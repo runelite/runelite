@@ -929,7 +929,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("One of several rhyming brothers, in business attire with an obsession for paper work.")
 			.location(new WorldPoint(3186, 3936, 0))
 			.npc("Piles")
-			.solutionProvider(CrypticClue::getSpeakToPilesSolution)
+			.solutionProvider((plugin) -> "Speak to Piles in the Wilderness Resource Area." + getResourceAreaCost(plugin))
 			.build(),
 		CrypticClue.builder()
 			.text("Search the drawers on the ground floor of a building facing Ardougne's market.")
@@ -1622,7 +1622,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
 			.location(new WorldPoint(3183, 3941, 0))
-			.solutionProvider(CrypticClue::getGoldOreResourceAreaSolution)
+			.solutionProvider((plugin) -> "Dig between the three gold ores in the Wilderness Resource Area." + getResourceAreaCost(plugin))
 			.build(),
 		CrypticClue.builder()
 			.text("Observing someone in a swamp, under the telescope lies treasure.")
@@ -1912,24 +1912,11 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		}
 	}
 
-	@SuppressWarnings("PMD.UnusedPrivateMethod")
-	private static String getGoldOreResourceAreaSolution(ClueScrollPlugin plugin)
-	{
-		return "Dig between the three gold ores in the Wilderness Resource Area. ".concat(getResourceAreaCost(plugin));
-	}
-
-	@SuppressWarnings("PMD.UnusedPrivateMethod")
-	private static String getSpeakToPilesSolution(ClueScrollPlugin plugin)
-	{
-		return "Speak to Piles in the Wilderness Resource Area.".concat(getResourceAreaCost(plugin));
-	}
-
 	private static String getResourceAreaCost(ClueScrollPlugin plugin)
 	{
-
 		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE) == 1)
 		{
-			return "No entry fee required.";
+			return "";
 		}
 
 		int resourceAreaCost = DEFAULT_RESOURCE_AREA_COST;
@@ -1943,6 +1930,6 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.8);
 		}
 
-		return String.format("An entry fee of %,d coins is required.", resourceAreaCost);
+		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
 	}
 }
