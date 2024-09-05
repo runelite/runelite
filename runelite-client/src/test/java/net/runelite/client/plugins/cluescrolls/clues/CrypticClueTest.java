@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -78,7 +79,7 @@ public class CrypticClueTest
 		CrypticClue clue = CrypticClue.forText("One of several rhyming brothers, in business attire with an obsession for paper work.");
 		assert clue != null;
 
-		assertTrue(clue.getSolution(plugin).contains("No entry fee required."));
+		assertFalse(clue.getSolution(plugin).contains("entry fee"));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 3,750 coins is required."));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 6,000 coins is required."));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
