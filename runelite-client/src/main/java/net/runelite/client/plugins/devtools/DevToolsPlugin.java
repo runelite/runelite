@@ -124,6 +124,9 @@ public class DevToolsPlugin extends Plugin
 	private WorldMapRegionOverlay mapRegionOverlay;
 
 	@Inject
+	private WorldMapMappingsOverlay mapMappingOverlay;
+
+	@Inject
 	private SoundEffectOverlay soundEffectOverlay;
 
 	@Inject
@@ -156,6 +159,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton lineOfSight;
 	private DevToolsButton cameraPosition;
 	private DevToolsButton worldMapLocation;
+	private DevToolsButton worldMapMapping;
 	private DevToolsButton tileLocation;
 	private DevToolsButton interacting;
 	private DevToolsButton examine;
@@ -247,6 +251,7 @@ public class DevToolsPlugin extends Plugin
 
 		location = new DevToolsButton("Location");
 		worldMapLocation = new DevToolsButton("World Map Location");
+		worldMapMapping = new DevToolsButton("World Map Mapping");
 		tileLocation = new DevToolsButton("Tile Location");
 		cameraPosition = new DevToolsButton("Camera Position");
 
@@ -278,6 +283,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(cameraOverlay);
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
+		overlayManager.add(mapMappingOverlay);
 		overlayManager.add(soundEffectOverlay);
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
@@ -308,6 +314,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
 		overlayManager.remove(mapRegionOverlay);
+		overlayManager.remove(mapMappingOverlay);
 		overlayManager.remove(soundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
 		Toolkit.getDefaultToolkit().removeAWTEventListener(swingInspectorKeyListener);
