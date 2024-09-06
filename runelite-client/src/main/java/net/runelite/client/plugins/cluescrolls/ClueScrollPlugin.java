@@ -890,10 +890,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		WorldPoint coordinate = coordinatesToWorldPoint(degX, minX, degY, minY);
-		// Convert from overworld to real
-		WorldPoint mirrorPoint = WorldPoint.getMirrorPoint(coordinate, false);
-		// Use mirror point as mirrorLocation if there is one
-		return new CoordinateClue(text, coordinate, coordinate == mirrorPoint ? null : mirrorPoint);
+		return CoordinateClue.forLocation(coordinate);
 	}
 
 	/**
