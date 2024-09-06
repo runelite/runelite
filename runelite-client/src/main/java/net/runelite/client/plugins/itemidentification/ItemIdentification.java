@@ -242,6 +242,8 @@ enum ItemIdentification
 	MITHRIL_BAR(Type.BAR, "Mithril", "MIT", ItemID.MITHRIL_BAR),
 	ADAMANTITE_BAR(Type.BAR, "Adaman", "ADA", ItemID.ADAMANTITE_BAR),
 	RUNITE_BAR(Type.BAR, "Runite", "RUN", ItemID.RUNITE_BAR),
+	
+	BLURITE_BAR(Type.BAR, "Blurite", "BLU", ItemID.BLURITE_BAR),
 
 	//Gems
 	SAPPHIRE(Type.GEM, "Sapphir", "S", ItemID.UNCUT_SAPPHIRE, ItemID.SAPPHIRE),
