@@ -101,6 +101,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideOthers;
 	private boolean hideOthers2D;
 	private boolean hideFriends;
+	private boolean hideFriends2D;
 	private boolean hideFriendsChatMembers;
 	private boolean hideClanMembers;
 	private boolean hideIgnoredPlayers;
@@ -152,6 +153,7 @@ public class EntityHiderPlugin extends Plugin
 		hideOthers2D = config.hideOthers2D();
 
 		hideFriends = config.hideFriends();
+		hideFriends2D = config.hideFriends2D();
 		hideFriendsChatMembers = config.hideFriendsChatMembers();
 		hideClanMembers = config.hideClanChatMembers();
 		hideIgnoredPlayers = config.hideIgnores();
@@ -201,7 +203,7 @@ public class EntityHiderPlugin extends Plugin
 
 			if (player.isFriend())
 			{
-				return !hideFriends;
+				return !(drawingUI ? hideFriends2D : hideFriends);
 			}
 			if (player.isFriendsChatMember())
 			{
