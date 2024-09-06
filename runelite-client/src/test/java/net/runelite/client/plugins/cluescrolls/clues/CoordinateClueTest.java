@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class CoordinateClueTest
 {
@@ -35,22 +35,31 @@ public class CoordinateClueTest
 	public void testDuplicateCoordinates()
 	{
 		// If this doesn't throw then the clues map doesn't have duplicate keys
-		new CoordinateClue("test", new WorldPoint(0, 0, 0), null);
+		CoordinateClue.builder().build();
+	}
+
+	@Test
+	public void testRequiresLight()
+	{
+		final CoordinateClue clueWithFirepit = CoordinateClue.forLocation(new WorldPoint(3830, 3060, 0));
+		final CoordinateClue clueWithoutFirepit = CoordinateClue.forLocation(new WorldPoint(2217, 3092, 0));
+
+		assertTrue(clueWithFirepit.isRequiresLight());
+		assertFalse(clueWithoutFirepit.isRequiresLight());
 	}
 
 	@Test
 	public void testIsleOfSoulsNpcs()
 	{
-		for (Map.Entry<WorldPoint, CoordinateClue.CoordinateClueInfo> clueEntry : CoordinateClue.CLUES.entrySet())
+		for (CoordinateClue clue : CoordinateClue.CLUES.values())
 		{
-			final CoordinateClue.CoordinateClueInfo clueInfo = clueEntry.getValue();
-			final Enemy enemy = clueInfo.getEnemy();
+			final Enemy enemy = clue.getEnemy();
 			if (!(enemy == Enemy.ARMADYLEAN_GUARD || enemy == Enemy.BANDOSIAN_GUARD))
 			{
 				continue;
 			}
 
-			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clueEntry, clueInfo.getDirections().contains("Isle of Souls"));
+			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clue, clue.getDirections().contains("Isle of Souls"));
 		}
 	}
 }
