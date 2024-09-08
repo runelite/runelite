@@ -2192,6 +2192,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.setParam0(p0)
 						.setParam1(p1)
 						.setOption(sub.option)
+						.setItemId(itemId)
 						.setTarget(target)
 						.setType(MenuAction.RUNELITE)
 						.onClick(e -> clientThread.invokeLater(() ->
