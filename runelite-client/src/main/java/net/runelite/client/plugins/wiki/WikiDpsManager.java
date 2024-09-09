@@ -291,6 +291,26 @@ class WikiDpsManager
 		text.setAction(0, "View DPS on OSRS Wiki");
 		text.setOnOpListener((JavaScriptCallback) ev -> onClick.run());
 
+		// listener which updates button height if window is resized
+		if (screen == Screen.BANK_EQUIPMENT)
+		{
+			text.setOnTimerListener((JavaScriptCallback) ev ->
+			{
+				int setBonusY = setBonus.getOriginalY() + parent.getHeight() / 2 - setBonus.getHeight() / 2;
+				if (setBonusY != text.getOriginalY())
+				{
+					int diff = setBonusY - text.getOriginalY();
+					for (int i = 0; i < 9; i++)
+					{
+						spriteWidgets[i].setOriginalY(diff + spriteWidgets[i].getOriginalY());
+						spriteWidgets[i].revalidate();
+					}
+					text.setOriginalY(diff + text.getOriginalY());
+					text.revalidate();
+				}
+			});
+		}
+
 		// recompute locations / sizes on parent
 		parent.revalidate();
 	}
