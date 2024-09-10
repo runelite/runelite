@@ -11885,50 +11885,75 @@
     28975,
     29307
   ],
+  "blue moon spear": [
+    28988,
+    29849
+  ],
+  "atlatl dart": [
+    28991,
+    29852
+  ],
+  "dual macuahuitl": [
+    28997,
+    29850
+  ],
+  "eclipse atlatl": [
+    29000,
+    29851
+  ],
   "eclipse moon chestplate": [
     29004,
     29031,
-    29049
+    29049,
+    29840
   ],
   "eclipse moon tassets": [
     29007,
     29033,
-    29052
+    29052,
+    29841
   ],
   "eclipse moon helm": [
     29010,
     29035,
-    29055
+    29055,
+    29842
   ],
   "blue moon chestplate": [
     29013,
     29037,
-    29058
+    29058,
+    29843
   ],
   "blue moon tassets": [
     29016,
     29039,
-    29061
+    29061,
+    29844
   ],
   "blue moon helm": [
     29019,
     29041,
-    29064
+    29064,
+    29845
   ],
   "blood moon chestplate": [
     29022,
     29043,
-    29067
+    29067,
+    29846
   ],
   "blood moon tassets": [
     29025,
     29045,
-    29070
+    29070,
+    29847
   ],
   "blood moon helm": [
     29028,
     29047,
-    29073
+    29073,
+    29848
   ],
   "moonlight potion": [
     29080,
