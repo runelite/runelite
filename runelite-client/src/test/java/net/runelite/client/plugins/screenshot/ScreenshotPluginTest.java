@@ -542,4 +542,15 @@ public class ScreenshotPluginTest
 
 		verify(screenshotPlugin).takeScreenshot("Loot key", "Wilderness Loot Chest");
 	}
+
+	@Test
+	public void testBossKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Nightmare kill count is: <col=ff0000>1,130</col>", null, 0);
+		screenshotPlugin.onChatMessage(chatMessage);
+
+		verify(screenshotPlugin).takeScreenshot("Nightmare(1130)", "Boss Kills");
+	}
 }
