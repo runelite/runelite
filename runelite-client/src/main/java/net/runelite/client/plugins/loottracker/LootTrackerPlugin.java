@@ -64,8 +64,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
@@ -83,6 +86,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -135,11 +139,13 @@ public class LootTrackerPlugin extends Plugin
 {
 	private static final int MAX_DROPS = 1024;
 	private static final Duration MAX_AGE = Duration.ofDays(365L);
+	private static final int INVCHANGE_TIMEOUT = 10; // server ticks
 
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
+	private static final int ARAXXOR_LAIR = 14489;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -181,6 +187,7 @@ public class LootTrackerPlugin extends Plugin
 		put(7827, "Dark Chest").
 		put(13117, "Rogues' Chest").
 		put(13156, "Chest (Ancient Vault)").
+		put(12348, "Muddy Chest").
 		build();
 
 	// Chests opened with keys from slayer tasks
@@ -264,6 +271,10 @@ public class LootTrackerPlugin extends Plugin
 	private static final String ORE_PACK_VM_EVENT = "Ore Pack (Volcanic Mine)";
 
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
+
+	private static final String BAG_FULL_OF_GEMS_PERCY_EVENT = "Bag full of gems (Percy)";
+	private static final String BAG_FULL_OF_GEMS_BELONA_EVENT = "Bag full of gems (Belona)";
+	private static final String BAG_FULL_OF_GEMS_DUSURI_EVENT = "Bag full of gems (Dusuri)";
 
 	// Soul Wars
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
@@ -366,6 +377,7 @@ public class LootTrackerPlugin extends Plugin
 	private InventoryID inventoryId;
 	private Multiset<Integer> inventorySnapshot;
 	private InvChangeCallback inventorySnapshotCb;
+	private int inventoryTimeout;
 
 	private String groundSnapshotName;
 	private int groundSnapshotCombatLevel;
@@ -394,7 +406,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 			if (quantity > 0)
 			{
-				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity, item.getLocation()));
+				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity));
 			}
 			else
 			{
@@ -634,7 +646,7 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
-		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
+		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId(), amount, null);
 		synchronized (queuedLoots)
 		{
 			queuedLoots.add(lootRecord);
@@ -700,6 +712,15 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPostClientTick(PostClientTick postClientTick)
 	{
+		if (inventoryTimeout > 0)
+		{
+			if (--inventoryTimeout == 0)
+			{
+				log.debug("Inventory snapshot: Loot timeout");
+				resetEvent();
+			}
+		}
+
 		if (groundSnapshotCycleDelay > 0)
 		{
 			groundSnapshotCycleDelay--;
@@ -743,7 +764,7 @@ public class LootTrackerPlugin extends Plugin
 
 			// convert to item stack
 			var items = diff.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation())) // made up location
+				.map(e -> new ItemStack(e.getElement(), e.getCount()))
 				.collect(Collectors.toList());
 			addLoot(groundSnapshotName, groundSnapshotCombatLevel, LootRecordType.NPC, null, items);
 
@@ -794,6 +815,13 @@ public class LootTrackerPlugin extends Plugin
 
 			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
+	}
+
+	@Subscribe
+	public void onPluginLootReceived(PluginLootReceived event)
+	{
+		log.debug("Plugin loot received from {}: {}", event.getSource().getName(), event.getItems());
+		addLoot(event.getName(), event.getCombatLevel(), event.getType(), event.getItems(), event.getItems());
 	}
 
 	@Subscribe
@@ -919,7 +947,7 @@ public class LootTrackerPlugin extends Plugin
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
 			.filter(item -> item.getId() > 0)
-			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
+			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
 			.collect(Collectors.toList());
 
 		if (config.showRaidsLootValue() && (event.equals(THEATRE_OF_BLOOD) || event.equals(CHAMBERS_OF_XERIC) || event.equals(TOMBS_OF_AMASCUT)))
@@ -1152,7 +1180,7 @@ public class LootTrackerPlugin extends Plugin
 		final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
 
 		final List<ItemStack> items = diff.entrySet().stream()
-			.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+			.map(e -> new ItemStack(e.getElement(), e.getCount()))
 			.collect(Collectors.toList());
 
 		log.debug("Inv change: {} Ground items: {}", items, groundItems);
@@ -1162,9 +1190,7 @@ public class LootTrackerPlugin extends Plugin
 			inventorySnapshotCb.accept(items, groundItems, diffr);
 		}
 
-		inventoryId = null;
-		inventorySnapshot = null;
-		inventorySnapshotCb = null;
+		resetEvent();
 	}
 
 	@Subscribe
@@ -1196,6 +1222,15 @@ public class LootTrackerPlugin extends Plugin
 				{
 					case ItemID.CASKET:
 						onInvChange(collectInvItems(LootRecordType.EVENT, CASKET_EVENT));
+						break;
+					case ItemID.BAG_FULL_OF_GEMS:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_PERCY_EVENT));
+						break;
+					case ItemID.BAG_FULL_OF_GEMS_24853:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_BELONA_EVENT));
+						break;
+					case ItemID.BAG_FULL_OF_GEMS_25537:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_DUSURI_EVENT));
 						break;
 					case ItemID.SUPPLY_CRATE:
 					case ItemID.EXTRA_SUPPLY_CRATE:
@@ -1269,6 +1304,17 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		Actor actor = animationChanged.getActor();
+		if (actor == client.getLocalPlayer() && actor.getAnimation() == AnimationID.FARMING_HARVEST_HERB && inAraxxorRegion())
+		{
+			log.debug("Harvest Araxxor");
+			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, "Araxxor"), 4);
+		}
+	}
+
 	private static boolean isNPCOp(MenuAction menuAction)
 	{
 		final int id = menuAction.getId();
@@ -1311,7 +1357,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ConfigLoot key = new ConfigLoot(record.getType(), record.getEventId());
 			ConfigLoot loot = map.computeIfAbsent(key, k -> key);
-			loot.kills++;
+			loot.kills += record.getAmount();
 			for (GameItem item : record.getDrops())
 			{
 				loot.add(item.getId(), item.getQty());
@@ -1349,6 +1395,7 @@ public class LootTrackerPlugin extends Plugin
 		inventoryId = null;
 		inventorySnapshot = null;
 		inventorySnapshotCb = null;
+		inventoryTimeout = 0;
 	}
 
 	@FunctionalInterface
@@ -1391,9 +1438,15 @@ public class LootTrackerPlugin extends Plugin
 
 	private void onInvChange(InventoryID inv, InvChangeCallback cb)
 	{
+		onInvChange(inv, cb, INVCHANGE_TIMEOUT);
+	}
+
+	private void onInvChange(InventoryID inv, InvChangeCallback cb, int timeout)
+	{
 		inventoryId = inv;
 		inventorySnapshot = HashMultiset.create();
 		inventorySnapshotCb = cb;
+		inventoryTimeout = timeout * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
 
 		final ItemContainer itemContainer = client.getItemContainer(inv);
 		if (itemContainer != null)
@@ -1418,7 +1471,7 @@ public class LootTrackerPlugin extends Plugin
 			Matcher matcher = HERBIBOAR_HERB_SACK_PATTERN.matcher(messageNode.getValue());
 			if (matcher.matches())
 			{
-				herbs.add(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), 1, client.getLocalPlayer().getLocalLocation()));
+				herbs.add(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), 1));
 			}
 		}
 
@@ -1437,6 +1490,12 @@ public class LootTrackerPlugin extends Plugin
 	{
 		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 		return region == THEATRE_OF_BLOOD_REGION || region == THEATRE_OF_BLOOD_LOBBY;
+	}
+
+	private boolean inAraxxorRegion()
+	{
+		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		return region == ARAXXOR_LAIR;
 	}
 
 	void toggleItem(String name, boolean ignore)

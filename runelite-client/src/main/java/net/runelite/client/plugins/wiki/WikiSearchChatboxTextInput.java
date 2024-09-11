@@ -135,7 +135,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 					public void onResponse(Call call, Response response) throws IOException
 					{
 						String body = response.body().string();
-						try // NOPMD: UseTryWithResources
+						try (response)
 						{
 							JsonArray jar = new JsonParser().parse(body).getAsJsonArray();
 							List<String> apredictions = gson.fromJson(jar.get(1), new TypeToken<List<String>>()
@@ -158,10 +158,6 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 						catch (JsonParseException | IllegalStateException | IndexOutOfBoundsException e)
 						{
 							log.warn("error parsing wiki response {}", body, e);
-						}
-						finally
-						{
-							response.close();
 						}
 					}
 				});

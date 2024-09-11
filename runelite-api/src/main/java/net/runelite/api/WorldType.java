@@ -70,6 +70,8 @@ public enum WorldType
 	 * Beta world.
 	 */
 	BETA_WORLD(1 << 16),
+	LEGACY_ONLY(1 << 22),
+	EOC_ONLY(1 << 23),
 	/**
 	 * Beta worlds without profiles that are saved.
 	 */

@@ -808,7 +808,7 @@ LABEL661:
    if_icmpeq              LABEL665
    jump                   LABEL668
 LABEL665:
-   sconst                 "You are not chatting in the channel of your Iron Group at the moment."
+   sconst                 "You are not chatting in the channel of your Ironman Group at the moment."
    mes                   
    jump                   LABEL670
 LABEL668:

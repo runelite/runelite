@@ -31,10 +31,10 @@ public abstract class AbstractWorldMapDataDefinition
 {
 	public int minLevel;
 	public int levels;
-	public int displaySquareX;
-	public int displaySquareZ;
 	public int sourceSquareX;
 	public int sourceSquareZ;
+	public int displaySquareX;
+	public int displaySquareZ;
 	public int groupId;
 	public int fileId;
 }

@@ -131,7 +131,7 @@ public class XpTrackerPlugin extends Plugin
 	private long lastTickMillis = 0;
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
-	private boolean initializeTracker;
+	private int initializeTracker;
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -165,7 +165,7 @@ public class XpTrackerPlugin extends Plugin
 
 		// Initialize the tracker & last xp if already logged in
 		fetchXp = true;
-		initializeTracker = true;
+		initializeTracker = 2;
 		lastAccount = -1L;
 		clientThread.invokeLater(() ->
 		{
@@ -209,12 +209,12 @@ public class XpTrackerPlugin extends Plugin
 				lastWorldType = type;
 				resetState();
 				// Must be set from hitting the LOGGING_IN or HOPPING case below
-				assert initializeTracker;
+				assert initializeTracker > 0;
 			}
 		}
 		else if (state == GameState.LOGGING_IN || state == GameState.HOPPING)
 		{
-			initializeTracker = true;
+			initializeTracker = 2;
 		}
 		else if (state == GameState.LOGIN_SCREEN)
 		{
@@ -382,7 +382,7 @@ public class XpTrackerPlugin extends Plugin
 		final int startGoalXp = client.getVarpValue(startGoal);
 		final int endGoalXp = client.getVarpValue(endGoal);
 
-		if (initializeTracker)
+		if (initializeTracker > 0)
 		{
 			// This is the XP sync on login, wait until after login to begin counting
 			return;
@@ -437,10 +437,8 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (initializeTracker)
+		if (initializeTracker > 0 && --initializeTracker == 0)
 		{
-			initializeTracker = false;
-
 			// Check for xp gained while logged out
 			for (Skill skill : Skill.values())
 			{
@@ -509,7 +507,15 @@ public class XpTrackerPlugin extends Plugin
 
 		// Get skill from menu option, eg. "View <col=ff981f>Attack</col> guide"
 		final String skillText = event.getOption().split(" ")[1];
-		final Skill skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+		final Skill skill;
+		try
+		{
+			skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+		}
+		catch (IllegalArgumentException ignored)
+		{
+			return;
+		}
 
 		client.createMenuEntry(-1)
 			.setTarget(skillText)

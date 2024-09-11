@@ -24,12 +24,9 @@
  */
 package net.runelite.client.plugins.animsmoothing;
 
-import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -41,19 +38,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class AnimationSmoothingPlugin extends Plugin
 {
-	static final String CONFIG_GROUP = "animationSmoothing";
-
 	@Inject
 	private Client client;
-
-	@Inject
-	private AnimationSmoothingConfig config;
-
-	@Provides
-	AnimationSmoothingConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AnimationSmoothingConfig.class);
-	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -64,24 +50,43 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		client.setInterpolatePlayerAnimations(false);
-		client.setInterpolateNpcAnimations(false);
-		client.setInterpolateObjectAnimations(false);
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(CONFIG_GROUP))
-		{
-			update();
-		}
+		client.setAnimationInterpolationFilter(null);
 	}
 
 	private void update()
 	{
-		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
-		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
-		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
+		client.setAnimationInterpolationFilter(AnimationSmoothingPlugin::isAnimationInterpolatable);
+	}
+
+	private static boolean isAnimationInterpolatable(int animId)
+	{
+		switch (animId)
+		{
+			case AnimationID.HELLHOUND_DEFENCE:
+
+			case AnimationID.WYRM_IDLE_DORMANT:
+			case AnimationID.WYRM_IDLE_ACTIVE:
+			case AnimationID.WYRM_ATTACK_MELEE:
+			case AnimationID.WYRM_ATTACK_MAGE:
+
+			case AnimationID.TREE_SPIRIT_IDLE:
+			case AnimationID.TREE_SPIRIT_WALK:
+
+			case AnimationID.SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK:
+
+			case AnimationID.VIGGORAS_CHAINMACE_IDLE:
+
+			case AnimationID.MLM_WATER_WHEEL_SPINNING:
+			case AnimationID.HARMONY_ISLAND_WINDMILL_SPINNING:
+			case AnimationID.GWENITH_WINDMILL_SPINNING:
+			case AnimationID.LITHKREN_GENERATOR_SPINNING:
+			case AnimationID.GIANTS_FOUNDRY_WATER_WHEEL_SPINNING:
+
+			case AnimationID.MAGIC_ARCEUUS_DEMONBANE:
+				return false;
+
+			default:
+				return true;
+		}
 	}
 }

@@ -1273,6 +1273,45 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testBirdsEgg()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have made <col=ff0000>one</col> offering.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "bird's egg offerings", 1);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have made <col=ff0000>420</col> offerings.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "bird's egg offerings", 420);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have made <col=ff0000>10,000</col> offerings.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "bird's egg offerings", 10_000);
+	}
+
+	@Test
+	public void testHunterRumours()
+	{
+		testHunterRumourChatMessage("You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", 77);
+		// single kc has no s.
+		testHunterRumourChatMessage("You have completed <col=ff3045>1</col> rumour for the Hunter Guild.", 1);
+		// opaque chatbox has different color
+		testHunterRumourChatMessage("You have completed <col=e00a19>2</col> rumours for the Hunter Guild.", 2);
+		// with comma in number
+		testHunterRumourChatMessage("You have completed <col=ff3045>1,032</col> rumours for the Hunter Guild.", 1032);
+	}
+
+	private void testHunterRumourChatMessage(String message, int kc)
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", message, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", kc);
+	}
+
+	@Test
 	public void testReward()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your reward is: <col=ff0000>1</col> x <col=ff0000>Kebab</col>.", null, 0);

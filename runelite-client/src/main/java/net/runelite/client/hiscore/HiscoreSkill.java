@@ -75,6 +75,7 @@ public enum HiscoreSkill
 	COLOSSEUM_GLORY("Colosseum Glory", ACTIVITY),
 	ABYSSAL_SIRE("Abyssal Sire", BOSS),
 	ALCHEMICAL_HYDRA("Alchemical Hydra", BOSS),
+	ARAXXOR("Araxxor", BOSS),
 	ARTIO("Artio", BOSS),
 	BARROWS_CHESTS("Barrows Chests", BOSS),
 	BRYOPHYTA("Bryophyta", BOSS),

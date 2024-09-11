@@ -32,14 +32,12 @@ class GpuIntBuffer
 {
 	private IntBuffer buffer = allocateDirect(65536);
 
-	void put(int x, int y, int z)
+	void put(float x, float y, float z, int w)
 	{
-		buffer.put(x).put(y).put(z);
-	}
-
-	void put(int x, int y, int z, int c)
-	{
-		buffer.put(x).put(y).put(z).put(c);
+		buffer.put(Float.floatToIntBits(x))
+			.put(Float.floatToIntBits(y))
+			.put(Float.floatToIntBits(z))
+			.put(w);
 	}
 
 	void flip()

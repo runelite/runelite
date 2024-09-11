@@ -35,10 +35,10 @@ import net.runelite.api.coords.WorldPoint;
 class MemorizedNpc
 {
 	@Getter
-	private int npcIndex;
+	private final int npcIndex;
 
 	@Getter
-	private String npcName;
+	private final String npcName;
 
 	@Getter
 	private int npcSize;

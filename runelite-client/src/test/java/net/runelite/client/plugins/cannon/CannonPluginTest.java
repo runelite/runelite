@@ -104,11 +104,11 @@ public class CannonPluginTest
 	@Test
 	public void testAmmoCountOnPlace()
 	{
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.SPAM);
-		chatMessage.setMessage("You add the furnace.");
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.CANNON_STATE);
+		varbitChanged.setValue(4);
 
-		plugin.onChatMessage(chatMessage);
+		plugin.onVarbitChanged(varbitChanged);
 		assertTrue(plugin.isCannonPlaced());
 
 		plugin.onVarbitChanged(cannonAmmoChanged);
@@ -126,11 +126,11 @@ public class CannonPluginTest
 	{
 		when(config.showInfobox()).thenReturn(true);
 
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.SPAM);
-		chatMessage.setMessage("You add the furnace.");
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.CANNON_STATE);
+		varbitChanged.setValue(4);
 
-		plugin.onChatMessage(chatMessage);
+		plugin.onVarbitChanged(varbitChanged);
 		assertTrue(plugin.isCannonPlaced());
 
 		assertEquals(0, plugin.getCballsLeft());

@@ -48,20 +48,20 @@ public class WorldMapCompositeDefinition
 
 		for (MapSquareDefinition mapSquare : mapSquareDefinitions)
 		{
-			if (squareX == mapSquare.sourceSquareX && squareZ == mapSquare.sourceSquareZ)
+			if (squareX == mapSquare.displaySquareX && squareZ == mapSquare.displaySquareZ)
 			{
-				int shiftX = ((mapSquare.displaySquareX - mapSquare.sourceSquareX) * 64);
-				int shiftZ = ((mapSquare.displaySquareZ - mapSquare.sourceSquareZ) * 64);
+				int shiftX = ((mapSquare.sourceSquareX - mapSquare.displaySquareX) * 64);
+				int shiftZ = ((mapSquare.sourceSquareZ - mapSquare.displaySquareZ) * 64);
 				offset = new Position(shiftX, shiftZ, mapSquare.getMinLevel());
 			}
 		}
 
 		for (ZoneDefinition zone : zoneDefinitions)
 		{
-			if (squareX == zone.sourceSquareX && squareZ == zone.sourceSquareZ && zoneX == zone.sourceZoneX && zoneZ == zone.sourceZoneZ)
+			if (squareX == zone.displaySquareX && squareZ == zone.displaySquareZ && zoneX == zone.displayZoneX && zoneZ == zone.displayZoneZ)
 			{
-				int shiftX = ((zone.displaySquareX - zone.sourceSquareX) * 64) + ((zone.displayZoneX - zone.sourceZoneX) * 8);
-				int shiftZ = ((zone.displaySquareZ - zone.sourceSquareZ) * 64) + ((zone.displayZoneY - zone.sourceZoneZ) * 8);
+				int shiftX = ((zone.sourceSquareX - zone.displaySquareX) * 64) + ((zone.sourceZoneX - zone.displayZoneX) * 8);
+				int shiftZ = ((zone.sourceSquareZ - zone.displaySquareZ) * 64) + ((zone.sourceZoneZ - zone.displayZoneZ) * 8);
 				offset = new Position(shiftX, shiftZ, zone.getMinLevel());
 			}
 		}

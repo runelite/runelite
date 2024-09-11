@@ -259,7 +259,7 @@ public class NightmareZonePlugin extends Plugin
 
 		if (!timeSinceStart.isZero())
 		{
-			return (int) ((double) currentPoints * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+			return (int) ((double) currentPoints * HOUR.toMillis() / timeSinceStart.toMillis());
 		}
 
 		return 0;

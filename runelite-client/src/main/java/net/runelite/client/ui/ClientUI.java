@@ -58,10 +58,10 @@ import java.awt.desktop.QuitStrategy;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -117,6 +117,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
@@ -177,10 +178,12 @@ public class ClientUI
 
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int minMemoryLimit = 400;
 
 	@Inject(optional = true)
 	@Named("recommendedMemoryLimit")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int recommendedMemoryLimit = 512;
 
 	private List<KeyListener> keyListeners;
@@ -499,6 +502,23 @@ public class ClientUI
 					}
 				});
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
+
+			frame.addWindowFocusListener(new WindowFocusListener()
+			{
+				@Override
+				public void windowGainedFocus(WindowEvent e)
+				{
+				}
+
+				@Override
+				public void windowLostFocus(WindowEvent e)
+				{
+					for (KeyListener keyListener : keyListeners)
+					{
+						keyListener.focusLost();
+					}
+				}
+			});
 
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
@@ -922,7 +942,15 @@ public class ClientUI
 	 */
 	public void flashTaskbar()
 	{
-		Taskbar.getTaskbar().requestWindowUserAttention(frame);
+		Taskbar taskbar = Taskbar.getTaskbar();
+		if (taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW))
+		{
+			taskbar.requestWindowUserAttention(frame);
+		}
+		else
+		{
+			log.debug("USER_ATTENTION_WINDOW is not supported");
+		}
 	}
 
 	/**

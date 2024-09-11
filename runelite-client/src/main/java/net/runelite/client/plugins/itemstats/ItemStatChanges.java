@@ -113,6 +113,12 @@ public class ItemStatChanges
 		add(range(food(5), food(8)), LEAN_SNAIL_MEAT);
 		add(range(food(7), food(9)), FAT_SNAIL_MEAT);
 		add(range(food(7), food(10)), SPIDER_ON_STICK_6297, SPIDER_ON_SHAFT_6299);
+		add(combo(food(8), food(6)), COOKED_GRAAHK);
+		add(combo(food(9), food(8)), COOKED_KYATT);
+		add(combo(food(11), food(8)), COOKED_PYRE_FOX);
+		add(combo(food(13), food(10), heal(RUN_ENERGY, 10)), COOKED_DASHING_KEBBIT);
+		add(combo(food(12), food(9)), COOKED_SUNLIGHT_ANTELOPE);
+		add(combo(food(14), food(12)), COOKED_MOONLIGHT_ANTELOPE);
 
 		// Dorgeshuun Cuisine
 		add(food(2), BAT_SHISH, COATED_FROGS_LEGS, FILLETS, FINGERS, FROGBURGER, FROGSPAWN_GUMBO, GREEN_GLOOP_SOUP,

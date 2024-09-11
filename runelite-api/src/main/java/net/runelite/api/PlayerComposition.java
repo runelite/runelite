@@ -33,6 +33,9 @@ import net.runelite.api.kit.KitType;
  */
 public interface PlayerComposition
 {
+	int KIT_OFFSET = 256;
+	int ITEM_OFFSET = 2048;
+
 	/**
 	 * Checks if the player is female.
 	 *
@@ -59,9 +62,8 @@ public interface PlayerComposition
 	/**
 	 * Gets an array of IDs related to equipment slots.
 	 * <p>
-	 * If the ID for a specific slot is between 256 and 512, subtracting
-	 * 256 will result in the kit ID. Values above 512 indicate an item
-	 * and can be converted to the item ID by subtracting 512.
+	 * IDs between {@link #KIT_OFFSET} and {@link #ITEM_OFFSET} are kits, offset by {@link #KIT_OFFSET}.
+	 * IDs greater than or equal to {@link #ITEM_OFFSET} are items, offset by {@link #ITEM_OFFSET}.
 	 *
 	 * @return the equipment IDs
 	 */

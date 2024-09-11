@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, 1Defence
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +23,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.specialcounter;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
-import net.runelite.client.ui.overlay.infobox.Timer;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-class TimerTimer extends Timer
+class PercentageInfobox extends InfoBox
 {
-	private final GameTimer timer;
-	int ticks;
+	private float percent = 1f;
 
-	TimerTimer(GameTimer timer, Duration duration, Plugin plugin)
+	PercentageInfobox(BufferedImage image, SpecialCounterPlugin plugin)
 	{
-		super(duration.toMillis(), ChronoUnit.MILLIS, null, plugin);
-		this.timer = timer;
-		setPriority(InfoBoxPriority.MED);
+		super(image, plugin);
 	}
 
-	public GameTimer getTimer()
+	void mul(float p)
 	{
-		return timer;
+		percent *= p;
 	}
 
 	@Override
-	public String getName()
+	public String getTooltip()
 	{
-		return timer.name();
+		return "Opponent defence has been reduced by " + getText() + ".";
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Override
+	public String getText()
+	{
+		return (int) ((1 - percent) * 100) + "%";
 	}
 }

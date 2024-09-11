@@ -287,7 +287,7 @@ public class SceneOverlay extends Overlay
 			return;
 		}
 
-		if (area.canTravelInDirection(client, dx, dy))
+		if (area.canTravelInDirection(client.getTopLevelWorldView(), dx, dy))
 		{
 			LocalPoint lp = actor.getLocalLocation();
 			if (lp == null)
@@ -358,7 +358,7 @@ public class SceneOverlay extends Overlay
 
 		// Running the line of sight algorithm 100 times per frame doesn't
 		// seem to use much CPU time, however rendering 100 tiles does
-		if (start.hasLineOfSightTo(client, targetLocation))
+		if (start.hasLineOfSightTo(client.getTopLevelWorldView(), targetLocation))
 		{
 			LocalPoint lp = LocalPoint.fromWorld(client, targetLocation);
 			if (lp == null)

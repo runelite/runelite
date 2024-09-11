@@ -26,9 +26,12 @@
 package net.runelite.api.coords;
 
 import javax.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Scene;
+import net.runelite.api.WorldView;
 
 /**
  * A two-dimensional point in the local coordinate space.
@@ -39,49 +42,97 @@ import net.runelite.api.Perspective;
  * The unit of a LocalPoint is 1/128th of a tile.
  */
 @Value
+@RequiredArgsConstructor
 public class LocalPoint
 {
 	/**
 	 * X and Y axis coordinates.
 	 */
 	private final int x, y;
+	private final int worldView;
 
-	/**
-	 * Gets the local coordinate at the center of the passed tile.
-	 *
-	 * @param client the client
-	 * @param world  the passed tile
-	 * @return coordinate if the tile is in the current scene, otherwise null
-	 */
+	public LocalPoint(int x, int y, WorldView wv)
+	{
+		this(x, y, wv.getId());
+	}
+
+	@Deprecated
+	public LocalPoint(int x, int y)
+	{
+		this(x, y, -1);
+	}
+
 	@Nullable
+	@Deprecated
 	public static LocalPoint fromWorld(Client client, WorldPoint world)
 	{
-		if (client.getPlane() != world.getPlane())
-		{
-			return null;
-		}
-		return fromWorld(client, world.getX(), world.getY());
+		return fromWorld(client.getTopLevelWorldView(), world);
 	}
 
 	/**
 	 * Gets the local coordinate at the center of the passed tile.
 	 *
-	 * @param client the client
+	 * @return coordinate if the tile is in the world view, otherwise null
+	 */
+	@Nullable
+	public static LocalPoint fromWorld(WorldView wv, WorldPoint world)
+	{
+		if (wv.getPlane() != world.getPlane())
+		{
+			return null;
+		}
+		return fromWorld(wv, world.getX(), world.getY());
+	}
+
+	@Deprecated
+	@Nullable
+	public static LocalPoint fromWorld(Client client, int x, int y)
+	{
+		return fromWorld(client.getTopLevelWorldView(), x, y);
+	}
+
+	/**
+	 * Gets the local coordinate at the center of the passed tile.
+	 *
+	 * @param wv     the scene
 	 * @param x      x-axis coordinate of the tile
 	 * @param y      y-axis coordinate of the tile
 	 * @return coordinate if the tile is in the current scene, otherwise null
 	 */
-	public static LocalPoint fromWorld(Client client, int x, int y)
+	@Nullable
+	public static LocalPoint fromWorld(WorldView wv, int x, int y)
 	{
-		if (!WorldPoint.isInScene(client, x, y))
+		if (!WorldPoint.isInScene(wv, x, y))
 		{
 			return null;
 		}
 
-		int baseX = client.getBaseX();
-		int baseY = client.getBaseY();
+		int baseX = wv.getBaseX();
+		int baseY = wv.getBaseY();
 
-		return fromScene(x - baseX, y - baseY);
+		return fromScene(x - baseX, y - baseY, wv);
+	}
+
+	/**
+	 * Gets the local coordinate at the center of the passed tile.
+	 *
+	 * @param scene  the scene
+	 * @param x      x-axis coordinate of the tile
+	 * @param y      y-axis coordinate of the tile
+	 * @return coordinate if the tile is in the current scene, otherwise null
+	 */
+	@Nullable
+	public static LocalPoint fromWorld(Scene scene, int x, int y)
+	{
+		if (!WorldPoint.isInScene(scene, x, y))
+		{
+			return null;
+		}
+
+		int baseX = scene.getBaseX();
+		int baseY = scene.getBaseY();
+
+		return fromScene(x - baseX, y - baseY, scene);
 	}
 
 	/**
@@ -92,11 +143,17 @@ public class LocalPoint
 	 */
 	public int distanceTo(LocalPoint other)
 	{
+		if (worldView != other.worldView)
+		{
+			assert false;
+			return Integer.MAX_VALUE;
+		}
+
 		return (int) Math.hypot(getX() - other.getX(), getY() - other.getY());
 	}
 
 	/**
-	 * Test if this point is in the loaded scene, a 104x104 tile area.
+	 * Test if this point is in the basic 104x104 tile scene.
 	 * @return
 	 */
 	public boolean isInScene()
@@ -112,11 +169,46 @@ public class LocalPoint
 	 * @param y      y-axis coordinate of the tile in Scene coords
 	 * @return true coordinate of the tile
 	 */
+	@Deprecated
 	public static LocalPoint fromScene(int x, int y)
 	{
 		return new LocalPoint(
 			(x << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1),
 			(y << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1)
+		);
+	}
+
+	/**
+	 * Gets the coordinate at the center of the passed tile.
+	 *
+	 * @param x      x-axis coordinate of the tile in Scene coords
+	 * @param y      y-axis coordinate of the tile in Scene coords
+	 * @param scene  scene containing the tile
+	 * @return true coordinate of the tile
+	 */
+	public static LocalPoint fromScene(int x, int y, Scene scene)
+	{
+		return new LocalPoint(
+			(x << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1),
+			(y << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1),
+			scene.getWorldViewId()
+		);
+	}
+
+	/**
+	 * Gets the coordinate at the center of the passed tile.
+	 *
+	 * @param x      x-axis coordinate of the tile in Scene coords
+	 * @param y      y-axis coordinate of the tile in Scene coords
+	 * @param wv     wv containing the tile
+	 * @return true coordinate of the tile
+	 */
+	public static LocalPoint fromScene(int x, int y, WorldView wv)
+	{
+		return new LocalPoint(
+			(x << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1),
+			(y << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1),
+			wv.getId()
 		);
 	}
 
@@ -138,5 +230,20 @@ public class LocalPoint
 	public int getSceneY()
 	{
 		return y >> Perspective.LOCAL_COORD_BITS;
+	}
+
+	public LocalPoint dx(int dx)
+	{
+		return plus(dx, 0);
+	}
+
+	public LocalPoint dy(int dy)
+	{
+		return plus(0, dy);
+	}
+
+	public LocalPoint plus(int dx, int dy)
+	{
+		return new LocalPoint(x + dx, y + dy, worldView);
 	}
 }
