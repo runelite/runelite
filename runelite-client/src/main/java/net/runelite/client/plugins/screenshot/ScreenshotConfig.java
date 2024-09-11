@@ -156,10 +156,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "ignoreSafePvPKills",
+		name = "Ignore Safe PvP Kills",
+		description = "Configures whether or not the Screenshot PvP Kills option ignores kills in safe PvP situations.",
+		position = 9,
+		section = whatSection
+	)
+	default boolean ignoreSafePvPKills()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "boss",
 		name = "Screenshot Boss Kills",
 		description = "Configures whether or not screenshots are automatically taken of boss kills.",
-		position = 9,
+		position = 10,
 		section = whatSection
 	)
 	default boolean screenshotBossKills()
@@ -171,7 +183,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "playerDeath",
 		name = "Screenshot Deaths",
 		description = "Configures whether or not screenshots are automatically taken when you die.",
-		position = 10,
+		position = 11,
 		section = whatSection
 	)
 	default boolean screenshotPlayerDeath()
@@ -180,10 +192,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "ignoreSafePvPDeaths",
+		name = "Ignore Safe PvP Deaths",
+		description = "Configures whether or not the Screenshot Deaths option ignores deaths in safe PvP situations.",
+		position = 12,
+		section = whatSection
+	)
+	default boolean ignoreSafePvPDeaths()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "friendDeath",
 		name = "Screenshot Friend Deaths",
 		description = "Configures whether or not screenshots are automatically taken when friends or friends chat members die.",
-		position = 11,
+		position = 13,
 		section = whatSection
 	)
 	default boolean screenshotFriendDeath()
@@ -195,7 +219,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "clanDeath",
 		name = "Screenshot Clan Deaths",
 		description = "Configures whether or not screenshots are automatically taken when clan members die.",
-		position = 12,
+		position = 14,
 		section = whatSection
 	)
 	default boolean screenshotClanDeath()
@@ -207,7 +231,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "duels",
 		name = "Screenshot Duels",
 		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
-		position = 13,
+		position = 15,
 		section = whatSection
 	)
 	default boolean screenshotDuels()
@@ -220,7 +244,7 @@ public interface ScreenshotConfig extends Config
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.<br>"
 			+ "Requires 'Loot drop notifications' to be enabled in the RuneScape settings.",
-		position = 14,
+		position = 16,
 		section = whatSection
 	)
 	default boolean screenshotValuableDrop()
@@ -233,7 +257,7 @@ public interface ScreenshotConfig extends Config
 		name = "Valuable Threshold",
 		description = "The minimum value to save screenshots of valuable drops.<br>"
 			+ "Requires 'Minimum item value needed for loot notification' to be set to a lesser or equal value in the RuneScape settings.",
-		position = 15,
+		position = 17,
 		section = whatSection
 	)
 	default int valuableDropThreshold()
@@ -246,7 +270,7 @@ public interface ScreenshotConfig extends Config
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.<br>"
 			+ "Requires 'Untradeable loot notifications' to be enabled in the RuneScape settings.",
-		position = 16,
+		position = 18,
 		section = whatSection
 	)
 	default boolean screenshotUntradeableDrop()
@@ -258,7 +282,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "ccKick",
 		name = "Screenshot Kicks from FC",
 		description = "Take a screenshot when you kick a user from a friends chat.",
-		position = 17,
+		position = 19,
 		section = whatSection
 	)
 	default boolean screenshotKick()
@@ -270,7 +294,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "baHighGamble",
 		name = "Screenshot BA high gambles",
 		description = "Take a screenshot of your reward from a high gamble at Barbarian Assault.",
-		position = 18,
+		position = 20,
 		section = whatSection
 	)
 	default boolean screenshotHighGamble()
@@ -283,7 +307,7 @@ public interface ScreenshotConfig extends Config
 		name = "Screenshot collection log entries",
 		description = "Take a screenshot when completing an entry in the collection log.<br>"
 			+ "Requires 'Collection log - New addition notification' to be enabled in the RuneScape settings.",
-		position = 19,
+		position = 21,
 		section = whatSection
 	)
 	default boolean screenshotCollectionLogEntries()
@@ -295,7 +319,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "combatAchievements",
 		name = "Screenshot combat achievements",
 		description = "Take a screenshot when completing a combat achievement task.",
-		position = 20,
+		position = 22,
 		section = whatSection
 	)
 	default boolean screenshotCombatAchievements()
@@ -307,7 +331,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "wildernessLootChest",
 		name = "Screenshot wilderness loot chest",
 		description = "Take a screenshot when opening wilderness loot chest.",
-		position = 21,
+		position = 23,
 		section = whatSection
 	)
 	default boolean screenshotWildernessLootChest()
