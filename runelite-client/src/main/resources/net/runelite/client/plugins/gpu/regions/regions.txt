@@ -353,3 +353,7 @@ n
 R 50 148 50 151
 r 49 149
 r 51 150
+
+// desert mining camp (the tourist trap)
+n
+r 51 147
