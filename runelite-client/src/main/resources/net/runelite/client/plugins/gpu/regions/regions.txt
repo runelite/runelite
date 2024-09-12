@@ -348,6 +348,8 @@ C 0 0 2 6
 n
 r 54 148
 
-// chasm of tears
+// lumbridge underground
 n
-r 50 148
+R 50 148 50 151
+r 49 149
+r 51 150
