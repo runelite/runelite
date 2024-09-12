@@ -425,10 +425,22 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "sidebarLeftKey",
+			name = "Sidebar Left Toggle",
+			description = "The key that will toggle the sidebar left or right (accepts modifiers)",
+			position = 45,
+			section = windowSettings
+		)
+		default Keybind sidebarLeftKey()
+		{
+			return new Keybind(KeyEvent.VK_F10, InputEvent.CTRL_DOWN_MASK);
+		}
+
+	@ConfigItem(
 		keyName = "sidebarToggleKey",
 		name = "Sidebar Toggle Key",
 		description = "The key that will toggle the sidebar (accepts modifiers)",
-		position = 45,
+		position = 46,
 		section = windowSettings
 	)
 	default Keybind sidebarToggleKey()
@@ -440,7 +452,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "panelToggleKey",
 		name = "Plugin Panel Toggle Key",
 		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
-		position = 46,
+		position = 47,
 		section = windowSettings
 	)
 	default Keybind panelToggleKey()
