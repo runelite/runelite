@@ -39,13 +39,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputTimestamp>1</project.build.outputTimestamp>
 		<lombok.version>1.18.30</lombok.version>
-		<logback.version>1.2.9</logback.version>
+		<logback.version>1.2.13</logback.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<flatlaf.version>3.2.5-rl4</flatlaf.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
-		<glslang.path></glslang.path>
+		<glslang.path/>
 
 		<rs.version>225</rs.version>
 	</properties>
