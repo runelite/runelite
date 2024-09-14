@@ -448,7 +448,7 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotBossKills())
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
-			if (m.matches())
+			if (m.find())
 			{
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2).replace(",", "");
