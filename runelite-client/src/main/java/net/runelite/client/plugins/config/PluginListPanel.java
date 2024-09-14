@@ -212,7 +212,7 @@ class PluginListPanel extends PluginPanel
 			.map(desc ->
 			{
 				PluginListItem listItem = new PluginListItem(this, desc);
-				listItem.setPinned(pinnedPlugins.contains(desc.getName()));
+				listItem.setPinned(pinnedPlugins.contains(desc.getName().replace(",", "")));
 				return listItem;
 			})
 			.sorted(Comparator.comparing(p -> p.getPluginConfig().getName()))
@@ -339,7 +339,7 @@ class PluginListPanel extends PluginPanel
 	{
 		final String value = pluginList.stream()
 			.filter(PluginListItem::isPinned)
-			.map(p -> p.getPluginConfig().getName())
+			.map(p -> p.getPluginConfig().getName().replace(",", ""))
 			.collect(Collectors.joining(","));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
