@@ -1,4 +1,4 @@
-*This is a guide for contributing to the core RuneLite client. For contributions to the Plugin Hub, see [this guide](https://github.com/runelite/plugin-hub/blob/master/README.md).*
+*This is a guide for contributing to the core RuneLite client. For contributions to the Plugin Hub, see the [Developer Guide](https://github.com/runelite/runelite/wiki/Developer-Guide).*
 
 # Contributing to RuneLite
 
