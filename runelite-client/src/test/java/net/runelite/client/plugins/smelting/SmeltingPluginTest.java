@@ -46,6 +46,7 @@ public class SmeltingPluginTest
 	private static final String SMELT_CANNONBALL_DOUBLE_AMMO_MOULD = "The molten metal cools slowly to form 8 cannonballs.";
 	private static final String SMELT_CANNONBALL_DONE_MESSAGE = "You remove the cannonballs from the mould";
 	private static final String SMELT_BAR = "You retrieve a bar of steel.";
+	private static final String SMELT_BAR_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously";
 
 	@Inject
 	SmeltingPlugin smeltingPlugin;
@@ -103,5 +104,18 @@ public class SmeltingPluginTest
 		SmeltingSession smeltingSession = smeltingPlugin.getSession();
 		assertNotNull(smeltingSession);
 		assertEquals(1, smeltingSession.getBarsSmelted());
+	}
+
+	@Test
+	public void testBarsVarrockPlatebody()
+	{
+		ChatMessage chatMessageExtra = new ChatMessage(null, ChatMessageType.SPAM, "", SMELT_BAR_VARROCK_PLATEBODY, "", 0);
+		smeltingPlugin.onChatMessage(chatMessageExtra);
+		ChatMessage chatMessageNormal = new ChatMessage(null, ChatMessageType.SPAM, "", SMELT_BAR, "", 0);
+		smeltingPlugin.onChatMessage(chatMessageNormal);
+
+		SmeltingSession smeltingSession = smeltingPlugin.getSession();
+		assertNotNull(smeltingSession);
+		assertEquals(2, smeltingSession.getBarsSmelted());
 	}
 }

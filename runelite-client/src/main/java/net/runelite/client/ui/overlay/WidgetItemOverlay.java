@@ -112,8 +112,6 @@ public abstract class WidgetItemOverlay extends Overlay
 			InterfaceID.EQUIPMENT_INVENTORY,
 			InterfaceID.INVENTORY,
 			InterfaceID.SEED_VAULT_INVENTORY,
-			InterfaceID.DUEL_INVENTORY,
-			InterfaceID.DUEL_INVENTORY_OTHER,
 			InterfaceID.TRADE,
 			InterfaceID.TRADE_INVENTORY,
 			InterfaceID.POH_TREASURE_CHEST_INV);

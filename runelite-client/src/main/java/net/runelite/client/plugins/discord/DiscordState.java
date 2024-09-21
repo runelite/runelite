@@ -171,7 +171,7 @@ class DiscordState
 		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
 		final String versionShortHand = runeliteVersion.replace("-SNAPSHOT", "+");
 
-		StringBuilder largeImageTooltipText = new StringBuilder(runeliteTitle + " v" + versionShortHand);
+		StringBuilder largeImageTooltipText = new StringBuilder(runeliteTitle).append(" v").append(versionShortHand);
 		if (safeMode)
 		{
 			largeImageTooltipText.append(" (safe mode)");

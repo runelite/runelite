@@ -490,6 +490,13 @@ class ConfigPanel extends PluginPanel
 		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 		spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
 		spinner.addChangeListener(ce -> changeConfiguration(spinner, cd, cid));
+
+		Units units = cid.getUnits();
+		if (units != null)
+		{
+			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units.value()));
+		}
+
 		return spinner;
 	}
 

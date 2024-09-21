@@ -78,5 +78,6 @@ public class ObjectDefinition
 	private int ambientSoundChangeTicksMax = 0;
 	private boolean blocksProjectile = true;
 	private boolean randomizeAnimStart;
+	private boolean deferAnimChange;
 	private Map<Integer, Object> params = null;
 }

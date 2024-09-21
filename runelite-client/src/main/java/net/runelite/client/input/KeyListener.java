@@ -30,4 +30,8 @@ public interface KeyListener extends java.awt.event.KeyListener
 	{
 		return false;
 	}
+
+	default void focusLost()
+	{
+	}
 }

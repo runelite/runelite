@@ -118,7 +118,7 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 			@Override
 			public void onResponse(Call call, Response response)
 			{
-				try // NOPMD: UseTryWithResources
+				try (response)
 				{
 					RuntimeConfig config = RuneLiteAPI.GSON.fromJson(response.body().charStream(), RuntimeConfig.class);
 					future.complete(config);
@@ -126,10 +126,6 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 				catch (Throwable ex)
 				{
 					future.completeExceptionally(ex);
-				}
-				finally
-				{
-					response.close();
 				}
 			}
 		});

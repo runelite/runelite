@@ -25,14 +25,16 @@
 package net.runelite.api.coords;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
 
 /**
  * Represents an area on the world.
@@ -227,16 +229,15 @@ public class WorldArea
 	 * Note that this method does not consider other actors as
 	 * a collision, but most non-boss NPCs do check for collision
 	 * with some actors. For actor collision checking, use the
-	 * {@link #canTravelInDirection(Client, int, int, Predicate)} method.
+	 * {@link #canTravelInDirection(WorldView, int, int, Predicate)} method.
 	 *
-	 * @param client the client to test in
 	 * @param dx the x-axis direction to travel (-1, 0, or 1)
 	 * @param dy the y-axis direction to travel (-1, 0, or 1)
 	 * @return true if the area can travel in the specified direction
 	 */
-	public boolean canTravelInDirection(Client client, int dx, int dy)
+	public boolean canTravelInDirection(WorldView wv, int dx, int dy)
 	{
-		return canTravelInDirection(client, dx, dy, x -> true);
+		return canTravelInDirection(wv, dx, dy, x -> true);
 	}
 
 	/**
@@ -251,14 +252,13 @@ public class WorldArea
 	 * with some actors. However, using the {@code extraCondition} param
 	 * it is possible to implement this check manually.
 	 *
-	 * @param client the client to test in
-	 * @param dx the x-axis direction to travel (-1, 0, or 1)
-	 * @param dy the y-axis direction to travel (-1, 0, or 1)
+	 * @param dx             the x-axis direction to travel (-1, 0, or 1)
+	 * @param dy             the y-axis direction to travel (-1, 0, or 1)
 	 * @param extraCondition an additional condition to perform when checking valid tiles,
 	 *                       such as performing a check for un-passable actors
 	 * @return true if the area can travel in the specified direction
 	 */
-	public boolean canTravelInDirection(Client client, int dx, int dy,
+	public boolean canTravelInDirection(WorldView wv, int dx, int dy,
 										Predicate<? super WorldPoint> extraCondition)
 	{
 		dx = Integer.signum(dx);
@@ -269,7 +269,7 @@ public class WorldArea
 			return true;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
+		LocalPoint lp = LocalPoint.fromWorld(wv, x, y);
 
 		int startX = lp.getSceneX() + dx;
 		int startY = lp.getSceneY() + dy;
@@ -335,7 +335,7 @@ public class WorldArea
 			xyFlags |= CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_WEST;
 		}
 
-		CollisionData[] collisionData = client.getCollisionMaps();
+		CollisionData[] collisionData = wv.getCollisionMaps();
 		if (collisionData == null)
 		{
 			return false;
@@ -349,7 +349,7 @@ public class WorldArea
 			for (int y = startY; y <= endY; y++)
 			{
 				if ((collisionDataFlags[checkX][y] & xFlags) != 0 ||
-					!extraCondition.test(WorldPoint.fromScene(client, checkX, y, plane)))
+					!extraCondition.test(WorldPoint.fromScene(wv, checkX, y, plane)))
 				{
 					// Collision while attempting to travel along the x axis
 					return false;
@@ -380,7 +380,7 @@ public class WorldArea
 			for (int x = startX; x <= endX; x++)
 			{
 				if ((collisionDataFlags[x][checkY] & yFlags) != 0 ||
-					!extraCondition.test(WorldPoint.fromScene(client, x, checkY, client.getPlane())))
+					!extraCondition.test(WorldPoint.fromScene(wv, x, checkY, wv.getPlane())))
 				{
 					// Collision while attempting to travel along the y axis
 					return false;
@@ -408,7 +408,7 @@ public class WorldArea
 		if (dx != 0 && dy != 0)
 		{
 			if ((collisionDataFlags[checkX][checkY] & xyFlags) != 0 ||
-				!extraCondition.test(WorldPoint.fromScene(client, checkX, checkY, client.getPlane())))
+				!extraCondition.test(WorldPoint.fromScene(wv, checkX, checkY, wv.getPlane())))
 			{
 				// Collision while attempting to travel diagonally
 				return false;
@@ -420,7 +420,7 @@ public class WorldArea
 			if (width == 1)
 			{
 				if ((collisionDataFlags[checkX][checkY - dy] & xFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromScene(client, checkX, startY, client.getPlane())))
+					extraCondition.test(WorldPoint.fromScene(wv, checkX, startY, wv.getPlane())))
 				{
 					return false;
 				}
@@ -428,7 +428,7 @@ public class WorldArea
 			if (height == 1)
 			{
 				if ((collisionDataFlags[checkX - dx][checkY] & yFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromScene(client, startX, checkY, client.getPlane())))
+					extraCondition.test(WorldPoint.fromScene(wv, startX, checkY, wv.getPlane())))
 				{
 					return false;
 				}
@@ -480,94 +480,47 @@ public class WorldArea
 	 * Note that the reverse isn't necessarily true, meaning this can return true
 	 * while the other WorldArea does not have line of sight to this WorldArea.
 	 *
-	 * @param client The client to compare in
 	 * @param other The other WorldArea to compare with
 	 * @return Returns true if this WorldArea has line of sight to the other
 	 */
-	public boolean hasLineOfSightTo(Client client, WorldArea other)
+	public boolean hasLineOfSightTo(WorldView wv, WorldArea other)
 	{
 		if (plane != other.getPlane())
 		{
 			return false;
 		}
 
-		LocalPoint sourceLp = LocalPoint.fromWorld(client, x, y);
-		LocalPoint targetLp = LocalPoint.fromWorld(client, other.getX(), other.getY());
-		if (sourceLp == null || targetLp == null)
+		List<WorldPoint> fromEdges = other.getVisibleCandidates(this);
+		List<WorldPoint> toEdges = this.getVisibleCandidates(other);
+		Tile[][][] tiles = wv.getScene().getTiles();
+		for (WorldPoint fromPoint : fromEdges)
 		{
-			return false;
-		}
+			for (WorldPoint toPoint : toEdges)
+			{
+				LocalPoint fromLp = LocalPoint.fromWorld(wv, fromPoint);
+				LocalPoint toLp = LocalPoint.fromWorld(wv, toPoint);
 
-		int thisX = sourceLp.getSceneX();
-		int thisY = sourceLp.getSceneY();
-		int otherX = targetLp.getSceneX();
-		int otherY = targetLp.getSceneY();
+				if (fromLp == null || toLp == null)
+				{
+					continue;
+				}
 
-		int cmpThisX, cmpThisY, cmpOtherX, cmpOtherY;
-
-		// Determine which position to compare with for this NPC
-		if (otherX <= thisX)
-		{
-			cmpThisX = thisX;
+				Tile sourceTile = tiles[plane][fromLp.getSceneX()][fromLp.getSceneY()];
+				Tile targetTile = tiles[other.getPlane()][toLp.getSceneX()][toLp.getSceneY()];
+				if (sourceTile == null || targetTile == null)
+				{
+					continue;
+				}
+				if (hasLineOfSightTo(wv, sourceTile, targetTile))
+				{
+					return true;
+				}
+			}
 		}
-		else if (otherX >= thisX + width - 1)
-		{
-			cmpThisX = thisX + width - 1;
-		}
-		else
-		{
-			cmpThisX = otherX;
-		}
-		if (otherY <= thisY)
-		{
-			cmpThisY = thisY;
-		}
-		else if (otherY >= thisY + height - 1)
-		{
-			cmpThisY = thisY + height - 1;
-		}
-		else
-		{
-			cmpThisY = otherY;
-		}
-
-		// Determine which position to compare for the other actor
-		if (thisX <= otherX)
-		{
-			cmpOtherX = otherX;
-		}
-		else if (thisX >= otherX + other.getWidth() - 1)
-		{
-			cmpOtherX = otherX + other.getWidth() - 1;
-		}
-		else
-		{
-			cmpOtherX = thisX;
-		}
-		if (thisY <= otherY)
-		{
-			cmpOtherY = otherY;
-		}
-		else if (thisY >= otherY + other.getHeight() - 1)
-		{
-			cmpOtherY = otherY + other.getHeight() - 1;
-		}
-		else
-		{
-			cmpOtherY = thisY;
-		}
-
-		Tile[][][] tiles = client.getScene().getTiles();
-		Tile sourceTile = tiles[plane][cmpThisX][cmpThisY];
-		Tile targetTile = tiles[other.getPlane()][cmpOtherX][cmpOtherY];
-		if (sourceTile == null || targetTile == null)
-		{
-			return false;
-		}
-		return hasLineOfSightTo(client, sourceTile, targetTile);
+		return false;
 	}
 
-	private static boolean hasLineOfSightTo(Client client, Tile from, Tile to)
+	private static boolean hasLineOfSightTo(WorldView wv, Tile from, Tile to)
 	{
 		// Thanks to Henke for this method :)
 
@@ -576,7 +529,7 @@ public class WorldArea
 			return false;
 		}
 
-		CollisionData[] collisionData = client.getCollisionMaps();
+		CollisionData[] collisionData = wv.getCollisionMaps();
 		if (collisionData == null)
 		{
 			return false;
@@ -687,13 +640,105 @@ public class WorldArea
 	 * Note that the reverse isn't necessarily true, meaning this can return true
 	 * while the other WorldArea does not have line of sight to this WorldArea.
 	 *
-	 * @param client The client to compare in
 	 * @param other The other WorldPoint to compare with
 	 * @return Returns true if this WorldPoint has line of sight to the WorldPoint
 	 */
-	public boolean hasLineOfSightTo(Client client, WorldPoint other)
+	public boolean hasLineOfSightTo(WorldView wv, WorldPoint other)
 	{
-		return hasLineOfSightTo(client, other.toWorldArea());
+		return hasLineOfSightTo(wv, other.toWorldArea());
+	}
+
+	/**
+	 * Gets the points of another worldArea that may be viewable by this WorldArea
+	 * The points are sorted by their distance to the closest point in this WorldArea
+	 *
+	 * @param other the other WorldArea
+	 * @return the list of potentially visible points
+	 */
+	private List<WorldPoint> getVisibleCandidates(WorldArea other)
+	{
+		Point compPoint = this.getComparisonPoint(other);
+		Comparator<WorldPoint> byDistance = Comparator.comparingInt((p) -> p.distanceTo(
+			new WorldPoint(compPoint.getX(), compPoint.getY(), this.getPlane())));
+
+		return other.toWorldPointList()
+			.stream()
+			.filter(p -> isEdgePoint(other, p))
+			.filter(p -> isVisibleCandidate(other, p))
+			.sorted(byDistance)
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * Checks if the given point is on the edge of the provided WorldArea
+	 *
+	 * @param p Point to test
+	 * @return true if on the edge, false otherwise
+	 */
+	private static boolean isEdgePoint(WorldArea wa, WorldPoint p)
+	{
+		return p.getX() == wa.getX()
+			|| p.getX() == wa.getX() + wa.getWidth() - 1
+			|| p.getY() == wa.getY()
+			|| p.getY() == wa.getY() + wa.getHeight() - 1;
+	}
+
+	/**
+	 * Prunes potentially visible WorldArea points in the other WorldArea by checking
+	 * if the given point is on a visible edge.
+	 *
+	 * @param other The other WorldArea
+	 * @param p     Test point in other WorldArea
+	 * @return true if the point is on a potentially visible edge, false otherwise
+	 */
+	private boolean isVisibleCandidate(WorldArea other, WorldPoint p)
+	{
+		if (this.intersectsWith(other))
+		{
+			return false;
+		}
+		// This WorldArea is east of other
+		if (this.getX() + this.getWidth() - 1 > other.getX() + other.getWidth() - 1)
+		{
+			// Southeast
+			if (this.getY() < other.getY())
+			{
+				return p.getX() == other.getX() + other.getWidth() - 1 || p.getY() == other.getY();
+			}
+			// Northeast
+			if (this.getY() + this.getHeight() - 1 > other.getY() + other.getHeight() - 1)
+			{
+				return p.getX() == other.getX() + other.getWidth() - 1 || p.getY() == other.getY() + other.getHeight() - 1;
+			}
+			return p.getX() == other.getX() + other.getWidth() - 1;
+		}
+		// This WorldArea is west of other
+		else if (this.getX() < other.getX())
+		{
+			// Southwest
+			if (this.getY() < other.getY())
+			{
+				return p.getX() == other.getX() || p.getY() == other.getY();
+			}
+			// Northwest
+			if (this.getY() + this.getHeight() - 1 > other.getY() + other.getHeight() - 1)
+			{
+				return p.getX() == other.getX() || p.getY() == other.getY() + other.getHeight() - 1;
+			}
+			// Straight west
+			return p.getX() == other.getX();
+		}
+		// This WorldArea is north
+		else if (this.getY() > other.getY() + other.getHeight() - 1)
+		{
+			return p.getY() == other.getY() + other.getHeight() - 1;
+		}
+		// This WorldArea is south
+		else if (this.getY() < other.getY())
+		{
+			return p.getY() == other.getY();
+		}
+		return false;
 	}
 
 	/**

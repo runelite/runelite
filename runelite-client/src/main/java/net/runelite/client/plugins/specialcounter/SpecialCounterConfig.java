@@ -57,6 +57,17 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "specDropMisses",
+		name = "Spec Drop Misses",
+		description = "Draws an overlay over the player when a special attack misses"
+	)
+	default boolean specDropMisses()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 2,
 		keyName = "specDropColor",
 		name = "Spec Drop Color",
@@ -79,12 +90,34 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "defenceDrainInfobox",
+		name = "Show defence drain infobox",
+		description = "If infoboxes are enabled, adds a defence drain percentage infobox for Dragon warhammer and Elder maul"
+	)
+	default boolean defenceDrainInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 10,
 		keyName = "dragonWarhammerThreshold",
 		name = "Dragon Warhammer",
 		description = "Threshold for Dragon Warhammer (0 to disable)"
 	)
 	default int dragonWarhammerThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "elderMaulThreshold",
+		name = "Elder Maul",
+		description = "Threshold for Elder Maul (0 to disable)"
+	)
+	default int elderMaulThreshold()
 	{
 		return 0;
 	}
@@ -107,6 +140,17 @@ public interface SpecialCounterConfig extends Config
 		description = "Threshold for Darklight (0 to disable)"
 	)
 	default int darklightThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 31,
+		keyName = "emberlightThreshold",
+		name = "Emberlight",
+		description = "Threshold for Emberlight (0 to disable)"
+	)
+	default int emberlightThreshold()
 	{
 		return 0;
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +24,68 @@
  */
 package net.runelite.api;
 
-public interface HealthBar
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import javax.annotation.Nonnull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class IndexedObjectSet<T> implements Iterable<T>
 {
-	SpritePixels getHealthBarFrontSprite();
+	@Getter
+	private final T[] sparse;
 
-	SpritePixels getHealthBarBackSprite();
+	private final int[] indexes;
 
-	int getHealthBarFrontSpriteId();
+	@Getter
+	private final int size;
 
-	void setPadding(int padding);
+	public T byIndex(int index)
+	{
+		return sparse[index];
+	}
+
+	public Stream<T> stream()
+	{
+		return StreamSupport.stream(this.spliterator(), false);
+	}
+
+	@Override
+	public Spliterator<T> spliterator()
+	{
+		return Spliterators.spliterator(this.iterator(), this.size,
+			Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
+	}
+
+	@Nonnull
+	@Override
+	public Iterator<T> iterator()
+	{
+		return new Iterator<T>()
+		{
+			int i;
+
+			@Override
+			public boolean hasNext()
+			{
+				return i < size;
+			}
+
+			@Override
+			public T next()
+			{
+				if (!hasNext())
+				{
+					throw new NoSuchElementException();
+				}
+
+				return sparse[indexes[i++]];
+			}
+		};
+	}
 }

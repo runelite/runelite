@@ -38,6 +38,7 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.Projection;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
@@ -53,7 +54,7 @@ class SceneUploader
 	private final Client client;
 	private final GpuPluginConfig gpuConfig;
 
-	private Regions regions;
+	private final Regions regions;
 
 	int sceneId = (int) System.nanoTime();
 	private int offset;
@@ -229,7 +230,7 @@ class SceneUploader
 	}
 
 	int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
-		int lx, int lz, boolean padUvs)
+		int lx, int lz, boolean stream)
 	{
 		tileX += GpuPlugin.SCENE_OFFSET;
 		tileY += GpuPlugin.SCENE_OFFSET;
@@ -277,15 +278,15 @@ class SceneUploader
 		final int lz3 = lz + Perspective.LOCAL_TILE_SIZE;
 		final int hsl3 = nwColor;
 
-		vertexBuffer.put(lx2, ly2, lz2, hsl2);
-		vertexBuffer.put(lx3, ly3, lz3, hsl3);
-		vertexBuffer.put(lx1, ly1, lz1, hsl1);
+		vertexBuffer.put((float) lx2, ly2, lz2, hsl2);
+		vertexBuffer.put((float) lx3, ly3, lz3, hsl3);
+		vertexBuffer.put((float) lx1, ly1, lz1, hsl1);
 
-		vertexBuffer.put(lx0, ly0, lz0, hsl0);
-		vertexBuffer.put(lx1, ly1, lz1, hsl1);
-		vertexBuffer.put(lx3, ly3, lz3, hsl3);
+		vertexBuffer.put((float) lx0, ly0, lz0, hsl0);
+		vertexBuffer.put((float) lx1, ly1, lz1, hsl1);
+		vertexBuffer.put((float) lx3, ly3, lz3, hsl3);
 
-		if (padUvs || tile.getTexture() != -1)
+		if (stream || tile.getTexture() != -1)
 		{
 			int tex = tile.getTexture() + 1;
 			if (tile.isFlat())
@@ -310,7 +311,7 @@ class SceneUploader
 	}
 
 	int upload(SceneTileModel sceneTileModel, int lx, int lz,
-		GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean padUvs)
+		GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean stream)
 	{
 		final int[] faceX = sceneTileModel.getFaceX();
 		final int[] faceY = sceneTileModel.getFaceY();
@@ -362,11 +363,11 @@ class SceneUploader
 			int ly2 = vertexY[vertex2];
 			int lz2 = vertexZ[vertex2] - lz;
 
-			vertexBuffer.put(lx0, ly0, lz0, hsl0);
-			vertexBuffer.put(lx1, ly1, lz1, hsl1);
-			vertexBuffer.put(lx2, ly2, lz2, hsl2);
+			vertexBuffer.put((float) lx0, ly0, lz0, hsl0);
+			vertexBuffer.put((float) lx1, ly1, lz1, hsl1);
+			vertexBuffer.put((float) lx2, ly2, lz2, hsl2);
 
-			if (padUvs || triangleTextures != null)
+			if (stream || triangleTextures != null)
 			{
 				if (triangleTextures != null && triangleTextures[i] != -1)
 				{
@@ -437,9 +438,9 @@ class SceneUploader
 		vertexBuffer.ensureCapacity(triangleCount * 12);
 		uvBuffer.ensureCapacity(triangleCount * 12);
 
-		final int[] vertexX = model.getVerticesX();
-		final int[] vertexY = model.getVerticesY();
-		final int[] vertexZ = model.getVerticesZ();
+		final float[] vertexX = model.getVerticesX();
+		final float[] vertexY = model.getVerticesY();
+		final float[] vertexZ = model.getVerticesZ();
 
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
@@ -558,9 +559,9 @@ class SceneUploader
 	private static float[] modelCanvasX;
 	private static float[] modelCanvasY;
 
-	private static int[] modelLocalX;
-	private static int[] modelLocalY;
-	private static int[] modelLocalZ;
+	private static float[] modelLocalX;
+	private static float[] modelLocalY;
+	private static float[] modelLocalZ;
 
 	private static int[] numOfPriority;
 	private static int[] eq10;
@@ -580,9 +581,9 @@ class SceneUploader
 		modelCanvasX = new float[MAX_VERTEX_COUNT];
 		modelCanvasY = new float[MAX_VERTEX_COUNT];
 
-		modelLocalX = new int[MAX_VERTEX_COUNT];
-		modelLocalY = new int[MAX_VERTEX_COUNT];
-		modelLocalZ = new int[MAX_VERTEX_COUNT];
+		modelLocalX = new float[MAX_VERTEX_COUNT];
+		modelLocalY = new float[MAX_VERTEX_COUNT];
+		modelLocalZ = new float[MAX_VERTEX_COUNT];
 
 		numOfPriority = new int[12];
 		eq10 = new int[2000];
@@ -611,12 +612,12 @@ class SceneUploader
 		orderedFaces = null;
 	}
 
-	int pushSortedModel(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	int pushSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int vertexCount = model.getVerticesCount();
-		final int[] verticesX = model.getVerticesX();
-		final int[] verticesY = model.getVerticesY();
-		final int[] verticesZ = model.getVerticesZ();
+		final float[] verticesX = model.getVerticesX();
+		final float[] verticesY = model.getVerticesY();
+		final float[] verticesZ = model.getVerticesZ();
 
 		final int faceCount = model.getFaceCount();
 		final int[] indices1 = model.getFaceIndices1();
@@ -630,39 +631,29 @@ class SceneUploader
 		final int centerY = client.getCenterY();
 		final int zoom = client.get3dZoom();
 
-		final int cameraX = client.getCameraX2();
-		final int cameraY = client.getCameraY2();
-		final int cameraZ = client.getCameraZ2();
-
-		// remove camera offset from model
-		x += cameraX;
-		y += cameraY;
-		z += cameraZ;
-
-		int orientSine = 0;
-		int orientCosine = 0;
+		float orientSine = 0;
+		float orientCosine = 0;
 		if (orientation != 0)
 		{
-			orientSine = Perspective.SINE[orientation];
-			orientCosine = Perspective.COSINE[orientation];
+			orientSine = Perspective.SINE[orientation] / 65536f;
+			orientCosine = Perspective.COSINE[orientation] / 65536f;
 		}
+
+		float[] p = proj.project(x, y, z);
+		int zero = (int) p[2];
 
 		for (int v = 0; v < vertexCount; ++v)
 		{
-			int vertexX = verticesX[v];
-			int vertexY = verticesY[v];
-			int vertexZ = verticesZ[v];
+			float vertexX = verticesX[v];
+			float vertexY = verticesY[v];
+			float vertexZ = verticesZ[v];
 
 			if (orientation != 0)
 			{
-				int i = vertexZ * orientSine + vertexX * orientCosine >> 16;
-				vertexZ = vertexZ * orientCosine - vertexX * orientSine >> 16;
-				vertexX = i;
+				float x0 = vertexX;
+				vertexX = vertexZ * orientSine + x0 * orientCosine;
+				vertexZ = vertexZ * orientCosine - x0 * orientSine;
 			}
-
-			int d = yawCos * vertexZ - vertexX * yawSin >> 16;
-			d = pitchCos * d + vertexY * pitchSin >> 16;
-			distances[v] = d;
 
 			// move to local position
 			vertexX += x;
@@ -673,25 +664,10 @@ class SceneUploader
 			modelLocalY[v] = vertexY;
 			modelLocalZ[v] = vertexZ;
 
-			// adjust for camera
-			vertexX -= cameraX;
-			vertexY -= cameraY;
-			vertexZ -= cameraZ;
-
-			final float fpitchSin = pitchSin / 65536f;
-			final float fpitchCos = pitchCos / 65536f;
-
-			final float fyawSin = yawSin / 65536f;
-			final float fyawCos = yawCos / 65536f;
-
-			final float rotatedX = (vertexZ * fyawSin) + (vertexX * fyawCos);
-			final float rotatedZ = (vertexZ * fyawCos) - (vertexX * fyawSin);
-
-			final float var13 = (vertexY * fpitchCos) - (rotatedZ * fpitchSin);
-			final float var12 = (vertexY * fpitchSin) + (rotatedZ * fpitchCos);
-
-			modelCanvasX[v] = rotatedX * zoom / var12 + centerX;
-			modelCanvasY[v] = var13 * zoom / var12 + centerY;
+			p = proj.project(vertexX, vertexY, vertexZ);
+			modelCanvasX[v] = centerX + p[0] * zoom / p[2];
+			modelCanvasY[v] = centerY + p[1] * zoom / p[2];
+			distances[v] = (int) p[2] - zero;
 		}
 
 		final int diameter = model.getDiameter();

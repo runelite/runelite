@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.animsmoothing;
+package net.runelite.client.plugins.timersandbuffs;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@ConfigGroup(AnimationSmoothingPlugin.CONFIG_GROUP)
-public interface AnimationSmoothingConfig extends Config
+@Getter(AccessLevel.PACKAGE)
+class BuffCounter extends Counter
 {
+	private final TimersAndBuffsPlugin plugin;
+	private final GameCounter gameCounter;
 
-	@ConfigItem(
-		keyName = "smoothPlayerAnimations",
-		name = "Smooth Player Animations",
-		description = "Configures whether the player animations are smooth or not",
-		position = 1
-	)
-	default boolean smoothPlayerAnimations()
+	BuffCounter(
+		TimersAndBuffsPlugin plugin,
+		GameCounter gameCounter,
+		int count)
 	{
-		return true;
+		super(null, plugin, count);
+		this.plugin = plugin;
+		this.gameCounter = gameCounter;
 	}
 
-	@ConfigItem(
-		keyName = "smoothNpcAnimations",
-		name = "Smooth NPC Animations",
-		description = "Configures whether the npc animations are smooth or not",
-		position = 2
-	)
-	default boolean smoothNpcAnimations()
+	@Override
+	public String getText()
 	{
-		return true;
+		return gameCounter.isShouldDisplayCount() ? Integer.toString(getCount()) : "";
 	}
 
-	@ConfigItem(
-		keyName = "smoothObjectAnimations",
-		name = "Smooth Object Animations",
-		description = "Configures whether the object animations are smooth or not",
-		position = 3
-	)
-	default boolean smoothObjectAnimations()
+	@Override
+	public Color getTextColor()
 	{
-		return true;
+		return gameCounter.getColorBoundaryType().shouldRecolor(getCount(), gameCounter.getBoundary()) ? gameCounter.getColor() : Color.WHITE;
 	}
-
 }

@@ -257,8 +257,8 @@ class InstanceMapOverlay extends Overlay
 			img = img.getSubimage(
 				TILE_SIZE * (cropChunks * 8),
 				TILE_SIZE * (cropChunks * 8),
-				(Constants.SCENE_SIZE + expandedChunks * 8) * TILE_SIZE,
-				(Constants.SCENE_SIZE + expandedChunks * 8) * TILE_SIZE
+				(Constants.SCENE_SIZE + expandedChunks * 2 * 8) * TILE_SIZE,
+				(Constants.SCENE_SIZE + expandedChunks * 2 * 8) * TILE_SIZE
 			);
 		}
 		return img;

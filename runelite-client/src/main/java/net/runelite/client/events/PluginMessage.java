@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2023, jocopa3
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +23,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.events;
 
-import java.awt.Color;
-import lombok.AccessLevel;
-import lombok.Getter;
-import net.runelite.api.SpriteID;
+import java.util.Collections;
+import java.util.Map;
+import lombok.NonNull;
+import lombok.Value;
 
-@Getter(AccessLevel.PACKAGE)
-enum GameIndicator
+/**
+ * An event pluginhub plugins can use to send data to each other.
+ */
+@Value
+public class PluginMessage
 {
-	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active");
+	/**
+	 * Event namespace. This should usually be a unique string representing your plugin name eg. "tombs-of-amascut"
+	 */
+	String namespace;
+	/**
+	 * Event name. This should represent what the event is for, eg "points".
+	 */
+	String name;
+	/**
+	 * Event data.
+	 */
+	Map<String, Object> data;
 
-	private final String description;
-	private String text;
-	private Color textColor;
-	private final int imageId;
-	private final GameTimerImageType imageType;
-
-	GameIndicator(int imageId, GameTimerImageType idType, String description, String text, Color textColor)
+	public PluginMessage(@NonNull String namespace, @NonNull String name)
 	{
-		this.imageId = imageId;
-		this.imageType = idType;
-		this.description = description;
-		this.text = text;
-		this.textColor = textColor;
+		this(namespace, name, Collections.emptyMap());
 	}
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description)
+	public PluginMessage(@NonNull String namespace, @NonNull String name, @NonNull Map<String, Object> data)
 	{
-		this(imageId, idType, description, "", null);
+		this.namespace = namespace;
+		this.name = name;
+		this.data = data;
 	}
 }

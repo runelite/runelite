@@ -307,7 +307,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (amuletOfChemistryBreakMatcher.find())
 			{
-				notifier.notify(config.amuletOfChemistryNotification(), "Your Amulet of Chemistry has crumbled to dust.");
+				notifier.notify(config.amuletOfChemistryNotification(), "Your amulet of chemistry has crumbled to dust.");
 
 				updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
 			}

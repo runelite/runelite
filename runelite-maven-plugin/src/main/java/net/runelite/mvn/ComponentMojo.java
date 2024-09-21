@@ -29,7 +29,9 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import javax.lang.model.element.Modifier;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -60,6 +62,8 @@ public class ComponentMojo extends AbstractMojo
 	private File outputDirectory;
 
 	private final Log log = getLog();
+	private final Set<Integer> seenInterfaces = new HashSet<>();
+	private final Set<Integer> seenComponents = new HashSet<>();
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
@@ -119,6 +123,12 @@ public class ComponentMojo extends AbstractMojo
 				throw new MojoExecutionException("interface id out of range for " + interfaceName);
 			}
 
+			if (seenInterfaces.contains(interfaceId))
+			{
+				throw new MojoExecutionException("duplicate interface id " + interfaceId);
+			}
+			seenInterfaces.add(interfaceId);
+
 			addField(interfaceType, interfaceName.toUpperCase(Locale.ENGLISH), interfaceId, null);
 
 			for (var entry2 : tbl.entrySet())
@@ -138,6 +148,12 @@ public class ComponentMojo extends AbstractMojo
 				var fullName = interfaceName.toUpperCase(Locale.ENGLISH) + "_" + componentName.toUpperCase(Locale.ENGLISH);
 				var comment = interfaceId + ":" + id;
 				int componentId = (interfaceId << 16) | id;
+
+				if (seenComponents.contains(componentId))
+				{
+					throw new MojoExecutionException("duplicate component id " + comment);
+				}
+				seenComponents.add(componentId);
 
 				addField(componentType, fullName, componentId, comment);
 			}

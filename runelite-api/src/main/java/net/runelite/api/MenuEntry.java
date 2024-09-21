@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.widgets.Widget;
 
@@ -81,6 +82,9 @@ public interface MenuEntry
 	boolean isForceLeftClick();
 	MenuEntry setForceLeftClick(boolean forceLeftClick);
 
+	int getWorldViewId();
+	MenuEntry setWorldViewId(int worldViewId);
+
 	/**
 	 * Deprioritized menus are sorted in the menu to be below the other menu entries.
 	 * @return
@@ -96,18 +100,10 @@ public interface MenuEntry
 	MenuEntry onClick(Consumer<MenuEntry> callback);
 
 	/**
-	 * Set the parent for the menu entry. This makes this menu entry part of the sub-menu off of the parent.
-	 * @param parent
+	 * Get the callback called when the menu option is clicked
 	 * @return
 	 */
-	MenuEntry setParent(MenuEntry parent);
-
-	/**
-	 * Get the parent for the menu entry.
-	 * @return
-	 */
-	@Nullable
-	MenuEntry getParent();
+	Consumer<MenuEntry> onClick();
 
 	/**
 	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
@@ -128,6 +124,13 @@ public interface MenuEntry
 	 * @see NullItemID
 	 */
 	int getItemId();
+
+	/**
+	 * Set the item id
+	 * @param itemId
+	 * @return
+	 */
+	MenuEntry setItemId(int itemId);
 
 	/**
 	 * Get the widget this menu entry is on, if this is a menu entry
@@ -157,4 +160,25 @@ public interface MenuEntry
 	 */
 	@Nullable
 	Actor getActor();
+
+	/**
+	 * Get the submenu for this menu entry.
+	 * @return the submenu, or null if one doesn't exist
+	 * @see #createSubMenu()
+	 */
+	@Nullable
+	Menu getSubMenu();
+
+	/**
+	 * Create a new submenu for this menu entry.
+	 * This will erase any previous submenu.
+	 * @return the new submenu
+	 */
+	@Nonnull
+	Menu createSubMenu();
+
+	/**
+	 * Remove the submenu from this menu entry.
+	 */
+	void deleteSubMenu();
 }
