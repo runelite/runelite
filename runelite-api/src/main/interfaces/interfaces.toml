@@ -231,6 +231,12 @@ spell_icon=28
 spell_text=29
 auto_retaliate=30
 
+[combat_achievements_tasks]
+id=715
+progress_bar=3
+list=9
+filters=17
+
 [corp_damage]
 id=13
 
