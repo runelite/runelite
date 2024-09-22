@@ -3,7 +3,9 @@
 We'd love for you to contribute to our source code and to make RuneLite even better than it is
 today!
 
-Check out the Developer's Guide on the [wiki](https://github.com/runelite/runelite/wiki) for setup instructions, and general tips and tricks.
+Check out the [Developer Guide](https://github.com/runelite/runelite/wiki/Developer-Guide) for setup instructions, and general tips and tricks.
+
+If you want to make or contribute to a plugin hub plugin, this is *not* the correct guide; instead read the plugin hub development guide, which is linked from the developer guide.
 
 Here are the guidelines we'd like you to follow:
 
