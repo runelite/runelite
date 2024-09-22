@@ -243,6 +243,11 @@ enum ItemIdentification
 	ADAMANTITE_BAR(Type.BAR, "Adaman", "ADA", ItemID.ADAMANTITE_BAR),
 	RUNITE_BAR(Type.BAR, "Runite", "RUN", ItemID.RUNITE_BAR),
 
+	BLURITE_BAR(Type.BAR, "Blurite", "BLU", ItemID.BLURITE_BAR),
+	ELEMENTAL_METAL(Type.BAR, "Elemental", "ELE", ItemID.ELEMENTAL_METAL),
+	LOVAKITE_BAR(Type.BAR, "Lovakite", "LOV", ItemID.LOVAKITE_BAR),
+	LUNAR_BAR(Type.BAR, "Lunar", "LUN", ItemID.LUNAR_BAR),
+
 	//Gems
 	SAPPHIRE(Type.GEM, "Sapphir", "S", ItemID.UNCUT_SAPPHIRE, ItemID.SAPPHIRE),
 	EMERALD(Type.GEM, "Emerald", "E", ItemID.UNCUT_EMERALD, ItemID.EMERALD),
