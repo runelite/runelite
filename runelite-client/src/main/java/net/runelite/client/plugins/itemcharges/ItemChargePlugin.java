@@ -131,7 +131,7 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern EXPEDITIOUS_BRACELET_CHECK_PATTERN = Pattern.compile(
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
-	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your expeditious bracelet has crumbled to dust.";
 	private static final Pattern BLOOD_ESSENCE_CHECK_PATTERN = Pattern.compile(
 		"Your blood essence has (\\d{1,4}) charges? remaining"
 	);
