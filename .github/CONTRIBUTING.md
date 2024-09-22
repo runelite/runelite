@@ -14,12 +14,12 @@ Here are the guidelines we'd like you to follow:
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to contribute to RuneLite, please join our [Discord](https://discord.gg/ArdAhnN) server.
+If you have questions about how to contribute to RuneLite, please join our [Discord](https://runelite.net/discord) server.
 
 ## <a name="issue"></a> Found an Issue?
 
 If you find a bug in the source code or a mistake in the documentation, you can help us by
-submitting an issue to our [GitHub Repository][github]. Even better you can submit a Pull Request
+submitting an issue to our [GitHub Repository](https://github.com/runelite/runelite). Even better you can submit a Pull Request
 with a fix.
 
 **Please see the [Submission Guidelines](#submit) below.**
@@ -130,7 +130,3 @@ from the main (upstream) repository:
 ## <a name="format"></a> Coding Format
 
 To ensure consistency throughout the source code, review our [code conventions](https://github.com/runelite/runelite/wiki/Code-Conventions).
-
-
-[github]: https://github.com/runelite/runelite
-[discord]: https://discord.gg/ArdAhnN
