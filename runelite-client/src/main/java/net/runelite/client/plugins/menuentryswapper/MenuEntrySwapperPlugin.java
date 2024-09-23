@@ -197,6 +197,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "help", config::swapHelp);
 		// make sure assignment swap is higher priority than trade swap for slayer masters
 		swap("talk-to", "assignment", config::swapAssignment);
+		// Thora the Barkeep's (and likely a few other NPCs) Menu Entry option has a space instead of a dash
+		swap("talk to", "trade", config::swapTrade);
 		swap("talk-to", "trade", config::swapTrade);
 		swap("talk-to", "trade-with", config::swapTrade);
 		swap("talk-to", "shop", config::swapTrade);
