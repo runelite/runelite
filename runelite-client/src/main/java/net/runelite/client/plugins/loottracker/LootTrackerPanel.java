@@ -477,6 +477,14 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * Rebuilds loot entries when one of the price type config options is changed
+	 */
+	void updatePriceTypeDisplay()
+	{
+		rebuild();
+	}
+
+	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
 	private void rebuild()

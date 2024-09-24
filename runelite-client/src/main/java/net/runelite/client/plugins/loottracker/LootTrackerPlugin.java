@@ -572,6 +572,10 @@ public class LootTrackerPlugin extends Plugin
 				ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
 				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 			}
+			else if ("priceType".equals(event.getKey()) || "showPriceType".equals(event.getKey()))
+			{
+				SwingUtilities.invokeLater(panel::updatePriceTypeDisplay);
+			}
 		}
 	}
 
