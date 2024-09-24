@@ -472,7 +472,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				int valuableDropValue = Integer.parseInt(m.group(2).replaceAll(",", ""));
+				int valuableDropValue = Integer.parseInt(m.group(2).replace(",", ""));
 				if (valuableDropValue >= config.valuableDropThreshold())
 				{
 					String valuableDropName = m.group(1);
