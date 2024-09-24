@@ -623,7 +623,7 @@ public class ChatCommandsPlugin extends Plugin
 		matcher = GUARDIANS_OF_THE_RIFT_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			int kc = Integer.parseInt(matcher.group(1));
+			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
 			setKc("Guardians of the Rift", kc);
 		}
 
