@@ -63,17 +63,17 @@ content_container=10
 tab_container=11
 item_container=13
 scrollbar=14
-search_button_background=40
-deposit_inventory=42
-deposit_equipment=44
-incinerator=46
-incinerator_confirm=47
-equipment_parent=69
-equipment_set_bonus=110
-settings_button=114
-equipment_button=115
-popup=117
-equipment_stat_bonus=122
+search_button_background=42
+deposit_inventory=44
+deposit_equipment=46
+incinerator=49
+incinerator_confirm=50
+equipment_parent=74
+equipment_set_bonus=115
+settings_button=119
+equipment_button=120
+popup=122
+equipment_stat_bonus=127
 
 [bank_inventory]
 id=15
@@ -277,8 +277,8 @@ text=2
 
 [diary]
 id=119
-title=2
-text=3
+title=4
+text=5
 
 [drift_net_fishing_reward]
 id=607
