@@ -42,7 +42,6 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldRegion;
@@ -60,8 +59,6 @@ class WorldTableRow extends JPanel
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 	private static final int PING_COLUMN_WIDTH = 35;
-
-	private static final int ROW_HEIGHT = 24;
 
 	private static final Color CURRENT_WORLD = new Color(66, 227, 17);
 	private static final Color DANGEROUS_WORLD = new Color(251, 62, 62);
@@ -113,7 +110,6 @@ class WorldTableRow extends JPanel
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
-		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, ROW_HEIGHT));
 
 		addMouseListener(new MouseAdapter()
 		{
