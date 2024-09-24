@@ -1694,8 +1694,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the food barrel at the top of the Hunter Guild.")
 			.location(new WorldPoint(1560, 3048, 2))
-			.objectId(ObjectID.FOOD_BARREL)
-			.solution("Search the food barrel at the top of the Hunter Guild.")
+			.objectId(ObjectID.FOOD_POT)
+			.solution("Search the food pot at the top of the Hunter Guild.")
 			.build(),
 		CrypticClue.builder()
 			.text("Are you somewhat entertained?")
