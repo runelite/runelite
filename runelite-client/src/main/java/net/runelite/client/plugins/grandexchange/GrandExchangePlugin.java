@@ -930,7 +930,7 @@ public class GrandExchangePlugin extends Plugin
 		final String url = runeLiteConfig.useWikiItemPrices() ?
 			"https://prices.runescape.wiki/" + (client.getWorldType().contains(net.runelite.api.WorldType.FRESH_START_WORLD) ? "fsw" : "osrs") + "/item/" + itemId :
 			"https://services.runescape.com/m=itemdb_oldschool/"
-				+ name.replaceAll(" ", "+")
+				+ name.replace(" ", "+")
 				+ "/viewitem?obj="
 				+ itemId;
 		LinkBrowser.browse(url);

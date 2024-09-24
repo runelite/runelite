@@ -300,7 +300,7 @@ public class FairyRingPlugin extends Plugin
 
 		for (CodeWidgets c : codes)
 		{
-			String code = Text.removeTags(c.getDescription().getName()).replaceAll(" ", "");
+			String code = Text.removeTags(c.getDescription().getName()).replace(" ", "");
 			String tags = null;
 
 			if (!code.isEmpty())
