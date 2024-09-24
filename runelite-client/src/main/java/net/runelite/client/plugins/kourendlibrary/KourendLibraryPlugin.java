@@ -54,6 +54,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.ComponentID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
@@ -109,6 +110,9 @@ public class KourendLibraryPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
@@ -146,7 +150,13 @@ public class KourendLibraryPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(tutorialOverlay);
 
-		updatePlayerBooks();
+		clientThread.invoke(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				updatePlayerBooks();
+			}
+		});
 
 		if (!config.hideButton())
 		{
