@@ -924,6 +924,14 @@ public final class Varbits
 	 */
 	public static final int COLOSSEUM_DOOM = 9801;
 
+	/**
+	 * If the player has the Stone of Jas empowerment
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int STONE_OF_JAS_EMPOWERMENT = 10934;
+
 	public static final int BUFF_GOADING_POTION = 11294;
 
 	public static final int BUFF_PRAYER_REGENERATION = 11361;

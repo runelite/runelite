@@ -615,6 +615,11 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
 		}
 
+		if (event.getVarbitId() == Varbits.STONE_OF_JAS_EMPOWERMENT && config.showOverload())
+		{
+			updateVarCounter(STONE_OF_JAS_EMPOWERMENT, event.getValue());
+		}
+
 		if (event.getVarbitId() == Varbits.BUFF_GOADING_POTION && config.showGoading())
 		{
 			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
@@ -666,6 +671,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(SMELLING_SALTS);
+			removeVarCounter(STONE_OF_JAS_EMPOWERMENT);
 		}
 
 		if (!config.showPrayerEnhance())
