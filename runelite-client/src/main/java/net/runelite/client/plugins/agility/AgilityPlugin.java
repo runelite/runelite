@@ -380,7 +380,7 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (Obstacles.OBSTACLE_IDS.contains(newObject.getId()) ||
+		if (Obstacles.AGILITY_OBSTACLES.build().entries().stream().anyMatch(entry -> entry.getValue().contains(newObject.getId())) ||
 			Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()) ||
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
 				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
