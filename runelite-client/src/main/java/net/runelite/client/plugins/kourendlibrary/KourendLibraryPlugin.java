@@ -352,10 +352,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
 	{
-		if (itemContainerChangedEvent.getContainerId() == InventoryID.INVENTORY.getId())
-		{
-			updatePlayerBooks();
-		}
+		updatePlayerBooks();
 	}
 
 	@Subscribe
@@ -397,7 +394,6 @@ public class KourendLibraryPlugin extends Plugin
 		}
 
 		playerBooks = books;
-		updateBooksPanel();
 	}
 
 	private void updateBooksPanel()
