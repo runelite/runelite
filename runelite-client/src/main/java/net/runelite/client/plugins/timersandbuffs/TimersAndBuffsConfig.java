@@ -488,4 +488,15 @@ public interface TimersAndBuffsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showTormentedDemonBuffs",
+		name = "Tormented demon buffs",
+		description = "Configures whether Tormented demon-related buffs are displayed.",
+		section = bossesSection
+	)
+	default boolean showTormentedDemonBuffs()
+	{
+		return true;
+	}
 }
