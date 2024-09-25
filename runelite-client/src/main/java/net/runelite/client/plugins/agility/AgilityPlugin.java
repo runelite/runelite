@@ -48,6 +48,7 @@ import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -62,6 +63,7 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
@@ -206,6 +208,19 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_ADVANCED && event.getValue() == 6)
+		{
+			trackSession(Courses.COLOSSAL_WYRM_ADVANCED);
+		}
+		else if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_BASIC && event.getValue() == 6)
+		{
+			trackSession(Courses.COLOSSAL_WYRM_BASIC);
+		}
+	}
+
+	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
 		if (statChanged.getSkill() != AGILITY)
@@ -231,11 +246,7 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (session == null || session.getCourse() != course)
-		{
-			session = new AgilitySession(course);
-		}
-		session.incrementLapCount(client, xpTrackerService);
+		trackSession(course);
 	}
 
 	@Subscribe
@@ -298,6 +309,17 @@ public class AgilityPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private void trackSession(Courses course)
+	{
+		if (session == null || session.getCourse() != course)
+		{
+			session = new AgilitySession(course);
+			log.debug("Started new agility session for course: {}", course);
+		}
+
+		session.incrementLapCount(client, xpTrackerService);
 	}
 
 	private boolean isInAgilityArena()
