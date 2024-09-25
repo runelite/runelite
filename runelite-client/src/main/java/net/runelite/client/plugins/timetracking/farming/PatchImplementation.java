@@ -482,147 +482,157 @@ public enum PatchImplementation
 				}
 				if (value >= 4 && value <= 7)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 14209,26825,26826,26827
 					return new PatchState(Produce.GUAM, CropState.GROWING, value - 4);
 				}
 				if (value >= 8 && value <= 10)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 26828,26828,26828
 					return new PatchState(Produce.GUAM, CropState.HARVESTABLE, 10 - value);
 				}
 				if (value >= 11 && value <= 14)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 26829,39748,39749,39750
 					return new PatchState(Produce.MARRENTILL, CropState.GROWING, value - 11);
 				}
 				if (value >= 15 && value <= 17)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39751,39751,39751
 					return new PatchState(Produce.MARRENTILL, CropState.HARVESTABLE, 17 - value);
 				}
 				if (value >= 18 && value <= 21)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39752,39753,39754,39755
 					return new PatchState(Produce.TARROMIN, CropState.GROWING, value - 18);
 				}
 				if (value >= 22 && value <= 24)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39756,39756,39756
 					return new PatchState(Produce.TARROMIN, CropState.HARVESTABLE, 24 - value);
 				}
 				if (value >= 25 && value <= 28)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39757,39758,39759,39760
 					return new PatchState(Produce.HARRALANDER, CropState.GROWING, value - 25);
 				}
 				if (value >= 29 && value <= 31)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39761,39761,39761
 					return new PatchState(Produce.HARRALANDER, CropState.HARVESTABLE, 31 - value);
 				}
 				if (value >= 32 && value <= 35)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39762,39763,39764,39765
 					return new PatchState(Produce.RANARR, CropState.GROWING, value - 32);
 				}
 				if (value >= 36 && value <= 38)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39766,39766,39766
 					return new PatchState(Produce.RANARR, CropState.HARVESTABLE, 38 - value);
 				}
 				if (value >= 39 && value <= 42)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39777,39778,39779,39780
 					return new PatchState(Produce.TOADFLAX, CropState.GROWING, value - 39);
 				}
 				if (value >= 43 && value <= 45)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39781,39781,39781
 					return new PatchState(Produce.TOADFLAX, CropState.HARVESTABLE, 45 - value);
 				}
 				if (value >= 46 && value <= 49)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39767,39768,39769,39770
 					return new PatchState(Produce.IRIT, CropState.GROWING, value - 46);
 				}
 				if (value >= 50 && value <= 52)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39771,39771,39771
 					return new PatchState(Produce.IRIT, CropState.HARVESTABLE, 52 - value);
 				}
 				if (value >= 53 && value <= 56)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39772,39773,39774,39775
 					return new PatchState(Produce.AVANTOE, CropState.GROWING, value - 53);
 				}
 				if (value >= 57 && value <= 59)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39776,39776,39776
 					return new PatchState(Produce.AVANTOE, CropState.HARVESTABLE, 59 - value);
 				}
-				if (value >= 60 && value <= 67)
+				if (value >= 60 && value <= 63)
 				{
-					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135
+					// Herbs[Inspect,Guide] 55347,55348,55349,55350
+					return new PatchState(Produce.HUASCA, CropState.GROWING, value - 60);
+				}
+				if (value >= 64 && value <= 66)
+				{
+					// Herbs[Pick,Inspect,Guide] 55351,55351,55351
+					return new PatchState(Produce.HUASCA, CropState.HARVESTABLE, 66 - value);
+				}
+				if (value == 67)
+				{
+					// Herb patch[Rake,Inspect,Guide] 8135
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				if (value >= 68 && value <= 71)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39782,39783,39784,39785
 					return new PatchState(Produce.KWUARM, CropState.GROWING, value - 68);
 				}
 				if (value >= 72 && value <= 74)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39786,39786,39786
 					return new PatchState(Produce.KWUARM, CropState.HARVESTABLE, 74 - value);
 				}
 				if (value >= 75 && value <= 78)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39807,39808,39809,39810
 					return new PatchState(Produce.SNAPDRAGON, CropState.GROWING, value - 75);
 				}
 				if (value >= 79 && value <= 81)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39811,39811,39811
 					return new PatchState(Produce.SNAPDRAGON, CropState.HARVESTABLE, 81 - value);
 				}
 				if (value >= 82 && value <= 85)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39787,39788,39789,39790
 					return new PatchState(Produce.CADANTINE, CropState.GROWING, value - 82);
 				}
 				if (value >= 86 && value <= 88)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39791,39791,39791
 					return new PatchState(Produce.CADANTINE, CropState.HARVESTABLE, 88 - value);
 				}
 				if (value >= 89 && value <= 92)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39792,39793,39794,39795
 					return new PatchState(Produce.LANTADYME, CropState.GROWING, value - 89);
 				}
 				if (value >= 93 && value <= 95)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39796,39796,39796
 					return new PatchState(Produce.LANTADYME, CropState.HARVESTABLE, 95 - value);
 				}
 				if (value >= 96 && value <= 99)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39797,39798,39799,39800
 					return new PatchState(Produce.DWARF_WEED, CropState.GROWING, value - 96);
 				}
 				if (value >= 100 && value <= 102)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39801,39801,39801
 					return new PatchState(Produce.DWARF_WEED, CropState.HARVESTABLE, 102 - value);
 				}
 				if (value >= 103 && value <= 106)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39802,39803,39804,39805
 					return new PatchState(Produce.TORSTOL, CropState.GROWING, value - 103);
 				}
 				if (value >= 107 && value <= 109)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39806,39806,39806
 					return new PatchState(Produce.TORSTOL, CropState.HARVESTABLE, 109 - value);
 				}
 				if (value >= 128 && value <= 130)
@@ -700,9 +710,14 @@ public enum PatchImplementation
 					// Dead herbs[Clear,Inspect,Guide] 8147,8148,8149
 					return new PatchState(Produce.ANYHERB, CropState.DEAD, value - 169);
 				}
-				if (value >= 173 && value <= 191)
+				if (value >= 173 && value <= 175)
 				{
-					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
+					// Diseased herbs[Cure,Inspect,Guide] 8144,8145,8146
+					return new PatchState(Produce.HUASCA, CropState.DISEASED, value - 172);
+				}
+				if (value >= 176 && value <= 191)
+				{
+					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				if (value >= 192 && value <= 195)
