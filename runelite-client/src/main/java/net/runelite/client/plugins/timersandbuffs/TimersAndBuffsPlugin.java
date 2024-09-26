@@ -618,6 +618,16 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarCounter(STONE_OF_JAS_EMPOWERMENT, event.getValue());
 		}
 
+		if (event.getVarbitId() == VarbitID.PLAYER_OWN_BURN_DAMAGE_TOTAL && config.showBurnDamageAccumulated())
+		{
+			updateVarCounter(BURN_DAMAGE_ACCUMULATED, event.getValue());
+		}
+
+		if (event.getVarbitId() == VarbitID.PLAYER_OWN_BURN_DAMAGE_HITSPLAT_SIZE && config.showBurnDamageNextHit())
+		{
+			updateVarCounter(BURN_DAMAGE_NEXT_HIT, event.getValue());
+		}
+
 		if (event.getVarbitId() == VarbitID.GOADING_POTION_TIMER && config.showGoading())
 		{
 			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
@@ -848,6 +858,16 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showMoonlightPotion())
 		{
 			removeVarTimer(MOONLIGHT_POTION);
+		}
+
+		if (!config.showBurnDamageAccumulated())
+		{
+			removeVarCounter(BURN_DAMAGE_ACCUMULATED);
+		}
+
+		if (!config.showBurnDamageNextHit())
+		{
+			removeVarCounter(BURN_DAMAGE_NEXT_HIT);
 		}
 
 		if (!config.showGoading())
