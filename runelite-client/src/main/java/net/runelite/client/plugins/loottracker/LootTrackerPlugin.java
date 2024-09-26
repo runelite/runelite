@@ -1259,6 +1259,9 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.BOUNTY_CRATE_TIER_7:
 					case ItemID.BOUNTY_CRATE_TIER_8:
 					case ItemID.BOUNTY_CRATE_TIER_9:
+					case ItemID.APPRENTICE_POTION_PACK:
+					case ItemID.ADEPT_POTION_PACK:
+					case ItemID.EXPERT_POTION_PACK:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
