@@ -74,6 +74,7 @@ enum Boss
 	// Harvestable Araxxor is not marked dead so that it is always interactable and visible,
 	// but we still want the respawn timer to show when it despawns.
 	ARAXXOR(NpcID.ARAXXOR_13669, 15, RSTimeUnit.GAME_TICKS, ItemID.NID, true),
+	AMOXLIATl(NpcID.AMOXLIATL, 28, RSTimeUnit.GAME_TICKS, ItemID.MOXI),
 	;
 
 	private static final Map<Integer, Boss> bosses;
