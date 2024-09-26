@@ -628,6 +628,11 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarCounter(BURN_DAMAGE_NEXT_HIT, event.getValue());
 		}
 
+		if (event.getVarbitId() == VarbitID.WGS_SMOULDERING_HEART_TIMER && config.showTormentedDemonBuffs())
+		{
+			updateVarTimer(SMOULDERING_HEART, event.getValue(), i -> i * 25);
+		}
+
 		if (event.getVarbitId() == VarbitID.GOADING_POTION_TIMER && config.showGoading())
 		{
 			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
@@ -684,6 +689,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showTormentedDemonBuffs())
 		{
 			removeVarCounter(STONE_OF_JAS_EMPOWERMENT);
+			removeGameTimer(SMOULDERING_HEART);
 		}
 
 		if (!config.showPrayerEnhance())
