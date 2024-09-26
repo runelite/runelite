@@ -932,6 +932,16 @@ public final class Varbits
 	 */
 	public static final int STONE_OF_JAS_EMPOWERMENT = 10934;
 
+	/**
+	 * The amount of burn damage accumulated on the local player.
+	 */
+	public static final int BURN_DAMAGE_ACCUMULATED = 10964;
+
+	/**
+	 * The next hit of burn damage the local player will receive.
+	 */
+	public static final int BURN_DAMAGE_NEXT_HIT = 10965;
+
 	public static final int BUFF_GOADING_POTION = 11294;
 
 	public static final int BUFF_PRAYER_REGENERATION = 11361;
