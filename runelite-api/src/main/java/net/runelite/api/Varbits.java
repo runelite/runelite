@@ -942,6 +942,12 @@ public final class Varbits
 	 */
 	public static final int BURN_DAMAGE_NEXT_HIT = 10965;
 
+	/**
+	 * Smouldering heart duration
+	 * Number of game ticks remaining in intervals of 25; for a value X there are 25 * X game ticks remaining.
+	 */
+	public static final int SMOULDERING_HEART = 10944;
+
 	public static final int BUFF_GOADING_POTION = 11294;
 
 	public static final int BUFF_PRAYER_REGENERATION = 11361;
