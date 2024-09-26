@@ -2552,6 +2552,13 @@ public class ChatCommandsPlugin extends Plugin
 			case "bird's eggs":
 				return "Bird's egg offerings";
 
+			case "amox":
+				return "Amoxliatl";
+
+			case "the hueycoatl":
+			case "huey":
+				return "Hueycoatl";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
