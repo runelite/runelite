@@ -36,6 +36,8 @@ import net.runelite.api.gameval.ItemID;
 @AllArgsConstructor
 enum GameCounter
 {
+	BURN_DAMAGE_ACCUMULATED(SpriteID.BURN_DAMAGE, GameTimerImageType.SPRITE, "Burn damage accumulated"),
+	BURN_DAMAGE_NEXT_HIT(ItemID.BONE_CLAW, GameTimerImageType.ITEM, "Burn damage next hit"),
 	COLOSSEUM_DOOM(SpriteID.COLOSSEUM_DOOM, GameTimerImageType.SPRITE, "Doom"),
 	CURSE_OF_THE_MOONS_BLUE(ItemID.FROST_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Blue Moon)", ColorBoundaryType.GREATER_THAN_EQUAL_TO, 18, Color.RED),
 	CURSE_OF_THE_MOONS_ECLIPSE(ItemID.ECLIPSE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Eclipse Moon)"),
