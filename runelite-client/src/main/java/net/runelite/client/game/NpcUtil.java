@@ -80,10 +80,10 @@ public class NpcUtil
 				return true;
 			}
 
-			Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
-			if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
+			Set<Integer> healthCheckDeadNpcs = runtimeConfig.getHealthCheckDeadNpcs();
+			if (healthCheckDeadNpcs != null && healthCheckDeadNpcs.contains(id))
 			{
-				return npc.isDead();
+				return npc.getHealthRatio() == 0;
 			}
 		}
 
