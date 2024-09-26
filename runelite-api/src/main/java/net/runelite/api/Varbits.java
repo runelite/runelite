@@ -916,4 +916,8 @@ public final class Varbits
 	 * The amount of Doom stacks received in the Fortis Colosseum.
 	 */
 	public static final int COLOSSEUM_DOOM = 9801;
+
+	public static final int BUFF_GOADING_POTION = 11294;
+
+	public static final int BUFF_PRAYER_REGENERATION = 11361;
 }

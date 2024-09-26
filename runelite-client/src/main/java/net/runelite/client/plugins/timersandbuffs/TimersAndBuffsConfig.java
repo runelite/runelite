@@ -174,6 +174,28 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showGoading",
+		name = "Goading potion timer",
+		description = "Configures whether goading potion timer is displayed",
+		section = consumablesSection
+	)
+	default boolean showGoading()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPrayerRegeneration",
+		name = "Prayer regeneration timer",
+		description = "Configures whether prayer regeneration timer is displayed",
+		section = consumablesSection
+	)
+	default boolean showPrayerRegneration()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showDivine",
 		name = "Divine potion timer",
 		description = "Configures whether divine potion timer is displayed",

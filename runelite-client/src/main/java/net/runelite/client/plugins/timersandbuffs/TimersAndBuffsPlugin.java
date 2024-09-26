@@ -614,6 +614,16 @@ public class TimersAndBuffsPlugin extends Plugin
 
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
 		}
+
+		if (event.getVarbitId() == Varbits.BUFF_GOADING_POTION && config.showGoading())
+		{
+			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
+		}
+
+		if (event.getVarbitId() == Varbits.BUFF_PRAYER_REGENERATION && config.showPrayerRegneration())
+		{
+			updateVarTimer(PRAYER_REGENERATION, event.getValue(), i -> i * 12);
+		}
 	}
 
 	@Subscribe
@@ -825,6 +835,16 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showMoonlightPotion())
 		{
 			removeVarTimer(MOONLIGHT_POTION);
+		}
+
+		if (!config.showGoading())
+		{
+			removeVarTimer(GOADING);
+		}
+
+		if (!config.showPrayerRegneration())
+		{
+			removeVarTimer(PRAYER_REGENERATION);
 		}
 	}
 
