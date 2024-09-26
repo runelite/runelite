@@ -197,6 +197,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "help", config::swapHelp);
 		// make sure assignment swap is higher priority than trade swap for slayer masters
 		swap("talk-to", "assignment", config::swapAssignment);
+		// make sure pay swaps are higher priority than trade swap for farmers
+		swap("talk-to", "pay", config::swapPay);
+		swapContains("talk-to", alwaysTrue(), "pay (", config::swapPay);
 		swap("talk-to", "trade", config::swapTrade);
 		swap("talk-to", "trade-with", config::swapTrade);
 		swap("talk-to", "shop", config::swapTrade);
@@ -215,8 +218,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "miscellania", config::swapTravel);
 		swap("talk-to", "follow", config::swapTravel);
 		swap("talk-to", "transport", config::swapTravel);
-		swap("talk-to", "pay", config::swapPay);
-		swapContains("talk-to", alwaysTrue(), "pay (", config::swapPay);
 		swap("talk-to", "quick-travel", config::swapQuick);
 		swap("talk-to", ESSENCE_MINE_NPCS::contains, "teleport", config::swapEssenceMineTeleport);
 		swap("talk-to", "deposit-items", config::swapDepositItems);
