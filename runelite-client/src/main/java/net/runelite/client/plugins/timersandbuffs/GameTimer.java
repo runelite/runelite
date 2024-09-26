@@ -98,6 +98,7 @@ enum GameTimer
 	SILK_DRESSING(ItemID.TOA_SUPPLY_HEAL_OVERTIME_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
 	BLESSED_CRYSTAL_SCARAB(ItemID.TOA_SUPPLY_PRAYER_OVERTIME_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
 	SPELLBOOK_SWAP(SpriteID.SPELL_SPELLBOOK_SWAP, GameTimerImageType.SPRITE, "Spellbook Reset", 120, ChronoUnit.SECONDS, false),
+	SMOULDERING_HEART(ItemID.SMOULDERING_HEART, GameTimerImageType.ITEM, "Smouldering heart", false),
 	GOADING(ItemID._4DOSEGOADING, GameTimerImageType.ITEM, "Goading potion", false),
 	PRAYER_REGENERATION(ItemID._4DOSE1PRAYER_REGENERATION, GameTimerImageType.ITEM, "Prayer regeneration", false),
 	;
