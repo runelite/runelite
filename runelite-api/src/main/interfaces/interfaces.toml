@@ -66,6 +66,7 @@ scrollbar=14
 search_button_background=42
 deposit_inventory=44
 deposit_equipment=46
+potion_store=48
 incinerator=49
 incinerator_confirm=50
 equipment_parent=74

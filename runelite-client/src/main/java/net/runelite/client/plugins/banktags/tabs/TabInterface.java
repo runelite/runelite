@@ -125,6 +125,7 @@ public class TabInterface
 	private static final int SCROLL_TICK = 500;
 	private static final int INCINERATOR_WIDTH = 48;
 	private static final int INCINERATOR_HEIGHT = 39;
+	private static final int BANK_BOTTOM_OFFSET = 39; // offset from bottom of BANK_CONTENT_CONTAINER
 	private static final int BANK_ITEM_WIDTH = BankTagsPlugin.BANK_ITEM_WIDTH;
 	private static final int BANK_ITEM_HEIGHT = BankTagsPlugin.BANK_ITEM_HEIGHT;
 	private static final int BANK_ITEM_X_PADDING = BankTagsPlugin.BANK_ITEM_X_PADDING;
@@ -869,7 +870,7 @@ public class TabInterface
 			}
 		}
 
-		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items"))
+		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items") || event.getMenuOption().equals("Potion store"))
 		{
 			closeTag(false);
 		}
@@ -1165,12 +1166,11 @@ public class TabInterface
 	private void repositionButtons()
 	{
 		Widget incinerator = client.getWidget(ComponentID.BANK_INCINERATOR);
-		int incineratorHeight = 0;
+		int offset = BANK_BOTTOM_OFFSET;
 		if (incinerator != null && !incinerator.isHidden())
 		{
 			incinerator.setOriginalHeight(INCINERATOR_HEIGHT);
 			incinerator.setOriginalWidth(INCINERATOR_WIDTH);
-			incinerator.setOriginalY(INCINERATOR_HEIGHT);
 
 			// ~bankmain_build is run three times when the bank is opened, the first is from ~bankmain_viewbuttons
 			// which is prior to the incinerator being setup.
@@ -1181,20 +1181,31 @@ public class TabInterface
 				child.setOriginalWidth(INCINERATOR_WIDTH);
 				child.setWidthMode(WidgetSizeMode.ABSOLUTE);
 				child.setHeightMode(WidgetSizeMode.ABSOLUTE);
-				child.setType(WidgetType.GRAPHIC);
-				child.setSpriteId(TabSprites.INCINERATOR.getSpriteId());
 			}
 
 			incinerator.revalidate();
 
-			incineratorHeight = incinerator.getHeight();
+			offset = incinerator.getHeight() + incinerator.getOriginalY();
+		}
+
+		Widget potionStore = client.getWidget(ComponentID.BANK_POTION_STORE);
+		if (potionStore != null && !potionStore.isSelfHidden())
+		{
+			potionStore.setOriginalY(offset);
+			potionStore.setOriginalHeight(43); // remove some unused vertical space to make it slightly smaller
+			potionStore.revalidate();
+
+			offset = potionStore.getHeight() + potionStore.getOriginalY();
 		}
 
 		scrollComponent.setOriginalY(41 + BUTTON_HEIGHT);
 		scrollComponent.setOriginalWidth(TAB_WIDTH + MARGIN * 2);
 
 		// Keep the tab layer height a multiple of the tab heights
-		int tabLayerHeight = parent.getHeight() - scrollComponent.getOriginalY() - 61 - incineratorHeight;
+		int tabLayerHeight = parent.getHeight()
+				- scrollComponent.getOriginalY()
+				- BUTTON_HEIGHT // the bottom button
+				- offset; // incinerator etc.
 		tabCount = tabLayerHeight / (TAB_HEIGHT + MARGIN);
 		scrollComponent.setOriginalHeight(tabCount * (TAB_HEIGHT + MARGIN));
 
