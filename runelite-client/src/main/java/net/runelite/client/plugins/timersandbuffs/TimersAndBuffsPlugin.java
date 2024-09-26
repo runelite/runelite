@@ -635,6 +635,11 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(SMOULDERING_HEART, event.getValue(), i -> i * 25);
 		}
 
+		if (event.getVarbitId() == Varbits.SMOULDERING_GLAND && config.showPrayerEnhance())
+		{
+			updateVarTimer(SMOULDERING_GLAND, event.getValue(), i -> i * 4);
+		}
+
 		if (event.getVarbitId() == Varbits.BUFF_GOADING_POTION && config.showGoading())
 		{
 			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
@@ -693,6 +698,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showPrayerEnhance())
 		{
 			removeGameTimer(PRAYER_ENHANCE);
+			removeGameTimer(SMOULDERING_GLAND);
 		}
 
 		if (!config.showDivine())

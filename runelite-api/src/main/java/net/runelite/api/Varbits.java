@@ -948,6 +948,12 @@ public final class Varbits
 	 */
 	public static final int SMOULDERING_HEART = 10944;
 
+	/**
+	 * Smouldering gland duration
+	 * Number of game ticks remaining in intervals of 4; for a value X there are 4 * X game ticks remaining.
+	 */
+	public static final int SMOULDERING_GLAND = 10945;
+
 	public static final int BUFF_GOADING_POTION = 11294;
 
 	public static final int BUFF_PRAYER_REGENERATION = 11361;
