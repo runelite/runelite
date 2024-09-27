@@ -76,6 +76,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_CLICKBOX;
@@ -147,6 +148,12 @@ public class ObjectIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		points.clear();
 		objects.clear();
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged e)
+	{
+		clientThread.invokeLater(this::reloadPoints);
 	}
 
 	@Subscribe
