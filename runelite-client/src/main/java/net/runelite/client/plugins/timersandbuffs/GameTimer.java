@@ -91,14 +91,14 @@ enum GameTimer
 	MARK_OF_DARKNESS_COOLDOWN(SpriteID.SPELL_MARK_OF_DARKNESS_DISABLED, GameTimerImageType.SPRITE, "Mark of Darkness cooldown", true),
 	PICKPOCKET_STUN(SpriteID.SKILL_THIEVING, GameTimerImageType.SPRITE, "Stunned", true),
 	FARMERS_AFFINITY(ItemID.GRAIN, GameTimerImageType.ITEM, "Farmer's Affinity", false),
-	SMELLING_SALTS(ItemID.SMELLING_SALTS_2, GameTimerImageType.ITEM, "Smelling salts", true),
-	MENAPHITE_REMEDY(ItemID.MENAPHITE_REMEDY4, GameTimerImageType.ITEM, "Menaphite remedy", true),
+	SMELLING_SALTS(ItemID.SMELLING_SALTS_2, GameTimerImageType.ITEM, "Smelling salts", false),
+	MENAPHITE_REMEDY(ItemID.MENAPHITE_REMEDY4, GameTimerImageType.ITEM, "Menaphite remedy", false),
 	LIQUID_ADRENALINE(ItemID.LIQUID_ADRENALINE_2, GameTimerImageType.ITEM, "Liquid adrenaline", 150, ChronoUnit.SECONDS, false),
 	SILK_DRESSING(ItemID.SILK_DRESSING_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
 	BLESSED_CRYSTAL_SCARAB(ItemID.BLESSED_CRYSTAL_SCARAB_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
 	SPELLBOOK_SWAP(SpriteID.SPELL_SPELLBOOK_SWAP, GameTimerImageType.SPRITE, "Spellbook Reset", 120, ChronoUnit.SECONDS, false),
-	GOADING(ItemID.GOADING_POTION4, GameTimerImageType.ITEM, "Goading potion", true),
-	PRAYER_REGENERATION(ItemID.PRAYER_REGENERATION_POTION4, GameTimerImageType.ITEM, "Prayer regeneration", true),
+	GOADING(ItemID.GOADING_POTION4, GameTimerImageType.ITEM, "Goading potion", false),
+	PRAYER_REGENERATION(ItemID.PRAYER_REGENERATION_POTION4, GameTimerImageType.ITEM, "Prayer regeneration", false),
 	;
 
 	@Nullable
