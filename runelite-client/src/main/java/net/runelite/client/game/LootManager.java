@@ -68,7 +68,8 @@ import net.runelite.client.events.PlayerLootReceived;
 public class LootManager
 {
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
-		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH
+		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH,
+		NpcID.THE_HUEYCOATL_14012, AnimationID.HUEYCOATL_DEATH
 	);
 
 	private final EventBus eventBus;
@@ -437,6 +438,11 @@ public class LootManager
 			{
 				final WorldArea bossArea = npc.getWorldArea();
 				return List.of(new WorldArea(bossArea.getX() - 1, bossArea.getY() - 1, 3, 3, bossArea.getPlane()));
+			}
+			case NpcID.THE_HUEYCOATL_14012:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 10, 10, 10, bossArea.getPlane()));
 			}
 		}
 

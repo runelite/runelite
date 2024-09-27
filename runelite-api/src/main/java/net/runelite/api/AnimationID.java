@@ -368,4 +368,6 @@ public final class AnimationID
 	public static final int GWENITH_WINDMILL_SPINNING = 6495;
 	public static final int LITHKREN_GENERATOR_SPINNING = 7898;
 	public static final int GIANTS_FOUNDRY_WATER_WHEEL_SPINNING = 9450;
+
+	public static final int HUEYCOATL_DEATH = 11679;
 }
