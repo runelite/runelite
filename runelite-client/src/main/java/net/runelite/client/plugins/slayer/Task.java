@@ -43,6 +43,7 @@ enum Task
 	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANT_DRAGON_MASK),
 	ALCHEMICAL_HYDRA("The Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
+	ARAXXOR("Araxxor", ItemID.NID),
 	ARAXYTES("Araxytes", ItemID.ARAXYTE_HEAD, "Araxxor"),
 	AVIANSIES("Aviansies", ItemID.ENSOULED_AVIANSIE_HEAD, "Kree'arra", "Flight Kilisa", "Flockleader Geerin", "Wingman Skree"),
 	BANDITS("Bandits", ItemID.BANDIT, "Bandit", "Black Heather", "Donny the Lad", "Speedy Keith"),
