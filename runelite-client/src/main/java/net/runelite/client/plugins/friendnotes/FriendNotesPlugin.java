@@ -64,8 +64,8 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Friend Notes",
-	description = "Store notes about your friends"
+		name = "Friend Notes",
+		description = "Store notes about your friends"
 )
 public class FriendNotesPlugin extends Plugin
 {
@@ -75,7 +75,7 @@ public class FriendNotesPlugin extends Plugin
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
-		ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
+			ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
 	private static final int ICON_WIDTH = 14;
 	private static final int ICON_HEIGHT = 12;
 
@@ -237,30 +237,30 @@ public class FriendNotesPlugin extends Plugin
 
 			// Build "Add Note" or "Edit Note" menu entry
 			client.createMenuEntry(-1)
-				.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE)
-				.setType(MenuAction.RUNELITE)
-				.setTarget(event.getTarget()) //Preserve color codes here
-				.onClick(e ->
-				{
-					//Friends have color tags
-					final String sanitizedTarget = Text.toJagexName(Text.removeTags(e.getTarget()));
-					final String note = getFriendNote(sanitizedTarget);
+					.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE)
+					.setType(MenuAction.RUNELITE)
+					.setTarget(event.getTarget()) //Preserve color codes here
+					.onClick(e ->
+					{
+						//Friends have color tags
+						final String sanitizedTarget = Text.toJagexName(Text.removeTags(e.getTarget()));
+						final String note = getFriendNote(sanitizedTarget);
 
-					// Open the new chatbox input dialog
-					chatboxPanelManager.openTextInput(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget, CHARACTER_LIMIT))
-						.value(Strings.nullToEmpty(note))
-						.onDone((content) ->
-						{
-							if (content == null)
-							{
-								return;
-							}
+						// Open the new chatbox input dialog
+						chatboxPanelManager.openTextInput(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget, CHARACTER_LIMIT))
+								.value(Strings.nullToEmpty(note))
+								.onDone((content) ->
+								{
+									if (content == null)
+									{
+										return;
+									}
 
-							content = Text.removeTags(content).trim();
-							log.debug("Set note for '{}': '{}'", sanitizedTarget, content);
-							setFriendNote(sanitizedTarget, content);
-						}).build();
-				});
+									content = Text.removeTags(content).trim();
+									log.debug("Set note for '{}': '{}'", sanitizedTarget, content);
+									setFriendNote(sanitizedTarget, content);
+								}).build();
+					});
 		}
 		else if (hoveredFriend != null)
 		{
@@ -282,8 +282,8 @@ public class FriendNotesPlugin extends Plugin
 			if (prevName != null)
 			{
 				migrateFriendNote(
-					Text.toJagexName(name),
-					Text.toJagexName(prevName)
+						Text.toJagexName(name),
+						Text.toJagexName(prevName)
 				);
 			}
 		}
@@ -292,10 +292,13 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onRemovedFriend(RemovedFriend event)
 	{
-		// Delete a friend's note if they are removed
-		final String displayName = Text.toJagexName(event.getNameable().getName());
-		log.debug("Remove friend: '{}'", displayName);
-		setFriendNote(displayName, null);
+		if (config.removeNoteOnDelete())
+		{
+			// Delete a friend's note if they are removed
+			final String displayName = Text.toJagexName(event.getNameable().getName());
+			log.debug("Remove friend: '{}'", displayName);
+			setFriendNote(displayName, null);
+		}
 	}
 
 	@Subscribe
@@ -340,16 +343,16 @@ public class FriendNotesPlugin extends Plugin
 		{
 			log.debug("Rebuilding friends list");
 			client.runScript(
-				ScriptID.FRIENDS_UPDATE,
-				ComponentID.FRIEND_LIST_FULL_CONTAINER,
-				ComponentID.FRIEND_LIST_SORT_BY_NAME_BUTTON,
-				ComponentID.FRIEND_LIST_SORT_BY_LAST_WORLD_CHANGE_BUTTON,
-				ComponentID.FRIEND_LIST_SORT_BY_WORLD_BUTTON,
-				ComponentID.FRIEND_LIST_LEGACY_SORT_BUTTON,
-				ComponentID.FRIEND_LIST_NAMES_CONTAINER,
-				ComponentID.FRIEND_LIST_SCROLL_BAR,
-				ComponentID.FRIEND_LIST_LOADING_TEXT,
-				ComponentID.FRIEND_LIST_PREVIOUS_NAME_HOLDER
+					ScriptID.FRIENDS_UPDATE,
+					ComponentID.FRIEND_LIST_FULL_CONTAINER,
+					ComponentID.FRIEND_LIST_SORT_BY_NAME_BUTTON,
+					ComponentID.FRIEND_LIST_SORT_BY_LAST_WORLD_CHANGE_BUTTON,
+					ComponentID.FRIEND_LIST_SORT_BY_WORLD_BUTTON,
+					ComponentID.FRIEND_LIST_LEGACY_SORT_BUTTON,
+					ComponentID.FRIEND_LIST_NAMES_CONTAINER,
+					ComponentID.FRIEND_LIST_SCROLL_BAR,
+					ComponentID.FRIEND_LIST_LOADING_TEXT,
+					ComponentID.FRIEND_LIST_PREVIOUS_NAME_HOLDER
 			);
 		});
 	}
@@ -360,14 +363,14 @@ public class FriendNotesPlugin extends Plugin
 		{
 			log.debug("Rebuilding ignore list");
 			client.runScript(
-				ScriptID.IGNORE_UPDATE,
-				ComponentID.IGNORE_LIST_FULL_CONTAINER,
-				ComponentID.IGNORE_LIST_SORT_BY_NAME_BUTTON,
-				ComponentID.IGNORE_LIST_LEGACY_SORT_BUTTON,
-				ComponentID.IGNORE_LIST_NAMES_CONTAINER,
-				ComponentID.IGNORE_LIST_SCROLL_BAR,
-				ComponentID.IGNORE_LIST_LOADING_TEXT,
-				ComponentID.IGNORE_LIST_PREVIOUS_NAME_HOLDER
+					ScriptID.IGNORE_UPDATE,
+					ComponentID.IGNORE_LIST_FULL_CONTAINER,
+					ComponentID.IGNORE_LIST_SORT_BY_NAME_BUTTON,
+					ComponentID.IGNORE_LIST_LEGACY_SORT_BUTTON,
+					ComponentID.IGNORE_LIST_NAMES_CONTAINER,
+					ComponentID.IGNORE_LIST_SCROLL_BAR,
+					ComponentID.IGNORE_LIST_LOADING_TEXT,
+					ComponentID.IGNORE_LIST_PREVIOUS_NAME_HOLDER
 			);
 		});
 	}

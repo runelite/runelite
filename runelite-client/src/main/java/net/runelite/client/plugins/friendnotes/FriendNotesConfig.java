@@ -34,13 +34,24 @@ import net.runelite.client.config.ConfigItem;
 public interface FriendNotesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showIcons",
-		name = "Show Icons",
-		description = "Show icons on friend or ignore list",
-		position = 1
+			keyName = "showIcons",
+			name = "Show Icons",
+			description = "Show icons on friend or ignore list",
+			position = 1
 	)
 	default boolean showIcons()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "removeNoteOnDelete",
+			name = "Remove Note On Delete",
+			description = "Remove the note when a player is deleted",
+			position = 2
+	)
+	default boolean removeNoteOnDelete()
+	{
+		return false;
 	}
 }
