@@ -125,7 +125,7 @@ enum Task
 	KURASK("Kurask", ItemID.KURASK),
 	LAVA_DRAGONS("Lava Dragons", ItemID.LAVA_SCALE, "Lava dragon"),
 	LESSER_DEMONS("Lesser demons", ItemID.LESSER_DEMON_MASK, "Zakl'n Gritch"),
-	LESSER_NAGUA("Lesser Nagua", ItemID.LESSER_NAGUA, "Sulphur Nagua"),
+	LESSER_NAGUA("Lesser Nagua", ItemID.LESSER_NAGUA, "Sulphur Nagua", "Frost Nagua", "Amoxliatl"),
 	LIZARDMEN("Lizardmen", ItemID.LIZARDMAN_FANG, "Lizardman"),
 	LIZARDS("Lizards", ItemID.DESERT_LIZARD),
 	MAGIC_AXES("Magic axes", ItemID.IRON_BATTLEAXE),
