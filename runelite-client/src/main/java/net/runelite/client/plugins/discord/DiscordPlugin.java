@@ -238,7 +238,7 @@ public class DiscordPlugin extends Plugin
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try // NOPMD: UseTryWithResources
+				try (response)
 				{
 					if (!response.isSuccessful())
 					{
@@ -253,10 +253,6 @@ public class DiscordPlugin extends Plugin
 					}
 
 					partyService.setPartyMemberAvatar(event.getMemberId(), image);
-				}
-				finally
-				{
-					response.close();
 				}
 			}
 		});

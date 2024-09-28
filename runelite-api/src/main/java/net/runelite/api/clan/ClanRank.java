@@ -24,29 +24,30 @@
  */
 package net.runelite.api.clan;
 
+import lombok.Value;
+
 /**
- * The ranks in a clan. Clan ranks 1-14 are mapped to corresponding titles via
- * the clan settings.
+ * A rank in a clan. The {@link #getRank()} value is -1 to 127 representing the rank.
+ * Some constants are defined for named ranks, but most ranks have configurable titles which must be
+ * fetched via {@link ClanSettings#titleForRank(ClanRank)}
+ *
+ * @see #JMOD
+ * @see #OWNER
+ * @see #DEPUTY_OWNER
+ * @see #ADMINISTRATOR
+ * @see #GUEST
  */
-public enum ClanRank
+@Value
+public class ClanRank
 {
-	GUEST,
-	CLAN_RANK_1,
-	CLAN_RANK_2,
-	CLAN_RANK_3,
-	CLAN_RANK_4,
-	CLAN_RANK_5,
-	CLAN_RANK_6,
-	CLAN_RANK_7,
-	CLAN_RANK_8,
-	CLAN_RANK_9,
-	CLAN_RANK_10,
-	ADMINISTRATOR,
-	CLAN_RANK_11,
-	CLAN_RANK_12,
-	CLAN_RANK_13,
-	CLAN_RANK_14,
-	DEPUTY_OWNER,
-	OWNER,
-	JMOD;
+	public static final ClanRank JMOD = new ClanRank(127);
+	public static final ClanRank OWNER = new ClanRank(126);
+	public static final ClanRank DEPUTY_OWNER = new ClanRank(125);
+	public static final ClanRank ADMINISTRATOR = new ClanRank(100);
+	public static final ClanRank GUEST = new ClanRank(-1);
+
+	/**
+	 * The rank, -1 to 127.
+	 */
+	private final int rank;
 }

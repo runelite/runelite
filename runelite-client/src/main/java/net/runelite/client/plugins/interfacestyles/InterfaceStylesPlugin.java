@@ -28,11 +28,13 @@ package net.runelite.client.plugins.interfacestyles;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.HealthBar;
+import net.runelite.api.HealthBarConfig;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
@@ -42,7 +44,7 @@ import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostClientTick;
-import net.runelite.api.events.PostHealthBar;
+import net.runelite.api.events.PostHealthBarConfig;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -146,41 +148,57 @@ public class InterfaceStylesPlugin extends Plugin
 	private void condensePlayerOptions()
 	{
 		MenuEntry[] menuEntries = client.getMenuEntries();
-		MenuEntry parentMenu = null;
+		MenuEntry[] newMenus = new MenuEntry[menuEntries.length];
+		int newIdx = 0;
+
+		Menu submenu = null;
 		Player prev = null;
-		for (int i = menuEntries.length - 1; i >= 0; --i)
+		boolean changed = false;
+
+		for (MenuEntry menuEntry : menuEntries)
 		{
-			MenuEntry menuEntry = menuEntries[i];
 			MenuAction type = menuEntry.getType();
 
 			Player player = menuEntry.getPlayer();
 			if (player != null && type != MenuAction.ITEM_USE_ON_PLAYER && type != MenuAction.WIDGET_TARGET_ON_PLAYER)
 			{
+				String option = menuEntry.getOption();
+				boolean deprioritized = menuEntry.isDeprioritized();
+
 				if (prev != player)
 				{
-					// This works by making the top most player menu the submenu, then adding a new
-					// menu with a copy of what this one was.
-					MenuEntry copy = client.createMenuEntry(-1)
-						.setIdentifier(menuEntry.getIdentifier())
-						.setOption(menuEntry.getOption())
-						.setTarget(menuEntry.getTarget())
-						.setType(menuEntry.getType())
-						.setParam0(menuEntry.getParam0())
-						.setParam1(menuEntry.getParam1())
-						.setDeprioritized(menuEntry.isDeprioritized());
-
+					// Change this menu to be the submenu parent
 					menuEntry.setOption("");
-					menuEntry.setType(MenuAction.RUNELITE_SUBMENU);
+					menuEntry.setType(MenuAction.RUNELITE);
 					menuEntry.setDeprioritized(false);
+					submenu = menuEntry.createSubMenu();
 
-					parentMenu = menuEntry;
-					menuEntry = copy;
+					newMenus[newIdx++] = menuEntry;
 				}
 
-				menuEntry.setParent(parentMenu);
+				// Add this menu to the submenu
+				assert submenu != null;
+				submenu.createMenuEntry(-1)
+					.setIdentifier(menuEntry.getIdentifier())
+					.setOption(option)
+					.setTarget(menuEntry.getTarget())
+					.setType(type)
+					.setParam0(menuEntry.getParam0())
+					.setParam1(menuEntry.getParam1())
+					.setDeprioritized(deprioritized);
+				changed = true;
+			}
+			else
+			{
+				newMenus[newIdx++] = menuEntry;
 			}
 
 			prev = player;
+		}
+
+		if (changed)
+		{
+			client.setMenuEntries(Arrays.copyOf(newMenus, newIdx));
 		}
 	}
 
@@ -202,14 +220,14 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPostHealthBar(PostHealthBar postHealthBar)
+	public void onPostHealthBarConfig(PostHealthBarConfig postHealthBar)
 	{
 		if (!config.hdHealthBars())
 		{
 			return;
 		}
 
-		HealthBar healthBar = postHealthBar.getHealthBar();
+		HealthBarConfig healthBar = postHealthBar.getHealthBarConfig();
 		HealthbarOverride override = HealthbarOverride.get(healthBar.getHealthBarFrontSpriteId());
 
 		// Check if this is the health bar we are replacing

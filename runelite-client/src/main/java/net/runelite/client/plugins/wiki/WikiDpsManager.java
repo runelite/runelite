@@ -53,6 +53,7 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
@@ -145,7 +146,7 @@ class WikiDpsManager
 
 			if (!setBonus)
 			{
-				if (interfaceId == InterfaceID.BANK_EQUIPMENT)
+				if (interfaceId == InterfaceID.BANK)
 				{
 					clientThread.invokeLater(() -> addButton(Screen.BANK_EQUIPMENT, this::launch));
 				}
@@ -217,14 +218,10 @@ class WikiDpsManager
 		// we must also use absolute for all the children below,
 		// which means it's necessary to offset the values by simulating corresponding pos/size modes.
 		int padding = 8;
-		int w = setBonus.getOriginalWidth();
-		int h = setBonus.getOriginalHeight();
-		int x = setBonus.getOriginalX() + (w / 2) + (padding / 2);
-		int y = setBonus.getOriginalY();
-		if (screen == Screen.BANK_EQUIPMENT) // uses ABSOLUTE_CENTER
-		{
-			y += parent.getHeight() / 2 - setBonus.getHeight() / 2;
-		}
+		final int w = setBonus.getOriginalWidth();
+		final int h = setBonus.getOriginalHeight();
+		final int x = setBonus.getOriginalX() + (w / 2) + (padding / 2);
+		final int y = setBonus.getOriginalY();
 
 		// now shift the Set Bonus and Stat Bonus buttons over a bit to make room
 		setBonus.setOriginalX(setBonus.getOriginalX() - (w / 2) - (padding / 2))
@@ -242,16 +239,31 @@ class WikiDpsManager
 		spriteWidgets[0] = parent.createChild(-1, WidgetType.GRAPHIC)
 			.setSpriteId(refComponents[0].getSpriteId())
 			.setPos(bgX, bgY)
-			.setSize(bgWidth, bgHeight);
+			.setSize(bgWidth, bgHeight)
+			.setYPositionMode(statBonus.getYPositionMode());
 		spriteWidgets[0].revalidate();
 
-		// borders and corners all use absolute positioning which is easy
+		// borders and corners
 		for (int i = 1; i < 9; i++)
 		{
-			spriteWidgets[i] = parent.createChild(-1, WidgetType.GRAPHIC)
+			Widget c = spriteWidgets[i] = parent.createChild(-1, WidgetType.GRAPHIC)
 				.setSpriteId(refComponents[i].getSpriteId())
-				.setPos(x + refComponents[i].getOriginalX(), y + refComponents[i].getOriginalY())
 				.setSize(refComponents[i].getOriginalWidth(), refComponents[i].getOriginalHeight());
+			if (statBonus.getYPositionMode() == WidgetPositionMode.ABSOLUTE_CENTER)
+			{
+				// Convert x/y from the reference component's, whose parent is the Set Bonus layer,
+				// to our components whose parent is the bank equipment parent.
+				// For y we have to reverse the ABSOLUTE_CENTER y calculation to convert
+				// the reference component original y into an offset from where the client will
+				// compute the ABSOLUTE_CENTER y to be.
+				c.setPos(x + refComponents[i].getOriginalX(), y - (setBonus.getHeight() - refComponents[i].getHeight() + 1) / 2 + refComponents[i].getOriginalY())
+					.setYPositionMode(statBonus.getYPositionMode());
+			}
+			else
+			{
+				c.setPos(x + refComponents[i].getOriginalX(), y + refComponents[i].getOriginalY());
+			}
+
 			spriteWidgets[i].revalidate();
 		}
 
@@ -265,7 +277,8 @@ class WikiDpsManager
 			.setXTextAlignment(refComponents[9].getXTextAlignment())
 			.setYTextAlignment(refComponents[9].getYTextAlignment())
 			.setPos(x, y)
-			.setSize(w, h);
+			.setSize(w, h)
+			.setYPositionMode(statBonus.getYPositionMode());
 		text.revalidate();
 
 		// we'll give the text layer the listeners since it covers the whole area

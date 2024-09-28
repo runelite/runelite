@@ -95,7 +95,7 @@ public class SmeltingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().startsWith("You retrieve a bar of"))
+		if (event.getMessage().startsWith("You retrieve a bar of") || event.getMessage().startsWith("The Varrock platebody enabled you to smelt your next ore"))
 		{
 			if (session == null)
 			{

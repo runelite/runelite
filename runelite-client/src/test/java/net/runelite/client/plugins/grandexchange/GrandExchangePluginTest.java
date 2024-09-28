@@ -28,10 +28,8 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -54,7 +52,6 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
-import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.findFuzzyIndices;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import static org.junit.Assert.assertEquals;
@@ -139,14 +136,6 @@ public class GrandExchangePluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
-	}
-
-	@Test
-	public void testFindFuzzyIndices()
-	{
-		List<Integer> fuzzyIndices = findFuzzyIndices("Ancestral robe bottom", "obby");
-		// r<u>ob</u>e <u>b</u>ottom
-		assertEquals(Arrays.asList(11, 12, 15), fuzzyIndices);
 	}
 
 	@Test

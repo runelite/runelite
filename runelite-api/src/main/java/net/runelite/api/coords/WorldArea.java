@@ -25,8 +25,10 @@
 package net.runelite.api.coords;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
@@ -250,8 +252,8 @@ public class WorldArea
 	 * with some actors. However, using the {@code extraCondition} param
 	 * it is possible to implement this check manually.
 	 *
-	 * @param dx the x-axis direction to travel (-1, 0, or 1)
-	 * @param dy the y-axis direction to travel (-1, 0, or 1)
+	 * @param dx             the x-axis direction to travel (-1, 0, or 1)
+	 * @param dy             the y-axis direction to travel (-1, 0, or 1)
 	 * @param extraCondition an additional condition to perform when checking valid tiles,
 	 *                       such as performing a check for un-passable actors
 	 * @return true if the area can travel in the specified direction
@@ -488,80 +490,34 @@ public class WorldArea
 			return false;
 		}
 
-		LocalPoint sourceLp = LocalPoint.fromWorld(wv, x, y);
-		LocalPoint targetLp = LocalPoint.fromWorld(wv, other.getX(), other.getY());
-		if (sourceLp == null || targetLp == null)
-		{
-			return false;
-		}
-
-		int thisX = sourceLp.getSceneX();
-		int thisY = sourceLp.getSceneY();
-		int otherX = targetLp.getSceneX();
-		int otherY = targetLp.getSceneY();
-
-		int cmpThisX, cmpThisY, cmpOtherX, cmpOtherY;
-
-		// Determine which position to compare with for this NPC
-		if (otherX <= thisX)
-		{
-			cmpThisX = thisX;
-		}
-		else if (otherX >= thisX + width - 1)
-		{
-			cmpThisX = thisX + width - 1;
-		}
-		else
-		{
-			cmpThisX = otherX;
-		}
-		if (otherY <= thisY)
-		{
-			cmpThisY = thisY;
-		}
-		else if (otherY >= thisY + height - 1)
-		{
-			cmpThisY = thisY + height - 1;
-		}
-		else
-		{
-			cmpThisY = otherY;
-		}
-
-		// Determine which position to compare for the other actor
-		if (thisX <= otherX)
-		{
-			cmpOtherX = otherX;
-		}
-		else if (thisX >= otherX + other.getWidth() - 1)
-		{
-			cmpOtherX = otherX + other.getWidth() - 1;
-		}
-		else
-		{
-			cmpOtherX = thisX;
-		}
-		if (thisY <= otherY)
-		{
-			cmpOtherY = otherY;
-		}
-		else if (thisY >= otherY + other.getHeight() - 1)
-		{
-			cmpOtherY = otherY + other.getHeight() - 1;
-		}
-		else
-		{
-			cmpOtherY = thisY;
-		}
-
+		List<WorldPoint> fromEdges = other.getVisibleCandidates(this);
+		List<WorldPoint> toEdges = this.getVisibleCandidates(other);
 		Tile[][][] tiles = wv.getScene().getTiles();
-		Tile sourceTile = tiles[plane][cmpThisX][cmpThisY];
-		Tile targetTile = tiles[other.getPlane()][cmpOtherX][cmpOtherY];
-		if (sourceTile == null || targetTile == null)
+		for (WorldPoint fromPoint : fromEdges)
 		{
-			return false;
+			for (WorldPoint toPoint : toEdges)
+			{
+				LocalPoint fromLp = LocalPoint.fromWorld(wv, fromPoint);
+				LocalPoint toLp = LocalPoint.fromWorld(wv, toPoint);
+
+				if (fromLp == null || toLp == null)
+				{
+					continue;
+				}
+
+				Tile sourceTile = tiles[plane][fromLp.getSceneX()][fromLp.getSceneY()];
+				Tile targetTile = tiles[other.getPlane()][toLp.getSceneX()][toLp.getSceneY()];
+				if (sourceTile == null || targetTile == null)
+				{
+					continue;
+				}
+				if (hasLineOfSightTo(wv, sourceTile, targetTile))
+				{
+					return true;
+				}
+			}
 		}
-		return hasLineOfSightTo(wv, sourceTile, targetTile);
+		return false;
 	}
 
 	private static boolean hasLineOfSightTo(WorldView wv, Tile from, Tile to)
@@ -690,6 +646,99 @@ public class WorldArea
 	public boolean hasLineOfSightTo(WorldView wv, WorldPoint other)
 	{
 		return hasLineOfSightTo(wv, other.toWorldArea());
+	}
+
+	/**
+	 * Gets the points of another worldArea that may be viewable by this WorldArea
+	 * The points are sorted by their distance to the closest point in this WorldArea
+	 *
+	 * @param other the other WorldArea
+	 * @return the list of potentially visible points
+	 */
+	private List<WorldPoint> getVisibleCandidates(WorldArea other)
+	{
+		Point compPoint = this.getComparisonPoint(other);
+		Comparator<WorldPoint> byDistance = Comparator.comparingInt((p) -> p.distanceTo(
+			new WorldPoint(compPoint.getX(), compPoint.getY(), this.getPlane())));
+
+		return other.toWorldPointList()
+			.stream()
+			.filter(p -> isEdgePoint(other, p))
+			.filter(p -> isVisibleCandidate(other, p))
+			.sorted(byDistance)
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * Checks if the given point is on the edge of the provided WorldArea
+	 *
+	 * @param p Point to test
+	 * @return true if on the edge, false otherwise
+	 */
+	private static boolean isEdgePoint(WorldArea wa, WorldPoint p)
+	{
+		return p.getX() == wa.getX()
+			|| p.getX() == wa.getX() + wa.getWidth() - 1
+			|| p.getY() == wa.getY()
+			|| p.getY() == wa.getY() + wa.getHeight() - 1;
+	}
+
+	/**
+	 * Prunes potentially visible WorldArea points in the other WorldArea by checking
+	 * if the given point is on a visible edge.
+	 *
+	 * @param other The other WorldArea
+	 * @param p     Test point in other WorldArea
+	 * @return true if the point is on a potentially visible edge, false otherwise
+	 */
+	private boolean isVisibleCandidate(WorldArea other, WorldPoint p)
+	{
+		if (this.intersectsWith(other))
+		{
+			return false;
+		}
+		// This WorldArea is east of other
+		if (this.getX() + this.getWidth() - 1 > other.getX() + other.getWidth() - 1)
+		{
+			// Southeast
+			if (this.getY() < other.getY())
+			{
+				return p.getX() == other.getX() + other.getWidth() - 1 || p.getY() == other.getY();
+			}
+			// Northeast
+			if (this.getY() + this.getHeight() - 1 > other.getY() + other.getHeight() - 1)
+			{
+				return p.getX() == other.getX() + other.getWidth() - 1 || p.getY() == other.getY() + other.getHeight() - 1;
+			}
+			return p.getX() == other.getX() + other.getWidth() - 1;
+		}
+		// This WorldArea is west of other
+		else if (this.getX() < other.getX())
+		{
+			// Southwest
+			if (this.getY() < other.getY())
+			{
+				return p.getX() == other.getX() || p.getY() == other.getY();
+			}
+			// Northwest
+			if (this.getY() + this.getHeight() - 1 > other.getY() + other.getHeight() - 1)
+			{
+				return p.getX() == other.getX() || p.getY() == other.getY() + other.getHeight() - 1;
+			}
+			// Straight west
+			return p.getX() == other.getX();
+		}
+		// This WorldArea is north
+		else if (this.getY() > other.getY() + other.getHeight() - 1)
+		{
+			return p.getY() == other.getY() + other.getHeight() - 1;
+		}
+		// This WorldArea is south
+		else if (this.getY() < other.getY())
+		{
+			return p.getY() == other.getY();
+		}
+		return false;
 	}
 
 	/**

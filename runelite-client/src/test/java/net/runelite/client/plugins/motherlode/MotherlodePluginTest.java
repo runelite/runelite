@@ -67,10 +67,6 @@ public class MotherlodePluginTest
 
 	@Mock
 	@Bind
-	MotherlodeSession motherlodeSession;
-
-	@Mock
-	@Bind
 	private MotherlodeConfig motherlodeConfig;
 
 	@Mock

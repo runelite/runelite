@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.motherlode;
+package net.runelite.client.plugins.timersandbuffs;
 
-import java.time.Duration;
-import java.time.Instant;
-import javax.inject.Singleton;
+import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@Getter
-@Slf4j
-@Singleton
-class MotherlodeSession
+@Getter(AccessLevel.PACKAGE)
+class BuffCounter extends Counter
 {
-	private static final long HOUR = Duration.ofHours(1).toMillis();
+	private final TimersAndBuffsPlugin plugin;
+	private final GameCounter gameCounter;
 
-	private int perHour;
-
-	private Instant lastPayDirtMined;
-	private int totalMined;
-
-	private Instant recentPayDirtMined;
-	private int recentMined;
-
-	public void incrementPayDirtMined()
+	BuffCounter(
+		TimersAndBuffsPlugin plugin,
+		GameCounter gameCounter,
+		int count)
 	{
-		Instant now = Instant.now();
-
-		lastPayDirtMined = now;
-		++totalMined;
-
-		if (recentMined == 0)
-		{
-			recentPayDirtMined = now;
-		}
-		++recentMined;
-
-		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
-		if (!timeSinceStart.isZero())
-		{
-			perHour = (int) ((double) recentMined * (double) HOUR / (double) timeSinceStart.toMillis());
-		}
+		super(null, plugin, count);
+		this.plugin = plugin;
+		this.gameCounter = gameCounter;
 	}
 
-	public void resetRecent()
+	@Override
+	public String getText()
 	{
-		recentPayDirtMined = null;
-		recentMined = 0;
+		return gameCounter.isShouldDisplayCount() ? Integer.toString(getCount()) : "";
 	}
 
+	@Override
+	public Color getTextColor()
+	{
+		return gameCounter.getColorBoundaryType().shouldRecolor(getCount(), gameCounter.getBoundary()) ? gameCounter.getColor() : Color.WHITE;
+	}
 }

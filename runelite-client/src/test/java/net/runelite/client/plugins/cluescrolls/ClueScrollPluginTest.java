@@ -59,6 +59,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.plugins.banktags.BankTagsService;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -126,6 +127,10 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	ChatboxPanelManager chatboxPanelManager;
+
+	@Mock
+	@Bind
+	BankTagsService bankTagsService;
 
 	@Before
 	public void before()

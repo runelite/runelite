@@ -249,6 +249,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int viewportOffsetX;
 	private int viewportOffsetY;
+	private int viewportWidth;
+	private int viewportHeight;
 
 	// Uniforms
 	private int uniColorBlindMode;
@@ -391,6 +393,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				client.setDrawCallbacks(this);
 				client.setGpuFlags(DrawCallbacks.GPU
 					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
+					| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
 				);
 				client.setExpandedMapLoading(config.expandedMapLoadingChunks());
 
@@ -529,6 +532,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 						client.setGameState(GameState.LOADING);
 					}
 				});
+			}
+			else if (configChanged.getKey().equals("removeVertexSnapping"))
+			{
+				log.debug("Toggle {}", configChanged.getKey());
+				client.setGpuFlags(DrawCallbacks.GPU
+					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
+					| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
+				);
 			}
 		}
 	}
@@ -875,6 +886,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		this.cameraYaw = cameraYaw;
 		viewportOffsetX = client.getViewportXOffset();
 		viewportOffsetY = client.getViewportYOffset();
+		viewportWidth = client.getViewportWidth();
+		viewportHeight = client.getViewportHeight();
 
 		final Scene scene = client.getScene();
 		scene.setDrawDistance(getDrawDistance());
@@ -1143,9 +1156,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		final int canvasHeight = client.getCanvasHeight();
 		final int canvasWidth = client.getCanvasWidth();
-
-		final int viewportHeight = client.getViewportHeight();
-		final int viewportWidth = client.getViewportWidth();
 
 		prepareInterfaceTexture(canvasWidth, canvasHeight);
 

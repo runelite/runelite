@@ -90,6 +90,15 @@ public final class Varbits
 	public static final int DIVINE_BATTLEMAGE = 13665;
 
 	/**
+	 * Moonlight potion timer.
+	 * When at least 70 herblore, the moonlight potion's defense effect will be removed when this timer runs out.
+	 * If the player drinks a dose of moonlight potion while already under its effects, desync between
+	 * Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick greater.
+	 * In case of desync, the moonlight defence effect will be removed once Varbits.DIVINE_SUPER_DEFENCE becomes 0.
+	 */
+	public static final int MOONLIGHT_POTION = 10029;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.
@@ -610,6 +619,9 @@ public final class Varbits
 
 	public static final int BANK_REARRANGE_MODE = 3959;
 	public static final int CURRENT_BANK_TAB = 4150;
+	public static final int BANK_QUANTITY_TYPE = 6590;
+	public static final int BANK_REQUESTEDQUANTITY = 3960;
+	public static final int BANK_LEAVEPLACEHOLDERS = 3755;
 
 	public static final int WORLDHOPPER_FAVORITE_1 = 4597;
 	public static final int WORLDHOPPER_FAVORITE_2 = 4598;
@@ -889,4 +901,39 @@ public final class Varbits
 
 	public static final int SPELLBOOK = 4070;
 	public static final int SPELLBOOK_SUBMENU = 9730;
+
+	/**
+	 * The amount of Curse of the Moons stacks received when fighting the Blue Moon or Eclipse Moon.
+	 * The varbit value remains 0 when fighting the Blood Moon.
+	 * When fighting the Blue Moon, the player's joints will lock up at 18 stacks, which causes their next attack to be
+	 * canceled and 18 stacks to be removed.
+	 * When fighting the Eclipse Moon, the stacks increase the chance of a player's attack glancing off the shield of
+	 * the Eclipse Moon. Glancing attacks reduce the player's max hit by two times the flat armour of the Eclipse Moon.
+	 */
+	public static final int CURSE_OF_THE_MOONS = 9853;
+
+	/**
+	 * The amount of Doom stacks received in the Fortis Colosseum.
+	 */
+	public static final int COLOSSEUM_DOOM = 9801;
+
+	public static final int BUFF_GOADING_POTION = 11294;
+
+	public static final int BUFF_PRAYER_REGENERATION = 11361;
+
+	/**
+	 * The player's progress value for the colossal wyrm advanced basic course.
+	 * <p>
+	 * Max value = 6;
+	 * </p>
+	 */
+	public static final int COLOSSAL_WYRM_COURSE_BASIC = 11292;
+
+	/**
+	 * The player's progress value for the colossal wyrm advanced agility course.
+	 * <p>
+	 * Max value = 6;
+	 * </p>
+	 */
+	public static final int COLOSSAL_WYRM_COURSE_ADVANCED = 11293;
 }

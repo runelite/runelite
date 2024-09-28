@@ -84,6 +84,7 @@ public enum FarmingAction implements NamedSkillAction
 	YEW_TREE("Yew Tree", 60, 7150.9f, ItemID.YEW_LOGS),
 	SNAPE_GRASS("Snape grass", 61, 82, ItemID.SNAPE_GRASS),
 	SNAPDRAGON("Snapdragon", 62, 87.5f, ItemID.SNAPDRAGON),
+	HUASCA("Huasca", 65, 86.5f, ItemID.HUASCA),
 	HESPORI("Hespori", 65, 12662, NullItemID.NULL_23044),
 	CADANTINE("Cadantine", 67, 106.5f, ItemID.CADANTINE),
 	PALM_TREE("Palm Tree", 68, 10260.6f, ItemID.COCONUT),

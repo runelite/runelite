@@ -45,11 +45,11 @@ public class RuntimeConfig
 	private Instant outageStart;
 	private Instant outageEnd;
 
-	private Set<Integer> ignoreDeadNpcs;
-	private Set<Integer> forceDeadNpcs;
-	private Set<Integer> resetDeadOnChangeNpcs;
-	private Set<Integer> forceDeadAnimations;
-	private Set<Integer> nonAttackNpcs;
+	private Set<Integer> ignoreDeadNpcs; // npc is never dead
+	private Set<Integer> forceDeadNpcs; // npc is always dead
+	private Set<Integer> resetDeadOnChangeNpcs; // npc dead flag is reset on type change
+	private Set<Integer> forceDeadAnimations; // npc dead flag is reset on anim change
+	private Set<Integer> healthCheckDeadNpcs; // npc is only dead if healthratio == 0
 
 	private Set<String> outdatedClientVersions;
 	private String[] updateLauncherWinVers;
@@ -89,7 +89,7 @@ public class RuntimeConfig
 		forceDeadNpcs = config.forceDeadNpcs;
 		resetDeadOnChangeNpcs = config.resetDeadOnChangeNpcs;
 		forceDeadAnimations = config.forceDeadAnimations;
-		nonAttackNpcs = config.nonAttackNpcs;
+		healthCheckDeadNpcs = config.healthCheckDeadNpcs;
 
 		outdatedClientVersions = config.outdatedClientVersions;
 	}

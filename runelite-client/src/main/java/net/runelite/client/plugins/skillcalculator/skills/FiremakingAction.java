@@ -37,8 +37,8 @@ import net.runelite.client.game.ItemManager;
 public enum FiremakingAction implements ItemSkillAction
 {
 	SACRED_OIL_2(ItemID.SACRED_OIL2, "Applying Sacred oil(2)", 1, 10, FiremakingMethod.SACRED_OIL),
-	SACRED_OIL_3(ItemID.SACRED_OIL3, "Applying Sacred oil(3)", 1, 12, FiremakingMethod.SACRED_OIL),
-	SACRED_OIL_4(ItemID.SACRED_OIL4, "Applying Sacred oil(4)", 1, 16, FiremakingMethod.SACRED_OIL),
+	SACRED_OIL_3(ItemID.SACRED_OIL3, "Applying Sacred oil(3)", 1, 15, FiremakingMethod.SACRED_OIL),
+	SACRED_OIL_4(ItemID.SACRED_OIL4, "Applying Sacred oil(4)", 1, 20, FiremakingMethod.SACRED_OIL),
 	ACHEY_TREE_LOGS(ItemID.ACHEY_TREE_LOGS, 1, 40, FiremakingMethod.NORMAL_LOGS),
 	LOGS(ItemID.LOGS, 1, 40, FiremakingMethod.NORMAL_LOGS),
 	PYRE_LOGS(ItemID.PYRE_LOGS, 5, 50, FiremakingMethod.PYRE_LOGS),
@@ -60,7 +60,7 @@ public enum FiremakingAction implements ItemSkillAction
 	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 303.8f, FiremakingMethod.NORMAL_LOGS),
 	MAGIC_PYRE_LOGS(ItemID.MAGIC_PYRE_LOGS, 80, 404.5f, FiremakingMethod.PYRE_LOGS),
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 350, FiremakingMethod.NORMAL_LOGS),
-	REDWOOD_PYRE_LOGS(ItemID.REDWOOD_LOGS, 95, 500, FiremakingMethod.PYRE_LOGS),
+	REDWOOD_PYRE_LOGS(ItemID.REDWOOD_PYRE_LOGS, 95, 500, FiremakingMethod.PYRE_LOGS),
 	;
 
 	private final int itemId;

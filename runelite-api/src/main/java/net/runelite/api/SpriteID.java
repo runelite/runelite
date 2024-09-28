@@ -1282,7 +1282,8 @@ public final class SpriteID
 	public static final int EMOTE_SMOOTH_DANCE_LOCKED = 1355;
 	public static final int EMOTE_CRAZY_DANCE_LOCKED = 1356;
 	public static final int EMOTE_PREMIER_SHIELD_LOCKED = 1357;
-	/* Unmapped: 1358~1359 */
+	public static final int HITSPLAT_BLUE_MISS = 1358;
+	/* Unmapped: 1359 */
 	public static final int HITSPLAT_GREEN_POISON = 1360;
 	/* Unmapped: 1361~1363 */
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
@@ -1682,6 +1683,9 @@ public final class SpriteID
 	public static final int HEALTHBAR_PURPLE_BACK_140PX = 4725;
 	public static final int HEALTHBAR_PURPLE_FRONT_160PX = 4726;
 	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
+	/* Unmapped: 4728~4765 */
+	public static final int COLOSSEUM_DOOM = 4766;
+	/* Unmapped: 4767~4842 */
 	public static final int PRAYER_RP_ANCIENT_STRENGTH = 4843;
 	public static final int PRAYER_RP_ANCIENT_SIGHT = 4844;
 	public static final int PRAYER_RP_ANCIENT_WILL = 4845;
