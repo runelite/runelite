@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.ammo;
 
+import com.google.common.collect.ImmutableSet;
 import java.awt.image.BufferedImage;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -32,10 +34,14 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -47,6 +53,12 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class AmmoPlugin extends Plugin
 {
+	private static final Set<Integer> DIZANAS_QUIVER_IDS = ImmutableSet.<Integer>builder()
+		.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.DIZANAS_QUIVER)))
+		.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.BLESSED_DIZANAS_QUIVER)))
+		.addAll(ItemVariationMapping.getVariations(ItemVariationMapping.map(ItemID.DIZANAS_MAX_CAPE)))
+		.build();
+
 	@Inject
 	private Client client;
 
@@ -60,6 +72,9 @@ public class AmmoPlugin extends Plugin
 	private ItemManager itemManager;
 
 	private AmmoCounter counterBox;
+	private AmmoCounter quiverBox;
+
+	private boolean isWearingQuiver;
 
 	@Override
 	protected void startUp() throws Exception
@@ -70,7 +85,7 @@ public class AmmoPlugin extends Plugin
 
 			if (container != null)
 			{
-				checkInventory(container.getItems());
+				checkInventory(container);
 			}
 		});
 	}
@@ -80,6 +95,7 @@ public class AmmoPlugin extends Plugin
 	{
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
+		removeQuiverInfobox();
 	}
 
 	@Subscribe
@@ -90,16 +106,29 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		checkInventory(event.getItemContainer().getItems());
+		checkInventory(event.getItemContainer());
 	}
 
-	private void checkInventory(final Item[] items)
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
 	{
+		if (event.getVarpId() == VarPlayer.DIZANAS_QUIVER_ITEM_COUNT || event.getVarpId() == VarPlayer.DIZANAS_QUIVER_ITEM_ID)
+		{
+			checkQuiver();
+		}
+	}
+
+	private void checkInventory(ItemContainer equipment)
+	{
+		final Item cape = equipment.getItem(EquipmentInventorySlot.CAPE.getSlotIdx());
+		isWearingQuiver = cape != null && DIZANAS_QUIVER_IDS.contains(cape.getId());
+		checkQuiver();
+
 		// Check for weapon slot items. This overrides the ammo slot,
 		// as the player will use the thrown weapon (eg. chinchompas, knives, darts)
-		if (items.length > EquipmentInventorySlot.WEAPON.getSlotIdx())
+		final Item weapon = equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+		if (weapon != null)
 		{
-			final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
 			final ItemComposition weaponComp = itemManager.getItemComposition(weapon.getId());
 			if (weaponComp.isStackable())
 			{
@@ -108,15 +137,14 @@ public class AmmoPlugin extends Plugin
 			}
 		}
 
-		if (items.length <= EquipmentInventorySlot.AMMO.getSlotIdx())
+		final Item ammo = equipment.getItem(EquipmentInventorySlot.AMMO.getSlotIdx());
+		if (ammo == null)
 		{
 			removeInfobox();
 			return;
 		}
 
-		final Item ammo = items[EquipmentInventorySlot.AMMO.getSlotIdx()];
 		final ItemComposition comp = itemManager.getItemComposition(ammo.getId());
-
 		if (!comp.isStackable())
 		{
 			removeInfobox();
@@ -144,5 +172,46 @@ public class AmmoPlugin extends Plugin
 	{
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
+	}
+
+	private void checkQuiver()
+	{
+		if (!isWearingQuiver)
+		{
+			removeQuiverInfobox();
+			return;
+		}
+
+		final int quiverAmmoId = client.getVarpValue(VarPlayer.DIZANAS_QUIVER_ITEM_ID);
+		final int quiverAmmoCount = client.getVarpValue(VarPlayer.DIZANAS_QUIVER_ITEM_COUNT);
+		if (quiverAmmoId == -1 || quiverAmmoCount == 0)
+		{
+			removeQuiverInfobox();
+			return;
+		}
+
+		updateQuiverInfobox(quiverAmmoId, quiverAmmoCount);
+	}
+
+	private void updateQuiverInfobox(final int itemId, final int count)
+	{
+		if (quiverBox != null && quiverBox.getItemID() == itemId)
+		{
+			quiverBox.setCount(count);
+			return;
+		}
+
+		final ItemComposition comp = itemManager.getItemComposition(itemId);
+
+		removeQuiverInfobox();
+		final BufferedImage image = itemManager.getImage(itemId, 5, false);
+		quiverBox = new AmmoCounter(this, itemId, count, comp.getName(), image);
+		infoBoxManager.addInfoBox(quiverBox);
+	}
+
+	private void removeQuiverInfobox()
+	{
+		infoBoxManager.removeInfoBox(quiverBox);
+		quiverBox = null;
 	}
 }

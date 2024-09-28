@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -65,7 +65,7 @@ enum GameTimer
 	ABYSSAL_SIRE_STUN(ItemID.ABYSSAL_ORPHAN, GameTimerImageType.ITEM, "Abyssal Sire Stun", 30, ChronoUnit.SECONDS, true),
 	HOME_TELEPORT(SpriteID.SPELL_LUMBRIDGE_HOME_TELEPORT, GameTimerImageType.SPRITE, "Home Teleport", 30, ChronoUnit.MINUTES),
 	MINIGAME_TELEPORT(SpriteID.TAB_QUESTS_RED_MINIGAMES, GameTimerImageType.SPRITE, "Minigame Teleport", 20, ChronoUnit.MINUTES),
-	DRAGON_FIRE_SHIELD(ItemID.DRAGONFIRE_SHIELD, GameTimerImageType.ITEM, "Dragonfire Shield Special", 115, ChronoUnit.SECONDS),
+	DRAGON_FIRE_SHIELD(ItemID.DRAGONFIRE_SHIELD, GameTimerImageType.ITEM, "Dragonfire Shield Special", false),
 	DIVINE_SUPER_ATTACK(ItemID.DIVINE_SUPER_ATTACK_POTION4, GameTimerImageType.ITEM, "Divine Super Attack", false),
 	DIVINE_SUPER_STRENGTH(ItemID.DIVINE_SUPER_STRENGTH_POTION4, GameTimerImageType.ITEM, "Divine Super Strength", false),
 	DIVINE_SUPER_DEFENCE(ItemID.DIVINE_SUPER_DEFENCE_POTION4, GameTimerImageType.ITEM, "Divine Super Defence", false),
@@ -74,6 +74,7 @@ enum GameTimer
 	DIVINE_MAGIC(ItemID.DIVINE_MAGIC_POTION4, GameTimerImageType.ITEM, "Divine Magic", false),
 	DIVINE_BASTION(ItemID.DIVINE_BASTION_POTION4, GameTimerImageType.ITEM, "Divine Bastion", false),
 	DIVINE_BATTLEMAGE(ItemID.DIVINE_BATTLEMAGE_POTION4, GameTimerImageType.ITEM, "Divine Battlemage", false),
+	MOONLIGHT_POTION(ItemID.MOONLIGHT_POTION4, GameTimerImageType.ITEM, "Moonlight potion", false),
 	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison", false),
 	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom", false),
 	TELEBLOCK(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Teleblock", false),
@@ -87,15 +88,17 @@ enum GameTimer
 	WARD_OF_ARCEUUS_COOLDOWN(SpriteID.SPELL_WARD_OF_ARCEUUS_DISABLED, GameTimerImageType.SPRITE, "Ward of Arceuus cooldown", 30, ChronoUnit.SECONDS),
 	DEATH_CHARGE_COOLDOWN(SpriteID.SPELL_DEATH_CHARGE_DISABLED, GameTimerImageType.SPRITE, "Death charge cooldown", 60, ChronoUnit.SECONDS),
 	CORRUPTION_COOLDOWN(SpriteID.SPELL_GREATER_CORRUPTION_DISABLED, GameTimerImageType.SPRITE, "Corruption cooldown", 30, ChronoUnit.SECONDS),
-	MARK_OF_DARKNESS_COOLDOWN(SpriteID.SPELL_MARK_OF_DARKNESS_DISABLED, GameTimerImageType.SPRITE, "Mark of Darkness cooldown", 90, GAME_TICKS, true),
+	MARK_OF_DARKNESS_COOLDOWN(SpriteID.SPELL_MARK_OF_DARKNESS_DISABLED, GameTimerImageType.SPRITE, "Mark of Darkness cooldown", true),
 	PICKPOCKET_STUN(SpriteID.SKILL_THIEVING, GameTimerImageType.SPRITE, "Stunned", true),
 	FARMERS_AFFINITY(ItemID.GRAIN, GameTimerImageType.ITEM, "Farmer's Affinity", false),
-	SMELLING_SALTS(ItemID.SMELLING_SALTS_2, GameTimerImageType.ITEM, "Smelling salts", true),
-	MENAPHITE_REMEDY(ItemID.MENAPHITE_REMEDY4, GameTimerImageType.ITEM, "Menaphite remedy", true),
+	SMELLING_SALTS(ItemID.SMELLING_SALTS_2, GameTimerImageType.ITEM, "Smelling salts", false),
+	MENAPHITE_REMEDY(ItemID.MENAPHITE_REMEDY4, GameTimerImageType.ITEM, "Menaphite remedy", false),
 	LIQUID_ADRENALINE(ItemID.LIQUID_ADRENALINE_2, GameTimerImageType.ITEM, "Liquid adrenaline", 150, ChronoUnit.SECONDS, false),
 	SILK_DRESSING(ItemID.SILK_DRESSING_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
 	BLESSED_CRYSTAL_SCARAB(ItemID.BLESSED_CRYSTAL_SCARAB_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
 	SPELLBOOK_SWAP(SpriteID.SPELL_SPELLBOOK_SWAP, GameTimerImageType.SPRITE, "Spellbook Reset", 120, ChronoUnit.SECONDS, false),
+	GOADING(ItemID.GOADING_POTION4, GameTimerImageType.ITEM, "Goading potion", false),
+	PRAYER_REGENERATION(ItemID.PRAYER_REGENERATION_POTION4, GameTimerImageType.ITEM, "Prayer regeneration", false),
 	;
 
 	@Nullable

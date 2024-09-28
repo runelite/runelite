@@ -158,7 +158,30 @@ public class NpcLoader
 			{
 				def.chatheadModels[index] = stream.readUnsignedShort();
 			}
-
+		}
+		else if (opcode == 74)
+		{
+			def.stats[0] = stream.readUnsignedShort();
+		}
+		else if (opcode == 75)
+		{
+			def.stats[1] = stream.readUnsignedShort();
+		}
+		else if (opcode == 76)
+		{
+			def.stats[2] = stream.readUnsignedShort();
+		}
+		else if (opcode == 77)
+		{
+			def.stats[3] = stream.readUnsignedShort();
+		}
+		else if (opcode == 78)
+		{
+			def.stats[4] = stream.readUnsignedShort();
+		}
+		else if (opcode == 79)
+		{
+			def.stats[5] = stream.readUnsignedShort();
 		}
 		else if (opcode == 93)
 		{
@@ -332,6 +355,10 @@ public class NpcLoader
 		else if (opcode == 123)
 		{
 			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 124)
+		{
+			def.height = stream.readUnsignedShort();
 		}
 		else if (opcode == 249)
 		{

@@ -47,6 +47,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +80,10 @@ public class IdleNotifierPluginTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Inject
 	private IdleNotifierPlugin plugin;
@@ -302,6 +307,7 @@ public class IdleNotifierPluginTest
 	@Test
 	public void testSpecRegen()
 	{
+		when(config.getSpecNotification()).thenReturn(Notification.ON);
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
@@ -310,7 +316,7 @@ public class IdleNotifierPluginTest
 
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify(eq("You have restored spec energy!"));
+		verify(notifier).notify(Notification.ON, "You have restored spec energy!");
 	}
 
 	@Test

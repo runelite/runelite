@@ -650,6 +650,11 @@ public interface Widget
 	void setAction(int index, String action);
 
 	/**
+	 * Clear the menu options on a widget.
+	 */
+	void clearActions();
+
+	/**
 	 * Sets a script to be ran when the a menu action is clicked.
 	 * hasListener must be true for this to take effect
 	 *

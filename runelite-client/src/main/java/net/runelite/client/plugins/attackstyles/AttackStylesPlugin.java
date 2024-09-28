@@ -133,8 +133,8 @@ public class AttackStylesPlugin extends Plugin
 		{
 			updateWidgetsToHide(false);
 			processWidgets();
+			hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), false);
 		});
-		hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), false);
 		warnedSkills.clear();
 	}
 

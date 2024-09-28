@@ -54,6 +54,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
@@ -111,6 +112,7 @@ public class BankPlugin extends Plugin
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
+	private ContainerPrices prices;
 
 	private final KeyListener searchHotkeyListener = new KeyListener()
 	{
@@ -321,19 +323,26 @@ public class BankPlugin extends Plugin
 		}
 	}
 
+	@Subscribe(priority = 1) // run prior to bank tags
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
+		{
+			// This is here so that it computes the tab price before bank tags layouts the tab with duplicates or placeholders.
+			prices = getWidgetContainerPrices(ComponentID.BANK_ITEM_CONTAINER, InventoryID.BANK);
+		}
+	}
+
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired event)
 	{
-		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
+		if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
-			ContainerPrices price = getWidgetContainerPrices(ComponentID.BANK_ITEM_CONTAINER, InventoryID.BANK);
-			if (price == null)
+			if (prices != null)
 			{
-				return;
+				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
+				bankTitle.setText(bankTitle.getText() + createValueText(prices.getGePrice(), prices.getHighAlchPrice()));
 			}
-
-			Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
@@ -618,8 +627,8 @@ public class BankPlugin extends Plugin
 			long geTotal = 0, haTotal = 0;
 			log.debug("Computing bank price of {} items", itemContainer.size());
 
-			// In the bank, the first components are the bank items, followed by tabs etc. There are always 816 components regardless
-			// of bank size, but we only need to check up to the bank size.
+			// In the bank, the first components are the bank items, followed by tabs etc. There are always enough
+			// components for the max bank regardless of the bank size, but we only need to check up to the bank size.
 			for (int i = 0; i < itemContainer.size(); ++i)
 			{
 				Widget child = children[i];

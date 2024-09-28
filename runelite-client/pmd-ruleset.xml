@@ -44,7 +44,7 @@
 	<rule ref="category/java/bestpractices.xml/UnusedPrivateMethod">
 		<properties>
 			<property name="ignoredAnnotations"
-					  value="net.runelite.client.eventbus.Subscribe|com.google.inject.Provides"/>
+					  value="net.runelite.client.eventbus.Subscribe,com.google.inject.Provides"/>
 		</properties>
 	</rule>
 	<rule ref="category/java/bestpractices.xml/UseTryWithResources"/>
@@ -53,13 +53,20 @@
 	<!-- code style -->
 	<rule ref="category/java/codestyle.xml/AvoidProtectedFieldInFinalClass"/>
 	<rule ref="category/java/codestyle.xml/AvoidProtectedMethodInFinalClassNotExtending"/>
+	<rule ref="category/java/codestyle.xml/EmptyControlStatement"/>
 	<rule ref="category/java/codestyle.xml/ExtendsObject"/>
 	<rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop"/>
 	<rule ref="category/java/codestyle.xml/IdenticalCatchBranches"/>
 	<rule ref="category/java/codestyle.xml/PackageCase"/>
+	<rule ref="category/java/codestyle.xml/UnnecessaryBoxing"/>
 	<rule ref="category/java/codestyle.xml/UnnecessaryCast"/>
 	<rule ref="category/java/codestyle.xml/UnnecessaryConstructor"/>
-	<rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName" />
+	<rule ref="category/java/codestyle.xml/UnnecessaryFullyQualifiedName">
+		<properties>
+			<property name="reportStaticMethods" value="false" />
+			<property name="reportStaticFields" value="false" />
+		</properties>
+	</rule>
 	<rule ref="category/java/codestyle.xml/UnnecessaryImport" />
 	<rule ref="category/java/codestyle.xml/UnnecessaryModifier"/>
 	<rule ref="category/java/codestyle.xml/UseDiamondOperator"/>
@@ -68,12 +75,7 @@
 	<!-- design -->
 	<rule ref="category/java/design.xml/AvoidThrowingNewInstanceOfSameException"/>
 	<rule ref="category/java/design.xml/FinalFieldCouldBeStatic"/>
-	<rule ref="category/java/design.xml/ImmutableField">
-		<properties>
-			<property name="ignoredAnnotations"
-					  value="lombok.Setter|lombok.Getter|lombok.Builder|lombok.Data|lombok.RequiredArgsConstructor|lombok.AllArgsConstructor|lombok.Value|lombok.NoArgsConstructor|javax.inject.Inject|com.google.inject.Inject"/>
-		</properties>
-	</rule>
+	<rule ref="category/java/design.xml/ImmutableField"/>
 	<rule ref="category/java/design.xml/SimplifyBooleanExpressions"/>
 	<rule ref="category/java/design.xml/SimplifyConditional"/>
 	<rule ref="category/java/design.xml/UselessOverridingMethod"/>
@@ -81,10 +83,6 @@
 	<!-- error prone -->
 	<rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
 	<rule ref="category/java/errorprone.xml/DontImportSun"/>
-	<rule ref="category/java/errorprone.xml/EmptyFinallyBlock"/>
-	<rule ref="category/java/errorprone.xml/EmptyIfStmt"/>
-	<rule ref="category/java/errorprone.xml/EmptyInitializer"/>
-	<rule ref="category/java/errorprone.xml/EmptyStatementBlock"/>
 	<rule ref="category/java/errorprone.xml/InstantiationToGetClass"/>
 	<rule ref="category/java/errorprone.xml/InvalidLogMessageFormat"/>
 	<rule ref="category/java/errorprone.xml/JumbledIncrementer"/>
@@ -100,5 +98,4 @@
 		</properties>
 	</rule>
 	<rule ref="category/java/performance.xml/InefficientStringBuffering"/>
-	<rule ref="category/java/performance.xml/UnnecessaryWrapperObjectCreation"/>
 </ruleset>

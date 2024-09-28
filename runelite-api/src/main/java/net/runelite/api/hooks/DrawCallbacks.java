@@ -48,6 +48,10 @@ public interface DrawCallbacks
 	 * {@link Model#getVertexNormalsY()} {@link Model#getVertexNormalsZ()} API.
 	 */
 	int NORMALS = 4;
+	/**
+	 * Disable vertex snapping for animations
+	 */
+	int NO_VERTEX_SNAPPING = 8;
 
 	void draw(Projection projection, Scene scene, Renderable renderable, int orientation, int x, int y, int z, long hash);
 

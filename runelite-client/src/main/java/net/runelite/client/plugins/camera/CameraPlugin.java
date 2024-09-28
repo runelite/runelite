@@ -145,6 +145,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraPitchRelaxerEnabled(false);
 		client.setInvertYaw(false);
 		client.setInvertPitch(false);
+		client.setCameraShakeDisabled(false);
 		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseListener(this);
 		controlDown = false;
@@ -180,6 +181,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		client.setInvertYaw(config.invertYaw());
 		client.setInvertPitch(config.invertPitch());
+		client.setCameraShakeDisabled(config.disableCameraShake());
 	}
 
 	@Subscribe

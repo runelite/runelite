@@ -177,9 +177,9 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
   // Compute average distances for 0/2, 3/4, and 6/8
 
   if (localId < size) {
-    int avg1 = 0;
-    int avg2 = 0;
-    int avg3 = 0;
+    int avg1 = -6000;
+    int avg2 = -6000;
+    int avg3 = -6000;
 
     if (totalNum[1] > 0 || totalNum[2] > 0) {
       avg1 = (totalDistance[1] + totalDistance[2]) / (totalNum[1] + totalNum[2]);

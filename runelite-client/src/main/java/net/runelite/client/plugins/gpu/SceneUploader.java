@@ -54,7 +54,7 @@ class SceneUploader
 	private final Client client;
 	private final GpuPluginConfig gpuConfig;
 
-	private Regions regions;
+	private final Regions regions;
 
 	int sceneId = (int) System.nanoTime();
 	private int offset;
@@ -438,9 +438,9 @@ class SceneUploader
 		vertexBuffer.ensureCapacity(triangleCount * 12);
 		uvBuffer.ensureCapacity(triangleCount * 12);
 
-		final int[] vertexX = model.getVerticesX();
-		final int[] vertexY = model.getVerticesY();
-		final int[] vertexZ = model.getVerticesZ();
+		final float[] vertexX = model.getVerticesX();
+		final float[] vertexY = model.getVerticesY();
+		final float[] vertexZ = model.getVerticesZ();
 
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
@@ -509,9 +509,9 @@ class SceneUploader
 			int triangleB = indices2[face];
 			int triangleC = indices3[face];
 
-			vertexBuffer.put((float) vertexX[triangleA], vertexY[triangleA], vertexZ[triangleA], packAlphaPriority | color1);
-			vertexBuffer.put((float) vertexX[triangleB], vertexY[triangleB], vertexZ[triangleB], packAlphaPriority | color2);
-			vertexBuffer.put((float) vertexX[triangleC], vertexY[triangleC], vertexZ[triangleC], packAlphaPriority | color3);
+			vertexBuffer.put(vertexX[triangleA], vertexY[triangleA], vertexZ[triangleA], packAlphaPriority | color1);
+			vertexBuffer.put(vertexX[triangleB], vertexY[triangleB], vertexZ[triangleB], packAlphaPriority | color2);
+			vertexBuffer.put(vertexX[triangleC], vertexY[triangleC], vertexZ[triangleC], packAlphaPriority | color3);
 
 			if (faceTextures != null)
 			{
@@ -559,9 +559,9 @@ class SceneUploader
 	private static float[] modelCanvasX;
 	private static float[] modelCanvasY;
 
-	private static int[] modelLocalX;
-	private static int[] modelLocalY;
-	private static int[] modelLocalZ;
+	private static float[] modelLocalX;
+	private static float[] modelLocalY;
+	private static float[] modelLocalZ;
 
 	private static int[] numOfPriority;
 	private static int[] eq10;
@@ -581,9 +581,9 @@ class SceneUploader
 		modelCanvasX = new float[MAX_VERTEX_COUNT];
 		modelCanvasY = new float[MAX_VERTEX_COUNT];
 
-		modelLocalX = new int[MAX_VERTEX_COUNT];
-		modelLocalY = new int[MAX_VERTEX_COUNT];
-		modelLocalZ = new int[MAX_VERTEX_COUNT];
+		modelLocalX = new float[MAX_VERTEX_COUNT];
+		modelLocalY = new float[MAX_VERTEX_COUNT];
+		modelLocalZ = new float[MAX_VERTEX_COUNT];
 
 		numOfPriority = new int[12];
 		eq10 = new int[2000];
@@ -615,9 +615,9 @@ class SceneUploader
 	int pushSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int vertexCount = model.getVerticesCount();
-		final int[] verticesX = model.getVerticesX();
-		final int[] verticesY = model.getVerticesY();
-		final int[] verticesZ = model.getVerticesZ();
+		final float[] verticesX = model.getVerticesX();
+		final float[] verticesY = model.getVerticesY();
+		final float[] verticesZ = model.getVerticesZ();
 
 		final int faceCount = model.getFaceCount();
 		final int[] indices1 = model.getFaceIndices1();
@@ -631,12 +631,12 @@ class SceneUploader
 		final int centerY = client.getCenterY();
 		final int zoom = client.get3dZoom();
 
-		int orientSine = 0;
-		int orientCosine = 0;
+		float orientSine = 0;
+		float orientCosine = 0;
 		if (orientation != 0)
 		{
-			orientSine = Perspective.SINE[orientation];
-			orientCosine = Perspective.COSINE[orientation];
+			orientSine = Perspective.SINE[orientation] / 65536f;
+			orientCosine = Perspective.COSINE[orientation] / 65536f;
 		}
 
 		float[] p = proj.project(x, y, z);
@@ -644,15 +644,15 @@ class SceneUploader
 
 		for (int v = 0; v < vertexCount; ++v)
 		{
-			int vertexX = verticesX[v];
-			int vertexY = verticesY[v];
-			int vertexZ = verticesZ[v];
+			float vertexX = verticesX[v];
+			float vertexY = verticesY[v];
+			float vertexZ = verticesZ[v];
 
 			if (orientation != 0)
 			{
-				int i = vertexZ * orientSine + vertexX * orientCosine >> 16;
-				vertexZ = vertexZ * orientCosine - vertexX * orientSine >> 16;
-				vertexX = i;
+				float x0 = vertexX;
+				vertexX = vertexZ * orientSine + x0 * orientCosine;
+				vertexZ = vertexZ * orientCosine - x0 * orientSine;
 			}
 
 			// move to local position
@@ -958,9 +958,9 @@ class SceneUploader
 			}
 		}
 
-		vertexBuffer.put((float) modelLocalX[triangleA], modelLocalY[triangleA], modelLocalZ[triangleA], packAlphaPriority | color1);
-		vertexBuffer.put((float) modelLocalX[triangleB], modelLocalY[triangleB], modelLocalZ[triangleB], packAlphaPriority | color2);
-		vertexBuffer.put((float) modelLocalX[triangleC], modelLocalY[triangleC], modelLocalZ[triangleC], packAlphaPriority | color3);
+		vertexBuffer.put(modelLocalX[triangleA], modelLocalY[triangleA], modelLocalZ[triangleA], packAlphaPriority | color1);
+		vertexBuffer.put(modelLocalX[triangleB], modelLocalY[triangleB], modelLocalZ[triangleB], packAlphaPriority | color2);
+		vertexBuffer.put(modelLocalX[triangleC], modelLocalY[triangleC], modelLocalZ[triangleC], packAlphaPriority | color3);
 
 		if (faceTextures != null && faceTextures[face] != -1)
 		{

@@ -314,7 +314,7 @@ class Updater
 				}
 			}
 			HashCode hash = hasher.hash();
-			return (double) (hash.asInt() & 0x7fffffff) / (double) Integer.MAX_VALUE;
+			return (hash.asInt() & 0x7fffffff) / (double) Integer.MAX_VALUE;
 		}
 		catch (Exception ex)
 		{
