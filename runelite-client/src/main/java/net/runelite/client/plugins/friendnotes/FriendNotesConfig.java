@@ -45,12 +45,12 @@ public interface FriendNotesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "removeNoteOnDelete",
-			name = "Remove Note On Delete",
-			description = "Remove the note when a player is deleted",
+			keyName = "keepNoteOnDelete",
+			name = "Keep Note On Delete",
+			description = "Keep the note when a player is deleted",
 			position = 2
 	)
-	default boolean removeNoteOnDelete()
+	default boolean keepNoteOnDelete()
 	{
 		return false;
 	}
