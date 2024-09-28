@@ -200,6 +200,7 @@ enum TeleportLocationData
 	KEY_MASTER_SCROLL(TeleportType.SCROLL, "Key Master Teleport", new WorldPoint(2686, 9882, 0), "scroll_teleport_icon.png"),
 	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png"),
 	WATSON_SCROLL(TeleportType.SCROLL, "Watson Teleport", new WorldPoint(1645, 3579, 0), "scroll_teleport_icon.png"),
+	SPIDER_CAVE_SCROLL(TeleportType.SCROLL, "Spider cave teleport", new WorldPoint(3658, 3403, 0), "scroll_teleport_icon.png"),
 
 	// Skillcapes
 	ACHIEVEMENT_CAPE_TWO_PINTS(TeleportType.OTHER, "Achievement Cape", "Two-pints", new WorldPoint(2574, 3324, 0), "achievement_cape_icon.png"),
