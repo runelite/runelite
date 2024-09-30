@@ -44,6 +44,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
+import net.runelite.client.plugins.grounditems.config.OwnershipFilterMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -124,6 +125,7 @@ public class GroundItemsPluginTest
 		when(config.getHighlightItems()).thenReturn("abyssal whip");
 		when(config.notifyTier()).thenReturn(HighlightTier.OFF);
 		when(config.notifyHighlightedDrops()).thenReturn(true);
+		when(config.ownershipFilterMode()).thenReturn(OwnershipFilterMode.ALL);
 
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP)).thenAnswer(a ->
 		{
