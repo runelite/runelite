@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 public class CoordinateClueTest
 {
@@ -34,5 +36,21 @@ public class CoordinateClueTest
 	{
 		// If this doesn't throw then the clues map doesn't have duplicate keys
 		new CoordinateClue("test", new WorldPoint(0, 0, 0), null);
+	}
+
+	@Test
+	public void testIsleOfSoulsNpcs()
+	{
+		for (Map.Entry<WorldPoint, CoordinateClue.CoordinateClueInfo> clueEntry : CoordinateClue.CLUES.entrySet())
+		{
+			final CoordinateClue.CoordinateClueInfo clueInfo = clueEntry.getValue();
+			final Enemy enemy = clueInfo.getEnemy();
+			if (!(enemy == Enemy.ARMADYLEAN_GUARD || enemy == Enemy.BANDOSIAN_GUARD))
+			{
+				continue;
+			}
+
+			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clueEntry, clueInfo.getDirections().contains("Isle of Souls"));
+		}
 	}
 }
