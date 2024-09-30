@@ -365,3 +365,7 @@ R 45 145 45 146
 // tomb of bervirius (shilo village)
 n
 r 43 146
+
+// tunnel of chaos (what lies below)
+n
+r 49 81
