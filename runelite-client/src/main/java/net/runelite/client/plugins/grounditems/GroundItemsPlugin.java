@@ -629,16 +629,64 @@ public class GroundItemsPlugin extends Plugin
 			return itemColor;
 		}
 
-		final int price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+		int price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+
+		// Scale price on stackable items for coloring purposes
+		if (TRUE.equals(config.scaleStackableColoringPrice()) || groundItem.isStackable())
+		{
+			price = (int)((float)price*config.stackableColoringPriceScaleFactor());
+		}
+
+		PriceHighlight itemHighlight = priceChecks.get(0);
+		PriceHighlight prevHighlight = priceChecks.get(0);
 		for (PriceHighlight highlight : priceChecks)
 		{
 			if (price > highlight.getPrice())
 			{
-				return highlight.getColor();
+				if(FALSE.equals(config.interpolateLootColors()) || highlight == priceChecks.get(0))
+				{
+					// return item tier color without blending
+					return highlight.getColor();
+				}
+				else
+				{
+					itemHighlight = highlight;
+					break;
+				}
 			}
+			prevHighlight = highlight;
 		}
 
-		return null;
+		if(!config.interpolateLootColors())
+		{
+			return null;
+		}
+
+		Color itemColorTier, nextColorTier;
+		int itemPriceTier, nextPriceTier;
+		if (itemHighlight == priceChecks.get(0))
+		{
+			itemColorTier = config.defaultColor();
+			itemPriceTier = 0;
+		}
+		else
+		{
+			itemColorTier = itemHighlight.getColor();
+			itemPriceTier = itemHighlight.getPrice();
+		}
+		nextColorTier = prevHighlight.getColor();
+		nextPriceTier = prevHighlight.getPrice();
+
+		// perform color blending by interpolation between price tiers
+		float blendFactor = Math.min(0.7f, (float)(price-(itemPriceTier))/(float)(nextPriceTier-itemPriceTier));
+		float inverseBlendFactor = 1 - blendFactor;
+
+		int red = (int)(itemColorTier.getRed()*inverseBlendFactor + nextColorTier.getRed()*blendFactor);
+		int green = (int)(itemColorTier.getGreen()*inverseBlendFactor + nextColorTier.getGreen()*blendFactor);
+		int blue = (int)(itemColorTier.getBlue()*inverseBlendFactor + nextColorTier.getBlue()*blendFactor);
+		int alpha = (int)(itemColorTier.getAlpha()*inverseBlendFactor + nextColorTier.getAlpha()*blendFactor);
+
+		return new Color(red, green, blue, alpha);
 	}
 
 	private Color getHidden(GroundItem groundItem)
