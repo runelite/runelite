@@ -39,11 +39,13 @@ import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
+import net.runelite.client.plugins.grounditems.config.OwnershipFilterMode;
 
 @ConfigGroup(GroundItemsConfig.GROUP)
 public interface GroundItemsConfig extends Config
 {
 	String GROUP = "grounditems";
+	String OWNERSHIP_FILTER_MODE = "ownershipFilterMode";
 
 	@ConfigSection(
 		name = "Item Lists",
@@ -362,14 +364,14 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "onlyShowLoot",
-		name = "Only show own items",
-		description = "Only shows items that are yours or you can pick up",
+		keyName = OWNERSHIP_FILTER_MODE,
+		name = "Ownership filter",
+		description = "Show all items, takeable items, or only your or your group's drops.",
 		position = 25
 	)
-	default boolean onlyShowOwnItems()
+	default OwnershipFilterMode ownershipFilterMode()
 	{
-		return false;
+		return OwnershipFilterMode.ALL;
 	}
 
 	@ConfigItem(
