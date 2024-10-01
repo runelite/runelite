@@ -28,7 +28,6 @@ package net.runelite.client.plugins.motherlode;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
 
 @ConfigGroup("motherlode")
 public interface MotherlodeConfig extends Config
@@ -49,37 +48,6 @@ public interface MotherlodeConfig extends Config
 		description = "Configures whether or not the fallen rocks obstacles are displayed."
 	)
 	default boolean showRockFalls()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "Configures the time until statistics are reset"
-	)
-	@Units(Units.MINUTES)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
-	)
-	default boolean showMiningStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
-	)
-	default boolean showMiningState()
 	{
 		return true;
 	}
