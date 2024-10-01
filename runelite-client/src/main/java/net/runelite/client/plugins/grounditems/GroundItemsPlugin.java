@@ -634,7 +634,7 @@ public class GroundItemsPlugin extends Plugin
 		// Scale price on stackable items for coloring purposes
 		if (TRUE.equals(config.scaleStackableColoringPrice()) || groundItem.isStackable())
 		{
-			price = (int)((float)price * config.stackableColoringPriceScaleFactor());
+			price = (int)(price * config.stackableColoringPriceScaleFactor());
 		}
 
 		PriceHighlight itemHighlight = priceChecks.get(0);
@@ -678,7 +678,7 @@ public class GroundItemsPlugin extends Plugin
 		nextPriceTier = prevHighlight.getPrice();
 
 		// perform color blending by interpolation between price tiers
-		float blendFactor = Math.min(0.7f, (float)(price - (itemPriceTier)) / (float)(nextPriceTier - itemPriceTier));
+		float blendFactor = Math.min(0.7f, (price - (itemPriceTier)) / (float)(nextPriceTier - itemPriceTier));
 		float inverseBlendFactor = 1 - blendFactor;
 
 		int red = (int)(itemColorTier.getRed() * inverseBlendFactor + nextColorTier.getRed() * blendFactor);
