@@ -47,6 +47,7 @@ import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -94,6 +95,9 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private ChatMessageManager chatManager;
+
+	@Inject
+	private Notifier notifier;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -236,17 +240,22 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (attackStyle != prevAttackStyle && warnedSkillSelected && config.showChatWarnings())
+		if (attackStyle != prevAttackStyle && warnedSkillSelected)
 		{
-			final String message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Your attack style has been changed to " + attackStyle.getName())
-				.build();
+			if (config.showChatWarnings())
+			{
+				final String message = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your attack style has been changed to " + attackStyle.getName())
+					.build();
 
-			chatManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(message)
-				.build());
+				chatManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
+
+			notifier.notify(config.warningNotification(), "Attack style changed to " + attackStyle.getName() + "!");
 		}
 		prevAttackStyle = attackStyle;
 	}
