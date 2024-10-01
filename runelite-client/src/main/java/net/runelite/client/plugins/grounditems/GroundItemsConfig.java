@@ -242,7 +242,10 @@ public interface GroundItemsConfig extends Config
 		description = "Adjusts the price value used to determine coloring for stackable items by a specified factor",
 		position = 14
 	)
-	default boolean scaleStackableColoringPrice() { return false; }
+	default boolean scaleStackableColoringPrice()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			keyName = "stackableColoringPriceScaleFactor",
@@ -250,7 +253,10 @@ public interface GroundItemsConfig extends Config
 			description = "Configures the factor by which stackable item price values are adjusted for coloring",
 			position = 15
 	)
-	default double stackableColoringPriceScaleFactor() { return 1.25; }
+	default double stackableColoringPriceScaleFactor()
+	{
+		return 1.25;
+	}
 
 	@Alpha
 	@ConfigItem(
@@ -386,7 +392,10 @@ public interface GroundItemsConfig extends Config
 		description = "Configures whether or not color is smoothly blended between tiers based on item value",
 		position = 27
 	)
-	default boolean interpolateLootColors() { return false; }
+	default boolean interpolateLootColors()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "onlyShowLoot",
