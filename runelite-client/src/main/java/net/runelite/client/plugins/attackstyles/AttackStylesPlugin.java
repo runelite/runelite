@@ -95,6 +95,9 @@ public class AttackStylesPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatManager;
 
+	@Inject
+	private AttackStylesFlashOverlay flashOverlay; // Added this line
+
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -105,6 +108,7 @@ public class AttackStylesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(flashOverlay); // Added this line
 
 		clientThread.invoke(() ->
 		{
@@ -129,6 +133,8 @@ public class AttackStylesPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(flashOverlay); // Added this line
+
 		clientThread.invokeLater(() ->
 		{
 			updateWidgetsToHide(false);
@@ -352,6 +358,15 @@ public class AttackStylesPlugin extends Plugin
 			}
 		}
 		updateWidgetsToHide(config.removeWarnedStyles());
+		// Added Trigger flash overlay based on the warning
+		if (warnedSkillSelected)
+		{
+			flashOverlay.startFlashing();
+		}
+		else
+		{
+			flashOverlay.stopFlashing();
+		}
 	}
 
 	private void updateWidgetsToHide(boolean enabled)
