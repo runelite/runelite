@@ -403,8 +403,7 @@ public interface GroundItemsConfig extends Config
 		keyName = OWNERSHIP_FILTER_MODE,
 		name = "Ownership filter",
 		description = "Show all items, takeable items, or only your or your group's drops.",
-		position = 25;
-
+		position = 28
 	)
 	default OwnershipFilterMode ownershipFilterMode()
 	{
