@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -32,6 +33,7 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
@@ -53,7 +55,9 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class CoordinateClue extends ClueScroll implements LocationClueScroll
 {
 	@Getter
-	private static class CoordinateClueInfo
+	@ToString
+	@VisibleForTesting
+	static class CoordinateClueInfo
 	{
 		private final String directions;
 		private final boolean lightRequired;
@@ -221,8 +225,8 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2094, 2889, 0), new CoordinateClueInfo("West side of the Isle of Souls.", ARMADYLEAN_GUARD))
 		.put(new WorldPoint(1451, 3509, 0), new CoordinateClueInfo("Ruins of Morra.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3318, 2706, 0), new CoordinateClueInfo("Necropolis mine", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(1557, 3183, 0), new CoordinateClueInfo("North of Ortus Farm", ARMADYLEAN_GUARD))
-		.put(new WorldPoint(1571, 3245, 0), new CoordinateClueInfo("At the top of The Proudspire", ARMADYLEAN_GUARD))
+		.put(new WorldPoint(1557, 3183, 0), new CoordinateClueInfo("North of Ortus Farm", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(1571, 3245, 0), new CoordinateClueInfo("At the top of The Proudspire", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), new CoordinateClueInfo("South of Iorwerth Camp.", BRASSICAN_MAGE))
 		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS if 76 Agility).", BRASSICAN_MAGE))

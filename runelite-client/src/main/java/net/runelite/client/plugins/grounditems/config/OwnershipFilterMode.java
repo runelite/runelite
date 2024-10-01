@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Moshe Ben-Zacharia <https://github.com/MosheBenZacharia>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.client.plugins.grounditems.config;
 
-import java.util.Map;
-import net.runelite.api.coords.WorldPoint;
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public class CoordinateClueTest
+@Getter
+@RequiredArgsConstructor
+public enum OwnershipFilterMode
 {
-	@Test
-	public void testDuplicateCoordinates()
-	{
-		// If this doesn't throw then the clues map doesn't have duplicate keys
-		new CoordinateClue("test", new WorldPoint(0, 0, 0), null);
-	}
+	ALL("All"),
+	TAKEABLE("Takeable"),
+	DROPS("Drops");
 
-	@Test
-	public void testIsleOfSoulsNpcs()
-	{
-		for (Map.Entry<WorldPoint, CoordinateClue.CoordinateClueInfo> clueEntry : CoordinateClue.CLUES.entrySet())
-		{
-			final CoordinateClue.CoordinateClueInfo clueInfo = clueEntry.getValue();
-			final Enemy enemy = clueInfo.getEnemy();
-			if (!(enemy == Enemy.ARMADYLEAN_GUARD || enemy == Enemy.BANDOSIAN_GUARD))
-			{
-				continue;
-			}
+	private final String name;
 
-			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clueEntry, clueInfo.getDirections().contains("Isle of Souls"));
-		}
+	@Override
+	public String toString()
+	{
+		return name;
 	}
 }
