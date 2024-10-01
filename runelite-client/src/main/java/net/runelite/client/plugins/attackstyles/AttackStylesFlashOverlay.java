@@ -89,9 +89,8 @@ class AttackStylesFlashOverlay extends Overlay
 		return null;
 	}
 
-
 	// Start flashing the screen indefinitely until the style is changed
-    void startFlashing()
+	void startFlashing()
 	{
 		if (flashTimer != null && flashTimer.isRunning())
 		{
@@ -114,7 +113,7 @@ class AttackStylesFlashOverlay extends Overlay
 	}
 
 	// Stop flashing when the attack style has been changed
-    void stopFlashing()
+	void stopFlashing()
 	{
 		if (flashTimer != null)
 		{
