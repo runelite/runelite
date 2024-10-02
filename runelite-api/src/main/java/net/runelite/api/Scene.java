@@ -81,7 +81,7 @@ public interface Scene extends Renderable
 	 */
 	void removeGameObject(GameObject gameObject);
 
-	void generateHouses();
+	void buildRoofs();
 
 	void setRoofRemovalMode(int flags);
 
