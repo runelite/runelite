@@ -86,7 +86,7 @@ class FishingOverlay extends OverlayPanel
 	private final XpTrackerService xpTrackerService;
 
 	@Inject
-	public FishingOverlay(Client client, FishingPlugin plugin, FishingConfig config, XpTrackerService xpTrackerService)
+	private FishingOverlay(Client client, FishingPlugin plugin, FishingConfig config, XpTrackerService xpTrackerService)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);

@@ -553,7 +553,7 @@ public class Hooks implements Callbacks
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		if (!scriptCallbackEvent.getEventName().equals("fakeXpDrop"))
 		{

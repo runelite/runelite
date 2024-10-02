@@ -73,7 +73,7 @@ class SoundEffectOverlay extends OverlayPanel
 	}
 
 	@Subscribe
-	public void onSoundEffectPlayed(SoundEffectPlayed event)
+	private void onSoundEffectPlayed(SoundEffectPlayed event)
 	{
 		if (!plugin.getSoundEffects().isActive())
 		{
@@ -93,7 +93,7 @@ class SoundEffectOverlay extends OverlayPanel
 	}
 
 	@Subscribe
-	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed event)
+	private void onAreaSoundEffectPlayed(AreaSoundEffectPlayed event)
 	{
 		if (!plugin.getSoundEffects().isActive())
 		{

@@ -140,7 +140,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
@@ -149,7 +149,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 
@@ -169,7 +169,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 
@@ -206,7 +206,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	private void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		Actor actor = hitsplatApplied.getActor();
 
@@ -219,7 +219,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged interactingChanged)
+	private void onInteractingChanged(InteractingChanged interactingChanged)
 	{
 		Actor source = interactingChanged.getSource();
 		Actor target = interactingChanged.getTarget();
@@ -233,7 +233,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		if (corp != null && varbitChanged.getVarbitId() == Varbits.CORP_DAMAGE)
 		{
@@ -247,7 +247,7 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		final MenuEntry menuEntry = menuEntryAdded.getMenuEntry();
 		final NPC npc = menuEntry.getNpc();

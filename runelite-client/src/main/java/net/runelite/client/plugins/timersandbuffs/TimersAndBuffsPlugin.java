@@ -195,7 +195,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	@VisibleForTesting
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarbitId() == Varbits.IN_RAID)
 		{
@@ -627,7 +628,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@VisibleForTesting
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(TimersAndBuffsConfig.GROUP))
 		{
@@ -849,7 +851,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		final String message = event.getMessage();
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
@@ -1103,7 +1106,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
@@ -1123,7 +1126,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	@VisibleForTesting
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		switch (gameStateChanged.getGameState())
 		{
@@ -1154,7 +1158,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicChanged(GraphicChanged event)
+	private void onGraphicChanged(GraphicChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -1208,7 +1212,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	 * Remove SOTD timer when equipment is changed.
 	 */
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	private void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		if (itemContainerChanged.getContainerId() != InventoryID.EQUIPMENT.getId())
 		{
@@ -1227,7 +1231,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 
@@ -1245,7 +1249,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onActorDeath(ActorDeath actorDeath)
+	private void onActorDeath(ActorDeath actorDeath)
 	{
 		if (actorDeath.getActor() == client.getLocalPlayer())
 		{
