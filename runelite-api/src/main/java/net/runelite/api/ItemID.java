@@ -14291,8 +14291,8 @@ public final class ItemID
 	public static final int REAGENT_POUCH = 29996;
 	public static final int OPEN_REAGENT_POUCH = 29998;
 	public static final int POTION_STORAGE = 29999;
-	public static final int PREPOT_DEVICE = 30000;
-	public static final int PREPOT_DEVICE_DISASSEMBLED = 30002;
+	public static final int CHUGGING_BARREL = 30000;
+	public static final int CHUGGING_BARREL_DISASSEMBLED = 30002;
 	public static final int MOX_PASTE = 30005;
 	public static final int AGA_PASTE = 30007;
 	public static final int LYE_PASTE = 30009;
