@@ -148,7 +148,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton decorations;
 	private DevToolsButton projectiles;
 	private DevToolsButton location;
-	private DevToolsButton chunkBorders;
+	private DevToolsButton zoneBorders;
 	private DevToolsButton mapSquares;
 	private DevToolsButton loadingLines;
 	private DevToolsButton validMovement;
@@ -250,7 +250,7 @@ public class DevToolsPlugin extends Plugin
 		tileLocation = new DevToolsButton("Tile Location");
 		cameraPosition = new DevToolsButton("Camera Position");
 
-		chunkBorders = new DevToolsButton("Chunk Borders");
+		zoneBorders = new DevToolsButton("Zone Borders");
 		mapSquares = new DevToolsButton("Map Squares");
 		loadingLines = new DevToolsButton("Loading Lines");
 
