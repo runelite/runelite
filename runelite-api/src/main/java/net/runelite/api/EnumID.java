@@ -93,4 +93,10 @@ public final class EnumID
 
 	public static final int SPELLBOOKS = 1981;
 	public static final int SPELLBOOKS_SUB = 5280;
+
+	/**
+	 * key: int id
+	 * val: enum potion
+	 */
+	public static final int POTIONSTORE_POTIONS = 4826;
 }

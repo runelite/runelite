@@ -64,6 +64,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
@@ -94,11 +95,15 @@ public class LayoutManager
 	private final TabManager tabManager;
 	private final TabInterface tabInterface;
 	private final ChatMessageManager chatMessageManager;
+	private final PotionStorage potionStorage;
+	private final EventBus eventBus;
 
 	private final List<PluginAutoLayout> autoLayouts = new ArrayList<>();
 
 	@Inject
-	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager, BankSearch bankSearch, TabManager tabManager, TabInterface tabInterface, ChatMessageManager chatMessageManager)
+	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager,
+		BankSearch bankSearch, TabManager tabManager, TabInterface tabInterface, ChatMessageManager chatMessageManager,
+		PotionStorage potionStorage, EventBus eventBus)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -108,8 +113,22 @@ public class LayoutManager
 		this.tabManager = tabManager;
 		this.tabInterface = tabInterface;
 		this.chatMessageManager = chatMessageManager;
+		this.potionStorage = potionStorage;
+		this.eventBus = eventBus;
 
 		registerAutoLayout(plugin, "Default", new DefaultLayout());
+	}
+
+	public void register()
+	{
+		eventBus.register(this);
+		eventBus.register(potionStorage);
+	}
+
+	public void unregister()
+	{
+		eventBus.unregister(this);
+		eventBus.unregister(potionStorage);
 	}
 
 	private void layout(Layout l)
@@ -144,7 +163,8 @@ public class LayoutManager
 		ItemMatcher[] matchers = {
 			this::matchExact,
 			this::matchPlaceholder,
-			this::matchesVariant
+			this::matchesVariant,
+			potionStorage::matches
 		};
 
 		Map<Integer, Integer> layoutToBank = new HashMap<>();
@@ -207,7 +227,7 @@ public class LayoutManager
 			}
 
 			Widget c = itemContainer.getChild(pos);
-			drawItem(l, c, bankItemId, bank.count(bankItemId), pos);
+			drawItem(l, c, bankItemId, count(bank, bankItemId), pos);
 		}
 
 		int lastEmptySlot = -1;
@@ -227,7 +247,7 @@ public class LayoutManager
 				break;
 			}
 
-			drawItem(l, c, itemId, bank.count(itemId), lastEmptySlot);
+			drawItem(l, c, itemId, count(bank, itemId), lastEmptySlot);
 
 			if (log.isDebugEnabled())
 			{
@@ -264,6 +284,16 @@ public class LayoutManager
 		{
 			tabManager.save();
 		}
+	}
+
+	private int count(ItemContainer bank, int itemId)
+	{
+		int count = bank.count(itemId);
+		if (count > 0)
+		{
+			return count;
+		}
+		return potionStorage.count(itemId);
 	}
 
 	// mostly from ~bankmain_drawitem
@@ -517,6 +547,12 @@ public class LayoutManager
 			BankTag activeTag = plugin.getActiveTag();
 			if (activeTag != null)
 			{
+				// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
+				// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
+				// which is after this is run, but before the var/inv transmit listeners run, so that we will have
+				// them by the time the inv transmit listener runs.
+				potionStorage.cachePotions = true;
+
 				Layout layout = activeTag.layout();
 				if (layout != null)
 				{
@@ -608,6 +644,15 @@ public class LayoutManager
 				if (idx > -1 && menu.getParam0() != idx)
 				{
 					menu.setParam0(idx);
+					return;
+				}
+
+				idx = potionStorage.find(w.getItemId());
+				if (idx > -1)
+				{
+					potionStorage.prepareWidgets();
+					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
+					menu.setParam0(idx * PotionStorage.COMPONENTS_PER_POTION);
 				}
 			}
 		}
