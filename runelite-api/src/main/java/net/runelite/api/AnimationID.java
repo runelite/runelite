@@ -236,6 +236,10 @@ public final class AnimationID
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
+	public static final int HERBLORE_MIXOLOGY_CONCENTRATE = 11644;
+	public static final int HERBLORE_MIXOLOGY_CRYSTALIZE = 11639;
+	public static final int HERBLORE_MIXOLOGY_HOMOGENIZE = 11634;
+	public static final int HERBLORE_MIXOLOGY_REFINER = 11604;
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
