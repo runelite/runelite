@@ -165,13 +165,19 @@ public class LayoutManager
 					layoutToBank.put(itemId, matchedId);
 					bankItems.remove(matchedId);
 
+					// Items with objvars can have both the item and the placeholder in the bank at the same time.
+					// Remove both from bankItems so that it won't get added later as an unlayouted tagged item.
+					ItemComposition matchedItemDef = client.getItemDefinition(matchedId);
+					boolean removedPlaceholder = bankItems.remove(matchedItemDef.getPlaceholderId());
+
 					if (log.isDebugEnabled())
 					{
-						var from = itemManager.getItemComposition(itemId);
-						var to = itemManager.getItemComposition(matchedId);
-						log.debug("Matched {}{} -> {}{}",
+						ItemComposition from = itemManager.getItemComposition(itemId);
+						ItemComposition to = matchedItemDef;
+						log.debug("Matched {}{} -> {}{} removed placeholder: {}",
 							from.getName(), from.getPlaceholderId() > -1 && from.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
-							to.getName(), to.getPlaceholderId() > -1 && to.getPlaceholderTemplateId() > -1 ? " (placeholder)" : ""
+							to.getName(), to.getPlaceholderId() > -1 && to.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
+							removedPlaceholder
 						);
 					}
 				}
@@ -223,11 +229,15 @@ public class LayoutManager
 
 			drawItem(l, c, itemId, bank.count(itemId), lastEmptySlot);
 
-			int layoutItemId = itemManager.canonicalize(itemId);
 			if (log.isDebugEnabled())
 			{
-				log.debug("Adding {} to layout", itemManager.getItemComposition(layoutItemId).getName());
+				ItemComposition def = itemManager.getItemComposition(itemId);
+				log.debug("Bank contains {}{} but is not in the layout",
+					def.getName(),
+					def.getPlaceholderTemplateId() > -1 && def.getPlaceholderId() > -1 ? " (placeholder)" : "");
 			}
+
+			int layoutItemId = itemManager.canonicalize(itemId);
 			l.addItem(layoutItemId);
 			modified = true;
 		}
@@ -271,9 +281,9 @@ public class LayoutManager
 			c.clearActions();
 
 			// Jagex Placeholder
-			if (qty == 1 && def.getPlaceholderTemplateId() >= 0 && def.getPlaceholderId() >= 0)
+			if (def.getPlaceholderTemplateId() >= 0 && def.getPlaceholderId() >= 0)
 			{
-				c.setItemQuantity(0);
+				c.setItemQuantity(qty);
 				c.setOpacity(120);
 				c.setAction(8 - 1, "Release");
 				c.setAction(10 - 1, "Examine");
