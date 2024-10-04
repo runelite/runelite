@@ -293,7 +293,7 @@ public class RoofRemovalPlugin extends Plugin
 					}
 
 					// Properly account for instances shifting worldpoints around
-					final WorldPoint wp = WorldPoint.fromLocalInstance(client, tile.getLocalLocation(), tile.getPlane());
+					final WorldPoint wp = WorldPoint.fromLocalInstance(scene, tile.getLocalLocation(), tile.getPlane());
 
 					int regionAndPlane = wp.getRegionID() << 2 | wp.getPlane();
 					if (configOverrideRegions.contains(wp.getRegionID()))
