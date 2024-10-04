@@ -27,9 +27,12 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
+import net.runelite.client.plugins.statusbars.config.BarAlignment;
 import net.runelite.client.plugins.statusbars.config.BarMode;
+import net.runelite.client.plugins.statusbars.config.CounterAlignment;
 
 @ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
@@ -37,39 +40,10 @@ public interface StatusBarsConfig extends Config
 	String GROUP = "statusbars";
 
 	@ConfigItem(
-		keyName = "enableCounter",
-		name = "Show counters",
-		description = "Shows current value of the status on the bar"
-	)
-	default boolean enableCounter()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "enableSkillIcon",
-		name = "Show icons",
-		description = "Adds skill icons at the top of the bars."
-	)
-	default boolean enableSkillIcon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "enableRestorationBars",
-		name = "Show restores",
-		description = "Visually shows how much will be restored to your status bar."
-	)
-	default boolean enableRestorationBars()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "leftBarMode",
 		name = "Left Bar",
-		description = "Configures the left status bar"
+		description = "Configures the left status bar.",
+		position = 0
 	)
 	default BarMode leftBarMode()
 	{
@@ -79,7 +53,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "rightBarMode",
 		name = "Right Bar",
-		description = "Configures the right status bar"
+		description = "Configures the right status bar.",
+		position = 1
 	)
 	default BarMode rightBarMode()
 	{
@@ -87,9 +62,32 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "enableSkillIcon",
+		name = "Show icons",
+		description = "Adds skill icons at the top of the bars.",
+		position = 2
+	)
+	default boolean enableSkillIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enableRestorationBars",
+		name = "Show restores",
+		description = "Visually shows how much will be restored to your status bar.",
+		position = 3
+	)
+	default boolean enableRestorationBars()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "hideAfterCombatDelay",
 		name = "Hide after combat delay",
-		description = "Amount of ticks before hiding status bars after no longer in combat. 0 = always show status bars."
+		description = "Number of ticks outside of combat after which bars will hide. 0 = always show status bars.",
+		position = 4
 	)
 	@Units(Units.TICKS)
 	default int hideAfterCombatDelay()
@@ -97,17 +95,156 @@ public interface StatusBarsConfig extends Config
 		return 0;
 	}
 
+	//#region Counter Options
+	@ConfigSection(
+		name = "Counters",
+		description = "Options for the showing of Counters",
+		position = 5,
+		closedByDefault = false
+	)
+	String countersSection = "countersSection";
+
+	@ConfigItem(
+		keyName = "enableCounter",
+		name = "Show counters",
+		description = "Shows current numerical value of the status on the bar.",
+		position = 1,
+		section = countersSection
+	)
+	default boolean enableCounter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "largeCounterText",
+		name = "Large Text",
+		description = "If checked, the font for Counters will be larger",
+		position = 2,
+		section = countersSection
+	)
+	default boolean largeCounterText()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "counterAlignment",
+		name = "Counter Alignment",
+		description = "Where the counters will be shown on the Bar",
+		position = 3,
+		section = countersSection
+	)
+	default CounterAlignment counterAlignment()
+	{
+		return CounterAlignment.TOP;
+	}
+	//#endregion
+
+	//#region Bar Sizing
+	@ConfigSection(
+		name = "Sizing",
+		description = "Options related to sizes of the bars/borders",
+		position = 6,
+		closedByDefault = false
+	)
+	String sizingSection = "sizingSection";
+
 	@Range(
-		min = BarRenderer.MIN_WIDTH,
-		max = BarRenderer.MAX_WIDTH
+		min = 3,
+		max = 50
 	)
 	@ConfigItem(
 		keyName = "barWidth",
 		name = "Bar Width",
-		description = "The width of the status bars in the modern resizeable layout."
+		description = "The width of each bar. Not used in Fixed UI mode.",
+		position = 1,
+		section = sizingSection
 	)
+	@Units(Units.PIXELS)
 	default int barWidth()
 	{
-		return BarRenderer.DEFAULT_WIDTH;
+		return 20;
 	}
+
+	@Range(
+		min = 10,
+		max = 150
+	)
+	@ConfigItem(
+		keyName = "barHeight",
+		name = "Bar Height",
+		description = "Relative height of the Status Bars",
+		position = 2,
+		section = sizingSection
+	)
+	@Units(Units.PERCENT)
+	default int barHeight()
+	{
+		return 100;
+	}
+
+	@ConfigItem(
+		keyName = "barAlignment",
+		name = "Bar Alignment",
+		description = "Dictates if the bars should stick to the top or bottom of the interface",
+		position = 3,
+		section = sizingSection
+	)
+	default BarAlignment barAlignment()
+	{
+		return BarAlignment.TOP;
+	}
+
+	@Range(
+		min = 0,
+		max = 5
+	)
+	@ConfigItem(
+		keyName = "borderSize",
+		name = "Border Size",
+		description = "The width of the border on each bar",
+		position = 4,
+		section = sizingSection
+	)
+	@Units(Units.PIXELS)
+	default int borderSize()
+	{
+		return 1;
+	}
+
+	@Range(
+		min = 0,
+		max = 32
+	)
+	@ConfigItem(
+		keyName = "barGap",
+		name = "Gap between Bars",
+		description = "The spacing between each bar. Not used in Fixed UI mode.",
+		position = 5,
+		section = sizingSection
+	)
+	@Units(Units.PIXELS)
+	default int barGap()
+	{
+		return 4;
+	}
+
+	@Range(
+		min = 8,
+		max = 30
+	)
+	@ConfigItem(
+		keyName = "iconSize",
+		name = "Icon Size",
+		description = "Size of Icons, if shown",
+		position = 6,
+		section = sizingSection
+	)
+	@Units(Units.PIXELS)
+	default int iconSize()
+	{
+		return 16;
+	}
+	//#endregion
 }
