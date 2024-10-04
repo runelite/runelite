@@ -24,7 +24,10 @@
  */
 package net.runelite.api;
 
-public interface WorldEntity
+public interface FloatProjection extends Projection
 {
-	WorldView getWorldView();
+	/**
+	 * Get the projection as a 4x4 matrix
+	 */
+	float[] getProjection();
 }

@@ -88,6 +88,7 @@ public class Constants
 
 	public static final int TILE_FLAG_BRIDGE = 2;
 	public static final int TILE_FLAG_UNDER_ROOF = 4;
+	public static final int TILE_FLAG_VIS_BELOW = 8;
 
 	/**
 	 * Flag for roof removal to remove the roofs above the player's current position.

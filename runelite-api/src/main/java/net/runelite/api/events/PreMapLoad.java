@@ -22,9 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-public interface WorldEntity
+import lombok.Value;
+import net.runelite.api.Scene;
+import net.runelite.api.WorldView;
+
+/**
+ * This event is run from the maploader thread prior to the map load completing.
+ * Most client operations can't be done from this thread safely.
+ * You probably don't want to use this event.
+ */
+@Value
+public class PreMapLoad
 {
-	WorldView getWorldView();
+	WorldView worldView;
+	Scene scene;
 }

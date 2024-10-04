@@ -631,7 +631,15 @@ public class TabInterface
 		{
 			case TAB_OP_OPEN_TAG:
 			{
+				if (client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == PotionStorage.BANKTAB_POTIONSTORE)
+				{
+					// Opening a tag tab with the potion store open would leave the store open in the bankground,
+					// making deposits not work. Force close the potion store.
+					log.debug("Closing potion store");
+					client.menuAction(-1, ComponentID.BANK_POTION_STORE, MenuAction.CC_OP, 1, -1, "Potion store", "");
+				}
 				client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+
 				Widget clicked = event.getSource();
 
 				TagTab tab = tabManager.find(Text.removeTags(clicked.getName()));

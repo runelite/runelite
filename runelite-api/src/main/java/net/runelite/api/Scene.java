@@ -81,9 +81,13 @@ public interface Scene extends Renderable
 	 */
 	void removeGameObject(GameObject gameObject);
 
-	void generateHouses();
+	void buildRoofs();
+
+	int[][][] getRoofs();
 
 	void setRoofRemovalMode(int flags);
+
+	int getRoofRemovalMode();
 
 	/**
 	 * Get the underlay ids for the scene. The value stored is id + 1, with 0 for no underlay.

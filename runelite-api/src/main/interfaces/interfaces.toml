@@ -69,6 +69,7 @@ deposit_equipment=46
 potion_store=48
 incinerator=49
 incinerator_confirm=50
+potionstore_content=52
 equipment_parent=74
 equipment_set_bonus=115
 settings_button=119

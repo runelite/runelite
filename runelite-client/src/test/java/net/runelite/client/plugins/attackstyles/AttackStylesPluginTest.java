@@ -37,11 +37,14 @@ import net.runelite.api.Skill;
 import net.runelite.api.StructComposition;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
@@ -50,10 +53,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -79,6 +84,10 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	Notifier notifier;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;
@@ -119,6 +128,8 @@ public class AttackStylesPluginTest
 
 			when(client.getStructComposition(styleStructId)).thenReturn(s);
 		}
+
+		when(attackConfig.warningNotification()).thenReturn(Notification.OFF);
 	}
 
 	/*
@@ -148,6 +159,9 @@ public class AttackStylesPluginTest
 		attackPlugin.onVarbitChanged(varbitChanged);
 
 		assertTrue(attackPlugin.isWarnedSkillSelected());
+
+		attackPlugin.onGameTick(new GameTick());
+		verify(notifier).notify(any(Notification.class), eq("Attack style changed to Accurate!"));
 
 		// Switch to attack style that doesn't give attack xp
 		when(client.getVarpValue(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
