@@ -239,7 +239,7 @@ class PotionStorage
 		if (potStoreContent.getChildren() == null)
 		{
 			int childIdx = 0;
-			for (int i = 0; i < potions.length; ++i)
+			for (int i = 0; i < potions.length; ++i) // NOPMD: ForLoopCanBeForeach
 			{
 				for (int j = 0; j < COMPONENTS_PER_POTION; ++j)
 				{
