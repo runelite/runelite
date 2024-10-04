@@ -653,7 +653,10 @@ public class TabInterface
 					openTag(tab, true);
 				}
 
-				client.playSoundEffect(SoundEffectID.UI_BOOP);
+				if (config.enableTagTabSound())
+				{
+					client.playSoundEffect(SoundEffectID.UI_BOOP);
+				}
 				break;
 			}
 			case TAB_OP_CHANGE_ICON:
