@@ -129,16 +129,4 @@ public interface AttackStylesConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-			keyName = "enableFlashing",
-			name = "Enable Screen Flashing",
-			description = "Enable or disable the fullscreen flashing feature for warned attack styles",
-			position = 10
-	)
-	default boolean enableFlashing()
-	{
-		return true; // Default to enabled
-	}
-
 }
