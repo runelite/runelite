@@ -79,6 +79,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.util.Text;
 
 @Getter
 public class EmoteClue extends ClueScroll implements LocationClueScroll
@@ -412,7 +413,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 	{
 		for (EmoteClue clue : CLUES)
 		{
-			if (clue.getText().equalsIgnoreCase(text))
+			if (clue.getText().equalsIgnoreCase(Text.removeTags(text)))
 			{
 				return clue;
 			}
