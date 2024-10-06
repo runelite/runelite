@@ -136,7 +136,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
-	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
+	@VisibleForTesting
+	final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
 	private int nextPoisonTick;
 	private int nextOverloadRefreshTick;
