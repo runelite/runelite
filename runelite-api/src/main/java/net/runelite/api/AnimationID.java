@@ -305,6 +305,7 @@ public final class AnimationID
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int CYCLOPS_ATTACK = 4652;
 	public static final int HELLHOUND_DEFENCE = 6566;
 
 	// Farming
