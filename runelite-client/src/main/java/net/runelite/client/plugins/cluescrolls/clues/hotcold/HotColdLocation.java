@@ -151,6 +151,7 @@ public enum HotColdLocation
 	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
 	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
 	VARLAMORE_SUNSET_COAST(MASTER, new WorldPoint(1534, 2997, 0), VARLAMORE, "North-east corner of Sunset Coast.", ANCIENT_WIZARDS),
+	VARLAMORE_VILLA_LUCENS(MASTER, new WorldPoint(1469, 2933, 0), VARLAMORE, "On the Villa Lucens theatre stage in Aldarin. Completion of Death on the Isle is required.", BRASSICAN_MAGE),
 	WESTERN_PROVINCE_EAGLES_PEAK(MASTER, new WorldPoint(2297, 3529, 0), WESTERN_PROVINCE, "North-west of Eagles' Peak.", BRASSICAN_MAGE),
 	WESTERN_PROVINCE_PISCATORIS(MASTER, new WorldPoint(2334, 3685, 0), WESTERN_PROVINCE, "Piscatoris Fishing Colony", ANCIENT_WIZARDS),
 	WESTERN_PROVINCE_PISCATORIS_HUNTER_AREA(MASTER, new WorldPoint(2359, 3564, 0), WESTERN_PROVINCE, "Eastern part of Piscatoris Hunter area, south-west of the Falconry.", BRASSICAN_MAGE),
