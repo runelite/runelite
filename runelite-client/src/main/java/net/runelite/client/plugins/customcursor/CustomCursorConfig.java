@@ -40,4 +40,14 @@ public interface CustomCursorConfig extends Config
 	{
 		return CustomCursor.RS3_GOLD;
 	}
+
+	@ConfigItem(
+			keyName = "showWeapon",
+			name = "Show weapon behind cursor",
+			description = "Draw the cursor with your currently equipped weapon (disabled if your current selection is Equipped Weapon)"
+	)
+	default boolean showWeapon()
+	{
+		return false;
+	}
 }
