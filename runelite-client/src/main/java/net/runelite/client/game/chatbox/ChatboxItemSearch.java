@@ -28,6 +28,7 @@ package net.runelite.client.game.chatbox;
 import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -276,6 +277,24 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			default:
 				super.keyPressed(ev);
 		}
+	}
+
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent mouseWheelEvent)
+	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return null;
+		}
+		if (mouseWheelEvent.getWheelRotation() != 0)
+		{
+			mouseWheelEvent.consume();
+			index += mouseWheelEvent.getWheelRotation() * RESULTS_PER_LINE;
+			index = Ints.constrainToRange(index, 0, results.size() - 1);
+
+			clientThread.invokeLater(this::update);
+		}
+		return mouseWheelEvent;
 	}
 
 	@Override

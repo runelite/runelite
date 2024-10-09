@@ -35,6 +35,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +59,11 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.util.Text;
 
 @Slf4j
-public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener
+public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener, MouseWheelListener
 {
 	private static final int CURSOR_FLASH_RATE_MILLIS = 1000;
 	private static final Pattern BREAK_MATCHER = Pattern.compile("[^a-zA-Z0-9']");
@@ -918,5 +920,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
 		return mouseEvent;
+	}
+
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent mouseWheelEvent)
+	{
+		return mouseWheelEvent;
 	}
 }
