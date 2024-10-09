@@ -140,11 +140,15 @@ public class ChatboxItemSearch extends ChatboxTextInput
 		for (ItemComposition itemComposition : results.values())
 		{
 			//Skipping lines based on startIdx
-			if(!skipped) {
-				if (idx < startIdx) {
+			if (!skipped)
+			{
+				if (idx < startIdx)
+				{
 					++idx;
 					continue;
-				} else {
+				}
+				else
+				{
 					idx = 0;
 					skipped = true;
 				}
