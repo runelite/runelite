@@ -55,7 +55,8 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private static final int ICON_HEIGHT = 32;
 	private static final int ICON_WIDTH = 36;
 	private static final int PADDING = 6;
-	private static final int MAX_RESULTS = 24;
+	private static final int MAX_RESULTS = 120;
+	private static final int RESULTS_PER_LINE = 12;
 	private static final int FONT_SIZE = 16;
 	private static final int HOVERED_OPACITY = 128;
 
@@ -132,11 +133,35 @@ public class ChatboxItemSearch extends ChatboxTextInput
 		separator.setTextColor(0x666666);
 		separator.revalidate();
 
-		int x = PADDING;
-		int y = PADDING * 3;
+		boolean skipped = false;
+		// Determines what line appears first
+		int startIdx = (index / RESULTS_PER_LINE) * RESULTS_PER_LINE;
 		int idx = 0;
 		for (ItemComposition itemComposition : results.values())
 		{
+			//Skipping lines based on startIdx
+			if(!skipped) {
+				if (idx < startIdx) {
+					++idx;
+					continue;
+				} else {
+					idx = 0;
+					skipped = true;
+				}
+			}
+
+			int x = PADDING;
+			int y = PADDING * 3;
+
+			int resultLine = idx / RESULTS_PER_LINE;
+			int resultCol = idx % RESULTS_PER_LINE;
+
+			y += resultLine * ICON_HEIGHT;
+			y += resultLine * PADDING;
+
+			x += resultCol * ICON_WIDTH;
+			x += resultCol * PADDING;
+
 			Widget item = container.createChild(-1, WidgetType.GRAPHIC);
 			item.setXPositionMode(WidgetPositionMode.ABSOLUTE_LEFT);
 			item.setYPositionMode(WidgetPositionMode.ABSOLUTE_TOP);
@@ -152,7 +177,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			item.setAction(0, tooltipText);
 			item.setHasListener(true);
 
-			if (index == idx)
+			if (index == idx + startIdx)
 			{
 				item.setOpacity(HOVERED_OPACITY);
 			}
@@ -171,13 +196,6 @@ public class ChatboxItemSearch extends ChatboxTextInput
 
 				chatboxPanelManager.close();
 			});
-
-			x += ICON_WIDTH + PADDING;
-			if (x + ICON_WIDTH >= container.getWidth())
-			{
-				y += ICON_HEIGHT + PADDING;
-				x = PADDING;
-			}
 
 			item.revalidate();
 			++idx;
@@ -233,42 +251,20 @@ public class ChatboxItemSearch extends ChatboxTextInput
 				break;
 			case KeyEvent.VK_UP:
 				ev.consume();
-				if (results.size() >= (MAX_RESULTS / 2))
+				if (!results.isEmpty())
 				{
-					index -= MAX_RESULTS / 2;
-					if (index < 0)
-					{
-						if (results.size() == MAX_RESULTS)
-						{
-							index += results.size();
-						}
-						else
-						{
-							index += MAX_RESULTS;
-						}
-						index = Ints.constrainToRange(index, 0, results.size() - 1);
-					}
+					index -= RESULTS_PER_LINE;
+					index = Ints.constrainToRange(index, 0, results.size() - 1);
 
 					clientThread.invokeLater(this::update);
 				}
 				break;
 			case KeyEvent.VK_DOWN:
 				ev.consume();
-				if (results.size() >= (MAX_RESULTS / 2))
+				if (!results.isEmpty())
 				{
-					index += MAX_RESULTS / 2;
-					if (index >= MAX_RESULTS)
-					{
-						if (results.size() == MAX_RESULTS)
-						{
-							index -= results.size();
-						}
-						else
-						{
-							index -= MAX_RESULTS;
-						}
-						index = Ints.constrainToRange(index, 0, results.size() - 1);
-					}
+					index += RESULTS_PER_LINE;
+					index = Ints.constrainToRange(index, 0, results.size() - 1);
 
 					clientThread.invokeLater(this::update);
 				}
