@@ -627,6 +627,7 @@ container=0
 
 [prayer]
 id=541
+parent=0
 
 [private_chat]
 id=163
