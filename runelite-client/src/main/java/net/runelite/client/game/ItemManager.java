@@ -52,13 +52,13 @@ import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.*;
+import net.runelite.api.ItemStats;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
 
 @Singleton
 @Slf4j
@@ -351,7 +351,27 @@ public class ItemManager
 	 * @return item stats
 	 */
 	@Nullable
-	public ItemStats getItemStats(int itemId, boolean allowNote)
+	public ItemStats getItemStats(int itemId)
+	{
+		ItemComposition itemComposition = getItemComposition(itemId);
+
+		if (itemComposition == null || itemComposition.getName() == null || itemComposition.getNote() != -1)
+		{
+			return null;
+		}
+
+		return itemStats.get(canonicalize(itemId));
+	}
+
+	/**
+	 * Look up an item's stats
+	 * @param itemId item id
+	 * @return item stats
+	 * @deprecated See {@link #getItemStats(int)}
+	 */
+	@Nullable
+	@Deprecated
+	public net.runelite.http.api.item.ItemStats getItemStats(int itemId, boolean allowNote)
 	{
 		ItemComposition itemComposition = getItemComposition(itemId);
 
@@ -360,7 +380,7 @@ public class ItemManager
 			return null;
 		}
 
-		return itemStats.get(canonicalize(itemId));
+		return itemStats.get(canonicalize(itemId)).toHttpApiFormat();
 	}
 
 	/**
