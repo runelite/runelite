@@ -201,7 +201,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
-		description = "Enables tray notifications",
+		description = "Enables tray notifications. Depending on your operating system settings, these can produce sound",
 		position = 21,
 		section = notificationSettings
 	)
