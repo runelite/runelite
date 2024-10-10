@@ -110,6 +110,17 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 7,
+		keyName = "showGroupBonus",
+		name = "Show group bonus",
+		description = "Configures whether to display the group bonus infobox"
+	)
+	default boolean showGroupBonus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 10,
 		keyName = "forestryLeprechaunNotification",
 		name = "Leprechaun notification",
