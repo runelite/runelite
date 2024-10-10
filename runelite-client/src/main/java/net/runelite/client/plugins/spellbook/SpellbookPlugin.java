@@ -47,6 +47,8 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetConfig.DRAG;
 import static net.runelite.api.widgets.WidgetConfig.DRAG_ON;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -289,6 +291,8 @@ public class SpellbookPlugin extends Plugin
 			return;
 		}
 
+		createWarning(reordering);
+
 		// this is called after ~magic_spellbook_redraw has built and sorted the array of visible spells
 		// based on the vanilla filtering
 
@@ -359,6 +363,23 @@ public class SpellbookPlugin extends Plugin
 
 		System.arraycopy(newSpells, 0, spells, 0, numNewSpells);
 		stack[size - 1] = numSpells = numNewSpells;
+	}
+
+	private void createWarning(boolean unlocked)
+	{
+		Widget w = client.getWidget(ComponentID.SPELLBOOK_PARENT);
+		w.deleteAllChildren();
+
+		if (unlocked)
+		{
+			Widget c = w.createChild(WidgetType.RECTANGLE);
+			c.setHeightMode(WidgetSizeMode.MINUS);
+			c.setWidthMode(WidgetSizeMode.MINUS);
+			c.setTextColor(0xff0000);
+			c.setFilled(true);
+			c.setOpacity(220);
+			c.revalidate();
+		}
 	}
 
 	private void initializeSpells(int spellbookEnum)

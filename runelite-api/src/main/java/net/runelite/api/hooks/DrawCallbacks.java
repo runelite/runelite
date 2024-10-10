@@ -127,19 +127,19 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void drawPass(Projection projection, Scene scene, int pass)
+	default void drawPass(Projection entityProjection, Scene scene, int pass)
 	{
 	}
 
-	default void drawZone(Projection projection, Scene scene, int pass, int zx, int zz)
+	default void drawZone(Projection entityProjection, Scene scene, int pass, int zx, int zz)
 	{
 	}
 
-	default void drawDynamic(Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
+	default void drawDynamic(Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
 	{
 	}
 
-	default void drawTemp(Scene scene, GameObject gameObject, Model m)
+	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m)
 	{
 	}
 
