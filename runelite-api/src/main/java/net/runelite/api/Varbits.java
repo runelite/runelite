@@ -936,4 +936,6 @@ public final class Varbits
 	 * </p>
 	 */
 	public static final int COLOSSAL_WYRM_COURSE_ADVANCED = 11293;
+
+	public static final int RING_OF_ELEMENTS_CHARGES = 13707;
 }
