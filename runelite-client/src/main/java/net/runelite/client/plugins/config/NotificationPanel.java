@@ -286,7 +286,7 @@ class NotificationPanel extends PluginPanel
 				var n = loadNotification();
 				saveNotification(n.withTray(checkboxTray.isSelected()));
 			});
-			item("Tray notification", "Enables tray notifications", checkboxTray);
+			item("Tray notification", "Enables tray notifications. Depending on your operating system settings, these can produce sound", checkboxTray);
 
 			var comboboxRequestFocus = combobox(RequestFocusType.class, notif.getRequestFocus());
 			comboboxRequestFocus.addItemListener(e ->
