@@ -187,6 +187,14 @@ public class ItemStatChanges
 		add(combo(food(5), boost(STRENGTH, perc(.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), SUNSHINE);
 		add(combo(food(5), boost(STRENGTH, 5), new BoostedStatBoost(ATTACK, false, perc(.02, -3))), RUM_28896);
 		add(combo(food(16), boost(WOODCUTTING, 1), heal(ATTACK, -5), heal(FLETCHING, -1)), ECLIPSE_RED);
+		add(combo(food(1), boost(MAGIC, 1), boost(MINING, 1), new BoostedStatBoost(ATTACK, false, perc(.05, -2)), new BoostedStatBoost(DEFENCE, false, perc(.05, -2))), STEAMFORGE_BREW);
+		add(combo(food(16), boost(FARMING, 1), heal(ATTACK, -5), heal(HERBLORE, -1)), IXCOZTIC_WHITE);
+		add(combo(food(16), boost(FIREMAKING, 1), heal(ATTACK, -5), heal(COOKING, -1)), CHILHUAC_RED);
+		add(combo(food(16), boost(HERBLORE, 1), heal(ATTACK, -5), heal(FARMING, -1)), CHICHILIHUI_ROS);
+		add(combo(food(16), boost(HUNTER, 1), heal(ATTACK, -5), heal(SLAYER, -1)), BLACKBIRD_RED);
+		add(combo(food(16), boost(RUNECRAFT, 1), heal(ATTACK, -5), heal(FIREMAKING, -1)), METZTONALLI_WHITE);
+		add(combo(food(16), boost(SLAYER, 1), heal(ATTACK, -5), heal(AGILITY, -1)), IMPERIAL_ROS);
+		add(combo(food(16), heal(PRAYER, 1), heal(ATTACK, -5), heal(THIEVING, -1)), TONAMEYO_WHITE);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), WINTER_SQIRKJUICE);
@@ -283,6 +291,7 @@ public class ItemStatChanges
 			SANFEW_SERUM4_23559, SANFEW_SERUM3_23561, SANFEW_SERUM2_23563, SANFEW_SERUM1_23565 /* LMS */);
 		add(combo(heal(ATTACK, remedyHeal), heal(STRENGTH, remedyHeal), heal(DEFENCE, remedyHeal), heal(RANGED, remedyHeal), heal(MAGIC, remedyHeal)), MENAPHITE_REMEDY1, MENAPHITE_REMEDY2, MENAPHITE_REMEDY3, MENAPHITE_REMEDY4);
 		add(staminaPot, STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
+		add(heal(PRAYER, 66), PRAYER_REGENERATION_POTION1, PRAYER_REGENERATION_POTION2, PRAYER_REGENERATION_POTION3, PRAYER_REGENERATION_POTION4);
 
 		// Mixed recovery potions
 		add(new MixedPotion(3, restorePot), RESTORE_MIX1, RESTORE_MIX2);
