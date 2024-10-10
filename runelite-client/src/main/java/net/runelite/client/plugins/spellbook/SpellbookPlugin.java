@@ -36,6 +36,7 @@ import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ParamID;
+import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.DraggingWidgetChanged;
@@ -55,6 +56,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
@@ -93,6 +95,9 @@ public class SpellbookPlugin extends Plugin
 		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
 
 	@Inject
+	private SpellbookConfig config;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -127,6 +132,18 @@ public class SpellbookPlugin extends Plugin
 	{
 		clearReoderMenus();
 		clientThread.invokeLater(this::reinitializeSpellbook);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(SpellbookConfig.GROUP))
+		{
+			if (event.getKey().equals("enableTooltips"))
+			{
+				clientThread.invokeLater(this::reinitializeSpellbook);
+			}
+		}
 	}
 
 	@Subscribe
@@ -206,6 +223,18 @@ public class SpellbookPlugin extends Plugin
 			int sz = client.getIntStackSize();
 			int spellBookEnum = stack[sz - 12]; // eg 1982, 5285, 1983, 1984, 1985
 			clientThread.invokeLater(() -> initializeSpells(spellBookEnum));
+		}
+
+		if (!config.enableTooltips() && event.getScriptId() == ScriptID.SPELLBOOK_TOOLTIP)
+		{
+			ScriptEvent tryReplace = event.getScriptEvent();
+			if ((int) tryReplace.getArguments()[1] == 0)
+			{
+				return;
+			}
+			tryReplace.getArguments()[1] = 0;
+			// index 1 is the boolean to show or hide the tool tip
+			event.setScriptEvent(tryReplace);
 		}
 	}
 
