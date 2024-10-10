@@ -24,13 +24,16 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -49,6 +52,34 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	private static final String CECILIA = "Cecilia";
 	private static final Pattern SONG_PATTERN = Pattern.compile("<col=ffffff>([A-Za-z !&',.]+)</col>");
 
+	static final List<MusicClue> CLUES = ImmutableList.of(
+		new MusicClue(ItemID.CLUE_SCROLL_EASY_23155, "Vision"),
+		new MusicClue(ItemID.CLUE_SCROLL_EASY_23156, "The Forlorn Homestead"),
+		new MusicClue(ItemID.CLUE_SCROLL_EASY_23157, "Tiptoe"),
+		new MusicClue(ItemID.CLUE_SCROLL_EASY_23158, "Rugged Terrain"),
+		new MusicClue(ItemID.CLUE_SCROLL_EASY_23159, "On the Shore"),
+		new MusicClue(ItemID.CLUE_SCROLL_EASY_23160, "Alone"),
+		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23138, "Karamja Jam"),
+		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23139, "Faerie"),
+		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23140, "Forgotten"),
+		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23141, "Catch Me If You Can"),
+		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23142, "Cave of Beasts"),
+		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23143, "Devils May Care"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23174, "Scorpia Dances"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23175, "Complication"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23176, "Subterranea"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23177, "Little Cave of Horrors"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23178, "Roc and Roll"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23179, "La Mort"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23180, "Fossilised"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_23181, "Hells Bells"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_25792, "Regal Pomp"),
+		new MusicClue(ItemID.CLUE_SCROLL_HARD_28918, "The Moons of Ruin"),
+		new MusicClue(ItemID.CLUE_SCROLL_ELITE_24773, "Lament for the Hallowed"),
+		new MusicClue(ItemID.CLUE_SCROLL_ELITE_26943, "The Pharaoh")
+		);
+
+	private final int itemId;
 	private final String song;
 
 	@Override
@@ -88,6 +119,32 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 		}
 	}
 
+	public static MusicClue forItemId(int itemId)
+	{
+		for (MusicClue clue : CLUES)
+		{
+			if (clue.itemId == itemId)
+			{
+				return clue;
+			}
+		}
+
+		return null;
+	}
+
+	public static MusicClue forSong(String song)
+	{
+		for (MusicClue clue : CLUES)
+		{
+			if (clue.song.equals(song))
+			{
+				return clue;
+			}
+		}
+
+		return null;
+	}
+
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
@@ -100,7 +157,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 		if (m.find())
 		{
 			final String song = m.group(1);
-			return new MusicClue(song);
+			return forSong(song);
 		}
 		return null;
 	}
