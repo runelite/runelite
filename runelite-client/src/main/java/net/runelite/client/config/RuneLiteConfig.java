@@ -225,7 +225,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationSound",
 		name = "Notification sound",
-		description = "Enables the playing of a beep sound when notifications are displayed",
+		description = "Enables the playing of a beep sound when notifications are sent from RuneLite. This does not change the sound played from tray notifications",
 		position = 23,
 		section = notificationSettings
 	)
