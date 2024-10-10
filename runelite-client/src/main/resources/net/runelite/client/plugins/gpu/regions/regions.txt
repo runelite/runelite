@@ -357,3 +357,15 @@ r 51 150
 // desert mining camp (the tourist trap)
 n
 r 51 147
+
+// ah za rhoon (shilo village)
+n
+R 45 145 45 146
+
+// tomb of bervirius (shilo village)
+n
+r 43 146
+
+// tunnel of chaos (what lies below)
+n
+r 49 81
