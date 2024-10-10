@@ -615,6 +615,31 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
 		}
 
+		if (event.getVarbitId() == Varbits.STONE_OF_JAS_EMPOWERMENT && config.showOverload())
+		{
+			updateVarCounter(STONE_OF_JAS_EMPOWERMENT, event.getValue());
+		}
+
+		if (event.getVarbitId() == Varbits.BURN_DAMAGE_ACCUMULATED && config.showBurnDamageAccumulated())
+		{
+			updateVarCounter(BURN_DAMAGE_ACCUMULATED, event.getValue());
+		}
+
+		if (event.getVarbitId() == Varbits.BURN_DAMAGE_NEXT_HIT && config.showBurnDamageNextHit())
+		{
+			updateVarCounter(BURN_DAMAGE_NEXT_HIT, event.getValue());
+		}
+
+		if (event.getVarbitId() == Varbits.SMOULDERING_HEART && config.showOverload())
+		{
+			updateVarTimer(SMOULDERING_HEART, event.getValue(), i -> i * 25);
+		}
+
+		if (event.getVarbitId() == Varbits.SMOULDERING_GLAND && config.showPrayerEnhance())
+		{
+			updateVarTimer(SMOULDERING_GLAND, event.getValue(), i -> i * 4);
+		}
+
 		if (event.getVarbitId() == Varbits.BUFF_GOADING_POTION && config.showGoading())
 		{
 			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
@@ -661,11 +686,14 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(SMELLING_SALTS);
+			removeVarCounter(STONE_OF_JAS_EMPOWERMENT);
+			removeGameTimer(SMOULDERING_HEART);
 		}
 
 		if (!config.showPrayerEnhance())
 		{
 			removeGameTimer(PRAYER_ENHANCE);
+			removeGameTimer(SMOULDERING_GLAND);
 		}
 
 		if (!config.showDivine())
@@ -837,6 +865,16 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeVarTimer(MOONLIGHT_POTION);
 		}
 
+		if (!config.showBurnDamageAccumulated())
+		{
+			removeVarCounter(BURN_DAMAGE_ACCUMULATED);
+		}
+
+		if (!config.showBurnDamageNextHit())
+		{
+			removeVarCounter(BURN_DAMAGE_NEXT_HIT);
+		}
+
 		if (!config.showGoading())
 		{
 			removeVarTimer(GOADING);
@@ -941,7 +979,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+				createGameTimer(MARK_OF_DARKNESS, Duration.of(getMagicLevelMoD(magicLevel), RSTimeUnit.GAME_TICKS));
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
@@ -960,13 +998,10 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (config.showArceuusCooldown())
+		if (config.showArceuusCooldown() && message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 		{
-			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-			if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
-			{
-				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
-			}
+			final int magicLevelMoD = getMagicLevelMoD(client.getRealSkillLevel(Skill.MAGIC));
+			createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevelMoD - 10, RSTimeUnit.GAME_TICKS));
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
@@ -1036,6 +1071,20 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			createGameTimer(LIQUID_ADRENALINE);
 		}
+	}
+
+	private int getMagicLevelMoD(int magicLevel)
+	{
+		final ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (container != null)
+		{
+			final Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+			if (weapon != null && weapon.getId() == ItemID.PURGING_STAFF)
+			{
+				return magicLevel * 5;
+			}
+		}
+		return magicLevel;
 	}
 
 	private boolean isInFightCaves()
