@@ -28,6 +28,8 @@ package net.runelite.client.plugins.runepouch;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
@@ -90,6 +92,8 @@ class RunepouchOverlay extends WidgetItemOverlay
 	private final RunepouchConfig config;
 	private final TooltipManager tooltipManager;
 	private final ItemManager itemManager;
+
+	private final Map<Integer, BufferedImage[]> luminanceCache = new HashMap<>();
 
 	@Inject
 	RunepouchOverlay(Client client, RunepouchConfig config, TooltipManager tooltipManager, ItemManager itemManager)
@@ -193,25 +197,47 @@ class RunepouchOverlay extends WidgetItemOverlay
 
 			++runeNum;
 
-			final String text = formatNumber(amount);
-			final int textX = location.getX() + 11;
-			final int textY = location.getY() + 12 + (graphics.getFontMetrics().getHeight() - 1) * runeNum;
-
-			graphics.setColor(Color.BLACK);
-			graphics.drawString(text, textX + 1, textY + 1);
-
-			graphics.setColor(config.fontColor());
-			graphics.drawString(text, textX, textY);
-
 			BufferedImage image = getRuneImage(runeId);
-			if (image != null)
+
+			switch (config.runePouchInventoryStyle())
 			{
-				OverlayUtil.renderImageLocation(graphics,
-					new Point(
-						location.getX() - 1,
-						location.getY() + graphics.getFontMetrics().getHeight() * runeNum - 1
-					),
-					image);
+				case LUMINANCE:
+					if (image != null)
+					{
+						if (amount < 10_000)
+						{
+							var images = getLuminanceScaledImages(runeId, image);
+							image = images[amount < 1000 ? 0 : 1];
+						}
+
+						OverlayUtil.renderImageLocation(graphics, new Point(
+							location.getX() - 1,
+							location.getY() + graphics.getFontMetrics().getHeight() * runeNum - 1
+						), image);
+					}
+					break;
+				case DEFAULT:
+					final String text = formatNumber(amount);
+					final int textX = location.getX() + 11;
+					final int textY = location.getY() + 12 + (graphics.getFontMetrics().getHeight() - 1) * runeNum;
+
+					graphics.setColor(Color.BLACK);
+					graphics.drawString(text, textX + 1, textY + 1);
+
+					graphics.setColor(config.fontColor());
+					graphics.drawString(text, textX, textY);
+				case NONE:
+				default:
+					if (image != null)
+					{
+						OverlayUtil.renderImageLocation(graphics,
+							new Point(
+								location.getX() - 1,
+								location.getY() + graphics.getFontMetrics().getHeight() * runeNum - 1
+							),
+							image);
+					}
+					break;
 			}
 		}
 	}
@@ -237,32 +263,69 @@ class RunepouchOverlay extends WidgetItemOverlay
 			c++;
 
 			BufferedImage image = getRuneImage(runeId);
-			if (image != null)
-			{
-				OverlayUtil.renderImageLocation(graphics,
-					new Point(iconX, iconY),
-					image);
-			}
 
-			final int height;
-			final Color color;
-
-			if (amount < 1000)
+			switch (config.runePouchInventoryStyle())
 			{
-				// with <1k runes, the bar is shown in red with 100 increments
-				height = amount / 100;
-				color = Color.RED;
-			}
-			else
-			{
-				// with >=1k runes, the bar is shown in 1000 increments capped at 10k
-				height = Math.min(10, amount / 1000);
-				color = Color.GREEN;
-			}
+				case DEFAULT:
+					if (image != null)
+					{
+						OverlayUtil.renderImageLocation(graphics, new Point(iconX, iconY), image);
+					}
 
-			graphics.setColor(color);
-			graphics.fillRect(iconX + IMAGE_SIZE, iconY + 1 + (10 - height), 2, height);
+					final int height;
+					final Color color;
+
+					if (amount < 1000)
+					{
+						// with <1k runes, the bar is shown in red with 100 increments
+						height = amount / 100;
+						color = Color.RED;
+					}
+					else
+					{
+						// with >=1k runes, the bar is shown in 1000 increments capped at 10k
+						height = Math.min(10, amount / 1000);
+						color = Color.GREEN;
+					}
+
+					graphics.setColor(color);
+					graphics.fillRect(iconX + IMAGE_SIZE, iconY + 1 + (10 - height), 2, height);
+					break;
+				case LUMINANCE:
+					if (image != null)
+					{
+						if (amount < 10_000)
+						{
+							var images = getLuminanceScaledImages(runeId, image);
+							image = images[amount < 1000 ? 0 : 1];
+						}
+
+						OverlayUtil.renderImageLocation(graphics, new Point(iconX, iconY), image);
+					}
+					break;
+				case NONE:
+				default:
+					if (image != null)
+					{
+						OverlayUtil.renderImageLocation(graphics, new Point(iconX, iconY), image);
+					}
+					break;
+			}
 		}
+	}
+
+	private BufferedImage[] getLuminanceScaledImages(int runeId, BufferedImage image)
+	{
+		var images = luminanceCache.get(runeId);
+		if (images == null)
+		{
+			images = new BufferedImage[]{
+				ImageUtil.luminanceScale(image, 0.25f),
+				ImageUtil.luminanceScale(image, 0.65f)
+			};
+			luminanceCache.put(runeId, images);
+		}
+		return images;
 	}
 
 	private BufferedImage getRuneImage(int runeId)

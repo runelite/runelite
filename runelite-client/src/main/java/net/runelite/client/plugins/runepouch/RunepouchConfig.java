@@ -64,4 +64,15 @@ public interface RunepouchConfig extends Config
 	{
 		return RunepouchOverlayMode.BOTH;
 	}
+
+	@ConfigItem(
+		keyName = "runePouchInventoryStyle",
+		name = "Inventory Style",
+		description = "Configures style of inventory display mode",
+		position = 4
+	)
+	default InventoryStyle runePouchInventoryStyle()
+	{
+		return InventoryStyle.DEFAULT;
+	}
 }
