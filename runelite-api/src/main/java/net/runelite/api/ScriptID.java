@@ -491,4 +491,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 1)
 	public static final int DOM_LOOT_CLAIM = 7928;
+
+	@ScriptArguments(integer = 6)
+	public static final int SPELLBOOK_TOOLTIP = 2622;
 }
