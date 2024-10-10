@@ -910,11 +910,23 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Nightmare kill count is: <col=ff0000>1130</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>5 players</col> Fight duration: <col=ff0000>3:28</col> (new personal best)", null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>Solo</col> Fight duration: <col=ff0000>3:29</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>3 players</col> Fight duration: <col=ff0000>3:30</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>4 players</col> Fight duration: <col=ff0000>3:31</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>5 players</col> Fight duration: <col=ff0000>3:32</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>6+ players</col> Fight duration: <col=ff0000>3:28</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "nightmare", 1130);
-		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare", 3 * 60 + 28.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare solo", 3 * 60 + 29.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 3 players", 3 * 60 + 30.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 4 players", 3 * 60 + 31.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 5 players", 3 * 60 + 32.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 6+ players", 3 * 60 + 28.0);
 	}
 
 	@Test
@@ -925,9 +937,22 @@ public class ChatCommandsPluginTest
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>Solo</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:44", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>3 players</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:45", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>4 players</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:46", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>5 players</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:47", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Team size: <col=ff0000>6+ players</col> Fight duration: <col=ff0000>10:47</col>. Personal best: 8:48", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
 
 		verify(configManager).setRSProfileConfiguration("killcount", "nightmare", 1130);
-		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare", 8 * 60 + 44.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare solo", 8 * 60 + 44.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 3 players", 8 * 60 + 45.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 4 players", 8 * 60 + 46.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 5 players", 8 * 60 + 47.0);
+		verify(configManager).setRSProfileConfiguration("personalbest", "nightmare 6+ players", 8 * 60 + 48.0);
 	}
 
 	@Test

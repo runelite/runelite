@@ -109,6 +109,7 @@ public class ChatCommandsPlugin extends Plugin
 {
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?<pre>completion count for |subdued |completed )?(?<boss>.+?) (?<post>(?:(?:kill|harvest|lap|completion) )?(?:count )?)is: <col=[0-9a-f]{6}>(?<kc>[0-9,]+)</col>");
 	private static final String TEAM_SIZES = "(?<teamsize>\\d+(?:\\+|-\\d+)? players?|Solo)";
+	private static final Pattern TEAM_SIZE = Pattern.compile("(?<teamsize>\\d+(?:\\+|-\\d+)? players?|Solo)");
 	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)</col>");
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:) <col=[0-9a-f]{6}>[0-9:.]+</col>\\. Personal best: (?:<col=ff0000>)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
@@ -534,25 +535,25 @@ public class ChatCommandsPlugin extends Plugin
 		matcher = KILL_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, message);
 		}
 
 		matcher = NEW_PB_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, message);
 		}
 
 		matcher = RAIDS_PB_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, message);
 		}
 
 		matcher = RAIDS_DURATION_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			matchPb(matcher);
+			matchPb(matcher, message);
 		}
 
 		matcher = HS_PB_PATTERN.matcher(message);
@@ -668,15 +669,24 @@ public class ChatCommandsPlugin extends Plugin
 		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format("%05.2f", seconds));
 	}
 
-	private void matchPb(Matcher matcher)
+	private void matchPb(Matcher matcher, String message)
 	{
 		double seconds = timeStringToSeconds(matcher.group("pb"));
 		if (lastBossKill != null)
 		{
 			// Most bosses send boss kill message, and then pb message, so we
-			// use the remembered lastBossKill
-			log.debug("Got personal best for {}: {}", lastBossKill, seconds);
-			setPb(lastBossKill, seconds);
+			// use the remembered lastBossKill and check if the boss has a team
+			Matcher teamSizeMatcher = TEAM_SIZE.matcher(message);
+			String teamSize = "-1";
+
+			if (teamSizeMatcher.find())
+			{
+				teamSize = teamSizeMatcher.group("teamsize");
+			}
+
+			String bossName = teamSize == "-1" ? lastBossKill : lastBossKill + " " + teamSize;
+			log.debug("Got personal best for {}: {}", bossName, seconds);
+			setPb(bossName, seconds);
 			lastPb = -1;
 			lastTeamSize = null;
 		}
@@ -898,7 +908,7 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean killCountSubmit(ChatInput chatInput, String value)
 	{
 		int idx = value.indexOf(' ');
-		final String boss = longBossName(value.substring(idx + 1));
+		final String boss = longBossName(value.substring(idx + 1), true);
 
 		final int kc = getKc(boss);
 		if (kc <= 0)
@@ -952,7 +962,7 @@ public class ChatCommandsPlugin extends Plugin
 			player = Text.sanitize(chatMessage.getName());
 		}
 
-		search = longBossName(search);
+		search = longBossName(search, true);
 
 		final int kc;
 		try
@@ -1954,6 +1964,11 @@ public class ChatCommandsPlugin extends Plugin
 
 	private static String longBossName(String boss)
 	{
+		return longBossName(boss, false);
+	}
+
+	private static String longBossName(String boss, boolean removeTeamSize)
+	{
 		switch (boss.toLowerCase())
 		{
 			case "corp":
@@ -2298,7 +2313,38 @@ public class ChatCommandsPlugin extends Plugin
 			case "tnm":
 			case "nmare":
 			case "the nightmare":
-				return "Nightmare";
+			case "nightmare":
+				return removeTeamSize ? "Nightmare" : "Nightmare 6+ players";
+			case "nm 1":
+			case "nm solo":
+			case "tnm 1":
+			case "tnm solo":
+			case "nmare 1":
+			case "nmare solo":
+			case "the nightmare 1":
+			case "the nightmare solo":
+			case "nightmare 1":
+			case "nightmare solo":
+				return removeTeamSize ? "Nightmare" : "Nightmare Solo";
+			case "nm 3":
+			case "tnm 3":
+			case "nmare 3":
+			case "the nightmare 3":
+			case "nightmare 3":
+				return removeTeamSize ? "Nightmare" : "Nightmare 3 players";
+			case "nm 4":
+			case "tnm 4":
+			case "nmare 4":
+			case "the nightmare 4":
+			case "nightmare 4":
+				return removeTeamSize ? "Nightmare" : "Nightmare 4 players";
+			case "nm 5":
+			case "tnm 5":
+			case "nmare 5":
+			case "the nightmare 5":
+			case "nightmare 5":
+				return removeTeamSize ? "Nightmare" : "Nightmare 5 players";
+
 
 			// Phosani's Nightmare
 			case "pnm":
