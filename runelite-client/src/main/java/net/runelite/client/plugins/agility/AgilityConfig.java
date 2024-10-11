@@ -55,10 +55,21 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "extendDrawDistance",
+		name = "Extend Clickbox Draw Distances",
+		description = "Show agility course and obstacle clickboxes from further away. May reduce performance on weaker machines.",
+		position = 1
+	)
+	default boolean extendDrawDistance()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showLapCount",
 		name = "Show Lap Count",
 		description = "Enable/disable the lap counter",
-		position = 1
+		position = 2
 	)
 	default boolean showLapCount()
 	{
@@ -69,7 +80,7 @@ public interface AgilityConfig extends Config
 		keyName = "lapTimeout",
 		name = "Hide Lap Count",
 		description = "Time until the lap counter hides/resets",
-		position = 2
+		position = 3
 	)
 	@Units(Units.MINUTES)
 	default int lapTimeout()
@@ -81,7 +92,7 @@ public interface AgilityConfig extends Config
 		keyName = "lapsToLevel",
 		name = "Show Laps Until Goal",
 		description = "Show number of laps remaining until next goal is reached.",
-		position = 3
+		position = 4
 	)
 	default boolean lapsToLevel()
 	{
@@ -92,7 +103,7 @@ public interface AgilityConfig extends Config
 		keyName = "lapsPerHour",
 		name = "Show Laps Per Hour",
 		description = "Shows how many laps you can expect to complete per hour.",
-		position = 4
+		position = 5
 	)
 	default boolean lapsPerHour()
 	{
@@ -104,7 +115,7 @@ public interface AgilityConfig extends Config
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Color of Agility overlay",
-		position = 5
+		position = 6
 	)
 	default Color getOverlayColor()
 	{
@@ -115,7 +126,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightMarks",
 		name = "Highlight Marks of Grace",
 		description = "Enable/disable the highlighting of retrievable Marks of Grace",
-		position = 6
+		position = 7
 	)
 	default boolean highlightMarks()
 	{
@@ -127,7 +138,7 @@ public interface AgilityConfig extends Config
 		keyName = "markHighlight",
 		name = "Mark Highlight Color",
 		description = "Color of highlighted Marks of Grace",
-		position = 7
+		position = 8
 	)
 	default Color getMarkColor()
 	{
@@ -138,7 +149,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightPortals",
 		name = "Highlight Portals",
 		description = "Enable/disable the highlighting of Prifddinas portals",
-		position = 8
+		position = 9
 	)
 	default boolean highlightPortals()
 	{
@@ -150,7 +161,7 @@ public interface AgilityConfig extends Config
 		keyName = "portalsHighlight",
 		name = "Portals Color",
 		description = "Color of highlighted Prifddinas portals",
-		position = 9
+		position = 10
 	)
 	default Color getPortalsColor()
 	{
@@ -161,7 +172,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightShortcuts",
 		name = "Highlight Agility Shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
-		position = 10
+		position = 11
 	)
 	default boolean highlightShortcuts()
 	{
@@ -172,7 +183,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
-		position = 11
+		position = 12
 	)
 	default boolean showTrapOverlay()
 	{
@@ -184,7 +195,7 @@ public interface AgilityConfig extends Config
 		keyName = "trapHighlight",
 		name = "Trap Overlay Color",
 		description = "Color of Agility trap overlay",
-		position = 12
+		position = 13
 	)
 	default Color getTrapColor()
 	{
@@ -195,7 +206,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 13
+		position = 14
 	)
 	default Notification notifyAgilityArena()
 	{
@@ -206,7 +217,7 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 14
+		position = 15
 	)
 	default boolean showAgilityArenaTimer()
 	{
@@ -217,7 +228,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightStick",
 		name = "Highlight Stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course",
-		position = 15
+		position = 16
 	)
 	default boolean highlightStick()
 	{
@@ -229,7 +240,7 @@ public interface AgilityConfig extends Config
 		keyName = "stickHighlightColor",
 		name = "Stick Highlight Color",
 		description = "Color of highlighted stick",
-		position = 16
+		position = 17
 	)
 	default Color stickHighlightColor()
 	{
@@ -240,7 +251,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreNpcs",
 		name = "Highlight Projectiles",
 		description = "Highlights arrows and swords in the Sepulchre",
-		position = 17,
+		position = 18,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreNpcs()
@@ -253,7 +264,7 @@ public interface AgilityConfig extends Config
 		keyName = "sepulchreHighlightColor",
 		name = "Projectile Color",
 		description = "Overlay color for arrows and swords",
-		position = 18,
+		position = 19,
 		section = sepulchreSection
 	)
 	default Color sepulchreHighlightColor()
@@ -265,7 +276,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreObstacles",
 		name = "Highlight Obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre",
-		position = 19,
+		position = 20,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreObstacles()
@@ -277,7 +288,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreSkilling",
 		name = "Highlight Skill Challenges",
 		description = "Highlights skilling challenges in the Sepulchre",
-		position = 20,
+		position = 21,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreSkilling()
