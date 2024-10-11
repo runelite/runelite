@@ -24,6 +24,8 @@
  */
 package net.runelite.api.hooks;
 
+import java.util.Set;
+import net.runelite.api.GameObject;
 import net.runelite.api.Model;
 import net.runelite.api.Projection;
 import net.runelite.api.Renderable;
@@ -31,33 +33,48 @@ import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
+import net.runelite.api.TileObject;
+import net.runelite.api.WorldView;
 
 public interface DrawCallbacks
 {
 	/**
 	 * GPU mode on.
 	 */
-	int GPU = 1;
+	int GPU = 0x1;
 	/**
 	 * GPU hillskew support. Enables the {@link Model#getUnskewedModel()}
 	 * API to get the unskewed model.
 	 */
-	int HILLSKEW = 2;
+	int HILLSKEW = 0x2;
 	/**
 	 * Requests normals be computed for models. Enables the {@link Model#getVertexNormalsX()}
 	 * {@link Model#getVertexNormalsY()} {@link Model#getVertexNormalsZ()} API.
 	 */
-	int NORMALS = 4;
+	int NORMALS = 0x4;
 	/**
 	 * Disable vertex snapping for animations
 	 */
-	int NO_VERTEX_SNAPPING = 8;
+	int NO_VERTEX_SNAPPING = 0x8;
+	/**
+	 * Enable zbuf renderer.
+	 */
+	int ZBUF = 0x10;
 
-	void draw(Projection projection, Scene scene, Renderable renderable, int orientation, int x, int y, int z, long hash);
+	int PASS_OPAQUE = 0;
+	int PASS_ALPHA = 1;
 
-	void drawScenePaint(Scene scene, SceneTilePaint paint, int plane, int tileX, int tileZ);
+	default void draw(Projection projection, Scene scene, Renderable renderable, int orientation, int x, int y, int z, long hash)
+	{
+	}
 
-	void drawSceneTileModel(Scene scene, SceneTileModel model, int tileX, int tileZ);
+	default void drawScenePaint(Scene scene, SceneTilePaint paint, int plane, int tileX, int tileZ)
+	{
+	}
+
+	default void drawSceneTileModel(Scene scene, SceneTileModel model, int tileX, int tileZ)
+	{
+	}
 
 	/**
 	 * Called when a frame should be drawn.
@@ -69,21 +86,64 @@ public interface DrawCallbacks
 	/**
 	 * Called before the scene is drawn
 	 */
-	void drawScene(double cameraX, double cameraY, double cameraZ, double cameraPitch, double cameraYaw, int plane);
+	default void drawScene(double cameraX, double cameraY, double cameraZ, double cameraPitch, double cameraYaw, int plane)
+	{
+	}
 
 	/**
 	 * Called after the scene has been drawn
 	 */
-	void postDrawScene();
+	default void postDrawScene()
+	{
+	}
 
-	void animate(Texture texture, int diff);
+	default void animate(Texture texture, int diff)
+	{
+	}
 
-	void loadScene(Scene scene);
+	default void loadScene(Scene scene)
+	{
+	}
 
 	void swapScene(Scene scene);
 
 	default boolean tileInFrustum(Scene scene, int pitchSin, int pitchCos, int yawSin, int yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
 	{
 		return true;
+	}
+
+	default void loadScene(WorldView worldView, Scene scene)
+	{
+	}
+
+	default void despawnWorldView(WorldView worldView)
+	{
+	}
+
+	default void prepareSceneDraw(
+		Scene scene,
+		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
+		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
+	{
+	}
+
+	default void drawPass(Projection entityProjection, Scene scene, int pass)
+	{
+	}
+
+	default void drawZone(Projection entityProjection, Scene scene, int pass, int zx, int zz)
+	{
+	}
+
+	default void drawDynamic(Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
+	{
+	}
+
+	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m)
+	{
+	}
+
+	default void invalidateZone(Scene scene, int zx, int zz)
+	{
 	}
 }

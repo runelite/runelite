@@ -51,10 +51,12 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemID;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.PlayerComposition;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
@@ -146,7 +148,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton decorations;
 	private DevToolsButton projectiles;
 	private DevToolsButton location;
-	private DevToolsButton chunkBorders;
+	private DevToolsButton zoneBorders;
 	private DevToolsButton mapSquares;
 	private DevToolsButton loadingLines;
 	private DevToolsButton validMovement;
@@ -163,7 +165,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton soundEffects;
 	private DevToolsButton scriptInspector;
 	private DevToolsButton inventoryInspector;
-	private DevToolsButton roofs;
+	private DevToolsButton tileFlags;
 	private DevToolsButton shell;
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
@@ -248,7 +250,7 @@ public class DevToolsPlugin extends Plugin
 		tileLocation = new DevToolsButton("Tile Location");
 		cameraPosition = new DevToolsButton("Camera Position");
 
-		chunkBorders = new DevToolsButton("Chunk Borders");
+		zoneBorders = new DevToolsButton("Zone Borders");
 		mapSquares = new DevToolsButton("Map Squares");
 		loadingLines = new DevToolsButton("Loading Lines");
 
@@ -264,7 +266,7 @@ public class DevToolsPlugin extends Plugin
 		soundEffects = new DevToolsButton("Sound Effects");
 		scriptInspector = new DevToolsButton("Script Inspector");
 		inventoryInspector = new DevToolsButton("Inventory Inspector");
-		roofs = new DevToolsButton("Roofs");
+		tileFlags = new DevToolsButton("Tile flags");
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
 
@@ -457,28 +459,28 @@ public class DevToolsPlugin extends Plugin
 				int slot = Integer.parseInt(args[0]);
 				int id = Integer.parseInt(args[1]);
 				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[slot] = id + 512;
+				player.getPlayerComposition().getEquipmentIds()[slot] = id + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().setHash();
 				break;
 			}
 			case "tex":
 			{
 				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.FIRE_CAPE + 512;
-				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.MIRROR_SHIELD + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.FIRE_CAPE + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.MIRROR_SHIELD + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().setHash();
 				break;
 			}
 			case "alpha":
 			{
 				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.HEAD.getIndex()] = ItemID.GHOSTLY_HOOD + 512;
-				player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = ItemID.AMULET_OF_TORTURE_OR + 512;
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.GHOSTLY_CLOAK + 512;
-				player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = ItemID.GHOSTLY_ROBE + 512;
-				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.ELYSIAN_SPIRIT_SHIELD + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HEAD.getIndex()] = ItemID.GHOSTLY_HOOD + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = ItemID.AMULET_OF_TORTURE_OR + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.GHOSTLY_CLOAK + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = ItemID.GHOSTLY_ROBE + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.ELYSIAN_SPIRIT_SHIELD + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().getEquipmentIds()[KitType.ARMS.getIndex()] = -1;
-				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.GHOSTLY_ROBE_6108 + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.GHOSTLY_ROBE_6108 + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().getEquipmentIds()[KitType.HAIR.getIndex()] = -1;
 				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.GHOSTLY_GLOVES;
 				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.GHOSTLY_BOOTS;
@@ -621,17 +623,17 @@ public class DevToolsPlugin extends Plugin
 				{
 					MenuEntry parent = client.createMenuEntry(1)
 						.setOption("pmenu" + i)
-						.setTarget("devtools")
-						.setType(MenuAction.RUNELITE_SUBMENU);
+						.setTarget(i % 60 == 0 ? "devtools devtools devtools devtools" : "devtools")
+						.setType(MenuAction.RUNELITE);
+					Menu submenu = parent.createSubMenu();
 
 					for (int j = 0; j < 4; ++j)
 					{
 						final int j_ = j;
-						client.createMenuEntry(1)
+						submenu.createMenuEntry(0)
 							.setOption("submenu" + j)
 							.setTarget("devtools")
 							.setType(MenuAction.RUNELITE)
-							.setParent(parent)
 							.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_ + " sub " + j_, null));
 					}
 					continue;

@@ -224,6 +224,19 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_ADVANCED && event.getValue() == 6)
+		{
+			trackSession(Courses.COLOSSAL_WYRM_ADVANCED);
+		}
+		else if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_BASIC && event.getValue() == 6)
+		{
+			trackSession(Courses.COLOSSAL_WYRM_BASIC);
+		}
+	}
+
+	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
 		if (statChanged.getSkill() != AGILITY)
@@ -249,11 +262,7 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (session == null || session.getCourse() != course)
-		{
-			session = new AgilitySession(course);
-		}
-		session.incrementLapCount(client, xpTrackerService);
+		trackSession(course);
 	}
 
 	@Subscribe
@@ -339,6 +348,17 @@ public class AgilityPlugin extends Plugin
 		{
 			agilityArenaTicketAvailable = event.getValue() == 1;
 		}
+	}
+
+	private void trackSession(Courses course)
+	{
+		if (session == null || session.getCourse() != course)
+		{
+			session = new AgilitySession(course);
+			log.debug("Started new agility session for course: {}", course);
+		}
+
+		session.incrementLapCount(client, xpTrackerService);
 	}
 
 	private boolean isInAgilityArena()

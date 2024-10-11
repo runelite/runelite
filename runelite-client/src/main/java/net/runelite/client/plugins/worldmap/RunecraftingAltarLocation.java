@@ -44,7 +44,7 @@ enum RunecraftingAltarLocation
 	LAW_ALTAR("Law Altar", 54, new WorldPoint(2858, 3381, 0), "law_altar_icon.png"),
 	DEATH_ALTAR("Death Altar", 65, new WorldPoint(1860, 4639, 0), "death_altar_icon.png"),
 	BLOOD_ALTAR("Blood Altar", 77, new WorldPoint(1716, 3827, 0), "blood_altar_icon.png"),
-	TRUE_BLOOD_ALTAR("True Blood Altar", 77, new WorldPoint(3625, 9781, 0), "blood_altar_icon.png"),
+	TRUE_BLOOD_ALTAR("True Blood Altar", 77, new WorldPoint(3625, 9717, 0), "blood_altar_icon.png"),
 	SOUL_ALTAR("Soul Altar", 90, new WorldPoint(1814, 3856, 0), "soul_altar_icon.png"),
 	WRATH_ALTAR("Wrath Altar", 95, new WorldPoint(2446, 2825, 0), "wrath_altar_icon.png");
 

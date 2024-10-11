@@ -106,7 +106,13 @@ class Obstacles
 		// Shayzien hard
 		BEAM, EDGE_42218, EDGE_42219, BEAM_42220, ZIPLINE,
 		// Necropolis
-		NULL_44595
+		NULL_44595,
+		// Colossal Wyrm
+		LADDER_55178, TIGHTROPE_55180, ZIPLINE_55179,
+		// Colossal Wyrm basic
+		TIGHTROPE_55184, ROPE_55186, LADDER_55190,
+		// Colossal Wyrm advanced
+		LADDER_55191, EDGE_55192, TIGHTROPE_55194
 	);
 
 	static final Set<Integer> PORTAL_OBSTACLE_IDS = ImmutableSet.of(

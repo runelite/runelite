@@ -66,7 +66,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ScreenshotPluginTest
 {
-	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
+	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 2,823 medium Treasure Trails</col>";
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
@@ -144,7 +144,7 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("medium", screenshotPlugin.getClueType());
-		assertEquals(28, screenshotPlugin.getClueNumber());
+		assertEquals(2823, screenshotPlugin.getClueNumber());
 	}
 
 	@Test
@@ -541,5 +541,16 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(screenshotPlugin).takeScreenshot("Loot key", "Wilderness Loot Chest");
+	}
+
+	@Test
+	public void testBossKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Nightmare kill count is: <col=ff0000>1,130</col>", null, 0);
+		screenshotPlugin.onChatMessage(chatMessage);
+
+		verify(screenshotPlugin).takeScreenshot("Nightmare(1130)", "Boss Kills");
 	}
 }

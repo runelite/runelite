@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2023, jocopa3
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +23,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.events;
 
-enum GameTimerImageType
+import java.util.Collections;
+import java.util.Map;
+import lombok.NonNull;
+import lombok.Value;
+
+/**
+ * An event pluginhub plugins can use to send data to each other.
+ */
+@Value
+public class PluginMessage
 {
-	ITEM,
-	SPRITE
+	/**
+	 * Event namespace. This should usually be a unique string representing your plugin name eg. "tombs-of-amascut"
+	 */
+	String namespace;
+	/**
+	 * Event name. This should represent what the event is for, eg "points".
+	 */
+	String name;
+	/**
+	 * Event data.
+	 */
+	Map<String, Object> data;
+
+	public PluginMessage(@NonNull String namespace, @NonNull String name)
+	{
+		this(namespace, name, Collections.emptyMap());
+	}
+
+	public PluginMessage(@NonNull String namespace, @NonNull String name, @NonNull Map<String, Object> data)
+	{
+		this.namespace = namespace;
+		this.name = name;
+		this.data = data;
+	}
 }

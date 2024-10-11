@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -74,8 +75,8 @@ public class WikiPlugin extends Plugin
 {
 	static final HttpUrl WIKI_BASE = HttpUrl.get("https://oldschool.runescape.wiki");
 	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
-	static final String UTM_SORUCE_KEY = "utm_source";
-	static final String UTM_SORUCE_VALUE = "runelite";
+	static final String UTM_SOURCE_KEY = "utm_source";
+	static final String UTM_SOURCE_VALUE = "runelite";
 
 	private static final String MENUOP_WIKI = "Wiki";
 
@@ -346,7 +347,7 @@ public class WikiPlugin extends Plugin
 				.addQueryParameter("type", type)
 				.addQueryParameter("id", "" + id)
 				.addQueryParameter("name", name)
-				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+				.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
 
 			if (location != null)
 			{
@@ -386,18 +387,27 @@ public class WikiPlugin extends Plugin
 
 		if (wikiSelected && event.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET.getId())
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
+			Menu menu = client.getMenu();
+			MenuEntry[] menuEntries = menu.getMenuEntries();
 			Widget w = getWidget(widgetID, widgetIndex);
 			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1 && w.getItemId() != NullItemID.NULL_6512)
 			{
-				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
+				for (int ourEntry = menuEntries.length - 1; ourEntry >= 0; ourEntry--)
 				{
 					MenuEntry entry = menuEntries[ourEntry];
 					if (entry.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET)
 					{
 						int id = itemManager.canonicalize(w.getItemId());
 						String name = itemManager.getItemComposition(id).getMembersName();
-						entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
+						if ("null".equals(name))
+						{
+							// may be a dummy item for the UI without a name
+							menu.removeMenuEntry(entry);
+						}
+						else
+						{
+							entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
+						}
 						break;
 					}
 				}
@@ -419,7 +429,7 @@ public class WikiPlugin extends Plugin
 			}
 		}
 
-		if (WidgetUtil.componentToInterface(widgetID) == InterfaceID.SKILLS)
+		if (event.getType() == MenuAction.CC_OP.getId() && WidgetUtil.componentToInterface(widgetID) == InterfaceID.SKILLS)
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
 			if (w.getActions() == null || w.getParentId() != ComponentID.SKILLS_CONTAINER)
@@ -442,7 +452,26 @@ public class WikiPlugin extends Plugin
 				.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
 					.addPathSegment("w")
 					.addPathSegment(Text.removeTags(ev.getTarget()))
-					.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
+					.build().toString()));
+		}
+
+		if (event.getType() == MenuAction.CC_OP.getId() && WidgetUtil.componentToInterface(widgetID) == InterfaceID.COMBAT_ACHIEVEMENTS_TASKS)
+		{
+			Widget w = getWidget(widgetID, widgetIndex);
+			if (w.getActions() == null || w.getParentId() != ComponentID.COMBAT_ACHIEVEMENTS_TASKS_LIST)
+			{
+				return;
+			}
+
+			client.getMenu().createMenuEntry(-1)
+				.setTarget(w.getName())
+				.setOption(MENUOP_WIKI)
+				.setType(MenuAction.RUNELITE)
+				.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
+					.addPathSegment("w")
+					.addPathSegment(Text.removeTags(ev.getTarget()))
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
 					.build().toString()));
 		}
 	}

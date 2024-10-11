@@ -93,10 +93,10 @@ public class ScreenshotPlugin extends Plugin
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([,0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
-	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=[0-9a-f]{6}>([0-9,]+)</col>");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
@@ -354,7 +354,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				clueNumber = Integer.valueOf(m.group());
+				clueNumber = Integer.valueOf(m.group().replace(",", ""));
 				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
 				return;
 			}
@@ -366,7 +366,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.BARROWS;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -377,7 +377,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.COX;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -388,7 +388,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.COX_CM;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -399,7 +399,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : (chatMessage.contains("Story Mode") ? KillType.TOB_SM : KillType.TOB);
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -412,7 +412,7 @@ public class ScreenshotPlugin extends Plugin
 				killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE :
 					chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
 						KillType.TOA;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -423,7 +423,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.MOONS_OF_PERIL;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -448,10 +448,10 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotBossKills())
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
-			if (m.matches())
+			if (m.find())
 			{
 				String bossName = m.group(1);
-				String bossKillcount = m.group(2);
+				String bossKillcount = m.group(2).replace(",", "");
 				String fileName = bossName + "(" + bossKillcount + ")";
 				takeScreenshot(fileName, SD_BOSS_KILLS);
 			}
@@ -472,7 +472,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				int valuableDropValue = Integer.parseInt(m.group(2).replaceAll(",", ""));
+				int valuableDropValue = Integer.parseInt(m.group(2).replace(",", ""));
 				if (valuableDropValue >= config.valuableDropThreshold())
 				{
 					String valuableDropName = m.group(1);

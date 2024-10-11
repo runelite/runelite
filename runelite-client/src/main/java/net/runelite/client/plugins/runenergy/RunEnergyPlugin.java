@@ -243,7 +243,7 @@ public class RunEnergyPlugin extends Plugin
 			int charges = -1;
 			while (matcher.find())
 			{
-				charges = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
+				charges = Integer.parseInt(matcher.group(1).replace(",", ""));
 			}
 
 			setRingOfEnduranceCharges(charges);

@@ -236,6 +236,10 @@ public final class AnimationID
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
+	public static final int HERBLORE_MIXOLOGY_CONCENTRATE = 11644;
+	public static final int HERBLORE_MIXOLOGY_CRYSTALIZE = 11639;
+	public static final int HERBLORE_MIXOLOGY_HOMOGENIZE = 11634;
+	public static final int HERBLORE_MIXOLOGY_REFINER = 11604;
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
@@ -301,6 +305,7 @@ public final class AnimationID
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int CYCLOPS_ATTACK = 4652;
 	public static final int HELLHOUND_DEFENCE = 6566;
 
 	// Farming
@@ -324,6 +329,7 @@ public final class AnimationID
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
+	public static final int MAGIC_ARCEUUS_DEMONBANE = 8977;    // Shared by all 3 Demonbane spells
 
 	// Battlestaff Crafting
 	public static final int CRAFTING_BATTLESTAVES = 7531;
@@ -347,4 +353,26 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Wyrms
+	public static final int WYRM_IDLE_DORMANT = 8266;
+	public static final int WYRM_IDLE_ACTIVE = 8267;
+	public static final int WYRM_ATTACK_MELEE = 8270;
+	public static final int WYRM_ATTACK_MAGE = 8271;
+
+	// Lost City's Tree spirit
+	public static final int TREE_SPIRIT_IDLE = 5530;
+	public static final int TREE_SPIRIT_WALK = 5531;
+
+	public static final int SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK = 5583;
+
+	public static final int VIGGORAS_CHAINMACE_IDLE = 244;
+
+	public static final int MLM_WATER_WHEEL_SPINNING = 1051;
+	public static final int HARMONY_ISLAND_WINDMILL_SPINNING = 5857;
+	public static final int GWENITH_WINDMILL_SPINNING = 6495;
+	public static final int LITHKREN_GENERATOR_SPINNING = 7898;
+	public static final int GIANTS_FOUNDRY_WATER_WHEEL_SPINNING = 9450;
+
+	public static final int HUEYCOATL_DEATH = 11679;
 }

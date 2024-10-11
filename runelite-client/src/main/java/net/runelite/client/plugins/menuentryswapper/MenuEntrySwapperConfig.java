@@ -85,7 +85,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		WEAR,
 		GEM_MINE,
-		DURADEL,
+		SLAYER_MASTER,
 	}
 
 	enum MorytaniaLegsMode
@@ -449,7 +449,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapKaramjaGloves",
 		name = "Karamja Gloves",
-		description = "Swap Wear with the Gem Mine or Duradel teleport on the Karamja Gloves 3 and 4",
+		description = "Swap Wear with the Gem Mine or the Slayer Master teleport on the Karamja Gloves 3 and 4",
 		section = itemSection
 	)
 	default KaramjaGlovesMode swapKaramjaGlovesMode()

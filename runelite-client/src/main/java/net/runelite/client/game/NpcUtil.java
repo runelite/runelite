@@ -65,6 +65,28 @@ public class NpcUtil
 	public boolean isDying(final NPC npc)
 	{
 		final int id = npc.getId();
+
+		if (runtimeConfig != null)
+		{
+			Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
+			if (ignoredNpcs != null && ignoredNpcs.contains(id))
+			{
+				return false;
+			}
+
+			Set<Integer> forceDeadNpcs = runtimeConfig.getForceDeadNpcs();
+			if (forceDeadNpcs != null && forceDeadNpcs.contains(id))
+			{
+				return true;
+			}
+
+			Set<Integer> healthCheckDeadNpcs = runtimeConfig.getHealthCheckDeadNpcs();
+			if (healthCheckDeadNpcs != null && healthCheckDeadNpcs.contains(id))
+			{
+				return npc.getHealthRatio() == 0;
+			}
+		}
+
 		switch (id)
 		{
 			// These NPCs hit 0hp but don't actually die
@@ -157,28 +179,10 @@ public class NpcUtil
 				return true;
 			case NpcID.ZALCANO_9050:
 				return npc.isDead();
+			// Amoxliatl has a nonstandard health bar which isDead() doesn't work with.
+			case NpcID.AMOXLIATL:
+				return npc.getHealthRatio() == 0;
 			default:
-				if (runtimeConfig != null)
-				{
-					Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
-					if (ignoredNpcs != null && ignoredNpcs.contains(id))
-					{
-						return false;
-					}
-
-					Set<Integer> forceDeadNpcs = runtimeConfig.getForceDeadNpcs();
-					if (forceDeadNpcs != null && forceDeadNpcs.contains(id))
-					{
-						return true;
-					}
-
-					Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
-					if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
-					{
-						return npc.isDead();
-					}
-				}
-
 				final NPCComposition npcComposition = npc.getTransformedComposition();
 				if (npcComposition == null)
 				{

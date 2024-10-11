@@ -40,6 +40,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullNpcID;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.timetracking.Tab;
@@ -70,6 +71,10 @@ class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.CACTUS, NpcID.AYESHA)
 		), 13362, 13105);
 
+		add(new FarmingRegion("Aldarin", 5421, false,
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS, NpcID.ERCOS)
+		), 5165, 5166, 5422, 5677, 5678);
+
 		add(new FarmingRegion("Ardougne", 10290, false,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH, NpcID.TORRELL)
 		), 10546);
@@ -82,7 +87,7 @@ class FarmingWorld
 		));
 
 		add(new FarmingRegion("Avium Savannah", 6702, true,
-			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HARDWOOD_TREE, NpcID.MARCELLUS_12936)
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HARDWOOD_TREE, NullNpcID.NULL_13401)
 		), 6446);
 
 		add(new FarmingRegion("Brimhaven", 11058, false,

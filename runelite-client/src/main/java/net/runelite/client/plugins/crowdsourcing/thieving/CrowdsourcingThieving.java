@@ -77,7 +77,7 @@ public class CrowdsourcingThieving
 
 		return equipmentContainer.contains(ItemID.THIEVING_CAPE) ||
 			equipmentContainer.contains(ItemID.THIEVING_CAPET) ||
-			equipmentContainer.contains(ItemID.MAX_CAPE);
+			equipmentContainer.contains(ItemID.MAX_CAPE_13342);
 	}
 
 	private int getArdougneDiary()

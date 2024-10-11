@@ -49,8 +49,9 @@ import static net.runelite.api.Constants.ROOF_FLAG_POSITION;
 import net.runelite.api.GameState;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.PreMapLoad;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -115,7 +116,7 @@ public class RoofRemovalPlugin extends Plugin
 
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				performRoofRemoval();
+				client.setGameState(GameState.LOADING);
 			}
 			return true;
 		});
@@ -137,12 +138,9 @@ public class RoofRemovalPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
+	public void onPreMapLoad(PreMapLoad preMapLoad)
 	{
-		if (e.getGameState() == GameState.LOGGED_IN)
-		{
-			performRoofRemoval();
-		}
+		performRoofRemoval(preMapLoad.getWorldView(), preMapLoad.getScene());
 	}
 
 	@Subscribe
@@ -204,14 +202,13 @@ public class RoofRemovalPlugin extends Plugin
 		}
 	}
 
-	private void performRoofRemoval()
+	private void performRoofRemoval(WorldView wv, Scene scene)
 	{
-		assert client.isClientThread();
-		applyRoofOverrides();
+		applyRoofOverrides(wv, scene);
 
 		Stopwatch sw = Stopwatch.createStarted();
-		client.getScene().generateHouses();
-		log.debug("House generation duration: {}", sw.stop());
+		scene.buildRoofs();
+		log.debug("Roof building duration: {}", sw.stop());
 	}
 
 	private void loadRoofOverrides() throws IOException
@@ -250,13 +247,13 @@ public class RoofRemovalPlugin extends Plugin
 		}
 	}
 
-	private void applyRoofOverrides()
+	private void applyRoofOverrides(WorldView wv, Scene scene)
 	{
 		Stopwatch sw = Stopwatch.createStarted();
 		boolean regionsHaveOverrides = false;
 
 		outer:
-		for (int regionID : client.getMapRegions())
+		for (int regionID : wv.getMapRegions())
 		{
 			if (configOverrideRegions.contains(regionID))
 			{
@@ -277,10 +274,10 @@ public class RoofRemovalPlugin extends Plugin
 			return;
 		}
 
-		Tile[][][] tiles = client.getScene().getTiles();
+		Tile[][][] tiles = scene.getTiles();
 		// the extended tile settings control what is actually drawn, the normal
 		// tile settings are just a copy
-		byte[][][] settings = client.getScene().getExtendedTileSettings();
+		byte[][][] settings = scene.getExtendedTileSettings();
 		final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
 		for (int z = 0; z < Constants.MAX_Z; z++)
@@ -296,7 +293,7 @@ public class RoofRemovalPlugin extends Plugin
 					}
 
 					// Properly account for instances shifting worldpoints around
-					final WorldPoint wp = WorldPoint.fromLocalInstance(client, tile.getLocalLocation(), tile.getPlane());
+					final WorldPoint wp = WorldPoint.fromLocalInstance(scene, tile.getLocalLocation(), tile.getPlane());
 
 					int regionAndPlane = wp.getRegionID() << 2 | wp.getPlane();
 					if (configOverrideRegions.contains(wp.getRegionID()))

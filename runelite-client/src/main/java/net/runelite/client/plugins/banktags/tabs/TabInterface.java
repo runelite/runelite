@@ -125,6 +125,7 @@ public class TabInterface
 	private static final int SCROLL_TICK = 500;
 	private static final int INCINERATOR_WIDTH = 48;
 	private static final int INCINERATOR_HEIGHT = 39;
+	private static final int BANK_BOTTOM_OFFSET = 39; // offset from bottom of BANK_CONTENT_CONTAINER
 	private static final int BANK_ITEM_WIDTH = BankTagsPlugin.BANK_ITEM_WIDTH;
 	private static final int BANK_ITEM_HEIGHT = BankTagsPlugin.BANK_ITEM_HEIGHT;
 	private static final int BANK_ITEM_X_PADDING = BankTagsPlugin.BANK_ITEM_X_PADDING;
@@ -245,7 +246,7 @@ public class TabInterface
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_TOGGLE)
 		{
-			if (activeTab != null)
+			if (activeTab != null || tagTabActive)
 			{
 				// close the active tab when search is pressed
 				closeTag(false);
@@ -394,8 +395,12 @@ public class TabInterface
 		plugin.open(null);
 
 		upButton = downButton = newTab = scrollComponent = null;
-		parent.deleteAllChildren();
-		parent = null;
+
+		if (parent != null)
+		{
+			parent.deleteAllChildren();
+			parent = null;
+		}
 
 		tabManager.clear();
 	}
@@ -626,7 +631,15 @@ public class TabInterface
 		{
 			case TAB_OP_OPEN_TAG:
 			{
+				if (client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == PotionStorage.BANKTAB_POTIONSTORE)
+				{
+					// Opening a tag tab with the potion store open would leave the store open in the bankground,
+					// making deposits not work. Force close the potion store.
+					log.debug("Closing potion store");
+					client.menuAction(-1, ComponentID.BANK_POTION_STORE, MenuAction.CC_OP, 1, -1, "Potion store", "");
+				}
 				client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+
 				Widget clicked = event.getSource();
 
 				TagTab tab = tabManager.find(Text.removeTags(clicked.getName()));
@@ -799,14 +812,15 @@ public class TabInterface
 			&& event.getActionParam1() == ComponentID.BANK_ITEM_CONTAINER
 			&& event.getOption().equals(DUPLICATE_ITEM))
 		{
-			event.getMenuEntry().setType(MenuAction.RUNELITE);
+			// use RUNELITE_LOW_PRIORITY to avoid sending the op to the server, but also keep it right-click only
+			event.getMenuEntry().setType(MenuAction.RUNELITE_LOW_PRIORITY);
 			event.getMenuEntry().onClick(this::opDuplicateItem);
 		}
 		if (activeTab != null
 			&& event.getActionParam1() == ComponentID.BANK_ITEM_CONTAINER
 			&& event.getOption().equals(REMOVE_LAYOUT))
 		{
-			event.getMenuEntry().setType(MenuAction.RUNELITE);
+			event.getMenuEntry().setType(MenuAction.RUNELITE_LOW_PRIORITY);
 			event.getMenuEntry().onClick(this::opRemoveLayout);
 		}
 		else if (event.getActionParam1() == ComponentID.BANK_DEPOSIT_INVENTORY
@@ -864,7 +878,7 @@ public class TabInterface
 			}
 		}
 
-		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items"))
+		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items") || event.getMenuOption().equals("Potion store"))
 		{
 			closeTag(false);
 		}
@@ -1160,12 +1174,11 @@ public class TabInterface
 	private void repositionButtons()
 	{
 		Widget incinerator = client.getWidget(ComponentID.BANK_INCINERATOR);
-		int incineratorHeight = 0;
+		int offset = BANK_BOTTOM_OFFSET;
 		if (incinerator != null && !incinerator.isHidden())
 		{
 			incinerator.setOriginalHeight(INCINERATOR_HEIGHT);
 			incinerator.setOriginalWidth(INCINERATOR_WIDTH);
-			incinerator.setOriginalY(INCINERATOR_HEIGHT);
 
 			// ~bankmain_build is run three times when the bank is opened, the first is from ~bankmain_viewbuttons
 			// which is prior to the incinerator being setup.
@@ -1176,20 +1189,31 @@ public class TabInterface
 				child.setOriginalWidth(INCINERATOR_WIDTH);
 				child.setWidthMode(WidgetSizeMode.ABSOLUTE);
 				child.setHeightMode(WidgetSizeMode.ABSOLUTE);
-				child.setType(WidgetType.GRAPHIC);
-				child.setSpriteId(TabSprites.INCINERATOR.getSpriteId());
 			}
 
 			incinerator.revalidate();
 
-			incineratorHeight = incinerator.getHeight();
+			offset = incinerator.getHeight() + incinerator.getOriginalY();
+		}
+
+		Widget potionStore = client.getWidget(ComponentID.BANK_POTION_STORE);
+		if (potionStore != null && !potionStore.isSelfHidden())
+		{
+			potionStore.setOriginalY(offset);
+			potionStore.setOriginalHeight(43); // remove some unused vertical space to make it slightly smaller
+			potionStore.revalidate();
+
+			offset = potionStore.getHeight() + potionStore.getOriginalY();
 		}
 
 		scrollComponent.setOriginalY(41 + BUTTON_HEIGHT);
 		scrollComponent.setOriginalWidth(TAB_WIDTH + MARGIN * 2);
 
 		// Keep the tab layer height a multiple of the tab heights
-		int tabLayerHeight = parent.getHeight() - scrollComponent.getOriginalY() - 61 - incineratorHeight;
+		int tabLayerHeight = parent.getHeight()
+				- scrollComponent.getOriginalY()
+				- BUTTON_HEIGHT // the bottom button
+				- offset; // incinerator etc.
 		tabCount = tabLayerHeight / (TAB_HEIGHT + MARGIN);
 		scrollComponent.setOriginalHeight(tabCount * (TAB_HEIGHT + MARGIN));
 

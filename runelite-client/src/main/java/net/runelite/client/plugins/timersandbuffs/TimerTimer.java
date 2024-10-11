@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, winterdaze
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
-import lombok.Getter;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import java.awt.image.BufferedImage;
-import java.awt.Color;
 import java.time.Duration;
-import java.time.Instant;
-import org.apache.commons.lang3.time.DurationFormatUtils;
+import java.time.temporal.ChronoUnit;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-@Getter
-class ElapsedTimer extends InfoBox
+class TimerTimer extends Timer
 {
-	private final Instant startTime;
-	private final Instant lastTime;
+	private final GameTimer timer;
+	int ticks;
 
-	// Creates a timer that counts up if lastTime is null, or a paused timer if lastTime is defined
-	ElapsedTimer(BufferedImage image, TimersPlugin plugin, Instant startTime, Instant lastTime)
+	TimerTimer(GameTimer timer, Duration duration, Plugin plugin)
 	{
-		super(image, plugin);
-		this.startTime = startTime;
-		this.lastTime = lastTime;
+		super(duration.toMillis(), ChronoUnit.MILLIS, null, plugin);
+		this.timer = timer;
+		setPriority(InfoBoxPriority.MED);
+	}
+
+	public GameTimer getTimer()
+	{
+		return timer;
 	}
 
 	@Override
-	public String getText()
+	public String getName()
 	{
-		if (startTime == null)
-		{
-			return null;
-		}
-
-		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
-		final String formatString = "mm:ss";
-		return DurationFormatUtils.formatDuration(time.toMillis(), formatString, true);
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return Color.WHITE;
-	}
-
-	@Override
-	public String getTooltip()
-	{
-		if (startTime == null)
-		{
-			return null;
-		}
-
-		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
-		return "Elapsed time: " +  DurationFormatUtils.formatDuration(time.toMillis(), "HH:mm:ss", true);
+		return timer.name();
 	}
 }

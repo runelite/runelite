@@ -26,4 +26,5 @@ package net.runelite.api;
 
 public interface WorldEntity
 {
+	WorldView getWorldView();
 }

@@ -461,4 +461,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 2)
 	public static final int MOTHERLODE_HUD_UPDATE = 1634;
+
+	@ScriptArguments(integer = 1)
+	public static final int POTIONSTORE_DOSES = 3750;
+
+	@ScriptArguments(integer = 1)
+	public static final int POTIONSTORE_WITHDRAW_DOSES = 4818;
 }

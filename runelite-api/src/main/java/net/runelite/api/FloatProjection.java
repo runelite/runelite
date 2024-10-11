@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +24,10 @@
  */
 package net.runelite.api;
 
-public interface HealthBar
+public interface FloatProjection extends Projection
 {
-	SpritePixels getHealthBarFrontSprite();
-
-	SpritePixels getHealthBarBackSprite();
-
-	int getHealthBarFrontSpriteId();
-
-	void setPadding(int padding);
+	/**
+	 * Get the projection as a 4x4 matrix
+	 */
+	float[] getProjection();
 }

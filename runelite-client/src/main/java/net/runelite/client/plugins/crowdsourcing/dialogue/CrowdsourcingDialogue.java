@@ -54,7 +54,7 @@ public class CrowdsourcingDialogue
 	private String sanitize(String dialogue)
 	{
 		String username = client.getLocalPlayer().getName();
-		return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
+		return dialogue.replace(" ", " ").replace(username, USERNAME_TOKEN);
 	}
 
 	@Subscribe
@@ -136,8 +136,9 @@ public class CrowdsourcingDialogue
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() == ChatMessageType.DIALOG
-		|| chatMessage.getType() == ChatMessageType.MESBOX)
+		if ((chatMessage.getType() == ChatMessageType.DIALOG
+			|| chatMessage.getType() == ChatMessageType.MESBOX)
+			&& client.getLocalPlayer().getName() != null)
 		{
 			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());
 			manager.storeEvent(data);

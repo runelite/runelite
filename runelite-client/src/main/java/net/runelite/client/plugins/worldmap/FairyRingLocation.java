@@ -65,6 +65,7 @@ enum FairyRingLocation
 	CIS("CIS", new WorldPoint(1636, 3869, 0)),
 	CJR("CJR", new WorldPoint(2704, 3578, 0)),
 	// CKP - Exists in game but not on World Map
+	CKQ("CKQ", new WorldPoint(1358, 2943, 0)),
 	CKR("CKR", new WorldPoint(2800, 3005, 0)),
 	CKS("CKS", new WorldPoint(3446, 3472, 0)),
 	CLP("CLP", new WorldPoint(3081, 3208, 0)),

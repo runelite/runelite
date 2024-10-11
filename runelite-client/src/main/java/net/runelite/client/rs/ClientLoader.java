@@ -26,10 +26,8 @@
  */
 package net.runelite.client.rs;
 
-import com.google.archivepatcher.applier.FileByFileV1DeltaApplier;
 import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
-import com.google.common.hash.HashingOutputStream;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import java.applet.Applet;
@@ -82,7 +80,6 @@ public class ClientLoader implements Supplier<Applet>
 	private static final int NUM_ATTEMPTS = 6;
 	private static File LOCK_FILE = new File(RuneLite.CACHE_DIR, "cache.lock");
 	private static File VANILLA_CACHE = new File(RuneLite.CACHE_DIR, "vanilla.cache");
-	private static File PATCHED_CACHE = new File(RuneLite.CACHE_DIR, "patched.cache");
 
 	private final OkHttpClient okHttpClient;
 	private final ClientConfigLoader clientConfigLoader;
@@ -160,15 +157,21 @@ public class ClientLoader implements Supplier<Applet>
 
 				if (updateCheckMode == AUTO)
 				{
-					SplashScreen.stage(.35, null, "Patching");
-					applyPatch();
+					SplashScreen.stage(.35, null, "Checking version");
+					checkVanillaHash();
 				}
 
 				SplashScreen.stage(.40, null, "Loading client");
-				File jarFile = updateCheckMode == AUTO ? PATCHED_CACHE : VANILLA_CACHE;
-				// create the classloader for the jar while we hold the lock, and eagerly load and link all classes
-				// in the jar. Otherwise the jar can change on disk and can break future classloads.
-				classLoader = createJarClassLoader(jarFile);
+				if (updateCheckMode == VANILLA)
+				{
+					// create the classloader for the jar while we hold the lock, and eagerly load and link all classes
+					// in the jar. Otherwise the jar can change on disk and can break future classloads.
+					classLoader = createJarClassLoader(VANILLA_CACHE);
+				}
+				else
+				{
+					classLoader = ClientLoader.class.getClassLoader();
+				}
 			}
 
 			SplashScreen.stage(.465, "Starting", "Starting Old School RuneScape");
@@ -441,17 +444,16 @@ public class ClientLoader implements Supplier<Applet>
 		}
 	}
 
-	private void applyPatch() throws IOException
+	private void checkVanillaHash() throws IOException
 	{
 		byte[] vanillaHash = new byte[64];
-		byte[] appliedPatchHash = new byte[64];
 
 		try (InputStream is = ClientLoader.class.getResourceAsStream("/client.serial"))
 		{
 			if (is == null)
 			{
 				SwingUtilities.invokeLater(() ->
-					new FatalErrorDialog("The client-patch is missing from the classpath. If you are building " +
+					new FatalErrorDialog("The injected-client is missing from the classpath. If you are building " +
 						"the client you need to re-run maven")
 						.addHelpButtons()
 						.addBuildingGuide()
@@ -461,7 +463,6 @@ public class ClientLoader implements Supplier<Applet>
 
 			DataInputStream dis = new DataInputStream(is);
 			dis.readFully(vanillaHash);
-			dis.readFully(appliedPatchHash);
 		}
 
 		byte[] vanillaCacheHash = Files.asByteSource(VANILLA_CACHE).hash(Hashing.sha512()).asBytes();
@@ -469,40 +470,6 @@ public class ClientLoader implements Supplier<Applet>
 		{
 			log.info("Client is outdated!");
 			updateCheckMode = VANILLA;
-			return;
-		}
-
-		if (PATCHED_CACHE.exists())
-		{
-			byte[] diskBytes = Files.asByteSource(PATCHED_CACHE).hash(Hashing.sha512()).asBytes();
-			if (!Arrays.equals(diskBytes, appliedPatchHash))
-			{
-				log.warn("Cached patch hash mismatches, regenerating patch");
-			}
-			else
-			{
-				log.info("Using cached patched client");
-				return;
-			}
-		}
-
-		try (HashingOutputStream hos = new HashingOutputStream(Hashing.sha512(), java.nio.file.Files.newOutputStream(PATCHED_CACHE.toPath()));
-			InputStream patch = ClientLoader.class.getResourceAsStream("/client.patch"))
-		{
-			new FileByFileV1DeltaApplier().applyDelta(VANILLA_CACHE, patch, hos);
-
-			if (!Arrays.equals(hos.hash().asBytes(), appliedPatchHash))
-			{
-				log.error("Patched client hash mismatch");
-				updateCheckMode = VANILLA;
-				return;
-			}
-		}
-		catch (IOException e)
-		{
-			log.error("Unable to apply patch despite hash matching", e);
-			updateCheckMode = VANILLA;
-			return;
 		}
 	}
 
@@ -510,7 +477,9 @@ public class ClientLoader implements Supplier<Applet>
 	{
 		try (JarFile jarFile = new JarFile(jar))
 		{
-			ClassLoader classLoader = new ClassLoader(ClientLoader.class.getClassLoader())
+			// We explicitly use the platform class loader so that the patched classes do not get used
+			// when loading vanilla
+			ClassLoader classLoader = new ClassLoader(ClassLoader.getPlatformClassLoader())
 			{
 				@Override
 				protected Class<?> findClass(String name) throws ClassNotFoundException
@@ -578,7 +547,7 @@ public class ClientLoader implements Supplier<Applet>
 
 		if (rs instanceof Client)
 		{
-			log.info("client-patch {}", ((Client) rs).getBuildID());
+			log.info("injected-client {}", ((Client) rs).getBuildID());
 		}
 
 		return rs;

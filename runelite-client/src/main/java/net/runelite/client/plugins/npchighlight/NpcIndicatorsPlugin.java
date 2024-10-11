@@ -49,6 +49,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -86,6 +87,8 @@ import net.runelite.client.util.WildcardMatcher;
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
+	// Longest known respawn time is currently held by Suspicious Water.
+	private static final int MAX_RESPAWN_TIME_TICKS = 500;
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
@@ -342,14 +345,14 @@ public class NpcIndicatorsPlugin extends Plugin
 		MenuEntry parent = client.createMenuEntry(idx--)
 			.setOption("Tag color")
 			.setTarget(target)
-			.setType(MenuAction.RUNELITE_SUBMENU);
+			.setType(MenuAction.RUNELITE);
+		Menu submenu = parent.createSubMenu();
 
 		for (final Color c : colors)
 		{
-			client.createMenuEntry(idx--)
+			submenu.createMenuEntry(0)
 				.setOption(ColorUtil.prependColorTag("Set color", c))
 				.setType(MenuAction.RUNELITE)
-				.setParent(parent)
 				.onClick(e ->
 				{
 					setNpcHighlightColor(npc.getId(), c);
@@ -357,10 +360,9 @@ public class NpcIndicatorsPlugin extends Plugin
 				});
 		}
 
-		client.createMenuEntry(idx--)
+		submenu.createMenuEntry(0)
 			.setOption("Pick color")
 			.setType(MenuAction.RUNELITE)
-			.setParent(parent)
 			.onClick(e -> SwingUtilities.invokeLater(() ->
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
@@ -375,10 +377,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (getNpcHighlightColor(npc.getId()) != null)
 		{
-			client.createMenuEntry(idx--)
+			submenu.createMenuEntry(0)
 				.setOption("Reset")
 				.setType(MenuAction.RUNELITE)
-				.setParent(parent)
 				.onClick(e ->
 				{
 					unsetNpcHighlightColor(npc.getId());
@@ -394,7 +395,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		MenuEntry parent = client.createMenuEntry(idx--)
 			.setOption("Tag style")
 			.setTarget(target)
-			.setType(MenuAction.RUNELITE_SUBMENU);
+			.setType(MenuAction.RUNELITE);
+		Menu submenu = parent.createSubMenu();
 
 		String[] names = {"Hull", "Tile", "True tile", "South-west tile", "South-west true tile", "Outline"};
 		String[] styles = {STYLE_HULL, STYLE_TILE, STYLE_TRUE_TILE, STYLE_SW_TILE, STYLE_SW_TRUE_TILE, STYLE_OUTLINE};
@@ -402,10 +404,9 @@ public class NpcIndicatorsPlugin extends Plugin
 		for (int i = 0; i < names.length; ++i)
 		{
 			final String style = styles[i];
-			client.createMenuEntry(idx--)
+			submenu.createMenuEntry(0)
 				.setOption(names[i])
 				.setType(MenuAction.RUNELITE)
-				.setParent(parent)
 				.onClick(e ->
 				{
 					setNpcTagStyle(npc.getId(), style);
@@ -415,10 +416,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (getNpcTagStyle(npc.getId()) != null)
 		{
-			client.createMenuEntry(idx--)
+			submenu.createMenuEntry(0)
 				.setOption("Reset")
 				.setType(MenuAction.RUNELITE)
-				.setParent(parent)
 				.onClick(e ->
 				{
 					unsetNpcTagStyle(npc.getId());
@@ -750,7 +750,9 @@ public class NpcIndicatorsPlugin extends Plugin
 						// By killing a monster and leaving the area before seeing it again, an erroneously lengthy
 						// respawn time can be recorded. Thus, if the respawn time is already set and is greater than
 						// the observed time, assume that the lower observed respawn time is correct.
-						if (mn.getRespawnTime() == -1 || respawnTime < mn.getRespawnTime())
+						// Similarly, if the observed respawn time exceeds the maximum known respawn time,
+						// we can ignore the calculated time as obviously incorrect.
+						if ((mn.getRespawnTime() == -1 || respawnTime < mn.getRespawnTime()) && respawnTime <= MAX_RESPAWN_TIME_TICKS)
 						{
 							mn.setRespawnTime(respawnTime);
 						}

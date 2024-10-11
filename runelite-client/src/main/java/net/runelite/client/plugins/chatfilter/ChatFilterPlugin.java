@@ -341,8 +341,8 @@ public class ChatFilterPlugin extends Plugin
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
 			.replace('\u00A0', ' ')
-			.replaceAll("<lt>", "<")
-			.replaceAll("<gt>", ">");
+			.replace("<lt>", "<")
+			.replace("<gt>", ">");
 		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
 

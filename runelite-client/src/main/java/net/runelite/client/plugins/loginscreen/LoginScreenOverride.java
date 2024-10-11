@@ -47,6 +47,8 @@ public enum LoginScreenOverride
 	NEX("nex.jpg"),
 	TOMBS_OF_AMASCUT("toa.jpg"),
 	VARLAMORE("varlamore.jpg"),
+	VARLAMORE_2("varlamore2.jpg"),
+	WHILE_GUTHIX_SLEEPS("wgs.jpg"),
 	CUSTOM,
 	RANDOM;
 

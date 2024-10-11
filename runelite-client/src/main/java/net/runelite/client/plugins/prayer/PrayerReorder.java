@@ -50,6 +50,8 @@ import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetConfig.DRAG;
 import static net.runelite.api.widgets.WidgetConfig.DRAG_ON;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -407,6 +409,8 @@ class PrayerReorder
 
 				++index;
 			}
+
+			createWarning(unlocked);
 		}
 
 		if (isInterfaceOpen(InterfaceID.QUICK_PRAYER))
@@ -452,6 +456,23 @@ class PrayerReorder
 
 				++index;
 			}
+		}
+	}
+
+	private void createWarning(boolean unlocked)
+	{
+		Widget w = client.getWidget(ComponentID.PRAYER_PARENT);
+		w.deleteAllChildren();
+
+		if (unlocked)
+		{
+			Widget c = w.createChild(WidgetType.RECTANGLE);
+			c.setHeightMode(WidgetSizeMode.MINUS);
+			c.setWidthMode(WidgetSizeMode.MINUS);
+			c.setTextColor(0xff0000);
+			c.setFilled(true);
+			c.setOpacity(220);
+			c.revalidate();
 		}
 	}
 

@@ -64,6 +64,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
@@ -94,11 +95,15 @@ public class LayoutManager
 	private final TabManager tabManager;
 	private final TabInterface tabInterface;
 	private final ChatMessageManager chatMessageManager;
+	private final PotionStorage potionStorage;
+	private final EventBus eventBus;
 
 	private final List<PluginAutoLayout> autoLayouts = new ArrayList<>();
 
 	@Inject
-	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager, BankSearch bankSearch, TabManager tabManager, TabInterface tabInterface, ChatMessageManager chatMessageManager)
+	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager,
+		BankSearch bankSearch, TabManager tabManager, TabInterface tabInterface, ChatMessageManager chatMessageManager,
+		PotionStorage potionStorage, EventBus eventBus)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -108,8 +113,22 @@ public class LayoutManager
 		this.tabManager = tabManager;
 		this.tabInterface = tabInterface;
 		this.chatMessageManager = chatMessageManager;
+		this.potionStorage = potionStorage;
+		this.eventBus = eventBus;
 
 		registerAutoLayout(plugin, "Default", new DefaultLayout());
+	}
+
+	public void register()
+	{
+		eventBus.register(this);
+		eventBus.register(potionStorage);
+	}
+
+	public void unregister()
+	{
+		eventBus.unregister(this);
+		eventBus.unregister(potionStorage);
 	}
 
 	private void layout(Layout l)
@@ -144,7 +163,8 @@ public class LayoutManager
 		ItemMatcher[] matchers = {
 			this::matchExact,
 			this::matchPlaceholder,
-			this::matchesVariant
+			this::matchesVariant,
+			potionStorage::matches
 		};
 
 		Map<Integer, Integer> layoutToBank = new HashMap<>();
@@ -165,13 +185,19 @@ public class LayoutManager
 					layoutToBank.put(itemId, matchedId);
 					bankItems.remove(matchedId);
 
+					// Items with objvars can have both the item and the placeholder in the bank at the same time.
+					// Remove both from bankItems so that it won't get added later as an unlayouted tagged item.
+					ItemComposition matchedItemDef = client.getItemDefinition(matchedId);
+					boolean removedPlaceholder = bankItems.remove(matchedItemDef.getPlaceholderId());
+
 					if (log.isDebugEnabled())
 					{
-						var from = itemManager.getItemComposition(itemId);
-						var to = itemManager.getItemComposition(matchedId);
-						log.debug("Matched {}{} -> {}{}",
+						ItemComposition from = itemManager.getItemComposition(itemId);
+						ItemComposition to = matchedItemDef;
+						log.debug("Matched {}{} -> {}{} removed placeholder: {}",
 							from.getName(), from.getPlaceholderId() > -1 && from.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
-							to.getName(), to.getPlaceholderId() > -1 && to.getPlaceholderTemplateId() > -1 ? " (placeholder)" : ""
+							to.getName(), to.getPlaceholderId() > -1 && to.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
+							removedPlaceholder
 						);
 					}
 				}
@@ -201,7 +227,7 @@ public class LayoutManager
 			}
 
 			Widget c = itemContainer.getChild(pos);
-			drawItem(l, c, bankItemId, bank.count(bankItemId), pos);
+			drawItem(l, c, bankItemId, count(bank, bankItemId), pos);
 		}
 
 		int lastEmptySlot = -1;
@@ -221,13 +247,17 @@ public class LayoutManager
 				break;
 			}
 
-			drawItem(l, c, itemId, bank.count(itemId), lastEmptySlot);
+			drawItem(l, c, itemId, count(bank, itemId), lastEmptySlot);
 
-			int layoutItemId = itemManager.canonicalize(itemId);
 			if (log.isDebugEnabled())
 			{
-				log.debug("Adding {} to layout", itemManager.getItemComposition(layoutItemId).getName());
+				ItemComposition def = itemManager.getItemComposition(itemId);
+				log.debug("Bank contains {}{} but is not in the layout",
+					def.getName(),
+					def.getPlaceholderTemplateId() > -1 && def.getPlaceholderId() > -1 ? " (placeholder)" : "");
 			}
+
+			int layoutItemId = itemManager.canonicalize(itemId);
 			l.addItem(layoutItemId);
 			modified = true;
 		}
@@ -256,6 +286,16 @@ public class LayoutManager
 		}
 	}
 
+	private int count(ItemContainer bank, int itemId)
+	{
+		int count = bank.count(itemId);
+		if (count > 0)
+		{
+			return count;
+		}
+		return potionStorage.count(itemId);
+	}
+
 	// mostly from ~bankmain_drawitem
 	private void drawItem(Layout l, Widget c, int item, int qty, int idx)
 	{
@@ -271,9 +311,9 @@ public class LayoutManager
 			c.clearActions();
 
 			// Jagex Placeholder
-			if (qty == 1 && def.getPlaceholderTemplateId() >= 0 && def.getPlaceholderId() >= 0)
+			if (def.getPlaceholderTemplateId() >= 0 && def.getPlaceholderId() >= 0)
 			{
-				c.setItemQuantity(0);
+				c.setItemQuantity(qty);
 				c.setOpacity(120);
 				c.setAction(8 - 1, "Release");
 				c.setAction(10 - 1, "Examine");
@@ -507,6 +547,12 @@ public class LayoutManager
 			BankTag activeTag = plugin.getActiveTag();
 			if (activeTag != null)
 			{
+				// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
+				// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
+				// which is after this is run, but before the var/inv transmit listeners run, so that we will have
+				// them by the time the inv transmit listener runs.
+				potionStorage.cachePotions = true;
+
 				Layout layout = activeTag.layout();
 				if (layout != null)
 				{
@@ -598,6 +644,15 @@ public class LayoutManager
 				if (idx > -1 && menu.getParam0() != idx)
 				{
 					menu.setParam0(idx);
+					return;
+				}
+
+				idx = potionStorage.find(w.getItemId());
+				if (idx > -1)
+				{
+					potionStorage.prepareWidgets();
+					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
+					menu.setParam0(idx * PotionStorage.COMPONENTS_PER_POTION);
 				}
 			}
 		}

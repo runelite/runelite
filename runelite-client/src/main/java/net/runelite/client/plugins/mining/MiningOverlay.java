@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Instant;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
@@ -42,6 +45,23 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class MiningOverlay extends OverlayPanel
 {
 	private static final String MINING_RESET = "Reset";
+	private static final Set<Integer> WAll_ANIMATIONS = ImmutableSet.of(
+		AnimationID.MINING_MOTHERLODE_3A,
+		AnimationID.MINING_MOTHERLODE_ADAMANT,
+		AnimationID.MINING_MOTHERLODE_BLACK,
+		AnimationID.MINING_MOTHERLODE_BRONZE,
+		AnimationID.MINING_MOTHERLODE_CRYSTAL,
+		AnimationID.MINING_MOTHERLODE_DRAGON,
+		AnimationID.MINING_MOTHERLODE_DRAGON_OR,
+		AnimationID.MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER,
+		AnimationID.MINING_MOTHERLODE_DRAGON_UPGRADED,
+		AnimationID.MINING_MOTHERLODE_GILDED,
+		AnimationID.MINING_MOTHERLODE_INFERNAL,
+		AnimationID.MINING_MOTHERLODE_IRON,
+		AnimationID.MINING_MOTHERLODE_MITHRIL,
+		AnimationID.MINING_MOTHERLODE_RUNE,
+		AnimationID.MINING_MOTHERLODE_STEEL,
+		AnimationID.MINING_MOTHERLODE_TRAILBLAZER);
 
 	private final Client client;
 	private final MiningPlugin plugin;
@@ -71,7 +91,13 @@ class MiningOverlay extends OverlayPanel
 		}
 
 		Pickaxe pickaxe = plugin.getPickaxe();
-		if (pickaxe != null && (pickaxe.matchesMiningAnimation(client.getLocalPlayer()) || client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING))
+		if (pickaxe != null &&
+				(pickaxe.matchesMiningAnimation(client.getLocalPlayer())
+						|| client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING
+						// when receiving ore from a wall the animation sets to -1 before starting up again
+						|| (WAll_ANIMATIONS.contains(plugin.getLastActionAnimationId())
+								&& plugin.getLastAnimationChange().isAfter(Instant.now().minusMillis(1800))))
+			)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Mining")

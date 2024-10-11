@@ -598,10 +598,19 @@ public interface Client extends OAuthApi, GameEngine
 	World[] getWorldList();
 
 	/**
+	 * Get the client menu.
+	 */
+	@Nonnull
+	Menu getMenu();
+
+	/**
 	 * Create a new menu entry
 	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
 	 * @return the newly created menu entry
+	 * @see #getMenu()
+	 * @see Menu#createMenuEntry(int)
 	 */
+	@Deprecated
 	MenuEntry createMenuEntry(int idx);
 
 	/**
@@ -609,7 +618,10 @@ public interface Client extends OAuthApi, GameEngine
 	 * clicked and activated.
 	 *
 	 * @return array of open menu entries
+	 * @see #getMenu()
+	 * @see Menu#getMenuEntries()
 	 */
+	@Deprecated
 	MenuEntry[] getMenuEntries();
 
 	/**
@@ -619,7 +631,10 @@ public interface Client extends OAuthApi, GameEngine
 	 * event, since setting the menu entries will be overwritten the next frame
 	 *
 	 * @param entries new array of open menu entries
+	 * @see #getMenu()
+	 * @see Menu#setMenuEntries(MenuEntry[])
 	 */
+	@Deprecated
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
@@ -651,28 +666,36 @@ public interface Client extends OAuthApi, GameEngine
 	 * Get the menu x location. Only valid if the menu is open.
 	 *
 	 * @return the menu x location
+	 * @see Menu#getMenuX()
 	 */
+	@Deprecated
 	int getMenuX();
 
 	/**
 	 * Get the menu y location. Only valid if the menu is open.
 	 *
 	 * @return the menu y location
+	 * @see Menu#getMenuY()
 	 */
+	@Deprecated
 	int getMenuY();
 
 	/**
 	 * Get the menu height. Only valid if the menu is open.
 	 *
 	 * @return the menu height
+	 * @see Menu#getMenuHeight()
 	 */
+	@Deprecated
 	int getMenuHeight();
 
 	/**
 	 * Get the menu width. Only valid if the menu is open.
 	 *
 	 * @return the menu width
+	 * @see Menu#getMenuWidth()
 	 */
+	@Deprecated
 	int getMenuWidth();
 
 	/**
@@ -2017,6 +2040,18 @@ public interface Client extends OAuthApi, GameEngine
 	WorldView getTopLevelWorldView();
 
 	/**
+	 * Whether camera shaking effects are disabled at e.g. Barrows, ToA
+	 * @return
+	 */
+	boolean isCameraShakeDisabled();
+
+	/**
+	 * Set whether to disable camera shaking effects at e.g. Barrows, ToA
+	 * @param disabled
+	 */
+	void setCameraShakeDisabled(boolean disabled);
+
+	/**
 	 * Contains a 3D array of template chunks for instanced areas.
 	 * <p>
 	 * The array returned is of format [z][x][y], where z is the
@@ -2035,6 +2070,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the array of instance template chunks
 	 * @see Constants#CHUNK_SIZE
 	 * @see InstanceTemplates
+	 * @see WorldView#getInstanceTemplateChunks()
 	 */
 	@Deprecated
 	int[][][] getInstanceTemplateChunks();
@@ -2056,6 +2092,7 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Checks whether the scene is in an instanced region.
+	 * @see WorldView#isInstance()
 	 */
 	@Deprecated
 	boolean isInInstancedRegion();
@@ -2070,6 +2107,7 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Gets the current scene
+	 * @see WorldView#getScene()
 	 */
 	@Deprecated
 	default Scene getScene()
@@ -2082,6 +2120,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets a list of all valid players from the player cache.
 	 *
 	 * @return a list of all players
+	 * @see WorldView#players()
 	 */
 	@Deprecated
 	default List<Player> getPlayers()
@@ -2096,6 +2135,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets a list of all valid NPCs from the NPC cache.
 	 *
 	 * @return a list of all NPCs
+	 * @see WorldView#npcs()
 	 */
 	@Deprecated
 	default List<NPC> getNpcs()
@@ -2110,6 +2150,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets an array of all cached NPCs.
 	 *
 	 * @return cached NPCs
+	 * @see WorldView#npcs()
 	 */
 	@Deprecated
 	default NPC[] getCachedNPCs()
@@ -2122,6 +2163,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets an array of all cached players.
 	 *
 	 * @return cached players
+	 * @see WorldView#players()
 	 */
 	@Deprecated
 	default Player[] getCachedPlayers()
@@ -2136,6 +2178,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * The index into the array is the plane/z-axis coordinate.
 	 *
 	 * @return the collision data
+	 * @see WorldView#getCollisionMaps()
 	 */
 	@Nullable
 	@Deprecated
@@ -2155,6 +2198,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * level use a tile offset and are still considered plane 0 by the game.
 	 *
 	 * @return the plane
+	 * @see WorldView#getPlane()
 	 */
 	@Deprecated
 	default int getPlane()
@@ -2167,6 +2211,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * current scene.
 	 *
 	 * @return the tile heights
+	 * @see WorldView#getTileHeights()
 	 */
 	@Deprecated
 	default int[][][] getTileHeights()
@@ -2179,6 +2224,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * current scene.
 	 *
 	 * @return the tile settings
+	 * @see WorldView#getTileSettings()
 	 */
 	@Deprecated
 	default byte[][][] getTileSettings()
@@ -2193,6 +2239,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base x-axis coordinate
+	 * @see WorldView#getBaseX()
 	 */
 	@Deprecated
 	default int getBaseX()
@@ -2208,6 +2255,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * the current scene (ie. the bottom-left most coordinates in the scene).
 	 *
 	 * @return the base y-axis coordinate
+	 * @see WorldView#getBaseY()
 	 */
 	@Deprecated
 	default int getBaseY()
@@ -2232,6 +2280,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param targetX target x - if an actor target is supplied should be the target x
 	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
+	 * @see WorldView#createProjectile(int, int, int, int, int, int, int, int, int, int, Actor, int, int)
 	 */
 	@Deprecated
 	default Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
@@ -2244,6 +2293,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets a list of all projectiles currently spawned.
 	 *
 	 * @return all projectiles
+	 * @see WorldView#getProjectiles()
 	 */
 	@Deprecated
 	default Deque<Projectile> getProjectiles()
@@ -2255,6 +2305,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets a list of all graphics objects currently drawn.
 	 *
 	 * @return all graphics objects
+	 * @see WorldView#getGraphicsObjects()
 	 */
 	@Deprecated
 	default Deque<GraphicsObject> getGraphicsObjects()
@@ -2266,6 +2317,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets the currently selected tile. (ie. last right clicked tile)
 	 *
 	 * @return the selected tile
+	 * @see WorldView#getSelectedSceneTile()
 	 */
 	@Deprecated
 	@Nullable

@@ -47,6 +47,7 @@ import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -57,6 +58,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
@@ -94,6 +96,9 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private ChatMessageManager chatManager;
+
+	@Inject
+	private Notifier notifier;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -133,8 +138,8 @@ public class AttackStylesPlugin extends Plugin
 		{
 			updateWidgetsToHide(false);
 			processWidgets();
+			hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), false);
 		});
-		hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), false);
 		warnedSkills.clear();
 	}
 
@@ -236,17 +241,22 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (attackStyle != prevAttackStyle && warnedSkillSelected && config.showChatWarnings())
+		if (attackStyle != prevAttackStyle && warnedSkillSelected)
 		{
-			final String message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Your attack style has been changed to " + attackStyle.getName())
-				.build();
+			if (config.showChatWarnings())
+			{
+				final String message = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your attack style has been changed to " + attackStyle.getName())
+					.build();
 
-			chatManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(message)
-				.build());
+				chatManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
+
+			notifier.notify(config.warningNotification(), "Attack style changed to " + attackStyle.getName() + "!");
 		}
 		prevAttackStyle = attackStyle;
 	}
@@ -287,6 +297,14 @@ public class AttackStylesPlugin extends Plugin
 		int weaponStyleEnum = client.getEnum(EnumID.WEAPON_STYLES).getIntValue(weaponType);
 		if (weaponStyleEnum == -1)
 		{
+			// Blue moon spear
+			if (weaponType == 22)
+			{
+				return new AttackStyle[]{
+					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING
+				};
+			}
+
 			if (weaponType == 30)
 			{
 				// Partisan

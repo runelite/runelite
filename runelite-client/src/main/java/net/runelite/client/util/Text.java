@@ -143,8 +143,8 @@ public class Text
 	public static String sanitizeMultilineText(String str)
 	{
 		return removeTags(str
-			.replaceAll("-<br>", "-")
-			.replaceAll("<br>", " ")
+			.replace("-<br>", "-")
+			.replace("<br>", " ")
 			.replaceAll("[ ]+", " "));
 	}
 
