@@ -130,32 +130,36 @@ class PotionStorage
 	private void rebuildPotions()
 	{
 		var potionStorePotions = client.getEnum(EnumID.POTIONSTORE_POTIONS);
-		potions = new Potion[potionStorePotions.size()];
+		var potionStoreUnfinishedPotions = client.getEnum(EnumID.POTIONSTORE_UNFINISHED_POTIONS);
+		potions = new Potion[potionStorePotions.size() + potionStoreUnfinishedPotions.size()];
 		int potionsIdx = 0;
-		for (int potionEnumId : potionStorePotions.getIntVals())
+		for (EnumComposition e : new EnumComposition[]{potionStorePotions, potionStoreUnfinishedPotions})
 		{
-			var potionEnum = client.getEnum(potionEnumId);
-			client.runScript(ScriptID.POTIONSTORE_DOSES, potionEnumId);
-			int doses = client.getIntStack()[0];
-			client.runScript(ScriptID.POTIONSTORE_WITHDRAW_DOSES, potionEnumId);
-			int withdrawDoses = client.getIntStack()[0];
-
-			if (doses > 0 && withdrawDoses > 0)
+			for (int potionEnumId : e.getIntVals())
 			{
-				Potion p = new Potion();
-				p.potionEnum = potionEnum;
-				p.itemId = potionEnum.getIntValue(withdrawDoses);
-				p.doses = doses;
-				p.withdrawDoses = withdrawDoses;
-				potions[potionsIdx] = p;
+				var potionEnum = client.getEnum(potionEnumId);
+				client.runScript(ScriptID.POTIONSTORE_DOSES, potionEnumId);
+				int doses = client.getIntStack()[0];
+				client.runScript(ScriptID.POTIONSTORE_WITHDRAW_DOSES, potionEnumId);
+				int withdrawDoses = client.getIntStack()[0];
 
-				if (log.isDebugEnabled())
+				if (doses > 0 && withdrawDoses > 0)
 				{
-					log.debug("Potion store has {} doses of {}", p.doses, itemManager.getItemComposition(p.itemId).getName());
-				}
-			}
+					Potion p = new Potion();
+					p.potionEnum = potionEnum;
+					p.itemId = potionEnum.getIntValue(withdrawDoses);
+					p.doses = doses;
+					p.withdrawDoses = withdrawDoses;
+					potions[potionsIdx] = p;
 
-			++potionsIdx;
+					if (log.isDebugEnabled())
+					{
+						log.debug("Potion store has {} doses of {}", p.doses, itemManager.getItemComposition(p.itemId).getName());
+					}
+				}
+
+				++potionsIdx;
+			}
 		}
 	}
 
