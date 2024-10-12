@@ -76,6 +76,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "autoLayout",
+			name = "Enable layout by default",
+			description = "Enables layout on newly created tag tabs automatically",
+			position = 5
+	)
+	default boolean autoTabLayout()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",

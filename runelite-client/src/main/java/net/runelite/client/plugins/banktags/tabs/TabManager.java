@@ -65,6 +65,10 @@ public class TabManager
 			{
 				tagTab.getLayout().dirty = true;
 			}
+			else if (configManager.getConfiguration(CONFIG_GROUP, "autoLayout", Boolean.class))
+			{
+				tagTab.setLayout(new Layout());
+			}
 		}
 	}
 
