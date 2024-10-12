@@ -52,6 +52,12 @@ class XpTrackerServiceImpl implements XpTrackerService
 	}
 
 	@Override
+	public int getXpPerAction(Skill skill)
+	{
+		return plugin.getSkillSnapshot(skill).getXpPerAction();
+	}
+
+	@Override
 	public int getActionsLeft(Skill skill)
 	{
 		return plugin.getSkillSnapshot(skill).getActionsRemainingToGoal();
