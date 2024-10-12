@@ -26,9 +26,21 @@ package net.runelite.client.plugins.spellbook;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup(SpellbookConfig.GROUP)
 public interface SpellbookConfig extends Config
 {
 	String GROUP = "spellbook";
+
+	@ConfigItem(
+		keyName = "enableTooltips",
+		name = "Enable Tooltips",
+		description = "Configures whether or not to show tooltips",
+		position = 0
+	)
+	default boolean enableTooltips()
+	{
+		return true;
+	}
 }
