@@ -27,5 +27,5 @@ package net.runelite.client.plugins.banktags.tabs;
 
 public interface AutoLayout
 {
-	Layout generateLayout(TagTab tab);
+	Layout generateLayout(Layout previous);
 }

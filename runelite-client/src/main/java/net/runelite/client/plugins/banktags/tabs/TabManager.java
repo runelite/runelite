@@ -38,7 +38,6 @@ import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_ICON_PREFIX;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_LAYOUT_PREFIX;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_TABS_CONFIG;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -61,10 +60,6 @@ public class TabManager
 		if (!contains(tagTab.getTag()))
 		{
 			tabs.add(tagTab);
-			if (tagTab.hasLayout())
-			{
-				tagTab.getLayout().dirty = true;
-			}
 		}
 	}
 
@@ -94,19 +89,6 @@ public class TabManager
 			String item = configManager.getConfiguration(CONFIG_GROUP, TAG_ICON_PREFIX + tag);
 			int itemid = NumberUtils.toInt(item, ItemID.SPADE);
 			tagTab = new TagTab(itemid, tag);
-
-			String layoutStr = configManager.getConfiguration(CONFIG_GROUP, TAG_LAYOUT_PREFIX + tag);
-			if (layoutStr != null)
-			{
-				List<String> layoutList = Text.fromCSV(layoutStr);
-				int[] layout = new int[layoutList.size()];
-				for (int i = 0; i < layoutList.size(); ++i)
-				{
-					layout[i] = Integer.parseInt(layoutList.get(i));
-				}
-
-				tagTab.setLayout(new Layout(layout));
-			}
 		}
 
 		return tagTab;
@@ -115,19 +97,6 @@ public class TabManager
 	private void save(TagTab tab)
 	{
 		setIcon(tab.getTag(), tab.getIconItemId());
-
-		if (tab.hasLayout())
-		{
-			Layout layout = tab.getLayout();
-			if (layout.dirty)
-			{
-				setLayout(tab.getTag(), layout.getLayout());
-			}
-		}
-		else
-		{
-			removeLayout(tab.getTag());
-		}
 	}
 
 	void swap(String tagToMove, String tagDestination)
@@ -160,7 +129,6 @@ public class TabManager
 		{
 			tabs.remove(tagTab);
 			removeIcon(tag);
-			removeLayout(tag);
 		}
 	}
 
@@ -183,25 +151,6 @@ public class TabManager
 	private void setIcon(final String tag, int itemId)
 	{
 		configManager.setConfiguration(CONFIG_GROUP, TAG_ICON_PREFIX + Text.standardize(tag), itemId);
-	}
-
-	private void removeLayout(String tag)
-	{
-		configManager.unsetConfiguration(CONFIG_GROUP, TAG_LAYOUT_PREFIX + Text.standardize(tag));
-	}
-
-	private void setLayout(String tag, int[] layout)
-	{
-		StringBuilder sb = new StringBuilder(layout.length * 5);
-		for (int i = 0; i < layout.length; ++i)
-		{
-			if (i > 0)
-			{
-				sb.append(',');
-			}
-			sb.append(layout[i]);
-		}
-		configManager.setConfiguration(CONFIG_GROUP, TAG_LAYOUT_PREFIX + Text.standardize(tag), sb.toString());
 	}
 
 	int size()

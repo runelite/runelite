@@ -95,7 +95,7 @@ class PotionStorage
 			if (layout)
 			{
 				layout = false;
-				BankTag activeTag = plugin.getActiveTag();
+				BankTag activeTag = plugin.getActiveBankTag();
 				if (activeTag != null)
 				{
 					bankSearch.layoutBank();
