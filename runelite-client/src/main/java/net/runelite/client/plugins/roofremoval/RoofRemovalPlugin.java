@@ -49,7 +49,6 @@ import static net.runelite.api.Constants.ROOF_FLAG_POSITION;
 import net.runelite.api.GameState;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
-import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.PreMapLoad;
 import net.runelite.client.callback.ClientThread;
@@ -140,7 +139,7 @@ public class RoofRemovalPlugin extends Plugin
 	@Subscribe
 	public void onPreMapLoad(PreMapLoad preMapLoad)
 	{
-		performRoofRemoval(preMapLoad.getWorldView(), preMapLoad.getScene());
+		performRoofRemoval(preMapLoad.getScene());
 	}
 
 	@Subscribe
@@ -202,9 +201,9 @@ public class RoofRemovalPlugin extends Plugin
 		}
 	}
 
-	private void performRoofRemoval(WorldView wv, Scene scene)
+	private void performRoofRemoval(Scene scene)
 	{
-		applyRoofOverrides(wv, scene);
+		applyRoofOverrides(scene);
 
 		Stopwatch sw = Stopwatch.createStarted();
 		scene.buildRoofs();
@@ -247,13 +246,13 @@ public class RoofRemovalPlugin extends Plugin
 		}
 	}
 
-	private void applyRoofOverrides(WorldView wv, Scene scene)
+	private void applyRoofOverrides(Scene scene)
 	{
 		Stopwatch sw = Stopwatch.createStarted();
 		boolean regionsHaveOverrides = false;
 
 		outer:
-		for (int regionID : wv.getMapRegions())
+		for (int regionID : scene.getMapRegions())
 		{
 			if (configOverrideRegions.contains(regionID))
 			{
