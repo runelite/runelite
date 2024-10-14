@@ -9,7 +9,6 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
