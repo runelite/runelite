@@ -475,7 +475,8 @@ public class ClueScrollPlugin extends Plugin
 		for (Item item : inventory)
 		{
 			int invItemId = item.getId();
-			if (findClueScroll(invItemId) != null)
+			// If paramID 623 returns a dbrow, the invItemId is a valid Clue Scroll
+			if (client.getItemDefinition(invItemId).getIntValue(623) != -1)
 			{
 				cluesFound.add(invItemId);
 			}
