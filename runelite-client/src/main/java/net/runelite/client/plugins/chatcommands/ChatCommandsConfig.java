@@ -224,7 +224,8 @@ public interface ChatCommandsConfig extends Config
 			name = "Icon Width",
 			description = "Set the icon width in pixels for each pet"
 	)
-	default int petsIconWidth() {
+	default int petsIconWidth()
+	{
 		return 21;
 	}
 
@@ -234,7 +235,8 @@ public interface ChatCommandsConfig extends Config
 			name = "Icon Height",
 			description = "Set the icon height in pixels for each pet"
 	)
-	default int petsIconHeight() {
+	default int petsIconHeight()
+	{
 		return 14;
 	}
 }
