@@ -214,7 +214,7 @@ public interface ChatCommandsConfig extends Config
 			name = "Debugging",
 			description = "Debugging Options",
 			position = 30,
-			closedByDefault = false
+			closedByDefault = true
 	)
 	String debug_section = "debugging";
 
