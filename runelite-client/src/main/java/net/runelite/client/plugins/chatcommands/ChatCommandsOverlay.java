@@ -48,6 +48,9 @@ public class ChatCommandsOverlay extends Overlay
 	private final ChatCommandsPlugin plugin;
 	private final ChatCommandsConfig config;
 
+	private static final int PETS_ICON_WIDTH = 21;
+	private static final int PETS_ICON_HEIGHT = 14;
+
 	@Inject
 	private TooltipManager tooltipManager;
 
@@ -61,6 +64,13 @@ public class ChatCommandsOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+	}
+
+	private boolean checkVisible(Widget parent, Widget line)
+	{
+		int childS = line.getRelativeY() + line.getHeight();
+		// Check if child's south most Y coord is within the base bounds of parent's scrolled viewport
+		return childS > parent.getScrollY() && childS < parent.getHeight() + parent.getScrollY();
 	}
 
 	private void petsOverlay(Graphics2D graphics)
@@ -84,56 +94,57 @@ public class ChatCommandsOverlay extends Overlay
 		for (Widget line : lines)
 		{
 			// ensure visible, text is not null, and matching pets text
-			if (messageLines.getBounds().contains(line.getBounds())
-					&& line.getText() != null
+			if (line.getText() != null
+					&& checkVisible(messageLines, line)
 					&& line.getText().matches(".*?Pets: \\([0-9]+\\) <img=[0-9]+>.*"))
 			{
 				// Get the bounds
 				Rectangle bounds = line.getBounds();
 				// Get mouse position
 				Point mousePos = client.getMouseCanvasPosition();
-				// If mouse in message bounds
-				if (bounds.contains(mousePos.getX(), mousePos.getY()))
+				// If mouse not-in message bounds, continue
+				if (!bounds.contains(mousePos.getX(), mousePos.getY()))
 				{
-					// Extract the pets list by icon ids
-					Matcher matcher = PETS_MATCHER.matcher(line.getText());
-					List<Integer> petIconIds = new ArrayList<>();
-					while (matcher.find())
+					continue;
+				}
+				// Extract the pets list by icon ids
+				Matcher matcher = PETS_MATCHER.matcher(line.getText());
+				List<Integer> petIconIds = new ArrayList<>();
+				while (matcher.find())
+				{
+					for (int i = 1; i <= matcher.groupCount(); i++)
 					{
-						for (int i = 1; i <= matcher.groupCount(); i++)
-						{
-							petIconIds.add(Integer.parseInt(matcher.group(i)));
-						}
+						petIconIds.add(Integer.parseInt(matcher.group(i)));
 					}
-					// Generate the offset based on the pets width
-					int petsTextOffset = line.getFont().getTextWidth("Pets (" + petIconIds.size() + ")");
+				}
+				// Generate the offset based on the pets width
+				int petsTextOffset = line.getFont().getTextWidth("Pets (" + petIconIds.size() + ")");
 
-					// Is it double height with many pets?
-					int petsPerLine = petIconIds.size();
-					if (bounds.height > config.petsIconHeight())
-					{
-						petsPerLine = (bounds.width - petsTextOffset) / config.petsIconWidth();
-					}
+				// Is it double height with many pets?
+				int petsPerLine = petIconIds.size();
+				if (bounds.height > PETS_ICON_HEIGHT)
+				{
+					petsPerLine = (bounds.width - petsTextOffset) / PETS_ICON_WIDTH;
+				}
 
-					// Get the hovered pet by the mouse position within chat line bounds
-					int iconPos = Math.floorDiv((int) (mousePos.getX() - (petsTextOffset + bounds.getX())),
-							config.petsIconWidth());
-					if (mousePos.getY() >= bounds.getY() + config.petsIconHeight())
+				// Get the hovered pet by the mouse position within chat line bounds
+				int iconPos = Math.floorDiv((int) (mousePos.getX() - (petsTextOffset + bounds.getX())),
+						PETS_ICON_WIDTH);
+				if (mousePos.getY() >= bounds.getY() + PETS_ICON_HEIGHT)
+				{
+					iconPos = Math.floorDiv((int) (mousePos.getX() - bounds.getX()),
+							PETS_ICON_WIDTH) + petsPerLine;
+				}
+				// If in bounds of a known icon position
+				if (iconPos >= 0 && iconPos < petIconIds.size())
+				{
+					int petIcon = petIconIds.get(iconPos);
+					// Bounds verification!
+					if (petIcon - plugin.petsIconIdx >= 0 && petIcon - plugin.petsIconIdx < plugin.pets.length)
 					{
-						iconPos = Math.floorDiv((int) (mousePos.getX() - bounds.getX()),
-								config.petsIconWidth()) + petsPerLine;
-					}
-					// If in bounds of a known icon position
-					if (iconPos >= 0 && iconPos < petIconIds.size())
-					{
-						int petIcon = petIconIds.get(iconPos);
-						// Bounds verification!
-						if (petIcon - plugin.petsIconIdx >= 0 && petIcon - plugin.petsIconIdx < plugin.pets.length)
-						{
-							String name = client.getItemDefinition(plugin.pets[petIcon - plugin.petsIconIdx]).getName();
-							// Draw a tool tip with the pet's name
-							tooltipManager.add(new Tooltip("Pet: " + name));
-						}
+						String name = client.getItemDefinition(plugin.pets[petIcon - plugin.petsIconIdx]).getName();
+						// Draw a tool tip with the pet's name
+						tooltipManager.add(new Tooltip("Pet: " + name));
 					}
 				}
 			}

@@ -209,34 +209,4 @@ public interface ChatCommandsConfig extends Config
 		return Keybind.NOT_SET;
 	}
 
-
-	@ConfigSection(
-			name = "Debugging",
-			description = "Debugging Options",
-			position = 30,
-			closedByDefault = true
-	)
-	String debug_section = "debugging";
-
-	@ConfigItem(position = 32,
-			section = debug_section,
-			keyName = "pets_icon_width",
-			name = "Icon Width",
-			description = "Set the icon width in pixels for each pet"
-	)
-	default int petsIconWidth()
-	{
-		return 21;
-	}
-
-	@ConfigItem(position = 33,
-			section = debug_section,
-			keyName = "pets_icon_height",
-			name = "Icon Height",
-			description = "Set the icon height in pixels for each pet"
-	)
-	default int petsIconHeight()
-	{
-		return 14;
-	}
 }
