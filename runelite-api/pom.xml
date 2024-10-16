@@ -68,6 +68,16 @@
 			<artifactId>slf4j-simple</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.arn</groupId>
+			<artifactId>http-api</artifactId>
+			<version>1.2.16</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
