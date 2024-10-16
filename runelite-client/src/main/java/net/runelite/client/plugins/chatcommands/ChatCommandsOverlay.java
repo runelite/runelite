@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,108 +33,122 @@ import java.util.regex.Pattern;
 import com.google.inject.Inject;
 
 import net.runelite.api.Client;
-import net.runelite.api.FontID;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.config.FontType;
 import net.runelite.client.ui.overlay.*;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-public class ChatCommandsOverlay extends Overlay {
-    private final Pattern PETS_MATCHER = Pattern.compile("<img=([0-9]+)>", Pattern.MULTILINE);
+public class ChatCommandsOverlay extends Overlay
+{
+	private final Pattern PETS_MATCHER = Pattern.compile("<img=([0-9]+)>", Pattern.MULTILINE);
 
-    private final Client client;
-    private final ChatCommandsPlugin plugin;
-    private final ChatCommandsConfig config;
+	private final Client client;
+	private final ChatCommandsPlugin plugin;
+	private final ChatCommandsConfig config;
 
-    @Inject
-    private TooltipManager tooltipManager;
+	@Inject
+	private TooltipManager tooltipManager;
 
-    @Inject
-    private ChatCommandsOverlay(Client client, ChatCommandsPlugin plugin, ChatCommandsConfig config) {
-        super(plugin);
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
-        setPriority(Overlay.PRIORITY_MED);
-        this.client = client;
-        this.plugin = plugin;
-        this.config = config;
-    }
+	@Inject
+	private ChatCommandsOverlay(Client client, ChatCommandsPlugin plugin, ChatCommandsConfig config)
+	{
+		super(plugin);
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(Overlay.PRIORITY_MED);
+		this.client = client;
+		this.plugin = plugin;
+		this.config = config;
+	}
 
-    private void petsOverlay(Graphics2D graphics) {
-        // Still loading icon data
-        if (plugin.petsIconIdx == -1) {
-            return;
-        }
-        // Get the chat box lines
-        Widget messageLines = client.getWidget(ComponentID.CHATBOX_MESSAGE_LINES);
-        if(messageLines == null){
-            return;
-        }
-        Widget[] lines = messageLines.getChildren();
-        if(lines == null){
-            return;
-        }
-        for (Widget line : lines) {
-            // ensure visible, text is not null, and matching pets text
-            if (messageLines.getBounds().contains(line.getBounds())
-                    && line.getText() != null
-                    && line.getText().matches(".*?Pets: \\([0-9]+\\) <img=[0-9]+>.*")) {
-                // Get the bounds
-                Rectangle bounds = line.getBounds();
-                // Get mouse position
-                Point mousePos = client.getMouseCanvasPosition();
-                // If mouse in message bounds
-                if (bounds.contains(mousePos.getX(), mousePos.getY())) {
-                    // Extract the pets list by icon ids
-                    Matcher matcher = PETS_MATCHER.matcher(line.getText());
-                    List<Integer> petIconIds = new ArrayList<>();
-                    while (matcher.find()) {
-                        for (int i = 1; i <= matcher.groupCount(); i++) {
-                            petIconIds.add(Integer.parseInt(matcher.group(i)));
-                        }
-                    }
-                    // Generate the offset based on the pets width
-                    int petsTextOffset = line.getFont().getTextWidth("Pets (" + petIconIds.size() + ")");
+	private void petsOverlay(Graphics2D graphics)
+	{
+		// Still loading icon data
+		if (plugin.petsIconIdx == -1)
+		{
+			return;
+		}
+		// Get the chat box lines
+		Widget messageLines = client.getWidget(ComponentID.CHATBOX_MESSAGE_LINES);
+		if (messageLines == null)
+		{
+			return;
+		}
+		Widget[] lines = messageLines.getChildren();
+		if (lines == null)
+		{
+			return;
+		}
+		for (Widget line : lines)
+		{
+			// ensure visible, text is not null, and matching pets text
+			if (messageLines.getBounds().contains(line.getBounds())
+					&& line.getText() != null
+					&& line.getText().matches(".*?Pets: \\([0-9]+\\) <img=[0-9]+>.*"))
+			{
+				// Get the bounds
+				Rectangle bounds = line.getBounds();
+				// Get mouse position
+				Point mousePos = client.getMouseCanvasPosition();
+				// If mouse in message bounds
+				if (bounds.contains(mousePos.getX(), mousePos.getY()))
+				{
+					// Extract the pets list by icon ids
+					Matcher matcher = PETS_MATCHER.matcher(line.getText());
+					List<Integer> petIconIds = new ArrayList<>();
+					while (matcher.find())
+					{
+						for (int i = 1; i <= matcher.groupCount(); i++)
+						{
+							petIconIds.add(Integer.parseInt(matcher.group(i)));
+						}
+					}
+					// Generate the offset based on the pets width
+					int petsTextOffset = line.getFont().getTextWidth("Pets (" + petIconIds.size() + ")");
 
-                    // Is it double height with many pets?
-                    int petsPerLine = petIconIds.size();
-                    if (bounds.height > config.petsIconHeight()) {
-                        petsPerLine = (bounds.width - petsTextOffset) / config.petsIconWidth();
-                    }
+					// Is it double height with many pets?
+					int petsPerLine = petIconIds.size();
+					if (bounds.height > config.petsIconHeight())
+					{
+						petsPerLine = (bounds.width - petsTextOffset) / config.petsIconWidth();
+					}
 
-                    // Get the hovered pet by the mouse position within chat line bounds
-                    int iconPos = Math.floorDiv((int) (mousePos.getX() - (petsTextOffset + bounds.getX())),
-                            config.petsIconWidth());
-                    if (mousePos.getY() >= bounds.getY() + config.petsIconHeight()) {
-                        iconPos = Math.floorDiv((int) (mousePos.getX() - bounds.getX()),
-                                config.petsIconWidth()) + petsPerLine;
-                    }
-                    // If in bounds of a known icon position
-                    if (iconPos >= 0 && iconPos < petIconIds.size()) {
-                        int petIcon = petIconIds.get(iconPos);
-                        // Bounds verification!
-                        if (petIcon - plugin.petsIconIdx >= 0 && petIcon - plugin.petsIconIdx < plugin.pets.length) {
-                            String name = client.getItemDefinition(plugin.pets[petIcon - plugin.petsIconIdx]).getName();
-                            // Draw a tool tip with the pet's name
-                            tooltipManager.add(new Tooltip("Pet: " + name));
-                        }
-                    }
-                }
-            }
-        }
-    }
+					// Get the hovered pet by the mouse position within chat line bounds
+					int iconPos = Math.floorDiv((int) (mousePos.getX() - (petsTextOffset + bounds.getX())),
+							config.petsIconWidth());
+					if (mousePos.getY() >= bounds.getY() + config.petsIconHeight())
+					{
+						iconPos = Math.floorDiv((int) (mousePos.getX() - bounds.getX()),
+								config.petsIconWidth()) + petsPerLine;
+					}
+					// If in bounds of a known icon position
+					if (iconPos >= 0 && iconPos < petIconIds.size())
+					{
+						int petIcon = petIconIds.get(iconPos);
+						// Bounds verification!
+						if (petIcon - plugin.petsIconIdx >= 0 && petIcon - plugin.petsIconIdx < plugin.pets.length)
+						{
+							String name = client.getItemDefinition(plugin.pets[petIcon - plugin.petsIconIdx]).getName();
+							// Draw a tool tip with the pet's name
+							tooltipManager.add(new Tooltip("Pet: " + name));
+						}
+					}
+				}
+			}
+		}
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        // Only render the pets if the pets commands is active
-        if(config.pets()){
-            petsOverlay(graphics);
-        }
-        return null;
-    }
-
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		// Only render the pets if the pets commands is active
+		if (config.pets())
+		{
+			petsOverlay(graphics);
+		}
+		return null;
+	}
 
 }
