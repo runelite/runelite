@@ -24,10 +24,8 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
+import net.runelite.client.config.*;
+
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -209,5 +207,34 @@ public interface ChatCommandsConfig extends Config
 	default Keybind clearChatBox()
 	{
 		return Keybind.NOT_SET;
+	}
+
+
+	@ConfigSection(
+			name = "Debugging",
+			description = "Debugging Options",
+			position = 30,
+			closedByDefault = false
+	)
+	String debug_section = "debugging";
+
+	@ConfigItem(position = 32,
+			section = debug_section,
+			keyName = "pets_icon_width",
+			name = "Icon Width",
+			description = "Set the icon width in pixels for each pet"
+	)
+	default int petsIconWidth() {
+		return 21;
+	}
+
+	@ConfigItem(position = 33,
+			section = debug_section,
+			keyName = "pets_icon_height",
+			name = "Icon Height",
+			description = "Set the icon height in pixels for each pet"
+	)
+	default int petsIconHeight() {
+		return 14;
 	}
 }
