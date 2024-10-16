@@ -57,6 +57,8 @@ enum MinigameLocation
 	MAHOGANY_HOMES_FALADOR("Mahogany Homes", new WorldPoint(2989, 3363, 0)),
 	MAHOGANY_HOMES_HOSIDIUS("Mahogany Homes", new WorldPoint(1780, 3623, 0)),
 	MAHOGANY_HOMES_VARROCK("Mahogany Homes", new WorldPoint(3240, 3471, 0)),
+	MASTERING_MIXOLOGY("Mastering Mixology", new WorldPoint(1393, 9326, 0)),
+	MASTERING_MIXOLOGY_SURFACE("Mastering Mixology", new WorldPoint(1388, 2920, 0)),
 	NIGHTMARE_ZONE("Nightmare Zone", new WorldPoint(2606, 3115, 0)),
 	PEST_CONTROL_INTERMEDIATE("Pest Control Intermediate", new WorldPoint(2638, 2641, 0)),
 	PEST_CONTROL_NOVICE("Pest Control Novice", new WorldPoint(2660, 2637, 0)),

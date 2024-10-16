@@ -115,6 +115,10 @@ enum TeleportLocationData
 	CHAOS_TEMPLE(TeleportType.JEWELLERY, "Burning Amulet" , "Chaos Temple (lvl 15)", new WorldPoint(3234, 3637, 0), "burning_amulet_teleport_icon.png"),
 	BANDIT_CAMP(TeleportType.JEWELLERY, "Burning Amulet" , "Bandit Camp (lvl 17)", new WorldPoint(3038, 3651, 0), "burning_amulet_teleport_icon.png"),
 	LAVA_MAZE(TeleportType.JEWELLERY, "Burning Amulet" , "Lava Maze (lvl 41)", new WorldPoint(3028, 3840, 0), "burning_amulet_teleport_icon.png"),
+	NORTH_ALDARIN(TeleportType.JEWELLERY, "Pendant of Ates", "North Aldarin", new WorldPoint(1425, 2995, 0), "pendant_of_ates_icon.png"),
+	DARKFROST(TeleportType.JEWELLERY, "Pendant of Ates", "The Darkfrost", new WorldPoint(1490, 3284, 0), "pendant_of_ates_icon.png"),
+	RALOS_RISE(TeleportType.JEWELLERY, "Pendant of Ates", "Ralos' Rise", new WorldPoint(1459, 3137, 0), "pendant_of_ates_icon.png"),
+	TWILIGHT_TEMPLE(TeleportType.JEWELLERY, "Pendant of Ates", "Twilight Temple", new WorldPoint(1666, 3223, 0), "pendant_of_ates_icon.png"),
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
@@ -201,6 +205,7 @@ enum TeleportLocationData
 	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png"),
 	WATSON_SCROLL(TeleportType.SCROLL, "Watson Teleport", new WorldPoint(1645, 3579, 0), "scroll_teleport_icon.png"),
 	SPIDER_CAVE_SCROLL(TeleportType.SCROLL, "Spider cave teleport", new WorldPoint(3658, 3403, 0), "scroll_teleport_icon.png"),
+	COLOSSAL_WYRM_SCROLL(TeleportType.SCROLL, "Colossal Wyrm Teleport", new WorldPoint(1641, 2921, 0), "scroll_teleport_icon.png"),
 
 	// Skillcapes
 	ACHIEVEMENT_CAPE_TWO_PINTS(TeleportType.OTHER, "Achievement Cape", "Two-pints", new WorldPoint(2574, 3324, 0), "achievement_cape_icon.png"),
@@ -224,6 +229,7 @@ enum TeleportLocationData
 	CONSTRUCTION_CAPE_POLLNIVNEACH(TeleportType.OTHER, "Construction Cape", "Pollnivneach", new WorldPoint(3340, 3004, 0), "construction_cape_icon.png"),
 	CONSTRUCTION_CAPE_HOSIDIUS(TeleportType.OTHER, "Construction Cape", "Hosidius", new WorldPoint(1744, 3517, 0), "construction_cape_icon.png"),
 	CONSTRUCTION_CAPE_RELLEKKA(TeleportType.OTHER, "Construction Cape", "Rellekka", new WorldPoint(2670, 3632, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_ALDARIN(TeleportType.OTHER, "Construction Cape", "Aldarin", new WorldPoint(1422, 2966, 0), "construction_cape_icon.png"),
 	CONSTRUCTION_CAPE_BRIMHAVEN(TeleportType.OTHER, "Construction Cape", "Brimhaven", new WorldPoint(2758, 3178, 0), "construction_cape_icon.png"),
 	CONSTRUCTION_CAPE_YANILLE(TeleportType.OTHER, "Construction Cape", "Yanille", new WorldPoint(2544, 3095, 0), "construction_cape_icon.png"),
 	CONSTRUCTION_CAPE_PRIFDDINAS(TeleportType.OTHER, "Construction Cape", "Prifddinas", new WorldPoint(3239, 6076, 0), "construction_cape_icon.png"),
