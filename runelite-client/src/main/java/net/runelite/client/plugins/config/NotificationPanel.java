@@ -286,7 +286,7 @@ class NotificationPanel extends PluginPanel
 				var n = loadNotification();
 				saveNotification(n.withTray(checkboxTray.isSelected()));
 			});
-			item("Tray notification", "Enables tray notifications", checkboxTray);
+			item("Tray notification", "Enables tray notifications. Depending on your operating system settings, these can produce sound", checkboxTray);
 
 			var comboboxRequestFocus = combobox(RequestFocusType.class, notif.getRequestFocus());
 			comboboxRequestFocus.addItemListener(e ->
@@ -308,7 +308,7 @@ class NotificationPanel extends PluginPanel
 					saveNotification(n.withSound((Notifier.NativeCustomOff) comboboxSound.getSelectedItem()));
 				}
 			});
-			item("Notification sound", "Enables the playing of a beep sound when notifications are displayed", comboboxSound);
+			item("Notification sound", "Enables the playing of a beep sound when notifications are sent from RuneLite. This does not change the sound played from tray notifications", comboboxSound);
 
 			var spinnerVolume = createIntSpinner(0, 100, notif.getVolume(), "%");
 			spinnerVolume.addChangeListener(ce ->
