@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cluescrolls;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup(ClueScrollConfig.GROUP)
 public interface ClueScrollConfig extends Config
@@ -36,10 +37,27 @@ public interface ClueScrollConfig extends Config
 	@ConfigItem(
 		keyName = "displayHintArrows",
 		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
+		description = "Configures whether or not to display hint arrows for clues",
+		position = 0
 	)
 	default boolean displayHintArrows()
 	{
 		return true;
+	}
+
+	@ConfigSection(name = "Advanced", description = "Advanced options", position = 1, closedByDefault = true)
+	String advancedSection = "Advanced";
+
+	@ConfigItem(
+			keyName = "autoIdentifyClues",
+			name = "Auto-identify clue scrolls",
+			description = "Automatically identify clue scrolls when added to inventory",
+			warning = "Does not work for Beginner and Master clues due to their shared Item IDs",
+			section = advancedSection,
+			position = 0
+	)
+	default boolean autoIdentifyClues()
+	{
+		return false;
 	}
 }
