@@ -467,4 +467,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 1)
 	public static final int POTIONSTORE_WITHDRAW_DOSES = 4818;
+
+	@ScriptArguments()
+	public static final int POTIONSTORE_BUILD = 6080;
+
+	@ScriptArguments(integer = 3)
+	public static final int POTIONSTORE_DOSE_CHANGE = 6555;
 }

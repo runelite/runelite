@@ -24,7 +24,6 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +36,15 @@ import net.runelite.cache.io.InputStream;
 public class SequenceLoader
 {
 	public static final int REV_220_SEQ_ARCHIVE_REV = 1141;
+	public static final int REV_226_SEQ_ARCHIVE_REV = 1268;
 
 	private boolean rev220FrameSounds = true;
+	private boolean rev226 = true;
 
 	public SequenceLoader configureForRevision(int rev)
 	{
 		this.rev220FrameSounds = rev > REV_220_SEQ_ARCHIVE_REV;
+		this.rev226 = rev > REV_226_SEQ_ARCHIVE_REV;
 		return this;
 	}
 
@@ -72,11 +74,11 @@ public class SequenceLoader
 		if (opcode == 1)
 		{
 			var3 = stream.readUnsignedShort();
-			def.frameLenghts = new int[var3];
+			def.frameLengths = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameLenghts[var4] = stream.readUnsignedShort();
+				def.frameLengths[var4] = stream.readUnsignedShort();
 			}
 
 			def.frameIDs = new int[var3];
@@ -154,32 +156,30 @@ public class SequenceLoader
 				def.chatFrameIds[var4] += stream.readUnsignedShort() << 16;
 			}
 		}
-		else if (opcode == 13)
+		else if (opcode == 13 && !rev226)
 		{
 			var3 = stream.readUnsignedByte();
-			def.frameSounds = new SequenceDefinition.Sound[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameSounds[var4] = this.readFrameSound(stream);
+				def.frameSounds.put(var4, this.readFrameSound(stream));
 			}
 		}
-		else if (opcode == 14)
+		else if (opcode == (rev226 ? 13 : 14))
 		{
 			def.animMayaID = stream.readInt();
 		}
-		else if (opcode == 15)
+		else if (opcode == (rev226 ? 14 : 15))
 		{
 			var3 = stream.readUnsignedShort();
-			def.animMayaFrameSounds = new HashMap<>();
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
 				int frame = stream.readUnsignedShort();
-				def.animMayaFrameSounds.put(frame, this.readFrameSound(stream));
+				def.frameSounds.put(frame, this.readFrameSound(stream));
 			}
 		}
-		else if (opcode == 16)
+		else if (opcode == (rev226 ? 15 : 16))
 		{
 			def.animMayaStart = stream.readUnsignedShort();
 			def.animMayaEnd = stream.readUnsignedShort();
@@ -207,6 +207,7 @@ public class SequenceLoader
 		int loops;
 		int location;
 		int retain;
+		int weight = -1;
 		if (!rev220FrameSounds)
 		{
 			int bits = stream.read24BitInt();
@@ -218,6 +219,10 @@ public class SequenceLoader
 		else
 		{
 			id = stream.readUnsignedShort();
+			if (rev226)
+			{
+				weight = stream.readUnsignedByte();
+			}
 			loops = stream.readUnsignedByte();
 			location = stream.readUnsignedByte();
 			retain = stream.readUnsignedByte();
@@ -225,7 +230,7 @@ public class SequenceLoader
 
 		if (id >= 1 && loops >= 1 && location >= 0 && retain >= 0)
 		{
-			return new SequenceDefinition.Sound(id, loops, location, retain);
+			return new SequenceDefinition.Sound(id, loops, location, retain, weight);
 		}
 		else
 		{

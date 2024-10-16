@@ -887,7 +887,7 @@ public class WorldHopperPlugin extends Plugin
 		final World currentWorld = worldResult.findWorld(client.getWorld());
 		if (currentWorld == null)
 		{
-			log.debug("unable to find current world: {}", client.getWorld());
+			log.trace("unable to find current world: {}", client.getWorld());
 			return;
 		}
 

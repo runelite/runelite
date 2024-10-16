@@ -482,8 +482,8 @@ public class DevToolsPlugin extends Plugin
 				player.getPlayerComposition().getEquipmentIds()[KitType.ARMS.getIndex()] = -1;
 				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.GHOSTLY_ROBE_6108 + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().getEquipmentIds()[KitType.HAIR.getIndex()] = -1;
-				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.GHOSTLY_GLOVES;
-				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.GHOSTLY_BOOTS;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.GHOSTLY_GLOVES + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.GHOSTLY_BOOTS + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().setHash();
 				break;
 			}
