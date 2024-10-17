@@ -74,7 +74,7 @@ public class ChatCommandsOverlay extends Overlay
 	private List<Integer> extractPetIconIds(String pets)
 	{
 		int limit = -Integer.MAX_VALUE / 10;
-		List<Integer> petIcons = new ArrayList<Integer>();
+		List<Integer> petIcons = new ArrayList<>();
 		boolean reading = false;
 		int intCache = 0;
 		for (int i = 0; i < pets.length(); i++)
@@ -118,7 +118,6 @@ public class ChatCommandsOverlay extends Overlay
 		{
 			return;
 		}
-		long start = System.nanoTime();
 		Point mousePos = client.getMouseCanvasPosition();
 		// Get the chat box lines
 		Widget messageLines = client.getWidget(ComponentID.CHATBOX_MESSAGE_LINES);
