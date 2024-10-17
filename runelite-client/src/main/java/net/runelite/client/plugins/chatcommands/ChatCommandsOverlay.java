@@ -24,25 +24,23 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.inject.Inject;
-
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.ui.overlay.*;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatCommandsOverlay extends Overlay
 {
-	private final Pattern PETS_MATCHER = Pattern.compile("<img=([0-9]+)>", Pattern.MULTILINE);
 
 	private final Client client;
 	private final ChatCommandsPlugin plugin;
@@ -73,6 +71,46 @@ public class ChatCommandsOverlay extends Overlay
 		return childS > parent.getScrollY() && childS < parent.getHeight() + parent.getScrollY();
 	}
 
+	private List<Integer> extractPetIconIds(String pets)
+	{
+		int limit = -Integer.MAX_VALUE / 10;
+		List<Integer> petIcons = new ArrayList<Integer>();
+		boolean reading = false;
+		int intCache = 0;
+		for (int i = 0; i < pets.length(); i++)
+		{
+			char c = pets.charAt(i);
+			// If at the start of presumably the numbers
+			if (c == '=')
+			{
+				reading = true;
+			}
+			// End reference point
+			else if (reading && c == '>')
+			{
+				reading = false;
+				petIcons.add(-intCache);
+				intCache = 0;
+			}
+			else if (reading)
+			{
+				// Accumulating negatively avoids surprises near MAX_VALUE
+				int digit = Character.digit(c, 10);
+				if (digit < 0 || intCache < limit)
+				{
+					continue;
+				}
+				intCache *= 10;
+				if (intCache < limit + digit)
+				{
+					continue;
+				}
+				intCache -= digit;
+			}
+		}
+		return petIcons;
+	}
+
 	private void petsOverlay(Graphics2D graphics)
 	{
 		// Still loading icon data
@@ -80,9 +118,11 @@ public class ChatCommandsOverlay extends Overlay
 		{
 			return;
 		}
+		long start = System.nanoTime();
+		Point mousePos = client.getMouseCanvasPosition();
 		// Get the chat box lines
 		Widget messageLines = client.getWidget(ComponentID.CHATBOX_MESSAGE_LINES);
-		if (messageLines == null)
+		if (messageLines == null || !messageLines.contains(mousePos))
 		{
 			return;
 		}
@@ -96,27 +136,20 @@ public class ChatCommandsOverlay extends Overlay
 			// ensure visible, text is not null, and matching pets text
 			if (line.getText() != null
 					&& checkVisible(messageLines, line)
-					&& line.getText().matches(".*?Pets: \\([0-9]+\\) <img=[0-9]+>.*"))
+					&& line.getText().contains("Pets: (")
+					&& line.getText().contains("<img="))
 			{
 				// Get the bounds
 				Rectangle bounds = line.getBounds();
 				// Get mouse position
-				Point mousePos = client.getMouseCanvasPosition();
 				// If mouse not-in message bounds, continue
 				if (!bounds.contains(mousePos.getX(), mousePos.getY()))
 				{
 					continue;
 				}
 				// Extract the pets list by icon ids
-				Matcher matcher = PETS_MATCHER.matcher(line.getText());
-				List<Integer> petIconIds = new ArrayList<>();
-				while (matcher.find())
-				{
-					for (int i = 1; i <= matcher.groupCount(); i++)
-					{
-						petIconIds.add(Integer.parseInt(matcher.group(i)));
-					}
-				}
+				List<Integer> petIconIds = extractPetIconIds(line.getText().substring(line.getText().indexOf(")")));
+
 				// Generate the offset based on the pets width
 				int petsTextOffset = line.getFont().getTextWidth("Pets (" + petIconIds.size() + ")");
 
