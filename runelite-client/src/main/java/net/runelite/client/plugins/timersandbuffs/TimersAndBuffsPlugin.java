@@ -55,6 +55,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import static net.runelite.api.VarPlayer.LAST_FORINTHRY_SURGE;
 import static net.runelite.api.VarPlayer.LAST_HOME_TELEPORT;
 import static net.runelite.api.VarPlayer.LAST_MINIGAME_TELEPORT;
 import net.runelite.api.Varbits;
@@ -174,8 +175,12 @@ public class TimersAndBuffsPlugin extends Plugin
 	{
 		if (config.showHomeMinigameTeleports())
 		{
-			checkTeleport(LAST_HOME_TELEPORT);
-			checkTeleport(LAST_MINIGAME_TELEPORT);
+			checkEpochTimer(LAST_HOME_TELEPORT);
+			checkEpochTimer(LAST_MINIGAME_TELEPORT);
+		}
+		if (config.showForinthrySurge())
+		{
+			checkEpochTimer(LAST_FORINTHRY_SURGE);
 		}
 	}
 
@@ -389,12 +394,17 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarpId() == LAST_HOME_TELEPORT && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(LAST_HOME_TELEPORT);
+			checkEpochTimer(LAST_HOME_TELEPORT);
 		}
 
 		if (event.getVarpId() == LAST_MINIGAME_TELEPORT && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(LAST_MINIGAME_TELEPORT);
+			checkEpochTimer(LAST_MINIGAME_TELEPORT);
+		}
+
+		if (event.getVarpId() == LAST_FORINTHRY_SURGE && config.showForinthrySurge())
+		{
+			checkEpochTimer(LAST_FORINTHRY_SURGE);
 		}
 
 		if (event.getVarbitId() == Varbits.RUN_SLOWED_DEPLETION_ACTIVE
@@ -641,8 +651,17 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 		else
 		{
-			checkTeleport(LAST_HOME_TELEPORT);
-			checkTeleport(LAST_MINIGAME_TELEPORT);
+			checkEpochTimer(LAST_HOME_TELEPORT);
+			checkEpochTimer(LAST_MINIGAME_TELEPORT);
+		}
+
+		if (!config.showForinthrySurge())
+		{
+			removeGameTimer(FORINTHRY_SURGE);
+		}
+		else
+		{
+			checkEpochTimer(LAST_FORINTHRY_SURGE);
 		}
 
 		if (!config.showAntiFire())
@@ -1071,34 +1090,38 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 	}
 
-	private void checkTeleport(@Varp int varPlayer)
+	private void checkEpochTimer(@Varp int varPlayer)
 	{
-		final GameTimer teleport;
+		final GameTimer timer;
 		switch (varPlayer)
 		{
 			case LAST_HOME_TELEPORT:
-				teleport = HOME_TELEPORT;
+				timer = HOME_TELEPORT;
 				break;
 			case LAST_MINIGAME_TELEPORT:
-				teleport = MINIGAME_TELEPORT;
+				timer = MINIGAME_TELEPORT;
+				break;
+			case LAST_FORINTHRY_SURGE:
+				timer = FORINTHRY_SURGE;
 				break;
 			default:
-				// Other var changes are not handled as teleports
+				// Other var changes are irrelevant
 				return;
 		}
 
-		int lastTeleport = client.getVarpValue(varPlayer);
-		long lastTeleportSeconds = (long) lastTeleport * 60;
-		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration());
-		Duration remainingTime = Duration.between(Instant.now(), teleportExpireInstant);
+		int varpValue = client.getVarpValue(varPlayer);
+		long epoch = (long) varpValue * 60;
+		Duration effectDuration = timer.getDuration() != null ? timer.getDuration() : Duration.ZERO;
+		Instant timerExpireInstant = Instant.ofEpochSecond(epoch).plus(effectDuration);
+		Duration remainingTime = Duration.between(Instant.now(), timerExpireInstant);
 
 		if (remainingTime.getSeconds() > 0)
 		{
-			createGameTimer(teleport, remainingTime);
+			createGameTimer(timer, remainingTime);
 		}
 		else
 		{
-			removeGameTimer(teleport);
+			removeGameTimer(timer);
 		}
 	}
 
