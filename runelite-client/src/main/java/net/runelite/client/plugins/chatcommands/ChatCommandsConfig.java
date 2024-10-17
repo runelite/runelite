@@ -24,10 +24,8 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
+import net.runelite.client.config.*;
+
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -210,4 +208,5 @@ public interface ChatCommandsConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+
 }
