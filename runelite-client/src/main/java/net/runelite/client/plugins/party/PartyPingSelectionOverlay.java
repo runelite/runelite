@@ -154,7 +154,6 @@ class PartyPingSelectionOverlay extends Overlay
 			{
 				continue;
 			}
-			
 			// subtract optionSelectionSize because our radial menu is slightly rotated
 			double angle = Math.toRadians(type.ordinal() * optionSelectionSize - optionSelectionSize);
 			BufferedImage img = type.getImage();
