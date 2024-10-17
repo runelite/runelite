@@ -747,7 +747,8 @@ public class PartyPlugin extends Plugin {
 					prayerMax,
 					runEnergy,
 					specEnergy,
-					vengActive
+					vengActive,
+					null
 			);
 		}
 	}
