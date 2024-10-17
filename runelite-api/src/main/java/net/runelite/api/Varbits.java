@@ -871,11 +871,27 @@ public final class Varbits
 
 	public static final int SLAYER_POINTS = 4068;
 	public static final int SLAYER_TASK_STREAK = 4069;
+	public static final int SLAYER_WILDERNESS_TASK_STREAK = 5617;
 
 	/**
 	 * The assigned boss for boss slayer.
 	 */
 	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * The slayer master that assigned the task. Varbit does not get reset to 0 after task completion.
+	 * <p>
+	 * 0 = no slayer master<br>
+	 * 1 = Turael / Spria / Aya<br>
+	 * 2 = Mazchna / Achtryn<br>
+	 * 3 = Vannaka<br>
+	 * 4 = Chaeldar<br>
+	 * 5 = Duradel / Kuradal<br>
+	 * 6 = Nieve / Steve<br>
+	 * 7 = Krystilia<br>
+	 * 8 = Konar quo Maten
+	 */
+	public static final int SLAYER_MASTER = 4067;
 
 	/**
 	 * Whether the level up interface is disabled
