@@ -16,92 +16,96 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-    name = "Nex Drop Rate",
-    description = "Tracks average drop rates from Nex",
-    tags = {"combat", "droprate", "tracking"}
+	name = "Nex Drop Rate",
+	description = "Tracks average drop rates from Nex",
+	tags = {"combat", "droprate", "tracking"}
 )
+
 public class NexDropRatePlugin extends Plugin
 {
+	@Inject
+	private Client client;
 
-  @Inject
-  private Client client;
-  private int[] damageRatio;
-  private final int[] NEX_ID = {11278, 11279, 11280, 11281, 11282};
-  private final int base = 43;
-  private List<Double> dropRates;
-  private List<String> playerCount;
-  private double averageDropRate;
+	private int[] damageRatio;
+	private final int[] NEX_ID = {11278, 11279, 11280, 11281, 11282};
+	private final int base = 43;
+	private List<Double> dropRates;
+	private List<String> playerCount;
+	private double averageDropRate;
 
-  private double dropRate() {
-    return base * playerCount.size() * damageRatio();
-  }
+	private double dropRate()
+	{
+		return base * playerCount.size() * damageRatio();
+	}
 
-  private double damageRatio() {
-    return damageRatio[1] == 0 ? 0 : (double) damageRatio[0] / damageRatio[1];
-  }
+	private double damageRatio()
+	{
+		return damageRatio[1] == 0 ? 0 : (double) damageRatio[0] / damageRatio[1];
+	}
 
-  @Subscribe
-  public void onHitsplatApplied(HitsplatApplied event)
-  {
-    if (event.getActor() instanceof NPC)
-    {
-      int nex = ((NPC) event.getActor()).getComposition().getId();
-      // Compare NPC ID directly
-      if (IntStream.of(NEX_ID).anyMatch(id -> id == nex))
-      {
-        int damage = event.getHitsplat().getAmount();
-        damageRatio[1] += damage;
-        if (event.getHitsplat().isMine())
-        {
-          damageRatio[0] += damage;
-        }
-      }
-    }
-  }
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (event.getActor() instanceof NPC)
+		{
+			int nex = ((NPC) event.getActor()).getComposition().getId();
+			// Compare NPC ID directly
+			if (IntStream.of(NEX_ID).anyMatch(id -> id == nex))
+			{
+				int damage = event.getHitsplat().getAmount();
+				damageRatio[1] += damage;
+				if (event.getHitsplat().isMine())
+				{
+					damageRatio[0] += damage;
+				}
+			}
+		}
+	}
 
-  @Subscribe
-  public void onNpcDespawned(NpcDespawned event)
-  {
-    int nex = event.getNpc().getComposition().getId();
-    // Compare NPC ID directly
-    if (IntStream.of(NEX_ID).anyMatch(id -> id == nex))
-    {
-      double dropRate = dropRate() == 0 ? 0 : 100 / dropRate();
-      dropRates.add(dropRate);
-      averageDropRate = dropRates.stream().mapToDouble(Double::doubleValue).sum() / dropRates.size();
-      damageRatio = new int[2]; // Reset for next kill
-    }
-  }
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		int nex = event.getNpc().getComposition().getId();
+		// Compare NPC ID directly
+		if (IntStream.of(NEX_ID).anyMatch(id -> id == nex))
+		{
+			double dropRate = dropRate() == 0 ? 0 : 100 / dropRate();
+			dropRates.add(dropRate);
+			averageDropRate =
+				dropRates.stream().mapToDouble(Double::doubleValue).sum() / dropRates.size();
+			damageRatio = new int[2]; // Reset for next kill
+		}
+	}
 
-  @Subscribe
-  public void onNpcSpawned(NpcSpawned event)
-  {
-    int nex = event.getNpc().getComposition().getId();
-    // Compare NPC ID directly
-    if (IntStream.of(NEX_ID).anyMatch(id -> id == nex))
-    {
-      damageRatio = new int[2]; // Reset damage ratio when Nex spawns
-    }
-  }
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		int nex = event.getNpc().getComposition().getId();
+		// Compare NPC ID directly
+		if (IntStream.of(NEX_ID).anyMatch(id -> id == nex))
+		{
+			damageRatio = new int[2]; // Reset damage ratio when Nex spawns
+		}
+	}
 
-  @Subscribe
-  public void onPlayerSpawned(PlayerSpawned event)
-  {
-    playerCount.add(event.getPlayer().getName());
-  }
+	@Subscribe
+	public void onPlayerSpawned(PlayerSpawned event)
+	{
+		playerCount.add(event.getPlayer().getName());
+	}
 
-  @Subscribe
-  public void onPlayerDespawned(PlayerDespawned event)
-  {
-    playerCount.remove(event.getPlayer().getName());
-  }
+	@Subscribe
+	public void onPlayerDespawned(PlayerDespawned event)
+	{
+		playerCount.remove(event.getPlayer().getName());
+	}
 
-  @Override
-  protected void startUp() throws Exception
-  {
-    this.damageRatio = new int[2];
-    this.dropRates = new ArrayList<>();
-    this.playerCount = new ArrayList<>();
-    this.averageDropRate = 0;
-  }
+	@Override
+	protected void startUp() throws Exception
+	{
+		this.damageRatio = new int[2];
+		this.dropRates = new ArrayList<>();
+		this.playerCount = new ArrayList<>();
+		this.averageDropRate = 0;
+	}
 }
