@@ -31,14 +31,12 @@ public interface BankTagsService
 {
 	/**
 	 * Open the given tag tab.
-	 *
 	 * @param tagTab
 	 */
 	void openTagTab(TagTab tagTab);
 
 	/**
 	 * Open the given bank tag.
-	 *
 	 * @param bankTag
 	 */
 	void openBankTag(BankTag bankTag);

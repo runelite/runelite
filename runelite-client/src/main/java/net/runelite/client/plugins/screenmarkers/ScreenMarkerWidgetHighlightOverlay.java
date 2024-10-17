@@ -53,12 +53,6 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 		setMovable(true);
 	}
 
-	private static void drawHighlight(Graphics2D graphics, Rectangle bounds)
-	{
-		graphics.setColor(Color.GREEN);
-		graphics.draw(bounds);
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -93,7 +87,8 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 			{
 				bounds = child.getBounds();
 			}
-		} else
+		}
+		else
 		{
 			bounds = widget.getBounds();
 		}
@@ -108,5 +103,11 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 		plugin.setSelectedWidgetBounds(bounds);
 
 		return null;
+	}
+
+	private static void drawHighlight(Graphics2D graphics, Rectangle bounds)
+	{
+		graphics.setColor(Color.GREEN);
+		graphics.draw(bounds);
 	}
 }

@@ -50,18 +50,18 @@ public class QuantityFormatter
 	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
 
 	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
-			"#,###.#",
-			DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+		"#,###.#",
+		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
 
 	private static final NumberFormat PRECISE_DECIMAL_FORMATTER = new DecimalFormat(
-			"#,###.###",
-			DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+		"#,###.###",
+		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
 
 	/**
 	 * Convert a quantity to a short, comma separated, SI-prefix style string
-	 * <p>
+	 *
 	 * example: {@code 9,450}, {@code 2.14B}, {@code 100K}
 	 *
 	 * @param quantity The quantity to convert.
@@ -73,7 +73,8 @@ public class QuantityFormatter
 		{
 			// Long.MIN_VALUE = -1 * Long.MIN_VALUE so we need to correct for it.
 			return "-" + quantityToStackSize(quantity == Long.MIN_VALUE ? Long.MAX_VALUE : -quantity);
-		} else if (quantity < 10_000)
+		}
+		else if (quantity < 10_000)
 		{
 			return NUMBER_FORMATTER.format(quantity);
 		}
@@ -106,10 +107,10 @@ public class QuantityFormatter
 	/**
 	 * Convert a quantity to a short SI-prefix style string, possibly with a decimal,
 	 * with K after 100,000 and M after 10,000,000
-	 * <p>
+	 * 
 	 * example: {@code 9,450}, {@code 2.1B}, {@code 100K}
-	 *
-	 * @see #quantityToRSDecimalStack(int, boolean)
+	 * 
+	 * @see #quantityToRSDecimalStack(int, boolean) 
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
@@ -119,7 +120,7 @@ public class QuantityFormatter
 	/**
 	 * Convert a quantity to a short SI-prefix style string, possibly with decimals,
 	 * with K after 100,000 and M after 10,000,000
-	 * <p>
+	 *
 	 * example without {@code precise}: {@code 9,450}, {@code 2.1B}, {@code 8.4M}
 	 * example with {@code precise}: {@code 9,450}, {@code 2.147B}, {@code 8.32M}
 	 *
@@ -138,8 +139,8 @@ public class QuantityFormatter
 
 		// Output thousandths for values above a million
 		NumberFormat format = precise && power >= 6
-				? PRECISE_DECIMAL_FORMATTER
-				: DECIMAL_FORMATTER;
+			? PRECISE_DECIMAL_FORMATTER
+			: DECIMAL_FORMATTER;
 
 		return format.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
 	}
@@ -160,7 +161,7 @@ public class QuantityFormatter
 
 	/**
 	 * Formats a number to be comma delimited. No suffixes are given
-	 * <p>
+	 *
 	 * example: {@code 10,123,351}, {@code 5}
 	 */
 	public static synchronized String formatNumber(final long number)
@@ -172,7 +173,7 @@ public class QuantityFormatter
 	/**
 	 * Formats a number to be comma delimited. No suffixes are given. Has at
 	 * most 3 decimal places
-	 * <p>
+	 *
 	 * example: {@code 10,123,351}, {@code 5.612}
 	 */
 	public static synchronized String formatNumber(double number)
@@ -195,7 +196,8 @@ public class QuantityFormatter
 		if (matcher.find())
 		{
 			suffix = matcher.group(1);
-		} else
+		}
+		else
 		{
 			throw new ParseException(string + " does not resemble a properly formatted stack.", string.length() - 1);
 		}
@@ -211,7 +213,8 @@ public class QuantityFormatter
 			}
 
 			throw new ParseException("Invalid Suffix: " + suffix, string.length() - 1);
-		} else
+		}
+		else
 		{
 			return 1;
 		}

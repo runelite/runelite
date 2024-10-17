@@ -65,40 +65,56 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-		name = "Herbiboar",
-		description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
-		tags = {"herblore", "hunter", "skilling", "overlay"}
+	name = "Herbiboar",
+	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
+	tags = {"herblore", "hunter", "skilling", "overlay"}
 )
 @Slf4j
 @Getter
 public class HerbiboarPlugin extends Plugin
 {
 	private static final List<WorldPoint> END_LOCATIONS = ImmutableList.of(
-			new WorldPoint(3693, 3798, 0),
-			new WorldPoint(3702, 3808, 0),
-			new WorldPoint(3703, 3826, 0),
-			new WorldPoint(3710, 3881, 0),
-			new WorldPoint(3700, 3877, 0),
-			new WorldPoint(3715, 3840, 0),
-			new WorldPoint(3751, 3849, 0),
-			new WorldPoint(3685, 3869, 0),
-			new WorldPoint(3681, 3863, 0)
+		new WorldPoint(3693, 3798, 0),
+		new WorldPoint(3702, 3808, 0),
+		new WorldPoint(3703, 3826, 0),
+		new WorldPoint(3710, 3881, 0),
+		new WorldPoint(3700, 3877, 0),
+		new WorldPoint(3715, 3840, 0),
+		new WorldPoint(3751, 3849, 0),
+		new WorldPoint(3685, 3869, 0),
+		new WorldPoint(3681, 3863, 0)
 	);
 
 	private static final Set<Integer> START_OBJECT_IDS = ImmutableSet.of(
-			ROCK_30519,
-			MUSHROOM_30520,
-			ROCK_30521,
-			ROCK_30522,
-			DRIFTWOOD_30523
+		ROCK_30519,
+		MUSHROOM_30520,
+		ROCK_30521,
+		ROCK_30522,
+		DRIFTWOOD_30523
 	);
 
 	private static final List<Integer> HERBIBOAR_REGIONS = ImmutableList.of(
-			14652,
-			14651,
-			14908,
-			14907
+		14652,
+		14651,
+		14908,
+		14907
 	);
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private HerbiboarOverlay overlay;
+
+	@Inject
+	private HerbiboarMinimapOverlay minimapOverlay;
+
 	/**
 	 * Objects which appear at the beginning of Herbiboar hunting trails
 	 */
@@ -123,16 +139,7 @@ public class HerbiboarPlugin extends Plugin
 	 * Sequence of herbiboar spots searched along the current trail
 	 */
 	private final List<HerbiboarSearchSpot> currentPath = Lists.newArrayList();
-	@Inject
-	private Client client;
-	@Inject
-	private ClientThread clientThread;
-	@Inject
-	private OverlayManager overlayManager;
-	@Inject
-	private HerbiboarOverlay overlay;
-	@Inject
-	private HerbiboarMinimapOverlay minimapOverlay;
+
 	private boolean inHerbiboarArea;
 	private TrailToSpot nextTrail;
 	private HerbiboarSearchSpot.Group currentGroup;
@@ -202,7 +209,8 @@ public class HerbiboarPlugin extends Plugin
 					{
 						currentPath.add(spot);
 					}
-				} else if (value > 0)
+				}
+				else if (value > 0)
 				{
 					// The current trail
 					shownTrails.addAll(trail.getFootprintIds());

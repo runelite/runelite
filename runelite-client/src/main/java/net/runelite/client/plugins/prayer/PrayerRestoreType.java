@@ -31,14 +31,21 @@ import net.runelite.api.ItemID;
 enum PrayerRestoreType
 {
 	RESTOREPOT(ItemID.SUPER_RESTORE4, ItemID.SUPER_RESTORE3, ItemID.SUPER_RESTORE2, ItemID.SUPER_RESTORE1,
-			ItemID.BLIGHTED_SUPER_RESTORE4, ItemID.BLIGHTED_SUPER_RESTORE3, ItemID.BLIGHTED_SUPER_RESTORE2,
-			ItemID.BLIGHTED_SUPER_RESTORE1),
+		ItemID.BLIGHTED_SUPER_RESTORE4, ItemID.BLIGHTED_SUPER_RESTORE3, ItemID.BLIGHTED_SUPER_RESTORE2,
+		ItemID.BLIGHTED_SUPER_RESTORE1),
 	PRAYERPOT(ItemID.PRAYER_POTION4, ItemID.PRAYER_POTION3, ItemID.PRAYER_POTION2, ItemID.PRAYER_POTION1),
 	SANFEWPOT(ItemID.SANFEW_SERUM4, ItemID.SANFEW_SERUM3, ItemID.SANFEW_SERUM2, ItemID.SANFEW_SERUM1),
 	HOLYWRENCH(ItemID.PRAYER_CAPE, ItemID.PRAYER_CAPET, ItemID.MAX_CAPE,
-			ItemID.MAX_CAPE_13342, ItemID.HOLY_WRENCH, ItemID.RING_OF_THE_GODS_I);
+		ItemID.MAX_CAPE_13342, ItemID.HOLY_WRENCH, ItemID.RING_OF_THE_GODS_I);
 
 	private static final Map<Integer, PrayerRestoreType> prayerRestores;
+
+	private final int[] items;
+
+	PrayerRestoreType(int... items)
+	{
+		this.items = items;
+	}
 
 	static
 	{
@@ -51,13 +58,6 @@ enum PrayerRestoreType
 			}
 		}
 		prayerRestores = builder.build();
-	}
-
-	private final int[] items;
-
-	PrayerRestoreType(int... items)
-	{
-		this.items = items;
 	}
 
 	static PrayerRestoreType getType(final int itemId)

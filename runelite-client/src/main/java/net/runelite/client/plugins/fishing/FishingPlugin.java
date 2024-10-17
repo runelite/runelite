@@ -72,9 +72,9 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Fishing",
-		description = "Show fishing stats and mark fishing spots",
-		tags = {"overlay", "skilling"}
+	name = "Fishing",
+	description = "Show fishing stats and mark fishing spots",
+	tags = {"overlay", "skilling"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Singleton
@@ -86,14 +86,19 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
 
 	private static final Pattern FISHING_CATCH_REGEX = Pattern.compile(
-			"You catch (?:a|an|some) |Your cormorant returns with its catch.|You catch .* Karambwanji");
+		"You catch (?:a|an|some) |Your cormorant returns with its catch.|You catch .* Karambwanji");
+
+	private Instant trawlerStartTime;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, MinnowSpot> minnowSpots = new HashMap<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> fishingSpots = new ArrayList<>();
-	private Instant trawlerStartTime;
+
 	@Getter(AccessLevel.PACKAGE)
 	private FishingSpot currentSpot;
 
@@ -166,14 +171,14 @@ public class FishingPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)
-				&& event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
+			&& event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			return;
 		}
 
 		final boolean showOverlays = session.getLastFishCaught() != null
-				|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
-				|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
+			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
+			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
 
 		if (!showOverlays)
 		{
@@ -305,7 +310,7 @@ public class FishingPlugin extends Plugin
 				// create the minnow spot if it doesn't already exist
 				// or if it was moved, reset it
 				if (minnowSpot == null
-						|| !minnowSpot.getLoc().equals(npc.getWorldLocation()))
+					|| !minnowSpot.getLoc().equals(npc.getWorldLocation()))
 				{
 					minnowSpots.put(id, new MinnowSpot(npc.getWorldLocation(), Instant.now()));
 				}
@@ -424,7 +429,8 @@ public class FishingPlugin extends Plugin
 		if (minutes > 0)
 		{
 			trawlerText.append(minutes);
-		} else
+		}
+		else
 		{
 			trawlerText.append('0');
 		}
@@ -450,14 +456,14 @@ public class FishingPlugin extends Plugin
 
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 		fishingSpots.sort(
-				Comparator.comparingInt(
-								// Negate to have the furthest first
-								(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
-						// Order by position
-						.thenComparing(NPC::getLocalLocation, Comparator.comparingInt(LocalPoint::getX)
-								.thenComparingInt(LocalPoint::getY))
-						// And then by id
-						.thenComparingInt(NPC::getId)
+			Comparator.comparingInt(
+				// Negate to have the furthest first
+				(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
+				// Order by position
+				.thenComparing(NPC::getLocalLocation, Comparator.comparingInt(LocalPoint::getX)
+					.thenComparingInt(LocalPoint::getY))
+				// And then by id
+				.thenComparingInt(NPC::getId)
 		);
 	}
 }

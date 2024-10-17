@@ -55,15 +55,14 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
-		name = "Kingdom of Miscellania",
-		description = "Show amount of approval when inside Miscellania",
-		tags = {"favor", "favour", "managing", "overlay", "approval", "coffer"},
-		enabledByDefault = false
+	name = "Kingdom of Miscellania",
+	description = "Show amount of approval when inside Miscellania",
+	tags = {"favor", "favour", "managing", "overlay", "approval", "coffer"},
+	enabledByDefault = false
 )
 @Slf4j
 public class KingdomPlugin extends Plugin
 {
-	static final int MAX_APPROVAL = 127;
 	private static final ImmutableSet<Integer> KINGDOM_REGION = ImmutableSet.of(10044, 10300);
 	private static final String CONFIG_LAST_CHANGED_KEY = "lastChanged";
 	private static final String CONFIG_COFFER_KEY = "coffer";
@@ -73,6 +72,8 @@ public class KingdomPlugin extends Plugin
 	private static final int MAX_WITHDRAWAL_ROYAL_TROUBLE = 75_000;
 	private static final float APPROVAL_DECREMENT_BASE = 0.025f;
 	private static final float APPROVAL_DECREMENT_ROYAL_TROUBLE = 0.010f;
+	static final int MAX_APPROVAL = 127;
+
 	private boolean loggingIn;
 
 	@Inject
@@ -95,18 +96,6 @@ public class KingdomPlugin extends Plugin
 
 	private KingdomCounter counter;
 
-	private static int getNumbersOfDaysPassed(Instant lastChanged)
-	{
-		lastChanged = lastChanged.truncatedTo(ChronoUnit.DAYS);
-		var now = Instant.now().truncatedTo(ChronoUnit.DAYS);
-		return (int) Duration.between(lastChanged, now).toDays();
-	}
-
-	static int getApprovalPercent(int approval)
-	{
-		return (approval * 100) / MAX_APPROVAL;
-	}
-
 	@Override
 	protected void shutDown() throws Exception
 	{
@@ -128,14 +117,15 @@ public class KingdomPlugin extends Plugin
 			final int approval = client.getVarbitValue(Varbits.KINGDOM_APPROVAL);
 
 			if (isThroneOfMiscellaniaCompleted()
-					&& (isInKingdom() || coffer > 0 && approval > 0)
-					&& (getCoffer() != coffer || getApproval() != approval))
+				&& (isInKingdom() || coffer > 0 && approval > 0)
+				&& (getCoffer() != coffer || getApproval() != approval))
 			{
 				setLastChanged(Instant.now());
 				setCoffer(coffer);
 				setApproval(approval);
 			}
-		} else if (event.getVarpId() == VarPlayer.THRONE_OF_MISCELLANIA)
+		}
+		else if (event.getVarpId() == VarPlayer.THRONE_OF_MISCELLANIA)
 		{
 			processInfobox();
 		}
@@ -147,7 +137,8 @@ public class KingdomPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			processInfobox();
-		} else if (event.getGameState() == GameState.LOGGING_IN)
+		}
+		else if (event.getGameState() == GameState.LOGGING_IN)
 		{
 			loggingIn = true;
 		}
@@ -168,7 +159,8 @@ public class KingdomPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGGED_IN && isThroneOfMiscellaniaCompleted() && isInKingdom())
 		{
 			addKingdomInfobox();
-		} else
+		}
+		else
 		{
 			removeKingdomInfobox();
 		}
@@ -195,9 +187,9 @@ public class KingdomPlugin extends Plugin
 		if (estimatedCoffer < config.getCofferThreshold() || getApprovalPercent(estimatedApproval) < config.getApprovalThreshold())
 		{
 			sendChatMessage(String.format(
-					CHAT_MESSAGE_FORMAT,
-					getApprovalPercent(estimatedApproval),
-					QuantityFormatter.quantityToStackSize(estimatedCoffer)));
+				CHAT_MESSAGE_FORMAT,
+				getApprovalPercent(estimatedApproval),
+				QuantityFormatter.quantityToStackSize(estimatedCoffer)));
 		}
 	}
 
@@ -243,10 +235,17 @@ public class KingdomPlugin extends Plugin
 		return Math.max(lastApproval, 0);
 	}
 
+	private static int getNumbersOfDaysPassed(Instant lastChanged)
+	{
+		lastChanged = lastChanged.truncatedTo(ChronoUnit.DAYS);
+		var now = Instant.now().truncatedTo(ChronoUnit.DAYS);
+		return (int) Duration.between(lastChanged, now).toDays();
+	}
+
 	private boolean isInKingdom()
 	{
 		return client.getLocalPlayer() != null
-				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+			&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
 	private boolean isThroneOfMiscellaniaCompleted()
@@ -259,18 +258,23 @@ public class KingdomPlugin extends Plugin
 		return Quest.ROYAL_TROUBLE.getState(client) == QuestState.FINISHED;
 	}
 
+	static int getApprovalPercent(int approval)
+	{
+		return (approval * 100) / MAX_APPROVAL;
+	}
+
 	private void sendChatMessage(String chatMessage)
 	{
 		final String message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append(chatMessage)
-				.build();
+			.append(ChatColorType.HIGHLIGHT)
+			.append(chatMessage)
+			.build();
 
 		chatMessageManager.queue(
-				QueuedMessage.builder()
-						.type(ChatMessageType.CONSOLE)
-						.runeLiteFormattedMessage(message)
-						.build());
+			QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 
 	private Instant getLastChanged()

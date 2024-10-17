@@ -36,7 +36,6 @@ public interface IndexDataBase
 
 	/**
 	 * Get the child file ids for a given archive
-	 *
 	 * @param archiveId
 	 * @return
 	 */

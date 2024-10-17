@@ -34,20 +34,6 @@ import net.runelite.cache.util.BaseVarType;
 
 public class DBTableIndexLoader
 {
-	private static Object decodeValue(BaseVarType baseType, InputStream stream)
-	{
-		switch (baseType)
-		{
-			case INTEGER:
-				return stream.readInt();
-			case LONG:
-				return stream.readLong();
-			case STRING:
-				return stream.readString();
-		}
-		return null;
-	}
-
 	public DBTableIndex load(int tableId, int columnId, byte[] b)
 	{
 		DBTableIndex index = new DBTableIndex(tableId, columnId);
@@ -89,5 +75,19 @@ public class DBTableIndexLoader
 
 		index.setTupleTypes(tupleTypes);
 		index.setTupleIndexes(tupleIndexes);
+	}
+
+	private static Object decodeValue(BaseVarType baseType, InputStream stream)
+	{
+		switch (baseType)
+		{
+			case INTEGER:
+				return stream.readInt();
+			case LONG:
+				return stream.readLong();
+			case STRING:
+				return stream.readString();
+		}
+		return null;
 	}
 }

@@ -57,25 +57,28 @@ class PluginListItem extends JPanel implements SearchablePlugin
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
 
+	private final PluginListPanel pluginListPanel;
+
+	@Getter
+	private final PluginConfigurationDescriptor pluginConfig;
+
+	@Getter
+	private final List<String> keywords = new ArrayList<>();
+
+	private final JToggleButton pinButton;
+	private final PluginToggleButton onOffToggle;
+
 	static
 	{
 		BufferedImage onStar = ImageUtil.loadImageResource(ConfigPanel.class, "star_on.png");
 		ON_STAR = new ImageIcon(onStar);
 
 		BufferedImage offStar = ImageUtil.luminanceScale(
-				ImageUtil.grayscaleImage(onStar),
-				0.77f
+			ImageUtil.grayscaleImage(onStar),
+			0.77f
 		);
 		OFF_STAR = new ImageIcon(offStar);
 	}
-
-	private final PluginListPanel pluginListPanel;
-	@Getter
-	private final PluginConfigurationDescriptor pluginConfig;
-	@Getter
-	private final List<String> keywords = new ArrayList<>();
-	private final JToggleButton pinButton;
-	private final PluginToggleButton onOffToggle;
 
 	PluginListItem(PluginListPanel pluginListPanel, PluginConfigurationDescriptor pluginConfig)
 	{
@@ -90,7 +93,8 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		{
 			keywords.add("pluginhub");
 			keywords.add(internalName);
-		} else
+		}
+		else
 		{
 			keywords.add("plugin"); // we don't want searching plugin to only show hub plugins
 		}
@@ -165,15 +169,44 @@ class PluginListItem extends JPanel implements SearchablePlugin
 				if (onOffToggle.isSelected())
 				{
 					pluginListPanel.startPlugin(pluginConfig.getPlugin());
-				} else
+				}
+				else
 				{
 					pluginListPanel.stopPlugin(pluginConfig.getPlugin());
 				}
 			});
-		} else
+		}
+		else
 		{
 			onOffToggle.setVisible(false);
 		}
+	}
+
+	@Override
+	public String getSearchableName()
+	{
+		return pluginConfig.getName();
+	}
+
+	@Override
+	public boolean isPinned()
+	{
+		return pinButton.isSelected();
+	}
+
+	void setPinned(boolean pinned)
+	{
+		pinButton.setSelected(pinned);
+	}
+
+	void setPluginEnabled(boolean enabled)
+	{
+		onOffToggle.setSelected(enabled);
+	}
+
+	private void openGroupConfigPanel()
+	{
+		pluginListPanel.openConfigurationPanel(pluginConfig);
 	}
 
 	/**
@@ -228,32 +261,5 @@ class PluginListItem extends JPanel implements SearchablePlugin
 				label.setForeground(lastForeground);
 			}
 		});
-	}
-
-	@Override
-	public String getSearchableName()
-	{
-		return pluginConfig.getName();
-	}
-
-	@Override
-	public boolean isPinned()
-	{
-		return pinButton.isSelected();
-	}
-
-	void setPinned(boolean pinned)
-	{
-		pinButton.setSelected(pinned);
-	}
-
-	void setPluginEnabled(boolean enabled)
-	{
-		onOffToggle.setSelected(enabled);
-	}
-
-	private void openGroupConfigPanel()
-	{
-		pluginListPanel.openConfigurationPanel(pluginConfig);
 	}
 }

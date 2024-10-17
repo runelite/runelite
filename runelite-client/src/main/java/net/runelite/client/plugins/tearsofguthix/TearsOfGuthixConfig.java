@@ -35,10 +35,10 @@ import net.runelite.client.util.ColorUtil;
 public interface TearsOfGuthixConfig extends Config
 {
 	@ConfigItem(
-			keyName = "showGreenTearsTimer",
-			name = "Enable Green Tears Timer",
-			description = "Configures whether to display a timer for green tears or not",
-			position = 1
+		keyName = "showGreenTearsTimer",
+		name = "Enable Green Tears Timer",
+		description = "Configures whether to display a timer for green tears or not",
+		position = 1
 	)
 	default boolean showGreenTearsTimer()
 	{
@@ -47,10 +47,10 @@ public interface TearsOfGuthixConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			keyName = "blueTearsColor",
-			name = "Blue Tears Color",
-			description = "Color of Blue Tears timer",
-			position = 2
+		keyName = "blueTearsColor",
+		name = "Blue Tears Color",
+		description = "Color of Blue Tears timer",
+		position = 2
 	)
 	default Color getBlueTearsColor()
 	{
@@ -59,10 +59,10 @@ public interface TearsOfGuthixConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			keyName = "greenTearsColor",
-			name = "Green Tears Color",
-			description = "Color of Green Tears timer",
-			position = 3
+		keyName = "greenTearsColor",
+		name = "Green Tears Color",
+		description = "Color of Green Tears timer",
+		position = 3
 	)
 	default Color getGreenTearsColor()
 	{

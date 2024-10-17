@@ -37,8 +37,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(
-		name = "build-index",
-		defaultPhase = LifecyclePhase.GENERATE_RESOURCES
+	name = "build-index",
+	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
 )
 public class IndexMojo extends AbstractMojo
 {
@@ -64,7 +64,8 @@ public class IndexMojo extends AbstractMojo
 						try
 						{
 							archiveId = parseInt(archiveFile.getName());
-						} catch (NumberFormatException ex)
+						}
+						catch (NumberFormatException ex)
 						{
 							continue;
 						}
@@ -75,7 +76,8 @@ public class IndexMojo extends AbstractMojo
 			}
 
 			fout.writeInt(-1);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			throw new MojoExecutionException("error build index file", ex);
 		}

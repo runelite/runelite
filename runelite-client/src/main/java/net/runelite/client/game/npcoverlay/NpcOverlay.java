@@ -110,8 +110,8 @@ class NpcOverlay extends Overlay
 			{
 				final int size = npcComposition.getSize();
 				final LocalPoint centerLp = lp.plus(
-						Perspective.LOCAL_TILE_SIZE * (size - 1) / 2,
-						Perspective.LOCAL_TILE_SIZE * (size - 1) / 2);
+					Perspective.LOCAL_TILE_SIZE * (size - 1) / 2,
+					Perspective.LOCAL_TILE_SIZE * (size - 1) / 2);
 				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, centerLp, size);
 				renderPoly(graphics, borderColor, borderWidth, fillColor, tilePoly);
 			}
@@ -121,8 +121,8 @@ class NpcOverlay extends Overlay
 		{
 			int size = npcComposition.getSize();
 			LocalPoint lp = actor.getLocalLocation().plus(
-					-((size - 1) * Perspective.LOCAL_TILE_SIZE / 2),
-					-((size - 1) * Perspective.LOCAL_TILE_SIZE / 2));
+				-((size - 1) * Perspective.LOCAL_TILE_SIZE / 2),
+				-((size - 1) * Perspective.LOCAL_TILE_SIZE / 2));
 
 			Polygon southWestTilePoly = Perspective.getCanvasTilePoly(client, lp);
 			renderPoly(graphics, borderColor, borderWidth, fillColor, southWestTilePoly);

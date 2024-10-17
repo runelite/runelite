@@ -42,58 +42,28 @@ import net.runelite.client.util.Text;
 @Builder
 public class LineComponent implements LayoutableRenderableEntity
 {
-	@Builder.Default
-	@Getter
-	private final Rectangle bounds = new Rectangle();
 	private String left;
 	private String right;
+
 	@Builder.Default
 	private Color leftColor = Color.WHITE;
+
 	@Builder.Default
 	private Color rightColor = Color.WHITE;
+
 	private Font leftFont;
+
 	private Font rightFont;
+
 	@Builder.Default
 	private Point preferredLocation = new Point();
+
 	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
-	private static int getLineWidth(final String line, final FontMetrics metrics)
-	{
-		return metrics.stringWidth(Text.removeTags(line));
-	}
-
-	private static String[] lineBreakText(String text, int maxWidth, FontMetrics metrics)
-	{
-		final String[] words = text.split(" ");
-
-		if (words.length == 0)
-		{
-			return new String[0];
-		}
-
-		final StringBuilder wrapped = new StringBuilder(words[0]);
-		int spaceLeft = maxWidth - metrics.stringWidth(wrapped.toString());
-
-		for (int i = 1; i < words.length; i++)
-		{
-			final String word = words[i];
-			final int wordLen = metrics.stringWidth(word);
-			final int spaceWidth = metrics.stringWidth(" ");
-
-			if (wordLen + spaceWidth > spaceLeft)
-			{
-				wrapped.append('\n').append(word);
-				spaceLeft = maxWidth - wordLen;
-			} else
-			{
-				wrapped.append(' ').append(word);
-				spaceLeft -= spaceWidth + wordLen;
-			}
-		}
-
-		return wrapped.toString().split("\n");
-	}
+	@Builder.Default
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -185,6 +155,44 @@ public class LineComponent implements LayoutableRenderableEntity
 		bounds.setLocation(preferredLocation);
 		bounds.setSize(dimension);
 		return dimension;
+	}
+
+	private static int getLineWidth(final String line, final FontMetrics metrics)
+	{
+		return metrics.stringWidth(Text.removeTags(line));
+	}
+
+	private static String[] lineBreakText(String text, int maxWidth, FontMetrics metrics)
+	{
+		final String[] words = text.split(" ");
+
+		if (words.length == 0)
+		{
+			return new String[0];
+		}
+
+		final StringBuilder wrapped = new StringBuilder(words[0]);
+		int spaceLeft = maxWidth - metrics.stringWidth(wrapped.toString());
+
+		for (int i = 1; i < words.length; i++)
+		{
+			final String word = words[i];
+			final int wordLen = metrics.stringWidth(word);
+			final int spaceWidth = metrics.stringWidth(" ");
+
+			if (wordLen + spaceWidth > spaceLeft)
+			{
+				wrapped.append('\n').append(word);
+				spaceLeft = maxWidth - wordLen;
+			}
+			else
+			{
+				wrapped.append(' ').append(word);
+				spaceLeft -= spaceWidth + wordLen;
+			}
+		}
+
+		return wrapped.toString().split("\n");
 	}
 }
 

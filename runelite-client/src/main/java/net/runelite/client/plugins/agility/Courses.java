@@ -55,6 +55,15 @@ enum Courses
 
 	private final static Map<Integer, Courses> coursesByRegion;
 
+	@Getter
+	private final double totalXp;
+
+	@Getter
+	private final int regionId;
+
+	@Getter
+	private final WorldPoint[] courseEndWorldPoints;
+
 	static
 	{
 		ImmutableMap.Builder<Integer, Courses> builder = new ImmutableMap.Builder<>();
@@ -70,13 +79,6 @@ enum Courses
 
 		coursesByRegion = builder.build();
 	}
-
-	@Getter
-	private final double totalXp;
-	@Getter
-	private final int regionId;
-	@Getter
-	private final WorldPoint[] courseEndWorldPoints;
 
 	Courses(double totalXp)
 	{

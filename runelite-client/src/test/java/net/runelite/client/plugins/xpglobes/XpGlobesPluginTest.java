@@ -150,10 +150,10 @@ public class XpGlobesPluginTest
 		int statChangedLevel = Math.min(Experience.getLevelForXp(totalXp), Experience.MAX_REAL_LEVEL);
 
 		StatChanged firstStatChangedEvent = new StatChanged(
-				skill,
-				totalXp,
-				statChangedLevel,
-				boostedLevel
+			skill,
+			totalXp,
+			statChangedLevel,
+			boostedLevel
 		);
 
 		// The first xp change is cached

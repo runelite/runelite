@@ -43,8 +43,8 @@ class ClientConfigLoader
 	RSConfig fetch(HttpUrl url) throws IOException
 	{
 		final Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		final RSConfig config = new RSConfig();
 

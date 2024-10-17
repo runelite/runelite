@@ -32,15 +32,15 @@ import net.runelite.api.ChatPlayer;
 @AllArgsConstructor
 class MemberActivity
 {
-	private ActivityType activityType;
-	private ChatType chatType;
-	private ChatPlayer member;
-	private Integer tick;
-
 	enum ChatType
 	{
 		FRIENDS_CHAT,
 		CLAN_CHAT,
 		GUEST_CHAT
 	}
+
+	private ActivityType activityType;
+	private ChatType chatType;
+	private ChatPlayer member;
+	private Integer tick;
 }

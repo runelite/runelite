@@ -64,35 +64,43 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.RSTimeUnit;
 
 @PluginDescriptor(
-		name = "Mining",
-		description = "Show mining statistics and ore respawn timers",
-		tags = {"overlay", "skilling", "timers"},
-		enabledByDefault = false
+	name = "Mining",
+	description = "Show mining statistics and ore respawn timers",
+	tags = {"overlay", "skilling", "timers"},
+	enabledByDefault = false
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class MiningPlugin extends Plugin
 {
 	private static final Pattern MINING_PATTERN = Pattern.compile(
-			"You swing your pick at the " +
-					"(?:rock|star)" +
-					"(?:\\.|!)");
-	@Getter(AccessLevel.PACKAGE)
-	private final List<RockRespawn> respawns = new ArrayList<>();
+		"You swing your pick at the " +
+			"(?:rock|star)" +
+			"(?:\\.|!)");
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private MiningOverlay overlay;
+
 	@Inject
 	private MiningRocksOverlay rocksOverlay;
+
 	@Inject
 	private MiningConfig config;
+
 	@Getter
 	@Nullable
 	@Setter(AccessLevel.PACKAGE)
 	private MiningSession session;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final List<RockRespawn> respawns = new ArrayList<>();
+
 	@Getter
 	@Nullable
 	private Pickaxe pickaxe;
@@ -163,7 +171,8 @@ public class MiningPlugin extends Plugin
 			}
 
 			session.setLastMined();
-		} else
+		}
+		else
 		{
 			Pickaxe pickaxe = Pickaxe.fromAnimation(animId);
 			if (pickaxe != null)
@@ -252,7 +261,7 @@ public class MiningPlugin extends Plugin
 		if (object.getId() == DAEYALT_ESSENCE_39095)
 		{
 			RockRespawn rockRespawn = new RockRespawn(Rock.DAEYALT_ESSENCE, object.getWorldLocation(), Instant.now(),
-					(int) Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, RSTimeUnit.GAME_TICKS).toMillis(), Rock.DAEYALT_ESSENCE.getZOffset());
+				(int) Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, RSTimeUnit.GAME_TICKS).toMillis(), Rock.DAEYALT_ESSENCE.getZOffset());
 			respawns.add(rockRespawn);
 			client.setHintArrow(object.getWorldLocation());
 		}

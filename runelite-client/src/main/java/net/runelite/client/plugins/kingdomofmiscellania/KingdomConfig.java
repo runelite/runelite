@@ -37,10 +37,10 @@ public interface KingdomConfig extends Config
 	int MAX_APPROVAL_PERCENT = 100;
 
 	@ConfigItem(
-			position = 1,
-			keyName = "sendNotifications",
-			name = "Send Notifications",
-			description = "Send chat notifications upon login showing current estimated coffer and approval"
+		position = 1,
+		keyName = "sendNotifications",
+		name = "Send Notifications",
+		description = "Send chat notifications upon login showing current estimated coffer and approval"
 	)
 	default boolean shouldSendNotifications()
 	{
@@ -48,13 +48,13 @@ public interface KingdomConfig extends Config
 	}
 
 	@Range(
-			max = MAX_COFFER
+		max = MAX_COFFER
 	)
 	@ConfigItem(
-			position = 2,
-			keyName = "cofferThreshold",
-			name = "Coffer Threshold",
-			description = "Send notifications if coffer is below this value"
+		position = 2,
+		keyName = "cofferThreshold",
+		name = "Coffer Threshold",
+		description = "Send notifications if coffer is below this value"
 	)
 	default int getCofferThreshold()
 	{
@@ -62,13 +62,13 @@ public interface KingdomConfig extends Config
 	}
 
 	@Range(
-			max = MAX_APPROVAL_PERCENT
+		max = MAX_APPROVAL_PERCENT
 	)
 	@ConfigItem(
-			position = 3,
-			keyName = "approvalThreshold",
-			name = "Approval Threshold",
-			description = "Send notifications if approval percentage is below this value"
+		position = 3,
+		keyName = "approvalThreshold",
+		name = "Approval Threshold",
+		description = "Send notifications if approval percentage is below this value"
 	)
 	default int getApprovalThreshold()
 	{

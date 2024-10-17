@@ -98,14 +98,15 @@ public class ObjectManager
 	{
 		java.mkdirs();
 		try (IDClass ids = IDClass.create(java, "ObjectID");
-			 IDClass nulls = IDClass.create(java, "NullObjectID"))
+			IDClass nulls = IDClass.create(java, "NullObjectID"))
 		{
 			for (ObjectDefinition def : objects.values())
 			{
 				if ("null".equals(def.getName()))
 				{
 					nulls.add(def.getName(), def.getId());
-				} else
+				}
+				else
 				{
 					ids.add(def.getName(), def.getId());
 				}

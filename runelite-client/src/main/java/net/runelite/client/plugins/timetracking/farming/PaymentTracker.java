@@ -46,17 +46,17 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
 @Slf4j
 @RequiredArgsConstructor(
-		access = AccessLevel.PRIVATE,
-		onConstructor = @__({@Inject})
+	access = AccessLevel.PRIVATE,
+	onConstructor = @__({@Inject})
 )
 @Singleton
 public class PaymentTracker
 {
 	private static final Set<String> PAYMENT_TEXT = ImmutableSet.of(
-			"That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.",
-			"That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.",
-			"That'll do nicely. Leave it with me - I'll make sure that<br>patch grows for you.",
-			"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you."
+		"That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.",
+		"That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.",
+		"That'll do nicely. Leave it with me - I'll make sure that<br>patch grows for you.",
+		"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you."
 	);
 
 	private final Client client;
@@ -64,21 +64,6 @@ public class PaymentTracker
 	private final FarmingWorld farmingWorld;
 
 	private int lastSelectedOption;
-
-	private static boolean isPatchOption(String name)
-	{
-		if (name == null)
-		{
-			return false;
-		}
-
-		return name.contains("Patch") || name.contains("allotment");
-	}
-
-	private static String configKey(FarmingPatch fp)
-	{
-		return fp.configKey() + "." + TimeTrackingConfig.PROTECTED;
-	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
@@ -154,12 +139,28 @@ public class PaymentTracker
 		}
 	}
 
+	private static boolean isPatchOption(String name)
+	{
+		if (name == null)
+		{
+			return false;
+		}
+
+		return name.contains("Patch") || name.contains("allotment");
+	}
+
+	private static String configKey(FarmingPatch fp)
+	{
+		return fp.configKey() + "." + TimeTrackingConfig.PROTECTED;
+	}
+
 	void setProtectedState(FarmingPatch fp, boolean state)
 	{
 		if (!state)
 		{
 			configManager.unsetRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey(fp));
-		} else
+		}
+		else
 		{
 			configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey(fp), state);
 		}
@@ -168,9 +169,9 @@ public class PaymentTracker
 	boolean getProtectedState(FarmingPatch fp)
 	{
 		return Boolean.TRUE.equals(configManager.getRSProfileConfiguration(
-				TimeTrackingConfig.CONFIG_GROUP,
-				configKey(fp),
-				Boolean.class));
+			TimeTrackingConfig.CONFIG_GROUP,
+			configKey(fp),
+			Boolean.class));
 	}
 
 	private FarmingPatch findPatchForNpc(int npcId)

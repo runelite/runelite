@@ -35,38 +35,33 @@ public interface AmbientSoundEffect
 {
 	/**
 	 * The id of the sound effect
-	 *
-	 * @return
 	 * @see SoundEffectID
+	 * @return
 	 */
 	int getSoundEffectId();
 
 	/**
 	 * The background sound effect ids. One sound effect is picked from this at random.
-	 *
-	 * @return
 	 * @see SoundEffectID
+	 * @return
 	 */
 	@Nullable
 	int[] getBackgroundSoundEffectIds();
 
 	/**
 	 * The plane the sound effect is on
-	 *
 	 * @return
 	 */
 	int getPlane();
 
 	/**
 	 * The min x/y position of the area this sound effect is at.
-	 *
 	 * @return
 	 */
 	LocalPoint getMinPosition();
 
 	/**
 	 * The max x/y position of the area this sound effect is at
-	 *
 	 * @return
 	 */
 	LocalPoint getMaxPosition();

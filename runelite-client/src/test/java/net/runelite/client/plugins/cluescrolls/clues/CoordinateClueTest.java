@@ -26,8 +26,8 @@ package net.runelite.client.plugins.cluescrolls.clues;
 
 import java.util.Map;
 import net.runelite.api.coords.WorldPoint;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 public class CoordinateClueTest
 {

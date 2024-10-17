@@ -43,9 +43,9 @@ import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-		name = "Configuration",
-		loadWhenOutdated = true,
-		hidden = true // prevent users from disabling
+	name = "Configuration",
+	loadWhenOutdated = true,
+	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin
 {
@@ -76,14 +76,14 @@ public class ConfigPlugin extends Plugin
 	{
 		PluginListPanel pluginListPanel = pluginListPanelProvider.get();
 		pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
-						"RuneLite", "RuneLite client settings",
-						new String[] {"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
-						runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
-				),
-				new PluginConfigurationDescriptor(
-						"Chat Color", "Recolor chat text", new String[] {"colour", "messages"},
-						chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
-				));
+				"RuneLite", "RuneLite client settings",
+				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
+				runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
+			),
+			new PluginConfigurationDescriptor(
+				"Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
+				chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
+			));
 		pluginListPanel.rebuildPluginList();
 
 		topLevelConfigPanel = topLevelConfigPanelProvider.get();
@@ -91,11 +91,11 @@ public class ConfigPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
-				.tooltip("Configuration")
-				.icon(icon)
-				.priority(0)
-				.panel(topLevelConfigPanel)
-				.build();
+			.tooltip("Configuration")
+			.icon(icon)
+			.priority(0)
+			.panel(topLevelConfigPanel)
+			.build();
 
 		clientToolbar.addNavigation(navButton);
 	}

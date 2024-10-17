@@ -31,21 +31,21 @@ import org.junit.Test;
 public class HotColdTemperatureChangeTest
 {
 	private static final String[] VALID_MESSAGES = {
-			"The device is warm, and warmer than last time.",
-			"The device is cold, but colder than last time.",
-			"The device is very hot, and the same temperature as last time.",
+		"The device is warm, and warmer than last time.",
+		"The device is cold, but colder than last time.",
+		"The device is very hot, and the same temperature as last time.",
 	};
 	private static final String[] INVALID_MESSAGES = {
-			"The device is cold.",
-			"The device is ice cold.",
-			"The device is very cold.",
-			"The device is hot.",
-			"The device is incredibly hot.",
-			"The device is an octopus, and is wetter than last time",
-			"foobar",
-			"a q p w",
-			"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
-			"and warmer than and colder than and the same temperature",
+		"The device is cold.",
+		"The device is ice cold.",
+		"The device is very cold.",
+		"The device is hot.",
+		"The device is incredibly hot.",
+		"The device is an octopus, and is wetter than last time",
+		"foobar",
+		"a q p w",
+		"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
+		"and warmer than and colder than and the same temperature",
 	};
 
 	@Test

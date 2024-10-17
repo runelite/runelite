@@ -59,23 +59,37 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Roof Removal",
-		description = "Remove only the needed roofs above your player, hovered tile, or destination",
-		enabledByDefault = false
+	name = "Roof Removal",
+	description = "Remove only the needed roofs above your player, hovered tile, or destination",
+	enabledByDefault = false
 )
 @Slf4j
 public class RoofRemovalPlugin extends Plugin
 {
-	private final Map<Integer, long[]> overrides = new HashMap<>();
-	private final Set<Integer> configOverrideRegions = new HashSet<>();
+	private static class FlaggedArea
+	{
+		int rx1;
+		int ry1;
+		int rx2;
+		int ry2;
+		int z1;
+		int z2;
+	}
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private Gson gson;
+
 	@Inject
 	private RoofRemovalConfig config;
+
+	private final Map<Integer, long[]> overrides = new HashMap<>();
+	private final Set<Integer> configOverrideRegions = new HashSet<>();
 
 	@Provides
 	RoofRemovalConfig getConfig(ConfigManager configManager)
@@ -139,7 +153,8 @@ public class RoofRemovalPlugin extends Plugin
 		if (e.getKey().startsWith("remove"))
 		{
 			client.getScene().setRoofRemovalMode(buildRoofRemovalFlags());
-		} else if (e.getKey().startsWith("override"))
+		}
+		else if (e.getKey().startsWith("override"))
 		{
 			buildConfigOverrides();
 			clientThread.invoke(() ->
@@ -201,9 +216,7 @@ public class RoofRemovalPlugin extends Plugin
 		{
 			final InputStreamReader data = new InputStreamReader(in, StandardCharsets.UTF_8);
 			//CHECKSTYLE:OFF
-			final Type type = new TypeToken<Map<Integer, List<FlaggedArea>>>()
-			{
-			}.getType();
+			final Type type = new TypeToken<Map<Integer, List<FlaggedArea>>>() {}.getType();
 			//CHECKSTYLE:ON
 			Map<Integer, List<FlaggedArea>> parsed = gson.fromJson(data, type);
 			overrides.clear();
@@ -285,7 +298,8 @@ public class RoofRemovalPlugin extends Plugin
 					if (configOverrideRegions.contains(wp.getRegionID()))
 					{
 						settings[z][x + SCENE_OFFSET][y + SCENE_OFFSET] |= Constants.TILE_FLAG_UNDER_ROOF;
-					} else if (overrides.containsKey(regionAndPlane))
+					}
+					else if (overrides.containsKey(regionAndPlane))
 					{
 						int rx = wp.getRegionX();
 						int ry = wp.getRegionY();
@@ -299,15 +313,5 @@ public class RoofRemovalPlugin extends Plugin
 			}
 		}
 		log.debug("Roof override duration: {}", sw.stop());
-	}
-
-	private static class FlaggedArea
-	{
-		int rx1;
-		int ry1;
-		int rx2;
-		int ry2;
-		int z1;
-		int z2;
 	}
 }

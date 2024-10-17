@@ -68,23 +68,28 @@ public class GrandExchangeOfferSlot extends JPanel
 	private static final ImageIcon RIGHT_ARROW_ICON;
 	private static final ImageIcon LEFT_ARROW_ICON;
 
+	private final GrandExchangePlugin grandExchangePlugin;
+
+	private final JPanel container = new JPanel();
+	private final CardLayout cardLayout = new CardLayout();
+
+	private final JLabel itemIcon = new JLabel();
+	private final JLabel itemName = new JLabel();
+	private final JLabel offerInfo = new JLabel();
+
+	private final JLabel itemPrice = new JLabel();
+	private final JLabel offerSpent = new JLabel();
+
+	private final ThinProgressBar progressBar = new ThinProgressBar();
+
+	private boolean showingFace = true;
+
 	static
 	{
 		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.loadImageResource(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
 		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
 		LEFT_ARROW_ICON = new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}
-
-	private final GrandExchangePlugin grandExchangePlugin;
-	private final JPanel container = new JPanel();
-	private final CardLayout cardLayout = new CardLayout();
-	private final JLabel itemIcon = new JLabel();
-	private final JLabel itemName = new JLabel();
-	private final JLabel offerInfo = new JLabel();
-	private final JLabel itemPrice = new JLabel();
-	private final JLabel offerSpent = new JLabel();
-	private final ThinProgressBar progressBar = new ThinProgressBar();
-	private boolean showingFace = true;
 
 	/**
 	 * This (sub)panel is used for each GE slot displayed
@@ -212,7 +217,8 @@ public class GrandExchangeOfferSlot extends JPanel
 		if (newOffer == null || newOffer.getState() == EMPTY)
 		{
 			return;
-		} else
+		}
+		else
 		{
 			cardLayout.show(container, FACE_CARD);
 
@@ -220,12 +226,12 @@ public class GrandExchangeOfferSlot extends JPanel
 			itemIcon.setIcon(new ImageIcon(itemImage));
 
 			boolean buying = newOffer.getState() == BOUGHT
-					|| newOffer.getState() == BUYING
-					|| newOffer.getState() == CANCELLED_BUY;
+				|| newOffer.getState() == BUYING
+				|| newOffer.getState() == CANCELLED_BUY;
 
 			String offerState = (buying ? "Bought " : "Sold ")
-					+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
-					+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
+				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getQuantitySold()) + " / "
+				+ QuantityFormatter.quantityToRSDecimalStack(newOffer.getTotalQuantity());
 
 			offerInfo.setText(offerState);
 
@@ -234,7 +240,7 @@ public class GrandExchangeOfferSlot extends JPanel
 			String action = buying ? "Spent: " : "Received: ";
 
 			offerSpent.setText(htmlLabel(action, QuantityFormatter.formatNumber(newOffer.getSpent()) + " / "
-					+ QuantityFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
+				+ QuantityFormatter.formatNumber(newOffer.getPrice() * newOffer.getTotalQuantity())));
 
 			progressBar.setForeground(getProgressColor(newOffer));
 			progressBar.setMaximumValue(newOffer.getTotalQuantity());

@@ -98,7 +98,8 @@ class StopwatchPanel extends ClockPanel
 		if (laps.isEmpty())
 		{
 			lapsContainer.setBorder(null);
-		} else
+		}
+		else
 		{
 			lapsContainer.setBorder(new EmptyBorder(5, 0, 0, 0));
 

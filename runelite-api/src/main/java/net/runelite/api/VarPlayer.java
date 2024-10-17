@@ -26,7 +26,7 @@ package net.runelite.api;
 
 /**
  * Server controlled "content-developer" integers.
- * <p>
+ *
  * VarPlayers are stored per RuneScape player save, and synchronized
  * from the server to the client. The client can change them preemptively
  * if it thinks they will change the next tick as a lag-hiding measure.
@@ -53,10 +53,10 @@ public final class VarPlayer
 
 	/**
 	 * The ID of the party. This Var is only set in the raid bank area and the raid lobby
-	 * <p>
+	 *
 	 * This gets set to -1 when the raid starts. This is first set when the first player of the friends chat forms a party
 	 * on the recruiting board and it changes again when the first person actually enters the raid.
-	 * <p>
+	 *
 	 * -1 : Not in a party or in the middle of an ongoing raid
 	 * Anything else : This means that your friends chat has a raid party being formed and has not started yet
 	 */
@@ -254,7 +254,6 @@ public final class VarPlayer
 	/**
 	 * The amount of ammo in Dizana's quiver's inventory slot.
 	 * 0 means the quiver is empty.
-	 *
 	 * @see #DIZANAS_QUIVER_ITEM_ID
 	 */
 	public static final int DIZANAS_QUIVER_ITEM_COUNT = 4141;
@@ -262,7 +261,6 @@ public final class VarPlayer
 	/**
 	 * The item ID of the ammo in Dizana's quiver inventory slot.
 	 * -1 means the quiver is empty.
-	 *
 	 * @see #DIZANAS_QUIVER_ITEM_COUNT
 	 */
 	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;

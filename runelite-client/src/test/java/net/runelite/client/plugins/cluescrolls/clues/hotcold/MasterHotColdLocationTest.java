@@ -33,8 +33,8 @@ import org.junit.Test;
 public class MasterHotColdLocationTest
 {
 	private static final Set<HotColdLocation> MASTER_HOT_COLD_LOCATIONS = Arrays.stream(HotColdLocation.values())
-			.filter(l -> !l.isBeginnerClue())
-			.collect(Collectors.toSet());
+		.filter(l -> !l.isBeginnerClue())
+		.collect(Collectors.toSet());
 	private static final int EXPECTED_DIMENSION_SIZE = 9;
 
 	@Test

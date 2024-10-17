@@ -35,10 +35,8 @@ public interface Texture extends Node
 	boolean isLoaded();
 
 	float getU();
-
 	void setU(float u);
 
 	float getV();
-
 	void setV(float v);
 }

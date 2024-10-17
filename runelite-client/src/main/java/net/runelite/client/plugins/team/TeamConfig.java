@@ -35,32 +35,32 @@ public interface TeamConfig extends Config
 	String GROUP = "teamCapes";
 
 	@ConfigSection(
-			name = "Team",
-			description = "Configuration for teams",
-			position = 10
+		name = "Team",
+		description = "Configuration for teams",
+		position = 10
 	)
 	String teamSection = "teamSection";
 
 	@ConfigSection(
-			name = "Friends Chat",
-			description = "Configuration for friends chat",
-			position = 20
+		name = "Friends Chat",
+		description = "Configuration for friends chat",
+		position = 20
 	)
 	String friendsChatSection = "friendsChatSection";
 
 	@ConfigSection(
-			name = "Clan Chat",
-			description = "Configuration for clan chat",
-			position = 30
+		name = "Clan Chat",
+		description = "Configuration for clan chat",
+		position = 30
 	)
 	String clanChatSection = "clanChatSection";
 
 	@ConfigItem(
-			keyName = "teamCapesOverlay",
-			name = "Team cape overlay",
-			description = "Configures whether to show the team cape overlay.",
-			position = 0,
-			section = teamSection
+		keyName = "teamCapesOverlay",
+		name = "Team cape overlay",
+		description = "Configures whether to show the team cape overlay.",
+		position = 0,
+		section = teamSection
 	)
 	default boolean teamCapesOverlay()
 	{
@@ -68,11 +68,11 @@ public interface TeamConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "minimumCapeCount",
-			name = "Minimum Cape Count",
-			description = "Configures the minimum number of team capes which must be present before being displayed.",
-			position = 1,
-			section = teamSection
+		keyName = "minimumCapeCount",
+		name = "Minimum Cape Count",
+		description = "Configures the minimum number of team capes which must be present before being displayed.",
+		position = 1,
+		section = teamSection
 	)
 	default int getMinimumCapeCount()
 	{
@@ -80,11 +80,11 @@ public interface TeamConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "friendsChatMemberCounter",
-			name = "Friends Chat Members Counter",
-			description = "Show the amount of friends chat members near you.",
-			position = 0,
-			section = friendsChatSection
+		keyName = "friendsChatMemberCounter",
+		name = "Friends Chat Members Counter",
+		description = "Show the amount of friends chat members near you.",
+		position = 0,
+		section = friendsChatSection
 	)
 	default boolean friendsChatMemberCounter()
 	{
@@ -92,11 +92,11 @@ public interface TeamConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "clanChatMemberCounter",
-			name = "Clan Chat Members Counter",
-			description = "Show the amount of clan chat members near you.",
-			position = 0,
-			section = clanChatSection
+		keyName = "clanChatMemberCounter",
+		name = "Clan Chat Members Counter",
+		description = "Show the amount of clan chat members near you.",
+		position = 0,
+		section = clanChatSection
 	)
 	default boolean clanChatMemberCounter()
 	{

@@ -32,8 +32,7 @@ import net.runelite.api.Point;
 import net.runelite.client.input.MouseListener;
 
 @RequiredArgsConstructor
-public class PartyPingMouseListener implements MouseListener
-{
+public class PartyPingMouseListener implements MouseListener {
 	// distance in px mouse needs to be dragged before radial ping menu is shown
 	private static final int PING_MENU_OPEN_DRAG_DISTANCE = 15;
 
@@ -42,18 +41,15 @@ public class PartyPingMouseListener implements MouseListener
 	private final PartyConfig config;
 
 	@Override
-	public MouseEvent mouseClicked(MouseEvent event)
-	{
+	public MouseEvent mouseClicked(MouseEvent event) {
 		return event;
 	}
 
 	@Override
-	public MouseEvent mousePressed(MouseEvent event)
-	{
+	public MouseEvent mousePressed(MouseEvent event) {
 		// if user inputs another button we want to close the radial menu
 		if (!plugin.isAdvancedPingMenuOpen() || SwingUtilities.isLeftMouseButton(event) ||
-				client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings())
-		{
+				client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings()) {
 			return event;
 		}
 
@@ -61,18 +57,15 @@ public class PartyPingMouseListener implements MouseListener
 		return event;
 	}
 
-	@SuppressWarnings("checkstyle:LeftCurly")
 	@Override
-	public MouseEvent mouseReleased(MouseEvent event)
-	{
+	public MouseEvent mouseReleased(MouseEvent event) {
 		if (plugin.getPendingPartyPing() == null || !SwingUtilities.isLeftMouseButton(event) ||
-				client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings())
-		{
+				client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings()) {
 			return event;
 		}
 
-		if (plugin.getPendingPartyPing().getPingType() != null)
-		{
+		// only send ping if the user is not cancelling selection
+		if (plugin.getPendingPartyPing().getPingType() != null) {
 			plugin.getParty().send(plugin.getPendingPartyPing());
 		}
 
@@ -81,35 +74,28 @@ public class PartyPingMouseListener implements MouseListener
 	}
 
 	@Override
-	public MouseEvent mouseEntered(MouseEvent event)
-	{
+	public MouseEvent mouseEntered(MouseEvent event) {
 		return event;
 	}
 
 	@Override
-	public MouseEvent mouseExited(MouseEvent event)
-	{
+	public MouseEvent mouseExited(MouseEvent event) {
 		return event;
 	}
 
-	@SuppressWarnings({"checkstyle:LeftCurly", "checkstyle:RightCurly", "checkstyle:RegexpSinglelineJava"})
 	@Override
-	public MouseEvent mouseDragged(MouseEvent event)
-	{
+	public MouseEvent mouseDragged(MouseEvent event) {
 		if (!plugin.isPingHotkeyPressed() && !plugin.isAdvancedPingMenuOpen() || !SwingUtilities.isLeftMouseButton(event) ||
-				client.isMenuOpen() || !plugin.getParty().isInParty() || plugin.getPendingPartyPing() == null || !config.pings())
-		{
+				client.isMenuOpen() || !plugin.getParty().isInParty() || plugin.getPendingPartyPing() == null || !config.pings()) {
 			return event;
 		}
 
 		Point mousePosition = client.getMouseCanvasPosition();
 		int distance = plugin.getMouseStartPosition().distanceTo(mousePosition);
 
-		if (plugin.isAdvancedPingMenuOpen())
-		{
+		if (plugin.isAdvancedPingMenuOpen()) {
 			// if mouse is within deadzone we want to cancel selection
-			if (distance <= PartyPlugin.PING_MENU_DEADZONE)
-			{
+			if (distance <= PartyPlugin.PING_MENU_DEADZONE) {
 				plugin.getPendingPartyPing().setPingType(null);
 				return event;
 			}
@@ -119,15 +105,13 @@ public class PartyPingMouseListener implements MouseListener
 			double offset = optionSelectionSize / 2.0;
 
 			double angle = Math.toDegrees(Math.atan2(plugin.getMouseStartPosition().getY() - mousePosition.getY(), plugin.getMouseStartPosition().getX() - mousePosition.getX())) - offset;
-			if (angle < 0)
-			{
+			if (angle < 0) {
 				angle += 360;
 			}
 
 			int ordinal = (int) Math.floor(angle / optionSelectionSize);
 			plugin.getPendingPartyPing().setPingType(pingTypes[ordinal]);
-		} else if (distance >= PING_MENU_OPEN_DRAG_DISTANCE)
-		{
+		} else if (distance >= PING_MENU_OPEN_DRAG_DISTANCE) {
 			plugin.setAdvancedPingMenuOpen(true);
 			plugin.getPendingPartyPing().setPingType(null);
 		}
@@ -135,10 +119,8 @@ public class PartyPingMouseListener implements MouseListener
 		return event;
 	}
 
-	@SuppressWarnings("checkstyle:LeftCurly")
 	@Override
-	public MouseEvent mouseMoved(MouseEvent event)
-	{
+	public MouseEvent mouseMoved(MouseEvent event) {
 		return event;
 	}
 }

@@ -38,8 +38,17 @@ import lombok.Data;
 @Singleton
 public class HiscoreManager
 {
+	@AllArgsConstructor
+	@Data
+	static class HiscoreKey
+	{
+		String username;
+		HiscoreEndpoint type;
+	}
+
 	static final HiscoreResult EMPTY = new HiscoreResult(null, ImmutableMap.of());
 	static final HiscoreResult NONE = new HiscoreResult(null, ImmutableMap.of());
+
 	private final LoadingCache<HiscoreKey, HiscoreResult> hiscoreCache;
 	private final HiscoreClient hiscoreClient;
 
@@ -48,9 +57,9 @@ public class HiscoreManager
 	{
 		this.hiscoreClient = hiscoreClient;
 		hiscoreCache = CacheBuilder.newBuilder()
-				.maximumSize(128L)
-				.expireAfterWrite(1, TimeUnit.HOURS)
-				.build(new HiscoreLoader(executor, hiscoreClient));
+			.maximumSize(128L)
+			.expireAfterWrite(1, TimeUnit.HOURS)
+			.build(new HiscoreLoader(executor, hiscoreClient));
 	}
 
 	/**
@@ -99,13 +108,5 @@ public class HiscoreManager
 
 		hiscoreCache.refresh(hiscoreKey);
 		return null;
-	}
-
-	@AllArgsConstructor
-	@Data
-	static class HiscoreKey
-	{
-		String username;
-		HiscoreEndpoint type;
 	}
 }

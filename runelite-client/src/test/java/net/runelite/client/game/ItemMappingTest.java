@@ -40,8 +40,8 @@ public class ItemMappingTest
 		Multimap<Integer, ItemMapping> mappings = ItemMapping.MAPPINGS;
 
 		MutableGraph<Integer> graph = GraphBuilder
-				.directed()
-				.build();
+			.directed()
+			.build();
 		for (Map.Entry<Integer, ItemMapping> entry : mappings.entries())
 		{
 			graph.putEdge(entry.getKey(), entry.getValue().getTradeableItem());

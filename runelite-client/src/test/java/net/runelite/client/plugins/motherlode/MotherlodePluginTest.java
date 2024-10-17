@@ -85,18 +85,13 @@ public class MotherlodePluginTest
 	@Bind
 	private EventBus eventBus;
 
-	private static Item item(int itemId, int quantity)
-	{
-		return new Item(itemId, quantity);
-	}
-
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
-		when(client.getMapRegions()).thenReturn(new int[] {14679});
+		when(client.getMapRegions()).thenReturn(new int[]{14679});
 	}
 
 	@Test
@@ -113,17 +108,17 @@ public class MotherlodePluginTest
 
 		// Create before inventory
 		ItemContainer inventory = mock(ItemContainer.class);
-		Item[] items = new Item[] {
-				item(ItemID.RUNITE_ORE, 1),
-				item(ItemID.GOLDEN_NUGGET, 4),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
+		Item[] items = new Item[]{
+			item(ItemID.RUNITE_ORE, 1),
+			item(ItemID.GOLDEN_NUGGET, 4),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
 
 		};
 		when(inventory.getItems())
-				.thenReturn(items);
+			.thenReturn(items);
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventory);
 
 		// Withdraw 20
@@ -132,21 +127,21 @@ public class MotherlodePluginTest
 
 		inventory = mock(ItemContainer.class);
 		// +1 rune, +4 nugget, +2 coal, +1 addy
-		items = new Item[] {
-				item(ItemID.RUNITE_ORE, 1),
-				item(ItemID.RUNITE_ORE, 1),
-				item(ItemID.GOLDEN_NUGGET, 8),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.COAL, 1),
-				item(ItemID.ADAMANTITE_ORE, 1),
+		items = new Item[]{
+			item(ItemID.RUNITE_ORE, 1),
+			item(ItemID.RUNITE_ORE, 1),
+			item(ItemID.GOLDEN_NUGGET, 8),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.COAL, 1),
+			item(ItemID.ADAMANTITE_ORE, 1),
 
 		};
 		when(inventory.getItems())
-				.thenReturn(items);
+			.thenReturn(items);
 
 		// Trigger comparison
 		when(motherlodeConfig.trackOresFound()).thenReturn(true);
@@ -156,10 +151,15 @@ public class MotherlodePluginTest
 		verify(eventBus).post(captor.capture());
 		PluginLootReceived event = captor.getValue();
 		assertEquals(Arrays.asList(
-				new ItemStack(ItemID.ADAMANTITE_ORE, 1),
-				new ItemStack(ItemID.RUNITE_ORE, 1),
-				new ItemStack(ItemID.COAL, 2),
-				new ItemStack(ItemID.GOLDEN_NUGGET, 4)
+			new ItemStack(ItemID.ADAMANTITE_ORE, 1),
+			new ItemStack(ItemID.RUNITE_ORE, 1),
+			new ItemStack(ItemID.COAL, 2),
+			new ItemStack(ItemID.GOLDEN_NUGGET, 4)
 		), event.getItems());
+	}
+
+	private static Item item(int itemId, int quantity)
+	{
+		return new Item(itemId, quantity);
 	}
 }

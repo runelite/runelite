@@ -39,7 +39,6 @@ public interface WorldMapRenderer
 
 	/**
 	 * Get the map regions in this map. Each map region is 64x64 tiles.
-	 *
 	 * @return
 	 */
 	WorldMapRegion[][] getMapRegions();

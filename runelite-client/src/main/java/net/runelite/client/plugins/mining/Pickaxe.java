@@ -113,7 +113,10 @@ enum Pickaxe
 	THIRDAGE(_3RD_AGE_PICKAXE, MINING_3A_PICKAXE, MINING_MOTHERLODE_3A, MINING_CRASHEDSTAR_3A),
 	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL, MINING_CRASHEDSTAR_CRYSTAL),
 	TRAILBLAZER(INFERNAL_PICKAXE_OR, MINING_TRAILBLAZER_PICKAXE, MINING_TRAILBLAZER_PICKAXE_2,
-			MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER);
+		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER);
+
+	private final int itemId;
+	private final int[] animIds;
 
 	private static final Map<Integer, Pickaxe> PICKAXE_ANIM_IDS;
 
@@ -132,22 +135,19 @@ enum Pickaxe
 		PICKAXE_ANIM_IDS = builder.build();
 	}
 
-	private final int itemId;
-	private final int[] animIds;
-
-	Pickaxe(int itemId, int... animIds)
+	Pickaxe(int itemId, int ... animIds)
 	{
 		this.itemId = itemId;
 		this.animIds = animIds;
 	}
 
-	static Pickaxe fromAnimation(int animId)
-	{
-		return PICKAXE_ANIM_IDS.get(animId);
-	}
-
 	boolean matchesMiningAnimation(final Player player)
 	{
 		return player != null && fromAnimation(player.getAnimation()) == this;
+	}
+
+	static Pickaxe fromAnimation(int animId)
+	{
+		return PICKAXE_ANIM_IDS.get(animId);
 	}
 }

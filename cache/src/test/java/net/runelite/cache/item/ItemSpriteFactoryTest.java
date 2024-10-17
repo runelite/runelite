@@ -57,7 +57,7 @@ public class ItemSpriteFactoryTest
 	public void test() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-				outDir = folder.newFolder();
+			outDir = folder.newFolder();
 
 		int count = 0;
 
@@ -99,14 +99,15 @@ public class ItemSpriteFactoryTest
 				try
 				{
 					BufferedImage sprite = ItemSpriteFactory.createSprite(itemManager, modelProvider, spriteManager, textureManager,
-							itemDef.id, 1, 1, 3153952, false);
+						itemDef.id, 1, 1, 3153952, false);
 
 					File out = new File(outDir, itemDef.id + ".png");
 					BufferedImage img = sprite;
 					ImageIO.write(img, "PNG", out);
 
 					++count;
-				} catch (Exception ex)
+				}
+				catch (Exception ex)
 				{
 					log.warn("error dumping item {}", itemDef.id, ex);
 				}

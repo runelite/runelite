@@ -52,16 +52,17 @@ class KourendLibraryPanel extends PluginPanel
 	private static final ImageIcon RESET_ICON;
 	private static final ImageIcon RESET_HOVER_ICON;
 
+	private final KourendLibraryPlugin plugin;
+	private final Library library;
+
+	private final HashMap<Book, BookPanel> bookPanels = new HashMap<>();
+
 	static
 	{
 		final BufferedImage resetIcon = ImageUtil.loadImageResource(KourendLibraryPanel.class, "/util/reset.png");
 		RESET_ICON = new ImageIcon(resetIcon);
 		RESET_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(resetIcon, -100));
 	}
-
-	private final KourendLibraryPlugin plugin;
-	private final Library library;
-	private final HashMap<Book, BookPanel> bookPanels = new HashMap<>();
 
 	@Inject
 	KourendLibraryPanel(KourendLibraryPlugin plugin, Library library)
@@ -85,15 +86,15 @@ class KourendLibraryPanel extends PluginPanel
 		c.gridx = 0;
 		c.gridy = 0;
 		Stream.of(Book.values())
-				.filter(b -> b != Book.VARLAMORE_ENVOY || plugin.showVarlamoreEnvoy())
-				.sorted(Comparator.comparing(Book::getShortName))
-				.forEach(b ->
-				{
-					BookPanel p = new BookPanel(b);
-					bookPanels.put(b, p);
-					books.add(p, c);
-					c.gridy++;
-				});
+			.filter(b -> b != Book.VARLAMORE_ENVOY || plugin.showVarlamoreEnvoy())
+			.sorted(Comparator.comparing(Book::getShortName))
+			.forEach(b ->
+			{
+				BookPanel p = new BookPanel(b);
+				bookPanels.put(b, p);
+				books.add(p, c);
+				c.gridy++;
+			});
 
 		JButton reset = new JButton("Reset", RESET_ICON);
 		reset.setRolloverIcon(RESET_HOVER_ICON);
@@ -129,7 +130,8 @@ class KourendLibraryPanel extends PluginPanel
 				if (bookcase.getBook() != null)
 				{
 					bookLocations.computeIfAbsent(bookcase.getBook(), a -> new HashSet<>()).add(bookcase.getLocationString());
-				} else
+				}
+				else
 				{
 					for (Book book : bookcase.getPossibleBooks())
 					{
@@ -147,7 +149,8 @@ class KourendLibraryPanel extends PluginPanel
 				if (locs == null || locs.size() > 3)
 				{
 					e.getValue().setLocation("Unknown");
-				} else
+				}
+				else
 				{
 					e.getValue().setLocation("<html>" + locs.stream().collect(Collectors.joining("<br>")) + "</html>");
 				}

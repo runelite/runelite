@@ -54,24 +54,26 @@ import okhttp3.HttpUrl;
 @Slf4j
 public class SessionManager
 {
+	@Getter
+	private AccountSession accountSession;
+
 	private final EventBus eventBus;
 	private final File sessionFile;
 	private final AccountClient accountClient;
 	private final Gson gson;
 	private final String oauthRedirect;
 	private final ScheduledExecutorService scheduledExecutorService;
-	@Getter
-	private AccountSession accountSession;
+
 	private HttpServer server;
 
 	@Inject
 	private SessionManager(
-			@Named("sessionfile") File sessionfile,
-			EventBus eventBus,
-			AccountClient accountClient,
-			Gson gson,
-			@Named("runelite.oauth.redirect") String oauthRedirect,
-			ScheduledExecutorService scheduledExecutorService
+		@Named("sessionfile") File sessionfile,
+		EventBus eventBus,
+		AccountClient accountClient,
+		Gson gson,
+		@Named("runelite.oauth.redirect") String oauthRedirect,
+		ScheduledExecutorService scheduledExecutorService
 	)
 	{
 		this.eventBus = eventBus;
@@ -99,7 +101,8 @@ public class SessionManager
 			session = gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), AccountSession.class);
 
 			log.debug("Loaded session for {}", session.getUsername());
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			log.warn("Unable to load session file", ex);
 			return;
@@ -128,7 +131,8 @@ public class SessionManager
 			gson.toJson(accountSession, fw);
 
 			log.debug("Saved session to {}", sessionFile);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("Unable to save session file", ex);
 		}
@@ -164,7 +168,8 @@ public class SessionManager
 		try
 		{
 			accountClient.logout();
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("Unable to sign out of session", ex);
 		}
@@ -181,7 +186,8 @@ public class SessionManager
 			try
 			{
 				startServer();
-			} catch (IOException ex)
+			}
+			catch (IOException ex)
 			{
 				log.error("Unable to start http server", ex);
 				return;
@@ -193,7 +199,8 @@ public class SessionManager
 		try
 		{
 			login = accountClient.login(server.getAddress().getPort());
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.error("Unable to get oauth url", ex);
 			return;
@@ -230,18 +237,20 @@ public class SessionManager
 				saveSession();
 
 				final HttpUrl redirect = HttpUrl.get(oauthRedirect).newBuilder()
-						.addQueryParameter("username", username)
-						.addQueryParameter("sessionId", sessionId.toString())
-						.build();
+					.addQueryParameter("username", username)
+					.addQueryParameter("sessionId", sessionId.toString())
+					.build();
 
 				req.getResponseHeaders().set("Location", redirect.toString());
 				req.sendResponseHeaders(302, 0);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				log.warn("failure serving oauth response", e);
 				req.sendResponseHeaders(400, 0);
 				req.getResponseBody().write(e.getMessage().getBytes(StandardCharsets.UTF_8));
-			} finally
+			}
+			finally
 			{
 				req.close();
 				scheduledExecutorService.execute(this::stopServer);

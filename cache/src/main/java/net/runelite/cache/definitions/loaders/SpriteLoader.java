@@ -31,7 +31,7 @@ import net.runelite.cache.io.InputStream;
 public class SpriteLoader
 {
 	public static final int FLAG_VERTICAL = 0b01;
-	public static final int FLAG_ALPHA = 0b10;
+	public static final int FLAG_ALPHA    = 0b10;
 
 	public SpriteDefinition[] load(int id, byte[] b)
 	{
@@ -117,7 +117,8 @@ public class SpriteLoader
 				{
 					pixelPaletteIndicies[j] = is.readByte();
 				}
-			} else
+			}
+			else
 			{
 				// read vertically
 				for (int j = 0; j < spriteWidth; ++j)
@@ -139,7 +140,8 @@ public class SpriteLoader
 					{
 						pixelAlphas[j] = is.readByte();
 					}
-				} else
+				}
+				else
 				{
 					// read vertically
 					for (int j = 0; j < spriteWidth; ++j)
@@ -150,7 +152,8 @@ public class SpriteLoader
 						}
 					}
 				}
-			} else
+			}
+			else
 			{
 				// everything non-zero is opaque
 				for (int j = 0; j < dimension; ++j)

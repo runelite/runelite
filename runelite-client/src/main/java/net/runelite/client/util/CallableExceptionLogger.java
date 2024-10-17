@@ -34,21 +34,22 @@ public class CallableExceptionLogger<V> implements Callable<V>
 {
 	private final Callable<V> callable;
 
-	public static <V> CallableExceptionLogger<V> wrap(Callable<V> callable)
-	{
-		return new CallableExceptionLogger<>(callable);
-	}
-
 	@Override
 	public V call() throws Exception
 	{
 		try
 		{
 			return callable.call();
-		} catch (Throwable ex)
+		}
+		catch (Throwable ex)
 		{
 			log.error("Uncaught exception in callable {}", callable, ex);
 			throw ex;
 		}
+	}
+
+	public static <V> CallableExceptionLogger<V> wrap(Callable<V> callable)
+	{
+		return new CallableExceptionLogger<>(callable);
 	}
 }

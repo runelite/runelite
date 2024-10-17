@@ -52,9 +52,9 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "Combat Level",
-		description = "Show a more accurate combat level in Combat Options panel and other combat level functions",
-		tags = {"wilderness", "attack", "range"}
+	name = "Combat Level",
+	description = "Show a more accurate combat level in Combat Options panel and other combat level functions",
+	tags = {"wilderness", "attack", "range"}
 )
 public class CombatLevelPlugin extends Plugin
 {
@@ -80,11 +80,6 @@ public class CombatLevelPlugin extends Plugin
 
 	private String combatLevelStr;
 
-	private static String combatAttackRange(final int combatLevel, final int wildernessLevel)
-	{
-		return Math.max(MIN_COMBAT_LEVEL, combatLevel - wildernessLevel) + "-" + Math.min(Experience.MAX_COMBAT_LEVEL, combatLevel + wildernessLevel);
-	}
-
 	@Provides
 	CombatLevelConfig provideConfig(ConfigManager configManager)
 	{
@@ -95,13 +90,13 @@ public class CombatLevelPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		double combatLevel = Experience.getCombatLevelPrecise(
-				client.getRealSkillLevel(Skill.ATTACK),
-				client.getRealSkillLevel(Skill.STRENGTH),
-				client.getRealSkillLevel(Skill.DEFENCE),
-				client.getRealSkillLevel(Skill.HITPOINTS),
-				client.getRealSkillLevel(Skill.MAGIC),
-				client.getRealSkillLevel(Skill.RANGED),
-				client.getRealSkillLevel(Skill.PRAYER)
+			client.getRealSkillLevel(Skill.ATTACK),
+			client.getRealSkillLevel(Skill.STRENGTH),
+			client.getRealSkillLevel(Skill.DEFENCE),
+			client.getRealSkillLevel(Skill.HITPOINTS),
+			client.getRealSkillLevel(Skill.MAGIC),
+			client.getRealSkillLevel(Skill.RANGED),
+			client.getRealSkillLevel(Skill.PRAYER)
 		);
 		combatLevelStr = DECIMAL_FORMAT.format(combatLevel);
 
@@ -137,16 +132,16 @@ public class CombatLevelPlugin extends Plugin
 	{
 		Skill skill = statChanged.getSkill();
 		if (skill == Skill.ATTACK || skill == Skill.DEFENCE || skill == Skill.STRENGTH || skill == Skill.HITPOINTS
-				|| skill == Skill.MAGIC || skill == Skill.PRAYER || skill == Skill.RANGED)
+			|| skill == Skill.MAGIC || skill == Skill.PRAYER || skill == Skill.RANGED)
 		{
 			double combatLevel = Experience.getCombatLevelPrecise(
-					client.getRealSkillLevel(Skill.ATTACK),
-					client.getRealSkillLevel(Skill.STRENGTH),
-					client.getRealSkillLevel(Skill.DEFENCE),
-					client.getRealSkillLevel(Skill.HITPOINTS),
-					client.getRealSkillLevel(Skill.MAGIC),
-					client.getRealSkillLevel(Skill.RANGED),
-					client.getRealSkillLevel(Skill.PRAYER)
+				client.getRealSkillLevel(Skill.ATTACK),
+				client.getRealSkillLevel(Skill.STRENGTH),
+				client.getRealSkillLevel(Skill.DEFENCE),
+				client.getRealSkillLevel(Skill.HITPOINTS),
+				client.getRealSkillLevel(Skill.MAGIC),
+				client.getRealSkillLevel(Skill.RANGED),
+				client.getRealSkillLevel(Skill.PRAYER)
 			);
 			combatLevelStr = DECIMAL_FORMAT.format(combatLevel);
 		}
@@ -175,7 +170,8 @@ public class CombatLevelPlugin extends Plugin
 		if (config.wildernessAttackLevelRange())
 		{
 			appendAttackLevelRangeText();
-		} else
+		}
+		else
 		{
 			shutDownAttackLevelRange();
 		}
@@ -201,7 +197,8 @@ public class CombatLevelPlugin extends Plugin
 			{
 				return;
 			}
-		} else // scriptId == ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT
+		}
+		else // scriptId == ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT
 		{
 			// This script is used for all account summary sections, so verify the script is running for the combat level section
 			final String sectionText = Text.removeTags(stringStack[stringStackSize - 3]); // third argument
@@ -212,13 +209,13 @@ public class CombatLevelPlugin extends Plugin
 		}
 
 		double combatLevelPrecise = Experience.getCombatLevelPrecise(
-				client.getRealSkillLevel(Skill.ATTACK),
-				client.getRealSkillLevel(Skill.STRENGTH),
-				client.getRealSkillLevel(Skill.DEFENCE),
-				client.getRealSkillLevel(Skill.HITPOINTS),
-				client.getRealSkillLevel(Skill.MAGIC),
-				client.getRealSkillLevel(Skill.RANGED),
-				client.getRealSkillLevel(Skill.PRAYER)
+			client.getRealSkillLevel(Skill.ATTACK),
+			client.getRealSkillLevel(Skill.STRENGTH),
+			client.getRealSkillLevel(Skill.DEFENCE),
+			client.getRealSkillLevel(Skill.HITPOINTS),
+			client.getRealSkillLevel(Skill.MAGIC),
+			client.getRealSkillLevel(Skill.RANGED),
+			client.getRealSkillLevel(Skill.PRAYER)
 		);
 
 		stringStack[stringStackSize - 1] = ColorUtil.wrapWithColorTag(DECIMAL_FORMAT.format(combatLevelPrecise), CHARACTER_SUMMARY_GREEN);
@@ -244,7 +241,7 @@ public class CombatLevelPlugin extends Plugin
 		final String wildernessLevelText = wildernessLevelWidget.getText();
 		final Matcher m = WILDERNESS_LEVEL_PATTERN.matcher(wildernessLevelText);
 		if (!m.matches()
-				|| WorldType.isPvpWorld(client.getWorldType()))
+			|| WorldType.isPvpWorld(client.getWorldType()))
 		{
 			return;
 		}
@@ -271,5 +268,10 @@ public class CombatLevelPlugin extends Plugin
 				wildernessLevelWidget.setText(wildernessLevelText.substring(0, wildernessLevelText.indexOf("<br>")));
 			}
 		}
+	}
+
+	private static String combatAttackRange(final int combatLevel, final int wildernessLevel)
+	{
+		return Math.max(MIN_COMBAT_LEVEL, combatLevel - wildernessLevel) + "-" + Math.min(Experience.MAX_COMBAT_LEVEL, combatLevel + wildernessLevel);
 	}
 }

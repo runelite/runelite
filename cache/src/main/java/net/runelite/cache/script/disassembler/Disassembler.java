@@ -40,9 +40,9 @@ public class Disassembler
 {
 	private static final Logger logger = LoggerFactory.getLogger(Disassembler.class);
 	private static final Escaper ESCAPER = Escapers.builder()
-			.addEscape('"', "\\\"")
-			.addEscape('\\', "\\\\")
-			.build();
+		.addEscape('"', "\\\"")
+		.addEscape('\\', "\\\\")
+		.build();
 
 	private final Instructions instructions = new Instructions();
 
@@ -149,7 +149,8 @@ public class Disassembler
 			if (ins != null && ins.getName() != null)
 			{
 				name = ins.getName();
-			} else
+			}
+			else
 			{
 				name = String.format("%03d", opcode);
 			}
@@ -161,7 +162,8 @@ public class Disassembler
 				if (isJump(opcode))
 				{
 					writer.append(" LABEL").append(i + iop + 1);
-				} else
+				}
+				else
 				{
 					writer.append(" ").append(iop);
 				}

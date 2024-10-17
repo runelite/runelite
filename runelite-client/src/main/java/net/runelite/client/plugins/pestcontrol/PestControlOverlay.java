@@ -64,24 +64,6 @@ public class PestControlOverlay extends Overlay
 		this.client = client;
 	}
 
-	private static Rectangle2D union(Rectangle2D src1, Rectangle2D src2)
-	{
-		double x1 = Math.min(src1.getMinX(), src2.getMinX());
-		double y1 = Math.min(src1.getMinY(), src2.getMinY());
-		double x2 = Math.max(src1.getMaxX(), src2.getMaxX());
-		double y2 = Math.max(src1.getMaxY(), src2.getMaxY());
-
-		Rectangle2D result = new Rectangle2D.Double();
-		result.setFrameFromDiagonal(x1, y1, x2, y2);
-
-		return result;
-	}
-
-	private static boolean isZero(Widget widget)
-	{
-		return widget.getText().trim().equals("0");
-	}
-
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -217,6 +199,19 @@ public class PestControlOverlay extends Overlay
 		graphics.drawString(text, x, y + 4);
 	}
 
+	private static Rectangle2D union(Rectangle2D src1, Rectangle2D src2)
+	{
+		double x1 = Math.min(src1.getMinX(), src2.getMinX());
+		double y1 = Math.min(src1.getMinY(), src2.getMinY());
+		double x2 = Math.max(src1.getMaxX(), src2.getMaxX());
+		double y2 = Math.max(src1.getMaxY(), src2.getMaxY());
+
+		Rectangle2D result = new Rectangle2D.Double();
+		result.setFrameFromDiagonal(x1, y1, x2, y2);
+
+		return result;
+	}
+
 	private void renderAttack(Graphics2D graphics, PortalContext portal)
 	{
 		if (portal.isShielded() || portal.isDead())
@@ -225,5 +220,10 @@ public class PestControlOverlay extends Overlay
 		}
 
 		renderWidgetOverlay(graphics, portal.getPortal(), "ATK", Color.RED);
+	}
+
+	private static boolean isZero(Widget widget)
+	{
+		return widget.getText().trim().equals("0");
 	}
 }

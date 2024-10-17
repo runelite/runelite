@@ -64,15 +64,15 @@ public class XteaClient
 	public void submit(XteaRequest xteaRequest)
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("xtea")
-				.build();
+			.addPathSegment("xtea")
+			.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(JSON, gson.toJson(xteaRequest)))
-				.url(url)
-				.build();
+			.post(RequestBody.create(JSON, gson.toJson(xteaRequest)))
+			.url(url)
+			.build();
 
 		client.newCall(request).enqueue(new Callback()
 		{
@@ -99,22 +99,21 @@ public class XteaClient
 	public List<XteaKey> get() throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("xtea")
-				.build();
+			.addPathSegment("xtea")
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
-			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>()
-			{
-			}.getType());
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>() { }.getType());
 			// CHECKSTYLE:ON
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}
@@ -123,19 +122,20 @@ public class XteaClient
 	public XteaKey get(int region) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("xtea")
-				.addPathSegment(Integer.toString(region))
-				.build();
+			.addPathSegment("xtea")
+			.addPathSegment(Integer.toString(region))
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), XteaKey.class);
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}

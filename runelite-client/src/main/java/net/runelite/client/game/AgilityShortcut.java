@@ -100,17 +100,17 @@ public enum AgilityShortcut
 			// Villa Lucens backstage theatre
 			LOOSE_ROCKS_54720, LOOSE_ROCKS_54721, LOOSE_ROCKS_54722),
 	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
-			{
-				@Override
-				public boolean matches(Client client, TileObject object)
-				{
-					assert object.getId() == NullObjectID.NULL_46815;
-					int multilocId = client.getObjectDefinition(object.getId())
-							.getImpostor()
-							.getId();
-					return multilocId == BROKEN_FENCE_46817;
-				}
-			},
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			assert object.getId() == NullObjectID.NULL_46815;
+			int multilocId = client.getObjectDefinition(object.getId())
+				.getImpostor()
+				.getId();
+			return multilocId == BROKEN_FENCE_46817;
+		}
+	},
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
@@ -154,7 +154,7 @@ public enum AgilityShortcut
 	DRAYNOR_MANOR_STEPPING_STONES(31, "Stepping Stones", new WorldPoint(3150, 3362, 0), STEPPING_STONE_16533),
 	CATHERBY_CLIFFSIDE_GRAPPLE(32, "Grapple Rock", new WorldPoint(2868, 3429, 0), ROCKS_17042),
 	CAIRN_ISLE_ROCKS(32, "Rocks", null, ROCKS_2231),
-	SHILO_VILLAGE_STEPPING_STONES(32, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
+	SHILO_VILLAGE_STEPPING_STONES( 32, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
 	ARDOUGNE_LOG_BALANCE(33, "Log Balance", new WorldPoint(2602, 3336, 0), LOG_BALANCE_16546, LOG_BALANCE_16547, LOG_BALANCE_16548),
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE(34, "Pipe Squeeze", null, new WorldPoint(2698, 9501, 0), PIPE_21727),
 	KOUREND_CATACOMBS_NORTH_EAST_CRACK_NORTH(34, "Crack", new WorldPoint(1715, 10057, 0), CRACK_28892),
@@ -204,7 +204,7 @@ public enum AgilityShortcut
 	ISAFDAR_FOREST_OBSTACLES(56, "Trap", null, DENSE_FOREST_3938, DENSE_FOREST_3939, DENSE_FOREST_3998, DENSE_FOREST_3999, DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE, TRIPWIRE_3921),
 	RELEKKA_EAST_FENCE(57, "Fence", new WorldPoint(2688, 3697, 0), BROKEN_FENCE),
 	YANILLE_DUNGEON_MONKEY_BARS(57, "Monkey Bars", null, MONKEYBARS_23567),
-	PHASMATYS_ECTOPOOL_SHORTCUT(58, "Weathered Wall", null, WEATHERED_WALL, WEATHERED_WALL_16526),
+	PHASMATYS_ECTOPOOL_SHORTCUT(58, "Weathered Wall", null , WEATHERED_WALL, WEATHERED_WALL_16526),
 	ELVEN_OVERPASS_CLIFF_SCRAMBLE(59, "Rocks", new WorldPoint(2345, 3300, 0), ROCKS_16514, ROCKS_16515),
 	ELVEN_OVERPASS_CLIFF_SCRAMBLE_PRIFDDINAS(59, "Rocks", new WorldPoint(3369, 6052, 0), ROCKS_16514, ROCKS_16515),
 	WILDERNESS_GWD_CLIMB_EAST(60, "Rocks", new WorldPoint(2943, 3770, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
@@ -242,17 +242,17 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), OBSTACLE_PIPE_16509),
 	TAVERLEY_DUNGEON_ROCKS_NORTH(70, "Rocks", new WorldPoint(2887, 9823, 0), ROCKS, ROCKS_14106),
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
-	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole", new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
-	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole", new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
+	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
+	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
 	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
-			{
-				@Override
-				public boolean matches(Client client, TileObject object)
-				{
-					// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
-					return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
-				}
-			},
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
+			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
+		}
+	},
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),
 	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375, NULL_26562),
 	GU_TANOTH_CRUMBLING_WALL(71, "Rocks", new WorldPoint(2545, 3032, 0), CRUMBLING_WALL_40355, ROCKS_40356),

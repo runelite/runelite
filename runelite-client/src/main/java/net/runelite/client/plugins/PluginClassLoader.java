@@ -36,7 +36,7 @@ class PluginClassLoader extends URLClassLoader
 	PluginClassLoader(File plugin, ClassLoader parent) throws MalformedURLException
 	{
 		// null parent classloader, or else class path scanning includes everything from the main class loader
-		super(new URL[] {plugin.toURI().toURL()}, null);
+		super(new URL[]{plugin.toURI().toURL()}, null);
 
 		this.parent = parent;
 	}
@@ -47,7 +47,8 @@ class PluginClassLoader extends URLClassLoader
 		try
 		{
 			return super.loadClass(name);
-		} catch (ClassNotFoundException ex)
+		}
+		catch (ClassNotFoundException ex)
 		{
 			// fall back to main class loader
 			return parent.loadClass(name);

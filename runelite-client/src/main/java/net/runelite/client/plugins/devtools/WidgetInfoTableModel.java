@@ -39,12 +39,15 @@ import net.runelite.client.callback.ClientThread;
 
 public class WidgetInfoTableModel extends AbstractTableModel
 {
-	private static final int COL_FIELD = 0;
-	private static final int COL_VALUE = 1;
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private Client client;
+
+	private static final int COL_FIELD = 0;
+	private static final int COL_VALUE = 1;
+
 	private final List<WidgetField<?>> fields = populateWidgetFields();
 
 	private Widget widget = null;
@@ -55,8 +58,8 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		clientThread.invoke(() ->
 		{
 			Map<WidgetField<?>, Object> newValues = w == null ? null : fields.stream().collect(ImmutableMap.toImmutableMap(
-					Function.identity(),
-					i -> i.getValue(w)
+				Function.identity(),
+				i -> i.getValue(w)
 			));
 			SwingUtilities.invokeLater(() ->
 			{
@@ -146,9 +149,9 @@ public class WidgetInfoTableModel extends AbstractTableModel
 		out.add(new WidgetField<>("Hidden", Widget::isHidden));
 		out.add(new WidgetField<>("Text", Widget::getText, Widget::setText, String.class));
 		out.add(new WidgetField<>("TextColor",
-				w -> Integer.toString(w.getTextColor(), 16),
-				(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
-				String.class
+			w -> Integer.toString(w.getTextColor(), 16),
+			(w, str) -> w.setTextColor(Integer.parseInt(str, 16)),
+			String.class
 		));
 		out.add(new WidgetField<>("Opacity", Widget::getOpacity, Widget::setOpacity, Integer.class));
 		out.add(new WidgetField<>("FontId", Widget::getFontId, Widget::setFontId, Integer.class));

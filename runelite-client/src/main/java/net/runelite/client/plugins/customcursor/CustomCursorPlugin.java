@@ -47,9 +47,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
 
 @PluginDescriptor(
-		name = "Custom Cursor",
-		description = "Replaces your mouse cursor image",
-		enabledByDefault = false
+	name = "Custom Cursor",
+	description = "Replaces your mouse cursor image",
+	enabledByDefault = false
 )
 @Slf4j
 public class CustomCursorPlugin extends Plugin
@@ -123,16 +123,19 @@ public class CustomCursorPlugin extends Plugin
 						image = ImageIO.read(CUSTOM_IMAGE_FILE);
 					}
 					clientUI.setCursor(image, selectedCursor.getName());
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					log.error("error setting custom cursor", e);
 					clientUI.resetCursor();
 				}
-			} else
+			}
+			else
 			{
 				clientUI.resetCursor();
 			}
-		} else if (selectedCursor == CustomCursor.EQUIPPED_WEAPON)
+		}
+		else if (selectedCursor == CustomCursor.EQUIPPED_WEAPON)
 		{
 			clientThread.invokeLater(() ->
 			{
@@ -156,12 +159,14 @@ public class CustomCursorPlugin extends Plugin
 				if (weapon.getQuantity() > 0)
 				{
 					clientUI.setCursor(image, selectedCursor.getName());
-				} else
+				}
+				else
 				{
 					clientUI.resetCursor();
 				}
 			});
-		} else
+		}
+		else
 		{
 			assert selectedCursor.getCursorImage() != null;
 			clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());

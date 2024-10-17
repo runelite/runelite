@@ -34,17 +34,22 @@ import net.runelite.api.coords.WorldPoint;
 class TitheFarmPlant
 {
 	private static final Duration PLANT_TIME = Duration.ofMinutes(1);
-	@Getter
-	private final TitheFarmPlantState state;
-	@Getter
-	private final TitheFarmPlantType type;
-	@Getter
-	private final GameObject gameObject;
-	@Getter
-	private final WorldPoint worldLocation;
+
 	@Getter
 	@Setter
 	private Instant planted;
+
+	@Getter
+	private final TitheFarmPlantState state;
+
+	@Getter
+	private final TitheFarmPlantType type;
+
+	@Getter
+	private final GameObject gameObject;
+
+	@Getter
+	private final WorldPoint worldLocation;
 
 	TitheFarmPlant(TitheFarmPlantState state, TitheFarmPlantType type, GameObject gameObject)
 	{

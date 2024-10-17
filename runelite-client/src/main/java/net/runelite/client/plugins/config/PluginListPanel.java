@@ -75,14 +75,14 @@ class PluginListPanel extends PluginPanel
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final ImmutableList<String> CATEGORY_TAGS = ImmutableList.of(
-			"Combat",
-			"Chat",
-			"Item",
-			"Minigame",
-			"Notification",
-			"Plugin Hub",
-			"Skilling",
-			"XP"
+		"Combat",
+		"Chat",
+		"Item",
+		"Minigame",
+		"Notification",
+		"Plugin Hub",
+		"Skilling",
+		"XP"
 	);
 
 	private final ConfigManager configManager;
@@ -103,11 +103,11 @@ class PluginListPanel extends PluginPanel
 
 	@Inject
 	public PluginListPanel(
-			ConfigManager configManager,
-			PluginManager pluginManager,
-			ExternalPluginManager externalPluginManager,
-			EventBus eventBus,
-			Provider<ConfigPanel> configPanelProvider)
+		ConfigManager configManager,
+		PluginManager pluginManager,
+		ExternalPluginManager externalPluginManager,
+		EventBus eventBus,
+		Provider<ConfigPanel> configPanelProvider)
 	{
 		super(false);
 
@@ -187,36 +187,36 @@ class PluginListPanel extends PluginPanel
 
 		// populate pluginList with all non-hidden plugins
 		pluginList = Stream.concat(
-						fakePlugins.stream(),
-						pluginManager.getPlugins().stream()
-								.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-								.map(plugin ->
-								{
-									PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-									Config config = pluginManager.getPluginConfigProxy(plugin);
-									ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-									List<String> conflicts = pluginManager.conflictsForPlugin(plugin).stream()
-											.map(Plugin::getName)
-											.collect(Collectors.toList());
-
-									return new PluginConfigurationDescriptor(
-											descriptor.name(),
-											descriptor.description(),
-											descriptor.tags(),
-											plugin,
-											config,
-											configDescriptor,
-											conflicts);
-								})
-				)
-				.map(desc ->
+			fakePlugins.stream(),
+			pluginManager.getPlugins().stream()
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
+				.map(plugin ->
 				{
-					PluginListItem listItem = new PluginListItem(this, desc);
-					listItem.setPinned(pinnedPlugins.contains(desc.getName()));
-					return listItem;
+					PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+					Config config = pluginManager.getPluginConfigProxy(plugin);
+					ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+					List<String> conflicts = pluginManager.conflictsForPlugin(plugin).stream()
+						.map(Plugin::getName)
+						.collect(Collectors.toList());
+
+					return new PluginConfigurationDescriptor(
+						descriptor.name(),
+						descriptor.description(),
+						descriptor.tags(),
+						plugin,
+						config,
+						configDescriptor,
+						conflicts);
 				})
-				.sorted(Comparator.comparing(p -> p.getPluginConfig().getName()))
-				.collect(Collectors.toList());
+		)
+			.map(desc ->
+			{
+				PluginListItem listItem = new PluginListItem(this, desc);
+				listItem.setPinned(pinnedPlugins.contains(desc.getName()));
+				return listItem;
+			})
+			.sorted(Comparator.comparing(p -> p.getPluginConfig().getName()))
+			.collect(Collectors.toList());
 
 		mainPanel.removeAll();
 		refresh();
@@ -302,7 +302,8 @@ class PluginListPanel extends PluginPanel
 		try
 		{
 			pluginManager.startPlugin(plugin);
-		} catch (PluginInstantiationException ex)
+		}
+		catch (PluginInstantiationException ex)
 		{
 			log.warn("Error when starting plugin {}", plugin.getClass().getSimpleName(), ex);
 		}
@@ -315,7 +316,8 @@ class PluginListPanel extends PluginPanel
 		try
 		{
 			pluginManager.stopPlugin(plugin);
-		} catch (PluginInstantiationException ex)
+		}
+		catch (PluginInstantiationException ex)
 		{
 			log.warn("Error when stopping plugin {}", plugin.getClass().getSimpleName(), ex);
 		}
@@ -336,9 +338,9 @@ class PluginListPanel extends PluginPanel
 	void savePinnedPlugins()
 	{
 		final String value = pluginList.stream()
-				.filter(PluginListItem::isPinned)
-				.map(p -> p.getPluginConfig().getName())
-				.collect(Collectors.joining(","));
+			.filter(PluginListItem::isPinned)
+			.map(p -> p.getPluginConfig().getName())
+			.collect(Collectors.joining(","));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}

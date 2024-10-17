@@ -50,39 +50,41 @@ public class FontManager
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
 		try (InputStream inRunescape = FontManager.class.getResourceAsStream("runescape.ttf");
-			 InputStream inRunescapeSmall = FontManager.class.getResourceAsStream("runescape_small.ttf");
-			 InputStream inRunescapeBold = FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+			InputStream inRunescapeSmall = FontManager.class.getResourceAsStream("runescape_small.ttf");
+			InputStream inRunescapeBold = FontManager.class.getResourceAsStream("runescape_bold.ttf"))
 		{
 			// runescape
 			Font font = Font.createFont(Font.TRUETYPE_FONT, inRunescape)
-					.deriveFont(Font.PLAIN, 16);
+				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(font);
 
 			runescapeFont = StyleContext.getDefaultStyleContext()
-					.getFont(font.getName(), Font.PLAIN, 16);
+				.getFont(font.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeFont);
 
 			// small
 			Font smallFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeSmall)
-					.deriveFont(Font.PLAIN, 16);
+				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(smallFont);
 
 			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-					.getFont(smallFont.getName(), Font.PLAIN, 16);
+				.getFont(smallFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeSmallFont);
 
 			// bold
 			Font boldFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeBold)
-					.deriveFont(Font.BOLD, 16);
+				.deriveFont(Font.BOLD, 16);
 			ge.registerFont(boldFont);
 
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.BOLD, 16);
+				.getFont(boldFont.getName(), Font.BOLD, 16);
 			ge.registerFont(runescapeBoldFont);
-		} catch (FontFormatException ex)
+		}
+		catch (FontFormatException ex)
 		{
 			throw new RuntimeException("Font loaded, but format incorrect.", ex);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			throw new RuntimeException("Font file not found.", ex);
 		}

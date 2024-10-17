@@ -202,7 +202,7 @@ public class DiskStorage implements Storage
 		assert entry.getId() == archive;
 
 		logger.trace("Loading archive {} for index {} from sector {} length {}",
-				archive, index, entry.getSector(), entry.getLength());
+			archive, index, entry.getSector(), entry.getLength());
 
 		byte[] archiveData = data.read(index, entry.getId(), entry.getSector(), entry.getLength());
 		return archiveData;
@@ -218,6 +218,6 @@ public class DiskStorage implements Storage
 		indexFile.write(new IndexEntry(indexFile, archive, res.sector, res.compressedLength));
 
 		logger.trace("Saved archive {}/{} at sector {}, compressed length {}",
-				index, archive, res.sector, res.compressedLength);
+			index, archive, res.sector, res.compressedLength);
 	}
 }

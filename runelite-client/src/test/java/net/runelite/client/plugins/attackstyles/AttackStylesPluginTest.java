@@ -236,9 +236,9 @@ public class AttackStylesPluginTest
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
 		assertFalse(attackPlugin.getHiddenWidgets().get(4,
-				ComponentID.COMBAT_STYLE_ONE));
+			ComponentID.COMBAT_STYLE_ONE));
 		assertFalse(attackPlugin.getHiddenWidgets().get(4,
-				ComponentID.COMBAT_STYLE_THREE));
+			ComponentID.COMBAT_STYLE_THREE));
 	}
 
 	private boolean isAtkHidden()

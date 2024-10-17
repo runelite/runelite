@@ -41,7 +41,6 @@ public interface Actor extends Renderable
 {
 	/**
 	 * Get the {@link WorldView} this actor belongs to
-	 *
 	 * @return
 	 */
 	WorldView getWorldView();
@@ -65,7 +64,6 @@ public interface Actor extends Renderable
 	 * Gets if the actor is interacting with another actor.
 	 * {@link #getInteracting()} will return the interacting actor,
 	 * unless they are outside of the visibility range.
-	 *
 	 * @return
 	 */
 	boolean isInteracting();
@@ -86,7 +84,7 @@ public interface Actor extends Renderable
 
 	/**
 	 * Gets the health of the actor in {@link #getHealthScale()} units.
-	 * <p>
+	 *
 	 * The server does not transmit actors' real health, only this value
 	 * between zero and {@link #getHealthScale()}. Some actors may be
 	 * missing this info, in which case -1 is returned.
@@ -95,7 +93,7 @@ public interface Actor extends Renderable
 
 	/**
 	 * Gets the maximum value {@link #getHealthRatio()} can return
-	 * <p>
+	 *
 	 * For actors with the default size health bar this is 30, but
 	 * for bosses with a larger health bar this can be a larger number.
 	 * Some actors may be missing this info, in which case -1 is returned.
@@ -144,15 +142,6 @@ public interface Actor extends Renderable
 	int getAnimation();
 
 	/**
-	 * Sets an animation for the actor to perform.
-	 *
-	 * @param animation the animation ID
-	 * @see AnimationID
-	 */
-	@VisibleForDevtools
-	void setAnimation(int animation);
-
-	/**
 	 * Gets the secondary animation the actor is performing. Usually an idle animation, or one of the walking ones.
 	 *
 	 * @return the animation ID
@@ -162,7 +151,6 @@ public interface Actor extends Renderable
 
 	/**
 	 * Set the idle pose animation.
-	 *
 	 * @param animation
 	 * @see AnimationID
 	 */
@@ -170,14 +158,12 @@ public interface Actor extends Renderable
 
 	/**
 	 * Get the frame of the idle animation the actor is performing
-	 *
 	 * @return
 	 */
 	int getPoseAnimationFrame();
 
 	/**
 	 * Set the frame of the idle animation the actor is performing
-	 *
 	 * @param frame
 	 */
 	void setPoseAnimationFrame(int frame);
@@ -265,18 +251,20 @@ public interface Actor extends Renderable
 	void setRunAnimation(int animationID);
 
 	/**
+	 * Sets an animation for the actor to perform.
+	 *
+	 * @param animation the animation ID
+	 * @see AnimationID
+	 */
+	@VisibleForDevtools
+	void setAnimation(int animation);
+
+	/**
 	 * Get the frame of the animation the actor is performing
 	 *
 	 * @return the frame
 	 */
 	int getAnimationFrame();
-
-	/**
-	 * Sets the frame of the animation the actor is performing.
-	 *
-	 * @param frame the animation frame
-	 */
-	void setAnimationFrame(int frame);
 
 	/**
 	 * Sets the frame of the animation the actor is performing.
@@ -288,39 +276,42 @@ public interface Actor extends Renderable
 	void setActionFrame(int frame);
 
 	/**
+	 * Sets the frame of the animation the actor is performing.
+	 *
+	 * @param frame the animation frame
+	 */
+	void setAnimationFrame(int frame);
+
+	/**
 	 * Get the spotanims on the actor.
 	 * It is important to not modify the table directly or indirectly via
 	 * eg. iterator remove().
-	 *
-	 * @return
 	 * @see #createSpotAnim(int, int, int, int)
 	 * @see #removeSpotAnim(int)
 	 * @see #clearSpotAnims()
+	 * @return
 	 */
 	IterableHashTable<ActorSpotAnim> getSpotAnims();
 
 	/**
 	 * Check if the actor has a spotanim
-	 *
 	 * @param spotAnimId the spot anim id
-	 * @return
 	 * @see GraphicID
+	 * @return
 	 */
 	boolean hasSpotAnim(int spotAnimId);
 
 	/**
 	 * Create an actor spotanim
-	 *
-	 * @param id         key for the {@link #getSpotAnims()} table
+	 * @param id key for the {@link #getSpotAnims()} table
 	 * @param spotAnimId spotanim id {@link GraphicID}
-	 * @param height     height offspot for spot anim
-	 * @param delay      initial delay, in client ticks, before spotanim is active
+	 * @param height height offspot for spot anim
+	 * @param delay initial delay, in client ticks, before spotanim is active
 	 */
 	void createSpotAnim(int id, int spotAnimId, int height, int delay);
 
 	/**
 	 * Remove an actor spotanim
-	 *
 	 * @param id key for the {@link #getSpotAnims()} table
 	 */
 	void removeSpotAnim(int id);
@@ -353,7 +344,6 @@ public interface Actor extends Renderable
 
 	/**
 	 * Get the height of the graphic/spotanim on the actor
-	 *
 	 * @return
 	 * @deprecated see {@link ActorSpotAnim#getHeight()}
 	 */
@@ -362,7 +352,6 @@ public interface Actor extends Renderable
 
 	/**
 	 * Set the height of the graphic/spotanim on the actor
-	 *
 	 * @param height
 	 * @deprecated see {@link ActorSpotAnim#setHeight(int)}
 	 */
@@ -399,8 +388,8 @@ public interface Actor extends Renderable
 	 * current location with the given z-axis offset.
 	 *
 	 * @param graphics engine graphics
-	 * @param text     the text to draw
-	 * @param zOffset  the z-axis offset
+	 * @param text the text to draw
+	 * @param zOffset the z-axis offset
 	 * @return the text drawing location
 	 */
 	@Nullable
@@ -410,7 +399,7 @@ public interface Actor extends Renderable
 	 * Gets the point at which an image should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
-	 * @param image   the image to draw
+	 * @param image the image to draw
 	 * @param zOffset the z-axis offset
 	 * @return the image drawing location
 	 */
@@ -421,7 +410,7 @@ public interface Actor extends Renderable
 	 * Gets the point at which a sprite should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
-	 * @param sprite  the sprite to draw
+	 * @param sprite the sprite to draw
 	 * @param zOffset the z-axis offset
 	 * @return the sprite drawing location
 	 */

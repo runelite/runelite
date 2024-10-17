@@ -38,7 +38,7 @@ public class KitLoader
 		KitDefinition def = new KitDefinition(id);
 		InputStream is = new InputStream(b);
 
-		for (; ; )
+		for (;;)
 		{
 			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
@@ -49,7 +49,8 @@ public class KitLoader
 			if (opcode == 1)
 			{
 				def.bodyPartId = is.readUnsignedByte();
-			} else if (opcode == 2)
+			}
+			else if (opcode == 2)
 			{
 				int length = is.readUnsignedByte();
 				def.models = new int[length];
@@ -58,10 +59,12 @@ public class KitLoader
 				{
 					def.models[index] = is.readUnsignedShort();
 				}
-			} else if (opcode == 3)
+			}
+			else if (opcode == 3)
 			{
 				def.nonSelectable = true;
-			} else if (opcode == 40)
+			}
+			else if (opcode == 40)
 			{
 				int length = is.readUnsignedByte();
 				def.recolorToFind = new short[length];
@@ -72,7 +75,8 @@ public class KitLoader
 					def.recolorToFind[index] = is.readShort();
 					def.recolorToReplace[index] = is.readShort();
 				}
-			} else if (opcode == 41)
+			}
+			else if (opcode == 41)
 			{
 				int length = is.readUnsignedByte();
 				def.retextureToFind = new short[length];
@@ -83,7 +87,8 @@ public class KitLoader
 					def.retextureToFind[index] = is.readShort();
 					def.retextureToReplace[index] = is.readShort();
 				}
-			} else if (opcode >= 60 && opcode < 70)
+			}
+			else if (opcode >= 60 && opcode < 70)
 			{
 				def.chatheadModels[opcode - 60] = is.readUnsignedShort();
 			}

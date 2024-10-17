@@ -32,8 +32,6 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 public interface LayoutableRenderableEntity extends RenderableEntity
 {
 	Rectangle getBounds();
-
 	void setPreferredLocation(Point position);
-
 	void setPreferredSize(Dimension dimension);
 }

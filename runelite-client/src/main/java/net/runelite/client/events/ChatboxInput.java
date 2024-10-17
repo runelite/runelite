@@ -39,7 +39,7 @@ public class ChatboxInput extends ChatInput
 
 	/**
 	 * sent message type
-	 * <p>
+	 *
 	 * 0 = public
 	 * 1 = cheat
 	 * 2 = friends chat

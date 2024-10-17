@@ -67,9 +67,9 @@ import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
-		name = "Item Stats",
-		description = "Show information about food and potion effects",
-		tags = {"food", "inventory", "overlay", "potion"}
+	name = "Item Stats",
+	description = "Show information about food and potion effects",
+	tags = {"food", "inventory", "overlay", "potion"}
 )
 public class ItemStatPlugin extends Plugin
 {
@@ -96,32 +96,6 @@ public class ItemStatPlugin extends Plugin
 	private ClientThread clientThread;
 
 	private Widget itemInformationTitle;
-
-	private static Widget createText(Widget parent, String text, int fontId, int textColor,
-									 int x, int y, int width, int height)
-	{
-		final Widget widget = parent.createChild(-1, WidgetType.TEXT);
-		widget.setText(text);
-		widget.setFontId(fontId);
-		widget.setTextColor(textColor);
-		widget.setTextShadowed(true);
-		widget.setOriginalHeight(height == -1 ? TEXT_HEIGHT : height);
-		widget.setOriginalWidth(width);
-		widget.setOriginalY(y);
-		widget.setOriginalX(x);
-		widget.revalidate();
-		return widget;
-	}
-
-	private static void createSeparator(Widget parent, int y)
-	{
-		Widget separator = parent.createChild(-1, WidgetType.GRAPHIC);
-		separator.setOriginalWidth(parent.getWidth());
-		separator.setOriginalY(y);
-		separator.setOriginalHeight(32);
-		separator.setSpriteId(SpriteID.UNKNOWN_BORDER_EDGE_HORIZONTAL_995);
-		separator.revalidate();
-	}
 
 	@Provides
 	ItemStatConfig getConfig(ConfigManager configManager)
@@ -161,8 +135,8 @@ public class ItemStatPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		if (itemInformationTitle != null && config.geStats()
-				&& (client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
-				|| client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
+			&& (client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
+			|| client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
 		{
 			resetGEInventory();
 		}
@@ -230,7 +204,7 @@ public class ItemStatPlugin extends Plugin
 		// HEADER
 
 		itemInformationTitle = createText(invContainer, "Item Information", FontID.BOLD_12, ORANGE_TEXT,
-				8, 8, invContainer.getWidth(), 16);
+			8, 8, invContainer.getWidth(), 16);
 		itemInformationTitle.setYTextAlignment(WidgetTextAlignment.CENTER);
 
 		Widget closeButton = invContainer.createChild(-1, WidgetType.GRAPHIC);
@@ -271,7 +245,7 @@ public class ItemStatPlugin extends Plugin
 		icon.revalidate();
 
 		Widget itemName = createText(invContainer, itemManager.getItemComposition(id).getName(), FontID.PLAIN_12, ORANGE_TEXT,
-				50, yPos, invContainer.getWidth() - 40, 30);
+			50, yPos, invContainer.getWidth() - 40, 30);
 		itemName.setYTextAlignment(WidgetTextAlignment.CENTER);
 
 		yPos += 20;
@@ -290,27 +264,27 @@ public class ItemStatPlugin extends Plugin
 		// STYLE BONUSES
 
 		final Set<String> stats = ImmutableSet.of(
-				"Stab",
-				"Slash",
-				"Crush",
-				"Magic",
-				"Ranged"
+			"Stab",
+			"Slash",
+			"Crush",
+			"Magic",
+			"Ranged"
 		);
 
 		final List<Integer> attackStats = ImmutableList.of(
-				equipmentStats.getAstab(),
-				equipmentStats.getAslash(),
-				equipmentStats.getAcrush(),
-				equipmentStats.getAmagic(),
-				equipmentStats.getArange()
+			equipmentStats.getAstab(),
+			equipmentStats.getAslash(),
+			equipmentStats.getAcrush(),
+			equipmentStats.getAmagic(),
+			equipmentStats.getArange()
 		);
 
 		final List<Integer> defenceStats = ImmutableList.of(
-				equipmentStats.getDstab(),
-				equipmentStats.getDslash(),
-				equipmentStats.getDcrush(),
-				equipmentStats.getDmagic(),
-				equipmentStats.getDrange()
+			equipmentStats.getDstab(),
+			equipmentStats.getDslash(),
+			equipmentStats.getDcrush(),
+			equipmentStats.getDmagic(),
+			equipmentStats.getDrange()
 		);
 
 		int index = 0;
@@ -321,17 +295,17 @@ public class ItemStatPlugin extends Plugin
 
 			// Style label
 			final Widget styleText = createText(invContainer, stat, FontID.PLAIN_11, ORANGE_TEXT,
-					0, yPos, invContainer.getWidth(), -1);
+				0, yPos, invContainer.getWidth(), -1);
 			styleText.setXTextAlignment(WidgetTextAlignment.CENTER);
 
 			// Attack bonus
 			createText(invContainer, attackStats.get(index).toString(), FontID.PLAIN_11, YELLOW_TEXT,
-					5, yPos, 50, -1);
+				5, yPos, 50, -1);
 
 			// Defence bonus
 			final int defenceX = invContainer.getWidth() - (smallFM.stringWidth(defenceStats.get(index).toString()) + 5);
 			createText(invContainer, defenceStats.get(index).toString(), FontID.PLAIN_11, YELLOW_TEXT,
-					defenceX, yPos, 50, -1);
+				defenceX, yPos, 50, -1);
 
 			index++;
 		}
@@ -341,10 +315,10 @@ public class ItemStatPlugin extends Plugin
 		yPos += TEXT_HEIGHT + 8;
 
 		final Map<String, Integer> miscStats = ImmutableMap.of(
-				"Strength", equipmentStats.getStr(),
-				"Ranged Strength", equipmentStats.getRstr(),
-				"Magic Damage", equipmentStats.getMdmg(),
-				"Prayer Bonus", equipmentStats.getPrayer()
+			"Strength", equipmentStats.getStr(),
+			"Ranged Strength", equipmentStats.getRstr(),
+			"Magic Damage", equipmentStats.getMdmg(),
+			"Prayer Bonus", equipmentStats.getPrayer()
 		);
 
 		for (final Map.Entry<String, Integer> miscStat : miscStats.entrySet())
@@ -367,12 +341,38 @@ public class ItemStatPlugin extends Plugin
 		createSeparator(invContainer, invContainer.getHeight() - 40);
 
 		final String coinText = "You have " + QuantityFormatter.quantityToStackSize(getCurrentGP())
-				+ (getCurrentGP() == 1 ? " coin." : " coins.");
+			+ (getCurrentGP() == 1 ? " coin." : " coins.");
 
 		final Widget coinWidget = createText(invContainer, coinText, FontID.PLAIN_12, ORANGE_TEXT,
-				0, invContainer.getHeight() - 18, invContainer.getWidth(), -1);
+			0, invContainer.getHeight() - 18, invContainer.getWidth(), -1);
 
 		coinWidget.setXTextAlignment(WidgetTextAlignment.CENTER);
+	}
+
+	private static Widget createText(Widget parent, String text, int fontId, int textColor,
+								int x, int y, int width, int height)
+	{
+		final Widget widget = parent.createChild(-1, WidgetType.TEXT);
+		widget.setText(text);
+		widget.setFontId(fontId);
+		widget.setTextColor(textColor);
+		widget.setTextShadowed(true);
+		widget.setOriginalHeight(height == -1 ? TEXT_HEIGHT : height);
+		widget.setOriginalWidth(width);
+		widget.setOriginalY(y);
+		widget.setOriginalX(x);
+		widget.revalidate();
+		return widget;
+	}
+
+	private static void createSeparator(Widget parent, int y)
+	{
+		Widget separator = parent.createChild(-1, WidgetType.GRAPHIC);
+		separator.setOriginalWidth(parent.getWidth());
+		separator.setOriginalY(y);
+		separator.setOriginalHeight(32);
+		separator.setSpriteId(SpriteID.UNKNOWN_BORDER_EDGE_HORIZONTAL_995);
+		separator.revalidate();
 	}
 
 	private void resetGEInventory()
@@ -416,11 +416,13 @@ public class ItemStatPlugin extends Plugin
 			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
 			{
 				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_CONTAINER);
-			} else
+			}
+			else
 			{
 				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_INVENTORY_CONTAINER);
 			}
-		} else
+		}
+		else
 		{
 			return client.getWidget(ComponentID.FIXED_VIEWPORT_INVENTORY_CONTAINER);
 		}

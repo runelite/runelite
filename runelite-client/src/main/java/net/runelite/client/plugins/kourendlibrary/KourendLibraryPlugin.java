@@ -73,37 +73,46 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-		name = "Kourend Library",
-		description = "Show where the books are found in the Kourend Library",
-		tags = {"arceuus", "magic", "runecrafting", "overlay", "panel"}
+	name = "Kourend Library",
+	description = "Show where the books are found in the Kourend Library",
+	tags = {"arceuus", "magic", "runecrafting", "overlay", "panel"}
 )
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
-	static final int REGION = 6459;
-	static final boolean debug = false;
 	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
 	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> npcsToMark = new HashSet<>();
+	static final int REGION = 6459;
+
+	static final boolean debug = false;
+
 	@Inject
 	private ClientToolbar clientToolbar;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private Library library;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private KourendLibraryOverlay overlay;
+
 	@Inject
 	private KourendLibraryTutorialOverlay tutorialOverlay;
+
 	@Inject
 	private KourendLibraryConfig config;
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private ClientThread clientThread;
+
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
@@ -112,10 +121,8 @@ public class KourendLibraryPlugin extends Plugin
 	private EnumSet<Book> playerBooks = EnumSet.noneOf(Book.class);
 	private QuestState depthsOfDespairState = QuestState.FINISHED;
 
-	static boolean isLibraryCustomer(int npcId)
-	{
-		return npcId == NpcID.VILLIA || npcId == NpcID.PROFESSOR_GRACKLEBONE || npcId == NpcID.SAM_7049;
-	}
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<NPC> npcsToMark = new HashSet<>();
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -134,11 +141,11 @@ public class KourendLibraryPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
-				.tooltip("Kourend Library")
-				.priority(6)
-				.icon(icon)
-				.panel(panel)
-				.build();
+			.tooltip("Kourend Library")
+			.priority(6)
+			.icon(icon)
+			.panel(panel)
+			.build();
 
 		overlayManager.add(overlay);
 		overlayManager.add(tutorialOverlay);
@@ -181,27 +188,31 @@ public class KourendLibraryPlugin extends Plugin
 		if (ev.getKey().equals("hideVarlamoreEnvoy"))
 		{
 			SwingUtilities.invokeLater(panel::reload);
-		} else if (ev.getKey().equals("hideButton"))
+		}
+		else if (ev.getKey().equals("hideButton"))
 		{
 			SwingUtilities.invokeLater(() ->
 			{
 				if (!config.hideButton())
 				{
 					clientToolbar.addNavigation(navButton);
-				} else
+				}
+				else
 				{
 					Player lp = client.getLocalPlayer();
 					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
 					if (inRegion)
 					{
 						clientToolbar.addNavigation(navButton);
-					} else
+					}
+					else
 					{
 						clientToolbar.removeNavigation(navButton);
 					}
 				}
 			});
-		} else if (ev.getKey().equals("showTargetHintArrow"))
+		}
+		else if (ev.getKey().equals("showTargetHintArrow"))
 		{
 			if (client.getLocalPlayer() == null || client.getLocalPlayer().getWorldLocation().getRegionID() != REGION)
 			{
@@ -259,7 +270,7 @@ public class KourendLibraryPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
-				event.getGameState() == GameState.HOPPING)
+			event.getGameState() == GameState.HOPPING)
 		{
 			npcsToMark.clear();
 		}
@@ -277,7 +288,8 @@ public class KourendLibraryPlugin extends Plugin
 				{
 					panel.reload();
 					clientToolbar.addNavigation(navButton);
-				} else
+				}
+				else
 				{
 					clientToolbar.removeNavigation(navButton);
 				}
@@ -327,7 +339,8 @@ public class KourendLibraryPlugin extends Plugin
 
 					library.setCustomer(npcHead.getModelId(), book);
 					updateBooksPanel();
-				} else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
+				}
+				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 				{
 					library.setCustomer(-1, null);
 					updateBooksPanel();
@@ -400,7 +413,8 @@ public class KourendLibraryPlugin extends Plugin
 		if (customerBook == null || doesPlayerContainBook(customerBook) || !config.showTargetHintArrow())
 		{
 			client.clearHintArrow();
-		} else if (state == SolvedState.COMPLETE && client.getHintArrowPoint() == null)
+		}
+		else if (state == SolvedState.COMPLETE && client.getHintArrowPoint() == null)
 		{
 			// Show a hint arrow pointing toward the target book if all book locations are known
 			// and a hint arrow is not already being displayed
@@ -428,5 +442,10 @@ public class KourendLibraryPlugin extends Plugin
 	boolean showVarlamoreEnvoy()
 	{
 		return config.alwaysShowVarlamoreEnvoy() || depthsOfDespairState == QuestState.IN_PROGRESS;
+	}
+
+	static boolean isLibraryCustomer(int npcId)
+	{
+		return npcId == NpcID.VILLIA || npcId == NpcID.PROFESSOR_GRACKLEBONE || npcId == NpcID.SAM_7049;
 	}
 }

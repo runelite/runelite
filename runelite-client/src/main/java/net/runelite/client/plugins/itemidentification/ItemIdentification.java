@@ -532,6 +532,19 @@ enum ItemIdentification
 	DRAGONBONE_NECKLACE(Type.JEWELLERY_ENCHANTED, "Dragon", "DRA", ItemID.DRAGONBONE_NECKLACE),
 	SLAYER_RING(Type.JEWELLERY_ENCHANTED, "Slayer", "SLA", ItemID.SLAYER_RING_1, ItemID.SLAYER_RING_2, ItemID.SLAYER_RING_3, ItemID.SLAYER_RING_4, ItemID.SLAYER_RING_5, ItemID.SLAYER_RING_6, ItemID.SLAYER_RING_7, ItemID.SLAYER_RING_8, ItemID.SLAYER_RING_ETERNAL);
 
+	final Type type;
+	final String medName;
+	final String shortName;
+	final int[] itemIDs;
+
+	ItemIdentification(Type type, String medName, String shortName, int... ids)
+	{
+		this.type = type;
+		this.medName = medName;
+		this.shortName = shortName;
+		this.itemIDs = ids;
+	}
+
 	private static final Map<Integer, ItemIdentification> itemIdentifications;
 
 	static
@@ -547,19 +560,6 @@ enum ItemIdentification
 		}
 
 		itemIdentifications = builder.build();
-	}
-
-	final Type type;
-	final String medName;
-	final String shortName;
-	final int[] itemIDs;
-
-	ItemIdentification(Type type, String medName, String shortName, int... ids)
-	{
-		this.type = type;
-		this.medName = medName;
-		this.shortName = shortName;
-		this.itemIDs = ids;
 	}
 
 	static ItemIdentification get(int id)

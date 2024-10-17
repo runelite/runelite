@@ -34,10 +34,10 @@ import net.runelite.client.config.ConfigItem;
 public interface FriendNotesConfig extends Config
 {
 	@ConfigItem(
-			keyName = "showIcons",
-			name = "Show Icons",
-			description = "Show icons on friend or ignore list",
-			position = 1
+		keyName = "showIcons",
+		name = "Show Icons",
+		description = "Show icons on friend or ignore list",
+		position = 1
 	)
 	default boolean showIcons()
 	{

@@ -121,14 +121,15 @@ public class ItemManager implements ItemProvider
 	{
 		java.mkdirs();
 		try (IDClass ids = IDClass.create(java, "ItemID");
-			 IDClass nulls = IDClass.create(java, "NullItemID"))
+			IDClass nulls = IDClass.create(java, "NullItemID"))
 		{
 			for (ItemDefinition def : items.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{
 					nulls.add(def.name, def.id);
-				} else
+				}
+				else
 				{
 					ids.add(def.name, def.id);
 				}

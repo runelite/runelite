@@ -101,8 +101,8 @@ class PrayerBarOverlay extends Overlay
 			graphics.drawImage(HD_FRONT_BAR.getSubimage(0, 0, progressFill, barHeight), barX, barY, progressFill, barHeight, null);
 
 			if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
-					&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
-					|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 			{
 				final double t = plugin.getTickProgress();
 				final int halfBarWidth = (barWidth / 2) - HD_PRAYER_BAR_PADDING;
@@ -132,8 +132,8 @@ class PrayerBarOverlay extends Overlay
 		graphics.fillRect(barX, barY, progressFill, barHeight);
 
 		if ((plugin.isPrayersActive() || config.prayerFlickAlwaysOn())
-				&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
-				|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
+			&& (config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR)
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.BOTH)))
 		{
 			double t = plugin.getTickProgress();
 

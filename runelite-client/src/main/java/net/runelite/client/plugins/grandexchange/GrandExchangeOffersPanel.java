@@ -179,7 +179,8 @@ class GrandExchangeOffersPanel extends JPanel
 		{
 			offerPanel.removeAll();
 			cardLayout.show(container, ERROR_PANEL);
-		} else
+		}
+		else
 		{
 			cardLayout.show(container, OFFERS_PANEL);
 		}

@@ -39,30 +39,30 @@ import org.junit.Test;
 public class ColorUtilTest
 {
 	private static final Map<Color, String> COLOR_HEXSTRING_MAP = new ImmutableMap.Builder<Color, String>().
-			put(Color.BLACK, "000000").
-			put(new Color(0x1), "000001").
-			put(new Color(0x100000), "100000").
-			put(Color.RED, "ff0000").
-			put(Color.GREEN, "00ff00").
-			put(Color.BLUE, "0000ff").
-			put(new Color(0xA1B2C3), "a1b2c3").
-			put(Color.WHITE, "ffffff").build();
+		put(Color.BLACK, "000000").
+		put(new Color(0x1), "000001").
+		put(new Color(0x100000), "100000").
+		put(Color.RED, "ff0000").
+		put(Color.GREEN, "00ff00").
+		put(Color.BLUE, "0000ff").
+		put(new Color(0xA1B2C3), "a1b2c3").
+		put(Color.WHITE, "ffffff").build();
 
 	private static final Map<Color, String> COLOR_ALPHA_HEXSTRING_MAP = ImmutableMap.of(
-			new Color(0x00000000, true), "00000000",
-			new Color(0xA1B2C3D4, true), "a1b2c3d4"
+		new Color(0x00000000, true), "00000000",
+		new Color(0xA1B2C3D4, true), "a1b2c3d4"
 	);
 
 	private static final List<String> INVALID_COLOR_HEXSTRING_LIST = List.of(
-			"#ffffffffffffffff",
-			"##abcdef",
-			"fffffg",
-			"0xabcdefg",
-			"0x",
-			"#",
-			"#######",
-			"#########",
-			""
+		"#ffffffffffffffff",
+		"##abcdef",
+		"fffffg",
+		"0xabcdefg",
+		"0x",
+		"#",
+		"#######",
+		"#########",
+		""
 	);
 
 	@Test
@@ -113,7 +113,7 @@ public class ColorUtilTest
 		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
 		{
 			assertEquals(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha[0]),
-					ColorUtil.colorWithAlpha(color, alpha[0]));
+				ColorUtil.colorWithAlpha(color, alpha[0]));
 			alpha[0] += 73;
 			alpha[0] %= 255;
 		});
@@ -121,7 +121,7 @@ public class ColorUtilTest
 		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
 		{
 			assertEquals(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha[0]),
-					ColorUtil.colorWithAlpha(color, alpha[0]));
+				ColorUtil.colorWithAlpha(color, alpha[0]));
 			alpha[0] += 73;
 			alpha[0] %= 255;
 		});

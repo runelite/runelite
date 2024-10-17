@@ -67,8 +67,8 @@ public class ChatboxPanelManager
 
 	@Inject
 	private ChatboxPanelManager(EventBus eventBus, Client client, ClientThread clientThread,
-								KeyManager keyManager, MouseManager mouseManager,
-								Provider<ChatboxTextMenuInput> chatboxTextMenuInputProvider, Provider<ChatboxTextInput> chatboxTextInputProvider)
+		KeyManager keyManager, MouseManager mouseManager,
+		Provider<ChatboxTextMenuInput> chatboxTextMenuInputProvider, Provider<ChatboxTextInput> chatboxTextInputProvider)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -91,10 +91,10 @@ public class ChatboxPanelManager
 	private void unsafeCloseInput()
 	{
 		client.runScript(
-				ScriptID.MESSAGE_LAYER_CLOSE,
-				0,
-				1,
-				0
+			ScriptID.MESSAGE_LAYER_CLOSE,
+			0,
+			1,
+			0
 		);
 		if (currentInput != null)
 		{
@@ -144,13 +144,13 @@ public class ChatboxPanelManager
 	public ChatboxTextMenuInput openTextMenuInput(String title)
 	{
 		return chatboxTextMenuInputProvider.get()
-				.title(title);
+			.title(title);
 	}
 
 	public ChatboxTextInput openTextInput(String prompt)
 	{
 		return chatboxTextInputProvider.get()
-				.prompt(prompt);
+			.prompt(prompt);
 	}
 
 	@Subscribe
@@ -176,7 +176,8 @@ public class ChatboxPanelManager
 		try
 		{
 			currentInput.close();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			log.warn("Exception closing {}", currentInput.getClass(), e);
 		}

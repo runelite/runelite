@@ -91,9 +91,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-		name = "Wintertodt",
-		description = "Show helpful information for the Wintertodt boss",
-		tags = {"minigame", "firemaking", "boss"}
+	name = "Wintertodt",
+	description = "Show helpful information for the Wintertodt boss",
+	tags = {"minigame", "firemaking", "boss"}
 )
 @Slf4j
 public class WintertodtPlugin extends Plugin
@@ -137,31 +137,6 @@ public class WintertodtPlugin extends Plugin
 	private Instant lastActionTime;
 
 	private int previousTimerValue;
-
-	private static int getPoints(int id)
-	{
-		switch (id)
-		{
-			case BRUMA_ROOT:
-				return 10;
-			case BRUMA_KINDLING:
-				return 25;
-			default:
-				return 0;
-		}
-	}
-
-	private static int getPotentialPoints(int id)
-	{
-		switch (id)
-		{
-			case BRUMA_ROOT:
-			case BRUMA_KINDLING:
-				return 25;
-			default:
-				return 0;
-		}
-	}
 
 	@Provides
 	WintertodtConfig getConfig(ConfigManager configManager)
@@ -304,28 +279,36 @@ public class WintertodtPlugin extends Plugin
 		if (messageNode.getValue().startsWith("The cold of"))
 		{
 			interruptType = WintertodtInterruptType.COLD;
-		} else if (messageNode.getValue().startsWith("The freezing cold attack"))
+		}
+		else if (messageNode.getValue().startsWith("The freezing cold attack"))
 		{
 			interruptType = WintertodtInterruptType.SNOWFALL;
-		} else if (messageNode.getValue().startsWith("The brazier is broken and shrapnel"))
+		}
+		else if (messageNode.getValue().startsWith("The brazier is broken and shrapnel"))
 		{
 			interruptType = WintertodtInterruptType.BRAZIER;
-		} else if (messageNode.getValue().startsWith("You have run out of bruma roots"))
+		}
+		else if (messageNode.getValue().startsWith("You have run out of bruma roots"))
 		{
 			interruptType = WintertodtInterruptType.OUT_OF_ROOTS;
-		} else if (messageNode.getValue().startsWith("Your inventory is too full"))
+		}
+		else if (messageNode.getValue().startsWith("Your inventory is too full"))
 		{
 			interruptType = WintertodtInterruptType.INVENTORY_FULL;
-		} else if (messageNode.getValue().startsWith("You fix the brazier"))
+		}
+		else if (messageNode.getValue().startsWith("You fix the brazier"))
 		{
 			interruptType = WintertodtInterruptType.FIXED_BRAZIER;
-		} else if (messageNode.getValue().startsWith("You light the brazier"))
+		}
+		else if (messageNode.getValue().startsWith("You light the brazier"))
 		{
 			interruptType = WintertodtInterruptType.LIT_BRAZIER;
-		} else if (messageNode.getValue().startsWith("The brazier has gone out."))
+		}
+		else if (messageNode.getValue().startsWith("The brazier has gone out."))
 		{
 			interruptType = WintertodtInterruptType.BRAZIER_WENT_OUT;
-		} else
+		}
+		else
 		{
 			return;
 		}
@@ -535,5 +518,30 @@ public class WintertodtPlugin extends Plugin
 	{
 		currentActivity = action;
 		lastActionTime = Instant.now();
+	}
+
+	private static int getPoints(int id)
+	{
+		switch (id)
+		{
+			case BRUMA_ROOT:
+				return 10;
+			case BRUMA_KINDLING:
+				return 25;
+			default:
+				return 0;
+		}
+	}
+
+	private static int getPotentialPoints(int id)
+	{
+		switch (id)
+		{
+			case BRUMA_ROOT:
+			case BRUMA_KINDLING:
+				return 25;
+			default:
+				return 0;
+		}
 	}
 }

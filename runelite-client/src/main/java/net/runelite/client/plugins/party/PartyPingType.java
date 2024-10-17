@@ -33,8 +33,7 @@ import net.runelite.client.util.ImageUtil;
 
 @Getter
 @RequiredArgsConstructor
-public enum PartyPingType
-{
+public enum PartyPingType {
 	/*
 	 * Danger icon made by iconproject45 from www.flaticon.com
 	 * Destination icon made by DinosoftLabs from www.flaticon.com

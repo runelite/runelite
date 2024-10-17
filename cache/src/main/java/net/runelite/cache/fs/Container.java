@@ -52,6 +52,48 @@ public class Container
 		this.revision = revision;
 	}
 
+	public void compress(byte[] data, int[] keys) throws IOException
+	{
+		OutputStream stream = new OutputStream();
+
+		byte[] compressedData;
+		int length;
+		switch (compression)
+		{
+			case CompressionType.NONE:
+				compressedData = data;
+				length = compressedData.length;
+				break;
+			case CompressionType.BZ2:
+				compressedData = concat(Ints.toByteArray(data.length), BZip2.compress(data));
+				length = compressedData.length - 4;
+				break;
+			case CompressionType.GZ:
+				compressedData = concat(Ints.toByteArray(data.length), GZip.compress(data));
+				length = compressedData.length - 4;
+				break;
+			default:
+				throw new RuntimeException("Unknown compression type");
+		}
+
+		compressedData = encrypt(compressedData, compressedData.length, keys);
+
+		stream.writeByte(compression);
+		stream.writeInt(length);
+
+		stream.writeBytes(compressedData);
+		if (revision != -1)
+		{
+			stream.writeShort(revision);
+		}
+
+		this.data = stream.flip();
+
+		Crc32 crc32 = new Crc32();
+		crc32.update(this.data, 0, this.data.length - (revision != -1 ? 2 : 0));
+		this.crc = crc32.getHash();
+	}
+
 	public static Container decompress(byte[] b, int[] keys) throws IOException
 	{
 		InputStream stream = new InputStream(b);
@@ -162,47 +204,5 @@ public class Container
 
 		Xtea xtea = new Xtea(keys);
 		return xtea.encrypt(data, length);
-	}
-
-	public void compress(byte[] data, int[] keys) throws IOException
-	{
-		OutputStream stream = new OutputStream();
-
-		byte[] compressedData;
-		int length;
-		switch (compression)
-		{
-			case CompressionType.NONE:
-				compressedData = data;
-				length = compressedData.length;
-				break;
-			case CompressionType.BZ2:
-				compressedData = concat(Ints.toByteArray(data.length), BZip2.compress(data));
-				length = compressedData.length - 4;
-				break;
-			case CompressionType.GZ:
-				compressedData = concat(Ints.toByteArray(data.length), GZip.compress(data));
-				length = compressedData.length - 4;
-				break;
-			default:
-				throw new RuntimeException("Unknown compression type");
-		}
-
-		compressedData = encrypt(compressedData, compressedData.length, keys);
-
-		stream.writeByte(compression);
-		stream.writeInt(length);
-
-		stream.writeBytes(compressedData);
-		if (revision != -1)
-		{
-			stream.writeShort(revision);
-		}
-
-		this.data = stream.flip();
-
-		Crc32 crc32 = new Crc32();
-		crc32.update(this.data, 0, this.data.length - (revision != -1 ? 2 : 0));
-		this.crc = crc32.getHash();
 	}
 }

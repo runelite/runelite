@@ -62,8 +62,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Spellbook",
-		description = "Reorder and hide spells"
+	name = "Spellbook",
+	description = "Reorder and hide spells"
 )
 @Slf4j
 public class SpellbookPlugin extends Plugin
@@ -75,22 +75,22 @@ public class SpellbookPlugin extends Plugin
 	private static final int HIDE_UNHIDE_OP = 6;
 
 	private static final WidgetMenuOption FIXED_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,
-			"", ComponentID.FIXED_VIEWPORT_MAGIC_TAB);
+		"", ComponentID.FIXED_VIEWPORT_MAGIC_TAB);
 
 	private static final WidgetMenuOption FIXED_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-			"", ComponentID.FIXED_VIEWPORT_MAGIC_TAB);
+		"", ComponentID.FIXED_VIEWPORT_MAGIC_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,
-			"", ComponentID.RESIZABLE_VIEWPORT_MAGIC_TAB);
+		"", ComponentID.RESIZABLE_VIEWPORT_MAGIC_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-			"", ComponentID.RESIZABLE_VIEWPORT_MAGIC_TAB);
+		"", ComponentID.RESIZABLE_VIEWPORT_MAGIC_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,
-			"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-			"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
 
 	@Inject
 	private Client client;
@@ -170,7 +170,8 @@ public class SpellbookPlugin extends Plugin
 			menuManager.addManagedCustomMenu(FIXED_MAGIC_TAB_LOCK, e -> reordering(false));
 			menuManager.addManagedCustomMenu(RESIZABLE_MAGIC_TAB_LOCK, e -> reordering(false));
 			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK, e -> reordering(false));
-		} else
+		}
+		else
 		{
 			menuManager.addManagedCustomMenu(FIXED_MAGIC_TAB_UNLOCK, e -> reordering(true));
 			menuManager.addManagedCustomMenu(RESIZABLE_MAGIC_TAB_UNLOCK, e -> reordering(true));
@@ -183,13 +184,13 @@ public class SpellbookPlugin extends Plugin
 		reordering = state;
 
 		var message = reordering ?
-				"Spell book reordering is now enabled." :
-				"Spell book reordering is now disabled.";
+			"Spell book reordering is now enabled." :
+			"Spell book reordering is now disabled.";
 
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(message)
-				.build());
+			.type(ChatMessageType.CONSOLE)
+			.runeLiteFormattedMessage(message)
+			.build());
 
 		refreshReorderMenus();
 
@@ -241,9 +242,9 @@ public class SpellbookPlugin extends Plugin
 			ItemComposition toSpell = client.getItemDefinition(spellbook.getIntValue(order[toIdx]));
 
 			log.debug("Insert {} ({}) at {} ({}) spellbook {}",
-					fromSpell.getStringValue(ParamID.SPELL_NAME), fromIdx,
-					toSpell.getStringValue(ParamID.SPELL_NAME), toIdx,
-					spellbookId);
+				fromSpell.getStringValue(ParamID.SPELL_NAME), fromIdx,
+				toSpell.getStringValue(ParamID.SPELL_NAME), toIdx,
+				spellbookId);
 
 			log.debug("Set {} to {}", client.getItemDefinition(spellbook.getIntValue(order[fromIdx])).getStringValue(ParamID.SPELL_NAME), toIdx);
 			setPosition(spellbookId, spellbook.getIntValue(order[fromIdx]), toIdx);
@@ -254,7 +255,8 @@ public class SpellbookPlugin extends Plugin
 					log.debug("Set {} to {}", client.getItemDefinition(spellbook.getIntValue(order[i])).getStringValue(ParamID.SPELL_NAME), i - 1);
 					setPosition(spellbookId, spellbook.getIntValue(order[i]), i - 1);
 				}
-			} else
+			}
+			else
 			{
 				for (int i = toIdx; i < fromIdx; ++i)
 				{
@@ -318,7 +320,8 @@ public class SpellbookPlugin extends Plugin
 				{
 					w.setOpacity(100);
 					w.setAction(HIDE_UNHIDE_OP, "Unhide");
-				} else
+				}
+				else
 				{
 					w.setOpacity(0);
 					w.setAction(HIDE_UNHIDE_OP, "Hide");
@@ -326,12 +329,14 @@ public class SpellbookPlugin extends Plugin
 
 				newSpells[numNewSpells++] = spells[i];
 				widgetConfig |= DRAG | DRAG_ON;
-			} else
+			}
+			else
 			{
 				if (hidden)
 				{
 					w.setHidden(true);
-				} else
+				}
+				else
 				{
 					newSpells[numNewSpells++] = spells[i];
 					w.setOpacity(0);
@@ -351,10 +356,10 @@ public class SpellbookPlugin extends Plugin
 			indices[order[i]] = i;
 		}
 		newSpells = Arrays.stream(newSpells, 0, numNewSpells)
-				.boxed()
-				.sorted(Comparator.comparingInt(i -> indices[i]))
-				.mapToInt(i -> i)
-				.toArray();
+			.boxed()
+			.sorted(Comparator.comparingInt(i -> indices[i]))
+			.mapToInt(i -> i)
+			.toArray();
 
 		System.arraycopy(newSpells, 0, spells, 0, numNewSpells);
 		stack[size - 1] = numSpells = numNewSpells;
@@ -426,8 +431,8 @@ public class SpellbookPlugin extends Plugin
 		if (w != null && w.getOnLoadListener() != null)
 		{
 			client.createScriptEvent(w.getOnLoadListener())
-					.setSource(w)
-					.run();
+				.setSource(w)
+				.run();
 		}
 	}
 
@@ -437,8 +442,8 @@ public class SpellbookPlugin extends Plugin
 		if (w != null && w.getOnInvTransmitListener() != null)
 		{
 			client.createScriptEvent(w.getOnInvTransmitListener())
-					.setSource(w)
-					.run();
+				.setSource(w)
+				.run();
 		}
 	}
 
@@ -454,26 +459,26 @@ public class SpellbookPlugin extends Plugin
 
 		// sort by desired index
 		return Arrays.stream(spells)
-				.boxed()
-				.sorted(Comparator.comparingInt(i -> indices[i]))
-				.mapToInt(i -> i)
-				.toArray();
+			.boxed()
+			.sorted(Comparator.comparingInt(i -> indices[i]))
+			.mapToInt(i -> i)
+			.toArray();
 	}
 
 	private int[] defaultSpellbookOrder(EnumComposition spellbook)
 	{
 		return IntStream.range(0, spellbook.size())
-				.boxed()
-				.sorted((idx1, idx2) ->
-				{
-					var i1 = client.getItemDefinition(spellbook.getIntValue(idx1));
-					var i2 = client.getItemDefinition(spellbook.getIntValue(idx2));
-					int l1 = i1.getIntValue(ParamID.SPELL_LEVELREQ);
-					int l2 = i2.getIntValue(ParamID.SPELL_LEVELREQ);
-					return Integer.compare(l1, l2);
-				})
-				.mapToInt(i -> i)
-				.toArray();
+			.boxed()
+			.sorted((idx1, idx2) ->
+			{
+				var i1 = client.getItemDefinition(spellbook.getIntValue(idx1));
+				var i2 = client.getItemDefinition(spellbook.getIntValue(idx2));
+				int l1 = i1.getIntValue(ParamID.SPELL_LEVELREQ);
+				int l2 = i2.getIntValue(ParamID.SPELL_LEVELREQ);
+				return Integer.compare(l1, l2);
+			})
+			.mapToInt(i -> i)
+			.toArray();
 	}
 
 	private boolean isHidden(int spellbook, int spell)
@@ -487,7 +492,8 @@ public class SpellbookPlugin extends Plugin
 		if (hidden)
 		{
 			configManager.setConfiguration(SpellbookConfig.GROUP, "spell_hidden_book_" + spellbook + "_" + spell, true);
-		} else
+		}
+		else
 		{
 			configManager.unsetConfiguration(SpellbookConfig.GROUP, "spell_hidden_book_" + spellbook + "_" + spell);
 		}

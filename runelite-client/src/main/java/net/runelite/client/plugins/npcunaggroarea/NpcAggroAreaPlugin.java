@@ -66,10 +66,10 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
-		name = "NPC Aggression Timer",
-		description = "Highlights the unaggressive area of NPCs nearby and timer until it becomes active",
-		tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "slayer"},
-		enabledByDefault = false
+	name = "NPC Aggression Timer",
+	description = "Highlights the unaggressive area of NPCs nearby and timer until it becomes active",
+	tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "slayer"},
+	enabledByDefault = false
 )
 @PluginDependency(SlayerPlugin.class)
 public class NpcAggroAreaPlugin extends Plugin
@@ -90,28 +90,40 @@ public class NpcAggroAreaPlugin extends Plugin
 	private static final Splitter NAME_SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 	private static final WorldArea WILDERNESS_ABOVE_GROUND = new WorldArea(2944, 3523, 448, 448, 0);
 	private static final WorldArea WILDERNESS_UNDERGROUND = new WorldArea(2944, 9918, 320, 442, 0);
-	@Getter
-	private final WorldPoint[] safeCenters = new WorldPoint[2];
-	@Getter
-	private final GeneralPath[] linesToDisplay = new GeneralPath[Constants.MAX_Z];
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private NpcAggroAreaConfig config;
+
 	@Inject
 	private NpcAggroAreaOverlay overlay;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private ItemManager itemManager;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private ConfigManager configManager;
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private SlayerPluginService slayerPluginService;
+
+	@Getter
+	private final WorldPoint[] safeCenters = new WorldPoint[2];
+
+	@Getter
+	private final GeneralPath[] linesToDisplay = new GeneralPath[Constants.MAX_Z];
+
 	@Getter
 	private boolean active;
 
@@ -124,11 +136,6 @@ public class NpcAggroAreaPlugin extends Plugin
 	private boolean notifyOnce;
 
 	private List<String> npcNamePatterns;
-
-	private static boolean isInWilderness(WorldPoint location)
-	{
-		return location.isInArea2D(WILDERNESS_ABOVE_GROUND, WILDERNESS_UNDERGROUND);
-	}
 
 	@Provides
 	NpcAggroAreaConfig provideConfig(ConfigManager configManager)
@@ -199,8 +206,8 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 
 		Rectangle sceneRect = new Rectangle(
-				client.getBaseX() + 1, client.getBaseY() + 1,
-				Constants.SCENE_SIZE - 2, Constants.SCENE_SIZE - 2);
+			client.getBaseX() + 1, client.getBaseY() + 1,
+			Constants.SCENE_SIZE - 2, Constants.SCENE_SIZE - 2);
 
 		for (int i = 0; i < linesToDisplay.length; i++)
 		{
@@ -237,6 +244,11 @@ public class NpcAggroAreaPlugin extends Plugin
 	private void resetTimer()
 	{
 		createTimer(AGGRESSIVE_TIME_DURATION);
+	}
+
+	private static boolean isInWilderness(WorldPoint location)
+	{
+		return location.isInArea2D(WILDERNESS_ABOVE_GROUND, WILDERNESS_UNDERGROUND);
 	}
 
 	private boolean isNpcMatch(NPC npc)
@@ -350,7 +362,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 
 		if (safeCenters[0] == null && previousUnknownCenter != null &&
-				previousUnknownCenter.distanceTo2D(newLocation) <= UNKNOWN_AREA_RADIUS)
+			previousUnknownCenter.distanceTo2D(newLocation) <= UNKNOWN_AREA_RADIUS)
 		{
 			// Player went back to their previous unknown area before the 2nd
 			// center point was found, which means we don't know where it is again.
@@ -362,7 +374,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		if (safeCenters[1] != null)
 		{
 			if (Arrays.stream(safeCenters).noneMatch(
-					x -> x != null && x.distanceTo2D(newLocation) <= SAFE_AREA_RADIUS))
+				x -> x != null && x.distanceTo2D(newLocation) <= SAFE_AREA_RADIUS))
 			{
 				safeCenters[0] = safeCenters[1];
 				safeCenters[1] = newLocation;
@@ -427,7 +439,8 @@ public class NpcAggroAreaPlugin extends Plugin
 		if (safeCenters[0] == null || safeCenters[1] == null || lastPlayerLocation == null || endTime == null)
 		{
 			resetConfig();
-		} else
+		}
+		else
 		{
 			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, safeCenters[0]);
 			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, safeCenters[1]);

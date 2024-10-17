@@ -89,17 +89,17 @@ class PyramidPlunderOverlay extends Overlay
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
 			if (config.highlightUrnsFloor() > currentFloor && URN_IDS.contains(object.getId())
-					|| config.highlightChestFloor() > currentFloor && GRAND_GOLD_CHEST_ID == object.getId()
-					|| config.highlightSarcophagusFloor() > currentFloor && SARCOPHAGUS_ID == object.getId()
-					|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
+				|| config.highlightChestFloor() > currentFloor && GRAND_GOLD_CHEST_ID == object.getId()
+				|| config.highlightSarcophagusFloor() > currentFloor && SARCOPHAGUS_ID == object.getId()
+				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
 			{
 				continue;
 			}
 
 			ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
 			if (URN_CLOSED_IDS.contains(imposter.getId())
-					|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
-					|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
+				|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
+				|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
 			{
 				Shape shape = object.getConvexHull();
 
@@ -116,9 +116,9 @@ class PyramidPlunderOverlay extends Overlay
 		plugin.getTilesToHighlight().forEach((object, tile) ->
 		{
 			if (!config.highlightDoors() && TOMB_DOOR_WALL_IDS.contains(object.getId())
-					|| !config.highlightSpeartraps() && SPEARTRAP_ID == object.getId()
-					|| tile.getPlane() != client.getPlane()
-					|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
+				|| !config.highlightSpeartraps() && SPEARTRAP_ID == object.getId()
+				|| tile.getPlane() != client.getPlane()
+				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
 			{
 				return;
 			}
@@ -133,7 +133,8 @@ class PyramidPlunderOverlay extends Overlay
 				}
 
 				highlightColor = config.highlightSpeartrapsColor();
-			} else
+			}
+			else
 			{
 				ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
 				if (imposter.getId() != TOMB_DOOR_CLOSED_ID)
@@ -150,7 +151,8 @@ class PyramidPlunderOverlay extends Overlay
 				if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 				{
 					graphics.setColor(highlightColor.darker());
-				} else
+				}
+				else
 				{
 					graphics.setColor(highlightColor);
 				}

@@ -25,9 +25,8 @@
 package net.runelite.client.plugins.grounditems;
 
 import joptsimple.internal.Strings;
-import static net.runelite.client.plugins.grounditems.ItemThreshold.Inequality.LESS_THAN;
-import static net.runelite.client.plugins.grounditems.ItemThreshold.Inequality.MORE_THAN;
 import org.junit.Assert;
+import static net.runelite.client.plugins.grounditems.ItemThreshold.Inequality.*;
 import org.junit.Test;
 
 public class ItemThresholdTest

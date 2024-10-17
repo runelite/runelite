@@ -110,7 +110,7 @@ public class FarmingContractManagerTest
 
 		// Consider all patches to be empty by default
 		when(farmingTracker.predictPatch(any(FarmingPatch.class)))
-				.thenReturn(new PatchPrediction(null, null, 0, 0, 0));
+			.thenReturn(new PatchPrediction(null, null, 0, 0, 0));
 	}
 
 	@Test
@@ -127,9 +127,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.HARVESTABLE, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -150,9 +150,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.POTATO, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.POTATO, CropState.HARVESTABLE, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -171,7 +171,7 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -193,10 +193,10 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(
-						Produce.CABBAGE, CropState.GROWING, expectedTime, 2, 3));
+			.thenReturn(new PatchPrediction(
+				Produce.CABBAGE, CropState.GROWING, expectedTime, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -219,9 +219,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -243,9 +243,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.ONION, CropState.HARVESTABLE, unixNow, 3, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -268,9 +268,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expected, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expected, 2, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -291,9 +291,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.HARVESTABLE, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -316,9 +316,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expected1, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expected1, 2, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expected2, 1, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expected2, 1, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -343,9 +343,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expectedTime, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expectedTime, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -370,9 +370,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expectedTime, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.GROWING, expectedTime, 2, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -394,9 +394,9 @@ public class FarmingContractManagerTest
 
 		// Specify the two allotment patches
 		when(farmingTracker.predictPatch(patch1))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
 		when(farmingTracker.predictPatch(patch2))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -415,7 +415,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.HARVESTABLE, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -430,7 +430,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DISEASED, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -446,7 +446,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CABBAGE, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.CABBAGE);
 
@@ -466,7 +466,7 @@ public class FarmingContractManagerTest
 
 		// For berries, Harvestable means already checked
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.HARVESTABLE, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.HARVESTABLE, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.REDBERRIES);
 
@@ -485,7 +485,7 @@ public class FarmingContractManagerTest
 
 		// For berries, Growing on the last stage is ready to be checked
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.GROWING, unixNow, 3, 3));
+			.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.GROWING, unixNow, 3, 3));
 
 		farmingContractManager.setContract(Produce.REDBERRIES);
 
@@ -505,7 +505,7 @@ public class FarmingContractManagerTest
 
 		// Not ready to check
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.GROWING, expectedCompletion, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.GROWING, expectedCompletion, 2, 3));
 
 		farmingContractManager.setContract(Produce.REDBERRIES);
 
@@ -523,7 +523,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.DISEASED, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.DISEASED, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.REDBERRIES);
 
@@ -540,7 +540,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.REDBERRIES, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.REDBERRIES);
 
@@ -557,7 +557,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.CADAVABERRIES, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.CADAVABERRIES, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.REDBERRIES);
 		assertEquals(SummaryState.OCCUPIED, farmingContractManager.getSummary());
@@ -572,7 +572,7 @@ public class FarmingContractManagerTest
 		assertNotNull(patch);
 
 		when(farmingTracker.predictPatch(patch))
-				.thenReturn(new PatchPrediction(Produce.GUAM, CropState.DEAD, 0, 2, 3));
+			.thenReturn(new PatchPrediction(Produce.GUAM, CropState.DEAD, 0, 2, 3));
 
 		farmingContractManager.setContract(Produce.GUAM);
 

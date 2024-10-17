@@ -92,8 +92,8 @@ public class ChatFilterPluginTest
 		event.setScript(null);
 		event.setEventName("chatFilterCheck");
 		int[] simulatedIntStack =
-				new int[] {1, messageType.getType(), 1}; // is msg allowed to show, ChatMessageType.PUBLICCHAT, message id
-		String[] simulatedStringStack = new String[] {chatMessage};
+			new int[]{1, messageType.getType(), 1}; // is msg allowed to show, ChatMessageType.PUBLICCHAT, message id
+		String[] simulatedStringStack = new String[]{chatMessage};
 		IterableHashTable<MessageNode> messageTable = mock(IterableHashTable.class);
 		MessageNode mockedMsgNode = mockMessageNode(sender);
 		when(client.getIntStack()).thenReturn(simulatedIntStack);
@@ -288,7 +288,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.updateFilteredPatterns();
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_MESSAGE);
 		assertEquals(CENSOR_MESSAGE,
-				chatFilterPlugin.censorMessage("Blue", "Meet swampletics, my morytania locked ultimate ironman"));
+			chatFilterPlugin.censorMessage("Blue", "Meet swampletics, my morytania locked ultimate ironman"));
 	}
 
 	@Test
@@ -298,7 +298,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.updateFilteredPatterns();
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
 		assertNull(
-				chatFilterPlugin.censorMessage("Blue", "What about now it's time to rock with the biggity buck bumble"));
+			chatFilterPlugin.censorMessage("Blue", "What about now it's time to rock with the biggity buck bumble"));
 	}
 
 	@Test

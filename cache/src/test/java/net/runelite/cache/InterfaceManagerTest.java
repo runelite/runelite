@@ -47,13 +47,13 @@ public class InterfaceManagerTest
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder(),
-				javaDir = folder.newFolder();
+			javaDir = folder.newFolder();
 
 		Store store = new Store(StoreLocation.LOCATION);
 		store.load();
 
 		InterfaceManager dumper = new InterfaceManager(
-				store
+			store
 		);
 		dumper.load();
 		dumper.export(dumpDir);

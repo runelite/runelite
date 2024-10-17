@@ -71,21 +71,21 @@ public class JShellAutocompleteProvider extends CompletionProviderBase
 			var ci = shell.sourceCodeAnalysis().analyzeCompletion(snipSrc);
 			offset = src.length() - ci.remaining().length();
 			boolean mayHaveMore = ci.completeness() == SourceCodeAnalysis.Completeness.COMPLETE_WITH_SEMI
-					|| ci.completeness() == SourceCodeAnalysis.Completeness.COMPLETE;
+				|| ci.completeness() == SourceCodeAnalysis.Completeness.COMPLETE;
 
 			if (cursor <= offset || !mayHaveMore)
 			{
 				var anchor = new int[1];
 
 				completions = shell.sourceCodeAnalysis()
-						.completionSuggestions(snipSrc, cursor - thisOffset, anchor)
-						.stream()
-						.filter(v -> !v.continuation().startsWith("$"))
-						.map(s ->
-						{
-							return new BasicCompletion(this, s.continuation());
-						})
-						.collect(Collectors.toList());
+					.completionSuggestions(snipSrc, cursor - thisOffset, anchor)
+					.stream()
+					.filter(v -> !v.continuation().startsWith("$"))
+					.map(s ->
+					{
+						return new BasicCompletion(this, s.continuation());
+					})
+					.collect(Collectors.toList());
 				anchorText = snipSrc.substring(anchor[0], cursor - thisOffset);
 				break;
 			}

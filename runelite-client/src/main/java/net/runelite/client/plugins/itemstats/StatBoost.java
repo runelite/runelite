@@ -79,10 +79,12 @@ public abstract class StatBoost extends SingleEffect
 		if (delta > 0)
 		{
 			out.setPositivity(hitCap ? Positivity.BETTER_CAPPED : Positivity.BETTER_UNCAPPED);
-		} else if (delta == 0)
+		}
+		else if (delta == 0)
 		{
 			out.setPositivity(Positivity.NO_CHANGE);
-		} else
+		}
+		else
 		{
 			out.setPositivity(Positivity.WORSE);
 		}

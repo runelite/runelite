@@ -61,8 +61,8 @@ class ScreenMarkerPanel extends JPanel
 	private static final int DEFAULT_FILL_OPACITY = 75;
 
 	private static final Border NAME_BOTTOM_BORDER = new CompoundBorder(
-			BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
-			BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
+		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
+		BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
 
 	private static final ImageIcon BORDER_COLOR_ICON;
 	private static final ImageIcon BORDER_COLOR_HOVER_ICON;
@@ -86,6 +86,26 @@ class ScreenMarkerPanel extends JPanel
 
 	private static final ImageIcon DELETE_ICON;
 	private static final ImageIcon DELETE_HOVER_ICON;
+
+	private final ScreenMarkerPlugin plugin;
+	private final ScreenMarkerOverlay marker;
+
+	private final JLabel borderColorIndicator = new JLabel();
+	private final JLabel fillColorIndicator = new JLabel();
+	private final JLabel labelIndicator = new JLabel();
+	private final JLabel visibilityLabel = new JLabel();
+	private final JLabel deleteLabel = new JLabel();
+
+	private final FlatTextField nameInput = new FlatTextField();
+	private final JLabel save = new JLabel("Save");
+	private final JLabel cancel = new JLabel("Cancel");
+	private final JLabel rename = new JLabel("Rename");
+
+	private final SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
+	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
+
+	private boolean visible;
+	private boolean showLabel;
 
 	static
 	{
@@ -125,22 +145,6 @@ class ScreenMarkerPanel extends JPanel
 		DELETE_ICON = new ImageIcon(deleteImg);
 		DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
 	}
-
-	private final ScreenMarkerPlugin plugin;
-	private final ScreenMarkerOverlay marker;
-	private final JLabel borderColorIndicator = new JLabel();
-	private final JLabel fillColorIndicator = new JLabel();
-	private final JLabel labelIndicator = new JLabel();
-	private final JLabel visibilityLabel = new JLabel();
-	private final JLabel deleteLabel = new JLabel();
-	private final FlatTextField nameInput = new FlatTextField();
-	private final JLabel save = new JLabel("Save");
-	private final JLabel cancel = new JLabel("Cancel");
-	private final JLabel rename = new JLabel("Rename");
-	private final SpinnerModel spinnerModel = new SpinnerNumberModel(5, 0, Integer.MAX_VALUE, 1);
-	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
-	private boolean visible;
-	private boolean showLabel;
 
 	ScreenMarkerPanel(ScreenMarkerPlugin plugin, ScreenMarkerOverlay marker)
 	{
@@ -251,7 +255,8 @@ class ScreenMarkerPanel extends JPanel
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					save();
-				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 				{
 					cancel();
 				}
@@ -389,8 +394,8 @@ class ScreenMarkerPanel extends JPanel
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				int confirm = JOptionPane.showConfirmDialog(ScreenMarkerPanel.this,
-						"Are you sure you want to permanently delete this screen marker?",
-						"Warning", JOptionPane.OK_CANCEL_OPTION);
+					"Are you sure you want to permanently delete this screen marker?",
+					"Warning", JOptionPane.OK_CANCEL_OPTION);
 
 				if (confirm == 0)
 				{
@@ -514,7 +519,8 @@ class ScreenMarkerPanel extends JPanel
 		if (isFullyTransparent)
 		{
 			fillColorIndicator.setBorder(null);
-		} else
+		}
+		else
 		{
 			Color color = marker.getMarker().getFill();
 			Color fullColor = new Color(color.getRed(), color.getGreen(), color.getBlue());
@@ -529,7 +535,8 @@ class ScreenMarkerPanel extends JPanel
 		if (marker.getMarker().getBorderThickness() == 0)
 		{
 			borderColorIndicator.setBorder(null);
-		} else
+		}
+		else
 		{
 			Color color = marker.getMarker().getColor();
 			borderColorIndicator.setBorder(new MatteBorder(0, 0, 3, 0, color));
@@ -542,10 +549,10 @@ class ScreenMarkerPanel extends JPanel
 	{
 		final Color fillColor = marker.getMarker().getFill();
 		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
-				SwingUtilities.windowForComponent(this),
-				fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
-				marker.getMarker().getName() + " Fill",
-				false);
+			SwingUtilities.windowForComponent(this),
+			fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
+			marker.getMarker().getName() + " Fill",
+			false);
 		colorPicker.setLocationRelativeTo(this);
 		colorPicker.setOnColorChange(c ->
 		{
@@ -559,10 +566,10 @@ class ScreenMarkerPanel extends JPanel
 	private void openBorderColorPicker()
 	{
 		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
-				SwingUtilities.windowForComponent(this),
-				marker.getMarker().getColor(),
-				marker.getMarker().getName() + " Border",
-				false);
+			SwingUtilities.windowForComponent(this),
+			marker.getMarker().getColor(),
+			marker.getMarker().getName() + " Border",
+			false);
 		colorPicker.setLocationRelativeTo(this);
 		colorPicker.setOnColorChange(c ->
 		{

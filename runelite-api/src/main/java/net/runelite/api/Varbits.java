@@ -761,7 +761,7 @@ public final class Varbits
 
 	/**
 	 * Combat Achievement tier completion variables
-	 * <p>
+	 *
 	 * 2 = completed
 	 */
 	public static final int COMBAT_ACHIEVEMENT_TIER_EASY = 12863;

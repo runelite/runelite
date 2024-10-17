@@ -80,6 +80,11 @@ public class ExternalPluginManager
 {
 	private static final String PLUGIN_LIST_KEY = "externalPlugins";
 	private static Class<? extends Plugin>[] builtinExternals = null;
+
+	@Inject
+	@Named("safeMode")
+	private boolean safeMode;
+
 	private final ConfigManager configManager;
 	private final ExternalPluginClient externalPluginClient;
 	private final ScheduledExecutorService executor;
@@ -87,19 +92,16 @@ public class ExternalPluginManager
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
 	private final Gson gson;
-	@Inject
-	@Named("safeMode")
-	private boolean safeMode;
 
 	@Inject
 	private ExternalPluginManager(
-			ConfigManager configManager,
-			ExternalPluginClient externalPluginClient,
-			ScheduledExecutorService executor,
-			PluginManager pluginManager,
-			EventBus eventBus,
-			OkHttpClient okHttpClient,
-			Gson gson
+		ConfigManager configManager,
+		ExternalPluginClient externalPluginClient,
+		ScheduledExecutorService executor,
+		PluginManager pluginManager,
+		EventBus eventBus,
+		OkHttpClient okHttpClient,
+		Gson gson
 	)
 	{
 		this.configManager = configManager;
@@ -111,50 +113,7 @@ public class ExternalPluginManager
 		this.gson = gson;
 
 		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
-				new Random().nextInt(60), 180, TimeUnit.MINUTES);
-	}
-
-	@Nullable
-	public static PluginHubManifest.JarData getJarData(Class<? extends Plugin> plugin)
-	{
-		ClassLoader cl = plugin.getClassLoader();
-		if (cl instanceof PluginHubClassLoader)
-		{
-			PluginHubClassLoader ecl = (PluginHubClassLoader) cl;
-			return ecl.getJarData();
-		}
-		return null;
-	}
-
-	@Nullable
-	public static PluginHubManifest.DisplayData getDisplayData(Class<? extends Plugin> plugin)
-	{
-		ClassLoader cl = plugin.getClassLoader();
-		if (cl instanceof PluginHubClassLoader)
-		{
-			PluginHubClassLoader ecl = (PluginHubClassLoader) cl;
-			return ecl.getStub();
-		}
-		return null;
-	}
-
-	@Nullable
-	public static String getInternalName(Class<? extends Plugin> plugin)
-	{
-		PluginHubManifest.JarData jd = getJarData(plugin);
-		return jd == null ? null : jd.getInternalName();
-	}
-
-	public static void loadBuiltin(Class<? extends Plugin>... plugins)
-	{
-		boolean assertsEnabled = false;
-		assert (assertsEnabled = true);
-		if (!assertsEnabled)
-		{
-			throw new RuntimeException("Assertions are not enabled, add '-ea' to your VM options. Enabling assertions during development catches undefined behavior and incorrect API usage.");
-		}
-
-		builtinExternals = plugins;
+			new Random().nextInt(60), 180, TimeUnit.MINUTES);
 	}
 
 	public void loadExternalPlugins() throws PluginInstantiationException
@@ -169,8 +128,8 @@ public class ExternalPluginManager
 	}
 
 	@Subscribe(
-			// run before PluginManager to avoid it starting plugins which we are about to uninstall
-			priority = 1
+		// run before PluginManager to avoid it starting plugins which we are about to uninstall
+		priority = 1
 	)
 	public void onProfileChanged(ProfileChanged profileChanged)
 	{
@@ -232,7 +191,7 @@ public class ExternalPluginManager
 			{
 				PluginHubManifest.ManifestLite manifest = externalPluginClient.downloadManifestLite();
 				Map<String, PluginHubManifest.JarData> manifests = manifest.getJars()
-						.stream().collect(ImmutableMap.toImmutableMap(PluginHubManifest.JarData::getInternalName, Function.identity()));
+					.stream().collect(ImmutableMap.toImmutableMap(PluginHubManifest.JarData::getInternalName, Function.identity()));
 
 				Set<PluginHubManifest.JarData> needsDownload = new HashSet<>();
 				Set<File> keep = new HashSet<>();
@@ -248,7 +207,8 @@ public class ExternalPluginManager
 						if (!jarData.isValid())
 						{
 							needsDownload.add(jarData);
-						} else
+						}
+						else
 						{
 							keep.add(jarData.getJarFile());
 						}
@@ -280,22 +240,24 @@ public class ExternalPluginManager
 						int fdownloaded = downloaded;
 						downloaded += jarData.getJarSize();
 						HashingInputStream his = new HashingInputStream(Hashing.sha256(),
-								new CountingInputStream(res.body().byteStream(), i ->
-										SplashScreen.stage(splashStart + (splashLength * .2), splashStart + (splashLength * .8),
-												null, "Downloading " + jarData.getDisplayName(),
-												i + fdownloaded, toDownload, true)));
+							new CountingInputStream(res.body().byteStream(), i ->
+								SplashScreen.stage(splashStart + (splashLength * .2), splashStart + (splashLength * .8),
+									null, "Downloading " + jarData.getDisplayName(),
+									i + fdownloaded, toDownload, true)));
 						Files.asByteSink(jarData.getJarFile()).writeFrom(his);
 						if (!PluginHubManifest.HASH_ENCODER.encodeToString(his.hash().asBytes()).equals(jarData.getJarHash()))
 						{
 							throw new VerificationException("Plugin " + jarData.getInternalName() + " didn't match its hash");
 						}
-					} catch (IOException | VerificationException e)
+					}
+					catch (IOException | VerificationException e)
 					{
 						externalPlugins.remove(jarData);
 						log.error("Unable to download external plugin \"{}\"", jarData.getInternalName(), e);
 					}
 				}
-			} catch (IOException | VerificationException e)
+			}
+			catch (IOException | VerificationException e)
 			{
 				log.error("Unable to download external plugins", e);
 				return;
@@ -325,12 +287,14 @@ public class ExternalPluginManager
 						try
 						{
 							pluginManager.stopPlugin(p);
-						} catch (Exception e)
+						}
+						catch (Exception e)
 						{
 							throw new RuntimeException(e);
 						}
 					});
-				} catch (InterruptedException | InvocationTargetException e)
+				}
+				catch (InterruptedException | InvocationTargetException e)
 				{
 					log.warn("Unable to stop external plugin \"{}\"", p.getClass().getName(), e);
 				}
@@ -351,7 +315,7 @@ public class ExternalPluginManager
 				List<Plugin> newPlugins = null;
 				try
 				{
-					PluginHubClassLoader cl = new PluginHubClassLoader(jarData, new URL[] {jarData.getJarFile().toURI().toURL()}, gson);
+					PluginHubClassLoader cl = new PluginHubClassLoader(jarData, new URL[]{jarData.getJarFile().toURI().toURL()}, gson);
 					if (Arrays.stream(cl.getStub().getPlugins()).anyMatch(builtinExternalClasses::contains))
 					{
 						log.debug("Skipping loading \"{}\" from hub as a conflicting builtin external is present", jarData.getInternalName());
@@ -377,16 +341,19 @@ public class ExternalPluginManager
 								{
 									pluginManager.startPlugin(p);
 								}
-							} catch (PluginInstantiationException e)
+							}
+							catch (PluginInstantiationException e)
 							{
 								throw new RuntimeException(e);
 							}
 						});
 					}
-				} catch (ThreadDeath e)
+				}
+				catch (ThreadDeath e)
 				{
 					throw e;
-				} catch (Throwable e)
+				}
+				catch (Throwable e)
 				{
 					log.warn("Unable to start or load external plugin \"{}\"", jarData.getInternalName(), e);
 					if (newPlugins != null)
@@ -400,12 +367,14 @@ public class ExternalPluginManager
 									try
 									{
 										pluginManager.stopPlugin(p);
-									} catch (Exception e2)
+									}
+									catch (Exception e2)
 									{
 										throw new RuntimeException(e2);
 									}
 								});
-							} catch (InterruptedException | InvocationTargetException e2)
+							}
+							catch (InterruptedException | InvocationTargetException e2)
 							{
 								log.info("Unable to fully stop plugin \"{}\"", jarData.getInternalName(), e2);
 							}
@@ -419,7 +388,8 @@ public class ExternalPluginManager
 			{
 				eventBus.post(new ExternalPluginsChanged());
 			}
-		} finally
+		}
+		finally
 		{
 			if (!startup)
 			{
@@ -457,5 +427,48 @@ public class ExternalPluginManager
 	public void update()
 	{
 		executor.submit(this::refreshPlugins);
+	}
+
+	@Nullable
+	public static PluginHubManifest.JarData getJarData(Class<? extends Plugin> plugin)
+	{
+		ClassLoader cl = plugin.getClassLoader();
+		if (cl instanceof PluginHubClassLoader)
+		{
+			PluginHubClassLoader ecl = (PluginHubClassLoader) cl;
+			return ecl.getJarData();
+		}
+		return null;
+	}
+
+	@Nullable
+	public static PluginHubManifest.DisplayData getDisplayData(Class<? extends Plugin> plugin)
+	{
+		ClassLoader cl = plugin.getClassLoader();
+		if (cl instanceof PluginHubClassLoader)
+		{
+			PluginHubClassLoader ecl = (PluginHubClassLoader) cl;
+			return ecl.getStub();
+		}
+		return null;
+	}
+
+	@Nullable
+	public static String getInternalName(Class<? extends Plugin> plugin)
+	{
+		PluginHubManifest.JarData jd = getJarData(plugin);
+		return jd == null ? null : jd.getInternalName();
+	}
+
+	public static void loadBuiltin(Class<? extends Plugin>... plugins)
+	{
+		boolean assertsEnabled = false;
+		assert (assertsEnabled = true);
+		if (!assertsEnabled)
+		{
+			throw new RuntimeException("Assertions are not enabled, add '-ea' to your VM options. Enabling assertions during development catches undefined behavior and incorrect API usage.");
+		}
+
+		builtinExternals = plugins;
 	}
 }

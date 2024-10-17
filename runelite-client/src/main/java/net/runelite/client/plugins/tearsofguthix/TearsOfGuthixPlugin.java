@@ -43,21 +43,25 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Tears Of Guthix",
-		description = "Show timers for the Tears Of Guthix streams",
-		tags = {"minigame", "overlay", "skilling", "timers", "tog"}
+	name = "Tears Of Guthix",
+	description = "Show timers for the Tears Of Guthix streams",
+	tags = {"minigame", "overlay", "skilling", "timers", "tog"}
 )
 public class TearsOfGuthixPlugin extends Plugin
 {
 	private static final int TOG_REGION = 12948;
-	@Getter
-	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private TearsOfGuthixOverlay overlay;
+
+	@Getter
+	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
 
 	@Provides
 	TearsOfGuthixConfig provideConfig(ConfigManager configManager)
@@ -96,9 +100,9 @@ public class TearsOfGuthixPlugin extends Plugin
 		DecorativeObject object = event.getDecorativeObject();
 
 		if (object.getId() == ObjectID.BLUE_TEARS ||
-				object.getId() == ObjectID.BLUE_TEARS_6665 ||
-				object.getId() == ObjectID.GREEN_TEARS ||
-				object.getId() == ObjectID.GREEN_TEARS_6666)
+			object.getId() == ObjectID.BLUE_TEARS_6665 ||
+			object.getId() == ObjectID.GREEN_TEARS ||
+			object.getId() == ObjectID.GREEN_TEARS_6666)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{

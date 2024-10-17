@@ -72,7 +72,8 @@ public abstract class WidgetItemOverlay extends Overlay
 				shouldClip |= itemCanvasBounds.x + itemCanvasBounds.width >= parentBounds.x + parentBounds.width;
 				shouldClip |= itemCanvasBounds.y < parentBounds.y;
 				shouldClip |= itemCanvasBounds.y + itemCanvasBounds.height >= parentBounds.y + parentBounds.height;
-			} else
+			}
+			else
 			{
 				// Otherwise, we only need to clip the overlay if it intersects the parent bounds,
 				// since items completely outside of the parent bounds are not drawn
@@ -88,7 +89,8 @@ public abstract class WidgetItemOverlay extends Overlay
 					graphics.setClip(parentBounds);
 					curClipParent = parent;
 				}
-			} else if (curClipParent != null && curClipParent != parent)
+			}
+			else if (curClipParent != null && curClipParent != parent)
 			{
 				graphics.setClip(originalClipBounds);
 				curClipParent = null;
@@ -102,17 +104,17 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected void showOnInventory()
 	{
 		showOnInterfaces(
-				InterfaceID.DEPOSIT_BOX,
-				InterfaceID.BANK_INVENTORY,
-				InterfaceID.SHOP_INVENTORY,
-				InterfaceID.GRAND_EXCHANGE_INVENTORY,
-				InterfaceID.GUIDE_PRICES_INVENTORY,
-				InterfaceID.EQUIPMENT_INVENTORY,
-				InterfaceID.INVENTORY,
-				InterfaceID.SEED_VAULT_INVENTORY,
-				InterfaceID.TRADE,
-				InterfaceID.TRADE_INVENTORY,
-				InterfaceID.POH_TREASURE_CHEST_INV);
+			InterfaceID.DEPOSIT_BOX,
+			InterfaceID.BANK_INVENTORY,
+			InterfaceID.SHOP_INVENTORY,
+			InterfaceID.GRAND_EXCHANGE_INVENTORY,
+			InterfaceID.GUIDE_PRICES_INVENTORY,
+			InterfaceID.EQUIPMENT_INVENTORY,
+			InterfaceID.INVENTORY,
+			InterfaceID.SEED_VAULT_INVENTORY,
+			InterfaceID.TRADE,
+			InterfaceID.TRADE_INVENTORY,
+			InterfaceID.POH_TREASURE_CHEST_INV);
 	}
 
 	protected void showOnBank()

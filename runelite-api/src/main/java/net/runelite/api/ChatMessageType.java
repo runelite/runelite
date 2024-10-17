@@ -41,8 +41,8 @@ public enum ChatMessageType
 	 */
 	GAMEMESSAGE(0),
 	/**
-	 * A message in the public chat from a moderator
-	 */
+ 	* A message in the public chat from a moderator
+ 	*/
 	MODCHAT(1),
 	/**
 	 * A message in the public chat.
@@ -198,6 +198,8 @@ public enum ChatMessageType
 	 */
 	UNKNOWN(-1);
 
+	private final int type;
+
 	private static final Map<Integer, ChatMessageType> CHAT_MESSAGE_TYPES = new HashMap<>();
 
 	static
@@ -210,8 +212,6 @@ public enum ChatMessageType
 			}
 		}
 	}
-
-	private final int type;
 
 	/**
 	 * Utility method that maps the type value to its respective

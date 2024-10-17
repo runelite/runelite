@@ -68,8 +68,9 @@ class PotionStorage
 	private final BankTagsPlugin plugin;
 	private final ItemManager itemManager;
 	private final BankSearch bankSearch;
-	boolean cachePotions;
+
 	private Potion[] potions;
+	boolean cachePotions;
 	private boolean layout;
 	private Set<Integer> potionStoreVars;
 
@@ -132,7 +133,7 @@ class PotionStorage
 		var potionStoreUnfinishedPotions = client.getEnum(EnumID.POTIONSTORE_UNFINISHED_POTIONS);
 		potions = new Potion[potionStorePotions.size() + potionStoreUnfinishedPotions.size()];
 		int potionsIdx = 0;
-		for (EnumComposition e : new EnumComposition[] {potionStorePotions, potionStoreUnfinishedPotions})
+		for (EnumComposition e : new EnumComposition[]{potionStorePotions, potionStoreUnfinishedPotions})
 		{
 			for (int potionEnumId : e.getIntVals())
 			{

@@ -43,7 +43,8 @@ public class CaveNightshade extends StatBoost
 		if (currentHP < 20)
 		{
 			return -currentHP / 2;
-		} else
+		}
+		else
 		{
 			return -15;
 		}

@@ -101,6 +101,8 @@ enum Emoji
 
 	private static final Map<String, Emoji> emojiMap;
 
+	private final String trigger;
+
 	static
 	{
 		ImmutableMap.Builder<String, Emoji> builder = new ImmutableMap.Builder<>();
@@ -113,20 +115,18 @@ enum Emoji
 		emojiMap = builder.build();
 	}
 
-	private final String trigger;
-
 	Emoji(String trigger)
 	{
 		this.trigger = trigger;
 	}
 
-	static Emoji getEmoji(String trigger)
-	{
-		return emojiMap.get(trigger);
-	}
-
 	BufferedImage loadImage()
 	{
 		return ImageUtil.loadImageResource(getClass(), this.name().toLowerCase() + ".png");
+	}
+
+	static Emoji getEmoji(String trigger)
+	{
+		return emojiMap.get(trigger);
 	}
 }

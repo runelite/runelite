@@ -34,17 +34,17 @@ import net.runelite.client.config.ConfigSection;
 public interface ItemIdentificationConfig extends Config
 {
 	@ConfigSection(
-			name = "Categories",
-			description = "The categories of items to identify",
-			position = 99
+		name = "Categories",
+		description = "The categories of items to identify",
+		position = 99
 	)
 	String identificationSection = "identification";
 
 	@ConfigItem(
-			keyName = "identificationType",
-			name = "Identification Type",
-			position = -4,
-			description = "How much to show of the item name"
+		keyName = "identificationType",
+		name = "Identification Type",
+		position = -4,
+		description = "How much to show of the item name"
 	)
 	default ItemIdentificationMode identificationType()
 	{
@@ -52,10 +52,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "textColor",
-			name = "Color",
-			position = -3,
-			description = "The colour of the identification text"
+		keyName = "textColor",
+		name = "Color",
+		position = -3,
+		description = "The colour of the identification text"
 	)
 	default Color textColor()
 	{
@@ -63,10 +63,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showHerbSeeds",
-			name = "Seeds (Herb)",
-			description = "Show identification on Herb Seeds",
-			section = identificationSection
+		keyName = "showHerbSeeds",
+		name = "Seeds (Herb)",
+		description = "Show identification on Herb Seeds",
+		section = identificationSection
 	)
 	default boolean showHerbSeeds()
 	{
@@ -74,10 +74,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showAllotmentSeeds",
-			name = "Seeds (Allotment)",
-			description = "Show identification on Allotment Seeds",
-			section = identificationSection
+		keyName = "showAllotmentSeeds",
+		name = "Seeds (Allotment)",
+		description = "Show identification on Allotment Seeds",
+		section = identificationSection
 	)
 	default boolean showAllotmentSeeds()
 	{
@@ -85,10 +85,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showFlowerSeeds",
-			name = "Seeds (Flower)",
-			description = "Show identification on Flower Seeds",
-			section = identificationSection
+		keyName = "showFlowerSeeds",
+		name = "Seeds (Flower)",
+		description = "Show identification on Flower Seeds",
+		section = identificationSection
 	)
 	default boolean showFlowerSeeds()
 	{
@@ -96,10 +96,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showFruitTreeSeeds",
-			name = "Seeds (Fruit Tree)",
-			description = "Show identification on Fruit Tree Seeds",
-			section = identificationSection
+		keyName = "showFruitTreeSeeds",
+		name = "Seeds (Fruit Tree)",
+		description = "Show identification on Fruit Tree Seeds",
+		section = identificationSection
 	)
 	default boolean showFruitTreeSeeds()
 	{
@@ -107,10 +107,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showTreeSeeds",
-			name = "Seeds (Tree)",
-			description = "Show identification on Tree Seeds",
-			section = identificationSection
+		keyName = "showTreeSeeds",
+		name = "Seeds (Tree)",
+		description = "Show identification on Tree Seeds",
+		section = identificationSection
 	)
 	default boolean showTreeSeeds()
 	{
@@ -118,10 +118,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showSpecialSeeds",
-			name = "Seeds (Special)",
-			description = "Show identification on Special Seeds",
-			section = identificationSection
+		keyName = "showSpecialSeeds",
+		name = "Seeds (Special)",
+		description = "Show identification on Special Seeds",
+		section = identificationSection
 	)
 	default boolean showSpecialSeeds()
 	{
@@ -129,10 +129,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showBerrySeeds",
-			name = "Seeds (Berry)",
-			description = "Show identification on Berry Seeds",
-			section = identificationSection
+		keyName = "showBerrySeeds",
+		name = "Seeds (Berry)",
+		description = "Show identification on Berry Seeds",
+		section = identificationSection
 	)
 	default boolean showBerrySeeds()
 	{
@@ -140,10 +140,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showHopSeeds",
-			name = "Seeds (Hops)",
-			description = "Show identification on Hops Seeds",
-			section = identificationSection
+		keyName = "showHopSeeds",
+		name = "Seeds (Hops)",
+		description = "Show identification on Hops Seeds",
+		section = identificationSection
 	)
 	default boolean showHopsSeeds()
 	{
@@ -151,10 +151,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showSacks",
-			name = "Sacks",
-			description = "Show identification on Sacks",
-			section = identificationSection
+		keyName = "showSacks",
+		name = "Sacks",
+		description = "Show identification on Sacks",
+		section = identificationSection
 	)
 	default boolean showSacks()
 	{
@@ -162,10 +162,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showHerbs",
-			name = "Herbs",
-			description = "Show identification on Herbs",
-			section = identificationSection
+		keyName = "showHerbs",
+		name = "Herbs",
+		description = "Show identification on Herbs",
+		section = identificationSection
 	)
 	default boolean showHerbs()
 	{
@@ -173,10 +173,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showLogs",
-			name = "Logs",
-			description = "Show identification on Logs",
-			section = identificationSection
+		keyName = "showLogs",
+		name = "Logs",
+		description = "Show identification on Logs",
+		section = identificationSection
 	)
 	default boolean showLogs()
 	{
@@ -184,10 +184,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showPyreLogs",
-			name = "Logs (Pyre)",
-			description = "Show identification on Pyre Logs",
-			section = identificationSection
+		keyName = "showPyreLogs",
+		name = "Logs (Pyre)",
+		description = "Show identification on Pyre Logs",
+		section = identificationSection
 	)
 	default boolean showPyreLogs()
 	{
@@ -195,10 +195,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showPlanks",
-			name = "Planks",
-			description = "Show identification on Planks",
-			section = identificationSection
+		keyName = "showPlanks",
+		name = "Planks",
+		description = "Show identification on Planks",
+		section = identificationSection
 	)
 	default boolean showPlanks()
 	{
@@ -206,10 +206,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showSaplings",
-			name = "Saplings",
-			description = "Show identification on Saplings and Seedlings",
-			section = identificationSection
+		keyName = "showSaplings",
+		name = "Saplings",
+		description = "Show identification on Saplings and Seedlings",
+		section = identificationSection
 	)
 	default boolean showSaplings()
 	{
@@ -217,10 +217,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showComposts",
-			name = "Composts",
-			description = "Show identification on Composts",
-			section = identificationSection
+		keyName = "showComposts",
+		name = "Composts",
+		description = "Show identification on Composts",
+		section = identificationSection
 	)
 	default boolean showComposts()
 	{
@@ -228,10 +228,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showOres",
-			name = "Ores",
-			description = "Show identification on Ores",
-			section = identificationSection
+		keyName = "showOres",
+		name = "Ores",
+		description = "Show identification on Ores",
+		section = identificationSection
 	)
 	default boolean showOres()
 	{
@@ -239,10 +239,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showBars",
-			name = "Bars",
-			description = "Show identification on Bars",
-			section = identificationSection
+		keyName = "showBars",
+		name = "Bars",
+		description = "Show identification on Bars",
+		section = identificationSection
 	)
 	default boolean showBars()
 	{
@@ -250,10 +250,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showGems",
-			name = "Gems",
-			description = "Show identification on Gems",
-			section = identificationSection
+		keyName = "showGems",
+		name = "Gems",
+		description = "Show identification on Gems",
+		section = identificationSection
 	)
 	default boolean showGems()
 	{
@@ -261,10 +261,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showPotions",
-			name = "Potions",
-			description = "Show identification on Potions",
-			section = identificationSection
+		keyName = "showPotions",
+		name = "Potions",
+		description = "Show identification on Potions",
+		section = identificationSection
 	)
 	default boolean showPotions()
 	{
@@ -272,10 +272,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showImplingJars",
-			name = "Impling jars",
-			description = "Show identification on Impling jars",
-			section = identificationSection
+		keyName = "showImplingJars",
+		name = "Impling jars",
+		description = "Show identification on Impling jars",
+		section = identificationSection
 	)
 	default boolean showImplingJars()
 	{
@@ -283,10 +283,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showTablets",
-			name = "Tablets",
-			description = "Show identification on Tablets",
-			section = identificationSection
+		keyName = "showTablets",
+		name = "Tablets",
+		description = "Show identification on Tablets",
+		section = identificationSection
 	)
 	default boolean showTablets()
 	{
@@ -294,10 +294,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showTeleportScrolls",
-			name = "Teleport Scrolls",
-			description = "Show identification on teleport scrolls",
-			section = identificationSection
+		keyName = "showTeleportScrolls",
+		name = "Teleport Scrolls",
+		description = "Show identification on teleport scrolls",
+		section = identificationSection
 	)
 	default boolean showTeleportScrolls()
 	{
@@ -305,10 +305,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showJewellery",
-			name = "Jewellery (Unenchanted)",
-			description = "Show identification on unenchanted jewellery",
-			section = identificationSection
+		keyName = "showJewellery",
+		name = "Jewellery (Unenchanted)",
+		description = "Show identification on unenchanted jewellery",
+		section = identificationSection
 	)
 	default boolean showJewellery()
 	{
@@ -316,10 +316,10 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showEnchantedJewellery",
-			name = "Jewellery (Enchanted)",
-			description = "Show identification on enchanted jewellery",
-			section = identificationSection
+		keyName = "showEnchantedJewellery",
+		name = "Jewellery (Enchanted)",
+		description = "Show identification on enchanted jewellery",
+		section = identificationSection
 	)
 	default boolean showEnchantedJewellery()
 	{

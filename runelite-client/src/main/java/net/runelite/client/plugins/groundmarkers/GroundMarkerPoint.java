@@ -34,7 +34,7 @@ import lombok.Value;
  * Used for serialization of ground marker points.
  */
 @Value
-@EqualsAndHashCode(exclude = {"color", "label"})
+@EqualsAndHashCode(exclude = { "color", "label" })
 class GroundMarkerPoint
 {
 	private int regionId;

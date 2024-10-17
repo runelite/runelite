@@ -25,65 +25,9 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.api.Item;
-import static net.runelite.api.ItemID.AHRIMS_HOOD;
-import static net.runelite.api.ItemID.AHRIMS_HOOD_50;
-import static net.runelite.api.ItemID.AHRIMS_ROBESKIRT;
-import static net.runelite.api.ItemID.AHRIMS_ROBESKIRT_50;
-import static net.runelite.api.ItemID.AHRIMS_ROBETOP;
-import static net.runelite.api.ItemID.AHRIMS_ROBETOP_50;
-import static net.runelite.api.ItemID.AHRIMS_STAFF;
-import static net.runelite.api.ItemID.AHRIMS_STAFF_50;
-import static net.runelite.api.ItemID.COMBAT_BRACELET;
-import static net.runelite.api.ItemID.COMBAT_BRACELET1;
-import static net.runelite.api.ItemID.COMBAT_BRACELET2;
-import static net.runelite.api.ItemID.COMBAT_BRACELET3;
-import static net.runelite.api.ItemID.COMBAT_BRACELET4;
-import static net.runelite.api.ItemID.COMBAT_BRACELET5;
-import static net.runelite.api.ItemID.COMBAT_BRACELET6;
-import static net.runelite.api.ItemID.DHAROKS_GREATAXE;
-import static net.runelite.api.ItemID.DHAROKS_GREATAXE_50;
-import static net.runelite.api.ItemID.DHAROKS_HELM;
-import static net.runelite.api.ItemID.DHAROKS_HELM_50;
-import static net.runelite.api.ItemID.DHAROKS_PLATEBODY;
-import static net.runelite.api.ItemID.DHAROKS_PLATEBODY_50;
-import static net.runelite.api.ItemID.DHAROKS_PLATELEGS;
-import static net.runelite.api.ItemID.DHAROKS_PLATELEGS_50;
-import static net.runelite.api.ItemID.GUTHANS_CHAINSKIRT;
-import static net.runelite.api.ItemID.GUTHANS_CHAINSKIRT_50;
-import static net.runelite.api.ItemID.GUTHANS_HELM;
-import static net.runelite.api.ItemID.GUTHANS_HELM_50;
-import static net.runelite.api.ItemID.GUTHANS_PLATEBODY;
-import static net.runelite.api.ItemID.GUTHANS_PLATEBODY_50;
-import static net.runelite.api.ItemID.GUTHANS_WARSPEAR;
-import static net.runelite.api.ItemID.GUTHANS_WARSPEAR_50;
-import static net.runelite.api.ItemID.KARILS_COIF;
-import static net.runelite.api.ItemID.KARILS_COIF_50;
-import static net.runelite.api.ItemID.KARILS_CROSSBOW;
-import static net.runelite.api.ItemID.KARILS_CROSSBOW_50;
-import static net.runelite.api.ItemID.KARILS_LEATHERSKIRT;
-import static net.runelite.api.ItemID.KARILS_LEATHERSKIRT_50;
-import static net.runelite.api.ItemID.KARILS_LEATHERTOP;
-import static net.runelite.api.ItemID.KARILS_LEATHERTOP_50;
-import static net.runelite.api.ItemID.TORAGS_HAMMERS;
-import static net.runelite.api.ItemID.TORAGS_HAMMERS_50;
-import static net.runelite.api.ItemID.TORAGS_HELM;
-import static net.runelite.api.ItemID.TORAGS_HELM_50;
-import static net.runelite.api.ItemID.TORAGS_PLATEBODY;
-import static net.runelite.api.ItemID.TORAGS_PLATEBODY_50;
-import static net.runelite.api.ItemID.TORAGS_PLATELEGS;
-import static net.runelite.api.ItemID.TORAGS_PLATELEGS_50;
-import static net.runelite.api.ItemID.VERACS_BRASSARD;
-import static net.runelite.api.ItemID.VERACS_BRASSARD_50;
-import static net.runelite.api.ItemID.VERACS_FLAIL;
-import static net.runelite.api.ItemID.VERACS_FLAIL_50;
-import static net.runelite.api.ItemID.VERACS_HELM;
-import static net.runelite.api.ItemID.VERACS_HELM_50;
-import static net.runelite.api.ItemID.VERACS_PLATESKIRT;
-import static net.runelite.api.ItemID.VERACS_PLATESKIRT_50;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static net.runelite.api.ItemID.*;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class EmoteClueTest
@@ -109,12 +53,12 @@ public class EmoteClueTest
 
 		ItemRequirement fullBarrowsSetRequirement = requirements[0];
 
-		assertTrue("Full Ahrim set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(AHRIMS_STAFF), item(AHRIMS_HOOD), item(AHRIMS_ROBETOP), item(AHRIMS_ROBESKIRT)}));
-		assertTrue("Full Dharok set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(DHAROKS_GREATAXE), item(DHAROKS_HELM), item(DHAROKS_PLATEBODY), item(DHAROKS_PLATELEGS)}));
-		assertTrue("Full Guthan set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(GUTHANS_WARSPEAR), item(GUTHANS_HELM), item(GUTHANS_PLATEBODY), item(GUTHANS_CHAINSKIRT)}));
-		assertTrue("Full Karil set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(KARILS_CROSSBOW), item(KARILS_COIF), item(KARILS_LEATHERTOP), item(KARILS_LEATHERSKIRT)}));
-		assertTrue("Full Torag set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(TORAGS_HAMMERS), item(TORAGS_HELM), item(TORAGS_PLATEBODY), item(TORAGS_PLATELEGS)}));
-		assertTrue("Full Verac set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(VERACS_FLAIL), item(VERACS_HELM), item(VERACS_BRASSARD), item(VERACS_PLATESKIRT)}));
+		assertTrue("Full Ahrim set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(AHRIMS_STAFF), item(AHRIMS_HOOD), item(AHRIMS_ROBETOP), item(AHRIMS_ROBESKIRT) }));
+		assertTrue("Full Dharok set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(DHAROKS_GREATAXE), item(DHAROKS_HELM), item(DHAROKS_PLATEBODY), item(DHAROKS_PLATELEGS) }));
+		assertTrue("Full Guthan set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(GUTHANS_WARSPEAR), item(GUTHANS_HELM), item(GUTHANS_PLATEBODY), item(GUTHANS_CHAINSKIRT) }));
+		assertTrue("Full Karil set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(KARILS_CROSSBOW), item(KARILS_COIF), item(KARILS_LEATHERTOP), item(KARILS_LEATHERSKIRT) }));
+		assertTrue("Full Torag set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS), item(TORAGS_HELM), item(TORAGS_PLATEBODY), item(TORAGS_PLATELEGS) }));
+		assertTrue("Full Verac set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL), item(VERACS_HELM), item(VERACS_BRASSARD), item(VERACS_PLATESKIRT) }));
 	}
 
 	@Test
@@ -127,12 +71,12 @@ public class EmoteClueTest
 
 		ItemRequirement fullBarrowsSetRequirement = requirements[0];
 
-		assertTrue("Full Ahrim set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(AHRIMS_STAFF_50), item(AHRIMS_HOOD_50), item(AHRIMS_ROBETOP_50), item(AHRIMS_ROBESKIRT_50)}));
-		assertTrue("Full Dharok set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(DHAROKS_GREATAXE_50), item(DHAROKS_HELM_50), item(DHAROKS_PLATEBODY_50), item(DHAROKS_PLATELEGS_50)}));
-		assertTrue("Full Guthan set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(GUTHANS_WARSPEAR_50), item(GUTHANS_HELM_50), item(GUTHANS_PLATEBODY_50), item(GUTHANS_CHAINSKIRT_50)}));
-		assertTrue("Full Karil set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(KARILS_CROSSBOW_50), item(KARILS_COIF_50), item(KARILS_LEATHERTOP_50), item(KARILS_LEATHERSKIRT_50)}));
-		assertTrue("Full Torag set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(TORAGS_HAMMERS_50), item(TORAGS_HELM_50), item(TORAGS_PLATEBODY_50), item(TORAGS_PLATELEGS_50)}));
-		assertTrue("Full Verac set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[] {item(VERACS_FLAIL_50), item(VERACS_HELM_50), item(VERACS_BRASSARD_50), item(VERACS_PLATESKIRT_50)}));
+		assertTrue("Full Ahrim set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(AHRIMS_STAFF_50), item(AHRIMS_HOOD_50), item(AHRIMS_ROBETOP_50), item(AHRIMS_ROBESKIRT_50) }));
+		assertTrue("Full Dharok set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(DHAROKS_GREATAXE_50), item(DHAROKS_HELM_50), item(DHAROKS_PLATEBODY_50), item(DHAROKS_PLATELEGS_50) }));
+		assertTrue("Full Guthan set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(GUTHANS_WARSPEAR_50), item(GUTHANS_HELM_50), item(GUTHANS_PLATEBODY_50), item(GUTHANS_CHAINSKIRT_50) }));
+		assertTrue("Full Karil set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(KARILS_CROSSBOW_50), item(KARILS_COIF_50), item(KARILS_LEATHERTOP_50), item(KARILS_LEATHERSKIRT_50) }));
+		assertTrue("Full Torag set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS_50), item(TORAGS_HELM_50), item(TORAGS_PLATEBODY_50), item(TORAGS_PLATELEGS_50) }));
+		assertTrue("Full Verac set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL_50), item(VERACS_HELM_50), item(VERACS_BRASSARD_50), item(VERACS_PLATESKIRT_50) }));
 	}
 
 	@Test

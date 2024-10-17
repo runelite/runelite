@@ -132,7 +132,8 @@ public class FlatStorage implements Storage
 							fd.setNameHash(Integer.parseInt(value.substring(vidx + 1)));
 							fileData.add(fd);
 							continue;
-						} else if (fileData != null)
+						}
+						else if (fileData != null)
 						{
 							archive.setFileData(fileData.toArray(new FileData[0]));
 							fileData = null;
@@ -164,7 +165,8 @@ public class FlatStorage implements Storage
 									idx.setNamed(Boolean.parseBoolean(value));
 									continue;
 							}
-						} else
+						}
+						else
 						{
 							switch (key)
 							{
@@ -186,7 +188,8 @@ public class FlatStorage implements Storage
 							}
 						}
 						throw new IOException("unknown key: \"" + key + "\"");
-					} catch (Exception e)
+					}
+					catch (Exception e)
 					{
 						throw new IOException("error reading flatcache at " + file + ":" + lineNo, e);
 					}

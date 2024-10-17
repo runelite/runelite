@@ -58,15 +58,27 @@ public class ReflectUtil
 			if (clazz.getClassLoader() instanceof PrivateLookupableClassLoader)
 			{
 				caller = ((PrivateLookupableClassLoader) clazz.getClassLoader()).getLookup();
-			} else
+			}
+			else
 			{
 				caller = MethodHandles.lookup();
 			}
 			return MethodHandles.privateLookupIn(clazz, caller);
-		} catch (IllegalAccessException e)
+		}
+		catch (IllegalAccessException e)
 		{
 			throw new RuntimeException(e);
 		}
+	}
+
+	public interface PrivateLookupableClassLoader
+	{
+		// define class is protected final so this needs a different name to become public
+		Class<?> defineClass0(String name, byte[] b, int off, int len) throws ClassFormatError;
+
+		MethodHandles.Lookup getLookup();
+
+		void setLookup(MethodHandles.Lookup lookup);
 	}
 
 	/**
@@ -91,9 +103,19 @@ public class ReflectUtil
 
 			// force <clinit> to run
 			clazz.getConstructor().newInstance();
-		} catch (IOException | ReflectiveOperationException e)
+		}
+		catch (IOException | ReflectiveOperationException e)
 		{
 			throw new RuntimeException("unable to install lookup helper", e);
+		}
+	}
+
+	public static class PrivateLookupHelper
+	{
+		static
+		{
+			PrivateLookupableClassLoader pcl = (PrivateLookupableClassLoader) PrivateLookupHelper.class.getClassLoader();
+			pcl.setLookup(MethodHandles.lookup());
 		}
 	}
 
@@ -132,11 +154,13 @@ public class ReflectUtil
 					uncacheAnnotations(constructor, Executable.class);
 				}
 			}
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			// this fails on newer Java versions which don't allow reflect into java.base
 			log.debug(null, ex);
-		} finally
+		}
+		finally
 		{
 			annotationClasses.clear();
 			annotationClasses = null;
@@ -179,24 +203,5 @@ public class ReflectUtil
 
 		final Object root = rootField.get(object);
 		uncacheAnnotations(root, declaredAnnotationsClazz);
-	}
-
-	public interface PrivateLookupableClassLoader
-	{
-		// define class is protected final so this needs a different name to become public
-		Class<?> defineClass0(String name, byte[] b, int off, int len) throws ClassFormatError;
-
-		MethodHandles.Lookup getLookup();
-
-		void setLookup(MethodHandles.Lookup lookup);
-	}
-
-	public static class PrivateLookupHelper
-	{
-		static
-		{
-			PrivateLookupableClassLoader pcl = (PrivateLookupableClassLoader) PrivateLookupHelper.class.getClassLoader();
-			pcl.setLookup(MethodHandles.lookup());
-		}
 	}
 }

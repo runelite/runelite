@@ -25,9 +25,9 @@
 package net.runelite.client.plugins.timetracking.clocks;
 
 import java.time.format.DateTimeParseException;
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import org.junit.Test;
 
 public class ClockPanelTest
 {
@@ -93,7 +93,8 @@ public class ClockPanelTest
 		{
 			ClockPanel.stringToSeconds(input);
 			fail("Should have thrown " + expectedException.getSimpleName());
-		} catch (Exception exception)
+		}
+		catch (Exception exception)
 		{
 			assertEquals(expectedException, exception.getClass());
 		}

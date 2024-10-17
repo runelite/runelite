@@ -39,23 +39,11 @@ public class DimmableJPanel extends JPanel
 	private Color undimmedBackground = null;
 
 	@Override
-	public Color getForeground()
-	{
-		return dimmed ? dimmedForeground : undimmedForeground;
-	}
-
-	@Override
 	public void setForeground(Color color)
 	{
 		undimmedForeground = color;
 		dimmedForeground = color.darker();
 		super.setForeground(color);
-	}
-
-	@Override
-	public Color getBackground()
-	{
-		return dimmed ? dimmedBackground : undimmedBackground;
 	}
 
 	@Override
@@ -66,11 +54,22 @@ public class DimmableJPanel extends JPanel
 		super.setBackground(color);
 	}
 
+	@Override
+	public Color getForeground()
+	{
+		return dimmed ? dimmedForeground : undimmedForeground;
+	}
+
+	@Override
+	public Color getBackground()
+	{
+		return dimmed ? dimmedBackground : undimmedBackground;
+	}
+
 	/**
 	 * Dimming sets all parts of this component with darker colors except for the central label
 	 * This is useful for showing that progress is paused
 	 * Setting dim to false will restore the original colors from before the component was dimmed.
-	 *
 	 * @param dimmed
 	 */
 	public void setDimmed(boolean dimmed)
@@ -81,7 +80,8 @@ public class DimmableJPanel extends JPanel
 		{
 			super.setBackground(dimmedBackground);
 			super.setForeground(dimmedForeground);
-		} else
+		}
+		else
 		{
 			super.setBackground(undimmedBackground);
 			super.setForeground(undimmedForeground);

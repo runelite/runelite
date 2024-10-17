@@ -60,9 +60,9 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
-		name = "Diary Requirements",
-		description = "Display level requirements in Achievement Diary interface",
-		tags = {"achievements", "tasks"}
+	name = "Diary Requirements",
+	description = "Display level requirements in Achievement Diary interface",
+	tags = {"achievements", "tasks"}
 )
 public class DiaryRequirementsPlugin extends Plugin
 {
@@ -81,11 +81,11 @@ public class DiaryRequirementsPlugin extends Plugin
 		if (event.getGroupId() == InterfaceID.ACHIEVEMENT_DIARY_SCROLL)
 		{
 			String widgetTitle = Text.removeTags(
-							client.getWidget(
-											ComponentID.ACHIEVEMENT_DIARY_SCROLL_TITLE)
-									.getText())
-					.replace(' ', '_')
-					.toUpperCase();
+				client.getWidget(
+					ComponentID.ACHIEVEMENT_DIARY_SCROLL_TITLE)
+					.getText())
+				.replace(' ', '_')
+				.toUpperCase();
 			if (widgetTitle.startsWith("ACHIEVEMENT_DIARY"))
 			{
 				showDiaryRequirements();
@@ -133,7 +133,8 @@ public class DiaryRequirementsPlugin extends Plugin
 			if (skillRequirements.get(taskBuffer + " " + rowText) != null)
 			{
 				taskBuffer = taskBuffer + " " + rowText;
-			} else
+			}
+			else
 			{
 				taskBuffer = rowText;
 			}
@@ -151,11 +152,13 @@ public class DiaryRequirementsPlugin extends Plugin
 				{
 					// Merge onto 1 line
 					newRequirements.set(i + offset, task + levelRequirement);
-				} else if (ourWidth < maxWidth)
+				}
+				else if (ourWidth < maxWidth)
 				{
 					// 2 line split
 					newRequirements.add(i + (++offset), strike + levelRequirement);
-				} else
+				}
+				else
 				{
 					// Full text layout
 					StringBuilder b = new StringBuilder();
@@ -168,7 +171,8 @@ public class DiaryRequirementsPlugin extends Plugin
 						{
 							runningWidth += wordWidth;
 							b.append(word);
-						} else
+						}
+						else
 						{
 							newRequirements.add(i + (offset++), b.toString());
 							b.delete(0, b.length());
@@ -211,8 +215,8 @@ public class DiaryRequirementsPlugin extends Plugin
 	private GenericDiaryRequirement getRequirementsForTitle(String title)
 	{
 		String diaryName = Text.removeTags(title
-				.replace(" ", "_")
-				.toUpperCase());
+			.replace(" ", "_")
+			.toUpperCase());
 
 		GenericDiaryRequirement diaryRequirementContainer;
 		switch (diaryName)

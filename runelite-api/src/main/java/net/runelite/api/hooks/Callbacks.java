@@ -95,7 +95,6 @@ public interface Callbacks
 
 	/**
 	 * Called after an interface has been drawn
-	 *
 	 * @param interfaceId the interface id
 	 * @param widgetItems Widget items within the interface
 	 */
@@ -103,8 +102,7 @@ public interface Callbacks
 
 	/**
 	 * Called after a widget layer has been drawn
-	 *
-	 * @param layer       The layer
+	 * @param layer The layer
 	 * @param widgetItems Widget items within the layer
 	 */
 	void drawLayer(Widget layer, List<WidgetItem> widgetItems);
@@ -196,16 +194,14 @@ public interface Callbacks
 
 	/**
 	 * Called to test if a renderable should be drawn this frame
-	 *
 	 * @param renderable the renderable
-	 * @param drawingUi  if this is the 2d ui, such as hp bars or hitsplats
+	 * @param drawingUi if this is the 2d ui, such as hp bars or hitsplats
 	 * @return false to prevent drawing
 	 */
 	boolean draw(Renderable renderable, boolean drawingUi);
 
 	/**
 	 * Called when a client error occurs
-	 *
 	 * @param message
 	 * @param reason
 	 */
@@ -213,7 +209,6 @@ public interface Callbacks
 
 	/**
 	 * Called when the client wants to open a URL
-	 *
 	 * @param url
 	 */
 	void openUrl(String url);

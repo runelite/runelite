@@ -39,22 +39,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Shapes<T extends Shape> implements Shape
 {
-	@Getter
-	private final List<T> shapes;
-
-	public Shapes(T... shape)
+	public Shapes(T ...shape)
 	{
 		this(Arrays.asList(shape));
 	}
+
+	@Getter
+	private final List<T> shapes;
 
 	@Override
 	public Rectangle getBounds()
 	{
 		int
-				minX = Integer.MAX_VALUE,
-				minY = Integer.MAX_VALUE,
-				maxX = Integer.MIN_VALUE,
-				maxY = Integer.MIN_VALUE;
+			minX = Integer.MAX_VALUE,
+			minY = Integer.MAX_VALUE,
+			maxX = Integer.MIN_VALUE,
+			maxY = Integer.MIN_VALUE;
 
 		for (Shape shape : shapes)
 		{
@@ -72,10 +72,10 @@ public class Shapes<T extends Shape> implements Shape
 	public Rectangle2D getBounds2D()
 	{
 		double
-				minX = Double.MAX_VALUE,
-				minY = Double.MAX_VALUE,
-				maxX = Double.MIN_VALUE,
-				maxY = Double.MIN_VALUE;
+			minX = Double.MAX_VALUE,
+			minY = Double.MAX_VALUE,
+			maxX = Double.MIN_VALUE,
+			maxY = Double.MIN_VALUE;
 
 		for (Shape shape : shapes)
 		{
@@ -129,23 +129,23 @@ public class Shapes<T extends Shape> implements Shape
 	public PathIterator getPathIterator(AffineTransform at)
 	{
 		return new ShapeIterator(shapes.stream()
-				.map(s -> s.getPathIterator(at))
-				.iterator());
+			.map(s -> s.getPathIterator(at))
+			.iterator());
 	}
 
 	@Override
 	public PathIterator getPathIterator(AffineTransform at, double flatness)
 	{
 		return new ShapeIterator(shapes.stream()
-				.map(s -> s.getPathIterator(at, flatness))
-				.iterator());
+			.map(s -> s.getPathIterator(at, flatness))
+			.iterator());
 	}
 
 	private static class ShapeIterator implements PathIterator
 	{
 		private final Iterator<PathIterator> iter;
-		private final int windingRule;
 		private PathIterator current = null;
+		private final int windingRule;
 
 		ShapeIterator(Iterator<PathIterator> iter)
 		{
@@ -155,7 +155,8 @@ public class Shapes<T extends Shape> implements Shape
 				current = iter.next();
 				windingRule = current.getWindingRule();
 				checkDone();
-			} else
+			}
+			else
 			{
 				windingRule = 0;
 			}
@@ -188,7 +189,8 @@ public class Shapes<T extends Shape> implements Shape
 				{
 					current = iter.next();
 					assert windingRule == current.getWindingRule();
-				} else
+				}
+				else
 				{
 					current = null;
 				}

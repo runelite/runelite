@@ -217,14 +217,15 @@ class DevToolsOverlay extends Overlay
 				if (transformedComposition == null)
 				{
 					color = GRAY;
-				} else
+				}
+				else
 				{
 					composition = transformedComposition;
 				}
 			}
 
 			String text = composition.getName() + " (ID:" + composition.getId() + ")" +
-					" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
+				" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
 			if (npc.getModelOverrides() != null)
 			{
 				var mo = npc.getModelOverrides();
@@ -320,9 +321,9 @@ class DevToolsOverlay extends Overlay
 			WorldPoint worldLocation = WorldPoint.fromLocalInstance(client, tileLocalLocation);
 			byte flags = client.getTileSettings()[tile.getRenderLevel()][tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
 			String tooltip = String.format("World location: %d, %d, %d</br>" +
-							"Flags: %d",
-					worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
-					flags);
+					"Flags: %d",
+				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
+				flags);
 			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
@@ -347,7 +348,8 @@ class DevToolsOverlay extends Overlay
 			if (movementFlags.isEmpty())
 			{
 				toolTipManager.add(new Tooltip("No movement flags"));
-			} else
+			}
+			else
 			{
 				movementFlags.forEach(flag -> toolTipManager.add(new Tooltip(flag.toString())));
 			}
@@ -469,7 +471,7 @@ class DevToolsOverlay extends Overlay
 
 			String infoString = "(ID: " + graphicsObject.getId() + ")";
 			Point textLocation = Perspective.getCanvasTextLocation(
-					client, graphics, lp, infoString, 0);
+				client, graphics, lp, infoString, 0);
 			if (textLocation != null)
 			{
 				OverlayUtil.renderTextLocation(graphics, textLocation, infoString, Color.WHITE);

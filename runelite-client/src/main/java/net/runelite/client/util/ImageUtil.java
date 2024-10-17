@@ -62,7 +62,7 @@ public class ImageUtil
 	 * Creates a {@link BufferedImage} from an {@link Image}.
 	 *
 	 * @param image An Image to be converted to a BufferedImage.
-	 * @return A BufferedImage instance of the same given image.
+	 * @return      A BufferedImage instance of the same given image.
 	 */
 	public static BufferedImage bufferedImageFromImage(final Image image)
 	{
@@ -109,10 +109,10 @@ public class ImageUtil
 	/**
 	 * Offsets an image's luminance by a given value.
 	 *
-	 * @param rawImg The image to be darkened or brightened.
+	 * @param rawImg  The image to be darkened or brightened.
 	 * @param offset A signed 8-bit integer value to brighten or darken the image with.
 	 *               Values above 0 will brighten, and values below 0 will darken.
-	 * @return The given image with its brightness adjusted by the given offset.
+	 * @return       The given image with its brightness adjusted by the given offset.
 	 */
 	public static BufferedImage luminanceOffset(final Image rawImg, final int offset)
 	{
@@ -135,10 +135,10 @@ public class ImageUtil
 	/**
 	 * Changes an images luminance by a scaling factor
 	 *
-	 * @param rawImg     The image to be darkened or brightened.
+	 * @param rawImg      The image to be darkened or brightened.
 	 * @param percentage The ratio to darken or brighten the given image.
 	 *                   Values above 1 will brighten, and values below 1 will darken.
-	 * @return The given image with its brightness scaled by the given percentage.
+	 * @return           The given image with its brightness scaled by the given percentage.
 	 */
 	public static BufferedImage luminanceScale(final Image rawImg, final float percentage)
 	{
@@ -161,11 +161,11 @@ public class ImageUtil
 	/**
 	 * Offsets an image's alpha component by a given offset.
 	 *
-	 * @param rawImg The image to be made more or less transparent.
+	 * @param rawImg  The image to be made more or less transparent.
 	 * @param offset A signed 8-bit integer value to modify the image's alpha component with.
 	 *               Values above 0 will increase transparency, and values below 0 will decrease
 	 *               transparency.
-	 * @return The given image with its alpha component adjusted by the given offset.
+	 * @return       The given image with its alpha component adjusted by the given offset.
 	 */
 	public static BufferedImage alphaOffset(final Image rawImg, final int offset)
 	{
@@ -183,11 +183,11 @@ public class ImageUtil
 	/**
 	 * Offsets an image's alpha component by a given percentage.
 	 *
-	 * @param rawImg     The image to be made more or less transparent.
+	 * @param rawImg      The image to be made more or less transparent.
 	 * @param percentage The ratio to modify the image's alpha component with.
 	 *                   Values above 1 will increase transparency, and values below 1 will decrease
 	 *                   transparency.
-	 * @return The given image with its alpha component scaled by the given percentage.
+	 * @return           The given image with its alpha component scaled by the given percentage.
 	 */
 	public static BufferedImage alphaOffset(final Image rawImg, final float percentage)
 	{
@@ -206,7 +206,7 @@ public class ImageUtil
 	 * Creates a grayscale image from the given image.
 	 *
 	 * @param image The source image to be converted.
-	 * @return A copy of the given imnage, with colors converted to grayscale.
+	 * @return      A copy of the given imnage, with colors converted to grayscale.
 	 */
 	public static BufferedImage grayscaleImage(final BufferedImage image)
 	{
@@ -217,8 +217,8 @@ public class ImageUtil
 	/**
 	 * Re-size a BufferedImage to the given dimensions.
 	 *
-	 * @param image     the BufferedImage.
-	 * @param newWidth  The width to set the BufferedImage to.
+	 * @param image the BufferedImage.
+	 * @param newWidth The width to set the BufferedImage to.
 	 * @param newHeight The height to set the BufferedImage to.
 	 * @return The BufferedImage with the specified dimensions
 	 */
@@ -230,12 +230,12 @@ public class ImageUtil
 	/**
 	 * Re-size a BufferedImage to the given dimensions.
 	 *
-	 * @param image               the BufferedImage.
-	 * @param newWidth            The width to set the BufferedImage to.
-	 * @param newHeight           The height to set the BufferedImage to.
+	 * @param image the BufferedImage.
+	 * @param newWidth The width to set the BufferedImage to.
+	 * @param newHeight The height to set the BufferedImage to.
 	 * @param preserveAspectRatio Whether to preserve the original image's aspect ratio. When {@code true}, the image
-	 *                            will be scaled to have a maximum of {@code newWidth} width and {@code newHeight}
-	 *                            height.
+	 *                               will be scaled to have a maximum of {@code newWidth} width and {@code newHeight}
+	 *                               height.
 	 * @return The BufferedImage with the specified dimensions
 	 */
 	public static BufferedImage resizeImage(final BufferedImage image, final int newWidth, final int newHeight, final boolean preserveAspectRatio)
@@ -246,11 +246,13 @@ public class ImageUtil
 			if (image.getWidth() > image.getHeight())
 			{
 				resized = image.getScaledInstance(newWidth, -1, Image.SCALE_SMOOTH);
-			} else
+			}
+			else
 			{
 				resized = image.getScaledInstance(-1, newHeight, Image.SCALE_SMOOTH);
 			}
-		} else
+		}
+		else
 		{
 			resized = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 		}
@@ -263,7 +265,7 @@ public class ImageUtil
 	 * @param image     The image whose canvas should be re-sized.
 	 * @param newWidth  The width to set the BufferedImage to.
 	 * @param newHeight The height to set the BufferedImage to.
-	 * @return The BufferedImage centered within canvas of given dimensions.
+	 * @return          The BufferedImage centered within canvas of given dimensions.
 	 */
 	public static BufferedImage resizeCanvas(final BufferedImage image, final int newWidth, final int newHeight)
 	{
@@ -282,7 +284,7 @@ public class ImageUtil
 	 *
 	 * @param image The image to be rotated.
 	 * @param theta The number of radians to rotate the image.
-	 * @return The given image, rotated by the given theta.
+	 * @return      The given image, rotated by the given theta.
 	 */
 	public static BufferedImage rotateImage(final BufferedImage image, final double theta)
 	{
@@ -298,7 +300,7 @@ public class ImageUtil
 	 * @param image      The image to be flipped.
 	 * @param horizontal Whether the image should be flipped horizontally.
 	 * @param vertical   Whether the image should be flipped vertically.
-	 * @return The given image, flipped horizontally and/or vertically.
+	 * @return           The given image, flipped horizontally and/or vertically.
 	 */
 	public static BufferedImage flipImage(final BufferedImage image, final boolean horizontal, final boolean vertical)
 	{
@@ -333,7 +335,7 @@ public class ImageUtil
 	 *
 	 * @param image The image to be outlined.
 	 * @param color The color to use for the outline.
-	 * @return The BufferedImage with its edges outlined with the given color.
+	 * @return      The BufferedImage with its edges outlined with the given color.
 	 */
 	public static BufferedImage outlineImage(final BufferedImage image, final Color color)
 	{
@@ -347,8 +349,8 @@ public class ImageUtil
 	 * @param image          The image to be outlined.
 	 * @param color          The color to use for the outline.
 	 * @param outlineCorners Whether to draw an outline around corners, or only around edges.
-	 * @return The BufferedImage with its edges--and optionally, corners--outlined
-	 * with the given color.
+	 * @return               The BufferedImage with its edges--and optionally, corners--outlined
+	 *                       with the given color.
 	 */
 	public static BufferedImage outlineImage(final BufferedImage image, final Color color, final Boolean outlineCorners)
 	{
@@ -361,7 +363,7 @@ public class ImageUtil
 			for (int y = -1; y <= 1; y++)
 			{
 				if ((x == 0 && y == 0)
-						|| (!outlineCorners && Math.abs(x) + Math.abs(y) != 1))
+					|| (!outlineCorners && Math.abs(x) + Math.abs(y) != 1))
 				{
 					continue;
 				}
@@ -391,7 +393,7 @@ public class ImageUtil
 	 *
 	 * @param c    The class to be referenced for the package path.
 	 * @param path The path, relative to the given class.
-	 * @return A {@link BufferedImage} of the loaded image resource from the given path.
+	 * @return     A {@link BufferedImage} of the loaded image resource from the given path.
 	 */
 	public static BufferedImage loadImageResource(final Class<?> c, final String path)
 	{
@@ -401,14 +403,16 @@ public class ImageUtil
 			{
 				return ImageIO.read(in);
 			}
-		} catch (IllegalArgumentException e)
+		}
+		catch (IllegalArgumentException e)
 		{
 			final String filePath;
 
 			if (path.startsWith("/"))
 			{
 				filePath = path;
-			} else
+			}
+			else
 			{
 				filePath = c.getPackage().getName().replace('.', '/') + "/" + path;
 			}
@@ -416,7 +420,8 @@ public class ImageUtil
 			log.warn("Failed to load image from class: {}, path: {}", c.getName(), filePath);
 
 			throw new IllegalArgumentException(path, e);
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new RuntimeException(path, e);
 		}
@@ -427,7 +432,7 @@ public class ImageUtil
 	 *
 	 * @param image The image which should have its non-transparent pixels filled.
 	 * @param color The color with which to fill pixels.
-	 * @return The given image with all non-transparent pixels set to the given color.
+	 * @return      The given image with all non-transparent pixels set to the given color.
 	 */
 	public static BufferedImage fillImage(final BufferedImage image, final Color color)
 	{
@@ -455,7 +460,7 @@ public class ImageUtil
 	 * @param image   The image to be adjusted.
 	 * @param scales  An array of scale operations to be performed on the image's color components.
 	 * @param offsets An array of offset operations to be performed on the image's color components.
-	 * @return The modified image after applying the given adjustments.
+	 * @return        The modified image after applying the given adjustments.
 	 */
 	private static BufferedImage offset(final BufferedImage image, final float[] scales, final float[] offsets)
 	{
@@ -465,10 +470,9 @@ public class ImageUtil
 
 	/**
 	 * Converts the buffered image into a sprite image and returns it
-	 *
 	 * @param image  The image to be converted
 	 * @param client Current client instance
-	 * @return The buffered image as a sprite image
+	 * @return       The buffered image as a sprite image
 	 */
 	public static SpritePixels getImageSpritePixels(BufferedImage image, Client client)
 	{
@@ -489,7 +493,8 @@ public class ImageUtil
 					pixels[i] = 0;
 				}
 			}
-		} catch (InterruptedException ex)
+		}
+		catch (InterruptedException ex)
 		{
 			log.debug("PixelGrabber was interrupted: ", ex);
 		}
@@ -499,12 +504,12 @@ public class ImageUtil
 
 	/**
 	 * Converts an image into an {@code IndexedSprite} instance.
-	 * <p>
+	 *
 	 * The passed in image can only have at max 255 different colors.
 	 *
 	 * @param image  The image to be converted
 	 * @param client Current client instance
-	 * @return The image as an {@code IndexedSprite}
+	 * @return		 The image as an {@code IndexedSprite}
 	 */
 	public static IndexedSprite getImageIndexedSprite(BufferedImage image, Client client)
 	{
@@ -517,8 +522,8 @@ public class ImageUtil
 		palette.add(0);
 
 		final int[] sourcePixels = image.getRGB(0, 0,
-				image.getWidth(), image.getHeight(),
-				null, 0, image.getWidth());
+			image.getWidth(), image.getHeight(),
+			null, 0, image.getWidth());
 
 		/*
 			Build a color palette and assign the pixels to positions in the palette.
@@ -550,7 +555,7 @@ public class ImageUtil
 		if (palette.size() > 256)
 		{
 			throw new RuntimeException("Passed in image had " + (palette.size() - 1)
-					+ " different colors, exceeding the max of 255.");
+				+ " different colors, exceeding the max of 255.");
 		}
 
 		final IndexedSprite sprite = client.createIndexedSprite();

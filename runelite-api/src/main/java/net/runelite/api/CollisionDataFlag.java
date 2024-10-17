@@ -48,9 +48,9 @@ public final class CollisionDataFlag
 	public static final int BLOCK_MOVEMENT_FLOOR_DECORATION = 0x40000;
 	public static final int BLOCK_MOVEMENT_FLOOR = 0x200000; // Eg. water
 	public static final int BLOCK_MOVEMENT_FULL =
-			BLOCK_MOVEMENT_OBJECT |
-					BLOCK_MOVEMENT_FLOOR_DECORATION |
-					BLOCK_MOVEMENT_FLOOR;
+		BLOCK_MOVEMENT_OBJECT |
+			BLOCK_MOVEMENT_FLOOR_DECORATION |
+			BLOCK_MOVEMENT_FLOOR;
 
 	/**
 	 * Directional line of sight blocking flags.

@@ -50,8 +50,8 @@ public class Geometry
 	 * @return The intersection point of the lines, or null if the lines don't intersect.
 	 */
 	public static Point2D.Float lineIntersectionPoint(
-			float x1, float y1, float x2, float y2,
-			float x3, float y3, float x4, float y4)
+		float x1, float y1, float x2, float y2,
+		float x3, float y3, float x4, float y4)
 	{
 		// https://stackoverflow.com/a/1968345
 
@@ -61,7 +61,7 @@ public class Geometry
 		float p2y = y4 - y3;
 
 		float s = (-p1y * (x1 - x3) + p1x * (y1 - y3)) / (-p2x * p1y + p1x * p2y);
-		float t = (p2x * (y1 - y3) - p2y * (x1 - x3)) / (-p2x * p1y + p1x * p2y);
+		float t = ( p2x * (y1 - y3) - p2y * (x1 - x3)) / (-p2x * p1y + p1x * p2y);
 
 		if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
 		{
@@ -78,10 +78,10 @@ public class Geometry
 	 * Find the intersection points between a Shape and a line.
 	 *
 	 * @param shape The shape.
-	 * @param x1    X coordinate of the first endpoint of the line.
-	 * @param y1    Y coordinate of the first endpoint of the line.
-	 * @param x2    X coordinate of the second endpoint of the line.
-	 * @param y2    Y coordinate of the second endpoint of the line.
+	 * @param x1 X coordinate of the first endpoint of the line.
+	 * @param y1 Y coordinate of the first endpoint of the line.
+	 * @param x2 X coordinate of the second endpoint of the line.
+	 * @param y2 Y coordinate of the second endpoint of the line.
 	 * @return A list with the intersection points.
 	 */
 	public static List<Point2D.Float> intersectionPoints(Shape shape, float x1, float y1, float x2, float y2)
@@ -101,20 +101,22 @@ public class Geometry
 				start[1] = coords[1];
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
-			} else if (type == PathIterator.SEG_LINETO)
+			}
+			else if (type == PathIterator.SEG_LINETO)
 			{
 				Point2D.Float intersection = lineIntersectionPoint(
-						prevCoords[0], prevCoords[1], coords[0], coords[1], x1, y1, x2, y2);
+					prevCoords[0], prevCoords[1], coords[0], coords[1], x1, y1, x2, y2);
 				if (intersection != null)
 				{
 					intersections.add(intersection);
 				}
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
-			} else if (type == PathIterator.SEG_CLOSE)
+			}
+			else if (type == PathIterator.SEG_CLOSE)
 			{
 				Point2D.Float intersection = lineIntersectionPoint(
-						coords[0], coords[1], start[0], start[1], x1, y1, x2, y2);
+					coords[0], coords[1], start[0], start[1], x1, y1, x2, y2);
 				if (intersection != null)
 				{
 					intersections.add(intersection);
@@ -129,7 +131,7 @@ public class Geometry
 	/**
 	 * Transforms the points in a path according to a method.
 	 *
-	 * @param it     The iterator of the path to change the points on.
+	 * @param it The iterator of the path to change the points on.
 	 * @param method The method to use to transform the points. Takes a float[2] array with x and y coordinates as parameter.
 	 * @return The transformed path.
 	 */
@@ -144,11 +146,13 @@ public class Geometry
 			{
 				method.accept(coords);
 				path.moveTo(coords[0], coords[1]);
-			} else if (type == PathIterator.SEG_LINETO)
+			}
+			else if (type == PathIterator.SEG_LINETO)
 			{
 				method.accept(coords);
 				path.lineTo(coords[0], coords[1]);
-			} else if (type == PathIterator.SEG_CLOSE)
+			}
+			else if (type == PathIterator.SEG_CLOSE)
 			{
 				path.closePath();
 			}
@@ -161,7 +165,7 @@ public class Geometry
 	/**
 	 * Transforms the points in a path according to a method.
 	 *
-	 * @param path   The path to change the points on.
+	 * @param path The path to change the points on.
 	 * @param method The method to use to transform the points. Takes a float[2] array with x and y coordinates as parameter.
 	 * @return The transformed path.
 	 */
@@ -173,23 +177,23 @@ public class Geometry
 	/**
 	 * Splits a line into smaller segments and appends the segments to a path.
 	 *
-	 * @param path          The path to append lines to.
+	 * @param path The path to append lines to.
 	 * @param segmentLength The desired length to use for the segmented lines.
-	 * @param x1            X coordinate of the first endpoint of the line.
-	 * @param y1            Y coordinate of the first endpoint of the line.
-	 * @param x2            X coordinate of the second endpoint of the line.
-	 * @param y2            Y coordinate of the second endpoint of the line.
+	 * @param x1 X coordinate of the first endpoint of the line.
+	 * @param y1 Y coordinate of the first endpoint of the line.
+	 * @param x2 X coordinate of the second endpoint of the line.
+	 * @param y2 Y coordinate of the second endpoint of the line.
 	 */
 	private static void appendSegmentLines(GeneralPath path, float segmentLength,
-										   float x1, float y1, float x2, float y2)
+		float x1, float y1, float x2, float y2)
 	{
 		float x = x1;
 		float y = y1;
-		float angle = (float) Math.atan2(y2 - y1, x2 - x1);
-		float dx = (float) Math.cos(angle) * segmentLength;
-		float dy = (float) Math.sin(angle) * segmentLength;
-		float length = (float) Math.hypot(x2 - x1, y2 - y1);
-		int steps = (int) ((length - 1e-4) / segmentLength);
+		float angle = (float)Math.atan2(y2 - y1, x2 - x1);
+		float dx = (float)Math.cos(angle) * segmentLength;
+		float dy = (float)Math.sin(angle) * segmentLength;
+		float length = (float)Math.hypot(x2 - x1, y2 - y1);
+		int steps = (int)((length - 1e-4) / segmentLength);
 		for (int i = 0; i < steps; i++)
 		{
 			x += dx;
@@ -203,7 +207,7 @@ public class Geometry
 	 * For example, calling this on a path with a line of length 6, with desired
 	 * segment length of 2, would split the path into 3 consecutive lines of length 2.
 	 *
-	 * @param it            The iterator of the path to modify.
+	 * @param it The iterator of the path to modify.
 	 * @param segmentLength The desired length to use for the segments.
 	 * @return The modified path.
 	 */
@@ -223,13 +227,15 @@ public class Geometry
 				newPath.moveTo(coords[0], coords[1]);
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
-			} else if (type == PathIterator.SEG_LINETO)
+			}
+			else if (type == PathIterator.SEG_LINETO)
 			{
 				appendSegmentLines(newPath, segmentLength, prevCoords[0], prevCoords[1], coords[0], coords[1]);
 				newPath.lineTo(coords[0], coords[1]);
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
-			} else if (type == PathIterator.SEG_CLOSE)
+			}
+			else if (type == PathIterator.SEG_CLOSE)
 			{
 				appendSegmentLines(newPath, segmentLength, coords[0], coords[1], startCoords[0], startCoords[1]);
 				newPath.closePath();
@@ -245,7 +251,7 @@ public class Geometry
 	 * For example, calling this on a path with a line of length 6, with desired
 	 * segment length of 2, would split the path into 3 consecutive lines of length 2.
 	 *
-	 * @param path          The path to modify.
+	 * @param path The path to modify.
 	 * @param segmentLength The desired length to use for the segments.
 	 * @return The modified path.
 	 */
@@ -257,7 +263,7 @@ public class Geometry
 	/**
 	 * Removes lines from a path according to a method.
 	 *
-	 * @param it     The iterator of the path to filter.
+	 * @param it The iterator of the path to filter.
 	 * @param method The method to use to decide which lines to remove. Takes two float[2] arrays with x and y coordinates of the endpoints of the line. Lines for which the predicate returns false are removed.
 	 * @return The filtered path.
 	 */
@@ -278,7 +284,8 @@ public class Geometry
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
 				shouldMoveNext = true;
-			} else if (type == PathIterator.SEG_LINETO)
+			}
+			else if (type == PathIterator.SEG_LINETO)
 			{
 				if (method.test(prevCoords, coords))
 				{
@@ -288,13 +295,15 @@ public class Geometry
 						shouldMoveNext = false;
 					}
 					newPath.lineTo(coords[0], coords[1]);
-				} else
+				}
+				else
 				{
 					shouldMoveNext = true;
 				}
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
-			} else if (type == PathIterator.SEG_CLOSE)
+			}
+			else if (type == PathIterator.SEG_CLOSE)
 			{
 				if (shouldMoveNext)
 				{
@@ -315,7 +324,7 @@ public class Geometry
 	/**
 	 * Removes lines from a path according to a method.
 	 *
-	 * @param path   The path to filter.
+	 * @param path The path to filter.
 	 * @param method The method to use to decide which lines to remove. Takes two float[2] arrays with x and y coordinates of the endpoints of the line. Lines for which the predicate returns false are removed.
 	 * @return The filtered path.
 	 */
@@ -329,7 +338,7 @@ public class Geometry
 	 * lines intersecting with the clipping area so the resulting lines
 	 * lie within the clipping area.
 	 *
-	 * @param it    The iterator of the path to clip.
+	 * @param it The iterator of the path to clip.
 	 * @param shape The clipping area to clip with.
 	 * @return The clipped path.
 	 */
@@ -358,7 +367,8 @@ public class Geometry
 				}
 				prevCoords[0] = coords[0];
 				prevCoords[1] = coords[1];
-			} else if (type == PathIterator.SEG_LINETO || type == PathIterator.SEG_CLOSE)
+			}
+			else if (type == PathIterator.SEG_LINETO || type == PathIterator.SEG_CLOSE)
 			{
 				if (type == PathIterator.SEG_CLOSE)
 				{
@@ -391,7 +401,8 @@ public class Geometry
 							shouldMove = false;
 						}
 						newPath.lineTo(intersection.getX(), intersection.getY());
-					} else
+					}
+					else
 					{
 						nextMove[0] = intersection.x;
 						nextMove[1] = intersection.y;
@@ -411,7 +422,8 @@ public class Geometry
 						shouldMove = false;
 					}
 					newPath.lineTo(coords[0], coords[1]);
-				} else
+				}
+				else
 				{
 					nextMove[0] = coords[0];
 					nextMove[1] = coords[1];
@@ -431,7 +443,7 @@ public class Geometry
 	 * lines intersecting with the clipping area so the resulting lines
 	 * lie within the clipping area.
 	 *
-	 * @param path  The path to clip.
+	 * @param path The path to clip.
 	 * @param shape The clipping area to clip with.
 	 * @return The clipped path.
 	 */

@@ -221,13 +221,14 @@ public class SimplePolygon implements Shape
 				if (p1 < 0 && p2 < 0)
 				{
 					pushRight(tx2, ty2);
-				} else if (p1 >= 0 != p2 >= 0)
+				}
+				else if (p1 >= 0 != p2 >= 0)
 				{
 					long nota = cx1 * cy2 - cy1 * cx2;
 					long clue = tx1 * ty2 - ty1 * tx2;
 					long div = ((cx1 - cx2) * (ty1 - ty2) - (cy1 - cy2) * (tx1 - tx2));
 					pushRight((int) ((nota * (tx1 - tx2) - (cx1 - cx2) * clue) / div),
-							(int) ((nota * (ty1 - ty2) - (cy1 - cy2) * clue) / div));
+						(int) ((nota * (ty1 - ty2) - (cy1 - cy2) * clue) / div));
 
 					if (p1 >= 0)
 					{
@@ -248,10 +249,10 @@ public class SimplePolygon implements Shape
 	public Rectangle getBounds()
 	{
 		int
-				minX = Integer.MAX_VALUE,
-				minY = Integer.MAX_VALUE,
-				maxX = Integer.MIN_VALUE,
-				maxY = Integer.MIN_VALUE;
+			minX = Integer.MAX_VALUE,
+			minY = Integer.MAX_VALUE,
+			maxX = Integer.MIN_VALUE,
+			maxY = Integer.MIN_VALUE;
 
 		for (int i = left; i <= right; i++)
 		{
@@ -361,9 +362,9 @@ public class SimplePolygon implements Shape
 		double y1 = y0 + h;
 
 		return crossings(x0, y0, false) != crossings(x1, y0, false) // top
-				|| crossings(x0, y1, false) != crossings(x1, y1, false) // bottom
-				|| crossings(x0, y0, true) != crossings(x0, y1, true) // left
-				|| crossings(x1, y0, true) != crossings(x1, y1, true); // right
+			|| crossings(x0, y1, false) != crossings(x1, y1, false) // bottom
+			|| crossings(x0, y0, true) != crossings(x0, y1, true) // left
+			|| crossings(x1, y0, true) != crossings(x1, y1, true); // right
 
 	}
 
@@ -429,7 +430,8 @@ public class SimplePolygon implements Shape
 			if (i == -1)
 			{
 				i = left;
-			} else
+			}
+			else
 			{
 				i++;
 			}

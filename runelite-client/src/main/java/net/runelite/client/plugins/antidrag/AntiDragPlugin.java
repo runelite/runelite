@@ -47,10 +47,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Anti Drag",
-		description = "Prevent dragging an item for a specified delay",
-		tags = {"antidrag", "delay", "inventory", "items"},
-		enabledByDefault = false
+	name = "Anti Drag",
+	description = "Prevent dragging an item for a specified delay",
+	tags = {"antidrag", "delay", "inventory", "items"},
+	enabledByDefault = false
 )
 @Slf4j
 public class AntiDragPlugin extends Plugin implements KeyListener
@@ -73,17 +73,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 
 	private boolean shiftHeld;
 	private boolean ctrlHeld;
-
-	private static void applyDragDelay(Widget widget, int delay)
-	{
-		if (widget != null)
-		{
-			for (Widget item : widget.getDynamicChildren())
-			{
-				item.setDragDeadTime(delay);
-			}
-		}
-	}
 
 	@Provides
 	AntiDragConfig getConfig(ConfigManager configManager)
@@ -128,7 +117,8 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			resetDragDelay();
 			ctrlHeld = true;
-		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			setDragDelay();
 			shiftHeld = true;
@@ -142,7 +132,8 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			setDragDelay();
 			ctrlHeld = false;
-		} else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			resetDragDelay();
 			shiftHeld = false;
@@ -168,7 +159,8 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			{
 				shiftHeld = false;
 				clientThread.invoke(this::resetDragDelay);
-			} else
+			}
+			else
 			{
 				clientThread.invoke(this::setDragDelay);
 			}
@@ -183,7 +175,8 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			shiftHeld = false;
 			ctrlHeld = false;
 			clientThread.invoke(this::resetDragDelay);
-		} else if (!config.onShiftOnly())
+		}
+		else if (!config.onShiftOnly())
 		{
 			clientThread.invoke(this::setDragDelay);
 		}
@@ -198,11 +191,12 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		}
 
 		if (widgetLoaded.getGroupId() == InterfaceID.BANK ||
-				widgetLoaded.getGroupId() == InterfaceID.BANK_INVENTORY ||
-				widgetLoaded.getGroupId() == InterfaceID.DEPOSIT_BOX)
+			widgetLoaded.getGroupId() == InterfaceID.BANK_INVENTORY ||
+			widgetLoaded.getGroupId() == InterfaceID.DEPOSIT_BOX)
 		{
 			setBankDragDelay(config.dragDelay());
-		} else if (widgetLoaded.getGroupId() == InterfaceID.INVENTORY)
+		}
+		else if (widgetLoaded.getGroupId() == InterfaceID.INVENTORY)
 		{
 			setInvDragDelay(config.dragDelay());
 		}
@@ -225,9 +219,21 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 					child.setDragDeadTime(delay);
 				}
 			}
-		} else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
+		}
+		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
 		{
 			setCoxDragDelay(config.dragDelay());
+		}
+	}
+
+	private static void applyDragDelay(Widget widget, int delay)
+	{
+		if (widget != null)
+		{
+			for (Widget item : widget.getDynamicChildren())
+			{
+				item.setDragDeadTime(delay);
+			}
 		}
 	}
 

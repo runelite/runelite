@@ -55,9 +55,8 @@ public class WidgetUtil
 
 	/**
 	 * Utility method that packs a component id from an interface id and child id.
-	 *
 	 * @param interfaceId interface id
-	 * @param childId     id within the interface
+	 * @param childId id within the interface
 	 * @return the component id
 	 */
 	@Component

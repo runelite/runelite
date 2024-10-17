@@ -47,41 +47,32 @@ import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
 @Mojo(
-		name = "pack-components",
-		defaultPhase = LifecyclePhase.GENERATE_SOURCES
+	name = "pack-components",
+	defaultPhase = LifecyclePhase.GENERATE_SOURCES
 )
 public class ComponentMojo extends AbstractMojo
 {
-	private final Log log = getLog();
-	private final Set<Integer> seenInterfaces = new HashSet<>();
-	private final Set<Integer> seenComponents = new HashSet<>();
 	@Parameter(defaultValue = "${project}")
 	private MavenProject project;
+
 	@Parameter(required = true)
 	private File inputDirectory;
+
 	@Parameter(required = true)
 	private File outputDirectory;
 
-	private static void addField(TypeSpec.Builder type, String name, int value, String comment)
-	{
-		FieldSpec.Builder field = FieldSpec.builder(int.class, name)
-				.addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
-				.initializer("$L", value);
-		if (comment != null)
-		{
-			field.addJavadoc(comment);
-		}
-		type.addField(field.build());
-	}
+	private final Log log = getLog();
+	private final Set<Integer> seenInterfaces = new HashSet<>();
+	private final Set<Integer> seenComponents = new HashSet<>();
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 		TypeSpec.Builder interfaceType = TypeSpec.classBuilder("InterfaceID")
-				.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+			.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
 
 		TypeSpec.Builder componentType = TypeSpec.classBuilder("ComponentID")
-				.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+			.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
 
 		for (File file : inputDirectory.listFiles((dir, name) -> name.endsWith(".toml")))
 		{
@@ -101,7 +92,8 @@ public class ComponentMojo extends AbstractMojo
 		try
 		{
 			result = Toml.parse(file.toPath());
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new MojoExecutionException("unable to read component file " + file.getName(), e);
 		}
@@ -168,15 +160,28 @@ public class ComponentMojo extends AbstractMojo
 		}
 	}
 
+	private static void addField(TypeSpec.Builder type, String name, int value, String comment)
+	{
+		FieldSpec.Builder field = FieldSpec.builder(int.class, name)
+			.addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+			.initializer("$L", value);
+		if (comment != null)
+		{
+			field.addJavadoc(comment);
+		}
+		type.addField(field.build());
+	}
+
 	private void writeClass(String pkg, TypeSpec type) throws MojoExecutionException
 	{
 		JavaFile javaFile = JavaFile.builder(pkg, type)
-				.build();
+			.build();
 
 		try
 		{
 			javaFile.writeTo(outputDirectory);
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			throw new MojoExecutionException("unable to write java class", e);
 		}

@@ -564,6 +564,10 @@ enum ItemWithCharge
 	PRAYER_REGENERATION4(POTION, PRAYER_REGENERATION_POTION4, 4),
 	;
 
+	private final ItemChargeType type;
+	private final int id;
+	private final int charges;
+
 	private static final Map<Integer, ItemWithCharge> ID_MAP;
 
 	static
@@ -577,10 +581,6 @@ enum ItemWithCharge
 
 		ID_MAP = builder.build();
 	}
-
-	private final ItemChargeType type;
-	private final int id;
-	private final int charges;
 
 	@Nullable
 	static ItemWithCharge findItem(int itemId)

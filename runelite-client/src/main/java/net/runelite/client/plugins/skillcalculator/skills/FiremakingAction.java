@@ -86,6 +86,13 @@ public enum FiremakingAction implements ItemSkillAction
 		return ItemSkillAction.super.getName(itemManager);
 	}
 
+	private enum FiremakingMethod
+	{
+		NORMAL_LOGS,
+		PYRE_LOGS,
+		SACRED_OIL,
+	}
+
 	@Override
 	public Set<FiremakingBonus> getExcludedSkillBonuses()
 	{
@@ -98,12 +105,5 @@ public enum FiremakingAction implements ItemSkillAction
 			default:
 				return EnumSet.complementOf(EnumSet.of(FiremakingBonus.PYROMANCER_OUTFIT));
 		}
-	}
-
-	private enum FiremakingMethod
-	{
-		NORMAL_LOGS,
-		PYRE_LOGS,
-		SACRED_OIL,
 	}
 }

@@ -65,9 +65,7 @@ class InstanceMapOverlay extends Overlay
 
 	private static final int MAX_PLANE = 3;
 	private static final int MIN_PLANE = 0;
-	private final Client client;
-	private final SpriteManager spriteManager;
-	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
+
 	/**
 	 * The plane to render on the instance map. When the map is opened this
 	 * defaults to the current plane. The ascend and descend buttons raise
@@ -75,12 +73,18 @@ class InstanceMapOverlay extends Overlay
 	 * above the local player's current plane.
 	 */
 	private int viewedPlane = 0;
+
+	private final Client client;
+	private final SpriteManager spriteManager;
+
 	/**
 	 * Saved image of the scene, no reason to draw the whole thing every
 	 * frame.
 	 */
 	private volatile BufferedImage mapImage;
 	private volatile boolean showMap = false;
+	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
+
 	@Setter
 	private boolean isCloseButtonHovered;
 
@@ -99,27 +103,6 @@ class InstanceMapOverlay extends Overlay
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		backgroundComponent.setFill(false);
-	}
-
-	private static BufferedImage minimapToBufferedImage(SpritePixels spritePixels, int expandedChunks)
-	{
-		int width = spritePixels.getWidth();
-		int height = spritePixels.getHeight();
-		int[] pixels = spritePixels.getPixels();
-		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		img.setRGB(0, 0, width, height, pixels, 0, width);
-		int maxChunks = ((Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2) / 8;
-		if (expandedChunks < maxChunks)
-		{
-			int cropChunks = maxChunks - expandedChunks;
-			img = img.getSubimage(
-					TILE_SIZE * (cropChunks * 8),
-					TILE_SIZE * (cropChunks * 8),
-					(Constants.SCENE_SIZE + expandedChunks * 2 * 8) * TILE_SIZE,
-					(Constants.SCENE_SIZE + expandedChunks * 2 * 8) * TILE_SIZE
-			);
-		}
-		return img;
 	}
 
 	public boolean isMapShown()
@@ -203,7 +186,7 @@ class InstanceMapOverlay extends Overlay
 		if (closeButton != null && closeButtonBounds == null)
 		{
 			closeButtonBounds = new Rectangle(image.getWidth() - closeButton.getWidth() - 5, 6,
-					closeButton.getWidth(), closeButton.getHeight());
+				closeButton.getWidth(), closeButton.getHeight());
 		}
 
 		graphics.drawImage(image, 0, 0, null);
@@ -234,7 +217,7 @@ class InstanceMapOverlay extends Overlay
 	 * @param graphics graphics to be drawn to
 	 */
 	private void drawPlayerDot(Graphics2D graphics, Player player,
-							   Color dotColor, Color outlineColor, int expandedChunks)
+		Color dotColor, Color outlineColor, int expandedChunks)
 	{
 		LocalPoint playerLoc = player.getLocalLocation();
 
@@ -258,6 +241,27 @@ class InstanceMapOverlay extends Overlay
 	{
 		mapImage = null;
 		closeButtonBounds = null;
+	}
+
+	private static BufferedImage minimapToBufferedImage(SpritePixels spritePixels, int expandedChunks)
+	{
+		int width = spritePixels.getWidth();
+		int height = spritePixels.getHeight();
+		int[] pixels = spritePixels.getPixels();
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		img.setRGB(0, 0, width, height, pixels, 0, width);
+		int maxChunks = ((Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2) / 8;
+		if (expandedChunks < maxChunks)
+		{
+			int cropChunks = maxChunks - expandedChunks;
+			img = img.getSubimage(
+				TILE_SIZE * (cropChunks * 8),
+				TILE_SIZE * (cropChunks * 8),
+				(Constants.SCENE_SIZE + expandedChunks * 2 * 8) * TILE_SIZE,
+				(Constants.SCENE_SIZE + expandedChunks * 2 * 8) * TILE_SIZE
+			);
+		}
+		return img;
 	}
 
 	@Nullable

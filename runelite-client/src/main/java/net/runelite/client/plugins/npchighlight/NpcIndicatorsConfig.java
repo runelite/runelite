@@ -38,18 +38,18 @@ public interface NpcIndicatorsConfig extends Config
 	String GROUP = "npcindicators";
 
 	@ConfigSection(
-			name = "Render style",
-			description = "The render style of NPC highlighting",
-			position = 0
+		name = "Render style",
+		description = "The render style of NPC highlighting",
+		position = 0
 	)
 	String renderStyleSection = "renderStyleSection";
 
 	@ConfigItem(
-			position = 0,
-			keyName = "highlightHull",
-			name = "Highlight hull",
-			description = "Configures whether or not NPC should be highlighted by hull",
-			section = renderStyleSection
+		position = 0,
+		keyName = "highlightHull",
+		name = "Highlight hull",
+		description = "Configures whether or not NPC should be highlighted by hull",
+		section = renderStyleSection
 	)
 	default boolean highlightHull()
 	{
@@ -57,11 +57,11 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "highlightTile",
-			name = "Highlight tile",
-			description = "Configures whether or not NPC should be highlighted by tile",
-			section = renderStyleSection
+		position = 1,
+		keyName = "highlightTile",
+		name = "Highlight tile",
+		description = "Configures whether or not NPC should be highlighted by tile",
+		section = renderStyleSection
 	)
 	default boolean highlightTile()
 	{
@@ -69,11 +69,11 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "highlightTrueTile",
-			name = "Highlight true tile",
-			description = "Configures whether or not NPC should be highlighted by true tile",
-			section = renderStyleSection
+		position = 2,
+		keyName = "highlightTrueTile",
+		name = "Highlight true tile",
+		description = "Configures whether or not NPC should be highlighted by true tile",
+		section = renderStyleSection
 	)
 	default boolean highlightTrueTile()
 	{
@@ -81,11 +81,11 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "highlightSouthWestTile",
-			name = "Highlight south west tile",
-			description = "Configures whether or not NPC should be highlighted by south western tile",
-			section = renderStyleSection
+		position = 3,
+		keyName = "highlightSouthWestTile",
+		name = "Highlight south west tile",
+		description = "Configures whether or not NPC should be highlighted by south western tile",
+		section = renderStyleSection
 	)
 	default boolean highlightSouthWestTile()
 	{
@@ -93,11 +93,11 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "highlightSouthWestTrueTile",
-			name = "Highlight south west true tile",
-			description = "Configures whether or not NPC should be highlighted by south western true tile",
-			section = renderStyleSection
+		position = 4,
+		keyName = "highlightSouthWestTrueTile",
+		name = "Highlight south west true tile",
+		description = "Configures whether or not NPC should be highlighted by south western true tile",
+		section = renderStyleSection
 	)
 	default boolean highlightSouthWestTrueTile()
 	{
@@ -105,11 +105,11 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "highlightOutline",
-			name = "Highlight outline",
-			description = "Configures whether or not the model of the NPC should be highlighted by outline",
-			section = renderStyleSection
+		position = 5,
+		keyName = "highlightOutline",
+		name = "Highlight outline",
+		description = "Configures whether or not the model of the NPC should be highlighted by outline",
+		section = renderStyleSection
 	)
 	default boolean highlightOutline()
 	{
@@ -118,11 +118,11 @@ public interface NpcIndicatorsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 10,
-			keyName = "npcColor",
-			name = "Highlight Color",
-			description = "Color of the NPC highlight border, menu, and text",
-			section = renderStyleSection
+		position = 10,
+		keyName = "npcColor",
+		name = "Highlight Color",
+		description = "Color of the NPC highlight border, menu, and text",
+		section = renderStyleSection
 	)
 	default Color highlightColor()
 	{
@@ -131,11 +131,11 @@ public interface NpcIndicatorsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 11,
-			keyName = "fillColor",
-			name = "Fill Color",
-			description = "Color of the NPC highlight fill",
-			section = renderStyleSection
+		position = 11,
+		keyName = "fillColor",
+		name = "Fill Color",
+		description = "Color of the NPC highlight fill",
+		section = renderStyleSection
 	)
 	default Color fillColor()
 	{
@@ -143,11 +143,11 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 12,
-			keyName = "borderWidth",
-			name = "Border Width",
-			description = "Width of the highlighted NPC border",
-			section = renderStyleSection
+		position = 12,
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the highlighted NPC border",
+		section = renderStyleSection
 	)
 	default double borderWidth()
 	{
@@ -155,15 +155,15 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 13,
-			keyName = "outlineFeather",
-			name = "Outline feather",
-			description = "Specify between 0-4 how much of the model outline should be faded",
-			section = renderStyleSection
+		position = 13,
+		keyName = "outlineFeather",
+		name = "Outline feather",
+		description = "Specify between 0-4 how much of the model outline should be faded",
+		section = renderStyleSection
 	)
 	@Range(
-			min = 0,
-			max = 4
+		min = 0,
+		max = 4
 	)
 	default int outlineFeather()
 	{
@@ -171,10 +171,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "npcToHighlight",
-			name = "NPCs to Highlight",
-			description = "List of NPC names to highlight. Format: (NPC), (NPC)"
+		position = 7,
+		keyName = "npcToHighlight",
+		name = "NPCs to Highlight",
+		description = "List of NPC names to highlight. Format: (NPC), (NPC)"
 	)
 	default String getNpcToHighlight()
 	{
@@ -182,17 +182,17 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "npcToHighlight",
-			name = "",
-			description = ""
+		keyName = "npcToHighlight",
+		name = "",
+		description = ""
 	)
 	void setNpcToHighlight(String npcsToHighlight);
 
 	@ConfigItem(
-			position = 8,
-			keyName = "drawNames",
-			name = "Draw names above NPC",
-			description = "Configures whether or not NPC names should be drawn above the NPC"
+		position = 8,
+		keyName = "drawNames",
+		name = "Draw names above NPC",
+		description = "Configures whether or not NPC names should be drawn above the NPC"
 	)
 	default boolean drawNames()
 	{
@@ -200,10 +200,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
-			keyName = "drawMinimapNames",
-			name = "Draw names on minimap",
-			description = "Configures whether or not NPC names should be drawn on the minimap"
+		position = 9,
+		keyName = "drawMinimapNames",
+		name = "Draw names on minimap",
+		description = "Configures whether or not NPC names should be drawn on the minimap"
 	)
 	default boolean drawMinimapNames()
 	{
@@ -211,10 +211,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "highlightMenuNames",
-			name = "Highlight menu names",
-			description = "Highlight NPC names in right click menu"
+		position = 10,
+		keyName = "highlightMenuNames",
+		name = "Highlight menu names",
+		description = "Highlight NPC names in right click menu"
 	)
 	default boolean highlightMenuNames()
 	{
@@ -222,10 +222,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
-			keyName = "ignoreDeadNpcs",
-			name = "Ignore dead NPCs",
-			description = "Prevents highlighting NPCs after they are dead"
+		position = 11,
+		keyName = "ignoreDeadNpcs",
+		name = "Ignore dead NPCs",
+		description = "Prevents highlighting NPCs after they are dead"
 	)
 	default boolean ignoreDeadNpcs()
 	{
@@ -233,18 +233,18 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 12,
-			keyName = "deadNpcMenuColor",
-			name = "Dead NPC menu color",
-			description = "Color of the NPC menus for dead NPCs"
+		position = 12,
+		keyName = "deadNpcMenuColor",
+		name = "Dead NPC menu color",
+		description = "Color of the NPC menus for dead NPCs"
 	)
 	Color deadNpcMenuColor();
 
 	@ConfigItem(
-			position = 13,
-			keyName = "showRespawnTimer",
-			name = "Show respawn timer",
-			description = "Show respawn timer of tagged NPCs"
+		position = 13,
+		keyName = "showRespawnTimer",
+		name = "Show respawn timer",
+		description = "Show respawn timer of tagged NPCs"
 	)
 	default boolean showRespawnTimer()
 	{
@@ -252,10 +252,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 14,
-			keyName = "ignorePets",
-			name = "Ignore pets",
-			description = "Excludes pets from being highlighted"
+		position = 14,
+		keyName = "ignorePets",
+		name = "Ignore pets",
+		description = "Excludes pets from being highlighted"
 	)
 	default boolean ignorePets()
 	{

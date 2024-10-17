@@ -63,16 +63,16 @@ import net.runelite.client.util.QuantityFormatter;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-		name = "Barrows Brothers",
-		description = "Show helpful information for the Barrows minigame",
-		tags = {"combat", "minigame", "bosses", "pve", "pvm"}
+	name = "Barrows Brothers",
+	description = "Show helpful information for the Barrows minigame",
+	tags = {"combat", "minigame", "bosses", "pve", "pvm"}
 )
 public class BarrowsPlugin extends Plugin
 {
 	private static final ImmutableList<Integer> POSSIBLE_SOLUTIONS = ImmutableList.of(
-			ComponentID.BARROWS_PUZZLE_ANSWER1,
-			ComponentID.BARROWS_PUZZLE_ANSWER2,
-			ComponentID.BARROWS_PUZZLE_ANSWER3
+		ComponentID.BARROWS_PUZZLE_ANSWER1,
+		ComponentID.BARROWS_PUZZLE_ANSWER2,
+		ComponentID.BARROWS_PUZZLE_ANSWER3
 	);
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
@@ -164,7 +164,8 @@ public class BarrowsPlugin extends Plugin
 			if (!isInCrypt && barrowsPrayerDrainTimer != null)
 			{
 				stopPrayerDrainTimer();
-			} else if (isInCrypt && barrowsPrayerDrainTimer == null)
+			}
+			else if (isInCrypt && barrowsPrayerDrainTimer == null)
 			{
 				startPrayerDrainTimer();
 			}
@@ -192,17 +193,18 @@ public class BarrowsPlugin extends Plugin
 			}
 
 			final ChatMessageBuilder message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Your chest is worth around ")
-					.append(QuantityFormatter.formatNumber(chestPrice))
-					.append(" coins.")
-					.append(ChatColorType.NORMAL);
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Your chest is worth around ")
+				.append(QuantityFormatter.formatNumber(chestPrice))
+				.append(" coins.")
+				.append(ChatColorType.NORMAL);
 
 			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.ITEM_EXAMINE)
-					.runeLiteFormattedMessage(message.build())
-					.build());
-		} else if (event.getGroupId() == InterfaceID.BARROWS_PUZZLE)
+				.type(ChatMessageType.ITEM_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
+		}
+		else if (event.getGroupId() == InterfaceID.BARROWS_PUZZLE)
 		{
 			final int answer = client.getWidget(ComponentID.BARROWS_PUZZLE_SEQUENCE_1).getModelId() - 3;
 			puzzleAnswer = null;
@@ -255,11 +257,11 @@ public class BarrowsPlugin extends Plugin
 		{
 			assert barrowsPrayerDrainTimer == null;
 			final LoopTimer loopTimer = new LoopTimer(
-					PRAYER_DRAIN_INTERVAL_MS,
-					ChronoUnit.MILLIS,
-					null,
-					this,
-					true);
+				PRAYER_DRAIN_INTERVAL_MS,
+				ChronoUnit.MILLIS,
+				null,
+				this,
+				true);
 
 			spriteManager.getSpriteAsync(SpriteID.TAB_PRAYER, 0, loopTimer);
 

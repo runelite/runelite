@@ -31,7 +31,6 @@ public interface Menu
 {
 	/**
 	 * Create a new menu entry
-	 *
 	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
 	 * @return the newly created menu entry
 	 */
@@ -56,7 +55,6 @@ public interface Menu
 
 	/**
 	 * Remove a menu entry
-	 *
 	 * @param entry the menu entry
 	 */
 	void removeMenuEntry(MenuEntry entry);

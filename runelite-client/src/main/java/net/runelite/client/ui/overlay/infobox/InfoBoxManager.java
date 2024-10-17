@@ -84,12 +84,12 @@ public class InfoBoxManager
 
 	@Inject
 	private InfoBoxManager(
-			final RuneLiteConfig runeLiteConfig,
-			final TooltipManager tooltipManager,
-			final Client client,
-			final EventBus eventBus,
-			final OverlayManager overlayManager,
-			final ConfigManager configManager)
+		final RuneLiteConfig runeLiteConfig,
+		final TooltipManager tooltipManager,
+		final Client client,
+		final EventBus eventBus,
+		final OverlayManager overlayManager,
+		final ConfigManager configManager)
 	{
 		this.runeLiteConfig = runeLiteConfig;
 		this.tooltipManager = tooltipManager;
@@ -98,41 +98,6 @@ public class InfoBoxManager
 		this.overlayManager = overlayManager;
 		this.configManager = configManager;
 		eventBus.register(this);
-	}
-
-	/**
-	 * Find insertion point for the given key into the given sorted list. If key already exists in the list,
-	 * return the index after the last occurrence.
-	 *
-	 * @param list
-	 * @param key
-	 * @param c
-	 * @param <T>
-	 * @return
-	 */
-	private static <T> int findInsertionIndex(List<? extends T> list, T key, Comparator<? super T> c)
-	{
-		int idx = Collections.binarySearch(list, key, c);
-
-		if (idx < 0)
-		{
-			// key isn't found in the list
-			return -idx - 1;
-		}
-
-		// list(idx) is equal to key, so it is not necessary to recheck it
-		for (int i = idx + 1; i < list.size(); ++i)
-		{
-			T cur = list.get(i);
-			int cmp = c.compare(cur, key);
-			if (cmp > 0)
-			{
-				// this is the first element which is greater
-				return i;
-			}
-		}
-
-		return list.size();
 	}
 
 	@Subscribe
@@ -161,12 +126,14 @@ public class InfoBoxManager
 		{
 			// The layer name doesn't matter as long as it is unique
 			splitInfobox(event.getInfoBox().getName() + "_" + System.currentTimeMillis(), event.getInfoBox());
-		} else if (FLIP.equals(event.getEntry().getOption()))
+		}
+		else if (FLIP.equals(event.getEntry().getOption()))
 		{
 			InfoBoxOverlay infoBoxOverlay = layers.get(event.getInfoBox().layer);
 			ComponentOrientation newOrientation = infoBoxOverlay.flip();
 			setOrientation(infoBoxOverlay.getName(), newOrientation);
-		} else if (DELETE.equals(event.getEntry().getOption()))
+		}
+		else if (DELETE.equals(event.getEntry().getOption()))
 		{
 			// This is just a merge into the default layer
 			InfoBoxOverlay source = layers.get(event.getInfoBox().layer);
@@ -200,10 +167,10 @@ public class InfoBoxManager
 		synchronized (this)
 		{
 			int idx = findInsertionIndex(overlay.getInfoBoxes(), infoBox, (b1, b2) -> ComparisonChain
-					.start()
-					.compare(b1.getPriority(), b2.getPriority())
-					.compare(b1.getPlugin().getName(), b2.getPlugin().getName())
-					.result());
+				.start()
+				.compare(b1.getPriority(), b2.getPriority())
+				.compare(b1.getPlugin().getName(), b2.getPlugin().getName())
+				.result());
 			overlay.getInfoBoxes().add(idx, infoBox);
 		}
 
@@ -303,7 +270,8 @@ public class InfoBoxManager
 				// Fall back to old orientation config option
 				orientation = runeLiteConfig.infoBoxVertical() ? ComponentOrientation.VERTICAL : ComponentOrientation.HORIZONTAL;
 				setOrientation(name, orientation);
-			} else
+			}
+			else
 			{
 				// Default infobox orientation
 				orientation = ComponentOrientation.HORIZONTAL;
@@ -311,13 +279,13 @@ public class InfoBoxManager
 		}
 
 		InfoBoxOverlay infoBoxOverlay = new InfoBoxOverlay(
-				this,
-				tooltipManager,
-				client,
-				runeLiteConfig,
-				eventBus,
-				name,
-				orientation);
+			this,
+			tooltipManager,
+			client,
+			runeLiteConfig,
+			eventBus,
+			name,
+			orientation);
 		overlayManager.add(infoBoxOverlay);
 		eventBus.register(infoBoxOverlay);
 		return infoBoxOverlay;
@@ -336,7 +304,7 @@ public class InfoBoxManager
 		InfoBoxOverlay oldOverlay = layers.get(infoBox.layer);
 		// Find all infoboxes with the same name, as they are all within the same group and so move at once.
 		Collection<InfoBox> filtered = oldOverlay.getInfoBoxes().stream()
-				.filter(i -> i.getName().equals(infoBox.getName())).collect(Collectors.toList());
+			.filter(i -> i.getName().equals(infoBox.getName())).collect(Collectors.toList());
 
 		oldOverlay.getInfoBoxes().removeAll(filtered);
 		if (oldOverlay.getInfoBoxes().isEmpty())
@@ -407,7 +375,8 @@ public class InfoBoxManager
 		if (layer.equals(DEFAULT_LAYER))
 		{
 			configManager.unsetConfiguration(INFOBOXLAYER_KEY, infoBox.getName());
-		} else
+		}
+		else
 		{
 			configManager.setConfiguration(INFOBOXLAYER_KEY, infoBox.getName(), layer);
 		}
@@ -426,5 +395,39 @@ public class InfoBoxManager
 	void unsetOrientation(String name)
 	{
 		configManager.unsetConfiguration(INFOBOXOVERLAY_KEY, INFOBOXOVERLAY_ORIENTATION_PREFIX + name);
+	}
+
+	/**
+	 * Find insertion point for the given key into the given sorted list. If key already exists in the list,
+	 * return the index after the last occurrence.
+	 * @param list
+	 * @param key
+	 * @param c
+	 * @param <T>
+	 * @return
+	 */
+	private static <T> int findInsertionIndex(List<? extends T> list, T key, Comparator<? super T> c)
+	{
+		int idx = Collections.binarySearch(list, key, c);
+
+		if (idx < 0)
+		{
+			// key isn't found in the list
+			return -idx - 1;
+		}
+
+		// list(idx) is equal to key, so it is not necessary to recheck it
+		for (int i = idx + 1; i < list.size(); ++i)
+		{
+			T cur = list.get(i);
+			int cmp = c.compare(cur, key);
+			if (cmp > 0)
+			{
+				// this is the first element which is greater
+				return i;
+			}
+		}
+
+		return list.size();
 	}
 }

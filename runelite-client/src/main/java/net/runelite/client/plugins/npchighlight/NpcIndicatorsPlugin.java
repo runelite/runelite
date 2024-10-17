@@ -79,9 +79,9 @@ import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
-		name = "NPC Indicators",
-		description = "Highlight NPCs on-screen and/or on the minimap",
-		tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
+	name = "NPC Indicators",
+	description = "Highlight NPCs on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
 )
 @Slf4j
 public class NpcIndicatorsPlugin extends Plugin
@@ -103,124 +103,98 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String STYLE_SW_TILE = "swtile";
 	private static final String STYLE_SW_TRUE_TILE = "swtruetile";
 	private static final String STYLE_OUTLINE = "outline";
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private NpcIndicatorsConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private NpcRespawnOverlay npcRespawnOverlay;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private NpcUtil npcUtil;
+
+	@Inject
+	private ConfigManager configManager;
+
+	@Inject
+	private ColorPickerManager colorPickerManager;
+
 	/**
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<NPC, HighlightedNpc> highlightedNpcs = new HashMap<>();
+
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, MemorizedNpc> deadNpcsToDisplay = new HashMap<>();
-	/**
-	 * Tagged NPCs that have died at some point, which are memorized to
-	 * remember when and where they will respawn
-	 */
-	private final Map<Integer, MemorizedNpc> memorizedNpcs = new HashMap<>();
-	/**
-	 * NPC ids marked with the Tag option
-	 */
-	private final Set<Integer> npcTags = new HashSet<>();
-	/**
-	 * Tagged NPCs that spawned this tick, which need to be verified that
-	 * they actually spawned and didn't just walk into view range.
-	 */
-	private final List<NPC> spawnedNpcsThisTick = new ArrayList<>();
-	/**
-	 * Tagged NPCs that despawned this tick, which need to be verified that
-	 * they actually spawned and didn't just walk into view range.
-	 */
-	private final List<NPC> despawnedNpcsThisTick = new ArrayList<>();
-	/**
-	 * World locations of graphics object which indicate that an
-	 * NPC teleported that were played this tick.
-	 */
-	private final Set<WorldPoint> teleportGraphicsObjectSpawnedThisTick = new HashSet<>();
-	private final Function<NPC, HighlightedNpc> isHighlighted = highlightedNpcs::get;
-	@Inject
-	private Client client;
-	@Inject
-	private NpcIndicatorsConfig config;
-	@Inject
-	private OverlayManager overlayManager;
-	@Inject
-	private NpcRespawnOverlay npcRespawnOverlay;
-	@Inject
-	private ClientThread clientThread;
-	@Inject
-	private NpcOverlayService npcOverlayService;
-	@Inject
-	private NpcUtil npcUtil;
-	@Inject
-	private ConfigManager configManager;
-	@Inject
-	private ColorPickerManager colorPickerManager;
+
 	/**
 	 * The time when the last game tick event ran.
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private Instant lastTickUpdate;
+
+	/**
+	 * Tagged NPCs that have died at some point, which are memorized to
+	 * remember when and where they will respawn
+	 */
+	private final Map<Integer, MemorizedNpc> memorizedNpcs = new HashMap<>();
+
 	/**
 	 * Highlight strings from the configuration
 	 */
 	private List<String> highlights = new ArrayList<>();
+
+	/**
+	 * NPC ids marked with the Tag option
+	 */
+	private final Set<Integer> npcTags = new HashSet<>();
+
+	/**
+	 * Tagged NPCs that spawned this tick, which need to be verified that
+	 * they actually spawned and didn't just walk into view range.
+	 */
+	private final List<NPC> spawnedNpcsThisTick = new ArrayList<>();
+
+	/**
+	 * Tagged NPCs that despawned this tick, which need to be verified that
+	 * they actually spawned and didn't just walk into view range.
+	 */
+	private final List<NPC> despawnedNpcsThisTick = new ArrayList<>();
+
+	/**
+	 * World locations of graphics object which indicate that an
+	 * NPC teleported that were played this tick.
+	 */
+	private final Set<WorldPoint> teleportGraphicsObjectSpawnedThisTick = new HashSet<>();
+
 	/**
 	 * The players location on the last game tick.
 	 */
 	private WorldPoint lastPlayerLocation;
+
 	/**
 	 * When hopping worlds, NPCs can spawn without them actually respawning,
 	 * so we would not want to mark it as a real spawn in those cases.
 	 */
 	private boolean skipNextSpawnCheck = false;
 
-	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
-	{
-		int distance = wp1.distanceTo(wp2);
-		return distance < MAX_ACTOR_VIEW_RANGE;
-	}
-
-	private static WorldPoint getWorldLocationBehind(NPC npc)
-	{
-		final int orientation = npc.getOrientation() / 256;
-		int dx = 0, dy = 0;
-
-		switch (orientation)
-		{
-			case 0: // South
-				dy = -1;
-				break;
-			case 1: // Southwest
-				dx = -1;
-				dy = -1;
-				break;
-			case 2: // West
-				dx = -1;
-				break;
-			case 3: // Northwest
-				dx = -1;
-				dy = 1;
-				break;
-			case 4: // North
-				dy = 1;
-				break;
-			case 5: // Northeast
-				dx = 1;
-				dy = 1;
-				break;
-			case 6: // East
-				dx = 1;
-				break;
-			case 7: // Southeast
-				dx = 1;
-				dy = -1;
-				break;
-		}
-
-		final WorldPoint currWP = npc.getWorldLocation();
-		return new WorldPoint(currWP.getX() - dx, currWP.getY() - dy, currWP.getPlane());
-	}
+	private final Function<NPC, HighlightedNpc> isHighlighted = highlightedNpcs::get;
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -261,7 +235,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
-				event.getGameState() == GameState.HOPPING)
+			event.getGameState() == GameState.HOPPING)
 		{
 			highlightedNpcs.clear();
 			deadNpcsToDisplay.clear();
@@ -306,26 +280,26 @@ public class NpcIndicatorsPlugin extends Plugin
 			final boolean nameMatch = highlights.stream().anyMatch(npcName::equalsIgnoreCase);
 			final boolean idMatch = npcTags.contains(npc.getIndex());
 			final boolean wildcardMatch = highlights.stream()
-					.filter(highlight -> !highlight.equalsIgnoreCase(npcName))
-					.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
+				.filter(highlight -> !highlight.equalsIgnoreCase(npcName))
+				.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
 			int idx = -1;
 
 			client.createMenuEntry(idx--)
-					.setOption(idMatch ? UNTAG : TAG)
-					.setTarget(event.getTarget())
-					.setIdentifier(event.getIdentifier())
-					.setType(MenuAction.RUNELITE)
-					.onClick(this::tag);
+				.setOption(idMatch ? UNTAG : TAG)
+				.setTarget(event.getTarget())
+				.setIdentifier(event.getIdentifier())
+				.setType(MenuAction.RUNELITE)
+				.onClick(this::tag);
 
 			// Only add Untag-All option to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
 			if (!wildcardMatch)
 			{
 				client.createMenuEntry(idx--)
-						.setOption(nameMatch ? UNTAG_ALL : TAG_ALL)
-						.setTarget(event.getTarget())
-						.setIdentifier(event.getIdentifier())
-						.setType(MenuAction.RUNELITE)
-						.onClick(this::tag);
+					.setOption(nameMatch ? UNTAG_ALL : TAG_ALL)
+					.setTarget(event.getTarget())
+					.setIdentifier(event.getIdentifier())
+					.setType(MenuAction.RUNELITE)
+					.onClick(this::tag);
 			}
 
 			// Add tag options only if the npc is currently tagged
@@ -334,7 +308,8 @@ public class NpcIndicatorsPlugin extends Plugin
 				idx = createTagColorMenu(idx, event.getTarget(), npc);
 				idx = createTagStyleMenu(idx, event.getTarget(), npc);
 			}
-		} else
+		}
+		else
 		{
 			Color color = null;
 			if (npcUtil.isDying(npc))
@@ -359,7 +334,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		List<Color> colors = getUsedColors();
 		// add a few default colors
-		for (Color default_ : new Color[] {Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
+		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
 		{
 			if (colors.size() < 5 && !colors.contains(default_))
 			{
@@ -368,48 +343,48 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		MenuEntry parent = client.createMenuEntry(idx--)
-				.setOption("Tag color")
-				.setTarget(target)
-				.setType(MenuAction.RUNELITE);
+			.setOption("Tag color")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE);
 		Menu submenu = parent.createSubMenu();
 
 		for (final Color c : colors)
 		{
 			submenu.createMenuEntry(0)
-					.setOption(ColorUtil.prependColorTag("Set color", c))
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
-					{
-						setNpcHighlightColor(npc.getId(), c);
-						clientThread.invokeLater(this::rebuild);
-					});
+				.setOption(ColorUtil.prependColorTag("Set color", c))
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					setNpcHighlightColor(npc.getId(), c);
+					clientThread.invokeLater(this::rebuild);
+				});
 		}
 
 		submenu.createMenuEntry(0)
-				.setOption("Pick color")
-				.setType(MenuAction.RUNELITE)
-				.onClick(e -> SwingUtilities.invokeLater(() ->
+			.setOption("Pick color")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> SwingUtilities.invokeLater(() ->
+			{
+				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+					Color.WHITE, "Tag Color", false);
+				colorPicker.setOnClose(c ->
 				{
-					RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
-							Color.WHITE, "Tag Color", false);
-					colorPicker.setOnClose(c ->
-					{
-						setNpcHighlightColor(npc.getId(), c);
-						clientThread.invokeLater(this::rebuild);
-					});
-					colorPicker.setVisible(true);
-				}));
+					setNpcHighlightColor(npc.getId(), c);
+					clientThread.invokeLater(this::rebuild);
+				});
+				colorPicker.setVisible(true);
+			}));
 
 		if (getNpcHighlightColor(npc.getId()) != null)
 		{
 			submenu.createMenuEntry(0)
-					.setOption("Reset")
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
-					{
-						unsetNpcHighlightColor(npc.getId());
-						clientThread.invokeLater(this::rebuild);
-					});
+				.setOption("Reset")
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					unsetNpcHighlightColor(npc.getId());
+					clientThread.invokeLater(this::rebuild);
+				});
 		}
 
 		return idx;
@@ -418,9 +393,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	private int createTagStyleMenu(int idx, String target, NPC npc)
 	{
 		MenuEntry parent = client.createMenuEntry(idx--)
-				.setOption("Tag style")
-				.setTarget(target)
-				.setType(MenuAction.RUNELITE);
+			.setOption("Tag style")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE);
 		Menu submenu = parent.createSubMenu();
 
 		String[] names = {"Hull", "Tile", "True tile", "South-west tile", "South-west true tile", "Outline"};
@@ -430,25 +405,25 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			final String style = styles[i];
 			submenu.createMenuEntry(0)
-					.setOption(names[i])
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
-					{
-						setNpcTagStyle(npc.getId(), style);
-						clientThread.invokeLater(this::rebuild);
-					});
+				.setOption(names[i])
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					setNpcTagStyle(npc.getId(), style);
+					clientThread.invokeLater(this::rebuild);
+				});
 		}
 
 		if (getNpcTagStyle(npc.getId()) != null)
 		{
 			submenu.createMenuEntry(0)
-					.setOption("Reset")
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
-					{
-						unsetNpcTagStyle(npc.getId());
-						clientThread.invokeLater(this::rebuild);
-					});
+				.setOption("Reset")
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					unsetNpcTagStyle(npc.getId());
+					clientThread.invokeLater(this::rebuild);
+				});
 		}
 
 		return idx;
@@ -476,7 +451,8 @@ public class NpcIndicatorsPlugin extends Plugin
 					highlightedNpcs.remove(npc);
 					memorizedNpcs.remove(npc.getIndex());
 				}
-			} else
+			}
+			else
 			{
 				if (!client.isInInstancedRegion())
 				{
@@ -487,7 +463,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 
 			npcOverlayService.rebuild();
-		} else
+		}
+		else
 		{
 			final String name = npc.getName();
 			final List<String> highlightedNpcs = new ArrayList<>(highlights);
@@ -559,7 +536,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		if (npcTags.contains(npc.getIndex())
-				|| highlightMatchesNPCName(npcName))
+			|| highlightMatchesNPCName(npcName))
 		{
 			highlightedNpcs.put(npc, highlightedNpc(npc));
 		}
@@ -583,6 +560,53 @@ public class NpcIndicatorsPlugin extends Plugin
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
+	}
+
+	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
+	{
+		int distance = wp1.distanceTo(wp2);
+		return distance < MAX_ACTOR_VIEW_RANGE;
+	}
+
+	private static WorldPoint getWorldLocationBehind(NPC npc)
+	{
+		final int orientation = npc.getOrientation() / 256;
+		int dx = 0, dy = 0;
+
+		switch (orientation)
+		{
+			case 0: // South
+				dy = -1;
+				break;
+			case 1: // Southwest
+				dx = -1;
+				dy = -1;
+				break;
+			case 2: // West
+				dx = -1;
+				break;
+			case 3: // Northwest
+				dx = -1;
+				dy = 1;
+				break;
+			case 4: // North
+				dy = 1;
+				break;
+			case 5: // Northeast
+				dx = 1;
+				dy = 1;
+				break;
+			case 6: // East
+				dx = 1;
+				break;
+			case 7: // Southeast
+				dx = 1;
+				dy = -1;
+				break;
+		}
+
+		final WorldPoint currWP = npc.getWorldLocation();
+		return new WorldPoint(currWP.getX() - dx, currWP.getY() - dy, currWP.getPlane());
 	}
 
 	private void memorizeNpc(NPC npc)
@@ -615,7 +639,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		highlightedNpcs.clear();
 
 		if (client.getGameState() != GameState.LOGGED_IN &&
-				client.getGameState() != GameState.LOADING)
+			client.getGameState() != GameState.LOADING)
 		{
 			// NPCs are still in the client after logging out,
 			// but we don't want to highlight those.
@@ -672,7 +696,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		if (skipNextSpawnCheck)
 		{
 			skipNextSpawnCheck = false;
-		} else
+		}
+		else
 		{
 			for (NPC npc : despawnedNpcsThisTick)
 			{
@@ -707,7 +732,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty())
 				{
 					if (teleportGraphicsObjectSpawnedThisTick.contains(npc.getWorldLocation()) ||
-							teleportGraphicsObjectSpawnedThisTick.contains(getWorldLocationBehind(npc)))
+						teleportGraphicsObjectSpawnedThisTick.contains(getWorldLocationBehind(npc)))
 					{
 						// NPC teleported here, so we don't want to update the respawn timer
 						continue;
@@ -742,7 +767,7 @@ public class NpcIndicatorsPlugin extends Plugin
 					final WorldPoint possibleOtherNpcLocation = getWorldLocationBehind(npc);
 
 					mn.getPossibleRespawnLocations().removeIf(x ->
-							!x.equals(npcLocation) && !x.equals(possibleOtherNpcLocation));
+						!x.equals(npcLocation) && !x.equals(possibleOtherNpcLocation));
 
 					if (mn.getPossibleRespawnLocations().isEmpty())
 					{
@@ -773,7 +798,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			swTile = STYLE_SW_TILE.equals(style);
 			swTrueTile = STYLE_SW_TRUE_TILE.equals(style);
 			outline = STYLE_OUTLINE.equals(style);
-		} else
+		}
+		else
 		{
 			hull = config.highlightHull();
 			tile = config.highlightTile();
@@ -784,21 +810,21 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		return HighlightedNpc.builder()
-				.npc(npc)
-				.highlightColor(MoreObjects.firstNonNull(getNpcHighlightColor(npcId), config.highlightColor()))
-				.fillColor(config.fillColor())
-				.hull(hull)
-				.tile(tile)
-				.trueTile(trueTile)
-				.swTile(swTile)
-				.swTrueTile(swTrueTile)
-				.outline(outline)
-				.name(config.drawNames())
-				.nameOnMinimap(config.drawMinimapNames())
-				.borderWidth((float) config.borderWidth())
-				.outlineFeather(config.outlineFeather())
-				.render(this::render)
-				.build();
+			.npc(npc)
+			.highlightColor(MoreObjects.firstNonNull(getNpcHighlightColor(npcId), config.highlightColor()))
+			.fillColor(config.fillColor())
+			.hull(hull)
+			.tile(tile)
+			.trueTile(trueTile)
+			.swTile(swTile)
+			.swTrueTile(swTrueTile)
+			.outline(outline)
+			.name(config.drawNames())
+			.nameOnMinimap(config.drawMinimapNames())
+			.borderWidth((float) config.borderWidth())
+			.outlineFeather(config.outlineFeather())
+			.render(this::render)
+			.build();
 	}
 
 	private boolean render(NPC n)

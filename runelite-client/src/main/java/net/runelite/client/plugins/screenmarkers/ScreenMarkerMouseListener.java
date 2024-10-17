@@ -65,11 +65,13 @@ class ScreenMarkerMouseListener extends MouseAdapter
 			if (bounds != null)
 			{
 				plugin.startCreation(bounds.getLocation(), bounds.getSize());
-			} else
+			}
+			else
 			{
 				plugin.startCreation(event.getPoint());
 			}
-		} else if (plugin.isCreatingScreenMarker())
+		}
+		else if (plugin.isCreatingScreenMarker())
 		{
 			plugin.finishCreation(true);
 		}

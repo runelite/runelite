@@ -109,7 +109,6 @@ public interface Projectile extends Renderable
 	 * projectile automatically despawns after this time, and setting the
 	 * end cycle to a time in the past is an effective way of removing the
 	 * projectile.
-	 *
 	 * @param cycle
 	 */
 	void setEndCycle(int cycle);
@@ -190,7 +189,6 @@ public interface Projectile extends Renderable
 
 	/**
 	 * The animation of the projectile
-	 *
 	 * @return
 	 */
 	@Nullable
@@ -198,7 +196,6 @@ public interface Projectile extends Renderable
 
 	/**
 	 * The frame of the current animation
-	 *
 	 * @return
 	 */
 	int getAnimationFrame();

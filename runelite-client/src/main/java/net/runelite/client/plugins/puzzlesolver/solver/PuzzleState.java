@@ -34,8 +34,9 @@ import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK
 
 public class PuzzleState
 {
-	private final int[] pieces;
 	private PuzzleState parent;
+
+	private final int[] pieces;
 	private int emptyPiece = -1;
 
 	private int h = -1;

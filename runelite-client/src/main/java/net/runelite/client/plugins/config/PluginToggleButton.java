@@ -43,12 +43,12 @@ class PluginToggleButton extends JToggleButton
 		BufferedImage onSwitcher = ImageUtil.loadImageResource(ConfigPanel.class, "switcher_on.png");
 		ON_SWITCHER = new ImageIcon(onSwitcher);
 		OFF_SWITCHER = new ImageIcon(ImageUtil.flipImage(
-				ImageUtil.luminanceScale(
-						ImageUtil.grayscaleImage(onSwitcher),
-						0.61f
-				),
-				true,
-				false
+			ImageUtil.luminanceScale(
+				ImageUtil.grayscaleImage(onSwitcher),
+				0.61f
+			),
+			true,
+			false
 		));
 	}
 
@@ -66,7 +66,7 @@ class PluginToggleButton extends JToggleButton
 
 	private void updateTooltip()
 	{
-		setToolTipText(isSelected() ? "Disable plugin" : "<html>Enable plugin" + conflictString);
+		setToolTipText(isSelected() ? "Disable plugin" :  "<html>Enable plugin" + conflictString);
 	}
 
 	public void setConflicts(List<String> conflicts)
@@ -87,7 +87,8 @@ class PluginToggleButton extends JToggleButton
 
 			sb.append(conflicts.get(conflicts.size() - 1));
 			conflictString = sb.toString();
-		} else
+		}
+		else
 		{
 			conflictString = "";
 		}

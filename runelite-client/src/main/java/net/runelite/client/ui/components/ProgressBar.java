@@ -41,12 +41,13 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
  */
 public class ProgressBar extends DimmableJPanel
 {
-	private final JLabel leftLabel = new JShadowedLabel();
-	private final JLabel rightLabel = new JShadowedLabel();
-	private final JLabel centerLabel = new JShadowedLabel();
 	private int maximumValue;
 	private int value;
 	private List<Integer> positions = Collections.emptyList();
+
+	private final JLabel leftLabel = new JShadowedLabel();
+	private final JLabel rightLabel = new JShadowedLabel();
+	private final JLabel centerLabel = new JShadowedLabel();
 	private String centerLabelText = "";
 	private String dimmedText = "";
 
@@ -111,7 +112,8 @@ public class ProgressBar extends DimmableJPanel
 			leftLabel.setForeground(Color.GRAY);
 			rightLabel.setForeground(Color.GRAY);
 			centerLabel.setText(dimmedText);
-		} else
+		}
+		else
 		{
 			leftLabel.setForeground(Color.WHITE);
 			rightLabel.setForeground(Color.WHITE);

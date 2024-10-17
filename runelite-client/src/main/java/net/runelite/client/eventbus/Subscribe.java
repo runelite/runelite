@@ -40,7 +40,6 @@ public @interface Subscribe
 {
 	/**
 	 * Priority relative to other event subscribers. Higher priorities run first.
-	 *
 	 * @return
 	 */
 	float priority() default 0;

@@ -26,7 +26,7 @@ package net.runelite.api.events;
 
 /**
  * Posted every client tick (20ms).
- * <p>
+ *
  * Client ticks are roughly broken down into
  * 1. packet processing
  * 2. interface tick

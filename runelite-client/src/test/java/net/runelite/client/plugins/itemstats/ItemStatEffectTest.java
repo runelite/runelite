@@ -55,94 +55,95 @@ public class ItemStatEffectTest
 	{
 		// https://oldschool.runescape.wiki/w/Revitalisation_(+)#Maximum_stat_restoration
 		REVITALISATION_TABLE = new ImmutableMap.Builder<Integer, Integer>()
-				.put(1, 11).put(50, 26)
-				.put(3, 11).put(53, 26)
-				.put(4, 12).put(54, 27)
-				.put(6, 12).put(56, 27)
-				.put(7, 13).put(57, 28)
-				.put(9, 13).put(59, 28)
-				.put(10, 14).put(60, 29)
-				.put(13, 14).put(63, 29)
-				.put(14, 15).put(64, 30)
-				.put(16, 15).put(66, 30)
-				.put(17, 16).put(67, 31)
-				.put(19, 16).put(69, 31)
-				.put(20, 17).put(70, 32)
-				.put(23, 17).put(73, 32)
-				.put(24, 18).put(74, 33)
-				.put(26, 18).put(76, 33)
-				.put(27, 19).put(77, 34)
-				.put(29, 19).put(79, 34)
-				.put(30, 20).put(80, 35)
-				.put(33, 20).put(83, 35)
-				.put(34, 21).put(84, 36)
-				.put(36, 21).put(86, 36)
-				.put(37, 22).put(87, 37)
-				.put(39, 22).put(89, 37)
-				.put(40, 23).put(90, 38)
-				.put(43, 23).put(93, 38)
-				.put(44, 24).put(94, 39)
-				.put(46, 24).put(96, 39)
-				.put(47, 25).put(97, 40)
-				.put(49, 25).put(99, 40)
-				.build();
+			.put(1, 11)     .put(50, 26)
+			.put(3, 11)     .put(53, 26)
+			.put(4, 12)     .put(54, 27)
+			.put(6, 12)     .put(56, 27)
+			.put(7, 13)     .put(57, 28)
+			.put(9, 13)     .put(59, 28)
+			.put(10, 14)    .put(60, 29)
+			.put(13, 14)    .put(63, 29)
+			.put(14, 15)    .put(64, 30)
+			.put(16, 15)    .put(66, 30)
+			.put(17, 16)    .put(67, 31)
+			.put(19, 16)    .put(69, 31)
+			.put(20, 17)    .put(70, 32)
+			.put(23, 17)    .put(73, 32)
+			.put(24, 18)    .put(74, 33)
+			.put(26, 18)    .put(76, 33)
+			.put(27, 19)    .put(77, 34)
+			.put(29, 19)    .put(79, 34)
+			.put(30, 20)    .put(80, 35)
+			.put(33, 20)    .put(83, 35)
+			.put(34, 21)    .put(84, 36)
+			.put(36, 21)    .put(86, 36)
+			.put(37, 22)    .put(87, 37)
+			.put(39, 22)    .put(89, 37)
+			.put(40, 23)    .put(90, 38)
+			.put(43, 23)    .put(93, 38)
+			.put(44, 24)    .put(94, 39)
+			.put(46, 24)    .put(96, 39)
+			.put(47, 25)    .put(97, 40)
+			.put(49, 25)    .put(99, 40)
+			.build();
 
 		// https://oldschool.runescape.wiki/w/Super_restore#Maximum_restoration
 		SUPER_RESTORE_TABLE = new ImmutableMap.Builder<Integer, Integer>()
-				.put(1, 8).put(36, 17).put(72, 26)
-				.put(3, 8).put(39, 17).put(75, 26)
-				.put(4, 9).put(40, 18).put(76, 27)
-				.put(7, 9).put(43, 18).put(79, 27)
-				.put(8, 10).put(44, 19).put(80, 28)
-				.put(11, 10).put(47, 19).put(83, 28)
-				.put(12, 11).put(48, 20).put(84, 29)
-				.put(15, 11).put(51, 20).put(87, 29)
-				.put(16, 12).put(52, 21).put(88, 30)
-				.put(19, 12).put(55, 21).put(91, 30)
-				.put(20, 13).put(56, 22).put(92, 31)
-				.put(23, 13).put(59, 22).put(95, 31)
-				.put(24, 14).put(60, 23).put(96, 32)
-				.put(27, 14).put(63, 23).put(99, 32)
-				.put(28, 15).put(64, 24)
-				.put(31, 15).put(67, 24)
-				.put(32, 16).put(68, 25)
-				.put(35, 16).put(71, 25)
-				.build();
+			.put(1, 8)      .put(36, 17)    .put(72, 26)
+			.put(3, 8)      .put(39, 17)    .put(75, 26)
+			.put(4, 9)      .put(40, 18)    .put(76, 27)
+			.put(7, 9)      .put(43, 18)    .put(79, 27)
+			.put(8, 10)     .put(44, 19)    .put(80, 28)
+			.put(11, 10)    .put(47, 19)    .put(83, 28)
+			.put(12, 11)    .put(48, 20)    .put(84, 29)
+			.put(15, 11)    .put(51, 20)    .put(87, 29)
+			.put(16, 12)    .put(52, 21)    .put(88, 30)
+			.put(19, 12)    .put(55, 21)    .put(91, 30)
+			.put(20, 13)    .put(56, 22)    .put(92, 31)
+			.put(23, 13)    .put(59, 22)    .put(95, 31)
+			.put(24, 14)    .put(60, 23)    .put(96, 32)
+			.put(27, 14)    .put(63, 23)    .put(99, 32)
+			.put(28, 15)    .put(64, 24)
+			.put(31, 15)    .put(67, 24)
+			.put(32, 16)    .put(68, 25)
+			.put(35, 16)    .put(71, 25)
+			.build();
 
 		// https://oldschool.runescape.wiki/w/Sanfew_serum#Maximum_restoration
 		SANFEW_TABLE = new ImmutableMap.Builder<Integer, Integer>()
-				.put(1, 4).put(34, 14).put(67, 24)
-				.put(3, 4).put(36, 14).put(69, 24)
-				.put(4, 5).put(37, 15).put(70, 25)
-				.put(6, 5).put(39, 15).put(73, 25)
-				.put(7, 6).put(40, 16).put(74, 26)
-				.put(9, 6).put(43, 16).put(76, 26)
-				.put(10, 7).put(44, 17).put(77, 27)
-				.put(13, 7).put(46, 17).put(79, 27)
-				.put(14, 8).put(47, 18).put(80, 28)
-				.put(16, 8).put(49, 18).put(83, 28)
-				.put(17, 9).put(50, 19).put(84, 29)
-				.put(19, 9).put(53, 19).put(86, 29)
-				.put(20, 10).put(54, 20).put(87, 30)
-				.put(23, 10).put(56, 20).put(89, 30)
-				.put(24, 11).put(57, 21).put(90, 31)
-				.put(26, 11).put(59, 21).put(93, 31)
-				.put(27, 12).put(60, 22).put(94, 32)
-				.put(29, 12).put(63, 22).put(96, 32)
-				.put(30, 13).put(64, 23).put(97, 33)
-				.put(33, 13).put(66, 23).put(99, 33)
-				.build();
+			.put(1, 4)      .put(34, 14)    .put(67, 24)
+			.put(3, 4)      .put(36, 14)    .put(69, 24)
+			.put(4, 5)      .put(37, 15)    .put(70, 25)
+			.put(6, 5)      .put(39, 15)    .put(73, 25)
+			.put(7, 6)      .put(40, 16)    .put(74, 26)
+			.put(9, 6)      .put(43, 16)    .put(76, 26)
+			.put(10, 7)     .put(44, 17)    .put(77, 27)
+			.put(13, 7)     .put(46, 17)    .put(79, 27)
+			.put(14, 8)     .put(47, 18)    .put(80, 28)
+			.put(16, 8)     .put(49, 18)    .put(83, 28)
+			.put(17, 9)     .put(50, 19)    .put(84, 29)
+			.put(19, 9)     .put(53, 19)    .put(86, 29)
+			.put(20, 10)    .put(54, 20)    .put(87, 30)
+			.put(23, 10)    .put(56, 20)    .put(89, 30)
+			.put(24, 11)    .put(57, 21)    .put(90, 31)
+			.put(26, 11)    .put(59, 21)    .put(93, 31)
+			.put(27, 12)    .put(60, 22)    .put(94, 32)
+			.put(29, 12)    .put(63, 22)    .put(96, 32)
+			.put(30, 13)    .put(64, 23)    .put(97, 33)
+			.put(33, 13)    .put(66, 23)    .put(99, 33)
+			.build();
 	}
 
-	private final ItemStatChanges itemStats = new ItemStatChanges();
 	@Mock
 	private Client client;
+
+	private final ItemStatChanges itemStats = new ItemStatChanges();
 
 	@Before
 	public void prepare()
 	{
 		when(client.getBoostedSkillLevel(any(Skill.class)))
-				.thenReturn(0);
+			.thenReturn(0);
 	}
 
 	@Test
@@ -174,7 +175,7 @@ public class ItemStatEffectTest
 			final int theoretical = entry.getValue();
 
 			when(client.getRealSkillLevel(any(Skill.class)))
-					.thenReturn(level);
+				.thenReturn(level);
 
 			final StatChange[] changes = item.calculate(client).getStatChanges();
 			for (final StatChange change : changes)
@@ -428,7 +429,7 @@ public class ItemStatEffectTest
 		when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ItemID.RING_OF_THE_GODS, 1));
 		assertEquals(31, skillChange(Skill.PRAYER, 99, 0, ppot));
 
-		for (final int ring : new int[] {ItemID.RING_OF_THE_GODS_I, ItemID.RING_OF_THE_GODS_I_25252, ItemID.RING_OF_THE_GODS_I_26764})
+		for (final int ring : new int[] { ItemID.RING_OF_THE_GODS_I, ItemID.RING_OF_THE_GODS_I_25252, ItemID.RING_OF_THE_GODS_I_26764 })
 		{
 			when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ring, 1));
 			assertEquals(33, skillChange(Skill.PRAYER, 99, 0, ppot));

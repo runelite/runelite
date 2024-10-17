@@ -76,8 +76,8 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 
 	@Inject
 	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-									  ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
-									  OkHttpClient okHttpClient, Gson gson)
+		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
+		OkHttpClient okHttpClient, Gson gson)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
@@ -112,16 +112,16 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 			runningRequest = scheduledExecutorService.schedule(() ->
 			{
 				HttpUrl url = WikiPlugin.WIKI_API.newBuilder()
-						.addQueryParameter("action", "opensearch")
-						.addQueryParameter("search", searchString)
-						.addQueryParameter("redirects", "resolve")
-						.addQueryParameter("format", "json")
-						.addQueryParameter("warningsaserror", Boolean.toString(developerMode))
-						.build();
+					.addQueryParameter("action", "opensearch")
+					.addQueryParameter("search", searchString)
+					.addQueryParameter("redirects", "resolve")
+					.addQueryParameter("format", "json")
+					.addQueryParameter("warningsaserror", Boolean.toString(developerMode))
+					.build();
 
 				Request req = new Request.Builder()
-						.url(url)
-						.build();
+					.url(url)
+					.build();
 
 				okHttpClient.newCall(req).enqueue(new Callback()
 				{
@@ -154,7 +154,8 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 								predictions = bpredictions;
 								update();
 							});
-						} catch (JsonParseException | IllegalStateException | IndexOutOfBoundsException e)
+						}
+						catch (JsonParseException | IllegalStateException | IndexOutOfBoundsException e)
 						{
 							log.warn("error parsing wiki response {}", body, e);
 						}
@@ -235,7 +236,8 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 			if (i == selectedPrediction)
 			{
 				text.setTextColor(0xFFFFFF);
-			} else
+			}
+			else
 			{
 				bg.setOpacity(255);
 				text.setTextColor(0x000000);
@@ -263,7 +265,8 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 					if (selectedPrediction == -1)
 					{
 						value(offPrediction);
-					} else
+					}
+					else
 					{
 						value(predictions.get(selectedPrediction));
 					}
@@ -296,10 +299,10 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private void search(String search)
 	{
 		LinkBrowser.browse(WikiPlugin.WIKI_BASE.newBuilder()
-				.addQueryParameter("search", search)
-				.addQueryParameter(WikiPlugin.UTM_SOURCE_KEY, WikiPlugin.UTM_SOURCE_VALUE)
-				.build()
-				.toString());
+			.addQueryParameter("search", search)
+			.addQueryParameter(WikiPlugin.UTM_SOURCE_KEY, WikiPlugin.UTM_SOURCE_VALUE)
+			.build()
+			.toString());
 		chatboxPanelManager.close();
 	}
 }

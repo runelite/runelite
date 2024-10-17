@@ -46,8 +46,10 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 public class GraveyardRoom extends MTARoom
 {
-	static final int MIN_SCORE = 16;
 	private static final int MTA_GRAVEYARD_REGION = 13462;
+
+	static final int MIN_SCORE = 16;
+
 	private final Client client;
 	private final MTAPlugin plugin;
 	private final ItemManager itemManager;
@@ -58,7 +60,7 @@ public class GraveyardRoom extends MTARoom
 
 	@Inject
 	private GraveyardRoom(MTAConfig config, Client client, MTAPlugin plugin,
-						  ItemManager itemManager, InfoBoxManager infoBoxManager)
+		ItemManager itemManager, InfoBoxManager infoBoxManager)
 	{
 		super(config);
 		this.client = client;
@@ -72,7 +74,7 @@ public class GraveyardRoom extends MTARoom
 	{
 		Player player = client.getLocalPlayer();
 		return player != null && player.getWorldLocation().getRegionID() == MTA_GRAVEYARD_REGION
-				&& player.getWorldLocation().getPlane() == 1;
+			&& player.getWorldLocation().getPlane() == 1;
 	}
 
 	@Subscribe

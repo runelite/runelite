@@ -85,7 +85,7 @@ class BarrowsOverlay extends Overlay
 
 			String brotherLetter = Character.toString(brother.getName().charAt(0));
 			Point miniMapLocation = Perspective.getCanvasTextMiniMapLocation(client, graphics,
-					localLocation, brotherLetter);
+				localLocation, brotherLetter);
 
 			if (miniMapLocation != null)
 			{
@@ -95,7 +95,8 @@ class BarrowsOverlay extends Overlay
 				if (client.getVarbitValue(brother.getKilledVarbit()) > 0)
 				{
 					graphics.setColor(config.deadBrotherLocColor());
-				} else
+				}
+				else
 				{
 					graphics.setColor(config.brotherLocColor());
 				}

@@ -43,9 +43,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Minimap",
-		description = "Customize the color of minimap dots, hide the minimap, and zoom",
-		tags = {"items", "npcs", "players", "zoom"}
+	name = "Minimap",
+	description = "Customize the color of minimap dots, hide the minimap, and zoom",
+	tags = {"items", "npcs", "players", "zoom"}
 )
 public class MinimapPlugin extends Plugin
 {
@@ -95,7 +95,8 @@ public class MinimapPlugin extends Plugin
 		if (state == GameState.STARTING)
 		{
 			originalDotSprites = null;
-		} else if (state == GameState.LOGIN_SCREEN && originalDotSprites == null)
+		}
+		else if (state == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
 			storeOriginalDots();
 			replaceMapDots();
@@ -114,7 +115,8 @@ public class MinimapPlugin extends Plugin
 		{
 			updateMinimapWidgetVisibility(config.hideMinimap());
 			return;
-		} else if (event.getKey().equals("zoom"))
+		}
+		else if (event.getKey().equals("zoom"))
 		{
 			client.setMinimapZoom(config.zoom());
 			return;
@@ -149,7 +151,7 @@ public class MinimapPlugin extends Plugin
 			for (Widget widget : resizableNormalWidget.getStaticChildren())
 			{
 				if (widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY &&
-						widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON)
+					widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON)
 				{
 					widget.setHidden(enable);
 				}

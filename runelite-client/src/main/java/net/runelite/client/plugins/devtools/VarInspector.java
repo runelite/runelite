@@ -68,6 +68,24 @@ import net.runelite.client.ui.FontManager;
 @Slf4j
 class VarInspector extends DevToolsFrame
 {
+	@Getter
+	private enum VarType
+	{
+		VARBIT("Varbit"),
+		VARP("VarPlayer"),
+		VARCINT("VarClientInt"),
+		VARCSTR("VarClientStr");
+
+		private final String name;
+		private final JCheckBox checkBox;
+
+		VarType(String name)
+		{
+			this.name = name;
+			checkBox = new JCheckBox(name, true);
+		}
+	}
+
 	private final static int MAX_LOG_ENTRIES = 10_000;
 	private static final int VARBITS_ARCHIVE_ID = 14;
 	private static final Map<Integer, String> VARBIT_NAMES;
@@ -103,7 +121,8 @@ class VarInspector extends DevToolsFrame
 			{
 				varp.put(f.getInt(null), f.getName());
 			}
-		} catch (IllegalAccessException ex)
+		}
+		catch (IllegalAccessException ex)
 		{
 			log.error("error setting up var names", ex);
 		}
@@ -117,10 +136,14 @@ class VarInspector extends DevToolsFrame
 	private final Client client;
 	private final ClientThread clientThread;
 	private final EventBus eventBus;
+
 	private final JPanel tracker = new JPanel();
+
 	private int lastTick = 0;
+
 	private int[] oldVarps = null;
 	private int[] oldVarps2 = null;
+
 	private Multimap<Integer, Integer> varbits;
 	private Map<Integer, Object> varcs = null;
 
@@ -208,8 +231,8 @@ class VarInspector extends DevToolsFrame
 				JLabel header = new JLabel("Tick " + tick);
 				header.setFont(FontManager.getRunescapeSmallFont());
 				header.setBorder(new CompoundBorder(
-						BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
-						BorderFactory.createEmptyBorder(3, 6, 0, 0)
+					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
+					BorderFactory.createEmptyBorder(3, 6, 0, 0)
 				));
 				tracker.add(header);
 			}
@@ -257,7 +280,8 @@ class VarInspector extends DevToolsFrame
 			if (name != null)
 			{
 				name += "(" + index + ")";
-			} else
+			}
+			else
 			{
 				name = Integer.toString(index);
 			}
@@ -297,14 +321,16 @@ class VarInspector extends DevToolsFrame
 			if (old != null)
 			{
 				old = "\"" + old + "\"";
-			} else
+			}
+			else
 			{
 				old = "null";
 			}
 			if (neew != null)
 			{
 				neew = "\"" + neew + "\"";
-			} else
+			}
+			else
 			{
 				neew = "null";
 			}
@@ -353,23 +379,5 @@ class VarInspector extends DevToolsFrame
 		eventBus.unregister(this);
 		varcs = null;
 		varbits = null;
-	}
-
-	@Getter
-	private enum VarType
-	{
-		VARBIT("Varbit"),
-		VARP("VarPlayer"),
-		VARCINT("VarClientInt"),
-		VARCSTR("VarClientStr");
-
-		private final String name;
-		private final JCheckBox checkBox;
-
-		VarType(String name)
-		{
-			this.name = name;
-			checkBox = new JCheckBox(name, true);
-		}
 	}
 }

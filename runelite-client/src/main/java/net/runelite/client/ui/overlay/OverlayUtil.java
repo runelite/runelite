@@ -190,7 +190,8 @@ public class OverlayUtil
 			if (area.contains(mousePosition.getX(), mousePosition.getY()))
 			{
 				graphics.setColor(borderHoverColor);
-			} else
+			}
+			else
 			{
 				graphics.setColor(borderColor);
 			}

@@ -81,13 +81,63 @@ public class ScriptInspector extends DevToolsFrame
 	private final ConfigManager configManager;
 
 	private final JPanel tracker = new JPanel();
-	private final JList<Integer> jList;
-	private final DefaultListModel<Integer> listModel;
 	private ScriptTreeNode currentNode;
 	private int lastTick;
 	private Set<Integer> blacklist;
 	private Set<Integer> highlights;
+	private final JList<Integer> jList;
+	private final DefaultListModel<Integer> listModel;
 	private ListState state = ListState.BLACKLIST;
+
+	private enum ListState
+	{
+		BLACKLIST,
+		HIGHLIGHT
+	}
+
+	@Data
+	private static class ScriptTreeNode extends DefaultMutableTreeNode
+	{
+		private final int scriptId;
+		private Widget source;
+		private int duplicateNumber = 1;
+		private Object[] args;
+
+		@Override
+		public String toString()
+		{
+			String output = Integer.toString(scriptId);
+
+			if (duplicateNumber != 1)
+			{
+				output += " ("  + duplicateNumber + ")";
+			}
+
+			if (source != null)
+			{
+				int id = source.getId();
+				output += "  -  " + WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
+
+				if (source.getIndex() != -1)
+				{
+					output += "[" + source.getIndex() + "]";
+				}
+
+				var name = WidgetInspector.getWidgetName(id);
+				if (name != null)
+				{
+					output += " " + name;
+				}
+			}
+
+			if (args != null)
+			{
+				output += " args: " + Arrays.toString(args);
+			}
+
+			return output;
+		}
+	}
 
 	@Inject
 	ScriptInspector(Client client, EventBus eventBus, ConfigManager configManager)
@@ -157,7 +207,8 @@ public class ScriptInspector extends DevToolsFrame
 		try
 		{
 			blacklist = new HashSet<>(Lists.transform(Text.fromCSV(blacklistConfig), Integer::parseInt));
-		} catch (NumberFormatException e)
+		}
+		catch (NumberFormatException e)
 		{
 			blacklist = new HashSet<>(Lists.transform(Text.fromCSV(DEFAULT_BLACKLIST), Integer::parseInt));
 		}
@@ -172,7 +223,8 @@ public class ScriptInspector extends DevToolsFrame
 		try
 		{
 			highlights = new HashSet<>(Lists.transform(Text.fromCSV(highlightsConfig), Integer::parseInt));
-		} catch (NumberFormatException e)
+		}
+		catch (NumberFormatException e)
 		{
 			blacklist = new HashSet<>();
 		}
@@ -237,7 +289,8 @@ public class ScriptInspector extends DevToolsFrame
 		if (currentNode == null)
 		{
 			currentNode = newNode;
-		} else
+		}
+		else
 		{
 			int count = 0;
 			Enumeration children = currentNode.children();
@@ -273,7 +326,8 @@ public class ScriptInspector extends DevToolsFrame
 		if (currentNode.getParent() != null)
 		{
 			currentNode = (ScriptTreeNode) currentNode.getParent();
-		} else
+		}
+		else
 		{
 			addScriptLog(currentNode);
 			currentNode = null;
@@ -291,9 +345,9 @@ public class ScriptInspector extends DevToolsFrame
 	public void close()
 	{
 		configManager.setConfiguration("devtools", "highlights",
-				Text.toCSV(Lists.transform(new ArrayList<>(highlights), String::valueOf)));
+			Text.toCSV(Lists.transform(new ArrayList<>(highlights), String::valueOf)));
 		configManager.setConfiguration("devtools", "blacklist",
-				Text.toCSV(Lists.transform(new ArrayList<>(blacklist), String::valueOf)));
+			Text.toCSV(Lists.transform(new ArrayList<>(blacklist), String::valueOf)));
 		currentNode = null;
 		eventBus.unregister(this);
 		super.close();
@@ -315,8 +369,8 @@ public class ScriptInspector extends DevToolsFrame
 				JLabel header = new JLabel("Tick " + tick);
 				header.setFont(FontManager.getRunescapeSmallFont());
 				header.setBorder(new CompoundBorder(
-						BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
-						BorderFactory.createEmptyBorder(3, 6, 0, 0)
+					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
+					BorderFactory.createEmptyBorder(3, 6, 0, 0)
 				));
 				tracker.add(header);
 			}
@@ -393,7 +447,8 @@ public class ScriptInspector extends DevToolsFrame
 		if (state == ListState.BLACKLIST)
 		{
 			set = blacklist;
-		} else
+		}
+		else
 		{
 			set = highlights;
 		}
@@ -425,55 +480,5 @@ public class ScriptInspector extends DevToolsFrame
 		}
 
 		return null;
-	}
-
-	private enum ListState
-	{
-		BLACKLIST,
-		HIGHLIGHT
-	}
-
-	@Data
-	private static class ScriptTreeNode extends DefaultMutableTreeNode
-	{
-		private final int scriptId;
-		private Widget source;
-		private int duplicateNumber = 1;
-		private Object[] args;
-
-		@Override
-		public String toString()
-		{
-			String output = Integer.toString(scriptId);
-
-			if (duplicateNumber != 1)
-			{
-				output += " (" + duplicateNumber + ")";
-			}
-
-			if (source != null)
-			{
-				int id = source.getId();
-				output += "  -  " + WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
-
-				if (source.getIndex() != -1)
-				{
-					output += "[" + source.getIndex() + "]";
-				}
-
-				var name = WidgetInspector.getWidgetName(id);
-				if (name != null)
-				{
-					output += " " + name;
-				}
-			}
-
-			if (args != null)
-			{
-				output += " args: " + Arrays.toString(args);
-			}
-
-			return output;
-		}
 	}
 }

@@ -111,21 +111,24 @@ import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 @PluginDescriptor(
-		name = "Grand Exchange",
-		description = "Provide additional and/or easier access to Grand Exchange information",
-		tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
+	name = "Grand Exchange",
+	description = "Provide additional and/or easier access to Grand Exchange information",
+	tags = {"external", "integration", "notifications", "panel", "prices", "trade"}
 )
 @Slf4j
 public class GrandExchangePlugin extends Plugin
 {
 	@VisibleForTesting
 	static final int GE_SLOTS = 8;
-	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
 	private static final int GE_LOGIN_BURST_WINDOW = 2; // ticks
 	private static final int GE_MAX_EXAMINE_LEN = 100;
+
 	private static final String BUY_LIMIT_GE_TEXT = "Buy limit: ";
 	private static final String BUY_LIMIT_KEY = "buylimit";
 	private static final Duration BUY_LIMIT_RESET = Duration.ofHours(4);
+
+	static final String SEARCH_GRAND_EXCHANGE = "Search Grand Exchange";
+
 	private static final int MAX_RESULT_COUNT = 250;
 
 	private static final Color FUZZY_HIGHLIGHT_COLOR = new Color(0x800000);
@@ -197,27 +200,6 @@ public class GrandExchangePlugin extends Plugin
 	private long lastAccount;
 	private int tradeSeq;
 
-	private static String shortenExamine(String examine)
-	{
-		int from = 0;
-		int idx;
-		while (true)
-		{
-			idx = examine.indexOf(' ', from);
-			if (idx == -1)
-			{
-				return examine;
-			}
-			if (idx > GE_MAX_EXAMINE_LEN && from > 0)
-			{
-				break; // use from
-			}
-			from = idx + 1;
-		}
-
-		return examine.substring(0, from - 1) + "...";
-	}
-
 	private SavedOffer getOffer(int slot)
 	{
 		String offer = configManager.getRSProfileConfiguration("geoffer", Integer.toString(slot));
@@ -243,9 +225,7 @@ public class GrandExchangePlugin extends Plugin
 		List<Trade> trades = new ArrayList<>();
 		String history = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, "tradeHistory");
 		//CHECKSTYLE:OFF
-		final Type type = new TypeToken<List<Trade>>()
-		{
-		}.getType();
+		final Type type = new TypeToken<List<Trade>>() {}.getType();
 		//CHECKSTYLE:ON
 		if (history != null)
 		{
@@ -256,7 +236,8 @@ public class GrandExchangePlugin extends Plugin
 				{
 					trades = t;
 				}
-			} catch (JsonSyntaxException ex)
+			}
+			catch (JsonSyntaxException ex)
 			{
 				log.warn("error updating saved trades", ex);
 			}
@@ -286,11 +267,11 @@ public class GrandExchangePlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "ge_icon.png");
 
 		button = NavigationButton.builder()
-				.tooltip("Grand Exchange")
-				.icon(icon)
-				.priority(3)
-				.panel(panel)
-				.build();
+			.tooltip("Grand Exchange")
+			.icon(icon)
+			.priority(3)
+			.panel(panel)
+			.build();
 
 		clientToolbar.addNavigation(button);
 
@@ -304,7 +285,8 @@ public class GrandExchangePlugin extends Plugin
 		if (accountSession != null)
 		{
 			grandExchangeClient.setUuid(accountSession.getUuid());
-		} else
+		}
+		else
 		{
 			grandExchangeClient.setUuid(null);
 		}
@@ -369,7 +351,8 @@ public class GrandExchangePlugin extends Plugin
 				{
 					mouseManager.registerMouseListener(inputListener);
 					keyManager.registerKeyListener(inputListener);
-				} else
+				}
+				else
 				{
 					mouseManager.unregisterMouseListener(inputListener);
 					keyManager.unregisterKeyListener(inputListener);
@@ -392,7 +375,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, lastLoginTick: {}",
-				offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), lastLoginTick);
+			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), lastLoginTick);
 
 		updatePanel(slot, offer);
 
@@ -519,19 +502,24 @@ public class GrandExchangePlugin extends Plugin
 		if (worldTypes.contains(net.runelite.api.WorldType.SEASONAL))
 		{
 			return WorldType.SEASONAL;
-		} else if (worldTypes.contains(net.runelite.api.WorldType.TOURNAMENT_WORLD))
+		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.TOURNAMENT_WORLD))
 		{
 			return WorldType.TOURNAMENT;
-		} else if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN))
+		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN))
 		{
 			return WorldType.DEADMAN;
-		} else if (worldTypes.contains(net.runelite.api.WorldType.FRESH_START_WORLD))
+		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.FRESH_START_WORLD))
 		{
 			return WorldType.FRESH_START_WORLD;
-		} else if (worldTypes.contains(net.runelite.api.WorldType.BETA_WORLD))
+		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.BETA_WORLD))
 		{
 			return WorldType.BETA_WORLD;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -550,7 +538,8 @@ public class GrandExchangePlugin extends Plugin
 		if (offer.getState() == GrandExchangeOfferState.EMPTY)
 		{
 			deleteOffer(slot);
-		} else
+		}
+		else
 		{
 			SavedOffer savedOffer = new SavedOffer();
 			savedOffer.setItemId(offer.getItemId());
@@ -576,7 +565,8 @@ public class GrandExchangePlugin extends Plugin
 		if (message.startsWith("Grand Exchange: Finished"))
 		{
 			notifier.notify(config.notifyOnOfferComplete(), message);
-		} else if (message.startsWith("Grand Exchange:"))
+		}
+		else if (message.startsWith("Grand Exchange:"))
 		{
 			notifier.notify(config.enableNotifications(), message);
 		}
@@ -690,10 +680,10 @@ public class GrandExchangePlugin extends Plugin
 	}
 
 	@Subscribe(
-			// run after the bank tags plugin, and potentially anything
-			// else which wants to consume the event and override
-			// the search behavior
-			priority = -100
+		// run after the bank tags plugin, and potentially anything
+		// else which wants to consume the event and override
+		// the search behavior
+		priority = -100
 	)
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
@@ -716,7 +706,7 @@ public class GrandExchangePlugin extends Plugin
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
 					.mapToObj(itemManager::getItemComposition)
 					.filter(item -> item.isTradeable() && item.getNote() == -1
-							&& item.getName().toLowerCase().contains(input))
+						&& item.getName().toLowerCase().contains(input))
 					.limit(MAX_RESULT_COUNT + 1)
 					.sorted(Comparator.comparing(ItemComposition::getName))
 					.map(ItemComposition::getId)
@@ -725,7 +715,8 @@ public class GrandExchangePlugin extends Plugin
 			{
 				client.setGeSearchResultCount(-1);
 				client.setGeSearchResultIds(null);
-			} else
+			}
+			else
 			{
 				resultCount = ids.size();
 				client.setGeSearchResultCount(resultCount);
@@ -741,7 +732,7 @@ public class GrandExchangePlugin extends Plugin
 					.filter(item -> item.isTradeable() && item.getNote() == -1)
 					.filter(item -> comparator.applyAsDouble(item) > 0)
 					.sorted(Comparator.comparingDouble(comparator).reversed()
-							.thenComparing(ItemComposition::getName))
+						.thenComparing(ItemComposition::getName))
 					.limit(MAX_RESULT_COUNT)
 					.map(ItemComposition::getId)
 					.collect(Collectors.toList());
@@ -806,7 +797,8 @@ public class GrandExchangePlugin extends Plugin
 		if (config.showExact())
 		{
 			titleBuilder.append(QuantityFormatter.formatNumber(total));
-		} else
+		}
+		else
 		{
 			titleBuilder.append(QuantityFormatter.quantityToStackSize(total));
 		}
@@ -823,18 +815,18 @@ public class GrandExchangePlugin extends Plugin
 	private void setLimitResetTime(int itemId)
 	{
 		Instant lastDateTime = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-				BUY_LIMIT_KEY + "." + itemId, Instant.class);
+			BUY_LIMIT_KEY + "." + itemId, Instant.class);
 		if (lastDateTime == null || lastDateTime.isBefore(Instant.now()))
 		{
 			configManager.setRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, BUY_LIMIT_KEY + "." + itemId,
-					Instant.now().plus(BUY_LIMIT_RESET));
+				Instant.now().plus(BUY_LIMIT_RESET));
 		}
 	}
 
 	private Instant getLimitResetTime(int itemId)
 	{
 		Instant lastDateTime = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP,
-				BUY_LIMIT_KEY + "." + itemId, Instant.class);
+			BUY_LIMIT_KEY + "." + itemId, Instant.class);
 		if (lastDateTime == null)
 		{
 			return null;
@@ -852,8 +844,8 @@ public class GrandExchangePlugin extends Plugin
 	private void updateLimitTimer(GrandExchangeOffer offer)
 	{
 		if (offer.getState() == GrandExchangeOfferState.BOUGHT ||
-				(offer.getQuantitySold() > 0 &&
-						offer.getState() == GrandExchangeOfferState.BUYING))
+			(offer.getQuantitySold() > 0 &&
+				offer.getState() == GrandExchangeOfferState.BUYING))
 		{
 			setLimitResetTime(offer.getItemId());
 		}
@@ -912,14 +904,35 @@ public class GrandExchangePlugin extends Plugin
 		return (!buy ? shortenExamine(examine) : examine) + "<br>" + sb;
 	}
 
+	private static String shortenExamine(String examine)
+	{
+		int from = 0;
+		int idx;
+		while (true)
+		{
+			idx = examine.indexOf(' ', from);
+			if (idx == -1)
+			{
+				return examine;
+			}
+			if (idx > GE_MAX_EXAMINE_LEN && from > 0)
+			{
+				break; // use from
+			}
+			from = idx + 1;
+		}
+
+		return examine.substring(0, from - 1) + "...";
+	}
+
 	void openGeLink(String name, int itemId)
 	{
 		final String url = runeLiteConfig.useWikiItemPrices() ?
-				"https://prices.runescape.wiki/" + (client.getWorldType().contains(net.runelite.api.WorldType.FRESH_START_WORLD) ? "fsw" : "osrs") + "/item/" + itemId :
-				"https://services.runescape.com/m=itemdb_oldschool/"
-						+ name.replace(" ", "+")
-						+ "/viewitem?obj="
-						+ itemId;
+			"https://prices.runescape.wiki/" + (client.getWorldType().contains(net.runelite.api.WorldType.FRESH_START_WORLD) ? "fsw" : "osrs") + "/item/" + itemId :
+			"https://services.runescape.com/m=itemdb_oldschool/"
+				+ name.replace(" ", "+")
+				+ "/viewitem?obj="
+				+ itemId;
 		LinkBrowser.browse(url);
 	}
 
@@ -958,7 +971,8 @@ public class GrandExchangePlugin extends Plugin
 			machineUuid = hasher.hash().toString();
 			tradeSeq = 0;
 			return machineUuid;
-		} catch (SocketException ex)
+		}
+		catch (SocketException ex)
 		{
 			log.debug("unable to generate machine id", ex);
 			machineUuid = null;

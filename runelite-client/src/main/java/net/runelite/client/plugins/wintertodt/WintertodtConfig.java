@@ -38,10 +38,10 @@ import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
 public interface WintertodtConfig extends Config
 {
 	@ConfigItem(
-			position = 0,
-			keyName = "showOverlay",
-			name = "Show Overlay",
-			description = "Toggles the status overlay"
+		position = 0,
+		keyName = "showOverlay",
+		name = "Show Overlay",
+		description = "Toggles the status overlay"
 	)
 	default boolean showOverlay()
 	{
@@ -49,10 +49,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "damageNotificationColor",
-			name = "Damage Notification",
-			description = "Color of damage notification text in chat"
+		position = 1,
+		keyName = "damageNotificationColor",
+		name = "Damage Notification",
+		description = "Color of damage notification text in chat"
 	)
 	default Color damageNotificationColor()
 	{
@@ -60,13 +60,13 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "roundNotification",
-			name = "Round notification",
-			description = "Notifies you before the round starts (in seconds)"
+		position = 2,
+		keyName = "roundNotification",
+		name = "Round notification",
+		description = "Notifies you before the round starts (in seconds)"
 	)
 	@Range(
-			max = 60
+		max = 60
 	)
 	@Units(Units.SECONDS)
 	default int roundNotification()
@@ -75,10 +75,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "notifyCold",
-			name = "Ambient Damage Notification",
-			description = "Notifies when hit by the Wintertodt's ambient cold damage"
+		position = 3,
+		keyName = "notifyCold",
+		name = "Ambient Damage Notification",
+		description = "Notifies when hit by the Wintertodt's ambient cold damage"
 	)
 	default WintertodtNotifyDamage notifyCold()
 	{
@@ -86,10 +86,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "notifySnowfall",
-			name = "Snowfall Damage Notification",
-			description = "Notifies when hit by the Wintertodt's snowfall attack"
+		position = 4,
+		keyName = "notifySnowfall",
+		name = "Snowfall Damage Notification",
+		description = "Notifies when hit by the Wintertodt's snowfall attack"
 	)
 	default WintertodtNotifyDamage notifySnowfall()
 	{
@@ -97,10 +97,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "notifyBrazierDamage",
-			name = "Brazier Damage Notification",
-			description = "Notifies when hit by the brazier breaking"
+		position = 5,
+		keyName = "notifyBrazierDamage",
+		name = "Brazier Damage Notification",
+		description = "Notifies when hit by the brazier breaking"
 	)
 	default WintertodtNotifyDamage notifyBrazierDamage()
 	{
@@ -108,10 +108,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
-			keyName = "notifyFullInv",
-			name = "Full Inventory Notification",
-			description = "Notifies when your inventory fills up with bruma roots"
+		position = 6,
+		keyName = "notifyFullInv",
+		name = "Full Inventory Notification",
+		description = "Notifies when your inventory fills up with bruma roots"
 	)
 	default boolean notifyFullInv()
 	{
@@ -119,10 +119,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "notifyEmptyInv",
-			name = "Empty Inventory Notification",
-			description = "Notifies when you run out of bruma roots"
+		position = 7,
+		keyName = "notifyEmptyInv",
+		name = "Empty Inventory Notification",
+		description = "Notifies when you run out of bruma roots"
 	)
 	default boolean notifyEmptyInv()
 	{
@@ -130,10 +130,10 @@ public interface WintertodtConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
-			keyName = "notifyBrazierOut",
-			name = "Brazier Extinguish Notification",
-			description = "Notifies when the brazier goes out"
+		position = 8,
+		keyName = "notifyBrazierOut",
+		name = "Brazier Extinguish Notification",
+		description = "Notifies when the brazier goes out"
 	)
 	default boolean notifyBrazierOut()
 	{

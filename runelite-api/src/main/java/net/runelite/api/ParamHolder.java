@@ -33,7 +33,6 @@ package net.runelite.api;
 public interface ParamHolder
 {
 	IterableHashTable<Node> getParams();
-
 	void setParams(IterableHashTable<Node> params);
 
 	/**

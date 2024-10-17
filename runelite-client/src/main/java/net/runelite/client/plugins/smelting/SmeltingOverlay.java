@@ -79,7 +79,8 @@ class SmeltingOverlay extends OverlayPanel
 					.text("Smelting")
 					.color(Color.GREEN)
 					.build());
-		} else
+		}
+		else
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 					.text("NOT smelting")

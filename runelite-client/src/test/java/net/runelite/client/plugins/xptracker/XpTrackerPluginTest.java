@@ -108,10 +108,10 @@ public class XpTrackerPluginTest
 
 		// Gain attack xp
 		StatChanged statChanged = new StatChanged(
-				Skill.ATTACK,
-				100,
-				2,
-				2
+			Skill.ATTACK,
+			100,
+			2,
+			2
 		);
 		xpTrackerPlugin.onStatChanged(statChanged);
 

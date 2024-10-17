@@ -47,11 +47,6 @@ public enum XpPanelLabel
 	private final String key;
 	private final Function<XpSnapshotSingle, String> valueFunc;
 
-	private static String format(int val)
-	{
-		return QuantityFormatter.quantityToRSDecimalStack(val, true);
-	}
-
 	/**
 	 * Get the action key label based on if the Action type is an xp drop or kill
 	 *
@@ -67,5 +62,10 @@ public enum XpPanelLabel
 		}
 
 		return actionKey;
+	}
+
+	private static String format(int val)
+	{
+		return QuantityFormatter.quantityToRSDecimalStack(val, true);
 	}
 }

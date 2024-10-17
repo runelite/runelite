@@ -104,12 +104,12 @@ public class PluginManager
 	@Inject
 	@VisibleForTesting
 	PluginManager(
-			@Named("developerMode") final boolean developerMode,
-			@Named("safeMode") final boolean safeMode,
-			final EventBus eventBus,
-			final Scheduler scheduler,
-			final ConfigManager configManager,
-			final Provider<GameEventManager> sceneTileManager)
+		@Named("developerMode") final boolean developerMode,
+		@Named("safeMode") final boolean safeMode,
+		final EventBus eventBus,
+		final Scheduler scheduler,
+		final ConfigManager configManager,
+		final Provider<GameEventManager> sceneTileManager)
 	{
 		this.developerMode = developerMode;
 		this.safeMode = safeMode;
@@ -117,47 +117,6 @@ public class PluginManager
 		this.scheduler = scheduler;
 		this.configManager = configManager;
 		this.sceneTileManager = sceneTileManager;
-	}
-
-	/**
-	 * Topologically sort a graph. Uses Kahn's algorithm.
-	 *
-	 * @param graph - A directed graph
-	 * @param <T>   - The type of the item contained in the nodes of the graph
-	 * @return - A topologically sorted list corresponding to graph.
-	 * <p>
-	 * Multiple invocations with the same arguments may return lists that are not equal.
-	 */
-	@VisibleForTesting
-	static <T> List<T> topologicalSort(Graph<T> graph)
-	{
-		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
-		List<T> l = new ArrayList<>();
-		Set<T> s = graphCopy.nodes().stream()
-				.filter(node -> graphCopy.inDegree(node) == 0)
-				.collect(Collectors.toSet());
-		while (!s.isEmpty())
-		{
-			Iterator<T> it = s.iterator();
-			T n = it.next();
-			it.remove();
-
-			l.add(n);
-
-			for (T m : new HashSet<>(graphCopy.successors(n)))
-			{
-				graphCopy.removeEdge(n, m);
-				if (graphCopy.inDegree(m) == 0)
-				{
-					s.add(m);
-				}
-			}
-		}
-		if (!graphCopy.edges().isEmpty())
-		{
-			throw new RuntimeException("Graph has at least one cycle");
-		}
-		return l;
 	}
 
 	@Subscribe
@@ -180,12 +139,14 @@ public class PluginManager
 						if (activePlugins.contains(plugin))
 						{
 							stopPlugin(plugin);
-						} else
+						}
+						else
 						{
 							startPlugin(plugin);
 						}
 					}
-				} catch (PluginInstantiationException e)
+				}
+				catch (PluginInstantiationException e)
 				{
 					log.error("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
@@ -207,10 +168,12 @@ public class PluginManager
 					return (Config) injector.getInstance(key);
 				}
 			}
-		} catch (ThreadDeath e)
+		}
+		catch (ThreadDeath e)
 		{
 			throw e;
-		} catch (Throwable e)
+		}
+		catch (Throwable e)
 		{
 			log.error("Unable to get plugin config", e);
 		}
@@ -252,10 +215,12 @@ public class PluginManager
 			{
 				configManager.setDefaultConfiguration(config, false);
 			}
-		} catch (ThreadDeath e)
+		}
+		catch (ThreadDeath e)
 		{
 			throw e;
-		} catch (Throwable ex)
+		}
+		catch (Throwable ex)
 		{
 			log.error("Unable to reset plugin configuration", ex);
 		}
@@ -274,13 +239,15 @@ public class PluginManager
 					try
 					{
 						startPlugin(plugin);
-					} catch (PluginInstantiationException ex)
+					}
+					catch (PluginInstantiationException ex)
 					{
 						log.error("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
 						plugins.remove(plugin);
 					}
 				});
-			} catch (InterruptedException | InvocationTargetException e)
+			}
+			catch (InterruptedException | InvocationTargetException e)
 			{
 				throw new RuntimeException(e);
 			}
@@ -301,11 +268,11 @@ public class PluginManager
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
 		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
-				.map(ClassInfo::load)
-				.collect(Collectors.toList());
+			.map(ClassInfo::load)
+			.collect(Collectors.toList());
 
 		loadPlugins(plugins, (loaded, total) ->
-				SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));
+			SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));
 	}
 
 	public void loadSideLoadPlugins()
@@ -332,13 +299,14 @@ public class PluginManager
 					ClassLoader classLoader = new PluginClassLoader(f, getClass().getClassLoader());
 
 					List<Class<?>> plugins = ClassPath.from(classLoader)
-							.getAllClasses()
-							.stream()
-							.map(ClassInfo::load)
-							.collect(Collectors.toList());
+						.getAllClasses()
+						.stream()
+						.map(ClassInfo::load)
+						.collect(Collectors.toList());
 
 					loadPlugins(plugins, null);
-				} catch (PluginInstantiationException | IOException ex)
+				}
+				catch (PluginInstantiationException | IOException ex)
 				{
 					log.error("error sideloading plugin", ex);
 				}
@@ -349,8 +317,8 @@ public class PluginManager
 	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
-				.directed()
-				.build();
+			.directed()
+			.build();
 
 		for (Class<?> clazz : plugins)
 		{
@@ -386,7 +354,7 @@ public class PluginManager
 				log.debug("Disabling {} due to safe mode", clazz);
 				// also disable the plugin from autostarting later
 				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME,
-						(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
+					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
 				continue;
 			}
 
@@ -424,7 +392,8 @@ public class PluginManager
 				plugin = instantiate(this.plugins, (Class<Plugin>) pluginClazz);
 				newPlugins.add(plugin);
 				this.plugins.add(plugin);
-			} catch (PluginInstantiationException ex)
+			}
+			catch (PluginInstantiationException ex)
 			{
 				log.error("Error instantiating plugin!", ex);
 			}
@@ -481,10 +450,12 @@ public class PluginManager
 			eventBus.register(plugin);
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
-		} catch (ThreadDeath e)
+		}
+		catch (ThreadDeath e)
 		{
 			throw e;
-		} catch (Throwable ex)
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -511,7 +482,8 @@ public class PluginManager
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
 			eventBus.post(new PluginChanged(plugin, false));
-		} catch (Exception ex)
+		}
+		catch (Exception ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -564,10 +536,12 @@ public class PluginManager
 		try
 		{
 			plugin = clazz.getDeclaredConstructor().newInstance();
-		} catch (ThreadDeath e)
+		}
+		catch (ThreadDeath e)
 		{
 			throw e;
-		} catch (Throwable ex)
+		}
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -592,7 +566,8 @@ public class PluginManager
 
 				// Create a parent injector containing all of the dependencies
 				parent = parent.createChildInjector(modules);
-			} else if (!deps.isEmpty())
+			}
+			else if (!deps.isEmpty())
 			{
 				// With only one dependency we can simply use its injector
 				parent = deps.get(0).injector;
@@ -607,7 +582,8 @@ public class PluginManager
 			};
 			Injector pluginInjector = parent.createChildInjector(pluginModule);
 			plugin.injector = pluginInjector;
-		} catch (CreationException ex)
+		}
+		catch (CreationException ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}
@@ -650,16 +626,17 @@ public class PluginManager
 				final MethodType subscription = MethodType.methodType(method.getReturnType(), method.getParameterTypes());
 				final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
 				final CallSite site = LambdaMetafactory.metafactory(
-						caller,
-						"run",
-						MethodType.methodType(Runnable.class, clazz),
-						subscription,
-						target,
-						subscription);
+					caller,
+					"run",
+					MethodType.methodType(Runnable.class, clazz),
+					subscription,
+					target,
+					subscription);
 
 				final MethodHandle factory = site.getTarget();
 				runnable = (Runnable) factory.bindTo(plugin).invokeExact();
-			} catch (Throwable e)
+			}
+			catch (Throwable e)
 			{
 				log.warn("Unable to create lambda for method {}", method, e);
 			}
@@ -687,6 +664,47 @@ public class PluginManager
 		}
 	}
 
+	/**
+	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 *
+	 * @param graph - A directed graph
+	 * @param <T>   - The type of the item contained in the nodes of the graph
+	 * @return - A topologically sorted list corresponding to graph.
+	 * <p>
+	 * Multiple invocations with the same arguments may return lists that are not equal.
+	 */
+	@VisibleForTesting
+	static <T> List<T> topologicalSort(Graph<T> graph)
+	{
+		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
+		List<T> l = new ArrayList<>();
+		Set<T> s = graphCopy.nodes().stream()
+			.filter(node -> graphCopy.inDegree(node) == 0)
+			.collect(Collectors.toSet());
+		while (!s.isEmpty())
+		{
+			Iterator<T> it = s.iterator();
+			T n = it.next();
+			it.remove();
+
+			l.add(n);
+
+			for (T m : new HashSet<>(graphCopy.successors(n)))
+			{
+				graphCopy.removeEdge(n, m);
+				if (graphCopy.inDegree(m) == 0)
+				{
+					s.add(m);
+				}
+			}
+		}
+		if (!graphCopy.edges().isEmpty())
+		{
+			throw new RuntimeException("Graph has at least one cycle");
+		}
+		return l;
+	}
+
 	public List<Plugin> conflictsForPlugin(Plugin plugin)
 	{
 		Set<String> conflicts;
@@ -697,29 +715,29 @@ public class PluginManager
 		}
 
 		return plugins.stream()
-				.filter(p ->
+			.filter(p ->
+			{
+				if (p == plugin)
 				{
-					if (p == plugin)
-					{
-						return false;
-					}
+					return false;
+				}
 
-					PluginDescriptor desc = p.getClass().getAnnotation(PluginDescriptor.class);
-					if (conflicts.contains(desc.name()))
+				PluginDescriptor desc = p.getClass().getAnnotation(PluginDescriptor.class);
+				if (conflicts.contains(desc.name()))
+				{
+					return true;
+				}
+
+				for (String conflict : desc.conflicts())
+				{
+					if (conflicts.contains(conflict))
 					{
 						return true;
 					}
+				}
 
-					for (String conflict : desc.conflicts())
-					{
-						if (conflicts.contains(conflict))
-						{
-							return true;
-						}
-					}
-
-					return false;
-				})
-				.collect(Collectors.toList());
+				return false;
+			})
+			.collect(Collectors.toList());
 	}
 }

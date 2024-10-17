@@ -69,8 +69,6 @@ class WorldTableRow extends JPanel
 	private static final Color PVP_ARENA_WORLD = new Color(144, 179, 255);
 	private static final Color QUEST_SPEEDRUNNING_WORLD = new Color(94, 213, 201);
 	private static final Color FRESH_START_WORLD = new Color(255, 211, 83);
-	private static final int LOCATION_US_WEST = -73;
-	private static final int LOCATION_US_EAST = -42;
 
 	static
 	{
@@ -82,13 +80,18 @@ class WorldTableRow extends JPanel
 		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
+	private static final int LOCATION_US_WEST = -73;
+	private static final int LOCATION_US_EAST = -42;
+
 	@Getter
 	private final World world;
 	private final BiConsumer<World, Boolean> onFavorite;
-	private final int worldLocation; // from enum WORLD_LOCATIONS
-	private final JMenuItem favoriteMenuOption = new JMenuItem();
 	@Getter(AccessLevel.PACKAGE)
 	private int playerCount;
+	private final int worldLocation; // from enum WORLD_LOCATIONS
+
+	private final JMenuItem favoriteMenuOption = new JMenuItem();
+
 	private JLabel worldField;
 	private JLabel playerCountField;
 	private JLabel activityField;
@@ -194,46 +197,11 @@ class WorldTableRow extends JPanel
 		add(rightSide, BorderLayout.CENTER);
 	}
 
-	private static String playerCountString(int playerCount)
-	{
-		return playerCount < 0 ? "OFF" : Integer.toString(playerCount);
-	}
-
-	private static ImageIcon getFlag(WorldRegion region, int worldLocation)
-	{
-		if (region == null)
-		{
-			return null;
-		}
-
-		switch (region)
-		{
-			case UNITED_STATES_OF_AMERICA:
-				switch (worldLocation)
-				{
-					case LOCATION_US_WEST:
-						return FLAG_US_WEST;
-					case LOCATION_US_EAST:
-						return FLAG_US_EAST;
-					default:
-						return FLAG_US;
-				}
-			case UNITED_KINGDOM:
-				return FLAG_UK;
-			case AUSTRALIA:
-				return FLAG_AUS;
-			case GERMANY:
-				return FLAG_GER;
-			default:
-				return null;
-		}
-	}
-
 	void setFavoriteMenu(boolean favorite)
 	{
 		String favoriteAction = favorite ?
-				"Remove " + world.getId() + " from favorites" :
-				"Add " + world.getId() + " to favorites";
+			"Remove " + world.getId() + " from favorites" :
+			"Add " + world.getId() + " to favorites";
 
 		favoriteMenuOption.setText(favoriteAction);
 
@@ -251,6 +219,17 @@ class WorldTableRow extends JPanel
 		playerCountField.setText(playerCountString(playerCount));
 	}
 
+	private static String playerCountString(int playerCount)
+	{
+		return playerCount < 0 ? "OFF" : Integer.toString(playerCount);
+	}
+
+	void setPing(int ping)
+	{
+		this.ping = ping;
+		pingField.setText(ping <= 0 ? "-" : Integer.toString(ping));
+	}
+
 	void hidePing()
 	{
 		pingField.setText("-");
@@ -264,12 +243,6 @@ class WorldTableRow extends JPanel
 	int getPing()
 	{
 		return ping;
-	}
-
-	void setPing(int ping)
-	{
-		this.ping = ping;
-		pingField.setText(ping <= 0 ? "-" : Integer.toString(ping));
 	}
 
 	public void recolour(boolean current)
@@ -287,27 +260,33 @@ class WorldTableRow extends JPanel
 
 		EnumSet<WorldType> types = world.getTypes();
 		if (types.contains(WorldType.PVP)
-				|| types.contains(WorldType.HIGH_RISK)
-				|| types.contains(WorldType.DEADMAN))
+			|| types.contains(WorldType.HIGH_RISK)
+			|| types.contains(WorldType.DEADMAN))
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
-		} else if (types.contains(WorldType.SEASONAL))
+		}
+		else if (types.contains(WorldType.SEASONAL))
 		{
 			activityField.setForeground(SEASONAL_WORLD);
-		} else if (types.contains(WorldType.NOSAVE_MODE) || types.contains(WorldType.BETA_WORLD)
-				|| types.contains(WorldType.LEGACY_ONLY)) // sometimes used for arbitrarily restricted worlds
+		}
+		else if (types.contains(WorldType.NOSAVE_MODE) || types.contains(WorldType.BETA_WORLD)
+			|| types.contains(WorldType.LEGACY_ONLY)) // sometimes used for arbitrarily restricted worlds
 		{
 			activityField.setForeground(BETA_WORLD);
-		} else if (types.contains(WorldType.PVP_ARENA))
+		}
+		else if (types.contains(WorldType.PVP_ARENA))
 		{
 			activityField.setForeground(PVP_ARENA_WORLD);
-		} else if (types.contains(WorldType.QUEST_SPEEDRUNNING))
+		}
+		else if (types.contains(WorldType.QUEST_SPEEDRUNNING))
 		{
 			activityField.setForeground(QUEST_SPEEDRUNNING_WORLD);
-		} else if (types.contains(WorldType.FRESH_START_WORLD))
+		}
+		else if (types.contains(WorldType.FRESH_START_WORLD))
 		{
 			activityField.setForeground(FRESH_START_WORLD);
-		} else
+		}
+		else
 		{
 			activityField.setForeground(Color.WHITE);
 		}
@@ -422,5 +401,35 @@ class WorldTableRow extends JPanel
 		column.add(worldField, BorderLayout.CENTER);
 
 		return column;
+	}
+
+	private static ImageIcon getFlag(WorldRegion region, int worldLocation)
+	{
+		if (region == null)
+		{
+			return null;
+		}
+
+		switch (region)
+		{
+			case UNITED_STATES_OF_AMERICA:
+				switch (worldLocation)
+				{
+					case LOCATION_US_WEST:
+						return FLAG_US_WEST;
+					case LOCATION_US_EAST:
+						return FLAG_US_EAST;
+					default:
+						return FLAG_US;
+				}
+			case UNITED_KINGDOM:
+				return FLAG_UK;
+			case AUSTRALIA:
+				return FLAG_AUS;
+			case GERMANY:
+				return FLAG_GER;
+			default:
+				return null;
+		}
 	}
 }

@@ -58,12 +58,15 @@ import static net.runelite.client.plugins.kourendlibrary.Book.*;
 @Slf4j
 class Library
 {
-	@VisibleForTesting
-	final int step;
 	private final Map<WorldPoint, Bookcase> byPoint = new HashMap<>();
 	private final Map<Integer, ArrayList<Bookcase>> byLevel = new HashMap<>();
 	private final List<Bookcase> byIndex = new ArrayList<>();
+
 	private final List<List<Book>> sequences = populateSequences();
+
+	@VisibleForTesting
+	final int step;
+
 	@Getter
 	private SolvedState state;
 
@@ -132,11 +135,12 @@ class Library
 			// Bookcase is set from a previous mark
 			// Check for a mismatch, unless it is now null and has Varlamore Envoy
 			if (book != bookcase.getBook()
-					&& !(book == null && bookcase.getBook() == VARLAMORE_ENVOY))
+				&& !(book == null && bookcase.getBook() == VARLAMORE_ENVOY))
 			{
 				reset();
 			}
-		} else if (state != SolvedState.NO_DATA)
+		}
+		else if (state != SolvedState.NO_DATA)
 		{
 			// Reset if the book we found isn't what we expected
 
@@ -151,11 +155,12 @@ class Library
 			// Reset if we found nothing when we expected something that wasn't Varlamore Envoy
 			// since the layout has changed
 			if (book == null
-					&& !bookcase.getPossibleBooks().isEmpty()
-					&& bookcase.getPossibleBooks().stream().noneMatch(b -> b == VARLAMORE_ENVOY))
+				&& !bookcase.getPossibleBooks().isEmpty()
+				&& bookcase.getPossibleBooks().stream().noneMatch(b -> b == VARLAMORE_ENVOY))
 			{
 				reset();
-			} else
+			}
+			else
 			{
 				// Everything is known, nothing to do
 				return;
@@ -208,7 +213,8 @@ class Library
 							}
 							found++;
 						}
-					} else
+					}
+					else
 					{
 						// Only bail if this isn't a double bookcase
 						if (iBookcase.isBookSet() && iBookcase.getBook() != null && iBookcase.getIndex().size() == 1)
@@ -239,27 +245,27 @@ class Library
 			}
 
 			IntStream.range(0, sequences.size())
-					.filter(i -> certainty[i] == max)
-					.forEach(isequence ->
-					{
-						List<Book> sequence = sequences.get(isequence);
-						int zero = getBookcaseZeroIndexForSequenceWithBook(sequence, bookcaseIndex, book);
+				.filter(i -> certainty[i] == max)
+				.forEach(isequence ->
+				{
+					List<Book> sequence = sequences.get(isequence);
+					int zero = getBookcaseZeroIndexForSequenceWithBook(sequence, bookcaseIndex, book);
 
-						for (int i = 0; i < byIndex.size(); i++)
+					for (int i = 0; i < byIndex.size(); i++)
+					{
+						int ai = (i + zero) % byIndex.size();
+						Bookcase iBookcase = byIndex.get(ai);
+						if (iBookcase.getBook() == null)
 						{
-							int ai = (i + zero) % byIndex.size();
-							Bookcase iBookcase = byIndex.get(ai);
-							if (iBookcase.getBook() == null)
+							int iseq = i / step;
+							if (i % step == 0 && iseq < sequence.size())
 							{
-								int iseq = i / step;
-								if (i % step == 0 && iseq < sequence.size())
-								{
-									Book seqBook = sequence.get(iseq);
-									iBookcase.getPossibleBooks().add(seqBook);
-								}
+								Book seqBook = sequence.get(iseq);
+								iBookcase.getPossibleBooks().add(seqBook);
 							}
 						}
-					});
+					}
+				});
 			if (IntStream.range(0, certainty.length).filter(i -> certainty[i] == max).count() == 1)
 			{
 				state = SolvedState.COMPLETE;
@@ -287,96 +293,96 @@ class Library
 	private List<List<Book>> populateSequences()
 	{
 		List<List<Book>> books = Arrays.asList(
-				Arrays.asList(
-						KILLING_OF_A_KING,
-						IDEOLOGY_OF_DARKNESS,
-						RADAS_JOURNEY,
-						TRANSVERGENCE_THEORY,
-						TRISTESSAS_TRAGEDY,
-						RADAS_CENSUS,
-						TREACHERY_OF_ROYALTY,
-						HOSIDIUS_LETTER,
-						RICKTORS_DIARY_7,
-						EATHRAM_RADA_EXTRACT,
-						VARLAMORE_ENVOY,
-						WINTERTODT_PARABLE,
-						TWILL_ACCORD,
-						BYRNES_CORONATION_SPEECH,
-						SOUL_JOURNEY,
-						TRANSPORTATION_INCANTATIONS
-				),
-				Arrays.asList(
-						KILLING_OF_A_KING,
-						IDEOLOGY_OF_DARKNESS,
-						RADAS_JOURNEY,
-						TRANSVERGENCE_THEORY,
-						TRISTESSAS_TRAGEDY,
-						RADAS_CENSUS,
-						TREACHERY_OF_ROYALTY,
-						HOSIDIUS_LETTER,
-						VARLAMORE_ENVOY,
-						RICKTORS_DIARY_7,
-						EATHRAM_RADA_EXTRACT,
-						SOUL_JOURNEY,
-						WINTERTODT_PARABLE,
-						TWILL_ACCORD,
-						BYRNES_CORONATION_SPEECH,
-						TRANSPORTATION_INCANTATIONS
-				),
-				Arrays.asList(
-						RICKTORS_DIARY_7,
-						VARLAMORE_ENVOY,
-						EATHRAM_RADA_EXTRACT,
-						IDEOLOGY_OF_DARKNESS,
-						RADAS_CENSUS,
-						KILLING_OF_A_KING,
-						TREACHERY_OF_ROYALTY,
-						HOSIDIUS_LETTER,
-						BYRNES_CORONATION_SPEECH,
-						SOUL_JOURNEY,
-						WINTERTODT_PARABLE,
-						TWILL_ACCORD,
-						RADAS_JOURNEY,
-						TRANSVERGENCE_THEORY,
-						TRISTESSAS_TRAGEDY,
-						TRANSPORTATION_INCANTATIONS
-				),
-				Arrays.asList(
-						RADAS_CENSUS,
-						RICKTORS_DIARY_7,
-						EATHRAM_RADA_EXTRACT,
-						KILLING_OF_A_KING,
-						HOSIDIUS_LETTER,
-						WINTERTODT_PARABLE,
-						TWILL_ACCORD,
-						BYRNES_CORONATION_SPEECH,
-						IDEOLOGY_OF_DARKNESS,
-						RADAS_JOURNEY,
-						TRANSVERGENCE_THEORY,
-						TRISTESSAS_TRAGEDY,
-						TREACHERY_OF_ROYALTY,
-						TRANSPORTATION_INCANTATIONS,
-						SOUL_JOURNEY,
-						VARLAMORE_ENVOY
-				),
-				Arrays.asList(
-						RADAS_CENSUS,
-						TRANSVERGENCE_THEORY,
-						TREACHERY_OF_ROYALTY,
-						RADAS_JOURNEY,
-						KILLING_OF_A_KING,
-						VARLAMORE_ENVOY,
-						BYRNES_CORONATION_SPEECH,
-						HOSIDIUS_LETTER,
-						TRISTESSAS_TRAGEDY,
-						RICKTORS_DIARY_7,
-						IDEOLOGY_OF_DARKNESS,
-						WINTERTODT_PARABLE,
-						TWILL_ACCORD,
-						SOUL_JOURNEY,
-						EATHRAM_RADA_EXTRACT,
-						TRANSPORTATION_INCANTATIONS
-				)
+			Arrays.asList(
+				KILLING_OF_A_KING,
+				IDEOLOGY_OF_DARKNESS,
+				RADAS_JOURNEY,
+				TRANSVERGENCE_THEORY,
+				TRISTESSAS_TRAGEDY,
+				RADAS_CENSUS,
+				TREACHERY_OF_ROYALTY,
+				HOSIDIUS_LETTER,
+				RICKTORS_DIARY_7,
+				EATHRAM_RADA_EXTRACT,
+				VARLAMORE_ENVOY,
+				WINTERTODT_PARABLE,
+				TWILL_ACCORD,
+				BYRNES_CORONATION_SPEECH,
+				SOUL_JOURNEY,
+				TRANSPORTATION_INCANTATIONS
+			),
+			Arrays.asList(
+				KILLING_OF_A_KING,
+				IDEOLOGY_OF_DARKNESS,
+				RADAS_JOURNEY,
+				TRANSVERGENCE_THEORY,
+				TRISTESSAS_TRAGEDY,
+				RADAS_CENSUS,
+				TREACHERY_OF_ROYALTY,
+				HOSIDIUS_LETTER,
+				VARLAMORE_ENVOY,
+				RICKTORS_DIARY_7,
+				EATHRAM_RADA_EXTRACT,
+				SOUL_JOURNEY,
+				WINTERTODT_PARABLE,
+				TWILL_ACCORD,
+				BYRNES_CORONATION_SPEECH,
+				TRANSPORTATION_INCANTATIONS
+			),
+			Arrays.asList(
+				RICKTORS_DIARY_7,
+				VARLAMORE_ENVOY,
+				EATHRAM_RADA_EXTRACT,
+				IDEOLOGY_OF_DARKNESS,
+				RADAS_CENSUS,
+				KILLING_OF_A_KING,
+				TREACHERY_OF_ROYALTY,
+				HOSIDIUS_LETTER,
+				BYRNES_CORONATION_SPEECH,
+				SOUL_JOURNEY,
+				WINTERTODT_PARABLE,
+				TWILL_ACCORD,
+				RADAS_JOURNEY,
+				TRANSVERGENCE_THEORY,
+				TRISTESSAS_TRAGEDY,
+				TRANSPORTATION_INCANTATIONS
+			),
+			Arrays.asList(
+				RADAS_CENSUS,
+				RICKTORS_DIARY_7,
+				EATHRAM_RADA_EXTRACT,
+				KILLING_OF_A_KING,
+				HOSIDIUS_LETTER,
+				WINTERTODT_PARABLE,
+				TWILL_ACCORD,
+				BYRNES_CORONATION_SPEECH,
+				IDEOLOGY_OF_DARKNESS,
+				RADAS_JOURNEY,
+				TRANSVERGENCE_THEORY,
+				TRISTESSAS_TRAGEDY,
+				TREACHERY_OF_ROYALTY,
+				TRANSPORTATION_INCANTATIONS,
+				SOUL_JOURNEY,
+				VARLAMORE_ENVOY
+			),
+			Arrays.asList(
+				RADAS_CENSUS,
+				TRANSVERGENCE_THEORY,
+				TREACHERY_OF_ROYALTY,
+				RADAS_JOURNEY,
+				KILLING_OF_A_KING,
+				VARLAMORE_ENVOY,
+				BYRNES_CORONATION_SPEECH,
+				HOSIDIUS_LETTER,
+				TRISTESSAS_TRAGEDY,
+				RICKTORS_DIARY_7,
+				IDEOLOGY_OF_DARKNESS,
+				WINTERTODT_PARABLE,
+				TWILL_ACCORD,
+				SOUL_JOURNEY,
+				EATHRAM_RADA_EXTRACT,
+				TRANSPORTATION_INCANTATIONS
+			)
 		);
 
 		for (int i = 0; i < books.size(); i++)

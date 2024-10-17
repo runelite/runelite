@@ -63,10 +63,12 @@ class RaidsTimer extends InfoBox
 		if (firstFloorTime == null)
 		{
 			firstFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
-		} else if (secondFloorTime == null)
+		}
+		else if (secondFloorTime == null)
 		{
 			secondFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
-		} else if (thirdFloorTime == null)
+		}
+		else if (thirdFloorTime == null)
 		{
 			thirdFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 		}

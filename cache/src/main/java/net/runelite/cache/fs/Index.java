@@ -39,12 +39,14 @@ public class Index
 	private static final Logger logger = LoggerFactory.getLogger(Index.class);
 
 	private final int id;
-	private final List<Archive> archives = new ArrayList<>();
+
 	private int protocol = 6;
 	private boolean named = true;
 	private int revision;
 	private int crc;
 	private int compression; // compression method of this index's data in 255
+
+	private final List<Archive> archives = new ArrayList<>();
 
 	public Index(int id)
 	{

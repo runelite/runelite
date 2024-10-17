@@ -51,7 +51,8 @@ public class Cache
 		try
 		{
 			cmd = parser.parse(options, args);
-		} catch (ParseException ex)
+		}
+		catch (ParseException ex)
 		{
 			System.err.println("Error parsing command line options: " + ex.getMessage());
 			System.exit(-1);
@@ -74,7 +75,8 @@ public class Cache
 
 			System.out.println("Dumping items to " + itemdir);
 			dumpItems(store, new File(itemdir));
-		} else if (cmd.hasOption("npcs"))
+		}
+		else if (cmd.hasOption("npcs"))
 		{
 			String npcdir = cmd.getOptionValue("npcs");
 
@@ -86,7 +88,8 @@ public class Cache
 
 			System.out.println("Dumping npcs to " + npcdir);
 			dumpNpcs(store, new File(npcdir));
-		} else if (cmd.hasOption("objects"))
+		}
+		else if (cmd.hasOption("objects"))
 		{
 			String objectdir = cmd.getOptionValue("objects");
 
@@ -98,7 +101,8 @@ public class Cache
 
 			System.out.println("Dumping objects to " + objectdir);
 			dumpObjects(store, new File(objectdir));
-		} else if (cmd.hasOption("sprites"))
+		}
+		else if (cmd.hasOption("sprites"))
 		{
 			String spritedir = cmd.getOptionValue("sprites");
 
@@ -110,7 +114,8 @@ public class Cache
 
 			System.out.println("Dumping sprites to " + spritedir);
 			dumpSprites(store, new File(spritedir));
-		} else
+		}
+		else
 		{
 			System.err.println("Nothing to do");
 		}

@@ -48,6 +48,10 @@ public class ScreenMarkerCreationPanel extends JPanel
 	private static final ImageIcon CANCEL_ICON;
 	private static final ImageIcon CANCEL_HOVER_ICON;
 
+	private final JShadowedLabel instructionsLabel = new JShadowedLabel();
+	private final JLabel confirmLabel = new JLabel();
+	private boolean lockedConfirm = true;
+
 	static
 	{
 		CONFIRM_ICON = new ImageIcon(ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "confirm_icon.png"));
@@ -58,10 +62,6 @@ public class ScreenMarkerCreationPanel extends JPanel
 		CONFIRM_LOCKED_ICON = new ImageIcon(ImageUtil.grayscaleImage(confirmIcon));
 		CANCEL_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(ImageUtil.bufferedImageFromImage(CANCEL_ICON.getImage()), 0.6f));
 	}
-
-	private final JShadowedLabel instructionsLabel = new JShadowedLabel();
-	private final JLabel confirmLabel = new JLabel();
-	private boolean lockedConfirm = true;
 
 	ScreenMarkerCreationPanel(ScreenMarkerPlugin plugin)
 	{

@@ -47,15 +47,17 @@ import org.slf4j.LoggerFactory;
 public class TrackDumperTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(TrackDumperTest.class);
-	private final Djb2Manager djb2 = new Djb2Manager();
+
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	private final Djb2Manager djb2 = new Djb2Manager();
 
 	@Test
 	public void test() throws IOException
 	{
 		File dumpDir1 = folder.newFolder(),
-				dumpDir2 = folder.newFolder();
+			dumpDir2 = folder.newFolder();
 		int idx1 = 0, idx2 = 0;
 
 		djb2.load();
@@ -104,7 +106,8 @@ public class TrackDumperTest
 			{
 				name = "name-" + archive.getNameHash();
 			}
-		} else
+		}
+		else
 		{
 			name = "archive-" + archive.getArchiveId();
 		}
@@ -142,7 +145,8 @@ public class TrackDumperTest
 			{
 				Thread.sleep(1000L);
 			}
-		} finally
+		}
+		finally
 		{
 			sequencer.close();
 		}

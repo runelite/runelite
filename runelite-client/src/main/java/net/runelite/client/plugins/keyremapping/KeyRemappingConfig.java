@@ -36,25 +36,25 @@ import net.runelite.client.config.ModifierlessKeybind;
 public interface KeyRemappingConfig extends Config
 {
 	@ConfigSection(
-			name = "Camera Remapping",
-			description = "Settings for remapping the camera",
-			position = 0
+		name = "Camera Remapping",
+		description = "Settings for remapping the camera",
+		position = 0
 	)
 	String cameraSection = "camera";
 
 	@ConfigSection(
-			name = "F Key Remapping",
-			description = "Settings for remapping the F Keys",
-			position = 1
+		name = "F Key Remapping",
+		description = "Settings for remapping the F Keys",
+		position = 1
 	)
 	String fKeySection = "fKeys";
 
 	@ConfigItem(
-			position = 1,
-			keyName = "cameraRemap",
-			name = "Remap Camera",
-			description = "Configures whether the camera movement uses remapped keys",
-			section = cameraSection
+		position = 1,
+		keyName = "cameraRemap",
+		name = "Remap Camera",
+		description = "Configures whether the camera movement uses remapped keys",
+		section = cameraSection
 	)
 	default boolean cameraRemap()
 	{
@@ -62,11 +62,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "up",
-			name = "Camera Up key",
-			description = "The key which will replace up.",
-			section = cameraSection
+		position = 2,
+		keyName = "up",
+		name = "Camera Up key",
+		description = "The key which will replace up.",
+		section = cameraSection
 	)
 	default ModifierlessKeybind up()
 	{
@@ -74,11 +74,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "down",
-			name = "Camera Down key",
-			description = "The key which will replace down.",
-			section = cameraSection
+		position = 3,
+		keyName = "down",
+		name = "Camera Down key",
+		description = "The key which will replace down.",
+		section = cameraSection
 	)
 	default ModifierlessKeybind down()
 	{
@@ -86,11 +86,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "left",
-			name = "Camera Left key",
-			description = "The key which will replace left.",
-			section = cameraSection
+		position = 4,
+		keyName = "left",
+		name = "Camera Left key",
+		description = "The key which will replace left.",
+		section = cameraSection
 	)
 	default ModifierlessKeybind left()
 	{
@@ -98,11 +98,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "right",
-			name = "Camera Right key",
-			description = "The key which will replace right.",
-			section = cameraSection
+		position = 5,
+		keyName = "right",
+		name = "Camera Right key",
+		description = "The key which will replace right.",
+		section = cameraSection
 	)
 	default ModifierlessKeybind right()
 	{
@@ -110,11 +110,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
-			keyName = "fkeyRemap",
-			name = "Remap F Keys",
-			description = "Configures whether F-Keys use remapped keys",
-			section = fKeySection
+		position = 6,
+		keyName = "fkeyRemap",
+		name = "Remap F Keys",
+		description = "Configures whether F-Keys use remapped keys",
+		section = fKeySection
 	)
 	default boolean fkeyRemap()
 	{
@@ -122,11 +122,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
-			keyName = "f1",
-			name = "F1",
-			description = "The key which will replace {F1}.",
-			section = fKeySection
+		position = 7,
+		keyName = "f1",
+		name = "F1",
+		description = "The key which will replace {F1}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f1()
 	{
@@ -134,11 +134,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
-			keyName = "f2",
-			name = "F2",
-			description = "The key which will replace {F2}.",
-			section = fKeySection
+		position = 8,
+		keyName = "f2",
+		name = "F2",
+		description = "The key which will replace {F2}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f2()
 	{
@@ -146,11 +146,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
-			keyName = "f3",
-			name = "F3",
-			description = "The key which will replace {F3}.",
-			section = fKeySection
+		position = 9,
+		keyName = "f3",
+		name = "F3",
+		description = "The key which will replace {F3}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f3()
 	{
@@ -158,11 +158,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "f4",
-			name = "F4",
-			description = "The key which will replace {F4}.",
-			section = fKeySection
+		position = 10,
+		keyName = "f4",
+		name = "F4",
+		description = "The key which will replace {F4}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f4()
 	{
@@ -170,11 +170,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 11,
-			keyName = "f5",
-			name = "F5",
-			description = "The key which will replace {F5}.",
-			section = fKeySection
+		position = 11,
+		keyName = "f5",
+		name = "F5",
+		description = "The key which will replace {F5}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f5()
 	{
@@ -182,11 +182,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 12,
-			keyName = "f6",
-			name = "F6",
-			description = "The key which will replace {F6}.",
-			section = fKeySection
+		position = 12,
+		keyName = "f6",
+		name = "F6",
+		description = "The key which will replace {F6}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f6()
 	{
@@ -194,11 +194,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 13,
-			keyName = "f7",
-			name = "F7",
-			description = "The key which will replace {F7}.",
-			section = fKeySection
+		position = 13,
+		keyName = "f7",
+		name = "F7",
+		description = "The key which will replace {F7}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f7()
 	{
@@ -206,11 +206,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 14,
-			keyName = "f8",
-			name = "F8",
-			description = "The key which will replace {F8}.",
-			section = fKeySection
+		position = 14,
+		keyName = "f8",
+		name = "F8",
+		description = "The key which will replace {F8}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f8()
 	{
@@ -218,11 +218,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 15,
-			keyName = "f9",
-			name = "F9",
-			description = "The key which will replace {F9}.",
-			section = fKeySection
+		position = 15,
+		keyName = "f9",
+		name = "F9",
+		description = "The key which will replace {F9}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f9()
 	{
@@ -230,11 +230,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 16,
-			keyName = "f10",
-			name = "F10",
-			description = "The key which will replace {F10}.",
-			section = fKeySection
+		position = 16,
+		keyName = "f10",
+		name = "F10",
+		description = "The key which will replace {F10}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f10()
 	{
@@ -242,11 +242,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 17,
-			keyName = "f11",
-			name = "F11",
-			description = "The key which will replace {F11}.",
-			section = fKeySection
+		position = 17,
+		keyName = "f11",
+		name = "F11",
+		description = "The key which will replace {F11}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f11()
 	{
@@ -254,11 +254,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 18,
-			keyName = "f12",
-			name = "F12",
-			description = "The key which will replace {F12}.",
-			section = fKeySection
+		position = 18,
+		keyName = "f12",
+		name = "F12",
+		description = "The key which will replace {F12}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind f12()
 	{
@@ -266,11 +266,11 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 19,
-			keyName = "esc",
-			name = "ESC",
-			description = "The key which will replace {ESC}.",
-			section = fKeySection
+		position = 19,
+		keyName = "esc",
+		name = "ESC",
+		description = "The key which will replace {ESC}.",
+		section = fKeySection
 	)
 	default ModifierlessKeybind esc()
 	{
@@ -278,10 +278,10 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 20,
-			keyName = "space",
-			name = "Space",
-			description = "The key which will replace {Space} when dialogs are open."
+		position = 20,
+		keyName = "space",
+		name = "Space",
+		description = "The key which will replace {Space} when dialogs are open."
 	)
 	default ModifierlessKeybind space()
 	{
@@ -289,10 +289,10 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 21,
-			keyName = "control",
-			name = "Control",
-			description = "The key which will replace {Control}."
+		position = 21,
+		keyName = "control",
+		name = "Control",
+		description = "The key which will replace {Control}."
 	)
 	default ModifierlessKeybind control()
 	{

@@ -81,7 +81,8 @@ class XpPauseState
 		if (state.getXp() != currentXp)
 		{
 			state.xpChanged(currentXp);
-		} else if (pauseAfterMinutes > 0)
+		}
+		else if (pauseAfterMinutes > 0)
 		{
 			final long now = System.currentTimeMillis();
 			final int pauseAfterMillis = pauseAfterMinutes * 60 * 1000;
@@ -106,7 +107,8 @@ class XpPauseState
 				findPauseState(skill).login();
 			}
 			overall.login();
-		} else if (prevIsLoggedIn && !loggedIn)
+		}
+		else if (prevIsLoggedIn && !loggedIn)
 		{
 			prevIsLoggedIn = false;
 

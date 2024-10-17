@@ -26,8 +26,8 @@ package net.runelite.client.plugins.puzzlesolver.lightbox;
 
 public class LightboxSolver
 {
-	private final LightboxState[] switches = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private LightboxState initial;
+	private final LightboxState[] switches = new LightboxState[LightBox.COMBINATIONS_POWER];
 
 	static boolean isBitSet(int num, int bit)
 	{

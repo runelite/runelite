@@ -61,9 +61,9 @@ class LapCounterOverlay extends OverlayPanel
 		AgilitySession session = plugin.getSession();
 
 		if (!config.showLapCount() ||
-				session == null ||
-				session.getLastLapCompleted() == null ||
-				session.getCourse() == null)
+			session == null ||
+			session.getLastLapCompleted() == null ||
+			session.getCourse() == null)
 		{
 			return null;
 		}
@@ -79,24 +79,24 @@ class LapCounterOverlay extends OverlayPanel
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Total Laps:")
-				.right(Integer.toString(session.getTotalLaps()))
-				.build());
+			.left("Total Laps:")
+			.right(Integer.toString(session.getTotalLaps()))
+			.build());
 
 		if (config.lapsToLevel() && session.getLapsTillGoal() > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left("Laps until goal:")
-					.right(Integer.toString(session.getLapsTillGoal()))
-					.build());
+				.left("Laps until goal:")
+				.right(Integer.toString(session.getLapsTillGoal()))
+				.build());
 		}
 
 		if (config.lapsPerHour() && session.getLapsPerHour() > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left("Laps per hour:")
-					.right(Integer.toString(session.getLapsPerHour()))
-					.build());
+				.left("Laps per hour:")
+				.right(Integer.toString(session.getLapsPerHour()))
+				.build());
 		}
 
 		return super.render(graphics);

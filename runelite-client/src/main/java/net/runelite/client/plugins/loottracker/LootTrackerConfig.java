@@ -36,18 +36,18 @@ public interface LootTrackerConfig extends Config
 	String GROUP = "loottracker";
 
 	@ConfigSection(
-			name = "Ignored Entries",
-			description = "The Ignore items and Ignore groups options",
-			position = -2,
-			closedByDefault = true
+		name = "Ignored Entries",
+		description = "The Ignore items and Ignore groups options",
+		position = -2,
+		closedByDefault = true
 	)
 	String ignored = "ignored";
 
 	@ConfigItem(
-			keyName = "ignoredItems",
-			name = "Ignored items",
-			description = "Configures which items should be ignored when calculating loot prices.",
-			section = ignored
+		keyName = "ignoredItems",
+		name = "Ignored items",
+		description = "Configures which items should be ignored when calculating loot prices.",
+		section = ignored
 	)
 	default String getIgnoredItems()
 	{
@@ -55,16 +55,16 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "ignoredItems",
-			name = "",
-			description = ""
+		keyName = "ignoredItems",
+		name = "",
+		description = ""
 	)
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
-			keyName = "priceType",
-			name = "Price Type",
-			description = "What type of price to use for calculating value."
+		keyName = "priceType",
+		name = "Price Type",
+		description = "What type of price to use for calculating value."
 	)
 	default LootTrackerPriceType priceType()
 	{
@@ -72,9 +72,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showPriceType",
-			name = "Show Price Type",
-			description = "Whether to show a GE: or HA: next to the total values in the tracker"
+		keyName = "showPriceType",
+		name = "Show Price Type",
+		description = "Whether to show a GE: or HA: next to the total values in the tracker"
 	)
 	default boolean showPriceType()
 	{
@@ -82,9 +82,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "syncPanel",
-			name = "Remember loot",
-			description = "Saves loot between client sessions"
+		keyName = "syncPanel",
+		name = "Remember loot",
+		description = "Saves loot between client sessions"
 	)
 	default boolean syncPanel()
 	{
@@ -92,10 +92,10 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "ignoredEvents",
-			name = "Ignored Loot Sources",
-			description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
-			section = ignored
+		keyName = "ignoredEvents",
+		name = "Ignored Loot Sources",
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
+		section = ignored
 	)
 	default String getIgnoredEvents()
 	{
@@ -103,16 +103,16 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "ignoredEvents",
-			name = "",
-			description = ""
+		keyName = "ignoredEvents",
+		name = "",
+		description = ""
 	)
 	void setIgnoredEvents(String key);
 
 	@ConfigItem(
-			keyName = "npcKillChatMessage",
-			name = "Show chat message for NPC kills",
-			description = "Adds a chat message with monster name and kill value when receiving loot from an NPC kill."
+		keyName = "npcKillChatMessage",
+		name = "Show chat message for NPC kills",
+		description = "Adds a chat message with monster name and kill value when receiving loot from an NPC kill."
 	)
 	default boolean npcKillChatMessage()
 	{
@@ -120,9 +120,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "pvpKillChatMessage",
-			name = "Show chat message for PVP kills",
-			description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
+		keyName = "pvpKillChatMessage",
+		name = "Show chat message for PVP kills",
+		description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
 	)
 	default boolean pvpKillChatMessage()
 	{
@@ -130,9 +130,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showRaidsLootValue",
-			name = "Show chat message for raids loot",
-			description = "Adds a chat message that displays the value of your loot at the end of the raid."
+		keyName = "showRaidsLootValue",
+		name = "Show chat message for raids loot",
+		description = "Adds a chat message that displays the value of your loot at the end of the raid."
 	)
 	default boolean showRaidsLootValue()
 	{

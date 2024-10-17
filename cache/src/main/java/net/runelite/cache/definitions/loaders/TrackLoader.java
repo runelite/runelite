@@ -125,28 +125,36 @@ public class TrackLoader
 				if (controlChangeIndex == JAG_TEMPO)
 				{
 					++tempoOpcodes;
-				} else if (opcode == JAG_NOTE_ON)
+				}
+				else if (opcode == JAG_NOTE_ON)
 				{
 					++noteOnOpcodes;
-				} else if (opcode == JAG_NOTE_OFF)
+				}
+				else if (opcode == JAG_NOTE_OFF)
 				{
 					++noteOffOpcodes;
-				} else if (opcode == JAG_CONTROL_CHANGE)
+				}
+				else if (opcode == JAG_CONTROL_CHANGE)
 				{
 					++ctrlChangeOpcodes;
-				} else if (opcode == JAG_PITCH_BEND)
+				}
+				else if (opcode == JAG_PITCH_BEND)
 				{
 					++wheelChangeOpcodes;
-				} else if (opcode == JAG_CHANNEL_PRESSURE)
+				}
+				else if (opcode == JAG_CHANNEL_PRESSURE)
 				{
 					++chnnlAfterTchOpcodes;
-				} else if (opcode == JAG_POLY_PRESSURE)
+				}
+				else if (opcode == JAG_POLY_PRESSURE)
 				{
 					++keyAfterTchOpcodes;
-				} else if (opcode == JAG_PROGRAM_CHANGE)
+				}
+				else if (opcode == JAG_PROGRAM_CHANGE)
 				{
 					++progmChangeOpcodes;
-				} else
+				}
+				else
 				{
 					throw new RuntimeException();
 				}
@@ -187,44 +195,56 @@ public class TrackLoader
 			if (controllerNumber == CONTROLLER_BANK_SELECT || controllerNumber == CONTROLLER_BANK_SELECT_2)
 			{
 				++progmChangeOpcodes;
-			} else if (controllerNumber == CONTROLLER_MODULATION_WHEEL)
+			}
+			else if (controllerNumber == CONTROLLER_MODULATION_WHEEL)
 			{
 				++modulationWheelSize;
-			} else if (controllerNumber == CONTROLLER_MODULATION_WHEEL2)
+			}
+			else if (controllerNumber == CONTROLLER_MODULATION_WHEEL2)
 			{
 				++modulationWheel2Size;
-			} else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME)
+			}
+			else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME)
 			{
 				++channelVolumeSize;
-			} else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME_2)
+			}
+			else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME_2)
 			{
 				++channelVolume2Size;
-			} else if (controllerNumber == CONTROLLER_PAN)
+			}
+			else if (controllerNumber == CONTROLLER_PAN)
 			{
 				++panSize;
-			} else if (controllerNumber == CONTROLLER_PAN_2)
+			}
+			else if (controllerNumber == CONTROLLER_PAN_2)
 			{
 				++pan2Size;
-			} else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_MSB)
+			}
+			else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_MSB)
 			{
 				++nonRegisteredMsbSize;
-			} else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_LSB)
+			}
+			else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_LSB)
 			{
 				++nonRegisteredLsbSize;
-			} else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_MSB)
+			}
+			else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_MSB)
 			{
 				++registeredNumberMsb;
-			} else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_LSB)
+			}
+			else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_LSB)
 			{
 				++registeredLsbSize;
-			} else if (controllerNumber != CONTROLLER_DAMPER_PEDAL
-					&& controllerNumber != CONTROLLER_PORTAMENTO
-					&& controllerNumber != CONTROLLER_ALL_SOUND_OFF
-					&& controllerNumber != CONTROLLER_RESET_ALL_CONTROLLERS
-					&& controllerNumber != CONTROLLER_ALL_NOTES_OFF)
+			}
+			else if (controllerNumber != CONTROLLER_DAMPER_PEDAL
+				&& controllerNumber != CONTROLLER_PORTAMENTO
+				&& controllerNumber != CONTROLLER_ALL_SOUND_OFF
+				&& controllerNumber != CONTROLLER_RESET_ALL_CONTROLLERS
+				&& controllerNumber != CONTROLLER_ALL_NOTES_OFF)
 			{
 				++otherSize;
-			} else
+			}
+			else
 			{
 				++commandsSize;
 			}
@@ -330,7 +350,8 @@ public class TrackLoader
 					var51.writeByte(var1.getArray()[tempoOffset++]);
 					var51.writeByte(var1.getArray()[tempoOffset++]);
 					var51.writeByte(var1.getArray()[tempoOffset++]);
-				} else
+				}
+				else
 				{
 					channel ^= status >> 4;
 					if (var62 == JAG_NOTE_ON)
@@ -344,7 +365,8 @@ public class TrackLoader
 						var54 += var1.getArray()[notesOnIndex++];
 						var51.writeByte(var53 & 127);
 						var51.writeByte(var54 & 127);
-					} else if (var62 == JAG_NOTE_OFF)
+					}
+					else if (var62 == JAG_NOTE_OFF)
 					{
 						if (var65)
 						{
@@ -355,7 +377,8 @@ public class TrackLoader
 						var55 += var1.getArray()[notesOffIndex++];
 						var51.writeByte(var53 & 127);
 						var51.writeByte(var55 & 127);
-					} else if (var62 == JAG_CONTROL_CHANGE)
+					}
+					else if (var62 == JAG_CONTROL_CHANGE)
 					{
 						if (var65)
 						{
@@ -368,44 +391,56 @@ public class TrackLoader
 						if (controllerNumber == CONTROLLER_BANK_SELECT || controllerNumber == CONTROLLER_BANK_SELECT_2)
 						{
 							var66 = var1.getArray()[programChangeIndex++];
-						} else if (controllerNumber == CONTROLLER_MODULATION_WHEEL)
+						}
+						else if (controllerNumber == CONTROLLER_MODULATION_WHEEL)
 						{
 							var66 = var1.getArray()[modulationWheelOffset++];
-						} else if (controllerNumber == CONTROLLER_MODULATION_WHEEL2)
+						}
+						else if (controllerNumber == CONTROLLER_MODULATION_WHEEL2)
 						{
 							var66 = var1.getArray()[modulationWheel2Offset++];
-						} else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME)
+						}
+						else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME)
 						{
 							var66 = var1.getArray()[channelVolumeOffset++];
-						} else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME_2)
+						}
+						else if (controllerNumber == CONTROLLER_CHANNEL_VOLUME_2)
 						{
 							var66 = var1.getArray()[channelVolume2Offset++];
-						} else if (controllerNumber == CONTROLLER_PAN)
+						}
+						else if (controllerNumber == CONTROLLER_PAN)
 						{
 							var66 = var1.getArray()[panOffset++];
-						} else if (controllerNumber == CONTROLLER_PAN_2)
+						}
+						else if (controllerNumber == CONTROLLER_PAN_2)
 						{
 							var66 = var1.getArray()[pan2Offset++];
-						} else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_MSB)
+						}
+						else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_MSB)
 						{
 							var66 = var1.getArray()[nonRegisteredMsbIndex++];
-						} else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_LSB)
+						}
+						else if (controllerNumber == CONTROLLER_NON_REGISTERED_PARAMETER_NUMBER_LSB)
 						{
 							var66 = var1.getArray()[nonRegisteredLsbIndex++];
-						} else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_MSB)
+						}
+						else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_MSB)
 						{
 							var66 = var1.getArray()[registeredMsbIndex++];
-						} else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_LSB)
+						}
+						else if (controllerNumber == CONTROLLER_REGISTERED_PARAMETER_NUMBER_LSB)
 						{
 							var66 = var1.getArray()[registeredLsbIndex++];
-						} else if (controllerNumber != CONTROLLER_DAMPER_PEDAL
-								&& controllerNumber != CONTROLLER_PORTAMENTO
-								&& controllerNumber != CONTROLLER_ALL_SOUND_OFF
-								&& controllerNumber != CONTROLLER_RESET_ALL_CONTROLLERS
-								&& controllerNumber != CONTROLLER_ALL_NOTES_OFF)
+						}
+						else if (controllerNumber != CONTROLLER_DAMPER_PEDAL
+							&& controllerNumber != CONTROLLER_PORTAMENTO
+							&& controllerNumber != CONTROLLER_ALL_SOUND_OFF
+							&& controllerNumber != CONTROLLER_RESET_ALL_CONTROLLERS
+							&& controllerNumber != CONTROLLER_ALL_NOTES_OFF)
 						{
 							var66 = var1.getArray()[otherIndex++];
-						} else
+						}
+						else
 						{
 							var66 = var1.getArray()[commandsIndex++];
 						}
@@ -413,7 +448,8 @@ public class TrackLoader
 						int var67 = var66 + var59[controllerNumber];
 						var59[controllerNumber] = var67;
 						var51.writeByte(var67 & 127);
-					} else if (var62 == JAG_PITCH_BEND)
+					}
+					else if (var62 == JAG_PITCH_BEND)
 					{
 						if (var65)
 						{
@@ -424,7 +460,8 @@ public class TrackLoader
 						var56 += var1.getArray()[pitchWheelHighIndex++] << 7;
 						var51.writeByte(var56 & 127);
 						var51.writeByte(var56 >> 7 & 127);
-					} else if (var62 == JAG_CHANNEL_PRESSURE)
+					}
+					else if (var62 == JAG_CHANNEL_PRESSURE)
 					{
 						if (var65)
 						{
@@ -433,7 +470,8 @@ public class TrackLoader
 
 						var57 += var1.getArray()[channelPressureIndex++];
 						var51.writeByte(var57 & 127);
-					} else if (var62 == JAG_POLY_PRESSURE)
+					}
+					else if (var62 == JAG_POLY_PRESSURE)
 					{
 						if (var65)
 						{
@@ -444,7 +482,8 @@ public class TrackLoader
 						var58 += var1.getArray()[polyPressureIndex++];
 						var51.writeByte(var53 & 127);
 						var51.writeByte(var58 & 127);
-					} else if (var62 == JAG_PROGRAM_CHANGE)
+					}
+					else if (var62 == JAG_PROGRAM_CHANGE)
 					{
 
 						if (var65)
@@ -453,7 +492,8 @@ public class TrackLoader
 						}
 
 						var51.writeByte(var1.getArray()[programChangeIndex++]);
-					} else
+					}
+					else
 					{
 						throw new RuntimeException();
 					}

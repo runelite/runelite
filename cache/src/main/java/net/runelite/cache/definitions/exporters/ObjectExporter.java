@@ -41,7 +41,7 @@ public class ObjectExporter
 		this.object = object;
 
 		GsonBuilder builder = new GsonBuilder()
-				.setPrettyPrinting();
+			.setPrettyPrinting();
 		gson = builder.create();
 	}
 

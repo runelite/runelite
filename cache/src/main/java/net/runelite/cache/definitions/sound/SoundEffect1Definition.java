@@ -31,18 +31,18 @@ public class SoundEffect1Definition
 	public SoundEffect2Definition field1175;
 	public int field1176 = 500;
 	public int[] field1177 = new int[]
-			{
-					0, 0, 0, 0, 0
-			};
+	{
+		0, 0, 0, 0, 0
+	};
 	public SoundEffect2Definition field1178;
 	public int[] field1179 = new int[]
-			{
-					0, 0, 0, 0, 0
-			};
+	{
+		0, 0, 0, 0, 0
+	};
 	public int[] field1180 = new int[]
-			{
-					0, 0, 0, 0, 0
-			};
+	{
+		0, 0, 0, 0, 0
+	};
 	public SoundEffect2Definition field1181;
 	public SoundEffect3Definition field1182;
 	public SoundEffect2Definition field1183;

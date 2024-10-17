@@ -32,8 +32,9 @@ import org.slf4j.LoggerFactory;
 public class LabelVisitor extends rs2asmBaseListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(LabelVisitor.class);
-	private final Map<String, Integer> map = new HashMap<>();
+
 	private int pos;
+	private final Map<String, Integer> map = new HashMap<>();
 
 	@Override
 	public void exitInstruction(rs2asmParser.InstructionContext ctx)

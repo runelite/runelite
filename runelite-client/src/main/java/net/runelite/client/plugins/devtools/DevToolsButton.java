@@ -48,7 +48,8 @@ public class DevToolsButton extends JButton
 		if (active)
 		{
 			setBackground(Color.GREEN);
-		} else
+		}
+		else
 		{
 			setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		}
@@ -62,7 +63,8 @@ public class DevToolsButton extends JButton
 			if (isActive())
 			{
 				frame.close();
-			} else
+			}
+			else
 			{
 				frame.open();
 			}

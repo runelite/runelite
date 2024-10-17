@@ -58,8 +58,8 @@ import net.runelite.client.util.Text;
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(
-		access = AccessLevel.PRIVATE,
-		onConstructor = @__({@Inject})
+	access = AccessLevel.PRIVATE,
+	onConstructor = @__({@Inject})
 )
 public class FarmingTracker
 {
@@ -153,7 +153,8 @@ public class FarmingTracker
 							try
 							{
 								unixTime = Long.parseLong(parts[1]);
-							} catch (NumberFormatException e)
+							}
+							catch (NumberFormatException e)
 							{
 								// ignored
 							}
@@ -161,7 +162,8 @@ public class FarmingTracker
 							{
 								continue;
 							}
-						} else if (!newRegionLoaded && timeSinceModalClose > 1)
+						}
+						else if (!newRegionLoaded && timeSinceModalClose > 1)
 						{
 							PatchState previousPatchState = patch.getImplementation().forVarbitValue(Integer.parseInt(parts[0]));
 
@@ -195,12 +197,13 @@ public class FarmingTracker
 								}
 							}
 							if (currentPatchState.getTickRate() != 0
-									// Don't set wasNotified to false if witnessing a check-health action
-									&& !(previousPatchState.getCropState() == CropState.GROWING && currentPatchState.getCropState() == CropState.HARVESTABLE && currentPatchState.getProduce().getPatchImplementation().isHealthCheckRequired()))
+								// Don't set wasNotified to false if witnessing a check-health action
+								&& !(previousPatchState.getCropState() == CropState.GROWING && currentPatchState.getCropState() == CropState.HARVESTABLE && currentPatchState.getProduce().getPatchImplementation().isHealthCheckRequired()))
 							{
 								wasNotified.put(new ProfilePatch(patch, configManager.getRSProfileKey()), false);
 							}
-						} else
+						}
+						else
 						{
 							log.debug("ignoring growth tick for offset calculation; newRegionLoaded={} timeSinceModalClose={}", newRegionLoaded, timeSinceModalClose);
 						}
@@ -208,8 +211,8 @@ public class FarmingTracker
 				}
 
 				if (currentPatchState.getCropState() == CropState.DEAD ||
-						currentPatchState.getCropState() == CropState.HARVESTABLE ||
-						currentPatchState.getCropState() == CropState.EMPTY)
+					currentPatchState.getCropState() == CropState.HARVESTABLE ||
+					currentPatchState.getCropState() == CropState.EMPTY)
 				{
 					compostTracker.setCompostState(patch, null);
 					paymentTracker.setProtectedState(patch, false);
@@ -243,8 +246,8 @@ public class FarmingTracker
 
 		//Ignore weeds growing or being cleared.
 		if (previousProduce == Produce.WEEDS || current.getProduce() == Produce.WEEDS
-				|| current.getProduce() != previousProduce
-				|| patchTickRate <= 0)
+			|| current.getProduce() != previousProduce
+			|| patchTickRate <= 0)
 		{
 			return false;
 		}
@@ -252,7 +255,7 @@ public class FarmingTracker
 		if (previousCropState == CropState.GROWING)
 		{
 			if ((currentCropState == CropState.GROWING && current.getStage() - previous.getStage() == 1)
-					|| currentCropState == CropState.DISEASED)
+				|| currentCropState == CropState.DISEASED)
 			{
 				log.debug("Found GROWING -> GROWING or GROWING -> DISEASED");
 				return true;
@@ -286,7 +289,7 @@ public class FarmingTracker
 		long unixNow = Instant.now().getEpochSecond();
 
 		boolean autoweed = Integer.toString(Autoweed.ON.ordinal())
-				.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.AUTOWEED));
+			.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.AUTOWEED));
 
 		String key = patch.configKey();
 		String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, key);
@@ -306,7 +309,8 @@ public class FarmingTracker
 				{
 					value = Integer.parseInt(parts[0]);
 					unixTime = Long.parseLong(parts[1]);
-				} catch (NumberFormatException e)
+				}
+				catch (NumberFormatException e)
 				{
 				}
 			}
@@ -352,11 +356,11 @@ public class FarmingTracker
 		}
 
 		return new PatchPrediction(
-				state.getProduce(),
-				state.getCropState(),
-				doneEstimate,
-				stage,
-				stages
+			state.getProduce(),
+			state.getCropState(),
+			doneEstimate,
+			stage,
+			stages
 		);
 	}
 
@@ -444,7 +448,8 @@ public class FarmingTracker
 					if (config.preferSoonest())
 					{
 						extremumCompletionTime = Math.min(extremumCompletionTime, prediction.getDoneEstimate());
-					} else
+					}
+					else
 					{
 						extremumCompletionTime = Math.max(extremumCompletionTime, prediction.getDoneEstimate());
 					}
@@ -459,15 +464,18 @@ public class FarmingTracker
 			{
 				state = SummaryState.UNKNOWN;
 				completionTime = -1L;
-			} else if (allEmpty)
+			}
+			else if (allEmpty)
 			{
 				state = SummaryState.EMPTY;
 				completionTime = -1L;
-			} else if (extremumCompletionTime <= Instant.now().getEpochSecond())
+			}
+			else if (extremumCompletionTime <= Instant.now().getEpochSecond())
 			{
 				state = SummaryState.COMPLETED;
 				completionTime = 0;
-			} else
+			}
+			else
 			{
 				state = SummaryState.IN_PROGRESS;
 				completionTime = extremumCompletionTime;
@@ -495,7 +503,7 @@ public class FarmingTracker
 					boolean patchNotified = wasNotified.getOrDefault(profilePatch, false);
 					String configKey = patch.notifyConfigKey();
 					boolean shouldNotify = Boolean.TRUE
-							.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), configKey, Boolean.class));
+						.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile.getKey(), configKey, Boolean.class));
 					PatchPrediction prediction = predictPatch(patch, profile.getKey());
 
 					if (prediction == null)
@@ -506,7 +514,7 @@ public class FarmingTracker
 					int tickRate = prediction.getProduce().getTickrate();
 
 					if (offsetPrecisionMins == null || offsetTimeMins == null || (offsetPrecisionMins < tickRate && offsetPrecisionMins < 40) || prediction.getProduce() == Produce.WEEDS
-							|| unixNow <= prediction.getDoneEstimate() || patchNotified || prediction.getCropState() == CropState.FILLING || prediction.getCropState() == CropState.EMPTY)
+						|| unixNow <= prediction.getDoneEstimate() || patchNotified || prediction.getCropState() == CropState.FILLING || prediction.getCropState() == CropState.EMPTY)
 					{
 						continue;
 					}
@@ -536,11 +544,12 @@ public class FarmingTracker
 			if (profileType != RuneScapeProfileType.getCurrent(client))
 			{
 				stringBuilder.append('(')
-						.append(Text.titleCase(profile.getType()))
-						.append(") ");
+					.append(Text.titleCase(profile.getType()))
+					.append(") ");
 			}
 			// Same RS account AND profile falls through here so no bracketed prefix is added
-		} else
+		}
+		else
 		{
 			// Different RS account AND profile type
 			if (profileType != RuneScapeProfileType.getCurrent(client) || client.getGameState() == GameState.LOGIN_SCREEN)
@@ -549,29 +558,30 @@ public class FarmingTracker
 				if (client.getGameState() == GameState.LOGIN_SCREEN && profileType == RuneScapeProfileType.STANDARD)
 				{
 					stringBuilder.append('(')
-							.append(profile.getDisplayName())
-							.append(") ");
-				} else
+						.append(profile.getDisplayName())
+						.append(") ");
+				}
+				else
 				{
 					stringBuilder.append('(')
-							.append(profile.getDisplayName())
-							.append(" - ")
-							.append(Text.titleCase(profile.getType()))
-							.append(") ");
+						.append(profile.getDisplayName())
+						.append(" - ")
+						.append(Text.titleCase(profile.getType()))
+						.append(") ");
 				}
 			}
 			// Different RS account but same profile type
 			else
 			{
 				stringBuilder.append('(')
-						.append(profile.getDisplayName())
-						.append(") ");
+					.append(profile.getDisplayName())
+					.append(") ");
 			}
 		}
 
 		stringBuilder
-				.append("Your ")
-				.append(prediction.getProduce().getName());
+			.append("Your ")
+			.append(prediction.getProduce().getName());
 
 		switch (prediction.getCropState())
 		{
@@ -580,7 +590,8 @@ public class FarmingTracker
 				if (prediction.getProduce().getName().toLowerCase(Locale.ENGLISH).contains("compost"))
 				{
 					stringBuilder.append(" is ready to collect in ");
-				} else
+				}
+				else
 				{
 					stringBuilder.append(" is ready to harvest in ");
 				}
@@ -597,8 +608,8 @@ public class FarmingTracker
 		}
 
 		stringBuilder.append(patch.getRegion().isDefinite() ? "the " : "")
-				.append(patch.getRegion().getName())
-				.append('.');
+			.append(patch.getRegion().getName())
+			.append('.');
 
 		notifier.notify(stringBuilder.toString());
 	}

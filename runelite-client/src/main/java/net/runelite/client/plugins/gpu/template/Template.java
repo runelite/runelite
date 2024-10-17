@@ -39,17 +39,6 @@ public class Template
 {
 	private final List<Function<String, String>> resourceLoaders = new ArrayList<>();
 
-	private static String inputStreamToString(InputStream in)
-	{
-		try
-		{
-			return CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
-		} catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
 	public String process(String str)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -65,7 +54,8 @@ public class Template
 
 				String resourceStr = load(resource);
 				sb.append(resourceStr);
-			} else
+			}
+			else
 			{
 				sb.append(line).append('\n');
 			}
@@ -103,11 +93,24 @@ public class Template
 				{
 					return inputStreamToString(is);
 				}
-			} catch (IOException ex)
+			}
+			catch (IOException ex)
 			{
 				log.warn(null, ex);
 			}
 			return null;
 		});
+	}
+
+	private static String inputStreamToString(InputStream in)
+	{
+		try
+		{
+			return CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

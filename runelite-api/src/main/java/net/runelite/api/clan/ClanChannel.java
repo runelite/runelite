@@ -34,21 +34,18 @@ public interface ClanChannel
 {
 	/**
 	 * The name of the channel
-	 *
 	 * @return
 	 */
 	String getName();
 
 	/**
 	 * The members currently online in the channel.
-	 *
 	 * @return
 	 */
 	List<ClanChannelMember> getMembers();
 
 	/**
 	 * Find a clan member by name
-	 *
 	 * @param name
 	 * @return
 	 */

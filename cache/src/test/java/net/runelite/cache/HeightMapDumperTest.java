@@ -45,7 +45,7 @@ public class HeightMapDumperTest
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-				outDir = folder.newFolder();
+			outDir = folder.newFolder();
 
 		try (Store store = new Store(base))
 		{

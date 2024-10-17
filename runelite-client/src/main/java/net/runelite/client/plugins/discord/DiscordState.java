@@ -46,21 +46,29 @@ import net.runelite.client.discord.DiscordService;
 @Slf4j
 class DiscordState
 {
+	@Data
+	private static class EventWithTime
+	{
+		private final DiscordGameEventType type;
+		private Instant start;
+		private Instant updated;
+	}
+
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
 	private final String runeliteTitle;
 	private final String runeliteVersion;
-	private final boolean safeMode;
 	private DiscordPresence lastPresence;
+	private final boolean safeMode;
 
 	@Inject
 	private DiscordState(
-			final DiscordService discordService,
-			final DiscordConfig config,
-			@Named("runelite.title") final String runeliteTitle,
-			@Named("runelite.version") final String runeliteVersion,
-			@Named("safeMode") boolean safeMode
+		final DiscordService discordService,
+		final DiscordConfig config,
+		@Named("runelite.title") final String runeliteTitle,
+		@Named("runelite.version") final String runeliteVersion,
+		@Named("safeMode") boolean safeMode
 	)
 	{
 		this.discordService = discordService;
@@ -93,7 +101,8 @@ class DiscordState
 		if (foundEvent.isPresent())
 		{
 			event = foundEvent.get();
-		} else
+		}
+		else
 		{
 			event = new EventWithTime(eventType);
 			event.setStart(Instant.now());
@@ -113,9 +122,9 @@ class DiscordState
 		}
 
 		events.sort((a, b) -> ComparisonChain.start()
-				.compare(b.getType().getPriority(), a.getType().getPriority())
-				.compare(b.getUpdated(), a.getUpdated())
-				.result());
+			.compare(b.getType().getPriority(), a.getType().getPriority())
+			.compare(b.getUpdated(), a.getUpdated())
+			.result());
 
 		log.debug("Events: {}", events);
 
@@ -169,10 +178,10 @@ class DiscordState
 		}
 
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
-				.state(MoreObjects.firstNonNull(state, ""))
-				.details(MoreObjects.firstNonNull(details, ""))
-				.largeImageText(largeImageTooltipText.toString())
-				.smallImageKey(imageKey);
+			.state(MoreObjects.firstNonNull(state, ""))
+			.details(MoreObjects.firstNonNull(details, ""))
+			.largeImageText(largeImageTooltipText.toString())
+			.smallImageKey(imageKey);
 
 		final Instant startTime;
 		switch (config.elapsedTimeType())
@@ -184,9 +193,9 @@ class DiscordState
 				// Use the start time of the IN_GAME event, which will always be
 				// the lowest.
 				startTime = events.stream()
-						.map(EventWithTime::getStart)
-						.min(Instant::compareTo)
-						.get();
+					.map(EventWithTime::getStart)
+					.min(Instant::compareTo)
+					.get();
 				break;
 			case ACTIVITY:
 			default:
@@ -220,24 +229,16 @@ class DiscordState
 		final Instant now = Instant.now();
 
 		final boolean removedAny = events.removeAll(events.stream()
-				// Only include clearable events
-				.filter(event -> event.getType().isShouldBeCleared())
-				// Find only events that should time out
-				.filter(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)))
-				.collect(Collectors.toList())
+			// Only include clearable events
+			.filter(event -> event.getType().isShouldBeCleared())
+			// Find only events that should time out
+			.filter(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)))
+			.collect(Collectors.toList())
 		);
 
 		if (removedAny)
 		{
 			updatePresenceWithLatestEvent();
 		}
-	}
-
-	@Data
-	private static class EventWithTime
-	{
-		private final DiscordGameEventType type;
-		private Instant start;
-		private Instant updated;
 	}
 }

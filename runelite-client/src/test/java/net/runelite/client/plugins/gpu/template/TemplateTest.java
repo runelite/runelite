@@ -31,19 +31,19 @@ import org.junit.Test;
 public class TemplateTest
 {
 	private static final String FILE1 = "" +
-			"test1\n" +
-			"#include file2\n" +
-			"test3\n";
+		"test1\n" +
+		"#include file2\n" +
+		"test3\n";
 
 	private static final String FILE2 = "" +
-			"test4\n" +
-			"test5\n";
+		"test4\n" +
+		"test5\n";
 
 	private static final String RESULT = "" +
-			"test1\n" +
-			"test4\n" +
-			"test5\n" +
-			"test3\n";
+		"test1\n" +
+		"test4\n" +
+		"test5\n" +
+		"test3\n";
 
 	@Test
 	public void testProcess()
@@ -59,8 +59,8 @@ public class TemplateTest
 			}
 		};
 		String out = new Template()
-				.add(func)
-				.process(FILE1);
+			.add(func)
+			.process(FILE1);
 		assertEquals(RESULT, out);
 	}
 }

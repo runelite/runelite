@@ -34,34 +34,34 @@ public class Mat4
 	public static float[] identity()
 	{
 		return new float[]
-				{
-						1, 0, 0, 0,
-						0, 1, 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 1,
-				};
+			{
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1,
+			};
 	}
 
 	public static float[] scale(float sx, float sy, float sz)
 	{
 		return new float[]
-				{
-						sx, 0, 0, 0,
-						0, sy, 0, 0,
-						0, 0, sz, 0,
-						0, 0, 0, 1,
-				};
+			{
+				sx, 0, 0, 0,
+				0, sy, 0, 0,
+				0, 0, sz, 0,
+				0, 0, 0, 1,
+			};
 	}
 
 	public static float[] translate(float tx, float ty, float tz)
 	{
 		return new float[]
-				{
-						1, 0, 0, 0,
-						0, 1, 0, 0,
-						0, 0, 1, 0,
-						tx, ty, tz, 1,
-				};
+			{
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				tx, ty, tz, 1,
+			};
 	}
 
 	public static float[] rotateX(float rx)
@@ -70,12 +70,12 @@ public class Mat4
 		float c = (float) Math.cos(rx);
 
 		return new float[]
-				{
-						1, 0, 0, 0,
-						0, c, s, 0,
-						0, -s, c, 0,
-						0, 0, 0, 1,
-				};
+			{
+				1, 0, 0, 0,
+				0, c, s, 0,
+				0, -s, c, 0,
+				0, 0, 0, 1,
+			};
 	}
 
 	public static float[] rotateY(float ry)
@@ -84,23 +84,23 @@ public class Mat4
 		float c = (float) Math.cos(ry);
 
 		return new float[]
-				{
-						c, 0, -s, 0,
-						0, 1, 0, 0,
-						s, 0, c, 0,
-						0, 0, 0, 1,
-				};
+			{
+				c, 0, -s, 0,
+				0, 1, 0, 0,
+				s, 0, c, 0,
+				0, 0, 0, 1,
+			};
 	}
 
 	public static float[] projection(float w, float h, float n)
 	{
 		return new float[]
-				{
-						2 / w, 0, 0, 0,
-						0, -2 / h, 0, 0,
-						0, 0, 0, 1,
-						0, 0, 2 * n, 0
-				};
+			{
+				2 / w, 0, 0, 0,
+				0, -2 / h, 0, 0,
+				0, 0, 0, 1,
+				0, 0, 2 * n, 0
+			};
 	}
 
 	public static void mul(final float[] a, final float[] b)

@@ -61,14 +61,24 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "World Map",
-		description = "Enhance the world map to display additional information",
-		tags = {"agility", "dungeon", "fairy", "farming", "rings", "teleports"}
+	name = "World Map",
+	description = "Enhance the world map to display additional information",
+	tags = {"agility", "dungeon", "fairy", "farming", "rings", "teleports"}
 )
 @Slf4j
 public class WorldMapPlugin extends Plugin
 {
+	private static final int CATEGORY_QUEST = 1056; // from [proc,worldmap_tooltip_override].cs2
+
 	static final BufferedImage BLANK_ICON;
+	private static final BufferedImage FAIRY_TRAVEL_ICON;
+	private static final BufferedImage NOPE_ICON;
+	private static final BufferedImage NOT_STARTED_ICON;
+	private static final BufferedImage STARTED_ICON;
+	private static final BufferedImage FINISHED_ICON;
+	private static final BufferedImage MINING_SITE_ICON;
+	private static final BufferedImage ROOFTOP_COURSE_ICON;
+
 	static final String CONFIG_KEY = "worldmap";
 	static final String CONFIG_KEY_FAIRY_RING_TOOLTIPS = "fairyRingTooltips";
 	static final String CONFIG_KEY_FAIRY_RING_ICON = "fairyRingIcon";
@@ -94,14 +104,6 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
 	static final String CONFIG_KEY_HUNTER_AREA_TOOLTIPS = "hunterAreaTooltips";
 	static final String CONFIG_KEY_FISHING_SPOT_TOOLTIPS = "fishingSpotTooltips";
-	private static final int CATEGORY_QUEST = 1056; // from [proc,worldmap_tooltip_override].cs2
-	private static final BufferedImage FAIRY_TRAVEL_ICON;
-	private static final BufferedImage NOPE_ICON;
-	private static final BufferedImage NOT_STARTED_ICON;
-	private static final BufferedImage STARTED_ICON;
-	private static final BufferedImage FINISHED_ICON;
-	private static final BufferedImage MINING_SITE_ICON;
-	private static final BufferedImage ROOFTOP_COURSE_ICON;
 
 	static
 	{
@@ -147,20 +149,19 @@ public class WorldMapPlugin extends Plugin
 		ROOFTOP_COURSE_ICON.getGraphics().drawImage(rooftopCourseIcon, iconOffset, iconOffset, null);
 	}
 
-	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 	@Inject
 	private Client client;
+
 	@Inject
 	private WorldMapConfig config;
+
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
+
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
 
-	private static Predicate<WorldMapPoint> isType(MapPoint.Type type)
-	{
-		return w -> w instanceof MapPoint && ((MapPoint) w).getType() == type;
-	}
+	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 
 	@Provides
 	WorldMapConfig provideConfig(ConfigManager configManager)
@@ -259,7 +260,7 @@ public class WorldMapPlugin extends Plugin
 		// what icons are loaded each tick.
 		WorldMapRegion[][] regions = wmm.getMapRegions();
 		Map<Integer, Quest> questMap = Arrays.stream(Quest.values())
-				.collect(Collectors.toMap(Quest::getId, Function.identity()));
+			.collect(Collectors.toMap(Quest::getId, Function.identity()));
 		for (int i = 0; i < regions.length; ++i) // NOPMD: ForLoopCanBeForeach
 		{
 			for (int j = 0; j < regions[i].length; ++j)
@@ -305,16 +306,16 @@ public class WorldMapPlugin extends Plugin
 		if (config.agilityShortcutLevelIcon() || config.agilityShortcutTooltips())
 		{
 			Arrays.stream(AgilityShortcut.values())
-					.filter(value -> value.getWorldMapLocation() != null)
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.AGILITY_SHORTCUT)
-									.worldPoint(l.getWorldMapLocation())
-									.image(agilityLevel > 0 && config.agilityShortcutLevelIcon() && l.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON)
-									.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.filter(value -> value.getWorldMapLocation() != null)
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.AGILITY_SHORTCUT)
+						.worldPoint(l.getWorldMapLocation())
+						.image(agilityLevel > 0 && config.agilityShortcutLevelIcon() && l.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON)
+						.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 	}
 
@@ -325,16 +326,16 @@ public class WorldMapPlugin extends Plugin
 		if (config.agilityCourseTooltip() || config.agilityCourseRooftop())
 		{
 			Arrays.stream(AgilityCourseLocation.values())
-					.filter(value -> value.getLocation() != null)
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.AGILITY_COURSE)
-									.worldPoint(l.getLocation())
-									.image(config.agilityCourseRooftop() && l.isRooftopCourse() ? ROOFTOP_COURSE_ICON : BLANK_ICON)
-									.tooltip(config.agilityCourseTooltip() ? l.getTooltip() : null)
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.filter(value -> value.getLocation() != null)
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.AGILITY_COURSE)
+						.worldPoint(l.getLocation())
+						.image(config.agilityCourseRooftop() && l.isRooftopCourse() ? ROOFTOP_COURSE_ICON : BLANK_ICON)
+						.tooltip(config.agilityCourseTooltip() ? l.getTooltip() : null)
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 	}
 
@@ -345,17 +346,17 @@ public class WorldMapPlugin extends Plugin
 		if (config.rareTreeLevelIcon() || config.rareTreeTooltips())
 		{
 			Arrays.stream(RareTreeLocation.values()).forEach(rareTree ->
-					Arrays.stream(rareTree.getLocations())
-							.map(point ->
-									MapPoint.builder()
-											.type(MapPoint.Type.RARE_TREE)
-											.worldPoint(point)
-											.image(woodcuttingLevel > 0 && config.rareTreeLevelIcon() &&
-													rareTree.getLevelReq() > woodcuttingLevel ? NOPE_ICON : BLANK_ICON)
-											.tooltip(config.rareTreeTooltips() ? rareTree.getTooltip() : null)
-											.build()
-							)
-							.forEach(worldMapPointManager::add));
+				Arrays.stream(rareTree.getLocations())
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.RARE_TREE)
+							.worldPoint(point)
+							.image(woodcuttingLevel > 0 && config.rareTreeLevelIcon() &&
+								rareTree.getLevelReq() > woodcuttingLevel ? NOPE_ICON : BLANK_ICON)
+							.tooltip(config.rareTreeTooltips() ? rareTree.getTooltip() : null)
+							.build()
+					)
+					.forEach(worldMapPointManager::add));
 		}
 	}
 
@@ -370,175 +371,175 @@ public class WorldMapPlugin extends Plugin
 		if (config.fairyRingIcon() || config.fairyRingTooltips())
 		{
 			Arrays.stream(FairyRingLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.FAIRY_RING)
-									.worldPoint(l.getLocation())
-									.image(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON)
-									.tooltip(config.fairyRingTooltips() ? "Fairy Ring - " + l.getCode() : null)
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.FAIRY_RING)
+						.worldPoint(l.getLocation())
+						.image(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON)
+						.tooltip(config.fairyRingTooltips() ? "Fairy Ring - " + l.getCode() : null)
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.MINIGAME));
 		if (config.minigameTooltip())
 		{
 			Arrays.stream(MinigameLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.MINIGAME)
-									.worldPoint(l.getLocation())
-									.image(BLANK_ICON)
-									.tooltip(l.getTooltip())
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.MINIGAME)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.TRANSPORTATION));
 		if (config.transportationTeleportTooltips())
 		{
 			Arrays.stream(TransportationPointLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.TRANSPORTATION)
-									.worldPoint(l.getLocation())
-									.image(BLANK_ICON)
-									.target(l.getTarget())
-									.jumpOnClick(l.getTarget() != null)
-									.name(Text.titleCase(l))
-									.tooltip(l.getTooltip())
-									.build()
-					)
-					.forEach((worldMapPointManager::add));
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.TRANSPORTATION)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.target(l.getTarget())
+						.jumpOnClick(l.getTarget() != null)
+						.name(Text.titleCase(l))
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach((worldMapPointManager::add));
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.FARMING_PATCH));
 		if (config.farmingPatchTooltips())
 		{
 			Arrays.stream(FarmingPatchLocation.values()).forEach(location ->
-					Arrays.stream(location.getLocations())
-							.map(point ->
-									MapPoint.builder()
-											.type(MapPoint.Type.FARMING_PATCH)
-											.worldPoint(point)
-											.image(BLANK_ICON)
-											.tooltip(location.getTooltip())
-											.build()
-							)
-							.forEach(worldMapPointManager::add)
+				Arrays.stream(location.getLocations())
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.FARMING_PATCH)
+							.worldPoint(point)
+							.image(BLANK_ICON)
+							.tooltip(location.getTooltip())
+							.build()
+					)
+					.forEach(worldMapPointManager::add)
 			);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.TELEPORT));
 		Arrays.stream(TeleportLocationData.values())
-				.filter(data ->
+			.filter(data ->
+			{
+				switch (data.getType())
 				{
-					switch (data.getType())
-					{
-						case NORMAL_MAGIC:
-							return config.normalTeleportIcon();
-						case ANCIENT_MAGICKS:
-							return config.ancientTeleportIcon();
-						case LUNAR_MAGIC:
-							return config.lunarTeleportIcon();
-						case ARCEUUS_MAGIC:
-							return config.arceuusTeleportIcon();
-						case JEWELLERY:
-							return config.jewelleryTeleportIcon();
-						case SCROLL:
-							return config.scrollTeleportIcon();
-						case OTHER:
-							return config.miscellaneousTeleportIcon();
-						default:
-							return false;
-					}
-				})
-				.map(l ->
-						MapPoint.builder()
-								.type(MapPoint.Type.TELEPORT)
-								.worldPoint(l.getLocation())
-								.tooltip(l.getTooltip())
-								.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
-								.build()
-				)
-				.forEach(worldMapPointManager::add);
+					case NORMAL_MAGIC:
+						return config.normalTeleportIcon();
+					case ANCIENT_MAGICKS:
+						return config.ancientTeleportIcon();
+					case LUNAR_MAGIC:
+						return config.lunarTeleportIcon();
+					case ARCEUUS_MAGIC:
+						return config.arceuusTeleportIcon();
+					case JEWELLERY:
+						return config.jewelleryTeleportIcon();
+					case SCROLL:
+						return config.scrollTeleportIcon();
+					case OTHER:
+						return config.miscellaneousTeleportIcon();
+					default:
+						return false;
+				}
+			})
+			.map(l ->
+				MapPoint.builder()
+					.type(MapPoint.Type.TELEPORT)
+					.worldPoint(l.getLocation())
+					.tooltip(l.getTooltip())
+					.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
+					.build()
+			)
+			.forEach(worldMapPointManager::add);
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.RUNECRAFT_ALTAR));
 		if (config.runecraftingAltarIcon())
 		{
 			Arrays.stream(RunecraftingAltarLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.RUNECRAFT_ALTAR)
-									.worldPoint(l.getLocation())
-									.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
-									.tooltip(l.getTooltip())
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.RUNECRAFT_ALTAR)
+						.worldPoint(l.getLocation())
+						.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.MINING_SITE));
 		if (config.miningSiteTooltips())
 		{
 			Arrays.stream(MiningSiteLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.MINING_SITE)
-									.worldPoint(l.getLocation())
-									.image(l.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON)
-									.tooltip(l.getTooltip())
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.MINING_SITE)
+						.worldPoint(l.getLocation())
+						.image(l.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.DUNGEON));
 		if (config.dungeonTooltips())
 		{
 			Arrays.stream(DungeonLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.DUNGEON)
-									.worldPoint(l.getLocation())
-									.image(BLANK_ICON)
-									.tooltip(l.getTooltip())
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.DUNGEON)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.HUNTER));
 		if (config.hunterAreaTooltips())
 		{
 			Arrays.stream(HunterAreaLocation.values())
-					.map(l ->
-							MapPoint.builder()
-									.type(MapPoint.Type.HUNTER)
-									.worldPoint(l.getLocation())
-									.image(BLANK_ICON)
-									.tooltip(l.getTooltip())
-									.build()
-					)
-					.forEach(worldMapPointManager::add);
+				.map(l ->
+					MapPoint.builder()
+						.type(MapPoint.Type.HUNTER)
+						.worldPoint(l.getLocation())
+						.image(BLANK_ICON)
+						.tooltip(l.getTooltip())
+						.build()
+				)
+				.forEach(worldMapPointManager::add);
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.FISHING));
 		if (config.fishingSpotTooltips())
 		{
 			Arrays.stream(FishingSpotLocation.values()).forEach(location ->
-					Arrays.stream(location.getLocations())
-							.map(point ->
-									MapPoint.builder()
-											.type(MapPoint.Type.FISHING)
-											.worldPoint(point)
-											.image(BLANK_ICON)
-											.tooltip(location.getTooltip())
-											.build()
-							)
-							.forEach(worldMapPointManager::add)
+				Arrays.stream(location.getLocations())
+					.map(point ->
+						MapPoint.builder()
+							.type(MapPoint.Type.FISHING)
+							.worldPoint(point)
+							.image(BLANK_ICON)
+							.tooltip(location.getTooltip())
+							.build()
+					)
+					.forEach(worldMapPointManager::add)
 			);
 		}
 	}
@@ -555,7 +556,7 @@ public class WorldMapPlugin extends Plugin
 	private MapPoint createQuestStartPoint(Quest quest, WorldMapIcon worldMapIcon)
 	{
 		final WorldPoint location = worldMapIcon.getCoordinate()
-				.dx(-1); // why -1? I don't know
+			.dx(-1); // why -1? I don't know
 
 		BufferedImage icon = BLANK_ICON;
 		if (quest != null)
@@ -575,9 +576,14 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		return MapPoint.builder()
-				.type(MapPoint.Type.QUEST)
-				.worldPoint(location)
-				.image(icon)
-				.build();
+			.type(MapPoint.Type.QUEST)
+			.worldPoint(location)
+			.image(icon)
+			.build();
+	}
+
+	private static Predicate<WorldMapPoint> isType(MapPoint.Type type)
+	{
+		return w -> w instanceof MapPoint && ((MapPoint) w).getType() == type;
 	}
 }

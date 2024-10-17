@@ -73,7 +73,8 @@ class HiscoreLoader extends CacheLoader<HiscoreManager.HiscoreKey, HiscoreResult
 				return NONE;
 			}
 			return result;
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("Unable to look up hiscore!", ex);
 			return NONE;

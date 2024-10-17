@@ -51,10 +51,10 @@ import okhttp3.FormBody;
 import okhttp3.Response;
 
 @PluginDescriptor(
-		name = "XP Updater",
-		description = "Automatically updates your stats on external xptrackers when you log out",
-		tags = {"cml", "crystalmathlabs", "runetracker", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
-		enabledByDefault = false
+	name = "XP Updater",
+	description = "Automatically updates your stats on external xptrackers when you log out",
+	tags = {"cml", "crystalmathlabs", "runetracker", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
+	enabledByDefault = false
 )
 @Slf4j
 public class XpUpdaterPlugin extends Plugin
@@ -101,7 +101,8 @@ public class XpUpdaterPlugin extends Plugin
 				lastAccount = client.getAccountHash();
 				fetchXp = true;
 			}
-		} else if (state == GameState.LOGIN_SCREEN || state == GameState.HOPPING)
+		}
+		else if (state == GameState.LOGIN_SCREEN || state == GameState.HOPPING)
 		{
 			Player local = client.getLocalPlayer();
 			if (local == null)
@@ -143,24 +144,24 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateCml(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.cml()
-				&& !worldTypes.contains(WorldType.SEASONAL)
-				&& !worldTypes.contains(WorldType.DEADMAN)
-				&& !worldTypes.contains(WorldType.NOSAVE_MODE)
-				&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("crystalmathlabs.com")
-					.addPathSegment("tracker")
-					.addPathSegment("api.php")
-					.addQueryParameter("type", "update")
-					.addQueryParameter("player", username)
-					.build();
+				.scheme("https")
+				.host("crystalmathlabs.com")
+				.addPathSegment("tracker")
+				.addPathSegment("api.php")
+				.addQueryParameter("type", "update")
+				.addQueryParameter("player", username)
+				.build();
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
 
 			sendRequest("CrystalMathLabs", request);
 		}
@@ -169,23 +170,23 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateRunetracker(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.runetracker()
-				&& !worldTypes.contains(WorldType.SEASONAL)
-				&& !worldTypes.contains(WorldType.DEADMAN)
-				&& !worldTypes.contains(WorldType.NOSAVE_MODE)
-				&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("rscript.org")
-					.addPathSegment("lookup.php")
-					.addQueryParameter("type", "stats07")
-					.addQueryParameter("user", username)
-					.build();
+				.scheme("https")
+				.host("rscript.org")
+				.addPathSegment("lookup.php")
+				.addQueryParameter("type", "stats07")
+				.addQueryParameter("user", username)
+				.build();
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
 
 			sendRequest("RuneTracker", request);
 		}
@@ -194,17 +195,17 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateTempleosrs(long accountHash, String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.templeosrs()
-				&& !worldTypes.contains(WorldType.SEASONAL)
-				&& !worldTypes.contains(WorldType.DEADMAN)
-				&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl.Builder url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("templeosrs.com")
-					.addPathSegment("php")
-					.addPathSegment("add_datapoint.php")
-					.addQueryParameter("player", username)
-					.addQueryParameter("accountHash", Long.toString(accountHash));
+				.scheme("https")
+				.host("templeosrs.com")
+				.addPathSegment("php")
+				.addPathSegment("add_datapoint.php")
+				.addQueryParameter("player", username)
+				.addQueryParameter("accountHash", Long.toString(accountHash));
 
 			if (worldTypes.contains(WorldType.FRESH_START_WORLD))
 			{
@@ -212,9 +213,9 @@ public class XpUpdaterPlugin extends Plugin
 			}
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url.build())
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url.build())
+				.build();
 
 			sendRequest("TempleOSRS", request);
 		}
@@ -223,26 +224,26 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateWom(long accountHash, String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.wiseoldman()
-				&& !worldTypes.contains(WorldType.DEADMAN)
-				&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("api.wiseoldman.net")
-					.addPathSegment(worldTypes.contains(WorldType.SEASONAL) ? "league" : "v2")
-					.addPathSegment("players")
-					.addPathSegment(username)
-					.build();
+				.scheme("https")
+				.host("api.wiseoldman.net")
+				.addPathSegment(worldTypes.contains(WorldType.SEASONAL) ? "league" : "v2")
+				.addPathSegment("players")
+				.addPathSegment(username)
+				.build();
 
 			RequestBody formBody = new FormBody.Builder()
-					.add("accountHash", Long.toString(accountHash))
-					.build();
+				.add("accountHash", Long.toString(accountHash))
+				.build();
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.post(formBody)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.post(formBody)
+				.build();
 
 			sendRequest("Wise Old Man", request);
 		}

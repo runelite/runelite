@@ -152,7 +152,8 @@ class ChatInputManager
 		try
 		{
 			client.runScript(ScriptID.CHAT_SEND, input, chatType, clanTarget, 0, -1);
-		} finally
+		}
+		finally
 		{
 			sending = false;
 		}

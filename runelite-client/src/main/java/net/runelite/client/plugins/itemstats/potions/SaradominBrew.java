@@ -41,7 +41,7 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 public class SaradominBrew implements Effect
 {
 	private static final Stat[] saradominBrewStats = {
-			ATTACK, STRENGTH, RANGED, MAGIC
+		ATTACK, STRENGTH, RANGED, MAGIC
 	};
 
 	private final double percH; //percentage heal
@@ -58,21 +58,21 @@ public class SaradominBrew implements Effect
 		SimpleStatBoost defence = new SimpleStatBoost(DEFENCE, true, perc(percD, deltaB));
 		BoostedStatBoost calc = new BoostedStatBoost(null, false, perc(percSD, -deltaR));
 		changes.setStatChanges(Stream.of(
-						Stream.of(hitpoints.effect(client)),
-						Stream.of(defence.effect(client)),
-						Stream.of(saradominBrewStats)
-								.filter(stat -> 1 < stat.getValue(client))
-								.map(stat ->
-								{
-									calc.setStat(stat);
-									return calc.effect(client);
-								}))
-				.reduce(Stream::concat)
-				.orElseGet(Stream::empty)
-				.toArray(StatChange[]::new));
+			Stream.of(hitpoints.effect(client)),
+			Stream.of(defence.effect(client)),
+			Stream.of(saradominBrewStats)
+				.filter(stat -> 1 < stat.getValue(client))
+				.map(stat ->
+				{
+					calc.setStat(stat);
+					return calc.effect(client);
+				}))
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-				.map(StatChange::getPositivity)
-				.max(Comparator.naturalOrder()).get());
+			.map(StatChange::getPositivity)
+			.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 }

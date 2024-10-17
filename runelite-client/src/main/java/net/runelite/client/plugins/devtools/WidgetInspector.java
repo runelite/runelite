@@ -75,8 +75,9 @@ import net.runelite.client.util.ColorUtil;
 @Singleton
 class WidgetInspector extends DevToolsFrame
 {
-	static final Color SELECTED_WIDGET_COLOR = Color.CYAN;
 	private static final Map<Integer, String> widgetNames = new HashMap<>();
+
+	static final Color SELECTED_WIDGET_COLOR = Color.CYAN;
 	private static final float SELECTED_WIDGET_HUE;
 
 	static
@@ -109,13 +110,13 @@ class WidgetInspector extends DevToolsFrame
 
 	@Inject
 	private WidgetInspector(
-			Client client,
-			ClientThread clientThread,
-			WidgetInfoTableModel infoTableModel,
-			DevToolsConfig config,
-			EventBus eventBus,
-			Provider<WidgetInspectorOverlay> overlay,
-			OverlayManager overlayManager)
+		Client client,
+		ClientThread clientThread,
+		WidgetInfoTableModel infoTableModel,
+		DevToolsConfig config,
+		EventBus eventBus,
+		Provider<WidgetInspectorOverlay> overlay,
+		OverlayManager overlayManager)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -187,46 +188,6 @@ class WidgetInspector extends DevToolsFrame
 		add(split, BorderLayout.CENTER);
 
 		pack();
-	}
-
-	static String getWidgetName(int componentId)
-	{
-		if (widgetNames.isEmpty())
-		{
-			//Initialize map here, so it doesn't create the index
-			//until it's actually needed.
-			try
-			{
-				for (Field f : ComponentID.class.getDeclaredFields())
-				{
-					widgetNames.put(f.getInt(null), f.getName());
-				}
-			} catch (IllegalAccessException ex)
-			{
-				log.error("error setting up widget names", ex);
-			}
-		}
-
-		return widgetNames.get(componentId);
-	}
-
-	public static String getWidgetIdentifier(Widget widget)
-	{
-		int id = widget.getId();
-		String str = WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
-
-		if (widget.getIndex() != -1)
-		{
-			str += "[" + widget.getIndex() + "]";
-		}
-
-		var name = getWidgetName(id);
-		if (name != null)
-		{
-			str += " " + name;
-		}
-
-		return str;
 	}
 
 	@Subscribe
@@ -365,6 +326,28 @@ class WidgetInspector extends DevToolsFrame
 		});
 	}
 
+	static String getWidgetName(int componentId)
+	{
+		if (widgetNames.isEmpty())
+		{
+			//Initialize map here, so it doesn't create the index
+			//until it's actually needed.
+			try
+			{
+				for (Field f : ComponentID.class.getDeclaredFields())
+				{
+					widgetNames.put(f.getInt(null), f.getName());
+				}
+			}
+			catch (IllegalAccessException ex)
+			{
+				log.error("error setting up widget names", ex);
+			}
+		}
+
+		return widgetNames.get(componentId);
+	}
+
 	@Override
 	public void open()
 	{
@@ -415,12 +398,12 @@ class WidgetInspector extends DevToolsFrame
 			Widget[] roots = client.getWidgetRoots();
 
 			parent = Stream.of(roots)
-					.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
-					.sorted(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
-							.reversed()
-							.thenComparingInt(Widget::getId)
-							.reversed())
-					.findFirst().get();
+				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
+				.sorted(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
+					.reversed()
+					.thenComparingInt(Widget::getId)
+					.reversed())
+				.findFirst().get();
 			x = 4;
 			y = 4;
 		}
@@ -527,5 +510,24 @@ class WidgetInspector extends DevToolsFrame
 		}
 
 		return null;
+	}
+
+	public static String getWidgetIdentifier(Widget widget)
+	{
+		int id = widget.getId();
+		String str = WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
+
+		if (widget.getIndex() != -1)
+		{
+			str += "[" + widget.getIndex() + "]";
+		}
+
+		var name = getWidgetName(id);
+		if (name != null)
+		{
+			str += " " + name;
+		}
+
+		return str;
 	}
 }

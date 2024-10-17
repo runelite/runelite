@@ -135,12 +135,16 @@ import net.runelite.client.util.WinUtil;
 @Singleton
 public class ClientUI
 {
-	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
-	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
 	private static final String CONFIG_GROUP = "runelite";
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
+	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
+	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
+
+	@Getter
+	private TrayIcon trayIcon;
+
 	private final RuneLiteConfig config;
 	private final MouseManager mouseManager;
 	private final Applet client;
@@ -149,25 +153,29 @@ public class ClientUI
 	private final EventBus eventBus;
 	private final boolean safeMode;
 	private final String title;
+
 	private final Rectangle sidebarButtonPosition = new Rectangle();
-	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
-	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
-	private final Timer normalBoundsTimer;
-	@Getter
-	private TrayIcon trayIcon;
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarCloseIcon;
+
 	private JTabbedPane sidebar;
+	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
+	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
+
 	private ClientToolbarPanel toolbarPanel;
 	private boolean withTitleBar;
+
 	private ContainableFrame frame;
 	private JPanel content;
 	private ClientPanel clientPanel;
 	private JButton sidebarNavBtn;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
+
 	private String lastNormalBounds;
+	private final Timer normalBoundsTimer;
+
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
 	@SuppressWarnings("PMD.ImmutableField")
@@ -180,16 +188,23 @@ public class ClientUI
 
 	private List<KeyListener> keyListeners;
 
+	@RequiredArgsConstructor
+	private static class HistoryEntry
+	{
+		private final boolean sidebarOpen;
+		private final NavigationButton navBtn;
+	}
+
 	@Inject
 	private ClientUI(
-			RuneLiteConfig config,
-			MouseManager mouseManager,
-			@Nullable Applet client,
-			ConfigManager configManager,
-			Provider<ClientThread> clientThreadProvider,
-			EventBus eventBus,
-			@Named("safeMode") boolean safeMode,
-			@Named("runelite.title") String title
+		RuneLiteConfig config,
+		MouseManager mouseManager,
+		@Nullable Applet client,
+		ConfigManager configManager,
+		Provider<ClientThread> clientThreadProvider,
+		EventBus eventBus,
+		@Named("safeMode") boolean safeMode,
+		@Named("runelite.title") String title
 	)
 	{
 		this.config = config;
@@ -205,74 +220,12 @@ public class ClientUI
 		normalBoundsTimer.setRepeats(false);
 	}
 
-	private static void setupDefaults()
-	{
-		// Force heavy-weight popups/tooltips.
-		// Prevents them from being obscured by the game applet.
-		var tooltipManager = ToolTipManager.sharedInstance();
-		tooltipManager.setLightWeightPopupEnabled(false);
-		tooltipManager.setInitialDelay(300);
-		tooltipManager.setDismissDelay(10_000);
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-		// Do not fill in background on repaint. Reduces flickering when
-		// the applet is resized.
-		System.setProperty("sun.awt.noerasebackground", "true");
-	}
-
-	@Nullable
-	private static TrayIcon createTrayIcon(@Nonnull final Image icon, @Nonnull final String title, @Nonnull final Frame frame)
-	{
-		if (!SystemTray.isSupported())
-		{
-			return null;
-		}
-
-		final SystemTray systemTray = SystemTray.getSystemTray();
-		final TrayIcon trayIcon = new TrayIcon(icon, title);
-		trayIcon.setImageAutoSize(true);
-
-		try
-		{
-			systemTray.add(trayIcon);
-		} catch (AWTException ex)
-		{
-			log.debug("Unable to add system tray icon", ex);
-			return trayIcon;
-		}
-
-		// Bring to front when tray icon is clicked
-		trayIcon.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
-				{
-					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
-					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
-					// Additionally, in order to bring the window to the foreground,
-					// frame.setVisible(true) calls CPlatformWindow::nativePushNSWindowToFront.
-					// However, this native method is not called with activateIgnoringOtherApps:YES,
-					// so any other active window will prevent our window from being brought to the front.
-					// To work around this, we use our macOS-specific requestForeground().
-					frame.setVisible(false);
-					OSXUtil.requestForeground();
-				}
-				frame.setVisible(true);
-				frame.setState(Frame.NORMAL); // Restore
-			}
-		});
-
-		return trayIcon;
-	}
-
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(CONFIG_GROUP) ||
-				event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
-				event.getKey().equals(CONFIG_CLIENT_BOUNDS))
+			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
+			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
 			return;
 		}
@@ -297,7 +250,7 @@ public class ClientUI
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-				sidebarEntries.headSet(navBtn).size());
+			sidebarEntries.headSet(navBtn).size());
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
 		{
@@ -310,7 +263,8 @@ public class ClientUI
 		if (navBtn.getPanel() == null)
 		{
 			toolbarPanel.remove(navBtn);
-		} else
+		}
+		else
 		{
 			boolean closingOpenTab = !selectedTabHistory.isEmpty() && selectedTabHistory.getLast().navBtn == navBtn;
 			selectedTabHistory.removeIf(it -> it.navBtn == navBtn);
@@ -318,8 +272,8 @@ public class ClientUI
 			if (closingOpenTab)
 			{
 				HistoryEntry entry = selectedTabHistory.isEmpty()
-						? new HistoryEntry(true, null)
-						: selectedTabHistory.removeLast();
+					? new HistoryEntry(true, null)
+					: selectedTabHistory.removeLast();
 
 				openPanel(entry.navBtn, entry.sidebarOpen);
 			}
@@ -395,7 +349,7 @@ public class ClientUI
 				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
 				// triggers the listener below instead of exiting.
 				Desktop.getDesktop()
-						.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
+					.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
 			}
 			frame.addWindowListener(new WindowAdapter()
 			{
@@ -409,11 +363,12 @@ public class ClientUI
 						try
 						{
 							result = JOptionPane.showConfirmDialog(
-									frame,
-									"Are you sure you want to exit?", "Exit",
-									JOptionPane.OK_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
-						} catch (Exception e)
+								frame,
+								"Are you sure you want to exit?", "Exit",
+								JOptionPane.OK_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
+						}
+						catch (Exception e)
 						{
 							log.warn("Unexpected exception occurred while check for confirm required", e);
 						}
@@ -460,7 +415,8 @@ public class ClientUI
 				if (index < 0)
 				{
 					newSelectedTab = null;
-				} else
+				}
+				else
 				{
 					// maybe just include a map component -> navbtn?
 					newSelectedTab = Iterables.get(sidebarEntries, index);
@@ -529,22 +485,22 @@ public class ClientUI
 
 			// Add key listener
 			keyListeners = List.of(
-					new HotkeyListener(config::sidebarToggleKey)
+				new HotkeyListener(config::sidebarToggleKey)
+				{
+					@Override
+					public void hotkeyPressed()
 					{
-						@Override
-						public void hotkeyPressed()
-						{
-							toggleSidebar();
-						}
-					},
-					new HotkeyListener(config::panelToggleKey)
+						toggleSidebar();
+					}
+				},
+				new HotkeyListener(config::panelToggleKey)
+				{
+					@Override
+					public void hotkeyPressed()
 					{
-						@Override
-						public void hotkeyPressed()
-						{
-							togglePluginPanel();
-						}
-					});
+						togglePluginPanel();
+					}
+				});
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
 
 			frame.addWindowFocusListener(new WindowFocusListener()
@@ -599,7 +555,8 @@ public class ClientUI
 				if (FlatNativeWindowBorder.isSupported())
 				{
 					rp.putClientProperty(FlatClientProperties.USE_WINDOW_DECORATIONS, true);
-				} else if (OSType.getOSType() == OSType.MacOS && SystemInfo.isMacFullWindowContentSupported)
+				}
+				else if (OSType.getOSType() == OSType.MacOS && SystemInfo.isMacFullWindowContentSupported)
 				{
 					rp.putClientProperty("apple.awt.fullWindowContent", true);
 					rp.putClientProperty("apple.awt.transparentTitleBar", true);
@@ -619,7 +576,8 @@ public class ClientUI
 					}
 
 					menuBar.setBorder(new EmptyBorder(3, 70, 3, 10));
-				} else
+				}
+				else
 				{
 					if (OSType.getOSType() == OSType.Linux)
 					{
@@ -636,17 +594,18 @@ public class ClientUI
 				applyCustomChromeBorder();
 
 				sidebarNavBtn = toolbarPanel.add(NavigationButton
-						.builder()
-						.priority(100)
-						.icon(sidebarCloseIcon)
-						.tooltip("Close sidebar")
-						.onClick(this::toggleSidebar)
-						.build(), false);
-			} else
+					.builder()
+					.priority(100)
+					.icon(sidebarCloseIcon)
+					.tooltip("Close sidebar")
+					.onClick(this::toggleSidebar)
+					.build(), false);
+			}
+			else
 			{
 				sidebar.putClientProperty(
-						FlatClientProperties.TABBED_PANE_TRAILING_COMPONENT,
-						toolbarPanel.createSidebarPanel());
+					FlatClientProperties.TABBED_PANE_TRAILING_COMPONENT,
+					toolbarPanel.createSidebarPanel());
 			}
 
 			// Update config
@@ -663,8 +622,8 @@ public class ClientUI
 	private void applyCustomChromeBorder()
 	{
 		content.setBorder((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
-				? null
-				: new MatteBorder(4, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
+			? null
+			: new MatteBorder(4, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
 	}
 
 	public void show()
@@ -694,10 +653,10 @@ public class ClientUI
 					Rectangle clientBounds = frame.getBounds();
 
 					clientBounds = new Rectangle(
-							clientBounds.x + insets.left,
-							clientBounds.y + insets.top,
-							clientBounds.width - (insets.left + insets.right),
-							clientBounds.height - (insets.top + insets.bottom)
+						clientBounds.x + insets.left,
+						clientBounds.y + insets.top,
+						clientBounds.width - (insets.left + insets.right),
+						clientBounds.height - (insets.top + insets.bottom)
 					);
 
 					// Check that the bounds are contained inside a valid display
@@ -705,7 +664,7 @@ public class ClientUI
 					if (gc == null)
 					{
 						log.info("Reset client position. Client bounds: {}x{}x{}x{}",
-								clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
+							clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
 						// Reset the position, but not the size
 						frame.setLocationRelativeTo(frame.getOwner());
 					}
@@ -745,16 +704,17 @@ public class ClientUI
 			if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()))
 			{
 				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-						"RuneLite has not yet been updated to work with the latest\n"
-								+ "game update, it will work with reduced functionality until then.",
-						"RuneLite is outdated", INFORMATION_MESSAGE));
-			} else
+					"RuneLite has not yet been updated to work with the latest\n"
+						+ "game update, it will work with reduced functionality until then.",
+					"RuneLite is outdated", INFORMATION_MESSAGE));
+			}
+			else
 			{
 				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-						"RuneLite is outdated and is not compatible with the latest game update.\n"
-								+ "If you are doing pluginhub development, update the runeliteVersion property in build.gradle."
-								+ " Otherwise, git pull and rebuild.",
-						"RuneLite is outdated", ERROR_MESSAGE));
+					"RuneLite is outdated and is not compatible with the latest game update.\n"
+						+ "If you are doing pluginhub development, update the runeliteVersion property in build.gradle."
+						+ " Otherwise, git pull and rebuild.",
+					"RuneLite is outdated", ERROR_MESSAGE));
 			}
 		}
 
@@ -764,9 +724,9 @@ public class ClientUI
 			SwingUtilities.invokeLater(() ->
 			{
 				JEditorPane ep = new JEditorPane("text/html",
-						"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended " + recommendedMemoryLimit + "mb.<br>" +
-								"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
-								"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended " + recommendedMemoryLimit + "mb.<br>" +
+						"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
 				);
 				ep.addHyperlinkListener(e ->
 				{
@@ -778,7 +738,7 @@ public class ClientUI
 				ep.setEditable(false);
 				ep.setOpaque(false);
 				JOptionPane.showMessageDialog(frame,
-						ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
+					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
 			});
 		}
 	}
@@ -875,7 +835,8 @@ public class ClientUI
 				{
 					((Client) client).stopNow();
 					clientShutdownWaitMS = 1000;
-				} else
+				}
+				else
 				{
 					// it will continue rendering for about 4 seconds before attempting shutdown if its vanilla
 					client.stop();
@@ -886,7 +847,8 @@ public class ClientUI
 				try
 				{
 					Thread.sleep(clientShutdownWaitMS);
-				} catch (InterruptedException ignored)
+				}
+				catch (InterruptedException ignored)
 				{
 				}
 			}
@@ -985,7 +947,8 @@ public class ClientUI
 		if (taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW))
 		{
 			taskbar.requestWindowUserAttention(frame);
-		} else
+		}
+		else
 		{
 			log.debug("USER_ATTENTION_WINDOW is not supported");
 		}
@@ -993,7 +956,6 @@ public class ClientUI
 
 	/**
 	 * Returns current cursor set on game container
-	 *
 	 * @return awt cursor
 	 */
 	public Cursor getCurrentCursor()
@@ -1003,7 +965,6 @@ public class ClientUI
 
 	/**
 	 * Returns current custom cursor or default system cursor if cursor is not set
-	 *
 	 * @return awt cursor
 	 */
 	public Cursor getDefaultCursor()
@@ -1014,7 +975,6 @@ public class ClientUI
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
-	 *
 	 * @param image cursor image
 	 * @param name  cursor name
 	 */
@@ -1033,7 +993,6 @@ public class ClientUI
 
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
-	 *
 	 * @param cursor awt cursor
 	 */
 	public void setCursor(final Cursor cursor)
@@ -1043,7 +1002,6 @@ public class ClientUI
 
 	/**
 	 * Resets client window cursor to default one.
-	 *
 	 * @see ClientUI#setCursor(BufferedImage, String)
 	 */
 	public void resetCursor()
@@ -1083,7 +1041,6 @@ public class ClientUI
 
 	/**
 	 * Paint UI related overlays to target graphics
-	 *
 	 * @param graphics target graphics
 	 */
 	public void paintOverlays(final Graphics2D graphics)
@@ -1099,15 +1056,15 @@ public class ClientUI
 		// Offset sidebar button if resizable mode logout is visible
 		final Widget logoutButton = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY);
 		final int y = logoutButton != null && !logoutButton.isHidden() && logoutButton.getParent() != null
-				? logoutButton.getHeight() + logoutButton.getRelativeY()
-				: 5;
+			? logoutButton.getHeight() + logoutButton.getRelativeY()
+			: 5;
 
 		final BufferedImage image = sidebar.isVisible() ? sidebarCloseIcon : sidebarOpenIcon;
 
 		final Rectangle sidebarButtonRange = new Rectangle(x - 15, 0, image.getWidth() + 25, client.getRealDimensions().height);
 		final Point mousePosition = new Point(
-				client.getMouseCanvasPosition().getX() + client.getViewportXOffset(),
-				client.getMouseCanvasPosition().getY() + client.getViewportYOffset());
+			client.getMouseCanvasPosition().getX() + client.getViewportXOffset(),
+			client.getMouseCanvasPosition().getY() + client.getViewportYOffset());
 
 		if (sidebarButtonRange.contains(mousePosition.getX(), mousePosition.getY()))
 		{
@@ -1153,7 +1110,8 @@ public class ClientUI
 		if (open)
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_CLOSED);
-		} else
+		}
+		else
 		{
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_SIDEBAR_CLOSED, true);
 		}
@@ -1171,7 +1129,8 @@ public class ClientUI
 			if (open)
 			{
 				SwingUtil.activate(selectedTab.getPanel());
-			} else
+			}
+			else
 			{
 				SwingUtil.deactivate(selectedTab.getPanel());
 			}
@@ -1212,7 +1171,8 @@ public class ClientUI
 			}
 
 			openPanel(open, true);
-		} else
+		}
+		else
 		{
 			sidebar.setSelectedIndex(-1);
 		}
@@ -1244,7 +1204,8 @@ public class ClientUI
 			{
 				c.requestFocusInWindow();
 			}
-		} else if (client != null)
+		}
+		else if (client != null)
 		{
 			client.requestFocusInWindow();
 		}
@@ -1258,7 +1219,7 @@ public class ClientUI
 		}
 
 		if (frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null
-				&& !safeMode)
+			&& !safeMode)
 		{
 			frame.setOpacity(config.windowOpacity() / 100.0f);
 		}
@@ -1271,7 +1232,8 @@ public class ClientUI
 			{
 				frame.setTitle(title + " - " + player.getName());
 			}
-		} else
+		}
+		else
 		{
 			frame.setTitle(title);
 		}
@@ -1340,7 +1302,8 @@ public class ClientUI
 			{
 				mode = 'g';
 				size = clientPanel.getSize();
-			} else
+			}
+			else
 			{
 				mode = 'c';
 				size = frame.getSize();
@@ -1366,7 +1329,8 @@ public class ClientUI
 			// leave the previous bounds there, so when the client starts maximized it
 			// can restore to the restored size from the previous run
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED, true);
-		} else
+		}
+		else
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 		}
@@ -1407,23 +1371,81 @@ public class ClientUI
 			if ("g".equals(mode))
 			{
 				((Layout) content.getLayout()).forceClientSize(width, height);
-			} else
+			}
+			else
 			{
 				frame.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom);
 			}
 
 			return true;
-		} catch (RuntimeException ignored)
+		}
+		catch (RuntimeException ignored)
 		{
 			return false;
 		}
 	}
 
-	@RequiredArgsConstructor
-	private static class HistoryEntry
+	private static void setupDefaults()
 	{
-		private final boolean sidebarOpen;
-		private final NavigationButton navBtn;
+		// Force heavy-weight popups/tooltips.
+		// Prevents them from being obscured by the game applet.
+		var tooltipManager = ToolTipManager.sharedInstance();
+		tooltipManager.setLightWeightPopupEnabled(false);
+		tooltipManager.setInitialDelay(300);
+		tooltipManager.setDismissDelay(10_000);
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+		// Do not fill in background on repaint. Reduces flickering when
+		// the applet is resized.
+		System.setProperty("sun.awt.noerasebackground", "true");
+	}
+
+	@Nullable
+	private static TrayIcon createTrayIcon(@Nonnull final Image icon, @Nonnull final String title, @Nonnull final Frame frame)
+	{
+		if (!SystemTray.isSupported())
+		{
+			return null;
+		}
+
+		final SystemTray systemTray = SystemTray.getSystemTray();
+		final TrayIcon trayIcon = new TrayIcon(icon, title);
+		trayIcon.setImageAutoSize(true);
+
+		try
+		{
+			systemTray.add(trayIcon);
+		}
+		catch (AWTException ex)
+		{
+			log.debug("Unable to add system tray icon", ex);
+			return trayIcon;
+		}
+
+		// Bring to front when tray icon is clicked
+		trayIcon.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
+				{
+					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
+					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
+					// Additionally, in order to bring the window to the foreground,
+					// frame.setVisible(true) calls CPlatformWindow::nativePushNSWindowToFront.
+					// However, this native method is not called with activateIgnoringOtherApps:YES,
+					// so any other active window will prevent our window from being brought to the front.
+					// To work around this, we use our macOS-specific requestForeground().
+					frame.setVisible(false);
+					OSXUtil.requestForeground();
+				}
+				frame.setVisible(true);
+				frame.setState(Frame.NORMAL); // Restore
+			}
+		});
+
+		return trayIcon;
 	}
 
 	private class Layout implements LayoutManager2
@@ -1506,8 +1528,8 @@ public class ClientUI
 
 			// adjust sidebar height first, as changing it's height can make it's min width change too
 			int innerHeight = Math.max(content.getHeight() - insetHeight, Math.max(
-					client.getMinimumSize().height,
-					sidebar.getMinimumSize().height));
+				client.getMinimumSize().height,
+				sidebar.getMinimumSize().height));
 			{
 				sidebar.setSize(sidebar.getWidth(), innerHeight);
 			}
@@ -1523,17 +1545,18 @@ public class ClientUI
 			final int clientMinWidth = client.getMinimumSize().width;
 			int clientWidth = Math.max(client.getWidth(), clientMinWidth);
 			int sidebarWidth = sidebar.isVisible()
-					? sidebar.getPreferredSize().width
-					: 0;
+				? sidebar.getPreferredSize().width
+				: 0;
 
 			boolean keepGameSize = (frame.getExtendedState() & Frame.MAXIMIZED_HORIZ) == 0
-					&& (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE || forceSizingClient);
+				&& (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE || forceSizingClient);
 
 			if (keepGameSize)
 			{
 				// adjust client for window resizes
 				clientWidth = Math.max(clientMinWidth, clientWidth + content.getWidth() - insetWidth - previousContentWidth);
-			} else
+			}
+			else
 			{
 				// fit client to window
 				clientWidth = Math.max(clientMinWidth, contentWidth - sidebarWidth);
@@ -1552,7 +1575,7 @@ public class ClientUI
 			Rectangle oldBounds = frame.getBounds();
 			frame.revalidateMinimumSize();
 			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
-					&& !frame.getPreferredSize().equals(oldBounds.getSize()))
+				&& !frame.getPreferredSize().equals(oldBounds.getSize()))
 			{
 				frame.containedSetSize(frame.getPreferredSize(), oldBounds);
 				if (!doingLayout)
@@ -1564,7 +1587,8 @@ public class ClientUI
 						// call us recursively if we calculate size wrong, so don't do that.
 						doingLayout = true;
 						frame.validate();
-					} finally
+					}
+					finally
 					{
 						doingLayout = false;
 					}

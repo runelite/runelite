@@ -57,21 +57,11 @@ public class ProfileManager
 	private static final File PROFILES_DIR = new File(RuneLite.RUNELITE_DIR, "profiles2");
 	private static final File PROFILES = new File(PROFILES_DIR, "profiles.json");
 
+	private final Gson gson;
+
 	static
 	{
 		PROFILES_DIR.mkdirs();
-	}
-
-	private final Gson gson;
-
-	public static File profileConfigFile(ConfigProfile profile)
-	{
-		return new File(PROFILES_DIR, profile.getName() + "-" + profile.getId() + ".properties");
-	}
-
-	public Lock lock()
-	{
-		return new Lock();
 	}
 
 	public class Lock implements AutoCloseable
@@ -97,11 +87,13 @@ public class ProfileManager
 			try (FileInputStream in = new FileInputStream(PROFILES))
 			{
 				return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Profiles.class)
-						.getProfiles();
-			} catch (FileNotFoundException ex)
+					.getProfiles();
+			}
+			catch (FileNotFoundException ex)
 			{
 				return Collections.emptyList();
-			} catch (IOException | JsonSyntaxException e)
+			}
+			catch (IOException | JsonSyntaxException e)
 			{
 				log.error("unable to read profiles", e);
 				return Collections.emptyList();
@@ -118,8 +110,8 @@ public class ProfileManager
 
 				File tempFile = File.createTempFile("runelite_profiles", null, PROFILES_DIR);
 				try (FileOutputStream out = new FileOutputStream(tempFile);
-					 FileChannel channel = lockOut.getChannel();
-					 OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
+					FileChannel channel = lockOut.getChannel();
+					OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
 				{
 					Profiles profilesData = new Profiles();
 					profilesData.setProfiles(profiles);
@@ -131,7 +123,8 @@ public class ProfileManager
 				try
 				{
 					Files.move(tempFile.toPath(), PROFILES.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-				} catch (AtomicMoveNotSupportedException ex)
+				}
+				catch (AtomicMoveNotSupportedException ex)
 				{
 					log.debug("atomic move not supported", ex);
 					Files.move(tempFile.toPath(), PROFILES.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -182,7 +175,7 @@ public class ProfileManager
 
 		public ConfigProfile findProfile(Predicate<ConfigProfile> condition)
 		{
-			for (ConfigProfile configProfile : profiles)
+			for (ConfigProfile configProfile: profiles)
 			{
 				if (condition.test(configProfile))
 				{
@@ -216,12 +209,13 @@ public class ProfileManager
 			try
 			{
 				Files.move(
-						oldFile.toPath(),
-						newFile.toPath(),
-						StandardCopyOption.REPLACE_EXISTING
+					oldFile.toPath(),
+					newFile.toPath(),
+					StandardCopyOption.REPLACE_EXISTING
 				);
 				log.info("Renamed profile file {} to {}", oldFile.getName(), newFile.getName());
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				log.error("error renaming profile", e);
 			}
@@ -231,5 +225,15 @@ public class ProfileManager
 		{
 			modified = true;
 		}
+	}
+
+	public Lock lock()
+	{
+		return new Lock();
+	}
+
+	public static File profileConfigFile(ConfigProfile profile)
+	{
+		return new File(PROFILES_DIR, profile.getName() + "-" + profile.getId() + ".properties");
 	}
 }

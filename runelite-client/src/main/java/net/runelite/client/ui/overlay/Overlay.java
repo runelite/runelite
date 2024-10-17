@@ -55,8 +55,6 @@ public abstract class Overlay implements LayoutableRenderableEntity
 
 	@Nullable
 	private final Plugin plugin;
-	private final List<Integer> drawHooks = new ArrayList<>();
-	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
 	private Point preferredLocation;
 	private Dimension preferredSize;
 	private OverlayPosition preferredPosition;
@@ -68,6 +66,8 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 */
 	private float priority = PRIORITY_DEFAULT;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	private final List<Integer> drawHooks = new ArrayList<>();
+	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
 	private boolean resizable;
 	private int minimumSize = 32;
 	private boolean resettable = true;
@@ -144,7 +144,6 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
 	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
 	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
-	 *
 	 * @param interfaceId The interface id
 	 * @see net.runelite.api.widgets.WidgetID
 	 */
@@ -158,9 +157,8 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
 	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
 	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
-	 * <p>
-	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
 	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
 	 * @param groupId The widget group id
 	 * @param childId The widget child id
 	 * @see net.runelite.api.widgets.WidgetID
@@ -177,9 +175,8 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
 	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
 	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
-	 * <p>
-	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
 	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
 	 * @param layer The layer
 	 * @see WidgetInfo
 	 */
@@ -194,9 +191,8 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
 	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
 	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
-	 * <p>
-	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
 	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
 	 * @param component The layer
 	 * @see WidgetInfo
 	 */
@@ -225,7 +221,6 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	/**
 	 * Get the parent bounds for overlay dragging. The overlay will
 	 * not be allowed to be moved outside of the parent bounds.
-	 *
 	 * @return
 	 */
 	@Nullable

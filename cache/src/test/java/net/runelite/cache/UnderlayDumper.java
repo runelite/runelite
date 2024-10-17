@@ -47,15 +47,17 @@ import org.slf4j.LoggerFactory;
 public class UnderlayDumper
 {
 	private static final Logger logger = LoggerFactory.getLogger(UnderlayDumper.class);
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-				outDir = folder.newFolder();
+			outDir = folder.newFolder();
 
 		int count = 0;
 

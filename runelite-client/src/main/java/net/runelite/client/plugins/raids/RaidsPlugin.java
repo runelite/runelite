@@ -94,9 +94,9 @@ import static net.runelite.client.util.Text.sanitize;
 import net.runelite.http.api.chat.LayoutRoom;
 
 @PluginDescriptor(
-		name = "Chambers Of Xeric",
-		description = "Show helpful information for the Chambers of Xeric raid",
-		tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox"}
+	name = "Chambers Of Xeric",
+	description = "Show helpful information for the Chambers of Xeric raid",
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -112,60 +112,75 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
 	private static final int MAX_LAYOUT_LEN = 300;
-	@Getter
-	private final Set<String> roomWhitelist = new HashSet<>();
-	@Getter
-	private final Set<String> roomBlacklist = new HashSet<>();
-	@Getter
-	private final Set<String> rotationWhitelist = new HashSet<>();
-	@Getter
-	private final Set<String> layoutWhitelist = new HashSet<>();
+
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private RaidsConfig config;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private RaidsOverlay overlay;
+
 	@Inject
 	private LayoutSolver layoutSolver;
+
 	@Inject
 	private SpriteManager spriteManager;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Inject
 	private ChatCommandManager chatCommandManager;
+
 	@Inject
 	private ChatClient chatClient;
+
 	@Inject
 	private ScheduledExecutorService scheduledExecutorService;
+
 	@Inject
 	private KeyManager keyManager;
+
 	@Inject
 	private ImageCapture imageCapture;
+
 	@Inject
 	private EventBus eventBus;
+
+	@Getter
+	private final Set<String> roomWhitelist = new HashSet<>();
+
+	@Getter
+	private final Set<String> roomBlacklist = new HashSet<>();
+
+	@Getter
+	private final Set<String> rotationWhitelist = new HashSet<>();
+
+	@Getter
+	private final Set<String> layoutWhitelist = new HashSet<>();
+
 	@Setter(AccessLevel.PACKAGE) // for the test
 	@Getter
 	private Raid raid;
-	private final HotkeyListener screenshotHotkeyListener = new HotkeyListener(() -> config.screenshotHotkey())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			clientThread.invoke(RaidsPlugin.this::screenshotScoutOverlay);
-		}
-	};
+
 	// if the player is inside of a raid or not
 	@Getter
 	private boolean inRaidChambers;
+
 	/*
 	 * if the player is in a raid party or not
 	 * This will be set when someone in the friends chat clicks the "make party" button on the raids widget
@@ -260,7 +275,8 @@ public class RaidsPlugin extends Plugin
 				if (inRaid)
 				{
 					scoutRaid();
-				} else if (raidPartyID == -1)
+				}
+				else if (raidPartyID == -1)
 				{
 					log.debug("Raid has ended");
 					reset();
@@ -304,26 +320,26 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
+						.append(ChatColorType.NORMAL)
+						.append("Total points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(totalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(", Personal points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(personalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(DECIMAL_FORMAT.format(percentage))
+						.append(ChatColorType.NORMAL)
+						.append("%)")
+						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-							.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-							.runeLiteFormattedMessage(chatMessage)
-							.build());
+						.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
 				}
 			}
 		}
@@ -395,16 +411,16 @@ public class RaidsPlugin extends Plugin
 		final String raidData = "[" + layout + "]: " + rooms;
 
 		final String layoutMessage = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(raidData)
-				.build();
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(raidData)
+			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-				.runeLiteFormattedMessage(layoutMessage)
-				.build());
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(layoutMessage)
+			.build());
 
 	}
 
@@ -441,7 +457,8 @@ public class RaidsPlugin extends Plugin
 			{
 				list.add("unknown (combat)");
 				list.add("unknown (puzzle)");
-			} else
+			}
+			else
 			{
 				list.add(s);
 			}
@@ -452,9 +469,9 @@ public class RaidsPlugin extends Plugin
 	{
 		RaidRoom[] combatRooms = raid.getCombatRooms();
 		String rotation = Arrays.stream(combatRooms)
-				.map(RaidRoom::getName)
-				.map(String::toLowerCase)
-				.collect(Collectors.joining(","));
+			.map(RaidRoom::getName)
+			.map(String::toLowerCase)
+			.collect(Collectors.joining(","));
 
 		return rotationWhitelist.contains(rotation);
 	}
@@ -504,8 +521,8 @@ public class RaidsPlugin extends Plugin
 			}
 
 			raid = new Raid(
-					new WorldPoint(client.getBaseX() + gridBase.getX(), client.getBaseY() + gridBase.getY(), LOBBY_PLANE),
-					lobbyIndex
+				new WorldPoint(client.getBaseX() + gridBase.getX(), client.getBaseY() + gridBase.getY(), LOBBY_PLANE),
+				lobbyIndex
 			);
 		}
 
@@ -524,7 +541,7 @@ public class RaidsPlugin extends Plugin
 		 * The rooms have the following y values
 		 *     0 0 0 0
 		 *     1 1 1 1
-		 */
+ 		 */
 		int baseY = raid.getLobbyIndex() % ROOMS_PER_PLANE > (AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE - 1) ? 1 : 0;
 
 		/*
@@ -590,7 +607,8 @@ public class RaidsPlugin extends Plugin
 			if (x < (1 - RaidRoom.ROOM_MAX_SIZE) || x >= SCENE_SIZE)
 			{
 				continue;
-			} else if (x < 1)
+			}
+			else if (x < 1)
 			{
 				x = 1;
 			}
@@ -694,7 +712,8 @@ public class RaidsPlugin extends Plugin
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
-		} else
+		}
+		else
 		{
 			player = sanitize(chatMessage.getName());
 		}
@@ -703,7 +722,8 @@ public class RaidsPlugin extends Plugin
 		try
 		{
 			layout = chatClient.getLayout(player);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.debug("unable to lookup layout", ex);
 			return;
@@ -715,10 +735,10 @@ public class RaidsPlugin extends Plugin
 		}
 
 		String layoutMessage = Joiner.on(", ").join(Arrays.stream(layout)
-				.map(l -> RaidRoom.valueOf(l.name()))
-				.filter(room -> room.getType() == RoomType.COMBAT || room.getType() == RoomType.PUZZLE)
-				.map(RaidRoom::getName)
-				.toArray());
+			.map(l -> RaidRoom.valueOf(l.name()))
+			.filter(room -> room.getType() == RoomType.COMBAT || room.getType() == RoomType.PUZZLE)
+			.map(RaidRoom::getName)
+			.toArray());
 
 		if (layoutMessage.length() > MAX_LAYOUT_LEN)
 		{
@@ -727,11 +747,11 @@ public class RaidsPlugin extends Plugin
 		}
 
 		String response = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(layoutMessage)
-				.build();
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Layout: ")
+			.append(ChatColorType.NORMAL)
+			.append(layoutMessage)
+			.build();
 
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
@@ -750,18 +770,20 @@ public class RaidsPlugin extends Plugin
 		List<RaidRoom> orderedRooms = raid.getOrderedRooms();
 
 		LayoutRoom[] layoutRooms = orderedRooms.stream()
-				.map(room -> LayoutRoom.valueOf(room.name()))
-				.toArray(LayoutRoom[]::new);
+			.map(room -> LayoutRoom.valueOf(room.name()))
+			.toArray(LayoutRoom[]::new);
 
 		scheduledExecutorService.execute(() ->
 		{
 			try
 			{
 				chatClient.submitLayout(playerName, layoutRooms);
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				log.warn("unable to submit layout", ex);
-			} finally
+			}
+			finally
 			{
 				chatInput.resume();
 			}
@@ -769,6 +791,15 @@ public class RaidsPlugin extends Plugin
 
 		return true;
 	}
+
+	private final HotkeyListener screenshotHotkeyListener = new HotkeyListener(() -> config.screenshotHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			clientThread.invoke(RaidsPlugin.this::screenshotScoutOverlay);
+		}
+	};
 
 	void screenshotScoutOverlay()
 	{
@@ -793,8 +824,8 @@ public class RaidsPlugin extends Plugin
 	 * Finds the lobby room index in the room array
 	 * There are 8 rooms per floor in a 4 wide (x) and 2 high (y) rectangle
 	 * The rooms on plane 3 (the lobby plane) have the following indexes
-	 * 0 1 2 3
-	 * 4 5 6 7
+	 *     0 1 2 3
+	 *     4 5 6 7
 	 */
 	private Integer findLobbyIndex(Point gridBase)
 	{
@@ -807,7 +838,7 @@ public class RaidsPlugin extends Plugin
 		 * but is included to be safe
 		 */
 		if (Constants.SCENE_SIZE <= gridBase.getX() + RaidRoom.ROOM_MAX_SIZE
-				|| Constants.SCENE_SIZE <= gridBase.getY() + RaidRoom.ROOM_MAX_SIZE)
+			|| Constants.SCENE_SIZE <= gridBase.getY() + RaidRoom.ROOM_MAX_SIZE)
 		{
 			return null;
 		}
@@ -828,7 +859,8 @@ public class RaidsPlugin extends Plugin
 		if (tiles[gridBase.getX()][gridBase.getY() + RaidRoom.ROOM_MAX_SIZE] == null)
 		{
 			y = 0;
-		} else
+		}
+		else
 		{
 			y = 1;
 		}
@@ -843,7 +875,8 @@ public class RaidsPlugin extends Plugin
 		if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
 		{
 			x = 3;
-		} else
+		}
+		else
 		{
 			// determine x based on how many rooms are to the west of it.
 			for (x = 0; x < 3; x++)

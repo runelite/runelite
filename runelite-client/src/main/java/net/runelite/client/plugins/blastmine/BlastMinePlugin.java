@@ -45,9 +45,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Blast Mine",
-		description = "Show helpful information for the Blast Mine minigame",
-		tags = {"explode", "explosive", "mining", "minigame", "skilling"}
+	name = "Blast Mine",
+	description = "Show helpful information for the Blast Mine minigame",
+	tags = {"explode", "explosive", "mining", "minigame", "skilling"}
 )
 public class BlastMinePlugin extends Plugin
 {
@@ -129,7 +129,7 @@ public class BlastMinePlugin extends Plugin
 		}
 
 		rocks.values().removeIf(rock ->
-				(rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) ||
-						(rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
+			(rock.getRemainingTimeRelative() == 1 && rock.getType() != BlastMineRockType.NORMAL) ||
+				(rock.getRemainingFuseTimeRelative() == 1 && rock.getType() == BlastMineRockType.LIT));
 	}
 }

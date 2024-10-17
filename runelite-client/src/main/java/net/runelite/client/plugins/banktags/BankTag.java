@@ -41,7 +41,6 @@ public interface BankTag
 {
 	/**
 	 * Test if an item is in the tag
-	 *
 	 * @param itemId
 	 * @return
 	 */
@@ -49,7 +48,6 @@ public interface BankTag
 
 	/**
 	 * The tag layout
-	 *
 	 * @return the layout for the tag, or null for no layout
 	 */
 	default Layout layout()

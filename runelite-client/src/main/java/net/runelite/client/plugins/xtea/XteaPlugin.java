@@ -53,8 +53,8 @@ import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
 
 @PluginDescriptor(
-		name = "Xtea",
-		hidden = true
+	name = "Xtea",
+	hidden = true
 )
 @Slf4j
 public class XteaPlugin extends Plugin
@@ -84,18 +84,20 @@ public class XteaPlugin extends Plugin
 	private Map<Integer, int[]> load()
 	{
 		try (FileInputStream in = new FileInputStream(XTEA_CACHE);
-			 FileChannel channel = in.getChannel();
-			 InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
+			FileChannel channel = in.getChannel();
+			InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
 		{
 			channel.lock(0, Long.MAX_VALUE, true);
 			return gson.fromJson(reader,
-					new TypeToken<Map<Integer, int[]>>()
-					{
-					}.getType());
-		} catch (FileNotFoundException ex)
+				new TypeToken<Map<Integer, int[]>>()
+				{
+				}.getType());
+		}
+		catch (FileNotFoundException ex)
 		{
 			return new HashMap<>();
-		} catch (IOException | JsonSyntaxException e)
+		}
+		catch (IOException | JsonSyntaxException e)
 		{
 			log.debug("error loading xteas", e);
 			return new HashMap<>();
@@ -105,16 +107,17 @@ public class XteaPlugin extends Plugin
 	private void save()
 	{
 		try (FileOutputStream out = new FileOutputStream(XTEA_CACHE);
-			 FileChannel channel = out.getChannel();
-			 OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
+			FileChannel channel = out.getChannel();
+			OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
 		{
 			channel.lock();
 			gson.toJson(xteas,
-					new TypeToken<Map<Integer, int[]>>()
-					{
-					}.getType(),
-					writer);
-		} catch (IOException e)
+				new TypeToken<Map<Integer, int[]>>()
+				{
+				}.getType(),
+				writer);
+		}
+		catch (IOException e)
 		{
 			log.debug("error saving xteas", e);
 		}

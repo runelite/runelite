@@ -82,13 +82,13 @@ public class TrapOverlay extends Overlay
 	public void updateConfig()
 	{
 		colorEmptyBorder = config.getEmptyTrapColor();
-		colorEmpty = ColorUtil.colorWithAlpha(colorEmptyBorder, (int) (colorEmptyBorder.getAlpha() / 2.5));
+		colorEmpty = ColorUtil.colorWithAlpha(colorEmptyBorder, (int)(colorEmptyBorder.getAlpha() / 2.5));
 		colorFullBorder = config.getFullTrapColor();
-		colorFull = ColorUtil.colorWithAlpha(colorFullBorder, (int) (colorFullBorder.getAlpha() / 2.5));
+		colorFull = ColorUtil.colorWithAlpha(colorFullBorder, (int)(colorFullBorder.getAlpha() / 2.5));
 		colorOpenBorder = config.getOpenTrapColor();
-		colorOpen = ColorUtil.colorWithAlpha(colorOpenBorder, (int) (colorOpenBorder.getAlpha() / 2.5));
+		colorOpen = ColorUtil.colorWithAlpha(colorOpenBorder, (int)(colorOpenBorder.getAlpha() / 2.5));
 		colorTransBorder = config.getTransTrapColor();
-		colorTrans = ColorUtil.colorWithAlpha(colorTransBorder, (int) (colorTransBorder.getAlpha() / 2.5));
+		colorTrans = ColorUtil.colorWithAlpha(colorTransBorder, (int)(colorTransBorder.getAlpha() / 2.5));
 	}
 
 	/**
@@ -125,10 +125,10 @@ public class TrapOverlay extends Overlay
 	 * Draws a timer on a given trap.
 	 *
 	 * @param graphics
-	 * @param trap          The trap on which the timer needs to be drawn
-	 * @param fill          The fill color of the timer
-	 * @param border        The border color of the timer
-	 * @param fillTimeLow   The fill color of the timer when it is low
+	 * @param trap The trap on which the timer needs to be drawn
+	 * @param fill The fill color of the timer
+	 * @param border The border color of the timer
+	 * @param fillTimeLow The fill color of the timer when it is low
 	 * @param borderTimeLow The border color of the timer when it is low
 	 */
 	private void drawTimerOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border, Color fillTimeLow, Color borderTimeLow)
@@ -163,9 +163,9 @@ public class TrapOverlay extends Overlay
 	 * Draws a timer on a given trap.
 	 *
 	 * @param graphics
-	 * @param trap     The trap on which the timer needs to be drawn
-	 * @param fill     The fill color of the timer
-	 * @param border   The border color of the timer
+	 * @param trap The trap on which the timer needs to be drawn
+	 * @param fill The fill color of the timer
+	 * @param border The border color of the timer
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border)
 	{

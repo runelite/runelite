@@ -59,7 +59,6 @@ public interface ObjectComposition extends ParamHolder
 	/**
 	 * Set the map scene index into the {@link Client#getMapScene()}
 	 * array, or -1 if it has no map scene icon
-	 *
 	 * @param mapSceneId
 	 */
 	void setMapSceneId(int mapSceneId);
@@ -73,7 +72,6 @@ public interface ObjectComposition extends ParamHolder
 	/**
 	 * Set the index of the object in the {@link Client#getMapIcons()}
 	 * array, or -1 if it has no map icon
-	 *
 	 * @param mapIconId
 	 */
 	void setMapIconId(int mapIconId);
@@ -111,14 +109,12 @@ public interface ObjectComposition extends ParamHolder
 
 	/**
 	 * Get the size of the object on the X-axis in tiles
-	 *
 	 * @return
 	 */
 	int getSizeX();
 
 	/**
 	 * Get the size of the object on the Y-axis in tiles
-	 *
 	 * @return
 	 */
 	int getSizeY();

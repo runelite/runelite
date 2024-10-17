@@ -33,7 +33,6 @@ public interface ClanChannelMember extends ChatPlayer
 {
 	/**
 	 * The member name
-	 *
 	 * @return
 	 */
 	String getName();
@@ -41,16 +40,14 @@ public interface ClanChannelMember extends ChatPlayer
 	/**
 	 * The member's rank relative to the other members. To get the member title,
 	 * see ClanSettings.
-	 *
-	 * @return
 	 * @see ClanRank
 	 * @see ClanSettings#titleForRank(ClanRank)
+	 * @return
 	 */
 	ClanRank getRank();
 
 	/**
 	 * The world the member is on
-	 *
 	 * @return
 	 */
 	int getWorld();

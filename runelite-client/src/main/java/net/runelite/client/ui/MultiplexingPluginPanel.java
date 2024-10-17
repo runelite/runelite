@@ -77,7 +77,8 @@ public class MultiplexingPluginPanel extends PluginPanel
 			{
 				popState();
 			}
-		} else
+		}
+		else
 		{
 			add(subpanel, name);
 			onAdd(subpanel);

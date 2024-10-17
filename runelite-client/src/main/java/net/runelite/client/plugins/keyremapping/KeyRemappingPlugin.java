@@ -49,10 +49,10 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-		name = "Key Remapping",
-		description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat', and remapping number keys to F-keys",
-		tags = {"enter", "chat", "wasd", "camera"},
-		enabledByDefault = false
+	name = "Key Remapping",
+	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat', and remapping number keys to F-keys",
+	tags = {"enter", "chat", "wasd", "camera"},
+	enabledByDefault = false
 )
 public class KeyRemappingPlugin extends Plugin
 {
@@ -113,7 +113,6 @@ public class KeyRemappingPlugin extends Plugin
 
 	/**
 	 * Check if something other than the chatbox is accepting key input.
-	 *
 	 * @return
 	 */
 	boolean chatboxFocused()
@@ -154,9 +153,9 @@ public class KeyRemappingPlugin extends Plugin
 		// so chatboxFocused() is true. The chatbox onkey script uses the following logic to ignore key presses,
 		// so we will use it too to not remap F-keys.
 		return isHidden(ComponentID.CHATBOX_MESSAGES) || isHidden(ComponentID.CHATBOX_TRANSPARENT_BACKGROUND_LINES)
-				// We want to block F-key remapping in the bank pin interface too, so it does not interfere with the
-				// Keyboard Bankpin feature of the Bank plugin
-				|| !isHidden(ComponentID.BANK_PIN_CONTAINER);
+			// We want to block F-key remapping in the bank pin interface too, so it does not interfere with the
+			// Keyboard Bankpin feature of the Bank plugin
+			|| !isHidden(ComponentID.BANK_PIN_CONTAINER);
 	}
 
 	boolean isOptionsDialogOpen()

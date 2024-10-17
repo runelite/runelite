@@ -58,7 +58,7 @@ class DriftNet
 	boolean isNotAcceptingFish()
 	{
 		return (status != DriftNetStatus.CATCH && status != DriftNetStatus.SET) ||
-				(prevTickStatus != DriftNetStatus.CATCH && prevTickStatus != DriftNetStatus.SET);
+			(prevTickStatus != DriftNetStatus.CATCH && prevTickStatus != DriftNetStatus.SET);
 	}
 
 	String getFormattedCountText()

@@ -52,7 +52,7 @@ public class SpriteManagerTest
 			store.load();
 
 			SpriteManager dumper = new SpriteManager(
-					store
+				store
 			);
 			dumper.load();
 			dumper.export(dumpDir);

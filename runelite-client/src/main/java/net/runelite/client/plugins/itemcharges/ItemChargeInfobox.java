@@ -38,11 +38,11 @@ class ItemChargeInfobox extends Counter
 	private final int item;
 
 	ItemChargeInfobox(
-			ItemChargePlugin plugin,
-			BufferedImage image,
-			String name,
-			int charges,
-			int item)
+		ItemChargePlugin plugin,
+		BufferedImage image,
+		String name,
+		int charges,
+		int item)
 	{
 		super(image, plugin, charges);
 		setTooltip(name);

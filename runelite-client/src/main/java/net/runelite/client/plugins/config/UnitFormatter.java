@@ -48,7 +48,8 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 		if (text.endsWith(units))
 		{
 			trimmedText = text.substring(0, text.length() - units.length());
-		} else
+		}
+		else
 		{
 			trimmedText = text;
 		}
@@ -56,7 +57,8 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 		try
 		{
 			return Integer.valueOf(trimmedText);
-		} catch (NumberFormatException e)
+		}
+		catch (NumberFormatException e)
 		{
 			throw new ParseException(trimmedText + " is not an integer.", 0); // NOPMD: PreserveStackTrace
 		}

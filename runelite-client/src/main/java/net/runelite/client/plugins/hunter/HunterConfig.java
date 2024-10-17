@@ -36,10 +36,10 @@ public interface HunterConfig extends Config
 {
 	@Alpha
 	@ConfigItem(
-			position = 1,
-			keyName = "hexColorOpenTrap",
-			name = "Open trap",
-			description = "Color of open trap timer"
+		position = 1,
+		keyName = "hexColorOpenTrap",
+		name = "Open trap",
+		description = "Color of open trap timer"
 	)
 	default Color getOpenTrapColor()
 	{
@@ -48,10 +48,10 @@ public interface HunterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 2,
-			keyName = "hexColorFullTrap",
-			name = "Full trap",
-			description = "Color of full trap timer"
+		position = 2,
+		keyName = "hexColorFullTrap",
+		name = "Full trap",
+		description = "Color of full trap timer"
 	)
 	default Color getFullTrapColor()
 	{
@@ -60,10 +60,10 @@ public interface HunterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 3,
-			keyName = "hexColorEmptyTrap",
-			name = "Empty trap",
-			description = "Color of empty trap timer"
+		position = 3,
+		keyName = "hexColorEmptyTrap",
+		name = "Empty trap",
+		description = "Color of empty trap timer"
 	)
 	default Color getEmptyTrapColor()
 	{
@@ -72,10 +72,10 @@ public interface HunterConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 4,
-			keyName = "hexColorTransTrap",
-			name = "Transitioning trap",
-			description = "Color of transitioning trap timer"
+		position = 4,
+		keyName = "hexColorTransTrap",
+		name = "Transitioning trap",
+		description = "Color of transitioning trap timer"
 	)
 	default Color getTransTrapColor()
 	{
@@ -83,10 +83,10 @@ public interface HunterConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "maniacalMonkeyNotify",
-			name = "Maniacal monkey notification",
-			description = "Send notification when maniacal monkey is caught or you fail to catch."
+		position = 5,
+		keyName = "maniacalMonkeyNotify",
+		name = "Maniacal monkey notification",
+		description = "Send notification when maniacal monkey is caught or you fail to catch."
 	)
 	default Notification maniacalMonkeyNotify()
 	{

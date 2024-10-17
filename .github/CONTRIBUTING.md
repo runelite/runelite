@@ -3,29 +3,25 @@
 We'd love for you to contribute to our source code and to make RuneLite even better than it is
 today!
 
-Check out the [Developer Guide](https://github.com/runelite/runelite/wiki/Developer-Guide) for setup instructions, and
-general tips and tricks.
+Check out the [Developer Guide](https://github.com/runelite/runelite/wiki/Developer-Guide) for setup instructions, and general tips and tricks.
 
-If you want to make or contribute to a plugin hub plugin, this is *not* the correct guide; instead read the plugin hub
-development guide, which is linked from the developer guide.
+If you want to make or contribute to a plugin hub plugin, this is *not* the correct guide; instead read the plugin hub development guide, which is linked from the developer guide.
 
 Here are the guidelines we'd like you to follow:
 
-- [Question or Problem?](#question)
-- [Issues and Bugs](#issue)
-- [Submission Guidelines](#submit)
-- [Coding Format](#format)
+ - [Question or Problem?](#question)
+ - [Issues and Bugs](#issue)
+ - [Submission Guidelines](#submit)
+ - [Coding Format](#format)
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to contribute to RuneLite, please join our [Discord](https://runelite.net/discord)
-server.
+If you have questions about how to contribute to RuneLite, please join our [Discord](https://runelite.net/discord) server.
 
 ## <a name="issue"></a> Found an Issue?
 
 If you find a bug in the source code or a mistake in the documentation, you can help us by
-submitting an issue to our [GitHub Repository](https://github.com/runelite/runelite). Even better you can submit a Pull
-Request
+submitting an issue to our [GitHub Repository](https://github.com/runelite/runelite). Even better you can submit a Pull Request
 with a fix.
 
 **Please see the [Submission Guidelines](#submit) below.**
@@ -33,7 +29,6 @@ with a fix.
 ## <a name="submit"></a> Submission Guidelines
 
 ### Submitting an Issue
-
 Before you submit your issue search the archive, maybe your question was already answered.
 
 If your issue appears to be a bug and hasn't been reported, open a new issue. Help us to maximize
@@ -45,11 +40,9 @@ quickly:
 * **Java Version and Operating System** - is this a problem with a specific setup?
 * **Reproduce the Error** - provide details, if possible, on how to reproduce the error
 * **Related Issues** - has a similar issue been reported before?
-* **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be causing the problem (
-  line of code or commit)
+* **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be causing the problem (line of code or commit)
 
 ### Submitting a Pull Request
-
 Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/runelite/runelite/pulls) for an open or closed Pull Request
@@ -62,9 +55,8 @@ Before you submit your pull request consider the following guidelines:
     git clone https://github.com/YOUR_USERNAME/runelite.git
     cd runelite/
     ```
-* After cloning, set a new remote [upstream](https://help.github.com/articles/configuring-a-remote-for-a-fork/) (this
-  helps to keep your fork up to date)
-
+* After cloning, set a new remote [upstream](https://help.github.com/articles/configuring-a-remote-for-a-fork/) (this helps to keep your fork up to date)
+    
     ```shell
     git remote add upstream https://github.com/runelite/runelite.git
     ```
@@ -77,8 +69,7 @@ Before you submit your pull request consider the following guidelines:
 
 * Create your patch and run appropriate tests.
 * Follow our [Coding Format](#format).
-* Commit your changes using a descriptive commit message that uses the imperative, present tense: "change" not "changed"
-  nor "changes".
+* Commit your changes using a descriptive commit message that uses the imperative, present tense: "change" not "changed" nor "changes".
 
     ```shell
     git commit -a
@@ -140,5 +131,4 @@ from the main (upstream) repository:
 
 ## <a name="format"></a> Coding Format
 
-To ensure consistency throughout the source code, review
-our [code conventions](https://github.com/runelite/runelite/wiki/Code-Conventions).
+To ensure consistency throughout the source code, review our [code conventions](https://github.com/runelite/runelite/wiki/Code-Conventions).

@@ -51,7 +51,8 @@ class ClientToolbarPanel extends JPanel
 		if (isInSidebar)
 		{
 			setLayout(new DynamicGridLayout(0, 1, 0, 4));
-		} else
+		}
+		else
 		{
 			setLayout(new DynamicGridLayout(1, 0, 4, 0));
 		}

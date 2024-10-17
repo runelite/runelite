@@ -65,19 +65,21 @@ public class InfoBoxOverlay extends OverlayPanel
 	private final RuneLiteConfig config;
 	private final EventBus eventBus;
 	private final String name;
+	private ComponentOrientation orientation;
+
 	@Getter
 	private final List<InfoBox> infoBoxes = new CopyOnWriteArrayList<>();
-	private ComponentOrientation orientation;
+
 	private InfoBoxComponent hoveredComponent;
 
 	InfoBoxOverlay(
-			InfoBoxManager infoboxManager,
-			TooltipManager tooltipManager,
-			Client client,
-			RuneLiteConfig config,
-			EventBus eventBus,
-			String name,
-			@NonNull ComponentOrientation orientation)
+		InfoBoxManager infoboxManager,
+		TooltipManager tooltipManager,
+		Client client,
+		RuneLiteConfig config,
+		EventBus eventBus,
+		String name,
+		@NonNull ComponentOrientation orientation)
 	{
 		this.tooltipManager = tooltipManager;
 		this.infoboxManager = infoboxManager;
@@ -201,9 +203,9 @@ public class InfoBoxOverlay extends OverlayPanel
 
 		InfoBox infoBox = hoveredComponent.getInfoBox();
 		OverlayMenuEntry overlayMenuEntry = infoBox.getMenuEntries().stream()
-				.filter(me -> me.getOption().equals(menuOptionClicked.getMenuOption()))
-				.findAny()
-				.orElse(null);
+			.filter(me -> me.getOption().equals(menuOptionClicked.getMenuOption()))
+			.findAny()
+			.orElse(null);
 		if (overlayMenuEntry != null)
 		{
 			eventBus.post(new InfoBoxMenuClicked(overlayMenuEntry, infoBox));

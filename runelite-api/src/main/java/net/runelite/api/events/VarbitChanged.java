@@ -32,7 +32,7 @@ import net.runelite.api.annotations.Varp;
 
 /**
  * An event when a varbit or varplayer has changed.
- * <p>
+ *
  * If the client preemptively changes a varp and the server agrees
  * the next tick, VarbitChanged will only be posted when the client
  * changes the value, not the server. This can cause unintended effects

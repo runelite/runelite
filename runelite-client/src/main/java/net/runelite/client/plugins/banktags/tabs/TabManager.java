@@ -123,7 +123,8 @@ public class TabManager
 			{
 				setLayout(tab.getTag(), layout.getLayout());
 			}
-		} else
+		}
+		else
 		{
 			removeLayout(tab.getTag());
 		}

@@ -57,9 +57,9 @@ public class ItemStatOverlay extends Overlay
 	// Unarmed attack speed is 4
 	@VisibleForTesting
 	static final ItemStats UNARMED = new ItemStats(true, 0, 0,
-			ItemEquipmentStats.builder()
-					.aspeed(4)
-					.build());
+		ItemEquipmentStats.builder()
+			.aspeed(4)
+			.build());
 
 	@Inject
 	private Client client;
@@ -102,20 +102,21 @@ public class ItemStatOverlay extends Overlay
 		int itemId = -1;
 
 		if (group == InterfaceID.EQUIPMENT ||
-				// For bank worn equipment, check widget parent to differentiate from normal bank items
-				(group == InterfaceID.BANK && widget.getParentId() == ComponentID.BANK_INVENTORY_EQUIPMENT_ITEM_CONTAINER))
+			// For bank worn equipment, check widget parent to differentiate from normal bank items
+			(group == InterfaceID.BANK && widget.getParentId() == ComponentID.BANK_INVENTORY_EQUIPMENT_ITEM_CONTAINER))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
 			{
 				itemId = widgetItem.getItemId();
 			}
-		} else if (widget.getId() == ComponentID.INVENTORY_CONTAINER
-				|| group == InterfaceID.EQUIPMENT_INVENTORY
-				|| widget.getId() == ComponentID.BANK_ITEM_CONTAINER && config.showStatsInBank()
-				|| group == InterfaceID.BANK_INVENTORY && config.showStatsInBank()
-				|| widget.getId() == ComponentID.GROUP_STORAGE_ITEM_CONTAINER && config.showStatsInBank()
-				|| group == InterfaceID.GROUP_STORAGE_INVENTORY && config.showStatsInBank())
+		}
+		else if (widget.getId() == ComponentID.INVENTORY_CONTAINER
+			|| group == InterfaceID.EQUIPMENT_INVENTORY
+			|| widget.getId() == ComponentID.BANK_ITEM_CONTAINER && config.showStatsInBank()
+			|| group == InterfaceID.BANK_INVENTORY && config.showStatsInBank()
+			|| widget.getId() == ComponentID.GROUP_STORAGE_ITEM_CONTAINER && config.showStatsInBank()
+			|| group == InterfaceID.GROUP_STORAGE_INVENTORY && config.showStatsInBank())
 		{
 			itemId = widget.getItemId();
 		}
@@ -156,7 +157,8 @@ public class ItemStatOverlay extends Overlay
 					// Only show "Duration: <time>" if there is one tooltip
 					Duration duration = durationRanges[0].getLowestDuration();
 					sb.append("Duration: ").append(DurationFormatUtils.formatDuration(duration.toMillis(), "m:ss"));
-				} else
+				}
+				else
 				{
 					// List the effect names and their duration (ranges)
 					for (PotionDuration.PotionDurationRange durationRange : durationRanges)
@@ -203,9 +205,9 @@ public class ItemStatOverlay extends Overlay
 	}
 
 	private String getChangeString(
-			final double value,
-			final boolean inverse,
-			final boolean showPercent)
+		final double value,
+		final boolean inverse,
+		final boolean showPercent)
 	{
 		final Color plus = Positivity.getColor(config, Positivity.BETTER_UNCAPPED);
 		final Color minus = Positivity.getColor(config, Positivity.WORSE);
@@ -220,7 +222,8 @@ public class ItemStatOverlay extends Overlay
 		if (inverse)
 		{
 			color = value > 0 ? minus : plus;
-		} else
+		}
+		else
 		{
 			color = value > 0 ? plus : minus;
 		}
@@ -232,22 +235,22 @@ public class ItemStatOverlay extends Overlay
 	}
 
 	private String buildStatRow(
-			final String label,
-			final double value,
-			final double diffValue,
-			final boolean inverse,
-			final boolean showPercent)
+		final String label,
+		final double value,
+		final double diffValue,
+		final boolean inverse,
+		final boolean showPercent)
 	{
 		return buildStatRow(label, value, diffValue, inverse, showPercent, true);
 	}
 
 	private String buildStatRow(
-			final String label,
-			final double value,
-			final double diffValue,
-			final boolean inverse,
-			final boolean showPercent,
-			final boolean showBase)
+		final String label,
+		final double value,
+		final double diffValue,
+		final boolean inverse,
+		final boolean showPercent,
+		final boolean showBase)
 	{
 		final StringBuilder b = new StringBuilder();
 
@@ -259,7 +262,8 @@ public class ItemStatOverlay extends Overlay
 			{
 				final String valueStr = QuantityFormatter.formatNumber(value);
 				b.append(label).append(": ").append(valueStr).append((!changeStr.isEmpty() ? " (" + changeStr + ") " : "")).append("</br>");
-			} else if (!changeStr.isEmpty())
+			}
+			else if (!changeStr.isEmpty())
 			{
 				b.append(label).append(": ").append(changeStr).append("</br>");
 			}

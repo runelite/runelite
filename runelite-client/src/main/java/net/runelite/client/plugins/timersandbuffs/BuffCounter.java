@@ -36,9 +36,9 @@ class BuffCounter extends Counter
 	private final GameCounter gameCounter;
 
 	BuffCounter(
-			TimersAndBuffsPlugin plugin,
-			GameCounter gameCounter,
-			int count)
+		TimersAndBuffsPlugin plugin,
+		GameCounter gameCounter,
+		int count)
 	{
 		super(null, plugin, count);
 		this.plugin = plugin;

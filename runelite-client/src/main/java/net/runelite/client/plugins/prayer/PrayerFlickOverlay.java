@@ -56,8 +56,8 @@ class PrayerFlickOverlay extends Overlay
 	{
 		// If there are no prayers active or flick location is set to the prayer bar we don't require the flick helper
 		if ((!plugin.isPrayersActive() && !config.prayerFlickAlwaysOn())
-				|| config.prayerFlickLocation().equals(PrayerFlickLocation.NONE)
-				|| config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR))
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.NONE)
+			|| config.prayerFlickLocation().equals(PrayerFlickLocation.PRAYER_BAR))
 		{
 			return null;
 		}

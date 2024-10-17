@@ -38,10 +38,10 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 public class SunlightMoth implements Effect
 {
 	private static final Stat[] RESTORED_STATS = {
-			ATTACK, DEFENCE, STRENGTH, RANGED, MAGIC, COOKING,
-			WOODCUTTING, FLETCHING, FISHING, FIREMAKING, CRAFTING, SMITHING, MINING,
-			HERBLORE, AGILITY, THIEVING, SLAYER, FARMING, RUNECRAFT, HUNTER,
-			CONSTRUCTION
+		ATTACK, DEFENCE, STRENGTH, RANGED, MAGIC, COOKING,
+		WOODCUTTING, FLETCHING, FISHING, FIREMAKING, CRAFTING, SMITHING, MINING,
+		HERBLORE, AGILITY, THIEVING, SLAYER, FARMING, RUNECRAFT, HUNTER,
+		CONSTRUCTION
 	};
 
 	public final double percentRestored;
@@ -62,15 +62,15 @@ public class SunlightMoth implements Effect
 		SimpleStatBoost calcHeal = new SimpleStatBoost(HITPOINTS, false, perc(0, 8));
 
 		changes.setStatChanges(Stream.concat(
-				Stream.of(new Stat[] {HITPOINTS})
-						.map(stat -> calcHeal.effect(client)),
-				Stream.of(RESTORED_STATS)
-						.filter(stat -> stat.getValue(client) < stat.getMaximum(client))
-						.map(stat ->
-						{
-							calcRestore.setStat(stat);
-							return calcRestore.effect(client);
-						})
+			Stream.of(new Stat[]{HITPOINTS})
+				.map(stat -> calcHeal.effect(client)),
+			Stream.of(RESTORED_STATS)
+				.filter(stat -> stat.getValue(client) < stat.getMaximum(client))
+				.map(stat ->
+				{
+					calcRestore.setStat(stat);
+					return calcRestore.effect(client);
+				})
 		).toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
 				.map(StatChange::getPositivity)

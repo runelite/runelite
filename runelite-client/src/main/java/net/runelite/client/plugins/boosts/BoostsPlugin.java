@@ -56,49 +56,61 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-		name = "Boosts Information",
-		description = "Show combat and/or skill boost information",
-		tags = {"combat", "notifications", "skilling", "overlay"}
+	name = "Boosts Information",
+	description = "Show combat and/or skill boost information",
+	tags = {"combat", "notifications", "skilling", "overlay"}
 )
 @Singleton
 @Slf4j
 public class BoostsPlugin extends Plugin
 {
 	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
-			Skill.ATTACK,
-			Skill.STRENGTH,
-			Skill.DEFENCE,
-			Skill.RANGED,
-			Skill.MAGIC);
+		Skill.ATTACK,
+		Skill.STRENGTH,
+		Skill.DEFENCE,
+		Skill.RANGED,
+		Skill.MAGIC);
 
 	private static final Set<Skill> BOOSTABLE_NON_COMBAT_SKILLS = ImmutableSet.of(
-			Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
-			Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-			Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER);
-	@Getter
-	private final Set<Skill> skillsToDisplay = EnumSet.noneOf(Skill.class);
-	private final Set<Skill> shownSkills = EnumSet.noneOf(Skill.class);
-	private final int[] lastSkillLevels = new int[Skill.values().length];
+		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
+		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
+		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER);
+
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private BoostsOverlay boostsOverlay;
+
 	@Inject
 	private CompactBoostsOverlay compactBoostsOverlay;
+
 	@Inject
 	private BoostsConfig config;
+
 	@Inject
 	private ConfigManager configManager;
+
 	@Inject
 	private SkillIconManager skillIconManager;
+
+	@Getter
+	private final Set<Skill> skillsToDisplay = EnumSet.noneOf(Skill.class);
+
+	private final Set<Skill> shownSkills = EnumSet.noneOf(Skill.class);
+
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
+	private final int[] lastSkillLevels = new int[Skill.values().length];
 	private int lastChangeDown = -1;
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
@@ -117,8 +129,7 @@ public class BoostsPlugin extends Plugin
 		OverlayMenuEntry menuEntry = new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
 
 		boostsOverlay.getMenuEntries().add(menuEntry);
-		compactBoostsOverlay.getMenuEntries().add(menuEntry);
-		;
+		compactBoostsOverlay.getMenuEntries().add(menuEntry);;
 
 		overlayManager.add(boostsOverlay);
 		overlayManager.add(compactBoostsOverlay);
@@ -331,7 +342,8 @@ public class BoostsPlugin extends Plugin
 			if (boosted > base)
 			{
 				isChangedUp = true;
-			} else if (boosted < base)
+			}
+			else if (boosted < base)
 			{
 				isChangedDown = true;
 			}
@@ -352,7 +364,7 @@ public class BoostsPlugin extends Plugin
 	 * section it will "activate" adding an additional 15 second section
 	 * to the boost timing. If again the preserve prayer is active for that
 	 * entire section a second 15 second section will be added.
-	 * <p>
+	 *
 	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
 	 * to gain full effect (seconds 45-75).
 	 *
@@ -402,13 +414,12 @@ public class BoostsPlugin extends Plugin
 
 	/**
 	 * Converts tick-based time to accurate second time
-	 *
 	 * @param time tick-based time
 	 * @return second-based time
 	 */
 	int getChangeTime(final int time)
 	{
 		final long diff = System.currentTimeMillis() - lastTickMillis;
-		return time != -1 ? (int) ((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
+		return time != -1 ? (int)((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
 	}
 }

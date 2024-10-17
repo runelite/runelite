@@ -104,6 +104,21 @@ class ProfilePanel extends PluginPanel
 	private static final ImageIcon SYNC_ICON;
 	private static final ImageIcon SYNC_ACTIVE_ICON;
 
+	private final ConfigManager configManager;
+	private final ProfileManager profileManager;
+	private final SessionManager sessionManager;
+	private final ScheduledExecutorService executor;
+
+	private final DragAndDropReorderPane profilesList;
+	private final JButton addButton;
+	private final JButton importButton;
+
+	private Map<Long, ProfileCard> cards = new HashMap<>();
+
+	private File lastFileChooserDirectory = RuneLite.RUNELITE_DIR;
+
+	private boolean active;
+
 	static
 	{
 		BufferedImage rename = ImageUtil.loadImageResource(ProfilePanel.class, "mdi_rename.png");
@@ -119,23 +134,12 @@ class ProfilePanel extends PluginPanel
 		SYNC_ACTIVE_ICON = new ImageIcon(ImageUtil.recolorImage(sync, ColorScheme.BRAND_ORANGE));
 	}
 
-	private final ConfigManager configManager;
-	private final ProfileManager profileManager;
-	private final SessionManager sessionManager;
-	private final ScheduledExecutorService executor;
-	private final DragAndDropReorderPane profilesList;
-	private final JButton addButton;
-	private final JButton importButton;
-	private Map<Long, ProfileCard> cards = new HashMap<>();
-	private File lastFileChooserDirectory = RuneLite.RUNELITE_DIR;
-	private boolean active;
-
 	@Inject
 	ProfilePanel(
-			ConfigManager configManager,
-			ProfileManager profileManager,
-			SessionManager sessionManager,
-			ScheduledExecutorService executor
+		ConfigManager configManager,
+		ProfileManager profileManager,
+		SessionManager sessionManager,
+		ScheduledExecutorService executor
 	)
 	{
 		this.profileManager = profileManager;
@@ -172,24 +176,24 @@ class ProfilePanel extends PluginPanel
 		});
 
 		JLabel info = new JLabel("<html>"
-				+ "Profiles are separate sets of plugins and settings that you can switch between at any time.");
+			+ "Profiles are separate sets of plugins and settings that you can switch between at any time.");
 
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addComponent(profilesList)
-				.addGap(8)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(addButton)
-						.addComponent(importButton))
-				.addGap(8)
-				.addComponent(info));
+			.addComponent(profilesList)
+			.addGap(8)
+			.addGroup(layout.createParallelGroup()
+				.addComponent(addButton)
+				.addComponent(importButton))
+			.addGap(8)
+			.addComponent(info));
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
-				.addComponent(profilesList)
-				.addGroup(layout.createSequentialGroup()
-						.addComponent(addButton)
-						.addGap(8)
-						.addComponent(importButton))
-				.addComponent(info));
+			.addComponent(profilesList)
+			.addGroup(layout.createSequentialGroup()
+				.addComponent(addButton)
+				.addGap(8)
+				.addComponent(importButton))
+			.addComponent(info));
 
 		{
 			Object refresh = "this could just be a lambda, but no, it has to be abstracted";
@@ -314,11 +318,11 @@ class ProfilePanel extends PluginPanel
 				final long id = profile.getId();
 				final List<String> defaultForRsProfiles = profile.getDefaultForRsProfiles();
 				ProfileCard pc = new ProfileCard(
-						profile,
-						activePanel == id,
-						defaultForRsProfiles != null && defaultForRsProfiles.contains(rsProfileKey),
-						limited,
-						prev);
+					profile,
+					activePanel == id,
+					defaultForRsProfiles != null && defaultForRsProfiles.contains(rsProfileKey),
+					limited,
+					prev);
 				cards.put(profile.getId(), pc);
 				profilesList.add(pc);
 			}
@@ -328,6 +332,350 @@ class ProfilePanel extends PluginPanel
 
 			profilesList.revalidate();
 		});
+	}
+
+	private class ProfileCard extends JPanel
+	{
+		private static final int CARD_WIDTH = 227;
+		private static final int LEFT_BORDER_WIDTH = 4;
+		private static final int LEFT_GAP = 4;
+
+		private final ConfigProfile profile;
+		private final JButton delete;
+		private final JTextField name;
+		private final JButton activate;
+		private final JPanel buttons;
+		private final JToggleButton rename;
+
+		private boolean expanded;
+		private boolean active;
+
+		private ProfileCard(ConfigProfile profile, boolean isActive, boolean rsProfileDefault, boolean limited, ProfileCard prev)
+		{
+			this.profile = profile;
+
+			setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+			name = new JTextField();
+			name.setText(profile.getName());
+			name.setEditable(false);
+			name.setEnabled(false);
+			name.setOpaque(false);
+			name.setBorder(null);
+			name.addActionListener(ev -> stopRenaming(true));
+			name.addKeyListener(new KeyAdapter()
+			{
+				@Override
+				public void keyPressed(KeyEvent e)
+				{
+					if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+					{
+						stopRenaming(false);
+					}
+				}
+			});
+			((AbstractDocument) name.getDocument()).setDocumentFilter(new DocumentFilter()
+			{
+				@Override
+				public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException
+				{
+					super.insertString(fb, offset, filter(string), attr);
+				}
+
+				@Override
+				public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException
+				{
+					super.replace(fb, offset, length, filter(text), attrs);
+				}
+
+				private String filter(String in)
+				{
+					// characters commonly forbidden in file names
+					return CharMatcher.noneOf("/\\<>:\"|?*\r\n\0")
+						.retainFrom(in);
+				}
+			});
+
+			activate = new JButton(ARROW_RIGHT_ICON);
+			activate.setDisabledIcon(ARROW_RIGHT_ICON);
+			activate.addActionListener(ev -> switchToProfile(profile.getId()));
+			SwingUtil.removeButtonDecorations(activate);
+
+			{
+				buttons = new JPanel();
+				buttons.setOpaque(false);
+				buttons.setLayout(new GridLayout(1, 0, 0, 0));
+
+				rename = new JToggleButton(RENAME_ICON);
+				rename.setSelectedIcon(RENAME_ACTIVE_ICON);
+				rename.setToolTipText("Rename profile");
+				SwingUtil.removeButtonDecorations(rename);
+				rename.addActionListener(ev ->
+				{
+					if (rename.isSelected())
+					{
+						startRenaming();
+					}
+					else
+					{
+						stopRenaming(true);
+					}
+				});
+				buttons.add(rename);
+
+				JButton clone = new JButton(CLONE_ICON);
+				clone.setToolTipText("Duplicate profile");
+				SwingUtil.removeButtonDecorations(clone);
+				clone.addActionListener(ev -> cloneProfile(profile));
+				clone.setEnabled(!limited);
+				buttons.add(clone);
+
+				JButton export = new JButton(EXPORT_ICON);
+				export.setToolTipText("Export profile");
+				SwingUtil.removeButtonDecorations(export);
+				export.addActionListener(ev ->
+				{
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Profile export");
+					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RuneLite properties", "properties"));
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.setCurrentDirectory(lastFileChooserDirectory);
+					fileChooser.setSelectedFile(new File(fileChooser.getCurrentDirectory(), profile.getName() + ".properties"));
+					int selection = fileChooser.showSaveDialog(this);
+					if (selection == JFileChooser.APPROVE_OPTION)
+					{
+						File file = fileChooser.getSelectedFile();
+						lastFileChooserDirectory = file.getParentFile();
+						// add properties file extension
+						if (!file.getName().endsWith(".properties"))
+						{
+							file = new File(file.getParentFile(), file.getName() + ".properties");
+						}
+						exportProfile(profile, file);
+					}
+				});
+				buttons.add(export);
+
+				if (configManager.getRSProfileKey() != null)
+				{
+					JToggleButton defaultForRsProfile = new JToggleButton(LINK_ICON);
+					SwingUtil.removeButtonDecorations(defaultForRsProfile);
+					defaultForRsProfile.setSelectedIcon(LINK_ACTIVE_ICON);
+					defaultForRsProfile.setSelected(rsProfileDefault);
+
+					final List<String> defaultForRsProfiles = profile.getDefaultForRsProfiles();
+					final StringBuilder tooltip = new StringBuilder("<html>");
+					if (defaultForRsProfiles == null || defaultForRsProfiles.isEmpty())
+					{
+						tooltip.append("Set profile as default for the current RuneScape account");
+					}
+					else
+					{
+						tooltip.append("This profile is the default for the following RuneScape accounts:");
+						for (final String rsProfileKey : profile.getDefaultForRsProfiles())
+						{
+							final String ign = configManager.getConfiguration(ConfigManager.RSPROFILE_GROUP, rsProfileKey, ConfigManager.RSPROFILE_DISPLAY_NAME);
+							if (Strings.isNullOrEmpty(ign))
+							{
+								continue;
+							}
+
+							final RuneScapeProfileType worldType = configManager.getConfiguration(ConfigManager.RSPROFILE_GROUP, rsProfileKey, ConfigManager.RSPROFILE_TYPE, RuneScapeProfileType.class);
+
+							tooltip.append("<br>");
+							tooltip.append(ign);
+							if (worldType != RuneScapeProfileType.STANDARD)
+							{
+								tooltip
+									.append(" (")
+									.append(Text.titleCase(worldType))
+									.append(')');
+							}
+						}
+					}
+					tooltip.append("</html>");
+					defaultForRsProfile.setToolTipText(tooltip.toString());
+
+					defaultForRsProfile.addActionListener(ev ->
+					{
+						if (rsProfileDefault)
+						{
+							unsetRsProfileDefaultProfile();
+						}
+						else
+						{
+							setRsProfileDefaultProfile(profile.getId());
+						}
+					});
+					buttons.add(defaultForRsProfile);
+				}
+
+				if (sessionManager.getAccountSession() != null)
+				{
+					JToggleButton sync = new JToggleButton(SYNC_ICON);
+					SwingUtil.removeButtonDecorations(sync);
+					sync.setSelectedIcon(SYNC_ACTIVE_ICON);
+					sync.setToolTipText(profile.isSync() ? "Disable cloud sync" : "Enable cloud sync");
+					sync.setSelected(profile.isSync());
+					sync.addActionListener(ev -> toggleSync(ev, profile, sync.isSelected()));
+					buttons.add(sync);
+				}
+
+				delete = new JButton(DELETE_ICON);
+				delete.setToolTipText("Delete profile");
+				SwingUtil.removeButtonDecorations(delete);
+				delete.addActionListener(ev ->
+				{
+					int confirm = JOptionPane.showConfirmDialog(ProfileCard.this,
+						"Are you sure you want to delete this profile?",
+						"Warning", JOptionPane.OK_CANCEL_OPTION);
+					if (confirm == 0)
+					{
+						deleteProfile(profile);
+					}
+				});
+				buttons.add(delete);
+
+				// Ensure buttons do not expand beyond the intended card width; this would cause the activate button to
+				// disappear off the right edge of the card.
+				final int maxButtonsWidth = CARD_WIDTH - LEFT_BORDER_WIDTH - LEFT_GAP - activate.getPreferredSize().width;
+				if (buttons.getPreferredSize().width > maxButtonsWidth)
+				{
+					buttons.setMinimumSize(new Dimension(maxButtonsWidth, buttons.getMinimumSize().height));
+					buttons.setPreferredSize(new Dimension(maxButtonsWidth, buttons.getPreferredSize().height));
+				}
+			}
+
+			{
+				GroupLayout layout = new GroupLayout(this);
+				this.setLayout(layout);
+
+				layout.setVerticalGroup(layout.createParallelGroup()
+					.addGroup(layout.createSequentialGroup()
+						.addComponent(name, 24, 24, 24)
+						.addComponent(buttons))
+					.addComponent(activate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+
+				layout.setHorizontalGroup(layout.createSequentialGroup()
+					.addGap(LEFT_GAP)
+					.addGroup(layout.createParallelGroup()
+						.addComponent(name)
+						.addComponent(buttons))
+					.addComponent(activate));
+			}
+
+			MouseAdapter expandListener = new MouseDragEventForwarder(profilesList)
+			{
+				@Override
+				public void mouseClicked(MouseEvent ev)
+				{
+					if (disabled(ev))
+					{
+						if (ev.getClickCount() == 2)
+						{
+							if (!active)
+							{
+								switchToProfile(profile.getId());
+							}
+						}
+						else
+						{
+							setExpanded(!expanded);
+						}
+					}
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent ev)
+				{
+					if (disabled(ev))
+					{
+						setBackground(ColorScheme.DARK_GRAY_COLOR);
+					}
+				}
+
+				@Override
+				public void mouseExited(MouseEvent ev)
+				{
+					if (disabled(ev))
+					{
+						setBackground(ColorScheme.DARKER_GRAY_COLOR);
+					}
+				}
+
+				private boolean disabled(MouseEvent ev)
+				{
+					Component target = ev.getComponent();
+					if (target instanceof JButton)
+					{
+						return !target.isEnabled();
+					}
+					if (target instanceof JTextField)
+					{
+						return !((JTextField) target).isEditable();
+					}
+					return true;
+				}
+			};
+			addMouseListener(expandListener);
+			addMouseMotionListener(expandListener);
+			name.addMouseListener(expandListener);
+			name.addMouseMotionListener(expandListener);
+			activate.addMouseListener(expandListener);
+			activate.addMouseMotionListener(expandListener);
+
+			setActive(isActive);
+			setExpanded(prev != null && prev.expanded);
+		}
+
+		void setActive(boolean active)
+		{
+			this.active = active;
+			setBorder(new MatteBorder(0, LEFT_BORDER_WIDTH, 0, 0, active
+				? ColorScheme.BRAND_ORANGE
+				: ColorScheme.DARKER_GRAY_COLOR));
+			delete.setEnabled(!active);
+			activate.setEnabled(expanded && !active);
+		}
+
+		void setExpanded(boolean expanded)
+		{
+			this.expanded = expanded;
+			buttons.setVisible(expanded);
+			activate.setEnabled(expanded && !active);
+			if (rename.isSelected())
+			{
+				stopRenaming(true);
+			}
+			revalidate();
+		}
+
+		private void startRenaming()
+		{
+			name.setEnabled(true);
+			name.setEditable(true);
+			name.setOpaque(true);
+			name.requestFocusInWindow();
+			name.selectAll();
+		}
+
+		private void stopRenaming(boolean save)
+		{
+			name.setEditable(false);
+			name.setEnabled(false);
+			name.setOpaque(false);
+
+			rename.setSelected(false);
+
+			if (save)
+			{
+				renameProfile(profile.getId(), name.getText().trim());
+			}
+			else
+			{
+				name.setText(profile.getName());
+			}
+		}
 	}
 
 	private void createProfile()
@@ -444,7 +792,8 @@ class ProfilePanel extends PluginPanel
 				if (id == -1)
 				{
 					log.debug("Unsetting default profile for rsProfile {}", rsProfileKey);
-				} else
+				}
+				else
 				{
 					final ConfigProfile profile = lock.findProfile(id);
 					if (profile == null)
@@ -495,11 +844,12 @@ class ProfilePanel extends PluginPanel
 			try
 			{
 				Files.copy(
-						source.toPath(),
-						file.toPath(),
-						StandardCopyOption.REPLACE_EXISTING
+					source.toPath(),
+					file.toPath(),
+					StandardCopyOption.REPLACE_EXISTING
 				);
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				log.error("error performing profile export", e);
 			}
@@ -562,10 +912,11 @@ class ProfilePanel extends PluginPanel
 					try
 					{
 						Files.copy(
-								from.toPath(),
-								to.toPath()
+							from.toPath(),
+							to.toPath()
 						);
-					} catch (IOException e)
+					}
+					catch (IOException e)
 					{
 						log.error("error cloning profile", e);
 					}
@@ -609,345 +960,6 @@ class ProfilePanel extends PluginPanel
 			lock.dirty();
 
 			reload(profiles);
-		}
-	}
-
-	private class ProfileCard extends JPanel
-	{
-		private static final int CARD_WIDTH = 227;
-		private static final int LEFT_BORDER_WIDTH = 4;
-		private static final int LEFT_GAP = 4;
-
-		private final ConfigProfile profile;
-		private final JButton delete;
-		private final JTextField name;
-		private final JButton activate;
-		private final JPanel buttons;
-		private final JToggleButton rename;
-
-		private boolean expanded;
-		private boolean active;
-
-		private ProfileCard(ConfigProfile profile, boolean isActive, boolean rsProfileDefault, boolean limited, ProfileCard prev)
-		{
-			this.profile = profile;
-
-			setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
-			name = new JTextField();
-			name.setText(profile.getName());
-			name.setEditable(false);
-			name.setEnabled(false);
-			name.setOpaque(false);
-			name.setBorder(null);
-			name.addActionListener(ev -> stopRenaming(true));
-			name.addKeyListener(new KeyAdapter()
-			{
-				@Override
-				public void keyPressed(KeyEvent e)
-				{
-					if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-					{
-						stopRenaming(false);
-					}
-				}
-			});
-			((AbstractDocument) name.getDocument()).setDocumentFilter(new DocumentFilter()
-			{
-				@Override
-				public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException
-				{
-					super.insertString(fb, offset, filter(string), attr);
-				}
-
-				@Override
-				public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException
-				{
-					super.replace(fb, offset, length, filter(text), attrs);
-				}
-
-				private String filter(String in)
-				{
-					// characters commonly forbidden in file names
-					return CharMatcher.noneOf("/\\<>:\"|?*\r\n\0")
-							.retainFrom(in);
-				}
-			});
-
-			activate = new JButton(ARROW_RIGHT_ICON);
-			activate.setDisabledIcon(ARROW_RIGHT_ICON);
-			activate.addActionListener(ev -> switchToProfile(profile.getId()));
-			SwingUtil.removeButtonDecorations(activate);
-
-			{
-				buttons = new JPanel();
-				buttons.setOpaque(false);
-				buttons.setLayout(new GridLayout(1, 0, 0, 0));
-
-				rename = new JToggleButton(RENAME_ICON);
-				rename.setSelectedIcon(RENAME_ACTIVE_ICON);
-				rename.setToolTipText("Rename profile");
-				SwingUtil.removeButtonDecorations(rename);
-				rename.addActionListener(ev ->
-				{
-					if (rename.isSelected())
-					{
-						startRenaming();
-					} else
-					{
-						stopRenaming(true);
-					}
-				});
-				buttons.add(rename);
-
-				JButton clone = new JButton(CLONE_ICON);
-				clone.setToolTipText("Duplicate profile");
-				SwingUtil.removeButtonDecorations(clone);
-				clone.addActionListener(ev -> cloneProfile(profile));
-				clone.setEnabled(!limited);
-				buttons.add(clone);
-
-				JButton export = new JButton(EXPORT_ICON);
-				export.setToolTipText("Export profile");
-				SwingUtil.removeButtonDecorations(export);
-				export.addActionListener(ev ->
-				{
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("Profile export");
-					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("RuneLite properties", "properties"));
-					fileChooser.setAcceptAllFileFilterUsed(false);
-					fileChooser.setCurrentDirectory(lastFileChooserDirectory);
-					fileChooser.setSelectedFile(new File(fileChooser.getCurrentDirectory(), profile.getName() + ".properties"));
-					int selection = fileChooser.showSaveDialog(this);
-					if (selection == JFileChooser.APPROVE_OPTION)
-					{
-						File file = fileChooser.getSelectedFile();
-						lastFileChooserDirectory = file.getParentFile();
-						// add properties file extension
-						if (!file.getName().endsWith(".properties"))
-						{
-							file = new File(file.getParentFile(), file.getName() + ".properties");
-						}
-						exportProfile(profile, file);
-					}
-				});
-				buttons.add(export);
-
-				if (configManager.getRSProfileKey() != null)
-				{
-					JToggleButton defaultForRsProfile = new JToggleButton(LINK_ICON);
-					SwingUtil.removeButtonDecorations(defaultForRsProfile);
-					defaultForRsProfile.setSelectedIcon(LINK_ACTIVE_ICON);
-					defaultForRsProfile.setSelected(rsProfileDefault);
-
-					final List<String> defaultForRsProfiles = profile.getDefaultForRsProfiles();
-					final StringBuilder tooltip = new StringBuilder("<html>");
-					if (defaultForRsProfiles == null || defaultForRsProfiles.isEmpty())
-					{
-						tooltip.append("Set profile as default for the current RuneScape account");
-					} else
-					{
-						tooltip.append("This profile is the default for the following RuneScape accounts:");
-						for (final String rsProfileKey : profile.getDefaultForRsProfiles())
-						{
-							final String ign = configManager.getConfiguration(ConfigManager.RSPROFILE_GROUP, rsProfileKey, ConfigManager.RSPROFILE_DISPLAY_NAME);
-							if (Strings.isNullOrEmpty(ign))
-							{
-								continue;
-							}
-
-							final RuneScapeProfileType worldType = configManager.getConfiguration(ConfigManager.RSPROFILE_GROUP, rsProfileKey, ConfigManager.RSPROFILE_TYPE, RuneScapeProfileType.class);
-
-							tooltip.append("<br>");
-							tooltip.append(ign);
-							if (worldType != RuneScapeProfileType.STANDARD)
-							{
-								tooltip
-										.append(" (")
-										.append(Text.titleCase(worldType))
-										.append(')');
-							}
-						}
-					}
-					tooltip.append("</html>");
-					defaultForRsProfile.setToolTipText(tooltip.toString());
-
-					defaultForRsProfile.addActionListener(ev ->
-					{
-						if (rsProfileDefault)
-						{
-							unsetRsProfileDefaultProfile();
-						} else
-						{
-							setRsProfileDefaultProfile(profile.getId());
-						}
-					});
-					buttons.add(defaultForRsProfile);
-				}
-
-				if (sessionManager.getAccountSession() != null)
-				{
-					JToggleButton sync = new JToggleButton(SYNC_ICON);
-					SwingUtil.removeButtonDecorations(sync);
-					sync.setSelectedIcon(SYNC_ACTIVE_ICON);
-					sync.setToolTipText(profile.isSync() ? "Disable cloud sync" : "Enable cloud sync");
-					sync.setSelected(profile.isSync());
-					sync.addActionListener(ev -> toggleSync(ev, profile, sync.isSelected()));
-					buttons.add(sync);
-				}
-
-				delete = new JButton(DELETE_ICON);
-				delete.setToolTipText("Delete profile");
-				SwingUtil.removeButtonDecorations(delete);
-				delete.addActionListener(ev ->
-				{
-					int confirm = JOptionPane.showConfirmDialog(ProfileCard.this,
-							"Are you sure you want to delete this profile?",
-							"Warning", JOptionPane.OK_CANCEL_OPTION);
-					if (confirm == 0)
-					{
-						deleteProfile(profile);
-					}
-				});
-				buttons.add(delete);
-
-				// Ensure buttons do not expand beyond the intended card width; this would cause the activate button to
-				// disappear off the right edge of the card.
-				final int maxButtonsWidth = CARD_WIDTH - LEFT_BORDER_WIDTH - LEFT_GAP - activate.getPreferredSize().width;
-				if (buttons.getPreferredSize().width > maxButtonsWidth)
-				{
-					buttons.setMinimumSize(new Dimension(maxButtonsWidth, buttons.getMinimumSize().height));
-					buttons.setPreferredSize(new Dimension(maxButtonsWidth, buttons.getPreferredSize().height));
-				}
-			}
-
-			{
-				GroupLayout layout = new GroupLayout(this);
-				this.setLayout(layout);
-
-				layout.setVerticalGroup(layout.createParallelGroup()
-						.addGroup(layout.createSequentialGroup()
-								.addComponent(name, 24, 24, 24)
-								.addComponent(buttons))
-						.addComponent(activate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-
-				layout.setHorizontalGroup(layout.createSequentialGroup()
-						.addGap(LEFT_GAP)
-						.addGroup(layout.createParallelGroup()
-								.addComponent(name)
-								.addComponent(buttons))
-						.addComponent(activate));
-			}
-
-			MouseAdapter expandListener = new MouseDragEventForwarder(profilesList)
-			{
-				@Override
-				public void mouseClicked(MouseEvent ev)
-				{
-					if (disabled(ev))
-					{
-						if (ev.getClickCount() == 2)
-						{
-							if (!active)
-							{
-								switchToProfile(profile.getId());
-							}
-						} else
-						{
-							setExpanded(!expanded);
-						}
-					}
-				}
-
-				@Override
-				public void mouseEntered(MouseEvent ev)
-				{
-					if (disabled(ev))
-					{
-						setBackground(ColorScheme.DARK_GRAY_COLOR);
-					}
-				}
-
-				@Override
-				public void mouseExited(MouseEvent ev)
-				{
-					if (disabled(ev))
-					{
-						setBackground(ColorScheme.DARKER_GRAY_COLOR);
-					}
-				}
-
-				private boolean disabled(MouseEvent ev)
-				{
-					Component target = ev.getComponent();
-					if (target instanceof JButton)
-					{
-						return !target.isEnabled();
-					}
-					if (target instanceof JTextField)
-					{
-						return !((JTextField) target).isEditable();
-					}
-					return true;
-				}
-			};
-			addMouseListener(expandListener);
-			addMouseMotionListener(expandListener);
-			name.addMouseListener(expandListener);
-			name.addMouseMotionListener(expandListener);
-			activate.addMouseListener(expandListener);
-			activate.addMouseMotionListener(expandListener);
-
-			setActive(isActive);
-			setExpanded(prev != null && prev.expanded);
-		}
-
-		void setActive(boolean active)
-		{
-			this.active = active;
-			setBorder(new MatteBorder(0, LEFT_BORDER_WIDTH, 0, 0, active
-					? ColorScheme.BRAND_ORANGE
-					: ColorScheme.DARKER_GRAY_COLOR));
-			delete.setEnabled(!active);
-			activate.setEnabled(expanded && !active);
-		}
-
-		void setExpanded(boolean expanded)
-		{
-			this.expanded = expanded;
-			buttons.setVisible(expanded);
-			activate.setEnabled(expanded && !active);
-			if (rename.isSelected())
-			{
-				stopRenaming(true);
-			}
-			revalidate();
-		}
-
-		private void startRenaming()
-		{
-			name.setEnabled(true);
-			name.setEditable(true);
-			name.setOpaque(true);
-			name.requestFocusInWindow();
-			name.selectAll();
-		}
-
-		private void stopRenaming(boolean save)
-		{
-			name.setEditable(false);
-			name.setEnabled(false);
-			name.setOpaque(false);
-
-			rename.setSelected(false);
-
-			if (save)
-			{
-				renameProfile(profile.getId(), name.getText().trim());
-			} else
-			{
-				name.setText(profile.getName());
-			}
 		}
 	}
 }

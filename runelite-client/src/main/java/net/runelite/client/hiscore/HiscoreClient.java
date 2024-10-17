@@ -57,19 +57,6 @@ public class HiscoreClient
 		this.gson = gson;
 	}
 
-	private static Request buildRequest(String username, HttpUrl hiscoreUrl)
-	{
-		HttpUrl url = hiscoreUrl.newBuilder()
-				.addQueryParameter("player", username)
-				.build();
-
-		log.debug("Built URL {}", url);
-
-		return new Request.Builder()
-				.url(url)
-				.build();
-	}
-
 	public HiscoreResult lookup(String username) throws IOException
 	{
 		return lookup(username, HiscoreEndpoint.NORMAL);
@@ -113,6 +100,19 @@ public class HiscoreClient
 		return future;
 	}
 
+	private static Request buildRequest(String username, HttpUrl hiscoreUrl)
+	{
+		HttpUrl url = hiscoreUrl.newBuilder()
+			.addQueryParameter("player", username)
+			.build();
+
+		log.debug("Built URL {}", url);
+
+		return new Request.Builder()
+			.url(url)
+			.build();
+	}
+
 	private HiscoreResult processResponse(String username, Response response) throws IOException
 	{
 		if (!response.isSuccessful())
@@ -129,7 +129,8 @@ public class HiscoreClient
 		try
 		{
 			hiscoreResponse = gson.fromJson(response.body().charStream(), HiscoreResponse.class);
-		} catch (JsonSyntaxException ex)
+		}
+		catch (JsonSyntaxException ex)
 		{
 			throw new IOException("Error deserializing hiscore response", ex);
 		}
@@ -140,7 +141,7 @@ public class HiscoreClient
 		}
 
 		Map<String, HiscoreSkill> skillMap = Arrays.stream(HiscoreSkill.values())
-				.collect(Collectors.toMap(HiscoreSkill::getName, Function.identity()));
+			.collect(Collectors.toMap(HiscoreSkill::getName, Function.identity()));
 
 		ImmutableMap.Builder<HiscoreSkill, Skill> skills = ImmutableMap.builder();
 		for (HiscoreResponse.Skill skill : hiscoreResponse.skills)

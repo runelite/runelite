@@ -56,13 +56,6 @@ public interface RuneLiteObject extends GraphicsObject
 	void setLocation(LocalPoint point, int plane);
 
 	/**
-	 * Gets the state of the RuneLiteObject
-	 *
-	 * @return true if the RuneLiteObject is added to the scene
-	 */
-	boolean isActive();
-
-	/**
 	 * Sets the state of the RuneLiteObject
 	 * Set to true to spawn the object
 	 * Set to false to despawn the object
@@ -70,18 +63,23 @@ public interface RuneLiteObject extends GraphicsObject
 	void setActive(boolean active);
 
 	/**
-	 * Get the object orientation
+	 * Gets the state of the RuneLiteObject
 	 *
-	 * @return
+	 * @return true if the RuneLiteObject is added to the scene
+	 */
+	boolean isActive();
+
+	/**
+	 * Get the object orientation
 	 * @see net.runelite.api.coords.Angle
+	 * @return
 	 */
 	int getOrientation();
 
 	/**
 	 * Set the object orientation
-	 *
-	 * @param orientation
 	 * @see net.runelite.api.coords.Angle
+	 * @param orientation
 	 */
 	void setOrientation(int orientation);
 
@@ -90,16 +88,14 @@ public interface RuneLiteObject extends GraphicsObject
 	 * the corners are in are used to determine the min and max scene x/y the object is on. These tiles are then drawn
 	 * first prior to the object being drawn, so that the object renders correctly over top of each tile.
 	 * The default radius is 60, marginally less than 128/2, which works well for models the size of a single tile.
-	 *
 	 * @return
 	 */
 	int getRadius();
 
 	/**
 	 * Set the object radius
-	 *
-	 * @param radius
 	 * @see #getRadius()
+	 * @param radius
 	 */
 	void setRadius(int radius);
 
@@ -108,16 +104,14 @@ public interface RuneLiteObject extends GraphicsObject
 	 * orientation the object is facing. This causes the tiles the object is facing to be drawn first, even if the
 	 * radius of the object would not place the object on that tile.
 	 * The default is false.
-	 *
 	 * @return
 	 */
 	boolean drawFrontTilesFirst();
 
 	/**
 	 * Sets whether the front tiles are drawn first.
-	 *
-	 * @param drawFrontTilesFirst
 	 * @see #drawFrontTilesFirst()
+	 * @param drawFrontTilesFirst
 	 */
 	void setDrawFrontTilesFirst(boolean drawFrontTilesFirst);
 }

@@ -83,16 +83,14 @@ import net.runelite.client.util.RSTimeUnit;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-		name = "Timers & Buffs",
-		configName = "TimersPlugin",
-		description = "Show various timers and buffs in an infobox",
-		tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket", "hunter", "impling", "puro", "buff"}
+	name = "Timers & Buffs",
+	configName = "TimersPlugin",
+	description = "Show various timers and buffs in an infobox",
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket", "hunter", "impling", "puro", "buff"}
 )
 @Slf4j
 public class TimersAndBuffsPlugin extends Plugin
 {
-	static final int FIGHT_CAVES_REGION_ID = 9551;
-	static final int INFERNO_REGION_ID = 9043;
 	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
 	private static final String CANNON_BASE_MESSAGE = "You place the cannon base on the ground.";
 	private static final String CANNON_STAND_MESSAGE = "You add the stand.";
@@ -118,29 +116,38 @@ public class TimersAndBuffsPlugin extends Plugin
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
 	private static final Set<Integer> STAVES_OF_THE_DEAD = new ImmutableSet.Builder<Integer>()
-			.addAll(ItemVariationMapping.getVariations(ItemID.STAFF_OF_THE_DEAD))
-			.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_STAFF_UNCHARGED))
-			.add(ItemID.STAFF_OF_LIGHT)
-			.add(ItemID.STAFF_OF_BALANCE)
-			.build();
+		.addAll(ItemVariationMapping.getVariations(ItemID.STAFF_OF_THE_DEAD))
+		.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_STAFF_UNCHARGED))
+		.add(ItemID.STAFF_OF_LIGHT)
+		.add(ItemID.STAFF_OF_BALANCE)
+		.build();
+
 	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 	private static final int OVERLOAD_TICK_LENGTH = 25;
 	private static final int ANTIFIRE_TICK_LENGTH = 30;
 	private static final int SUPERANTIFIRE_TICK_LENGTH = 20;
+
+	static final int FIGHT_CAVES_REGION_ID = 9551;
+	static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
-	private static final int ECLIPSE_MOON_REGION_ID = 6038;
-	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
-	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
+
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
+
+	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
+
 	private int nextPoisonTick;
 	private int nextOverloadRefreshTick;
 	private int nextAntifireTick;
 	private int nextSuperAntifireTick;
 	private WorldPoint lastPoint;
 	private ElapsedTimer tzhaarTimer;
+
+	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
+	private static final int ECLIPSE_MOON_REGION_ID = 6038;
+
 	@Inject
 	private ItemManager itemManager;
 
@@ -201,7 +208,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(VENGEANCE);
-			} else
+			}
+			else
 			{
 				removeGameTimer(VENGEANCE);
 			}
@@ -212,7 +220,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(SPELLBOOK_SWAP);
-			} else
+			}
+			else
 			{
 				removeGameTimer(SPELLBOOK_SWAP);
 			}
@@ -223,7 +232,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(HEAL_GROUP);
-			} else
+			}
+			else
 			{
 				removeGameTimer(HEAL_GROUP);
 			}
@@ -234,7 +244,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(DEATH_CHARGE_COOLDOWN);
-			} else
+			}
+			else
 			{
 				removeGameTimer(DEATH_CHARGE_COOLDOWN);
 			}
@@ -245,7 +256,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(CORRUPTION_COOLDOWN);
-			} else
+			}
+			else
 			{
 				removeGameTimer(CORRUPTION_COOLDOWN);
 			}
@@ -256,7 +268,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(RESURRECT_THRALL_COOLDOWN);
-			} else
+			}
+			else
 			{
 				removeGameTimer(RESURRECT_THRALL_COOLDOWN);
 			}
@@ -267,7 +280,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(SHADOW_VEIL_COOLDOWN);
-			} else
+			}
+			else
 			{
 				removeGameTimer(SHADOW_VEIL_COOLDOWN);
 			}
@@ -278,7 +292,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
-			} else
+			}
+			else
 			{
 				removeGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
 			}
@@ -294,7 +309,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (event.getValue() == 1)
 			{
 				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
-			} else
+			}
+			else
 			{
 				removeGameTimer(DEATH_CHARGE);
 			}
@@ -318,21 +334,22 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (poisonVarp == 0)
 			{
 				nextPoisonTick = -1;
-			} else if (nextPoisonTick - tickCount <= 0)
+			}
+			else if (nextPoisonTick - tickCount <= 0)
 			{
 				nextPoisonTick = tickCount + POISON_TICK_LENGTH;
 			}
 
 			updateVarTimer(ANTIPOISON, event.getValue(),
-					i -> i >= 0 || i < VENOM_VALUE_CUTOFF,
-					i -> nextPoisonTick - tickCount + Math.abs((i + 1) * POISON_TICK_LENGTH));
+				i -> i >= 0 || i < VENOM_VALUE_CUTOFF,
+				i -> nextPoisonTick - tickCount + Math.abs((i + 1) * POISON_TICK_LENGTH));
 			updateVarTimer(ANTIVENOM, event.getValue(),
-					i -> i >= VENOM_VALUE_CUTOFF,
-					i -> nextPoisonTick - tickCount + Math.abs((i + 1 - VENOM_VALUE_CUTOFF) * POISON_TICK_LENGTH));
+				i -> i >= VENOM_VALUE_CUTOFF,
+				i -> nextPoisonTick - tickCount + Math.abs((i + 1 - VENOM_VALUE_CUTOFF) * POISON_TICK_LENGTH));
 		}
 
 		if ((event.getVarbitId() == Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING
-				|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING) && config.showOverload())
+			|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING) && config.showOverload())
 		{
 			final int overloadVarb = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -340,7 +357,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (overloadVarb <= 0)
 			{
 				nextOverloadRefreshTick = -1;
-			} else if (nextOverloadRefreshTick - tickCount <= 0)
+			}
+			else if (nextOverloadRefreshTick - tickCount <= 0)
 			{
 				nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
 			}
@@ -380,8 +398,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 
 		if (event.getVarbitId() == Varbits.RUN_SLOWED_DEPLETION_ACTIVE
-				|| event.getVarbitId() == Varbits.STAMINA_EFFECT
-				|| event.getVarbitId() == Varbits.RING_OF_ENDURANCE_EFFECT)
+			|| event.getVarbitId() == Varbits.STAMINA_EFFECT
+			|| event.getVarbitId() == Varbits.RING_OF_ENDURANCE_EFFECT)
 		{
 			// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
 			int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
@@ -403,7 +421,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (antifireVarb == 0)
 			{
 				nextAntifireTick = -1;
-			} else if (nextAntifireTick - tickCount <= 0)
+			}
+			else if (nextAntifireTick - tickCount <= 0)
 			{
 				nextAntifireTick = tickCount + ANTIFIRE_TICK_LENGTH;
 			}
@@ -419,7 +438,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (superAntifireVarb == 0)
 			{
 				nextSuperAntifireTick = -1;
-			} else if (nextSuperAntifireTick - tickCount <= 0)
+			}
+			else if (nextSuperAntifireTick - tickCount <= 0)
 			{
 				nextSuperAntifireTick = tickCount + SUPERANTIFIRE_TICK_LENGTH;
 			}
@@ -455,12 +475,12 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (event.getVarbitId() == Varbits.DIVINE_SUPER_DEFENCE && config.showDivine())
 		{
 			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue()
-					|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
-					|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
-					// When drinking a dose of moonlight potion while already under its effects, desync between
-					// Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick
-					// greater
-					|| client.getVarbitValue(Varbits.MOONLIGHT_POTION) >= event.getValue())
+				|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
+				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
+				// When drinking a dose of moonlight potion while already under its effects, desync between
+				// Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick
+				// greater
+				|| client.getVarbitValue(Varbits.MOONLIGHT_POTION) >= event.getValue())
 			{
 				return;
 			}
@@ -570,7 +590,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (regionID == ECLIPSE_MOON_REGION_ID)
 			{
 				updateVarCounter(CURSE_OF_THE_MOONS_ECLIPSE, event.getValue());
-			} else
+			}
+			else
 			{
 				updateVarCounter(CURSE_OF_THE_MOONS_BLUE, event.getValue());
 			}
@@ -617,7 +638,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeGameTimer(HOME_TELEPORT);
 			removeGameTimer(MINIGAME_TELEPORT);
-		} else
+		}
+		else
 		{
 			checkTeleport(LAST_HOME_TELEPORT);
 			checkTeleport(LAST_MINIGAME_TELEPORT);
@@ -748,7 +770,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showTzhaarTimers())
 		{
 			removeTzhaarTimer();
-		} else
+		}
+		else
 		{
 			createTzhaarTimer();
 		}
@@ -844,7 +867,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (message.contains("hero") || message.contains("elf"))
 			{
 				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(6));
-			} else
+			}
+			else
 			{
 				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(5));
 			}
@@ -858,18 +882,20 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (config.showCannon())
 		{
 			if (message.equals(CANNON_BASE_MESSAGE) || message.equals(CANNON_STAND_MESSAGE)
-					|| message.equals(CANNON_BARRELS_MESSAGE) || message.equals(CANNON_FURNACE_MESSAGE)
-					|| message.contains(CANNON_REPAIR_MESSAGE))
+				|| message.equals(CANNON_BARRELS_MESSAGE) || message.equals(CANNON_FURNACE_MESSAGE)
+				|| message.contains(CANNON_REPAIR_MESSAGE))
 			{
 				removeGameTimer(CANNON_REPAIR);
 				TimerTimer cannonTimer = createGameTimer(CANNON);
 				cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
-			} else if (message.equals(CANNON_BROKEN_MESSAGE))
+			}
+			else if (message.equals(CANNON_BROKEN_MESSAGE))
 			{
 				removeGameTimer(CANNON);
 				TimerTimer cannonTimer = createGameTimer(CANNON_REPAIR);
 				cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
-			} else if (message.equals(CANNON_PICKUP_MESSAGE) || message.equals(CANNON_DESTROYED_MESSAGE))
+			}
+			else if (message.equals(CANNON_PICKUP_MESSAGE) || message.equals(CANNON_DESTROYED_MESSAGE))
 			{
 				removeGameTimer(CANNON);
 				removeGameTimer(CANNON_REPAIR);
@@ -908,13 +934,16 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (message.endsWith(SHADOW_VEIL_MESSAGE))
 			{
 				createGameTimer(SHADOW_VEIL, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
-			} else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
+			}
+			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{
 				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
-			} else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
+			}
+			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
 				createGameTimer(MARK_OF_DARKNESS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
-			} else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
 				// by default the thrall lasts 1 tick per magic level
 				int t = client.getBoostedSkillLevel(Skill.MAGIC);
@@ -922,7 +951,8 @@ public class TimersAndBuffsPlugin extends Plugin
 				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
 				{
 					t += t; // 100% boost
-				} else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
+				}
+				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
 				{
 					t += t / 2; // 50% boost
 				}
@@ -963,7 +993,8 @@ public class TimersAndBuffsPlugin extends Plugin
 				{
 					// The first wave message of the inferno comes six seconds after the ingame timer starts counting
 					config.tzhaarStartTime(now.minus(Duration.ofSeconds(6)));
-				} else
+				}
+				else
 				{
 					config.tzhaarStartTime(now);
 				}
@@ -973,7 +1004,8 @@ public class TimersAndBuffsPlugin extends Plugin
 				{
 					createTzhaarTimer();
 				}
-			} else if (config.tzhaarStartTime() != null && config.tzhaarLastTime() != null)
+			}
+			else if (config.tzhaarStartTime() != null && config.tzhaarLastTime() != null)
 			{
 				log.debug("Unpausing tzhaar timer");
 
@@ -1063,7 +1095,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (remainingTime.getSeconds() > 0)
 		{
 			createGameTimer(teleport, remainingTime);
-		} else
+		}
+		else
 		{
 			removeGameTimer(teleport);
 		}
@@ -1079,7 +1112,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			// assume movement means unfrozen
 			if (freezeTime != client.getTickCount()
-					&& !currentWorldPoint.equals(lastPoint))
+				&& !currentWorldPoint.equals(lastPoint))
 			{
 				removeGameTimer(freezeTimer.getTimer());
 				freezeTimer = null;
@@ -1275,7 +1308,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			timer = createGameTimer(gameTimer, duration);
 			timer.ticks = ticks;
 			varTimers.put(gameTimer, timer);
-		} else
+		}
+		else
 		{
 			timer.ticks = ticks;
 			timer.updateDuration(duration);
@@ -1295,11 +1329,13 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (varValue == 0)
 		{
 			removeVarCounter(gameCounter);
-		} else if (buffCounter == null)
+		}
+		else if (buffCounter == null)
 		{
 			buffCounter = createBuffCounter(gameCounter, varValue);
 			varCounters.put(gameCounter, buffCounter);
-		} else
+		}
+		else
 		{
 			buffCounter.setCount(varValue);
 		}

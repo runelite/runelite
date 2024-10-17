@@ -48,9 +48,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "Nightmare Zone",
-		description = "Show NMZ points/absorption and/or notify about expiring potions",
-		tags = {"combat", "nmz", "minigame", "notifications"}
+	name = "Nightmare Zone",
+	description = "Show NMZ points/absorption and/or notify about expiring potions",
+	tags = {"combat", "nmz", "minigame", "notifications"}
 )
 public class NightmareZonePlugin extends Plugin
 {
@@ -174,8 +174,8 @@ public class NightmareZonePlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (!isInNightmareZone()
-				|| (event.getType() != ChatMessageType.GAMEMESSAGE
-				&& event.getType() != ChatMessageType.SPAM))
+			|| (event.getType() != ChatMessageType.GAMEMESSAGE
+			&& event.getType() != ChatMessageType.SPAM))
 		{
 			return;
 		}
@@ -187,22 +187,27 @@ public class NightmareZonePlugin extends Plugin
 			overloadNotificationSend = false;
 
 			notifier.notify(config.overloadNotification(), "Your overload has worn off");
-		} else if (msg.contains("A power-up has spawned:"))
+		}
+		else if (msg.contains("A power-up has spawned:"))
 		{
 			if (msg.contains("Power surge"))
 			{
 				notifier.notify(config.powerSurgeNotification(), msg);
-			} else if (msg.contains("Recurrent damage"))
+			}
+			else if (msg.contains("Recurrent damage"))
 			{
 				notifier.notify(config.recurrentDamageNotification(), msg);
-			} else if (msg.contains("Zapper"))
+			}
+			else if (msg.contains("Zapper"))
 			{
 				notifier.notify(config.zapperNotification(), msg);
-			} else if (msg.contains("Ultimate force"))
+			}
+			else if (msg.contains("Ultimate force"))
 			{
 				notifier.notify(config.ultimateForceNotification(), msg);
 			}
-		} else if (msg.contains("You drink some of your overload potion."))
+		}
+		else if (msg.contains("You drink some of your overload potion."))
 		{
 			lastOverload = Instant.now();  // Save time of last overload
 			overloadNotificationSend = true;  // Queue up a overload notification once time threshold is reached
@@ -212,7 +217,7 @@ public class NightmareZonePlugin extends Plugin
 	private void checkOverload()
 	{
 		if (Instant.now().isAfter(lastOverload.plus(OVERLOAD_DURATION).
-				minus(Duration.ofSeconds(config.overloadEarlyWarningSeconds()))))
+			minus(Duration.ofSeconds(config.overloadEarlyWarningSeconds()))))
 		{
 			notifier.notify(config.overloadNotification(), "Your overload potion is about to expire!");
 			overloadNotificationSend = false;
@@ -230,7 +235,8 @@ public class NightmareZonePlugin extends Plugin
 				notifier.notify(config.absorptionNotification(), "Absorption points below: " + config.absorptionThreshold());
 				absorptionNotificationSend = true;
 			}
-		} else
+		}
+		else
 		{
 			if (absorptionPoints > config.absorptionThreshold())
 			{

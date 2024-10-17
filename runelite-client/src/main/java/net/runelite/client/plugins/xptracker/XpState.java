@@ -94,7 +94,8 @@ class XpState
 			assert currentXp >= 0;
 			initializeSkill(skill, currentXp);
 			return XpUpdateResult.INITIALIZED;
-		} else
+		}
+		else
 		{
 			long startXp = state.getStartXp();
 			int gainedXp = state.getTotalXpGained();
@@ -104,7 +105,8 @@ class XpState
 				// Reinitialize with lesser currentXp, this can happen with negative xp lamps
 				initializeSkill(skill, currentXp);
 				return XpUpdateResult.INITIALIZED;
-			} else
+			}
+			else
 			{
 				if (!state.update(currentXp))
 				{
@@ -122,7 +124,8 @@ class XpState
 		if (overall == null || overall.getStartXp() + overall.getTotalXpGained() > currentXp)
 		{
 			overall = new XpStateSingle(currentXp);
-		} else
+		}
+		else
 		{
 			overall.update(currentXp);
 		}
@@ -164,7 +167,8 @@ class XpState
 			{
 				action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
 			}
-		} else
+		}
+		else
 		{
 			// So we have a decent average off the bat, lets populate all values with what we see.
 			Arrays.fill(action.getActionExps(), actionExp);

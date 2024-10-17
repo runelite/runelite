@@ -32,13 +32,14 @@ import java.util.function.IntConsumer;
 public class CountingInputStream extends FilterInputStream
 {
 	private final IntConsumer changed;
-	private int read = 0;
 
 	public CountingInputStream(InputStream in, IntConsumer changed)
 	{
 		super(in);
 		this.changed = changed;
 	}
+
+	private int read = 0;
 
 	@Override
 	public int read(byte[] b, int off, int len) throws IOException

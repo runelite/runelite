@@ -72,12 +72,13 @@ public class CrowdsourcingDialogue
 		// If we were not in a conversation, but now one of these widgets is not null, we have started a conversation.
 		// Else if we were in a conversation, but now there is no widget, we have left the conversation.
 		if (!inDialogue && (npcDialogueTextWidget != null || playerDialogueTextWidget != null || playerDialogueOptionsWidget != null
-				|| spriteTextWidget != null || doubleSpriteTextWidget != null))
+			|| spriteTextWidget != null || doubleSpriteTextWidget != null))
 		{
 			inDialogue = true;
 			manager.storeEvent(new StartEndData(true));
-		} else if (inDialogue && npcDialogueTextWidget == null && playerDialogueTextWidget == null
-				&& playerDialogueOptionsWidget == null && spriteTextWidget == null && doubleSpriteTextWidget == null)
+		}
+		else if (inDialogue && npcDialogueTextWidget == null && playerDialogueTextWidget == null
+			&& playerDialogueOptionsWidget == null && spriteTextWidget == null && doubleSpriteTextWidget == null)
 		{
 			inDialogue = false;
 			manager.storeEvent(new StartEndData(false));
@@ -113,7 +114,7 @@ public class CrowdsourcingDialogue
 		}
 
 		if (spriteWidget != null && spriteTextWidget != null && (!spriteTextWidget.getText().equals(lastDialogueText)
-				|| spriteWidget.getItemId() != lastItemId1))
+			|| spriteWidget.getItemId() != lastItemId1))
 		{
 			lastItemId1 = spriteWidget.getItemId();
 			lastDialogueText = spriteTextWidget.getText();
@@ -122,7 +123,7 @@ public class CrowdsourcingDialogue
 		}
 
 		if (doubleSprite1Widget != null && doubleSpriteTextWidget != null && (!doubleSpriteTextWidget.getText().equals(lastDialogueText)
-				|| doubleSprite1Widget.getItemId() != lastItemId1 || doubleSprite2Widget.getItemId() != lastItemId2))
+			|| doubleSprite1Widget.getItemId() != lastItemId1 || doubleSprite2Widget.getItemId() != lastItemId2))
 		{
 			lastItemId1 = doubleSprite1Widget.getItemId();
 			lastItemId2 = doubleSprite2Widget.getItemId();
@@ -136,8 +137,8 @@ public class CrowdsourcingDialogue
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if ((chatMessage.getType() == ChatMessageType.DIALOG
-				|| chatMessage.getType() == ChatMessageType.MESBOX)
-				&& client.getLocalPlayer().getName() != null)
+			|| chatMessage.getType() == ChatMessageType.MESBOX)
+			&& client.getLocalPlayer().getName() != null)
 		{
 			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());
 			manager.storeEvent(data);

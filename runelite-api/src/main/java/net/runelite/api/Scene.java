@@ -47,12 +47,10 @@ public interface Scene extends Renderable
 	byte[][][] getExtendedTileSettings();
 
 	int getDrawDistance();
-
 	void setDrawDistance(int drawDistance);
 
 	/**
 	 * Get the world view id of this scene
-	 *
 	 * @return the world view id, or -1 if this is the top level scene
 	 */
 	int getWorldViewId();
@@ -73,14 +71,12 @@ public interface Scene extends Renderable
 
 	/**
 	 * Remove a tile from the scene
-	 *
 	 * @param tile
 	 */
 	void removeTile(Tile tile);
 
 	/**
 	 * Remove a game object from the scene
-	 *
 	 * @param gameObject
 	 */
 	void removeGameObject(GameObject gameObject);
@@ -89,34 +85,30 @@ public interface Scene extends Renderable
 
 	int[][][] getRoofs();
 
-	int getRoofRemovalMode();
-
 	void setRoofRemovalMode(int flags);
+
+	int getRoofRemovalMode();
 
 	/**
 	 * Get the underlay ids for the scene. The value stored is id + 1, with 0 for no underlay.
-	 *
 	 * @return
 	 */
 	short[][][] getUnderlayIds();
 
 	/**
 	 * Get the overlay ids for the scene. The value stored is id + 1, with 0 for no overlay.
-	 *
 	 * @return
 	 */
 	short[][][] getOverlayIds();
 
 	/**
 	 * Get the shapes of the tiles for the scene.
-	 *
 	 * @return
 	 */
 	byte[][][] getTileShapes();
 
 	/**
 	 * Get the heights of the tiles on the scene.
-	 *
 	 * @return
 	 */
 	int[][][] getTileHeights();
@@ -143,9 +135,8 @@ public interface Scene extends Renderable
 
 	/**
 	 * Check if this scene is an instance
-	 *
-	 * @return
 	 * @see #getInstanceTemplateChunks()
+	 * @return
 	 */
 	boolean isInstance();
 
@@ -165,7 +156,6 @@ public interface Scene extends Renderable
 	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
 	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	 * }</pre>
-	 *
 	 * @return the array of instance template chunks
 	 * @see Constants#CHUNK_SIZE
 	 * @see InstanceTemplates

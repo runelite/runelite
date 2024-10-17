@@ -38,10 +38,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Low Detail",
-		description = "Turn off ground decorations and certain textures, reducing memory usage",
-		tags = {"memory", "usage", "ground", "decorations"},
-		enabledByDefault = false
+	name = "Low Detail",
+	description = "Turn off ground decorations and certain textures, reducing memory usage",
+	tags = {"memory", "usage", "ground", "decorations"},
+	enabledByDefault = false
 )
 public class LowMemoryPlugin extends Plugin
 {
@@ -87,7 +87,8 @@ public class LowMemoryPlugin extends Plugin
 		if (gameStateChanged.getGameState() == GameState.STARTING)
 		{
 			client.changeMemoryMode(false);
-		} else if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		}
+		else if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			client.changeMemoryMode(config.lowDetail());
 		}
@@ -114,6 +115,6 @@ public class LowMemoryPlugin extends Plugin
 		// This needs to be set to the current plane, but there is no event for plane change, so
 		// just set it each render.
 		client.getScene().
-				setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
+			setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
 	}
 }

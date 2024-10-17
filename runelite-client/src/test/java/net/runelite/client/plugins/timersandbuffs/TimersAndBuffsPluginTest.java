@@ -252,7 +252,7 @@ public class TimersAndBuffsPluginTest
 	public void testTzhaarTimer()
 	{
 		when(timersAndBuffsConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[] {TimersAndBuffsPlugin.FIGHT_CAVES_REGION_ID});
+		when(client.getMapRegions()).thenReturn(new int[]{TimersAndBuffsPlugin.FIGHT_CAVES_REGION_ID});
 
 		class InstantRef
 		{
@@ -318,7 +318,7 @@ public class TimersAndBuffsPluginTest
 	public void testInfernoTimerStartOffset()
 	{
 		when(timersAndBuffsConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[] {TimersAndBuffsPlugin.INFERNO_REGION_ID});
+		when(client.getMapRegions()).thenReturn(new int[]{TimersAndBuffsPlugin.INFERNO_REGION_ID});
 
 		class InstantRef
 		{
@@ -518,7 +518,7 @@ public class TimersAndBuffsPluginTest
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersAndBuffsPlugin);
-		verify(infoBoxManager, times(1)).addInfoBox(any());
+		verify(infoBoxManager, times (1)).addInfoBox(any());
 		verify(infoBoxManager, times(1)).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));

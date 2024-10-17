@@ -40,19 +40,23 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class Keybind
 {
+	private static final BiMap<Integer, Integer> MODIFIER_TO_KEY_CODE = new ImmutableBiMap.Builder<Integer, Integer>()
+		.put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
+		.put(InputEvent.ALT_DOWN_MASK, KeyEvent.VK_ALT)
+		.put(InputEvent.SHIFT_DOWN_MASK, KeyEvent.VK_SHIFT)
+		.put(InputEvent.META_DOWN_MASK, KeyEvent.VK_META)
+		.build();
+
+	// Bitmask of all supported modifiers
+	private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
+		.reduce((a, b) -> a | b).get();
+
 	public static final Keybind NOT_SET = new Keybind(KeyEvent.VK_UNDEFINED, 0);
+
 	public static final Keybind CTRL = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	public static final Keybind ALT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
 	public static final Keybind SHIFT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
-	private static final BiMap<Integer, Integer> MODIFIER_TO_KEY_CODE = new ImmutableBiMap.Builder<Integer, Integer>()
-			.put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
-			.put(InputEvent.ALT_DOWN_MASK, KeyEvent.VK_ALT)
-			.put(InputEvent.SHIFT_DOWN_MASK, KeyEvent.VK_SHIFT)
-			.put(InputEvent.META_DOWN_MASK, KeyEvent.VK_META)
-			.build();
-	// Bitmask of all supported modifiers
-	private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
-			.reduce((a, b) -> a | b).get();
+
 	private final int keyCode;
 	private final int modifiers;
 
@@ -93,12 +97,6 @@ public class Keybind
 		assert matches(e);
 	}
 
-	@Nullable
-	public static Integer getModifierForKeyCode(int keyCode)
-	{
-		return MODIFIER_TO_KEY_CODE.inverse().get(keyCode);
-	}
-
 	/**
 	 * If the KeyEvent is from a KeyPressed event this returns if the
 	 * Event is this hotkey being pressed. If the KeyEvent is a
@@ -132,7 +130,8 @@ public class Keybind
 			if (keyCode != KeyEvent.VK_UNDEFINED)
 			{
 				return this.keyCode == keyCode;
-			} else if (mf != null)
+			}
+			else if (mf != null)
 			{
 				return this.keyCode == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
 			}
@@ -158,7 +157,8 @@ public class Keybind
 		if (keyCode == KeyEvent.VK_UNDEFINED)
 		{
 			key = "";
-		} else
+		}
+		else
 		{
 			key = KeyEvent.getKeyText(keyCode);
 		}
@@ -182,5 +182,11 @@ public class Keybind
 			return key;
 		}
 		return mod;
+	}
+
+	@Nullable
+	public static Integer getModifierForKeyCode(int keyCode)
+	{
+		return MODIFIER_TO_KEY_CODE.inverse().get(keyCode);
 	}
 }

@@ -131,6 +131,26 @@ public class SplashScreen extends JFrame implements ActionListener
 		setVisible(true);
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		action.setText(actionText);
+		subAction.setText(subActionText);
+		progress.setMaximum(1000);
+		progress.setValue((int) (overallProgress * 1000));
+
+		String progressText = this.progressText;
+		if (progressText == null)
+		{
+			progress.setStringPainted(false);
+		}
+		else
+		{
+			progress.setStringPainted(true);
+			progress.setString(progressText);
+		}
+	}
+
 	public static boolean isOpen()
 	{
 		return INSTANCE != null;
@@ -155,12 +175,14 @@ public class SplashScreen extends JFrame implements ActionListener
 						UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 					}
 					INSTANCE = new SplashScreen();
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					log.warn("Unable to start splash screen", e);
 				}
 			});
-		} catch (InterruptedException | InvocationTargetException bs)
+		}
+		catch (InterruptedException | InvocationTargetException bs)
 		{
 			throw new RuntimeException(bs);
 		}
@@ -193,8 +215,8 @@ public class SplashScreen extends JFrame implements ActionListener
 	}
 
 	public static void stage(double startProgress, double endProgress,
-							 @Nullable String actionText, String subActionText,
-							 int done, int total, boolean mib)
+		@Nullable String actionText, String subActionText,
+		int done, int total, boolean mib)
 	{
 		String progress;
 		if (mib)
@@ -202,7 +224,8 @@ public class SplashScreen extends JFrame implements ActionListener
 			final double MiB = 1024 * 1024;
 			final double CEIL = 1.d / 10.d;
 			progress = String.format("%.1f / %.1f MiB", done / MiB, (total / MiB) + CEIL);
-		} else
+		}
+		else
 		{
 			progress = done + " / " + total;
 		}
@@ -220,25 +243,6 @@ public class SplashScreen extends JFrame implements ActionListener
 			}
 			INSTANCE.subActionText = subActionText;
 			INSTANCE.progressText = progressText;
-		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		action.setText(actionText);
-		subAction.setText(subActionText);
-		progress.setMaximum(1000);
-		progress.setValue((int) (overallProgress * 1000));
-
-		String progressText = this.progressText;
-		if (progressText == null)
-		{
-			progress.setStringPainted(false);
-		} else
-		{
-			progress.setStringPainted(true);
-			progress.setString(progressText);
 		}
 	}
 }

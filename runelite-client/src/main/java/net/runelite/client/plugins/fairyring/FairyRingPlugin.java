@@ -62,9 +62,9 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
-		name = "Fairy Rings",
-		description = "Show the location of the fairy ring teleport",
-		tags = {"teleportation"}
+	name = "Fairy Rings",
+	description = "Show the location of the fairy ring teleport",
+	tags = {"teleportation"}
 )
 public class FairyRingPlugin extends Plugin
 {
@@ -92,6 +92,19 @@ public class FairyRingPlugin extends Plugin
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
+
+	@Data
+	private static class CodeWidgets
+	{
+		// The fairy hideout has both of these null, because its not the same as the rest of them
+		@Nullable
+		private Widget favorite;
+
+		@Nullable
+		private Widget code;
+
+		private Widget description;
+	}
 
 	@Provides
 	FairyRingConfig getConfig(ConfigManager configManager)
@@ -159,9 +172,10 @@ public class FairyRingPlugin extends Plugin
 			try
 			{
 				FairyRings fairyRingDestination = getFairyRingDestination(client.getVarbitValue(Varbits.FAIRY_RING_DIAL_ADCB),
-						client.getVarbitValue(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVarbitValue(Varbits.FAIRY_RING_DIAL_PSRQ));
+					client.getVarbitValue(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVarbitValue(Varbits.FAIRY_RING_DIAL_PSRQ));
 				destination = fairyRingDestination.getDestination();
-			} catch (IllegalArgumentException ex)
+			}
+			catch (IllegalArgumentException ex)
 			{
 				destination = "Invalid location";
 			}
@@ -181,15 +195,15 @@ public class FairyRingPlugin extends Plugin
 		searchBtn.setAction(1, MENU_CLOSE);
 		searchBtn.setOnOpListener((JavaScriptCallback) this::menuClose);
 		searchInput = chatboxPanelManager.openTextInput("Filter fairy rings")
-				.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
-				.onDone(s -> false)
-				.onClose(() ->
-				{
-					clientThread.invokeLater(() -> updateFilter(""));
-					searchBtn.setOnOpListener((JavaScriptCallback) this::menuOpen);
-					searchBtn.setAction(1, MENU_OPEN);
-				})
-				.build();
+			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
+			.onDone(s -> false)
+			.onClose(() ->
+			{
+				clientThread.invokeLater(() -> updateFilter(""));
+				searchBtn.setOnOpListener((JavaScriptCallback) this::menuOpen);
+				searchBtn.setAction(1, MENU_OPEN);
+			})
+			.build();
 	}
 
 	@Subscribe
@@ -250,7 +264,8 @@ public class FairyRingPlugin extends Plugin
 				if (w.getSpriteId() != -1)
 				{
 					codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setFavorite(w);
-				} else if (!Strings.isNullOrEmpty(w.getText()))
+				}
+				else if (!Strings.isNullOrEmpty(w.getText()))
 				{
 					codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setDescription(w);
 				}
@@ -294,16 +309,17 @@ public class FairyRingPlugin extends Plugin
 				{
 					FairyRings ring = FairyRings.valueOf(code);
 					tags = ring.getTags();
-				} catch (IllegalArgumentException e)
+				}
+				catch (IllegalArgumentException e)
 				{
 					log.warn("Unable to find ring with code '{}'", code, e);
 				}
 			}
 
 			boolean hidden = !(filter.isEmpty()
-					|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(filter)
-					|| code.toLowerCase().contains(filter)
-					|| tags != null && tags.contains(filter));
+				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(filter)
+				|| code.toLowerCase().contains(filter)
+				|| tags != null && tags.contains(filter));
 
 			if (c.getCode() != null)
 			{
@@ -342,23 +358,10 @@ public class FairyRingPlugin extends Plugin
 		list.setScrollHeight(y);
 		list.revalidateScroll();
 		client.runScript(
-				ScriptID.UPDATE_SCROLLBAR,
-				ComponentID.FAIRY_RING_PANEL_SCROLLBAR,
-				ComponentID.FAIRY_RING_PANEL_LIST,
-				newHeight
+			ScriptID.UPDATE_SCROLLBAR,
+			ComponentID.FAIRY_RING_PANEL_SCROLLBAR,
+			ComponentID.FAIRY_RING_PANEL_LIST,
+			newHeight
 		);
-	}
-
-	@Data
-	private static class CodeWidgets
-	{
-		// The fairy hideout has both of these null, because its not the same as the rest of them
-		@Nullable
-		private Widget favorite;
-
-		@Nullable
-		private Widget code;
-
-		private Widget description;
 	}
 }

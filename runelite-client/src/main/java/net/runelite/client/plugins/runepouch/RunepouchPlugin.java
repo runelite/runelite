@@ -32,9 +32,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Rune Pouch",
-		description = "Show the contents of your rune pouch",
-		tags = {"combat", "magic", "overlay"}
+	name = "Rune Pouch",
+	description = "Show the contents of your rune pouch",
+	tags = {"combat", "magic", "overlay"}
 )
 public class RunepouchPlugin extends Plugin
 {

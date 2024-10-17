@@ -52,9 +52,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-		name = "Cooking",
-		description = "Show cooking statistics",
-		tags = {"overlay", "skilling", "cook"}
+	name = "Cooking",
+	description = "Show cooking statistics",
+	tags = {"overlay", "skilling", "cook"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class CookingPlugin extends Plugin
@@ -132,15 +132,16 @@ public class CookingPlugin extends Plugin
 		if (player.getGraphic() == GraphicID.WINE_MAKE && config.fermentTimer())
 		{
 			Optional<FermentTimer> fermentTimerOpt = infoBoxManager.getInfoBoxes().stream()
-					.filter(FermentTimer.class::isInstance)
-					.map(FermentTimer.class::cast)
-					.findAny();
+				.filter(FermentTimer.class::isInstance)
+				.map(FermentTimer.class::cast)
+				.findAny();
 
 			if (fermentTimerOpt.isPresent())
 			{
 				FermentTimer fermentTimer = fermentTimerOpt.get();
 				fermentTimer.reset();
-			} else
+			}
+			else
 			{
 				FermentTimer fermentTimer = new FermentTimer(itemManager.getImage(ItemID.JUG_OF_WINE), this);
 				infoBoxManager.addInfoBox(fermentTimer);
@@ -159,18 +160,18 @@ public class CookingPlugin extends Plugin
 		final String message = event.getMessage();
 
 		if (message.startsWith("You successfully cook")
-				|| message.startsWith("You successfully bake")
-				|| message.startsWith("You successfully fry")
-				|| message.startsWith("You manage to cook")
-				|| message.startsWith("You roast a")
-				|| message.startsWith("You spit-roast")
-				|| message.startsWith("You cook")
-				|| message.startsWith("Eventually the Jubbly")
-				|| message.startsWith("You half-cook")
-				|| message.startsWith("The undead meat is now cooked")
-				|| message.startsWith("The undead chicken is now cooked")
-				|| message.startsWith("You successfully scramble")
-				|| message.startsWith("You dry a piece of meat"))
+			|| message.startsWith("You successfully bake")
+			|| message.startsWith("You successfully fry")
+			|| message.startsWith("You manage to cook")
+			|| message.startsWith("You roast a")
+			|| message.startsWith("You spit-roast")
+			|| message.startsWith("You cook")
+			|| message.startsWith("Eventually the Jubbly")
+			|| message.startsWith("You half-cook")
+			|| message.startsWith("The undead meat is now cooked")
+			|| message.startsWith("The undead chicken is now cooked")
+			|| message.startsWith("You successfully scramble")
+			|| message.startsWith("You dry a piece of meat"))
 		{
 			if (session == null)
 			{
@@ -180,10 +181,11 @@ public class CookingPlugin extends Plugin
 			session.updateLastCookingAction();
 			session.increaseCookAmount();
 
-		} else if (message.startsWith("You accidentally burn")
-				|| message.equals("You burn the mushroom in the fire.")
-				|| message.startsWith("Unfortunately the Jubbly")
-				|| message.startsWith("You accidentally spoil"))
+		}
+		else if (message.startsWith("You accidentally burn")
+			|| message.equals("You burn the mushroom in the fire.")
+			|| message.startsWith("Unfortunately the Jubbly")
+			|| message.startsWith("You accidentally spoil"))
 		{
 			if (session == null)
 			{

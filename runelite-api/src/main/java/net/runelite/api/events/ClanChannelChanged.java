@@ -43,7 +43,6 @@ public class ClanChannelChanged
 	private final ClanChannel clanChannel;
 	/**
 	 * The clan id, or -1 for guest clan
-	 *
 	 * @see net.runelite.api.clan.ClanID
 	 */
 	@MagicConstant(valuesFromClass = ClanID.class)

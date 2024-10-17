@@ -58,8 +58,8 @@ public class RuntimeConfig
 	public boolean showOutageMessage()
 	{
 		if (Strings.isNullOrEmpty(getOutageMessage())
-				|| (outageStart != null && Instant.now().isBefore(outageStart))
-				|| (outageEnd != null && Instant.now().isAfter(outageEnd)))
+			|| (outageStart != null && Instant.now().isBefore(outageStart))
+			|| (outageEnd != null && Instant.now().isAfter(outageEnd)))
 		{
 			return false;
 		}
@@ -73,7 +73,8 @@ public class RuntimeConfig
 				{
 					fed.addButton(e.getKey(), () -> LinkBrowser.browse(e.getValue()));
 				}
-			} else
+			}
+			else
 			{
 				fed.addButton("OSRS Twitter", () -> LinkBrowser.browse(RuneLiteProperties.getOSRSTwitterLink()));
 			}

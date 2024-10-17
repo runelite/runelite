@@ -38,10 +38,10 @@ import java.time.Instant;
 class AgilitySession
 {
 	private final Courses course;
-	private final EvictingQueue<Duration> lastLapTimes = EvictingQueue.create(30);
 	private Instant lastLapCompleted;
 	private int totalLaps;
 	private int lapsTillGoal;
+	private final EvictingQueue<Duration> lastLapTimes = EvictingQueue.create(30);
 	private int lapsPerHour;
 
 	AgilitySession(Courses course)

@@ -46,7 +46,7 @@ public class OutputStreamTest
 	@Test
 	public void testWriteString()
 	{
-		char[] c = new char[] {32, 160};
+		char[] c = new char[]{32, 160};
 		String str = new String(c, 0, c.length);
 
 		OutputStream os = new OutputStream();

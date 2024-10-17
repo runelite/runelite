@@ -92,7 +92,7 @@ class KourendLibraryOverlay extends Overlay
 			// AABB
 			WorldPoint caseLoc = bookcase.getLocation();
 			if (Math.abs(playerLoc.getX() - caseLoc.getX()) > MAXIMUM_DISTANCE
-					|| Math.abs(playerLoc.getY() - caseLoc.getY()) > MAXIMUM_DISTANCE)
+				|| Math.abs(playerLoc.getY() - caseLoc.getY()) > MAXIMUM_DISTANCE)
 			{
 				continue;
 			}
@@ -143,25 +143,26 @@ class KourendLibraryOverlay extends Overlay
 						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
 						height = (int) bounds.getHeight() + book.getIcon().getHeight() + 6;
 						Point textLoc = new Point(
-								(int) (screenBookcase.getX() - (bounds.getWidth() / 2)),
-								screenBookcase.getY() - (height / 2) + (int) bounds.getHeight()
+							(int) (screenBookcase.getX() - (bounds.getWidth() / 2)),
+							screenBookcase.getY() - (height / 2) + (int) bounds.getHeight()
 						);
 						OverlayUtil.renderTextLocation(g, textLoc, book.getShortName(), color);
 						g.drawImage(
-								book.getIcon(),
-								screenBookcase.getX() - (book.getIcon().getWidth() / 2),
-								screenBookcase.getY() + (height / 2) - book.getIcon().getHeight(),
-								null
+							book.getIcon(),
+							screenBookcase.getX() - (book.getIcon().getWidth() / 2),
+							screenBookcase.getY() + (height / 2) - book.getIcon().getHeight(),
+							null
 						);
 					}
-				} else
+				}
+				else
 				{
 					// otherwise render up to 9 icons of the possible books in the bookcase in a square
 					final int BOOK_ICON_SIZE = 32;
 					Book[] books = possible.stream()
-							.filter(Objects::nonNull)
-							.limit(9)
-							.toArray(Book[]::new);
+						.filter(Objects::nonNull)
+						.limit(9)
+						.toArray(Book[]::new);
 					if (books.length > 1 && books.length <= 9)
 					{
 						int cols = (int) Math.ceil(Math.sqrt(books.length));
@@ -227,7 +228,7 @@ class KourendLibraryOverlay extends Overlay
 	private boolean shouldHideOverlayIfDuplicateBook(@Nullable Book book)
 	{
 		return config.hideDuplicateBook()
-				&& book != null
-				&& plugin.doesPlayerContainBook(book);
+			&& book != null
+			&& plugin.doesPlayerContainBook(book);
 	}
 }

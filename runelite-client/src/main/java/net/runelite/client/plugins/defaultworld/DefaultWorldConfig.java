@@ -34,9 +34,9 @@ public interface DefaultWorldConfig extends Config
 	String GROUP = "defaultworld";
 
 	@ConfigItem(
-			keyName = "defaultWorld",
-			name = "Default world",
-			description = "World to use as default one"
+		keyName = "defaultWorld",
+		name = "Default world",
+		description = "World to use as default one"
 	)
 	default int getWorld()
 	{
@@ -44,9 +44,9 @@ public interface DefaultWorldConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "useLastWorld",
-			name = "Use Last World",
-			description = "Use the last world you used as the default"
+		keyName = "useLastWorld",
+		name = "Use Last World",
+		description = "Use the last world you used as the default"
 	)
 	default boolean useLastWorld()
 	{
@@ -54,10 +54,10 @@ public interface DefaultWorldConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "lastWorld",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "lastWorld",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default int lastWorld()
 	{
@@ -65,9 +65,9 @@ public interface DefaultWorldConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "lastWorld",
-			name = "",
-			description = ""
+		keyName = "lastWorld",
+		name = "",
+		description = ""
 	)
 	void lastWorld(int lastWorld);
 }

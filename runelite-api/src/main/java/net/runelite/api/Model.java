@@ -38,15 +38,12 @@ public interface Model extends Mesh<Model>, Renderable
 	int[] getFaceColors3();
 
 	int getSceneId();
-
 	void setSceneId(int sceneId);
 
 	int getBufferOffset();
-
 	void setBufferOffset(int bufferOffset);
 
 	int getUvBufferOffset();
-
 	void setUvBufferOffset(int bufferOffset);
 
 	int getBottomY();
@@ -56,7 +53,6 @@ public interface Model extends Mesh<Model>, Renderable
 	byte[] getFaceRenderPriorities();
 
 	int getRadius();
-
 	int getDiameter();
 
 	/**
@@ -69,34 +65,25 @@ public interface Model extends Mesh<Model>, Renderable
 	AABB getAABB(int orientation);
 
 	int getXYZMag();
-
 	boolean useBoundingBox();
 
 	int[] getVertexNormalsX();
-
 	int[] getVertexNormalsY();
-
 	int[] getVertexNormalsZ();
 
 	byte getOverrideAmount();
-
 	byte getOverrideHue();
-
 	byte getOverrideSaturation();
-
 	byte getOverrideLuminance();
 
 	byte[] getTextureFaces();
 
 	int[] getTexIndices1();
-
 	int[] getTexIndices2();
-
 	int[] getTexIndices3();
 
 	Model getUnskewedModel();
 
 	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
-
 	void drawOrtho(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera, int zoom);
 }

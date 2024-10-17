@@ -58,25 +58,32 @@ public class SpotAnimLoader
 		if (opcode == 1)
 		{
 			def.modelId = stream.readUnsignedShort();
-		} else if (opcode == 2)
+		}
+		else if (opcode == 2)
 		{
 			def.animationId = stream.readUnsignedShort();
-		} else if (opcode == 4)
+		}
+		else if (opcode == 4)
 		{
 			def.resizeX = stream.readUnsignedShort();
-		} else if (opcode == 5)
+		}
+		else if (opcode == 5)
 		{
 			def.resizeY = stream.readUnsignedShort();
-		} else if (opcode == 6)
+		}
+		else if (opcode == 6)
 		{
 			def.rotaton = stream.readUnsignedShort();
-		} else if (opcode == 7)
+		}
+		else if (opcode == 7)
 		{
 			def.ambient = stream.readUnsignedByte();
-		} else if (opcode == 8)
+		}
+		else if (opcode == 8)
 		{
 			def.contrast = stream.readUnsignedByte();
-		} else if (opcode == 40)
+		}
+		else if (opcode == 40)
 		{
 			int var3 = stream.readUnsignedByte();
 			def.recolorToFind = new short[var3];
@@ -87,7 +94,8 @@ public class SpotAnimLoader
 				def.recolorToFind[var4] = (short) stream.readUnsignedShort();
 				def.recolorToReplace[var4] = (short) stream.readUnsignedShort();
 			}
-		} else if (opcode == 41)
+		}
+		else if (opcode == 41)
 		{
 			int var3 = stream.readUnsignedByte();
 			def.textureToFind = new short[var3];

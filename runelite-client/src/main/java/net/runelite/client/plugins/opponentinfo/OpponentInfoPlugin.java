@@ -56,9 +56,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Opponent Information",
-		description = "Show name and hitpoints information about the NPC you are fighting",
-		tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
+	name = "Opponent Information",
+	description = "Show name and hitpoints information about the NPC you are fighting",
+	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
 )
 public class OpponentInfoPlugin extends Plugin
 {
@@ -89,12 +89,6 @@ public class OpponentInfoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@VisibleForTesting
 	private Instant lastTime;
-
-	private static String getPercentText(int current, int maximum)
-	{
-		double percent = 100.0 * current / maximum;
-		return PERCENT_FORMAT.format(percent) + "%";
-	}
 
 	@Provides
 	OpponentInfoConfig provideConfig(ConfigManager configManager)
@@ -152,8 +146,8 @@ public class OpponentInfoPlugin extends Plugin
 	public void onGameTick(GameTick gameTick)
 	{
 		if (lastOpponent != null
-				&& lastTime != null
-				&& client.getLocalPlayer().getInteracting() == null)
+			&& lastTime != null
+			&& client.getLocalPlayer().getInteracting() == null)
 		{
 			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
 			{
@@ -166,8 +160,8 @@ public class OpponentInfoPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		if (menuEntryAdded.getType() != MenuAction.NPC_SECOND_OPTION.getId()
-				|| !menuEntryAdded.getOption().equals("Attack")
-				|| !config.showOpponentsInMenu())
+			|| !menuEntryAdded.getOption().equals("Attack")
+			|| !config.showOpponentsInMenu())
 		{
 			return;
 		}
@@ -222,5 +216,11 @@ public class OpponentInfoPlugin extends Plugin
 				widget.setText(widget.getText() + " (" + getPercentText(currHp, maxHp) + ")");
 				break;
 		}
+	}
+
+	private static String getPercentText(int current, int maximum)
+	{
+		double percent = 100.0 * current / maximum;
+		return PERCENT_FORMAT.format(percent) + "%";
 	}
 }

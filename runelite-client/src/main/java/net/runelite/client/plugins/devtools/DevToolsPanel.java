@@ -66,16 +66,16 @@ class DevToolsPanel extends PluginPanel
 
 	@Inject
 	private DevToolsPanel(
-			Client client,
-			ClientThread clientThread,
-			DevToolsPlugin plugin,
-			WidgetInspector widgetInspector,
-			VarInspector varInspector,
-			ScriptInspector scriptInspector,
-			InventoryInspector inventoryInspector,
-			Notifier notifier,
-			InfoBoxManager infoBoxManager,
-			ScheduledExecutorService scheduledExecutorService)
+		Client client,
+		ClientThread clientThread,
+		DevToolsPlugin plugin,
+		WidgetInspector widgetInspector,
+		VarInspector varInspector,
+		ScriptInspector scriptInspector,
+		InventoryInspector inventoryInspector,
+		Notifier notifier,
+		InfoBoxManager infoBoxManager,
+		ScheduledExecutorService scheduledExecutorService)
 	{
 		super();
 		this.client = client;
@@ -145,13 +145,13 @@ class DevToolsPanel extends PluginPanel
 
 		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
-				scheduledExecutorService.schedule(() ->
-				{
-					var notif = new Notification()
-							.withEnabled(true)
-							.withTrayIconType(TrayIcon.MessageType.ERROR);
-					notifier.notify(notif, "Wow!");
-				}, 3, TimeUnit.SECONDS));
+			scheduledExecutorService.schedule(() ->
+			{
+				var notif = new Notification()
+					.withEnabled(true)
+					.withTrayIconType(TrayIcon.MessageType.ERROR);
+				notifier.notify(notif, "Wow!");
+			}, 3, TimeUnit.SECONDS));
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());
@@ -192,10 +192,12 @@ class DevToolsPanel extends PluginPanel
 			ShellFrame sf = plugin.getInjector().getInstance(ShellFrame.class);
 			container.add(plugin.getShell());
 			plugin.getShell().addFrame(sf);
-		} catch (LinkageError | ProvisionException e)
+		}
+		catch (LinkageError | ProvisionException e)
 		{
 			log.debug("Shell is not supported", e);
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			log.info("Shell couldn't be loaded", e);
 		}
@@ -215,7 +217,8 @@ class DevToolsPanel extends PluginPanel
 				}
 			});
 			container.add(uiDefaultsBtn);
-		} catch (LinkageError e)
+		}
+		catch (LinkageError e)
 		{
 		}
 

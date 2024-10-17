@@ -65,6 +65,10 @@ public class ClockTabPanel extends TabContentPanel
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_ICON_HOVER;
 
+	private final ClockManager clockManager;
+
+	private final List<ClockPanel> clockPanels = new ArrayList<>();
+
 	static
 	{
 		BufferedImage deleteIcon = ImageUtil.loadImageResource(TimeTrackingPlugin.class, "delete_icon.png");
@@ -93,9 +97,6 @@ public class ClockTabPanel extends TabContentPanel
 		LOOP_SELECTED_ICON = new ImageIcon(loopSelectedIcon);
 		LOOP_SELECTED_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(loopSelectedIcon, -80));
 	}
-
-	private final ClockManager clockManager;
-	private final List<ClockPanel> clockPanels = new ArrayList<>();
 
 	ClockTabPanel(ClockManager clockManager)
 	{

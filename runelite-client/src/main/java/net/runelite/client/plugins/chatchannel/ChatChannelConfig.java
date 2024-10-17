@@ -37,31 +37,31 @@ public interface ChatChannelConfig extends Config
 	String GROUP = "clanchat"; // group name from the old plugin
 
 	@ConfigSection(
-			name = "Friends Chat",
-			description = "Configuration for friends chat",
-			position = 10
+		name = "Friends Chat",
+		description = "Configuration for friends chat",
+		position = 10
 	)
 	String friendsChatSection = "friendsChat";
 
 	@ConfigSection(
-			name = "Clan Chat",
-			description = "Configuration for clan chat",
-			position = 20
+		name = "Clan Chat",
+		description = "Configuration for clan chat",
+		position = 20
 	)
 	String clanChatSection = "clanChat";
 
 	@ConfigSection(
-			name = "Guest Clan Chat",
-			description = "Configuration for guest clan chat",
-			position = 30
+		name = "Guest Clan Chat",
+		description = "Configuration for guest clan chat",
+		position = 30
 	)
 	String guestClanChatSection = "guestClanChat";
 
 	@ConfigItem(
-			keyName = "joinLeaveTimeout",
-			name = "Join/Leave timeout",
-			description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
-			position = 0
+		keyName = "joinLeaveTimeout",
+		name = "Join/Leave timeout",
+		description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
+		position = 0
 	)
 	default int joinLeaveTimeout()
 	{
@@ -69,11 +69,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "clanChatIcons",
-			name = "Chat Icons",
-			description = "Show rank icons next to friends chat members.",
-			position = 1,
-			section = friendsChatSection
+		keyName = "clanChatIcons",
+		name = "Chat Icons",
+		description = "Show rank icons next to friends chat members.",
+		position = 1,
+		section = friendsChatSection
 	)
 	default boolean chatIcons()
 	{
@@ -81,11 +81,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "recentChats",
-			name = "Recent Chats",
-			description = "Show recent friends chats.",
-			position = 2,
-			section = friendsChatSection
+		keyName = "recentChats",
+		name = "Recent Chats",
+		description = "Show recent friends chats.",
+		position = 2,
+		section = friendsChatSection
 	)
 	default boolean recentChats()
 	{
@@ -93,10 +93,10 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chatsData",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "chatsData",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default String chatsData()
 	{
@@ -104,18 +104,18 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chatsData",
-			name = "",
-			description = ""
+		keyName = "chatsData",
+		name = "",
+		description = ""
 	)
 	void chatsData(String str);
 
 	@ConfigItem(
-			keyName = "showJoinLeave",
-			name = "Show Join/Leave",
-			description = "Adds a temporary message notifying when a member joins or leaves.",
-			position = 4,
-			section = friendsChatSection
+		keyName = "showJoinLeave",
+		name = "Show Join/Leave",
+		description = "Adds a temporary message notifying when a member joins or leaves.",
+		position = 4,
+		section = friendsChatSection
 	)
 	default boolean showFriendsChatJoinLeave()
 	{
@@ -123,11 +123,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "joinLeaveRank",
-			name = "Join/Leave rank",
-			description = "Only show join/leave messages for members at or above this rank.",
-			position = 5,
-			section = friendsChatSection
+		keyName = "joinLeaveRank",
+		name = "Join/Leave rank",
+		description = "Only show join/leave messages for members at or above this rank.",
+		position = 5,
+		section = friendsChatSection
 	)
 	default FriendsChatRank joinLeaveRank()
 	{
@@ -135,11 +135,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "privateMessageIcons",
-			name = "Private Message Icons",
-			description = "Add rank icons to private messages received from members.",
-			position = 7,
-			section = friendsChatSection
+		keyName = "privateMessageIcons",
+		name = "Private Message Icons",
+		description = "Add rank icons to private messages received from members.",
+		position = 7,
+		section = friendsChatSection
 	)
 	default boolean privateMessageIcons()
 	{
@@ -147,11 +147,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "publicChatIcons",
-			name = "Public Chat Icons",
-			description = "Add rank icons to public chat messages from members.",
-			position = 8,
-			section = friendsChatSection
+		keyName = "publicChatIcons",
+		name = "Public Chat Icons",
+		description = "Add rank icons to public chat messages from members.",
+		position = 8,
+		section = friendsChatSection
 	)
 	default boolean publicChatIcons()
 	{
@@ -159,11 +159,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "confirmKicks",
-			name = "Confirm Kicks",
-			description = "Shows a chat prompt to confirm kicks",
-			position = 10,
-			section = friendsChatSection
+		keyName = "confirmKicks",
+		name = "Confirm Kicks",
+		description = "Shows a chat prompt to confirm kicks",
+		position = 10,
+		section = friendsChatSection
 	)
 	default boolean confirmKicks()
 	{
@@ -171,11 +171,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showIgnores",
-			name = "Recolor ignored players",
-			description = "Recolor members who are on your ignore list",
-			position = 11,
-			section = friendsChatSection
+		keyName = "showIgnores",
+		name = "Recolor ignored players",
+		description = "Recolor members who are on your ignore list",
+		position = 11,
+		section = friendsChatSection
 	)
 	default boolean showIgnores()
 	{
@@ -183,11 +183,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showIgnoresColor",
-			name = "Ignored color",
-			description = "Allows you to change the color of the ignored players in your friends chat",
-			position = 12,
-			section = friendsChatSection
+		keyName = "showIgnoresColor",
+		name = "Ignored color",
+		description = "Allows you to change the color of the ignored players in your friends chat",
+		position = 12,
+		section = friendsChatSection
 	)
 	default Color showIgnoresColor()
 	{
@@ -195,11 +195,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "clanChatShowJoinLeave",
-			name = "Show Join/Leave",
-			description = "Adds a temporary message notifying when a member joins or leaves.",
-			position = 0,
-			section = clanChatSection
+		keyName = "clanChatShowJoinLeave",
+		name = "Show Join/Leave",
+		description = "Adds a temporary message notifying when a member joins or leaves.",
+		position = 0,
+		section = clanChatSection
 	)
 	default boolean clanChatShowJoinLeave()
 	{
@@ -207,11 +207,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "clanChatShowOnlineMemberCount",
-			name = "Show Online Member Count",
-			description = "Shows the number of online clan members at the end of the clan's name.",
-			position = 1,
-			section = clanChatSection
+		keyName = "clanChatShowOnlineMemberCount",
+		name = "Show Online Member Count",
+		description = "Shows the number of online clan members at the end of the clan's name.",
+		position = 1,
+		section = clanChatSection
 	)
 	default boolean clanChatShowOnlineMemberCount()
 	{
@@ -219,11 +219,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "guestClanChatShowJoinLeave",
-			name = "Show Join/Leave",
-			description = "Adds a temporary message notifying when a member joins or leaves.",
-			position = 0,
-			section = guestClanChatSection
+		keyName = "guestClanChatShowJoinLeave",
+		name = "Show Join/Leave",
+		description = "Adds a temporary message notifying when a member joins or leaves.",
+		position = 0,
+		section = guestClanChatSection
 	)
 	default boolean guestClanChatShowJoinLeave()
 	{
@@ -231,11 +231,11 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "guestClanChatShowOnlineMemberCount",
-			name = "Show Online Member Count",
-			description = "Shows the number of online guest clan members at the end of the clan's name.",
-			position = 1,
-			section = guestClanChatSection
+		keyName = "guestClanChatShowOnlineMemberCount",
+		name = "Show Online Member Count",
+		description = "Shows the number of online guest clan members at the end of the clan's name.",
+		position = 1,
+		section = guestClanChatSection
 	)
 	default boolean guestClanChatShowOnlineMemberCount()
 	{

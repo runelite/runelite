@@ -86,7 +86,8 @@ public class FrameLoader
 			if ((var9 & 1) != 0)
 			{
 				scratchTranslatorX[index] = data.readShortSmart();
-			} else
+			}
+			else
 			{
 				scratchTranslatorX[index] = var11;
 			}
@@ -94,7 +95,8 @@ public class FrameLoader
 			if ((var9 & 2) != 0)
 			{
 				scratchTranslatorY[index] = data.readShortSmart();
-			} else
+			}
+			else
 			{
 				scratchTranslatorY[index] = var11;
 			}
@@ -102,7 +104,8 @@ public class FrameLoader
 			if ((var9 & 4) != 0)
 			{
 				scratchTranslatorZ[index] = data.readShortSmart();
-			} else
+			}
+			else
 			{
 				scratchTranslatorZ[index] = var11;
 			}

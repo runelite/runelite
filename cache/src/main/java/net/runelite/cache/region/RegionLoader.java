@@ -72,7 +72,8 @@ public class RegionLoader
 			try
 			{
 				this.loadRegionFromArchive(i);
-			} catch (IOException ex)
+			}
+			catch (IOException ex)
 			{
 				log.debug("Can't decrypt region " + i, ex);
 			}

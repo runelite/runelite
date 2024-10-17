@@ -107,10 +107,10 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Adds a new chat message to the chatbox.
 	 *
-	 * @param type    the type of message
-	 * @param name    the name of the player that sent the message
+	 * @param type the type of message
+	 * @param name the name of the player that sent the message
 	 * @param message the message contents
-	 * @param sender  the sender/channel name
+	 * @param sender the sender/channel name
 	 * @return the message node for the message
 	 */
 	MessageNode addChatMessage(ChatMessageType type, String name, String message, String sender);
@@ -118,10 +118,10 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Adds a new chat message to the chatbox.
 	 *
-	 * @param type      the type of message
-	 * @param name      the name of the player that sent the message
-	 * @param message   the message contents
-	 * @param sender    the sender/channel name
+	 * @param type the type of message
+	 * @param name the name of the player that sent the message
+	 * @param message the message contents
+	 * @param sender the sender/channel name
 	 * @param postEvent whether to post the chat message event
 	 * @return the message node for the message
 	 */
@@ -232,9 +232,8 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Floating point camera position, x-axis
-	 *
-	 * @return
 	 * @see #getCameraX()
+	 * @return
 	 */
 	double getCameraFpX();
 
@@ -250,9 +249,8 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Floating point camera position, y-axis
-	 *
-	 * @return
 	 * @see #getCameraY()
+	 * @return
 	 */
 	double getCameraFpY();
 
@@ -268,9 +266,8 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Floating point camera position, z-axis
-	 *
-	 * @return
 	 * @see #getCameraZ()
+	 * @return
 	 */
 	double getCameraFpZ();
 
@@ -286,9 +283,8 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Floating point camera pitch.
-	 *
-	 * @return
 	 * @see #getCameraPitch()
+	 * @return
 	 */
 	double getCameraFpPitch();
 
@@ -301,9 +297,8 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Floating point camera yaw
-	 *
-	 * @return
 	 * @see #getCameraYaw()
+	 * @return
 	 */
 	double getCameraFpYaw();
 
@@ -316,14 +311,12 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Gets the canvas height
-	 *
 	 * @return
 	 */
 	int getCanvasHeight();
 
 	/**
 	 * Gets the canvas width
-	 *
 	 * @return
 	 */
 	int getCanvasWidth();
@@ -379,7 +372,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the local player's follower, such as a pet
-	 *
 	 * @return
 	 */
 	@Nullable
@@ -398,13 +390,13 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Creates an item icon sprite with passed variables.
 	 *
-	 * @param itemId      the item ID
-	 * @param quantity    the item quantity
-	 * @param border      whether to draw a border
+	 * @param itemId the item ID
+	 * @param quantity the item quantity
+	 * @param border whether to draw a border
 	 * @param shadowColor the shadow color
-	 * @param stackable   whether the item is stackable
-	 * @param noted       whether the item is noted
-	 * @param scale       the scale of the sprite
+	 * @param stackable whether the item is stackable
+	 * @param noted whether the item is noted
+	 * @param scale the scale of the sprite
 	 * @return the created sprite
 	 */
 	@Nullable
@@ -413,7 +405,6 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Get the item model cache. These models are used for drawing widgets of type {@link net.runelite.api.widgets.WidgetType#MODEL}
 	 * and inventory item icons
-	 *
 	 * @return
 	 */
 	NodeCache getItemModelCache();
@@ -421,7 +412,6 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Get the item sprite cache. These are 2d SpritePixels which are used to raster item images on the inventory and
 	 * on widgets of type {@link net.runelite.api.widgets.WidgetType#GRAPHIC}
-	 *
 	 * @return
 	 */
 	NodeCache getItemSpriteCache();
@@ -429,9 +419,9 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Loads and creates the sprite images of the passed archive and file IDs.
 	 *
-	 * @param source    the sprite index
+	 * @param source the sprite index
 	 * @param archiveId the sprites archive ID
-	 * @param fileId    the sprites file ID
+	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
 	 */
 	@Nullable
@@ -615,7 +605,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Create a new menu entry
-	 *
 	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
 	 * @return the newly created menu entry
 	 * @see #getMenu()
@@ -657,21 +646,18 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Returns whether the currently open menu is scrollable.
-	 *
 	 * @return
 	 */
 	boolean isMenuScrollable();
 
 	/**
 	 * Get the number of entries the currently open menu has been scrolled down.
-	 *
 	 * @return
 	 */
 	int getMenuScroll();
 
 	/**
 	 * Set the number of entries the currently open menu has been scrolled down.
-	 *
 	 * @param scroll
 	 */
 	void setMenuScroll(int scroll);
@@ -747,7 +733,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * Get an array of all server varplayers. These vars are only
 	 * modified by the server, and so represent the server's idea of
 	 * the varp values.
-	 *
 	 * @return the server varps
 	 */
 	@VisibleForDevtools
@@ -782,7 +767,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * This returns the server's idea of the value, not the client's. This is
 	 * specifically the last value set by the server regardless of changes to
 	 * the var by the client.
-	 *
 	 * @param varbit the varbit id
 	 * @return the value
 	 */
@@ -826,7 +810,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets a VarClientString to the passed value
 	 *
-	 * @param var   the {@link VarClientStr}
+	 * @param var the {@link VarClientStr}
 	 * @param value the new value
 	 */
 	void setVarcStrValue(@VarCStr int var, String value);
@@ -834,7 +818,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets a VarClientInt to the passed value
 	 *
-	 * @param var   the {@link VarClientInt}
+	 * @param var the {@link VarClientInt}
 	 * @param value the new value
 	 */
 	void setVarcIntValue(@VarCInt int var, int value);
@@ -843,7 +827,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Sets the value of a varbit
 	 *
 	 * @param varbit the varbit id
-	 * @param value  the new value
+	 * @param value the new value
 	 */
 	void setVarbit(@Varbit int varbit, int value);
 
@@ -860,7 +844,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the value of a given variable.
 	 *
-	 * @param varps    passed varbits
+	 * @param varps passed varbits
 	 * @param varbitId the variable ID
 	 * @return the value
 	 * @see Varbits
@@ -871,9 +855,9 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets the value of a given variable.
 	 *
-	 * @param varps  passed varbits
+	 * @param varps passed varbits
 	 * @param varbit the variable
-	 * @param value  the value
+	 * @param value the value
 	 * @see Varbits
 	 */
 	@VisibleForDevtools
@@ -882,29 +866,26 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Mark the given varp as changed, causing var listeners to be
 	 * triggered next tick
-	 *
 	 * @param varp
 	 */
 	void queueChangedVarp(@Varp int varp);
 
 	/**
 	 * Open an interface.
-	 *
 	 * @param componentId component id to open the interface at
 	 * @param interfaceId the interface to open
-	 * @param modalMode   see {@link WidgetModalMode}
+	 * @param modalMode see {@link WidgetModalMode}
+	 * @throws IllegalStateException if the component does not exist or it not a layer, or the interface is already
+	 * open on a different component
 	 * @return the {@link WidgetNode} for the interface. This should be closed later by calling
 	 * {{@link #closeInterface(WidgetNode, boolean)}.
-	 * @throws IllegalStateException if the component does not exist or it not a layer, or the interface is already
-	 *                               open on a different component
 	 */
 	WidgetNode openInterface(int componentId, int interfaceId, @MagicConstant(valuesFromClass = WidgetModalMode.class) int modalMode);
 
 	/**
 	 * Close an interface
-	 *
 	 * @param interfaceNode the {@link WidgetNode} linking the interface into the component tree
-	 * @param unload        whether to null the client's widget table
+	 * @param unload whether to null the client's widget table
 	 * @throws IllegalArgumentException if the interfaceNode is not linked into the component tree
 	 */
 	void closeInterface(WidgetNode interfaceNode, boolean unload);
@@ -1079,7 +1060,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * pixels.
 	 *
 	 * @param pixels the pixels
-	 * @param width  the width
+	 * @param width the width
 	 * @param height the height
 	 * @return the sprite image
 	 */
@@ -1104,20 +1085,20 @@ public interface Client extends OAuthApi, GameEngine
 	 * other models. If you want to mutate these you MUST call the relevant {@code cloneX}
 	 * method.
 	 *
+	 * @see ModelData#cloneColors()
+	 *
 	 * @param id the ID of the model
 	 * @return the model or null if it is loading or nonexistent
-	 * @see ModelData#cloneColors()
 	 */
 	@Nullable
 	ModelData loadModelData(int id);
 
 	ModelData mergeModels(ModelData[] models, int length);
-
-	ModelData mergeModels(ModelData... models);
+	ModelData mergeModels(ModelData ...models);
 
 	/**
 	 * Loads and lights a model from the cache
-	 * <p>
+	 *
 	 * This is equivalent to {@code loadModelData(id).light()}
 	 *
 	 * @param id the ID of the model
@@ -1129,8 +1110,8 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Loads a model from the cache and also recolors it
 	 *
-	 * @param id             the ID of the model
-	 * @param colorToFind    array of hsl color values to find in the model to replace
+	 * @param id the ID of the model
+	 * @param colorToFind array of hsl color values to find in the model to replace
 	 * @param colorToReplace array of hsl color values to replace in the model
 	 * @return the model or null if it is loading or nonexistent
 	 */
@@ -1141,20 +1122,18 @@ public interface Client extends OAuthApi, GameEngine
 	 * Loads an animation from the cache
 	 *
 	 * @param id the ID of the animation. Any int is allowed, but implementations in the client
-	 *           should be defined in {@link AnimationID}
+	 * should be defined in {@link AnimationID}
 	 */
 	Animation loadAnimation(int id);
 
 	/**
 	 * Gets the music volume
-	 *
 	 * @return volume 0-255 inclusive
 	 */
 	int getMusicVolume();
 
 	/**
 	 * Sets the music volume
-	 *
 	 * @param volume 0-255 inclusive
 	 */
 	void setMusicVolume(int volume);
@@ -1165,31 +1144,31 @@ public interface Client extends OAuthApi, GameEngine
 	 * normally played.
 	 *
 	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 *           {@link SoundEffectID} for some common ones
+	 * {@link SoundEffectID} for some common ones
 	 */
 	void playSoundEffect(int id);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id    the ID of the sound to play. Any int is allowed, but see
-	 *              {@link SoundEffectID} for some common ones
-	 * @param x     the ground coordinate on the x axis
-	 * @param y     the ground coordinate on the y axis
+	 * @param id the ID of the sound to play. Any int is allowed, but see
+	 * {@link SoundEffectID} for some common ones
+	 * @param x the ground coordinate on the x axis
+	 * @param y the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard
-	 *              from
+	 * from
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id    the ID of the sound to play. Any int is allowed, but see
-	 *              {@link SoundEffectID} for some common ones
-	 * @param x     the ground coordinate on the x axis
-	 * @param y     the ground coordinate on the y axis
+	 * @param id the ID of the sound to play. Any int is allowed, but see
+	 * {@link SoundEffectID} for some common ones
+	 * @param x the ground coordinate on the x axis
+	 * @param y the ground coordinate on the y axis
 	 * @param range the number of tiles away that the sound can be heard
-	 *              from
+	 * from
 	 * @param delay the amount of frames before the sound starts playing
 	 */
 	void playSoundEffect(int id, int x, int y, int range, int delay);
@@ -1262,7 +1241,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get all item containers
-	 *
 	 * @return
 	 */
 	HashTable<ItemContainer> getItemContainers();
@@ -1299,7 +1277,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the size of one of the cs2 vm's arrays.
-	 *
 	 * @param arrayId the array id
 	 * @return
 	 */
@@ -1308,7 +1285,6 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Get one of the cs2 vm's arrays. Use {@link #getArraySizes(int)} to get
 	 * the array length.
-	 *
 	 * @param arrayId the array id
 	 * @return
 	 */
@@ -1316,14 +1292,14 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Gets the cs2 vm's active widget
-	 * <p>
+	 *
 	 * This is used for all {@code cc_*} operations with a {@code 0} operand
 	 */
 	Widget getScriptActiveWidget();
 
 	/**
 	 * Gets the cs2 vm's "dot" widget
-	 * <p>
+	 *
 	 * This is used for all {@code .cc_*} operations with a {@code 1} operand
 	 */
 	Widget getScriptDotWidget();
@@ -1331,7 +1307,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Checks whether a player is on the friends list.
 	 *
-	 * @param name           the name of the player
+	 * @param name the name of the player
 	 * @param mustBeLoggedIn if they player is online
 	 * @return true if the player is friends
 	 */
@@ -1377,13 +1353,6 @@ public interface Client extends OAuthApi, GameEngine
 	int getCameraYawTarget();
 
 	/**
-	 * Set the target camera yaw
-	 *
-	 * @param cameraYawTarget target camera yaw
-	 */
-	void setCameraYawTarget(int cameraYawTarget);
-
-	/**
 	 * Get the target camera pitch
 	 * The target pitch is the pitch the camera should use based on player input.
 	 * The actual camera pitch, from {@link #getCameraPitch()} ()}, is what the camera
@@ -1394,6 +1363,13 @@ public interface Client extends OAuthApi, GameEngine
 	int getCameraPitchTarget();
 
 	/**
+	 * Set the target camera yaw
+	 *
+	 * @param cameraYawTarget target camera yaw
+	 */
+	void setCameraYawTarget(int cameraYawTarget);
+
+	/**
 	 * Set the target camera pitch
 	 *
 	 * @param cameraPitchTarget target camera pitch
@@ -1402,7 +1378,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Sets the camera speed
-	 *
 	 * @param speed
 	 */
 	void setCameraSpeed(float speed);
@@ -1410,7 +1385,6 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets the mask for which mouse buttons control the camera.
 	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
-	 *
 	 * @param mask
 	 */
 	void setCameraMouseButtonMask(int mask);
@@ -1482,7 +1456,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * factors towards {@code zero} when stretching.
 	 *
 	 * @param state new integer scaling state
-	 */
+	*/
 	void setStretchedIntegerScaling(boolean state);
 
 	/**
@@ -1548,9 +1522,9 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Executes a client script from the cache
-	 * <p>
+	 *
 	 * This method must be ran on the client thread and is not reentrant
-	 * <p>
+	 *
 	 * This method is shorthand for {@code client.createScriptEvent(args).run()}
 	 *
 	 * @param args the script id, then any additional arguments to execute the script with
@@ -1564,7 +1538,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
-	ScriptEvent createScriptEvent(Object... args);
+	ScriptEvent createScriptEvent(Object ...args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.
@@ -1578,8 +1552,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the hint arrow type
 	 */
-	@MagicConstant(valuesFromClass = HintArrowType.class)
-	int getHintArrowType();
+	@MagicConstant(valuesFromClass = HintArrowType.class) int getHintArrowType();
 
 	/**
 	 * Clears the current hint arrow.
@@ -1636,7 +1609,6 @@ public interface Client extends OAuthApi, GameEngine
 	NPC getHintArrowNpc();
 
 	IntPredicate getAnimationInterpolationFilter();
-
 	void setAnimationInterpolationFilter(IntPredicate filter);
 
 	@VisibleForDevtools
@@ -1711,14 +1683,12 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the camera mode
-	 *
 	 * @return 0 for normal, 1 for free camera
 	 */
 	int getCameraMode();
 
 	/**
 	 * Set the camera mode
-	 *
 	 * @param mode 0 for normal, 1 for free camera
 	 */
 	void setCameraMode(int mode);
@@ -1726,14 +1696,12 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Get the camera focus point x
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
-	 *
 	 * @return
 	 */
 	double getCameraFocalPointX();
 
 	/**
 	 * Sets the camera focus point x. Requires the {@link #getCameraMode()} to be free camera.
-	 *
 	 * @param x
 	 */
 	void setCameraFocalPointX(double x);
@@ -1741,14 +1709,12 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Get the camera focus point y
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
-	 *
 	 * @return
 	 */
 	double getCameraFocalPointY();
 
 	/**
 	 * Sets the camera focus point y. Requires the {@link #getCameraMode()} to be free camera.
-	 *
 	 * @param y
 	 */
 	void setCameraFocalPointY(double y);
@@ -1756,14 +1722,12 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Get the camera focus point z
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
-	 *
 	 * @return
 	 */
 	double getCameraFocalPointZ();
 
 	/**
 	 * Sets the camera focus point z. Requires the {@link #getCameraMode()} to be free camera.
-	 *
 	 * @param z
 	 */
 	void setCameraFocalPointZ(double z);
@@ -1812,43 +1776,35 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Hops using in-game world hopper widget to another world
-	 *
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
-
-	/**
-	 * Gets the RGB color of the skybox
-	 */
-	int getSkyboxColor();
 
 	/**
 	 * Sets the RGB color of the skybox
 	 */
 	void setSkyboxColor(int skyboxColor);
 
-	boolean isGpu();
+	/**
+	 * Gets the RGB color of the skybox
+	 */
+	int getSkyboxColor();
 
+	boolean isGpu();
 	void setGpuFlags(int gpuflags);
 
+	void setExpandedMapLoading(int chunks);
 	int getExpandedMapLoading();
 
-	void setExpandedMapLoading(int chunks);
-
 	int get3dZoom();
-
 	int getCenterX();
-
 	int getCenterY();
 
 	TextureProvider getTextureProvider();
 
 	int getRasterizer3D_clipMidX2();
-
 	int getRasterizer3D_clipNegativeMidX();
-
 	int getRasterizer3D_clipNegativeMidY();
-
 	int getRasterizer3D_clipMidY2();
 
 	void checkClickbox(Projection projection, Model model, int orientation, int x, int y, int z, long hash);
@@ -1865,7 +1821,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the selected widget, such as a selected spell or selected item (eg. "Use")
-	 *
 	 * @return the selected widget
 	 */
 	@Nullable
@@ -1878,7 +1833,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Returns client object composition cache
-	 *
 	 * @return
 	 */
 	NodeCache getObjectCompositionCache();
@@ -1950,7 +1904,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Test if a key is pressed
-	 *
 	 * @param keycode the keycode
 	 * @return
 	 * @see KeyCode
@@ -1974,7 +1927,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the primary clan channel the player is in.
-	 *
 	 * @return
 	 */
 	@Nullable
@@ -1982,7 +1934,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the guest clan channel the player is in.
-	 *
 	 * @return
 	 */
 	@Nullable
@@ -1990,7 +1941,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get clan settings for the clan the user is in.
-	 *
 	 * @return
 	 */
 	@Nullable
@@ -1998,7 +1948,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the guest clan's settings.
-	 *
 	 * @return
 	 */
 	@Nullable
@@ -2006,7 +1955,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get clan channel by id.
-	 *
 	 * @param clanId the clan id
 	 * @return
 	 * @see net.runelite.api.clan.ClanID
@@ -2016,7 +1964,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get clan settings by id
-	 *
 	 * @param clanId the clan id
 	 * @return
 	 * @see net.runelite.api.clan.ClanID
@@ -2025,54 +1972,46 @@ public interface Client extends OAuthApi, GameEngine
 	ClanSettings getClanSettings(@MagicConstant(valuesFromClass = ClanID.class) int clanId);
 
 	void setUnlockedFps(boolean unlock);
-
 	void setUnlockedFpsTarget(int fps);
 
 	/**
 	 * Gets the ambient sound effects
-	 *
 	 * @return
 	 */
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
 
 	/**
-	 * Get the amount of time until the client automatically logs out due to idle input.
-	 *
-	 * @return client ticks
-	 */
-	int getIdleTimeout();
-
-	/**
 	 * Set the amount of time until the client automatically logs out due to idle input.
-	 *
 	 * @param ticks client ticks
 	 */
 	void setIdleTimeout(int ticks);
 
 	/**
+	 * Get the amount of time until the client automatically logs out due to idle input.
+	 * @return client ticks
+	 */
+	int getIdleTimeout();
+
+	/**
 	 * Get whether minimap zoom is enabled
-	 *
 	 * @return
 	 */
 	boolean isMinimapZoom();
 
 	/**
-	 * Gets the number of pixels per tile on the minimap. The default is 4.
-	 *
-	 * @return
-	 */
-	double getMinimapZoom();
-
-	/**
 	 * Set whether minimap zoom is enabled
-	 *
 	 * @param minimapZoom
 	 */
 	void setMinimapZoom(boolean minimapZoom);
 
 	/**
+	 * Gets the number of pixels per tile on the minimap. The default is 4.
+	 * @return
+	 */
+	double getMinimapZoom();
+
+	/**
 	 * Set the number of pixels per tile on the minimap. The default is 4.
-	 *
 	 * @param zoom
 	 */
 	void setMinimapZoom(double zoom);
@@ -2089,7 +2028,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get worldview by id
-	 *
 	 * @param id id, or -1 for top level worldview
 	 * @return
 	 */
@@ -2097,21 +2035,18 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Get the top level world view
-	 *
 	 * @return
 	 */
 	WorldView getTopLevelWorldView();
 
 	/**
 	 * Whether camera shaking effects are disabled at e.g. Barrows, ToA
-	 *
 	 * @return
 	 */
 	boolean isCameraShakeDisabled();
 
 	/**
 	 * Set whether to disable camera shaking effects at e.g. Barrows, ToA
-	 *
 	 * @param disabled
 	 */
 	void setCameraShakeDisabled(boolean disabled);
@@ -2132,7 +2067,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
 	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	 * }</pre>
-	 *
 	 * @return the array of instance template chunks
 	 * @see Constants#CHUNK_SIZE
 	 * @see InstanceTemplates
@@ -2158,7 +2092,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Checks whether the scene is in an instanced region.
-	 *
 	 * @see WorldView#isInstance()
 	 */
 	@Deprecated
@@ -2174,7 +2107,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Gets the current scene
-	 *
 	 * @see WorldView#getScene()
 	 */
 	@Deprecated
@@ -2195,8 +2127,8 @@ public interface Client extends OAuthApi, GameEngine
 	{
 		var wv = getTopLevelWorldView();
 		return wv == null ? Collections.emptyList() : wv.players()
-				.stream()
-				.collect(Collectors.toCollection(ArrayList::new));
+			.stream()
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	/**
@@ -2210,8 +2142,8 @@ public interface Client extends OAuthApi, GameEngine
 	{
 		var wv = getTopLevelWorldView();
 		return wv == null ? Collections.emptyList() : wv.npcs()
-				.stream()
-				.collect(Collectors.toCollection(ArrayList::new));
+			.stream()
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	/**
@@ -2334,26 +2266,25 @@ public interface Client extends OAuthApi, GameEngine
 
 	/**
 	 * Create a projectile.
-	 *
-	 * @param id          projectile/spotanim id
-	 * @param plane       plane the projectile is on
-	 * @param startX      local x coordinate the projectile starts at
-	 * @param startY      local y coordinate the projectile starts at
-	 * @param startZ      local z coordinate the projectile starts at - includes tile height
-	 * @param startCycle  cycle the project starts
-	 * @param endCycle    cycle the projectile ends
+	 * @param id projectile/spotanim id
+	 * @param plane plane the projectile is on
+	 * @param startX local x coordinate the projectile starts at
+	 * @param startY local y coordinate the projectile starts at
+	 * @param startZ local z coordinate the projectile starts at - includes tile height
+	 * @param startCycle cycle the project starts
+	 * @param endCycle cycle the projectile ends
 	 * @param slope
 	 * @param startHeight start height of projectile - excludes tile height
-	 * @param endHeight   end height of projectile - excludes tile height
-	 * @param target      optional actor target
-	 * @param targetX     target x - if an actor target is supplied should be the target x
-	 * @param targetY     target y - if an actor target is supplied should be the target y
+	 * @param endHeight end height of projectile - excludes tile height
+	 * @param target optional actor target
+	 * @param targetX target x - if an actor target is supplied should be the target x
+	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 * @see WorldView#createProjectile(int, int, int, int, int, int, int, int, int, int, Actor, int, int)
 	 */
 	@Deprecated
 	default Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
-										int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY)
+		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY)
 	{
 		return getTopLevelWorldView().createProjectile(id, plane, startX, startY, startZ, startCycle, endCycle, slope, startHeight, endHeight, target, targetX, targetY);
 	}

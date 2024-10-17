@@ -60,7 +60,8 @@ public class ColorJButton extends JButton
 		if (lum > 0.5 || color.getAlpha() < ALPHA_TEXT_CUTOFF)
 		{
 			textColor = Color.BLACK;
-		} else
+		}
+		else
 		{
 			textColor = Color.WHITE;
 		}

@@ -70,7 +70,7 @@ class PartyMemberBox extends JPanel
 	private boolean avatarSet;
 
 	PartyMemberBox(final PartyConfig config, final JComponent panel, final PartyData memberPartyData,
-				   final PartyService partyService)
+		final PartyService partyService)
 	{
 		this.config = config;
 		this.memberPartyData = memberPartyData;
@@ -139,11 +139,6 @@ class PartyMemberBox extends JPanel
 		update();
 	}
 
-	private static String progressBarLabel(int current, int max)
-	{
-		return current + "/" + max;
-	}
-
 	void update()
 	{
 		final PartyMember member = partyService.getMemberById(memberPartyData.getMemberId());
@@ -173,5 +168,10 @@ class PartyMemberBox extends JPanel
 
 		name.setForeground(isLoggedIn ? playerColor : Color.GRAY);
 		name.setText(member.getDisplayName());
+	}
+
+	private static String progressBarLabel(int current, int max)
+	{
+		return current + "/" + max;
 	}
 }

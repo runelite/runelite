@@ -107,11 +107,11 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 
 		Request request = new Request.Builder()
-				.url(runeliteWs.newBuilder()
-						.addQueryParameter("sessionId", sessionId.toString())
-						.build())
-				.header("User-Agent", RuneLite.USER_AGENT)
-				.build();
+			.url(runeliteWs.newBuilder()
+				.addQueryParameter("sessionId", sessionId.toString())
+				.build())
+			.header("User-Agent", RuneLite.USER_AGENT)
+			.build();
 
 		webSocket = okHttpClient.newWebSocket(request, this);
 	}
@@ -140,22 +140,22 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	void join(long partyId, long memberId)
 	{
 		final Party.Join join = Party.Join.newBuilder()
-				.setPartyId(partyId)
-				.setMemberId(memberId)
-				.build();
+			.setPartyId(partyId)
+			.setMemberId(memberId)
+			.build();
 		final Party.C2S c2s = Party.C2S.newBuilder()
-				.setJoin(join)
-				.build();
+			.setJoin(join)
+			.build();
 		send(c2s);
 	}
 
 	void part()
 	{
 		final Party.Part part = Party.Part.newBuilder()
-				.build();
+			.build();
 		final Party.C2S c2s = Party.C2S.newBuilder()
-				.setPart(part)
-				.build();
+			.setPart(part)
+			.build();
 		send(c2s);
 	}
 
@@ -164,12 +164,12 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		log.debug("Sending: {}", message);
 		final String json = gson.toJson(message, WebsocketMessage.class);
 		final Party.Data data = Party.Data.newBuilder()
-				.setType(message.getClass().getSimpleName())
-				.setData(com.google.protobuf.ByteString.copyFromUtf8(json))
-				.build();
+			.setType(message.getClass().getSimpleName())
+			.setData(com.google.protobuf.ByteString.copyFromUtf8(json))
+			.build();
 		final Party.C2S c2s = Party.C2S.newBuilder()
-				.setData(data)
-				.build();
+			.setData(data)
+			.build();
 		send(c2s);
 	}
 
@@ -206,7 +206,8 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		try
 		{
 			s2c = Party.S2C.parseFrom(bytes.toByteArray());
-		} catch (InvalidProtocolBufferException e)
+		}
+		catch (InvalidProtocolBufferException e)
 		{
 			log.debug("Failed to deserialize message", e);
 			return;
@@ -233,7 +234,8 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 				try
 				{
 					message = gson.fromJson(data.getData().toStringUtf8(), WebsocketMessage.class);
-				} catch (JsonParseException e)
+				}
+				catch (JsonParseException e)
 				{
 					log.debug("Failed to deserialize message", e);
 					return;

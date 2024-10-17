@@ -30,10 +30,10 @@ import org.junit.Test;
 public class JagexColorTest
 {
 	private static final double[] BRIGHTNESS_LEVELS = {
-			JagexColor.BRIGHTNESS_MIN,
-			JagexColor.BRIGHTNESS_LOW,
-			JagexColor.BRIGHTNESS_HIGH,
-			JagexColor.BRIGHTNESS_MAX,
+		JagexColor.BRIGHTNESS_MIN,
+		JagexColor.BRIGHTNESS_LOW,
+		JagexColor.BRIGHTNESS_HIGH,
+		JagexColor.BRIGHTNESS_MAX,
 	};
 
 	// copy/pasted from the client, the reference colors
@@ -59,7 +59,8 @@ public class JagexColorTest
 					if (var11 < 0.5D)
 					{
 						var19 = var11 * (1.0D + var8);
-					} else
+					}
+					else
 					{
 						var19 = var11 + var8 - var11 * var8;
 					}
@@ -80,13 +81,16 @@ public class JagexColorTest
 					if (6.0D * var23 < 1.0D)
 					{
 						var13 = var21 + (var19 - var21) * 6.0D * var23;
-					} else if (2.0D * var23 < 1.0D)
+					}
+					else if (2.0D * var23 < 1.0D)
 					{
 						var13 = var19;
-					} else if (3.0D * var23 < 2.0D)
+					}
+					else if (3.0D * var23 < 2.0D)
 					{
 						var13 = var21 + (var19 - var21) * (0.6666666666666666D - var23) * 6.0D;
-					} else
+					}
+					else
 					{
 						var13 = var21;
 					}
@@ -94,13 +98,16 @@ public class JagexColorTest
 					if (6.0D * var6 < 1.0D)
 					{
 						var15 = var21 + (var19 - var21) * 6.0D * var6;
-					} else if (2.0D * var6 < 1.0D)
+					}
+					else if (2.0D * var6 < 1.0D)
 					{
 						var15 = var19;
-					} else if (3.0D * var6 < 2.0D)
+					}
+					else if (3.0D * var6 < 2.0D)
 					{
 						var15 = var21 + (var19 - var21) * (0.6666666666666666D - var6) * 6.0D;
-					} else
+					}
+					else
 					{
 						var15 = var21;
 					}
@@ -108,13 +115,16 @@ public class JagexColorTest
 					if (6.0D * var27 < 1.0D)
 					{
 						var17 = var21 + (var19 - var21) * 6.0D * var27;
-					} else if (2.0D * var27 < 1.0D)
+					}
+					else if (2.0D * var27 < 1.0D)
 					{
 						var17 = var19;
-					} else if (3.0D * var27 < 2.0D)
+					}
+					else if (3.0D * var27 < 2.0D)
 					{
 						var17 = var21 + (var19 - var21) * (0.6666666666666666D - var27) * 6.0D;
-					} else
+					}
+					else
 					{
 						var17 = var21;
 					}

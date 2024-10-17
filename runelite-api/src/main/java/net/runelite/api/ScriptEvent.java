@@ -56,25 +56,22 @@ public interface ScriptEvent
 
 	/**
 	 * Gets the {@link Widget} target. This is only used for the drag complete listener
-	 *
-	 * @return
 	 * @see Widget#setOnDragCompleteListener(Object...)
+	 * @return
 	 */
 	@Nullable
 	Widget getTarget();
 
 	/**
 	 * Sets the {@link Widget} target. This is only used for the drag complete listener.
-	 *
 	 * @param target
-	 * @return
 	 * @see Widget#setOnDragCompleteListener(Object...)
+	 * @return
 	 */
 	ScriptEvent setTarget(Widget target);
 
 	/**
 	 * Arguments passed to the script. Index 0 is the script being run and is not an argument.
-	 *
 	 * @return
 	 */
 	Object[] getArguments();
@@ -127,7 +124,7 @@ public interface ScriptEvent
 
 	/**
 	 * Executes a cs2 script specified by this event
-	 * <p>
+	 *
 	 * This method must be ran on the client thread and is not reentrant
 	 */
 	void run();

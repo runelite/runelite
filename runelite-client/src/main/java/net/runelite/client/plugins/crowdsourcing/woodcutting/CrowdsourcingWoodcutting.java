@@ -55,122 +55,122 @@ public class CrowdsourcingWoodcutting
 	private static final String INVENTORY_FULL_MESSAGE = "Your inventory is too full to hold any more logs.";
 	private static final String NEST_MESSAGE = "A bird's nest falls out of the tree";
 	private static final Set<Integer> TREE_OBJECTS = new ImmutableSet.Builder<Integer>().
-			add(ObjectID.OAK_TREE_8462).
-			add(ObjectID.OAK_TREE_10820).
-			add(ObjectID.OAK_TREE_8467).
-			add(ObjectID.OAK_TREE_9734).
+		add(ObjectID.OAK_TREE_8462 ).
+		add(ObjectID.OAK_TREE_10820).
+		add(ObjectID.OAK_TREE_8467).
+		add(ObjectID.OAK_TREE_9734).
 
-			add(ObjectID.YEW_TREE_10822).
-			add(ObjectID.YEW_TREE_8513).
+		add(ObjectID.YEW_TREE_10822).
+		add(ObjectID.YEW_TREE_8513).
 
-			add(ObjectID.TREE).
-			add(ObjectID.TREE_1277).
-			add(ObjectID.TREE_1278).
-			add(ObjectID.TREE_1279).
-			add(ObjectID.TREE_1280).
-			add(ObjectID.DEAD_TREE).
-			add(ObjectID.DEAD_TREE_1283).
-			add(ObjectID.DEAD_TREE_1284).
-			add(ObjectID.DEAD_TREE_1285).
-			add(ObjectID.DEAD_TREE_1286).
-			add(ObjectID.DEAD_TREE_1289).
-			add(ObjectID.DEAD_TREE_1290).
-			add(ObjectID.DEAD_TREE_1291).
-			add(ObjectID.EVERGREEN_TREE).
-			add(ObjectID.EVERGREEN_TREE_1319).
-			add(ObjectID.TREE_1330).
-			add(ObjectID.TREE_1331).
-			add(ObjectID.TREE_1332).
-			add(ObjectID.DEAD_TREE_1365).
-			add(ObjectID.DEAD_TREE_1383).
-			add(ObjectID.DEAD_TREE_1384).
-			add(ObjectID.EVERGREEN_TREE_2091).
-			add(ObjectID.EVERGREEN_TREE_2092).
-			add(ObjectID.TREE_2409).
-			add(ObjectID.TREE_3879).
-			add(ObjectID.TREE_3881).
-			add(ObjectID.TREE_3882).
-			add(ObjectID.TREE_3883).
-			add(ObjectID.DEAD_TREE_5902).
-			add(ObjectID.DEAD_TREE_5903).
-			add(ObjectID.DEAD_TREE_5904).
-			add(ObjectID.TREE_9730).
-			add(ObjectID.TREE_9731).
-			add(ObjectID.TREE_9732).
-			add(ObjectID.TREE_9733).
-			add(ObjectID.TREE_10041).
-			add(ObjectID.TREE_14308).
-			add(ObjectID.TREE_14309).
-			add(ObjectID.TREE_16264).
-			add(ObjectID.TREE_16265).
-			add(ObjectID.EVERGREEN_TREE_27060).
-			add(ObjectID.BURNT_TREE).
-			add(ObjectID.BURNT_TREE_30854).
+		add(ObjectID.TREE).
+		add(ObjectID.TREE_1277).
+		add(ObjectID.TREE_1278).
+		add(ObjectID.TREE_1279).
+		add(ObjectID.TREE_1280).
+		add(ObjectID.DEAD_TREE).
+		add(ObjectID.DEAD_TREE_1283).
+		add(ObjectID.DEAD_TREE_1284).
+		add(ObjectID.DEAD_TREE_1285).
+		add(ObjectID.DEAD_TREE_1286).
+		add(ObjectID.DEAD_TREE_1289).
+		add(ObjectID.DEAD_TREE_1290).
+		add(ObjectID.DEAD_TREE_1291).
+		add(ObjectID.EVERGREEN_TREE).
+		add(ObjectID.EVERGREEN_TREE_1319).
+		add(ObjectID.TREE_1330).
+		add(ObjectID.TREE_1331).
+		add(ObjectID.TREE_1332).
+		add(ObjectID.DEAD_TREE_1365).
+		add(ObjectID.DEAD_TREE_1383).
+		add(ObjectID.DEAD_TREE_1384).
+		add(ObjectID.EVERGREEN_TREE_2091).
+		add(ObjectID.EVERGREEN_TREE_2092).
+		add(ObjectID.TREE_2409).
+		add(ObjectID.TREE_3879).
+		add(ObjectID.TREE_3881).
+		add(ObjectID.TREE_3882).
+		add(ObjectID.TREE_3883).
+		add(ObjectID.DEAD_TREE_5902).
+		add(ObjectID.DEAD_TREE_5903).
+		add(ObjectID.DEAD_TREE_5904).
+		add(ObjectID.TREE_9730).
+		add(ObjectID.TREE_9731).
+		add(ObjectID.TREE_9732).
+		add(ObjectID.TREE_9733).
+		add(ObjectID.TREE_10041).
+		add(ObjectID.TREE_14308).
+		add(ObjectID.TREE_14309).
+		add(ObjectID.TREE_16264).
+		add(ObjectID.TREE_16265).
+		add(ObjectID.EVERGREEN_TREE_27060).
+		add(ObjectID.BURNT_TREE).
+		add(ObjectID.BURNT_TREE_30854).
 
-			add(ObjectID.MATURE_JUNIPER_TREE).
+		add(ObjectID.MATURE_JUNIPER_TREE).
 
-			add(ObjectID.WILLOW_TREE_10819).
-			add(ObjectID.WILLOW_TREE_10829).
-			add(ObjectID.WILLOW_TREE_10831).
-			add(ObjectID.WILLOW_TREE_10833).
-			add(ObjectID.WILLOW_TREE_8488).
-			add(ObjectID.SCRAPEY_TREE).
-			add(ObjectID.JUNGLE_TREE_15951).
-			add(ObjectID.JUNGLE_TREE_15954).
-			add(ObjectID.JUNGLE_TREE_15948).
-			add(ObjectID.MAPLE_TREE_10832).
-			add(ObjectID.MAPLE_TREE_4674).
-			add(ObjectID.MAPLE_TREE_8444).
-			add(ObjectID.MAHOGANY_TREE_36688).
-			add(ObjectID.TEAK_TREE_15062).
-			add(ObjectID.TEAK_TREE_15062).
-			add(ObjectID.MAGIC_TREE_10834).
-			add(ObjectID.MAGIC_TREE_8409).
-			add(ObjectID.HOLLOW_TREE_10821).
-			add(ObjectID.HOLLOW_TREE_10830).
-			add(ObjectID.ACHEY_TREE).
-			add(ObjectID.REDWOOD_TREE).
-			add(ObjectID.REDWOOD_TREE_29670).
-			add(ObjectID.BRUMA_ROOTS).
-			add(ObjectID.ARCTIC_PINE_TREE).
-			add(ObjectID.SULLIUSCEP).
-			build();
+		add(ObjectID.WILLOW_TREE_10819).
+		add(ObjectID.WILLOW_TREE_10829).
+		add(ObjectID.WILLOW_TREE_10831).
+		add(ObjectID.WILLOW_TREE_10833).
+		add(ObjectID.WILLOW_TREE_8488).
+		add(ObjectID.SCRAPEY_TREE).
+		add(ObjectID.JUNGLE_TREE_15951).
+		add(ObjectID.JUNGLE_TREE_15954).
+		add(ObjectID.JUNGLE_TREE_15948).
+		add(ObjectID.MAPLE_TREE_10832).
+		add(ObjectID.MAPLE_TREE_4674).
+		add(ObjectID.MAPLE_TREE_8444).
+		add(ObjectID.MAHOGANY_TREE_36688).
+		add(ObjectID.TEAK_TREE_15062).
+		add(ObjectID.TEAK_TREE_15062).
+		add(ObjectID.MAGIC_TREE_10834).
+		add(ObjectID.MAGIC_TREE_8409).
+		add(ObjectID.HOLLOW_TREE_10821).
+		add(ObjectID.HOLLOW_TREE_10830).
+		add(ObjectID.ACHEY_TREE).
+		add(ObjectID.REDWOOD_TREE).
+		add(ObjectID.REDWOOD_TREE_29670).
+		add(ObjectID.BRUMA_ROOTS).
+		add(ObjectID.ARCTIC_PINE_TREE).
+		add(ObjectID.SULLIUSCEP).
+		build();
 
 	private static final Map<Integer, Integer> AXE_ANIMS = new ImmutableMap.Builder<Integer, Integer>().
-			put(AnimationID.WOODCUTTING_BRONZE, ItemID.BRONZE_AXE).
-			put(AnimationID.WOODCUTTING_IRON, ItemID.IRON_AXE).
-			put(AnimationID.WOODCUTTING_STEEL, ItemID.STEEL_AXE).
-			put(AnimationID.WOODCUTTING_BLACK, ItemID.BLACK_AXE).
-			put(AnimationID.WOODCUTTING_MITHRIL, ItemID.MITHRIL_AXE).
-			put(AnimationID.WOODCUTTING_ADAMANT, ItemID.ADAMANT_AXE).
-			put(AnimationID.WOODCUTTING_RUNE, ItemID.RUNE_AXE).
-			put(AnimationID.WOODCUTTING_DRAGON, ItemID.DRAGON_AXE).
-			put(AnimationID.WOODCUTTING_DRAGON_OR, ItemID.DRAGON_AXE_OR).
-			put(AnimationID.WOODCUTTING_INFERNAL, ItemID.INFERNAL_AXE).
-			put(AnimationID.WOODCUTTING_3A_AXE, ItemID._3RD_AGE_AXE).
-			put(AnimationID.WOODCUTTING_CRYSTAL, ItemID.CRYSTAL_AXE).
-			put(AnimationID.WOODCUTTING_TRAILBLAZER, ItemID.INFERNAL_AXE_OR).build();
+		put(AnimationID.WOODCUTTING_BRONZE, ItemID.BRONZE_AXE).
+		put(AnimationID.WOODCUTTING_IRON, ItemID.IRON_AXE).
+		put(AnimationID.WOODCUTTING_STEEL, ItemID.STEEL_AXE).
+		put(AnimationID.WOODCUTTING_BLACK, ItemID.BLACK_AXE).
+		put(AnimationID.WOODCUTTING_MITHRIL, ItemID.MITHRIL_AXE).
+		put(AnimationID.WOODCUTTING_ADAMANT, ItemID.ADAMANT_AXE).
+		put(AnimationID.WOODCUTTING_RUNE, ItemID.RUNE_AXE).
+		put(AnimationID.WOODCUTTING_DRAGON, ItemID.DRAGON_AXE).
+		put(AnimationID.WOODCUTTING_DRAGON_OR, ItemID.DRAGON_AXE_OR).
+		put(AnimationID.WOODCUTTING_INFERNAL, ItemID.INFERNAL_AXE).
+		put(AnimationID.WOODCUTTING_3A_AXE, ItemID._3RD_AGE_AXE).
+		put(AnimationID.WOODCUTTING_CRYSTAL, ItemID.CRYSTAL_AXE).
+		put(AnimationID.WOODCUTTING_TRAILBLAZER, ItemID.INFERNAL_AXE_OR).build();
 
 	private static final Set<String> SUCCESS_MESSAGES = new ImmutableSet.Builder<String>().
-			add("You get some logs.").
-			add("You get some oak logs.").
-			add("You get some willow logs.").
-			add("You get some teak logs.").
-			add("You get some teak logs and give them to Carpenter Kjallak.").
-			add("You get some maple logs.").
-			add("You get some maple logs and give them to Lumberjack Leif.").
-			add("You get some mahogany logs.").
-			add("You get some mahogany logs and give them to Carpenter Kjallak.").
-			add("You get some yew logs.").
-			add("You get some magic logs.").
-			add("You get some redwood logs.").
-			add("You get some scrapey tree logs.").
-			add("You get some bark.").
-			add("You get a bruma root.").
-			add("You get an arctic pine log").
-			add("You get some juniper logs.").
-			add("You get some mushrooms.").
-			build();
+		add("You get some logs.").
+		add("You get some oak logs.").
+		add("You get some willow logs.").
+		add("You get some teak logs.").
+		add("You get some teak logs and give them to Carpenter Kjallak.").
+		add("You get some maple logs.").
+		add("You get some maple logs and give them to Lumberjack Leif.").
+		add("You get some mahogany logs.").
+		add("You get some mahogany logs and give them to Carpenter Kjallak.").
+		add("You get some yew logs.").
+		add("You get some magic logs.").
+		add("You get some redwood logs.").
+		add("You get some scrapey tree logs.").
+		add("You get some bark.").
+		add("You get a bruma root.").
+		add("You get an arctic pine log").
+		add("You get some juniper logs.").
+		add("You get some mushrooms.").
+		build();
 
 	@Inject
 	private CrowdsourcingManager manager;
@@ -194,15 +194,15 @@ public class CrowdsourcingWoodcutting
 			int endTick = client.getTickCount();
 			int woodcuttingLevel = client.getBoostedSkillLevel(Skill.WOODCUTTING);
 			WoodcuttingData data = new WoodcuttingData(
-					woodcuttingLevel,
-					startTick,
-					endTick,
-					chopTicks,
-					nestTicks,
-					axe,
-					treeId,
-					treeLocation,
-					reason
+				woodcuttingLevel,
+				startTick,
+				endTick,
+				chopTicks,
+				nestTicks,
+				axe,
+				treeId,
+				treeLocation,
+				reason
 			);
 			manager.storeEvent(data);
 
@@ -222,13 +222,16 @@ public class CrowdsourcingWoodcutting
 		{
 			startTick = client.getTickCount();
 			state = SkillingState.CUTTING;
-		} else if (state == SkillingState.CUTTING && type == ChatMessageType.SPAM && SUCCESS_MESSAGES.contains(message))
+		}
+		else if (state == SkillingState.CUTTING && type == ChatMessageType.SPAM && SUCCESS_MESSAGES.contains(message))
 		{
 			chopTicks.add(client.getTickCount());
-		} else if (state == SkillingState.CUTTING && type == ChatMessageType.GAMEMESSAGE && message.equals(INVENTORY_FULL_MESSAGE))
+		}
+		else if (state == SkillingState.CUTTING && type == ChatMessageType.GAMEMESSAGE && message.equals(INVENTORY_FULL_MESSAGE))
 		{
 			endExperiment(SkillingEndReason.INVENTORY_FULL);
-		} else if (state == SkillingState.CUTTING && type == ChatMessageType.GAMEMESSAGE && message.contains(NEST_MESSAGE))
+		}
+		else if (state == SkillingState.CUTTING && type == ChatMessageType.GAMEMESSAGE && message.contains(NEST_MESSAGE))
 		{
 			nestTicks.add(client.getTickCount());
 		}
@@ -243,17 +246,21 @@ public class CrowdsourcingWoodcutting
 			if (AXE_ANIMS.containsKey(animId))
 			{
 				axe = AXE_ANIMS.get(animId);
-			} else
+			}
+			else
 			{
 				endExperiment(SkillingEndReason.INTERRUPTED);
 			}
-		} else if (animId != -1)
+		}
+		else if (animId != -1)
 		{
 			endExperiment(SkillingEndReason.INTERRUPTED);
-		} else if (state == SkillingState.RECOVERING && client.getTickCount() - lastExperimentEnd >= 4)
+		}
+		else if (state == SkillingState.RECOVERING && client.getTickCount() - lastExperimentEnd >= 4)
 		{
 			state = SkillingState.READY;
-		} else if (state == SkillingState.CLICKED && client.getTickCount() - lastExperimentEnd >= 20)
+		}
+		else if (state == SkillingState.CLICKED && client.getTickCount() - lastExperimentEnd >= 20)
 		{
 			state = SkillingState.READY;
 		}
@@ -270,7 +277,8 @@ public class CrowdsourcingWoodcutting
 			lastExperimentEnd = client.getTickCount();
 			treeId = id;
 			treeLocation = WorldPoint.fromScene(client, menuOptionClicked.getParam0(), menuOptionClicked.getParam1(), client.getPlane());
-		} else
+		}
+		else
 		{
 			endExperiment(SkillingEndReason.INTERRUPTED);
 		}

@@ -80,6 +80,11 @@ enum Boss
 
 	private static final Map<Integer, Boss> bosses;
 
+	private final int id;
+	private final Duration spawnTime;
+	private final int itemSpriteId;
+	private final boolean ignoreDead;
+
 	static
 	{
 		ImmutableMap.Builder<Integer, Boss> builder = new ImmutableMap.Builder<>();
@@ -91,11 +96,6 @@ enum Boss
 
 		bosses = builder.build();
 	}
-
-	private final int id;
-	private final Duration spawnTime;
-	private final int itemSpriteId;
-	private final boolean ignoreDead;
 
 	Boss(int id, long period, TemporalUnit unit, int itemSpriteId)
 	{

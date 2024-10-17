@@ -34,7 +34,7 @@ public interface Rasterizer
 {
 	/**
 	 * Gets the back buffer of the rasterizer
-	 * <p>
+	 *
 	 * ARGB or RGB depending on {@link Client#isGpu()}
 	 */
 	int[] getPixels();

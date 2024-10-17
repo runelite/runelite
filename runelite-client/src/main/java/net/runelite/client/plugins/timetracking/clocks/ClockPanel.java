@@ -48,21 +48,24 @@ import net.runelite.client.util.SwingUtil;
 abstract class ClockPanel extends JPanel
 {
 	private static final Border NAME_BOTTOM_BORDER = new CompoundBorder(
-			BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
-			BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
+		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
+		BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
 
 	private static final Color ACTIVE_CLOCK_COLOR = ColorScheme.LIGHT_GRAY_COLOR.brighter();
 	private static final Color INACTIVE_CLOCK_COLOR = ColorScheme.LIGHT_GRAY_COLOR.darker();
 
 	private static final String INPUT_HMS_REGEX = ".*[hms].*";
 	private static final String WHITESPACE_REGEX = "\\s+";
-	protected final FlatTextField displayInput;
+
 	// additional content or buttons should be added to these panels in the subclasses
 	final JPanel contentContainer;
 	final JPanel leftActions;
 	final JPanel rightActions;
+
 	private final FlatTextField nameInput;
 	private final JToggleButton startPauseButton;
+	protected final FlatTextField displayInput;
+
 	@Getter
 	private final Clock clock;
 
@@ -140,7 +143,8 @@ abstract class ClockPanel extends JPanel
 				try
 				{
 					duration = stringToSeconds(displayInput.getText());
-				} catch (Exception ignored)
+				}
+				catch (Exception ignored)
 				{
 				}
 
@@ -177,7 +181,8 @@ abstract class ClockPanel extends JPanel
 			if (!startPauseButton.isSelected())
 			{
 				clock.pause();
-			} else if (!clock.start())
+			}
+			else if (!clock.start())
 			{
 				return;
 			}
@@ -216,37 +221,6 @@ abstract class ClockPanel extends JPanel
 		add(mainContainer, BorderLayout.CENTER);
 	}
 
-	static String getFormattedDuration(long duration)
-	{
-		long hours = duration / (60 * 60);
-		long mins = (duration / 60) % 60;
-		long seconds = duration % 60;
-
-		return String.format("%02d:%02d:%02d", hours, mins, seconds);
-	}
-
-	static long stringToSeconds(String time) throws NumberFormatException, DateTimeParseException
-	{
-		long duration = 0;
-
-		if (time.matches(INPUT_HMS_REGEX))
-		{
-			String textWithoutWhitespaces = time.replaceAll(WHITESPACE_REGEX, "");
-			//parse input using ISO-8601 Duration format (e.g. 'PT1h30m10s')
-			duration = Duration.parse("PT" + textWithoutWhitespaces).toMillis() / 1000;
-		} else
-		{
-			String[] parts = time.split(":");
-			// parse from back to front, so as to accept hour:min:sec, min:sec, and sec formats
-			for (int i = parts.length - 1, multiplier = 1; i >= 0 && multiplier <= 3600; i--, multiplier *= 60)
-			{
-				duration += Integer.parseInt(parts[i].trim()) * multiplier;
-			}
-		}
-
-		return duration;
-	}
-
 	void reset()
 	{
 		updateDisplayInput();
@@ -279,5 +253,37 @@ abstract class ClockPanel extends JPanel
 	protected Color getColor()
 	{
 		return clock.isActive() ? ACTIVE_CLOCK_COLOR : INACTIVE_CLOCK_COLOR;
+	}
+
+	static String getFormattedDuration(long duration)
+	{
+		long hours = duration / (60 * 60);
+		long mins = (duration / 60) % 60;
+		long seconds = duration % 60;
+
+		return String.format("%02d:%02d:%02d", hours, mins, seconds);
+	}
+
+	static long stringToSeconds(String time) throws NumberFormatException, DateTimeParseException
+	{
+		long duration = 0;
+
+		if (time.matches(INPUT_HMS_REGEX))
+		{
+			String textWithoutWhitespaces = time.replaceAll(WHITESPACE_REGEX, "");
+			//parse input using ISO-8601 Duration format (e.g. 'PT1h30m10s')
+			duration = Duration.parse("PT" + textWithoutWhitespaces).toMillis() / 1000;
+		}
+		else
+		{
+			String[] parts = time.split(":");
+			// parse from back to front, so as to accept hour:min:sec, min:sec, and sec formats
+			for (int i = parts.length - 1, multiplier = 1; i >= 0 && multiplier <= 3600; i--, multiplier *= 60)
+			{
+				duration += Integer.parseInt(parts[i].trim()) * multiplier;
+			}
+		}
+
+		return duration;
 	}
 }

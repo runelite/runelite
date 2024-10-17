@@ -76,24 +76,26 @@ class LootTrackerBox extends JPanel
 	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
+
+	private int kills;
 	@Getter
 	private final List<LootTrackerItem> items = new ArrayList<>();
+
+	private long totalPrice;
 	private final boolean hideIgnoredItems;
 	private final BiConsumer<String, Boolean> onItemToggle;
-	private int kills;
-	private long totalPrice;
 
 	LootTrackerBox(
-			final ItemManager itemManager,
-			final String id,
-			final LootRecordType lootRecordType,
-			@Nullable final String subtitle,
-			final boolean hideIgnoredItems,
-			final LootTrackerPriceType priceType,
-			final boolean showPriceType,
-			final BiConsumer<String, Boolean> onItemToggle,
-			final BiConsumer<String, Boolean> onEventToggle,
-			final boolean eventIgnored)
+		final ItemManager itemManager,
+		final String id,
+		final LootRecordType lootRecordType,
+		@Nullable final String subtitle,
+		final boolean hideIgnoredItems,
+		final LootTrackerPriceType priceType,
+		final boolean showPriceType,
+		final BiConsumer<String, Boolean> onItemToggle,
+		final BiConsumer<String, Boolean> onEventToggle,
+		final boolean eventIgnored)
 	{
 		this.id = id;
 		this.lootRecordType = lootRecordType;
@@ -148,42 +150,6 @@ class LootTrackerBox extends JPanel
 		popupMenu.add(toggle);
 	}
 
-	private static String buildToolTip(LootTrackerItem item)
-	{
-		final String name = item.getName();
-		final int quantity = item.getQuantity();
-		final long gePrice = item.getTotalGePrice();
-		final long haPrice = item.getTotalHaPrice();
-		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		final StringBuilder sb = new StringBuilder("<html>");
-		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
-		if (item.getId() == ItemID.COINS_995)
-		{
-			sb.append("</html>");
-			return sb.toString();
-		}
-
-		sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
-		if (quantity > 1)
-		{
-			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
-		}
-
-		if (item.getId() == ItemID.PLATINUM_TOKEN)
-		{
-			sb.append("</html>");
-			return sb.toString();
-		}
-
-		sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
-		if (quantity > 1)
-		{
-			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
-		}
-		sb.append("</html>");
-		return sb.toString();
-	}
-
 	/**
 	 * Returns total amount of kills
 	 *
@@ -208,7 +174,7 @@ class LootTrackerBox extends JPanel
 	/**
 	 * Checks if this box matches specified id and type
 	 *
-	 * @param id   other record id
+	 * @param id other record id
 	 * @param type other record type
 	 * @return true if match is made
 	 */
@@ -250,8 +216,8 @@ class LootTrackerBox extends JPanel
 			}
 
 			final LootTrackerItem mappedItem = mappedItemId == item.getId()
-					? item // reuse existing item
-					: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getHaPrice(), item.isIgnored());
+				? item // reuse existing item
+				: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getHaPrice(), item.isIgnored());
 			items.add(mappedItem);
 		}
 	}
@@ -335,12 +301,12 @@ class LootTrackerBox extends JPanel
 		}
 
 		ToLongFunction<LootTrackerItem> getPrice = priceType == LootTrackerPriceType.HIGH_ALCHEMY
-				? LootTrackerItem::getTotalHaPrice
-				: LootTrackerItem::getTotalGePrice;
+			? LootTrackerItem::getTotalHaPrice
+			: LootTrackerItem::getTotalGePrice;
 
 		totalPrice = items.stream()
-				.mapToLong(getPrice)
-				.sum();
+			.mapToLong(getPrice)
+			.sum();
 
 		items.sort(Comparator.comparingLong(getPrice).reversed());
 
@@ -373,7 +339,8 @@ class LootTrackerBox extends JPanel
 						BufferedImage transparentImage = ImageUtil.alphaOffset(itemImage, .3f);
 						imageLabel.setIcon(new ImageIcon(transparentImage));
 					});
-				} else
+				}
+				else
 				{
 					itemImage.addTo(imageLabel);
 				}
@@ -399,5 +366,41 @@ class LootTrackerBox extends JPanel
 		}
 
 		itemContainer.revalidate();
+	}
+
+	private static String buildToolTip(LootTrackerItem item)
+	{
+		final String name = item.getName();
+		final int quantity = item.getQuantity();
+		final long gePrice = item.getTotalGePrice();
+		final long haPrice = item.getTotalHaPrice();
+		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
+		final StringBuilder sb = new StringBuilder("<html>");
+		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
+		if (item.getId() == ItemID.COINS_995)
+		{
+			sb.append("</html>");
+			return sb.toString();
+		}
+
+		sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
+		}
+
+		if (item.getId() == ItemID.PLATINUM_TOKEN)
+		{
+			sb.append("</html>");
+			return sb.toString();
+		}
+
+		sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
+		}
+		sb.append("</html>");
+		return sb.toString();
 	}
 }

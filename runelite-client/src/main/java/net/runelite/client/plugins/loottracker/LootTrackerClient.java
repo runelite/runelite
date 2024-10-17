@@ -69,8 +69,8 @@ public class LootTrackerClient
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("loottracker")
-				.build();
+			.addPathSegment("loottracker")
+			.build();
 
 		Request.Builder requestBuilder = new Request.Builder();
 		if (uuid != null)
@@ -78,8 +78,8 @@ public class LootTrackerClient
 			requestBuilder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
 		}
 		requestBuilder.post(RequestBody.create(JSON, gson.toJson(lootRecords)))
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		client.newCall(requestBuilder.build()).enqueue(new Callback()
 		{
@@ -96,7 +96,8 @@ public class LootTrackerClient
 				if (response.isSuccessful())
 				{
 					log.debug("Submitted loot");
-				} else
+				}
+				else
 				{
 					log.warn("Error submitting loot: {} - {}", response.code(), response.message());
 				}

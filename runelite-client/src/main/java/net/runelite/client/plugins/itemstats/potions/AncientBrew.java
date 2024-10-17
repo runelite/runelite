@@ -46,7 +46,7 @@ import java.util.stream.Stream;
 public class AncientBrew implements Effect
 {
 	private static final Stat[] LOWERED_STATS = {
-			ATTACK, STRENGTH, DEFENCE
+		ATTACK, STRENGTH, DEFENCE
 	};
 	private static final CappedStatBoost PRAYER_BOOST = new CappedStatBoost(PRAYER, perc(.1, 2), perc(.05, 0));
 	private static final BoostedStatBoost MELEE_DRAIN = new BoostedStatBoost(null, false, perc(.1, -2));
@@ -61,21 +61,21 @@ public class AncientBrew implements Effect
 
 		StatsChanges changes = new StatsChanges(0);
 		changes.setStatChanges(Stream.of(
-						Stream.of(PRAYER_BOOST.effect(client)),
-						Stream.of(magic.effect(client)),
-						Stream.of(LOWERED_STATS)
-								.filter(stat -> 1 < stat.getValue(client))
-								.map(stat ->
-								{
-									MELEE_DRAIN.setStat(stat);
-									return MELEE_DRAIN.effect(client);
-								}))
-				.reduce(Stream::concat)
-				.orElseGet(Stream::empty)
-				.toArray(StatChange[]::new));
+			Stream.of(PRAYER_BOOST.effect(client)),
+			Stream.of(magic.effect(client)),
+			Stream.of(LOWERED_STATS)
+				.filter(stat -> 1 < stat.getValue(client))
+				.map(stat ->
+				{
+					MELEE_DRAIN.setStat(stat);
+					return MELEE_DRAIN.effect(client);
+				}))
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-				.map(StatChange::getPositivity)
-				.max(Comparator.naturalOrder()).get());
+			.map(StatChange::getPositivity)
+			.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 }

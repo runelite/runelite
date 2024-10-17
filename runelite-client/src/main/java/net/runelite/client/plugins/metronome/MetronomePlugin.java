@@ -37,10 +37,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Metronome",
-		description = "Play a sound on a specified tick to aid in efficient skilling",
-		tags = {"skilling", "tick", "timers"},
-		enabledByDefault = false
+	name = "Metronome",
+	description = "Play a sound on a specified tick to aid in efficient skilling",
+	tags = {"skilling", "tick", "timers"},
+	enabledByDefault = false
 )
 public class MetronomePlugin extends Plugin
 {
@@ -85,7 +85,8 @@ public class MetronomePlugin extends Plugin
 			{
 				preferences.setSoundEffectVolume(config.tockVolume());
 				client.playSoundEffect(SoundEffectID.GE_DECREMENT_PLOP, config.tockVolume());
-			} else if (config.tickVolume() > 0)
+			}
+			else if (config.tickVolume() > 0)
 			{
 				preferences.setSoundEffectVolume(config.tickVolume());
 				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP, config.tickVolume());

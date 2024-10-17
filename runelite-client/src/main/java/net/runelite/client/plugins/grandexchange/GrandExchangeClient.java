@@ -65,8 +65,8 @@ public class GrandExchangeClient
 	public void submit(GrandExchangeTrade grandExchangeTrade)
 	{
 		final HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("ge")
-				.build();
+			.addPathSegment("ge")
+			.build();
 
 		Request.Builder builder = new Request.Builder();
 		if (uuid != null)
@@ -79,9 +79,9 @@ public class GrandExchangeClient
 		}
 
 		Request request = builder
-				.post(RequestBody.create(JSON, gson.toJson(grandExchangeTrade)))
-				.url(url)
-				.build();
+			.post(RequestBody.create(JSON, gson.toJson(grandExchangeTrade)))
+			.url(url)
+			.build();
 
 		client.newCall(request).enqueue(new Callback()
 		{

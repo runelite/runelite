@@ -43,11 +43,11 @@ public class BZip2
 	private static final boolean USE_NATIVE_BZIP2 = "true".equalsIgnoreCase(System.getProperty("runelite.useNativeBzip"));
 
 	private static final byte[] BZIP_HEADER = new byte[]
-			{
-					'B', 'Z', // magic
-					'h',      // 'h' for Bzip2 ('H'uffman coding)
-					'1'       // block size
-			};
+	{
+		'B', 'Z', // magic
+		'h',      // 'h' for Bzip2 ('H'uffman coding)
+		'1'       // block size
+	};
 
 	public static byte[] compress(byte[] bytes) throws IOException
 	{
@@ -108,12 +108,14 @@ public class BZip2
 					offset = 0;
 					stream.next_out = out;
 					stream.avail_out = outsz;
-				} else
+				}
+				else
 				{
 					throw new IOException("BZ2_bzCompress() error");
 				}
 			} while (i != BZ_STREAM_END);
-		} finally
+		}
+		finally
 		{
 			if (libBZip2.BZ2_bzCompressEnd(stream) != BZ_OK)
 			{

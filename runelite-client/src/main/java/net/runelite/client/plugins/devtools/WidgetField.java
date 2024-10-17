@@ -81,13 +81,16 @@ public class WidgetField<T>
 		if (type.isAssignableFrom(inValue.getClass()))
 		{
 			value = inValue;
-		} else if (type == Boolean.class)
+		}
+		else if (type == Boolean.class)
 		{
 			value = Boolean.valueOf((String) inValue);
-		} else if (type == Integer.class)
+		}
+		else if (type == Integer.class)
 		{
 			value = Integer.valueOf((String) inValue);
-		} else
+		}
+		else
 		{
 			log.warn("Type {} is not supported for editing", type);
 		}

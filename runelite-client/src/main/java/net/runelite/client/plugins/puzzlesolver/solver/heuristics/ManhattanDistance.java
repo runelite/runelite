@@ -32,7 +32,7 @@ import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK
 
 /**
  * An implementation of the manhattan distance heuristic function.
- * <p>
+ *
  * https://heuristicswiki.wikispaces.com/Manhattan+Distance
  */
 public class ManhattanDistance implements Heuristic
@@ -63,7 +63,8 @@ public class ManhattanDistance implements Heuristic
 					value += Math.abs(x - goalX) + Math.abs(y - goalY);
 				}
 			}
-		} else
+		}
+		else
 		{
 			/*
 				If the Manhattan distance for the parent has already been
@@ -89,21 +90,24 @@ public class ManhattanDistance implements Heuristic
 				// right
 				if (targetX > x) value++;
 				else value--;
-			} else if (x2 < x)
+			}
+			else if (x2 < x)
 			{
 				int targetX = piece % DIMENSION;
 
 				// left
 				if (targetX < x) value++;
 				else value--;
-			} else if (y2 > y)
+			}
+			else if (y2 > y)
 			{
 				int targetY = piece / DIMENSION;
 
 				// down
 				if (targetY > y) value++;
 				else value--;
-			} else
+			}
+			else
 			{
 				int targetY = piece / DIMENSION;
 

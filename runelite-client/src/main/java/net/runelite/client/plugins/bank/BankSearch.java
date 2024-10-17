@@ -45,8 +45,8 @@ public class BankSearch
 
 	@Inject
 	private BankSearch(
-			final Client client,
-			final ClientThread clientThread
+		final Client client,
+		final ClientThread clientThread
 	)
 	{
 		this.client = client;
@@ -106,7 +106,8 @@ public class BankSearch
 			{
 				// this clears the input text and type, and resets the chatbox to allow input
 				client.runScript(ScriptID.MESSAGE_LAYER_CLOSE, 1, 1, 0);
-			} else
+			}
+			else
 			{
 				client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
 				client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");

@@ -23,7 +23,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package net.runelite.client.plugins.pyramidplunder;
-
 import java.awt.Color;
 import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
@@ -34,10 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface PyramidPlunderConfig extends Config
 {
 	@ConfigItem(
-			position = 0,
-			keyName = "hideTimer",
-			name = "Hide default timer",
-			description = "Hides the default pyramid plunder timer"
+		position = 0,
+		keyName = "hideTimer",
+		name = "Hide default timer",
+		description = "Hides the default pyramid plunder timer"
 	)
 	default boolean hideTimer()
 	{
@@ -45,10 +44,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "showExactTimer",
-			name = "Show exact timer",
-			description = "Displays the amount of time remaining as an infobox"
+		position = 1,
+		keyName = "showExactTimer",
+		name = "Show exact timer",
+		description = "Displays the amount of time remaining as an infobox"
 	)
 	default boolean showExactTimer()
 	{
@@ -56,10 +55,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "timerLowWarning",
-			name = "Timer low warning",
-			description = "Determines the time when the timers color will change"
+		position = 2,
+		keyName = "timerLowWarning",
+		name = "Timer low warning",
+		description = "Determines the time when the timers color will change"
 	)
 	default int timerLowWarning()
 	{
@@ -68,10 +67,10 @@ public interface PyramidPlunderConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 3,
-			keyName = "highlightDoorsColor",
-			name = "Highlight doors",
-			description = "Selects the color for highlighting tomb doors"
+		position = 3,
+		keyName = "highlightDoorsColor",
+		name = "Highlight doors",
+		description = "Selects the color for highlighting tomb doors"
 	)
 	default Color highlightDoorsColor()
 	{
@@ -79,10 +78,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "highlightDoors",
-			name = "Highlight doors",
-			description = "Highlights the four tomb doors in each room"
+		position = 4,
+		keyName = "highlightDoors",
+		name = "Highlight doors",
+		description = "Highlights the four tomb doors in each room"
 	)
 	default boolean highlightDoors()
 	{
@@ -91,10 +90,10 @@ public interface PyramidPlunderConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 5,
-			keyName = "highlightSpeartrapColor",
-			name = "Highlight speartrap",
-			description = "Selects the color for highlighting speartraps"
+		position = 5,
+		keyName = "highlightSpeartrapColor",
+		name = "Highlight speartrap",
+		description = "Selects the color for highlighting speartraps"
 	)
 	default Color highlightSpeartrapsColor()
 	{
@@ -102,10 +101,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
-			keyName = "highlightSpeartraps",
-			name = "Highlight speartraps",
-			description = "Highlight the spear traps at the entrance of each room"
+		position = 6,
+		keyName = "highlightSpeartraps",
+		name = "Highlight speartraps",
+		description = "Highlight the spear traps at the entrance of each room"
 	)
 	default boolean highlightSpeartraps()
 	{
@@ -114,10 +113,10 @@ public interface PyramidPlunderConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-			position = 7,
-			keyName = "highlightContainersColor",
-			name = "Highlight containers",
-			description = "Selects the color for highlighting urns, chests and sarcophagus"
+		position = 7,
+		keyName = "highlightContainersColor",
+		name = "Highlight containers",
+		description = "Selects the color for highlighting urns, chests and sarcophagus"
 	)
 	default Color highlightContainersColor()
 	{
@@ -125,10 +124,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
-			keyName = "highlightUrnsFloor",
-			name = "Highlight urns floor",
-			description = "Highlight the urns starting at selected floor and up"
+		position = 8,
+		keyName = "highlightUrnsFloor",
+		name = "Highlight urns floor",
+		description = "Highlight the urns starting at selected floor and up"
 	)
 	default int highlightUrnsFloor()
 	{
@@ -136,10 +135,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 9,
-			keyName = "highlightedChestFloor",
-			name = "Highlight chest floor",
-			description = "Highlight the Grand Gold Chest starting at selected floor and up"
+		position = 9,
+		keyName = "highlightedChestFloor",
+		name = "Highlight chest floor",
+		description = "Highlight the Grand Gold Chest starting at selected floor and up"
 	)
 	default int highlightChestFloor()
 	{
@@ -147,10 +146,10 @@ public interface PyramidPlunderConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "highlightedSarcophagusFloor",
-			name = "Highlight sarcophagus floor",
-			description = "Highlight the sarcophagus starting at selected floor and up"
+		position = 10,
+		keyName = "highlightedSarcophagusFloor",
+		name = "Highlight sarcophagus floor",
+		description = "Highlight the sarcophagus starting at selected floor and up"
 	)
 	default int highlightSarcophagusFloor()
 	{

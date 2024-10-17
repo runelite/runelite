@@ -40,17 +40,19 @@ import lombok.Getter;
 public class Regions
 {
 	private static final Pattern PATTERN = Pattern.compile("^[ \\t]*(?<expr>" +
-			"//.*$|" + // //comment
-			"n|" +
-			"m[ \\t]*(?<mrx>[0-9]+)[ \\t]+(?<mry>[0-9]+)|" + // m <rx> <ry>
-			"r[ \\t]*(?<rx>[0-9]+)[ \\t]+(?<ry>[0-9]+)|" + // r <rx> <ry>
-			"R[ \\t]*(?<rx1>[0-9]+)[ \\t]+(?<ry1>[0-9]+)[ \\t]+(?<rx2>[0-9]+)[ \\t]+(?<ry2>[0-9]+)|" + // R <rx1> <ry1> <rx2> <ry2>
-			"c[ \\t]*(?<cx>[0-9-]+)[ \\t]+(?<cy>[0-9-]+)|" + // c <cx> <cy>
-			"C[ \\t]*(?<cx1>[0-9-]+)[ \\t]+(?<cy1>[0-9-]+)[ \\t]+(?<cx2>[0-9-]+)[ \\t]+(?<cy2>[0-9-]+)|" + // C <cx1> <cy1> <cx2> <cy2>
-			")[ \\t]*");
-	private static final int REGION_MAP_SIZE = 70 * 200 / 8;
+		"//.*$|" + // //comment
+		"n|" +
+		"m[ \\t]*(?<mrx>[0-9]+)[ \\t]+(?<mry>[0-9]+)|" + // m <rx> <ry>
+		"r[ \\t]*(?<rx>[0-9]+)[ \\t]+(?<ry>[0-9]+)|" + // r <rx> <ry>
+		"R[ \\t]*(?<rx1>[0-9]+)[ \\t]+(?<ry1>[0-9]+)[ \\t]+(?<rx2>[0-9]+)[ \\t]+(?<ry2>[0-9]+)|" + // R <rx1> <ry1> <rx2> <ry2>
+		"c[ \\t]*(?<cx>[0-9-]+)[ \\t]+(?<cy>[0-9-]+)|" + // c <cx> <cy>
+		"C[ \\t]*(?<cx1>[0-9-]+)[ \\t]+(?<cy1>[0-9-]+)[ \\t]+(?<cx2>[0-9-]+)[ \\t]+(?<cy2>[0-9-]+)|" + // C <cx1> <cy1> <cx2> <cy2>
+		")[ \\t]*");
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Region> regions = new ArrayList<>();
+
+	private static final int REGION_MAP_SIZE = 70 * 200 / 8;
 	private final byte[] regionMap = new byte[REGION_MAP_SIZE];
 
 	private Region last;
@@ -102,7 +104,8 @@ public class Regions
 						{
 							rx2 = rx1 = Integer.parseInt(m.group("rx"));
 							ry2 = ry1 = Integer.parseInt(m.group("ry"));
-						} else
+						}
+						else
 						{
 							rx1 = Integer.parseInt(m.group("rx1"));
 							ry1 = Integer.parseInt(m.group("ry1"));
@@ -120,7 +123,8 @@ public class Regions
 						{
 							cx2 = cx1 = cx1 + Integer.parseInt(m.group("cx"));
 							cy2 = cy1 = cy1 + Integer.parseInt(m.group("cy"));
-						} else if (cha == 'C')
+						}
+						else if (cha == 'C')
 						{
 							cx2 = cx1 + Integer.parseInt(m.group("cx2"));
 							cy2 = cy1 + Integer.parseInt(m.group("cy2"));
@@ -154,11 +158,6 @@ public class Regions
 		}
 	}
 
-	private static boolean intersects(int cx, int cy, Region r)
-	{
-		return cx >= r.cx1 && cy >= r.cy1 && cx <= r.cx2 && cy <= r.cy2;
-	}
-
 	public int getRegionId(int cx, int cy)
 	{
 		int rx = cx / 8;
@@ -182,6 +181,11 @@ public class Regions
 			}
 		}
 		return 0;
+	}
+
+	private static boolean intersects(int cx, int cy, Region r)
+	{
+		return cx >= r.cx1 && cy >= r.cy1 && cx <= r.cx2 && cy <= r.cy2;
 	}
 
 	private void markRegion(int rx, int ry)

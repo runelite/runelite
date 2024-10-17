@@ -81,9 +81,9 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
-		name = "Screenshot",
-		description = "Enable the manual and automatic taking of screenshots",
-		tags = {"external", "images", "integration", "notifications"}
+	name = "Screenshot",
+	description = "Enable the manual and automatic taking of screenshots",
+	tags = {"external", "images", "integration", "notifications"}
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin
@@ -106,13 +106,13 @@ public class ScreenshotPlugin extends Plugin
 	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
 	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
-			"You feel something weird sneaking into your backpack",
-			"You have a funny feeling like you would have been followed");
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
-			InterfaceID.FIXED_VIEWPORT,
-			InterfaceID.RESIZABLE_VIEWPORT,
-			InterfaceID.RESIZABLE_VIEWPORT_BOTTOM_LINE);
+		InterfaceID.FIXED_VIEWPORT,
+		InterfaceID.RESIZABLE_VIEWPORT,
+		InterfaceID.RESIZABLE_VIEWPORT_BOTTOM_LINE);
 	private static final String SD_KINGDOM_REWARDS = "Kingdom Rewards";
 	private static final String SD_BOSS_KILLS = "Boss Kills";
 	private static final String SD_CLUE_SCROLL_REWARDS = "Clue Scroll Rewards";
@@ -130,30 +130,64 @@ public class ScreenshotPlugin extends Plugin
 
 	private String clueType;
 	private Integer clueNumber;
+
+	enum KillType
+	{
+		BARROWS,
+		COX,
+		COX_CM,
+		MOONS_OF_PERIL,
+		TOB,
+		TOB_SM,
+		TOB_HM,
+		TOA_ENTRY_MODE,
+		TOA,
+		TOA_EXPERT_MODE
+	}
+
 	private KillType killType;
 	private Integer killCountNumber;
+
 	private boolean shouldTakeScreenshot;
 	private boolean notificationStarted;
+
 	@Inject
 	private ScreenshotConfig config;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private ScreenshotOverlay screenshotOverlay;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientToolbar clientToolbar;
+
 	@Inject
 	private DrawManager drawManager;
+
 	@Inject
 	private ScheduledExecutorService executor;
+
 	@Inject
 	private KeyManager keyManager;
+
 	@Inject
 	private SpriteManager spriteManager;
+
 	@Inject
 	private ImageCapture imageCapture;
+
+	@Getter(AccessLevel.PACKAGE)
+	private BufferedImage reportButton;
+
+	private NavigationButton titleBarButton;
+
+	private String kickPlayerName;
+
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
 		@Override
@@ -162,91 +196,6 @@ public class ScreenshotPlugin extends Plugin
 			manualScreenshot();
 		}
 	};
-	@Getter(AccessLevel.PACKAGE)
-	private BufferedImage reportButton;
-
-	private NavigationButton titleBarButton;
-
-	private String kickPlayerName;
-
-	/**
-	 * Parses the passed quest completion dialog text into a shortened string for filename usage.
-	 *
-	 * @return Shortened string in the format "Quest(The Corsair Curse)"
-	 */
-	@VisibleForTesting
-	static String parseQuestCompletedWidget(final String text)
-	{
-		// "You have completed The Corsair Curse!"
-		final Matcher questMatch1 = QUEST_PATTERN_1.matcher(text);
-		// "'One Small Favour' completed!"
-		final Matcher questMatch2 = QUEST_PATTERN_2.matcher(text);
-		final Matcher questMatchFinal = questMatch1.matches() ? questMatch1 : questMatch2;
-		if (!questMatchFinal.matches())
-		{
-			return "Quest(quest not found)";
-		}
-
-		String quest = questMatchFinal.group("quest");
-		String verb = questMatchFinal.group("verb") != null ? questMatchFinal.group("verb") : "";
-
-		if (verb.contains("kind of"))
-		{
-			quest += " partial completion";
-		} else if (verb.contains("completely"))
-		{
-			quest += " II";
-		}
-
-		if (RFD_TAGS.stream().anyMatch((quest + verb)::contains))
-		{
-			quest = "Recipe for Disaster - " + quest;
-		}
-
-		if (WORD_QUEST_IN_NAME_TAGS.stream().anyMatch(quest::contains))
-		{
-			quest += " Quest";
-		}
-
-		return "Quest(" + quest + ')';
-	}
-
-	/**
-	 * Parses the Barbarian Assault high gamble reward dialog text into a shortened string for filename usage.
-	 *
-	 * @return Shortened string in the format "High Gamble(100)"
-	 */
-	@VisibleForTesting
-	static String parseBAHighGambleWidget(final String text)
-	{
-		final Matcher highGambleMatch = BA_HIGH_GAMBLE_REWARD_PATTERN.matcher(text);
-		if (highGambleMatch.find())
-		{
-			String gambleCount = highGambleMatch.group("gambleCount");
-			return String.format("High Gamble(%s)", gambleCount);
-		}
-
-		return "High Gamble(count not found)";
-	}
-
-	/**
-	 * Parses a combat achievement success chat message into a filename-safe string.
-	 *
-	 * @param text A received chat message which may or may not be from completing a combat achievement.
-	 * @return A formatted string of the achieved combat task name, or the empty string if the passed message
-	 * is not a combat achievement completion message.
-	 */
-	@VisibleForTesting
-	static String parseCombatAchievementWidget(final String text)
-	{
-		final Matcher m = COMBAT_ACHIEVEMENTS_PATTERN.matcher(text);
-		if (m.find())
-		{
-			String task = m.group("task").replaceAll("[:?]", "");
-			return "Combat task (" + task + ")";
-		}
-		return "";
-	}
 
 	@Provides
 	ScreenshotConfig getConfig(ConfigManager configManager)
@@ -264,17 +213,17 @@ public class ScreenshotPlugin extends Plugin
 		final BufferedImage iconImage = ImageUtil.loadImageResource(getClass(), "screenshot.png");
 
 		titleBarButton = NavigationButton.builder()
-				.tooltip("Take screenshot")
-				.icon(iconImage)
-				.onClick(this::manualScreenshot)
-				.popup(ImmutableMap
-						.<String, Runnable>builder()
-						.put("Open screenshot folder...", () ->
-						{
-							LinkBrowser.open(SCREENSHOT_DIR.toString());
-						})
-						.build())
-				.build();
+			.tooltip("Take screenshot")
+			.icon(iconImage)
+			.onClick(this::manualScreenshot)
+			.popup(ImmutableMap
+				.<String, Runnable>builder()
+				.put("Open screenshot folder...", () ->
+				{
+					LinkBrowser.open(SCREENSHOT_DIR.toString());
+				})
+				.build())
+			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
 
@@ -307,7 +256,8 @@ public class ScreenshotPlugin extends Plugin
 		{
 			fileName = parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL);
 			screenshotSubDir = "Levels";
-		} else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
+		}
+		else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
 		{
 			String text = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT).getText();
 			if (Text.removeTags(text).contains("High level gamble"))
@@ -317,7 +267,8 @@ public class ScreenshotPlugin extends Plugin
 					fileName = parseBAHighGambleWidget(text);
 					screenshotSubDir = "BA High Gambles";
 				}
-			} else
+			}
+			else
 			{
 				if (config.screenshotLevels())
 				{
@@ -325,7 +276,8 @@ public class ScreenshotPlugin extends Plugin
 					screenshotSubDir = "Levels";
 				}
 			}
-		} else if (client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT) != null)
+		}
+		else if (client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
 			String text = client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = parseQuestCompletedWidget(text);
@@ -348,9 +300,10 @@ public class ScreenshotPlugin extends Plugin
 			if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
 			{
 				takeScreenshot("Death", SD_DEATHS);
-			} else if (player != client.getLocalPlayer()
-					&& player.getCanvasTilePoly() != null
-					&& (((player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath())
+			}
+			else if (player != client.getLocalPlayer()
+				&& player.getCanvasTilePoly() != null
+				&& (((player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath())
 					|| (player.isClanMember() && config.screenshotClanDeath())))
 			{
 				takeScreenshot("Death " + player.getName(), SD_DEATHS);
@@ -387,9 +340,9 @@ public class ScreenshotPlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE
-				&& event.getType() != ChatMessageType.SPAM
-				&& event.getType() != ChatMessageType.TRADE
-				&& event.getType() != ChatMessageType.FRIENDSCHATNOTIFICATION)
+			&& event.getType() != ChatMessageType.SPAM
+			&& event.getType() != ChatMessageType.TRADE
+			&& event.getType() != ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			return;
 		}
@@ -457,8 +410,8 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE :
-						chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
-								KillType.TOA;
+					chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
+						KillType.TOA;
 				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
@@ -646,7 +599,8 @@ public class ScreenshotPlugin extends Plugin
 					killType = null;
 					killCountNumber = 0;
 					break;
-				} else if (killType == KillType.COX_CM)
+				}
+				else if (killType == KillType.COX_CM)
 				{
 					fileName = "Chambers of Xeric Challenge Mode(" + killCountNumber + ")";
 					screenshotSubDir = SD_BOSS_KILLS;
@@ -833,6 +787,86 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	/**
+	 * Parses the passed quest completion dialog text into a shortened string for filename usage.
+	 *
+	 * @return Shortened string in the format "Quest(The Corsair Curse)"
+	 */
+	@VisibleForTesting
+	static String parseQuestCompletedWidget(final String text)
+	{
+		// "You have completed The Corsair Curse!"
+		final Matcher questMatch1 = QUEST_PATTERN_1.matcher(text);
+		// "'One Small Favour' completed!"
+		final Matcher questMatch2 = QUEST_PATTERN_2.matcher(text);
+		final Matcher questMatchFinal = questMatch1.matches() ? questMatch1 : questMatch2;
+		if (!questMatchFinal.matches())
+		{
+			return "Quest(quest not found)";
+		}
+
+		String quest = questMatchFinal.group("quest");
+		String verb = questMatchFinal.group("verb") != null ? questMatchFinal.group("verb") : "";
+
+		if (verb.contains("kind of"))
+		{
+			quest += " partial completion";
+		}
+		else if (verb.contains("completely"))
+		{
+			quest += " II";
+		}
+
+		if (RFD_TAGS.stream().anyMatch((quest + verb)::contains))
+		{
+			quest = "Recipe for Disaster - " + quest;
+		}
+
+		if (WORD_QUEST_IN_NAME_TAGS.stream().anyMatch(quest::contains))
+		{
+			quest += " Quest";
+		}
+
+		return "Quest(" + quest + ')';
+	}
+
+	/**
+	 * Parses the Barbarian Assault high gamble reward dialog text into a shortened string for filename usage.
+	 *
+	 * @return Shortened string in the format "High Gamble(100)"
+	 */
+	@VisibleForTesting
+	static String parseBAHighGambleWidget(final String text)
+	{
+		final Matcher highGambleMatch = BA_HIGH_GAMBLE_REWARD_PATTERN.matcher(text);
+		if (highGambleMatch.find())
+		{
+			String gambleCount = highGambleMatch.group("gambleCount");
+			return String.format("High Gamble(%s)", gambleCount);
+		}
+
+		return "High Gamble(count not found)";
+	}
+
+	/**
+	 * Parses a combat achievement success chat message into a filename-safe string.
+	 *
+	 * @param text A received chat message which may or may not be from completing a combat achievement.
+	 * @return A formatted string of the achieved combat task name, or the empty string if the passed message
+	 *         is not a combat achievement completion message.
+	 */
+	@VisibleForTesting
+	static String parseCombatAchievementWidget(final String text)
+	{
+		final Matcher m = COMBAT_ACHIEVEMENTS_PATTERN.matcher(text);
+		if (m.find())
+		{
+			String task = m.group("task").replaceAll("[:?]", "");
+			return "Combat task (" + task + ")";
+		}
+		return "";
+	}
+
+	/**
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
@@ -858,7 +892,8 @@ public class ScreenshotPlugin extends Plugin
 		if (config.displayDate() && REPORT_BUTTON_TLIS.contains(client.getTopLevelInterfaceId()))
 		{
 			screenshotOverlay.queueForTimestamp(imageCallback);
-		} else
+		}
+		else
 		{
 			drawManager.requestNextFrameListener(imageCallback);
 		}
@@ -871,7 +906,8 @@ public class ScreenshotPlugin extends Plugin
 		{
 			// just simply copy the image
 			screenshot = ImageUtil.bufferedImageFromImage(image);
-		} else
+		}
+		else
 		{
 			screenshot = imageCapture.addClientFrame(image);
 		}
@@ -882,9 +918,9 @@ public class ScreenshotPlugin extends Plugin
 	private boolean isInsideGauntlet()
 	{
 		return this.client.isInInstancedRegion()
-				&& this.client.getMapRegions().length > 0
-				&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
-				|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
+			&& this.client.getMapRegions().length > 0
+			&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
+			|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
 	}
 
 	@VisibleForTesting
@@ -909,19 +945,5 @@ public class ScreenshotPlugin extends Plugin
 	int getKillCountNumber()
 	{
 		return killCountNumber;
-	}
-
-	enum KillType
-	{
-		BARROWS,
-		COX,
-		COX_CM,
-		MOONS_OF_PERIL,
-		TOB,
-		TOB_SM,
-		TOB_HM,
-		TOA_ENTRY_MODE,
-		TOA,
-		TOA_EXPERT_MODE
 	}
 }

@@ -46,13 +46,13 @@ public enum WoodcuttingAction implements ItemSkillAction
 	YEW_LOGS(ItemID.YEW_LOGS, 60, 175),
 	BLISTERWOOD_LOGS(ItemID.BLISTERWOOD_LOGS, 62, 76),
 	SULLIUSCEPS(ItemID.SULLIUSCEP_CAP, 65, 127)
-			{
-				@Override
-				public String getName(final ItemManager itemManager)
-				{
-					return "Sulliusceps";
-				}
-			},
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Sulliusceps";
+		}
+	},
 	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 250),
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 380),
 	;

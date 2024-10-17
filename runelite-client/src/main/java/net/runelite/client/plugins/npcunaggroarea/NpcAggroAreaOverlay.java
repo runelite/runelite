@@ -96,21 +96,21 @@ class NpcAggroAreaOverlay extends Overlay
 	{
 		LocalPoint playerLp = client.getLocalPlayer().getLocalLocation();
 		Rectangle viewArea = new Rectangle(
-				playerLp.getX() - MAX_LOCAL_DRAW_LENGTH,
-				playerLp.getY() - MAX_LOCAL_DRAW_LENGTH,
-				MAX_LOCAL_DRAW_LENGTH * 2,
-				MAX_LOCAL_DRAW_LENGTH * 2);
+			playerLp.getX() - MAX_LOCAL_DRAW_LENGTH,
+			playerLp.getY() - MAX_LOCAL_DRAW_LENGTH,
+			MAX_LOCAL_DRAW_LENGTH * 2,
+			MAX_LOCAL_DRAW_LENGTH * 2);
 
 		graphics.setColor(color);
 		graphics.setStroke(new BasicStroke(1));
 
 		path = Geometry.clipPath(path, viewArea);
 		path = Geometry.filterPath(path, (p1, p2) ->
-				Perspective.localToCanvas(client, new LocalPoint((int) p1[0], (int) p1[1]), client.getPlane()) != null &&
-						Perspective.localToCanvas(client, new LocalPoint((int) p2[0], (int) p2[1]), client.getPlane()) != null);
+			Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
+			Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
 		path = Geometry.transformPath(path, coords ->
 		{
-			Point point = Perspective.localToCanvas(client, new LocalPoint((int) coords[0], (int) coords[1]), client.getPlane());
+			Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
 			coords[0] = point.getX();
 			coords[1] = point.getY();
 		});

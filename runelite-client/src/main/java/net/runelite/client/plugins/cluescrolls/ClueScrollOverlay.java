@@ -47,44 +47,46 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ClueScrollOverlay extends OverlayPanel
 {
-	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 	private static final ItemRequirement HAS_SPADE = new AnyRequirementCollection("Spade",
-			item(SPADE),
-			item(EASTFLOOR_SPADE));
+		item(SPADE),
+		item(EASTFLOOR_SPADE));
 	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source",
-			item(LIT_TORCH),
-			item(LIT_CANDLE),
-			item(LIT_BLACK_CANDLE),
-			item(CANDLE_LANTERN_4531),
-			item(CANDLE_LANTERN_4534), // lit black candle lantern
-			item(OIL_LAMP_4524),
-			item(OIL_LANTERN_4539),
-			item(BULLSEYE_LANTERN_4550),
-			item(SAPPHIRE_LANTERN_4702),
-			item(EMERALD_LANTERN_9065),
-			item(MINING_HELMET),
-			item(FIREMAKING_CAPE),
-			item(FIREMAKING_CAPET),
-			item(KANDARIN_HEADGEAR_1),
-			item(KANDARIN_HEADGEAR_2),
-			item(KANDARIN_HEADGEAR_3),
-			item(KANDARIN_HEADGEAR_4),
-			item(BRUMA_TORCH),
-			item(MAX_CAPE),
-			item(MAX_CAPE_13342),
-			item(ABYSSAL_LANTERN_NORMAL_LOGS),
-			item(ABYSSAL_LANTERN_BLUE_LOGS),
-			item(ABYSSAL_LANTERN_RED_LOGS),
-			item(ABYSSAL_LANTERN_WHITE_LOGS),
-			item(ABYSSAL_LANTERN_PURPLE_LOGS),
-			item(ABYSSAL_LANTERN_GREEN_LOGS),
-			item(ABYSSAL_LANTERN_OAK_LOGS),
-			item(ABYSSAL_LANTERN_WILLOW_LOGS),
-			item(ABYSSAL_LANTERN_MAPLE_LOGS),
-			item(ABYSSAL_LANTERN_YEW_LOGS),
-			item(ABYSSAL_LANTERN_BLISTERWOOD_LOGS),
-			item(ABYSSAL_LANTERN_MAGIC_LOGS),
-			item(ABYSSAL_LANTERN_REDWOOD_LOGS));
+		item(LIT_TORCH),
+		item(LIT_CANDLE),
+		item(LIT_BLACK_CANDLE),
+		item(CANDLE_LANTERN_4531),
+		item(CANDLE_LANTERN_4534), // lit black candle lantern
+		item(OIL_LAMP_4524),
+		item(OIL_LANTERN_4539),
+		item(BULLSEYE_LANTERN_4550),
+		item(SAPPHIRE_LANTERN_4702),
+		item(EMERALD_LANTERN_9065),
+		item(MINING_HELMET),
+		item(FIREMAKING_CAPE),
+		item(FIREMAKING_CAPET),
+		item(KANDARIN_HEADGEAR_1),
+		item(KANDARIN_HEADGEAR_2),
+		item(KANDARIN_HEADGEAR_3),
+		item(KANDARIN_HEADGEAR_4),
+		item(BRUMA_TORCH),
+		item(MAX_CAPE),
+		item(MAX_CAPE_13342),
+		item(ABYSSAL_LANTERN_NORMAL_LOGS),
+		item(ABYSSAL_LANTERN_BLUE_LOGS),
+		item(ABYSSAL_LANTERN_RED_LOGS),
+		item(ABYSSAL_LANTERN_WHITE_LOGS),
+		item(ABYSSAL_LANTERN_PURPLE_LOGS),
+		item(ABYSSAL_LANTERN_GREEN_LOGS),
+		item(ABYSSAL_LANTERN_OAK_LOGS),
+		item(ABYSSAL_LANTERN_WILLOW_LOGS),
+		item(ABYSSAL_LANTERN_MAPLE_LOGS),
+		item(ABYSSAL_LANTERN_YEW_LOGS),
+		item(ABYSSAL_LANTERN_BLISTERWOOD_LOGS),
+		item(ABYSSAL_LANTERN_MAGIC_LOGS),
+		item(ABYSSAL_LANTERN_REDWOOD_LOGS));
+
+	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
+
 	private final ClueScrollPlugin plugin;
 	private final Client client;
 
@@ -125,9 +127,9 @@ public class ClueScrollOverlay extends OverlayPanel
 		}
 
 		if (clue.isRequiresLight()
-				&& ((clue.getFirePitVarbitId() == -1 || client.getVarbitValue(clue.getFirePitVarbitId()) != 1)
+			&& ((clue.getFirePitVarbitId() == -1 || client.getVarbitValue(clue.getFirePitVarbitId()) != 1)
 				&& (inventoryItems == null || !HAS_LIGHT.fulfilledBy(inventoryItems))
-				&& (equippedItems == null || !HAS_LIGHT.fulfilledBy(equippedItems))))
+					&& (equippedItems == null || !HAS_LIGHT.fulfilledBy(equippedItems))))
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("").build());
 			panelComponent.getChildren().add(LineComponent.builder().left("Requires Light Source!").leftColor(Color.RED).build());
@@ -137,9 +139,9 @@ public class ClueScrollOverlay extends OverlayPanel
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("").build());
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left(clue.getEnemy().getText())
-					.leftColor(Color.YELLOW)
-					.build());
+				.left(clue.getEnemy().getText())
+				.leftColor(Color.YELLOW)
+				.build());
 		}
 
 		return super.render(graphics);

@@ -33,117 +33,6 @@ import net.runelite.client.config.Units;
 @ConfigGroup("discord")
 public interface DiscordConfig extends Config
 {
-	@ConfigItem(
-			keyName = "elapsedTime",
-			name = "Elapsed Time",
-			description = "Configures elapsed time shown.",
-			position = 1
-	)
-	default ElapsedTimeType elapsedTimeType()
-	{
-		return ElapsedTimeType.TOTAL;
-	}
-
-	@ConfigItem(
-			keyName = "actionTimeout",
-			name = "Activity timeout",
-			description = "Configures after how long of not updating activity will be reset (in minutes)",
-			position = 2
-	)
-	@Units(Units.MINUTES)
-	default int actionTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-			keyName = "showMainMenu",
-			name = "Main Menu",
-			description = "Show status when in main menu",
-			position = 3
-	)
-	default boolean showMainMenu()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showSkillActivity",
-			name = "Skilling",
-			description = "Show your activity while training skills",
-			position = 4
-	)
-	default boolean showSkillingActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showBossActivity",
-			name = "Bosses",
-			description = "Show your activity and location while at bosses",
-			position = 5
-	)
-	default boolean showBossActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showCityActivity",
-			name = "Cities",
-			description = "Show your activity and location while in cities",
-			position = 6
-	)
-	default boolean showCityActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showDungeonActivity",
-			name = "Dungeons",
-			description = "Show your activity and location while in dungeons",
-			position = 7
-	)
-	default boolean showDungeonActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showMinigameActivity",
-			name = "Minigames",
-			description = "Show your activity and location while in minigames",
-			position = 8
-	)
-	default boolean showMinigameActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showRaidingActivity",
-			name = "Raids",
-			description = "Show your activity and location while in Raids",
-			position = 9
-	)
-	default boolean showRaidingActivity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-			keyName = "showRegionsActivity",
-			name = "Regions",
-			description = "Show your activity and location while in other regions",
-			position = 10
-	)
-	default boolean showRegionsActivity()
-	{
-		return true;
-	}
-
 	@AllArgsConstructor
 	enum ElapsedTimeType
 	{
@@ -158,5 +47,116 @@ public interface DiscordConfig extends Config
 		{
 			return value;
 		}
+	}
+
+	@ConfigItem(
+		keyName = "elapsedTime",
+		name = "Elapsed Time",
+		description = "Configures elapsed time shown.",
+		position = 1
+	)
+	default ElapsedTimeType elapsedTimeType()
+	{
+		return ElapsedTimeType.TOTAL;
+	}
+
+	@ConfigItem(
+		keyName = "actionTimeout",
+		name = "Activity timeout",
+		description = "Configures after how long of not updating activity will be reset (in minutes)",
+		position = 2
+	)
+	@Units(Units.MINUTES)
+	default int actionTimeout()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "showMainMenu",
+		name = "Main Menu",
+		description = "Show status when in main menu",
+		position = 3
+	)
+	default boolean showMainMenu()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSkillActivity",
+		name = "Skilling",
+		description = "Show your activity while training skills",
+		position = 4
+	)
+	default boolean showSkillingActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBossActivity",
+		name = "Bosses",
+		description = "Show your activity and location while at bosses",
+		position = 5
+	)
+	default boolean showBossActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showCityActivity",
+		name = "Cities",
+		description = "Show your activity and location while in cities",
+		position = 6
+	)
+	default boolean showCityActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDungeonActivity",
+		name = "Dungeons",
+		description = "Show your activity and location while in dungeons",
+		position = 7
+	)
+	default boolean showDungeonActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMinigameActivity",
+		name = "Minigames",
+		description = "Show your activity and location while in minigames",
+		position = 8
+	)
+	default boolean showMinigameActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRaidingActivity",
+		name = "Raids",
+		description = "Show your activity and location while in Raids",
+		position = 9
+	)
+	default boolean showRaidingActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRegionsActivity",
+		name = "Regions",
+		description = "Show your activity and location while in other regions",
+		position = 10
+	)
+	default boolean showRegionsActivity()
+	{
+		return true;
 	}
 }

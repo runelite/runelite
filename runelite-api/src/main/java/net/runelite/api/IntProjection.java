@@ -27,16 +27,12 @@ package net.runelite.api;
 public interface IntProjection extends Projection
 {
 	int getCameraX();
-
 	int getCameraY();
-
 	int getCameraZ();
 
 	int getPitchSin();
-
 	int getPitchCos();
 
 	int getYawSin();
-
 	int getYawCos();
 }

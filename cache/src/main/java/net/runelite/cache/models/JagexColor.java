@@ -41,15 +41,15 @@ public final class JagexColor
 	public static short packHSL(int hue, int saturation, int luminance)
 	{
 		return (short) ((short) (hue & 63) << 10
-				| (short) (saturation & 7) << 7
-				| (short) (luminance & 127));
+			| (short) (saturation & 7) << 7
+			| (short) (luminance & 127));
 	}
 
 	public static int packHSLFull(int hue, int saturation, int luminance)
 	{
 		return (hue & 0xFF) << 16
-				| (saturation & 0xFF) << 8
-				| (luminance & 0xFF);
+			| (saturation & 0xFF) << 8
+			| (luminance & 0xFF);
 
 	}
 
@@ -130,8 +130,8 @@ public final class JagexColor
 		}
 
 		int rgb = ((int) (r * 256.0D) << 16)
-				| ((int) (g * 256.0D) << 8)
-				| (int) (b * 256.0D);
+			| ((int) (g * 256.0D) << 8)
+			| (int) (b * 256.0D);
 
 		rgb = adjustForBrightness(rgb, brightness);
 
@@ -184,8 +184,8 @@ public final class JagexColor
 		}
 
 		int rgb = ((((int) (r * 256.0D)) & 255) << 16)
-				| ((((int) (g * 256.0D)) & 255) << 8)
-				| ((int) (b * 256.0D)) & 255;
+			| ((((int) (g * 256.0D)) & 255) << 8)
+			| ((int) (b * 256.0D)) & 255;
 
 		if (rgb == 0)
 		{
@@ -205,8 +205,8 @@ public final class JagexColor
 		b = Math.pow(b, brightness);
 
 		return ((int) (r * 256.0D) << 16)
-				| ((int) (g * 256.0D) << 8)
-				| (int) (b * 256.0D);
+			| ((int) (g * 256.0D) << 8)
+			| (int) (b * 256.0D);
 	}
 
 	public static int[] createPalette(double brightness)

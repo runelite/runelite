@@ -52,13 +52,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MenuManagerTest
 {
-	private final MenuEntry CANCEL = createMenuEntry("Cancel", "", MenuAction.CANCEL, ComponentID.MINIMAP_WORLDMAP_OPTIONS);
-	private final List<MenuEntry> createdMenuEntries = new ArrayList<>();
 	@Inject
 	private MenuManager menuManager;
+
 	@Mock
 	@Bind
 	private Client client;
+
+	private final MenuEntry CANCEL = createMenuEntry("Cancel", "", MenuAction.CANCEL, ComponentID.MINIMAP_WORLDMAP_OPTIONS);
+
+	private final List<MenuEntry> createdMenuEntries = new ArrayList<>();
 
 	private static MenuEntry createMenuEntry(String option, String target, MenuAction type, int param1)
 	{
@@ -76,13 +79,13 @@ public class MenuManagerTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
 		when(client.createMenuEntry(anyInt()))
-				.thenAnswer(a ->
-				{
-					MenuEntry e = new TestMenuEntry();
-					createdMenuEntries.add(e);
-					return e;
-				});
-		when(client.getMenuEntries()).thenReturn(new MenuEntry[] {CANCEL});
+			.thenAnswer(a ->
+			{
+				MenuEntry e = new TestMenuEntry();
+				createdMenuEntries.add(e);
+				return e;
+			});
+		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{CANCEL});
 	}
 
 	@Test
@@ -109,7 +112,7 @@ public class MenuManagerTest
 			}
 		}
 
-		assertArrayEquals(new MenuEntry[] {third, second, first},
-				Lists.reverse(createdMenuEntries).toArray(new MenuEntry[0]));
+		assertArrayEquals(new MenuEntry[]{third, second, first},
+			Lists.reverse(createdMenuEntries).toArray(new MenuEntry[0]));
 	}
 }

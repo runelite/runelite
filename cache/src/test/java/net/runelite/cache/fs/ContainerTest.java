@@ -37,9 +37,9 @@ public class ContainerTest
 	public void testCompress() throws IOException
 	{
 		int[] keys = new int[]
-				{
-						4, 8, 15, 16
-				};
+		{
+			4, 8, 15, 16
+		};
 		Random random = new Random(42L);
 		byte[] data = new byte[1024];
 		random.nextBytes(data);

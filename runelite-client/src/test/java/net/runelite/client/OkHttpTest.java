@@ -44,14 +44,17 @@ import org.junit.rules.TemporaryFolder;
 
 public class OkHttpTest
 {
-	private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.US)
-			.withZone(ZoneId.of("GMT"));
-	private static final String BODY_404 = "<html>404 not found";
-	private static final String BODY_200 = "{success:true}";
 	@Rule
 	public TemporaryFolder cacheFolder = new TemporaryFolder();
+
 	@Rule
 	public MockWebServer server = new MockWebServer();
+
+	private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.US)
+		.withZone(ZoneId.of("GMT"));
+
+	private static final String BODY_404 = "<html>404 not found";
+	private static final String BODY_200 = "{success:true}";
 
 	/**
 	 * The specific thing we are trying to catch here is when a 404
@@ -73,13 +76,13 @@ public class OkHttpTest
 		Instant lastModified = Instant.now().minusSeconds(20);
 
 		server.enqueue(new MockResponse()
-				.setResponseCode(404)
-				.setHeader("Content-Type", "text/html")
-				.setHeader("Date", TIME_FMT.format(Instant.now().minusSeconds(10)))
-				.setBody(BODY_404));
+			.setResponseCode(404)
+			.setHeader("Content-Type", "text/html")
+			.setHeader("Date", TIME_FMT.format(Instant.now().minusSeconds(10)))
+			.setBody(BODY_404));
 		try (Response res = client.newCall(new Request.Builder()
-				.url(server.url("/manifest"))
-				.build()).execute())
+			.url(server.url("/manifest"))
+			.build()).execute())
 		{
 			Assert.assertEquals(404, res.code());
 		}
@@ -87,14 +90,14 @@ public class OkHttpTest
 		Assert.assertNotNull("cache did not make a initial request", req);
 
 		server.enqueue(new MockResponse()
-				.setResponseCode(200)
-				.setHeader("Content-Type", "text/html")
-				.setHeader("Date", TIME_FMT.format(Instant.now().minusSeconds(5)))
-				.setHeader("Last-Modified", TIME_FMT.format(lastModified))
-				.setBody(BODY_200));
+			.setResponseCode(200)
+			.setHeader("Content-Type", "text/html")
+			.setHeader("Date", TIME_FMT.format(Instant.now().minusSeconds(5)))
+			.setHeader("Last-Modified", TIME_FMT.format(lastModified))
+			.setBody(BODY_200));
 		try (Response res = client.newCall(new Request.Builder()
-				.url(server.url("/manifest"))
-				.build()).execute())
+			.url(server.url("/manifest"))
+			.build()).execute())
 		{
 			Assert.assertEquals(200, res.code());
 		}
@@ -103,13 +106,13 @@ public class OkHttpTest
 		Assert.assertNull(req.getHeader("If-Modified-Since"));
 
 		server.enqueue(new MockResponse()
-				.setResponseCode(304)
-				.setHeader("Content-Type", "text/html")
-				.setHeader("Date", TIME_FMT.format(Instant.now()))
-				.setHeader("Last-Modified", TIME_FMT.format(lastModified)));
+			.setResponseCode(304)
+			.setHeader("Content-Type", "text/html")
+			.setHeader("Date", TIME_FMT.format(Instant.now()))
+			.setHeader("Last-Modified", TIME_FMT.format(lastModified)));
 		try (Response res = client.newCall(new Request.Builder()
-				.url(server.url("/manifest"))
-				.build()).execute())
+			.url(server.url("/manifest"))
+			.build()).execute())
 		{
 			Assert.assertEquals(200, res.code());
 		}
@@ -124,10 +127,10 @@ public class OkHttpTest
 		server.enqueue(new MockResponse().setBody("OK"));
 
 		Request request = new Request.Builder()
-				.url(server.url("/"))
-				.build();
+			.url(server.url("/"))
+			.build();
 		RuneLite.buildHttpClient(false)
-				.newCall(request).execute().close();
+			.newCall(request).execute().close();
 
 		// rest of UA depends on if git is found
 		assertTrue(server.takeRequest().getHeader("User-Agent").startsWith("RuneLite/" + RuneLiteProperties.getVersion()));

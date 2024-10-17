@@ -49,14 +49,11 @@ public interface SceneTilePaint
 	boolean isFlat();
 
 	int getBufferOffset();
-
 	void setBufferOffset(int bufferOffset);
 
 	int getUvBufferOffset();
-
 	void setUvBufferOffset(int bufferOffset);
 
 	int getBufferLen();
-
 	void setBufferLen(int bufferLen);
 }

@@ -37,9 +37,9 @@ public interface StatusBarsConfig extends Config
 	String GROUP = "statusbars";
 
 	@ConfigItem(
-			keyName = "enableCounter",
-			name = "Show counters",
-			description = "Shows current value of the status on the bar"
+		keyName = "enableCounter",
+		name = "Show counters",
+		description = "Shows current value of the status on the bar"
 	)
 	default boolean enableCounter()
 	{
@@ -47,9 +47,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "enableSkillIcon",
-			name = "Show icons",
-			description = "Adds skill icons at the top of the bars."
+		keyName = "enableSkillIcon",
+		name = "Show icons",
+		description = "Adds skill icons at the top of the bars."
 	)
 	default boolean enableSkillIcon()
 	{
@@ -57,9 +57,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "enableRestorationBars",
-			name = "Show restores",
-			description = "Visually shows how much will be restored to your status bar."
+		keyName = "enableRestorationBars",
+		name = "Show restores",
+		description = "Visually shows how much will be restored to your status bar."
 	)
 	default boolean enableRestorationBars()
 	{
@@ -67,9 +67,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "leftBarMode",
-			name = "Left Bar",
-			description = "Configures the left status bar"
+		keyName = "leftBarMode",
+		name = "Left Bar",
+		description = "Configures the left status bar"
 	)
 	default BarMode leftBarMode()
 	{
@@ -77,9 +77,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "rightBarMode",
-			name = "Right Bar",
-			description = "Configures the right status bar"
+		keyName = "rightBarMode",
+		name = "Right Bar",
+		description = "Configures the right status bar"
 	)
 	default BarMode rightBarMode()
 	{
@@ -87,9 +87,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideAfterCombatDelay",
-			name = "Hide after combat delay",
-			description = "Amount of ticks before hiding status bars after no longer in combat. 0 = always show status bars."
+		keyName = "hideAfterCombatDelay",
+		name = "Hide after combat delay",
+		description = "Amount of ticks before hiding status bars after no longer in combat. 0 = always show status bars."
 	)
 	@Units(Units.TICKS)
 	default int hideAfterCombatDelay()
@@ -98,13 +98,13 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@Range(
-			min = BarRenderer.MIN_WIDTH,
-			max = BarRenderer.MAX_WIDTH
+		min = BarRenderer.MIN_WIDTH,
+		max = BarRenderer.MAX_WIDTH
 	)
 	@ConfigItem(
-			keyName = "barWidth",
-			name = "Bar Width",
-			description = "The width of the status bars in the modern resizeable layout."
+		keyName = "barWidth",
+		name = "Bar Width",
+		description = "The width of the status bars in the modern resizeable layout."
 	)
 	default int barWidth()
 	{

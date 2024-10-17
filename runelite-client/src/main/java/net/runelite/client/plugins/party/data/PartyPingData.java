@@ -39,8 +39,7 @@ import net.runelite.client.plugins.party.PartyPingType;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class PartyPingData
-{
+public class PartyPingData {
 	private final long pingDuration;
 	private final Instant expiresAt;
 	private final PartyPingType pingType;

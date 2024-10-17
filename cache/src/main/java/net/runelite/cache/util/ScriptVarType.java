@@ -91,19 +91,6 @@ public enum ScriptVarType
 		}
 	}
 
-	/**
-	 * The type id when encoding or decoding types from some data structures.
-	 */
-	private final int id;
-	/**
-	 * The character used when encoding or decoding types.
-	 */
-	private final char keyChar;
-	/**
-	 * The full name of the var type.
-	 */
-	private final String fullName;
-
 	public static ScriptVarType forId(int id)
 	{
 		return idToTypeMap.get(id);
@@ -113,5 +100,20 @@ public enum ScriptVarType
 	{
 		return keyToTypeMap.get(key);
 	}
+
+	/**
+	 * The type id when encoding or decoding types from some data structures.
+	 */
+	private final int id;
+
+	/**
+	 * The character used when encoding or decoding types.
+	 */
+	private final char keyChar;
+
+	/**
+	 * The full name of the var type.
+	 */
+	private final String fullName;
 
 }

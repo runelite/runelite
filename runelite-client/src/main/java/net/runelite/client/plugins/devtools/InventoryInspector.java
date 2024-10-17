@@ -160,20 +160,6 @@ class InventoryInspector extends DevToolsFrame
 		pack();
 	}
 
-	@Nullable
-	private static String getNameForInventoryID(final int id)
-	{
-		for (final InventoryID inv : InventoryID.values())
-		{
-			if (inv.getId() == id)
-			{
-				return inv.name();
-			}
-		}
-
-		return null;
-	}
-
 	@Override
 	public void open()
 	{
@@ -283,9 +269,8 @@ class InventoryInspector extends DevToolsFrame
 
 	/**
 	 * Compares the current inventory to the old one returning the InventoryItems that were added and removed.
-	 *
 	 * @param previous old snapshot
-	 * @param current  new snapshot
+	 * @param current new snapshot
 	 * @return The first InventoryItem[] contains the items that were added and the second contains the items that were removed
 	 */
 	private InventoryItem[][] compareItemSnapshots(final Item[] previous, final Item[] current)
@@ -310,38 +295,52 @@ class InventoryInspector extends DevToolsFrame
 		}
 
 		final Map<Boolean, List<InventoryItem>> result = qtyMap.entrySet().stream()
-				.filter(e -> e.getValue() != 0)
-				.flatMap(e ->
+			.filter(e -> e.getValue() != 0)
+			.flatMap(e ->
+			{
+				final int id = e.getKey();
+				final int qty = e.getValue();
+				final ItemComposition c = itemManager.getItemComposition(e.getKey());
+
+				InventoryItem[] items = {
+					new InventoryItem(-1, new Item(id, qty), c.getMembersName(), c.isStackable())
+				};
+				if (!c.isStackable() && (qty > 1 || qty < -1))
 				{
-					final int id = e.getKey();
-					final int qty = e.getValue();
-					final ItemComposition c = itemManager.getItemComposition(e.getKey());
-
-					InventoryItem[] items = {
-							new InventoryItem(-1, new Item(id, qty), c.getMembersName(), c.isStackable())
-					};
-					if (!c.isStackable() && (qty > 1 || qty < -1))
+					items = new InventoryItem[Math.abs(qty)];
+					for (int i = 0; i < Math.abs(qty); i++)
 					{
-						items = new InventoryItem[Math.abs(qty)];
-						for (int i = 0; i < Math.abs(qty); i++)
-						{
-							final Item item = new Item(id, Integer.signum(qty));
-							items[i] = new InventoryItem(-1, item, c.getMembersName(), c.isStackable());
-						}
+						final Item item = new Item(id, Integer.signum(qty));
+						items[i] = new InventoryItem(-1, item, c.getMembersName(), c.isStackable());
 					}
+				}
 
-					return Arrays.stream(items);
-				})
-				.collect(Collectors.partitioningBy(item -> item.getItem().getQuantity() > 0));
+				return Arrays.stream(items);
+			})
+			.collect(Collectors.partitioningBy(item -> item.getItem().getQuantity() > 0));
 
 		final InventoryItem[] added = result.get(true).toArray(new InventoryItem[0]);
 		final InventoryItem[] removed = result.get(false).stream()
-				// Make quantities positive now that its been sorted.
-				.peek(i -> i.setItem(new Item(i.getItem().getId(), -i.getItem().getQuantity())))
-				.toArray(InventoryItem[]::new);
+			// Make quantities positive now that its been sorted.
+			.peek(i -> i.setItem(new Item(i.getItem().getId(), -i.getItem().getQuantity())))
+			.toArray(InventoryItem[]::new);
 
-		return new InventoryItem[][] {
-				added, removed
+		return new InventoryItem[][]{
+			added, removed
 		};
+	}
+
+	@Nullable
+	private static String getNameForInventoryID(final int id)
+	{
+		for (final InventoryID inv : InventoryID.values())
+		{
+			if (inv.getId() == id)
+			{
+				return inv.name();
+			}
+		}
+
+		return null;
 	}
 }

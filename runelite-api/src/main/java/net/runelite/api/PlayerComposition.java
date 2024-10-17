@@ -99,7 +99,6 @@ public interface PlayerComposition
 	 * Get the overrides for this player composition, indexed by kit id. The overrides
 	 * replace the target color/textures for the item instead of using the target colors/textures
 	 * from the item composition. Only works if the kittype is an item.
-	 *
 	 * @return
 	 */
 	@Nullable

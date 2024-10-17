@@ -54,21 +54,6 @@ enum Book
 	private static final Map<Integer, Book> BY_ID = buildById();
 
 	private static final Map<String, Book> BY_NAME = buildByName();
-	@Getter
-	private final int item;
-	@Getter
-	private final String name;
-	@Getter
-	private final String shortName;
-	@Getter
-	private AsyncBufferedImage icon;
-
-	Book(int id, String shortName, String name)
-	{
-		this.item = id;
-		this.shortName = shortName;
-		this.name = name;
-	}
 
 	private static Map<Integer, Book> buildById()
 	{
@@ -98,6 +83,26 @@ enum Book
 	static Book byName(String name)
 	{
 		return BY_NAME.get(name);
+	}
+
+	@Getter
+	private final int item;
+
+	@Getter
+	private final String name;
+
+	@Getter
+	private final String shortName;
+
+	@Getter
+	private AsyncBufferedImage icon;
+
+
+	Book(int id, String shortName, String name)
+	{
+		this.item = id;
+		this.shortName = shortName;
+		this.name = name;
 	}
 
 	static void fillImages(ItemManager itemManager)

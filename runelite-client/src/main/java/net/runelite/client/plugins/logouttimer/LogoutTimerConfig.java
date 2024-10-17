@@ -36,9 +36,9 @@ public interface LogoutTimerConfig extends Config
 	String GROUP = "logouttimer";
 
 	@ConfigItem(
-			keyName = "idleTimeout",
-			name = "Idle timeout",
-			description = "Amount of time before you are logged out for being idle"
+		keyName = "idleTimeout",
+		name = "Idle timeout",
+		description = "Amount of time before you are logged out for being idle"
 	)
 	@Units(Units.MINUTES)
 	@Range(min = 5, max = 25)

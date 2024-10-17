@@ -38,11 +38,19 @@ import lombok.Setter;
 @Setter
 public class ProgressBarComponent implements LayoutableRenderableEntity
 {
+	public enum LabelDisplayMode
+	{
+		PERCENTAGE,
+		FULL,
+		TEXT_ONLY,
+		BOTH
+	}
+
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
 	private static final DecimalFormat DECIMAL_FORMAT_ABS = new DecimalFormat("#0");
+
 	private static final int SIDE_LABEL_OFFSET = 4;
-	@Getter
-	private final Rectangle bounds = new Rectangle();
+
 	private long minimum;
 	private long maximum = 100;
 	private double value;
@@ -56,15 +64,8 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	private Point preferredLocation = new Point();
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 16);
 
-	private static String formatFullProgress(double current, long maximum)
-	{
-		return DECIMAL_FORMAT_ABS.format(Math.floor(current)) + "/" + maximum;
-	}
-
-	private static String formatPercentageProgress(double ratio)
-	{
-		return DECIMAL_FORMAT.format(ratio * 100d) + "%";
-	}
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -147,11 +148,13 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		return dimension;
 	}
 
-	public enum LabelDisplayMode
+	private static String formatFullProgress(double current, long maximum)
 	{
-		PERCENTAGE,
-		FULL,
-		TEXT_ONLY,
-		BOTH
+		return DECIMAL_FORMAT_ABS.format(Math.floor(current)) + "/" + maximum;
+	}
+
+	private static String formatPercentageProgress(double ratio)
+	{
+		return DECIMAL_FORMAT.format(ratio * 100d) + "%";
 	}
 }

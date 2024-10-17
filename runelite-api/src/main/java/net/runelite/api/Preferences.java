@@ -45,28 +45,24 @@ public interface Preferences
 
 	/**
 	 * Gets the sound effect volume
-	 *
 	 * @return volume 0-127 inclusive
 	 */
 	int getSoundEffectVolume();
 
 	/**
 	 * Sets the sound effect volume
-	 *
 	 * @param volume 0-127 inclusive
 	 */
 	void setSoundEffectVolume(int volume);
 
 	/**
 	 * Gets the area sound effect volume
-	 *
 	 * @return volume 0-127 inclusive
 	 */
 	int getAreaSoundEffectVolume();
 
 	/**
 	 * Sets the area sound effect volume
-	 *
 	 * @param volume 0-127 inclusive
 	 */
 	void setAreaSoundEffectVolume(int volume);

@@ -31,7 +31,6 @@ public interface FriendContainer extends NameableContainer<Friend>
 {
 	/**
 	 * Get the recent logins/logouts of friends from the last few seconds
-	 *
 	 * @return
 	 */
 	Deque<PendingLogin> getPendingLogins();

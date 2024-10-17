@@ -71,7 +71,8 @@ class CombatLevelOverlay extends Overlay
 		if (combatTabLevelWidget != null && !combatTabLevelWidget.isHidden())
 		{
 			combatCanvas = combatTabLevelWidget.getBounds();
-		} else if (characterTabWidget != null && !characterTabWidget.isHidden())
+		}
+		else if (characterTabWidget != null && !characterTabWidget.isHidden())
 		{
 			combatCanvas = characterTabWidget.getChild(9).getBounds();
 		}
@@ -103,15 +104,15 @@ class CombatLevelOverlay extends Overlay
 
 		// find the needed levels until level up
 		int meleeNeed = Experience.getNextCombatLevelMelee(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
-				magicLevel, rangeLevel, prayerLevel);
+			magicLevel, rangeLevel, prayerLevel);
 		int hpDefNeed = Experience.getNextCombatLevelHpDef(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
-				magicLevel, rangeLevel, prayerLevel);
+			magicLevel, rangeLevel, prayerLevel);
 		int rangeNeed = Experience.getNextCombatLevelRange(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
-				magicLevel, rangeLevel, prayerLevel);
+			magicLevel, rangeLevel, prayerLevel);
 		int magicNeed = Experience.getNextCombatLevelMagic(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
-				magicLevel, rangeLevel, prayerLevel);
+			magicLevel, rangeLevel, prayerLevel);
 		int prayerNeed = Experience.getNextCombatLevelPrayer(attackLevel, strengthLevel, defenceLevel, hitpointsLevel,
-				magicLevel, rangeLevel, prayerLevel);
+			magicLevel, rangeLevel, prayerLevel);
 
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();

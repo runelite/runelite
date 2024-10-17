@@ -52,9 +52,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Regeneration Meter",
-		description = "Track and show the hitpoints and special attack regeneration timers",
-		tags = {"combat", "health", "hitpoints", "special", "attack", "overlay", "notifications"}
+	name = "Regeneration Meter",
+	description = "Track and show the hitpoints and special attack regeneration timers",
+	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay", "notifications"}
 )
 public class RegenMeterPlugin extends Plugin
 {
@@ -154,7 +154,8 @@ public class RegenMeterPlugin extends Plugin
 		{
 			// The recharge doesn't tick when at 100%
 			ticksSinceSpecRegen = 0;
-		} else
+		}
+		else
 		{
 			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % ticksPerSpecRegen;
 		}
@@ -175,7 +176,8 @@ public class RegenMeterPlugin extends Plugin
 		if (currentHP == maxHP && !config.showWhenNoChange())
 		{
 			hitpointsPercentage = 0;
-		} else if (currentHP > maxHP)
+		}
+		else if (currentHP > maxHP)
 		{
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;

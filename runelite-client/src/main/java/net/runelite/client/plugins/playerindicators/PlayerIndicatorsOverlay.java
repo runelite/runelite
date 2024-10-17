@@ -51,7 +51,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-									ChatIconManager chatIconManager)
+		ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
@@ -113,7 +113,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 			{
 				rankImage = chatIconManager.getRankImage(decorations.getFriendsChatRank());
 			}
-		} else if (decorations.getClanTitle() != null && config.showClanChatRanks())
+		}
+		else if (decorations.getClanTitle() != null && config.showClanChatRanks())
 		{
 			rankImage = chatIconManager.getRankImage(decorations.getClanTitle());
 		}
@@ -128,7 +129,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 			{
 				imageTextMargin = imageWidth;
 				imageNegativeMargin = 0;
-			} else
+			}
+			else
 			{
 				imageTextMargin = imageWidth / 2;
 				imageNegativeMargin = imageWidth / 2;

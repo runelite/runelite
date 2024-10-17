@@ -51,14 +51,14 @@ public class XpClient
 	public void update(String username)
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("xp")
-				.addPathSegment("update")
-				.addQueryParameter("username", username)
-				.build();
+			.addPathSegment("xp")
+			.addPathSegment("update")
+			.addQueryParameter("username", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		client.newCall(request).enqueue(new Callback()
 		{

@@ -41,7 +41,8 @@ public class ZoneDefinition extends AbstractWorldMapDataDefinition
 		if (!(obj instanceof ZoneDefinition))
 		{
 			return false;
-		} else
+		}
+		else
 		{
 			ZoneDefinition other = (ZoneDefinition) obj;
 			return other.displaySquareX == this.displaySquareX && other.displaySquareZ == this.displaySquareZ

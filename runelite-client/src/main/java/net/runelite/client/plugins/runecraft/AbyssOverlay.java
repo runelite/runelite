@@ -85,7 +85,8 @@ class AbyssOverlay extends Overlay
 			if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 			{
 				graphics.setColor(Color.MAGENTA.darker());
-			} else
+			}
+			else
 			{
 				graphics.setColor(Color.MAGENTA);
 			}

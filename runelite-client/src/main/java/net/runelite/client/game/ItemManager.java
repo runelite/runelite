@@ -64,112 +64,132 @@ import net.runelite.http.api.item.ItemStats;
 @Slf4j
 public class ItemManager
 {
-	// Worn items with weight reducing property have a different worn and inventory ItemID
-	private static final ImmutableMap<Integer, Integer> WORN_ITEMS = ImmutableMap.<Integer, Integer>builder().
-			put(BOOTS_OF_LIGHTNESS_89, BOOTS_OF_LIGHTNESS).
-			put(PENANCE_GLOVES_10554, PENANCE_GLOVES).
+	@Value
+	private static class ImageKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final boolean stackable;
+	}
 
-			put(GRACEFUL_HOOD_11851, GRACEFUL_HOOD).
-			put(GRACEFUL_CAPE_11853, GRACEFUL_CAPE).
-			put(GRACEFUL_TOP_11855, GRACEFUL_TOP).
-			put(GRACEFUL_LEGS_11857, GRACEFUL_LEGS).
-			put(GRACEFUL_GLOVES_11859, GRACEFUL_GLOVES).
-			put(GRACEFUL_BOOTS_11861, GRACEFUL_BOOTS).
-			put(GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13579).
-			put(GRACEFUL_CAPE_13582, GRACEFUL_CAPE_13581).
-			put(GRACEFUL_TOP_13584, GRACEFUL_TOP_13583).
-			put(GRACEFUL_LEGS_13586, GRACEFUL_LEGS_13585).
-			put(GRACEFUL_GLOVES_13588, GRACEFUL_GLOVES_13587).
-			put(GRACEFUL_BOOTS_13590, GRACEFUL_BOOTS_13589).
-			put(GRACEFUL_HOOD_13592, GRACEFUL_HOOD_13591).
-			put(GRACEFUL_CAPE_13594, GRACEFUL_CAPE_13593).
-			put(GRACEFUL_TOP_13596, GRACEFUL_TOP_13595).
-			put(GRACEFUL_LEGS_13598, GRACEFUL_LEGS_13597).
-			put(GRACEFUL_GLOVES_13600, GRACEFUL_GLOVES_13599).
-			put(GRACEFUL_BOOTS_13602, GRACEFUL_BOOTS_13601).
-			put(GRACEFUL_HOOD_13604, GRACEFUL_HOOD_13603).
-			put(GRACEFUL_CAPE_13606, GRACEFUL_CAPE_13605).
-			put(GRACEFUL_TOP_13608, GRACEFUL_TOP_13607).
-			put(GRACEFUL_LEGS_13610, GRACEFUL_LEGS_13609).
-			put(GRACEFUL_GLOVES_13612, GRACEFUL_GLOVES_13611).
-			put(GRACEFUL_BOOTS_13614, GRACEFUL_BOOTS_13613).
-			put(GRACEFUL_HOOD_13616, GRACEFUL_HOOD_13615).
-			put(GRACEFUL_CAPE_13618, GRACEFUL_CAPE_13617).
-			put(GRACEFUL_TOP_13620, GRACEFUL_TOP_13619).
-			put(GRACEFUL_LEGS_13622, GRACEFUL_LEGS_13621).
-			put(GRACEFUL_GLOVES_13624, GRACEFUL_GLOVES_13623).
-			put(GRACEFUL_BOOTS_13626, GRACEFUL_BOOTS_13625).
-			put(GRACEFUL_HOOD_13628, GRACEFUL_HOOD_13627).
-			put(GRACEFUL_CAPE_13630, GRACEFUL_CAPE_13629).
-			put(GRACEFUL_TOP_13632, GRACEFUL_TOP_13631).
-			put(GRACEFUL_LEGS_13634, GRACEFUL_LEGS_13633).
-			put(GRACEFUL_GLOVES_13636, GRACEFUL_GLOVES_13635).
-			put(GRACEFUL_BOOTS_13638, GRACEFUL_BOOTS_13637).
-			put(GRACEFUL_HOOD_13668, GRACEFUL_HOOD_13667).
-			put(GRACEFUL_CAPE_13670, GRACEFUL_CAPE_13669).
-			put(GRACEFUL_TOP_13672, GRACEFUL_TOP_13671).
-			put(GRACEFUL_LEGS_13674, GRACEFUL_LEGS_13673).
-			put(GRACEFUL_GLOVES_13676, GRACEFUL_GLOVES_13675).
-			put(GRACEFUL_BOOTS_13678, GRACEFUL_BOOTS_13677).
-			put(GRACEFUL_HOOD_21063, GRACEFUL_HOOD_21061).
-			put(GRACEFUL_CAPE_21066, GRACEFUL_CAPE_21064).
-			put(GRACEFUL_TOP_21069, GRACEFUL_TOP_21067).
-			put(GRACEFUL_LEGS_21072, GRACEFUL_LEGS_21070).
-			put(GRACEFUL_GLOVES_21075, GRACEFUL_GLOVES_21073).
-			put(GRACEFUL_BOOTS_21078, GRACEFUL_BOOTS_21076).
-			put(GRACEFUL_HOOD_24745, GRACEFUL_HOOD_24743).
-			put(GRACEFUL_CAPE_24748, GRACEFUL_CAPE_24746).
-			put(GRACEFUL_TOP_24751, GRACEFUL_TOP_24749).
-			put(GRACEFUL_LEGS_24754, GRACEFUL_LEGS_24752).
-			put(GRACEFUL_GLOVES_24757, GRACEFUL_GLOVES_24755).
-			put(GRACEFUL_BOOTS_24760, GRACEFUL_BOOTS_24758).
-			put(GRACEFUL_HOOD_25071, GRACEFUL_HOOD_25069).
-			put(GRACEFUL_CAPE_25074, GRACEFUL_CAPE_25072).
-			put(GRACEFUL_TOP_25077, GRACEFUL_TOP_25075).
-			put(GRACEFUL_LEGS_25080, GRACEFUL_LEGS_25078).
-			put(GRACEFUL_GLOVES_25083, GRACEFUL_GLOVES_25081).
-			put(GRACEFUL_BOOTS_25086, GRACEFUL_BOOTS_25084).
-			put(GRACEFUL_HOOD_27446, GRACEFUL_HOOD_27444).
-			put(GRACEFUL_CAPE_27449, GRACEFUL_CAPE_27447).
-			put(GRACEFUL_TOP_27452, GRACEFUL_TOP_27450).
-			put(GRACEFUL_LEGS_27455, GRACEFUL_LEGS_27453).
-			put(GRACEFUL_GLOVES_27458, GRACEFUL_GLOVES_27456).
-			put(GRACEFUL_BOOTS_27461, GRACEFUL_BOOTS_27459).
-			put(GRACEFUL_HOOD_30047, GRACEFUL_HOOD_30045).
-			put(GRACEFUL_CAPE_30050, GRACEFUL_CAPE_30048).
-			put(GRACEFUL_TOP_30053, GRACEFUL_TOP_30051).
-			put(GRACEFUL_LEGS_30056, GRACEFUL_LEGS_30054).
-			put(GRACEFUL_GLOVES_30059, GRACEFUL_GLOVES_30057).
-			put(GRACEFUL_BOOTS_30062, GRACEFUL_BOOTS_30060).
+	@Value
+	private static class OutlineKey
+	{
+		private final int itemId;
+		private final int itemQuantity;
+		private final Color outlineColor;
+	}
 
-			put(MAX_CAPE_13342, MAX_CAPE).
-
-			put(SPOTTED_CAPE_10073, SPOTTED_CAPE).
-			put(SPOTTIER_CAPE_10074, SPOTTIER_CAPE).
-
-			put(AGILITY_CAPET_13341, AGILITY_CAPET).
-			put(AGILITY_CAPE_13340, AGILITY_CAPE).
-			build();
 	private final Client client;
 	private final ClientThread clientThread;
 	private final ItemClient itemClient;
 	private final RuneLiteConfig runeLiteConfig;
-	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
-	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
+
 	@Inject(optional = true)
 	@Named("activePriceThreshold")
 	@SuppressWarnings("PMD.ImmutableField")
 	private double activePriceThreshold = 5;
+
 	@Inject(optional = true)
 	@Named("lowPriceThreshold")
 	@SuppressWarnings("PMD.ImmutableField")
 	private int lowPriceThreshold = 1000;
+
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
+	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
+	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
+
+	// Worn items with weight reducing property have a different worn and inventory ItemID
+	private static final ImmutableMap<Integer, Integer> WORN_ITEMS = ImmutableMap.<Integer, Integer>builder().
+		put(BOOTS_OF_LIGHTNESS_89, BOOTS_OF_LIGHTNESS).
+		put(PENANCE_GLOVES_10554, PENANCE_GLOVES).
+
+		put(GRACEFUL_HOOD_11851, GRACEFUL_HOOD).
+		put(GRACEFUL_CAPE_11853, GRACEFUL_CAPE).
+		put(GRACEFUL_TOP_11855, GRACEFUL_TOP).
+		put(GRACEFUL_LEGS_11857, GRACEFUL_LEGS).
+		put(GRACEFUL_GLOVES_11859, GRACEFUL_GLOVES).
+		put(GRACEFUL_BOOTS_11861, GRACEFUL_BOOTS).
+		put(GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13579).
+		put(GRACEFUL_CAPE_13582, GRACEFUL_CAPE_13581).
+		put(GRACEFUL_TOP_13584, GRACEFUL_TOP_13583).
+		put(GRACEFUL_LEGS_13586, GRACEFUL_LEGS_13585).
+		put(GRACEFUL_GLOVES_13588, GRACEFUL_GLOVES_13587).
+		put(GRACEFUL_BOOTS_13590, GRACEFUL_BOOTS_13589).
+		put(GRACEFUL_HOOD_13592, GRACEFUL_HOOD_13591).
+		put(GRACEFUL_CAPE_13594, GRACEFUL_CAPE_13593).
+		put(GRACEFUL_TOP_13596, GRACEFUL_TOP_13595).
+		put(GRACEFUL_LEGS_13598, GRACEFUL_LEGS_13597).
+		put(GRACEFUL_GLOVES_13600, GRACEFUL_GLOVES_13599).
+		put(GRACEFUL_BOOTS_13602, GRACEFUL_BOOTS_13601).
+		put(GRACEFUL_HOOD_13604, GRACEFUL_HOOD_13603).
+		put(GRACEFUL_CAPE_13606, GRACEFUL_CAPE_13605).
+		put(GRACEFUL_TOP_13608, GRACEFUL_TOP_13607).
+		put(GRACEFUL_LEGS_13610, GRACEFUL_LEGS_13609).
+		put(GRACEFUL_GLOVES_13612, GRACEFUL_GLOVES_13611).
+		put(GRACEFUL_BOOTS_13614, GRACEFUL_BOOTS_13613).
+		put(GRACEFUL_HOOD_13616, GRACEFUL_HOOD_13615).
+		put(GRACEFUL_CAPE_13618, GRACEFUL_CAPE_13617).
+		put(GRACEFUL_TOP_13620, GRACEFUL_TOP_13619).
+		put(GRACEFUL_LEGS_13622, GRACEFUL_LEGS_13621).
+		put(GRACEFUL_GLOVES_13624, GRACEFUL_GLOVES_13623).
+		put(GRACEFUL_BOOTS_13626, GRACEFUL_BOOTS_13625).
+		put(GRACEFUL_HOOD_13628, GRACEFUL_HOOD_13627).
+		put(GRACEFUL_CAPE_13630, GRACEFUL_CAPE_13629).
+		put(GRACEFUL_TOP_13632, GRACEFUL_TOP_13631).
+		put(GRACEFUL_LEGS_13634, GRACEFUL_LEGS_13633).
+		put(GRACEFUL_GLOVES_13636, GRACEFUL_GLOVES_13635).
+		put(GRACEFUL_BOOTS_13638, GRACEFUL_BOOTS_13637).
+		put(GRACEFUL_HOOD_13668, GRACEFUL_HOOD_13667).
+		put(GRACEFUL_CAPE_13670, GRACEFUL_CAPE_13669).
+		put(GRACEFUL_TOP_13672, GRACEFUL_TOP_13671).
+		put(GRACEFUL_LEGS_13674, GRACEFUL_LEGS_13673).
+		put(GRACEFUL_GLOVES_13676, GRACEFUL_GLOVES_13675).
+		put(GRACEFUL_BOOTS_13678, GRACEFUL_BOOTS_13677).
+		put(GRACEFUL_HOOD_21063, GRACEFUL_HOOD_21061).
+		put(GRACEFUL_CAPE_21066, GRACEFUL_CAPE_21064).
+		put(GRACEFUL_TOP_21069, GRACEFUL_TOP_21067).
+		put(GRACEFUL_LEGS_21072, GRACEFUL_LEGS_21070).
+		put(GRACEFUL_GLOVES_21075, GRACEFUL_GLOVES_21073).
+		put(GRACEFUL_BOOTS_21078, GRACEFUL_BOOTS_21076).
+		put(GRACEFUL_HOOD_24745, GRACEFUL_HOOD_24743).
+		put(GRACEFUL_CAPE_24748, GRACEFUL_CAPE_24746).
+		put(GRACEFUL_TOP_24751, GRACEFUL_TOP_24749).
+		put(GRACEFUL_LEGS_24754, GRACEFUL_LEGS_24752).
+		put(GRACEFUL_GLOVES_24757, GRACEFUL_GLOVES_24755).
+		put(GRACEFUL_BOOTS_24760, GRACEFUL_BOOTS_24758).
+		put(GRACEFUL_HOOD_25071, GRACEFUL_HOOD_25069).
+		put(GRACEFUL_CAPE_25074, GRACEFUL_CAPE_25072).
+		put(GRACEFUL_TOP_25077, GRACEFUL_TOP_25075).
+		put(GRACEFUL_LEGS_25080, GRACEFUL_LEGS_25078).
+		put(GRACEFUL_GLOVES_25083, GRACEFUL_GLOVES_25081).
+		put(GRACEFUL_BOOTS_25086, GRACEFUL_BOOTS_25084).
+		put(GRACEFUL_HOOD_27446, GRACEFUL_HOOD_27444).
+		put(GRACEFUL_CAPE_27449, GRACEFUL_CAPE_27447).
+		put(GRACEFUL_TOP_27452, GRACEFUL_TOP_27450).
+		put(GRACEFUL_LEGS_27455, GRACEFUL_LEGS_27453).
+		put(GRACEFUL_GLOVES_27458, GRACEFUL_GLOVES_27456).
+		put(GRACEFUL_BOOTS_27461, GRACEFUL_BOOTS_27459).
+		put(GRACEFUL_HOOD_30047, GRACEFUL_HOOD_30045).
+		put(GRACEFUL_CAPE_30050, GRACEFUL_CAPE_30048).
+		put(GRACEFUL_TOP_30053, GRACEFUL_TOP_30051).
+		put(GRACEFUL_LEGS_30056, GRACEFUL_LEGS_30054).
+		put(GRACEFUL_GLOVES_30059, GRACEFUL_GLOVES_30057).
+		put(GRACEFUL_BOOTS_30062, GRACEFUL_BOOTS_30060).
+
+		put(MAX_CAPE_13342, MAX_CAPE).
+
+		put(SPOTTED_CAPE_10073, SPOTTED_CAPE).
+		put(SPOTTIER_CAPE_10074, SPOTTIER_CAPE).
+
+		put(AGILITY_CAPET_13341, AGILITY_CAPET).
+		put(AGILITY_CAPE_13340, AGILITY_CAPE).
+		build();
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
-					   ItemClient itemClient, RuneLiteConfig runeLiteConfig)
+		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -180,28 +200,28 @@ public class ItemManager
 		scheduledExecutorService.submit(this::loadStats);
 
 		itemImages = CacheBuilder.newBuilder()
-				.maximumSize(128L)
-				.expireAfterAccess(1, TimeUnit.HOURS)
-				.build(new CacheLoader<>()
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<>()
+			{
+				@Override
+				public AsyncBufferedImage load(ImageKey key) throws Exception
 				{
-					@Override
-					public AsyncBufferedImage load(ImageKey key) throws Exception
-					{
-						return loadImage(key.itemId, key.itemQuantity, key.stackable);
-					}
-				});
+					return loadImage(key.itemId, key.itemQuantity, key.stackable);
+				}
+			});
 
 		itemOutlines = CacheBuilder.newBuilder()
-				.maximumSize(128L)
-				.expireAfterAccess(1, TimeUnit.HOURS)
-				.build(new CacheLoader<>()
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build(new CacheLoader<>()
+			{
+				@Override
+				public BufferedImage load(OutlineKey key) throws Exception
 				{
-					@Override
-					public BufferedImage load(OutlineKey key) throws Exception
-					{
-						return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
-					}
-				});
+					return loadItemOutline(key.itemId, key.itemQuantity, key.outlineColor);
+				}
+			});
 	}
 
 	private void loadPrices()
@@ -220,7 +240,8 @@ public class ItemManager
 			}
 
 			log.debug("Loaded {} prices", itemPrices.size());
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			log.warn("error loading prices!", e);
 		}
@@ -237,7 +258,8 @@ public class ItemManager
 			}
 
 			log.debug("Loaded {} stats", itemStats.size());
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			log.warn("error loading stats!", e);
 		}
@@ -257,7 +279,7 @@ public class ItemManager
 	/**
 	 * Look up an item's price
 	 *
-	 * @param itemID       item id
+	 * @param itemID item id
 	 * @param useWikiPrice use the actively traded/wiki price
 	 * @return item price
 	 */
@@ -291,7 +313,8 @@ public class ItemManager
 			{
 				price = useWikiPrice ? getWikiPrice(ip) : ip.getPrice();
 			}
-		} else
+		}
+		else
 		{
 			for (final ItemMapping mappedItem : mappedItems)
 			{
@@ -304,7 +327,6 @@ public class ItemManager
 
 	/**
 	 * Get the wiki price for an item, with checks to try and avoid excessive price manipulation
-	 *
 	 * @param itemPrice
 	 * @return
 	 */
@@ -325,7 +347,6 @@ public class ItemManager
 
 	/**
 	 * Look up an item's stats
-	 *
 	 * @param itemId item id
 	 * @return item stats
 	 */
@@ -412,7 +433,7 @@ public class ItemManager
 				return false;
 			}
 			SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
-					stackable ? ItemQuantityMode.ALWAYS : ItemQuantityMode.NEVER, false, CLIENT_DEFAULT_ZOOM);
+				stackable ? ItemQuantityMode.ALWAYS : ItemQuantityMode.NEVER, false, CLIENT_DEFAULT_ZOOM);
 			if (sprite == null)
 			{
 				return false;
@@ -455,7 +476,8 @@ public class ItemManager
 		try
 		{
 			return itemImages.get(new ImageKey(itemId, quantity, stackable));
-		} catch (ExecutionException ex)
+		}
+		catch (ExecutionException ex)
 		{
 			return null;
 		}
@@ -464,7 +486,7 @@ public class ItemManager
 	/**
 	 * Create item sprite and applies an outline.
 	 *
-	 * @param itemId       item id
+	 * @param itemId item id
 	 * @param itemQuantity item quantity
 	 * @param outlineColor outline color
 	 * @return image
@@ -478,7 +500,7 @@ public class ItemManager
 	/**
 	 * Get item outline with a specific color.
 	 *
-	 * @param itemId       item id
+	 * @param itemId item id
 	 * @param itemQuantity item quantity
 	 * @param outlineColor outline color
 	 * @return image
@@ -488,25 +510,10 @@ public class ItemManager
 		try
 		{
 			return itemOutlines.get(new OutlineKey(itemId, itemQuantity, outlineColor));
-		} catch (ExecutionException e)
+		}
+		catch (ExecutionException e)
 		{
 			return null;
 		}
-	}
-
-	@Value
-	private static class ImageKey
-	{
-		private final int itemId;
-		private final int itemQuantity;
-		private final boolean stackable;
-	}
-
-	@Value
-	private static class OutlineKey
-	{
-		private final int itemId;
-		private final int itemQuantity;
-		private final Color outlineColor;
 	}
 }

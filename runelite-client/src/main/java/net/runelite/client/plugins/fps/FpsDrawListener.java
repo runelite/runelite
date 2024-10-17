@@ -45,12 +45,15 @@ public class FpsDrawListener implements Runnable
 	private static final int SAMPLE_SIZE = 4;
 
 	private final FpsConfig config;
-	private final long[] lastDelays = new long[SAMPLE_SIZE];
+
 	private long targetDelay = 0;
+
 	// Often changing values
 	private boolean isFocused = true;
+
 	// Working set
 	private long lastMillis = 0;
+	private final long[] lastDelays = new long[SAMPLE_SIZE];
 	private int lastDelayIndex = 0;
 	private long sleepDelay = 0;
 
@@ -66,8 +69,8 @@ public class FpsDrawListener implements Runnable
 		lastMillis = System.currentTimeMillis();
 
 		int fps = config.limitFpsUnfocused() && !isFocused
-				? config.maxFpsUnfocused()
-				: config.maxFps();
+			? config.maxFpsUnfocused()
+			: config.maxFps();
 
 		targetDelay = 1000 / Math.max(1, fps);
 
@@ -88,7 +91,7 @@ public class FpsDrawListener implements Runnable
 	private boolean isEnforced()
 	{
 		return config.limitFps()
-				|| (config.limitFpsUnfocused() && !isFocused);
+			|| (config.limitFpsUnfocused() && !isFocused);
 	}
 
 	@Override
@@ -126,7 +129,8 @@ public class FpsDrawListener implements Runnable
 		if (averageDelay > targetDelay)
 		{
 			sleepDelay--;
-		} else if (averageDelay < targetDelay)
+		}
+		else if (averageDelay < targetDelay)
 		{
 			sleepDelay++;
 		}
@@ -136,7 +140,8 @@ public class FpsDrawListener implements Runnable
 			try
 			{
 				Thread.sleep(sleepDelay);
-			} catch (InterruptedException e)
+			}
+			catch (InterruptedException e)
 			{
 				// Can happen on shutdown
 			}

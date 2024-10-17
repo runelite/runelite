@@ -53,9 +53,9 @@ import net.runelite.client.task.Schedule;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 @PluginDescriptor(
-		name = "Report Button",
-		description = "Replace the text on the Report button with the current time",
-		tags = {"time", "utc", "clock"}
+	name = "Report Button",
+	description = "Replace the text on the Report button with the current time",
+	tags = {"time", "utc", "clock"}
 )
 public class ReportButtonPlugin extends Plugin
 {
@@ -76,11 +76,6 @@ public class ReportButtonPlugin extends Plugin
 
 	@Inject
 	private ReportButtonConfig config;
-
-	private static String getDate()
-	{
-		return DATE_FORMAT.format(new Date());
-	}
 
 	@Provides
 	ReportButtonConfig provideConfig(ConfigManager configManager)
@@ -151,8 +146,8 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Schedule(
-			period = 500,
-			unit = ChronoUnit.MILLIS
+		period = 500,
+		unit = ChronoUnit.MILLIS
 	)
 	public void updateSchedule()
 	{
@@ -238,12 +233,18 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(timeFormat);
 	}
 
+	private static String getDate()
+	{
+		return DATE_FORMAT.format(new Date());
+	}
+
 	private void updateTimeFormat()
 	{
 		if (config.switchTimeFormat() == TimeFormat.TIME_24H)
 		{
 			timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-		} else
+		}
+		else
 		{
 			timeFormat = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 		}

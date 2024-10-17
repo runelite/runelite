@@ -9,13 +9,14 @@ import net.runelite.cache.models.VertexNormal;
 @Data
 public class ModelDefinition
 {
-	public static transient int animOffsetX, animOffsetY, animOffsetZ;
 	public int id;
+
 	public int vertexCount = 0;
 	public int[] vertexX;
 	public int[] vertexY;
 	public int[] vertexZ;
 	public transient VertexNormal[] vertexNormals;
+
 	public int faceCount;
 	public int[] faceIndices1;
 	public int[] faceIndices2;
@@ -25,6 +26,7 @@ public class ModelDefinition
 	public byte[] faceRenderPriorities;
 	public byte[] faceRenderTypes;
 	public transient FaceNormal[] faceNormals;
+
 	public int numTextureFaces;
 	public short[] texIndices1;
 	public short[] texIndices2;
@@ -35,16 +37,23 @@ public class ModelDefinition
 	public short[] faceTextures;
 	public byte[] textureCoords;
 	public byte[] textureRenderTypes;
+
 	public int[] packedVertexGroups;
 	public int[] packedTransparencyVertexGroups;
+
 	public byte priority;
+
+	private transient int[][] vertexGroups;
 	public int[][] animayaGroups;
 	public int[][] animayaScales;
-	public transient int maxPriority;
-	private transient int[][] vertexGroups;
+
 	private transient int[] origVX;
 	private transient int[] origVY;
 	private transient int[] origVZ;
+
+	public transient int maxPriority;
+
+	public static transient int animOffsetX, animOffsetY, animOffsetZ;
 
 	public void computeNormals()
 	{
@@ -101,7 +110,8 @@ public class ModelDefinition
 			if (this.faceRenderTypes == null)
 			{
 				var15 = 0;
-			} else
+			}
+			else
 			{
 				var15 = this.faceRenderTypes[var1];
 			}
@@ -125,7 +135,8 @@ public class ModelDefinition
 				var16.y += var12;
 				var16.z += var13;
 				++var16.magnitude;
-			} else if (var15 == 1)
+			}
+			else if (var15 == 1)
 			{
 				if (this.faceNormals == null)
 				{
@@ -229,7 +240,8 @@ public class ModelDefinition
 				v1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
 				// v2 = (v8 ⋅ v6) * f
 				v2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
-			} else
+			}
+			else
 			{
 				// Without a texture face, the client assigns tex = triangle, but the resulting
 				// calculations can be reduced:
@@ -264,8 +276,8 @@ public class ModelDefinition
 				v2 = 1f;
 			}
 
-			this.faceTextureUCoordinates[i] = new float[] {u0, u1, u2};
-			this.faceTextureVCoordinates[i] = new float[] {v0, v1, v2};
+			this.faceTextureUCoordinates[i] = new float[]{u0, u1, u2};
+			this.faceTextureVCoordinates[i] = new float[]{v0, v1, v2};
 		}
 	}
 
@@ -382,14 +394,16 @@ public class ModelDefinition
 				animOffsetX = dx + animOffsetX / var7;
 				animOffsetY = dy + animOffsetY / var7;
 				animOffsetZ = dz + animOffsetZ / var7;
-			} else
+			}
+			else
 			{
 				animOffsetX = dx;
 				animOffsetY = dy;
 				animOffsetZ = dz;
 			}
 
-		} else
+		}
+		else
 		{
 			int[] var18;
 			int var19;
@@ -412,7 +426,8 @@ public class ModelDefinition
 					}
 				}
 
-			} else if (type == 2)
+			}
+			else if (type == 2)
 			{
 				for (var7 = 0; var7 < var6; ++var7)
 				{
@@ -467,7 +482,8 @@ public class ModelDefinition
 					}
 				}
 
-			} else if (type == 3)
+			}
+			else if (type == 3)
 			{
 				for (var7 = 0; var7 < var6; ++var7)
 				{
@@ -492,7 +508,8 @@ public class ModelDefinition
 					}
 				}
 
-			} else if (type == 5)
+			}
+			else if (type == 5)
 			{
 				// alpha animation
 			}

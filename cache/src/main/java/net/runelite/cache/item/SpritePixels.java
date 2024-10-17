@@ -48,43 +48,6 @@ class SpritePixels
 		this(new int[var2 * var1], var1, var2);
 	}
 
-	static void method5843(int[] rasterizerPixels, int[] spritePixels, int var2, int var3, int pixelIndex, int width, int height, int var7, int var8)
-	{
-		int var9 = -(width >> 2);
-		width = -(width & 3);
-
-		for (int var10 = -height; var10 < 0; ++var10)
-		{
-			for (int i = var9 * 4; i < 0; ++i)
-			{
-				var2 = spritePixels[var3++];
-				if (var2 != 0)
-				{
-					rasterizerPixels[pixelIndex++] = var2;
-				} else
-				{
-					++pixelIndex;
-				}
-			}
-
-			for (int i = width; i < 0; ++i)
-			{
-				var2 = spritePixels[var3++];
-				if (var2 != 0)
-				{
-					rasterizerPixels[pixelIndex++] = var2;
-				} else
-				{
-					++pixelIndex;
-				}
-			}
-
-			pixelIndex += var7;
-			var3 += var8;
-		}
-
-	}
-
 	public void drawBorder(int color)
 	{
 		int[] newPixels = new int[this.width * this.height];
@@ -125,6 +88,7 @@ class SpritePixels
 
 		this.pixels = newPixels;
 	}
+
 
 	public void drawShadow(int color)
 	{
@@ -191,6 +155,45 @@ class SpritePixels
 		{
 			method5843(graphics.graphicsPixels, this.pixels, 0, deltaIndex, pixelIndex, width, height, var7, var8);
 		}
+	}
+
+	static void method5843(int[] rasterizerPixels, int[] spritePixels, int var2, int var3, int pixelIndex, int width, int height, int var7, int var8)
+	{
+		int var9 = -(width >> 2);
+		width = -(width & 3);
+
+		for (int var10 = -height; var10 < 0; ++var10)
+		{
+			for (int i = var9 * 4; i < 0; ++i)
+			{
+				var2 = spritePixels[var3++];
+				if (var2 != 0)
+				{
+					rasterizerPixels[pixelIndex++] = var2;
+				}
+				else
+				{
+					++pixelIndex;
+				}
+			}
+
+			for (int i = width; i < 0; ++i)
+			{
+				var2 = spritePixels[var3++];
+				if (var2 != 0)
+				{
+					rasterizerPixels[pixelIndex++] = var2;
+				}
+				else
+				{
+					++pixelIndex;
+				}
+			}
+
+			pixelIndex += var7;
+			var3 += var8;
+		}
+
 	}
 
 	public BufferedImage toBufferedImage()

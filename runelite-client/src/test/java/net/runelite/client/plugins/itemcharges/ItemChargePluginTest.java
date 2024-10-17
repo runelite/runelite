@@ -507,18 +507,17 @@ public class ItemChargePluginTest
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
 	}
-
 	@Test
 	public void testBraceletOfClayUseTrahaearn()
 	{
 		// Set bracelet of clay charges to 13
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, Integer.class))
-				.thenReturn(13);
+			.thenReturn(13);
 
 		// Equip bracelet of clay
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT))
-				.thenReturn(equipmentItemContainer);
+			.thenReturn(equipmentItemContainer);
 		when(equipmentItemContainer.contains(ItemID.BRACELET_OF_CLAY)).thenReturn(true);
 		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
 
@@ -539,16 +538,16 @@ public class ItemChargePluginTest
 		// Equip bracelet of clay
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT))
-				.thenReturn(equipmentItemContainer);
+			.thenReturn(equipmentItemContainer);
 		when(equipmentItemContainer.contains(ItemID.BRACELET_OF_CLAY))
-				.thenReturn(true);
+			.thenReturn(true);
 
 		// Set inventory to 1 free slots
 		ItemContainer inventoryItemContainer = mock(ItemContainer.class);
 		when(inventoryItemContainer.count())
-				.thenReturn(27);
+			.thenReturn(27);
 		when(client.getItemContainer(InventoryID.INVENTORY))
-				.thenReturn(inventoryItemContainer);
+			.thenReturn(inventoryItemContainer);
 
 		// Verify bracelet of clay charges were not changed
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);

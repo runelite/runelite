@@ -105,7 +105,8 @@ public final class OutputStream extends java.io.OutputStream
 		{
 			ensureRemaining(4);
 			this.writeInt((1 << 31) | value);
-		} else
+		}
+		else
 		{
 			ensureRemaining(2);
 			this.writeShort(value);
@@ -124,7 +125,8 @@ public final class OutputStream extends java.io.OutputStream
 		if (value < 128)
 		{
 			writeByte(value);
-		} else
+		}
+		else
 		{
 			writeShort(0x8000 | value);
 		}

@@ -102,7 +102,8 @@ class BurnerOverlay extends Overlay
 				pieComponent.setFill(Color.GREEN);
 				pieComponent.setBorderColor(Color.GREEN);
 				pieComponent.render(graphics);
-			} else if (randomSec > 0)
+			}
+			else if (randomSec > 0)
 			{
 				pieComponent.setProgress(randomSec / burner.getRandomTimer());
 				pieComponent.setFill(Color.ORANGE);

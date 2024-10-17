@@ -78,12 +78,12 @@ public class XpGlobesOverlay extends Overlay
 
 	@Inject
 	private XpGlobesOverlay(
-			Client client,
-			XpGlobesPlugin plugin,
-			XpGlobesConfig config,
-			XpTrackerService xpTrackerService,
-			SkillIconManager iconManager,
-			TooltipManager tooltipManager)
+		Client client,
+		XpGlobesPlugin plugin,
+		XpGlobesConfig config,
+		XpTrackerService xpTrackerService,
+		SkillIconManager iconManager,
+		TooltipManager tooltipManager)
 	{
 		super(plugin);
 		this.iconManager = iconManager;
@@ -119,7 +119,8 @@ public class XpGlobesOverlay extends Overlay
 			if (config.alignOrbsVertically())
 			{
 				renderProgressCircle(graphics, xpGlobe, startXp, goalXp, progressArcOffset, curDrawPosition, getBounds());
-			} else
+			}
+			else
 			{
 				renderProgressCircle(graphics, xpGlobe, startXp, goalXp, curDrawPosition, progressArcOffset, getBounds());
 			}
@@ -131,7 +132,8 @@ public class XpGlobesOverlay extends Overlay
 		if (config.alignOrbsVertically())
 		{
 			return new Dimension(config.xpOrbSize() + progressArcOffset * 2, markersLength);
-		} else
+		}
+		else
 		{
 			return new Dimension(markersLength, config.xpOrbSize() + progressArcOffset * 2);
 		}
@@ -181,20 +183,20 @@ public class XpGlobesOverlay extends Overlay
 		graphics.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 		drawProgressArc(
-				graphics,
-				x, y,
-				config.xpOrbSize(), config.xpOrbSize(),
-				PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
-				PROGRESS_BACKGROUND_SIZE,
-				config.progressOrbOutLineColor()
+			graphics,
+			x, y,
+			config.xpOrbSize(), config.xpOrbSize(),
+			PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
+			PROGRESS_BACKGROUND_SIZE,
+			config.progressOrbOutLineColor()
 		);
 		drawProgressArc(
-				graphics,
-				x, y,
-				config.xpOrbSize(), config.xpOrbSize(),
-				PROGRESS_RADIUS_START, radiusCurrentXp,
-				config.progressArcStrokeWidth(),
-				config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
+			graphics,
+			x, y,
+			config.xpOrbSize(), config.xpOrbSize(),
+			PROGRESS_RADIUS_START, radiusCurrentXp,
+			config.progressArcStrokeWidth(),
+			config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
 	}
 
 	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int startXp, int goalXp, int x, int y)
@@ -220,10 +222,10 @@ public class XpGlobesOverlay extends Overlay
 		graphics.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		graphics.setColor(color);
 		graphics.draw(new Arc2D.Double(
-				x, y,
-				w, h,
-				radiusStart, radiusEnd,
-				Arc2D.OPEN));
+			x, y,
+			w, h,
+			radiusStart, radiusEnd,
+			Arc2D.OPEN));
 		graphics.setStroke(stroke);
 	}
 
@@ -247,10 +249,10 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		graphics.drawImage(
-				skillImage,
-				x + (orbSize / 2) - (skillImage.getWidth() / 2),
-				y + (orbSize / 2) - (skillImage.getHeight() / 2),
-				null
+			skillImage,
+			x + (orbSize / 2) - (skillImage.getWidth() / 2),
+			y + (orbSize / 2) - (skillImage.getHeight() / 2),
+			null
 		);
 	}
 
@@ -297,15 +299,15 @@ public class XpGlobesOverlay extends Overlay
 		xpTooltip.getChildren().clear();
 
 		xpTooltip.getChildren().add(LineComponent.builder()
-				.left(skillName)
-				.right(skillLevel)
-				.build());
+			.left(skillName)
+			.right(skillLevel)
+			.build());
 
 		xpTooltip.getChildren().add(LineComponent.builder()
-				.left("Current XP:")
-				.leftColor(Color.ORANGE)
-				.right(skillCurrentXp)
-				.build());
+			.left("Current XP:")
+			.leftColor(Color.ORANGE)
+			.right(skillCurrentXp)
+			.build());
 
 		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
@@ -354,10 +356,10 @@ public class XpGlobesOverlay extends Overlay
 			{
 				String timeLeft = xpTrackerService.getTimeTilGoal(mouseOverSkill.getSkill());
 				xpTooltip.getChildren().add(LineComponent.builder()
-						.left("Time left:")
-						.leftColor(Color.ORANGE)
-						.right(timeLeft)
-						.build());
+					.left("Time left:")
+					.leftColor(Color.ORANGE)
+					.right(timeLeft)
+					.build());
 			}
 		}
 

@@ -35,14 +35,17 @@ public class Raid
 {
 	@Getter
 	private final RaidRoom[] rooms = new RaidRoom[16];
+
+	@Getter
+	private Layout layout;
+
 	// The south west tile of the lobby room
 	@Getter
 	private final WorldPoint gridBase;
+
 	// The index of the lobby room in the rooms array
 	@Getter
 	private final int lobbyIndex;
-	@Getter
-	private Layout layout;
 
 	public Raid(WorldPoint gridBase, int lobbyIndex)
 	{
@@ -138,7 +141,8 @@ public class Raid
 			if (room != null)
 			{
 				builder.append(room.getType().getCode());
-			} else
+			}
+			else
 			{
 				builder.append(' ');
 			}
@@ -149,7 +153,6 @@ public class Raid
 
 	/**
 	 * Get the raid rooms in the order they are in the raid
-	 *
 	 * @return
 	 */
 	List<RaidRoom> getOrderedRooms()

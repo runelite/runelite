@@ -37,7 +37,8 @@ public enum AgilityBonus implements SkillBonus
 	WILDERNESS_AGILITY_TICKET_51_TO_100("51-100 Wilderness Tickets", 1.1f),
 	WILDERNESS_AGILITY_TICKET_101_PLUS("101+ Wilderness Tickets", 1.15f),
 	DESERT_HARD_DIARY("Desert Hard Diary", 1016f / 890),
-	FREMENNIK_HARD_DIARY("Fremennik Hard Diary", 920f / 780);
+	FREMENNIK_HARD_DIARY("Fremennik Hard Diary", 920f / 780)
+	;
 
 	private final String name;
 	private final float value;

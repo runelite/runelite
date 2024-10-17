@@ -72,7 +72,8 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 			{
 				socket.close();
 			}
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("error closing socket", ex);
 		}
@@ -92,7 +93,8 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 			out = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("unable to setup irc client", ex);
 			return;
@@ -121,27 +123,30 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 						break;
 					case "PRIVMSG":
 						twitchListener.privmsg(message.getSource().substring(0, message.getSource().indexOf('!')),
-								message.getTags(),
-								message.getArguments()[1]);
+							message.getTags(),
+							message.getArguments()[1]);
 						break;
 					case "ROOMSTATE":
 						twitchListener.roomstate(message.getTags());
 						break;
 					case "USERNOTICE":
 						twitchListener.usernotice(message.getTags(),
-								message.getArguments().length > 0 ? message.getArguments()[0] : null);
+							message.getArguments().length > 0 ? message.getArguments()[0] : null);
 						break;
 				}
 			}
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.debug("error in twitch irc client", ex);
-		} finally
+		}
+		finally
 		{
 			try
 			{
 				socket.close();
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				log.warn(null, e);
 			}
@@ -167,12 +172,14 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 			{
 				ping("twitch");
 				pingSent = true;
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				log.debug("Ping failure, disconnecting.", e);
 				close();
 			}
-		} else if (pingSent)
+		}
+		else if (pingSent)
 		{
 			log.debug("Ping timeout, disconnecting.");
 			close();

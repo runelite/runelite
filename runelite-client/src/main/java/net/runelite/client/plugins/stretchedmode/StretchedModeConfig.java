@@ -34,9 +34,9 @@ import net.runelite.client.config.Units;
 public interface StretchedModeConfig extends Config
 {
 	@ConfigItem(
-			keyName = "keepAspectRatio",
-			name = "Keep aspect ratio",
-			description = "Keeps the aspect ratio when stretching."
+		keyName = "keepAspectRatio",
+		name = "Keep aspect ratio",
+		description = "Keeps the aspect ratio when stretching."
 	)
 	default boolean keepAspectRatio()
 	{
@@ -44,9 +44,9 @@ public interface StretchedModeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "increasedPerformance",
-			name = "Increased performance mode",
-			description = "Uses a fast algorithm when stretching, lowering quality but increasing performance."
+		keyName = "increasedPerformance",
+		name = "Increased performance mode",
+		description = "Uses a fast algorithm when stretching, lowering quality but increasing performance."
 	)
 	default boolean increasedPerformance()
 	{
@@ -54,9 +54,9 @@ public interface StretchedModeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "integerScaling",
-			name = "Integer Scaling",
-			description = "Forces use of a whole number scale factor when stretching."
+		keyName = "integerScaling",
+		name = "Integer Scaling",
+		description = "Forces use of a whole number scale factor when stretching."
 	)
 	default boolean integerScaling()
 	{
@@ -64,9 +64,9 @@ public interface StretchedModeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "scalingFactor",
-			name = "Resizable Scaling",
-			description = "In resizable mode, the game is reduced in size this much before it's stretched."
+		keyName = "scalingFactor",
+		name = "Resizable Scaling",
+		description = "In resizable mode, the game is reduced in size this much before it's stretched."
 	)
 	@Units(Units.PERCENT)
 	default int scalingFactor()

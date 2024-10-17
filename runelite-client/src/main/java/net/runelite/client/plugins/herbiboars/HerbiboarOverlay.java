@@ -123,7 +123,8 @@ class HerbiboarOverlay extends Overlay
 				graphics.setColor(clickBoxColor);
 				graphics.fill(clickbox);
 			}
-		} else
+		}
+		else
 		{
 			OverlayUtil.renderTileOverlay(graphics, object, "", color);
 		}

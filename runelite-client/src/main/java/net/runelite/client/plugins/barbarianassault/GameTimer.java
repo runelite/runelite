@@ -35,20 +35,6 @@ class GameTimer
 	final private Instant startTime = Instant.now();
 	private Instant prevWave = startTime;
 
-	private static String formatTime(LocalTime time)
-	{
-		if (time.getHour() > 0)
-		{
-			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
-		} else if (time.getMinute() > 9)
-		{
-			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
-		} else
-		{
-			return time.format(DateTimeFormatter.ofPattern("m:ss"));
-		}
-	}
-
 	String getTime(boolean waveTime)
 	{
 		final Instant now = Instant.now();
@@ -57,7 +43,8 @@ class GameTimer
 		if (waveTime)
 		{
 			elapsed = Duration.between(prevWave, now);
-		} else
+		}
+		else
 		{
 			elapsed = Duration.between(startTime, now).minus(Duration.of(1, GAME_TICKS));
 		}
@@ -68,5 +55,21 @@ class GameTimer
 	void setWaveStartTime()
 	{
 		prevWave = Instant.now();
+	}
+
+	private static String formatTime(LocalTime time)
+	{
+		if (time.getHour() > 0)
+		{
+			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
+		}
+		else if (time.getMinute() > 9)
+		{
+			return time.format(DateTimeFormatter.ofPattern("mm:ss"));
+		}
+		else
+		{
+			return time.format(DateTimeFormatter.ofPattern("m:ss"));
+		}
 	}
 }

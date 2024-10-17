@@ -63,7 +63,7 @@ public class MapDumperTest
 	public void dumpRaw() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-				outDir = folder.newFolder();
+			outDir = folder.newFolder();
 		XteaKeyManager keyManager = new XteaKeyManager();
 
 		try (Store store = new Store(base))
@@ -99,7 +99,8 @@ public class MapDumperTest
 					try
 					{
 						data = land.decompress(storage.loadArchive(land), keys);
-					} catch (IOException ex)
+					}
+					catch (IOException ex)
 					{
 						logger.info("Unable to decompress and load land " + x + "," + y + " (bad keys?)", ex);
 						continue;
@@ -145,7 +146,8 @@ public class MapDumperTest
 				try
 				{
 					data = land.decompress(storage.loadArchive(land), keys);
-				} catch (IOException ex)
+				}
+				catch (IOException ex)
 				{
 					continue;
 				}
@@ -164,7 +166,7 @@ public class MapDumperTest
 	public void dumpJson() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-				outDir = folder.newFolder();
+			outDir = folder.newFolder();
 
 		try (Store store = new Store(base))
 		{

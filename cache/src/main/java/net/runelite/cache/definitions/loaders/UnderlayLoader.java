@@ -40,7 +40,7 @@ public class UnderlayLoader
 
 		def.setId(id);
 
-		for (; ; )
+		for (;;)
 		{
 			int opcode = is.readUnsignedByte();
 			if (opcode == 0)

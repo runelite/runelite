@@ -148,12 +148,12 @@ public class MenuEntrySwapperPluginTest
 		lenient().when(config.swapTrade()).thenReturn(true);
 		when(config.swapAssignment()).thenReturn(true);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Rewards", "Duradel", MenuAction.NPC_FIFTH_OPTION),
-				menu("Trade", "Duradel", MenuAction.NPC_FOURTH_OPTION),
-				menu("Assignment", "Duradel", MenuAction.NPC_THIRD_OPTION),
-				menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Rewards", "Duradel", MenuAction.NPC_FIFTH_OPTION),
+			menu("Trade", "Duradel", MenuAction.NPC_FOURTH_OPTION),
+			menu("Assignment", "Duradel", MenuAction.NPC_THIRD_OPTION),
+			menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
 		};
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
@@ -161,12 +161,12 @@ public class MenuEntrySwapperPluginTest
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		// check the assignment swap is hit first instead of trade
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Rewards", "Duradel", MenuAction.NPC_FIFTH_OPTION),
-				menu("Trade", "Duradel", MenuAction.NPC_FOURTH_OPTION),
-				menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
-				menu("Assignment", "Duradel", MenuAction.NPC_THIRD_OPTION),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Rewards", "Duradel", MenuAction.NPC_FIFTH_OPTION),
+			menu("Trade", "Duradel", MenuAction.NPC_FOURTH_OPTION),
+			menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
+			menu("Assignment", "Duradel", MenuAction.NPC_THIRD_OPTION),
 		}, argumentCaptor.getValue());
 	}
 
@@ -175,21 +175,21 @@ public class MenuEntrySwapperPluginTest
 	{
 		when(config.swapBank()).thenReturn(true);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
-				menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
-				menu("Walk here", "", MenuAction.WALK),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
+			menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
+			menu("Walk here", "", MenuAction.WALK),
 
-				// Banker 2
-				menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
-				menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
-				menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
+			// Banker 2
+			menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
+			menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
+			menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
 
-				// Banker 1
-				menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
-				menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
-				menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
+			// Banker 1
+			menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
+			menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
+			menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -197,21 +197,21 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu, times(2)).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
-				menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
-				menu("Walk here", "", MenuAction.WALK),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
+			menu("Examine", "Gnome banker", MenuAction.EXAMINE_NPC),
+			menu("Walk here", "", MenuAction.WALK),
 
-				// Banker 2
-				menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
-				menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
-				menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
+			// Banker 2
+			menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
+			menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
+			menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
 
-				// Banker 1
-				menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
-				menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
-				menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
+			// Banker 1
+			menu("Collect", "Gnome banker", MenuAction.NPC_FOURTH_OPTION),
+			menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
+			menu("Bank", "Gnome banker", MenuAction.NPC_THIRD_OPTION),
 		}, argumentCaptor.getValue());
 	}
 
@@ -220,14 +220,14 @@ public class MenuEntrySwapperPluginTest
 	{
 		when(config.swapPay()).thenReturn(true);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Kragen", MenuAction.EXAMINE_NPC),
-				menu("Walk here", "", MenuAction.WALK),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Kragen", MenuAction.EXAMINE_NPC),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Pay (south)", "Kragen", MenuAction.NPC_FOURTH_OPTION),
-				menu("Pay (north)", "Kragen", MenuAction.NPC_THIRD_OPTION),
-				menu("Talk-to", "Kragen", MenuAction.NPC_FIRST_OPTION),
+			menu("Pay (south)", "Kragen", MenuAction.NPC_FOURTH_OPTION),
+			menu("Pay (north)", "Kragen", MenuAction.NPC_THIRD_OPTION),
+			menu("Talk-to", "Kragen", MenuAction.NPC_FIRST_OPTION),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -235,14 +235,14 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Kragen", MenuAction.EXAMINE_NPC),
-				menu("Walk here", "", MenuAction.WALK),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Kragen", MenuAction.EXAMINE_NPC),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Pay (south)", "Kragen", MenuAction.NPC_FOURTH_OPTION),
-				menu("Talk-to", "Kragen", MenuAction.NPC_FIRST_OPTION),
-				menu("Pay (north)", "Kragen", MenuAction.NPC_THIRD_OPTION),
+			menu("Pay (south)", "Kragen", MenuAction.NPC_FOURTH_OPTION),
+			menu("Talk-to", "Kragen", MenuAction.NPC_FIRST_OPTION),
+			menu("Pay (north)", "Kragen", MenuAction.NPC_THIRD_OPTION),
 		}, argumentCaptor.getValue());
 	}
 
@@ -252,13 +252,13 @@ public class MenuEntrySwapperPluginTest
 		when(config.swapQuick()).thenReturn(true);
 
 		//Quick-enter, Enter
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
-				menu("Walk here", "", MenuAction.WALK),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
-				menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -266,13 +266,13 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
-				menu("Walk here", "", MenuAction.WALK),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Formidable Passage", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
-				menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Quick-Enter", "Formidable Passage", MenuAction.GAME_OBJECT_SECOND_OPTION),
 		}, argumentCaptor.getValue());
 	}
 
@@ -282,10 +282,10 @@ public class MenuEntrySwapperPluginTest
 		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.EXTRA_OP);
 		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Wield", "Abyssal whip", MenuAction.CC_OP_LOW_PRIORITY, 9),
-				menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Wield", "Abyssal whip", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -293,10 +293,10 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
-				menu("Wield", "Abyssal whip", MenuAction.CC_OP, 9),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
+			menu("Wield", "Abyssal whip", MenuAction.CC_OP, 9),
 		}, argumentCaptor.getValue());
 	}
 
@@ -306,11 +306,11 @@ public class MenuEntrySwapperPluginTest
 		when(config.bankDepositShiftClick()).thenReturn(ShiftDepositMode.DEPOSIT_ALL);
 		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Wield", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 9),
-				menu("Deposit-All", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 8),
-				menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Wield", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Deposit-All", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 8),
+			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -318,11 +318,11 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Wield", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 9),
-				menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
-				menu("Deposit-All", "Rune arrow", MenuAction.CC_OP, 8),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Wield", "Rune arrow", MenuAction.CC_OP_LOW_PRIORITY, 9),
+			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
+			menu("Deposit-All", "Rune arrow", MenuAction.CC_OP, 8),
 		}, argumentCaptor.getValue());
 	}
 
@@ -331,14 +331,14 @@ public class MenuEntrySwapperPluginTest
 	{
 		when(config.swapBirdhouseEmpty()).thenReturn(true);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Redwood birdhouse", MenuAction.EXAMINE_OBJECT),
-				menu("Walk here", "", MenuAction.WALK),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Redwood birdhouse", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Empty", "Redwood birdhouse", MenuAction.GAME_OBJECT_THIRD_OPTION),
-				menu("Seeds", "Redwood birdhouse", MenuAction.GAME_OBJECT_SECOND_OPTION),
-				menu("Interact", "Redwood birdhouse", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Empty", "Redwood birdhouse", MenuAction.GAME_OBJECT_THIRD_OPTION),
+			menu("Seeds", "Redwood birdhouse", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Interact", "Redwood birdhouse", MenuAction.GAME_OBJECT_FIRST_OPTION),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -346,14 +346,14 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Redwood birdhouse", MenuAction.EXAMINE_OBJECT),
-				menu("Walk here", "", MenuAction.WALK),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Redwood birdhouse", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Interact", "Redwood birdhouse", MenuAction.GAME_OBJECT_FIRST_OPTION),
-				menu("Seeds", "Redwood birdhouse", MenuAction.GAME_OBJECT_SECOND_OPTION),
-				menu("Empty", "Redwood birdhouse", MenuAction.GAME_OBJECT_THIRD_OPTION),
+			menu("Interact", "Redwood birdhouse", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Seeds", "Redwood birdhouse", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Empty", "Redwood birdhouse", MenuAction.GAME_OBJECT_THIRD_OPTION),
 		}, argumentCaptor.getValue());
 	}
 
@@ -362,13 +362,13 @@ public class MenuEntrySwapperPluginTest
 	{
 		when(config.swapFairyRing()).thenReturn(FairyRingMode.ZANARIS);
 
-		entries = new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Fairy ring", MenuAction.EXAMINE_OBJECT),
-				menu("Walk here", "", MenuAction.WALK),
+		entries = new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Fairy ring", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
-				menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
 		};
 
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
@@ -376,13 +376,13 @@ public class MenuEntrySwapperPluginTest
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(menu).setMenuEntries(argumentCaptor.capture());
 
-		assertArrayEquals(new MenuEntry[] {
-				menu("Cancel", "", MenuAction.CANCEL),
-				menu("Examine", "Fairy ring", MenuAction.EXAMINE_OBJECT),
-				menu("Walk here", "", MenuAction.WALK),
+		assertArrayEquals(new MenuEntry[]{
+			menu("Cancel", "", MenuAction.CANCEL),
+			menu("Examine", "Fairy ring", MenuAction.EXAMINE_OBJECT),
+			menu("Walk here", "", MenuAction.WALK),
 
-				menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
-				menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
+			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
+			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
 		}, argumentCaptor.getValue());
 	}
 }

@@ -37,9 +37,9 @@ public interface FontTypeFace
 	int getBaseline();
 
 	void drawWidgetText(
-			String text,
-			int x, int y, int width, int height,
-			int rgb, int shadowRGB, int alpha,
-			@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int xTextAlignment, @MagicConstant(valuesFromClass = WidgetTextAlignment.class) int yTextAlignment,
-			int lineHeight);
+		String text,
+		int x, int y, int width, int height,
+		int rgb, int shadowRGB, int alpha,
+		@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int xTextAlignment, @MagicConstant(valuesFromClass = WidgetTextAlignment.class) int yTextAlignment,
+		int lineHeight);
 }

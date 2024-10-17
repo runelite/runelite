@@ -37,48 +37,38 @@ enum ChatboxTab
 {
 
 	ALL("Switch tab", ComponentID.CHATBOX_TAB_ALL,
-			ChatMessageType.values()),
+		ChatMessageType.values()),
 
 	// null 'after' var since we're not adding to menu
 	PRIVATE(null, ComponentID.CHATBOX_TAB_PRIVATE,
-			ChatMessageType.PRIVATECHAT, ChatMessageType.PRIVATECHATOUT, ChatMessageType.MODPRIVATECHAT,
-			ChatMessageType.LOGINLOGOUTNOTIFICATION),
+		ChatMessageType.PRIVATECHAT, ChatMessageType.PRIVATECHATOUT, ChatMessageType.MODPRIVATECHAT,
+		ChatMessageType.LOGINLOGOUTNOTIFICATION),
 
 	// null 'after' var since we're not adding to menu
 	PUBLIC(null, ComponentID.CHATBOX_TAB_PUBLIC,
-			ChatMessageType.PUBLICCHAT, ChatMessageType.AUTOTYPER, ChatMessageType.MODCHAT, ChatMessageType.MODAUTOTYPER),
+		ChatMessageType.PUBLICCHAT, ChatMessageType.AUTOTYPER, ChatMessageType.MODCHAT, ChatMessageType.MODAUTOTYPER),
 
 	GAME("Filter", ComponentID.CHATBOX_TAB_GAME,
-			ChatMessageType.GAMEMESSAGE, ChatMessageType.ENGINE, ChatMessageType.BROADCAST,
-			ChatMessageType.SNAPSHOTFEEDBACK, ChatMessageType.ITEM_EXAMINE, ChatMessageType.NPC_EXAMINE,
-			ChatMessageType.OBJECT_EXAMINE, ChatMessageType.FRIENDNOTIFICATION, ChatMessageType.IGNORENOTIFICATION,
-			ChatMessageType.CONSOLE, ChatMessageType.SPAM, ChatMessageType.PLAYERRELATED, ChatMessageType.TENSECTIMEOUT,
-			ChatMessageType.WELCOME, ChatMessageType.UNKNOWN),
+		ChatMessageType.GAMEMESSAGE, ChatMessageType.ENGINE, ChatMessageType.BROADCAST,
+		ChatMessageType.SNAPSHOTFEEDBACK, ChatMessageType.ITEM_EXAMINE, ChatMessageType.NPC_EXAMINE,
+		ChatMessageType.OBJECT_EXAMINE, ChatMessageType.FRIENDNOTIFICATION, ChatMessageType.IGNORENOTIFICATION,
+		ChatMessageType.CONSOLE, ChatMessageType.SPAM, ChatMessageType.PLAYERRELATED, ChatMessageType.TENSECTIMEOUT,
+		ChatMessageType.WELCOME, ChatMessageType.UNKNOWN),
 
 	CHANNEL(null, ComponentID.CHATBOX_TAB_CHANNEL,
-			ChatMessageType.FRIENDSCHATNOTIFICATION, ChatMessageType.FRIENDSCHAT, ChatMessageType.CHALREQ_FRIENDSCHAT),
+		ChatMessageType.FRIENDSCHATNOTIFICATION, ChatMessageType.FRIENDSCHAT, ChatMessageType.CHALREQ_FRIENDSCHAT),
 
 	CLAN(null, ComponentID.CHATBOX_TAB_CLAN,
-			ChatMessageType.CLAN_CHAT, ChatMessageType.CLAN_MESSAGE,
-			ChatMessageType.CLAN_GUEST_CHAT, ChatMessageType.CLAN_GUEST_MESSAGE),
+		ChatMessageType.CLAN_CHAT, ChatMessageType.CLAN_MESSAGE,
+		ChatMessageType.CLAN_GUEST_CHAT, ChatMessageType.CLAN_GUEST_MESSAGE),
 
 	// Group has its own Clear option, but Trade does not
 	TRADE_GROUP("Trade:</col> Show none", ComponentID.CHATBOX_TAB_TRADE,
-			ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE,
-			ChatMessageType.CLAN_GIM_CHAT, ChatMessageType.CLAN_GIM_MESSAGE),
+		ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE,
+		ChatMessageType.CLAN_GIM_CHAT, ChatMessageType.CLAN_GIM_MESSAGE),
 	;
 
 	private static final Map<Integer, ChatboxTab> TAB_MESSAGE_TYPES;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, ChatboxTab> builder = ImmutableMap.builder();
-		for (ChatboxTab t : values())
-		{
-			builder.put(t.widgetId, t);
-		}
-		TAB_MESSAGE_TYPES = builder.build();
-	}
 
 	@Nullable
 	private final String after;
@@ -91,6 +81,16 @@ enum ChatboxTab
 		this.after = after;
 		this.widgetId = widgetId;
 		this.messageTypes = messageTypes;
+	}
+
+	static
+	{
+		ImmutableMap.Builder<Integer, ChatboxTab> builder = ImmutableMap.builder();
+		for (ChatboxTab t : values())
+		{
+			builder.put(t.widgetId, t);
+		}
+		TAB_MESSAGE_TYPES = builder.build();
 	}
 
 	static ChatboxTab of(int widgetId)

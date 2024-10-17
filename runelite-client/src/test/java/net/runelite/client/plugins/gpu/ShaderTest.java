@@ -50,30 +50,30 @@ public class ShaderTest
 		Assume.assumeFalse("glslang.path is not set", Strings.isNullOrEmpty(verifier));
 
 		Template[] templates = {
-				new Template()
-						.addInclude(GpuPlugin.class)
-						.add(key ->
+			new Template()
+				.addInclude(GpuPlugin.class)
+				.add(key ->
+			{
+				if ("version_header".equals(key))
 				{
-					if ("version_header".equals(key))
-					{
-						return GpuPlugin.WINDOWS_VERSION_HEADER;
-					}
-					if ("thread_config".equals(key))
-					{
-						int threadCount = 512;
-						int facesPerThread = 1;
-						return "#define THREAD_COUNT " + threadCount + "\n" +
-								"#define FACES_PER_THREAD " + facesPerThread + "\n";
-					}
-					return null;
-				}),
+					return GpuPlugin.WINDOWS_VERSION_HEADER;
+				}
+				if ("thread_config".equals(key))
+				{
+					int threadCount = 512;
+					int facesPerThread = 1;
+					return "#define THREAD_COUNT " + threadCount + "\n" +
+						"#define FACES_PER_THREAD " + facesPerThread + "\n";
+				}
+				return null;
+			}),
 		};
 
 		Shader[] shaders = {
-				GpuPlugin.PROGRAM,
-				GpuPlugin.COMPUTE_PROGRAM,
-				GpuPlugin.UNORDERED_COMPUTE_PROGRAM,
-				GpuPlugin.UI_PROGRAM,
+			GpuPlugin.PROGRAM,
+			GpuPlugin.COMPUTE_PROGRAM,
+			GpuPlugin.UNORDERED_COMPUTE_PROGRAM,
+			GpuPlugin.UI_PROGRAM,
 		};
 
 		for (Template t : templates)

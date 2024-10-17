@@ -25,11 +25,12 @@
 
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
 
 public class ItemLoader
 {
@@ -61,81 +62,102 @@ public class ItemLoader
 		if (opcode == 1)
 		{
 			def.inventoryModel = stream.readUnsignedShort();
-		} else if (opcode == 2)
+		}
+		else if (opcode == 2)
 		{
 			def.name = stream.readString();
-		} else if (opcode == 3)
+		}
+		else if (opcode == 3)
 		{
 			def.examine = stream.readString();
-		} else if (opcode == 4)
+		}
+		else if (opcode == 4)
 		{
 			def.zoom2d = stream.readUnsignedShort();
-		} else if (opcode == 5)
+		}
+		else if (opcode == 5)
 		{
 			def.xan2d = stream.readUnsignedShort();
-		} else if (opcode == 6)
+		}
+		else if (opcode == 6)
 		{
 			def.yan2d = stream.readUnsignedShort();
-		} else if (opcode == 7)
+		}
+		else if (opcode == 7)
 		{
 			def.xOffset2d = stream.readUnsignedShort();
 			if (def.xOffset2d > 32767)
 			{
 				def.xOffset2d -= 65536;
 			}
-		} else if (opcode == 8)
+		}
+		else if (opcode == 8)
 		{
 			def.yOffset2d = stream.readUnsignedShort();
 			if (def.yOffset2d > 32767)
 			{
 				def.yOffset2d -= 65536;
 			}
-		} else if (opcode == 9)
+		}
+		else if (opcode == 9)
 		{
 			def.unknown1 = stream.readString();
-		} else if (opcode == 11)
+		}
+		else if (opcode == 11)
 		{
 			def.stackable = 1;
-		} else if (opcode == 12)
+		}
+		else if (opcode == 12)
 		{
 			def.cost = stream.readInt();
-		} else if (opcode == 13)
+		}
+		else if (opcode == 13)
 		{
 			def.wearPos1 = stream.readByte();
-		} else if (opcode == 14)
+		}
+		else if (opcode == 14)
 		{
 			def.wearPos2 = stream.readByte();
-		} else if (opcode == 16)
+		}
+		else if (opcode == 16)
 		{
 			def.members = true;
-		} else if (opcode == 23)
+		}
+		else if (opcode == 23)
 		{
 			def.maleModel0 = stream.readUnsignedShort();
 			def.maleOffset = stream.readUnsignedByte();
-		} else if (opcode == 24)
+		}
+		else if (opcode == 24)
 		{
 			def.maleModel1 = stream.readUnsignedShort();
-		} else if (opcode == 25)
+		}
+		else if (opcode == 25)
 		{
 			def.femaleModel0 = stream.readUnsignedShort();
 			def.femaleOffset = stream.readUnsignedByte();
-		} else if (opcode == 26)
+		}
+		else if (opcode == 26)
 		{
 			def.femaleModel1 = stream.readUnsignedShort();
-		} else if (opcode == 27)
+		}
+		else if (opcode == 27)
 		{
 			def.wearPos3 = stream.readByte();
-		} else if (opcode >= 30 && opcode < 35)
+		}
+		else if (opcode >= 30 && opcode < 35)
 		{
 			def.options[opcode - 30] = stream.readString();
 			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
 				def.options[opcode - 30] = null;
 			}
-		} else if (opcode >= 35 && opcode < 40)
+		}
+		else if (opcode >= 35 && opcode < 40)
 		{
 			def.interfaceOptions[opcode - 35] = stream.readString();
-		} else if (opcode == 40)
+		}
+		else if (opcode == 40)
 		{
 			int var5 = stream.readUnsignedByte();
 			def.colorFind = new short[var5];
@@ -147,7 +169,8 @@ public class ItemLoader
 				def.colorReplace[var4] = (short) stream.readUnsignedShort();
 			}
 
-		} else if (opcode == 41)
+		}
+		else if (opcode == 41)
 		{
 			int var5 = stream.readUnsignedByte();
 			def.textureFind = new short[var5];
@@ -159,10 +182,12 @@ public class ItemLoader
 				def.textureReplace[var4] = (short) stream.readUnsignedShort();
 			}
 
-		} else if (opcode == 42)
+		}
+		else if (opcode == 42)
 		{
 			def.shiftClickDropIndex = stream.readByte();
-		} else if (opcode == 43)
+		}
+		else if (opcode == 43)
 		{
 			int opId = stream.readUnsignedByte();
 			if (def.subops == null)
@@ -190,43 +215,56 @@ public class ItemLoader
 					def.subops[opId][subopId] = op;
 				}
 			}
-		} else if (opcode == 65)
+		}
+		else if (opcode == 65)
 		{
 			def.isTradeable = true;
-		} else if (opcode == 75)
+		}
+		else if (opcode == 75)
 		{
 			def.weight = stream.readShort();
-		} else if (opcode == 78)
+		}
+		else if (opcode == 78)
 		{
 			def.maleModel2 = stream.readUnsignedShort();
-		} else if (opcode == 79)
+		}
+		else if (opcode == 79)
 		{
 			def.femaleModel2 = stream.readUnsignedShort();
-		} else if (opcode == 90)
+		}
+		else if (opcode == 90)
 		{
 			def.maleHeadModel = stream.readUnsignedShort();
-		} else if (opcode == 91)
+		}
+		else if (opcode == 91)
 		{
 			def.femaleHeadModel = stream.readUnsignedShort();
-		} else if (opcode == 92)
+		}
+		else if (opcode == 92)
 		{
 			def.maleHeadModel2 = stream.readUnsignedShort();
-		} else if (opcode == 93)
+		}
+		else if (opcode == 93)
 		{
 			def.femaleHeadModel2 = stream.readUnsignedShort();
-		} else if (opcode == 94)
+		}
+		else if (opcode == 94)
 		{
 			def.category = stream.readUnsignedShort();
-		} else if (opcode == 95)
+		}
+		else if (opcode == 95)
 		{
 			def.zan2d = stream.readUnsignedShort();
-		} else if (opcode == 97)
+		}
+		else if (opcode == 97)
 		{
 			def.notedID = stream.readUnsignedShort();
-		} else if (opcode == 98)
+		}
+		else if (opcode == 98)
 		{
 			def.notedTemplate = stream.readUnsignedShort();
-		} else if (opcode >= 100 && opcode < 110)
+		}
+		else if (opcode >= 100 && opcode < 110)
 		{
 			if (def.countObj == null)
 			{
@@ -236,37 +274,48 @@ public class ItemLoader
 
 			def.countObj[opcode - 100] = stream.readUnsignedShort();
 			def.countCo[opcode - 100] = stream.readUnsignedShort();
-		} else if (opcode == 110)
+		}
+		else if (opcode == 110)
 		{
 			def.resizeX = stream.readUnsignedShort();
-		} else if (opcode == 111)
+		}
+		else if (opcode == 111)
 		{
 			def.resizeY = stream.readUnsignedShort();
-		} else if (opcode == 112)
+		}
+		else if (opcode == 112)
 		{
 			def.resizeZ = stream.readUnsignedShort();
-		} else if (opcode == 113)
+		}
+		else if (opcode == 113)
 		{
 			def.ambient = stream.readByte();
-		} else if (opcode == 114)
+		}
+		else if (opcode == 114)
 		{
 			def.contrast = stream.readByte();
-		} else if (opcode == 115)
+		}
+		else if (opcode == 115)
 		{
 			def.team = stream.readUnsignedByte();
-		} else if (opcode == 139)
+		}
+		else if (opcode == 139)
 		{
 			def.boughtId = stream.readUnsignedShort();
-		} else if (opcode == 140)
+		}
+		else if (opcode == 140)
 		{
 			def.boughtTemplateId = stream.readUnsignedShort();
-		} else if (opcode == 148)
+		}
+		else if (opcode == 148)
 		{
 			def.placeholderId = stream.readUnsignedShort();
-		} else if (opcode == 149)
+		}
+		else if (opcode == 149)
 		{
 			def.placeholderTemplateId = stream.readUnsignedShort();
-		} else if (opcode == 249)
+		}
+		else if (opcode == 249)
 		{
 			int length = stream.readUnsignedByte();
 
@@ -281,14 +330,17 @@ public class ItemLoader
 				if (isString)
 				{
 					value = stream.readString();
-				} else
+				}
+
+				else
 				{
 					value = stream.readInt();
 				}
 
 				def.params.put(key, value);
 			}
-		} else
+		}
+		else
 		{
 			logger.warn("Unrecognized opcode {}", opcode);
 		}

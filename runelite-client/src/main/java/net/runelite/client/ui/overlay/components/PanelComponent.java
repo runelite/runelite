@@ -38,29 +38,38 @@ public class PanelComponent implements LayoutableRenderableEntity
 {
 	@Getter
 	private final Rectangle bounds = new Rectangle();
-	@Getter
-	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
-	private final Dimension childDimensions = new Dimension();
+
 	@Setter
 	private Point preferredLocation = new Point();
+
 	@Setter
 	@Getter
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
+
 	@Setter
 	@Getter
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+
+	@Getter
+	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
+
 	@Setter
 	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
+
 	@Setter
 	private boolean wrap = false;
+
 	@Setter
 	private Rectangle border = new Rectangle(
-			ComponentConstants.STANDARD_BORDER,
-			ComponentConstants.STANDARD_BORDER,
-			ComponentConstants.STANDARD_BORDER,
-			ComponentConstants.STANDARD_BORDER);
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER,
+		ComponentConstants.STANDARD_BORDER);
+
 	@Setter
 	private Point gap = new Point(0, 0);
+
+	private final Dimension childDimensions = new Dimension();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -72,8 +81,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Calculate panel dimension
 		final Dimension dimension = new Dimension(
-				border.x + childDimensions.width + border.width,
-				border.y + childDimensions.height + border.height);
+			border.x + childDimensions.width + border.width,
+			border.y + childDimensions.height + border.height);
 
 		// Render background
 		if (backgroundColor != null)
@@ -94,8 +103,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 
 		// Create child preferred size
 		final Dimension childPreferredSize = new Dimension(
-				preferredSize.width - border.x - border.width,
-				preferredSize.height - border.y - border.height);
+			preferredSize.width - border.x - border.width,
+			preferredSize.height - border.y - border.height);
 
 		// Calculate max width/height for infoboxes
 		int totalHeight = 0;
@@ -179,7 +188,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 		if (orientation == ComponentOrientation.HORIZONTAL)
 		{
 			totalWidth -= gap.x;
-		} else // VERTICAL
+		}
+		else // VERTICAL
 		{
 			totalHeight -= gap.y;
 		}

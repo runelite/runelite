@@ -93,9 +93,10 @@ class ClueScrollEmoteOverlay extends Overlay
 			{
 				firstEmoteWidget = emoteWidget;
 				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null,
-						emoteClue.getSecondEmote() != null ? "1st" : null);
-			} else if (emoteClue.getSecondEmote() != null
-					&& emoteWidget.getSpriteId() == emoteClue.getSecondEmote().getSpriteId())
+					emoteClue.getSecondEmote() != null ? "1st" : null);
+			}
+			else if (emoteClue.getSecondEmote() != null
+				&& emoteWidget.getSpriteId() == emoteClue.getSecondEmote().getSpriteId())
 			{
 				secondEmoteWidget = emoteWidget;
 				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null, "2nd");

@@ -48,13 +48,16 @@ enum BirdHouseState
 		if (varp < 0 || varp > BirdHouse.values().length * 3)
 		{
 			return UNKNOWN;
-		} else if (varp == 0)
+		}
+		else if (varp == 0)
 		{
 			return EMPTY;
-		} else if (varp % 3 == 0)
+		}
+		else if (varp % 3 == 0)
 		{
 			return SEEDED;
-		} else
+		}
+		else
 		{
 			return BUILT;
 		}

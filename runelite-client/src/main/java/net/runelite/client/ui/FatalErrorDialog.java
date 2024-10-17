@@ -80,7 +80,8 @@ public class FatalErrorDialog extends JDialog
 			runelite.setBackground(ColorScheme.DARK_GRAY_COLOR);
 			runelite.setOpaque(true);
 			rightColumn.add(runelite);
-		} catch (RuntimeException e)
+		}
+		catch (RuntimeException e)
 		{
 		}
 
@@ -130,43 +131,6 @@ public class FatalErrorDialog extends JDialog
 		pane.add(rightColumn, BorderLayout.EAST);
 	}
 
-	public static void showNetErrorWindow(String action, Throwable err)
-	{
-		if (err instanceof VerificationException || err instanceof GeneralSecurityException)
-		{
-			new FatalErrorDialog("RuneLite was unable to verify the security of its connection to the internet while " +
-					action + ". You may have a misbehaving antivirus, internet service provider, a proxy, or an incomplete" +
-					" java installation.")
-					.addHelpButtons()
-					.open();
-			return;
-		}
-
-		if (err instanceof ConnectException)
-		{
-			new FatalErrorDialog("RuneLite is unable to connect to a required server while " + action + ". " +
-					"Please check your internet connection")
-					.addHelpButtons()
-					.open();
-			return;
-		}
-
-		if (err instanceof UnknownHostException)
-		{
-			new FatalErrorDialog("RuneLite is unable to resolve the address of a required server while " + action + ". " +
-					"Your DNS resolver may be misconfigured, pointing to an inaccurate resolver, or your internet connection may " +
-					"be down. ")
-					.addHelpButtons()
-					.addButton("Change your DNS resolver", () -> LinkBrowser.browse(RuneLiteProperties.getDNSChangeLink()))
-					.open();
-			return;
-		}
-
-		new FatalErrorDialog("RuneLite encountered a fatal error while " + action + ".")
-				.addHelpButtons()
-				.open();
-	}
-
 	public void open()
 	{
 		addButton("Exit", () -> System.exit(-1));
@@ -185,8 +149,8 @@ public class FatalErrorDialog extends JDialog
 		button.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		button.setForeground(Color.LIGHT_GRAY);
 		button.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
-				new EmptyBorder(4, 4, 4, 4)
+			BorderFactory.createMatteBorder(1, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
+			new EmptyBorder(4, 4, 4, 4)
 		));
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -196,10 +160,12 @@ public class FatalErrorDialog extends JDialog
 			if (button.getModel().isPressed())
 			{
 				button.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-			} else if (button.getModel().isRollover())
+			}
+			else if (button.getModel().isRollover())
 			{
 				button.setBackground(ColorScheme.DARK_GRAY_HOVER_COLOR);
-			} else
+			}
+			else
 			{
 				button.setBackground(ColorScheme.DARK_GRAY_COLOR);
 			}
@@ -221,12 +187,49 @@ public class FatalErrorDialog extends JDialog
 	public FatalErrorDialog addHelpButtons()
 	{
 		return addButton("Open logs folder", () -> LinkBrowser.open(RuneLite.LOGS_DIR.toString()))
-				.addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
-				.addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));
+			.addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
+			.addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));
 	}
 
 	public FatalErrorDialog addBuildingGuide()
 	{
 		return addButton("Building guide", () -> LinkBrowser.browse(RuneLiteProperties.getBuildingLink()));
+	}
+
+	public static void showNetErrorWindow(String action, Throwable err)
+	{
+		if (err instanceof VerificationException || err instanceof GeneralSecurityException)
+		{
+			new FatalErrorDialog("RuneLite was unable to verify the security of its connection to the internet while " +
+				action + ". You may have a misbehaving antivirus, internet service provider, a proxy, or an incomplete" +
+				" java installation.")
+				.addHelpButtons()
+				.open();
+			return;
+		}
+
+		if (err instanceof ConnectException)
+		{
+			new FatalErrorDialog("RuneLite is unable to connect to a required server while " + action + ". " +
+				"Please check your internet connection")
+				.addHelpButtons()
+				.open();
+			return;
+		}
+
+		if (err instanceof UnknownHostException)
+		{
+			new FatalErrorDialog("RuneLite is unable to resolve the address of a required server while " + action + ". " +
+				"Your DNS resolver may be misconfigured, pointing to an inaccurate resolver, or your internet connection may " +
+				"be down. ")
+				.addHelpButtons()
+				.addButton("Change your DNS resolver", () -> LinkBrowser.browse(RuneLiteProperties.getDNSChangeLink()))
+				.open();
+			return;
+		}
+
+		new FatalErrorDialog("RuneLite encountered a fatal error while " + action + ".")
+			.addHelpButtons()
+			.open();
 	}
 }

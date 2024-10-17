@@ -58,10 +58,11 @@ public class DataFile implements Closeable
 	}
 
 	/**
-	 * @param indexId   expected index of archive of contents being read
+	 *
+	 * @param indexId expected index of archive of contents being read
 	 * @param archiveId expected archive of contents being read
-	 * @param sector    sector to start reading at
-	 * @param size      size of file
+	 * @param sector sector to start reading at
+	 * @param size size of file
 	 * @return
 	 * @throws IOException
 	 */
@@ -77,8 +78,8 @@ public class DataFile implements Closeable
 		ByteBuffer buffer = ByteBuffer.allocate(size);
 
 		for (int part = 0, readBytesCount = 0, nextSector;
-			 size > readBytesCount;
-			 sector = nextSector)
+			size > readBytesCount;
+			sector = nextSector)
 		{
 			if (sector == 0)
 			{
@@ -109,15 +110,16 @@ public class DataFile implements Closeable
 				}
 
 				currentArchive = ((readBuffer[0] & 0xFF) << 24)
-						| ((readBuffer[1] & 0xFF) << 16)
-						| ((readBuffer[2] & 0xFF) << 8)
-						| (readBuffer[3] & 0xFF);
+					| ((readBuffer[1] & 0xFF) << 16)
+					| ((readBuffer[2] & 0xFF) << 8)
+					| (readBuffer[3] & 0xFF);
 				currentPart = ((readBuffer[4] & 0xFF) << 8) + (readBuffer[5] & 0xFF);
 				nextSector = ((readBuffer[6] & 0xFF) << 16)
-						| ((readBuffer[7] & 0xFF) << 8)
-						| (readBuffer[8] & 0xFF);
+					| ((readBuffer[7] & 0xFF) << 8)
+					| (readBuffer[8] & 0xFF);
 				currentIndex = readBuffer[9] & 0xFF;
-			} else
+			}
+			else
 			{
 				headerSize = 8;
 				if (dataBlockSize > SECTOR_SIZE - headerSize)
@@ -133,21 +135,21 @@ public class DataFile implements Closeable
 				}
 
 				currentArchive = ((readBuffer[0] & 0xFF) << 8)
-						| (readBuffer[1] & 0xFF);
+					| (readBuffer[1] & 0xFF);
 				currentPart = ((readBuffer[2] & 0xFF) << 8)
-						| (readBuffer[3] & 0xFF);
+					| (readBuffer[3] & 0xFF);
 				nextSector = ((readBuffer[4] & 0xFF) << 16)
-						| ((readBuffer[5] & 0xFF) << 8)
-						| (readBuffer[6] & 0xFF);
+					| ((readBuffer[5] & 0xFF) << 8)
+					| (readBuffer[6] & 0xFF);
 				currentIndex = readBuffer[7] & 0xFF;
 			}
 
 			if (archiveId != currentArchive || currentPart != part || indexId != currentIndex)
 			{
 				logger.warn("data mismatch {} != {}, {} != {}, {} != {}",
-						archiveId, currentArchive,
-						part, currentPart,
-						indexId, currentIndex);
+					archiveId, currentArchive,
+					part, currentPart,
+					indexId, currentIndex);
 				return null;
 			}
 
@@ -212,7 +214,8 @@ public class DataFile implements Closeable
 				{
 					dataToWrite = 510;
 				}
-			} else
+			}
+			else
 			{
 				if (data.remaining() <= 512)
 				{

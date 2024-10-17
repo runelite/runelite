@@ -59,10 +59,10 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "HiScore",
-		description = "Enable the HiScore panel and an optional Lookup option on players",
-		tags = {"panel", "players"},
-		loadWhenOutdated = true
+	name = "HiScore",
+	description = "Enable the HiScore panel and an optional Lookup option on players",
+	tags = {"panel", "players"},
+	loadWhenOutdated = true
 )
 public class HiscorePlugin extends Plugin
 {
@@ -102,11 +102,11 @@ public class HiscorePlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
 
 		navButton = NavigationButton.builder()
-				.tooltip("Hiscore")
-				.icon(icon)
-				.priority(5)
-				.panel(hiscorePanel)
-				.build();
+			.tooltip("Hiscore")
+			.icon(icon)
+			.priority(5)
+			.panel(hiscorePanel)
+			.build();
 
 		clientToolbar.addNavigation(navButton);
 
@@ -158,27 +158,27 @@ public class HiscorePlugin extends Plugin
 		final int groupId = WidgetUtil.componentToInterface(componentId);
 
 		if (groupId == InterfaceID.FRIEND_LIST && option.equals("Delete")
-				|| groupId == InterfaceID.FRIENDS_CHAT && (option.equals("Add ignore") || option.equals("Remove friend"))
-				|| groupId == InterfaceID.CHATBOX && (option.equals("Add ignore") || option.equals("Message"))
-				|| groupId == InterfaceID.IGNORE_LIST && option.equals("Delete")
-				|| (componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS) && (option.equals("Add ignore") || option.equals("Remove friend"))
-				|| groupId == InterfaceID.PRIVATE_CHAT && (option.equals("Add ignore") || option.equals("Message"))
-				|| groupId == InterfaceID.GROUP_IRON && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
+			|| groupId == InterfaceID.FRIENDS_CHAT && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == InterfaceID.CHATBOX && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == InterfaceID.IGNORE_LIST && option.equals("Delete")
+			|| (componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS) && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == InterfaceID.PRIVATE_CHAT && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == InterfaceID.GROUP_IRON && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
 		)
 		{
 			client.createMenuEntry(-2)
-					.setOption(LOOKUP)
-					.setTarget(event.getTarget())
-					.setType(MenuAction.RUNELITE)
-					.setIdentifier(event.getIdentifier())
-					.onClick(e ->
-					{
-						// Determine proper endpoint from player name.
-						// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
-						HiscoreEndpoint endpoint = findHiscoreEndpointFromPlayerName(e.getTarget());
-						String target = Text.removeTags(e.getTarget());
-						lookupPlayer(target, endpoint);
-					});
+				.setOption(LOOKUP)
+				.setTarget(event.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(event.getIdentifier())
+				.onClick(e ->
+				{
+					// Determine proper endpoint from player name.
+					// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
+					HiscoreEndpoint endpoint = findHiscoreEndpointFromPlayerName(e.getTarget());
+					String target = Text.removeTags(e.getTarget());
+					lookupPlayer(target, endpoint);
+				});
 		}
 	}
 

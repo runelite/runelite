@@ -32,10 +32,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Tile Indicators",
-		description = "Highlight the tile you are currently moving to",
-		tags = {"highlight", "overlay"},
-		enabledByDefault = false
+	name = "Tile Indicators",
+	description = "Highlight the tile you are currently moving to",
+	tags = {"highlight", "overlay"},
+	enabledByDefault = false
 )
 public class TileIndicatorsPlugin extends Plugin
 {

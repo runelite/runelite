@@ -54,8 +54,8 @@ public class ObjExporter
 		for (int i = 0; i < model.vertexCount; ++i)
 		{
 			objWriter.println("v " + model.vertexX[i] + " "
-					+ model.vertexY[i] * -1 + " "
-					+ model.vertexZ[i] * -1);
+				+ model.vertexY[i] * -1 + " "
+				+ model.vertexZ[i] * -1);
 		}
 
 		if (model.faceTextures != null)
@@ -86,11 +86,12 @@ public class ObjExporter
 			if (model.faceTextures != null)
 			{
 				objWriter.println("f "
-						+ x + "/" + (i * 3 + 1) + " "
-						+ y + "/" + (i * 3 + 2) + " "
-						+ z + "/" + (i * 3 + 3));
+					+ x + "/" + (i * 3 + 1) + " "
+					+ y + "/" + (i * 3 + 2) + " "
+					+ z + "/" + (i * 3 + 3));
 
-			} else
+			}
+			else
 			{
 				objWriter.println("f " + x + " " + y + " " + z);
 			}
@@ -111,13 +112,14 @@ public class ObjExporter
 
 			if (textureId == -1)
 			{
-				int rgb = JagexColor.HSLtoRGB(model.faceColors[i], BRIGHTNESS);
+				int rgb = JagexColor.HSLtoRGB( model.faceColors[i], BRIGHTNESS);
 				double r = ((rgb >> 16) & 0xff) / 255.0;
 				double g = ((rgb >> 8) & 0xff) / 255.0;
 				double b = (rgb & 0xff) / 255.0;
 
 				mtlWriter.println("Kd " + r + " " + g + " " + b);
-			} else
+			}
+			else
 			{
 				TextureDefinition texture = textureManager.findTexture(textureId);
 				assert texture != null;

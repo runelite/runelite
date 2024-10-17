@@ -73,15 +73,18 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SpecialCounterPluginTest
 {
-	@Bind
-	@Named("developerMode")
-	boolean developerMode;
 	@Mock
 	@Bind
 	private Client client;
+
 	@Mock
 	@Bind
 	private ClientThread clientThread;
+
+	@Bind
+	@Named("developerMode")
+	boolean developerMode;
+
 	@Mock
 	@Bind
 	private InfoBoxManager infoBoxManager;
@@ -117,15 +120,6 @@ public class SpecialCounterPluginTest
 	@Inject
 	private SpecialCounterPlugin specialCounterPlugin;
 
-	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)
-	{
-		Hitsplat hitsplat = new Hitsplat(type, type == HitsplatID.DAMAGE_ME ? 1 : 0, 42);
-		HitsplatApplied hitsplatApplied = new HitsplatApplied();
-		hitsplatApplied.setActor(target);
-		hitsplatApplied.setHitsplat(hitsplat);
-		return hitsplatApplied;
-	}
-
 	@Before
 	public void before()
 	{
@@ -146,6 +140,15 @@ public class SpecialCounterPluginTest
 
 		// Set up item image for spec info drop
 		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 24, 24, BufferedImage.TYPE_INT_ARGB));
+	}
+
+	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)
+	{
+		Hitsplat hitsplat = new Hitsplat(type, type == HitsplatID.DAMAGE_ME ? 1 : 0, 42);
+		HitsplatApplied hitsplatApplied = new HitsplatApplied();
+		hitsplatApplied.setActor(target);
+		hitsplatApplied.setHitsplat(hitsplat);
+		return hitsplatApplied;
 	}
 
 	@Test

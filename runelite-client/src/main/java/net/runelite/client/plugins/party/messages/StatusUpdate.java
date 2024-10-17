@@ -34,8 +34,7 @@ import net.runelite.client.party.messages.PartyMemberMessage;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class StatusUpdate extends PartyMemberMessage
-{
+public class StatusUpdate extends PartyMemberMessage {
 
 	// we use boxed fields to null out properties that haven't changed
 	@SerializedName("n")
@@ -65,8 +64,7 @@ public class StatusUpdate extends PartyMemberMessage
 	@SerializedName("c")
 	private Color memberColor = null;
 
-	public StatusUpdate(String characterName, Integer healthCurrent, Integer healthMax, Integer prayerCurrent, Integer prayerMax, Integer runEnergy, Integer specEnergy, Boolean vengeanceActive, Color memberColor)
-	{
+	public StatusUpdate(String characterName, Integer healthCurrent, Integer healthMax, Integer prayerCurrent, Integer prayerMax, Integer runEnergy, Integer specEnergy, Boolean vengeanceActive, Color memberColor) {
 		this.characterName = characterName;
 		this.healthCurrent = healthCurrent;
 		this.healthMax = healthMax;

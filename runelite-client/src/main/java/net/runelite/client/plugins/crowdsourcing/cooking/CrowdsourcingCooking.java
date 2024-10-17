@@ -75,21 +75,21 @@ public class CrowdsourcingCooking
 		final String message = event.getMessage();
 		// Message prefixes taken from CookingPlugin
 		if (message.startsWith("You successfully cook")
-				|| message.startsWith("You successfully bake")
-				|| message.startsWith("You successfully fry")
-				|| message.startsWith("You manage to cook")
-				|| message.startsWith("You roast a")
-				|| message.startsWith("You spit-roast")
-				|| message.startsWith("You cook")
-				|| message.equals("You burn the mushroom in the fire.")
-				|| message.startsWith("Eventually the Jubbly")
-				|| message.startsWith("Unfortunately the Jubbly")
-				|| message.startsWith("You accidentally burn")
-				|| message.startsWith("You half-cook")
-				|| message.startsWith("The undead meat is now cooked")
-				|| message.startsWith("The undead chicken is now cooked")
-				|| message.startsWith("You successfully scramble")
-				|| message.startsWith("You accidentally spoil"))
+			|| message.startsWith("You successfully bake")
+			|| message.startsWith("You successfully fry")
+			|| message.startsWith("You manage to cook")
+			|| message.startsWith("You roast a")
+			|| message.startsWith("You spit-roast")
+			|| message.startsWith("You cook")
+			|| message.equals("You burn the mushroom in the fire.")
+			|| message.startsWith("Eventually the Jubbly")
+			|| message.startsWith("Unfortunately the Jubbly")
+			|| message.startsWith("You accidentally burn")
+			|| message.startsWith("You half-cook")
+			|| message.startsWith("The undead meat is now cooked")
+			|| message.startsWith("The undead chicken is now cooked")
+			|| message.startsWith("You successfully scramble")
+			|| message.startsWith("You accidentally spoil"))
 		{
 			boolean inHosidiusKitchen = false;
 			Player local = client.getLocalPlayer();
@@ -111,11 +111,11 @@ public class CrowdsourcingCooking
 	{
 		MenuAction action = menuOptionClicked.getMenuAction();
 		if (action == MenuAction.GAME_OBJECT_FIRST_OPTION
-				|| action == MenuAction.GAME_OBJECT_SECOND_OPTION
-				|| action == MenuAction.GAME_OBJECT_THIRD_OPTION
-				|| action == MenuAction.GAME_OBJECT_FOURTH_OPTION
-				|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION
-				|| (action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
+			|| action == MenuAction.GAME_OBJECT_SECOND_OPTION
+			|| action == MenuAction.GAME_OBJECT_THIRD_OPTION
+			|| action == MenuAction.GAME_OBJECT_FOURTH_OPTION
+			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION
+			|| (action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
 				&& client.getSelectedWidget() != null
 				&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER))
 		{

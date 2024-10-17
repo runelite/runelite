@@ -66,7 +66,8 @@ public class StructLoader
 				if (isString)
 				{
 					value = stream.readString();
-				} else
+				}
+				else
 				{
 					value = stream.readInt();
 				}

@@ -169,14 +169,14 @@ public class ConfigManagerTest
 	public void testKeySplitter()
 	{
 		for (String[] test : new String[][]
-				{
-						{"rsprofile", "rsprofile.123", "rsprofileThing"},
-						{"rsprofile", null, "rsprofileThing"},
-						{"foo", "rsprofile.123", "big.bad"},
-						{"foo", null, "big.bad"},
-						{"foo", "rsprofile.123", "456"},
-						{"foo", null, "file.256"},
-				})
+			{
+				{"rsprofile", "rsprofile.123", "rsprofileThing"},
+				{"rsprofile", null, "rsprofileThing"},
+				{"foo", "rsprofile.123", "big.bad"},
+				{"foo", null, "big.bad"},
+				{"foo", "rsprofile.123", "456"},
+				{"foo", null, "file.256"},
+			})
 		{
 			String whole = ConfigManager.getWholeKey(test[0], test[1], test[2]);
 			String[] split = ConfigManager.splitKey(whole);

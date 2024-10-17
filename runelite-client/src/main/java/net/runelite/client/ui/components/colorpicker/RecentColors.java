@@ -54,27 +54,6 @@ final class RecentColors
 		this.configManager = configManager;
 	}
 
-	private static JPanel createBox(final Color color, final Consumer<Color> consumer, final boolean alphaHidden)
-	{
-		final JPanel box = new JPanel();
-		String hex = alphaHidden ? ColorUtil.colorToHexCode(color) : ColorUtil.colorToAlphaHexCode(color);
-
-		box.setBackground(color);
-		box.setOpaque(true);
-		box.setPreferredSize(new Dimension(BOX_SIZE, BOX_SIZE));
-		box.setToolTipText("#" + hex.toUpperCase());
-		box.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				consumer.accept(color);
-			}
-		});
-
-		return box;
-	}
-
 	private void load()
 	{
 		String str = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY);
@@ -129,5 +108,26 @@ final class RecentColors
 		}
 
 		return container;
+	}
+
+	private static JPanel createBox(final Color color, final Consumer<Color> consumer, final boolean alphaHidden)
+	{
+		final JPanel box = new JPanel();
+		String hex = alphaHidden ? ColorUtil.colorToHexCode(color) : ColorUtil.colorToAlphaHexCode(color);
+
+		box.setBackground(color);
+		box.setOpaque(true);
+		box.setPreferredSize(new Dimension(BOX_SIZE, BOX_SIZE));
+		box.setToolTipText("#" + hex.toUpperCase());
+		box.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				consumer.accept(color);
+			}
+		});
+
+		return box;
 	}
 }

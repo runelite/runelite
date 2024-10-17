@@ -76,8 +76,8 @@ public class CrowdsourcingThieving
 		}
 
 		return equipmentContainer.contains(ItemID.THIEVING_CAPE) ||
-				equipmentContainer.contains(ItemID.THIEVING_CAPET) ||
-				equipmentContainer.contains(ItemID.MAX_CAPE_13342);
+			equipmentContainer.contains(ItemID.THIEVING_CAPET) ||
+			equipmentContainer.contains(ItemID.MAX_CAPE_13342);
 	}
 
 	private int getArdougneDiary()
@@ -99,9 +99,9 @@ public class CrowdsourcingThieving
 
 		String message = event.getMessage();
 		if (BLACKJACK_SUCCESS.equals(message)
-				|| BLACKJACK_FAIL.equals(message)
-				|| PICKPOCKET_FAIL.matcher(message).matches()
-				|| PICKPOCKET_SUCCESS.matcher(message).matches())
+			|| BLACKJACK_FAIL.equals(message)
+			|| PICKPOCKET_FAIL.matcher(message).matches()
+			|| PICKPOCKET_SUCCESS.matcher(message).matches())
 		{
 			WorldPoint location = client.getLocalPlayer().getWorldLocation();
 			int ardougneDiary = getArdougneDiary();

@@ -44,7 +44,7 @@ class Message
 		if (in.startsWith("@"))
 		{
 			String[] tags = in.substring(1)
-					.split(";");
+				.split(";");
 			for (String tag : tags)
 			{
 				int eq = tag.indexOf('=');
@@ -52,11 +52,11 @@ class Message
 
 				String key = tag.substring(0, eq);
 				String value = tag.substring(eq + 1)
-						.replace("\\:", ";")
-						.replace("\\s", " ")
-						.replace("\\\\", "\\")
-						.replace("\\r", "\r")
-						.replace("\\n", "\n");
+					.replace("\\:", ";")
+					.replace("\\s", " ")
+					.replace("\\\\", "\\")
+					.replace("\\r", "\r")
+					.replace("\\n", "\n");
 
 				message.tags.put(key, value);
 			}
@@ -92,7 +92,8 @@ class Message
 			{
 				arg = args.substring(1);
 				sp = -1;
-			} else
+			}
+			else
 			{
 				sp = args.indexOf(' ');
 				arg = sp == -1 ? args : args.substring(0, sp);

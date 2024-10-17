@@ -105,7 +105,8 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 				if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY()))
 				{
 					graphics.setColor(color.darker());
-				} else
+				}
+				else
 				{
 					graphics.setColor(color);
 				}

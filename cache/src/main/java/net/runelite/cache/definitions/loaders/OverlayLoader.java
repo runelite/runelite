@@ -40,7 +40,7 @@ public class OverlayLoader
 
 		def.setId(id);
 
-		for (; ; )
+		for (;;)
 		{
 			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
@@ -52,14 +52,17 @@ public class OverlayLoader
 			{
 				int color = is.read24BitInt();
 				def.setRgbColor(color);
-			} else if (opcode == 2)
+			}
+			else if (opcode == 2)
 			{
 				int texture = is.readUnsignedByte();
 				def.setTexture(texture);
-			} else if (opcode == 5)
+			}
+			else if (opcode == 5)
 			{
 				def.setHideUnderlay(false);
-			} else if (opcode == 7)
+			}
+			else if (opcode == 7)
 			{
 				int secondaryColor = is.read24BitInt();
 				def.setSecondaryRgbColor(secondaryColor);

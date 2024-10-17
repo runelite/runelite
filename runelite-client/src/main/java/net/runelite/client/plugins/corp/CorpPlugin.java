@@ -61,24 +61,30 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Corporeal Beast",
-		description = "Show damage statistics and highlight dark energy cores",
-		tags = {"bosses", "combat", "pve", "overlay"}
+	name = "Corporeal Beast",
+	description = "Show damage statistics and highlight dark energy cores",
+	tags = {"bosses", "combat", "pve", "overlay"}
 )
 @Slf4j
 public class CorpPlugin extends Plugin
 {
 	private static final String ATTACK = "Attack";
 	private static final String DARK_ENERGY_CORE = "Dark energy core";
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<Actor> players = new HashSet<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC core;
+
 	private int yourDamage;
+
 	@Getter(AccessLevel.PACKAGE)
 	private int totalDamage;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<Actor> players = new HashSet<>();
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
@@ -90,21 +96,23 @@ public class CorpPlugin extends Plugin
 
 	@Inject
 	private CorpConfig config;
+
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
 	private final Function<NPC, HighlightedNpc> isCore = (npc) ->
 	{
 		if (npc == core)
 		{
 			return HighlightedNpc.builder()
-					.npc(npc)
-					.tile(true)
-					.highlightColor(Color.RED.brighter())
-					.render(n -> config.markDarkCore())
-					.build();
+				.npc(npc)
+				.tile(true)
+				.highlightColor(Color.RED.brighter())
+				.render(n -> config.markDarkCore())
+				.build();
 		}
 		return null;
 	};
-	@Inject
-	private NpcOverlayService npcOverlayService;
 
 	@Provides
 	CorpConfig getConfig(ConfigManager configManager)
@@ -175,22 +183,23 @@ public class CorpPlugin extends Plugin
 			{
 				// Show kill stats
 				String message = new ChatMessageBuilder()
-						.append(ChatColorType.NORMAL)
-						.append("Corporeal Beast: Your damage: ")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(Integer.toString(yourDamage))
-						.append(ChatColorType.NORMAL)
-						.append(", Total damage: ")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(Integer.toString(totalDamage))
-						.build();
+					.append(ChatColorType.NORMAL)
+					.append("Corporeal Beast: Your damage: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(yourDamage))
+					.append(ChatColorType.NORMAL)
+					.append(", Total damage: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(Integer.toString(totalDamage))
+					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CONSOLE)
-						.runeLiteFormattedMessage(message)
-						.build());
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
 			}
-		} else if (npc == core)
+		}
+		else if (npc == core)
 		{
 			core = null;
 		}
@@ -248,8 +257,8 @@ public class CorpPlugin extends Plugin
 		}
 
 		if (menuEntry.getType() != MenuAction.NPC_SECOND_OPTION
-				|| !menuEntry.getOption().equals(ATTACK)
-				|| !config.leftClickCore())
+			|| !menuEntry.getOption().equals(ATTACK)
+			|| !config.leftClickCore())
 		{
 			return;
 		}

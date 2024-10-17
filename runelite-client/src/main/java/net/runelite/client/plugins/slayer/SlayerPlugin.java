@@ -93,9 +93,9 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-		name = "Slayer",
-		description = "Show additional slayer task related information",
-		tags = {"combat", "notifications", "overlay", "tasks"}
+	name = "Slayer",
+	description = "Show additional slayer task related information",
+	tags = {"combat", "notifications", "overlay", "tasks"}
 )
 @Slf4j
 public class SlayerPlugin extends Plugin
@@ -107,84 +107,96 @@ public class SlayerPlugin extends Plugin
 	private static final String TASK_COMMAND_STRING = "!task";
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private SlayerConfig config;
+
+	@Inject
+	private ConfigManager configManager;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private SlayerOverlay overlay;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private TargetWeaknessOverlay targetWeaknessOverlay;
+
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
+
+	@Inject
+	private ChatClient chatClient;
+
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
-	private final List<Pattern> targetNames = new ArrayList<>();
+
 	@Inject
 	@Named("developerMode")
 	boolean developerMode;
-	@Inject
-	private Client client;
-	@Inject
-	private SlayerConfig config;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int amount;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private int initialAmount;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String taskLocation;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String taskName;
+
+	private TaskCounter counter;
+	private Instant infoTimer;
+	private boolean loginFlag;
+	private final List<Pattern> targetNames = new ArrayList<>();
+
+	private String[] taskLocations;
+
 	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
 	{
 		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
 		{
 			Color color = config.getTargetColor();
 			return HighlightedNpc.builder()
-					.npc(n)
-					.highlightColor(color)
-					.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
-					.hull(config.highlightHull())
-					.tile(config.highlightTile())
-					.outline(config.highlightOutline())
-					.build();
+				.npc(n)
+				.highlightColor(color)
+				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
+				.hull(config.highlightHull())
+				.tile(config.highlightTile())
+				.outline(config.highlightOutline())
+				.build();
 
 		}
 		return null;
 	};
-	@Inject
-	private ConfigManager configManager;
-	@Inject
-	private OverlayManager overlayManager;
-	@Inject
-	private SlayerOverlay overlay;
-	@Inject
-	private InfoBoxManager infoBoxManager;
-	@Inject
-	private ItemManager itemManager;
-	@Inject
-	private Notifier notifier;
-	@Inject
-	private ClientThread clientThread;
-	@Inject
-	private TargetWeaknessOverlay targetWeaknessOverlay;
-	@Inject
-	private ChatCommandManager chatCommandManager;
-	@Inject
-	private ScheduledExecutorService executor;
-	@Inject
-	private ChatClient chatClient;
-	@Inject
-	private NpcOverlayService npcOverlayService;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private int amount;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private int initialAmount;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private String taskLocation;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private String taskName;
-	private TaskCounter counter;
-	private Instant infoTimer;
-	private boolean loginFlag;
-	private String[] taskLocations;
-
-	private static Pattern targetNamePattern(final String targetName)
-	{
-		return Pattern.compile("(?:\\s|^)" + targetName + "(?:\\s|$)", Pattern.CASE_INSENSITIVE);
-	}
-
-	//Utils
-	private static String capsString(String str)
-	{
-		return str.substring(0, 1).toUpperCase() + str.substring(1);
-	}
 
 	@Override
 	public void configure(Binder binder)
@@ -283,7 +295,8 @@ public class SlayerPlugin extends Plugin
 		if (value != null)
 		{
 			configManager.setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
-		} else
+		}
+		else
 		{
 			configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, key);
 		}
@@ -320,12 +333,13 @@ public class SlayerPlugin extends Plugin
 		int varpId = varbitChanged.getVarpId();
 		int varbitId = varbitChanged.getVarbitId();
 		if (varpId == VarPlayer.SLAYER_TASK_SIZE
-				|| varpId == VarPlayer.SLAYER_TASK_LOCATION
-				|| varpId == VarPlayer.SLAYER_TASK_CREATURE
-				|| varbitId == Varbits.SLAYER_TASK_BOSS)
+			|| varpId == VarPlayer.SLAYER_TASK_LOCATION
+			|| varpId == VarPlayer.SLAYER_TASK_CREATURE
+			|| varbitId == Varbits.SLAYER_TASK_BOSS)
 		{
 			clientThread.invokeLater(this::updateTask);
-		} else if (varbitId == Varbits.SLAYER_POINTS)
+		}
+		else if (varbitId == Varbits.SLAYER_POINTS)
 		{
 			setProfileConfig(SlayerConfig.POINTS_KEY, varbitChanged.getValue());
 
@@ -335,7 +349,8 @@ public class SlayerPlugin extends Plugin
 				removeCounter();
 				addCounter();
 			}
-		} else if (varbitId == Varbits.SLAYER_TASK_STREAK)
+		}
+		else if (varbitId == Varbits.SLAYER_TASK_STREAK)
 		{
 			setProfileConfig(SlayerConfig.STREAK_KEY, varbitChanged.getValue());
 
@@ -358,13 +373,14 @@ public class SlayerPlugin extends Plugin
 			if (taskId == 98 /* Bosses, from [proc,helper_slayer_current_assignment] */)
 			{
 				int structId = client.getEnum(EnumID.SLAYER_TASK)
-						.getIntValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
+					.getIntValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
 				taskName = client.getStructComposition(structId)
-						.getStringValue(ParamID.SLAYER_TASK_NAME);
-			} else
+					.getStringValue(ParamID.SLAYER_TASK_NAME);
+			}
+			else
 			{
 				taskName = client.getEnum(EnumID.SLAYER_TASK_CREATURE)
-						.getStringValue(taskId);
+					.getStringValue(taskId);
 			}
 
 			int areaId = client.getVarpValue(VarPlayer.SLAYER_TASK_LOCATION);
@@ -372,7 +388,7 @@ public class SlayerPlugin extends Plugin
 			if (areaId > 0)
 			{
 				taskLocation = client.getEnum(EnumID.SLAYER_TASK_LOCATION)
-						.getStringValue(areaId);
+					.getStringValue(areaId);
 			}
 
 			if (loginFlag)
@@ -386,11 +402,13 @@ public class SlayerPlugin extends Plugin
 				// initialize streak and points in the event the plugin was toggled on after login
 				setProfileConfig(SlayerConfig.POINTS_KEY, client.getVarbitValue(Varbits.SLAYER_POINTS));
 				setProfileConfig(SlayerConfig.STREAK_KEY, client.getVarbitValue(Varbits.SLAYER_TASK_STREAK));
-			} else if (!Objects.equals(taskName, this.taskName) || !Objects.equals(taskLocation, this.taskLocation))
+			}
+			else if (!Objects.equals(taskName, this.taskName) || !Objects.equals(taskLocation, this.taskLocation))
 			{
 				log.debug("Task change: {}x {} at {}", amount, taskName, taskLocation);
 				setTask(taskName, amount, amount, taskLocation, true);
-			} else if (amount != this.amount)
+			}
+			else if (amount != this.amount)
 			{
 				log.debug("Amount change: {} -> {}", this.amount, amount);
 
@@ -406,7 +424,8 @@ public class SlayerPlugin extends Plugin
 					infoTimer = Instant.now();
 				}
 			}
-		} else if (this.amount > 0)
+		}
+		else if (this.amount > 0)
 		{
 			log.debug("Task complete");
 			setTask("", 0, 0);
@@ -459,11 +478,13 @@ public class SlayerPlugin extends Plugin
 			if (config.showInfobox())
 			{
 				clientThread.invoke(this::addCounter);
-			} else
+			}
+			else
 			{
 				removeCounter();
 			}
-		} else
+		}
+		else
 		{
 			npcOverlayService.rebuild();
 		}
@@ -473,7 +494,7 @@ public class SlayerPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		if ((menuOptionClicked.getMenuAction() == MenuAction.CC_OP || menuOptionClicked.getMenuAction() == MenuAction.CC_OP_LOW_PRIORITY)
-				&& menuOptionClicked.getMenuOption().equals("Check"))
+			&& menuOptionClicked.getMenuOption().equals("Check"))
 		{
 			Widget w = client.getWidget(menuOptionClicked.getParam1());
 			if (w == null)
@@ -502,7 +523,7 @@ public class SlayerPlugin extends Plugin
 
 			itemId = ItemVariationMapping.map(itemId);
 			if (itemId == ItemID.SLAYER_HELMET || itemId == ItemID.SLAYER_RING_8
-					|| itemId == ItemID.ENCHANTED_GEM)
+				|| itemId == ItemID.ENCHANTED_GEM)
 			{
 				log.debug("Checked slayer task");
 				infoTimer = Instant.now();
@@ -526,14 +547,14 @@ public class SlayerPlugin extends Plugin
 		}
 
 		final String name = composition.getName()
-				.replace('\u00A0', ' ')
-				.toLowerCase();
+			.replace('\u00A0', ' ')
+			.toLowerCase();
 
 		for (Pattern target : targetNames)
 		{
 			final Matcher targetMatcher = target.matcher(name);
 			if (targetMatcher.find()
-					&& (ArrayUtils.contains(composition.getActions(), "Attack")
+				&& (ArrayUtils.contains(composition.getActions(), "Attack")
 					// Pick action is for zygomite-fungi
 					|| ArrayUtils.contains(composition.getActions(), "Pick")))
 			{
@@ -550,11 +571,16 @@ public class SlayerPlugin extends Plugin
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
-					.map(SlayerPlugin::targetNamePattern)
-					.forEach(targetNames::add);
+				.map(SlayerPlugin::targetNamePattern)
+				.forEach(targetNames::add);
 
 			targetNames.add(targetNamePattern(taskName.replaceAll("s$", "")));
 		}
+	}
+
+	private static Pattern targetNamePattern(final String targetName)
+	{
+		return Pattern.compile("(?:\\s|^)" + targetName + "(?:\\s|$)", Pattern.CASE_INSENSITIVE);
 	}
 
 	private void rebuildTargetList()
@@ -620,15 +646,15 @@ public class SlayerPlugin extends Plugin
 		}
 
 		taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
-				+ " %s</br>"
-				+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
-				+ " %s";
+			+ " %s</br>"
+			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+			+ " %s";
 
 		if (initialAmount > 0)
 		{
 			taskTooltip += "</br>"
-					+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
-					+ " " + initialAmount;
+				+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
+				+ " " + initialAmount;
 		}
 
 		counter = new TaskCounter(taskImg, this, amount);
@@ -661,25 +687,27 @@ public class SlayerPlugin extends Plugin
 		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
-		} else
+		}
+		else
 		{
 			player = Text.removeTags(chatMessage.getName())
-					.replace('\u00A0', ' ');
+				.replace('\u00A0', ' ');
 		}
 
 		net.runelite.http.api.chat.Task task;
 		try
 		{
 			task = chatClient.getTask(player);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.debug("unable to lookup slayer task", ex);
 			return;
 		}
 
 		if (TASK_STRING_VALIDATION.matcher(task.getTask()).find() || task.getTask().length() > TASK_STRING_MAX_LENGTH ||
-				TASK_STRING_VALIDATION.matcher(task.getLocation()).find() || task.getLocation().length() > TASK_STRING_MAX_LENGTH ||
-				Task.getTask(task.getTask()) == null || !isValidLocation(task.getLocation()))
+			TASK_STRING_VALIDATION.matcher(task.getLocation()).find() || task.getLocation().length() > TASK_STRING_MAX_LENGTH ||
+			Task.getTask(task.getTask()) == null || !isValidLocation(task.getLocation()))
 		{
 			log.debug("Validation failed for task name or location: {}", task);
 			return;
@@ -697,17 +725,18 @@ public class SlayerPlugin extends Plugin
 		if (killed < 0)
 		{
 			sb.append(task.getAmount()).append(" left");
-		} else
+		}
+		else
 		{
 			sb.append(killed).append('/').append(task.getInitialAmount()).append(" killed");
 		}
 
 		String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Slayer Task: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(sb.toString())
-				.build();
+			.append(ChatColorType.NORMAL)
+			.append("Slayer Task: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(sb.toString())
+			.build();
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
@@ -728,10 +757,12 @@ public class SlayerPlugin extends Plugin
 			try
 			{
 				chatClient.submitTask(playerName, capsString(taskName), amount, initialAmount, taskLocation);
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				log.warn("unable to submit slayer task", ex);
-			} finally
+			}
+			finally
 			{
 				chatInput.resume();
 			}
@@ -759,5 +790,11 @@ public class SlayerPlugin extends Plugin
 		}
 
 		return false;
+	}
+
+	//Utils
+	private static String capsString(String str)
+	{
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 }

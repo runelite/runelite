@@ -73,30 +73,16 @@ public class ImageCapture
 	private final ScheduledExecutorService executor;
 	private final EventBus eventBus;
 
-	private static int getScaledValue(final double scale, final int value)
-	{
-		return (int) (value * scale);
-	}
-
-	private static String format(Date date)
-	{
-		synchronized (TIME_FORMAT)
-		{
-			return TIME_FORMAT.format(date);
-		}
-	}
-
 	/**
 	 * Take a screenshot and save it
-	 *
-	 * @param subDir             the subdirectory to save the screenshot in
-	 * @param fileName           the filename for the screenshot
+	 * @param subDir the subdirectory to save the screenshot in
+	 * @param fileName the filename for the screenshot
 	 * @param includeClientFrame whether to include the client ui in the screenshot
-	 * @param notify             whether to send a notification
-	 * @param copyToClipboard    whether to copy the screenshot to clipboard
+	 * @param notify whether to send a notification
+	 * @param copyToClipboard whether to copy the screenshot to clipboard
 	 */
 	public void takeScreenshot(@Nullable String subDir, String fileName, boolean includeClientFrame,
-							   boolean notify, boolean copyToClipboard)
+		boolean notify, boolean copyToClipboard)
 	{
 		drawManager.requestNextFrameListener((img) ->
 		{
@@ -107,7 +93,8 @@ public class ImageCapture
 				if (includeClientFrame)
 				{
 					screenshot = addClientFrame(img);
-				} else
+				}
+				else
 				{
 					screenshot = ImageUtil.bufferedImageFromImage(img);
 				}
@@ -147,7 +134,8 @@ public class ImageCapture
 		try
 		{
 			SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
-		} catch (InterruptedException | InvocationTargetException e)
+		}
+		catch (InterruptedException | InvocationTargetException e)
 		{
 			log.warn("unable to paint client UI on screenshot", e);
 		}
@@ -168,21 +156,26 @@ public class ImageCapture
 		return screenshot;
 	}
 
+	private static int getScaledValue(final double scale, final int value)
+	{
+		return (int) (value * scale);
+	}
+
 	/**
 	 * Save a screenshot to disk. And optionally send a notification and copy it to clipboard.
 	 *
-	 * @param screenshot      screenshot
-	 * @param fileName        Filename to use, without file extension.
-	 * @param subDir          Directory within the player screenshots dir to store the captured screenshot to.
-	 * @param notify          Send a notification to the system tray when the image is captured.
+	 * @param screenshot screenshot
+	 * @param fileName Filename to use, without file extension.
+	 * @param subDir Directory within the player screenshots dir to store the captured screenshot to.
+	 * @param notify Send a notification to the system tray when the image is captured.
 	 * @param saveToClipboard Whether to also save the screenshot to clipboard
 	 */
 	public void saveScreenshot(
-			BufferedImage screenshot,
-			String fileName,
-			@Nullable String subDir,
-			boolean notify,
-			boolean saveToClipboard
+		BufferedImage screenshot,
+		String fileName,
+		@Nullable String subDir,
+		boolean notify,
+		boolean saveToClipboard
 	)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
@@ -208,7 +201,8 @@ public class ImageCapture
 			}
 
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
-		} else
+		}
+		else
 		{
 			playerFolder = SCREENSHOT_DIR;
 		}
@@ -229,7 +223,8 @@ public class ImageCapture
 		try
 		{
 			ImageIO.write(screenshot, "PNG", screenshotFile);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.error("error writing screenshot", ex);
 			return;
@@ -245,14 +240,15 @@ public class ImageCapture
 			{
 				notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
 			}
-		} else if (notify)
+		}
+		else if (notify)
 		{
 			notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
 		}
 
 		ScreenshotTaken screenshotTaken = new ScreenshotTaken(
-				screenshotFile,
-				screenshot
+			screenshotFile,
+			screenshot
 		);
 		eventBus.post(screenshotTaken);
 	}
@@ -260,9 +256,8 @@ public class ImageCapture
 	/**
 	 * Saves a screenshot to the screenshots folder as a PNG, and fires a ScreenshotTaken
 	 * event afterward.
-	 *
-	 * @see #saveScreenshot(BufferedImage, String, String, boolean, boolean)
 	 * @deprecated This method formerly could upload the image to Imgur, which is no longer supported. Use saveScreenshot instead.
+	 * @see #saveScreenshot(BufferedImage, String, String, boolean, boolean)
 	 */
 	@Deprecated
 	public void takeScreenshot(BufferedImage screenshot, String fileName, @Nullable String subDir, boolean notify, ImageUploadStyle imageUploadStyle)
@@ -271,15 +266,22 @@ public class ImageCapture
 	}
 
 	/**
-	 * Saves a screenshot to the screenshots folder as a PNG, and fires a ScreenshotTaken
-	 * event afterward.
-	 *
-	 * @see #saveScreenshot(BufferedImage, String, String, boolean, boolean)
+	  * Saves a screenshot to the screenshots folder as a PNG, and fires a ScreenshotTaken
+	  * event afterward.
 	 * @deprecated This method formerly could upload the image to Imgur, which is no longer supported. Use saveScreenshot instead.
+	 * @see #saveScreenshot(BufferedImage, String, String, boolean, boolean)
 	 */
 	@Deprecated
 	public void takeScreenshot(BufferedImage screenshot, String fileName, boolean notify, ImageUploadStyle imageUploadStyle)
 	{
 		takeScreenshot(screenshot, fileName, null, notify, imageUploadStyle);
+	}
+
+	private static String format(Date date)
+	{
+		synchronized (TIME_FORMAT)
+		{
+			return TIME_FORMAT.format(date);
+		}
 	}
 }

@@ -40,6 +40,7 @@ public class WinUtil
 
 	/**
 	 * Forcibly set focus to the given component
+	 *
 	 */
 	public static void requestForeground(Frame frame)
 	{
@@ -62,6 +63,13 @@ public class WinUtil
 		user32.SetForegroundWindow(hwnd);
 	}
 
+	interface RLUser32 extends StdCallLibrary
+	{
+		RLUser32 INSTANCE = Native.load("user32", RLUser32.class, W32APIOptions.DEFAULT_OPTIONS);
+
+		boolean IsWindowArranged(Pointer hwnd);
+	}
+
 	public static boolean isWindowArranged(Window window)
 	{
 		if (!isWindowArrangedSupported || !window.isDisplayable())
@@ -73,18 +81,12 @@ public class WinUtil
 		{
 			Pointer hwnd = Native.getComponentPointer(window);
 			return RLUser32.INSTANCE.IsWindowArranged(hwnd);
-		} catch (LinkageError ignored)
+		}
+		catch (LinkageError ignored)
 		{
 			// IsWindowArranged is only since Win 10 1903
 			isWindowArrangedSupported = false;
 			return false;
 		}
-	}
-
-	interface RLUser32 extends StdCallLibrary
-	{
-		RLUser32 INSTANCE = Native.load("user32", RLUser32.class, W32APIOptions.DEFAULT_OPTIONS);
-
-		boolean IsWindowArranged(Pointer hwnd);
 	}
 }

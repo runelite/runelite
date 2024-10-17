@@ -68,8 +68,8 @@ class SpecialCounter extends Counter
 		for (Map.Entry<String, Integer> entry : partySpecs.entrySet())
 		{
 			stringBuilder.append("</br>")
-					.append(entry.getKey() == null ? "You" : entry.getKey()).append(": ")
-					.append(buildTooltip(entry.getValue()));
+				.append(entry.getKey() == null ? "You" : entry.getKey()).append(": ")
+				.append(buildTooltip(entry.getValue()));
 		}
 
 		return stringBuilder.toString();
@@ -82,11 +82,13 @@ class SpecialCounter extends Counter
 			if (hitValue == 1)
 			{
 				return weapon.getName() + " special has hit " + hitValue + " time.";
-			} else
+			}
+			else
 			{
 				return weapon.getName() + " special has hit " + hitValue + " times.";
 			}
-		} else
+		}
+		else
 		{
 			return weapon.getName() + " special has hit " + hitValue + " total.";
 		}

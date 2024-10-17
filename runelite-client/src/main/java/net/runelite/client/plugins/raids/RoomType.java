@@ -43,19 +43,6 @@ public enum RoomType
 	private final String name;
 	private final char code;
 
-	static RoomType fromCode(char code)
-	{
-		for (RoomType type : values())
-		{
-			if (type.getCode() == code)
-			{
-				return type;
-			}
-		}
-
-		return EMPTY;
-	}
-
 	RaidRoom getUnsolvedRoom()
 	{
 		switch (this)
@@ -76,5 +63,18 @@ public enum RoomType
 			default:
 				return RaidRoom.EMPTY;
 		}
+	}
+
+	static RoomType fromCode(char code)
+	{
+		for (RoomType type : values())
+		{
+			if (type.getCode() == code)
+			{
+				return type;
+			}
+		}
+
+		return EMPTY;
 	}
 }

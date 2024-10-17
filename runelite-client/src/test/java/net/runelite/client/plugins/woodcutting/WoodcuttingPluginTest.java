@@ -88,13 +88,6 @@ public class WoodcuttingPluginTest
 	@Bind
 	OverlayManager overlayManager;
 
-	private static ObjectComposition makeObject(int id, String name)
-	{
-		var obj = mock(ObjectComposition.class);
-		when(obj.getName()).thenReturn(name);
-		return obj;
-	}
-
 	@Before
 	public void before()
 	{
@@ -349,6 +342,13 @@ public class WoodcuttingPluginTest
 		woodcuttingPlugin.onChatMessage(chatMessage);
 
 		assertEquals(gameObject, woodcuttingPlugin.getSaplingOrder()[1]);
+	}
+
+	private static ObjectComposition makeObject(int id, String name)
+	{
+		var obj = mock(ObjectComposition.class);
+		when(obj.getName()).thenReturn(name);
+		return obj;
 	}
 
 	@Test

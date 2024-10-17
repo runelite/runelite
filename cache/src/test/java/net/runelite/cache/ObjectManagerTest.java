@@ -46,14 +46,14 @@ public class ObjectManagerTest
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder(),
-				javaDir = folder.newFolder();
+			javaDir = folder.newFolder();
 
 		try (Store store = new Store(StoreLocation.LOCATION))
 		{
 			store.load();
 
 			ObjectManager dumper = new ObjectManager(
-					store
+				store
 			);
 			dumper.load();
 			dumper.dump(dumpDir);

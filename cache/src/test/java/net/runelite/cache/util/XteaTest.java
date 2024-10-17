@@ -36,13 +36,13 @@ public class XteaTest
 		byte[] data = "testtesttest1".getBytes(StandardCharsets.UTF_8);
 
 		int[] key = new int[]
-				{
-						4, 8, 15, 16
-				};
+		{
+			4, 8, 15, 16
+		};
 		byte[] encrypted = new byte[]
-				{
-						121, -18, 48, 64, 120, -42, -113, 77, 116, 101, 115, 116, 49
-				};
+		{
+			121, -18, 48, 64, 120, -42, -113, 77, 116, 101, 115, 116, 49
+		};
 
 		Xtea xtea = new Xtea(key);
 		byte[] encData = xtea.encrypt(data, data.length);

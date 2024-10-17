@@ -66,6 +66,43 @@ public class InfoPanel extends PluginPanel
 	private static final ImageIcon PATREON_ICON;
 	private static final ImageIcon WIKI_ICON;
 
+	private final JLabel loggedLabel = new JLabel();
+	private final JRichTextPane emailLabel = new JRichTextPane();
+	private JPanel actionsContainer;
+
+	@Inject
+	@Nullable
+	private Client client;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private SessionManager sessionManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
+
+	@Inject
+	@Named("runelite.version")
+	private String runeliteVersion;
+
+	@Inject
+	@Named("runelite.github.link")
+	private String githubLink;
+
+	@Inject
+	@Named("runelite.discord.invite")
+	private String discordInvite;
+
+	@Inject
+	@Named("runelite.patreon.link")
+	private String patreonLink;
+
+	@Inject
+	@Named("runelite.wiki.link")
+	private String wikiLink;
+
 	static
 	{
 		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "/util/arrow_right.png"));
@@ -75,33 +112,81 @@ public class InfoPanel extends PluginPanel
 		WIKI_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "wiki_icon.png"));
 	}
 
-	private final JLabel loggedLabel = new JLabel();
-	private final JRichTextPane emailLabel = new JRichTextPane();
-	private JPanel actionsContainer;
-	@Inject
-	@Nullable
-	private Client client;
-	@Inject
-	private EventBus eventBus;
-	@Inject
-	private SessionManager sessionManager;
-	@Inject
-	private ScheduledExecutorService executor;
-	@Inject
-	@Named("runelite.version")
-	private String runeliteVersion;
-	@Inject
-	@Named("runelite.github.link")
-	private String githubLink;
-	@Inject
-	@Named("runelite.discord.invite")
-	private String discordInvite;
-	@Inject
-	@Named("runelite.patreon.link")
-	private String patreonLink;
-	@Inject
-	@Named("runelite.wiki.link")
-	private String wikiLink;
+	void init()
+	{
+		setLayout(new BorderLayout());
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+
+		JPanel versionPanel = new JPanel();
+		versionPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		versionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		versionPanel.setLayout(new GridLayout(0, 1));
+
+		final Font smallFont = FontManager.getRunescapeSmallFont();
+
+		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeliteVersion));
+		version.setFont(smallFont);
+
+		JLabel revision = new JLabel();
+		revision.setFont(smallFont);
+
+		String engineVer = "Unknown";
+		if (client != null)
+		{
+			engineVer = String.format("Rev %d", client.getRevision());
+		}
+
+		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
+
+		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
+			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
+		launcher.setFont(smallFont);
+
+		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		loggedLabel.setFont(smallFont);
+
+		emailLabel.setForeground(Color.WHITE);
+		emailLabel.setFont(smallFont);
+		emailLabel.enableAutoLinkHandler(false);
+		emailLabel.addHyperlinkListener(e ->
+		{
+			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
+			{
+				if (e.getURL().toString().equals(RUNELITE_LOGIN))
+				{
+					executor.execute(sessionManager::login);
+				}
+			}
+		});
+
+		versionPanel.add(version);
+		versionPanel.add(revision);
+		versionPanel.add(launcher);
+		versionPanel.add(Box.createGlue());
+		versionPanel.add(loggedLabel);
+		versionPanel.add(emailLabel);
+
+		actionsContainer = new JPanel();
+		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
+		actionsContainer.setLayout(new GridLayout(0, 1, 0, 10));
+
+		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", githubLink));
+		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "Discord server", discordInvite));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", patreonLink));
+		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", wikiLink));
+
+		add(versionPanel, BorderLayout.NORTH);
+		add(actionsContainer, BorderLayout.CENTER);
+
+		updateLoggedIn();
+		eventBus.register(this);
+	}
+
+	void deinit()
+	{
+		eventBus.unregister(this);
+	}
 
 	/**
 	 * Builds a link panel with a given icon, text and url to redirect to.
@@ -185,104 +270,29 @@ public class InfoPanel extends PluginPanel
 		return container;
 	}
 
-	private static String htmlLabel(String key, String value)
-	{
-		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
-	}
-
-	void init()
-	{
-		setLayout(new BorderLayout());
-		setBackground(ColorScheme.DARK_GRAY_COLOR);
-		setBorder(new EmptyBorder(10, 10, 10, 10));
-
-		JPanel versionPanel = new JPanel();
-		versionPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		versionPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		versionPanel.setLayout(new GridLayout(0, 1));
-
-		final Font smallFont = FontManager.getRunescapeSmallFont();
-
-		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeliteVersion));
-		version.setFont(smallFont);
-
-		JLabel revision = new JLabel();
-		revision.setFont(smallFont);
-
-		String engineVer = "Unknown";
-		if (client != null)
-		{
-			engineVer = String.format("Rev %d", client.getRevision());
-		}
-
-		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
-
-		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
-				.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
-		launcher.setFont(smallFont);
-
-		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		loggedLabel.setFont(smallFont);
-
-		emailLabel.setForeground(Color.WHITE);
-		emailLabel.setFont(smallFont);
-		emailLabel.enableAutoLinkHandler(false);
-		emailLabel.addHyperlinkListener(e ->
-		{
-			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
-			{
-				if (e.getURL().toString().equals(RUNELITE_LOGIN))
-				{
-					executor.execute(sessionManager::login);
-				}
-			}
-		});
-
-		versionPanel.add(version);
-		versionPanel.add(revision);
-		versionPanel.add(launcher);
-		versionPanel.add(Box.createGlue());
-		versionPanel.add(loggedLabel);
-		versionPanel.add(emailLabel);
-
-		actionsContainer = new JPanel();
-		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
-		actionsContainer.setLayout(new GridLayout(0, 1, 0, 10));
-
-		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", githubLink));
-		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "Discord server", discordInvite));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", patreonLink));
-		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", wikiLink));
-
-		add(versionPanel, BorderLayout.NORTH);
-		add(actionsContainer, BorderLayout.CENTER);
-
-		updateLoggedIn();
-		eventBus.register(this);
-	}
-
-	void deinit()
-	{
-		eventBus.unregister(this);
-	}
-
 	private void updateLoggedIn()
 	{
 		final String name = sessionManager.getAccountSession() != null
-				? sessionManager.getAccountSession().getUsername()
-				: null;
+			? sessionManager.getAccountSession().getUsername()
+			: null;
 
 		if (name != null)
 		{
 			emailLabel.setContentType("text/plain");
 			emailLabel.setText(name);
 			loggedLabel.setText("Signed in as");
-		} else
+		}
+		else
 		{
 			emailLabel.setContentType("text/html");
 			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Sign in</a> to sync settings to the cloud.");
 			loggedLabel.setText("Not signed in");
 		}
+	}
+
+	private static String htmlLabel(String key, String value)
+	{
+		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
 	@Subscribe

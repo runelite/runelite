@@ -34,21 +34,18 @@ public interface ClanSettings
 {
 	/**
 	 * The clan name
-	 *
 	 * @return
 	 */
 	String getName();
 
 	/**
 	 * The members of the clan. This includes all members, whether online or offline.
-	 *
 	 * @return
 	 */
 	List<ClanMember> getMembers();
 
 	/**
 	 * Find a member of the clan.
-	 *
 	 * @param name
 	 * @return
 	 */
@@ -57,10 +54,9 @@ public interface ClanSettings
 
 	/**
 	 * Get the clan title for a clan rank.
-	 *
 	 * @param clanRank the rank
-	 * @return
 	 * @see ClanRank
+	 * @return
 	 */
 	@Nullable
 	ClanTitle titleForRank(ClanRank clanRank);

@@ -36,9 +36,9 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-		name = "Logout Timer",
-		description = "Extends the default 5 minute logout timer",
-		enabledByDefault = false
+	name = "Logout Timer",
+	description = "Extends the default 5 minute logout timer",
+	enabledByDefault = false
 )
 public class LogoutTimerPlugin extends Plugin
 {

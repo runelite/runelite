@@ -53,7 +53,31 @@ import org.slf4j.MarkerFactory;
 public class EventBus
 {
 	private static final Marker DEDUPLICATE = MarkerFactory.getMarker("DEDUPLICATE");
+
+	@Value
+	public static class Subscriber
+	{
+		private final Object object;
+		private final Method method;
+		private final float priority;
+		@EqualsAndHashCode.Exclude
+		private final Consumer<Object> lambda;
+
+		void invoke(final Object arg) throws Exception
+		{
+			if (lambda != null)
+			{
+				lambda.accept(arg);
+			}
+			else
+			{
+				method.invoke(object, arg);
+			}
+		}
+	}
+
 	private final Consumer<Throwable> exceptionHandler;
+
 	@Nonnull
 	private ImmutableMultimap<Class<?>, Subscriber> subscribers = ImmutableMultimap.of();
 
@@ -77,7 +101,7 @@ public class EventBus
 		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
 		builder.putAll(subscribers);
 		builder.orderValuesBy(Comparator.comparingDouble(Subscriber::getPriority).reversed()
-				.thenComparing(s -> s.object.getClass().getName()));
+			.thenComparing(s -> s.object.getClass().getName()));
 
 		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
 		{
@@ -119,16 +143,17 @@ public class EventBus
 					final MethodType subscription = MethodType.methodType(void.class, parameterClazz);
 					final MethodHandle target = caller.findVirtual(clazz, method.getName(), subscription);
 					final CallSite site = LambdaMetafactory.metafactory(
-							caller,
-							"accept",
-							MethodType.methodType(Consumer.class, clazz),
-							subscription.changeParameterType(0, Object.class),
-							target,
-							subscription);
+						caller,
+						"accept",
+						MethodType.methodType(Consumer.class, clazz),
+						subscription.changeParameterType(0, Object.class),
+						target,
+						subscription);
 
 					final MethodHandle factory = site.getTarget();
 					lambda = (Consumer<Object>) factory.bindTo(object).invokeExact();
-				} catch (Throwable e)
+				}
+				catch (Throwable e)
 				{
 					log.warn("Unable to create lambda for method {}", method, e);
 				}
@@ -147,7 +172,7 @@ public class EventBus
 		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
 		builder.putAll(subscribers);
 		builder.orderValuesBy(Comparator.comparingDouble(Subscriber::getPriority).reversed()
-				.thenComparing(s -> s.object.getClass().getName()));
+			.thenComparing(s -> s.object.getClass().getName()));
 
 		Subscriber sub = new Subscriber(subFn, null, priority, (Consumer<Object>) subFn);
 		builder.put(clazz, sub);
@@ -165,8 +190,8 @@ public class EventBus
 	public synchronized void unregister(@Nonnull final Object object)
 	{
 		subscribers = ImmutableMultimap.copyOf(Iterables.filter(
-				subscribers.entries(),
-				e -> e.getValue().getObject() != object
+			subscribers.entries(),
+			e -> e.getValue().getObject() != object
 		));
 	}
 
@@ -178,8 +203,8 @@ public class EventBus
 		}
 
 		subscribers = ImmutableMultimap.copyOf(Iterables.filter(
-				subscribers.entries(),
-				e -> sub != e.getValue()
+			subscribers.entries(),
+			e -> sub != e.getValue()
 		));
 	}
 
@@ -196,30 +221,10 @@ public class EventBus
 			try
 			{
 				subscriber.invoke(event);
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				exceptionHandler.accept(e);
-			}
-		}
-	}
-
-	@Value
-	public static class Subscriber
-	{
-		private final Object object;
-		private final Method method;
-		private final float priority;
-		@EqualsAndHashCode.Exclude
-		private final Consumer<Object> lambda;
-
-		void invoke(final Object arg) throws Exception
-		{
-			if (lambda != null)
-			{
-				lambda.accept(arg);
-			} else
-			{
-				method.invoke(object, arg);
 			}
 		}
 	}

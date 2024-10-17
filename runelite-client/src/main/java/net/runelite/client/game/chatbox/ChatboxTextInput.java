@@ -65,31 +65,58 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 {
 	private static final int CURSOR_FLASH_RATE_MILLIS = 1000;
 	private static final Pattern BREAK_MATCHER = Pattern.compile("[^a-zA-Z0-9']");
-	protected final ClientThread clientThread;
+
 	private final ChatboxPanelManager chatboxPanelManager;
+	protected final ClientThread clientThread;
+
+	private static IntPredicate getDefaultCharValidator()
+	{
+		return i -> i >= 32 && i < 127;
+	}
+
+	@AllArgsConstructor
+	private static class Line
+	{
+		private final int start;
+		private final int end;
+		private final String text;
+	}
+
 	@Getter
 	private String prompt;
+
 	@Getter
 	private int lines;
+
 	private StringBuffer value = new StringBuffer();
+
 	@Getter
 	private int cursorStart = 0;
+
 	@Getter
 	private int cursorEnd = 0;
+
 	private int selectionStart = -1;
 	private int selectionEnd = -1;
+
 	@Getter
 	private IntPredicate charValidator = getDefaultCharValidator();
+
 	@Getter
 	private Runnable onClose = null;
+
 	@Getter
 	private Predicate<String> onDone = null;
+
 	@Getter
 	private Consumer<String> onChanged = null;
+
 	@Getter
 	private int fontID = FontID.QUILL_8;
+
 	@Getter
 	private boolean built = false;
+
 	// These are lambdas for atomic updates
 	private Predicate<MouseEvent> isInBounds = null;
 	private ToIntFunction<Integer> getLineOffset = null;
@@ -100,11 +127,6 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	{
 		this.chatboxPanelManager = chatboxPanelManager;
 		this.clientThread = clientThread;
-	}
-
-	private static IntPredicate getDefaultCharValidator()
-	{
-		return i -> i >= 32 && i < 127;
 	}
 
 	public ChatboxTextInput addCharValidator(IntPredicate validator)
@@ -349,7 +371,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			String rt = "";
 
 			final boolean isStartLine = cursorOnLine(cursorStart, line.start, line.end)
-					|| (cursorOnLine(cursorStart, line.start, line.end + 1) && i == editLines.size() - 1);
+				|| (cursorOnLine(cursorStart, line.start, line.end + 1) && i == editLines.size() - 1);
 
 			final boolean isEndLine = cursorOnLine(cursorEnd, line.start, line.end);
 
@@ -511,7 +533,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			{
 				Line l = editLines.get(i);
 				if (cursorOnLine(cursorStart, l.start, l.end)
-						|| (cursorOnLine(cursorStart, l.start, l.end + 1) && i == editLines.size() - 1))
+					|| (cursorOnLine(cursorStart, l.start, l.end + 1) && i == editLines.size() - 1))
 				{
 					currentLine = i;
 					break;
@@ -519,8 +541,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			}
 
 			if (currentLine == -1
-					|| (code == KeyEvent.VK_UP && currentLine == 0)
-					|| (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1))
+				|| (code == KeyEvent.VK_UP && currentLine == 0)
+				|| (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1))
 			{
 				return cursorStart;
 			}
@@ -533,7 +555,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			// Place cursor on right line if whitespace keep it on the same line or skip a line
 			final Line nextLine = editLines.get(currentLine + direction);
 			if ((direction == -1 && charOffset >= line.start)
-					|| (direction == 1 && (charOffset > nextLine.end && (currentLine + direction != editLines.size() - 1))))
+				|| (direction == 1 && (charOffset > nextLine.end && (currentLine + direction != editLines.size() - 1))))
 			{
 				return nextLine.end;
 			}
@@ -632,17 +654,17 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 							cursorAt(cursorStart);
 						}
 						Toolkit.getDefaultToolkit()
-								.getSystemClipboard()
-								.setContents(new StringSelection(s), null);
+							.getSystemClipboard()
+							.setContents(new StringSelection(s), null);
 					}
 					return;
 				case KeyEvent.VK_V:
 					try
 					{
 						String s = Toolkit.getDefaultToolkit()
-								.getSystemClipboard()
-								.getData(DataFlavor.stringFlavor)
-								.toString();
+							.getSystemClipboard()
+							.getData(DataFlavor.stringFlavor)
+							.toString();
 						if (cursorStart != cursorEnd)
 						{
 							value.delete(cursorStart, cursorEnd);
@@ -661,7 +683,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 						{
 							onChanged.accept(getValue());
 						}
-					} catch (IOException | UnsupportedFlavorException ex)
+					}
+					catch (IOException | UnsupportedFlavorException ex)
 					{
 						log.warn("Unable to get clipboard", ex);
 					}
@@ -683,7 +706,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				selectionEnd = cursorStart;
 			}
 			newPos = selectionEnd;
-		} else
+		}
+		else
 		{
 			selectionStart = -1;
 			selectionEnd = -1;
@@ -737,7 +761,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				if (cursorStart != cursorEnd)
 				{
 					newPos = cursorStart;
-				} else
+				}
+				else
 				{
 					newPos--;
 				}
@@ -747,7 +772,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				if (cursorStart != cursorEnd)
 				{
 					newPos = cursorEnd;
-				} else
+				}
+				else
 				{
 					newPos++;
 				}
@@ -800,7 +826,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		{
 			selectionEnd = newPos;
 			cursorAt(selectionStart, newPos);
-		} else
+		}
+		else
 		{
 			cursorAt(newPos);
 		}
@@ -841,7 +868,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		{
 			selectionEnd = nco;
 			cursorAt(selectionStart, selectionEnd);
-		} else
+		}
+		else
 		{
 			selectionStart = nco;
 			cursorAt(nco);
@@ -890,13 +918,5 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
 		return mouseEvent;
-	}
-
-	@AllArgsConstructor
-	private static class Line
-	{
-		private final int start;
-		private final int end;
-		private final String text;
 	}
 }

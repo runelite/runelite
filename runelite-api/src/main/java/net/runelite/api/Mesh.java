@@ -30,23 +30,15 @@ package net.runelite.api;
 public interface Mesh<T extends Mesh<T>>
 {
 	int getVerticesCount();
-
 	float[] getVerticesX();
-
 	float[] getVerticesY();
-
 	float[] getVerticesZ();
 
 	int getFaceCount();
-
 	int[] getFaceIndices1();
-
 	int[] getFaceIndices2();
-
 	int[] getFaceIndices3();
-
 	byte[] getFaceTransparencies();
-
 	short[] getFaceTextures();
 
 	/**

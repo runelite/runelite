@@ -47,9 +47,9 @@ public class FarmingNextTickPanel extends TabContentPanel
 
 	@Inject
 	public FarmingNextTickPanel(
-			FarmingTracker farmingTracker,
-			TimeTrackingConfig config,
-			ConfigManager configManager
+		FarmingTracker farmingTracker,
+		TimeTrackingConfig config,
+		ConfigManager configManager
 	)
 	{
 		this.farmingTracker = farmingTracker;

@@ -62,17 +62,17 @@ public class ChatClient
 	public boolean submitKc(String username, String boss, int kc) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("kc")
-				.addQueryParameter("name", username)
-				.addQueryParameter("boss", boss)
-				.addQueryParameter("kc", Integer.toString(kc))
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("kc")
+			.addQueryParameter("name", username)
+			.addQueryParameter("boss", boss)
+			.addQueryParameter("kc", Integer.toString(kc))
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(null, new byte[0]))
-				.url(url)
-				.build();
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -83,15 +83,15 @@ public class ChatClient
 	public int getKc(String username, String boss) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("kc")
-				.addQueryParameter("name", username)
-				.addQueryParameter("boss", boss)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("kc")
+			.addQueryParameter("name", username)
+			.addQueryParameter("boss", boss)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -106,16 +106,16 @@ public class ChatClient
 	public boolean submitQp(String username, int qp) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("qp")
-				.addQueryParameter("name", username)
-				.addQueryParameter("qp", Integer.toString(qp))
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("qp")
+			.addQueryParameter("name", username)
+			.addQueryParameter("qp", Integer.toString(qp))
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(null, new byte[0]))
-				.url(url)
-				.build();
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -126,14 +126,14 @@ public class ChatClient
 	public int getQp(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("qp")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("qp")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -148,19 +148,19 @@ public class ChatClient
 	public boolean submitTask(String username, String task, int amount, int initialAmount, String location) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("task")
-				.addQueryParameter("name", username)
-				.addQueryParameter("task", task)
-				.addQueryParameter("amount", Integer.toString(amount))
-				.addQueryParameter("initialAmount", Integer.toString(initialAmount))
-				.addQueryParameter("location", location)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("task")
+			.addQueryParameter("name", username)
+			.addQueryParameter("task", task)
+			.addQueryParameter("amount", Integer.toString(amount))
+			.addQueryParameter("initialAmount", Integer.toString(initialAmount))
+			.addQueryParameter("location", location)
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(null, new byte[0]))
-				.url(url)
-				.build();
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -171,14 +171,14 @@ public class ChatClient
 	public Task getTask(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("task")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("task")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -189,7 +189,8 @@ public class ChatClient
 
 			InputStream in = response.body().byteStream();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Task.class);
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}
@@ -198,17 +199,17 @@ public class ChatClient
 	public boolean submitPb(String username, String boss, double pb) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("pb")
-				.addQueryParameter("name", username)
-				.addQueryParameter("boss", boss)
-				.addQueryParameter("pb", Double.toString(pb))
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("pb")
+			.addQueryParameter("name", username)
+			.addQueryParameter("boss", boss)
+			.addQueryParameter("pb", Double.toString(pb))
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(null, new byte[0]))
-				.url(url)
-				.build();
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -219,15 +220,15 @@ public class ChatClient
 	public double getPb(String username, String boss) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("pb")
-				.addQueryParameter("name", username)
-				.addQueryParameter("boss", boss)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("pb")
+			.addQueryParameter("name", username)
+			.addQueryParameter("boss", boss)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -242,16 +243,16 @@ public class ChatClient
 	public boolean submitGc(String username, int gc) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("gc")
-				.addQueryParameter("name", username)
-				.addQueryParameter("gc", Integer.toString(gc))
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("gc")
+			.addQueryParameter("name", username)
+			.addQueryParameter("gc", Integer.toString(gc))
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(null, new byte[0]))
-				.url(url)
-				.build();
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -262,14 +263,14 @@ public class ChatClient
 	public int getGc(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("gc")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("gc")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -284,19 +285,19 @@ public class ChatClient
 	public boolean submitDuels(String username, int wins, int losses, int winningStreak, int losingStreak) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("duels")
-				.addQueryParameter("name", username)
-				.addQueryParameter("wins", Integer.toString(wins))
-				.addQueryParameter("losses", Integer.toString(losses))
-				.addQueryParameter("winningStreak", Integer.toString(winningStreak))
-				.addQueryParameter("losingStreak", Integer.toString(losingStreak))
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("duels")
+			.addQueryParameter("name", username)
+			.addQueryParameter("wins", Integer.toString(wins))
+			.addQueryParameter("losses", Integer.toString(losses))
+			.addQueryParameter("winningStreak", Integer.toString(winningStreak))
+			.addQueryParameter("losingStreak", Integer.toString(losingStreak))
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(null, new byte[0]))
-				.url(url)
-				.build();
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -307,14 +308,14 @@ public class ChatClient
 	public Duels getDuels(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("duels")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("duels")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -325,7 +326,8 @@ public class ChatClient
 
 			InputStream in = response.body().byteStream();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Duels.class);
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}
@@ -334,15 +336,15 @@ public class ChatClient
 	public boolean submitLayout(String username, LayoutRoom[] rooms) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("layout")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("layout")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(rooms)))
-				.url(url)
-				.build();
+			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(rooms)))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -353,14 +355,14 @@ public class ChatClient
 	public LayoutRoom[] getLayout(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("layout")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("layout")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -371,7 +373,8 @@ public class ChatClient
 
 			InputStream in = response.body().byteStream();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), LayoutRoom[].class);
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}
@@ -380,15 +383,15 @@ public class ChatClient
 	public boolean submitPetList(String username, Collection<Integer> petList) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("pets")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("pets")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(petList)))
-				.url(url)
-				.build();
+			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(petList)))
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -399,14 +402,14 @@ public class ChatClient
 	public Set<Integer> getPetList(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("chat")
-				.addPathSegment("pets")
-				.addQueryParameter("name", username)
-				.build();
+			.addPathSegment("chat")
+			.addPathSegment("pets")
+			.addQueryParameter("name", username)
+			.build();
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -418,11 +421,10 @@ public class ChatClient
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
-					new TypeToken<Set<Integer>>()
-					{
-					}.getType());
+				new TypeToken<Set<Integer>>(){}.getType());
 			// CHECKSTYLE:ON
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}

@@ -34,10 +34,10 @@ public interface LowMemoryConfig extends Config
 	String GROUP = "lowmemory";
 
 	@ConfigItem(
-			keyName = "lowDetail",
-			name = "Low detail",
-			description = "Hides ground detail and simplifies textures.",
-			position = 0
+		keyName = "lowDetail",
+		name = "Low detail",
+		description = "Hides ground detail and simplifies textures.",
+		position = 0
 	)
 	default boolean lowDetail()
 	{
@@ -45,10 +45,10 @@ public interface LowMemoryConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideLowerPlanes",
-			name = "Hide lower planes",
-			description = "Only renders the current plane you are on.",
-			position = 1
+		keyName = "hideLowerPlanes",
+		name = "Hide lower planes",
+		description = "Only renders the current plane you are on.",
+		position = 1
 	)
 	default boolean hideLowerPlanes()
 	{

@@ -35,8 +35,8 @@ public final class JagexColor
 	public static short packHSL(int hue, int saturation, int luminance)
 	{
 		return (short) ((short) (hue & HUE_MAX) << 10
-				| (short) (saturation & SATURATION_MAX) << 7
-				| (short) (luminance & LUMINANCE_MAX));
+			| (short) (saturation & SATURATION_MAX) << 7
+			| (short) (luminance & LUMINANCE_MAX));
 	}
 
 	public static int unpackHue(short hsl)
@@ -82,7 +82,7 @@ public final class JagexColor
 		double saturation = (hsv[2] - luminance) / Math.min(luminance, 1 - luminance);
 
 		return packHSL((int) (Math.ceil(hue * 64.D) % 63.D),
-				(int) Math.ceil(saturation * 7.D),
-				(int) Math.ceil(luminance * 127.D));
+			(int) Math.ceil(saturation * 7.D),
+			(int) Math.ceil(luminance * 127.D));
 	}
 }

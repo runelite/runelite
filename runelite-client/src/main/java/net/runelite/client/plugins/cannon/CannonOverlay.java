@@ -80,9 +80,9 @@ class CannonOverlay extends Overlay
 		if (localLocation.distanceTo(cannonPoint) <= MAX_OVERLAY_DISTANCE)
 		{
 			Point cannonLoc = Perspective.getCanvasTextLocation(client,
-					graphics,
-					cannonPoint,
-					String.valueOf(plugin.getCballsLeft()), 150);
+				graphics,
+				cannonPoint,
+				String.valueOf(plugin.getCballsLeft()), 150);
 
 			if (cannonLoc != null)
 			{
@@ -105,7 +105,6 @@ class CannonOverlay extends Overlay
 
 	/**
 	 * Draw the double hit spots on a 6 by 6 grid around the cannon
-	 *
 	 * @param startTile The position of the cannon
 	 */
 	private void drawDoubleHitSpots(Graphics2D graphics, LocalPoint startTile, Color color)

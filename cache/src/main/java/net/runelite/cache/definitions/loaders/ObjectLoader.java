@@ -54,7 +54,7 @@ public class ObjectLoader
 
 		def.setId(id);
 
-		for (; ; )
+		for (;;)
 		{
 			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
@@ -89,10 +89,12 @@ public class ObjectLoader
 				def.setObjectTypes(objectTypes);
 				def.setObjectModels(objectModels);
 			}
-		} else if (opcode == 2)
+		}
+		else if (opcode == 2)
 		{
 			def.setName(is.readString());
-		} else if (opcode == 5)
+		}
+		else if (opcode == 5)
 		{
 			int length = is.readUnsignedByte();
 			if (length > 0)
@@ -107,51 +109,65 @@ public class ObjectLoader
 
 				def.setObjectModels(objectModels);
 			}
-		} else if (opcode == 14)
+		}
+		else if (opcode == 14)
 		{
 			def.setSizeX(is.readUnsignedByte());
-		} else if (opcode == 15)
+		}
+		else if (opcode == 15)
 		{
 			def.setSizeY(is.readUnsignedByte());
-		} else if (opcode == 17)
+		}
+		else if (opcode == 17)
 		{
 			def.setInteractType(0);
 			def.setBlocksProjectile(false);
-		} else if (opcode == 18)
+		}
+		else if (opcode == 18)
 		{
 			def.setBlocksProjectile(false);
-		} else if (opcode == 19)
+		}
+		else if (opcode == 19)
 		{
 			def.setWallOrDoor(is.readUnsignedByte());
-		} else if (opcode == 21)
+		}
+		else if (opcode == 21)
 		{
 			def.setContouredGround(0);
-		} else if (opcode == 22)
+		}
+		else if (opcode == 22)
 		{
 			def.setMergeNormals(true);
-		} else if (opcode == 23)
+		}
+		else if (opcode == 23)
 		{
 			def.setABool2111(true);
-		} else if (opcode == 24)
+		}
+		else if (opcode == 24)
 		{
 			def.setAnimationID(is.readUnsignedShort());
 			if (def.getAnimationID() == 0xFFFF)
 			{
 				def.setAnimationID(-1);
 			}
-		} else if (opcode == 27)
+		}
+		else if (opcode == 27)
 		{
 			def.setInteractType(1);
-		} else if (opcode == 28)
+		}
+		else if (opcode == 28)
 		{
 			def.setDecorDisplacement(is.readUnsignedByte());
-		} else if (opcode == 29)
+		}
+		else if (opcode == 29)
 		{
 			def.setAmbient(is.readByte());
-		} else if (opcode == 39)
+		}
+		else if (opcode == 39)
 		{
 			def.setContrast(is.readByte() * 25);
-		} else if (opcode >= 30 && opcode < 35)
+		}
+		else if (opcode >= 30 && opcode < 35)
 		{
 			String[] actions = def.getActions();
 			actions[opcode - 30] = is.readString();
@@ -159,7 +175,8 @@ public class ObjectLoader
 			{
 				actions[opcode - 30] = null;
 			}
-		} else if (opcode == 40)
+		}
+		else if (opcode == 40)
 		{
 			int length = is.readUnsignedByte();
 			short[] recolorToFind = new short[length];
@@ -173,7 +190,8 @@ public class ObjectLoader
 
 			def.setRecolorToFind(recolorToFind);
 			def.setRecolorToReplace(recolorToReplace);
-		} else if (opcode == 41)
+		}
+		else if (opcode == 41)
 		{
 			int length = is.readUnsignedByte();
 			short[] retextureToFind = new short[length];
@@ -187,49 +205,64 @@ public class ObjectLoader
 
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
-		} else if (opcode == 61)
+		}
+		else if (opcode == 61)
 		{
 			def.setCategory(is.readUnsignedShort());
-		} else if (opcode == 62)
+		}
+		else if (opcode == 62)
 		{
 			def.setRotated(true);
-		} else if (opcode == 64)
+		}
+		else if (opcode == 64)
 		{
 			def.setShadow(false);
-		} else if (opcode == 65)
+		}
+		else if (opcode == 65)
 		{
 			def.setModelSizeX(is.readUnsignedShort());
-		} else if (opcode == 66)
+		}
+		else if (opcode == 66)
 		{
 			def.setModelSizeHeight(is.readUnsignedShort());
-		} else if (opcode == 67)
+		}
+		else if (opcode == 67)
 		{
 			def.setModelSizeY(is.readUnsignedShort());
-		} else if (opcode == 68)
+		}
+		else if (opcode == 68)
 		{
 			def.setMapSceneID(is.readUnsignedShort());
-		} else if (opcode == 69)
+		}
+		else if (opcode == 69)
 		{
 			def.setBlockingMask(is.readByte());
-		} else if (opcode == 70)
+		}
+		else if (opcode == 70)
 		{
 			def.setOffsetX(is.readUnsignedShort());
-		} else if (opcode == 71)
+		}
+		else if (opcode == 71)
 		{
 			def.setOffsetHeight(is.readUnsignedShort());
-		} else if (opcode == 72)
+		}
+		else if (opcode == 72)
 		{
 			def.setOffsetY(is.readUnsignedShort());
-		} else if (opcode == 73)
+		}
+		else if (opcode == 73)
 		{
 			def.setObstructsGround(true);
-		} else if (opcode == 74)
+		}
+		else if (opcode == 74)
 		{
 			def.setHollow(true);
-		} else if (opcode == 75)
+		}
+		else if (opcode == 75)
 		{
 			def.setSupportsItems(is.readUnsignedByte());
-		} else if (opcode == 77)
+		}
+		else if (opcode == 77)
 		{
 			int varpID = is.readUnsignedShort();
 			if (varpID == 0xFFFF)
@@ -260,7 +293,8 @@ public class ObjectLoader
 			configChangeDest[length + 1] = -1;
 
 			def.setConfigChangeDest(configChangeDest);
-		} else if (opcode == 78)
+		}
+		else if (opcode == 78)
 		{
 			def.setAmbientSoundId(is.readUnsignedShort());
 			def.setAmbientSoundDistance(is.readUnsignedByte());
@@ -268,7 +302,8 @@ public class ObjectLoader
 			{
 				def.setAmbientSoundRetain(is.readUnsignedByte());
 			}
-		} else if (opcode == 79)
+		}
+		else if (opcode == 79)
 		{
 			def.setAmbientSoundChangeTicksMin(is.readUnsignedShort());
 			def.setAmbientSoundChangeTicksMax(is.readUnsignedShort());
@@ -286,19 +321,24 @@ public class ObjectLoader
 			}
 
 			def.setAmbientSoundIds(ambientSoundIds);
-		} else if (opcode == 81)
+		}
+		else if (opcode == 81)
 		{
 			def.setContouredGround(is.readUnsignedByte() * 256);
-		} else if (opcode == 82)
+		}
+		else if (opcode == 82)
 		{
 			def.setMapAreaId(is.readUnsignedShort());
-		} else if (opcode == 89)
+		}
+		else if (opcode == 89)
 		{
 			def.setRandomizeAnimStart(true);
-		} else if (opcode == 90)
+		}
+		else if (opcode == 90)
 		{
 			def.setDeferAnimChange(true);
-		} else if (opcode == 92)
+		}
+		else if (opcode == 92)
 		{
 			int varpID = is.readUnsignedShort();
 			if (varpID == 0xFFFF)
@@ -336,7 +376,8 @@ public class ObjectLoader
 			configChangeDest[length + 1] = var;
 
 			def.setConfigChangeDest(configChangeDest);
-		} else if (opcode == 249)
+		}
+		else if (opcode == 249)
 		{
 			int length = is.readUnsignedByte();
 
@@ -350,7 +391,9 @@ public class ObjectLoader
 				if (isString)
 				{
 					value = is.readString();
-				} else
+				}
+
+				else
 				{
 					value = is.readInt();
 				}
@@ -359,7 +402,8 @@ public class ObjectLoader
 			}
 
 			def.setParams(params);
-		} else
+		}
+		else
 		{
 			log.warn("Unrecognized opcode {}", opcode);
 		}

@@ -55,8 +55,8 @@ class OverviewTabPanel extends TabContentPanel
 	private final OverviewItemPanel farmingContractOverview;
 
 	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
-					 FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager,
-					 FarmingContractManager farmingContractManager)
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager,
+		FarmingContractManager farmingContractManager)
 	{
 		this.config = config;
 		this.farmingTracker = farmingTracker;
@@ -77,19 +77,19 @@ class OverviewTabPanel extends TabContentPanel
 		add(birdHouseOverview);
 
 		farmingOverviews = Stream.of(Tab.FARMING_TABS)
-				.filter(v -> v != Tab.OVERVIEW)
-				.collect(ImmutableMap.toImmutableMap(
-						Function.identity(),
-						t ->
-						{
-							OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
-							add(p);
-							return p;
-						}
-				));
+			.filter(v -> v != Tab.OVERVIEW)
+			.collect(ImmutableMap.toImmutableMap(
+				Function.identity(),
+				t ->
+				{
+					OverviewItemPanel p = new OverviewItemPanel(itemManager, pluginPanel, t, t.getName());
+					add(p);
+					return p;
+				}
+			));
 
 		farmingContractOverview = new OverviewItemPanel(itemManager, () -> pluginPanel.switchTab(farmingContractManager.getContractTab()),
-				farmingContractManager::hasContract, ItemID.SEED_PACK, "Farming Contract");
+			farmingContractManager::hasContract, ItemID.SEED_PACK, "Farming Contract");
 		add(farmingContractOverview);
 	}
 
@@ -108,7 +108,8 @@ class OverviewTabPanel extends TabContentPanel
 		if (timers == 0)
 		{
 			timerOverview.updateStatus("No active timers", Color.GRAY);
-		} else
+		}
+		else
 		{
 			timerOverview.updateStatus(timers + " active timer" + (timers == 1 ? "" : "s"), ColorScheme.PROGRESS_COMPLETE_COLOR);
 		}
@@ -116,13 +117,14 @@ class OverviewTabPanel extends TabContentPanel
 		if (stopwatches == 0)
 		{
 			stopwatchOverview.updateStatus("No active stopwatches", Color.GRAY);
-		} else
+		}
+		else
 		{
 			stopwatchOverview.updateStatus(stopwatches + " active stopwatch" + (stopwatches == 1 ? "" : "es"), ColorScheme.PROGRESS_COMPLETE_COLOR);
 		}
 
 		farmingOverviews.forEach((patchType, panel) ->
-				updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType)));
+			updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType)));
 
 		updateItemPanel(birdHouseOverview, birdHouseTracker.getSummary(), birdHouseTracker.getCompletionTime());
 		updateContractPanel();
@@ -140,7 +142,8 @@ class OverviewTabPanel extends TabContentPanel
 				if (duration <= 0)
 				{
 					panel.updateStatus("Ready", ColorScheme.PROGRESS_COMPLETE_COLOR);
-				} else
+				}
+				else
 				{
 					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.timeFormatMode()), Color.GRAY);
 				}

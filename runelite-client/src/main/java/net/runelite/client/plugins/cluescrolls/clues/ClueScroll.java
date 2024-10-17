@@ -74,12 +74,12 @@ public abstract class ClueScroll
 		if (!Strings.isNullOrEmpty(note))
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left("Note:")
-					.build());
+				.left("Note:")
+				.build());
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left(note)
-					.leftColor(TITLED_CONTENT_COLOR)
-					.build());
+				.left(note)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 		}
 	}
 }

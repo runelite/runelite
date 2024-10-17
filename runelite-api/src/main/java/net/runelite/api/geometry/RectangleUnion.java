@@ -41,6 +41,14 @@ public class RectangleUnion
 	{
 	}
 
+	@RequiredArgsConstructor
+	@Getter
+	@ToString
+	public static class Rectangle
+	{
+		private final int x1, y1, x2, y2;
+	}
+
 	/**
 	 * Returns a polygon representing the union of all of the passed rectangles.
 	 * the passed List will be modified
@@ -96,7 +104,8 @@ public class RectangleUnion
 				cs.x = rr.x2;
 				r++;
 				rect = rr;
-			} else
+			}
+			else
 			{
 				cs.delta = 1;
 				cs.x = lr.x1;
@@ -160,14 +169,6 @@ public class RectangleUnion
 	}
 
 	@RequiredArgsConstructor
-	@Getter
-	@ToString
-	public static class Rectangle
-	{
-		private final int x1, y1, x2, y2;
-	}
-
-	@RequiredArgsConstructor
 	private static class ChangingState
 	{
 		final Shapes<SimplePolygon> out;
@@ -187,7 +188,8 @@ public class RectangleUnion
 				{
 					first = s;
 				}
-			} else
+			}
+			else
 			{
 				finish(s);
 			}
@@ -213,14 +215,16 @@ public class RectangleUnion
 					c.left = null;
 					c.right = null;
 					out.getShapes().add(c);
-				} else
+				}
+				else
 				{
 					Chunk leftChunk, rightChunk;
 					if (!s.left)
 					{
 						leftChunk = s.chunk;
 						rightChunk = first.chunk;
-					} else
+					}
+					else
 					{
 						leftChunk = first.chunk;
 						rightChunk = s.chunk;
@@ -233,7 +237,8 @@ public class RectangleUnion
 						if (first.left)
 						{
 							leftChunk.reverse();
-						} else
+						}
+						else
 						{
 							rightChunk.reverse();
 						}
@@ -249,7 +254,8 @@ public class RectangleUnion
 					leftChunk.left.chunk = leftChunk;
 					leftChunk.right.chunk = leftChunk;
 				}
-			} else if (first.chunk == null && s.chunk == null)
+			}
+			else if (first.chunk == null && s.chunk == null)
 			{
 				first.chunk = new Chunk();
 				first.chunk.right = first;
@@ -260,12 +266,14 @@ public class RectangleUnion
 
 				push(first);
 				push(s);
-			} else if (first.chunk == null)
+			}
+			else if (first.chunk == null)
 			{
 				push(s);
 				move(first, s);
 				push(first);
-			} else
+			}
+			else
 			{
 				push(first);
 				move(s, first);
@@ -284,7 +292,8 @@ public class RectangleUnion
 			{
 				assert dst.chunk.left == src;
 				dst.chunk.left = dst;
-			} else
+			}
+			else
 			{
 				assert dst.chunk.right == src;
 				dst.chunk.right = dst;
@@ -297,7 +306,8 @@ public class RectangleUnion
 			{
 				s.chunk.pushLeft(x, s.y);
 				assert s.chunk.left == s;
-			} else
+			}
+			else
 			{
 				s.chunk.pushRight(x, s.y);
 				assert s.chunk.right == s;
@@ -359,7 +369,8 @@ public class RectangleUnion
 				n.value = before.value;
 				before.next = n;
 				n.previous = before;
-			} else
+			}
+			else
 			{
 				if (first != null)
 				{

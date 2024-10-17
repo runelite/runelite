@@ -32,21 +32,26 @@ enum XpWorldType
 	NORMAL,
 	TOURNEY,
 	DMM
-			{
-				@Override
-				int modifier(Client client)
-				{
-					return 5;
-				}
-			},
+	{
+		@Override
+		int modifier(Client client)
+		{
+			return 5;
+		}
+	},
 	LEAGUE
-			{
-				@Override
-				int modifier(Client client)
-				{
-					return 5;
-				}
-			};
+	{
+		@Override
+		int modifier(Client client)
+		{
+			return 5;
+		}
+	};
+
+	int modifier(Client client)
+	{
+		return 1;
+	}
 
 	static XpWorldType of(WorldType type)
 	{
@@ -61,10 +66,5 @@ enum XpWorldType
 			default:
 				return NORMAL;
 		}
-	}
-
-	int modifier(Client client)
-	{
-		return 1;
 	}
 }

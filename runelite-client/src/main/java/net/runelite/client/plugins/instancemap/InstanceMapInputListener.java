@@ -82,7 +82,8 @@ public class InstanceMapInputListener extends MouseAdapter implements KeyListene
 		if (direction > 0)
 		{
 			plugin.ascendMap();
-		} else
+		}
+		else
 		{
 			plugin.descendMap();
 		}
@@ -139,9 +140,9 @@ public class InstanceMapInputListener extends MouseAdapter implements KeyListene
 	private boolean isWithinCloseButton(final Point point)
 	{
 		Point overlayPoint = new Point(point.x - (int) overlay.getBounds().getX(),
-				point.y - (int) overlay.getBounds().getY());
+			point.y - (int) overlay.getBounds().getY());
 
 		return overlay.getCloseButtonBounds() != null
-				&& overlay.getCloseButtonBounds().contains(overlayPoint);
+			&& overlay.getCloseButtonBounds().contains(overlayPoint);
 	}
 }

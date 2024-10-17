@@ -73,7 +73,7 @@ public class BirdHouseTracker
 
 	@Inject
 	private BirdHouseTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-							 TimeTrackingConfig config, Notifier notifier)
+		TimeTrackingConfig config, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -106,7 +106,8 @@ public class BirdHouseTracker
 						int varp = Integer.parseInt(parts[0]);
 						long timestamp = Long.parseLong(parts[1]);
 						birdHouseData.put(space, new BirdHouseData(space, varp, timestamp));
-					} catch (NumberFormatException e)
+					}
+					catch (NumberFormatException e)
 					{
 						// ignored
 					}
@@ -192,7 +193,6 @@ public class BirdHouseTracker
 
 	/**
 	 * Updates the overall completion time of the bird houses.
-	 *
 	 * @see #completionTime
 	 */
 	private void updateCompletionTime()
@@ -225,11 +225,13 @@ public class BirdHouseTracker
 		{
 			summary = SummaryState.EMPTY;
 			completionTime = 0;
-		} else if (maxCompletionTime <= Instant.now().getEpochSecond())
+		}
+		else if (maxCompletionTime <= Instant.now().getEpochSecond())
 		{
 			summary = SummaryState.COMPLETED;
 			completionTime = 0;
-		} else
+		}
+		else
 		{
 			summary = SummaryState.IN_PROGRESS;
 			completionTime = maxCompletionTime;

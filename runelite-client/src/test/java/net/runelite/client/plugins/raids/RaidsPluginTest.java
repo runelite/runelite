@@ -113,7 +113,7 @@ public class RaidsPluginTest
 		when(raidsConfig.whitelistedRotations()).thenReturn("Muttadiles, Tekton, Mystics");
 		raidsPlugin.updateLists();
 
-		final RaidRoom[] raidRooms = new RaidRoom[] {RaidRoom.MUTTADILES, RaidRoom.TEKTON, RaidRoom.MYSTICS};
+		final RaidRoom[] raidRooms = new RaidRoom[]{RaidRoom.MUTTADILES, RaidRoom.TEKTON, RaidRoom.MYSTICS};
 		Raid raid = mock(Raid.class);
 		when(raid.getCombatRooms()).thenReturn(raidRooms);
 		raidsPlugin.setRaid(raid);
@@ -127,7 +127,7 @@ public class RaidsPluginTest
 		when(raidsConfig.whitelistedRotations()).thenReturn("Vanguards, Vespula, Vasa \nMuttadiles, Tekton, Mystics");
 		raidsPlugin.updateLists();
 
-		final RaidRoom[] raidRooms = new RaidRoom[] {RaidRoom.MUTTADILES, RaidRoom.TEKTON, RaidRoom.MYSTICS};
+		final RaidRoom[] raidRooms = new RaidRoom[]{RaidRoom.MUTTADILES, RaidRoom.TEKTON, RaidRoom.MYSTICS};
 		Raid raid = mock(Raid.class);
 		when(raid.getCombatRooms()).thenReturn(raidRooms);
 		raidsPlugin.setRaid(raid);
@@ -141,7 +141,7 @@ public class RaidsPluginTest
 		when(raidsConfig.whitelistedRotations()).thenReturn("muttadiles, tekton, mystics");
 		raidsPlugin.updateLists();
 
-		final RaidRoom[] raidRooms = new RaidRoom[] {RaidRoom.MYSTICS, RaidRoom.TEKTON, RaidRoom.MUTTADILES};
+		final RaidRoom[] raidRooms = new RaidRoom[]{RaidRoom.MYSTICS, RaidRoom.TEKTON, RaidRoom.MUTTADILES};
 		Raid raid = mock(Raid.class);
 		when(raid.getCombatRooms()).thenReturn(raidRooms);
 		raidsPlugin.setRaid(raid);

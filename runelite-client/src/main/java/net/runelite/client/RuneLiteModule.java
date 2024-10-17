@@ -97,17 +97,20 @@ public class RuneLiteModule extends AbstractModule
 			{
 				ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(key));
 				binder.to((String) entry.getValue());
-			} else if (entry.getValue() instanceof Double)
+			}
+			else if (entry.getValue() instanceof Double)
 			{
 				ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(key));
 				if (DoubleMath.isMathematicalInteger((double) entry.getValue()))
 				{
 					binder.to((int) (double) entry.getValue());
-				} else
+				}
+				else
 				{
 					binder.to((double) entry.getValue());
 				}
-			} else if (entry.getValue() instanceof Boolean)
+			}
+			else if (entry.getValue() instanceof Boolean)
 			{
 				ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(key));
 				binder.to((boolean) entry.getValue());
@@ -138,11 +141,11 @@ public class RuneLiteModule extends AbstractModule
 		bind(Callbacks.class).to(Hooks.class);
 
 		bind(EventBus.class)
-				.toInstance(new EventBus());
+			.toInstance(new EventBus());
 
 		bind(EventBus.class)
-				.annotatedWith(Names.named("Deferred EventBus"))
-				.to(DeferredEventBus.class);
+			.annotatedWith(Names.named("Deferred EventBus"))
+			.to(DeferredEventBus.class);
 	}
 
 	@Provides
@@ -222,9 +225,9 @@ public class RuneLiteModule extends AbstractModule
 	@Provides
 	@Singleton
 	TelemetryClient provideTelemetry(
-			OkHttpClient okHttpClient,
-			Gson gson,
-			@Named("runelite.api.base") HttpUrl apiBase)
+		OkHttpClient okHttpClient,
+		Gson gson,
+		@Named("runelite.api.base") HttpUrl apiBase)
 	{
 		return disableTelemetry ? null : new TelemetryClient(okHttpClient, gson, apiBase);
 	}

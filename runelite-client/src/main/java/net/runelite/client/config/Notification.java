@@ -83,7 +83,7 @@ class NotificationSerializer implements Serializer<Notification>
 		if ("true".equals(s) || "false".equals(s))
 		{
 			return new Notification()
-					.withEnabled(Boolean.parseBoolean(s));
+				.withEnabled(Boolean.parseBoolean(s));
 		}
 
 		return gson.fromJson(s, Notification.class);

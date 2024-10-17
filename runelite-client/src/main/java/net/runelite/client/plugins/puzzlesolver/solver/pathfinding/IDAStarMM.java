@@ -37,10 +37,10 @@ import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
 public class IDAStarMM extends IDAStar
 {
+	private PuzzleState currentState;
 	private final List<PuzzleState> stateList = new ArrayList<>();
 	private final List<List<Integer>> validRowNumbers = new ArrayList<>();
 	private final List<List<Integer>> validColumnNumbers = new ArrayList<>();
-	private PuzzleState currentState;
 
 	public IDAStarMM(Heuristic heuristic)
 	{
@@ -130,12 +130,14 @@ public class IDAStarMM extends IDAStar
 				{
 					alignTargetX(valTarget, x, y);
 					swapUpRow(valTarget, x, y);
-				} else
+				}
+				else
 				{
 					alignTargetY(valTarget, x, y);
 					swapLeftColumn(valTarget, x, y);
 				}
-			} else
+			}
+			else
 			{
 				int distX = locVal.getX() - locBlank.getX();
 				int distY = locVal.getY() - locBlank.getY();
@@ -149,49 +151,55 @@ public class IDAStarMM extends IDAStar
 					{
 						//Next to
 						reached = true;
-					} else
+					}
+					else
 					{
 						//More than 2 away, move towards on Y-axis
 						if (distY >= 2)
 						{
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
 							swap(locBlank, locSwap);
-						} else if (distY <= -2)
+						}
+						else if (distY <= -2)
 						{
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() - 1);
 							swap(locBlank, locSwap);
 						}
 					}
-				} else if (distY == 0)
+				}
+				else if (distY == 0)
 				{
 					//Same row
 					if (distAbsX == 1)
 					{
 						//Next to
 						reached = true;
-					} else
+					}
+					else
 					{
 						//More than 2 away, move towards on X-axis
 						if (distX >= 2)
 						{
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
 							swap(locBlank, locSwap);
-						} else if (distX <= -2)
+						}
+						else if (distX <= -2)
 						{
 							Point locSwap = new Point(locBlank.getX() - 1, locBlank.getY());
 							swap(locBlank, locSwap);
 						}
 					}
-				} else
+				}
+				else
 				{
 					//Different row and column
 					if (rowMode)
 					{
 						//Check if already correct above
 						if (locBlank.getY() - 1 == y
-								&& validRowNumbers.get(y).contains(currentState.getPiece(locBlank.getX(), locBlank.getY() - 1))
-								&& currentState.getPiece(locBlank.getX(), locBlank.getY() - 1) < valTarget
-								&& distY <= -1)
+							&& validRowNumbers.get(y).contains(currentState.getPiece(locBlank.getX(), locBlank.getY() - 1))
+							&& currentState.getPiece(locBlank.getX(), locBlank.getY() - 1) < valTarget
+							&& distY <= -1)
 						{
 							//Move forward
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
@@ -204,18 +212,20 @@ public class IDAStarMM extends IDAStar
 						{
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
 							swap(locBlank, locSwap);
-						} else if (distY <= -1)
+						}
+						else if (distY <= -1)
 						{
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() - 1);
 							swap(locBlank, locSwap);
 						}
-					} else
+					}
+					else
 					{
 						//Check if already correct to the left
 						if (locBlank.getX() - 1 == x
-								&& validColumnNumbers.get(x).contains(currentState.getPiece(locBlank.getX() - 1, locBlank.getY()))
-								&& currentState.getPiece(locBlank.getX() - 1, locBlank.getY()) < valTarget
-								&& distX <= -1)
+							&& validColumnNumbers.get(x).contains(currentState.getPiece(locBlank.getX() - 1, locBlank.getY()))
+							&& currentState.getPiece(locBlank.getX() - 1, locBlank.getY()) < valTarget
+							&& distX <= -1)
 						{
 							//Move down
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
@@ -228,7 +238,8 @@ public class IDAStarMM extends IDAStar
 						{
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
 							swap(locBlank, locSwap);
-						} else if (distX <= -1)
+						}
+						else if (distX <= -1)
 						{
 							Point locSwap = new Point(locBlank.getX() - 1, locBlank.getY());
 							swap(locBlank, locSwap);
@@ -275,12 +286,14 @@ public class IDAStarMM extends IDAStar
 					swap(locBlank, loc1);
 					swap(loc1, loc2);
 					swap(loc2, locVal);
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Above
 					swap(locBlank, locVal);
 				}
-			} else if (locVal.getY() == locBlank.getY())
+			}
+			else if (locVal.getY() == locBlank.getY())
 			{
 				int diff = locBlank.getX() - locVal.getX();
 				if (diff == 1)
@@ -289,33 +302,38 @@ public class IDAStarMM extends IDAStar
 					if (direction == 1)
 					{
 						swap(locVal, locBlank);
-					} else if (direction == -1)
+					}
+					else if (direction == -1)
 					{
 						//Check space
 						if (locVal.getY() == DIMENSION - 1)
 						{
 							//No space below, use upper rotate
 							performSwapPattern(locBlank, locVal, ROTATE_LEFT_UP);
-						} else
+						}
+						else
 						{
 							//Space below, use lower rotate
 							performSwapPattern(locBlank, locVal, ROTATE_LEFT_DOWN);
 						}
 					}
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Left
 					if (direction == -1)
 					{
 						swap(locVal, locBlank);
-					} else if (direction == 1)
+					}
+					else if (direction == 1)
 					{
 						//Check space
 						if (locVal.getY() == DIMENSION - 1)
 						{
 							//No space below, use upper rotate
 							performSwapPattern(locBlank, locVal, ROTATE_RIGHT_UP);
-						} else
+						}
+						else
 						{
 							//Space below, use lower rotate
 							performSwapPattern(locBlank, locVal, ROTATE_RIGHT_DOWN);
@@ -372,19 +390,22 @@ public class IDAStarMM extends IDAStar
 					}
 
 					performSwapPattern(locBlank, locVal, ROTATE_UP_RIGHT);
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Above
 					swap(locBlank, locVal);
 				}
-			} else if (locVal.getY() == locBlank.getY())
+			}
+			else if (locVal.getY() == locBlank.getY())
 			{
 				int diff = locBlank.getX() - locVal.getX();
 				if (diff == 1)
 				{
 					//Right
 					performSwapPattern(locBlank, locVal, SHUFFLE_UP_RIGHT);
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Left
 
@@ -443,12 +464,14 @@ public class IDAStarMM extends IDAStar
 					swap(locBlank, loc1);
 					swap(loc1, loc2);
 					swap(loc2, locVal);
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Left
 					swap(locBlank, locVal);
 				}
-			} else if (locVal.getX() == locBlank.getX())
+			}
+			else if (locVal.getX() == locBlank.getX())
 			{
 				int diff = locBlank.getY() - locVal.getY();
 				if (diff == 1)
@@ -457,33 +480,38 @@ public class IDAStarMM extends IDAStar
 					if (direction == 1)
 					{
 						swap(locVal, locBlank);
-					} else if (direction == -1)
+					}
+					else if (direction == -1)
 					{
 						//Check space
 						if (locVal.getX() == DIMENSION - 1)
 						{
 							//No space to the right, use left rotate
 							performSwapPattern(locBlank, locVal, ROTATE_UP_LEFT);
-						} else
+						}
+						else
 						{
 							//Space to the right, use right rotate
 							performSwapPattern(locBlank, locVal, ROTATE_UP_RIGHT);
 						}
 					}
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Above
 					if (direction == -1)
 					{
 						swap(locVal, locBlank);
-					} else if (direction == 1)
+					}
+					else if (direction == 1)
 					{
 						//Check space
 						if (locVal.getX() == DIMENSION - 1)
 						{
 							//No space to the right, use left rotate
 							performSwapPattern(locBlank, locVal, ROTATE_DOWN_LEFT);
-						} else
+						}
+						else
 						{
 							//Space to the right, use right rotate
 							performSwapPattern(locBlank, locVal, ROTATE_DOWN_RIGHT);
@@ -532,7 +560,8 @@ public class IDAStarMM extends IDAStar
 				{
 					//Below
 					performSwapPattern(locBlank, locVal, SHUFFLE_UP_BELOW);
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Above
 
@@ -551,7 +580,8 @@ public class IDAStarMM extends IDAStar
 
 					performSwapPattern(locBlank, locVal, SHUFFLE_UP_ABOVE);
 				}
-			} else if (locVal.getY() == locBlank.getY())
+			}
+			else if (locVal.getY() == locBlank.getY())
 			{
 				int diff = locBlank.getX() - locVal.getX();
 				if (diff == 1)
@@ -566,7 +596,8 @@ public class IDAStarMM extends IDAStar
 					}
 
 					performSwapPattern(locBlank, locVal, ROTATE_LEFT_DOWN);
-				} else if (diff == -1)
+				}
+				else if (diff == -1)
 				{
 					//Left
 					swap(locBlank, locVal);
@@ -601,7 +632,7 @@ public class IDAStarMM extends IDAStar
 
 	/**
 	 * Assumes locBlank is first point for swap and locVal is last point for swap
-	 * <p>
+	 *
 	 * swap(locBlank, loc1);
 	 * swap(loc1, loc2);
 	 * swap(loc2, locVal);
@@ -657,7 +688,8 @@ public class IDAStarMM extends IDAStar
 				swap(start, p);
 				start = p;
 			}
-		} else
+		}
+		else
 		{
 			Point loc1 = points.get(0);
 			Point loc2 = points.get(1);

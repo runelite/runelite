@@ -83,8 +83,8 @@ public class ExaminePluginTest
 
 		QueuedMessage queuedMessage = argumentCaptor.getValue();
 		assertEquals(
-				"<colNORMAL>Price of <colHIGHLIGHT>2,000,000,000 x Abyssal whip<colNORMAL>:<colNORMAL> GE average <colHIGHLIGHT>6,000,000,000<colNORMAL> (<colHIGHLIGHT>3<colNORMAL>ea)<colNORMAL> HA value <colHIGHLIGHT>4,000,000,000<colNORMAL> (<colHIGHLIGHT>2<colNORMAL>ea)",
-				queuedMessage.getRuneLiteFormattedMessage()
+			"<colNORMAL>Price of <colHIGHLIGHT>2,000,000,000 x Abyssal whip<colNORMAL>:<colNORMAL> GE average <colHIGHLIGHT>6,000,000,000<colNORMAL> (<colHIGHLIGHT>3<colNORMAL>ea)<colNORMAL> HA value <colHIGHLIGHT>4,000,000,000<colNORMAL> (<colHIGHLIGHT>2<colNORMAL>ea)",
+			queuedMessage.getRuneLiteFormattedMessage()
 		);
 	}
 }

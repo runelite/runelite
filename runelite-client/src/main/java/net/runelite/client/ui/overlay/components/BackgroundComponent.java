@@ -52,17 +52,17 @@ public class BackgroundComponent implements RenderableEntity
 	public Dimension render(Graphics2D graphics)
 	{
 		Color outsideStrokeColor = new Color(
-				(int) (backgroundColor.getRed() * OUTER_COLOR_OFFSET),
-				(int) (backgroundColor.getGreen() * OUTER_COLOR_OFFSET),
-				(int) (backgroundColor.getBlue() * OUTER_COLOR_OFFSET),
-				Math.min(255, (int) (backgroundColor.getAlpha() * ALPHA_COLOR_OFFSET))
+			(int) (backgroundColor.getRed() * OUTER_COLOR_OFFSET),
+			(int) (backgroundColor.getGreen() * OUTER_COLOR_OFFSET),
+			(int) (backgroundColor.getBlue() * OUTER_COLOR_OFFSET),
+			Math.min(255, (int) (backgroundColor.getAlpha() * ALPHA_COLOR_OFFSET))
 		);
 
 		Color insideStrokeColor = new Color(
-				Math.min(255, (int) (backgroundColor.getRed() * INNER_COLOR_OFFSET)),
-				Math.min(255, (int) (backgroundColor.getGreen() * INNER_COLOR_OFFSET)),
-				Math.min(255, (int) (backgroundColor.getBlue() * INNER_COLOR_OFFSET)),
-				Math.min(255, (int) (backgroundColor.getAlpha() * ALPHA_COLOR_OFFSET))
+			Math.min(255, (int) (backgroundColor.getRed() * INNER_COLOR_OFFSET)),
+			Math.min(255, (int) (backgroundColor.getGreen() * INNER_COLOR_OFFSET)),
+			Math.min(255, (int) (backgroundColor.getBlue() * INNER_COLOR_OFFSET)),
+			Math.min(255, (int) (backgroundColor.getAlpha() * ALPHA_COLOR_OFFSET))
 		);
 
 		// Render background

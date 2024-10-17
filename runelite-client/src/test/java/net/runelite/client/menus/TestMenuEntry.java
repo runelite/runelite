@@ -172,7 +172,8 @@ public class TestMenuEntry implements MenuEntry
 			{
 				type += MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 			}
-		} else
+		}
+		else
 		{
 			if (type >= MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET)
 			{

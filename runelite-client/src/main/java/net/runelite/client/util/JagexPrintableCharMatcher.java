@@ -33,7 +33,7 @@ class JagexPrintableCharMatcher extends CharMatcher
 	{
 		// Characters which are printable
 		return (c >= 32 && c <= 126)
-				|| c == 128
-				|| (c >= 160 && c <= 255);
+			|| c == 128
+			|| (c >= 160 && c <= 255);
 	}
 }

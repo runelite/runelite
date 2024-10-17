@@ -46,23 +46,20 @@ public interface TileItem extends Renderable
 
 	/**
 	 * Get the time, in server ticks, when the item becomes visible to other players
-	 *
-	 * @return
 	 * @see Client#getTickCount()
+	 * @return
 	 */
 	int getVisibleTime();
 
 	/**
 	 * Get the time, in server ticks, when the item despawns
-	 *
-	 * @return
 	 * @see Client#getTickCount()
+	 * @return
 	 */
 	int getDespawnTime();
 
 	/**
 	 * Get the item ownership
-	 *
 	 * @return
 	 */
 	@MagicConstant(intValues = {OWNERSHIP_NONE, OWNERSHIP_SELF, OWNERSHIP_OTHER, OWNERSHIP_GROUP})
@@ -70,7 +67,6 @@ public interface TileItem extends Renderable
 
 	/**
 	 * Test whether the item is private
-	 *
 	 * @return
 	 */
 	boolean isPrivate();

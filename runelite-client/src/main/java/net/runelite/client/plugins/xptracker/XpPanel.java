@@ -88,7 +88,7 @@ class XpPanel extends PluginPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-				client.getWorldType(), client.getLocalPlayer(), null)));
+			client.getWorldType(), client.getLocalPlayer(), null)));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -173,15 +173,15 @@ class XpPanel extends PluginPanel
 		}
 
 		return new HttpUrl.Builder()
-				.scheme("https")
-				.host(worldTypes.contains(WorldType.SEASONAL) ? "league.wiseoldman.net" : "wiseoldman.net")
-				.addPathSegment("players")
-				.addPathSegment(player.getName())
-				.addPathSegment("gained")
-				.addQueryParameter("metric", skill == null ? "overall" : skill.getName().toLowerCase())
-				.addQueryParameter("period", "week")
-				.build()
-				.toString();
+			.scheme("https")
+			.host(worldTypes.contains(WorldType.SEASONAL) ? "league.wiseoldman.net" : "wiseoldman.net")
+			.addPathSegment("players")
+			.addPathSegment(player.getName())
+			.addPathSegment("gained")
+			.addQueryParameter("metric", skill == null ? "overall" : skill.getName().toLowerCase())
+			.addQueryParameter("period", "week")
+			.build()
+			.toString();
 	}
 
 	void resetAllInfoBoxes()
@@ -215,7 +215,8 @@ class XpPanel extends PluginPanel
 		{
 			overallPanel.setVisible(true);
 			remove(errorPanel);
-		} else if (xpSnapshotTotal.getXpGainedInSession() == 0 && overallPanel.isVisible())
+		}
+		else if (xpSnapshotTotal.getXpGainedInSession() == 0 && overallPanel.isVisible())
 		{
 			overallPanel.setVisible(false);
 			add(errorPanel);

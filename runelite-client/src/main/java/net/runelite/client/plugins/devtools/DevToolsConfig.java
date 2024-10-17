@@ -33,10 +33,10 @@ import net.runelite.client.config.Keybind;
 public interface DevToolsConfig extends Config
 {
 	@ConfigItem(
-			keyName = "inspectorAlwaysOnTop",
-			name = "",
-			description = "",
-			hidden = true
+		keyName = "inspectorAlwaysOnTop",
+		name = "",
+		description = "",
+		hidden = true
 	)
 	default boolean inspectorAlwaysOnTop()
 	{
@@ -44,16 +44,16 @@ public interface DevToolsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "inspectorAlwaysOnTop",
-			name = "",
-			description = ""
+		keyName = "inspectorAlwaysOnTop",
+		name = "",
+		description = ""
 	)
 	void inspectorAlwaysOnTop(boolean value);
 
 	@ConfigItem(
-			keyName = "swingInspectorHotkey",
-			name = "Swing Inspector",
-			description = "Hotkey to open the Swing inspector, if available"
+		keyName = "swingInspectorHotkey",
+		name = "Swing Inspector",
+		description = "Hotkey to open the Swing inspector, if available"
 	)
 	default Keybind swingInspectorHotkey()
 	{

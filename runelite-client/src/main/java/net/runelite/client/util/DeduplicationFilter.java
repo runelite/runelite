@@ -40,6 +40,16 @@ public class DeduplicationFilter extends TurboFilter
 	private static final Marker deduplicateMarker = MarkerFactory.getMarker("DEDUPLICATE");
 	private static final int CACHE_SIZE = 8;
 	private static final int DUPLICATE_LOG_COUNT = 1000;
+
+	@RequiredArgsConstructor
+	@EqualsAndHashCode(exclude = {"count"})
+	private static class LogException
+	{
+		private final String message;
+		private final StackTraceElement[] stackTraceElements;
+		private volatile int count;
+	}
+
 	private final Deque<LogException> cache = new ConcurrentLinkedDeque<>();
 
 	@Override
@@ -82,14 +92,5 @@ public class DeduplicationFilter extends TurboFilter
 		}
 
 		return FilterReply.NEUTRAL;
-	}
-
-	@RequiredArgsConstructor
-	@EqualsAndHashCode(exclude = {"count"})
-	private static class LogException
-	{
-		private final String message;
-		private final StackTraceElement[] stackTraceElements;
-		private volatile int count;
 	}
 }

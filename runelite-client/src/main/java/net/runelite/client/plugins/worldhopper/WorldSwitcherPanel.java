@@ -58,16 +58,20 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PING_COLUMN_WIDTH = 47;
 
 	private final JPanel listContainer = new JPanel();
-	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
-	private final WorldHopperPlugin plugin;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean active;
+
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
 	private WorldTableHeader activityHeader;
 	private WorldTableHeader pingHeader;
+
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
+
+	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
+	private final WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
 	private SubscriptionFilterMode subscriptionFilterMode;
 	@Setter(AccessLevel.PACKAGE)
@@ -110,7 +114,8 @@ class WorldSwitcherPanel extends PluginPanel
 			if (row.getWorld().getId() == newWorld)
 			{
 				row.recolour(true);
-			} else if (row.getWorld().getId() == lastWorld)
+			}
+			else if (row.getWorld().getId() == lastWorld)
 			{
 				row.recolour(false);
 			}
@@ -285,9 +290,9 @@ class WorldSwitcherPanel extends PluginPanel
 			}
 
 			rows.add(buildRow(world, i % 2 == 0,
-					world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0,
-					plugin.isFavorite(world),
-					worldLocations != null ? worldLocations.getIntValue(world.getId()) : -1));
+				world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0,
+				plugin.isFavorite(world),
+				worldLocations != null ? worldLocations.getIntValue(world.getId()) : -1));
 		}
 
 		updateList();
@@ -410,20 +415,21 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, int worldLocation)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
-				plugin::hopTo,
-				(w, add) ->
+			plugin::hopTo,
+			(w, add) ->
+			{
+				if (add)
 				{
-					if (add)
-					{
-						plugin.addToFavorites(w);
-					} else
-					{
-						plugin.removeFromFavorites(w);
-					}
+					plugin.addToFavorites(w);
+				}
+				else
+				{
+					plugin.removeFromFavorites(w);
+				}
 
-					updateList();
-				},
-				worldLocation
+				updateList();
+			},
+			worldLocation
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;

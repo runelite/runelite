@@ -73,27 +73,27 @@ import okhttp3.Response;
 class WikiDpsManager
 {
 	private static final int[] SPRITE_IDS_INACTIVE = {
-			SpriteID.DIALOG_BACKGROUND_BRIGHTER,
-			SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_LEFT,
-			SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_RIGHT,
-			SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_LEFT,
-			SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_RIGHT,
-			SpriteID.WORLD_MAP_BUTTON_EDGE_LEFT,
-			SpriteID.WORLD_MAP_BUTTON_EDGE_TOP,
-			SpriteID.WORLD_MAP_BUTTON_EDGE_RIGHT,
-			SpriteID.WORLD_MAP_BUTTON_EDGE_BOTTOM,
+		SpriteID.DIALOG_BACKGROUND_BRIGHTER,
+		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_LEFT,
+		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_RIGHT,
+		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_LEFT,
+		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_RIGHT,
+		SpriteID.WORLD_MAP_BUTTON_EDGE_LEFT,
+		SpriteID.WORLD_MAP_BUTTON_EDGE_TOP,
+		SpriteID.WORLD_MAP_BUTTON_EDGE_RIGHT,
+		SpriteID.WORLD_MAP_BUTTON_EDGE_BOTTOM,
 	};
 
 	private static final int[] SPRITE_IDS_ACTIVE = {
-			SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND,
-			SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_LEFT_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_RIGHT_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_LEFT_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_RIGHT_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_EDGE_LEFT_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_EDGE_TOP_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_EDGE_RIGHT_HOVERED,
-			SpriteID.EQUIPMENT_BUTTON_EDGE_BOTTOM_HOVERED,
+		SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND,
+		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_LEFT_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_RIGHT_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_LEFT_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_RIGHT_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_EDGE_LEFT_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_EDGE_TOP_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_EDGE_RIGHT_HOVERED,
+		SpriteID.EQUIPMENT_BUTTON_EDGE_BOTTOM_HOVERED,
 	};
 
 	private static final int FONT_COLOUR_INACTIVE = 0xff981f;
@@ -110,11 +110,11 @@ class WikiDpsManager
 
 	@Inject
 	private WikiDpsManager(
-			Client client,
-			ClientThread clientThread,
-			EventBus eventBus,
-			OkHttpClient okHttpClient,
-			Gson gson
+		Client client,
+		ClientThread clientThread,
+		EventBus eventBus,
+		OkHttpClient okHttpClient,
+		Gson gson
 	)
 	{
 		this.client = client;
@@ -149,12 +149,46 @@ class WikiDpsManager
 				if (interfaceId == InterfaceID.BANK)
 				{
 					clientThread.invokeLater(() -> addButton(Screen.BANK_EQUIPMENT, this::launch));
-				} else if (interfaceId == InterfaceID.EQUIPMENT_BONUSES)
+				}
+				else if (interfaceId == InterfaceID.EQUIPMENT_BONUSES)
 				{
 					addButton(Screen.EQUIPMENT_BONUSES, this::launch);
 				}
 			}
 		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	enum Screen
+	{
+		EQUIPMENT_BONUSES(ComponentID.EQUIPMENT_BONUSES_PARENT, ComponentID.EQUIPMENT_BONUSES_SET_BONUS, ComponentID.EQUIPMENT_BONUSES_STAT_BONUS, 55),
+		BANK_EQUIPMENT(ComponentID.BANK_EQUIPMENT_PARENT, ComponentID.BANK_EQUIPMENT_SET_BONUS, ComponentID.BANK_EQUIPMENT_STAT_BONUS, 49),
+		;
+
+		/**
+		 * parent widget of the interface, install target
+		 */
+		@Getter(onMethod_ = @Component)
+		private final int parentId;
+
+		/**
+		 * the "Set Bonus" button widget layer
+		 */
+		@Getter(onMethod_ = @Component)
+		private final int setBonusId;
+
+		/**
+		 * the "Stat Bonus" button widget layer, which replaces "Set Bonus" after it is clicked
+		 */
+		@Getter(onMethod_ = @Component)
+		private final int statBonusId;
+
+		/**
+		 * OriginalX for Set Bonus and Stat Bonus, prior to us moving them around (for shutdown)
+		 **/
+		private final int originalX;
+
 	}
 
 	void tryAddButton(Runnable onClick)
@@ -191,9 +225,9 @@ class WikiDpsManager
 
 		// now shift the Set Bonus and Stat Bonus buttons over a bit to make room
 		setBonus.setOriginalX(setBonus.getOriginalX() - (w / 2) - (padding / 2))
-				.revalidate();
+			.revalidate();
 		statBonus.setOriginalX(statBonus.getOriginalX() - (w / 2) - (padding / 2))
-				.revalidate();
+			.revalidate();
 
 		final Widget[] spriteWidgets = new Widget[9];
 
@@ -203,18 +237,18 @@ class WikiDpsManager
 		int bgX = (x + refComponents[0].getOriginalX()) + (w - bgWidth) / 2;
 		int bgY = (y + refComponents[0].getOriginalY()) + (h - bgHeight) / 2;
 		spriteWidgets[0] = parent.createChild(-1, WidgetType.GRAPHIC)
-				.setSpriteId(refComponents[0].getSpriteId())
-				.setPos(bgX, bgY)
-				.setSize(bgWidth, bgHeight)
-				.setYPositionMode(statBonus.getYPositionMode());
+			.setSpriteId(refComponents[0].getSpriteId())
+			.setPos(bgX, bgY)
+			.setSize(bgWidth, bgHeight)
+			.setYPositionMode(statBonus.getYPositionMode());
 		spriteWidgets[0].revalidate();
 
 		// borders and corners
 		for (int i = 1; i < 9; i++)
 		{
 			Widget c = spriteWidgets[i] = parent.createChild(-1, WidgetType.GRAPHIC)
-					.setSpriteId(refComponents[i].getSpriteId())
-					.setSize(refComponents[i].getOriginalWidth(), refComponents[i].getOriginalHeight());
+				.setSpriteId(refComponents[i].getSpriteId())
+				.setSize(refComponents[i].getOriginalWidth(), refComponents[i].getOriginalHeight());
 			if (statBonus.getYPositionMode() == WidgetPositionMode.ABSOLUTE_CENTER)
 			{
 				// Convert x/y from the reference component's, whose parent is the Set Bonus layer,
@@ -223,8 +257,9 @@ class WikiDpsManager
 				// the reference component original y into an offset from where the client will
 				// compute the ABSOLUTE_CENTER y to be.
 				c.setPos(x + refComponents[i].getOriginalX(), y - (setBonus.getHeight() - refComponents[i].getHeight() + 1) / 2 + refComponents[i].getOriginalY())
-						.setYPositionMode(statBonus.getYPositionMode());
-			} else
+					.setYPositionMode(statBonus.getYPositionMode());
+			}
+			else
 			{
 				c.setPos(x + refComponents[i].getOriginalX(), y + refComponents[i].getOriginalY());
 			}
@@ -235,15 +270,15 @@ class WikiDpsManager
 		// text label uses ABSOLUTE_CENTER positioning and MINUS sizing,
 		// but matches size of parent so effectively no-op
 		final Widget text = parent.createChild(-1, WidgetType.TEXT)
-				.setText("View DPS")
-				.setTextColor(FONT_COLOUR_INACTIVE)
-				.setFontId(refComponents[9].getFontId())
-				.setTextShadowed(refComponents[9].getTextShadowed())
-				.setXTextAlignment(refComponents[9].getXTextAlignment())
-				.setYTextAlignment(refComponents[9].getYTextAlignment())
-				.setPos(x, y)
-				.setSize(w, h)
-				.setYPositionMode(statBonus.getYPositionMode());
+			.setText("View DPS")
+			.setTextColor(FONT_COLOUR_INACTIVE)
+			.setFontId(refComponents[9].getFontId())
+			.setTextShadowed(refComponents[9].getTextShadowed())
+			.setXTextAlignment(refComponents[9].getXTextAlignment())
+			.setYTextAlignment(refComponents[9].getYTextAlignment())
+			.setPos(x, y)
+			.setSize(w, h)
+			.setYPositionMode(statBonus.getYPositionMode());
 		text.revalidate();
 
 		// we'll give the text layer the listeners since it covers the whole area
@@ -288,14 +323,14 @@ class WikiDpsManager
 			if (setBonus != null)
 			{
 				setBonus.setOriginalX(screen.getOriginalX())
-						.revalidate();
+					.revalidate();
 			}
 
 			Widget statBonus = client.getWidget(screen.getStatBonusId());
 			if (statBonus != null)
 			{
 				statBonus.setOriginalX(screen.getOriginalX())
-						.revalidate();
+					.revalidate();
 			}
 		}
 	}
@@ -375,13 +410,18 @@ class WikiDpsManager
 		return j;
 	}
 
+	private static class ShortlinkResponse
+	{
+		String data;
+	}
+
 	void launch()
 	{
 		JsonObject jsonBody = buildShortlinkData();
 		Request request = new Request.Builder()
-				.url(SHORTLINK_ENDPOINT)
-				.post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString()))
-				.build();
+			.url(SHORTLINK_ENDPOINT)
+			.post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonBody.toString()))
+			.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
@@ -400,50 +440,13 @@ class WikiDpsManager
 					{
 						ShortlinkResponse resp = gson.fromJson(response.body().charStream(), ShortlinkResponse.class);
 						LinkBrowser.browse(UI_ENDPOINT + "?id=" + resp.data);
-					} else
+					}
+					else
 					{
 						log.warn("Failed to create shortlink for DPS calculator: http status {}", response.code());
 					}
 				}
 			}
 		});
-	}
-
-	@Getter
-	@RequiredArgsConstructor
-	enum Screen
-	{
-		EQUIPMENT_BONUSES(ComponentID.EQUIPMENT_BONUSES_PARENT, ComponentID.EQUIPMENT_BONUSES_SET_BONUS, ComponentID.EQUIPMENT_BONUSES_STAT_BONUS, 55),
-		BANK_EQUIPMENT(ComponentID.BANK_EQUIPMENT_PARENT, ComponentID.BANK_EQUIPMENT_SET_BONUS, ComponentID.BANK_EQUIPMENT_STAT_BONUS, 49),
-		;
-
-		/**
-		 * parent widget of the interface, install target
-		 */
-		@Getter(onMethod_ = @Component)
-		private final int parentId;
-
-		/**
-		 * the "Set Bonus" button widget layer
-		 */
-		@Getter(onMethod_ = @Component)
-		private final int setBonusId;
-
-		/**
-		 * the "Stat Bonus" button widget layer, which replaces "Set Bonus" after it is clicked
-		 */
-		@Getter(onMethod_ = @Component)
-		private final int statBonusId;
-
-		/**
-		 * OriginalX for Set Bonus and Stat Bonus, prior to us moving them around (for shutdown)
-		 **/
-		private final int originalX;
-
-	}
-
-	private static class ShortlinkResponse
-	{
-		String data;
 	}
 }

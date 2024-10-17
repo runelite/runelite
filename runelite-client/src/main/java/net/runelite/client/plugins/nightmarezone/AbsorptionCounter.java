@@ -50,7 +50,8 @@ public class AbsorptionCounter extends Counter
 		if (absorption >= threshold)
 		{
 			return aboveThresholdColor;
-		} else
+		}
+		else
 		{
 			return belowThresholdColor;
 		}

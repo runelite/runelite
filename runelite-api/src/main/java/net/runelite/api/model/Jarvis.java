@@ -181,7 +181,7 @@ public class Jarvis
 	private static long crossProduct(int px, int py, int qx, int qy, int rx, int ry)
 	{
 		long val = (long) (qy - py) * (rx - qx)
-				- (long) (qx - px) * (ry - qy);
+			- (long) (qx - px) * (ry - qy);
 		return val;
 	}
 }

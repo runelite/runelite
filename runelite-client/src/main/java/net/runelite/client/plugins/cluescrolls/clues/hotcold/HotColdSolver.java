@@ -62,7 +62,7 @@ public class HotColdSolver
 	 * @param temperature       The temperature of the checked point
 	 * @param temperatureChange The change of temperature of the checked point compared to the previously-checked point
 	 * @return A set of {@link HotColdLocation}s which are still possible after the filtering occurs. This return value
-	 * is the same as would be returned by {@code getPossibleLocations()}.
+	 *         is the same as would be returned by {@code getPossibleLocations()}.
 	 */
 	public Set<HotColdLocation> signal(@Nonnull final WorldPoint worldPoint, @Nonnull final HotColdTemperature temperature, @Nullable final HotColdTemperatureChange temperatureChange)
 	{
@@ -73,16 +73,16 @@ public class HotColdSolver
 
 		// maxDistanceArea encompasses all of the points that are within the max possible distance from the player
 		final Rectangle maxDistanceArea = new Rectangle(
-				worldPoint.getX() - maxSquaresAway,
-				worldPoint.getY() - maxSquaresAway,
-				2 * maxSquaresAway + 1,
-				2 * maxSquaresAway + 1);
+			worldPoint.getX() - maxSquaresAway,
+			worldPoint.getY() - maxSquaresAway,
+			2 * maxSquaresAway + 1,
+			2 * maxSquaresAway + 1);
 		// minDistanceArea encompasses all of the points that are within the min possible distance from the player
 		final Rectangle minDistanceArea = new Rectangle(
-				worldPoint.getX() - minSquaresAway,
-				worldPoint.getY() - minSquaresAway,
-				2 * minSquaresAway + 1,
-				2 * minSquaresAway + 1);
+			worldPoint.getX() - minSquaresAway,
+			worldPoint.getY() - minSquaresAway,
+			2 * minSquaresAway + 1,
+			2 * minSquaresAway + 1);
 
 		// eliminate from consideration dig spots that lie entirely within the min range or entirely outside of the max range
 		possibleLocations.removeIf(entry -> minDistanceArea.contains(entry.getRect()) || !maxDistanceArea.intersects(entry.getRect()));

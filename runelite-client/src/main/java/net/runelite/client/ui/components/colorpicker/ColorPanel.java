@@ -181,11 +181,11 @@ public class ColorPanel extends JPanel
 		Color primaryRight = Color.getHSBColor(1f - this.selectedY / (float) (size - 1), 1, 1);
 		Graphics2D g = image.createGraphics();
 		GradientPaint primary = new GradientPaint(
-				0f, 0f, Color.WHITE,
-				size - 1, 0f, primaryRight);
+			0f, 0f, Color.WHITE,
+			size - 1, 0f, primaryRight);
 		GradientPaint shade = new GradientPaint(
-				0f, 0f, new Color(0, 0, 0, 0),
-				0f, size - 1, Color.BLACK);
+			0f, 0f, new Color(0, 0, 0, 0),
+			0f, size - 1, Color.BLACK);
 		g.setPaint(primary);
 		g.fillRect(0, 0, size, size);
 		g.setPaint(shade);

@@ -52,8 +52,8 @@ public class ClientSessionManager
 
 	@Inject
 	ClientSessionManager(ScheduledExecutorService executorService,
-						 @Nullable Client client,
-						 SessionClient sessionClient)
+		@Nullable Client client,
+		SessionClient sessionClient)
 	{
 		this.executorService = executorService;
 		this.client = client;
@@ -68,7 +68,8 @@ public class ClientSessionManager
 			{
 				sessionId = sessionClient.open();
 				log.debug("Opened session {}", sessionId);
-			} catch (IOException ex)
+			}
+			catch (IOException ex)
 			{
 				log.warn("error opening session", ex);
 			}
@@ -91,7 +92,8 @@ public class ClientSessionManager
 				{
 					sessionClient.delete(localUuid);
 				}
-			} catch (IOException ex)
+			}
+			catch (IOException ex)
 			{
 				log.warn(null, ex);
 			}
@@ -109,7 +111,8 @@ public class ClientSessionManager
 				log.debug("Opened session {}", sessionId);
 				return;
 			}
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("unable to open session", ex);
 			return;
@@ -125,7 +128,8 @@ public class ClientSessionManager
 		try
 		{
 			sessionClient.ping(sessionId, loggedIn);
-		} catch (IOException ex)
+		}
+		catch (IOException ex)
 		{
 			log.warn("Resetting session", ex);
 			sessionId = null;

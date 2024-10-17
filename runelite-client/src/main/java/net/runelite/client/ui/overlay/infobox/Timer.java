@@ -96,7 +96,6 @@ public class Timer extends InfoBox
 
 	/**
 	 * Update the timer duration *relative to the start time*
-	 *
 	 * @param duration
 	 */
 	public void setDuration(Duration duration)
@@ -108,7 +107,6 @@ public class Timer extends InfoBox
 
 	/**
 	 * Update the timer duration relative to now
-	 *
 	 * @param duration
 	 */
 	public void updateDuration(Duration duration)

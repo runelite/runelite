@@ -60,8 +60,8 @@ public class ChatKeyboardListener implements KeyListener
 		{
 			int inputTye = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
 			String input = inputTye == InputType.NONE.getType()
-					? client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)
-					: client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+				? client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)
+				: client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 
 			if (input != null)
 			{
@@ -80,7 +80,8 @@ public class ChatKeyboardListener implements KeyListener
 
 				clientThread.invoke(() -> applyText(inputTye, replacement));
 			}
-		} else if (chatCommandsConfig.clearChatBox().matches(e))
+		}
+		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
 			e.consume();
 			int inputTye = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
@@ -94,7 +95,8 @@ public class ChatKeyboardListener implements KeyListener
 		{
 			client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
 			client.runScript(ScriptID.CHAT_PROMPT_INIT);
-		} else if (inputType == InputType.PRIVATE_MESSAGE.getType())
+		}
+		else if (inputType == InputType.PRIVATE_MESSAGE.getType())
 		{
 			client.setVarcStrValue(VarClientStr.INPUT_TEXT, replacement);
 			client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");

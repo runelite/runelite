@@ -32,9 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface ReportButtonConfig extends Config
 {
 	@ConfigItem(
-			keyName = "time",
-			name = "Display Options",
-			description = "Configures what text the report button shows."
+		keyName = "time",
+		name = "Display Options",
+		description = "Configures what text the report button shows."
 	)
 	default TimeStyle time()
 	{
@@ -42,9 +42,9 @@ public interface ReportButtonConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "switchTimeFormat",
-			name = "Time Format",
-			description = "Configures time between 12 or 24 hour time format"
+		keyName = "switchTimeFormat",
+		name = "Time Format",
+		description = "Configures time between 12 or 24 hour time format"
 	)
 	default TimeFormat switchTimeFormat()
 	{

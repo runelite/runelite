@@ -74,8 +74,8 @@ class WorldTableHeader extends JPanel
 	{
 		setLayout(new BorderLayout(5, 0));
 		setBorder(new CompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, ColorScheme.MEDIUM_GRAY_COLOR),
-				new EmptyBorder(0, 5, 0, 2)));
+			BorderFactory.createMatteBorder(0, 0, 0, 1, ColorScheme.MEDIUM_GRAY_COLOR),
+			new EmptyBorder(0, 5, 0, 2)));
 		setBackground(ColorScheme.SCROLL_TRACK_COLOR);
 
 		addMouseListener(new MouseAdapter()

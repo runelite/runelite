@@ -62,9 +62,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-		name = "Player Indicators",
-		description = "Highlight players on-screen and/or on the minimap",
-		tags = {"highlight", "minimap", "overlay", "players"}
+	name = "Player Indicators",
+	description = "Highlight players on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "overlay", "players"}
 )
 @Slf4j
 public class PlayerIndicatorsPlugin extends Plugin
@@ -133,13 +133,13 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private void migrate()
 	{
 		String[] keys = {
-				"drawOwnName", "highlightSelf",
-				"drawPartyMembers", "highlightPartyMembers",
-				"drawFriendNames", "highlightFriends",
-				"drawClanMemberNames", "highlightFriendsChat",
-				"drawTeamMemberNames", "highlightTeamMembers",
-				"drawClanChatMemberNames", "highlightClanMembers",
-				"drawNonClanMemberNames", "highlightOthers"
+			"drawOwnName", "highlightSelf",
+			"drawPartyMembers", "highlightPartyMembers",
+			"drawFriendNames", "highlightFriends",
+			"drawClanMemberNames", "highlightFriendsChat",
+			"drawTeamMemberNames", "highlightTeamMembers",
+			"drawClanChatMemberNames", "highlightClanMembers",
+			"drawNonClanMemberNames", "highlightOthers"
 		};
 
 		Boolean disableOutsidePvP = configManager.getConfiguration(PlayerIndicatorsConfig.GROUP, "disableOutsidePvP", Boolean.class);
@@ -159,10 +159,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 					if (disableOutsidePvP && value)
 					{
 						newSetting = PlayerIndicatorsConfig.HighlightSetting.PVP;
-					} else if (value)
+					}
+					else if (value)
 					{
 						newSetting = PlayerIndicatorsConfig.HighlightSetting.ENABLED;
-					} else
+					}
+					else
 					{
 						newSetting = PlayerIndicatorsConfig.HighlightSetting.DISABLED;
 					}
@@ -191,17 +193,17 @@ public class PlayerIndicatorsPlugin extends Plugin
 			MenuAction type = entry.getType();
 
 			if (type == WALK
-					|| type == WIDGET_TARGET_ON_PLAYER
-					|| type == ITEM_USE_ON_PLAYER
-					|| type == PLAYER_FIRST_OPTION
-					|| type == PLAYER_SECOND_OPTION
-					|| type == PLAYER_THIRD_OPTION
-					|| type == PLAYER_FOURTH_OPTION
-					|| type == PLAYER_FIFTH_OPTION
-					|| type == PLAYER_SIXTH_OPTION
-					|| type == PLAYER_SEVENTH_OPTION
-					|| type == PLAYER_EIGHTH_OPTION
-					|| type == RUNELITE_PLAYER)
+				|| type == WIDGET_TARGET_ON_PLAYER
+				|| type == ITEM_USE_ON_PLAYER
+				|| type == PLAYER_FIRST_OPTION
+				|| type == PLAYER_SECOND_OPTION
+				|| type == PLAYER_THIRD_OPTION
+				|| type == PLAYER_FOURTH_OPTION
+				|| type == PLAYER_FIFTH_OPTION
+				|| type == PLAYER_SIXTH_OPTION
+				|| type == PLAYER_SEVENTH_OPTION
+				|| type == PLAYER_EIGHTH_OPTION
+				|| type == RUNELITE_PLAYER)
 			{
 				Player[] players = client.getCachedPlayers();
 				Player player = null;
@@ -267,7 +269,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 		if (rank != null && rank != UNRANKED && config.showFriendsChatRanks())
 		{
 			image = chatIconManager.getIconNumber(rank);
-		} else if (decorations.getClanTitle() != null && config.showClanChatRanks())
+		}
+		else if (decorations.getClanTitle() != null && config.showClanChatRanks())
 		{
 			image = chatIconManager.getIconNumber(decorations.getClanTitle());
 		}

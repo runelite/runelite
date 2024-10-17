@@ -32,71 +32,71 @@ import net.runelite.http.api.worlds.WorldType;
 enum WorldTypeFilter
 {
 	NORMAL
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					EnumSet<WorldType> normal = EnumSet.of(WorldType.MEMBERS, WorldType.BOUNTY, WorldType.SKILL_TOTAL, WorldType.LAST_MAN_STANDING);
-					EnumSet<WorldType> inverse = EnumSet.complementOf(normal);
-					return Sets.intersection(types, inverse).isEmpty();
-				}
-			},
+				EnumSet<WorldType> normal = EnumSet.of(WorldType.MEMBERS, WorldType.BOUNTY, WorldType.SKILL_TOTAL, WorldType.LAST_MAN_STANDING);
+				EnumSet<WorldType> inverse = EnumSet.complementOf(normal);
+				return Sets.intersection(types, inverse).isEmpty();
+			}
+		},
 	DEADMAN
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.DEADMAN);
-				}
-			},
+				return types.contains(WorldType.DEADMAN);
+			}
+		},
 	SEASONAL
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.SEASONAL);
-				}
-			},
+				return types.contains(WorldType.SEASONAL);
+			}
+		},
 	QUEST_SPEEDRUNNING
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.QUEST_SPEEDRUNNING);
-				}
-			},
+				return types.contains(WorldType.QUEST_SPEEDRUNNING);
+			}
+		},
 	FRESH_START_WORLD
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.FRESH_START_WORLD);
-				}
-			},
+				return types.contains(WorldType.FRESH_START_WORLD);
+			}
+		},
 	PVP
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.PVP);
-				}
-			},
+				return types.contains(WorldType.PVP);
+			}
+		},
 	SKILL_TOTAL
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.SKILL_TOTAL);
-				}
-			},
+				return types.contains(WorldType.SKILL_TOTAL);
+			}
+		},
 	HIGH_RISK
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
 			{
-				@Override
-				boolean matches(Set<WorldType> types)
-				{
-					return types.contains(WorldType.HIGH_RISK);
-				}
-			};
+				return types.contains(WorldType.HIGH_RISK);
+			}
+		};
 
 	abstract boolean matches(Set<WorldType> types);
 }

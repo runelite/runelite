@@ -77,7 +77,8 @@ class BlastMineOreCountOverlay extends OverlayPanel
 			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.MITHRIL_ORE, client.getVarbitValue(Varbits.BLAST_MINE_MITHRIL))));
 			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.ADAMANTITE_ORE, client.getVarbitValue(Varbits.BLAST_MINE_ADAMANTITE))));
 			panelComponent.getChildren().add(new ImageComponent(getImage(ItemID.RUNITE_ORE, client.getVarbitValue(Varbits.BLAST_MINE_RUNITE))));
-		} else
+		}
+		else
 		{
 			blastMineWidget.setHidden(false);
 		}

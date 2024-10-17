@@ -155,10 +155,10 @@ class InventoryDeltaPanel extends JPanel implements Scrollable
 				}
 			});
 			gridItem.setToolTipText("<html>Name: " + item.getName()
-					+ "<br/>Item ID: " + item.getItem().getId()
-					+ "<br/>Quantity: " + COMMA_FORMAT.format(item.getItem().getQuantity())
-					+ "<br/>Slot: " + item.getSlot()
-					+ "</html>");
+				+ "<br/>Item ID: " + item.getItem().getId()
+				+ "<br/>Quantity: " + COMMA_FORMAT.format(item.getItem().getQuantity())
+				+ "<br/>Slot: " + item.getSlot()
+				+ "</html>");
 		}
 
 		revalidate();
@@ -178,13 +178,14 @@ class InventoryDeltaPanel extends JPanel implements Scrollable
 		if (item.getId() == -1)
 		{
 			gridItem.setText("EMPTY");
-		} else
+		}
+		else
 		{
 			itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1).addTo(gridItem);
 			gridItem.setToolTipText("<html>Name: " + inventoryItem.getName()
-					+ "<br/>Item ID: " + item.getId()
-					+ "<br/>Quantity: " + COMMA_FORMAT.format(item.getQuantity())
-					+ "</html>");
+				+ "<br/>Item ID: " + item.getId()
+				+ "<br/>Quantity: " + COMMA_FORMAT.format(item.getQuantity())
+				+ "</html>");
 		}
 
 		panel.add(gridItem);

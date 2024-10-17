@@ -54,30 +54,30 @@ class RemappingThrowable extends Throwable
 		dejaVu.put(wrapped, this);
 
 		setStackTrace(Stream.of(wrapped.getStackTrace())
-				.map(e ->
+			.map(e ->
+			{
+				Integer boxOffset = offsets.get(e.getFileName());
+				if (boxOffset == null)
 				{
-					Integer boxOffset = offsets.get(e.getFileName());
-					if (boxOffset == null)
-					{
-						return e;
-					}
+					return e;
+				}
 
-					int offset = boxOffset;
-					int line = e.getLineNumber();
-					for (int i = 0; i <= offset && i < source.length(); i++)
+				int offset = boxOffset;
+				int line = e.getLineNumber();
+				for (int i = 0; i <= offset && i < source.length(); i++)
+				{
+					if (source.charAt(i) == '\n')
 					{
-						if (source.charAt(i) == '\n')
-						{
-							line++;
-						}
+						line++;
 					}
-					return new StackTraceElement(
-							Strings.isNullOrEmpty(e.getClassName()) ? "Shell" : e.getClassName(),
-							Strings.isNullOrEmpty(e.getMethodName()) ? "global" : e.getMethodName(),
-							"",
-							line);
-				})
-				.toArray(StackTraceElement[]::new));
+				}
+				return new StackTraceElement(
+					Strings.isNullOrEmpty(e.getClassName()) ? "Shell" : e.getClassName(),
+					Strings.isNullOrEmpty(e.getMethodName()) ? "global" : e.getMethodName(),
+					"",
+					line);
+			})
+			.toArray(StackTraceElement[]::new));
 
 		if (wrapped.getCause() != null)
 		{
@@ -126,7 +126,8 @@ class RemappingThrowable extends Throwable
 		if (wrapped instanceof EvalException)
 		{
 			className = ((EvalException) wrapped).getExceptionClassName();
-		} else
+		}
+		else
 		{
 			className = wrapped.getClass().getName();
 		}

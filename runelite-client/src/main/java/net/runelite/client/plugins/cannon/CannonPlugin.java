@@ -56,26 +56,33 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-		name = "Cannon",
-		description = "Show information about cannon placement and/or amount of cannonballs",
-		tags = {"combat", "notifications", "ranged", "overlay"}
+	name = "Cannon",
+	description = "Show information about cannon placement and/or amount of cannonballs",
+	tags = {"combat", "notifications", "ranged", "overlay"}
 )
 @Slf4j
 public class CannonPlugin extends Plugin
 {
 	static final int MAX_OVERLAY_DISTANCE = 4100;
-	@Getter
-	private final List<WorldPoint> spotPoints = new ArrayList<>();
+
 	private CannonCounter counter;
 	private boolean cannonBallNotificationSent;
+
 	@Getter
 	private int cballsLeft;
+
 	@Getter
 	private boolean cannonPlaced;
+
 	@Getter
 	private WorldArea cannonPosition;
+
 	@Getter
 	private int cannonWorld = -1;
+
+	@Getter
+	private final List<WorldPoint> spotPoints = new ArrayList<>();
+
 	@Inject
 	private ItemManager itemManager;
 
@@ -102,11 +109,6 @@ public class CannonPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	private static WorldArea buildCannonWorldArea(WorldPoint worldPoint)
-	{
-		return new WorldArea(worldPoint.getX(), worldPoint.getY(), 3, 3, worldPoint.getPlane());
-	}
 
 	@Provides
 	CannonConfig provideConfig(ConfigManager configManager)
@@ -199,7 +201,8 @@ public class CannonPlugin extends Plugin
 			if (!config.showInfobox())
 			{
 				removeCounter();
-			} else
+			}
+			else
 			{
 				if (cannonPlaced)
 				{
@@ -246,18 +249,21 @@ public class CannonPlugin extends Plugin
 				notifier.notify(config.showCannonNotifications(), String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
 				cannonBallNotificationSent = true;
 			}
-		} else if (varbitChanged.getVarpId() == VarPlayer.CANNON_COORD)
+		}
+		else if (varbitChanged.getVarpId() == VarPlayer.CANNON_COORD)
 		{
 			WorldPoint c = WorldPoint.fromCoord(varbitChanged.getValue());
 			cannonPosition = buildCannonWorldArea(c);
-		} else if (varbitChanged.getVarpId() == VarPlayer.CANNON_STATE)
+		}
+		else if (varbitChanged.getVarpId() == VarPlayer.CANNON_STATE)
 		{
 			cannonPlaced = varbitChanged.getValue() == 4;
 
 			if (cannonPlaced)
 			{
 				addCounter();
-			} else
+			}
+			else
 			{
 				removeCounter();
 			}
@@ -275,7 +281,8 @@ public class CannonPlugin extends Plugin
 		if (event.getMessage().equals("You add the furnace."))
 		{
 			cannonWorld = client.getWorld();
-		} else if (event.getMessage().contains("Your cannon is out of ammo!"))
+		}
+		else if (event.getMessage().contains("Your cannon is out of ammo!"))
 		{
 			notifier.notify(config.showCannonNotifications(), "Your cannon is out of ammo!");
 		}
@@ -286,7 +293,8 @@ public class CannonPlugin extends Plugin
 		if (cballsLeft > 15)
 		{
 			return Color.green;
-		} else if (cballsLeft > 5)
+		}
+		else if (cballsLeft > 5)
 		{
 			return Color.orange;
 		}
@@ -316,5 +324,10 @@ public class CannonPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private static WorldArea buildCannonWorldArea(WorldPoint worldPoint)
+	{
+		return new WorldArea(worldPoint.getX(), worldPoint.getY(), 3, 3, worldPoint.getPlane());
 	}
 }

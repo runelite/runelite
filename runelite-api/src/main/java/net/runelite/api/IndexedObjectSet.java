@@ -59,7 +59,7 @@ public class IndexedObjectSet<T> implements Iterable<T>
 	public Spliterator<T> spliterator()
 	{
 		return Spliterators.spliterator(this.iterator(), this.size,
-				Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
+			Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
 	}
 
 	@Nonnull

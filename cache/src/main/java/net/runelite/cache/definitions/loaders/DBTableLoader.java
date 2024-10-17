@@ -32,31 +32,6 @@ import net.runelite.cache.util.ScriptVarType;
 @Slf4j
 public class DBTableLoader
 {
-	public static Object[] decodeColumnFields(InputStream stream, ScriptVarType[] types)
-	{
-		int fieldCount = stream.readUnsignedShortSmart();
-		Object[] values = new Object[fieldCount * types.length];
-
-		for (int fieldIndex = 0; fieldIndex < fieldCount; fieldIndex++)
-		{
-			for (int typeIndex = 0; typeIndex < types.length; typeIndex++)
-			{
-				ScriptVarType type = types[typeIndex];
-				int valuesIndex = fieldIndex * types.length + typeIndex;
-
-				if (type == ScriptVarType.STRING)
-				{
-					values[valuesIndex] = stream.readString();
-				} else
-				{
-					values[valuesIndex] = stream.readInt();
-				}
-			}
-		}
-
-		return values;
-	}
-
 	public DBTableDefinition load(int id, byte[] b)
 	{
 		DBTableDefinition def = new DBTableDefinition(id);
@@ -108,9 +83,36 @@ public class DBTableLoader
 
 			def.setTypes(types);
 			def.setDefaultColumnValues(defaultValues);
-		} else
+		}
+		else
 		{
 			log.warn("Unrecognized dbtable opcode {}", opcode);
 		}
+	}
+
+	public static Object[] decodeColumnFields(InputStream stream, ScriptVarType[] types)
+	{
+		int fieldCount = stream.readUnsignedShortSmart();
+		Object[] values = new Object[fieldCount * types.length];
+
+		for (int fieldIndex = 0; fieldIndex < fieldCount; fieldIndex++)
+		{
+			for (int typeIndex = 0; typeIndex < types.length; typeIndex++)
+			{
+				ScriptVarType type = types[typeIndex];
+				int valuesIndex = fieldIndex * types.length + typeIndex;
+
+				if (type == ScriptVarType.STRING)
+				{
+					values[valuesIndex] = stream.readString();
+				}
+				else
+				{
+					values[valuesIndex] = stream.readInt();
+				}
+			}
+		}
+
+		return values;
 	}
 }

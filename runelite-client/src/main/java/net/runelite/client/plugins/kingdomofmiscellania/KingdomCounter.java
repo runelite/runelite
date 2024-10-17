@@ -48,6 +48,6 @@ public class KingdomCounter extends Counter
 	public String getTooltip()
 	{
 		return "Approval: " + plugin.getApproval() + "/" + KingdomPlugin.MAX_APPROVAL + "</br>"
-				+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer());
+			+ "Coffer: " + QuantityFormatter.quantityToStackSize(plugin.getCoffer());
 	}
 }

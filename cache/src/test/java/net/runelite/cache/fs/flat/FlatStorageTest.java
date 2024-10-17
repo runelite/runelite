@@ -31,10 +31,9 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.fs.jagex.DiskStorage;
 import net.runelite.cache.index.FileData;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import org.junit.Rule;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 
 public class FlatStorageTest

@@ -37,6 +37,11 @@ import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 @Slf4j
 class Game
 {
+	// Game starts with all possible rotations
+	private Rotation[] possibleRotations = Rotation.values();
+	// Number of shields dropped
+	private int shieldsDropped;
+
 	@Getter
 	private final PortalContext purple = new PortalContext(PURPLE);
 	@Getter
@@ -45,10 +50,6 @@ class Game
 	private final PortalContext yellow = new PortalContext(YELLOW);
 	@Getter
 	private final PortalContext red = new PortalContext(RED);
-	// Game starts with all possible rotations
-	private Rotation[] possibleRotations = Rotation.values();
-	// Number of shields dropped
-	private int shieldsDropped;
 
 	void fall(String color)
 	{

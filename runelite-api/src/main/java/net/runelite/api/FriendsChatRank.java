@@ -88,11 +88,6 @@ public enum FriendsChatRank
 	}
 
 	/**
-	 * The value of the rank.
-	 */
-	private final int value;
-
-	/**
 	 * Utility method that maps the rank value to its respective
 	 * {@link FriendsChatRank} value.
 	 *
@@ -103,4 +98,9 @@ public enum FriendsChatRank
 	{
 		return RANKS.get(rank);
 	}
+
+	/**
+	 * The value of the rank.
+	 */
+	private final int value;
 }

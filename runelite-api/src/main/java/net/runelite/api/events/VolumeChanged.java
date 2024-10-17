@@ -30,12 +30,12 @@ import lombok.Value;
 @Value
 public class VolumeChanged
 {
-	private final Type type;
-
 	public enum Type
 	{
 		MUSIC,
 		EFFECTS,
 		AREA
 	}
+
+	private final Type type;
 }

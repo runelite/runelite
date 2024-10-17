@@ -58,10 +58,10 @@ public class CastleWarsBandage implements Effect
 		final StatChange hitPoints = heal(HITPOINTS, perc(percH, 0)).effect(client);
 		final StatChange runEnergy = heal(RUN_ENERGY, 30).effect(client);
 		final StatsChanges changes = new StatsChanges(2);
-		changes.setStatChanges(new StatChange[] {hitPoints, runEnergy});
+		changes.setStatChanges(new StatChange[]{hitPoints, runEnergy});
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-				.map(StatChange::getPositivity)
-				.max(Comparator.naturalOrder()).get());
+			.map(StatChange::getPositivity)
+			.max(Comparator.naturalOrder()).get());
 
 		return changes;
 	}

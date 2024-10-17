@@ -24,9 +24,6 @@
  */
 package net.runelite.cache;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.cache.definitions.FontDefinition;
 import net.runelite.cache.definitions.loaders.FontLoader;
 import net.runelite.cache.fs.Archive;
@@ -35,6 +32,9 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.Djb2;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FontManager
 {

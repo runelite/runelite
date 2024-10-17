@@ -66,9 +66,9 @@ public class SceneOverlay extends Overlay
 	private static final int INTERACTING_SHIFT = -16;
 
 	private static final Polygon ARROW_HEAD = new Polygon(
-			new int[] {0, -3, 3},
-			new int[] {0, -5, -5},
-			3
+		new int[]{0, -3, 3},
+		new int[]{0, -5, -5},
+		3
 	);
 
 
@@ -137,15 +137,16 @@ public class SceneOverlay extends Overlay
 			for (int z = startZ; z <= endZ; z += Constants.CHUNK_SIZE)
 			{
 				Point p = Perspective.localToCanvas(client,
-						x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS,
-						client.getPlane());
+					x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS,
+					client.getPlane());
 				if (p != null)
 				{
 					if (first)
 					{
 						path.moveTo(p.getX(), p.getY());
 						first = false;
-					} else
+					}
+					else
 					{
 						path.lineTo(p.getX(), p.getY());
 					}
@@ -158,15 +159,16 @@ public class SceneOverlay extends Overlay
 			for (int x = startX; x <= endX; x += Constants.CHUNK_SIZE)
 			{
 				Point p = Perspective.localToCanvas(client,
-						x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS,
-						client.getPlane());
+					x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS,
+					client.getPlane());
 				if (p != null)
 				{
 					if (first)
 					{
 						path.moveTo(p.getX(), p.getY());
 						first = false;
-					} else
+					}
+					else
 					{
 						path.lineTo(p.getX(), p.getY());
 					}
@@ -184,12 +186,12 @@ public class SceneOverlay extends Overlay
 		int off = 16 * Perspective.LOCAL_TILE_SIZE;
 		int max = Perspective.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE;
 		LocalPoint[] points =
-				{
-						new LocalPoint(off, off),
-						new LocalPoint(off, max - off),
-						new LocalPoint(max - off, max - off),
-						new LocalPoint(max - off, off),
-				};
+		{
+			new LocalPoint(off, off),
+			new LocalPoint(off, max - off),
+			new LocalPoint(max - off, max - off),
+			new LocalPoint(max - off, off),
+		};
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -226,15 +228,16 @@ public class SceneOverlay extends Overlay
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
 			{
 				Point p = Perspective.localToCanvas(client,
-						new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
-						client.getPlane());
+					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
+					client.getPlane());
 				if (p != null)
 				{
 					if (first)
 					{
 						path.moveTo(p.getX(), p.getY());
 						first = false;
-					} else
+					}
+					else
 					{
 						path.lineTo(p.getX(), p.getY());
 					}
@@ -250,15 +253,16 @@ public class SceneOverlay extends Overlay
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
 			{
 				Point p = Perspective.localToCanvas(client,
-						new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
-						client.getPlane());
+					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
+					client.getPlane());
 				if (p != null)
 				{
 					if (first)
 					{
 						path.moveTo(p.getX(), p.getY());
 						first = false;
-					} else
+					}
+					else
 					{
 						path.lineTo(p.getX(), p.getY());
 					}
@@ -285,8 +289,8 @@ public class SceneOverlay extends Overlay
 			}
 
 			lp = new LocalPoint(
-					lp.getX() + dx * Perspective.LOCAL_TILE_SIZE + dx * Perspective.LOCAL_TILE_SIZE * (area.getWidth() - 1) / 2,
-					lp.getY() + dy * Perspective.LOCAL_TILE_SIZE + dy * Perspective.LOCAL_TILE_SIZE * (area.getHeight() - 1) / 2);
+				lp.getX() + dx * Perspective.LOCAL_TILE_SIZE + dx * Perspective.LOCAL_TILE_SIZE * (area.getWidth() - 1) / 2,
+				lp.getY() + dy * Perspective.LOCAL_TILE_SIZE + dy * Perspective.LOCAL_TILE_SIZE * (area.getHeight() - 1) / 2);
 
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 			if (poly == null)
@@ -297,7 +301,8 @@ public class SceneOverlay extends Overlay
 			if (actor == client.getLocalPlayer())
 			{
 				OverlayUtil.renderPolygon(graphics, poly, LOCAL_VALID_MOVEMENT_COLOR);
-			} else
+			}
+			else
 			{
 				OverlayUtil.renderPolygon(graphics, poly, VALID_MOVEMENT_COLOR);
 			}
@@ -383,8 +388,8 @@ public class SceneOverlay extends Overlay
 	private void renderInteracting(Graphics2D graphics)
 	{
 		Stream.concat(
-				client.getPlayers().stream(),
-				client.getNpcs().stream()
+			client.getPlayers().stream(),
+			client.getNpcs().stream()
 		).forEach(fa ->
 		{
 			Actor ta = fa.getInteracting();

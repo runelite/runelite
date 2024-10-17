@@ -33,10 +33,10 @@ import net.runelite.client.config.Notification;
 public interface AttackStylesConfig extends Config
 {
 	@ConfigItem(
-			keyName = "alwaysShowStyle",
-			name = "Always show style",
-			description = "Show attack style indicator at all times",
-			position = 1
+		keyName = "alwaysShowStyle",
+		name = "Always show style",
+		description = "Show attack style indicator at all times",
+		position = 1
 	)
 	default boolean alwaysShowStyle()
 	{
@@ -44,10 +44,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warnForDefensive",
-			name = "Warn for defence",
-			description = "Show warning when a Defence skill combat option is selected",
-			position = 2
+		keyName = "warnForDefensive",
+		name = "Warn for defence",
+		description = "Show warning when a Defence skill combat option is selected",
+		position = 2
 	)
 	default boolean warnForDefence()
 	{
@@ -55,10 +55,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warnForAttack",
-			name = "Warn for attack",
-			description = "Show warning when an Attack skill combat option is selected",
-			position = 3
+		keyName = "warnForAttack",
+		name = "Warn for attack",
+		description = "Show warning when an Attack skill combat option is selected",
+		position = 3
 	)
 	default boolean warnForAttack()
 	{
@@ -66,10 +66,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warnForStrength",
-			name = "Warn for strength",
-			description = "Show warning when a Strength skill combat option is selected",
-			position = 4
+		keyName = "warnForStrength",
+		name = "Warn for strength",
+		description = "Show warning when a Strength skill combat option is selected",
+		position = 4
 	)
 	default boolean warnForStrength()
 	{
@@ -77,10 +77,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warnForRanged",
-			name = "Warn for ranged",
-			description = "Show warning when a Ranged skill combat option is selected",
-			position = 5
+		keyName = "warnForRanged",
+		name = "Warn for ranged",
+		description = "Show warning when a Ranged skill combat option is selected",
+		position = 5
 	)
 	default boolean warnForRanged()
 	{
@@ -88,10 +88,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warnForMagic",
-			name = "Warn for magic",
-			description = "Show warning when a Magic skill combat option is selected",
-			position = 6
+		keyName = "warnForMagic",
+		name = "Warn for magic",
+		description = "Show warning when a Magic skill combat option is selected",
+		position = 6
 	)
 	default boolean warnForMagic()
 	{
@@ -99,10 +99,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideAutoRetaliate",
-			name = "Hide auto retaliate",
-			description = "Hide auto retaliate from the combat options tab",
-			position = 7
+		keyName = "hideAutoRetaliate",
+		name = "Hide auto retaliate",
+		description = "Hide auto retaliate from the combat options tab",
+		position = 7
 	)
 	default boolean hideAutoRetaliate()
 	{
@@ -110,10 +110,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "removeWarnedStyles",
-			name = "Remove warned styles",
-			description = "Remove warned styles from the combat options tab",
-			position = 8
+		keyName = "removeWarnedStyles",
+		name = "Remove warned styles",
+		description = "Remove warned styles from the combat options tab",
+		position = 8
 	)
 	default boolean removeWarnedStyles()
 	{
@@ -121,10 +121,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showChatWarnings",
-			name = "Show chat warnings",
-			description = "Show chat warnings about switching to an unwanted attack style",
-			position = 9
+		keyName = "showChatWarnings",
+		name = "Show chat warnings",
+		description = "Show chat warnings about switching to an unwanted attack style",
+		position = 9
 	)
 	default boolean showChatWarnings()
 	{
@@ -132,10 +132,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "warningNotification",
-			name = "Warning notification",
-			description = "Notification for switching to an unwanted attack style",
-			position = 10
+		keyName = "warningNotification",
+		name = "Warning notification",
+		description = "Notification for switching to an unwanted attack style",
+		position = 10
 	)
 	default Notification warningNotification()
 	{

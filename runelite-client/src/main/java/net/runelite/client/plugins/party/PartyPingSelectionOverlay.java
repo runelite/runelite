@@ -38,8 +38,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class PartyPingSelectionOverlay extends Overlay
-{
+class PartyPingSelectionOverlay extends Overlay {
 	private static final Color BACKGROUND_COLOR = new Color(42, 38, 27, 155);
 	private static final Color OUTSIDE_STROKE_COLOR = new Color(111, 108, 94, 120);
 	private static final Color INSIDE_STROKE_COLOR = new Color(80, 72, 59, 200);
@@ -54,8 +53,7 @@ class PartyPingSelectionOverlay extends Overlay
 	private final PartyPlugin plugin;
 
 	@Inject
-	private PartyPingSelectionOverlay(final Client client, final PartyPlugin plugin)
-	{
+	private PartyPingSelectionOverlay(final Client client, final PartyPlugin plugin) {
 		this.client = client;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -63,10 +61,8 @@ class PartyPingSelectionOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		if (!plugin.isAdvancedPingMenuOpen())
-		{
+	public Dimension render(Graphics2D graphics) {
+		if (!plugin.isAdvancedPingMenuOpen()) {
 			return null;
 		}
 
@@ -80,8 +76,7 @@ class PartyPingSelectionOverlay extends Overlay
 		renderRadialMenuBackground(graphics, baseX, baseY);
 
 		// highlight ping type option if one is selected
-		if (plugin.getPendingPartyPing() != null && plugin.getPendingPartyPing().getPingType() != null)
-		{
+		if (plugin.getPendingPartyPing() != null && plugin.getPendingPartyPing().getPingType() != null) {
 			renderRadialHighlight(graphics, baseX, baseY);
 		}
 
@@ -91,8 +86,7 @@ class PartyPingSelectionOverlay extends Overlay
 		return null;
 	}
 
-	private void renderRadialMenuBackground(final Graphics2D graphics, int baseX, int baseY)
-	{
+	private void renderRadialMenuBackground(final Graphics2D graphics, int baseX, int baseY) {
 		Ellipse2D outer = new Ellipse2D.Double(baseX, baseY, RADIAL_MENU_SIZE, RADIAL_MENU_SIZE);
 		Ellipse2D inner = new Ellipse2D.Double(baseX + RADIAL_MENU_THICKNESS, baseY + RADIAL_MENU_THICKNESS, RADIAL_MENU_HOLE_SIZE, RADIAL_MENU_HOLE_SIZE);
 
@@ -111,8 +105,7 @@ class PartyPingSelectionOverlay extends Overlay
 		graphics.drawOval(baseX + RADIAL_MENU_THICKNESS + 1, baseY + RADIAL_MENU_THICKNESS + 1, RADIAL_MENU_HOLE_SIZE - 3, RADIAL_MENU_HOLE_SIZE - 3);
 	}
 
-	private void renderRadialHighlight(final Graphics2D graphics, int baseX, int baseY)
-	{
+	private void renderRadialHighlight(final Graphics2D graphics, int baseX, int baseY) {
 		// substract 1 because TARGET ping type is our default and not shown in advanced menu
 		double optionSelectionSize = 360.0 / (PartyPingType.values().length - 1);
 		double offset = optionSelectionSize / 2.0;
@@ -121,8 +114,7 @@ class PartyPingSelectionOverlay extends Overlay
 
 		// Arc2D draws counter-clockwise and 0deg = 3 o'clock, but our radial menu starts at 9 o'clock + offset, going clockwise
 		double startAngle = 180 - offset - pingType.ordinal() * optionSelectionSize;
-		if (startAngle < 0)
-		{
+		if (startAngle < 0) {
 			startAngle += 360;
 		}
 
@@ -135,14 +127,11 @@ class PartyPingSelectionOverlay extends Overlay
 		graphics.fill(area);
 	}
 
-	private void renderMenuIcons(final Graphics2D graphics, int centerX, int centerY)
-	{
+	private void renderMenuIcons(final Graphics2D graphics, int centerX, int centerY) {
 		double optionSelectionSize = 360.0 / (PartyPingType.values().length - 1);
-		for (PartyPingType type : PartyPingType.values())
-		{
+		for (PartyPingType type : PartyPingType.values()) {
 			// skip default target ping
-			if (type == PartyPingType.TARGET)
-			{
+			if (type == PartyPingType.TARGET) {
 				continue;
 			}
 
@@ -158,8 +147,7 @@ class PartyPingSelectionOverlay extends Overlay
 		}
 	}
 
-	private void renderIndicationLine(final Graphics2D graphics, Point start, Point end)
-	{
+	private void renderIndicationLine(final Graphics2D graphics, Point start, Point end) {
 		graphics.setColor(Color.WHITE);
 		graphics.drawLine(start.getX(), start.getY(), end.getX(), end.getY());
 	}

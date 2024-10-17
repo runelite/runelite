@@ -58,10 +58,10 @@ import net.runelite.client.util.ImageUtil;
 
 @Slf4j
 @PluginDescriptor(
-		name = "Interface Styles",
-		description = "Change the interface style to the 2005/2010 interface",
-		tags = {"2005", "2010", "skin", "theme", "ui", "hp", "bar"},
-		enabledByDefault = false
+	name = "Interface Styles",
+	description = "Change the interface style to the 2005/2010 interface",
+	tags = {"2005", "2010", "skin", "theme", "ui", "hp", "bar"},
+	enabledByDefault = false
 )
 public class InterfaceStylesPlugin extends Plugin
 {
@@ -179,15 +179,16 @@ public class InterfaceStylesPlugin extends Plugin
 				// Add this menu to the submenu
 				assert submenu != null;
 				submenu.createMenuEntry(-1)
-						.setIdentifier(menuEntry.getIdentifier())
-						.setOption(option)
-						.setTarget(menuEntry.getTarget())
-						.setType(type)
-						.setParam0(menuEntry.getParam0())
-						.setParam1(menuEntry.getParam1())
-						.setDeprioritized(deprioritized);
+					.setIdentifier(menuEntry.getIdentifier())
+					.setOption(option)
+					.setTarget(menuEntry.getTarget())
+					.setType(type)
+					.setParam0(menuEntry.getParam0())
+					.setParam1(menuEntry.getParam1())
+					.setDeprioritized(deprioritized);
 				changed = true;
-			} else
+			}
+			else
 			{
 				newMenus[newIdx++] = menuEntry;
 			}
@@ -255,7 +256,8 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			client.draw2010Menu(config.menuAlpha());
 			event.consume();
-		} else if (config.menuAlpha() != 255)
+		}
+		else if (config.menuAlpha() != 255)
 		{
 			client.drawOriginalMenu(config.menuAlpha());
 			event.consume();
@@ -277,15 +279,16 @@ public class InterfaceStylesPlugin extends Plugin
 				if (skin == configuredSkin)
 				{
 					final String configSkin = skin.getExtendSkin() != null
-							? skin.getExtendSkin().toString()
-							: skin.toString();
+						? skin.getExtendSkin().toString()
+						: skin.toString();
 					String file = configSkin + "/" + spriteOverride.getSpriteID() + ".png";
 					SpritePixels spritePixels = getFileSpritePixels(file);
 
 					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
 					{
 						client.setCompass(spritePixels);
-					} else
+					}
+					else
 					{
 						client.getSpriteOverrides().put(spriteOverride.getSpriteID(), spritePixels);
 					}
@@ -315,11 +318,11 @@ public class InterfaceStylesPlugin extends Plugin
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
 			if (widgetOverride.getSkin() == configuredSkin
-					|| widgetOverride.getSkin() == configuredSkin.getExtendSkin())
+				|| widgetOverride.getSkin() == configuredSkin.getExtendSkin())
 			{
 				final String configSkin = configuredSkin.getExtendSkin() != null
-						? configuredSkin.getExtendSkin().toString()
-						: configuredSkin.toString();
+					? configuredSkin.getExtendSkin().toString()
+					: configuredSkin.toString();
 				String file = configSkin + "/widget/" + widgetOverride.getName() + ".png";
 				SpritePixels spritePixels = getFileSpritePixels(file);
 
@@ -352,7 +355,8 @@ public class InterfaceStylesPlugin extends Plugin
 			log.debug("Loading: {}", file);
 			BufferedImage image = ImageUtil.loadImageResource(this.getClass(), file);
 			return ImageUtil.getImageSpritePixels(image, client);
-		} catch (RuntimeException ex)
+		}
+		catch (RuntimeException ex)
 		{
 			log.debug("Unable to load image: ", ex);
 		}
@@ -409,7 +413,8 @@ public class InterfaceStylesPlugin extends Plugin
 			spriteManager.addSpriteOverrides(HealthbarOverride.values());
 			// Reset health bar caches to apply the override
 			clientThread.invokeLater(client::resetHealthBarCaches);
-		} else
+		}
+		else
 		{
 			restoreHealthBars();
 		}
@@ -453,7 +458,8 @@ public class InterfaceStylesPlugin extends Plugin
 
 				crossSprites[i] = newSprite;
 			}
-		} else
+		}
+		else
 		{
 			restoreCrossSprites();
 		}

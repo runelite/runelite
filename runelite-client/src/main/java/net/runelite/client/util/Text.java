@@ -40,14 +40,16 @@ import org.apache.commons.text.similarity.JaroWinklerDistance;
  */
 public class Text
 {
-	public static final CharMatcher JAGEX_PRINTABLE_CHAR_MATCHER = new JagexPrintableCharMatcher();
 	private static final JaroWinklerDistance DISTANCE = new JaroWinklerDistance();
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Splitter COMMA_SPLITTER = Splitter
-			.on(",")
-			.omitEmptyStrings()
-			.trimResults();
+		.on(",")
+		.omitEmptyStrings()
+		.trimResults();
+
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+
+	public static final CharMatcher JAGEX_PRINTABLE_CHAR_MATCHER = new JagexPrintableCharMatcher();
 
 	/**
 	 * Splits comma separated values to list of strings
@@ -110,8 +112,8 @@ public class Text
 
 	/**
 	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
-	 *
 	 * @param str The string to standardize
+	 *
 	 * @return The given `str` that is standardized
 	 */
 	public static String standardize(String str)
@@ -141,9 +143,9 @@ public class Text
 	public static String sanitizeMultilineText(String str)
 	{
 		return removeTags(str
-				.replace("-<br>", "-")
-				.replace("<br>", " ")
-				.replaceAll("[ ]+", " "));
+			.replace("-<br>", "-")
+			.replace("<br>", " ")
+			.replaceAll("[ ]+", " "));
 	}
 
 	/**
@@ -159,13 +161,16 @@ public class Text
 			if (c == '<')
 			{
 				out.append("<lt>");
-			} else if (c == '>')
+			}
+			else if (c == '>')
 			{
 				out.append("<gt>");
-			} else if (c == '\n')
+			}
+			else if (c == '\n')
 			{
 				out.append("<br>");
-			} else if (c != '\r')
+			}
+			else if (c != '\r')
 			{
 				out.append(c);
 			}
@@ -192,9 +197,9 @@ public class Text
 	 * converts enum name format from THIS_FORMAT to This Format.
 	 *
 	 * @param o an enum
-	 * @return the enum's name in title case,
-	 * or if it overrides toString,
-	 * the value returned by toString
+	 * @return  the enum's name in title case,
+	 *          or if it overrides toString,
+	 *          the value returned by toString
 	 */
 	public static String titleCase(Enum o)
 	{
@@ -204,8 +209,8 @@ public class Text
 		if (o.name().equals(toString))
 		{
 			return WordUtils
-					.capitalize(toString.toLowerCase(), '_')
-					.replace("_", " ");
+				.capitalize(toString.toLowerCase(), '_')
+				.replace("_", " ");
 		}
 
 		return toString;
@@ -221,7 +226,7 @@ public class Text
 		for (String term : searchTerms)
 		{
 			if (keywords.stream().noneMatch((t) -> t.contains(term) ||
-					DISTANCE.apply(t, term) > 0.9))
+				DISTANCE.apply(t, term) > 0.9))
 			{
 				return false;
 			}

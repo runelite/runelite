@@ -28,9 +28,9 @@ package net.runelite.client.config;
 public interface TestConfig extends Config
 {
 	@ConfigItem(
-			keyName = "key",
-			name = "Key Name",
-			description = "value"
+		keyName = "key",
+		name = "Key Name",
+		description = "value"
 	)
 	default String key()
 	{
@@ -38,9 +38,9 @@ public interface TestConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "key",
-			name = "Key Name",
-			description = "value"
+		keyName = "key",
+		name = "Key Name",
+		description = "value"
 	)
 	void key(String key);
 

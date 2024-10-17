@@ -49,14 +49,14 @@ public class WorldClient
 	public WorldResult lookupWorlds() throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-				.addPathSegment("worlds.js")
-				.build();
+			.addPathSegment("worlds.js")
+			.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-				.url(url)
-				.build();
+			.url(url)
+			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -68,7 +68,8 @@ public class WorldClient
 
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), WorldResult.class);
-		} catch (JsonParseException ex)
+		}
+		catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}

@@ -39,7 +39,8 @@ public final class TitleCaseListCellRenderer extends DefaultListCellRenderer
 		if (value instanceof Enum<?>)
 		{
 			text = Text.titleCase((Enum<?>) value);
-		} else
+		}
+		else
 		{
 			text = value.toString();
 		}

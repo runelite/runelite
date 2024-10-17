@@ -85,7 +85,7 @@ class PlayerIndicatorsService
 		}
 
 		final Predicate<PlayerIndicatorsConfig.HighlightSetting> isEnabled = (hs) -> hs == PlayerIndicatorsConfig.HighlightSetting.ENABLED ||
-				(hs == PlayerIndicatorsConfig.HighlightSetting.PVP && (client.getVarbitValue(Varbits.IN_WILDERNESS) == 1 || client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1));
+			(hs == PlayerIndicatorsConfig.HighlightSetting.PVP && (client.getVarbitValue(Varbits.IN_WILDERNESS) == 1 || client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1));
 
 		Color color = null;
 		if (player == client.getLocalPlayer())
@@ -94,22 +94,28 @@ class PlayerIndicatorsService
 			{
 				color = config.getOwnPlayerColor();
 			}
-		} else if (partyService.isInParty() && isEnabled.test(config.highlightPartyMembers()) && partyService.getMemberByDisplayName(player.getName()) != null)
+		}
+		else if (partyService.isInParty() && isEnabled.test(config.highlightPartyMembers()) && partyService.getMemberByDisplayName(player.getName()) != null)
 		{
 			color = config.getPartyMemberColor();
-		} else if (player.isFriend() && isEnabled.test(config.highlightFriends()))
+		}
+		else if (player.isFriend() && isEnabled.test(config.highlightFriends()))
 		{
 			color = config.getFriendColor();
-		} else if (player.isFriendsChatMember() && isEnabled.test(config.highlightFriendsChat()))
+		}
+		else if (player.isFriendsChatMember() && isEnabled.test(config.highlightFriendsChat()))
 		{
 			color = config.getFriendsChatMemberColor();
-		} else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && isEnabled.test(config.highlightTeamMembers()))
+		}
+		else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && isEnabled.test(config.highlightTeamMembers()))
 		{
 			color = config.getTeamMemberColor();
-		} else if (player.isClanMember() && isEnabled.test(config.highlightClanMembers()))
+		}
+		else if (player.isClanMember() && isEnabled.test(config.highlightClanMembers()))
 		{
 			color = config.getClanMemberColor();
-		} else if (!player.isFriendsChatMember() && !player.isClanMember() && isEnabled.test(config.highlightOthers()))
+		}
+		else if (!player.isFriendsChatMember() && !player.isClanMember() && isEnabled.test(config.highlightOthers()))
 		{
 			color = config.getOthersColor();
 		}
@@ -131,6 +137,14 @@ class PlayerIndicatorsService
 		}
 
 		return new Decorations(rank, clanTitle, color);
+	}
+
+	@Value
+	static class Decorations
+	{
+		FriendsChatRank friendsChatRank;
+		ClanTitle clanTitle;
+		Color color;
 	}
 
 	private ClanTitle getClanTitle(Player player)
@@ -162,13 +176,5 @@ class PlayerIndicatorsService
 
 		FriendsChatMember friendsChatMember = friendsChatManager.findByName(Text.removeTags(player.getName()));
 		return friendsChatMember != null ? friendsChatMember.getRank() : UNRANKED;
-	}
-
-	@Value
-	static class Decorations
-	{
-		FriendsChatRank friendsChatRank;
-		ClanTitle clanTitle;
-		Color color;
 	}
 }

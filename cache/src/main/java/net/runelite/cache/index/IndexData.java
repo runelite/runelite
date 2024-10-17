@@ -148,7 +148,8 @@ public class IndexData
 		if (protocol >= 7)
 		{
 			stream.writeBigSmart(this.archives.length);
-		} else
+		}
+		else
 		{
 			stream.writeShort(this.archives.length);
 		}
@@ -167,7 +168,8 @@ public class IndexData
 			if (protocol >= 7)
 			{
 				stream.writeBigSmart(archive);
-			} else
+			}
+			else
 			{
 				stream.writeShort(archive);
 			}
@@ -203,7 +205,8 @@ public class IndexData
 			if (protocol >= 7)
 			{
 				stream.writeBigSmart(len);
-			} else
+			}
+			else
 			{
 				stream.writeShort(len);
 			}
@@ -227,7 +230,8 @@ public class IndexData
 				if (protocol >= 7)
 				{
 					stream.writeBigSmart(offset);
-				} else
+				}
+				else
 				{
 					stream.writeShort(offset);
 				}

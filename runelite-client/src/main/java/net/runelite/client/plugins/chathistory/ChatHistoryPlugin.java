@@ -65,9 +65,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
-		name = "Chat History",
-		description = "Retain your chat history when logging in/out or world hopping",
-		tags = {"chat", "history", "retain", "cycle", "pm"}
+	name = "Chat History",
+	description = "Retain your chat history when logging in/out or world hopping",
+	tags = {"chat", "history", "retain", "cycle", "pm"}
 )
 @Slf4j
 public class ChatHistoryPlugin extends Plugin implements KeyListener
@@ -137,11 +137,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			for (MessageNode queuedMessage : messageQueue)
 			{
 				final MessageNode node = client.addChatMessage(
-						queuedMessage.getType(),
-						queuedMessage.getName(),
-						queuedMessage.getValue(),
-						queuedMessage.getSender(),
-						false);
+					queuedMessage.getType(),
+					queuedMessage.getName(),
+					queuedMessage.getValue(),
+					queuedMessage.getSender(),
+					false);
 				node.setRuneLiteFormatMessage(queuedMessage.getRuneLiteFormatMessage());
 				node.setTimestamp(queuedMessage.getTimestamp());
 			}

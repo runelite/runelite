@@ -64,31 +64,39 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Zalcano",
-		description = "Assistance for the Zalcano fight",
-		enabledByDefault = false
+	name = "Zalcano",
+	description = "Assistance for the Zalcano fight",
+	enabledByDefault = false
 )
 public class ZalcanoPlugin extends Plugin
 {
 	private static final int ZALCANO_WEAKENED = NpcID.ZALCANO_9050;
 	private static final int GOLEM = NpcID.GOLEM_9051;
-	@Getter
-	private final List<GraphicsObject> rocks = new ArrayList<>();
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private ZalcanoOverlay overlay;
+
 	@Inject
 	private ZalcanoPanel panel;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Getter
 	private LocalPoint targetedGlowingRock;
 	@Getter
 	private int targetedGlowingRockEndCycle;
 	private WorldPoint lastGlowingRock;
+
+	@Getter
+	private final List<GraphicsObject> rocks = new ArrayList<>();
+
 	@Getter
 	private int healthDamage;
 	@Getter
@@ -174,7 +182,8 @@ public class ZalcanoPlugin extends Plugin
 		if (npc.getId() == ZALCANO_WEAKENED)
 		{
 			client.clearHintArrow();
-		} else if (npc.getId() == GOLEM)
+		}
+		else if (npc.getId() == GOLEM)
 		{
 			if (lastGlowingRock != null)
 			{
@@ -209,7 +218,8 @@ public class ZalcanoPlugin extends Plugin
 		if (npc.getId() == ZALCANO_WEAKENED)
 		{
 			client.setHintArrow(npc);
-		} else if (npc.getId() == ZALCANO)
+		}
+		else if (npc.getId() == ZALCANO)
 		{
 			if (lastGlowingRock != null)
 			{

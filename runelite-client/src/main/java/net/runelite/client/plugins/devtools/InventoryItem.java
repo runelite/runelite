@@ -33,7 +33,7 @@ import net.runelite.api.Item;
 class InventoryItem
 {
 	private final int slot;
+	private Item item;
 	private final String name;
 	private final boolean stackable;
-	private Item item;
 }

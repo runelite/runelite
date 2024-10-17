@@ -65,43 +65,55 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CompostTrackerTest
 {
 
-	private static final int PATCH_ID = 12345;
-	private static final int PATCH_VARBIT = 54321;
-	private static final WorldPoint worldPoint = new WorldPoint(1, 2, 0);
-	@Rule
-	public ErrorCollector collector = new ErrorCollector();
 	@Inject
 	private CompostTracker compostTracker;
+
 	@Mock
 	@Bind
 	private Client client;
+
 	@Mock
 	@Bind
 	private FarmingWorld farmingWorld;
+
 	@Mock
 	@Bind
 	private ConfigManager configManager;
+
 	@Mock
 	@Bind
 	private FarmingRegion farmingRegion;
+
 	@Mock
 	@Bind
 	private FarmingPatch farmingPatch;
+
 	@Mock
 	@Bind
 	private GameObject patchObject;
+
 	@Mock
 	@Bind
 	private Player player;
+
 	@Mock
 	@Bind
 	private Scene scene;
+
 	@Mock
 	@Bind
 	private Tile tile;
+
 	@Mock
 	@Bind
 	private ObjectComposition patchDef;
+
+	@Rule
+	public ErrorCollector collector = new ErrorCollector();
+
+	private static final int PATCH_ID = 12345;
+	private static final int PATCH_VARBIT = 54321;
+	private static final WorldPoint worldPoint = new WorldPoint(1, 2, 0);
 
 	@Before
 	public void before()
@@ -119,12 +131,12 @@ public class CompostTrackerTest
 		when(client.getScene()).thenReturn(scene);
 		when(client.getObjectDefinition(PATCH_ID)).thenReturn(patchDef);
 
-		when(scene.getTiles()).thenReturn(new Tile[][][] {{null, {null, null, tile}}}); // indices match worldPoint
-		when(tile.getGameObjects()).thenReturn(new GameObject[] {patchObject});
+		when(scene.getTiles()).thenReturn(new Tile[][][]{{null, {null, null, tile}}}); // indices match worldPoint
+		when(tile.getGameObjects()).thenReturn(new GameObject[]{patchObject});
 
 		when(farmingWorld.getRegionsForLocation(any())).thenReturn(Collections.singleton(farmingRegion));
 
-		when(farmingRegion.getPatches()).thenReturn(new FarmingPatch[] {farmingPatch});
+		when(farmingRegion.getPatches()).thenReturn(new FarmingPatch[]{farmingPatch});
 
 		when(farmingPatch.getVarbit()).thenReturn(PATCH_VARBIT);
 		when(farmingPatch.configKey()).thenReturn("MOCK");
@@ -154,7 +166,7 @@ public class CompostTrackerTest
 	public void getCompostState_directlyReturnsFromConfig()
 	{
 		when(configManager.getRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.class)).thenReturn(
-				CompostState.SUPERCOMPOST);
+			CompostState.SUPERCOMPOST);
 		assertThat(compostTracker.getCompostState(farmingPatch), is(CompostState.SUPERCOMPOST));
 	}
 
@@ -163,43 +175,43 @@ public class CompostTrackerTest
 	{
 		// invalid
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("This is not a farming chat message."),
-				is((CompostState) null)
+			CompostTracker.determineCompostUsed("This is not a farming chat message."),
+			is((CompostState) null)
 		);
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("Contains word compost but is not examine message."),
-				is((CompostState) null)
+			CompostTracker.determineCompostUsed("Contains word compost but is not examine message."),
+			is((CompostState) null)
 		);
 
 		// inspect
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("This is an allotment. The soil has been treated with supercompost. The patch is empty and weeded."),
-				is(CompostState.SUPERCOMPOST)
+			CompostTracker.determineCompostUsed("This is an allotment. The soil has been treated with supercompost. The patch is empty and weeded."),
+			is(CompostState.SUPERCOMPOST)
 		);
 
 		// fertile soil on existing patch
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("This patch has already been fertilised with ultracompost - the spell can't make it any more fertile."),
-				is(CompostState.ULTRACOMPOST)
+			CompostTracker.determineCompostUsed("This patch has already been fertilised with ultracompost - the spell can't make it any more fertile."),
+			is(CompostState.ULTRACOMPOST)
 		);
 		// fertile soil on cleared patch
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("The herb patch has been treated with supercompost."),
-				is(CompostState.SUPERCOMPOST)
+			CompostTracker.determineCompostUsed("The herb patch has been treated with supercompost."),
+			is(CompostState.SUPERCOMPOST)
 		);
 
 		// bucket on cleared patch
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("You treat the herb patch with ultracompost."),
-				is(CompostState.ULTRACOMPOST)
+			CompostTracker.determineCompostUsed("You treat the herb patch with ultracompost."),
+			is(CompostState.ULTRACOMPOST)
 		);
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("You treat the tree patch with compost."),
-				is(CompostState.COMPOST)
+			CompostTracker.determineCompostUsed("You treat the tree patch with compost."),
+			is(CompostState.COMPOST)
 		);
 		collector.checkThat(
-				CompostTracker.determineCompostUsed("You treat the fruit tree patch with supercompost."),
-				is(CompostState.SUPERCOMPOST)
+			CompostTracker.determineCompostUsed("You treat the fruit tree patch with supercompost."),
+			is(CompostState.SUPERCOMPOST)
 		);
 	}
 

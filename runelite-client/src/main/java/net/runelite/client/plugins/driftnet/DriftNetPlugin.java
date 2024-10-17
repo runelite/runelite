@@ -70,45 +70,52 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "Drift Net",
-		description = "Display information about drift nets",
-		tags = {"hunter", "fishing", "drift", "net"},
-		enabledByDefault = false
+	name = "Drift Net",
+	description = "Display information about drift nets",
+	tags = {"hunter", "fishing", "drift", "net"},
+	enabledByDefault = false
 )
 public class DriftNetPlugin extends Plugin
 {
 	static final String CONFIG_GROUP = "driftnet";
 	private static final int UNDERWATER_REGION = 15008;
-	private static final String CHAT_PRODDING_FISH = "You prod at the shoal of fish to scare it.";
+	private static final String CHAT_PRODDING_FISH  = "You prod at the shoal of fish to scare it.";
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private DriftNetConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private DriftNetOverlay overlay;
+
 	@Getter
 	private final Set<NPC> fish = new HashSet<>();
 	@Getter
 	private final Map<NPC, Integer> taggedFish = new HashMap<>();
 	@Getter
 	private final List<DriftNet> NETS = ImmutableList.of(
-			new DriftNet(NullObjectID.NULL_31433, Varbits.NORTH_NET_STATUS, Varbits.NORTH_NET_CATCH_COUNT, ImmutableSet.of(
-					new WorldPoint(3746, 10297, 1),
-					new WorldPoint(3747, 10297, 1),
-					new WorldPoint(3748, 10297, 1),
-					new WorldPoint(3749, 10297, 1)
-			)),
-			new DriftNet(NullObjectID.NULL_31434, Varbits.SOUTH_NET_STATUS, Varbits.SOUTH_NET_CATCH_COUNT, ImmutableSet.of(
-					new WorldPoint(3742, 10288, 1),
-					new WorldPoint(3742, 10289, 1),
-					new WorldPoint(3742, 10290, 1),
-					new WorldPoint(3742, 10291, 1),
-					new WorldPoint(3742, 10292, 1)
-			)));
-	@Inject
-	private Client client;
-	@Inject
-	private ClientThread clientThread;
-	@Inject
-	private DriftNetConfig config;
-	@Inject
-	private OverlayManager overlayManager;
-	@Inject
-	private DriftNetOverlay overlay;
+		new DriftNet(NullObjectID.NULL_31433, Varbits.NORTH_NET_STATUS, Varbits.NORTH_NET_CATCH_COUNT, ImmutableSet.of(
+			new WorldPoint(3746, 10297, 1),
+			new WorldPoint(3747, 10297, 1),
+			new WorldPoint(3748, 10297, 1),
+			new WorldPoint(3749, 10297, 1)
+		)),
+		new DriftNet(NullObjectID.NULL_31434, Varbits.SOUTH_NET_STATUS, Varbits.SOUTH_NET_CATCH_COUNT, ImmutableSet.of(
+			new WorldPoint(3742, 10288, 1),
+			new WorldPoint(3742, 10289, 1),
+			new WorldPoint(3742, 10290, 1),
+			new WorldPoint(3742, 10291, 1),
+			new WorldPoint(3742, 10292, 1)
+		)));
+
 	@Getter
 	private boolean inDriftNetArea;
 	private boolean armInteraction;
@@ -203,9 +210,9 @@ public class DriftNetPlugin extends Plugin
 	public void onInteractingChanged(InteractingChanged event)
 	{
 		if (armInteraction
-				&& event.getSource() == client.getLocalPlayer()
-				&& event.getTarget() instanceof NPC
-				&& ((NPC) event.getTarget()).getId() == NpcID.FISH_SHOAL)
+			&& event.getSource() == client.getLocalPlayer()
+			&& event.getTarget() instanceof NPC
+			&& ((NPC) event.getTarget()).getId() == NpcID.FISH_SHOAL)
 		{
 			tagFish(event.getTarget());
 			armInteraction = false;
@@ -232,12 +239,12 @@ public class DriftNetPlugin extends Plugin
 		}
 
 		List<DriftNet> closedNets = NETS.stream()
-				.filter(DriftNet::isNotAcceptingFish)
-				.collect(Collectors.toList());
+			.filter(DriftNet::isNotAcceptingFish)
+			.collect(Collectors.toList());
 
 		taggedFish.entrySet().removeIf(entry ->
-				isTagExpired(entry.getValue()) ||
-						isFishNextToNet(entry.getKey(), closedNets)
+			isTagExpired(entry.getValue()) ||
+			isFishNextToNet(entry.getKey(), closedNets)
 		);
 
 		NETS.forEach(net -> net.setPrevTickStatus(net.getStatus()));
@@ -260,7 +267,8 @@ public class DriftNetPlugin extends Plugin
 			if (target instanceof NPC && ((NPC) target).getId() == NpcID.FISH_SHOAL)
 			{
 				tagFish(target);
-			} else
+			}
+			else
 			{
 				// If the fish is on an adjacent tile, the interaction change happens after
 				// the chat message is sent, so we arm it

@@ -100,7 +100,7 @@ public class PlayerIndicatorsPluginTest
 		String t2 = "title2";
 		String col = "<col=ff>";
 
-		String cmbLevel = col + t0 + name + t1 + col + "  (level-126)" + t2;
+		String cmbLevel =  col + t0 + name + t1 + col + "  (level-126)" + t2;
 		String skillTotal = col + t0 + name + t1 + "  (skill-1234)" + t2;
 
 		// widget names contains the col tags
