@@ -98,15 +98,14 @@ public class NpcManager
 	{
 		java.mkdirs();
 		try (IDClass ids = IDClass.create(java, "NpcID");
-			IDClass nulls = IDClass.create(java, "NullNpcID"))
+			 IDClass nulls = IDClass.create(java, "NullNpcID"))
 		{
 			for (NpcDefinition def : npcs.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{
 					nulls.add(def.name, def.id);
-				}
-				else
+				} else
 				{
 					ids.add(def.name, def.id);
 				}

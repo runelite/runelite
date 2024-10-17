@@ -31,32 +31,15 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Animation Smoothing",
-	description = "Show smoother player, NPC, and object animations",
-	tags = {"npcs", "objects", "players"},
-	enabledByDefault = false
+		name = "Animation Smoothing",
+		description = "Show smoother player, NPC, and object animations",
+		tags = {"npcs", "objects", "players"},
+		enabledByDefault = false
 )
 public class AnimationSmoothingPlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		update();
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		client.setAnimationInterpolationFilter(null);
-	}
-
-	private void update()
-	{
-		client.setAnimationInterpolationFilter(AnimationSmoothingPlugin::isAnimationInterpolatable);
-	}
 
 	private static boolean isAnimationInterpolatable(int animId)
 	{
@@ -90,5 +73,22 @@ public class AnimationSmoothingPlugin extends Plugin
 			default:
 				return true;
 		}
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		update();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		client.setAnimationInterpolationFilter(null);
+	}
+
+	private void update()
+	{
+		client.setAnimationInterpolationFilter(AnimationSmoothingPlugin::isAnimationInterpolatable);
 	}
 }

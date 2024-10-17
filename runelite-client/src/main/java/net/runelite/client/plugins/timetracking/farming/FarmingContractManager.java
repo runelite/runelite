@@ -125,12 +125,12 @@ public class FarmingContractManager
 	{
 		PatchPrediction patchPrediction = farmingTracker.predictPatch(patch);
 		if (contract != null &&
-			patch.getRegion().getRegionID() == FARMING_GUILD_REGION_ID &&
-			contract.getPatchImplementation() == patch.getImplementation() &&
-			patchPrediction != null &&
-			(summary == SummaryState.EMPTY &&
-				(patchPrediction.getProduce() == null || patchPrediction.getProduce() == Produce.WEEDS)
-				|| patchPrediction.getProduce().equals(contract)))
+				patch.getRegion().getRegionID() == FARMING_GUILD_REGION_ID &&
+				contract.getPatchImplementation() == patch.getImplementation() &&
+				patchPrediction != null &&
+				(summary == SummaryState.EMPTY &&
+						(patchPrediction.getProduce() == null || patchPrediction.getProduce() == Produce.WEEDS)
+						|| patchPrediction.getProduce().equals(contract)))
 		{
 			return true;
 		}
@@ -152,8 +152,7 @@ public class FarmingContractManager
 		{
 			handleGuildmasterJaneWidgetDialog();
 			handleInfoBox();
-		}
-		else
+		} else
 		{
 			if (infoBox != null)
 			{
@@ -267,7 +266,7 @@ public class FarmingContractManager
 				}
 
 				if ((contract.getPatchImplementation().isHealthCheckRequired() && state == CropState.HARVESTABLE)
-					&& !(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch))
+						&& !(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch))
 				{
 					summary = SummaryState.OCCUPIED;
 					// Don't let this run into the "Completed" section!
@@ -282,8 +281,7 @@ public class FarmingContractManager
 				{
 					summary = SummaryState.OCCUPIED;
 				}
-			}
-			else
+			} else
 			{
 				// Ignore if crop is dead but there's another one in progress (either normal or diseased)
 				if (state == CropState.DEAD && (hasDiseasedPatch || completionTime != Long.MAX_VALUE))
@@ -302,13 +300,11 @@ public class FarmingContractManager
 				{
 					hasDiseasedPatch = true;
 					summary = SummaryState.IN_PROGRESS;
-				}
-				else if (contractCropState == CropState.DEAD)
+				} else if (contractCropState == CropState.DEAD)
 				{
 					hasDeadPatch = true;
 					summary = SummaryState.IN_PROGRESS;
-				}
-				else
+				} else
 				{
 					long estimatedTime = Math.min(prediction.getDoneEstimate(), completionTime);
 					if (estimatedTime <= Instant.now().getEpochSecond())
@@ -316,8 +312,7 @@ public class FarmingContractManager
 						summary = SummaryState.COMPLETED;
 						completionTime = 0;
 						break;
-					}
-					else
+					} else
 					{
 						summary = SummaryState.IN_PROGRESS;
 						completionTime = estimatedTime;
@@ -334,8 +329,7 @@ public class FarmingContractManager
 		try
 		{
 			return Produce.getByItemID(Integer.parseInt(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT)));
-		}
-		catch (NumberFormatException ignored)
+		} catch (NumberFormatException ignored)
 		{
 			return null;
 		}
@@ -346,8 +340,7 @@ public class FarmingContractManager
 		if (contract != null)
 		{
 			configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT, String.valueOf(contract.getItemID()));
-		}
-		else
+		} else
 		{
 			configManager.unsetRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT);
 		}

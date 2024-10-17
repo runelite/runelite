@@ -67,8 +67,7 @@ class HotkeyButton extends JButton
 				if (modifierless)
 				{
 					setValue(new ModifierlessKeybind(e));
-				}
-				else
+				} else
 				{
 					setValue(new Keybind(e));
 				}

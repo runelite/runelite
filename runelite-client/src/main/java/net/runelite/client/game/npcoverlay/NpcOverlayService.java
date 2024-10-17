@@ -55,7 +55,7 @@ public class NpcOverlayService
 
 	@Inject
 	private NpcOverlayService(Client client, ClientThread clientThread,
-		OverlayManager overlayManager, ModelOutlineRenderer modelOutlineRenderer, EventBus eventBus)
+							  OverlayManager overlayManager, ModelOutlineRenderer modelOutlineRenderer, EventBus eventBus)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
@@ -68,15 +68,15 @@ public class NpcOverlayService
 	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
-			event.getGameState() == GameState.HOPPING)
+				event.getGameState() == GameState.HOPPING)
 		{
 			highlightedNpcs.clear();
 		}
 	}
 
 	@Subscribe(
-		// Run after plugins, which typically capture NPCs on spawn and reference them in the highlight functions
-		priority = -1
+			// Run after plugins, which typically capture NPCs on spawn and reference them in the highlight functions
+			priority = -1
 	)
 	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
@@ -94,7 +94,7 @@ public class NpcOverlayService
 	}
 
 	@Subscribe(
-		priority = -1
+			priority = -1
 	)
 	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
@@ -103,7 +103,7 @@ public class NpcOverlayService
 	}
 
 	@Subscribe(
-		priority = -1
+			priority = -1
 	)
 	private void onNpcChanged(NpcChanged event)
 	{

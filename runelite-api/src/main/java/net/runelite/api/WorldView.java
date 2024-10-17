@@ -30,12 +30,14 @@ public interface WorldView
 {
 	/**
 	 * Get the world view id
+	 *
 	 * @return the id, or -1 if this is the top level worldview
 	 */
 	int getId();
 
 	/**
 	 * Test if this worldview is the top level world view.
+	 *
 	 * @return
 	 */
 	boolean isTopLevel();
@@ -102,12 +104,14 @@ public interface WorldView
 
 	/**
 	 * Get the size of the world view, x-axis
+	 *
 	 * @return
 	 */
 	int getSizeX();
 
 	/**
 	 * Get the size of the world view, y-axis
+	 *
 	 * @return
 	 */
 	int getSizeY();
@@ -134,23 +138,24 @@ public interface WorldView
 
 	/**
 	 * Create a projectile.
-	 * @param id projectile/spotanim id
-	 * @param plane plane the projectile is on
-	 * @param startX local x coordinate the projectile starts at
-	 * @param startY local y coordinate the projectile starts at
-	 * @param startZ local z coordinate the projectile starts at - includes tile height
-	 * @param startCycle cycle the project starts
-	 * @param endCycle cycle the projectile ends
+	 *
+	 * @param id          projectile/spotanim id
+	 * @param plane       plane the projectile is on
+	 * @param startX      local x coordinate the projectile starts at
+	 * @param startY      local y coordinate the projectile starts at
+	 * @param startZ      local z coordinate the projectile starts at - includes tile height
+	 * @param startCycle  cycle the project starts
+	 * @param endCycle    cycle the projectile ends
 	 * @param slope
 	 * @param startHeight start height of projectile - excludes tile height
-	 * @param endHeight end height of projectile - excludes tile height
-	 * @param target optional actor target
-	 * @param targetX target x - if an actor target is supplied should be the target x
-	 * @param targetY target y - if an actor target is supplied should be the target y
+	 * @param endHeight   end height of projectile - excludes tile height
+	 * @param target      optional actor target
+	 * @param targetX     target x - if an actor target is supplied should be the target x
+	 * @param targetY     target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 */
 	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
-		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
+								int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
 
 	/**
 	 * Gets a list of all projectiles currently spawned.
@@ -176,8 +181,9 @@ public interface WorldView
 
 	/**
 	 * Check if this scene is an instance
-	 * @see #getInstanceTemplateChunks()
+	 *
 	 * @return
+	 * @see #getInstanceTemplateChunks()
 	 */
 	boolean isInstance();
 
@@ -197,6 +203,7 @@ public interface WorldView
 	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
 	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 	 * }</pre>
+	 *
 	 * @return the array of instance template chunks
 	 * @see Constants#CHUNK_SIZE
 	 * @see InstanceTemplates

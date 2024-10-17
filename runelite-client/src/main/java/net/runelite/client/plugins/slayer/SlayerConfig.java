@@ -47,10 +47,10 @@ public interface SlayerConfig extends Config
 	String POINTS_KEY = "points";
 
 	@ConfigItem(
-		position = 1,
-		keyName = "infobox",
-		name = "Task InfoBox",
-		description = "Display task information in an InfoBox"
+			position = 1,
+			keyName = "infobox",
+			name = "Task InfoBox",
+			description = "Display task information in an InfoBox"
 	)
 	default boolean showInfobox()
 	{
@@ -58,10 +58,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "itemoverlay",
-		name = "Count on Items",
-		description = "Display task count remaining on slayer items"
+			position = 2,
+			keyName = "itemoverlay",
+			name = "Count on Items",
+			description = "Display task count remaining on slayer items"
 	)
 	default boolean showItemOverlay()
 	{
@@ -69,10 +69,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "superiornotification",
-		name = "Superior foe notification",
-		description = "Toggles notifications on superior foe encounters"
+			position = 3,
+			keyName = "superiornotification",
+			name = "Superior foe notification",
+			description = "Toggles notifications on superior foe encounters"
 	)
 	default Notification showSuperiorNotification()
 	{
@@ -80,10 +80,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "statTimeout",
-		name = "InfoBox Expiry",
-		description = "Set the time until the InfoBox expires"
+			position = 4,
+			keyName = "statTimeout",
+			name = "InfoBox Expiry",
+			description = "Set the time until the InfoBox expires"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -92,10 +92,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "highlightHull",
-		name = "Highlight hull",
-		description = "Configures whether the NPC hull should be highlighted"
+			position = 5,
+			keyName = "highlightHull",
+			name = "Highlight hull",
+			description = "Configures whether the NPC hull should be highlighted"
 	)
 	default boolean highlightHull()
 	{
@@ -103,10 +103,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "highlightTile",
-		name = "Highlight tile",
-		description = "Configures whether the NPC tile should be highlighted"
+			position = 6,
+			keyName = "highlightTile",
+			name = "Highlight tile",
+			description = "Configures whether the NPC tile should be highlighted"
 	)
 	default boolean highlightTile()
 	{
@@ -114,10 +114,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
-		keyName = "highlightOutline",
-		name = "Highlight outline",
-		description = "Configures whether or not the NPC outline should be highlighted"
+			position = 7,
+			keyName = "highlightOutline",
+			name = "Highlight outline",
+			description = "Configures whether or not the NPC outline should be highlighted"
 	)
 	default boolean highlightOutline()
 	{
@@ -126,10 +126,10 @@ public interface SlayerConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 8,
-		keyName = "targetColor",
-		name = "Target color",
-		description = "Color of the highlighted targets"
+			position = 8,
+			keyName = "targetColor",
+			name = "Target color",
+			description = "Color of the highlighted targets"
 	)
 	default Color getTargetColor()
 	{
@@ -137,10 +137,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
-		keyName = "weaknessPrompt",
-		name = "Show Monster Weakness",
-		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles, Rockslugs & Zygomites)"
+			position = 9,
+			keyName = "weaknessPrompt",
+			name = "Show Monster Weakness",
+			description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles, Rockslugs & Zygomites)"
 	)
 	default boolean weaknessPrompt()
 	{
@@ -148,10 +148,10 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
-		keyName = "taskCommand",
-		name = "Task Command",
-		description = "Configures whether the slayer task command is enabled<br> !task"
+			position = 10,
+			keyName = "taskCommand",
+			name = "Task Command",
+			description = "Configures whether the slayer task command is enabled<br> !task"
 	)
 	default boolean taskCommand()
 	{

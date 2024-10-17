@@ -62,7 +62,7 @@ public class WorldService
 
 	@Inject
 	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, OkHttpClient okHttpClient,
-		@Named("runelite.api.base") HttpUrl apiBase, EventBus eventBus)
+						 @Named("runelite.api.base") HttpUrl apiBase, EventBus eventBus)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
@@ -80,8 +80,7 @@ public class WorldService
 			{
 				fetch();
 			}
-		}
-		finally
+		} finally
 		{
 			firstRunFuture.complete(worlds);
 		}
@@ -97,8 +96,7 @@ public class WorldService
 			worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
 			worlds = worldResult;
 			eventBus.post(new WorldsFetch(worldResult));
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			log.warn("Error looking up worlds", ex);
 		}
@@ -117,8 +115,7 @@ public class WorldService
 			try
 			{
 				return firstRunFuture.get(10, TimeUnit.SECONDS);
-			}
-			catch (InterruptedException | ExecutionException | TimeoutException e)
+			} catch (InterruptedException | ExecutionException | TimeoutException e)
 			{
 				log.warn("Failed to retrieve worlds on first run", e);
 			}

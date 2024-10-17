@@ -31,6 +31,11 @@ import lombok.Getter;
 
 public class JShadowedLabel extends JLabel
 {
+	@Getter
+	private Color shadow = Color.BLACK;
+	@Getter
+	private Point shadowSize = new Point(1, 1);
+
 	public JShadowedLabel()
 	{
 		super();
@@ -43,17 +48,11 @@ public class JShadowedLabel extends JLabel
 		setUI(new JShadowedLabelUI());
 	}
 
-	@Getter
-	private Color shadow = Color.BLACK;
-
 	public void setShadow(Color shadow)
 	{
 		this.shadow = shadow;
 		repaint();
 	}
-
-	@Getter
-	private Point shadowSize = new Point(1, 1);
 
 	public void setShadowSize(Point newSize)
 	{

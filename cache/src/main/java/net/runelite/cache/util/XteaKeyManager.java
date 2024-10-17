@@ -45,7 +45,9 @@ public class XteaKeyManager implements KeyProvider
 	{
 		// CHECKSTYLE:OFF
 		List<XteaKey> k = new Gson()
-			.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>() { }.getType());
+				.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>()
+				{
+				}.getType());
 		// CHECKSTYLE:ON
 
 		for (XteaKey key : k)

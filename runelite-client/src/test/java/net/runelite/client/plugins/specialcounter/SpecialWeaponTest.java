@@ -24,12 +24,26 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import static net.runelite.client.plugins.specialcounter.SpecialWeapon.*;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.ACCURSED_SCEPTRE;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.ARCLIGHT;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.BANDOS_GODSWORD;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.BARRELCHEST_ANCHOR;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.BONE_DAGGER;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.BULWARK;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.DARKLIGHT;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.DORGESHUUN_CROSSBOW;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.DRAGON_WARHAMMER;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.ELDER_MAUL;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class SpecialWeaponTest
 {
+	private static void assertRangeDelayEquals(final int expected, final SpecialWeapon specialWeapon, final int range)
+	{
+		assertEquals(expected, specialWeapon.getHitDelay(range));
+	}
+
 	@Test
 	public void verifyMeleeWeaponHitDelay()
 	{
@@ -67,10 +81,5 @@ public class SpecialWeaponTest
 		assertRangeDelayEquals(4, ACCURSED_SCEPTRE, 7);
 		assertRangeDelayEquals(5, ACCURSED_SCEPTRE, 8);
 		assertRangeDelayEquals(5, ACCURSED_SCEPTRE, 9);
-	}
-
-	private static void assertRangeDelayEquals(final int expected, final SpecialWeapon specialWeapon, final int range)
-	{
-		assertEquals(expected, specialWeapon.getHitDelay(range));
 	}
 }

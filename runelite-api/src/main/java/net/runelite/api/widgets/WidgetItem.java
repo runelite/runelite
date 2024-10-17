@@ -65,6 +65,7 @@ public class WidgetItem
 
 	/**
 	 * Get the area where the widget item is drawn on the canvas, accounting for drag
+	 *
 	 * @return
 	 */
 	public Rectangle getCanvasBounds()
@@ -74,6 +75,7 @@ public class WidgetItem
 
 	/**
 	 * Get the area where the widget item is drawn on the canvas
+	 *
 	 * @param dragging whether the returned area should account for widget drag
 	 * @return
 	 */

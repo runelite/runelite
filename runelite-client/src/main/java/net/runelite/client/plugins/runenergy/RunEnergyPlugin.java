@@ -65,67 +65,29 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
-	name = "Run Energy",
-	description = "Show various information related to run energy",
-	tags = {"overlay", "stamina"}
+		name = "Run Energy",
+		description = "Show various information related to run energy",
+		tags = {"overlay", "stamina"}
 )
 @Slf4j
 public class RunEnergyPlugin extends Plugin
 {
-	@Getter
-	private enum GracefulEquipmentSlot
-	{
-		HEAD(EquipmentInventorySlot.HEAD.getSlotIdx(), 3, GRACEFUL_HOOD),
-		BODY(EquipmentInventorySlot.BODY.getSlotIdx(), 4, GRACEFUL_TOP),
-		LEGS(EquipmentInventorySlot.LEGS.getSlotIdx(), 4, GRACEFUL_LEGS),
-		GLOVES(EquipmentInventorySlot.GLOVES.getSlotIdx(), 3, GRACEFUL_GLOVES),
-		BOOTS(EquipmentInventorySlot.BOOTS.getSlotIdx(), 3, GRACEFUL_BOOTS),
-		// Agility skill capes and the non-cosmetic Max capes also count for the Graceful set effect
-		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), 3, GRACEFUL_CAPE, AGILITY_CAPE, MAX_CAPE);
-
-		private final int index;
-		private final int boost;
-		private final Set<Integer> items;
-
-		GracefulEquipmentSlot(int index, int boost, int... baseItems)
-		{
-			this.index = index;
-			this.boost = boost;
-
-			final ImmutableSet.Builder<Integer> itemsBuilder = ImmutableSet.builder();
-			for (int item : baseItems)
-			{
-				itemsBuilder.addAll(ItemVariationMapping.getVariations(item));
-			}
-			items = itemsBuilder.build();
-		}
-
-		private static final int TOTAL_BOOSTS = Arrays.stream(values()).mapToInt(GracefulEquipmentSlot::getBoost).sum();
-	}
-
 	// Full set grants an extra 10% boost to recovery rate
 	private static final int GRACEFUL_FULL_SET_BOOST_BONUS = 10;
 	// number of charges for roe passive effect
 	private static final int RING_OF_ENDURANCE_PASSIVE_EFFECT = 500;
-
 	@Inject
 	private ChatMessageManager chatMessageManager;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private RunEnergyOverlay energyOverlay;
-
 	@Inject
 	private RunEnergyConfig energyConfig;
-
 	@Inject
 	private ConfigManager configManager;
-
 	private int lastCheckTick;
 	private boolean roeWarningSent;
 	private boolean localPlayerRunningToDestination;
@@ -174,9 +136,9 @@ public class RunEnergyPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		localPlayerRunningToDestination =
-			prevLocalPlayerLocation != null &&
-			client.getLocalDestinationLocation() != null &&
-			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
+				prevLocalPlayerLocation != null &&
+						client.getLocalDestinationLocation() != null &&
+						prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
@@ -225,19 +187,18 @@ public class RunEnergyPlugin extends Plugin
 			if (!roeWarningSent && charges < RING_OF_ENDURANCE_PASSIVE_EFFECT && energyConfig.ringOfEnduranceChargeMessage())
 			{
 				String chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Your Ring of endurance now has less than " + RING_OF_ENDURANCE_PASSIVE_EFFECT + " charges. Add more charges to regain its passive stamina effect.")
-					.build();
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Your Ring of endurance now has less than " + RING_OF_ENDURANCE_PASSIVE_EFFECT + " charges. Add more charges to regain its passive stamina effect.")
+						.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CONSOLE)
-					.runeLiteFormattedMessage(chatMessage)
-					.build());
+						.type(ChatMessageType.CONSOLE)
+						.runeLiteFormattedMessage(chatMessage)
+						.build());
 
 				roeWarningSent = true;
 			}
-		}
-		else if (message.startsWith("Your Ring of endurance is charged with") || message.startsWith("You load your Ring of endurance with"))
+		} else if (message.startsWith("Your Ring of endurance is charged with") || message.startsWith("You load your Ring of endurance with"))
 		{
 			Matcher matcher = Pattern.compile("([0-9,]+)").matcher(message);
 			int charges = -1;
@@ -297,8 +258,7 @@ public class RunEnergyPlugin extends Plugin
 		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
 			energyUnitsLost *= 0.3; // Stamina effect reduces energy depletion to 30%
-		}
-		else if (isRingOfEnduranceEquipped()) // Ring of Endurance passive effect does not stack with stamina potion
+		} else if (isRingOfEnduranceEquipped()) // Ring of Endurance passive effect does not stack with stamina potion
 		{
 			Integer charges = getRingOfEnduranceCharges();
 			if (charges == null)
@@ -320,8 +280,7 @@ public class RunEnergyPlugin extends Plugin
 		if (inSeconds)
 		{
 			return (int) Math.floor(secondsLeft) + "s";
-		}
-		else
+		} else
 		{
 			final int minutes = (int) Math.floor(secondsLeft / 60.0);
 			final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
@@ -399,6 +358,36 @@ public class RunEnergyPlugin extends Plugin
 		if (widgetDestroyItemName.getText().equals("Ring of endurance"))
 		{
 			setRingOfEnduranceCharges(0);
+		}
+	}
+
+	@Getter
+	private enum GracefulEquipmentSlot
+	{
+		HEAD(EquipmentInventorySlot.HEAD.getSlotIdx(), 3, GRACEFUL_HOOD),
+		BODY(EquipmentInventorySlot.BODY.getSlotIdx(), 4, GRACEFUL_TOP),
+		LEGS(EquipmentInventorySlot.LEGS.getSlotIdx(), 4, GRACEFUL_LEGS),
+		GLOVES(EquipmentInventorySlot.GLOVES.getSlotIdx(), 3, GRACEFUL_GLOVES),
+		BOOTS(EquipmentInventorySlot.BOOTS.getSlotIdx(), 3, GRACEFUL_BOOTS),
+		// Agility skill capes and the non-cosmetic Max capes also count for the Graceful set effect
+		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), 3, GRACEFUL_CAPE, AGILITY_CAPE, MAX_CAPE);
+
+		private static final int TOTAL_BOOSTS = Arrays.stream(values()).mapToInt(GracefulEquipmentSlot::getBoost).sum();
+		private final int index;
+		private final int boost;
+		private final Set<Integer> items;
+
+		GracefulEquipmentSlot(int index, int boost, int... baseItems)
+		{
+			this.index = index;
+			this.boost = boost;
+
+			final ImmutableSet.Builder<Integer> itemsBuilder = ImmutableSet.builder();
+			for (int item : baseItems)
+			{
+				itemsBuilder.addAll(ItemVariationMapping.getVariations(item));
+			}
+			items = itemsBuilder.build();
 		}
 	}
 }

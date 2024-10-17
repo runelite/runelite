@@ -52,13 +52,6 @@ class RegenMeterOverlay extends Overlay
 	private final RegenMeterPlugin plugin;
 	private final RegenMeterConfig config;
 
-	private static Color brighter(int color)
-	{
-		float[] hsv = new float[3];
-		Color.RGBtoHSB(color >>> 16, (color >> 8) & 0xFF, color & 0xFF, hsv);
-		return Color.getHSBColor(hsv[0], 1.f, 1.f);
-	}
-
 	@Inject
 	public RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config)
 	{
@@ -67,6 +60,13 @@ class RegenMeterOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+	}
+
+	private static Color brighter(int color)
+	{
+		float[] hsv = new float[3];
+		Color.RGBtoHSB(color >>> 16, (color >> 8) & 0xFF, color & 0xFF, hsv);
+		return Color.getHSBColor(hsv[0], 1.f, 1.f);
 	}
 
 	@Override

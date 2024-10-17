@@ -33,9 +33,9 @@ import net.runelite.client.config.ConfigItem;
 public interface MotherlodeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showVeins",
-		name = "Show pay-dirt mining spots",
-		description = "Configures whether or not the pay-dirt mining spots are displayed."
+			keyName = "showVeins",
+			name = "Show pay-dirt mining spots",
+			description = "Configures whether or not the pay-dirt mining spots are displayed."
 	)
 	default boolean showVeins()
 	{
@@ -43,9 +43,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showRocks",
-		name = "Show rocks obstacles",
-		description = "Configures whether or not the fallen rocks obstacles are displayed."
+			keyName = "showRocks",
+			name = "Show rocks obstacles",
+			description = "Configures whether or not the fallen rocks obstacles are displayed."
 	)
 	default boolean showRockFalls()
 	{
@@ -53,9 +53,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGemsFound",
-		name = "Track gems found",
-		description = "Tracks gems found from mining in the loot tracker"
+			keyName = "showGemsFound",
+			name = "Track gems found",
+			description = "Tracks gems found from mining in the loot tracker"
 	)
 	default boolean trackGemsFound()
 	{
@@ -63,9 +63,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOresFound",
-		name = "Track ores found",
-		description = "Tracks ores found from mining in the loot tracker"
+			keyName = "showOresFound",
+			name = "Track ores found",
+			description = "Tracks ores found from mining in the loot tracker"
 	)
 	default boolean trackOresFound()
 	{
@@ -73,9 +73,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBrokenStruts",
-		name = "Show broken struts",
-		description = "Shows broken water wheel struts"
+			keyName = "showBrokenStruts",
+			name = "Show broken struts",
+			description = "Shows broken water wheel struts"
 	)
 	default boolean showBrokenStruts()
 	{

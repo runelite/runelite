@@ -50,9 +50,9 @@ import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "Twitch",
-	description = "Integrates Twitch chat",
-	enabledByDefault = false
+		name = "Twitch",
+		description = "Integrates Twitch chat",
+		enabledByDefault = false
 )
 @Slf4j
 public class TwitchPlugin extends Plugin implements TwitchListener
@@ -100,8 +100,8 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		}
 
 		if (!Strings.isNullOrEmpty(twitchConfig.username())
-			&& !Strings.isNullOrEmpty(twitchConfig.oauthToken())
-			&& !Strings.isNullOrEmpty(twitchConfig.channel()))
+				&& !Strings.isNullOrEmpty(twitchConfig.oauthToken())
+				&& !Strings.isNullOrEmpty(twitchConfig.channel()))
 		{
 			String channel = twitchConfig.channel().toLowerCase();
 			if (channel.startsWith("https://www.twitch.tv/"))
@@ -121,10 +121,10 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			log.debug("Connecting to Twitch as {}", twitchConfig.username());
 
 			twitchIRCClient = new TwitchIRCClient(
-				this,
-				twitchConfig.username(),
-				token,
-				channel
+					this,
+					twitchConfig.username(),
+					token,
+					channel
 			);
 			twitchIRCClient.start();
 		}
@@ -163,17 +163,17 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	private void addChatMessage(String sender, String message)
 	{
 		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(message)
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append(message)
+				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHAT)
-			.sender("Twitch")
-			.name(sender)
-			.runeLiteFormattedMessage(chatMessage)
-			.timestamp((int) (System.currentTimeMillis() / 1000))
-			.build());
+				.type(ChatMessageType.FRIENDSCHAT)
+				.sender("Twitch")
+				.name(sender)
+				.runeLiteFormattedMessage(chatMessage)
+				.timestamp((int) (System.currentTimeMillis() / 1000))
+				.build());
 	}
 
 	@Override
@@ -236,8 +236,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			{
 				twitchIRCClient.privmsg(message);
 				addChatMessage(twitchConfig.username(), message);
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{
 				log.warn("failed to send message", e);
 			}

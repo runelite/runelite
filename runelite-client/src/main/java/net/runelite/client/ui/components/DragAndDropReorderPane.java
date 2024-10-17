@@ -43,11 +43,11 @@ import javax.swing.SwingUtilities;
  */
 public class DragAndDropReorderPane extends JLayeredPane
 {
+	private final List<DragListener> dragListeners = new ArrayList<>(0);
 	private Point dragStartPoint;
 	private Component draggingComponent;
 	private int dragYOffset = 0;
 	private int dragIndex = -1;
-	private final List<DragListener> dragListeners = new ArrayList<>(0);
 
 	public DragAndDropReorderPane()
 	{
@@ -111,12 +111,10 @@ public class DragAndDropReorderPane extends JLayeredPane
 			if (dragUp && draggingComponent.getY() < targetMidY)
 			{
 				newIndex = index;
-			}
-			else if (!dragUp && draggingComponent.getY() + draggingComponent.getHeight() > targetMidY)
+			} else if (!dragUp && draggingComponent.getY() + draggingComponent.getHeight() > targetMidY)
 			{
 				newIndex = index + 1;
-			}
-			else
+			} else
 			{
 				return;
 			}
@@ -184,6 +182,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		/**
 		 * Called after a component has been dragged
+		 *
 		 * @param component the component
 		 */
 		void onDrag(Component component);
@@ -212,8 +211,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 
 				setLayer(draggingComponent, DRAG_LAYER);
 				draggingComponent.setLocation(location);
-			}
-			else
+			} else
 			{
 				super.layoutContainer(target);
 			}
@@ -240,8 +238,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 				if (draggingComponent != null)
 				{
 					drag(point);
-				}
-				else if (point.distance(dragStartPoint) > DragSource.getDragThreshold())
+				} else if (point.distance(dragStartPoint) > DragSource.getDragThreshold())
 				{
 					startDragging(point);
 				}

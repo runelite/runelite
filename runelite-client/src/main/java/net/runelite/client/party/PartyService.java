@@ -87,6 +87,18 @@ public class PartyService
 		eventBus.register(this);
 	}
 
+	private static long passphraseToId(String passphrase)
+	{
+		return Hashing.sha256().hashBytes(
+				passphrase.getBytes(StandardCharsets.UTF_8)
+		).asLong() & Long.MAX_VALUE;
+	}
+
+	private static long randomMemberId()
+	{
+		return new Random().nextLong() & Long.MAX_VALUE;
+	}
+
 	public String generatePassphrase()
 	{
 		assert client.isClientThread();
@@ -123,8 +135,7 @@ public class PartyService
 				++len;
 			}
 			while (len < 4);
-		}
-		else
+		} else
 		{
 			int len = 0;
 			do
@@ -243,7 +254,7 @@ public class PartyService
 
 		// Remove non-printable characters, and <img> tags from message
 		String sentMesage = JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(message.getValue())
-			.replaceAll("<img=.+>", "");
+				.replaceAll("<img=.+>", "");
 
 		// Cap the message length
 		if (sentMesage.length() > MAX_MESSAGE_LEN)
@@ -252,11 +263,11 @@ public class PartyService
 		}
 
 		chat.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHAT)
-			.sender("Party")
-			.name(member.getDisplayName())
-			.runeLiteFormattedMessage(sentMesage)
-			.build());
+				.type(ChatMessageType.FRIENDSCHAT)
+				.sender("Party")
+				.name(member.getDisplayName())
+				.runeLiteFormattedMessage(sentMesage)
+				.build());
 	}
 
 	public PartyMember getLocalMember()
@@ -310,17 +321,5 @@ public class PartyService
 			memberById.setAvatar(image);
 			eventBus.post(new PartyMemberAvatar(memberID, image));
 		}
-	}
-
-	private static long passphraseToId(String passphrase)
-	{
-		return Hashing.sha256().hashBytes(
-			passphrase.getBytes(StandardCharsets.UTF_8)
-		).asLong() & Long.MAX_VALUE;
-	}
-
-	private static long randomMemberId()
-	{
-		return new Random().nextLong() & Long.MAX_VALUE;
 	}
 }

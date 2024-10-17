@@ -120,29 +120,26 @@ public class ConfigManager
 	private final SessionManager sessionManager;
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
-
+	private final Map<Type, Serializer<?>> serializers = Collections.synchronizedMap(new WeakHashMap<>());
 	@Getter
 	private ConfigProfile profile;
 	private ConfigProfile rsProfile;
 	private ConfigData configProfile;
 	private ConfigData rsProfileConfigProfile;
-
 	// null => we need to make a new profile
 	@Nullable
 	private String rsProfileKey;
 
-	private final Map<Type, Serializer<?>> serializers = Collections.synchronizedMap(new WeakHashMap<>());
-
 	@Inject
 	private ConfigManager(
-		@Nullable @Named("profile") String profile,
-		ScheduledExecutorService scheduledExecutorService,
-		EventBus eventBus,
-		@Nullable Client client,
-		Gson gson,
-		@Nonnull ConfigClient configClient,
-		ProfileManager profileManager,
-		SessionManager sessionManager
+			@Nullable @Named("profile") String profile,
+			ScheduledExecutorService scheduledExecutorService,
+			EventBus eventBus,
+			@Nullable Client client,
+			Gson gson,
+			@Nonnull ConfigClient configClient,
+			ProfileManager profileManager,
+			SessionManager sessionManager
 	)
 	{
 		this.configProfileName = profile;
@@ -154,6 +151,116 @@ public class ConfigManager
 		this.sessionManager = sessionManager;
 
 		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::sendConfig), 30 + (int) (5 * 60 * Math.random()), 5 * 60, TimeUnit.SECONDS);
+	}
+
+	private static void removeDuplicateProfiles(ProfileManager.Lock lock)
+	{
+		var seen = new HashMap<Long, ConfigProfile>();
+		for (var it = lock.getProfiles().iterator(); it.hasNext(); )
+		{
+			var profile = it.next();
+			if (seen.containsKey(profile.getId()))
+			{
+				var existing = seen.get(profile.getId());
+				log.warn("Duplicate profiles detected: {} and {}. Removing the latter.",
+						existing, profile);
+				it.remove();
+				lock.dirty();
+				continue;
+			}
+
+			seen.put(profile.getId(), profile);
+		}
+	}
+
+	private static void fixRsProfileName(ProfileManager.Lock lock)
+	{
+		var rsProfile = lock.findProfile(RSPROFILE_ID);
+		if (rsProfile != null && !rsProfile.getName().equals(RSPROFILE_NAME))
+		{
+			log.warn("renaming {} to {}", rsProfile, RSPROFILE_NAME);
+			rsProfile.setName(RSPROFILE_NAME);
+			lock.dirty();
+		}
+	}
+
+	public static String getWholeKey(String groupName, String profile, String key)
+	{
+		if (profile == null)
+		{
+			return groupName + "." + key;
+		} else
+		{
+			return groupName + "." + profile + "." + key;
+		}
+	}
+
+	private static ConfigProfile updateProfile(ProfileManager.Lock lock, ConfigProfile profile)
+	{
+		ConfigProfile p = lock.findProfile(profile.getId());
+		if (p == null)
+		{
+			log.warn("Lost active profile {}!", profile.getName());
+
+			// We just recreate it, with the same id, so that the ConfigData stays valid
+			p = lock.createProfile(profile.getName(), profile.getId());
+			p.setActive(profile.isActive());
+		} else if (profile.getRev() != p.getRev())
+		{
+			// I think this is okay because while the in memory config on this client will be outdated,
+			// the version on disk and also the remote version will still be consistent
+			log.debug("Profile {} changed on disk", p.getName());
+		}
+		return p;
+	}
+
+	private static ConfigPatch buildConfigPatch(@Nullable String profileName, Map<String, String> patchChanges)
+	{
+		ConfigPatch patch = new ConfigPatch();
+		// Note profileName is only used for internal profiles and on initial sync, to prevent
+		// clients fighting over profile names.
+		patch.setProfileName(profileName);
+		for (Map.Entry<String, String> entry : patchChanges.entrySet())
+		{
+			final String key = entry.getKey(), value = entry.getValue();
+			if (value == null)
+			{
+				patch.getUnset().add(key);
+			} else
+			{
+				patch.getEdit().put(key, value);
+			}
+		}
+		return patch;
+	}
+
+	/**
+	 * Split a config key into (group, profile, key)
+	 *
+	 * @param key in form group.(rsprofile.profile.)?key
+	 * @return an array of {group, profile, key}
+	 */
+	@VisibleForTesting
+	@Nullable
+	static String[] splitKey(String key)
+	{
+		int i = key.indexOf('.');
+		if (i == -1)
+		{
+			// all keys must have a group and key
+			return null;
+		}
+
+		String group = key.substring(0, i);
+		String profile = null;
+		key = key.substring(i + 1);
+		if (key.startsWith(RSPROFILE_GROUP + "."))
+		{
+			i = key.indexOf('.', RSPROFILE_GROUP.length() + 2); // skip . after RSPROFILE_GROUP
+			profile = key.substring(0, i);
+			key = key.substring(i + 1);
+		}
+		return new String[] {group, profile, key};
 	}
 
 	public void switchProfile(ConfigProfile newProfile)
@@ -186,8 +293,7 @@ public class ConfigManager
 				{
 					syncRemote(lock, profile, profiles);
 				}
-			}
-			catch (IOException ex)
+			} catch (IOException ex)
 			{
 				log.error("error fetching remote profile", ex);
 			}
@@ -258,8 +364,7 @@ public class ConfigManager
 			{
 				mergeRemoteProfiles(profiles);
 			}
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			log.error("error syncing remote profiles", e);
 		}
@@ -323,8 +428,7 @@ public class ConfigManager
 				ConfigData data = new ConfigData(from);
 				ConfigPatch patch = buildConfigPatch(profile.getName(), data.get());
 				configClient.patch(patch, profile.getId());
-			}
-			else
+			} else
 			{
 				configClient.delete(profile.getId());
 			}
@@ -400,8 +504,7 @@ public class ConfigManager
 			{
 				rsProfileKeys.add(profile);
 				rsProfileEntries.add(entry);
-			}
-			else
+			} else
 			{
 				configData.setProperty(entry.getKey(), entry.getValue());
 				++keys;
@@ -433,8 +536,7 @@ public class ConfigManager
 						}
 					}
 					log.info("not importing rsprofile key \"{}\" (hash={} type={})", oldKey, strHash, strType);
-				}
-				catch (IllegalArgumentException e)
+				} catch (IllegalArgumentException e)
 				{
 					log.info("failed to unmarshal imported rsprofile data for key \"{}\"", oldKey, e);
 				}
@@ -461,37 +563,6 @@ public class ConfigManager
 		log.info("Finished importing {} keys", keys);
 	}
 
-	private static void removeDuplicateProfiles(ProfileManager.Lock lock)
-	{
-		var seen = new HashMap<Long, ConfigProfile>();
-		for (var it = lock.getProfiles().iterator(); it.hasNext(); )
-		{
-			var profile = it.next();
-			if (seen.containsKey(profile.getId()))
-			{
-				var existing = seen.get(profile.getId());
-				log.warn("Duplicate profiles detected: {} and {}. Removing the latter.",
-					existing, profile);
-				it.remove();
-				lock.dirty();
-				continue;
-			}
-
-			seen.put(profile.getId(), profile);
-		}
-	}
-
-	private static void fixRsProfileName(ProfileManager.Lock lock)
-	{
-		var rsProfile = lock.findProfile(RSPROFILE_ID);
-		if (rsProfile != null && !rsProfile.getName().equals(RSPROFILE_NAME))
-		{
-			log.warn("renaming {} to {}", rsProfile, RSPROFILE_NAME);
-			rsProfile.setName(RSPROFILE_NAME);
-			lock.dirty();
-		}
-	}
-
 	public void load()
 	{
 		AccountSession session = sessionManager.getAccountSession();
@@ -507,8 +578,7 @@ public class ConfigManager
 					remoteProfiles = profiles;
 					mergeRemoteProfiles(remoteProfiles);
 				}
-			}
-			catch (IOException ex)
+			} catch (IOException ex)
 			{
 				log.error("error loading remote profiles", ex);
 			}
@@ -557,8 +627,7 @@ public class ConfigManager
 			if (configProfileName != null)
 			{
 				profile = lock.findProfile(p -> !p.isInternal() && configProfileName.equals(p.getName()));
-			}
-			else
+			} else
 			{
 				// select a config profile associated with the display name from the jagex launcher, if available
 				if (launcherDisplayName != null)
@@ -610,8 +679,7 @@ public class ConfigManager
 			if (profile != null)
 			{
 				log.info("Using profile: {} ({})", profile.getName(), profile.getId());
-			}
-			else
+			} else
 			{
 				profile = lock.createProfile(configProfileName != null ? configProfileName : "default");
 				if (configProfileName == null)
@@ -702,9 +770,9 @@ public class ConfigManager
 
 		long id = profile.getId();
 		Profile remoteProfile = remoteProfiles.stream()
-			.filter(p -> p.getId() == id)
-			.findFirst()
-			.orElse(null);
+				.filter(p -> p.getId() == id)
+				.findFirst()
+				.orElse(null);
 
 		if (remoteProfile == null)
 		{
@@ -719,8 +787,7 @@ public class ConfigManager
 		if (profile.getRev() == remoteProfile.getRev())
 		{
 			log.info("Profile '{}' is up to date", profile.getName());
-		}
-		else
+		} else
 		{
 			log.info("Loading remote configuration for profile '{}'", profile.getName());
 
@@ -744,8 +811,7 @@ public class ConfigManager
 				log.debug("synced remote profile {} rev {} to disk", profile, remoteConfiguration.getRev());
 				profile.setRev(remoteConfiguration.getRev());
 				lock.dirty();
-			}
-			catch (IOException ex)
+			} catch (IOException ex)
 			{
 				log.error("unable to load remote configuration for {}", profile, ex);
 			}
@@ -760,9 +826,9 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-			{
-				clazz
-			}, handler);
+				{
+						clazz
+				}, handler);
 
 		return t;
 	}
@@ -770,8 +836,8 @@ public class ConfigManager
 	public List<String> getConfigurationKeys(String prefix)
 	{
 		return configProfile.keySet().stream()
-			.filter(k -> k.startsWith(prefix))
-			.collect(Collectors.toList());
+				.filter(k -> k.startsWith(prefix))
+				.collect(Collectors.toList());
 	}
 
 	public List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
@@ -785,21 +851,9 @@ public class ConfigManager
 
 		String prefix = group + "." + profile + "." + keyPrefix;
 		return rsProfileConfigProfile.keySet().stream()
-			.filter(k -> k.startsWith(prefix))
-			.map(k -> splitKey(k)[KEY_SPLITTER_KEY])
-			.collect(Collectors.toList());
-	}
-
-	public static String getWholeKey(String groupName, String profile, String key)
-	{
-		if (profile == null)
-		{
-			return groupName + "." + key;
-		}
-		else
-		{
-			return groupName + "." + profile + "." + key;
-		}
+				.filter(k -> k.startsWith(prefix))
+				.map(k -> splitKey(k)[KEY_SPLITTER_KEY])
+				.collect(Collectors.toList());
 	}
 
 	// region get configuration
@@ -829,12 +883,12 @@ public class ConfigManager
 		if (profile != null)
 		{
 			return getConfiguration(rsProfileConfigProfile, groupName, profile, key);
-		}
-		else
+		} else
 		{
 			return getConfiguration(configProfile, groupName, null, key);
 		}
 	}
+	// endregion
 
 	public <T> T getConfiguration(String groupName, String key, Type clazz)
 	{
@@ -860,15 +914,13 @@ public class ConfigManager
 			try
 			{
 				return (T) stringToObject(value, type);
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				log.warn("Unable to unmarshal {} ", getWholeKey(groupName, profile, key), e);
 			}
 		}
 		return null;
 	}
-	// endregion
 
 	// region set configuration
 	private void setConfiguration(ConfigData configData, String groupName, String profile, String key, @NonNull String value)
@@ -905,8 +957,7 @@ public class ConfigManager
 		if (profile != null)
 		{
 			setConfiguration(rsProfileConfigProfile, groupName, profile, key, value);
-		}
-		else
+		} else
 		{
 			setConfiguration(configProfile, groupName, null, key, value);
 		}
@@ -916,6 +967,7 @@ public class ConfigManager
 	{
 		setConfiguration(configProfile, groupName, null, key, value);
 	}
+	// endregion
 
 	public <T> void setConfiguration(String groupName, String profile, String key, T value)
 	{
@@ -943,8 +995,7 @@ public class ConfigManager
 			if (p == null)
 			{
 				log.warn("trying to create profile without display name");
-			}
-			else
+			} else
 			{
 				displayName = p.getName();
 			}
@@ -964,7 +1015,6 @@ public class ConfigManager
 		}
 		setConfiguration(groupName, rsProfileKey, key, value);
 	}
-	// endregion
 
 	// region unset configuration
 	private void unsetConfiguration(ConfigData configData, String groupName, String profile, String key)
@@ -989,14 +1039,14 @@ public class ConfigManager
 
 		eventBus.post(configChanged);
 	}
+	// endregion
 
 	public void unsetConfiguration(String groupName, String profile, String key)
 	{
 		if (profile != null)
 		{
 			unsetConfiguration(rsProfileConfigProfile, groupName, profile, key);
-		}
-		else
+		} else
 		{
 			unsetConfiguration(configProfile, groupName, null, key);
 		}
@@ -1017,7 +1067,6 @@ public class ConfigManager
 
 		unsetConfiguration(rsProfileConfigProfile, groupName, rsProfileKey, key);
 	}
-	// endregion
 
 	public ConfigDescriptor getConfigDescriptor(Config configurationProxy)
 	{
@@ -1030,43 +1079,42 @@ public class ConfigManager
 		}
 
 		final List<ConfigSectionDescriptor> sections = Arrays.stream(inter.getDeclaredFields())
-			.filter(m -> m.isAnnotationPresent(ConfigSection.class) && m.getType() == String.class)
-			.map(m ->
-			{
-				try
+				.filter(m -> m.isAnnotationPresent(ConfigSection.class) && m.getType() == String.class)
+				.map(m ->
 				{
-					return new ConfigSectionDescriptor(
-						String.valueOf(m.get(inter)),
-						m.getDeclaredAnnotation(ConfigSection.class)
-					);
-				}
-				catch (IllegalAccessException e)
-				{
-					log.warn("Unable to load section {}::{}", inter.getSimpleName(), m.getName());
-					return null;
-				}
-			})
-			.filter(Objects::nonNull)
-			.sorted((a, b) -> ComparisonChain.start()
-				.compare(a.getSection().position(), b.getSection().position())
-				.compare(a.getSection().name(), b.getSection().name())
-				.result())
-			.collect(Collectors.toList());
+					try
+					{
+						return new ConfigSectionDescriptor(
+								String.valueOf(m.get(inter)),
+								m.getDeclaredAnnotation(ConfigSection.class)
+						);
+					} catch (IllegalAccessException e)
+					{
+						log.warn("Unable to load section {}::{}", inter.getSimpleName(), m.getName());
+						return null;
+					}
+				})
+				.filter(Objects::nonNull)
+				.sorted((a, b) -> ComparisonChain.start()
+						.compare(a.getSection().position(), b.getSection().position())
+						.compare(a.getSection().name(), b.getSection().name())
+						.result())
+				.collect(Collectors.toList());
 
 		final List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
-			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
-			.map(m -> new ConfigItemDescriptor(
-				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getGenericReturnType(),
-				m.getDeclaredAnnotation(Range.class),
-				m.getDeclaredAnnotation(Alpha.class),
-				m.getDeclaredAnnotation(Units.class)
-			))
-			.sorted((a, b) -> ComparisonChain.start()
-				.compare(a.getItem().position(), b.getItem().position())
-				.compare(a.getItem().name(), b.getItem().name())
-				.result())
-			.collect(Collectors.toList());
+				.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
+				.map(m -> new ConfigItemDescriptor(
+						m.getDeclaredAnnotation(ConfigItem.class),
+						m.getGenericReturnType(),
+						m.getDeclaredAnnotation(Range.class),
+						m.getDeclaredAnnotation(Alpha.class),
+						m.getDeclaredAnnotation(Units.class)
+				))
+				.sorted((a, b) -> ComparisonChain.start()
+						.compare(a.getItem().position(), b.getItem().position())
+						.compare(a.getItem().name(), b.getItem().name())
+						.result())
+				.collect(Collectors.toList());
 
 		return new ConfigDescriptor(group, sections, items);
 	}
@@ -1125,8 +1173,7 @@ public class ConfigManager
 			try
 			{
 				defaultValue = ConfigInvocationHandler.callDefaultMethod(proxy, method, null);
-			}
-			catch (Throwable ex)
+			} catch (Throwable ex)
 			{
 				log.warn(null, ex);
 				continue;
@@ -1147,8 +1194,7 @@ public class ConfigManager
 			if (Strings.isNullOrEmpty(valueString))
 			{
 				unsetConfiguration(group.value(), item.keyName());
-			}
-			else
+			} else
 			{
 				setConfiguration(group.value(), item.keyName(), valueString);
 			}
@@ -1257,8 +1303,8 @@ public class ConfigManager
 					// To allow class unloading, use a temporary child injector
 					// and use it to get the instance, and cache it a weak map.
 					serializer = RuneLite.getInjector()
-						.createChildInjector()
-						.getInstance(serializerClass);
+							.createChildInjector()
+							.getInstance(serializerClass);
 					serializers.put(type, serializer);
 				}
 				return serializer.deserialize(str);
@@ -1329,8 +1375,8 @@ public class ConfigManager
 				if (serializer == null)
 				{
 					serializer = RuneLite.getInjector()
-						.createChildInjector()
-						.getInstance(serializerClass);
+							.createChildInjector()
+							.getInstance(serializerClass);
 					serializers.put(serializerClass, serializer);
 				}
 				return serializer.serialize(object);
@@ -1340,8 +1386,8 @@ public class ConfigManager
 	}
 
 	@Subscribe(
-		// run after plugins, in the event they save config on shutdown
-		priority = -100
+			// run after plugins, in the event they save config on shutdown
+			priority = -100
 	)
 	private void onClientShutdown(ClientShutdown e)
 	{
@@ -1364,26 +1410,6 @@ public class ConfigManager
 		}
 	}
 
-	private static ConfigProfile updateProfile(ProfileManager.Lock lock, ConfigProfile profile)
-	{
-		ConfigProfile p = lock.findProfile(profile.getId());
-		if (p == null)
-		{
-			log.warn("Lost active profile {}!", profile.getName());
-
-			// We just recreate it, with the same id, so that the ConfigData stays valid
-			p = lock.createProfile(profile.getName(), profile.getId());
-			p.setActive(profile.isActive());
-		}
-		else if (profile.getRev() != p.getRev())
-		{
-			// I think this is okay because while the in memory config on this client will be outdated,
-			// the version on disk and also the remote version will still be consistent
-			log.debug("Profile {} changed on disk", p.getName());
-		}
-		return p;
-	}
-
 	private void saveConfiguration(ProfileManager.Lock lock, ConfigProfile profile, ConfigData data)
 	{
 		Map<String, String> patch = data.swapChanges();
@@ -1403,8 +1429,7 @@ public class ConfigManager
 				if (patchResult == null)
 				{
 					profile.setRev(-1L);
-				}
-				else
+				} else
 				{
 					long oldRev = patchResult.getRev() - 1;
 					long newRev = patchResult.getRev();
@@ -1413,8 +1438,7 @@ public class ConfigManager
 					{
 						profile.setRev(newRev);
 						log.debug("incremental patch applied {} -> {}", oldRev, newRev);
-					}
-					else
+					} else
 					{
 						// version on disk now mismatches the remote config. Set rev as -1 to force a reload
 						// on next start.
@@ -1423,8 +1447,7 @@ public class ConfigManager
 					}
 				}
 				lock.dirty();
-			}
-			catch (ExecutionException | InterruptedException e)
+			} catch (ExecutionException | InterruptedException e)
 			{
 				profile.setRev(-1L);
 				lock.dirty();
@@ -1433,27 +1456,6 @@ public class ConfigManager
 		}
 
 		data.patch(patch);
-	}
-
-	private static ConfigPatch buildConfigPatch(@Nullable String profileName, Map<String, String> patchChanges)
-	{
-		ConfigPatch patch = new ConfigPatch();
-		// Note profileName is only used for internal profiles and on initial sync, to prevent
-		// clients fighting over profile names.
-		patch.setProfileName(profileName);
-		for (Map.Entry<String, String> entry : patchChanges.entrySet())
-		{
-			final String key = entry.getKey(), value = entry.getValue();
-			if (value == null)
-			{
-				patch.getUnset().add(key);
-			}
-			else
-			{
-				patch.getEdit().put(key, value);
-			}
-		}
-		return patch;
 	}
 
 	public List<RuneScapeProfile> getRSProfiles()
@@ -1477,20 +1479,20 @@ public class ConfigManager
 		}
 
 		return profileKeys.stream()
-			.map(key ->
-			{
-				Long accid = getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_ACCOUNT_HASH, long.class);
-				RuneScapeProfile prof = new RuneScapeProfile(
-					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_DISPLAY_NAME),
-					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_TYPE, RuneScapeProfileType.class),
-					accid == null ? RuneScapeProfile.ACCOUNT_HASH_INVALID : accid,
-					key
-				);
+				.map(key ->
+				{
+					Long accid = getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_ACCOUNT_HASH, long.class);
+					RuneScapeProfile prof = new RuneScapeProfile(
+							getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_DISPLAY_NAME),
+							getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_TYPE, RuneScapeProfileType.class),
+							accid == null ? RuneScapeProfile.ACCOUNT_HASH_INVALID : accid,
+							key
+					);
 
-				return prof;
-			})
-			.sorted(Comparator.comparing(RuneScapeProfile::getKey))
-			.collect(Collectors.toCollection(ArrayList::new));
+					return prof;
+				})
+				.sorted(Comparator.comparing(RuneScapeProfile::getKey))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, long accountHash, RuneScapeProfileType type, String displayName, boolean create)
@@ -1501,8 +1503,8 @@ public class ConfigManager
 		}
 
 		List<RuneScapeProfile> matches = profiles.stream()
-			.filter(p -> p.getType() == type && accountHash == p.getAccountHash())
-			.collect(Collectors.toList());
+				.filter(p -> p.getType() == type && accountHash == p.getAccountHash())
+				.collect(Collectors.toList());
 
 		if (matches.size() > 1)
 		{
@@ -1522,12 +1524,12 @@ public class ConfigManager
 		// generate the new key deterministically so if you "create" the same profile on 2 different clients it doesn't duplicate
 		Set<String> keys = profiles.stream().map(RuneScapeProfile::getKey).collect(Collectors.toSet());
 		byte[] key = {
-			(byte) accountHash,
-			(byte) (accountHash >> 8),
-			(byte) (accountHash >> 16),
-			(byte) (accountHash >> 24),
-			(byte) (accountHash >> 32),
-			(byte) (accountHash >> 40),
+				(byte) accountHash,
+				(byte) (accountHash >> 8),
+				(byte) (accountHash >> 16),
+				(byte) (accountHash >> 24),
+				(byte) (accountHash >> 32),
+				(byte) (accountHash >> 40),
 		};
 		key[0] += type.ordinal();
 		for (int i = 0; i < 0xFF; i++, key[1]++)
@@ -1619,34 +1621,5 @@ public class ConfigManager
 			log.debug("Switching to default profile {} for rsprofile {}", switchToProfile.getName(), rsProfileKey);
 			switchProfile(switchToProfile);
 		}
-	}
-
-	/**
-	 * Split a config key into (group, profile, key)
-	 *
-	 * @param key in form group.(rsprofile.profile.)?key
-	 * @return an array of {group, profile, key}
-	 */
-	@VisibleForTesting
-	@Nullable
-	static String[] splitKey(String key)
-	{
-		int i = key.indexOf('.');
-		if (i == -1)
-		{
-			// all keys must have a group and key
-			return null;
-		}
-
-		String group = key.substring(0, i);
-		String profile = null;
-		key = key.substring(i + 1);
-		if (key.startsWith(RSPROFILE_GROUP + "."))
-		{
-			i = key.indexOf('.', RSPROFILE_GROUP.length() + 2); // skip . after RSPROFILE_GROUP
-			profile = key.substring(0, i);
-			key = key.substring(i + 1);
-		}
-		return new String[]{group, profile, key};
 	}
 }

@@ -58,8 +58,8 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Friend List",
-	description = "Add extra information to the friend and ignore lists"
+		name = "Friend List",
+		description = "Add extra information to the friend and ignore lists"
 )
 @Slf4j
 public class FriendListPlugin extends Plugin
@@ -113,17 +113,16 @@ public class FriendListPlugin extends Plugin
 				final int limit = isMember ? MAX_FRIENDS_P2P : MAX_FRIENDS_F2P;
 
 				final String title = "Friends - W" +
-					world +
-					" (" +
-					friendCount +
-					"/" +
-					limit +
-					")";
+						world +
+						" (" +
+						friendCount +
+						"/" +
+						limit +
+						")";
 
 				setFriendsListTitle(title);
 			}
-		}
-		else if (event.getScriptId() == ScriptID.IGNORE_UPDATE)
+		} else if (event.getScriptId() == ScriptID.IGNORE_UPDATE)
 		{
 			final int world = client.getWorld();
 			final boolean isMember = client.getVarpValue(VarPlayer.MEMBERSHIP_DAYS) > 0;
@@ -134,12 +133,12 @@ public class FriendListPlugin extends Plugin
 				final int limit = isMember ? MAX_IGNORES_P2P : MAX_IGNORES_F2P;
 
 				final String title = "Ignores - W" +
-					world +
-					" (" +
-					ignoreCount +
-					"/" +
-					limit +
-					")";
+						world +
+						" (" +
+						ignoreCount +
+						"/" +
+						limit +
+						")";
 
 				setIgnoreListTitle(title);
 			}
@@ -154,13 +153,13 @@ public class FriendListPlugin extends Plugin
 			MessageNode messageNode = message.getMessageNode();
 			// get the player name out of the notification
 			String name = messageNode.getValue()
-				.substring(0, messageNode.getValue().indexOf(" "));
+					.substring(0, messageNode.getValue().indexOf(" "));
 			ChatPlayer player = findFriend(name);
 
 			if (player != null && player.getWorld() > 0)
 			{
 				messageNode
-					.setValue(messageNode.getValue() + String.format(" (World %d)", player.getWorld()));
+						.setValue(messageNode.getValue() + String.format(" (World %d)", player.getWorld()));
 			}
 		}
 	}
@@ -176,18 +175,18 @@ public class FriendListPlugin extends Plugin
 			String friend = Text.toJagexName(Text.removeTags(event.getTarget()));
 
 			client.createMenuEntry(-1)
-				.setOption(isHideNotification(friend) ? SHOW_NOTIFICATIONS : HIDE_NOTIFICATIONS)
-				.setType(MenuAction.RUNELITE)
-				.setTarget(event.getTarget()) //Preserve color codes here
-				.onClick(e ->
-				{
-					boolean hidden = isHideNotification(friend);
-					setHideNotifications(friend, !hidden);
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CONSOLE)
-						.value("Login notifications for " + friend + " are now " + (hidden ? "shown." : "hidden."))
-						.build());
-				});
+					.setOption(isHideNotification(friend) ? SHOW_NOTIFICATIONS : HIDE_NOTIFICATIONS)
+					.setType(MenuAction.RUNELITE)
+					.setTarget(event.getTarget()) //Preserve color codes here
+					.onClick(e ->
+					{
+						boolean hidden = isHideNotification(friend);
+						setHideNotifications(friend, !hidden);
+						chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.value("Login notifications for " + friend + " are now " + (hidden ? "shown." : "hidden."))
+								.build());
+					});
 		}
 	}
 
@@ -240,8 +239,7 @@ public class FriendListPlugin extends Plugin
 		if (hide)
 		{
 			configManager.setConfiguration(FriendListConfig.GROUP, "hidenotification_" + friend, true);
-		}
-		else
+		} else
 		{
 			configManager.unsetConfiguration(FriendListConfig.GROUP, "hidenotification_" + friend);
 		}

@@ -55,9 +55,9 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Poison",
-	description = "Tracks current damage values for Poison and Venom",
-	tags = {"combat", "poison", "venom", "heart", "hp"}
+		name = "Poison",
+		description = "Tracks current damage values for Poison and Venom",
+		tags = {"combat", "poison", "venom", "heart", "hp"}
 )
 public class PoisonPlugin extends Plugin
 {
@@ -104,6 +104,39 @@ public class PoisonPlugin extends Plugin
 	private Instant poisonNaturalCure;
 	private Instant nextPoisonTick;
 	private BufferedImage heart;
+
+	private static int nextDamage(int poisonValue)
+	{
+		int damage;
+
+		if (poisonValue >= VENOM_THRESHOLD)
+		{
+			//Venom Damage starts at 6, and increments in twos;
+			//The VarPlayer increments in values of 1, however.
+			poisonValue -= VENOM_THRESHOLD - 3;
+			damage = poisonValue * 2;
+			//Venom Damage caps at 20, but the VarPlayer keeps increasing
+			if (damage > VENOM_MAXIUMUM_DAMAGE)
+			{
+				damage = VENOM_MAXIUMUM_DAMAGE;
+			}
+		} else
+		{
+			damage = (int) Math.ceil(poisonValue / 5.0f);
+		}
+
+		return damage;
+	}
+
+	private static String getFormattedTime(Instant endTime)
+	{
+		final Duration timeLeft = Duration.between(Instant.now(), endTime);
+		int seconds = (int) (timeLeft.toMillis() / 1000L);
+		int minutes = seconds / 60;
+		int secs = seconds % 60;
+
+		return String.format("%d:%02d", minutes, secs);
+	}
 
 	@Provides
 	PoisonConfig getConfig(ConfigManager configManager)
@@ -157,8 +190,7 @@ public class PoisonPlugin extends Plugin
 			if (poisonValue < VENOM_THRESHOLD)
 			{
 				poisonNaturalCure = Instant.now().plus(Duration.of(POISON_TICK_MILLIS * poisonValue, ChronoUnit.MILLIS));
-			}
-			else
+			} else
 			{
 				poisonNaturalCure = null;
 			}
@@ -184,8 +216,7 @@ public class PoisonPlugin extends Plugin
 			}
 
 			checkHealthIcon();
-		}
-		else if (event.getVarpId() == VarPlayer.DISEASE_VALUE)
+		} else if (event.getVarpId() == VarPlayer.DISEASE_VALUE)
 		{
 			checkHealthIcon();
 		}
@@ -208,35 +239,10 @@ public class PoisonPlugin extends Plugin
 		if (config.changeHealthIcon())
 		{
 			clientThread.invoke(this::checkHealthIcon);
-		}
-		else
+		} else
 		{
 			clientThread.invoke(this::resetHealthIcon);
 		}
-	}
-
-	private static int nextDamage(int poisonValue)
-	{
-		int damage;
-
-		if (poisonValue >= VENOM_THRESHOLD)
-		{
-			//Venom Damage starts at 6, and increments in twos;
-			//The VarPlayer increments in values of 1, however.
-			poisonValue -= VENOM_THRESHOLD - 3;
-			damage = poisonValue * 2;
-			//Venom Damage caps at 20, but the VarPlayer keeps increasing
-			if (damage > VENOM_MAXIUMUM_DAMAGE)
-			{
-				damage = VENOM_MAXIUMUM_DAMAGE;
-			}
-		}
-		else
-		{
-			damage = (int) Math.ceil(poisonValue / 5.0f);
-		}
-
-		return damage;
 	}
 
 	private BufferedImage getSplat(int id, int damage)
@@ -249,10 +255,10 @@ public class PoisonPlugin extends Plugin
 		}
 
 		final BufferedImage splat = new BufferedImage(
-			rawSplat.getColorModel(),
-			rawSplat.copyData(null),
-			rawSplat.getColorModel().isAlphaPremultiplied(),
-			null);
+				rawSplat.getColorModel(),
+				rawSplat.copyData(null),
+				rawSplat.getColorModel().isAlphaPremultiplied(),
+				null);
 
 		final Graphics g = splat.getGraphics();
 		g.setFont(FontManager.getRunescapeSmallFont());
@@ -270,20 +276,10 @@ public class PoisonPlugin extends Plugin
 		return splat;
 	}
 
-	private static String getFormattedTime(Instant endTime)
-	{
-		final Duration timeLeft = Duration.between(Instant.now(), endTime);
-		int seconds = (int) (timeLeft.toMillis() / 1000L);
-		int minutes = seconds / 60;
-		int secs = seconds % 60;
-
-		return String.format("%d:%02d", minutes, secs);
-	}
-
 	String createTooltip()
 	{
 		String line1 = MessageFormat.format("Next {0} damage: {1}</br>Time until damage: {2}",
-			envenomed ? "venom" : "poison", ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED), getFormattedTime(nextPoisonTick));
+				envenomed ? "venom" : "poison", ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED), getFormattedTime(nextPoisonTick));
 		String line2 = envenomed ? "" : MessageFormat.format("</br>Time until cure: {0}", getFormattedTime(poisonNaturalCure));
 
 		return line1 + line2;
@@ -302,16 +298,13 @@ public class PoisonPlugin extends Plugin
 		if (poison >= VENOM_THRESHOLD)
 		{
 			newHeart = HEART_VENOM;
-		}
-		else if (poison > 0)
+		} else if (poison > 0)
 		{
 			newHeart = HEART_POISON;
-		}
-		else if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+		} else if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
 		{
 			newHeart = HEART_DISEASE;
-		}
-		else
+		} else
 		{
 			resetHealthIcon();
 			return;

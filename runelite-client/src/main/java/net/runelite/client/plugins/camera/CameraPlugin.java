@@ -64,17 +64,16 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @PluginDescriptor(
-	name = "Camera",
-	description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
-	tags = {"zoom", "limit", "vertical", "click", "mouse"},
-	enabledByDefault = false
+		name = "Camera",
+		description = "Expands zoom limit, provides vertical camera, and remaps mouse input keys",
+		tags = {"zoom", "limit", "vertical", "click", "mouse"},
+		enabledByDefault = false
 )
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
+	static final int DEFAULT_INNER_ZOOM_LIMIT = 896;
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
 	private static final int DEFAULT_OUTER_ZOOM_LIMIT = 128;
-	static final int DEFAULT_INNER_ZOOM_LIMIT = 896;
-
 	private boolean controlDown;
 	// flags used to store the mousedown states
 	private boolean rightClick;
@@ -131,8 +130,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
-					.setSource(settingsInit)
-					.run();
+						.setSource(settingsInit)
+						.run();
 			}
 		});
 	}
@@ -162,8 +161,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
-					.setSource(settingsInit)
-					.run();
+						.setSource(settingsInit)
+						.run();
 			}
 		});
 	}
@@ -439,6 +438,21 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				rightClick = true;
 				// Change the mousePressed() MouseEvent to the middle mouse button
 				mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
+						mouseEvent.getID(),
+						mouseEvent.getWhen(),
+						mouseEvent.getModifiersEx(),
+						mouseEvent.getX(),
+						mouseEvent.getY(),
+						mouseEvent.getClickCount(),
+						mouseEvent.isPopupTrigger(),
+						MouseEvent.BUTTON2);
+			}
+		} else if (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
+		{
+			// Set the middleClick flag to true so we can release it later in mouseReleased()
+			middleClick = true;
+			// Chance the middle mouse button MouseEvent to a right-click
+			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
 					mouseEvent.getID(),
 					mouseEvent.getWhen(),
 					mouseEvent.getModifiersEx(),
@@ -446,23 +460,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 					mouseEvent.getY(),
 					mouseEvent.getClickCount(),
 					mouseEvent.isPopupTrigger(),
-					MouseEvent.BUTTON2);
-			}
-		}
-		else if (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
-		{
-			// Set the middleClick flag to true so we can release it later in mouseReleased()
-			middleClick = true;
-			// Chance the middle mouse button MouseEvent to a right-click
-			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON3);
+					MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
 	}
@@ -478,14 +476,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			rightClick = false;
 			// Change the MouseEvent to button 2 so the middle mouse button will be released
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON2);
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON2);
 
 		}
 		if (middleClick)
@@ -493,14 +491,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			middleClick = false;
 			// Change the MouseEvent ot button 3 so the right mouse button will be released
 			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON3);
+					mouseEvent.getID(),
+					mouseEvent.getWhen(),
+					mouseEvent.getModifiersEx(),
+					mouseEvent.getX(),
+					mouseEvent.getY(),
+					mouseEvent.getClickCount(),
+					mouseEvent.isPopupTrigger(),
+					MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
 	}

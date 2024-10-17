@@ -34,10 +34,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
-	name = "Inventory Viewer",
-	description = "Add an overlay showing the contents of your inventory",
-	tags = {"alternate", "items", "overlay", "second"},
-	enabledByDefault = false
+		name = "Inventory Viewer",
+		description = "Add an overlay showing the contents of your inventory",
+		tags = {"alternate", "items", "overlay", "second"},
+		enabledByDefault = false
 )
 public class InventoryViewerPlugin extends Plugin
 {
@@ -46,10 +46,16 @@ public class InventoryViewerPlugin extends Plugin
 
 	@Inject
 	private InventoryViewerOverlay overlay;
-
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.toggleKeybind())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			overlay.toggle();
+		}
+	};
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private KeyManager keyManager;
 
@@ -72,13 +78,4 @@ public class InventoryViewerPlugin extends Plugin
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
-
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.toggleKeybind())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			overlay.toggle();
-		}
-	};
 }

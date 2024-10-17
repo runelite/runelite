@@ -47,32 +47,6 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.HERBLORE;
 import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
 import static net.runelite.client.plugins.itemstats.stats.Stats.STRENGTH;
 
-@RequiredArgsConstructor
-public class MoonlightPotion implements Effect
-{
-	@Override
-	public StatsChanges calculate(Client client)
-	{
-		StatsChanges changes = new StatsChanges(4);
-		ArrayList<StatChange> statChanges = new ArrayList<>();
-
-		getStatChange(client, ATTACK).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
-		getStatChange(client, DEFENCE).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
-		getStatChange(client, STRENGTH).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
-		getStatChange(client, PRAYER).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
-
-		changes.setStatChanges(statChanges.toArray(StatChange[]::new));
-		return changes;
-	}
-
-	private Optional<StatEffect> getStatChange(Client client, Stat stat)
-	{
-		return Arrays.stream(StatEffect.values())
-			.filter(t -> t.getStat() == stat && client.getBoostedSkillLevel(Skill.HERBLORE) >= t.getLevelRequirement())
-			.max(Comparator.comparingInt(StatEffect::getLevelRequirement));
-	}
-}
-
 @Getter
 enum StatEffect
 {
@@ -106,5 +80,31 @@ enum StatEffect
 		this.stat = stat;
 		this.levelRequirement = levelRequirement;
 		this.effect = effect;
+	}
+}
+
+@RequiredArgsConstructor
+public class MoonlightPotion implements Effect
+{
+	@Override
+	public StatsChanges calculate(Client client)
+	{
+		StatsChanges changes = new StatsChanges(4);
+		ArrayList<StatChange> statChanges = new ArrayList<>();
+
+		getStatChange(client, ATTACK).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
+		getStatChange(client, DEFENCE).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
+		getStatChange(client, STRENGTH).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
+		getStatChange(client, PRAYER).ifPresent(e -> statChanges.add(e.getEffect().effect(client)));
+
+		changes.setStatChanges(statChanges.toArray(StatChange[]::new));
+		return changes;
+	}
+
+	private Optional<StatEffect> getStatChange(Client client, Stat stat)
+	{
+		return Arrays.stream(StatEffect.values())
+				.filter(t -> t.getStat() == stat && client.getBoostedSkillLevel(Skill.HERBLORE) >= t.getLevelRequirement())
+				.max(Comparator.comparingInt(StatEffect::getLevelRequirement));
 	}
 }

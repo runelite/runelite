@@ -35,9 +35,6 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @ToString(onlyExplicitlyIncluded = true)
 class FarmingPatch
 {
-	@Setter(AccessLevel.PACKAGE)
-	@ToString.Include
-	private FarmingRegion region;
 	@ToString.Include
 	private final String name;
 	@Getter(onMethod_ = {@Varbit})
@@ -46,6 +43,9 @@ class FarmingPatch
 	private final PatchImplementation implementation;
 	private final int farmer;
 	private final int patchNumber;
+	@Setter(AccessLevel.PACKAGE)
+	@ToString.Include
+	private FarmingRegion region;
 
 	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation)
 	{

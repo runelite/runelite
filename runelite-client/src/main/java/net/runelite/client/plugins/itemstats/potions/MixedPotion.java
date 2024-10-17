@@ -56,66 +56,62 @@ public class MixedPotion implements Effect
 		if (Stream.of(potionChanges.getStatChanges()).anyMatch(statChange -> statChange.getStat() == HITPOINTS))
 		{
 			changes.setStatChanges(Stream.of(potionChanges.getStatChanges())
-				.map(change ->
-				{
-					/*
-					 * Mixed potions do not exist ingame for all types of potions. In fact, at the time of writing, the
-					 * Zamorak mix is the only mixed potion which includes base potion effects which affect a player's
-					 * Hitpoints. Working from what we know of how these behave, this code assumes that mixed potions
-					 * including Hitpoints changes will only include negative HP effects as the
-					 * absolute/relative/theoretical end values cannot be determined otherwise. For this reason, potions
-					 * with positive HP effects will not have their stat changes affected here.
-					 */
-					if (change.getStat() != HITPOINTS || mixedPotionHitpointsHealing == 0 || change.getTheoretical() >= 0)
+					.map(change ->
 					{
+						/*
+						 * Mixed potions do not exist ingame for all types of potions. In fact, at the time of writing, the
+						 * Zamorak mix is the only mixed potion which includes base potion effects which affect a player's
+						 * Hitpoints. Working from what we know of how these behave, this code assumes that mixed potions
+						 * including Hitpoints changes will only include negative HP effects as the
+						 * absolute/relative/theoretical end values cannot be determined otherwise. For this reason, potions
+						 * with positive HP effects will not have their stat changes affected here.
+						 */
+						if (change.getStat() != HITPOINTS || mixedPotionHitpointsHealing == 0 || change.getTheoretical() >= 0)
+						{
+							return change;
+						}
+
+						/*
+						 * Mixed potions apply two hitpoints changes, both based on the current hitpoints value. Because of
+						 * this, the two effects are calculated independently of each other, both against the same starting
+						 * hitpoints value and later combined. These effects are:
+						 *   1. A food effect of `heal` amount
+						 *   2. Deduct hitpoints equal to the potion's boost amount
+						 */
+
+						final int max = HITPOINTS.getMaximum(client);
+						final int absolute = change.getAbsolute();
+						final int relative = change.getRelative();
+
+						if (absolute + mixedPotionHitpointsHealing > max)
+						{
+							change.setPositivity(Positivity.BETTER_CAPPED);
+						} else if (relative + mixedPotionHitpointsHealing > 0)
+						{
+							change.setPositivity(Positivity.BETTER_UNCAPPED);
+						} else if (relative + mixedPotionHitpointsHealing == 0)
+						{
+							change.setPositivity(Positivity.NO_CHANGE);
+						} else
+						{
+							change.setPositivity(Positivity.WORSE);
+						}
+
+						change.setAbsolute(Math.min(max, absolute + mixedPotionHitpointsHealing));
+						change.setRelative(change.getRelative() + mixedPotionHitpointsHealing);
+						change.setTheoretical(change.getTheoretical() + mixedPotionHitpointsHealing);
+
 						return change;
-					}
-
-					/*
-					 * Mixed potions apply two hitpoints changes, both based on the current hitpoints value. Because of
-					 * this, the two effects are calculated independently of each other, both against the same starting
-					 * hitpoints value and later combined. These effects are:
-					 *   1. A food effect of `heal` amount
-					 *   2. Deduct hitpoints equal to the potion's boost amount
-					 */
-
-					final int max = HITPOINTS.getMaximum(client);
-					final int absolute = change.getAbsolute();
-					final int relative = change.getRelative();
-
-					if (absolute + mixedPotionHitpointsHealing > max)
-					{
-						change.setPositivity(Positivity.BETTER_CAPPED);
-					}
-					else if (relative + mixedPotionHitpointsHealing > 0)
-					{
-						change.setPositivity(Positivity.BETTER_UNCAPPED);
-					}
-					else if (relative + mixedPotionHitpointsHealing == 0)
-					{
-						change.setPositivity(Positivity.NO_CHANGE);
-					}
-					else
-					{
-						change.setPositivity(Positivity.WORSE);
-					}
-
-					change.setAbsolute(Math.min(max, absolute + mixedPotionHitpointsHealing));
-					change.setRelative(change.getRelative() + mixedPotionHitpointsHealing);
-					change.setTheoretical(change.getTheoretical() + mixedPotionHitpointsHealing);
-
-					return change;
-				})
-				.toArray(StatChange[]::new));
-		}
-		else
+					})
+					.toArray(StatChange[]::new));
+		} else
 		{
-			changes.setStatChanges(ArrayUtils.addAll(new StatChange[] { mixedPotionHpBoost }, potionChanges.getStatChanges()));
+			changes.setStatChanges(ArrayUtils.addAll(new StatChange[] {mixedPotionHpBoost}, potionChanges.getStatChanges()));
 		}
 
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-			.map(StatChange::getPositivity)
-			.max(Comparator.naturalOrder()).get());
+				.map(StatChange::getPositivity)
+				.max(Comparator.naturalOrder()).get());
 
 		return changes;
 	}

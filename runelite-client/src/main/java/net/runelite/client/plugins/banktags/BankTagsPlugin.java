@@ -72,30 +72,19 @@ import net.runelite.client.plugins.banktags.tabs.TagTab;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Bank Tags",
-	description = "Enable tagging of bank items and searching of bank tags",
-	tags = {"searching", "tagging"}
+		name = "Bank Tags",
+		description = "Enable tagging of bank items and searching of bank tags",
+		tags = {"searching", "tagging"}
 )
 @Slf4j
 public class BankTagsPlugin extends Plugin implements BankTagsService
 {
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
-	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String TAG_ICON_PREFIX = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
 	public static final String TAG_LAYOUT_PREFIX = "layout_";
-
-	private static final int MAX_RESULT_COUNT = 250;
-
-	private static final String SEARCH_BANK_INPUT_TEXT =
-		"Show items whose names or tags contain the following text:<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
-	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
-		"Show items whose names or tags contain the following text: (%d found)<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
-
 	public static final int BANK_ITEM_WIDTH = 36;
 	public static final int BANK_ITEM_HEIGHT = 32;
 	public static final int BANK_ITEM_X_PADDING = 12;
@@ -103,7 +92,14 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	public static final int BANK_ITEMS_PER_ROW = 8;
 	public static final int BANK_ITEM_START_X = 51;
 	public static final int BANK_ITEM_START_Y = 0;
-
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	private static final int MAX_RESULT_COUNT = 250;
+	private static final String SEARCH_BANK_INPUT_TEXT =
+			"Show items whose names or tags contain the following text:<br>" +
+					"(To show only tagged items, start your search with 'tag:')";
+	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
+			"Show items whose names or tags contain the following text: (%d found)<br>" +
+					"(To show only tagged items, start your search with 'tag:')";
 	@Inject
 	private ItemManager itemManager;
 
@@ -159,10 +155,10 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	public void resetConfiguration()
 	{
 		List<String> extraKeys = Lists.newArrayList(
-			CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
-			CONFIG_GROUP + "." + TAG_ICON_PREFIX,
-			CONFIG_GROUP + "." + TAG_TABS_CONFIG,
-			CONFIG_GROUP + "." + TAG_LAYOUT_PREFIX
+				CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
+				CONFIG_GROUP + "." + TAG_ICON_PREFIX,
+				CONFIG_GROUP + "." + TAG_TABS_CONFIG,
+				CONFIG_GROUP + "." + TAG_LAYOUT_PREFIX
 		);
 
 		for (String prefix : extraKeys)
@@ -213,8 +209,8 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		if (w != null)
 		{
 			client.createScriptEvent(w.getOnLoadListener())
-				.setSource(w)
-				.run();
+					.setSource(w)
+					.run();
 		}
 	}
 
@@ -263,8 +259,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 			if (replaced.isEmpty())
 			{
 				configManager.unsetConfiguration(CONFIG_GROUP, key);
-			}
-			else
+			} else
 			{
 				configManager.setConfiguration(CONFIG_GROUP, key, replaced);
 			}
@@ -284,14 +279,14 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 
 		final String tag = input.substring(TAG_SEARCH.length()).trim();
 		final Set<Integer> ids = tagManager.getItemsForTag(tag)
-			.stream()
-			.mapToInt(Math::abs)
-			.mapToObj(ItemVariationMapping::getVariations)
-			.flatMap(Collection::stream)
-			.distinct()
-			.filter(i -> itemManager.getItemComposition(i).isTradeable())
-			.limit(MAX_RESULT_COUNT)
-			.collect(Collectors.toCollection(TreeSet::new));
+				.stream()
+				.mapToInt(Math::abs)
+				.mapToObj(ItemVariationMapping::getVariations)
+				.flatMap(Collection::stream)
+				.distinct()
+				.filter(i -> itemManager.getItemComposition(i).isTradeable())
+				.limit(MAX_RESULT_COUNT)
+				.collect(Collectors.toCollection(TreeSet::new));
 
 		client.setGeSearchResultIndex(0);
 		client.setGeSearchResultCount(ids.size());
@@ -355,8 +350,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
-				}
-				else if (tagSearch)
+				} else if (tagSearch)
 				{
 					// if the item isn't tagged we return false to prevent the item matching if the item name happens
 					// to contain the tag name.
@@ -383,7 +377,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (event.getActionParam1() == ComponentID.BANK_ITEM_CONTAINER
-			&& event.getOption().equals("Examine"))
+				&& event.getOption().equals("Examine"))
 		{
 			Widget container = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
@@ -397,14 +391,14 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 			}
 
 			client.createMenuEntry(-1)
-				.setParam0(event.getActionParam0())
-				.setParam1(event.getActionParam1())
-				.setTarget(event.getTarget())
-				.setOption(text)
-				.setType(MenuAction.RUNELITE)
-				.setIdentifier(event.getIdentifier())
-				.setItemId(event.getItemId())
-				.onClick(this::editTags);
+					.setParam0(event.getActionParam0())
+					.setParam1(event.getActionParam1())
+					.setTarget(event.getTarget())
+					.setOption(text)
+					.setType(MenuAction.RUNELITE)
+					.setIdentifier(event.getIdentifier())
+					.setItemId(event.getItemId())
+					.onClick(this::editTags);
 		}
 	}
 
@@ -417,33 +411,33 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		// Get both tags and vartags and append * to end of vartags name
 		Collection<String> tags = tagManager.getTags(itemId, false);
 		tagManager.getTags(itemId, true).stream()
-			.map(i -> i + "*")
-			.forEach(tags::add);
+				.map(i -> i + "*")
+				.forEach(tags::add);
 
 		String initialValue = Text.toCSV(tags);
 
 		chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
-			.addCharValidator(FILTERED_CHARS)
-			.value(initialValue)
-			.onDone((Consumer<String>) (newValue) ->
-				clientThread.invoke(() ->
-				{
-					// Split inputted tags to vartags (ending with *) and regular tags
-					final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
-					final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
-					{
-						newTags.remove(s);
-						return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
-					}).collect(Collectors.toList());
+				.addCharValidator(FILTERED_CHARS)
+				.value(initialValue)
+				.onDone((Consumer<String>) (newValue) ->
+						clientThread.invoke(() ->
+						{
+							// Split inputted tags to vartags (ending with *) and regular tags
+							final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
+							final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
+							{
+								newTags.remove(s);
+								return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
+							}).collect(Collectors.toList());
 
-					// And save them
-					tagManager.setTagString(itemId, Text.toCSV(newTags), false);
-					tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
+							// And save them
+							tagManager.setTagString(itemId, Text.toCSV(newTags), false);
+							tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
 
-					// If a tab if active, rebuild the bank to apply the changes
-					tabInterface.reloadActiveTab();
-				}))
-			.build();
+							// If a tab if active, rebuild the bank to apply the changes
+							tabInterface.reloadActiveTab();
+						}))
+				.build();
 	}
 
 	@Subscribe
@@ -472,7 +466,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 			public boolean contains(int itemId)
 			{
 				return tagManager.findTag(itemId, tab.getTag())
-					|| (custom != null && custom.contains(itemId));
+						|| (custom != null && custom.contains(itemId));
 			}
 
 			@Override
@@ -488,7 +482,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		// custom tags are combined with the tab
 		final BankTag custom = tagManager.findTag(tag);
 		return itemId -> tagManager.findTag(itemId, tag)
-			|| (custom != null && custom.contains(itemId));
+				|| (custom != null && custom.contains(itemId));
 	}
 
 	@Override

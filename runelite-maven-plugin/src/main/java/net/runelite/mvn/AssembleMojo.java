@@ -42,18 +42,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(
-	name = "assemble",
-	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
+		name = "assemble",
+		defaultPhase = LifecyclePhase.GENERATE_RESOURCES
 )
 public class AssembleMojo extends AbstractMojo
 {
+	private final Log log = getLog();
 	@Parameter(required = true)
 	private File scriptDirectory;
-
 	@Parameter(required = true)
 	private File outputDirectory;
-
-	private final Log log = getLog();
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
@@ -86,15 +84,13 @@ public class AssembleMojo extends AbstractMojo
 				if (hashFile.exists())
 				{
 					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
-				}
-				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
+				} else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
 				{
 					throw new MojoExecutionException("Unable to find hash file for " + scriptFile);
 				}
 
 				++count;
-			}
-			catch (IOException ex)
+			} catch (IOException ex)
 			{
 				throw new MojoFailureException("unable to open file", ex);
 			}

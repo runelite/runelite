@@ -57,38 +57,23 @@ import net.runelite.api.coords.LocalPoint;
 @Singleton
 public class ModelOutlineRenderer
 {
-	@AllArgsConstructor
-	private static class PixelDistanceDelta
-	{
-		private final int dx;
-		private final int dy;
-	}
-
-	@AllArgsConstructor
-	private static class PixelDistanceGroupIndex
-	{
-		@Getter(AccessLevel.PRIVATE)
-		private final double distance;
-		private final int distanceGroupIndex;
-		private final double alphaMultiply;
-	}
-
 	private static final int MAX_OUTLINE_WIDTH = 50;
 	private static final int MAX_FEATHER = 4;
 	private static final int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
-
 	private final Client client;
-
 	// Vertex positions projected on the screen.
 	private final int[] projectedVerticesX = new int[6500];
 	private final int[] projectedVerticesY = new int[6500];
-
+	// Memory used for queueing the pixels for the outline of the model.
+	// Pixels are grouped by x and y distance to the closest pixel drawn on the model.
+	// A block buffer is used so memory can be reused after a group has been processed
+	// without using the JVM garbage collector.
+	private final IntBlockBuffer outlinePixelsBlockBuffer = new IntBlockBuffer();
 	// Window boundaries for the ingame world
 	private int clipX1;
 	private int clipY1;
 	private int clipX2;
 	private int clipY2;
-
 	// Boundaries for the outline
 	private int croppedX1;
 	private int croppedY1;
@@ -96,24 +81,15 @@ public class ModelOutlineRenderer
 	private int croppedY2;
 	private int croppedWidth;
 	private int croppedHeight;
-
 	// Bitset with pixel positions that would be rendered to within the cropped area by the model.
 	private int[] visited = new int[0];
-
-	// Memory used for queueing the pixels for the outline of the model.
-	// Pixels are grouped by x and y distance to the closest pixel drawn on the model.
-	// A block buffer is used so memory can be reused after a group has been processed
-	// without using the JVM garbage collector.
-	private final IntBlockBuffer outlinePixelsBlockBuffer = new IntBlockBuffer();
 	private int[][] outlinePixelsBlockIndices = new int[0][];
 	private int[] outlinePixelsBlockIndicesLengths = new int[0];
 	private int[] outlinePixelsLastBlockLength;
 	private int outlineArrayWidth;
-
 	// An array of pixel group indices ordered by distance for each outline width and feather.
 	// These are calculated once upon first usage and then stored here to skip reevaluation.
 	private PixelDistanceGroupIndex[][][] precomputedGroupIndices = new PixelDistanceGroupIndex[0][][];
-
 	// An array of pixel distance deltas for each outline width and direction (right/up/left/down).
 	// These are calculated once upon first usage and then stored here to skip reevaluation.
 	private PixelDistanceDelta[][][] precomputedDistanceDeltas = new PixelDistanceDelta[0][][];
@@ -156,7 +132,7 @@ public class ModelOutlineRenderer
 	 * Get an array of pixel outline group indices ordered by distance for a specific outline width.
 	 *
 	 * @param outlineWidth The outline width.
-	 * @param feather The feather of the outline.
+	 * @param feather      The feather of the outline.
 	 * @return Returns the list of pixel distances.
 	 */
 	private PixelDistanceGroupIndex[] getPriorityList(int outlineWidth, int feather)
@@ -168,8 +144,7 @@ public class ModelOutlineRenderer
 		if (precomputedGroupIndices[outlineWidth] == null)
 		{
 			precomputedGroupIndices[outlineWidth] = new PixelDistanceGroupIndex[feather + 1][];
-		}
-		else if (precomputedGroupIndices[outlineWidth].length <= feather)
+		} else if (precomputedGroupIndices[outlineWidth].length <= feather)
 		{
 			precomputedGroupIndices[outlineWidth] = Arrays.copyOf(precomputedGroupIndices[outlineWidth], feather + 1);
 		}
@@ -256,8 +231,8 @@ public class ModelOutlineRenderer
 	 * Enqueues a pixel for outlining.
 	 *
 	 * @param distanceGroupIndex The group index to enqueue the pixel into.
-	 * @param x The x position of the pixel.
-	 * @param y The y position of the pixel.
+	 * @param x                  The x position of the pixel.
+	 * @param y                  The y position of the pixel.
 	 */
 	private void enqueueOutlinePixel(int distanceGroupIndex, int x, int y)
 	{
@@ -267,11 +242,11 @@ public class ModelOutlineRenderer
 			if (minimumBlockIndicesSize > outlinePixelsBlockIndices[distanceGroupIndex].length)
 			{
 				outlinePixelsBlockIndices[distanceGroupIndex] = Arrays.copyOf(
-					outlinePixelsBlockIndices[distanceGroupIndex],
-					nextPowerOfTwo(minimumBlockIndicesSize));
+						outlinePixelsBlockIndices[distanceGroupIndex],
+						nextPowerOfTwo(minimumBlockIndicesSize));
 			}
 			outlinePixelsBlockIndices[distanceGroupIndex][outlinePixelsBlockIndicesLengths[distanceGroupIndex]] =
-				outlinePixelsBlockBuffer.useNewBlock();
+					outlinePixelsBlockBuffer.useNewBlock();
 			outlinePixelsBlockIndicesLengths[distanceGroupIndex]++;
 			outlinePixelsLastBlockLength[distanceGroupIndex] = 0;
 		}
@@ -340,8 +315,8 @@ public class ModelOutlineRenderer
 	 * Simulates a horizontal line rasterization and marks pixels visited.
 	 *
 	 * @param pixelY The y position of the line
-	 * @param x1 The starting x position
-	 * @param x2 The ending x position
+	 * @param x1     The starting x position
+	 * @param x2     The ending x position
 	 */
 	private void simulateHorizontalLineRasterizationForOutline(int pixelY, int x1, int x2)
 	{
@@ -365,8 +340,7 @@ public class ModelOutlineRenderer
 		if (pixelPosIndex1 == pixelPosIndex2)
 		{
 			visited[pixelPosIndex1] |= ((1 << (pixelPos2 & 31)) - 1) ^ ((1 << (pixelPos1 & 31)) - 1);
-		}
-		else
+		} else
 		{
 			visited[pixelPosIndex1] |= -(1 << (pixelPos1 & 31));
 			visited[pixelPosIndex2] |= (1 << (pixelPos2 & 31)) - 1;
@@ -388,7 +362,7 @@ public class ModelOutlineRenderer
 	 * @param y3 The y position of the third vertex in the triangle
 	 */
 	private void simulateTriangleRasterizationForOutline(
-		int x1, int y1, int x2, int y2, int x3, int y3)
+			int x1, int y1, int x2, int y2, int x3, int y3)
 	{
 		// Swap vertices so y1 <= y2 <= y3 using bubble sort
 		if (y1 > y2)
@@ -492,8 +466,7 @@ public class ModelOutlineRenderer
 				x2 += slope2;
 				pixelY++;
 			}
-		}
-		else
+		} else
 		{
 			while (height1-- > 0)
 			{
@@ -516,9 +489,9 @@ public class ModelOutlineRenderer
 	/**
 	 * Translates the vertices 3D points to the screen canvas 2D points.
 	 *
-	 * @param localX The local x position of the vertices.
-	 * @param localY The local y position of the vertices.
-	 * @param localZ The local z position of the vertices.
+	 * @param localX            The local x position of the vertices.
+	 * @param localY            The local y position of the vertices.
+	 * @param localZ            The local z position of the vertices.
 	 * @param vertexOrientation The orientation of the vertices.
 	 * @return Returns true if any of them are inside the clip area, otherwise false.
 	 */
@@ -526,11 +499,11 @@ public class ModelOutlineRenderer
 	{
 		final int vertexCount = model.getVerticesCount();
 		Perspective.modelToCanvas(client,
-			vertexCount,
-			localX, localY, localZ,
-			vertexOrientation,
-			model.getVerticesX(), model.getVerticesZ(), model.getVerticesY(),
-			projectedVerticesX, projectedVerticesY);
+				vertexCount,
+				localX, localY, localZ,
+				vertexOrientation,
+				model.getVerticesX(), model.getVerticesZ(), model.getVerticesY(),
+				projectedVerticesX, projectedVerticesY);
 
 		boolean anyVisible = false;
 
@@ -549,8 +522,7 @@ public class ModelOutlineRenderer
 				croppedX2 = Math.max(croppedX2, x + 1);
 				croppedY1 = Math.min(croppedY1, y);
 				croppedY2 = Math.max(croppedY2, y + 1);
-			}
-			else
+			} else
 			{
 				// Vertex is too close or behind camera and isn't rendered
 				projectedVerticesY[i] = Integer.MIN_VALUE;
@@ -574,10 +546,10 @@ public class ModelOutlineRenderer
 		for (int i = 0; i < triangleCount; i++)
 		{
 			if (projectedVerticesY[indices1[i]] != Integer.MIN_VALUE &&
-				projectedVerticesY[indices2[i]] != Integer.MIN_VALUE &&
-				projectedVerticesY[indices3[i]] != Integer.MIN_VALUE &&
-				// 254 and 255 counts as fully transparent
-				(triangleTransparencies == null || (triangleTransparencies[i] & 255) < 254))
+					projectedVerticesY[indices2[i]] != Integer.MIN_VALUE &&
+					projectedVerticesY[indices3[i]] != Integer.MIN_VALUE &&
+					// 254 and 255 counts as fully transparent
+					(triangleTransparencies == null || (triangleTransparencies[i] & 255) < 254))
 			{
 				final int index1 = indices1[i];
 				final int index2 = indices2[i];
@@ -600,15 +572,15 @@ public class ModelOutlineRenderer
 	/**
 	 * Draws the outline of a pixel according to the distance deltas of an outline.
 	 *
-	 * @param imageData The image data to draw to.
-	 * @param imageWidth The width of the image to draw to.
-	 * @param x The x position of the pixel.
-	 * @param y The y position of the pixel.
+	 * @param imageData      The image data to draw to.
+	 * @param imageWidth     The width of the image to draw to.
+	 * @param x              The x position of the pixel.
+	 * @param y              The y position of the pixel.
 	 * @param distanceDeltas The distance deltas of the outline width.
-	 * @param color The color to draw the outline in.
+	 * @param color          The color to draw the outline in.
 	 */
 	private void rasterDistanceDeltas(int[] imageData, int imageWidth, int x, int y,
-		PixelDistanceDelta[] distanceDeltas, int color)
+									  PixelDistanceDelta[] distanceDeltas, int color)
 	{
 		for (PixelDistanceDelta delta : distanceDeltas)
 		{
@@ -616,7 +588,7 @@ public class ModelOutlineRenderer
 			int cy = y + delta.dy;
 			int visitedPixelPos = (cy - croppedY1) * croppedWidth + (cx - croppedX1);
 			if (cx >= clipX1 && cx < clipX2 && cy >= clipY1 && cy < clipY2 &&
-				(visited[visitedPixelPos >> 5] & (1 << (visitedPixelPos & 31))) == 0)
+					(visited[visitedPixelPos >> 5] & (1 << (visitedPixelPos & 31))) == 0)
 			{
 				imageData[cy * imageWidth + cx] = color;
 			}
@@ -627,8 +599,8 @@ public class ModelOutlineRenderer
 	 * Enqueues pixels that are adjacent above or below the model
 	 * or draws them directly to the clients image buffer.
 	 *
-	 * @param directWrite If true the pixels are drawn to the image buffer, otherwise they are enqueued for drawing.
-	 * @param color The color to draw if directWrite == true
+	 * @param directWrite  If true the pixels are drawn to the image buffer, otherwise they are enqueued for drawing.
+	 * @param color        The color to draw if directWrite == true
 	 * @param outlineWidth The outline width to draw if directWrite == true
 	 */
 	private void processInitialOutlinePixels(boolean directWrite, Color color, int outlineWidth)
@@ -663,8 +635,7 @@ public class ModelOutlineRenderer
 									imageData[(croppedY1 + y - bv2) * imageWidth + (croppedX1 + x + bit)] = colorRGB;
 								}
 							}
-						}
-						else
+						} else
 						{
 							PixelDistanceDelta[] distancesDown = precomputedDistanceDeltas[outlineWidth][3];
 							PixelDistanceDelta[] distancesUp = precomputedDistanceDeltas[outlineWidth][1];
@@ -675,17 +646,15 @@ public class ModelOutlineRenderer
 								if (bv1 == 1 && bv2 == 0)
 								{
 									rasterDistanceDeltas(imageData, imageWidth, croppedX1 + x + bit, croppedY1 + y - 1,
-										distancesDown, colorRGB);
-								}
-								else if (bv1 == 0 && bv2 == 1)
+											distancesDown, colorRGB);
+								} else if (bv1 == 0 && bv2 == 1)
 								{
 									rasterDistanceDeltas(imageData, imageWidth, croppedX1 + x + bit, croppedY1 + y,
-										distancesUp, colorRGB);
+											distancesUp, colorRGB);
 								}
 							}
 						}
-					}
-					else
+					} else
 					{
 						for (int bit = 0; bit < 32; bit++)
 						{
@@ -732,8 +701,7 @@ public class ModelOutlineRenderer
 								}
 								lastBv = bv;
 							}
-						}
-						else
+						} else
 						{
 							PixelDistanceDelta[] distancesRight = precomputedDistanceDeltas[outlineWidth][0];
 							PixelDistanceDelta[] distancesLeft = precomputedDistanceDeltas[outlineWidth][2];
@@ -743,18 +711,16 @@ public class ModelOutlineRenderer
 								if (bv == 1 && lastBv == 0)
 								{
 									rasterDistanceDeltas(imageData, imageWidth, croppedX1 + x + bit, croppedY1 + y,
-										distancesLeft, colorRGB);
-								}
-								else if (bv == 0 && lastBv == 1)
+											distancesLeft, colorRGB);
+								} else if (bv == 0 && lastBv == 1)
 								{
 									rasterDistanceDeltas(imageData, imageWidth, croppedX1 + x + bit - 1, croppedY1 + y,
-										distancesRight, colorRGB);
+											distancesRight, colorRGB);
 								}
 								lastBv = bv;
 							}
 						}
-					}
-					else
+					} else
 					{
 						for (int bit = 1; bit < end; bit++)
 						{
@@ -776,24 +742,21 @@ public class ModelOutlineRenderer
 						if (outlineWidth == 1)
 						{
 							imageData[(croppedY1 + y) * imageWidth + (croppedX1 + x - (v & 1))] = colorRGB;
-						}
-						else
+						} else
 						{
 							if ((v & 1) == 1)
 							{
 								PixelDistanceDelta[] distancesLeft = precomputedDistanceDeltas[outlineWidth][2];
 								rasterDistanceDeltas(imageData, imageWidth, croppedX1 + x, croppedY1 + y,
-									distancesLeft, colorRGB);
-							}
-							else
+										distancesLeft, colorRGB);
+							} else
 							{
 								PixelDistanceDelta[] distancesRight = precomputedDistanceDeltas[outlineWidth][0];
 								rasterDistanceDeltas(imageData, imageWidth, croppedX1 + x - 1, croppedY1 + y,
-									distancesRight, colorRGB);
+										distancesRight, colorRGB);
 							}
 						}
-					}
-					else
+					} else
 					{
 						enqueueOutlinePixel(1, croppedX1 + x - (v & 1), croppedY1 + y);
 					}
@@ -809,7 +772,7 @@ public class ModelOutlineRenderer
 	 * in the queue to the client image buffer.
 	 *
 	 * @param outlineWidth The width of the outline.
-	 * @param color The color of the outline.
+	 * @param color        The color of the outline.
 	 */
 	private void processOutlinePixelQueue(int outlineWidth, Color color, int feather)
 	{
@@ -829,9 +792,9 @@ public class ModelOutlineRenderer
 				int alpha = (int) Math.round(color.getAlpha() * p.alphaMultiply);
 				inverseAlpha = 256 - alpha;
 				colorARGB = (alpha << 24)
-					| ((color.getRed() * alpha) / 255) << 16
-					| ((color.getGreen() * alpha) / 255) << 8
-					| ((color.getBlue() * alpha) / 255);
+						| ((color.getRed() * alpha) / 255) << 16
+						| ((color.getGreen() * alpha) / 255) << 8
+						| ((color.getBlue() * alpha) / 255);
 			}
 
 			final int groupIndex = p.distanceGroupIndex;
@@ -857,8 +820,8 @@ public class ModelOutlineRenderer
 					int pixelPos = y * imageWidth + x;
 					int dst = imageData[pixelPos];
 					imageData[pixelPos]
-						= (colorARGB & 0xFF00FF00) + (((dst & 0xFF00FF00) * inverseAlpha) >>> 8) & 0xFF00FF00
-						| (colorARGB & 0x00FF00FF) + (((dst & 0x00FF00FF) * inverseAlpha) >>> 8) & 0x00FF00FF;
+							= (colorARGB & 0xFF00FF00) + (((dst & 0xFF00FF00) * inverseAlpha) >>> 8) & 0xFF00FF00
+							| (colorARGB & 0x00FF00FF) + (((dst & 0x00FF00FF) * inverseAlpha) >>> 8) & 0x00FF00FF;
 
 					if (x - 1 >= clipX1)
 					{
@@ -888,16 +851,16 @@ public class ModelOutlineRenderer
 	/**
 	 * Draws an outline around a model to an image
 	 *
-	 * @param localX The local x position of the model
-	 * @param localY The local y position of the model
-	 * @param localZ The local z position of the model
-	 * @param orientation The orientation of the model
+	 * @param localX       The local x position of the model
+	 * @param localY       The local y position of the model
+	 * @param localZ       The local z position of the model
+	 * @param orientation  The orientation of the model
 	 * @param outlineWidth The width of the outline
-	 * @param color The color of the outline
+	 * @param color        The color of the outline
 	 */
 	private void drawModelOutline(Model model,
-		int localX, int localY, int localZ, int orientation,
-		int outlineWidth, Color color, int feather)
+								  int localX, int localY, int localZ, int orientation,
+								  int outlineWidth, Color color, int feather)
 	{
 		if (outlineWidth <= 0 || color.getAlpha() == 0 || model == null)
 		{
@@ -912,8 +875,7 @@ public class ModelOutlineRenderer
 		if (feather < 0)
 		{
 			feather = 0;
-		}
-		else if (feather > MAX_FEATHER)
+		} else if (feather > MAX_FEATHER)
 		{
 			feather = MAX_FEATHER;
 		}
@@ -954,13 +916,12 @@ public class ModelOutlineRenderer
 		// Performance becomes worse than queueing when using larger outline widths,
 		// usually around 10 px outline width according to some basic testing.
 		boolean directWrite = color.getAlpha() == 255 && outlineWidth <= DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD &&
-			(feather == 0 || outlineWidth == 1); // Feather has no effect on outlineWidth == 1
+				(feather == 0 || outlineWidth == 1); // Feather has no effect on outlineWidth == 1
 
 		if (directWrite)
 		{
 			ensureDistanceDeltasCreated(outlineWidth);
-		}
-		else
+		} else
 		{
 			outlineArrayWidth = outlineWidth + 2;
 			initializeOutlineBuffers();
@@ -974,8 +935,7 @@ public class ModelOutlineRenderer
 			{
 				processOutlinePixelQueue(outlineWidth, color, feather);
 			}
-		}
-		finally
+		} finally
 		{
 			freeAllBlockMemory();
 		}
@@ -999,8 +959,8 @@ public class ModelOutlineRenderer
 			final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY);
 
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, northEastLp, client.getPlane()),
-				npc.getCurrentOrientation(), outlineWidth, color, feather);
+					Perspective.getTileHeight(client, northEastLp, client.getPlane()),
+					npc.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
 
@@ -1010,8 +970,8 @@ public class ModelOutlineRenderer
 		if (lp != null)
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, lp, client.getPlane()),
-				player.getCurrentOrientation(), outlineWidth, color, feather);
+					Perspective.getTileHeight(client, lp, client.getPlane()),
+					player.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
 
@@ -1024,7 +984,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, gameObject.getX(), gameObject.getY(), gameObject.getZ(),
-					gameObject.getModelOrientation(), outlineWidth, color, feather);
+						gameObject.getModelOrientation(), outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1038,7 +998,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, groundObject.getX(), groundObject.getY(), groundObject.getZ(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1052,7 +1012,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, itemLayer.getX(), itemLayer.getY(), itemLayer.getZ() - itemLayer.getHeight(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1063,7 +1023,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, itemLayer.getX(), itemLayer.getY(), itemLayer.getZ() - itemLayer.getHeight(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1074,7 +1034,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, itemLayer.getX(), itemLayer.getY(), itemLayer.getZ() - itemLayer.getHeight(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1088,10 +1048,10 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model,
-					decorativeObject.getX() + decorativeObject.getXOffset(),
-					decorativeObject.getY() + decorativeObject.getYOffset(),
-					decorativeObject.getZ(),
-					0, outlineWidth, color, feather);
+						decorativeObject.getX() + decorativeObject.getXOffset(),
+						decorativeObject.getY() + decorativeObject.getYOffset(),
+						decorativeObject.getZ(),
+						0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1103,7 +1063,7 @@ public class ModelOutlineRenderer
 			{
 				// Offset is not used for the second model
 				drawModelOutline(model, decorativeObject.getX(), decorativeObject.getY(), decorativeObject.getZ(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1117,7 +1077,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, wallObject.getX(), wallObject.getY(), wallObject.getZ(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1128,7 +1088,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, wallObject.getX(), wallObject.getY(), wallObject.getZ(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1138,20 +1098,16 @@ public class ModelOutlineRenderer
 		if (tileObject instanceof GameObject)
 		{
 			drawOutline((GameObject) tileObject, outlineWidth, color, feather);
-		}
-		else if (tileObject instanceof GroundObject)
+		} else if (tileObject instanceof GroundObject)
 		{
 			drawOutline((GroundObject) tileObject, outlineWidth, color, feather);
-		}
-		else if (tileObject instanceof ItemLayer)
+		} else if (tileObject instanceof ItemLayer)
 		{
 			drawOutline((ItemLayer) tileObject, outlineWidth, color, feather);
-		}
-		else if (tileObject instanceof DecorativeObject)
+		} else if (tileObject instanceof DecorativeObject)
 		{
 			drawOutline((DecorativeObject) tileObject, outlineWidth, color, feather);
-		}
-		else if (tileObject instanceof WallObject)
+		} else if (tileObject instanceof WallObject)
 		{
 			drawOutline((WallObject) tileObject, outlineWidth, color, feather);
 		}
@@ -1166,7 +1122,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(), graphicsObject.getZ(),
-					0, outlineWidth, color, feather);
+						0, outlineWidth, color, feather);
 			}
 		}
 	}
@@ -1180,8 +1136,24 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(), runeLiteObject.getZ(),
-					runeLiteObject.getOrientation(), outlineWidth, color, feather);
+						runeLiteObject.getOrientation(), outlineWidth, color, feather);
 			}
 		}
+	}
+
+	@AllArgsConstructor
+	private static class PixelDistanceDelta
+	{
+		private final int dx;
+		private final int dy;
+	}
+
+	@AllArgsConstructor
+	private static class PixelDistanceGroupIndex
+	{
+		@Getter(AccessLevel.PRIVATE)
+		private final double distance;
+		private final int distanceGroupIndex;
+		private final double alphaMultiply;
 	}
 }

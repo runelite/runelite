@@ -86,9 +86,9 @@ import org.slf4j.LoggerFactory;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Developer Tools",
-	tags = {"panel"},
-	developerPlugin = true
+		name = "Developer Tools",
+		tags = {"panel"},
+		developerPlugin = true
 )
 @Getter
 public class DevToolsPlugin extends Plugin
@@ -137,7 +137,54 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private DevToolsConfig config;
+	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
+	{
+		Object inspector;
 
+		@Override
+		public void hotkeyPressed()
+		{
+			Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
+			try
+			{
+				if (inspector == null)
+				{
+					JRootPane rootPane = ((RootPaneContainer) window).getRootPane();
+					FlatInspector fi = new FlatInspector(rootPane);
+					fi.setEnabled(true);
+					inspector = fi;
+					fi.addPropertyChangeListener(ev ->
+					{
+						if ("enabled".equals(ev.getPropertyName()) && !fi.isEnabled() && inspector == ev.getSource())
+						{
+							inspector = null;
+						}
+					});
+				} else
+				{
+					((FlatInspector) inspector).setEnabled(false);
+				}
+			} catch (LinkageError | Exception e)
+			{
+				log.warn("unable to open swing inspector", e);
+				JOptionPane.showMessageDialog(window, "The swing inspector is not available.");
+			}
+		}
+	};
+	private final AWTEventListener swingInspectorKeyListener = rawEv ->
+	{
+		if (rawEv instanceof KeyEvent)
+		{
+			KeyEvent kev = (KeyEvent) rawEv;
+			if (kev.getID() == KeyEvent.KEY_PRESSED)
+			{
+				swingInspectorHotkeyListener.keyPressed(kev);
+			} else if (kev.getID() == KeyEvent.KEY_RELEASED)
+			{
+				swingInspectorHotkeyListener.keyReleased(kev);
+			}
+		}
+	};
 	private DevToolsButton players;
 	private DevToolsButton npcs;
 	private DevToolsButton groundItems;
@@ -170,59 +217,6 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
 	private NavigationButton navButton;
-
-	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
-	{
-		Object inspector;
-
-		@Override
-		public void hotkeyPressed()
-		{
-			Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
-			try
-			{
-				if (inspector == null)
-				{
-					JRootPane rootPane = ((RootPaneContainer) window).getRootPane();
-					FlatInspector fi = new FlatInspector(rootPane);
-					fi.setEnabled(true);
-					inspector = fi;
-					fi.addPropertyChangeListener(ev ->
-					{
-						if ("enabled".equals(ev.getPropertyName()) && !fi.isEnabled() && inspector == ev.getSource())
-						{
-							inspector = null;
-						}
-					});
-				}
-				else
-				{
-					((FlatInspector) inspector).setEnabled(false);
-				}
-			}
-			catch (LinkageError | Exception e)
-			{
-				log.warn("unable to open swing inspector", e);
-				JOptionPane.showMessageDialog(window, "The swing inspector is not available.");
-			}
-		}
-	};
-
-	private final AWTEventListener swingInspectorKeyListener = rawEv ->
-	{
-		if (rawEv instanceof KeyEvent)
-		{
-			KeyEvent kev = (KeyEvent) rawEv;
-			if (kev.getID() == KeyEvent.KEY_PRESSED)
-			{
-				swingInspectorHotkeyListener.keyPressed(kev);
-			}
-			else if (kev.getID() == KeyEvent.KEY_RELEASED)
-			{
-				swingInspectorHotkeyListener.keyReleased(kev);
-			}
-		}
-	};
 
 	@Provides
 	DevToolsConfig provideConfig(ConfigManager configManager)
@@ -285,11 +279,11 @@ public class DevToolsPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("Developer Tools")
-			.icon(icon)
-			.priority(1)
-			.panel(panel)
-			.build();
+				.tooltip("Developer Tools")
+				.icon(icon)
+				.priority(1)
+				.panel(panel)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 
@@ -329,8 +323,7 @@ public class DevToolsPlugin extends Plugin
 				if (args.length < 1)
 				{
 					message = "Logger level is currently set to " + currentLoggerLevel;
-				}
-				else
+				} else
 				{
 					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
 					logger.setLevel(newLoggerLevel);
@@ -398,10 +391,10 @@ public class DevToolsPlugin extends Plugin
 				client.queueChangedSkill(skill);
 
 				StatChanged statChanged = new StatChanged(
-					skill,
-					totalXp,
-					level,
-					level
+						skill,
+						totalXp,
+						level,
+						level
 				);
 				eventBus.post(statChanged);
 				break;
@@ -421,10 +414,10 @@ public class DevToolsPlugin extends Plugin
 				client.queueChangedSkill(skill);
 
 				StatChanged statChanged = new StatChanged(
-					skill,
-					xp,
-					level,
-					level
+						skill,
+						xp,
+						level,
+						level
 				);
 				eventBus.post(statChanged);
 				break;
@@ -519,16 +512,15 @@ public class DevToolsPlugin extends Plugin
 				{
 					configManager.unsetConfiguration(group, key);
 					message = String.format("Unset configuration %s.%s (was: %s)", group, key, current);
-				}
-				else
+				} else
 				{
 					configManager.setConfiguration(group, key, value);
 					message = String.format("Set configuration %s.%s to %s (was: %s)", group, key, value, current);
 				}
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAMEMESSAGE)
-					.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
-					.build());
+						.type(ChatMessageType.GAMEMESSAGE)
+						.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
+						.build());
 				break;
 			}
 			case "getconf":
@@ -537,9 +529,9 @@ public class DevToolsPlugin extends Plugin
 				String value = configManager.getConfiguration(group, key);
 				final String message = String.format("%s.%s = %s", group, key, value);
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAMEMESSAGE)
-					.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
-					.build());
+						.type(ChatMessageType.GAMEMESSAGE)
+						.runeLiteFormattedMessage(new ChatMessageBuilder().append(message).build())
+						.build());
 				break;
 			}
 			case "modicons":
@@ -556,9 +548,9 @@ public class DevToolsPlugin extends Plugin
 					}
 				}
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAMEMESSAGE)
-					.runeLiteFormattedMessage(builder.build())
-					.build());
+						.type(ChatMessageType.GAMEMESSAGE)
+						.runeLiteFormattedMessage(builder.build())
+						.build());
 				break;
 			}
 		}
@@ -586,8 +578,7 @@ public class DevToolsPlugin extends Plugin
 				NPC npc = entry.getNpc();
 				assert npc != null;
 				info += npc.getId();
-			}
-			else
+			} else
 			{
 				info += identifier;
 
@@ -622,28 +613,28 @@ public class DevToolsPlugin extends Plugin
 				if (i % 30 == 0)
 				{
 					MenuEntry parent = client.createMenuEntry(1)
-						.setOption("pmenu" + i)
-						.setTarget(i % 60 == 0 ? "devtools devtools devtools devtools" : "devtools")
-						.setType(MenuAction.RUNELITE);
+							.setOption("pmenu" + i)
+							.setTarget(i % 60 == 0 ? "devtools devtools devtools devtools" : "devtools")
+							.setType(MenuAction.RUNELITE);
 					Menu submenu = parent.createSubMenu();
 
 					for (int j = 0; j < 4; ++j)
 					{
 						final int j_ = j;
 						submenu.createMenuEntry(0)
-							.setOption("submenu" + j)
-							.setTarget("devtools")
-							.setType(MenuAction.RUNELITE)
-							.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_ + " sub " + j_, null));
+								.setOption("submenu" + j)
+								.setTarget("devtools")
+								.setType(MenuAction.RUNELITE)
+								.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_ + " sub " + j_, null));
 					}
 					continue;
 				}
 
 				client.createMenuEntry(1)
-					.setOption("menu" + i)
-					.setTarget("devtools")
-					.setType(MenuAction.RUNELITE)
-					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
+						.setOption("menu" + i)
+						.setTarget("devtools")
+						.setType(MenuAction.RUNELITE)
+						.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
 			}
 		}
 	}

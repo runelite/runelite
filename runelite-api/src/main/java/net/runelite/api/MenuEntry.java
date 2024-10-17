@@ -38,6 +38,7 @@ public interface MenuEntry
 	 * The option text added to the menu. (ie. "Walk here", "Use")
 	 */
 	String getOption();
+
 	MenuEntry setOption(String option);
 
 	/**
@@ -47,53 +48,63 @@ public interface MenuEntry
 	 * will be set to empty string.
 	 */
 	String getTarget();
+
 	MenuEntry setTarget(String target);
 
 	/**
 	 * An identifier value for the target of the action.
 	 */
 	int getIdentifier();
+
 	MenuEntry setIdentifier(int identifier);
 
 	/**
 	 * The action the entry will trigger.
 	 */
 	MenuAction getType();
+
 	MenuEntry setType(MenuAction type);
 
 	/**
 	 * An additional parameter for the action.
 	 */
 	int getParam0();
+
 	MenuEntry setParam0(int param0);
 
 	/**
 	 * A second additional parameter for the action.
 	 */
 	int getParam1();
+
 	MenuEntry setParam1(int param1);
 
 	/**
 	 * If this is true and you have single mouse button on and this entry is
 	 * the top entry the right click menu will not be opened when you left click
-	 *
+	 * <p>
 	 * This is used  for shift click
 	 */
 	boolean isForceLeftClick();
+
 	MenuEntry setForceLeftClick(boolean forceLeftClick);
 
 	int getWorldViewId();
+
 	MenuEntry setWorldViewId(int worldViewId);
 
 	/**
 	 * Deprioritized menus are sorted in the menu to be below the other menu entries.
+	 *
 	 * @return
 	 */
 	boolean isDeprioritized();
+
 	MenuEntry setDeprioritized(boolean deprioritized);
 
 	/**
 	 * Set a callback to be called when this menu option is clicked
+	 *
 	 * @param callback
 	 * @return
 	 */
@@ -101,24 +112,28 @@ public interface MenuEntry
 
 	/**
 	 * Get the callback called when the menu option is clicked
+	 *
 	 * @return
 	 */
 	Consumer<MenuEntry> onClick();
 
 	/**
 	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
+	 *
 	 * @return
 	 */
 	boolean isItemOp();
 
 	/**
 	 * If this menu entry is an item op, get the item op id
+	 *
 	 * @return 1-5
 	 */
 	int getItemOp();
 
 	/**
 	 * Get the item id
+	 *
 	 * @return
 	 * @see ItemID
 	 * @see NullItemID
@@ -127,6 +142,7 @@ public interface MenuEntry
 
 	/**
 	 * Set the item id
+	 *
 	 * @param itemId
 	 * @return
 	 */
@@ -135,6 +151,7 @@ public interface MenuEntry
 	/**
 	 * Get the widget this menu entry is on, if this is a menu entry
 	 * with an associated widget. Such as eg, CC_OP.
+	 *
 	 * @return
 	 */
 	@Nullable
@@ -142,6 +159,7 @@ public interface MenuEntry
 
 	/**
 	 * Get the {@link NPC} this menu entry is targeting, if any.
+	 *
 	 * @return
 	 */
 	@Nullable
@@ -149,6 +167,7 @@ public interface MenuEntry
 
 	/**
 	 * Get the {@link Player} this menu entry is targeting, if any.
+	 *
 	 * @return
 	 */
 	@Nullable
@@ -156,6 +175,7 @@ public interface MenuEntry
 
 	/**
 	 * Get the {@link Actor} this menu entry is targeting, if any.
+	 *
 	 * @return
 	 */
 	@Nullable
@@ -163,6 +183,7 @@ public interface MenuEntry
 
 	/**
 	 * Get the submenu for this menu entry.
+	 *
 	 * @return the submenu, or null if one doesn't exist
 	 * @see #createSubMenu()
 	 */
@@ -172,6 +193,7 @@ public interface MenuEntry
 	/**
 	 * Create a new submenu for this menu entry.
 	 * This will erase any previous submenu.
+	 *
 	 * @return the new submenu
 	 */
 	@Nonnull

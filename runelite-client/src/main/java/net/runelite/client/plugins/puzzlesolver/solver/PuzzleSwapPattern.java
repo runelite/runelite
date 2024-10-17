@@ -31,20 +31,20 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum PuzzleSwapPattern
 {
-	ROTATE_LEFT_UP(new int[]{1, -1, 0, -1, -1, -1, -1, 0}, 1, 1), //Reference point
+	ROTATE_LEFT_UP(new int[] {1, -1, 0, -1, -1, -1, -1, 0}, 1, 1), //Reference point
 	ROTATE_LEFT_DOWN(1, -1),
 	ROTATE_RIGHT_UP(-1, 1),
 	ROTATE_RIGHT_DOWN(-1, -1),
-	ROTATE_UP_LEFT(new int[]{-1, 1, -1, 0, -1, -1, 0, -1}, 1 , 1), //Reference point
+	ROTATE_UP_LEFT(new int[] {-1, 1, -1, 0, -1, -1, 0, -1}, 1, 1), //Reference point
 	ROTATE_UP_RIGHT(-1, 1),
 	ROTATE_DOWN_LEFT(1, -1),
 	ROTATE_DOWN_RIGHT(-1, -1),
-	LAST_PIECE_ROW(new int[]{-1, -1, 0, -1, -1, 0, -1, 1}, 1, 1),
-	LAST_PIECE_COLUMN(new int[]{-1, -1, -1, 0, 0, -1, 1, -1}, 1, 1),
-	SHUFFLE_UP_RIGHT(new int[]{1, -1, 0, -1}, 1, 1),
-	SHUFFLE_UP_LEFT(new int[]{-1, -1, 0, -1}, 1, 1),
-	SHUFFLE_UP_BELOW(new int[]{-1, 1, -1, 0}, 1, 1),
-	SHUFFLE_UP_ABOVE(new int[]{-1, -1, -1, 0}, 1, 1);
+	LAST_PIECE_ROW(new int[] {-1, -1, 0, -1, -1, 0, -1, 1}, 1, 1),
+	LAST_PIECE_COLUMN(new int[] {-1, -1, -1, 0, 0, -1, 1, -1}, 1, 1),
+	SHUFFLE_UP_RIGHT(new int[] {1, -1, 0, -1}, 1, 1),
+	SHUFFLE_UP_LEFT(new int[] {-1, -1, 0, -1}, 1, 1),
+	SHUFFLE_UP_BELOW(new int[] {-1, 1, -1, 0}, 1, 1),
+	SHUFFLE_UP_ABOVE(new int[] {-1, -1, -1, 0}, 1, 1);
 
 	/**
 	 * Points used for swaps relative to locVal

@@ -39,48 +39,30 @@ import net.runelite.api.Client;
 
 class Skybox
 {
-	@FunctionalInterface
-	public interface ChunkMapper
-	{
-		/**
-		 * Gets the instance template chunk data for the specified point
-		 *
-		 * @see Client#getInstanceTemplateChunks
-		 */
-		int getTemplateChunk(int cx, int cy, int plane);
-	}
-
 	private static final double SQRT2 = Math.sqrt(2);
-
 	// How many stddev per direction we need to stay visibly continuous
 	// 511/512 accuracy
 	private static final double BLEND_DISTRIBUTION = 3.075;
-
 	// This has a worst case complexity of O((BLEND_RADUS*2)^2)
 	// BLEND_RADIUS is in chunks (8 tiles)
 	private static final int BLEND_RADIUS = 5;
-
 	// The maximum number of tiles that can be blended before becoming visibly discontinuous
 	private static final int MAX_BLEND = (int) ((BLEND_RADIUS * 8) / BLEND_DISTRIBUTION);
-
 	private static final int PLANE_ALL = 0b1111;
-
 	private static final Pattern PATTERN = Pattern.compile("^[ \\t]*(?<expr>" +
-		"//.*$|" + // //comment
-		"m[ \\t]*(?<mrx>[0-9]+)[ \\t]+(?<mry>[0-9]+)|" + // m <rx> <ry>
-		"r[ \\t]*(?<rx>[0-9]+)[ \\t]+(?<ry>[0-9]+)|" + // r <rx> <ry>
-		"R[ \\t]*(?<rx1>[0-9]+)[ \\t]+(?<ry1>[0-9]+)[ \\t]+(?<rx2>[0-9]+)[ \\t]+(?<ry2>[0-9]+)|" + // R <rx1> <ry1> <rx2> <ry2>
-		"c[ \\t]*(?<cx>[0-9-]+)[ \\t]+(?<cy>[0-9-]+)|" + // c <cx> <cy>
-		"C[ \\t]*(?<cx1>[0-9-]+)[ \\t]+(?<cy1>[0-9-]+)[ \\t]+(?<cx2>[0-9-]+)[ \\t]+(?<cy2>[0-9-]+)|" + // C <cx1> <cy1> <cx2> <cy2>
-		"#[ \\t]*(?<color>[0-9a-fA-F]{6}|[0-9a-fA-F]{3})|" + // #<RRGGBB> or #<RGB>
-		"p[ \\t]*(?<plane>all|0?[ \\t]*1?[ \\t]*2?[ \\t]*3?)|" + // p all or p<1><2><3><4>
-		"b[ \\t]*(?<blend>[0-9]+)|" + // b <blend>
-		"bounds[ \\t]+(?<bx1>[0-9]+)[ \\t]+(?<by1>[0-9]+)[ \\t]+(?<bx2>[0-9]+)[ \\t]+(?<by2>[0-9]+)" + // bounds <x0> <y0> <x1> <y1>
-		")[ \\t]*");
-
+			"//.*$|" + // //comment
+			"m[ \\t]*(?<mrx>[0-9]+)[ \\t]+(?<mry>[0-9]+)|" + // m <rx> <ry>
+			"r[ \\t]*(?<rx>[0-9]+)[ \\t]+(?<ry>[0-9]+)|" + // r <rx> <ry>
+			"R[ \\t]*(?<rx1>[0-9]+)[ \\t]+(?<ry1>[0-9]+)[ \\t]+(?<rx2>[0-9]+)[ \\t]+(?<ry2>[0-9]+)|" + // R <rx1> <ry1> <rx2> <ry2>
+			"c[ \\t]*(?<cx>[0-9-]+)[ \\t]+(?<cy>[0-9-]+)|" + // c <cx> <cy>
+			"C[ \\t]*(?<cx1>[0-9-]+)[ \\t]+(?<cy1>[0-9-]+)[ \\t]+(?<cx2>[0-9-]+)[ \\t]+(?<cy2>[0-9-]+)|" + // C <cx1> <cy1> <cx2> <cy2>
+			"#[ \\t]*(?<color>[0-9a-fA-F]{6}|[0-9a-fA-F]{3})|" + // #<RRGGBB> or #<RGB>
+			"p[ \\t]*(?<plane>all|0?[ \\t]*1?[ \\t]*2?[ \\t]*3?)|" + // p all or p<1><2><3><4>
+			"b[ \\t]*(?<blend>[0-9]+)|" + // b <blend>
+			"bounds[ \\t]+(?<bx1>[0-9]+)[ \\t]+(?<by1>[0-9]+)[ \\t]+(?<bx2>[0-9]+)[ \\t]+(?<by2>[0-9]+)" + // bounds <x0> <y0> <x1> <y1>
+			")[ \\t]*");
 	private final int[] chunks;
 	private final int[] planeOverrides;
-
 	private final int x1;
 	private final int y1;
 	private final int x2;
@@ -157,8 +139,7 @@ class Skybox
 								cg |= cg << 4;
 								cb = scolor & 0xF;
 								cb |= cb << 4;
-							}
-							else
+							} else
 							{
 								cr = scolor >> 16 & 0xFF;
 								cg = scolor >> 8 & 0xFF;
@@ -196,8 +177,7 @@ class Skybox
 							if ("all".equals(planes))
 							{
 								plane = PLANE_ALL;
-							}
-							else
+							} else
 							{
 								plane = 0;
 								for (int i = 0; i < planes.length(); i++)
@@ -212,8 +192,7 @@ class Skybox
 							{
 								rx2 = rx1 = Integer.parseInt(m.group("rx"));
 								ry2 = ry1 = Integer.parseInt(m.group("ry"));
-							}
-							else
+							} else
 							{
 								rx1 = Integer.parseInt(m.group("rx1"));
 								ry1 = Integer.parseInt(m.group("ry1"));
@@ -231,8 +210,7 @@ class Skybox
 							{
 								cx2 = cx1 = cx1 + Integer.parseInt(m.group("cx"));
 								cy2 = cy1 = cy1 + Integer.parseInt(m.group("cy"));
-							}
-							else if (cha == 'C')
+							} else if (cha == 'C')
 							{
 								cx2 = cx1 + Integer.parseInt(m.group("cx2"));
 								cy2 = cy1 + Integer.parseInt(m.group("cy2"));
@@ -259,8 +237,7 @@ class Skybox
 									if (plane == PLANE_ALL)
 									{
 										chunks[offset] = color;
-									}
-									else
+									} else
 									{
 										// We are not setting all planes in this chunk, so allocate a plane override section
 										// and add a pointer to it in the normal chunk's space. We do this because most chunks
@@ -271,8 +248,7 @@ class Skybox
 										{
 											// Existing plane override
 											poptr = ocv & 0x7FFF_FFFF;
-										}
-										else
+										} else
 										{
 											poptr = planeOverrideEnd;
 											planeOverrideEnd += 4;
@@ -301,8 +277,7 @@ class Skybox
 					}
 				}
 			}
-		}
-		catch (NumberFormatException ex)
+		} catch (NumberFormatException ex)
 		{
 			throw new IllegalArgumentException("Expected number (" + filename + ":" + lineNo + ")", ex);
 		}
@@ -499,8 +474,7 @@ class Skybox
 				if (x % lineEvery == 0 || y % lineEvery == 0)
 				{
 					color = 0x00FFFFFF;
-				}
-				else
+				} else
 				{
 					double fx = (x1 * 8) + (x / resolution);
 					double fy = (y1 * 8) + (y / resolution);
@@ -511,5 +485,16 @@ class Skybox
 		}
 
 		return img;
+	}
+
+	@FunctionalInterface
+	public interface ChunkMapper
+	{
+		/**
+		 * Gets the instance template chunk data for the specified point
+		 *
+		 * @see Client#getInstanceTemplateChunks
+		 */
+		int getTemplateChunk(int cx, int cy, int plane);
 	}
 }

@@ -34,19 +34,19 @@ import net.runelite.client.config.ConfigSection;
 public interface ChatFilterConfig extends Config
 {
 	@ConfigSection(
-		name = "Filter Lists",
-		description = "Custom Word, Regex, and Username filter lists",
-		position = 0,
-		closedByDefault = true
+			name = "Filter Lists",
+			description = "Custom Word, Regex, and Username filter lists",
+			position = 0,
+			closedByDefault = true
 	)
 	String filterLists = "filterLists";
 
 	@ConfigItem(
-		keyName = "filteredWords",
-		name = "Filtered Words",
-		description = "List of filtered words, separated by commas",
-		position = 1,
-		section = filterLists
+			keyName = "filteredWords",
+			name = "Filtered Words",
+			description = "List of filtered words, separated by commas",
+			position = 1,
+			section = filterLists
 	)
 	default String filteredWords()
 	{
@@ -54,11 +54,11 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filteredRegex",
-		name = "Filtered Regex",
-		description = "List of regular expressions to filter, one per line",
-		position = 2,
-		section = filterLists
+			keyName = "filteredRegex",
+			name = "Filtered Regex",
+			description = "List of regular expressions to filter, one per line",
+			position = 2,
+			section = filterLists
 	)
 	default String filteredRegex()
 	{
@@ -66,11 +66,11 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filteredNames",
-		name = "Filtered Names",
-		description = "List of filtered names, one per line. Accepts regular expressions",
-		position = 3,
-		section = filterLists
+			keyName = "filteredNames",
+			name = "Filtered Names",
+			description = "List of filtered names, one per line. Accepts regular expressions",
+			position = 3,
+			section = filterLists
 	)
 	default String filteredNames()
 	{
@@ -78,10 +78,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterType",
-		name = "Filter type",
-		description = "Configures how the messages are filtered",
-		position = 4
+			keyName = "filterType",
+			name = "Filter type",
+			description = "Configures how the messages are filtered",
+			position = 4
 	)
 	default ChatFilterType filterType()
 	{
@@ -89,10 +89,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterFriends",
-		name = "Filter Friends",
-		description = "Filter your friends' messages",
-		position = 5
+			keyName = "filterFriends",
+			name = "Filter Friends",
+			description = "Filter your friends' messages",
+			position = 5
 	)
 	default boolean filterFriends()
 	{
@@ -100,10 +100,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterClan",
-		name = "Filter Friends Chat Members",
-		description = "Filter your friends chat members' messages",
-		position = 6
+			keyName = "filterClan",
+			name = "Filter Friends Chat Members",
+			description = "Filter your friends chat members' messages",
+			position = 6
 	)
 	default boolean filterFriendsChat()
 	{
@@ -111,10 +111,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterClanChat",
-		name = "Filter clan Chat Members",
-		description = "Filter your clan chat members' messages",
-		position = 7
+			keyName = "filterClanChat",
+			name = "Filter clan Chat Members",
+			description = "Filter your clan chat members' messages",
+			position = 7
 	)
 	default boolean filterClanChat()
 	{
@@ -122,10 +122,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "filterGameChat",
-		name = "Filter Game Chat",
-		description = "Filter your game chat messages",
-		position = 9
+			keyName = "filterGameChat",
+			name = "Filter Game Chat",
+			description = "Filter your game chat messages",
+			position = 9
 	)
 	default boolean filterGameChat()
 	{
@@ -133,10 +133,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "collapseGameChat",
-		name = "Collapse Game Chat",
-		description = "Collapse duplicate game chat messages into a single line",
-		position = 10
+			keyName = "collapseGameChat",
+			name = "Collapse Game Chat",
+			description = "Collapse duplicate game chat messages into a single line",
+			position = 10
 	)
 	default boolean collapseGameChat()
 	{
@@ -144,10 +144,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "collapsePlayerChat",
-		name = "Collapse Player Chat",
-		description = "Collapse duplicate player chat messages into a single line",
-		position = 11
+			keyName = "collapsePlayerChat",
+			name = "Collapse Player Chat",
+			description = "Collapse duplicate player chat messages into a single line",
+			position = 11
 	)
 	default boolean collapsePlayerChat()
 	{
@@ -155,10 +155,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "maxRepeatedPublicChats",
-		name = "Repeat filter",
-		description = "Block player chat message if repeated this many times. 0 is off",
-		position = 12
+			keyName = "maxRepeatedPublicChats",
+			name = "Repeat filter",
+			description = "Block player chat message if repeated this many times. 0 is off",
+			position = 12
 	)
 	default int maxRepeatedPublicChats()
 	{
@@ -166,10 +166,10 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "stripAccents",
-		name = "Strip accents",
-		description = "Remove accents before applying filters",
-		position = 13
+			keyName = "stripAccents",
+			name = "Strip accents",
+			description = "Remove accents before applying filters",
+			position = 13
 	)
 	default boolean stripAccents()
 	{

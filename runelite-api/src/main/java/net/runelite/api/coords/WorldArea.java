@@ -89,6 +89,131 @@ public class WorldArea
 		this.height = height;
 	}
 
+	private static boolean hasLineOfSightTo(WorldView wv, Tile from, Tile to)
+	{
+		// Thanks to Henke for this method :)
+
+		if (from.getPlane() != to.getPlane())
+		{
+			return false;
+		}
+
+		CollisionData[] collisionData = wv.getCollisionMaps();
+		if (collisionData == null)
+		{
+			return false;
+		}
+
+		int z = from.getPlane();
+		int[][] collisionDataFlags = collisionData[z].getFlags();
+
+		Point p1 = from.getSceneLocation();
+		Point p2 = to.getSceneLocation();
+		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
+		{
+			return true;
+		}
+
+		int dx = p2.getX() - p1.getX();
+		int dy = p2.getY() - p1.getY();
+		int dxAbs = Math.abs(dx);
+		int dyAbs = Math.abs(dy);
+
+		int xFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		int yFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		if (dx < 0)
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_EAST;
+		} else
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_WEST;
+		}
+		if (dy < 0)
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_NORTH;
+		} else
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_SOUTH;
+		}
+
+		if (dxAbs > dyAbs)
+		{
+			int x = p1.getX();
+			int yBig = p1.getY() << 16; // The y position is represented as a bigger number to handle rounding
+			int slope = (dy << 16) / dxAbs;
+			yBig += 0x8000; // Add half of a tile
+			if (dy < 0)
+			{
+				yBig--; // For correct rounding
+			}
+			int direction = dx < 0 ? -1 : 1;
+
+			while (x != p2.getX())
+			{
+				x += direction;
+				int y = yBig >>> 16;
+				if ((collisionDataFlags[x][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+				yBig += slope;
+				int nextY = yBig >>> 16;
+				if (nextY != y && (collisionDataFlags[x][nextY] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+			}
+		} else
+		{
+			int y = p1.getY();
+			int xBig = p1.getX() << 16; // The x position is represented as a bigger number to handle rounding
+			int slope = (dx << 16) / dyAbs;
+			xBig += 0x8000; // Add half of a tile
+			if (dx < 0)
+			{
+				xBig--; // For correct rounding
+			}
+			int direction = dy < 0 ? -1 : 1;
+
+			while (y != p2.getY())
+			{
+				y += direction;
+				int x = xBig >>> 16;
+				if ((collisionDataFlags[x][y] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+				xBig += slope;
+				int nextX = xBig >>> 16;
+				if (nextX != x && (collisionDataFlags[nextX][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+			}
+		}
+
+		// No collision
+		return true;
+	}
+
+	/**
+	 * Checks if the given point is on the edge of the provided WorldArea
+	 *
+	 * @param p Point to test
+	 * @return true if on the edge, false otherwise
+	 */
+	private static boolean isEdgePoint(WorldArea wa, WorldPoint p)
+	{
+		return p.getX() == wa.getX()
+				|| p.getX() == wa.getX() + wa.getWidth() - 1
+				|| p.getY() == wa.getY()
+				|| p.getY() == wa.getY() + wa.getHeight() - 1;
+	}
+
 	/**
 	 * Computes the shortest distance to another area.
 	 *
@@ -290,33 +415,33 @@ public class WorldArea
 		{
 			xFlags |= CollisionDataFlag.BLOCK_MOVEMENT_EAST;
 			xWallFlagsSouth |= CollisionDataFlag.BLOCK_MOVEMENT_SOUTH |
-				CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_EAST;
+					CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_EAST;
 			xWallFlagsNorth |= CollisionDataFlag.BLOCK_MOVEMENT_NORTH |
-				CollisionDataFlag.BLOCK_MOVEMENT_NORTH_EAST;
+					CollisionDataFlag.BLOCK_MOVEMENT_NORTH_EAST;
 		}
 		if (dx > 0)
 		{
 			xFlags |= CollisionDataFlag.BLOCK_MOVEMENT_WEST;
 			xWallFlagsSouth |= CollisionDataFlag.BLOCK_MOVEMENT_SOUTH |
-				CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_WEST;
+					CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_WEST;
 			xWallFlagsNorth |= CollisionDataFlag.BLOCK_MOVEMENT_NORTH |
-				CollisionDataFlag.BLOCK_MOVEMENT_NORTH_WEST;
+					CollisionDataFlag.BLOCK_MOVEMENT_NORTH_WEST;
 		}
 		if (dy < 0)
 		{
 			yFlags |= CollisionDataFlag.BLOCK_MOVEMENT_NORTH;
 			yWallFlagsWest |= CollisionDataFlag.BLOCK_MOVEMENT_WEST |
-				CollisionDataFlag.BLOCK_MOVEMENT_NORTH_WEST;
+					CollisionDataFlag.BLOCK_MOVEMENT_NORTH_WEST;
 			yWallFlagsEast |= CollisionDataFlag.BLOCK_MOVEMENT_EAST |
-				CollisionDataFlag.BLOCK_MOVEMENT_NORTH_EAST;
+					CollisionDataFlag.BLOCK_MOVEMENT_NORTH_EAST;
 		}
 		if (dy > 0)
 		{
 			yFlags |= CollisionDataFlag.BLOCK_MOVEMENT_SOUTH;
 			yWallFlagsWest |= CollisionDataFlag.BLOCK_MOVEMENT_WEST |
-				CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_WEST;
+					CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_WEST;
 			yWallFlagsEast |= CollisionDataFlag.BLOCK_MOVEMENT_EAST |
-				CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_EAST;
+					CollisionDataFlag.BLOCK_MOVEMENT_SOUTH_EAST;
 		}
 		if (dx < 0 && dy < 0)
 		{
@@ -349,7 +474,7 @@ public class WorldArea
 			for (int y = startY; y <= endY; y++)
 			{
 				if ((collisionDataFlags[checkX][y] & xFlags) != 0 ||
-					!extraCondition.test(WorldPoint.fromScene(wv, checkX, y, plane)))
+						!extraCondition.test(WorldPoint.fromScene(wv, checkX, y, plane)))
 				{
 					// Collision while attempting to travel along the x axis
 					return false;
@@ -380,7 +505,7 @@ public class WorldArea
 			for (int x = startX; x <= endX; x++)
 			{
 				if ((collisionDataFlags[x][checkY] & yFlags) != 0 ||
-					!extraCondition.test(WorldPoint.fromScene(wv, x, checkY, wv.getPlane())))
+						!extraCondition.test(WorldPoint.fromScene(wv, x, checkY, wv.getPlane())))
 				{
 					// Collision while attempting to travel along the y axis
 					return false;
@@ -408,7 +533,7 @@ public class WorldArea
 		if (dx != 0 && dy != 0)
 		{
 			if ((collisionDataFlags[checkX][checkY] & xyFlags) != 0 ||
-				!extraCondition.test(WorldPoint.fromScene(wv, checkX, checkY, wv.getPlane())))
+					!extraCondition.test(WorldPoint.fromScene(wv, checkX, checkY, wv.getPlane())))
 			{
 				// Collision while attempting to travel diagonally
 				return false;
@@ -420,7 +545,7 @@ public class WorldArea
 			if (width == 1)
 			{
 				if ((collisionDataFlags[checkX][checkY - dy] & xFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromScene(wv, checkX, startY, wv.getPlane())))
+						extraCondition.test(WorldPoint.fromScene(wv, checkX, startY, wv.getPlane())))
 				{
 					return false;
 				}
@@ -428,7 +553,7 @@ public class WorldArea
 			if (height == 1)
 			{
 				if ((collisionDataFlags[checkX - dx][checkY] & yFlags) != 0 &&
-					extraCondition.test(WorldPoint.fromScene(wv, startX, checkY, wv.getPlane())))
+						extraCondition.test(WorldPoint.fromScene(wv, startX, checkY, wv.getPlane())))
 				{
 					return false;
 				}
@@ -450,24 +575,20 @@ public class WorldArea
 		if (other.x <= this.x)
 		{
 			x = this.x;
-		}
-		else if (other.x >= this.x + this.width - 1)
+		} else if (other.x >= this.x + this.width - 1)
 		{
 			x = this.x + this.width - 1;
-		}
-		else
+		} else
 		{
 			x = other.x;
 		}
 		if (other.y <= this.y)
 		{
 			y = this.y;
-		}
-		else if (other.y >= this.y + this.height - 1)
+		} else if (other.y >= this.y + this.height - 1)
 		{
 			y = this.y + this.height - 1;
-		}
-		else
+		} else
 		{
 			y = other.y;
 		}
@@ -520,120 +641,6 @@ public class WorldArea
 		return false;
 	}
 
-	private static boolean hasLineOfSightTo(WorldView wv, Tile from, Tile to)
-	{
-		// Thanks to Henke for this method :)
-
-		if (from.getPlane() != to.getPlane())
-		{
-			return false;
-		}
-
-		CollisionData[] collisionData = wv.getCollisionMaps();
-		if (collisionData == null)
-		{
-			return false;
-		}
-
-		int z = from.getPlane();
-		int[][] collisionDataFlags = collisionData[z].getFlags();
-
-		Point p1 = from.getSceneLocation();
-		Point p2 = to.getSceneLocation();
-		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
-		{
-			return true;
-		}
-
-		int dx = p2.getX() - p1.getX();
-		int dy = p2.getY() - p1.getY();
-		int dxAbs = Math.abs(dx);
-		int dyAbs = Math.abs(dy);
-
-		int xFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
-		int yFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
-		if (dx < 0)
-		{
-			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_EAST;
-		}
-		else
-		{
-			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_WEST;
-		}
-		if (dy < 0)
-		{
-			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_NORTH;
-		}
-		else
-		{
-			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_SOUTH;
-		}
-
-		if (dxAbs > dyAbs)
-		{
-			int x = p1.getX();
-			int yBig = p1.getY() << 16; // The y position is represented as a bigger number to handle rounding
-			int slope = (dy << 16) / dxAbs;
-			yBig += 0x8000; // Add half of a tile
-			if (dy < 0)
-			{
-				yBig--; // For correct rounding
-			}
-			int direction = dx < 0 ? -1 : 1;
-
-			while (x != p2.getX())
-			{
-				x += direction;
-				int y = yBig >>> 16;
-				if ((collisionDataFlags[x][y] & xFlags) != 0)
-				{
-					// Collision while traveling on the x axis
-					return false;
-				}
-				yBig += slope;
-				int nextY = yBig >>> 16;
-				if (nextY != y && (collisionDataFlags[x][nextY] & yFlags) != 0)
-				{
-					// Collision while traveling on the y axis
-					return false;
-				}
-			}
-		}
-		else
-		{
-			int y = p1.getY();
-			int xBig = p1.getX() << 16; // The x position is represented as a bigger number to handle rounding
-			int slope = (dx << 16) / dyAbs;
-			xBig += 0x8000; // Add half of a tile
-			if (dx < 0)
-			{
-				xBig--; // For correct rounding
-			}
-			int direction = dy < 0 ? -1 : 1;
-
-			while (y != p2.getY())
-			{
-				y += direction;
-				int x = xBig >>> 16;
-				if ((collisionDataFlags[x][y] & yFlags) != 0)
-				{
-					// Collision while traveling on the y axis
-					return false;
-				}
-				xBig += slope;
-				int nextX = xBig >>> 16;
-				if (nextX != x && (collisionDataFlags[nextX][y] & xFlags) != 0)
-				{
-					// Collision while traveling on the x axis
-					return false;
-				}
-			}
-		}
-
-		// No collision
-		return true;
-	}
-
 	/**
 	 * Determine if this WorldArea has line of sight to another WorldArea.
 	 * <p>
@@ -659,28 +666,14 @@ public class WorldArea
 	{
 		Point compPoint = this.getComparisonPoint(other);
 		Comparator<WorldPoint> byDistance = Comparator.comparingInt((p) -> p.distanceTo(
-			new WorldPoint(compPoint.getX(), compPoint.getY(), this.getPlane())));
+				new WorldPoint(compPoint.getX(), compPoint.getY(), this.getPlane())));
 
 		return other.toWorldPointList()
-			.stream()
-			.filter(p -> isEdgePoint(other, p))
-			.filter(p -> isVisibleCandidate(other, p))
-			.sorted(byDistance)
-			.collect(Collectors.toList());
-	}
-
-	/**
-	 * Checks if the given point is on the edge of the provided WorldArea
-	 *
-	 * @param p Point to test
-	 * @return true if on the edge, false otherwise
-	 */
-	private static boolean isEdgePoint(WorldArea wa, WorldPoint p)
-	{
-		return p.getX() == wa.getX()
-			|| p.getX() == wa.getX() + wa.getWidth() - 1
-			|| p.getY() == wa.getY()
-			|| p.getY() == wa.getY() + wa.getHeight() - 1;
+				.stream()
+				.filter(p -> isEdgePoint(other, p))
+				.filter(p -> isVisibleCandidate(other, p))
+				.sorted(byDistance)
+				.collect(Collectors.toList());
 	}
 
 	/**

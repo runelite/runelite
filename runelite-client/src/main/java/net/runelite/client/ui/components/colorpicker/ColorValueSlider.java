@@ -76,11 +76,6 @@ public class ColorValueSlider extends JPanel
 		});
 	}
 
-	public void setValue(int x)
-	{
-		moveTarget(x + KNOB_WIDTH, false);
-	}
-
 	private void moveTarget(int x, boolean shouldUpdate)
 	{
 		value = Ints.constrainToRange(x, ColorUtil.MIN_RGB_VALUE + KNOB_WIDTH, ColorUtil.MAX_RGB_VALUE + KNOB_WIDTH);
@@ -107,5 +102,10 @@ public class ColorValueSlider extends JPanel
 	int getValue()
 	{
 		return value - KNOB_WIDTH;
+	}
+
+	public void setValue(int x)
+	{
+		moveTarget(x + KNOB_WIDTH, false);
 	}
 }

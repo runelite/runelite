@@ -38,90 +38,88 @@ import net.runelite.api.NpcID;
 @Getter
 public enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::dragonWarhammerThreshold)
-		{
-			@Override
-			public float computeDrainPercent(int hit, @Nullable NPC target)
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[] {ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::dragonWarhammerThreshold)
 			{
-				if (hit > 0)
+				@Override
+				public float computeDrainPercent(int hit, @Nullable NPC target)
 				{
-					return 0.7f;
+					if (hit > 0)
+					{
+						return 0.7f;
+					} else if (target != null && TEKTON_VARIANTS.contains(target.getId()))
+					{
+						return 0.95f;
+					}
+					return 0;
 				}
-				else if (target != null && TEKTON_VARIANTS.contains(target.getId()))
-				{
-					return 0.95f;
-				}
-				return 0;
-			}
-		},
-	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
-	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
-	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold)
-		{
-			@Override
-			public int computeHit(int hit, @Nullable NPC target)
+			},
+	ARCLIGHT("Arclight", new int[] {ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
+	DARKLIGHT("Darklight", new int[] {ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
+	BANDOS_GODSWORD("Bandos Godsword", new int[] {ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold)
 			{
-				if (hit == 0 && target != null && TEKTON_VARIANTS.contains(target.getId()))
+				@Override
+				public int computeHit(int hit, @Nullable NPC target)
 				{
-					return 10;
+					if (hit == 0 && target != null && TEKTON_VARIANTS.contains(target.getId()))
+					{
+						return 10;
+					}
+					return super.computeHit(hit, target);
 				}
-				return super.computeHit(hit, target);
-			}
-		},
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
+			},
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[] {ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
+	BONE_DAGGER("Bone Dagger", new int[] {ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
 	DORGESHUUN_CROSSBOW(
-		"Dorgeshuun Crossbow",
-		new int[]{ItemID.DORGESHUUN_CROSSBOW},
-		true,
-		(distance) -> 60 + distance * 3,
-		(c) -> 0
+			"Dorgeshuun Crossbow",
+			new int[] {ItemID.DORGESHUUN_CROSSBOW},
+			true,
+			(distance) -> 60 + distance * 3,
+			(c) -> 0
 	),
-	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold),
+	BULWARK("Dinh's Bulwark", new int[] {ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold),
 	ACCURSED_SCEPTRE(
-		"Accursed Sceptre",
-		new int[]{ItemID.ACCURSED_SCEPTRE, ItemID.ACCURSED_SCEPTRE_A},
-		false,
-		(distance) -> 46 + distance * 10,
-		(c) -> 0
+			"Accursed Sceptre",
+			new int[] {ItemID.ACCURSED_SCEPTRE, ItemID.ACCURSED_SCEPTRE_A},
+			false,
+			(distance) -> 46 + distance * 10,
+			(c) -> 0
 	),
 	TONALZTICS_OF_RALOS(
-		"Tonalztics of Ralos",
-		new int[]{ItemID.TONALZTICS_OF_RALOS},
-		true, // Not really, but we convert the number of hits into a single hit
-		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
-		(c) -> 0
+			"Tonalztics of Ralos",
+			new int[] {ItemID.TONALZTICS_OF_RALOS},
+			true, // Not really, but we convert the number of hits into a single hit
+			(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
+			(c) -> 0
 	),
 	ELDER_MAUL("Elder Maul",
-		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_OR},
-		false,
-		(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
-		SpecialCounterConfig::elderMaulThreshold)
-		{
-			@Override
-			public float computeDrainPercent(int hit, @Nullable NPC target)
+			new int[] {ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_OR},
+			false,
+			(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
+			SpecialCounterConfig::elderMaulThreshold)
 			{
-				if (hit > 0)
+				@Override
+				public float computeDrainPercent(int hit, @Nullable NPC target)
 				{
-					return 0.65f;
+					if (hit > 0)
+					{
+						return 0.65f;
+					} else if (target != null && TEKTON_VARIANTS.contains(target.getId()))
+					{
+						return 0.95f;
+					}
+					return 0;
 				}
-				else if (target != null && TEKTON_VARIANTS.contains(target.getId()))
-				{
-					return 0.95f;
-				}
-				return 0;
-			}
-		},
-	SEERCULL("Seercull", new int[]{ItemID.SEERCULL}, true, (d) -> 46 + (d * 5), (c) -> 0),
-	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold);
+			},
+	SEERCULL("Seercull", new int[] {ItemID.SEERCULL}, true, (d) -> 46 + (d * 5), (c) -> 0),
+	EMBERLIGHT("Emberlight", new int[] {ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold);
 
 	private static final Set<Integer> TEKTON_VARIANTS = ImmutableSet.of(
-		NpcID.TEKTON,
-		NpcID.TEKTON_7541,
-		NpcID.TEKTON_7542,
-		NpcID.TEKTON_7545,
-		NpcID.TEKTON_ENRAGED,
-		NpcID.TEKTON_ENRAGED_7544
+			NpcID.TEKTON,
+			NpcID.TEKTON_7541,
+			NpcID.TEKTON_7542,
+			NpcID.TEKTON_7545,
+			NpcID.TEKTON_ENRAGED,
+			NpcID.TEKTON_ENRAGED_7544
 	);
 
 	private final String name;

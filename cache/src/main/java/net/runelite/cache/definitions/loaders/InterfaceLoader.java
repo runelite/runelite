@@ -40,8 +40,7 @@ public class InterfaceLoader
 		if (b[0] == -1)
 		{
 			decodeIf3(iface, new InputStream(b));
-		}
-		else
+		} else
 		{
 			decodeIf1(iface, new InputStream(b));
 		}
@@ -64,8 +63,7 @@ public class InterfaceLoader
 		if (iface.parentId == 0xFFFF)
 		{
 			iface.parentId = -1;
-		}
-		else
+		} else
 		{
 			iface.parentId += iface.id & ~0xFFFF;
 		}
@@ -112,7 +110,7 @@ public class InterfaceLoader
 					}
 
 					List<ClientScript1Instruction> instructions = new ArrayList<>();
-					for (int i = 0; i < bytecode.length;)
+					for (int i = 0; i < bytecode.length; )
 					{
 						ClientScript1Instruction ins = new ClientScript1Instruction();
 
@@ -184,8 +182,7 @@ public class InterfaceLoader
 					iface.xOffsets[var8] = var1.readShort();
 					iface.yOffsets[var8] = var1.readShort();
 					iface.sprites[var8] = var1.readInt();
-				}
-				else
+				} else
 				{
 					iface.sprites[var8] = -1;
 				}
@@ -377,8 +374,7 @@ public class InterfaceLoader
 		if (iface.type == 9)
 		{
 			iface.originalHeight = var1.readShort();
-		}
-		else
+		} else
 		{
 			iface.originalHeight = var1.readUnsignedShort();
 		}
@@ -391,8 +387,7 @@ public class InterfaceLoader
 		if (iface.parentId == 0xFFFF)
 		{
 			iface.parentId = -1;
-		}
-		else
+		} else
 		{
 			iface.parentId += iface.id & ~0xFFFF;
 		}
@@ -527,8 +522,7 @@ public class InterfaceLoader
 		if (var2 == 0)
 		{
 			return null;
-		}
-		else
+		} else
 		{
 			Object[] var3 = new Object[var2];
 
@@ -538,8 +532,7 @@ public class InterfaceLoader
 				if (var5 == 0)
 				{
 					var3[var4] = new Integer(var1.readInt());
-				}
-				else if (var5 == 1)
+				} else if (var5 == 1)
 				{
 					var3[var4] = var1.readString();
 				}
@@ -556,8 +549,7 @@ public class InterfaceLoader
 		if (var2 == 0)
 		{
 			return null;
-		}
-		else
+		} else
 		{
 			int[] var3 = new int[var2];
 

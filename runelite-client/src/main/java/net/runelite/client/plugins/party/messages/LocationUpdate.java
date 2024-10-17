@@ -42,9 +42,9 @@ public class LocationUpdate extends PartyMemberMessage
 	public WorldPoint getWorldPoint()
 	{
 		return new WorldPoint(
-			(c >> 14) & 0x3fff,
-			c & 0x3fff,
-			(c >> 28) & 3
+				(c >> 14) & 0x3fff,
+				c & 0x3fff,
+				(c >> 28) & 3
 		);
 	}
 }

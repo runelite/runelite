@@ -51,6 +51,9 @@ import net.runelite.client.util.Text;
 @RequiredArgsConstructor
 public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
+	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
+	private final String text;
+
 	public static ThreeStepCrypticClue forText(String plainText, String text)
 	{
 		final String[] split = text.split("<br>\\s*<br>");
@@ -81,9 +84,6 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		return new ThreeStepCrypticClue(steps, plainText);
 	}
 
-	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
-	private final String text;
-
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
@@ -100,9 +100,9 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 				panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue #" + (i + 1)).build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Solution:").build());
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left(c.getSolution(plugin))
-					.leftColor(TITLED_CONTENT_COLOR)
-					.build());
+						.left(c.getSolution(plugin))
+						.leftColor(TITLED_CONTENT_COLOR)
+						.build());
 
 				c.renderOverlayNote(panelComponent, plugin);
 			}
@@ -126,8 +126,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		if (containerId == InventoryID.INVENTORY.getId())
 		{
 			return checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_1, 0) ||
-				checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_2, 1) ||
-				checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_3, 2);
+					checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_2, 1) ||
+					checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_3, 2);
 		}
 
 		return false;
@@ -169,36 +169,36 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getLocation(plugin))
-			.filter(Objects::nonNull)
-			.toArray(WorldPoint[]::new);
+				.filter(s -> !s.getValue())
+				.map(s -> s.getKey().getLocation(plugin))
+				.filter(Objects::nonNull)
+				.toArray(WorldPoint[]::new);
 	}
 
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getNpc())
-			.toArray(String[]::new);
+				.filter(s -> !s.getValue())
+				.map(s -> s.getKey().getNpc())
+				.toArray(String[]::new);
 	}
 
 	@Override
 	public int[] getObjectIds()
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.mapToInt(s -> s.getKey().getObjectId())
-			.toArray();
+				.filter(s -> !s.getValue())
+				.mapToInt(s -> s.getKey().getObjectId())
+				.toArray();
 	}
 
 	@Override
 	public int[] getConfigKeys()
 	{
 		return clueSteps.stream()
-			.map(Map.Entry::getKey)
-			.flatMapToInt(c -> Arrays.stream(c.getConfigKeys()))
-			.toArray();
+				.map(Map.Entry::getKey)
+				.flatMapToInt(c -> Arrays.stream(c.getConfigKeys()))
+				.toArray();
 	}
 }

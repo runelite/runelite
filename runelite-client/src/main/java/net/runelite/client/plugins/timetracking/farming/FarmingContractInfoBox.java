@@ -95,7 +95,7 @@ class FarmingContractInfoBox extends InfoBox
 						break;
 					default:
 						contractDescription = "Ready " + TabContentPanel.getFormattedEstimate(manager.getCompletionTime() - Instant.now().getEpochSecond(),
-							config.timeFormatMode());
+								config.timeFormatMode());
 						contractColor = Color.GRAY;
 						break;
 				}

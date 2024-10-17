@@ -85,11 +85,11 @@ import org.lwjgl.system.Callback;
 import org.lwjgl.system.Configuration;
 
 @PluginDescriptor(
-	name = "GPU",
-	description = "Utilizes the GPU",
-	enabledByDefault = false,
-	tags = {"fog", "draw distance"},
-	loadInSafeMode = false
+		name = "GPU",
+		description = "Utilizes the GPU",
+		enabledByDefault = false,
+		tags = {"fog", "draw distance"},
+		loadInSafeMode = false
 )
 @Slf4j
 public class GpuPlugin extends Plugin implements DrawCallbacks
@@ -97,97 +97,30 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	// This is the maximum number of triangles the compute shaders support
 	static final int MAX_TRIANGLE = 6144;
 	static final int SMALL_TRIANGLE_COUNT = 512;
-	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	static final int MAX_DISTANCE = 184;
 	static final int MAX_FOG_DEPTH = 100;
 	static final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2; // offset for sxy -> msxy
-	private static final int GROUND_MIN_Y = 350; // how far below the ground models extend
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClientUI clientUI;
-
-	@Inject
-	private OpenCLManager openCLManager;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private GpuPluginConfig config;
-
-	@Inject
-	private TextureManager textureManager;
-
-	@Inject
-	private SceneUploader sceneUploader;
-
-	@Inject
-	private DrawManager drawManager;
-
-	@Inject
-	private PluginManager pluginManager;
-
-	enum ComputeMode
-	{
-		NONE,
-		OPENGL,
-		OPENCL
-	}
-
-	private ComputeMode computeMode = ComputeMode.NONE;
-
-	private Canvas canvas;
-	private AWTContext awtContext;
-	private Callback debugCallback;
-
-	private GLCapabilities glCapabilities;
-
 	static final String LINUX_VERSION_HEADER =
-		"#version 420\n" +
-			"#extension GL_ARB_compute_shader : require\n" +
-			"#extension GL_ARB_shader_storage_buffer_object : require\n" +
-			"#extension GL_ARB_explicit_attrib_location : require\n";
+			"#version 420\n" +
+					"#extension GL_ARB_compute_shader : require\n" +
+					"#extension GL_ARB_shader_storage_buffer_object : require\n" +
+					"#extension GL_ARB_explicit_attrib_location : require\n";
 	static final String WINDOWS_VERSION_HEADER = "#version 430\n";
-
 	static final Shader PROGRAM = new Shader()
-		.add(GL43C.GL_VERTEX_SHADER, "vert.glsl")
-		.add(GL43C.GL_GEOMETRY_SHADER, "geom.glsl")
-		.add(GL43C.GL_FRAGMENT_SHADER, "frag.glsl");
-
+			.add(GL43C.GL_VERTEX_SHADER, "vert.glsl")
+			.add(GL43C.GL_GEOMETRY_SHADER, "geom.glsl")
+			.add(GL43C.GL_FRAGMENT_SHADER, "frag.glsl");
 	static final Shader COMPUTE_PROGRAM = new Shader()
-		.add(GL43C.GL_COMPUTE_SHADER, "comp.glsl");
-
+			.add(GL43C.GL_COMPUTE_SHADER, "comp.glsl");
 	static final Shader SMALL_COMPUTE_PROGRAM = new Shader()
-		.add(GL43C.GL_COMPUTE_SHADER, "comp.glsl");
-
+			.add(GL43C.GL_COMPUTE_SHADER, "comp.glsl");
 	static final Shader UNORDERED_COMPUTE_PROGRAM = new Shader()
-		.add(GL43C.GL_COMPUTE_SHADER, "comp_unordered.glsl");
-
+			.add(GL43C.GL_COMPUTE_SHADER, "comp_unordered.glsl");
 	static final Shader UI_PROGRAM = new Shader()
-		.add(GL43C.GL_VERTEX_SHADER, "vertui.glsl")
-		.add(GL43C.GL_FRAGMENT_SHADER, "fragui.glsl");
-
-	private int glProgram;
-	private int glComputeProgram;
-	private int glSmallComputeProgram;
-	private int glUnorderedComputeProgram;
-	private int glUiProgram;
-
-	private int vaoCompute;
-	private int vaoTemp;
-
-	private int interfaceTexture;
-	private int interfacePbo;
-
-	private int vaoUiHandle;
-	private int vboUiHandle;
-
-	private int fboScene;
-	private int rboColorBuffer;
-
+			.add(GL43C.GL_VERTEX_SHADER, "vertui.glsl")
+			.add(GL43C.GL_FRAGMENT_SHADER, "fragui.glsl");
+	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
+	private static final int GROUND_MIN_Y = 350; // how far below the ground models extend
 	private final GLBuffer sceneVertexBuffer = new GLBuffer("scene vertex buffer");
 	private final GLBuffer sceneUvBuffer = new GLBuffer("scene tex buffer");
 	private final GLBuffer tmpVertexBuffer = new GLBuffer("tmp vertex buffer");
@@ -197,61 +130,83 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private final GLBuffer tmpModelBufferUnordered = new GLBuffer("model buffer unordered");
 	private final GLBuffer tmpOutBuffer = new GLBuffer("out vertex buffer");
 	private final GLBuffer tmpOutUvBuffer = new GLBuffer("out tex buffer");
-
+	private final GLBuffer uniformBuffer = new GLBuffer("uniform buffer");
+	@Inject
+	private Client client;
+	@Inject
+	private ClientUI clientUI;
+	@Inject
+	private OpenCLManager openCLManager;
+	@Inject
+	private ClientThread clientThread;
+	@Inject
+	private GpuPluginConfig config;
+	@Inject
+	private TextureManager textureManager;
+	@Inject
+	private SceneUploader sceneUploader;
+	@Inject
+	private DrawManager drawManager;
+	@Inject
+	private PluginManager pluginManager;
+	private ComputeMode computeMode = ComputeMode.NONE;
+	private Canvas canvas;
+	private AWTContext awtContext;
+	private Callback debugCallback;
+	private GLCapabilities glCapabilities;
+	private int glProgram;
+	private int glComputeProgram;
+	private int glSmallComputeProgram;
+	private int glUnorderedComputeProgram;
+	private int glUiProgram;
+	private int vaoCompute;
+	private int vaoTemp;
+	private int interfaceTexture;
+	private int interfacePbo;
+	private int vaoUiHandle;
+	private int vboUiHandle;
+	private int fboScene;
+	private int rboColorBuffer;
 	private int textureArrayId;
 	private int tileHeightTex;
-
-	private final GLBuffer uniformBuffer = new GLBuffer("uniform buffer");
-
 	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
-
 	private GpuIntBuffer modelBufferUnordered;
 	private GpuIntBuffer modelBufferSmall;
 	private GpuIntBuffer modelBuffer;
-
 	private int unorderedModels;
-
 	/**
 	 * number of models in small buffer
 	 */
 	private int smallModels;
-
 	/**
 	 * number of models in large buffer
 	 */
 	private int largeModels;
-
 	/**
 	 * offset in the target buffer for model
 	 */
 	private int targetBufferOffset;
-
 	/**
 	 * offset into the temporary scene vertex buffer
 	 */
 	private int tempOffset;
-
 	/**
 	 * offset into the temporary scene uv buffer
 	 */
 	private int tempUvOffset;
-
 	private int lastCanvasWidth;
 	private int lastCanvasHeight;
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
 	private int lastAnisotropicFilteringLevel = -1;
-
 	private double cameraX, cameraY, cameraZ;
 	private double cameraYaw, cameraPitch;
-
 	private int viewportOffsetX;
 	private int viewportOffsetY;
 	private int viewportWidth;
 	private int viewportHeight;
-
 	// Uniforms
 	private int uniColorBlindMode;
 	private int uniUiColorBlindMode;
@@ -275,13 +230,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniSmoothBanding;
 	private int uniTextureLightMode;
 	private int uniTick;
-
 	private boolean lwjglInitted = false;
-
 	private int sceneId;
 	private int nextSceneId;
 	private GpuIntBuffer nextSceneVertexBuffer;
 	private GpuFloatBuffer nextSceneTexBuffer;
+
+	private static int nextPowerOfTwo(int v)
+	{
+		v--;
+		v |= v >> 1;
+		v |= v >> 2;
+		v |= v >> 4;
+		v |= v >> 8;
+		v |= v >> 16;
+		v++;
+		return v;
+	}
 
 	@Override
 	protected void startUp()
@@ -314,8 +279,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				canvas.setIgnoreRepaint(true);
 
 				computeMode = config.useComputeShaders()
-					? (OSType.getOSType() == OSType.MacOS ? ComputeMode.OPENCL : ComputeMode.OPENGL)
-					: ComputeMode.NONE;
+						? (OSType.getOSType() == OSType.MacOS ? ComputeMode.OPENCL : ComputeMode.OPENGL)
+						: ComputeMode.NONE;
 
 				// lwjgl defaults to lwjgl- + user.name, but this breaks if the username would cause an invalid path
 				// to be created.
@@ -356,7 +321,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 						//		source GL API
 						//		msg Buffer detailed info: Buffer object 11 (bound to GL_ARRAY_BUFFER_ARB, and GL_SHADER_STORAGE_BUFFER (4), usage hint is GL_STREAM_DRAW) will use VIDEO memory as the source for buffer object operations.
 						GL43C.glDebugMessageControl(GL43C.GL_DEBUG_SOURCE_API, GL43C.GL_DEBUG_TYPE_OTHER,
-							GL43C.GL_DONT_CARE, 0x20071, false);
+								GL43C.GL_DONT_CARE, 0x20071, false);
 
 						//	GLDebugMessageHandler: GLDebugEvent[ id 0x20052
 						//		type Warning: implementation dependent performance
@@ -364,7 +329,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 						//		source GL API
 						//		msg Pixel-path performance warning: Pixel transfer is synchronized with 3D rendering.
 						GL43C.glDebugMessageControl(GL43C.GL_DEBUG_SOURCE_API, GL43C.GL_DEBUG_TYPE_PERFORMANCE,
-							GL43C.GL_DONT_CARE, 0x20052, false);
+								GL43C.GL_DONT_CARE, 0x20052, false);
 					}
 				}
 
@@ -382,8 +347,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				try
 				{
 					initProgram();
-				}
-				catch (ShaderException ex)
+				} catch (ShaderException ex)
 				{
 					throw new RuntimeException(ex);
 				}
@@ -392,8 +356,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				client.setDrawCallbacks(this);
 				client.setGpuFlags(DrawCallbacks.GPU
-					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
-					| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
+						| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
+						| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
 				);
 				client.setExpandedMapLoading(config.expandedMapLoadingChunks());
 
@@ -414,8 +378,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				}
 
 				checkGLErrors();
-			}
-			catch (Throwable e)
+			} catch (Throwable e)
 			{
 				log.error("Error starting GPU plugin", e);
 
@@ -425,8 +388,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					{
 						pluginManager.setPluginEnabled(this, false);
 						pluginManager.stopPlugin(this);
-					}
-					catch (PluginInstantiationException ex)
+					} catch (PluginInstantiationException ex)
 					{
 						log.error("error stopping plugin", ex);
 					}
@@ -516,13 +478,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (configChanged.getGroup().equals(GpuPluginConfig.GROUP))
 		{
 			if (configChanged.getKey().equals("unlockFps")
-				|| configChanged.getKey().equals("vsyncMode")
-				|| configChanged.getKey().equals("fpsTarget"))
+					|| configChanged.getKey().equals("vsyncMode")
+					|| configChanged.getKey().equals("fpsTarget"))
 			{
 				log.debug("Rebuilding sync mode");
 				clientThread.invokeLater(this::setupSyncMode);
-			}
-			else if (configChanged.getKey().equals("expandedMapLoadingChunks"))
+			} else if (configChanged.getKey().equals("expandedMapLoadingChunks"))
 			{
 				clientThread.invokeLater(() ->
 				{
@@ -532,13 +493,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 						client.setGameState(GameState.LOADING);
 					}
 				});
-			}
-			else if (configChanged.getKey().equals("removeVertexSnapping"))
+			} else if (configChanged.getKey().equals("removeVertexSnapping"))
 			{
 				log.debug("Toggle {}", configChanged.getKey());
 				client.setGpuFlags(DrawCallbacks.GPU
-					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
-					| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
+						| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
+						| (config.removeVertexSnapping() ? DrawCallbacks.NO_VERTEX_SNAPPING : 0)
 				);
 			}
 		}
@@ -551,8 +511,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Without unlocked fps, the client manages sync on its 20ms timer
 		GpuPluginConfig.SyncMode syncMode = unlockFps
-			? this.config.syncMode()
-			: GpuPluginConfig.SyncMode.OFF;
+				? this.config.syncMode()
+				: GpuPluginConfig.SyncMode.OFF;
 
 		int swapInterval = 0;
 		switch (syncMode)
@@ -591,7 +551,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			if ("thread_config".equals(key))
 			{
 				return "#define THREAD_COUNT " + threadCount + "\n" +
-					"#define FACES_PER_THREAD " + facesPerThread + "\n";
+						"#define FACES_PER_THREAD " + facesPerThread + "\n";
 			}
 			return null;
 		});
@@ -610,8 +570,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			glComputeProgram = COMPUTE_PROGRAM.compile(createTemplate(1024, 6));
 			glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(createTemplate(512, 1));
 			glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(template);
-		}
-		else if (computeMode == ComputeMode.OPENCL)
+		} else if (computeMode == ComputeMode.OPENCL)
 		{
 			openCLManager.init(awtContext);
 		}
@@ -709,12 +668,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glBindVertexArray(vaoUiHandle);
 
 		FloatBuffer vboUiBuf = GpuFloatBuffer.allocateDirect(5 * 4);
-		vboUiBuf.put(new float[]{
-			// positions     // texture coords
-			1f, 1f, 0.0f, 1.0f, 0f, // top right
-			1f, -1f, 0.0f, 1.0f, 1f, // bottom right
-			-1f, -1f, 0.0f, 0.0f, 1f, // bottom left
-			-1f, 1f, 0.0f, 0.0f, 0f  // top left
+		vboUiBuf.put(new float[] {
+				// positions     // texture coords
+				1f, 1f, 0.0f, 1.0f, 0f, // top right
+				1f, -1f, 0.0f, 1.0f, 1f, // bottom right
+				-1f, -1f, 0.0f, 0.0f, 1f, // bottom left
+				-1f, 1f, 0.0f, 0.0f, 0f  // top left
 		});
 		vboUiBuf.rewind();
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, vboUiHandle);
@@ -834,8 +793,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (aaSamples > 0)
 		{
 			GL43C.glEnable(GL43C.GL_MULTISAMPLE);
-		}
-		else
+		} else
 		{
 			GL43C.glDisable(GL43C.GL_MULTISAMPLE);
 		}
@@ -904,14 +862,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		vertexBuffer.ensureCapacity(32);
 		IntBuffer uniformBuf = vertexBuffer.getBuffer();
 		uniformBuf
-			.put(Float.floatToIntBits((float) cameraYaw))
-			.put(Float.floatToIntBits((float) cameraPitch))
-			.put(client.getCenterX())
-			.put(client.getCenterY())
-			.put(client.getScale())
-			.put(Float.floatToIntBits((float) cameraX))
-			.put(Float.floatToIntBits((float) cameraY))
-			.put(Float.floatToIntBits((float) cameraZ));
+				.put(Float.floatToIntBits((float) cameraYaw))
+				.put(Float.floatToIntBits((float) cameraPitch))
+				.put(client.getCenterX())
+				.put(client.getCenterY())
+				.put(client.getScale())
+				.put(Float.floatToIntBits((float) cameraX))
+				.put(Float.floatToIntBits((float) cameraY))
+				.put(Float.floatToIntBits((float) cameraZ));
 		uniformBuf.flip();
 
 		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, uniformBuf, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
@@ -966,15 +924,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		// Output buffers
 		updateBuffer(tmpOutBuffer,
-			GL43C.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16, // each element is an ivec4, which is 16 bytes
-			GL43C.GL_STREAM_DRAW,
-			CL12.CL_MEM_WRITE_ONLY);
+				GL43C.GL_ARRAY_BUFFER,
+				targetBufferOffset * 16, // each element is an ivec4, which is 16 bytes
+				GL43C.GL_STREAM_DRAW,
+				CL12.CL_MEM_WRITE_ONLY);
 		updateBuffer(tmpOutUvBuffer,
-			GL43C.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16, // each element is a vec4, which is 16 bytes
-			GL43C.GL_STREAM_DRAW,
-			CL12.CL_MEM_WRITE_ONLY);
+				GL43C.GL_ARRAY_BUFFER,
+				targetBufferOffset * 16, // each element is a vec4, which is 16 bytes
+				GL43C.GL_STREAM_DRAW,
+				CL12.CL_MEM_WRITE_ONLY);
 
 		if (computeMode == ComputeMode.OPENCL)
 		{
@@ -984,12 +942,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// GL43C.glFinish();
 
 			openCLManager.compute(
-				unorderedModels, smallModels, largeModels,
-				sceneVertexBuffer, sceneUvBuffer,
-				tmpVertexBuffer, tmpUvBuffer,
-				tmpModelBufferUnordered, tmpModelBufferSmall, tmpModelBufferLarge,
-				tmpOutBuffer, tmpOutUvBuffer,
-				uniformBuffer);
+					unorderedModels, smallModels, largeModels,
+					sceneVertexBuffer, sceneUvBuffer,
+					tmpVertexBuffer, tmpUvBuffer,
+					tmpModelBufferUnordered, tmpModelBufferSmall, tmpModelBufferLarge,
+					tmpOutBuffer, tmpOutUvBuffer,
+					uniformBuffer);
 
 			checkGLErrors();
 			return;
@@ -1052,14 +1010,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (computeMode == ComputeMode.NONE)
 		{
 			targetBufferOffset += sceneUploader.upload(scene, paint,
-				plane, tileX, tileY,
-				vertexBuffer, uvBuffer,
-				tileX << Perspective.LOCAL_COORD_BITS,
-				tileY << Perspective.LOCAL_COORD_BITS,
-				true
+					plane, tileX, tileY,
+					vertexBuffer, uvBuffer,
+					tileX << Perspective.LOCAL_COORD_BITS,
+					tileY << Perspective.LOCAL_COORD_BITS,
+					true
 			);
-		}
-		else if (paint.getBufferLen() > 0)
+		} else if (paint.getBufferLen() > 0)
 		{
 			final int localX = tileX << Perspective.LOCAL_COORD_BITS;
 			final int localY = 0;
@@ -1087,11 +1044,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (computeMode == ComputeMode.NONE)
 		{
 			targetBufferOffset += sceneUploader.upload(model,
-				0, 0,
-				vertexBuffer, uvBuffer,
-				true);
-		}
-		else if (model.getBufferLen() > 0)
+					0, 0,
+					vertexBuffer, uvBuffer,
+					true);
+		} else if (model.getBufferLen() > 0)
 		{
 			final int localX = tileX << Perspective.LOCAL_COORD_BITS;
 			final int localY = 0;
@@ -1136,8 +1092,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		GL43C.glBindBuffer(GL43C.GL_PIXEL_UNPACK_BUFFER, interfacePbo);
 		GL43C.glMapBuffer(GL43C.GL_PIXEL_UNPACK_BUFFER, GL43C.GL_WRITE_ONLY)
-			.asIntBuffer()
-			.put(pixels, 0, width * height);
+				.asIntBuffer()
+				.put(pixels, 0, width * height);
 		GL43C.glUnmapBuffer(GL43C.GL_PIXEL_UNPACK_BUFFER);
 		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D, interfaceTexture);
 		GL43C.glTexSubImage2D(GL43C.GL_TEXTURE_2D, 0, 0, 0, width, height, GL43C.GL_BGRA, GL43C.GL_UNSIGNED_INT_8_8_8_8_REV, 0);
@@ -1169,8 +1125,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			// Re-create fbo
 			if (lastStretchedCanvasWidth != stretchedCanvasWidth
-				|| lastStretchedCanvasHeight != stretchedCanvasHeight
-				|| lastAntiAliasingMode != antiAliasingMode)
+					|| lastStretchedCanvasHeight != stretchedCanvasHeight
+					|| lastAntiAliasingMode != antiAliasingMode)
 			{
 				shutdownFbo();
 
@@ -1179,7 +1135,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				final int forcedAASamples = GL43C.glGetInteger(GL43C.GL_SAMPLES);
 				final int maxSamples = GL43C.glGetInteger(GL43C.GL_MAX_SAMPLES);
 				final int samples = forcedAASamples != 0 ? forcedAASamples :
-					Math.min(antiAliasingMode.getSamples(), maxSamples);
+						Math.min(antiAliasingMode.getSamples(), maxSamples);
 
 				log.debug("AA samples: {}, max samples: {}, forced samples: {}", samples, maxSamples, forcedAASamples);
 
@@ -1302,8 +1258,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				{
 					// Before reading the SSBOs written to from postDrawScene() we must insert a barrier
 					GL43C.glMemoryBarrier(GL43C.GL_SHADER_STORAGE_BARRIER_BIT);
-				}
-				else
+				} else
 				{
 					// Wait for the command queue to finish, so that we know the compute is done
 					openCLManager.finish();
@@ -1311,8 +1266,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				// Draw using the output buffer of the compute
 				GL43C.glBindVertexArray(vaoCompute);
-			}
-			else
+			} else
 			{
 				// Only use the temporary buffers, which will contain the full scene
 				GL43C.glBindVertexArray(vaoTemp);
@@ -1340,7 +1294,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			GL43C.glBindFramebuffer(GL43C.GL_READ_FRAMEBUFFER, fboScene);
 			GL43C.glBindFramebuffer(GL43C.GL_DRAW_FRAMEBUFFER, awtContext.getFramebuffer(false));
 			GL43C.glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
-				GL43C.GL_COLOR_BUFFER_BIT, GL43C.GL_NEAREST);
+					GL43C.GL_COLOR_BUFFER_BIT, GL43C.GL_NEAREST);
 
 			// Reset
 			GL43C.glBindFramebuffer(GL43C.GL_READ_FRAMEBUFFER, awtContext.getFramebuffer(false));
@@ -1362,8 +1316,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		try
 		{
 			awtContext.swapBuffers();
-		}
-		catch (RuntimeException ex)
+		} catch (RuntimeException ex)
 		{
 			// this is always fatal
 			if (!canvas.isValid())
@@ -1396,10 +1349,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glUniform2i(uniTexSourceDimensions, canvasWidth, canvasHeight);
 		GL43C.glUniform1i(uniUiColorBlindMode, config.colorBlindMode().ordinal());
 		GL43C.glUniform4f(uniUiAlphaOverlay,
-			(overlayColor >> 16 & 0xFF) / 255f,
-			(overlayColor >> 8 & 0xFF) / 255f,
-			(overlayColor & 0xFF) / 255f,
-			(overlayColor >>> 24) / 255f
+				(overlayColor >> 16 & 0xFF) / 255f,
+				(overlayColor >> 8 & 0xFF) / 255f,
+				(overlayColor & 0xFF) / 255f,
+				(overlayColor >>> 24) / 255f
 		);
 
 		if (client.isStretchedEnabled())
@@ -1407,8 +1360,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			Dimension dim = client.getStretchedDimensions();
 			glDpiAwareViewport(0, 0, dim.width, dim.height);
 			GL43C.glUniform2i(uniTexTargetDimensions, dim.width, dim.height);
-		}
-		else
+		} else
 		{
 			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
 			GL43C.glUniform2i(uniTexTargetDimensions, canvasWidth, canvasHeight);
@@ -1457,7 +1409,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		height = getScaledValue(t.getScaleY(), height);
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
-			.order(ByteOrder.nativeOrder());
+				.order(ByteOrder.nativeOrder());
 
 		GL43C.glReadBuffer(awtContext.getBufferMode());
 		GL43C.glReadPixels(0, 0, width, height, GL43C.GL_RGBA, GL43C.GL_UNSIGNED_BYTE, buffer);
@@ -1528,9 +1480,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.EXTENDED_SCENE_SIZE * Constants.EXTENDED_SCENE_SIZE * Short.BYTES;
 		ShortBuffer tileBuffer = ByteBuffer
-			.allocateDirect(TILEHEIGHT_BUFFER_SIZE)
-			.order(ByteOrder.nativeOrder())
-			.asShortBuffer();
+				.allocateDirect(TILEHEIGHT_BUFFER_SIZE)
+				.order(ByteOrder.nativeOrder())
+				.asShortBuffer();
 
 		int[][][] tileHeights = scene.getTileHeights();
 		for (int z = 0; z < Constants.MAX_Z; ++z)
@@ -1555,8 +1507,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_WRAP_S, GL43C.GL_CLAMP_TO_EDGE);
 		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_WRAP_T, GL43C.GL_CLAMP_TO_EDGE);
 		GL43C.glTexImage3D(GL43C.GL_TEXTURE_3D, 0, GL43C.GL_R16I,
-			Constants.EXTENDED_SCENE_SIZE, Constants.EXTENDED_SCENE_SIZE, Constants.MAX_Z,
-			0, GL43C.GL_RED_INTEGER, GL43C.GL_SHORT, tileBuffer);
+				Constants.EXTENDED_SCENE_SIZE, Constants.EXTENDED_SCENE_SIZE, Constants.MAX_Z,
+				0, GL43C.GL_RED_INTEGER, GL43C.GL_SHORT, tileBuffer);
 		GL43C.glBindTexture(GL43C.GL_TEXTURE_3D, 0);
 
 		// bind to texture 2
@@ -1576,8 +1528,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (computeMode == ComputeMode.OPENCL)
 		{
 			openCLManager.uploadTileHeights(scene);
-		}
-		else
+		} else
 		{
 			assert computeMode == ComputeMode.OPENGL;
 			uploadTileHeights(scene);
@@ -1601,8 +1552,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int x = ((msx - SCENE_OFFSET) << Perspective.LOCAL_COORD_BITS) + 64 - cameraX;
 		int z = ((msy - SCENE_OFFSET) << Perspective.LOCAL_COORD_BITS) + 64 - cameraZ;
 		int y = Math.max(
-			Math.max(tileHeights[plane][msx][msy], tileHeights[plane][msx][msy + 1]),
-			Math.max(tileHeights[plane][msx + 1][msy], tileHeights[plane][msx + 1][msy + 1])
+				Math.max(tileHeights[plane][msx][msy], tileHeights[plane][msx][msy + 1]),
+				Math.max(tileHeights[plane][msx + 1][msy], tileHeights[plane][msx + 1][msy + 1])
 		) + GROUND_MIN_Y - cameraY;
 
 		int radius = 96; // ~ 64 * sqrt(2)
@@ -1697,8 +1648,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				offsetModel = model;
 			}
-		}
-		else
+		} else
 		{
 			model = renderable.getModel();
 			if (model == null)
@@ -1730,10 +1680,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			client.checkClickbox(projection, model, orientation, x, y, z, hash);
 
 			targetBufferOffset += sceneUploader.pushSortedModel(
-				projection,
-				model, orientation,
-				x, y, z,
-				vertexBuffer, uvBuffer);
+					projection,
+					model, orientation,
+					x, y, z,
+					vertexBuffer, uvBuffer);
 		}
 		// Model may be in the scene buffer
 		else if (offsetModel.getSceneId() == sceneId)
@@ -1770,8 +1720,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			buffer.put(x).put(y).put(z);
 
 			targetBufferOffset += tc * 3;
-		}
-		else
+		} else
 		{
 			// Temporary model (animated or otherwise not a static Model on the scene)
 
@@ -1831,8 +1780,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			++smallModels;
 			return modelBufferSmall;
-		}
-		else
+		} else
 		{
 			++largeModels;
 			return modelBuffer;
@@ -1849,10 +1797,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
 		final AffineTransform t = graphicsConfiguration.getDefaultTransform();
 		GL43C.glViewport(
-			getScaledValue(t.getScaleX(), x),
-			getScaledValue(t.getScaleY(), y),
-			getScaledValue(t.getScaleX(), width),
-			getScaledValue(t.getScaleY(), height));
+				getScaledValue(t.getScaleX(), x),
+				getScaledValue(t.getScaleY(), y),
+				getScaledValue(t.getScaleX(), width),
+				getScaledValue(t.getScaleY(), height));
 	}
 
 	private int getDrawDistance()
@@ -1894,18 +1842,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	private static int nextPowerOfTwo(int v)
-	{
-		v--;
-		v |= v >> 1;
-		v |= v >> 2;
-		v |= v >> 4;
-		v |= v >> 8;
-		v |= v >> 16;
-		v++;
-		return v;
-	}
-
 	private void recreateCLBuffer(GLBuffer glBuffer, long clFlags)
 	{
 		if (computeMode == ComputeMode.OPENCL)
@@ -1917,8 +1853,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			if (glBuffer.size == 0)
 			{
 				glBuffer.clBuffer = -1;
-			}
-			else
+			} else
 			{
 				glBuffer.clBuffer = CL10GL.clCreateFromGLBuffer(openCLManager.context, clFlags, glBuffer.glBufferId, (int[]) null);
 			}
@@ -1962,5 +1897,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			log.debug("glGetError:", new Exception(errStr));
 		}
+	}
+
+	enum ComputeMode
+	{
+		NONE,
+		OPENGL,
+		OPENCL
 	}
 }

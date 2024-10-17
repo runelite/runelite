@@ -58,19 +58,19 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Runecraft",
-	description = "Show minimap icons and clickboxes for abyssal rifts",
-	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
+		name = "Runecraft",
+		description = "Show minimap icons and clickboxes for abyssal rifts",
+		tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
 )
 public class RunecraftPlugin extends Plugin
 {
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
-		ItemID.MEDIUM_POUCH_5511,
-		ItemID.LARGE_POUCH_5513,
-		ItemID.GIANT_POUCH_5515,
-		ItemID.COLOSSAL_POUCH_26786
+			ItemID.MEDIUM_POUCH_5511,
+			ItemID.LARGE_POUCH_5513,
+			ItemID.GIANT_POUCH_5515,
+			ItemID.COLOSSAL_POUCH_26786
 	);
 
 	@Getter(AccessLevel.PACKAGE)
@@ -89,14 +89,11 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private RunecraftConfig config;
-
+	private final Function<NPC, HighlightedNpc> highlightDarkMage = this::highlightDarkMage;
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private NpcOverlayService npcOverlayService;
-
-	private final Function<NPC, HighlightedNpc> highlightDarkMage = this::highlightDarkMage;
 
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
@@ -180,11 +177,11 @@ public class RunecraftPlugin extends Plugin
 		if (npc.getId() == NpcID.DARK_MAGE)
 		{
 			return HighlightedNpc.builder()
-				.npc(npc)
-				.tile(true)
-				.highlightColor(Color.GREEN)
-				.render(n -> config.hightlightDarkMage() && degradedPouchInInventory)
-				.build();
+					.npc(npc)
+					.tile(true)
+					.highlightColor(Color.GREEN)
+					.render(n -> config.hightlightDarkMage() && degradedPouchInInventory)
+					.build();
 		}
 		return null;
 	}

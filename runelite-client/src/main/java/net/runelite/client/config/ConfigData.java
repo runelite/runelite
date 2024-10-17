@@ -59,14 +59,12 @@ class ConfigData
 
 		Properties props = new Properties();
 		try (FileInputStream in = new FileInputStream(configPath);
-			InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
+			 InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
 		{
 			props.load(reader);
-		}
-		catch (FileNotFoundException ignored)
+		} catch (FileNotFoundException ignored)
 		{
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			throw new RuntimeException(ex);
 		}
@@ -136,17 +134,16 @@ class ConfigData
 
 		File lckFile = new File(configPath.getParentFile(), configPath.getName() + ".lck");
 		try (FileOutputStream lockOut = new FileOutputStream(lckFile);
-			FileChannel lckChannel = lockOut.getChannel())
+			 FileChannel lckChannel = lockOut.getChannel())
 		{
 			lckChannel.lock();
 
 			Properties tempProps = new Properties();
 			try (FileInputStream in = new FileInputStream(configPath);
-				InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
+				 InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
 			{
 				tempProps.load(reader);
-			}
-			catch (FileNotFoundException e)
+			} catch (FileNotFoundException e)
 			{
 				log.debug("config file {} does not exist", configPath);
 			}
@@ -157,8 +154,7 @@ class ConfigData
 				// but to be safe in the event the prop is deleted off disk, flush the entire properties
 				// from memory
 				tempProps.putAll(properties);
-			}
-			else
+			} else
 			{
 				// apply patches
 				for (Map.Entry<String, String> entry : patch.entrySet())
@@ -166,8 +162,7 @@ class ConfigData
 					if (entry.getValue() == null)
 					{
 						tempProps.remove(entry.getKey());
-					}
-					else
+					} else
 					{
 						tempProps.put(entry.getKey(), entry.getValue());
 					}
@@ -176,8 +171,8 @@ class ConfigData
 
 			File tempFile = File.createTempFile("runelite_config", null, configPath.getParentFile());
 			try (FileOutputStream out = new FileOutputStream(tempFile);
-				FileChannel channel = out.getChannel();
-				OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
+				 FileChannel channel = out.getChannel();
+				 OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
 			{
 				channel.lock();
 				tempProps.store(writer, "RuneLite configuration");
@@ -188,14 +183,12 @@ class ConfigData
 			try
 			{
 				Files.move(tempFile.toPath(), configPath.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-			}
-			catch (AtomicMoveNotSupportedException ex)
+			} catch (AtomicMoveNotSupportedException ex)
 			{
 				log.debug("atomic move not supported", ex);
 				Files.move(tempFile.toPath(), configPath.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			log.error("unable to save configuration file", ex);
 		}

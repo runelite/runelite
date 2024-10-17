@@ -224,9 +224,9 @@ public class ChatCommandsPluginTest
 		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB2)).thenReturn(15);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
-				"Duration: <col=ff0000>2:42.0</col><br>" +
-				"Theatre of Blood completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
+				"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+						"Duration: <col=ff0000>2:42.0</col><br>" +
+						"Theatre of Blood completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
@@ -246,9 +246,9 @@ public class ChatCommandsPluginTest
 		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
-				"Duration: <col=ff0000>2:42</col><br>" +
-				"Theatre of Blood completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
+				"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+						"Duration: <col=ff0000>2:42</col><br>" +
+						"Theatre of Blood completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
@@ -268,9 +268,9 @@ public class ChatCommandsPluginTest
 		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Entry Mode) complete!<br>" +
-				"Duration: <col=ff0000>2:42</col><br>" +
-				"Theatre of Blood completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
+				"Wave 'The Final Challenge' (Entry Mode) complete!<br>" +
+						"Duration: <col=ff0000>2:42</col><br>" +
+						"Theatre of Blood completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
@@ -651,11 +651,11 @@ public class ChatCommandsPluginTest
 	public void testCoxCmNoPb()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "",
-			"<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>41:10</col> Personal best: </col><col=ff0000>40:03</col>", null, 0);
+				"<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>41:10</col> Personal best: </col><col=ff0000>40:03</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Your completed Chambers of Xeric Challenge Mode count is: <col=ff0000>13</col>.", null, 0);
+				"Your completed Chambers of Xeric Challenge Mode count is: <col=ff0000>13</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric challenge mode", 13);
@@ -669,7 +669,7 @@ public class ChatCommandsPluginTest
 		when(chatCommandsConfig.lvl()).thenReturn(true);
 
 		HiscoreResult hiscoreResult = new HiscoreResult(PLAYER_NAME,
-			ImmutableMap.of(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE, new Skill(10, 1000, -1)));
+				ImmutableMap.of(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE, new Skill(10, 1000, -1)));
 
 		when(hiscoreClient.lookup(eq(PLAYER_NAME), nullable(HiscoreEndpoint.class))).thenReturn(hiscoreResult);
 
@@ -941,7 +941,7 @@ public class ChatCommandsPluginTest
 
 		Widget logEntryHeaderTitleWidget = mock(Widget.class);
 		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
-			.thenReturn(logEntryHeaderTitleWidget);
+				.thenReturn(logEntryHeaderTitleWidget);
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
@@ -964,7 +964,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[] {ItemID.IKKLE_HYDRA}));
 	}
 
 	@Test
@@ -978,7 +978,7 @@ public class ChatCommandsPluginTest
 
 		Widget logEntryHeaderTitleWidget = mock(Widget.class);
 		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
-			.thenReturn(logEntryHeaderTitleWidget);
+				.thenReturn(logEntryHeaderTitleWidget);
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
@@ -1012,7 +1012,7 @@ public class ChatCommandsPluginTest
 
 		Widget logEntryHeaderTitleWidget = mock(Widget.class);
 		when(logEntryHeaderWidget.getChild(ChatCommandsPlugin.COL_LOG_ENTRY_HEADER_TITLE_INDEX))
-			.thenReturn(logEntryHeaderTitleWidget);
+				.thenReturn(logEntryHeaderTitleWidget);
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
@@ -1035,7 +1035,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[] {ItemID.IKKLE_HYDRA}));
 
 		// chompy chick item
 		ItemComposition chompy = mock(ItemComposition.class);
@@ -1047,10 +1047,10 @@ public class ChatCommandsPluginTest
 		chatMessage.setMessage("New item added to your collection log: Chompy chick");
 		chatMessage.setType(GAMEMESSAGE);
 		when(configManager.getRSProfileConfiguration("chatcommands", "pets2",
-			String.class)).thenReturn(gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
+				String.class)).thenReturn(gson.toJson(new int[] {ItemID.IKKLE_HYDRA}));
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA, ItemID.CHOMPY_CHICK}));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[] {ItemID.IKKLE_HYDRA, ItemID.CHOMPY_CHICK}));
 	}
 
 	@Test
@@ -1079,140 +1079,140 @@ public class ChatCommandsPluginTest
 	public void testCounters()
 	{
 		final String[] log = {
-			"Chompy Hunting",
-			"Kills: <col=ffffff>1,003</col>",
-			"Rank: <col=ffffff>Ogre Expert</col>",
-			"",
-			"Order of the White Knights",
-			"Rank: <col=ffffff>Master</col>",
-			"with a kill score of <col=ffffff>1,300</col>",
-			"",
-			"TzHaar Fight Cave",
-			"Fastest run: <col=ffffff>33:53</col>",
-			"",
-			"Inferno",
-			"Fastest run: <col=ffffff>2:02:20</col>",
-			"",
-			"Zulrah",
-			"Fastest kill: <col=ffffff>0:47</col>",
-			"",
-			"Vorkath",
-			"Fastest kill: <col=ffffff>1:04</col>",
-			"",
-			"Galvek",
-			"Fastest kill: <col=ffffff>-</col>",
-			"",
-			"Grotesque Guardians",
-			"Fastest kill: <col=ffffff>1:20</col>",
-			"",
-			"Alchemical Hydra",
-			"Fastest kill: <col=ffffff>1:34</col>",
-			"",
-			"Hespori",
-			"Fastest kill: <col=ffffff>1:24</col>",
-			"",
-			// Nightmare is here 3x!
-			"Nightmare", // including one only called "Nightmare"
-			"Fastest kill: <col=ffffff>-</col>", // with no time
-			"",
-			"The Nightmare",
-			"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",
-			"",
-			"The Nightmare",
-			"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",
-			"",
-			"Phosani's Nightmare",
-			"Fastest kill: <col=ffffff>-</col>",
-			"",
-			"The Gauntlet",
-			"Fastest run: <col=ffffff>-</col>",
-			"",
-			"The Corrupted Gauntlet",
-			"Fastest run: <col=ffffff>-</col>",
-			"",
-			"Fragment of Seren",
-			"Fastest kill: <col=ffffff>-</col>",
-			"",
-			"Chambers of Xeric",
-			"Fastest run - (Team size: Solo): <col=ffffff>28:07</col>",
-			"Fastest run - (Team size: 2 players): <col=ffffff>24:40</col>",
-			"Fastest run - (Team size: 3 players): <col=ffffff>25:35</col>",
-			"Fastest run - (Team size: 4 players): <col=ffffff>22:40</col>",
-			"Fastest run - (Team size: 5 players): <col=ffffff>23:00</col>",
-			"Fastest run - (Team size: 6 players): <col=ffffff>28:11</col>",
-			"",
-			"Chambers of Xeric - Challenge mode",
-			"Fastest run - (Team size: 3 players): <col=ffffff>45:41</col>",
-			"",
-			"Theatre of Blood",
-			"Fastest Room time (former): <col=ffffff>18:45</col>",
-			"Fastest Wave time (former): <col=ffffff>22:01</col>",
-			"Fastest Room time - (Team size: (1 player): <col=ffffff>1:01:57.00</col>",
-			"Fastest Overall time - (Team size: 1 player): <col=ffffff>1:06:40.20</col>",
-			"Fastest Room time - (Team size: (2 player): <col=ffffff>22:43.80</col>",
-			"Fastest Overall time - (Team size: 2 player): <col=ffffff>27:36.60</col>",
-			"Fastest Room time - (Team size: (3 player): <col=ffffff>19:50</col>",
-			"Fastest Overall time - (Team size: 3 player): <col=ffffff>22:47</col>",
-			"Fastest Room time - (Team size: (4 player): <col=ffffff>17:38</col>",
-			"Fastest Overall time - (Team size: 4 player): <col=ffffff>20:31</col>",
-			"Fastest Room time - (Team size: (5 player): <col=ffffff>18:45</col>",
-			"Fastest Overall time - (Team size: 5 player): <col=ffffff>22:01</col>",
-			"",
-			"Tombs of Amascut - Entry",
-			"Fastest Room time - (Team size: Solo): <col=ffffff>32:53</col>",
-			"Fastest Overall time - (Team size: Solo): <col=ffffff>39:06</col>",
-			"Fastest Room time - (Team size: (2 player): <col=ffffff>25:44</col>",
-			"Fastest Overall time - (Team size: (2 player): <col=ffffff>34:36</col>",
-			"Fastest Room time - (Team size: (3 player): <col=ffffff>28:32</col>",
-			"Fastest Overall time - (Team size: (3 player): <col=ffffff>36:31</col>",
-			"Fastest Room time - (Team size: (4 player): <col=ffffff>27:52</col>",
-			"Fastest Overall time - (Team size: (4 player): <col=ffffff>49:06</col>",
-			"Fastest Room time - (Team size: (5 player): <col=ffffff>39:38</col>",
-			"Fastest Overall time - (Team size: (5 player): <col=ffffff>1:12:08</col>",
-			"",
-			"Tombs of Amascut",
-			"Fastest Room time - (Team size: Solo): <col=ffffff>25:35</col>",
-			"Fastest Overall time - (Team size: Solo): <col=ffffff>28:44</col>",
-			"Fastest Room time - (Team size: (2 player): <col=ffffff>22:02</col>",
-			"Fastest Overall time - (Team size: (2 player): <col=ffffff>24:23</col>",
-			"Fastest Room time - (Team size: (3 player): <col=ffffff>25:25</col>",
-			"Fastest Overall time - (Team size: (3 player): <col=ffffff>29:37</col>",
-			"Fastest Room time - (Team size: (4 player): <col=ffffff>23:11</col>",
-			"Fastest Overall time - (Team size: (4 player): <col=ffffff>27:26</col>",
-			"Fastest Room time - (Team size: (5 player): <col=ffffff>30:36</col>",
-			"Fastest Overall time - (Team size: (5 player): <col=ffffff>34:44</col>",
-			"Fastest Room time - (Team size: (6 player): <col=ffffff>29:19</col>",
-			"Fastest Overall time - (Team size: (6 player): <col=ffffff>33:54</col>",
-			"Fastest Room time - (Team size: (7 player): <col=ffffff>25:27</col>",
-			"Fastest Overall time - (Team size: (7 player): <col=ffffff>28:49</col>",
-			"Fastest Room time - (Team size: (8 player): <col=ffffff>24:55</col>",
-			"Fastest Overall time - (Team size: (8 player): <col=ffffff>28:04</col>",
-			"",
-			"Tombs of Amascut - Expert",
-			"Fastest Room time - (Team size: Solo): <col=ffffff>37:43</col>",
-			"Fastest Overall time - (Team size: Solo): <col=ffffff>46:19</col>",
-			"Fastest Room time - (Team size: (2 player): <col=ffffff>28:53</col>",
-			"Fastest Overall time - (Team size: (2 player): <col=ffffff>32:38</col>",
-			"Fastest Room time - (Team size: (3 player): <col=ffffff>28:20</col>",
-			"Fastest Overall time - (Team size: (3 player): <col=ffffff>31:40</col>",
-			"Fastest Room time - (Team size: (4 player): <col=ffffff>29:04</col>",
-			"Fastest Overall time - (Team size: (4 player): <col=ffffff>32:26</col>",
-			"Fastest Room time - (Team size: (5 player): <col=ffffff>26:49</col>",
-			"Fastest Overall time - (Team size: (5 player): <col=ffffff>30:07</col>",
-			"Fastest Room time - (Team size: (6 player): <col=ffffff>23:14</col>",
-			"Fastest Overall time - (Team size: (6 player): <col=ffffff>26:13</col>",
-			"Fastest Room time - (Team size: (7 player): <col=ffffff>23:42</col>",
-			"Fastest Overall time - (Team size: (7 player): <col=ffffff>26:58</col>",
-			"Fastest Room time - (Team size: (8 player): <col=ffffff>23:07</col>",
-			"Fastest Overall time - (Team size: (8 player): <col=ffffff>26:18</col>",
-			"",
-			"Tempoross",
-			"Fastest run: <col=ffffff>3:54</col>",
-			"",
-			"Barbarian Assault",
-			"High-level gambles: <col=ffffff>0</col>",
-			"",
-			"Fremennik spirits rested: <col=ffffff>0</col>",
+				"Chompy Hunting",
+				"Kills: <col=ffffff>1,003</col>",
+				"Rank: <col=ffffff>Ogre Expert</col>",
+				"",
+				"Order of the White Knights",
+				"Rank: <col=ffffff>Master</col>",
+				"with a kill score of <col=ffffff>1,300</col>",
+				"",
+				"TzHaar Fight Cave",
+				"Fastest run: <col=ffffff>33:53</col>",
+				"",
+				"Inferno",
+				"Fastest run: <col=ffffff>2:02:20</col>",
+				"",
+				"Zulrah",
+				"Fastest kill: <col=ffffff>0:47</col>",
+				"",
+				"Vorkath",
+				"Fastest kill: <col=ffffff>1:04</col>",
+				"",
+				"Galvek",
+				"Fastest kill: <col=ffffff>-</col>",
+				"",
+				"Grotesque Guardians",
+				"Fastest kill: <col=ffffff>1:20</col>",
+				"",
+				"Alchemical Hydra",
+				"Fastest kill: <col=ffffff>1:34</col>",
+				"",
+				"Hespori",
+				"Fastest kill: <col=ffffff>1:24</col>",
+				"",
+				// Nightmare is here 3x!
+				"Nightmare", // including one only called "Nightmare"
+				"Fastest kill: <col=ffffff>-</col>", // with no time
+				"",
+				"The Nightmare",
+				"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",
+				"",
+				"The Nightmare",
+				"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",
+				"",
+				"Phosani's Nightmare",
+				"Fastest kill: <col=ffffff>-</col>",
+				"",
+				"The Gauntlet",
+				"Fastest run: <col=ffffff>-</col>",
+				"",
+				"The Corrupted Gauntlet",
+				"Fastest run: <col=ffffff>-</col>",
+				"",
+				"Fragment of Seren",
+				"Fastest kill: <col=ffffff>-</col>",
+				"",
+				"Chambers of Xeric",
+				"Fastest run - (Team size: Solo): <col=ffffff>28:07</col>",
+				"Fastest run - (Team size: 2 players): <col=ffffff>24:40</col>",
+				"Fastest run - (Team size: 3 players): <col=ffffff>25:35</col>",
+				"Fastest run - (Team size: 4 players): <col=ffffff>22:40</col>",
+				"Fastest run - (Team size: 5 players): <col=ffffff>23:00</col>",
+				"Fastest run - (Team size: 6 players): <col=ffffff>28:11</col>",
+				"",
+				"Chambers of Xeric - Challenge mode",
+				"Fastest run - (Team size: 3 players): <col=ffffff>45:41</col>",
+				"",
+				"Theatre of Blood",
+				"Fastest Room time (former): <col=ffffff>18:45</col>",
+				"Fastest Wave time (former): <col=ffffff>22:01</col>",
+				"Fastest Room time - (Team size: (1 player): <col=ffffff>1:01:57.00</col>",
+				"Fastest Overall time - (Team size: 1 player): <col=ffffff>1:06:40.20</col>",
+				"Fastest Room time - (Team size: (2 player): <col=ffffff>22:43.80</col>",
+				"Fastest Overall time - (Team size: 2 player): <col=ffffff>27:36.60</col>",
+				"Fastest Room time - (Team size: (3 player): <col=ffffff>19:50</col>",
+				"Fastest Overall time - (Team size: 3 player): <col=ffffff>22:47</col>",
+				"Fastest Room time - (Team size: (4 player): <col=ffffff>17:38</col>",
+				"Fastest Overall time - (Team size: 4 player): <col=ffffff>20:31</col>",
+				"Fastest Room time - (Team size: (5 player): <col=ffffff>18:45</col>",
+				"Fastest Overall time - (Team size: 5 player): <col=ffffff>22:01</col>",
+				"",
+				"Tombs of Amascut - Entry",
+				"Fastest Room time - (Team size: Solo): <col=ffffff>32:53</col>",
+				"Fastest Overall time - (Team size: Solo): <col=ffffff>39:06</col>",
+				"Fastest Room time - (Team size: (2 player): <col=ffffff>25:44</col>",
+				"Fastest Overall time - (Team size: (2 player): <col=ffffff>34:36</col>",
+				"Fastest Room time - (Team size: (3 player): <col=ffffff>28:32</col>",
+				"Fastest Overall time - (Team size: (3 player): <col=ffffff>36:31</col>",
+				"Fastest Room time - (Team size: (4 player): <col=ffffff>27:52</col>",
+				"Fastest Overall time - (Team size: (4 player): <col=ffffff>49:06</col>",
+				"Fastest Room time - (Team size: (5 player): <col=ffffff>39:38</col>",
+				"Fastest Overall time - (Team size: (5 player): <col=ffffff>1:12:08</col>",
+				"",
+				"Tombs of Amascut",
+				"Fastest Room time - (Team size: Solo): <col=ffffff>25:35</col>",
+				"Fastest Overall time - (Team size: Solo): <col=ffffff>28:44</col>",
+				"Fastest Room time - (Team size: (2 player): <col=ffffff>22:02</col>",
+				"Fastest Overall time - (Team size: (2 player): <col=ffffff>24:23</col>",
+				"Fastest Room time - (Team size: (3 player): <col=ffffff>25:25</col>",
+				"Fastest Overall time - (Team size: (3 player): <col=ffffff>29:37</col>",
+				"Fastest Room time - (Team size: (4 player): <col=ffffff>23:11</col>",
+				"Fastest Overall time - (Team size: (4 player): <col=ffffff>27:26</col>",
+				"Fastest Room time - (Team size: (5 player): <col=ffffff>30:36</col>",
+				"Fastest Overall time - (Team size: (5 player): <col=ffffff>34:44</col>",
+				"Fastest Room time - (Team size: (6 player): <col=ffffff>29:19</col>",
+				"Fastest Overall time - (Team size: (6 player): <col=ffffff>33:54</col>",
+				"Fastest Room time - (Team size: (7 player): <col=ffffff>25:27</col>",
+				"Fastest Overall time - (Team size: (7 player): <col=ffffff>28:49</col>",
+				"Fastest Room time - (Team size: (8 player): <col=ffffff>24:55</col>",
+				"Fastest Overall time - (Team size: (8 player): <col=ffffff>28:04</col>",
+				"",
+				"Tombs of Amascut - Expert",
+				"Fastest Room time - (Team size: Solo): <col=ffffff>37:43</col>",
+				"Fastest Overall time - (Team size: Solo): <col=ffffff>46:19</col>",
+				"Fastest Room time - (Team size: (2 player): <col=ffffff>28:53</col>",
+				"Fastest Overall time - (Team size: (2 player): <col=ffffff>32:38</col>",
+				"Fastest Room time - (Team size: (3 player): <col=ffffff>28:20</col>",
+				"Fastest Overall time - (Team size: (3 player): <col=ffffff>31:40</col>",
+				"Fastest Room time - (Team size: (4 player): <col=ffffff>29:04</col>",
+				"Fastest Overall time - (Team size: (4 player): <col=ffffff>32:26</col>",
+				"Fastest Room time - (Team size: (5 player): <col=ffffff>26:49</col>",
+				"Fastest Overall time - (Team size: (5 player): <col=ffffff>30:07</col>",
+				"Fastest Room time - (Team size: (6 player): <col=ffffff>23:14</col>",
+				"Fastest Overall time - (Team size: (6 player): <col=ffffff>26:13</col>",
+				"Fastest Room time - (Team size: (7 player): <col=ffffff>23:42</col>",
+				"Fastest Overall time - (Team size: (7 player): <col=ffffff>26:58</col>",
+				"Fastest Room time - (Team size: (8 player): <col=ffffff>23:07</col>",
+				"Fastest Overall time - (Team size: (8 player): <col=ffffff>26:18</col>",
+				"",
+				"Tempoross",
+				"Fastest run: <col=ffffff>3:54</col>",
+				"",
+				"Barbarian Assault",
+				"High-level gambles: <col=ffffff>0</col>",
+				"",
+				"Fremennik spirits rested: <col=ffffff>0</col>",
 		};
 
 		// adv log
@@ -1227,13 +1227,13 @@ public class ChatCommandsPluginTest
 		{
 			Widget widget = mock(Widget.class);
 			Widget[] children = Arrays.stream(log)
-				.map(s ->
-				{
-					Widget w = mock(Widget.class);
-					when(w.getText()).thenReturn(s);
-					return w;
-				})
-				.toArray(Widget[]::new);
+					.map(s ->
+					{
+						Widget w = mock(Widget.class);
+						when(w.getText()).thenReturn(s);
+						return w;
+					})
+					.toArray(Widget[]::new);
 			when(widget.getStaticChildren()).thenReturn(children);
 			return widget;
 		});

@@ -30,6 +30,7 @@ public interface WorldMapRegion
 {
 	/**
 	 * Gets visible map icons. The underlying list is modified as the map is panned around.
+	 *
 	 * @return
 	 */
 	Collection<WorldMapIcon> getMapIcons();

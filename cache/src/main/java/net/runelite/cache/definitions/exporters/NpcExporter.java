@@ -41,7 +41,7 @@ public class NpcExporter
 		this.npc = npc;
 
 		GsonBuilder builder = new GsonBuilder()
-			.setPrettyPrinting();
+				.setPrettyPrinting();
 		gson = builder.create();
 	}
 

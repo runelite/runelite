@@ -128,7 +128,7 @@ public enum HotColdLocation
 	KARAMJA_KHARAZI_NE(MASTER, new WorldPoint(2904, 2925, 0), KARAMJA, "North-eastern part of Kharazi Jungle.", BRASSICAN_MAGE),
 	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", ANCIENT_WIZARDS),
 	KARAMJA_CRASH_ISLAND(MASTER, new WorldPoint(2909, 2737, 0), KARAMJA, "Northern part of Crash Island.", BRASSICAN_MAGE),
-	LUMBRIDGE_COW_FIELD(BEGINNER,  new WorldPoint(3174, 3336, 0), MISTHALIN, "Cow field north of Lumbridge"),
+	LUMBRIDGE_COW_FIELD(BEGINNER, new WorldPoint(3174, 3336, 0), MISTHALIN, "Cow field north of Lumbridge"),
 	MISTHALIN_VARROCK_STONE_CIRCLE(MASTER, new WorldPoint(3225, 3356, 0), MISTHALIN, "South of the stone circle near Varrock's entrance.", BRASSICAN_MAGE),
 	MISTHALIN_LUMBRIDGE(MASTER, new WorldPoint(3234, 3169, 0), MISTHALIN, "Just north-west of the Lumbridge Fishing tutor.", BRASSICAN_MAGE),
 	MISTHALIN_LUMBRIDGE_2(MASTER, new WorldPoint(3169, 3279, 0), MISTHALIN, "North of the pond between Lumbridge and Draynor Village.", BRASSICAN_MAGE),
@@ -203,13 +203,6 @@ public enum HotColdLocation
 	private final String area;
 	private final Enemy enemy;
 
-	public enum HotColdType
-	{
-		BEGINNER,
-		MASTER,
-		;
-	}
-
 	HotColdLocation(HotColdType type, WorldPoint worldPoint, HotColdArea hotColdArea, String areaDescription)
 	{
 		this(type, worldPoint, hotColdArea, areaDescription, null);
@@ -220,12 +213,19 @@ public enum HotColdLocation
 	public Rectangle getRect()
 	{
 		final int digRadius = isBeginnerClue() ? HotColdTemperature.BEGINNER_VISIBLY_SHAKING.getMaxDistance() :
-			HotColdTemperature.MASTER_VISIBLY_SHAKING.getMaxDistance();
+				HotColdTemperature.MASTER_VISIBLY_SHAKING.getMaxDistance();
 		return new Rectangle(worldPoint.getX() - digRadius, worldPoint.getY() - digRadius, digRadius * 2 + 1, digRadius * 2 + 1);
 	}
 
 	public boolean isBeginnerClue()
 	{
 		return type == BEGINNER;
+	}
+
+	public enum HotColdType
+	{
+		BEGINNER,
+		MASTER,
+		;
 	}
 }

@@ -47,21 +47,18 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "XP Globes",
-	description = "Show XP globes for the respective skill when gaining XP",
-	tags = {"experience", "levels", "overlay"},
-	enabledByDefault = false
+		name = "XP Globes",
+		description = "Show XP globes for the respective skill when gaining XP",
+		tags = {"experience", "levels", "overlay"},
+		enabledByDefault = false
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class XpGlobesPlugin extends Plugin
 {
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
-
-	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length];
-
 	@Getter
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
-
+	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length];
 	@Inject
 	private XpGlobesConfig config;
 
@@ -124,8 +121,7 @@ public class XpGlobesPlugin extends Plugin
 			cachedGlobe.setCurrentLevel(currentLevel);
 			cachedGlobe.setTime(Instant.now());
 			addXpGlobe(cachedGlobe);
-		}
-		else
+		} else
 		{
 			// dont draw non cached globes, this is triggered on login to setup all of the initial values
 			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, Instant.now());
@@ -144,22 +140,22 @@ public class XpGlobesPlugin extends Plugin
 			if (xpGlobes.size() > MAXIMUM_SHOWN_GLOBES)
 			{
 				xpGlobes.stream()
-					.min(Comparator.comparing(XpGlobe::getTime))
-					.ifPresent(xpGlobes::remove);
+						.min(Comparator.comparing(XpGlobe::getTime))
+						.ifPresent(xpGlobes::remove);
 			}
 		}
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
+			period = 1,
+			unit = ChronoUnit.SECONDS
 	)
 	public void removeExpiredXpGlobes()
 	{
 		if (!xpGlobes.isEmpty())
 		{
 			Instant expireTime = Instant.now()
-				.minusSeconds(config.xpOrbDuration());
+					.minusSeconds(config.xpOrbDuration());
 			xpGlobes.removeIf(globe -> globe.getTime().isBefore(expireTime));
 		}
 	}

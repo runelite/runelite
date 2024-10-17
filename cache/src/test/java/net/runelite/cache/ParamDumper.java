@@ -47,10 +47,9 @@ import org.junit.rules.TemporaryFolder;
 @Slf4j
 public class ParamDumper
 {
-	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
 	@Ignore

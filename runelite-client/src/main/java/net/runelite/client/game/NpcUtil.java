@@ -109,8 +109,8 @@ public class NpcUtil
 			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
 			case NpcID.BEE_SWARM:
-			// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
-			// them to be considered dead when reaching 0hp.
+				// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
+				// them to be considered dead when reaching 0hp.
 			case NpcID.KALPHITE_QUEEN_963:
 			case NpcID.VETION:
 			case NpcID.CALVARION:
@@ -154,10 +154,10 @@ public class NpcUtil
 			case NpcID.RUNITE_ROCKS:
 			case NpcID.STRANGE_CREATURE_12076: // Secrets of the North transitioning to Jhallan
 			case NpcID.BOUNCER_3509:
-			// Tutorial island giant rats respawn instantly.
+				// Tutorial island giant rats respawn instantly.
 			case NpcID.GIANT_RAT_3313:
-			// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
-			// equipped, or moved away immediately after applying the killing blow.
+				// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
+				// equipped, or moved away immediately after applying the killing blow.
 			case NpcID.AGRITH_NAAR:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
@@ -170,8 +170,8 @@ public class NpcUtil
 			case NpcID.XARPUS_10773:
 			case NpcID.THE_NIGHTMARE_9433:
 			case NpcID.PHOSANIS_NIGHTMARE_9424:
-			// Gargoyles, Dawn, and Dusk each have cracking forms which contain their death animations, so should always
-			// be considered dead.
+				// Gargoyles, Dawn, and Dusk each have cracking forms which contain their death animations, so should always
+				// be considered dead.
 			case NpcID.GARGOYLE_413:
 			case NpcID.MARBLE_GARGOYLE_7408:
 			case NpcID.DAWN_7885:
@@ -231,10 +231,10 @@ public class NpcUtil
 			case NpcID.DAMIS_HARD_1135:
 			case NpcID.HOPELESS_CREATURE_1074:
 			case NpcID.GADDERANKS_4485:
-			// The Nightmare should be considered alive again once reaching its sleeping form
+				// The Nightmare should be considered alive again once reaching its sleeping form
 			case NpcID.THE_NIGHTMARE:
 			case NpcID.PHOSANIS_NIGHTMARE:
-			// Skotizo's altars should be considered alive again once they "respawn" from their inactive altar forms
+				// Skotizo's altars should be considered alive again once they "respawn" from their inactive altar forms
 			case NpcID.AWAKENED_ALTAR:
 			case NpcID.AWAKENED_ALTAR_7290:
 			case NpcID.AWAKENED_ALTAR_7292:

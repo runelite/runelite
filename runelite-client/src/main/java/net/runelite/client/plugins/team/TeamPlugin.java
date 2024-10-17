@@ -68,43 +68,35 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Team",
-	description = "Shows how many team and clan mates are nearby",
-	tags = {"overlay", "players", "cape", "clan", "friend"},
-	configName = "TeamCapesPlugin", // the old plugin's name
-	enabledByDefault = false
+		name = "Team",
+		description = "Shows how many team and clan mates are nearby",
+		tags = {"overlay", "players", "cape", "clan", "friend"},
+		configName = "TeamCapesPlugin", // the old plugin's name
+		enabledByDefault = false
 )
 @Slf4j
 public class TeamPlugin extends Plugin
 {
+	// Player -> Team number
+	private final Map<Player, Integer> playerTeam = new HashMap<>();
+	private final BiMap<String, Player> players = HashBiMap.create();
 	@Inject
 	private Client client;
-
 	@Inject
 	private ClientThread clientThread;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private TeamConfig config;
-
 	@Inject
 	private TeamCapesOverlay overlay;
-
 	@Inject
 	private SpriteManager spriteManager;
-
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
 	// Team number -> Number of players
 	@Getter(AccessLevel.PACKAGE)
 	private Map<Integer, Integer> teams = new LinkedHashMap<>();
-	// Player -> Team number
-	private final Map<Player, Integer> playerTeam = new HashMap<>();
-
-	private final BiMap<String, Player> players = HashBiMap.create();
 	private int friendsChatCount;
 	private int clanChatCount;
 	private MembersIndicator friendsChatIndicator;
@@ -145,8 +137,7 @@ public class TeamPlugin extends Plugin
 			if (config.friendsChatMemberCounter())
 			{
 				clientThread.invoke(this::addFriendsChatCounter);
-			}
-			else
+			} else
 			{
 				removeFriendsChatCounter();
 			}
@@ -154,8 +145,7 @@ public class TeamPlugin extends Plugin
 			if (config.clanChatMemberCounter())
 			{
 				clientThread.invoke(this::addClanChatCounter);
-			}
-			else
+			} else
 			{
 				removeClanChatCounter();
 			}
@@ -271,11 +261,11 @@ public class TeamPlugin extends Plugin
 	{
 		// Sort teams by value in descending order and then by key in ascending order, limited to 5 entries
 		teams = teams.entrySet().stream()
-			.sorted(
-				Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
-					.thenComparingInt(Map.Entry::getKey)
-			)
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+				.sorted(
+						Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
+								.thenComparingInt(Map.Entry::getKey)
+				)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 
 	@Subscribe

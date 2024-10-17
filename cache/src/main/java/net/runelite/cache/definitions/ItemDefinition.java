@@ -70,10 +70,10 @@ public class ItemDefinition
 	public int[] countCo;
 	public int[] countObj;
 
-	public String[] options = new String[]{null, null, "Take", null, null};
+	public String[] options = new String[] {null, null, "Take", null, null};
 	public String[][] subops;
 
-	public String[] interfaceOptions = new String[]{null, null, null, null, "Drop"};
+	public String[] interfaceOptions = new String[] {null, null, null, null, "Drop"};
 
 	public int maleModel0 = -1;
 	public int maleModel1 = -1;

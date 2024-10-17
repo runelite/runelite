@@ -42,8 +42,7 @@ public class WildcardMatcher
 			if (matcher.group(1) != null)
 			{
 				matcher.appendReplacement(buffer, ".*");
-			}
-			else
+			} else
 			{
 				matcher.appendReplacement(buffer, Matcher.quoteReplacement(Pattern.quote(matcher.group(0))));
 			}

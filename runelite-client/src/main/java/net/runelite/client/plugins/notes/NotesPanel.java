@@ -94,8 +94,7 @@ class NotesPanel extends PluginPanel
 					{
 						undoRedo.undo();
 					}
-				}
-				catch (CannotUndoException ex)
+				} catch (CannotUndoException ex)
 				{
 					log.warn("Notes Document Unable To Undo: " + ex);
 				}
@@ -113,8 +112,7 @@ class NotesPanel extends PluginPanel
 					{
 						undoRedo.redo();
 					}
-				}
-				catch (CannotUndoException ex)
+				} catch (CannotUndoException ex)
 				{
 					log.warn("Notes Document Unable To Redo: " + ex);
 				}
@@ -142,8 +140,7 @@ class NotesPanel extends PluginPanel
 					// get document text and save to config whenever editor is changed
 					String data = doc.getText(0, doc.getLength());
 					config.notesData(data);
-				}
-				catch (BadLocationException ex)
+				} catch (BadLocationException ex)
 				{
 					log.warn("Notes Document Bad Location: " + ex);
 				}

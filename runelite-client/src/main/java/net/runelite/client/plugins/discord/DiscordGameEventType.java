@@ -99,80 +99,80 @@ enum DiscordGameEventType
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
 	// Cities
-	CITY_AL_KHARID("Al Kharid" , DiscordAreaType.CITIES, 13105, 13106),
-	CITY_ARCEUUS_HOUSE("Arceuus" , DiscordAreaType.CITIES, 6458, 6459, 6460, 6714, 6715),
-	CITY_ARDOUGNE("Ardougne" , DiscordAreaType.CITIES, 9779, 9780, 10035, 10036, 10291, 10292, 10547, 10548),
-	CITY_BANDIT_CAMP("Bandit Camp" , DiscordAreaType.CITIES, 12590),
+	CITY_AL_KHARID("Al Kharid", DiscordAreaType.CITIES, 13105, 13106),
+	CITY_ARCEUUS_HOUSE("Arceuus", DiscordAreaType.CITIES, 6458, 6459, 6460, 6714, 6715),
+	CITY_ARDOUGNE("Ardougne", DiscordAreaType.CITIES, 9779, 9780, 10035, 10036, 10291, 10292, 10547, 10548),
+	CITY_BANDIT_CAMP("Bandit Camp", DiscordAreaType.CITIES, 12590),
 	CITY_BARBARIAN_OUTPOST("Barbarian Outpost", DiscordAreaType.CITIES, 10039),
-	CITY_BARBARIAN_VILLAGE("Barbarian Village" , DiscordAreaType.CITIES, 12341),
-	CITY_BEDABIN_CAMP("Bedabin Camp" , DiscordAreaType.CITIES, 12591),
-	CITY_BRIMHAVEN("Brimhaven" , DiscordAreaType.CITIES, 11057, 11058),
-	CITY_BURGH_DE_ROTT("Burgh de Rott" , DiscordAreaType.CITIES, 13874, 13873, 14130, 14129),
-	CITY_BURTHORPE("Burthorpe" , DiscordAreaType.CITIES, 11319, 11575),
-	CITY_CAM_TORUM("Cam Torum" , DiscordAreaType.CITIES, 5525, 5780, 5781, 6037),
-	CITY_CANIFIS("Canifis" , DiscordAreaType.CITIES, 13878),
-	CITY_CATHERBY("Catherby" , DiscordAreaType.CITIES, 11317, 11318, 11061),
-	CITY_CIVITAS_ILLA_FORTIS("Civitas Illa Fortis" , DiscordAreaType.CITIES, 6448, 6449, 6704, 6705, 6960, 6961),
-	CITY_CORSAIR_COVE("Corsair Cove" , DiscordAreaType.CITIES, 10028, 10284),
+	CITY_BARBARIAN_VILLAGE("Barbarian Village", DiscordAreaType.CITIES, 12341),
+	CITY_BEDABIN_CAMP("Bedabin Camp", DiscordAreaType.CITIES, 12591),
+	CITY_BRIMHAVEN("Brimhaven", DiscordAreaType.CITIES, 11057, 11058),
+	CITY_BURGH_DE_ROTT("Burgh de Rott", DiscordAreaType.CITIES, 13874, 13873, 14130, 14129),
+	CITY_BURTHORPE("Burthorpe", DiscordAreaType.CITIES, 11319, 11575),
+	CITY_CAM_TORUM("Cam Torum", DiscordAreaType.CITIES, 5525, 5780, 5781, 6037),
+	CITY_CANIFIS("Canifis", DiscordAreaType.CITIES, 13878),
+	CITY_CATHERBY("Catherby", DiscordAreaType.CITIES, 11317, 11318, 11061),
+	CITY_CIVITAS_ILLA_FORTIS("Civitas Illa Fortis", DiscordAreaType.CITIES, 6448, 6449, 6704, 6705, 6960, 6961),
+	CITY_CORSAIR_COVE("Corsair Cove", DiscordAreaType.CITIES, 10028, 10284),
 	CITY_DARKMEYER("Darkmeyer", DiscordAreaType.CITIES, 14388, 14644),
-	CITY_DORGESH_KAAN("Dorgesh-Kaan" , DiscordAreaType.CITIES, 10835, 10834),
-	CITY_DRAYNOR("Draynor" , DiscordAreaType.CITIES, 12338, 12339),
-	CITY_EDGEVILLE("Edgeville" , DiscordAreaType.CITIES, 12342),
-	CITY_ENTRANA("Entrana" , DiscordAreaType.CITIES, 11060, 11316),
+	CITY_DORGESH_KAAN("Dorgesh-Kaan", DiscordAreaType.CITIES, 10835, 10834),
+	CITY_DRAYNOR("Draynor", DiscordAreaType.CITIES, 12338, 12339),
+	CITY_EDGEVILLE("Edgeville", DiscordAreaType.CITIES, 12342),
+	CITY_ENTRANA("Entrana", DiscordAreaType.CITIES, 11060, 11316),
 	CITY_ETCETERIA("Etceteria", DiscordAreaType.CITIES, 10300),
-	CITY_FALADOR("Falador" , DiscordAreaType.CITIES, 11828, 11572, 11827, 12084),
-	CITY_GUTANOTH("Gu'Tanoth" , DiscordAreaType.CITIES, 10031),
+	CITY_FALADOR("Falador", DiscordAreaType.CITIES, 11828, 11572, 11827, 12084),
+	CITY_GUTANOTH("Gu'Tanoth", DiscordAreaType.CITIES, 10031),
 	CITY_GWENITH("Gwenith", DiscordAreaType.CITIES, 8757),
-	CITY_HOSIDIUS_HOUSE("Hosidius" , DiscordAreaType.CITIES, 6710, 6711, 6712, 6455, 6456, 6966, 6967, 6968, 7221, 7223, 7224, 7478, 7479),
-	CITY_JATIZSO("Jatizso" , DiscordAreaType.CITIES, 9531),
-	CITY_KELDAGRIM("Keldagrim" , DiscordAreaType.CITIES, 11423, 11422, 11679, 11678),
+	CITY_HOSIDIUS_HOUSE("Hosidius", DiscordAreaType.CITIES, 6710, 6711, 6712, 6455, 6456, 6966, 6967, 6968, 7221, 7223, 7224, 7478, 7479),
+	CITY_JATIZSO("Jatizso", DiscordAreaType.CITIES, 9531),
+	CITY_KELDAGRIM("Keldagrim", DiscordAreaType.CITIES, 11423, 11422, 11679, 11678),
 	CITY_LANDS_END("Land's End", DiscordAreaType.CITIES, 5941),
 	CITY_LASSAR_UNDERCITY("Lassar Undercity", DiscordAreaType.CITIES, 9314, 9315, 9316, 9571, 9572, 9828, 10338, 10339, 10340, 10596, 10852),
-	CITY_LLETYA("Lletya" , DiscordAreaType.CITIES, 9265, 11103),
-	CITY_LOVAKENGJ_HOUSE("Lovakengj" , DiscordAreaType.CITIES, 5692, 5691, 5947, 6203, 6202, 5690, 5946),
-	CITY_LUMBRIDGE("Lumbridge" , DiscordAreaType.CITIES, 12850),
-	CITY_LUNAR_ISLE("Lunar Isle" , DiscordAreaType.CITIES, 8253, 8252, 8509, 8508),
+	CITY_LLETYA("Lletya", DiscordAreaType.CITIES, 9265, 11103),
+	CITY_LOVAKENGJ_HOUSE("Lovakengj", DiscordAreaType.CITIES, 5692, 5691, 5947, 6203, 6202, 5690, 5946),
+	CITY_LUMBRIDGE("Lumbridge", DiscordAreaType.CITIES, 12850),
+	CITY_LUNAR_ISLE("Lunar Isle", DiscordAreaType.CITIES, 8253, 8252, 8509, 8508),
 	CITY_MARIM("Marim", DiscordAreaType.REGIONS, 11051),
-	CITY_MEIYERDITCH("Meiyerditch" , DiscordAreaType.CITIES, 14132, 14387, 14386, 14385),
+	CITY_MEIYERDITCH("Meiyerditch", DiscordAreaType.CITIES, 14132, 14387, 14386, 14385),
 	CITY_MENAPHOS("Menaphos", DiscordAreaType.CITIES, 12843),
-	CITY_MISCELLANIA("Miscellania" , DiscordAreaType.CITIES, 10044),
-	CITY_MOR_UL_REK("Mor Ul Rek" , DiscordAreaType.CITIES, 9808, 9807, 10064, 10063),
-	CITY_MORTTON("Mort'ton" , DiscordAreaType.CITIES, 13875),
-	CITY_MOS_LE_HARMLESS("Mos Le'Harmless" , DiscordAreaType.CITIES, 14637, 14638, 14639, 14894, 14895, 15151, 15406, 15407),
+	CITY_MISCELLANIA("Miscellania", DiscordAreaType.CITIES, 10044),
+	CITY_MOR_UL_REK("Mor Ul Rek", DiscordAreaType.CITIES, 9808, 9807, 10064, 10063),
+	CITY_MORTTON("Mort'ton", DiscordAreaType.CITIES, 13875),
+	CITY_MOS_LE_HARMLESS("Mos Le'Harmless", DiscordAreaType.CITIES, 14637, 14638, 14639, 14894, 14895, 15151, 15406, 15407),
 	CITY_MOUNT_KARUULM("Mount Karuulm", DiscordAreaType.CITIES, 5179, 4923, 5180),
 	CITY_MOUNTAIN_CAMP("Mountain Camp", DiscordAreaType.CITIES, 11065),
 	CITY_MYNYDD("Mynydd", DiscordAreaType.CITIES, 8501),
-	CITY_NARDAH("Nardah" , DiscordAreaType.CITIES, 13613),
-	CITY_NEITIZNOT("Neitiznot" , DiscordAreaType.CITIES, 9275),
-	CITY_PISCARILIUS_HOUSE("Port Piscarilius" , DiscordAreaType.CITIES, 6969, 6971, 7227, 6970, 7225, 7226),
-	CITY_PISCATORIS("Piscatoris" , DiscordAreaType.CITIES, 9273),
-	CITY_POLLNIVNEACH("Pollnivneach" , DiscordAreaType.CITIES, 13358),
-	CITY_PORT_KHAZARD("Port Khazard" , DiscordAreaType.CITIES, 10545),
-	CITY_PORT_PHASMATYS("Port Phasmatys" , DiscordAreaType.CITIES, 14646),
-	CITY_PORT_SARIM("Port Sarim" , DiscordAreaType.CITIES, 12081, 12082),
+	CITY_NARDAH("Nardah", DiscordAreaType.CITIES, 13613),
+	CITY_NEITIZNOT("Neitiznot", DiscordAreaType.CITIES, 9275),
+	CITY_PISCARILIUS_HOUSE("Port Piscarilius", DiscordAreaType.CITIES, 6969, 6971, 7227, 6970, 7225, 7226),
+	CITY_PISCATORIS("Piscatoris", DiscordAreaType.CITIES, 9273),
+	CITY_POLLNIVNEACH("Pollnivneach", DiscordAreaType.CITIES, 13358),
+	CITY_PORT_KHAZARD("Port Khazard", DiscordAreaType.CITIES, 10545),
+	CITY_PORT_PHASMATYS("Port Phasmatys", DiscordAreaType.CITIES, 14646),
+	CITY_PORT_SARIM("Port Sarim", DiscordAreaType.CITIES, 12081, 12082),
 	CITY_PRIFDDINAS("Prifddinas", DiscordAreaType.CITIES, 8499, 8500, 8755, 8756, 9011, 9012, 9013, 12894, 12895, 13150, 13151),
-	CITY_RELLEKKA("Rellekka" , DiscordAreaType.CITIES, 10297, 10553),
-	CITY_RIMMINGTON("Rimmington" , DiscordAreaType.CITIES, 11826, 11570),
-	CITY_SEERS_VILLAGE("Seers' Village" , DiscordAreaType.CITIES, 10806),
-	CITY_SHAYZIEN_HOUSE("Shayzien" , DiscordAreaType.CITIES, 5944, 5943, 6200, 6199, 5686, 5687, 5688, 5689, 5945),
-	CITY_SHILO_VILLAGE("Shilo Village" , DiscordAreaType.CITIES, 11310),
+	CITY_RELLEKKA("Rellekka", DiscordAreaType.CITIES, 10297, 10553),
+	CITY_RIMMINGTON("Rimmington", DiscordAreaType.CITIES, 11826, 11570),
+	CITY_SEERS_VILLAGE("Seers' Village", DiscordAreaType.CITIES, 10806),
+	CITY_SHAYZIEN_HOUSE("Shayzien", DiscordAreaType.CITIES, 5944, 5943, 6200, 6199, 5686, 5687, 5688, 5689, 5945),
+	CITY_SHILO_VILLAGE("Shilo Village", DiscordAreaType.CITIES, 11310),
 	CITY_SLEPE("Slepe", DiscordAreaType.CITIES, 14643, 14899, 14900, 14901),
-	CITY_SOPHANEM("Sophanem" , DiscordAreaType.CITIES, 13099),
-	CITY_TAI_BWO_WANNAI("Tai Bwo Wannai" , DiscordAreaType.CITIES, 11056, 11055),
-	CITY_TAVERLEY("Taverley" , DiscordAreaType.CITIES, 11574, 11573),
-	CITY_TREE_GNOME_STRONGHOLD("Tree Gnome Stronghold" , DiscordAreaType.CITIES, 9525, 9526, 9782, 9781),
-	CITY_TREE_GNOME_VILLAGE("Tree Gnome Village" , DiscordAreaType.CITIES, 10033),
-	CITY_TROLL_STRONGHOLD("Troll Stronghold" , DiscordAreaType.CITIES, 11321, 11421),
-	CITY_UZER("Uzer" , DiscordAreaType.CITIES, 13872),
+	CITY_SOPHANEM("Sophanem", DiscordAreaType.CITIES, 13099),
+	CITY_TAI_BWO_WANNAI("Tai Bwo Wannai", DiscordAreaType.CITIES, 11056, 11055),
+	CITY_TAVERLEY("Taverley", DiscordAreaType.CITIES, 11574, 11573),
+	CITY_TREE_GNOME_STRONGHOLD("Tree Gnome Stronghold", DiscordAreaType.CITIES, 9525, 9526, 9782, 9781),
+	CITY_TREE_GNOME_VILLAGE("Tree Gnome Village", DiscordAreaType.CITIES, 10033),
+	CITY_TROLL_STRONGHOLD("Troll Stronghold", DiscordAreaType.CITIES, 11321, 11421),
+	CITY_UZER("Uzer", DiscordAreaType.CITIES, 13872),
 	CITY_UZER_OASIS("Uzer Oasis", DiscordAreaType.CITIES, 13871),
-	CITY_VARROCK("Varrock" , DiscordAreaType.CITIES, 12596, 12597, 12852, 12853, 12854, 13108, 13109, 13110),
+	CITY_VARROCK("Varrock", DiscordAreaType.CITIES, 12596, 12597, 12852, 12853, 12854, 13108, 13109, 13110),
 	CITY_VER_SINHAZA("Ver Sinhaza", DiscordAreaType.CITIES, 14642),
 	CITY_VOID_OUTPOST("Void Knights' Outpost", DiscordAreaType.CITIES, 10537),
 	CITY_WEISS("Weiss", DiscordAreaType.CITIES, 11325, 11581),
-	CITY_WITCHHAVEN("Witchaven" , DiscordAreaType.CITIES, 10803),
-	CITY_YANILLE("Yanille" , DiscordAreaType.CITIES, 10288, 10032),
-	CITY_ZANARIS("Zanaris" , DiscordAreaType.CITIES, 9285, 9541, 9540, 9797),
-	CITY_ZULANDRA("Zul-Andra" , DiscordAreaType.CITIES, 8495, 8751),
+	CITY_WITCHHAVEN("Witchaven", DiscordAreaType.CITIES, 10803),
+	CITY_YANILLE("Yanille", DiscordAreaType.CITIES, 10288, 10032),
+	CITY_ZANARIS("Zanaris", DiscordAreaType.CITIES, 9285, 9541, 9540, 9797),
+	CITY_ZULANDRA("Zul-Andra", DiscordAreaType.CITIES, 8495, 8751),
 
 	// Dungeons
 	DUNGEON_ABANDONED_MINE("Abandoned Mine", DiscordAreaType.DUNGEONS, 13618, 13718, 11079, 11078, 11077, 10823, 10822, 10821),
@@ -343,7 +343,7 @@ enum DiscordGameEventType
 	REGION_AIR_ALTAR("Air Altar", DiscordAreaType.REGIONS, 11339),
 	REGION_AL_KHARID_MINE("Al Kharid Mine", DiscordAreaType.REGIONS, 13107),
 	REGION_ANCIENT_VAULT("Ancient Vault", DiscordAreaType.REGIONS, 12644, 13156),
-	REGION_APE_ATOLL("Ape Atoll" , DiscordAreaType.REGIONS, 10794, 10795, 10974, 11050),
+	REGION_APE_ATOLL("Ape Atoll", DiscordAreaType.REGIONS, 10794, 10795, 10974, 11050),
 	REGION_ARANDAR("Arandar", DiscordAreaType.REGIONS, 9266, 9267, 9523),
 	REGION_ASGARNIA("Asgarnia", DiscordAreaType.REGIONS, 11825, 11829, 11830, 12085, 12086),
 	REGION_AVIUM_SAVANNAH("Avium Savannah", DiscordAreaType.REGIONS, 5935, 5936, 5937, 6189, 6445, 6446, 6447, 6701, 6702, 6703, 6957, 6958, 6959, 7215),
@@ -401,9 +401,9 @@ enum DiscordGameEventType
 	REGION_ISAFDAR("Isafdar", DiscordAreaType.REGIONS, 8497, 8753, 8754, 9009, 9010),
 	REGION_ISLAND_OF_STONE("Island of Stone", DiscordAreaType.REGIONS, 9790),
 	REGION_ISLE_OF_SOULS("Isle of Souls", DiscordAreaType.REGIONS, 8236, 8237, 8238, 8491, 8492, 8494, 8747, 8750, 9003, 9004, 9006, 9260, 9261, 9262),
-	REGION_JIGGIG("Jiggig" , DiscordAreaType.REGIONS, 9775),
+	REGION_JIGGIG("Jiggig", DiscordAreaType.REGIONS, 9775),
 	REGION_KANDARIN("Kandarin", DiscordAreaType.REGIONS, 9268, 9269, 9014, 9263, 9264, 9519, 9524, 9527, 9776, 9783, 10037, 10290, 10294, 10546, 10551, 10805, 11062),
-	REGION_KARAMJA("Karamja" , DiscordAreaType.REGIONS, 10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
+	REGION_KARAMJA("Karamja", DiscordAreaType.REGIONS, 10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
 	REGION_KEBOS_LOWLANDS("Kebos Lowlands", DiscordAreaType.REGIONS, 4665, 4666, 4667, 4921, 5178),
 	REGION_KEBOS_SWAMP("Kebos Swamp", DiscordAreaType.REGIONS, 4664, 4920, 5174, 5175, 5176, 5430, 5431),
 	REGION_KHARAZI_JUNGLE("Kharazi Jungle", DiscordAreaType.REGIONS, 11053, 11309, 11565, 11821),
@@ -598,29 +598,52 @@ enum DiscordGameEventType
 	{
 		switch (skill)
 		{
-			case ATTACK: return TRAINING_ATTACK;
-			case DEFENCE: return TRAINING_DEFENCE;
-			case STRENGTH: return TRAINING_STRENGTH;
-			case RANGED: return TRAINING_RANGED;
-			case PRAYER: return TRAINING_PRAYER;
-			case MAGIC: return TRAINING_MAGIC;
-			case COOKING: return TRAINING_COOKING;
-			case WOODCUTTING: return TRAINING_WOODCUTTING;
-			case FLETCHING: return TRAINING_FLETCHING;
-			case FISHING: return TRAINING_FISHING;
-			case FIREMAKING: return TRAINING_FIREMAKING;
-			case CRAFTING: return TRAINING_CRAFTING;
-			case SMITHING: return TRAINING_SMITHING;
-			case MINING: return TRAINING_MINING;
-			case HERBLORE: return TRAINING_HERBLORE;
-			case AGILITY: return TRAINING_AGILITY;
-			case THIEVING: return TRAINING_THIEVING;
-			case SLAYER: return TRAINING_SLAYER;
-			case FARMING: return TRAINING_FARMING;
-			case RUNECRAFT: return TRAINING_RUNECRAFT;
-			case HUNTER: return TRAINING_HUNTER;
-			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
-			default: return null;
+			case ATTACK:
+				return TRAINING_ATTACK;
+			case DEFENCE:
+				return TRAINING_DEFENCE;
+			case STRENGTH:
+				return TRAINING_STRENGTH;
+			case RANGED:
+				return TRAINING_RANGED;
+			case PRAYER:
+				return TRAINING_PRAYER;
+			case MAGIC:
+				return TRAINING_MAGIC;
+			case COOKING:
+				return TRAINING_COOKING;
+			case WOODCUTTING:
+				return TRAINING_WOODCUTTING;
+			case FLETCHING:
+				return TRAINING_FLETCHING;
+			case FISHING:
+				return TRAINING_FISHING;
+			case FIREMAKING:
+				return TRAINING_FIREMAKING;
+			case CRAFTING:
+				return TRAINING_CRAFTING;
+			case SMITHING:
+				return TRAINING_SMITHING;
+			case MINING:
+				return TRAINING_MINING;
+			case HERBLORE:
+				return TRAINING_HERBLORE;
+			case AGILITY:
+				return TRAINING_AGILITY;
+			case THIEVING:
+				return TRAINING_THIEVING;
+			case SLAYER:
+				return TRAINING_SLAYER;
+			case FARMING:
+				return TRAINING_FARMING;
+			case RUNECRAFT:
+				return TRAINING_RUNECRAFT;
+			case HUNTER:
+				return TRAINING_HUNTER;
+			case CONSTRUCTION:
+				return TRAINING_CONSTRUCTION;
+			default:
+				return null;
 		}
 	}
 

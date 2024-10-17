@@ -63,10 +63,10 @@ class XpInfoBoxOverlay extends OverlayPanel
 	private final BufferedImage icon;
 
 	XpInfoBoxOverlay(
-		XpTrackerPlugin plugin,
-		XpTrackerConfig config,
-		Skill skill,
-		BufferedImage icon)
+			XpTrackerPlugin plugin,
+			XpTrackerConfig config,
+			Skill skill,
+			BufferedImage icon)
 	{
 		super(plugin);
 		this.plugin = plugin;
@@ -94,9 +94,9 @@ class XpInfoBoxOverlay extends OverlayPanel
 		final String rightNum = config.onScreenDisplayMode().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLine = LineComponent.builder()
-			.left(leftStr + ":")
-			.right(rightNum)
-			.build();
+				.left(leftStr + ":")
+				.right(rightNum)
+				.build();
 
 		final String bottomLeftStr = config.onScreenDisplayModeBottom().getActionKey(snapshot);
 		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
@@ -129,8 +129,8 @@ class XpInfoBoxOverlay extends OverlayPanel
 
 		progressBarComponent.setLeftLabel(String.valueOf(snapshot.getStartLevel()));
 		progressBarComponent.setRightLabel(snapshot.getEndGoalXp() == Experience.MAX_SKILL_XP
-			? "200M"
-			: String.valueOf(snapshot.getEndLevel()));
+				? "200M"
+				: String.valueOf(snapshot.getEndLevel()));
 
 		progressBarComponent.setValue(snapshot.getSkillProgressToGoal());
 

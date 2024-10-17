@@ -32,6 +32,9 @@ public class MapDefinition
 	public static final int X = 64;
 	public static final int Y = 64;
 	public static final int Z = 4;
+	private int regionX;
+	private int regionY;
+	private Tile[][][] tiles = new Tile[Z][X][Y];
 
 	@Data
 	public static class Tile
@@ -44,8 +47,4 @@ public class MapDefinition
 		public byte overlayRotation;
 		public short underlayId;
 	}
-
-	private int regionX;
-	private int regionY;
-	private Tile[][][] tiles = new Tile[Z][X][Y];
 }

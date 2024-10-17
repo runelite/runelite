@@ -90,41 +90,34 @@ import static net.runelite.client.ui.JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGR
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chat Channels",
-	description = "Improvements for friends chat and clan chat.",
-	tags = {"icons", "rank", "recent", "clan", "friend", "channel"}
+		name = "Chat Channels",
+		description = "Improvements for friends chat and clan chat.",
+		tags = {"icons", "rank", "recent", "clan", "friend", "channel"}
 )
 public class ChatChannelPlugin extends Plugin
 {
-	private static final int MAX_CHATS = 10;
-	private static final String RECENT_TITLE = "Recent FCs";
 	@VisibleForTesting
 	static final int MESSAGE_DELAY = 10;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private ChatIconManager chatIconManager;
-
-	@Inject
-	private ChatChannelConfig config;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private ChatboxPanelManager chatboxPanelManager;
-
-	@Inject
-	private ChatColorConfig chatColorConfig;
-
-	private List<String> chats;
+	private static final int MAX_CHATS = 10;
+	private static final String RECENT_TITLE = "Recent FCs";
 	/**
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<MemberJoinMessage> joinMessages = new ArrayDeque<>();
 	private final List<MemberActivity> activityBuffer = new LinkedList<>();
+	@Inject
+	private Client client;
+	@Inject
+	private ChatIconManager chatIconManager;
+	@Inject
+	private ChatChannelConfig config;
+	@Inject
+	private ClientThread clientThread;
+	@Inject
+	private ChatboxPanelManager chatboxPanelManager;
+	@Inject
+	private ChatColorConfig chatColorConfig;
+	private List<String> chats;
 	private int joinedTick;
 
 	private boolean kickConfirmed = false;
@@ -186,7 +179,7 @@ public class ChatChannelPlugin extends Plugin
 		}
 
 		if (!config.showFriendsChatJoinLeave() ||
-			member.getRank().getValue() < config.joinLeaveRank().getValue())
+				member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
@@ -201,7 +194,7 @@ public class ChatChannelPlugin extends Plugin
 		final FriendsChatMember member = event.getMember();
 
 		if (!config.showFriendsChatJoinLeave() ||
-			member.getRank().getValue() < config.joinLeaveRank().getValue())
+				member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
@@ -232,8 +225,8 @@ public class ChatChannelPlugin extends Plugin
 	private MemberActivity.ChatType clanChannelToChatType(ClanChannel clanChannel)
 	{
 		return clanChannel == client.getClanChannel() ? MemberActivity.ChatType.CLAN_CHAT :
-			clanChannel == client.getGuestClanChannel() ? MemberActivity.ChatType.GUEST_CHAT :
-			null;
+				clanChannel == client.getGuestClanChannel() ? MemberActivity.ChatType.GUEST_CHAT :
+						null;
 	}
 
 	private boolean clanChannelJoinLeaveEnabled(MemberActivity.ChatType chatType)
@@ -263,7 +256,7 @@ public class ChatChannelPlugin extends Plugin
 		}
 
 		MemberActivity activity = new MemberActivity(ActivityType.JOINED, chatType,
-			member, client.getTickCount());
+				member, client.getTickCount());
 		activityBuffer.add(activity);
 	}
 
@@ -281,7 +274,7 @@ public class ChatChannelPlugin extends Plugin
 		}
 
 		MemberActivity activity = new MemberActivity(ActivityType.LEFT, chatType,
-			member, client.getTickCount());
+				member, client.getTickCount());
 		activityBuffer.add(activity);
 	}
 
@@ -299,8 +292,8 @@ public class ChatChannelPlugin extends Plugin
 			Widget owner = client.getWidget(ComponentID.FRIENDS_CHAT_OWNER);
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
 			if ((friendsChatManager == null || friendsChatManager.getCount() <= 0)
-				&& chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText())
-				&& config.recentChats())
+					&& chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText())
+					&& config.recentChats())
 			{
 				loadFriendsChats();
 			}
@@ -346,8 +339,7 @@ public class ChatChannelPlugin extends Plugin
 						removed = true;
 					}
 				}
-			}
-			else
+			} else
 			{
 				// Everything else in the deque is newer
 				break;
@@ -409,8 +401,7 @@ public class ChatChannelPlugin extends Plugin
 		{
 			textColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatInfo(), CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
 			channelColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatChannelName(), CHAT_FC_NAME_TRANSPARENT_BACKGROUND);
-		}
-		else
+		} else
 		{
 			textColor = MoreObjects.firstNonNull(chatColorConfig.opaqueFriendsChatInfo(), CHAT_FC_TEXT_OPAQUE_BACKGROUND);
 			channelColor = MoreObjects.firstNonNull(chatColorConfig.opaqueFriendsChatChannelName(), CHAT_FC_NAME_OPAQUE_BACKGROUND);
@@ -422,17 +413,17 @@ public class ChatChannelPlugin extends Plugin
 		}
 
 		ChatMessageBuilder message = new ChatMessageBuilder()
-			.append("[")
-			.append(channelColor, friendsChatManager.getName());
+				.append("[")
+				.append(channelColor, friendsChatManager.getName());
 		if (rankIcon > -1)
 		{
 			message
-				.append(" ")
-				.img(rankIcon);
+					.append(" ")
+					.img(rankIcon);
 		}
 		message
-			.append("] ")
-			.append(textColor, member.getName() + activityMessage);
+				.append("] ")
+				.append(textColor, member.getName() + activityMessage);
 
 		final String messageString = message.build();
 		final MessageNode line = client.addChatMessage(ChatMessageType.FRIENDSCHATNOTIFICATION, "", messageString, "");
@@ -464,14 +455,13 @@ public class ChatChannelPlugin extends Plugin
 		if (client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1)
 		{
 			textColor = MoreObjects.firstNonNull(
-				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.transparentClanChatInfo() : chatColorConfig.transparentClanChatGuestInfo(),
-				CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
-		}
-		else
+					chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.transparentClanChatInfo() : chatColorConfig.transparentClanChatGuestInfo(),
+					CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
+		} else
 		{
 			textColor = MoreObjects.firstNonNull(
-				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.opaqueClanChatInfo() : chatColorConfig.opaqueClanChatGuestInfo(),
-				CHAT_FC_TEXT_OPAQUE_BACKGROUND);
+					chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.opaqueClanChatInfo() : chatColorConfig.opaqueClanChatGuestInfo(),
+					CHAT_FC_TEXT_OPAQUE_BACKGROUND);
 		}
 
 		ChatMessageBuilder message = new ChatMessageBuilder();
@@ -483,8 +473,8 @@ public class ChatChannelPlugin extends Plugin
 
 		final String messageString = message.build();
 		final MessageNode line = client.addChatMessage(
-			chatType == MemberActivity.ChatType.CLAN_CHAT ? ChatMessageType.CLAN_MESSAGE : ChatMessageType.CLAN_GUEST_MESSAGE,
-			"", messageString, "");
+				chatType == MemberActivity.ChatType.CLAN_CHAT ? ChatMessageType.CLAN_MESSAGE : ChatMessageType.CLAN_GUEST_MESSAGE,
+				"", messageString, "");
 
 		MemberJoinMessage joinMessage = new MemberJoinMessage(line, line.getId(), client.getTickCount());
 		joinMessages.addLast(joinMessage);
@@ -613,8 +603,7 @@ public class ChatChannelPlugin extends Plugin
 			{
 				chatTitle.setText(chatTitle.getText() + " (" + friendsChatManager.getCount() + "/" + friendsChatManager.getSize() + ")");
 			}
-		}
-		else if (event.getScriptId() == ScriptID.CLAN_SIDEPANEL_DRAW)
+		} else if (event.getScriptId() == ScriptID.CLAN_SIDEPANEL_DRAW)
 		{
 			if (config.clanChatShowOnlineMemberCount())
 			{
@@ -704,16 +693,16 @@ public class ChatChannelPlugin extends Plugin
 	private void confirmKickPlayer(final String kickPlayerName)
 	{
 		chatboxPanelManager.openTextMenuInput("Attempting to kick: " + kickPlayerName)
-			.option("1. Confirm kick", () ->
-				clientThread.invoke(() ->
-				{
-					kickConfirmed = true;
-					client.runScript(ScriptID.FRIENDS_CHAT_SEND_KICK, kickPlayerName);
-					kickConfirmed = false;
-				})
-			)
-			.option("2. Cancel", Runnables.doNothing())
-			.build();
+				.option("1. Confirm kick", () ->
+						clientThread.invoke(() ->
+						{
+							kickConfirmed = true;
+							client.runScript(ScriptID.FRIENDS_CHAT_SEND_KICK, kickPlayerName);
+							kickConfirmed = false;
+						})
+				)
+				.option("2. Cancel", Runnables.doNothing())
+				.build();
 	}
 
 	private void colorIgnoredPlayers(Color ignoreColor)

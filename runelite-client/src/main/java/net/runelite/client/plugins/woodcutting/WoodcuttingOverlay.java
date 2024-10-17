@@ -69,36 +69,35 @@ class WoodcuttingOverlay extends OverlayPanel
 		}
 
 		if (WoodcuttingPlugin.WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation())
-			|| client.getVarpValue(VarPlayer.BUFF_BAR_WC_GROUP_BONUS) == BUFF_BAR_DISPLAYED)
+				|| client.getVarpValue(VarPlayer.BUFF_BAR_WC_GROUP_BONUS) == BUFF_BAR_DISPLAYED)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Woodcutting")
-				.color(Color.GREEN)
-				.build());
-		}
-		else
+					.text("Woodcutting")
+					.color(Color.GREEN)
+					.build());
+		} else
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT woodcutting")
-				.color(Color.RED)
-				.build());
+					.text("NOT woodcutting")
+					.color(Color.RED)
+					.build());
 		}
 
 		int logsCut = session.getLogsCut();
 		if (logsCut > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Logs cut:")
-				.right(Integer.toString(logsCut))
-				.build());
+					.left("Logs cut:")
+					.right(Integer.toString(logsCut))
+					.build());
 
 			int logsPerHr = session.getLogsPerHr();
 			if (logsPerHr > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Logs/hr:")
-					.right(Integer.toString(logsPerHr))
-					.build());
+						.left("Logs/hr:")
+						.right(Integer.toString(logsPerHr))
+						.build());
 			}
 		}
 
@@ -106,17 +105,17 @@ class WoodcuttingOverlay extends OverlayPanel
 		if (bark > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Bark:")
-				.right(Integer.toString(bark))
-				.build());
+					.left("Bark:")
+					.right(Integer.toString(bark))
+					.build());
 
 			int barkPerHr = session.getBarkPerHr();
 			if (barkPerHr > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Bark/hr:")
-					.right(Integer.toString(barkPerHr))
-					.build());
+						.left("Bark/hr:")
+						.right(Integer.toString(barkPerHr))
+						.build());
 			}
 		}
 

@@ -46,9 +46,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Status Bars",
-	description = "Draws status bars next to players inventory showing current HP & Prayer and healing amounts",
-	enabledByDefault = false
+		name = "Status Bars",
+		description = "Draws status bars next to players inventory showing current HP & Prayer and healing amounts",
+		enabledByDefault = false
 )
 @PluginDependency(ItemStatPlugin.class)
 public class StatusBarsPlugin extends Plugin
@@ -121,14 +121,12 @@ public class StatusBarsPlugin extends Plugin
 		if (config.hideAfterCombatDelay() == 0)
 		{
 			barsDisplayed = true;
-		}
-		else if ((interacting instanceof NPC && ArrayUtils.contains(((NPC) interacting).getComposition().getActions(), "Attack"))
-			|| (interacting instanceof Player && client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1))
+		} else if ((interacting instanceof NPC && ArrayUtils.contains(((NPC) interacting).getComposition().getActions(), "Attack"))
+				|| (interacting instanceof Player && client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1))
 		{
 			lastCombatActionTickCount = client.getTickCount();
 			barsDisplayed = true;
-		}
-		else if (client.getTickCount() - lastCombatActionTickCount >= config.hideAfterCombatDelay())
+		} else if (client.getTickCount() - lastCombatActionTickCount >= config.hideAfterCombatDelay())
 		{
 			barsDisplayed = false;
 		}

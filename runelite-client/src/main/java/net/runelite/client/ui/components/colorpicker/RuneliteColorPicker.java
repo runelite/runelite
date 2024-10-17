@@ -100,7 +100,7 @@ public class RuneliteColorPicker extends JDialog
 	private Consumer<Color> onClose;
 
 	RuneliteColorPicker(Window parent, Color previousColor, String title, boolean alphaHidden,
-		final ConfigManager configManager, final ColorPickerManager colorPickerManager)
+						final ConfigManager configManager, final ColorPickerManager colorPickerManager)
 	{
 		super(parent, "RuneLite Color Picker - " + title, ModalityType.MODELESS);
 
@@ -251,7 +251,7 @@ public class RuneliteColorPicker extends JDialog
 		{
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String str, AttributeSet attrs)
-				throws BadLocationException
+					throws BadLocationException
 			{
 				str = str.replaceAll("#|0x", "");
 				String text = RuneliteColorPicker.getReplacedText(fb, offset, length, str);
@@ -294,7 +294,7 @@ public class RuneliteColorPicker extends JDialog
 		});
 
 		alphaSlider.setOnValueChanged(i ->
-			colorChange(new Color(selectedColor.getRed(), selectedColor.getGreen(), selectedColor.getBlue(), i)));
+				colorChange(new Color(selectedColor.getRed(), selectedColor.getGreen(), selectedColor.getBlue(), i)));
 
 		updatePanels();
 		updateText();
@@ -324,6 +324,19 @@ public class RuneliteColorPicker extends JDialog
 				}
 			}
 		});
+	}
+
+	/**
+	 * Gets the whole string from the passed DocumentFilter replace.
+	 */
+	static String getReplacedText(DocumentFilter.FilterBypass fb, int offset, int length, String str)
+			throws BadLocationException
+	{
+		Document doc = fb.getDocument();
+		StringBuilder sb = new StringBuilder(doc.getText(0, doc.getLength()));
+		sb.replace(offset, offset + length, str);
+
+		return sb.toString();
 	}
 
 	private void updatePanels()
@@ -361,10 +374,10 @@ public class RuneliteColorPicker extends JDialog
 		if (this.selectedColor.getAlpha() != this.alphaSlider.getValue())
 		{
 			this.selectedColor = new Color(
-				selectedColor.getRed(),
-				selectedColor.getGreen(),
-				selectedColor.getBlue(),
-				alphaSlider.getValue());
+					selectedColor.getRed(),
+					selectedColor.getGreen(),
+					selectedColor.getBlue(),
+					alphaSlider.getValue());
 		}
 
 		updateText();
@@ -415,10 +428,10 @@ public class RuneliteColorPicker extends JDialog
 
 		Rectangle gcBounds = gc.getBounds();
 		gcBounds.setRect(
-			gcBounds.x + insets.left,
-			gcBounds.y + insets.top,
-			gcBounds.width - insets.left - insets.right,
-			gcBounds.height - insets.top - insets.bottom);
+				gcBounds.x + insets.left,
+				gcBounds.y + insets.top,
+				gcBounds.width - insets.left - insets.right,
+				gcBounds.height - insets.top - insets.bottom);
 
 		Dimension compSize = c.getSize();
 		Point compLocation = c.getLocationOnScreen();
@@ -453,18 +466,5 @@ public class RuneliteColorPicker extends JDialog
 		}
 
 		setLocation(dx, dy);
-	}
-
-	/**
-	 * Gets the whole string from the passed DocumentFilter replace.
-	 */
-	static String getReplacedText(DocumentFilter.FilterBypass fb, int offset, int length, String str)
-		throws BadLocationException
-	{
-		Document doc = fb.getDocument();
-		StringBuilder sb = new StringBuilder(doc.getText(0, doc.getLength()));
-		sb.replace(offset, offset + length, str);
-
-		return sb.toString();
 	}
 }

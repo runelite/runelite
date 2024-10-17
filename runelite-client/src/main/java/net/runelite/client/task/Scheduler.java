@@ -82,8 +82,7 @@ public class Scheduler
 				if (schedule.asynchronous())
 				{
 					executor.submit(() -> run(scheduledMethod));
-				}
-				else
+				} else
 				{
 					run(scheduledMethod);
 				}
@@ -99,18 +98,15 @@ public class Scheduler
 			if (lambda != null)
 			{
 				lambda.run();
-			}
-			else
+			} else
 			{
 				Method method = scheduledMethod.getMethod();
 				method.invoke(scheduledMethod.getObject());
 			}
-		}
-		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{
 			log.warn("error invoking scheduled task", ex);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.warn("error during scheduled task", ex);
 		}

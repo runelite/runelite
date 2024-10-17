@@ -36,24 +36,19 @@ import lombok.Setter;
 @Builder
 public class SplitComponent implements LayoutableRenderableEntity
 {
-	private LayoutableRenderableEntity first;
-	private LayoutableRenderableEntity second;
-
-	@Builder.Default
-	private Point preferredLocation = new Point();
-
-	@Builder.Default
-	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
-
-	@Builder.Default
-	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
-
-	@Builder.Default
-	private Point gap = new Point(0, 0);
-
 	@Builder.Default
 	@Getter
 	private final Rectangle bounds = new Rectangle();
+	private LayoutableRenderableEntity first;
+	private LayoutableRenderableEntity second;
+	@Builder.Default
+	private Point preferredLocation = new Point();
+	@Builder.Default
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
+	@Builder.Default
+	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
+	@Builder.Default
+	private Point gap = new Point(0, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -67,8 +62,7 @@ public class SplitComponent implements LayoutableRenderableEntity
 		if (orientation == ComponentOrientation.VERTICAL)
 		{
 			y = firstDimension.height + gap.y;
-		}
-		else
+		} else
 		{
 			x = firstDimension.width + gap.x;
 		}
@@ -87,8 +81,7 @@ public class SplitComponent implements LayoutableRenderableEntity
 		{
 			totalWidth = Math.max(firstDimension.width, secondDimension.width);
 			totalHeight = y + secondDimension.height;
-		}
-		else
+		} else
 		{
 			totalHeight = Math.max(firstDimension.height, secondDimension.height);
 			totalWidth = x + secondDimension.width;

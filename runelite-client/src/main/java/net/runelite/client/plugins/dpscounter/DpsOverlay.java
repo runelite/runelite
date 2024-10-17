@@ -56,7 +56,7 @@ class DpsOverlay extends OverlayPanel
 
 	@Inject
 	DpsOverlay(DpsCounterPlugin dpsCounterPlugin, DpsConfig dpsConfig, PartyService partyService, Client client,
-		TooltipManager tooltipManager)
+			   TooltipManager tooltipManager)
 	{
 		super(dpsCounterPlugin);
 		this.dpsCounterPlugin = dpsCounterPlugin;
@@ -78,8 +78,7 @@ class DpsOverlay extends OverlayPanel
 		if (s >= 3600)
 		{
 			format = String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
-		}
-		else
+		} else
 		{
 			format = String.format("%d:%02d", s / 60, (s % 60));
 		}
@@ -102,9 +101,9 @@ class DpsOverlay extends OverlayPanel
 
 		final String title = (inParty ? "Party " : "") + (showDamage ? "Damage" : "DPS") + (paused ? " (paused)" : "");
 		panelComponent.getChildren().add(
-			TitleComponent.builder()
-				.text(title)
-				.build());
+				TitleComponent.builder()
+						.text(title)
+						.build());
 
 		int maxWidth = ComponentConstants.STANDARD_WIDTH;
 		FontMetrics fontMetrics = graphics.getFontMetrics();
@@ -115,10 +114,10 @@ class DpsOverlay extends OverlayPanel
 			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());
 			maxWidth = Math.max(maxWidth, fontMetrics.stringWidth(left) + fontMetrics.stringWidth(right));
 			panelComponent.getChildren().add(
-				LineComponent.builder()
-					.left(left)
-					.right(right)
-					.build());
+					LineComponent.builder()
+							.left(left)
+							.right(right)
+							.build());
 		}
 
 		panelComponent.setPreferredSize(new Dimension(maxWidth + PANEL_WIDTH_OFFSET, 0));
@@ -133,10 +132,10 @@ class DpsOverlay extends OverlayPanel
 				if (self != null && total.getDamage() > self.getDamage())
 				{
 					panelComponent.getChildren().add(
-						LineComponent.builder()
-							.left(total.getName())
-							.right(showDamage ? Integer.toString(total.getDamage()) : DPS_FORMAT.format(total.getDps()))
-							.build());
+							LineComponent.builder()
+									.left(total.getName())
+									.right(showDamage ? Integer.toString(total.getDamage()) : DPS_FORMAT.format(total.getDps()))
+									.build());
 				}
 			}
 		}
@@ -152,8 +151,7 @@ class DpsOverlay extends OverlayPanel
 		if (paused)
 		{
 			addMenuEntry(RUNELITE_OVERLAY, "Unpause", "DPS counter", e -> dpsCounterPlugin.unpause());
-		}
-		else
+		} else
 		{
 			addMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter", e -> dpsCounterPlugin.pause());
 		}

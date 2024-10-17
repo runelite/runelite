@@ -81,9 +81,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility",
-	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps", "sepulchre"}
+		name = "Agility",
+		description = "Show helpful information about agility courses and obstacles",
+		tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps", "sepulchre"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Slf4j
@@ -91,8 +91,8 @@ public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
 	private static final Set<Integer> SEPULCHRE_NPCS = ImmutableSet.of(
-		NullNpcID.NULL_9672, NullNpcID.NULL_9673, NullNpcID.NULL_9674,  // arrows
-		NullNpcID.NULL_9669, NullNpcID.NULL_9670, NullNpcID.NULL_9671   // swords
+			NullNpcID.NULL_9672, NullNpcID.NULL_9673, NullNpcID.NULL_9674,  // arrows
+			NullNpcID.NULL_9669, NullNpcID.NULL_9670, NullNpcID.NULL_9671   // swords
 	);
 
 	@Getter
@@ -213,8 +213,7 @@ public class AgilityPlugin extends Plugin
 		if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_ADVANCED && event.getValue() == 6)
 		{
 			trackSession(Courses.COLOSSAL_WYRM_ADVANCED);
-		}
-		else if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_BASIC && event.getValue() == 6)
+		} else if (event.getVarbitId() == Varbits.COLOSSAL_WYRM_COURSE_BASIC && event.getValue() == 6)
 		{
 			trackSession(Courses.COLOSSAL_WYRM_BASIC);
 		}
@@ -240,8 +239,8 @@ public class AgilityPlugin extends Plugin
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
 		if (course == null
-			|| !config.showLapCount()
-			|| Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
+				|| !config.showLapCount()
+				|| Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
 		{
 			return;
 		}
@@ -297,7 +296,7 @@ public class AgilityPlugin extends Plugin
 			lastArenaTicketPosition = newTicketPosition;
 
 			if (oldTickPosition != null && newTicketPosition != null
-				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
+					&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
@@ -403,11 +402,11 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.OBSTACLE_IDS.contains(newObject.getId()) ||
-			Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()) ||
-			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
-			Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(newObject.getId()) ||
-			Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(newObject.getId()))
+				Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()) ||
+				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+						&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
+				Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(newObject.getId()) ||
+				Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(newObject.getId()))
 		{
 			obstacles.put(newObject, new Obstacle(tile, null));
 		}
@@ -429,8 +428,7 @@ public class AgilityPlugin extends Plugin
 				{
 					closestShortcut = shortcut;
 					break;
-				}
-				else
+				} else
 				{
 					int newDistance = shortcut.getWorldLocation().distanceTo2D(newObject.getWorldLocation());
 					if (closestShortcut == null || newDistance < distance)

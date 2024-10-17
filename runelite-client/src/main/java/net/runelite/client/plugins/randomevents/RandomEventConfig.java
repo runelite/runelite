@@ -35,17 +35,17 @@ import net.runelite.client.config.Notification;
 public interface RandomEventConfig extends Config
 {
 	@ConfigSection(
-		name = "Notification Settings",
-		description = "Choose which random events will trigger notifications when spawned",
-		position = 99
+			name = "Notification Settings",
+			description = "Choose which random events will trigger notifications when spawned",
+			position = 99
 	)
 	String notificationSection = "section";
 
 	@ConfigItem(
-		keyName = "removeMenuOptions",
-		name = "Remove others' menu options",
-		description = "Remove menu options from random events for other players.",
-		position = -3
+			keyName = "removeMenuOptions",
+			name = "Remove others' menu options",
+			description = "Remove menu options from random events for other players.",
+			position = -3
 	)
 	default boolean removeMenuOptions()
 	{
@@ -53,11 +53,11 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyAll",
-		name = "Notify for all events",
-		description = "",
-		position = -2,
-		section = notificationSection
+			keyName = "notifyAll",
+			name = "Notify for all events",
+			description = "",
+			position = -2,
+			section = notificationSection
 	)
 	default Notification notifyAllEvents()
 	{
@@ -65,10 +65,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyArnav",
-		name = "Notify on Capt' Arnav's Chest",
-		description = "",
-		section = notificationSection
+			keyName = "notifyArnav",
+			name = "Notify on Capt' Arnav's Chest",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyArnav()
 	{
@@ -76,10 +76,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyBeekeeper",
-		name = "Notify on Beekeeper",
-		description = "",
-		section = notificationSection
+			keyName = "notifyBeekeeper",
+			name = "Notify on Beekeeper",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyBeekeeper()
 	{
@@ -87,10 +87,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyBob",
-		name = "Notify on Evil Bob",
-		description = "",
-		section = notificationSection
+			keyName = "notifyBob",
+			name = "Notify on Evil Bob",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyBob()
 	{
@@ -98,10 +98,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyCerters",
-		name = "Notify on Certers",
-		description = "",
-		section = notificationSection
+			keyName = "notifyCerters",
+			name = "Notify on Certers",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyCerters()
 	{
@@ -109,10 +109,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyDemon",
-		name = "Notify on Drill Demon",
-		description = "",
-		section = notificationSection
+			keyName = "notifyDemon",
+			name = "Notify on Drill Demon",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyDemon()
 	{
@@ -120,10 +120,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyDunce",
-		name = "Notify on Surprise Exam",
-		description = "",
-		section = notificationSection
+			keyName = "notifyDunce",
+			name = "Notify on Surprise Exam",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyDunce()
 	{
@@ -131,10 +131,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyDwarf",
-		name = "Notify on Drunken Dwarf",
-		description = "",
-		section = notificationSection
+			keyName = "notifyDwarf",
+			name = "Notify on Drunken Dwarf",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyDwarf()
 	{
@@ -142,10 +142,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyForester",
-		name = "Notify on Freaky Forester",
-		description = "",
-		section = notificationSection
+			keyName = "notifyForester",
+			name = "Notify on Freaky Forester",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyForester()
 	{
@@ -153,10 +153,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyFlippa",
-		name = "Notify on Pinball",
-		description = "",
-		section = notificationSection
+			keyName = "notifyFlippa",
+			name = "Notify on Pinball",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyFlippa()
 	{
@@ -164,10 +164,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyFrog",
-		name = "Notify on Kiss the Frog",
-		description = "",
-		section = notificationSection
+			keyName = "notifyFrog",
+			name = "Notify on Kiss the Frog",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyFrog()
 	{
@@ -175,10 +175,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyGenie",
-		name = "Notify on Genie",
-		description = "",
-		section = notificationSection
+			keyName = "notifyGenie",
+			name = "Notify on Genie",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyGenie()
 	{
@@ -186,10 +186,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyGravedigger",
-		name = "Notify on Gravedigger",
-		description = "",
-		section = notificationSection
+			keyName = "notifyGravedigger",
+			name = "Notify on Gravedigger",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyGravedigger()
 	{
@@ -197,10 +197,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyJekyll",
-		name = "Notify on Jekyll & Hyde",
-		description = "",
-		section = notificationSection
+			keyName = "notifyJekyll",
+			name = "Notify on Jekyll & Hyde",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyJekyll()
 	{
@@ -208,10 +208,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyMaze",
-		name = "Notify on Maze",
-		description = "",
-		section = notificationSection
+			keyName = "notifyMaze",
+			name = "Notify on Maze",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyMaze()
 	{
@@ -219,10 +219,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyMime",
-		name = "Notify on Mime",
-		description = "",
-		section = notificationSection
+			keyName = "notifyMime",
+			name = "Notify on Mime",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyMime()
 	{
@@ -230,10 +230,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyMoM",
-		name = "Notify on Mysterious Old Man",
-		description = "",
-		section = notificationSection
+			keyName = "notifyMoM",
+			name = "Notify on Mysterious Old Man",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyMoM()
 	{
@@ -241,10 +241,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyPillory",
-		name = "Notify on Pillory",
-		description = "",
-		section = notificationSection
+			keyName = "notifyPillory",
+			name = "Notify on Pillory",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyPillory()
 	{
@@ -252,10 +252,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyPrison",
-		name = "Notify on Prison Pete",
-		description = "",
-		section = notificationSection
+			keyName = "notifyPrison",
+			name = "Notify on Prison Pete",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyPrison()
 	{
@@ -263,10 +263,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyQuiz",
-		name = "Notify on Quiz Master",
-		description = "",
-		section = notificationSection
+			keyName = "notifyQuiz",
+			name = "Notify on Quiz Master",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyQuiz()
 	{
@@ -274,10 +274,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifySandwich",
-		name = "Notify on Sandwich Lady",
-		description = "",
-		section = notificationSection
+			keyName = "notifySandwich",
+			name = "Notify on Sandwich Lady",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifySandwich()
 	{
@@ -285,10 +285,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyTurpentine",
-		name = "Notify on Rick Turpentine",
-		description = "",
-		section = notificationSection
+			keyName = "notifyTurpentine",
+			name = "Notify on Rick Turpentine",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyTurpentine()
 	{
@@ -296,10 +296,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyTwin",
-		name = "Notify on Evil twin",
-		description = "",
-		section = notificationSection
+			keyName = "notifyTwin",
+			name = "Notify on Evil twin",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyTwin()
 	{
@@ -307,10 +307,10 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyCountCheck",
-		name = "Notify on Count Check",
-		description = "",
-		section = notificationSection
+			keyName = "notifyCountCheck",
+			name = "Notify on Count Check",
+			description = "",
+			section = notificationSection
 	)
 	default Notification notifyCountCheck()
 	{

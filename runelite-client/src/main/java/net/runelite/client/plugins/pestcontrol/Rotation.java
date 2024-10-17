@@ -43,9 +43,9 @@ enum Rotation
 	Rotation(Portal first, Portal second, Portal third, Portal fourth)
 	{
 		portals = new Portal[]
-		{
-			first, second, third, fourth
-		};
+				{
+						first, second, third, fourth
+				};
 	}
 
 	public Portal getPortal(int index)

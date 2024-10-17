@@ -101,26 +101,15 @@ public enum PrayerAction implements ItemSkillAction
 	SUPERIOR_DRAGON_BONES(ItemID.SUPERIOR_DRAGON_BONES, 70, 150, PrayerMethod.BONES),
 	;
 
-	private enum PrayerMethod
-	{
-		BONES,
-		DEMONIC_ASHES,
-		ENSOULED_HEAD,
-		PREPARED_FISH,
-		SHADE_REMAINS,
-		BLESSED_SUNFIRE_WINE,
-	}
-
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_BONES = EnumSet.of(
-		MORYTANIA_DIARY_3_SHADES,
-		DEMONIC_OFFERING,
-		BLESSED_SUNFIRE_WINE
+			MORYTANIA_DIARY_3_SHADES,
+			DEMONIC_OFFERING,
+			BLESSED_SUNFIRE_WINE
 	);
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_REMAINS = EnumSet.complementOf(EnumSet.of(MORYTANIA_DIARY_3_SHADES));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_BLESSED_SUNFIRE_WINE = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES, BLESSED_SUNFIRE_WINE));
 	private static final Set<PrayerBonus> EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES));
-
 	private final int itemId;
 	private final int level;
 	private final float xp;
@@ -145,5 +134,15 @@ public enum PrayerAction implements ItemSkillAction
 			default:
 				return EnumSet.allOf(PrayerBonus.class);
 		}
+	}
+
+	private enum PrayerMethod
+	{
+		BONES,
+		DEMONIC_ASHES,
+		ENSOULED_HEAD,
+		PREPARED_FISH,
+		SHADE_REMAINS,
+		BLESSED_SUNFIRE_WINE,
 	}
 }

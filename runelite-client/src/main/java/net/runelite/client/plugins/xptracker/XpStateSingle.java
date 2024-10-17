@@ -181,8 +181,7 @@ class XpStateSingle
 				if (durationDays > 1)
 				{
 					return String.format("%d days %02d:%02d:%02d", durationDays, durationHours, durationMinutes, durationSeconds);
-				}
-				else if (durationDays == 1)
+				} else if (durationDays == 1)
 				{
 					return String.format("1 day %02d:%02d:%02d", durationHours, durationMinutes, durationSeconds);
 				}
@@ -190,8 +189,7 @@ class XpStateSingle
 				if (durationHoursTotal > 1)
 				{
 					return String.format("%d hours %02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
-				}
-				else if (durationHoursTotal == 1)
+				} else if (durationHoursTotal == 1)
 				{
 					return String.format("1 hour %02d:%02d", durationMinutes, durationSeconds);
 				}
@@ -252,8 +250,7 @@ class XpStateSingle
 		if (action.isActionsHistoryInitialized())
 		{
 			action.getActionExps()[action.getActionExpIndex()] = actionExp;
-		}
-		else
+		} else
 		{
 			// populate all values in our action history array with this first value that we see
 			// so the average value of our action history starts out as this first value we see
@@ -276,8 +273,7 @@ class XpStateSingle
 		if (goalStartXp < 0 || currentXp > goalEndXp)
 		{
 			startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp((int) currentXp));
-		}
-		else
+		} else
 		{
 			startLevelExp = goalStartXp;
 		}
@@ -286,10 +282,9 @@ class XpStateSingle
 		{
 			int currentLevel = Experience.getLevelForXp((int) currentXp);
 			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
-				? Experience.getXpForLevel(currentLevel + 1)
-				: Experience.MAX_SKILL_XP;
-		}
-		else
+					? Experience.getXpForLevel(currentLevel + 1)
+					: Experience.MAX_SKILL_XP;
+		} else
 		{
 			endLevelExp = goalEndXp;
 		}
@@ -308,21 +303,21 @@ class XpStateSingle
 	XpSnapshotSingle snapshot()
 	{
 		return XpSnapshotSingle.builder()
-			.startLevel(Experience.getLevelForXp(startLevelExp))
-			.endLevel(Experience.getLevelForXp(endLevelExp))
-			.xpGainedInSession(getTotalXpGained())
-			.xpRemainingToGoal(getXpRemaining())
-			.xpPerHour(getXpHr())
-			.skillProgressToGoal(getSkillProgress())
-			.actionType(actionType)
-			.actionsInSession(getXpAction(actionType).getActions() + getXpAction(actionType).getActionsSinceReset())
-			.actionsRemainingToGoal(getActionsRemaining())
-			.actionsPerHour(getActionsHr())
-			.timeTillGoal(getTimeTillLevel(XpGoalTimeType.DAYS))
-			.timeTillGoalHours(getTimeTillLevel(XpGoalTimeType.HOURS))
-			.timeTillGoalShort(getTimeTillLevel(XpGoalTimeType.SHORT))
-			.startGoalXp(startLevelExp)
-			.endGoalXp(endLevelExp)
-			.build();
+				.startLevel(Experience.getLevelForXp(startLevelExp))
+				.endLevel(Experience.getLevelForXp(endLevelExp))
+				.xpGainedInSession(getTotalXpGained())
+				.xpRemainingToGoal(getXpRemaining())
+				.xpPerHour(getXpHr())
+				.skillProgressToGoal(getSkillProgress())
+				.actionType(actionType)
+				.actionsInSession(getXpAction(actionType).getActions() + getXpAction(actionType).getActionsSinceReset())
+				.actionsRemainingToGoal(getActionsRemaining())
+				.actionsPerHour(getActionsHr())
+				.timeTillGoal(getTimeTillLevel(XpGoalTimeType.DAYS))
+				.timeTillGoalHours(getTimeTillLevel(XpGoalTimeType.HOURS))
+				.timeTillGoalShort(getTimeTillLevel(XpGoalTimeType.SHORT))
+				.startGoalXp(startLevelExp)
+				.endGoalXp(endLevelExp)
+				.build();
 	}
 }

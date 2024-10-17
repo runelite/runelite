@@ -125,8 +125,8 @@ public class AlchemyRoom extends MTARoom
 			best = bestItem;
 			// Reset items to unknown
 			Arrays.stream(cupboards)
-				.filter(Objects::nonNull)
-				.forEach(e -> e.alchemyItem = AlchemyItem.UNKNOWN);
+					.filter(Objects::nonNull)
+					.forEach(e -> e.alchemyItem = AlchemyItem.UNKNOWN);
 
 			client.clearHintArrow();
 		}
@@ -187,8 +187,7 @@ public class AlchemyRoom extends MTARoom
 		if (cupboard != null)
 		{
 			cupboard.gameObject = spawn;
-		}
-		else
+		} else
 		{
 			cupboard = new Cupboard();
 			cupboard.gameObject = spawn;
@@ -235,8 +234,7 @@ public class AlchemyRoom extends MTARoom
 				{
 					fill(clicked, alchemyItem);
 				}
-			}
-			else if (message.equals(EMPTY))
+			} else if (message.equals(EMPTY))
 			{
 				Cupboard clicked = getClicked();
 				if (clicked.alchemyItem != AlchemyItem.EMPTY)
@@ -258,7 +256,7 @@ public class AlchemyRoom extends MTARoom
 	{
 		Player player = client.getLocalPlayer();
 		return player != null && player.getWorldLocation().getRegionID() == MTA_ALCH_REGION
-			&& player.getWorldLocation().getPlane() == 2;
+				&& player.getWorldLocation().getPlane() == 2;
 	}
 
 	private AlchemyItem getBest()

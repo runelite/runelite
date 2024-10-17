@@ -29,76 +29,76 @@ import org.junit.Test;
 
 public class LightboxSolverTest
 {
-	private static final int[] INITIAL = new int[]{
-		1, 0, 1, 0, 0,
-		0, 1, 0, 1, 0,
-		0, 1, 1, 1, 0,
-		0, 1, 0, 1, 0,
-		1, 0, 1, 0, 1
+	private static final int[] INITIAL = new int[] {
+			1, 0, 1, 0, 0,
+			0, 1, 0, 1, 0,
+			0, 1, 1, 1, 0,
+			0, 1, 0, 1, 0,
+			1, 0, 1, 0, 1
 	};
 
-	private static final int[] A = new int[]{
-		0, 1, 0, 0, 0,
-		0, 0, 0, 0, 1,
-		0, 1, 0, 1, 0,
-		0, 0, 0, 1, 0,
-		0, 0, 0, 0, 1
+	private static final int[] A = new int[] {
+			0, 1, 0, 0, 0,
+			0, 0, 0, 0, 1,
+			0, 1, 0, 1, 0,
+			0, 0, 0, 1, 0,
+			0, 0, 0, 0, 1
 	};
 
-	private static final int[] B = new int[]{
-		0, 1, 0, 0, 0,
-		1, 0, 0, 0, 1,
-		0, 0, 0, 1, 0,
-		1, 1, 0, 1, 0,
-		0, 0, 0, 1, 1,
+	private static final int[] B = new int[] {
+			0, 1, 0, 0, 0,
+			1, 0, 0, 0, 1,
+			0, 0, 0, 1, 0,
+			1, 1, 0, 1, 0,
+			0, 0, 0, 1, 1,
 	};
 
-	private static final int[] C = new int[]{
-		0, 1, 0, 0, 0,
-		1, 0, 0, 0, 1,
-		1, 1, 0, 0, 0,
-		0, 1, 0, 0, 0,
-		0, 0, 0, 0, 1,
+	private static final int[] C = new int[] {
+			0, 1, 0, 0, 0,
+			1, 0, 0, 0, 1,
+			1, 1, 0, 0, 0,
+			0, 1, 0, 0, 0,
+			0, 0, 0, 0, 1,
 	};
 
-	private static final int[] D = new int[]{
-		1, 1, 0, 0, 0,
-		1, 0, 1, 0, 1,
-		1, 1, 0, 1, 1,
-		0, 1, 1, 0, 0,
-		1, 0, 0, 1, 1,
+	private static final int[] D = new int[] {
+			1, 1, 0, 0, 0,
+			1, 0, 1, 0, 1,
+			1, 1, 0, 1, 1,
+			0, 1, 1, 0, 0,
+			1, 0, 0, 1, 1,
 	};
 
-	private static final int[] E = new int[]{
-		1, 0, 0, 1, 0,
-		1, 1, 1, 0, 1,
-		1, 1, 0, 1, 0,
-		0, 0, 1, 0, 0,
-		1, 0, 0, 1, 1,
+	private static final int[] E = new int[] {
+			1, 0, 0, 1, 0,
+			1, 1, 1, 0, 1,
+			1, 1, 0, 1, 0,
+			0, 0, 1, 0, 0,
+			1, 0, 0, 1, 1,
 	};
 
-	private static final int[] F = new int[]{
-		1, 0, 0, 1, 0,
-		1, 0, 0, 0, 1,
-		1, 0, 1, 1, 0,
-		0, 0, 1, 0, 0,
-		1, 0, 0, 0, 0,
+	private static final int[] F = new int[] {
+			1, 0, 0, 1, 0,
+			1, 0, 0, 0, 1,
+			1, 0, 1, 1, 0,
+			0, 0, 1, 0, 0,
+			1, 0, 0, 0, 0,
 	};
 
-	private static final int[] G = new int[]{
-		1, 0, 0, 1, 1,
-		1, 1, 1, 0, 0,
-		0, 1, 1, 1, 0,
-		0, 0, 0, 0, 1,
-		1, 1, 0, 0, 0,
+	private static final int[] G = new int[] {
+			1, 0, 0, 1, 1,
+			1, 1, 1, 0, 0,
+			0, 1, 1, 1, 0,
+			0, 0, 0, 0, 1,
+			1, 1, 0, 0, 0,
 	};
 
-	private static final int[] H = new int[]{
-		1, 0, 1, 1, 1,
-		1, 1, 1, 0, 0,
-		0, 1, 1, 1, 0,
-		1, 1, 0, 0, 1,
-		1, 0, 0, 1, 0
+	private static final int[] H = new int[] {
+			1, 0, 1, 1, 1,
+			1, 1, 1, 0, 0,
+			0, 1, 1, 1, 0,
+			1, 1, 0, 0, 1,
+			1, 0, 0, 1, 0
 	};
 
 	private static LightboxState fromArray(int[] array)

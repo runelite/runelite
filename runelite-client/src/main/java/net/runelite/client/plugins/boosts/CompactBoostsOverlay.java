@@ -93,27 +93,27 @@ class CompactBoostsOverlay extends Overlay
 			}
 
 			drawBoost(graphics, fontMetrics, fontHeight,
-				skillIconManager.getSkillImage(skill, true),
-				getTextColor(boost),
-				getBoostText(boost, base, boosted));
+					skillIconManager.getSkillImage(skill, true),
+					getTextColor(boost),
+					getBoostText(boost, base, boosted));
 		}
 
 		int time = plugin.getChangeUpTicks();
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
-				DEBUFFED,
-				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				Integer.toString(plugin.getChangeTime(time)));
+					DEBUFFED,
+					time < 10 ? Color.RED.brighter() : Color.WHITE,
+					Integer.toString(plugin.getChangeTime(time)));
 		}
 
 		time = plugin.getChangeDownTicks();
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
-				BUFFED,
-				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				Integer.toString(plugin.getChangeTime(time)));
+					BUFFED,
+					time < 10 ? Color.RED.brighter() : Color.WHITE,
+					Integer.toString(plugin.getChangeTime(time)));
 		}
 
 		return new Dimension(maxX, curY);
@@ -129,16 +129,16 @@ class CompactBoostsOverlay extends Overlay
 		textComponent.setText(text);
 		textComponent.setOutline(true);
 		textComponent.setPosition(new Point(
-			image.getWidth()
-				+ H_PADDING // add a little bit of padding to get the text off the side of the image
-				+ (TEXT_WIDTH - stringWidth), // right justify to TEXT_WIDTH
-			// this really should be y + (image.getHeight() / 2) + (fontHeight / 2), but in practice
-			// it is the same
-			curY + fontHeight));
+				image.getWidth()
+						+ H_PADDING // add a little bit of padding to get the text off the side of the image
+						+ (TEXT_WIDTH - stringWidth), // right justify to TEXT_WIDTH
+				// this really should be y + (image.getHeight() / 2) + (fontHeight / 2), but in practice
+				// it is the same
+				curY + fontHeight));
 		textComponent.render(graphics);
 
 		curY += Math.max(image.getHeight(), fontHeight)
-			+ V_PADDING; // padding to keep images from touching
+				+ V_PADDING; // padding to keep images from touching
 		maxX = Math.max(maxX, image.getWidth() + H_PADDING + TEXT_WIDTH);
 	}
 
@@ -147,8 +147,7 @@ class CompactBoostsOverlay extends Overlay
 		if (config.useRelativeBoost())
 		{
 			return boost > 0 ? "+" + boost : Integer.toString(boost);
-		}
-		else
+		} else
 		{
 			return Integer.toString(boosted);
 		}

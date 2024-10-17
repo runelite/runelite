@@ -65,8 +65,7 @@ public class NPCManager
 		try
 		{
 			npcMap = npcInfoClient.getNpcs();
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			log.warn("error loading npc stats", e);
 		}

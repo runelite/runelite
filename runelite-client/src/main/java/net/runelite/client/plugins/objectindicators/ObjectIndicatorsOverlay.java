@@ -61,7 +61,7 @@ class ObjectIndicatorsOverlay extends Overlay
 
 	@Inject
 	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin,
-		ModelOutlineRenderer modelOutlineRenderer)
+									ModelOutlineRenderer modelOutlineRenderer)
 	{
 		this.client = client;
 		this.config = config;
@@ -83,10 +83,10 @@ class ObjectIndicatorsOverlay extends Overlay
 
 		Stroke stroke = new BasicStroke((float) config.borderWidth());
 		final var defaultFlags =
-			(config.highlightHull() ? HF_HULL : 0) |
-			(config.highlightOutline() ? HF_OUTLINE : 0) |
-			(config.highlightClickbox() ? HF_CLICKBOX : 0) |
-			(config.highlightTile() ? HF_TILE : 0);
+				(config.highlightHull() ? HF_HULL : 0) |
+						(config.highlightOutline() ? HF_OUTLINE : 0) |
+						(config.highlightClickbox() ? HF_CLICKBOX : 0) |
+						(config.highlightTile() ? HF_TILE : 0);
 		for (ColorTileObject obj : objects)
 		{
 			TileObject object = obj.getTileObject();
@@ -103,9 +103,9 @@ class ObjectIndicatorsOverlay extends Overlay
 				composition = composition.getImpostor();
 				// Only mark the object if the name still matches
 				if (composition == null
-					|| Strings.isNullOrEmpty(composition.getName())
-					|| "null".equals(composition.getName())
-					|| !composition.getName().equals(obj.getName()))
+						|| Strings.isNullOrEmpty(composition.getName())
+						|| "null".equals(composition.getName())
+						|| !composition.getName().equals(obj.getName()))
 				{
 					continue;
 				}
@@ -128,7 +128,7 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if ((flags & HF_OUTLINE) != 0)
 			{
-				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), borderColor, config.outlineFeather());
+				modelOutlineRenderer.drawOutline(object, (int) config.borderWidth(), borderColor, config.outlineFeather());
 			}
 
 			if ((flags & HF_CLICKBOX) != 0)
@@ -163,22 +163,18 @@ class ObjectIndicatorsOverlay extends Overlay
 		if (object instanceof GameObject)
 		{
 			polygon = ((GameObject) object).getConvexHull();
-		}
-		else if (object instanceof WallObject)
+		} else if (object instanceof WallObject)
 		{
 			polygon = ((WallObject) object).getConvexHull();
 			polygon2 = ((WallObject) object).getConvexHull2();
-		}
-		else if (object instanceof DecorativeObject)
+		} else if (object instanceof DecorativeObject)
 		{
 			polygon = ((DecorativeObject) object).getConvexHull();
 			polygon2 = ((DecorativeObject) object).getConvexHull2();
-		}
-		else if (object instanceof GroundObject)
+		} else if (object instanceof GroundObject)
 		{
 			polygon = ((GroundObject) object).getConvexHull();
-		}
-		else
+		} else
 		{
 			polygon = object.getCanvasTilePoly();
 		}

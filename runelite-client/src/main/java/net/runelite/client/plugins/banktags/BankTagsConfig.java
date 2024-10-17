@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface BankTagsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "useTabs",
-		name = "Use Tag Tabs",
-		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
-		position = 1
+			keyName = "useTabs",
+			name = "Use Tag Tabs",
+			description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
+			position = 1
 	)
 	default boolean tabs()
 	{
@@ -43,10 +43,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rememberTab",
-		name = "Remember last Tag Tab",
-		description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
-		position = 2
+			keyName = "rememberTab",
+			name = "Remember last Tag Tab",
+			description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
+			position = 2
 	)
 	default boolean rememberTab()
 	{
@@ -54,10 +54,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "removeTabSeparators",
-		name = "Remove tab separators",
-		description = "Remove the tab separators normally present in tag tabs",
-		position = 3
+			keyName = "removeTabSeparators",
+			name = "Remove tab separators",
+			description = "Remove the tab separators normally present in tag tabs",
+			position = 3
 	)
 	default boolean removeSeparators()
 	{
@@ -65,10 +65,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "preventTagTabDrags",
-		name = "Prevent tag tab item dragging",
-		description = "Ignore dragged items to prevent unwanted bank item reordering",
-		position = 4
+			keyName = "preventTagTabDrags",
+			name = "Prevent tag tab item dragging",
+			description = "Ignore dragged items to prevent unwanted bank item reordering",
+			position = 4
 	)
 	default boolean preventTagTabDrags()
 	{
@@ -76,10 +76,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "position",
-		name = "",
-		description = "",
-		hidden = true
+			keyName = "position",
+			name = "",
+			description = "",
+			hidden = true
 	)
 	default int position()
 	{
@@ -87,17 +87,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "position",
-		name = "",
-		description = ""
+			keyName = "position",
+			name = "",
+			description = ""
 	)
 	void position(int idx);
 
 	@ConfigItem(
-		keyName = "tab",
-		name = "",
-		description = "",
-		hidden = true
+			keyName = "tab",
+			name = "",
+			description = "",
+			hidden = true
 	)
 	default String tab()
 	{
@@ -105,9 +105,9 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "tab",
-		name = "",
-		description = ""
+			keyName = "tab",
+			name = "",
+			description = ""
 	)
 	void tab(String tab);
 }

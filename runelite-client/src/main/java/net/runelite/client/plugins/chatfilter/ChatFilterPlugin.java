@@ -70,41 +70,30 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
-	name = "Chat Filter",
-	description = "Censor user configurable words or patterns from chat",
-	enabledByDefault = false
+		name = "Chat Filter",
+		description = "Censor user configurable words or patterns from chat",
+		enabledByDefault = false
 )
 public class ChatFilterPlugin extends Plugin
 {
-	private static final Splitter NEWLINE_SPLITTER = Splitter
-		.on("\n")
-		.omitEmptyStrings()
-		.trimResults();
-
 	@VisibleForTesting
 	static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
-
+	private static final Splitter NEWLINE_SPLITTER = Splitter
+			.on("\n")
+			.omitEmptyStrings()
+			.trimResults();
 	private static final Set<ChatMessageType> COLLAPSIBLE_MESSAGETYPES = ImmutableSet.of(
-		ENGINE,
-		GAMEMESSAGE,
-		ITEM_EXAMINE,
-		NPC_EXAMINE,
-		OBJECT_EXAMINE,
-		SPAM,
-		PUBLICCHAT,
-		MODCHAT
+			ENGINE,
+			GAMEMESSAGE,
+			ITEM_EXAMINE,
+			NPC_EXAMINE,
+			OBJECT_EXAMINE,
+			SPAM,
+			PUBLICCHAT,
+			MODCHAT
 	);
 
 	private static final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
-	private List<Pattern> filteredPatterns = Collections.emptyList();
-	private List<Pattern> filteredNamePatterns = Collections.emptyList();
-
-	private static class Duplicate
-	{
-		int messageId;
-		int count;
-	}
-
 	private final LinkedHashMap<String, Duplicate> duplicateChatCache = new LinkedHashMap<>()
 	{
 		private static final int MAX_ENTRIES = 100;
@@ -115,25 +104,24 @@ public class ChatFilterPlugin extends Plugin
 			return size() > MAX_ENTRIES;
 		}
 	};
-
-	private static class FilterCacheMap extends LinkedHashMap<Integer, String>
-	{
-		private static final int MAX_ENTRIES = 100;
-
-		@Override
-		protected boolean removeEldestEntry(Map.Entry<Integer, String> eldest)
-		{
-			return size() > MAX_ENTRIES;
-		}
-	}
-
 	private final Map<ChatMessageType, FilterCacheMap> filterCache = new HashMap<>();
-
+	private List<Pattern> filteredPatterns = Collections.emptyList();
+	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 	@Inject
 	private Client client;
-
 	@Inject
 	private ChatFilterConfig config;
+
+	private static Pattern compilePattern(String pattern)
+	{
+		try
+		{
+			return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		} catch (PatternSyntaxException ex)
+		{
+			return null;
+		}
+	}
 
 	@Provides
 	ChatFilterConfig provideConfig(ConfigManager configManager)
@@ -233,8 +221,8 @@ public class ChatFilterPlugin extends Plugin
 		}
 
 		boolean shouldCollapse = chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT
-			? config.collapsePlayerChat()
-			: COLLAPSIBLE_MESSAGETYPES.contains(chatMessageType) && config.collapseGameChat();
+				? config.collapsePlayerChat()
+				: COLLAPSIBLE_MESSAGETYPES.contains(chatMessageType) && config.collapseGameChat();
 		if (!blockMessage && shouldCollapse)
 		{
 			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + message);
@@ -244,8 +232,8 @@ public class ChatFilterPlugin extends Plugin
 			if (duplicateCacheEntry != null && duplicateCacheEntry.messageId != -1)
 			{
 				blockMessage = duplicateCacheEntry.messageId != messageId ||
-					((chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT) &&
-						config.maxRepeatedPublicChats() > 0 && duplicateCacheEntry.count > config.maxRepeatedPublicChats());
+						((chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT) &&
+								config.maxRepeatedPublicChats() > 0 && duplicateCacheEntry.count > config.maxRepeatedPublicChats());
 				duplicateCount = duplicateCacheEntry.count;
 			}
 		}
@@ -254,8 +242,7 @@ public class ChatFilterPlugin extends Plugin
 		{
 			// Block the message
 			intStack[intStackSize - 3] = 0;
-		}
-		else
+		} else
 		{
 			// Replace the message
 			if (duplicateCount > 1)
@@ -309,9 +296,9 @@ public class ChatFilterPlugin extends Plugin
 	{
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
-			(config.filterFriends() || !client.isFriended(playerName, false)) &&
-			(config.filterFriendsChat() || !isFriendsChatMember(playerName)) &&
-			(config.filterClanChat() || !isClanChatMember(playerName));
+				(config.filterFriends() || !client.isFriended(playerName, false)) &&
+				(config.filterFriendsChat() || !isFriendsChatMember(playerName)) &&
+				(config.filterClanChat() || !isClanChatMember(playerName));
 	}
 
 	private boolean isFriendsChatMember(String name)
@@ -340,9 +327,9 @@ public class ChatFilterPlugin extends Plugin
 	String censorMessage(final String username, final String message)
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
-			.replace('\u00A0', ' ')
-			.replace("<lt>", "<")
-			.replace("<gt>", ">");
+				.replace('\u00A0', ' ')
+				.replace("<lt>", "<")
+				.replace("<gt>", ">");
 		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
 
@@ -374,7 +361,7 @@ public class ChatFilterPlugin extends Plugin
 					case CENSOR_WORDS:
 						MatchResult matchResult = m.toMatchResult();
 						sb.append(strippedMessage, idx, matchResult.start())
-							.append(StringUtils.repeat('*', matchResult.group().length()));
+								.append(StringUtils.repeat('*', matchResult.group().length()));
 						idx = m.end();
 						filtered = true;
 						break;
@@ -418,21 +405,21 @@ public class ChatFilterPlugin extends Plugin
 		List<Pattern> namePatterns = new ArrayList<>();
 
 		Text.fromCSV(config.filteredWords()).stream()
-			.map(this::stripAccents)
-			.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
-			.forEach(patterns::add);
+				.map(this::stripAccents)
+				.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
+				.forEach(patterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredRegex()).stream()
-			.map(this::stripAccents)
-			.map(ChatFilterPlugin::compilePattern)
-			.filter(Objects::nonNull)
-			.forEach(patterns::add);
+				.map(this::stripAccents)
+				.map(ChatFilterPlugin::compilePattern)
+				.filter(Objects::nonNull)
+				.forEach(patterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredNames()).stream()
-			.map(this::stripAccents)
-			.map(ChatFilterPlugin::compilePattern)
-			.filter(Objects::nonNull)
-			.forEach(namePatterns::add);
+				.map(this::stripAccents)
+				.map(ChatFilterPlugin::compilePattern)
+				.filter(Objects::nonNull)
+				.forEach(namePatterns::add);
 
 		filteredPatterns = patterns;
 		filteredNamePatterns = namePatterns;
@@ -443,18 +430,6 @@ public class ChatFilterPlugin extends Plugin
 	private String stripAccents(String input)
 	{
 		return config.stripAccents() ? StringUtils.stripAccents(input) : input;
-	}
-
-	private static Pattern compilePattern(String pattern)
-	{
-		try
-		{
-			return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-		}
-		catch (PatternSyntaxException ex)
-		{
-			return null;
-		}
 	}
 
 	@Subscribe
@@ -484,5 +459,22 @@ public class ChatFilterPlugin extends Plugin
 			}
 		}
 		return false;
+	}
+
+	private static class Duplicate
+	{
+		int messageId;
+		int count;
+	}
+
+	private static class FilterCacheMap extends LinkedHashMap<Integer, String>
+	{
+		private static final int MAX_ENTRIES = 100;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Integer, String> eldest)
+		{
+			return size() > MAX_ENTRIES;
+		}
 	}
 }

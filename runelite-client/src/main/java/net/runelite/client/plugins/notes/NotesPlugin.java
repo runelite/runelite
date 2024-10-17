@@ -37,10 +37,10 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Notes",
-	description = "Enable the Notes panel",
-	tags = {"panel"},
-	loadWhenOutdated = true
+		name = "Notes",
+		description = "Enable the Notes panel",
+		tags = {"panel"},
+		loadWhenOutdated = true
 )
 public class NotesPlugin extends Plugin
 {
@@ -68,11 +68,11 @@ public class NotesPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "notes_icon.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("Notes")
-			.icon(icon)
-			.priority(7)
-			.panel(panel)
-			.build();
+				.tooltip("Notes")
+				.icon(icon)
+				.priority(7)
+				.panel(panel)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 	}

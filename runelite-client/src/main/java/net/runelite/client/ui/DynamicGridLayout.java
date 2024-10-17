@@ -33,7 +33,7 @@ import java.util.function.Function;
 
 /**
  * Grid layout implementation with support for cells with unequal size.
- *
+ * <p>
  * See https://www.javaworld.com/article/2077486/core-java/java-tip-121--flex-your-grid-layout.html
  */
 public class DynamicGridLayout extends GridLayout
@@ -89,8 +89,7 @@ public class DynamicGridLayout extends GridLayout
 			if (nrows > 0)
 			{
 				ncols = (ncomponents + nrows - 1) / nrows;
-			}
-			else
+			} else
 			{
 				nrows = (ncomponents + ncols - 1) / ncols;
 			}
@@ -152,8 +151,9 @@ public class DynamicGridLayout extends GridLayout
 
 	/**
 	 * Calculate outer size of the layout based on it's children and sizer
+	 *
 	 * @param parent parent component
-	 * @param sizer functioning returning dimension of the child component
+	 * @param sizer  functioning returning dimension of the child component
 	 * @return outer size
 	 */
 	private Dimension calculateSize(final Container parent, final Function<Component, Dimension> sizer)
@@ -165,8 +165,7 @@ public class DynamicGridLayout extends GridLayout
 		if (nrows > 0)
 		{
 			ncols = (ncomponents + nrows - 1) / nrows;
-		}
-		else
+		} else
 		{
 			nrows = (ncomponents + ncols - 1) / ncols;
 		}
@@ -212,7 +211,7 @@ public class DynamicGridLayout extends GridLayout
 
 		// Apply insets and horizontal and vertical gap to layout
 		return new Dimension(
-			insets.left + insets.right + nw + (ncols - 1) * getHgap(),
-			insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
+				insets.left + insets.right + nw + (ncols - 1) * getHgap(),
+				insets.top + insets.bottom + nh + (nrows - 1) * getVgap());
 	}
 }

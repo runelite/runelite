@@ -73,10 +73,10 @@ class Updater
 
 	@Inject
 	Updater(
-		OkHttpClient okHttpClient,
-		@Nullable RuntimeConfig runtimeConfig,
-		ConfigManager configManager,
-		@Named("noupdate") boolean noupdate
+			OkHttpClient okHttpClient,
+			@Nullable RuntimeConfig runtimeConfig,
+			ConfigManager configManager,
+			@Named("noupdate") boolean noupdate
 	)
 	{
 		this.okHttpClient = okHttpClient;
@@ -85,13 +85,44 @@ class Updater
 		this.noupdate = noupdate;
 	}
 
+	private static double installRollout()
+	{
+		try
+		{
+			Hasher hasher = Hashing.sha256().newHasher();
+			Runtime runtime = Runtime.getRuntime();
+
+			hasher.putByte((byte) OSType.getOSType().ordinal());
+			hasher.putByte((byte) runtime.availableProcessors());
+			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
+			hasher.putUnencodedChars(System.getProperty("os.version", ""));
+			hasher.putUnencodedChars(System.getProperty("user.name", ""));
+
+			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+			while (networkInterfaces.hasMoreElements())
+			{
+				NetworkInterface networkInterface = networkInterfaces.nextElement();
+				byte[] hardwareAddress = networkInterface.getHardwareAddress();
+				if (hardwareAddress != null)
+				{
+					hasher.putBytes(hardwareAddress);
+				}
+			}
+			HashCode hash = hasher.hash();
+			return (hash.asInt() & 0x7fffffff) / (double) Integer.MAX_VALUE;
+		} catch (Exception ex)
+		{
+			log.error("unable to generate machine id", ex);
+			return Math.random();
+		}
+	}
+
 	void update()
 	{
 		try
 		{
 			tryUpdate();
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("error updating", ex);
 		}
@@ -114,14 +145,12 @@ class Updater
 			downloadUrl = WIN64_URL;
 			checksum = WIN64_CHECKSUM;
 			size = WIN64_SIZE;
-		}
-		else if ("x86".equals(arch))
+		} else if ("x86".equals(arch))
 		{
 			downloadUrl = WIN32_URL;
 			checksum = WIN32_CHECKSUM;
 			size = WIN32_SIZE;
-		}
-		else
+		} else
 		{
 			log.debug("Unsupported arch {}", arch);
 			return;
@@ -138,7 +167,7 @@ class Updater
 		if (!path.getFileName().toString().equals(LAUNCHER_EXECUTABLE_NAME_WIN))
 		{
 			log.debug("Skipping update check due to not running from installer, command is {}",
-				current.info().command().get());
+					current.info().command().get());
 			return;
 		}
 
@@ -152,7 +181,7 @@ class Updater
 		log.debug("Running from installer");
 
 		if (runtimeConfig == null || runtimeConfig.getUpdateLauncherWinVers() == null
-			|| !Arrays.asList(runtimeConfig.getUpdateLauncherWinVers()).contains(launcherVersion))
+				|| !Arrays.asList(runtimeConfig.getUpdateLauncherWinVers()).contains(launcherVersion))
 		{
 			log.debug("No update available");
 			return;
@@ -188,9 +217,9 @@ class Updater
 		if (checksum.equals(lastUpdateHash) && Instant.ofEpochMilli(updateAttemptTime).isAfter(Instant.now().minus(hours, ChronoUnit.HOURS)))
 		{
 			log.info("Previous upgrade attempt was at {} (backoff: {} hours), skipping",
-				// logback logs are in local time, so use that to match it
-				LocalTime.from(Instant.ofEpochMilli(updateAttemptTime).atZone(ZoneId.systemDefault())),
-				hours);
+					// logback logs are in local time, so use that to match it
+					LocalTime.from(Instant.ofEpochMilli(updateAttemptTime).atZone(ZoneId.systemDefault())),
+					hours);
 			return;
 		}
 
@@ -231,13 +260,13 @@ class Updater
 			log.info("Downloading launcher update");
 
 			Request request = new Request.Builder()
-				.url(downloadUrl)
-				.build();
+					.url(downloadUrl)
+					.build();
 
 			var tempExe = Files.createTempFile("rlupdate", "exe");
 			HashCode hash;
 			try (Response response = okHttpClient.newCall(request).execute();
-				HashingOutputStream out = new HashingOutputStream(Hashing.sha256(), Files.newOutputStream(tempExe)))
+				 HashingOutputStream out = new HashingOutputStream(Hashing.sha256(), Files.newOutputStream(tempExe)))
 			{
 				if (!response.isSuccessful())
 				{
@@ -274,8 +303,8 @@ class Updater
 			log.info("Launching installer");
 
 			var pb = new ProcessBuilder(
-				tempExe.toFile().getAbsolutePath(),
-				"/SILENT"
+					tempExe.toFile().getAbsolutePath(),
+					"/SILENT"
 			);
 
 			var env = pb.environment();
@@ -283,43 +312,9 @@ class Updater
 			pb.start();
 
 			System.exit(0);
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			log.error("io error performing upgrade", e);
-		}
-	}
-
-	private static double installRollout()
-	{
-		try
-		{
-			Hasher hasher = Hashing.sha256().newHasher();
-			Runtime runtime = Runtime.getRuntime();
-
-			hasher.putByte((byte) OSType.getOSType().ordinal());
-			hasher.putByte((byte) runtime.availableProcessors());
-			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
-			hasher.putUnencodedChars(System.getProperty("os.version", ""));
-			hasher.putUnencodedChars(System.getProperty("user.name", ""));
-
-			Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-			while (networkInterfaces.hasMoreElements())
-			{
-				NetworkInterface networkInterface = networkInterfaces.nextElement();
-				byte[] hardwareAddress = networkInterface.getHardwareAddress();
-				if (hardwareAddress != null)
-				{
-					hasher.putBytes(hardwareAddress);
-				}
-			}
-			HashCode hash = hasher.hash();
-			return (hash.asInt() & 0x7fffffff) / (double) Integer.MAX_VALUE;
-		}
-		catch (Exception ex)
-		{
-			log.error("unable to generate machine id", ex);
-			return Math.random();
 		}
 	}
 }

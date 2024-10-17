@@ -26,6 +26,9 @@ package net.runelite.client.hiscore;
 
 class HiscoreResponse
 {
+	Skill[] skills;
+	Activity[] activities;
+
 	static class Skill
 	{
 		String name;
@@ -40,7 +43,4 @@ class HiscoreResponse
 		int rank;
 		long score;
 	}
-
-	Skill[] skills;
-	Activity[] activities;
 }

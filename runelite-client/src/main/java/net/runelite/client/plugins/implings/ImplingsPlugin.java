@@ -42,9 +42,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Implings",
-	description = "Highlight nearby implings on the minimap and on-screen",
-	tags = {"hunter", "minimap", "overlay", "imp"}
+		name = "Implings",
+		description = "Highlight nearby implings on the minimap and on-screen",
+		tags = {"hunter", "minimap", "overlay", "imp"}
 )
 public class ImplingsPlugin extends Plugin
 {
@@ -56,13 +56,6 @@ public class ImplingsPlugin extends Plugin
 
 	@Inject
 	private ImplingsConfig config;
-
-	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private NpcOverlayService npcOverlayService;
-
 	public final Function<NPC, HighlightedNpc> isTarget = (npc) ->
 	{
 		Impling impling = Impling.findImpling(npc.getId());
@@ -70,15 +63,19 @@ public class ImplingsPlugin extends Plugin
 		{
 			Color color = implingColor(impling);
 			return HighlightedNpc.builder()
-				.npc(npc)
-				.highlightColor(color)
-				.tile(true)
-				.name(true)
-				.nameOnMinimap(config.showName())
-				.build();
+					.npc(npc)
+					.highlightColor(color)
+					.tile(true)
+					.name(true)
+					.nameOnMinimap(config.showName())
+					.build();
 		}
 		return null;
 	};
+	@Inject
+	private Notifier notifier;
+	@Inject
+	private NpcOverlayService npcOverlayService;
 
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)

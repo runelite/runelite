@@ -39,6 +39,36 @@ class TextureManager
 {
 	private static final int TEXTURE_SIZE = 128;
 
+	private static byte[] convertPixels(int[] srcPixels, int width, int height, int textureWidth, int textureHeight)
+	{
+		byte[] pixels = new byte[textureWidth * textureHeight * 4];
+
+		int pixelIdx = 0;
+		int srcPixelIdx = 0;
+
+		int offset = (textureWidth - width) * 4;
+
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				int rgb = srcPixels[srcPixelIdx++];
+				if (rgb != 0)
+				{
+					pixels[pixelIdx++] = (byte) (rgb >> 16);
+					pixels[pixelIdx++] = (byte) (rgb >> 8);
+					pixels[pixelIdx++] = (byte) rgb;
+					pixels[pixelIdx++] = (byte) -1;
+				} else
+				{
+					pixelIdx += 4;
+				}
+			}
+			pixelIdx += offset;
+		}
+		return pixels;
+	}
+
 	int initTextureArray(TextureProvider textureProvider)
 	{
 		if (!allTexturesLoaded(textureProvider))
@@ -53,8 +83,7 @@ class TextureManager
 		if (GL.getCapabilities().glTexStorage3D != 0)
 		{
 			GL43C.glTexStorage3D(GL43C.GL_TEXTURE_2D_ARRAY, 8, GL43C.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
-		}
-		else
+		} else
 		{
 			int size = TEXTURE_SIZE;
 			for (int i = 0; i < 8; i++)
@@ -182,42 +211,11 @@ class TextureManager
 				pixelBuffer.put(pixels);
 				pixelBuffer.flip();
 				GL43C.glTexSubImage3D(GL43C.GL_TEXTURE_2D_ARRAY, 0, 0, 0, textureId, TEXTURE_SIZE, TEXTURE_SIZE,
-					1, GL43C.GL_RGBA, GL43C.GL_UNSIGNED_BYTE, pixelBuffer);
+						1, GL43C.GL_RGBA, GL43C.GL_UNSIGNED_BYTE, pixelBuffer);
 			}
 		}
 
 		log.debug("Uploaded textures {}", cnt);
-	}
-
-	private static byte[] convertPixels(int[] srcPixels, int width, int height, int textureWidth, int textureHeight)
-	{
-		byte[] pixels = new byte[textureWidth * textureHeight * 4];
-
-		int pixelIdx = 0;
-		int srcPixelIdx = 0;
-
-		int offset = (textureWidth - width) * 4;
-
-		for (int y = 0; y < height; y++)
-		{
-			for (int x = 0; x < width; x++)
-			{
-				int rgb = srcPixels[srcPixelIdx++];
-				if (rgb != 0)
-				{
-					pixels[pixelIdx++] = (byte) (rgb >> 16);
-					pixels[pixelIdx++] = (byte) (rgb >> 8);
-					pixels[pixelIdx++] = (byte) rgb;
-					pixels[pixelIdx++] = (byte) -1;
-				}
-				else
-				{
-					pixelIdx += 4;
-				}
-			}
-			pixelIdx += offset;
-		}
-		return pixels;
 	}
 
 	float[] computeTextureAnimations(TextureProvider textureProvider)

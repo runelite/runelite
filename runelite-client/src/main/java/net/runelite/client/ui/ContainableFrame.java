@@ -40,15 +40,7 @@ import net.runelite.client.util.WinUtil;
 @Slf4j
 public class ContainableFrame extends JFrame
 {
-	public enum Mode
-	{
-		ALWAYS,
-		RESIZING,
-		NEVER;
-	}
-
 	private static final int SCREEN_EDGE_CLOSE_DISTANCE = 40;
-
 	@Setter
 	private Mode containedInScreen;
 	private boolean rightSideSuction;
@@ -80,9 +72,9 @@ public class ContainableFrame extends JFrame
 			}
 
 			if (wWidth > wOldWidth
-				&& cRect.getMaxX() > cDpyBounds.getMaxX()
-				&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
-				&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) <= cDpyBounds.getMaxX())
+					&& cRect.getMaxX() > cDpyBounds.getMaxX()
+					&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
+					&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) <= cDpyBounds.getMaxX())
 			{
 				// attempt to retain the distance between us and the edge when shifting left
 				cRect.x -= wWidth - wOldWidth;
@@ -120,12 +112,10 @@ public class ContainableFrame extends JFrame
 		if (xyDifferent && whDifferent)
 		{
 			super.reshape(wX, wY, wWidth, wHeight);
-		}
-		else if (xyDifferent)
+		} else if (xyDifferent)
 		{
 			super.move(wX, wY);
-		}
-		else if (whDifferent)
+		} else if (whDifferent)
 		{
 			super.resize(wWidth, wHeight);
 		}
@@ -150,36 +140,6 @@ public class ContainableFrame extends JFrame
 	}
 
 	@Override
-	public void setMinimumSize(Dimension minSize)
-	{
-		if (OSType.getOSType() == OSType.Windows)
-		{
-			// JDK-8221452 - Window.setMinimumSize does not respect DPI scaling
-			// Window::setMinimumSize will call setSize if the window is smaller
-			// than the new minimum size. Because of this, and other places reading
-			// minimumSize expecting scaling to be unscaled, we have to scale the size
-			// only when WWindowPeer::updateMinimumSize is called. This is also called
-			// during pack, but we call this afterwards so it doesn't matter much
-			synchronized (getTreeLock())
-			{
-				try
-				{
-					scaleMinSize = true;
-					super.setMinimumSize(minSize);
-				}
-				finally
-				{
-					scaleMinSize = false;
-				}
-			}
-		}
-		else
-		{
-			super.setMinimumSize(minSize);
-		}
-	}
-
-	@Override
 	public Dimension getMinimumSize()
 	{
 		Dimension minSize = super.getMinimumSize();
@@ -197,6 +157,34 @@ public class ContainableFrame extends JFrame
 			}
 		}
 		return minSize;
+	}
+
+	@Override
+	public void setMinimumSize(Dimension minSize)
+	{
+		if (OSType.getOSType() == OSType.Windows)
+		{
+			// JDK-8221452 - Window.setMinimumSize does not respect DPI scaling
+			// Window::setMinimumSize will call setSize if the window is smaller
+			// than the new minimum size. Because of this, and other places reading
+			// minimumSize expecting scaling to be unscaled, we have to scale the size
+			// only when WWindowPeer::updateMinimumSize is called. This is also called
+			// during pack, but we call this afterwards so it doesn't matter much
+			synchronized (getTreeLock())
+			{
+				try
+				{
+					scaleMinSize = true;
+					super.setMinimumSize(minSize);
+				} finally
+				{
+					scaleMinSize = false;
+				}
+			}
+		} else
+		{
+			super.setMinimumSize(minSize);
+		}
 	}
 
 	private boolean isFullScreen()
@@ -221,12 +209,10 @@ public class ContainableFrame extends JFrame
 		try
 		{
 			super.setOpacity(opacity);
-		}
-		catch (IllegalComponentStateException | UnsupportedOperationException | IllegalArgumentException ex)
+		} catch (IllegalComponentStateException | UnsupportedOperationException | IllegalArgumentException ex)
 		{
 			log.warn("unable to set opacity {}", opacity, ex);
-		}
-		finally
+		} finally
 		{
 			overrideUndecorated = false;
 		}
@@ -236,5 +222,12 @@ public class ContainableFrame extends JFrame
 	public boolean isUndecorated()
 	{
 		return overrideUndecorated || super.isUndecorated();
+	}
+
+	public enum Mode
+	{
+		ALWAYS,
+		RESIZING,
+		NEVER;
 	}
 }

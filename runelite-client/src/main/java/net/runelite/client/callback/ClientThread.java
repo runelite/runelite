@@ -117,20 +117,17 @@ public class ClientThread
 			try
 			{
 				remove = r.getAsBoolean();
-			}
-			catch (ThreadDeath d)
+			} catch (ThreadDeath d)
 			{
 				throw d;
-			}
-			catch (Throwable e)
+			} catch (Throwable e)
 			{
 				log.error("Exception in invoke", e);
 			}
 			if (remove)
 			{
 				ir.remove();
-			}
-			else
+			} else
 			{
 				log.trace("Deferring task {}", r);
 			}

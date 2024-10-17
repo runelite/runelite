@@ -92,7 +92,7 @@ public class DBTableIndexManager
 	/**
 	 * Gets the index for the specified table and column.
 	 *
-	 * @param tableId The table id to lookup.
+	 * @param tableId  The table id to lookup.
 	 * @param columnId The column id to lookup.
 	 * @return The index for the specific table column.
 	 */

@@ -34,6 +34,6 @@ public interface LocationClueScroll
 	default WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		WorldPoint location = getLocation(plugin);
-		return location == null ? new WorldPoint[0] : new WorldPoint[]{location};
+		return location == null ? new WorldPoint[0] : new WorldPoint[] {location};
 	}
 }

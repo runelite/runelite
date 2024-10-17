@@ -39,28 +39,25 @@ import javax.swing.plaf.ComponentUI;
 
 public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 {
-	public static ComponentUI createUI(JComponent c)
-	{
-		return new RuneLiteTabbedPaneUI();
-	}
-
 	@FlatStylingSupport.Styleable
 	protected boolean expandWrappedTabs = UIManager.getBoolean("TabbedPane.expandWrappedTabs");
-
 	@FlatStylingSupport.Styleable
 	protected boolean evenlyWrapTabs = UIManager.getBoolean("TabbedPane.evenlyWrapTabs");
-
 	/**
 	 * If the tabs are always a single size
 	 */
 	@FlatStylingSupport.Styleable
 	protected boolean variableSize = false;
-
 	/**
 	 * If the there can be no tab selected
 	 */
 	@FlatStylingSupport.Styleable
 	protected boolean deselectable = false;
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return new RuneLiteTabbedPaneUI();
+	}
 
 	@Override
 	protected LayoutManager createLayoutManager()
@@ -71,101 +68,6 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 		}
 
 		return super.createLayoutManager();
-	}
-
-	protected class RuneLiteTabbedPaneLayout extends FlatTabbedPaneLayout
-	{
-		@Override
-		protected void normalizeTabRuns(int tabPlacement, int tabCount, int start, int max)
-		{
-			if (!evenlyWrapTabs)
-			{
-				return;
-			}
-
-			// the jdk's method to do this iteratively moves stuff around until its close enough,
-			// however this means that with 16 equally sized tabs you get 2 runs of 7 and 9 tabs
-			// each, which looks wrong
-
-			// XXX this assumes all tabs are the same size
-
-			boolean verticalTabRuns = tabPlacement == LEFT || tabPlacement == RIGHT;
-
-			int tab = 0;
-			for (int run = 0; run < runCount; run++)
-			{
-				tabRuns[run] = tab;
-				int remainingTabs = tabCount - tab;
-				int remainingRuns = runCount - run;
-				int nextRun = tab + (remainingTabs + remainingRuns - 1) / remainingRuns;
-				for (int i = tab, off = start; i < nextRun; i++)
-				{
-					if (verticalTabRuns)
-					{
-						rects[i].y = off;
-						off += rects[i].height;
-					}
-					else
-					{
-						rects[i].x = off;
-						off += rects[i].width;
-					}
-				}
-				tab = nextRun;
-			}
-		}
-
-		@Override
-		protected Dimension calculateSize(boolean minimum)
-		{
-			if (!variableSize)
-			{
-				return super.calculateSize(minimum);
-			}
-
-			// assume the directions the tabs are running is a fixed size
-			// and we want to calculate the size of the tab bar + our current
-			// content only in the perpendicular axis
-
-			int tabPlacement = tabPane.getTabPlacement();
-			boolean verticalTabRuns = tabPlacement == LEFT || tabPlacement == RIGHT;
-
-			int width = 0;
-			int height = 0;
-
-			Insets contentInsets = getContentBorderInsets(tabPlacement);
-			Insets insets = tabPane.getInsets();
-			Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-			int xInsets = insets.left + insets.right + contentInsets.left + contentInsets.right;
-			int yInsets = insets.bottom + insets.top + contentInsets.top + contentInsets.bottom;
-
-			Component component = tabPane.getSelectedComponent();
-			if (component != null)
-			{
-				Dimension size = minimum
-					? component.getMinimumSize()
-					: component.getPreferredSize();
-
-				if (size != null)
-				{
-					width = Math.max(0, size.width);
-					height = Math.max(0, size.height);
-				}
-			}
-
-			if (verticalTabRuns)
-			{
-				height = Math.max(height, calculateMaxTabHeight(tabPlacement));
-				width += preferredTabAreaWidth(tabPlacement, tabPane.getHeight() - yInsets - tabAreaInsets.top - tabAreaInsets.bottom);
-			}
-			else
-			{
-				width = Math.max(width, calculateMaxTabWidth(tabPlacement));
-				height += preferredTabAreaHeight(tabPlacement, tabPane.getWidth() - xInsets - tabAreaInsets.left - tabAreaInsets.right);
-			}
-
-			return new Dimension(width + xInsets, height + yInsets);
-		}
 	}
 
 	@Override
@@ -234,5 +136,98 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 				delegate.mouseEntered(e);
 			}
 		};
+	}
+
+	protected class RuneLiteTabbedPaneLayout extends FlatTabbedPaneLayout
+	{
+		@Override
+		protected void normalizeTabRuns(int tabPlacement, int tabCount, int start, int max)
+		{
+			if (!evenlyWrapTabs)
+			{
+				return;
+			}
+
+			// the jdk's method to do this iteratively moves stuff around until its close enough,
+			// however this means that with 16 equally sized tabs you get 2 runs of 7 and 9 tabs
+			// each, which looks wrong
+
+			// XXX this assumes all tabs are the same size
+
+			boolean verticalTabRuns = tabPlacement == LEFT || tabPlacement == RIGHT;
+
+			int tab = 0;
+			for (int run = 0; run < runCount; run++)
+			{
+				tabRuns[run] = tab;
+				int remainingTabs = tabCount - tab;
+				int remainingRuns = runCount - run;
+				int nextRun = tab + (remainingTabs + remainingRuns - 1) / remainingRuns;
+				for (int i = tab, off = start; i < nextRun; i++)
+				{
+					if (verticalTabRuns)
+					{
+						rects[i].y = off;
+						off += rects[i].height;
+					} else
+					{
+						rects[i].x = off;
+						off += rects[i].width;
+					}
+				}
+				tab = nextRun;
+			}
+		}
+
+		@Override
+		protected Dimension calculateSize(boolean minimum)
+		{
+			if (!variableSize)
+			{
+				return super.calculateSize(minimum);
+			}
+
+			// assume the directions the tabs are running is a fixed size
+			// and we want to calculate the size of the tab bar + our current
+			// content only in the perpendicular axis
+
+			int tabPlacement = tabPane.getTabPlacement();
+			boolean verticalTabRuns = tabPlacement == LEFT || tabPlacement == RIGHT;
+
+			int width = 0;
+			int height = 0;
+
+			Insets contentInsets = getContentBorderInsets(tabPlacement);
+			Insets insets = tabPane.getInsets();
+			Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+			int xInsets = insets.left + insets.right + contentInsets.left + contentInsets.right;
+			int yInsets = insets.bottom + insets.top + contentInsets.top + contentInsets.bottom;
+
+			Component component = tabPane.getSelectedComponent();
+			if (component != null)
+			{
+				Dimension size = minimum
+						? component.getMinimumSize()
+						: component.getPreferredSize();
+
+				if (size != null)
+				{
+					width = Math.max(0, size.width);
+					height = Math.max(0, size.height);
+				}
+			}
+
+			if (verticalTabRuns)
+			{
+				height = Math.max(height, calculateMaxTabHeight(tabPlacement));
+				width += preferredTabAreaWidth(tabPlacement, tabPane.getHeight() - yInsets - tabAreaInsets.top - tabAreaInsets.bottom);
+			} else
+			{
+				width = Math.max(width, calculateMaxTabWidth(tabPlacement));
+				height += preferredTabAreaHeight(tabPlacement, tabPane.getWidth() - xInsets - tabAreaInsets.left - tabAreaInsets.right);
+			}
+
+			return new Dimension(width + xInsets, height + yInsets);
+		}
 	}
 }

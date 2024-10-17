@@ -32,9 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface CustomCursorConfig extends Config
 {
 	@ConfigItem(
-		keyName = "cursorStyle",
-		name = "Cursor",
-		description = "Select which cursor you wish to use"
+			keyName = "cursorStyle",
+			name = "Cursor",
+			description = "Select which cursor you wish to use"
 	)
 	default CustomCursor selectedCursor()
 	{

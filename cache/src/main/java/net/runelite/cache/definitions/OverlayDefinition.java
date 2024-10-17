@@ -102,12 +102,10 @@ public class OverlayDefinition
 			if (var2 == var10)
 			{
 				var12 = (var4 - var6) / (var10 - var8);
-			}
-			else if (var4 == var10)
+			} else if (var4 == var10)
 			{
 				var12 = 2.0D + (var6 - var2) / (var10 - var8);
-			}
-			else if (var10 == var6)
+			} else if (var10 == var6)
 			{
 				var12 = 4.0D + (var2 - var4) / (var10 - var8);
 			}
@@ -120,8 +118,7 @@ public class OverlayDefinition
 		if (this.saturation < 0)
 		{
 			this.saturation = 0;
-		}
-		else if (this.saturation > 255)
+		} else if (this.saturation > 255)
 		{
 			this.saturation = 255;
 		}
@@ -129,8 +126,7 @@ public class OverlayDefinition
 		if (this.lightness < 0)
 		{
 			this.lightness = 0;
-		}
-		else if (this.lightness > 255)
+		} else if (this.lightness > 255)
 		{
 			this.lightness = 255;
 		}

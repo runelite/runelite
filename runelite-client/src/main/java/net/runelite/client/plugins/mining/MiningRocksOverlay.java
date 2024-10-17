@@ -117,7 +117,7 @@ class MiningRocksOverlay extends Overlay
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
-	 *
+	 * <p>
 	 * This method assumes that the given point is already in the mlm
 	 * and is not meaningful when outside the mlm.
 	 *

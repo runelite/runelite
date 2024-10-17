@@ -58,8 +58,8 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
-	name = "Login Screen",
-	description = "Provides various enhancements for login screen"
+		name = "Login Screen",
+		description = "Provides various enhancements for login screen"
 )
 @Slf4j
 public class LoginScreenPlugin extends Plugin implements KeyListener
@@ -132,8 +132,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			applyUsername();
-		}
-		else if (event.getGameState() == GameState.LOGGED_IN)
+		} else if (event.getGameState() == GameState.LOGGED_IN)
 		{
 			String username = "";
 
@@ -201,8 +200,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	public void keyPressed(KeyEvent e)
 	{
 		if (!config.pasteEnabled() || (
-			client.getGameState() != GameState.LOGIN_SCREEN &&
-			client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
+				client.getGameState() != GameState.LOGIN_SCREEN &&
+						client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
 		{
 			return;
 		}
@@ -215,11 +214,11 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 			try
 			{
 				String data = Toolkit
-					.getDefaultToolkit()
-					.getSystemClipboard()
-					.getData(DataFlavor.stringFlavor)
-					.toString()
-					.trim();
+						.getDefaultToolkit()
+						.getSystemClipboard()
+						.getData(DataFlavor.stringFlavor)
+						.toString()
+						.trim();
 
 				switch (client.getLoginIndex())
 				{
@@ -239,8 +238,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 						client.setOtp(data.substring(0, Math.min(data.length(), MAX_PIN_LENGTH)));
 						break;
 				}
-			}
-			catch (UnsupportedFlavorException | IOException ex)
+			} catch (UnsupportedFlavorException | IOException ex)
 			{
 				log.warn("failed to fetch clipboard data", ex);
 			}
@@ -282,24 +280,21 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 						image = ImageUtil.resizeImage(image, (int) (image.getWidth() * scalar), Constants.GAME_FIXED_HEIGHT);
 					}
 					pixels = ImageUtil.getImageSpritePixels(image, client);
-				}
-				catch (IOException e)
+				} catch (IOException e)
 				{
 					log.error("error loading custom login screen", e);
 					restoreLoginScreen();
 					return;
 				}
 			}
-		}
-		else if (config.loginScreen() == LoginScreenOverride.RANDOM)
+		} else if (config.loginScreen() == LoginScreenOverride.RANDOM)
 		{
 			LoginScreenOverride[] filtered = Arrays.stream(LoginScreenOverride.values())
-				.filter(screen -> screen.getFileName() != null)
-				.toArray(LoginScreenOverride[]::new);
+					.filter(screen -> screen.getFileName() != null)
+					.toArray(LoginScreenOverride[]::new);
 			LoginScreenOverride randomScreen = filtered[new Random().nextInt(filtered.length)];
 			pixels = getFileSpritePixels(randomScreen.getFileName());
-		}
-		else
+		} else
 		{
 			pixels = getFileSpritePixels(config.loginScreen().getFileName());
 		}
@@ -322,8 +317,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 			log.debug("Loading: {}", file);
 			BufferedImage image = ImageUtil.loadImageResource(this.getClass(), file);
 			return ImageUtil.getImageSpritePixels(image, client);
-		}
-		catch (RuntimeException ex)
+		} catch (RuntimeException ex)
 		{
 			log.debug("Unable to load image: ", ex);
 		}

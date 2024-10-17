@@ -79,51 +79,41 @@ public class NpcLoader
 			{
 				def.models[index] = stream.readUnsignedShort();
 			}
-		}
-		else if (opcode == 2)
+		} else if (opcode == 2)
 		{
 			def.name = stream.readString();
-		}
-		else if (opcode == 12)
+		} else if (opcode == 12)
 		{
 			def.size = stream.readUnsignedByte();
-		}
-		else if (opcode == 13)
+		} else if (opcode == 13)
 		{
 			def.standingAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 14)
+		} else if (opcode == 14)
 		{
 			def.walkingAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 15)
+		} else if (opcode == 15)
 		{
 			def.idleRotateLeftAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 16)
+		} else if (opcode == 16)
 		{
 			def.idleRotateRightAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 17)
+		} else if (opcode == 17)
 		{
 			def.walkingAnimation = stream.readUnsignedShort();
 			def.rotate180Animation = stream.readUnsignedShort();
 			def.rotateLeftAnimation = stream.readUnsignedShort();
 			def.rotateRightAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 18)
+		} else if (opcode == 18)
 		{
 			def.category = stream.readUnsignedShort();
-		}
-		else if (opcode >= 30 && opcode < 35)
+		} else if (opcode >= 30 && opcode < 35)
 		{
 			def.actions[opcode - 30] = stream.readString();
 			if (def.actions[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
 				def.actions[opcode - 30] = null;
 			}
-		}
-		else if (opcode == 40)
+		} else if (opcode == 40)
 		{
 			length = stream.readUnsignedByte();
 			def.recolorToFind = new short[length];
@@ -135,8 +125,7 @@ public class NpcLoader
 				def.recolorToReplace[index] = (short) stream.readUnsignedShort();
 			}
 
-		}
-		else if (opcode == 41)
+		} else if (opcode == 41)
 		{
 			length = stream.readUnsignedByte();
 			def.retextureToFind = new short[length];
@@ -148,8 +137,7 @@ public class NpcLoader
 				def.retextureToReplace[index] = (short) stream.readUnsignedShort();
 			}
 
-		}
-		else if (opcode == 60)
+		} else if (opcode == 60)
 		{
 			length = stream.readUnsignedByte();
 			def.chatheadModels = new int[length];
@@ -158,67 +146,52 @@ public class NpcLoader
 			{
 				def.chatheadModels[index] = stream.readUnsignedShort();
 			}
-		}
-		else if (opcode == 74)
+		} else if (opcode == 74)
 		{
 			def.stats[0] = stream.readUnsignedShort();
-		}
-		else if (opcode == 75)
+		} else if (opcode == 75)
 		{
 			def.stats[1] = stream.readUnsignedShort();
-		}
-		else if (opcode == 76)
+		} else if (opcode == 76)
 		{
 			def.stats[2] = stream.readUnsignedShort();
-		}
-		else if (opcode == 77)
+		} else if (opcode == 77)
 		{
 			def.stats[3] = stream.readUnsignedShort();
-		}
-		else if (opcode == 78)
+		} else if (opcode == 78)
 		{
 			def.stats[4] = stream.readUnsignedShort();
-		}
-		else if (opcode == 79)
+		} else if (opcode == 79)
 		{
 			def.stats[5] = stream.readUnsignedShort();
-		}
-		else if (opcode == 93)
+		} else if (opcode == 93)
 		{
 			def.isMinimapVisible = false;
-		}
-		else if (opcode == 95)
+		} else if (opcode == 95)
 		{
 			def.combatLevel = stream.readUnsignedShort();
-		}
-		else if (opcode == 97)
+		} else if (opcode == 97)
 		{
 			def.widthScale = stream.readUnsignedShort();
-		}
-		else if (opcode == 98)
+		} else if (opcode == 98)
 		{
 			def.heightScale = stream.readUnsignedShort();
-		}
-		else if (opcode == 99)
+		} else if (opcode == 99)
 		{
 			def.hasRenderPriority = true;
-		}
-		else if (opcode == 100)
+		} else if (opcode == 100)
 		{
 			def.ambient = stream.readByte();
-		}
-		else if (opcode == 101)
+		} else if (opcode == 101)
 		{
 			def.contrast = stream.readByte();
-		}
-		else if (opcode == 102)
+		} else if (opcode == 102)
 		{
 			if (!rev210HeadIcons)
 			{
-				def.headIconArchiveIds = new int[]{defaultHeadIconArchive};
-				def.headIconSpriteIndex = new short[]{(short) stream.readUnsignedShort()};
-			}
-			else
+				def.headIconArchiveIds = new int[] {defaultHeadIconArchive};
+				def.headIconSpriteIndex = new short[] {(short) stream.readUnsignedShort()};
+			} else
 			{
 				int bitfield = stream.readUnsignedByte();
 				int len = 0;
@@ -236,20 +209,17 @@ public class NpcLoader
 					{
 						def.headIconArchiveIds[i] = -1;
 						def.headIconSpriteIndex[i] = -1;
-					}
-					else
+					} else
 					{
 						def.headIconArchiveIds[i] = stream.readBigSmart2();
 						def.headIconSpriteIndex[i] = (short) stream.readUnsignedShortSmartMinusOne();
 					}
 				}
 			}
-		}
-		else if (opcode == 103)
+		} else if (opcode == 103)
 		{
 			def.rotationSpeed = stream.readUnsignedShort();
-		}
-		else if (opcode == 106)
+		} else if (opcode == 106)
 		{
 			def.varbitId = stream.readUnsignedShort();
 			if (def.varbitId == 65535)
@@ -277,44 +247,36 @@ public class NpcLoader
 
 			def.configs[length + 1] = -1;
 
-		}
-		else if (opcode == 107)
+		} else if (opcode == 107)
 		{
 			def.isInteractable = false;
-		}
-		else if (opcode == 109)
+		} else if (opcode == 109)
 		{
 			def.rotationFlag = false;
-		}
-		else if (opcode == 111)
+		} else if (opcode == 111)
 		{
 			// removed in 220
 			def.isFollower = true;
 			def.lowPriorityFollowerOps = true;
-		}
-		else if (opcode == 114)
+		} else if (opcode == 114)
 		{
 			def.runAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 115)
+		} else if (opcode == 115)
 		{
 			def.runAnimation = stream.readUnsignedShort();
 			def.runRotate180Animation = stream.readUnsignedShort();
 			def.runRotateLeftAnimation = stream.readUnsignedShort();
 			def.runRotateRightAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 116)
+		} else if (opcode == 116)
 		{
 			def.crawlAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 117)
+		} else if (opcode == 117)
 		{
 			def.crawlAnimation = stream.readUnsignedShort();
 			def.crawlRotate180Animation = stream.readUnsignedShort();
 			def.crawlRotateLeftAnimation = stream.readUnsignedShort();
 			def.crawlRotateRightAnimation = stream.readUnsignedShort();
-		}
-		else if (opcode == 118)
+		} else if (opcode == 118)
 		{
 			def.varbitId = stream.readUnsignedShort();
 			if (def.varbitId == 65535)
@@ -347,20 +309,16 @@ public class NpcLoader
 			}
 
 			def.configs[length + 1] = var;
-		}
-		else if (opcode == 122)
+		} else if (opcode == 122)
 		{
 			def.isFollower = true;
-		}
-		else if (opcode == 123)
+		} else if (opcode == 123)
 		{
 			def.lowPriorityFollowerOps = true;
-		}
-		else if (opcode == 124)
+		} else if (opcode == 124)
 		{
 			def.height = stream.readUnsignedShort();
-		}
-		else if (opcode == 249)
+		} else if (opcode == 249)
 		{
 			length = stream.readUnsignedByte();
 
@@ -375,17 +333,14 @@ public class NpcLoader
 				if (isString)
 				{
 					value = stream.readString();
-				}
-
-				else
+				} else
 				{
 					value = stream.readInt();
 				}
 
 				def.params.put(key, value);
 			}
-		}
-		else
+		} else
 		{
 			log.warn("Unrecognized opcode {}", opcode);
 		}

@@ -39,22 +39,19 @@ public enum OSType
 	static
 	{
 		final String OS = System
-			.getProperty("os.name", "generic")
-			.toLowerCase();
+				.getProperty("os.name", "generic")
+				.toLowerCase();
 
 		if ((OS.contains("mac")) || (OS.contains("darwin")))
 		{
 			OS_TYPE = OSType.MacOS;
-		}
-		else if (OS.contains("win"))
+		} else if (OS.contains("win"))
 		{
 			OS_TYPE = OSType.Windows;
-		}
-		else if (OS.contains("nux"))
+		} else if (OS.contains("nux"))
 		{
 			OS_TYPE = OSType.Linux;
-		}
-		else
+		} else
 		{
 			OS_TYPE = OSType.Other;
 		}

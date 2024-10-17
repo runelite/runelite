@@ -81,8 +81,7 @@ class TeamCapesOverlay extends OverlayPanel
 			{
 				// The team cape is every 2nd item id based on tc number
 				itemID = 2 * teamcapeNumber + ItemID.TEAM1_CAPE;
-			}
-			else
+			} else
 			{
 				// The team cape is every 3rd item id based on tc number starting from 0
 				itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;

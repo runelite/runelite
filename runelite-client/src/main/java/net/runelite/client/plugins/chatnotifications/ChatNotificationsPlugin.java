@@ -56,29 +56,79 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chat Notifications",
-	description = "Highlight and notify you of chat messages",
-	tags = {"duel", "messages", "notifications", "trade", "username"},
-	enabledByDefault = false
+		name = "Chat Notifications",
+		description = "Highlight and notify you of chat messages",
+		tags = {"duel", "messages", "notifications", "trade", "username"},
+		enabledByDefault = false
 )
 public class ChatNotificationsPlugin extends Plugin
 {
+	private final List<Pattern> highlightPatterns = new ArrayList<>();
 	@Inject
 	private Client client;
-
 	@Inject
 	private ChatNotificationsConfig config;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	@Named("runelite.title")
 	private String runeliteTitle;
-
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
-	private final List<Pattern> highlightPatterns = new ArrayList<>();
+
+	private static Pattern compilePattern(String pattern)
+	{
+		try
+		{
+			return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		} catch (PatternSyntaxException ex)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Get the last color tag from a string, or null if there was none
+	 *
+	 * @param str
+	 * @return
+	 */
+	private static String getLastColor(String str)
+	{
+		int colIdx = str.lastIndexOf("<col=");
+		int colEndIdx = str.lastIndexOf("</col>");
+
+		if (colEndIdx > colIdx)
+		{
+			// ends in a </col> which resets the color to normal
+			return "<col" + ChatColorType.NORMAL + ">";
+		}
+
+		if (colIdx == -1)
+		{
+			return null; // no color
+		}
+
+		int closeIdx = str.indexOf('>', colIdx);
+		if (closeIdx == -1)
+		{
+			return null; // unclosed col tag
+		}
+
+		return str.substring(colIdx, closeIdx + 1); // include the >
+	}
+
+	/**
+	 * Strip color tags from a string.
+	 *
+	 * @param str
+	 * @return
+	 */
+	@VisibleForTesting
+	static String stripColor(String str)
+	{
+		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
+	}
 
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
@@ -128,34 +178,22 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			List<String> items = Text.fromCSV(config.highlightWordsString());
 			String joined = items.stream()
-				.map(Text::escapeJagex) // we compare these strings to the raw Jagex ones
-				.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
-				.collect(Collectors.joining("|"));
+					.map(Text::escapeJagex) // we compare these strings to the raw Jagex ones
+					.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
+					.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
 			// so match \b or \s, as well as \A and \z for beginning and end of input respectively
 			highlightPatterns.add(Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE));
 		}
 
 		Splitter
-			.on("\n")
-			.omitEmptyStrings()
-			.trimResults()
-			.splitToList(config.highlightRegexString()).stream()
-			.map(ChatNotificationsPlugin::compilePattern)
-			.filter(Objects::nonNull)
-			.forEach(highlightPatterns::add);
-	}
-
-	private static Pattern compilePattern(String pattern)
-	{
-		try
-		{
-			return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-		}
-		catch (PatternSyntaxException ex)
-		{
-			return null;
-		}
+				.on("\n")
+				.omitEmptyStrings()
+				.trimResults()
+				.splitToList(config.highlightRegexString()).stream()
+				.map(ChatNotificationsPlugin::compilePattern)
+				.filter(Objects::nonNull)
+				.forEach(highlightPatterns::add);
 	}
 
 	@Subscribe
@@ -225,8 +263,8 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			String username = client.getLocalPlayer().getName();
 			String pattern = Arrays.stream(username.split(" "))
-				.map(s -> s.isEmpty() ? "" : Pattern.quote(s))
-				.collect(Collectors.joining("[\u00a0\u0020]")); // space or nbsp
+					.map(s -> s.isEmpty() ? "" : Pattern.quote(s))
+					.collect(Collectors.joining("[\u00a0\u0020]")); // space or nbsp
 			usernameMatcher = Pattern.compile("\\b" + pattern + "\\b", Pattern.CASE_INSENSITIVE);
 		}
 
@@ -242,8 +280,8 @@ public class ChatNotificationsPlugin extends Plugin
 				{
 					final int start = matcher.start(); // start not end, since username won't contain a col tag
 					final String closeColor = MoreObjects.firstNonNull(
-						getLastColor(message.substring(0, start)),
-						"<col" + ChatColorType.NORMAL + '>');
+							getLastColor(message.substring(0, start)),
+							"<col" + ChatColorType.NORMAL + '>');
 					final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
 					matcher.appendReplacement(stringBuffer, replacement);
 				}
@@ -255,12 +293,12 @@ public class ChatNotificationsPlugin extends Plugin
 				update = true;
 
 				if (chatMessage.getType() == ChatMessageType.PUBLICCHAT
-					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
-					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
-					|| chatMessage.getType() == ChatMessageType.MODCHAT
-					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT
-					|| chatMessage.getType() == ChatMessageType.CLAN_CHAT
-					|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT)
+						|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
+						|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
+						|| chatMessage.getType() == ChatMessageType.MODCHAT
+						|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT
+						|| chatMessage.getType() == ChatMessageType.CLAN_CHAT
+						|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT)
 				{
 					sendNotification(config.notifyOnOwnName(), chatMessage);
 				}
@@ -288,8 +326,8 @@ public class ChatNotificationsPlugin extends Plugin
 				// Determine the ending color by finding the last color tag up to and
 				// including the match.
 				final String closeColor = MoreObjects.firstNonNull(
-					getLastColor(nodeValue.substring(0, end)),
-					"<col" + ChatColorType.NORMAL + '>');
+						getLastColor(nodeValue.substring(0, end)),
+						"<col" + ChatColorType.NORMAL + '>');
 				// Strip color tags from the highlighted region so that it remains highlighted correctly
 				final String value = stripColor(matcher.group());
 
@@ -350,48 +388,5 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 
 		return stringBuilder.toString();
-	}
-
-	/**
-	 * Get the last color tag from a string, or null if there was none
-	 *
-	 * @param str
-	 * @return
-	 */
-	private static String getLastColor(String str)
-	{
-		int colIdx = str.lastIndexOf("<col=");
-		int colEndIdx = str.lastIndexOf("</col>");
-
-		if (colEndIdx > colIdx)
-		{
-			// ends in a </col> which resets the color to normal
-			return "<col" + ChatColorType.NORMAL + ">";
-		}
-
-		if (colIdx == -1)
-		{
-			return null; // no color
-		}
-
-		int closeIdx = str.indexOf('>', colIdx);
-		if (closeIdx == -1)
-		{
-			return null; // unclosed col tag
-		}
-
-		return str.substring(colIdx, closeIdx + 1); // include the >
-	}
-
-	/**
-	 * Strip color tags from a string.
-	 *
-	 * @param str
-	 * @return
-	 */
-	@VisibleForTesting
-	static String stripColor(String str)
-	{
-		return str.replaceAll("(<col=[0-9a-f]+>|</col>)", "");
 	}
 }

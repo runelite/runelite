@@ -52,23 +52,11 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private static final ImageIcon ADD_HOVER_ICON;
 
 	private static final Color DEFAULT_BORDER_COLOR = Color.GREEN;
-	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
-
-	private static final int DEFAULT_BORDER_THICKNESS = 3;
-
 	public static final Color SELECTED_COLOR = DEFAULT_BORDER_COLOR;
+	private static final Color DEFAULT_FILL_COLOR = new Color(0, 255, 0, 0);
 	public static final Color SELECTED_FILL_COLOR = DEFAULT_FILL_COLOR;
+	private static final int DEFAULT_BORDER_THICKNESS = 3;
 	public static final int SELECTED_BORDER_THICKNESS = DEFAULT_BORDER_THICKNESS;
-
-	private final JLabel addMarker = new JLabel(ADD_ICON);
-	private final JLabel title = new JLabel();
-	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
-	private final JPanel markerView = new JPanel(new GridBagLayout());
-
-	private final ScreenMarkerPlugin plugin;
-
-	@Getter
-	private final ScreenMarkerCreationPanel creationPanel;
 
 	static
 	{
@@ -76,6 +64,14 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		ADD_ICON = new ImageIcon(addIcon);
 		ADD_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(addIcon, 0.53f));
 	}
+
+	private final JLabel addMarker = new JLabel(ADD_ICON);
+	private final JLabel title = new JLabel();
+	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
+	private final JPanel markerView = new JPanel(new GridBagLayout());
+	private final ScreenMarkerPlugin plugin;
+	@Getter
+	private final ScreenMarkerCreationPanel creationPanel;
 
 	public ScreenMarkerPluginPanel(ScreenMarkerPlugin screenMarkerPlugin)
 	{
@@ -184,8 +180,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		{
 			noMarkersPanel.setVisible(false);
 			title.setVisible(true);
-		}
-		else
+		} else
 		{
 			boolean empty = plugin.getScreenMarkers().isEmpty();
 			noMarkersPanel.setVisible(empty);

@@ -48,17 +48,16 @@ class OverviewItemPanel extends JPanel
 
 	private static final Color HOVER_COLOR = ColorScheme.DARKER_GRAY_HOVER_COLOR;
 
-	private final JPanel textContainer;
-	private final JLabel statusLabel;
-	private final JLabel arrowLabel;
-	private final BooleanSupplier isSelectable;
-
-	private boolean isHighlighted;
-
 	static
 	{
 		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "/util/arrow_right.png"));
 	}
+
+	private final JPanel textContainer;
+	private final JLabel statusLabel;
+	private final JLabel arrowLabel;
+	private final BooleanSupplier isSelectable;
+	private boolean isHighlighted;
 
 	OverviewItemPanel(ItemManager itemManager, TimeTrackingPanel pluginPanel, Tab tab, String title)
 	{

@@ -33,15 +33,28 @@ public class TextureDefinition
 {
 	public int field1777;
 	public boolean field1778;
-	private int id;
-	private int[] fileIds;
 	public int[] field1780;
 	public int[] field1781;
 	public int[] field1786;
 	public int animationSpeed;
 	public int animationDirection;
-
 	public transient int[] pixels;
+	private int id;
+	private int[] fileIds;
+
+	static int adjustRGB(int var0, double var1)
+	{
+		double var3 = (double) (var0 >> 16) / 256.0D;
+		double var5 = (double) (var0 >> 8 & 255) / 256.0D;
+		double var7 = (double) (var0 & 255) / 256.0D;
+		var3 = Math.pow(var3, var1);
+		var5 = Math.pow(var5, var1);
+		var7 = Math.pow(var7, var1);
+		int var9 = (int) (var3 * 256.0D);
+		int var10 = (int) (var5 * 256.0D);
+		int var11 = (int) (var7 * 256.0D);
+		return var11 + (var10 << 8) + (var9 << 16);
+	}
 
 	public boolean method2680(double var1, int var3, SpriteProvider spriteProvider)
 	{
@@ -84,8 +97,7 @@ public class TextureDefinition
 			if (var6 == 0)
 			{
 				var11 = 0;
-			}
-			else
+			} else
 			{
 				var11 = this.field1780[var6 - 1];
 			}
@@ -98,8 +110,7 @@ public class TextureDefinition
 					{
 						this.pixels[var12] = var9[var8[var12] & 255];
 					}
-				}
-				else if (var7.getMaxWidth() == 64 && var3 == 128)
+				} else if (var7.getMaxWidth() == 64 && var3 == 128)
 				{
 					var12 = 0;
 
@@ -110,8 +121,7 @@ public class TextureDefinition
 							this.pixels[var12++] = var9[var8[(var13 >> 1 << 6) + (var14 >> 1)] & 255];
 						}
 					}
-				}
-				else
+				} else
 				{
 					if (var7.getMaxWidth() != 128 || var3 != 64)
 					{
@@ -132,19 +142,5 @@ public class TextureDefinition
 		}
 
 		return true;
-	}
-
-	static int adjustRGB(int var0, double var1)
-	{
-		double var3 = (double) (var0 >> 16) / 256.0D;
-		double var5 = (double) (var0 >> 8 & 255) / 256.0D;
-		double var7 = (double) (var0 & 255) / 256.0D;
-		var3 = Math.pow(var3, var1);
-		var5 = Math.pow(var5, var1);
-		var7 = Math.pow(var7, var1);
-		int var9 = (int) (var3 * 256.0D);
-		int var10 = (int) (var5 * 256.0D);
-		int var11 = (int) (var7 * 256.0D);
-		return var11 + (var10 << 8) + (var9 << 16);
 	}
 }

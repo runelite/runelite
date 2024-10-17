@@ -68,9 +68,9 @@ import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.Skill;
 
 @PluginDescriptor(
-	name = "Player-owned House",
-	description = "Show minimap icons and mark unlit/lit burners",
-	tags = {"construction", "poh", "minimap", "overlay"}
+		name = "Player-owned House",
+		description = "Show minimap icons and mark unlit/lit burners",
+		tags = {"construction", "poh", "minimap", "overlay"}
 )
 @Slf4j
 public class PohPlugin extends Plugin
@@ -101,6 +101,14 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private BurnerOverlay burnerOverlay;
+
+	private static void updateBurner(IncenseBurner incenseBurner, int fmLevel)
+	{
+		final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
+		incenseBurner.setCountdownTimer((200 + fmLevel) * tickLengthSeconds);
+		incenseBurner.setRandomTimer((fmLevel - 1) * tickLengthSeconds);
+		log.debug("Set burner timer for firemaking level {}", fmLevel);
+	}
 
 	@Provides
 	PohConfig getConfig(ConfigManager configManager)
@@ -202,23 +210,22 @@ public class PohPlugin extends Plugin
 
 		// Find burner closest to player
 		incenseBurners.keySet()
-			.stream()
-			.min(Comparator.comparingInt(a -> loc.distanceTo(a.getLocalLocation())))
-			.ifPresent(tile ->
-			{
-				final IncenseBurner incenseBurner = incenseBurners.get(tile);
-				incenseBurner.reset();
+				.stream()
+				.min(Comparator.comparingInt(a -> loc.distanceTo(a.getLocalLocation())))
+				.ifPresent(tile ->
+				{
+					final IncenseBurner incenseBurner = incenseBurners.get(tile);
+					incenseBurner.reset();
 
-				if (actor == client.getLocalPlayer())
-				{
-					int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
-					updateBurner(incenseBurner, level);
-				}
-				else if (actorName != null)
-				{
-					lookupPlayer(actorName, incenseBurner);
-				}
-			});
+					if (actor == client.getLocalPlayer())
+					{
+						int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
+						updateBurner(incenseBurner, level);
+					} else if (actorName != null)
+					{
+						lookupPlayer(actorName, incenseBurner);
+					}
+				});
 
 	}
 
@@ -238,19 +245,10 @@ public class PohPlugin extends Plugin
 				final Skill fm = playerStats.getSkill(HiscoreSkill.FIREMAKING);
 				final int level = fm.getLevel();
 				updateBurner(incenseBurner, Math.max(level, 1));
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{
 				log.warn("Error fetching Hiscore data " + e.getMessage());
 			}
 		});
-	}
-
-	private static void updateBurner(IncenseBurner incenseBurner, int fmLevel)
-	{
-		final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
-		incenseBurner.setCountdownTimer((200 + fmLevel) * tickLengthSeconds);
-		incenseBurner.setRandomTimer((fmLevel - 1) * tickLengthSeconds);
-		log.debug("Set burner timer for firemaking level {}", fmLevel);
 	}
 }

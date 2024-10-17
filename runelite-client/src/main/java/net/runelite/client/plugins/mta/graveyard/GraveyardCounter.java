@@ -43,12 +43,10 @@ public class GraveyardCounter extends Counter
 		if (count >= GraveyardRoom.MIN_SCORE)
 		{
 			return Color.GREEN;
-		}
-		else if (count == 0)
+		} else if (count == 0)
 		{
 			return Color.RED;
-		}
-		else
+		} else
 		{
 			return Color.ORANGE;
 		}

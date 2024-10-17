@@ -61,8 +61,7 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 		try
 		{
 			return configFuture.get();
-		}
-		catch (InterruptedException | ExecutionException e)
+		} catch (InterruptedException | ExecutionException e)
 		{
 			log.error("error fetching runtime config", e);
 			return null;
@@ -75,8 +74,7 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 		try
 		{
 			return configFuture.get(0, TimeUnit.SECONDS);
-		}
-		catch (InterruptedException | ExecutionException | TimeoutException e)
+		} catch (InterruptedException | ExecutionException | TimeoutException e)
 		{
 			return null;
 		}
@@ -96,16 +94,15 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 				log.info("Using local runtime config: {}", conf);
 				future.complete(conf);
 				return future;
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{
 				throw new RuntimeException("failed to load override runtime config", e);
 			}
 		}
 
 		Request request = new Request.Builder()
-			.url(RuneLiteProperties.getRuneLiteConfig())
-			.build();
+				.url(RuneLiteProperties.getRuneLiteConfig())
+				.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
@@ -122,8 +119,7 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 				{
 					RuntimeConfig config = RuneLiteAPI.GSON.fromJson(response.body().charStream(), RuntimeConfig.class);
 					future.complete(config);
-				}
-				catch (Throwable ex)
+				} catch (Throwable ex)
 				{
 					future.completeExceptionally(ex);
 				}

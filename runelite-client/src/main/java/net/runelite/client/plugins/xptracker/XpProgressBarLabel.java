@@ -37,8 +37,7 @@ public enum XpProgressBarLabel
 {
 	PERCENTAGE((snap) -> TWO_DECIMAL_FORMAT.format(snap.getSkillProgressToGoal()) + "%"),
 	TIME_TO_LEVEL(XpSnapshotSingle::getTimeTillGoal),
-	HOURS_TO_LEVEL(XpSnapshotSingle::getTimeTillGoalHours)
-	;
+	HOURS_TO_LEVEL(XpSnapshotSingle::getTimeTillGoalHours);
 
 	private final Function<XpSnapshotSingle, String> valueFunc;
 }

@@ -35,10 +35,10 @@ import java.awt.Color;
 public interface BlastMinePluginConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "showOreOverlay",
-		name = "Show ore overlay",
-		description = "Configures whether or not the ore count overlay is displayed"
+			position = 0,
+			keyName = "showOreOverlay",
+			name = "Show ore overlay",
+			description = "Configures whether or not the ore count overlay is displayed"
 	)
 	default boolean showOreOverlay()
 	{
@@ -46,10 +46,10 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "showRockIconOverlay",
-		name = "Show icons overlay",
-		description = "Configures whether or not the icon overlay is displayed"
+			position = 1,
+			keyName = "showRockIconOverlay",
+			name = "Show icons overlay",
+			description = "Configures whether or not the icon overlay is displayed"
 	)
 	default boolean showRockIconOverlay()
 	{
@@ -57,10 +57,10 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "showTimerOverlay",
-		name = "Show timer overlay",
-		description = "Configures whether or not the timer overlay is displayed"
+			position = 2,
+			keyName = "showTimerOverlay",
+			name = "Show timer overlay",
+			description = "Configures whether or not the timer overlay is displayed"
 	)
 	default boolean showTimerOverlay()
 	{
@@ -68,10 +68,10 @@ public interface BlastMinePluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "showWarningOverlay",
-		name = "Show explosion warning",
-		description = "Configures whether or not the explosion warning overlay is displayed"
+			position = 3,
+			keyName = "showWarningOverlay",
+			name = "Show explosion warning",
+			description = "Configures whether or not the explosion warning overlay is displayed"
 	)
 	default boolean showWarningOverlay()
 	{
@@ -80,10 +80,10 @@ public interface BlastMinePluginConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 4,
-		keyName = "hexTimerColor",
-		name = "Timer color",
-		description = "Color of timer overlay"
+			position = 4,
+			keyName = "hexTimerColor",
+			name = "Timer color",
+			description = "Color of timer overlay"
 	)
 	default Color getTimerColor()
 	{
@@ -92,10 +92,10 @@ public interface BlastMinePluginConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 5,
-		keyName = "hexWarningColor",
-		name = "Warning color",
-		description = "Color of warning overlay"
+			position = 5,
+			keyName = "hexWarningColor",
+			name = "Warning color",
+			description = "Color of warning overlay"
 	)
 	default Color getWarningColor()
 	{

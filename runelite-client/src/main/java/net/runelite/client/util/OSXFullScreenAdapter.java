@@ -37,6 +37,11 @@ class OSXFullScreenAdapter extends FullScreenAdapter
 {
 	private final Frame frame;
 
+	public static void install(Frame frame)
+	{
+		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
+	}
+
 	@Override
 	public void windowEnteredFullScreen(FullScreenEvent e)
 	{
@@ -49,10 +54,5 @@ class OSXFullScreenAdapter extends FullScreenAdapter
 	{
 		log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
 		frame.setExtendedState(Frame.NORMAL);
-	}
-
-	public static void install(Frame frame)
-	{
-		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
 	}
 }

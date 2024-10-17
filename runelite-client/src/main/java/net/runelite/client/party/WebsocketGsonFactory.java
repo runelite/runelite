@@ -67,8 +67,8 @@ class WebsocketGsonFactory
 	public static Gson build(final RuntimeTypeAdapterFactory<WebsocketMessage> factory)
 	{
 		return RuneLiteAPI.GSON.newBuilder()
-			.registerTypeAdapterFactory(factory)
-			.create();
+				.registerTypeAdapterFactory(factory)
+				.create();
 	}
 
 	public static Gson build()

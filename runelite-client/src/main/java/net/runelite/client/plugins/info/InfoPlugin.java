@@ -33,9 +33,9 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Info Panel",
-	description = "Enable the Info panel",
-	loadWhenOutdated = true
+		name = "Info Panel",
+		description = "Enable the Info panel",
+		loadWhenOutdated = true
 )
 public class InfoPlugin extends Plugin
 {
@@ -54,11 +54,11 @@ public class InfoPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "info_icon.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("Info")
-			.icon(icon)
-			.priority(10)
-			.panel(panel)
-			.build();
+				.tooltip("Info")
+				.icon(icon)
+				.priority(10)
+				.panel(panel)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 	}

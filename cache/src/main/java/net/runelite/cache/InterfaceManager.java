@@ -41,8 +41,8 @@ import net.runelite.cache.util.Namer;
 public class InterfaceManager
 {
 	private final Store store;
-	private InterfaceDefinition[][] interfaces;
 	private final Namer namer = new Namer();
+	private InterfaceDefinition[][] interfaces;
 
 	public InterfaceManager(Store store)
 	{

@@ -90,7 +90,7 @@ public class LoopTimer extends InfoBox
 		final long progress = passedMillis % durationMillis;
 
 		return Duration.ofMillis(reverse
-			? durationMillis - progress
-			: progress);
+				? durationMillis - progress
+				: progress);
 	}
 }

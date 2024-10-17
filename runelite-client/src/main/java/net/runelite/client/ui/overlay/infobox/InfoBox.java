@@ -40,28 +40,22 @@ public abstract class InfoBox
 	@Nonnull
 	@Getter(AccessLevel.PACKAGE)
 	private final Plugin plugin;
-
+	String layer;
 	@Getter
 	@Setter
 	private BufferedImage image;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private BufferedImage scaledImage;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Setter
 	private InfoBoxPriority priority;
-
 	@Getter
 	@Setter
 	private String tooltip;
-
 	@Getter
 	@Setter
 	private List<OverlayMenuEntry> menuEntries = new ArrayList<>();
-
-	String layer;
 
 	public InfoBox(BufferedImage image, @Nonnull Plugin plugin)
 	{

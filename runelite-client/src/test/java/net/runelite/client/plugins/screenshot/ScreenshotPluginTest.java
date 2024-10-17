@@ -80,38 +80,29 @@ public class ScreenshotPluginTest
 	private static final String CRAFTING_LEVEL_96_MESSAGE = "Congratulations, you've just advanced your Crafting level. You are now level 96.";
 	private static final String STRENGTH_LEVEL_99_MESSAGE = "Congratulations, you've reached the highest possible Strength level of 99.";
 	private static final String COLLECTION_LOG_CHAT = "New item added to your collection log: <col=ef1020>Chompy bird hat</col>";
-
-	@Mock
-	@Bind
-	private Client client;
-
-	@Inject
-	private ScreenshotPlugin screenshotPlugin;
-
-	@Mock
-	@Bind
-	private ScreenshotConfig screenshotConfig;
-
 	@Mock
 	@Bind
 	Notifier notifier;
-
 	@Mock
 	@Bind
 	ClientUI clientUi;
-
 	@Mock
 	@Bind
 	DrawManager drawManager;
-
 	@Mock
 	@Bind
 	RuneLiteConfig config;
-
 	@Mock
 	@Bind
 	ScheduledExecutorService service;
-
+	@Mock
+	@Bind
+	private Client client;
+	@Inject
+	private ScreenshotPlugin screenshotPlugin;
+	@Mock
+	@Bind
+	private ScreenshotConfig screenshotConfig;
 	@Mock
 	@Bind
 	private OverlayManager overlayManager;
@@ -525,7 +516,7 @@ public class ScreenshotPluginTest
 		when(client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
-			"Congratulations, you've completed a grandmaster combat task: <col=06600c>Egniol Diet II</col> (6 points).", null, 0);
+				"Congratulations, you've completed a grandmaster combat task: <col=06600c>Egniol Diet II</col> (6 points).", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Combat task (Egniol Diet II)", "Combat Achievements");

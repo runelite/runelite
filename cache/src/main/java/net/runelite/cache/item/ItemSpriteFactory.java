@@ -39,19 +39,19 @@ import net.runelite.cache.models.VertexNormal;
 public class ItemSpriteFactory
 {
 	public static BufferedImage createSprite(ItemProvider itemProvider, ModelProvider modelProvider,
-		SpriteProvider spriteProvider, TextureProvider textureProvider,
-		int itemId, int quantity, int border, int shadowColor,
-		boolean noted) throws IOException
+											 SpriteProvider spriteProvider, TextureProvider textureProvider,
+											 int itemId, int quantity, int border, int shadowColor,
+											 boolean noted) throws IOException
 	{
 		SpritePixels spritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-			itemId, quantity, border, shadowColor, noted);
+				itemId, quantity, border, shadowColor, noted);
 		return spritePixels == null ? null : spritePixels.toBufferedImage();
 	}
 
 	private static SpritePixels createSpritePixels(ItemProvider itemProvider, ModelProvider modelProvider,
-		SpriteProvider spriteProvider, TextureProvider textureProvider,
-		int itemId, int quantity, int border, int shadowColor,
-		boolean noted) throws IOException
+												   SpriteProvider spriteProvider, TextureProvider textureProvider,
+												   int itemId, int quantity, int border, int shadowColor,
+												   boolean noted) throws IOException
 	{
 		ItemDefinition item = itemProvider.provide(itemId);
 
@@ -83,25 +83,23 @@ public class ItemSpriteFactory
 		if (item.notedTemplate != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.notedID, 10, 1, 0, true);
+					item.notedID, 10, 1, 0, true);
 			if (auxSpritePixels == null)
 			{
 				return null;
 			}
-		}
-		else if (item.boughtTemplateId != -1)
+		} else if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.boughtId, quantity, border, 0, false);
+					item.boughtId, quantity, border, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
 			}
-		}
-		else if (item.placeholderTemplateId != -1)
+		} else if (item.placeholderTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.placeholderId, quantity, 0, 0, false);
+					item.placeholderId, quantity, 0, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -128,8 +126,7 @@ public class ItemSpriteFactory
 		if (noted)
 		{
 			zoom2d = (int) ((double) zoom2d * 1.5D);
-		}
-		else if (border == 2)
+		} else if (border == 2)
 		{
 			zoom2d = (int) ((double) zoom2d * 1.04D);
 		}
@@ -139,12 +136,12 @@ public class ItemSpriteFactory
 
 		itemModel.calculateBoundsCylinder();
 		itemModel.projectAndDraw(graphics, 0,
-			item.yan2d,
-			item.zan2d,
-			item.xan2d,
-			item.xOffset2d,
-			itemModel.modelHeight / 2 + var17 + item.yOffset2d,
-			var18 + item.yOffset2d);
+				item.yan2d,
+				item.zan2d,
+				item.xan2d,
+				item.xOffset2d,
+				itemModel.modelHeight / 2 + var17 + item.yOffset2d,
+				var18 + item.yOffset2d);
 		if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels.drawAtOn(graphics, 0, 0);
@@ -172,8 +169,8 @@ public class ItemSpriteFactory
 		}
 
 		graphics.setRasterBuffer(graphics.graphicsPixels,
-			graphics.graphicsPixelsWidth,
-			graphics.graphicsPixelsHeight);
+				graphics.graphicsPixelsWidth,
+				graphics.graphicsPixelsHeight);
 
 		graphics.setRasterClipping();
 		graphics.rasterGouraudLowRes = true;
@@ -260,8 +257,7 @@ public class ItemSpriteFactory
 					litModel.texIndices2[var10] = def.texIndices2[i] & '\uffff';
 					litModel.texIndices3[var10] = def.texIndices3[i] & '\uffff';
 					var9[i] = var10++;
-				}
-				else
+				} else
 				{
 					var9[i] = -1;
 				}
@@ -274,8 +270,7 @@ public class ItemSpriteFactory
 				if (def.textureCoords[i] != -1)
 				{
 					litModel.textureCoords[i] = (byte) var9[def.textureCoords[i] & 255];
-				}
-				else
+				} else
 				{
 					litModel.textureCoords[i] = -1;
 				}
@@ -288,8 +283,7 @@ public class ItemSpriteFactory
 			if (def.faceRenderTypes == null)
 			{
 				faceType = 0;
-			}
-			else
+			} else
 			{
 				faceType = def.faceRenderTypes[faceIdx];
 			}
@@ -298,8 +292,7 @@ public class ItemSpriteFactory
 			if (def.faceTransparencies == null)
 			{
 				faceAlpha = 0;
-			}
-			else
+			} else
 			{
 				faceAlpha = def.faceTransparencies[faceIdx];
 			}
@@ -308,8 +301,7 @@ public class ItemSpriteFactory
 			if (def.faceTextures == null)
 			{
 				faceTexture = -1;
-			}
-			else
+			} else
 			{
 				faceTexture = def.faceTextures[faceIdx];
 			}
@@ -337,18 +329,15 @@ public class ItemSpriteFactory
 						tmp = (y * faceNormal.y + z * faceNormal.z + x * faceNormal.x) / (var7 / 2 + var7) + ambient;
 						litModel.faceColors1[faceIdx] = method2608(def.faceColors[faceIdx] & '\uffff', tmp);
 						litModel.faceColors3[faceIdx] = -1;
-					}
-					else if (faceType == 3)
+					} else if (faceType == 3)
 					{
 						litModel.faceColors1[faceIdx] = 128;
 						litModel.faceColors3[faceIdx] = -1;
-					}
-					else
+					} else
 					{
 						litModel.faceColors3[faceIdx] = -2;
 					}
-				}
-				else
+				} else
 				{
 					int var15 = def.faceColors[faceIdx] & '\uffff';
 					vertexNormal = def.vertexNormals[def.faceIndices1[faceIdx]];
@@ -364,8 +353,7 @@ public class ItemSpriteFactory
 					tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 					litModel.faceColors3[faceIdx] = method2608(var15, tmp);
 				}
-			}
-			else if (faceType != 0)
+			} else if (faceType != 0)
 			{
 				if (faceType == 1)
 				{
@@ -373,13 +361,11 @@ public class ItemSpriteFactory
 					tmp = (y * faceNormal.y + z * faceNormal.z + x * faceNormal.x) / (var7 / 2 + var7) + ambient;
 					litModel.faceColors1[faceIdx] = bound2to126(tmp);
 					litModel.faceColors3[faceIdx] = -1;
-				}
-				else
+				} else
 				{
 					litModel.faceColors3[faceIdx] = -2;
 				}
-			}
-			else
+			} else
 			{
 				vertexNormal = def.vertexNormals[def.faceIndices1[faceIdx]];
 
@@ -423,8 +409,7 @@ public class ItemSpriteFactory
 		if (var0 < 2)
 		{
 			var0 = 2;
-		}
-		else if (var0 > 126)
+		} else if (var0 > 126)
 		{
 			var0 = 126;
 		}

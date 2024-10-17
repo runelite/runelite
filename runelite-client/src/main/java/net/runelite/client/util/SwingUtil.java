@@ -110,8 +110,7 @@ public class SwingUtil
 			try
 			{
 				((Activatable) maybeActivatable).onActivate();
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				log.warn("uncaught exception in activate", e);
 			}
@@ -125,8 +124,7 @@ public class SwingUtil
 			try
 			{
 				((Activatable) maybeActivatable).onDeactivate();
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				log.warn("uncaught exception in deactivate", e);
 			}

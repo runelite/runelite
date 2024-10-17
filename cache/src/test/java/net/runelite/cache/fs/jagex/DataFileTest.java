@@ -123,9 +123,9 @@ public class DataFileTest
 	{
 		File file = folder.newFile();
 		int[] keys = new int[]
-		{
-			4, 8, 15, 16
-		};
+				{
+						4, 8, 15, 16
+				};
 
 		DataFile df = new DataFile(file);
 
@@ -148,9 +148,9 @@ public class DataFileTest
 	{
 		File file = folder.newFile();
 		int[] keys = new int[]
-		{
-			4, 8, 15, 16
-		};
+				{
+						4, 8, 15, 16
+				};
 
 		DataFile df = new DataFile(file);
 

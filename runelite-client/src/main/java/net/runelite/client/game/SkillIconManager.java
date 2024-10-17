@@ -47,7 +47,7 @@ public class SkillIconManager
 		}
 
 		String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
-			+ skill.getName().toLowerCase() + ".png";
+				+ skill.getName().toLowerCase() + ".png";
 		log.debug("Loading skill icon from {}", skillIconPath);
 		BufferedImage skillImage = ImageUtil.loadImageResource(getClass(), skillIconPath);
 		imgCache[skillIdx] = skillImage;

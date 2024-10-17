@@ -72,11 +72,11 @@ class OpponentInfoOverlay extends OverlayPanel
 
 	@Inject
 	private OpponentInfoOverlay(
-		Client client,
-		OpponentInfoPlugin opponentInfoPlugin,
-		OpponentInfoConfig opponentInfoConfig,
-		HiscoreManager hiscoreManager,
-		NPCManager npcManager)
+			Client client,
+			OpponentInfoPlugin opponentInfoPlugin,
+			OpponentInfoConfig opponentInfoConfig,
+			HiscoreManager hiscoreManager,
+			NPCManager npcManager)
 	{
 		super(opponentInfoPlugin);
 		this.client = client;
@@ -123,8 +123,7 @@ class OpponentInfoOverlay extends OverlayPanel
 					}
 				}
 				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
-			}
-			else if (opponent instanceof Player)
+			} else if (opponent instanceof Player)
 			{
 				final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
 				if (hiscoreResult != null)
@@ -151,8 +150,8 @@ class OpponentInfoOverlay extends OverlayPanel
 		int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(opponentName) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
 		panelComponent.setPreferredSize(new Dimension(panelWidth, 0));
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text(opponentName)
-			.build());
+				.text(opponentName)
+				.build());
 
 		// Health bar
 		if (lastRatio >= 0 && lastHealthScale > 0)
@@ -164,7 +163,7 @@ class OpponentInfoOverlay extends OverlayPanel
 			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
 
 			if ((displayStyle == HitpointsDisplayStyle.HITPOINTS || displayStyle == HitpointsDisplayStyle.BOTH)
-				&& lastMaxHealth != null)
+					&& lastMaxHealth != null)
 			{
 				// This is the reverse of the calculation of healthRatio done by the server
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
@@ -187,8 +186,7 @@ class OpponentInfoOverlay extends OverlayPanel
 						{
 							maxHealth = lastMaxHealth;
 						}
-					}
-					else
+					} else
 					{
 						// If healthScale is 1, healthRatio will always be 1 unless health = 0
 						// so we know nothing about the upper limit except that it can't be higher than maxHealth
@@ -200,13 +198,12 @@ class OpponentInfoOverlay extends OverlayPanel
 
 				// Show both the hitpoint and percentage values if enabled in the config
 				final ProgressBarComponent.LabelDisplayMode progressBarDisplayMode = displayStyle == HitpointsDisplayStyle.BOTH ?
-					ProgressBarComponent.LabelDisplayMode.BOTH : ProgressBarComponent.LabelDisplayMode.FULL;
+						ProgressBarComponent.LabelDisplayMode.BOTH : ProgressBarComponent.LabelDisplayMode.FULL;
 
 				progressBarComponent.setLabelDisplayMode(progressBarDisplayMode);
 				progressBarComponent.setMaximum(lastMaxHealth);
 				progressBarComponent.setValue(health);
-			}
-			else
+			} else
 			{
 				float floatRatio = lastRatio / (float) lastHealthScale;
 				progressBarComponent.setValue(floatRatio * 100d);
@@ -220,6 +217,7 @@ class OpponentInfoOverlay extends OverlayPanel
 
 	/**
 	 * Check if the hp hud is active for an opponent
+	 *
 	 * @param opponent
 	 * @return
 	 */

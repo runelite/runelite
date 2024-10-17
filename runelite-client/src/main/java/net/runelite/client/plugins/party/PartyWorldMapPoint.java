@@ -35,9 +35,8 @@ import net.runelite.client.party.PartyMember;
 class PartyWorldMapPoint extends WorldMapPoint
 {
 	private static final BufferedImage ARROW = ImageUtil.loadImageResource(PartyWorldMapPoint.class, "/util/clue_arrow.png");
-
-	private BufferedImage partyImage;
 	private final PartyMember member;
+	private BufferedImage partyImage;
 
 	PartyWorldMapPoint(WorldPoint worldPoint, PartyMember member)
 	{
@@ -46,8 +45,8 @@ class PartyWorldMapPoint extends WorldMapPoint
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
 		this.setImagePoint(new Point(
-			ARROW.getWidth() / 2,
-			ARROW.getHeight()));
+				ARROW.getWidth() / 2,
+				ARROW.getHeight()));
 	}
 
 	@Override

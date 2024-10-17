@@ -32,6 +32,9 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 @SuperBuilder
 class MapPoint extends WorldMapPoint
 {
+	@Getter
+	private final Type type;
+
 	enum Type
 	{
 		TELEPORT,
@@ -50,7 +53,4 @@ class MapPoint extends WorldMapPoint
 		QUEST,
 		RARE_TREE
 	}
-
-	@Getter
-	private final Type type;
 }

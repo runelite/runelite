@@ -43,8 +43,7 @@ public class BZip2Test
 		try
 		{
 			var l = LibBZip2.INSTANCE;
-		}
-		catch (UnsatisfiedLinkError ex)
+		} catch (UnsatisfiedLinkError ex)
 		{
 			assumeNoException(ex);
 		}

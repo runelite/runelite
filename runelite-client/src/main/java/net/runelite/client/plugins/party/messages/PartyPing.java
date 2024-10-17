@@ -37,21 +37,17 @@ import net.runelite.client.plugins.party.PartyPingType;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PartyPing extends PartyMemberMessage {
-	@SerializedName("pt")
-	private PartyPingType pingType;
-
+public class PartyPing extends PartyMemberMessage
+{
 	@SerializedName("tt")
 	private final PartyPingTargetType targetType;
-
 	// this will either be the targeted tile, the tile the game object is on or null for npc pings
 	private final WorldPoint point;
-
 	// this will either be the object ID, the npc's index or null for regular pings
 	private final Integer target;
-
 	private final int world;
-
 	@SerializedName("pid")
 	private final int playerId;
+	@SerializedName("pt")
+	private PartyPingType pingType;
 }

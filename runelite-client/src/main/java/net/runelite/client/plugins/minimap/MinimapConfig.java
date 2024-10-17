@@ -36,16 +36,16 @@ public interface MinimapConfig extends Config
 	String GROUP = "minimap";
 
 	@ConfigSection(
-		name = "Minimap dot colors",
-		description = "The colors of dots on the minimap.",
-		position = 0
+			name = "Minimap dot colors",
+			description = "The colors of dots on the minimap.",
+			position = 0
 	)
 	String minimapDotSection = "minimapDotSection";
 
 	@ConfigItem(
-		keyName = "zoom",
-		name = "Zoom",
-		description = "Enables zooming on the minimap"
+			keyName = "zoom",
+			name = "Zoom",
+			description = "Enables zooming on the minimap"
 	)
 	default boolean zoom()
 	{
@@ -53,9 +53,9 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideMinimap",
-		name = "Hide minimap",
-		description = "Do not show the minimap on screen (Resizable only)"
+			keyName = "hideMinimap",
+			name = "Hide minimap",
+			description = "Do not show the minimap on screen (Resizable only)"
 	)
 	default boolean hideMinimap()
 	{
@@ -63,58 +63,58 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "item",
-		name = "Item color",
-		description = "Set the minimap color items are drawn in",
-		section = minimapDotSection
+			keyName = "item",
+			name = "Item color",
+			description = "Set the minimap color items are drawn in",
+			section = minimapDotSection
 	)
 	Color itemColor();
 
 	@ConfigItem(
-		keyName = "npc",
-		name = "NPC color",
-		description = "Set the minimap color NPCs are drawn in",
-		section = minimapDotSection
+			keyName = "npc",
+			name = "NPC color",
+			description = "Set the minimap color NPCs are drawn in",
+			section = minimapDotSection
 	)
 	Color npcColor();
 
 	@ConfigItem(
-		keyName = "player",
-		name = "Player color",
-		description = "Set the minimap Color players are drawn in",
-		section = minimapDotSection
+			keyName = "player",
+			name = "Player color",
+			description = "Set the minimap Color players are drawn in",
+			section = minimapDotSection
 	)
 	Color playerColor();
 
 	@ConfigItem(
-		keyName = "friend",
-		name = "Friends color",
-		description = "Set the minimap color your friends are drawn in",
-		section = minimapDotSection
+			keyName = "friend",
+			name = "Friends color",
+			description = "Set the minimap color your friends are drawn in",
+			section = minimapDotSection
 	)
 	Color friendColor();
 
 	@ConfigItem(
-		keyName = "team",
-		name = "Team color",
-		description = "Set the minimap color your team is drawn in",
-		section = minimapDotSection
+			keyName = "team",
+			name = "Team color",
+			description = "Set the minimap color your team is drawn in",
+			section = minimapDotSection
 	)
 	Color teamColor();
 
 	@ConfigItem(
-		keyName = "clan", // old name from prior to clans
-		name = "Friends Chat color",
-		description = "Set the minimap color your friends chat members are drawn in",
-		section = minimapDotSection
+			keyName = "clan", // old name from prior to clans
+			name = "Friends Chat color",
+			description = "Set the minimap color your friends chat members are drawn in",
+			section = minimapDotSection
 	)
 	Color friendsChatColor();
 
 	@ConfigItem(
-		keyName = "clanchat",
-		name = "Clan Chat color",
-		description = "Set the minimap color your clan chat members are drawn in",
-		section = minimapDotSection
+			keyName = "clanchat",
+			name = "Clan Chat color",
+			description = "Set the minimap color your clan chat members are drawn in",
+			section = minimapDotSection
 	)
 	Color clanChatColor();
 }

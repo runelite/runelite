@@ -58,9 +58,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Screen Markers",
-	description = "Enable drawing of screen markers on top of the client",
-	tags = {"boxes", "overlay", "panel"}
+		name = "Screen Markers",
+		description = "Enable drawing of screen markers on top of the client",
+		tags = {"boxes", "overlay", "panel"}
 )
 public class ScreenMarkerPlugin extends Plugin
 {
@@ -132,11 +132,11 @@ public class ScreenMarkerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
-			.tooltip(PLUGIN_NAME)
-			.icon(icon)
-			.priority(5)
-			.panel(pluginPanel)
-			.build();
+				.tooltip(PLUGIN_NAME)
+				.icon(icon)
+				.priority(5)
+				.panel(pluginPanel)
+				.build();
 
 		clientToolbar.addNavigation(navigationButton);
 
@@ -177,8 +177,7 @@ public class ScreenMarkerPlugin extends Plugin
 		if (enabled)
 		{
 			mouseManager.registerMouseListener(mouseListener);
-		}
-		else
+		} else
 		{
 			mouseManager.unregisterMouseListener(mouseListener);
 		}
@@ -198,13 +197,13 @@ public class ScreenMarkerPlugin extends Plugin
 	public void startCreation(Point location, Dimension size)
 	{
 		currentMarker = new ScreenMarker(
-			Instant.now().toEpochMilli(),
-			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
-			ScreenMarkerPluginPanel.SELECTED_BORDER_THICKNESS,
-			ScreenMarkerPluginPanel.SELECTED_COLOR,
-			ScreenMarkerPluginPanel.SELECTED_FILL_COLOR,
-			true,
-			false
+				Instant.now().toEpochMilli(),
+				DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
+				ScreenMarkerPluginPanel.SELECTED_BORDER_THICKNESS,
+				ScreenMarkerPluginPanel.SELECTED_COLOR,
+				ScreenMarkerPluginPanel.SELECTED_FILL_COLOR,
+				true,
+				false
 		);
 
 		// Set overlay creator bounds to current position and default size
@@ -271,7 +270,7 @@ public class ScreenMarkerPlugin extends Plugin
 		}
 
 		final String json = gson
-			.toJson(screenMarkers.stream().map(ScreenMarkerOverlay::getMarker).collect(Collectors.toList()));
+				.toJson(screenMarkers.stream().map(ScreenMarkerOverlay::getMarker).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
 	}
 

@@ -61,25 +61,21 @@ public class MapLoader
 						if (attribute == 0)
 						{
 							break;
-						}
-						else if (attribute == 1)
+						} else if (attribute == 1)
 						{
 							int height = in.readUnsignedByte();
 							tile.height = height;
 							break;
-						}
-						else if (attribute <= 49)
+						} else if (attribute <= 49)
 						{
 							tile.attrOpcode = attribute;
 							tile.overlayId = in.readShort();
 							tile.overlayPath = (byte) ((attribute - 2) / 4);
 							tile.overlayRotation = (byte) (attribute - 2 & 3);
-						}
-						else if (attribute <= 81)
+						} else if (attribute <= 81)
 						{
 							tile.settings = (byte) (attribute - 49);
-						}
-						else
+						} else
 						{
 							tile.underlayId = (short) (attribute - 81);
 						}

@@ -66,11 +66,26 @@ public class MenuManager
 		eventBus.register(this);
 	}
 
+	private static boolean menuContainsCustomMenu(MenuEntry[] menuEntries, WidgetMenuOption customMenuOption)
+	{
+		for (MenuEntry menuEntry : menuEntries)
+		{
+			String option = menuEntry.getOption();
+			String target = menuEntry.getTarget();
+
+			if (option.equals(customMenuOption.getMenuOption()) && target.equals(customMenuOption.getMenuTarget()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Adds a CustomMenuOption to the list of managed menu options.
 	 *
 	 * @param customMenuOption The custom menu to add
-	 * @param callback callback to be called when the menu is clicked
+	 * @param callback         callback to be called when the menu is clicked
 	 */
 	public void addManagedCustomMenu(WidgetMenuOption customMenuOption, Consumer<MenuEntry> callback)
 	{
@@ -86,21 +101,6 @@ public class MenuManager
 	public void removeManagedCustomMenu(WidgetMenuOption customMenuOption)
 	{
 		managedMenuOptions.remove(customMenuOption.getWidgetId(), customMenuOption);
-	}
-
-	private static boolean menuContainsCustomMenu(MenuEntry[] menuEntries, WidgetMenuOption customMenuOption)
-	{
-		for (MenuEntry menuEntry : menuEntries)
-		{
-			String option = menuEntry.getOption();
-			String target = menuEntry.getTarget();
-
-			if (option.equals(customMenuOption.getMenuOption()) && target.equals(customMenuOption.getMenuTarget()))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Subscribe
@@ -133,11 +133,11 @@ public class MenuManager
 			}
 
 			client.createMenuEntry(insertIdx--)
-				.setOption(currentMenu.getMenuOption())
-				.setTarget(currentMenu.getMenuTarget())
-				.setType(MenuAction.RUNELITE)
-				.setParam1(widgetId)
-				.onClick(currentMenu.callback);
+					.setOption(currentMenu.getMenuOption())
+					.setTarget(currentMenu.getMenuTarget())
+					.setType(MenuAction.RUNELITE)
+					.setParam1(widgetId)
+					.onClick(currentMenu.callback);
 		}
 	}
 

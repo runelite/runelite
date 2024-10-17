@@ -34,8 +34,45 @@ import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
 
 @ConfigGroup(PartyConfig.GROUP)
-public interface PartyConfig extends Config {
+public interface PartyConfig extends Config
+{
 	String GROUP = "party";
+	@ConfigSection(
+			name = "Target ping (default)",
+			description = "Configure default target ping.",
+			position = 6
+	)
+	String SECTION_TARGET_PING = "targetPing";
+	@ConfigSection(
+			name = "Danger ping",
+			description = "Configure danger ping.",
+			position = 9
+	)
+	String SECTION_DANGER_PING = "dangerPing";
+	@ConfigSection(
+			name = "Destination ping",
+			description = "Configure destination ping.",
+			position = 13
+	)
+	String SECTION_DESTINATION_PING = "destinationPing";
+	@ConfigSection(
+			name = "Request ping",
+			description = "Configure request ping.",
+			position = 18
+	)
+	String SECTION_REQUEST_PING = "requestPing";
+	@ConfigSection(
+			name = "Question ping",
+			description = "Configure question ping.",
+			position = 22
+	)
+	String SECTION_QUESTION_PING = "questionPing";
+	@ConfigSection(
+			name = "Player Status Overlay",
+			description = "Player status such as health, prayer, and special attack energy drawn on player models.",
+			position = 26
+	)
+	String SECTION_STATUS_OVERLAY = "statusOverlay";
 
 	@ConfigItem(
 			keyName = "recolorNames",
@@ -43,7 +80,8 @@ public interface PartyConfig extends Config {
 			description = "Recolor party members names based on unique color hash",
 			position = 1
 	)
-	default boolean recolorNames() {
+	default boolean recolorNames()
+	{
 		return true;
 	}
 
@@ -53,7 +91,8 @@ public interface PartyConfig extends Config {
 			description = "Enables party pings",
 			position = 2
 	)
-	default boolean pings() {
+	default boolean pings()
+	{
 		return true;
 	}
 
@@ -63,7 +102,8 @@ public interface PartyConfig extends Config {
 			description = "Enables opening advanced ping menu by dragging the mouse after selecting a target",
 			position = 3
 	)
-	default boolean advancedPingMenu() {
+	default boolean advancedPingMenu()
+	{
 		return true;
 	}
 
@@ -73,7 +113,8 @@ public interface PartyConfig extends Config {
 			description = "Key to hold to send a ping",
 			position = 4
 	)
-	default Keybind pingHotkey() {
+	default Keybind pingHotkey()
+	{
 		return Keybind.NOT_SET;
 	}
 
@@ -83,16 +124,10 @@ public interface PartyConfig extends Config {
 			description = "How long pings are visible for, in seconds",
 			position = 5
 	)
-	default double pingDuration() {
+	default double pingDuration()
+	{
 		return 1.5;
 	}
-
-	@ConfigSection(
-			name = "Target ping (default)",
-			description = "Configure default target ping.",
-			position = 6
-	)
-	String SECTION_TARGET_PING = "targetPing";
 
 	@ConfigItem(
 			section = SECTION_TARGET_PING,
@@ -101,7 +136,8 @@ public interface PartyConfig extends Config {
 			description = "Enables sound notification on target ping",
 			position = 7
 	)
-	default boolean targetPingSound() {
+	default boolean targetPingSound()
+	{
 		return true;
 	}
 
@@ -112,16 +148,10 @@ public interface PartyConfig extends Config {
 			description = "Color of incoming target pings",
 			position = 8
 	)
-	default Color targetPingColor() {
+	default Color targetPingColor()
+	{
 		return null;
 	}
-
-	@ConfigSection(
-			name = "Danger ping",
-			description = "Configure danger ping.",
-			position = 9
-	)
-	String SECTION_DANGER_PING = "dangerPing";
 
 	@ConfigItem(
 			section = SECTION_DANGER_PING,
@@ -130,7 +160,8 @@ public interface PartyConfig extends Config {
 			description = "Enables sound notification on danger ping",
 			position = 10
 	)
-	default boolean dangerPingSound() {
+	default boolean dangerPingSound()
+	{
 		return true;
 	}
 
@@ -141,7 +172,8 @@ public interface PartyConfig extends Config {
 			description = "Color of incoming danger pings",
 			position = 11
 	)
-	default Color dangerPingColor() {
+	default Color dangerPingColor()
+	{
 		return Color.RED;
 	}
 
@@ -152,16 +184,10 @@ public interface PartyConfig extends Config {
 			description = "Key to hold to send a danger ping",
 			position = 12
 	)
-	default Keybind dangerPingHotkey() {
+	default Keybind dangerPingHotkey()
+	{
 		return Keybind.NOT_SET;
 	}
-
-	@ConfigSection(
-			name = "Destination ping",
-			description = "Configure destination ping.",
-			position = 13
-	)
-	String SECTION_DESTINATION_PING = "destinationPing";
 
 	@ConfigItem(
 			section = SECTION_DESTINATION_PING,
@@ -170,7 +196,8 @@ public interface PartyConfig extends Config {
 			description = "Draw a line between source player and destination",
 			position = 14
 	)
-	default boolean drawDestinationLine() {
+	default boolean drawDestinationLine()
+	{
 		return true;
 	}
 
@@ -181,7 +208,8 @@ public interface PartyConfig extends Config {
 			description = "Enables sound notification on destination ping",
 			position = 15
 	)
-	default boolean destinationPingSound() {
+	default boolean destinationPingSound()
+	{
 		return true;
 	}
 
@@ -192,7 +220,8 @@ public interface PartyConfig extends Config {
 			description = "Color of incoming destination pings",
 			position = 16
 	)
-	default Color destinationPingColor() {
+	default Color destinationPingColor()
+	{
 		return null;
 	}
 
@@ -203,16 +232,10 @@ public interface PartyConfig extends Config {
 			description = "Key to hold to send a destination ping",
 			position = 17
 	)
-	default Keybind destinationPingHotkey() {
+	default Keybind destinationPingHotkey()
+	{
 		return Keybind.NOT_SET;
 	}
-
-	@ConfigSection(
-			name = "Request ping",
-			description = "Configure request ping.",
-			position = 18
-	)
-	String SECTION_REQUEST_PING = "requestPing";
 
 	@ConfigItem(
 			section = SECTION_REQUEST_PING,
@@ -221,7 +244,8 @@ public interface PartyConfig extends Config {
 			description = "Enables sound notification on request ping",
 			position = 19
 	)
-	default boolean requestPingSound() {
+	default boolean requestPingSound()
+	{
 		return true;
 	}
 
@@ -232,7 +256,8 @@ public interface PartyConfig extends Config {
 			description = "Color of incoming request pings",
 			position = 20
 	)
-	default Color requestPingColor() {
+	default Color requestPingColor()
+	{
 		return null;
 	}
 
@@ -243,16 +268,10 @@ public interface PartyConfig extends Config {
 			description = "Key to hold to send a request ping",
 			position = 21
 	)
-	default Keybind requestPingHotkey() {
+	default Keybind requestPingHotkey()
+	{
 		return Keybind.NOT_SET;
 	}
-
-	@ConfigSection(
-			name = "Question ping",
-			description = "Configure question ping.",
-			position = 22
-	)
-	String SECTION_QUESTION_PING = "questionPing";
 
 	@ConfigItem(
 			section = SECTION_QUESTION_PING,
@@ -261,7 +280,8 @@ public interface PartyConfig extends Config {
 			description = "Enables sound notification on question ping",
 			position = 23
 	)
-	default boolean questionPingSound() {
+	default boolean questionPingSound()
+	{
 		return true;
 	}
 
@@ -272,7 +292,8 @@ public interface PartyConfig extends Config {
 			description = "Color of incoming question pings",
 			position = 24
 	)
-	default Color questionPingColor() {
+	default Color questionPingColor()
+	{
 		return null;
 	}
 
@@ -283,16 +304,10 @@ public interface PartyConfig extends Config {
 			description = "Key to hold to send an question ping",
 			position = 25
 	)
-	default Keybind questionPingHotkey() {
+	default Keybind questionPingHotkey()
+	{
 		return Keybind.NOT_SET;
 	}
-
-	@ConfigSection(
-			name = "Player Status Overlay",
-			description = "Player status such as health, prayer, and special attack energy drawn on player models.",
-			position = 26
-	)
-	String SECTION_STATUS_OVERLAY = "statusOverlay";
 
 	@ConfigItem(
 			section = SECTION_STATUS_OVERLAY,
@@ -301,7 +316,8 @@ public interface PartyConfig extends Config {
 			description = "Show health of party members on the player model.",
 			position = 27
 	)
-	default boolean statusOverlayHealth() {
+	default boolean statusOverlayHealth()
+	{
 		return false;
 	}
 
@@ -312,7 +328,8 @@ public interface PartyConfig extends Config {
 			description = "Show prayer of party members on the player model.",
 			position = 28
 	)
-	default boolean statusOverlayPrayer() {
+	default boolean statusOverlayPrayer()
+	{
 		return false;
 	}
 
@@ -323,7 +340,8 @@ public interface PartyConfig extends Config {
 			description = "Show run energy (stamina) of party members on the player model.",
 			position = 29
 	)
-	default boolean statusOverlayStamina() {
+	default boolean statusOverlayStamina()
+	{
 		return false;
 	}
 
@@ -334,7 +352,8 @@ public interface PartyConfig extends Config {
 			description = "Show special attack energy of party members on the player model.",
 			position = 30
 	)
-	default boolean statusOverlaySpec() {
+	default boolean statusOverlaySpec()
+	{
 		return false;
 	}
 
@@ -345,7 +364,8 @@ public interface PartyConfig extends Config {
 			description = "Show vengeance status (active/inactive) of party members on the player model.",
 			position = 31
 	)
-	default boolean statusOverlayVeng() {
+	default boolean statusOverlayVeng()
+	{
 		return true;
 	}
 
@@ -356,7 +376,8 @@ public interface PartyConfig extends Config {
 			description = "Show above activated status overlays on your local player.",
 			position = 32
 	)
-	default boolean statusOverlayRenderSelf() {
+	default boolean statusOverlayRenderSelf()
+	{
 		return true;
 	}
 
@@ -366,7 +387,8 @@ public interface PartyConfig extends Config {
 			description = "",
 			hidden = true
 	)
-	default String previousPartyId() {
+	default String previousPartyId()
+	{
 		return "";
 	}
 

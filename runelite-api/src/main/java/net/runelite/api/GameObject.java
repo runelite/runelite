@@ -75,8 +75,9 @@ public interface GameObject extends TileObject
 
 	/**
 	 * Get the orientation of the object
-	 * @see net.runelite.api.coords.Angle
+	 *
 	 * @return
+	 * @see net.runelite.api.coords.Angle
 	 */
 	int getOrientation();
 

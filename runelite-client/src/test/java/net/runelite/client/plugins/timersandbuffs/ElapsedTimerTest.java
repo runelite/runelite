@@ -30,6 +30,11 @@ import org.junit.Test;
 
 public class ElapsedTimerTest
 {
+	private static String timerText(final Instant startTime, final Instant lastTime)
+	{
+		return new ElapsedTimer(null, null, startTime, lastTime).getText();
+	}
+
 	@Test
 	public void testGetText()
 	{
@@ -55,10 +60,5 @@ public class ElapsedTimerTest
 		assertEquals("299:55", timerText(fiveHoursAgo, fiveSecondsAgo));
 		assertEquals("300:00", timerText(fiveHoursAgo, now));
 		assertEquals("300:00", timerText(fiveHoursAgo, null));
-	}
-
-	private static String timerText(final Instant startTime, final Instant lastTime)
-	{
-		return new ElapsedTimer(null, null, startTime, lastTime).getText();
 	}
 }

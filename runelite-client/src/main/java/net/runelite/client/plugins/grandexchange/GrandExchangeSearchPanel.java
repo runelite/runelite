@@ -82,7 +82,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 	@Inject
 	private GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager,
-		ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig, GrandExchangePlugin grandExchangePlugin)
+									 ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig, GrandExchangePlugin grandExchangePlugin)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
@@ -132,7 +132,7 @@ class GrandExchangeSearchPanel extends JPanel
 		errorWrapper.add(errorPanel, BorderLayout.NORTH);
 
 		errorPanel.setContent("Grand Exchange Search",
-			"Here you can search for an item by its name to find price information.");
+				"Here you can search for an item by its name to find price information.");
 
 		centerPanel.add(resultsWrapper, RESULTS_PANEL);
 		centerPanel.add(errorWrapper, ERROR_PANEL);
@@ -237,7 +237,7 @@ class GrandExchangeSearchPanel extends JPanel
 			for (GrandExchangeItems item : itemsList)
 			{
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(grandExchangePlugin, item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
+						item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
@@ -250,8 +250,7 @@ class GrandExchangeSearchPanel extends JPanel
 					marginWrapper.setBorder(new EmptyBorder(5, 0, 0, 0));
 					marginWrapper.add(panel, BorderLayout.NORTH);
 					searchItemsPanel.add(marginWrapper, constraints);
-				}
-				else
+				} else
 				{
 					searchItemsPanel.add(panel, constraints);
 				}

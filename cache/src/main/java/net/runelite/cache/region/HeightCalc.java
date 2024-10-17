@@ -1,16 +1,16 @@
 /**
  * Copyright (c) 2015 Kyle Friz
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -46,14 +46,13 @@ public class HeightCalc
 	public static int calculate(int x, int y)
 	{
 		int n = interpolateNoise(x + 45365, y + 91923, 4) - 128
-			+ (interpolateNoise(10294 + x, y + 37821, 2) - 128 >> 1)
-			+ (interpolateNoise(x, y, 1) - 128 >> 2);
+				+ (interpolateNoise(10294 + x, y + 37821, 2) - 128 >> 1)
+				+ (interpolateNoise(x, y, 1) - 128 >> 2);
 		n = 35 + (int) ((double) n * 0.3D);
 		if (n < 10)
 		{
 			n = 10;
-		}
-		else if (n > 60)
+		} else if (n > 60)
 		{
 			n = 60;
 		}

@@ -41,48 +41,48 @@ public class RotationSolverTest
 	@Test
 	public void testSolve1()
 	{
-		RaidRoom[] rooms = new RaidRoom[]{VESPULA, UNKNOWN_COMBAT, UNKNOWN_COMBAT, VANGUARDS};
+		RaidRoom[] rooms = new RaidRoom[] {VESPULA, UNKNOWN_COMBAT, UNKNOWN_COMBAT, VANGUARDS};
 		RotationSolver.solve(rooms);
-		assertArrayEquals(new RaidRoom[]{VESPULA, SHAMANS, VASA, VANGUARDS}, rooms);
+		assertArrayEquals(new RaidRoom[] {VESPULA, SHAMANS, VASA, VANGUARDS}, rooms);
 	}
 
 	@Test
 	public void testSolve2()
 	{
-		RaidRoom[] rooms = new RaidRoom[]{UNKNOWN_COMBAT, UNKNOWN_COMBAT, MUTTADILES, TEKTON};
+		RaidRoom[] rooms = new RaidRoom[] {UNKNOWN_COMBAT, UNKNOWN_COMBAT, MUTTADILES, TEKTON};
 		RotationSolver.solve(rooms);
-		assertArrayEquals(new RaidRoom[]{VESPULA, GUARDIANS, MUTTADILES, TEKTON}, rooms);
+		assertArrayEquals(new RaidRoom[] {VESPULA, GUARDIANS, MUTTADILES, TEKTON}, rooms);
 	}
 
 	@Test
 	public void testSolve3()
 	{
-		RaidRoom[] rooms = new RaidRoom[]{TEKTON, UNKNOWN_COMBAT, GUARDIANS, MYSTICS};
+		RaidRoom[] rooms = new RaidRoom[] {TEKTON, UNKNOWN_COMBAT, GUARDIANS, MYSTICS};
 		RotationSolver.solve(rooms);
-		assertArrayEquals(new RaidRoom[]{TEKTON, VASA, GUARDIANS, MYSTICS}, rooms);
+		assertArrayEquals(new RaidRoom[] {TEKTON, VASA, GUARDIANS, MYSTICS}, rooms);
 	}
 
 	@Test
 	public void testSolve4()
 	{
-		RaidRoom[] rooms = new RaidRoom[]{VASA, UNKNOWN_COMBAT, UNKNOWN_COMBAT, GUARDIANS};
+		RaidRoom[] rooms = new RaidRoom[] {VASA, UNKNOWN_COMBAT, UNKNOWN_COMBAT, GUARDIANS};
 		RotationSolver.solve(rooms);
-		assertArrayEquals(new RaidRoom[]{VASA, SHAMANS, VESPULA, GUARDIANS}, rooms);
+		assertArrayEquals(new RaidRoom[] {VASA, SHAMANS, VESPULA, GUARDIANS}, rooms);
 	}
 
 	@Test
 	public void testSolve5()
 	{
-		RaidRoom[] rooms = new RaidRoom[]{GUARDIANS, UNKNOWN_COMBAT, SHAMANS, VASA};
+		RaidRoom[] rooms = new RaidRoom[] {GUARDIANS, UNKNOWN_COMBAT, SHAMANS, VASA};
 		RotationSolver.solve(rooms);
-		assertArrayEquals(new RaidRoom[]{GUARDIANS, VESPULA, SHAMANS, VASA}, rooms);
+		assertArrayEquals(new RaidRoom[] {GUARDIANS, VESPULA, SHAMANS, VASA}, rooms);
 	}
 
 	@Test
 	public void testSolve6()
 	{
-		RaidRoom[] rooms = new RaidRoom[]{UNKNOWN_COMBAT, UNKNOWN_COMBAT, TEKTON, MUTTADILES};
+		RaidRoom[] rooms = new RaidRoom[] {UNKNOWN_COMBAT, UNKNOWN_COMBAT, TEKTON, MUTTADILES};
 		RotationSolver.solve(rooms);
-		assertArrayEquals(new RaidRoom[]{VANGUARDS, MYSTICS, TEKTON, MUTTADILES}, rooms);
+		assertArrayEquals(new RaidRoom[] {VANGUARDS, MYSTICS, TEKTON, MUTTADILES}, rooms);
 	}
 }

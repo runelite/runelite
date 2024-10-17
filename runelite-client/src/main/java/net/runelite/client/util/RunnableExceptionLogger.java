@@ -33,22 +33,21 @@ public class RunnableExceptionLogger implements Runnable
 {
 	private final Runnable runnable;
 
+	public static RunnableExceptionLogger wrap(Runnable runnable)
+	{
+		return new RunnableExceptionLogger(runnable);
+	}
+
 	@Override
 	public void run()
 	{
 		try
 		{
 			runnable.run();
-		}
-		catch (Throwable ex)
+		} catch (Throwable ex)
 		{
 			log.error("Uncaught exception in runnable {}", runnable, ex);
 			throw ex;
 		}
-	}
-
-	public static RunnableExceptionLogger wrap(Runnable runnable)
-	{
-		return new RunnableExceptionLogger(runnable);
 	}
 }

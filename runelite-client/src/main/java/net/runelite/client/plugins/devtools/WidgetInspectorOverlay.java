@@ -47,8 +47,8 @@ public class WidgetInspectorOverlay extends Overlay
 
 	@Inject
 	public WidgetInspectorOverlay(
-		Client client,
-		WidgetInspector inspector
+			Client client,
+			WidgetInspector inspector
 	)
 	{
 		this.client = client;

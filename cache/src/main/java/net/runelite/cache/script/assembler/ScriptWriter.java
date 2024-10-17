@@ -205,8 +205,8 @@ public class ScriptWriter extends rs2asmBaseListener
 		}
 
 		int target = instruction // target instruction index
-			- (pos - 1) // pos is already at the instruction after the switch, so - 1
-			- 1; // to go to the instruction prior to target
+				- (pos - 1) // pos is already at the instruction after the switch, so - 1
+				- 1; // to go to the instruction prior to target
 
 		LookupSwitch ls = switches.get(pos - 1);
 		assert ls != null;
@@ -227,9 +227,9 @@ public class ScriptWriter extends rs2asmBaseListener
 		script.setLocalStringCount(localStringCount);
 		script.setInstructions(opcodes.stream().mapToInt(Integer::valueOf).toArray());
 		script.setIntOperands(iops.stream()
-			.map(i -> i == null ? 0 : i)
-			.mapToInt(Integer::valueOf)
-			.toArray());
+				.map(i -> i == null ? 0 : i)
+				.mapToInt(Integer::valueOf)
+				.toArray());
 		script.setStringOperands(sops.toArray(new String[0]));
 		script.setSwitches(buildSwitches());
 		return script;

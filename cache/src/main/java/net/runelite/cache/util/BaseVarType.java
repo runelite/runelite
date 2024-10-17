@@ -34,6 +34,14 @@ public enum BaseVarType
 	STRING(2, String.class);
 
 	private static final BaseVarType[] VALUES = values();
+	/**
+	 * The id of the type when being encoded or decoded.
+	 */
+	private final int id;
+	/**
+	 * The class the base type represents.
+	 */
+	private final Class<?> clazz;
 
 	public static BaseVarType forId(int id)
 	{
@@ -46,14 +54,4 @@ public enum BaseVarType
 		}
 		return null;
 	}
-
-	/**
-	 * The id of the type when being encoded or decoded.
-	 */
-	private final int id;
-
-	/**
-	 * The class the base type represents.
-	 */
-	private final Class<?> clazz;
 }

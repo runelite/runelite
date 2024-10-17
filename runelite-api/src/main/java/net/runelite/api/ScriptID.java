@@ -64,7 +64,7 @@ public final class ScriptID
 
 	/**
 	 * Opens the Private Message chat interface
-	 *
+	 * <p>
 	 * Jagex refers to this script as {@code meslayer_mode6}
 	 * <ul>
 	 * <li> String Player to send private message to</li>
@@ -117,7 +117,7 @@ public final class ScriptID
 	 * <li>int Bitpacked stash unit states 2</li>
 	 * <li>int Bitpacked stash unit states 3</li>
 	 * </ul>
-	 *
+	 * <p>
 	 * Returns a pair of booleans indicating if the stash unit is built and if it is filled
 	 */
 	@ScriptArguments(integer = 4)
@@ -158,7 +158,7 @@ public final class ScriptID
 
 	/**
 	 * Handles zoom input
-	 *
+	 * <p>
 	 * Updates the VarClientInts (73, 74) to this same value
 	 * <ul>
 	 * <li> int  Reset zoom position for fixed viewport mode</li>
@@ -170,7 +170,7 @@ public final class ScriptID
 
 	/**
 	 * Does nothing
-	 *
+	 * <p>
 	 * This is used to eat events when you want a menu action attached to it
 	 * because you need an op listener attached to it for it to work
 	 */
@@ -329,7 +329,7 @@ public final class ScriptID
 	 * <ul>
 	 * <li>int 1 (must be 1 or script immediately returns)</li>
 	 * </ul>
-	 *
+	 * <p>
 	 * Also takes 17 widget IDs corresponding to various bank widgets.
 	 * These can be retrieved from the onInvTransmitListener of BANK_ITEM_CONTAINER. Note that this array also
 	 * contains the script ID for the bank layout script in the first index
@@ -342,7 +342,7 @@ public final class ScriptID
 
 	/**
 	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
-	 *
+	 * <p>
 	 * The active widget is set to the track created by {@link ParamID#SETTING_FOREGROUND_CLICKZONE}
 	 * <ul>
 	 * <li>int {@link ParamID#SETTING_ID}</li>

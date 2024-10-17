@@ -164,7 +164,7 @@ public class SlayerPluginTest
 		}).when(clientThread).invoke(any(BooleanSupplier.class));
 
 		EnumComposition e = mock(EnumComposition.class);
-		when(e.getStringVals()).thenReturn(new String[]{"The Abyss"});
+		when(e.getStringVals()).thenReturn(new String[] {"The Abyss"});
 		when(client.getEnum(EnumID.SLAYER_TASK_LOCATION)).thenReturn(e);
 
 		slayerPlugin.startUp();
@@ -249,12 +249,12 @@ public class SlayerPluginTest
 		when(client.getVarpValue(VarPlayer.SLAYER_TASK_SIZE)).thenReturn(42);
 		when(client.getVarpValue(VarPlayer.SLAYER_TASK_CREATURE)).thenReturn(1);
 		when(client.getEnum(EnumID.SLAYER_TASK_CREATURE))
-			.thenAnswer(a ->
-			{
-				EnumComposition e = mock(EnumComposition.class);
-				when(e.getStringValue(anyInt())).thenReturn("mocked npc");
-				return e;
-			});
+				.thenAnswer(a ->
+				{
+					EnumComposition e = mock(EnumComposition.class);
+					when(e.getStringValue(anyInt())).thenReturn("mocked npc");
+					return e;
+				});
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarpId(VarPlayer.SLAYER_TASK_SIZE);
@@ -298,7 +298,7 @@ public class SlayerPluginTest
 		final NPCComposition comp = mock(NPCComposition.class);
 		when(npc.getTransformedComposition()).thenReturn(comp);
 		when(comp.getName()).thenReturn(npcName);
-		when(comp.getActions()).thenReturn(new String[] { "Attack" });
+		when(comp.getActions()).thenReturn(new String[] {"Attack"});
 
 		slayerPlugin.setTask(task.getName(), 0, 0);
 		return slayerPlugin.isTarget(npc);
@@ -310,12 +310,12 @@ public class SlayerPluginTest
 		when(client.getVarpValue(VarPlayer.SLAYER_TASK_SIZE)).thenReturn(42);
 		when(client.getVarpValue(VarPlayer.SLAYER_TASK_CREATURE)).thenReturn(1);
 		when(client.getEnum(EnumID.SLAYER_TASK_CREATURE))
-			.thenAnswer(a ->
-			{
-				EnumComposition e = mock(EnumComposition.class);
-				when(e.getStringValue(anyInt())).thenReturn("mocked npc");
-				return e;
-			});
+				.thenAnswer(a ->
+				{
+					EnumComposition e = mock(EnumComposition.class);
+					when(e.getStringValue(anyInt())).thenReturn("mocked npc");
+					return e;
+				});
 
 		// initial amount is fetched from config at sync
 		when(configManager.getRSProfileConfiguration("slayer", "initialAmount", int.class)).thenReturn(99);

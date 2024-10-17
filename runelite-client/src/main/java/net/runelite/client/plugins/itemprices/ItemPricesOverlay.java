@@ -74,6 +74,11 @@ class ItemPricesOverlay extends Overlay
 		this.tooltipManager = tooltipManager;
 	}
 
+	private static Color haProfitColor(int haProfit)
+	{
+		return haProfit >= 0 ? Color.GREEN : Color.RED;
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -176,10 +181,10 @@ class ItemPricesOverlay extends Overlay
 
 		// Inventory item
 		if (widgetId == INVENTORY_ITEM_WIDGETID ||
-			widgetId == BANK_INVENTORY_ITEM_WIDGETID ||
-			widgetId == EXPLORERS_RING_ITEM_WIDGETID ||
-			widgetId == SEED_VAULT_INVENTORY_ITEM_WIDGETID ||
-			widgetId == POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID)
+				widgetId == BANK_INVENTORY_ITEM_WIDGETID ||
+				widgetId == EXPLORERS_RING_ITEM_WIDGETID ||
+				widgetId == SEED_VAULT_INVENTORY_ITEM_WIDGETID ||
+				widgetId == POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID)
 		{
 			container = client.getItemContainer(InventoryID.INVENTORY);
 		}
@@ -219,8 +224,7 @@ class ItemPricesOverlay extends Overlay
 		if (id == ItemID.COINS_995)
 		{
 			return QuantityFormatter.formatNumber(qty) + " gp";
-		}
-		else if (id == ItemID.PLATINUM_TOKEN)
+		} else if (id == ItemID.PLATINUM_TOKEN)
 		{
 			return QuantityFormatter.formatNumber(qty * 1000L) + " gp";
 		}
@@ -264,13 +268,13 @@ class ItemPricesOverlay extends Overlay
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("GE: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
-				.append(" gp");
+					.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+					.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(gePrice))
-					.append(" ea)");
+						.append(QuantityFormatter.quantityToStackSize(gePrice))
+						.append(" ea)");
 			}
 		}
 		if (haValue > 0)
@@ -281,13 +285,13 @@ class ItemPricesOverlay extends Overlay
 			}
 
 			itemStringBuilder.append("HA: ")
-				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
-				.append(" gp");
+					.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
+					.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(haValue))
-					.append(" ea)");
+						.append(QuantityFormatter.quantityToStackSize(haValue))
+						.append(" ea)");
 			}
 		}
 
@@ -297,13 +301,13 @@ class ItemPricesOverlay extends Overlay
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
-				.append(" gp");
+					.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
+					.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
-					.append(" ea)");
+						.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
+						.append(" ea)");
 			}
 		}
 
@@ -317,10 +321,5 @@ class ItemPricesOverlay extends Overlay
 	{
 		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
 		return haPrice - gePrice - natureRunePrice;
-	}
-
-	private static Color haProfitColor(int haProfit)
-	{
-		return haProfit >= 0 ? Color.GREEN : Color.RED;
 	}
 }

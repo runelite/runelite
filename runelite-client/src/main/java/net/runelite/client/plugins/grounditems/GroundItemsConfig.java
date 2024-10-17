@@ -48,18 +48,18 @@ public interface GroundItemsConfig extends Config
 	String OWNERSHIP_FILTER_MODE = "ownershipFilterMode";
 
 	@ConfigSection(
-		name = "Item Lists",
-		description = "The highlighted and hidden item lists",
-		position = 0
+			name = "Item Lists",
+			description = "The highlighted and hidden item lists",
+			position = 0
 	)
 	String itemLists = "itemLists";
 
 	@ConfigItem(
-		keyName = "highlightedItems",
-		name = "Highlighted Items",
-		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 0,
-		section = itemLists
+			keyName = "highlightedItems",
+			name = "Highlighted Items",
+			description = "Configures specifically highlighted ground items. Format: (item), (item)",
+			position = 0,
+			section = itemLists
 	)
 	default String getHighlightItems()
 	{
@@ -67,18 +67,18 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightedItems",
-		name = "",
-		description = ""
+			keyName = "highlightedItems",
+			name = "",
+			description = ""
 	)
 	void setHighlightedItem(String key);
 
 	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "Hidden Items",
-		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 1,
-		section = itemLists
+			keyName = "hiddenItems",
+			name = "Hidden Items",
+			description = "Configures hidden ground items. Format: (item), (item)",
+			position = 1,
+			section = itemLists
 	)
 	default String getHiddenItems()
 	{
@@ -86,17 +86,17 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "",
-		description = ""
+			keyName = "hiddenItems",
+			name = "",
+			description = ""
 	)
 	void setHiddenItems(String key);
 
 	@ConfigItem(
-		keyName = "showHighlightedOnly",
-		name = "Show Highlighted items only",
-		description = "Configures whether or not to draw items only on your highlighted list",
-		position = 2
+			keyName = "showHighlightedOnly",
+			name = "Show Highlighted items only",
+			description = "Configures whether or not to draw items only on your highlighted list",
+			position = 2
 	)
 	default boolean showHighlightedOnly()
 	{
@@ -104,10 +104,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dontHideUntradeables",
-		name = "Do not hide untradeables",
-		description = "Configures whether or not untradeable items ignore hiding under settings",
-		position = 3
+			keyName = "dontHideUntradeables",
+			name = "Do not hide untradeables",
+			description = "Configures whether or not untradeable items ignore hiding under settings",
+			position = 3
 	)
 	default boolean dontHideUntradeables()
 	{
@@ -115,10 +115,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMenuItemQuantities",
-		name = "Show Menu Item Quantities",
-		description = "Configures whether or not to show the item quantities in the menu",
-		position = 4
+			keyName = "showMenuItemQuantities",
+			name = "Show Menu Item Quantities",
+			description = "Configures whether or not to show the item quantities in the menu",
+			position = 4
 	)
 	default boolean showMenuItemQuantities()
 	{
@@ -126,10 +126,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recolorMenuHiddenItems",
-		name = "Recolor Menu Hidden Items",
-		description = "Configures whether or not hidden items in right-click menu will be recolored",
-		position = 5
+			keyName = "recolorMenuHiddenItems",
+			name = "Recolor Menu Hidden Items",
+			description = "Configures whether or not hidden items in right-click menu will be recolored",
+			position = 5
 	)
 	default boolean recolorMenuHiddenItems()
 	{
@@ -137,10 +137,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "deprioritizeHiddenItems",
-		name = "Deprioritize Menu Hidden Items",
-		description = "Depriotizies the menu options for items which are hidden, requiring a right click to pick up.",
-		position = 5
+			keyName = "deprioritizeHiddenItems",
+			name = "Deprioritize Menu Hidden Items",
+			description = "Depriotizies the menu options for items which are hidden, requiring a right click to pick up.",
+			position = 5
 	)
 	default boolean deprioritizeHiddenItems()
 	{
@@ -148,10 +148,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightTiles",
-		name = "Highlight Tiles",
-		description = "Configures whether or not to highlight tiles containing ground items",
-		position = 6
+			keyName = "highlightTiles",
+			name = "Highlight Tiles",
+			description = "Configures whether or not to highlight tiles containing ground items",
+			position = 6
 	)
 	default boolean highlightTiles()
 	{
@@ -159,10 +159,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyHighlightedDrops",
-		name = "Notify for Highlighted drops",
-		description = "Configures whether or not to notify for drops on your highlighted list",
-		position = 7
+			keyName = "notifyHighlightedDrops",
+			name = "Notify for Highlighted drops",
+			description = "Configures whether or not to notify for drops on your highlighted list",
+			position = 7
 	)
 	default boolean notifyHighlightedDrops()
 	{
@@ -170,10 +170,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyTier",
-		name = "Notify tier",
-		description = "Configures which price tiers will trigger a notification on drop",
-		position = 8
+			keyName = "notifyTier",
+			name = "Notify tier",
+			description = "Configures which price tiers will trigger a notification on drop",
+			position = 8
 	)
 	default HighlightTier notifyTier()
 	{
@@ -181,10 +181,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "priceDisplayMode",
-		name = "Price Display Mode",
-		description = "Configures which price types are shown alongside ground item name",
-		position = 9
+			keyName = "priceDisplayMode",
+			name = "Price Display Mode",
+			description = "Configures which price types are shown alongside ground item name",
+			position = 9
 	)
 	default PriceDisplayMode priceDisplayMode()
 	{
@@ -192,10 +192,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "itemHighlightMode",
-		name = "Item Highlight Mode",
-		description = "Configures how ground items will be highlighted",
-		position = 10
+			keyName = "itemHighlightMode",
+			name = "Item Highlight Mode",
+			description = "Configures how ground items will be highlighted",
+			position = 10
 	)
 	default ItemHighlightMode itemHighlightMode()
 	{
@@ -203,10 +203,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "menuHighlightMode",
-		name = "Menu Highlight Mode",
-		description = "Configures what to highlight in right-click menu",
-		position = 11
+			keyName = "menuHighlightMode",
+			name = "Menu Highlight Mode",
+			description = "Configures what to highlight in right-click menu",
+			position = 11
 	)
 	default MenuHighlightMode menuHighlightMode()
 	{
@@ -214,10 +214,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highlightValueCalculation",
-		name = "Highlight Value Calculation",
-		description = "Configures which coin value is used to determine highlight color",
-		position = 12
+			keyName = "highlightValueCalculation",
+			name = "Highlight Value Calculation",
+			description = "Configures which coin value is used to determine highlight color",
+			position = 12
 	)
 	default ValueCalculationMode valueCalculationMode()
 	{
@@ -225,10 +225,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideUnderValue",
-		name = "Hide under value",
-		description = "Configures hidden ground items under both GE and HA value",
-		position = 13
+			keyName = "hideUnderValue",
+			name = "Hide under value",
+			description = "Configures hidden ground items under both GE and HA value",
+			position = 13
 	)
 	default int getHideUnderValue()
 	{
@@ -237,10 +237,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "defaultColor",
-		name = "Default items",
-		description = "Configures the color for default, non-highlighted items",
-		position = 14
+			keyName = "defaultColor",
+			name = "Default items",
+			description = "Configures the color for default, non-highlighted items",
+			position = 14
 	)
 	default Color defaultColor()
 	{
@@ -249,10 +249,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "highlightedColor",
-		name = "Highlighted items",
-		description = "Configures the color for highlighted items",
-		position = 15
+			keyName = "highlightedColor",
+			name = "Highlighted items",
+			description = "Configures the color for highlighted items",
+			position = 15
 	)
 	default Color highlightedColor()
 	{
@@ -261,10 +261,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "hiddenColor",
-		name = "Hidden items",
-		description = "Configures the color for hidden items in right-click menu and when holding ALT",
-		position = 16
+			keyName = "hiddenColor",
+			name = "Hidden items",
+			description = "Configures the color for hidden items in right-click menu and when holding ALT",
+			position = 16
 	)
 	default Color hiddenColor()
 	{
@@ -273,10 +273,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "lowValueColor",
-		name = "Low value items",
-		description = "Configures the color for low value items",
-		position = 17
+			keyName = "lowValueColor",
+			name = "Low value items",
+			description = "Configures the color for low value items",
+			position = 17
 	)
 	default Color lowValueColor()
 	{
@@ -284,10 +284,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lowValuePrice",
-		name = "Low value price",
-		description = "Configures the start price for low value items",
-		position = 18
+			keyName = "lowValuePrice",
+			name = "Low value price",
+			description = "Configures the start price for low value items",
+			position = 18
 	)
 	default int lowValuePrice()
 	{
@@ -296,10 +296,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "mediumValueColor",
-		name = "Medium value items",
-		description = "Configures the color for medium value items",
-		position = 19
+			keyName = "mediumValueColor",
+			name = "Medium value items",
+			description = "Configures the color for medium value items",
+			position = 19
 	)
 	default Color mediumValueColor()
 	{
@@ -307,10 +307,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "mediumValuePrice",
-		name = "Medium value price",
-		description = "Configures the start price for medium value items",
-		position = 20
+			keyName = "mediumValuePrice",
+			name = "Medium value price",
+			description = "Configures the start price for medium value items",
+			position = 20
 	)
 	default int mediumValuePrice()
 	{
@@ -319,10 +319,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "highValueColor",
-		name = "High value items",
-		description = "Configures the color for high value items",
-		position = 21
+			keyName = "highValueColor",
+			name = "High value items",
+			description = "Configures the color for high value items",
+			position = 21
 	)
 	default Color highValueColor()
 	{
@@ -330,10 +330,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "highValuePrice",
-		name = "High value price",
-		description = "Configures the start price for high value items",
-		position = 22
+			keyName = "highValuePrice",
+			name = "High value price",
+			description = "Configures the start price for high value items",
+			position = 22
 	)
 	default int highValuePrice()
 	{
@@ -342,10 +342,10 @@ public interface GroundItemsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "insaneValueColor",
-		name = "Insane value items",
-		description = "Configures the color for insane value items",
-		position = 23
+			keyName = "insaneValueColor",
+			name = "Insane value items",
+			description = "Configures the color for insane value items",
+			position = 23
 	)
 	default Color insaneValueColor()
 	{
@@ -353,10 +353,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "insaneValuePrice",
-		name = "Insane value price",
-		description = "Configures the start price for insane value items",
-		position = 24
+			keyName = "insaneValuePrice",
+			name = "Insane value price",
+			description = "Configures the start price for insane value items",
+			position = 24
 	)
 	default int insaneValuePrice()
 	{
@@ -364,10 +364,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = OWNERSHIP_FILTER_MODE,
-		name = "Ownership filter",
-		description = "Show all items, takeable items, or only your or your group's drops.",
-		position = 25
+			keyName = OWNERSHIP_FILTER_MODE,
+			name = "Ownership filter",
+			description = "Show all items, takeable items, or only your or your group's drops.",
+			position = 25
 	)
 	default OwnershipFilterMode ownershipFilterMode()
 	{
@@ -375,10 +375,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "doubleTapDelay",
-		name = "Double-tap delay",
-		description = "Delay for the double-tap ALT to hide ground items. 0 to disable.",
-		position = 26
+			keyName = "doubleTapDelay",
+			name = "Double-tap delay",
+			description = "Delay for the double-tap ALT to hide ground items. 0 to disable.",
+			position = 26
 	)
 	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
@@ -387,10 +387,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "collapseEntries",
-		name = "Collapse ground item menu",
-		description = "Collapses ground item menu entries together and appends count",
-		position = 27
+			keyName = "collapseEntries",
+			name = "Collapse ground item menu",
+			description = "Collapses ground item menu entries together and appends count",
+			position = 27
 	)
 	default boolean collapseEntries()
 	{
@@ -398,10 +398,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "groundItemTimers",
-		name = "Despawn timer",
-		description = "Shows despawn timers for items you've dropped and received as loot",
-		position = 28
+			keyName = "groundItemTimers",
+			name = "Despawn timer",
+			description = "Shows despawn timers for items you've dropped and received as loot",
+			position = 28
 	)
 	default DespawnTimerMode groundItemTimers()
 	{
@@ -409,10 +409,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "textOutline",
-		name = "Text Outline",
-		description = "Use an outline around text instead of a text shadow",
-		position = 29
+			keyName = "textOutline",
+			name = "Text Outline",
+			description = "Use an outline around text instead of a text shadow",
+			position = 29
 	)
 	default boolean textOutline()
 	{
@@ -420,10 +420,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showLootbeamForHighlighted",
-		name = "Highlighted item lootbeams",
-		description = "Configures lootbeams to show for all highlighted items.",
-		position = 30
+			keyName = "showLootbeamForHighlighted",
+			name = "Highlighted item lootbeams",
+			description = "Configures lootbeams to show for all highlighted items.",
+			position = 30
 	)
 	default boolean showLootbeamForHighlighted()
 	{
@@ -431,10 +431,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showLootbeamTier",
-		name = "Lootbeam tier",
-		description = "Configures which price tiers will trigger a lootbeam",
-		position = 31
+			keyName = "showLootbeamTier",
+			name = "Lootbeam tier",
+			description = "Configures which price tiers will trigger a lootbeam",
+			position = 31
 	)
 	default HighlightTier showLootbeamTier()
 	{
@@ -442,10 +442,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "lootbeamStyle",
-		name = "Lootbeam Style",
-		description = "Style of lootbeam to use",
-		position = 32
+			keyName = "lootbeamStyle",
+			name = "Lootbeam Style",
+			description = "Style of lootbeam to use",
+			position = 32
 	)
 	default Lootbeam.Style lootbeamStyle()
 	{
@@ -453,10 +453,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hotkey",
-		name = "Hotkey",
-		description = "Configures the hotkey used by the Ground Items plugin",
-		position = 33
+			keyName = "hotkey",
+			name = "Hotkey",
+			description = "Configures the hotkey used by the Ground Items plugin",
+			position = 33
 	)
 	default Keybind hotkey()
 	{

@@ -86,8 +86,7 @@ public class EnchantmentRoom extends MTARoom
 		{
 			client.setHintArrow(nearest);
 			hintSet = true;
-		}
-		else
+		} else
 		{
 			client.clearHintArrow();
 			hintSet = false;
@@ -144,6 +143,6 @@ public class EnchantmentRoom extends MTARoom
 	{
 		Player player = client.getLocalPlayer();
 		return player != null && player.getWorldLocation().getRegionID() == MTA_ENCHANT_REGION
-			&& player.getWorldLocation().getPlane() == 0;
+				&& player.getWorldLocation().getPlane() == 0;
 	}
 }

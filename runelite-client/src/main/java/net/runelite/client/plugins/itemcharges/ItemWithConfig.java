@@ -50,10 +50,6 @@ enum ItemWithConfig
 	BLOOD_ESSENCE(ItemID.BLOOD_ESSENCE_ACTIVE, ItemChargeConfig.KEY_BLOOD_ESSENCE, ItemChargeType.BLOOD_ESSENCE),
 	BRACELET_OF_CLAY(ItemID.BRACELET_OF_CLAY, ItemChargeConfig.KEY_BRACELET_OF_CLAY, ItemChargeType.BRACELET_OF_CLAY);
 
-	private final int itemId;
-	private final String configKey;
-	private final ItemChargeType type;
-
 	private static final Map<Integer, ItemWithConfig> ID_MAP;
 
 	static
@@ -67,6 +63,10 @@ enum ItemWithConfig
 
 		ID_MAP = builder.build();
 	}
+
+	private final int itemId;
+	private final String configKey;
+	private final ItemChargeType type;
 
 	@Nullable
 	static ItemWithConfig findItem(int itemId)

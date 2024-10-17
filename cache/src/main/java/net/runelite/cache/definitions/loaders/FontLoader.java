@@ -40,8 +40,7 @@ public class FontLoader
 			}
 
 			fontDefinition.ascent = buffer[256] & 255;
-		}
-		else
+		} else
 		{
 			// buffer length 256 may exist in some version of the cache?
 			throw new RuntimeException("Font data buffer is the wrong size");

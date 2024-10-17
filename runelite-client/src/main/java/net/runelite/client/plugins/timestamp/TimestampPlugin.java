@@ -48,10 +48,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-	name = "Chat Timestamps",
-	description = "Add timestamps to chat messages",
-	tags = {"timestamp"},
-	enabledByDefault = false
+		name = "Chat Timestamps",
+		description = "Add timestamps to chat messages",
+		tags = {"timestamp"},
+		enabledByDefault = false
 )
 public class TimestampPlugin extends Plugin
 {
@@ -136,7 +136,7 @@ public class TimestampPlugin extends Plugin
 	String generateTimestamp(int timestamp, ZoneId zoneId)
 	{
 		final ZonedDateTime time = ZonedDateTime.ofInstant(
-			Instant.ofEpochSecond(timestamp), zoneId);
+				Instant.ofEpochSecond(timestamp), zoneId);
 
 		return formatter.format(Date.from(time.toInstant()));
 	}
@@ -146,8 +146,7 @@ public class TimestampPlugin extends Plugin
 		try
 		{
 			formatter = new SimpleDateFormat(config.timestampFormat());
-		}
-		catch (IllegalArgumentException e)
+		} catch (IllegalArgumentException e)
 		{
 			formatter = new SimpleDateFormat("[HH:mm]");
 		}

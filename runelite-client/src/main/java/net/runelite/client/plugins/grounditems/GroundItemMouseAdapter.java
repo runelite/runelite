@@ -66,8 +66,7 @@ class GroundItemMouseAdapter extends MouseAdapter
 					e.consume();
 					return e;
 				}
-			}
-			else if (SwingUtilities.isRightMouseButton(e))
+			} else if (SwingUtilities.isRightMouseButton(e))
 			{
 				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
 				{

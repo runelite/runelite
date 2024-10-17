@@ -32,12 +32,19 @@ class GpuIntBuffer
 {
 	private IntBuffer buffer = allocateDirect(65536);
 
+	static IntBuffer allocateDirect(int size)
+	{
+		return ByteBuffer.allocateDirect(size * Integer.BYTES)
+				.order(ByteOrder.nativeOrder())
+				.asIntBuffer();
+	}
+
 	void put(float x, float y, float z, int w)
 	{
 		buffer.put(Float.floatToIntBits(x))
-			.put(Float.floatToIntBits(y))
-			.put(Float.floatToIntBits(z))
-			.put(w);
+				.put(Float.floatToIntBits(y))
+				.put(Float.floatToIntBits(z))
+				.put(w);
 	}
 
 	void flip()
@@ -72,12 +79,5 @@ class GpuIntBuffer
 	IntBuffer getBuffer()
 	{
 		return buffer;
-	}
-
-	static IntBuffer allocateDirect(int size)
-	{
-		return ByteBuffer.allocateDirect(size * Integer.BYTES)
-			.order(ByteOrder.nativeOrder())
-			.asIntBuffer();
 	}
 }

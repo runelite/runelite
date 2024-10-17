@@ -40,12 +40,21 @@ class ConfigInvocationHandler implements InvocationHandler
 
 	private final ConfigManager manager;
 	private final Cache<Method, Object> cache = CacheBuilder.newBuilder()
-		.maximumSize(256)
-		.build();
+			.maximumSize(256)
+			.build();
 
 	ConfigInvocationHandler(ConfigManager manager)
 	{
 		this.manager = manager;
+	}
+
+	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
+	{
+		Class<?> declaringClass = method.getDeclaringClass();
+		return ReflectUtil.privateLookupIn(declaringClass)
+				.unreflectSpecial(method, declaringClass)
+				.bindTo(proxy)
+				.invokeWithArguments(args);
 	}
 
 	@Override
@@ -119,8 +128,7 @@ class ConfigInvocationHandler implements InvocationHandler
 				Object objectValue = manager.stringToObject(value, method.getGenericReturnType());
 				cache.put(method, objectValue == null ? NULL : objectValue);
 				return objectValue;
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				log.warn("Unable to unmarshal {}.{} ", group.value(), item.keyName(), e);
 				if (method.isDefault())
@@ -129,8 +137,7 @@ class ConfigInvocationHandler implements InvocationHandler
 				}
 				return null;
 			}
-		}
-		else
+		} else
 		{
 			// Setting a configuration value
 
@@ -165,23 +172,13 @@ class ConfigInvocationHandler implements InvocationHandler
 			if (newValue == null)
 			{
 				manager.unsetConfiguration(group.value(), item.keyName());
-			}
-			else
+			} else
 			{
 				String newValueStr = manager.objectToString(newValue);
 				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
 			return null;
 		}
-	}
-
-	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
-	{
-		Class<?> declaringClass = method.getDeclaringClass();
-		return ReflectUtil.privateLookupIn(declaringClass)
-			.unreflectSpecial(method, declaringClass)
-			.bindTo(proxy)
-			.invokeWithArguments(args);
 	}
 
 	void invalidate()

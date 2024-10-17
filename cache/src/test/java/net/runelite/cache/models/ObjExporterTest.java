@@ -54,7 +54,7 @@ public class ObjExporterTest
 
 			ObjExporter exporter = new ObjExporter(tm, model);
 			try (PrintWriter objWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.obj")));
-				PrintWriter mtlWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.mtl"))))
+				 PrintWriter mtlWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.mtl"))))
 			{
 				exporter.export(objWriter, mtlWriter);
 			}

@@ -51,7 +51,7 @@ public class MapImageDumperTest
 	public void dumpMap() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+				outDir = folder.newFolder();
 
 		try (Store store = new Store(base))
 		{
@@ -80,7 +80,7 @@ public class MapImageDumperTest
 	public void dumpRegions() throws Exception
 	{
 		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+				outDir = folder.newFolder();
 
 		try (Store store = new Store(base))
 		{

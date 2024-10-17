@@ -93,7 +93,8 @@ public class Hooks implements Callbacks
 
 	private static final GameTick GAME_TICK = new GameTick();
 	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
-
+	private static MainBufferProvider lastMainBufferProvider;
+	private static Graphics2D lastGraphics;
 	private final Client client;
 	private final OverlayRenderer renderer;
 	private final EventBus eventBus;
@@ -112,69 +113,34 @@ public class Hooks implements Callbacks
 	@Nullable
 	private final RuntimeConfig runtimeConfig;
 	private final boolean developerMode;
-
+	private final List<RenderableDrawListener> renderableDrawListeners = new ArrayList<>();
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
 	private Graphics2D stretchedGraphics;
-
 	private long lastCheck;
 	private boolean shouldProcessGameTick;
-
-	private static MainBufferProvider lastMainBufferProvider;
-	private static Graphics2D lastGraphics;
-
 	private long nextError;
 	private boolean rateLimitedError;
 	private int errorBackoff = 1;
 
-	@FunctionalInterface
-	public interface RenderableDrawListener
-	{
-		boolean draw(Renderable renderable, boolean ui);
-	}
-
-	private final List<RenderableDrawListener> renderableDrawListeners = new ArrayList<>();
-
-	/**
-	 * Get the Graphics2D for the MainBufferProvider image
-	 * This caches the Graphics2D instance so it can be reused
-	 * @param mainBufferProvider
-	 * @return
-	 */
-	private static Graphics2D getGraphics(MainBufferProvider mainBufferProvider)
-	{
-		if (lastGraphics == null || lastMainBufferProvider != mainBufferProvider)
-		{
-			if (lastGraphics != null)
-			{
-				log.debug("Graphics reset!");
-				lastGraphics.dispose();
-			}
-
-			lastMainBufferProvider = mainBufferProvider;
-			lastGraphics = (Graphics2D) mainBufferProvider.getImage().getGraphics();
-		}
-		return lastGraphics;
-	}
-
 	@Inject
 	private Hooks(
-		Client client,
-		OverlayRenderer renderer,
-		EventBus eventBus,
-		DeferredEventBus deferredEventBus,
-		Scheduler scheduler,
-		InfoBoxManager infoBoxManager,
-		ChatMessageManager chatMessageManager,
-		MouseManager mouseManager,
-		KeyManager keyManager,
-		ClientThread clientThread,
-		DrawManager drawManager,
-		Notifier notifier,
-		ClientUI clientUi,
-		@Nullable TelemetryClient telemetryClient,
-		@Nullable RuntimeConfig runtimeConfig,
-		@Named("developerMode") final boolean developerMode
+			Client client,
+			OverlayRenderer renderer,
+			EventBus eventBus,
+			DeferredEventBus deferredEventBus,
+			Scheduler scheduler,
+			InfoBoxManager infoBoxManager,
+			ChatMessageManager chatMessageManager,
+			MouseManager mouseManager,
+			KeyManager keyManager,
+			ClientThread clientThread,
+			DrawManager drawManager,
+			Notifier notifier,
+			ClientUI clientUi,
+			@Nullable TelemetryClient telemetryClient,
+			@Nullable RuntimeConfig runtimeConfig,
+			@Named("developerMode") final boolean developerMode
 	)
 	{
 		this.client = client;
@@ -194,6 +160,29 @@ public class Hooks implements Callbacks
 		this.runtimeConfig = runtimeConfig;
 		this.developerMode = developerMode;
 		eventBus.register(this);
+	}
+
+	/**
+	 * Get the Graphics2D for the MainBufferProvider image
+	 * This caches the Graphics2D instance so it can be reused
+	 *
+	 * @param mainBufferProvider
+	 * @return
+	 */
+	private static Graphics2D getGraphics(MainBufferProvider mainBufferProvider)
+	{
+		if (lastGraphics == null || lastMainBufferProvider != mainBufferProvider)
+		{
+			if (lastGraphics != null)
+			{
+				log.debug("Graphics reset!");
+				lastGraphics.dispose();
+			}
+
+			lastMainBufferProvider = mainBufferProvider;
+			lastGraphics = (Graphics2D) mainBufferProvider.getImage().getGraphics();
+		}
+		return lastGraphics;
 	}
 
 	@Override
@@ -245,8 +234,7 @@ public class Hooks implements Callbacks
 			chatMessageManager.process();
 
 			checkWorldMap();
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("error during main loop tasks", ex);
 		}
@@ -375,8 +363,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.renderOverlayLayer(graphics2d, OverlayLayer.ALWAYS_ON_TOP);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("Error during overlay rendering", ex);
 		}
@@ -403,8 +390,8 @@ public class Hooks implements Callbacks
 
 			int status = -1;
 			if (!stretchedDimensions.equals(lastStretchedDimensions)
-				|| stretchedImage == null
-				|| (status = stretchedImage.validate(gc)) != VolatileImage.IMAGE_OK)
+					|| stretchedImage == null
+					|| (status = stretchedImage.validate(gc)) != VolatileImage.IMAGE_OK)
 			{
 				log.debug("Volatile image non-OK status: {}", status);
 
@@ -417,8 +404,8 @@ public class Hooks implements Callbacks
 				}
 
 				if (!stretchedDimensions.equals(lastStretchedDimensions)
-					|| stretchedImage == null
-					|| status == VolatileImage.IMAGE_INCOMPATIBLE)
+						|| stretchedImage == null
+						|| status == VolatileImage.IMAGE_INCOMPATIBLE)
 				{
 					if (stretchedImage != null)
 					{
@@ -434,14 +421,13 @@ public class Hooks implements Callbacks
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				client.isStretchedFast()
-					? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					client.isStretchedFast()
+							? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+							: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
 			finalImage = stretchedImage;
-		}
-		else
+		} else
 		{
 			if (stretchedImage != null)
 			{
@@ -491,8 +477,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.renderOverlayLayer(graphics2d, OverlayLayer.ABOVE_SCENE);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("Error during overlay rendering", ex);
 		}
@@ -507,8 +492,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.renderOverlayLayer(graphics2d, OverlayLayer.UNDER_WIDGETS);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("Error during overlay rendering", ex);
 		}
@@ -529,8 +513,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.renderAfterInterface(graphics2d, interfaceId, widgetItems);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("Error during overlay rendering", ex);
 		}
@@ -545,8 +528,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.renderAfterLayer(graphics2d, layer, widgetItems);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("Error during overlay rendering", ex);
 		}
@@ -568,8 +550,8 @@ public class Hooks implements Callbacks
 
 		Skill skill = Skill.values()[statId];
 		FakeXpDrop fakeXpDrop = new FakeXpDrop(
-			skill,
-			xp
+				skill,
+				xp
 		);
 		eventBus.post(fakeXpDrop);
 	}
@@ -596,8 +578,7 @@ public class Hooks implements Callbacks
 					return false;
 				}
 			}
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("exception from renderable draw listener", ex);
 		}
@@ -627,22 +608,20 @@ public class Hooks implements Callbacks
 			}
 
 			telemetryClient.submitError(
-				"client error",
-				sw.toString());
+					"client error",
+					sw.toString());
 
 			if (rateLimitedError)
 			{
 				errorBackoff++;
 				rateLimitedError = false;
-			}
-			else
+			} else
 			{
 				errorBackoff = 1;
 			}
 
 			nextError = now + (10_000L * errorBackoff);
-		}
-		else
+		} else
 		{
 			rateLimitedError = true;
 		}
@@ -669,5 +648,11 @@ public class Hooks implements Callbacks
 		}
 
 		return outdatedClientVersions.contains(RuneLiteProperties.getVersion());
+	}
+
+	@FunctionalInterface
+	public interface RenderableDrawListener
+	{
+		boolean draw(Renderable renderable, boolean ui);
 	}
 }

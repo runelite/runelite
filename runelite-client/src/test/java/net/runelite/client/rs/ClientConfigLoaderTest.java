@@ -49,7 +49,7 @@ public class ClientConfigLoaderTest
 		try (InputStream in = getClass().getResourceAsStream("jav_config.ws"))
 		{
 			response = CharStreams.toString(new InputStreamReader(
-				in, Charsets.UTF_8));
+					in, Charsets.UTF_8));
 		}
 		server.enqueue(new MockResponse().setBody(response));
 	}

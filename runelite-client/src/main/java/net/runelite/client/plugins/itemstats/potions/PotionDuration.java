@@ -37,14 +37,14 @@ public enum PotionDuration
 	SUPERANTIPOISON(Duration.ofMinutes(6), ItemID.SUPERANTIPOISON4, ItemID.SUPERANTIPOISON3, ItemID.SUPERANTIPOISON2, ItemID.SUPERANTIPOISON1),
 	ANTIDOTE_P(Duration.ofMinutes(9), ItemID.ANTIDOTE4, ItemID.ANTIDOTE3, ItemID.ANTIDOTE2, ItemID.ANTIDOTE1),
 	ANTIDOTE_PP(Duration.ofMinutes(12), ItemID.ANTIDOTE4_5952, ItemID.ANTIDOTE3_5954, ItemID.ANTIDOTE2_5956, ItemID.ANTIDOTE1_5958),
-	ANTIVENOM(new PotionDurationRange[]{
-		new PotionDurationRange("Anti-venom", Duration.ofSeconds(18), Duration.ofSeconds(36)),
-		new PotionDurationRange("Anti-poison", Duration.ofMinutes(12))},
-		ItemID.ANTIVENOM4, ItemID.ANTIVENOM3, ItemID.ANTIVENOM2, ItemID.ANTIVENOM1),
-	ANTIVENOM_P(new PotionDurationRange[]{
-		new PotionDurationRange("Anti-venom", Duration.ofMinutes(3)),
-		new PotionDurationRange("Anti-poison", Duration.ofMinutes(15))},
-		ItemID.ANTIVENOM4_12913, ItemID.ANTIVENOM3_12915, ItemID.ANTIVENOM2_12917, ItemID.ANTIVENOM1_12919),
+	ANTIVENOM(new PotionDurationRange[] {
+			new PotionDurationRange("Anti-venom", Duration.ofSeconds(18), Duration.ofSeconds(36)),
+			new PotionDurationRange("Anti-poison", Duration.ofMinutes(12))},
+			ItemID.ANTIVENOM4, ItemID.ANTIVENOM3, ItemID.ANTIVENOM2, ItemID.ANTIVENOM1),
+	ANTIVENOM_P(new PotionDurationRange[] {
+			new PotionDurationRange("Anti-venom", Duration.ofMinutes(3)),
+			new PotionDurationRange("Anti-poison", Duration.ofMinutes(15))},
+			ItemID.ANTIVENOM4_12913, ItemID.ANTIVENOM3_12915, ItemID.ANTIVENOM2_12917, ItemID.ANTIVENOM1_12919),
 	ANTIFIRE(Duration.ofMinutes(6), ItemID.ANTIFIRE_POTION4, ItemID.ANTIFIRE_POTION3, ItemID.ANTIFIRE_POTION2, ItemID.ANTIFIRE_POTION1),
 	EXTENDED_ANTIFIRE(Duration.ofMinutes(12), ItemID.EXTENDED_ANTIFIRE4, ItemID.EXTENDED_ANTIFIRE3, ItemID.EXTENDED_ANTIFIRE2, ItemID.EXTENDED_ANTIFIRE1),
 	SUPER_ANTIFIRE(Duration.ofMinutes(3), ItemID.SUPER_ANTIFIRE_POTION4, ItemID.SUPER_ANTIFIRE_POTION3, ItemID.SUPER_ANTIFIRE_POTION2, ItemID.SUPER_ANTIFIRE_POTION1),
@@ -55,6 +55,23 @@ public enum PotionDuration
 	EXTENDED_ANTIFIRE_MIX(Duration.ofMinutes(12), ItemID.EXTENDED_ANTIFIRE_MIX1, ItemID.EXTENDED_ANTIFIRE_MIX2),
 	SUPER_ANTIFIRE_MIX(Duration.ofMinutes(3), ItemID.SUPER_ANTIFIRE_MIX1, ItemID.SUPER_ANTIFIRE_MIX2),
 	EXTENDED_SUPER_ANTIFIRE_MIX(Duration.ofMinutes(6), ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1, ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2);
+
+	private static final Map<Integer, PotionDuration> potions;
+
+	static
+	{
+		ImmutableMap.Builder<Integer, PotionDuration> builder = new ImmutableMap.Builder<>();
+
+		for (PotionDuration potion : values())
+		{
+			for (int id : potion.itemIds)
+			{
+				builder.put(id, potion);
+			}
+		}
+
+		potions = builder.build();
+	}
 
 	@Getter
 	private final PotionDurationRange[] durationRanges;
@@ -73,23 +90,6 @@ public enum PotionDuration
 	{
 		this.durationRanges = durationRanges;
 		this.itemIds = itemIds;
-	}
-
-	private static final Map<Integer, PotionDuration> potions;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, PotionDuration> builder = new ImmutableMap.Builder<>();
-
-		for (PotionDuration potion : values())
-		{
-			for (int id : potion.itemIds)
-			{
-				builder.put(id, potion);
-			}
-		}
-
-		potions = builder.build();
 	}
 
 	public static PotionDuration get(int id)

@@ -23,15 +23,15 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<ruleset name="RuneLite"
-		 xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="RuneLite"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
-	<description>
-		RuneLite Maven Plugin PMD ruleset
-	</description>
+    <description>
+        RuneLite Maven Plugin PMD ruleset
+    </description>
 
-	<!-- error prone -->
-	<rule ref="category/java/errorprone.xml/UseLocaleWithCaseConversions"/>
+    <!-- error prone -->
+    <rule ref="category/java/errorprone.xml/UseLocaleWithCaseConversions"/>
 </ruleset>

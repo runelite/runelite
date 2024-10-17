@@ -51,7 +51,7 @@ public class BirdHouseTabPanel extends TabContentPanel
 	private final List<TimeablePanel<BirdHouseSpace>> spacePanels;
 
 	BirdHouseTabPanel(ConfigManager configManager, ItemManager itemManager, BirdHouseTracker birdHouseTracker,
-		TimeTrackingConfig config)
+					  TimeTrackingConfig config)
 	{
 		this.configManager = configManager;
 		this.itemManager = itemManager;
@@ -102,7 +102,7 @@ public class BirdHouseTabPanel extends TabContentPanel
 		long unixNow = Instant.now().getEpochSecond();
 
 		boolean notifications = Boolean.TRUE
-			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, boolean.class));
+				.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, boolean.class));
 
 		for (TimeablePanel<BirdHouseSpace> panel : spacePanels)
 		{
@@ -124,8 +124,7 @@ public class BirdHouseTabPanel extends TabContentPanel
 			{
 				itemManager.getImage(ItemID.FEATHER).addTo(panel.getIcon());
 				panel.getProgress().setVisible(false);
-			}
-			else
+			} else
 			{
 				itemManager.getImage(birdHouse.getItemID()).addTo(panel.getIcon());
 				panel.getIcon().setToolTipText(birdHouse.getName());
@@ -153,8 +152,7 @@ public class BirdHouseTabPanel extends TabContentPanel
 						panel.getProgress().setValue(BirdHouseTracker.BIRD_HOUSE_DURATION);
 						panel.getProgress().setForeground(COMPLETED_COLOR);
 						panel.getEstimate().setText("Done");
-					}
-					else
+					} else
 					{
 						panel.getProgress().setValue((int) (BirdHouseTracker.BIRD_HOUSE_DURATION - remainingTime));
 						panel.getEstimate().setText("Done " + getFormattedEstimate(remainingTime, config.timeFormatMode()));

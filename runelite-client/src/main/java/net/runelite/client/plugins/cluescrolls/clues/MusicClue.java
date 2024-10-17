@@ -51,27 +51,38 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 
 	private final String song;
 
+	public static MusicClue forText(String text)
+	{
+		final Matcher m = SONG_PATTERN.matcher(text);
+		if (m.find())
+		{
+			final String song = m.group(1);
+			return new MusicClue(song);
+		}
+		return null;
+	}
+
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Music Clue").build());
 		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(CECILIA)
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+				.left(CECILIA)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Falador Park")
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+				.left("Falador Park")
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Song:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(song)
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
+				.left(song)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
 	}
 
 	@Override
@@ -92,17 +103,6 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {CECILIA};
-	}
-
-	public static MusicClue forText(String text)
-	{
-		final Matcher m = SONG_PATTERN.matcher(text);
-		if (m.find())
-		{
-			final String song = m.group(1);
-			return new MusicClue(song);
-		}
-		return null;
 	}
 
 	@Override

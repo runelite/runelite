@@ -43,20 +43,16 @@ public class Anglerfish extends FoodBase
 		if (maxHP <= 24)
 		{
 			C = 2;
-		}
-		else if (maxHP <= 49)
+		} else if (maxHP <= 49)
 		{
 			C = 4;
-		}
-		else if (maxHP <= 74)
+		} else if (maxHP <= 74)
 		{
 			C = 6;
-		}
-		else if (maxHP <= 92)
+		} else if (maxHP <= 92)
 		{
 			C = 8;
-		}
-		else
+		} else
 		{
 			C = 13;
 		}

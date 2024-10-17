@@ -51,14 +51,12 @@ public class CalculatorTypeTest
 				if (currentLevel < prevLevel)
 				{
 					fail(skillName + " skill action " + skillAction + " is not ordered by level.");
-				}
-				else if (currentLevel == prevLevel)
+				} else if (currentLevel == prevLevel)
 				{
 					if (currentXP < prevXP)
 					{
 						fail(skillName + " skill action " + skillAction + " is not ordered by xp among level " + currentLevel + " actions.");
-					}
-					else if (currentXP == prevXP && currentName.compareTo(prevName) < 0)
+					} else if (currentXP == prevXP && currentName.compareTo(prevName) < 0)
 					{
 						fail(skillName + " skill action " + skillAction + " is not ordered alphabetically among " + currentXP + "xp skills at level " + currentLevel + '.');
 					}

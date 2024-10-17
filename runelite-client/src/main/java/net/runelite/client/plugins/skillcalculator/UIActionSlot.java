@@ -52,28 +52,25 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 class UIActionSlot extends JPanel
 {
 	private static final Border GREEN_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_COMPLETE_COLOR).darker()),
+			BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Border RED_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
+			BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Border ORANGE_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
-		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+			BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
+			BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillAction action;
-
-	@Getter(AccessLevel.PACKAGE)
-	private String actionName;
-
 	private final JShadowedLabel uiLabelActions;
 	private final JPanel uiInfo;
-
+	@Getter(AccessLevel.PACKAGE)
+	private String actionName;
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isAvailable;
 
@@ -173,12 +170,10 @@ class UIActionSlot extends JPanel
 		if (isAvailable)
 		{
 			this.setBorder(GREEN_BORDER);
-		}
-		else if (isOverlapping)
+		} else if (isOverlapping)
 		{
 			this.setBorder(ORANGE_BORDER);
-		}
-		else
+		} else
 		{
 			this.setBorder(RED_BORDER);
 		}

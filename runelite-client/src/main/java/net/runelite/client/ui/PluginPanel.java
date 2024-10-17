@@ -76,8 +76,7 @@ public abstract class PluginPanel extends JPanel implements Activatable
 			wrappedPanel.setPreferredSize(OUTER_PREFERRED_SIZE);
 			wrappedPanel.setLayout(new BorderLayout());
 			wrappedPanel.add(scrollPane, BorderLayout.CENTER);
-		}
-		else
+		} else
 		{
 			scrollPane = null;
 			wrappedPanel = this;

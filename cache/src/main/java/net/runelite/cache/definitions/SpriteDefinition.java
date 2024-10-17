@@ -29,6 +29,8 @@ import lombok.Data;
 @Data
 public class SpriteDefinition
 {
+	public transient byte[] pixelIdx;
+	public transient int[] palette;
 	private int id;
 	private int frame;
 	private int offsetX;
@@ -38,9 +40,6 @@ public class SpriteDefinition
 	private int[] pixels;
 	private int maxWidth;
 	private int maxHeight;
-
-	public transient byte[] pixelIdx;
-	public transient int[] palette;
 
 	public void normalize()
 	{

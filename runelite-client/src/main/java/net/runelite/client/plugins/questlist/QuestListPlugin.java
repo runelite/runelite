@@ -51,8 +51,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Quest List",
-	description = "Adds a search filter to the quest list"
+		name = "Quest List",
+		description = "Adds a search filter to the quest list"
 )
 public class QuestListPlugin extends Plugin
 {
@@ -186,15 +186,15 @@ public class QuestListPlugin extends Plugin
 		questSearchButton.setAction(1, MENU_CLOSE);
 		questSearchButton.setOnOpListener((JavaScriptCallback) e -> closeSearch());
 		searchInput = chatboxPanelManager.openTextInput("Search quest list")
-			.onChanged(s -> redrawQuests())
-			.onDone(s -> false)
-			.onClose(() ->
-			{
-				redrawQuests();
-				questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
-				questSearchButton.setAction(1, MENU_OPEN);
-			})
-			.build();
+				.onChanged(s -> redrawQuests())
+				.onDone(s -> false)
+				.onClose(() ->
+				{
+					redrawQuests();
+					questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
+					questSearchButton.setAction(1, MENU_OPEN);
+				})
+				.build();
 	}
 
 	private void redrawQuests()
@@ -212,6 +212,6 @@ public class QuestListPlugin extends Plugin
 		}
 
 		clientThread.invokeLater(() ->
-			client.runScript(onVarTransmitListener));
+				client.runScript(onVarTransmitListener));
 	}
 }

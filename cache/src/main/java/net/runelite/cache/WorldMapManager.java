@@ -24,6 +24,13 @@
  */
 package net.runelite.cache;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.WorldMapCompositeDefinition;
 import net.runelite.cache.definitions.WorldMapElementDefinition;
@@ -32,17 +39,10 @@ import net.runelite.cache.definitions.loaders.WorldMapCompositeLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
+import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.fs.Index;
 import net.runelite.cache.region.Position;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class WorldMapManager
 {
@@ -100,7 +100,7 @@ public class WorldMapManager
 		Map<Integer, Integer> linkSwitch = scriptDefinition.getSwitches()[0];
 		int[] linkStarts = Arrays.stream(linkSwitch.keySet().toArray())
 				.sorted(Comparator.comparingInt(linkSwitch::get))
-				.mapToInt(i -> (int)i)
+				.mapToInt(i -> (int) i)
 				.toArray();
 		assert (linkStarts.length - 1) == linkEnds.size(); // The last case in the switch statement is the default case
 

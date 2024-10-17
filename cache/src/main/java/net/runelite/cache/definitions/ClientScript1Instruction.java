@@ -30,6 +30,9 @@ import lombok.RequiredArgsConstructor;
 @Data
 public class ClientScript1Instruction
 {
+	public Opcode opcode;
+	public int[] operands;
+
 	@RequiredArgsConstructor
 	public enum Opcode
 	{
@@ -57,7 +60,4 @@ public class ClientScript1Instruction
 
 		public final int argumentCount;
 	}
-
-	public Opcode opcode;
-	public int[] operands;
 }

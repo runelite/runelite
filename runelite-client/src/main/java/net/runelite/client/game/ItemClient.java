@@ -52,9 +52,9 @@ public class ItemClient
 
 	@Inject
 	private ItemClient(OkHttpClient client,
-		@Named("runelite.api.base") HttpUrl apiBase,
-		@Named("runelite.static.base") HttpUrl staticBase,
-		Gson gson
+					   @Named("runelite.api.base") HttpUrl apiBase,
+					   @Named("runelite.static.base") HttpUrl staticBase,
+					   Gson gson
 	)
 	{
 		this.client = client;
@@ -66,16 +66,16 @@ public class ItemClient
 	public ItemPrice[] getPrices() throws IOException
 	{
 		HttpUrl.Builder urlBuilder = apiBase.newBuilder()
-			.addPathSegment("item")
-			.addPathSegment("prices.js");
+				.addPathSegment("item")
+				.addPathSegment("prices.js");
 
 		HttpUrl url = urlBuilder.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.url(url)
-			.build();
+				.url(url)
+				.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -87,8 +87,7 @@ public class ItemClient
 
 			InputStream in = response.body().byteStream();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ItemPrice[].class);
-		}
-		catch (JsonParseException ex)
+		} catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}
@@ -97,17 +96,17 @@ public class ItemClient
 	public Map<Integer, ItemStats> getStats() throws IOException
 	{
 		HttpUrl.Builder urlBuilder = staticBase.newBuilder()
-			.addPathSegment("item")
-			// TODO: Change this to stats.min.json later after release is undeployed
-			.addPathSegment("stats.ids.min.json");
+				.addPathSegment("item")
+				// TODO: Change this to stats.min.json later after release is undeployed
+				.addPathSegment("stats.ids.min.json");
 
 		HttpUrl url = urlBuilder.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.url(url)
-			.build();
+				.url(url)
+				.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -122,8 +121,7 @@ public class ItemClient
 			{
 			}.getType();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
-		}
-		catch (JsonParseException ex)
+		} catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}

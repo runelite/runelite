@@ -126,8 +126,7 @@ public class QuantityFormatterTest
 		{
 			QuantityFormatter.parseQuantity("0L");
 			fail("Should have thrown an exception for invalid suffix.");
-		}
-		catch (ParseException ignore)
+		} catch (ParseException ignore)
 		{
 		}
 
@@ -135,8 +134,7 @@ public class QuantityFormatterTest
 		{
 			QuantityFormatter.parseQuantity("badstack");
 			fail("Should have thrown an exception for improperly formatted stack.");
-		}
-		catch (ParseException ignore)
+		} catch (ParseException ignore)
 		{
 		}
 	}

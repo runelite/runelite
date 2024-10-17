@@ -69,7 +69,7 @@ class GroundMarkerSharingManager
 
 	@Inject
 	private GroundMarkerSharingManager(GroundMarkerPlugin plugin, Client client, MenuManager menuManager,
-		ChatMessageManager chatMessageManager, ChatboxPanelManager chatboxPanelManager, Gson gson)
+									   ChatMessageManager chatMessageManager, ChatboxPanelManager chatboxPanelManager, Gson gson)
 	{
 		this.plugin = plugin;
 		this.client = client;
@@ -106,9 +106,9 @@ class GroundMarkerSharingManager
 		}
 
 		List<GroundMarkerPoint> activePoints = Arrays.stream(regions)
-			.mapToObj(regionId -> plugin.getPoints(regionId).stream())
-			.flatMap(Function.identity())
-			.collect(Collectors.toList());
+				.mapToObj(regionId -> plugin.getPoints(regionId).stream())
+				.flatMap(Function.identity())
+				.collect(Collectors.toList());
 
 		if (activePoints.isEmpty())
 		{
@@ -121,8 +121,8 @@ class GroundMarkerSharingManager
 		log.debug("Exported ground markers: {}", exportDump);
 
 		Toolkit.getDefaultToolkit()
-			.getSystemClipboard()
-			.setContents(new StringSelection(exportDump), null);
+				.getSystemClipboard()
+				.setContents(new StringSelection(exportDump), null);
 		sendChatMessage(activePoints.size() + " ground markers were copied to your clipboard.");
 	}
 
@@ -132,11 +132,10 @@ class GroundMarkerSharingManager
 		try
 		{
 			clipboardText = Toolkit.getDefaultToolkit()
-				.getSystemClipboard()
-				.getData(DataFlavor.stringFlavor)
-				.toString();
-		}
-		catch (IOException | UnsupportedFlavorException ex)
+					.getSystemClipboard()
+					.getData(DataFlavor.stringFlavor)
+					.toString();
+		} catch (IOException | UnsupportedFlavorException ex)
 		{
 			sendChatMessage("Unable to read system clipboard.");
 			log.warn("error reading clipboard", ex);
@@ -154,10 +153,11 @@ class GroundMarkerSharingManager
 		try
 		{
 			// CHECKSTYLE:OFF
-			importPoints = gson.fromJson(clipboardText, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+			importPoints = gson.fromJson(clipboardText, new TypeToken<List<GroundMarkerPoint>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
-		}
-		catch (JsonSyntaxException e)
+		} catch (JsonSyntaxException e)
 		{
 			log.debug("Malformed JSON for clipboard import", e);
 			sendChatMessage("You do not have any ground markers copied in your clipboard.");
@@ -171,9 +171,9 @@ class GroundMarkerSharingManager
 		}
 
 		chatboxPanelManager.openTextMenuInput("Are you sure you want to import " + importPoints.size() + " ground markers?")
-			.option("Yes", () -> importGroundMarkers(importPoints))
-			.option("No", Runnables.doNothing())
-			.build();
+				.option("Yes", () -> importGroundMarkers(importPoints))
+				.option("No", Runnables.doNothing())
+				.build();
 	}
 
 	private void importGroundMarkers(Collection<GroundMarkerPoint> importPoints)
@@ -182,7 +182,7 @@ class GroundMarkerSharingManager
 		// so need to import each bunch directly into the config
 		// first, collate the list of unique region ids in the import
 		Map<Integer, List<GroundMarkerPoint>> regionGroupedPoints = importPoints.stream()
-			.collect(Collectors.groupingBy(GroundMarkerPoint::getRegionId));
+				.collect(Collectors.groupingBy(GroundMarkerPoint::getRegionId));
 
 		// now import each region into the config
 		regionGroupedPoints.forEach((regionId, groupedPoints) ->
@@ -223,8 +223,8 @@ class GroundMarkerSharingManager
 		}
 
 		long numActivePoints = Arrays.stream(regions)
-			.mapToLong(regionId -> plugin.getPoints(regionId).size())
-			.sum();
+				.mapToLong(regionId -> plugin.getPoints(regionId).size())
+				.sum();
 
 		if (numActivePoints == 0)
 		{
@@ -233,27 +233,27 @@ class GroundMarkerSharingManager
 		}
 
 		chatboxPanelManager.openTextMenuInput("Are you sure you want to clear the<br>" + numActivePoints + " currently loaded ground markers?")
-			.option("Yes", () ->
-			{
-				for (int regionId : regions)
+				.option("Yes", () ->
 				{
-					plugin.savePoints(regionId, null);
-				}
+					for (int regionId : regions)
+					{
+						plugin.savePoints(regionId, null);
+					}
 
-				plugin.loadPoints();
-				sendChatMessage(numActivePoints + " ground marker"
-					+ (numActivePoints == 1 ? " was cleared." : "s were cleared."));
+					plugin.loadPoints();
+					sendChatMessage(numActivePoints + " ground marker"
+							+ (numActivePoints == 1 ? " was cleared." : "s were cleared."));
 
-			})
-			.option("No", Runnables.doNothing())
-			.build();
+				})
+				.option("No", Runnables.doNothing())
+				.build();
 	}
 
 	private void sendChatMessage(final String message)
 	{
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CONSOLE)
-			.runeLiteFormattedMessage(message)
-			.build());
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 }

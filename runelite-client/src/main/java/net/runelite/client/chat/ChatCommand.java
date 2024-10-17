@@ -36,7 +36,7 @@ import net.runelite.client.events.ChatInput;
 class ChatCommand
 {
 	private final String name;
-	private boolean async;
 	private final BiConsumer<ChatMessage, String> execute;
 	private final BiPredicate<ChatInput, String> input;
+	private boolean async;
 }

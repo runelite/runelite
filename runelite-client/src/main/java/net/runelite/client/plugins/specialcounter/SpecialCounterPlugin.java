@@ -81,78 +81,62 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Special Attack Counter",
-	description = "Track special attacks used on NPCs",
-	tags = {"combat", "npcs", "overlay"},
-	enabledByDefault = false
+		name = "Special Attack Counter",
+		description = "Track special attacks used on NPCs",
+		tags = {"combat", "npcs", "overlay"},
+		enabledByDefault = false
 )
 @Slf4j
 public class SpecialCounterPlugin extends Plugin
 {
 	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
-		NpcID.DARK_ENERGY_CORE, // corp 
-		NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, // vorkath
-		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, // poh
-		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
-		NpcID.SPAWN, NpcID.SCION // abyssal sire
+			NpcID.DARK_ENERGY_CORE, // corp
+			NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, // vorkath
+			NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, // poh
+			NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
+			NpcID.SPAWN, NpcID.SCION // abyssal sire
 	);
-
+	// most recent hitsplat and the target it was on
+	private final List<Hitsplat> hitsplats = new ArrayList<>();
+	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
+	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
+	@Getter(AccessLevel.PACKAGE)
+	private final List<PlayerInfoDrop> playerInfoDrops = new ArrayList<>();
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
 	private int currentWorld;
 	private int specialPercentage;
 	private int lastHitPointsExperience;
 	private int lastHpChangeCycle;
-
 	private SpecialWeapon specialWeapon;
 	// expected tick the hitsplat will happen on
 	private int hitsplatTick;
-	// most recent hitsplat and the target it was on
-	private final List<Hitsplat> hitsplats = new ArrayList<>();
 	private NPC lastSpecTarget;
 	private boolean lastSpecHpChange;
-
-	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
-	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 	private PercentageInfobox percentageInfobox;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final List<PlayerInfoDrop> playerInfoDrops = new ArrayList<>();
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ClientThread clientThread;
-
 	@Inject
 	private WSClient wsClient;
-
 	@Inject
 	private PartyService party;
-
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private SpriteManager spriteManager;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private SpecialCounterConfig config;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private PlayerInfoDropOverlay playerInfoDropOverlay;
-
-	@Inject
-	@Named("developerMode")
-	boolean developerMode;
 
 	@Provides
 	SpecialCounterConfig getConfig(ConfigManager configManager)
@@ -250,8 +234,7 @@ public class SpecialCounterPlugin extends Plugin
 				int hit = Math.min(last.getAmount(), 1) + Math.min(secondToLast.getAmount(), 1);
 
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
-			}
-			else
+			} else
 			{
 				if (hitsplats.isEmpty())
 				{
@@ -267,8 +250,7 @@ public class SpecialCounterPlugin extends Plugin
 			specialWeapon = null;
 			hitsplats.clear();
 			lastSpecTarget = null;
-		}
-		else if (tickCount > hitsplatTick)
+		} else if (tickCount > hitsplatTick)
 		{
 			log.debug("Timeout waiting for hitsplat for {}", specialWeapon);
 			specialWeapon = null;
@@ -285,8 +267,7 @@ public class SpecialCounterPlugin extends Plugin
 			if (currentWorld == -1)
 			{
 				currentWorld = client.getWorld();
-			}
-			else if (currentWorld != client.getWorld())
+			} else if (currentWorld != client.getWorld())
 			{
 				currentWorld = client.getWorld();
 				removeCounters();
@@ -331,7 +312,7 @@ public class SpecialCounterPlugin extends Plugin
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
 
 			log.debug("Special attack used - cycle: {} percent: {} weapon: {} server cycle {} hitsplat cycle {} hp change: {}",
-				client.getGameCycle(), specialPercentage, specialWeapon, serverTicks, hitsplatTick, lastSpecHpChange);
+					client.getGameCycle(), specialPercentage, specialWeapon, serverTicks, hitsplatTick, lastSpecHpChange);
 
 			// Check if the counters should be reset
 			if (lastSpecTarget != null)
@@ -436,7 +417,7 @@ public class SpecialCounterPlugin extends Plugin
 	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
 		if (party.getLocalMember().getMemberId() == event.getMemberId()
-			|| event.getWorld() != client.getWorld())
+				|| event.getWorld() != client.getWorld())
 		{
 			return;
 		}
@@ -531,11 +512,10 @@ public class SpecialCounterPlugin extends Plugin
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
-				hit, specialWeapon);
+					hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
-		}
-		else
+		} else
 		{
 			counter.addHits(hit);
 		}
@@ -550,8 +530,7 @@ public class SpecialCounterPlugin extends Plugin
 			if (partySpecs.containsKey(name))
 			{
 				partySpecs.put(name, hit + partySpecs.get(name));
-			}
-			else
+			} else
 			{
 				partySpecs.put(name, hit);
 			}
@@ -593,16 +572,16 @@ public class SpecialCounterPlugin extends Plugin
 		BufferedImage background = hit == 0 ? spriteManager.getSprite(SpriteID.HITSPLAT_BLUE_MISS, 0) : null;
 
 		return PlayerInfoDrop.builder()
-			.startCycle(cycle)
-			.endCycle(cycle + 100)
-			.playerIdx(playerId)
-			.text(Integer.toString(hit))
-			.textBackground(background)
-			.color(config.specDropColor())
-			.startHeightOffset(100)
-			.endHeightOffset(400)
-			.image(image)
-			.build();
+				.startCycle(cycle)
+				.endCycle(cycle + 100)
+				.playerIdx(playerId)
+				.text(Integer.toString(hit))
+				.textBackground(background)
+				.color(config.specDropColor())
+				.startHeightOffset(100)
+				.endHeightOffset(400)
+				.image(image)
+				.build();
 	}
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)

@@ -28,10 +28,9 @@ import net.runelite.cache.models.JagexColor;
 
 class Graphics3D extends Rasterizer2D
 {
-	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
-
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
+	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
 
 	static
 	{
@@ -43,12 +42,13 @@ class Graphics3D extends Rasterizer2D
 	}
 
 	private final RSTextureProvider textureProvider;
+	public boolean rasterGouraudLowRes = true;
+	public int Rasterizer3D_zoom = 512;
+	public int[] colorPalette;
 	boolean rasterClipEnable;
 	boolean field1909;
 	boolean lowMem;
-	public boolean rasterGouraudLowRes = true;
 	int rasterAlpha;
-	public int Rasterizer3D_zoom = 512;
 	int centerX;
 	int centerY;
 	int rasterClipX;
@@ -58,11 +58,24 @@ class Graphics3D extends Rasterizer2D
 	int Rasterizer3D_clipNegativeMidY;
 	int Rasterizer3D_clipMidY2;
 	int[] rasterClipY = new int[1024];
-	public int[] colorPalette;
 
 	public Graphics3D(RSTextureProvider textureProvider)
 	{
 		this.textureProvider = textureProvider;
+	}
+
+	static final int method2794(int var0, int var1)
+	{
+		var1 = (var0 & 127) * var1 >> 7;
+		if (var1 < 2)
+		{
+			var1 = 2;
+		} else if (var1 > 126)
+		{
+			var1 = 126;
+		}
+
+		return (var0 & 65408) + var1;
 	}
 
 	public final void setRasterClipping()
@@ -137,8 +150,7 @@ class Graphics3D extends Rasterizer2D
 		if (var2 != var1)
 		{
 			var15 = (var5 - var4 << 14) / (var2 - var1);
-		}
-		else
+		} else
 		{
 			var15 = 0;
 		}
@@ -147,8 +159,7 @@ class Graphics3D extends Rasterizer2D
 		if (var0 != var1)
 		{
 			var16 = (var9 << 14) / var10;
-		}
-		else
+		} else
 		{
 			var16 = 0;
 		}
@@ -157,8 +168,7 @@ class Graphics3D extends Rasterizer2D
 		if (var0 != var2)
 		{
 			var17 = (var11 << 14) / var12;
-		}
-		else
+		} else
 		{
 			var17 = 0;
 		}
@@ -234,8 +244,7 @@ class Graphics3D extends Rasterizer2D
 								var6 += var20;
 								var0 += graphicsPixelsWidth;
 							}
-						}
-						else
+						} else
 						{
 							var2 -= var1;
 							var1 -= var0;
@@ -269,8 +278,7 @@ class Graphics3D extends Rasterizer2D
 								var0 += graphicsPixelsWidth;
 							}
 						}
-					}
-					else
+					} else
 					{
 						var4 = var3 <<= 14;
 						if (var0 < 0)
@@ -321,8 +329,7 @@ class Graphics3D extends Rasterizer2D
 								var6 += var20;
 								var0 += graphicsPixelsWidth;
 							}
-						}
-						else
+						} else
 						{
 							var1 -= var2;
 							var2 -= var0;
@@ -358,8 +365,7 @@ class Graphics3D extends Rasterizer2D
 						}
 					}
 				}
-			}
-			else if (var1 <= var2)
+			} else if (var1 <= var2)
 			{
 				if (var1 < Rasterizer3D_clipHeight)
 				{
@@ -425,8 +431,7 @@ class Graphics3D extends Rasterizer2D
 								var7 += var20;
 								var1 += graphicsPixelsWidth;
 							}
-						}
-						else
+						} else
 						{
 							var0 -= var2;
 							var2 -= var1;
@@ -460,8 +465,7 @@ class Graphics3D extends Rasterizer2D
 								var1 += graphicsPixelsWidth;
 							}
 						}
-					}
-					else
+					} else
 					{
 						var5 = var4 <<= 14;
 						if (var1 < 0)
@@ -512,8 +516,7 @@ class Graphics3D extends Rasterizer2D
 								var7 += var20;
 								var1 += graphicsPixelsWidth;
 							}
-						}
-						else
+						} else
 						{
 							var2 -= var0;
 							var0 -= var1;
@@ -549,8 +552,7 @@ class Graphics3D extends Rasterizer2D
 						}
 					}
 				}
-			}
-			else if (var2 < Rasterizer3D_clipHeight)
+			} else if (var2 < Rasterizer3D_clipHeight)
 			{
 				if (var0 > Rasterizer3D_clipHeight)
 				{
@@ -614,8 +616,7 @@ class Graphics3D extends Rasterizer2D
 							var8 += var20;
 							var2 += graphicsPixelsWidth;
 						}
-					}
-					else
+					} else
 					{
 						var1 -= var0;
 						var0 -= var2;
@@ -649,8 +650,7 @@ class Graphics3D extends Rasterizer2D
 							var2 += graphicsPixelsWidth;
 						}
 					}
-				}
-				else
+				} else
 				{
 					var3 = var5 <<= 14;
 					if (var2 < 0)
@@ -701,8 +701,7 @@ class Graphics3D extends Rasterizer2D
 							var8 += var20;
 							var2 += graphicsPixelsWidth;
 						}
-					}
-					else
+					} else
 					{
 						var0 -= var1;
 						var1 -= var2;
@@ -740,7 +739,6 @@ class Graphics3D extends Rasterizer2D
 			}
 		}
 	}
-
 
 	final void method2778(int[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
 	{
@@ -795,8 +793,7 @@ class Graphics3D extends Rasterizer2D
 							--var3;
 						} while (var3 > 0);
 					}
-				}
-				else
+				} else
 				{
 					var8 = rasterAlpha;
 					var9 = 256 - rasterAlpha;
@@ -834,8 +831,7 @@ class Graphics3D extends Rasterizer2D
 					}
 				}
 
-			}
-			else
+			} else
 			{
 				var3 = var5 - var4;
 				if (rasterAlpha == 0)
@@ -846,8 +842,7 @@ class Graphics3D extends Rasterizer2D
 						var6 += var7;
 						--var3;
 					} while (var3 > 0);
-				}
-				else
+				} else
 				{
 					var8 = rasterAlpha;
 					var9 = 256 - rasterAlpha;
@@ -866,7 +861,6 @@ class Graphics3D extends Rasterizer2D
 			}
 		}
 	}
-
 
 	public final void rasterFlat(int var0, int var1, int var2, int var3, int var4, int var5, int var6)
 	{
@@ -950,8 +944,7 @@ class Graphics3D extends Rasterizer2D
 							var3 += var7;
 							var0 += graphicsPixelsWidth;
 						}
-					}
-					else
+					} else
 					{
 						var2 -= var1;
 						var1 -= var0;
@@ -983,8 +976,7 @@ class Graphics3D extends Rasterizer2D
 							var0 += graphicsPixelsWidth;
 						}
 					}
-				}
-				else
+				} else
 				{
 					var4 = var3 <<= 14;
 					if (var0 < 0)
@@ -1032,8 +1024,7 @@ class Graphics3D extends Rasterizer2D
 							var3 += var7;
 							var0 += graphicsPixelsWidth;
 						}
-					}
-					else
+					} else
 					{
 						var1 -= var2;
 						var2 -= var0;
@@ -1067,8 +1058,7 @@ class Graphics3D extends Rasterizer2D
 					}
 				}
 			}
-		}
-		else if (var1 <= var2)
+		} else if (var1 <= var2)
 		{
 			if (var1 < Rasterizer3D_clipHeight)
 			{
@@ -1130,8 +1120,7 @@ class Graphics3D extends Rasterizer2D
 							var4 += var8;
 							var1 += graphicsPixelsWidth;
 						}
-					}
-					else
+					} else
 					{
 						var0 -= var2;
 						var2 -= var1;
@@ -1163,8 +1152,7 @@ class Graphics3D extends Rasterizer2D
 							var1 += graphicsPixelsWidth;
 						}
 					}
-				}
-				else
+				} else
 				{
 					var5 = var4 <<= 14;
 					if (var1 < 0)
@@ -1212,8 +1200,7 @@ class Graphics3D extends Rasterizer2D
 							var4 += var8;
 							var1 += graphicsPixelsWidth;
 						}
-					}
-					else
+					} else
 					{
 						var2 -= var0;
 						var0 -= var1;
@@ -1247,8 +1234,7 @@ class Graphics3D extends Rasterizer2D
 					}
 				}
 			}
-		}
-		else if (var2 < Rasterizer3D_clipHeight)
+		} else if (var2 < Rasterizer3D_clipHeight)
 		{
 			if (var0 > Rasterizer3D_clipHeight)
 			{
@@ -1308,8 +1294,7 @@ class Graphics3D extends Rasterizer2D
 						var5 += var9;
 						var2 += graphicsPixelsWidth;
 					}
-				}
-				else
+				} else
 				{
 					var1 -= var0;
 					var0 -= var2;
@@ -1341,8 +1326,7 @@ class Graphics3D extends Rasterizer2D
 						var2 += graphicsPixelsWidth;
 					}
 				}
-			}
-			else
+			} else
 			{
 				var3 = var5 <<= 14;
 				if (var2 < 0)
@@ -1390,8 +1374,7 @@ class Graphics3D extends Rasterizer2D
 						var5 += var9;
 						var2 += graphicsPixelsWidth;
 					}
-				}
-				else
+				} else
 				{
 					var0 -= var1;
 					var1 -= var2;
@@ -1426,7 +1409,6 @@ class Graphics3D extends Rasterizer2D
 			}
 		}
 	}
-
 
 	final void method2842(int[] var0, int var1, int var2, int var3, int var4, int var5)
 	{
@@ -1475,8 +1457,7 @@ class Graphics3D extends Rasterizer2D
 						var0[var1++] = var0[var1];
 						var0[var1++] = var0[var1];
 					}
-				}
-				else
+				} else
 				{
 					int var6 = rasterAlpha;
 					int var7 = 256 - rasterAlpha;
@@ -1513,8 +1494,7 @@ class Graphics3D extends Rasterizer2D
 						var0[var1++] = ((var8 & 16711935) * var6 >> 8 & 16711935) + var2 + (var6 * (var8 & 65280) >> 8 & 65280);
 					}
 				}
-			}
-			else
+			} else
 			{
 				while (true)
 				{
@@ -1544,7 +1524,6 @@ class Graphics3D extends Rasterizer2D
 		}
 	}
 
-
 	final void rasterTextureAffine(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18)
 	{
 		int[] var19 = textureProvider.load(var18);
@@ -1553,8 +1532,7 @@ class Graphics3D extends Rasterizer2D
 		{
 			var20 = textureProvider.getAverageTextureRGB(var18);
 			rasterGouraud(var0, var1, var2, var3, var4, var5, method2794(var20, var6), method2794(var20, var7), method2794(var20, var8));
-		}
-		else
+		} else
 		{
 			lowMem = textureProvider.vmethod3066(var18);
 			field1909 = textureProvider.vmethod3057(var18);
@@ -1679,8 +1657,7 @@ class Graphics3D extends Rasterizer2D
 									var35 += var37;
 									var38 += var40;
 								}
-							}
-							else
+							} else
 							{
 								var2 -= var1;
 								var1 -= var0;
@@ -1720,8 +1697,7 @@ class Graphics3D extends Rasterizer2D
 									var38 += var40;
 								}
 							}
-						}
-						else
+						} else
 						{
 							var4 = var3 <<= 14;
 							if (var0 < 0)
@@ -1782,8 +1758,7 @@ class Graphics3D extends Rasterizer2D
 									var35 += var37;
 									var38 += var40;
 								}
-							}
-							else
+							} else
 							{
 								var1 -= var2;
 								var2 -= var0;
@@ -1825,8 +1800,7 @@ class Graphics3D extends Rasterizer2D
 							}
 						}
 					}
-				}
-				else if (var1 <= var2)
+				} else if (var1 <= var2)
 				{
 					if (var1 < Rasterizer3D_clipHeight)
 					{
@@ -1902,8 +1876,7 @@ class Graphics3D extends Rasterizer2D
 									var35 += var37;
 									var38 += var40;
 								}
-							}
-							else
+							} else
 							{
 								var0 -= var2;
 								var2 -= var1;
@@ -1943,8 +1916,7 @@ class Graphics3D extends Rasterizer2D
 									var38 += var40;
 								}
 							}
-						}
-						else
+						} else
 						{
 							var5 = var4 <<= 14;
 							if (var1 < 0)
@@ -2005,8 +1977,7 @@ class Graphics3D extends Rasterizer2D
 									var35 += var37;
 									var38 += var40;
 								}
-							}
-							else
+							} else
 							{
 								var2 -= var0;
 								var0 -= var1;
@@ -2048,8 +2019,7 @@ class Graphics3D extends Rasterizer2D
 							}
 						}
 					}
-				}
-				else if (var2 < Rasterizer3D_clipHeight)
+				} else if (var2 < Rasterizer3D_clipHeight)
 				{
 					if (var0 > Rasterizer3D_clipHeight)
 					{
@@ -2123,8 +2093,7 @@ class Graphics3D extends Rasterizer2D
 								var35 += var37;
 								var38 += var40;
 							}
-						}
-						else
+						} else
 						{
 							var1 -= var0;
 							var0 -= var2;
@@ -2164,8 +2133,7 @@ class Graphics3D extends Rasterizer2D
 								var38 += var40;
 							}
 						}
-					}
-					else
+					} else
 					{
 						var3 = var5 <<= 14;
 						if (var2 < 0)
@@ -2226,8 +2194,7 @@ class Graphics3D extends Rasterizer2D
 								var35 += var37;
 								var38 += var40;
 							}
-						}
-						else
+						} else
 						{
 							var0 -= var1;
 							var1 -= var2;
@@ -2273,7 +2240,6 @@ class Graphics3D extends Rasterizer2D
 		}
 	}
 
-
 	final void method2791(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14)
 	{
 		if (rasterClipEnable)
@@ -2317,13 +2283,11 @@ class Graphics3D extends Rasterizer2D
 					if (var18 < 0)
 					{
 						var18 = 0;
-					}
-					else if (var18 > 4032)
+					} else if (var18 > 4032)
 					{
 						var18 = 4032;
 					}
-				}
-				else
+				} else
 				{
 					var18 = 0;
 					var19 = 0;
@@ -2340,13 +2304,11 @@ class Graphics3D extends Rasterizer2D
 					if (var20 < 0)
 					{
 						var20 = 0;
-					}
-					else if (var20 > 4032)
+					} else if (var20 > 4032)
 					{
 						var20 = 4032;
 					}
-				}
-				else
+				} else
 				{
 					var20 = 0;
 					var21 = 0;
@@ -2400,13 +2362,11 @@ class Graphics3D extends Rasterizer2D
 								if (var20 < 0)
 								{
 									var20 = 0;
-								}
-								else if (var20 > 4032)
+								} else if (var20 > 4032)
 								{
 									var20 = 4032;
 								}
-							}
-							else
+							} else
 							{
 								var20 = 0;
 								var21 = 0;
@@ -2431,8 +2391,7 @@ class Graphics3D extends Rasterizer2D
 							--var17;
 						} while (var17 > 0);
 					}
-				}
-				else
+				} else
 				{
 					if (var17 > 0)
 					{
@@ -2507,13 +2466,11 @@ class Graphics3D extends Rasterizer2D
 								if (var20 < 0)
 								{
 									var20 = 0;
-								}
-								else if (var20 > 4032)
+								} else if (var20 > 4032)
 								{
 									var20 = 4032;
 								}
-							}
-							else
+							} else
 							{
 								var20 = 0;
 								var21 = 0;
@@ -2543,8 +2500,7 @@ class Graphics3D extends Rasterizer2D
 						} while (var17 > 0);
 					}
 				}
-			}
-			else
+			} else
 			{
 				var23 = var5 - centerX;
 				var9 += var23 * (var12 >> 3);
@@ -2558,13 +2514,11 @@ class Graphics3D extends Rasterizer2D
 					if (var18 < 0)
 					{
 						var18 = 0;
-					}
-					else if (var18 > 16256)
+					} else if (var18 > 16256)
 					{
 						var18 = 16256;
 					}
-				}
-				else
+				} else
 				{
 					var18 = 0;
 					var19 = 0;
@@ -2581,13 +2535,11 @@ class Graphics3D extends Rasterizer2D
 					if (var20 < 0)
 					{
 						var20 = 0;
-					}
-					else if (var20 > 16256)
+					} else if (var20 > 16256)
 					{
 						var20 = 16256;
 					}
-				}
-				else
+				} else
 				{
 					var20 = 0;
 					var21 = 0;
@@ -2641,13 +2593,11 @@ class Graphics3D extends Rasterizer2D
 								if (var20 < 0)
 								{
 									var20 = 0;
-								}
-								else if (var20 > 16256)
+								} else if (var20 > 16256)
 								{
 									var20 = 16256;
 								}
-							}
-							else
+							} else
 							{
 								var20 = 0;
 								var21 = 0;
@@ -2672,8 +2622,7 @@ class Graphics3D extends Rasterizer2D
 							--var17;
 						} while (var17 > 0);
 					}
-				}
-				else
+				} else
 				{
 					if (var17 > 0)
 					{
@@ -2748,13 +2697,11 @@ class Graphics3D extends Rasterizer2D
 								if (var20 < 0)
 								{
 									var20 = 0;
-								}
-								else if (var20 > 16256)
+								} else if (var20 > 16256)
 								{
 									var20 = 16256;
 								}
-							}
-							else
+							} else
 							{
 								var20 = 0;
 								var21 = 0;
@@ -2787,20 +2734,5 @@ class Graphics3D extends Rasterizer2D
 			}
 
 		}
-	}
-
-	static final int method2794(int var0, int var1)
-	{
-		var1 = (var0 & 127) * var1 >> 7;
-		if (var1 < 2)
-		{
-			var1 = 2;
-		}
-		else if (var1 > 126)
-		{
-			var1 = 126;
-		}
-
-		return (var0 & 65408) + var1;
 	}
 }

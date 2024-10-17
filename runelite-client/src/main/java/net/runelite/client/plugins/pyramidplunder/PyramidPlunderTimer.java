@@ -39,11 +39,11 @@ class PyramidPlunderTimer extends Timer
 	private final Client client;
 
 	public PyramidPlunderTimer(
-		Duration duration,
-		BufferedImage image,
-		PyramidPlunderPlugin plugin,
-		PyramidPlunderConfig config,
-		Client client
+			Duration duration,
+			BufferedImage image,
+			PyramidPlunderPlugin plugin,
+			PyramidPlunderConfig config,
+			Client client
 	)
 	{
 		super(duration.toMillis(), ChronoUnit.MILLIS, image, plugin);

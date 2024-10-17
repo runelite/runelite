@@ -51,11 +51,11 @@ public class AssemblerTest
 	public static String[] scripts()
 	{
 		return new String[]
-		{
-			"91.rs2asm",
-			"681.rs2asm",
-			"Unicode.rs2asm"
-		};
+				{
+						"91.rs2asm",
+						"681.rs2asm",
+						"Unicode.rs2asm"
+				};
 	}
 
 	@Test

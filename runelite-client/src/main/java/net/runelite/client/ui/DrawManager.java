@@ -66,8 +66,7 @@ public class DrawManager
 			try
 			{
 				everyFrameListener.run();
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				log.error("Error in draw consumer", e);
 			}
@@ -82,8 +81,7 @@ public class DrawManager
 				try
 				{
 					image = imageSupplier.get();
-				}
-				catch (Exception ex)
+				} catch (Exception ex)
 				{
 					log.warn("error getting screenshot", ex);
 				}
@@ -98,8 +96,7 @@ public class DrawManager
 			try
 			{
 				nextFrameListener.accept(image);
-			}
-			catch (Exception e)
+			} catch (Exception e)
 			{
 				log.error("Error in draw consumer", e);
 			}

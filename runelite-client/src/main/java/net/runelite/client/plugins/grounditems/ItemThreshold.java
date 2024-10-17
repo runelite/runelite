@@ -30,12 +30,6 @@ import lombok.Value;
 @Value
 class ItemThreshold
 {
-	enum Inequality
-	{
-		LESS_THAN,
-		MORE_THAN
-	}
-
 	private final String itemName;
 	private final int quantity;
 	private final Inequality inequality;
@@ -68,8 +62,7 @@ class ItemThreshold
 						try
 						{
 							qty = Integer.parseInt(entry.substring(i + 1).trim());
-						}
-						catch (NumberFormatException e)
+						} catch (NumberFormatException e)
 						{
 							qty = 0;
 							operator = Inequality.MORE_THAN;
@@ -88,10 +81,15 @@ class ItemThreshold
 		if (inequality == Inequality.LESS_THAN)
 		{
 			return itemCount < quantity;
-		}
-		else
+		} else
 		{
 			return itemCount > quantity;
 		}
+	}
+
+	enum Inequality
+	{
+		LESS_THAN,
+		MORE_THAN
 	}
 }

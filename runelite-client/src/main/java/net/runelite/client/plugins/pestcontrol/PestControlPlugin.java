@@ -47,18 +47,18 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Pest Control",
-	description = "Show helpful information for the Pest Control minigame",
-	tags = {"minigame", "overlay"}
+		name = "Pest Control",
+		description = "Show helpful information for the Pest Control minigame",
+		tags = {"minigame", "overlay"}
 )
 public class PestControlPlugin extends Plugin
 {
 	private static final Set<Integer> SPINNER_IDS = ImmutableSet.of(
-		NpcID.SPINNER,
-		NpcID.SPINNER_1710,
-		NpcID.SPINNER_1711,
-		NpcID.SPINNER_1712,
-		NpcID.SPINNER_1713
+			NpcID.SPINNER,
+			NpcID.SPINNER_1710,
+			NpcID.SPINNER_1711,
+			NpcID.SPINNER_1712,
+			NpcID.SPINNER_1713
 	);
 
 	private final Pattern SHIELD_DROP = Pattern.compile("The ([a-z]+), [^ ]+ portal shield has dropped!", Pattern.CASE_INSENSITIVE);

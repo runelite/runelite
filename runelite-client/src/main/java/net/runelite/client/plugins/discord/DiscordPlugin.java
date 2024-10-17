@@ -69,42 +69,33 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @PluginDescriptor(
-	name = "Discord",
-	description = "Show your status and activity in the Discord user panel",
-	tags = {"action", "activity", "external", "integration", "status"}
+		name = "Discord",
+		description = "Show your status and activity in the Discord user panel",
+		tags = {"action", "activity", "external", "integration", "status"}
 )
 @Slf4j
 public class DiscordPlugin extends Plugin
 {
+	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	@Inject
 	private Client client;
-
 	@Inject
 	private DiscordConfig config;
-
 	@Inject
 	private ClientToolbar clientToolbar;
-
 	@Inject
 	private DiscordState discordState;
-
 	@Inject
 	private PartyService partyService;
-
 	@Inject
 	private DiscordService discordService;
-
 	@Inject
 	private WSClient wsClient;
-
 	@Inject
 	private OkHttpClient okHttpClient;
-
 	@Inject
 	@Named("runelite.discord.invite")
 	private String discordInvite;
-
-	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
 
@@ -120,10 +111,10 @@ public class DiscordPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "discord.png");
 
 		discordButton = NavigationButton.builder()
-			.tooltip("Join Discord")
-			.icon(icon)
-			.onClick(() -> LinkBrowser.browse(discordInvite))
-			.build();
+				.tooltip("Join Discord")
+				.icon(icon)
+				.onClick(() -> LinkBrowser.browse(discordInvite))
+				.build();
 
 		clientToolbar.addNavigation(discordButton);
 		resetState();
@@ -215,8 +206,7 @@ public class DiscordPlugin extends Plugin
 			int disc = Integer.parseInt(event.getDiscriminator());
 			int avatarId = disc % 5;
 			url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
-		}
-		else
+		} else
 		{
 			url = "https://cdn.discordapp.com/avatars/" + event.getUserId() + "/" + event.getAvatarId() + ".png";
 		}
@@ -224,8 +214,8 @@ public class DiscordPlugin extends Plugin
 		log.debug("Got user avatar {}", url);
 
 		final Request request = new Request.Builder()
-			.url(url)
-			.build();
+				.url(url)
+				.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
@@ -265,18 +255,18 @@ public class DiscordPlugin extends Plugin
 		if (discordUser != null)
 		{
 			final DiscordUserInfo userInfo = new DiscordUserInfo(
-				discordUser.userId,
-				discordUser.username,
-				discordUser.discriminator,
-				discordUser.avatar
+					discordUser.userId,
+					discordUser.username,
+					discordUser.discriminator,
+					discordUser.avatar
 			);
 			partyService.send(userInfo);
 		}
 	}
 
 	@Schedule(
-		period = 1,
-		unit = ChronoUnit.MINUTES
+			period = 1,
+			unit = ChronoUnit.MINUTES
 	)
 	public void checkForValidStatus()
 	{
@@ -320,8 +310,7 @@ public class DiscordPlugin extends Plugin
 		{
 			discordState.triggerEvent(DiscordGameEventType.PLAYING_DEADMAN);
 			return;
-		}
-		else if (WorldType.isPvpWorld(worldType))
+		} else if (WorldType.isPvpWorld(worldType))
 		{
 			discordState.triggerEvent(DiscordGameEventType.PLAYING_PVP);
 			return;
@@ -332,7 +321,7 @@ public class DiscordPlugin extends Plugin
 		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
 		// Since KBD requires going through the wilderness there is no EventType for it
 		if (DiscordGameEventType.MG_NIGHTMARE_ZONE == discordGameEventType
-			&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
+				&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
 		{
 			discordGameEventType = null;
 		}
@@ -361,12 +350,18 @@ public class DiscordPlugin extends Plugin
 
 		switch (event.getDiscordAreaType())
 		{
-			case BOSSES: return config.showBossActivity();
-			case CITIES: return config.showCityActivity();
-			case DUNGEONS: return config.showDungeonActivity();
-			case MINIGAMES: return config.showMinigameActivity();
-			case REGIONS: return config.showRegionsActivity();
-			case RAIDS: return config.showRaidingActivity();
+			case BOSSES:
+				return config.showBossActivity();
+			case CITIES:
+				return config.showCityActivity();
+			case DUNGEONS:
+				return config.showDungeonActivity();
+			case MINIGAMES:
+				return config.showMinigameActivity();
+			case REGIONS:
+				return config.showRegionsActivity();
+			case RAIDS:
+				return config.showRaidingActivity();
 		}
 
 		return false;

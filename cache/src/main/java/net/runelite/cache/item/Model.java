@@ -26,6 +26,18 @@ package net.runelite.cache.item;
 
 class Model extends Renderable
 {
+	static int[] Model_sine;
+	static int[] Model_cosine;
+
+	static
+	{
+		Model_sine = Graphics3D.SINE;
+		Model_cosine = Graphics3D.COSINE;
+	}
+
+	public int extremeX;
+	public int extremeY;
+	public int extremeZ;
 	boolean[] faceClipped = new boolean[6500];
 	int[] modelViewportYs = new int[6500];
 	int[] modelViewportXs = new int[6500];
@@ -40,8 +52,6 @@ class Model extends Renderable
 	int[] eq10 = new int[2000];
 	int[] eq11 = new int[2000];
 	int[] lt10 = new int[12];
-	static int[] Model_sine;
-	static int[] Model_cosine;
 	int verticesCount;
 	int[] verticesX;
 	int[] verticesY;
@@ -66,15 +76,6 @@ class Model extends Renderable
 	int XYZMag;
 	int diameter;
 	int radius;
-	public int extremeX;
-	public int extremeY;
-	public int extremeZ;
-
-	static
-	{
-		Model_sine = Graphics3D.SINE;
-		Model_cosine = Graphics3D.COSINE;
-	}
 
 	Model()
 	{
@@ -245,8 +246,7 @@ class Model extends Renderable
 						if (var10 >= 0 && var11 >= 0 && var12 >= 0 && var10 <= graphics.rasterClipX && var11 <= graphics.rasterClipX && var12 <= graphics.rasterClipX)
 						{
 							faceClipped[var26] = false;
-						}
-						else
+						} else
 						{
 							faceClipped[var26] = true;
 						}
@@ -274,8 +274,7 @@ class Model extends Renderable
 					}
 				}
 
-			}
-			else
+			} else
 			{
 				for (var26 = 0; var26 < 12; ++var26)
 				{
@@ -299,12 +298,10 @@ class Model extends Renderable
 							if (var31 < 10)
 							{
 								lt10[var31] += var26;
-							}
-							else if (var31 == 10)
+							} else if (var31 == 10)
 							{
 								eq10[var12] = var26;
-							}
-							else
+							} else
 							{
 								eq11[var12] = var26;
 							}
@@ -345,8 +342,7 @@ class Model extends Renderable
 				if (var10 < var11)
 				{
 					var9 = var29[var10];
-				}
-				else
+				} else
 				{
 					var9 = -1000;
 				}
@@ -367,8 +363,7 @@ class Model extends Renderable
 						if (var10 < var11)
 						{
 							var9 = var29[var10];
-						}
-						else
+						} else
 						{
 							var9 = -1000;
 						}
@@ -388,8 +383,7 @@ class Model extends Renderable
 						if (var10 < var11)
 						{
 							var9 = var29[var10];
-						}
-						else
+						} else
 						{
 							var9 = -1000;
 						}
@@ -409,8 +403,7 @@ class Model extends Renderable
 						if (var10 < var11)
 						{
 							var9 = var29[var10];
-						}
-						else
+						} else
 						{
 							var9 = -1000;
 						}
@@ -439,8 +432,7 @@ class Model extends Renderable
 					if (var10 < var11)
 					{
 						var9 = var29[var10];
-					}
-					else
+					} else
 					{
 						var9 = -1000;
 					}
@@ -459,8 +451,7 @@ class Model extends Renderable
 		if (this.faceTransparencies == null)
 		{
 			graphics.rasterAlpha = 0;
-		}
-		else
+		} else
 		{
 			graphics.rasterAlpha = this.faceTransparencies[face] & 255;
 		}
@@ -476,8 +467,7 @@ class Model extends Renderable
 				var5 = this.texIndices1[var8];
 				var6 = this.texIndices2[var8];
 				var7 = this.texIndices3[var8];
-			}
-			else
+			} else
 			{
 				var5 = var2;
 				var6 = var3;
@@ -487,18 +477,15 @@ class Model extends Renderable
 			if (this.faceColors3[face] == -1)
 			{
 				graphics.rasterTextureAffine(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], this.faceColors1[face], this.faceColors1[face], this.faceColors1[face], modelLocalX[var5], modelLocalX[var6], modelLocalX[var7], modelLocalY[var5], modelLocalY[var6], modelLocalY[var7], modelLocalZ[var5], modelLocalZ[var6], modelLocalZ[var7], this.faceTextures[face]);
-			}
-			else
+			} else
 			{
 				graphics.rasterTextureAffine(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], this.faceColors1[face], this.faceColors2[face], this.faceColors3[face], modelLocalX[var5], modelLocalX[var6], modelLocalX[var7], modelLocalY[var5], modelLocalY[var6], modelLocalY[var7], modelLocalZ[var5], modelLocalZ[var6], modelLocalZ[var7], this.faceTextures[face]);
 			}
-		}
-		else if (this.faceColors3[face] == -1)
+		} else if (this.faceColors3[face] == -1)
 		{
 			int[] field1889 = graphics.colorPalette;
 			graphics.rasterFlat(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], field1889[this.faceColors1[face]]);
-		}
-		else
+		} else
 		{
 			graphics.rasterGouraud(modelViewportXs[var2], modelViewportXs[var3], modelViewportXs[var4], modelViewportYs[var2], modelViewportYs[var3], modelViewportYs[var4], this.faceColors1[face], this.faceColors2[face], this.faceColors3[face]);
 		}

@@ -39,20 +39,16 @@ import net.runelite.client.input.KeyListener;
 
 class KeyRemappingListener implements KeyListener
 {
-	@Inject
-	private KeyRemappingPlugin plugin;
-
-	@Inject
-	private KeyRemappingConfig config;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
-
 	private final Map<Integer, Integer> modified = new HashMap<>();
 	private final Set<Character> blockedChars = new HashSet<>();
+	@Inject
+	private KeyRemappingPlugin plugin;
+	@Inject
+	private KeyRemappingConfig config;
+	@Inject
+	private Client client;
+	@Inject
+	private ClientThread clientThread;
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -81,16 +77,13 @@ class KeyRemappingListener implements KeyListener
 				if (config.up().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_UP;
-				}
-				else if (config.down().matches(e))
+				} else if (config.down().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_DOWN;
-				}
-				else if (config.left().matches(e))
+				} else if (config.left().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_LEFT;
-				}
-				else if (config.right().matches(e))
+				} else if (config.right().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_RIGHT;
 				}
@@ -104,52 +97,40 @@ class KeyRemappingListener implements KeyListener
 				if (config.f1().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F1;
-				}
-				else if (config.f2().matches(e))
+				} else if (config.f2().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F2;
-				}
-				else if (config.f3().matches(e))
+				} else if (config.f3().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F3;
-				}
-				else if (config.f4().matches(e))
+				} else if (config.f4().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F4;
-				}
-				else if (config.f5().matches(e))
+				} else if (config.f5().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F5;
-				}
-				else if (config.f6().matches(e))
+				} else if (config.f6().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F6;
-				}
-				else if (config.f7().matches(e))
+				} else if (config.f7().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F7;
-				}
-				else if (config.f8().matches(e))
+				} else if (config.f8().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F8;
-				}
-				else if (config.f9().matches(e))
+				} else if (config.f9().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F9;
-				}
-				else if (config.f10().matches(e))
+				} else if (config.f10().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F10;
-				}
-				else if (config.f11().matches(e))
+				} else if (config.f11().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F11;
-				}
-				else if (config.f12().matches(e))
+				} else if (config.f12().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_F12;
-				}
-				else if (config.esc().matches(e))
+				} else if (config.esc().matches(e))
 				{
 					mappedKeyCode = KeyEvent.VK_ESCAPE;
 				}
@@ -193,8 +174,7 @@ class KeyRemappingListener implements KeyListener
 					break;
 			}
 
-		}
-		else
+		} else
 		{
 			switch (e.getKeyCode())
 			{

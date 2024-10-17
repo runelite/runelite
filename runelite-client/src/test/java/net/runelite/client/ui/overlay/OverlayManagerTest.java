@@ -35,39 +35,6 @@ import org.junit.Test;
 
 public class OverlayManagerTest
 {
-	class TestOverlay extends Overlay
-	{
-		TestOverlay(OverlayPosition position, float priority)
-		{
-			setPosition(position);
-			setPriority(priority);
-		}
-
-		@Override
-		public Dimension render(Graphics2D graphics)
-		{
-			throw new UnsupportedOperationException("Not supported yet.");
-		}
-	}
-
-	private static class OverlayA extends Overlay
-	{
-		@Override
-		public Dimension render(Graphics2D graphics)
-		{
-			return null;
-		}
-	}
-
-	private static class OverlayB extends Overlay
-	{
-		@Override
-		public Dimension render(Graphics2D graphics)
-		{
-			return null;
-		}
-	}
-
 	@Test
 	public void testEquality()
 	{
@@ -118,6 +85,39 @@ public class OverlayManagerTest
 		assertEquals(dyn, overlays.get(0));
 		assertEquals(tlh, overlays.get(1));
 		assertEquals(t, overlays.get(2));
+	}
+
+	private static class OverlayA extends Overlay
+	{
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			return null;
+		}
+	}
+
+	private static class OverlayB extends Overlay
+	{
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			return null;
+		}
+	}
+
+	class TestOverlay extends Overlay
+	{
+		TestOverlay(OverlayPosition position, float priority)
+		{
+			setPosition(position);
+			setPriority(priority);
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			throw new UnsupportedOperationException("Not supported yet.");
+		}
 	}
 
 }

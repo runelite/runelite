@@ -73,8 +73,8 @@ public class WorldMapOverlay extends Overlay
 
 	@Inject
 	private WorldMapOverlay(
-		Client client,
-		WorldMapPointManager worldMapPointManager)
+			Client client,
+			WorldMapPointManager worldMapPointManager)
 	{
 		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
@@ -110,11 +110,11 @@ public class WorldMapOverlay extends Overlay
 			}
 
 			client.createMenuEntry(-1)
-				.setTarget(ColorUtil.wrapWithColorTag(worldPoint.getName(), JagexColors.MENU_TARGET))
-				.setOption(FOCUS_ON)
-				.setType(MenuAction.RUNELITE)
-				.onClick(m -> client.getWorldMap().setWorldMapPositionTarget(
-					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getWorldPoint())));
+					.setTarget(ColorUtil.wrapWithColorTag(worldPoint.getName(), JagexColors.MENU_TARGET))
+					.setOption(FOCUS_ON)
+					.setType(MenuAction.RUNELITE)
+					.onClick(m -> client.getWorldMap().setWorldMapPositionTarget(
+							MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getWorldPoint())));
 		});
 		bottomBar.setHasListener(true);
 
@@ -151,8 +151,7 @@ public class WorldMapOverlay extends Overlay
 				{
 					graphics.setClip(canvasViewArea);
 					currentClip = canvasViewArea;
-				}
-				else if (!worldPoint.isSnapToEdge() && mapViewArea != currentClip)
+				} else if (!worldPoint.isSnapToEdge() && mapViewArea != currentClip)
 				{
 					graphics.setClip(mapViewArea);
 					currentClip = mapViewArea;
@@ -184,8 +183,7 @@ public class WorldMapOverlay extends Overlay
 							worldPoint.setCurrentlyEdgeSnapped(false);
 							worldPoint.onEdgeUnsnap();
 						}
-					}
-					else
+					} else
 					{
 						drawPoint = clipToRectangle(drawPoint, snappedRect);
 						if (!worldPoint.isCurrentlyEdgeSnapped())
@@ -203,8 +201,7 @@ public class WorldMapOverlay extends Overlay
 				{
 					drawX -= image.getWidth() / 2;
 					drawY -= image.getHeight() / 2;
-				}
-				else
+				} else
 				{
 					drawX -= worldPoint.getImagePoint().getX();
 					drawY -= worldPoint.getImagePoint().getY();
@@ -294,8 +291,8 @@ public class WorldMapOverlay extends Overlay
 	 * Gets a clip area which excludes the area of widgets which overlay the world map.
 	 *
 	 * @param baseRectangle The base area to clip from
-	 * @return              An {@link Area} representing <code>baseRectangle</code>, with the area
-	 *                      of visible widgets overlaying the world map clipped from it.
+	 * @return An {@link Area} representing <code>baseRectangle</code>, with the area
+	 * of visible widgets overlaying the world map clipped from it.
 	 */
 	private Shape getWorldMapClipArea(Rectangle baseRectangle)
 	{

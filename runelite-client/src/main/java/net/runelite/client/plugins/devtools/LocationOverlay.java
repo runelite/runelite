@@ -66,24 +66,24 @@ public class LocationOverlay extends OverlayPanel
 			worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Instance")
-				.build());
+					.left("Instance")
+					.build());
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Local")
-			.right(localPoint.getX() + ", " + localPoint.getY())
-			.build());
+				.left("Local")
+				.right(localPoint.getX() + ", " + localPoint.getY())
+				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("World")
-			.right(worldPoint.getX() + ", " + worldPoint.getY() + ", " + client.getPlane())
-			.build());
+				.left("World")
+				.right(worldPoint.getX() + ", " + worldPoint.getY() + ", " + client.getPlane())
+				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Scene")
-			.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
-			.build());
+				.left("Scene")
+				.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
+				.build());
 
 		if (client.isInInstancedRegion())
 		{
@@ -107,19 +107,18 @@ public class LocationOverlay extends OverlayPanel
 
 					boolean myChunk = cx == localPoint.getSceneX() / CHUNK_SIZE && cy == localPoint.getSceneY() / CHUNK_SIZE;
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left("Chunk")
-						.right(chunkX + ", " + chunkY + ", " + chunkPlane)
-						.rightColor(myChunk ? Color.GREEN : Color.WHITE)
-						.build());
+							.left("Chunk")
+							.right(chunkX + ", " + chunkY + ", " + chunkPlane)
+							.rightColor(myChunk ? Color.GREEN : Color.WHITE)
+							.build());
 				}
 			}
-		}
-		else
+		} else
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Base")
-				.right(client.getBaseX() + ", " + client.getBaseY())
-				.build());
+					.left("Base")
+					.right(client.getBaseX() + ", " + client.getBaseY())
+					.build());
 		}
 
 		for (int i = 0; i < client.getMapRegions().length; i++)
@@ -129,10 +128,10 @@ public class LocationOverlay extends OverlayPanel
 			int my = region & 0xff;
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left((i == 0) ? "Map regions" : " ")
-				.right(mx + ", " + my)
-				.rightColor((region == worldPoint.getRegionID()) ? Color.GREEN : Color.WHITE)
-				.build());
+					.left((i == 0) ? "Map regions" : " ")
+					.right(mx + ", " + my)
+					.rightColor((region == worldPoint.getRegionID()) ? Color.GREEN : Color.WHITE)
+					.build());
 		}
 
 		return super.render(graphics);

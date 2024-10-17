@@ -42,16 +42,16 @@ public class RuneLiteCheckBoxUI extends FlatCheckBoxUI
 	@FlatStylingSupport.Styleable
 	protected float rolloverIconAlpha = 1.0f;
 
-	public static ComponentUI createUI(JComponent c)
-	{
-		return FlatUIUtils.canUseSharedUI(c)
-			? FlatUIUtils.createSharedUI(RuneLiteCheckBoxUI.class, () -> new RuneLiteCheckBoxUI(true))
-			: new RuneLiteCheckBoxUI(false);
-	}
-
 	protected RuneLiteCheckBoxUI(boolean shared)
 	{
 		super(shared);
+	}
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return FlatUIUtils.canUseSharedUI(c)
+				? FlatUIUtils.createSharedUI(RuneLiteCheckBoxUI.class, () -> new RuneLiteCheckBoxUI(true))
+				: new RuneLiteCheckBoxUI(false);
 	}
 
 	@Override
@@ -76,8 +76,7 @@ public class RuneLiteCheckBoxUI extends FlatCheckBoxUI
 			{
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
 				super.paintIcon(g, c, iconRect);
-			}
-			finally
+			} finally
 			{
 				g2d.setComposite(composite);
 			}

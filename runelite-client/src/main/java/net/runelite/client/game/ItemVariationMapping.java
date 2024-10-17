@@ -51,15 +51,16 @@ public class ItemVariationMapping
 	{
 		final Gson gson = new Gson();
 		// CHECKSTYLE:OFF
-		final TypeToken<Map<String, Collection<Integer>>> typeToken = new TypeToken<>(){};
+		final TypeToken<Map<String, Collection<Integer>>> typeToken = new TypeToken<>()
+		{
+		};
 		// CHECKSTYLE:ON
 
 		final Map<String, Collection<Integer>> itemVariations;
 		try (InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json"))
 		{
 			itemVariations = gson.fromJson(new InputStreamReader(geLimitData, StandardCharsets.UTF_8), typeToken.getType());
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}

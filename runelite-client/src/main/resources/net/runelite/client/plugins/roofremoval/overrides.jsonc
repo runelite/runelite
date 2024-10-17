@@ -1,5 +1,6 @@
 {
-  "12946": [ // Smoke Dungeon
+  "12946": [
+    // Smoke Dungeon
     {
       "rx1": 0,
       "ry1": 0,
@@ -9,7 +10,8 @@
       "z2": 0
     }
   ],
-  "13203": [ // Desert Mining Camp Underground
+  "13203": [
+    // Desert Mining Camp Underground
     {
       "rx1": 11,
       "ry1": 15,
@@ -27,7 +29,8 @@
       "z2": 0
     }
   ],
-  "13358": [ // Polnivneach
+  "13358": [
+    // Polnivneach
     {
       "rx1": 33,
       "ry1": 49,
@@ -45,7 +48,8 @@
       "z2": 0
     }
   ],
-  "11828": [ // Falador Castle Gate
+  "11828": [
+    // Falador Castle Gate
     {
       "rx1": 18,
       "ry1": 21,
@@ -70,7 +74,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Eastern part of the castle
+    {
+      // Eastern part of the castle
       "rx1": 36,
       "ry1": 15,
       "rx2": 36,
@@ -78,7 +83,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Rising Sun Inn
+    {
+      // Rising Sun Inn
       "rx1": 12,
       "ry1": 51,
       "rx2": 12,
@@ -87,8 +93,10 @@
       "z2": 0
     }
   ],
-  "12895":[ // Prif NW
-    { // Entrance North
+  "12895": [
+    // Prif NW
+    {
+      // Entrance North
       "rx1": 61,
       "ry1": 14,
       "rx2": 63,
@@ -96,7 +104,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Entrance West
+    {
+      // Entrance West
       "rx1": 49,
       "ry1": 0,
       "rx2": 52,
@@ -104,7 +113,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Balcony North
+    {
+      // Balcony North
       "rx1": 57,
       "ry1": 12,
       "rx2": 59,
@@ -112,7 +122,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Balcony West
+    {
+      // Balcony West
       "rx1": 51,
       "ry1": 7,
       "rx2": 54,
@@ -120,7 +131,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Roof Peak Corner
+    {
+      // Roof Peak Corner
       "rx1": 60,
       "ry1": 5,
       "rx2": 61,
@@ -128,7 +140,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Roof Peak Centre
+    {
+      // Roof Peak Centre
       "rx1": 61,
       "ry1": 0,
       "rx2": 63,
@@ -136,7 +149,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Upper Floor Roof
+    {
+      // Upper Floor Roof
       "rx1": 56,
       "ry1": 8,
       "rx2": 58,
@@ -144,7 +158,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Amlodd Tower Upper Floor
+    {
+      // Amlodd Tower Upper Floor
       "rx1": 18,
       "ry1": 17,
       "rx2": 24,
@@ -152,7 +167,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Hefin Tower Upper Floor
+    {
+      // Hefin Tower Upper Floor
       "rx1": 44,
       "ry1": 42,
       "rx2": 49,
@@ -168,7 +184,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Tatie's house
+    {
+      // Tatie's house
       "rx1": 28,
       "ry1": 5,
       "rx2": 35,
@@ -177,8 +194,10 @@
       "z2": 0
     }
   ],
-  "13151":[ // Prif NE
-    { // Entrance North
+  "13151": [
+    // Prif NE
+    {
+      // Entrance North
       "rx1": 0,
       "ry1": 14,
       "rx2": 2,
@@ -186,7 +205,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Entrance East
+    {
+      // Entrance East
       "rx1": 11,
       "ry1": 0,
       "rx2": 14,
@@ -194,7 +214,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Balcony North
+    {
+      // Balcony North
       "rx1": 4,
       "ry1": 12,
       "rx2": 6,
@@ -202,7 +223,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Balcony East
+    {
+      // Balcony East
       "rx1": 9,
       "ry1": 7,
       "rx2": 12,
@@ -210,7 +232,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Roof Peak Corner
+    {
+      // Roof Peak Corner
       "rx1": 2,
       "ry1": 5,
       "rx2": 3,
@@ -218,7 +241,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Roof Peak Centre
+    {
+      // Roof Peak Centre
       "rx1": 0,
       "ry1": 0,
       "rx2": 2,
@@ -226,7 +250,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Upper Floor Roof
+    {
+      // Upper Floor Roof
       "rx1": 5,
       "ry1": 8,
       "rx2": 7,
@@ -234,7 +259,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Meilyr Tower Upper Floor
+    {
+      // Meilyr Tower Upper Floor
       "rx1": 14,
       "ry1": 42,
       "rx2": 19,
@@ -242,7 +268,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Cryws Tower Upper Floor
+    {
+      // Cryws Tower Upper Floor
       "rx1": 39,
       "ry1": 17,
       "rx2": 45,
@@ -251,8 +278,10 @@
       "z2": 2
     }
   ],
-  "12894": [ // Prif SW
-    { // Entrance South
+  "12894": [
+    // Prif SW
+    {
+      // Entrance South
       "rx1": 61,
       "ry1": 52,
       "rx2": 63,
@@ -260,7 +289,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Balcony South
+    {
+      // Balcony South
       "rx1": 57,
       "ry1": 54,
       "rx2": 59,
@@ -268,7 +298,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Balcony West
+    {
+      // Balcony West
       "rx1": 51,
       "ry1": 60,
       "rx2": 54,
@@ -276,7 +307,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Roof Peak Corner
+    {
+      // Roof Peak Corner
       "rx1": 60,
       "ry1": 63,
       "rx2": 61,
@@ -284,7 +316,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Upper Floor Roof
+    {
+      // Upper Floor Roof
       "rx1": 56,
       "ry1": 59,
       "rx2": 58,
@@ -292,7 +325,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Iowerth Tower Upper Floor
+    {
+      // Iowerth Tower Upper Floor
       "rx1": 44,
       "ry1": 21,
       "rx2": 49,
@@ -300,7 +334,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Ithell Tower Upper Floor
+    {
+      // Ithell Tower Upper Floor
       "rx1": 18,
       "ry1": 47,
       "rx2": 24,
@@ -340,7 +375,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Crafting shop
+    {
+      // Crafting shop
       "rx1": 21,
       "ry1": 60,
       "rx2": 23,
@@ -349,8 +385,10 @@
       "z2": 0
     }
   ],
-  "13150": [ // Prif SE
-    { // Entrance South
+  "13150": [
+    // Prif SE
+    {
+      // Entrance South
       "rx1": 0,
       "ry1": 52,
       "rx2": 2,
@@ -358,7 +396,8 @@
       "z1": 0,
       "z2": 2
     },
-    { // Balcony South
+    {
+      // Balcony South
       "rx1": 4,
       "ry1": 54,
       "rx2": 6,
@@ -366,7 +405,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Balcony East
+    {
+      // Balcony East
       "rx1": 9,
       "ry1": 60,
       "rx2": 12,
@@ -374,7 +414,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // Upper Floor Roof
+    {
+      // Upper Floor Roof
       "rx1": 5,
       "ry1": 59,
       "rx2": 7,
@@ -382,7 +423,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Cadarn Tower Upper Floor
+    {
+      // Cadarn Tower Upper Floor
       "rx1": 39,
       "ry1": 47,
       "rx2": 45,
@@ -390,7 +432,8 @@
       "z1": 2,
       "z2": 2
     },
-    { // Traehaearn Tower Upper Floor
+    {
+      // Traehaearn Tower Upper Floor
       "rx1": 14,
       "ry1": 21,
       "rx2": 19,
@@ -399,7 +442,8 @@
       "z2": 2
     }
   ],
-  "14386": [ // South Meiyerditch
+  "14386": [
+    // South Meiyerditch
     {
       "rx1": 21,
       "ry1": 19,
@@ -417,7 +461,8 @@
       "z2": 1
     }
   ],
-  "14387": [ // North Meiyerditch
+  "14387": [
+    // North Meiyerditch
     {
       "rx1": 50,
       "ry1": 4,
@@ -427,7 +472,8 @@
       "z2": 0
     }
   ],
-  "14388": [ // Darkmeyer
+  "14388": [
+    // Darkmeyer
     {
       "rx1": 34,
       "ry1": 54,
@@ -493,7 +539,8 @@
       "z2": 0
     }
   ],
-  "10291": [ // Ardougne
+  "10291": [
+    // Ardougne
     {
       "rx1": 27,
       "ry1": 30,
@@ -511,7 +558,8 @@
       "z2": 1
     }
   ],
-  "12854": [ // Varrock Castle
+  "12854": [
+    // Varrock Castle
     {
       "rx1": 0,
       "ry1": 11,
@@ -529,7 +577,8 @@
       "z2": 1
     }
   ],
-  "12852": [ // South Varrock
+  "12852": [
+    // South Varrock
     {
       "rx1": 42,
       "ry1": 58,
@@ -547,7 +596,8 @@
       "z2": 0
     }
   ],
-  "12596": [ // Champion's Guild
+  "12596": [
+    // Champion's Guild
     {
       "rx1": 52,
       "ry1": 22,
@@ -557,7 +607,8 @@
       "z2": 0
     }
   ],
-  "8253": [ // Lunar Isle
+  "8253": [
+    // Lunar Isle
     {
       "rx1": 49,
       "ry1": 12,
@@ -615,7 +666,8 @@
       "z2": 0
     }
   ],
-  "8252": [ // Lunar Isle South
+  "8252": [
+    // Lunar Isle South
     {
       "rx1": 23,
       "ry1": 62,
@@ -625,7 +677,8 @@
       "z2": 0
     }
   ],
-  "6456": [ // Mess Hall
+  "6456": [
+    // Mess Hall
     {
       "rx1": 47,
       "ry1": 38,
@@ -635,7 +688,8 @@
       "z2": 0
     }
   ],
-  "6713": [ // Kourend Castle East
+  "6713": [
+    // Kourend Castle East
     {
       "rx1": 28,
       "ry1": 20,
@@ -653,7 +707,8 @@
       "z2": 0
     }
   ],
-  "6715": [ // North East Arceuus
+  "6715": [
+    // North East Arceuus
     {
       "rx1": 20,
       "ry1": 5,
@@ -679,7 +734,8 @@
       "z2": 0
     }
   ],
-  "6459": [ // Arceuus Library
+  "6459": [
+    // Arceuus Library
     {
       "rx1": 7,
       "ry1": 8,
@@ -753,7 +809,8 @@
       "z2": 1
     }
   ],
-  "6970": [ // Piscarilius West
+  "6970": [
+    // Piscarilius West
     {
       "rx1": 60,
       "ry1": 8,
@@ -787,7 +844,8 @@
       "z2": 0
     }
   ],
-  "7226": [ // Piscarilius East
+  "7226": [
+    // Piscarilius East
     {
       "rx1": 5,
       "ry1": 6,
@@ -813,7 +871,8 @@
       "z2": 0
     }
   ],
-  "6203": [ // Lovakenj North East
+  "6203": [
+    // Lovakenj North East
     {
       "rx1": 19,
       "ry1": 13,
@@ -831,7 +890,8 @@
       "z2": 0
     }
   ],
-  "10288": [ // Yanille East
+  "10288": [
+    // Yanille East
     {
       "rx1": 27,
       "ry1": 12,
@@ -897,7 +957,8 @@
       "z2": 0
     }
   ],
-  "10032": [ // Yanille West
+  "10032": [
+    // Yanille West
     {
       "rx1": 35,
       "ry1": 23,
@@ -915,7 +976,8 @@
       "z2": 0
     }
   ],
-  "9775": [ // Jigjig
+  "9775": [
+    // Jigjig
     {
       "rx1": 50,
       "ry1": 32,
@@ -965,7 +1027,8 @@
       "z2": 0
     }
   ],
-  "10806": [ // Seers' Village
+  "10806": [
+    // Seers' Village
     {
       "rx1": 22,
       "ry1": 41,
@@ -991,7 +1054,8 @@
       "z2": 0
     }
   ],
-  "10549": [ // Ranging Guild
+  "10549": [
+    // Ranging Guild
     {
       "rx1": 42,
       "ry1": 49,
@@ -1065,7 +1129,8 @@
       "z2": 0
     }
   ],
-  "10293": [ // Fishing Guild
+  "10293": [
+    // Fishing Guild
     {
       "rx1": 57,
       "ry1": 2,
@@ -1075,7 +1140,8 @@
       "z2": 0
     }
   ],
-  "9781": [ // Gnome Stronghold SE
+  "9781": [
+    // Gnome Stronghold SE
     {
       "rx1": 42,
       "ry1": 5,
@@ -1261,7 +1327,8 @@
       "z2": 1
     }
   ],
-  "9525": [ // Gnome Stronghold SW
+  "9525": [
+    // Gnome Stronghold SW
     {
       "rx1": 46,
       "ry1": 22,
@@ -1383,7 +1450,8 @@
       "z2": 1
     }
   ],
-  "9526": [ // Gnome Stronghold NE
+  "9526": [
+    // Gnome Stronghold NE
     {
       "rx1": 40,
       "ry1": 13,
@@ -1513,7 +1581,8 @@
       "z2": 0
     }
   ],
-  "9782": [ // Gnome Stronghold NE
+  "9782": [
+    // Gnome Stronghold NE
     {
       "rx1": 4,
       "ry1": 7,
@@ -1570,7 +1639,6 @@
       "z1": 0,
       "z2": 0
     },
-
     {
       "rx1": 16,
       "ry1": 22,
@@ -1972,7 +2040,8 @@
       "z2": 2
     }
   ],
-  "9531": [ // Jatiszo
+  "9531": [
+    // Jatiszo
     {
       "rx1": 4,
       "ry1": 23,
@@ -1982,7 +2051,8 @@
       "z2": 0
     }
   ],
-  "9275": [ // Neitiznot
+  "9275": [
+    // Neitiznot
     {
       "rx1": 58,
       "ry1": 22,
@@ -1992,7 +2062,8 @@
       "z2": 0
     }
   ],
-  "11575": [ // Burthorpe
+  "11575": [
+    // Burthorpe
     {
       "rx1": 25,
       "ry1": 24,
@@ -2002,7 +2073,8 @@
       "z2": 0
     }
   ],
-  "11319": [ // Warrior's Guild
+  "11319": [
+    // Warrior's Guild
     {
       "rx1": 21,
       "ry1": 15,
@@ -2020,7 +2092,8 @@
       "z2": 0
     }
   ],
-  "11061": [ // West Catherby & Keep Le Faye
+  "11061": [
+    // West Catherby & Keep Le Faye
     {
       "rx1": 11,
       "ry1": 6,
@@ -2046,7 +2119,8 @@
       "z2": 0
     }
   ],
-  "11317": [ // East Catherby
+  "11317": [
+    // East Catherby
     {
       "rx1": 5,
       "ry1": 48,
@@ -2064,7 +2138,8 @@
       "z2": 0
     }
   ],
-  "5945": [ // West Shayzien Encampment
+  "5945": [
+    // West Shayzien Encampment
     {
       "rx1": 1,
       "ry1": 0,
@@ -2074,7 +2149,8 @@
       "z2": 1
     }
   ],
-  "10040": [ // Lighthouse
+  "10040": [
+    // Lighthouse
     {
       "rx1": 9,
       "ry1": 53,
@@ -2092,7 +2168,8 @@
       "z2": 1
     }
   ],
-  "9799": [ // Lighthouse (During Horror from the Deep)
+  "9799": [
+    // Lighthouse (During Horror from the Deep)
     {
       "rx1": 9,
       "ry1": 53,
@@ -2110,7 +2187,8 @@
       "z2": 1
     }
   ],
-  "10547": [ // SE Ardy
+  "10547": [
+    // SE Ardy
     {
       "rx1": 53,
       "ry1": 1,
@@ -2144,7 +2222,8 @@
       "z2": 0
     }
   ],
-  "11570": [ // Rimmington Dock
+  "11570": [
+    // Rimmington Dock
     {
       "rx1": 28,
       "ry1": 19,
@@ -2162,7 +2241,8 @@
       "z2": 0
     }
   ],
-  "11058": [ // Brimhaven Docks
+  "11058": [
+    // Brimhaven Docks
     {
       "rx1": 22,
       "ry1": 32,
@@ -2172,7 +2252,8 @@
       "z2": 0
     }
   ],
-  "10284": [ // Corsair's Cove East
+  "10284": [
+    // Corsair's Cove East
     {
       "rx1": 7,
       "ry1": 47,
@@ -2182,7 +2263,8 @@
       "z2": 0
     }
   ],
-  "10028": [ // Corsair's Cove West
+  "10028": [
+    // Corsair's Cove West
     {
       "rx1": 47,
       "ry1": 44,
@@ -2192,7 +2274,8 @@
       "z2": 0
     }
   ],
-  "10545": [ // Port Khazard
+  "10545": [
+    // Port Khazard
     {
       "rx1": 45,
       "ry1": 31,
@@ -2202,7 +2285,8 @@
       "z2": 0
     }
   ],
-  "11825": [ // Musa Point Docks
+  "11825": [
+    // Musa Point Docks
     {
       "rx1": 1,
       "ry1": 5,
@@ -2220,7 +2304,8 @@
       "z2": 0
     }
   ],
-  "14902": [ // Bill Teach's Ship at Port Phasmatys
+  "14902": [
+    // Bill Teach's Ship at Port Phasmatys
     {
       "rx1": 0,
       "ry1": 33,
@@ -2230,7 +2315,8 @@
       "z2": 0
     }
   ],
-  "14646": [ // Port Phasmatys
+  "14646": [
+    // Port Phasmatys
     {
       "rx1": 27,
       "ry1": 25,
@@ -2248,7 +2334,8 @@
       "z2": 0
     }
   ],
-  "14647": [ // Ectofuntus
+  "14647": [
+    // Ectofuntus
     {
       "rx1": 46,
       "ry1": 0,
@@ -2258,7 +2345,8 @@
       "z2": 0
     }
   ],
-  "14638": [ // Mos Le'Harmless Port
+  "14638": [
+    // Mos Le'Harmless Port
     {
       "rx1": 20,
       "ry1": 2,
@@ -2268,7 +2356,8 @@
       "z2": 0
     }
   ],
-  "6968": [ // Hosidius Town
+  "6968": [
+    // Hosidius Town
     {
       "rx1": 17,
       "ry1": 26,
@@ -2278,7 +2367,8 @@
       "z2": 0
     }
   ],
-  "6995": [ // Ancient Cavern
+  "6995": [
+    // Ancient Cavern
     {
       "rx1": 42,
       "ry1": 15,
@@ -2328,7 +2418,8 @@
       "z2": 0
     }
   ],
-  "11056": [ // North Tai Bwo Wannai
+  "11056": [
+    // North Tai Bwo Wannai
     {
       "rx1": 32,
       "ry1": 1,
@@ -2346,7 +2437,8 @@
       "z2": 0
     }
   ],
-  "11055": [ // South Tai Bwo Wannai
+  "11055": [
+    // South Tai Bwo Wannai
     {
       "rx1": 55,
       "ry1": 56,
@@ -2372,7 +2464,8 @@
       "z2": 0
     }
   ],
-  "7749": [ // Pyramid Plunder
+  "7749": [
+    // Pyramid Plunder
     {
       "rx1": 0,
       "ry1": 0,
@@ -2382,7 +2475,8 @@
       "z2": 2
     }
   ],
-  "11310": [ // Shilo Village
+  "11310": [
+    // Shilo Village
     {
       "rx1": 26,
       "ry1": 52,
@@ -2520,7 +2614,8 @@
       "z2": 0
     }
   ],
-  "12340": [ // Draynor Manor
+  "12340": [
+    // Draynor Manor
     {
       "rx1": 30,
       "ry1": 24,
@@ -2530,7 +2625,8 @@
       "z2": 0
     }
   ],
-  "9265": [ // Lletya
+  "9265": [
+    // Lletya
     {
       "rx1": 23,
       "ry1": 34,
@@ -2556,7 +2652,8 @@
       "z2": 0
     }
   ],
-  "11103": [ // Burning Lletya (during Song of the Elves)
+  "11103": [
+    // Burning Lletya (during Song of the Elves)
     {
       "rx1": 23,
       "ry1": 34,
@@ -2582,7 +2679,8 @@
       "z2": 0
     }
   ],
-  "15148": [ // Harmony Island
+  "15148": [
+    // Harmony Island
     {
       "rx1": 30,
       "ry1": 24,
@@ -2616,7 +2714,8 @@
       "z2": 0
     }
   ],
-  "11423": [ // NW Keldagrim
+  "11423": [
+    // NW Keldagrim
     {
       "rx1": 60,
       "ry1": 11,
@@ -2626,7 +2725,8 @@
       "z2": 1
     }
   ],
-  "11678": [ // SE Keldagrim
+  "11678": [
+    // SE Keldagrim
     {
       "rx1": 49,
       "ry1": 46,
@@ -2644,7 +2744,8 @@
       "z2": 0
     }
   ],
-  "11679": [ // NE Keldagrim
+  "11679": [
+    // NE Keldagrim
     {
       "rx1": 50,
       "ry1": 0,
@@ -2662,7 +2763,8 @@
       "z2": 1
     }
   ],
-  "8008": [ // Temple of Light Dungeon
+  "8008": [
+    // Temple of Light Dungeon
     {
       "rx1": 34,
       "ry1": 45,
@@ -2672,7 +2774,8 @@
       "z2": 0
     }
   ],
-  "12349": [ // Mage Arena
+  "12349": [
+    // Mage Arena
     {
       "rx1": 31,
       "ry1": 48,
@@ -2754,7 +2857,8 @@
       "z2": 0
     }
   ],
-  "6198": [ // Woodcutting Guild West
+  "6198": [
+    // Woodcutting Guild West
     {
       "rx1": 30,
       "ry1": 22,
@@ -2764,7 +2868,8 @@
       "z2": 2
     }
   ],
-  "12082": [ // Port Sarim
+  "12082": [
+    // Port Sarim
     {
       "rx1": 31,
       "ry1": 27,
@@ -2806,7 +2911,8 @@
       "z2": 0
     }
   ],
-  "12081": [ // South Port Sarim
+  "12081": [
+    // South Port Sarim
     {
       "rx1": 27,
       "ry1": 60,
@@ -2824,7 +2930,8 @@
       "z2": 0
     }
   ],
-  "11316": [ // Entrana
+  "11316": [
+    // Entrana
     {
       "rx1": 7,
       "ry1": 0,
@@ -2842,7 +2949,8 @@
       "z2": 0
     }
   ],
-  "14391": [ // Morytania Farm
+  "14391": [
+    // Morytania Farm
     {
       "rx1": 18,
       "ry1": 21,
@@ -2860,7 +2968,8 @@
       "z2": 0
     }
   ],
-  "10835": [ // Dorgesh-Kaan North
+  "10835": [
+    // Dorgesh-Kaan North
     {
       "rx1": 14,
       "ry1": 16,
@@ -2918,7 +3027,8 @@
       "z2": 0
     }
   ],
-  "10834": [ // Dorgesh-Kaan South
+  "10834": [
+    // Dorgesh-Kaan South
     {
       "rx1": 0,
       "ry1": 41,
@@ -2942,7 +3052,8 @@
       "ry2": 15,
       "z1": 0,
       "z2": 0
-    },{
+    },
+    {
       "rx1": 37,
       "ry1": 18,
       "rx2": 39,
@@ -2991,7 +3102,8 @@
       "z2": 0
     }
   ],
-  "7496": [ // Temple of Light
+  "7496": [
+    // Temple of Light
     {
       "rx1": 0,
       "ry1": 0,
@@ -3001,7 +3113,8 @@
       "z2": 2
     }
   ],
-  "15008": [ // Fossil Island Underwater West
+  "15008": [
+    // Fossil Island Underwater West
     {
       "rx1": 10,
       "ry1": 7,
@@ -3291,7 +3404,8 @@
       "z2": 1
     }
   ],
-  "15264": [ // Fossil Island Underwater East
+  "15264": [
+    // Fossil Island Underwater East
     {
       "rx1": 0,
       "ry1": 19,
@@ -3373,7 +3487,8 @@
       "z2": 1
     }
   ],
-  "7236": [ // Waterbirth Island Dungeon Lower Level West
+  "7236": [
+    // Waterbirth Island Dungeon Lower Level West
     {
       "rx1": 0,
       "ry1": 0,
@@ -3383,7 +3498,8 @@
       "z2": 1
     }
   ],
-  "7492": [ // Waterbirth Island Dungeon Lower Level Centre
+  "7492": [
+    // Waterbirth Island Dungeon Lower Level Centre
     {
       "rx1": 0,
       "ry1": 14,
@@ -3401,7 +3517,8 @@
       "z2": 0
     }
   ],
-  "7748": [ // Waterbirth Island Dungeon Lower Level East
+  "7748": [
+    // Waterbirth Island Dungeon Lower Level East
     {
       "rx1": 0,
       "ry1": 0,
@@ -3411,7 +3528,8 @@
       "z2": 2
     }
   ],
-  "10290": [ // Ardougne Monastery
+  "10290": [
+    // Ardougne Monastery
     {
       "rx1": 43,
       "ry1": 17,
@@ -3421,7 +3539,8 @@
       "z2": 0
     }
   ],
-  "12597": [ // Varrock West
+  "12597": [
+    // Varrock West
     {
       "rx1": 19,
       "ry1": 33,
@@ -3439,17 +3558,19 @@
       "z2": 0
     }
   ],
-  "12341": [ // Barbarian Village
-     {
-       "rx1": 22,
-       "ry1": 35,
-       "rx2": 27,
-       "ry2": 38,
-       "z1": 1,
-       "z2": 1
-     }
+  "12341": [
+    // Barbarian Village
+    {
+      "rx1": 22,
+      "ry1": 35,
+      "rx2": 27,
+      "ry2": 38,
+      "z1": 1,
+      "z2": 1
+    }
   ],
-  "11325": [ // Weiss
+  "11325": [
+    // Weiss
     {
       "rx1": 43,
       "ry1": 37,
@@ -3459,7 +3580,8 @@
       "z2": 0
     }
   ],
-  "11826": [ // Rimmington
+  "11826": [
+    // Rimmington
     {
       "rx1": 7,
       "ry1": 7,
@@ -3469,7 +3591,8 @@
       "z2": 0
     }
   ],
-  "12113": [ // Tolna's Rift
+  "12113": [
+    // Tolna's Rift
     {
       "rx1": 0,
       "ry1": 32,
@@ -3479,7 +3602,8 @@
       "z2": 0
     }
   ],
-  "7513": [ // POH styles 1-4
+  "7513": [
+    // POH styles 1-4
     {
       "rx1": 24,
       "ry1": 0,
@@ -3489,7 +3613,8 @@
       "z2": 3
     }
   ],
-  "7769": [ // POH styles 5-8
+  "7769": [
+    // POH styles 5-8
     {
       "rx1": 24,
       "ry1": 0,
@@ -3499,7 +3624,8 @@
       "z2": 3
     }
   ],
-  "8025": [ // POH styles 9-12
+  "8025": [
+    // POH styles 9-12
     {
       "rx1": 24,
       "ry1": 0,
@@ -3509,7 +3635,8 @@
       "z2": 3
     }
   ],
-  "7243": [ // Cabin Fever ships
+  "7243": [
+    // Cabin Fever ships
     {
       "rx1": 21,
       "ry1": 23,
@@ -3527,8 +3654,10 @@
       "z2": 0
     }
   ],
-  "12336": [ // Tutorial Island
-    { // bank front
+  "12336": [
+    // Tutorial Island
+    {
+      // bank front
       "rx1": 46,
       "ry1": 46,
       "rx2": 53,
@@ -3536,7 +3665,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // bank back
+    {
+      // bank back
       "rx1": 47,
       "ry1": 54,
       "rx2": 48,
@@ -3544,7 +3674,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // monastery
+    {
+      // monastery
       "rx1": 57,
       "ry1": 34,
       "rx2": 57,
@@ -3552,7 +3683,8 @@
       "z1": 0,
       "z2": 0
     },
-    { // monastery z1
+    {
+      // monastery z1
       "rx1": 43,
       "ry1": 33,
       "rx2": 52,
@@ -3561,8 +3693,10 @@
       "z2": 1
     }
   ],
-  "11830": [ // Goblin Village & mind altar
-    { // Grim Tales tower
+  "11830": [
+    // Goblin Village & mind altar
+    {
+      // Grim Tales tower
       "rx1": 21,
       "ry1": 10,
       "rx2": 27,
@@ -3571,7 +3705,8 @@
       "z2": 2
     }
   ],
-  "10292": [ // North & North of East Ardougne (south of Fishing Guild)
+  "10292": [
+    // North & North of East Ardougne (south of Fishing Guild)
     {
       "rx1": 19,
       "ry1": 16,
@@ -3581,7 +3716,8 @@
       "z2": 0
     }
   ],
-  "6475": [ // Misthalin Mystery manor
+  "6475": [
+    // Misthalin Mystery manor
     {
       "rx1": 30,
       "ry1": 23,
@@ -3599,7 +3735,8 @@
       "z2": 0
     }
   ],
-  "9035": [ // Chaos runecrafting altar
+  "9035": [
+    // Chaos runecrafting altar
     {
       "rx1": 0,
       "ry1": 0,
@@ -3609,7 +3746,8 @@
       "z2": 3
     }
   ],
-  "14908": [ // Fossil Island House on the Hill
+  "14908": [
+    // Fossil Island House on the Hill
     {
       "rx1": 45,
       "ry1": 23,
@@ -3659,7 +3797,8 @@
       "z2": 1
     }
   ],
-  "10803": [ // Witchaven
+  "10803": [
+    // Witchaven
     {
       "rx1": 15,
       "ry1": 27,
@@ -3669,7 +3808,8 @@
       "z2": 0
     }
   ],
-  "11829": [ // North of Falador
+  "11829": [
+    // North of Falador
     {
       "rx1": 59,
       "ry1": 1,
@@ -3687,7 +3827,8 @@
       "z2": 0
     }
   ],
-  "12084": [ // East Falador
+  "12084": [
+    // East Falador
     {
       "rx1": 11,
       "ry1": 62,
@@ -3761,7 +3902,8 @@
       "z2": 0
     }
   ],
-  "12085": [ // North of East Falador
+  "12085": [
+    // North of East Falador
     {
       "rx1": 0,
       "ry1": 0,
@@ -3771,7 +3913,8 @@
       "z2": 0
     }
   ],
-  "8527": [ // Braindeath Island distillery
+  "8527": [
+    // Braindeath Island distillery
     {
       "rx1": 26,
       "ry1": 35,
@@ -3781,7 +3924,8 @@
       "z2": 2
     }
   ],
-   "14231": [ // Barrows Underground
+  "14231": [
+    // Barrows Underground
     {
       "rx1": 0,
       "ry1": 0,
@@ -3791,17 +3935,19 @@
       "z2": 0
     }
   ],
-  "10300": [ // Etceteria
-      {
-        "rx1": 57,
-        "ry1": 53,
-        "rx2": 57,
-        "ry2": 57,
-        "z1": 0,
-        "z2": 0
-      }
+  "10300": [
+    // Etceteria
+    {
+      "rx1": 57,
+      "ry1": 53,
+      "rx2": 57,
+      "ry2": 57,
+      "z1": 0,
+      "z2": 0
+    }
   ],
-  "8276": [ // Monkey Madness II airship platform
+  "8276": [
+    // Monkey Madness II airship platform
     {
       "rx1": 18,
       "ry1": 9,
@@ -3811,57 +3957,59 @@
       "z2": 1
     }
   ],
-  "13871": [ // Uzer Oasis
+  "13871": [
+    // Uzer Oasis
     {
-        "rx1": 40,
-        "ry1": 46,
-        "rx2": 41,
-        "ry2": 46,
-        "z1": 0,
-        "z2": 0
+      "rx1": 40,
+      "ry1": 46,
+      "rx2": 41,
+      "ry2": 46,
+      "z1": 0,
+      "z2": 0
     },
     {
-        "rx1": 42,
-        "ry1": 46,
-        "rx2": 42,
-        "ry2": 45,
-        "z1": 0,
-        "z2": 0
+      "rx1": 42,
+      "ry1": 46,
+      "rx2": 42,
+      "ry2": 45,
+      "z1": 0,
+      "z2": 0
     },
     {
-        "rx1": 46,
-        "ry1": 43,
-        "rx2": 46,
-        "ry2": 44,
-        "z1": 0,
-        "z2": 0
+      "rx1": 46,
+      "ry1": 43,
+      "rx2": 46,
+      "ry2": 44,
+      "z1": 0,
+      "z2": 0
     },
     {
-        "rx1": 45,
-        "ry1": 43,
-        "rx2": 45,
-        "ry2": 48,
-        "z1": 0,
-        "z2": 0
+      "rx1": 45,
+      "ry1": 43,
+      "rx2": 45,
+      "ry2": 48,
+      "z1": 0,
+      "z2": 0
     },
     {
-        "rx1": 43,
-        "ry1": 43,
-        "rx2": 43,
-        "ry2": 46,
-        "z1": 0,
-        "z2": 0
+      "rx1": 43,
+      "ry1": 43,
+      "rx2": 43,
+      "ry2": 46,
+      "z1": 0,
+      "z2": 0
     },
     {
-        "rx1": 42,
-        "ry1": 43,
-        "rx2": 42,
-        "ry2": 46,
-        "z1": 0,
-        "z2": 0
+      "rx1": 42,
+      "ry1": 43,
+      "rx2": 42,
+      "ry2": 46,
+      "z1": 0,
+      "z2": 0
     }
   ],
-  "11062": [ // Camelot Castle
+  "11062": [
+    // Camelot Castle
     {
       "rx1": 0,
       "ry1": 40,
@@ -3871,7 +4019,8 @@
       "z2": 1
     }
   ],
-  "5279": [ // Karuulm Slayer Dungeon
+  "5279": [
+    // Karuulm Slayer Dungeon
     {
       "rx1": 1,
       "ry1": 16,
@@ -3921,7 +4070,8 @@
       "z2": 1
     }
   ],
-  "9315": [ // Lassar Undercity northern science district (shadow realm version)
+  "9315": [
+    // Lassar Undercity northern science district (shadow realm version)
     {
       "rx1": 18,
       "ry1": 44,
@@ -3971,7 +4121,8 @@
       "z2": 1
     }
   ],
-  "9572": [ // Lassar Undercity central residential district (shadow realm version)
+  "9572": [
+    // Lassar Undercity central residential district (shadow realm version)
     {
       "rx1": 60,
       "ry1": 40,
@@ -3989,7 +4140,8 @@
       "z2": 1
     }
   ],
-  "9828": [ // Lassar Undercity eastern residential district (shadow realm version)
+  "9828": [
+    // Lassar Undercity eastern residential district (shadow realm version)
     {
       "rx1": 7,
       "ry1": 28,
@@ -3999,7 +4151,8 @@
       "z2": 1
     }
   ],
-  "10339": [ // Lassar Undercity northern science district
+  "10339": [
+    // Lassar Undercity northern science district
     {
       "rx1": 18,
       "ry1": 44,
@@ -4049,7 +4202,8 @@
       "z2": 1
     }
   ],
-  "10596": [ // Lassar Undercity central residential district (normal version)
+  "10596": [
+    // Lassar Undercity central residential district (normal version)
     {
       "rx1": 60,
       "ry1": 40,
@@ -4067,7 +4221,8 @@
       "z2": 1
     }
   ],
-  "10852": [ // Lassar Undercity eastern residential district (normal version)
+  "10852": [
+    // Lassar Undercity eastern residential district (normal version)
     {
       "rx1": 7,
       "ry1": 28,
@@ -4077,7 +4232,8 @@
       "z2": 1
     }
   ],
-  "6191": [ // Varlamore hunter's guild
+  "6191": [
+    // Varlamore hunter's guild
     {
       "rx1": 22,
       "ry1": 49,
@@ -4103,7 +4259,8 @@
       "z2": 0
     }
   ],
-  "6704": [ // Varlamore bazaar
+  "6704": [
+    // Varlamore bazaar
     {
       "rx1": 7,
       "ry1": 43,
@@ -4201,7 +4358,8 @@
       "z2": 0
     }
   ],
-  "6705": [ // Sunrise palace
+  "6705": [
+    // Sunrise palace
     {
       "rx1": 4,
       "ry1": 13,
@@ -4211,7 +4369,8 @@
       "z2": 0
     }
   ],
-  "6960": [ // Fortis east bank
+  "6960": [
+    // Fortis east bank
     {
       "rx1": 47,
       "ry1": 29,

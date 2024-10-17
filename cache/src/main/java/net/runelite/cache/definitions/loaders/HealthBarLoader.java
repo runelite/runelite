@@ -54,44 +54,34 @@ public class HealthBarLoader
 		if (opcode == 1)
 		{
 			stream.readUnsignedShort();
-		}
-		else if (opcode == 2)
+		} else if (opcode == 2)
 		{
 			def.field3277 = stream.readUnsignedByte();
-		}
-		else if (opcode == 3)
+		} else if (opcode == 3)
 		{
 			def.field3278 = stream.readUnsignedByte();
-		}
-		else if (opcode == 4)
+		} else if (opcode == 4)
 		{
 			def.field3283 = 0;
-		}
-		else if (opcode == 5)
+		} else if (opcode == 5)
 		{
 			def.field3275 = stream.readUnsignedShort();
-		}
-		else if (opcode == 6)
+		} else if (opcode == 6)
 		{
 			stream.readUnsignedByte();
-		}
-		else if (opcode == 7)
+		} else if (opcode == 7)
 		{
 			def.healthBarFrontSpriteId = stream.readBigSmart2();
-		}
-		else if (opcode == 8)
+		} else if (opcode == 8)
 		{
 			def.healthBarBackSpriteId = stream.readBigSmart2();
-		}
-		else if (opcode == 11)
+		} else if (opcode == 11)
 		{
 			def.field3283 = stream.readUnsignedShort();
-		}
-		else if (opcode == 14)
+		} else if (opcode == 14)
 		{
 			def.healthScale = stream.readUnsignedByte();
-		}
-		else if (opcode == 15)
+		} else if (opcode == 15)
 		{
 			def.healthBarPadding = stream.readUnsignedByte();
 		}

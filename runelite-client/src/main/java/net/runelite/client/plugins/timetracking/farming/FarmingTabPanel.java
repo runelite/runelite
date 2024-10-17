@@ -57,14 +57,14 @@ public class FarmingTabPanel extends TabContentPanel
 	private final FarmingContractManager farmingContractManager;
 
 	FarmingTabPanel(
-		FarmingTracker farmingTracker,
-		CompostTracker compostTracker,
-		PaymentTracker paymentTracker,
-		ItemManager itemManager,
-		ConfigManager configManager,
-		TimeTrackingConfig config,
-		Set<FarmingPatch> patches,
-		FarmingContractManager farmingContractManager
+			FarmingTracker farmingTracker,
+			CompostTracker compostTracker,
+			PaymentTracker paymentTracker,
+			ItemManager itemManager,
+			ConfigManager configManager,
+			TimeTrackingConfig config,
+			Set<FarmingPatch> patches,
+			FarmingContractManager farmingContractManager
 	)
 	{
 		this.farmingTracker = farmingTracker;
@@ -102,8 +102,7 @@ public class FarmingTabPanel extends TabContentPanel
 				{
 					first = false;
 					groupLabel.setBorder(new EmptyBorder(4, 0, 0, 0));
-				}
-				else
+				} else
 				{
 					groupLabel.setBorder(new EmptyBorder(15, 0, 0, 0));
 				}
@@ -164,8 +163,7 @@ public class FarmingTabPanel extends TabContentPanel
 			if (img != null)
 			{
 				img.onLoaded(() -> panel.setOverlayIconImage(img));
-			}
-			else
+			} else
 			{
 				panel.setOverlayIconImage(null);
 			}
@@ -179,15 +177,13 @@ public class FarmingTabPanel extends TabContentPanel
 				panel.getProgress().setVisible(false);
 				panel.getEstimate().setText("Unknown");
 				panel.getProgress().setBackground(null);
-			}
-			else
+			} else
 			{
 				if (prediction.getProduce().getItemID() < 0)
 				{
 					panel.getIcon().setIcon(null);
 					panel.getIcon().setToolTipText("Unknown state" + tooltip);
-				}
-				else
+				} else
 				{
 					itemManager.getImage(prediction.getProduce().getItemID()).addTo(panel.getIcon());
 					panel.getIcon().setToolTipText(prediction.getProduce().getName() + tooltip);
@@ -202,8 +198,7 @@ public class FarmingTabPanel extends TabContentPanel
 						if (prediction.getDoneEstimate() < unixNow)
 						{
 							panel.getEstimate().setText("Done");
-						}
-						else
+						} else
 						{
 							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.timeFormatMode()));
 						}
@@ -229,8 +224,7 @@ public class FarmingTabPanel extends TabContentPanel
 					panel.getProgress().setForeground(prediction.getCropState().getColor().darker());
 					panel.getProgress().setMaximumValue(prediction.getStages() - 1);
 					panel.getProgress().setValue(prediction.getStage());
-				}
-				else
+				} else
 				{
 					panel.getProgress().setVisible(false);
 				}
@@ -241,8 +235,7 @@ public class FarmingTabPanel extends TabContentPanel
 			{
 				itemManager.getImage(ItemID.SEED_PACK).addTo(farmingContractIcon);
 				farmingContractIcon.setToolTipText(farmingContractManager.getContract().getName());
-			}
-			else
+			} else
 			{
 				farmingContractIcon.setIcon(null);
 				farmingContractIcon.setToolTipText("");
@@ -251,7 +244,7 @@ public class FarmingTabPanel extends TabContentPanel
 			String configKey = patch.notifyConfigKey();
 			JToggleButton toggleNotify = panel.getNotifyButton();
 			boolean notifyEnabled = Boolean.TRUE
-				.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, Boolean.class));
+					.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, Boolean.class));
 
 			toggleNotify.setSelected(notifyEnabled);
 		}
@@ -260,7 +253,7 @@ public class FarmingTabPanel extends TabContentPanel
 	private AsyncBufferedImage getPatchImage(CompostState compostState, boolean protected_)
 	{
 		return protected_ ? itemManager.getImage(ItemID.APPLES5) :
-			(compostState != null ? itemManager.getImage(compostState.getItemId()) : null);
+				(compostState != null ? itemManager.getImage(compostState.getItemId()) : null);
 	}
 
 	private String getPatchTooltip(CompostState compostState, boolean protected_)
@@ -273,8 +266,7 @@ public class FarmingTabPanel extends TabContentPanel
 			{
 				stringBuilder.append(" and ").append(compostState.name().toLowerCase()).append("ed");
 			}
-		}
-		else if (compostState != null)
+		} else if (compostState != null)
 		{
 			stringBuilder.append(" with ").append(compostState.name().toLowerCase());
 		}

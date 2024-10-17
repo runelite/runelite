@@ -30,48 +30,42 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpponentInfoPluginTest
 {
+	private final Player localPlayer = mock(Player.class);
 	@Mock
 	@Bind
 	Client client;
-
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
-
 	@Mock
 	@Bind
 	OpponentInfoConfig config;
-
 	@Mock
 	@Bind
 	OpponentInfoOverlay opponentInfoOverlay;
-
 	@Mock
 	@Bind
 	PlayerComparisonOverlay playerComparisonOverlay;
-
 	@Inject
 	OpponentInfoPlugin plugin;
-
-	private final Player localPlayer = mock(Player.class);
 
 	@Before
 	public void before()

@@ -48,6 +48,11 @@ public class BigBufferedImage extends BufferedImage
 	private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	private static final int MAX_PIXELS_IN_MEMORY = 1024 * 1024;
 
+	private BigBufferedImage(ColorModel cm, SimpleRaster raster, boolean isRasterPremultiplied, Hashtable<?, ?> properties)
+	{
+		super(cm, raster, isRasterPremultiplied, properties);
+	}
+
 	public static BufferedImage create(int width, int height, int imageType)
 	{
 		if (width * height > MAX_PIXELS_IN_MEMORY)
@@ -56,13 +61,11 @@ public class BigBufferedImage extends BufferedImage
 			{
 				final File tempDir = new File(TMP_DIR);
 				return createBigBufferedImage(tempDir, width, height, imageType);
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{
 				throw new RuntimeException(e);
 			}
-		}
-		else
+		} else
 		{
 			return new BufferedImage(width, height, imageType);
 		}
@@ -89,13 +92,12 @@ public class BigBufferedImage extends BufferedImage
 					for (int y = 0; y < height; y += block)
 					{
 						partLoaders.add(new ImagePartLoader(
-							y, width, Math.min(block, height - y), inputFile, image));
+								y, width, Math.min(block, height - y), inputFile, image));
 					}
 					generalExecutor.invokeAll(partLoaders);
 					generalExecutor.shutdown();
 					return image;
-				}
-				catch (InterruptedException ex)
+				} catch (InterruptedException ex)
 				{
 					log.error(null, ex);
 				}
@@ -105,7 +107,7 @@ public class BigBufferedImage extends BufferedImage
 	}
 
 	private static BufferedImage createBigBufferedImage(File tempDir, int width, int height, int imageType)
-		throws IOException
+			throws IOException
 	{
 		FileDataBuffer buffer = new FileDataBuffer(tempDir, width * height, 4);
 		ColorModel colorModel;
@@ -114,20 +116,20 @@ public class BigBufferedImage extends BufferedImage
 		{
 			case TYPE_INT_RGB:
 				colorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-					new int[]{8, 8, 8, 0},
-					false,
-					false,
-					ComponentColorModel.TRANSLUCENT,
-					DataBuffer.TYPE_BYTE);
+						new int[] {8, 8, 8, 0},
+						false,
+						false,
+						ComponentColorModel.TRANSLUCENT,
+						DataBuffer.TYPE_BYTE);
 				sampleModel = new BandedSampleModel(DataBuffer.TYPE_BYTE, width, height, 3);
 				break;
 			case TYPE_INT_ARGB:
 				colorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_sRGB),
-					new int[]{8, 8, 8, 8},
-					true,
-					false,
-					ComponentColorModel.TRANSLUCENT,
-					DataBuffer.TYPE_BYTE);
+						new int[] {8, 8, 8, 8},
+						true,
+						false,
+						ComponentColorModel.TRANSLUCENT,
+						DataBuffer.TYPE_BYTE);
 				sampleModel = new BandedSampleModel(DataBuffer.TYPE_BYTE, width, height, 4);
 				break;
 			default:
@@ -136,6 +138,19 @@ public class BigBufferedImage extends BufferedImage
 		SimpleRaster raster = new SimpleRaster(sampleModel, buffer, new Point(0, 0));
 		BigBufferedImage image = new BigBufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
 		return image;
+	}
+
+	public static void dispose(RenderedImage image)
+	{
+		if (image instanceof BigBufferedImage)
+		{
+			((BigBufferedImage) image).dispose();
+		}
+	}
+
+	public void dispose()
+	{
+		((SimpleRaster) getRaster()).dispose();
 	}
 
 	private static class ImagePartLoader implements Callable<ImagePartLoader>
@@ -176,24 +191,6 @@ public class BigBufferedImage extends BufferedImage
 		}
 	}
 
-	private BigBufferedImage(ColorModel cm, SimpleRaster raster, boolean isRasterPremultiplied, Hashtable<?, ?> properties)
-	{
-		super(cm, raster, isRasterPremultiplied, properties);
-	}
-
-	public void dispose()
-	{
-		((SimpleRaster) getRaster()).dispose();
-	}
-
-	public static void dispose(RenderedImage image)
-	{
-		if (image instanceof BigBufferedImage)
-		{
-			((BigBufferedImage) image).dispose();
-		}
-	}
-
 	private static class SimpleRaster extends WritableRaster
 	{
 		public SimpleRaster(SampleModel sampleModel, FileDataBuffer dataBuffer, Point origin)
@@ -209,12 +206,12 @@ public class BigBufferedImage extends BufferedImage
 
 	private static final class FileDataBufferDeleterHook extends Thread
 	{
+		private static final HashSet<FileDataBuffer> undisposedBuffers = new HashSet<>();
+
 		static
 		{
 			Runtime.getRuntime().addShutdownHook(new FileDataBufferDeleterHook());
 		}
-
-		private static final HashSet<FileDataBuffer> undisposedBuffers = new HashSet<>();
 
 		@Override
 		public void run()
@@ -319,8 +316,7 @@ public class BigBufferedImage extends BufferedImage
 					try
 					{
 						file.close();
-					}
-					catch (IOException e)
+					} catch (IOException e)
 					{
 						e.printStackTrace();
 					}

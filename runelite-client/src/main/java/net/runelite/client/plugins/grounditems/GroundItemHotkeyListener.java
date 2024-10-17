@@ -53,13 +53,11 @@ class GroundItemHotkeyListener extends HotkeyListener
 			plugin.setHideAll(false);
 			plugin.setHotKeyPressed(true);
 			lastPress = null;
-		}
-		else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
+		} else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
 		{
 			plugin.setHideAll(true);
 			lastPress = null;
-		}
-		else
+		} else
 		{
 			plugin.setHotKeyPressed(true);
 			lastPress = Instant.now();

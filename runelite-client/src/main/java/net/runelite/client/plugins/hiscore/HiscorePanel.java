@@ -81,47 +81,47 @@ public class HiscorePanel extends PluginPanel
 	 * Real skills, ordered in the way they should be displayed in the panel.
 	 */
 	private static final List<HiscoreSkill> SKILLS = ImmutableList.of(
-		ATTACK, HITPOINTS, MINING,
-		STRENGTH, AGILITY, SMITHING,
-		DEFENCE, HERBLORE, FISHING,
-		RANGED, THIEVING, COOKING,
-		PRAYER, CRAFTING, FIREMAKING,
-		MAGIC, FLETCHING, WOODCUTTING,
-		RUNECRAFT, SLAYER, FARMING,
-		CONSTRUCTION, HUNTER
+			ATTACK, HITPOINTS, MINING,
+			STRENGTH, AGILITY, SMITHING,
+			DEFENCE, HERBLORE, FISHING,
+			RANGED, THIEVING, COOKING,
+			PRAYER, CRAFTING, FIREMAKING,
+			MAGIC, FLETCHING, WOODCUTTING,
+			RUNECRAFT, SLAYER, FARMING,
+			CONSTRUCTION, HUNTER
 	);
 
 	/**
 	 * Bosses, ordered in the way they should be displayed in the panel.
 	 */
 	private static final List<HiscoreSkill> BOSSES = ImmutableList.of(
-		ABYSSAL_SIRE, ALCHEMICAL_HYDRA, AMOXLIATL,
-		ARAXXOR, ARTIO, BARROWS_CHESTS,
-		BRYOPHYTA, CALLISTO, CALVARION,
-		CERBERUS, CHAMBERS_OF_XERIC, CHAMBERS_OF_XERIC_CHALLENGE_MODE,
-		CHAOS_ELEMENTAL, CHAOS_FANATIC, COMMANDER_ZILYANA,
-		CORPOREAL_BEAST, CRAZY_ARCHAEOLOGIST, DAGANNOTH_PRIME,
-		DAGANNOTH_REX, DAGANNOTH_SUPREME, DERANGED_ARCHAEOLOGIST,
-		DUKE_SUCELLUS, GENERAL_GRAARDOR, GIANT_MOLE,
-		GROTESQUE_GUARDIANS, HESPORI, KALPHITE_QUEEN,
-		KING_BLACK_DRAGON, KRAKEN, KREEARRA,
-		KRIL_TSUTSAROTH, LUNAR_CHESTS, MIMIC,
-		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
-		OBOR, PHANTOM_MUSPAH, SARACHNIS,
-		SCORPIA, SCURRIUS, SKOTIZO,
-		SOL_HEREDIT, SPINDEL, TEMPOROSS,
-		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THE_HUEYCOATL,
-		THE_LEVIATHAN, THE_WHISPERER, THEATRE_OF_BLOOD,
-		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TOMBS_OF_AMASCUT,
-		TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK, TZTOK_JAD,
-		VARDORVIS, VENENATIS, VETION,
-		VORKATH, WINTERTODT, ZALCANO,
-		ZULRAH
+			ABYSSAL_SIRE, ALCHEMICAL_HYDRA, AMOXLIATL,
+			ARAXXOR, ARTIO, BARROWS_CHESTS,
+			BRYOPHYTA, CALLISTO, CALVARION,
+			CERBERUS, CHAMBERS_OF_XERIC, CHAMBERS_OF_XERIC_CHALLENGE_MODE,
+			CHAOS_ELEMENTAL, CHAOS_FANATIC, COMMANDER_ZILYANA,
+			CORPOREAL_BEAST, CRAZY_ARCHAEOLOGIST, DAGANNOTH_PRIME,
+			DAGANNOTH_REX, DAGANNOTH_SUPREME, DERANGED_ARCHAEOLOGIST,
+			DUKE_SUCELLUS, GENERAL_GRAARDOR, GIANT_MOLE,
+			GROTESQUE_GUARDIANS, HESPORI, KALPHITE_QUEEN,
+			KING_BLACK_DRAGON, KRAKEN, KREEARRA,
+			KRIL_TSUTSAROTH, LUNAR_CHESTS, MIMIC,
+			NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
+			OBOR, PHANTOM_MUSPAH, SARACHNIS,
+			SCORPIA, SCURRIUS, SKOTIZO,
+			SOL_HEREDIT, SPINDEL, TEMPOROSS,
+			THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THE_HUEYCOATL,
+			THE_LEVIATHAN, THE_WHISPERER, THEATRE_OF_BLOOD,
+			THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TOMBS_OF_AMASCUT,
+			TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK, TZTOK_JAD,
+			VARDORVIS, VENENATIS, VETION,
+			VORKATH, WINTERTODT, ZALCANO,
+			ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
-		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN,
-		HiscoreEndpoint.DEADMAN, HiscoreEndpoint.PURE, HiscoreEndpoint.LEVEL_3_SKILLER, HiscoreEndpoint.TOURNAMENT
+			HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN,
+			HiscoreEndpoint.DEADMAN, HiscoreEndpoint.PURE, HiscoreEndpoint.LEVEL_3_SKILLER, HiscoreEndpoint.TOURNAMENT
 	};
 
 	private final HiscorePlugin plugin;
@@ -145,7 +145,7 @@ public class HiscorePanel extends PluginPanel
 
 	@Inject
 	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
-		NameAutocompleter nameAutocompleter, HiscoreClient hiscoreClient)
+						NameAutocompleter nameAutocompleter, HiscoreClient hiscoreClient)
 	{
 		this.plugin = plugin;
 		this.config = config;
@@ -312,6 +312,55 @@ public class HiscorePanel extends PluginPanel
 		addInputKeyListener(nameAutocompleter);
 	}
 
+	private static String buildMinigameTooltip(Skill s, HiscoreSkill hiscoreSkill)
+	{
+		String rank = (s.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(s.getRank());
+		String content = "";
+		content += "<p><span style = 'color:white'>" + hiscoreSkill.getName() + "</span></p>";
+		content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+		if (s.getLevel() > -1)
+		{
+			content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(s.getLevel()) + "</p>";
+		}
+		return content;
+	}
+
+	private static String buildClueLine(HiscoreResult result, String name, HiscoreSkill skill)
+	{
+		Skill sk = result.getSkill(skill);
+		String count = sk.getLevel() == -1
+				? "0"
+				: QuantityFormatter.formatNumber(sk.getLevel());
+		String rank = sk.getRank() == -1
+				? "Unranked"
+				: QuantityFormatter.formatNumber(sk.getRank());
+		return "<p><span style = 'color:white'>" + name + ":</span> " + count + " <span style = 'color:white'>Rank:</span> " + rank + "</p>";
+	}
+
+	private static String sanitize(String lookup)
+	{
+		return lookup.replace('\u00A0', ' ');
+	}
+
+	@VisibleForTesting
+	static String formatLevel(int level)
+	{
+		if (level < 10000)
+		{
+			return Integer.toString(level);
+		} else
+		{
+			return (level / 1000) + "k";
+		}
+	}
+
+	private static String pad(String str, HiscoreSkillType type)
+	{
+		// Left pad label text to keep labels aligned
+		int pad = type == HiscoreSkillType.BOSS ? 4 : 2;
+		return StringUtils.leftPad(str, pad);
+	}
+
 	void shutdown()
 	{
 		removeInputKeyListener(nameAutocompleter);
@@ -338,16 +387,13 @@ public class HiscorePanel extends PluginPanel
 		if (skill == null || skill == OVERALL)
 		{
 			directory = "/skill_icons/";
-		}
-		else if (skillType == HiscoreSkillType.BOSS)
+		} else if (skillType == HiscoreSkillType.BOSS)
 		{
 			directory = "bosses/";
-		}
-		else if (skillType == HiscoreSkillType.ACTIVITY)
+		} else if (skillType == HiscoreSkillType.ACTIVITY)
 		{
 			directory = "activities/";
-		}
-		else
+		} else
 		{
 			assert skillType == HiscoreSkillType.SKILL;
 			directory = "/skill_icons_small/";
@@ -418,34 +464,34 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		hiscoreClient.lookupAsync(lookup, selectedEndPoint).whenCompleteAsync((result, ex) ->
-			SwingUtilities.invokeLater(() ->
-			{
-				if (!sanitize(searchBar.getText()).equals(lookup))
+				SwingUtilities.invokeLater(() ->
 				{
-					// search has changed in the meantime
-					return;
-				}
-
-				if (result == null || ex != null)
-				{
-					if (ex != null)
+					if (!sanitize(searchBar.getText()).equals(lookup))
 					{
-						log.warn("Error fetching Hiscore data " + ex.getMessage());
+						// search has changed in the meantime
+						return;
 					}
 
-					searchBar.setIcon(IconTextField.Icon.ERROR);
+					if (result == null || ex != null)
+					{
+						if (ex != null)
+						{
+							log.warn("Error fetching Hiscore data " + ex.getMessage());
+						}
+
+						searchBar.setIcon(IconTextField.Icon.ERROR);
+						searchBar.setEditable(true);
+						loading = false;
+						return;
+					}
+
+					//successful player search
+					searchBar.setIcon(IconTextField.Icon.SEARCH);
 					searchBar.setEditable(true);
 					loading = false;
-					return;
-				}
 
-				//successful player search
-				searchBar.setIcon(IconTextField.Icon.SEARCH);
-				searchBar.setEditable(true);
-				loading = false;
-
-				applyHiscoreResult(result);
-			}));
+					applyHiscoreResult(result);
+				}));
 	}
 
 	private void applyHiscoreResult(HiscoreResult result)
@@ -466,18 +512,17 @@ public class HiscorePanel extends PluginPanel
 				if (result.getPlayer() != null)
 				{
 					int combatLevel = Experience.getCombatLevel(
-						result.getSkill(ATTACK).getLevel(),
-						result.getSkill(STRENGTH).getLevel(),
-						result.getSkill(DEFENCE).getLevel(),
-						result.getSkill(HITPOINTS).getLevel(),
-						result.getSkill(MAGIC).getLevel(),
-						result.getSkill(RANGED).getLevel(),
-						result.getSkill(PRAYER).getLevel()
+							result.getSkill(ATTACK).getLevel(),
+							result.getSkill(STRENGTH).getLevel(),
+							result.getSkill(DEFENCE).getLevel(),
+							result.getSkill(HITPOINTS).getLevel(),
+							result.getSkill(MAGIC).getLevel(),
+							result.getSkill(RANGED).getLevel(),
+							result.getSkill(PRAYER).getLevel()
 					);
 					label.setText(Integer.toString(combatLevel));
 				}
-			}
-			else if ((s = result.getSkill(skill)) != null)
+			} else if ((s = result.getSkill(skill)) != null)
 			{
 				final long exp = s.getExperience();
 				final boolean isSkill = skill.getType() == HiscoreSkillType.SKILL;
@@ -485,8 +530,7 @@ public class HiscorePanel extends PluginPanel
 				if (config.virtualLevels() && isSkill && exp > -1L)
 				{
 					level = Experience.getLevelForXp((int) exp);
-				}
-				else if (!isSkill || exp != -1L)
+				} else if (!isSkill || exp != -1L)
 				{
 					// for skills, level is only valid if exp is not -1
 					// otherwise level is always valid
@@ -526,25 +570,24 @@ public class HiscorePanel extends PluginPanel
 		if (skill == null)
 		{
 			double combatLevel = Experience.getCombatLevelPrecise(
-				result.getSkill(ATTACK).getLevel(),
-				result.getSkill(STRENGTH).getLevel(),
-				result.getSkill(DEFENCE).getLevel(),
-				result.getSkill(HITPOINTS).getLevel(),
-				result.getSkill(MAGIC).getLevel(),
-				result.getSkill(RANGED).getLevel(),
-				result.getSkill(PRAYER).getLevel()
+					result.getSkill(ATTACK).getLevel(),
+					result.getSkill(STRENGTH).getLevel(),
+					result.getSkill(DEFENCE).getLevel(),
+					result.getSkill(HITPOINTS).getLevel(),
+					result.getSkill(MAGIC).getLevel(),
+					result.getSkill(RANGED).getLevel(),
+					result.getSkill(PRAYER).getLevel()
 			);
 
 			double combatExperience = result.getSkill(ATTACK).getExperience()
-				+ result.getSkill(STRENGTH).getExperience() + result.getSkill(DEFENCE).getExperience()
-				+ result.getSkill(HITPOINTS).getExperience() + result.getSkill(MAGIC).getExperience()
-				+ result.getSkill(RANGED).getExperience() + result.getSkill(PRAYER).getExperience();
+					+ result.getSkill(STRENGTH).getExperience() + result.getSkill(DEFENCE).getExperience()
+					+ result.getSkill(HITPOINTS).getExperience() + result.getSkill(MAGIC).getExperience()
+					+ result.getSkill(RANGED).getExperience() + result.getSkill(PRAYER).getExperience();
 
 			content += "<p><span style = 'color:white'>Combat</span></p>";
 			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + QuantityFormatter.formatNumber(combatLevel) + "</p>";
 			content += "<p><span style = 'color:white'>Experience:</span> " + QuantityFormatter.formatNumber(combatExperience) + "</p>";
-		}
-		else
+		} else
 		{
 			switch (skill)
 			{
@@ -618,8 +661,7 @@ public class HiscorePanel extends PluginPanel
 						{
 							content += "<p><span style = 'color:white'>KC:</span> " + lvl + "</p>";
 						}
-					}
-					else
+					} else
 					{
 						Skill requestedSkill = result.getSkill(skill);
 						final long experience = requestedSkill.getExperience();
@@ -630,8 +672,7 @@ public class HiscorePanel extends PluginPanel
 						if (experience == -1L)
 						{
 							remainingXp = "Unranked";
-						}
-						else
+						} else
 						{
 							int currentLevel = Experience.getLevelForXp((int) experience);
 							remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? QuantityFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - experience) : "0";
@@ -664,45 +705,15 @@ public class HiscorePanel extends PluginPanel
 
 				// had to wrap the bar with an empty div, if i added the margin directly to the bar, it would mess up
 				content += "<div style = 'margin-top:3px'>"
-					+ "<div style = 'background: #070707; border: 1px solid #070707; height: 6px; width: 100%;'>"
-					+ "<div style = 'height: 6px; width: " + progress + "%; background: #dc8a00;'>"
-					+ "</div>"
-					+ "</div>"
-					+ "</div>";
+						+ "<div style = 'background: #070707; border: 1px solid #070707; height: 6px; width: 100%;'>"
+						+ "<div style = 'height: 6px; width: " + progress + "%; background: #dc8a00;'>"
+						+ "</div>"
+						+ "</div>"
+						+ "</div>";
 			}
 		}
 
 		return openingTags + content + closingTags;
-	}
-
-	private static String buildMinigameTooltip(Skill s, HiscoreSkill hiscoreSkill)
-	{
-		String rank = (s.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(s.getRank());
-		String content = "";
-		content += "<p><span style = 'color:white'>" + hiscoreSkill.getName() + "</span></p>";
-		content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-		if (s.getLevel() > -1)
-		{
-			content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(s.getLevel()) + "</p>";
-		}
-		return content;
-	}
-
-	private static String buildClueLine(HiscoreResult result, String name, HiscoreSkill skill)
-	{
-		Skill sk = result.getSkill(skill);
-		String count = sk.getLevel() == -1
-			? "0"
-			: QuantityFormatter.formatNumber(sk.getLevel());
-		String rank = sk.getRank() == -1
-			? "Unranked"
-			: QuantityFormatter.formatNumber(sk.getRank());
-		return "<p><span style = 'color:white'>" + name + ":</span> " + count + " <span style = 'color:white'>Rank:</span> " + rank + "</p>";
-	}
-
-	private static String sanitize(String lookup)
-	{
-		return lookup.replace('\u00A0', ' ');
 	}
 
 	private void resetEndpoints()
@@ -711,25 +722,5 @@ public class HiscorePanel extends PluginPanel
 		HiscoreEndpoint endpoint = plugin.getWorldEndpoint();
 		int idx = ArrayUtils.indexOf(ENDPOINTS, endpoint);
 		tabGroup.select(tabGroup.getTab(idx));
-	}
-
-	@VisibleForTesting
-	static String formatLevel(int level)
-	{
-		if (level < 10000)
-		{
-			return Integer.toString(level);
-		}
-		else
-		{
-			return (level / 1000) + "k";
-		}
-	}
-
-	private static String pad(String str, HiscoreSkillType type)
-	{
-		// Left pad label text to keep labels aligned
-		int pad = type == HiscoreSkillType.BOSS ? 4 : 2;
-		return StringUtils.leftPad(str, pad);
 	}
 }

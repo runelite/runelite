@@ -32,19 +32,19 @@ import org.junit.Test;
 public class HotColdTemperatureTest
 {
 	private static final String[] VALID_MESSAGES = {
-		"The device is warm, and warmer than last time.",
-		"The device is visibly shaking and burns to the touch. This must be the spot.",
-		"The device is cold.",
-		"The device is ice cold.",
-		"The device is very cold.",
-		"The device is hot.",
-		"The device is incredibly hot.",
+			"The device is warm, and warmer than last time.",
+			"The device is visibly shaking and burns to the touch. This must be the spot.",
+			"The device is cold.",
+			"The device is ice cold.",
+			"The device is very cold.",
+			"The device is hot.",
+			"The device is incredibly hot.",
 	};
 	private static final String[] INVALID_MESSAGES = {
-		"The device is an octopus, and is wetter than last time.",
-		"foobar",
-		"a q p w",
-		"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
+			"The device is an octopus, and is wetter than last time.",
+			"foobar",
+			"a q p w",
+			"My feet are cold, I should put them in some lukewarm water, or run hot water over them.",
 	};
 
 	@Test

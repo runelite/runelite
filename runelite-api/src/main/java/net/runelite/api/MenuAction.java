@@ -143,6 +143,7 @@ public enum MenuAction
 	WIDGET_TYPE_1(24),
 	/**
 	 * Select the widget for targeting other widgets/entites etc.
+	 *
 	 * @see Client#getSelectedWidget()
 	 */
 	WIDGET_TARGET(25),
@@ -246,6 +247,7 @@ public enum MenuAction
 
 	/**
 	 * RuneLite menu that is a widge.
+	 *
 	 * @see MenuEntry#getWidget()
 	 */
 	RUNELITE_WIDGET(998),
@@ -334,13 +336,13 @@ public enum MenuAction
 		this.id = id;
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
 	public static MenuAction of(int id)
 	{
 		return map.getOrDefault(id, UNKNOWN);
+	}
+
+	public int getId()
+	{
+		return id;
 	}
 }

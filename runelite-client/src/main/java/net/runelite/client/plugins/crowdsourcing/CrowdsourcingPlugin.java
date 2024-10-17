@@ -39,8 +39,8 @@ import net.runelite.client.plugins.crowdsourcing.zmi.CrowdsourcingZMI;
 import net.runelite.client.task.Schedule;
 
 @PluginDescriptor(
-	name = "OSRS Wiki Crowdsourcing",
-	description = "Send data to the wiki to help figure out skilling success rates, burn rates, more. See osrs.wiki/RS:CROWD"
+		name = "OSRS Wiki Crowdsourcing",
+		description = "Send data to the wiki to help figure out skilling success rates, burn rates, more. See osrs.wiki/RS:CROWD"
 )
 public class CrowdsourcingPlugin extends Plugin
 {
@@ -94,9 +94,9 @@ public class CrowdsourcingPlugin extends Plugin
 	}
 
 	@Schedule(
-		period = SECONDS_BETWEEN_UPLOADS,
-		unit = ChronoUnit.SECONDS,
-		asynchronous = true
+			period = SECONDS_BETWEEN_UPLOADS,
+			unit = ChronoUnit.SECONDS,
+			asynchronous = true
 	)
 	public void submitToAPI()
 	{

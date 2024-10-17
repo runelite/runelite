@@ -53,30 +53,24 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter",
-	description = "Show the state of your traps",
-	tags = {"overlay", "skilling", "timers"}
+		name = "Hunter",
+		description = "Show the state of your traps",
+		tags = {"overlay", "skilling", "timers"}
 )
 public class HunterPlugin extends Plugin
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private TrapOverlay overlay;
-
-	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private HunterConfig config;
-
 	@Getter
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
-
+	@Inject
+	private Client client;
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private TrapOverlay overlay;
+	@Inject
+	private Notifier notifier;
+	@Inject
+	private HunterConfig config;
 	private WorldPoint lastTickLocalPlayerLocation;
 
 	@Provides
@@ -132,7 +126,7 @@ public class HunterPlugin extends Plugin
 				// event runs after the player movement has been updated, so we need to
 				// compare to the trap location to the last location of the player.
 				if (lastTickLocalPlayerLocation != null
-					&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
+						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
 					traps.put(trapLocation, new HunterTrap(gameObject));
@@ -232,36 +226,36 @@ public class HunterPlugin extends Plugin
 			// Imp entering box
 			case ObjectID.MAGIC_BOX_19225:
 
-			// Black chin shaking box
+				// Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
 			case ObjectID.BOX_TRAP_2029:
 
-			// Red chin shaking box
+				// Red chin shaking box
 			case ObjectID.BOX_TRAP_9381:
 			case ObjectID.BOX_TRAP_9390:
 			case ObjectID.BOX_TRAP_9391:
 			case ObjectID.BOX_TRAP_9392:
 			case ObjectID.BOX_TRAP_9393:
 
-			// Grey chin shaking box
+				// Grey chin shaking box
 			case ObjectID.BOX_TRAP_9386:
 			case ObjectID.BOX_TRAP_9387:
 			case ObjectID.BOX_TRAP_9388:
 
-			// Ferret shaking box
+				// Ferret shaking box
 			case ObjectID.BOX_TRAP_9394:
 			case ObjectID.BOX_TRAP_9396:
 			case ObjectID.BOX_TRAP_9397:
 
-			// Embertailed Jerboa box
+				// Embertailed Jerboa box
 			case ObjectID.BOX_TRAP_50728:
 			case ObjectID.BOX_TRAP_50729:
 			case ObjectID.BOX_TRAP_50730:
 			case ObjectID.BOX_TRAP_50731:
 
-			// Bird traps
+				// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
 			case ObjectID.BIRD_SNARE_9347:
 			case ObjectID.BIRD_SNARE_9349:
@@ -269,7 +263,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BIRD_SNARE_9376:
 			case ObjectID.BIRD_SNARE_9378:
 
-			// Deadfall trap
+				// Deadfall trap
 			case ObjectID.DEADFALL_19218:
 			case ObjectID.DEADFALL_19851:
 			case ObjectID.DEADFALL_20128:
@@ -279,7 +273,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL_50724:
 			case ObjectID.DEADFALL_50725:
 
-			// Net trap
+				// Net trap
 			case ObjectID.NET_TRAP_9003:
 			case ObjectID.NET_TRAP_9005:
 			case ObjectID.NET_TRAP_8972:
@@ -291,7 +285,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_50716:
 			case ObjectID.NET_TRAP_50718:
 
-			// Maniacal monkey boulder trap
+				// Maniacal monkey boulder trap
 			case ObjectID.MONKEY_TRAP_28828:
 			case ObjectID.MONKEY_TRAP_28829:
 				if (myTrap != null)
@@ -356,8 +350,8 @@ public class HunterPlugin extends Plugin
 					// Check for young trees (used while catching salamanders) in the tile.
 					// Otherwise, hunter timers will never disappear after a trap is dismantled
 					if (object.getId() == ObjectID.YOUNG_TREE_8732 || object.getId() == ObjectID.YOUNG_TREE_8990 ||
-						object.getId() == ObjectID.YOUNG_TREE_9000 || object.getId() == ObjectID.YOUNG_TREE_9341 ||
-						object.getId() == ObjectID.YOUNG_TREE_50721 || object.getId() == ObjectID.YOUNG_TREE_50722)
+							object.getId() == ObjectID.YOUNG_TREE_9000 || object.getId() == ObjectID.YOUNG_TREE_9341 ||
+							object.getId() == ObjectID.YOUNG_TREE_50721 || object.getId() == ObjectID.YOUNG_TREE_50722)
 					{
 						containsYoungTree = true;
 					}
@@ -368,15 +362,14 @@ public class HunterPlugin extends Plugin
 			{
 				it.remove();
 				log.debug("Trap removed from personal trap collection, {} left", traps.size());
-			}
-			else if (containsBoulder) // For traps like deadfalls. This is different because when the trap is gone, there is still a GameObject (boulder)
+			} else if (containsBoulder) // For traps like deadfalls. This is different because when the trap is gone, there is still a GameObject (boulder)
 			{
 				it.remove();
 				log.debug("Special trap removed from personal trap collection, {} left", traps.size());
 
 				// Case we have notifications enabled and the action was not manual, throw notification
 				if (trap.getObjectId() == ObjectID.MONKEY_TRAP &&
-					!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
+						!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
 				{
 					notifier.notify(config.maniacalMonkeyNotify(), "The monkey escaped.");
 				}

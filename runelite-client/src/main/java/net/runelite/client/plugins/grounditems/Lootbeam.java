@@ -46,45 +46,6 @@ class Lootbeam
 	private Color color;
 	private Style style;
 
-	@RequiredArgsConstructor
-	public enum Style
-	{
-		LIGHT(l -> l.client.loadModel(
-			5809,
-			new short[]{6371},
-			new short[]{JagexColor.rgbToHSL(l.color.getRGB(), 1.0d)}
-		), anim(AnimationID.RAID_LIGHT_ANIMATION)),
-		MODERN(l ->
-		{
-			ModelData md = l.client.loadModelData(43330);
-			if (md == null)
-			{
-				return null;
-			}
-
-			short hsl = JagexColor.rgbToHSL(l.color.getRGB(), 1.0d);
-			int hue = JagexColor.unpackHue(hsl);
-			int sat = JagexColor.unpackSaturation(hsl);
-			int lum = JagexColor.unpackLuminance(hsl);
-			int satDelta = sat > 2 ? 1 : 0;
-
-			return md.cloneColors()
-				.recolor((short) 26432, JagexColor.packHSL(hue, sat - satDelta, lum))
-				.recolor((short) 26584, JagexColor.packHSL(hue, sat, Math.min(lum + 24, JagexColor.LUMINANCE_MAX)))
-				.light(75 + ModelData.DEFAULT_AMBIENT, 1875 + ModelData.DEFAULT_CONTRAST,
-					ModelData.DEFAULT_X, ModelData.DEFAULT_Y, ModelData.DEFAULT_Z);
-		}, anim(AnimationID.LOOTBEAM_ANIMATION)),
-		;
-
-		private final Function<Lootbeam, Model> modelSupplier;
-		private final Function<Lootbeam, Animation> animationSupplier;
-	}
-
-	private static Function<Lootbeam, Animation> anim(int id)
-	{
-		return b -> b.client.loadAnimation(id);
-	}
-
 	public Lootbeam(Client client, ClientThread clientThread, WorldPoint worldPoint, Color color, Style style)
 	{
 		this.client = client;
@@ -100,6 +61,11 @@ class Lootbeam
 		runeLiteObject.setLocation(lp, client.getPlane());
 
 		runeLiteObject.setActive(true);
+	}
+
+	private static Function<Lootbeam, Animation> anim(int id)
+	{
+		return b -> b.client.loadAnimation(id);
 	}
 
 	public void setColor(Color color)
@@ -145,6 +111,40 @@ class Lootbeam
 	public void remove()
 	{
 		runeLiteObject.setActive(false);
+	}
+
+	@RequiredArgsConstructor
+	public enum Style
+	{
+		LIGHT(l -> l.client.loadModel(
+				5809,
+				new short[] {6371},
+				new short[] {JagexColor.rgbToHSL(l.color.getRGB(), 1.0d)}
+		), anim(AnimationID.RAID_LIGHT_ANIMATION)),
+		MODERN(l ->
+		{
+			ModelData md = l.client.loadModelData(43330);
+			if (md == null)
+			{
+				return null;
+			}
+
+			short hsl = JagexColor.rgbToHSL(l.color.getRGB(), 1.0d);
+			int hue = JagexColor.unpackHue(hsl);
+			int sat = JagexColor.unpackSaturation(hsl);
+			int lum = JagexColor.unpackLuminance(hsl);
+			int satDelta = sat > 2 ? 1 : 0;
+
+			return md.cloneColors()
+					.recolor((short) 26432, JagexColor.packHSL(hue, sat - satDelta, lum))
+					.recolor((short) 26584, JagexColor.packHSL(hue, sat, Math.min(lum + 24, JagexColor.LUMINANCE_MAX)))
+					.light(75 + ModelData.DEFAULT_AMBIENT, 1875 + ModelData.DEFAULT_CONTRAST,
+							ModelData.DEFAULT_X, ModelData.DEFAULT_Y, ModelData.DEFAULT_Z);
+		}, anim(AnimationID.LOOTBEAM_ANIMATION)),
+		;
+
+		private final Function<Lootbeam, Model> modelSupplier;
+		private final Function<Lootbeam, Animation> animationSupplier;
 	}
 
 }

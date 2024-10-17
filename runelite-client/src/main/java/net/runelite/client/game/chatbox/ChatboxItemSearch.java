@@ -70,19 +70,9 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	@Getter
 	private Consumer<Integer> onItemSelected;
 
-	@Value
-	private static class ItemIcon
-	{
-		int modelId;
-		int ambient;
-		int contrast;
-		short[] colorsToReplace;
-		short[] texturesToReplace;
-	}
-
 	@Inject
 	private ChatboxItemSearch(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-		ItemManager itemManager, Client client)
+							  ItemManager itemManager, Client client)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
@@ -92,11 +82,11 @@ public class ChatboxItemSearch extends ChatboxTextInput
 		lines(1);
 		prompt("Item Search");
 		onChanged(searchString ->
-			clientThread.invokeLater(() ->
-			{
-				filterResults();
-				update();
-			}));
+				clientThread.invokeLater(() ->
+				{
+					filterResults();
+					update();
+				}));
 	}
 
 	@Override
@@ -155,8 +145,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			if (index == idx)
 			{
 				item.setOpacity(HOVERED_OPACITY);
-			}
-			else
+			} else
 			{
 				item.setOnMouseOverListener((JavaScriptCallback) ev -> item.setOpacity(HOVERED_OPACITY));
 				item.setOnMouseLeaveListener((JavaScriptCallback) ev -> item.setOpacity(0));
@@ -241,8 +230,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 						if (results.size() == MAX_RESULTS)
 						{
 							index += results.size();
-						}
-						else
+						} else
 						{
 							index += MAX_RESULTS;
 						}
@@ -262,8 +250,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 						if (results.size() == MAX_RESULTS)
 						{
 							index -= results.size();
-						}
-						else
+						} else
 						{
 							index -= MAX_RESULTS;
 						}
@@ -318,8 +305,8 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			{
 				// Check if the results already contain the same item image
 				ItemIcon itemIcon = new ItemIcon(itemComposition.getInventoryModel(),
-					itemComposition.getAmbient(), itemComposition.getContrast(),
-					itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
+						itemComposition.getAmbient(), itemComposition.getContrast(),
+						itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
 				if (itemIcons.contains(itemIcon))
 				{
 					continue;
@@ -341,5 +328,15 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	{
 		tooltipText = text;
 		return this;
+	}
+
+	@Value
+	private static class ItemIcon
+	{
+		int modelId;
+		int ambient;
+		int contrast;
+		short[] colorsToReplace;
+		short[] texturesToReplace;
 	}
 }

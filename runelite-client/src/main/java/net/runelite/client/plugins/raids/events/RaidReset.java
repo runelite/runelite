@@ -26,7 +26,7 @@ package net.runelite.client.plugins.raids.events;
 
 /**
  * An event that fires when the raid plugin resets
- *
+ * <p>
  * This happens when the player leaves a raid and when the raid plugin turns off
  */
 public class RaidReset

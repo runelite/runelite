@@ -39,7 +39,7 @@ import lombok.Value;
 public class NavigationButton
 {
 	static final Comparator<NavigationButton> COMPARATOR = Comparator.comparing(NavigationButton::getPriority)
-		.thenComparing(NavigationButton::getTooltip);
+			.thenComparing(NavigationButton::getTooltip);
 
 	/**
 	 * Icon of button.

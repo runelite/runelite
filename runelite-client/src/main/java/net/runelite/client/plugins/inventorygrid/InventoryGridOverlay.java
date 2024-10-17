@@ -64,6 +64,13 @@ class InventoryGridOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
+	private static WidgetItem getWidgetItem(Widget parentWidget, int idx)
+	{
+		assert parentWidget.isIf3();
+		Widget wi = parentWidget.getChild(idx);
+		return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), wi.getBounds(), parentWidget, wi.getBounds());
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -80,8 +87,8 @@ class InventoryGridOverlay extends Overlay
 
 		// grid is only supported on bank inventory and inventory
 		if (draggingWidget.getId() != ComponentID.BANK_INVENTORY_ITEM_CONTAINER
-			&& draggingWidget.getId() != ComponentID.BANK_INVENTORY_EQUIPMENT_ITEM_CONTAINER
-			&& draggingWidget.getId() != ComponentID.INVENTORY_CONTAINER)
+				&& draggingWidget.getId() != ComponentID.BANK_INVENTORY_EQUIPMENT_ITEM_CONTAINER
+				&& draggingWidget.getId() != ComponentID.INVENTORY_CONTAINER)
 		{
 			return null;
 		}
@@ -99,8 +106,8 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| !(client.getDragTime() > draggingWidget.getDragDeadTime())
-			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
+				|| !(client.getDragTime() > draggingWidget.getDragDeadTime())
+				|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
 		}
@@ -123,8 +130,7 @@ class InventoryGridOverlay extends Overlay
 			{
 				graphics.setColor(config.highlightColor());
 				graphics.fill(bounds);
-			}
-			else if (config.showGrid())
+			} else if (config.showGrid())
 			{
 				graphics.setColor(config.gridColor());
 				graphics.fill(bounds);
@@ -132,13 +138,6 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	private static WidgetItem getWidgetItem(Widget parentWidget, int idx)
-	{
-		assert parentWidget.isIf3();
-		Widget wi = parentWidget.getChild(idx);
-		return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), wi.getBounds(), parentWidget, wi.getBounds());
 	}
 
 	private void drawItem(Graphics2D graphics, Rectangle bounds, WidgetItem item)

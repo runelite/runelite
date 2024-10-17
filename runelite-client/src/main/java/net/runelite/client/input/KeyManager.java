@@ -42,6 +42,7 @@ import net.runelite.client.eventbus.Subscribe;
 public class KeyManager
 {
 	private final Client client;
+	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
 
 	@Inject
 	private KeyManager(@Nullable final Client client, final EventBus eventBus)
@@ -49,8 +50,6 @@ public class KeyManager
 		this.client = client;
 		eventBus.register(this);
 	}
-
-	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
 
 	public void registerKeyListener(KeyListener keyListener)
 	{

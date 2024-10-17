@@ -85,15 +85,14 @@ class RunEnergyOverlay extends Overlay
 			if (config.replaceOrbText())
 			{
 				sb.append("Run Energy: ").append(client.getEnergy() / 100).append('%');
-			}
-			else
+			} else
 			{
 				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
 			}
 
 			if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) == 0
-				&& plugin.isRingOfEnduranceEquipped()
-				&& plugin.getRingOfEnduranceCharges() == null)
+					&& plugin.isRingOfEnduranceEquipped()
+					&& plugin.getRingOfEnduranceCharges() == null)
 			{
 				sb.append("</br>Check your Ring of endurance to get the time remaining.");
 			}

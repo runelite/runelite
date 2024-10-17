@@ -37,8 +37,8 @@ public class KitDefinition
 	public int bodyPartId = -1;
 	public int[] models;
 	public int[] chatheadModels = new int[]
-	{
-		-1, -1, -1, -1, -1
-	};
+			{
+					-1, -1, -1, -1, -1
+			};
 	public boolean nonSelectable = false;
 }

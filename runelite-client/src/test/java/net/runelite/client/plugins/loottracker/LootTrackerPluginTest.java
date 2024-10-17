@@ -90,20 +90,20 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class LootTrackerPluginTest
 {
 	private static final Map<Integer, String> HERB_IDS_TO_NAMES = ImmutableMap.<Integer, String>builder()
-		.put(ItemID.GRIMY_GUAM_LEAF, "Grimy guam leaf")
-		.put(ItemID.GRIMY_MARRENTILL, "Grimy marrentill")
-		.put(ItemID.GRIMY_TARROMIN, "Grimy tarromin")
-		.put(ItemID.GRIMY_HARRALANDER, "Grimy harralander")
-		.put(ItemID.GRIMY_RANARR_WEED, "Grimy ranarr weed")
-		.put(ItemID.GRIMY_IRIT_LEAF, "Grimy irit leaf")
-		.put(ItemID.GRIMY_AVANTOE, "Grimy avantoe")
-		.put(ItemID.GRIMY_KWUARM, "Grimy kwuarm")
-		.put(ItemID.GRIMY_SNAPDRAGON, "Grimy snapdragon")
-		.put(ItemID.GRIMY_CADANTINE, "Grimy cadantine")
-		.put(ItemID.GRIMY_LANTADYME, "Grimy lantadyme")
-		.put(ItemID.GRIMY_DWARF_WEED, "Grimy dwarf weed")
-		.put(ItemID.GRIMY_TORSTOL, "Grimy torstol")
-		.build();
+			.put(ItemID.GRIMY_GUAM_LEAF, "Grimy guam leaf")
+			.put(ItemID.GRIMY_MARRENTILL, "Grimy marrentill")
+			.put(ItemID.GRIMY_TARROMIN, "Grimy tarromin")
+			.put(ItemID.GRIMY_HARRALANDER, "Grimy harralander")
+			.put(ItemID.GRIMY_RANARR_WEED, "Grimy ranarr weed")
+			.put(ItemID.GRIMY_IRIT_LEAF, "Grimy irit leaf")
+			.put(ItemID.GRIMY_AVANTOE, "Grimy avantoe")
+			.put(ItemID.GRIMY_KWUARM, "Grimy kwuarm")
+			.put(ItemID.GRIMY_SNAPDRAGON, "Grimy snapdragon")
+			.put(ItemID.GRIMY_CADANTINE, "Grimy cadantine")
+			.put(ItemID.GRIMY_LANTADYME, "Grimy lantadyme")
+			.put(ItemID.GRIMY_DWARF_WEED, "Grimy dwarf weed")
+			.put(ItemID.GRIMY_TORSTOL, "Grimy torstol")
+			.build();
 
 	@Mock
 	@Bind
@@ -172,8 +172,8 @@ public class LootTrackerPluginTest
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(items.stream()
-			.map(is -> new Item(is.getId(), is.getQuantity()))
-			.toArray(Item[]::new));
+				.map(is -> new Item(is.getId(), is.getQuantity()))
+				.toArray(Item[]::new));
 		when(client.getItemContainer(inv)).thenReturn(itemContainer);
 
 		ItemContainerChanged event = new ItemContainerChanged(inv.getId(), itemContainer);
@@ -187,7 +187,7 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 1)
+				new ItemStack(ItemID.COINS_995, 1)
 		);
 		sendInvChange(InventoryID.INVENTORY, items);
 
@@ -201,7 +201,7 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 1)
+				new ItemStack(ItemID.COINS_995, 1)
 		);
 		sendInvChange(InventoryID.BARROWS_REWARD, items);
 
@@ -244,8 +244,8 @@ public class LootTrackerPluginTest
 			lootTrackerPlugin.onChatMessage(chatMessage);
 
 			verify(lootTrackerPlugin).addLoot("Herbiboar", -1, LootRecordType.EVENT, 42, Arrays.asList(
-				new ItemStack(id, 1),
-				new ItemStack(id, 1)
+					new ItemStack(id, 1),
+					new ItemStack(id, 1)
 			));
 		}
 	}
@@ -257,9 +257,9 @@ public class LootTrackerPluginTest
 		when(lootTrackerConfig.priceType()).thenReturn(LootTrackerPriceType.GRAND_EXCHANGE);
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.PURE_ESSENCE, 42)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.TWISTED_BOW, 1),
+				new Item(ItemID.PURE_ESSENCE, 42)
 		});
 		when(client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST)).thenReturn(itemContainer);
 
@@ -288,9 +288,9 @@ public class LootTrackerPluginTest
 		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.SCYTHE_OF_VITUR, 1),
-			new Item(ItemID.MAHOGANY_SEED, 10)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.SCYTHE_OF_VITUR, 1),
+				new Item(ItemID.MAHOGANY_SEED, 10)
 		});
 		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
 
@@ -323,7 +323,7 @@ public class LootTrackerPluginTest
 	{
 		when(client.getBoostedSkillLevel(Skill.HUNTER)).thenReturn(42);
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.BIRD_NEST, 42)
+				new ItemStack(ItemID.BIRD_NEST, 42)
 		);
 
 		// No bird nests
@@ -363,31 +363,31 @@ public class LootTrackerPluginTest
 		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.GRUBBY_KEY, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.TWISTED_BOW, 1),
+				new Item(ItemID.GRUBBY_KEY, 1)
 		});
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You unlock the chest with your key.", "", 0);
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.TWISTED_BOW, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.TWISTED_BOW, 1)
 		});
 		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have opened the Grubby Chest 2 times.", "", 0);
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.SHARK, 42)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.TWISTED_BOW, 1),
+				new Item(ItemID.SHARK, 42)
 		});
 		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
-			new ItemStack(ItemID.SHARK, 42)
+				new ItemStack(ItemID.SHARK, 42)
 		));
 	}
 
@@ -402,39 +402,39 @@ public class LootTrackerPluginTest
 		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BUCKET_OF_WATER, 1),
-			new Item(ItemID.ROPE, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.BUCKET_OF_WATER, 1),
+				new Item(ItemID.ROPE, 1)
 		});
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 30 x Raw tuna", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BUCKET_OF_WATER, 1),
-			new Item(ItemID.ROPE, 1),
-			new Item(ItemID.RAW_TUNA, 30)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.BUCKET_OF_WATER, 1),
+				new Item(ItemID.ROPE, 1),
+				new Item(ItemID.RAW_TUNA, 30)
 		});
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
-			new ItemStack(ItemID.RAW_TUNA, 30)
+				new ItemStack(ItemID.RAW_TUNA, 30)
 		));
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BUCKET_OF_WATER, 1),
-			new Item(ItemID.ROPE, 1),
-			new Item(ItemID.RAW_TUNA, 30),
-			new Item(ItemID.TOME_OF_WATER_EMPTY, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.BUCKET_OF_WATER, 1),
+				new Item(ItemID.ROPE, 1),
+				new Item(ItemID.RAW_TUNA, 30),
+				new Item(ItemID.TOME_OF_WATER_EMPTY, 1)
 		});
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
-			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1)
+				new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1)
 		));
 	}
 
@@ -450,8 +450,8 @@ public class LootTrackerPluginTest
 		loading.setGameState(GameState.LOADING);
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		});
 		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
 
@@ -463,7 +463,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+				new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		));
 	}
 
@@ -479,8 +479,8 @@ public class LootTrackerPluginTest
 		loading.setGameState(GameState.LOADING);
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		});
 		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
 
@@ -492,7 +492,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+				new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		));
 	}
 
@@ -508,8 +508,8 @@ public class LootTrackerPluginTest
 		loading.setGameState(GameState.LOADING);
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		});
 		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
 
@@ -521,18 +521,18 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+				new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		));
 
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
+		when(itemContainer.getItems()).thenReturn(new Item[] {
+				new Item(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
 		});
 		when(client.isInInstancedRegion()).thenReturn(true);
 		spyPlugin.onGameStateChanged(loading);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
+				new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
 		));
 	}
 }

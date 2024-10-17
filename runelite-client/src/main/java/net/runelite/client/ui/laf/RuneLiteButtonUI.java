@@ -43,38 +43,16 @@ public class RuneLiteButtonUI extends FlatButtonUI
 	@FlatStylingSupport.Styleable
 	protected float rolloverIconAlpha = 1.0f;
 
-	public static ComponentUI createUI(JComponent c)
-	{
-		return FlatUIUtils.canUseSharedUI(c)
-			? FlatUIUtils.createSharedUI(RuneLiteButtonUI.class, () -> new RuneLiteButtonUI(true))
-			: new RuneLiteButtonUI(false);
-	}
-
 	protected RuneLiteButtonUI(boolean shared)
 	{
 		super(shared);
 	}
 
-	@Override
-	protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect)
+	public static ComponentUI createUI(JComponent c)
 	{
-		if (rolloverIconAlpha != 1.0f && useRolloverEffect(c))
-		{
-			Graphics2D g2d = (Graphics2D) g;
-			Composite composite = g2d.getComposite();
-			try
-			{
-				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
-				super.paintIcon(g, c, iconRect);
-			}
-			finally
-			{
-				g2d.setComposite(composite);
-			}
-			return;
-		}
-
-		super.paintIcon(g, c, iconRect);
+		return FlatUIUtils.canUseSharedUI(c)
+				? FlatUIUtils.createSharedUI(RuneLiteButtonUI.class, () -> new RuneLiteButtonUI(true))
+				: new RuneLiteButtonUI(false);
 	}
 
 	static boolean useRolloverEffect(JComponent c)
@@ -94,5 +72,26 @@ public class RuneLiteButtonUI extends FlatButtonUI
 		}
 
 		return false;
+	}
+
+	@Override
+	protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect)
+	{
+		if (rolloverIconAlpha != 1.0f && useRolloverEffect(c))
+		{
+			Graphics2D g2d = (Graphics2D) g;
+			Composite composite = g2d.getComposite();
+			try
+			{
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
+				super.paintIcon(g, c, iconRect);
+			} finally
+			{
+				g2d.setComposite(composite);
+			}
+			return;
+		}
+
+		super.paintIcon(g, c, iconRect);
 	}
 }

@@ -42,22 +42,11 @@ import net.runelite.client.input.KeyListener;
 
 public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 {
-	@Data
-	@AllArgsConstructor
-	private static final class Entry
-	{
-		private String text;
-		private Runnable callback;
-	}
-
 	private final ChatboxPanelManager chatboxPanelManager;
-
-	@Getter
-	private String title;
-
 	@Getter
 	private final List<Entry> options = new ArrayList<>();
-
+	@Getter
+	private String title;
 	@Getter
 	private Runnable onClose;
 
@@ -174,7 +163,6 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 		}
 	}
 
-
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
@@ -217,5 +205,13 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
+	}
+
+	@Data
+	@AllArgsConstructor
+	private static final class Entry
+	{
+		private String text;
+		private Runnable callback;
 	}
 }

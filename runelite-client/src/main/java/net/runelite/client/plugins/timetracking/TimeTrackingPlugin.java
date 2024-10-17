@@ -66,9 +66,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Time Tracking",
-	description = "Enable the Time Tracking panel, which contains timers, stopwatches, and farming and bird house trackers",
-	tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "stopwatches", "timers", "panel"}
+		name = "Time Tracking",
+		description = "Enable the Time Tracking panel, which contains timers, stopwatches, and farming and bird house trackers",
+		tags = {"birdhouse", "farming", "hunter", "notifications", "skilling", "stopwatches", "timers", "panel"}
 )
 public class TimeTrackingPlugin extends Plugin
 {
@@ -145,11 +145,11 @@ public class TimeTrackingPlugin extends Plugin
 		panel = injector.getInstance(TimeTrackingPanel.class);
 
 		navButton = NavigationButton.builder()
-			.tooltip("Time Tracking")
-			.icon(icon)
-			.panel(panel)
-			.priority(4)
-			.build();
+				.tooltip("Time Tracking")
+				.icon(icon)
+				.panel(panel)
+				.priority(4)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 
@@ -189,12 +189,10 @@ public class TimeTrackingPlugin extends Plugin
 		if (clockManager.getTimers().isEmpty() && e.getKey().equals(TIMERS))
 		{
 			clockManager.loadTimers();
-		}
-		else if (clockManager.getStopwatches().isEmpty() && e.getKey().equals(STOPWATCHES))
+		} else if (clockManager.getStopwatches().isEmpty() && e.getKey().equals(STOPWATCHES))
 		{
 			clockManager.loadStopwatches();
-		}
-		else if (e.getKey().equals(PREFER_SOONEST))
+		} else if (e.getKey().equals(PREFER_SOONEST))
 		{
 			farmingTracker.loadCompletionTimes();
 		}

@@ -71,6 +71,6 @@ class ScreenMarkerCreationOverlay extends Overlay
 
 	private Stroke createStripedStroke(int thickness)
 	{
-		return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
+		return new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] {9}, 0);
 	}
 }

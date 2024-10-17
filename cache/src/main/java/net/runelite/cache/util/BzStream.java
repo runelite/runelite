@@ -68,21 +68,21 @@ public class BzStream extends Structure
 	protected List<String> getFieldOrder()
 	{
 		return Arrays.asList(
-			"next_in",
-			"avail_in",
-			"total_in_lo32",
-			"total_in_hi32",
+				"next_in",
+				"avail_in",
+				"total_in_lo32",
+				"total_in_hi32",
 
-			"next_out",
-			"avail_out",
-			"total_out_lo32",
-			"total_out_hi32",
+				"next_out",
+				"avail_out",
+				"total_out_lo32",
+				"total_out_hi32",
 
-			"state",
+				"state",
 
-			"bzalloc",
-			"bzfree",
-			"opaque"
+				"bzalloc",
+				"bzfree",
+				"opaque"
 		);
 	}
 }

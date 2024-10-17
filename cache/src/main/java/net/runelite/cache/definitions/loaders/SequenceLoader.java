@@ -92,12 +92,10 @@ public class SequenceLoader
 			{
 				def.frameIDs[var4] += stream.readUnsignedShort() << 16;
 			}
-		}
-		else if (opcode == 2)
+		} else if (opcode == 2)
 		{
 			def.frameStep = stream.readUnsignedShort();
-		}
-		else if (opcode == 3)
+		} else if (opcode == 3)
 		{
 			var3 = stream.readUnsignedByte();
 			def.interleaveLeave = new int[1 + var3];
@@ -108,40 +106,31 @@ public class SequenceLoader
 			}
 
 			def.interleaveLeave[var3] = 9999999;
-		}
-		else if (opcode == 4)
+		} else if (opcode == 4)
 		{
 			def.stretches = true;
-		}
-		else if (opcode == 5)
+		} else if (opcode == 5)
 		{
 			def.forcedPriority = stream.readUnsignedByte();
-		}
-		else if (opcode == 6)
+		} else if (opcode == 6)
 		{
 			def.leftHandItem = stream.readUnsignedShort();
-		}
-		else if (opcode == 7)
+		} else if (opcode == 7)
 		{
 			def.rightHandItem = stream.readUnsignedShort();
-		}
-		else if (opcode == 8)
+		} else if (opcode == 8)
 		{
 			def.maxLoops = stream.readUnsignedByte();
-		}
-		else if (opcode == 9)
+		} else if (opcode == 9)
 		{
 			def.precedenceAnimating = stream.readUnsignedByte();
-		}
-		else if (opcode == 10)
+		} else if (opcode == 10)
 		{
 			def.priority = stream.readUnsignedByte();
-		}
-		else if (opcode == 11)
+		} else if (opcode == 11)
 		{
 			def.replyMode = stream.readUnsignedByte();
-		}
-		else if (opcode == 12)
+		} else if (opcode == 12)
 		{
 			var3 = stream.readUnsignedByte();
 			def.chatFrameIds = new int[var3];
@@ -155,8 +144,7 @@ public class SequenceLoader
 			{
 				def.chatFrameIds[var4] += stream.readUnsignedShort() << 16;
 			}
-		}
-		else if (opcode == 13 && !rev226)
+		} else if (opcode == 13 && !rev226)
 		{
 			var3 = stream.readUnsignedByte();
 
@@ -164,12 +152,10 @@ public class SequenceLoader
 			{
 				def.frameSounds.put(var4, this.readFrameSound(stream));
 			}
-		}
-		else if (opcode == (rev226 ? 13 : 14))
+		} else if (opcode == (rev226 ? 13 : 14))
 		{
 			def.animMayaID = stream.readInt();
-		}
-		else if (opcode == (rev226 ? 14 : 15))
+		} else if (opcode == (rev226 ? 14 : 15))
 		{
 			var3 = stream.readUnsignedShort();
 
@@ -178,13 +164,11 @@ public class SequenceLoader
 				int frame = stream.readUnsignedShort();
 				def.frameSounds.put(frame, this.readFrameSound(stream));
 			}
-		}
-		else if (opcode == (rev226 ? 15 : 16))
+		} else if (opcode == (rev226 ? 15 : 16))
 		{
 			def.animMayaStart = stream.readUnsignedShort();
 			def.animMayaEnd = stream.readUnsignedShort();
-		}
-		else if (opcode == 17)
+		} else if (opcode == 17)
 		{
 			def.animMayaMasks = new boolean[256];
 
@@ -194,8 +178,7 @@ public class SequenceLoader
 			{
 				def.animMayaMasks[stream.readUnsignedByte()] = true;
 			}
-		}
-		else
+		} else
 		{
 			log.warn("Unrecognized opcode {}", opcode);
 		}
@@ -215,8 +198,7 @@ public class SequenceLoader
 			id = bits >> 8;
 			loops = bits >> 4 & 7;
 			retain = 0;
-		}
-		else
+		} else
 		{
 			id = stream.readUnsignedShort();
 			if (rev226)
@@ -231,8 +213,7 @@ public class SequenceLoader
 		if (id >= 1 && loops >= 1 && location >= 0 && retain >= 0)
 		{
 			return new SequenceDefinition.Sound(id, loops, location, retain, weight);
-		}
-		else
+		} else
 		{
 			return null;
 		}

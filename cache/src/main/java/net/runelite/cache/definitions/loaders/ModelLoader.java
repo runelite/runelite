@@ -13,16 +13,13 @@ public class ModelLoader
 		if (b[b.length - 1] == -3 && b[b.length - 2] == -1)
 		{
 			decodeType3(def, b);
-		}
-		else if (b[b.length - 1] == -2 && b[b.length - 2] == -1)
+		} else if (b[b.length - 1] == -2 && b[b.length - 2] == -1)
 		{
 			decodeType2(def, b);
-		}
-		else if (b[b.length - 1] == -1 && b[b.length - 2] == -1)
+		} else if (b[b.length - 1] == -1 && b[b.length - 2] == -1)
 		{
 			decodeType1(def, b);
-		}
-		else
+		} else
 		{
 			decodeOldFormat(def, b);
 		}
@@ -170,8 +167,7 @@ public class ModelLoader
 		if (var13 == 255)
 		{
 			def.faceRenderPriorities = new byte[var10];
-		}
-		else
+		} else
 		{
 			def.priority = (byte) var13;
 		}
@@ -497,8 +493,7 @@ public class ModelLoader
 		if (var13 == 255)
 		{
 			def.faceRenderPriorities = new byte[var10];
-		}
-		else
+		} else
 		{
 			def.priority = (byte) var13;
 		}
@@ -599,8 +594,7 @@ public class ModelLoader
 				{
 					def.faceRenderTypes[var40] = 1;
 					var2 = true;
-				}
-				else
+				} else
 				{
 					def.faceRenderTypes[var40] = 0;
 				}
@@ -614,8 +608,7 @@ public class ModelLoader
 					{
 						var3 = true;
 					}
-				}
-				else
+				} else
 				{
 					def.textureCoords[var40] = -1;
 					def.faceTextures[var40] = -1;
@@ -716,8 +709,7 @@ public class ModelLoader
 					if (def.faceIndices1[var45] == (def.texIndices1[var46] & '\uffff') && def.faceIndices2[var45] == (def.texIndices2[var46] & '\uffff') && def.faceIndices3[var45] == (def.texIndices3[var46] & '\uffff'))
 					{
 						def.textureCoords[var45] = -1;
-					}
-					else
+					} else
 					{
 						var47 = true;
 					}
@@ -880,8 +872,7 @@ public class ModelLoader
 		if (var13 == 255)
 		{
 			def.faceRenderPriorities = new byte[var10];
-		}
-		else
+		} else
 		{
 			def.priority = (byte) var13;
 		}
@@ -1187,8 +1178,7 @@ public class ModelLoader
 		if (faceRenderPriority == 255)
 		{
 			def.faceRenderPriorities = new byte[faceCount];
-		}
-		else
+		} else
 		{
 			def.priority = (byte) faceRenderPriority;
 		}
@@ -1262,8 +1252,7 @@ public class ModelLoader
 				{
 					def.faceRenderTypes[i] = 1;
 					usesFaceRenderTypes = true;
-				}
-				else
+				} else
 				{
 					def.faceRenderTypes[i] = 0;
 				}
@@ -1277,8 +1266,7 @@ public class ModelLoader
 					{
 						usesFaceTextures = true;
 					}
-				}
-				else
+				} else
 				{
 					def.textureCoords[i] = -1;
 					def.faceTextures[i] = -1;
@@ -1372,8 +1360,7 @@ public class ModelLoader
 					if (def.faceIndices1[i] == (def.texIndices1[coord] & '\uffff') && def.faceIndices2[i] == (def.texIndices2[coord] & '\uffff') && def.faceIndices3[i] == (def.texIndices3[coord] & '\uffff'))
 					{
 						def.textureCoords[i] = -1;
-					}
-					else
+					} else
 					{
 						usesTextureCoords = true;
 					}

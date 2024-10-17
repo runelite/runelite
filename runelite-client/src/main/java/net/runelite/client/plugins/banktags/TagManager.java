@@ -50,8 +50,8 @@ public class TagManager
 
 	@Inject
 	private TagManager(
-		final ItemManager itemManager,
-		final ConfigManager configManager)
+			final ItemManager itemManager,
+			final ConfigManager configManager)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
@@ -82,8 +82,7 @@ public class TagManager
 		if (Strings.isNullOrEmpty(tags))
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, tags);
 		}
@@ -123,9 +122,9 @@ public class TagManager
 	{
 		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
 		return configManager.getConfigurationKeys(prefix).stream()
-			.map(item -> Integer.parseInt(item.replace(prefix, "")))
-			.filter(item -> getTags(item, false).contains(tag) || getTags(item, true).contains(tag))
-			.collect(Collectors.toList());
+				.map(item -> Integer.parseInt(item.replace(prefix, "")))
+				.filter(item -> getTags(item, false).contains(tag) || getTags(item, true).contains(tag))
+				.collect(Collectors.toList());
 	}
 
 	public void removeTag(String tag)

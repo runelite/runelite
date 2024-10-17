@@ -42,29 +42,14 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Account",
-	description = "Sync RuneLite config settings with your Google account",
-	tags = {"external", "google", "integration"},
-	loadWhenOutdated = true
+		name = "Account",
+		description = "Sync RuneLite config settings with your Google account",
+		tags = {"external", "google", "integration"},
+		loadWhenOutdated = true
 )
 @Slf4j
 public class AccountPlugin extends Plugin
 {
-	@Inject
-	private SessionManager sessionManager;
-
-	@Inject
-	private ConfigManager configManager;
-
-	@Inject
-	private ClientToolbar clientToolbar;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
-	private NavigationButton loginButton;
-	private NavigationButton logoutButton;
-
 	private static final BufferedImage LOGIN_IMAGE, LOGOUT_IMAGE;
 
 	static
@@ -73,20 +58,31 @@ public class AccountPlugin extends Plugin
 		LOGOUT_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "logout_icon.png");
 	}
 
+	@Inject
+	private SessionManager sessionManager;
+	@Inject
+	private ConfigManager configManager;
+	@Inject
+	private ClientToolbar clientToolbar;
+	@Inject
+	private ScheduledExecutorService executor;
+	private NavigationButton loginButton;
+	private NavigationButton logoutButton;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		loginButton = NavigationButton.builder()
-			.icon(LOGIN_IMAGE)
-			.tooltip("Sign in to RuneLite")
-			.onClick(this::loginClick)
-			.build();
+				.icon(LOGIN_IMAGE)
+				.tooltip("Sign in to RuneLite")
+				.onClick(this::loginClick)
+				.build();
 
 		logoutButton = NavigationButton.builder()
-			.icon(LOGOUT_IMAGE)
-			.tooltip("Sign out of RuneLite")
-			.onClick(this::logoutClick)
-			.build();
+				.icon(LOGOUT_IMAGE)
+				.tooltip("Sign out of RuneLite")
+				.onClick(this::logoutClick)
+				.build();
 
 		addAndRemoveButtons();
 	}
@@ -96,8 +92,8 @@ public class AccountPlugin extends Plugin
 		clientToolbar.removeNavigation(loginButton);
 		clientToolbar.removeNavigation(logoutButton);
 		clientToolbar.addNavigation(sessionManager.getAccountSession() == null
-			? loginButton
-			: logoutButton);
+				? loginButton
+				: logoutButton);
 	}
 
 	@Override
@@ -115,8 +111,8 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-			"Are you sure you want to sign out of RuneLite?", "Sign Out Confirmation",
-			JOptionPane.YES_NO_OPTION))
+				"Are you sure you want to sign out of RuneLite?", "Sign Out Confirmation",
+				JOptionPane.YES_NO_OPTION))
 		{
 			executor.execute(() ->
 			{

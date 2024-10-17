@@ -91,13 +91,12 @@ class SkillCalculator extends JPanel
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final Map<SkillBonus, JCheckBox> bonusCheckBoxes = new HashMap<>();
 	private final IconTextField searchBar = new IconTextField();
-
+	private final Set<SkillBonus> currentBonuses = new HashSet<>();
 	private CalculatorType currentCalculator;
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private final Set<SkillBonus> currentBonuses = new HashSet<>();
 
 	@Inject
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -149,6 +148,116 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
 	}
 
+	private static String generateDisplayNameForBonus(SkillBonus bonus)
+	{
+		return bonus.getName() + " (" + formatBonusPercentage(bonus.getValue()) + "%)";
+	}
+
+	@VisibleForTesting
+	static String formatBonusPercentage(float bonus)
+	{
+		final int bonusValue = Math.round(10_000 * bonus);
+		final float bonusPercent = bonusValue / 100f;
+		final int bonusPercentInt = (int) bonusPercent;
+
+		if (bonusPercent == bonusPercentInt)
+		{
+			return String.valueOf(bonusPercentInt);
+		} else
+		{
+			return String.valueOf(bonusPercent);
+		}
+	}
+
+	private static String formatXPActionString(int xp, int actionCount, String expExpression)
+	{
+		int integer = xp / 10;
+		int frac = xp % 10;
+		return (frac != 0 ? (integer + "." + frac) : integer) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount == 1 ? " action" : " actions");
+	}
+
+	private static int enforceSkillBounds(int input)
+	{
+		return Math.min(Experience.MAX_VIRT_LEVEL, Math.max(1, input));
+	}
+
+	private static int enforceXPBounds(int input)
+	{
+		return Math.min(MAX_XP, Math.max(0, input));
+	}
+
+	private static boolean slotContainsText(UIActionSlot slot, String text)
+	{
+		return slot.getActionName().toLowerCase().contains(text.toLowerCase());
+	}
+
+	private static FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)
+	{
+		return new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				focusLostConsumer.accept(e);
+			}
+		};
+	}
+
+	private static @Varp int endGoalVarpForSkill(final Skill skill)
+	{
+		switch (skill)
+		{
+			case ATTACK:
+				return VarPlayer.ATTACK_GOAL_END;
+			case MINING:
+				return VarPlayer.MINING_GOAL_END;
+			case WOODCUTTING:
+				return VarPlayer.WOODCUTTING_GOAL_END;
+			case DEFENCE:
+				return VarPlayer.DEFENCE_GOAL_END;
+			case MAGIC:
+				return VarPlayer.MAGIC_GOAL_END;
+			case RANGED:
+				return VarPlayer.RANGED_GOAL_END;
+			case HITPOINTS:
+				return VarPlayer.HITPOINTS_GOAL_END;
+			case AGILITY:
+				return VarPlayer.AGILITY_GOAL_END;
+			case STRENGTH:
+				return VarPlayer.STRENGTH_GOAL_END;
+			case PRAYER:
+				return VarPlayer.PRAYER_GOAL_END;
+			case SLAYER:
+				return VarPlayer.SLAYER_GOAL_END;
+			case FISHING:
+				return VarPlayer.FISHING_GOAL_END;
+			case RUNECRAFT:
+				return VarPlayer.RUNECRAFT_GOAL_END;
+			case HERBLORE:
+				return VarPlayer.HERBLORE_GOAL_END;
+			case FIREMAKING:
+				return VarPlayer.FIREMAKING_GOAL_END;
+			case CONSTRUCTION:
+				return VarPlayer.CONSTRUCTION_GOAL_END;
+			case HUNTER:
+				return VarPlayer.HUNTER_GOAL_END;
+			case COOKING:
+				return VarPlayer.COOKING_GOAL_END;
+			case FARMING:
+				return VarPlayer.FARMING_GOAL_END;
+			case CRAFTING:
+				return VarPlayer.CRAFTING_GOAL_END;
+			case SMITHING:
+				return VarPlayer.SMITHING_GOAL_END;
+			case THIEVING:
+				return VarPlayer.THIEVING_GOAL_END;
+			case FLETCHING:
+				return VarPlayer.FLETCHING_GOAL_END;
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
 	void openCalculator(CalculatorType calculatorType, boolean forceReload)
 	{
 		// Update internal skill/XP values.
@@ -166,8 +275,7 @@ class SkillCalculator extends JPanel
 			{
 				targetLevel = Experience.getLevelForXp(endGoal);
 				targetXP = endGoal;
-			}
-			else
+			} else
 			{
 				targetLevel = enforceSkillBounds(currentLevel + 1);
 				targetXP = Experience.getXpForLevel(targetLevel);
@@ -208,12 +316,10 @@ class SkillCalculator extends JPanel
 		if (size > 1)
 		{
 			combinedActionSlot.setTitle(size + " actions selected");
-		}
-		else if (size == 1)
+		} else if (size == 1)
 		{
 			combinedActionSlot.setTitle("1 action selected");
-		}
-		else
+		} else
 		{
 			combinedActionSlot.setTitle("No action selected");
 			combinedActionSlot.setText("Shift-click to select multiple");
@@ -291,28 +397,6 @@ class SkillCalculator extends JPanel
 		return uiOption;
 	}
 
-	private static String generateDisplayNameForBonus(SkillBonus bonus)
-	{
-		return bonus.getName() + " (" + formatBonusPercentage(bonus.getValue()) + "%)";
-	}
-
-	@VisibleForTesting
-	static String formatBonusPercentage(float bonus)
-	{
-		final int bonusValue = Math.round(10_000 * bonus);
-		final float bonusPercent = bonusValue / 100f;
-		final int bonusPercentInt = (int) bonusPercent;
-
-		if (bonusPercent == bonusPercentInt)
-		{
-			return String.valueOf(bonusPercentInt);
-		}
-		else
-		{
-			return String.valueOf(bonusPercent);
-		}
-	}
-
 	private void adjustCheckboxes(JCheckBox target, SkillBonus bonus)
 	{
 		// Check if target is stackable with any other bonuses
@@ -328,8 +412,7 @@ class SkillCalculator extends JPanel
 		if (target.isSelected())
 		{
 			currentBonuses.add(bonus);
-		}
-		else
+		} else
 		{
 			currentBonuses.remove(bonus);
 		}
@@ -349,8 +432,7 @@ class SkillCalculator extends JPanel
 			if (action.getIcon() != -1)
 			{
 				itemManager.getImage(action.getIcon()).addTo(uiIcon);
-			}
-			else if (action.getSprite() != -1)
+			} else if (action.getSprite() != -1)
 			{
 				spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 			}
@@ -371,8 +453,7 @@ class SkillCalculator extends JPanel
 					if (slot.isSelected())
 					{
 						combinedActionSlots.remove(slot);
-					}
-					else
+					} else
 					{
 						combinedActionSlots.add(slot);
 					}
@@ -389,23 +470,21 @@ class SkillCalculator extends JPanel
 			uiActionSlots.forEach(this::add);
 			revalidate();
 			repaint();
-		}
-		else
+		} else
 		{
 			// Filter out members actions due to being on F2P, then refresh the rendering
 			clientThread.invokeLater(() ->
 			{
 				List<UIActionSlot> membersActions = uiActionSlots.stream()
-					.filter(slot -> !slot.getAction().isMembers(itemManager))
-					.collect(Collectors.toList());
+						.filter(slot -> !slot.getAction().isMembers(itemManager))
+						.collect(Collectors.toList());
 
 				SwingUtilities.invokeLater(() ->
 				{
 					if (membersActions.isEmpty())
 					{
 						add(EMPTY_PANEL);
-					}
-					else
+					} else
 					{
 						membersActions.forEach(this::add);
 					}
@@ -446,13 +525,6 @@ class SkillCalculator extends JPanel
 		}
 
 		updateCombinedAction();
-	}
-
-	private static String formatXPActionString(int xp, int actionCount, String expExpression)
-	{
-		int integer = xp / 10;
-		int frac = xp % 10;
-		return (frac != 0 ? (integer + "." + frac) : integer) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount == 1 ? " action" : " actions");
 	}
 
 	private void updateInputFields()
@@ -502,16 +574,6 @@ class SkillCalculator extends JPanel
 		updateInputFields();
 	}
 
-	private static int enforceSkillBounds(int input)
-	{
-		return Math.min(Experience.MAX_VIRT_LEVEL, Math.max(1, input));
-	}
-
-	private static int enforceXPBounds(int input)
-	{
-		return Math.min(MAX_XP, Math.max(0, input));
-	}
-
 	private void onSearch()
 	{
 		//only show slots that match our search text
@@ -520,85 +582,12 @@ class SkillCalculator extends JPanel
 			if (slotContainsText(slot, searchBar.getText()))
 			{
 				super.add(slot);
-			}
-			else
+			} else
 			{
 				super.remove(slot);
 			}
 
 			revalidate();
 		});
-	}
-
-	private static boolean slotContainsText(UIActionSlot slot, String text)
-	{
-		return slot.getActionName().toLowerCase().contains(text.toLowerCase());
-	}
-
-	private static FocusAdapter buildFocusAdapter(Consumer<FocusEvent> focusLostConsumer)
-	{
-		return new FocusAdapter()
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				focusLostConsumer.accept(e);
-			}
-		};
-	}
-
-	private static @Varp int endGoalVarpForSkill(final Skill skill)
-	{
-		switch (skill)
-		{
-			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_END;
-			case MINING:
-				return VarPlayer.MINING_GOAL_END;
-			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_END;
-			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_END;
-			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_END;
-			case RANGED:
-				return VarPlayer.RANGED_GOAL_END;
-			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_END;
-			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_END;
-			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_END;
-			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_END;
-			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_END;
-			case FISHING:
-				return VarPlayer.FISHING_GOAL_END;
-			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_END;
-			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_END;
-			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_END;
-			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_END;
-			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_END;
-			case COOKING:
-				return VarPlayer.COOKING_GOAL_END;
-			case FARMING:
-				return VarPlayer.FARMING_GOAL_END;
-			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_END;
-			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_END;
-			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_END;
-			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_END;
-			default:
-				throw new IllegalArgumentException();
-		}
 	}
 }

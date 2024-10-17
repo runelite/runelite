@@ -30,8 +30,8 @@ import lombok.NonNull;
 
 public class Layout
 {
-	private int[] layout;
 	boolean dirty = true;
+	private int[] layout;
 
 	public Layout()
 	{
@@ -74,8 +74,7 @@ public class Layout
 		{
 			layout = new int[pos + 1];
 			Arrays.fill(layout, -1);
-		}
-		else if (pos >= layout.length)
+		} else if (pos >= layout.length)
 		{
 			int[] n = Arrays.copyOf(layout, pos + 1);
 			Arrays.fill(n, layout.length, n.length, -1);
@@ -155,8 +154,7 @@ public class Layout
 			layout[sidx] = -1;
 			System.arraycopy(layout, i + 1, layout, i, tidx - i);
 			layout[tidx] = sid;
-		}
-		else if (sidx > tidx)
+		} else if (sidx > tidx)
 		{
 			// Shift items up to the next blank spot
 			int i = tidx;

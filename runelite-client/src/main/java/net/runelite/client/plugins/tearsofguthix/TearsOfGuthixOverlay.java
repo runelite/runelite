@@ -69,7 +69,7 @@ class TearsOfGuthixOverlay extends Overlay
 		plugin.getStreams().forEach((object, timer) ->
 		{
 			if ((object.getId() == ObjectID.GREEN_TEARS || object.getId() == ObjectID.GREEN_TEARS_6666)
-				&& !config.showGreenTearsTimer())
+					&& !config.showGreenTearsTimer())
 			{
 				return;
 			}
@@ -85,13 +85,12 @@ class TearsOfGuthixOverlay extends Overlay
 			progressPie.setDiameter(15);
 
 			if (object.getId() == ObjectID.BLUE_TEARS ||
-				object.getId() == ObjectID.BLUE_TEARS_6665)
+					object.getId() == ObjectID.BLUE_TEARS_6665)
 			{
 				progressPie.setFill(blueTearsFill);
 				progressPie.setBorderColor(blueTearsBorder);
-			}
-			else if (object.getId() == ObjectID.GREEN_TEARS ||
-				object.getId() == ObjectID.GREEN_TEARS_6666)
+			} else if (object.getId() == ObjectID.GREEN_TEARS ||
+					object.getId() == ObjectID.GREEN_TEARS_6666)
 			{
 				progressPie.setFill(greenTearsFill);
 				progressPie.setBorderColor(greenTearsBorder);
@@ -101,8 +100,8 @@ class TearsOfGuthixOverlay extends Overlay
 
 			final Duration duration = Duration.between(timer, Instant.now());
 			progressPie.setProgress(1 - (duration.compareTo(MAX_TIME) < 0
-				? (double) duration.toMillis() / MAX_TIME.toMillis()
-				: 1));
+					? (double) duration.toMillis() / MAX_TIME.toMillis()
+					: 1));
 
 			progressPie.render(graphics);
 		});

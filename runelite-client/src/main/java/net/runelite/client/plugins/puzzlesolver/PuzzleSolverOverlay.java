@@ -138,8 +138,7 @@ public class PuzzleSolverOverlay extends Overlay
 			if (solver.hasFailed())
 			{
 				infoString = "The puzzle could not be solved";
-			}
-			else
+			} else
 			{
 				if (solver.hasSolution())
 				{
@@ -202,12 +201,10 @@ public class PuzzleSolverOverlay extends Overlay
 						if (stepsLeft == 0)
 						{
 							infoString = "Solved!";
-						}
-						else if (config.displayRemainingMoves())
+						} else if (config.displayRemainingMoves())
 						{
 							infoString = "Moves left: " + stepsLeft;
-						}
-						else
+						} else
 						{
 							infoString = null;
 						}
@@ -248,8 +245,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 									graphics.fillOval(x, y, markerSize, markerSize);
 								}
-							}
-							else
+							} else
 							{
 								// Find the current blank tile position
 								PuzzleState currentMove = solver.getStep(solver.getPosition());
@@ -284,16 +280,13 @@ public class PuzzleSolverOverlay extends Overlay
 									if (xDelta > 0)
 									{
 										arrow = getRightArrow();
-									}
-									else if (xDelta < 0)
+									} else if (xDelta < 0)
 									{
 										arrow = getLeftArrow();
-									}
-									else if (yDelta > 0)
+									} else if (yDelta > 0)
 									{
 										arrow = getDownArrow();
-									}
-									else
+									} else
 									{
 										arrow = getUpArrow();
 									}
@@ -345,7 +338,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 		// Solve the puzzle if we don't have an up to date solution
 		if (solver == null || cachedItems == null
-			|| (!shouldCache && solver.hasExceededWaitDuration() && !Arrays.equals(cachedItems, itemIds)))
+				|| (!shouldCache && solver.hasExceededWaitDuration() && !Arrays.equals(cachedItems, itemIds)))
 		{
 			solve(itemIds, useNormalSolver);
 			shouldCache = true;
@@ -411,8 +404,7 @@ public class PuzzleSolverOverlay extends Overlay
 				}
 
 				convertedItems[i] = value;
-			}
-			else
+			} else
 			{
 				convertedItems[i] = BLANK_TILE_VALUE;
 			}
@@ -439,8 +431,7 @@ public class PuzzleSolverOverlay extends Overlay
 		if (useNormalSolver)
 		{
 			solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
-		}
-		else
+		} else
 		{
 			solver = new PuzzleSolver(new IDAStarMM(new ManhattanDistance()), puzzleState);
 		}

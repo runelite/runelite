@@ -33,12 +33,14 @@ public interface PendingLogin
 {
 	/**
 	 * The name of the player
+	 *
 	 * @return
 	 */
 	String getName();
 
 	/**
 	 * The world the player logged into, or 0 if a logout.
+	 *
 	 * @return
 	 */
 	short getWorld();

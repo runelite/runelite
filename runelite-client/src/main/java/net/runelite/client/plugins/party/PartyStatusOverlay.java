@@ -74,8 +74,8 @@ class PartyStatusOverlay extends Overlay
 
 	@Inject
 	private PartyStatusOverlay(
-		Client client, SpriteManager spriteManager,
-		PartyConfig config, PartyService partyService, PartyPluginService partyPluginService
+			Client client, SpriteManager spriteManager,
+			PartyConfig config, PartyService partyService, PartyPluginService partyPluginService
 	)
 	{
 		this.client = client;
@@ -172,10 +172,10 @@ class PartyStatusOverlay extends Overlay
 			int zOffset = size * renderIx;
 
 			OverlayUtil.renderTextLocation(
-				graphics,
-				new Point(point.getX() + size + 5, point.getY() + zOffset),
-				text,
-				color
+					graphics,
+					new Point(point.getX() + size + 5, point.getY() + zOffset),
+					text,
+					color
 			);
 		}
 	}

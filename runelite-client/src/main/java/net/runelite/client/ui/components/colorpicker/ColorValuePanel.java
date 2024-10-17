@@ -52,12 +52,6 @@ public class ColorValuePanel extends JPanel
 
 	private Consumer<Integer> onValueChanged;
 
-	void setOnValueChanged(Consumer<Integer> c)
-	{
-		onValueChanged = c;
-		slider.setOnValueChanged(c);
-	}
-
 	ColorValuePanel(String labelText)
 	{
 		setLayout(new BorderLayout(10, 0));
@@ -70,7 +64,7 @@ public class ColorValuePanel extends JPanel
 		{
 			@Override
 			public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String str, AttributeSet attrs)
-				throws BadLocationException
+					throws BadLocationException
 			{
 				try
 				{
@@ -84,8 +78,7 @@ public class ColorValuePanel extends JPanel
 					}
 
 					super.replace(fb, offset, length, str, attrs);
-				}
-				catch (NumberFormatException e)
+				} catch (NumberFormatException e)
 				{
 					Toolkit.getDefaultToolkit().beep();
 				}
@@ -115,6 +108,12 @@ public class ColorValuePanel extends JPanel
 		add(label, BorderLayout.WEST);
 		add(slider, BorderLayout.CENTER);
 		add(input, BorderLayout.EAST);
+	}
+
+	void setOnValueChanged(Consumer<Integer> c)
+	{
+		onValueChanged = c;
+		slider.setOnValueChanged(c);
 	}
 
 	private void updateText()

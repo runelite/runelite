@@ -126,7 +126,7 @@ public class RunEnergyPluginTest
 	@Test
 	public void testUncharge()
 	{
-		when(client.getIntStack()).thenReturn(new int[]{1, RING_OF_ENDURANCE});
+		when(client.getIntStack()).thenReturn(new int[] {1, RING_OF_ENDURANCE});
 		when(client.getIntStackSize()).thenReturn(1);
 		when(client.getTickCount()).thenReturn(1);
 

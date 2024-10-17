@@ -266,15 +266,15 @@ public class ClueScrollPluginTest
 		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), container);
 
 		final Item[] inventory = {
-			new Item(ItemID.COINS_995, 100),
-			new Item(ItemID.MITHRIL_BAR, 1),
-			new Item(ItemID.MITHRIL_BAR, 1),
-			new Item(ItemID.MITHRIL_BAR, 1),
-			new Item(ItemID.SOUL_RUNE, 30),
-			new Item(ItemID.COSMIC_RUNE, 100),
-			new Item(ItemID.RUNE_POUCH, 1),
-			new Item(ItemID.SPADE, 1),
-			new Item(ItemID.CLUE_SCROLL_MASTER, 1)
+				new Item(ItemID.COINS_995, 100),
+				new Item(ItemID.MITHRIL_BAR, 1),
+				new Item(ItemID.MITHRIL_BAR, 1),
+				new Item(ItemID.MITHRIL_BAR, 1),
+				new Item(ItemID.SOUL_RUNE, 30),
+				new Item(ItemID.COSMIC_RUNE, 100),
+				new Item(ItemID.RUNE_POUCH, 1),
+				new Item(ItemID.SPADE, 1),
+				new Item(ItemID.CLUE_SCROLL_MASTER, 1)
 		};
 
 		when(container.getItems()).thenReturn(inventory);

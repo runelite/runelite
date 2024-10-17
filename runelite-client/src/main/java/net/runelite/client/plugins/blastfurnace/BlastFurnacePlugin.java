@@ -53,9 +53,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Blast Furnace",
-	description = "Show helpful information for the Blast Furnace minigame",
-	tags = {"minigame", "overlay", "skilling", "smithing"}
+		name = "Blast Furnace",
+		description = "Show helpful information for the Blast Furnace minigame",
+		tags = {"minigame", "overlay", "skilling", "smithing"}
 )
 public class BlastFurnacePlugin extends Plugin
 {
@@ -172,7 +172,7 @@ public class BlastFurnacePlugin extends Plugin
 
 		// blocking dialog check until 5 minutes needed to avoid re-adding while dialog message still displayed
 		boolean shouldCheckForemanFee = client.getRealSkillLevel(Skill.SMITHING) < 60
-			&& (foremanTimer == null || Duration.between(Instant.now(), foremanTimer.getEndTime()).toMinutes() <= 5);
+				&& (foremanTimer == null || Duration.between(Instant.now(), foremanTimer.getEndTime()).toMinutes() <= 5);
 
 		if (shouldCheckForemanFee)
 		{

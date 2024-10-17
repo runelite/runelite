@@ -53,9 +53,9 @@ public class SpriteManager
 	private final InfoBoxManager infoBoxManager;
 
 	private final Cache<Long, BufferedImage> cache = CacheBuilder.newBuilder()
-		.maximumSize(128L)
-		.expireAfterAccess(1, TimeUnit.HOURS)
-		.build();
+			.maximumSize(128L)
+			.expireAfterAccess(1, TimeUnit.HOURS)
+			.build();
 
 	@Inject
 	private SpriteManager(Client client, ClientThread clientThread, InfoBoxManager infoBoxManager)

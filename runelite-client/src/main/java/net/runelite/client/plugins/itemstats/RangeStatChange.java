@@ -55,6 +55,34 @@ public class RangeStatChange extends StatChange
 	 */
 	private int minAbsolute;
 
+	private static String concat(int changeA, int changeB)
+	{
+		if (changeA == changeB)
+		{
+			return formatBoost(changeA);
+		} else if (changeA * -1 == changeB)
+		{
+			return "±" + Math.abs(changeA);
+		}
+
+		final StringBuilder sb = new StringBuilder();
+
+		sb.append(String.format("%+d", changeA));
+		sb.append('~');
+
+		// If they share a operator, strip b's duplicate
+		if (changeA < 0 && changeB < 0
+				|| changeA >= 0 && changeB >= 0)
+		{
+			sb.append(Math.abs(changeB));
+		} else
+		{
+			sb.append(String.format("%+d", changeB));
+		}
+
+		return sb.toString();
+	}
+
 	/**
 	 * Returns a human-readable formatted relative boost.
 	 * Should be the boost range in the format "±N" (for minimum -N and maximum +N values),
@@ -83,35 +111,5 @@ public class RangeStatChange extends StatChange
 	public String getFormattedTheoretical()
 	{
 		return concat(minTheoretical, getTheoretical());
-	}
-
-	private static String concat(int changeA, int changeB)
-	{
-		if (changeA == changeB)
-		{
-			return formatBoost(changeA);
-		}
-		else if (changeA * -1 == changeB)
-		{
-			return "±" + Math.abs(changeA);
-		}
-
-		final StringBuilder sb = new StringBuilder();
-
-		sb.append(String.format("%+d", changeA));
-		sb.append('~');
-
-		// If they share a operator, strip b's duplicate
-		if (changeA < 0 && changeB < 0
-			|| changeA >= 0 && changeB >= 0)
-		{
-			sb.append(Math.abs(changeB));
-		}
-		else
-		{
-			sb.append(String.format("%+d", changeB));
-		}
-
-		return sb.toString();
 	}
 }

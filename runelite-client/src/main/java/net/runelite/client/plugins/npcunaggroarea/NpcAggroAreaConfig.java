@@ -41,10 +41,10 @@ public interface NpcAggroAreaConfig extends Config
 	String CONFIG_DURATION = "duration";
 
 	@ConfigItem(
-		keyName = "npcUnaggroAlwaysActive",
-		name = "Always active",
-		description = "Always show this plugins overlays<br>Otherwise, they will only be shown when any NPC name matches the list",
-		position = 1
+			keyName = "npcUnaggroAlwaysActive",
+			name = "Always active",
+			description = "Always show this plugins overlays<br>Otherwise, they will only be shown when any NPC name matches the list",
+			position = 1
 	)
 	default boolean alwaysActive()
 	{
@@ -52,10 +52,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "npcUnaggroNames",
-		name = "NPC names",
-		description = "Enter names of NPCs where you wish to use this plugin",
-		position = 2
+			keyName = "npcUnaggroNames",
+			name = "NPC names",
+			description = "Enter names of NPCs where you wish to use this plugin",
+			position = 2
 	)
 	default String npcNamePatterns()
 	{
@@ -63,10 +63,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "npcUnaggroShowTimer",
-		name = "Show timer",
-		description = "Display a timer until NPCs become unaggressive",
-		position = 3
+			keyName = "npcUnaggroShowTimer",
+			name = "Show timer",
+			description = "Display a timer until NPCs become unaggressive",
+			position = 3
 	)
 	default boolean showTimer()
 	{
@@ -74,10 +74,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "npcUnaggroShowAreaLines",
-		name = "Show area lines",
-		description = "Display lines, when walked past, the unaggressive timer resets",
-		position = 4
+			keyName = "npcUnaggroShowAreaLines",
+			name = "Show area lines",
+			description = "Display lines, when walked past, the unaggressive timer resets",
+			position = 4
 	)
 	default boolean showAreaLines()
 	{
@@ -86,10 +86,10 @@ public interface NpcAggroAreaConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "npcAggroAreaColor",
-		name = "Aggressive colour",
-		description = "Choose colour to use for marking NPC unaggressive area when NPCs are aggressive",
-		position = 5
+			keyName = "npcAggroAreaColor",
+			name = "Aggressive colour",
+			description = "Choose colour to use for marking NPC unaggressive area when NPCs are aggressive",
+			position = 5
 	)
 	default Color aggroAreaColor()
 	{
@@ -98,10 +98,10 @@ public interface NpcAggroAreaConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "npcUnaggroAreaColor",
-		name = "Unaggressive colour",
-		description = "Choose colour to use for marking NPC unaggressive area after NPCs have lost aggression",
-		position = 6
+			keyName = "npcUnaggroAreaColor",
+			name = "Unaggressive colour",
+			description = "Choose colour to use for marking NPC unaggressive area after NPCs have lost aggression",
+			position = 6
 	)
 	default Color unaggroAreaColor()
 	{
@@ -109,10 +109,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notifyExpire",
-		name = "Notify Expiration",
-		description = "Send a notification when the unaggressive timer expires",
-		position = 7
+			keyName = "notifyExpire",
+			name = "Notify Expiration",
+			description = "Send a notification when the unaggressive timer expires",
+			position = 7
 	)
 	default Notification notifyExpire()
 	{
@@ -120,10 +120,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideIfOutOfCombat",
-		name = "Hide when out of combat",
-		description = "Hides unaggressive area lines when out of combat.",
-		position = 8
+			keyName = "hideIfOutOfCombat",
+			name = "Hide when out of combat",
+			description = "Hides unaggressive area lines when out of combat.",
+			position = 8
 	)
 	default boolean hideIfOutOfCombat()
 	{
@@ -131,10 +131,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOnSlayerTask",
-		name = "Show on slayer task",
-		description = "Enable for current slayer task NPCs",
-		position = 9
+			keyName = "showOnSlayerTask",
+			name = "Show on slayer task",
+			description = "Enable for current slayer task NPCs",
+			position = 9
 	)
 	default boolean showOnSlayerTask()
 	{

@@ -40,10 +40,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Virtual Levels",
-	description = "Shows virtual levels (beyond 99) and virtual skill total on the skills tab.",
-	tags = {"skill", "total", "max"},
-	enabledByDefault = false
+		name = "Virtual Levels",
+		description = "Shows virtual levels (beyond 99) and virtual skill total on the skills tab.",
+		tags = {"skill", "total", "max"},
+		enabledByDefault = false
 )
 public class VirtualLevelsPlugin extends Plugin
 {

@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showConveyorBelt",
-		name = "Show conveyor belt clickbox",
-		description = "Configures whether or not the clickbox for the conveyor belt is displayed",
-		position = 1
+			keyName = "showConveyorBelt",
+			name = "Show conveyor belt clickbox",
+			description = "Configures whether or not the clickbox for the conveyor belt is displayed",
+			position = 1
 	)
 	default boolean showConveyorBelt()
 	{
@@ -43,10 +43,10 @@ public interface BlastFurnaceConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBarDispenser",
-		name = "Show bar dispenser clickbox",
-		description = "Configures whether or not the clickbox for the bar dispenser is displayed",
-		position = 2
+			keyName = "showBarDispenser",
+			name = "Show bar dispenser clickbox",
+			description = "Configures whether or not the clickbox for the bar dispenser is displayed",
+			position = 2
 	)
 	default boolean showBarDispenser()
 	{
@@ -54,10 +54,10 @@ public interface BlastFurnaceConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showCofferTime",
-		name = "Show coffer time remaining",
-		description = "Configures whether or not the coffer time remaining is displayed",
-		position = 3
+			keyName = "showCofferTime",
+			name = "Show coffer time remaining",
+			description = "Configures whether or not the coffer time remaining is displayed",
+			position = 3
 	)
 	default boolean showCofferTime()
 	{

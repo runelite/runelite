@@ -26,7 +26,7 @@ package net.runelite.api;
 
 /**
  * Client side only, content-developer strings
- *
+ * <p>
  * VarCInts are stored entirely in memory, or locally on a user's
  * machine in the preferences2.dat file depending on how Jagex
  * configured the variable

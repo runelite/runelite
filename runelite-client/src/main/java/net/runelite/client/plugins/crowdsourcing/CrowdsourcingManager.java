@@ -77,9 +77,9 @@ public class CrowdsourcingManager
 		}
 
 		Request r = new Request.Builder()
-			.url(CROWDSOURCING_BASE)
-			.post(RequestBody.create(JSON, gson.toJson(temp)))
-			.build();
+				.url(CROWDSOURCING_BASE)
+				.post(RequestBody.create(JSON, gson.toJson(temp)))
+				.build();
 
 		okHttpClient.newCall(r).enqueue(new Callback()
 		{

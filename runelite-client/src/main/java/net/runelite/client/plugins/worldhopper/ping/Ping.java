@@ -55,8 +55,7 @@ public class Ping
 		try
 		{
 			inetAddress = InetAddress.getByName(world.getAddress());
-		}
-		catch (UnknownHostException ex)
+		} catch (UnknownHostException ex)
 		{
 			log.debug("error resolving host for world ping", ex);
 			return -1;
@@ -79,8 +78,7 @@ public class Ping
 					try
 					{
 						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
-					}
-					catch (Exception ex)
+					} catch (Exception ex)
 					{
 						log.debug("error during icmp ping", ex);
 						return tcpPing(inetAddress);
@@ -88,8 +86,7 @@ public class Ping
 				default:
 					return tcpPing(inetAddress);
 			}
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			log.warn("error pinging", ex);
 			return -1;
@@ -115,8 +112,7 @@ public class Ping
 			}
 
 			return Math.toIntExact(icmpEchoReply.roundTripTime.longValue());
-		}
-		finally
+		} finally
 		{
 			ipHlpAPI.IcmpCloseHandle(ptr);
 		}
@@ -153,11 +149,11 @@ public class Ping
 
 			// struct icmphdr
 			byte[] request = {
-				8, // type 8 - ipv4 echo request
-				0, // code
-				0, 0, // checksum
-				0, 0, // id - set by kernel on Linux. MacOS uses pid, however sending 0 appears to work fine.
-				(byte) (((seqno >> 8) & 0xff)), (byte) (seqno & 0xff)
+					8, // type 8 - ipv4 echo request
+					0, // code
+					0, 0, // checksum
+					0, 0, // id - set by kernel on Linux. MacOS uses pid, however sending 0 appears to work fine.
+					(byte) (((seqno >> 8) & 0xff)), (byte) (seqno & 0xff)
 			};
 			// append payload
 			request = Bytes.concat(request, RUNELITE_PING);
@@ -170,15 +166,15 @@ public class Ping
 
 			// struct sockaddr_in
 			byte[] addr = {
-				(byte) libc.AF_INET, 0, // sin_family
-				0, 0, // sin_port
-				address[0], address[1], address[2], address[3], // sin_addr.s_addr
-				0, 0, 0, 0, 0, 0, 0, 0 // padding
+					(byte) libc.AF_INET, 0, // sin_family
+					0, 0, // sin_port
+					address[0], address[1], address[2], address[3], // sin_addr.s_addr
+					0, 0, 0, 0, 0, 0, 0, 0 // padding
 			};
 
 			// response size/buffer
 			int size = 8 + RUNELITE_PING.length + // struct icmphdr + response
-				(includeIpHeader ? MAX_IPV4_HEADER_SIZE : 0); // struct ip
+					(includeIpHeader ? MAX_IPV4_HEADER_SIZE : 0); // struct ip
 			Memory response = new Memory(size);
 
 			long start = System.nanoTime();
@@ -233,8 +229,7 @@ public class Ping
 			}
 
 			return -1;
-		}
-		finally
+		} finally
 		{
 			libc.close(sock);
 		}

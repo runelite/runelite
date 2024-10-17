@@ -190,12 +190,6 @@ enum Task
 
 	private static final Map<String, Task> tasks;
 
-	private final String name;
-	private final int itemSpriteId;
-	private final String[] targetNames;
-	private final int weaknessThreshold;
-	private final int weaknessItem;
-
 	static
 	{
 		ImmutableMap.Builder<String, Task> builder = new ImmutableMap.Builder<>();
@@ -207,6 +201,12 @@ enum Task
 
 		tasks = builder.build();
 	}
+
+	private final String name;
+	private final int itemSpriteId;
+	private final String[] targetNames;
+	private final int weaknessThreshold;
+	private final int weaknessItem;
 
 	Task(String name, int itemSpriteId, String... targetNames)
 	{

@@ -59,9 +59,9 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
-	name = "Prayer",
-	description = "Show various information related to prayer",
-	tags = {"combat", "flicking", "overlay"}
+		name = "Prayer",
+		description = "Show various information related to prayer",
+		tags = {"combat", "flicking", "overlay"}
 )
 public class PrayerPlugin extends Plugin
 {
@@ -109,6 +109,21 @@ public class PrayerPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
+	private static int getDrainEffect(Client client)
+	{
+		int drainEffect = 0;
+
+		for (PrayerType prayerType : PrayerType.values())
+		{
+			if (client.isPrayerActive(prayerType.getPrayer()))
+			{
+				drainEffect += prayerType.getDrainEffect();
+			}
+		}
+
+		return drainEffect;
+	}
+
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
 	{
@@ -152,8 +167,7 @@ public class PrayerPlugin extends Plugin
 			if (!config.prayerIndicator())
 			{
 				removeIndicators();
-			}
-			else if (!config.prayerIndicatorOverheads())
+			} else if (!config.prayerIndicatorOverheads())
 			{
 				removeOverheadsIndicators();
 			}
@@ -167,9 +181,8 @@ public class PrayerPlugin extends Plugin
 		if (id == InventoryID.INVENTORY.getId())
 		{
 			updatePotionBonus(event.getItemContainer(),
-				client.getItemContainer(InventoryID.EQUIPMENT));
-		}
-		else if (id == InventoryID.EQUIPMENT.getId())
+					client.getItemContainer(InventoryID.EQUIPMENT));
+		} else if (id == InventoryID.EQUIPMENT.getId())
 		{
 			prayerBonus = totalPrayerBonus(event.getItemContainer().getItems());
 		}
@@ -221,11 +234,10 @@ public class PrayerPlugin extends Plugin
 				{
 					PrayerCounter counter = prayerCounter[ord] = new PrayerCounter(this, prayerType);
 					spriteManager.getSpriteAsync(prayerType.getSpriteID(), 0,
-						counter::setImage);
+							counter::setImage);
 					infoBoxManager.addInfoBox(counter);
 				}
-			}
-			else if (prayerCounter[ord] != null)
+			} else if (prayerCounter[ord] != null)
 			{
 				infoBoxManager.removeInfoBox(prayerCounter[ord]);
 				prayerCounter[ord] = null;
@@ -299,15 +311,15 @@ public class PrayerPlugin extends Plugin
 		int restored = 0;
 		if (hasSanfew)
 		{
-			restored = Math.max(restored, 4 + (int) Math.floor(prayerLevel *  (hasWrench ? .32 : .30)));
+			restored = Math.max(restored, 4 + (int) Math.floor(prayerLevel * (hasWrench ? .32 : .30)));
 		}
 		if (hasSuperRestore)
 		{
-			restored = Math.max(restored, 8 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+			restored = Math.max(restored, 8 + (int) Math.floor(prayerLevel * (hasWrench ? .27 : .25)));
 		}
 		if (hasPrayerPotion)
 		{
-			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel * (hasWrench ? .27 : .25)));
 		}
 
 		doseOverlay.setRestoreAmount(restored);
@@ -342,7 +354,7 @@ public class PrayerPlugin extends Plugin
 	private void removeOverheadsIndicators()
 	{
 		infoBoxManager.removeIf(entry -> entry instanceof PrayerCounter
-			&& ((PrayerCounter) entry).getPrayerType().isOverhead());
+				&& ((PrayerCounter) entry).getPrayerType().isOverhead());
 	}
 
 	private void setPrayerOrbText(String text)
@@ -352,21 +364,6 @@ public class PrayerPlugin extends Plugin
 		{
 			prayerOrbText.setText(text);
 		}
-	}
-
-	private static int getDrainEffect(Client client)
-	{
-		int drainEffect = 0;
-
-		for (PrayerType prayerType : PrayerType.values())
-		{
-			if (client.isPrayerActive(prayerType.getPrayer()))
-			{
-				drainEffect += prayerType.getDrainEffect();
-			}
-		}
-
-		return drainEffect;
 	}
 
 	String getEstimatedTimeRemaining(boolean formatForOrb)
@@ -393,12 +390,10 @@ public class PrayerPlugin extends Plugin
 		{
 			long minutes = Duration.ofSeconds((long) secondsLeft).toMinutes();
 			return String.format("%dm", minutes);
-		}
-		else if (timeLeft.getHour() > 0)
+		} else if (timeLeft.getHour() > 0)
 		{
 			return timeLeft.format(DateTimeFormatter.ofPattern("H:mm:ss"));
-		}
-		else
+		} else
 		{
 			return timeLeft.format(DateTimeFormatter.ofPattern("m:ss"));
 		}

@@ -40,26 +40,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class HealerOverlay extends Overlay
 {
-	@Getter
-	@AllArgsConstructor
-	private enum HealerTeam
-	{
-		TEAMMATE1(ComponentID.BA_HEALER_TEAMMATE1, 28, 2, 115),
-		TEAMMATE2(ComponentID.BA_HEALER_TEAMMATE2, 26, 2, 115),
-		TEAMMATE3(ComponentID.BA_HEALER_TEAMMATE3, 26, 2, 115),
-		TEAMMATE4(ComponentID.BA_HEALER_TEAMMATE4, 25, 2, 115);
-
-		@Component
-		private int teammate;
-		private int offsetX;
-		private int offsetY;
-		private int width;
-	}
-
 	private static final Color HP_HIGH = new Color(10, 146, 5, 125);
 	private static final Color HP_MID = new Color(146, 146, 0, 230);
 	private static final Color HP_LOW = new Color(225, 35, 0, 125);
-
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
@@ -140,5 +123,21 @@ class HealerOverlay extends Overlay
 		}
 
 		return HP_HIGH;
+	}
+
+	@Getter
+	@AllArgsConstructor
+	private enum HealerTeam
+	{
+		TEAMMATE1(ComponentID.BA_HEALER_TEAMMATE1, 28, 2, 115),
+		TEAMMATE2(ComponentID.BA_HEALER_TEAMMATE2, 26, 2, 115),
+		TEAMMATE3(ComponentID.BA_HEALER_TEAMMATE3, 26, 2, 115),
+		TEAMMATE4(ComponentID.BA_HEALER_TEAMMATE4, 25, 2, 115);
+
+		@Component
+		private int teammate;
+		private int offsetX;
+		private int offsetY;
+		private int width;
 	}
 }

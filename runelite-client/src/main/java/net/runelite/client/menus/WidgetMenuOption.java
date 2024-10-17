@@ -38,6 +38,19 @@ import net.runelite.client.util.ColorUtil;
 public final class WidgetMenuOption
 {
 	/**
+	 * The widgetinfo to add the option to, if available
+	 */
+	@Nullable
+	@Getter
+	private final WidgetInfo widget;
+	/**
+	 * The widget to add the option to
+	 */
+	@Getter
+	@Component
+	private final int widgetId;
+	Consumer<MenuEntry> callback;
+	/**
 	 * The left hand text to be displayed on the menu option. (ex. the menuOption of "Drop Bones" is "Drop")
 	 */
 	@Getter
@@ -54,22 +67,6 @@ public final class WidgetMenuOption
 	@Getter
 	@Setter
 	private Color color = JagexColors.MENU_TARGET;
-
-	/**
-	 * The widgetinfo to add the option to, if available
-	 */
-	@Nullable
-	@Getter
-	private final WidgetInfo widget;
-
-	/**
-	 * The widget to add the option to
-	 */
-	@Getter
-	@Component
-	private final int widgetId;
-
-	Consumer<MenuEntry> callback;
 
 	/**
 	 * Creates a menu to be added to right click menus. The menu will only be added if match is found within the menu options

@@ -65,7 +65,7 @@ class StatusBarsOverlay extends Overlay
 	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
-	private static final Color ENERGY_HEAL_COLOR = new Color (199,  118, 0, 218);
+	private static final Color ENERGY_HEAL_COLOR = new Color(199, 118, 0, 218);
 	private static final Color RUN_STAMINA_COLOR = new Color(160, 124, 72, 255);
 	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
@@ -90,10 +90,10 @@ class StatusBarsOverlay extends Overlay
 	private final Image heartDisease;
 	private final Image heartPoison;
 	private final Image heartVenom;
+	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
 	private Image heartIcon;
 	private Image specialIcon;
 	private Image energyIcon;
-	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
@@ -118,105 +118,104 @@ class StatusBarsOverlay extends Overlay
 	{
 		barRenderers.put(BarMode.DISABLED, null);
 		barRenderers.put(BarMode.HITPOINTS, new BarRenderer(
-			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
-			() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
-			() -> getRestoreValue(Skill.HITPOINTS.getName()),
-			() ->
-			{
-				final int poisonState = client.getVarpValue(VarPlayer.POISON);
-
-				if (poisonState >= 1000000)
+				() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
+				() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
+				() -> getRestoreValue(Skill.HITPOINTS.getName()),
+				() ->
 				{
-					return VENOMED_COLOR;
-				}
+					final int poisonState = client.getVarpValue(VarPlayer.POISON);
 
-				if (poisonState > 0)
+					if (poisonState >= 1000000)
+					{
+						return VENOMED_COLOR;
+					}
+
+					if (poisonState > 0)
+					{
+						return POISONED_COLOR;
+					}
+
+					if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+					{
+						return DISEASE_COLOR;
+					}
+
+					if (client.getVarbitValue(Varbits.PARASITE) >= 1)
+					{
+						return PARASITE_COLOR;
+					}
+
+					return HEALTH_COLOR;
+				},
+				() -> HEAL_COLOR,
+				() ->
 				{
-					return POISONED_COLOR;
+					final int poisonState = client.getVarpValue(VarPlayer.POISON);
+
+					if (poisonState > 0 && poisonState < 50)
+					{
+						return heartPoison;
+					}
+
+					if (poisonState >= 1000000)
+					{
+						return heartVenom;
+					}
+
+					if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+					{
+						return heartDisease;
+					}
+
+					return heartIcon;
 				}
-
-				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
-				{
-					return DISEASE_COLOR;
-				}
-
-				if (client.getVarbitValue(Varbits.PARASITE) >= 1)
-				{
-					return PARASITE_COLOR;
-				}
-
-				return HEALTH_COLOR;
-			},
-			() -> HEAL_COLOR,
-			() ->
-			{
-				final int poisonState = client.getVarpValue(VarPlayer.POISON);
-
-				if (poisonState > 0 && poisonState < 50)
-				{
-					return heartPoison;
-				}
-
-				if (poisonState >= 1000000)
-				{
-					return heartVenom;
-				}
-
-				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
-				{
-					return heartDisease;
-				}
-
-				return heartIcon;
-			}
 		));
 		barRenderers.put(BarMode.PRAYER, new BarRenderer(
-			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.PRAYER),
-			() -> client.getBoostedSkillLevel(Skill.PRAYER),
-			() -> getRestoreValue(Skill.PRAYER.getName()),
-			() ->
-			{
-				Color prayerColor = PRAYER_COLOR;
-
-				for (Prayer pray : Prayer.values())
+				() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.PRAYER),
+				() -> client.getBoostedSkillLevel(Skill.PRAYER),
+				() -> getRestoreValue(Skill.PRAYER.getName()),
+				() ->
 				{
-					if (client.isPrayerActive(pray))
-					{
-						prayerColor = ACTIVE_PRAYER_COLOR;
-						break;
-					}
-				}
+					Color prayerColor = PRAYER_COLOR;
 
-				return prayerColor;
-			},
-			() -> PRAYER_HEAL_COLOR,
-			() -> prayerIcon
+					for (Prayer pray : Prayer.values())
+					{
+						if (client.isPrayerActive(pray))
+						{
+							prayerColor = ACTIVE_PRAYER_COLOR;
+							break;
+						}
+					}
+
+					return prayerColor;
+				},
+				() -> PRAYER_HEAL_COLOR,
+				() -> prayerIcon
 		));
 		barRenderers.put(BarMode.RUN_ENERGY, new BarRenderer(
-			() -> MAX_RUN_ENERGY_VALUE,
-			() -> client.getEnergy() / 100,
-			() -> getRestoreValue("Run Energy"),
-			() ->
-			{
-				if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+				() -> MAX_RUN_ENERGY_VALUE,
+				() -> client.getEnergy() / 100,
+				() -> getRestoreValue("Run Energy"),
+				() ->
 				{
-					return RUN_STAMINA_COLOR;
-				}
-				else
-				{
-					return ENERGY_COLOR;
-				}
-			},
-			() -> ENERGY_HEAL_COLOR,
-			() -> energyIcon
+					if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+					{
+						return RUN_STAMINA_COLOR;
+					} else
+					{
+						return ENERGY_COLOR;
+					}
+				},
+				() -> ENERGY_HEAL_COLOR,
+				() -> energyIcon
 		));
 		barRenderers.put(BarMode.SPECIAL_ATTACK, new BarRenderer(
-			() -> MAX_SPECIAL_ATTACK_VALUE,
-			() -> client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
-			() -> 0,
-			() -> SPECIAL_ATTACK_COLOR,
-			() -> SPECIAL_ATTACK_COLOR,
-			() -> specialIcon
+				() -> MAX_SPECIAL_ATTACK_VALUE,
+				() -> client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
+				() -> 0,
+				() -> SPECIAL_ATTACK_COLOR,
+				() -> SPECIAL_ATTACK_COLOR,
+				() -> specialIcon
 		));
 	}
 
@@ -261,8 +260,7 @@ class StatusBarsOverlay extends Overlay
 			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
 			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX() - barWidthOffset);
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
-		}
-		else
+		} else
 		{
 			width = BarRenderer.DEFAULT_WIDTH;
 			height = HEIGHT;

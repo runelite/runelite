@@ -81,56 +81,46 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.loottracker.LootRecordType;
 
 @PluginDescriptor(
-	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherlode Mine",
-	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
-	enabledByDefault = false
+		name = "Motherlode Mine",
+		description = "Show helpful information inside the Motherlode Mine",
+		tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
+		enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
+			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
 
 	private static final int SACK_LARGE_SIZE = 189;
 	private static final int SACK_SIZE = 108;
 
 	private static final int UPPER_FLOOR_HEIGHT = -490;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private MotherlodeSceneOverlay sceneOverlay;
-
-	@Inject
-	private MotherlodeConfig config;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private EventBus eventBus;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean inMlm;
-
-	private int curSackSize;
-
-	private boolean shouldUpdateOres;
-	private Multiset<Integer> inventorySnapshot;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> rocks = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> brokenStruts = new HashSet<>();
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private MotherlodeSceneOverlay sceneOverlay;
+	@Inject
+	private MotherlodeConfig config;
+	@Inject
+	private Client client;
+	@Inject
+	private ClientThread clientThread;
+	@Inject
+	private EventBus eventBus;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean inMlm;
+	private int curSackSize;
+	private boolean shouldUpdateOres;
+	private Multiset<Integer> inventorySnapshot;
 
 	@Provides
 	MotherlodeConfig getConfig(ConfigManager configManager)
@@ -176,8 +166,8 @@ public class MotherlodePlugin extends Plugin
 				{
 					inventorySnapshot = HashMultiset.create();
 					Arrays.stream(itemContainer.getItems())
-						.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
-						.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+							.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
+							.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 				}
 			}
 		}
@@ -229,11 +219,11 @@ public class MotherlodePlugin extends Plugin
 	private void broadcastLootItem(int itemId)
 	{
 		var lootEvent = PluginLootReceived.builder()
-			.source(this)
-			.name("Motherlode Mine")
-			.type(LootRecordType.EVENT)
-			.items(Collections.singleton(new ItemStack(itemId, 1, client.getLocalPlayer().getLocalLocation())))
-			.build();
+				.source(this)
+				.name("Motherlode Mine")
+				.type(LootRecordType.EVENT)
+				.items(Collections.singleton(new ItemStack(itemId, 1, client.getLocalPlayer().getLocalLocation())))
+				.build();
 		eventBus.post(lootEvent);
 	}
 
@@ -267,8 +257,7 @@ public class MotherlodePlugin extends Plugin
 			{
 				sackSizeWidget.setTextColor(0xff0000);
 				spaceTextWidget.setTextColor(0xff0000);
-			}
-			else
+			} else
 			{
 				sackSizeWidget.setTextColor(0xc8c8c8);
 				spaceTextWidget.setTextColor(0xffffff);
@@ -336,8 +325,7 @@ public class MotherlodePlugin extends Plugin
 			brokenStruts.clear();
 
 			inMlm = checkInMlm();
-		}
-		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		} else if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			// Prevent code from running while logged out.
 			inMlm = false;
@@ -364,21 +352,21 @@ public class MotherlodePlugin extends Plugin
 		// Build set of current inventory
 		Multiset<Integer> current = HashMultiset.create();
 		Arrays.stream(container.getItems())
-			.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
-			.forEach(item -> current.add(item.getId(), item.getQuantity()));
+				.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
+				.forEach(item -> current.add(item.getId(), item.getQuantity()));
 
 		// Take the difference
 		Multiset<Integer> delta = Multisets.difference(current, inventorySnapshot);
 
 		// Advertise the loot
 		var lootEvent = PluginLootReceived.builder()
-			.source(this)
-			.name("Motherlode Mine")
-			.type(LootRecordType.EVENT)
-			.items(delta.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount()))
-				.collect(Collectors.toList()))
-			.build();
+				.source(this)
+				.name("Motherlode Mine")
+				.type(LootRecordType.EVENT)
+				.items(delta.entrySet().stream()
+						.map(e -> new ItemStack(e.getElement(), e.getCount()))
+						.collect(Collectors.toList()))
+				.build();
 		if (config.trackOresFound())
 		{
 			eventBus.post(lootEvent);
@@ -392,7 +380,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		GameState gameState = client.getGameState();
 		if (gameState != GameState.LOGGED_IN
-			&& gameState != GameState.LOADING)
+				&& gameState != GameState.LOADING)
 		{
 			return false;
 		}

@@ -50,6 +50,7 @@ public interface NPCComposition extends ParamHolder
 
 	/**
 	 * NPC can be interacting with via menu options
+	 *
 	 * @return
 	 */
 	boolean isInteractible();
@@ -95,34 +96,39 @@ public interface NPCComposition extends ParamHolder
 	/**
 	 * If the npc is a follower, such as a pet. Is affected by the
 	 * "Move follower options lower down" setting.
+	 *
 	 * @return
 	 */
 	boolean isFollower();
 
 	/**
 	 * Get the colors to be replaced on this npc's model for this npc.
-	 * @see JagexColor
+	 *
 	 * @return the colors to be replaced
+	 * @see JagexColor
 	 */
 	@Nullable
 	short[] getColorToReplace();
 
 	/**
 	 * Get the colors applied to this npc's model for this npc.
-	 * @see JagexColor
+	 *
 	 * @return the colors to replace with
+	 * @see JagexColor
 	 */
 	@Nullable
 	short[] getColorToReplaceWith();
 
 	/**
 	 * Horizontal scaling of the npc model (1/128th of a tile).
+	 *
 	 * @return
 	 */
 	int getWidthScale();
 
 	/**
 	 * Vertical scaling of the npc model (1/128th of a tile).
+	 *
 	 * @return
 	 */
 	int getHeightScale();

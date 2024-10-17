@@ -29,7 +29,7 @@ import net.runelite.client.plugins.raids.Raid;
 
 /**
  * An event that fires when the player scouts a raid
- *
+ * <p>
  * This will fire every time the raid plugin successfully scouts a raid but mostly fires at LOGGED_IN gamestate changes
  * This event only fires in scoutable raids (not challenge mode)
  * The raid object is not guaranteed to change in between events

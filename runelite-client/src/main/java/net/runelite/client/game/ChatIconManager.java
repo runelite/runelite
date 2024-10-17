@@ -57,14 +57,11 @@ public class ChatIconManager
 	private final Client client;
 	private final SpriteManager spriteManager;
 	private final ClientThread clientThread;
-
+	private final List<ChatIcon> icons = new ArrayList<>();
 	private BufferedImage[] friendsChatRankImages;
 	private BufferedImage[] clanRankImages;
-
 	private int friendsChatOffset = -1;
 	private int clanOffset = -1;
-
-	private final List<ChatIcon> icons = new ArrayList<>();
 
 	@Inject
 	private ChatIconManager(Client client, SpriteManager spriteManager, ClientThread clientThread, EventBus eventBus)
@@ -87,11 +84,16 @@ public class ChatIconManager
 		});
 	}
 
-	@AllArgsConstructor
-	private static class ChatIcon
+	private static BufferedImage friendsChatImageFromSprite(final BufferedImage sprite)
 	{
-		int idx;
-		IndexedSprite sprite;
+		final BufferedImage canvas = ImageUtil.resizeCanvas(sprite, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
+		return ImageUtil.outlineImage(canvas, IMAGE_OUTLINE_COLOR);
+	}
+
+	private static int clanRankToIdx(int key)
+	{
+		// keys are -6 to 265, with no 0
+		return key < 0 ? ~key : (key + 5);
 	}
 
 	@Subscribe
@@ -108,8 +110,7 @@ public class ChatIconManager
 					icon.idx = -1;
 				}
 			}
-		}
-		else if (state == GameState.LOGIN_SCREEN)
+		} else if (state == GameState.LOGIN_SCREEN)
 		{
 			if (friendsChatOffset == -1)
 			{
@@ -221,8 +222,8 @@ public class ChatIconManager
 			clanOffset = friendsChatOffset + friendsChatIcons.size();
 
 			IndexedSprite blank = ImageUtil.getImageIndexedSprite(
-				new BufferedImage(modIcons[0].getWidth(), modIcons[0].getHeight(), BufferedImage.TYPE_INT_ARGB),
-				client);
+					new BufferedImage(modIcons[0].getWidth(), modIcons[0].getHeight(), BufferedImage.TYPE_INT_ARGB),
+					client);
 
 			modIcons = Arrays.copyOf(modIcons, friendsChatOffset + friendsChatIcons.size() + clanIcons.size());
 			Arrays.fill(modIcons, friendsChatOffset, modIcons.length, blank);
@@ -262,15 +263,10 @@ public class ChatIconManager
 		}
 	}
 
-	private static BufferedImage friendsChatImageFromSprite(final BufferedImage sprite)
+	@AllArgsConstructor
+	private static class ChatIcon
 	{
-		final BufferedImage canvas = ImageUtil.resizeCanvas(sprite, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
-		return ImageUtil.outlineImage(canvas, IMAGE_OUTLINE_COLOR);
-	}
-
-	private static int clanRankToIdx(int key)
-	{
-		// keys are -6 to 265, with no 0
-		return key < 0 ? ~key : (key + 5);
+		int idx;
+		IndexedSprite sprite;
 	}
 }

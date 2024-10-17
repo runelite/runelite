@@ -38,20 +38,16 @@ import lombok.Setter;
 @Builder
 public class TitleComponent implements LayoutableRenderableEntity
 {
-	private String text;
-
-	@Builder.Default
-	private Color color = Color.WHITE;
-
-	@Builder.Default
-	private Point preferredLocation = new Point();
-
-	@Builder.Default
-	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
-
 	@Builder.Default
 	@Getter
 	private final Rectangle bounds = new Rectangle();
+	private String text;
+	@Builder.Default
+	private Color color = Color.WHITE;
+	@Builder.Default
+	private Point preferredLocation = new Point();
+	@Builder.Default
+	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -63,8 +59,8 @@ public class TitleComponent implements LayoutableRenderableEntity
 		titleComponent.setText(text);
 		titleComponent.setColor(color);
 		titleComponent.setPosition(new Point(
-			baseX + ((preferredSize.width - metrics.stringWidth(text)) / 2),
-			baseY + metrics.getHeight()));
+				baseX + ((preferredSize.width - metrics.stringWidth(text)) / 2),
+				baseY + metrics.getHeight()));
 		final Dimension rendered = titleComponent.render(graphics);
 		final Dimension dimension = new Dimension(preferredSize.width, rendered.height);
 		bounds.setLocation(preferredLocation);

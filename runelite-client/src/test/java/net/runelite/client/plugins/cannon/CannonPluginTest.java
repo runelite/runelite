@@ -57,42 +57,33 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CannonPluginTest
 {
 
+	private final VarbitChanged cannonAmmoChanged = new VarbitChanged();
 	@Inject
 	private CannonPlugin plugin;
-
 	@Mock
 	@Bind
 	private CannonConfig config;
-
 	@Mock
 	@Bind
 	private CannonOverlay cannonOverlay;
-
 	@Mock
 	@Bind
 	private CannonSpotOverlay cannonSpotOverlay;
-
 	@Mock
 	@Bind
 	private InfoBoxManager infoBoxManager;
-
 	@Mock
 	@Bind
 	private Notifier notifier;
-
 	@Mock
 	@Bind
 	private ItemManager itemManager;
-
 	@Mock
 	@Bind
 	private Client client;
-
 	@Mock
 	@Bind
 	private OverlayManager overlayManager;
-
-	private final VarbitChanged cannonAmmoChanged = new VarbitChanged();
 
 	@Before
 	public void before()

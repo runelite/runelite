@@ -47,7 +47,7 @@ class InventoryViewerOverlay extends OverlayPanel
 {
 	private static final int INVENTORY_SIZE = 28;
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(
-		new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
+			new BufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private final Client client;
 	private final ItemManager itemManager;

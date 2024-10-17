@@ -85,9 +85,6 @@ enum Impling
 	LUCKY(ImplingType.LUCKY, NpcID.LUCKY_IMPLING),
 	LUCKY_2(ImplingType.LUCKY, NpcID.LUCKY_IMPLING_7302);
 
-	private ImplingType implingType;
-	private final int npcId;
-
 	private static final Map<Integer, Impling> IMPLINGS;
 
 	static
@@ -101,6 +98,9 @@ enum Impling
 
 		IMPLINGS = builder.build();
 	}
+
+	private final int npcId;
+	private ImplingType implingType;
 
 	static Impling findImpling(int npcId)
 	{

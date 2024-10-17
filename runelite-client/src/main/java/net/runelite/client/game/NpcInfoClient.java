@@ -59,16 +59,16 @@ public class NpcInfoClient
 	public Map<Integer, NpcInfo> getNpcs() throws IOException
 	{
 		HttpUrl.Builder urlBuilder = staticBase.newBuilder()
-			.addPathSegment("npcs")
-			.addPathSegment("npcs.min.json");
+				.addPathSegment("npcs")
+				.addPathSegment("npcs.min.json");
 
 		HttpUrl url = urlBuilder.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.url(url)
-			.build();
+				.url(url)
+				.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
@@ -82,8 +82,7 @@ public class NpcInfoClient
 			{
 			}.getType();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
-		}
-		catch (JsonParseException ex)
+		} catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}

@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface MTAConfig extends Config
 {
 	@ConfigItem(
-		keyName = "alchemy",
-		name = "Enable alchemy room",
-		description = "Configures whether or not the alchemy room overlay is enabled.",
-		position = 0
+			keyName = "alchemy",
+			name = "Enable alchemy room",
+			description = "Configures whether or not the alchemy room overlay is enabled.",
+			position = 0
 	)
 	default boolean alchemy()
 	{
@@ -43,10 +43,10 @@ public interface MTAConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "graveyard",
-		name = "Enable graveyard room",
-		description = "Configures whether or not the graveyard room overlay is enabled.",
-		position = 1
+			keyName = "graveyard",
+			name = "Enable graveyard room",
+			description = "Configures whether or not the graveyard room overlay is enabled.",
+			position = 1
 	)
 	default boolean graveyard()
 	{
@@ -54,10 +54,10 @@ public interface MTAConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "telekinetic",
-		name = "Enable telekinetic room",
-		description = "Configures whether or not the telekinetic room overlay is enabled.",
-		position = 2
+			keyName = "telekinetic",
+			name = "Enable telekinetic room",
+			description = "Configures whether or not the telekinetic room overlay is enabled.",
+			position = 2
 	)
 	default boolean telekinetic()
 	{
@@ -65,10 +65,10 @@ public interface MTAConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enchantment",
-		name = "Enable enchantment room",
-		description = "Configures whether or not the enchantment room overlay is enabled.",
-		position = 3
+			keyName = "enchantment",
+			name = "Enable enchantment room",
+			description = "Configures whether or not the enchantment room overlay is enabled.",
+			position = 3
 	)
 	default boolean enchantment()
 	{

@@ -62,8 +62,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 
 			charges = itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey());
-		}
-		else
+		} else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
 			if (chargeItem == null)

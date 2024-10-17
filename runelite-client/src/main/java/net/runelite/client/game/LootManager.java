@@ -68,8 +68,8 @@ import net.runelite.client.events.PlayerLootReceived;
 public class LootManager
 {
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
-		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH,
-		NpcID.THE_HUEYCOATL_14012, AnimationID.HUEYCOATL_DEATH
+			NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH,
+			NpcID.THE_HUEYCOATL_14012, AnimationID.HUEYCOATL_DEATH
 	);
 
 	private final EventBus eventBus;
@@ -163,8 +163,8 @@ public class LootManager
 		final int y = location.getSceneY();
 		final int packed = x << 8 | y;
 		final Collection<ItemStack> items = itemSpawns.get(packed).stream()
-			.map(i -> new ItemStack(i.getId(), i.getQuantity()))
-			.collect(Collectors.toList());
+				.map(i -> new ItemStack(i.getId(), i.getQuantity()))
+				.collect(Collectors.toList());
 
 		if (items.isEmpty())
 		{
@@ -215,8 +215,7 @@ public class LootManager
 			{
 				// Big Kraken drops loot wherever player is standing when animation starts.
 				krakenPlayerLocation = client.getLocalPlayer().getWorldLocation();
-			}
-			else
+			} else
 			{
 				// These NPCs drop loot on death animation, which is right now.
 				processNpcLoot(npc);
@@ -234,14 +233,12 @@ public class LootManager
 			delayedLootTick = 10;
 			// it is too early to call getAdjacentSquareLootTile() because the player might move before the
 			// loot location is calculated by the server.
-		}
-		else if (npc.getId() == NpcID.HOLE_IN_THE_WALL)
+		} else if (npc.getId() == NpcID.HOLE_IN_THE_WALL)
 		{
 			delayedLootNpc = npc;
 			delayedLootTick = 1;
 			delayedLootAreas = getDropLocations(npc);
-		}
-		else if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		} else if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
 		{
 			delayedLootNpc = npc;
 			delayedLootTick = 5;
@@ -277,8 +274,7 @@ public class LootManager
 		{
 			log.debug("Got delayed loot stack from {}: {}", delayedLootNpc.getName(), itemStacks);
 			eventBus.post(new NpcLootReceived(delayedLootNpc, itemStacks));
-		}
-		else
+		} else
 		{
 			log.debug("Delayed loot expired with no loot");
 		}
@@ -366,16 +362,14 @@ public class LootManager
 				if (playerLocationLastTick.getX() < x)
 				{
 					x -= 4;
-				}
-				else if (playerLocationLastTick.getX() > x)
+				} else if (playerLocationLastTick.getX() > x)
 				{
 					x += 4;
 				}
 				if (playerLocationLastTick.getY() < y)
 				{
 					y -= 4;
-				}
-				else if (playerLocationLastTick.getY() > y)
+				} else if (playerLocationLastTick.getY() > y)
 				{
 					y += 4;
 				}
@@ -459,8 +453,7 @@ public class LootManager
 		if (playerLocationLastTick.getX() < x)
 		{
 			x -= 1;
-		}
-		else
+		} else
 		{
 			x += Math.min(playerLocationLastTick.getX() - x, composition.getSize());
 		}
@@ -468,8 +461,7 @@ public class LootManager
 		if (playerLocationLastTick.getY() < y)
 		{
 			y -= 1;
-		}
-		else
+		} else
 		{
 			y += Math.min(playerLocationLastTick.getY() - y, composition.getSize());
 		}
@@ -496,8 +488,8 @@ public class LootManager
 		final int packed = sceneX << 8 | sceneY;
 		final List<TileItem> itemStacks = itemSpawns.get(packed);
 		return itemStacks.stream()
-			.map(ti -> new ItemStack(ti.getId(), ti.getQuantity()))
-			.collect(Collectors.toList());
+				.map(ti -> new ItemStack(ti.getId(), ti.getQuantity()))
+				.collect(Collectors.toList());
 	}
 
 	private void clearDelayedLootNpc()

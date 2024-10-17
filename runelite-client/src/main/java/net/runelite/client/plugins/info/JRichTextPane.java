@@ -73,8 +73,7 @@ public class JRichTextPane extends JEditorPane
 							try
 							{
 								Desktop.getDesktop().browse(e.getURL().toURI());
-							}
-							catch (URISyntaxException | IOException ex)
+							} catch (URISyntaxException | IOException ex)
 							{
 								log.warn("Error opening link", ex);
 							}
@@ -82,8 +81,7 @@ public class JRichTextPane extends JEditorPane
 					}
 				};
 				addHyperlinkListener(linkHandler);
-			}
-			else
+			} else
 			{
 				removeHyperlinkListener(linkHandler);
 				linkHandler = null;

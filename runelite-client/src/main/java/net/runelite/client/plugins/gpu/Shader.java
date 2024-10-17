@@ -38,17 +38,6 @@ public class Shader
 	@VisibleForTesting
 	final List<Unit> units = new ArrayList<>();
 
-	@RequiredArgsConstructor
-	@VisibleForTesting
-	static class Unit
-	{
-		@Getter
-		private final int type;
-
-		@Getter
-		private final String filename;
-	}
-
 	public Shader add(int type, String name)
 	{
 		units.add(new Unit(type, name));
@@ -103,8 +92,7 @@ public class Shader
 			}
 
 			ok = true;
-		}
-		finally
+		} finally
 		{
 			while (i > 0)
 			{
@@ -120,5 +108,16 @@ public class Shader
 		}
 
 		return program;
+	}
+
+	@RequiredArgsConstructor
+	@VisibleForTesting
+	static class Unit
+	{
+		@Getter
+		private final int type;
+
+		@Getter
+		private final String filename;
 	}
 }

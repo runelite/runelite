@@ -41,10 +41,10 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 public class SuperRestore implements Effect
 {
 	private static final Stat[] superRestoreStats = {
-		ATTACK, DEFENCE, STRENGTH, RANGED, MAGIC, COOKING,
-		WOODCUTTING, FLETCHING, FISHING, FIREMAKING, CRAFTING, SMITHING, MINING,
-		HERBLORE, AGILITY, THIEVING, SLAYER, FARMING, RUNECRAFT, HUNTER,
-		CONSTRUCTION
+			ATTACK, DEFENCE, STRENGTH, RANGED, MAGIC, COOKING,
+			WOODCUTTING, FLETCHING, FISHING, FIREMAKING, CRAFTING, SMITHING, MINING,
+			HERBLORE, AGILITY, THIEVING, SLAYER, FARMING, RUNECRAFT, HUNTER,
+			CONSTRUCTION
 	};
 
 	@VisibleForTesting
@@ -59,18 +59,18 @@ public class SuperRestore implements Effect
 		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(percR, delta));
 		PrayerPotion prayer = new PrayerPotion(delta, percR);
 		changes.setStatChanges(Stream.concat(
-			Stream.of(prayer.effect(client)),
-			Stream.of(superRestoreStats)
-				.filter(stat -> stat.getValue(client) < stat.getMaximum(client))
-				.map(stat ->
-				{
-					calc.setStat(stat);
-					return calc.effect(client);
-				})
-			).toArray(StatChange[]::new));
+				Stream.of(prayer.effect(client)),
+				Stream.of(superRestoreStats)
+						.filter(stat -> stat.getValue(client) < stat.getMaximum(client))
+						.map(stat ->
+						{
+							calc.setStat(stat);
+							return calc.effect(client);
+						})
+		).toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-			.map(sc -> sc.getPositivity())
-			.max(Comparator.naturalOrder()).get());
+				.map(sc -> sc.getPositivity())
+				.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 

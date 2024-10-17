@@ -71,19 +71,19 @@ class BarrowsBrotherSlainOverlay extends OverlayPanel
 			final boolean brotherSlain = client.getVarbitValue(brother.getKilledVarbit()) > 0;
 			String slain = brotherSlain ? "\u2713" : "\u2717";
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(brother.getName())
-				.right(slain)
-				.rightFont(FontManager.getDefaultFont())
-				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
-				.build());
+					.left(brother.getName())
+					.right(slain)
+					.rightFont(FontManager.getDefaultFont())
+					.rightColor(brotherSlain ? Color.GREEN : Color.RED)
+					.build());
 		}
 
 		final int rewardPotential = rewardPotential();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Potential")
-			.right(REWARD_POTENTIAL_FORMATTER.format(rewardPotential / 1012f))
-			.rightColor(rewardPotential >= 756 && rewardPotential < 881 ? Color.GREEN : rewardPotential < 631 ? Color.WHITE : Color.YELLOW)
-			.build());
+				.left("Potential")
+				.right(REWARD_POTENTIAL_FORMATTER.format(rewardPotential / 1012f))
+				.rightColor(rewardPotential >= 756 && rewardPotential < 881 ? Color.GREEN : rewardPotential < 631 ? Color.WHITE : Color.YELLOW)
+				.build());
 
 		return super.render(graphics);
 	}
@@ -108,11 +108,11 @@ class BarrowsBrotherSlainOverlay extends OverlayPanel
 	{
 		// this is from [proc,barrows_overlay_reward]
 		int brothers = client.getVarbitValue(Varbits.BARROWS_KILLED_AHRIM)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_DHAROK)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_GUTHAN)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_KARIL)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_TORAG)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_VERAC);
+				+ client.getVarbitValue(Varbits.BARROWS_KILLED_DHAROK)
+				+ client.getVarbitValue(Varbits.BARROWS_KILLED_GUTHAN)
+				+ client.getVarbitValue(Varbits.BARROWS_KILLED_KARIL)
+				+ client.getVarbitValue(Varbits.BARROWS_KILLED_TORAG)
+				+ client.getVarbitValue(Varbits.BARROWS_KILLED_VERAC);
 		return client.getVarbitValue(Varbits.BARROWS_REWARD_POTENTIAL) + brothers * 2;
 	}
 }

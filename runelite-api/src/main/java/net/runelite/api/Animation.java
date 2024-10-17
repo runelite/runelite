@@ -31,14 +31,15 @@ public interface Animation
 {
 	/**
 	 * Get the id for this animation
-	 * @see AnimationID
+	 *
 	 * @return
+	 * @see AnimationID
 	 */
 	int getId();
 
 	/**
 	 * Get how many distinct frames this animation has.
-	 *
+	 * <p>
 	 * For animaya animations, this is the duration in client ticks. For classic
 	 * animations, this is how many keyframes it has, not it's duration in ticks.
 	 */

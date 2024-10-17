@@ -75,18 +75,18 @@ class BlastFurnaceCofferOverlay extends OverlayPanel
 			sack.setHidden(true);
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Coffer:")
-				.right(QuantityFormatter.quantityToStackSize(coffer) + " gp")
-				.build());
+					.left("Coffer:")
+					.right(QuantityFormatter.quantityToStackSize(coffer) + " gp")
+					.build());
 
 			if (config.showCofferTime())
 			{
 				final long millis = (long) (coffer / COST_PER_HOUR * 60 * 60 * 1000);
 
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Time:")
-					.right(formatDuration(millis, "H'h' m'm' s's'", true))
-					.build());
+						.left("Time:")
+						.right(formatDuration(millis, "H'h' m'm' s's'", true))
+						.build());
 			}
 		}
 

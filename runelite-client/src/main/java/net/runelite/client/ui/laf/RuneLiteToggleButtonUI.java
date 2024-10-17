@@ -40,16 +40,16 @@ public class RuneLiteToggleButtonUI extends FlatToggleButtonUI
 	@FlatStylingSupport.Styleable
 	protected float rolloverIconAlpha = 1.0f;
 
-	public static ComponentUI createUI(JComponent c)
-	{
-		return FlatUIUtils.canUseSharedUI(c)
-			? FlatUIUtils.createSharedUI(RuneLiteToggleButtonUI.class, () -> new RuneLiteToggleButtonUI(true))
-			: new RuneLiteToggleButtonUI(false);
-	}
-
 	protected RuneLiteToggleButtonUI(boolean shared)
 	{
 		super(shared);
+	}
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return FlatUIUtils.canUseSharedUI(c)
+				? FlatUIUtils.createSharedUI(RuneLiteToggleButtonUI.class, () -> new RuneLiteToggleButtonUI(true))
+				: new RuneLiteToggleButtonUI(false);
 	}
 
 	@Override
@@ -63,8 +63,7 @@ public class RuneLiteToggleButtonUI extends FlatToggleButtonUI
 			{
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
 				super.paintIcon(g, c, iconRect);
-			}
-			finally
+			} finally
 			{
 				g2d.setComposite(composite);
 			}

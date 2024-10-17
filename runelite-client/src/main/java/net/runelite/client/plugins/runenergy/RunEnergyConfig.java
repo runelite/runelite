@@ -34,9 +34,9 @@ public interface RunEnergyConfig extends Config
 	String GROUP_NAME = "runenergy";
 
 	@ConfigItem(
-		keyName = "ringOfEnduranceChargeMessage",
-		name = "Ring of endurance charge message",
-		description = "Sends a message asking you to charge your equipped Ring of endurance when it has less than 500 charges."
+			keyName = "ringOfEnduranceChargeMessage",
+			name = "Ring of endurance charge message",
+			description = "Sends a message asking you to charge your equipped Ring of endurance when it has less than 500 charges."
 	)
 	default boolean ringOfEnduranceChargeMessage()
 	{
@@ -44,9 +44,9 @@ public interface RunEnergyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "replaceOrbText",
-		name = "Replace orb text with run time left",
-		description = "Show the remaining run time (in seconds) next in the energy orb."
+			keyName = "replaceOrbText",
+			name = "Replace orb text with run time left",
+			description = "Show the remaining run time (in seconds) next in the energy orb."
 	)
 	default boolean replaceOrbText()
 	{

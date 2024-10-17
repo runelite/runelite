@@ -59,10 +59,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class PrayerPluginTest
 {
 	private static final ItemStats HIGH_PRAYER_BONUS_WEAPON = new ItemStats(false, 0, 0,
-		ItemEquipmentStats.builder()
-			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
-			.prayer(50)
-			.build());
+			ItemEquipmentStats.builder()
+					.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+					.prayer(50)
+					.build());
 
 	@Inject
 	private PrayerPlugin prayerPlugin;
@@ -105,7 +105,7 @@ public class PrayerPluginTest
 	public void testGetEstimatedTimeRemainingOverOneHour()
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
+		when(itemContainer.getItems()).thenReturn(new Item[] {new Item(-1, 1)});
 		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
@@ -120,7 +120,7 @@ public class PrayerPluginTest
 	public void testGetEstimatedTimeRemainingUnderOneHour()
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{});
+		when(itemContainer.getItems()).thenReturn(new Item[] {});
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
@@ -134,7 +134,7 @@ public class PrayerPluginTest
 	public void testGetEstimatedTimeRemainingFormatForOrbUnderOneHour()
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{});
+		when(itemContainer.getItems()).thenReturn(new Item[] {});
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
@@ -148,7 +148,7 @@ public class PrayerPluginTest
 	public void testGetEstimatedTimeRemainingFormatForOrbOverOneHour()
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
+		when(itemContainer.getItems()).thenReturn(new Item[] {new Item(-1, 1)});
 		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);

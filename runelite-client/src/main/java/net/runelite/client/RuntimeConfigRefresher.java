@@ -48,9 +48,9 @@ class RuntimeConfigRefresher
 
 	@Inject
 	private RuntimeConfigRefresher(
-		@Nullable RuntimeConfig managedRuntimeConfig,
-		RuntimeConfigLoader configLoader,
-		EventBus eventBus
+			@Nullable RuntimeConfig managedRuntimeConfig,
+			RuntimeConfigLoader configLoader,
+			EventBus eventBus
 	)
 	{
 		this.managedRuntimeConfig = managedRuntimeConfig;

@@ -53,7 +53,7 @@ public class Ambrosia implements Effect
 		final StatChange runChange = heal(RUN_ENERGY, 100).effect(client);
 
 		final StatsChanges changes = new StatsChanges(3);
-		changes.setStatChanges(new StatChange[]{ hpChange, prayerChange, runChange });
+		changes.setStatChanges(new StatChange[] {hpChange, prayerChange, runChange});
 		return changes;
 	}
 }

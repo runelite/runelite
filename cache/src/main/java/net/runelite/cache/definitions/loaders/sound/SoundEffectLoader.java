@@ -24,8 +24,8 @@
  */
 package net.runelite.cache.definitions.loaders.sound;
 
-import net.runelite.cache.definitions.sound.SoundEffectDefinition;
 import net.runelite.cache.definitions.sound.SoundEffect1Definition;
+import net.runelite.cache.definitions.sound.SoundEffectDefinition;
 import net.runelite.cache.io.InputStream;
 
 public class SoundEffectLoader

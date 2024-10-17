@@ -88,16 +88,14 @@ public class MapImageDumper
 
 	private final Map<Integer, UnderlayDefinition> underlays = new HashMap<>();
 	private final Map<Integer, OverlayDefinition> overlays = new HashMap<>();
-	private SpriteDefinition[] mapDecorations;
-
 	private final RegionLoader regionLoader;
 	private final AreaManager areas;
 	private final SpriteManager sprites;
 	private final FontManager fonts;
 	private final WorldMapManager worldMapManager;
-	private RSTextureProvider rsTextureProvider;
 	private final ObjectManager objectManager;
-
+	private SpriteDefinition[] mapDecorations;
+	private RSTextureProvider rsTextureProvider;
 	@Getter
 	@Setter
 	private boolean labelRegions;
@@ -166,8 +164,7 @@ public class MapImageDumper
 		try
 		{
 			cmd = parser.parse(options, args);
-		}
-		catch (ParseException ex)
+		} catch (ParseException ex)
 		{
 			System.err.println("Error parsing command line options: " + ex.getMessage());
 			System.exit(-1);
@@ -205,6 +202,57 @@ public class MapImageDumper
 				log.info("Wrote image {}", imageFile);
 			}
 		}
+	}
+
+	private static int convert(int d)
+	{
+		if (d >= 0)
+		{
+			return d % 64;
+		} else
+		{
+			return 64 - -(d % 64) - 1;
+		}
+	}
+
+	static int adjustHSL_something(int hsl, int constant)
+	{
+		//Same as adjustHSLListness0 except this one is missing if hsl == -1 return a clamped constant
+		if (hsl == -1)
+		{
+			return 12345678;
+		} else
+		{
+			constant = (hsl & 127) * constant / 128;
+			if (constant < 2)
+			{
+				constant = 2;
+			} else if (constant > 126)
+			{
+				constant = 126;
+			}
+
+			//0xFF80
+			return (hsl & 65408) + constant;
+		}
+	}
+
+	static final int adjustHSLListness0(int hsl)
+	{
+		double multiplier = 0.898D;
+		int hue = JagexColor.unpackHueFull(hsl);
+		int saturation = JagexColor.unpackSaturationFull(hsl);
+		int light = JagexColor.unpackLuminanceFull(hsl);
+		int constant = (int) (light * multiplier);
+		if (constant < 2)
+		{
+			constant = 2;
+		} else if (constant > 255)
+		{
+			constant = 255;
+		}
+
+		return JagexColor.packHSLFull(hue, saturation, constant);
 	}
 
 	protected double random()
@@ -248,15 +296,14 @@ public class MapImageDumper
 		int pixelsY = dimY * MAP_SCALE;
 
 		log.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB). Max memory: {}mb", pixelsX, pixelsY,
-			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
-			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
+				MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
+				Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
 		BufferedImage image;
 		if (lowMemory)
 		{
 			image = BigBufferedImage.create(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
-		}
-		else
+		} else
 		{
 			image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
 		}
@@ -381,8 +428,8 @@ public class MapImageDumper
 				if (argb != 0)
 				{
 					to.setRGB(drawBaseX * MAP_SCALE + x * MAP_SCALE + i,
-						drawBaseY * MAP_SCALE + y * MAP_SCALE + j,
-						argb);
+							drawBaseY * MAP_SCALE + y * MAP_SCALE + j,
+							argb);
 				}
 			}
 		}
@@ -505,8 +552,7 @@ public class MapImageDumper
 									if (avgLight < 0)
 									{
 										avgLight = 0;
-									}
-									else if (avgLight > 255)
+									} else if (avgLight > 255)
 									{
 										avgLight = 255;
 									}
@@ -525,8 +571,7 @@ public class MapImageDumper
 								if (overlayId == 0)
 								{
 									shape = rotation = 0;
-								}
-								else
+								} else
 								{
 									shape = r.getOverlayPath(z, convert(xi), convert(yi)) + 1;
 									rotation = r.getOverlayRotation(z, convert(xi), convert(yi));
@@ -540,12 +585,10 @@ public class MapImageDumper
 										hsl = rsTextureProvider.getAverageTextureRGB(overlayTexture);
 										//Repack it into full hsl
 										hsl = packHslFull(JagexColor.unpackHue((short) hsl) * 4, JagexColor.unpackSaturation((short) hsl) * 32, JagexColor.unpackLuminance((short) hsl) * 2);
-									}
-									else if (overlayDefinition.getRgbColor() == 0xFF_00FF)
+									} else if (overlayDefinition.getRgbColor() == 0xFF_00FF)
 									{
 										hsl = -2;
-									}
-									else
+									} else
 									{
 										// randomness added here
 										//Overlay Hsl
@@ -582,14 +625,12 @@ public class MapImageDumper
 									{
 										drawMapSquare(pixels, drawX, drawY, underlayRgb);
 									}
-								}
-								else if (shape == 1)
+								} else if (shape == 1)
 								{
 									int drawX = xi;
 									int drawY = Region.Y - 1 - yi;
 									drawMapSquare(pixels, drawX, drawY, overlayRgb);
-								}
-								else
+								} else
 								{
 									shape--; //This is how jagex does it.
 									int drawX = xi * MAP_SCALE;
@@ -608,8 +649,7 @@ public class MapImageDumper
 												setPixels(pixels, drawX + ix, drawY + iy, p);
 											}
 										}
-									}
-									else
+									} else
 									{
 										//Only draw the overlay portion of the tile. Used extensively for the coastlines of tutorial island.
 										int rotIdx = 0;
@@ -638,8 +678,7 @@ public class MapImageDumper
 		if (x >= 0 && y >= 0 && x < pixels.length && y < pixels[x].length)
 		{
 			pixels[x][y] = value;
-		}
-		else
+		} else
 		{
 			System.err.println("Ground drawing out of bounds! " + x + ", " + y);
 		}
@@ -793,8 +832,7 @@ public class MapImageDumper
 					}
 
 					++var2;
-				}
-				else
+				} else
 				{
 					++var2;
 				}
@@ -1288,18 +1326,6 @@ public class MapImageDumper
 		TILE_SHAPE_2D[7][3] = shape;
 	}
 
-	private static int convert(int d)
-	{
-		if (d >= 0)
-		{
-			return d % 64;
-		}
-		else
-		{
-			return 64 - -(d % 64) - 1;
-		}
-	}
-
 	private void drawObjects(BufferedImage image, int drawBaseX, int drawBaseY, Region region, int z)
 	{
 		if (!renderObjects)
@@ -1333,8 +1359,7 @@ public class MapImageDumper
 					if (pos.getZ() == tileZ && (region.getTileSetting(z, localX, localY) & 24) == 0)
 					{
 						planeLocs.add(loc);
-					}
-					else if (z < 3 && pos.getZ() == tileZ + 1 && (region.getTileSetting(z + 1, localX, localY) & 8) != 0)
+					} else if (z < 3 && pos.getZ() == tileZ + 1 && (region.getTileSetting(z + 1, localX, localY) & 8) != 0)
 					{
 						pushDownLocs.add(loc);
 					}
@@ -1367,8 +1392,7 @@ public class MapImageDumper
 								if (object.getMapSceneID() != -1)
 								{
 									blitMapDecoration(image, drawX, drawY, object);
-								}
-								else if (drawX >= 0 && drawY >= 0 && drawX < image.getWidth() && drawY < image.getHeight())
+								} else if (drawX >= 0 && drawY >= 0 && drawX < image.getWidth() && drawY < image.getHeight())
 								{
 									//Straight walls/doors
 									if (type == 0 || type == 2)
@@ -1399,16 +1423,13 @@ public class MapImageDumper
 										if (rotation == 0)
 										{
 											image.setRGB(drawX + 0, drawY + 0, rgb);
-										}
-										else if (rotation == 1)
+										} else if (rotation == 1)
 										{
 											image.setRGB(drawX + MAP_SCALE - 1, drawY + 0, rgb);
-										}
-										else if (rotation == 2)
+										} else if (rotation == 2)
 										{
 											image.setRGB(drawX + MAP_SCALE - 1, drawY + MAP_SCALE - 1, rgb);
-										}
-										else if (rotation == 3)
+										} else if (rotation == 3)
 										{
 											image.setRGB(drawX + 0, drawY + MAP_SCALE - 1, rgb);
 										}
@@ -1477,8 +1498,7 @@ public class MapImageDumper
 											xOffset++;
 										}
 										while (xOffset < MAP_SCALE && yOffset < MAP_SCALE);
-									}
-									else
+									} else
 									{
 										int xOffset = 0;
 										int yOffset = MAP_SCALE - 1;
@@ -1588,7 +1608,7 @@ public class MapImageDumper
 			return;
 		}
 
-		FontName[] fontSizes = new FontName[]{FontName.VERDANA_11, FontName.VERDANA_13, FontName.VERDANA_15};
+		FontName[] fontSizes = new FontName[] {FontName.VERDANA_11, FontName.VERDANA_13, FontName.VERDANA_15};
 		List<WorldMapElementDefinition> elements = worldMapManager.getElements();
 		for (WorldMapElementDefinition element : elements)
 		{
@@ -1618,10 +1638,10 @@ public class MapImageDumper
 						int drawX = worldPosition.getX() - regionLoader.getLowestX().getBaseX();
 						int drawY = regionLoader.getHighestY().getBaseY() - worldPosition.getY() + Region.Y - 2;
 						blitGlyph(image,
-							(drawX * MAP_SCALE) + advance - (stringWidth / 2),
-							(drawY * MAP_SCALE) + ascent - (font.getAscent() / 2),
-							area.getTextColor(),
-							sprite
+								(drawX * MAP_SCALE) + advance - (stringWidth / 2),
+								(drawY * MAP_SCALE) + ascent - (font.getAscent() / 2),
+								area.getTextColor(),
+								sprite
 						);
 					}
 
@@ -1640,49 +1660,6 @@ public class MapImageDumper
 	private int packHslFull(int hue, int saturation, int light)
 	{
 		return JagexColor.packHSLFull(hue, saturation, light);
-	}
-
-	static int adjustHSL_something(int hsl, int constant)
-	{
-		//Same as adjustHSLListness0 except this one is missing if hsl == -1 return a clamped constant
-		if (hsl == -1)
-		{
-			return 12345678;
-		}
-		else
-		{
-			constant = (hsl & 127) * constant / 128;
-			if (constant < 2)
-			{
-				constant = 2;
-			}
-			else if (constant > 126)
-			{
-				constant = 126;
-			}
-
-			//0xFF80
-			return (hsl & 65408) + constant;
-		}
-	}
-
-	static final int adjustHSLListness0(int hsl)
-	{
-		double multiplier = 0.898D;
-		int hue = JagexColor.unpackHueFull(hsl);
-		int saturation = JagexColor.unpackSaturationFull(hsl);
-		int light = JagexColor.unpackLuminanceFull(hsl);
-		int constant = (int) (light * multiplier);
-		if (constant < 2)
-		{
-			constant = 2;
-		}
-		else if (constant > 255)
-		{
-			constant = 255;
-		}
-
-		return JagexColor.packHSLFull(hue, saturation, constant);
 	}
 
 	private void drawMapSquare(int[][] pixels, int x, int y, int rgb)
@@ -1733,9 +1710,9 @@ public class MapImageDumper
 				assert sprite != null;
 
 				blitIcon(img,
-					(drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
-					(drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
-					sprite, 1.0f);
+						(drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
+						(drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
+						sprite, 1.0f);
 			}
 		}
 
@@ -1759,9 +1736,9 @@ public class MapImageDumper
 			int drawY = drawBaseY + (Region.Y - 1 - localY);
 			SpriteDefinition sprite = sprites.findSprite(area.spriteId, 0);
 			blitIcon(img,
-				(drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
-				(drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
-				sprite, 1.0f);
+					(drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
+					(drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
+					sprite, 1.0f);
 		}
 	}
 

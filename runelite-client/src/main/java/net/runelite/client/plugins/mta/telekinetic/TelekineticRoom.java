@@ -90,6 +90,11 @@ public class TelekineticRoom extends MTARoom
 		this.client = client;
 	}
 
+	private static int manhattan(WorldPoint point1, WorldPoint point2)
+	{
+		return Math.abs(point1.getX() - point2.getX()) + Math.abs(point2.getY() - point1.getY());
+	}
+
 	public void resetRoom()
 	{
 		finishLocation = null;
@@ -144,16 +149,14 @@ public class TelekineticRoom extends MTARoom
 			bounds = getBounds(telekineticWalls.toArray(new WallObject[0]));
 			numMazeWalls = telekineticWalls.size();
 			client.clearHintArrow();
-		}
-		else if (guardian != null)
+		} else if (guardian != null)
 		{
 			WorldPoint current;
 			if (guardian.getId() == MAZE_GUARDIAN_MOVING)
 			{
 				destination = getGuardianDestination();
 				current = WorldPoint.fromLocal(client, destination);
-			}
-			else
+			} else
 			{
 				destination = null;
 				current = guardian.getWorldLocation();
@@ -172,15 +175,13 @@ public class TelekineticRoom extends MTARoom
 			if (location.equals(finishLocation))
 			{
 				client.clearHintArrow();
-			}
-			else
+			} else
 			{
 				log.debug("Rebuilding moves due to guardian move");
 				this.moves = build();
 			}
 
-		}
-		else
+		} else
 		{
 			client.clearHintArrow();
 			moves.clear();
@@ -230,12 +231,10 @@ public class TelekineticRoom extends MTARoom
 				if (guardian.getId() == MAZE_GUARDIAN_MOVING)
 				{
 					graphics2D.setColor(Color.YELLOW);
-				}
-				else if (moves.peek() == getPosition())
+				} else if (moves.peek() == getPosition())
 				{
 					graphics2D.setColor(Color.GREEN);
-				}
-				else
+				} else
 				{
 					graphics2D.setColor(Color.RED);
 				}
@@ -288,11 +287,6 @@ public class TelekineticRoom extends MTARoom
 		return nearest(areaNext, nearestAfter);
 	}
 
-	private static int manhattan(WorldPoint point1, WorldPoint point2)
-	{
-		return Math.abs(point1.getX() - point2.getX()) + Math.abs(point2.getY() - point1.getY());
-	}
-
 	private WorldPoint nearest(WorldArea area, WorldPoint worldPoint)
 	{
 		int dist = Integer.MAX_VALUE;
@@ -334,8 +328,7 @@ public class TelekineticRoom extends MTARoom
 		{
 			WorldPoint converted = WorldPoint.fromLocal(client, getGuardianDestination());
 			return build(converted);
-		}
-		else
+		} else
 		{
 			return build(guardian.getWorldLocation());
 		}
@@ -404,16 +397,13 @@ public class TelekineticRoom extends MTARoom
 			if (next.getX() > current.getX())
 			{
 				path.add(Direction.WEST);
-			}
-			else if (next.getX() < current.getX())
+			} else if (next.getX() < current.getX())
 			{
 				path.add(Direction.EAST);
-			}
-			else if (next.getY() > current.getY())
+			} else if (next.getY() > current.getY())
 			{
 				path.add(Direction.SOUTH);
-			}
-			else
+			} else
 			{
 				path.add(Direction.NORTH);
 			}
@@ -427,10 +417,10 @@ public class TelekineticRoom extends MTARoom
 	private LocalPoint[] neighbours(LocalPoint point)
 	{
 		return new LocalPoint[]
-		{
-			neighbour(point, Direction.NORTH), neighbour(point, Direction.SOUTH),
-			neighbour(point, Direction.EAST), neighbour(point, Direction.WEST)
-		};
+				{
+						neighbour(point, Direction.NORTH), neighbour(point, Direction.SOUTH),
+						neighbour(point, Direction.EAST), neighbour(point, Direction.WEST)
+				};
 	}
 
 	private LocalPoint neighbour(LocalPoint point, Direction direction)
@@ -465,8 +455,8 @@ public class TelekineticRoom extends MTARoom
 		while (area.canTravelInDirection(client.getTopLevelWorldView(), dx, dy))
 		{
 			worldPoint = area.toWorldPoint()
-				.dx(dx)
-				.dy(dy);
+					.dx(dx)
+					.dy(dy);
 			area = worldPoint.toWorldArea();
 		}
 
@@ -501,16 +491,13 @@ public class TelekineticRoom extends MTARoom
 		if (mine.getY() >= bounds.getMaxY() && mine.getX() < bounds.getMaxX() && mine.getX() > bounds.getX())
 		{
 			return Direction.NORTH;
-		}
-		else if (mine.getY() <= bounds.getY() && mine.getX() < bounds.getMaxX() && mine.getX() > bounds.getX())
+		} else if (mine.getY() <= bounds.getY() && mine.getX() < bounds.getMaxX() && mine.getX() > bounds.getX())
 		{
 			return Direction.SOUTH;
-		}
-		else if (mine.getX() >= bounds.getMaxX() && mine.getY() < bounds.getMaxY() && mine.getY() > bounds.getY())
+		} else if (mine.getX() >= bounds.getMaxX() && mine.getY() < bounds.getMaxY() && mine.getY() > bounds.getY())
 		{
 			return Direction.EAST;
-		}
-		else if (mine.getX() <= bounds.getX() && mine.getY() < bounds.getMaxY() && mine.getY() > bounds.getY())
+		} else if (mine.getX() <= bounds.getX() && mine.getY() < bounds.getMaxY() && mine.getY() > bounds.getY())
 		{
 			return Direction.WEST;
 		}

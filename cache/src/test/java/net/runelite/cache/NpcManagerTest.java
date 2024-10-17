@@ -46,14 +46,14 @@ public class NpcManagerTest
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder(),
-			javaDir = folder.newFolder();
+				javaDir = folder.newFolder();
 
 		try (Store store = new Store(StoreLocation.LOCATION))
 		{
 			store.load();
 
 			NpcManager dumper = new NpcManager(
-				store
+					store
 			);
 			dumper.load();
 			dumper.dump(dumpDir);

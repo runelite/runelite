@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface NotesConfig extends Config
 {
 	@ConfigItem(
-		keyName = "notesData",
-		name = "",
-		description = "",
-		hidden = true
+			keyName = "notesData",
+			name = "",
+			description = "",
+			hidden = true
 	)
 	default String notesData()
 	{
@@ -43,9 +43,9 @@ public interface NotesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "notesData",
-		name = "",
-		description = ""
+			keyName = "notesData",
+			name = "",
+			description = ""
 	)
 	void notesData(String str);
 }

@@ -54,8 +54,7 @@ public class StoreLocation
 		try
 		{
 			LOCATION = setupCacheDir();
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			throw new RuntimeException(ex);
 		}
@@ -89,8 +88,7 @@ public class StoreLocation
 			}
 
 			logger.info("Set up cache working directory to {}", file);
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			file.delete();
 			throw ex;

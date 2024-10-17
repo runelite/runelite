@@ -44,7 +44,7 @@ public interface ModelData extends Mesh<ModelData>, Renderable
 
 	/**
 	 * Lights a model.
-	 *
+	 * <p>
 	 * The produced model shares verticies, face transparencies, face indicies, and textures with
 	 * the underlying ModelData. If any of these may be mutated the corresponding {@code cloneX}
 	 * method should be called before {@code light}ing
@@ -53,7 +53,7 @@ public interface ModelData extends Mesh<ModelData>, Renderable
 
 	/**
 	 * Lights a model with default values
-	 * 
+	 *
 	 * @see #light(int, int, int, int, int)
 	 */
 	Model light();

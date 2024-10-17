@@ -47,13 +47,13 @@ public class ItemManagerTest
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder(),
-			javaDir = folder.newFolder();
+				javaDir = folder.newFolder();
 
 		Store store = new Store(StoreLocation.LOCATION);
 		store.load();
 
 		ItemManager dumper = new ItemManager(
-			store
+				store
 		);
 		dumper.load();
 		dumper.export(dumpDir);

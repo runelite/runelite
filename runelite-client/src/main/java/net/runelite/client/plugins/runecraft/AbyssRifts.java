@@ -62,15 +62,6 @@ enum AbyssRifts
 	SOUL_RIFT(ObjectID.SOUL_RIFT, SOUL_RUNE, RunecraftConfig::showSoul),
 	WATER_RIFT(ObjectID.WATER_RIFT, WATER_RUNE, RunecraftConfig::showWater);
 
-	@Getter
-	private final int objectId;
-
-	@Getter
-	private final int itemId;
-
-	@Getter
-	private final Predicate<RunecraftConfig> configEnabled;
-
 	private static final Map<Integer, AbyssRifts> rifts;
 
 	static
@@ -84,6 +75,13 @@ enum AbyssRifts
 
 		rifts = builder.build();
 	}
+
+	@Getter
+	private final int objectId;
+	@Getter
+	private final int itemId;
+	@Getter
+	private final Predicate<RunecraftConfig> configEnabled;
 
 	static AbyssRifts getRift(int id)
 	{

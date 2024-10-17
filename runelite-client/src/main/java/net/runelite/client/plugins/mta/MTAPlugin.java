@@ -39,10 +39,10 @@ import net.runelite.client.plugins.mta.telekinetic.TelekineticRoom;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Mage Training Arena",
-	description = "Show helpful information for the Mage Training Arena minigame",
-	tags = {"mta", "magic", "minigame", "overlay"},
-	enabledByDefault = false
+		name = "Mage Training Arena",
+		description = "Show helpful information for the Mage Training Arena minigame",
+		tags = {"mta", "magic", "minigame", "overlay"},
+		enabledByDefault = false
 )
 public class MTAPlugin extends Plugin
 {
@@ -80,7 +80,7 @@ public class MTAPlugin extends Plugin
 		overlayManager.add(sceneOverlay);
 		overlayManager.add(itemOverlay);
 
-		this.rooms = new MTARoom[]{alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
+		this.rooms = new MTARoom[] {alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
 
 		for (MTARoom room : rooms)
 		{

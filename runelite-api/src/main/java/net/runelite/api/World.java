@@ -81,7 +81,7 @@ public interface World
 	int getIndex();
 
 	/**
-	 *  Sets the worlds index.
+	 * Sets the worlds index.
 	 *
 	 * @param index the index
 	 */

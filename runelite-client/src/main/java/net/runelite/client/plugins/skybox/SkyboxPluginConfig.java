@@ -33,18 +33,18 @@ import net.runelite.client.config.ConfigItem;
 public interface SkyboxPluginConfig extends Config
 {
 	@ConfigItem(
-		keyName = "customOverworldColor",
-		name = "Overworld sky color",
-		description = "Sets the color to use for the sky in overworld areas.",
-		position = 1
+			keyName = "customOverworldColor",
+			name = "Overworld sky color",
+			description = "Sets the color to use for the sky in overworld areas.",
+			position = 1
 	)
 	Color customOverworldColor();
 
 	@ConfigItem(
-		keyName = "customOtherColor",
-		name = "Cave sky color",
-		description = "Sets the color to use for the sky in non-overworld areas.",
-		position = 2
+			keyName = "customOtherColor",
+			name = "Cave sky color",
+			description = "Sets the color to use for the sky in non-overworld areas.",
+			position = 2
 	)
 	Color customOtherColor();
 }

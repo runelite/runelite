@@ -39,80 +39,80 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 	{
 		// EASY
 		add("Have Aubury teleport you to the Essence mine.",
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+				new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Mine some Iron in the south east mining patch near Varrock.",
-			new SkillRequirement(Skill.MINING, 15));
+				new SkillRequirement(Skill.MINING, 15));
 		add("Jump over the fence south of Varrock.",
-			new SkillRequirement(Skill.AGILITY, 13));
+				new SkillRequirement(Skill.AGILITY, 13));
 		add("Spin a bowl on the pottery wheel and fire it in the oven in Barb Village.",
-			new SkillRequirement(Skill.CRAFTING, 8));
+				new SkillRequirement(Skill.CRAFTING, 8));
 		add("Craft some Earth runes from Essence.",
-			new SkillRequirement(Skill.RUNECRAFT, 9));
+				new SkillRequirement(Skill.RUNECRAFT, 9));
 		add("Catch some trout in the River Lum at Barbarian Village.",
-			new SkillRequirement(Skill.FISHING, 20));
+				new SkillRequirement(Skill.FISHING, 20));
 		add("Steal from the Tea stall in Varrock.",
-			new SkillRequirement(Skill.THIEVING, 5));
+				new SkillRequirement(Skill.THIEVING, 5));
 
 		// MEDIUM
 		add("Enter the Champions' Guild.",
-			new QuestPointRequirement(32));
+				new QuestPointRequirement(32));
 		add("Select a colour for your kitten.",
-			new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY, true),
-			new QuestRequirement(Quest.GERTRUDES_CAT));
+				new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY, true),
+				new QuestRequirement(Quest.GERTRUDES_CAT));
 		add("Use the spirit tree north of Varrock.",
-			new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
+				new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
 		add("Enter the Tolna dungeon after completing A Soul's Bane.",
-			new QuestRequirement(Quest.A_SOULS_BANE));
+				new QuestRequirement(Quest.A_SOULS_BANE));
 		add("Teleport to the digsite using a Digsite pendant.",
-			new QuestRequirement(Quest.THE_DIG_SITE));
+				new QuestRequirement(Quest.THE_DIG_SITE));
 		add("Cast the teleport to Varrock spell.",
-			new SkillRequirement(Skill.MAGIC, 25));
+				new SkillRequirement(Skill.MAGIC, 25));
 		add("Get a Slayer task from Vannaka.",
-			new CombatLevelRequirement(40));
+				new CombatLevelRequirement(40));
 		add("Pick a White tree fruit.",
-			new SkillRequirement(Skill.FARMING, 25),
-			new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY));
+				new SkillRequirement(Skill.FARMING, 25),
+				new QuestRequirement(Quest.GARDEN_OF_TRANQUILLITY));
 		add("Use the balloon to travel from Varrock.",
-			new SkillRequirement(Skill.FIREMAKING, 40),
-			new QuestRequirement(Quest.ENLIGHTENED_JOURNEY));
+				new SkillRequirement(Skill.FIREMAKING, 40),
+				new QuestRequirement(Quest.ENLIGHTENED_JOURNEY));
 		add("Complete a lap of the Varrock Agility course.",
-			new SkillRequirement(Skill.AGILITY, 30));
+				new SkillRequirement(Skill.AGILITY, 30));
 
 		// HARD
 		add("Trade furs with the Fancy Dress Seller for a spottier cape and equip it.",
-			new SkillRequirement(Skill.HUNTER, 66));
+				new SkillRequirement(Skill.HUNTER, 66));
 		add("Make a Waka Canoe near Edgeville.",
-			new SkillRequirement(Skill.WOODCUTTING, 57));
+				new SkillRequirement(Skill.WOODCUTTING, 57));
 		add("Teleport to Paddewwa.",
-			new SkillRequirement(Skill.MAGIC, 54),
-			new QuestRequirement(Quest.DESERT_TREASURE_I));
+				new SkillRequirement(Skill.MAGIC, 54),
+				new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Chop some yew logs in Varrock and burn them at the top of the Varrock church.",
-			new SkillRequirement(Skill.WOODCUTTING, 60),
-			new SkillRequirement(Skill.FIREMAKING, 60));
+				new SkillRequirement(Skill.WOODCUTTING, 60),
+				new SkillRequirement(Skill.FIREMAKING, 60));
 		add("Have the Varrock estate agent decorate your house with Fancy Stone.",
-			new SkillRequirement(Skill.CONSTRUCTION, 50));
+				new SkillRequirement(Skill.CONSTRUCTION, 50));
 		add("Collect at least 2 yew roots from the Tree patch in Varrock Palace.",
-			new SkillRequirement(Skill.WOODCUTTING, 60),
-			new SkillRequirement(Skill.FARMING, 68));
+				new SkillRequirement(Skill.WOODCUTTING, 60),
+				new SkillRequirement(Skill.FARMING, 68));
 		add("Pray at the altar in Varrock palace with Smite active.",
-			new SkillRequirement(Skill.PRAYER, 52));
+				new SkillRequirement(Skill.PRAYER, 52));
 		add("Squeeze through the obstacle pipe in Edgeville dungeon.",
-			new SkillRequirement(Skill.AGILITY, 51));
+				new SkillRequirement(Skill.AGILITY, 51));
 
 		// ELITE
 		add("Create a super combat potion in Varrock west bank.",
-			new SkillRequirement(Skill.HERBLORE, 90),
-			new QuestRequirement(Quest.DRUIDIC_RITUAL));
+				new SkillRequirement(Skill.HERBLORE, 90),
+				new QuestRequirement(Quest.DRUIDIC_RITUAL));
 		add("Use Lunar magic to make 20 mahogany planks at the Lumberyard.",
-			new SkillRequirement(Skill.MAGIC, 86),
-			new QuestRequirement(Quest.DREAM_MENTOR));
+				new SkillRequirement(Skill.MAGIC, 86),
+				new QuestRequirement(Quest.DREAM_MENTOR));
 		add("Bake a summer pie in the Cooking Guild.",
-			new SkillRequirement(Skill.COOKING, 95));
+				new SkillRequirement(Skill.COOKING, 95));
 		add("Smith and fletch ten rune darts within Varrock.",
-			new SkillRequirement(Skill.SMITHING, 89),
-			new SkillRequirement(Skill.FLETCHING, 81),
-			new QuestRequirement(Quest.THE_TOURIST_TRAP));
+				new SkillRequirement(Skill.SMITHING, 89),
+				new SkillRequirement(Skill.FLETCHING, 81),
+				new QuestRequirement(Quest.THE_TOURIST_TRAP));
 		add("Craft 100 or more earth runes simultaneously from Essence without the use of Extracts.",
-			new SkillRequirement(Skill.RUNECRAFT, 78));
+				new SkillRequirement(Skill.RUNECRAFT, 78));
 	}
 }

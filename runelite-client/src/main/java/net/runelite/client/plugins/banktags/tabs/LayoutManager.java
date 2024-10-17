@@ -102,8 +102,8 @@ public class LayoutManager
 
 	@Inject
 	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager,
-		BankSearch bankSearch, TabManager tabManager, TabInterface tabInterface, ChatMessageManager chatMessageManager,
-		PotionStorage potionStorage, EventBus eventBus)
+				  BankSearch bankSearch, TabManager tabManager, TabInterface tabInterface, ChatMessageManager chatMessageManager,
+				  PotionStorage potionStorage, EventBus eventBus)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -161,10 +161,10 @@ public class LayoutManager
 		int[] layout = l.getLayout();
 
 		ItemMatcher[] matchers = {
-			this::matchExact,
-			this::matchPlaceholder,
-			this::matchesVariant,
-			potionStorage::matches
+				this::matchExact,
+				this::matchPlaceholder,
+				this::matchesVariant,
+				potionStorage::matches
 		};
 
 		Map<Integer, Integer> layoutToBank = new HashMap<>();
@@ -195,9 +195,9 @@ public class LayoutManager
 						ItemComposition from = itemManager.getItemComposition(itemId);
 						ItemComposition to = matchedItemDef;
 						log.debug("Matched {}{} -> {}{} removed placeholder: {}",
-							from.getName(), from.getPlaceholderId() > -1 && from.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
-							to.getName(), to.getPlaceholderId() > -1 && to.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
-							removedPlaceholder
+								from.getName(), from.getPlaceholderId() > -1 && from.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
+								to.getName(), to.getPlaceholderId() > -1 && to.getPlaceholderTemplateId() > -1 ? " (placeholder)" : "",
+								removedPlaceholder
 						);
 					}
 				}
@@ -253,8 +253,8 @@ public class LayoutManager
 			{
 				ItemComposition def = itemManager.getItemComposition(itemId);
 				log.debug("Bank contains {}{} but is not in the layout",
-					def.getName(),
-					def.getPlaceholderTemplateId() > -1 && def.getPlaceholderId() > -1 ? " (placeholder)" : "");
+						def.getName(),
+						def.getPlaceholderTemplateId() > -1 && def.getPlaceholderId() > -1 ? " (placeholder)" : "");
 			}
 
 			int layoutItemId = itemManager.canonicalize(itemId);
@@ -331,8 +331,7 @@ public class LayoutManager
 					c.setAction(7 - 1, DUPLICATE_ITEM);
 					c.setAction(8 - 1, REMOVE_LAYOUT);
 				}
-			}
-			else
+			} else
 			{
 				int quantityType = client.getVarbitValue(Varbits.BANK_QUANTITY_TYPE);
 				int requestQty = client.getVarbitValue(Varbits.BANK_REQUESTEDQUANTITY);
@@ -381,8 +380,7 @@ public class LayoutManager
 
 			c.setOnDragListener(ScriptID.BANKMAIN_DRAGSCROLL, ScriptEvent.WIDGET_ID, ScriptEvent.WIDGET_INDEX, ScriptEvent.MOUSE_X, ScriptEvent.MOUSE_Y, ComponentID.BANK_SCROLLBAR, 0);
 			c.setOnDragCompleteListener((JavaScriptCallback) ev -> dragCompleteHandler(l, ev));
-		}
-		else
+		} else
 		{
 			// pad size to not leave a gap between items
 			c.setOriginalWidth(BANK_ITEM_WIDTH + BANK_ITEM_X_PADDING);
@@ -435,8 +433,7 @@ public class LayoutManager
 		{
 			log.debug("Swap {} <-> {}", sidx, tidx);
 			l.swap(sidx, tidx);
-		}
-		else
+		} else
 		{
 			log.debug("Insert {} -> {}", sidx, tidx);
 			l.insert(sidx, tidx);
@@ -444,12 +441,6 @@ public class LayoutManager
 
 		tabManager.save();
 		bankSearch.layoutBank();
-	}
-
-	@FunctionalInterface
-	interface ItemMatcher
-	{
-		int match(Set<Integer> bank, int itemId);
 	}
 
 	private int matchExact(Set<Integer> bank, int itemId)
@@ -490,14 +481,6 @@ public class LayoutManager
 			}
 		}
 		return -1;
-	}
-
-	@Value
-	private static class PluginAutoLayout
-	{
-		Plugin plugin;
-		String name;
-		AutoLayout autoLayout;
 	}
 
 	/**
@@ -595,45 +578,45 @@ public class LayoutManager
 			for (PluginAutoLayout autoLayout : autoLayouts)
 			{
 				client.createMenuEntry(--idx)
-					.setOption("Auto layout: " + autoLayout.getName())
-					.setTarget(event.getTarget())
-					.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
-					.onClick(e ->
-					{
-						TagTab tab = tabManager.find(Text.removeTags(e.getTarget()));
-						if (tab != tabInterface.getActiveTab())
+						.setOption("Auto layout: " + autoLayout.getName())
+						.setTarget(event.getTarget())
+						.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
+						.onClick(e ->
 						{
-							chatMessageManager.queue(QueuedMessage.builder()
-								.type(ChatMessageType.CONSOLE)
-								.runeLiteFormattedMessage("The tag tab must be open first before performing an auto layout.")
-								.build());
-							return;
-						}
-
-						Layout old = tab.getLayout();
-						Layout new_ = autoLayout.autoLayout.generateLayout(tab);
-						tab.setLayout(new_);
-						bankSearch.layoutBank();
-						tab.setLayout(old);
-						tabManager.save();
-
-						chatboxPanelManager.openTextMenuInput("Tab laid out using the '" + autoLayout.getName() + "' layout.")
-							.option("1. Keep", () ->
+							TagTab tab = tabManager.find(Text.removeTags(e.getTarget()));
+							if (tab != tabInterface.getActiveTab())
 							{
-								tab.setLayout(new_);
-								tabManager.save();
-							})
-							.option("2. Undo", Runnables.doNothing())
-							.onClose(bankSearch::layoutBank)
-							.build();
-					});
+								chatMessageManager.queue(QueuedMessage.builder()
+										.type(ChatMessageType.CONSOLE)
+										.runeLiteFormattedMessage("The tag tab must be open first before performing an auto layout.")
+										.build());
+								return;
+							}
+
+							Layout old = tab.getLayout();
+							Layout new_ = autoLayout.autoLayout.generateLayout(tab);
+							tab.setLayout(new_);
+							bankSearch.layoutBank();
+							tab.setLayout(old);
+							tabManager.save();
+
+							chatboxPanelManager.openTextMenuInput("Tab laid out using the '" + autoLayout.getName() + "' layout.")
+									.option("1. Keep", () ->
+									{
+										tab.setLayout(new_);
+										tabManager.save();
+									})
+									.option("2. Undo", Runnables.doNothing())
+									.onClose(bankSearch::layoutBank)
+									.build();
+						});
 			}
 		}
 
 		// Update widget index of the menu so withdraws work in laid out tabs.
 		BankTag activeTag = plugin.getActiveTag();
-		if (event.getActionParam1()  == ComponentID.BANK_ITEM_CONTAINER
-			&& activeTag != null && !tabInterface.isTagTabActive() && activeTag.layout() != null)
+		if (event.getActionParam1() == ComponentID.BANK_ITEM_CONTAINER
+				&& activeTag != null && !tabInterface.isTagTabActive() && activeTag.layout() != null)
 		{
 			MenuEntry menu = event.getMenuEntry();
 			Widget w = menu.getWidget();
@@ -687,6 +670,20 @@ public class LayoutManager
 		}
 	}
 
+	@FunctionalInterface
+	interface ItemMatcher
+	{
+		int match(Set<Integer> bank, int itemId);
+	}
+
+	@Value
+	private static class PluginAutoLayout
+	{
+		Plugin plugin;
+		String name;
+		AutoLayout autoLayout;
+	}
+
 	private class DefaultLayout implements AutoLayout
 	{
 		@Override
@@ -700,11 +697,11 @@ public class LayoutManager
 			if (e != null)
 			{
 				int[] format = {
-					-1, EquipmentInventorySlot.HEAD.getSlotIdx(), -1,
-					EquipmentInventorySlot.CAPE.getSlotIdx(), EquipmentInventorySlot.AMULET.getSlotIdx(), EquipmentInventorySlot.AMMO.getSlotIdx(),
-					EquipmentInventorySlot.WEAPON.getSlotIdx(), EquipmentInventorySlot.BODY.getSlotIdx(), EquipmentInventorySlot.SHIELD.getSlotIdx(),
-					-1, EquipmentInventorySlot.LEGS.getSlotIdx(), -1,
-					EquipmentInventorySlot.GLOVES.getSlotIdx(), EquipmentInventorySlot.BOOTS.getSlotIdx(), EquipmentInventorySlot.RING.getSlotIdx()
+						-1, EquipmentInventorySlot.HEAD.getSlotIdx(), -1,
+						EquipmentInventorySlot.CAPE.getSlotIdx(), EquipmentInventorySlot.AMULET.getSlotIdx(), EquipmentInventorySlot.AMMO.getSlotIdx(),
+						EquipmentInventorySlot.WEAPON.getSlotIdx(), EquipmentInventorySlot.BODY.getSlotIdx(), EquipmentInventorySlot.SHIELD.getSlotIdx(),
+						-1, EquipmentInventorySlot.LEGS.getSlotIdx(), -1,
+						EquipmentInventorySlot.GLOVES.getSlotIdx(), EquipmentInventorySlot.BOOTS.getSlotIdx(), EquipmentInventorySlot.RING.getSlotIdx()
 				};
 				for (int pos = 0, base = 0; pos < format.length; ++pos)
 				{
@@ -728,8 +725,7 @@ public class LayoutManager
 					if (item != null)
 					{
 						l.setItemAtPos(itemManager.canonicalize(item.getId()), lpos);
-					}
-					else
+					} else
 					{
 						l.setItemAtPos(-1, lpos);
 					}
@@ -758,8 +754,7 @@ public class LayoutManager
 					if (item != null)
 					{
 						l.setItemAtPos(itemManager.canonicalize(item.getId()), lpos);
-					}
-					else
+					} else
 					{
 						l.setItemAtPos(-1, lpos);
 					}
@@ -770,7 +765,7 @@ public class LayoutManager
 			if (i != null && hasRunePouch(i))
 			{
 				final int[] RUNEPOUCH_RUNES = {
-					Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
+						Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
 				};
 				final EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
 

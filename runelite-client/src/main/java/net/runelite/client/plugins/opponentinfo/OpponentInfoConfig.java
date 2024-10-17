@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface OpponentInfoConfig extends Config
 {
 	@ConfigItem(
-		keyName = "lookupOnInteraction",
-		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
-		position = 0
+			keyName = "lookupOnInteraction",
+			name = "Lookup players on interaction",
+			description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
+			position = 0
 	)
 	default boolean lookupOnInteraction()
 	{
@@ -43,10 +43,10 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hitpointsDisplayStyle",
-		name = "Display style",
-		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
-		position = 1
+			keyName = "hitpointsDisplayStyle",
+			name = "Display style",
+			description = "Show opponent's hitpoints as a value (if known), percentage, or both",
+			position = 1
 	)
 	default HitpointsDisplayStyle hitpointsDisplayStyle()
 	{
@@ -54,10 +54,10 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOpponentsInMenu",
-		name = "Show opponents in menu",
-		description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",
-		position = 3
+			keyName = "showOpponentsInMenu",
+			name = "Show opponents in menu",
+			description = "Marks opponents names in the menu which you are attacking or are attacking you (NPC only)",
+			position = 3
 	)
 	default boolean showOpponentsInMenu()
 	{
@@ -65,10 +65,10 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showOpponentHealthOverlay",
-		name = "Show opponent health overlay",
-		description = "Shows a health bar overlay when a boss health overlay is not present",
-		position = 4
+			keyName = "showOpponentHealthOverlay",
+			name = "Show opponent health overlay",
+			description = "Shows a health bar overlay when a boss health overlay is not present",
+			position = 4
 	)
 	default boolean showOpponentHealthOverlay()
 	{

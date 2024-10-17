@@ -49,45 +49,35 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BankTagsPluginTest
 {
+	private final ScriptCallbackEvent EVENT = new ScriptCallbackEvent();
 	@Mock
 	@Bind
 	private Client client;
-
 	@Mock
 	@Bind
 	private ItemManager itemManager;
-
 	@Mock
 	@Bind
 	private BankTagsConfig bankTagsConfig;
-
 	@Mock
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
-
 	@Mock
 	@Bind
 	private TabInterface tabInterface;
-
 	@Mock
 	@Bind
 	private ClueScrollService clueScrollService;
-
 	@Mock
 	@Bind
 	private ConfigManager configManager;
-
 	@Mock
 	@Bind
 	private ChatMessageManager chatMessageManager;
-
 	@Inject
 	private TagManager tagManager;
-
 	@Inject
 	private BankTagsPlugin bankTagsPlugin;
-
-	private final ScriptCallbackEvent EVENT = new ScriptCallbackEvent();
 
 	@Before
 	public void before()
@@ -104,25 +94,25 @@ public class BankTagsPluginTest
 	@Test
 	public void testExplicitSearch()
 	{
-		when(client.getIntStack()).thenReturn(new int[]{0, ABYSSAL_WHIP});
-		when(client.getStringStack()).thenReturn(new String[]{"tag:whip"});
+		when(client.getIntStack()).thenReturn(new int[] {0, ABYSSAL_WHIP});
+		when(client.getStringStack()).thenReturn(new String[] {"tag:whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip");
+				TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip");
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
 
 		// Search should be found at the start of the tag
-		when(client.getIntStack()).thenReturn(new int[]{0, ABYSSAL_WHIP});
+		when(client.getIntStack()).thenReturn(new int[] {0, ABYSSAL_WHIP});
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
+				TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
 
 		// Search should not be be found in the middle of the tag
 		// and explicit search does not allow fall through
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing whip");
+				TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing whip");
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(0, client.getIntStack()[0]);
 	}
@@ -130,11 +120,11 @@ public class BankTagsPluginTest
 	@Test
 	public void testFallThrough()
 	{
-		when(client.getIntStack()).thenReturn(new int[]{1, ABYSSAL_WHIP});
-		when(client.getStringStack()).thenReturn(new String[]{"whip"});
+		when(client.getIntStack()).thenReturn(new int[] {1, ABYSSAL_WHIP});
+		when(client.getStringStack()).thenReturn(new String[] {"whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing");
+				TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing");
 
 		assertFalse(tagManager.findTag(ABYSSAL_WHIP, "whip"));
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
@@ -144,11 +134,11 @@ public class BankTagsPluginTest
 	@Test
 	public void testNonExplicitSearch()
 	{
-		when(client.getIntStack()).thenReturn(new int[]{0, ABYSSAL_WHIP});
-		when(client.getStringStack()).thenReturn(new String[]{"whip"});
+		when(client.getIntStack()).thenReturn(new int[] {0, ABYSSAL_WHIP});
+		when(client.getStringStack()).thenReturn(new String[] {"whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
+				TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
 
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);

@@ -78,20 +78,20 @@ public class BankPluginTest
 		int itemId = ItemID.ABYSSAL_WHIP;
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(itemId, 30)});
+		when(itemContainer.getItems()).thenReturn(new Item[] {new Item(itemId, 30)});
 		when(client.getItemContainer(InventoryID.BANK)).thenReturn(itemContainer);
 
 		ItemComposition comp = mock(ItemComposition.class);
 
 		// 60k HA price * 30 = 1.8m
 		when(comp.getHaPrice())
-			.thenReturn(60_000);
+				.thenReturn(60_000);
 
 		// 400k GE Price * 30 = 12m
 		when(itemManager.getItemPrice(itemId))
-			.thenReturn(400_000);
+				.thenReturn(400_000);
 		when(itemManager.getItemComposition(itemId))
-			.thenReturn(comp);
+				.thenReturn(comp);
 
 		assertTrue(bankPlugin.valueSearch(itemId, ">500k"));
 		assertTrue(bankPlugin.valueSearch(itemId, "< 5.5b"));
@@ -132,17 +132,17 @@ public class BankPluginTest
 		Item whip = new Item(ItemID.ABYSSAL_WHIP, 1_000_000_000);
 
 		Item[] items = ImmutableList.of(
-			coins,
-			whip
+				coins,
+				whip
 		).toArray(new Item[0]);
 
 		ItemComposition whipComp = mock(ItemComposition.class);
 		when(whipComp.getHaPrice())
-			.thenReturn(4); // 4 * 1m overflows
+				.thenReturn(4); // 4 * 1m overflows
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP))
-			.thenReturn(whipComp);
+				.thenReturn(whipComp);
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP))
-			.thenReturn(3); // 1b * 3 overflows
+				.thenReturn(3); // 1b * 3 overflows
 
 		final ContainerPrices prices = bankPlugin.calculate(items);
 		assertNotNull(prices);

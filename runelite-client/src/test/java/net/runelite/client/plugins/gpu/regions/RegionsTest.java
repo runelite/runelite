@@ -27,12 +27,20 @@ package net.runelite.client.plugins.gpu.regions;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
 @Slf4j
 public class RegionsTest
 {
+	private static boolean intersects(Region r1, Region r2)
+	{
+		return r1.cx1 <= r2.cx2 && r1.cx2 >= r2.cx1 &&
+				r1.cy1 <= r2.cy2 && r1.cy2 >= r2.cy1;
+	}
+
 	@Test
 	public void test() throws IOException
 	{
@@ -63,11 +71,5 @@ public class RegionsTest
 
 		assertEquals(0, regions.getRegionId(50 * 8, 50 * 8)); // Lumbridge
 		assertNotEquals(0, regions.getRegionId(2416 / 8, 4448 / 8)); // Zanaris
-	}
-
-	private static boolean intersects(Region r1, Region r2)
-	{
-		return r1.cx1 <= r2.cx2 && r1.cx2 >= r2.cx1 &&
-			r1.cy1 <= r2.cy2 && r1.cy2 >= r2.cy1;
 	}
 }

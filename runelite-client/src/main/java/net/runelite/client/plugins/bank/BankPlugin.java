@@ -77,9 +77,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
-	name = "Bank",
-	description = "Modifications to the banking interface",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "pin"}
+		name = "Bank",
+		description = "Modifications to the banking interface",
+		tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "pin"}
 )
 @Slf4j
 public class BankPlugin extends Plugin
@@ -93,9 +93,9 @@ public class BankPlugin extends Plugin
 
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
-		" *(?<individual>i|iv|individual|per)?" +
-		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
-		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
+			" *(?<individual>i|iv|individual|per)?" +
+			" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
+			"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
 
 	@Inject
 	private Client client;
@@ -111,15 +111,6 @@ public class BankPlugin extends Plugin
 
 	@Inject
 	private BankSearch bankSearch;
-
-	@Inject
-	private KeyManager keyManager;
-
-	private boolean forceRightClickFlag;
-	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
-	private String searchString;
-	private ContainerPrices prices;
-
 	private final KeyListener searchHotkeyListener = new KeyListener()
 	{
 		@Override
@@ -160,8 +151,8 @@ public class BankPlugin extends Plugin
 						}
 
 						client.createScriptEvent(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
-							.setOp(1)
-							.run();
+								.setOp(1)
+								.run();
 					});
 					e.consume();
 				}
@@ -189,6 +180,12 @@ public class BankPlugin extends Plugin
 		{
 		}
 	};
+	@Inject
+	private KeyManager keyManager;
+	private boolean forceRightClickFlag;
+	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
+	private String searchString;
+	private ContainerPrices prices;
 
 	@Provides
 	BankConfig getConfig(ConfigManager configManager)
@@ -226,9 +223,9 @@ public class BankPlugin extends Plugin
 		{
 
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
-				|| (entry.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders())
+					|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
+					|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+					|| (entry.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders())
 			)
 			{
 				event.setForceRightClick(true);
@@ -241,9 +238,9 @@ public class BankPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
-			|| (event.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders()))
+				|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
+				|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+				|| (event.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders()))
 		{
 			forceRightClickFlag = true;
 		}
@@ -308,12 +305,11 @@ public class BankPlugin extends Plugin
 		if (event.getGroupId() == InterfaceID.SEED_VAULT && config.seedVaultValue())
 		{
 			clientThread.invokeLater(this::updateSeedVaultTotal);
-		}
-		else if (event.getGroupId() == InterfaceID.CLANRANK_POPUP // also the Jagex account ad in the bank
-			&& config.blockJagexAccountAd())
+		} else if (event.getGroupId() == InterfaceID.CLANRANK_POPUP // also the Jagex account ad in the bank
+				&& config.blockJagexAccountAd())
 		{
 			var wn = client.getComponentTable()
-				.get(ComponentID.BANK_POPUP);
+					.get(ComponentID.BANK_POPUP);
 			if (wn != null)
 			{
 				clientThread.invokeLater(() ->
@@ -357,16 +353,14 @@ public class BankPlugin extends Plugin
 			// The title is not overwritten by this script (but instead bankmain_build, which is only called at setup)
 			// so we can't append the price, and instead reset the whole title.
 			bankTitle.setText("Potion store " + createValueText(prices.getGePrice(), prices.getHighAlchPrice()));
-		}
-		else if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
+		} else if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
 			if (prices != null)
 			{
 				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
 				bankTitle.setText(bankTitle.getText() + createValueText(prices.getGePrice(), prices.getHighAlchPrice()));
 			}
-		}
-		else if (scriptId == ScriptID.BANKMAIN_SEARCH_REFRESH)
+		} else if (scriptId == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
 			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
 			// and the bank wasn't laid out this tick, lay it out early
@@ -376,8 +370,7 @@ public class BankPlugin extends Plugin
 				clientThread.invokeLater(bankSearch::layoutBank);
 				searchString = inputText;
 			}
-		}
-		else if (scriptId == ScriptID.GROUP_IRONMAN_STORAGE_BUILD)
+		} else if (scriptId == ScriptID.GROUP_IRONMAN_STORAGE_BUILD)
 		{
 			ContainerPrices price = getWidgetContainerPrices(ComponentID.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
 			if (price == null)
@@ -398,8 +391,7 @@ public class BankPlugin extends Plugin
 		if (containerId == InventoryID.BANK.getId())
 		{
 			itemQuantities = null;
-		}
-		else if (containerId == InventoryID.SEED_VAULT.getId() && config.seedVaultValue())
+		} else if (containerId == InventoryID.SEED_VAULT.getId() && config.seedVaultValue())
 		{
 			updateSeedVaultTotal();
 		}
@@ -420,8 +412,7 @@ public class BankPlugin extends Plugin
 			if (config.showExact())
 			{
 				stringBuilder.append(QuantityFormatter.formatNumber(gePrice));
-			}
-			else
+			} else
 			{
 				stringBuilder.append(QuantityFormatter.quantityToStackSize(gePrice));
 			}
@@ -440,8 +431,7 @@ public class BankPlugin extends Plugin
 			if (config.showExact())
 			{
 				stringBuilder.append(QuantityFormatter.formatNumber(haPrice));
-			}
-			else
+			} else
 			{
 				stringBuilder.append(QuantityFormatter.quantityToStackSize(haPrice));
 			}
@@ -535,8 +525,7 @@ public class BankPlugin extends Plugin
 			try
 			{
 				compare = QuantityFormatter.parseQuantity(matcher.group("num"));
-			}
-			catch (ParseException e)
+			} catch (ParseException e)
 			{
 				return false;
 			}
@@ -565,8 +554,7 @@ public class BankPlugin extends Plugin
 			{
 				compare1 = QuantityFormatter.parseQuantity(num1);
 				compare2 = QuantityFormatter.parseQuantity(num2);
-			}
-			catch (ParseException e)
+			} catch (ParseException e)
 			{
 				return false;
 			}

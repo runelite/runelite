@@ -110,8 +110,7 @@ public class TextComponent implements RenderableEntity
 			graphics.drawString(text, x, y - 1);
 			graphics.drawString(text, x + 1, y);
 			graphics.drawString(text, x - 1, y);
-		}
-		else
+		} else
 		{
 			// shadow
 			graphics.drawString(text, x + 1, y + 1);

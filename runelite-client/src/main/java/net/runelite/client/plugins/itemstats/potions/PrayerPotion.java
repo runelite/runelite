@@ -37,6 +37,8 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
 public class PrayerPotion extends StatBoost
 {
 	private static final double BASE_PERC = .25;
+	private static final int RING_SLOT = EquipmentInventorySlot.RING.getSlotIdx();
+	private static final int CAPE_SLOT = EquipmentInventorySlot.CAPE.getSlotIdx();
 	private final int delta;
 	private final double perc;
 
@@ -52,9 +54,6 @@ public class PrayerPotion extends StatBoost
 		this.perc = perc;
 	}
 
-	private static final int RING_SLOT = EquipmentInventorySlot.RING.getSlotIdx();
-	private static final int CAPE_SLOT = EquipmentInventorySlot.CAPE.getSlotIdx();
-
 	@Override
 	public int heals(Client client)
 	{
@@ -67,9 +66,9 @@ public class PrayerPotion extends StatBoost
 			Item ring = equipContainer.getItem(RING_SLOT);
 
 			hasHolyWrench = ring != null && ItemVariationMapping.getVariations(ItemID.RING_OF_THE_GODS)
-				.stream()
-				.filter(itemId -> itemId != ItemID.RING_OF_THE_GODS) // remove non-imbued rotg; it does not have the wrench effect
-				.anyMatch(itemId -> itemId == ring.getId());
+					.stream()
+					.filter(itemId -> itemId != ItemID.RING_OF_THE_GODS) // remove non-imbued rotg; it does not have the wrench effect
+					.anyMatch(itemId -> itemId == ring.getId());
 			if (cape != null)
 			{
 				int capeId = cape.getId();

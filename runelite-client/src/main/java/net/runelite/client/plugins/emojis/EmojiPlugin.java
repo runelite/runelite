@@ -39,9 +39,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Emojis",
-	description = "Replaces common emoticons such as :) with their corresponding emoji in the chat",
-	enabledByDefault = false
+		name = "Emojis",
+		description = "Replaces common emoticons such as :) with their corresponding emoji in the chat",
+		enabledByDefault = false
 )
 public class EmojiPlugin extends Plugin
 {

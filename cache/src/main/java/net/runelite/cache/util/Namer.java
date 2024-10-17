@@ -32,6 +32,49 @@ public class Namer
 {
 	private final Set<String> used = new HashSet<>();
 
+	private static String sanitize(String in)
+	{
+		String s = removeTags(in)
+				.toUpperCase()
+				.replace(' ', '_')
+				.replaceAll("[^a-zA-Z0-9_]", "");
+		if (s.isEmpty())
+		{
+			return null;
+		}
+		if (Character.isDigit(s.charAt(0)))
+		{
+			return "_" + s;
+		} else
+		{
+			return s;
+		}
+	}
+
+	public static String removeTags(String str)
+	{
+		StringBuilder builder = new StringBuilder(str.length());
+		boolean inTag = false;
+
+		for (int i = 0; i < str.length(); i++)
+		{
+			char currentChar = str.charAt(i);
+
+			if (currentChar == '<')
+			{
+				inTag = true;
+			} else if (currentChar == '>')
+			{
+				inTag = false;
+			} else if (!inTag)
+			{
+				builder.append(currentChar);
+			}
+		}
+
+		return builder.toString();
+	}
+
 	public String name(String name, int id)
 	{
 		name = sanitize(name);
@@ -50,51 +93,5 @@ public class Namer
 		used.add(name);
 
 		return name;
-	}
-
-	private static String sanitize(String in)
-	{
-		String s = removeTags(in)
-			.toUpperCase()
-			.replace(' ', '_')
-			.replaceAll("[^a-zA-Z0-9_]", "");
-		if (s.isEmpty())
-		{
-			return null;
-		}
-		if (Character.isDigit(s.charAt(0)))
-		{
-			return "_" + s;
-		}
-		else
-		{
-			return s;
-		}
-	}
-
-	public static String removeTags(String str)
-	{
-		StringBuilder builder = new StringBuilder(str.length());
-		boolean inTag = false;
-
-		for (int i = 0; i < str.length(); i++)
-		{
-			char currentChar = str.charAt(i);
-
-			if (currentChar == '<')
-			{
-				inTag = true;
-			}
-			else if (currentChar == '>')
-			{
-				inTag = false;
-			}
-			else if (!inTag)
-			{
-				builder.append(currentChar);
-			}
-		}
-
-		return builder.toString();
 	}
 }

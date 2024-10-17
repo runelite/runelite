@@ -33,10 +33,10 @@ import net.runelite.client.config.ConfigItem;
 public interface AntiDragConfig extends Config
 {
 	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 1
+			keyName = "dragDelay",
+			name = "Drag Delay",
+			description = "Configures the inventory drag delay in client ticks (20ms)",
+			position = 1
 	)
 	default int dragDelay()
 	{
@@ -44,10 +44,10 @@ public interface AntiDragConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "onShiftOnly",
-		name = "On Shift Only",
-		description = "Configures whether to only adjust the delay while holding shift.",
-		position = 2
+			keyName = "onShiftOnly",
+			name = "On Shift Only",
+			description = "Configures whether to only adjust the delay while holding shift.",
+			position = 2
 	)
 	default boolean onShiftOnly()
 	{
@@ -55,10 +55,10 @@ public interface AntiDragConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "disableOnCtrl",
-		name = "Disable On Control Pressed",
-		description = "Configures whether to ignore the delay while holding control.",
-		position = 3
+			keyName = "disableOnCtrl",
+			name = "Disable On Control Pressed",
+			description = "Configures whether to ignore the delay while holding control.",
+			position = 3
 	)
 	default boolean disableOnCtrl()
 	{

@@ -79,6 +79,7 @@ public class LinkBrowser
 
 	/**
 	 * Tries to open a directory in the OS native file manager.
+	 *
 	 * @param directory directory to open
 	 */
 	public static void open(final String directory)
@@ -112,7 +113,7 @@ public class LinkBrowser
 	{
 		try
 		{
-			final Process exec = Runtime.getRuntime().exec(new String[]{"xdg-open", resource});
+			final Process exec = Runtime.getRuntime().exec(new String[] {"xdg-open", resource});
 			exec.waitFor();
 
 			final int ret = exec.exitValue();
@@ -123,14 +124,12 @@ public class LinkBrowser
 
 			log.warn("xdg-open {} returned with error code {}", resource, ret);
 			return false;
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			// xdg-open not found
 			shouldAttemptXdg = false;
 			return false;
-		}
-		catch (InterruptedException ex)
+		} catch (InterruptedException ex)
 		{
 			log.warn("Interrupted while waiting for xdg-open {} to execute", resource);
 			return false;
@@ -155,8 +154,7 @@ public class LinkBrowser
 		{
 			desktop.browse(new URI(url));
 			return true;
-		}
-		catch (IOException | URISyntaxException ex)
+		} catch (IOException | URISyntaxException ex)
 		{
 			log.warn("Failed to open Desktop#browse {}", url, ex);
 			return false;
@@ -181,8 +179,7 @@ public class LinkBrowser
 		{
 			desktop.open(new File(directory));
 			return true;
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			log.warn("Failed to open Desktop#open {}", directory, ex);
 			return false;
@@ -191,6 +188,7 @@ public class LinkBrowser
 
 	/**
 	 * Open swing message box with specified message and copy data to clipboard
+	 *
 	 * @param message message to show
 	 */
 	private static void showMessageBox(final String message, final String data)
@@ -198,7 +196,7 @@ public class LinkBrowser
 		SwingUtilities.invokeLater(() ->
 		{
 			final int result = JOptionPane.showConfirmDialog(null, message, "Message",
-				JOptionPane.OK_CANCEL_OPTION);
+					JOptionPane.OK_CANCEL_OPTION);
 
 			if (result == JOptionPane.OK_OPTION)
 			{

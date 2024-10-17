@@ -38,9 +38,6 @@ enum LootTrackerMapping
 	CLUE_SCROLL_ELITE("Clue scroll (elite)", ItemID.CLUE_SCROLL_ELITE),
 	CLUE_SCROLL_MASTER("Clue scroll (master)", ItemID.CLUE_SCROLL_MASTER);
 
-	private final String name;
-	private final int baseId;
-
 	private static final ImmutableMap<String, Integer> MAPPINGS;
 
 	static
@@ -52,6 +49,9 @@ enum LootTrackerMapping
 		}
 		MAPPINGS = map.build();
 	}
+
+	private final String name;
+	private final int baseId;
 
 	static int map(int itemId, String name)
 	{

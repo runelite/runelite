@@ -70,9 +70,9 @@ class TimeTrackingPanel extends PluginPanel
 
 	@Inject
 	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config, FarmingTracker farmingTracker,
-		BirdHouseTracker birdHouseTracker, ClockManager clockManager,
-		FarmingContractManager farmingContractManager, ConfigManager configManager,
-		@Named("developerMode") boolean developerMode)
+					  BirdHouseTracker birdHouseTracker, ClockManager clockManager,
+					  FarmingContractManager farmingContractManager, ConfigManager configManager,
+					  @Named("developerMode") boolean developerMode)
 	{
 		super(false);
 
@@ -91,7 +91,7 @@ class TimeTrackingPanel extends PluginPanel
 		add(display, BorderLayout.CENTER);
 
 		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager,
-			farmingContractManager));
+				farmingContractManager));
 		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 

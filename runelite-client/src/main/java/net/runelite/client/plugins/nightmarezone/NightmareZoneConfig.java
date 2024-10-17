@@ -36,10 +36,10 @@ import net.runelite.client.config.Units;
 public interface NightmareZoneConfig extends Config
 {
 	@ConfigItem(
-		keyName = "moveoverlay",
-		name = "Override NMZ overlay",
-		description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
-		position = 1
+			keyName = "moveoverlay",
+			name = "Override NMZ overlay",
+			description = "Overrides the overlay so it doesn't conflict with other RuneLite plugins",
+			position = 1
 	)
 	default boolean moveOverlay()
 	{
@@ -47,10 +47,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "powersurgenotification",
-		name = "Power surge notification",
-		description = "Toggles notifications when a power surge power-up appears",
-		position = 2
+			keyName = "powersurgenotification",
+			name = "Power surge notification",
+			description = "Toggles notifications when a power surge power-up appears",
+			position = 2
 	)
 	default Notification powerSurgeNotification()
 	{
@@ -58,10 +58,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "recurrentdamagenotification",
-		name = "Recurrent damage notification",
-		description = "Toggles notifications when a recurrent damage power-up appears",
-		position = 3
+			keyName = "recurrentdamagenotification",
+			name = "Recurrent damage notification",
+			description = "Toggles notifications when a recurrent damage power-up appears",
+			position = 3
 	)
 	default Notification recurrentDamageNotification()
 	{
@@ -69,10 +69,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "zappernotification",
-		name = "Zapper notification",
-		description = "Toggles notifications when a zapper power-up appears",
-		position = 4
+			keyName = "zappernotification",
+			name = "Zapper notification",
+			description = "Toggles notifications when a zapper power-up appears",
+			position = 4
 	)
 	default Notification zapperNotification()
 	{
@@ -80,10 +80,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "ultimateforcenotification",
-		name = "Ultimate Force notification",
-		description = "Toggles notifications when an ultimate force power-up appears",
-		position = 5
+			keyName = "ultimateforcenotification",
+			name = "Ultimate Force notification",
+			description = "Toggles notifications when an ultimate force power-up appears",
+			position = 5
 	)
 	default Notification ultimateForceNotification()
 	{
@@ -91,10 +91,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "overloadnotification",
-		name = "Overload notification",
-		description = "Toggles notifications when your overload runs out",
-		position = 6
+			keyName = "overloadnotification",
+			name = "Overload notification",
+			description = "Toggles notifications when your overload runs out",
+			position = 6
 	)
 	default Notification overloadNotification()
 	{
@@ -102,14 +102,14 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@Range(
-		min = 0,
-		max = 300
+			min = 0,
+			max = 300
 	)
 	@ConfigItem(
-		keyName = "overloadearlywarningseconds",
-		name = "Overload early warning",
-		description = "You will be notified this many seconds before your overload potion expires",
-		position = 7
+			keyName = "overloadearlywarningseconds",
+			name = "Overload early warning",
+			description = "You will be notified this many seconds before your overload potion expires",
+			position = 7
 	)
 	@Units(Units.SECONDS)
 	default int overloadEarlyWarningSeconds()
@@ -118,10 +118,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptionnotification",
-		name = "Absorption notification",
-		description = "Toggles notifications when your absorption points gets below your threshold",
-		position = 8
+			keyName = "absorptionnotification",
+			name = "Absorption notification",
+			description = "Toggles notifications when your absorption points gets below your threshold",
+			position = 8
 	)
 	default Notification absorptionNotification()
 	{
@@ -129,10 +129,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptionthreshold",
-		name = "Absorption Threshold",
-		description = "The amount of absorption points to send a notification at",
-		position = 9
+			keyName = "absorptionthreshold",
+			name = "Absorption Threshold",
+			description = "The amount of absorption points to send a notification at",
+			position = 9
 	)
 	default int absorptionThreshold()
 	{
@@ -140,10 +140,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptioncoloroverthreshold",
-		name = "Color above threshold",
-		description = "Configures the color for the absorption widget when above the threshold",
-		position = 10
+			keyName = "absorptioncoloroverthreshold",
+			name = "Color above threshold",
+			description = "Configures the color for the absorption widget when above the threshold",
+			position = 10
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -151,10 +151,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "absorptioncolorbelowthreshold",
-		name = "Color below threshold",
-		description = "Configures the color for the absorption widget when below the threshold",
-		position = 11
+			keyName = "absorptioncolorbelowthreshold",
+			name = "Color below threshold",
+			description = "Configures the color for the absorption widget when below the threshold",
+			position = 11
 	)
 	default Color absorptionColorBelowThreshold()
 	{

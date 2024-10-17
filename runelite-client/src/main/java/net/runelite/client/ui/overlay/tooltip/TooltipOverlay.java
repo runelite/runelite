@@ -78,8 +78,7 @@ public class TooltipOverlay extends Overlay
 		try
 		{
 			return renderTooltips(graphics, tooltips);
-		}
-		finally
+		} finally
 		{
 			// Tooltips must always be cleared each frame
 			tooltipManager.clear();
@@ -94,8 +93,8 @@ public class TooltipOverlay extends Overlay
 
 		final int tooltipX = Math.min(canvasWidth - prevWidth, mouseCanvasPosition.getX());
 		final int tooltipY = runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR
-			? Math.max(0, mouseCanvasPosition.getY() - prevHeight)
-			: Math.min(canvasHeight - prevHeight, mouseCanvasPosition.getY() + UNDER_OFFSET);
+				? Math.max(0, mouseCanvasPosition.getY() - prevHeight)
+				: Math.min(canvasHeight - prevHeight, mouseCanvasPosition.getY() + UNDER_OFFSET);
 
 		int width = 0, height = 0;
 		for (Tooltip tooltip : tooltips)
@@ -109,8 +108,7 @@ public class TooltipOverlay extends Overlay
 				{
 					((PanelComponent) entity).setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
 				}
-			}
-			else
+			} else
 			{
 				final TooltipComponent tooltipComponent = new TooltipComponent();
 				tooltipComponent.setModIcons(client.getModIcons());

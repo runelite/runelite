@@ -47,6 +47,45 @@ public class TooltipComponent implements LayoutableRenderableEntity
 	private Point position = new Point();
 	private IndexedSprite[] modIcons;
 
+	@VisibleForTesting
+	static int calculateTextWidth(FontMetrics metrics, String line)
+	{
+		char[] chars = line.toCharArray();
+		int textWidth = 0;
+
+		int begin = 0;
+		boolean inTag = false;
+		for (int j = 0; j < chars.length; j++)
+		{
+			if (chars[j] == '<')
+			{
+				textWidth += metrics.stringWidth(line.substring(begin, j));
+
+				begin = j;
+				inTag = true;
+			} else if (chars[j] == '>' && inTag)
+			{
+				String subLine = line.substring(begin + 1, j);
+
+				if (subLine.startsWith("img="))
+				{
+					textWidth += MOD_ICON_WIDTH;
+				} else if (!subLine.startsWith("col=") && !subLine.startsWith("/col"))
+				{
+					textWidth += metrics.stringWidth(line.substring(begin, j + 1));
+				}
+
+				begin = j + 1;
+				inTag = false;
+			}
+		}
+
+		// Include trailing text (after last tag)
+		textWidth += metrics.stringWidth(line.substring(begin));
+
+		return textWidth;
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -77,7 +116,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 
 		// Render tooltip - background
 		final Rectangle tooltipBackground = new Rectangle(x, y,
-			tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
+				tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
 		backgroundComponent.setBackgroundColor(backgroundColor);
 		backgroundComponent.setRectangle(tooltipBackground);
@@ -112,8 +151,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 
 					begin = j;
 					inTag = true;
-				}
-				else if (chars[j] == '>' && inTag)
+				} else if (chars[j] == '>' && inTag)
 				{
 					String subLine = line.substring(begin + 1, j);
 
@@ -121,12 +159,10 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					{
 						String argument = subLine.substring(4);
 						nextColor = Color.decode("#" + argument);
-					}
-					else if (subLine.equals("/col"))
+					} else if (subLine.equals("/col"))
 					{
 						nextColor = Color.WHITE;
-					}
-					else if (subLine.startsWith("img="))
+					} else if (subLine.startsWith("img="))
 					{
 						if (modIcons != null)
 						{
@@ -136,8 +172,7 @@ public class TooltipComponent implements LayoutableRenderableEntity
 							renderModIcon(graphics, lineX, textY + i * textHeight - textDescent, modIcon);
 							lineX += modIcon.getWidth();
 						}
-					}
-					else
+					} else
 					{
 						TextComponent textComponent = new TextComponent();
 						textComponent.setColor(nextColor);
@@ -163,47 +198,6 @@ public class TooltipComponent implements LayoutableRenderableEntity
 		}
 
 		return new Dimension(tooltipWidth + OFFSET * 2, tooltipHeight + OFFSET * 2);
-	}
-
-	@VisibleForTesting
-	static int calculateTextWidth(FontMetrics metrics, String line)
-	{
-		char[] chars = line.toCharArray();
-		int textWidth = 0;
-
-		int begin = 0;
-		boolean inTag = false;
-		for (int j = 0; j < chars.length; j++)
-		{
-			if (chars[j] == '<')
-			{
-				textWidth += metrics.stringWidth(line.substring(begin, j));
-
-				begin = j;
-				inTag = true;
-			}
-			else if (chars[j] == '>' && inTag)
-			{
-				String subLine = line.substring(begin + 1, j);
-
-				if (subLine.startsWith("img="))
-				{
-					textWidth += MOD_ICON_WIDTH;
-				}
-				else if (!subLine.startsWith("col=") && !subLine.startsWith("/col"))
-				{
-					textWidth += metrics.stringWidth(line.substring(begin, j + 1));
-				}
-
-				begin = j + 1;
-				inTag = false;
-			}
-		}
-
-		// Include trailing text (after last tag)
-		textWidth += metrics.stringWidth(line.substring(begin));
-
-		return textWidth;
 	}
 
 	private void renderModIcon(Graphics2D graphics, int x, int y, IndexedSprite modIcon)

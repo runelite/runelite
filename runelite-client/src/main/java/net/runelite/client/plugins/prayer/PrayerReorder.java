@@ -77,22 +77,22 @@ class PrayerReorder
 	private static final String UNLOCK = "Enable prayer reordering";
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", ComponentID.FIXED_VIEWPORT_PRAYER_TAB);
+			"", ComponentID.FIXED_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", ComponentID.FIXED_VIEWPORT_PRAYER_TAB);
+			"", ComponentID.FIXED_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_PRAYER_TAB);
+			"", ComponentID.RESIZABLE_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_PRAYER_TAB);
+			"", ComponentID.RESIZABLE_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
+			"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
+			"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -155,15 +155,15 @@ class PrayerReorder
 			return null;
 		}
 		return Arrays.stream(s.split(","))
-			.mapToInt(Integer::parseInt)
-			.toArray();
+				.mapToInt(Integer::parseInt)
+				.toArray();
 	}
 
 	private void setPrayerOrder(int prayerbook, int[] prayers)
 	{
 		var s = Arrays.stream(prayers)
-			.mapToObj(Integer::toString)
-			.collect(Collectors.joining(","));
+				.mapToObj(Integer::toString)
+				.collect(Collectors.joining(","));
 		configManager.setConfiguration(PrayerConfig.GROUP, "prayer_order_book_" + prayerbook, s);
 	}
 
@@ -178,8 +178,7 @@ class PrayerReorder
 		if (hidden)
 		{
 			configManager.setConfiguration(PrayerConfig.GROUP, "prayer_hidden_book_" + prayerbook + "_" + prayer, true);
-		}
-		else
+		} else
 		{
 			configManager.unsetConfiguration(PrayerConfig.GROUP, "prayer_hidden_book_" + prayerbook + "_" + prayer);
 		}
@@ -240,11 +239,11 @@ class PrayerReorder
 		int scriptId = scriptPostFired.getScriptId();
 		if (
 			// this script calls if_clearops on the prayer, removing our hide/unhide, so we just re-build the entire ui
-			reordering && scriptId == ScriptID.PRAYER_UPDATEBUTTON ||
-			// rebuild after eg. a prayer book swap
-			scriptId == ScriptID.PRAYER_REDRAW ||
-			// rebuild after opening quick prayers
-			scriptId == ScriptID.QUICKPRAYER_INIT
+				reordering && scriptId == ScriptID.PRAYER_UPDATEBUTTON ||
+						// rebuild after eg. a prayer book swap
+						scriptId == ScriptID.PRAYER_REDRAW ||
+						// rebuild after opening quick prayers
+						scriptId == ScriptID.QUICKPRAYER_INIT
 		)
 		{
 			rebuildPrayers(reordering);
@@ -260,15 +259,15 @@ class PrayerReorder
 	private int[] defaultPrayerOrder(EnumComposition prayerEnum)
 	{
 		return Arrays.stream(prayerEnum.getKeys())
-			.boxed() // IntStream does not accept a custom comparator
-			.sorted(Comparator.comparing(id ->
-			{
-				var prayerObjId = prayerEnum.getIntValue(id);
-				var prayerObj = client.getItemDefinition(prayerObjId);
-				return prayerObj.getIntValue(ParamID.OC_PRAYER_LEVEL);
-			}))
-			.mapToInt(i -> i)
-			.toArray();
+				.boxed() // IntStream does not accept a custom comparator
+				.sorted(Comparator.comparing(id ->
+				{
+					var prayerObjId = prayerEnum.getIntValue(id);
+					var prayerObj = client.getItemDefinition(prayerObjId);
+					return prayerObj.getIntValue(ParamID.OC_PRAYER_LEVEL);
+				}))
+				.mapToInt(i -> i)
+				.toArray();
 	}
 
 	private int findPrayerIdFromComponent(int prayerbook, Widget component)
@@ -302,13 +301,13 @@ class PrayerReorder
 		reordering = state;
 
 		var message = reordering ?
-			"Prayer book reordering is now enabled." :
-			"Prayer book reordering is now disabled.";
+				"Prayer book reordering is now enabled." :
+				"Prayer book reordering is now disabled.";
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CONSOLE)
-			.runeLiteFormattedMessage(message)
-			.build());
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
 
 		refreshPrayerTabOption();
 
@@ -323,8 +322,7 @@ class PrayerReorder
 			menuManager.addManagedCustomMenu(FIXED_PRAYER_TAB_LOCK, e -> reordering(false));
 			menuManager.addManagedCustomMenu(RESIZABLE_PRAYER_TAB_LOCK, e -> reordering(false));
 			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_PRAYER_TAB_LOCK, e -> reordering(false));
-		}
-		else
+		} else
 		{
 			menuManager.addManagedCustomMenu(FIXED_PRAYER_TAB_UNLOCK, e -> reordering(true));
 			menuManager.addManagedCustomMenu(RESIZABLE_PRAYER_TAB_UNLOCK, e -> reordering(true));
@@ -363,8 +361,7 @@ class PrayerReorder
 				{
 					// allow dragging of this widget & to be dragged on
 					widgetConfig |= DRAG | DRAG_ON;
-				}
-				else
+				} else
 				{
 					// remove drag flag & drag on flags
 					widgetConfig &= ~(DRAG | DRAG_ON);
@@ -388,13 +385,11 @@ class PrayerReorder
 					{
 						prayerWidget.setAction(3, "Unhide");
 						prayerWidget.getChild(1).setOpacity(200);
-					}
-					else
+					} else
 					{
 						prayerWidget.setAction(3, "Hide");
 					}
-				}
-				else
+				} else
 				{
 					prayerWidget.setAction(3, null);
 				}
@@ -444,14 +439,14 @@ class PrayerReorder
 
 				Widget prayerSpriteWidget = prayerWidgets[childId];
 				prayerSpriteWidget.setPos(
-					QUICK_PRAYER_SPRITE_X_OFFSET + x * PRAYER_X_OFFSET,
-					QUICK_PRAYER_SPRITE_Y_OFFSET + y * PRAYER_Y_OFFSET);
+						QUICK_PRAYER_SPRITE_X_OFFSET + x * PRAYER_X_OFFSET,
+						QUICK_PRAYER_SPRITE_Y_OFFSET + y * PRAYER_Y_OFFSET);
 				prayerSpriteWidget.revalidate();
 
 				Widget prayerToggleWidget = prayerWidgets[childId + 1];
 				prayerToggleWidget.setPos(
-					x * PRAYER_X_OFFSET,
-					y * PRAYER_Y_OFFSET);
+						x * PRAYER_X_OFFSET,
+						y * PRAYER_Y_OFFSET);
 				prayerToggleWidget.revalidate();
 
 				++index;
@@ -485,9 +480,9 @@ class PrayerReorder
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		if (reordering
-			&& menuOptionClicked.getMenuAction() == MenuAction.CC_OP
-			&& menuOptionClicked.getId() == 4
-			&& ("Hide".equals(menuOptionClicked.getMenuOption()) || "Unhide".equals(menuOptionClicked.getMenuOption())))
+				&& menuOptionClicked.getMenuAction() == MenuAction.CC_OP
+				&& menuOptionClicked.getId() == 4
+				&& ("Hide".equals(menuOptionClicked.getMenuOption()) || "Unhide".equals(menuOptionClicked.getMenuOption())))
 		{
 			var widget = menuOptionClicked.getWidget();
 			var prayerbook = client.getVarbitValue(Varbits.PRAYERBOOK);
@@ -504,8 +499,7 @@ class PrayerReorder
 				{
 					widget.setOpacity(0);
 					setHidden(prayerbook, prayerId, false);
-				}
-				else
+				} else
 				{
 					widget.setOpacity(200);
 					setHidden(prayerbook, prayerId, true);

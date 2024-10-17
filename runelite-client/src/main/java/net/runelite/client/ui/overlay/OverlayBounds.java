@@ -94,32 +94,25 @@ class OverlayBounds
 		if (bounds == topLeft)
 		{
 			return TOP_LEFT;
-		}
-		else if (bounds == topCenter)
+		} else if (bounds == topCenter)
 		{
 			return TOP_CENTER;
-		}
-		else if (bounds == topRight)
+		} else if (bounds == topRight)
 		{
 			return TOP_RIGHT;
-		}
-		else if (bounds == bottomLeft)
+		} else if (bounds == bottomLeft)
 		{
 			return BOTTOM_LEFT;
-		}
-		else if (bounds == bottomRight)
+		} else if (bounds == bottomRight)
 		{
 			return BOTTOM_RIGHT;
-		}
-		else if (bounds == aboveChatboxRight)
+		} else if (bounds == aboveChatboxRight)
 		{
 			return ABOVE_CHATBOX_RIGHT;
-		}
-		else if (bounds == canvasTopRight)
+		} else if (bounds == canvasTopRight)
 		{
 			return CANVAS_TOP_RIGHT;
-		}
-		else
+		} else
 		{
 			throw new IllegalArgumentException();
 		}

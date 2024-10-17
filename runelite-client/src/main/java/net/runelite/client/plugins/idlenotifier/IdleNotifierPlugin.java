@@ -61,10 +61,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Idle Notifier",
-	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
-	tags = {"health", "hitpoints", "notifications", "prayer"},
-	enabledByDefault = false
+		name = "Idle Notifier",
+		description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
+		tags = {"health", "hitpoints", "notifications", "prayer"},
+		enabledByDefault = false
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -76,19 +76,15 @@ public class IdleNotifierPlugin extends Plugin
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
 	private static final String FISHING_SPOT = "Fishing spot";
-
+	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private IdleNotifierConfig config;
-
 	@Inject
 	private ConfigManager configManager;
-
 	private Instant lastAnimating;
 	private int lastAnimation = IDLE;
 	private Instant lastInteracting;
@@ -108,7 +104,6 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
-	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -168,7 +163,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_2H_CRYSTAL:
 			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
 			case WOODCUTTING_2H_3A:
-			/* Woodcutting: Ents & Canoes */
+				/* Woodcutting: Ents & Canoes */
 			case WOODCUTTING_ENT_BRONZE:
 			case WOODCUTTING_ENT_IRON:
 			case WOODCUTTING_ENT_STEEL:
@@ -197,7 +192,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_ENT_2H_CRYSTAL_INACTIVE:
 			case WOODCUTTING_ENT_2H_3A:
 			case BLISTERWOOD_JUMP_SCARE:
-			/* Firemaking */
+				/* Firemaking */
 			case FIREMAKING_FORESTERS_CAMPFIRE_ARCTIC_PINE:
 			case FIREMAKING_FORESTERS_CAMPFIRE_BLISTERWOOD:
 			case FIREMAKING_FORESTERS_CAMPFIRE_LOGS:
@@ -209,11 +204,11 @@ public class IdleNotifierPlugin extends Plugin
 			case FIREMAKING_FORESTERS_CAMPFIRE_TEAK:
 			case FIREMAKING_FORESTERS_CAMPFIRE_WILLOW:
 			case FIREMAKING_FORESTERS_CAMPFIRE_YEW:
-			/* Cooking(Fire, Range) */
+				/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
 			case COOKING_WINE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning, Weaving, Battlestaves, Pottery) */
+				/* Crafting(Gem Cutting, Glassblowing, Spinning, Weaving, Battlestaves, Pottery) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -229,7 +224,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_LEATHER:
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
-			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
+				/* Fletching(Cutting, Stringing, Adding feathers and heads) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
@@ -253,12 +248,12 @@ public class IdleNotifierPlugin extends Plugin
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_ADAMANT_BOLT:
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_RUNE_BOLT:
 			case FLETCHING_ATTACH_BOLT_TIPS_TO_DRAGON_BOLT:
-			/* Smithing(Anvil, Furnace, Cannonballs */
+				/* Smithing(Anvil, Furnace, Cannonballs */
 			case SMITHING_ANVIL:
 			case SMITHING_IMCANDO_HAMMER:
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
-			/* Fishing */
+				/* Fishing */
 			case FISHING_CRUSHING_INFERNAL_EELS:
 			case FISHING_CRUSHING_INFERNAL_EELS_IMCANDO_HAMMER:
 			case FISHING_CUTTING_SACRED_EELS:
@@ -284,7 +279,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_PEARL_BARBARIAN_ROD_2:
 			case FISHING_PEARL_OILY_ROD:
 			case FISHING_BARBARIAN_ROD:
-			/* Mining(Normal) */
+				/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
 			case MINING_STEEL_PICKAXE:
@@ -305,7 +300,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_TRAILBLAZER_PICKAXE_3:
 			case DENSE_ESSENCE_CHIPPING:
 			case DENSE_ESSENCE_CHISELING:
-			/* Mining(Motherlode) */
+				/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
 			case MINING_MOTHERLODE_STEEL:
@@ -322,7 +317,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_3A:
 			case MINING_MOTHERLODE_CRYSTAL:
 			case MINING_MOTHERLODE_TRAILBLAZER:
-			/* Mining(Crashed Star) */
+				/* Mining(Crashed Star) */
 			case MINING_CRASHEDSTAR_BRONZE:
 			case MINING_CRASHEDSTAR_IRON:
 			case MINING_CRASHEDSTAR_STEEL:
@@ -338,7 +333,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_CRASHEDSTAR_INFERNAL:
 			case MINING_CRASHEDSTAR_3A:
 			case MINING_CRASHEDSTAR_CRYSTAL:
-			/* Herblore */
+				/* Herblore */
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
@@ -346,7 +341,7 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MIXOLOGY_CRYSTALIZE:
 			case HERBLORE_MIXOLOGY_HOMOGENIZE:
 			case HERBLORE_MIXOLOGY_REFINER:
-			/* Magic */
+				/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_PLANK_MAKE:
 			case MAGIC_LUNAR_STRING_JEWELRY:
@@ -356,20 +351,20 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_ENCHANTING_AMULET_2:
 			case MAGIC_ENCHANTING_AMULET_3:
 			case MAGIC_ENCHANTING_BOLTS:
-			/* Prayer */
+				/* Prayer */
 			case USING_GILDED_ALTAR:
 			case ECTOFUNTUS_FILL_SLIME_BUCKET:
 			case ECTOFUNTUS_INSERT_BONES:
 			case ECTOFUNTUS_GRIND_BONES:
 			case ECTOFUNTUS_EMPTY_BIN:
-			/* Farming */
+				/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
 			case FARMING_HARVEST_BUSH:
 			case FARMING_HARVEST_HERB:
 			case FARMING_HARVEST_FRUIT_TREE:
 			case FARMING_HARVEST_FLOWER:
 			case FARMING_HARVEST_ALLOTMENT:
-			/* Misc */
+				/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
 			case SAND_COLLECTION:
@@ -417,8 +412,7 @@ public class IdleNotifierPlugin extends Plugin
 		if (target != null)
 		{
 			lastInteract = null;
-		}
-		else
+		} else
 		{
 			lastInteracting = Instant.now();
 		}
@@ -514,10 +508,10 @@ public class IdleNotifierPlugin extends Plugin
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
 		if (client.getGameState() != GameState.LOGGED_IN
-			|| local == null
-			// If user has clicked in the last second then they're not idle so don't send idle notification
-			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 1000
-			|| client.getKeyboardIdleTicks() < 10)
+				|| local == null
+				// If user has clicked in the last second then they're not idle so don't send idle notification
+				|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 1000
+				|| client.getKeyboardIdleTicks() < 10)
 		{
 			resetTimers();
 			return;
@@ -548,8 +542,7 @@ public class IdleNotifierPlugin extends Plugin
 			if (lastInteractWasCombat)
 			{
 				notifier.notify(config.interactionIdle(), "You are now out of combat!");
-			}
-			else
+			} else
 			{
 				notifier.notify(config.interactionIdle(), "You are now idle!");
 			}
@@ -610,8 +603,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpoints", 1);
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpointsNotification", Notification.OFF);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpointsNotification", Notification.ON);
 		}
@@ -621,8 +613,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayer", 1);
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayerNotification", Notification.OFF);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayerNotification", Notification.ON);
 		}
@@ -632,8 +623,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergy", 0);
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergyNotification", Notification.OFF);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergyNotification", Notification.ON);
 		}
@@ -643,8 +633,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergy", 100);
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergyNotification", Notification.OFF);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergyNotification", Notification.ON);
 		}
@@ -654,8 +643,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygen", 1);
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygenNotification", Notification.OFF);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygenNotification", Notification.ON);
 		}
@@ -665,8 +653,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "spec", 1);
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "specNotification", Notification.OFF);
-		}
-		else
+		} else
 		{
 			configManager.setConfiguration(IdleNotifierConfig.GROUP, "specNotification", Notification.ON);
 		}
@@ -686,8 +673,7 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteract = target;
 			lastInteracting = Instant.now();
 			lastInteractWasCombat = true;
-		}
-		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
+		} else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
 		{
 			// Player is fishing
 			resetTimers();
@@ -711,7 +697,7 @@ public class IdleNotifierPlugin extends Plugin
 		// Check if we have regenerated over the threshold, and that the
 		// regen was small enough.
 		boolean notify = lastSpecEnergy < threshold && currentSpecEnergy >= threshold
-			&& currentSpecEnergy - lastSpecEnergy <= 100;
+				&& currentSpecEnergy - lastSpecEnergy <= 100;
 		lastSpecEnergy = currentSpecEnergy;
 		return notify;
 	}
@@ -729,8 +715,7 @@ public class IdleNotifierPlugin extends Plugin
 				notifyOxygen = true;
 				return true;
 			}
-		}
-		else
+		} else
 		{
 			notifyOxygen = false;
 		}
@@ -752,8 +737,7 @@ public class IdleNotifierPlugin extends Plugin
 					notifyHitpoints = true;
 					return true;
 				}
-			}
-			else
+			} else
 			{
 				notifyHitpoints = false;
 			}
@@ -777,8 +761,7 @@ public class IdleNotifierPlugin extends Plugin
 					notifyPrayer = true;
 					return true;
 				}
-			}
-			else
+			} else
 			{
 				notifyPrayer = false;
 			}
@@ -801,8 +784,7 @@ public class IdleNotifierPlugin extends Plugin
 				shouldNotifyLowEnergy = false;
 				return true;
 			}
-		}
-		else
+		} else
 		{
 			shouldNotifyLowEnergy = true;
 		}
@@ -824,8 +806,7 @@ public class IdleNotifierPlugin extends Plugin
 				shouldNotifyHighEnergy = false;
 				return true;
 			}
-		}
-		else
+		} else
 		{
 			shouldNotifyHighEnergy = true;
 		}
@@ -845,8 +826,8 @@ public class IdleNotifierPlugin extends Plugin
 		if (interact == null)
 		{
 			if (lastInteracting != null
-				&& Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0
-				&& lastCombatCountdown == 0)
+					&& Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0
+					&& lastCombatCountdown == 0)
 			{
 				lastInteract = null;
 				lastInteracting = null;
@@ -857,8 +838,7 @@ public class IdleNotifierPlugin extends Plugin
 
 				return true;
 			}
-		}
-		else
+		} else
 		{
 			lastInteracting = Instant.now();
 		}
@@ -914,8 +894,7 @@ public class IdleNotifierPlugin extends Plugin
 				notify6HourLogout = false;
 				return true;
 			}
-		}
-		else
+		} else
 		{
 			notify6HourLogout = true;
 		}
@@ -945,8 +924,7 @@ public class IdleNotifierPlugin extends Plugin
 
 				return true;
 			}
-		}
-		else
+		} else
 		{
 			lastAnimating = Instant.now();
 		}
@@ -967,15 +945,14 @@ public class IdleNotifierPlugin extends Plugin
 		if (lastPosition.equals(position))
 		{
 			if (notifyPosition
-				&& local.getAnimation() == IDLE
-				&& Instant.now().compareTo(lastMoving.plus(waitDuration)) >= 0)
+					&& local.getAnimation() == IDLE
+					&& Instant.now().compareTo(lastMoving.plus(waitDuration)) >= 0)
 			{
 				notifyPosition = false;
 				// Return true only if we weren't just breaking out of an animation
 				return lastAnimation == IDLE;
 			}
-		}
-		else
+		} else
 		{
 			notifyPosition = true;
 			lastPosition = position;

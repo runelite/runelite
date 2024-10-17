@@ -97,24 +97,24 @@ public class PluginManagerTest
 	{
 		OkHttpClient okHttpClient = mock(OkHttpClient.class);
 		when(okHttpClient.newCall(any(Request.class)))
-			.thenThrow(new RuntimeException("in plugin manager test"));
+				.thenThrow(new RuntimeException("in plugin manager test"));
 
 		when(configManager.getConfig(any(Class.class)))
-			.thenAnswer(a ->
-			{
-				Class<?> c = a.getArgument(0);
-				return mock(c);
-			});
+				.thenAnswer(a ->
+				{
+					Class<?> c = a.getArgument(0);
+					return mock(c);
+				});
 
 		RuntimeConfigLoader configLoader = mock(RuntimeConfigLoader.class);
 		when(configLoader.get()).thenReturn(mock(RuntimeConfig.class));
 
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, configLoader, true, false, false,
-				RuneLite.DEFAULT_SESSION_FILE,
-				null, false, false
-			))
-			.with(BoundFieldModule.of(this)));
+				.override(new RuneLiteModule(okHttpClient, () -> null, configLoader, true, false, false,
+						RuneLite.DEFAULT_SESSION_FILE,
+						null, false, false
+				))
+				.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
 
@@ -147,10 +147,10 @@ public class PluginManagerTest
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
 		long expected = pluginClasses.stream()
-			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(PluginDescriptor::loadWhenOutdated)
-			.count();
+				.map(cl -> cl.getAnnotation(PluginDescriptor.class))
+				.filter(Objects::nonNull)
+				.filter(PluginDescriptor::loadWhenOutdated)
+				.count();
 		assertEquals(expected, plugins.size());
 
 		pluginManager = new PluginManager(false, false, null, null, null, null);
@@ -162,10 +162,10 @@ public class PluginManagerTest
 		plugins.forEach(eventBus::register);
 
 		expected = pluginClasses.stream()
-			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(pd -> !pd.developerPlugin())
-			.count();
+				.map(cl -> cl.getAnnotation(PluginDescriptor.class))
+				.filter(Objects::nonNull)
+				.filter(pd -> !pd.developerPlugin())
+				.count();
 		assertEquals(expected, plugins.size());
 	}
 
@@ -234,8 +234,8 @@ public class PluginManagerTest
 	public void testTopologicalSort()
 	{
 		MutableGraph<Integer> graph = GraphBuilder
-			.directed()
-			.build();
+				.directed()
+				.build();
 
 		graph.addNode(1);
 		graph.addNode(2);

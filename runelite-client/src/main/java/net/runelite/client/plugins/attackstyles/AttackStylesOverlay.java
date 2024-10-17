@@ -66,13 +66,13 @@ class AttackStylesOverlay extends OverlayPanel
 			final String attackStyleString = attackStyle.getName();
 
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(attackStyleString)
-				.color(warnedSkillSelected ? Color.RED : Color.WHITE)
-				.build());
+					.text(attackStyleString)
+					.color(warnedSkillSelected ? Color.RED : Color.WHITE)
+					.build());
 
 			panelComponent.setPreferredSize(new Dimension(
-				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
-				0));
+					graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
+					0));
 
 			return super.render(graphics);
 		}

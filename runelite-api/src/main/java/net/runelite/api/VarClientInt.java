@@ -26,7 +26,7 @@ package net.runelite.api;
 
 /**
  * Client side only, content-developer integers
- *
+ * <p>
  * VarCInts are stored entirely in memory, or locally on a user's
  * machine in the preferences2.dat file depending on how Jagex
  * configured the variable
@@ -43,6 +43,7 @@ public final class VarClientInt
 
 	/**
 	 * Current message layer mode
+	 *
 	 * @see net.runelite.api.vars.InputType
 	 */
 	public static final int INPUT_TYPE = 5;

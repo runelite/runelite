@@ -59,6 +59,14 @@ class PlayerInfoDropOverlay extends Overlay
 		setPriority(PRIORITY_MED);
 	}
 
+	private static void drawText(Graphics2D g, Point point, String text, Color color, int colorAlpha)
+	{
+		g.setColor(ColorUtil.colorWithAlpha(Color.BLACK, colorAlpha));
+		g.drawString(text, point.getX() + 1, point.getY() + 1);
+		g.setColor(ColorUtil.colorWithAlpha(color, colorAlpha));
+		g.drawString(text, point.getX(), point.getY());
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -116,8 +124,8 @@ class PlayerInfoDropOverlay extends Overlay
 			int textMargin = sprite.getWidth() / 2;
 
 			Point imageLocation = new Point(
-				playerLocation.getX() - textMargin - 1,
-				playerLocation.getY() - textHeight / 2 - sprite.getHeight() / 2
+					playerLocation.getX() - textMargin - 1,
+					playerLocation.getY() - textHeight / 2 - sprite.getHeight() / 2
 			);
 			Point textLocation = new Point(playerLocation.getX() + textMargin, playerLocation.getY());
 
@@ -141,13 +149,5 @@ class PlayerInfoDropOverlay extends Overlay
 			drawText(graphics, textLocation, text, infoDrop.getColor(), alpha);
 		}
 		return null;
-	}
-
-	private static void drawText(Graphics2D g, Point point, String text, Color color, int colorAlpha)
-	{
-		g.setColor(ColorUtil.colorWithAlpha(Color.BLACK, colorAlpha));
-		g.drawString(text, point.getX() + 1, point.getY() + 1);
-		g.setColor(ColorUtil.colorWithAlpha(color, colorAlpha));
-		g.drawString(text, point.getX(), point.getY());
 	}
 }

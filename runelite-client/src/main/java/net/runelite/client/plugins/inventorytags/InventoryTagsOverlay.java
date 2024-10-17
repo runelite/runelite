@@ -57,19 +57,19 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 		showOnEquipment();
 		showOnInventory();
 		showOnInterfaces(
-			InterfaceID.CHAMBERS_OF_XERIC_INVENTORY,
-			InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE,
-			InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED,
-			InterfaceID.GRAVESTONE
+				InterfaceID.CHAMBERS_OF_XERIC_INVENTORY,
+				InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE,
+				InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED,
+				InterfaceID.GRAVESTONE
 		);
 		fillCache = CacheBuilder.newBuilder()
-			.concurrencyLevel(1)
-			.maximumSize(32)
-			.build();
+				.concurrencyLevel(1)
+				.maximumSize(32)
+				.build();
 		tagCache = CacheBuilder.newBuilder()
-			.concurrencyLevel(1)
-			.maximumSize(39)
-			.build();
+				.concurrencyLevel(1)
+				.maximumSize(39)
+				.build();
 	}
 
 	@Override

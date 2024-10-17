@@ -38,12 +38,12 @@ public enum ClueNestTier
 
 
 	private static final ImmutableMap<Integer, ClueNestTier> CLUE_NEST_ID_TO_TIER = new ImmutableMap.Builder<Integer, ClueNestTier>()
-		.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
-		.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
-		.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
-		.put(ItemID.CLUE_NEST_EASY, ClueNestTier.EASY)
-		.put(ItemID.CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
-		.build();
+			.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
+			.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
+			.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
+			.put(ItemID.CLUE_NEST_EASY, ClueNestTier.EASY)
+			.put(ItemID.CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
+			.build();
 
 	static public ClueNestTier getTierFromItem(int itemId)
 	{

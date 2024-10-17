@@ -65,20 +65,19 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Attack Styles",
-	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"}
+		name = "Attack Styles",
+		description = "Show your current attack style as an overlay",
+		tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"}
 )
 public class AttackStylesPlugin extends Plugin
 {
+	private final Set<Skill> warnedSkills = EnumSet.noneOf(Skill.class);
+	// Weapon type, component, hidden
+	private final Table<Integer, Integer, Boolean> widgetsToHide = HashBasedTable.create();
 	private int equippedWeaponTypeVarbit = -1;
 	private AttackStyle attackStyle;
 	private AttackStyle prevAttackStyle;
-	private final Set<Skill> warnedSkills = EnumSet.noneOf(Skill.class);
 	private boolean warnedSkillSelected;
-	// Weapon type, component, hidden
-	private final Table<Integer, Integer, Boolean> widgetsToHide = HashBasedTable.create();
-
 	@Inject
 	private Client client;
 
@@ -99,6 +98,14 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
+
+	private static void hideWidget(Widget widget, boolean hidden)
+	{
+		if (widget != null)
+		{
+			widget.setHidden(hidden);
+		}
+	}
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -121,9 +128,9 @@ public class AttackStylesPlugin extends Plugin
 				equippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 				int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
 				updateAttackStyle(
-					equippedWeaponTypeVarbit,
-					attackStyleVarbit,
-					castingModeVarbit);
+						equippedWeaponTypeVarbit,
+						attackStyleVarbit,
+						castingModeVarbit);
 				updateWarning();
 				processWidgets();
 			}
@@ -179,8 +186,8 @@ public class AttackStylesPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayer.ATTACK_STYLE
-			|| event.getVarbitId() == Varbits.EQUIPPED_WEAPON_TYPE
-			|| event.getVarbitId() == Varbits.DEFENSIVE_CASTING_MODE)
+				|| event.getVarbitId() == Varbits.EQUIPPED_WEAPON_TYPE
+				|| event.getVarbitId() == Varbits.DEFENSIVE_CASTING_MODE)
 		{
 			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
 			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
@@ -191,7 +198,7 @@ public class AttackStylesPlugin extends Plugin
 			equippedWeaponTypeVarbit = currentEquippedWeaponTypeVarbit;
 
 			updateAttackStyle(equippedWeaponTypeVarbit, currentAttackStyleVarbit,
-				currentCastingModeVarbit);
+					currentCastingModeVarbit);
 			updateWarning();
 
 			// this is required because the widgets need to be hidden prior to interface tick, which is soon after this,
@@ -246,14 +253,14 @@ public class AttackStylesPlugin extends Plugin
 			if (config.showChatWarnings())
 			{
 				final String message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Your attack style has been changed to " + attackStyle.getName())
-					.build();
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Your attack style has been changed to " + attackStyle.getName())
+						.build();
 
 				chatManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CONSOLE)
-					.runeLiteFormattedMessage(message)
-					.build());
+						.type(ChatMessageType.CONSOLE)
+						.runeLiteFormattedMessage(message)
+						.build());
 			}
 
 			notifier.notify(config.warningNotification(), "Attack style changed to " + attackStyle.getName() + "!");
@@ -300,16 +307,16 @@ public class AttackStylesPlugin extends Plugin
 			// Blue moon spear
 			if (weaponType == 22)
 			{
-				return new AttackStyle[]{
-					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING
+				return new AttackStyle[] {
+						AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING
 				};
 			}
 
 			if (weaponType == 30)
 			{
 				// Partisan
-				return new AttackStyle[]{
-					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, AttackStyle.AGGRESSIVE, DEFENSIVE
+				return new AttackStyle[] {
+						AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, AttackStyle.AGGRESSIVE, DEFENSIVE
 				};
 			}
 			return new AttackStyle[0];
@@ -347,8 +354,7 @@ public class AttackStylesPlugin extends Plugin
 		if (enabled)
 		{
 			warnedSkills.add(skill);
-		}
-		else
+		} else
 		{
 			warnedSkills.remove(skill);
 		}
@@ -421,14 +427,6 @@ public class AttackStylesPlugin extends Plugin
 					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_DEFENSIVE_SPELL_TEXT, enabled && warnedSkill);
 					break;
 			}
-		}
-	}
-
-	private static void hideWidget(Widget widget, boolean hidden)
-	{
-		if (widget != null)
-		{
-			widget.setHidden(hidden);
 		}
 	}
 

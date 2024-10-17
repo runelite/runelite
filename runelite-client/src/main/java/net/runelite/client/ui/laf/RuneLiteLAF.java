@@ -46,14 +46,6 @@ import net.runelite.client.ui.FontManager;
 
 public class RuneLiteLAF extends FlatDarkLaf
 {
-	public static boolean setup()
-	{
-		// flatlaf always gets this wrong
-		System.setProperty(FlatSystemProperties.UI_SCALE_ENABLED, "false");
-
-		return setup(new RuneLiteLAF());
-	}
-
 	@SneakyThrows
 	public RuneLiteLAF()
 	{
@@ -61,10 +53,10 @@ public class RuneLiteLAF extends FlatDarkLaf
 
 		// load the properties ourselves to avoid platform specific styles
 		Properties p = new Properties();
-		for (Class<?> clazz : new Class[]{
-			FlatLaf.class,
-			FlatDarkLaf.class,
-			RuneLiteLAF.class,
+		for (Class<?> clazz : new Class[] {
+				FlatLaf.class,
+				FlatDarkLaf.class,
+				RuneLiteLAF.class,
 		})
 		{
 			try (InputStream is = clazz.getResourceAsStream("/" + clazz.getName().replace('.', '/') + ".properties"))
@@ -104,6 +96,14 @@ public class RuneLiteLAF extends FlatDarkLaf
 		}
 
 		setExtraDefaults(extras);
+	}
+
+	public static boolean setup()
+	{
+		// flatlaf always gets this wrong
+		System.setProperty(FlatSystemProperties.UI_SCALE_ENABLED, "false");
+
+		return setup(new RuneLiteLAF());
 	}
 
 	@Override

@@ -177,8 +177,7 @@ public class ArchiveFiles
 		{
 			FSFile file = this.getFiles().get(0);
 			stream.writeBytes(file.getContents());
-		}
-		else
+		} else
 		{
 			for (FSFile file : this.getFiles())
 			{

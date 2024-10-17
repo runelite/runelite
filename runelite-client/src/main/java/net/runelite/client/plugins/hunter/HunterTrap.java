@@ -40,51 +40,24 @@ class HunterTrap
 	 * A hunter trap stays up 1 minute before collapsing.
 	 */
 	static final Duration TRAP_TIME = Duration.ofMinutes(1);
-
+	/**
+	 * The ID of the game object this is representing
+	 */
+	@Getter
+	private final int objectId;
+	@Getter
+	private final WorldPoint worldLocation;
 	/**
 	 * The time in milliseconds when the trap was placed.
 	 */
 	@Getter
 	private Instant placedOn;
-
 	/**
 	 * The state of the trap.
 	 */
 	@Getter
 	@Setter
 	private State state;
-
-	/**
-	 * The ID of the game object this is representing
-	 */
-	@Getter
-	private final int objectId;
-
-	@Getter
-	private final WorldPoint worldLocation;
-
-	/**
-	 * The states a trap can be in.
-	 */
-	enum State
-	{
-		/**
-		 * A laid out trap.
-		 */
-		OPEN,
-		/**
-		 * A trap that is empty.
-		 */
-		EMPTY,
-		/**
-		 * A trap that caught something.
-		 */
-		FULL,
-		/**
-		 * A trap that is closing.
-		 */
-		TRANSITION
-	}
 
 	/**
 	 * Constructor for a HunterTrap object
@@ -117,5 +90,28 @@ class HunterTrap
 	public void resetTimer()
 	{
 		placedOn = Instant.now();
+	}
+
+	/**
+	 * The states a trap can be in.
+	 */
+	enum State
+	{
+		/**
+		 * A laid out trap.
+		 */
+		OPEN,
+		/**
+		 * A trap that is empty.
+		 */
+		EMPTY,
+		/**
+		 * A trap that caught something.
+		 */
+		FULL,
+		/**
+		 * A trap that is closing.
+		 */
+		TRANSITION
 	}
 }

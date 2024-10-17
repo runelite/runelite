@@ -45,8 +45,8 @@ class ClueScrollWorldMapPoint extends WorldMapPoint
 		graphics.drawImage(plugin.getMapArrow(), 0, 0, null);
 		graphics.drawImage(plugin.getClueScrollImage(), 0, 0, null);
 		clueScrollWorldImagePoint = new Point(
-			clueScrollWorldImage.getWidth() / 2,
-			clueScrollWorldImage.getHeight());
+				clueScrollWorldImage.getWidth() / 2,
+				clueScrollWorldImage.getHeight());
 
 		this.plugin = plugin;
 		this.setSnapToEdge(true);

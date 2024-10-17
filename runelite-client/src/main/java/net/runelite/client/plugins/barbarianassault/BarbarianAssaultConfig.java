@@ -33,9 +33,9 @@ import net.runelite.client.config.ConfigItem;
 public interface BarbarianAssaultConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showTimer",
-		name = "Show call change timer",
-		description = "Show time to next call change"
+			keyName = "showTimer",
+			name = "Show call change timer",
+			description = "Show time to next call change"
 	)
 	default boolean showTimer()
 	{
@@ -43,9 +43,9 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showHealerBars",
-		name = "Show health bars for teammates when healer",
-		description = "Displays team health for healer"
+			keyName = "showHealerBars",
+			name = "Show health bars for teammates when healer",
+			description = "Displays team health for healer"
 	)
 	default boolean showHealerBars()
 	{
@@ -53,9 +53,9 @@ public interface BarbarianAssaultConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "waveTimes",
-		name = "Show wave and game duration",
-		description = "Displays wave and game duration"
+			keyName = "waveTimes",
+			name = "Show wave and game duration",
+			description = "Displays wave and game duration"
 	)
 	default boolean waveTimes()
 	{

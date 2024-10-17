@@ -56,26 +56,23 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Interact Highlight",
-	description = "Outlines npcs and objects you interact with or hover over",
-	enabledByDefault = false
+		name = "Interact Highlight",
+		description = "Outlines npcs and objects you interact with or hover over",
+		enabledByDefault = false
 )
 public class InteractHighlightPlugin extends Plugin
 {
+	@Getter(AccessLevel.PACKAGE)
+	boolean attacked;
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private InteractHighlightOverlay interactHighlightOverlay;
-
 	@Inject
 	private Client client;
-
 	@Getter(AccessLevel.PACKAGE)
 	private TileObject interactedObject;
 	private NPC interactedNpc;
-	@Getter(AccessLevel.PACKAGE)
-	boolean attacked;
 	private int clickTick;
 	@Getter(AccessLevel.PACKAGE)
 	private int gameCycle;
@@ -169,9 +166,9 @@ public class InteractHighlightPlugin extends Plugin
 				interactedObject = null;
 				interactedNpc = menuOptionClicked.getMenuEntry().getNpc();
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
-					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC
-						&& client.getSelectedWidget() != null
-						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK;
+						menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC
+								&& client.getSelectedWidget() != null
+								&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;

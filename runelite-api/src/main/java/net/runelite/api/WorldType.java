@@ -93,12 +93,11 @@ public enum WorldType
 	 */
 	SEASONAL(1 << 30);
 
-	private final int mask;
-
 	private static final EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
-		DEADMAN, // dmmt worlds are also flaged as DEADMAN
-		PVP
+			DEADMAN, // dmmt worlds are also flaged as DEADMAN
+			PVP
 	);
+	private final int mask;
 
 	/**
 	 * Create enum set of world types from mask.
@@ -143,7 +142,7 @@ public enum WorldType
 	 * Checks whether a world having a {@link Collection} of {@link WorldType}s is a PVP world.
 	 *
 	 * @param worldTypes A {@link Collection} of {@link WorldType}s describing the given world.
-	 * @return           True if the given worldtypes of the world are a PVP world, false otherwise.
+	 * @return True if the given worldtypes of the world are a PVP world, false otherwise.
 	 * @see Client#getWorldType()
 	 */
 	public static boolean isPvpWorld(final Collection<WorldType> worldTypes)

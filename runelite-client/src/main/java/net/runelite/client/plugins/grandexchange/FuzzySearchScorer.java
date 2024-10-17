@@ -70,8 +70,8 @@ public class FuzzySearchScorer
 		// We do this so that for example the items "Anti-venom ..." are still at the top
 		// when searching "anti venom"
 		return item -> score(
-			query.toLowerCase().replace('-', ' '),
-			item.getName().toLowerCase().replace('-', ' ')
+				query.toLowerCase().replace('-', ' '),
+				item.getName().toLowerCase().replace('-', ' ')
 		);
 	}
 

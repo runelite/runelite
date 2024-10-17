@@ -36,8 +36,7 @@ public class MapSquareDefinition extends AbstractWorldMapDataDefinition
 		if (!(obj instanceof MapSquareDefinition))
 		{
 			return false;
-		}
-		else
+		} else
 		{
 			MapSquareDefinition other = (MapSquareDefinition) obj;
 			return other.displaySquareX == this.displaySquareX && other.displaySquareZ == this.displaySquareZ;

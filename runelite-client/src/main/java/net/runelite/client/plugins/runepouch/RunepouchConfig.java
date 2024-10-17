@@ -33,6 +33,28 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("runepouch")
 public interface RunepouchConfig extends Config
 {
+	@ConfigItem(
+			keyName = "fontcolor",
+			name = "Font Color",
+			description = "Color of the font for the number of runes in pouch",
+			position = 1
+	)
+	default Color fontColor()
+	{
+		return Color.yellow;
+	}
+
+	@ConfigItem(
+			keyName = "runePouchOverlayMode",
+			name = "Display mode",
+			description = "Configures where rune pouch overlay is displayed",
+			position = 3
+	)
+	default RunepouchOverlayMode runePouchOverlayMode()
+	{
+		return RunepouchOverlayMode.BOTH;
+	}
+
 	enum RunepouchOverlayMode
 	{
 		// only show item overlay
@@ -41,27 +63,5 @@ public interface RunepouchConfig extends Config
 		MOUSE_HOVER,
 		// show both tooltip and item overlay
 		BOTH
-	}
-
-	@ConfigItem(
-		keyName = "fontcolor",
-		name = "Font Color",
-		description = "Color of the font for the number of runes in pouch",
-		position = 1
-	)
-	default Color fontColor()
-	{
-		return Color.yellow;
-	}
-
-	@ConfigItem(
-		keyName = "runePouchOverlayMode",
-		name = "Display mode",
-		description = "Configures where rune pouch overlay is displayed",
-		position = 3
-	)
-	default RunepouchOverlayMode runePouchOverlayMode()
-	{
-		return RunepouchOverlayMode.BOTH;
 	}
 }

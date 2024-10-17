@@ -61,10 +61,10 @@ public class DiscordService implements AutoCloseable
 
 	@Inject
 	private DiscordService(
-		final EventBus eventBus,
-		final ScheduledExecutorService executorService,
-		@Named("runelite.discord.enable") boolean enable,
-		@Named("runelite.discord.appid") final String discordAppId
+			final EventBus eventBus,
+			final ScheduledExecutorService executorService,
+			@Named("runelite.discord.enable") boolean enable,
+			@Named("runelite.discord.appid") final String discordAppId
 	)
 	{
 
@@ -83,8 +83,7 @@ public class DiscordService implements AutoCloseable
 		try
 		{
 			discordRPC = DiscordRPC.INSTANCE;
-		}
-		catch (Error e)
+		} catch (Error e)
 		{
 			log.warn("Failed to load Discord library, Discord support will be disabled.");
 			this.discordRPC = null;
@@ -149,14 +148,14 @@ public class DiscordService implements AutoCloseable
 		discordRichPresence.state = discordPresence.getState();
 		discordRichPresence.details = discordPresence.getDetails();
 		discordRichPresence.startTimestamp = discordPresence.getStartTimestamp() != null
-			? discordPresence.getStartTimestamp().getEpochSecond()
-			: 0;
+				? discordPresence.getStartTimestamp().getEpochSecond()
+				: 0;
 		discordRichPresence.endTimestamp = discordPresence.getEndTimestamp() != null
-			? discordPresence.getEndTimestamp().getEpochSecond()
-			: 0;
+				? discordPresence.getEndTimestamp().getEpochSecond()
+				: 0;
 		discordRichPresence.largeImageKey = Strings.isNullOrEmpty(discordPresence.getLargeImageKey())
-			? "default"
-			: discordPresence.getLargeImageKey();
+				? "default"
+				: discordPresence.getLargeImageKey();
 		discordRichPresence.largeImageText = discordPresence.getLargeImageText();
 
 		if (!Strings.isNullOrEmpty(discordPresence.getSmallImageKey()))
@@ -210,10 +209,10 @@ public class DiscordService implements AutoCloseable
 		log.info("Discord RPC service is ready with user {}.", user.username);
 		currentUser = user;
 		eventBus.post(new DiscordReady(
-			user.userId,
-			user.username,
-			user.discriminator,
-			user.avatar));
+				user.userId,
+				user.username,
+				user.discriminator,
+				user.avatar));
 	}
 
 	private void disconnected(int errorCode, String message)
@@ -244,9 +243,9 @@ public class DiscordService implements AutoCloseable
 	{
 		log.debug("Discord join request: {}", user);
 		eventBus.post(new DiscordJoinRequest(
-			user.userId,
-			user.username,
-			user.discriminator,
-			user.avatar));
+				user.userId,
+				user.username,
+				user.discriminator,
+				user.avatar));
 	}
 }

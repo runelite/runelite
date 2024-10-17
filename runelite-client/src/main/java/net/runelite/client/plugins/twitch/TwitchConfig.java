@@ -32,27 +32,27 @@ import net.runelite.client.config.ConfigItem;
 public interface TwitchConfig extends Config
 {
 	@ConfigItem(
-		keyName = "username",
-		name = "Username",
-		description = "Twitch Username",
-		position = 0
+			keyName = "username",
+			name = "Username",
+			description = "Twitch Username",
+			position = 0
 	)
 	String username();
 
 	@ConfigItem(
-		keyName = "oauth",
-		name = "OAuth Token",
-		description = "Enter your OAuth token here. This can be found at http://www.twitchapps.com/tmi/",
-		secret = true,
-		position = 1
+			keyName = "oauth",
+			name = "OAuth Token",
+			description = "Enter your OAuth token here. This can be found at http://www.twitchapps.com/tmi/",
+			secret = true,
+			position = 1
 	)
 	String oauthToken();
 
 	@ConfigItem(
-		keyName = "channel",
-		name = "Channel",
-		description = "Username of Twitch chat to join",
-		position = 2
+			keyName = "channel",
+			name = "Channel",
+			description = "Username of Twitch chat to join",
+			position = 2
 	)
 	String channel();
 }

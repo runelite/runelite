@@ -48,18 +48,16 @@ import org.slf4j.LoggerFactory;
 public class SequenceDumper
 {
 	private static final Logger logger = LoggerFactory.getLogger(SequenceDumper.class);
-
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
 	@Ignore
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+				outDir = folder.newFolder();
 
 		int count = 0;
 

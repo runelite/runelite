@@ -42,6 +42,8 @@ public interface LibBZip2 extends Library
 	int BZ_FINISH = 2;
 
 	int BZ2_bzCompressInit(BzStream stream, int blockSize100k, int verbosity, int workFactor);
+
 	int BZ2_bzCompress(BzStream stream, int action);
+
 	int BZ2_bzCompressEnd(BzStream stream);
 }

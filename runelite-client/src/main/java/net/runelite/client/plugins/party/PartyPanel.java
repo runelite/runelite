@@ -132,16 +132,15 @@ class PartyPanel extends PluginPanel
 			{
 				// Leave party
 				final int result = JOptionPane.showOptionDialog(startButton,
-					"Are you sure you want to leave the party?",
-					"Leave party?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, new String[]{"Yes", "No"}, "No");
+						"Are you sure you want to leave the party?",
+						"Leave party?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, new String[] {"Yes", "No"}, "No");
 
 				if (result == JOptionPane.YES_OPTION)
 				{
 					plugin.leaveParty();
 				}
-			}
-			else
+			} else
 			{
 				// Create party
 				clientThread.invokeLater(() -> party.changeParty(party.generatePassphrase()));
@@ -153,13 +152,13 @@ class PartyPanel extends PluginPanel
 			if (!party.isInParty())
 			{
 				String s = (String) JOptionPane.showInputDialog(
-					joinPartyButton,
-					"Please enter the party passphrase:",
-					"Party Passphrase",
-					JOptionPane.PLAIN_MESSAGE,
-					null,
-					null,
-					"");
+						joinPartyButton,
+						"Please enter the party passphrase:",
+						"Party Passphrase",
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						null,
+						"");
 
 				if (s == null)
 				{
@@ -174,9 +173,9 @@ class PartyPanel extends PluginPanel
 					if (!Character.isLetter(ch) && !Character.isDigit(ch) && ch != '-')
 					{
 						JOptionPane.showMessageDialog(joinPartyButton,
-							"Party passphrase must be a combination of alphanumeric or hyphen characters.",
-							"Invalid party passphrase",
-							JOptionPane.ERROR_MESSAGE);
+								"Party passphrase must be a combination of alphanumeric or hyphen characters.",
+								"Invalid party passphrase",
+								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 				}
@@ -220,8 +219,7 @@ class PartyPanel extends PluginPanel
 		if (!party.isInParty())
 		{
 			add(noPartyPanel);
-		}
-		else if (plugin.getPartyDataMap().size() <= 1)
+		} else if (plugin.getPartyDataMap().size() <= 1)
 		{
 			partyEmptyPanel.setContent("Party created", "You can now invite friends!<br/>" +
 					"Your party passphrase is: " + party.getPartyPassphrase() + ".");

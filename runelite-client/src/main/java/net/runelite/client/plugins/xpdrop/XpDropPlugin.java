@@ -57,47 +57,40 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "XP Drop",
-	description = "Enable customization of the way XP drops are displayed",
-	tags = {"experience", "levels", "tick", "prayer", "xpdrop"}
+		name = "XP Drop",
+		description = "Enable customization of the way XP drops are displayed",
+		tags = {"experience", "levels", "tick", "prayer", "xpdrop"}
 )
 public class XpDropPlugin extends Plugin
 {
-	enum PrayerType
-	{
-		MELEE,
-		RANGE,
-		MAGIC;
-	}
-
 	private static final Multimap<Prayer, PrayerType> PRAYER_TYPE = new ImmutableMultimap.Builder<Prayer, PrayerType>()
-		.put(Prayer.BURST_OF_STRENGTH, PrayerType.MELEE)
-		.put(Prayer.CLARITY_OF_THOUGHT, PrayerType.MELEE)
-		.put(Prayer.SHARP_EYE, PrayerType.RANGE)
-		.put(Prayer.MYSTIC_WILL, PrayerType.MAGIC)
-		.put(Prayer.SUPERHUMAN_STRENGTH, PrayerType.MELEE)
-		.put(Prayer.IMPROVED_REFLEXES, PrayerType.MELEE)
-		.put(Prayer.HAWK_EYE, PrayerType.RANGE)
-		.put(Prayer.MYSTIC_LORE, PrayerType.MAGIC)
-		.put(Prayer.ULTIMATE_STRENGTH, PrayerType.MELEE)
-		.put(Prayer.INCREDIBLE_REFLEXES, PrayerType.MELEE)
-		.put(Prayer.EAGLE_EYE, PrayerType.RANGE)
-		.put(Prayer.MYSTIC_MIGHT, PrayerType.MAGIC)
-		.put(Prayer.CHIVALRY, PrayerType.MELEE)
-		.put(Prayer.PIETY, PrayerType.MELEE)
-		.put(Prayer.RIGOUR, PrayerType.RANGE)
-		.put(Prayer.AUGURY, PrayerType.MAGIC)
-		// RP
-		.put(Prayer.RP_ANCIENT_STRENGTH, PrayerType.MELEE)
-		.put(Prayer.RP_ANCIENT_SIGHT, PrayerType.RANGE)
-		.put(Prayer.RP_ANCIENT_WILL, PrayerType.MAGIC)
-		.putAll(Prayer.RP_TRINITAS, PrayerType.MELEE, PrayerType.RANGE, PrayerType.MAGIC)
-		.put(Prayer.RP_DECIMATE, PrayerType.MELEE)
-		.put(Prayer.RP_ANNIHILATE, PrayerType.RANGE)
-		.put(Prayer.RP_VAPORISE, PrayerType.MAGIC)
-		.putAll(Prayer.RP_INTENSIFY, PrayerType.MELEE, PrayerType.RANGE, PrayerType.MAGIC)
-		.build();
-
+			.put(Prayer.BURST_OF_STRENGTH, PrayerType.MELEE)
+			.put(Prayer.CLARITY_OF_THOUGHT, PrayerType.MELEE)
+			.put(Prayer.SHARP_EYE, PrayerType.RANGE)
+			.put(Prayer.MYSTIC_WILL, PrayerType.MAGIC)
+			.put(Prayer.SUPERHUMAN_STRENGTH, PrayerType.MELEE)
+			.put(Prayer.IMPROVED_REFLEXES, PrayerType.MELEE)
+			.put(Prayer.HAWK_EYE, PrayerType.RANGE)
+			.put(Prayer.MYSTIC_LORE, PrayerType.MAGIC)
+			.put(Prayer.ULTIMATE_STRENGTH, PrayerType.MELEE)
+			.put(Prayer.INCREDIBLE_REFLEXES, PrayerType.MELEE)
+			.put(Prayer.EAGLE_EYE, PrayerType.RANGE)
+			.put(Prayer.MYSTIC_MIGHT, PrayerType.MAGIC)
+			.put(Prayer.CHIVALRY, PrayerType.MELEE)
+			.put(Prayer.PIETY, PrayerType.MELEE)
+			.put(Prayer.RIGOUR, PrayerType.RANGE)
+			.put(Prayer.AUGURY, PrayerType.MAGIC)
+			// RP
+			.put(Prayer.RP_ANCIENT_STRENGTH, PrayerType.MELEE)
+			.put(Prayer.RP_ANCIENT_SIGHT, PrayerType.RANGE)
+			.put(Prayer.RP_ANCIENT_WILL, PrayerType.MAGIC)
+			.putAll(Prayer.RP_TRINITAS, PrayerType.MELEE, PrayerType.RANGE, PrayerType.MAGIC)
+			.put(Prayer.RP_DECIMATE, PrayerType.MELEE)
+			.put(Prayer.RP_ANNIHILATE, PrayerType.RANGE)
+			.put(Prayer.RP_VAPORISE, PrayerType.MAGIC)
+			.putAll(Prayer.RP_INTENSIFY, PrayerType.MELEE, PrayerType.RANGE, PrayerType.MAGIC)
+			.build();
+	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 	@Inject
 	private Client client;
 
@@ -109,7 +102,6 @@ public class XpDropPlugin extends Plugin
 	private boolean hasDropped = false;
 	private int xpdropColor;
 	private Skill lastSkill = null;
-	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -147,29 +139,29 @@ public class XpDropPlugin extends Plugin
 		}
 
 		final List<PrayerType> xpDropTypes =
-			Arrays.stream(children)
-				.skip(1) // skip text
-				.filter(Objects::nonNull)
-				.map(Widget::getSpriteId)
-				.map(id ->
-				{
-					if (id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE)
-					{
-						return PrayerType.MELEE;
-					}
-					if (id == SpriteID.SKILL_RANGED)
-					{
-						return PrayerType.RANGE;
-					}
-					if (id == SpriteID.SKILL_MAGIC)
-					{
-						return PrayerType.MAGIC;
-					}
-					return null;
-				})
-				.filter(Objects::nonNull)
-				.distinct()
-				.collect(Collectors.toList());
+				Arrays.stream(children)
+						.skip(1) // skip text
+						.filter(Objects::nonNull)
+						.map(Widget::getSpriteId)
+						.map(id ->
+						{
+							if (id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE)
+							{
+								return PrayerType.MELEE;
+							}
+							if (id == SpriteID.SKILL_RANGED)
+							{
+								return PrayerType.RANGE;
+							}
+							if (id == SpriteID.SKILL_MAGIC)
+							{
+								return PrayerType.MAGIC;
+							}
+							return null;
+						})
+						.filter(Objects::nonNull)
+						.distinct()
+						.collect(Collectors.toList());
 
 		// Check MELEE last to avoid defensive casting being categorized as melee
 		if (xpDropTypes.contains(PrayerType.RANGE))
@@ -178,15 +170,13 @@ public class XpDropPlugin extends Plugin
 			{
 				xpdropColor = config.getRangePrayerColor().getRGB();
 			}
-		}
-		else if (xpDropTypes.contains(PrayerType.MAGIC))
+		} else if (xpDropTypes.contains(PrayerType.MAGIC))
 		{
 			if (prayers.contains(PrayerType.MAGIC))
 			{
 				xpdropColor = config.getMagePrayerColor().getRGB();
 			}
-		}
-		else if (xpDropTypes.contains(PrayerType.MELEE))
+		} else if (xpDropTypes.contains(PrayerType.MELEE))
 		{
 			if (prayers.contains(PrayerType.MELEE))
 			{
@@ -197,8 +187,7 @@ public class XpDropPlugin extends Plugin
 		if (xpdropColor != 0)
 		{
 			text.setTextColor(xpdropColor);
-		}
-		else
+		} else
 		{
 			resetTextColor(text);
 		}
@@ -213,8 +202,7 @@ public class XpDropPlugin extends Plugin
 		{
 			int color = standardColor.getRGB();
 			widget.setTextColor(color);
-		}
-		else
+		} else
 		{
 			EnumComposition colorEnum = client.getEnum(EnumID.XPDROP_COLORS);
 			int defaultColorId = client.getVarbitValue(Varbits.EXPERIENCE_DROP_COLOR);
@@ -287,6 +275,13 @@ public class XpDropPlugin extends Plugin
 			previousExpGained = xp - previous;
 			hasDropped = true;
 		}
+	}
+
+	enum PrayerType
+	{
+		MELEE,
+		RANGE,
+		MAGIC;
 	}
 
 }

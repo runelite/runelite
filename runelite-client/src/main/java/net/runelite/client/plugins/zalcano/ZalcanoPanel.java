@@ -45,29 +45,6 @@ class ZalcanoPanel extends OverlayPanel
 		this.plugin = plugin;
 	}
 
-	@Override
-	public Dimension render(Graphics2D g)
-	{
-		if (!plugin.isInCavern())
-		{
-			return null;
-		}
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Health damage:")
-			.leftColor(colorFromCount(plugin.getHealthDamage()))
-			.right(Integer.toString(plugin.getHealthDamage()))
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Shield damage:")
-			.leftColor(colorFromCount(plugin.getShieldDamage()))
-			.right(Integer.toString(plugin.getShieldDamage()))
-			.build());
-
-		return super.render(g);
-	}
-
 	private static Color colorFromCount(int damage)
 	{
 		if (damage >= 50)
@@ -81,5 +58,28 @@ class ZalcanoPanel extends OverlayPanel
 			return Color.YELLOW;
 		}
 		return Color.RED;
+	}
+
+	@Override
+	public Dimension render(Graphics2D g)
+	{
+		if (!plugin.isInCavern())
+		{
+			return null;
+		}
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Health damage:")
+				.leftColor(colorFromCount(plugin.getHealthDamage()))
+				.right(Integer.toString(plugin.getHealthDamage()))
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Shield damage:")
+				.leftColor(colorFromCount(plugin.getShieldDamage()))
+				.right(Integer.toString(plugin.getShieldDamage()))
+				.build());
+
+		return super.render(g);
 	}
 }

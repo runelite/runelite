@@ -53,6 +53,17 @@ public class ChatCommandManager
 		eventBus.register(this);
 	}
 
+	private static String extractCommand(String message)
+	{
+		int idx = message.indexOf(' ');
+		if (idx == -1)
+		{
+			return message;
+		}
+
+		return message.substring(0, idx);
+	}
+
 	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute)
 	{
 		registerCommand(command, execute, null);
@@ -109,8 +120,7 @@ public class ChatCommandManager
 		if (chatCommand.isAsync())
 		{
 			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, message));
-		}
-		else
+		} else
 		{
 			chatCommand.getExecute().accept(chatMessage, message);
 		}
@@ -162,16 +172,5 @@ public class ChatCommandManager
 		{
 			privateMessageInput.consume();
 		}
-	}
-
-	private static String extractCommand(String message)
-	{
-		int idx = message.indexOf(' ');
-		if (idx == -1)
-		{
-			return message;
-		}
-
-		return message.substring(0, idx);
 	}
 }

@@ -47,11 +47,9 @@ import org.slf4j.LoggerFactory;
 public class KitDumperTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(KitDumperTest.class);
-
-	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
 	public void test() throws IOException

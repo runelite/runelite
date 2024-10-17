@@ -43,10 +43,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Skybox",
-	description = "Draws an oldschool styled skybox",
-	enabledByDefault = false,
-	tags = {"sky"}
+		name = "Skybox",
+		description = "Draws an oldschool styled skybox",
+		enabledByDefault = false,
+		tags = {"sky"}
 )
 public class SkyboxPlugin extends Plugin
 {
@@ -110,7 +110,7 @@ public class SkyboxPlugin extends Plugin
 		}
 
 		Color overrideColor = WorldPoint.getMirrorPoint(player.getWorldLocation(), true).getY() < Constants.OVERWORLD_MAX_Y
-			? config.customOverworldColor() : config.customOtherColor();
+				? config.customOverworldColor() : config.customOtherColor();
 		if (overrideColor != null)
 		{
 			client.setSkyboxColor(overrideColor.getRGB());
@@ -122,8 +122,7 @@ public class SkyboxPlugin extends Plugin
 		{
 			px = client.getOculusOrbFocalPointX();
 			py = client.getOculusOrbFocalPointY();
-		}
-		else
+		} else
 		{
 			LocalPoint p = player.getLocalLocation();
 			px = p.getX();
@@ -138,13 +137,13 @@ public class SkyboxPlugin extends Plugin
 		int baseY = client.getBaseY();
 
 		client.setSkyboxColor(skybox.getColorForPoint(
-			baseX + ((px + spx) / 128.f),
-			baseY + ((py + spy) / 128.f),
-			baseX + (px / 128),
-			baseY + (py / 128),
-			client.getPlane(),
-			client.getTextureProvider().getBrightness(),
-			client.isInInstancedRegion() ? this::mapChunk : null
+				baseX + ((px + spx) / 128.f),
+				baseY + ((py + spy) / 128.f),
+				baseX + (px / 128),
+				baseY + (py / 128),
+				client.getPlane(),
+				client.getTextureProvider().getBrightness(),
+				client.isInInstancedRegion() ? this::mapChunk : null
 		));
 	}
 

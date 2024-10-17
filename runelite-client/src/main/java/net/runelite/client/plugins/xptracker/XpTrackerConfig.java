@@ -35,17 +35,17 @@ import net.runelite.client.config.Units;
 public interface XpTrackerConfig extends Config
 {
 	@ConfigSection(
-		name = "Overlay",
-		description = "Canvas overlay options",
-		position = 99
+			name = "Overlay",
+			description = "Canvas overlay options",
+			position = 99
 	)
 	String overlaySection = "overlay";
 
 	@ConfigItem(
-		position = 0,
-		keyName = "hideMaxed",
-		name = "Hide maxed skills",
-		description = "XP Tracker will no longer track level 99 skills"
+			position = 0,
+			keyName = "hideMaxed",
+			name = "Hide maxed skills",
+			description = "XP Tracker will no longer track level 99 skills"
 	)
 	default boolean hideMaxed()
 	{
@@ -53,10 +53,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "logoutPausing",
-		name = "Pause on Logout",
-		description = "Configures whether skills should pause on logout"
+			position = 1,
+			keyName = "logoutPausing",
+			name = "Pause on Logout",
+			description = "Configures whether skills should pause on logout"
 	)
 	default boolean pauseOnLogout()
 	{
@@ -64,10 +64,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "intermediateLevelMarkers",
-		name = "Show intermediate level markers",
-		description = "Marks intermediate levels on the progressbar"
+			position = 2,
+			keyName = "intermediateLevelMarkers",
+			name = "Show intermediate level markers",
+			description = "Marks intermediate levels on the progressbar"
 	)
 	default boolean showIntermediateLevels()
 	{
@@ -75,10 +75,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "pauseSkillAfter",
-		name = "Auto pause after",
-		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
+			position = 3,
+			keyName = "pauseSkillAfter",
+			name = "Auto pause after",
+			description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
 	)
 	@Units(Units.MINUTES)
 	default int pauseSkillAfter()
@@ -87,10 +87,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "resetSkillRateAfter",
-		name = "Auto reset after",
-		description = "Configures how many minutes passes before resetting a skill's per hour rates while in game and there's no XP, 0 means disabled"
+			position = 4,
+			keyName = "resetSkillRateAfter",
+			name = "Auto reset after",
+			description = "Configures how many minutes passes before resetting a skill's per hour rates while in game and there's no XP, 0 means disabled"
 	)
 	@Units(Units.MINUTES)
 	default int resetSkillRateAfter()
@@ -99,11 +99,11 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "skillTabOverlayMenuOptions",
-		name = "Add skill tab canvas menu option",
-		description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab",
-		section = overlaySection
+			position = 5,
+			keyName = "skillTabOverlayMenuOptions",
+			name = "Add skill tab canvas menu option",
+			description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab",
+			section = overlaySection
 	)
 	default boolean skillTabOverlayMenuOptions()
 	{
@@ -111,11 +111,11 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "onScreenDisplayMode",
-		name = "On-screen tracker display mode (top)",
-		description = "Configures the information displayed in the first line of on-screen XP overlays",
-		section = overlaySection
+			position = 6,
+			keyName = "onScreenDisplayMode",
+			name = "On-screen tracker display mode (top)",
+			description = "Configures the information displayed in the first line of on-screen XP overlays",
+			section = overlaySection
 	)
 	default XpPanelLabel onScreenDisplayMode()
 	{
@@ -123,11 +123,11 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
-		keyName = "onScreenDisplayModeBottom",
-		name = "On-screen tracker display mode (bottom)",
-		description = "Configures the information displayed in the second line of on-screen XP overlays",
-		section = overlaySection
+			position = 7,
+			keyName = "onScreenDisplayModeBottom",
+			name = "On-screen tracker display mode (bottom)",
+			description = "Configures the information displayed in the second line of on-screen XP overlays",
+			section = overlaySection
 	)
 	default XpPanelLabel onScreenDisplayModeBottom()
 	{
@@ -135,10 +135,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
-		keyName = "xpPanelLabel1",
-		name = "Top-left XP info label",
-		description = "Configures the information displayed in the top-left of XP info box"
+			position = 8,
+			keyName = "xpPanelLabel1",
+			name = "Top-left XP info label",
+			description = "Configures the information displayed in the top-left of XP info box"
 	)
 	default XpPanelLabel xpPanelLabel1()
 	{
@@ -146,10 +146,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
-		keyName = "xpPanelLabel2",
-		name = "Top-right XP info label",
-		description = "Configures the information displayed in the top-right of XP info box"
+			position = 9,
+			keyName = "xpPanelLabel2",
+			name = "Top-right XP info label",
+			description = "Configures the information displayed in the top-right of XP info box"
 	)
 
 	default XpPanelLabel xpPanelLabel2()
@@ -158,10 +158,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
-		keyName = "xpPanelLabel3",
-		name = "Bottom-left XP info label",
-		description = "Configures the information displayed in the bottom-left of XP info box"
+			position = 10,
+			keyName = "xpPanelLabel3",
+			name = "Bottom-left XP info label",
+			description = "Configures the information displayed in the bottom-left of XP info box"
 	)
 	default XpPanelLabel xpPanelLabel3()
 	{
@@ -169,10 +169,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
-		keyName = "xpPanelLabel4",
-		name = "Bottom-right XP info label",
-		description = "Configures the information displayed in the bottom-right of XP info box"
+			position = 11,
+			keyName = "xpPanelLabel4",
+			name = "Bottom-right XP info label",
+			description = "Configures the information displayed in the bottom-right of XP info box"
 	)
 	default XpPanelLabel xpPanelLabel4()
 	{
@@ -180,10 +180,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
-		keyName = "progressBarLabel",
-		name = "Progress bar label",
-		description = "Configures the info box progress bar to show Time to goal or percentage complete"
+			position = 12,
+			keyName = "progressBarLabel",
+			name = "Progress bar label",
+			description = "Configures the info box progress bar to show Time to goal or percentage complete"
 	)
 	default XpProgressBarLabel progressBarLabel()
 	{
@@ -191,10 +191,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
-		keyName = "progressBarTooltipLabel",
-		name = "Tooltip label",
-		description = "Configures the info box progress bar tooltip to show Time to goal or percentage complete"
+			position = 13,
+			keyName = "progressBarTooltipLabel",
+			name = "Tooltip label",
+			description = "Configures the info box progress bar tooltip to show Time to goal or percentage complete"
 	)
 	default XpProgressBarLabel progressBarTooltipLabel()
 	{
@@ -202,10 +202,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
-		keyName = "prioritizeRecentXpSkills",
-		name = "Move recently trained skills to top",
-		description = "Configures whether skills should be organized by most recently gained xp"
+			position = 14,
+			keyName = "prioritizeRecentXpSkills",
+			name = "Move recently trained skills to top",
+			description = "Configures whether skills should be organized by most recently gained xp"
 	)
 	default boolean prioritizeRecentXpSkills()
 	{
@@ -213,10 +213,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
-		keyName = "wiseOldManOpenOption",
-		name = "Wise Old Man Option",
-		description = "Adds an option to the XP info box right-click menu to open Wise Old Man"
+			position = 15,
+			keyName = "wiseOldManOpenOption",
+			name = "Wise Old Man Option",
+			description = "Adds an option to the XP info box right-click menu to open Wise Old Man"
 	)
 	default boolean wiseOldManOpenOption()
 	{

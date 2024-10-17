@@ -41,6 +41,10 @@ import org.intellij.lang.annotations.MagicConstant;
 @Builder
 class GroundItem
 {
+	// cached values derived from config
+	boolean highlighted;
+	boolean hidden;
+	Color color;
 	private int id;
 	private int itemId;
 	private String name;
@@ -59,11 +63,6 @@ class GroundItem
 	private boolean stackable;
 	private Duration despawnTime;
 	private Duration visibleTime;
-
-	// cached values derived from config
-	boolean highlighted;
-	boolean hidden;
-	Color color;
 
 	int getHaPrice()
 	{

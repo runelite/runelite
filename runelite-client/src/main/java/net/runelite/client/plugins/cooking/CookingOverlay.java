@@ -79,27 +79,26 @@ class CookingOverlay extends OverlayPanel
 		if (isCooking() || Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < COOK_TIMEOUT)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Cooking")
-				.color(Color.GREEN)
-				.build());
-		}
-		else
+					.text("Cooking")
+					.color(Color.GREEN)
+					.build());
+		} else
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT cooking")
-				.color(Color.RED)
-				.build());
+					.text("NOT cooking")
+					.color(Color.RED)
+					.build());
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Cooked:")
-			.right(session.getCookAmount() + (session.getCookAmount() >= 1 ? " (" + xpTrackerService.getActionsHr(Skill.COOKING) + "/hr)" : ""))
-			.build());
+				.left("Cooked:")
+				.right(session.getCookAmount() + (session.getCookAmount() >= 1 ? " (" + xpTrackerService.getActionsHr(Skill.COOKING) + "/hr)" : ""))
+				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Burnt:")
-			.right(session.getBurnAmount() + (session.getBurnAmount() >= 1 ? " (" + FORMAT.format(session.getBurntPercentage()) + "%)" : ""))
-			.build());
+				.left("Burnt:")
+				.right(session.getBurnAmount() + (session.getBurnAmount() >= 1 ? " (" + FORMAT.format(session.getBurntPercentage()) + "%)" : ""))
+				.build());
 
 		return super.render(graphics);
 	}

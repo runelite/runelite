@@ -63,23 +63,22 @@ public class AccountClient
 	public OAuthResponse login(int port) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("login")
-			.addQueryParameter("port", Integer.toString(port))
-			.build();
+				.addPathSegment("account")
+				.addPathSegment("login")
+				.addQueryParameter("port", Integer.toString(port))
+				.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.url(url)
-			.build();
+				.url(url)
+				.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), OAuthResponse.class);
-		}
-		catch (JsonParseException ex)
+		} catch (JsonParseException ex)
 		{
 			throw new IOException(ex);
 		}
@@ -88,16 +87,16 @@ public class AccountClient
 	public void logout() throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("logout")
-			.build();
+				.addPathSegment("account")
+				.addPathSegment("logout")
+				.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
+				.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
+				.url(url)
+				.build();
 
 		try (Response ignored = client.newCall(request).execute())
 		{
@@ -108,22 +107,21 @@ public class AccountClient
 	public boolean sessionCheck()
 	{
 		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("session-check")
-			.build();
+				.addPathSegment("account")
+				.addPathSegment("session-check")
+				.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
+				.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
+				.url(url)
+				.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
 			return response.isSuccessful();
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			log.debug("Unable to verify session", ex);
 			return true; // assume it is still valid if the server is unreachable

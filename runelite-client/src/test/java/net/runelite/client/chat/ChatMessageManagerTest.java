@@ -78,15 +78,15 @@ public class ChatMessageManagerTest
 		when(tbl.get(anyLong())).thenReturn(messageNode);
 		when(client.getMessages()).thenReturn(tbl);
 
-		sstack = new String[]{
-			"",
-			name,
-			message,
-			""
+		sstack = new String[] {
+				"",
+				name,
+				message,
+				""
 		};
-		istack = new int[]{
-			0, // splitpmbox
-			1
+		istack = new int[] {
+				0, // splitpmbox
+				1
 		};
 		when(client.getStringStack()).thenReturn(sstack);
 		when(client.getStringStackSize()).thenReturn(sstack.length);
@@ -169,21 +169,21 @@ public class ChatMessageManagerTest
 		chatMessageManager.onConfigChanged(configChanged);
 
 		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Total points: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append("42")
-			.append(ChatColorType.NORMAL)
-			.append(", Personal points: ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append("43")
-			.append(ChatColorType.NORMAL)
-			.append(" (")
-			.append(ChatColorType.HIGHLIGHT)
-			.append("44")
-			.append(ChatColorType.NORMAL)
-			.append("%)")
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append("Total points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append("42")
+				.append(ChatColorType.NORMAL)
+				.append(", Personal points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append("43")
+				.append(ChatColorType.NORMAL)
+				.append(" (")
+				.append(ChatColorType.HIGHLIGHT)
+				.append("44")
+				.append(ChatColorType.NORMAL)
+				.append("%)")
+				.build();
 
 		String formattedMessage = chatMessageManager.formatRuneLiteMessage(chatMessage, ChatMessageType.FRIENDSCHATNOTIFICATION, false);
 

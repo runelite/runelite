@@ -154,15 +154,6 @@ enum HealthbarOverride implements SpriteOverride
 	COX_YELLOW(HEALTHBAR_COX_YELLOW, "cox_yellow.png"),
 	COX_RED(HEALTHBAR_COX_RED, "cox_red.png");
 
-	@Getter
-	private final int spriteId;
-
-	private final String fileName;
-
-	@Getter
-	@SuppressWarnings("PMD.FinalFieldCouldBeStatic")
-	private final int padding = 1;
-
 	private static final Map<Integer, HealthbarOverride> MAP;
 
 	static
@@ -176,6 +167,13 @@ enum HealthbarOverride implements SpriteOverride
 
 		MAP = builder.build();
 	}
+
+	@Getter
+	private final int spriteId;
+	private final String fileName;
+	@Getter
+	@SuppressWarnings("PMD.FinalFieldCouldBeStatic")
+	private final int padding = 1;
 
 	static HealthbarOverride get(int spriteID)
 	{

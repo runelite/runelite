@@ -40,16 +40,16 @@ public class RuneLiteRadioButtonUI extends FlatRadioButtonUI
 	@FlatStylingSupport.Styleable
 	protected float rolloverIconAlpha = 1.0f;
 
-	public static ComponentUI createUI(JComponent c)
-	{
-		return FlatUIUtils.canUseSharedUI(c)
-			? FlatUIUtils.createSharedUI(RuneLiteRadioButtonUI.class, () -> new RuneLiteRadioButtonUI(true))
-			: new RuneLiteRadioButtonUI(false);
-	}
-
 	protected RuneLiteRadioButtonUI(boolean shared)
 	{
 		super(shared);
+	}
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return FlatUIUtils.canUseSharedUI(c)
+				? FlatUIUtils.createSharedUI(RuneLiteRadioButtonUI.class, () -> new RuneLiteRadioButtonUI(true))
+				: new RuneLiteRadioButtonUI(false);
 	}
 
 	@Override
@@ -63,8 +63,7 @@ public class RuneLiteRadioButtonUI extends FlatRadioButtonUI
 			{
 				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
 				super.paintIcon(g, c, iconRect);
-			}
-			finally
+			} finally
 			{
 				g2d.setComposite(composite);
 			}

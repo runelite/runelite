@@ -97,7 +97,7 @@ public class GroundItemsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || config.itemHighlightMode() == NONE
-			|| plugin.isHideAll()) && !plugin.isHotKeyPressed();
+				|| plugin.isHideAll()) && !plugin.isHotKeyPressed();
 
 		if (dontShowOverlay && !config.highlightTiles())
 		{
@@ -136,24 +136,24 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				if (plugin.getTextBoxBounds() != null
-					&& item.equals(plugin.getTextBoxBounds().getValue())
-					&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getTextBoxBounds().getValue())
+						&& plugin.getTextBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHiddenBoxBounds() != null
-					&& item.equals(plugin.getHiddenBoxBounds().getValue())
-					&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHiddenBoxBounds().getValue())
+						&& plugin.getHiddenBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 					continue;
 				}
 
 				if (plugin.getHighlightBoxBounds() != null
-					&& item.equals(plugin.getHighlightBoxBounds().getValue())
-					&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
+						&& item.equals(plugin.getHighlightBoxBounds().getValue())
+						&& plugin.getHighlightBoxBounds().getKey().contains(awtMousePos))
 				{
 					groundItem = item;
 				}
@@ -181,7 +181,7 @@ public class GroundItemsOverlay extends Overlay
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE
-				|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
+					|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
 			{
 				continue;
 			}
@@ -225,8 +225,8 @@ public class GroundItemsOverlay extends Overlay
 			if (item.getQuantity() > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
-					.append(')');
+						.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
+						.append(')');
 			}
 
 			if (item.getId() != ItemID.COINS_995)
@@ -237,29 +237,28 @@ public class GroundItemsOverlay extends Overlay
 					if (item.getGePrice() > 0)
 					{
 						itemStringBuilder.append(" (GE: ")
-							.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
-							.append(" gp)");
+								.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
+								.append(" gp)");
 					}
 
 					if (item.getHaPrice() > 0)
 					{
 						itemStringBuilder.append(" (HA: ")
-							.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
-							.append(" gp)");
+								.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
+								.append(" gp)");
 					}
-				}
-				else if (displayMode != PriceDisplayMode.OFF)
+				} else if (displayMode != PriceDisplayMode.OFF)
 				{
 					final int price = displayMode == PriceDisplayMode.GE
-						? item.getGePrice()
-						: item.getHaPrice();
+							? item.getGePrice()
+							: item.getHaPrice();
 
 					if (price > 0)
 					{
 						itemStringBuilder
-							.append(" (")
-							.append(QuantityFormatter.quantityToStackSize(price))
-							.append(" gp)");
+								.append(" (")
+								.append(QuantityFormatter.quantityToStackSize(price))
+								.append(" gp)");
 					}
 				}
 			}
@@ -268,10 +267,10 @@ public class GroundItemsOverlay extends Overlay
 			itemStringBuilder.setLength(0);
 
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
-				graphics,
-				groundPoint,
-				itemString,
-				item.getHeight() + OFFSET_Z);
+					graphics,
+					groundPoint,
+					itemString,
+					item.getHeight() + OFFSET_Z);
 
 			if (textPoint == null)
 			{
@@ -279,8 +278,8 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final int offset = plugin.isHotKeyPressed()
-				? item.getOffset()
-				: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+					? item.getOffset()
+					: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
 
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);
@@ -314,13 +313,11 @@ public class GroundItemsOverlay extends Overlay
 				if (mouseInBox)
 				{
 					plugin.setTextBoxBounds(new SimpleEntry<>(itemBounds, item));
-				}
-				else if (mouseInHiddenBox)
+				} else if (mouseInHiddenBox)
 				{
 					plugin.setHiddenBoxBounds(new SimpleEntry<>(itemHiddenBox, item));
 
-				}
-				else if (mouseInHighlightBox)
+				} else if (mouseInHighlightBox)
 				{
 					plugin.setHighlightBoxBounds(new SimpleEntry<>(itemHighlightBox, item));
 				}
@@ -346,8 +343,7 @@ public class GroundItemsOverlay extends Overlay
 			if (groundItemTimers == DespawnTimerMode.PIE || plugin.isHotKeyPressed())
 			{
 				drawTimerPieOverlay(graphics, textX, textY, item);
-			}
-			else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
+			} else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
 			{
 				Instant despawnTime = calculateDespawnTime(item);
 				Color timerColor = getItemTimerColor(item);
@@ -358,8 +354,7 @@ public class GroundItemsOverlay extends Overlay
 					if (groundItemTimers == DespawnTimerMode.SECONDS)
 					{
 						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
-					}
-					else // TICKS
+					} else // TICKS
 					{
 						timerText = String.format(" - %d", despawnTimeMillis / 600);
 					}
@@ -479,23 +474,23 @@ public class GroundItemsOverlay extends Overlay
 		graphics.setColor(Color.WHITE);
 		// Minus symbol
 		graphics.drawLine
-			(
-				rect.x + 2,
-				rect.y + (rect.height / 2),
-				rect.x + rect.width - 2,
-				rect.y + (rect.height / 2)
-			);
+				(
+						rect.x + 2,
+						rect.y + (rect.height / 2),
+						rect.x + rect.width - 2,
+						rect.y + (rect.height / 2)
+				);
 
 		if (!hiddenBox)
 		{
 			// Plus symbol
 			graphics.drawLine
-				(
-					rect.x + (rect.width / 2),
-					rect.y + 2,
-					rect.x + (rect.width / 2),
-					rect.y + rect.height - 2
-				);
+					(
+							rect.x + (rect.width / 2),
+							rect.y + 2,
+							rect.x + (rect.width / 2),
+							rect.y + rect.height - 2
+					);
 		}
 
 	}

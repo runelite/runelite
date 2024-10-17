@@ -36,17 +36,17 @@ import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigSection(
-		name = "Forestry",
-		description = "Configuration for forestry",
-		position = 10
+			name = "Forestry",
+			description = "Configuration for forestry",
+			position = 10
 	)
 	String forestrySection = "forestry";
 
 	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
+			position = 1,
+			keyName = "statTimeout",
+			name = "Reset stats",
+			description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -55,10 +55,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "showNestNotification",
-		name = "Bird nest notification",
-		description = "Configures whether to notify you of a bird nest spawn"
+			position = 2,
+			keyName = "showNestNotification",
+			name = "Bird nest notification",
+			description = "Configures whether to notify you of a bird nest spawn"
 	)
 	default Notification showNestNotification()
 	{
@@ -66,10 +66,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "clueNestNotifyTier",
-		name = "Clue nest notification",
-		description = "Configures the clue tier from which to start notifying of a clue nest spawn"
+			position = 3,
+			keyName = "clueNestNotifyTier",
+			name = "Clue nest notification",
+			description = "Configures the clue tier from which to start notifying of a clue nest spawn"
 	)
 	default ClueNestTier clueNestNotifyTier()
 	{
@@ -77,10 +77,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "showWoodcuttingStats",
-		name = "Show session stats",
-		description = "Configures whether to display woodcutting session stats"
+			position = 4,
+			keyName = "showWoodcuttingStats",
+			name = "Show session stats",
+			description = "Configures whether to display woodcutting session stats"
 	)
 	default boolean showWoodcuttingStats()
 	{
@@ -88,10 +88,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "showRedwoods",
-		name = "Show Redwood trees",
-		description = "Configures whether to show a indicator for redwood trees"
+			position = 5,
+			keyName = "showRedwoods",
+			name = "Show Redwood trees",
+			description = "Configures whether to show a indicator for redwood trees"
 	)
 	default boolean showRedwoodTrees()
 	{
@@ -99,10 +99,10 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
-		keyName = "showRespawnTimers",
-		name = "Show respawn timers",
-		description = "Configures whether to display the respawn timer overlay"
+			position = 6,
+			keyName = "showRespawnTimers",
+			name = "Show respawn timers",
+			description = "Configures whether to display the respawn timer overlay"
 	)
 	default boolean showRespawnTimers()
 	{
@@ -110,11 +110,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
-		keyName = "forestryLeprechaunNotification",
-		name = "Leprechaun notification",
-		description = "Configures whether to notify you of a Leprechaun event",
-		section = forestrySection
+			position = 10,
+			keyName = "forestryLeprechaunNotification",
+			name = "Leprechaun notification",
+			description = "Configures whether to notify you of a Leprechaun event",
+			section = forestrySection
 	)
 	default boolean forestryLeprechaunNotification()
 	{
@@ -122,11 +122,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
-		keyName = "forestryRisingRootsNotification",
-		name = "Rising Roots notification",
-		description = "Configures whether to notify you of a Rising Roots event",
-		section = forestrySection
+			position = 11,
+			keyName = "forestryRisingRootsNotification",
+			name = "Rising Roots notification",
+			description = "Configures whether to notify you of a Rising Roots event",
+			section = forestrySection
 	)
 	default Notification forestryRisingRootsNotification()
 	{
@@ -134,11 +134,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
-		keyName = "forestryStrugglingSaplingNotification",
-		name = "Struggling Sapling notification",
-		description = "Configures whether to notify you of a Struggling Sapling event",
-		section = forestrySection
+			position = 12,
+			keyName = "forestryStrugglingSaplingNotification",
+			name = "Struggling Sapling notification",
+			description = "Configures whether to notify you of a Struggling Sapling event",
+			section = forestrySection
 	)
 	default Notification forestryStrugglingSaplingNotification()
 	{
@@ -146,11 +146,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
-		keyName = "forestryFloweringTreeNotification",
-		name = "Flowering Tree notification",
-		description = "Configures whether to notify you of a Flowering Tree event",
-		section = forestrySection
+			position = 13,
+			keyName = "forestryFloweringTreeNotification",
+			name = "Flowering Tree notification",
+			description = "Configures whether to notify you of a Flowering Tree event",
+			section = forestrySection
 	)
 	default Notification forestryFloweringTreeNotification()
 	{
@@ -158,11 +158,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
-		keyName = "forestryPoachersNotification",
-		name = "Poachers notification",
-		description = "Configures whether to notify you of a Poachers event",
-		section = forestrySection
+			position = 14,
+			keyName = "forestryPoachersNotification",
+			name = "Poachers notification",
+			description = "Configures whether to notify you of a Poachers event",
+			section = forestrySection
 	)
 	default Notification forestryPoachersNotification()
 	{
@@ -170,11 +170,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
-		keyName = "forestryPheasantControlNotification",
-		name = "Pheasant Control notification",
-		description = "Configures whether to notify you of a Pheasant Control event",
-		section = forestrySection
+			position = 15,
+			keyName = "forestryPheasantControlNotification",
+			name = "Pheasant Control notification",
+			description = "Configures whether to notify you of a Pheasant Control event",
+			section = forestrySection
 	)
 	default Notification forestryPheasantControlNotification()
 	{
@@ -182,11 +182,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
-		keyName = "forestryBeeHiveNotification",
-		name = "Bee Hive notification",
-		description = "Configures whether to notify you of a Bee Hive event",
-		section = forestrySection
+			position = 16,
+			keyName = "forestryBeeHiveNotification",
+			name = "Bee Hive notification",
+			description = "Configures whether to notify you of a Bee Hive event",
+			section = forestrySection
 	)
 	default Notification forestryBeeHiveNotification()
 	{
@@ -194,11 +194,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
-		keyName = "forestryEnchantmentRitualNotification",
-		name = "Enchantment Ritual notification",
-		description = "Configures whether to notify you of an Enchantment Ritual event",
-		section = forestrySection
+			position = 17,
+			keyName = "forestryEnchantmentRitualNotification",
+			name = "Enchantment Ritual notification",
+			description = "Configures whether to notify you of an Enchantment Ritual event",
+			section = forestrySection
 	)
 	default Notification forestryEnchantmentRitualNotification()
 	{
@@ -206,11 +206,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
-		keyName = "forestryFriendlyEntNotification",
-		name = "Friendly Ent notification",
-		description = "Configures whether to notify you of a Friendly Ent event",
-		section = forestrySection
+			position = 18,
+			keyName = "forestryFriendlyEntNotification",
+			name = "Friendly Ent notification",
+			description = "Configures whether to notify you of a Friendly Ent event",
+			section = forestrySection
 	)
 	default Notification forestryFriendlyEntNotification()
 	{
@@ -218,11 +218,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
-		keyName = "highlightGlowingRoots",
-		name = "Highlight glowing roots",
-		description = "Highlights glowing roots during Rising Roots events",
-		section = forestrySection
+			position = 20,
+			keyName = "highlightGlowingRoots",
+			name = "Highlight glowing roots",
+			description = "Highlights glowing roots during Rising Roots events",
+			section = forestrySection
 	)
 	default boolean highlightGlowingRoots()
 	{
@@ -230,11 +230,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
-		keyName = "highlightMulch",
-		name = "Highlight mulch ingredients",
-		description = "Highlights mulch ingredients during Struggling Sapling events",
-		section = forestrySection
+			position = 21,
+			keyName = "highlightMulch",
+			name = "Highlight mulch ingredients",
+			description = "Highlights mulch ingredients during Struggling Sapling events",
+			section = forestrySection
 	)
 	default boolean highlightMulch()
 	{
@@ -242,11 +242,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 22,
-		keyName = "highlightFlowers",
-		name = "Highlight flowers",
-		description = "Highlights flowers during Flowering Tree events",
-		section = forestrySection
+			position = 22,
+			keyName = "highlightFlowers",
+			name = "Highlight flowers",
+			description = "Highlights flowers during Flowering Tree events",
+			section = forestrySection
 	)
 	default boolean highlightFlowers()
 	{
@@ -254,11 +254,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
-		keyName = "highlightFoxTrap",
-		name = "Highlight fox trap",
-		description = "Highlights the fox trap during Poachers events",
-		section = forestrySection
+			position = 23,
+			keyName = "highlightFoxTrap",
+			name = "Highlight fox trap",
+			description = "Highlights the fox trap during Poachers events",
+			section = forestrySection
 	)
 	default boolean highlightFoxTrap()
 	{
@@ -266,11 +266,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 24,
-		keyName = "highlightPheasantNest",
-		name = "Highlight pheasant nest",
-		description = "Highlights the pheasant next during Pheasant Control events",
-		section = forestrySection
+			position = 24,
+			keyName = "highlightPheasantNest",
+			name = "Highlight pheasant nest",
+			description = "Highlights the pheasant next during Pheasant Control events",
+			section = forestrySection
 	)
 	default boolean highlightPheasantNest()
 	{
@@ -278,11 +278,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 25,
-		keyName = "highlightBeeHive",
-		name = "Highlight bee hive",
-		description = "Highlights the bee hive during Bee Hive events",
-		section = forestrySection
+			position = 25,
+			keyName = "highlightBeeHive",
+			name = "Highlight bee hive",
+			description = "Highlights the bee hive during Bee Hive events",
+			section = forestrySection
 	)
 	default boolean highlightBeeHive()
 	{
@@ -290,11 +290,11 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 26,
-		keyName = "highlightRitualCircle",
-		name = "Highlight ritual circle",
-		description = "Highlights the Ritual Circle during Enchantment Ritual events",
-		section = forestrySection
+			position = 26,
+			keyName = "highlightRitualCircle",
+			name = "Highlight ritual circle",
+			description = "Highlights the Ritual Circle during Enchantment Ritual events",
+			section = forestrySection
 	)
 	default boolean highlightRitualCircle()
 	{

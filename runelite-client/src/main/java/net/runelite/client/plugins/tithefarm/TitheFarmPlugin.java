@@ -43,20 +43,18 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tithe Farm",
-	description = "Show timers for the farming patches within the Tithe Farm minigame",
-	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
+		name = "Tithe Farm",
+		description = "Show timers for the farming patches within the Tithe Farm minigame",
+		tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )
 public class TitheFarmPlugin extends Plugin
 {
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private TitheFarmPlantOverlay titheFarmOverlay;
-
 	@Getter
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private TitheFarmPlantOverlay titheFarmOverlay;
 
 	@Provides
 	TitheFarmPluginConfig getConfig(ConfigManager configManager)
@@ -112,17 +110,14 @@ public class TitheFarmPlugin extends Plugin
 		{
 			log.debug("Added plant {}", newPlant);
 			plants.add(newPlant);
-		}
-		else if (oldPlant == null)
+		} else if (oldPlant == null)
 		{
 			return;
-		}
-		else if (newPlant.getType() == TitheFarmPlantType.EMPTY)
+		} else if (newPlant.getType() == TitheFarmPlantType.EMPTY)
 		{
 			log.debug("Removed plant {}", oldPlant);
 			plants.remove(oldPlant);
-		}
-		else if (oldPlant.getGameObject().getId() != newPlant.getGameObject().getId())
+		} else if (oldPlant.getGameObject().getId() != newPlant.getGameObject().getId())
 		{
 			if (oldPlant.getState() != TitheFarmPlantState.WATERED && newPlant.getState() == TitheFarmPlantState.WATERED)
 			{
@@ -130,8 +125,7 @@ public class TitheFarmPlugin extends Plugin
 				newPlant.setPlanted(oldPlant.getPlanted());
 				plants.remove(oldPlant);
 				plants.add(newPlant);
-			}
-			else
+			} else
 			{
 				log.debug("Updated plant");
 				plants.remove(oldPlant);

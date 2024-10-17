@@ -43,9 +43,9 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Smelting",
-	description = "Show Smelting stats",
-	tags = {"overlay", "skilling"}
+		name = "Smelting",
+		description = "Show Smelting stats",
+		tags = {"overlay", "skilling"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class SmeltingPlugin extends Plugin
@@ -102,16 +102,13 @@ public class SmeltingPlugin extends Plugin
 				session = new SmeltingSession();
 			}
 			session.increaseBarsSmelted();
-		}
-		else if (event.getMessage().endsWith(" to form 8 cannonballs."))
+		} else if (event.getMessage().endsWith(" to form 8 cannonballs."))
 		{
 			cannonBallsMade = 8;
-		}
-		else if (event.getMessage().endsWith(" to form 4 cannonballs."))
+		} else if (event.getMessage().endsWith(" to form 4 cannonballs."))
 		{
 			cannonBallsMade = 4;
-		}
-		else if (event.getMessage().startsWith("You remove the cannonballs from the mould"))
+		} else if (event.getMessage().startsWith("You remove the cannonballs from the mould"))
 		{
 			if (session == null)
 			{

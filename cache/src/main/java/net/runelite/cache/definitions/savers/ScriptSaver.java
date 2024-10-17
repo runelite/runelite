@@ -28,10 +28,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.OutputStream;
-import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
 import static net.runelite.cache.script.Opcodes.POP_STRING;
 import static net.runelite.cache.script.Opcodes.RETURN;
+import static net.runelite.cache.script.Opcodes.SCONST;
 
 public class ScriptSaver
 {
@@ -51,12 +51,10 @@ public class ScriptSaver
 			if (opcode == SCONST)
 			{
 				out.writeString(stringOperands[i]);
-			}
-			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
+			} else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
 			{
 				out.writeInt(intOperands[i]);
-			}
-			else
+			} else
 			{
 				out.writeByte(intOperands[i]);
 			}
@@ -70,8 +68,7 @@ public class ScriptSaver
 		if (switches == null)
 		{
 			out.writeByte(0);
-		}
-		else
+		} else
 		{
 			out.writeByte(switches.length);
 			for (Map<Integer, Integer> s : switches)

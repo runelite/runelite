@@ -74,37 +74,32 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public abstract class ShellPanel extends JPanel
 {
+	public static ShellPanel INSTANCE;
 	private final ScheduledExecutorService executor;
-
 	private final RSyntaxTextArea textArea;
 	private final JTextArea console = new JTextArea();
-
 	@Getter
 	private final Logger shellLogger;
-
 	private final List<Runnable> cleanup = new ArrayList<>();
-
 	private RLShellExecutionControl exec;
 	private JShell shell;
 	private Set<Snippet> prelude;
 	private Injector injector;
 	private AutoCompletion autoCompletion;
 
-	public static ShellPanel INSTANCE;
-
 	public ShellPanel(ScheduledExecutorService executor)
 	{
 		this.executor = executor;
 
 		Font codeFont = Stream.of(
-			"Source code pro",
-			"DejaVu Sans Code",
-			"Consolas",
-			Font.MONOSPACED)
-			.map(name -> new Font(name, Font.PLAIN, 12))
-			.filter(f -> !"Dialog.plain".equals(f.getFontName()))
-			.findFirst()
-			.get();
+						"Source code pro",
+						"DejaVu Sans Code",
+						"Consolas",
+						Font.MONOSPACED)
+				.map(name -> new Font(name, Font.PLAIN, 12))
+				.filter(f -> !"Dialog.plain".equals(f.getFontName()))
+				.findFirst()
+				.get();
 
 		setLayout(new BorderLayout());
 
@@ -135,8 +130,7 @@ public abstract class ShellPanel extends JPanel
 			var f = RSyntaxTextArea.class.getDeclaredField("aaHints");
 			f.setAccessible(true);
 			f.set(textArea, map);
-		}
-		catch (ReflectiveOperationException e)
+		} catch (ReflectiveOperationException e)
 		{
 			throw new RuntimeException(e);
 		}
@@ -173,14 +167,13 @@ public abstract class ShellPanel extends JPanel
 		try
 		{
 			Theme.load(ShellPanel.class.getResourceAsStream("darcula.xml"), codeFont)
-				.apply(textArea);
+					.apply(textArea);
 
 			try (var is = ShellPanel.class.getResourceAsStream("default.jsh"))
 			{
 				textArea.setText(new String(is.readAllBytes(), StandardCharsets.UTF_8));
 			}
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
@@ -219,12 +212,10 @@ public abstract class ShellPanel extends JPanel
 					try
 					{
 						result.set(super.invoke(doitMethod));
-					}
-					catch (Exception e)
+					} catch (Exception e)
 					{
 						result.set(e);
-					}
-					finally
+					} finally
 					{
 						sema.release();
 					}
@@ -239,15 +230,14 @@ public abstract class ShellPanel extends JPanel
 		};
 
 		shell = JShell.builder()
-			.executionEngine(exec, null)
-			.build();
+				.executionEngine(exec, null)
+				.build();
 
 		String preludeStr;
 		try (var is = ShellPanel.class.getResourceAsStream("prelude.jsh"))
 		{
 			preludeStr = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			throw new RuntimeException(e);
 		}
@@ -284,8 +274,7 @@ public abstract class ShellPanel extends JPanel
 				}
 				doc.insertString(doc.getLength(), message + "\n", null);
 				console.setCaretPosition(doc.getLength());
-			}
-			catch (BadLocationException e)
+			} catch (BadLocationException e)
 			{
 				throw new RuntimeException(e);
 			}
@@ -301,7 +290,7 @@ public abstract class ShellPanel extends JPanel
 		for (int offset = 0; offset < src.length(); )
 		{
 			// Workaround a jdk bug
-			for (; src.charAt(offset) == '\n'; offset++);
+			for (; src.charAt(offset) == '\n'; offset++) ;
 
 			var ci = shell.sourceCodeAnalysis().analyzeCompletion(src.substring(offset));
 			int thisOffset = offset;
@@ -328,8 +317,7 @@ public abstract class ShellPanel extends JPanel
 						{
 							logToConsole(msg);
 							// It might be nice to highlight stuff here
-						}
-						else
+						} else
 						{
 							throw new RuntimeException("prelude error: " + msg);
 						}
@@ -357,8 +345,7 @@ public abstract class ShellPanel extends JPanel
 					if (isUserCode)
 					{
 						shellLogger.error("", new RemappingThrowable(src, offsets, ev.exception()));
-					}
-					else
+					} else
 					{
 						throw new RuntimeException("prelude error", ev.exception());
 					}
@@ -388,8 +375,7 @@ public abstract class ShellPanel extends JPanel
 			{
 				line++;
 				column = 1;
-			}
-			else
+			} else
 			{
 				column++;
 			}
@@ -404,8 +390,8 @@ public abstract class ShellPanel extends JPanel
 		executor.submit(() ->
 		{
 			shell.snippets()
-				.filter(v -> !prelude.contains(v))
-				.forEach(shell::drop);
+					.filter(v -> !prelude.contains(v))
+					.forEach(shell::drop);
 
 			cleanup();
 
@@ -443,8 +429,7 @@ public abstract class ShellPanel extends JPanel
 				try
 				{
 					c.run();
-				}
-				catch (Exception e)
+				} catch (Exception e)
 				{
 					shellLogger.error("Cleanup threw:", e);
 				}

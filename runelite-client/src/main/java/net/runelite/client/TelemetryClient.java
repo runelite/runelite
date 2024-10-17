@@ -52,16 +52,34 @@ public class TelemetryClient
 	private final Gson gson;
 	private final HttpUrl apiBase;
 
+	private static Telemetry buildTelemetry()
+	{
+		Telemetry telemetry = new Telemetry();
+		telemetry.setJavaVendor(System.getProperty("java.vendor"));
+		telemetry.setJavaVersion(System.getProperty("java.version"));
+		telemetry.setOsName(System.getProperty("os.name"));
+		telemetry.setOsVersion(System.getProperty("os.version"));
+		telemetry.setOsArch(System.getProperty("os.arch"));
+		telemetry.setLauncherVersion(System.getProperty("runelite.launcher.version"));
+		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
+		if (operatingSystemMXBean instanceof com.sun.management.OperatingSystemMXBean)
+		{
+			long totalPhysicalMemorySize = ((com.sun.management.OperatingSystemMXBean) operatingSystemMXBean).getTotalPhysicalMemorySize();
+			telemetry.setTotalMemory(totalPhysicalMemorySize);
+		}
+		return telemetry;
+	}
+
 	void submitTelemetry()
 	{
 		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("telemetry")
-			.build();
+				.addPathSegment("telemetry")
+				.build();
 
 		Request request = new Request.Builder()
-			.url(url)
-			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(buildTelemetry())))
-			.build();
+				.url(url)
+				.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(buildTelemetry())))
+				.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
@@ -88,8 +106,8 @@ public class TelemetryClient
 			for (File f : logsDir.listFiles())
 			{
 				if (!f.getName().startsWith("jvm_crash_") || !f.getName().endsWith(".log") // jvm_crash_pid_12345.log
-					|| f.getName().endsWith("_r.log") // avoid sending logs multiple times
-					|| f.lastModified() < yesterday)
+						|| f.getName().endsWith("_r.log") // avoid sending logs multiple times
+						|| f.lastModified() < yesterday)
 				{
 					continue;
 				}
@@ -107,13 +125,12 @@ public class TelemetryClient
 				String username = System.getProperty("user.name");
 				String home = System.getProperty("user.home");
 				hsErr = hsErr
-					.replace(username, "%USERNAME%")
-					.replace(home, "%HOME%");
+						.replace(username, "%USERNAME%")
+						.replace(home, "%HOME%");
 
 				submitError("vm crash", hsErr);
 			}
-		}
-		catch (Exception ex)
+		} catch (Exception ex)
 		{
 			log.error("error reporting errors", ex);
 		}
@@ -122,15 +139,15 @@ public class TelemetryClient
 	public void submitError(String type, String error)
 	{
 		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("telemetry")
-			.addPathSegment("error")
-			.addQueryParameter("type", type)
-			.build();
+				.addPathSegment("telemetry")
+				.addPathSegment("error")
+				.addQueryParameter("type", type)
+				.build();
 
 		Request request = new Request.Builder()
-			.url(url)
-			.post(RequestBody.create(MediaType.get("text/plain"), error))
-			.build();
+				.url(url)
+				.post(RequestBody.create(MediaType.get("text/plain"), error))
+				.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
@@ -147,23 +164,5 @@ public class TelemetryClient
 				response.close();
 			}
 		});
-	}
-
-	private static Telemetry buildTelemetry()
-	{
-		Telemetry telemetry = new Telemetry();
-		telemetry.setJavaVendor(System.getProperty("java.vendor"));
-		telemetry.setJavaVersion(System.getProperty("java.version"));
-		telemetry.setOsName(System.getProperty("os.name"));
-		telemetry.setOsVersion(System.getProperty("os.version"));
-		telemetry.setOsArch(System.getProperty("os.arch"));
-		telemetry.setLauncherVersion(System.getProperty("runelite.launcher.version"));
-		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
-		if (operatingSystemMXBean instanceof com.sun.management.OperatingSystemMXBean)
-		{
-			long totalPhysicalMemorySize = ((com.sun.management.OperatingSystemMXBean) operatingSystemMXBean).getTotalPhysicalMemorySize();
-			telemetry.setTotalMemory(totalPhysicalMemorySize);
-		}
-		return telemetry;
 	}
 }

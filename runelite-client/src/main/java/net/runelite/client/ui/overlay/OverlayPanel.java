@@ -81,8 +81,7 @@ public abstract class OverlayPanel extends Overlay
 				if (getPreferredSize().width >= ComponentConstants.STANDARD_WIDTH * 1.3)
 				{
 					graphics.setFont(FontManager.getRunescapeBoldFont());
-				}
-				else if (getPreferredSize().width <= ComponentConstants.STANDARD_WIDTH * 0.8)
+				} else if (getPreferredSize().width <= ComponentConstants.STANDARD_WIDTH * 0.8)
 				{
 					graphics.setFont(FontManager.getRunescapeSmallFont());
 				}
@@ -100,8 +99,7 @@ public abstract class OverlayPanel extends Overlay
 		try
 		{
 			dimension = panelComponent.render(graphics);
-		}
-		finally
+		} finally
 		{
 			if (clearChildren)
 			{

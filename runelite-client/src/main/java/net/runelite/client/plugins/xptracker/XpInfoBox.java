@@ -64,22 +64,20 @@ import net.runelite.client.util.QuantityFormatter;
 class XpInfoBox extends JPanel
 {
 	static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
+	// Templates
+	private static final String HTML_TOOL_TIP_TEMPLATE =
+			"<html>%s %s done<br/>"
+					+ "%s %s/hr<br/>"
+					+ "%s %s</html>";
+	private static final String HTML_LABEL_TEMPLATE =
+			"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+	private static final String REMOVE_STATE = "Remove from canvas";
+	private static final String ADD_STATE = "Add to canvas";
 
 	static
 	{
 		TWO_DECIMAL_FORMAT.setRoundingMode(RoundingMode.DOWN);
 	}
-
-	// Templates
-	private static final String HTML_TOOL_TIP_TEMPLATE =
-		"<html>%s %s done<br/>"
-			+ "%s %s/hr<br/>"
-			+ "%s %s</html>";
-	private static final String HTML_LABEL_TEMPLATE =
-		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
-
-	private static final String REMOVE_STATE = "Remove from canvas";
-	private static final String ADD_STATE = "Add to canvas";
 
 	// Instance members
 	private final JComponent panel;
@@ -124,7 +122,7 @@ class XpInfoBox extends JPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-			client.getWorldType(), client.getLocalPlayer(), skill)));
+				client.getWorldType(), client.getLocalPlayer(), skill)));
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
@@ -175,8 +173,7 @@ class XpInfoBox extends JPanel
 			if (canvasItem.getText().equals(REMOVE_STATE))
 			{
 				xpTrackerPlugin.removeOverlay(skill);
-			}
-			else
+			} else
 			{
 				xpTrackerPlugin.addOverlay(skill);
 			}
@@ -236,6 +233,24 @@ class XpInfoBox extends JPanel
 		add(container, BorderLayout.NORTH);
 	}
 
+	static String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
+	{
+		String key = panelLabel.getActionKey(xpSnapshotSingle) + ": ";
+		String value = panelLabel.getValueFunc().apply(xpSnapshotSingle);
+		return htmlLabel(key, value);
+	}
+
+	static String htmlLabel(String key, int value)
+	{
+		String valueStr = QuantityFormatter.quantityToRSDecimalStack(value, true);
+		return htmlLabel(key, valueStr);
+	}
+
+	static String htmlLabel(String key, String valueStr)
+	{
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+	}
+
 	void reset()
 	{
 		canvasItem.setText(ADD_STATE);
@@ -270,8 +285,8 @@ class XpInfoBox extends JPanel
 			progressBar.setCenterLabel(xpTrackerConfig.progressBarLabel().getValueFunc().apply(xpSnapshotSingle));
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
-				? "200M"
-				: "Lvl. " + xpSnapshotSingle.getEndLevel());
+					? "200M"
+					: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
 			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
@@ -286,8 +301,7 @@ class XpInfoBox extends JPanel
 				}
 
 				progressBar.setPositions(positions);
-			}
-			else
+			} else
 			{
 				progressBar.setPositions(Collections.emptyList());
 			}
@@ -295,24 +309,22 @@ class XpInfoBox extends JPanel
 			XpProgressBarLabel tooltipLabel = xpTrackerConfig.progressBarTooltipLabel();
 
 			progressBar.setToolTipText(String.format(
-				HTML_TOOL_TIP_TEMPLATE,
-				xpSnapshotSingle.getActionsInSession(),
-				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getActionsPerHour(),
-				xpSnapshotSingle.getActionType().getLabel(),
-				tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
-				tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
+					HTML_TOOL_TIP_TEMPLATE,
+					xpSnapshotSingle.getActionsInSession(),
+					xpSnapshotSingle.getActionType().getLabel(),
+					xpSnapshotSingle.getActionsPerHour(),
+					xpSnapshotSingle.getActionType().getLabel(),
+					tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
+					tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
 
 			progressBar.setDimmed(skillPaused);
-		}
-		else if (!paused && skillPaused)
+		} else if (!paused && skillPaused)
 		{
 			// React to the skill state now being paused
 			progressBar.setDimmed(true);
 			paused = true;
 			pauseSkill.setText("Unpause");
-		}
-		else if (paused && !skillPaused)
+		} else if (paused && !skillPaused)
 		{
 			// React to the skill being unpaused (without update)
 			progressBar.setDimmed(false);
@@ -326,23 +338,5 @@ class XpInfoBox extends JPanel
 		topRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel2(), xpSnapshotSingle));
 		bottomLeftStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel3(), xpSnapshotSingle));
 		bottomRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel4(), xpSnapshotSingle));
-	}
-
-	static String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
-	{
-		String key = panelLabel.getActionKey(xpSnapshotSingle) + ": ";
-		String value = panelLabel.getValueFunc().apply(xpSnapshotSingle);
-		return htmlLabel(key, value);
-	}
-
-	static String htmlLabel(String key, int value)
-	{
-		String valueStr = QuantityFormatter.quantityToRSDecimalStack(value, true);
-		return htmlLabel(key, valueStr);
-	}
-
-	static String htmlLabel(String key, String valueStr)
-	{
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

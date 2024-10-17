@@ -30,12 +30,14 @@ public interface WorldMapIcon
 {
 	/**
 	 * Get the mapelement config id of this icon
+	 *
 	 * @return
 	 */
 	int getType();
 
 	/**
 	 * Get the coordinate of the map icon
+	 *
 	 * @return
 	 */
 	WorldPoint getCoordinate();

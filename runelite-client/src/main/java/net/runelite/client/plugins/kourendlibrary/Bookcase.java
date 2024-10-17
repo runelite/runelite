@@ -34,18 +34,15 @@ import net.runelite.api.coords.WorldPoint;
 
 class Bookcase
 {
-	Bookcase(WorldPoint location)
-	{
-		this.location = location;
-		this.index = new ArrayList<>();
-	}
-
 	@Getter
 	private final WorldPoint location;
-
 	@Getter
 	private final List<Integer> index;
-
+	/**
+	 * Books that can be in this slot. Will only be populated if library.state != SolvedState.NO_DATA
+	 */
+	@Getter
+	private final Set<Book> possibleBooks = new HashSet<>();
 	@Getter
 	private boolean isBookSet;
 
@@ -56,11 +53,11 @@ class Bookcase
 	@Getter
 	private Book book;
 
-	/**
-	 * Books that can be in this slot. Will only be populated if library.state != SolvedState.NO_DATA
-	 */
-	@Getter
-	private final Set<Book> possibleBooks = new HashSet<>();
+	Bookcase(WorldPoint location)
+	{
+		this.location = location;
+		this.index = new ArrayList<>();
+	}
 
 	void clearBook()
 	{
@@ -92,16 +89,13 @@ class Bookcase
 		if (north && west)
 		{
 			b.append("Northwest");
-		}
-		else if (north)
+		} else if (north)
 		{
 			b.append("Northeast");
-		}
-		else if (west)
+		} else if (west)
 		{
 			b.append("Southwest");
-		}
-		else
+		} else
 		{
 			b.append("Center");
 		}

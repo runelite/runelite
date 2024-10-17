@@ -51,11 +51,22 @@ import net.runelite.client.plugins.gpu.regions.Regions;
 @Slf4j
 class SceneUploader
 {
+	private static int[] distances;
+	private static char[] distanceFaceCount;
+	private static char[][] distanceToFaces;
+	private static float[] modelCanvasX;
+	private static float[] modelCanvasY;
+	private static float[] modelLocalX;
+	private static float[] modelLocalY;
+	private static float[] modelLocalZ;
+	private static int[] numOfPriority;
+	private static int[] eq10;
+	private static int[] eq11;
+	private static int[] lt10;
+	private static int[][] orderedFaces;
 	private final Client client;
 	private final GpuPluginConfig gpuConfig;
-
 	private final Regions regions;
-
 	int sceneId = (int) System.nanoTime();
 	private int offset;
 	private int uvoffset;
@@ -63,8 +74,8 @@ class SceneUploader
 
 	@Inject
 	SceneUploader(
-		Client client,
-		GpuPluginConfig config
+			Client client,
+			GpuPluginConfig config
 	)
 	{
 		this.client = client;
@@ -73,10 +84,78 @@ class SceneUploader
 		try (var in = SceneUploader.class.getResourceAsStream("regions/regions.txt"))
 		{
 			regions = new Regions(in, "regions.txt");
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			throw new RuntimeException(ex);
+		}
+	}
+
+	private static int packAlphaPriority(short[] faceTextures, byte[] faceTransparencies, byte[] facePriorities, int face)
+	{
+		int alpha = 0;
+		if (faceTransparencies != null && (faceTextures == null || faceTextures[face] == -1))
+		{
+			alpha = (faceTransparencies[face] & 0xFF) << 24;
+		}
+		int priority = 0;
+		if (facePriorities != null)
+		{
+			priority = (facePriorities[face] & 0xff) << 16;
+		}
+		return alpha | priority;
+	}
+
+	private static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)
+	{
+		int hue = hsl >> 10 & 63;
+		int sat = hsl >> 7 & 7;
+		int lum = hsl & 127;
+		int var9 = lerp & 255;
+		if (hue2 != -1)
+		{
+			hue += var9 * (hue2 - hue) >> 7;
+		}
+
+		if (sat2 != -1)
+		{
+			sat += var9 * (sat2 - sat) >> 7;
+		}
+
+		if (lum2 != -1)
+		{
+			lum += var9 * (lum2 - lum) >> 7;
+		}
+
+		return (hue << 10 | sat << 7 | lum) & 65535;
+	}
+
+	private static void removeChunk(Scene scene, int cx, int cy)
+	{
+		int wx = cx * 8;
+		int wy = cy * 8;
+		int sx = wx - scene.getBaseX();
+		int sy = wy - scene.getBaseY();
+		int cmsx = sx + GpuPlugin.SCENE_OFFSET;
+		int cmsy = sy + GpuPlugin.SCENE_OFFSET;
+		Tile[][][] tiles = scene.getExtendedTiles();
+		for (int x = 0; x < 8; ++x)
+		{
+			for (int y = 0; y < 8; ++y)
+			{
+				int msx = cmsx + x;
+				int msy = cmsy + y;
+				if (msx >= 0 && msx < Constants.EXTENDED_SCENE_SIZE && msy >= 0 && msy < Constants.EXTENDED_SCENE_SIZE)
+				{
+					for (int z = 0; z < Constants.MAX_Z; ++z)
+					{
+						Tile tile = tiles[z][msx][msy];
+						if (tile != null)
+						{
+							scene.removeTile(tile);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -129,16 +208,15 @@ class SceneUploader
 			if (sceneTilePaint.getTexture() != -1)
 			{
 				sceneTilePaint.setUvBufferOffset(uvoffset);
-			}
-			else
+			} else
 			{
 				sceneTilePaint.setUvBufferOffset(-1);
 			}
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(scene, sceneTilePaint,
-				tile.getRenderLevel(), tilePoint.getX(), tilePoint.getY(),
-				vertexBuffer, uvBuffer,
-				0, 0, false);
+					tile.getRenderLevel(), tilePoint.getX(), tilePoint.getY(),
+					vertexBuffer, uvBuffer,
+					0, 0, false);
 			sceneTilePaint.setBufferLen(len);
 			offset += len;
 			if (sceneTilePaint.getTexture() != -1)
@@ -154,15 +232,14 @@ class SceneUploader
 			if (sceneTileModel.getTriangleTextureId() != null)
 			{
 				sceneTileModel.setUvBufferOffset(uvoffset);
-			}
-			else
+			} else
 			{
 				sceneTileModel.setUvBufferOffset(-1);
 			}
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTileModel,
-				tilePoint.getX() << Perspective.LOCAL_COORD_BITS, tilePoint.getY() << Perspective.LOCAL_COORD_BITS,
-				vertexBuffer, uvBuffer, false);
+					tilePoint.getX() << Perspective.LOCAL_COORD_BITS, tilePoint.getY() << Perspective.LOCAL_COORD_BITS,
+					vertexBuffer, uvBuffer, false);
 			sceneTileModel.setBufferLen(len);
 			offset += len;
 			if (sceneTileModel.getTriangleTextureId() != null)
@@ -230,7 +307,7 @@ class SceneUploader
 	}
 
 	int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
-		int lx, int lz, boolean stream)
+			   int lx, int lz, boolean stream)
 	{
 		tileX += GpuPlugin.SCENE_OFFSET;
 		tileY += GpuPlugin.SCENE_OFFSET;
@@ -294,8 +371,7 @@ class SceneUploader
 				uvBuffer.put(tex, lx0, ly0, lz0);
 				uvBuffer.put(tex, lx1, ly1, lz1);
 				uvBuffer.put(tex, lx3, ly3, lz3);
-			}
-			else
+			} else
 			{
 				uvBuffer.put(tex, lx2, ly2, lz2);
 				uvBuffer.put(tex, lx3, ly3, lz3);
@@ -311,7 +387,7 @@ class SceneUploader
 	}
 
 	int upload(SceneTileModel sceneTileModel, int lx, int lz,
-		GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean stream)
+			   GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean stream)
 	{
 		final int[] faceX = sceneTileModel.getFaceX();
 		final int[] faceY = sceneTileModel.getFaceY();
@@ -377,15 +453,13 @@ class SceneUploader
 						uvBuffer.put(tex, vertexX[0] - lx, vertexY[0], vertexZ[0] - lz);
 						uvBuffer.put(tex, vertexX[1] - lx, vertexY[1], vertexZ[1] - lz);
 						uvBuffer.put(tex, vertexX[3] - lx, vertexY[3], vertexZ[3] - lz);
-					}
-					else
+					} else
 					{
 						uvBuffer.put(tex, vertexX[vertex0] - lx, vertexY[vertex0], vertexZ[vertex0] - lz);
 						uvBuffer.put(tex, vertexX[vertex1] - lx, vertexY[vertex1], vertexZ[vertex1] - lz);
 						uvBuffer.put(tex, vertexX[vertex2] - lx, vertexY[vertex2], vertexZ[vertex2] - lz);
 					}
-				}
-				else
+				} else
 				{
 					uvBuffer.put(0, 0, 0, 0);
 					uvBuffer.put(0, 0, 0, 0);
@@ -414,8 +488,7 @@ class SceneUploader
 		if (model.getFaceTextures() != null)
 		{
 			model.setUvBufferOffset(uvoffset);
-		}
-		else
+		} else
 		{
 			model.setUvBufferOffset(-1);
 		}
@@ -474,8 +547,7 @@ class SceneUploader
 			if (color3 == -1)
 			{
 				color2 = color3 = color1;
-			}
-			else if (color3 == -2)
+			} else if (color3 == -2)
 			{
 				vertexBuffer.put(0, 0, 0, 0);
 				vertexBuffer.put(0, 0, 0, 0);
@@ -525,8 +597,7 @@ class SceneUploader
 						texA = texIndices1[tface];
 						texB = texIndices2[tface];
 						texC = texIndices3[tface];
-					}
-					else
+					} else
 					{
 						texA = triangleA;
 						texB = triangleB;
@@ -537,8 +608,7 @@ class SceneUploader
 					uvBuffer.put(texture, vertexX[texA], vertexY[texA], vertexZ[texA]);
 					uvBuffer.put(texture, vertexX[texB], vertexY[texB], vertexZ[texB]);
 					uvBuffer.put(texture, vertexX[texC], vertexY[texC], vertexZ[texC]);
-				}
-				else
+				} else
 				{
 					uvBuffer.put(0, 0, 0, 0);
 					uvBuffer.put(0, 0, 0, 0);
@@ -551,23 +621,6 @@ class SceneUploader
 
 		return len;
 	}
-
-	private static int[] distances;
-	private static char[] distanceFaceCount;
-	private static char[][] distanceToFaces;
-
-	private static float[] modelCanvasX;
-	private static float[] modelCanvasY;
-
-	private static float[] modelLocalX;
-	private static float[] modelLocalY;
-	private static float[] modelLocalZ;
-
-	private static int[] numOfPriority;
-	private static int[] eq10;
-	private static int[] eq11;
-	private static int[] lt10;
-	private static int[][] orderedFaces;
 
 	void initSortingBuffers()
 	{
@@ -688,12 +741,12 @@ class SceneUploader
 				final int v3 = indices3[i];
 
 				final float
-					aX = modelCanvasX[v1],
-					aY = modelCanvasY[v1],
-					bX = modelCanvasX[v2],
-					bY = modelCanvasY[v2],
-					cX = modelCanvasX[v3],
-					cY = modelCanvasY[v3];
+						aX = modelCanvasX[v1],
+						aY = modelCanvasY[v1],
+						bX = modelCanvasX[v2],
+						bY = modelCanvasY[v2],
+						cX = modelCanvasX[v3],
+						cY = modelCanvasY[v3];
 
 				if ((aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
 				{
@@ -724,8 +777,7 @@ class SceneUploader
 					}
 				}
 			}
-		}
-		else
+		} else
 		{
 			Arrays.fill(numOfPriority, 0);
 			Arrays.fill(lt10, 0);
@@ -747,12 +799,10 @@ class SceneUploader
 						if (pri < 10)
 						{
 							lt10[pri] += i;
-						}
-						else if (pri == 10)
+						} else if (pri == 10)
 						{
 							eq10[distIdx] = i;
-						}
-						else
+						} else
 						{
 							eq11[distIdx] = i;
 						}
@@ -794,8 +844,7 @@ class SceneUploader
 			if (drawnFaces < numDynFaces)
 			{
 				currFaceDistance = dynFaceDistances[drawnFaces];
-			}
-			else
+			} else
 			{
 				currFaceDistance = -1000;
 			}
@@ -818,8 +867,7 @@ class SceneUploader
 					if (drawnFaces < numDynFaces)
 					{
 						currFaceDistance = dynFaceDistances[drawnFaces];
-					}
-					else
+					} else
 					{
 						currFaceDistance = -1000;
 					}
@@ -841,8 +889,7 @@ class SceneUploader
 					if (drawnFaces < numDynFaces)
 					{
 						currFaceDistance = dynFaceDistances[drawnFaces];
-					}
-					else
+					} else
 					{
 						currFaceDistance = -1000;
 					}
@@ -864,8 +911,7 @@ class SceneUploader
 					if (drawnFaces < numDynFaces)
 					{
 						currFaceDistance = dynFaceDistances[drawnFaces];
-					}
-					else
+					} else
 					{
 						currFaceDistance = -1000;
 					}
@@ -897,8 +943,7 @@ class SceneUploader
 				if (drawnFaces < numDynFaces)
 				{
 					currFaceDistance = dynFaceDistances[drawnFaces];
-				}
-				else
+				} else
 				{
 					currFaceDistance = -1000;
 				}
@@ -972,8 +1017,7 @@ class SceneUploader
 				texA = texIndices1[tfaceIdx];
 				texB = texIndices2[tfaceIdx];
 				texC = texIndices3[tfaceIdx];
-			}
-			else
+			} else
 			{
 				texA = triangleA;
 				texB = triangleB;
@@ -984,8 +1028,7 @@ class SceneUploader
 			uvBuffer.put(texture, modelLocalX[texA], modelLocalY[texA], modelLocalZ[texA]);
 			uvBuffer.put(texture, modelLocalX[texB], modelLocalY[texB], modelLocalZ[texB]);
 			uvBuffer.put(texture, modelLocalX[texC], modelLocalY[texC], modelLocalZ[texC]);
-		}
-		else
+		} else
 		{
 			uvBuffer.put(0, 0, 0, 0);
 			uvBuffer.put(0, 0, 0, 0);
@@ -993,45 +1036,6 @@ class SceneUploader
 		}
 
 		return 3;
-	}
-
-	private static int packAlphaPriority(short[] faceTextures, byte[] faceTransparencies, byte[] facePriorities, int face)
-	{
-		int alpha = 0;
-		if (faceTransparencies != null && (faceTextures == null || faceTextures[face] == -1))
-		{
-			alpha = (faceTransparencies[face] & 0xFF) << 24;
-		}
-		int priority = 0;
-		if (facePriorities != null)
-		{
-			priority = (facePriorities[face] & 0xff) << 16;
-		}
-		return alpha | priority;
-	}
-
-	private static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)
-	{
-		int hue = hsl >> 10 & 63;
-		int sat = hsl >> 7 & 7;
-		int lum = hsl & 127;
-		int var9 = lerp & 255;
-		if (hue2 != -1)
-		{
-			hue += var9 * (hue2 - hue) >> 7;
-		}
-
-		if (sat2 != -1)
-		{
-			sat += var9 * (sat2 - sat) >> 7;
-		}
-
-		if (lum2 != -1)
-		{
-			lum += var9 * (lum2 - lum) >> 7;
-		}
-
-		return (hue << 10 | sat << 7 | lum) & 65535;
 	}
 
 	// remove tiles from the scene that are outside the current region
@@ -1059,36 +1063,6 @@ class SceneUploader
 				if (id != centerId)
 				{
 					removeChunk(scene, cx, cy);
-				}
-			}
-		}
-	}
-
-	private static void removeChunk(Scene scene, int cx, int cy)
-	{
-		int wx = cx * 8;
-		int wy = cy * 8;
-		int sx = wx - scene.getBaseX();
-		int sy = wy - scene.getBaseY();
-		int cmsx = sx + GpuPlugin.SCENE_OFFSET;
-		int cmsy = sy + GpuPlugin.SCENE_OFFSET;
-		Tile[][][] tiles = scene.getExtendedTiles();
-		for (int x = 0; x < 8; ++x)
-		{
-			for (int y = 0; y < 8; ++y)
-			{
-				int msx = cmsx + x;
-				int msy = cmsy + y;
-				if (msx >= 0 && msx < Constants.EXTENDED_SCENE_SIZE && msy >= 0 && msy < Constants.EXTENDED_SCENE_SIZE)
-				{
-					for (int z = 0; z < Constants.MAX_Z; ++z)
-					{
-						Tile tile = tiles[z][msx][msy];
-						if (tile != null)
-						{
-							scene.removeTile(tile);
-						}
-					}
 				}
 			}
 		}

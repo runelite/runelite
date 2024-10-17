@@ -94,6 +94,7 @@ public interface TileObject
 	/**
 	 * Get the world location for this object. For objects which are larger than 1 tile, this is the
 	 * center most tile, rounded to the south-west.
+	 *
 	 * @return
 	 */
 	@Nonnull
@@ -101,6 +102,7 @@ public interface TileObject
 
 	/**
 	 * Get the local location for this object. This point is the center point of the object.
+	 *
 	 * @return
 	 */
 	@Nonnull
@@ -130,7 +132,7 @@ public interface TileObject
 	 * Calculates the canvas point to center {@code text} above the tile this object is on.
 	 *
 	 * @param graphics the graphics to use for font size calculation
-	 * @param zOffset Vertical offset to apply before projection
+	 * @param zOffset  Vertical offset to apply before projection
 	 * @return the canvas point to draw the text at
 	 */
 	@Nullable

@@ -28,10 +28,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
-import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
 import static net.runelite.cache.script.Opcodes.POP_STRING;
 import static net.runelite.cache.script.Opcodes.RETURN;
+import static net.runelite.cache.script.Opcodes.SCONST;
 
 public class ScriptLoader
 {
@@ -97,12 +97,10 @@ public class ScriptLoader
 			if (opcode == SCONST)
 			{
 				stringOperands[i] = in.readString();
-			}
-			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
+			} else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
 			{
 				intOperands[i] = in.readInt();
-			}
-			else
+			} else
 			{
 				intOperands[i] = in.readUnsignedByte();
 			}

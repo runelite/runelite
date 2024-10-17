@@ -57,8 +57,7 @@ public class RuneLiteProperties
 		try (InputStream in = RuneLiteProperties.class.getResourceAsStream("runelite.properties"))
 		{
 			properties.load(in);
-		}
-		catch (IOException ex)
+		} catch (IOException ex)
 		{
 			throw new RuntimeException(ex);
 		}

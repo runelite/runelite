@@ -50,31 +50,29 @@ public enum HotColdTemperature
 	MASTER_VISIBLY_SHAKING("visibly shaking", 0, 4);
 
 	public static final Set<HotColdTemperature> BEGINNER_HOT_COLD_TEMPERATURES = Sets.immutableEnumSet(
-		ICE_COLD,
-		VERY_COLD,
-		COLD,
-		WARM,
-		HOT,
-		VERY_HOT,
-		BEGINNER_INCREDIBLY_HOT,
-		BEGINNER_VISIBLY_SHAKING
+			ICE_COLD,
+			VERY_COLD,
+			COLD,
+			WARM,
+			HOT,
+			VERY_HOT,
+			BEGINNER_INCREDIBLY_HOT,
+			BEGINNER_VISIBLY_SHAKING
 	);
 	public static final Set<HotColdTemperature> MASTER_HOT_COLD_TEMPERATURES = Sets.immutableEnumSet(
-		ICE_COLD,
-		VERY_COLD,
-		COLD,
-		WARM,
-		HOT,
-		VERY_HOT,
-		MASTER_INCREDIBLY_HOT,
-		MASTER_VISIBLY_SHAKING
+			ICE_COLD,
+			VERY_COLD,
+			COLD,
+			WARM,
+			HOT,
+			VERY_HOT,
+			MASTER_INCREDIBLY_HOT,
+			MASTER_VISIBLY_SHAKING
 	);
-
+	private static final String DEVICE_USED_START_TEXT = "The device is ";
 	private final String text;
 	private final int minDistance;
 	private final int maxDistance;
-
-	private static final String DEVICE_USED_START_TEXT = "The device is ";
 
 	/**
 	 * Gets the temperature from a set of temperatures corresponding to the passed string.
@@ -82,9 +80,9 @@ public enum HotColdTemperature
 	 * @param temperatureSet A set of temperature values to select from
 	 * @param message        A string containing a temperature value
 	 * @return The corresponding enum from the given temperature set.
-	 *         <p>
-	 *         Note that in cases where two temperature values in the given set are equally likely to be the given
-	 *         temperature (say, two temperatures with identical text values), the behavior is undefined.
+	 * <p>
+	 * Note that in cases where two temperature values in the given set are equally likely to be the given
+	 * temperature (say, two temperatures with identical text values), the behavior is undefined.
 	 */
 	@Nullable
 	public static HotColdTemperature getFromTemperatureSet(final Set<HotColdTemperature> temperatureSet, final String message)
@@ -106,9 +104,9 @@ public enum HotColdTemperature
 		}
 
 		return possibleTemperatures.stream()
-			// For messages such as "The device is very cold", this will choose the Enum with text of greatest length so
-			// that VERY_COLD would be selected over COLD, though both Enums have matching text for this message.
-			.max(Comparator.comparingInt(x -> (x.getText()).length()))
-			.orElse(null);
+				// For messages such as "The device is very cold", this will choose the Enum with text of greatest length so
+				// that VERY_COLD would be selected over COLD, though both Enums have matching text for this message.
+				.max(Comparator.comparingInt(x -> (x.getText()).length()))
+				.orElse(null);
 	}
 }

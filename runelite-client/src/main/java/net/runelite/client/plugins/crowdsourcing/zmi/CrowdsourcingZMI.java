@@ -67,7 +67,7 @@ public class CrowdsourcingZMI
 		if (inventory != null)
 		{
 			Arrays.stream(inventory.getItems())
-				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 
 		return inventorySnapshot;

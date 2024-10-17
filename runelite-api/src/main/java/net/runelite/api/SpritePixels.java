@@ -64,32 +64,18 @@ public interface SpritePixels
 	int getMaxWidth();
 
 	/**
-	 * Gets the max height of the sprite image in pixels.
-	 *
-	 * @return the height
-	 */
-	int getMaxHeight();
-
-	/**
-	 * Gets the x offset of the sprite image in pixels.
-	 *
-	 * @return the offset
-	 */
-	int getOffsetX();
-
-	/**
-	 * Gets the y offset of the sprite image in pixels.
-	 *
-	 * @return the offset
-	 */
-	int getOffsetY();
-
-	/**
 	 * Sets the max width of the sprite image in pixels.
 	 *
 	 * @param maxWidth the width
 	 */
 	void setMaxWidth(int maxWidth);
+
+	/**
+	 * Gets the max height of the sprite image in pixels.
+	 *
+	 * @return the height
+	 */
+	int getMaxHeight();
 
 	/**
 	 * Sets the max height of the sprite image in pixels.
@@ -99,11 +85,25 @@ public interface SpritePixels
 	void setMaxHeight(int maxHeight);
 
 	/**
+	 * Gets the x offset of the sprite image in pixels.
+	 *
+	 * @return the offset
+	 */
+	int getOffsetX();
+
+	/**
 	 * Sets the x offset of the sprite image in pixels.
 	 *
 	 * @param offsetX the offset
 	 */
 	void setOffsetX(int offsetX);
+
+	/**
+	 * Gets the y offset of the sprite image in pixels.
+	 *
+	 * @return the offset
+	 */
+	int getOffsetY();
 
 	/**
 	 * Sets the y offset of the sprite image in pixels.
@@ -131,7 +131,7 @@ public interface SpritePixels
 	 *
 	 * @param img the passsed buffered image
 	 * @throws IllegalArgumentException if the width or height do not match
- 	 */
+	 */
 	void toBufferedImage(BufferedImage img) throws IllegalArgumentException;
 
 	/**
@@ -144,7 +144,7 @@ public interface SpritePixels
 	/**
 	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
 	 *
-	 * @param img target image
+	 * @param img   target image
 	 * @param color target color
 	 */
 	void toBufferedOutline(BufferedImage img, int color);

@@ -57,10 +57,10 @@ class TopLevelConfigPanel extends PluginPanel
 
 	@Inject
 	TopLevelConfigPanel(
-		EventBus eventBus,
-		PluginListPanel pluginListPanel,
-		ProfilePanel profilePanel,
-		Provider<PluginHubPanel> pluginHubPanelProvider
+			EventBus eventBus,
+			PluginListPanel pluginListPanel,
+			ProfilePanel profilePanel,
+			Provider<PluginHubPanel> pluginHubPanelProvider
 	)
 	{
 		super(false);
@@ -92,8 +92,8 @@ class TopLevelConfigPanel extends PluginPanel
 	private MaterialTab addTab(PluginPanel panel, String image, String tooltip)
 	{
 		MaterialTab mt = new MaterialTab(
-			new ImageIcon(ImageUtil.loadImageResource(TopLevelConfigPanel.class, image)),
-			tabGroup, null);
+				new ImageIcon(ImageUtil.loadImageResource(TopLevelConfigPanel.class, image)),
+				tabGroup, null);
 		mt.setToolTipText(tooltip);
 		tabGroup.addTab(mt);
 
@@ -111,8 +111,8 @@ class TopLevelConfigPanel extends PluginPanel
 	private MaterialTab addTab(Provider<? extends PluginPanel> panelProvider, String image, String tooltip)
 	{
 		MaterialTab mt = new MaterialTab(
-			new ImageIcon(ImageUtil.loadImageResource(TopLevelConfigPanel.class, image)),
-			tabGroup, null);
+				new ImageIcon(ImageUtil.loadImageResource(TopLevelConfigPanel.class, image)),
+				tabGroup, null);
 		mt.setToolTipText(tooltip);
 		tabGroup.addTab(mt);
 

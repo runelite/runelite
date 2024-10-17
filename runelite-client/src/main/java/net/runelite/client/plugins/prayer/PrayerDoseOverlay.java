@@ -72,6 +72,14 @@ class PrayerDoseOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
+	private static Color endColor(Color start)
+	{
+		return new Color(Math.max((int) (start.getRed() * DARKEN_FACTOR), 0),
+				Math.max((int) (start.getGreen() * DARKEN_FACTOR), 0),
+				Math.max((int) (start.getBlue() * DARKEN_FACTOR), 0),
+				start.getAlpha());
+	}
+
 	void onTick()
 	{
 		// Only track the time on every other tick
@@ -79,8 +87,7 @@ class PrayerDoseOverlay extends Overlay
 		{
 			startOfLastTick = Instant.now(); //Reset the tick timer
 			trackTick = false;
-		}
-		else
+		} else
 		{
 			trackTick = true;
 		}
@@ -110,8 +117,7 @@ class PrayerDoseOverlay extends Overlay
 			if (config.replaceOrbText())
 			{
 				sb.append("Prayer points remaining: ").append(client.getBoostedSkillLevel(Skill.PRAYER));
-			}
-			else
+			} else
 			{
 				sb.append("Time Remaining: ").append(plugin.getEstimatedTimeRemaining(false));
 			}
@@ -147,20 +153,12 @@ class PrayerDoseOverlay extends Overlay
 
 		Color startColor = config.prayerDoseOrbStartColor();
 		graphics.setColor(ColorUtil.colorLerp(
-			startColor,
-			endColor(startColor),
-			Math.sin(t)));
+				startColor,
+				endColor(startColor),
+				Math.sin(t)));
 
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
 		return null;
-	}
-
-	private static Color endColor(Color start)
-	{
-		return new Color(Math.max((int) (start.getRed() * DARKEN_FACTOR), 0),
-			Math.max((int) (start.getGreen() * DARKEN_FACTOR), 0),
-			Math.max((int) (start.getBlue() * DARKEN_FACTOR), 0),
-			start.getAlpha());
 	}
 }

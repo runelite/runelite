@@ -71,8 +71,7 @@ public class SoundEffect3Loader
 					{
 						se.field1154[var5][1][var6] = var1.readUnsignedShort();
 						se.field1159[var5][1][var6] = var1.readUnsignedShort();
-					}
-					else
+					} else
 					{
 						se.field1154[var5][1][var6] = se.field1154[var5][0][var6];
 						se.field1159[var5][1][var6] = se.field1159[var5][0][var6];
@@ -84,8 +83,7 @@ public class SoundEffect3Loader
 			{
 				se2Loader.method1144(var2, var1);
 			}
-		}
-		else
+		} else
 		{
 			int[] var7 = se.field1156;
 			se.field1156[1] = 0;

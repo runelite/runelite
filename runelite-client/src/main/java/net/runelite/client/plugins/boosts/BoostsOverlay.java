@@ -66,18 +66,18 @@ class BoostsOverlay extends OverlayPanel
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Next + restore in")
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
+					.left("Next + restore in")
+					.right(String.valueOf(plugin.getChangeTime(nextChange)))
+					.build());
 		}
 
 		nextChange = plugin.getChangeUpTicks();
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Next - restore in")
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
+					.left("Next - restore in")
+					.right(String.valueOf(plugin.getChangeTime(nextChange)))
+					.build());
 		}
 
 		for (Skill skill : boostedSkills)
@@ -95,18 +95,17 @@ class BoostsOverlay extends OverlayPanel
 				{
 					str = "+" + str;
 				}
-			}
-			else
+			} else
 			{
 				str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
-					+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
+						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(skill.getName())
-				.right(str)
-				.rightColor(strColor)
-				.build());
+					.left(skill.getName())
+					.right(str)
+					.rightColor(strColor)
+					.build());
 		}
 
 		return super.render(graphics);

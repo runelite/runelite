@@ -43,13 +43,10 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 {
 	private static final int SEPARATOR = 3;
 	private static final int DEFAULT_SIZE = 32;
-
-	@Getter
-	private String tooltip;
-
 	@Getter
 	private final Rectangle bounds = new Rectangle();
-
+	@Getter
+	private String tooltip;
 	private Point preferredLocation = new Point();
 	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 	private String text;
@@ -87,10 +84,10 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 
 		// Render image
 		graphics.drawImage(
-			image,
-			baseX + (size - image.getWidth(null)) / 2,
-			baseY + (size - image.getHeight(null)) / 2,
-			null);
+				image,
+				baseX + (size - image.getWidth(null)) / 2,
+				baseY + (size - image.getHeight(null)) / 2,
+				null);
 
 		// Render caption
 		if (!Strings.isNullOrEmpty(text))

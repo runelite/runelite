@@ -84,10 +84,10 @@ class NotificationPanel extends PluginPanel
 
 	@Inject
 	private NotificationPanel(
-		ConfigManager configManager,
-		ColorPickerManager colorPickerManager,
-		RuneLiteConfig runeLiteConfig,
-		PluginListPanel pluginList
+			ConfigManager configManager,
+			ColorPickerManager colorPickerManager,
+			RuneLiteConfig runeLiteConfig,
+			PluginListPanel pluginList
 	)
 	{
 		super(false);
@@ -137,12 +137,11 @@ class NotificationPanel extends PluginPanel
 			{
 				log.debug("Initializing notification {}.{}", configDescriptor.getGroup().value(), configItemDescriptor.getItem().name());
 				notif = new Notification(true, true, true,
-					runeLiteConfig.enableTrayNotifications(), TrayIcon.MessageType.NONE, runeLiteConfig.notificationRequestFocus(),
-					runeLiteConfig.notificationSound(), runeLiteConfig.notificationVolume(), runeLiteConfig.notificationTimeout(),
-					runeLiteConfig.enableGameMessageNotification(), runeLiteConfig.flashNotification(), runeLiteConfig.notificationFlashColor(),
-					runeLiteConfig.sendNotificationsWhenFocused());
-			}
-			else
+						runeLiteConfig.enableTrayNotifications(), TrayIcon.MessageType.NONE, runeLiteConfig.notificationRequestFocus(),
+						runeLiteConfig.notificationSound(), runeLiteConfig.notificationVolume(), runeLiteConfig.notificationTimeout(),
+						runeLiteConfig.enableGameMessageNotification(), runeLiteConfig.flashNotification(), runeLiteConfig.notificationFlashColor(),
+						runeLiteConfig.sendNotificationsWhenFocused());
+			} else
 			{
 				notif = notif.withOverride(enabled.isSelected());
 			}
@@ -188,8 +187,7 @@ class NotificationPanel extends PluginPanel
 			Enum<?> selectedItem = Enum.valueOf(clazz, value.name());
 			box.setSelectedItem(selectedItem);
 			box.setToolTipText(Text.titleCase(selectedItem));
-		}
-		catch (IllegalArgumentException ex)
+		} catch (IllegalArgumentException ex)
 		{
 			log.debug("invalid selected item", ex);
 		}
@@ -225,8 +223,7 @@ class NotificationPanel extends PluginPanel
 		if (existing == null)
 		{
 			colorPickerBtn = new ColorJButton("Pick a color", Color.BLACK);
-		}
-		else
+		} else
 		{
 			String colorHex = "#" + ColorUtil.colorToAlphaHexCode(existing).toUpperCase();
 			colorPickerBtn = new ColorJButton(colorHex, existing);
@@ -239,10 +236,10 @@ class NotificationPanel extends PluginPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(
-					SwingUtilities.windowForComponent(NotificationPanel.this),
-					colorPickerBtn.getColor(),
-					name,
-					false);
+						SwingUtilities.windowForComponent(NotificationPanel.this),
+						colorPickerBtn.getColor(),
+						name,
+						false);
 				colorPicker.setLocationRelativeTo(colorPickerBtn);
 				colorPicker.setOnColorChange(c ->
 				{
@@ -364,8 +361,8 @@ class NotificationPanel extends PluginPanel
 			resetButton.addActionListener((e) ->
 			{
 				final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this notification configuration?",
-					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, new String[]{"Yes", "No"}, "No");
+						"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, new String[] {"Yes", "No"}, "No");
 
 				if (result == JOptionPane.YES_OPTION)
 				{
@@ -378,8 +375,7 @@ class NotificationPanel extends PluginPanel
 				}
 			});
 			mainPanel.add(resetButton);
-		}
-		else
+		} else
 		{
 			JPanel infoPanel = new JPanel();
 			infoPanel.setLayout(new BorderLayout());

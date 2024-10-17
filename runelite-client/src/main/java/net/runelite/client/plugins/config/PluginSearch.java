@@ -41,9 +41,9 @@ public class PluginSearch
 	public static <T extends SearchablePlugin> List<T> search(Collection<T> searchablePlugins, String query)
 	{
 		return searchablePlugins.stream()
-			.filter(plugin -> Text.matchesSearchTerms(SPLITTER.split(query.toLowerCase()), plugin.getKeywords()))
-			.sorted(comparator(query))
-			.collect(Collectors.toList());
+				.filter(plugin -> Text.matchesSearchTerms(SPLITTER.split(query.toLowerCase()), plugin.getKeywords()))
+				.sorted(comparator(query))
+				.collect(Collectors.toList());
 	}
 
 	private static Comparator<SearchablePlugin> comparator(String query)
@@ -51,32 +51,32 @@ public class PluginSearch
 		if (StringUtils.isBlank(query))
 		{
 			return Comparator.nullsLast(Comparator.comparing(SearchablePlugin::isPinned, Comparator.nullsLast(Comparator.reverseOrder())))
-				.thenComparing(SearchablePlugin::getSearchableName, Comparator.nullsLast(Comparator.naturalOrder()));
+					.thenComparing(SearchablePlugin::getSearchableName, Comparator.nullsLast(Comparator.naturalOrder()));
 		}
 		Iterable<String> queryPieces = SPLITTER.split(query.toLowerCase());
 		return Comparator.nullsLast(Comparator.comparing((SearchablePlugin sp) -> query.equalsIgnoreCase(sp.getSearchableName()), Comparator.reverseOrder()))
-			.thenComparing(sp ->
-			{
-				if (sp.getSearchableName() == null)
+				.thenComparing(sp ->
 				{
-					return 0L;
-				}
-				return stream(SPLITTER.split(sp.getSearchableName()))
-					.filter(piece -> stream(queryPieces).anyMatch(qp -> containsOrIsContainedBy(piece.toLowerCase(), qp)))
-					.count();
-			}, Comparator.reverseOrder())
-			.thenComparing(sp ->
-			{
-				if (sp.getKeywords() == null)
+					if (sp.getSearchableName() == null)
+					{
+						return 0L;
+					}
+					return stream(SPLITTER.split(sp.getSearchableName()))
+							.filter(piece -> stream(queryPieces).anyMatch(qp -> containsOrIsContainedBy(piece.toLowerCase(), qp)))
+							.count();
+				}, Comparator.reverseOrder())
+				.thenComparing(sp ->
 				{
-					return 0L;
-				}
-				return stream(sp.getKeywords())
-					.filter(piece -> stream(queryPieces).anyMatch(qp -> containsOrIsContainedBy(piece.toLowerCase(), qp)))
-					.count();
-			}, Comparator.reverseOrder())
-			.thenComparing(SearchablePlugin::isPinned, Comparator.nullsLast(Comparator.reverseOrder()))
-			.thenComparing(SearchablePlugin::getSearchableName, Comparator.nullsLast(Comparator.naturalOrder()));
+					if (sp.getKeywords() == null)
+					{
+						return 0L;
+					}
+					return stream(sp.getKeywords())
+							.filter(piece -> stream(queryPieces).anyMatch(qp -> containsOrIsContainedBy(piece.toLowerCase(), qp)))
+							.count();
+				}, Comparator.reverseOrder())
+				.thenComparing(SearchablePlugin::isPinned, Comparator.nullsLast(Comparator.reverseOrder()))
+				.thenComparing(SearchablePlugin::getSearchableName, Comparator.nullsLast(Comparator.naturalOrder()));
 	}
 
 	private static Stream<String> stream(Iterable<String> iterable)

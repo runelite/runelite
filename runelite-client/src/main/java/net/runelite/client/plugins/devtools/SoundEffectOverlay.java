@@ -54,9 +54,9 @@ class SoundEffectOverlay extends OverlayPanel
 		this.client = client;
 		this.plugin = plugin;
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Sound Effects")
-			.leftColor(Color.CYAN)
-			.build());
+				.left("Sound Effects")
+				.leftColor(Color.CYAN)
+				.build());
 		setClearChildren(false);
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
@@ -81,13 +81,13 @@ class SoundEffectOverlay extends OverlayPanel
 		}
 
 		String text =
-			"Id: " + event.getSoundId() +
-			" - D: " + event.getDelay();
+				"Id: " + event.getSoundId() +
+						" - D: " + event.getDelay();
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(text)
-			.leftColor(COLOR_SOUND_EFFECT)
-			.build());
+				.left(text)
+				.leftColor(COLOR_SOUND_EFFECT)
+				.build());
 
 		checkMaxLines();
 	}
@@ -120,16 +120,16 @@ class SoundEffectOverlay extends OverlayPanel
 		}
 
 		String text =
-			"Id: " + event.getSoundId() +
-			" - S: " + (event.getSource() != null ? event.getSource().getName() : "<none>") +
-			" - L: " + event.getSceneX() + "," + event.getSceneY() +
-			" - R: " + event.getRange() +
-			" - D: " + event.getDelay();
+				"Id: " + event.getSoundId() +
+						" - S: " + (event.getSource() != null ? event.getSource().getName() : "<none>") +
+						" - L: " + event.getSceneX() + "," + event.getSceneY() +
+						" - R: " + event.getRange() +
+						" - D: " + event.getDelay();
 
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(text)
-			.leftColor(textColor)
-			.build());
+				.left(text)
+				.leftColor(textColor)
+				.build());
 
 		checkMaxLines();
 	}

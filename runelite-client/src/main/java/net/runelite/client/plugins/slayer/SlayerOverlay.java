@@ -44,12 +44,12 @@ class SlayerOverlay extends WidgetItemOverlay
 	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.copyOf(ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8));
 
 	private final static Set<Integer> ALL_SLAYER_ITEMS = Stream.of(
-		ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
-		ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8).stream(),
-		Stream.of(ItemID.ENCHANTED_GEM, ItemID.ETERNAL_GEM))
-		.reduce(Stream::concat)
-		.orElseGet(Stream::empty)
-		.collect(Collectors.toSet());
+					ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
+					ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8).stream(),
+					Stream.of(ItemID.ENCHANTED_GEM, ItemID.ETERNAL_GEM))
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.collect(Collectors.toSet());
 
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
@@ -90,8 +90,8 @@ class SlayerOverlay extends WidgetItemOverlay
 
 		// Draw the counter in the bottom left for equipment, and top left for jewelry
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y - 1 + (SLAYER_JEWELRY.contains(itemId)
-			? bounds.height
-			: graphics.getFontMetrics().getHeight())));
+				? bounds.height
+				: graphics.getFontMetrics().getHeight())));
 		textComponent.render(graphics);
 	}
 }

@@ -54,23 +54,23 @@ class PlayerComparisonOverlay extends Overlay
 	private static final Color HIGHLIGHT_COLOR = new Color(255, 200, 0, 255);
 
 	private static final Skill[] COMBAT_SKILLS = {
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.HITPOINTS,
-		Skill.RANGED,
-		Skill.MAGIC,
-		Skill.PRAYER
+			Skill.ATTACK,
+			Skill.STRENGTH,
+			Skill.DEFENCE,
+			Skill.HITPOINTS,
+			Skill.RANGED,
+			Skill.MAGIC,
+			Skill.PRAYER
 	};
 
 	private static final HiscoreSkill[] HISCORE_COMBAT_SKILLS = {
-		HiscoreSkill.ATTACK,
-		HiscoreSkill.STRENGTH,
-		HiscoreSkill.DEFENCE,
-		HiscoreSkill.HITPOINTS,
-		HiscoreSkill.RANGED,
-		HiscoreSkill.MAGIC,
-		HiscoreSkill.PRAYER
+			HiscoreSkill.ATTACK,
+			HiscoreSkill.STRENGTH,
+			HiscoreSkill.DEFENCE,
+			HiscoreSkill.HITPOINTS,
+			HiscoreSkill.RANGED,
+			HiscoreSkill.MAGIC,
+			HiscoreSkill.PRAYER
 	};
 
 	private static final String LEFT_COLUMN_HEADER = "Skill";
@@ -94,6 +94,19 @@ class PlayerComparisonOverlay extends Overlay
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay");
+	}
+
+	private static Color comparisonStatColor(int a, int b)
+	{
+		if (a > b)
+		{
+			return HIGHER_STAT_TEXT_COLOR;
+		}
+		if (a < b)
+		{
+			return LOWER_STAT_TEXT_COLOR;
+		}
+		return NEUTRAL_TEXT_COLOR;
 	}
 
 	@Override
@@ -134,18 +147,18 @@ class PlayerComparisonOverlay extends Overlay
 		final String opponentName = opponentSkills.getPlayer();
 
 		panelComponent.getChildren().add(
-			TitleComponent.builder()
-				.text(opponentName)
-				.color(HIGHLIGHT_COLOR)
-				.build());
+				TitleComponent.builder()
+						.text(opponentName)
+						.color(HIGHLIGHT_COLOR)
+						.build());
 
 		panelComponent.getChildren().add(
-			LineComponent.builder()
-				.left(LEFT_COLUMN_HEADER)
-				.leftColor(HIGHLIGHT_COLOR)
-				.right(RIGHT_COLUMN_HEADER)
-				.rightColor(HIGHLIGHT_COLOR)
-				.build());
+				LineComponent.builder()
+						.left(LEFT_COLUMN_HEADER)
+						.leftColor(HIGHLIGHT_COLOR)
+						.right(RIGHT_COLUMN_HEADER)
+						.rightColor(HIGHLIGHT_COLOR)
+						.build());
 
 		for (int i = 0; i < COMBAT_SKILLS.length; ++i)
 		{
@@ -163,24 +176,11 @@ class PlayerComparisonOverlay extends Overlay
 			final int opponentSkillLevel = opponentSkill.getLevel();
 
 			panelComponent.getChildren().add(
-				LineComponent.builder()
-					.left(hiscoreSkill.getName())
-					.right(Integer.toString(playerSkillLevel) + "/" + Integer.toString(opponentSkillLevel))
-					.rightColor(comparisonStatColor(playerSkillLevel, opponentSkillLevel))
-					.build());
+					LineComponent.builder()
+							.left(hiscoreSkill.getName())
+							.right(Integer.toString(playerSkillLevel) + "/" + Integer.toString(opponentSkillLevel))
+							.rightColor(comparisonStatColor(playerSkillLevel, opponentSkillLevel))
+							.build());
 		}
-	}
-
-	private static Color comparisonStatColor(int a, int b)
-	{
-		if (a > b)
-		{
-			return HIGHER_STAT_TEXT_COLOR;
-		}
-		if (a < b)
-		{
-			return LOWER_STAT_TEXT_COLOR;
-		}
-		return NEUTRAL_TEXT_COLOR;
 	}
 }

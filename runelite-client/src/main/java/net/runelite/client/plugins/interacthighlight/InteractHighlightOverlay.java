@@ -115,8 +115,8 @@ class InteractHighlightOverlay extends Overlay
 				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
 				{
 					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION
-						|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK
-						? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
+							|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK
+							? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
 					modelOutlineRenderer.drawOutline(npc, config.borderWidth(), highlightColor, config.outlineFeather());
 				}
 				break;
@@ -130,7 +130,7 @@ class InteractHighlightOverlay extends Overlay
 		if (interactedObject != null && config.objectShowInteract())
 		{
 			Color clickColor = getClickColor(config.objectHoverHighlightColor(), config.objectInteractHighlightColor(),
-				client.getGameCycle() - plugin.getGameCycle());
+					client.getGameCycle() - plugin.getGameCycle());
 			modelOutlineRenderer.drawOutline(interactedObject, config.borderWidth(), clickColor, config.outlineFeather());
 		}
 
@@ -140,7 +140,7 @@ class InteractHighlightOverlay extends Overlay
 			Color startColor = plugin.isAttacked() ? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
 			Color endColor = plugin.isAttacked() ? config.npcAttackHighlightColor() : config.npcInteractHighlightColor();
 			Color clickColor = getClickColor(startColor, endColor,
-				client.getGameCycle() - plugin.getGameCycle());
+					client.getGameCycle() - plugin.getGameCycle());
 			modelOutlineRenderer.drawOutline((NPC) target, config.borderWidth(), clickColor, config.outlineFeather());
 		}
 	}
@@ -150,8 +150,7 @@ class InteractHighlightOverlay extends Overlay
 		if (time < 5)
 		{
 			return ColorUtil.colorLerp(start, INTERACT_CLICK_COLOR, time / 5f);
-		}
-		else if (time < 10)
+		} else if (time < 10)
 		{
 			return ColorUtil.colorLerp(INTERACT_CLICK_COLOR, end, (time - 5) / 5f);
 		}
@@ -176,7 +175,7 @@ class InteractHighlightOverlay extends Overlay
 		idx = menuEntries.length - 1 - idx;
 
 		if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth
-			&& idx >= 0 && idx < menuEntries.length)
+				&& idx >= 0 && idx < menuEntries.length)
 		{
 			return menuEntries[idx];
 		}

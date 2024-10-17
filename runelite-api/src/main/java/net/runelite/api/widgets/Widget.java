@@ -84,6 +84,7 @@ public interface Widget
 
 	/**
 	 * Gets the current click configuration of the widget.
+	 *
 	 * @see WidgetConfig
 	 */
 	@MagicConstant(flagsFromClass = WidgetConfig.class)
@@ -157,7 +158,7 @@ public interface Widget
 
 	/**
 	 * Sets the relative x-axis coordinate to the widgets parent.
-	 *
+	 * <p>
 	 * You do not want to use this. Use {@link #setOriginalX(int)}, {@link #setXPositionMode(int)}
 	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
 	 * recalculate this value.
@@ -174,7 +175,7 @@ public interface Widget
 
 	/**
 	 * Sets the relative y-axis coordinate to the widgets parent.
-	 *
+	 * <p>
 	 * You do not want to use this. Use {@link #setOriginalY(int)}, {@link #setYPositionMode(int)}
 	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
 	 * recalculate this value.
@@ -185,6 +186,7 @@ public interface Widget
 	/**
 	 * Set a forced position for the widget. This position overrides the relative x/y for the
 	 * widget, even if the widget is revalidated. To clear the forced position pass -1 for x/y.
+	 *
 	 * @param x x pos relative to the parent
 	 * @param y y pos relative to the parent
 	 */
@@ -308,7 +310,7 @@ public interface Widget
 	 * Sets the x rotation of the model displayed in the widget.
 	 * <br>
 	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationX()} will cause a client
-	 *       crash.
+	 * crash.
 	 *
 	 * @param modelX the new model x rotation value
 	 */
@@ -325,7 +327,7 @@ public interface Widget
 	 * Sets the y rotation of the model displayed in the widget.
 	 * <br>
 	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationY()} will cause a client
-	 *       crash.
+	 * crash.
 	 *
 	 * @param modelY the new model y rotation value
 	 */
@@ -342,7 +344,7 @@ public interface Widget
 	 * Sets the z rotation of the model displayed in the widget.
 	 * <br>
 	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationZ()} will cause a client
-	 *       crash.
+	 * crash.
 	 *
 	 * @param modelZ the new model z rotation value
 	 */
@@ -369,6 +371,14 @@ public interface Widget
 	int getSpriteId();
 
 	/**
+	 * Sets the sprite ID displayed in the widget.
+	 *
+	 * @param spriteId the sprite ID
+	 * @see net.runelite.api.SpriteID
+	 */
+	Widget setSpriteId(int spriteId);
+
+	/**
 	 * Gets if sprites are repeated or stretched
 	 */
 	boolean getSpriteTiling();
@@ -379,21 +389,20 @@ public interface Widget
 	Widget setSpriteTiling(boolean tiling);
 
 	/**
-	 * Sets the sprite ID displayed in the widget.
-	 *
-	 * @param spriteId the sprite ID
-	 * @see net.runelite.api.SpriteID
-	 */
-	Widget setSpriteId(int spriteId);
-
-	/**
 	 * Checks whether this widget or any of its parents are hidden.
-	 *
+	 * <p>
 	 * This must be ran on the client thread
 	 *
 	 * @return true if this widget or any parent is hidden, false otherwise
 	 */
 	boolean isHidden();
+
+	/**
+	 * Sets the self-hidden state of this widget.
+	 *
+	 * @param hidden new hidden state
+	 */
+	Widget setHidden(boolean hidden);
 
 	/**
 	 * Checks whether this widget is hidden, not taking into account
@@ -402,13 +411,6 @@ public interface Widget
 	 * @return true if this widget is hidden, false otherwise
 	 */
 	boolean isSelfHidden();
-
-	/**
-	 * Sets the self-hidden state of this widget.
-	 *
-	 * @param hidden new hidden state
-	 */
-	Widget setHidden(boolean hidden);
 
 	/**
 	 * The index of this widget in it's parent's children array
@@ -437,7 +439,7 @@ public interface Widget
 
 	/**
 	 * Sets the width of the widget.
-	 *
+	 * <p>
 	 * You do not want to use this. Use {@link #setOriginalWidth(int)}, {@link #setWidthMode(int)}
 	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
 	 * recalculate this value.
@@ -454,7 +456,7 @@ public interface Widget
 
 	/**
 	 * Sets the height of the widget.
-	 *
+	 * <p>
 	 * You do not want to use this. Use {@link #setOriginalHeight(int)}, {@link #setHeightMode(int)}
 	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
 	 * recalculate this value.
@@ -578,9 +580,10 @@ public interface Widget
 	 * Sets the X/Y coordinates
 	 */
 	Widget setPos(int x, int y);
+
 	Widget setPos(int x, int y,
-		@MagicConstant(valuesFromClass = WidgetPositionMode.class) int xMode,
-		@MagicConstant(valuesFromClass = WidgetPositionMode.class) int yMode);
+				  @MagicConstant(valuesFromClass = WidgetPositionMode.class) int xMode,
+				  @MagicConstant(valuesFromClass = WidgetPositionMode.class) int yMode);
 
 	/**
 	 * Gets the height coordinate of this widget before being adjusted by
@@ -611,9 +614,10 @@ public interface Widget
 	Widget setOriginalWidth(int originalWidth);
 
 	Widget setSize(int width, int height);
+
 	Widget setSize(int width, int height,
-		@MagicConstant(valuesFromClass = WidgetSizeMode.class) int widthMode,
-		@MagicConstant(valuesFromClass = WidgetSizeMode.class) int heightMode);
+				   @MagicConstant(valuesFromClass = WidgetSizeMode.class) int widthMode,
+				   @MagicConstant(valuesFromClass = WidgetSizeMode.class) int heightMode);
 
 	/**
 	 * Gets the menu options available on the widget as a sparse array.
@@ -632,7 +636,7 @@ public interface Widget
 	/**
 	 * Creates a dynamic widget child at the end of the children list
 	 *
-	 * @param type  the {@link WidgetType} of the widget
+	 * @param type the {@link WidgetType} of the widget
 	 */
 	Widget createChild(@MagicConstant(valuesFromClass = WidgetType.class) int type);
 
@@ -655,26 +659,11 @@ public interface Widget
 	void clearActions();
 
 	/**
-	 * Sets a script to be ran when the a menu action is clicked.
-	 * hasListener must be true for this to take effect
-	 *
-	 * @param args A ScriptID, then the args for the script
-	 */
-	void setOnOpListener(Object... args);
-
-	/**
 	 * Sets a script to be ran when the dialog is canceled
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnDialogAbortListener(Object... args);
-
-	/**
-	 * Sets a script to be ran on key input
-	 *
-	 * @param args A ScriptID, then the args for the script
-	 */
-	void setOnKeyListener(Object... args);
 
 	/**
 	 * Sets a script to be ran when the mouse enters the widget bounds
@@ -751,11 +740,26 @@ public interface Widget
 	Object[] getOnOpListener();
 
 	/**
+	 * Sets a script to be ran when the a menu action is clicked.
+	 * hasListener must be true for this to take effect
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnOpListener(Object... args);
+
+	/**
 	 * Gets the script and arguments to be ran when a key is pressed.
 	 *
 	 * @return
 	 */
 	Object[] getOnKeyListener();
+
+	/**
+	 * Sets a script to be ran on key input
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnKeyListener(Object... args);
 
 	/**
 	 * Gets the script and arguments to be ran when a interface is loaded.
@@ -1001,14 +1005,14 @@ public interface Widget
 	/**
 	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
 	 */
-	void setVarTransmitTrigger(int ...trigger);
+	void setVarTransmitTrigger(int... trigger);
 
 	/**
 	 * Sets a script to be ran the first client tick the mouse is held ontop of this widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnClickListener(Object ...args);
+	void setOnClickListener(Object... args);
 
 	/**
 	 * Sets a script to be ran the every client tick the mouse is held ontop of this widget,
@@ -1016,35 +1020,35 @@ public interface Widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnHoldListener(Object ...args);
+	void setOnHoldListener(Object... args);
 
 	/**
 	 * Sets a script to be ran the first client tick the mouse is not held ontop of this widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnReleaseListener(Object ...args);
+	void setOnReleaseListener(Object... args);
 
 	/**
 	 * Sets a script to be ran when a drag operation is finished on this widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnDragCompleteListener(Object ...args);
+	void setOnDragCompleteListener(Object... args);
 
 	/**
 	 * Sets a script to be ran when this widget moves due to a drag
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnDragListener(Object ...args);
+	void setOnDragListener(Object... args);
 
 	/**
 	 * Sets a script to be ran when the mouse is scrolled when on the widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnScrollWheelListener(Object ...args);
+	void setOnScrollWheelListener(Object... args);
 
 	/**
 	 * Container this can be dragged in
@@ -1068,5 +1072,5 @@ public interface Widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-	void setOnVarTransmitListener(Object ...args);
+	void setOnVarTransmitListener(Object... args);
 }

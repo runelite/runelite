@@ -67,8 +67,7 @@ public class PluginHubManifest
 						return true;
 					}
 				}
-			}
-			catch (IOException e)
+			} catch (IOException e)
 			{
 			}
 			return false;

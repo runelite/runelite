@@ -35,6 +35,59 @@ import net.runelite.client.plugins.itemstats.stats.Stats;
 public class SpicyStew implements Effect
 {
 
+	/**
+	 * Calculate the potential boost that a spice currently offers,
+	 * based on its number of doses in the stew.
+	 *
+	 * @param spiceDoses Number of doses between 0 and 3.
+	 * @return Either 0, +1, +3, or +5.
+	 */
+	private static int spiceBoostOf(int spiceDoses)
+	{
+		return Math.max(0, (spiceDoses * 2) - 1);
+	}
+
+	/**
+	 * Calculate the fields of a stat change tooltip row.
+	 *
+	 * @param stat       Stat that the spice boost affects.
+	 * @param spiceBoost Potential spice boost before capping.
+	 * @param client     Client API, needed to check current stat values.
+	 * @return StatChange object with all required values.
+	 */
+	private static StatChange statChangeOf(Stat stat, int spiceBoost, Client client)
+	{
+		int currentValue = stat.getValue(client);
+		int currentBase = stat.getMaximum(client);
+
+		int currentBoost = currentValue - currentBase; // Can be negative
+		int spiceBoostCapped = (currentBoost <= 0) ? spiceBoost : Math.max(0, spiceBoost - currentBoost);
+
+		final RangeStatChange change = new RangeStatChange();
+		change.setStat(stat);
+		change.setMinRelative(-spiceBoost);
+		change.setRelative(spiceBoostCapped);
+		change.setMinTheoretical(-spiceBoost);
+		change.setTheoretical(spiceBoost);
+		change.setMinAbsolute(Math.max(-spiceBoost, -currentValue));
+		change.setAbsolute(stat.getValue(client) + spiceBoostCapped);
+
+		Positivity positivity;
+		if (spiceBoostCapped == 0)
+		{
+			positivity = Positivity.NO_CHANGE;
+		} else if (spiceBoost > spiceBoostCapped)
+		{
+			positivity = Positivity.BETTER_CAPPED;
+		} else
+		{
+			positivity = Positivity.BETTER_UNCAPPED;
+		}
+		change.setPositivity(positivity);
+
+		return change;
+	}
+
 	@Override
 	public StatsChanges calculate(Client client)
 	{
@@ -102,60 +155,5 @@ public class SpicyStew implements Effect
 		changesReturn.setStatChanges(changes.toArray(new StatChange[changes.size()]));
 
 		return changesReturn;
-	}
-
-	/**
-	 * Calculate the potential boost that a spice currently offers,
-	 * based on its number of doses in the stew.
-	 *
-	 * @param spiceDoses Number of doses between 0 and 3.
-	 * @return Either 0, +1, +3, or +5.
-	 */
-	private static int spiceBoostOf(int spiceDoses)
-	{
-		return Math.max(0, (spiceDoses * 2) - 1);
-	}
-
-	/**
-	 * Calculate the fields of a stat change tooltip row.
-	 *
-	 * @param stat Stat that the spice boost affects.
-	 * @param spiceBoost Potential spice boost before capping.
-	 * @param client Client API, needed to check current stat values.
-	 * @return StatChange object with all required values.
-	 */
-	private static StatChange statChangeOf(Stat stat, int spiceBoost, Client client)
-	{
-		int currentValue = stat.getValue(client);
-		int currentBase = stat.getMaximum(client);
-
-		int currentBoost = currentValue - currentBase; // Can be negative
-		int spiceBoostCapped = (currentBoost <= 0) ? spiceBoost : Math.max(0, spiceBoost - currentBoost);
-
-		final RangeStatChange change = new RangeStatChange();
-		change.setStat(stat);
-		change.setMinRelative(-spiceBoost);
-		change.setRelative(spiceBoostCapped);
-		change.setMinTheoretical(-spiceBoost);
-		change.setTheoretical(spiceBoost);
-		change.setMinAbsolute(Math.max(-spiceBoost, -currentValue));
-		change.setAbsolute(stat.getValue(client) + spiceBoostCapped);
-
-		Positivity positivity;
-		if (spiceBoostCapped == 0)
-		{
-			positivity = Positivity.NO_CHANGE;
-		}
-		else if (spiceBoost > spiceBoostCapped)
-		{
-			positivity = Positivity.BETTER_CAPPED;
-		}
-		else
-		{
-			positivity = Positivity.BETTER_UNCAPPED;
-		}
-		change.setPositivity(positivity);
-
-		return change;
 	}
 }

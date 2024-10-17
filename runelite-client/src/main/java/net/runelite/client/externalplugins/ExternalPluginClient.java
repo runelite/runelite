@@ -67,15 +67,27 @@ public class ExternalPluginClient
 
 	@Inject
 	private ExternalPluginClient(OkHttpClient okHttpClient,
-		Gson gson,
-		@Named("runelite.api.base") HttpUrl apiBase,
-		@Named("runelite.pluginhub.url") HttpUrl pluginHubBase
+								 Gson gson,
+								 @Named("runelite.api.base") HttpUrl apiBase,
+								 @Named("runelite.pluginhub.url") HttpUrl pluginHubBase
 	)
 	{
 		this.okHttpClient = okHttpClient;
 		this.gson = gson;
 		this.apiBase = apiBase;
 		this.pluginHubBase = pluginHubBase;
+	}
+
+	private static Certificate loadCertificate()
+	{
+		try (InputStream in = ExternalPluginClient.class.getResourceAsStream("externalplugins.crt"))
+		{
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+			return certFactory.generateCertificate(in);
+		} catch (CertificateException | IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	public PluginHubManifest.ManifestLite downloadManifestLite() throws IOException, VerificationException
@@ -91,10 +103,10 @@ public class ExternalPluginClient
 	private <T> T downloadManifest(String name, Class<T> clazz) throws IOException, VerificationException
 	{
 		HttpUrl manifest = pluginHubBase
-			.newBuilder()
-			.addPathSegment("manifest")
-			.addPathSegment(RuneLiteProperties.getPluginHubVersion() + "_" + name + ".js")
-			.build();
+				.newBuilder()
+				.addPathSegment("manifest")
+				.addPathSegment(RuneLiteProperties.getPluginHubVersion() + "_" + name + ".js")
+				.build();
 		try (Response res = okHttpClient.newCall(new Request.Builder().url(manifest).build()).execute())
 		{
 			if (res.code() != 200)
@@ -118,8 +130,7 @@ public class ExternalPluginClient
 			}
 
 			return gson.fromJson(new String(data, StandardCharsets.UTF_8), clazz);
-		}
-		catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e)
+		} catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e)
 		{
 			throw new VerificationException(e);
 		}
@@ -133,10 +144,10 @@ public class ExternalPluginClient
 		}
 
 		HttpUrl url = pluginHubBase
-			.newBuilder()
-			.addPathSegment("icon")
-			.addPathSegment(plugin.getInternalName() + "_" + plugin.getIconHash() + ".png")
-			.build();
+				.newBuilder()
+				.addPathSegment("icon")
+				.addPathSegment(plugin.getInternalName() + "_" + plugin.getIconHash() + ".png")
+				.build();
 
 		try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
 		{
@@ -152,23 +163,10 @@ public class ExternalPluginClient
 	HttpUrl getJarURL(PluginHubManifest.JarData plugin)
 	{
 		return pluginHubBase
-			.newBuilder()
-			.addPathSegment("jar")
-			.addPathSegment(plugin.getInternalName() + "_" + plugin.getJarHash() + ".jar")
-			.build();
-	}
-
-	private static Certificate loadCertificate()
-	{
-		try (InputStream in = ExternalPluginClient.class.getResourceAsStream("externalplugins.crt"))
-		{
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			return certFactory.generateCertificate(in);
-		}
-		catch (CertificateException | IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+				.newBuilder()
+				.addPathSegment("jar")
+				.addPathSegment(plugin.getInternalName() + "_" + plugin.getJarHash() + ".jar")
+				.build();
 	}
 
 	void submitPlugins(List<String> plugins)
@@ -179,13 +177,13 @@ public class ExternalPluginClient
 		}
 
 		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("pluginhub")
-			.build();
+				.addPathSegment("pluginhub")
+				.build();
 
 		Request request = new Request.Builder()
-			.url(url)
-			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(plugins)))
-			.build();
+				.url(url)
+				.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(plugins)))
+				.build();
 
 		okHttpClient.newCall(request).enqueue(new Callback()
 		{
@@ -207,9 +205,9 @@ public class ExternalPluginClient
 	public Map<String, Integer> getPluginCounts() throws IOException
 	{
 		HttpUrl url = apiBase
-			.newBuilder()
-			.addPathSegments("pluginhub")
-			.build();
+				.newBuilder()
+				.addPathSegments("pluginhub")
+				.build();
 		try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
 		{
 			if (res.code() != 200)
@@ -218,10 +216,11 @@ public class ExternalPluginClient
 			}
 
 			// CHECKSTYLE:OFF
-			return gson.fromJson(res.body().string(), new TypeToken<Map<String, Integer>>(){}.getType());
+			return gson.fromJson(res.body().string(), new TypeToken<Map<String, Integer>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
-		}
-		catch (JsonSyntaxException ex)
+		} catch (JsonSyntaxException ex)
 		{
 			throw new IOException(ex);
 		}

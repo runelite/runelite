@@ -47,7 +47,7 @@ public interface ChatLineBuffer
 
 	/**
 	 * Removes a message node.
-	 *
+	 * <p>
 	 * This method modifies the underlying MessageNode array. If removing multiple MessageNodes at a time,
 	 * clone the original {@link #getLines()} array; as items in the array will get modified and be left in an
 	 * inconsistent state.

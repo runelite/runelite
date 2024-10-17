@@ -68,82 +68,82 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Item Charges",
-	description = "Show number of item charges remaining",
-	tags = {"inventory", "notifications", "overlay"}
+		name = "Item Charges",
+		description = "Show number of item charges remaining",
+		tags = {"inventory", "notifications", "overlay"}
 )
 @Slf4j
 public class ItemChargePlugin extends Plugin
 {
 	private static final Pattern DODGY_CHECK_PATTERN = Pattern.compile(
-		"Your dodgy necklace has (\\d+) charges? left\\.");
+			"Your dodgy necklace has (\\d+) charges? left\\.");
 	private static final Pattern DODGY_PROTECT_PATTERN = Pattern.compile(
-		"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
+			"Your dodgy necklace protects you\\..*It has (\\d+) charges? left\\.");
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
-		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
+			"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
 	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "Your Ring of Recoil has shattered.";
 	private static final Pattern BINDING_CHECK_PATTERN = Pattern.compile(
-		"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates\\.");
+			"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates\\.");
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
-		"You (partially succeed to )?bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
+			"You (partially succeed to )?bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
-		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
+			"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
 	private static final String RING_OF_FORGING_BREAK_TEXT = "Your Ring of Forging has melted.";
 	private static final String RING_OF_FORGING_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously.";
 	private static final Pattern AMULET_OF_CHEMISTRY_CHECK_PATTERN = Pattern.compile(
-		"Your amulet of chemistry has (\\d) charges? left\\."
+			"Your amulet of chemistry has (\\d) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_USED_PATTERN = Pattern.compile(
-		"Your amulet of chemistry helps you create a \\d-dose potion\\. It has (\\d|one) charges? left\\."
+			"Your amulet of chemistry helps you create a \\d-dose potion\\. It has (\\d|one) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_CHEMISTRY_BREAK_PATTERN = Pattern.compile(
-		"Your amulet of chemistry helps you create a \\d-dose potion\\. It then crumbles to dust\\."
+			"Your amulet of chemistry helps you create a \\d-dose potion\\. It then crumbles to dust\\."
 	);
 	private static final Pattern AMULET_OF_BOUNTY_CHECK_PATTERN = Pattern.compile(
-		"Your amulet of bounty has (\\d+) charges? left\\."
+			"Your amulet of bounty has (\\d+) charges? left\\."
 	);
 	private static final Pattern AMULET_OF_BOUNTY_USED_PATTERN = Pattern.compile(
-		"Your amulet of bounty saves some seeds for you\\. It has (\\d) charges? left\\."
+			"Your amulet of bounty saves some seeds for you\\. It has (\\d) charges? left\\."
 	);
 	private static final String AMULET_OF_BOUNTY_BREAK_TEXT = "Your amulet of bounty saves some seeds for you. It then crumbles to dust.";
 	private static final Pattern CHRONICLE_ADD_PATTERN = Pattern.compile(
-		"You add (?:\\d+|a single) charges? to your book\\. It now has (\\d+|one) charges?\\."
+			"You add (?:\\d+|a single) charges? to your book\\. It now has (\\d+|one) charges?\\."
 	);
 	private static final Pattern CHRONICLE_USE_AND_CHECK_PATTERN = Pattern.compile(
-		"Your book has (\\d+) charges left\\."
+			"Your book has (\\d+) charges left\\."
 	);
 	private static final String CHRONICLE_FULL_TEXT = "Your book is fully charged! It has 1,000 charges already.";
 	private static final String CHRONICLE_ONE_CHARGE_TEXT = "You have one charge left in your book.";
 	private static final String CHRONICLE_EMPTY_TEXT = "Your book has run out of charges.";
 	private static final String CHRONICLE_NO_CHARGES_TEXT = "Your book does not have any charges. Purchase some Teleport Cards from Diango.";
 	private static final Pattern BRACELET_OF_SLAUGHTER_ACTIVATE_PATTERN = Pattern.compile(
-		"Your bracelet of slaughter prevents your slayer count from decreasing. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.|It then regenerates itself to full charge!)"
+			"Your bracelet of slaughter prevents your slayer count from decreasing. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.|It then regenerates itself to full charge!)"
 	);
 	private static final Pattern BRACELET_OF_SLAUGHTER_CHECK_PATTERN = Pattern.compile(
-		"Your bracelet of slaughter has (\\d{1,2}) charges? left\\."
+			"Your bracelet of slaughter has (\\d{1,2}) charges? left\\."
 	);
 	private static final String BRACELET_OF_SLAUGHTER_BREAK_TEXT = "Your Bracelet of Slaughter has crumbled to dust.";
 	private static final Pattern EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN = Pattern.compile(
-		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.|It then regenerates itself to full charge!)"
+			"Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.|It then regenerates itself to full charge!)"
 	);
 	private static final Pattern EXPEDITIOUS_BRACELET_CHECK_PATTERN = Pattern.compile(
-		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
+			"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
 	private static final Pattern BLOOD_ESSENCE_CHECK_PATTERN = Pattern.compile(
-		"Your blood essence has (\\d{1,4}) charges? remaining"
+			"Your blood essence has (\\d{1,4}) charges? remaining"
 	);
 	private static final Pattern BLOOD_ESSENCE_EXTRACT_PATTERN = Pattern.compile(
-		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
+			"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
 	);
 	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
 	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
 	private static final String BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN = "You manage to mine some soft clay.";
 	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
-		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
+			"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
 
 	private static final int MAX_DODGY_CHARGES = 10;
@@ -155,37 +155,27 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
-
+	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
 	@Inject
 	private Client client;
-
 	@Inject
 	private ClientThread clientThread;
-
 	@Inject
 	private ConfigManager configManager;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private ItemChargeOverlay overlay;
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private InfoBoxManager infoBoxManager;
-
 	@Inject
 	private Notifier notifier;
-
 	@Inject
 	private ItemChargeConfig config;
-
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
-	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
 	private boolean loginFlag;
 
 	@Provides
@@ -274,26 +264,21 @@ public class ItemChargePlugin extends Plugin
 			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify(config.recoilNotification(), "Your Ring of Recoil has shattered");
-			}
-			else if (dodgyBreakMatcher.find())
+			} else if (dodgyBreakMatcher.find())
 			{
 				notifier.notify(config.dodgyNotification(), "Your dodgy necklace has crumbled to dust.");
 
 				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
-			}
-			else if (dodgyCheckMatcher.find())
+			} else if (dodgyCheckMatcher.find())
 			{
 				updateDodgyNecklaceCharges(Integer.parseInt(dodgyCheckMatcher.group(1)));
-			}
-			else if (dodgyProtectMatcher.find())
+			} else if (dodgyProtectMatcher.find())
 			{
 				updateDodgyNecklaceCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
-			}
-			else if (amuletOfChemistryCheckMatcher.find())
+			} else if (amuletOfChemistryCheckMatcher.find())
 			{
 				updateAmuletOfChemistryCharges(Integer.parseInt(amuletOfChemistryCheckMatcher.group(1)));
-			}
-			else if (amuletOfChemistryUsedMatcher.find())
+			} else if (amuletOfChemistryUsedMatcher.find())
 			{
 				final String match = amuletOfChemistryUsedMatcher.group(1);
 
@@ -304,41 +289,34 @@ public class ItemChargePlugin extends Plugin
 				}
 
 				updateAmuletOfChemistryCharges(charges);
-			}
-			else if (amuletOfChemistryBreakMatcher.find())
+			} else if (amuletOfChemistryBreakMatcher.find())
 			{
 				notifier.notify(config.amuletOfChemistryNotification(), "Your amulet of chemistry has crumbled to dust.");
 
 				updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
-			}
-			else if (amuletOfBountyCheckMatcher.find())
+			} else if (amuletOfBountyCheckMatcher.find())
 			{
 				updateAmuletOfBountyCharges(Integer.parseInt(amuletOfBountyCheckMatcher.group(1)));
-			}
-			else if (amuletOfBountyUsedMatcher.find())
+			} else if (amuletOfBountyUsedMatcher.find())
 			{
 				updateAmuletOfBountyCharges(Integer.parseInt(amuletOfBountyUsedMatcher.group(1)));
-			}
-			else if (message.equals(AMULET_OF_BOUNTY_BREAK_TEXT))
+			} else if (message.equals(AMULET_OF_BOUNTY_BREAK_TEXT))
 			{
 				updateAmuletOfBountyCharges(MAX_AMULET_OF_BOUNTY_CHARGES);
-			}
-			else if (message.contains(BINDING_BREAK_TEXT))
+			} else if (message.contains(BINDING_BREAK_TEXT))
 			{
 				notifier.notify(config.bindingNotification(), BINDING_BREAK_TEXT);
 
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
 				updateBindingNecklaceCharges(MAX_BINDING_CHARGES + 1);
-			}
-			else if (bindingNecklaceUsedMatcher.find())
+			} else if (bindingNecklaceUsedMatcher.find())
 			{
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 				if (equipment.contains(ItemID.BINDING_NECKLACE))
 				{
 					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
 				}
-			}
-			else if (bindingNecklaceCheckMatcher.find())
+			} else if (bindingNecklaceCheckMatcher.find())
 			{
 				final String match = bindingNecklaceCheckMatcher.group(1);
 
@@ -349,8 +327,7 @@ public class ItemChargePlugin extends Plugin
 				}
 
 				updateBindingNecklaceCharges(charges);
-			}
-			else if (ringOfForgingCheckMatcher.find())
+			} else if (ringOfForgingCheckMatcher.find())
 			{
 				final String match = ringOfForgingCheckMatcher.group(1);
 
@@ -360,8 +337,7 @@ public class ItemChargePlugin extends Plugin
 					charges = Integer.parseInt(match);
 				}
 				updateRingOfForgingCharges(charges);
-			}
-			else if (message.equals(RING_OF_FORGING_USED_TEXT) || message.equals(RING_OF_FORGING_VARROCK_PLATEBODY))
+			} else if (message.equals(RING_OF_FORGING_USED_TEXT) || message.equals(RING_OF_FORGING_VARROCK_PLATEBODY))
 			{
 				final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
@@ -377,94 +353,76 @@ public class ItemChargePlugin extends Plugin
 					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
 				}
-			}
-			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
+			} else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
 			{
 				notifier.notify(config.ringOfForgingNotification(), "Your ring of forging has melted.");
 
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
-			}
-			else if (chronicleAddMatcher.find())
+			} else if (chronicleAddMatcher.find())
 			{
 				final String match = chronicleAddMatcher.group(1);
 
 				if (match.equals("one"))
 				{
 					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
-				}
-				else
+				} else
 				{
 					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(match));
 				}
-			}
-			else if (chronicleUseAndCheckMatcher.find())
+			} else if (chronicleUseAndCheckMatcher.find())
 			{
 				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
-			}
-			else if (message.equals(CHRONICLE_ONE_CHARGE_TEXT))
+			} else if (message.equals(CHRONICLE_ONE_CHARGE_TEXT))
 			{
 				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
-			}
-			else if (message.equals(CHRONICLE_EMPTY_TEXT) || message.equals(CHRONICLE_NO_CHARGES_TEXT))
+			} else if (message.equals(CHRONICLE_EMPTY_TEXT) || message.equals(CHRONICLE_NO_CHARGES_TEXT))
 			{
 				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 0);
-			}
-			else if (message.equals(CHRONICLE_FULL_TEXT))
+			} else if (message.equals(CHRONICLE_FULL_TEXT))
 			{
 				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1000);
-			}
-			else if (slaughterActivateMatcher.find())
+			} else if (slaughterActivateMatcher.find())
 			{
 				final String found = slaughterActivateMatcher.group(1);
 				if (found == null)
 				{
 					updateBraceletOfSlaughterCharges(MAX_SLAYER_BRACELET_CHARGES);
 					notifier.notify(config.slaughterNotification(), BRACELET_OF_SLAUGHTER_BREAK_TEXT);
-				}
-				else
+				} else
 				{
 					updateBraceletOfSlaughterCharges(Integer.parseInt(found));
 				}
-			}
-			else if (slaughterCheckMatcher.find())
+			} else if (slaughterCheckMatcher.find())
 			{
 				updateBraceletOfSlaughterCharges(Integer.parseInt(slaughterCheckMatcher.group(1)));
-			}
-			else if (expeditiousActivateMatcher.find())
+			} else if (expeditiousActivateMatcher.find())
 			{
 				final String found = expeditiousActivateMatcher.group(1);
 				if (found == null)
 				{
 					updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
 					notifier.notify(config.expeditiousNotification(), EXPEDITIOUS_BRACELET_BREAK_TEXT);
-				}
-				else
+				} else
 				{
 					updateExpeditiousBraceletCharges(Integer.parseInt(found));
 				}
-			}
-			else if (expeditiousCheckMatcher.find())
+			} else if (expeditiousCheckMatcher.find())
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
-			}
-			else if (bloodEssenceCheckMatcher.find())
+			} else if (bloodEssenceCheckMatcher.find())
 			{
 				updateBloodEssenceCharges(Integer.parseInt(bloodEssenceCheckMatcher.group(1)));
-			}
-			else if (bloodEssenceExtractMatcher.find())
+			} else if (bloodEssenceExtractMatcher.find())
 			{
 				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
-			}
-			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
+			} else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
 			{
 				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
-			}
-			else if (braceletOfClayCheckMatcher.find())
+			} else if (braceletOfClayCheckMatcher.find())
 			{
 				updateBraceletOfClayCharges(Integer.parseInt(braceletOfClayCheckMatcher.group(1)));
-			}
-			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT) || message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN))
+			} else if (message.equals(BRACELET_OF_CLAY_USE_TEXT) || message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN))
 			{
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
@@ -475,8 +433,8 @@ public class ItemChargePlugin extends Plugin
 
 					// Charge is not used if only 1 inventory slot is available when mining in Prifddinas
 					boolean ignore = inventory != null
-						&& inventory.count() == 27
-						&& message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN);
+							&& inventory.count() == 27
+							&& message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN);
 
 					if (!ignore)
 					{
@@ -484,8 +442,7 @@ public class ItemChargePlugin extends Plugin
 						updateBraceletOfClayCharges(charges);
 					}
 				}
-			}
-			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
+			} else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
 			{
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
@@ -677,8 +634,7 @@ public class ItemChargePlugin extends Plugin
 			{
 				type = itemWithCharge.getType();
 				charges = itemWithCharge.getCharges();
-			}
-			else
+			} else
 			{
 				final ItemWithConfig itemWithConfig = ItemWithConfig.findItem(id);
 				if (itemWithConfig != null)
@@ -717,8 +673,7 @@ public class ItemChargePlugin extends Plugin
 				infobox = new ItemChargeInfobox(this, image, name, charges, id);
 				infoBoxManager.addInfoBox(infobox);
 				infoboxes.put(slot, infobox);
-			}
-			else
+			} else
 			{
 				ItemChargeInfobox infobox = infoboxes.remove(slot);
 				if (infobox != null)
@@ -756,8 +711,7 @@ public class ItemChargePlugin extends Plugin
 		if (charges <= config.veryLowWarning())
 		{
 			color = config.veryLowWarningColor();
-		}
-		else if (charges <= config.lowWarning())
+		} else if (charges <= config.lowWarning())
 		{
 			color = config.lowWarningolor();
 		}

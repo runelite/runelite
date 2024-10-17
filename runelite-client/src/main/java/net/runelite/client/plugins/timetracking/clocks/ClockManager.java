@@ -44,26 +44,20 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class ClockManager
 {
-	@Inject
-	private ConfigManager configManager;
-
-	@Inject
-	private TimeTrackingConfig config;
-
-	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private Gson gson;
-
 	@Getter
 	private final List<Timer> timers = new CopyOnWriteArrayList<>();
-
 	@Getter
 	private final List<Stopwatch> stopwatches = new ArrayList<>();
-
 	@Getter
 	private final ClockTabPanel clockTabPanel = new ClockTabPanel(this);
+	@Inject
+	private ConfigManager configManager;
+	@Inject
+	private TimeTrackingConfig config;
+	@Inject
+	private Notifier notifier;
+	@Inject
+	private Gson gson;
 
 	void addTimer()
 	{

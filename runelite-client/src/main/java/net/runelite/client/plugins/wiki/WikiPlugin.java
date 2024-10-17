@@ -68,8 +68,8 @@ import okhttp3.HttpUrl;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Wiki",
-	description = "Adds a Wiki button that takes you to the OSRS Wiki"
+		name = "Wiki",
+		description = "Adds a Wiki button that takes you to the OSRS Wiki"
 )
 public class WikiPlugin extends Plugin
 {
@@ -77,32 +77,22 @@ public class WikiPlugin extends Plugin
 	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
 	static final String UTM_SOURCE_KEY = "utm_source";
 	static final String UTM_SOURCE_VALUE = "runelite";
-
+	static final String CONFIG_GROUP_KEY = "wiki";
 	private static final String MENUOP_WIKI = "Wiki";
-
 	@Inject
 	private WikiConfig config;
-
 	@Inject
 	private ClientThread clientThread;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
-
 	@Inject
 	private WikiDpsManager wikiDpsManager;
-
 	private Widget icon;
-
 	private boolean wikiSelected = false;
-
-	static final String CONFIG_GROUP_KEY = "wiki";
 
 	@Provides
 	WikiConfig getConfig(ConfigManager configManager)
@@ -199,7 +189,7 @@ public class WikiPlugin extends Plugin
 		icon.setTargetVerb("Lookup");
 		icon.setName("Wiki");
 		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC
-			| WidgetConfig.USE_OBJECT | WidgetConfig.USE_WIDGET);
+				| WidgetConfig.USE_OBJECT | WidgetConfig.USE_WIDGET);
 		icon.setNoClickThrough(true);
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
@@ -217,8 +207,7 @@ public class WikiPlugin extends Plugin
 			if (op == searchIndex)
 			{
 				openSearchInput();
-			}
-			else if (op == 6)
+			} else if (op == 6)
 			{
 				wikiDpsManager.launch();
 			}
@@ -344,16 +333,16 @@ public class WikiPlugin extends Plugin
 			name = Text.removeTags(name);
 			HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
 			urlBuilder.addPathSegments("w/Special:Lookup")
-				.addQueryParameter("type", type)
-				.addQueryParameter("id", "" + id)
-				.addQueryParameter("name", name)
-				.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
+					.addQueryParameter("type", type)
+					.addQueryParameter("id", "" + id)
+					.addQueryParameter("name", name)
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
 
 			if (location != null)
 			{
 				urlBuilder.addQueryParameter("x", "" + location.getX())
-					.addQueryParameter("y", "" + location.getY())
-					.addQueryParameter("plane", "" + location.getPlane());
+						.addQueryParameter("y", "" + location.getY())
+						.addQueryParameter("plane", "" + location.getPlane());
 			}
 
 			HttpUrl url = urlBuilder.build();
@@ -366,7 +355,7 @@ public class WikiPlugin extends Plugin
 	private void openSearchInput()
 	{
 		wikiSearchChatboxTextInputProvider.get()
-			.build();
+				.build();
 	}
 
 	private Widget getWidget(int wid, int index)
@@ -403,16 +392,14 @@ public class WikiPlugin extends Plugin
 						{
 							// may be a dummy item for the UI without a name
 							menu.removeMenuEntry(entry);
-						}
-						else
+						} else
 						{
 							entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
 						}
 						break;
 					}
 				}
-			}
-			else
+			} else
 			{
 				// we don't support this widget
 				// remove the last SPELL_CAST_ON_WIDGET; we can't blindly remove the top action because some other
@@ -420,8 +407,8 @@ public class WikiPlugin extends Plugin
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 				for (int ourEntry = oldEntries.length - 1;
-					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.WIDGET_TARGET_ON_WIDGET;
-					ourEntry--)
+					 ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.WIDGET_TARGET_ON_WIDGET;
+					 ourEntry--)
 				{
 					menuEntries[ourEntry - 1] = oldEntries[ourEntry];
 				}
@@ -438,22 +425,22 @@ public class WikiPlugin extends Plugin
 			}
 
 			String action = Stream.of(w.getActions())
-				.filter(s -> s != null && !s.isEmpty())
-				.findFirst().orElse(null);
+					.filter(s -> s != null && !s.isEmpty())
+					.findFirst().orElse(null);
 			if (action == null)
 			{
 				return;
 			}
 
 			client.createMenuEntry(-1)
-				.setTarget(action.replace("View ", "").replace(" guide", ""))
-				.setOption(MENUOP_WIKI)
-				.setType(MenuAction.RUNELITE)
-				.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
-					.addPathSegment("w")
-					.addPathSegment(Text.removeTags(ev.getTarget()))
-					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
-					.build().toString()));
+					.setTarget(action.replace("View ", "").replace(" guide", ""))
+					.setOption(MENUOP_WIKI)
+					.setType(MenuAction.RUNELITE)
+					.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
+							.addPathSegment("w")
+							.addPathSegment(Text.removeTags(ev.getTarget()))
+							.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
+							.build().toString()));
 		}
 
 		if (event.getType() == MenuAction.CC_OP.getId() && WidgetUtil.componentToInterface(widgetID) == InterfaceID.COMBAT_ACHIEVEMENTS_TASKS)
@@ -465,14 +452,14 @@ public class WikiPlugin extends Plugin
 			}
 
 			client.getMenu().createMenuEntry(-1)
-				.setTarget(w.getName())
-				.setOption(MENUOP_WIKI)
-				.setType(MenuAction.RUNELITE)
-				.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
-					.addPathSegment("w")
-					.addPathSegment(Text.removeTags(ev.getTarget()))
-					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
-					.build().toString()));
+					.setTarget(w.getName())
+					.setOption(MENUOP_WIKI)
+					.setType(MenuAction.RUNELITE)
+					.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
+							.addPathSegment("w")
+							.addPathSegment(Text.removeTags(ev.getTarget()))
+							.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
+							.build().toString()));
 		}
 	}
 }

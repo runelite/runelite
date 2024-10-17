@@ -52,26 +52,22 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Puzzle Solver",
-	description = "Show you where to click to solve puzzle boxes",
-	tags = {"clues", "scrolls", "overlay"}
+		name = "Puzzle Solver",
+		description = "Show you where to click to solve puzzle boxes",
+		tags = {"clues", "scrolls", "overlay"}
 )
 @Slf4j
 public class PuzzleSolverPlugin extends Plugin
 {
 	private static final Color CORRECT_MUSEUM_PUZZLE_ANSWER_COLOR = new Color(0, 248, 128);
-
+	private final LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private PuzzleSolverOverlay overlay;
-
 	@Inject
 	private Client client;
-
 	private LightboxState lightbox;
-	private final LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private Combination lastClick;
 	private boolean lastClickInvalid;
 
@@ -109,11 +105,11 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 
 		final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
-			client,
-			questionWidget.getText(),
-			ComponentID.VARROCK_MUSEUM_FIRST_ANSWER,
-			ComponentID.VARROCK_MUSEUM_SECOND_ANSWER,
-			ComponentID.VARROCK_MUSEUM_THIRD_ANSWER);
+				client,
+				questionWidget.getText(),
+				ComponentID.VARROCK_MUSEUM_FIRST_ANSWER,
+				ComponentID.VARROCK_MUSEUM_SECOND_ANSWER,
+				ComponentID.VARROCK_MUSEUM_THIRD_ANSWER);
 
 		if (answerWidget == null)
 		{
@@ -140,36 +136,28 @@ public class PuzzleSolverPlugin extends Plugin
 		if (widgetId == ComponentID.LIGHT_BOX_BUTTON_A)
 		{
 			combination = Combination.A;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_B)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_B)
 		{
 			combination = Combination.B;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_C)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_C)
 		{
 			combination = Combination.C;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_D)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_D)
 		{
 			combination = Combination.D;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_E)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_E)
 		{
 			combination = Combination.E;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_F)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_F)
 		{
 			combination = Combination.F;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_G)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_G)
 		{
 			combination = Combination.G;
-		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_H)
+		} else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_H)
 		{
 			combination = Combination.H;
-		}
-		else
+		} else
 		{
 			return;
 		}
@@ -177,8 +165,7 @@ public class PuzzleSolverPlugin extends Plugin
 		if (lastClick != null)
 		{
 			lastClickInvalid = true;
-		}
-		else
+		} else
 		{
 			lastClick = combination;
 		}
@@ -261,12 +248,10 @@ public class PuzzleSolverPlugin extends Plugin
 			if (solution != null && solution.numMoves() > 0)
 			{
 				title.setText("Light box - Solution: " + solution);
-			}
-			else if (solution != null)
+			} else if (solution != null)
 			{
 				title.setText("Light box - Solution: solved!");
-			}
-			else
+			} else
 			{
 				title.setText("Light box - Solution: unknown");
 			}

@@ -80,13 +80,11 @@ public class Region
 						if (z == 0)
 						{
 							tileHeights[0][x][y] = -HeightCalc.calculate(baseX + x + 0xe3b7b, baseY + y + 0x87cce) * 8;
-						}
-						else
+						} else
 						{
 							tileHeights[z][x][y] = tileHeights[z - 1][x][y] - 240;
 						}
-					}
-					else
+					} else
 					{
 						int height = tile.getHeight();
 						if (height == 1)
@@ -97,8 +95,7 @@ public class Region
 						if (z == 0)
 						{
 							tileHeights[0][x][y] = -height * 8;
-						}
-						else
+						} else
 						{
 							tileHeights[z][x][y] = tileHeights[z - 1][x][y] - height * 8;
 						}
@@ -120,9 +117,9 @@ public class Region
 		for (Location loc : locs.getLocations())
 		{
 			Location newLoc = new Location(loc.getId(), loc.getType(), loc.getOrientation(),
-				new Position(getBaseX() + loc.getPosition().getX(),
-					getBaseY() + loc.getPosition().getY(),
-					loc.getPosition().getZ()));
+					new Position(getBaseX() + loc.getPosition().getX(),
+							getBaseY() + loc.getPosition().getY(),
+							loc.getPosition().getZ()));
 			locations.add(newLoc);
 		}
 	}

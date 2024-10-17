@@ -45,8 +45,7 @@ class TransferableBufferedImage implements Transferable
 		if (flavor.equals(DataFlavor.imageFlavor))
 		{
 			return image;
-		}
-		else
+		} else
 		{
 			throw new UnsupportedFlavorException(flavor);
 		}
@@ -55,7 +54,7 @@ class TransferableBufferedImage implements Transferable
 	@Override
 	public DataFlavor[] getTransferDataFlavors()
 	{
-		return new DataFlavor[]{DataFlavor.imageFlavor};
+		return new DataFlavor[] {DataFlavor.imageFlavor};
 	}
 
 	@Override

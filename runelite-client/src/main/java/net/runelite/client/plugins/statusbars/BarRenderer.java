@@ -37,15 +37,15 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 @RequiredArgsConstructor
 class BarRenderer
 {
+	static final int DEFAULT_WIDTH = 20;
+	static final int MIN_WIDTH = 3;
+	static final int MAX_WIDTH = 40;
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int BORDER_SIZE = 1;
 	private static final int MIN_ICON_AND_COUNTER_WIDTH = 16;
-	static final int DEFAULT_WIDTH = 20;
-	static final int MIN_WIDTH = 3;
-	static final int MAX_WIDTH = 40;
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
 	private final Supplier<Integer> healSupplier;
@@ -55,6 +55,18 @@ class BarRenderer
 	private int maxValue;
 	private int currentValue;
 
+	private static int getBarHeight(int base, int current, int size)
+	{
+		final double ratio = (double) current / base;
+
+		if (ratio >= 1)
+		{
+			return size;
+		}
+
+		return (int) Math.round(ratio * size);
+	}
+
 	private void refreshSkills()
 	{
 		maxValue = maxValueSupplier.get();
@@ -63,12 +75,13 @@ class BarRenderer
 
 	/**
 	 * Renders a status bar along with its restoration bar(s), icons and counters as appropriate
-	 * @param config Plugin configuration which dictates certain settings, such as whether to show restoration bars and
-	 *               whether or not to draw icons.
+	 *
+	 * @param config   Plugin configuration which dictates certain settings, such as whether to show restoration bars and
+	 *                 whether or not to draw icons.
 	 * @param graphics Graphics.
-	 * @param x The location on the client where it will draw the bar on the x axis starting on the left side.
-	 * @param y The location on the client where it will draw the bar on the y axis starting on the bottom side.
-	 * @param height The height of the bar.
+	 * @param x        The location on the client where it will draw the bar on the x axis starting on the left side.
+	 * @param y        The location on the client where it will draw the bar on the y axis starting on the bottom side.
+	 * @param height   The height of the bar.
 	 */
 	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
 	{
@@ -82,9 +95,9 @@ class BarRenderer
 
 		graphics.setColor(fill);
 		graphics.fillRect(x + BORDER_SIZE,
-			y + BORDER_SIZE + (height - filledHeight),
-			width - BORDER_SIZE * 2,
-			filledHeight - BORDER_SIZE * 2);
+				y + BORDER_SIZE + (height - filledHeight),
+				width - BORDER_SIZE * 2,
+				filledHeight - BORDER_SIZE * 2);
 
 		if (config.enableRestorationBars())
 		{
@@ -149,28 +162,15 @@ class BarRenderer
 			graphics.setColor(OVERHEAL_COLOR);
 			fillY = y + BORDER_SIZE;
 			fillHeight = height - filledCurrentHeight - BORDER_SIZE;
-		}
-		else
+		} else
 		{
 			fillY = y + BORDER_SIZE + height - (filledCurrentHeight + filledHealHeight);
 			fillHeight = filledHealHeight;
 		}
 
 		graphics.fillRect(x + BORDER_SIZE,
-			fillY,
-			width - BORDER_SIZE * 2,
-			fillHeight);
-	}
-
-	private static int getBarHeight(int base, int current, int size)
-	{
-		final double ratio = (double) current / base;
-
-		if (ratio >= 1)
-		{
-			return size;
-		}
-
-		return (int) Math.round(ratio * size);
+				fillY,
+				width - BORDER_SIZE * 2,
+				fillHeight);
 	}
 }

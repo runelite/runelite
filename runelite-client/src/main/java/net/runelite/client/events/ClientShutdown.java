@@ -58,12 +58,10 @@ public class ClientShutdown
 			try
 			{
 				task.get(timeout, TimeUnit.NANOSECONDS);
-			}
-			catch (ThreadDeath d)
+			} catch (ThreadDeath d)
 			{
 				throw d;
-			}
-			catch (Throwable t)
+			} catch (Throwable t)
 			{
 				log.warn("Error during shutdown: ", t);
 			}

@@ -57,12 +57,6 @@ import net.runelite.client.events.ProfileChanged;
 public class OverlayManager
 {
 	public static final String OPTION_CONFIGURE = "Configure";
-
-	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
-	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
-	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
-	private static final String RUNELITE_CONFIG_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
-
 	static final Comparator<Overlay> OVERLAY_COMPARATOR = (a, b) ->
 	{
 		final OverlayPosition aPos = MoreObjects.firstNonNull(a.getPreferredPosition(), a.getPosition());
@@ -81,20 +75,24 @@ public class OverlayManager
 		// draw *earlier* so that they are closer to their
 		// defined position.
 		return aPos == OverlayPosition.DYNAMIC || aPos == OverlayPosition.DETACHED
-			? Float.compare(a.getPriority(), b.getPriority())
-			: Float.compare(b.getPriority(), a.getPriority());
+				? Float.compare(a.getPriority(), b.getPriority())
+				: Float.compare(b.getPriority(), a.getPriority());
 	};
-
+	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
+	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
+	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
+	private static final String RUNELITE_CONFIG_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	/**
 	 * Insertion-order sorted set of overlays
 	 * All access to this must be guarded by a lock on this OverlayManager
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Overlay> overlays = new ArrayList<>();
+	private final ConfigManager configManager;
+	private final RuneLiteConfig runeLiteConfig;
 	@Getter
 	@Setter
 	private Collection<WidgetItem> widgetItems = Collections.emptyList();
-
 	/**
 	 * Valid keys are:
 	 * OverlayLayer ABOVE_SCENE, UNDER_WIDGETS, and ALWAYS_ON_TOP
@@ -102,9 +100,6 @@ public class OverlayManager
 	 * An interface id << 16 | 0xffff
 	 */
 	private ArrayListMultimap<Object, Overlay> overlayMap = ArrayListMultimap.create();
-
-	private final ConfigManager configManager;
-	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
 	private OverlayManager(final ConfigManager configManager, final RuneLiteConfig runeLiteConfig)
@@ -326,8 +321,7 @@ public class OverlayManager
 		if (overlay.isMovable())
 		{
 			overlay.setPreferredLocation(location);
-		}
-		else if (location != null)
+		} else if (location != null)
 		{
 			log.info("Resetting preferred location of non-movable overlay {} (class {})", overlay.getName(), overlay.getClass().getName());
 			overlay.setPreferredLocation(null);
@@ -339,8 +333,7 @@ public class OverlayManager
 		if (overlay.isSnappable())
 		{
 			overlay.setPreferredPosition(position);
-		}
-		else if (position != null)
+		} else if (position != null)
 		{
 			log.info("Resetting preferred position of non-snappable overlay {} (class {})", overlay.getName(), overlay.getClass().getName());
 			overlay.setPreferredPosition(null);
@@ -363,15 +356,14 @@ public class OverlayManager
 		if (overlay.getPreferredLocation() != null)
 		{
 			configManager.setConfiguration(
-				RUNELITE_CONFIG_GROUP_NAME,
-				key,
-				overlay.getPreferredLocation());
-		}
-		else
+					RUNELITE_CONFIG_GROUP_NAME,
+					key,
+					overlay.getPreferredLocation());
+		} else
 		{
 			configManager.unsetConfiguration(
-				RUNELITE_CONFIG_GROUP_NAME,
-				key);
+					RUNELITE_CONFIG_GROUP_NAME,
+					key);
 		}
 	}
 
@@ -381,15 +373,14 @@ public class OverlayManager
 		if (overlay.getPreferredSize() != null)
 		{
 			configManager.setConfiguration(
-				RUNELITE_CONFIG_GROUP_NAME,
-				key,
-				overlay.getPreferredSize());
-		}
-		else
+					RUNELITE_CONFIG_GROUP_NAME,
+					key,
+					overlay.getPreferredSize());
+		} else
 		{
 			configManager.unsetConfiguration(
-				RUNELITE_CONFIG_GROUP_NAME,
-				key);
+					RUNELITE_CONFIG_GROUP_NAME,
+					key);
 		}
 	}
 
@@ -399,15 +390,14 @@ public class OverlayManager
 		if (overlay.getPreferredPosition() != null)
 		{
 			configManager.setConfiguration(
-				RUNELITE_CONFIG_GROUP_NAME,
-				key,
-				overlay.getPreferredPosition());
-		}
-		else
+					RUNELITE_CONFIG_GROUP_NAME,
+					key,
+					overlay.getPreferredPosition());
+		} else
 		{
 			configManager.unsetConfiguration(
-				RUNELITE_CONFIG_GROUP_NAME,
-				key);
+					RUNELITE_CONFIG_GROUP_NAME,
+					key);
 		}
 	}
 

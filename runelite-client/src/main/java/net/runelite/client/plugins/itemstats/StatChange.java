@@ -58,6 +58,11 @@ public class StatChange
 	 */
 	private Positivity positivity;
 
+	static String formatBoost(int boost)
+	{
+		return String.format("%+d", boost);
+	}
+
 	/**
 	 * Returns a human-readable formatted relative boost.
 	 * Should be the boost amount prefixed by "+" or "-".
@@ -78,10 +83,5 @@ public class StatChange
 	public String getFormattedTheoretical()
 	{
 		return formatBoost(theoretical);
-	}
-
-	static String formatBoost(int boost)
-	{
-		return String.format("%+d", boost);
 	}
 }
