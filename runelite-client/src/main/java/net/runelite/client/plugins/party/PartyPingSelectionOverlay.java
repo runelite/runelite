@@ -40,10 +40,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 class PartyPingSelectionOverlay extends Overlay
 {
-	private static final Color BACKGROUND_COLOR = new Color(42, 38, 27, 155);
-	private static final Color OUTSIDE_STROKE_COLOR = new Color(111, 108, 94, 120);
-	private static final Color INSIDE_STROKE_COLOR = new Color(80, 72, 59, 200);
-	private static final Color PING_SELECTION_HIGHLIGHT_COLOR = new Color(107, 105, 97, 155);
+	private static class Colors
+	{
+		static final Color BACKGROUND = new Color(42, 38, 27, 155);
+		static final Color OUTSIDE_STROKE = new Color(111, 108, 94, 120);
+		static final Color INSIDE_STROKE = new Color(80, 72, 59, 200);
+		static final Color PING_SELECTION_HIGHLIGHT = new Color(107, 105, 97, 155);
+	}
 
 	private static final int RADIAL_MENU_RADIUS = 55;
 	private static final int RADIAL_MENU_THICKNESS = 30;
@@ -91,29 +94,33 @@ class PartyPingSelectionOverlay extends Overlay
 		return null;
 	}
 
-	private void renderRadialMenuBackground(final Graphics2D graphics, int baseX, int baseY)
+	private static void renderRadialMenuBackground(final Graphics2D graphics, int baseX, int baseY)
 	{
 		Ellipse2D outer = new Ellipse2D.Double(baseX, baseY, RADIAL_MENU_SIZE, RADIAL_MENU_SIZE);
 		Ellipse2D inner = new Ellipse2D.Double(baseX + RADIAL_MENU_THICKNESS, baseY + RADIAL_MENU_THICKNESS, RADIAL_MENU_HOLE_SIZE, RADIAL_MENU_HOLE_SIZE);
 
 		Area area = new Area(outer);
 		area.subtract(new Area(inner));
-		graphics.setColor(BACKGROUND_COLOR);
+		graphics.setColor(Colors.BACKGROUND);
 		graphics.fill(area);
 
-		// outlines
-		graphics.setColor(INSIDE_STROKE_COLOR);
+		drawOvals(graphics, baseX, baseY);
+	}
+
+	private static void drawOvals(final Graphics2D graphics, int baseX, int baseY)
+	{
+		graphics.setColor(Colors.INSIDE_STROKE);
 		graphics.drawOval(baseX - 1, baseY - 1, RADIAL_MENU_SIZE + 1, RADIAL_MENU_SIZE + 1);
 		graphics.drawOval(baseX + RADIAL_MENU_THICKNESS, baseY + RADIAL_MENU_THICKNESS, RADIAL_MENU_HOLE_SIZE - 1, RADIAL_MENU_HOLE_SIZE - 1);
 
-		graphics.setColor(OUTSIDE_STROKE_COLOR);
+		graphics.setColor(Colors.OUTSIDE_STROKE);
 		graphics.drawOval(baseX - 2, baseY - 2, RADIAL_MENU_SIZE + 3, RADIAL_MENU_SIZE + 3);
 		graphics.drawOval(baseX + RADIAL_MENU_THICKNESS + 1, baseY + RADIAL_MENU_THICKNESS + 1, RADIAL_MENU_HOLE_SIZE - 3, RADIAL_MENU_HOLE_SIZE - 3);
 	}
 
 	private void renderRadialHighlight(final Graphics2D graphics, int baseX, int baseY)
 	{
-		// substract 1 because TARGET ping type is our default and not shown in advanced menu
+		// subtract 1 because TARGET ping type is our default and not shown in advanced menu
 		double optionSelectionSize = 360.0 / (PartyPingType.values().length - 1);
 		double offset = optionSelectionSize / 2.0;
 
@@ -121,6 +128,7 @@ class PartyPingSelectionOverlay extends Overlay
 
 		// Arc2D draws counter-clockwise and 0deg = 3 o'clock, but our radial menu starts at 9 o'clock + offset, going clockwise
 		double startAngle = 180 - offset - pingType.ordinal() * optionSelectionSize;
+
 		if (startAngle < 0)
 		{
 			startAngle += 360;
@@ -131,13 +139,14 @@ class PartyPingSelectionOverlay extends Overlay
 		Area area = new Area(arc);
 		area.subtract(new Area(inner));
 
-		graphics.setColor(PING_SELECTION_HIGHLIGHT_COLOR);
+		graphics.setColor(Colors.PING_SELECTION_HIGHLIGHT);
 		graphics.fill(area);
 	}
 
 	private void renderMenuIcons(final Graphics2D graphics, int centerX, int centerY)
 	{
 		double optionSelectionSize = 360.0 / (PartyPingType.values().length - 1);
+
 		for (PartyPingType type : PartyPingType.values())
 		{
 			// skip default target ping
@@ -145,20 +154,20 @@ class PartyPingSelectionOverlay extends Overlay
 			{
 				continue;
 			}
-
-			// substract optionSelectionSize because our radial menu is slightly rotated
-			double angle = type.ordinal() * optionSelectionSize - optionSelectionSize;
-			final BufferedImage img = type.getImage();
+			
+			// subtract optionSelectionSize because our radial menu is slightly rotated
+			double angle = Math.toRadians(type.ordinal() * optionSelectionSize - optionSelectionSize);
+			BufferedImage img = type.getImage();
 
 			int radius = RADIAL_MENU_RADIUS - RADIAL_MENU_THICKNESS / 2 - 1;
-			double rad = Math.toRadians(angle);
-			int x = (int) (centerX - (img.getWidth() / 2) + (radius * Math.cos(rad)));
-			int y = (int) (centerY - (img.getHeight() / 2) + (radius * Math.sin(rad)));
+			int x = (int) (centerX - ((double) img.getWidth() / 2) + (radius * Math.cos(angle)));
+			int y = (int) (centerY - ((double) img.getHeight() / 2) + (radius * Math.sin(angle)));
+
 			graphics.drawImage(img, x, y, null);
 		}
 	}
 
-	private void renderIndicationLine(final Graphics2D graphics, Point start, Point end)
+	private static void renderIndicationLine(final Graphics2D graphics, Point start, Point end)
 	{
 		graphics.setColor(Color.WHITE);
 		graphics.drawLine(start.getX(), start.getY(), end.getX(), end.getY());

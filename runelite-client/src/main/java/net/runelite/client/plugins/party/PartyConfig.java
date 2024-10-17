@@ -119,10 +119,7 @@ public interface PartyConfig extends Config
 			description = "Color of incoming target pings",
 			position = 8
 	)
-	default Color targetPingColor()
-	{
-		return null;
-	}
+	Color targetPingColor();
 
 	@ConfigSection(
 			name = "Danger ping",
@@ -205,10 +202,7 @@ public interface PartyConfig extends Config
 			description = "Color of incoming destination pings",
 			position = 16
 	)
-	default Color destinationPingColor()
-	{
-		return null;
-	}
+	Color destinationPingColor();
 
 	@ConfigItem(
 			section = SECTION_DESTINATION_PING,
@@ -248,10 +242,7 @@ public interface PartyConfig extends Config
 			description = "Color of incoming request pings",
 			position = 20
 	)
-	default Color requestPingColor()
-	{
-		return null;
-	}
+	Color requestPingColor();
 
 	@ConfigItem(
 			section = SECTION_REQUEST_PING,
@@ -291,10 +282,7 @@ public interface PartyConfig extends Config
 			description = "Color of incoming question pings",
 			position = 24
 	)
-	default Color questionPingColor()
-	{
-		return null;
-	}
+	Color questionPingColor();
 
 	@ConfigItem(
 			section = SECTION_QUESTION_PING,

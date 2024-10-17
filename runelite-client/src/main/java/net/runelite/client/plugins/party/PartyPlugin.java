@@ -102,7 +102,12 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
-@PluginDescriptor(name = "Party", configName = "PartyPlugin2", description = "Party management and basic info", enabledByDefault = false)
+@PluginDescriptor(
+		name = "Party",
+		configName = "PartyPlugin2",
+		description = "Party management and basic info",
+		enabledByDefault = false
+)
 @Slf4j
 public class PartyPlugin extends Plugin
 {
@@ -489,7 +494,7 @@ public class PartyPlugin extends Plugin
 		}
 
 		Integer target = ping.getTarget();
-		Color color = null;
+		Color color;
 		int soundId;
 		WorldPoint point = null;
 		Actor actor = null;
@@ -602,7 +607,10 @@ public class PartyPlugin extends Plugin
 		return null;
 	}
 
-	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
+	@Schedule(
+			period = 10,
+			unit = ChronoUnit.SECONDS
+	)
 	public void scheduledTick()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
