@@ -37,7 +37,8 @@ import net.runelite.client.plugins.party.PartyPingType;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PartyPing extends PartyMemberMessage {
+public class PartyPing extends PartyMemberMessage
+{
 	@SerializedName("pt")
 	private PartyPingType pingType;
 

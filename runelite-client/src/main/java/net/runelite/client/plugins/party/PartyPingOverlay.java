@@ -52,14 +52,15 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class PartyPingOverlay extends Overlay {
+class PartyPingOverlay extends Overlay
+{
 	private static final int PING_START_ALPHA = 255;
 	private static final double IMAGE_FLOAT_START_THRESHOLD = 0.3;
 	private static final int IMAGE_BASE_FLOAT_HEIGHT = 10;
 	private static final int IMAGE_END_FLOAT_HEIGHT = 25;
 	private static final Polygon ARROW_HEAD = new Polygon(
-			new int[]{0, -5, 5},
-			new int[]{0, -7, -7},
+			new int[] {0, -5, 5},
+			new int[] {0, -7, -7},
 			3
 	);
 
@@ -68,7 +69,8 @@ class PartyPingOverlay extends Overlay {
 	private final PartyConfig config;
 
 	@Inject
-	private PartyPingOverlay(final Client client, final PartyPlugin plugin, final PartyConfig config) {
+	private PartyPingOverlay(final Client client, final PartyPlugin plugin, final PartyConfig config)
+	{
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
@@ -76,19 +78,24 @@ class PartyPingOverlay extends Overlay {
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
-		if (plugin.getPartyDataMap().isEmpty()) {
+	public Dimension render(Graphics2D graphics)
+	{
+		if (plugin.getPartyDataMap().isEmpty())
+		{
 			return null;
 		}
 
-		synchronized (plugin.getPendingPartyPings()) {
+		synchronized (plugin.getPendingPartyPings())
+		{
 			final Iterator<PartyPingData> iterator = plugin.getPendingPartyPings().iterator();
 
-			while (iterator.hasNext()) {
+			while (iterator.hasNext())
+			{
 				PartyPingData next = iterator.next();
 				long timeLeft = Duration.between(Instant.now(), next.getExpiresAt()).toMillis();
 
-				if (timeLeft <= 0) {
+				if (timeLeft <= 0)
+				{
 					iterator.remove();
 					continue;
 				}
@@ -101,13 +108,15 @@ class PartyPingOverlay extends Overlay {
 		return null;
 	}
 
-	private void renderPing(final Graphics2D graphics, final PartyPingData ping, double percentageLeft) {
+	private void renderPing(final Graphics2D graphics, final PartyPingData ping, double percentageLeft)
+	{
 		Polygon poly = null;
 		LocalPoint localPoint = null;
 		int targetHeight = 0;
 		int imageFloatDistance = 0;
 
-		switch (ping.getTargetType()) {
+		switch (ping.getTargetType())
+		{
 			case TILE:
 				localPoint = LocalPoint.fromWorld(client, ping.getPoint());
 				poly = Perspective.getCanvasTilePoly(client, localPoint);
@@ -129,7 +138,8 @@ class PartyPingOverlay extends Overlay {
 				break;
 		}
 
-		if (poly == null || localPoint == null) {
+		if (poly == null || localPoint == null)
+		{
 			return;
 		}
 
@@ -141,14 +151,17 @@ class PartyPingOverlay extends Overlay {
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
 
-		if (ping.getPingType() == PartyPingType.DESTINATION && config.drawDestinationLine()) {
+		if (ping.getPingType() == PartyPingType.DESTINATION && config.drawDestinationLine())
+		{
 			Player source = client.getCachedPlayers()[ping.getSourcePlayerIdx()];
-			if (source != null) {
+			if (source != null)
+			{
 				renderSourcePlayerLine(graphics, source, localPoint, color);
 			}
 		}
 
-		if (ping.getTargetType() == PartyPingTargetType.TILE && ping.getPingType() == PartyPingType.TARGET) {
+		if (ping.getTargetType() == PartyPingTargetType.TILE && ping.getPingType() == PartyPingType.TARGET)
+		{
 			return;
 		}
 
@@ -156,7 +169,8 @@ class PartyPingOverlay extends Overlay {
 		final Point imageLocation = Perspective.localToCanvas(client, localPoint, client.getPlane(), targetHeight + image.getHeight());
 
 		final Composite originalComposite = graphics.getComposite();
-		if (percentageLeft <= IMAGE_FLOAT_START_THRESHOLD) {
+		if (percentageLeft <= IMAGE_FLOAT_START_THRESHOLD)
+		{
 			final AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (percentageLeft / IMAGE_FLOAT_START_THRESHOLD));
 			graphics.setComposite(alphaComposite);
 		}
@@ -167,10 +181,13 @@ class PartyPingOverlay extends Overlay {
 		graphics.setComposite(originalComposite);
 	}
 
-	private int determineObjectTargetHeight(TileObject object) {
-		if (object instanceof GameObject) {
+	private int determineObjectTargetHeight(TileObject object)
+	{
+		if (object instanceof GameObject)
+		{
 			GameObject gameObject = (GameObject) object;
-			if (gameObject.getRenderable() instanceof DynamicObject) {
+			if (gameObject.getRenderable() instanceof DynamicObject)
+			{
 				// without recalculating the bounds cylinder, the height for the object seems to be inaccurate because we are possibly calling it after it is already drawn
 				// this will cause the image we are trying to draw above the object to be drawn at some undesired height instead
 				gameObject.getRenderable().getModel().calculateBoundsCylinder();
@@ -183,11 +200,13 @@ class PartyPingOverlay extends Overlay {
 		int height1 = 0;
 		int height2 = 0;
 
-		if (object instanceof WallObject) {
+		if (object instanceof WallObject)
+		{
 			WallObject wallObject = (WallObject) object;
 			height1 = wallObject.getRenderable1() != null ? wallObject.getRenderable1().getModelHeight() : 0;
 			height2 = wallObject.getRenderable2() != null ? wallObject.getRenderable2().getModelHeight() : 0;
-		} else if (object instanceof DecorativeObject) {
+		} else if (object instanceof DecorativeObject)
+		{
 			DecorativeObject decorativeObject = (DecorativeObject) object;
 			height1 = decorativeObject.getRenderable() != null ? decorativeObject.getRenderable().getModelHeight() : 0;
 			height2 = decorativeObject.getRenderable2() != null ? decorativeObject.getRenderable2().getModelHeight() : 0;
@@ -196,15 +215,18 @@ class PartyPingOverlay extends Overlay {
 		return Math.max(height1, height2);
 	}
 
-	private void renderSourcePlayerLine(final Graphics2D graphics, final Player player, final LocalPoint destination, final Color color) {
+	private void renderSourcePlayerLine(final Graphics2D graphics, final Player player, final LocalPoint destination, final Color color)
+	{
 		final LocalPoint playerLocation = player.getLocalLocation();
 		final Point source = Perspective.localToCanvas(client, playerLocation, client.getPlane());
-		if (source == null) {
+		if (source == null)
+		{
 			return;
 		}
 
 		final Point target = Perspective.localToCanvas(client, destination, client.getPlane());
-		if (target == null) {
+		if (target == null)
+		{
 			return;
 		}
 

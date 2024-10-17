@@ -26,6 +26,7 @@ package net.runelite.client.plugins.party.messages;
 
 import com.google.gson.annotations.SerializedName;
 import java.awt.Color;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,8 +34,10 @@ import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class StatusUpdate extends PartyMemberMessage {
+public class StatusUpdate extends PartyMemberMessage
+{
 
 	// we use boxed fields to null out properties that haven't changed
 	@SerializedName("n")
@@ -63,16 +66,4 @@ public class StatusUpdate extends PartyMemberMessage {
 
 	@SerializedName("c")
 	private Color memberColor = null;
-
-	public StatusUpdate(String characterName, Integer healthCurrent, Integer healthMax, Integer prayerCurrent, Integer prayerMax, Integer runEnergy, Integer specEnergy, Boolean vengeanceActive, Color memberColor) {
-		this.characterName = characterName;
-		this.healthCurrent = healthCurrent;
-		this.healthMax = healthMax;
-		this.prayerCurrent = prayerCurrent;
-		this.prayerMax = prayerMax;
-		this.runEnergy = runEnergy;
-		this.specEnergy = specEnergy;
-		this.vengeanceActive = vengeanceActive;
-		this.memberColor = memberColor;
-	}
 }
