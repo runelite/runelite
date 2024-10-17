@@ -58,11 +58,7 @@ class PartyPingOverlay extends Overlay
 	private static final double IMAGE_FLOAT_START_THRESHOLD = 0.3;
 	private static final int IMAGE_BASE_FLOAT_HEIGHT = 10;
 	private static final int IMAGE_END_FLOAT_HEIGHT = 25;
-	private static final Polygon ARROW_HEAD = new Polygon(
-			new int[] {0, -5, 5},
-			new int[] {0, -7, -7},
-			3
-	);
+	private static final Polygon ARROW_HEAD = new Polygon(new int[] {0, -5, 5}, new int[] {0, -7, -7}, 3);
 
 	private final Client client;
 	private final PartyPlugin plugin;
@@ -120,9 +116,7 @@ class PartyPingOverlay extends Overlay
 			case TILE:
 				localPoint = LocalPoint.fromWorld(client, ping.getPoint());
 				poly = Perspective.getCanvasTilePoly(client, localPoint);
-				imageFloatDistance =
-						percentageLeft <= IMAGE_FLOAT_START_THRESHOLD ? (int) (IMAGE_END_FLOAT_HEIGHT - ((IMAGE_END_FLOAT_HEIGHT - IMAGE_BASE_FLOAT_HEIGHT) * (percentageLeft / IMAGE_FLOAT_START_THRESHOLD))) :
-								IMAGE_BASE_FLOAT_HEIGHT;
+				imageFloatDistance = percentageLeft <= IMAGE_FLOAT_START_THRESHOLD ? (int) (IMAGE_END_FLOAT_HEIGHT - ((IMAGE_END_FLOAT_HEIGHT - IMAGE_BASE_FLOAT_HEIGHT) * (percentageLeft / IMAGE_FLOAT_START_THRESHOLD))) : IMAGE_BASE_FLOAT_HEIGHT;
 				break;
 
 			case NPC:
@@ -143,11 +137,7 @@ class PartyPingOverlay extends Overlay
 			return;
 		}
 
-		final Color color = new Color(
-				ping.getColor().getRed(),
-				ping.getColor().getGreen(),
-				ping.getColor().getBlue(),
-				(int) (PING_START_ALPHA * percentageLeft));
+		final Color color = new Color(ping.getColor().getRed(), ping.getColor().getGreen(), ping.getColor().getBlue(), (int) (PING_START_ALPHA * percentageLeft));
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
 
@@ -205,7 +195,8 @@ class PartyPingOverlay extends Overlay
 			WallObject wallObject = (WallObject) object;
 			height1 = wallObject.getRenderable1() != null ? wallObject.getRenderable1().getModelHeight() : 0;
 			height2 = wallObject.getRenderable2() != null ? wallObject.getRenderable2().getModelHeight() : 0;
-		} else if (object instanceof DecorativeObject)
+		}
+		else if (object instanceof DecorativeObject)
 		{
 			DecorativeObject decorativeObject = (DecorativeObject) object;
 			height1 = decorativeObject.getRenderable() != null ? decorativeObject.getRenderable().getModelHeight() : 0;
