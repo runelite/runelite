@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -25,17 +26,21 @@ public class NexDropRatePlugin extends Plugin
 {
 	@Inject
 	private Client client;
-
 	private int[] damageRatio;
-	private final int[] NEX_ID = {11278, 11279, 11280, 11281, 11282};
-	private final int base = 43;
+	private final int[] NEX_ID = {
+		NpcID.NEX,
+		NpcID.NEX_11279,
+		NpcID.NEX_11280,
+		NpcID.NEX_11281,
+		NpcID.NEX_11282
+	};
 	private List<Double> dropRates;
 	private List<String> playerCount;
 	private double averageDropRate;
 
 	private double dropRate()
 	{
-		return base * playerCount.size() * damageRatio();
+		return 43 * playerCount.size() * damageRatio();
 	}
 
 	private double damageRatio()
