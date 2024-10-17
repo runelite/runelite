@@ -27,8 +27,7 @@ package net.runelite.api;
 /**
  * Utility class used for mapping sound effect IDs.
  */
-public final class SoundEffectID
-{
+public final class SoundEffectID {
 	public final static int UI_BOOP = 2266;
 	public final static int GE_INCREMENT_PLOP = 3929;
 	public final static int GE_DECREMENT_PLOP = 3930;
@@ -95,5 +94,8 @@ public final class SoundEffectID
 	public final static int TOWN_CRIER_BELL_DING = 3813;
 	public final static int TOWN_CRIER_BELL_DONG = 3817;
 	public final static int TOWN_CRIER_SHOUT_SQUEAK = 3816;
+
+	public final static int SOTE_BELL_HIGH_C = 4152;
+	public final static int STAR_SPRITE_APPEAR = 4935;
 
 }

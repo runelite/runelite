@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,18 +26,27 @@
 package net.runelite.client.plugins.party.data;
 
 import java.awt.Color;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.api.Actor;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.party.PartyPingTargetType;
+import net.runelite.client.plugins.party.PartyPingType;
 
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class PartyTilePingData
-{
+public class PartyPingData {
+	private final long pingDuration;
+	private final Instant expiresAt;
+	private final PartyPingType pingType;
+	private final PartyPingTargetType targetType;
+	private final int sourcePlayerIdx;
+	private final Actor targetActor;
+	private final TileObject targetObject;
 	private final WorldPoint point;
 	private final Color color;
-	private int alpha = 255;
-	private final long creationTime = System.nanoTime();
 }

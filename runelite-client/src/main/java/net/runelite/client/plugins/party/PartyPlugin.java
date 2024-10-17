@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,23 +38,29 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
@@ -66,9 +73,11 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -78,10 +87,10 @@ import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
-import net.runelite.client.plugins.party.data.PartyTilePingData;
+import net.runelite.client.plugins.party.data.PartyPingData;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
+import net.runelite.client.plugins.party.messages.PartyPing;
 import net.runelite.client.plugins.party.messages.StatusUpdate;
-import net.runelite.client.plugins.party.messages.TilePing;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -94,18 +103,21 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Party",
-	configName = "PartyPlugin2",
-	description = "Party management and basic info",
-	enabledByDefault = false
+		name = "Party",
+		configName = "PartyPlugin2",
+		description = "Party management and basic info",
+		enabledByDefault = false
 )
 @Slf4j
-public class PartyPlugin extends Plugin
-{
+public class PartyPlugin extends Plugin {
+	// deadzone (radius in px) within radial menu that will cancel out ping selection
+	static final int PING_MENU_DEADZONE = 25;
+
 	@Inject
 	private Client client;
 
 	@Inject
+	@Getter(AccessLevel.PACKAGE)
 	private PartyService party;
 
 	@Inject
@@ -116,6 +128,9 @@ public class PartyPlugin extends Plugin
 
 	@Inject
 	private PartyStatusOverlay partyStatusOverlay;
+
+	@Inject
+	private PartyPingSelectionOverlay partyPingSelectionOverlay;
 
 	@Inject
 	private WSClient wsClient;
@@ -139,6 +154,9 @@ public class PartyPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -146,7 +164,7 @@ public class PartyPlugin extends Plugin
 	private final Map<Long, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
 
 	@Getter
-	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
+	private final List<PartyPingData> pendingPartyPings = Collections.synchronizedList(new ArrayList<>());
 
 	private Instant lastLogout;
 
@@ -156,50 +174,119 @@ public class PartyPlugin extends Plugin
 	private WorldPoint lastLocation;
 	private StatusUpdate lastStatus;
 
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
-	{
+	@Getter(AccessLevel.PACKAGE)
+	private Point mouseStartPosition;
+	private PartyPingMouseListener pingMouseListener;
+
+	@Getter(AccessLevel.PACKAGE)
+	private PartyPing pendingPartyPing;
+
+	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	private boolean advancedPingMenuOpen = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean pingHotkeyPressed = false;
+	private final HotkeyListener pingHotkeyListener = new HotkeyListener(() -> config.pingHotkey()) {
 		@Override
-		public void hotkeyPressed()
-		{
-			hotkeyPressed = true;
+		public void hotkeyPressed() {
+			pingHotkeyPressed = true;
 		}
 
 		@Override
-		public void hotkeyReleased()
-		{
-			hotkeyPressed = false;
+		public void hotkeyReleased() {
+			pingHotkeyPressed = false;
 		}
 	};
 
-	private boolean hotkeyPressed = false;
+	private boolean dangerHotkeyPressed = false;
+	private final HotkeyListener dangerHotkeyListener = new HotkeyListener(() -> config.dangerPingHotkey()) {
+		@Override
+		public void hotkeyPressed() {
+			dangerHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased() {
+			dangerHotkeyPressed = false;
+		}
+	};
+
+	private boolean destinationHotkeyPressed = false;
+	private final HotkeyListener destinationHotkeyListener = new HotkeyListener(() -> config.destinationPingHotkey()) {
+		@Override
+		public void hotkeyPressed() {
+			destinationHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased() {
+			destinationHotkeyPressed = false;
+		}
+	};
+
+	private boolean requestHotkeyPressed = false;
+	private final HotkeyListener requestHotkeyListener = new HotkeyListener(() -> config.requestPingHotkey()) {
+		@Override
+		public void hotkeyPressed() {
+			requestHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased() {
+			requestHotkeyPressed = false;
+		}
+	};
+
+	private boolean questionHotkeyPressed = false;
+	private final HotkeyListener questionHotkeyListener = new HotkeyListener(() -> config.questionPingHotkey()) {
+		@Override
+		public void hotkeyPressed() {
+			questionHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased() {
+			questionHotkeyPressed = false;
+		}
+	};
+
+	private boolean isHotkeyPressed() {
+		return pingHotkeyPressed || dangerHotkeyPressed || destinationHotkeyPressed || requestHotkeyPressed || questionHotkeyPressed;
+	}
 
 	@Override
-	public void configure(Binder binder)
-	{
+	public void configure(Binder binder) {
 		binder.bind(PartyPluginService.class).to(PartyPluginServiceImpl.class);
 	}
 
 	@Override
-	protected void startUp() throws Exception
-	{
+	protected void startUp() throws Exception {
 		lastLogout = Instant.now();
 		panel = injector.getInstance(PartyPanel.class);
 
 		final BufferedImage icon = ImageUtil.loadImageResource(PartyPlugin.class, "panel_icon.png");
 
 		navButton = NavigationButton.builder()
-			.tooltip("Party")
-			.icon(icon)
-			.priority(9)
-			.panel(panel)
-			.build();
+				.tooltip("Party")
+				.icon(icon)
+				.priority(9)
+				.panel(panel)
+				.build();
 
 		clientToolbar.addNavigation(navButton);
 
+		pingMouseListener = new PartyPingMouseListener(client, this, config);
+		mouseManager.registerMouseListener(pingMouseListener);
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
-		keyManager.registerKeyListener(hotkeyListener);
-		wsClient.registerMessage(TilePing.class);
+		overlayManager.add(partyPingSelectionOverlay);
+		keyManager.registerKeyListener(pingHotkeyListener);
+		keyManager.registerKeyListener(questionHotkeyListener);
+		keyManager.registerKeyListener(dangerHotkeyListener);
+		keyManager.registerKeyListener(destinationHotkeyListener);
+		keyManager.registerKeyListener(requestHotkeyListener);
+		wsClient.registerMessage(PartyPing.class);
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
@@ -207,20 +294,26 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
-	{
+	protected void shutDown() throws Exception {
 		lastLogout = null;
 		clientToolbar.removeNavigation(navButton);
 
 		panel = null;
 
 		partyDataMap.clear();
-		pendingTilePings.clear();
+		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
+		mouseManager.unregisterMouseListener(pingMouseListener);
+		pingMouseListener = null;
 		overlayManager.remove(partyPingOverlay);
 		overlayManager.remove(partyStatusOverlay);
-		keyManager.unregisterKeyListener(hotkeyListener);
-		wsClient.unregisterMessage(TilePing.class);
+		overlayManager.remove(partyPingSelectionOverlay);
+		keyManager.unregisterKeyListener(pingHotkeyListener);
+		keyManager.unregisterKeyListener(questionHotkeyListener);
+		keyManager.unregisterKeyListener(dangerHotkeyListener);
+		keyManager.unregisterKeyListener(destinationHotkeyListener);
+		keyManager.unregisterKeyListener(requestHotkeyListener);
+		wsClient.unregisterMessage(PartyPing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(StatusUpdate.class);
 		lastLocation = null;
@@ -228,30 +321,37 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Provides
-	public PartyConfig provideConfig(ConfigManager configManager)
-	{
+	public PartyConfig provideConfig(ConfigManager configManager) {
 		return configManager.getConfig(PartyConfig.class);
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			hotkeyPressed = false;
+	public void onFocusChanged(FocusChanged focusChanged) {
+		if (!focusChanged.isFocused()) {
+			pingHotkeyPressed = false;
+			questionHotkeyPressed = false;
+			dangerHotkeyPressed = false;
+			destinationHotkeyPressed = false;
+			requestHotkeyPressed = false;
 		}
 	}
 
-	void leaveParty()
-	{
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event) {
+		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+				event.getEntry().getTarget().equals("Party") &&
+				event.getEntry().getOption().equals("Leave")) {
+			leaveParty();
+		}
+	}
+
+	void leaveParty() {
 		party.changeParty(null);
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(PartyConfig.GROUP))
-		{
+	public void onConfigChanged(ConfigChanged event) {
+		if (event.getGroup().equals(PartyConfig.GROUP)) {
 			partyStatusOverlay.updateConfig();
 			// rebuild the panel in the event the "Recolor names" option changes
 			SwingUtilities.invokeLater(panel::updateAll);
@@ -259,104 +359,230 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (!hotkeyPressed || client.isMenuOpen() || !party.isInParty() || !config.pings())
-		{
+	public void onMenuOptionClicked(MenuOptionClicked event) {
+		if (!isHotkeyPressed() || client.isMenuOpen() || !party.isInParty() || !config.pings()) {
 			return;
 		}
 
-		Tile selectedSceneTile = client.getSelectedSceneTile();
-		if (selectedSceneTile == null)
-		{
-			return;
+		final Integer target;
+		final PartyPingTargetType targetType;
+		final WorldPoint location;
+
+		switch (event.getMenuAction()) {
+			case NPC_FIRST_OPTION:
+			case NPC_SECOND_OPTION:
+			case NPC_THIRD_OPTION:
+			case NPC_FOURTH_OPTION:
+			case NPC_FIFTH_OPTION:
+				targetType = PartyPingTargetType.NPC;
+				target = event.getId();
+				location = null;
+				break;
+
+			case GAME_OBJECT_FIRST_OPTION:
+			case GAME_OBJECT_SECOND_OPTION:
+			case GAME_OBJECT_THIRD_OPTION:
+			case GAME_OBJECT_FOURTH_OPTION:
+			case GAME_OBJECT_FIFTH_OPTION:
+				targetType = PartyPingTargetType.OBJECT;
+				target = event.getId();
+				location = WorldPoint.fromScene(client, event.getParam0(), event.getParam1(), client.getPlane());
+				break;
+
+			case WALK:
+				Tile selectedSceneTile = client.getSelectedSceneTile();
+				if (selectedSceneTile == null) {
+					return;
+				}
+
+				targetType = PartyPingTargetType.TILE;
+				target = null;
+				location = selectedSceneTile.getWorldLocation();
+				break;
+
+			default:
+				log.debug("Ping attempt failed due to unhandled menu action {}", event.getMenuAction());
+				return;
 		}
 
-		boolean isOnCanvas = false;
+		PartyPingType pingType =
+				questionHotkeyPressed ? PartyPingType.QUESTION :
+						dangerHotkeyPressed ? PartyPingType.DANGER :
+								destinationHotkeyPressed ? PartyPingType.DESTINATION :
+										requestHotkeyPressed ? PartyPingType.REQUEST :
+												PartyPingType.TARGET; //default to target ping
 
-		for (MenuEntry menuEntry : client.getMenuEntries())
-		{
-			if (menuEntry == null)
-			{
-				continue;
-			}
-
-			if ("walk here".equalsIgnoreCase(menuEntry.getOption()))
-			{
-				isOnCanvas = true;
-			}
-		}
-
-		if (!isOnCanvas)
-		{
-			return;
+		final PartyPing ping = new PartyPing(pingType, targetType, location, target, client.getWorld(), client.getLocalPlayer().getId());
+		if (pingHotkeyPressed && config.advancedPingMenu()) {
+			mouseStartPosition = client.getMouseCanvasPosition();
+			pendingPartyPing = ping;
+		} else {
+			party.send(ping);
 		}
 
 		event.consume();
-		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
-		party.send(tilePing);
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
-		{
+	public void onGameStateChanged(GameStateChanged event) {
+		if (event.getGameState() == GameState.LOGIN_SCREEN) {
 			lastLogout = Instant.now();
 		}
 
 		checkStateChanged(false);
 	}
 
-	@Subscribe
-	public void onTilePing(TilePing event)
-	{
-		if (config.pings())
-		{
-			final PartyData partyData = getPartyData(event.getMemberId());
-			final Color color = partyData != null ? partyData.getColor() : Color.RED;
-			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color));
+	void resetPingMenu() {
+		advancedPingMenuOpen = false;
+		mouseStartPosition = null;
+		pendingPartyPing = null;
+	}
+
+	private boolean pingIsSameSourceAndTarget(PartyPingData data, PartyPingData other) {
+		if (data.getSourcePlayerIdx() != other.getSourcePlayerIdx() && data.getTargetType() != other.getTargetType()) {
+			return false;
 		}
 
-		if (config.sounds())
-		{
-			WorldPoint point = event.getPoint();
+		if (data.getPoint() == null) {
+			return other.getPoint() == null && data.getTargetActor() == other.getTargetActor() && data.getTargetObject() == other.getTargetObject();
+		}
 
-			if (point.getPlane() != client.getPlane() || !WorldPoint.isInScene(client, point.getX(), point.getY()))
-			{
+		return data.getPoint().equals(other.getPoint());
+	}
+
+	@Subscribe
+	public void onPartyPing(PartyPing ping) {
+		if (ping.getWorld() != client.getWorld() || !config.pings()) {
+			return;
+		}
+
+		PartyPingTargetType targetType = ping.getTargetType();
+		if (targetType != PartyPingTargetType.NPC && (ping.getPoint().getPlane() != client.getPlane() || !WorldPoint.isInScene(client, ping.getPoint().getX(), ping.getPoint().getY()))) {
+			return;
+		}
+
+		Integer target = ping.getTarget();
+		Color color = null;
+		int soundId;
+		WorldPoint point = null;
+		Actor actor = null;
+		TileObject object = null;
+
+		switch (targetType) {
+			case TILE:
+				point = ping.getPoint();
+				break;
+
+			case NPC:
+				actor = client.getCachedNPCs()[target];
+				if (actor == null) {
+					return;
+				}
+				break;
+
+			case OBJECT:
+				object = findTileObject(ping.getPoint(), target);
+				if (object == null) {
+					// couldn't find the object so target tile instead
+					targetType = PartyPingTargetType.TILE;
+					point = ping.getPoint();
+				}
+				break;
+		}
+
+		final PartyPingType type = ping.getPingType();
+		switch (type) {
+			case TARGET:
+				color = config.targetPingColor();
+				soundId = !config.targetPingSound() ? -1 :
+						targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.SOTE_BELL_HIGH_C;
+				break;
+
+			case QUESTION:
+				color = config.questionPingColor();
+				soundId = config.questionPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case DANGER:
+				color = config.dangerPingColor();
+				soundId = config.dangerPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case DESTINATION:
+				color = config.destinationPingColor();
+				soundId = config.destinationPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case REQUEST:
+				color = config.requestPingColor();
+				soundId = config.requestPingSound() ? type.getSoundId() : -1;
+				break;
+
+			default:
+				log.debug("Received PartyPing with unhandled type: {}", type);
 				return;
-			}
+		}
 
-			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK));
+		// if user has not set a color preference, use unique hash based color instead
+		if (color == null) {
+			final PartyData partyData = getPartyData(ping.getMemberId());
+			color = partyData != null ? partyData.getColor() : Color.ORANGE;
+		}
+
+		final long pingDuration = (long) (config.pingDuration() * 1000);
+		final Instant expiresAt = Instant.now().plusMillis(pingDuration);
+		final PartyPingData pingData = new PartyPingData(pingDuration, expiresAt, type, targetType, ping.getPlayerId(), actor, object, point, color);
+		pendingPartyPings.removeIf(p -> pingIsSameSourceAndTarget(p, pingData));
+		pendingPartyPings.add(pingData);
+
+		if (soundId > -1) {
+			clientThread.invoke(() -> client.playSoundEffect(soundId));
 		}
 	}
 
-	@Schedule(
-		period = 10,
-		unit = ChronoUnit.SECONDS
-	)
-	public void scheduledTick()
-	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			shareLocation();
+	private TileObject findTileObject(WorldPoint point, int objectId) {
+		LocalPoint local = LocalPoint.fromWorld(client, point);
+		Tile tile = client.getScene().getTiles()[client.getPlane()][local.getSceneX()][local.getSceneY()];
+		if (tile == null) {
+			return null;
 		}
-		else if (client.getGameState() == GameState.LOGIN_SCREEN)
-		{
+
+		if (tile.getWallObject() != null && tile.getWallObject().getId() == objectId) {
+			return tile.getWallObject();
+		}
+
+		if (tile.getDecorativeObject() != null && tile.getDecorativeObject().getId() == objectId) {
+			return tile.getDecorativeObject();
+		}
+
+		for (GameObject gameObject : tile.getGameObjects()) {
+			if (gameObject != null && gameObject.getId() == objectId) {
+				return gameObject;
+			}
+		}
+
+		return null;
+	}
+
+	@Schedule(
+			period = 10,
+			unit = ChronoUnit.SECONDS
+	)
+	public void scheduledTick() {
+		if (client.getGameState() == GameState.LOGGED_IN) {
+			shareLocation();
+		} else if (client.getGameState() == GameState.LOGIN_SCREEN) {
 			checkIdle();
 		}
 	}
 
-	private void shareLocation()
-	{
-		if (!party.isInParty())
-		{
+	private void shareLocation() {
+		if (!party.isInParty()) {
 			return;
 		}
 
 		WorldPoint location = client.getLocalPlayer().getWorldLocation();
-		if (location.equals(lastLocation))
-		{
+		if (location.equals(lastLocation)) {
 			return;
 		}
 
@@ -366,26 +592,21 @@ public class PartyPlugin extends Plugin
 		party.send(locationUpdate);
 	}
 
-	private void checkIdle()
-	{
+	private void checkIdle() {
 		if (lastLogout != null && lastLogout.isBefore(Instant.now().minus(30, ChronoUnit.MINUTES))
-			&& party.isInParty())
-		{
+				&& party.isInParty()) {
 			log.info("Leaving party due to inactivity");
 			party.changeParty(null);
 		}
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
-	{
+	public void onGameTick(final GameTick event) {
 		checkStateChanged(false);
 	}
 
-	void requestSync()
-	{
-		if (party.isInParty())
-		{
+	void requestSync() {
+		if (party.isInParty()) {
 			// Request sync
 			final UserSync userSync = new UserSync();
 			party.send(userSync);
@@ -393,59 +614,44 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatusUpdate(final StatusUpdate event)
-	{
+	public void onStatusUpdate(final StatusUpdate event) {
 		final PartyData partyData = getPartyData(event.getMemberId());
-		if (partyData == null)
-		{
+		if (partyData == null) {
 			return;
 		}
 
-		if (event.getHealthCurrent() != null)
-		{
+		if (event.getHealthCurrent() != null) {
 			partyData.setHitpoints(event.getHealthCurrent());
 		}
-		if (event.getHealthMax() != null)
-		{
+		if (event.getHealthMax() != null) {
 			partyData.setMaxHitpoints(event.getHealthMax());
 		}
-		if (event.getPrayerCurrent() != null)
-		{
+		if (event.getPrayerCurrent() != null) {
 			partyData.setPrayer(event.getPrayerCurrent());
 		}
-		if (event.getPrayerMax() != null)
-		{
+		if (event.getPrayerMax() != null) {
 			partyData.setMaxPrayer(event.getPrayerMax());
 		}
-		if (event.getRunEnergy() != null)
-		{
+		if (event.getRunEnergy() != null) {
 			partyData.setRunEnergy(event.getRunEnergy());
 		}
-		if (event.getSpecEnergy() != null)
-		{
+		if (event.getSpecEnergy() != null) {
 			partyData.setSpecEnergy(event.getSpecEnergy());
 		}
-		if (event.getVengeanceActive() != null)
-		{
+		if (event.getVengeanceActive() != null) {
 			partyData.setVengeanceActive(event.getVengeanceActive());
-		}
-		if (event.getMemberColor() != null)
-		{
-			partyData.setColor(event.getMemberColor());
 		}
 
 		final PartyMember member = party.getMemberById(event.getMemberId());
-		if (event.getCharacterName() != null)
-		{
+		if (event.getCharacterName() != null) {
 			final String name = Text.removeTags(Text.toJagexName(event.getCharacterName()));
-			if (!name.isEmpty())
-			{
+			if (!name.isEmpty()) {
 				member.setDisplayName(name);
 				member.setLoggedIn(true);
-			}
-			else
-			{
+				partyData.setColor(ColorUtil.fromObject(name));
+			} else {
 				member.setLoggedIn(false);
+				partyData.setColor(Color.WHITE);
 			}
 		}
 
@@ -453,12 +659,10 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocationUpdate(final LocationUpdate event)
-	{
+	public void onLocationUpdate(final LocationUpdate event) {
 		final PartyData partyData = getPartyData(event.getMemberId());
 
-		if (partyData == null)
-		{
+		if (partyData == null) {
 			return;
 		}
 
@@ -466,28 +670,23 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onUserJoin(final UserJoin event)
-	{
+	public void onUserJoin(final UserJoin event) {
 		// this has a side effect of creating the party data
 		getPartyData(event.getMemberId());
 	}
 
 	@Subscribe
-	public void onUserSync(final UserSync event)
-	{
+	public void onUserSync(final UserSync event) {
 		clientThread.invokeLater(() -> checkStateChanged(true));
 		lastLocation = null;
 	}
 
-	private void checkStateChanged(boolean forceSend)
-	{
-		if (lastStatus == null)
-		{
+	private void checkStateChanged(boolean forceSend) {
+		if (lastStatus == null) {
 			forceSend = true;
 		}
 
-		if (!party.isInParty())
-		{
+		if (!party.isInParty()) {
 			return;
 		}
 
@@ -495,94 +694,69 @@ public class PartyPlugin extends Plugin
 		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
-		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
+		final int runEnergy = (int) Math.ceil(client.getEnergy() / 10.0) * 10; // flatten to reduce network load
 		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
 		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
-		final Color memberColor = getLocalMemberColor();
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
 
-		boolean hasChange = false;
-		boolean canDelay = !forceSend;
+		boolean shouldSend = false;
 		final StatusUpdate update = new StatusUpdate();
-		if (forceSend || !characterName.equals(lastStatus.getCharacterName()))
-		{
-			hasChange = true;
+		if (forceSend || !characterName.equals(lastStatus.getCharacterName())) {
+			shouldSend = true;
 			update.setCharacterName(characterName);
 		}
-		if (forceSend || healthCurrent != lastStatus.getHealthCurrent())
-		{
-			hasChange = true;
+		if (forceSend || healthCurrent != lastStatus.getHealthCurrent()) {
+			shouldSend = true;
 			update.setHealthCurrent(healthCurrent);
 		}
-		if (forceSend || healthMax != lastStatus.getHealthMax())
-		{
-			hasChange = true;
+		if (forceSend || healthMax != lastStatus.getHealthMax()) {
+			shouldSend = true;
 			update.setHealthMax(healthMax);
 		}
-		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent())
-		{
-			hasChange = true;
+		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent()) {
+			shouldSend = true;
 			update.setPrayerCurrent(prayerCurrent);
 		}
-		if (forceSend || prayerMax != lastStatus.getPrayerMax())
-		{
-			hasChange = true;
+		if (forceSend || prayerMax != lastStatus.getPrayerMax()) {
+			shouldSend = true;
 			update.setPrayerMax(prayerMax);
 		}
-		if (forceSend || runEnergy != lastStatus.getRunEnergy())
-		{
-			hasChange = true;
+		if (forceSend || runEnergy != lastStatus.getRunEnergy()) {
+			shouldSend = true;
 			update.setRunEnergy(runEnergy);
 		}
-		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
-		{
-			hasChange = true;
-			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() == 10; // delay regen
+		if (forceSend || specEnergy != lastStatus.getSpecEnergy()) {
+			shouldSend = true;
 			update.setSpecEnergy(specEnergy);
 		}
-		if (forceSend || vengActive != lastStatus.getVengeanceActive())
-		{
-			hasChange = true;
+		if (forceSend || vengActive != lastStatus.getVengeanceActive()) {
+			shouldSend = true;
 			update.setVengeanceActive(vengActive);
 		}
-		if (forceSend || !Objects.equals(memberColor, lastStatus.getMemberColor()))
-		{
-			hasChange = true;
-			update.setMemberColor(memberColor);
-		}
 
-		if (canDelay && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
-		{
-			return;
-		}
-
-		if (hasChange)
-		{
+		if (shouldSend) {
 			party.send(update);
 			// non-null values for next-tick comparison
 			lastStatus = new StatusUpdate(
-				characterName,
-				healthCurrent,
-				healthMax,
-				prayerCurrent,
-				prayerMax,
-				runEnergy,
-				specEnergy,
-				vengActive,
-				memberColor
+					characterName,
+					healthCurrent,
+					healthMax,
+					prayerCurrent,
+					prayerMax,
+					runEnergy,
+					specEnergy,
+					vengActive
 			);
 		}
 	}
 
 	@Subscribe
-	public void onUserPart(final UserPart event)
-	{
+	public void onUserPart(final UserPart event) {
 		final PartyData removed = partyDataMap.remove(event.getMemberId());
 
-		if (removed != null)
-		{
+		if (removed != null) {
 			worldMapManager.remove(removed.getWorldMapPoint());
 
 			SwingUtilities.invokeLater(() -> panel.removeMember(event.getMemberId()));
@@ -590,15 +764,13 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPartyChanged(final PartyChanged event)
-	{
+	public void onPartyChanged(final PartyChanged event) {
 		// Reset party
 		partyDataMap.clear();
-		pendingTilePings.clear();
+		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 
-		if (event.getPartyId() != null)
-		{
+		if (event.getPartyId() != null) {
 			config.setPreviousPartyId(event.getPassphrase());
 		}
 
@@ -606,34 +778,28 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
-	{
-		if (!developerMode || !commandExecuted.getCommand().equalsIgnoreCase("partyinfo"))
-		{
+	public void onCommandExecuted(CommandExecuted commandExecuted) {
+		if (!developerMode || !commandExecuted.getCommand().equals("partyinfo")) {
 			return;
 		}
 
 		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Party " + party.getPartyPassphrase() + " ID " + party.getPartyId()).build());
 		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local ID " + party.getLocalMember().getMemberId()).build());
-		for (PartyMember partyMember : party.getMembers())
-		{
+		for (PartyMember partyMember : party.getMembers()) {
 			chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Member " + partyMember.getDisplayName() + " " + partyMember.getMemberId()).build());
 		}
 	}
 
 	@Subscribe
-	public void onPartyMemberAvatar(PartyMemberAvatar event)
-	{
+	public void onPartyMemberAvatar(PartyMemberAvatar event) {
 		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
 	}
 
 	@Nullable
-	PartyData getPartyData(final long uuid)
-	{
+	PartyData getPartyData(final long uuid) {
 		final PartyMember memberById = party.getMemberById(uuid);
 
-		if (memberById == null)
-		{
+		if (memberById == null) {
 			// This happens when you are not in party but you still receive message.
 			// Can happen if you just left party and you received message before message went through
 			// in ws service
@@ -649,8 +815,7 @@ public class PartyPlugin extends Plugin
 
 			boolean isSelf = partyMember != null && u.equals(partyMember.getMemberId());
 
-			if (!isSelf)
-			{
+			if (!isSelf) {
 				worldMapManager.add(worldMapPoint);
 			}
 
@@ -659,31 +824,5 @@ public class PartyPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;
 		});
-	}
-
-	private Color getLocalMemberColor()
-	{
-		Color memberColor = config.memberColor();
-		if (memberColor == null)
-		{
-			PartyMember local = party.getLocalMember();
-			if (local == null)
-			{
-				return null;
-			}
-
-			String localName = local.getDisplayName();
-			memberColor = ColorUtil.fromObject(localName);
-			log.debug("Computed member color {} for {}", memberColor, localName);
-			config.setMemberColor(memberColor);
-		}
-
-		return memberColor;
-	}
-
-	private static int messageFreq(int partySize)
-	{
-		// introduce a tick delay for each member >6
-		return Math.max(1, partySize - 6);
 	}
 }
