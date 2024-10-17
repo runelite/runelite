@@ -51,8 +51,7 @@ public class PartyPingMouseListener implements MouseListener
 	public MouseEvent mousePressed(MouseEvent event)
 	{
 		// if user inputs another button we want to close the radial menu
-		if (!plugin.isAdvancedPingMenuOpen() || SwingUtilities.isLeftMouseButton(event) ||
-				client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings())
+		if (!plugin.isAdvancedPingMenuOpen() || SwingUtilities.isLeftMouseButton(event) || client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings())
 		{
 			return event;
 		}
@@ -64,8 +63,7 @@ public class PartyPingMouseListener implements MouseListener
 	@Override
 	public MouseEvent mouseReleased(MouseEvent event)
 	{
-		if (plugin.getPendingPartyPing() == null || !SwingUtilities.isLeftMouseButton(event) ||
-				client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings())
+		if (plugin.getPendingPartyPing() == null || !SwingUtilities.isLeftMouseButton(event) || client.isMenuOpen() || !plugin.getParty().isInParty() || !config.pings())
 		{
 			return event;
 		}
@@ -95,8 +93,7 @@ public class PartyPingMouseListener implements MouseListener
 	@Override
 	public MouseEvent mouseDragged(MouseEvent event)
 	{
-		if (!plugin.isPingHotkeyPressed() && !plugin.isAdvancedPingMenuOpen() || !SwingUtilities.isLeftMouseButton(event) ||
-				client.isMenuOpen() || !plugin.getParty().isInParty() || plugin.getPendingPartyPing() == null || !config.pings())
+		if (!plugin.isPingHotkeyPressed() && !plugin.isAdvancedPingMenuOpen() || !SwingUtilities.isLeftMouseButton(event) || client.isMenuOpen() || !plugin.getParty().isInParty() || plugin.getPendingPartyPing() == null || !config.pings())
 		{
 			return event;
 		}
@@ -125,7 +122,8 @@ public class PartyPingMouseListener implements MouseListener
 
 			int ordinal = (int) Math.floor(angle / optionSelectionSize);
 			plugin.getPendingPartyPing().setPingType(pingTypes[ordinal]);
-		} else if (distance >= PING_MENU_OPEN_DRAG_DISTANCE)
+		}
+		else if (distance >= PING_MENU_OPEN_DRAG_DISTANCE)
 		{
 			plugin.setAdvancedPingMenuOpen(true);
 			plugin.getPendingPartyPing().setPingType(null);

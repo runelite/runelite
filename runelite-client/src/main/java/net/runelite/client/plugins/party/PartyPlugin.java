@@ -102,12 +102,7 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
-@PluginDescriptor(
-		name = "Party",
-		configName = "PartyPlugin2",
-		description = "Party management and basic info",
-		enabledByDefault = false
-)
+@PluginDescriptor(name = "Party", configName = "PartyPlugin2", description = "Party management and basic info", enabledByDefault = false)
 @Slf4j
 public class PartyPlugin extends Plugin
 {
@@ -286,12 +281,7 @@ public class PartyPlugin extends Plugin
 
 		final BufferedImage icon = ImageUtil.loadImageResource(PartyPlugin.class, "panel_icon.png");
 
-		navButton = NavigationButton.builder()
-				.tooltip("Party")
-				.icon(icon)
-				.priority(9)
-				.panel(panel)
-				.build();
+		navButton = NavigationButton.builder().tooltip("Party").icon(icon).priority(9).panel(panel).build();
 
 		clientToolbar.addNavigation(navButton);
 
@@ -362,9 +352,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
-		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
-				event.getEntry().getTarget().equals("Party") &&
-				event.getEntry().getOption().equals("Leave"))
+		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY && event.getEntry().getTarget().equals("Party") && event.getEntry().getOption().equals("Leave"))
 		{
 			leaveParty();
 		}
@@ -437,19 +425,15 @@ public class PartyPlugin extends Plugin
 				return;
 		}
 
-		PartyPingType pingType =
-				questionHotkeyPressed ? PartyPingType.QUESTION :
-						dangerHotkeyPressed ? PartyPingType.DANGER :
-								destinationHotkeyPressed ? PartyPingType.DESTINATION :
-										requestHotkeyPressed ? PartyPingType.REQUEST :
-												PartyPingType.TARGET; //default to target ping
+		PartyPingType pingType = questionHotkeyPressed ? PartyPingType.QUESTION : dangerHotkeyPressed ? PartyPingType.DANGER : destinationHotkeyPressed ? PartyPingType.DESTINATION : requestHotkeyPressed ? PartyPingType.REQUEST : PartyPingType.TARGET; //default to target ping
 
 		final PartyPing ping = new PartyPing(pingType, targetType, location, target, client.getWorld(), client.getLocalPlayer().getId());
 		if (pingHotkeyPressed && config.advancedPingMenu())
 		{
 			mouseStartPosition = client.getMouseCanvasPosition();
 			pendingPartyPing = ping;
-		} else
+		}
+		else
 		{
 			party.send(ping);
 		}
@@ -541,8 +525,7 @@ public class PartyPlugin extends Plugin
 		{
 			case TARGET:
 				color = config.targetPingColor();
-				soundId = !config.targetPingSound() ? -1 :
-						targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.SOTE_BELL_HIGH_C;
+				soundId = !config.targetPingSound() ? -1 : targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.SOTE_BELL_HIGH_C;
 				break;
 
 			case QUESTION:
@@ -619,16 +602,14 @@ public class PartyPlugin extends Plugin
 		return null;
 	}
 
-	@Schedule(
-			period = 10,
-			unit = ChronoUnit.SECONDS
-	)
+	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
 	public void scheduledTick()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			shareLocation();
-		} else if (client.getGameState() == GameState.LOGIN_SCREEN)
+		}
+		else if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			checkIdle();
 		}
@@ -655,8 +636,7 @@ public class PartyPlugin extends Plugin
 
 	private void checkIdle()
 	{
-		if (lastLogout != null && lastLogout.isBefore(Instant.now().minus(30, ChronoUnit.MINUTES))
-				&& party.isInParty())
+		if (lastLogout != null && lastLogout.isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)) && party.isInParty())
 		{
 			log.info("Leaving party due to inactivity");
 			party.changeParty(null);
@@ -726,7 +706,8 @@ public class PartyPlugin extends Plugin
 				member.setDisplayName(name);
 				member.setLoggedIn(true);
 				partyData.setColor(ColorUtil.fromObject(name));
-			} else
+			}
+			else
 			{
 				member.setLoggedIn(false);
 				partyData.setColor(Color.WHITE);
@@ -833,17 +814,7 @@ public class PartyPlugin extends Plugin
 		{
 			party.send(update);
 			// non-null values for next-tick comparison
-			lastStatus = new StatusUpdate(
-					characterName,
-					healthCurrent,
-					healthMax,
-					prayerCurrent,
-					prayerMax,
-					runEnergy,
-					specEnergy,
-					vengActive,
-					null
-			);
+			lastStatus = new StatusUpdate(characterName, healthCurrent, healthMax, prayerCurrent, prayerMax, runEnergy, specEnergy, vengActive, null);
 		}
 	}
 

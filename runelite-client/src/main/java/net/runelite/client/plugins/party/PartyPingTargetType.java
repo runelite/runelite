@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.party;
 
-public enum PartyPingTargetType {
+public enum PartyPingTargetType
+{
 	NPC, OBJECT, TILE
 }
