@@ -57,6 +57,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.ItemQuantityMode;
@@ -586,7 +587,7 @@ public class LayoutManager
 		}
 	}
 
-	@Subscribe(priority = -1) // run after TabInterface sets up the Duplicate/Remove layout menus
+	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (event.getActionParam1() == ComponentID.BANK_CONTENT_CONTAINER && event.getOption().equals(TabInterface.DISABLE_LAYOUT))
@@ -629,10 +630,14 @@ public class LayoutManager
 					});
 			}
 		}
+	}
 
+	@Subscribe(priority = -1)
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
 		// Update widget index of the menu so withdraws work in laid out tabs.
 		BankTag activeTag = plugin.getActiveTag();
-		if (event.getActionParam1()  == ComponentID.BANK_ITEM_CONTAINER
+		if (event.getParam1() == ComponentID.BANK_ITEM_CONTAINER
 			&& activeTag != null && !tabInterface.isTagTabActive() && activeTag.layout() != null)
 		{
 			MenuEntry menu = event.getMenuEntry();
