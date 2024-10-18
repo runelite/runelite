@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2022, LlemonDuck <napkinorton@gmail.com>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +23,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.messages;
+package net.runelite.client.plugins.party.data;
 
-import com.google.gson.annotations.SerializedName;
 import java.awt.Color;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import net.runelite.client.party.messages.PartyMemberMessage;
+import java.time.Instant;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import net.runelite.api.Actor;
+import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.party.PartyPingTargetType;
+import net.runelite.client.plugins.party.PartyPingType;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class StatusUpdate extends PartyMemberMessage
+@RequiredArgsConstructor
+@Getter
+@Setter
+public class PartyPingData
 {
-
-	// we use boxed fields to null out properties that haven't changed
-	@SerializedName("n")
-	private String characterName = null;
-
-	@SerializedName("hc")
-	private Integer healthCurrent = null;
-
-	@SerializedName("hm")
-	private Integer healthMax = null;
-
-	@SerializedName("pc")
-	private Integer prayerCurrent = null;
-
-	@SerializedName("pm")
-	private Integer prayerMax = null;
-
-	@SerializedName("r")
-	private Integer runEnergy = null;
-
-	@SerializedName("s")
-	private Integer specEnergy = null;
-
-	@SerializedName("v")
-	private Boolean vengeanceActive = null;
-
-	@SerializedName("c")
-	private Color memberColor = null;
+	private final long pingDuration;
+	private final Instant expiresAt;
+	private final PartyPingType pingType;
+	private final PartyPingTargetType targetType;
+	private final int sourcePlayerIdx;
+	private final Actor targetActor;
+	private final TileObject targetObject;
+	private final WorldPoint point;
+	private final Color color;
 }

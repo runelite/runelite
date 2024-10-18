@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2022, LlemonDuck <napkinorton@gmail.com>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,45 +26,33 @@
 package net.runelite.client.plugins.party.messages;
 
 import com.google.gson.annotations.SerializedName;
-import java.awt.Color;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.party.messages.PartyMemberMessage;
+import net.runelite.client.plugins.party.PartyPingTargetType;
+import net.runelite.client.plugins.party.PartyPingType;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class StatusUpdate extends PartyMemberMessage
+public class PartyPing extends PartyMemberMessage
 {
+	@SerializedName("pt")
+	private PartyPingType pingType;
 
-	// we use boxed fields to null out properties that haven't changed
-	@SerializedName("n")
-	private String characterName = null;
+	@SerializedName("tt")
+	private final PartyPingTargetType targetType;
 
-	@SerializedName("hc")
-	private Integer healthCurrent = null;
+	// this will either be the targeted tile, the tile the game object is on or null for npc pings
+	private final WorldPoint point;
 
-	@SerializedName("hm")
-	private Integer healthMax = null;
+	// this will either be the object ID, the npc's index or null for regular pings
+	private final Integer target;
 
-	@SerializedName("pc")
-	private Integer prayerCurrent = null;
+	private final int world;
 
-	@SerializedName("pm")
-	private Integer prayerMax = null;
-
-	@SerializedName("r")
-	private Integer runEnergy = null;
-
-	@SerializedName("s")
-	private Integer specEnergy = null;
-
-	@SerializedName("v")
-	private Boolean vengeanceActive = null;
-
-	@SerializedName("c")
-	private Color memberColor = null;
+	@SerializedName("pid")
+	private final int playerId;
 }
