@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,8 +100,7 @@ public class Notifier
 		.build();
 
 	// Notifier properties
-	private static final int MINIMUM_FLASH_DURATION_MILLIS = 2000;
-	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
+	private static final long MINIMUM_FLASH_DURATION_NANOS = 2000000000L;
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
 	private static final long CLIP_MTIME_UNLOADED = -2;
@@ -117,12 +115,12 @@ public class Notifier
 	private final String appName;
 	private final Path notifyIconPath;
 	private boolean terminalNotifierAvailable;
-	private Instant flashStart;
+	private long flashStart = -1;
 	private FlashNotification flashNotification;
 	private Color flashColor;
-	private long mouseLastPressedMillis;
+	private boolean activityDetected;
 	private long lastClipMTime = CLIP_MTIME_UNLOADED;
-	private Clip clip = null;
+	private Clip clip;
 
 	@Inject
 	private Notifier(
@@ -246,8 +244,7 @@ public class Notifier
 		{
 			flashNotification = notification.getFlash();
 			flashColor = notification.getFlashColor();
-			flashStart = Instant.now();
-			mouseLastPressedMillis = client.getMouseLastPressedMillis();
+			flashStart = System.nanoTime();
 		}
 	}
 
@@ -270,40 +267,42 @@ public class Notifier
 
 	public void processFlash(final Graphics2D graphics)
 	{
-		if (flashStart == null || flashNotification == null || flashColor == null
+		if (flashStart == -1 || flashNotification == null || flashColor == null
 			|| client.getGameState() != GameState.LOGGED_IN
 			|| flashNotification == FlashNotification.DISABLED)
 		{
-			flashStart = null;
-			flashNotification = null;
-			flashColor = null;
+			resetFlashState();
 			return;
 		}
 
-		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
+		final boolean hasFlashedMinDuration = System.nanoTime() - flashStart >= MINIMUM_FLASH_DURATION_NANOS;
+		switch (flashNotification)
 		{
-			switch (flashNotification)
-			{
-				case FLASH_TWO_SECONDS:
-				case SOLID_TWO_SECONDS:
-					flashStart = null;
-					flashNotification = null;
-					flashColor = null;
+			case FLASH_TWO_SECONDS:
+			case SOLID_TWO_SECONDS:
+				if (hasFlashedMinDuration)
+				{
+					resetFlashState();
 					return;
-				case SOLID_UNTIL_CANCELLED:
-				case FLASH_UNTIL_CANCELLED:
-					// Any interaction with the client since the notification started will cancel it after the minimum duration
-					if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-						|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
-					{
-						flashStart = null;
-						flashNotification = null;
-						flashColor = null;
-						return;
-					}
-					break;
-			}
+				}
+				break;
+			case SOLID_UNTIL_CANCELLED:
+			case FLASH_UNTIL_CANCELLED:
+				// Any interaction with the client since the notification started will cancel it after the minimum duration
+				final long mouseIdleTime = client.getMouseIdleTicks() * Constants.CLIENT_TICK_LENGTH * 1000000L;
+				final long keyboardIdleTime = client.getKeyboardIdleTicks() * Constants.CLIENT_TICK_LENGTH * 1000000L;
+				final long nanoTime = System.nanoTime();
+				if ((nanoTime - flashStart >= mouseIdleTime || nanoTime - flashStart >= keyboardIdleTime)
+					&& clientUI.isFocused())
+				{
+					activityDetected = true;
+				}
+				if (hasFlashedMinDuration && activityDetected)
+				{
+					resetFlashState();
+					return;
+				}
+				break;
 		}
 
 		if (client.getGameCycle() % 40 >= 20
@@ -318,6 +317,14 @@ public class Notifier
 		graphics.setColor(flashColor);
 		graphics.fill(new Rectangle(client.getCanvas().getSize()));
 		graphics.setColor(color);
+	}
+
+	private void resetFlashState()
+	{
+		flashStart = -1;
+		flashNotification = null;
+		flashColor = null;
+		activityDetected = false;
 	}
 
 	private void sendNotification(
