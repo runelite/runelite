@@ -100,6 +100,7 @@ public final class AnimationID
 	public static final int FIREMAKING_FORESTERS_CAMPFIRE_WILLOW = 10572;
 	public static final int FIREMAKING_FORESTERS_CAMPFIRE_YEW = 10573;
 	public static final int DEATH = 836;
+	public static final int DOOM_DEATH = 10873; // Death cause by doom in the Fortis Colosseum
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
 	public static final int COOKING_WINE = 7529;
