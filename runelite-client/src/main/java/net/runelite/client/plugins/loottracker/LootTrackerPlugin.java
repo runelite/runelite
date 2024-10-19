@@ -274,6 +274,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String ORE_PACK_VM_EVENT = "Ore Pack (Volcanic Mine)";
 
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
+	private static final String WINTERTODT_REWARD_CART_EVENT = "Reward cart (Wintertodt)";
+	private static final String WINTERTODT_LOOT_STRING = "You found some loot: ";
+	private static final int WINTERTODT_REGION = 6461;
 
 	private static final String BAG_FULL_OF_GEMS_PERCY_EVENT = "Bag full of gems (Percy)";
 	private static final String BAG_FULL_OF_GEMS_BELONA_EVENT = "Bag full of gems (Belona)";
@@ -1151,6 +1154,12 @@ public class LootTrackerPlugin extends Plugin
 		if (regionID == GUARDIANS_OF_THE_RIFT_REGION && message.startsWith(GUARDIANS_OF_THE_RIFT_LOOT_STRING))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, GUARDIANS_OF_THE_RIFT_EVENT, client.getBoostedSkillLevel(Skill.RUNECRAFT)));
+			return;
+		}
+
+		if (regionID == WINTERTODT_REGION && message.startsWith(WINTERTODT_LOOT_STRING))
+		{
+			onInvChange(collectInvItems(LootRecordType.EVENT, WINTERTODT_REWARD_CART_EVENT, client.getBoostedSkillLevel(Skill.FIREMAKING)));
 			return;
 		}
 
