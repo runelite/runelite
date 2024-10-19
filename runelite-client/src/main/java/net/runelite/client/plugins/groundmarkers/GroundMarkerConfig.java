@@ -82,7 +82,7 @@ public interface GroundMarkerConfig extends Config
 	@ConfigItem(
 		keyName = "fillOpacity",
 		name = "Fill Opacity",
-		description = "Opacity of the tile fill color"
+		description = "Opacity of the tile fill color. 0 (fully transparent) - 255 (fully opaque)."
 	)
 	@Range(
 		max = 255
