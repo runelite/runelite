@@ -39,7 +39,7 @@ public interface AgilityConfig extends Config
 	@ConfigSection(
 		name = "Hallowed Sepulchre",
 		description = "Settings for Hallowed Sepulchre highlights",
-		position = 17
+		position = 18
 	)
 	String sepulchreSection = "Hallowed Sepulchre";
 
@@ -237,10 +237,21 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "overlayOnTop",
+		name = "Overlay Always On Top",
+		description = "The overlay will always be on the top of the screen",
+		position = 17
+	)
+	default boolean overlayOnTop()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
 		name = "Highlight Projectiles",
 		description = "Highlights arrows and swords in the Sepulchre",
-		position = 17,
+		position = 19,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreNpcs()
@@ -253,7 +264,7 @@ public interface AgilityConfig extends Config
 		keyName = "sepulchreHighlightColor",
 		name = "Projectile Color",
 		description = "Overlay color for arrows and swords",
-		position = 18,
+		position = 20,
 		section = sepulchreSection
 	)
 	default Color sepulchreHighlightColor()
@@ -265,7 +276,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreObstacles",
 		name = "Highlight Obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre",
-		position = 19,
+		position = 21,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreObstacles()
@@ -277,7 +288,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreSkilling",
 		name = "Highlight Skill Challenges",
 		description = "Highlights skilling challenges in the Sepulchre",
-		position = 20,
+		position = 22,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreSkilling()
