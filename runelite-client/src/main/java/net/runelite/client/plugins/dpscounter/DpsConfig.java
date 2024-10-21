@@ -74,4 +74,15 @@ public interface DpsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "sortOutput",
+		name = "Sort output",
+		description = "Sort the displayed values"
+	)
+	default boolean sortOutput()
+	{
+		return false;
+	}
 }
