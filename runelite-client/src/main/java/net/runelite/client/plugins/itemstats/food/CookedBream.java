@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024 Macweese
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,9 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.itemstats.food;
 
-public interface WorldEntity
+import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.FoodBase;
+import static net.runelite.client.plugins.itemstats.stats.Stats.COOKING;
+import static net.runelite.client.plugins.itemstats.stats.Stats.FISHING;
+
+public class CookedBream extends FoodBase
 {
-	WorldView getWorldView();
+	@Override
+	public int heals(Client client)
+	{
+		int cooking = COOKING.getValue(client) / 3;
+		int fishing = FISHING.getValue(client) / 3;
+		return Math.max(7, Math.min(cooking, fishing));
+	}
 }

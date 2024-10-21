@@ -87,6 +87,8 @@ import net.runelite.client.util.WildcardMatcher;
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
+	// Longest known respawn time is currently held by Suspicious Water.
+	private static final int MAX_RESPAWN_TIME_TICKS = 500;
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
@@ -748,7 +750,9 @@ public class NpcIndicatorsPlugin extends Plugin
 						// By killing a monster and leaving the area before seeing it again, an erroneously lengthy
 						// respawn time can be recorded. Thus, if the respawn time is already set and is greater than
 						// the observed time, assume that the lower observed respawn time is correct.
-						if (mn.getRespawnTime() == -1 || respawnTime < mn.getRespawnTime())
+						// Similarly, if the observed respawn time exceeds the maximum known respawn time,
+						// we can ignore the calculated time as obviously incorrect.
+						if ((mn.getRespawnTime() == -1 || respawnTime < mn.getRespawnTime()) && respawnTime <= MAX_RESPAWN_TIME_TICKS)
 						{
 							mn.setRespawnTime(respawnTime);
 						}

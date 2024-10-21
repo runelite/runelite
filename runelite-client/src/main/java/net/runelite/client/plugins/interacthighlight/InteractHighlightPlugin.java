@@ -31,6 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -199,8 +200,10 @@ public class InteractHighlightPlugin extends Plugin
 
 	TileObject findTileObject(int x, int y, int id)
 	{
+		x += (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
+		y += (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
+		Tile[][][] tiles = scene.getExtendedTiles();
 		Tile tile = tiles[client.getPlane()][x][y];
 		if (tile != null)
 		{

@@ -24,7 +24,8 @@
  */
 package net.runelite.cache.definitions;
 
-import java.util.Map;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import lombok.Data;
 import lombok.Value;
 
@@ -34,8 +35,7 @@ public class SequenceDefinition
 	private final int id;
 	public int[] frameIDs; // top 16 bits are FrameDefinition ids
 	public int[] chatFrameIds;
-	public int[] frameLenghts;
-	public Sound[] frameSounds;
+	public int[] frameLengths;
 	public int frameStep = -1;
 	public int[] interleaveLeave;
 	public boolean stretches = false;
@@ -47,7 +47,7 @@ public class SequenceDefinition
 	public int priority = -1;
 	public int replyMode = 2;
 	public int animMayaID = -1;
-	public Map<Integer, Sound> animMayaFrameSounds;
+	public Multimap<Integer, Sound> frameSounds = ArrayListMultimap.create();
 	public int animMayaStart;
 	public int animMayaEnd;
 	public boolean[] animMayaMasks;
@@ -59,5 +59,6 @@ public class SequenceDefinition
 		public int loops;
 		public int location;
 		public int retain;
+		public int weight;
 	}
 }

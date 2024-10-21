@@ -44,7 +44,7 @@ enum Courses
 	SHAYZIEN_ADVANCED(507.5, 5944, new WorldPoint(1522, 3625, 0)),
 	FALADOR(586, 12084, new WorldPoint(3029, 3332, 0), new WorldPoint(3029, 3333, 0), new WorldPoint(3029, 3334, 0), new WorldPoint(3029, 3335, 0)),
 	COLOSSAL_WYRM_BASIC(504),
-	WILDERNESS(571.4, 11837, new WorldPoint(2994, 3933, 0)),
+	WILDERNESS(571.4, 11837, new WorldPoint(2993, 3933, 0), new WorldPoint(2994, 3933, 0), new WorldPoint(2995, 3933, 0)),
 	WEREWOLF(730.0, 14234, new WorldPoint(3528, 9873, 0)),
 	SEERS(570.0, 10806, new WorldPoint(2704, 3464, 0)),
 	COLOSSAL_WYRM_ADVANCED(685),

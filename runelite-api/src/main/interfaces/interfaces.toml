@@ -69,12 +69,13 @@ deposit_equipment=46
 potion_store=48
 incinerator=49
 incinerator_confirm=50
-equipment_parent=74
-equipment_set_bonus=115
-settings_button=119
-equipment_button=120
-popup=122
-equipment_stat_bonus=127
+potionstore_content=52
+equipment_parent=77
+equipment_set_bonus=118
+settings_button=122
+equipment_button=123
+popup=125
+equipment_stat_bonus=131
 
 [bank_inventory]
 id=15
@@ -626,6 +627,7 @@ container=0
 
 [prayer]
 id=541
+parent=0
 
 [private_chat]
 id=163

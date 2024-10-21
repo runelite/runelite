@@ -69,6 +69,8 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.WYRM_ATTACK_MELEE:
 			case AnimationID.WYRM_ATTACK_MAGE:
 
+			case AnimationID.CYCLOPS_ATTACK:
+
 			case AnimationID.TREE_SPIRIT_IDLE:
 			case AnimationID.TREE_SPIRIT_WALK:
 
