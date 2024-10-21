@@ -648,12 +648,6 @@ public class GroundItemsPlugin extends Plugin
 
 		int price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
 
-		// Scale price on stackable items for coloring purposes
-		if (TRUE.equals(config.scaleStackableColoringPrice()) || groundItem.isStackable())
-		{
-			price = (int)(price * config.stackableColoringPriceScaleFactor());
-		}
-
 		PriceHighlight itemHighlight = priceChecks.get(0);
 		PriceHighlight prevHighlight = priceChecks.get(0);
 		for (PriceHighlight highlight : priceChecks)
