@@ -236,6 +236,10 @@ public final class AnimationID
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
 	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
+	public static final int HERBLORE_MIXOLOGY_CONCENTRATE = 11644;
+	public static final int HERBLORE_MIXOLOGY_CRYSTALIZE = 11639;
+	public static final int HERBLORE_MIXOLOGY_HOMOGENIZE = 11634;
+	public static final int HERBLORE_MIXOLOGY_REFINER = 11604;
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
@@ -301,6 +305,7 @@ public final class AnimationID
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int CYCLOPS_ATTACK = 4652;
 	public static final int HELLHOUND_DEFENCE = 6566;
 
 	// Farming

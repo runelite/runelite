@@ -187,7 +187,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		cleanConfig();
 		spriteManager.addSpriteOverrides(TabSprites.values());
 		eventBus.register(tabInterface);
-		eventBus.register(layoutManager);
+		layoutManager.register();
 		clientThread.invokeLater(this::reinitBank);
 	}
 
@@ -195,7 +195,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	public void shutDown()
 	{
 		eventBus.unregister(tabInterface);
-		eventBus.unregister(layoutManager);
+		layoutManager.unregister();
 		clientThread.invokeLater(() ->
 		{
 			// since the tab interface is unregistered from the eventbus, manually deinit it

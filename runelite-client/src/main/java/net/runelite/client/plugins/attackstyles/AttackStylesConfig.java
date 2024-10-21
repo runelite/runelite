@@ -27,6 +27,7 @@ package net.runelite.client.plugins.attackstyles;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("attackIndicator")
 public interface AttackStylesConfig extends Config
@@ -128,5 +129,16 @@ public interface AttackStylesConfig extends Config
 	default boolean showChatWarnings()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "warningNotification",
+		name = "Warning notification",
+		description = "Notification for switching to an unwanted attack style",
+		position = 10
+	)
+	default Notification warningNotification()
+	{
+		return Notification.OFF;
 	}
 }

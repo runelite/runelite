@@ -148,7 +148,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton decorations;
 	private DevToolsButton projectiles;
 	private DevToolsButton location;
-	private DevToolsButton chunkBorders;
+	private DevToolsButton zoneBorders;
 	private DevToolsButton mapSquares;
 	private DevToolsButton loadingLines;
 	private DevToolsButton validMovement;
@@ -165,7 +165,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton soundEffects;
 	private DevToolsButton scriptInspector;
 	private DevToolsButton inventoryInspector;
-	private DevToolsButton roofs;
+	private DevToolsButton tileFlags;
 	private DevToolsButton shell;
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
@@ -250,7 +250,7 @@ public class DevToolsPlugin extends Plugin
 		tileLocation = new DevToolsButton("Tile Location");
 		cameraPosition = new DevToolsButton("Camera Position");
 
-		chunkBorders = new DevToolsButton("Chunk Borders");
+		zoneBorders = new DevToolsButton("Zone Borders");
 		mapSquares = new DevToolsButton("Map Squares");
 		loadingLines = new DevToolsButton("Loading Lines");
 
@@ -266,7 +266,7 @@ public class DevToolsPlugin extends Plugin
 		soundEffects = new DevToolsButton("Sound Effects");
 		scriptInspector = new DevToolsButton("Script Inspector");
 		inventoryInspector = new DevToolsButton("Inventory Inspector");
-		roofs = new DevToolsButton("Roofs");
+		tileFlags = new DevToolsButton("Tile flags");
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
 
@@ -482,8 +482,8 @@ public class DevToolsPlugin extends Plugin
 				player.getPlayerComposition().getEquipmentIds()[KitType.ARMS.getIndex()] = -1;
 				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.GHOSTLY_ROBE_6108 + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().getEquipmentIds()[KitType.HAIR.getIndex()] = -1;
-				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.GHOSTLY_GLOVES;
-				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.GHOSTLY_BOOTS;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.GHOSTLY_GLOVES + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.GHOSTLY_BOOTS + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().setHash();
 				break;
 			}
