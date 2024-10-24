@@ -36,6 +36,7 @@ enum MiningSiteLocation
 {
 	AGILITY_PYRAMID(new WorldPoint(3322, 2875, 0), new Rock(5, Ore.GOLD)),
 	// ABANDONED_MINE -- NOT AVAILABLE ON WORLDMAP
+	ALDARIN(new WorldPoint(1430, 2882, 0), new Rock(8, Ore.IRON), new Rock(5, Ore.SILVER), new Rock(6, Ore.COAL), new Rock(5, Ore.GOLD)),
 	AL_KHARID_MINE_NORTH(new WorldPoint(3298, 3312, 0),
 		new Rock(3, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(7, Ore.IRON), new Rock(5, Ore.SILVER),
 		new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
@@ -198,6 +199,8 @@ enum MiningSiteLocation
 		new Rock(1, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(5, Ore.IRON), new Rock(2, Ore.SILVER), new Rock(1, Ore.COAL)),
 	SALT_MINE(new WorldPoint(2835, 10334, 0),
 		new Rock(7, Ore.BASALT), new Rock(15, Ore.TE_SALT), new Rock(12, Ore.EFH_SALT), new Rock(12, Ore.URT_SALT)),
+	SALVAGER_OVERLOOK_EAST(new WorldPoint(1671, 3284, 0), new Rock(5, Ore.IRON), new Rock(5, Ore.GOLD)),
+	SALVAGER_OVERLOOK_WEST(new WorldPoint(1631, 3277, 0), new Rock(7, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
 	SHAYZIEN(new WorldPoint(1601, 3645, 0),
 		new Rock(3, Ore.CLAY), new Rock(3, Ore.IRON), new Rock(4, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
 	SHILO_VILLAGE_SURFACE(new WorldPoint(2822, 3001, 0), new Rock(7, Ore.GEM_ROCK)),

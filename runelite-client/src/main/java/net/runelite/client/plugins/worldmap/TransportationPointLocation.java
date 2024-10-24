@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 enum TransportationPointLocation
 {
 	//Ships
+	ALDARIN_TO_SUNSET_COAST("Ship to Sunset Coast", new WorldPoint(1443, 2976, 0), new WorldPoint(1492, 2985, 0)),
 	ARDOUGNE_TO_BRIMHAVEN("Ship to Brimhaven / Rimmington", new WorldPoint(2675, 3275, 0)),
 	ARDOUGNE_TO_FISHINGPLAT("Ship to Fishing Platform", new WorldPoint(2722, 3304, 0), new WorldPoint(2779, 3271, 0)),
 	BRIMHAVEN_TO_ARDOUGNE("Ship to Ardougne / Rimmington", new WorldPoint(2772, 3234, 0)),
@@ -76,6 +77,7 @@ enum TransportationPointLocation
 	RELLEKKA_TO_WEISS_ICEBERG("Ship to Weiss/Iceberg", new WorldPoint(2707, 3735, 0)),
 	RELLEKKA_TO_UNGAEL("Ship to Ungael", new WorldPoint(2638, 3698, 0), new WorldPoint(2276, 4034, 0)),
 	RIMMINGTON_TO_CORSAIR_COVE("Ship to Corsair Cove", new WorldPoint(2909, 3227, 0 ), new WorldPoint(2577, 2839, 0)),
+	SUNSET_COAST_TO_ALDARIN("Ship to Aldarin", new WorldPoint(1492, 2985, 0), new WorldPoint(1443, 2976, 0)),
 	WATERBIRTH_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2549, 3758, 0), new WorldPoint(2618, 3685, 0)),
 	WEISS_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2847, 3967, 0), new WorldPoint(2707, 3735, 0)),
 	UNGAEL_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2276, 4034, 0), new WorldPoint(2638, 3698, 0)),
@@ -110,6 +112,7 @@ enum TransportationPointLocation
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
 
 	//Charter ships
+	CHARTER_ALDARIN("Charter Ship", new WorldPoint(1455, 2968, 0)),
 	CHARTER_BRIMHAVEN("Charter Ship", new WorldPoint(2760, 3238, 0)),
 	CHARTER_CATHERBY("Charter Ship", new WorldPoint(2791, 3415, 0)),
 	CHARTER_CIVITAS_ILLA_FORTIS("Charter Ship", new WorldPoint(1743, 3136, 0)),
@@ -222,11 +225,14 @@ enum TransportationPointLocation
 	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever to Ardougne/Edgeville", new WorldPoint(3154, 3924, 0)),
 
 	//Queztals
+	QUETZAL_ALDARIN("Quetzal", new WorldPoint(1388, 2899, 0)),
 	QUETZAL_AVIUM_SAVANNAH_NORTH_EAST("Quetzal", new WorldPoint(1701, 3037, 0)),
 	QUETZAL_AVIUM_SAVANNAH_SOUTH("Quetzal", new WorldPoint(1671, 2933, 0)),
 	QUETZAL_CAM_TORUM("Quetzal", new WorldPoint(1447, 3108, 0)),
 	QUETZAL_EAST_CIVITAS_ILLA_FORTIS("Quetzal", new WorldPoint(1776, 3111, 0)),
 	QUETZAL_HUNTER_GUILD("Quetzal", new WorldPoint(1584, 3055, 0)),
+	QUETZAL_QUETZACALLI_GORGE("Quetzal", new WorldPoint(1511, 3222, 0)),
+	QUETZAL_SALVAGER_OVERLOOK("Quetzal", new WorldPoint(1612, 3302, 0)),
 	QUETZAL_SUNSET_COAST("Quetzal", new WorldPoint(1547, 2997, 0)),
 	QUETZAL_RALOS_RISE("Quetzal", new WorldPoint(1436, 3169, 0)),
 	QUETZAL_VARLAMORE_VARROCK("Quetzal to Varrock", new WorldPoint(1699, 3142, 0), new WorldPoint(3279, 3413, 0)),
