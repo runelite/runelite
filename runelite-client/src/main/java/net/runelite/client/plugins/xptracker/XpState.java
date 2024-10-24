@@ -40,8 +40,6 @@ import net.runelite.api.Skill;
  */
 class XpState
 {
-	private static final double DEFAULT_XP_MODIFIER = 4.0;
-	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private XpStateSingle overall = new XpStateSingle(-1);
 	private NPC interactedNPC;
@@ -131,32 +129,30 @@ class XpState
 		}
 	}
 
-	private double getCombatXPModifier(Skill skill)
-	{
-		if (skill == Skill.HITPOINTS)
-		{
-			return SHARED_XP_MODIFIER;
-		}
-
-		return DEFAULT_XP_MODIFIER;
-	}
-
 	/**
 	 * Updates skill with average actions based on currently interacted NPC.
 	 *
-	 * @param skill     experience gained skill
-	 * @param npc       currently interacted NPC
-	 * @param npcHealth health of currently interacted NPC
+	 * @param skill     				experience gained skill
+	 * @param npc       				currently interacted NPC
+	 * @param npcHealth 				health of currently interacted NPC
+	 * @param worldXpModifier 	xp modifier of current world
+	 * @param combatXpModifier 	xp modifier of current attack style and equipped weapon type
 	 */
-	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth, int xpModifier)
+	void updateNpcExperience(
+		Skill skill,
+		NPC npc,
+		Integer npcHealth,
+		int worldXpModifier,
+		double combatXpModifier)
 	{
 		if (npc == null || npc.getCombatLevel() <= 0 || npcHealth == null)
 		{
 			return;
 		}
 
+		final int actionExp = (int) (npcHealth * worldXpModifier * combatXpModifier);
+
 		final XpStateSingle state = getSkill(skill);
-		final int actionExp = (int) (npcHealth * getCombatXPModifier(skill) * xpModifier);
 		final XpAction action = state.getXpAction(XpActionType.ACTOR_HEALTH);
 
 		if (action.isActionsHistoryInitialized())
