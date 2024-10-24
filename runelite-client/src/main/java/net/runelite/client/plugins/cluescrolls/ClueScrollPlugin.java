@@ -224,6 +224,7 @@ public class ClueScrollPlugin extends Plugin
 	private BufferedImage emoteImage;
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
+	private Set<Integer> clueItemIdsInInventory = new HashSet<>();
 	private boolean worldMapPointsSet = false;
 
 	// Some objects will only update to their "active" state when changing to their plane after varbit changes,
@@ -406,6 +407,23 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
+		// Check if clues were added to inventory
+		if (config.autoIdentifyClues())
+		{
+			Set<Integer> newClueItemIds = getClueItemIdsInInventory(itemContainer);
+			newClueItemIds.removeAll(clueItemIdsInInventory);
+
+			if (!newClueItemIds.isEmpty())
+			{
+				// Set new clue to be the active clue
+				if (newClueItemIds.size() == 1)
+				{
+					setActiveClue(newClueItemIds.iterator().next());
+				}
+				clueItemIdsInInventory = getClueItemIdsInInventory(itemContainer);
+			}
+		}
+
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
 		{
@@ -432,6 +450,39 @@ public class ClueScrollPlugin extends Plugin
 				checkClueNPCs(clue, client.getCachedNPCs());
 			}
 		}
+	}
+
+	private void setActiveClue(Integer itemId)
+	{
+		ClueScroll clueScroll = findClueScroll(itemId);
+
+		if (clueScroll != null)
+		{
+			clueItemId = itemId;
+			updateClue(clueScroll);
+		}
+	}
+
+	private Set<Integer> getClueItemIdsInInventory(ItemContainer inventoryContainer)
+	{
+		// Remove clues no longer in inventory
+		clueItemIdsInInventory.removeIf(clue -> !inventoryContainer.contains(clue));
+
+		// Add new clues
+		Item[] inventory = inventoryContainer.getItems();
+		Set<Integer> cluesFound = new HashSet<>();
+
+		for (Item item : inventory)
+		{
+			int invItemId = item.getId();
+			// If paramID 623 returns a dbrow, the invItemId is a valid Clue Scroll
+			if (client.getItemDefinition(invItemId).getIntValue(623) != -1)
+			{
+				cluesFound.add(invItemId);
+			}
+		}
+
+		return cluesFound;
 	}
 
 	private List<Item> getRunepouchContents()
@@ -845,6 +896,67 @@ public class ClueScrollPlugin extends Plugin
 		if (threeStepCrypticClue != null)
 		{
 			return threeStepCrypticClue;
+		}
+
+		return null;
+	}
+
+	private ClueScroll findClueScroll(int itemId)
+	{
+		if (itemId == ItemID.CLUE_SCROLL_BEGINNER || itemId == ItemID.CLUE_SCROLL_MASTER)
+		{
+			return null;
+		}
+
+		final MapClue mapClue = MapClue.forItemId(itemId);
+		if (mapClue != null)
+		{
+			return mapClue;
+		}
+
+		final MusicClue musicClue = MusicClue.forItemId(itemId);
+		if (musicClue != null)
+		{
+			return musicClue;
+		}
+
+		final CoordinateClue coordinateClue = CoordinateClue.forItemId(itemId);
+		if (coordinateClue != null)
+		{
+			return coordinateClue;
+		}
+
+		final AnagramClue anagramClue = AnagramClue.forItemId(itemId);
+		if (anagramClue != null)
+		{
+			return anagramClue;
+		}
+
+		final CipherClue cipherClue = CipherClue.forItemId(itemId);
+		if (cipherClue != null)
+		{
+			return cipherClue;
+		}
+
+		final CrypticClue crypticClue = CrypticClue.forItemId(itemId);
+
+		if (crypticClue != null)
+		{
+			return crypticClue;
+		}
+
+		final EmoteClue emoteClue = EmoteClue.forItemId(itemId);
+
+		if (emoteClue != null)
+		{
+			return emoteClue;
+		}
+
+		final FairyRingClue fairyRingClue = FairyRingClue.forItemId(itemId);
+
+		if (fairyRingClue != null)
+		{
+			return fairyRingClue;
 		}
 
 		return null;
