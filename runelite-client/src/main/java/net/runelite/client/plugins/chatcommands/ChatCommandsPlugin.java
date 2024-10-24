@@ -91,6 +91,7 @@ import net.runelite.client.hiscore.Skill;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
@@ -160,8 +161,8 @@ public class ChatCommandsPlugin extends Plugin
 	private int lastBossTime = -1;
 	private double lastPb = -1;
 	private String lastTeamSize;
-	private int petsIconIdx = -1;
-	private int[] pets;
+	protected int petsIconIdx = -1;
+	protected int[] pets;
 
 	@Inject
 	private Client client;
@@ -200,6 +201,11 @@ public class ChatCommandsPlugin extends Plugin
 	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private ChatCommandsOverlay chatCommandsOverlay;
+	@Inject
 	private Gson gson;
 
 	@Override
@@ -234,6 +240,8 @@ public class ChatCommandsPlugin extends Plugin
 				}
 			}
 		});
+
+		overlayManager.add(chatCommandsOverlay);
 	}
 
 	@Override
@@ -261,6 +269,8 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
+
+		overlayManager.remove(chatCommandsOverlay);
 	}
 
 	@Provides
