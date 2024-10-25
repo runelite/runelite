@@ -1270,7 +1270,9 @@ public class TabInterface
 		int y = scrollComponent.getOriginalY();
 		y += MARGIN;
 
-		for (int i = tabScrollOffset; i < tabScrollOffset + tabCount && i * 2 + 1 < children.length - TAGTAB_CHILD_OFFSET; ++i)
+		for (int i = tabScrollOffset;
+			i < tabScrollOffset + tabCount && i * 2 + 1 < children.length - TAGTAB_CHILD_OFFSET && children[TAGTAB_CHILD_OFFSET + i * 2] != null;
+			++i)
 		{
 			Widget background = children[TAGTAB_CHILD_OFFSET + i * 2];
 			background.setOriginalY(y);
