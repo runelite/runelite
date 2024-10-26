@@ -314,14 +314,14 @@ public class ItemStatPlugin extends Plugin
 
 		yPos += TEXT_HEIGHT + 8;
 
-		final Map<String, Integer> miscStats = ImmutableMap.of(
+		final Map<String, Object> miscStats = ImmutableMap.of(
 			"Strength", equipmentStats.getStr(),
 			"Ranged Strength", equipmentStats.getRstr(),
 			"Magic Damage", equipmentStats.getMdmg(),
 			"Prayer Bonus", equipmentStats.getPrayer()
 		);
 
-		for (final Map.Entry<String, Integer> miscStat : miscStats.entrySet())
+		for (final Map.Entry<String, Object> miscStat : miscStats.entrySet())
 		{
 			final String name = miscStat.getKey();
 			final String value = miscStat.getValue().toString();
