@@ -43,12 +43,12 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
 
 /**
  * This panel holds the search section of the Grand Exchange Plugin.
@@ -215,7 +215,7 @@ class GrandExchangeSearchPanel extends JPanel
 				break;
 			}
 
-			ItemStats itemStats = itemManager.getItemStats(itemId, false);
+			ItemStats itemStats = itemManager.getItemStats(itemId);
 
 			int itemPrice = useActivelyTradedPrice ? itemManager.getWikiPrice(item) : item.getPrice();
 			int itemLimit = itemStats != null ? itemStats.getGeLimit() : 0;

@@ -93,6 +93,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -106,7 +107,6 @@ import net.runelite.client.util.OSType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeTrade;
-import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
@@ -858,7 +858,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (buy && config.enableGELimits())
 		{
-			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
+			final ItemStats itemStats = itemManager.getItemStats(itemId);
 
 			// If we have item buy limit, append it
 			if (itemStats != null && itemStats.getGeLimit() > 0)

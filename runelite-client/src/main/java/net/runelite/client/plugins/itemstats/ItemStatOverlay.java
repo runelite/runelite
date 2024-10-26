@@ -40,7 +40,9 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
+import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.plugins.itemstats.potions.PotionDuration;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
@@ -48,8 +50,6 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemStats;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class ItemStatOverlay extends Overlay
@@ -188,7 +188,7 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.equipmentStats())
 		{
-			final ItemStats stats = itemManager.getItemStats(itemId, false);
+			final ItemStats stats = itemManager.getItemStats(itemId);
 
 			if (stats != null)
 			{
@@ -275,7 +275,7 @@ public class ItemStatOverlay extends Overlay
 	private ItemStats getItemStatsFromContainer(ItemContainer container, int slotID)
 	{
 		final Item item = container.getItem(slotID);
-		return item != null ? itemManager.getItemStats(item.getId(), false) : null;
+		return item != null ? itemManager.getItemStats(item.getId()) : null;
 	}
 
 	@VisibleForTesting
