@@ -303,7 +303,7 @@ public class ItemStatOverlay extends Overlay
 					{
 						// Account for speed change when two handed weapon gets removed
 						// shield - (2h - unarmed) == shield - 2h + unarmed
-						other = otherEquip.isTwoHanded() ? other.subtract(UNARMED) : null;
+						other = otherEquip.isTwoHanded() ? subtract(other, UNARMED) : null;
 					}
 				}
 			}
@@ -323,7 +323,7 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		final ItemStats subtracted = s.subtract(other).subtract(offHand);
+		final ItemStats subtracted = subtract(subtract(s, other), offHand);
 		final ItemEquipmentStats e = subtracted.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
@@ -368,6 +368,49 @@ public class ItemStatOverlay extends Overlay
 		}
 
 		return b.toString();
+	}
+
+	private static ItemStats subtract(ItemStats one, ItemStats two)
+	{
+		if (two == null)
+		{
+			return one;
+		}
+
+		final double newWeight = one.getWeight() - two.getWeight();
+		final ItemEquipmentStats newEquipment;
+
+		if (two.getEquipment() != null)
+		{
+			final ItemEquipmentStats equipment = one.getEquipment() != null
+				? one.getEquipment()
+				: ItemEquipmentStats.builder().build();
+
+			newEquipment = ItemEquipmentStats.builder()
+				.slot(equipment.getSlot())
+				.astab(equipment.getAstab() - two.getEquipment().getAstab())
+				.aslash(equipment.getAslash() - two.getEquipment().getAslash())
+				.acrush(equipment.getAcrush() - two.getEquipment().getAcrush())
+				.amagic(equipment.getAmagic() - two.getEquipment().getAmagic())
+				.arange(equipment.getArange() - two.getEquipment().getArange())
+				.dstab(equipment.getDstab() - two.getEquipment().getDstab())
+				.dslash(equipment.getDslash() - two.getEquipment().getDslash())
+				.dcrush(equipment.getDcrush() - two.getEquipment().getDcrush())
+				.dmagic(equipment.getDmagic() - two.getEquipment().getDmagic())
+				.drange(equipment.getDrange() - two.getEquipment().getDrange())
+				.str(equipment.getStr() - two.getEquipment().getStr())
+				.rstr(equipment.getRstr() - two.getEquipment().getRstr())
+				.mdmg(equipment.getMdmg() - two.getEquipment().getMdmg())
+				.prayer(equipment.getPrayer() - two.getEquipment().getPrayer())
+				.aspeed(equipment.getAspeed() - two.getEquipment().getAspeed())
+				.build();
+		}
+		else
+		{
+			newEquipment = one.getEquipment();
+		}
+
+		return new ItemStats(one.isEquipable(), newWeight, 0, newEquipment);
 	}
 
 	private String buildStatChangeString(StatChange c)
