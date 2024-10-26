@@ -136,7 +136,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
-	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
+	@VisibleForTesting
+	final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
 	private int nextPoisonTick;
 	private int nextOverloadRefreshTick;
@@ -610,6 +611,13 @@ public class TimersAndBuffsPlugin extends Plugin
 			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue + 1)
 			{
 				moonlightValue++;
+			}
+			// Varbits.DIVINE_SUPER_DEFENCE updates before Varbits.MOONLIGHT_POTION (at least during its first tick).
+			// Thus, the early return that prevents creation of the divine super defence timer does not work for the
+			// first game tick.
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue)
+			{
+				removeVarTimer(DIVINE_SUPER_DEFENCE);
 			}
 
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());

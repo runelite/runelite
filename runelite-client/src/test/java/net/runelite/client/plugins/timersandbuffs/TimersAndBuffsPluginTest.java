@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -49,6 +50,7 @@ import net.runelite.client.util.RSTimeUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,6 +60,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -188,6 +191,76 @@ public class TimersAndBuffsPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.DIVINE_RANGING, infoBox.getTimer());
+	}
+
+	@Test
+	public void testMoonlight()
+	{
+		// Tests drinking a sip of moonlight potion to confirm there is no superfluous GameTimer.DIVINE_SUPER_DEFENCE
+		TimersAndBuffsPlugin timersAndBuffsPluginSpy = spy(timersAndBuffsPlugin);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
+		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		lenient().when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(500);
+		VarbitChanged moonlightVarbitChanged = new VarbitChanged();
+		moonlightVarbitChanged.setVarbitId(Varbits.MOONLIGHT_POTION);
+		moonlightVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.MOONLIGHT_POTION
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(500, varTimer.getValue().getTicks());
+		}
+	}
+
+	@Test
+	public void testMoonlightDesync()
+	{
+		// Tests drinking a sip of moonlight potion while already under its effects to confirm there is no superfluous
+		// GameTimer.DIVINE_SUPER_DEFENCE and the duration of GameTimer.MOONLIGHT_POTION is correct despite the desync
+		TimersAndBuffsPlugin timersAndBuffsPluginSpy = spy(timersAndBuffsPlugin);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(376);
+		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
+		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setValue(376);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(376);
+		VarbitChanged moonlightVarbitChanged = new VarbitChanged();
+		moonlightVarbitChanged.setVarbitId(Varbits.MOONLIGHT_POTION);
+		moonlightVarbitChanged.setValue(376);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Drink a sip of Moonlight potion while already under its effect
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+		superDefenceVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+		lenient().when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(500);
+		moonlightVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		lenient().when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(499);
+		moonlightVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.MOONLIGHT_POTION with the correct duration
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(500, varTimer.getValue().getTicks());
+		}
 	}
 
 	@Test
