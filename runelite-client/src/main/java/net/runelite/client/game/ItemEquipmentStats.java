@@ -51,7 +51,7 @@ public class ItemEquipmentStats
 
 	int str;
 	int rstr;
-	int mdmg;
+	float mdmg;
 	int prayer;
 	int aspeed;
 
@@ -72,7 +72,7 @@ public class ItemEquipmentStats
 			.drange(this.drange)
 			.str(this.str)
 			.rstr(this.rstr)
-			.mdmg(this.mdmg)
+			.mdmg((int) this.mdmg)
 			.prayer(this.prayer)
 			.aspeed(this.aspeed)
 			.build();
