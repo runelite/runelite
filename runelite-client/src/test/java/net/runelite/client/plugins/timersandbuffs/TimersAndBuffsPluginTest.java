@@ -264,6 +264,72 @@ public class TimersAndBuffsPluginTest
 	}
 
 	@Test
+	public void testMoonlightDesyncOrder()
+	{
+		// Tests drinking a sip of moonlight potion just when it runs out to confirm there is no superfluous
+		// GameTimer.DIVINE_SUPER_DEFENCE and the duration of GameTimer.MOONLIGHT_POTION is correct despite
+		// desync and a change in varbit transmission order after the first gametick
+		TimersAndBuffsPlugin timersAndBuffsPluginSpy = spy(timersAndBuffsPlugin);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(1);
+		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
+		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setValue(1);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(1);
+		VarbitChanged moonlightVarbitChanged = new VarbitChanged();
+		moonlightVarbitChanged.setVarbitId(Varbits.MOONLIGHT_POTION);
+		moonlightVarbitChanged.setValue(1);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.MOONLIGHT_POTION with the correct duration
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(1, varTimer.getValue().getTicks());
+		}
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(0);
+		superDefenceVarbitChanged.setValue(0);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(0);
+		moonlightVarbitChanged.setValue(0);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Drink a sip of Moonlight potion right after its effect ends
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+		superDefenceVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(500);
+		moonlightVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(499);
+		moonlightVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// After the first GameTick, the varbit transmission order is reversed
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(498);
+		moonlightVarbitChanged.setValue(498);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		lenient().when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(499);
+		superDefenceVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.MOONLIGHT_POTION with the correct duration
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(499, varTimer.getValue().getTicks());
+		}
+	}
+
+	@Test
 	public void testStamina()
 	{
 		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
