@@ -51,12 +51,12 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -238,7 +238,7 @@ public class PrayerPlugin extends Plugin
 		int total = 0;
 		for (Item item : items)
 		{
-			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			ItemStats is = itemManager.getItemStats(item.getId());
 			if (is != null && is.getEquipment() != null)
 			{
 				total += is.getEquipment().getPrayer();
