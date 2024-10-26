@@ -158,7 +158,7 @@ public class TimersAndBuffsPluginTest
 		List<InfoBox> infoBoxes = captor.getAllValues();
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
-		verify(infoBoxManager, times(6)).removeIf(prcaptor.capture());
+		verify(infoBoxManager, times(5)).removeIf(prcaptor.capture());
 		List<Predicate<InfoBox>> filters = prcaptor.getAllValues();
 
 		// test defence, ranging, and bastion infoboxes added
@@ -168,12 +168,10 @@ public class TimersAndBuffsPluginTest
 
 		// test ranging and defence infoboxes removed
 		assertTrue(filters.get(0).test(infoBoxes.get(0)));  // divine ranging infobox added
-		// filters.get(1) tries to remove a non-existent moonlight potion timer since Varbits.DIVINE_SUPER_DEFENCE
-		// was changed
-		assertTrue(filters.get(2).test(infoBoxes.get(1)));  // divine super defence infobox added
-		assertTrue(filters.get(3).test(infoBoxes.get(0)));  // divine ranging infobox removed
-		assertTrue(filters.get(4).test(infoBoxes.get(1)));  // divine super defence infobox removed
-		assertTrue(filters.get(5).test(infoBoxes.get(2)));  // divine bastion infobox added
+		assertTrue(filters.get(1).test(infoBoxes.get(1)));  // divine super defence infobox added
+		assertTrue(filters.get(2).test(infoBoxes.get(0)));  // divine ranging infobox removed
+		assertTrue(filters.get(3).test(infoBoxes.get(1)));  // divine super defence infobox removed
+		assertTrue(filters.get(4).test(infoBoxes.get(2)));  // divine bastion infobox added
 	}
 
 	@Test
@@ -219,6 +217,89 @@ public class TimersAndBuffsPluginTest
 		{
 			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
 			assertEquals(500, varTimer.getValue().getTicks());
+		}
+	}
+
+	@Test
+	public void testMoonlightConfigToggle()
+	{
+		// Tests toggling the moonlight config to ensure the super defence timer is added and removed correctly
+		TimersAndBuffsPlugin timersAndBuffsPluginSpy = spy(timersAndBuffsPlugin);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
+		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(500);
+		VarbitChanged moonlightVarbitChanged = new VarbitChanged();
+		moonlightVarbitChanged.setVarbitId(Varbits.MOONLIGHT_POTION);
+		moonlightVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.MOONLIGHT_POTION
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(500, varTimer.getValue().getTicks());
+		}
+
+		// Disable moonlight potion timers
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(false);
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(TimersAndBuffsConfig.GROUP);
+		timersAndBuffsPlugin.onConfigChanged(configChanged);
+
+		// The moonlight timer should now be removed, leaving no timers
+		assertTrue(timersAndBuffsPluginSpy.varTimers.isEmpty());
+
+		// On the next tick, the super defence timer will be added, since the moonlight potion config is disabled
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(499);
+		superDefenceVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(499);
+		moonlightVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.DIVINE_SUPER_DEFENCE
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.DIVINE_SUPER_DEFENCE, varTimer.getKey());
+			assertEquals(499, varTimer.getValue().getTicks());
+		}
+
+		// Re-enable moonlight potion timers
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+		timersAndBuffsPlugin.onConfigChanged(configChanged);
+
+		// Repeat the previous check for the divine super defence timer; until vars are updated again, no change in timers is expected
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.DIVINE_SUPER_DEFENCE, varTimer.getKey());
+			assertEquals(499, varTimer.getValue().getTicks());
+		}
+
+		// Finally, the next tick will return the state to a single moonlight timer present
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(498);
+		superDefenceVarbitChanged.setValue(498);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		lenient().when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(498);
+		moonlightVarbitChanged.setValue(498);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(498, varTimer.getValue().getTicks());
 		}
 	}
 
@@ -326,6 +407,116 @@ public class TimersAndBuffsPluginTest
 		{
 			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
 			assertEquals(499, varTimer.getValue().getTicks());
+		}
+	}
+
+	@Test
+	public void testMoonlightDesyncOrderToggle()
+	{
+		// Tests toggling the moonlight config to ensure the super defence timer is added and removed correctly
+		// and the duration of GameTimer.MOONLIGHT_POTION is correct despite desync and a change in varbit transmission
+		// order after the first gametick
+		TimersAndBuffsPlugin timersAndBuffsPluginSpy = spy(timersAndBuffsPlugin);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(1);
+		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
+		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setValue(1);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(1);
+		VarbitChanged moonlightVarbitChanged = new VarbitChanged();
+		moonlightVarbitChanged.setVarbitId(Varbits.MOONLIGHT_POTION);
+		moonlightVarbitChanged.setValue(1);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(0);
+		superDefenceVarbitChanged.setValue(0);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(0);
+		moonlightVarbitChanged.setValue(0);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// Drink a sip of Moonlight potion right after its effect ends
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+		superDefenceVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(500);
+		moonlightVarbitChanged.setValue(500);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(499);
+		moonlightVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+
+		// After the first GameTick, the varbit transmission order is reversed
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(498);
+		moonlightVarbitChanged.setValue(498);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(499);
+		superDefenceVarbitChanged.setValue(499);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.MOONLIGHT_POTION with the correct duration
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(499, varTimer.getValue().getTicks());
+		}
+
+		// Disable moonlight potion timers
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(false);
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(TimersAndBuffsConfig.GROUP);
+		timersAndBuffsPlugin.onConfigChanged(configChanged);
+
+		// The moonlight timer should now be removed, leaving no timers
+		assertTrue(timersAndBuffsPluginSpy.varTimers.isEmpty());
+
+		// On the next tick, the super defence timer will be added, since the moonlight potion config is disabled
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(497);
+		moonlightVarbitChanged.setValue(497);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(498);
+		superDefenceVarbitChanged.setValue(498);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		// Confirm that there's only 1 GameTimer, which is GameTimer.DIVINE_SUPER_DEFENCE with the correct duration
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.DIVINE_SUPER_DEFENCE, varTimer.getKey());
+			assertEquals(498, varTimer.getValue().getTicks());
+		}
+
+		// Re-enable moonlight potion timers
+		when(timersAndBuffsConfig.showMoonlightPotion()).thenReturn(true);
+		timersAndBuffsPlugin.onConfigChanged(configChanged);
+
+		// Repeat the previous check for the divine super defence timer; until vars are updated again, no change in timers is expected
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.DIVINE_SUPER_DEFENCE, varTimer.getKey());
+			assertEquals(498, varTimer.getValue().getTicks());
+		}
+
+		// Finally, the next tick will return the state to a single moonlight timer present
+		when(client.getVarbitValue(Varbits.MOONLIGHT_POTION)).thenReturn(496);
+		moonlightVarbitChanged.setValue(496);
+		timersAndBuffsPlugin.onVarbitChanged(moonlightVarbitChanged);
+		lenient().when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(497);
+		superDefenceVarbitChanged.setValue(497);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
+
+		assertEquals(1, timersAndBuffsPluginSpy.varTimers.size());
+		for (Map.Entry<GameTimer, TimerTimer> varTimer : timersAndBuffsPluginSpy.varTimers.entrySet())
+		{
+			assertSame(GameTimer.MOONLIGHT_POTION, varTimer.getKey());
+			assertEquals(497, varTimer.getValue().getTicks());
 		}
 	}
 
