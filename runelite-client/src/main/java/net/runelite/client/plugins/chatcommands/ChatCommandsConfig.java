@@ -190,6 +190,28 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 14,
+		keyName = "ca",
+		name = "CA Command",
+		description = "Configures whether the Combat Achievements command is enabled<br> !ca"
+	)
+	default boolean ca()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "clog",
+		name = "CLOG Command",
+		description = "Configures whether the Collection Log command is enabled<br> !clog"
+	)
+	default boolean clog()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 20,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",

@@ -181,6 +181,9 @@ public final class VarPlayer
 	 */
 	public static final int HP_HUD_NPC_ID = 1683;
 
+	public static final int CLOG_LOGGED = 2943;
+	public static final int CLOG_TOTAL = 2944;
+
 	/**
 	 * Colors for chat messages
 	 */
