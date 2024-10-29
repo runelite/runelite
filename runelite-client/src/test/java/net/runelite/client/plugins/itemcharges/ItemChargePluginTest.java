@@ -160,7 +160,8 @@ public class ItemChargePluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
 		// Stub the clientThread to run immediately in tests
-		Mockito.doAnswer(invocation -> {
+		Mockito.doAnswer(invocation ->
+		{
 			Runnable runnable = invocation.getArgument(0);
 			runnable.run();
 			return null;
