@@ -167,12 +167,24 @@ public interface TileIndicatorsConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		keyName = "highlightCurrentTileMoving",
+		name = "Only show true tile when moving",
+		description = "Whether to only highlight the true tile when the player is moving",
+		position = 2,
+		section = currentTile
+	)
+	default boolean highlightCurrentTileMoving()
+	{
+		return false;
+	}
+
 	@Alpha
 	@ConfigItem(
 		keyName = "highlightCurrentColor",
 		name = "Highlight color",
 		description = "Configures the highlight color of current true tile",
-		position = 2,
+		position = 3,
 		section = currentTile
 	)
 	default Color highlightCurrentColor()
@@ -185,7 +197,7 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "currentTileFillColor",
 		name = "Fill color",
 		description = "Configures the fill color of current true tile",
-		position = 3,
+		position = 4,
 		section = currentTile
 	)
 	default Color currentTileFillColor()
@@ -197,7 +209,7 @@ public interface TileIndicatorsConfig extends Config
 		keyName = "currentTileBorderWidth",
 		name = "Border width",
 		description = "Width of the true tile marker border",
-		position = 4,
+		position = 5,
 		section = currentTile
 	)
 	default double currentTileBorderWidth()

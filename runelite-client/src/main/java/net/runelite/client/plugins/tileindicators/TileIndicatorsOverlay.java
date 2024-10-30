@@ -80,7 +80,8 @@ public class TileIndicatorsOverlay extends Overlay
 			}
 
 			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, playerPos);
-			if (playerPosLocal == null)
+			if (playerPosLocal == null || (config.highlightCurrentTileMoving()
+				&& client.getLocalDestinationLocation() == null))
 			{
 				return null;
 			}
