@@ -475,7 +475,6 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == Varbits.DIVINE_SUPER_DEFENCE && config.showDivine())
 		{
-			final boolean showMoonlightPotion = config.showMoonlightPotion();
 			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue()
 				|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
 				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
@@ -488,14 +487,9 @@ public class TimersAndBuffsPlugin extends Plugin
 				// However, after the first tick, Varbits.MOONLIGHT_POTION is suddenly transmitted BEFORE
 				// Varbits.DIVINE_SUPER_DEFENCE every tick. Thus, when the latter is transmitted, the
 				// Varbits.MOONLIGHT_POTION value might be 1 less than the Varbits.DIVINE_SUPER_DEFENCE value.
-				|| (showMoonlightPotion && client.getVarbitValue(Varbits.MOONLIGHT_POTION) + 1 >= event.getValue()))
+				|| (client.getVarbitValue(Varbits.MOONLIGHT_POTION) + 1 >= event.getValue()) && config.showMoonlightPotion())
 			{
 				return;
-			}
-
-			if (showMoonlightPotion && client.getVarbitValue(Varbits.MOONLIGHT_POTION) + 1 < event.getValue())
-			{
-				removeVarTimer(MOONLIGHT_POTION);
 			}
 
 			updateVarTimer(DIVINE_SUPER_DEFENCE, event.getValue(), IntUnaryOperator.identity());
