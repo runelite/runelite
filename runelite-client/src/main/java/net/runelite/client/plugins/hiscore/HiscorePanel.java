@@ -497,13 +497,11 @@ public class HiscorePanel extends PluginPanel
 				}
 				else if (config.maxedSkillsStyle() == MaxedSkillsStyle.SHOW_EXPERIENCE && (isSkill || skill.getType() == HiscoreSkillType.OVERALL) && exp > -1L)
 				{
-					if ((isSkill && s.getLevel() == 99) || s.getLevel() == 2277)
+					int skillCount = isSkill ? 1 : /* Overall skill */ net.runelite.api.Skill.values().length;
+					if (s.getLevel() == 99 * skillCount)
 					{
 						level = exp;
-						label.setForeground((isSkill && exp == 200_000_000) || exp == 4_600_000_000L
-							? SKILL_200M_COLOR
-							: SKILL_MAXED_COLOR
-						);
+						label.setForeground(exp == 200_000_000L * skillCount ? SKILL_200M_COLOR : SKILL_MAXED_COLOR);
 					}
 					else
 					{
