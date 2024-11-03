@@ -39,7 +39,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,8 +80,6 @@ public class HiscorePanel extends PluginPanel
 
 	private static final Color SKILL_MAXED_COLOR = new Color(0x00ff88);
 	private static final Color SKILL_200M_COLOR = new Color(0xff66b2);
-
-	private static final DecimalFormat SHOW_TENTHS_FORMATTER = new DecimalFormat("#0.0");
 
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
@@ -738,13 +735,9 @@ public class HiscorePanel extends PluginPanel
 		{
 			return (level / 1000) + "k";
 		}
-		else if (level < 100_000_000)
-		{
-			return SHOW_TENTHS_FORMATTER.format(level / 1_000_000D) + "M";
-		}
 		else
 		{
-			return (level / 1_000_000) + "M";
+			return (level / 1_000_000) + "m";
 		}
 	}
 

@@ -51,9 +51,9 @@ public class HiscorePanelTest
 		assertEquals("7682", formatLevel(7682));
 		assertEquals("12k", formatLevel(12398));
 		assertEquals("219k", formatLevel(219824));
-		assertEquals("56.3M", formatLevel(56_300_000));
-		assertEquals("199M", formatLevel(199_999_999));
-		assertEquals("200M", formatLevel(200_000_000));
-		assertEquals("4600M", formatLevel(4_600_000_000L));
+		assertEquals("56m", formatLevel(56_300_000));
+		assertEquals("199m", formatLevel(199_999_999));
+		assertEquals("200m", formatLevel(200_000_000));
+		assertEquals("4600m", formatLevel(4_600_000_000L));
 	}
 }
