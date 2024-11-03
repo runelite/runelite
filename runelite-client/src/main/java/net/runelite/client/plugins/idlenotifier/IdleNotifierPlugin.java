@@ -230,7 +230,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
 			case CRAFTING_CRUSH_BLESSED_BONES:
-				/* Fletching(Cutting, Stringing, Adding feathers and heads) */
+			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
