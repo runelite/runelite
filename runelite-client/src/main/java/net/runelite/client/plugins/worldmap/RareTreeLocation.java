@@ -109,7 +109,10 @@ enum RareTreeLocation
 		new WorldPoint(2946, 2908, 0),
 
 		// Prifddinas
-		new WorldPoint(3301, 6129, 0)),
+		new WorldPoint(3301, 6129, 0),
+
+		// Desert
+		new WorldPoint(3506, 3014, 0)),
 
 	TEAK_MAHOGANY("Teak/Mahogany trees", 50,
 		// Miscellania

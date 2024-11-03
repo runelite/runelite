@@ -159,6 +159,7 @@ enum DungeonLocation
 	OURANIA_CAVE("Ourania Cave", new WorldPoint(2451, 3231, 0)),
 	PATERDOMUS("Paterdomus basement", new WorldPoint(3404, 3506, 0)),
 	PATERDOMUS_MORYTANIA("Paterdomus basement", new WorldPoint(3421, 3484, 0)),
+	POISON_WASTE_DUNGEON("Poison Waste Dungeon", new WorldPoint(2320, 3100, 0)),
 	PORT_PHASMATYS_BREWERY("Port Phasmatys Brewery", new WorldPoint(3679, 3498, 0)),
 	PORT_SARIM_RAT_PITS("Port Sarim Rat Pits", new WorldPoint(3017, 3232, 0)),
 	QUIDAMORTEM_CAVE("Quidamortem Cave", new WorldPoint(1213, 3559, 0)),
