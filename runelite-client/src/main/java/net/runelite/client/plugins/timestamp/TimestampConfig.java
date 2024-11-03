@@ -35,25 +35,33 @@ public interface TimestampConfig extends Config
 	String GROUP = "timestamp";
 
 	@ConfigItem(
-		keyName = "opaqueTimestamp",
-		name = "Timestamps (opaque)",
+		keyName = "opaqueChatboxTimestamp",
+		name = "Timestamps (opaque chatbox)",
 		position = 1,
-		description = "Colour of Timestamps from the Timestamps plugin (opaque)"
+		description = "Colour of Timestamps from the Timestamps plugin (opaque chatbox)"
 	)
-	Color opaqueTimestamp();
+	Color opaqueChatboxTimestamp();
 
 	@ConfigItem(
-		keyName = "transparentTimestamp",
-		name = "Timestamps (transparent)",
+		keyName = "transparentChatboxTimestamp",
+		name = "Timestamps (transparent chatbox)",
 		position = 2,
-		description = "Colour of Timestamps from the Timestamps plugin (transparent)"
+		description = "Colour of Timestamps from the Timestamps plugin (transparent chatbox)"
 	)
-	Color transparentTimestamp();
+	Color transparentChatboxTimestamp();
+
+	@ConfigItem(
+		keyName = "splitPMTimestamp",
+		name = "Timestamps (split PM box)",
+		position = 3,
+		description = "Colour of Timestamps from the Timestamps plugin (split PM box)"
+	)
+	Color splitPMTimestamp();
 
 	@ConfigItem(
 		keyName = "format",
 		name = "Timestamp Format",
-		position = 3,
+		position = 4,
 		description = "Customize your timestamp format by using the following characters<br>" +
 			"'yyyy' : year<br>" +
 			"'MM' : month<br>" +
