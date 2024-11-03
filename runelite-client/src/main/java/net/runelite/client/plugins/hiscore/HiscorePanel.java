@@ -471,54 +471,46 @@ public class HiscorePanel extends PluginPanel
 
 			if (skill == null)
 			{
-				if (result.getPlayer() != null)
-				{
-					int combatLevel = Experience.getCombatLevel(
-						result.getSkill(ATTACK).getLevel(),
-						result.getSkill(STRENGTH).getLevel(),
-						result.getSkill(DEFENCE).getLevel(),
-						result.getSkill(HITPOINTS).getLevel(),
-						result.getSkill(MAGIC).getLevel(),
-						result.getSkill(RANGED).getLevel(),
-						result.getSkill(PRAYER).getLevel()
-					);
-					label.setText(Integer.toString(combatLevel));
-				}
+				int combatLevel = Experience.getCombatLevel(
+					result.getSkill(ATTACK).getLevel(),
+					result.getSkill(STRENGTH).getLevel(),
+					result.getSkill(DEFENCE).getLevel(),
+					result.getSkill(HITPOINTS).getLevel(),
+					result.getSkill(MAGIC).getLevel(),
+					result.getSkill(RANGED).getLevel(),
+					result.getSkill(PRAYER).getLevel()
+				);
+				label.setText(Integer.toString(combatLevel));
 			}
-			else if ((s = result.getSkill(skill)) != null)
+			else if ((s = result.getSkill(skill)) != null && s.getLevel() != -1) // custom styling for level text.
 			{
-				label.setForeground(Color.WHITE);
 				final long exp = s.getExperience();
+				long level = s.getLevel();
+
 				final boolean isSkill = skill.getType() == HiscoreSkillType.SKILL;
-				long level = -1;
-				if (config.maxedSkillsStyle() == MaxedSkillsStyle.VIRTUAL_LEVELS && isSkill && exp > -1L)
+				final boolean isOverallSkill = skill.getType() == HiscoreSkillType.OVERALL;
+				if ((isSkill || isOverallSkill) && exp > -1L) // A skill with xp that is ranked on the hiscores.
 				{
-					level = Experience.getLevelForXp((int) exp);
-				}
-				else if (config.maxedSkillsStyle() == MaxedSkillsStyle.SHOW_EXPERIENCE && (isSkill || skill.getType() == HiscoreSkillType.OVERALL) && exp > -1L)
-				{
-					int skillCount = isSkill ? 1 : /* Overall skill */ net.runelite.api.Skill.values().length;
-					if (s.getLevel() == 99 * skillCount)
+					switch (config.maxedSkillsStyle())
 					{
-						level = exp;
-						label.setForeground(exp == 200_000_000L * skillCount ? SKILL_200M_COLOR : SKILL_MAXED_COLOR);
+						case VIRTUAL_LEVELS:
+							if (isSkill)
+							{
+								level = Experience.getLevelForXp((int) exp);
+							}
+							break;
+						case SHOW_EXPERIENCE:
+							int skillCount = isSkill ? 1 : net.runelite.api.Skill.values().length;
+							if (s.getLevel() == 99 * skillCount)
+							{
+								level = exp;
+								label.setForeground(exp == 200_000_000L * skillCount ? SKILL_200M_COLOR : SKILL_MAXED_COLOR);
+							}
+							break;
 					}
-					else
-					{
-						level = s.getLevel();
-					}
-				}
-				else if (!isSkill || exp != -1L)
-				{
-					// for skills, level is only valid if exp is not -1
-					// otherwise level is always valid
-					level = s.getLevel();
 				}
 
-				if (level != -1)
-				{
-					label.setText(pad(formatLevel(level), skill.getType()));
-				}
+				label.setText(pad(formatLevel(level), skill.getType()));
 			}
 
 			label.setToolTipText(detailsHtml(result, skill));
