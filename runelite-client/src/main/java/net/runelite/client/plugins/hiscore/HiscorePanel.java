@@ -53,6 +53,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import static net.runelite.api.Experience.MAX_SKILL_XP;
 import net.runelite.api.Player;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -479,35 +480,35 @@ public class HiscorePanel extends PluginPanel
 				);
 				label.setText(Integer.toString(combatLevel));
 			}
-			else if ((s = result.getSkill(skill)) != null && s.getLevel() != -1) // custom styling for level text.
+			else if ((s = result.getSkill(skill)) != null && s.getLevel() != -1)
 			{
 				final long exp = s.getExperience();
-				long level = s.getLevel();
+				long labelValue = s.getLevel();
 
 				final boolean isSkill = skill.getType() == HiscoreSkillType.SKILL;
 				final boolean isOverallSkill = skill.getType() == HiscoreSkillType.OVERALL;
-				if ((isSkill || isOverallSkill) && exp > -1L) // A skill with xp that is ranked on the hiscores.
+				if ((isSkill || isOverallSkill) && exp > -1L)
 				{
 					switch (config.maxedSkillsStyle())
 					{
 						case VIRTUAL_LEVELS:
 							if (isSkill)
 							{
-								level = Experience.getLevelForXp((int) exp);
+								labelValue = Experience.getLevelForXp((int) exp);
 							}
 							break;
 						case SHOW_EXPERIENCE:
 							int skillCount = isSkill ? 1 : net.runelite.api.Skill.values().length;
 							if (s.getLevel() == 99 * skillCount)
 							{
-								level = exp;
-								label.setForeground(exp == 200_000_000L * skillCount ? SKILL_200M_COLOR : SKILL_MAXED_COLOR);
+								labelValue = exp;
+								label.setForeground(exp == (long) MAX_SKILL_XP * skillCount ? SKILL_200M_COLOR : SKILL_MAXED_COLOR);
 							}
 							break;
 					}
 				}
 
-				label.setText(pad(formatLevel(level), skill.getType()));
+				label.setText(pad(formatNumber(labelValue), skill.getType()));
 			}
 
 			label.setToolTipText(detailsHtml(result, skill));
@@ -725,19 +726,19 @@ public class HiscorePanel extends PluginPanel
 	}
 
 	@VisibleForTesting
-	static String formatLevel(long level)
+	static String formatNumber(long number)
 	{
-		if (level < 10_000)
+		if (number < 10_000)
 		{
-			return Long.toString(level);
+			return Long.toString(number);
 		}
-		else if (level < 10_000_000)
+		else if (number < 10_000_000)
 		{
-			return (level / 1000) + "k";
+			return (number / 1000) + "k";
 		}
 		else
 		{
-			return (level / 1_000_000) + "m";
+			return (number / 1_000_000) + "m";
 		}
 	}
 

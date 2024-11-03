@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.hiscore;
 
 import net.runelite.client.hiscore.HiscoreClient;
-import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
+import static net.runelite.client.plugins.hiscore.HiscorePanel.formatNumber;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -44,16 +44,16 @@ public class HiscorePanelTest
 	}
 
 	@Test
-	public void testFormatLevel()
+	public void testFormatNumber()
 	{
-		assertEquals("398", formatLevel(398));
-		assertEquals("5000", formatLevel(5000));
-		assertEquals("7682", formatLevel(7682));
-		assertEquals("12k", formatLevel(12398));
-		assertEquals("219k", formatLevel(219824));
-		assertEquals("56m", formatLevel(56_300_000));
-		assertEquals("199m", formatLevel(199_999_999));
-		assertEquals("200m", formatLevel(200_000_000));
-		assertEquals("4600m", formatLevel(4_600_000_000L));
+		assertEquals("398", formatNumber(398));
+		assertEquals("5000", formatNumber(5000));
+		assertEquals("7682", formatNumber(7682));
+		assertEquals("12k", formatNumber(12398));
+		assertEquals("219k", formatNumber(219824));
+		assertEquals("56m", formatNumber(56_300_000));
+		assertEquals("199m", formatNumber(199_999_999));
+		assertEquals("200m", formatNumber(200_000_000));
+		assertEquals("4600m", formatNumber(4_600_000_000L));
 	}
 }
