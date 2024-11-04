@@ -72,6 +72,7 @@ public interface StatusBarsConfig extends Config
 		PRAYER,
 		RUN_ENERGY,
 		SPECIAL_ATTACK,
+		WARMTH,
 	}
 
 	@ConfigItem(

@@ -211,6 +211,14 @@ class StatusBarsOverlay extends Overlay
 			() -> null,
 			() -> loadSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON)
 		));
+		barRenderers.put(StatusBarsConfig.BarMode.WARMTH, new BarRenderer(
+			() -> 100,
+			() -> client.getVarbitValue(Varbits.WINTERTODT_WARMTH) / 10,
+			() -> 0,
+			() -> new Color(244, 97, 0),
+			() -> null,
+			() -> skillIconManager.getSkillImage(Skill.FIREMAKING, true)
+		));
 	}
 
 	@Override
