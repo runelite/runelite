@@ -29,7 +29,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
-import net.runelite.client.plugins.statusbars.config.BarMode;
 
 @ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
@@ -64,6 +63,15 @@ public interface StatusBarsConfig extends Config
 	default boolean enableRestorationBars()
 	{
 		return true;
+	}
+
+	enum BarMode
+	{
+		DISABLED,
+		HITPOINTS,
+		PRAYER,
+		RUN_ENERGY,
+		SPECIAL_ATTACK,
 	}
 
 	@ConfigItem(
