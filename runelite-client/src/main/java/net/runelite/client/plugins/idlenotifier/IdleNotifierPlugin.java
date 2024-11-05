@@ -229,6 +229,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_LEATHER:
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
+			case CRAFTING_CRUSH_BLESSED_BONES:
 			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
@@ -380,6 +381,9 @@ public class IdleNotifierPlugin extends Plugin
 			case CLEANING_SPECIMENS_1:
 			case CLEANING_SPECIMENS_2:
 			case LOOKING_INTO:
+			case SACRIFICE_BLESSED_BONE_SHARDS:
+			case MAKING_SUNFIRE_WINE:
+			case THIEVING_VARLAMORE_STEALING_VALUABLES:
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();
