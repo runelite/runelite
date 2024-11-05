@@ -288,7 +288,7 @@ public final class ScriptID
 	 * Called to build the combat interface
 	 */
 	@ScriptArguments()
-	public static final int COMBAT_INTERFACE_SETUP = 420;
+	public static final int COMBAT_INTERFACE_SETUP = 7593;
 
 	/**
 	 * Called to build the toplevel interface
