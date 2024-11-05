@@ -218,20 +218,20 @@ entry_items=36
 
 [combat]
 id=593
-level=3
-style_one=4
-style_two=8
-style_three=12
-style_four=16
-spells=20
-defensive_spell_box=21
-defensive_spell_icon=23
-defensive_spell_shield=24
-defensive_spell_text=25
-spell_box=26
-spell_icon=28
-spell_text=29
-auto_retaliate=30
+level=4
+style_one=5
+style_two=9
+style_three=13
+style_four=17
+spells=21
+defensive_spell_box=22
+defensive_spell_icon=24
+defensive_spell_shield=25
+defensive_spell_text=26
+spell_box=27
+spell_icon=29
+spell_text=30
+auto_retaliate=31
 
 [combat_achievements_tasks]
 id=715
