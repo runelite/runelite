@@ -59,6 +59,7 @@ import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
@@ -369,6 +370,12 @@ public class XpTrackerPlugin extends Plugin
 			xpState.resetSkillPerHour(skill);
 		}
 		xpState.resetOverallPerHour();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		xpPanel.relayoutInfoBoxes();
 	}
 
 	@Subscribe

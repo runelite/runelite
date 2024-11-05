@@ -28,11 +28,14 @@ import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.util.QuantityFormatter;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @AllArgsConstructor
 public enum XpPanelLabel
 {
+	NONE(null, unused -> StringUtils.EMPTY),
+
 	TIME_TO_LEVEL("TTL", XpSnapshotSingle::getTimeTillGoalShort),
 
 	XP_GAINED("XP Gained", snap -> format(snap.getXpGainedInSession())),
@@ -55,6 +58,10 @@ public enum XpPanelLabel
 	 */
 	public String getActionKey(XpSnapshotSingle snapshot)
 	{
+		if (this == NONE)
+		{
+			return StringUtils.EMPTY;
+		}
 		String actionKey = key;
 		if (snapshot.getActionType() == XpActionType.ACTOR_HEALTH)
 		{

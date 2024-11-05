@@ -137,8 +137,8 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "xpPanelLabel1",
-		name = "Top-left XP info label",
-		description = "Configures the information displayed in the top-left of XP info box"
+		name = "1st XP info label",
+		description = "Configures the information displayed in the first XP info box"
 	)
 	default XpPanelLabel xpPanelLabel1()
 	{
@@ -148,8 +148,8 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "xpPanelLabel2",
-		name = "Top-right XP info label",
-		description = "Configures the information displayed in the top-right of XP info box"
+		name = "2nd XP info label",
+		description = "Configures the information displayed in the second XP info box"
 	)
 
 	default XpPanelLabel xpPanelLabel2()
@@ -160,8 +160,8 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "xpPanelLabel3",
-		name = "Bottom-left XP info label",
-		description = "Configures the information displayed in the bottom-left of XP info box"
+		name = "3rd XP info label",
+		description = "Configures the information displayed in the third XP info box"
 	)
 	default XpPanelLabel xpPanelLabel3()
 	{
@@ -171,8 +171,8 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "xpPanelLabel4",
-		name = "Bottom-right XP info label",
-		description = "Configures the information displayed in the bottom-right of XP info box"
+		name = "4th XP info label",
+		description = "Configures the information displayed in the fourth XP info box"
 	)
 	default XpPanelLabel xpPanelLabel4()
 	{
@@ -181,6 +181,39 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 12,
+		keyName = "xpPanelLabel5",
+		name = "5th XP info label",
+		description = "Configures the information displayed in the fifth XP info box"
+	)
+	default XpPanelLabel xpPanelLabel5()
+	{
+		return XpPanelLabel.NONE;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "xpPanelLabel6",
+		name = "6th XP info label",
+		description = "Configures the information displayed in the sixth XP info box"
+	)
+	default XpPanelLabel xpPanelLabel6()
+	{
+		return XpPanelLabel.NONE;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "xpPanelLabel7",
+		name = "7th XP info label",
+		description = "Configures the information displayed in the seventh XP info box"
+	)
+	default XpPanelLabel xpPanelLabel7()
+	{
+		return XpPanelLabel.NONE;
+	}
+
+	@ConfigItem(
+		position = 15,
 		keyName = "progressBarLabel",
 		name = "Progress bar label",
 		description = "Configures the info box progress bar to show Time to goal or percentage complete"
@@ -191,7 +224,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 16,
 		keyName = "progressBarTooltipLabel",
 		name = "Tooltip label",
 		description = "Configures the info box progress bar tooltip to show Time to goal or percentage complete"
@@ -202,7 +235,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 17,
 		keyName = "prioritizeRecentXpSkills",
 		name = "Move recently trained skills to top",
 		description = "Configures whether skills should be organized by most recently gained xp"
@@ -213,7 +246,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 18,
 		keyName = "wiseOldManOpenOption",
 		name = "Wise Old Man Option",
 		description = "Adds an option to the XP info box right-click menu to open Wise Old Man"

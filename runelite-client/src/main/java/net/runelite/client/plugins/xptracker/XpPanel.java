@@ -189,6 +189,11 @@ class XpPanel extends PluginPanel
 		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.reset());
 	}
 
+	void relayoutInfoBoxes()
+	{
+		infoBoxes.forEach((skill, xpInfoBox) -> xpInfoBox.relayoutStatsPanel());
+	}
+
 	void resetSkill(Skill skill)
 	{
 		XpInfoBox xpInfoBox = infoBoxes.get(skill);
