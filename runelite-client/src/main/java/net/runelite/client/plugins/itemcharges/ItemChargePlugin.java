@@ -146,22 +146,22 @@ public class ItemChargePlugin extends Plugin
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
 	private static final Pattern ALCHEMISTS_AMULET_ACTIVATE_PATTERN = Pattern.compile(
-			"Your Alchemist's amulet helps you create a \\d-dose potion\\. It has (\\d+|one) charges? left\\."
+		"Your Alchemist's amulet helps you create a \\d-dose potion\\. It has (\\d+|one) charges? left\\."
 	);
 	private static final Pattern ALCHEMISTS_AMULET_CHECK_PATTERN = Pattern.compile(
-			"Your Alchemist's amulet has (\\d+) charges? left\\."
+		"Your Alchemist's amulet has (\\d+) charges? left\\."
 	);
 	private static final Pattern ALCHEMISTS_AMULET_NO_CHARGES_PATTERN = Pattern.compile(
-			"Your Alchemist's amulet helps you create a \\d-dose potion\\. It no longer has any charges\\."
+		"Your Alchemist's amulet helps you create a \\d-dose potion\\. It no longer has any charges\\."
 	);
 	private static final Pattern ALCHEMISTS_AMULET_INITIAL_APPLY_PATTERN = Pattern.compile(
-			"You apply (\\d+) charges to your Alchemist's amulet\\."
+		"You apply (\\d+) charges to your Alchemist's amulet\\."
 	);
 	private static final Pattern ALCHEMISTS_AMULET_ADDITIONAL_APPLY_PATTERN = Pattern.compile(
-			"You apply an additional (\\d+) charges to your Alchemist's<br>amulet\\. It now has (\\d+) charges in total\\."
+		"You apply an additional (\\d+) charges to your Alchemist's<br>amulet\\. It now has (\\d+) charges in total\\."
 	);
 	private static final Pattern ALCHEMISTS_AMULET_UNCHARGE_PATTERN = Pattern.compile(
-			"You uncharge your Alchemist's amulet, regaining (\\d+)<br>amulets of chemistry in the process\\."
+		"You uncharge your Alchemist's amulet, regaining (\\d+)<br>amulets of chemistry in the process\\."
 	);
 
 	private static final int MAX_DODGY_CHARGES = 10;

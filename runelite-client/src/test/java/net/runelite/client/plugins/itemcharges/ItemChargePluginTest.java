@@ -533,6 +533,7 @@ public class ItemChargePluginTest
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
 	}
+
 	@Test
 	public void testBraceletOfClayUseTrahaearn()
 	{

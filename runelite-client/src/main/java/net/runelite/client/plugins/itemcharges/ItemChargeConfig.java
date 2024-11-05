@@ -469,11 +469,11 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showAlchemistsAmulet",
-			name = "Alchemist's Amulet Charges",
-			description = "Show Alchemist's Amulet item charges",
-			position = 34,
-			section = chargesSection
+		keyName = "showAlchemistsAmulet",
+		name = "Alchemist's Amulet Charges",
+		description = "Show Alchemist's Amulet item charges",
+		position = 34,
+		section = chargesSection
 	)
 	default boolean showAlchemistsAmulet()
 	{
@@ -481,11 +481,11 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "alchemistsAmuletNotification",
-			name = "Alchemist's Amulet Notification",
-			description = "Send a notification when the Alchemist's Amulet runs out of charges",
-			position = 35,
-			section = notificationSection
+		keyName = "alchemistsAmuletNotification",
+		name = "Alchemist's Amulet Notification",
+		description = "Send a notification when the Alchemist's Amulet runs out of charges",
+		position = 35,
+		section = notificationSection
 	)
 	default Notification alchemistsAmuletNotification()
 	{
