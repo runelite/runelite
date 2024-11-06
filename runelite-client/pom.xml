@@ -426,6 +426,7 @@
 						<configuration>
 							<scriptDirectory>src/main/scripts</scriptDirectory>
 							<outputDirectory>${project.build.outputDirectory}/runelite</outputDirectory>
+							<componentsFile>../runelite-api/src/main/interfaces/interfaces.toml</componentsFile>
 						</configuration>
 					</execution>
 					<execution>

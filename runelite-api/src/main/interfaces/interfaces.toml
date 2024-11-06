@@ -218,6 +218,7 @@ entry_items=36
 
 [combat]
 id=593
+weapon_name=2
 level=4
 style_one=5
 style_two=9
