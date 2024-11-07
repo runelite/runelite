@@ -1181,7 +1181,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 
 		// downgrade freeze based on graphic, if at the same tick as the freeze message
-		if (freezeTime == client.getTickCount())
+		if (freezeTime == client.getTickCount() && config.showFreezes())
 		{
 			if (actor.getGraphic() == ICERUSH.getGraphicId())
 			{
