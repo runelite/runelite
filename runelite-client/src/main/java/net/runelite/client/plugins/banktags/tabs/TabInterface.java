@@ -517,7 +517,7 @@ public class TabInterface
 				break;
 			case NEWTAB_OP_OPEN_TAB_MENU:
 				client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
-				openTag(TAGTABS, null, 0, true);
+				plugin.openTag(TAGTABS, null, 0);
 				break;
 		}
 	}
