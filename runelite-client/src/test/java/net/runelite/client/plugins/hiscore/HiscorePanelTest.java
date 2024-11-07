@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.hiscore;
 
 import net.runelite.api.Client;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.hiscore.HiscoreClient;
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
 import net.runelite.client.hiscore.HiscoreEndpoint;
@@ -41,7 +42,7 @@ public class HiscorePanelTest
 		HiscorePlugin plugin = mock(HiscorePlugin.class);
 		when(plugin.getWorldEndpoint()).thenReturn(HiscoreEndpoint.NORMAL);
 		new HiscorePanel(mock(Client.class), plugin, mock(HiscoreConfig.class),
-			mock(NameAutocompleter.class), mock(HiscoreClient.class));
+			mock(NameAutocompleter.class), mock(HiscoreClient.class), mock(SpriteManager.class));
 	}
 
 	@Test
