@@ -194,7 +194,7 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!event.getType().equals(ChatMessageType.GAMEMESSAGE) || !config.bountylookup())
+		if (event.getType() != ChatMessageType.GAMEMESSAGE || !config.bountylookup())
 		{
 			return;
 		}
@@ -247,7 +247,7 @@ public class HiscorePlugin extends Plugin
 		return HiscoreEndpoint.NORMAL;
 	}
 
-	private HiscoreEndpoint findHiscoreEndpointFromPlayerName(String name)
+	private static HiscoreEndpoint findHiscoreEndpointFromPlayerName(String name)
 	{
 		if (name.contains(IconID.IRONMAN.toString()))
 		{
