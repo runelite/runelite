@@ -41,7 +41,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -144,7 +143,7 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
+	public HiscorePanel(Client client, HiscorePlugin plugin, HiscoreConfig config,
 		NameAutocompleter nameAutocompleter, HiscoreClient hiscoreClient)
 	{
 		this.plugin = plugin;
@@ -178,10 +177,6 @@ public class HiscorePanel extends PluginPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				if (e.getClickCount() != 2)
-				{
-					return;
-				}
-				if (client == null)
 				{
 					return;
 				}
