@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.Client;
 import static net.runelite.api.ItemID.ABYSSAL_WHIP;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -81,6 +82,10 @@ public class BankTagsPluginTest
 	@Mock
 	@Bind
 	private ChatMessageManager chatMessageManager;
+
+	@Bind
+	@Named("developerMode")
+	boolean developerMode;
 
 	@Inject
 	private TagManager tagManager;
