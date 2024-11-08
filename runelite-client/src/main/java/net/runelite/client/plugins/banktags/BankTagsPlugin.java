@@ -503,7 +503,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	@Override
 	public void openBankTag(String name, int options)
 	{
-		Layout layout = layoutManager.loadLayout(name);
+		Layout layout = (options & OPTION_NO_LAYOUT) != 0 ? null : layoutManager.loadLayout(name);
 		openTag(name, layout, options);
 	}
 
