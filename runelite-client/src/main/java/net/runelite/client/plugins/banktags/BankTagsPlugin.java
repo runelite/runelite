@@ -78,13 +78,19 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class BankTagsPlugin extends Plugin implements BankTagsService
 {
+	// banktags:item_<id>=tag,tag,tag,...
+	// banktags:icon_<tag>=id
+	// banktags:tagtabs=tab,tab,tab,...
+	// banktags:layout_<tag>=item,item,item,...
 	public static final String CONFIG_GROUP = "banktags";
-	public static final String TAG_SEARCH = "tag:";
-	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String TAG_ICON_PREFIX = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
-	public static final String VAR_TAG_SUFFIX = "*";
 	public static final String TAG_LAYOUT_PREFIX = "layout_";
+	static final String ITEM_KEY_PREFIX = "item_";
+
+	public static final String TAG_SEARCH = "tag:";
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	public static final String VAR_TAG_SUFFIX = "*";
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -167,7 +173,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	public void resetConfiguration()
 	{
 		List<String> extraKeys = Lists.newArrayList(
-			CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
+			CONFIG_GROUP + "." + ITEM_KEY_PREFIX,
 			CONFIG_GROUP + "." + TAG_ICON_PREFIX,
 			CONFIG_GROUP + "." + TAG_TABS_CONFIG,
 			CONFIG_GROUP + "." + TAG_LAYOUT_PREFIX

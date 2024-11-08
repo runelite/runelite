@@ -38,12 +38,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.ITEM_KEY_PREFIX;
 import net.runelite.client.util.Text;
 
 @Singleton
 public class TagManager
 {
-	static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final Map<String, BankTag> customTags = new HashMap<>();

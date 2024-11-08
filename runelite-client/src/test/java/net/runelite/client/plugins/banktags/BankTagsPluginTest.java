@@ -35,6 +35,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.ITEM_KEY_PREFIX;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.cluescrolls.ClueScrollService;
 import static org.junit.Assert.assertEquals;
@@ -108,21 +109,21 @@ public class BankTagsPluginTest
 		when(client.getStringStack()).thenReturn(new String[]{"tag:whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip");
+			ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip");
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
 
 		// Search should be found at the start of the tag
 		when(client.getIntStack()).thenReturn(new int[]{0, ABYSSAL_WHIP});
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
+			ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
 
 		// Search should not be be found in the middle of the tag
 		// and explicit search does not allow fall through
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing whip");
+			ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing whip");
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(0, client.getIntStack()[0]);
 	}
@@ -134,7 +135,7 @@ public class BankTagsPluginTest
 		when(client.getStringStack()).thenReturn(new String[]{"whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing");
+			ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing");
 
 		assertFalse(tagManager.findTag(ABYSSAL_WHIP, "whip"));
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
@@ -148,7 +149,7 @@ public class BankTagsPluginTest
 		when(client.getStringStack()).thenReturn(new String[]{"whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
-			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
+			ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");
 
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
