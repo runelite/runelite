@@ -176,7 +176,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		// rightClickMenuBlocksCamera=false works because the camera click mask is set to 2 or 4. Clicking on objects does *not*
 		// remap rmb->mmb, so the rmb click both opens the menu and moves the camera. Clicking on nothing *does* remap rmb->mmb
 		// which moves the camera, but won't open a Walk-here only menu.
-		client.setCameraMouseButtonMask(!config.rightClickMenuBlocksCamera() ? ((1 << MouseEvent.BUTTON2) | (1 << 4 /* button 4 */)) : 0);
+		// If rightClickMovesCamera=false, we use a mask of 0 which gives us the default behaviour. There's no need to consider
+		// rightClickMenuBlocksCamera if rmb isn't used to move the camera to begin with.
+		client.setCameraMouseButtonMask((config.rightClickMovesCamera() && !config.rightClickMenuBlocksCamera()) ? ((1 << MouseEvent.BUTTON2) | (1 << 4 /* button 4 */)) : 0);
 		client.setCameraSpeed((float) config.cameraSpeed());
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		client.setInvertYaw(config.invertYaw());
