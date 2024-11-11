@@ -30,6 +30,7 @@ import java.time.Instant;
 import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Data;
+import net.runelite.api.ItemID;
 import static net.runelite.api.TileItem.OWNERSHIP_GROUP;
 import static net.runelite.api.TileItem.OWNERSHIP_NONE;
 import static net.runelite.api.TileItem.OWNERSHIP_OTHER;
@@ -77,7 +78,7 @@ class GroundItem
 
 	int getCoinsAmount()
 	{
-		return name == "Coins" ? quantity : 0;
+		return itemId == ItemID.COINS_995 ? quantity : 0;
 	}
 
 	void reset()

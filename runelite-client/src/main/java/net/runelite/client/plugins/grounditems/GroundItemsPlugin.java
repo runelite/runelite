@@ -669,7 +669,7 @@ public class GroundItemsPlugin extends Plugin
 		final boolean underCoins = groundItem.getCoinsAmount() < config.getHideCoinsUnderAmount();
 
 		// Explicit highlight takes priority over implicit hide
-		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa && underCoins)
+		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && ((underGe && underHa) || underCoins))
 			? config.hiddenColor()
 			: null;
 	}
