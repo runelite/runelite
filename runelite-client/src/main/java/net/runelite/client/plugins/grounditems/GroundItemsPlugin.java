@@ -666,9 +666,10 @@ public class GroundItemsPlugin extends Plugin
 		final boolean canBeHidden = groundItem.getGePrice() > 0 || groundItem.isTradeable() || !config.dontHideUntradeables();
 		final boolean underGe = groundItem.getGePrice() < config.getHideUnderValue();
 		final boolean underHa = groundItem.getHaPrice() < config.getHideUnderValue();
+		final boolean underCoins = groundItem.getCoinsAmount() < config.getHideCoinsUnderAmount();
 
 		// Explicit highlight takes priority over implicit hide
-		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
+		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa && underCoins)
 			? config.hiddenColor()
 			: null;
 	}

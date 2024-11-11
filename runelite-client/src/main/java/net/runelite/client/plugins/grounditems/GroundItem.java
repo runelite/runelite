@@ -75,6 +75,11 @@ class GroundItem
 		return gePrice * quantity;
 	}
 
+	int getCoinsAmount()
+	{
+		return name == "Coins" ? quantity : 0;
+	}
+
 	void reset()
 	{
 		highlighted = hidden = false;
