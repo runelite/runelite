@@ -37,21 +37,21 @@ public interface ChatChannelConfig extends Config
 	String GROUP = "clanchat"; // group name from the old plugin
 
 	@ConfigSection(
-		name = "Friends Chat",
+		name = "Friends chat",
 		description = "Configuration for friends chat",
 		position = 10
 	)
 	String friendsChatSection = "friendsChat";
 
 	@ConfigSection(
-		name = "Clan Chat",
+		name = "Clan chat",
 		description = "Configuration for clan chat",
 		position = 20
 	)
 	String clanChatSection = "clanChat";
 
 	@ConfigSection(
-		name = "Guest Clan Chat",
+		name = "Guest clan chat",
 		description = "Configuration for guest clan chat",
 		position = 30
 	)
@@ -59,7 +59,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "joinLeaveTimeout",
-		name = "Join/Leave timeout",
+		name = "Join/leave timeout",
 		description = "Set the timeout duration of join/leave messages. A value of 0 will make the messages permanent.",
 		position = 0
 	)
@@ -70,7 +70,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanChatIcons",
-		name = "Chat Icons",
+		name = "Chat icons",
 		description = "Show rank icons next to friends chat members.",
 		position = 1,
 		section = friendsChatSection
@@ -82,7 +82,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "recentChats",
-		name = "Recent Chats",
+		name = "Recent chats",
 		description = "Show recent friends chats.",
 		position = 2,
 		section = friendsChatSection
@@ -112,7 +112,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "showJoinLeave",
-		name = "Show Join/Leave",
+		name = "Show join/leave",
 		description = "Adds a temporary message notifying when a member joins or leaves.",
 		position = 4,
 		section = friendsChatSection
@@ -124,7 +124,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "joinLeaveRank",
-		name = "Join/Leave rank",
+		name = "Join/leave rank",
 		description = "Only show join/leave messages for members at or above this rank.",
 		position = 5,
 		section = friendsChatSection
@@ -136,7 +136,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "privateMessageIcons",
-		name = "Private Message Icons",
+		name = "Private message icons",
 		description = "Add rank icons to private messages received from members.",
 		position = 7,
 		section = friendsChatSection
@@ -148,7 +148,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "publicChatIcons",
-		name = "Public Chat Icons",
+		name = "Public chat icons",
 		description = "Add rank icons to public chat messages from members.",
 		position = 8,
 		section = friendsChatSection
@@ -160,7 +160,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "confirmKicks",
-		name = "Confirm Kicks",
+		name = "Confirm kicks",
 		description = "Shows a chat prompt to confirm kicks",
 		position = 10,
 		section = friendsChatSection
@@ -196,7 +196,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanChatShowJoinLeave",
-		name = "Show Join/Leave",
+		name = "Show join/leave",
 		description = "Adds a temporary message notifying when a member joins or leaves.",
 		position = 0,
 		section = clanChatSection
@@ -208,7 +208,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanChatShowOnlineMemberCount",
-		name = "Show Online Member Count",
+		name = "Show online member count",
 		description = "Shows the number of online clan members at the end of the clan's name.",
 		position = 1,
 		section = clanChatSection
@@ -220,7 +220,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "guestClanChatShowJoinLeave",
-		name = "Show Join/Leave",
+		name = "Show join/leave",
 		description = "Adds a temporary message notifying when a member joins or leaves.",
 		position = 0,
 		section = guestClanChatSection
@@ -232,7 +232,7 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigItem(
 		keyName = "guestClanChatShowOnlineMemberCount",
-		name = "Show Online Member Count",
+		name = "Show online member count",
 		description = "Shows the number of online guest clan members at the end of the clan's name.",
 		position = 1,
 		section = guestClanChatSection

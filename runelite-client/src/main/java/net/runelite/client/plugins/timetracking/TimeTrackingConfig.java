@@ -81,7 +81,7 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "defaultTimerMinutes",
-		name = "Default Time",
+		name = "Default time",
 		description = "The default time for the timer in minutes",
 		position = 5
 	)
@@ -93,7 +93,7 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "sortOrder",
-		name = "Sort Order",
+		name = "Sort order",
 		description = "The order in which to sort the timers",
 		position = 6
 	)
@@ -104,7 +104,7 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "timerWarningThreshold",
-		name = "Warning Threshold",
+		name = "Warning threshold",
 		description = "The time at which to change the timer color to the warning color",
 		position = 6
 	)
@@ -127,7 +127,7 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "activeTab",
-		name = "Active Tab",
+		name = "Active tab",
 		description = "The currently selected tab",
 		hidden = true
 	)

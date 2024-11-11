@@ -77,7 +77,7 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "leftBarMode",
-		name = "Left Bar",
+		name = "Left bar",
 		description = "Configures the left status bar"
 	)
 	default BarMode leftBarMode()
@@ -87,7 +87,7 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightBarMode",
-		name = "Right Bar",
+		name = "Right bar",
 		description = "Configures the right status bar"
 	)
 	default BarMode rightBarMode()
@@ -112,7 +112,7 @@ public interface StatusBarsConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "barWidth",
-		name = "Bar Width",
+		name = "Bar width",
 		description = "The width of the status bars in the modern resizeable layout."
 	)
 	default int barWidth()

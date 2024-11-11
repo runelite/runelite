@@ -120,7 +120,7 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "npcColor",
-		name = "Highlight Color",
+		name = "Highlight color",
 		description = "Color of the NPC highlight border, menu, and text",
 		section = renderStyleSection
 	)
@@ -133,7 +133,7 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "fillColor",
-		name = "Fill Color",
+		name = "Fill color",
 		description = "Color of the NPC highlight fill",
 		section = renderStyleSection
 	)
@@ -145,7 +145,7 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 12,
 		keyName = "borderWidth",
-		name = "Border Width",
+		name = "Border width",
 		description = "Width of the highlighted NPC border",
 		section = renderStyleSection
 	)
@@ -173,7 +173,7 @@ public interface NpcIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "npcToHighlight",
-		name = "NPCs to Highlight",
+		name = "NPCs to highlight",
 		description = "List of NPC names to highlight. Format: (NPC), (NPC)"
 	)
 	default String getNpcToHighlight()

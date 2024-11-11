@@ -52,7 +52,7 @@ public interface TimestampConfig extends Config
 
 	@ConfigItem(
 		keyName = "format",
-		name = "Timestamp Format",
+		name = "Timestamp format",
 		position = 3,
 		description = "Customize your timestamp format by using the following characters<br>" +
 			"'yyyy' : year<br>" +

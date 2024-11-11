@@ -33,7 +33,7 @@ public interface BankTagsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "useTabs",
-		name = "Use Tag Tabs",
+		name = "Use tag tabs",
 		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
 		position = 1
 	)
@@ -44,7 +44,7 @@ public interface BankTagsConfig extends Config
 
 	@ConfigItem(
 		keyName = "rememberTab",
-		name = "Remember last Tag Tab",
+		name = "Remember last tag tab",
 		description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
 		position = 2
 	)

@@ -49,7 +49,7 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayBoosts",
-		name = "Display Boosts",
+		name = "Display boosts",
 		description = "Configures which skill boosts to display",
 		position = 1
 	)

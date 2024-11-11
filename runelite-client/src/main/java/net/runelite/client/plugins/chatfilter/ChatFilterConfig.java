@@ -34,7 +34,7 @@ import net.runelite.client.config.ConfigSection;
 public interface ChatFilterConfig extends Config
 {
 	@ConfigSection(
-		name = "Filter Lists",
+		name = "Filter lists",
 		description = "Custom Word, Regex, and Username filter lists",
 		position = 0,
 		closedByDefault = true
@@ -43,7 +43,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filteredWords",
-		name = "Filtered Words",
+		name = "Filtered words",
 		description = "List of filtered words, separated by commas",
 		position = 1,
 		section = filterLists
@@ -55,7 +55,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filteredRegex",
-		name = "Filtered Regex",
+		name = "Filtered regex",
 		description = "List of regular expressions to filter, one per line",
 		position = 2,
 		section = filterLists
@@ -67,7 +67,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filteredNames",
-		name = "Filtered Names",
+		name = "Filtered names",
 		description = "List of filtered names, one per line. Accepts regular expressions",
 		position = 3,
 		section = filterLists
@@ -90,7 +90,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filterFriends",
-		name = "Filter Friends",
+		name = "Filter friends",
 		description = "Filter your friends' messages",
 		position = 5
 	)
@@ -101,7 +101,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filterClan",
-		name = "Filter Friends Chat Members",
+		name = "Filter friends chat members",
 		description = "Filter your friends chat members' messages",
 		position = 6
 	)
@@ -112,7 +112,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filterClanChat",
-		name = "Filter clan Chat Members",
+		name = "Filter clan chat members",
 		description = "Filter your clan chat members' messages",
 		position = 7
 	)
@@ -123,7 +123,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "filterGameChat",
-		name = "Filter Game Chat",
+		name = "Filter game chat",
 		description = "Filter your game chat messages",
 		position = 9
 	)
@@ -134,7 +134,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "collapseGameChat",
-		name = "Collapse Game Chat",
+		name = "Collapse game chat",
 		description = "Collapse duplicate game chat messages into a single line",
 		position = 10
 	)
@@ -145,7 +145,7 @@ public interface ChatFilterConfig extends Config
 
 	@ConfigItem(
 		keyName = "collapsePlayerChat",
-		name = "Collapse Player Chat",
+		name = "Collapse player chat",
 		description = "Collapse duplicate player chat messages into a single line",
 		position = 11
 	)
