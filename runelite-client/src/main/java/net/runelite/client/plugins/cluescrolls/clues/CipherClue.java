@@ -27,11 +27,11 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullNpcID;
@@ -79,12 +79,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 	private CipherClue(String text, WorldPoint location, String area)
 	{
-		this.text = "The cipher reveals where to dig next: " + text;
-		this.npcId = -1;
-		this.location = location;
-		this.area = area;
-		this.question = null;
-		this.answer = null;
+		this(text, -1, location, area);
 	}
 
 	private CipherClue(String text, int npcId, WorldPoint location, String area)
@@ -112,63 +107,54 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Cipher Clue").build());
-
-		final NPCComposition npc = getNpcComposition(plugin);
-		if (npc != null)
-		{
-			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(npc.getName())
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
-		}
-
-		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getArea())
-			.leftColor(TITLED_CONTENT_COLOR)
-			.build());
-
-		if (getAnswer() != null)
-		{
-			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getAnswer())
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
-		}
+		addNPC(panelComponent, plugin);
+		addLocation(panelComponent);
+		addAnswer(panelComponent);
 
 		renderOverlayNote(panelComponent, plugin);
+	}
+
+	private void addNPC(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	{
+		final NPCComposition npc = getNpcComposition(plugin);
+		if (npc == null) return;
+		addEntry(panelComponent, "NPC:", npc.getName());
+	}
+
+	private void addLocation(PanelComponent panelComponent)
+	{
+		addEntry(panelComponent, "Location:", getArea());
+	}
+
+	private void addAnswer(PanelComponent panelComponent)
+	{
+		if (getAnswer() == null) return;
+		addEntry(panelComponent, "Answer:", getAnswer());
+	}
+
+	private void addEntry(PanelComponent panelComponent, String label, String entry)
+	{
+		panelComponent.getChildren().add(LineComponent.builder().left(label).build());
+		panelComponent.getChildren().add(LineComponent.builder().left(entry).leftColor(TITLED_CONTENT_COLOR).build());
 	}
 
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!getLocation().isInScene(plugin.getClient()))
-		{
-			return;
-		}
+		if (!getLocation().isInScene(plugin.getClient())) return;
+		if (plugin.getNpcsToMark() == null) return;
 
-		if (plugin.getNpcsToMark() != null)
-		{
-			for (NPC npc : plugin.getNpcsToMark())
-			{
-				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
-			}
-		}
+		BufferedImage clueScrollImage = plugin.getClueScrollImage();
+		plugin.getNpcsToMark().forEach(
+			npc -> OverlayUtil.renderActorOverlayImage(graphics, npc, clueScrollImage, Color.ORANGE, IMAGE_Z_OFFSET)
+		);
 	}
 
 	public static CipherClue forText(String text)
 	{
-		for (CipherClue clue : CLUES)
-		{
-			if (text.equalsIgnoreCase(clue.text) || text.equalsIgnoreCase(clue.question))
-			{
-				return clue;
-			}
-		}
-
-		return null;
+		return CLUES.stream().filter(
+			clue -> text.equalsIgnoreCase(clue.text) || text.equalsIgnoreCase(clue.question)
+		).findFirst().orElse(null);
 	}
 
 	@Override
@@ -186,16 +172,9 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 	private NPCComposition getNpcComposition(ClueScrollPlugin plugin)
 	{
-		if (npcId == -1)
-		{
-			return null;
-		}
+		if (npcId == -1) return null;
 
 		NPCComposition composition = plugin.getClient().getNpcDefinition(npcId);
-		if (composition.getConfigs() != null)
-		{
-			composition = composition.transform();
-		}
-		return composition;
+		return composition.getConfigs() != null ? composition.transform() : composition;
 	}
 }
