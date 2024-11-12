@@ -86,7 +86,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 		prompt("OSRS Wiki Search");
 		onDone(string ->
 		{
-			if (string != null && string.length() > 0)
+			if (string != null && !string.isEmpty())
 			{
 				search(string);
 			}

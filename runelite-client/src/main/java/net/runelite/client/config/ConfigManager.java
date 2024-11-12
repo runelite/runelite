@@ -408,7 +408,7 @@ public class ConfigManager
 			}
 		}
 
-		if (rsProfileKeys.size() > 0)
+		if (!rsProfileKeys.isEmpty())
 		{
 			Map<String, String> oldToNewRSProfile = new HashMap<>();
 			List<RuneScapeProfile> existingProfiles = getRSProfiles();
@@ -1509,7 +1509,7 @@ public class ConfigManager
 			log.warn("multiple matching profiles, choosing {}, ignoring {}", matches.get(0), matches.subList(1, matches.size()));
 		}
 
-		if (matches.size() >= 1)
+		if (!matches.isEmpty())
 		{
 			return matches.get(0);
 		}

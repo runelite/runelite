@@ -92,7 +92,7 @@ public class ChatboxTextMenuInput extends ChatboxInput implements KeyListener
 			throw new IllegalStateException("Title must be set");
 		}
 
-		if (options.size() < 1)
+		if (options.isEmpty())
 		{
 			throw new IllegalStateException("You must have atleast 1 option");
 		}

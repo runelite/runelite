@@ -229,7 +229,7 @@ public class AttackStylesPluginTest
 
 	private boolean isAtkHidden()
 	{
-		if (attackPlugin.getHiddenWidgets().size() == 0)
+		if (attackPlugin.getHiddenWidgets().isEmpty())
 		{
 			return false;
 		}
@@ -238,7 +238,7 @@ public class AttackStylesPluginTest
 
 	private boolean isStrHidden()
 	{
-		if (attackPlugin.getHiddenWidgets().size() == 0)
+		if (attackPlugin.getHiddenWidgets().isEmpty())
 		{
 			return false;
 		}

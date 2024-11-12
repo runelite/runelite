@@ -210,7 +210,7 @@ class InventoryInspector extends DevToolsFrame
 	{
 		deltaPanel.clear();
 
-		if (logMap.size() > 0)
+		if (!logMap.isEmpty())
 		{
 			logMap.values().forEach(this::addLog);
 			logMap.clear();
