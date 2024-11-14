@@ -113,6 +113,11 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:) <col=[0-9a-f]{6}>[0-9:.]+</col>\\. Personal best: (?:<col=ff0000>)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
 	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
+
+	private static final Pattern SLEDDING_PB_PATTERN = Pattern.compile("(?i)(?:You completed the race in: <col=[0-9a-f]{6}>[0-9:.]+</col>. |New )personal best: (?:<col=[0-9a-z]{6}>)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
+
+	private static final String SLEDDING_COMPLETION_MESSAGE = "You land softly in a pile of snow at the bottom of the slope.";
+
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won ([\\d,]+|one) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost ([\\d,]+|one) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
@@ -559,6 +564,19 @@ public class ChatCommandsPlugin extends Plugin
 		if (matcher.find())
 		{
 			matchPb(matcher);
+		}
+
+		matcher = SLEDDING_PB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			matchPb(matcher);
+		}
+
+		if (message.equals(SLEDDING_COMPLETION_MESSAGE) && lastPb > -1)
+		{
+			setPb("Sledding", lastPb);
+			lastPb = -1;
+			lastTeamSize = null;
 		}
 
 		matcher = HS_PB_PATTERN.matcher(message);
