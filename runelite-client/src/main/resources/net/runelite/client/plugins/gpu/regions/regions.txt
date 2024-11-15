@@ -369,3 +369,7 @@ r 43 146
 // tunnel of chaos (what lies below)
 n
 r 49 81
+
+// king black dragon lair
+n
+r 35 73
