@@ -802,7 +802,7 @@ public class TabInterface
 					.setParam0(event.getActionParam0())
 					.setParam1(event.getActionParam1())
 					.setTarget(event.getTarget())
-					.setOption(!hidden && (activeOptions & BankTagsService.OPTION_HIDE_REMOVE_TAG_NAME) == 0 ? REMOVE_TAG + " (" + activeTag + ")" : REMOVE_TAG)
+					.setOption(!hidden && (activeOptions & BankTagsService.OPTION_HIDE_TAG_NAME) == 0 ? REMOVE_TAG + " (" + activeTag + ")" : REMOVE_TAG)
 					.setType(MenuAction.RUNELITE)
 					.setIdentifier(event.getIdentifier())
 					.setItemId(event.getItemId())
@@ -840,7 +840,8 @@ public class TabInterface
 		{
 			createMenuEntry(event, TAG_INVENTORY, event.getTarget());
 
-			if (activeTag != null && (activeOptions & BankTagsService.OPTION_ALLOW_MODIFICATIONS) != 0)
+			if (activeTag != null && !tagManager.isHidden(activeTag)
+				&& (activeOptions & (BankTagsService.OPTION_ALLOW_MODIFICATIONS | BankTagsService.OPTION_HIDE_TAG_NAME)) == BankTagsService.OPTION_ALLOW_MODIFICATIONS)
 			{
 				createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTag, HILIGHT_COLOR));
 			}
@@ -850,7 +851,8 @@ public class TabInterface
 		{
 			createMenuEntry(event, TAG_GEAR, event.getTarget());
 
-			if (activeTag != null && (activeOptions & BankTagsService.OPTION_ALLOW_MODIFICATIONS) != 0)
+			if (activeTag != null && !tagManager.isHidden(activeTag)
+				&& (activeOptions & (BankTagsService.OPTION_ALLOW_MODIFICATIONS | BankTagsService.OPTION_HIDE_TAG_NAME)) == BankTagsService.OPTION_ALLOW_MODIFICATIONS)
 			{
 				createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTag, HILIGHT_COLOR));
 			}
