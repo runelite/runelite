@@ -35,7 +35,7 @@ enum DungeonLocation
 	ABANDONED_MINE("Abandoned Mine", new WorldPoint(3439, 3232, 0)),
 	ABANDONED_MINE_SECRET("Abandoned Mine (secret entrance)", new WorldPoint(3452, 3244, 0)),
 	ALDARIN_WINE_CELLAR("Wine Cellar", new WorldPoint(1447, 2938, 0)),
-	ALDARIN_BACKSTAGE("Backstage", new WorldPoint(1475, 2927, 0)),
+	ALDARIN_BACKSTAGE("Backstage Entrance", new WorldPoint(1475, 2927, 0)),
 	ALDARIN_ALCHEMICAL_SOCIETY("Alchemical Society", new WorldPoint(1388, 2916, 0)),
 	ALDARIN_MOONRISE("Moonrise Brewery and Winery", new WorldPoint(1356, 2920, 0)),
 	ANCIENT_CAVERN("Ancient Cavern", new WorldPoint(2511, 3508, 0)),
