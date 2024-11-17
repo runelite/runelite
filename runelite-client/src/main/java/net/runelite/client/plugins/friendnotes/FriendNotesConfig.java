@@ -35,7 +35,7 @@ public interface FriendNotesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showIcons",
-		name = "Show Icons",
+		name = "Show icons",
 		description = "Show icons on friend or ignore list",
 		position = 1
 	)

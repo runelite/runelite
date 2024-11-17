@@ -2052,6 +2052,38 @@ public interface Client extends OAuthApi, GameEngine
 	void setCameraShakeDisabled(boolean disabled);
 
 	/**
+	 * Draw all 2D extras. This is the default.
+	 */
+	int DRAW_2D_ALL = ~0;
+	/**
+	 * Hide all 2D extras.
+	 */
+	int DRAW_2D_NONE = 0;
+	/**
+	 * Render overhead text.
+	 */
+	int DRAW_2D_OVERHEAD_TEXT = 1;
+	/**
+	 * Render elements not otherwise specified in this bitflag.
+	 */
+	int DRAW_2D_OTHERS = 1 << 30;
+
+	/**
+	 * Gets the current draw2D mask. 
+	 * @return the current mask
+	 * @see Client#setDraw2DMask(int)
+	 */
+	@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS})
+	int getDraw2DMask();
+
+	/**
+	 * Sets the current draw2D mask.
+	 * Use bit operations on the value returned by {@link Client#getDraw2DMask()} to modify specific features.
+	 * @param mask The new mask.
+	 */
+	void setDraw2DMask(@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS}) int mask);
+
+	/**
 	 * Contains a 3D array of template chunks for instanced areas.
 	 * <p>
 	 * The array returned is of format [z][x][y], where z is the

@@ -100,7 +100,7 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
-		name = "Standard Spellbook destinations",
+		name = "Standard spellbook destinations",
 		description = "Show icons at the destinations for teleports in the Standard Spellbook",
 		position = 7
 	)
@@ -122,7 +122,7 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
-		name = "Ancient Magicks destinations",
+		name = "Ancient magicks destinations",
 		description = "Show icons at the destinations for teleports in the Ancient Spellbook",
 		position = 9
 	)
@@ -133,7 +133,7 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_LUNAR_TELEPORT_ICON,
-		name = "Lunar Spellbook destinations",
+		name = "Lunar spellbook destinations",
 		description = "Show icons at the destinations for teleports in the Lunar Spellbook",
 		position = 10
 	)
@@ -144,7 +144,7 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ARCEUUS_TELEPORT_ICON,
-		name = "Arceuus Spellbook destinations",
+		name = "Arceuus spellbook destinations",
 		description = "Show icons at the destinations for teleports in the Arceuus Spellbook",
 		position = 11
 	)

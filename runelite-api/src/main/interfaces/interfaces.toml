@@ -218,20 +218,21 @@ entry_items=36
 
 [combat]
 id=593
-level=3
-style_one=4
-style_two=8
-style_three=12
-style_four=16
-spells=20
-defensive_spell_box=21
-defensive_spell_icon=23
-defensive_spell_shield=24
-defensive_spell_text=25
-spell_box=26
-spell_icon=28
-spell_text=29
-auto_retaliate=30
+weapon_name=2
+level=4
+style_one=5
+style_two=9
+style_three=13
+style_four=17
+spells=21
+defensive_spell_box=22
+defensive_spell_icon=24
+defensive_spell_shield=25
+defensive_spell_text=26
+spell_box=27
+spell_icon=29
+spell_text=30
+auto_retaliate=31
 
 [combat_achievements_tasks]
 id=715
@@ -755,7 +756,6 @@ id=128
 
 [seed_vault]
 id=631
-inventory_item_container=1
 title_container=2
 item_container=15
 item_text=16
@@ -763,6 +763,7 @@ search_button=24
 
 [seed_vault_inventory]
 id=630
+item_container=1
 
 [settings]
 id=134

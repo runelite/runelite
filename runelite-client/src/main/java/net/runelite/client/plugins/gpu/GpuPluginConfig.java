@@ -44,7 +44,7 @@ public interface GpuPluginConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "drawDistance",
-		name = "Draw Distance",
+		name = "Draw distance",
 		description = "Draw distance.",
 		position = 1
 	)
@@ -80,7 +80,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "smoothBanding",
-		name = "Remove Color Banding",
+		name = "Remove color banding",
 		description = "Smooths out the color banding that is present in the CPU renderer",
 		position = 2
 	)
@@ -91,7 +91,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "antiAliasingMode",
-		name = "Anti Aliasing",
+		name = "Anti aliasing",
 		description = "Configures the anti-aliasing mode",
 		position = 3
 	)
@@ -127,7 +127,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "useComputeShaders",
-		name = "Compute Shaders",
+		name = "Compute shaders",
 		description = "Offloads face sorting to GPU. Requires plugin restart.",
 		warning = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect.",
 		position = 6
@@ -143,7 +143,7 @@ public interface GpuPluginConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "anisotropicFilteringLevel",
-		name = "Anisotropic Filtering",
+		name = "Anisotropic filtering",
 		description = "Configures the anisotropic filtering level.",
 		position = 7
 	)
@@ -154,7 +154,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "colorBlindMode",
-		name = "Colorblindness Correction",
+		name = "Colorblindness correction",
 		description = "Adjusts colors to account for colorblindness",
 		position = 8
 	)
@@ -165,7 +165,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "brightTextures",
-		name = "Bright Textures",
+		name = "Bright textures",
 		description = "Use old texture lighting method which results in brighter game textures",
 		position = 9
 	)
@@ -194,7 +194,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "vsyncMode",
-		name = "Vsync Mode",
+		name = "Vsync mode",
 		description = "Method to synchronize frame rate with refresh rate",
 		position = 11
 	)
@@ -205,7 +205,7 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "fpsTarget",
-		name = "FPS Target",
+		name = "FPS target",
 		description = "Target FPS when unlock FPS is enabled and Vsync mode is OFF",
 		position = 12
 	)

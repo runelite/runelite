@@ -33,7 +33,7 @@ public interface ItemPricesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showGEPrice",
-		name = "Show Grand Exchange Prices",
+		name = "Show Grand Exchange prices",
 		description = "Grand exchange prices should be shown on tooltips",
 		position = 1
 	)
@@ -44,7 +44,7 @@ public interface ItemPricesConfig extends Config
 
 	@ConfigItem(
 		keyName = "showHAValue",
-		name = "Show High Alchemy Values",
+		name = "Show high alchemy values",
 		description = "High Alchemy values should be shown on tooltips",
 		position = 2
 	)
@@ -55,7 +55,7 @@ public interface ItemPricesConfig extends Config
 
 	@ConfigItem(
 		keyName = "showEA",
-		name = "Show Price Each on Stacks",
+		name = "Show price each on stacks",
 		description = "The price/value of each item should be shown on stacks",
 		position = 3
 	)
@@ -66,7 +66,7 @@ public interface ItemPricesConfig extends Config
 
 	@ConfigItem(
 		keyName = "hideInventory",
-		name = "Hide Tooltips on Inventory Items",
+		name = "Hide tooltips on inventory items",
 		description = "Tooltips should be hidden on items in the inventory",
 		position = 4
 	)
@@ -77,7 +77,7 @@ public interface ItemPricesConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAlchProfit",
-		name = "Show High Alchemy Profit",
+		name = "Show high alchemy profit",
 		description = "Show the profit from casting high alchemy on items",
 		position = 5
 	)

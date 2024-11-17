@@ -177,7 +177,7 @@ public interface InteractHighlightConfig extends Config
 
 	@ConfigItem(
 		keyName = "borderWidth",
-		name = "Border Width",
+		name = "Border width",
 		description = "Width of the outlined border",
 		position = 7
 	)

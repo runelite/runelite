@@ -162,6 +162,7 @@ public class IndexData
 			if (i != 0)
 			{
 				ArchiveData prev = this.archives[i - 1];
+				assert a.id > prev.id : "archive ids out of order";
 				archive -= prev.getId();
 			}
 
@@ -224,6 +225,7 @@ public class IndexData
 				if (j != 0)
 				{
 					FileData prev = a.getFiles()[j - 1];
+					assert file.id > prev.id : "file ids out of order";
 					offset -= prev.getId();
 				}
 

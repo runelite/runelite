@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.antidrag;
+package net.runelite.client.game;
 
-import net.runelite.api.Constants;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.EquipmentInventorySlot;
+import org.junit.Test;
 
-@ConfigGroup(AntiDragPlugin.CONFIG_GROUP)
-public interface AntiDragConfig extends Config
+public class ItemStatsTest
 {
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 1
-	)
-	default int dragDelay()
-	{
-		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
-	}
+	private static final ItemStats WEAPON = new ItemStats(true, 0, 0,
+		ItemEquipmentStats.builder()
+			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+			.build());
 
-	@ConfigItem(
-		keyName = "onShiftOnly",
-		name = "On shift only",
-		description = "Configures whether to only adjust the delay while holding shift.",
-		position = 2
-	)
-	default boolean onShiftOnly()
+	@Test
+	public void testMigratedApiDoesNotThrow()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "disableOnCtrl",
-		name = "Disable on control pressed",
-		description = "Configures whether to ignore the delay while holding control.",
-		position = 3
-	)
-	default boolean disableOnCtrl()
-	{
-		return false;
+		new ItemStats(true, 0, 0, null).toHttpApiFormat();
+		WEAPON.toHttpApiFormat();
 	}
 }

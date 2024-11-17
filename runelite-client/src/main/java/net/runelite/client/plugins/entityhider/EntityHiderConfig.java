@@ -37,7 +37,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "hidePlayers",
-		name = "Hide Others",
+		name = "Hide others",
 		description = "Configures whether or not other players are hidden"
 	)
 	default boolean hideOthers()
@@ -48,7 +48,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "hidePlayers2D",
-		name = "Hide Others 2D",
+		name = "Hide others 2D",
 		description = "Configures whether or not other players 2D elements are hidden"
 	)
 	default boolean hideOthers2D()
@@ -59,7 +59,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "hideFriends",
-		name = "Hide Friends",
+		name = "Hide friends",
 		description = "Configures whether or not friends are hidden"
 	)
 	default boolean hideFriends()
@@ -70,7 +70,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "hideClanMates", // is actually friends chat
-		name = "Hide Friends Chat members",
+		name = "Hide friends chat members",
 		description = "Configures whether or not friends chat members are hidden"
 	)
 	default boolean hideFriendsChatMembers()
@@ -81,7 +81,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "hideClanChatMembers",
-		name = "Hide Clan Chat members",
+		name = "Hide clan chat members",
 		description = "Configures whether or not clan chat members are hidden"
 	)
 	default boolean hideClanChatMembers()
@@ -92,7 +92,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "hideIgnores",
-		name = "Hide Ignores",
+		name = "Hide ignores",
 		description = "Configures whether or not ignored players are hidden"
 	)
 	default boolean hideIgnores()
@@ -103,7 +103,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "hideLocalPlayer",
-		name = "Hide Local Player",
+		name = "Hide local player",
 		description = "Configures whether or not the local player is hidden"
 	)
 	default boolean hideLocalPlayer()
@@ -114,7 +114,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "hideLocalPlayer2D",
-		name = "Hide Local Player 2D",
+		name = "Hide local player 2D",
 		description = "Configures whether or not the local player's 2D elements are hidden"
 	)
 	default boolean hideLocalPlayer2D()
@@ -147,7 +147,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "hidePets",
-		name = "Hide Other Players' Pets",
+		name = "Hide other players' pets",
 		description = "Configures whether or not other player pets are hidden"
 	)
 	default boolean hidePets()
@@ -158,7 +158,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 12,
 		keyName = "hideAttackers",
-		name = "Hide Attackers",
+		name = "Hide attackers",
 		description = "Configures whether or not NPCs/players attacking you are hidden"
 	)
 	default boolean hideAttackers()
@@ -169,7 +169,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "hideProjectiles",
-		name = "Hide Projectiles",
+		name = "Hide projectiles",
 		description = "Configures whether or not projectiles are hidden"
 	)
 	default boolean hideProjectiles()
@@ -180,7 +180,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 14,
 		keyName = "hideDeadNpcs",
-		name = "Hide Dead NPCs",
+		name = "Hide dead NPCs",
 		description = "Hides NPCs when their health reaches 0"
 	)
 	default boolean hideDeadNpcs()
@@ -191,7 +191,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "hideThralls",
-		name = "Hide Thralls",
+		name = "Hide thralls",
 		description = "Configures whether or not Thralls are hidden"
 	)
 	default boolean hideThralls()
@@ -202,7 +202,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 16,
 		keyName = "hideRandomEvents",
-		name = "Hide Random Events",
+		name = "Hide random events",
 		description = "Configures whether or not Random events are hidden"
 	)
 	default boolean hideRandomEvents()

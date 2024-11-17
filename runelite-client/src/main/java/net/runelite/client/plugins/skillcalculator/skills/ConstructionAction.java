@@ -93,6 +93,7 @@ public enum ConstructionAction implements NamedSkillAction
 	GREENMANS_ALE("Greenman's Ale", 26, 184, ItemID.GREENMANS_ALE),
 	OAK_DRAWERS("Oak Drawers", 27, 120, ItemID.OAK_DRAWERS),
 	PUMP_AND_TUB("Pump and Tub", 27, 200, ItemID.PUMP_AND_TUB),
+	DEADMAN_RUG("Deadman rug", 28, 283, ItemID.DEADMAN_RUG),
 	OAK_SHAVING_STAND("Oak Shaving Stand", 29, 61, ItemID.OAK_SHAVING_STAND),
 	LARGE_OVEN("Large Oven", 29, 100, ItemID.LARGE_OVEN),
 	OAK_BOOKCASE("Oak Bookcase", 29, 180, ItemID.OAK_BOOKCASE),

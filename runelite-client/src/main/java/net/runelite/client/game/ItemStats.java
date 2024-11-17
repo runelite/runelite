@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Jos <Malevolentdev@gmail.com>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.statusbars.config;
+package net.runelite.client.game;
 
-public enum BarMode
+import com.google.gson.annotations.SerializedName;
+import lombok.Value;
+
+@Value
+public class ItemStats
 {
-	DISABLED,
-	HITPOINTS,
-	PRAYER,
-	RUN_ENERGY,
-	SPECIAL_ATTACK,
-	;
+	boolean equipable;
+	double weight;
+	@SerializedName("ge_limit")
+	int geLimit;
+
+	ItemEquipmentStats equipment;
+
+	net.runelite.http.api.item.ItemStats toHttpApiFormat()
+	{
+		var equipment = this.equipment == null ? null : this.equipment.toHttpApiFormat();
+		return new net.runelite.http.api.item.ItemStats(this.equipable, this.weight, this.geLimit, equipment);
+	}
 }
+

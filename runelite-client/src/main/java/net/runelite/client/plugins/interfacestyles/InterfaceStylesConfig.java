@@ -46,7 +46,7 @@ public interface InterfaceStylesConfig extends Config
 
 	@ConfigItem(
 		keyName = "hdHealthBars",
-		name = "High Detail health bars",
+		name = "High detail health bars",
 		description = "Replaces health bars with the RuneScape High Detail mode design"
 	)
 	default boolean hdHealthBars()
@@ -56,7 +56,7 @@ public interface InterfaceStylesConfig extends Config
 
 	@ConfigItem(
 		keyName = "hdMenu",
-		name = "High Detail menu",
+		name = "High detail menu",
 		description = "Replaces game menu with the RuneScape High Detail mode design"
 	)
 	default boolean hdMenu()

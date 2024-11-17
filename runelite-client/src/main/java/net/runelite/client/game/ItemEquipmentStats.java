@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.antidrag;
+package net.runelite.client.game;
 
-import net.runelite.api.Constants;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.gson.annotations.SerializedName;
+import lombok.Builder;
+import lombok.Value;
 
-@ConfigGroup(AntiDragPlugin.CONFIG_GROUP)
-public interface AntiDragConfig extends Config
+@Value
+@Builder
+public class ItemEquipmentStats
 {
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 1
-	)
-	default int dragDelay()
-	{
-		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
-	}
+	int slot;
 
-	@ConfigItem(
-		keyName = "onShiftOnly",
-		name = "On shift only",
-		description = "Configures whether to only adjust the delay while holding shift.",
-		position = 2
-	)
-	default boolean onShiftOnly()
-	{
-		return true;
-	}
+	@SerializedName("is2h")
+	boolean isTwoHanded;
 
-	@ConfigItem(
-		keyName = "disableOnCtrl",
-		name = "Disable on control pressed",
-		description = "Configures whether to ignore the delay while holding control.",
-		position = 3
-	)
-	default boolean disableOnCtrl()
+	int astab;
+	int aslash;
+	int acrush;
+	int amagic;
+	int arange;
+
+	int dstab;
+	int dslash;
+	int dcrush;
+	int dmagic;
+	int drange;
+
+	int str;
+	int rstr;
+	float mdmg;
+	int prayer;
+	int aspeed;
+
+	net.runelite.http.api.item.ItemEquipmentStats toHttpApiFormat()
 	{
-		return false;
+		return net.runelite.http.api.item.ItemEquipmentStats.builder()
+			.slot(this.slot)
+			.isTwoHanded(this.isTwoHanded)
+			.astab(this.astab)
+			.aslash(this.aslash)
+			.acrush(this.acrush)
+			.amagic(this.amagic)
+			.arange(this.arange)
+			.dstab(this.dstab)
+			.dslash(this.dslash)
+			.dcrush(this.dcrush)
+			.dmagic(this.dmagic)
+			.drange(this.drange)
+			.str(this.str)
+			.rstr(this.rstr)
+			.mdmg((int) this.mdmg)
+			.prayer(this.prayer)
+			.aspeed(this.aspeed)
+			.build();
 	}
 }

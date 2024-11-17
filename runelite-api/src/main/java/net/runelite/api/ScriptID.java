@@ -288,7 +288,7 @@ public final class ScriptID
 	 * Called to build the combat interface
 	 */
 	@ScriptArguments()
-	public static final int COMBAT_INTERFACE_SETUP = 420;
+	public static final int COMBAT_INTERFACE_SETUP = 7593;
 
 	/**
 	 * Called to build the toplevel interface
@@ -473,4 +473,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 3)
 	public static final int POTIONSTORE_DOSE_CHANGE = 6555;
+
+	@ScriptArguments(integer = 5)
+	public static final int FAIRYRINGS_SORT_UPDATE = 402;
 }

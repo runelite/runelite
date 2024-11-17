@@ -43,7 +43,7 @@ public interface CameraConfig extends Config
 	int INNER_ZOOM_LIMIT = 1004;
 
 	@ConfigSection(
-		name = "Mouse Settings",
+		name = "Mouse settings",
 		description = "Mouse settings",
 		position = 10
 	)
@@ -88,7 +88,7 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "controlFunction",
-		name = "Control Function",
+		name = "Control function",
 		description = "Configures the zoom function when control is pressed",
 		position = 4
 	)
@@ -114,7 +114,7 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "zoomIncrement",
-		name = "Zoom Speed",
+		name = "Zoom speed",
 		description = "Speed of zoom",
 		position = 6
 	)
@@ -125,7 +125,7 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "cameraSpeed",
-		name = "Camera Speed",
+		name = "Camera speed",
 		description = "Speed which the camera moves from input",
 		position = 7
 	)
@@ -136,7 +136,7 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "disableCameraShake",
-		name = "Disable Camera Shake",
+		name = "Disable camera shake",
 		description = "Disables camera shake",
 		position = 8
 	)
@@ -209,7 +209,7 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "invertYaw",
-		name = "Invert Yaw",
+		name = "Invert yaw",
 		description = "Makes moving the camera horizontally with the mouse backwards",
 		position = 12,
 		section = mouseSettingsSection
@@ -221,7 +221,7 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "invertPitch",
-		name = "Invert Pitch",
+		name = "Invert pitch",
 		description = "Makes moving the camera vertically with the mouse backwards",
 		position = 13,
 		section = mouseSettingsSection

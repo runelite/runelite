@@ -36,7 +36,7 @@ public interface LootTrackerConfig extends Config
 	String GROUP = "loottracker";
 
 	@ConfigSection(
-		name = "Ignored Entries",
+		name = "Ignored entries",
 		description = "The Ignore items and Ignore groups options",
 		position = -2,
 		closedByDefault = true
@@ -63,7 +63,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "priceType",
-		name = "Price Type",
+		name = "Price type",
 		description = "What type of price to use for calculating value."
 	)
 	default LootTrackerPriceType priceType()
@@ -73,7 +73,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPriceType",
-		name = "Show Price Type",
+		name = "Show price type",
 		description = "Whether to show a GE: or HA: next to the total values in the tracker"
 	)
 	default boolean showPriceType()
@@ -93,7 +93,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "ignoredEvents",
-		name = "Ignored Loot Sources",
+		name = "Ignored loot sources",
 		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
 		section = ignored
 	)
@@ -121,7 +121,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "pvpKillChatMessage",
-		name = "Show chat message for PVP kills",
+		name = "Show chat message for PvP kills",
 		description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
 	)
 	default boolean pvpKillChatMessage()
