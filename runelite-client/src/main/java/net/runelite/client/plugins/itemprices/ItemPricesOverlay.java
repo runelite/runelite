@@ -38,6 +38,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -60,18 +61,17 @@ class ItemPricesOverlay extends Overlay
 	private final Client client;
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
+	private final ItemManager itemManager;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 
 	@Inject
-	ItemManager itemManager;
-
-	@Inject
-	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager)
+	ItemPricesOverlay(Client client, ItemPricesConfig config, TooltipManager tooltipManager, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.client = client;
 		this.config = config;
 		this.tooltipManager = tooltipManager;
+		this.itemManager = itemManager;
 	}
 
 	@Override
@@ -186,7 +186,8 @@ class ItemPricesOverlay extends Overlay
 		// Bank item
 		else if (widgetId == BANK_ITEM_WIDGETID)
 		{
-			container = client.getItemContainer(InventoryID.BANK);
+			Widget w = menuEntry.getWidget();
+			return getItemStackValueText(w.getItemId(), w.getItemQuantity());
 		}
 		// Seed vault item
 		else if (widgetId == SEED_VAULT_ITEM_WIDGETID)
@@ -204,16 +205,15 @@ class ItemPricesOverlay extends Overlay
 		final Item item = container.getItem(index);
 		if (item != null)
 		{
-			return getItemStackValueText(item);
+			return getItemStackValueText(item.getId(), item.getQuantity());
 		}
 
 		return null;
 	}
 
-	private String getItemStackValueText(Item item)
+	private String getItemStackValueText(int id, int qty)
 	{
-		int id = itemManager.canonicalize(item.getId());
-		int qty = item.getQuantity();
+		id = itemManager.canonicalize(id);
 
 		// Special case for coins and platinum tokens
 		if (id == ItemID.COINS_995)
