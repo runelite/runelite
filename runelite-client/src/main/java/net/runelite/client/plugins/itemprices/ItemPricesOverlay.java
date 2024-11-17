@@ -29,10 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -163,41 +160,27 @@ class ItemPricesOverlay extends Overlay
 			return null;
 		}
 
-		final int widgetId = menuEntry.getParam1();
-		ItemContainer container = null;
+		final int componentId = menuEntry.getParam1();
 
 		// Inventory item
-		if (widgetId == ComponentID.INVENTORY_CONTAINER ||
-			widgetId == ComponentID.BANK_INVENTORY_ITEM_CONTAINER ||
-			widgetId == ComponentID.EXPLORERS_RING_INVENTORY ||
-			widgetId == ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER ||
-			widgetId == ComponentID.POH_TREASURE_CHEST_INV_CONTAINER)
-		{
-			container = client.getItemContainer(InventoryID.INVENTORY);
-		}
-		// Bank item
-		else if (widgetId == ComponentID.BANK_ITEM_CONTAINER)
+		if (componentId == ComponentID.INVENTORY_CONTAINER ||
+			componentId == ComponentID.BANK_INVENTORY_ITEM_CONTAINER ||
+			componentId == ComponentID.EXPLORERS_RING_INVENTORY ||
+			componentId == ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER ||
+			componentId == ComponentID.POH_TREASURE_CHEST_INV_CONTAINER ||
+			// Bank item
+			componentId == ComponentID.BANK_ITEM_CONTAINER ||
+			// Seed vault item
+			componentId == ComponentID.SEED_VAULT_ITEM_CONTAINER
+		)
 		{
 			Widget w = menuEntry.getWidget();
+			if (w == null)
+			{
+				return null;
+			}
+
 			return getItemStackValueText(w.getItemId(), w.getItemQuantity());
-		}
-		// Seed vault item
-		else if (widgetId == ComponentID.SEED_VAULT_ITEM_CONTAINER)
-		{
-			container = client.getItemContainer(InventoryID.SEED_VAULT);
-		}
-
-		if (container == null)
-		{
-			return null;
-		}
-
-		// Find the item in the container to get stack size
-		final int index = menuEntry.getParam0();
-		final Item item = container.getItem(index);
-		if (item != null)
-		{
-			return getItemStackValueText(item.getId(), item.getQuantity());
 		}
 
 		return null;
