@@ -117,7 +117,7 @@ public interface ObjectIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "borderWidth",
-		name = "Border Width",
+		name = "Border width",
 		description = "Width of the marked object border",
 		section = renderStyleSection
 	)

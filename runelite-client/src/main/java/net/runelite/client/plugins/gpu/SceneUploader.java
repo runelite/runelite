@@ -573,10 +573,12 @@ class SceneUploader
 	{
 		int MAX_VERTEX_COUNT = 6500;
 		int MAX_DIAMETER = 6000;
+		int ZSORT_GROUP_SIZE = 1024; // was 512
+		int MAX_FACES_PER_PRIORITY = 4000; // was 2000
 
 		distances = new int[MAX_VERTEX_COUNT];
 		distanceFaceCount = new char[MAX_DIAMETER];
-		distanceToFaces = new char[MAX_DIAMETER][512];
+		distanceToFaces = new char[MAX_DIAMETER][ZSORT_GROUP_SIZE];
 
 		modelCanvasX = new float[MAX_VERTEX_COUNT];
 		modelCanvasY = new float[MAX_VERTEX_COUNT];
@@ -586,10 +588,10 @@ class SceneUploader
 		modelLocalZ = new float[MAX_VERTEX_COUNT];
 
 		numOfPriority = new int[12];
-		eq10 = new int[2000];
-		eq11 = new int[2000];
+		eq10 = new int[MAX_FACES_PER_PRIORITY];
+		eq11 = new int[MAX_FACES_PER_PRIORITY];
 		lt10 = new int[12];
-		orderedFaces = new int[12][2000];
+		orderedFaces = new int[12][MAX_FACES_PER_PRIORITY];
 	}
 
 	void releaseSortingBuffers()

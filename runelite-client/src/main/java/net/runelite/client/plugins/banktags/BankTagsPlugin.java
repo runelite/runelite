@@ -38,6 +38,7 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -78,13 +79,21 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class BankTagsPlugin extends Plugin implements BankTagsService
 {
+	// banktags:item_<id>=tag,tag,tag,...
+	// banktags:icon_<tag>=id
+	// banktags:tagtabs=tab,tab,tab,...
+	// banktags:layout_<tag>=item,item,item,...
+	// banktags:hidden_<tag>=true
 	public static final String CONFIG_GROUP = "banktags";
-	public static final String TAG_SEARCH = "tag:";
-	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String TAG_ICON_PREFIX = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
-	public static final String VAR_TAG_SUFFIX = "*";
 	public static final String TAG_LAYOUT_PREFIX = "layout_";
+	static final String ITEM_KEY_PREFIX = "item_";
+	static final String TAG_HIDDEN_PREFIX = "hidden_";
+
+	public static final String TAG_SEARCH = "tag:";
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	public static final String VAR_TAG_SUFFIX = "*";
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -139,6 +148,10 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	@Inject
 	private BankTagsConfig config;
 
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
+
 	@Getter
 	private String activeTag;
 
@@ -167,7 +180,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	public void resetConfiguration()
 	{
 		List<String> extraKeys = Lists.newArrayList(
-			CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
+			CONFIG_GROUP + "." + ITEM_KEY_PREFIX,
 			CONFIG_GROUP + "." + TAG_ICON_PREFIX,
 			CONFIG_GROUP + "." + TAG_TABS_CONFIG,
 			CONFIG_GROUP + "." + TAG_LAYOUT_PREFIX
@@ -395,10 +408,15 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		{
 			Widget container = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
-			int itemID = item.getItemId();
-			String text = EDIT_TAGS_MENU_OPTION;
-			int tagCount = tagManager.getTags(itemID, false).size() + tagManager.getTags(itemID, true).size();
+			int itemId = item.getItemId();
 
+			Collection<String> tags = tagManager.getTags(itemId, false);
+			tags.addAll(tagManager.getTags(itemId, true));
+			int tagCount = (int) tags.stream()
+				.filter(tag -> !developerMode && !tagManager.isHidden(tag))
+				.count();
+
+			String text = EDIT_TAGS_MENU_OPTION;
 			if (tagCount > 0)
 			{
 				text += " (" + tagCount + ")";
@@ -423,9 +441,13 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		String name = itemComposition.getName();
 
 		// Get both tags and vartags and append * to end of vartags name
-		Collection<String> tags = tagManager.getTags(itemId, false);
+		List<String> tags = tagManager.getTags(itemId, false).stream()
+			.filter(tag -> !developerMode && !tagManager.isHidden(tag))
+			.collect(Collectors.toList());
+
 		tagManager.getTags(itemId, true).stream()
-			.map(i -> i + "*")
+			.filter(tag -> !developerMode && !tagManager.isHidden(tag))
+			.map(tag -> tag + "*")
 			.forEach(tags::add);
 
 		String initialValue = Text.toCSV(tags);
@@ -503,7 +525,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	@Override
 	public void openBankTag(String name, int options)
 	{
-		Layout layout = layoutManager.loadLayout(name);
+		Layout layout = (options & OPTION_NO_LAYOUT) != 0 ? null : layoutManager.loadLayout(name);
 		openTag(name, layout, options);
 	}
 

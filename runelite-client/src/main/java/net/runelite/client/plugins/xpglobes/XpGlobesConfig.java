@@ -36,7 +36,7 @@ public interface XpGlobesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "enableTooltips",
-		name = "Enable Tooltips",
+		name = "Enable tooltips",
 		description = "Configures whether or not to show tooltips",
 		position = 0
 	)
@@ -47,7 +47,7 @@ public interface XpGlobesConfig extends Config
 
 	@ConfigItem(
 		keyName = "showXpLeft",
-		name = "Show XP Left",
+		name = "Show XP left",
 		description = "Shows XP Left inside the globe tooltip box",
 		position = 1
 	)
@@ -196,7 +196,7 @@ public interface XpGlobesConfig extends Config
 
 	@ConfigItem(
 		keyName = "alignOrbsVertically",
-		name = "Vertical Orbs",
+		name = "Vertical orbs",
 		description = "Aligns the orbs vertically instead of horizontally.",
 		hidden = true
 	)

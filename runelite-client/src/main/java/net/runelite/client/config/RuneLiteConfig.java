@@ -40,21 +40,21 @@ public interface RuneLiteConfig extends Config
 	String GROUP_NAME = "runelite";
 
 	@ConfigSection(
-		name = "Window Settings",
+		name = "Window settings",
 		description = "Settings relating to the client's window and frame",
 		position = 0
 	)
 	String windowSettings = "windowSettings";
 
 	@ConfigSection(
-		name = "Notification Settings",
+		name = "Notification settings",
 		description = "Settings relating to notifications",
 		position = 1
 	)
 	String notificationSettings = "notificationSettings";
 
 	@ConfigSection(
-		name = "Overlay Settings",
+		name = "Overlay settings",
 		description = "Settings relating to fonts",
 		position = 2
 	)
@@ -303,7 +303,7 @@ public interface RuneLiteConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "notificationFlashColor",
-		name = "Notification Flash",
+		name = "Notification flash",
 		description = "Sets the color of the notification flashes.",
 		position = 29,
 		section = notificationSettings
@@ -315,7 +315,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "fontType",
-		name = "Dynamic Overlay Font",
+		name = "Dynamic overlay font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
 		position = 30,
 		section = overlaySettings
@@ -327,7 +327,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "tooltipFontType",
-		name = "Tooltip Font",
+		name = "Tooltip font",
 		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
 		position = 31,
 		section = overlaySettings
@@ -339,7 +339,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "interfaceFontType",
-		name = "Interface Font",
+		name = "Interface font",
 		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
 		position = 32,
 		section = overlaySettings
@@ -351,7 +351,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "infoboxFontType",
-		name = "Infobox Font",
+		name = "Infobox font",
 		description = "Configures what font type is used for infoboxes.",
 		position = 33,
 		section = overlaySettings
@@ -363,7 +363,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "tooltipPosition",
-		name = "Tooltip Position",
+		name = "Tooltip position",
 		description = "Configures whether to show the tooltip above or under the cursor",
 		position = 35,
 		section = overlaySettings
@@ -414,7 +414,7 @@ public interface RuneLiteConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "overlayBackgroundColor",
-		name = "Overlay Color",
+		name = "Overlay color",
 		description = "Configures the background color of infoboxes and overlays",
 		position = 44,
 		section = overlaySettings
@@ -426,7 +426,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "sidebarToggleKey",
-		name = "Sidebar Toggle Key",
+		name = "Sidebar toggle key",
 		description = "The key that will toggle the sidebar (accepts modifiers)",
 		position = 45,
 		section = windowSettings
@@ -438,7 +438,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "panelToggleKey",
-		name = "Plugin Panel Toggle Key",
+		name = "Plugin panel toggle key",
 		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
 		position = 46,
 		section = windowSettings
@@ -472,7 +472,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "dragHotkey",
-		name = "Drag Hotkey",
+		name = "Drag hotkey",
 		description = "Configures the hotkey used to drag UI elements around",
 		position = 52
 	)

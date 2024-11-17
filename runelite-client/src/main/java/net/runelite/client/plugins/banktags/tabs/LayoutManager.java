@@ -641,7 +641,7 @@ public class LayoutManager
 					.setType(MenuAction.RUNELITE_HIGH_PRIORITY)
 					.onClick(e ->
 					{
-						String tag = Text.removeTags(e.getTarget());
+						String tag = Text.standardize(e.getTarget());
 						if (!tag.equals(tabInterface.getActiveTag()))
 						{
 							chatMessageManager.queue(QueuedMessage.builder()

@@ -81,7 +81,7 @@ public interface NightmareZoneConfig extends Config
 
 	@ConfigItem(
 		keyName = "ultimateforcenotification",
-		name = "Ultimate Force notification",
+		name = "Ultimate force notification",
 		description = "Toggles notifications when an ultimate force power-up appears",
 		position = 5
 	)
@@ -130,7 +130,7 @@ public interface NightmareZoneConfig extends Config
 
 	@ConfigItem(
 		keyName = "absorptionthreshold",
-		name = "Absorption Threshold",
+		name = "Absorption threshold",
 		description = "The amount of absorption points to send a notification at",
 		position = 9
 	)

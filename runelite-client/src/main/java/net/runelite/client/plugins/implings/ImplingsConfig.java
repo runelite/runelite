@@ -44,7 +44,7 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigSection(
-		name = "Impling Type Settings",
+		name = "Impling type settings",
 		description = "Configuration for each type of impling",
 		position = 99
 	)
@@ -353,7 +353,7 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 25,
 		keyName = "showspawn",
-		name = "Show Spawn locations",
+		name = "Show spawn locations",
 		description = "Configures whether or not spawn locations are displayed in Puro Puro"
 	)
 	default boolean showSpawn()

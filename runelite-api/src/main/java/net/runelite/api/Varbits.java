@@ -936,4 +936,13 @@ public final class Varbits
 	 * </p>
 	 */
 	public static final int COLOSSAL_WYRM_COURSE_ADVANCED = 11293;
+
+	public static final int WINTERTODT_WARMTH = 11434;
+
+	public static final int COMBAT_TASK_EASY = 12885;
+	public static final int COMBAT_TASK_MEDIUM = 12886;
+	public static final int COMBAT_TASK_HARD = 12887;
+	public static final int COMBAT_TASK_ELITE = 12888;
+	public static final int COMBAT_TASK_MASTER = 12889;
+	public static final int COMBAT_TASK_GRANDMASTER = 12890;
 }

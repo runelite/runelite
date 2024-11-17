@@ -37,7 +37,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "thresholdNotification",
-		name = "Threshold Notifications",
+		name = "Threshold notifications",
 		description = "Sends a notification when your special attack counter exceeds the threshold"
 	)
 	default Notification thresholdNotification()
@@ -48,7 +48,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "specDrops",
-		name = "Spec Drops",
+		name = "Spec drops",
 		description = "Draws an overlay over the player when a special attack hits"
 	)
 	default boolean specDrops()
@@ -59,7 +59,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "specDropMisses",
-		name = "Spec Drop Misses",
+		name = "Spec drop misses",
 		description = "Draws an overlay over the player when a special attack misses"
 	)
 	default boolean specDropMisses()
@@ -70,7 +70,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "specDropColor",
-		name = "Spec Drop Color",
+		name = "Spec drop color",
 		description = "Text color for spec drops"
 	)
 	default Color specDropColor()
@@ -103,7 +103,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "dragonWarhammerThreshold",
-		name = "Dragon Warhammer",
+		name = "Dragon warhammer",
 		description = "Threshold for Dragon Warhammer (0 to disable)"
 	)
 	default int dragonWarhammerThreshold()
@@ -114,7 +114,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "elderMaulThreshold",
-		name = "Elder Maul",
+		name = "Elder maul",
 		description = "Threshold for Elder Maul (0 to disable)"
 	)
 	default int elderMaulThreshold()
@@ -158,7 +158,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 40,
 		keyName = "bandosGodswordThreshold",
-		name = "Bandos Godsword",
+		name = "Bandos godsword",
 		description = "Threshold for Bandos Godsword (0 to disable)"
 	)
 	default int bandosGodswordThreshold()
@@ -169,7 +169,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 50,
 		keyName = "bulwarkThreshold",
-		name = "Dinh's Bulwark",
+		name = "Dinh's bulwark",
 		description = "Threshold for Dinh's Bulwark (0 to disable)"
 	)
 	default int bulwarkThreshold()

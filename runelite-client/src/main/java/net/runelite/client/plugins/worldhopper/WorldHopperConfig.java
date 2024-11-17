@@ -107,7 +107,7 @@ public interface WorldHopperConfig extends Config
 
 	@ConfigItem(
 		keyName = "menuOption",
-		name = "Show Hop-to menu option",
+		name = "Show hop-to menu option",
 		description = "Adds Hop-to menu option to the friends list and friends chat members list",
 		position = 7
 	)

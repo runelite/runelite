@@ -25,6 +25,7 @@
 package net.runelite.cache.fs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.index.ArchiveData;
@@ -147,26 +148,60 @@ public class Index
 
 	public List<Archive> getArchives()
 	{
-		return archives;
+		return Collections.unmodifiableList(archives);
 	}
 
 	public Archive addArchive(int id)
 	{
+		int idx = findArchiveIndex(id);
+		if (idx >= 0)
+		{
+			throw new IllegalArgumentException("archive " + id + " already exists");
+		}
+
+		idx = -idx - 1;
 		Archive archive = new Archive(this, id);
-		this.archives.add(archive);
+		this.archives.add(idx, archive);
 		return archive;
 	}
 
 	public Archive getArchive(int id)
 	{
-		for (Archive a : archives)
+		int idx = findArchiveIndex(id);
+		if (idx < 0)
 		{
-			if (a.getArchiveId() == id)
+			return null;
+		}
+
+		return archives.get(idx);
+	}
+
+	private int findArchiveIndex(int id)
+	{
+		int low = 0;
+		int high = archives.size() - 1;
+
+		while (low <= high)
+		{
+			int mid = (low + high) >>> 1;
+
+			Archive a = archives.get(mid);
+			int cmp = Integer.compare(a.getArchiveId(), id);
+			if (cmp < 0)
 			{
-				return a;
+				low = mid + 1;
+			}
+			else if (cmp > 0)
+			{
+				high = mid - 1;
+			}
+			else
+			{
+				return mid;
 			}
 		}
-		return null;
+
+		return -(low + 1);
 	}
 
 	public boolean removeArchive(Archive archive)

@@ -33,7 +33,7 @@ public interface ChatHistoryConfig extends Config
 {
 	@ConfigItem(
 		keyName = "retainChatHistory",
-		name = "Retain Chat History",
+		name = "Retain chat history",
 		description = "Retains chat history when logging in/out or world hopping",
 		position = 0
 	)
@@ -44,7 +44,7 @@ public interface ChatHistoryConfig extends Config
 
 	@ConfigItem(
 		keyName = "pmTargetCycling",
-		name = "PM Target Cycling",
+		name = "PM target cycling",
 		description = "Pressing Tab while sending a PM will cycle the target username based on PM history",
 		position = 1
 	)

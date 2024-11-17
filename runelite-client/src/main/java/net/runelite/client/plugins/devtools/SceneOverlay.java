@@ -136,9 +136,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int z = startZ; z <= endZ; z += Constants.CHUNK_SIZE)
 			{
-				Point p = Perspective.localToCanvas(client,
-					x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS,
-					client.getPlane());
+				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS);
+				Point p = Perspective.localToCanvas(client, lp, client.getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -158,9 +157,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int x = startX; x <= endX; x += Constants.CHUNK_SIZE)
 			{
-				Point p = Perspective.localToCanvas(client,
-					x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS,
-					client.getPlane());
+				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS);
+				Point p = Perspective.localToCanvas(client, lp, client.getPlane());
 				if (p != null)
 				{
 					if (first)

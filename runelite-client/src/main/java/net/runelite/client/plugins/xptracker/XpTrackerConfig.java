@@ -55,7 +55,7 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "logoutPausing",
-		name = "Pause on Logout",
+		name = "Pause on logout",
 		description = "Configures whether skills should pause on logout"
 	)
 	default boolean pauseOnLogout()
@@ -215,7 +215,7 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "wiseOldManOpenOption",
-		name = "Wise Old Man Option",
+		name = "Wise Old Man option",
 		description = "Adds an option to the XP info box right-click menu to open Wise Old Man"
 	)
 	default boolean wiseOldManOpenOption()

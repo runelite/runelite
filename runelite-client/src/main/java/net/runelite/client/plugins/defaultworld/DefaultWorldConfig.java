@@ -45,7 +45,7 @@ public interface DefaultWorldConfig extends Config
 
 	@ConfigItem(
 		keyName = "useLastWorld",
-		name = "Use Last World",
+		name = "Use last world",
 		description = "Use the last world you used as the default"
 	)
 	default boolean useLastWorld()

@@ -49,9 +49,9 @@ public class ItemDefinition
 	public int stackable = 0;
 	public int inventoryModel;
 
-	public int wearPos1;
-	public int wearPos2;
-	public int wearPos3;
+	public int wearPos1 = -1;
+	public int wearPos2 = -1;
+	public int wearPos3 = -1;
 
 	public boolean members = false;
 

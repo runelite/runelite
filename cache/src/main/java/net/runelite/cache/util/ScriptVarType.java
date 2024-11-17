@@ -74,6 +74,7 @@ public enum ScriptVarType
 	HITMARK(62, '×', "hitmark"),
 	STRUCT(73, 'J', "struct"),
 	DBROW(74, 'Ð', "dbrow"),
+	VARP(209, '7', "varp"),
 	;
 
 	private static final Map<Integer, ScriptVarType> idToTypeMap = new HashMap<>();

@@ -45,7 +45,7 @@ public interface RunepouchConfig extends Config
 
 	@ConfigItem(
 		keyName = "fontcolor",
-		name = "Font Color",
+		name = "Font color",
 		description = "Color of the font for the number of runes in pouch",
 		position = 1
 	)

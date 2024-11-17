@@ -35,21 +35,21 @@ import net.runelite.client.config.ConfigSection;
 public interface TileIndicatorsConfig extends Config
 {
 	@ConfigSection(
-		name = "Destination Tile",
+		name = "Destination tile",
 		description = "Destination tile configuration",
 		position = 0
 	)
 	String destinationTile = "destinationTile";
 
 	@ConfigSection(
-		name = "Hovered Tile",
+		name = "Hovered tile",
 		description = "Hovered tile configuration",
 		position = 1
 	)
 	String hoveredTile = "hoveredTile";
 
 	@ConfigSection(
-		name = "Current Tile",
+		name = "Current tile",
 		description = "Current tile configuration",
 		position = 2
 	)

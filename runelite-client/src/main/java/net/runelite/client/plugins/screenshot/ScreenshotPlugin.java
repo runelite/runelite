@@ -428,7 +428,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
+		if (chatMessage.equals("Your request to kick/ban this user was successful.") && config.screenshotKick())
 		{
 			if (kickPlayerName == null)
 			{
@@ -439,7 +439,7 @@ public class ScreenshotPlugin extends Plugin
 			kickPlayerName = null;
 		}
 
-		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
+		if (PET_MESSAGES.stream().anyMatch(chatMessage::contains) && config.screenshotPet())
 		{
 			String fileName = "Pet";
 			takeScreenshot(fileName, SD_PETS);
@@ -505,7 +505,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
+		if (chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1 && config.screenshotCollectionLogEntries())
 		{
 			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
 			String fileName = "Collection log (" + entry + ")";

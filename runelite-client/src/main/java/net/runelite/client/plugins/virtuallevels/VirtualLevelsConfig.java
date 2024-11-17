@@ -33,7 +33,7 @@ public interface VirtualLevelsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "virtualTotalLevel",
-		name = "Virtual Total Level",
+		name = "Virtual total level",
 		description = "Count virtual levels towards total level",
 		position = 0
 	)

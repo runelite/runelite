@@ -227,6 +227,7 @@ public enum Quest
 	DEATH_ON_THE_ISLE(3711, "Death on the Isle"),
 	MEAT_AND_GREET(3712, "Meat and Greet"),
 	ETHICALLY_ACQUIRED_ANTIQUITIES(3713, "Ethically Acquired Antiquities"),
+	THE_CURSE_OF_ARRAV(3937, "The Curse of Arrav"),
 	;
 
 	@Getter

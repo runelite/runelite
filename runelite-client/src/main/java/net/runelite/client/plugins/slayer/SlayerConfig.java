@@ -49,7 +49,7 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "infobox",
-		name = "Task InfoBox",
+		name = "Task infobox",
 		description = "Display task information in an InfoBox"
 	)
 	default boolean showInfobox()
@@ -60,7 +60,7 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "itemoverlay",
-		name = "Count on Items",
+		name = "Count on items",
 		description = "Display task count remaining on slayer items"
 	)
 	default boolean showItemOverlay()
@@ -82,7 +82,7 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "statTimeout",
-		name = "InfoBox Expiry",
+		name = "Infobox expiry",
 		description = "Set the time until the InfoBox expires"
 	)
 	@Units(Units.MINUTES)
@@ -139,7 +139,7 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "weaknessPrompt",
-		name = "Show Monster Weakness",
+		name = "Show monster weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles, Rockslugs & Zygomites)"
 	)
 	default boolean weaknessPrompt()
@@ -150,7 +150,7 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "taskCommand",
-		name = "Task Command",
+		name = "Task command",
 		description = "Configures whether the slayer task command is enabled<br> !task"
 	)
 	default boolean taskCommand()

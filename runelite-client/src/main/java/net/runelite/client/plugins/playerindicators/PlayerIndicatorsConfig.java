@@ -36,7 +36,7 @@ public interface PlayerIndicatorsConfig extends Config
 	String GROUP = "playerindicators";
 
 	@ConfigSection(
-		name = "Highlight Options",
+		name = "Highlight options",
 		description = "Toggle highlighted players by type (self, friends, etc.) and choose their highlight colors",
 		position = 99
 	)

@@ -56,15 +56,15 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Item Stats",
@@ -166,7 +166,7 @@ public class ItemStatPlugin extends Plugin
 
 	private void createItemInformation(int id)
 	{
-		final ItemStats itemStats = itemManager.getItemStats(id, false);
+		final ItemStats itemStats = itemManager.getItemStats(id);
 
 		if (itemStats == null || !itemStats.isEquipable())
 		{
@@ -314,14 +314,14 @@ public class ItemStatPlugin extends Plugin
 
 		yPos += TEXT_HEIGHT + 8;
 
-		final Map<String, Integer> miscStats = ImmutableMap.of(
+		final Map<String, Object> miscStats = ImmutableMap.of(
 			"Strength", equipmentStats.getStr(),
 			"Ranged Strength", equipmentStats.getRstr(),
 			"Magic Damage", equipmentStats.getMdmg(),
 			"Prayer Bonus", equipmentStats.getPrayer()
 		);
 
-		for (final Map.Entry<String, Integer> miscStat : miscStats.entrySet())
+		for (final Map.Entry<String, Object> miscStat : miscStats.entrySet())
 		{
 			final String name = miscStat.getKey();
 			final String value = miscStat.getValue().toString();

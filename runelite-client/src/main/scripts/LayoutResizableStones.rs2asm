@@ -18,7 +18,7 @@
       1130: LABEL107
       1129: LABEL149
       1745: LABEL169
-   jump                   LABEL244
+   jump                   LABEL178
 LABEL9:
    iconst                 10747998
    if_getwidth           
@@ -132,7 +132,7 @@ LABEL102:
    iconst                 10747926
    if_sethide            
 LABEL106:
-   jump                   LABEL244
+   jump                   LABEL178
 LABEL107:
    get_varbit             4084
    iconst                 1
@@ -182,7 +182,7 @@ LABEL144:
    iconst                 10551318
    if_sethide            
 LABEL148:
-   jump                   LABEL244
+   jump                   LABEL178
 LABEL149:
    invoke                 3297
    iconst                 1
@@ -206,96 +206,16 @@ LABEL161:
    enum                  
    2122                  
 LABEL168:
-   jump                   LABEL244
+   jump                   LABEL178
 LABEL169:
-   get_varbit             6257
-   iconst                 1
-   if_icmpeq              LABEL176
-   get_varbit             542
-   iconst                 1
-   if_icmpeq              LABEL176
-   jump                   LABEL180
-LABEL176:
-   iconst                 1
-   iconst                 39387162
-   if_sethide            
-   jump                   LABEL235
-LABEL180:
-   iconst                 0
-   iconst                 39387162
-   if_sethide            
-   iconst                 1
-   iconst                 39387162
-   2308                  
-   get_varbit             6255
-   switch                
-      2: LABEL189
-      1: LABEL197
-      3: LABEL205
-   jump                   LABEL213
-LABEL189:
-   iconst                 1718
-   iconst                 39387182
-   if_setgraphic         
-   iconst                 1
-   sconst                 "Toggle single-tap mode"
-   iconst                 39387162
-   if_setop              
-   jump                   LABEL220
-LABEL197:
-   iconst                 1717
-   iconst                 39387182
-   if_setgraphic         
-   iconst                 1
-   sconst                 "Toggle tap-to-drop mode"
-   iconst                 39387162
-   if_setop              
-   jump                   LABEL220
-LABEL205:
-   iconst                 1716
-   iconst                 39387182
-   if_setgraphic         
-   iconst                 1
-   sconst                 "Show Keyboard"
-   iconst                 39387162
-   if_setop              
-   jump                   LABEL220
-LABEL213:
-   iconst                 1715
-   iconst                 39387182
-   if_setgraphic         
-   iconst                 1
-   sconst                 ""
-   iconst                 39387162
-   if_setop              
-LABEL220:
-   get_varbit             6255
-   iconst                 3
-   if_icmpne              LABEL224
-   jump                   LABEL232
-LABEL224:
-   get_varbit             6256
-   iconst                 0
-   if_icmpeq              LABEL228
-   jump                   LABEL232
-LABEL228:
-   iconst                 155
-   iconst                 39387182
-   if_settrans           
-   jump                   LABEL235
-LABEL232:
-   iconst                 0
-   iconst                 39387182
-   if_settrans           
-LABEL235:
    invoke                 2581
    get_varbit             6254
    invoke                 633
-   iconst                 39387174
+   iconst                 39387167
    if_sethide            
    invoke                 2526
    pop_int               
    clientclock           
    set_varc_int           384
-LABEL244:
+LABEL178:
    return                

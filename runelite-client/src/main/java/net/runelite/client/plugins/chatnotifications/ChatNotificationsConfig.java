@@ -35,7 +35,7 @@ import net.runelite.client.config.Notification;
 public interface ChatNotificationsConfig extends Config
 {
 	@ConfigSection(
-		name = "Highlight Lists",
+		name = "Highlight lists",
 		description = "Custom single word and regex filter lists",
 		position = 0
 	)
@@ -56,7 +56,7 @@ public interface ChatNotificationsConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "highlightRegexString",
-		name = "Highlight Regex",
+		name = "Highlight regex",
 		description = "Highlights the following regular expressions in chat, one per line",
 		section = highlightLists
 	)

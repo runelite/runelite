@@ -34,7 +34,7 @@ public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showBrotherLoc",
-		name = "Show Brothers location",
+		name = "Show brothers location",
 		description = "Configures whether or not the brothers location is displayed",
 		position = 1
 	)
@@ -45,7 +45,7 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "showChestValue",
-		name = "Show Value of Chests",
+		name = "Show value of chests",
 		description = "Configure whether to show total exchange value of chest when opened",
 		position = 2
 	)
@@ -67,7 +67,7 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "deadBrotherLocColor",
-		name = "Dead Brother loc. color",
+		name = "Dead brother loc. color",
 		description = "Change the color of the name displayed on the minimap for a dead brother",
 		position = 4
 	)
@@ -78,7 +78,7 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPuzzleAnswer",
-		name = "Show Puzzle Answer",
+		name = "Show puzzle answer",
 		description = "Configures if the puzzle answer should be shown.",
 		position = 5
 	)
@@ -89,7 +89,7 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPrayerDrainTimer",
-		name = "Show Prayer Drain Timer",
+		name = "Show prayer drain timer",
 		description = "Configure whether or not a countdown until the next prayer drain is displayed",
 		position = 6
 	)

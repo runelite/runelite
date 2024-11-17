@@ -45,7 +45,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "showClickboxes",
-		name = "Show Clickboxes",
+		name = "Show clickboxes",
 		description = "Show agility course and other obstacle clickboxes",
 		position = 0
 	)
@@ -56,7 +56,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "showLapCount",
-		name = "Show Lap Count",
+		name = "Show lap count",
 		description = "Enable/disable the lap counter",
 		position = 1
 	)
@@ -67,7 +67,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapTimeout",
-		name = "Hide Lap Count",
+		name = "Hide lap count",
 		description = "Time until the lap counter hides/resets",
 		position = 2
 	)
@@ -79,7 +79,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapsToLevel",
-		name = "Show Laps Until Goal",
+		name = "Show laps until goal",
 		description = "Show number of laps remaining until next goal is reached.",
 		position = 3
 	)
@@ -90,7 +90,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "lapsPerHour",
-		name = "Show Laps Per Hour",
+		name = "Show laps per hour",
 		description = "Shows how many laps you can expect to complete per hour.",
 		position = 4
 	)
@@ -102,7 +102,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
-		name = "Overlay Color",
+		name = "Overlay color",
 		description = "Color of Agility overlay",
 		position = 5
 	)
@@ -113,7 +113,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightMarks",
-		name = "Highlight Marks of Grace",
+		name = "Highlight marks of grace",
 		description = "Enable/disable the highlighting of retrievable Marks of Grace",
 		position = 6
 	)
@@ -125,7 +125,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "markHighlight",
-		name = "Mark Highlight Color",
+		name = "Mark highlight color",
 		description = "Color of highlighted Marks of Grace",
 		position = 7
 	)
@@ -136,7 +136,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightPortals",
-		name = "Highlight Portals",
+		name = "Highlight portals",
 		description = "Enable/disable the highlighting of Prifddinas portals",
 		position = 8
 	)
@@ -148,7 +148,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "portalsHighlight",
-		name = "Portals Color",
+		name = "Portals color",
 		description = "Color of highlighted Prifddinas portals",
 		position = 9
 	)
@@ -159,7 +159,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightShortcuts",
-		name = "Highlight Agility Shortcuts",
+		name = "Highlight agility shortcuts",
 		description = "Enable/disable the highlighting of Agility shortcuts",
 		position = 10
 	)
@@ -170,7 +170,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "trapOverlay",
-		name = "Show Trap Overlay",
+		name = "Show trap overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",
 		position = 11
 	)
@@ -182,7 +182,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "trapHighlight",
-		name = "Trap Overlay Color",
+		name = "Trap overlay color",
 		description = "Color of Agility trap overlay",
 		position = 12
 	)
@@ -215,7 +215,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightStick",
-		name = "Highlight Stick",
+		name = "Highlight stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course",
 		position = 15
 	)
@@ -227,7 +227,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "stickHighlightColor",
-		name = "Stick Highlight Color",
+		name = "Stick highlight color",
 		description = "Color of highlighted stick",
 		position = 16
 	)
@@ -238,7 +238,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
-		name = "Highlight Projectiles",
+		name = "Highlight projectiles",
 		description = "Highlights arrows and swords in the Sepulchre",
 		position = 17,
 		section = sepulchreSection
@@ -251,7 +251,7 @@ public interface AgilityConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "sepulchreHighlightColor",
-		name = "Projectile Color",
+		name = "Projectile color",
 		description = "Overlay color for arrows and swords",
 		position = 18,
 		section = sepulchreSection
@@ -263,7 +263,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightSepulchreObstacles",
-		name = "Highlight Obstacles",
+		name = "Highlight obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre",
 		position = 19,
 		section = sepulchreSection
@@ -275,7 +275,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightSepulchreSkilling",
-		name = "Highlight Skill Challenges",
+		name = "Highlight skill challenges",
 		description = "Highlights skilling challenges in the Sepulchre",
 		position = 20,
 		section = sepulchreSection

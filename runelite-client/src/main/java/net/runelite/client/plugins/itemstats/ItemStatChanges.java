@@ -187,6 +187,9 @@ public class ItemStatChanges
 		add(combo(food(5), boost(STRENGTH, perc(.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), SUNSHINE);
 		add(combo(food(5), boost(STRENGTH, 5), new BoostedStatBoost(ATTACK, false, perc(.02, -3))), RUM_28896);
 		add(combo(food(16), boost(WOODCUTTING, 1), heal(ATTACK, -5), heal(FLETCHING, -1)), ECLIPSE_RED);
+		add(combo(food(1), boost(MAGIC, 1), boost(MINING, 1), new BoostedStatBoost(ATTACK, false, perc(.05, -3)), new BoostedStatBoost(DEFENCE, false, perc(.05, -3))), STEAMFORGE_BREW);
+		add(combo(food(16), boost(HUNTER, 1), dec(ATTACK, 5), dec(SLAYER, 1)), BLACKBIRD_RED);
+		add(combo(food(16), boost(RUNECRAFT, 1), dec(ATTACK, 5), dec(FIREMAKING, 1)), METZTONALLI_WHITE);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), WINTER_SQIRKJUICE);

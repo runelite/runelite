@@ -48,10 +48,11 @@ instruction_name: name_string | name_opcode ;
 name_string: IDENTIFIER ;
 name_opcode: INT ;
 
-instruction_operand: operand_int | operand_qstring | operand_label | ;
+instruction_operand: operand_int | operand_qstring | operand_label | operand_symbol | ;
 operand_int: INT ;
 operand_qstring: QSTRING ;
 operand_label: IDENTIFIER ;
+operand_symbol: SYMBOL ;
 
 switch_lookup: switch_key ':' switch_value ;
 switch_key: INT ;
@@ -61,6 +62,7 @@ NEWLINE: ( '\r' | '\n' )+ ;
 INT: '-'? [0-9]+ ;
 QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
 IDENTIFIER: [a-zA-Z0-9_]+ ;
+SYMBOL: ':' [a-zA-Z0-9_:]+ ;
 COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
 
 WS: (' ' | '\t')+ -> channel(HIDDEN) ;

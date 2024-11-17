@@ -37,7 +37,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
+		name = "Hotkey lookup (alt + left click)",
 		description = "Configures whether to enable the hotkey lookup for GE searches"
 	)
 	default boolean quickLookup()
@@ -81,7 +81,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "enableGeLimits",
-		name = "Enable GE Limits on GE",
+		name = "Enable GE limits on GE",
 		description = "Shows the GE Limits on the GE"
 	)
 	default boolean enableGELimits()
@@ -92,7 +92,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "enableGELimitReset",
-		name = "Enable GE Limit Reset Timer",
+		name = "Enable GE limit reset timer",
 		description = "Shows when GE Trade limits reset (H:MM)"
 	)
 
@@ -126,7 +126,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 8,
 		keyName = "highlightSearchMatch",
-		name = "Highlight Search Match",
+		name = "Highlight search match",
 		description = "Highlights the search match with an underline"
 	)
 	default boolean highlightSearchMatch()
@@ -137,7 +137,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "geSearchMode",
-		name = "Search Mode",
+		name = "Search mode",
 		description = "The search mode to use for the GE<br>"
 			+ "Default - Matches exact text only<br>"
 			+ "Fuzzy Only - Matches inexact text such as 'sara sword'<br>"

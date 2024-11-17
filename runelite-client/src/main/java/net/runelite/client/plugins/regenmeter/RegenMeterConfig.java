@@ -43,7 +43,7 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSpecial",
-		name = "Show Spec. Attack regen",
+		name = "Show spec. attack regen",
 		description = "Show a ring around the Special Attack orb")
 	default boolean showSpecial()
 	{
@@ -61,7 +61,7 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyBeforeHpRegenDuration",
-		name = "Hitpoint Notification",
+		name = "Hitpoint notification",
 		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
 	)
 	@Units(Units.SECONDS)

@@ -36,14 +36,14 @@ import net.runelite.client.config.ModifierlessKeybind;
 public interface KeyRemappingConfig extends Config
 {
 	@ConfigSection(
-		name = "Camera Remapping",
+		name = "Camera remapping",
 		description = "Settings for remapping the camera",
 		position = 0
 	)
 	String cameraSection = "camera";
 
 	@ConfigSection(
-		name = "F Key Remapping",
+		name = "F key remapping",
 		description = "Settings for remapping the F Keys",
 		position = 1
 	)
@@ -52,7 +52,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "cameraRemap",
-		name = "Remap Camera",
+		name = "Remap camera",
 		description = "Configures whether the camera movement uses remapped keys",
 		section = cameraSection
 	)
@@ -64,7 +64,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "up",
-		name = "Camera Up key",
+		name = "Camera up key",
 		description = "The key which will replace up.",
 		section = cameraSection
 	)
@@ -76,7 +76,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "down",
-		name = "Camera Down key",
+		name = "Camera down key",
 		description = "The key which will replace down.",
 		section = cameraSection
 	)
@@ -88,7 +88,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "left",
-		name = "Camera Left key",
+		name = "Camera left key",
 		description = "The key which will replace left.",
 		section = cameraSection
 	)
@@ -100,7 +100,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "right",
-		name = "Camera Right key",
+		name = "Camera right key",
 		description = "The key which will replace right.",
 		section = cameraSection
 	)
@@ -112,7 +112,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "fkeyRemap",
-		name = "Remap F Keys",
+		name = "Remap F keys",
 		description = "Configures whether F-Keys use remapped keys",
 		section = fKeySection
 	)

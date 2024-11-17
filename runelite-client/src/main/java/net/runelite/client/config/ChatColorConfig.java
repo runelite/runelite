@@ -198,7 +198,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "opaqueClanGuestInfo",
-		name = "Guest Clan chat info",
+		name = "Guest clan chat info",
 		description = "Guest Clan Chat Information (eg. when joining a channel)",
 		section = opaqueSection
 	)
@@ -207,7 +207,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 16,
 		keyName = "opaqueClanGuestInfoHighlight",
-		name = "Guest Clan chat info highlight",
+		name = "Guest clan chat info highlight",
 		description = "Guest Clan Chat Information highlight",
 		section = opaqueSection
 	)
@@ -219,7 +219,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 17,
 		keyName = "opaqueClanGuestMessage",
-		name = "Guest Clan chat message",
+		name = "Guest clan chat message",
 		description = "Color of Guest Clan chat messages",
 		section = opaqueSection
 	)
@@ -228,7 +228,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 18,
 		keyName = "opaqueClanChatGuestMessageHighlight",
-		name = "Guest Clan chat message highlight",
+		name = "Guest clan chat message highlight",
 		description = "Color of highlights in Guest Clan Chat messages",
 		section = opaqueSection
 	)
@@ -373,7 +373,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 33,
 		keyName = "opaqueClanChannelName",
-		name = "Friends Chat channel name",
+		name = "Friends chat channel name",
 		description = "Color of Friends chat channel name",
 		section = opaqueSection
 	)
@@ -382,7 +382,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 34,
 		keyName = "opaqueClanChatChannelName",
-		name = "Clan Chat channel name",
+		name = "Clan chat channel name",
 		description = "Color of Clan chat channel name",
 		section = opaqueSection
 	)
@@ -391,7 +391,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 35,
 		keyName = "opaqueClanChatGuestChannelName",
-		name = "Guest Clan Chat channel name",
+		name = "Guest clan chat channel name",
 		description = "Color of Guest clan chat channel name",
 		section = opaqueSection
 	)
@@ -418,7 +418,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 38,
 		keyName = "opaqueClanChatGuestUsernames",
-		name = "Guest Clan chat usernames",
+		name = "Guest clan chat usernames",
 		description = "Color of usernames in Guest Clan chat",
 		section = opaqueSection
 	)
@@ -595,7 +595,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 65,
 		keyName = "transparentClanGuestInfo",
-		name = "Guest Clan chat info (transparent)",
+		name = "Guest clan chat info (transparent)",
 		description = "Guest Clan Chat Information (eg. when joining a channel) (transparent)",
 		section = transparentSection
 	)
@@ -604,7 +604,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 66,
 		keyName = "transparentClanGuestInfoHighlight",
-		name = "Guest Clan chat info highlight (transparent)",
+		name = "Guest clan chat info highlight (transparent)",
 		description = "Guest Clan Chat Information highlight (transparent)",
 		section = transparentSection
 	)
@@ -616,7 +616,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 67,
 		keyName = "transparentClanGuestMessage",
-		name = "Guest Clan chat message (transparent)",
+		name = "Guest clan chat message (transparent)",
 		description = "Color of Guest Clan chat messages (transparent)",
 		section = transparentSection
 	)
@@ -625,7 +625,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 68,
 		keyName = "transparentClanChatGuestMessageHighlight",
-		name = "Guest Clan chat message highlight (transparent)",
+		name = "Guest clan chat message highlight (transparent)",
 		description = "Color of highlights in Guest Clan Chat messages (transparent)",
 		section = transparentSection
 	)
@@ -770,7 +770,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 83,
 		keyName = "transparentClanChannelName",
-		name = "Friends Chat channel name (transparent)",
+		name = "Friends chat channel name (transparent)",
 		description = "Color of Friends chat channel name (transparent)",
 		section = transparentSection
 	)
@@ -779,7 +779,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 84,
 		keyName = "transparentClanChatChannelName",
-		name = "Clan Chat channel name (transparent)",
+		name = "Clan chat channel name (transparent)",
 		description = "Color of Clan chat channel name (transparent)",
 		section = transparentSection
 	)
@@ -788,7 +788,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 85,
 		keyName = "transparentClanChatGuestChannelName",
-		name = "Guest Clan Chat channel name (transparent)",
+		name = "Guest clan chat channel name (transparent)",
 		description = "Color of Guest clan chat channel name (transparent)",
 		section = transparentSection
 	)
@@ -815,7 +815,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 88,
 		keyName = "transparentClanClanGuestUsernames",
-		name = "Guest Clan chat usernames (transparent)",
+		name = "Guest clan chat usernames (transparent)",
 		description = "Color of usernames in Guest Clan chat (transparent)",
 		section = transparentSection
 	)

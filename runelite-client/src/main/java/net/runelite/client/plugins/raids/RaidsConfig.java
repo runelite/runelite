@@ -90,7 +90,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "ccDisplay",
-		name = "FC and World in scout overlay",
+		name = "FC and world in scout overlay",
 		description = "Display current Friends Chat and World in scouting overlay"
 	)
 	default boolean fcDisplay()

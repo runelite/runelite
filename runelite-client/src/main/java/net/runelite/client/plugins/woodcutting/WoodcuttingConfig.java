@@ -124,7 +124,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "forestryRisingRootsNotification",
-		name = "Rising Roots notification",
+		name = "Rising roots notification",
 		description = "Configures whether to notify you of a Rising Roots event",
 		section = forestrySection
 	)
@@ -136,7 +136,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 12,
 		keyName = "forestryStrugglingSaplingNotification",
-		name = "Struggling Sapling notification",
+		name = "Struggling sapling notification",
 		description = "Configures whether to notify you of a Struggling Sapling event",
 		section = forestrySection
 	)
@@ -148,7 +148,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "forestryFloweringTreeNotification",
-		name = "Flowering Tree notification",
+		name = "Flowering tree notification",
 		description = "Configures whether to notify you of a Flowering Tree event",
 		section = forestrySection
 	)
@@ -172,7 +172,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "forestryPheasantControlNotification",
-		name = "Pheasant Control notification",
+		name = "Pheasant control notification",
 		description = "Configures whether to notify you of a Pheasant Control event",
 		section = forestrySection
 	)
@@ -184,7 +184,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 16,
 		keyName = "forestryBeeHiveNotification",
-		name = "Bee Hive notification",
+		name = "Bee hive notification",
 		description = "Configures whether to notify you of a Bee Hive event",
 		section = forestrySection
 	)
@@ -196,7 +196,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 17,
 		keyName = "forestryEnchantmentRitualNotification",
-		name = "Enchantment Ritual notification",
+		name = "Enchantment ritual notification",
 		description = "Configures whether to notify you of an Enchantment Ritual event",
 		section = forestrySection
 	)
@@ -208,7 +208,7 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 18,
 		keyName = "forestryFriendlyEntNotification",
-		name = "Friendly Ent notification",
+		name = "Friendly ent notification",
 		description = "Configures whether to notify you of a Friendly Ent event",
 		section = forestrySection
 	)

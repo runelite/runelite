@@ -73,6 +73,7 @@ enum CannonSpots
 	SUQAHS(new WorldPoint(2114, 3943, 0)),
 	TROLLS(new WorldPoint(2401, 3856, 0), new WorldPoint(1242, 3517, 0)),
 	WARPED_CREATURES(new WorldPoint(1490, 4263, 1)),
+	WYRMS(new WorldPoint(1368, 9695, 0)),
 	ZOMBIE(new WorldPoint(3172, 3677, 0));
 
 	@Getter
