@@ -50,14 +50,6 @@ import net.runelite.client.util.QuantityFormatter;
 
 class ItemPricesOverlay extends Overlay
 {
-	private static final int INVENTORY_ITEM_WIDGETID = ComponentID.INVENTORY_CONTAINER;
-	private static final int BANK_INVENTORY_ITEM_WIDGETID = ComponentID.BANK_INVENTORY_ITEM_CONTAINER;
-	private static final int BANK_ITEM_WIDGETID = ComponentID.BANK_ITEM_CONTAINER;
-	private static final int EXPLORERS_RING_ITEM_WIDGETID = ComponentID.EXPLORERS_RING_INVENTORY;
-	private static final int SEED_VAULT_ITEM_WIDGETID = ComponentID.SEED_VAULT_ITEM_CONTAINER;
-	private static final int SEED_VAULT_INVENTORY_ITEM_WIDGETID = ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER;
-	private static final int POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID = ComponentID.POH_TREASURE_CHEST_INV_CONTAINER;
-
 	private final Client client;
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
@@ -175,22 +167,22 @@ class ItemPricesOverlay extends Overlay
 		ItemContainer container = null;
 
 		// Inventory item
-		if (widgetId == INVENTORY_ITEM_WIDGETID ||
-			widgetId == BANK_INVENTORY_ITEM_WIDGETID ||
-			widgetId == EXPLORERS_RING_ITEM_WIDGETID ||
-			widgetId == SEED_VAULT_INVENTORY_ITEM_WIDGETID ||
-			widgetId == POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID)
+		if (widgetId == ComponentID.INVENTORY_CONTAINER ||
+			widgetId == ComponentID.BANK_INVENTORY_ITEM_CONTAINER ||
+			widgetId == ComponentID.EXPLORERS_RING_INVENTORY ||
+			widgetId == ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER ||
+			widgetId == ComponentID.POH_TREASURE_CHEST_INV_CONTAINER)
 		{
 			container = client.getItemContainer(InventoryID.INVENTORY);
 		}
 		// Bank item
-		else if (widgetId == BANK_ITEM_WIDGETID)
+		else if (widgetId == ComponentID.BANK_ITEM_CONTAINER)
 		{
 			Widget w = menuEntry.getWidget();
 			return getItemStackValueText(w.getItemId(), w.getItemQuantity());
 		}
 		// Seed vault item
-		else if (widgetId == SEED_VAULT_ITEM_WIDGETID)
+		else if (widgetId == ComponentID.SEED_VAULT_ITEM_CONTAINER)
 		{
 			container = client.getItemContainer(InventoryID.SEED_VAULT);
 		}
