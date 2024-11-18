@@ -33,7 +33,7 @@ public interface PohConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showPortals",
-		name = "Show Portals",
+		name = "Show portals",
 		description = "Configures whether to display teleport portals"
 	)
 	default boolean showPortals()
@@ -43,7 +43,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAltar",
-		name = "Show Altar",
+		name = "Show altar",
 		description = "Configures whether or not the altar is displayed"
 	)
 	default boolean showAltar()
@@ -53,7 +53,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showGlory",
-		name = "Show Glory mount",
+		name = "Show glory mount",
 		description = "Configures whether or not the mounted glory is displayed"
 	)
 	default boolean showGlory()
@@ -63,7 +63,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPools",
-		name = "Show Pools",
+		name = "Show pools",
 		description = "Configures whether or not the pools are displayed"
 	)
 	default boolean showPools()
@@ -73,7 +73,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showRepairStand",
-		name = "Show Repair stand",
+		name = "Show repair stand",
 		description = "Configures whether or not the repair stand is displayed"
 	)
 	default boolean showRepairStand()
@@ -83,7 +83,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showExitPortal",
-		name = "Show Exit portal",
+		name = "Show exit portal",
 		description = "Configures whether or not the exit portal is displayed"
 	)
 	default boolean showExitPortal()
@@ -93,7 +93,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBurner",
-		name = "Show Incense Burner timers",
+		name = "Show incense burner timers",
 		description = "Configures whether or not unlit/lit burners are displayed"
 	)
 	default boolean showBurner()
@@ -103,7 +103,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSpellbook",
-		name = "Show Spellbook altar",
+		name = "Show spellbook altar",
 		description = "Configures whether or not the Spellbook altar is displayed"
 	)
 	default boolean showSpellbook()
@@ -113,7 +113,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showJewelleryBox",
-		name = "Show Jewellery Box",
+		name = "Show jewellery box",
 		description = "Configures whether or not the jewellery box is displayed"
 	)
 	default boolean showJewelleryBox()
@@ -123,7 +123,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMagicTravel",
-		name = "Show Fairy/ Spirit Tree/ Obelisk",
+		name = "Show fairy/ spirit tree/ obelisk",
 		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
 	)
 	default boolean showMagicTravel()
@@ -133,7 +133,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPortalNexus",
-		name = "Show Portal Nexus",
+		name = "Show portal nexus",
 		description = "Configures whether or not the Portal Nexus is displayed"
 	)
 	default boolean showPortalNexus()
@@ -143,7 +143,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showDigsitePendant",
-		name = "Show Digsite Pendant",
+		name = "Show digsite pendant",
 		description = "Configures whether or not the Digsite Pendant is displayed"
 	)
 	default boolean showDigsitePendant()
@@ -153,7 +153,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showXericsTalisman",
-		name = "Show Xeric's Talisman",
+		name = "Show Xeric's talisman",
 		description = "Configures whether or not the Xeric's Talisman is displayed"
 	)
 	default boolean showXericsTalisman()
@@ -163,7 +163,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMythicalCape",
-		name = "Show Mythical Cape",
+		name = "Show mythical cape",
 		description = "Configures whether or not the Mythical Cape is displayed"
 	)
 	default boolean showMythicalCape()

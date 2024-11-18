@@ -61,7 +61,7 @@ public interface GroundMarkerConfig extends Config
 
 	@ConfigItem(
 		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
-		name = "Show Import/Export/Clear options",
+		name = "Show import/export/clear options",
 		description = "Show the Import, Export, and Clear options on the world map right-click menu"
 	)
 	default boolean showImportExport()
@@ -71,7 +71,7 @@ public interface GroundMarkerConfig extends Config
 
 	@ConfigItem(
 		keyName = "borderWidth",
-		name = "Border Width",
+		name = "Border width",
 		description = "Width of the marked tile border"
 	)
 	default double borderWidth()
@@ -81,7 +81,7 @@ public interface GroundMarkerConfig extends Config
 
 	@ConfigItem(
 		keyName = "fillOpacity",
-		name = "Fill Opacity",
+		name = "Fill opacity",
 		description = "Opacity of the tile fill color"
 	)
 	@Range(

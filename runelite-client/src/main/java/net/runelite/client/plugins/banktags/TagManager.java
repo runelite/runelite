@@ -38,12 +38,13 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.ITEM_KEY_PREFIX;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_HIDDEN_PREFIX;
 import net.runelite.client.util.Text;
 
 @Singleton
 public class TagManager
 {
-	static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final Map<String, BankTag> customTags = new HashMap<>();
@@ -136,6 +137,8 @@ public class TagManager
 			int id = Integer.parseInt(item.replace(prefix, ""));
 			removeTag(id, tag);
 		});
+
+		setHidden(tag, false);
 	}
 
 	public void removeTag(int itemId, String tag)
@@ -165,6 +168,23 @@ public class TagManager
 
 			setTags(id, tags, id < 0);
 		});
+	}
+
+	public boolean isHidden(String tag)
+	{
+		return Boolean.TRUE.equals(configManager.getConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag), Boolean.class));
+	}
+
+	public void setHidden(String tag, boolean hidden)
+	{
+		if (hidden)
+		{
+			configManager.setConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag), true);
+		}
+		else
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag));
+		}
 	}
 
 	private int getItemId(int itemId, boolean variation)

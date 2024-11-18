@@ -51,7 +51,7 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "elapsedTime",
-		name = "Elapsed Time",
+		name = "Elapsed time",
 		description = "Configures elapsed time shown.",
 		position = 1
 	)
@@ -74,7 +74,7 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMainMenu",
-		name = "Main Menu",
+		name = "Main menu",
 		description = "Show status when in main menu",
 		position = 3
 	)

@@ -104,7 +104,7 @@ public interface MinimapConfig extends Config
 
 	@ConfigItem(
 		keyName = "clan", // old name from prior to clans
-		name = "Friends Chat color",
+		name = "Friends chat color",
 		description = "Set the minimap color your friends chat members are drawn in",
 		section = minimapDotSection
 	)
@@ -112,7 +112,7 @@ public interface MinimapConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanchat",
-		name = "Clan Chat color",
+		name = "Clan chat color",
 		description = "Set the minimap color your clan chat members are drawn in",
 		section = minimapDotSection
 	)

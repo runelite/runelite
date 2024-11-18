@@ -40,11 +40,15 @@ public interface BankTagsService
 	/**
 	 * Bank tag is allowed to be modified
 	 */
-	int OPTION_ALLOW_MODIFICATIONS = 1;
+	int OPTION_ALLOW_MODIFICATIONS = 0x1;
 	/**
-	 * Option to hide the tag name from the "Remove-tag" menu option.
+	 * Option to hide the tag name.
 	 */
-	int OPTION_HIDE_REMOVE_TAG_NAME = 2;
+	int OPTION_HIDE_TAG_NAME = 0x2;
+	/**
+	 * Option to prevent {@link #openBankTag(String, int)} from performing a layout
+	 */
+	int OPTION_NO_LAYOUT = 0x4;
 
 	/**
 	 * Open the given bank tag. The tag may have an associated {@link net.runelite.client.plugins.banktags.tabs.TagTab},
@@ -54,7 +58,7 @@ public interface BankTagsService
 	 * @param tag the tag name
 	 * @param options
 	 * @see #OPTION_ALLOW_MODIFICATIONS
-	 * @see #OPTION_HIDE_REMOVE_TAG_NAME
+	 * @see #OPTION_HIDE_TAG_NAME
 	 */
 	void openBankTag(String tag, int options);
 

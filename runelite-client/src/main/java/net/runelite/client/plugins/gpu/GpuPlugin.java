@@ -1372,7 +1372,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				return;
 			}
 
-			throw ex;
+			log.error("error swapping buffers", ex);
+
+			// try to stop the plugin
+			SwingUtilities.invokeLater(() ->
+			{
+				try
+				{
+					pluginManager.stopPlugin(this);
+				}
+				catch (PluginInstantiationException ex2)
+				{
+					log.error("error stopping plugin", ex2);
+				}
+			});
+			return;
 		}
 
 		drawManager.processDrawComplete(this::screenshot);

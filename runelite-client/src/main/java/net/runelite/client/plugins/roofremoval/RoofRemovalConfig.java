@@ -42,7 +42,7 @@ public interface RoofRemovalConfig extends Config
 	String modesSection = "modes";
 
 	@ConfigSection(
-		name = "Area Overrides",
+		name = "Area overrides",
 		description = "Always remove roofs in specific areas",
 		position = 1
 	)
@@ -94,7 +94,7 @@ public interface RoofRemovalConfig extends Config
 
 	@ConfigItem(
 		keyName = "overridePOH",
-		name = "Player Owned House",
+		name = "Player owned house",
 		description = "Always remove roofs while in the Player Owned House",
 		section = overridesSection
 	)

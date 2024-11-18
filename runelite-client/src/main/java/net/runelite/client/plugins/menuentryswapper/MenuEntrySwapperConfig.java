@@ -35,7 +35,7 @@ public interface MenuEntrySwapperConfig extends Config
 	String GROUP = "menuentryswapper";
 
 	@ConfigSection(
-		name = "Item Swaps",
+		name = "Item swaps",
 		description = "All options that swap item menu entries",
 		position = 0,
 		closedByDefault = true
@@ -43,7 +43,7 @@ public interface MenuEntrySwapperConfig extends Config
 	String itemSection = "items";
 
 	@ConfigSection(
-		name = "NPC Swaps",
+		name = "NPC swaps",
 		description = "All options that swap NPC menu entries",
 		position = 1,
 		closedByDefault = true
@@ -51,7 +51,7 @@ public interface MenuEntrySwapperConfig extends Config
 	String npcSection = "npcs";
 
 	@ConfigSection(
-		name = "Object Swaps",
+		name = "Object swaps",
 		description = "All options that swap object menu entries",
 		position = 2,
 		closedByDefault = true
@@ -59,7 +59,7 @@ public interface MenuEntrySwapperConfig extends Config
 	String objectSection = "objects";
 
 	@ConfigSection(
-		name = "UI Swaps",
+		name = "UI swaps",
 		description = "All options that swap entries in the UI (except Items)",
 		position = 3,
 		closedByDefault = true
@@ -67,7 +67,7 @@ public interface MenuEntrySwapperConfig extends Config
 	String uiSection = "ui";
 
 	@ConfigSection(
-		name = "Ground Item Swaps",
+		name = "Ground item swaps",
 		description = "All options that swap ground item menu entries",
 		position = 4,
 		closedByDefault = true
@@ -349,7 +349,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapJewelleryBox",
-		name = "Jewellery Box",
+		name = "Jewellery box",
 		description = "Swap Teleport Menu with previous destination on Jewellery Box",
 		section = objectSection
 	)
@@ -360,7 +360,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapPortalNexus",
-		name = "Portal Nexus",
+		name = "Portal nexus",
 		description =  "Swap Teleport options with Teleport Menu on the Portal Nexus",
 		section = objectSection
 	)
@@ -393,7 +393,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapQuick",
-		name = "Quick Pass/Open/Start/Travel",
+		name = "Quick pass/open/start/travel",
 		description = "Swap Pass with Quick-Pass, Open with Quick-Open, Ring with Quick-Start and Talk-to with Quick-Travel",
 		section = objectSection
 	)
@@ -448,7 +448,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapKaramjaGloves",
-		name = "Karamja Gloves",
+		name = "Karamja gloves",
 		description = "Swap Wear with the Gem Mine or the Slayer Master teleport on the Karamja Gloves 3 and 4",
 		section = itemSection
 	)
@@ -459,7 +459,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapArdougneCloak",
-		name = "Ardougne Cloak",
+		name = "Ardougne cloak",
 		description = "Swap Wear with Monastery Teleport or Farm Teleport on the Ardougne cloak.",
 		section = itemSection
 	)
@@ -470,7 +470,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapRadasBlessing",
-		name = "Rada's Blessing",
+		name = "Rada's blessing",
 		description = "Swap Equip with the Woodland or Mount Karuulm teleport on Rada's Blessing.",
 		section = itemSection
 	)
@@ -481,7 +481,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapMorytaniaLegs",
-		name = "Morytania Legs",
+		name = "Morytania legs",
 		description = "Swap Wear with the Ectofuntus or Burgh de Rott teleport on the Morytania Legs.",
 		section = itemSection
 	)
@@ -492,7 +492,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapDesertAmulet",
-		name = "Desert Amulet",
+		name = "Desert amulet",
 		description = "Swap Wear with the Nardah or Kalphite Cave teleport on Desert Amulet 4.",
 		section = itemSection
 	)
@@ -503,7 +503,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapAbyssTeleport",
-		name = "Teleport to Abyss",
+		name = "Teleport to abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak",
 		section = npcSection
 	)
@@ -536,7 +536,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapGEItemCollect",
-		name = "GE Item Collect",
+		name = "GE item collect",
 		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer",
 		section = uiSection
 	)
@@ -547,7 +547,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapGEAbort",
-		name = "GE Abort",
+		name = "GE abort",
 		description = "Swap abort offer on Grand Exchange offers when shift-clicking",
 		section = uiSection
 	)
@@ -558,7 +558,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankWithdrawShiftClick",
-		name = "Bank Withdraw Shift-Click",
+		name = "Bank withdraw shift-click",
 		description = "Swaps the behavior of shift-click when withdrawing from bank.",
 		section = uiSection
 	)
@@ -569,7 +569,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "bankDepositShiftClick",
-		name = "Bank Deposit Shift-Click",
+		name = "Bank deposit shift-click",
 		description = "Swaps the behavior of shift-click when depositing to bank.",
 		section = uiSection
 	)
@@ -580,7 +580,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "shopBuy",
-		name = "Shop Buy Shift-Click",
+		name = "Shop buy shift-click",
 		description = "Swaps the Buy options with Value on items in shops when shift is held.",
 		section = uiSection
 	)
@@ -591,7 +591,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "shopSell",
-		name = "Shop Sell Shift-Click",
+		name = "Shop sell shift-click",
 		description = "Swaps the Sell options with Value on items in your inventory when selling to shops when shift is held.",
 		section = uiSection
 	)
@@ -602,7 +602,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapEssenceMineTeleport",
-		name = "Essence Mine Teleport",
+		name = "Essence mine teleport",
 		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine",
 		section = npcSection
 	)
@@ -624,7 +624,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapDepositItems",
-		name = "Deposit Items",
+		name = "Deposit items",
 		description = "Swap Talk-to with Deposit-items",
 		section = npcSection
 	)
@@ -664,7 +664,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapTemporossLeave",
-		name = "Tempoross Leave",
+		name = "Tempoross leave",
 		description = "Swap Talk-to with Leave after subduing Tempoross",
 		section = npcSection
 	)
@@ -675,7 +675,7 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "removeDeadNpcMenus",
-		name = "Remove dead npc menus",
+		name = "Remove dead NPC menus",
 		description = "Remove menu options such as Attack and Talk-to from dead npcs",
 		section = npcSection
 	)

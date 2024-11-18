@@ -55,7 +55,7 @@ public interface KourendLibraryConfig extends Config
 
 	@ConfigItem(
 		keyName = "alwaysShowVarlamoreEnvoy",
-		name = "Show Varlamore Envoy",
+		name = "Show Varlamore envoy",
 		description = "Varlamore Envoy is only needed during the Depths of Despair, and is never asked for"
 	)
 	default boolean alwaysShowVarlamoreEnvoy()

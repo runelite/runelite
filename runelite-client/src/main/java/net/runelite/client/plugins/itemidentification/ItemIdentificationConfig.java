@@ -42,7 +42,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "identificationType",
-		name = "Identification Type",
+		name = "Identification type",
 		position = -4,
 		description = "How much to show of the item name"
 	)
@@ -64,7 +64,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showHerbSeeds",
-		name = "Seeds (Herb)",
+		name = "Seeds (herb)",
 		description = "Show identification on Herb Seeds",
 		section = identificationSection
 	)
@@ -75,7 +75,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAllotmentSeeds",
-		name = "Seeds (Allotment)",
+		name = "Seeds (allotment)",
 		description = "Show identification on Allotment Seeds",
 		section = identificationSection
 	)
@@ -86,7 +86,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showFlowerSeeds",
-		name = "Seeds (Flower)",
+		name = "Seeds (flower)",
 		description = "Show identification on Flower Seeds",
 		section = identificationSection
 	)
@@ -97,7 +97,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showFruitTreeSeeds",
-		name = "Seeds (Fruit Tree)",
+		name = "Seeds (fruit tree)",
 		description = "Show identification on Fruit Tree Seeds",
 		section = identificationSection
 	)
@@ -108,7 +108,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showTreeSeeds",
-		name = "Seeds (Tree)",
+		name = "Seeds (tree)",
 		description = "Show identification on Tree Seeds",
 		section = identificationSection
 	)
@@ -119,7 +119,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSpecialSeeds",
-		name = "Seeds (Special)",
+		name = "Seeds (special)",
 		description = "Show identification on Special Seeds",
 		section = identificationSection
 	)
@@ -130,7 +130,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBerrySeeds",
-		name = "Seeds (Berry)",
+		name = "Seeds (berry)",
 		description = "Show identification on Berry Seeds",
 		section = identificationSection
 	)
@@ -141,7 +141,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showHopSeeds",
-		name = "Seeds (Hops)",
+		name = "Seeds (hops)",
 		description = "Show identification on Hops Seeds",
 		section = identificationSection
 	)
@@ -185,7 +185,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPyreLogs",
-		name = "Logs (Pyre)",
+		name = "Logs (pyre)",
 		description = "Show identification on Pyre Logs",
 		section = identificationSection
 	)
@@ -295,7 +295,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showTeleportScrolls",
-		name = "Teleport Scrolls",
+		name = "Teleport scrolls",
 		description = "Show identification on teleport scrolls",
 		section = identificationSection
 	)
@@ -306,7 +306,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showJewellery",
-		name = "Jewellery (Unenchanted)",
+		name = "Jewellery (unenchanted)",
 		description = "Show identification on unenchanted jewellery",
 		section = identificationSection
 	)
@@ -317,7 +317,7 @@ public interface ItemIdentificationConfig extends Config
 
 	@ConfigItem(
 		keyName = "showEnchantedJewellery",
-		name = "Jewellery (Enchanted)",
+		name = "Jewellery (enchanted)",
 		description = "Show identification on enchanted jewellery",
 		section = identificationSection
 	)

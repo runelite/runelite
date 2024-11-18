@@ -33,7 +33,7 @@ public interface WikiConfig extends Config
 {
 	@ConfigItem(
 		keyName = "leftClickSearch",
-		name = "Left Click Search",
+		name = "Left click search",
 		description = "Swap left-click on the Wiki button to Search",
 		position = 1
 	)
