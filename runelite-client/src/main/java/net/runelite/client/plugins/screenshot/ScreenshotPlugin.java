@@ -127,6 +127,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_DEATHS = "Deaths";
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
+	private static final String SD_LEVELS = "Levels";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -255,7 +256,7 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getWidget(ComponentID.LEVEL_UP_LEVEL) != null)
 		{
 			fileName = parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL);
-			screenshotSubDir = "Levels";
+			screenshotSubDir = SD_LEVELS;
 		}
 		else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
 		{
@@ -273,7 +274,7 @@ public class ScreenshotPlugin extends Plugin
 				if (config.screenshotLevels())
 				{
 					fileName = parseLevelUpWidget(ComponentID.DIALOG_SPRITE_TEXT);
-					screenshotSubDir = "Levels";
+					screenshotSubDir = SD_LEVELS;
 				}
 			}
 		}
@@ -529,8 +530,7 @@ public class ScreenshotPlugin extends Plugin
 				String skillName = StringUtils.capitalize(m.group("skill") != null ? m.group("skill") : m.group("skill99"));
 				String skillLevel = m.group("level") != null ? m.group("level") : "99";
 				String fileName = skillName + "(" + skillLevel + ")";
-				String screenshotSubDir = "Levels";
-				takeScreenshot(fileName, screenshotSubDir);
+				takeScreenshot(fileName, SD_LEVELS);
 			}
 		}
 	}
