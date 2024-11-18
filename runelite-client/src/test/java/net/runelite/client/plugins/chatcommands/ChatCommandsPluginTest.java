@@ -1251,6 +1251,36 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testBrimstoneChest()
+	{
+		testKillCountChatMessage("brimstone chest", "You have opened the Brimstone chest 0 times.", 0);
+		testKillCountChatMessage("brimstone chest", "You have opened the Brimstone chest once.", 1);
+		testKillCountChatMessage("brimstone chest", "You have opened the Brimstone chest 2 times.", 2);
+		testKillCountChatMessage("brimstone chest", "You have opened the Brimstone chest 1,234 times.", 1234);
+	}
+
+	@Test
+	public void testLarransChests()
+	{
+		testKillCountChatMessage("larran's small chest", "You have opened Larran's small chest 0 times.", 0);
+		testKillCountChatMessage("larran's small chest", "You have opened Larran's small chest once.", 1);
+		testKillCountChatMessage("larran's small chest", "You have opened Larran's small chest 2 times.", 2);
+
+		testKillCountChatMessage("larran's big chest", "You have opened Larran's big chest 0 times.", 0);
+		testKillCountChatMessage("larran's big chest", "You have opened Larran's big chest once.", 1);
+		testKillCountChatMessage("larran's big chest", "You have opened Larran's big chest 26,644 times.", 26644);
+	}
+
+	@Test
+	public void testCrystalChest()
+	{
+		testKillCountChatMessage("crystal chest", "You have never opened the crystal chest.", 0);
+		testKillCountChatMessage("crystal chest", "You have opened the crystal chest once.", 1);
+		testKillCountChatMessage("crystal chest", "You have opened the crystal chest 172 times.", 172);
+		testKillCountChatMessage("crystal chest", "You have opened the crystal chest 2,015 times.", 2015);
+	}
+
+	@Test
 	public void testHunterRumours()
 	{
 		testKillCountChatMessage("hunter rumours", "You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", 77);
