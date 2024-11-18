@@ -125,6 +125,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern GUARDIANS_OF_THE_RIFT_PATTERN = Pattern.compile("Amount of Rifts you have closed: <col=ff0000>([0-9,]+)</col>\\.", Pattern.CASE_INSENSITIVE);
 	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild\\.");
 	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?\\.");
+	private static final Pattern CHEST_OPENING_PATTERN = Pattern.compile("You have (?<never>never )?opened (the )?(?<chest>crystal chest|Larran's big chest|Larran's small chest|Brimstone chest)( (?<kc>[\\d,]+ times|once))?\\.");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -642,6 +643,27 @@ public class ChatCommandsPlugin extends Plugin
 				: Integer.parseInt(kcString.replace(",", ""));
 
 			setKc("Bird's egg offerings", kc);
+		}
+
+		matcher = CHEST_OPENING_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc;
+			if (matcher.group("never") != null)
+			{
+				kc = 0;
+			}
+			else
+			{
+				String kcString = matcher.group("kc");
+				kc = kcString.equals("once")
+					? 1
+					: Integer.parseInt(kcString.split(" ")[0].replace(",", ""));
+			}
+
+			String chest = matcher.group("chest");
+
+			setKc(chest, kc);
 		}
 	}
 
@@ -2703,6 +2725,22 @@ public class ChatCommandsPlugin extends Plugin
 			case "the hueycoatl":
 			case "huey":
 				return "Hueycoatl";
+
+			case "crystal chest":
+				return "crystal chest";
+
+			case "larran small chest":
+			case "larran's small chest":
+				return "Larran's small chest";
+
+			case "larran chest":
+			case "larran's chest":
+			case "larran big chest":
+			case "larran's big chest":
+				return "Larran's big chest";
+
+			case "brimstone chest":
+				return "Brimstone chest";
 
 			default:
 				return WordUtils.capitalize(boss);
