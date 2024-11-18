@@ -128,6 +128,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
 	private static final String SD_LEVELS = "Levels";
+	private static final String SD_LEAGUE_TASKS = "League Tasks";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -737,8 +738,12 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
+
 				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
 				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+
+				log.debug("Notification: top: {} bottom: {}", topText, bottomText);
+
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());
@@ -751,6 +756,13 @@ public class ScreenshotPlugin extends Plugin
 					String task = s[1];
 					String fileName = "Combat task (" + task.replaceAll("[:?]", "") + ")";
 					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+				}
+				if (topText.equalsIgnoreCase("League Task Complete!") && config.screenshotLeagueTasks())
+				{
+					String[] s = bottomText.split("<.*?>");
+					String task = s[1];
+					String fileName = "League task (" + task.replaceAll("[:?]", "") + ")";
+					takeScreenshot(fileName, SD_LEAGUE_TASKS);
 				}
 				notificationStarted = false;
 				break;
