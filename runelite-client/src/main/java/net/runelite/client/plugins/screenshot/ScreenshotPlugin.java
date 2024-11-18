@@ -127,6 +127,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_DEATHS = "Deaths";
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
+	private static final String SD_LEVELS = "Levels";
+	private static final String SD_LEAGUE_TASKS = "League Tasks";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -255,7 +257,7 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getWidget(ComponentID.LEVEL_UP_LEVEL) != null)
 		{
 			fileName = parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL);
-			screenshotSubDir = "Levels";
+			screenshotSubDir = SD_LEVELS;
 		}
 		else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
 		{
@@ -273,7 +275,7 @@ public class ScreenshotPlugin extends Plugin
 				if (config.screenshotLevels())
 				{
 					fileName = parseLevelUpWidget(ComponentID.DIALOG_SPRITE_TEXT);
-					screenshotSubDir = "Levels";
+					screenshotSubDir = SD_LEVELS;
 				}
 			}
 		}
@@ -529,8 +531,7 @@ public class ScreenshotPlugin extends Plugin
 				String skillName = StringUtils.capitalize(m.group("skill") != null ? m.group("skill") : m.group("skill99"));
 				String skillLevel = m.group("level") != null ? m.group("level") : "99";
 				String fileName = skillName + "(" + skillLevel + ")";
-				String screenshotSubDir = "Levels";
-				takeScreenshot(fileName, screenshotSubDir);
+				takeScreenshot(fileName, SD_LEVELS);
 			}
 		}
 	}
@@ -737,8 +738,12 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
+
 				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
 				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+
+				log.debug("Notification: top: {} bottom: {}", topText, bottomText);
+
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());
@@ -751,6 +756,13 @@ public class ScreenshotPlugin extends Plugin
 					String task = s[1];
 					String fileName = "Combat task (" + task.replaceAll("[:?]", "") + ")";
 					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+				}
+				if (topText.equalsIgnoreCase("League Task Complete!") && config.screenshotLeagueTasks())
+				{
+					String[] s = bottomText.split("<.*?>");
+					String task = s[1];
+					String fileName = "League task (" + task.replaceAll("[:?]", "") + ")";
+					takeScreenshot(fileName, SD_LEAGUE_TASKS);
 				}
 				notificationStarted = false;
 				break;

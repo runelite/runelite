@@ -304,10 +304,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "screenshotLeagueTasks",
+		name = "Screenshot league tasks",
+		description = "Take a screenshot when completing a league task.",
+		position = 21,
+		section = whatSection
+	)
+	default boolean screenshotLeagueTasks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "wildernessLootChest",
 		name = "Screenshot wilderness loot chest",
 		description = "Take a screenshot when opening wilderness loot chest.",
-		position = 21,
+		position = 22,
 		section = whatSection
 	)
 	default boolean screenshotWildernessLootChest()
