@@ -1680,71 +1680,61 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
-
-		try
+		var levels = client.getRealSkillLevels();
+		if (levels == null)
 		{
-			HiscoreResult playerStats = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
-
-			if (playerStats == null)
-			{
-				log.warn("Error fetching hiscore data: not found");
-				return;
-			}
-
-			int attack = playerStats.getSkill(HiscoreSkill.ATTACK).getLevel();
-			int strength = playerStats.getSkill(HiscoreSkill.STRENGTH).getLevel();
-			int defence = playerStats.getSkill(HiscoreSkill.DEFENCE).getLevel();
-			int hitpoints = playerStats.getSkill(HiscoreSkill.HITPOINTS).getLevel();
-			int ranged = playerStats.getSkill(HiscoreSkill.RANGED).getLevel();
-			int prayer = playerStats.getSkill(HiscoreSkill.PRAYER).getLevel();
-			int magic = playerStats.getSkill(HiscoreSkill.MAGIC).getLevel();
-			int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
-
-			String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Combat Level: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(combatLevel))
-				.append(ChatColorType.NORMAL)
-				.append(" A: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(attack))
-				.append(ChatColorType.NORMAL)
-				.append(" S: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(strength))
-				.append(ChatColorType.NORMAL)
-				.append(" D: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(defence))
-				.append(ChatColorType.NORMAL)
-				.append(" H: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(hitpoints))
-				.append(ChatColorType.NORMAL)
-				.append(" R: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(ranged))
-				.append(ChatColorType.NORMAL)
-				.append(" P: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(prayer))
-				.append(ChatColorType.NORMAL)
-				.append(" M: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.valueOf(magic))
-				.build();
-
-			log.debug("Setting response {}", response);
-			final MessageNode messageNode = chatMessage.getMessageNode();
-			messageNode.setRuneLiteFormatMessage(response);
-			client.refreshChat();
+			log.warn("Error fetching levels: not found");
+			return;
 		}
-		catch (IOException ex)
-		{
-			log.warn("Error fetching hiscore data", ex);
-		}
+
+		int attack = levels[net.runelite.api.Skill.valueOf("ATTACK").ordinal()];
+		int strength = levels[net.runelite.api.Skill.valueOf("STRENGTH").ordinal()];
+		int defence = levels[net.runelite.api.Skill.valueOf("DEFENCE").ordinal()];
+		int hitpoints = levels[net.runelite.api.Skill.valueOf("HITPOINTS").ordinal()];
+		int ranged = levels[net.runelite.api.Skill.valueOf("RANGED").ordinal()];
+		int prayer = levels[net.runelite.api.Skill.valueOf("PRAYER").ordinal()];
+		int magic = levels[net.runelite.api.Skill.valueOf("MAGIC").ordinal()];
+		int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Combat Level: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(combatLevel))
+			.append(ChatColorType.NORMAL)
+			.append(" A: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(attack))
+			.append(ChatColorType.NORMAL)
+			.append(" S: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(strength))
+			.append(ChatColorType.NORMAL)
+			.append(" D: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(defence))
+			.append(ChatColorType.NORMAL)
+			.append(" H: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(hitpoints))
+			.append(ChatColorType.NORMAL)
+			.append(" R: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(ranged))
+			.append(ChatColorType.NORMAL)
+			.append(" P: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(prayer))
+			.append(ChatColorType.NORMAL)
+			.append(" M: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(magic))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		client.refreshChat();
 	}
 
 	private void leaguePointsLookup(ChatMessage chatMessage, String message)
