@@ -36,4 +36,4 @@ We've set up a separate document for our [contribution guidelines](https://githu
 
 ### Our Changes:
 
-- currently none
+- [Left Side Sidebar](https://github.com/runelite/runelite/pull/18262) (Toggle with Ctrl+F10) by [halfwolf102](https://github.com/halfwolf102)
