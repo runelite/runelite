@@ -7,12 +7,13 @@
 
 ### Improved Fixed Mode
 - WIP (contains [Fixed Mode Hide Chat](https://github.com/deathbeam/example-plugin/tree/fixed-mode-hide-chat) by [deathbeam](https://github.com/deathbeam))
-
 <br />
 <br />
 <br />
 <br />
-official [runelite](https://github.com/runelite/runelite) links and description<br />
+<br />
+official [runelite](https://github.com/runelite/runelite) links and description <br />
+<br />
 ![](https://runelite.net/img/logo.png)
 # runelite [![CI](https://github.com/runelite/runelite/workflows/CI/badge.svg)](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/ArdAhnN)
 
