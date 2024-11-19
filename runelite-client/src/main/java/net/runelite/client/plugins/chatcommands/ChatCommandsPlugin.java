@@ -1687,13 +1687,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		int attack = levels[net.runelite.api.Skill.valueOf("ATTACK").ordinal()];
-		int strength = levels[net.runelite.api.Skill.valueOf("STRENGTH").ordinal()];
-		int defence = levels[net.runelite.api.Skill.valueOf("DEFENCE").ordinal()];
-		int hitpoints = levels[net.runelite.api.Skill.valueOf("HITPOINTS").ordinal()];
-		int ranged = levels[net.runelite.api.Skill.valueOf("RANGED").ordinal()];
-		int prayer = levels[net.runelite.api.Skill.valueOf("PRAYER").ordinal()];
-		int magic = levels[net.runelite.api.Skill.valueOf("MAGIC").ordinal()];
+		int attack = levels[net.runelite.api.Skill.ATTACK.ordinal()];
+		int strength = levels[net.runelite.api.Skill.STRENGTH.ordinal()];
+		int defence = levels[net.runelite.api.Skill.DEFENCE.ordinal()];
+		int hitpoints = levels[net.runelite.api.Skill.HITPOINTS.ordinal()];
+		int ranged = levels[net.runelite.api.Skill.RANGED.ordinal()];
+		int prayer = levels[net.runelite.api.Skill.PRAYER.ordinal()];
+		int magic = levels[net.runelite.api.Skill.MAGIC.ordinal()];
 		int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
 
 		String response = new ChatMessageBuilder()
