@@ -25,7 +25,8 @@ RuneLite is licensed under the BSD 2-clause license. See the license header in t
 We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/.github/CONTRIBUTING.md).
 
 
-![Quick Ugly Logo](https://github.com/user-attachments/assets/6af4c7fe-21e4-4427-bb7f-05ff738b3ec6)
+
+![](https://github.com/user-attachments/assets/428f49d1-6fb9-4793-add1-0cd08942c43c)
 # improved-runelite
 
 ### Changes:
