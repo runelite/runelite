@@ -1167,17 +1167,20 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (actor.getGraphic() == BIND.getGraphicId() && config.showFreezes())
 		{
-			createGameTimer(BIND);
+			freezeTimer = createGameTimer(BIND);
+			freezeTime = client.getTickCount();
 		}
 
 		if (actor.getGraphic() == SNARE.getGraphicId() && config.showFreezes())
 		{
-			createGameTimer(SNARE);
+			freezeTimer = createGameTimer(SNARE);
+			freezeTime = client.getTickCount();
 		}
 
 		if (actor.getGraphic() == ENTANGLE.getGraphicId() && config.showFreezes())
 		{
-			createGameTimer(ENTANGLE);
+			freezeTimer = createGameTimer(ENTANGLE);
+			freezeTime = client.getTickCount();
 		}
 
 		// downgrade freeze based on graphic, if at the same tick as the freeze message
