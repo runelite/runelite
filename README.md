@@ -33,6 +33,7 @@ We've set up a separate document for our [contribution guidelines](https://githu
 <br />
 <br />
 <br />
+
 ![little ugly but beloved logo](https://github.com/user-attachments/assets/428f49d1-6fb9-4793-add1-0cd08942c43c)
 # improved-runelite
 
