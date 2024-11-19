@@ -1,5 +1,5 @@
 
-# [RuneLite](https://github.com/runelite/runelite) Description
+[RuneLite](https://github.com/runelite/runelite) Description
 
 ![](https://runelite.net/img/logo.png)
 # runelite [![CI](https://github.com/runelite/runelite/workflows/CI/badge.svg)](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/ArdAhnN)
@@ -27,6 +27,9 @@ RuneLite is licensed under the BSD 2-clause license. See the license header in t
 
 We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/.github/CONTRIBUTING.md).
 <br />
+<br />
+<br />
+# 
 <br />
 <br />
 <br />
