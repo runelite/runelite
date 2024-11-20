@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.ui.ClientToolbar;
 import org.junit.Before;
@@ -59,6 +60,10 @@ public class HiscorePluginTest
 	@Mock
 	@Bind
 	private ClientToolbar clientToolbar;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Mock
 	@Bind

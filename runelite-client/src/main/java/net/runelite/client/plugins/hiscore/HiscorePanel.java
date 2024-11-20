@@ -29,6 +29,7 @@ package net.runelite.client.plugins.hiscore;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -52,6 +53,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import static net.runelite.api.Experience.MAX_SKILL_XP;
 import net.runelite.api.Player;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -76,6 +78,9 @@ public class HiscorePanel extends PluginPanel
 {
 	/* The maximum allowed username length in RuneScape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
+
+	private static final Color SKILL_MAXED_COLOR = new Color(0x00ff88);
+	private static final Color SKILL_200M_COLOR = new Color(0xff66b2);
 
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
@@ -408,6 +413,7 @@ public class HiscorePanel extends PluginPanel
 			HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
 			label.setText(pad("--", skillType));
+			label.setForeground(Color.WHITE);
 			label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		}
 
@@ -463,40 +469,46 @@ public class HiscorePanel extends PluginPanel
 
 			if (skill == null)
 			{
-				if (result.getPlayer() != null)
-				{
-					int combatLevel = Experience.getCombatLevel(
-						result.getSkill(ATTACK).getLevel(),
-						result.getSkill(STRENGTH).getLevel(),
-						result.getSkill(DEFENCE).getLevel(),
-						result.getSkill(HITPOINTS).getLevel(),
-						result.getSkill(MAGIC).getLevel(),
-						result.getSkill(RANGED).getLevel(),
-						result.getSkill(PRAYER).getLevel()
-					);
-					label.setText(Integer.toString(combatLevel));
-				}
+				int combatLevel = Experience.getCombatLevel(
+					result.getSkill(ATTACK).getLevel(),
+					result.getSkill(STRENGTH).getLevel(),
+					result.getSkill(DEFENCE).getLevel(),
+					result.getSkill(HITPOINTS).getLevel(),
+					result.getSkill(MAGIC).getLevel(),
+					result.getSkill(RANGED).getLevel(),
+					result.getSkill(PRAYER).getLevel()
+				);
+				label.setText(Integer.toString(combatLevel));
 			}
-			else if ((s = result.getSkill(skill)) != null)
+			else if ((s = result.getSkill(skill)) != null && s.getLevel() != -1)
 			{
 				final long exp = s.getExperience();
+				long labelValue = s.getLevel();
+
 				final boolean isSkill = skill.getType() == HiscoreSkillType.SKILL;
-				int level = -1;
-				if (config.virtualLevels() && isSkill && exp > -1L)
+				final boolean isOverallSkill = skill.getType() == HiscoreSkillType.OVERALL;
+				if ((isSkill || isOverallSkill) && exp > -1L)
 				{
-					level = Experience.getLevelForXp((int) exp);
-				}
-				else if (!isSkill || exp != -1L)
-				{
-					// for skills, level is only valid if exp is not -1
-					// otherwise level is always valid
-					level = s.getLevel();
+					switch (config.maxedSkillsStyle())
+					{
+						case VIRTUAL_LEVELS:
+							if (isSkill)
+							{
+								labelValue = Experience.getLevelForXp((int) exp);
+							}
+							break;
+						case SHOW_EXPERIENCE:
+							int skillCount = isSkill ? 1 : net.runelite.api.Skill.values().length;
+							if (s.getLevel() == 99 * skillCount)
+							{
+								labelValue = exp;
+								label.setForeground(exp == (long) MAX_SKILL_XP * skillCount ? SKILL_200M_COLOR : SKILL_MAXED_COLOR);
+							}
+							break;
+					}
 				}
 
-				if (level != -1)
-				{
-					label.setText(pad(formatLevel(level), skill.getType()));
-				}
+				label.setText(pad(formatNumber(labelValue), skill.getType()));
 			}
 
 			label.setToolTipText(detailsHtml(result, skill));
@@ -714,15 +726,19 @@ public class HiscorePanel extends PluginPanel
 	}
 
 	@VisibleForTesting
-	static String formatLevel(int level)
+	static String formatNumber(long number)
 	{
-		if (level < 10000)
+		if (number < 10_000)
 		{
-			return Integer.toString(level);
+			return Long.toString(number);
+		}
+		else if (number < 10_000_000)
+		{
+			return (number / 1000) + "k";
 		}
 		else
 		{
-			return (level / 1000) + "k";
+			return (number / 1_000_000) + "m";
 		}
 	}
 

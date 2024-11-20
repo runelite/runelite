@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Sam <dasistkeinnamen@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,65 +24,15 @@
  */
 package net.runelite.client.plugins.hiscore;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup(HiscorePlugin.CONFIG_GROUP)
-public interface HiscoreConfig extends Config
+public enum MaxedSkillsStyle
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "playerOption",
-		name = "Player option",
-		description = "Add Lookup option to players"
-	)
-	default boolean playerOption()
-	{
-		return true;
-	}
+	SHOW_99,
+	VIRTUAL_LEVELS,
+	SHOW_EXPERIENCE;
 
-	@ConfigItem(
-		position = 2,
-		keyName = "menuOption",
-		name = "Menu option",
-		description = "Show Lookup option in menus"
-	)
-	default boolean menuOption()
+	@Override
+	public String toString()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = HiscorePlugin.CONFIG_KEY_MAXED_SKILLS_STYLE,
-		name = "Maxed skills",
-		description = "How to display skills that are level 99."
-	)
-	default MaxedSkillsStyle maxedSkillsStyle()
-	{
-		return MaxedSkillsStyle.VIRTUAL_LEVELS;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "autocomplete",
-		name = "Autocomplete",
-		description = "Predict names when typing a name to lookup"
-	)
-	default boolean autocomplete()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "bountylookup",
-		name = "Bounty lookup",
-		description = "Automatically lookup the stats of your bounty hunter target"
-	)
-	default boolean bountylookup()
-	{
-		return false;
+		return this == SHOW_99 ? "Show \"99\"" : super.toString();
 	}
 }
