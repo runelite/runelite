@@ -2703,6 +2703,21 @@ public class ChatCommandsPlugin extends Plugin
 			case "the hueycoatl":
 			case "huey":
 				return "Hueycoatl";
+				
+			// Colossal Wyrm Basic Agility Course
+			case "wyrmba":
+			case "wbac":
+			case "wyrmbasic":
+			case "wyrm basic":
+				return "Colossal Wyrm Agility Course (Basic)";
+
+			// Colossal Wyrm Advanced Agility Course
+			case "wyrma":
+			case "wad":
+			case "wyrmadv":
+			case "wyrmadvanced":
+			case "wyrm advanced":
+				return "Colossal Wyrm Agility Course (Advanced)";
 
 			default:
 				return WordUtils.capitalize(boss);
