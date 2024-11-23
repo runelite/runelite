@@ -210,7 +210,7 @@ public class CookingPlugin extends Plugin
 	@Subscribe
 	public void onBeforeRender(BeforeRender event)
 	{
-		if(!config.showCookingTooltips())
+		if (!config.showCookingTooltips())
 		{
 			return;
 		}
@@ -257,7 +257,8 @@ public class CookingPlugin extends Plugin
 		}
 	}
 
-	private Color getChanceColor(double chance) {
+	private Color getChanceColor(double chance)
+	{
 		if (chance >= 95) return new Color(0, 255, 0); // Bright green
 		if (chance >= 80) return new Color(150, 255, 0); // Light green
 		if (chance >= 60) return new Color(255, 255, 0); // Yellow
@@ -282,7 +283,7 @@ public class CookingPlugin extends Plugin
 
 		int level = client.getBoostedSkillLevel(Skill.COOKING);
 		StringBuilder sb = new StringBuilder();
-		
+
 		int requiredLevel = cookable.getLevel();
 		if (level < requiredLevel)
 		{
@@ -296,7 +297,7 @@ public class CookingPlugin extends Plugin
 				new Color(255, 255, 0)
 		));
 		double fireChance = cookable.calculateFireChance(level);
-		if(fireChance > 0)
+		if (fireChance > 0)
 		{
 			sb.append("<br>Fire: ").append(ColorUtil.wrapWithColorTag(
 				String.format("%.2f", fireChance) + "%",
@@ -314,7 +315,7 @@ public class CookingPlugin extends Plugin
 			}
 		}
 		double rangeChance = cookable.calculateRangeChance(level);
-		if(rangeChance > 0)
+		if (rangeChance > 0)
 		{
 			sb.append("<br>Range: ").append(ColorUtil.wrapWithColorTag(
 				String.format("%.2f", rangeChance) + "%",
