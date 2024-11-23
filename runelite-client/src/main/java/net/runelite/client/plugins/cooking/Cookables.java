@@ -4,7 +4,8 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @Getter
-public enum Cookables {
+public enum Cookables
+{
 
 	ANCHOVIES(ItemID.ANCHOVIES, ItemID.RAW_ANCHOVIES, 1, 30, 128, 512, 128, 512),
 	COOKED_CHICKEN(ItemID.COOKED_CHICKEN, ItemID.RAW_CHICKEN, 1, 30, 128, 512, 128, 512),
