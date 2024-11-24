@@ -71,7 +71,6 @@ public class EntityHiderPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-
 		when(client.getIgnoreContainer()).thenReturn(ignoreNameableContainer);
 	}
 
@@ -238,5 +237,38 @@ public class EntityHiderPluginTest
 
 		assertFalse(plugin.shouldDraw(npc, true));
 		assertFalse(plugin.shouldDraw(npc, false));
+	}
+
+	@Test
+	public void testHideIgnoresWhenOthersHidden()
+	{
+		when(config.hideOthers()).thenReturn(true);
+		when(config.hideIgnores()).thenReturn(false);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("Adam");
+
+		when(ignoreNameableContainer.findByName("Adam")).thenReturn(mock(Ignore.class));
+
+		//Test if hide Others overrides ignores.
+		assertFalse(plugin.shouldDraw(player, false));
+
+		when(config.hideOthers()).thenReturn(false);
+		when(config.hideIgnores()).thenReturn(true);
+		plugin.onConfigChanged(configChanged);
+
+		//Test if ignored players are hidden when others are shown.
+		assertFalse(plugin.shouldDraw(player, false));
+
+		when(config.hideOthers()).thenReturn(false);
+		when(config.hideIgnores()).thenReturn(false);
+		plugin.onConfigChanged(configChanged);
+
+		//Test if ignored players show up as they should when both are turned off.
+		assertTrue(plugin.shouldDraw(player, false));
 	}
 }
