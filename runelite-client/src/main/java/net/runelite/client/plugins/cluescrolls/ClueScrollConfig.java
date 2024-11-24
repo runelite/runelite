@@ -36,7 +36,7 @@ public interface ClueScrollConfig extends Config
 	@ConfigItem(
 		keyName = "displayHintArrows",
 		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
+		description = "Configures whether or not to display hint arrows for clues."
 	)
 	default boolean displayHintArrows()
 	{

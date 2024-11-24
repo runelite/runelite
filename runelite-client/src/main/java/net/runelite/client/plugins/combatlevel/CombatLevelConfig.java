@@ -54,7 +54,7 @@ public interface CombatLevelConfig extends Config
 	@ConfigItem(
 		keyName = "wildernessAttackLevelRange",
 		name = "Show level range in wilderness",
-		description = "Displays a PVP-world-like attack level range in the wilderness"
+		description = "Displays a PvP-world-like attack level range in the wilderness."
 	)
 	default boolean wildernessAttackLevelRange()
 	{

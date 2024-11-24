@@ -55,7 +55,7 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "showGemsFound",
 		name = "Track gems found",
-		description = "Tracks gems found from mining in the loot tracker"
+		description = "Tracks gems found from mining in the loot tracker."
 	)
 	default boolean trackGemsFound()
 	{
@@ -65,7 +65,7 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "showOresFound",
 		name = "Track ores found",
-		description = "Tracks ores found from mining in the loot tracker"
+		description = "Tracks ores found from mining in the loot tracker."
 	)
 	default boolean trackOresFound()
 	{
@@ -75,7 +75,7 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "showBrokenStruts",
 		name = "Show broken struts",
-		description = "Shows broken water wheel struts"
+		description = "Shows broken water wheel struts."
 	)
 	default boolean showBrokenStruts()
 	{

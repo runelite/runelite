@@ -38,7 +38,7 @@ public interface TitheFarmPluginConfig extends Config
 		position = 1,
 		keyName = "hexColorUnwatered",
 		name = "Unwatered plant",
-		description = "Color of unwatered plant timer"
+		description = "Color of unwatered plant timer."
 	)
 	default Color getColorUnwatered()
 	{
@@ -50,7 +50,7 @@ public interface TitheFarmPluginConfig extends Config
 		position = 2,
 		keyName = "hexColorWatered",
 		name = "Watered plant",
-		description = "Color of watered plant timer"
+		description = "Color of watered plant timer."
 	)
 	default Color getColorWatered()
 	{

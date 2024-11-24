@@ -38,7 +38,7 @@ public interface ChatCommandsConfig extends Config
 		position = 0,
 		keyName = "price",
 		name = "Price command",
-		description = "Configures whether the Price command is enabled<br> !price [item]"
+		description = "Configures whether the price command is enabled: !price [item]"
 	)
 	default boolean price()
 	{
@@ -49,7 +49,7 @@ public interface ChatCommandsConfig extends Config
 		position = 1,
 		keyName = "lvl",
 		name = "Level command",
-		description = "Configures whether the Level command is enabled<br> !lvl [skill]"
+		description = "Configures whether the level command is enabled: !lvl [skill]"
 	)
 	default boolean lvl()
 	{
@@ -60,7 +60,7 @@ public interface ChatCommandsConfig extends Config
 		position = 2,
 		keyName = "clue",
 		name = "Clue command",
-		description = "Configures whether the Clue command is enabled<br> !clues"
+		description = "Configures whether the clue command is enabled: !clues"
 	)
 	default boolean clue()
 	{
@@ -71,7 +71,7 @@ public interface ChatCommandsConfig extends Config
 		position = 3,
 		keyName = "killcount",
 		name = "Killcount command",
-		description = "Configures whether the Killcount command is enabled<br> !kc [boss]"
+		description = "Configures whether the killcount command is enabled: !kc [boss]"
 	)
 	default boolean killcount()
 	{
@@ -82,7 +82,7 @@ public interface ChatCommandsConfig extends Config
 		position = 4,
 		keyName = "qp",
 		name = "QP command",
-		description = "Configures whether the quest point command is enabled<br> !qp"
+		description = "Configures whether the quest point command is enabled: !qp"
 	)
 	default boolean qp()
 	{
@@ -93,7 +93,7 @@ public interface ChatCommandsConfig extends Config
 		position = 5,
 		keyName = "pb",
 		name = "PB command",
-		description = "Configures whether the personal best command is enabled<br> !pb"
+		description = "Configures whether the personal best command is enabled: !pb [boss]"
 	)
 	default boolean pb()
 	{
@@ -104,7 +104,7 @@ public interface ChatCommandsConfig extends Config
 		position = 6,
 		keyName = "gc",
 		name = "GC command",
-		description = "Configures whether the Barbarian Assault High gamble count command is enabled<br> !gc"
+		description = "Configures whether the Barbarian Assault high gamble count command is enabled: !gc"
 	)
 	default boolean gc()
 	{
@@ -115,7 +115,7 @@ public interface ChatCommandsConfig extends Config
 		position = 7,
 		keyName = "duels",
 		name = "Duels command",
-		description = "Configures whether the duel arena command is enabled<br> !duels"
+		description = "Configures whether the duel arena command is enabled: !duels"
 	)
 	default boolean duels()
 	{
@@ -126,7 +126,7 @@ public interface ChatCommandsConfig extends Config
 		position = 8,
 		keyName = "bh",
 		name = "BH command",
-		description = "Configures whether the Bounty Hunter - Hunter command is enabled<br> !bh"
+		description = "Configures whether the Bounty Hunter - Hunter command is enabled: !bh"
 	)
 	default boolean bh()
 	{
@@ -137,7 +137,7 @@ public interface ChatCommandsConfig extends Config
 		position = 9,
 		keyName = "bhRogue",
 		name = "BH Rogue command",
-		description = "Configures whether the Bounty Hunter - Rogue command is enabled<br> !bhrogue"
+		description = "Configures whether the Bounty Hunter - Rogue command is enabled: !bhrogue"
 	)
 	default boolean bhRogue()
 	{
@@ -148,7 +148,7 @@ public interface ChatCommandsConfig extends Config
 		position = 10,
 		keyName = "lms",
 		name = "LMS command",
-		description = "Configures whether the Last Man Standing command is enabled<br> !lms"
+		description = "Configures whether the Last Man Standing command is enabled: !lms"
 	)
 	default boolean lms()
 	{
@@ -159,7 +159,7 @@ public interface ChatCommandsConfig extends Config
 		position = 11,
 		keyName = "lp",
 		name = "LP command",
-		description = "Configures whether the League Points command is enabled<br> !lp"
+		description = "Configures whether the League Points command is enabled: !lp"
 	)
 	default boolean lp()
 	{
@@ -170,7 +170,7 @@ public interface ChatCommandsConfig extends Config
 		position = 12,
 		keyName = "sw",
 		name = "SW command",
-		description = "Configures whether the Soul Wars Zeal command is enabled<br> !sw"
+		description = "Configures whether the Soul Wars Zeal command is enabled: !sw"
 	)
 	default boolean sw()
 	{
@@ -181,8 +181,7 @@ public interface ChatCommandsConfig extends Config
 		position = 13,
 		keyName = "pets",
 		name = "Pets command",
-		description = "Configures whether the player pet list command is enabled<br> !pets<br>" +
-			" Note: Update your pet list by looking at the All Pets tab in the Collection Log"
+		description = "Configures whether the player pet list command is enabled. Update your pet list by looking at the 'All Pets' tab in the collection log."
 	)
 	default boolean pets()
 	{
@@ -193,7 +192,7 @@ public interface ChatCommandsConfig extends Config
 		position = 14,
 		keyName = "ca",
 		name = "CA command",
-		description = "Configures whether the Combat Achievements command is enabled<br> !ca"
+		description = "Configures whether the combat achievements command is enabled: !ca"
 	)
 	default boolean ca()
 	{
@@ -204,7 +203,7 @@ public interface ChatCommandsConfig extends Config
 		position = 15,
 		keyName = "clog",
 		name = "CLOG command",
-		description = "Configures whether the Collection Log command is enabled<br> !clog"
+		description = "Configures whether the collection log command is enabled: !clog"
 	)
 	default boolean clog()
 	{
@@ -215,7 +214,7 @@ public interface ChatCommandsConfig extends Config
 		position = 20,
 		keyName = "clearSingleWord",
 		name = "Clear single word",
-		description = "Enable hot key to clear single word at a time"
+		description = "Enable hotkey to clear single word at a time."
 	)
 	default Keybind clearSingleWord()
 	{
@@ -226,7 +225,7 @@ public interface ChatCommandsConfig extends Config
 		position = 21,
 		keyName = "clearEntireChatBox",
 		name = "Clear chat box",
-		description = "Enable hotkey to clear entire chat box"
+		description = "Enable hotkey to clear entire chat box."
 	)
 	default Keybind clearChatBox()
 	{
