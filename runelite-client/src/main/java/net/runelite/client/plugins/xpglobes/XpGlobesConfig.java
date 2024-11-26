@@ -73,6 +73,18 @@ public interface XpGlobesConfig extends Config
 		description = "Shows XP per hour inside the globe tooltip box",
 		position = 3
 	)
+	default boolean showXpPerAction()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showXpPerAction",
+			name = "Show XP per Action",
+			description = "Shows XP per action inside the globe tooltip box",
+			position = 5
+	)
+
 	default boolean showXpHour()
 	{
 		return true;
