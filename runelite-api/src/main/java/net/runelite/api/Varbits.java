@@ -903,6 +903,19 @@ public final class Varbits
 	public static final int SPELLBOOK_SUBMENU = 9730;
 
 	/**
+	 * 0 = the arrow is not currently being used
+	 * 5 = while using Matthias' Falcon
+	 * 6 = while Stealing valuables and playing the Brimhaven Agility Arena minigame
+	 */
+	public static final int HINT_ARROW = 14192;
+
+	/**
+	 * 0 = a ticket has already been obtained from the active ticket dispenser
+	 * 1 = a ticket can be obtained from the active ticket dispenser
+	 */
+	public static final int AGILITY_ARENA_TICKET_AVAILABLE = 5962;
+
+  /**
 	 * The amount of Curse of the Moons stacks received when fighting the Blue Moon or Eclipse Moon.
 	 * The varbit value remains 0 when fighting the Blood Moon.
 	 * When fighting the Blue Moon, the player's joints will lock up at 18 stacks, which causes their next attack to be

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,6 +44,7 @@ import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -83,7 +85,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Agility",
 	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps", "sepulchre"}
+	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps", "sepulchre", "brimhaven"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 @Slf4j
@@ -93,6 +95,9 @@ public class AgilityPlugin extends Plugin
 	private static final Set<Integer> SEPULCHRE_NPCS = ImmutableSet.of(
 		NullNpcID.NULL_9672, NullNpcID.NULL_9673, NullNpcID.NULL_9674,  // arrows
 		NullNpcID.NULL_9669, NullNpcID.NULL_9670, NullNpcID.NULL_9671   // swords
+	);
+	private static final Set<Integer> TICKET_DISPENSERS = ImmutableSet.of(
+		ObjectID.TICKET_DISPENSER, ObjectID.TICKET_DISPENSER_3608
 	);
 
 	@Getter
@@ -136,13 +141,21 @@ public class AgilityPlugin extends Plugin
 	private AgilitySession session;
 
 	private int lastAgilityXp;
-	private WorldPoint lastArenaTicketPosition;
 
 	@Getter
 	private int agilityLevel;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Tile stickTile;
+
+	@Getter(AccessLevel.PACKAGE)
+	private WorldPoint agilityArenaTicketDispenser;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean agilityArenaTicketAvailable;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<WorldPoint, TileObject> agilityArenaTicketDispensers = new ConcurrentHashMap<>();
 
 	@Provides
 	AgilityConfig getConfig(ConfigManager configManager)
@@ -168,6 +181,7 @@ public class AgilityPlugin extends Plugin
 		session = null;
 		agilityLevel = 0;
 		stickTile = null;
+		agilityArenaTicketDispenser = null;
 		npcs.clear();
 	}
 
@@ -179,11 +193,12 @@ public class AgilityPlugin extends Plugin
 			case HOPPING:
 			case LOGIN_SCREEN:
 				session = null;
-				lastArenaTicketPosition = null;
+				agilityArenaTicketDispenser = null;
 				removeAgilityArenaTimer();
 				npcs.clear();
 				break;
 			case LOADING:
+				agilityArenaTicketDispensers.clear();
 				marksOfGrace.clear();
 				obstacles.clear();
 				stickTile = null;
@@ -191,7 +206,8 @@ public class AgilityPlugin extends Plugin
 			case LOGGED_IN:
 				if (!isInAgilityArena())
 				{
-					lastArenaTicketPosition = null;
+					agilityArenaTicketDispensers.clear();
+					agilityArenaTicketDispenser = null;
 					removeAgilityArenaTimer();
 				}
 				break;
@@ -286,21 +302,40 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	public void onGameTick(GameTick event)
 	{
-		if (isInAgilityArena())
+		if (!isInAgilityArena())
 		{
-			// Hint arrow has no plane, and always returns the current plane
-			WorldPoint newTicketPosition = client.getHintArrowPoint();
-			WorldPoint oldTickPosition = lastArenaTicketPosition;
+			return;
+		}
 
-			lastArenaTicketPosition = newTicketPosition;
+		WorldPoint hintArrowPoint = client.getHintArrowPoint();
+		if (hintArrowPoint == null)
+		{
+			return;
+		}
 
-			if (oldTickPosition != null && newTicketPosition != null
-				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
+		// Hint arrow has no plane, and always returns the current plane
+		if (agilityArenaTicketDispenser == null ||
+			agilityArenaTicketDispenser.getX() != hintArrowPoint.getX() ||
+			agilityArenaTicketDispenser.getY() != hintArrowPoint.getY())
+		{
+			agilityArenaTicketDispenser = hintArrowPoint;
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (!isInAgilityArena())
+		{
+			return;
+		}
+
+		if (event.getVarbitId() == Varbits.HINT_ARROW)
+		{
+			if (event.getValue() == 6)
 			{
-				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
-
 				notifier.notify(config.notifyAgilityArena(), "Ticket location changed");
 
 				if (config.showAgilityArenaTimer())
@@ -308,6 +343,10 @@ public class AgilityPlugin extends Plugin
 					showNewAgilityArenaTimer();
 				}
 			}
+		}
+		else if (event.getVarbitId() == Varbits.AGILITY_ARENA_TICKET_AVAILABLE)
+		{
+			agilityArenaTicketAvailable = event.getValue() == 1;
 		}
 	}
 
@@ -445,6 +484,11 @@ public class AgilityPlugin extends Plugin
 			{
 				obstacles.put(newObject, new Obstacle(tile, closestShortcut));
 			}
+		}
+
+		if (TICKET_DISPENSERS.contains(newObject.getId()))
+		{
+			agilityArenaTicketDispensers.put(newObject.getWorldLocation(), newObject);
 		}
 	}
 

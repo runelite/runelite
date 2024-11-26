@@ -43,6 +43,13 @@ public interface AgilityConfig extends Config
 	)
 	String sepulchreSection = "Hallowed Sepulchre";
 
+	@ConfigSection(
+		name = "Agility Arena",
+		description = "Settings for Brimhaven Agility Arena highlights",
+		position = 21
+	)
+	String arenaSection = "Agility Arena";
+
 	@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show clickboxes",
@@ -195,7 +202,8 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaNotifier",
 		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
-		position = 13
+		position = 13,
+		section = arenaSection
 	)
 	default Notification notifyAgilityArena()
 	{
@@ -206,7 +214,8 @@ public interface AgilityConfig extends Config
 		keyName = "agilityArenaTimer",
 		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
-		position = 14
+		position = 14,
+		section = arenaSection
 	)
 	default boolean showAgilityArenaTimer()
 	{
@@ -283,5 +292,30 @@ public interface AgilityConfig extends Config
 	default boolean highlightSepulchreSkilling()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightDispenser",
+		name = "Highlight Dispenser",
+		description = "Enable/disable the highlighting of the active Ticket Dispenser",
+		position = 22,
+		section = arenaSection
+	)
+	default boolean highlightDispenser()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "dispenserColor",
+		name = "Dispenser Color",
+		description = "Color of highlighted active Ticket Dispenser",
+		position = 23,
+		section = arenaSection
+	)
+	default Color dispenserColor()
+	{
+		return Color.BLUE;
 	}
 }
