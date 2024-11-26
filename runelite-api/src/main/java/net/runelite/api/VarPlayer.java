@@ -267,4 +267,13 @@ public final class VarPlayer
 	 * @see #DIZANAS_QUIVER_ITEM_COUNT
 	 */
 	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;
+
+	/**
+	 * Forinthry surge
+	 * <p>
+	 * Returns the effect's end as UNIX epoch, measured in minutes.
+	 * Value of 0 means the effect is inactive.
+	 * </p>
+	 */
+	public static final int LAST_FORINTHRY_SURGE = 3347;
 }
