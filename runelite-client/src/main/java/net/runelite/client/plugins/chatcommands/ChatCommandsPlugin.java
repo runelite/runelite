@@ -2497,6 +2497,26 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
 
+			// Colossal Wyrm Basic Agility Course
+			case "wbac":
+			case "cwbac":
+			case "wyrmb":
+			case "wyrmbasic":
+			case "wyrm basic":
+			case "colossal basic":
+			case "colossal wyrm basic":
+				return "Colossal Wyrm Agility Course (Basic)";
+
+			// Colossal Wyrm Advanced Agility Course
+			case "waac":
+			case "cwaac":
+			case "wyrma":
+			case "wyrmadvanced":
+			case "wyrm advanced":
+			case "colossal advanced":
+			case "colossal wyrm advanced":
+				return "Colossal Wyrm Agility Course (Advanced)";
+
 			// Prifddinas Agility Course
 			case "prif":
 			case "prifddinas":
