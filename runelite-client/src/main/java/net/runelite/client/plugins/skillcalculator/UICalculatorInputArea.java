@@ -28,16 +28,24 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.Getter;
+import net.runelite.client.plugins.config.UnitFormatterFactory;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
+
+import static net.runelite.client.plugins.skillcalculator.SkillCalculator.MAX_MULTIPLIER;
 
 @Getter
 @Singleton
@@ -47,7 +55,7 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
-	private final JTextField uiFieldXPMultiplier;
+	private final JSpinner uiFieldXPMultiplier;
 
 	@Inject
 	UICalculatorInputArea()
@@ -57,7 +65,7 @@ class UICalculatorInputArea extends JPanel
 		uiFieldCurrentXP = addComponent("Current Experience");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target Experience");
-		uiFieldXPMultiplier = addComponent("XP Multiplier");
+		uiFieldXPMultiplier = addSpinnerComponent("XP Multiplier");
 	}
 
 	int getCurrentLevelInput()
@@ -115,6 +123,18 @@ class UICalculatorInputArea extends JPanel
 		uiFieldTargetXP.setToolTipText((String) value);
 	}
 
+	private int getInput(JSpinner field)
+	{
+		try
+		{
+			return Integer.parseInt(field.getModel().getValue().toString().replaceAll("\\D", ""));
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+
 	private int getInput(JTextField field)
 	{
 		try
@@ -130,6 +150,39 @@ class UICalculatorInputArea extends JPanel
 	private void setInput(JTextField field, Object value)
 	{
 		field.setText(String.valueOf(value));
+	}
+
+	private void setInput(JSpinner field, Object value)
+	{
+		((JSpinner.DefaultEditor) field.getEditor()).getTextField().setValue(value);
+	}
+
+	private JSpinner addSpinnerComponent(String label)
+	{
+		final JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+
+		final JLabel uiLabel = new JLabel(label);
+
+		SpinnerModel model = new SpinnerNumberModel(1, 1, MAX_MULTIPLIER, 1);
+		final JSpinner uiInput = new JSpinner(model);
+
+		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
+		JFormattedTextField spinnerTextField = editor.getTextField();
+		spinnerTextField.setFormatterFactory(new UnitFormatterFactory("x"));
+		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
+
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		uiLabel.setForeground(Color.WHITE);
+
+		container.add(uiLabel, BorderLayout.NORTH);
+		container.add(uiInput, BorderLayout.CENTER);
+
+		add(container);
+
+		return uiInput;
 	}
 
 	private JTextField addComponent(String label)

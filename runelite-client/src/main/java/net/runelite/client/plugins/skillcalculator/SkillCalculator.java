@@ -73,7 +73,7 @@ import net.runelite.client.ui.components.IconTextField;
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
-	private static final int MAX_MULTIPLIER = 100;
+	static final int MAX_MULTIPLIER = 32;
 	private static final JLabel EMPTY_PANEL = new JLabel("No F2P actions to show.");
 
 	static
@@ -143,7 +143,7 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
-		uiInput.getUiFieldXPMultiplier().addActionListener(e -> onFieldXPMultiplierUpdated());
+		uiInput.getUiFieldXPMultiplier().addChangeListener(e -> onFieldXPMultiplierUpdated());
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
