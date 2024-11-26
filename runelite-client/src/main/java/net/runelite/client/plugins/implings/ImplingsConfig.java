@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup(ImplingsConfig.GROUP)
 public interface ImplingsConfig extends Config
@@ -52,14 +53,14 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "showbaby",
-		name = "Baby implings",
+		keyName = "highlightBaby",
+		name = "Baby impling highlight",
 		description = "Configures whether or not Baby impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showBaby()
+	default boolean highlightBaby()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -77,19 +78,31 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "showyoung",
-		name = "Young implings",
+		keyName = "babyNotification",
+		name = "Baby impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getBabyNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "highlightYoung",
+		name = "Young impling highlight",
 		description = "Configures whether or not Young impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showYoung()
+	default boolean highlightYoung()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "youngColor",
 		name = "Young impling color",
 		description = "Text color for Young implings",
@@ -101,20 +114,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "showgourmet",
-		name = "Gourmet implings",
+		position = 6,
+		keyName = "youngNotification",
+		name = "Young impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getYoungNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "highlightGourmet",
+		name = "Gourmet impling highlight",
 		description = "Configures whether or not Gourmet impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showGourmet()
+	default boolean highlightGourmet()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "gourmetColor",
 		name = "Gourmet impling color",
 		description = "Text color for Gourmet implings",
@@ -126,20 +151,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
-		keyName = "showearth",
-		name = "Earth implings",
+		position = 9,
+		keyName = "gourmetNotification",
+		name = "Gourmet impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getGourmetNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "highlightEarth",
+		name = "Earth impling highlight",
 		description = "Configures whether or not Earth impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showEarth()
+	default boolean highlightEarth()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 8,
+		position = 11,
 		keyName = "earthColor",
 		name = "Earth impling color",
 		description = "Text color for Earth implings",
@@ -151,20 +188,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
-		keyName = "showessence",
-		name = "Essence implings",
+		position = 12,
+		keyName = "earthNotification",
+		name = "Earth impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getEarthNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "highlightEssence",
+		name = "Essence impling highlight",
 		description = "Configures whether or not Essence impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showEssence()
+	default boolean highlightEssence()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 10,
+		position = 14,
 		keyName = "essenceColor",
 		name = "Essence impling color",
 		description = "Text color for Essence implings",
@@ -176,20 +225,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
-		keyName = "showeclectic",
-		name = "Eclectic implings",
+		position = 15,
+		keyName = "essenceNotification",
+		name = "Essence impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getEssenceNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "highlightEclectic",
+		name = "Eclectic impling highlight",
 		description = "Configures whether or not Eclectic impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showEclectic()
+	default boolean highlightEclectic()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 12,
+		position = 17,
 		keyName = "eclecticColor",
 		name = "Eclectic impling color",
 		description = "Text color for Eclectic implings",
@@ -201,20 +262,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
-		keyName = "shownature",
-		name = "Nature implings",
+		position = 18,
+		keyName = "eclecticNotification",
+		name = "Eclectic impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getEclecticNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "highlightNature",
+		name = "Nature impling highlight",
 		description = "Configures whether or not Nature impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showNature()
+	default boolean highlightNature()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 14,
+		position = 20,
 		keyName = "natureColor",
 		name = "Nature impling color",
 		description = "Text color for Nature implings",
@@ -226,20 +299,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
-		keyName = "showmagpie",
-		name = "Magpie implings",
+		position = 21,
+		keyName = "natureNotification",
+		name = "Nature impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getNatureNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "highlightMagpie",
+		name = "Magpie impling highlight",
 		description = "Configures whether or not Magpie impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showMagpie()
+	default boolean highlightMagpie()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 16,
+		position = 23,
 		keyName = "magpieColor",
 		name = "Magpie impling color",
 		description = "Text color for Magpie implings",
@@ -251,20 +336,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
-		keyName = "showninja",
-		name = "Ninja implings",
+		position = 24,
+		keyName = "magpieNotification",
+		name = "Magpie impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getMagpieNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "highlightNinja",
+		name = "Ninja impling highlight",
 		description = "Configures whether or not Ninja impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showNinja()
+	default boolean highlightNinja()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 18,
+		position = 26,
 		keyName = "ninjaColor",
 		name = "Ninja impling color",
 		description = "Text color for Ninja implings",
@@ -276,20 +373,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
-		keyName = "showCrystal",
-		name = "Crystal implings",
+		position = 27,
+		keyName = "ninjaNotification",
+		name = "Ninja impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getNinjaNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 28,
+		keyName = "highlightCrystal",
+		name = "Crystal impling highlight",
 		description = "Configures whether or not Crystal implings are displayed",
 		section = implingSection
 	)
-	default ImplingMode showCrystal()
+	default boolean highlightCrystal()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 20,
+		position = 29,
 		keyName = "crystalColor",
 		name = "Crystal impling color",
 		description = "Text color for Crystal implings",
@@ -301,20 +410,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
-		keyName = "showdragon",
-		name = "Dragon implings",
+		position = 30,
+		keyName = "crystalNotification",
+		name = "Crystal impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getCrystalNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 31,
+		keyName = "highlightDragon",
+		name = "Dragon impling highlight",
 		description = "Configures whether or not Dragon impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showDragon()
+	default boolean highlightDragon()
 	{
-		return ImplingMode.HIGHLIGHT;
+		return true;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 22,
+		position = 32,
 		keyName = "dragonColor",
 		name = "Dragon impling color",
 		description = "Text color for Dragon implings",
@@ -326,20 +447,32 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
-		keyName = "showlucky",
-		name = "Lucky implings",
+		position = 33,
+		keyName = "dragonNotification",
+		name = "Dragon impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getDragonNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 34,
+		keyName = "highlightLucky",
+		name = "Lucky impling highlight",
 		description = "Configures whether or not Lucky impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showLucky()
+	default boolean highlightLucky()
 	{
-		return ImplingMode.HIGHLIGHT;
+		return true;
 	}
 
 	@Alpha
 	@ConfigItem(
-		position = 24,
+		position = 35,
 		keyName = "luckyColor",
 		name = "Lucky impling color",
 		description = "Text color for Lucky implings",
@@ -348,6 +481,18 @@ public interface ImplingsConfig extends Config
 	default Color getLuckyColor()
 	{
 		return new Color(102, 7, 101);
+	}
+
+	@ConfigItem(
+		position = 36,
+		keyName = "luckyNotification",
+		name = "Lucky impling notification",
+		description = "Configures whether or not the notification is enabled.",
+		section = implingSection
+	)
+	default Notification getLuckyNotification()
+	{
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
