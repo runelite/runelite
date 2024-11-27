@@ -72,7 +72,6 @@ import net.runelite.client.ui.components.IconTextField;
 
 class SkillCalculator extends JPanel
 {
-	private static final int MAX_XP = 200_000_000;
 	static final int MAX_XP_MULTIPLIER = 32;
 	private static final JLabel EMPTY_PANEL = new JLabel("No F2P actions to show.");
 
@@ -520,7 +519,7 @@ class SkillCalculator extends JPanel
 
 	private static int enforceXPBounds(int input)
 	{
-		return Math.min(MAX_XP, Math.max(0, input));
+		return Math.min(Experience.MAX_SKILL_XP, Math.max(0, input));
 	}
 
 	private static int enforceMultiplierBounds(int input)

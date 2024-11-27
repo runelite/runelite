@@ -28,6 +28,7 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.regex.Pattern;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,6 +50,7 @@ import net.runelite.client.ui.components.FlatTextField;
 @Singleton
 class UICalculatorInputArea extends JPanel
 {
+	private static final Pattern NON_NUMERIC = Pattern.compile("\\D");
 	private final JTextField uiFieldCurrentLevel;
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
@@ -121,11 +123,11 @@ class UICalculatorInputArea extends JPanel
 		uiFieldTargetXP.setToolTipText((String) value);
 	}
 
-	private int getInput(JTextField field)
+	private static int getInput(JTextField field)
 	{
 		try
 		{
-			return Integer.parseInt(field.getText().replaceAll("\\D", ""));
+			return Integer.parseInt(NON_NUMERIC.matcher(field.getText()).replaceAll(""));
 		}
 		catch (NumberFormatException e)
 		{
@@ -133,11 +135,11 @@ class UICalculatorInputArea extends JPanel
 		}
 	}
 
-	private int getInput(JSpinner field)
+	private static int getInput(JSpinner field)
 	{
 		try
 		{
-			return Integer.parseInt(field.getModel().getValue().toString().replaceAll("\\D", ""));
+			return Integer.parseInt(NON_NUMERIC.matcher(field.getModel().getValue().toString()).replaceAll(""));
 		}
 		catch (NumberFormatException e)
 		{
@@ -145,7 +147,7 @@ class UICalculatorInputArea extends JPanel
 		}
 	}
 
-	private void setInput(JTextField field, Object value)
+	private static void setInput(JTextField field, Object value)
 	{
 		field.setText(String.valueOf(value));
 	}
