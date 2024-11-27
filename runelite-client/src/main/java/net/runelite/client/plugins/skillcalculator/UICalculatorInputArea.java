@@ -42,6 +42,7 @@ import lombok.Getter;
 import static net.runelite.client.plugins.skillcalculator.SkillCalculator.MAX_XP_MULTIPLIER;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.FlatTextField;
 
 @Getter
@@ -191,6 +192,7 @@ class UICalculatorInputArea extends JPanel
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
 		JFormattedTextField spinnerTextField = editor.getTextField();
 		spinnerTextField.setHorizontalAlignment(JTextField.LEFT);
+		spinnerTextField.setFormatterFactory(new UnitFormatterFactory("x"));
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 
