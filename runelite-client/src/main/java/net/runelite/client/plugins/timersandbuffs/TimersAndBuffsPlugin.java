@@ -624,6 +624,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			updateVarTimer(PRAYER_REGENERATION, event.getValue(), i -> i * 12);
 		}
+
+		if (event.getVarbitId() == Varbits.SCURRIUS_FOOD_PILE_COOLDOWN && config.showScurriusFoodPile())
+		{
+			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
+		}
 	}
 
 	@Subscribe
@@ -845,6 +850,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showPrayerRegneration())
 		{
 			removeVarTimer(PRAYER_REGENERATION);
+		}
+
+		if (!config.showScurriusFoodPile())
+		{
+			removeVarTimer(SCURRIUS_FOOD_PILE);
 		}
 	}
 
