@@ -96,6 +96,7 @@ public enum MiningAction implements ItemSkillAction
 	ADAMANTITE_ORE(ItemID.ADAMANTITE_ORE, 70, 95),
 	RUNITE_ORE(ItemID.RUNITE_ORE, 85, 125),
 	AMETHYST(ItemID.AMETHYST, 92, 240),
+	STARDUST(ItemID.STARDUST, 10, 32),
 	;
 
 	private final int itemId;
