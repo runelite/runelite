@@ -30,7 +30,7 @@
     <parent>
         <groupId>net.runelite</groupId>
         <artifactId>runelite-parent</artifactId>
-        <version>1.10.45-SNAPSHOT</version>
+        <version>1.10.46-SNAPSHOT</version>
     </parent>
 
     <artifactId>jshell</artifactId>

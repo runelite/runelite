@@ -93,7 +93,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID._3RD_AGE_PICKAXE),
 		item(ItemID.CRYSTAL_PICKAXE),
 		item(ItemID.CRYSTAL_PICKAXE_INACTIVE),
-		item(ItemID.TRAILBLAZER_PICKAXE)
+		item(ItemID.ECHO_PICKAXE)
 	);
 
 	private static final AnyRequirementCollection ANY_AXE = any("Any Axe",
@@ -125,7 +125,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.CRYSTAL_AXE_INACTIVE),
 		item(ItemID.CRYSTAL_FELLING_AXE),
 		item(ItemID.CRYSTAL_FELLING_AXE_INACTIVE),
-		item(ItemID.TRAILBLAZER_AXE)
+		item(ItemID.ECHO_AXE)
 	);
 
 	private static final AnyRequirementCollection ANY_HARPOON = any("Harpoon",
@@ -139,7 +139,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED_25367),
 		item(ItemID.CRYSTAL_HARPOON),
 		item(ItemID.CRYSTAL_HARPOON_INACTIVE),
-		item(ItemID.TRAILBLAZER_HARPOON)
+		item(ItemID.ECHO_HARPOON)
 	);
 
 	private static final AnyRequirementCollection ANY_HAMMER = any("Hammer",

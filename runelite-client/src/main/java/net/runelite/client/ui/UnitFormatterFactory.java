@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.ui;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 }
 
 @RequiredArgsConstructor
-final class UnitFormatterFactory extends JFormattedTextField.AbstractFormatterFactory
+public final class UnitFormatterFactory extends JFormattedTextField.AbstractFormatterFactory
 {
 	private final String units;
 	private final Map<JFormattedTextField, JFormattedTextField.AbstractFormatter> formatters = new HashMap<>();
