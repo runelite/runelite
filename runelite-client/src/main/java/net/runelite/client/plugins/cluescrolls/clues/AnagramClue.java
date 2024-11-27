@@ -775,6 +775,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Metla")
 			.location(new WorldPoint(1742, 2977, 0))
 			.area("Stonecutter Outpost")
+			.build(),
+		AnagramClue.builder()
+			.text("CIRR JAD")
+			.npc("Jardric")
+			.location(new WorldPoint(3718, 3811, 0))
+			.area("Fossil Island")
+			.question("What is 3 to the power of 0?")
+			.answer("1")
 			.build()
 	);
 
