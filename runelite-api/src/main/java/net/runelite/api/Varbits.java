@@ -809,6 +809,13 @@ public final class Varbits
 	public static final int GOD_WARS_ALTAR_COOLDOWN = 4099;
 
 	/**
+	 * Cooldown timer remaining before being able to eat from the piles of food in Scurrius's lair.
+	 * Number of game ticks remaining is in intervals of 100; for a value X there are 100 * X game ticks remaining.
+	 * A player can eat from the food piles once this reaches 0.
+	 */
+	public static final int SCURRIUS_FOOD_PILE_COOLDOWN = 9581;
+
+	/**
 	 * Farmer's Affinity effect timer
 	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
 	 * The Farmer's Affinity expires once this reaches 0.
