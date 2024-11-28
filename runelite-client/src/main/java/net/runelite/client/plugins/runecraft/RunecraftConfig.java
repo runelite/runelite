@@ -68,10 +68,22 @@ public interface RunecraftConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showRiftIcons",
+		name = "Show Rift icons",
+		description = "Configures whether to display the icon on the rift",
+		position = 4,
+		section = riftSection
+	)
+	default boolean showIcons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showAir",
 		name = "Show air rift",
 		description = "Configures whether to display the air rift",
-		position = 4,
+		position = 5,
 		section = riftSection
 	)
 	default boolean showAir()
@@ -83,7 +95,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showBlood",
 		name = "Show blood rift",
 		description = "Configures whether to display the Blood rift",
-		position = 5,
+		position = 6,
 		section = riftSection
 	)
 	default boolean showBlood()
@@ -95,7 +107,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showBody",
 		name = "Show body rift",
 		description = "Configures whether to display the Body rift",
-		position = 6,
+		position = 7,
 		section = riftSection
 	)
 	default boolean showBody()
@@ -107,7 +119,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showChaos",
 		name = "Show chaos rift",
 		description = "Configures whether to display the Chaos rift",
-		position = 7,
+		position = 8,
 		section = riftSection
 	)
 	default boolean showChaos()
@@ -119,7 +131,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showCosmic",
 		name = "Show cosmic rift",
 		description = "Configures whether to display the Cosmic rift",
-		position = 8,
+		position = 9,
 		section = riftSection
 	)
 	default boolean showCosmic()
@@ -131,7 +143,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showDeath",
 		name = "Show death rift",
 		description = "Configures whether to display the Death rift",
-		position = 9,
+		position = 10,
 		section = riftSection
 	)
 	default boolean showDeath()
@@ -143,7 +155,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showEarth",
 		name = "Show earth rift",
 		description = "Configures whether to display the Earth rift",
-		position = 10,
+		position = 11,
 		section = riftSection
 	)
 	default boolean showEarth()
@@ -155,7 +167,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showFire",
 		name = "Show fire rift",
 		description = "Configures whether to display the Fire rift",
-		position = 11,
+		position = 12,
 		section = riftSection
 	)
 	default boolean showFire()
@@ -167,7 +179,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showLaw",
 		name = "Show law rift",
 		description = "Configures whether to display the Law rift",
-		position = 12,
+		position = 13,
 		section = riftSection
 	)
 	default boolean showLaw()
@@ -179,7 +191,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showMind",
 		name = "Show mind rift",
 		description = "Configures whether to display the Mind rift",
-		position = 13,
+		position = 14,
 		section = riftSection
 	)
 	default boolean showMind()
@@ -191,7 +203,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showNature",
 		name = "Show nature rift",
 		description = "Configures whether to display the Nature rift",
-		position = 14,
+		position = 15,
 		section = riftSection
 	)
 	default boolean showNature()
@@ -203,7 +215,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showSoul",
 		name = "Show soul rift",
 		description = "Configures whether to display the Soul rift",
-		position = 15,
+		position = 16,
 		section = riftSection
 	)
 	default boolean showSoul()
@@ -215,7 +227,7 @@ public interface RunecraftConfig extends Config
 		keyName = "showWater",
 		name = "Show water rift",
 		description = "Configures whether to display the Water rift",
-		position = 16,
+		position = 17,
 		section = riftSection
 	)
 	default boolean showWater()
