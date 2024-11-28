@@ -39,6 +39,7 @@ public enum MiningAction implements ItemSkillAction
 	COPPER_ORE(ItemID.COPPER_ORE, 1, 17.5f),
 	TIN_ORE(ItemID.TIN_ORE, 1, 17.5f),
 	LIMESTONE(ItemID.LIMESTONE, 10, 26.5f),
+	STARDUST(ItemID.STARDUST, 10, 32),
 	BARRONITE_SHARDS(NullItemID.NULL_25683, 14, 16)
 	{
 		@Override
@@ -96,7 +97,6 @@ public enum MiningAction implements ItemSkillAction
 	ADAMANTITE_ORE(ItemID.ADAMANTITE_ORE, 70, 95),
 	RUNITE_ORE(ItemID.RUNITE_ORE, 85, 125),
 	AMETHYST(ItemID.AMETHYST, 92, 240),
-	STARDUST(ItemID.STARDUST, 10, 32),
 	;
 
 	private final int itemId;
