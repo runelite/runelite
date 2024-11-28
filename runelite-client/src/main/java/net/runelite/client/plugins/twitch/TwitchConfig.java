@@ -42,7 +42,7 @@ public interface TwitchConfig extends Config
 	@ConfigItem(
 		keyName = "oauth",
 		name = "OAuth token",
-		description = "Enter your OAuth token here. This can be found at http://www.twitchapps.com/tmi/",
+		description = "Enter your OAuth token here.",
 		secret = true,
 		position = 1
 	)
