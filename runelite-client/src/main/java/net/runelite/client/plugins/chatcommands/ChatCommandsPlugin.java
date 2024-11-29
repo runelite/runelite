@@ -955,7 +955,8 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	private void killCountLookup(ChatMessage chatMessage, String message)
+	@VisibleForTesting
+	void killCountLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.killcount())
 		{
@@ -2121,7 +2122,14 @@ public class ChatCommandsPlugin extends Plugin
 
 	private static String longBossName(String boss)
 	{
-		switch (boss.toLowerCase())
+		String lowerBoss = boss.toLowerCase();
+		if (lowerBoss.endsWith(" (echo)"))
+		{
+			String actualBoss = lowerBoss.substring(0, lowerBoss.length() - " (echo)".length());
+			return longBossName(actualBoss) + " (Echo)";
+		}
+
+		switch (lowerBoss)
 		{
 			case "corp":
 				return "Corporeal Beast";

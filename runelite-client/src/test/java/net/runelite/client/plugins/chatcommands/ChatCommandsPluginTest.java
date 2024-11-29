@@ -676,6 +676,24 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testKillCountLookup() throws IOException
+	{
+		when(chatCommandsConfig.killcount()).thenReturn(true);
+
+		when(chatClient.getKc(PLAYER_NAME, "Kalphite Queen (Echo)")).thenReturn(1);
+
+		MessageNode messageNode = mock(MessageNode.class);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
+		chatMessage.setName(PLAYER_NAME);
+		chatMessage.setMessageNode(messageNode);
+		chatCommandsPlugin.killCountLookup(chatMessage, "!kc kq (echo)");
+
+		verify(messageNode).setRuneLiteFormatMessage("<colHIGHLIGHT>Kalphite Queen (Echo)<colNORMAL> kill count: <colHIGHLIGHT>1");
+	}
+
+	@Test
 	public void testHsFloorNoPb()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Floor 1 time: <col=ff0000>1:19</col>. Personal best: 0:28", null, 0);
