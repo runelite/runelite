@@ -43,8 +43,8 @@ public interface KeyRemappingConfig extends Config
 	String cameraSection = "camera";
 
 	@ConfigSection(
-		name = "F key remapping",
-		description = "Settings for remapping the F keys.",
+		name = "F-key remapping",
+		description = "Settings for remapping the F-keys.",
 		position = 1
 	)
 	String fKeySection = "fKeys";
@@ -112,7 +112,7 @@ public interface KeyRemappingConfig extends Config
 	@ConfigItem(
 		position = 6,
 		keyName = "fkeyRemap",
-		name = "Remap F keys",
+		name = "Remap F-keys",
 		description = "Configures whether f-keys use remapped keys.",
 		section = fKeySection
 	)
