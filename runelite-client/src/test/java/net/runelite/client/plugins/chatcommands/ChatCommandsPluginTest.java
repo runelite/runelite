@@ -318,6 +318,18 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testHunllefEcho()
+	{
+		testKillCountChatMessage("corrupted hunllef (echo)", "Your <col=a53fff>Corrupted Hunllef (Echo)</col> kill count is: <col=ff3045>31</col>", 31);
+	}
+
+	@Test
+	public void testKalphiteEcho()
+	{
+		testKillCountChatMessage("kalphite queen (echo)", "Your <col=6800bf>Kalphite Queen (Echo)</col> kill count is:<col=e00a19>1</col>", 1);
+	}
+
+	@Test
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
