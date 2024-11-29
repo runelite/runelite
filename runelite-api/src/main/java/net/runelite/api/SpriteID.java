@@ -773,7 +773,6 @@ public final class SpriteID
 	public static final int TAB_QUESTS = 776;
 	public static final int RS2_TAB_INVENTORY = 777;
 	public static final int RS2_TAB_EQUIPMENT = 778;
-	public static final int RS2_TAB_PRAYER = 779;
 	public static final int TAB_PRAYER = 779;
 	public static final int TAB_MAGIC = 780;
 	public static final int RS2_TAB_FRIENDS_CHAT = 781;
