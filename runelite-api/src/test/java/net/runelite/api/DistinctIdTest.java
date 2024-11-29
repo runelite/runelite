@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.twitch;
+package net.runelite.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.SneakyThrows;
+import net.runelite.api.clan.ClanID;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 
-@ConfigGroup("twitch")
-public interface TwitchConfig extends Config
+public class DistinctIdTest
 {
-	@ConfigItem(
-		keyName = "username",
-		name = "Username",
-		description = "Twitch Username",
-		position = 0
-	)
-	String username();
+	@Test
+	public void testUnique()
+	{
+		duplicateCheck(
+			// disabled as a few plugins rely on the dups
+			//AnimationID.class,
+			ClanID.class,
+			EnumID.class,
+			FontID.class,
+			GraphicID.class,
+			HitsplatID.class,
+			KeyCode.class,
+			ParamID.class,
+			ScriptID.class,
+			SettingID.class,
+			SkullIcon.class,
+			SoundEffectID.class,
+			SpriteID.class,
+			StructID.class,
+			VarClientInt.class,
+			VarClientStr.class,
+			VarPlayer.class,
+			Varbits.class
+		);
+	}
 
-	@ConfigItem(
-		keyName = "oauth",
-		name = "OAuth token",
-		description = "Enter your OAuth token here.",
-		secret = true,
-		position = 1
-	)
-	String oauthToken();
-
-	@ConfigItem(
-		keyName = "channel",
-		name = "Channel",
-		description = "Username of Twitch chat to join",
-		position = 2
-	)
-	String channel();
+	@SneakyThrows
+	private void duplicateCheck(Class<?>... classes)
+	{
+		for (Class<?> clazz : classes)
+		{
+			Set<Integer> seen = new HashSet<>();
+			for (Field f : clazz.getDeclaredFields())
+			{
+				if (!seen.add(f.getInt(null)))
+				{
+					fail("field with duplicate value: " + clazz.getSimpleName() + "." + f.getName());
+				}
+			}
+		}
+	}
 }
