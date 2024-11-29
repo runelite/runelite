@@ -139,7 +139,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "deprioritizeHiddenItems",
 		name = "Deprioritize menu hidden items",
-		description = "Depriotizies the menu options for items which are hidden, requiring a right click to pick up.",
+		description = "Depriotizies the menu options for items which are hidden, requiring a right-click to pick up.",
 		position = 5
 	)
 	default boolean deprioritizeHiddenItems()

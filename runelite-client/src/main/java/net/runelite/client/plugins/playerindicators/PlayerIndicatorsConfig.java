@@ -254,7 +254,7 @@ public interface PlayerIndicatorsConfig extends Config
 		position = 13,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
-		description = "Color right click menu for players."
+		description = "Color right-click menu for players."
 	)
 	default boolean colorPlayerMenu()
 	{
@@ -265,7 +265,7 @@ public interface PlayerIndicatorsConfig extends Config
 		position = 14,
 		keyName = "clanMenuIcons",
 		name = "Show friends chat ranks",
-		description = "Add friends chat rank to right click menu and next to player names."
+		description = "Add friends chat rank to right-click menu and next to player names."
 	)
 	default boolean showFriendsChatRanks()
 	{
@@ -276,7 +276,7 @@ public interface PlayerIndicatorsConfig extends Config
 		position = 15,
 		keyName = "clanchatMenuIcons",
 		name = "Show clan chat ranks",
-		description = "Add clan chat rank to right click menu and next to player names."
+		description = "Add clan chat rank to right-click menu and next to player names."
 	)
 	default boolean showClanChatRanks()
 	{

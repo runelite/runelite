@@ -214,7 +214,7 @@ public interface NpcIndicatorsConfig extends Config
 		position = 10,
 		keyName = "highlightMenuNames",
 		name = "Highlight menu names",
-		description = "Highlight NPC names in right click menu."
+		description = "Highlight NPC names in right-click menu."
 	)
 	default boolean highlightMenuNames()
 	{

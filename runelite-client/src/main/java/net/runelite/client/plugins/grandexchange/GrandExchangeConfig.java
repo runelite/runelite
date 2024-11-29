@@ -37,7 +37,7 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "quickLookup",
-		name = "Hotkey lookup (alt + left click)",
+		name = "Hotkey lookup (ALT + left-click)",
 		description = "Configures whether to enable the hotkey lookup for GE searches."
 	)
 	default boolean quickLookup()

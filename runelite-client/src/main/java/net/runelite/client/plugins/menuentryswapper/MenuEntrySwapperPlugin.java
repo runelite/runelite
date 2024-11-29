@@ -509,11 +509,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					(shiftSwapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(shiftSwapConfig));
 
 				MenuEntry swapLeftClick = client.createMenuEntry(idx)
-					.setOption("Swap left click")
+					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
 				MenuEntry swapShiftClick = client.createMenuEntry(idx)
-					.setOption("Swap shift click")
+					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
 				Menu subLeft = swapLeftClick.createSubMenu();
@@ -698,11 +698,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					(shiftSwapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(shiftSwapConfig));
 
 				MenuEntry swapLeftClick = client.createMenuEntry(idx)
-					.setOption("Swap left click")
+					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
 				MenuEntry swapShiftClick = client.createMenuEntry(idx)
-					.setOption("Swap shift click")
+					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
 				Menu subLeft = swapLeftClick.createSubMenu();
@@ -837,11 +837,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer shiftClickOp = getWornItemSwapConfig(true, itemComposition.getId());
 
 					MenuEntry swapLeftClick = client.createMenuEntry(idx)
-						.setOption("Swap left click")
+						.setOption("Swap left-click")
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE);
 					MenuEntry swapShiftClick = client.createMenuEntry(idx)
-						.setOption("Swap shift click")
+						.setOption("Swap shift-click")
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE);
 					Menu subLeft = swapLeftClick.createSubMenu();
@@ -905,7 +905,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(e ->
 							{
 								final String message = new ChatMessageBuilder()
-									.append("The default worn left click option for '").append(itemComposition.getMembersName()).append("' ")
+									.append("The default worn left-click option for '").append(itemComposition.getMembersName()).append("' ")
 									.append("has been reset.")
 									.build();
 
@@ -926,7 +926,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(e ->
 							{
 								final String message = new ChatMessageBuilder()
-									.append("The default worn shift click option for '").append(itemComposition.getMembersName()).append("' ")
+									.append("The default worn shift-click option for '").append(itemComposition.getMembersName()).append("' ")
 									.append("has been reset.")
 									.build();
 
@@ -988,11 +988,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final int defaultShiftClickOp = defaultOp(itemComposition, true);
 
 				MenuEntry swapLeftClick = client.createMenuEntry(idx)
-					.setOption("Swap left click")
+					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
 				MenuEntry swapShiftClick = client.createMenuEntry(idx)
-					.setOption("Swap shift click")
+					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
 				Menu subLeft = swapLeftClick.createSubMenu();
@@ -1081,7 +1081,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.onClick(e ->
 						{
 							final String message = new ChatMessageBuilder()
-								.append("The default held left click option for '").append(itemComposition.getMembersName()).append("' ")
+								.append("The default held left-click option for '").append(itemComposition.getMembersName()).append("' ")
 								.append("has been reset.")
 								.build();
 
@@ -1102,7 +1102,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.onClick(e ->
 						{
 							final String message = new ChatMessageBuilder()
-								.append("The default held shift click option for '").append(itemComposition.getMembersName()).append("' ")
+								.append("The default held shift-click option for '").append(itemComposition.getMembersName()).append("' ")
 								.append("has been reset.")
 								.build();
 
@@ -1205,10 +1205,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 					{
 						initialized = true;
 						swapLeftClick = client.createMenuEntry(2)
-							.setOption("Swap left click")
+							.setOption("Swap left-click")
 							.setType(MenuAction.RUNELITE);
 						swapShiftClick = client.createMenuEntry(2)
-							.setOption("Swap shift click")
+							.setOption("Swap shift-click")
 							.setType(MenuAction.RUNELITE);
 						subLeft = swapLeftClick.createSubMenu();
 						subShift = swapShiftClick.createSubMenu();
@@ -1240,7 +1240,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 								.onClick(menuEntry ->
 								{
 									final String message = new ChatMessageBuilder()
-										.append("The default left click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
+										.append("The default left-click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
 										.append("has been reset.")
 										.build();
 
@@ -1263,7 +1263,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 								.onClick(menuEntry ->
 								{
 									final String message = new ChatMessageBuilder()
-										.append("The default shift click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
+										.append("The default shift-click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
 										.append("has been reset.")
 										.build();
 
