@@ -496,6 +496,11 @@ public final class Varbits
 	public static final int QUEST_THE_HAND_IN_THE_SAND = 1527;
 
 	/**
+	 * Dragon slayer 2 quest status
+	 */
+	public static final int QUEST_DS2 = 6104;
+
+	/**
 	 * Daily Tasks =Collection availability)
 	 */
 	public static final int DAILY_HERB_BOXES_COLLECTED = 3961;
