@@ -204,4 +204,26 @@ public interface TileIndicatorsConfig extends Config
 	{
 		return 2;
 	}
+
+	@ConfigItem(
+		keyName = "showOnMinimap",
+		name = "Show on minimap",
+		description = "Whether to display tile indicators on the minimap",
+		position = 3
+	)
+	default boolean showOnMinimap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showOnWorldMap",
+		name = "Show on world map",
+		description = "Whether to display tile indicators on the world map",
+		position = 4
+	)
+	default boolean showOnWorldMap()
+	{
+		return false;
+	}
 }
