@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
@@ -399,7 +400,7 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "groundItemTimers",
-		name = "Despawn timer",
+		name = "Despawn timer style",
 		description = "Shows despawn timers for items you've dropped and received as loot",
 		position = 28
 	)
@@ -408,11 +409,25 @@ public interface GroundItemsConfig extends Config
 		return DespawnTimerMode.OFF;
 	}
 
+	@Range(
+		max = 90
+	)
+	@ConfigItem(
+		keyName = "despawnTimer",
+		name = "Despawn timer",
+		description = "Time remaining before a red despawn warning triggers. Max of 90 seconds. 0 to disable",
+		position = 29
+	)
+	default int despawnTimer()
+	{
+		return 45;
+	}
+
 	@ConfigItem(
 		keyName = "textOutline",
 		name = "Text outline",
 		description = "Use an outline around text instead of a text shadow",
-		position = 29
+		position = 30
 	)
 	default boolean textOutline()
 	{
@@ -423,7 +438,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showLootbeamForHighlighted",
 		name = "Highlighted item lootbeams",
 		description = "Configures lootbeams to show for all highlighted items.",
-		position = 30
+		position = 31
 	)
 	default boolean showLootbeamForHighlighted()
 	{
@@ -434,7 +449,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showLootbeamTier",
 		name = "Lootbeam tier",
 		description = "Configures which price tiers will trigger a lootbeam",
-		position = 31
+		position = 32
 	)
 	default HighlightTier showLootbeamTier()
 	{
@@ -445,7 +460,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "lootbeamStyle",
 		name = "Lootbeam style",
 		description = "Style of lootbeam to use",
-		position = 32
+		position = 33
 	)
 	default Lootbeam.Style lootbeamStyle()
 	{
@@ -456,7 +471,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "hotkey",
 		name = "Hotkey",
 		description = "Configures the hotkey used by the Ground Items plugin",
-		position = 33
+		position = 34
 	)
 	default Keybind hotkey()
 	{
