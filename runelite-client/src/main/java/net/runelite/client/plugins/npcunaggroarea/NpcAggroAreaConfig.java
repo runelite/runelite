@@ -87,8 +87,8 @@ public interface NpcAggroAreaConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "npcAggroAreaColor",
-		name = "Aggressive colour",
-		description = "Choose colour to use for marking NPC unaggressive area when NPCs are aggressive.",
+		name = "Aggressive color",
+		description = "Choose color to use for marking NPC unaggressive area when NPCs are aggressive.",
 		position = 5
 	)
 	default Color aggroAreaColor()
@@ -99,8 +99,8 @@ public interface NpcAggroAreaConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "npcUnaggroAreaColor",
-		name = "Unaggressive colour",
-		description = "Choose colour to use for marking NPC unaggressive area after NPCs have lost aggression.",
+		name = "Unaggressive color",
+		description = "Choose color to use for marking NPC unaggressive area after NPCs have lost aggression.",
 		position = 6
 	)
 	default Color unaggroAreaColor()

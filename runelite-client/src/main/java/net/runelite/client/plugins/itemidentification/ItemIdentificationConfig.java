@@ -55,7 +55,7 @@ public interface ItemIdentificationConfig extends Config
 		keyName = "textColor",
 		name = "Color",
 		position = -3,
-		description = "The colour of the identification text."
+		description = "The color of the identification text."
 	)
 	default Color textColor()
 	{
