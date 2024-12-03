@@ -83,7 +83,8 @@ public class ClueScrollOverlay extends OverlayPanel
 		item(ABYSSAL_LANTERN_YEW_LOGS),
 		item(ABYSSAL_LANTERN_BLISTERWOOD_LOGS),
 		item(ABYSSAL_LANTERN_MAGIC_LOGS),
-		item(ABYSSAL_LANTERN_REDWOOD_LOGS));
+		item(ABYSSAL_LANTERN_REDWOOD_LOGS),
+		item(CLUE_COMPASS));
 
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
