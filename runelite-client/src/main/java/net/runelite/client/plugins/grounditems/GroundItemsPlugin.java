@@ -97,6 +97,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.B
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
 import net.runelite.client.plugins.grounditems.config.OwnershipFilterMode;
+import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -646,7 +647,7 @@ public class GroundItemsPlugin extends Plugin
 			return itemColor;
 		}
 
-		final int price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+		final int price = getValueByMode(groundItem);
 		for (PriceHighlight highlight : priceChecks)
 		{
 			if (price > highlight.getPrice())
@@ -664,11 +665,10 @@ public class GroundItemsPlugin extends Plugin
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
 		final boolean canBeHidden = groundItem.getGePrice() > 0 || groundItem.isTradeable() || !config.dontHideUntradeables();
-		final boolean underGe = groundItem.getGePrice() < config.getHideUnderValue();
-		final boolean underHa = groundItem.getHaPrice() < config.getHideUnderValue();
+		final boolean isUnder = getValueByMode(groundItem, config.getHideUnderValueCalculation()) < config.getHideUnderValue();
 
 		// Explicit highlight takes priority over implicit hide
-		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
+		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && isUnder)
 			? config.hiddenColor()
 			: null;
 	}
@@ -703,7 +703,7 @@ public class GroundItemsPlugin extends Plugin
 			TRUE.equals(highlightedItems.getUnchecked(new NamedQuantity(item)));
 
 		final boolean shouldNotifyTier = config.notifyTier() != HighlightTier.OFF &&
-			getValueByMode(item.getGePrice(), item.getHaPrice()) > config.notifyTier().getValueFromTier(config) &&
+			getValueByMode(item) > config.notifyTier().getValueFromTier(config) &&
 			FALSE.equals(hiddenItems.getUnchecked(new NamedQuantity(item)));
 
 		final String dropType;
@@ -736,16 +736,21 @@ public class GroundItemsPlugin extends Plugin
 		notifier.notify(notificationStringBuilder.toString());
 	}
 
-	private int getValueByMode(int gePrice, int haPrice)
+	private int getValueByMode(GroundItem item)
 	{
-		switch (config.valueCalculationMode())
+		return getValueByMode(item, config.valueCalculationMode());
+	}
+
+	private int getValueByMode(GroundItem item, ValueCalculationMode mode)
+	{
+		switch (mode)
 		{
 			case GE:
-				return gePrice;
+				return item.getGePrice();
 			case HA:
-				return haPrice;
+				return item.getHaPrice();
 			default: // Highest
-				return Math.max(gePrice, haPrice);
+				return Math.max(item.getGePrice(), item.getHaPrice());
 		}
 	}
 
@@ -792,7 +797,7 @@ public class GroundItemsPlugin extends Plugin
 				continue;
 			}
 
-			int itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+			int itemPrice = getValueByMode(groundItem);
 			if (itemPrice > highestPrice)
 			{
 				highestPrice = itemPrice;
