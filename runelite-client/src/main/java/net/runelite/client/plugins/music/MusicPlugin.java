@@ -517,9 +517,7 @@ public class MusicPlugin extends Plugin
 			track.setOnMouseRepeatListener((JavaScriptCallback) ev ->
 			{
 				int value = channel.getValue();
-				int percent = (int) Math.round((value * 100.0 / channel.getMax()));
-
-				sliderTooltip = new Tooltip(channel.getName() + ": " + percent + "%");
+				sliderTooltip = new Tooltip(channel.getName() + ": " + getPercentage(value) + "%");
 			});
 			track.setOnClickListener((JavaScriptCallback) this::click);
 			track.setHasListener(true);
@@ -556,13 +554,20 @@ public class MusicPlugin extends Plugin
 			level = Ints.constrainToRange(level, 0, channel.max);
 			channel.setLevel(level);
 
-			int percent = (int) Math.round((level * 100.0 / channel.getMax()));
-			sliderTooltip = new Tooltip(channel.getName() + ": " + percent + "%");
+			sliderTooltip = new Tooltip(channel.getName() + ": " + getPercentage(level) + "%");
 		}
 
 		protected int getWidth()
 		{
 			return track.getWidth() - SLIDER_HANDLE_SIZE;
+		}
+
+		protected int getPercentage(int level)
+		{
+			// when handle position is converted to level, level is floored
+			// to convert back to position, we take the ceil
+			double position = Math.ceil((double) level / channel.max * getWidth());
+			return (int) Math.round(position * 100 / getWidth());
 		}
 	}
 
