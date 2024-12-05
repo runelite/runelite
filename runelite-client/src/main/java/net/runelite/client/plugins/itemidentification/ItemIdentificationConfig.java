@@ -272,6 +272,17 @@ public interface ItemIdentificationConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showUnfinishedPotions",
+		name = "Potions (Unfinished)",
+		description = "Show identification on Unfinished Potions",
+		section = identificationSection
+	)
+	default boolean showUnfinishedPotions()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showImplingJars",
 		name = "Impling jars",
 		description = "Show identification on Impling jars",
