@@ -26,6 +26,8 @@ package net.runelite.client.plugins.itemstats;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.api.Client;
 
@@ -55,6 +57,25 @@ public abstract class StatBoost extends SingleEffect
 		boolean hitCap = false;
 
 		int calcedDelta = heals(client);
+		if (calcedDelta > 0)
+		{
+			final String statName = stat.getName();
+			final int meleeMastery = client.getVarbitValue(Varbits.LEAGUES_MELEE_COMBAT_MASTERY_LEVEL);
+			final int rangedMastery = client.getVarbitValue(Varbits.LEAGUES_RANGED_COMBAT_MASTERY_LEVEL);
+			final int magicMastery = client.getVarbitValue(Varbits.LEAGUES_MAGIC_COMBAT_MASTERY_LEVEL);
+
+			if ((meleeMastery >= 2 || rangedMastery >= 2 || magicMastery >= 2)
+				&& statName.equals(Skill.HITPOINTS.getName()))
+			{
+				calcedDelta *= 1.2;
+			}
+			else if ((meleeMastery >= 5 || rangedMastery >= 5 || magicMastery >= 5)
+				&& statName.equals(Skill.PRAYER.getName()))
+			{
+				calcedDelta *= 1.25;
+			}
+		}
+
 		if (boost && calcedDelta > 0)
 		{
 			max += calcedDelta;

@@ -36,7 +36,7 @@ public interface DefaultWorldConfig extends Config
 	@ConfigItem(
 		keyName = "defaultWorld",
 		name = "Default world",
-		description = "World to use as default one"
+		description = "World to use as default one."
 	)
 	default int getWorld()
 	{
@@ -46,7 +46,7 @@ public interface DefaultWorldConfig extends Config
 	@ConfigItem(
 		keyName = "useLastWorld",
 		name = "Use last world",
-		description = "Use the last world you used as the default"
+		description = "Use the last world you used as the default."
 	)
 	default boolean useLastWorld()
 	{

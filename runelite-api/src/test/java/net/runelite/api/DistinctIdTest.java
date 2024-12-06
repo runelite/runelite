@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.blastfurnace;
+package net.runelite.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+import lombok.SneakyThrows;
+import net.runelite.api.clan.ClanID;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 
-@ConfigGroup("blastfurnace")
-public interface BlastFurnaceConfig extends Config
+public class DistinctIdTest
 {
-	@ConfigItem(
-		keyName = "showConveyorBelt",
-		name = "Show conveyor belt clickbox",
-		description = "Configures whether or not the clickbox for the conveyor belt is displayed.",
-		position = 1
-	)
-	default boolean showConveyorBelt()
+	@Test
+	public void testUnique()
 	{
-		return false;
+		duplicateCheck(
+			// disabled as a few plugins rely on the dups
+			//AnimationID.class,
+			ClanID.class,
+			EnumID.class,
+			FontID.class,
+			GraphicID.class,
+			HitsplatID.class,
+			KeyCode.class,
+			ParamID.class,
+			ScriptID.class,
+			SettingID.class,
+			SkullIcon.class,
+			SoundEffectID.class,
+			SpriteID.class,
+			StructID.class,
+			VarClientInt.class,
+			VarClientStr.class,
+			VarPlayer.class,
+			Varbits.class
+		);
 	}
 
-	@ConfigItem(
-		keyName = "showBarDispenser",
-		name = "Show bar dispenser clickbox",
-		description = "Configures whether or not the clickbox for the bar dispenser is displayed.",
-		position = 2
-	)
-	default boolean showBarDispenser()
+	@SneakyThrows
+	private void duplicateCheck(Class<?>... classes)
 	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showCofferTime",
-		name = "Show coffer time remaining",
-		description = "Configures whether or not the coffer time remaining is displayed.",
-		position = 3
-	)
-	default boolean showCofferTime()
-	{
-		return true;
+		for (Class<?> clazz : classes)
+		{
+			Set<Integer> seen = new HashSet<>();
+			for (Field f : clazz.getDeclaredFields())
+			{
+				if (!seen.add(f.getInt(null)))
+				{
+					fail("field with duplicate value: " + clazz.getSimpleName() + "." + f.getName());
+				}
+			}
+		}
 	}
 }

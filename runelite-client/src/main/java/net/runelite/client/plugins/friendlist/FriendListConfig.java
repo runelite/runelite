@@ -36,7 +36,7 @@ public interface FriendListConfig extends Config
 	@ConfigItem(
 		keyName = "showWorldOnLogin",
 		name = "Show world on login",
-		description = "Shows world number on friend login notifications"
+		description = "Shows world number on friend login notifications."
 	)
 	default boolean showWorldOnLogin()
 	{

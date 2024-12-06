@@ -114,7 +114,7 @@ public interface DailyTasksConfig extends Config
 		position = 8,
 		keyName = "showDynamite",
 		name = "Show claimable dynamite",
-		description = "Show a message when you can collect Dynamite from Thirus."
+		description = "Show a message when you can collect dynamite from Thirus."
 	)
 	default boolean showDynamite()
 	{

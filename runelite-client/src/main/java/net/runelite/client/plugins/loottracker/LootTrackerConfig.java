@@ -37,7 +37,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigSection(
 		name = "Ignored entries",
-		description = "The Ignore items and Ignore groups options",
+		description = "The ignored items and sources.",
 		position = -2,
 		closedByDefault = true
 	)
@@ -74,7 +74,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "showPriceType",
 		name = "Show price type",
-		description = "Whether to show a GE: or HA: next to the total values in the tracker"
+		description = "Whether to show a GE: or HA: next to the total values in the tracker."
 	)
 	default boolean showPriceType()
 	{
@@ -84,7 +84,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "syncPanel",
 		name = "Remember loot",
-		description = "Saves loot between client sessions"
+		description = "Saves loot between client sessions."
 	)
 	default boolean syncPanel()
 	{
@@ -94,7 +94,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "ignoredEvents",
 		name = "Ignored loot sources",
-		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., goblin, barrows chest, H.A.M. member).",
 		section = ignored
 	)
 	default String getIgnoredEvents()

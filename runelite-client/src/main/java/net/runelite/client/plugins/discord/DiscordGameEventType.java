@@ -442,7 +442,7 @@ enum DiscordGameEventType
 	REGION_POH("Player Owned House", DiscordAreaType.REGIONS, 7513, 7514, 7769, 7770),
 	REGION_POISON_WASTE("Poison Waste", DiscordAreaType.REGIONS, 8752, 9008),
 	REGION_PORT_TYRAS("Port Tyras", DiscordAreaType.REGIONS, 8496),
-	REGION_PURO_PURO("Puro Puro", DiscordAreaType.REGIONS, 10307),
+	REGION_PURO_PURO("Puro-Puro", DiscordAreaType.REGIONS, 10307),
 	REGION_QUARRY("Quarry", DiscordAreaType.REGIONS, 12589),
 	REGION_RALOS_RISE("Ralos' Rise", DiscordAreaType.REGIONS, 5424, 5425, 5679, 5680, 5681, 5682),
 	REGION_RANGING_GUILD("Ranging Guild", DiscordAreaType.REGIONS, 10549),

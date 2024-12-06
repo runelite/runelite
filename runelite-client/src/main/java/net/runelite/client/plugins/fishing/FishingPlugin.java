@@ -271,7 +271,7 @@ public class FishingPlugin extends Plugin
 				case ItemID.CORMORANTS_GLOVE:
 				case ItemID.CORMORANTS_GLOVE_22817:
 				case ItemID.INFERNAL_HARPOON_OR:
-				case ItemID.TRAILBLAZER_HARPOON:
+				case ItemID.ECHO_HARPOON:
 				case ItemID.CRYSTAL_HARPOON:
 				case ItemID.CRYSTAL_HARPOON_23864:
 				case ItemID.CRYSTAL_HARPOON_INACTIVE:
