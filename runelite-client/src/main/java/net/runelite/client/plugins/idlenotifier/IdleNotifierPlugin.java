@@ -913,7 +913,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
 		{
-			if (notify6HourLogout)
+			if (notify6HourLogout && config.sixHourLogout() == Notification.ON)
 			{
 				notify6HourLogout = false;
 				return true;
