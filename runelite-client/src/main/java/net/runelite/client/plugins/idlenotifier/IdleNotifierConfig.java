@@ -37,21 +37,10 @@ public interface IdleNotifierConfig extends Config
 	String GROUP = "idlenotifier";
 
 	@ConfigItem(
-		keyName = "sixHourLogout",
-		name = "6-hour logout notification",
-		description = "Configures if the 6-hour logout notification is enabled.",
-		position = 1
-	)
-	default Notification sixHourLogout()
-	{
-		return Notification.ON;
-	}
-
-	@ConfigItem(
-		keyName = "animationIdle",
+		keyName = "animationidle",
 		name = "Idle animation notifications",
-		description = "Configures if animation idle notifications are enabled.",
-		position = 2
+		description = "Configures if idle animation notifications are enabled.",
+		position = 1
 	)
 	default Notification animationIdle()
 	{
@@ -59,21 +48,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "movementIdle",
-		name = "Idle movement notifications",
-		description = "Configures if movement idle notifications are enabled.",
-		position = 3
-	)
-	default Notification movementIdle()
-	{
-		return Notification.ON;
-	}
-
-	@ConfigItem(
-		keyName = "interactionIdle",
+		keyName = "interactionidle",
 		name = "Idle interaction notifications",
-		description = "Configures if interaction idle notifications are enabled.",
-		position = 4
+		description = "Configures if idle interaction notifications are enabled e.g. combat, fishing.",
+		position = 2
 	)
 	default Notification interactionIdle()
 	{
@@ -81,12 +59,34 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "movementidle",
+		name = "Idle movement notifications",
+		description = "Configures if idle movement notifications are enabled e.g. running, walking.",
+		position = 3
+	)
+	default Notification movementIdle()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "logoutidle",
 		name = "Idle logout notifications",
 		description = "Configures if the idle logout notifications are enabled.",
-		position = 5
+		position = 4
 	)
 	default Notification logoutIdle()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "sixHourLogout",
+		name = "6-hour logout notification",
+		description = "Configures if the 6-hour logout notification is enabled.",
+		position = 5
+	)
+	default Notification sixHourLogout()
 	{
 		return Notification.ON;
 	}
