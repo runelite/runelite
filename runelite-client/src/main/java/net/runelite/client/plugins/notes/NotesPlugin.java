@@ -84,7 +84,7 @@ public class NotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		// update notes
 		String data = config.notesData();

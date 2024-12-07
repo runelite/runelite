@@ -116,7 +116,7 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getContainerId() != InventoryID.EQUIPMENT.getId())
 		{
@@ -146,7 +146,7 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		final int ticksPerSpecRegen = wearingLightbearer ? SPEC_REGEN_TICKS / 2 : SPEC_REGEN_TICKS;
 

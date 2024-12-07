@@ -130,7 +130,7 @@ public class SpellbookPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged event)
+	private void onProfileChanged(ProfileChanged event)
 	{
 		clientThread.invokeLater(this::redrawSpellbook);
 	}
@@ -198,7 +198,7 @@ public class SpellbookPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
+	private void onScriptPreFired(ScriptPreFired event)
 	{
 		if (event.getScriptId() == ScriptID.MAGIC_SPELLBOOK_INITIALISESPELLS)
 		{
@@ -210,7 +210,7 @@ public class SpellbookPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	private void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
 		if (event.isDraggingWidget() && client.getMouseCurrentButton() == 0)
 		{
@@ -284,7 +284,7 @@ public class SpellbookPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"spellbookSort".equals(event.getEventName()))
 		{

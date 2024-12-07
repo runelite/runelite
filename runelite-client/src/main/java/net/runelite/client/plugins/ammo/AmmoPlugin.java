@@ -99,7 +99,7 @@ public class AmmoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
@@ -110,7 +110,7 @@ public class AmmoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayer.DIZANAS_QUIVER_ITEM_COUNT || event.getVarpId() == VarPlayer.DIZANAS_QUIVER_ITEM_ID)
 		{
