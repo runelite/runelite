@@ -191,7 +191,8 @@ enum WidgetOffset
 	FIXED_2006_MUSIC_ICON(Skin.AROUND_2006, InterfaceID.Toplevel.ICON13, 202, -1, null, null),
 
 	RESIZABLE_MOBILE_QUESTS_HIGHLIGHT(Skin.MOBILE, InterfaceID.ToplevelOsrsStretch.STONE2, null, null, 33, null),
-	FIXED_MOBILE_QUESTS_HIGHLIGHT(Skin.MOBILE, InterfaceID.Toplevel.STONE2, null, null, 33, null);
+	FIXED_MOBILE_QUESTS_HIGHLIGHT(Skin.MOBILE, InterfaceID.Toplevel.STONE2, null, null, 33, null),
+	FIXED_MOBILE_IGNORES_HIGHLIGHT(Skin.MOBILE, InterfaceID.Toplevel.STONE8, null, null, 33, null);
 
 	private final Skin skin;
 	@Component
