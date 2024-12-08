@@ -29,6 +29,7 @@ package net.runelite.client.plugins.interfacestyles;
 import lombok.Getter;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.ComponentID;
 
 @Getter
 enum WidgetOffset
@@ -187,7 +188,10 @@ enum WidgetOffset
 	FIXED_2006_EMOTES_HIGHLIGHT(Skin.AROUND_2006, InterfaceID.Toplevel.STONE12, 178, null, 30, 37),
 	FIXED_2006_EMOTES_ICON(Skin.AROUND_2006, InterfaceID.Toplevel.ICON12, 177, null, null, null),
 	FIXED_2006_MUSIC_HIGHLIGHT(Skin.AROUND_2006, InterfaceID.Toplevel.STONE13, 206, null, 33, 36),
-	FIXED_2006_MUSIC_ICON(Skin.AROUND_2006, InterfaceID.Toplevel.ICON13, 202, -1, null, null);
+	FIXED_2006_MUSIC_ICON(Skin.AROUND_2006, InterfaceID.Toplevel.ICON13, 202, -1, null, null),
+
+	RESIZABLE_MOBILE_QUESTS_HIGHLIGHT(Skin.MOBILE, InterfaceID.ToplevelOsrsStretch.STONE2, null, null, 33, null),
+	FIXED_MOBILE_QUESTS_HIGHLIGHT(Skin.MOBILE, InterfaceID.Toplevel.STONE2, null, null, 33, null);
 
 	private final Skin skin;
 	@Component
