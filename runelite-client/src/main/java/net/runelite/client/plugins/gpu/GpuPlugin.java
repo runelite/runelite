@@ -593,6 +593,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				return "#define THREAD_COUNT " + threadCount + "\n" +
 					"#define FACES_PER_THREAD " + facesPerThread + "\n";
 			}
+			if ("texture_config".equals(key))
+			{
+				return "#define TEXTURE_COUNT " + TextureManager.TEXTURE_COUNT + "\n";
+			}
 			return null;
 		});
 		template.addInclude(GpuPlugin.class);

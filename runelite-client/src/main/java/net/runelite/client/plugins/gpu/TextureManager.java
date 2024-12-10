@@ -37,6 +37,7 @@ import org.lwjgl.opengl.GL43C;
 @Slf4j
 class TextureManager
 {
+	static final int TEXTURE_COUNT = 256;
 	private static final int TEXTURE_SIZE = 128;
 
 	int initTextureArray(TextureProvider textureProvider)
@@ -223,7 +224,7 @@ class TextureManager
 	float[] computeTextureAnimations(TextureProvider textureProvider)
 	{
 		Texture[] textures = textureProvider.getTextures();
-		float[] anims = new float[256 * 2];
+		float[] anims = new float[TEXTURE_COUNT * 2];
 		for (int i = 0; i < textures.length; ++i)
 		{
 			Texture texture = textures[i];

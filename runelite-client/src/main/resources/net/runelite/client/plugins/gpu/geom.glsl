@@ -25,6 +25,8 @@
 
 #version 330
 
+#include texture_config
+
 //#define ZBUF
 
 // smallest unit of the texture which can be moved per tick. textures are all
@@ -47,7 +49,7 @@ layout(std140) uniform uniforms {
 
 #include "uv.glsl"
 
-uniform vec2 textureAnimations[256];
+uniform vec2 textureAnimations[TEXTURE_COUNT];
 uniform int tick;
 uniform mat4 projectionMatrix;
 
