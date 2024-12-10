@@ -223,7 +223,7 @@ class TextureManager
 	float[] computeTextureAnimations(TextureProvider textureProvider)
 	{
 		Texture[] textures = textureProvider.getTextures();
-		float[] anims = new float[TEXTURE_SIZE * 2];
+		float[] anims = new float[256 * 2];
 		for (int i = 0; i < textures.length; ++i)
 		{
 			Texture texture = textures[i];
