@@ -26,6 +26,8 @@ package net.runelite.client.plugins.itemstats;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.itemstats.stats.Stat;
@@ -64,10 +66,21 @@ public abstract class StatBoost extends SingleEffect
 			final int rangedMastery = client.getVarbitValue(Varbits.LEAGUES_RANGED_COMBAT_MASTERY_LEVEL);
 			final int magicMastery = client.getVarbitValue(Varbits.LEAGUES_MAGIC_COMBAT_MASTERY_LEVEL);
 
-			if ((meleeMastery >= 2 || rangedMastery >= 2 || magicMastery >= 2)
-				&& statName.equals(Skill.HITPOINTS.getName()))
+			if (statName.equals(Skill.HITPOINTS.getName()))
 			{
-				calcedDelta *= 1.2;
+				float multiplier = 1;
+
+				if (meleeMastery >= 2 || rangedMastery >= 2 || magicMastery >= 2)
+				{
+					multiplier += 0.2;
+				}
+
+				if (client.getItemContainer(InventoryID.EQUIPMENT).contains(ItemID.SUNLIT_BRACERS))
+				{
+					multiplier += 1;
+				}
+
+				calcedDelta *= multiplier;
 			}
 			else if ((meleeMastery >= 5 || rangedMastery >= 5 || magicMastery >= 5)
 				&& statName.equals(Skill.PRAYER.getName()))

@@ -145,6 +145,7 @@ public class ItemStatEffectTest
 	{
 		when(client.getBoostedSkillLevel(any(Skill.class)))
 			.thenReturn(0);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(mock(ItemContainer.class));
 	}
 
 	@Test
@@ -465,6 +466,29 @@ public class ItemStatEffectTest
 		assertEquals(27, skillChange(Skill.PRAYER, 99, 1, moonlightMoth));
 		assertEquals(38, skillChange(Skill.PRAYER, 99, 1, prayerPotion));
 		assertEquals(-5, skillChange(Skill.PRAYER, 99, 99, bloodPint));
+	}
+
+	@Test
+	public void sunlitBracerHealingBoost()
+	{
+		final Effect karambwan = new ItemStatChanges().get(ItemID.COOKED_KARAMBWAN);
+		final Effect shark = new ItemStatChanges().get(ItemID.SHARK);
+		final Effect saradominBrew = new ItemStatChanges().get(ItemID.SARADOMIN_BREW4);
+
+		final ItemContainer equipment = mock(ItemContainer.class);
+		when(equipment.contains(ItemID.SUNLIT_BRACERS)).thenReturn(true);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+
+		assertEquals(36, skillChange(Skill.HITPOINTS, 99, 1, karambwan));
+		assertEquals(40, skillChange(Skill.HITPOINTS, 99, 1, shark));
+		assertEquals(32, skillChange(Skill.HITPOINTS, 99, 99, saradominBrew));
+
+		// Test combined with tier 2 combat relic passive
+		when(client.getVarbitValue(Varbits.LEAGUES_MELEE_COMBAT_MASTERY_LEVEL)).thenReturn(2);
+
+		assertEquals(39, skillChange(Skill.HITPOINTS, 99, 1, karambwan));
+		assertEquals(44, skillChange(Skill.HITPOINTS, 99, 1, shark));
+		assertEquals(35, skillChange(Skill.HITPOINTS, 99, 99, saradominBrew));
 	}
 
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)

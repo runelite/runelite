@@ -36,21 +36,21 @@ public interface TeamConfig extends Config
 
 	@ConfigSection(
 		name = "Team",
-		description = "Configuration for teams",
+		description = "Configuration for teams.",
 		position = 10
 	)
 	String teamSection = "teamSection";
 
 	@ConfigSection(
 		name = "Friends chat",
-		description = "Configuration for friends chat",
+		description = "Configuration for friends chat.",
 		position = 20
 	)
 	String friendsChatSection = "friendsChatSection";
 
 	@ConfigSection(
 		name = "Clan chat",
-		description = "Configuration for clan chat",
+		description = "Configuration for clan chat.",
 		position = 30
 	)
 	String clanChatSection = "clanChatSection";

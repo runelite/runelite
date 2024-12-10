@@ -34,7 +34,7 @@ public interface TwitchConfig extends Config
 	@ConfigItem(
 		keyName = "username",
 		name = "Username",
-		description = "Twitch Username",
+		description = "Twitch username.",
 		position = 0
 	)
 	String username();
@@ -51,7 +51,7 @@ public interface TwitchConfig extends Config
 	@ConfigItem(
 		keyName = "channel",
 		name = "Channel",
-		description = "Username of Twitch chat to join",
+		description = "Username of Twitch chat to join.",
 		position = 2
 	)
 	String channel();

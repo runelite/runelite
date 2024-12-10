@@ -35,7 +35,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show brothers location",
-		description = "Configures whether or not the brothers location is displayed",
+		description = "Configures whether or not the brothers location is displayed.",
 		position = 1
 	)
 	default boolean showBrotherLoc()
@@ -46,7 +46,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "showChestValue",
 		name = "Show value of chests",
-		description = "Configure whether to show total exchange value of chest when opened",
+		description = "Configure whether to show total exchange value of chest when opened.",
 		position = 2
 	)
 	default boolean showChestValue()
@@ -57,7 +57,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
-		description = "Change the color of the name displayed on the minimap",
+		description = "Change the color of the name displayed on the minimap.",
 		position = 3
 	)
 	default Color brotherLocColor()
@@ -68,7 +68,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "deadBrotherLocColor",
 		name = "Dead brother loc. color",
-		description = "Change the color of the name displayed on the minimap for a dead brother",
+		description = "Change the color of the name displayed on the minimap for a dead brother.",
 		position = 4
 	)
 	default Color deadBrotherLocColor()
@@ -90,7 +90,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "showPrayerDrainTimer",
 		name = "Show prayer drain timer",
-		description = "Configure whether or not a countdown until the next prayer drain is displayed",
+		description = "Configure whether or not a countdown until the next prayer drain is displayed.",
 		position = 6
 	)
 	default boolean showPrayerDrainTimer()

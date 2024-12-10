@@ -38,21 +38,21 @@ public interface ChatChannelConfig extends Config
 
 	@ConfigSection(
 		name = "Friends chat",
-		description = "Configuration for friends chat",
+		description = "Configuration for friends chat.",
 		position = 10
 	)
 	String friendsChatSection = "friendsChat";
 
 	@ConfigSection(
 		name = "Clan chat",
-		description = "Configuration for clan chat",
+		description = "Configuration for clan chat.",
 		position = 20
 	)
 	String clanChatSection = "clanChat";
 
 	@ConfigSection(
 		name = "Guest clan chat",
-		description = "Configuration for guest clan chat",
+		description = "Configuration for guest clan chat.",
 		position = 30
 	)
 	String guestClanChatSection = "guestClanChat";
@@ -161,7 +161,7 @@ public interface ChatChannelConfig extends Config
 	@ConfigItem(
 		keyName = "confirmKicks",
 		name = "Confirm kicks",
-		description = "Shows a chat prompt to confirm kicks",
+		description = "Shows a chat prompt to confirm kicks.",
 		position = 10,
 		section = friendsChatSection
 	)
@@ -173,7 +173,7 @@ public interface ChatChannelConfig extends Config
 	@ConfigItem(
 		keyName = "showIgnores",
 		name = "Recolor ignored players",
-		description = "Recolor members who are on your ignore list",
+		description = "Recolor members who are on your ignore list.",
 		position = 11,
 		section = friendsChatSection
 	)
@@ -185,7 +185,7 @@ public interface ChatChannelConfig extends Config
 	@ConfigItem(
 		keyName = "showIgnoresColor",
 		name = "Ignored color",
-		description = "Allows you to change the color of the ignored players in your friends chat",
+		description = "Allows you to change the color of the ignored players in your friends chat.",
 		position = 12,
 		section = friendsChatSection
 	)
