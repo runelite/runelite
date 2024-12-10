@@ -77,7 +77,7 @@ void main() {
     vec3 cameraPos = vec3(cameraX, cameraY, cameraZ);
     compute_uv(cameraPos, gVertex[0], gVertex[1], gVertex[2], gTexPos[0], gTexPos[1], gTexPos[2], uv[0], uv[1], uv[2]);
 
-    vec2 textureAnim = textureAnimations[textureId - 1];
+    vec2 textureAnim = textureAnimations[min(textureId - 1, TEXTURE_COUNT - 1)];
     for (int i = 0; i < 3; ++i) {
       uv[i] += tick * textureAnim * TEXTURE_ANIM_UNIT;
     }

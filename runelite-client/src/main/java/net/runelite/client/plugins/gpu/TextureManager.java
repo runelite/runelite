@@ -224,8 +224,14 @@ class TextureManager
 	float[] computeTextureAnimations(TextureProvider textureProvider)
 	{
 		Texture[] textures = textureProvider.getTextures();
+
+		if (textures.length > TEXTURE_COUNT)
+		{
+			log.warn("texture limit exceeded: {} > {}", textures.length, TEXTURE_COUNT);
+		}
+
 		float[] anims = new float[TEXTURE_COUNT * 2];
-		for (int i = 0; i < textures.length; ++i)
+		for (int i = 0; i < Math.min(TEXTURE_COUNT, textures.length); ++i)
 		{
 			Texture texture = textures[i];
 			if (texture == null)
