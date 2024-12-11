@@ -27,6 +27,7 @@ package net.runelite.client.plugins.itemstats;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
@@ -75,7 +76,8 @@ public abstract class StatBoost extends SingleEffect
 					multiplier += 0.2;
 				}
 
-				if (client.getItemContainer(InventoryID.EQUIPMENT).contains(ItemID.SUNLIT_BRACERS))
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+				if (equipment != null && equipment.contains(ItemID.SUNLIT_BRACERS))
 				{
 					multiplier += 1;
 				}
