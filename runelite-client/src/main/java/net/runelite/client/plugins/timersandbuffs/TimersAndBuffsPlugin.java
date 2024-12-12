@@ -646,6 +646,11 @@ public class TimersAndBuffsPlugin extends Plugin
 			return;
 		}
 
+		if (!config.showWealthyCitizensTimer())
+		{
+			removeGameTimer(WEALTHY_TIMER);
+		}
+
 		if (!config.showHomeMinigameTeleports())
 		{
 			removeGameTimer(HOME_TELEPORT);
