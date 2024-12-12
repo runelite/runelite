@@ -1076,7 +1076,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	public void triggerWealthyTimer()
-	 {
+	{
 		int timeNow = (int) (System.currentTimeMillis() / 1000);
 		boolean notAlreadyTriggered = ((timeNow - lastWealthyCitizensTriggerTime) >= wealthyTriggerLength);
 		boolean isNotDisabledByTimeout = config.ignoreWealthy() * 60 > (timeNow - lastPickpocketTime);
