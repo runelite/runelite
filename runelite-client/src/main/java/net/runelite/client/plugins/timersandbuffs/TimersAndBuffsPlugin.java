@@ -1080,6 +1080,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		int timeNow = (int) (System.currentTimeMillis() / 1000);
 		boolean notAlreadyTriggered = ((timeNow - lastWealthyCitizensTriggerTime) >= wealthyTriggerLength);
 		boolean isNotDisabledByTimeout = config.ignoreWealthy() * 60 > (timeNow - lastPickpocketTime);
+
 		if (isNotDisabledByTimeout && notAlreadyTriggered)
 		{
 			createGameTimer(WEALTHY_TIMER, Duration.ofSeconds(wealthyTriggerLength));
