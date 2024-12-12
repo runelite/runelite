@@ -1063,21 +1063,25 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onOverheadTextChanged(OverheadTextChanged event){
+	public void onOverheadTextChanged(OverheadTextChanged event)
+	{
 		final String actorName = event.getActor().getName();
 		final String message = event.getOverheadText();
 		boolean isSaidByLeo = Objects.equals(actorName, "Leo");
 		boolean isWealthyTriggerMessage = Arrays.asList(WealthyCitizensTriggers).contains(message);
-		if (isSaidByLeo && isWealthyTriggerMessage && config.showWealthyCitizensTimer()){
+		if (isSaidByLeo && isWealthyTriggerMessage && config.showWealthyCitizensTimer())
+		{
 			triggerWealthyTimer();
 		}
 	}
 
-	public void triggerWealthyTimer(){
+	public void triggerWealthyTimer()
+	 {
 		int timeNow = (int) (System.currentTimeMillis() / 1000);
 		boolean notAlreadyTriggered = ((timeNow - lastWealthyCitizensTriggerTime) >= wealthyTriggerLength);
 		boolean isNotDisabledByTimeout = config.ignoreWealthy() * 60 > (timeNow - lastPickpocketTime);
-		if (isNotDisabledByTimeout && notAlreadyTriggered) {
+		if (isNotDisabledByTimeout && notAlreadyTriggered)
+		{
 			createGameTimer(WEALTHY_TIMER, Duration.ofSeconds(wealthyTriggerLength));
 			lastWealthyCitizensTriggerTime = timeNow;
 		}
