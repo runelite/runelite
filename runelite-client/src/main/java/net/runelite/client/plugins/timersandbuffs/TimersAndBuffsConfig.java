@@ -100,7 +100,10 @@ public interface TimersAndBuffsConfig extends Config
 			position = 3
 	)
 	@Units(Units.MINUTES)
-	default int ignoreWealthy() { return 20; }
+	default int ignoreWealthy()
+	{
+		return 20;
+	}
 
 	@ConfigItem(
 		keyName = "showHomeMinigameTeleports",
@@ -152,7 +155,10 @@ public interface TimersAndBuffsConfig extends Config
 		description = "Configures whether overload timer is displayed.",
 		section = consumablesSection
 	)
-	default boolean showOverload() { return true; }
+	default boolean showOverload()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showLiquidAdrenaline",
@@ -171,7 +177,10 @@ public interface TimersAndBuffsConfig extends Config
 		description = "Configures whether menaphite remedy timer is displayed.",
 		section = consumablesSection
 	)
-	default boolean showMenaphiteRemedy() { return true; }
+	default boolean showMenaphiteRemedy()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showSilkDressing",
@@ -190,7 +199,10 @@ public interface TimersAndBuffsConfig extends Config
 		description = "Configures whether blessed crystal scarab timer is displayed.",
 		section = consumablesSection
 	)
-	default boolean showBlessedCrystalScarab()  { return true; }
+	default boolean showBlessedCrystalScarab()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showPrayerEnhance",
@@ -198,7 +210,10 @@ public interface TimersAndBuffsConfig extends Config
 		description = "Configures whether prayer enhance timer is displayed.",
 		section = consumablesSection
 	)
-	default boolean showPrayerEnhance()  { return true; }
+	default boolean showPrayerEnhance()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showGoading",
@@ -206,7 +221,10 @@ public interface TimersAndBuffsConfig extends Config
 		description = "Configures whether goading potion timer is displayed.",
 		section = consumablesSection
 	)
-	default boolean showGoading()  { return true; }
+	default boolean showGoading()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showPrayerRegeneration",
@@ -214,7 +232,10 @@ public interface TimersAndBuffsConfig extends Config
 		description = "Configures whether prayer regeneration timer is displayed.",
 		section = consumablesSection
 	)
-	default boolean showPrayerRegneration()  { return true; }
+	default boolean showPrayerRegneration()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "showDivine",
