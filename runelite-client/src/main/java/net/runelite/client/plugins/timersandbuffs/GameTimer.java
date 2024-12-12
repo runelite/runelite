@@ -100,6 +100,7 @@ enum GameTimer
 	SPELLBOOK_SWAP(SpriteID.SPELL_SPELLBOOK_SWAP, GameTimerImageType.SPRITE, "Spellbook Reset", 120, ChronoUnit.SECONDS, false),
 	GOADING(ItemID.GOADING_POTION4, GameTimerImageType.ITEM, "Goading potion", false),
 	PRAYER_REGENERATION(ItemID.PRAYER_REGENERATION_POTION4, GameTimerImageType.ITEM, "Prayer regeneration", false),
+	WEALTHY_TIMER(SpriteID.SKILL_THIEVING, GameTimerImageType.SPRITE, "Stunned", true),
 	;
 
 	@Nullable

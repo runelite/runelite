@@ -31,9 +31,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
@@ -60,14 +58,7 @@ import static net.runelite.api.VarPlayer.LAST_MINIGAME_TELEPORT;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ActorDeath;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -81,6 +72,7 @@ import static net.runelite.client.plugins.timersandbuffs.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
 import org.apache.commons.lang3.ArrayUtils;
+
 
 @PluginDescriptor(
 	name = "Timers & Buffs",
@@ -147,6 +139,21 @@ public class TimersAndBuffsPlugin extends Plugin
 
 	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
 	private static final int ECLIPSE_MOON_REGION_ID = 6038;
+
+
+	// ================================[ Wealthy Citizens Timers ]==============================
+	private static final int wealthyTriggerLength = 84;
+	private int lastPickpocketTime = (int) (System.currentTimeMillis() / 1000);
+	private int lastWealthyCitizensTriggerTime = (int) (System.currentTimeMillis() / 1000) - 100;
+	private static final String PickpocketAttemptMessage = "You attempt to pick the wealthy citizen's pocket.";
+	private static final String[] WealthyCitizensTriggers = {
+			"*Sobbing*",
+			"I've been robbed!",
+			"Check out these moves!",
+			"Im so lost! Someone help!",
+			"My leg! Someone please!"
+	};
+	// ==========================================================================================
 
 	@Inject
 	private ItemManager itemManager;
@@ -867,6 +874,11 @@ public class TimersAndBuffsPlugin extends Plugin
 			return;
 		}
 
+		if (message.contains((PickpocketAttemptMessage)))
+		{
+			lastPickpocketTime = (int) (System.currentTimeMillis() / 1000);
+		}
+
 		if (message.contains(DODGY_NECKLACE_PROTECTION_MESSAGE) || message.contains(SHADOW_VEIL_PROTECTION_MESSAGE))
 		{
 			removeGameTimer(PICKPOCKET_STUN);
@@ -1047,6 +1059,27 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (message.equals(LIQUID_ADRENALINE_MESSAGE) && config.showLiquidAdrenaline())
 		{
 			createGameTimer(LIQUID_ADRENALINE);
+		}
+	}
+
+	@Subscribe
+	public void onOverheadTextChanged(OverheadTextChanged event){
+		final String actorName = event.getActor().getName();
+		final String message = event.getOverheadText();
+		boolean isSaidByLeo = Objects.equals(actorName, "Leo");
+		boolean isWealthyTriggerMessage = Arrays.asList(WealthyCitizensTriggers).contains(message);
+		if (isSaidByLeo && isWealthyTriggerMessage && config.showWealthyCitizensTimer()){
+			triggerWealthyTimer();
+		}
+	}
+
+	public void triggerWealthyTimer(){
+		int timeNow = (int) (System.currentTimeMillis() / 1000);
+		boolean notAlreadyTriggered = ((timeNow - lastWealthyCitizensTriggerTime) >= wealthyTriggerLength);
+		boolean isNotDisabledByTimeout = config.ignoreWealthy() * 60 > (timeNow - lastPickpocketTime);
+		if (isNotDisabledByTimeout && notAlreadyTriggered) {
+			createGameTimer(WEALTHY_TIMER, Duration.ofSeconds(wealthyTriggerLength));
+			lastWealthyCitizensTriggerTime = timeNow;
 		}
 	}
 
