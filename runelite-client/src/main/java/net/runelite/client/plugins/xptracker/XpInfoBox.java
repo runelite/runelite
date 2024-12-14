@@ -75,6 +75,7 @@ class XpInfoBox extends JPanel
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 		"<html>%s %s done<br/>"
+			+ "%s XP/%s<br/>"
 			+ "%s %s/hr<br/>"
 			+ "%s %s</html>";
 	private static final String HTML_LABEL_TEMPLATE =
@@ -348,6 +349,8 @@ class XpInfoBox extends JPanel
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
 				xpSnapshotSingle.getActionType().getLabel(),
+				xpSnapshotSingle.getXpPerAction(),
+				xpSnapshotSingle.getActionType().getLabel().substring(0, xpSnapshotSingle.getActionType().getLabel().length() - 1),
 				xpSnapshotSingle.getActionsPerHour(),
 				xpSnapshotSingle.getActionType().getLabel(),
 				tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
