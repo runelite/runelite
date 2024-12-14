@@ -29,6 +29,8 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -81,6 +83,9 @@ class XpInfoBox extends JPanel
 	private static final String REMOVE_STATE = "Remove from canvas";
 	private static final String ADD_STATE = "Add to canvas";
 
+	private static final EmptyBorder DEFAULT_PROGRESS_WRAPPER_BORDER = new EmptyBorder(0, 7, 7, 7);
+	private static final EmptyBorder COMPACT_PROGRESS_WRAPPER_BORDER = new EmptyBorder(5, 1, 5, 5);
+
 	// Instance members
 	private final JComponent panel;
 
@@ -95,6 +100,12 @@ class XpInfoBox extends JPanel
 
 	/* Contains all the skill information (exp gained, per hour, etc) */
 	private final JPanel statsPanel = new JPanel();
+
+	// Contains progress bar and compact-view icon
+	private final JPanel progressWrapper = new JPanel();
+
+	// Contains skill icon
+	private final JLabel compactSkillIcon;
 
 	private final ProgressBar progressBar = new ProgressBar();
 
@@ -182,18 +193,12 @@ class XpInfoBox extends JPanel
 			}
 		});
 
-		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
-		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
-		skillIcon.setPreferredSize(new Dimension(35, 35));
-
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
 		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
-
 
 		topLeftStat.setFont(FontManager.getRunescapeSmallFont());
 		bottomLeftStat.setFont(FontManager.getRunescapeSmallFont());
@@ -205,20 +210,24 @@ class XpInfoBox extends JPanel
 		statsPanel.add(bottomLeftStat);  // bottom left
 		statsPanel.add(bottomRightStat); // bottom right
 
-		headerPanel.add(skillIcon, BorderLayout.WEST);
+		JLabel headerSkillIcon = getSkillIcon(iconManager, skill, 35, 35, false);
+		headerPanel.add(headerSkillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
 
-		JPanel progressWrapper = new JPanel();
 		progressWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		progressWrapper.setLayout(new BorderLayout());
-		progressWrapper.setBorder(new EmptyBorder(0, 7, 7, 7));
+		progressWrapper.setBorder(DEFAULT_PROGRESS_WRAPPER_BORDER);
 
 		progressBar.setMaximumValue(100);
 		progressBar.setBackground(new Color(61, 56, 49));
 		progressBar.setForeground(SkillColor.find(skill).getColor());
 		progressBar.setDimmedText("Paused");
 
-		progressWrapper.add(progressBar, BorderLayout.NORTH);
+		compactSkillIcon = getSkillIcon(iconManager, skill, 25, 16, true);
+		compactSkillIcon.setVisible(false);
+
+		progressWrapper.add(compactSkillIcon, BorderLayout.WEST);
+		progressWrapper.add(progressBar, BorderLayout.CENTER);
 
 		container.add(headerPanel, BorderLayout.NORTH);
 		container.add(progressWrapper, BorderLayout.SOUTH);
@@ -233,12 +242,28 @@ class XpInfoBox extends JPanel
 		progressBar.addMouseListener(mouseDragEventForwarder);
 		progressBar.addMouseMotionListener(mouseDragEventForwarder);
 
+		// collapse/expand on mouse click
+		final MouseAdapter clickToggleCompact = new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					toggleCompactView();
+				}
+			}
+		};
+		container.addMouseListener(clickToggleCompact);
+		progressBar.addMouseListener(clickToggleCompact);
+
 		add(container, BorderLayout.NORTH);
 	}
 
 	void reset()
 	{
 		canvasItem.setText(ADD_STATE);
+		setCompactView(false);
 		panel.remove(this);
 		panel.revalidate();
 	}
@@ -246,6 +271,31 @@ class XpInfoBox extends JPanel
 	void update(boolean updated, boolean paused, XpSnapshotSingle xpSnapshotSingle)
 	{
 		SwingUtilities.invokeLater(() -> rebuildAsync(updated, paused, xpSnapshotSingle));
+	}
+
+	private void toggleCompactView()
+	{
+		final boolean isCompact = !headerPanel.isVisible();
+		setCompactView(!isCompact);
+	}
+
+	private void setCompactView(final boolean compact)
+	{
+		progressWrapper.setBorder(compact ? COMPACT_PROGRESS_WRAPPER_BORDER : DEFAULT_PROGRESS_WRAPPER_BORDER);
+		headerPanel.setVisible(!compact);
+		compactSkillIcon.setVisible(compact);
+	}
+
+	private static JLabel getSkillIcon(SkillIconManager iconManager, Skill skill, int width, int height, boolean small)
+	{
+		JLabel skillIcon = new JLabel();
+
+		skillIcon.setIcon(new ImageIcon(iconManager.getSkillImage(skill, small)));
+		skillIcon.setPreferredSize(new Dimension(width, height));
+		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
+
+		return skillIcon;
 	}
 
 	private void rebuildAsync(boolean updated, boolean skillPaused, XpSnapshotSingle xpSnapshotSingle)

@@ -38,7 +38,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "enableCounter",
 		name = "Show counters",
-		description = "Shows current value of the status on the bar"
+		description = "Shows current value of the status on the bar."
 	)
 	default boolean enableCounter()
 	{
@@ -78,7 +78,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "leftBarMode",
 		name = "Left bar",
-		description = "Configures the left status bar"
+		description = "Configures the left status bar."
 	)
 	default BarMode leftBarMode()
 	{
@@ -88,7 +88,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "rightBarMode",
 		name = "Right bar",
-		description = "Configures the right status bar"
+		description = "Configures the right status bar."
 	)
 	default BarMode rightBarMode()
 	{

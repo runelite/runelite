@@ -2090,7 +2090,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.itemId(ItemID.CLUE_SCROLL_EASY_29853)
 			.text("Dig outside the bank on Aldarin.")
 			.location(new WorldPoint(1390, 2926, 0))
-			.solution("Dig outside the bank on Aldarin.")
+			.solution("Dig outside the bank on Aldarin. Fairy ring CKQ.")
 			.build()
 	);
 

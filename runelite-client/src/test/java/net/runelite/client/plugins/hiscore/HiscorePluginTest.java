@@ -27,7 +27,6 @@ package net.runelite.client.plugins.hiscore;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -52,8 +51,8 @@ public class HiscorePluginTest
 	@Inject
 	private HiscorePlugin hiscorePlugin;
 
+	@Mock
 	@Bind
-	@Nullable
 	private Client client;
 
 	@Mock

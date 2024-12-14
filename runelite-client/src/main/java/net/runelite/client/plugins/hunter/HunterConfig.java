@@ -39,7 +39,7 @@ public interface HunterConfig extends Config
 		position = 1,
 		keyName = "hexColorOpenTrap",
 		name = "Open trap",
-		description = "Color of open trap timer"
+		description = "Color of open trap timer."
 	)
 	default Color getOpenTrapColor()
 	{
@@ -51,7 +51,7 @@ public interface HunterConfig extends Config
 		position = 2,
 		keyName = "hexColorFullTrap",
 		name = "Full trap",
-		description = "Color of full trap timer"
+		description = "Color of full trap timer."
 	)
 	default Color getFullTrapColor()
 	{
@@ -63,7 +63,7 @@ public interface HunterConfig extends Config
 		position = 3,
 		keyName = "hexColorEmptyTrap",
 		name = "Empty trap",
-		description = "Color of empty trap timer"
+		description = "Color of empty trap timer."
 	)
 	default Color getEmptyTrapColor()
 	{
@@ -75,7 +75,7 @@ public interface HunterConfig extends Config
 		position = 4,
 		keyName = "hexColorTransTrap",
 		name = "Transitioning trap",
-		description = "Color of transitioning trap timer"
+		description = "Color of transitioning trap timer."
 	)
 	default Color getTransTrapColor()
 	{

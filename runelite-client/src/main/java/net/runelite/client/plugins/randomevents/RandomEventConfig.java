@@ -36,7 +36,7 @@ public interface RandomEventConfig extends Config
 {
 	@ConfigSection(
 		name = "Notification settings",
-		description = "Choose which random events will trigger notifications when spawned",
+		description = "Choose which random events will trigger notifications when spawned.",
 		position = 99
 	)
 	String notificationSection = "section";

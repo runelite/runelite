@@ -105,11 +105,9 @@ public final class AnimationID
 	public static final int COOKING_WINE = 7529;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
-	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
 	public static final int HUNTER_LAY_NETTRAP = 5215; //setting up net trap
 	public static final int HUNTER_LAY_MANIACAL_MONKEY_BOULDER_TRAP = 7259; // setting up maniacal monkey boulder trap
 	public static final int HUNTER_CHECK_BIRD_SNARE = 5207;
-	public static final int HUNTER_CHECK_BOX_TRAP = 5212;
 	public static final int HERBLORE_MAKE_TAR = 5249;
 	public static final int FLETCHING_STRING_NORMAL_SHORTBOW = 6678;
 	public static final int FLETCHING_STRING_NORMAL_LONGBOW = 6684;
@@ -149,7 +147,7 @@ public final class AnimationID
 	public static final int CRAFTING_LOOM = 2270;
 	public static final int CRAFTING_CRUSH_BLESSED_BONES = 11099;
 	public static final int SMITHING_SMELTING = 899;
-	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
+	public static final int SMITHING_CANNONBALL = 827; // same as BURYING_BONES
 	public static final int SMITHING_ANVIL = 898;
 	public static final int SMITHING_IMCANDO_HAMMER = 8911;
 	public static final int FISHING_BIG_NET = 620;
@@ -255,8 +253,6 @@ public final class AnimationID
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
 	public static final int DEMONIC_GORILLA_RANGED_ATTACK = 7227;
-	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
-	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
 	public static final int BOOK_HOME_TELEPORT_1 = 4847;
 	public static final int BOOK_HOME_TELEPORT_2 = 4850;
@@ -321,13 +317,12 @@ public final class AnimationID
 	public static final int FARMING_PLANT_SEED = 2291;
 	public static final int FARMING_HARVEST_FLOWER = 2292;
 	public static final int FARMING_MIX_ULTRACOMPOST = 7699;
-	public static final int FARMING_HARVEST_ALLOTMENT = 830;
+	public static final int FARMING_HARVEST_ALLOTMENT = 830; // same as DIG
 
 	// Lunar spellbook
 	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
 	public static final int MAGIC_LUNAR_SHARED = 4413; // Utilized by Fertile Soil, Boost/Stat Potion Share, NPC Contact, Bake Pie
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
-	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
 	public static final int MAGIC_LUNAR_PLANK_MAKE = 6298;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 

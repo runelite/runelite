@@ -1302,13 +1302,18 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.HUNTERS_LOOT_SACK_EXPERT:
 					case ItemID.HUNTERS_LOOT_SACK_MASTER:
 						final int itemId = event.getItemId();
+						final Map<String, Integer> levels = new ImmutableMap.Builder<String, Integer>().
+							put("WOODCUTTING", client.getBoostedSkillLevel(Skill.WOODCUTTING)).
+							put("HERBLORE", client.getBoostedSkillLevel(Skill.HERBLORE)).
+							put("HUNTER", client.getBoostedSkillLevel(Skill.HUNTER)).
+							build();
 						onInvChange((((invItems, groundItems, removedItems) ->
 						{
 							int cnt = removedItems.count(itemId);
 							if (cnt > 0)
 							{
 								String name = itemManager.getItemComposition(itemId).getMembersName();
-								addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
+								addLoot(name, -1, LootRecordType.EVENT, levels, invItems, cnt);
 							}
 						})));
 						break;

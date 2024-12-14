@@ -36,7 +36,7 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "showItem",
 		name = "Show item",
-		description = "Show a preview of the item in the new slot",
+		description = "Show a preview of the item in the new slot.",
 		position = 6
 	)
 	default boolean showItem()
@@ -47,7 +47,7 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "showGrid",
 		name = "Show grid",
-		description = "Show a grid on the inventory while dragging",
+		description = "Show a grid on the inventory while dragging.",
 		position = 3
 	)
 	default boolean showGrid()
@@ -58,7 +58,7 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "showHighlight",
 		name = "Highlight background",
-		description = "Show a background highlight on the new slot",
+		description = "Show a background highlight on the new slot.",
 		position = 2
 	)
 	default boolean showHighlight()
@@ -70,7 +70,7 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "gridColor",
 		name = "Grid color",
-		description = "The color of the grid",
+		description = "The color of the grid.",
 		position = 4
 	)
 	default Color gridColor()
@@ -82,7 +82,7 @@ public interface InventoryGridConfig extends Config
 	@ConfigItem(
 		keyName = "highlightColor",
 		name = "Highlight color",
-		description = "The color of the new inventory slot highlight",
+		description = "The color of the new inventory slot highlight.",
 		position = 5
 	)
 	default Color highlightColor()

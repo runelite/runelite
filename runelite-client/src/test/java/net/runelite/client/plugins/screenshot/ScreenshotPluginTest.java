@@ -553,4 +553,25 @@ public class ScreenshotPluginTest
 
 		verify(screenshotPlugin).takeScreenshot("Nightmare(1130)", "Boss Kills");
 	}
+
+	@Test
+	public void testEchoBossKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your <col=6800bf>Kalphite Queen (Echo)</col> kill count is:<col=e00a19>1</col>", null, 1);
+		screenshotPlugin.onChatMessage(chatMessage);
+
+		verify(screenshotPlugin).takeScreenshot("Kalphite Queen (Echo)(1)", "Boss Kills");
+	}
+
+	@Test
+	public void testEchoGauntletKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your <col=a53fff>Corrupted Hunllef (Echo)</col> kill count is: <col=ff3045>31</col>", null, 0);
+		screenshotPlugin.onChatMessage(chatMessage);
+		verify(screenshotPlugin).takeScreenshot("Corrupted Hunllef (Echo)(31)", "Boss Kills");
+	}
+
 }

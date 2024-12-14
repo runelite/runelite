@@ -61,6 +61,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.ColorJButton;
 import net.runelite.client.ui.components.TitleCaseListCellRenderer;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
@@ -286,7 +287,7 @@ class NotificationPanel extends PluginPanel
 				var n = loadNotification();
 				saveNotification(n.withTray(checkboxTray.isSelected()));
 			});
-			item("Tray notification", "Enables tray notifications", checkboxTray);
+			item("Tray notification", "Enables tray notifications.", checkboxTray);
 
 			var comboboxRequestFocus = combobox(RequestFocusType.class, notif.getRequestFocus());
 			comboboxRequestFocus.addItemListener(e ->
@@ -297,7 +298,7 @@ class NotificationPanel extends PluginPanel
 					saveNotification(n.withRequestFocus((RequestFocusType) comboboxRequestFocus.getSelectedItem()));
 				}
 			});
-			item("Request focus", "Configures the window focus request type on notification", comboboxRequestFocus);
+			item("Request focus", "Configures the window focus request type on notification.", comboboxRequestFocus);
 
 			var comboboxSound = combobox(Notifier.NativeCustomOff.class, notif.getSound());
 			comboboxSound.addItemListener(e ->
@@ -308,7 +309,7 @@ class NotificationPanel extends PluginPanel
 					saveNotification(n.withSound((Notifier.NativeCustomOff) comboboxSound.getSelectedItem()));
 				}
 			});
-			item("Notification sound", "Enables the playing of a beep sound when notifications are displayed", comboboxSound);
+			item("Notification sound", "Enables the playing of a beep sound when notifications are displayed.", comboboxSound);
 
 			var spinnerVolume = createIntSpinner(0, 100, notif.getVolume(), "%");
 			spinnerVolume.addChangeListener(ce ->
@@ -332,7 +333,7 @@ class NotificationPanel extends PluginPanel
 				var n = loadNotification();
 				saveNotification(n.withGameMessage(checkboxGameMessage.isSelected()));
 			});
-			item("Game message notification", "Adds a notification message to the chatbox", checkboxGameMessage);
+			item("Game message notification", "Adds a notification message to the chatbox.", checkboxGameMessage);
 
 			var comboboxFlash = combobox(FlashNotification.class, notif.getFlash());
 			comboboxFlash.addItemListener(e ->
@@ -343,14 +344,14 @@ class NotificationPanel extends PluginPanel
 					saveNotification(n.withFlash((FlashNotification) comboboxFlash.getSelectedItem()));
 				}
 			});
-			item("Flash", "Flashes the game frame as a notification", comboboxFlash);
+			item("Flash", "Flashes the game frame as a notification.", comboboxFlash);
 
 			var colorpickerFlashColor = createColorPicker("Flash color", notif.getFlashColor(), c ->
 			{
 				var n = loadNotification();
 				saveNotification(n.withFlashColor(c));
 			});
-			item("Flash color", "Sets the color of the notification flashes.", colorpickerFlashColor);
+			item("Flash color", "The color of the notification flashes.", colorpickerFlashColor);
 
 			var checkboxSendWhenFocused = checkbox(notif.isSendWhenFocused());
 			checkboxSendWhenFocused.addActionListener(ae ->
@@ -358,7 +359,7 @@ class NotificationPanel extends PluginPanel
 				var n = loadNotification();
 				saveNotification(n.withSendWhenFocused(checkboxSendWhenFocused.isSelected()));
 			});
-			item("Send notifications when focused", "Sends the notification even when the client is focused", checkboxSendWhenFocused);
+			item("Send notifications when focused", "Send the notification even when the client is focused.", checkboxSendWhenFocused);
 
 			JButton resetButton = new JButton("Reset");
 			resetButton.addActionListener((e) ->

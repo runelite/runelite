@@ -52,7 +52,7 @@ LABEL40:
    if_icmpeq              LABEL44
    jump                   LABEL49
 LABEL44:
-   sconst                 "<img=22>"
+   invoke                 7776
    chat_playername       
    join_string            2
    sstore                 2
@@ -205,7 +205,7 @@ LABEL167:
    if_icmpeq              LABEL171
    jump                   LABEL176
 LABEL171:
-   sconst                 "<img=22>"
+   invoke                 7776
    sconst                 " You must set a name before you can chat."
    join_string            2
    sstore                 2

@@ -40,7 +40,7 @@ public interface DriftNetConfig extends Config
 		position = 1,
 		keyName = "showNetStatus",
 		name = "Show net status",
-		description = "Show net status and fish count"
+		description = "Show net status and fish count."
 	)
 	default boolean showNetStatus()
 	{
@@ -51,7 +51,7 @@ public interface DriftNetConfig extends Config
 		position = 2,
 		keyName = "countColor",
 		name = "Fish count color",
-		description = "Color of the fish count text"
+		description = "Color of the fish count text."
 	)
 	default Color countColor()
 	{
@@ -62,7 +62,7 @@ public interface DriftNetConfig extends Config
 		position = 3,
 		keyName = "highlightUntaggedFish",
 		name = "Highlight untagged fish",
-		description = "Highlight the untagged fish"
+		description = "Highlight the untagged fish."
 	)
 	default boolean highlightUntaggedFish()
 	{
@@ -73,7 +73,7 @@ public interface DriftNetConfig extends Config
 		position = 4,
 		keyName = "timeoutDelay",
 		name = "Tagged timeout",
-		description = "Time required for a tag to expire"
+		description = "Time required for a tag to expire."
 	)
 	@Range(
 		min = 1,
@@ -89,7 +89,7 @@ public interface DriftNetConfig extends Config
 	@ConfigItem(
 		keyName = "untaggedFishColor",
 		name = "Untagged fish color",
-		description = "Color of untagged fish",
+		description = "Color of untagged fish.",
 		position = 5
 	)
 	default Color untaggedFishColor()
@@ -100,7 +100,7 @@ public interface DriftNetConfig extends Config
 	@ConfigItem(
 		keyName = "tagAnnette",
 		name = "Tag Annette",
-		description = "Tag Annette when no nets in inventory",
+		description = "Tag Annette when no nets in inventory.",
 		position = 6
 	)
 	default boolean tagAnnetteWhenNoNets()
@@ -112,7 +112,7 @@ public interface DriftNetConfig extends Config
 	@ConfigItem(
 		keyName = "annetteTagColor",
 		name = "Annette tag color",
-		description = "Color of Annette tag",
+		description = "Color of Annette tag.",
 		position = 7
 	)
 	default Color annetteTagColor()

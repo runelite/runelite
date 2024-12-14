@@ -50,7 +50,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "displayBoosts",
 		name = "Display boosts",
-		description = "Configures which skill boosts to display",
+		description = "Configures which skill boosts to display.",
 		position = 1
 	)
 	default DisplayBoosts displayBoosts()
@@ -61,7 +61,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "relativeBoost",
 		name = "Show relative boosts",
-		description = "Configures whether or not relative boost is used",
+		description = "Configures whether or not relative boost is used.",
 		position = 2
 	)
 	default boolean useRelativeBoost()
@@ -72,7 +72,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "displayIndicators",
 		name = "Display infoboxes",
-		description = "Configures whether to display boost infoboxes",
+		description = "Configures whether to display boost infoboxes.",
 		position = 3
 	)
 	default boolean displayInfoboxes()
@@ -83,7 +83,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "displayPanel",
 		name = "Display panel",
-		description = "Configures whether to display the boost panel",
+		description = "Configures whether to display the boost panel.",
 		position = 3
 	)
 	default boolean displayPanel()
@@ -94,7 +94,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "compactDisplay",
 		name = "Compact display",
-		description = "Displays skill boosts in a more compact panel",
+		description = "Displays skill boosts in a more compact panel.",
 		position = 4
 	)
 	default boolean compactDisplay()
@@ -105,7 +105,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "displayNextBuffChange",
 		name = "Next buff change",
-		description = "Configures whether or not to display when the next buffed stat change will be",
+		description = "Configures whether or not to display when the next buffed stat change will be.",
 		position = 10
 	)
 	default DisplayChangeMode displayNextBuffChange()
@@ -116,7 +116,7 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "displayNextDebuffChange",
 		name = "Next debuff change",
-		description = "Configures whether or not to display when the next debuffed stat change will be",
+		description = "Configures whether or not to display when the next debuffed stat change will be.",
 		position = 11
 	)
 	default DisplayChangeMode displayNextDebuffChange()

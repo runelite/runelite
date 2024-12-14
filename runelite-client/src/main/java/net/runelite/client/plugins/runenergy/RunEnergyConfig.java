@@ -36,7 +36,7 @@ public interface RunEnergyConfig extends Config
 	@ConfigItem(
 		keyName = "ringOfEnduranceChargeMessage",
 		name = "Ring of endurance charge message",
-		description = "Sends a message asking you to charge your equipped Ring of endurance when it has less than 500 charges."
+		description = "Sends a message asking you to charge your equipped ring of endurance when it has less than 500 charges."
 	)
 	default boolean ringOfEnduranceChargeMessage()
 	{

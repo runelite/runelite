@@ -107,7 +107,7 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?<pre>completion count for |subdued |completed )?(?<boss>.+?) (?<post>(?:(?:kill|harvest|lap|completion) )?(?:count )?)is: <col=[0-9a-f]{6}>(?<kc>[0-9,]+)</col>");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?<pre>completion count for |subdued |completed )?(?:<col=[0-9a-f]{6}>)?(?<boss>.+?)(?:</col>)? (?<post>(?:(?:kill|harvest|lap|completion) )?(?:count )?)is: ?<col=[0-9a-f]{6}>(?<kc>[0-9,]+)</col>");
 	private static final String TEAM_SIZES = "(?<teamsize>\\d+(?:\\+|-\\d+)? players?|Solo)";
 	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)</col>");
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
@@ -122,9 +122,10 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>([0-9,]+)</col>\\.");
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>([0-9,]+)</col> times?!");
 	private static final Pattern COLLECTION_LOG_ITEM_PATTERN = Pattern.compile("New item added to your collection log: (.*)");
-	private static final Pattern GUARDIANS_OF_THE_RIFT_PATTERN = Pattern.compile("Amount of Rifts you have closed: <col=ff0000>([0-9,]+)</col>.", Pattern.CASE_INSENSITIVE);
-	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild.");
-	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?.");
+	private static final Pattern GUARDIANS_OF_THE_RIFT_PATTERN = Pattern.compile("Amount of Rifts you have closed: <col=ff0000>([0-9,]+)</col>\\.", Pattern.CASE_INSENSITIVE);
+	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild\\.");
+	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?\\.");
+	private static final Pattern CHEST_OPENING_PATTERN = Pattern.compile("You have (?<never>never )?opened (the )?(?<chest>crystal chest|Larran's big chest|Larran's small chest|Brimstone chest)( (?<kc>[\\d,]+ times|once))?\\.");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -643,6 +644,27 @@ public class ChatCommandsPlugin extends Plugin
 
 			setKc("Bird's egg offerings", kc);
 		}
+
+		matcher = CHEST_OPENING_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc;
+			if (matcher.group("never") != null)
+			{
+				kc = 0;
+			}
+			else
+			{
+				String kcString = matcher.group("kc");
+				kc = kcString.equals("once")
+					? 1
+					: Integer.parseInt(kcString.split(" ")[0].replace(",", ""));
+			}
+
+			String chest = matcher.group("chest");
+
+			setKc(chest, kc);
+		}
 	}
 
 	@VisibleForTesting
@@ -933,7 +955,8 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	private void killCountLookup(ChatMessage chatMessage, String message)
+	@VisibleForTesting
+	void killCountLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.killcount())
 		{
@@ -2099,7 +2122,14 @@ public class ChatCommandsPlugin extends Plugin
 
 	private static String longBossName(String boss)
 	{
-		switch (boss.toLowerCase())
+		String lowerBoss = boss.toLowerCase();
+		if (lowerBoss.endsWith(" (echo)"))
+		{
+			String actualBoss = lowerBoss.substring(0, lowerBoss.length() - " (echo)".length());
+			return longBossName(actualBoss) + " (Echo)";
+		}
+
+		switch (lowerBoss)
 		{
 			case "corp":
 				return "Corporeal Beast";
@@ -2475,6 +2505,26 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
 
+			// Colossal Wyrm Basic Agility Course
+			case "wbac":
+			case "cwbac":
+			case "wyrmb":
+			case "wyrmbasic":
+			case "wyrm basic":
+			case "colossal basic":
+			case "colossal wyrm basic":
+				return "Colossal Wyrm Agility Course (Basic)";
+
+			// Colossal Wyrm Advanced Agility Course
+			case "waac":
+			case "cwaac":
+			case "wyrma":
+			case "wyrmadvanced":
+			case "wyrm advanced":
+			case "colossal advanced":
+			case "colossal wyrm advanced":
+				return "Colossal Wyrm Agility Course (Advanced)";
+
 			// Prifddinas Agility Course
 			case "prif":
 			case "prifddinas":
@@ -2703,6 +2753,22 @@ public class ChatCommandsPlugin extends Plugin
 			case "the hueycoatl":
 			case "huey":
 				return "Hueycoatl";
+
+			case "crystal chest":
+				return "crystal chest";
+
+			case "larran small chest":
+			case "larran's small chest":
+				return "Larran's small chest";
+
+			case "larran chest":
+			case "larran's chest":
+			case "larran big chest":
+			case "larran's big chest":
+				return "Larran's big chest";
+
+			case "brimstone chest":
+				return "Brimstone chest";
 
 			default:
 				return WordUtils.capitalize(boss);

@@ -36,7 +36,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 0,
 		keyName = "hideTimer",
 		name = "Hide default timer",
-		description = "Hides the default pyramid plunder timer"
+		description = "Hides the default pyramid plunder timer."
 	)
 	default boolean hideTimer()
 	{
@@ -47,7 +47,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 1,
 		keyName = "showExactTimer",
 		name = "Show exact timer",
-		description = "Displays the amount of time remaining as an infobox"
+		description = "Displays the amount of time remaining as an infobox."
 	)
 	default boolean showExactTimer()
 	{
@@ -58,7 +58,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 2,
 		keyName = "timerLowWarning",
 		name = "Timer low warning",
-		description = "Determines the time when the timers color will change"
+		description = "Determines the time when the timers color will change."
 	)
 	default int timerLowWarning()
 	{
@@ -70,7 +70,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 3,
 		keyName = "highlightDoorsColor",
 		name = "Highlight doors",
-		description = "Selects the color for highlighting tomb doors"
+		description = "Selects the color for highlighting tomb doors."
 	)
 	default Color highlightDoorsColor()
 	{
@@ -81,7 +81,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 4,
 		keyName = "highlightDoors",
 		name = "Highlight doors",
-		description = "Highlights the four tomb doors in each room"
+		description = "Highlights the four tomb doors in each room."
 	)
 	default boolean highlightDoors()
 	{
@@ -93,7 +93,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 5,
 		keyName = "highlightSpeartrapColor",
 		name = "Highlight speartrap",
-		description = "Selects the color for highlighting speartraps"
+		description = "Selects the color for highlighting speartraps."
 	)
 	default Color highlightSpeartrapsColor()
 	{
@@ -104,7 +104,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 6,
 		keyName = "highlightSpeartraps",
 		name = "Highlight speartraps",
-		description = "Highlight the spear traps at the entrance of each room"
+		description = "Highlight the spear traps at the entrance of each room."
 	)
 	default boolean highlightSpeartraps()
 	{
@@ -116,7 +116,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 7,
 		keyName = "highlightContainersColor",
 		name = "Highlight containers",
-		description = "Selects the color for highlighting urns, chests and sarcophagus"
+		description = "Selects the color for highlighting urns, chests and sarcophagus."
 	)
 	default Color highlightContainersColor()
 	{
@@ -127,7 +127,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 8,
 		keyName = "highlightUrnsFloor",
 		name = "Highlight urns floor",
-		description = "Highlight the urns starting at selected floor and up"
+		description = "Highlight the urns starting at selected floor and up."
 	)
 	default int highlightUrnsFloor()
 	{
@@ -138,7 +138,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 9,
 		keyName = "highlightedChestFloor",
 		name = "Highlight chest floor",
-		description = "Highlight the Grand Gold Chest starting at selected floor and up"
+		description = "Highlight the grand gold chest starting at selected floor and up."
 	)
 	default int highlightChestFloor()
 	{
@@ -149,7 +149,7 @@ public interface PyramidPlunderConfig extends Config
 		position = 10,
 		keyName = "highlightedSarcophagusFloor",
 		name = "Highlight sarcophagus floor",
-		description = "Highlight the sarcophagus starting at selected floor and up"
+		description = "Highlight the sarcophagus starting at selected floor and up."
 	)
 	default int highlightSarcophagusFloor()
 	{

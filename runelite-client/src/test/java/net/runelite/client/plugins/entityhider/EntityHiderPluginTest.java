@@ -36,11 +36,14 @@ import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.party.PartyMember;
+import net.runelite.client.party.PartyService;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -63,6 +66,10 @@ public class EntityHiderPluginTest
 	@Mock
 	@Bind
 	Hooks hooks;
+
+	@Mock
+	@Bind
+	PartyService partyService;
 
 	@Mock
 	NameableContainer<Ignore> ignoreNameableContainer;
@@ -238,5 +245,44 @@ public class EntityHiderPluginTest
 
 		assertFalse(plugin.shouldDraw(npc, true));
 		assertFalse(plugin.shouldDraw(npc, false));
+	}
+
+	@Test
+	public void testHidePartyMembersPositive()
+	{
+		when(config.hidePartyMembers()).thenReturn(true);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("test player");
+
+		PartyMember partyMember = mock(PartyMember.class);
+		when(partyService.isInParty()).thenReturn(true);
+		when(partyService.getMemberByDisplayName(eq("test player"))).thenReturn(partyMember);
+
+		assertFalse(plugin.shouldDraw(player, true));
+		assertFalse(plugin.shouldDraw(player, false));
+	}
+
+	@Test
+	public void testHidePartyMembersNegative()
+	{
+		when(config.hidePartyMembers()).thenReturn(true);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("test player");
+
+		when(partyService.isInParty()).thenReturn(true);
+		when(partyService.getMemberByDisplayName("test player")).thenReturn(null);
+
+		assertTrue(plugin.shouldDraw(player, true));
+		assertTrue(plugin.shouldDraw(player, false));
 	}
 }

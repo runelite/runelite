@@ -45,11 +45,33 @@ LABEL28:
    join_string            3
    sstore                 1
 LABEL37:
+   iconst                 1736
+   invoke                 3697
+   iconst                 1
+   if_icmpeq              LABEL42
+   jump                   LABEL57
+LABEL42:
+   sload                  0
+   sconst                 "|"
+   invoke                 7699
+   join_string            2
+   append                
+   sstore                 0
+   sload                  1
+   sconst                 "|"
+   iconst                 -1
+   invoke                 7698
+   sconst                 ","
+   invoke                 46
+   join_string            2
+   append                
+   sstore                 1
+LABEL57:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL41
-   jump                   LABEL72
-LABEL41:
+   if_icmpeq              LABEL61
+   jump                   LABEL92
+LABEL61:
    iconst                 1
    sconst                 "Toggle Total XP"
    iload                  0
@@ -67,14 +89,14 @@ LABEL41:
    if_setonop            
    get_varc_int           218
    iload                  0
-   if_icmpeq              LABEL60
-   jump                   LABEL71
-LABEL60:
+   if_icmpeq              LABEL80
+   jump                   LABEL91
+LABEL80:
    get_varc_int           217
    iconst                 -1
-   if_icmpeq              LABEL64
-   jump                   LABEL71
-LABEL64:
+   if_icmpeq              LABEL84
+   jump                   LABEL91
+LABEL84:
    iload                  0
    iconst                 -1
    iload                  1
@@ -82,9 +104,9 @@ LABEL64:
    sload                  1
    iconst                 495
    invoke                 2344
-LABEL71:
-   jump                   LABEL92
-LABEL72:
+LABEL91:
+   jump                   LABEL112
+LABEL92:
    iconst                 992
    iconst                 -2147483645
    iconst                 -1
@@ -105,5 +127,5 @@ LABEL72:
    if_setonmouseleave    
    iconst                 0
    set_varc_int           2
-LABEL92:
+LABEL112:
    return                

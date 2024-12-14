@@ -42,7 +42,7 @@ public interface GroundMarkerConfig extends Config
 	@ConfigItem(
 		keyName = "markerColor",
 		name = "Tile color",
-		description = "The default color for marked tiles"
+		description = "The default color for marked tiles."
 	)
 	default Color markerColor()
 	{
@@ -52,7 +52,7 @@ public interface GroundMarkerConfig extends Config
 	@ConfigItem(
 		keyName = "drawOnMinimap",
 		name = "Draw tiles on minimap",
-		description = "Configures whether marked tiles should be drawn on minimap"
+		description = "Configures whether marked tiles should be drawn on minimap."
 	)
 	default boolean drawTileOnMinimmap()
 	{
@@ -62,7 +62,7 @@ public interface GroundMarkerConfig extends Config
 	@ConfigItem(
 		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
 		name = "Show import/export/clear options",
-		description = "Show the Import, Export, and Clear options on the world map right-click menu"
+		description = "Show the Import, Export, and Clear options on the world map orb right-click menu."
 	)
 	default boolean showImportExport()
 	{
@@ -72,7 +72,7 @@ public interface GroundMarkerConfig extends Config
 	@ConfigItem(
 		keyName = "borderWidth",
 		name = "Border width",
-		description = "Width of the marked tile border"
+		description = "Width of the marked tile border."
 	)
 	default double borderWidth()
 	{
@@ -82,7 +82,7 @@ public interface GroundMarkerConfig extends Config
 	@ConfigItem(
 		keyName = "fillOpacity",
 		name = "Fill opacity",
-		description = "Opacity of the tile fill color"
+		description = "Opacity of the tile fill color."
 	)
 	@Range(
 		max = 255

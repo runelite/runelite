@@ -40,7 +40,7 @@ public interface KingdomConfig extends Config
 		position = 1,
 		keyName = "sendNotifications",
 		name = "Send notifications",
-		description = "Send chat notifications upon login showing current estimated coffer and approval"
+		description = "Send chat notifications upon login showing current estimated coffer and approval."
 	)
 	default boolean shouldSendNotifications()
 	{
@@ -54,7 +54,7 @@ public interface KingdomConfig extends Config
 		position = 2,
 		keyName = "cofferThreshold",
 		name = "Coffer threshold",
-		description = "Send notifications if coffer is below this value"
+		description = "Send notifications if coffer is below this value."
 	)
 	default int getCofferThreshold()
 	{
@@ -68,7 +68,7 @@ public interface KingdomConfig extends Config
 		position = 3,
 		keyName = "approvalThreshold",
 		name = "Approval threshold",
-		description = "Send notifications if approval percentage is below this value"
+		description = "Send notifications if approval percentage is below this value."
 	)
 	default int getApprovalThreshold()
 	{

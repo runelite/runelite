@@ -38,7 +38,7 @@ public interface RunecraftConfig extends Config
 
 	@ConfigSection(
 		name = "Rift settings",
-		description = "Abyss rift overlay settings",
+		description = "Abyss rift overlay settings.",
 		position = 99
 	)
 	String riftSection = "rifts";
@@ -46,7 +46,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showRifts",
 		name = "Show rifts in abyss",
-		description = "Configures whether the rifts in the abyss will be displayed",
+		description = "Configures whether the rifts in the abyss will be displayed.",
 		position = 2,
 		section = riftSection
 	)
@@ -58,7 +58,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showClickBox",
 		name = "Show rift click box",
-		description = "Configures whether to display the click box of the rift",
+		description = "Configures whether to display the click box of the rift.",
 		position = 3,
 		section = riftSection
 	)
@@ -70,7 +70,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showAir",
 		name = "Show air rift",
-		description = "Configures whether to display the air rift",
+		description = "Configures whether to display the air rift.",
 		position = 4,
 		section = riftSection
 	)
@@ -82,7 +82,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showBlood",
 		name = "Show blood rift",
-		description = "Configures whether to display the Blood rift",
+		description = "Configures whether to display the blood rift.",
 		position = 5,
 		section = riftSection
 	)
@@ -94,7 +94,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showBody",
 		name = "Show body rift",
-		description = "Configures whether to display the Body rift",
+		description = "Configures whether to display the body rift.",
 		position = 6,
 		section = riftSection
 	)
@@ -106,7 +106,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showChaos",
 		name = "Show chaos rift",
-		description = "Configures whether to display the Chaos rift",
+		description = "Configures whether to display the chaos rift.",
 		position = 7,
 		section = riftSection
 	)
@@ -118,7 +118,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showCosmic",
 		name = "Show cosmic rift",
-		description = "Configures whether to display the Cosmic rift",
+		description = "Configures whether to display the cosmic rift.",
 		position = 8,
 		section = riftSection
 	)
@@ -130,7 +130,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showDeath",
 		name = "Show death rift",
-		description = "Configures whether to display the Death rift",
+		description = "Configures whether to display the death rift.",
 		position = 9,
 		section = riftSection
 	)
@@ -142,7 +142,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showEarth",
 		name = "Show earth rift",
-		description = "Configures whether to display the Earth rift",
+		description = "Configures whether to display the earth rift.",
 		position = 10,
 		section = riftSection
 	)
@@ -154,7 +154,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showFire",
 		name = "Show fire rift",
-		description = "Configures whether to display the Fire rift",
+		description = "Configures whether to display the fire rift.",
 		position = 11,
 		section = riftSection
 	)
@@ -166,7 +166,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showLaw",
 		name = "Show law rift",
-		description = "Configures whether to display the Law rift",
+		description = "Configures whether to display the law rift.",
 		position = 12,
 		section = riftSection
 	)
@@ -178,7 +178,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showMind",
 		name = "Show mind rift",
-		description = "Configures whether to display the Mind rift",
+		description = "Configures whether to display the mind rift.",
 		position = 13,
 		section = riftSection
 	)
@@ -190,7 +190,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showNature",
 		name = "Show nature rift",
-		description = "Configures whether to display the Nature rift",
+		description = "Configures whether to display the nature rift.",
 		position = 14,
 		section = riftSection
 	)
@@ -202,7 +202,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showSoul",
 		name = "Show soul rift",
-		description = "Configures whether to display the Soul rift",
+		description = "Configures whether to display the soul rift.",
 		position = 15,
 		section = riftSection
 	)
@@ -214,7 +214,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "showWater",
 		name = "Show water rift",
-		description = "Configures whether to display the Water rift",
+		description = "Configures whether to display the water rift.",
 		position = 16,
 		section = riftSection
 	)
@@ -226,7 +226,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "hightlightDarkMage",
 		name = "Highlight Dark mage NPC",
-		description = "Configures whether to highlight the Dark Mage when pouches are degraded",
+		description = "Configures whether to highlight the Dark mage when pouches are degraded.",
 		position = 18
 	)
 	default boolean hightlightDarkMage()
@@ -237,7 +237,7 @@ public interface RunecraftConfig extends Config
 	@ConfigItem(
 		keyName = "degradingNotification",
 		name = "Notify when pouch degrades",
-		description = "Send a notification when a pouch degrades",
+		description = "Send a notification when a pouch degrades.",
 		position = 19
 	)
 	default Notification degradingNotification()

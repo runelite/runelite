@@ -34,7 +34,7 @@ public interface VirtualLevelsConfig extends Config
 	@ConfigItem(
 		keyName = "virtualTotalLevel",
 		name = "Virtual total level",
-		description = "Count virtual levels towards total level",
+		description = "Count virtual levels towards total level.",
 		position = 0
 	)
 	default boolean virtualTotalLevel()

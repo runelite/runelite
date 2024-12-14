@@ -37,7 +37,7 @@ public interface HerbiboarConfig extends Config
 		position = 0,
 		keyName = "showStart",
 		name = "Show start objects",
-		description = "Show highlights for starting rocks and logs"
+		description = "Show highlights for starting rocks and logs."
 	)
 	default boolean isStartShown()
 	{
@@ -48,7 +48,7 @@ public interface HerbiboarConfig extends Config
 		position = 1,
 		keyName = "showClickboxes",
 		name = "Show clickboxes",
-		description = "Show clickboxes on trail objects and tunnels instead of tiles"
+		description = "Show clickboxes on trail objects and tunnels instead of tiles."
 	)
 	default boolean showClickBoxes()
 	{
@@ -60,7 +60,7 @@ public interface HerbiboarConfig extends Config
 		position = 2,
 		keyName = "colorStart",
 		name = "Start color",
-		description = "Color for rocks that start the trails"
+		description = "Color for rocks that start the trails."
 	)
 	default Color getStartColor()
 	{
@@ -71,7 +71,7 @@ public interface HerbiboarConfig extends Config
 		position = 3,
 		keyName = "showTunnel",
 		name = "Show end tunnels",
-		description = "Show highlights for tunnels with herbiboars"
+		description = "Show highlights for tunnels with herbiboars."
 	)
 	default boolean isTunnelShown()
 	{
@@ -83,7 +83,7 @@ public interface HerbiboarConfig extends Config
 		position = 4,
 		keyName = "colorTunnel",
 		name = "Tunnel color",
-		description = "Color for tunnels with herbiboars"
+		description = "Color for tunnels with herbiboars."
 	)
 	default Color getTunnelColor()
 	{
@@ -94,7 +94,7 @@ public interface HerbiboarConfig extends Config
 		position = 5,
 		keyName = "showObject",
 		name = "Show trail objects",
-		description = "Show highlights for mushrooms, mud, seaweed, etc"
+		description = "Show highlights for mushrooms, mud, seaweed, etc."
 	)
 	default boolean isObjectShown()
 	{
@@ -106,7 +106,7 @@ public interface HerbiboarConfig extends Config
 		position = 6,
 		keyName = "colorGameObject",
 		name = "Trail object color",
-		description = "Color for mushrooms, mud, seaweed, etc"
+		description = "Color for mushrooms, mud, seaweed, etc."
 	)
 	default Color getObjectColor()
 	{
@@ -117,7 +117,7 @@ public interface HerbiboarConfig extends Config
 		position = 7,
 		keyName = "showTrail",
 		name = "Show trail",
-		description = "Show highlights for trail prints"
+		description = "Show highlights for trail prints."
 	)
 	default boolean isTrailShown()
 	{
@@ -129,7 +129,7 @@ public interface HerbiboarConfig extends Config
 		position = 8,
 		keyName = "colorTrail",
 		name = "Trail color",
-		description = "Color for mushrooms, mud, seaweed, etc"
+		description = "Color for mushrooms, mud, seaweed, etc."
 	)
 	default Color getTrailColor()
 	{

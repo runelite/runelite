@@ -41,7 +41,7 @@ public interface WintertodtConfig extends Config
 		position = 0,
 		keyName = "showOverlay",
 		name = "Show overlay",
-		description = "Toggles the status overlay"
+		description = "Toggles the status overlay."
 	)
 	default boolean showOverlay()
 	{
@@ -52,7 +52,7 @@ public interface WintertodtConfig extends Config
 		position = 1,
 		keyName = "damageNotificationColor",
 		name = "Damage notification",
-		description = "Color of damage notification text in chat"
+		description = "Color of damage notification text in chat."
 	)
 	default Color damageNotificationColor()
 	{
@@ -63,7 +63,7 @@ public interface WintertodtConfig extends Config
 		position = 2,
 		keyName = "roundNotification",
 		name = "Round notification",
-		description = "Notifies you before the round starts (in seconds)"
+		description = "Notifies you before the round starts (in seconds)."
 	)
 	@Range(
 		max = 60
@@ -78,7 +78,7 @@ public interface WintertodtConfig extends Config
 		position = 3,
 		keyName = "notifyCold",
 		name = "Ambient damage notification",
-		description = "Notifies when hit by the Wintertodt's ambient cold damage"
+		description = "Notifies when hit by the Wintertodt's ambient cold damage."
 	)
 	default WintertodtNotifyDamage notifyCold()
 	{
@@ -89,7 +89,7 @@ public interface WintertodtConfig extends Config
 		position = 4,
 		keyName = "notifySnowfall",
 		name = "Snowfall damage notification",
-		description = "Notifies when hit by the Wintertodt's snowfall attack"
+		description = "Notifies when hit by the Wintertodt's snowfall attack."
 	)
 	default WintertodtNotifyDamage notifySnowfall()
 	{
@@ -100,7 +100,7 @@ public interface WintertodtConfig extends Config
 		position = 5,
 		keyName = "notifyBrazierDamage",
 		name = "Brazier damage notification",
-		description = "Notifies when hit by the brazier breaking"
+		description = "Notifies when hit by the brazier breaking."
 	)
 	default WintertodtNotifyDamage notifyBrazierDamage()
 	{
@@ -111,7 +111,7 @@ public interface WintertodtConfig extends Config
 		position = 6,
 		keyName = "notifyFullInv",
 		name = "Full inventory notification",
-		description = "Notifies when your inventory fills up with bruma roots"
+		description = "Notifies when your inventory fills up with bruma roots."
 	)
 	default boolean notifyFullInv()
 	{
@@ -122,7 +122,7 @@ public interface WintertodtConfig extends Config
 		position = 7,
 		keyName = "notifyEmptyInv",
 		name = "Empty inventory notification",
-		description = "Notifies when you run out of bruma roots"
+		description = "Notifies when you run out of bruma roots."
 	)
 	default boolean notifyEmptyInv()
 	{
@@ -133,7 +133,7 @@ public interface WintertodtConfig extends Config
 		position = 8,
 		keyName = "notifyBrazierOut",
 		name = "Brazier extinguish notification",
-		description = "Notifies when the brazier goes out"
+		description = "Notifies when the brazier goes out."
 	)
 	default boolean notifyBrazierOut()
 	{

@@ -624,6 +624,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			updateVarTimer(PRAYER_REGENERATION, event.getValue(), i -> i * 12);
 		}
+
+		if (event.getVarbitId() == Varbits.SCURRIUS_FOOD_PILE_COOLDOWN && config.showScurriusFoodPile())
+		{
+			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
+		}
 	}
 
 	@Subscribe
@@ -845,6 +850,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showPrayerRegneration())
 		{
 			removeVarTimer(PRAYER_REGENERATION);
+		}
+
+		if (!config.showScurriusFoodPile())
+		{
+			removeVarTimer(SCURRIUS_FOOD_PILE);
 		}
 	}
 
@@ -1167,17 +1177,20 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (actor.getGraphic() == BIND.getGraphicId() && config.showFreezes())
 		{
-			createGameTimer(BIND);
+			freezeTimer = createGameTimer(BIND);
+			freezeTime = client.getTickCount();
 		}
 
 		if (actor.getGraphic() == SNARE.getGraphicId() && config.showFreezes())
 		{
-			createGameTimer(SNARE);
+			freezeTimer = createGameTimer(SNARE);
+			freezeTime = client.getTickCount();
 		}
 
 		if (actor.getGraphic() == ENTANGLE.getGraphicId() && config.showFreezes())
 		{
-			createGameTimer(ENTANGLE);
+			freezeTimer = createGameTimer(ENTANGLE);
+			freezeTime = client.getTickCount();
 		}
 
 		// downgrade freeze based on graphic, if at the same tick as the freeze message
