@@ -908,6 +908,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	@Builder
 	private AnagramClue(
+		int itemId,
 		String text,
 		String npc,
 		@Nullable WorldPoint location,
@@ -918,6 +919,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Nullable Integer objectId
 	)
 	{
+		this.itemId = itemId;
 		this.text = text;
 		this.npc = npc;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
