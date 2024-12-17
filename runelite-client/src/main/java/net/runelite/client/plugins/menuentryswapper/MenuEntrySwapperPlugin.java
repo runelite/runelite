@@ -982,10 +982,26 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				final ItemComposition itemComposition = itemManager.getItemComposition(entry.getItemId());
 				final String[] actions = itemComposition.getInventoryActions();
-				final Integer leftClickOp = getItemSwapConfig(false, itemComposition.getId());
-				final Integer shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
 				final int defaultLeftClickOp = defaultOp(itemComposition, false);
 				final int defaultShiftClickOp = defaultOp(itemComposition, true);
+
+				// getItemSwapConfig will return null if the user has not previously set an option
+				Integer leftClickOp = getItemSwapConfig(false, itemComposition.getId());
+				Integer shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
+
+				// If leftClickOp has not been set previously, set it to its default option.
+				if (leftClickOp == null)
+				{
+					setItemSwapConfig(false, itemComposition.getId(), defaultLeftClickOp);
+					leftClickOp = getItemSwapConfig(false, itemComposition.getId());
+				}
+
+				// If shiftClickOp has not been set previously, set it to its default option.
+				if (shiftClickOp == null)
+				{
+					setItemSwapConfig(true, itemComposition.getId(), defaultShiftClickOp);
+					shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
+				}
 
 				MenuEntry swapLeftClick = client.createMenuEntry(idx)
 					.setOption("Swap left-click")
@@ -1028,14 +1044,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 					if (actionIdx == 2)
 					{
 						// Use
-						if (defaultLeftClickOp != -1 && config.leftClickCustomization())
+						if (defaultLeftClickOp != -1 && leftClickOp != null && leftClickOp != -1 && config.leftClickCustomization())
 						{
 							subLeft.createMenuEntry(0)
 								.setOption("Use")
 								.setType(MenuAction.RUNELITE)
 								.onClick(heldItemConsumer(itemComposition, "Use", -1, false));
 						}
-						if (defaultShiftClickOp != -1 && config.shiftClickCustomization())
+						if (defaultShiftClickOp != -1 && shiftClickOp != null && shiftClickOp != -1 && config.shiftClickCustomization())
 						{
 							subShift.createMenuEntry(0)
 								.setOption("Use")
@@ -1073,10 +1089,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 
-				if (leftClickOp != null && config.leftClickCustomization())
+				if (leftClickOp != null && leftClickOp != defaultLeftClickOp && config.leftClickCustomization())
 				{
 					subLeft.createMenuEntry(0)
-						.setOption("Reset")
+						.setOption("Reset" + " (" + ((defaultLeftClickOp == -1) ? "Use" : actions[defaultLeftClickOp]) + ")")
 						.setType(MenuAction.RUNELITE)
 						.onClick(e ->
 						{
@@ -1091,13 +1107,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 								.build());
 
 							log.debug("Unset held item left swap for {}", itemComposition.getMembersName());
-							unsetItemSwapConfig(false, itemComposition.getId());
+							setItemSwapConfig(false, itemComposition.getId(), defaultOp(itemComposition, false)); // Set to default
 						});
 				}
-				if (shiftClickOp != null && config.shiftClickCustomization())
+				if (shiftClickOp != null && shiftClickOp != defaultShiftClickOp && config.shiftClickCustomization())
 				{
 					subShift.createMenuEntry(0)
-						.setOption("Reset")
+						.setOption("Reset" + " (" + ((defaultShiftClickOp == -1) ? "Use" : actions[defaultShiftClickOp]) + ")")
 						.setType(MenuAction.RUNELITE)
 						.onClick(e ->
 						{
@@ -1112,7 +1128,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 								.build());
 
 							log.debug("Unset held item shift swap for {}", itemComposition.getMembersName());
-							unsetItemSwapConfig(true, itemComposition.getId());
+							setItemSwapConfig(true, itemComposition.getId(), defaultOp(itemComposition, true));
 						});
 				}
 
