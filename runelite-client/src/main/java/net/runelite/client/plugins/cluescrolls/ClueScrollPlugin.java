@@ -733,7 +733,7 @@ public class ClueScrollPlugin extends Plugin
 					}
 					else
 					{
-						log.info("Unknown clue text: {}", clueScrollText.getText());
+						log.info("Unknown clue scroll (id {}) for '{}'", clueItemId, clueScrollText.getText());
 						resetClue(true);
 					}
 				}
