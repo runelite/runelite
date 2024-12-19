@@ -31,6 +31,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
@@ -48,25 +49,26 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClueScroll
 {
 	static final List<CipherClue> CLUES = ImmutableList.of(
-		new CipherClue("BMJ UIF LFCBC TFMMFS", /* base npc for Ali or Isma'il the Kebab seller */ NullNpcID.NULL_11875, new WorldPoint(3354, 2974, 0), "Pollnivneach", "How many coins would you need to purchase 133 kebabs from me?", "399"),
-		new CipherClue("GUHCHO", NpcID.DREZEL, new WorldPoint(3440, 9895, 0), "Paterdomus", "Please solve this for x: 7x - 28=21", "7"),
-		new CipherClue("HQNM LZM STSNQ", NpcID.IRONMAN_TUTOR, new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?", "666"),
-		new CipherClue("ZHLUG ROG PDQ", NpcID.WEIRD_OLD_MAN, new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "SIX LEGS! All of them have 6! There are 25 of them! How many legs?", "150"),
-		new CipherClue("ECRVCKP MJCNGF", NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3754, 0), "Large eastern building in Port Piscarilius", "How many fishing cranes can you find around here?", "5"),
-		new CipherClue("OVEXON", NpcID.ELUNED, new WorldPoint(2289, 3144, 0), "Outside Lletya or in Prifddinas after Song of the Elves", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
-		new CipherClue("VTYR APCNTGLW", NpcID.KING_PERCIVAL, new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
-		new CipherClue("UZZU MUJHRKYYKJ", NpcID.OTTO_GODBLESSED, new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
-		new CipherClue("XJABSE USBJCPSO", NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
-		new CipherClue("HCKTA IQFHCVJGT", NpcID.FAIRY_GODFATHER, new WorldPoint(2446, 4428, 0), "Zanaris throne room", "There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?", "64"),
-		new CipherClue("ZSBKDO ZODO", NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofuntus"),
-		new CipherClue("GBJSZ RVFFO", NpcID.FAIRY_QUEEN, new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),
-		new CipherClue("QSPGFTTPS HSBDLMFCPOF", NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
-		new CipherClue("IWPPLQTP", NpcID.GUNNJORN, new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
-		new CipherClue("BSOPME MZETQPS", NpcID.ARNOLD_LYDSPOR, new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank"),
-		new CipherClue("ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village."),
-		new CipherClue("BXJA UNJMNA YRCAR", NpcID.SOAR_LEADER_PITRI, new WorldPoint(1559, 3045, 0), "Top of the Hunter Guild")
+		new CipherClue(ItemID.CLUE_SCROLL_MEDIUM_19768, "BMJ UIF LFCBC TFMMFS", /* base npc for Ali or Isma'il the Kebab seller */ NullNpcID.NULL_11875, new WorldPoint(3354, 2974, 0), "Pollnivneach", "How many coins would you need to purchase 133 kebabs from me?", "399"),
+		new CipherClue(ItemID.CLUE_SCROLL_MEDIUM_19772, "GUHCHO", NpcID.DREZEL, new WorldPoint(3440, 9895, 0), "Paterdomus", "Please solve this for x: 7x - 28=21", "7"),
+		new CipherClue(ItemID.CLUE_SCROLL_MEDIUM_19770, "HQNM LZM STSNQ", NpcID.IRONMAN_TUTOR, new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?", "666"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19904, "ZHLUG ROG PDQ", NpcID.WEIRD_OLD_MAN, new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "SIX LEGS! All of them have 6! There are 25 of them! How many legs?", "150"),
+		new CipherClue(ItemID.CLUE_SCROLL_MEDIUM_19766, "ECRVCKP MJCNGF", NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3754, 0), "Large eastern building in Port Piscarilius", "How many fishing cranes can you find around here?", "5"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19898, "OVEXON", NpcID.ELUNED, new WorldPoint(2289, 3144, 0), "Outside Lletya or in Prifddinas after Song of the Elves", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19906, "VTYR APCNTGLW", NpcID.KING_PERCIVAL, new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19900, "UZZU MUJHRKYYKJ", NpcID.OTTO_GODBLESSED, new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
+		new CipherClue(ItemID.CLUE_SCROLL_MEDIUM_19764, "XJABSE USBJCPSO", NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19908, "HCKTA IQFHCVJGT", NpcID.FAIRY_GODFATHER, new WorldPoint(2446, 4428, 0), "Zanaris throne room", "There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?", "64"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19902, "ZSBKDO ZODO", NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofuntus"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_19910, "GBJSZ RVFFO", NpcID.FAIRY_QUEEN, new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),
+		new CipherClue(ItemID.CLUE_SCROLL_MEDIUM_19762, "QSPGFTTPS HSBDLMFCPOF", NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_23172, "IWPPLQTP", NpcID.GUNNJORN, new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_23170, "BSOPME MZETQPS", NpcID.ARNOLD_LYDSPOR, new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank"),
+		new CipherClue(ItemID.TREASURE_SCROLL, "ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village."),
+		new CipherClue(ItemID.CLUE_SCROLL_HARD_28916, "BXJA UNJMNA YRCAR", NpcID.SOAR_LEADER_PITRI, new WorldPoint(1559, 3045, 0), "Top of the Hunter Guild")
 	);
 
+	private final int itemId;
 	private final String text;
 	private final int npcId;
 	@Getter(AccessLevel.PRIVATE)
@@ -77,8 +79,9 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 	@Nullable
 	private final String answer;
 
-	private CipherClue(String text, WorldPoint location, String area)
+	private CipherClue(int itemId, String text, WorldPoint location, String area)
 	{
+		this.itemId = itemId;
 		this.text = "The cipher reveals where to dig next: " + text;
 		this.npcId = -1;
 		this.location = location;
@@ -87,13 +90,14 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		this.answer = null;
 	}
 
-	private CipherClue(String text, int npcId, WorldPoint location, String area)
+	private CipherClue(int itemId, String text, int npcId, WorldPoint location, String area)
 	{
-		this(text, npcId, location, area, null, null);
+		this(itemId, text, npcId, location, area, null, null);
 	}
 
-	private CipherClue(String text, int npcId, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
+	private CipherClue(int itemId, String text, int npcId, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
 	{
+		this.itemId = itemId;
 		this.text = "The cipher reveals who to speak to next: " + text;
 		this.npcId = npcId;
 		this.location = location;
@@ -156,6 +160,19 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
+	}
+
+	public static CipherClue forItemId(int itemId)
+	{
+		for (CipherClue clue : CLUES)
+		{
+			if (clue.itemId == itemId)
+			{
+				return clue;
+			}
+		}
+
+		return null;
 	}
 
 	public static CipherClue forText(String text)
