@@ -879,6 +879,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Stonecutter Outpost")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.CLUE_SCROLL_ELITE_21524)
 			.text("CIRR JAD")
 			.npc("Jardric")
 			.locationProvider(plugin ->
@@ -908,7 +909,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	@Builder
 	private AnagramClue(
-		int itemId,
+		@Nullable Integer itemId,
 		String text,
 		String npc,
 		@Nullable WorldPoint location,
@@ -919,7 +920,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Nullable Integer objectId
 	)
 	{
-		this.itemId = itemId;
+		this.itemId = itemId != null ? itemId : -1;
 		this.text = text;
 		this.npc = npc;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);

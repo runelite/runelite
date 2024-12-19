@@ -2118,7 +2118,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	@Builder
 	private CrypticClue(
-		int itemId,
+		@Nullable Integer itemId,
 		String text,
 		@Nullable String npc,
 		int objectId,
@@ -2131,7 +2131,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Singular List<Integer> npcRegions
 	)
 	{
-		this.itemId = itemId;
+		this.itemId = itemId != null ? itemId : -1;
 		this.text = text;
 		this.npc = npc;
 		this.objectId = objectId > 0 ? objectId : -1;
