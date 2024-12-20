@@ -143,7 +143,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2841, 3267, 0), new CoordinateClueInfo("Crandor island.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3168, 3041, 0), new CoordinateClueInfo("Bedabin Camp.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2542, 3031, 0), new CoordinateClueInfo("Gu'Tanoth, may require 20gp.", SARADOMIN_WIZARD))
-		.put(new WorldPoint(2581, 3030, 0), new CoordinateClueInfo("Gu'Tanoth island, enter cave north-west of Feldip Hills (AKS).", SARADOMIN_WIZARD))
+		.put(new WorldPoint(2581, 3030, 0), new CoordinateClueInfo("Gu'Tanoth island, enter cave south-west of Feldip Hills (AKS).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2961, 3024, 0), new CoordinateClueInfo("Ship yard (DKP).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2339, 3311, 0), new CoordinateClueInfo("East of Prifddinas on Arandar mountain pass.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3440, 3341, 0), new CoordinateClueInfo("Nature Spirit's grotto (BIP).", SARADOMIN_WIZARD))
