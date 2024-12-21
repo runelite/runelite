@@ -50,6 +50,7 @@ public enum LoginScreenOverride
 	VARLAMORE_2("varlamore2.jpg"),
 	WHILE_GUTHIX_SLEEPS("wgs.jpg"),
 	LEAGUES_3("leagues3.jpg"),
+	LEAGUES_5("leagues5.jpg"),
 	CUSTOM,
 	RANDOM;
 
