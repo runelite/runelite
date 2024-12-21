@@ -135,7 +135,7 @@ public class NpcIndicatorsPluginTest
 	public void testAliveNpcMenuHighlight()
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
-		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.NONE);
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.NAME);
 		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLUE);
 
 		npcIndicatorsPlugin.rebuild();

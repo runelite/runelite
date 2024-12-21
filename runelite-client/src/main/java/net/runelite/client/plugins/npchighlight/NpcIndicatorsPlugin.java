@@ -338,7 +338,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (monsterEndIndex == -1)
 		{
-			return target;
+			return displayMode == DisplayMode.LEVEL ? target : ColorUtil.prependColorTag(cleanedTarget, color);
 		}
 
 		String levelText = cleanedTarget.substring(levelStartIndex);
@@ -347,7 +347,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
 		if (originalMonsterEndIndex == -1)
 		{
-			return target;
+			return displayMode == DisplayMode.LEVEL ? target : ColorUtil.prependColorTag(cleanedTarget, color);
 		}
 
 		String monsterTextTagged = target.substring(0, originalMonsterEndIndex);
