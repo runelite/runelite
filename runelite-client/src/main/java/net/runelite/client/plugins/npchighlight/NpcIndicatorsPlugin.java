@@ -324,13 +324,13 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			if (color != null)
 			{
-				final String target = getTargetColor(event.getTarget(), color, config.highlightMenuNames());
+				final String target = getTargetColor(event.getTarget(), config.highlightMenuNames(), color);
 				menuEntry.setTarget(target);
 			}
 		}
 	}
 
-	private String getTargetColor(String target, Color color, DisplayMode displayMode)
+	private String getTargetColor(String target, DisplayMode displayMode, Color color)
 	{
 		String cleanedTarget = Text.removeTags(target);
 		int levelStartIndex = cleanedTarget.lastIndexOf('(');

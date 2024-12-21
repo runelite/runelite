@@ -211,10 +211,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 10,
-			keyName = "highlightMenuNames",
-			name = "Highlight npc menu",
-			description = "Highlight NPC text in right-click menu."
+		position = 10,
+		keyName = "highlightMenuNames",
+		name = "Highlight npc menu",
+		description = "Highlight NPC text in right-click menu."
 	)
 	default DisplayMode highlightMenuNames()
 	{
