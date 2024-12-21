@@ -346,7 +346,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
 		String monsterTextTagged = target.substring(0, originalMonsterEndIndex);
 
-		if (displayMode == DisplayMode.NAME || displayMode == DisplayMode.BOTH) {
+		if (displayMode == DisplayMode.NAME || displayMode == DisplayMode.BOTH)
+		{
 			monsterTextTagged = ColorUtil.prependColorTag(monsterText, color);
 		}
 
