@@ -334,25 +334,19 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		String cleanedTarget = Text.removeTags(target);
 		int levelStartIndex = cleanedTarget.lastIndexOf('(');
-		int monsterEndIndex = levelStartIndex != -1 ? cleanedTarget.substring(0, levelStartIndex).trim().length() : -1;
 
-		if (monsterEndIndex == -1)
+		if (levelStartIndex == -1)
 		{
 			return displayMode == DisplayMode.LEVEL ? target : ColorUtil.prependColorTag(cleanedTarget, color);
 		}
 
-		String levelText = cleanedTarget.substring(levelStartIndex);
-		String monsterText = cleanedTarget.substring(0, monsterEndIndex);
+		String monsterText = cleanedTarget.substring(0, levelStartIndex).trim();
+		String levelText = cleanedTarget.substring(levelStartIndex).trim();
 
 		int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
-		if (originalMonsterEndIndex == -1)
-		{
-			return displayMode == DisplayMode.LEVEL ? target : ColorUtil.prependColorTag(cleanedTarget, color);
-		}
-
 		String monsterTextTagged = target.substring(0, originalMonsterEndIndex);
-		if (displayMode == DisplayMode.NAME || displayMode == DisplayMode.BOTH)
-		{
+
+		if (displayMode == DisplayMode.NAME || displayMode == DisplayMode.BOTH) {
 			monsterTextTagged = ColorUtil.prependColorTag(monsterText, color);
 		}
 

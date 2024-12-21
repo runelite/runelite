@@ -132,11 +132,11 @@ public class NpcIndicatorsPluginTest
 	}
 
 	@Test
-	public void testAliveNpcMenuHighlight()
+	public void testNpcMenuHighlightName()
 	{
 		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
 		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.NAME);
-		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLUE);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLACK);
 
 		npcIndicatorsPlugin.rebuild();
 
@@ -145,14 +145,134 @@ public class NpcIndicatorsPluginTest
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
 		TestMenuEntry entry = new TestMenuEntry();
-		entry.setTarget("Goblin");
+		entry.setTarget("<col=ff0000>Goblin<col=ff0000>  (level-3)");
 		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
 		entry.setActor(npc);
 
 		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
 
-		assertEquals("<col=0000ff>Goblin", entry.getTarget()); // blue
+		assertEquals("<col=000000>Goblin<col=ff0000>  (level-3)", entry.getTarget());
+	}
+
+	@Test
+	public void testNpcMenuHighlightLevel()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.LEVEL);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLACK);
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Goblin");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("<col=ff0000>Goblin<col=ff0000>  (level-3)");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
+
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		assertEquals("<col=ff0000>Goblin  <col=000000>(level-3)", entry.getTarget());
+	}
+
+	@Test
+	public void testNpcMenuHighlightBoth()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.BOTH);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLACK);
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Goblin");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("<col=ff0000>Goblin<col=ff0000>  (level-3)");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
+
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		assertEquals("<col=000000>Goblin  <col=000000>(level-3)", entry.getTarget());
+	}
+
+	@Test
+	public void testNpcMenuHighlightNone()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("goblin");
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.NONE);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLACK);
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Goblin");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("<col=ff0000>Goblin<col=ff0000>  (level-3)");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
+
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		assertEquals("<col=ff0000>Goblin<col=ff0000>  (level-3)", entry.getTarget());
+	}
+
+	@Test
+	public void testNonMobNpcMenuHighlightLevel()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("banker");
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.LEVEL);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLACK);
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Banker");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("<col=ff0000>Banker");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
+
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		assertEquals("<col=ff0000>Banker", entry.getTarget());
+	}
+
+	@Test
+	public void testNonMobNpcMenuHighlightName()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("banker");
+		when(npcIndicatorsConfig.highlightMenuNames()).thenReturn(DisplayMode.NAME);
+		when(npcIndicatorsConfig.highlightColor()).thenReturn(Color.BLUE);
+
+		npcIndicatorsPlugin.rebuild();
+
+		NPC npc = mock(NPC.class);
+		when(npc.getName()).thenReturn("Banker");
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
+
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("Banker");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
+
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
+		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
+
+		assertEquals("<col=0000ff>Banker", entry.getTarget()); // blue
 	}
 
 	@Test
