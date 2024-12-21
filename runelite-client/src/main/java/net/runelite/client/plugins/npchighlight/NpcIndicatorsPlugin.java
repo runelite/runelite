@@ -317,17 +317,47 @@ public class NpcIndicatorsPlugin extends Plugin
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() != DisplayMode.NONE && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
 			}
 
 			if (color != null)
 			{
-				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				final String target = getTargetColor(event.getTarget(), config.highlightMenuNames(), color);
 				menuEntry.setTarget(target);
 			}
 		}
+	}
+
+	private String getTargetColor(String target, DisplayMode displayMode, Color color)
+	{
+		String cleanedTarget = Text.removeTags(target);
+		int levelStartIndex = cleanedTarget.lastIndexOf('(');
+
+		if (levelStartIndex == -1)
+		{
+			return displayMode == DisplayMode.LEVEL ? target : ColorUtil.prependColorTag(cleanedTarget, color);
+		}
+
+		String monsterText = cleanedTarget.substring(0, levelStartIndex).trim();
+		String levelText = cleanedTarget.substring(levelStartIndex).trim();
+
+		int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
+		String monsterTextTagged = target.substring(0, originalMonsterEndIndex);
+
+		if (displayMode == DisplayMode.NAME || displayMode == DisplayMode.BOTH)
+		{
+			monsterTextTagged = ColorUtil.prependColorTag(monsterText, color);
+		}
+
+		String levelTextTagged = target.substring(originalMonsterEndIndex);
+		if (displayMode == DisplayMode.LEVEL || displayMode == DisplayMode.BOTH)
+		{
+			levelTextTagged = "  " + ColorUtil.prependColorTag(levelText, color);
+		}
+
+		return monsterTextTagged + levelTextTagged;
 	}
 
 	private int createTagColorMenu(int idx, String target, NPC npc)
