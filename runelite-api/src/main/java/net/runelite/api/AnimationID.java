@@ -109,6 +109,14 @@ public final class AnimationID
 	public static final int HUNTER_LAY_MANIACAL_MONKEY_BOULDER_TRAP = 7259; // setting up maniacal monkey boulder trap
 	public static final int HUNTER_CHECK_BIRD_SNARE = 5207;
 	public static final int HERBLORE_MAKE_TAR = 5249;
+	public static final int FLETCHING_ATTACH_STOCK_TO_BRONZE_LIMBS = 4436;
+	public static final int FLETCHING_ATTACH_STOCK_TO_BLURITE_LIMBS = 4437;
+	public static final int FLETCHING_ATTACH_STOCK_TO_IRON_LIMBS = 4438;
+	public static final int FLETCHING_ATTACH_STOCK_TO_STEEL_LIMBS = 4439;
+	public static final int FLETCHING_ATTACH_STOCK_TO_MITHRIL_LIMBS = 4440;
+	public static final int FLETCHING_ATTACH_STOCK_TO_ADAMANTITE_LIMBS = 4441;
+	public static final int FLETCHING_ATTACH_STOCK_TO_RUNITE_LIMBS = 4442;
+	public static final int FLETCHING_ATTACH_STOCK_TO_DRAGON_LIMBS = 7860;
 	public static final int FLETCHING_STRING_NORMAL_SHORTBOW = 6678;
 	public static final int FLETCHING_STRING_NORMAL_LONGBOW = 6684;
 	public static final int FLETCHING_STRING_OAK_SHORTBOW = 6679;
