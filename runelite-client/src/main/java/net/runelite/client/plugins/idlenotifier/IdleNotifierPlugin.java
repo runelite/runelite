@@ -525,8 +525,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| local == null
+		if (local == null
 			// If user has clicked in the last second then they're not idle so don't send idle notification
 			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 1000
 			|| client.getKeyboardIdleTicks() < 10)
@@ -1003,14 +1002,15 @@ public class IdleNotifierPlugin extends Plugin
 
 		// Reset animation idle timer
 		lastAnimating = null;
-		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
+		var gameState = client.getGameState();
+		if (gameState == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
 		{
 			lastAnimation = IDLE;
 		}
 
 		// Reset interaction idle timer
 		lastInteracting = null;
-		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
+		if (gameState == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
 		}
