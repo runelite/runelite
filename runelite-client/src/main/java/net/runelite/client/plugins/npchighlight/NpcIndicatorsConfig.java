@@ -210,15 +210,23 @@ public interface NpcIndicatorsConfig extends Config
 		return false;
 	}
 
+	enum MenuHighlightStyle
+	{
+		NONE,
+		LEVEL,
+		NAME,
+		BOTH
+	}
+
 	@ConfigItem(
 		position = 10,
-		keyName = "highlightMenuNames",
-		name = "Highlight npc menu",
-		description = "Highlight NPC text in right-click menu."
+		keyName = "highlightMenuStyle",
+		name = "Highlight menu style",
+		description = "Highlight style in the right-click menu."
 	)
-	default DisplayMode highlightMenuNames()
+	default MenuHighlightStyle highlightMenuStyle()
 	{
-		return DisplayMode.NONE;
+		return MenuHighlightStyle.NONE;
 	}
 
 	@ConfigItem(

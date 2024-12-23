@@ -315,49 +315,74 @@ public class NpcIndicatorsPlugin extends Plugin
 			if (npcUtil.isDying(npc))
 			{
 				color = config.deadNpcMenuColor();
+				if (color != null)
+				{
+					final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+					menuEntry.setTarget(target);
+					return;
+				}
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() != DisplayMode.NONE && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			if (highlightedNpcs.containsKey(npc) && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
-			}
-
-			if (color != null)
-			{
-				final String target = getTargetColor(event.getTarget(), config.highlightMenuNames(), color);
+				final String target = getTargetColor(event.getTarget(), config.highlightMenuStyle(), color);
 				menuEntry.setTarget(target);
 			}
 		}
 	}
 
-	private String getTargetColor(String target, DisplayMode displayMode, Color color)
+	private String getTargetColor(String target, NpcIndicatorsConfig.MenuHighlightStyle style, Color color)
 	{
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NONE)
+		{
+			return target;
+		}
+
 		String cleanedTarget = Text.removeTags(target);
-		int levelStartIndex = cleanedTarget.lastIndexOf('(');
-
-		if (levelStartIndex == -1)
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.BOTH)
 		{
-			return displayMode == DisplayMode.LEVEL ? target : ColorUtil.prependColorTag(cleanedTarget, color);
+			return ColorUtil.prependColorTag(cleanedTarget, color);
 		}
 
-		String monsterText = cleanedTarget.substring(0, levelStartIndex).trim();
-		String levelText = cleanedTarget.substring(levelStartIndex).trim();
-
-		int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
-		String monsterTextTagged = target.substring(0, originalMonsterEndIndex);
-
-		if (displayMode == DisplayMode.NAME || displayMode == DisplayMode.BOTH)
+		String name, level;
+		if (target.contains("  (level-"))
 		{
-			monsterTextTagged = ColorUtil.prependColorTag(monsterText, color);
+			int levelStartIndex = cleanedTarget.lastIndexOf('(');
+			String monsterText = cleanedTarget.substring(0, levelStartIndex).trim();
+
+			int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
+			name = target.substring(0, originalMonsterEndIndex);
+			level = target.substring(originalMonsterEndIndex);
+		}
+		else
+		{
+			name = target;
+			level = null;
 		}
 
-		String levelTextTagged = target.substring(originalMonsterEndIndex);
-		if (displayMode == DisplayMode.LEVEL || displayMode == DisplayMode.BOTH)
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NAME)
 		{
-			levelTextTagged = "  " + ColorUtil.prependColorTag(levelText, color);
+			String t = ColorUtil.prependColorTag(Text.removeTags(name), color);
+			if (level != null)
+			{
+				t += level;
+			}
+			return t;
 		}
-
-		return monsterTextTagged + levelTextTagged;
+		else if (style == NpcIndicatorsConfig.MenuHighlightStyle.LEVEL)
+		{
+			String t = name;
+			if (level != null)
+			{
+				t += ColorUtil.prependColorTag(Text.removeTags(level), color);
+			}
+			return t;
+		}
+		else
+		{
+			throw new IllegalArgumentException();
+		}
 	}
 
 	private int createTagColorMenu(int idx, String target, NPC npc)
