@@ -212,6 +212,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			skipNextSpawnCheck = true;
 			rebuild();
 		});
+
+		migrateConfig();
 	}
 
 	@Override
@@ -339,21 +341,17 @@ public class NpcIndicatorsPlugin extends Plugin
 			return target;
 		}
 
-		String cleanedTarget = Text.removeTags(target);
 		if (style == NpcIndicatorsConfig.MenuHighlightStyle.BOTH)
 		{
-			return ColorUtil.prependColorTag(cleanedTarget, color);
+			return ColorUtil.prependColorTag(Text.removeTags(target), color);
 		}
 
 		String name, level;
 		if (target.contains("  (level-"))
 		{
-			int levelStartIndex = cleanedTarget.lastIndexOf('(');
-			String monsterText = cleanedTarget.substring(0, levelStartIndex).trim();
-
-			int originalMonsterEndIndex = target.indexOf(monsterText) + monsterText.length();
-			name = target.substring(0, originalMonsterEndIndex);
-			level = target.substring(originalMonsterEndIndex);
+			int c = target.lastIndexOf('<');
+			name = target.substring(0, c);
+			level = target.substring(c);
 		}
 		else
 		{
@@ -947,5 +945,24 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 		}
 		return colors;
+	}
+
+	private void migrateConfig() {
+		String migrated = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "migrated");
+		if ("1".equals(migrated)) {
+			return;
+		}
+
+		boolean highlightMenuNames = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuNames", boolean.class);
+		if (highlightMenuNames)
+		{
+			configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuStyle", NpcIndicatorsConfig.MenuHighlightStyle.BOTH);
+		}
+		else
+		{
+			configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuStyle", NpcIndicatorsConfig.MenuHighlightStyle.NONE);
+		}
+
+		configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "migrated", 1);
 	}
 }
