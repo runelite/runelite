@@ -947,9 +947,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		return colors;
 	}
 
-	private void migrateConfig() {
+	private void migrateConfig()
+	{
 		String migrated = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "migrated");
-		if ("1".equals(migrated)) {
+		if ("1".equals(migrated))
+		{
 			return;
 		}
 
