@@ -542,7 +542,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (check6hrLogout())
 		{
-			notifier.notify("You are about to log out from being online for 6 hours!");
+			notifier.notify(config.sixHourLogout(), "You are about to log out from being online for 6 hours!");
 		}
 
 		if (checkAnimationIdle(waitDuration, local))

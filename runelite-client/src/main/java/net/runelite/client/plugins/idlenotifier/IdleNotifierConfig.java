@@ -81,6 +81,17 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "sixHourLogout",
+		name = "Six hour logout notification",
+		description = "Configures the six hour logout notification.",
+		position = 5
+	)
+	default Notification sixHourLogout()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
 		keyName = "timeout",
 		name = "Idle notification delay",
 		description = "The notification delay after the player is idle.",
