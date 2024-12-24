@@ -172,16 +172,35 @@ public class EntityHiderPluginTest
 		assertTrue(plugin.shouldDraw(player, false));
 	}
 
-	//	hidenpc hideattacker hidden?
-	//	t       t            t iif attacker would be hidden
-	//	t       f            f
-	//	f       t            t
-	//	f       f            f
 	@Test
-	public void testHideAndAttacker()
+	public void testHideNpcAttacker()
 	{
-		when(config.hideNPCs2D()).thenReturn(true);
 		when(config.hideAttackers()).thenReturn(true);
+		when(config.hideAttackers2D()).thenReturn(true);
+
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(EntityHiderConfig.GROUP);
+		plugin.onConfigChanged(configChanged);
+
+		NPCComposition composition = mock(NPCComposition.class);
+
+		NPC npc = mock(NPC.class);
+		when(npc.getComposition()).thenReturn(composition);
+
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		when(npc.getInteracting()).thenReturn(player);
+
+		assertFalse(plugin.shouldDraw(npc, true));
+		assertFalse(plugin.shouldDraw(npc, false));
+	}
+
+	@Test
+	public void testHideNpcWithoutHideAttackers()
+	{
+		when(config.hideAttackers2D()).thenReturn(false);
+		when(config.hideNPCs2D()).thenReturn(true);
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(EntityHiderConfig.GROUP);
@@ -202,32 +221,10 @@ public class EntityHiderPluginTest
 	}
 
 	@Test
-	public void testHideAndNoAttacker()
-	{
-		when(config.hideNPCs2D()).thenReturn(true);
-
-		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup(EntityHiderConfig.GROUP);
-		plugin.onConfigChanged(configChanged);
-
-		NPCComposition composition = mock(NPCComposition.class);
-
-		NPC npc = mock(NPC.class);
-		when(npc.getComposition()).thenReturn(composition);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
-
-		when(npc.getInteracting()).thenReturn(player);
-
-		assertTrue(plugin.shouldDraw(npc, true));
-		assertTrue(plugin.shouldDraw(npc, false));
-	}
-
-	@Test
-	public void testHideAttacker()
+	public void testHidePlayerAttacker()
 	{
 		when(config.hideAttackers()).thenReturn(true);
+		when(config.hideAttackers2D()).thenReturn(true);
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(EntityHiderConfig.GROUP);
@@ -263,7 +260,7 @@ public class EntityHiderPluginTest
 		when(partyService.isInParty()).thenReturn(true);
 		when(partyService.getMemberByDisplayName(eq("test player"))).thenReturn(partyMember);
 
-		assertFalse(plugin.shouldDraw(player, true));
+		assertTrue(plugin.shouldDraw(player, true));
 		assertFalse(plugin.shouldDraw(player, false));
 	}
 
