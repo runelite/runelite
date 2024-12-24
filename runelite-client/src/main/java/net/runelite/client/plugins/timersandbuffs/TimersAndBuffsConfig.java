@@ -24,10 +24,8 @@
  */
 package net.runelite.client.plugins.timersandbuffs;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.*;
+
 import java.time.Instant;
 
 @ConfigGroup(TimersAndBuffsConfig.GROUP)
@@ -57,11 +55,55 @@ public interface TimersAndBuffsConfig extends Config
 	String spellsSection = "spellsSection";
 
 	@ConfigSection(
+			name = "Thieving",
+			description = "Timers and buffs related to thieving.",
+			position = 3
+	)
+	String thievingSection = "thievingSection";
+
+	@ConfigSection(
 		name = "Miscellaneous",
 		description = "Timers and buffs related to miscellaneous items or activities.",
-		position = 3
+		position = 4
 	)
 	String miscellaneousSection = "miscellaneousSection";
+
+	@ConfigItem(
+			keyName = "showPickpocketStun",
+			name = "Pickpocket stun timer",
+			description = "Configures whether pickpocket stun timer is displayed.",
+			section = thievingSection,
+			position = 1
+	)
+	default boolean showPickpocketStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showWealthCitizensTimer",
+			name = "Wealthy Citizens",
+			description = "Configures whether timers for wealthy citizens are displayed. During this time, wealthy citizens will not be distracted again.",
+			section = thievingSection,
+			position = 2
+	)
+	default boolean showWealthyCitizensTimer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "IgnoreWealthyAfter",
+			name = "Disable Wealthy Citizens After",
+			description = "Time since the last pickpocket until the wealthy citizens timer is disabled",
+			section = thievingSection,
+			position = 3
+	)
+	@Units(Units.MINUTES)
+	default int ignoreWealthy()
+	{
+		return 20;
+	}
 
 	@ConfigItem(
 		keyName = "showHomeMinigameTeleports",
@@ -410,17 +452,6 @@ public interface TimersAndBuffsConfig extends Config
 	default boolean showArceuusCooldown()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showPickpocketStun",
-		name = "Pickpocket stun timer",
-		description = "Configures whether pickpocket stun timer is displayed.",
-		section = miscellaneousSection
-	)
-	default boolean showPickpocketStun()
-	{
-		return true;
 	}
 
 	@ConfigItem(
