@@ -212,6 +212,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			skipNextSpawnCheck = true;
 			rebuild();
 		});
+
+		migrateConfig();
 	}
 
 	@Override
@@ -315,18 +317,69 @@ public class NpcIndicatorsPlugin extends Plugin
 			if (npcUtil.isDying(npc))
 			{
 				color = config.deadNpcMenuColor();
+				if (color != null)
+				{
+					final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+					menuEntry.setTarget(target);
+					return;
+				}
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			if (highlightedNpcs.containsKey(npc) && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
-			}
-
-			if (color != null)
-			{
-				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				final String target = getTargetColor(event.getTarget(), config.highlightMenuStyle(), color);
 				menuEntry.setTarget(target);
 			}
+		}
+	}
+
+	private String getTargetColor(String target, NpcIndicatorsConfig.MenuHighlightStyle style, Color color)
+	{
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NONE)
+		{
+			return target;
+		}
+
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.BOTH)
+		{
+			return ColorUtil.prependColorTag(Text.removeTags(target), color);
+		}
+
+		String name, level;
+		if (target.contains("  (level-"))
+		{
+			int c = target.lastIndexOf('<');
+			name = target.substring(0, c);
+			level = target.substring(c);
+		}
+		else
+		{
+			name = target;
+			level = null;
+		}
+
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NAME)
+		{
+			String t = ColorUtil.prependColorTag(Text.removeTags(name), color);
+			if (level != null)
+			{
+				t += level;
+			}
+			return t;
+		}
+		else if (style == NpcIndicatorsConfig.MenuHighlightStyle.LEVEL)
+		{
+			String t = name;
+			if (level != null)
+			{
+				t += ColorUtil.prependColorTag(Text.removeTags(level), color);
+			}
+			return t;
+		}
+		else
+		{
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -892,5 +945,26 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 		}
 		return colors;
+	}
+
+	private void migrateConfig()
+	{
+		String migrated = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "migrated");
+		if ("1".equals(migrated))
+		{
+			return;
+		}
+
+		boolean highlightMenuNames = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuNames", boolean.class);
+		if (highlightMenuNames)
+		{
+			configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuStyle", NpcIndicatorsConfig.MenuHighlightStyle.BOTH);
+		}
+		else
+		{
+			configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuStyle", NpcIndicatorsConfig.MenuHighlightStyle.NONE);
+		}
+
+		configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "migrated", 1);
 	}
 }
