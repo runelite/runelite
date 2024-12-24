@@ -28,17 +28,33 @@ package net.runelite.client.plugins.entityhider;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup(EntityHiderConfig.GROUP)
 public interface EntityHiderConfig extends Config
 {
 	String GROUP = "entityhider";
 
+	@ConfigSection(
+		name = "3D",
+		position = 1,
+		description = "Options to hide rendering of 3D scene elements (player models, NPC models)."
+	)
+	String draw3D = "draw3D";
+
+	@ConfigSection(
+		name = "2D",
+		position = 2,
+		description = "Options to hide rendering of 2D elements (overhead text, prayers, etc.)."
+	)
+	String draw2D = "draw2D";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "hidePlayers",
 		name = "Hide others",
-		description = "Configures whether or not other players are hidden."
+		description = "Configures whether or not other players are hidden.",
+		section = draw3D
 	)
 	default boolean hideOthers()
 	{
@@ -49,7 +65,8 @@ public interface EntityHiderConfig extends Config
 		position = 2,
 		keyName = "hidePlayers2D",
 		name = "Hide others 2D",
-		description = "Configures whether or not other players 2D elements are hidden."
+		description = "Configures whether or not other players 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideOthers2D()
 	{
@@ -60,7 +77,8 @@ public interface EntityHiderConfig extends Config
 		position = 3,
 		keyName = "hidePartyMembers",
 		name = "Hide party members",
-		description = "Configures whether or not party members are hidden."
+		description = "Configures whether or not party members are hidden.",
+		section = draw3D
 	)
 	default boolean hidePartyMembers()
 	{
@@ -71,7 +89,8 @@ public interface EntityHiderConfig extends Config
 		position = 4,
 		keyName = "hidePartyMembers2D",
 		name = "Hide party members 2D",
-		description = "Configures whether or not party members' 2D elements are hidden."
+		description = "Configures whether or not party members' 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hidePartyMembers2D()
 	{
@@ -82,7 +101,8 @@ public interface EntityHiderConfig extends Config
 		position = 5,
 		keyName = "hideFriends",
 		name = "Hide friends",
-		description = "Configures whether or not friends are hidden."
+		description = "Configures whether or not friends are hidden.",
+		section = draw3D
 	)
 	default boolean hideFriends()
 	{
@@ -93,7 +113,8 @@ public interface EntityHiderConfig extends Config
 		position = 6,
 		keyName = "hideFriends2D",
 		name = "Hide friends 2D",
-		description = "Configures whether or not friends' 2D elements are hidden."
+		description = "Configures whether or not friends' 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideFriends2D()
 	{
@@ -104,7 +125,8 @@ public interface EntityHiderConfig extends Config
 		position = 7,
 		keyName = "hideClanMates", // is actually friends chat
 		name = "Hide friends chat members",
-		description = "Configures whether or not friends chat members are hidden."
+		description = "Configures whether or not friends chat members are hidden.",
+		section = draw3D
 	)
 	default boolean hideFriendsChatMembers()
 	{
@@ -115,7 +137,8 @@ public interface EntityHiderConfig extends Config
 		position = 8,
 		keyName = "hideClanMates2D", // is actually friends chat
 		name = "Hide friends chat members 2D",
-		description = "Configures whether or not friends chat members' 2D elements are hidden."
+		description = "Configures whether or not friends chat members' 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideFriendsChatMembers2D()
 	{
@@ -126,7 +149,8 @@ public interface EntityHiderConfig extends Config
 		position = 9,
 		keyName = "hideClanChatMembers",
 		name = "Hide clan chat members",
-		description = "Configures whether or not clan chat members are hidden."
+		description = "Configures whether or not clan chat members are hidden.",
+		section = draw3D
 	)
 	default boolean hideClanChatMembers()
 	{
@@ -137,7 +161,8 @@ public interface EntityHiderConfig extends Config
 		position = 10,
 		keyName = "hideClanChatMembers2D",
 		name = "Hide clan chat members 2D",
-		description = "Configures whether or not clan chat members' 2D elements are hidden."
+		description = "Configures whether or not clan chat members' 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideClanChatMembers2D()
 	{
@@ -148,7 +173,8 @@ public interface EntityHiderConfig extends Config
 		position = 11,
 		keyName = "hideIgnores",
 		name = "Hide ignores",
-		description = "Configures whether or not ignored players are hidden."
+		description = "Configures whether or not ignored players are hidden.",
+		section = draw3D
 	)
 	default boolean hideIgnores()
 	{
@@ -159,7 +185,8 @@ public interface EntityHiderConfig extends Config
 		position = 12,
 		keyName = "hideIgnores2D",
 		name = "Hide ignores 2D",
-		description = "Configures whether or not ignored players' 2D elements are hidden."
+		description = "Configures whether or not ignored players' 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideIgnores2D()
 	{
@@ -170,7 +197,8 @@ public interface EntityHiderConfig extends Config
 		position = 13,
 		keyName = "hideLocalPlayer",
 		name = "Hide local player",
-		description = "Configures whether or not the local player is hidden."
+		description = "Configures whether or not the local player is hidden.",
+		section = draw3D
 	)
 	default boolean hideLocalPlayer()
 	{
@@ -181,7 +209,8 @@ public interface EntityHiderConfig extends Config
 		position = 14,
 		keyName = "hideLocalPlayer2D",
 		name = "Hide local player 2D",
-		description = "Configures whether or not the local player's 2D elements are hidden."
+		description = "Configures whether or not the local player's 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideLocalPlayer2D()
 	{
@@ -192,7 +221,8 @@ public interface EntityHiderConfig extends Config
 		position = 15,
 		keyName = "hideNPCs",
 		name = "Hide NPCs",
-		description = "Configures whether or not NPCs are hidden."
+		description = "Configures whether or not NPCs are hidden.",
+		section = draw3D
 	)
 	default boolean hideNPCs()
 	{
@@ -203,7 +233,8 @@ public interface EntityHiderConfig extends Config
 		position = 16,
 		keyName = "hideNPCs2D",
 		name = "Hide NPCs 2D",
-		description = "Configures whether or not NPCs 2D elements are hidden."
+		description = "Configures whether or not NPCs 2D elements are hidden.",
+		section = draw2D
 	)
 	default boolean hideNPCs2D()
 	{
@@ -214,7 +245,8 @@ public interface EntityHiderConfig extends Config
 		position = 17,
 		keyName = "hidePets",
 		name = "Hide other players' pets",
-		description = "Configures whether or not other player pets are hidden."
+		description = "Configures whether or not other player pets are hidden.",
+		section = draw3D
 	)
 	default boolean hidePets()
 	{
@@ -225,7 +257,8 @@ public interface EntityHiderConfig extends Config
 		position = 18,
 		keyName = "hideAttackers",
 		name = "Hide attackers",
-		description = "Configures whether or not NPCs/players attacking you are hidden."
+		description = "Configures whether or not NPCs/players attacking you are hidden.",
+		section = draw3D
 	)
 	default boolean hideAttackers()
 	{
@@ -236,7 +269,8 @@ public interface EntityHiderConfig extends Config
 		position = 19,
 		keyName = "hideAttackers2D",
 		name = "Hide attackers 2D",
-		description = "Configures whether or not 2D elements of NPCs/players attacking you are hidden."
+		description = "Configures whether or not 2D elements of NPCs/players attacking you are hidden.",
+		section = draw2D
 	)
 	default boolean hideAttackers2D()
 	{
@@ -247,7 +281,8 @@ public interface EntityHiderConfig extends Config
 		position = 20,
 		keyName = "hideProjectiles",
 		name = "Hide projectiles",
-		description = "Configures whether or not projectiles are hidden."
+		description = "Configures whether or not projectiles are hidden.",
+		section = draw3D
 	)
 	default boolean hideProjectiles()
 	{
@@ -258,7 +293,8 @@ public interface EntityHiderConfig extends Config
 		position = 21,
 		keyName = "hideDeadNpcs",
 		name = "Hide dead NPCs",
-		description = "Hides NPCs when their health reaches 0."
+		description = "Hides NPCs when their health reaches 0.",
+		section = draw3D
 	)
 	default boolean hideDeadNpcs()
 	{
@@ -269,7 +305,8 @@ public interface EntityHiderConfig extends Config
 		position = 22,
 		keyName = "hideThralls",
 		name = "Hide thralls",
-		description = "Configures whether or not thralls are hidden."
+		description = "Configures whether or not thralls are hidden.",
+		section = draw3D
 	)
 	default boolean hideThralls()
 	{
@@ -280,7 +317,8 @@ public interface EntityHiderConfig extends Config
 		position = 23,
 		keyName = "hideRandomEvents",
 		name = "Hide random events",
-		description = "Configures whether or not random events are hidden."
+		description = "Configures whether or not random events are hidden.",
+		section = draw3D
 	)
 	default boolean hideRandomEvents()
 	{
