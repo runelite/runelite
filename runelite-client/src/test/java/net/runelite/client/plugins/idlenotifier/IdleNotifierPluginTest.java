@@ -240,7 +240,7 @@ public class IdleNotifierPluginTest
 		plugin.onGameStateChanged(gameStateChanged);
 
 		// Log back in
-		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		lenient().when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		gameStateChanged.setGameState(GameState.LOGGED_IN);
 		plugin.onGameStateChanged(gameStateChanged);
 

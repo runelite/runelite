@@ -212,6 +212,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			skipNextSpawnCheck = true;
 			rebuild();
 		});
+
+		migrate();
 	}
 
 	@Override
@@ -229,6 +231,17 @@ public class NpcIndicatorsPlugin extends Plugin
 			npcTags.clear();
 			highlightedNpcs.clear();
 		});
+	}
+
+	private void migrate()
+	{
+		Boolean b = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuNames", Boolean.class);
+		if (b != null)
+		{
+			log.debug("Migrated highlightMenuNames");
+			configManager.unsetConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuNames");
+			configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuStyle", b ? NpcIndicatorsConfig.MenuHighlightStyle.BOTH : NpcIndicatorsConfig.MenuHighlightStyle.NONE);
+		}
 	}
 
 	@Subscribe
@@ -311,22 +324,75 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			Color color = null;
 			if (npcUtil.isDying(npc))
 			{
-				color = config.deadNpcMenuColor();
+				Color color = config.deadNpcMenuColor();
+				if (color != null)
+				{
+					final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+					menuEntry.setTarget(target);
+					return;
+				}
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			if (highlightedNpcs.containsKey(npc) && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
-				color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
-			}
-
-			if (color != null)
-			{
-				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				Color color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
+				final String target = recolorMenuTarget(event.getTarget(), config.highlightMenuStyle(), color);
 				menuEntry.setTarget(target);
+				return;
 			}
+		}
+	}
+
+	private static String recolorMenuTarget(String target, NpcIndicatorsConfig.MenuHighlightStyle style, Color color)
+	{
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NONE)
+		{
+			return target;
+		}
+
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.BOTH)
+		{
+			return ColorUtil.prependColorTag(Text.removeTags(target), color);
+		}
+
+		//<col=ffff00>Tool Leprechaun
+		//<col=ffff00>Ram<col=ff00>  (level-2)
+		String name, level;
+		if (target.contains("  (level-"))
+		{
+			int c = target.lastIndexOf('<');
+			name = target.substring(0, c);
+			level = target.substring(c);
+		}
+		else
+		{
+			name = target;
+			level = null;
+		}
+
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NAME)
+		{
+			String t = ColorUtil.prependColorTag(Text.removeTags(name), color);
+			if (level != null)
+			{
+				t += level;
+			}
+			return t;
+		}
+		else if (style == NpcIndicatorsConfig.MenuHighlightStyle.LEVEL)
+		{
+			String t = name;
+			if (level != null)
+			{
+				t += ColorUtil.prependColorTag(Text.removeTags(level), color);
+			}
+			return t;
+		}
+		else
+		{
+			throw new IllegalArgumentException();
 		}
 	}
 
