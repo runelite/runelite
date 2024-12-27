@@ -65,6 +65,7 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.Point;
 import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
@@ -476,7 +477,7 @@ public class ClueScrollPlugin extends Plugin
 		{
 			int invItemId = item.getId();
 			// If paramID 623 returns a dbrow, the invItemId is a valid Clue Scroll
-			if (client.getItemDefinition(invItemId).getIntValue(623) != -1)
+			if (client.getItemDefinition(invItemId).getIntValue(ParamID.CLUE_SCROLL) != -1)
 			{
 				cluesFound.add(invItemId);
 			}

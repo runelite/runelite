@@ -157,7 +157,17 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 		if (m.find())
 		{
 			final String song = m.group(1);
-			return forSong(song);
+
+			// Check for existing MusicClue, otherwise create new
+			MusicClue clue = forSong(song);
+			if (clue != null)
+			{
+				return clue;
+			}
+			else
+			{
+				return new MusicClue(-1, song);
+			}
 		}
 		return null;
 	}
