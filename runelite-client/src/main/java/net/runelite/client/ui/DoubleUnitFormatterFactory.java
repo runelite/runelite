@@ -31,11 +31,11 @@ import javax.swing.JFormattedTextField;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class UnitFormatter extends JFormattedTextField.AbstractFormatter
+final class DoubleUnitFormatter extends JFormattedTextField.AbstractFormatter
 {
 	private final String units;
-	private final int min;
-	private final int max;
+	private final double min;
+	private final double max;
 
 	@Override
 	public Object stringToValue(final String text) throws ParseException
@@ -54,7 +54,7 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 
 		try
 		{
-			int newValue = Integer.parseInt(trimmedText);
+			double newValue = Double.parseDouble(trimmedText);
 
 			if (newValue < this.min || newValue > this.max)
 			{
@@ -65,7 +65,7 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 		}
 		catch (NumberFormatException e)
 		{
-			throw new ParseException(trimmedText + " is not an integer.", 0); // NOPMD: PreserveStackTrace
+			throw new ParseException(trimmedText + " is not a double.", 0); // NOPMD: PreserveStackTrace
 		}
 	}
 
@@ -77,21 +77,21 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 }
 
 @RequiredArgsConstructor
-public final class UnitFormatterFactory extends JFormattedTextField.AbstractFormatterFactory
+public final class DoubleUnitFormatterFactory extends JFormattedTextField.AbstractFormatterFactory
 {
 	private final String units;
-	private final int min;
-	private final int max;
+	private final double min;
+	private final double max;
 	private final Map<JFormattedTextField, JFormattedTextField.AbstractFormatter> formatters = new HashMap<>();
 
-	public UnitFormatterFactory(String units)
+	public DoubleUnitFormatterFactory(String units)
 	{
-		this(units, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		this(units, Double.MIN_VALUE, Double.MAX_VALUE);
 	}
 
 	@Override
 	public JFormattedTextField.AbstractFormatter getFormatter(final JFormattedTextField tf)
 	{
-		return formatters.computeIfAbsent(tf, (key) -> new UnitFormatter(units, min, max));
+		return formatters.computeIfAbsent(tf, (key) -> new DoubleUnitFormatter(units, min, max));
 	}
 }
