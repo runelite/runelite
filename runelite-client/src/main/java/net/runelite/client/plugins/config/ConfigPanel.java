@@ -475,7 +475,7 @@ class ConfigPanel extends PluginPanel
 		Units units = cid.getUnits();
 		if (units != null)
 		{
-			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units.value()));
+			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units.value(), min, max));
 		}
 
 		return spinner;

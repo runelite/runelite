@@ -30,14 +30,12 @@ import java.util.Map;
 import javax.swing.JFormattedTextField;
 import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 {
 	private final String units;
-
-	UnitFormatter(String units)
-	{
-		this.units = units;
-	}
+	private final int min;
+	private final int max;
 
 	@Override
 	public Object stringToValue(final String text) throws ParseException
@@ -56,7 +54,14 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 
 		try
 		{
-			return Integer.valueOf(trimmedText);
+			int newValue = Integer.parseInt(trimmedText);
+
+			if (newValue < this.min || newValue > this.max)
+			{
+				throw new ParseException(trimmedText + " is out of range", 0);
+			}
+
+			return newValue;
 		}
 		catch (NumberFormatException e)
 		{
@@ -75,11 +80,18 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 public final class UnitFormatterFactory extends JFormattedTextField.AbstractFormatterFactory
 {
 	private final String units;
+	private final int min;
+	private final int max;
 	private final Map<JFormattedTextField, JFormattedTextField.AbstractFormatter> formatters = new HashMap<>();
+
+	public UnitFormatterFactory(String units)
+	{
+		this(units, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	}
 
 	@Override
 	public JFormattedTextField.AbstractFormatter getFormatter(final JFormattedTextField tf)
 	{
-		return formatters.computeIfAbsent(tf, (key) -> new UnitFormatter(units));
+		return formatters.computeIfAbsent(tf, (key) -> new UnitFormatter(units, min, max));
 	}
 }
