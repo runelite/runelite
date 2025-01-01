@@ -684,12 +684,13 @@ public class LayoutManager
 					return;
 				}
 
-				idx = potionStorage.find(w.getItemId());
+				idx = potionStorage.getIdx(w.getItemId());
 				if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
+
 					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
-					menu.setParam0(idx * PotionStorage.COMPONENTS_PER_POTION);
+					menu.setParam0(idx);
 				}
 			}
 		}
