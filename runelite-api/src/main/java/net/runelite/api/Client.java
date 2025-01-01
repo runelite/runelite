@@ -1080,6 +1080,21 @@ public interface Client extends OAuthApi, GameEngine
 	RuneLiteObject createRuneLiteObject();
 
 	/**
+	 * Registers a new {@link RuneLiteObjectController} to its corresponding {@link WorldView}.
+	 */
+	void registerRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Removes a new {@link RuneLiteObjectController} from its corresponding {@link WorldView}.
+	 */
+	void removeRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Checks whether a {@link RuneLiteObjectController} is registered to any {@link WorldView}.
+	 */
+	boolean isRuneLiteObjectRegistered(RuneLiteObjectController controller);
+
+	/**
 	 * Loads an unlit model from the cache. The returned model shares
 	 * data such as faces, face colors, face transparencies, and vertex points with
 	 * other models. If you want to mutate these you MUST call the relevant {@code cloneX}
@@ -2357,4 +2372,12 @@ public interface Client extends OAuthApi, GameEngine
 	{
 		return getTopLevelWorldView().getSelectedSceneTile();
 	}
+
+	/**
+	 * Applies an animation to a Model. The returned model is shared and shouldn't be used
+	 * after any other call to applyTransformations, including calls made by the client internally.
+	 * Vertices are cloned from the source model. Face transparencies are copied if either animation
+	 * animates transparency, otherwise it will share a reference. All other fields share a reference.
+	 */
+	Model applyTransformations(Model model, @Nullable Animation animA, int frameA, @Nullable Animation animB, int frameB);
 }
