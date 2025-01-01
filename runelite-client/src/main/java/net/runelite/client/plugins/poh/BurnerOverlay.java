@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.poh;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
@@ -99,15 +98,15 @@ class BurnerOverlay extends Overlay
 			if (certainSec > 0)
 			{
 				pieComponent.setProgress(certainSec / burner.getCountdownTimer());
-				pieComponent.setFill(Color.GREEN);
-				pieComponent.setBorderColor(Color.GREEN);
+				pieComponent.setFill(config.burnerCertainTimerColor());
+				pieComponent.setBorderColor(config.burnerCertainTimerColor());
 				pieComponent.render(graphics);
 			}
 			else if (randomSec > 0)
 			{
 				pieComponent.setProgress(randomSec / burner.getRandomTimer());
-				pieComponent.setFill(Color.ORANGE);
-				pieComponent.setBorderColor(Color.ORANGE);
+				pieComponent.setFill(config.burnerRandomTimerColor());
+				pieComponent.setBorderColor(config.burnerRandomTimerColor());
 				pieComponent.render(graphics);
 			}
 		});
