@@ -105,10 +105,15 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideOthers;
 	private boolean hideOthers2D;
 	private boolean hidePartyMembers;
+	private boolean hidePartyMembers2D;
 	private boolean hideFriends;
+	private boolean hideFriends2D;
 	private boolean hideFriendsChatMembers;
+	private boolean hideFriendsChatMembers2D;
 	private boolean hideClanMembers;
+	private boolean hideClanMembers2D;
 	private boolean hideIgnoredPlayers;
+	private boolean hideIgnoredPlayers2D;
 	private boolean hideLocalPlayer;
 	private boolean hideLocalPlayer2D;
 	private boolean hideNPCs;
@@ -118,6 +123,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideThralls;
 	private boolean hideRandomEvents;
 	private boolean hideAttackers;
+	private boolean hideAttackers2D;
 	private boolean hideProjectiles;
 
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
@@ -157,10 +163,19 @@ public class EntityHiderPlugin extends Plugin
 		hideOthers2D = config.hideOthers2D();
 
 		hidePartyMembers = config.hidePartyMembers();
+		hidePartyMembers2D = config.hidePartyMembers2D();
+
 		hideFriends = config.hideFriends();
+		hideFriends2D = config.hideFriends2D();
+
 		hideFriendsChatMembers = config.hideFriendsChatMembers();
+		hideFriendsChatMembers2D = config.hideFriendsChatMembers2D();
+
 		hideClanMembers = config.hideClanChatMembers();
+		hideClanMembers2D = config.hideClanChatMembers2D();
+
 		hideIgnoredPlayers = config.hideIgnores();
+		hideIgnoredPlayers2D = config.hideIgnores2D();
 
 		hideLocalPlayer = config.hideLocalPlayer();
 		hideLocalPlayer2D = config.hideLocalPlayer2D();
@@ -175,6 +190,7 @@ public class EntityHiderPlugin extends Plugin
 		hideRandomEvents = config.hideRandomEvents();
 
 		hideAttackers = config.hideAttackers();
+		hideAttackers2D = config.hideAttackers2D();
 
 		hideProjectiles = config.hideProjectiles();
 	}
@@ -200,30 +216,37 @@ public class EntityHiderPlugin extends Plugin
 				return !(drawingUI ? hideLocalPlayer2D : hideLocalPlayer);
 			}
 
-			if (hideAttackers && player.getInteracting() == local)
+			if (player.getInteracting() == local)
 			{
-				return false; // hide
+				if (!drawingUI && hideAttackers)
+				{
+					return false;
+				}
+				if (drawingUI && hideAttackers2D)
+				{
+					return false;
+				}
 			}
 
 			if (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null)
 			{
-				return !hidePartyMembers;
+				return !(drawingUI ? hidePartyMembers2D : hidePartyMembers);
 			}
 			if (player.isFriend())
 			{
-				return !hideFriends;
+				return !(drawingUI ? hideFriends2D : hideFriends);
 			}
 			if (player.isFriendsChatMember())
 			{
-				return !hideFriendsChatMembers;
+				return !(drawingUI ? hideFriendsChatMembers2D : hideFriendsChatMembers);
 			}
 			if (player.isClanMember())
 			{
-				return !hideClanMembers;
+				return !(drawingUI ? hideClanMembers2D : hideClanMembers);
 			}
 			if (client.getIgnoreContainer().findByName(player.getName()) != null)
 			{
-				return !hideIgnoredPlayers;
+				return !(drawingUI ? hideIgnoredPlayers2D : hideIgnoredPlayers);
 			}
 
 			return !(drawingUI ? hideOthers2D : hideOthers);
@@ -245,14 +268,14 @@ public class EntityHiderPlugin extends Plugin
 
 			if (npc.getInteracting() == client.getLocalPlayer())
 			{
-				boolean b = hideAttackers;
-				// Kludge to make hide attackers only affect 2d or 3d if the 2d or 3d hide is on
-				// This allows hiding 2d for all npcs, including attackers.
-				if (hideNPCs2D || hideNPCs)
+				if (!drawingUI && hideAttackers)
 				{
-					b &= drawingUI ? hideNPCs2D : hideNPCs;
+					return false;
 				}
-				return !b;
+				if (drawingUI && hideAttackers2D)
+				{
+					return false;
+				}
 			}
 
 			if (THRALL_IDS.contains(npc.getId()))
