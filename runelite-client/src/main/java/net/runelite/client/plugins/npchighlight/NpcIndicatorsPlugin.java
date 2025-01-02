@@ -360,11 +360,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		//<col=ffff00>Tool Leprechaun
 		//<col=ffff00>Ram<col=ff00>  (level-2)
 		String name, level;
-		if (target.contains("  (level-"))
+		int levelStartIndex = target.indexOf("(");
+		if (levelStartIndex > -1)
 		{
-			int c = target.lastIndexOf('<');
-			name = target.substring(0, c);
-			level = target.substring(c);
+			// in case other plugins (like monster menu hp) add tags in middle of level or name, or more than 2 tags total
+			int monsterEndIndex = target.substring(0, levelStartIndex).lastIndexOf('<');
+			monsterEndIndex = monsterEndIndex > -1 ? monsterEndIndex : levelStartIndex;
+
+			name = target.substring(0, monsterEndIndex);
+			level = target.substring(monsterEndIndex);
 		}
 		else
 		{
