@@ -296,13 +296,13 @@ public class InfoPanel extends PluginPanel
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		updateLoggedIn();
 	}
 
 	@Subscribe
-	public void onSessionClose(SessionClose e)
+	private void onSessionClose(SessionClose e)
 	{
 		updateLoggedIn();
 	}

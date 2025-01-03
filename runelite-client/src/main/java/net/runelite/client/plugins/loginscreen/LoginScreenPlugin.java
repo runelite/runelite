@@ -113,7 +113,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("loginscreen"))
 		{
@@ -122,7 +122,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (!config.syncUsername())
 		{
@@ -153,7 +153,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		// configuation for the account is available now, so update the username
 		applyUsername();

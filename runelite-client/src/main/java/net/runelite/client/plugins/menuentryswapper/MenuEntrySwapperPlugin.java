@@ -475,7 +475,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOpened(MenuOpened event)
+	private void onMenuOpened(MenuOpened event)
 	{
 		configureObjectClick(event);
 		configureNpcClick(event);
@@ -1591,7 +1591,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	private void onClientTick(ClientTick clientTick)
 	{
 		lastShift = curShift;
 		curShift = shiftModifier();
@@ -1662,7 +1662,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPostMenuSort(PostMenuSort postMenuSort)
+	@VisibleForTesting
+	void onPostMenuSort(PostMenuSort postMenuSort)
 	{
 		// The menu is not rebuilt when it is open, so don't swap or else it will
 		// repeatedly swap entries
@@ -2132,7 +2133,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		var me = menuEntryAdded.getMenuEntry();
 		if (me.getWidget() != null && me.getWidget().getId() == ComponentID.EQUIPMENT_CAPE)

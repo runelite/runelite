@@ -89,7 +89,7 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.QUESTLIST_INIT)
 		{
@@ -120,7 +120,7 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		if (isChatboxOpen() && !isOnQuestTab())
 		{
@@ -129,7 +129,7 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
 		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB)
 		{
@@ -141,7 +141,7 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		if (!"questFilter".equals(scriptCallbackEvent.getEventName()) || !isChatboxOpen())
 		{

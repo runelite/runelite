@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -183,7 +184,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.TOB_HUD_SOTETSEG_FADE)
 		{
@@ -193,7 +194,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFakeXpDrop(FakeXpDrop event)
+	private void onFakeXpDrop(FakeXpDrop event)
 	{
 		if (event.getSkill() == Skill.HITPOINTS)
 		{
@@ -202,7 +203,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged event)
+	private void onStatChanged(StatChanged event)
 	{
 		if (event.getSkill() == Skill.HITPOINTS)
 		{
@@ -215,7 +216,8 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	@VisibleForTesting
+	void onGameTick(GameTick event)
 	{
 		if (specialWeapon == null || lastSpecTarget == null)
 		{
@@ -278,7 +280,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -295,7 +297,8 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	@VisibleForTesting
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT)
 		{
@@ -356,7 +359,8 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	@VisibleForTesting
+	void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
@@ -405,7 +409,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC actor = npcDespawned.getNpc();
 
@@ -421,7 +425,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged npcChanged)
+	private void onNpcChanged(NpcChanged npcChanged)
 	{
 		final NPC npc = npcChanged.getNpc();
 		// Duke does not despawn when dead
@@ -433,7 +437,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
+	private void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
 		if (party.getLocalMember().getMemberId() == event.getMemberId()
 			|| event.getWorld() != client.getWorld())
@@ -477,7 +481,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
+	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("spec"))
 		{

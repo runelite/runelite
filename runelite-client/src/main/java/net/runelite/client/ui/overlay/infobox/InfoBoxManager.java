@@ -101,7 +101,7 @@ public class InfoBoxManager
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
 		{
@@ -110,7 +110,7 @@ public class InfoBoxManager
 	}
 
 	@Subscribe
-	public synchronized void onProfileChanged(ProfileChanged profileChanged)
+	private synchronized void onProfileChanged(ProfileChanged profileChanged)
 	{
 		// infobox layers may have changed due to the profile change, just rebuild the infoboxes
 		List<InfoBox> infoBoxes = getInfoBoxes();
@@ -120,7 +120,7 @@ public class InfoBoxManager
 	}
 
 	@Subscribe
-	public void onInfoBoxMenuClicked(InfoBoxMenuClicked event)
+	private void onInfoBoxMenuClicked(InfoBoxMenuClicked event)
 	{
 		if (DETACH.equals(event.getEntry().getOption()))
 		{
