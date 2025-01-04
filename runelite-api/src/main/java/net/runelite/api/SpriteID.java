@@ -1798,4 +1798,6 @@ public final class SpriteID
 	public static final int HISCORE_RIFTS_CLOSED = 5860;
 	public static final int HISCORE_DEADMAN_POINTS = 5861;
 	public static final int HISCORE_COLOSSEUM_GLORY = 5862;
+	public static final int HEALTHBAR_LAST_STAND_FRONT = 5863;
+	public static final int HEALTHBAR_LAST_STAND_BACK = 5864;
 }
