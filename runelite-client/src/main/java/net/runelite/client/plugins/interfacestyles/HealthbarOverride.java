@@ -167,6 +167,9 @@ enum HealthbarOverride implements SpriteOverride
 	BLUE_MOON_BACK_90PX(HEALTHBAR_BLUE_MOON_BACK_90PX, "blue_moon_back_90px.png"),
 	ECLIPSE_MOON_FRONT_90PX(HEALTHBAR_ECLIPSE_MOON_FRONT_90PX, "eclipse_moon_front_90px.png"),
 	ECLIPSE_MOON_BACK_90PX(HEALTHBAR_ECLIPSE_MOON_BACK_90PX, "eclipse_moon_back_90px.png"),
+
+	LAST_STAND_FRONT(HEALTHBAR_LAST_STAND_FRONT, "last_stand_front.png"),
+	LAST_STAND_BACK(HEALTHBAR_LAST_STAND_BACK, "last_stand_back.png"),
 	;
 
 	@Getter
