@@ -1724,7 +1724,28 @@ public final class SpriteID
 	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
 	/* Unmapped: 4728~4765 */
 	public static final int COLOSSEUM_DOOM = 4766;
-	/* Unmapped: 4767~4842 */
+	/* Unmapped: 4767~4770 */
+	public static final int HEALTHBAR_GREEN_FRONT_30PX = 4771;
+	public static final int HEALTHBAR_GREEN_BACK_30PX = 4772;
+	public static final int HEALTHBAR_GREEN_FRONT_40PX = 4773;
+	public static final int HEALTHBAR_GREEN_BACK_40PX = 4774;
+	public static final int HEALTHBAR_GREEN_FRONT_50PX = 4775;
+	public static final int HEALTHBAR_GREEN_BACK_50PX = 4776;
+	public static final int HEALTHBAR_GREEN_FRONT_60PX = 4777;
+	public static final int HEALTHBAR_GREEN_BACK_60PX = 4778;
+	public static final int HEALTHBAR_GREEN_FRONT_70PX = 4779;
+	public static final int HEALTHBAR_GREEN_BACK_70PX = 4780;
+	public static final int HEALTHBAR_GREEN_FRONT_80PX = 4781;
+	public static final int HEALTHBAR_GREEN_BACK_80PX = 4782;
+	public static final int HEALTHBAR_GREEN_FRONT_100PX = 4783;
+	public static final int HEALTHBAR_GREEN_BACK_100PX = 4784;
+	public static final int HEALTHBAR_GREEN_FRONT_120PX = 4785;
+	public static final int HEALTHBAR_GREEN_BACK_120PX = 4786;
+	public static final int HEALTHBAR_GREEN_FRONT_140PX = 4787;
+	public static final int HEALTHBAR_GREEN_BACK_140PX = 4788;
+	public static final int HEALTHBAR_GREEN_FRONT_160PX = 4789;
+	public static final int HEALTHBAR_GREEN_BACK_160PX = 4790;
+	/* Unmapped: 4791~4842 */
 	public static final int PRAYER_RP_ANCIENT_STRENGTH = 4843;
 	public static final int PRAYER_RP_ANCIENT_SIGHT = 4844;
 	public static final int PRAYER_RP_ANCIENT_WILL = 4845;
@@ -1759,7 +1780,19 @@ public final class SpriteID
 	public static final int HEALTHBAR_BLUE_MOON_BACK_120PX = 5582;
 	public static final int HEALTHBAR_ECLIPSE_MOON_FRONT_120PX = 5583;
 	public static final int HEALTHBAR_ECLIPSE_MOON_BACK_120PX = 5584;
-	/* Unmapped: 5585~5620 */
+	/* Unmapped: 5585~5608 */
+	public static final int HEALTHBAR_DEFAULT_FRONT_90PX = 5609;
+	public static final int HEALTHBAR_DEFAULT_BACK_90PX = 5610;
+	public static final int HEALTHBAR_CYAN_FRONT_90PX = 5611;
+	public static final int HEALTHBAR_CYAN_BACK_90PX = 5612;
+	public static final int HEALTHBAR_ORANGE_FRONT_90PX = 5613;
+	public static final int HEALTHBAR_ORANGE_BACK_90PX = 5614;
+	public static final int HEALTHBAR_YELLOW_FRONT_90PX = 5615;
+	public static final int HEALTHBAR_YELLOW_BACK_90PX = 5616;
+	public static final int HEALTHBAR_PURPLE_FRONT_90PX = 5617;
+	public static final int HEALTHBAR_PURPLE_BACK_90PX = 5618;
+	public static final int HEALTHBAR_GREEN_FRONT_90PX = 5619;
+	public static final int HEALTHBAR_GREEN_BACK_90PX = 5620;
 	public static final int HISCORE_CHAOS_ELEMENTAL = 5621;
 	public static final int HISCORE_ARTIO_CALLISTO = 5622;
 	public static final int HISCORE_CALVARION_VETION = 5623;
