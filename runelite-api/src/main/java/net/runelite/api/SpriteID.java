@@ -1752,7 +1752,14 @@ public final class SpriteID
 	public static final int ACTIVATED_PRAYER_BACKGROUND = 4892;
 	/* Unmapped: 4893~5250 */
 	public static final int EMOTE_FORTIS_SALUTE = 5251;
-	/* Unmapped: 5252~5620 */
+	/* Unmapped: 5252~5578 */
+	public static final int HEALTHBAR_BLOOD_MOON_FRONT_120PX = 5579;
+	public static final int HEALTHBAR_BLOOD_MOON_BACK_120PX = 5580;
+	public static final int HEALTHBAR_BLUE_MOON_FRONT_120PX = 5581;
+	public static final int HEALTHBAR_BLUE_MOON_BACK_120PX = 5582;
+	public static final int HEALTHBAR_ECLIPSE_MOON_FRONT_120PX = 5583;
+	public static final int HEALTHBAR_ECLIPSE_MOON_BACK_120PX = 5584;
+	/* Unmapped: 5585~5620 */
 	public static final int HISCORE_CHAOS_ELEMENTAL = 5621;
 	public static final int HISCORE_ARTIO_CALLISTO = 5622;
 	public static final int HISCORE_CALVARION_VETION = 5623;
@@ -1773,7 +1780,14 @@ public final class SpriteID
 	public static final int HISCORE_ARAXXOR = 5638;
 	public static final int HISCORE_AMOXLIATL = 5639;
 	public static final int HISCORE_THE_HUEYCOATL = 5640;
-	/* Unmapped: 5641~5852 */
+	/* Unmapped: 5641~5643 */
+	public static final int HEALTHBAR_BLOOD_MOON_FRONT_90PX = 5644;
+	public static final int HEALTHBAR_BLOOD_MOON_BACK_90PX = 5645;
+	public static final int HEALTHBAR_BLUE_MOON_FRONT_90PX = 5646;
+	public static final int HEALTHBAR_BLUE_MOON_BACK_90PX = 5647;
+	public static final int HEALTHBAR_ECLIPSE_MOON_FRONT_90PX = 5648;
+	public static final int HEALTHBAR_ECLIPSE_MOON_BACK_90PX = 5649;
+	/* Unmapped: 5650~5852 */
 	public static final int HISCORE_CLUE_SCROLL_ALL = 5853;
 	public static final int HISCORE_BOUNTY_HUNTER_HUNTER = 5854;
 	public static final int HISCORE_BOUNTY_HUNTER_ROGUE = 5855;
