@@ -111,7 +111,6 @@ public class ConfigManager
 	@Nullable
 	private final String configProfileName;
 	private final EventBus eventBus;
-	@Nullable
 	private final Client client;
 	private final Gson gson;
 	@Nonnull
@@ -138,7 +137,7 @@ public class ConfigManager
 		@Nullable @Named("profile") String profile,
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
-		@Nullable Client client,
+		Client client,
 		Gson gson,
 		@Nonnull ConfigClient configClient,
 		ProfileManager profileManager,
@@ -552,7 +551,7 @@ public class ConfigManager
 			this.rsProfile = rsProfile;
 			rsProfileConfigProfile = new ConfigData(ProfileManager.profileConfigFile(rsProfile));
 
-			final String launcherDisplayName = client != null ? client.getLauncherDisplayName() : null;
+			final String launcherDisplayName = client.getLauncherDisplayName();
 			// --profile
 			if (configProfileName != null)
 			{
