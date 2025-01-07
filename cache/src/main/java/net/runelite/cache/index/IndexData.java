@@ -24,9 +24,13 @@
  */
 package net.runelite.cache.index;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 
+@Setter
+@Getter
 public class IndexData
 {
 	private int protocol;
@@ -255,45 +259,5 @@ public class IndexData
 		}
 
 		return stream.flip();
-	}
-
-	public int getProtocol()
-	{
-		return protocol;
-	}
-
-	public void setProtocol(int protocol)
-	{
-		this.protocol = protocol;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
-
-	public boolean isNamed()
-	{
-		return named;
-	}
-
-	public void setNamed(boolean named)
-	{
-		this.named = named;
-	}
-
-	public ArchiveData[] getArchives()
-	{
-		return archives;
-	}
-
-	public void setArchives(ArchiveData[] archives)
-	{
-		this.archives = archives;
 	}
 }
