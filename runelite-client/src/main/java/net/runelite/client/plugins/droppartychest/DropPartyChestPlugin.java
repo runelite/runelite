@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.droppartychest;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -118,8 +117,10 @@ public class DropPartyChestPlugin extends Plugin
 	{
 		long grandExchangeValue = 0;
 
-		for (Item item : items) {
-			if (item != null) {
+		for (Item item : items)
+		{
+			if (item != null)
+			{
 				grandExchangeValue += (long) itemManager.getItemPrice(item.getId()) * item.getQuantity();
 			}
 		}
