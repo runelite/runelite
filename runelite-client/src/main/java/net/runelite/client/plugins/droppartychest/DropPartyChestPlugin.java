@@ -44,7 +44,9 @@ import javax.inject.Inject;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Drop Party Chest"
+	name = "Drop Party Chest",
+	description = "Display value of the party room and clan hall chests.",
+	tags = {"party", "room", "clan", "hall", "chest", "value"}
 )
 public class DropPartyChestPlugin extends Plugin
 {
