@@ -33,6 +33,8 @@ import net.runelite.cache.io.OutputStream;
 @Getter
 public class IndexData
 {
+	private static final int NAMED = 1;
+
 	private int protocol;
 	private int revision;
 	private boolean named;
@@ -52,12 +54,13 @@ public class IndexData
 			this.revision = stream.readInt();
 		}
 
-		int hash = stream.readUnsignedByte();
-		named = (1 & hash) != 0;
-		if ((hash & ~1) != 0)
+		int flags = stream.readUnsignedByte();
+		named = (flags & NAMED) != 0;
+		if ((flags & ~NAMED) != 0)
 		{
-			throw new IllegalArgumentException("Unknown flags");
+			throw new IllegalArgumentException("Unknown flags: " + flags);
 		}
+
 		int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 		int lastArchiveId = 0;
 
@@ -148,7 +151,7 @@ public class IndexData
 			stream.writeInt(this.revision);
 		}
 
-		stream.writeByte(named ? 1 : 0);
+		stream.writeByte(named ? NAMED : 0);
 		if (protocol >= 7)
 		{
 			stream.writeBigSmart(this.archives.length);
