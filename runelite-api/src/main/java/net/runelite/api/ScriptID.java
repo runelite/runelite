@@ -476,4 +476,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 5)
 	public static final int FAIRYRINGS_SORT_UPDATE = 402;
+
+	@ScriptArguments(integer = 1, string = 1)
+	public static final int POPUP_OVERLAY_YESNO_INIT = 4212;
 }

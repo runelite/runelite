@@ -182,9 +182,6 @@ layer=0
 header=1
 members=6
 
-[clanrank_popup]
-id=289
-
 [cluescroll]
 id=203
 text=2
