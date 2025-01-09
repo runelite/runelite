@@ -44,6 +44,28 @@ public interface RunecraftConfig extends Config
 	String riftSection = "rifts";
 
 	@ConfigItem(
+		keyName = "showPouch",
+		name = "Show pouch count",
+		description = "Configures whether the pouch essence count is displayed.",
+		position = 1
+	)
+	default boolean showPouch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "pouchDegrade",
+		name = "Show pouch fills",
+		description = "Configures whether the pouch durability is shown as an approximate number of fills remaining.",
+		position = 2
+	)
+	default boolean pouchDegrade()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showRifts",
 		name = "Show rifts in abyss",
 		description = "Configures whether the rifts in the abyss will be displayed.",
