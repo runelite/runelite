@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,21 +31,20 @@ import java.util.Map;
 import javax.swing.JFormattedTextField;
 import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 {
+	private final JFormattedTextField.AbstractFormatter delegate;
 	private final String units;
-
-	UnitFormatter(String units)
-	{
-		this.units = units;
-	}
 
 	@Override
 	public Object stringToValue(final String text) throws ParseException
 	{
 		final String trimmedText;
 
-		// Using the spinner controls causes the value to have the unit on the end, so remove it
+		// Using the spinner controls causes the value to have the unit on the end, so remove it.
+		// This isn't actually required because NumberFormatter is very lax and will error out
+		// when encountering the unit, but we do it anyway.
 		if (text.endsWith(units))
 		{
 			trimmedText = text.substring(0, text.length() - units.length());
@@ -54,14 +54,7 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 			trimmedText = text;
 		}
 
-		try
-		{
-			return Integer.valueOf(trimmedText);
-		}
-		catch (NumberFormatException e)
-		{
-			throw new ParseException(trimmedText + " is not an integer.", 0); // NOPMD: PreserveStackTrace
-		}
+		return delegate.stringToValue(trimmedText);
 	}
 
 	@Override
@@ -74,12 +67,13 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 @RequiredArgsConstructor
 public final class UnitFormatterFactory extends JFormattedTextField.AbstractFormatterFactory
 {
+	private final JFormattedTextField.AbstractFormatterFactory delegateFactory;
 	private final String units;
-	private final Map<JFormattedTextField, JFormattedTextField.AbstractFormatter> formatters = new HashMap<>();
+	private final Map<JFormattedTextField, JFormattedTextField.AbstractFormatter> formatters = new HashMap<>(1);
 
 	@Override
 	public JFormattedTextField.AbstractFormatter getFormatter(final JFormattedTextField tf)
 	{
-		return formatters.computeIfAbsent(tf, (key) -> new UnitFormatter(units));
+		return formatters.computeIfAbsent(tf, (key) -> new UnitFormatter(delegateFactory.getFormatter(key), units));
 	}
 }

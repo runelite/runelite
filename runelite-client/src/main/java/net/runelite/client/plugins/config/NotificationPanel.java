@@ -215,7 +215,7 @@ class NotificationPanel extends PluginPanel
 		Component editor = spinner.getEditor();
 		JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 		spinnerTextField.setColumns(6);
-		spinnerTextField.setFormatterFactory(new UnitFormatterFactory(unit));
+		spinnerTextField.setFormatterFactory(new UnitFormatterFactory(spinnerTextField.getFormatterFactory(), unit));
 		return spinner;
 	}
 
