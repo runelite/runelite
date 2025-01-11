@@ -45,11 +45,31 @@ public interface RunEnergyConfig extends Config
 
 	@ConfigItem(
 		keyName = "replaceOrbText",
-		name = "Replace orb text with run time left",
-		description = "Show the remaining run time (in seconds) next in the energy orb."
+		name = "Orb display",
+		description = "Choose stamina orb display format"
 	)
-	default boolean replaceOrbText()
+	default EnergyDisplayMode runEnergyDisplayMode()
 	{
-		return false;
+		return EnergyDisplayMode.PERCENT;
+	}
+
+	enum EnergyDisplayMode
+	{
+		PERCENT,
+		SECONDS,
+		MINUTES_AND_SECONDS,
+		TICKS;
+
+		@Override
+		public String toString()
+		{
+			switch (this)
+			{
+				case MINUTES_AND_SECONDS:
+					return "MM:SS";
+				default:
+					return name();
+			}
+		}
 	}
 }
