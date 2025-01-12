@@ -267,4 +267,10 @@ public final class VarPlayer
 	 * @see #DIZANAS_QUIVER_ITEM_COUNT
 	 */
 	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;
+
+
+	/**
+	 * The amount of vials in the Potion Storage.
+	 */
+	public static final int POTION_STORAGE_VIALS_COUNT = 4286;
 }
