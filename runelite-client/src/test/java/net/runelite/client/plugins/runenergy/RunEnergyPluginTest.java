@@ -150,7 +150,7 @@ public class RunEnergyPluginTest
 		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getEnergy()).thenReturn(10000);
-		when(client.getRealSkillLevel(Skill.AGILITY)).thenReturn(99);
+		when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(99);
 		assertEquals("333s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
 
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(0);
