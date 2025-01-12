@@ -292,7 +292,7 @@ public class RunEnergyPlugin extends Plugin
 		final int effectiveWeight = Math.min(Math.max(client.getWeight(), 0), 64);
 
 		// 100% energy is 10000 energy units
-		int energyUnitsLost = (int) ((60 + (67 * effectiveWeight / 64)) * (1 - (double) client.getBoostedSkillLevel(Skill.AGILITY) / 300.0));
+		int energyUnitsLost = (int) ((60 + (67 * effectiveWeight / 64)) * (1 - client.getBoostedSkillLevel(Skill.AGILITY) / 300.0));
 
 		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
