@@ -28,6 +28,8 @@ package net.runelite.client.plugins.skillcalculator;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
@@ -98,6 +100,18 @@ class SkillCalculatorPanel extends PluginPanel
 				currentTab = tab;
 				shouldForceReload = false;
 				return true;
+			});
+
+			tab.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					if (tab.isSelected())
+					{
+						uiCalculator.openCalculator(calculatorType, shouldForceReload);
+					}
+				}
 			});
 
 			tabGroup.addTab(tab);
