@@ -525,7 +525,7 @@ public class Notifier
 		// Using loop instead of start + setFramePosition prevents the clip
 		// from not being played sometimes, presumably a race condition in the
 		// underlying line driver
-		clip.loop(1);
+		clip.loop(0);
 	}
 
 	private boolean tryLoadNotification()
