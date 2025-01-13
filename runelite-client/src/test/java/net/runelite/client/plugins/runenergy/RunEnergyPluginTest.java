@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.RING_OF_ENDURANCE;
@@ -149,10 +150,11 @@ public class RunEnergyPluginTest
 		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getEnergy()).thenReturn(10000);
-		assertEquals("300s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
+		when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(99);
+		assertEquals("500s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
 
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(0);
 		when(configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class)).thenReturn(512);
-		assertEquals("1:47", runEnergyPlugin.getEstimatedRunTimeRemaining(false));
+		assertEquals("2:57", runEnergyPlugin.getEstimatedRunTimeRemaining(false));
 	}
 }
