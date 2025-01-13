@@ -96,7 +96,7 @@ class SkillCalculatorPanel extends PluginPanel
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
 			tab.setOnSelectEvent(() ->
 			{
-				uiCalculator.openCalculator(calculatorType, shouldForceReload);
+				uiCalculator.openCalculator(calculatorType, shouldForceReload, true);
 				currentTab = tab;
 				shouldForceReload = false;
 				return true;
@@ -109,7 +109,7 @@ class SkillCalculatorPanel extends PluginPanel
 				{
 					if (tab.isSelected())
 					{
-						uiCalculator.openCalculator(calculatorType, shouldForceReload);
+						uiCalculator.openCalculator(calculatorType, shouldForceReload, false);
 					}
 				}
 			});

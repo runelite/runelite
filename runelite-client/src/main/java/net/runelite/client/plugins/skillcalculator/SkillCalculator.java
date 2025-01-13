@@ -152,7 +152,7 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldXPMultiplier().addFocusListener(buildFocusAdapter(e -> onFieldXPMultiplierUpdated()));
 	}
 
-	void openCalculator(CalculatorType calculatorType, boolean forceReload)
+	void openCalculator(CalculatorType calculatorType, boolean forceReload, boolean refreshTargetLevel)
 	{
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
@@ -163,17 +163,20 @@ class SkillCalculator extends JPanel
 			currentCalculator = calculatorType;
 			currentBonuses.clear();
 
-			@Varp int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
-			int endGoal = client.getVarpValue(endGoalVarp);
-			if (endGoal != -1)
+			if (refreshTargetLevel)
 			{
-				targetLevel = Experience.getLevelForXp(endGoal);
-				targetXP = endGoal;
-			}
-			else
-			{
-				targetLevel = enforceSkillBounds(currentLevel + 1);
-				targetXP = Experience.getXpForLevel(targetLevel);
+				@Varp int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
+				int endGoal = client.getVarpValue(endGoalVarp);
+				if (endGoal != -1)
+				{
+					targetLevel = Experience.getLevelForXp(endGoal);
+					targetXP = endGoal;
+				}
+				else
+				{
+					targetLevel = enforceSkillBounds(currentLevel + 1);
+					targetXP = Experience.getXpForLevel(targetLevel);
+				}
 			}
 
 			// Remove all components (action slots) from this panel.
