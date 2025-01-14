@@ -112,6 +112,17 @@ public final class Varbits
 	public static final int CHAT_SCROLLBAR_ON_LEFT = 6374;
 
 	/**
+	 * Essence pouches
+	 */
+	public static final int ESSENCE_POUCH_SMALL_AMOUNT = 603;
+	public static final int ESSENCE_POUCH_MEDIUM_AMOUNT = 604;
+	public static final int ESSENCE_POUCH_LARGE_AMOUNT = 605;
+	public static final int ESSENCE_POUCH_GIANT_AMOUNT = 606;
+	public static final int ESSENCE_POUCH_COLOSSAL_AMOUNT = 13682;
+
+	public static final int ESSENCE_POUCH_COLOSSAL_DEGRADE = 13683;
+
+	/**
 	 * Runepouch
 	 */
 	public static final int RUNE_POUCH_RUNE1 = 29;

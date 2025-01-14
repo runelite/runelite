@@ -100,7 +100,7 @@ public class RuneLiteObject extends RuneLiteObjectController
 		}
 
 		super.setLocation(point, level);
-		setZ(client.getWorldView(getWorldView()).getTileHeights()[level][getX() / 128][getY() / 128]);
+		setZ(Perspective.getTileHeight(client, point, level));
 
 		if (needReregister)
 		{

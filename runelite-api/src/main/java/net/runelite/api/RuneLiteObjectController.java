@@ -37,7 +37,7 @@ public abstract class RuneLiteObjectController
 	private int y;
 	private int z;
 
-	private int worldView;
+	private int worldView = -1;
 	private int level;
 
 	/**
