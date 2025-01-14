@@ -99,9 +99,11 @@ class SkillCalculatorPanel extends PluginPanel
 				currentCalculator = calculatorType;
 				return true;
 			});
-			tab.addMouseListener(new MouseAdapter() {
+			tab.addMouseListener(new MouseAdapter()
+			{
 				@Override
-				public void mouseClicked(MouseEvent e) {
+				public void mouseClicked(MouseEvent e)
+				{
 					uiCalculator.refreshCurrentXP(calculatorType);
 				}
 			});
