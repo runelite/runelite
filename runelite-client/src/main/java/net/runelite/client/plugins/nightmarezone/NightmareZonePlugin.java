@@ -27,12 +27,13 @@ package net.runelite.client.plugins.nightmarezone;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.widgets.ComponentID;
@@ -42,6 +43,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -54,7 +56,6 @@ import net.runelite.client.util.Text;
 )
 public class NightmareZonePlugin extends Plugin
 {
-	private static final int[] NMZ_MAP_REGION = {9033};
 	private static final Duration HOUR = Duration.ofHours(1);
 	private static final Duration OVERLOAD_DURATION = Duration.ofMinutes(5);
 
@@ -273,12 +274,14 @@ public class NightmareZonePlugin extends Plugin
 
 	public boolean isInNightmareZone()
 	{
-		if (client.getLocalPlayer() == null)
+		final Player localPlayer = client.getLocalPlayer();
+		if (localPlayer == null)
 		{
 			return false;
 		}
 
 		// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
-		return client.getLocalPlayer().getWorldLocation().getPlane() > 0 && Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+		return localPlayer.getWorldLocation().getPlane() > 0
+			&& GameArea.NIGHTMARE_ZONE.containsRegion(WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID());
 	}
 }
