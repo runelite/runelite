@@ -75,7 +75,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private String offPrediction = null;
 
 	@Inject
-	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
+	private WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
 		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
 		OkHttpClient okHttpClient, Gson gson)
 	{

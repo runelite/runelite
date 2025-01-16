@@ -60,7 +60,7 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
@@ -74,7 +74,7 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!inside() || !config.enchantment())
 		{
@@ -112,7 +112,7 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
@@ -126,7 +126,7 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final TileItem item = itemDespawned.getItem();
 		final Tile tile = itemDespawned.getTile();

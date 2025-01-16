@@ -104,7 +104,7 @@ public class AlchemyRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!inside() || !config.alchemy())
 		{
@@ -136,7 +136,7 @@ public class AlchemyRoom extends MTARoom
 
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!inside())
 		{
@@ -198,7 +198,7 @@ public class AlchemyRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
@@ -215,7 +215,7 @@ public class AlchemyRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage wrapper)
+	private void onChatMessage(ChatMessage wrapper)
 	{
 		if (!inside() || !config.alchemy())
 		{

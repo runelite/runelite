@@ -137,7 +137,7 @@ class WikiDpsManager
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	private void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		if (scriptPreFired.getScriptId() == ScriptID.EQUIPMENT_SET_STAT_BONUS_SETUP)
 		{

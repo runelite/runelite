@@ -242,7 +242,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
 		if (gameState == GameState.LOGIN_SCREEN)
@@ -262,7 +262,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == InterfaceID.MUSIC)
 		{
@@ -320,7 +320,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
+	private void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
 		if (isChatboxOpen() && !isOnMusicTab())
 		{
@@ -329,7 +329,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVolumeChanged(VolumeChanged volumeChanged)
+	private void onVolumeChanged(VolumeChanged volumeChanged)
 	{
 		if (musicConfig.granularSliders())
 		{
@@ -338,7 +338,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(MusicConfig.GROUP))
 		{
@@ -969,13 +969,13 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick event)
+	private void onClientTick(ClientTick event)
 	{
 		sliderTooltip = null;
 	}
 
 	@Subscribe
-	public void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
+	private void onAreaSoundEffectPlayed(AreaSoundEffectPlayed areaSoundEffectPlayed)
 	{
 		Actor source = areaSoundEffectPlayed.getSource();
 		int soundId = areaSoundEffectPlayed.getSoundId();
@@ -1004,7 +1004,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSoundEffectPlayed(SoundEffectPlayed soundEffectPlayed)
+	private void onSoundEffectPlayed(SoundEffectPlayed soundEffectPlayed)
 	{
 		if (musicConfig.mutePrayerSounds()
 			&& PRAYER_SOUNDS.contains(soundEffectPlayed.getSoundId()))
@@ -1014,7 +1014,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAmbientSoundEffectCreated(AmbientSoundEffectCreated ev)
+	private void onAmbientSoundEffectCreated(AmbientSoundEffectCreated ev)
 	{
 		if (musicConfig.muteAmbientSounds())
 		{

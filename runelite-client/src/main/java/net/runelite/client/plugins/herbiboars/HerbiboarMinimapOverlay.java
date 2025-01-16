@@ -41,7 +41,7 @@ class HerbiboarMinimapOverlay extends Overlay
 	private final HerbiboarConfig config;
 
 	@Inject
-	public HerbiboarMinimapOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
+	private HerbiboarMinimapOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);

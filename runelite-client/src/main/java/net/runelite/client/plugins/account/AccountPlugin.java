@@ -128,13 +128,13 @@ public class AccountPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSessionClose(SessionClose e)
+	private void onSessionClose(SessionClose e)
 	{
 		addAndRemoveButtons();
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession session = sessionManager.getAccountSession();
 

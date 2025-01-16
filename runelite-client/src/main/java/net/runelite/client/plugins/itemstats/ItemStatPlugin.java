@@ -123,7 +123,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getKey().equals("geStats"))
 		{
@@ -132,7 +132,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (itemInformationTitle != null && config.geStats()
 			&& (client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
@@ -143,7 +143,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayer.CURRENT_GE_ITEM && config.geStats())
 		{
@@ -152,7 +152,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.GE_OFFERS_SETUP_BUILD && config.geStats())
 		{
