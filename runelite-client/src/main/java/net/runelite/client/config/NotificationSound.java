@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.Notification;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("devtools")
-public interface DevToolsConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum NotificationSound
 {
-	@ConfigItem(
-		keyName = "inspectorAlwaysOnTop",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default boolean inspectorAlwaysOnTop()
-	{
-		return false;
-	}
+	NATIVE("Native"),
+	CUSTOM("Custom"),
+	OFF("Off");
 
-	@ConfigItem(
-		keyName = "inspectorAlwaysOnTop",
-		name = "",
-		description = ""
-	)
-	void inspectorAlwaysOnTop(boolean value);
+	private final String name;
 
-	@ConfigItem(
-		keyName = "swingInspectorHotkey",
-		name = "Swing inspector",
-		description = "Hotkey to open the Swing inspector, if available."
-	)
-	default Keybind swingInspectorHotkey()
+	@Override
+	public String toString()
 	{
-		return Keybind.NOT_SET;
-	}
-
-	@ConfigItem(
-		keyName = "notification",
-		name = "Notification",
-		description = ""
-	)
-	default Notification notification()
-	{
-		return Notification.ON;
+		return name;
 	}
 }
