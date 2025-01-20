@@ -75,7 +75,10 @@ import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Skill;
 import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -89,13 +92,18 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Woodcutting",
@@ -125,7 +133,16 @@ public class WoodcuttingPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private SkillIconManager skillIconManager;
 
 	@Inject
 	private WoodcuttingOverlay overlay;
@@ -170,6 +187,11 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private ClueNestTier clueTierSpawned;
+	@Getter(AccessLevel.PACKAGE)
+	private int groupBonus;
+	private GroupBonusCounter counter;
+	private static final int BUFF_BAR_DISPLAYED = 96;
+	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -182,6 +204,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
+		clientThread.invokeLater(() -> groupBonus = client.getVarbitValue(Varbits.WOODCUTTING_GROUP_BONUS));
 	}
 
 	@Override
@@ -189,6 +212,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(treesOverlay);
+		removeCounter();
 		respawns.clear();
 		redwoods.clear();
 		roots.clear();
@@ -721,6 +745,24 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("woodcutting"))
+		{
+			return;
+		}
+
+		if (!config.showGroupBonus())
+		{
+			removeCounter();
+		}
+		else if (client.getVarpValue(VarPlayer.BUFF_BAR_WC_GROUP_BONUS) == BUFF_BAR_DISPLAYED)
+		{
+			clientThread.invoke(this::addCounter);
+		}
+	}
+
+	@Subscribe
 	public void onInteractingChanged(InteractingChanged event)
 	{
 		if (event.getSource() != client.getLocalPlayer()
@@ -731,6 +773,59 @@ public class WoodcuttingPlugin extends Plugin
 		}
 
 		lastInteractFlower = (NPC) event.getTarget();
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == Varbits.WOODCUTTING_GROUP_BONUS)
+		{
+			groupBonus = event.getValue();
+			if (groupBonus == 0)
+			{
+				removeCounter();
+			}
+			else
+			{
+				addCounter();
+			}
+		}
+		if (event.getVarpId() == VarPlayer.BUFF_BAR_WC_GROUP_BONUS)
+		{
+			final int varpValue = event.getValue();
+			if (varpValue == BUFF_BAR_NOT_DISPLAYED)
+			{
+				removeCounter();
+			}
+			else if (varpValue == BUFF_BAR_DISPLAYED)
+			{
+				addCounter();
+			}
+		}
+	}
+
+	private void addCounter()
+	{
+		if (counter != null || groupBonus == 0 || !config.showGroupBonus())
+		{
+			return;
+		}
+
+		counter = new GroupBonusCounter(skillIconManager.getSkillImage(Skill.WOODCUTTING), this);
+		counter.setTooltip("Woodcutting group bonus");
+
+		infoBoxManager.addInfoBox(counter);
+	}
+
+	private void removeCounter()
+	{
+		if (counter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(counter);
+		counter = null;
 	}
 
 	private static boolean isFloweringBush(int npcId)
