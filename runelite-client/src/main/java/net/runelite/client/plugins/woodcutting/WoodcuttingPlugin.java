@@ -643,10 +643,12 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	//Leprechaun's Luck is drained in intervals of 5
-	private void checkLeprechaunsLuck () {
+	private void checkLeprechaunsLuck ()
+	{
 		final int leprechaunsLuck = client.getVarbitValue(Varbits.LEPRECHAUNS_LUCK) / 5;
 
-		if (leprechaunsLuck <= 1) {
+		if (leprechaunsLuck <= 1)
+		{
 			if (leprechaunsLuckInfoBox != null)
 			{
 				infoBoxManager.removeInfoBox(leprechaunsLuckInfoBox);
