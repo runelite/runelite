@@ -70,12 +70,12 @@ potion_store=48
 incinerator=49
 incinerator_confirm=50
 potionstore_content=52
-equipment_parent=77
-equipment_set_bonus=118
-settings_button=122
-equipment_button=123
-popup=125
-equipment_stat_bonus=131
+equipment_parent=78
+equipment_set_bonus=119
+settings_button=123
+equipment_button=124
+popup=126
+equipment_stat_bonus=132
 
 [bank_inventory]
 id=15
@@ -769,10 +769,10 @@ init=1
 [settings_side]
 id=116
 camera_zoom_slider_track=57
-music_slider=92
-music_slider_step_holder=104
-sound_effect_slider=106
-area_sound_slider=120
+music_slider=98
+music_slider_step_holder=110
+sound_effect_slider=112
+area_sound_slider=126
 
 [shop]
 id=300
