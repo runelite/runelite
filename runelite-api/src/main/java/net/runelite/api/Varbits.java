@@ -400,8 +400,6 @@ public final class Varbits
 	 */
 	public static final int IN_RAID = 5432;
 	public static final int TOTAL_POINTS = 5431;
-	public static final int PERSONAL_POINTS = 5422;
-	public static final int RAID_PARTY_SIZE = 5424;
 
 	// 0 = raid not started, >0 = raid started
 	public static final int RAID_STATE = 5425;

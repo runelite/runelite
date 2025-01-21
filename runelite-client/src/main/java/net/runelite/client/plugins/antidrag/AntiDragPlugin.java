@@ -191,8 +191,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		}
 
 		if (widgetLoaded.getGroupId() == InterfaceID.BANK ||
-			widgetLoaded.getGroupId() == InterfaceID.BANK_INVENTORY ||
-			widgetLoaded.getGroupId() == InterfaceID.DEPOSIT_BOX)
+			widgetLoaded.getGroupId() == InterfaceID.BANK_INVENTORY)
 		{
 			setBankDragDelay(config.dragDelay());
 		}
@@ -207,11 +206,12 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		if (ev.getScriptId() == ScriptID.INVENTORY_DRAWITEM)
 		{
-			Widget inv = client.getWidget(ComponentID.INVENTORY_CONTAINER);
-			final int delay = config.dragDelay();
-			boolean overriding = isOverriding();
-			for (Widget child : inv.getDynamicChildren())
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == ComponentID.BANK_ITEM_CONTAINER
+				|| child.getParentId() == ComponentID.INVENTORY_CONTAINER)
 			{
+				final int delay = config.dragDelay();
+				boolean overriding = isOverriding();
 				// disable [clientscript,inventory_antidrag_update] listener
 				child.setOnMouseRepeatListener((Object[]) null);
 				if (overriding)
@@ -222,7 +222,17 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		}
 		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
 		{
-			setCoxDragDelay(config.dragDelay());
+			if (isOverriding())
+			{
+				setCoxDragDelay(config.dragDelay());
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.BANK_DEPOSITBOX_INIT)
+		{
+			if (isOverriding())
+			{
+				setBankDragDelay(config.dragDelay());
+			}
 		}
 	}
 

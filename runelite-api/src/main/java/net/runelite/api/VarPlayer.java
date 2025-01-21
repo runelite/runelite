@@ -274,4 +274,6 @@ public final class VarPlayer
 	public static final int ESSENCE_POUCH_MEDIUM_DEGRADE = 488;
 	public static final int ESSENCE_POUCH_LARGE_DEGRADE = 489;
 	public static final int ESSENCE_POUCH_GIANT_DEGRADE = 490;
+
+	public static final int RAIDS_PERSONAL_POINTS = 4609;
 }

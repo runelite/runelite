@@ -242,7 +242,7 @@ id=13
 
 [deposit_box]
 id=192
-inventory_item_container=2
+inventory_item_container=23
 
 [destroy_item]
 id=584

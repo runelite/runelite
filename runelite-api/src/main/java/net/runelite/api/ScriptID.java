@@ -479,4 +479,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 1, string = 1)
 	public static final int POPUP_OVERLAY_YESNO_INIT = 4212;
+
+	@ScriptArguments(integer = 12)
+	public static final int BANK_DEPOSITBOX_INIT = 144;
 }
