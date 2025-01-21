@@ -42,10 +42,13 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.Notification;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -87,6 +90,14 @@ public class WoodcuttingPluginTest
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private InfoBoxManager infoBoxManager;
+
+	@Mock
+	@Bind
+	private ItemManager itemManager;
 
 	@Before
 	public void before()
