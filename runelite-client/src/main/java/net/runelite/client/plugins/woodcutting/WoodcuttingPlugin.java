@@ -70,12 +70,14 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -89,13 +91,16 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Woodcutting",
@@ -136,6 +141,12 @@ public class WoodcuttingPlugin extends Plugin
 	@Inject
 	private WoodcuttingConfig config;
 
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
+
 	@Getter
 	@Nullable
 	@Setter(AccessLevel.PACKAGE)
@@ -161,6 +172,8 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> pheasantNests = new ArrayList<>(4);
 	@Getter(AccessLevel.PACKAGE)
+	private final List<GameObject> endOfRainbows = new ArrayList<>(1);
+	@Getter(AccessLevel.PACKAGE)
 	private NPC freakyForester;
 	@Getter(AccessLevel.PACKAGE)
 	private NPC unfinishedBeeHive;
@@ -170,6 +183,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private ClueNestTier clueTierSpawned;
+
+	@Getter(AccessLevel.PACKAGE)
+	private LeprechaunsLuckInfoBox leprechaunsLuckInfoBox;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -368,6 +384,9 @@ public class WoodcuttingPlugin extends Plugin
 			case ObjectID.PHEASANT_NEST_49937:
 				pheasantNests.add(gameObject);
 				break;
+			case ObjectID.END_OF_RAINBOW:
+				endOfRainbows.add(gameObject);
+				break;
 		}
 	}
 
@@ -417,6 +436,9 @@ public class WoodcuttingPlugin extends Plugin
 				{
 					log.debug("Pheasant event is over");
 				}
+				break;
+			case ObjectID.END_OF_RAINBOW:
+				endOfRainbows.remove(object);
 				break;
 		}
 	}
@@ -606,8 +628,44 @@ public class WoodcuttingPlugin extends Plugin
 				saplingIngredients.clear();
 				Arrays.fill(saplingOrder, null);
 				pheasantNests.clear();
+				endOfRainbows.clear();
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (config.showLeprechaunLuck() && event.getVarbitId() == Varbits.LEPRECHAUNS_LUCK)
+		{
+			checkLeprechaunsLuck();
+		}
+	}
+
+	//Leprechaun's Luck is drained in intervals of 5
+	private void checkLeprechaunsLuck ()
+	{
+		final int leprechaunsLuck = client.getVarbitValue(Varbits.LEPRECHAUNS_LUCK) / 5;
+
+		if (leprechaunsLuck <= 1)
+		{
+			if (leprechaunsLuckInfoBox != null)
+			{
+				infoBoxManager.removeInfoBox(leprechaunsLuckInfoBox);
+				leprechaunsLuckInfoBox = null;
+			}
+
+			return;
+		}
+
+		if (leprechaunsLuckInfoBox == null)
+		{
+			leprechaunsLuckInfoBox = new LeprechaunsLuckInfoBox(this, itemManager.getImage(ItemID.CLOVER_INSIGNIA), leprechaunsLuck);
+			infoBoxManager.addInfoBox(leprechaunsLuckInfoBox);
+			return;
+		}
+
+		leprechaunsLuckInfoBox.setCount(leprechaunsLuck);
 	}
 
 	@Subscribe

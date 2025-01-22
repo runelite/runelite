@@ -300,4 +300,28 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 27,
+			keyName = "highlightLeprechaunRainbow",
+			name = "Highlight Leprechaun Rainbow",
+			description = "Highlights the End of Rainbows during Leprechaun events.",
+			section = forestrySection
+	)
+	default boolean highlightLeprechaunRainbows()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 28,
+			keyName = "showLeprechaunLuck",
+			name = "Show Leprechaun Luck",
+			description = "Displays an overlay for available charges of Leprechaun's Luck the player has accumulated",
+			section = forestrySection
+	)
+	default boolean showLeprechaunLuck()
+	{
+		return true;
+	}
 }
