@@ -73,10 +73,12 @@ class XpInfoBox extends JPanel
 	}
 
 	// Templates
-	private static final String HTML_TOOL_TIP_TEMPLATE =
-		"<html>%s %s done<br/>"
-			+ "%s %s/hr<br/>"
+	private static final String PROGRESS_BAR_TOOLTIP =
+		"<html>%s Actions done<br/>"
+			+ "%s Actions/hr<br/>"
 			+ "%s %s</html>";
+	private static final String PROGRESS_BAR_TOOLTIP_NO_ACTIONS =
+		"<html>%s %s</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
@@ -344,14 +346,22 @@ class XpInfoBox extends JPanel
 
 			XpProgressBarLabel tooltipLabel = xpTrackerConfig.progressBarTooltipLabel();
 
-			progressBar.setToolTipText(String.format(
-				HTML_TOOL_TIP_TEMPLATE,
-				xpSnapshotSingle.getActionsInSession(),
-				"Actions",
-				xpSnapshotSingle.getActionsPerHour(),
-				"Actions",
-				tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
-				tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
+			if (isCombatSkill(skill))
+			{
+				progressBar.setToolTipText(String.format(
+					PROGRESS_BAR_TOOLTIP_NO_ACTIONS,
+					tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
+					tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
+			}
+			else
+			{
+				progressBar.setToolTipText(String.format(
+					PROGRESS_BAR_TOOLTIP,
+					xpSnapshotSingle.getActionsInSession(),
+					xpSnapshotSingle.getActionsPerHour(),
+					tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
+					tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
+			}
 
 			progressBar.setDimmed(skillPaused);
 		}
@@ -378,11 +388,27 @@ class XpInfoBox extends JPanel
 		bottomRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel4(), xpSnapshotSingle));
 	}
 
-	static String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
+	private String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
 	{
+		// hide actions for combat skills
+		if (isActions(panelLabel) && isCombatSkill(skill))
+		{
+			return "";
+		}
+
 		String key = panelLabel.getKey() + ": ";
 		String value = panelLabel.getValueFunc().apply(xpSnapshotSingle);
 		return htmlLabel(key, value);
+	}
+
+	private static boolean isActions(XpPanelLabel panelLabel)
+	{
+		return panelLabel == XpPanelLabel.ACTIONS_LEFT || panelLabel == XpPanelLabel.ACTIONS_HOUR || panelLabel == XpPanelLabel.ACTIONS_DONE;
+	}
+
+	private static boolean isCombatSkill(Skill skill)
+	{
+		return skill == Skill.AGILITY || skill == Skill.STRENGTH || skill == Skill.DEFENCE || skill == Skill.HITPOINTS || skill == Skill.RANGED;
 	}
 
 	static String htmlLabel(String key, int value)
