@@ -347,9 +347,9 @@ class XpInfoBox extends JPanel
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
-				xpSnapshotSingle.getActionType().getLabel(),
+				"Actions",
 				xpSnapshotSingle.getActionsPerHour(),
-				xpSnapshotSingle.getActionType().getLabel(),
+				"Actions",
 				tooltipLabel.getValueFunc().apply(xpSnapshotSingle),
 				tooltipLabel == XpProgressBarLabel.PERCENTAGE ? "of goal" : "till goal lvl"));
 
@@ -380,7 +380,7 @@ class XpInfoBox extends JPanel
 
 	static String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
 	{
-		String key = panelLabel.getActionKey(xpSnapshotSingle) + ": ";
+		String key = panelLabel.getKey() + ": ";
 		String value = panelLabel.getValueFunc().apply(xpSnapshotSingle);
 		return htmlLabel(key, value);
 	}

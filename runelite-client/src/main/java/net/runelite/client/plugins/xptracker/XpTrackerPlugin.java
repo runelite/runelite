@@ -27,23 +27,19 @@ package net.runelite.client.plugins.xptracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.MoreObjects.firstNonNull;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
-import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
-import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -52,14 +48,12 @@ import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -87,14 +81,6 @@ public class XpTrackerPlugin extends Plugin
 	private static final String MENUOP_ADD_CANVAS_TRACKER = "Add to canvas";
 	private static final String MENUOP_REMOVE_CANVAS_TRACKER = "Remove from canvas";
 
-	static final List<Skill> COMBAT = ImmutableList.of(
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.RANGED,
-		Skill.HITPOINTS,
-		Skill.MAGIC);
-
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -109,9 +95,6 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private XpTrackerConfig xpTrackerConfig;
-
-	@Inject
-	private NPCManager npcManager;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -395,42 +378,11 @@ public class XpTrackerPlugin extends Plugin
 			return;
 		}
 
-		final XpStateSingle state = xpState.getSkill(skill);
-		state.setActionType(XpActionType.EXPERIENCE);
-
-		final Actor interacting = client.getLocalPlayer().getInteracting();
-		if (interacting instanceof NPC && COMBAT.contains(skill))
-		{
-			final int xpModifier = worldSetToType(client.getWorldType()).modifier(client);
-			final NPC npc = (NPC) interacting;
-			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getId()), xpModifier);
-		}
-
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		xpPanel.updateSkillExperience(updateResult == XpUpdateResult.UPDATED, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 
 		// Also update the total experience
 		xpState.updateOverall(client.getOverallExperience());
-		xpPanel.updateTotal(xpState.getTotalSnapshot());
-	}
-
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
-	{
-		final NPC npc = event.getNpc();
-
-		if (!npc.isDead())
-		{
-			return;
-		}
-
-		for (Skill skill : COMBAT)
-		{
-			final XpUpdateResult updateResult = xpState.updateNpcKills(skill, npc, npcManager.getHealth(npc.getId()));
-			final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
-		}
-
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
