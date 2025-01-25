@@ -209,7 +209,6 @@ class XpStateSingle
 	void resetPerHour()
 	{
 		//reset actions per hour
-		actions += actionsSinceReset;
 		actionsSinceReset = 0;
 
 		//reset xp per hour
@@ -248,6 +247,7 @@ class XpStateSingle
 		}
 
 		actionExpIndex = (actionExpIndex + 1) % actionExps.length;
+		actions++;
 		actionsSinceReset++;
 
 		// Calculate experience gained
@@ -299,7 +299,7 @@ class XpStateSingle
 			.xpRemainingToGoal(getXpRemaining())
 			.xpPerHour(getXpHr())
 			.skillProgressToGoal(getSkillProgress())
-			.actionsInSession(actions + actionsSinceReset)
+			.actionsInSession(actions)
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
 			.timeTillGoal(getTimeTillLevel(XpGoalTimeType.DAYS))
