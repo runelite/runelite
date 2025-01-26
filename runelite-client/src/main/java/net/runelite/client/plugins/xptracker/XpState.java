@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.NonNull;
@@ -32,13 +34,12 @@ import net.runelite.api.Skill;
 
 /**
  * Internal state for the XpTrackerPlugin
- * <p>
- * Note: This class's operations are not currently synchronized.
- * It is intended to be called by the XpTrackerPlugin on the client thread.
  */
 class XpState
 {
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
+	// this is keeping a copy of the panel skill order so that serialization keeps the order
+	private final List<Skill> order = new ArrayList<>(Skill.values().length);
 	private XpStateSingle overall = new XpStateSingle(-1);
 
 	@Inject
@@ -50,6 +51,7 @@ class XpState
 	void reset()
 	{
 		xpSkills.clear();
+		order.clear();
 		overall = new XpStateSingle(-1);
 	}
 
@@ -109,6 +111,7 @@ class XpState
 				}
 
 				state.updateGoals(currentXp, goalStartXp, goalEndXp);
+				updateOrder(skill);
 				return XpUpdateResult.UPDATED;
 			}
 		}
@@ -212,5 +215,61 @@ class XpState
 	XpSnapshotSingle getTotalSnapshot()
 	{
 		return overall.snapshot();
+	}
+
+	private void updateOrder(Skill skill)
+	{
+		if (xpTrackerConfig.prioritizeRecentXpSkills())
+		{
+			int idx = order.indexOf(skill);
+			if (idx != 0)
+			{
+				order.remove(skill);
+				order.add(0, skill);
+			}
+		}
+		else
+		{
+			if (!order.contains(skill))
+			{
+				order.add(skill);
+			}
+		}
+	}
+
+	XpSave save()
+	{
+		if (overall.getStartXp() == -1)
+		{
+			return null;
+		}
+
+		XpSave save = new XpSave();
+		for (Skill skill : order)
+		{
+			XpStateSingle state = xpSkills.get(skill);
+			if (state.getTotalXpGained() > 0)
+			{
+				save.skills.put(skill, state.save());
+			}
+		}
+		save.overall = overall.save();
+		return save;
+	}
+
+	void restore(XpSave save)
+	{
+		reset();
+
+		for (Map.Entry<Skill, XpSaveSingle> entry : save.skills.entrySet())
+		{
+			Skill skill = entry.getKey();
+			XpSaveSingle s = entry.getValue();
+			XpStateSingle state = new XpStateSingle(s.startXp);
+			state.restore(s);
+			xpSkills.put(skill, state);
+			order.add(skill);
+		}
+		overall.restore(save.overall);
 	}
 }

@@ -24,11 +24,20 @@
  */
 package net.runelite.client.events;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.Value;
+
 /**
  * Posted when the user switches to a different RuneScape save profile
  * This might be because they logged into a different account, or hopped
  * to/from a Beta/Tournament/DMM/Leagues world
  */
+@Value
 public class RuneScapeProfileChanged
 {
+	@Nullable
+	String previousProfile;
+	@Nonnull
+	String newProfile;
 }

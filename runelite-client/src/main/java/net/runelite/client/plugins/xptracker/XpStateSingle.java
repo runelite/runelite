@@ -50,8 +50,10 @@ class XpStateSingle
 
 	private int xpGainedBeforeReset = 0;
 
+	// how long the skill has been trained for in ms
 	@Setter
 	private long skillTime = 0;
+	// the last time the skill xp changed in ms
 	@Getter
 	private long lastChangeMillis;
 
@@ -66,12 +68,6 @@ class XpStateSingle
 	long getCurrentXp()
 	{
 		return startXp + getTotalXpGained();
-	}
-
-	void setXpGainedSinceReset(int xpGainedSinceReset)
-	{
-		this.xpGainedSinceReset = xpGainedSinceReset;
-		lastChangeMillis = System.currentTimeMillis();
 	}
 
 	int getTotalXpGained()
@@ -213,7 +209,8 @@ class XpStateSingle
 
 		//reset xp per hour
 		xpGainedBeforeReset += xpGainedSinceReset;
-		setXpGainedSinceReset(0);
+		xpGainedSinceReset = 0;
+		lastChangeMillis = System.currentTimeMillis();
 		setSkillTime(0);
 	}
 
@@ -251,7 +248,8 @@ class XpStateSingle
 		actionsSinceReset++;
 
 		// Calculate experience gained
-		setXpGainedSinceReset((int) (currentXp - (startXp + xpGainedBeforeReset)));
+		xpGainedSinceReset = (int) (currentXp - (startXp + xpGainedBeforeReset));
+		lastChangeMillis = System.currentTimeMillis();
 
 		return true;
 	}
@@ -308,5 +306,23 @@ class XpStateSingle
 			.startGoalXp(startLevelExp)
 			.endGoalXp(endLevelExp)
 			.build();
+	}
+
+	XpSaveSingle save()
+	{
+		XpSaveSingle save = new XpSaveSingle();
+		save.startXp = startXp;
+		save.xpGainedBeforeReset = xpGainedBeforeReset;
+		save.xpGainedSinceReset = xpGainedSinceReset;
+		save.time = skillTime;
+		return save;
+	}
+
+	void restore(XpSaveSingle save)
+	{
+		startXp = save.startXp;
+		xpGainedBeforeReset = save.xpGainedBeforeReset;
+		xpGainedSinceReset = save.xpGainedSinceReset;
+		skillTime = save.time;
 	}
 }

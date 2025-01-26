@@ -34,6 +34,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -75,6 +76,10 @@ public class XpTrackerPluginTest
 	@Mock
 	@Bind
 	private OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Before
 	public void before()

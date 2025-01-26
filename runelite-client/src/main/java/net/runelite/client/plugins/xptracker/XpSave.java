@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Anthony <https://github.com/while-loop>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,33 +24,53 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.util.function.Function;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.client.util.QuantityFormatter;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.google.inject.Inject;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import net.runelite.api.Skill;
+import net.runelite.client.config.ConfigSerializer;
+import net.runelite.client.config.Serializer;
 
-@Getter
-@AllArgsConstructor
-public enum XpPanelLabel
+@ConfigSerializer(XpSaveSerializer.class)
+class XpSave
 {
-	TIME_TO_LEVEL("TTL", XpSnapshotSingle::getTimeTillGoalShort),
+	Map<Skill, XpSaveSingle> skills = new LinkedHashMap<>();
+	XpSaveSingle overall;
+}
 
-	XP_GAINED("XP Gained", snap -> format(snap.getXpGainedInSession())),
-	XP_HOUR("XP/hr", snap -> format(snap.getXpPerHour())),
-	XP_LEFT("XP Left", snap -> format(snap.getXpRemainingToGoal())),
+class XpSaveSingle
+{
+	@SerializedName("s")
+	long startXp;
+	@SerializedName("br")
+	int xpGainedBeforeReset;
+	@SerializedName("ar")
+	int xpGainedSinceReset;
+	@SerializedName("t")
+	long time; // ms
+}
 
-	ACTIONS_LEFT("Actions", snap -> format(snap.getActionsRemainingToGoal())),
-	ACTIONS_HOUR("Actions/hr", snap -> format(snap.getActionsPerHour())),
-	ACTIONS_DONE("Actions Done", snap -> format(snap.getActionsInSession())),
-	;
+class XpSaveSerializer implements Serializer<XpSave>
+{
+	private final Gson gson;
 
-	private final String key;
-	private final Function<XpSnapshotSingle, String> valueFunc;
-
-	private static String format(int val)
+	@Inject
+	private XpSaveSerializer(Gson gson)
 	{
-		// actions remaining uses Integer.MAX_VALUE if the action history isn't initialized, which can happen
-		// from restoring a save.
-		return val == Integer.MAX_VALUE ? "N/A" : QuantityFormatter.quantityToRSDecimalStack(val, true);
+		this.gson = gson;
+	}
+
+	@Override
+	public String serialize(XpSave value)
+	{
+		return gson.toJson(value);
+	}
+
+	@Override
+	public XpSave deserialize(String s)
+	{
+		return gson.fromJson(s, XpSave.class);
 	}
 }

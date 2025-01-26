@@ -54,6 +54,8 @@ import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -104,6 +106,9 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private XpState xpState;
+
+	@Inject
+	private ConfigManager configManager;
 
 	private NavigationButton navButton;
 	@Setter(AccessLevel.PACKAGE)
@@ -223,6 +228,26 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onRuneScapeProfileChanged(RuneScapeProfileChanged event)
+	{
+		XpSave save = xpState.save();
+		if (save != null)
+		{
+			saveSaveState(event.getPreviousProfile(), save);
+		}
+	}
+
+	@Subscribe
+	public void onClientShutdown(ClientShutdown event)
+	{
+		XpSave save = xpState.save();
+		if (save != null)
+		{
+			saveSaveState(configManager.getRSProfileKey(), save);
+		}
+	}
+
 	private XpWorldType worldSetToType(EnumSet<WorldType> types)
 	{
 		XpWorldType xpType = NORMAL;
@@ -276,6 +301,7 @@ public class XpTrackerPlugin extends Plugin
 	 */
 	void resetAndInitState()
 	{
+		clearSaveState(configManager.getRSProfileKey());
 		resetState();
 
 		for (Skill skill : Skill.values())
@@ -391,6 +417,34 @@ public class XpTrackerPlugin extends Plugin
 	{
 		if (initializeTracker > 0 && --initializeTracker == 0)
 		{
+			XpSave save;
+			// Restore from saved state
+			if (!xpState.isOverallInitialized() && xpTrackerConfig.saveState() && (save = loadSaveState(configManager.getRSProfileKey())) != null)
+			{
+				log.debug("Loading xp state from save");
+				xpState.restore(save);
+
+				// xpsave doesn't save or restore xp goals, fetch them from the client
+				// and apply them to the xpstate
+				for (Skill skill : save.skills.keySet())
+				{
+					@Varp final int startGoal = startGoalVarpForSkill(skill);
+					@Varp final int endGoal = endGoalVarpForSkill(skill);
+					final int startGoalXp = client.getVarpValue(startGoal);
+					final int endGoalXp = client.getVarpValue(endGoal);
+
+					XpStateSingle x = xpState.getSkill(skill);
+					x.updateGoals(x.getCurrentXp(), startGoalXp, endGoalXp);
+				}
+
+				// apply state to the panel
+				for (Skill skill : save.skills.keySet())
+				{
+					xpPanel.updateSkillExperience(true, false, skill, xpState.getSkillSnapshot(skill));
+				}
+				xpPanel.updateTotal(xpState.getTotalSnapshot());
+			}
+
 			// Check for xp gained while logged out
 			for (Skill skill : Skill.values())
 			{
@@ -407,6 +461,7 @@ public class XpTrackerPlugin extends Plugin
 					{
 						log.debug("Xp is going backwards! {} {} -> {}", skill, skillState.getCurrentXp(), currentXp);
 						resetState();
+						clearSaveState(configManager.getRSProfileKey());
 						break;
 					}
 
@@ -649,6 +704,20 @@ public class XpTrackerPlugin extends Plugin
 		rebuildSkills();
 	}
 
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.MINUTES,
+		asynchronous = true
+	)
+	public void tickStateSave()
+	{
+		XpSave save = xpState.save();
+		if (save != null)
+		{
+			saveSaveState(configManager.getRSProfileKey(), save);
+		}
+	}
+
 	private void rebuildSkills()
 	{
 		// Rebuild calculated values like xp/hr in panel
@@ -682,5 +751,20 @@ public class XpTrackerPlugin extends Plugin
 		{
 			xpPauseState.unpauseOverall();
 		}
+	}
+
+	private void saveSaveState(String profile, XpSave state)
+	{
+		configManager.setConfiguration("xpTracker", profile, "state", state);
+	}
+
+	private void clearSaveState(String profile)
+	{
+		configManager.unsetConfiguration("xpTracker", profile, "state");
+	}
+
+	private XpSave loadSaveState(String profile)
+	{
+		return configManager.getConfiguration("xpTracker", profile, "state", XpSave.class);
 	}
 }
