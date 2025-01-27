@@ -108,8 +108,8 @@ public class LayoutManager
 
 	@Inject
 	LayoutManager(Client client, ItemManager itemManager, BankTagsPlugin plugin, ChatboxPanelManager chatboxPanelManager,
-                  BankSearch bankSearch, ChatMessageManager chatMessageManager,
-                  PotionStorage potionStorage, EventBus eventBus, ConfigManager configManager, BankTagsConfig config)
+    	BankSearch bankSearch, ChatMessageManager chatMessageManager,
+    	PotionStorage potionStorage, EventBus eventBus, ConfigManager configManager, BankTagsConfig config)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -120,9 +120,9 @@ public class LayoutManager
 		this.potionStorage = potionStorage;
 		this.eventBus = eventBus;
 		this.configManager = configManager;
-        this.config = config;
+    	this.config = config;
 
-        registerAutoLayout(plugin, "Default", new DefaultLayout());
+    	registerAutoLayout(plugin, "Default", new DefaultLayout());
 	}
 
 	public void register()
