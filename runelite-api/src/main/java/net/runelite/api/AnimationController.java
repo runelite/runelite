@@ -49,9 +49,7 @@ public class AnimationController
 	@Setter
 	private int frame;
 
-	@Getter
-	@Setter
-	private int elapsedTicksThisFrame;
+	private int elapsedTicks;
 
 	public AnimationController(Client client, int animationID)
 	{
@@ -73,7 +71,7 @@ public class AnimationController
 	public void reset()
 	{
 		frame = 0;
-		elapsedTicksThisFrame = 0;
+		elapsedTicks = 0;
 	}
 
 	public void loop()
@@ -92,59 +90,45 @@ public class AnimationController
 
 	public void tick(int ticks)
 	{
-		outer:
-		for (; ; )
+		if (animation == null)
 		{
-			if (animation == null)
-			{
-				return;
-			}
+			return;
+		}
 
-			if (animation.isMayaAnim())
+		if (animation.isMayaAnim())
+		{
+			frame += ticks;
+			if (frame >= animation.getDuration())
 			{
-				frame += ticks;
-				ticks = 0;
-				if (frame >= animation.getDuration())
+				onFinished.accept(this);
+
+				if (frame < 0 || animation == null || frame >= animation.getDuration())
+				{
+					animation = null;
+				}
+			}
+		}
+		else
+		{
+			elapsedTicks += ticks;
+
+			int[] frameLengths = animation.getFrameLengths();
+			while (elapsedTicks > frameLengths[frame])
+			{
+				elapsedTicks -= frameLengths[frame];
+				frame++;
+
+				if (frame >= frameLengths.length)
 				{
 					onFinished.accept(this);
-					if (animation != null && frame < animation.getDuration())
+
+					if (frame < 0 || animation == null || frame >= frameLengths.length)
 					{
-						continue;
+						animation = null;
+						return;
 					}
 				}
 			}
-			else
-			{
-				int[] frameLengths = animation.getFrameLengths();
-				if (frameLengths == null)
-				{
-					return;
-				}
-
-				elapsedTicksThisFrame += ticks;
-				ticks = 0;
-
-				for (; ; )
-				{
-					if (frame >= frameLengths.length)
-					{
-						onFinished.accept(this);
-						continue outer;
-					}
-
-					if (elapsedTicksThisFrame > frameLengths[frame])
-					{
-						elapsedTicksThisFrame -= frameLengths[frame];
-						frame++;
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
-
-			return;
 		}
 	}
 
@@ -179,7 +163,7 @@ public class AnimationController
 		}
 
 		return Integer.MIN_VALUE
-			| elapsedTicksThisFrame << 16
+			| elapsedTicks << 16
 			| frame;
 	}
 }
