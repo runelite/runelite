@@ -1616,7 +1616,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Talk to the Slayer Master in Burthorpe.")
 			.location(new WorldPoint(2930, 3536, 0))
-			.npc("Turael")
+			.npcProvider(CrypticClue::getBurthorpeSlayerMaster)
 			.solution("The Slayer Master is located in the small house east of the Toad and Chicken inn in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
@@ -1733,8 +1733,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private static final int DEFAULT_RESOURCE_AREA_COST = 7500;
 
 	private final String text;
-	@Nullable
-	private final String npc;
+	@Getter(AccessLevel.PRIVATE)
+	private final Function<ClueScrollPlugin, String> npcProvider;
 	private final int objectId;
 	@Getter(AccessLevel.NONE)
 	private final String solution;
@@ -1751,6 +1751,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private CrypticClue(
 		String text,
 		@Nullable String npc,
+		@Nullable Function<ClueScrollPlugin, String> npcProvider,
 		int objectId,
 		@Nullable WorldPoint location,
 		@Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider,
@@ -1762,15 +1763,21 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	)
 	{
 		this.text = text;
-		this.npc = npc;
+		this.npcProvider = npcProvider != null ? npcProvider : (npc != null ? (plugin) -> npc : null);
 		this.objectId = objectId > 0 ? objectId : -1;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.solutionProvider = solutionProvider != null ? solutionProvider : (plugin) -> solution;
 		this.solution = solution;
 		this.questionText = questionText;
 		this.npcRegions = npcRegions;
-		setRequiresSpade(this.locationProvider != null && npc == null && this.objectId == -1);
+		setRequiresSpade(this.locationProvider != null && this.npcProvider == null && this.objectId == -1);
 		setRequiresLight(requiresLight);
+	}
+
+	@Nullable
+	public String getNpc(ClueScrollPlugin plugin)
+	{
+		return npcProvider == null ? null : npcProvider.apply(plugin);
 	}
 
 	@Nullable
@@ -1790,11 +1797,12 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue").build());
 
-		if (getNpc() != null)
+		final String npc = getNpc(plugin);
+		if (npc != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getNpc())
+				.left(npc)
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
@@ -1832,7 +1840,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		// Mark dig location
 		WorldPoint location = getLocation(plugin);
-		if (location != null && getNpc() == null && objectId == -1)
+		if (location != null && getNpc(plugin) == null && objectId == -1)
 		{
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), location);
 
@@ -1891,7 +1899,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
-		return new String[]{npc};
+		return new String[]{getNpc(plugin)};
 	}
 
 	@Override
@@ -1946,5 +1954,11 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		}
 
 		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
+	}
+
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
+	private static String getBurthorpeSlayerMaster(ClueScrollPlugin plugin)
+	{
+		return plugin.getClient().getVarbitValue(Varbits.BURTHORPE_SLAYER_MASTER) == 0 ? "Turael" : "Aya";
 	}
 }
