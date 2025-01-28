@@ -21,16 +21,16 @@ LABEL10:
    istore                 0
    sstore                 0
    iconst                 1
-   iconst                 10616887
+   iconst                 10616888
    if_settextshadow      
    jump                   LABEL23
 LABEL20:
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_settextshadow      
 LABEL23:
    iload                  0
-   iconst                 10616887
+   iconst                 10616888
    if_setcolour          
    get_varc_string        335
    string_length         
@@ -166,7 +166,7 @@ LABEL131:
    parawidth             
    istore                 3
    iload                  3
-   iconst                 10616887
+   iconst                 10616888
    if_getwidth           
    if_icmpgt              LABEL141
    jump                   LABEL147
@@ -174,29 +174,29 @@ LABEL141:
    iconst                 2
    iconst                 2
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_settextalign       
    jump                   LABEL152
 LABEL147:
    iconst                 0
    iconst                 2
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_settextalign       
 LABEL152:
-   iconst                 10616887
+   iconst                 10616888
    if_clearops           
    iconst                 -1
    sconst                 ""
-   iconst                 10616887
+   iconst                 10616888
    if_setonmouserepeat   
    iconst                 -1
    sconst                 ""
-   iconst                 10616887
+   iconst                 10616888
    if_setonmouseleave    
    iconst                 -1
    sconst                 ""
-   iconst                 10616887
+   iconst                 10616888
    if_setonop            
    jump                   LABEL226
 LABEL167:
@@ -234,39 +234,39 @@ LABEL193:
    iconst                 1
    iconst                 2
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_settextalign       
    iconst                 10
    sconst                 "Configure"
-   iconst                 10616887
+   iconst                 10616888
    if_setop              
    sconst                 "<col=ff9040>"
    sconst                 "Display name"
    sconst                 "</col>"
    join_string            3
-   iconst                 10616887
+   iconst                 10616888
    if_setopbase          
    iconst                 45
    iconst                 -2147483645
    iload                  1
    sconst                 "Ii"
-   iconst                 10616887
+   iconst                 10616888
    if_setonmouserepeat   
    iconst                 45
    iconst                 -2147483645
    iload                  0
    sconst                 "Ii"
-   iconst                 10616887
+   iconst                 10616888
    if_setonmouseleave    
    iconst                 489
    iconst                 -2147483644
    iconst                 1024
    sconst                 "ii"
-   iconst                 10616887
+   iconst                 10616888
    if_setonop            
 LABEL226:
    sload                  2
-   iconst                 10616887
+   iconst                 10616888
    if_settext            
    sconst                 "setChatboxInput"
    runelite_callback     
@@ -274,6 +274,6 @@ LABEL226:
    iconst                 16
    iconst                 1
    iconst                 0
-   iconst                 10616887
+   iconst                 10616888
    if_setsize            
    return                
