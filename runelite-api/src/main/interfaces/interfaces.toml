@@ -159,16 +159,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=35
-container=37
-title=41
-full_input=42
-ge_search_results=50
-messages=53
-transparent_background_lines=54
-input=55
-message_lines=56
-first_message=57
+transparent_background=36
+container=38
+title=42
+full_input=43
+ge_search_results=51
+messages=54
+transparent_background_lines=55
+input=56
+message_lines=57
+first_message=58
 
 [clan]
 id=701
@@ -207,11 +207,11 @@ id=356
 
 [collection_log]
 id=621
-container=0
+container=87
 tabs=3
 entry=17
-entry_header=19
-entry_items=36
+entry_header=20
+entry_items=37
 
 [combat]
 id=593
