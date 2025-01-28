@@ -315,6 +315,7 @@ public class MiningPlugin extends Plugin
 				case ROCKS_11391:
 				case ROCKS_11392:
 				case ROCKS_33253: // Basalt etc
+				case ROCKS_36202: // Trahaearn mine
 				case EMPTY_ASH_PILE:
 				{
 					addRockRespawn(Rock.ROCK, WorldPoint.fromCoord(locCoord), ticks);
