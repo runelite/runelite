@@ -1617,7 +1617,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Talk to the Slayer Master in Burthorpe.")
 			.location(new WorldPoint(2930, 3536, 0))
 			.npcProvider(CrypticClue::getBurthorpeSlayerMaster)
-			.solution("The Slayer Master is located in the small house east of the Toad and Chicken inn in Burthorpe.")
+			.solutionProvider((plugin) -> getBurthorpeSlayerMaster(plugin) + " is located in the small house east of the Toad and Chicken inn in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
@@ -1956,7 +1956,6 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
 	}
 
-	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static String getBurthorpeSlayerMaster(ClueScrollPlugin plugin)
 	{
 		return plugin.getClient().getVarbitValue(Varbits.BURTHORPE_SLAYER_MASTER) == 0 ? "Turael" : "Aya";
