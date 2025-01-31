@@ -42,6 +42,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.itemstats.ItemStatPlugin;
+import net.runelite.client.plugins.statusbars.StatusBarsConfig.WarmthDirection;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -53,6 +54,8 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDependency(ItemStatPlugin.class)
 public class StatusBarsPlugin extends Plugin
 {
+	private static final int WINTERTODT_REGION = 6462;
+
 	@Inject
 	private StatusBarsOverlay overlay;
 
@@ -118,7 +121,7 @@ public class StatusBarsPlugin extends Plugin
 
 		final Actor interacting = localPlayer.getInteracting();
 
-		if (config.hideAfterCombatDelay() == 0)
+		if (config.hideAfterCombatDelay() == 0 || (config.wintertodtWarmthDirection() != WarmthDirection.DISABLED && isInWintertodtRegion()))
 		{
 			barsDisplayed = true;
 		}
@@ -132,5 +135,15 @@ public class StatusBarsPlugin extends Plugin
 		{
 			barsDisplayed = false;
 		}
+	}
+
+	private boolean isInWintertodtRegion()
+	{
+		if (client.getLocalPlayer() != null)
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
+		}
+
+		return false;
 	}
 }
