@@ -49,6 +49,7 @@ import net.runelite.client.plugins.itemstats.special.CastleWarsBandage;
 import net.runelite.client.plugins.itemstats.special.CaveNightshade;
 import net.runelite.client.plugins.itemstats.special.NettleTeaRunEnergy;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
+import net.runelite.client.plugins.itemstats.stats.Stats;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @Singleton
@@ -383,6 +384,9 @@ public class ItemStatChanges
 		add(boost(ATTACK, perc(.15, 4)), RUBY_HARVEST, RUBY_HARVEST_MIX_1, RUBY_HARVEST_MIX_2);
 		add(boost(STRENGTH, perc(.15, 4)), BLACK_WARLOCK, BLACK_WARLOCK_MIX_1, BLACK_WARLOCK_MIX_2);
 		add(boost(DEFENCE, perc(.15, 4)), SAPPHIRE_GLACIALIS, SAPPHIRE_GLACIALIS_MIX_1, SAPPHIRE_GLACIALIS_MIX_2);
+
+		// Wintertodt
+		add(heal(WARMTH, 30), REJUVENATION_POTION_1, REJUVENATION_POTION_2, REJUVENATION_POTION_3, REJUVENATION_POTION_4);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
