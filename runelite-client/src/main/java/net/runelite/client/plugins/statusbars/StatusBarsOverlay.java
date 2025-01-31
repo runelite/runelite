@@ -319,9 +319,12 @@ class StatusBarsOverlay extends Overlay
 			return barRenderers.get(StatusBarsConfig.BarMode.WARMTH);
 		}
 
-		if (left) {
+		if (left)
+		{
 			return barRenderers.get(config.leftBarMode());
-		} else {
+		}
+		else
+		{
 			return barRenderers.get(config.rightBarMode());
 		}
 	}

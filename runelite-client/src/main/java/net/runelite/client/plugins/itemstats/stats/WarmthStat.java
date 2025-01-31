@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Lake David <ldavid432@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,21 +29,21 @@ import net.runelite.api.Varbits;
 
 public class WarmthStat extends Stat
 {
-    WarmthStat()
-    {
-        super("Warmth");
-    }
+	WarmthStat()
+	{
+		super("Warmth");
+	}
 
-    @Override
-    public int getValue(Client client)
-    {
-        return client.getVarbitValue(Varbits.WINTERTODT_WARMTH) / 10;
-    }
+	@Override
+	public int getValue(Client client)
+	{
+		return client.getVarbitValue(Varbits.WINTERTODT_WARMTH) / 10;
+	}
 
-    @Override
-    public int getMaximum(Client client)
-    {
-        return 100;
-    }
+	@Override
+	public int getMaximum(Client client)
+	{
+		return 100;
+	}
 
 }

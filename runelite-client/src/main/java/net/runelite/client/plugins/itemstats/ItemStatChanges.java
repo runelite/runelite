@@ -49,7 +49,6 @@ import net.runelite.client.plugins.itemstats.special.CastleWarsBandage;
 import net.runelite.client.plugins.itemstats.special.CaveNightshade;
 import net.runelite.client.plugins.itemstats.special.NettleTeaRunEnergy;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
-import net.runelite.client.plugins.itemstats.stats.Stats;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @Singleton
