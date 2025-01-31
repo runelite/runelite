@@ -106,6 +106,24 @@ public interface StatusBarsConfig extends Config
 		return 0;
 	}
 
+	enum WarmthDirection
+	{
+		DISABLED,
+		LEFT,
+		RIGHT,
+		BOTH,
+	}
+
+	@ConfigItem(
+		keyName = "wintertodtWarmthDirection",
+		name = "Wintertodt Warmth",
+		description = "Automatically replace your status bar(s) with Warmth while fighting the Wintertodt"
+	)
+	default WarmthDirection wintertodtWarmthDirection()
+	{
+		return WarmthDirection.DISABLED;
+	}
+
 	@Range(
 		min = BarRenderer.MIN_WIDTH,
 		max = BarRenderer.MAX_WIDTH
