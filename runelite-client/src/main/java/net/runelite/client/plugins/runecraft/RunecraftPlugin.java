@@ -60,7 +60,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Runecraft",
 	description = "Show minimap icons and clickboxes for abyssal rifts",
-	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
+	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting", "essence", "pouch"}
 )
 public class RunecraftPlugin extends Plugin
 {
@@ -88,6 +88,9 @@ public class RunecraftPlugin extends Plugin
 	private AbyssMinimapOverlay abyssMinimapOverlay;
 
 	@Inject
+	private EssencePouchOverlay essencePouchOverlay;
+
+	@Inject
 	private RunecraftConfig config;
 
 	@Inject
@@ -110,6 +113,7 @@ public class RunecraftPlugin extends Plugin
 		npcOverlayService.registerHighlighter(highlightDarkMage);
 		overlayManager.add(abyssOverlay);
 		overlayManager.add(abyssMinimapOverlay);
+		overlayManager.add(essencePouchOverlay);
 	}
 
 	@Override
@@ -118,6 +122,7 @@ public class RunecraftPlugin extends Plugin
 		npcOverlayService.unregisterHighlighter(highlightDarkMage);
 		overlayManager.remove(abyssOverlay);
 		overlayManager.remove(abyssMinimapOverlay);
+		overlayManager.remove(essencePouchOverlay);
 		abyssObjects.clear();
 		degradedPouchInInventory = false;
 	}

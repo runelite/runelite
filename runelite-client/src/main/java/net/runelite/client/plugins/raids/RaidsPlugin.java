@@ -315,7 +315,7 @@ public class RaidsPlugin extends Plugin
 				if (config.pointsMessage())
 				{
 					int totalPoints = client.getVarbitValue(Varbits.TOTAL_POINTS);
-					int personalPoints = client.getVarbitValue(Varbits.PERSONAL_POINTS);
+					int personalPoints = client.getVarpValue(VarPlayer.RAIDS_PERSONAL_POINTS);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 

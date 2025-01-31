@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -37,8 +39,6 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import lombok.Getter;
 import static net.runelite.client.plugins.skillcalculator.SkillCalculator.MAX_XP_MULTIPLIER;
 import net.runelite.client.ui.ColorScheme;
@@ -194,7 +194,7 @@ class UICalculatorInputArea extends JPanel
 		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
 		JFormattedTextField spinnerTextField = editor.getTextField();
 		spinnerTextField.setHorizontalAlignment(JTextField.LEFT);
-		spinnerTextField.setFormatterFactory(new UnitFormatterFactory("x"));
+		spinnerTextField.setFormatterFactory(new UnitFormatterFactory(spinnerTextField.getFormatterFactory(), "x"));
 		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
 

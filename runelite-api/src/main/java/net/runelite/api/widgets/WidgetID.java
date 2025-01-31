@@ -195,7 +195,6 @@ public final class WidgetID
 	public static final int BGR_RANK_RUNEVERSI_GROUP_ID = InterfaceID.BGR_RANK_RUNEVERSI;
 	public static final int AGILITY_ARENA_HUD_GROUP_ID = InterfaceID.AGILITY_ARENA;
 	public static final int GNOMEBALL_SCORE_GROUP_ID = InterfaceID.GNOMEBALL;
-	public static final int CLANRANK_POPUP = InterfaceID.CLANRANK_POPUP;
 	public static final int SANITY_GROUP_ID = InterfaceID.SANITY;
 	public static final int THE_STRANGLER_INFECTION_GROUP_ID = InterfaceID.STRANGLER;
 }

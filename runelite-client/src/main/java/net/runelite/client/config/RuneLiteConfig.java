@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
-import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.util.OSType;
@@ -229,9 +228,9 @@ public interface RuneLiteConfig extends Config
 		position = 23,
 		section = notificationSettings
 	)
-	default Notifier.NativeCustomOff notificationSound()
+	default NotificationSound notificationSound()
 	{
-		return Notifier.NativeCustomOff.NATIVE;
+		return NotificationSound.NATIVE;
 	}
 
 	@Range(

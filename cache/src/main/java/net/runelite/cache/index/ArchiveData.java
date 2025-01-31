@@ -24,6 +24,11 @@
  */
 package net.runelite.cache.index;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ArchiveData
 {
 	int id;
@@ -31,54 +36,4 @@ public class ArchiveData
 	int crc;
 	int revision;
 	FileData[] files;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getNameHash()
-	{
-		return nameHash;
-	}
-
-	public void setNameHash(int nameHash)
-	{
-		this.nameHash = nameHash;
-	}
-
-	public int getCrc()
-	{
-		return crc;
-	}
-
-	public void setCrc(int crc)
-	{
-		this.crc = crc;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
-
-	public FileData[] getFiles()
-	{
-		return files;
-	}
-
-	public void setFiles(FileData[] files)
-	{
-		this.files = files;
-	}
 }

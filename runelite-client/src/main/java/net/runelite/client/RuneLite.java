@@ -107,6 +107,7 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
+	public static final File NOTIFICATIONS_DIR = new File(RuneLite.RUNELITE_DIR, "notifications");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");

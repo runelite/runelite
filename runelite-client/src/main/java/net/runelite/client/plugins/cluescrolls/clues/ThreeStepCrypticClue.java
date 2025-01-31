@@ -180,7 +180,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	{
 		return clueSteps.stream()
 			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getNpc())
+			.map(s -> s.getKey().getNpc(plugin))
 			.toArray(String[]::new);
 	}
 

@@ -24,11 +24,17 @@
  */
 package net.runelite.cache.index;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 
+@Setter
+@Getter
 public class IndexData
 {
+	private static final int NAMED = 1;
+
 	private int protocol;
 	private int revision;
 	private boolean named;
@@ -48,12 +54,13 @@ public class IndexData
 			this.revision = stream.readInt();
 		}
 
-		int hash = stream.readUnsignedByte();
-		named = (1 & hash) != 0;
-		if ((hash & ~1) != 0)
+		int flags = stream.readUnsignedByte();
+		named = (flags & NAMED) != 0;
+		if ((flags & ~NAMED) != 0)
 		{
-			throw new IllegalArgumentException("Unknown flags");
+			throw new IllegalArgumentException("Unknown flags: " + flags);
 		}
+
 		int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 		int lastArchiveId = 0;
 
@@ -144,7 +151,7 @@ public class IndexData
 			stream.writeInt(this.revision);
 		}
 
-		stream.writeByte(named ? 1 : 0);
+		stream.writeByte(named ? NAMED : 0);
 		if (protocol >= 7)
 		{
 			stream.writeBigSmart(this.archives.length);
@@ -255,45 +262,5 @@ public class IndexData
 		}
 
 		return stream.flip();
-	}
-
-	public int getProtocol()
-	{
-		return protocol;
-	}
-
-	public void setProtocol(int protocol)
-	{
-		this.protocol = protocol;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
-
-	public boolean isNamed()
-	{
-		return named;
-	}
-
-	public void setNamed(boolean named)
-	{
-		this.named = named;
-	}
-
-	public ArchiveData[] getArchives()
-	{
-		return archives;
-	}
-
-	public void setArchives(ArchiveData[] archives)
-	{
-		this.archives = archives;
 	}
 }

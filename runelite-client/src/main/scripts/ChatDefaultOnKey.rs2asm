@@ -3,11 +3,11 @@
 .string_stack_count 0
 .int_var_count      10
 .string_var_count   0
-   iconst                 10616885
+   iconst                 10616886
    if_gethide            
    iconst                 1
    if_icmpeq              LABEL9
-   iconst                 10616886
+   iconst                 10616887
    if_gethide            
    iconst                 1
    if_icmpeq              LABEL9
@@ -1027,7 +1027,7 @@ LABEL828:
    if_icmpeq              LABEL832
    jump                   LABEL877
 LABEL832:
-   iconst                 40697938
+   iconst                 40697932
    iconst                 1
    cc_find               
    iconst                 1

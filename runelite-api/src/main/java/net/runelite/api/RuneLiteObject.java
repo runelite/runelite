@@ -25,93 +25,243 @@
  */
 package net.runelite.api;
 
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.runelite.api.coords.LocalPoint;
 
-/**
- * Represents a modified {@link GraphicsObject}
- */
-public interface RuneLiteObject extends GraphicsObject
+@RequiredArgsConstructor
+public class RuneLiteObject extends RuneLiteObjectController
 {
-	/**
-	 * Sets the model of the RuneLiteObject
-	 */
-	void setModel(Model model);
+	private final Client client;
+
+	@Getter
+	private Model baseModel;
 
 	/**
-	 * Sets the animation of the RuneLiteObject
-	 * If animation is null model will be static
+	 * The animation of the RuneLiteObject.
+	 * If animation is null then the model will be static.
 	 */
-	void setAnimation(Animation animation);
+	@Getter
+	@Nullable
+	private AnimationController animationController;
+
+	/**
+	 * The optional pose animation of the RuneLiteObject.
+	 * If animation is null then the model from {@link RuneLiteObject#animationController} will be used.
+	 */
+	@Setter
+	@Getter
+	@Nullable
+	private AnimationController poseAnimationController;
+
+	@Getter
+	@Setter
+	private int startCycle;
+
+	// tri-state for unset, true, false. Legacy option for pre-RuneLiteObjectController.
+	private Boolean shouldLoop;
 
 	/**
 	 * Sets whether the animation of the RuneLiteObject should loop when the animation ends.
 	 * If this is false the object will despawn when the animation ends.
 	 * Does nothing if the animation is null.
+	 *
+	 * @deprecated Use {@link AnimationController#setOnFinished(Consumer)} with {@link AnimationController#loop()} instead.
 	 */
-	void setShouldLoop(boolean shouldLoop);
+	@Deprecated
+	public void setShouldLoop(boolean shouldLoop)
+	{
+		this.shouldLoop = shouldLoop;
+		updateAnimationControllerLooping();
+	}
+
+	/**
+	 * Sets the model to be rendered.
+	 * If {@link RuneLiteObject#animationController} is not null, this model will be passed to {@link AnimationController#animate(Model)}.
+	 */
+	public void setModel(Model baseModel)
+	{
+		this.baseModel = baseModel;
+	}
 
 	/**
 	 * Sets the location in the scene for the RuneLiteObject
 	 */
-	void setLocation(LocalPoint point, int plane);
+	@Override
+	public void setLocation(LocalPoint point, int level)
+	{
+		boolean needReregister = isActive() && point.getWorldView() != getWorldView();
+		if (needReregister)
+		{
+			setActive(false);
+		}
+
+		super.setLocation(point, level);
+		setZ(Perspective.getTileHeight(client, point, level));
+
+		if (needReregister)
+		{
+			setActive(true);
+		}
+	}
 
 	/**
-	 * Sets the state of the RuneLiteObject
-	 * Set to true to spawn the object
-	 * Set to false to despawn the object
+	 * Sets the animation of the RuneLiteObject.
+	 * If animation is null, the model will be static.
 	 */
-	void setActive(boolean active);
+	public void setAnimation(Animation animation)
+	{
+		setAnimationController(new AnimationController(client, animation));
+	}
+
+	/**
+	 * Sets the animation controller of the RuneLiteObject.
+	 * If animationController is null, the model will be static.
+	 */
+	public void setAnimationController(@Nullable AnimationController animationController)
+	{
+		this.animationController = animationController;
+		updateAnimationControllerLooping();
+	}
+
+	/**
+	 * Sets the state of the RuneLiteObject.
+	 * Set to true to spawn the object.
+	 * Set to false to despawn the object.
+	 */
+	public void setActive(boolean active)
+	{
+		if (active)
+		{
+			client.registerRuneLiteObject(this);
+		}
+		else
+		{
+			client.removeRuneLiteObject(this);
+		}
+	}
 
 	/**
 	 * Gets the state of the RuneLiteObject
 	 *
 	 * @return true if the RuneLiteObject is added to the scene
 	 */
-	boolean isActive();
+	public boolean isActive()
+	{
+		return client.isRuneLiteObjectRegistered(this);
+	}
 
 	/**
-	 * Get the object orientation
-	 * @see net.runelite.api.coords.Angle
-	 * @return
+	 * Called every frame the RuneLiteObject is registered and in the scene
+	 *
+	 * @param ticksSinceLastFrame The number of client ticks since the last frame
 	 */
-	int getOrientation();
+	@Override
+	public void tick(int ticksSinceLastFrame)
+	{
+		if (animationController != null)
+		{
+			animationController.tick(ticksSinceLastFrame);
+		}
+	}
 
 	/**
-	 * Set the object orientation
-	 * @see net.runelite.api.coords.Angle
-	 * @param orientation
+	 * Called every frame to get a model to render. The returned model is not modified and
+	 * can be a shared model.
 	 */
-	void setOrientation(int orientation);
+	@Override
+	public Model getModel()
+	{
+		if (animationController != null)
+		{
+			return animationController.animate(this.baseModel, this.poseAnimationController);
+		}
+		else if (poseAnimationController != null)
+		{
+			return poseAnimationController.animate(this.baseModel);
+		}
+		else
+		{
+			return baseModel;
+		}
+	}
 
 	/**
-	 * Get the object radius. The radius is offset from the object position to form a 2d rectangle, and the tiles
-	 * the corners are in are used to determine the min and max scene x/y the object is on. These tiles are then drawn
-	 * first prior to the object being drawn, so that the object renders correctly over top of each tile.
-	 * The default radius is 60, marginally less than 128/2, which works well for models the size of a single tile.
-	 * @return
+	 * @deprecated Use a custom {@link AnimationController} instead.
 	 */
-	int getRadius();
+	@Deprecated
+	public boolean finished()
+	{
+		return !this.isActive();
+	}
 
 	/**
-	 * Set the object radius
-	 * @see #getRadius()
-	 * @param radius
+	 * @deprecated Use a custom {@link AnimationController} instead
+	 * to despawn the object when it completes its animation.
 	 */
-	void setRadius(int radius);
+	@Deprecated
+	public void setFinished(boolean finished)
+	{
+		if (finished)
+		{
+			setActive(false);
+		}
+	}
 
 	/**
-	 * If true, the rectangle computed from the radius has 1 or 2 of its sides expanded by a full tile based on the
-	 * orientation the object is facing. This causes the tiles the object is facing to be drawn first, even if the
-	 * radius of the object would not place the object on that tile.
-	 * The default is false.
-	 * @return
+	 * @deprecated Use {@link #getAnimationController} or {@link #getPoseAnimationController()}
+	 * followed by {@link AnimationController#getFrame()}.
 	 */
-	boolean drawFrontTilesFirst();
+	public Animation getAnimation()
+	{
+		if (animationController != null)
+		{
+			return animationController.getAnimation();
+		}
+
+		if (poseAnimationController != null)
+		{
+			return poseAnimationController.getAnimation();
+		}
+
+		return null;
+	}
 
 	/**
-	 * Sets whether the front tiles are drawn first.
-	 * @see #drawFrontTilesFirst()
-	 * @param drawFrontTilesFirst
+	 * @deprecated Use {@link #getAnimationController} or {@link #getPoseAnimationController()}
+	 * followed by {@link AnimationController#getFrame()}.
 	 */
-	void setDrawFrontTilesFirst(boolean drawFrontTilesFirst);
+	@Deprecated
+	public int getAnimationFrame()
+	{
+		if (animationController != null)
+		{
+			return animationController.getFrame();
+		}
+
+		if (poseAnimationController != null)
+		{
+			return poseAnimationController.getFrame();
+		}
+
+		return -1;
+	}
+
+	private void updateAnimationControllerLooping()
+	{
+		if (this.shouldLoop != null && this.animationController != null)
+		{
+			if (this.shouldLoop)
+			{
+				animationController.setOnFinished(AnimationController::loop);
+			}
+			else
+			{
+				animationController.setOnFinished(_ac -> this.setActive(false));
+			}
+		}
+	}
 }

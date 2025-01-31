@@ -78,6 +78,8 @@ public class MiningPlugin extends Plugin
 			"(?:rock|star)" +
 			"(?:\\.|!)");
 
+	private static final int DAEYALT_ESSENCE_MINE_REGION = 14744;
+
 	@Inject
 	private Client client;
 
@@ -258,7 +260,7 @@ public class MiningPlugin extends Plugin
 		GameObject object = event.getGameObject();
 
 		// Inverse timer to track daeyalt essence active duration
-		if (object.getId() == DAEYALT_ESSENCE_39095)
+		if (object.getId() == DAEYALT_ESSENCE_39095 && client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_ESSENCE_MINE_REGION)
 		{
 			RockRespawn rockRespawn = new RockRespawn(Rock.DAEYALT_ESSENCE, object.getWorldLocation(), Instant.now(),
 				(int) Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, RSTimeUnit.GAME_TICKS).toMillis(), Rock.DAEYALT_ESSENCE.getZOffset());
@@ -315,6 +317,7 @@ public class MiningPlugin extends Plugin
 				case ROCKS_11391:
 				case ROCKS_11392:
 				case ROCKS_33253: // Basalt etc
+				case ROCKS_36202: // Trahaearn mine
 				case EMPTY_ASH_PILE:
 				{
 					addRockRespawn(Rock.ROCK, WorldPoint.fromCoord(locCoord), ticks);

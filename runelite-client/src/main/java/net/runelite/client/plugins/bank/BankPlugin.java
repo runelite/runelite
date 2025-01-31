@@ -309,24 +309,6 @@ public class BankPlugin extends Plugin
 		{
 			clientThread.invokeLater(this::updateSeedVaultTotal);
 		}
-		else if (event.getGroupId() == InterfaceID.CLANRANK_POPUP // also the Jagex account ad in the bank
-			&& config.blockJagexAccountAd())
-		{
-			var wn = client.getComponentTable()
-				.get(ComponentID.BANK_POPUP);
-			if (wn != null)
-			{
-				clientThread.invokeLater(() ->
-				{
-					var w = client.getWidget(InterfaceID.CLANRANK_POPUP, 4).getChild(1);
-					// this is also re-used by the clear all bank fillers popup
-					if (w.getText().equals("Want more bank space?"))
-					{
-						client.closeInterface(wn, true);
-					}
-				});
-			}
-		}
 	}
 
 	@Subscribe(priority = 1) // run prior to bank tags
@@ -341,6 +323,17 @@ public class BankPlugin extends Plugin
 			{
 				// This is here so that it computes the tab price before bank tags layouts the tab with duplicates or placeholders.
 				prices = getWidgetContainerPrices(ComponentID.BANK_ITEM_CONTAINER, InventoryID.BANK);
+			}
+		}
+		else if (event.getScriptId() == ScriptID.POPUP_OVERLAY_YESNO_INIT)
+		{
+			var text = event.getScriptEvent().getArguments()[1];
+			// this is also re-used by the clear all bank fillers popup
+			if (((String) text).startsWith("Want more bank space?") && config.blockJagexAccountAd())
+			{
+				var wn = client.getComponentTable()
+					.get(ComponentID.BANK_POPUP);
+				clientThread.invokeAtTickEnd(() -> client.closeInterface(wn, true));
 			}
 		}
 	}

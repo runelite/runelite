@@ -425,17 +425,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "teleportSubmenus",
-		name = "Teleport submenus",
-		description = "Use submenus for max, construction, hunter, and diary cape teleports.",
-		section = itemSection
-	)
-	default boolean teleportSubmenus()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapTeleToPoh",
 		name = "Tele to POH",
 		description = "Swap Wear with Tele to POH on the construction cape.",

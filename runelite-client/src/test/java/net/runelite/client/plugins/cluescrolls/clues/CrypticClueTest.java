@@ -27,6 +27,7 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -84,5 +85,19 @@ public class CrypticClueTest
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 6,000 coins is required."));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
+	}
+
+	@Test
+	public void testBurthorpeSlayerMaster()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.BURTHORPE_SLAYER_MASTER)).thenReturn(0, 1, 2);
+
+		CrypticClue clue = CrypticClue.forText("Talk to the Slayer Master in Burthorpe.");
+		assert clue != null;
+
+		assertEquals("Turael", clue.getNpc(plugin));
+		assertEquals("Aya", clue.getNpc(plugin));
+		assertEquals("Aya", clue.getNpc(plugin));
 	}
 }
