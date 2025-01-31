@@ -152,7 +152,7 @@ public class CookingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SPAM)
+		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
