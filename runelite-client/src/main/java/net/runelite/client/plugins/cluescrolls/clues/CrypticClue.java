@@ -125,8 +125,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Come have a cip with this great soot covered denizen.")
 			.location(new WorldPoint(2527, 3891, 0))
 			.npc("Miner Magnus")
-			.solution("Talk to Miner Magnus on Miscellania, east of the fairy ring CIP. Answer: 8")
+			.solution("Talk to Miner Magnus on Miscellania, east of the fairy ring CIP.")
 			.questionText("How many coal rocks are around here?")
+			.answer("8")
 			.build(),
 		CrypticClue.builder()
 			.text("Citric cellar.")
@@ -415,8 +416,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("I have many arms but legs, I have just one. I have little family but my seed you can grow on, I am not dead, yet I am but a spirit, and my power, on your quests, you will earn the right to free it.")
 			.location(new WorldPoint(2544, 3170, 0))
 			.objectId(NullObjectID.NULL_1293)
-			.solution("Spirit Tree in Tree Gnome Village. Answer: 13112221")
+			.solution("Spirit Tree in Tree Gnome Village.")
 			.questionText("What is the next number in the sequence? 1, 11, 21, 1211, 111221, 312211")
+			.answer("13112221")
 			.build(),
 		CrypticClue.builder()
 			.text("I am the one who watches the giants. The giants in turn watch me. I watch with two while they watch with one. Come seek where I may be.")
@@ -591,8 +593,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("He knows just how easy it is to lose track of time.")
 			.location(new WorldPoint(2570, 3250, 0))
 			.npc("Brother Kojo")
-			.solution("Speak to Brother Kojo in the Clock Tower. Answer: 22")
+			.solution("Speak to Brother Kojo in the Clock Tower.")
 			.questionText("On a clock, how many times a day do the minute hand and the hour hand overlap?")
+			.answer("22")
 			.build(),
 		CrypticClue.builder()
 			.text("A great view - watch the rapidly drying hides get splashed. Check the box you are sitting on.")
@@ -1004,8 +1007,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to a referee.")
 			.location(new WorldPoint(2386, 3487, 0))
 			.npc("Gnome ball referee")
-			.solution("Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096")
+			.solution("Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold.")
 			.questionText("What is 57 x 89 + 23?")
+			.answer("5096")
 			.build(),
 		CrypticClue.builder()
 			.text("This crate holds a better reward than a broken arrow.")
@@ -1506,8 +1510,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to Uglug Nar.")
 			.location(new WorldPoint(2444, 3049, 0))
 			.npc("Uglug Nar")
-			.solution("Outside Jiggig, south of Castle Wars. Answer: 6859")
+			.solution("Outside Jiggig, south of Castle Wars.")
 			.questionText("What is 19 to the power of 3?")
+			.answer("6859")
 			.build(),
 		CrypticClue.builder()
 			.text("The effects of this fire are magnified.")
@@ -1733,6 +1738,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private static final int DEFAULT_RESOURCE_AREA_COST = 7500;
 
 	private final String text;
+	@Nullable
 	@Getter(AccessLevel.PRIVATE)
 	private final Function<ClueScrollPlugin, String> npcProvider;
 	private final int objectId;
@@ -1745,6 +1751,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
 	@Getter(AccessLevel.PRIVATE)
 	private final Function<ClueScrollPlugin, String> solutionProvider;
+	@Nullable
+	private final String answer;
 	private final List<Integer> npcRegions;
 
 	@Builder
@@ -1758,6 +1766,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Nullable Function<ClueScrollPlugin, String> solutionProvider,
 		String solution,
 		@Nullable String questionText,
+		@Nullable String answer,
 		boolean requiresLight,
 		@Singular List<Integer> npcRegions
 	)
@@ -1769,6 +1778,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		this.solutionProvider = solutionProvider != null ? solutionProvider : (plugin) -> solution;
 		this.solution = solution;
 		this.questionText = questionText;
+		this.answer = answer;
 		this.npcRegions = npcRegions;
 		setRequiresSpade(this.locationProvider != null && this.npcProvider == null && this.objectId == -1);
 		setRequiresLight(requiresLight);
@@ -1831,6 +1841,15 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.left(getSolution(plugin))
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
+
+		if (getAnswer() != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getAnswer())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
 
 		renderOverlayNote(panelComponent, plugin);
 	}
