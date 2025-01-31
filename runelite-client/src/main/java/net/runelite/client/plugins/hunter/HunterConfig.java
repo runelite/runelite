@@ -73,6 +73,18 @@ public interface HunterConfig extends Config
 	@Alpha
 	@ConfigItem(
 		position = 4,
+		keyName = "hexColorDeadTrap",
+		name = "Dead trap",
+		description = "Color of dead trap timer"
+	)
+	default Color getDeadTrapColor()
+	{
+		return Color.BLACK;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 5,
 		keyName = "hexColorTransTrap",
 		name = "Transitioning trap",
 		description = "Color of transitioning trap timer."
@@ -83,7 +95,7 @@ public interface HunterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "maniacalMonkeyNotify",
 		name = "Maniacal monkey notification",
 		description = "Send notification when maniacal monkey is caught or you fail to catch."
