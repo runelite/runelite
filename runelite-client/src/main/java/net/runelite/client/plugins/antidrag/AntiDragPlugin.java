@@ -234,6 +234,13 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				setBankDragDelay(config.dragDelay());
 			}
 		}
+		else if (ev.getScriptId() == ScriptID.SEED_VAULT_BUILD)
+		{
+			if (isOverriding())
+			{
+				setSeedVaultDragDelay(config.dragDelay());
+			}
+		}
 	}
 
 	private static void applyDragDelay(Widget widget, int delay)
@@ -272,6 +279,14 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		applyDragDelay(coxChest, delay);
 	}
 
+	private void setSeedVaultDragDelay(int delay)
+	{
+		final Widget seedVaultItems = client.getWidget(ComponentID.SEED_VAULT_ITEM_CONTAINER);
+		final Widget seedVaultText = client.getWidget(ComponentID.SEED_VAULT_ITEM_TEXT);
+		applyDragDelay(seedVaultItems, delay);
+		applyDragDelay(seedVaultText, delay);
+	}
+
 	private void setDragDelay()
 	{
 		final int delay = config.dragDelay();
@@ -280,6 +295,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		setInvDragDelay(delay);
 		setBankDragDelay(delay);
 		setCoxDragDelay(delay);
+		setSeedVaultDragDelay(delay);
 	}
 
 	private void resetDragDelay()
@@ -289,6 +305,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		setInvDragDelay(DEFAULT_DELAY);
 		setBankDragDelay(DEFAULT_DELAY);
 		setCoxDragDelay(DEFAULT_DELAY);
+		setSeedVaultDragDelay(DEFAULT_DELAY);
 	}
 
 }

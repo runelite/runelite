@@ -482,4 +482,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 12)
 	public static final int BANK_DEPOSITBOX_INIT = 144;
+
+	@ScriptArguments(integer = 7)
+	public static final int SEED_VAULT_BUILD = 2819;
 }
