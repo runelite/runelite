@@ -49,14 +49,14 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 {
 	static final List<CipherClue> CLUES = ImmutableList.of(
 		new CipherClue("BMJ UIF LFCBC TFMMFS", /* base npc for Ali or Isma'il the Kebab seller */ NullNpcID.NULL_11875, new WorldPoint(3354, 2974, 0), "Pollnivneach", "How many coins would you need to purchase 133 kebabs from me?", "399"),
-		new CipherClue("GUHCHO", NpcID.DREZEL, new WorldPoint(3440, 9895, 0), "Paterdomus", "Please solve this for x: 7x - 28=21", "7"),
+		new CipherClue("GUHCHO", NpcID.DREZEL, new WorldPoint(3422, 3485, 0), "Paterdomus", "Please solve this for x: 7x - 28=21", "7"),
 		new CipherClue("HQNM LZM STSNQ", NpcID.IRONMAN_TUTOR, new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?", "666"),
 		new CipherClue("ZHLUG ROG PDQ", NpcID.WEIRD_OLD_MAN, new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "SIX LEGS! All of them have 6! There are 25 of them! How many legs?", "150"),
 		new CipherClue("ECRVCKP MJCNGF", NpcID.CAPTAIN_KHALED, new WorldPoint(1845, 3754, 0), "Large eastern building in Port Piscarilius", "How many fishing cranes can you find around here?", "5"),
 		new CipherClue("OVEXON", NpcID.ELUNED, new WorldPoint(2289, 3144, 0), "Outside Lletya or in Prifddinas after Song of the Elves", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
-		new CipherClue("VTYR APCNTGLW", NpcID.KING_PERCIVAL, new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
+		new CipherClue("VTYR APCNTGLW", NpcID.KING_PERCIVAL, new WorldPoint(2633, 4681, 0), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
 		new CipherClue("UZZU MUJHRKYYKJ", NpcID.OTTO_GODBLESSED, new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
-		new CipherClue("XJABSE USBJCPSO", NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
+		new CipherClue("XJABSE USBJCPSO", NpcID.WIZARD_TRAIBORN, new WorldPoint(3104, 3160, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
 		new CipherClue("HCKTA IQFHCVJGT", NpcID.FAIRY_GODFATHER, new WorldPoint(2446, 4428, 0), "Zanaris throne room", "There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?", "64"),
 		new CipherClue("ZSBKDO ZODO", NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofuntus"),
 		new CipherClue("GBJSZ RVFFO", NpcID.FAIRY_QUEEN, new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),

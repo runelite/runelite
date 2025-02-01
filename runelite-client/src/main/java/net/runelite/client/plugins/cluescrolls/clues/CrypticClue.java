@@ -422,7 +422,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("I am the one who watches the giants. The giants in turn watch me. I watch with two while they watch with one. Come seek where I may be.")
-			.location(new WorldPoint(2840, 3538, 0))
+			.location(new WorldPoint(2839, 3538, 0))
 			.npc("Kamfreena")
 			.solution("Speak to Kamfreena on the top floor of the Warriors' Guild.")
 			.build(),
@@ -487,7 +487,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("Speak to Donovan, the Family Handyman.")
-			.location(new WorldPoint(2737, 3580, 0))
+			.location(new WorldPoint(2736, 3581, 0))
 			.npc("Donovan the Family Handyman")
 			.solution("Donovan the Family Handyman is found on the top floor of Sinclair Mansion, north of Seers' Village. Fairy ring CJR.")
 			.build(),
@@ -585,7 +585,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("Talk to a party-goer in Falador.")
-			.location(new WorldPoint(3046, 3382, 0))
+			.location(new WorldPoint(3037, 3383, 0))
 			.npc("Lucy")
 			.solution("Lucy is the bartender on the first floor of the Falador party room.")
 			.build(),
@@ -856,7 +856,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("The magic of 4 colours, an early experience you could learn. The large beast caged up top, rages, as his demised kin's loot now returns.")
-			.location(new WorldPoint(3103, 3163, 2))
+			.location(new WorldPoint(3104, 3160, 0))
 			.npc("Wizard Mizgog")
 			.solution("Speak to Wizard Mizgog at the top of the Wizards' Tower south of Draynor.")
 			.build(),
@@ -879,7 +879,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("Talk to Ermin.")
-			.location(new WorldPoint(2488, 3409, 1))
+			.location(new WorldPoint(2488, 3408, 0))
 			.npc("Ermin")
 			.solution("Ermin can be found on the first floor of the tree house south-east of the Gnome Agility Course.")
 			.build(),
@@ -1534,7 +1534,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("In a village of barbarians, I am the one who guards the village from up high.")
-			.location(new WorldPoint(3097, 3432, 2))
+			.location(new WorldPoint(3096, 3433, 0))
 			.npc("Hunding")
 			.solution("Talk to Hunding atop the tower on the east side of Barbarian Village.")
 			.build(),
