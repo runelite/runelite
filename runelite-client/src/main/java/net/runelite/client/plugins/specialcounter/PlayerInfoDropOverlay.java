@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.WorldView;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -68,6 +69,7 @@ class PlayerInfoDropOverlay extends Overlay
 			return null;
 		}
 
+		final WorldView wv = client.getTopLevelWorldView();
 		final int cycle = client.getGameCycle();
 		for (Iterator<PlayerInfoDrop> iterator = infoDrops.iterator(); iterator.hasNext(); )
 		{
@@ -89,7 +91,7 @@ class PlayerInfoDropOverlay extends Overlay
 				continue;
 			}
 
-			Player player = client.getCachedPlayers()[infoDrop.getPlayerIdx()];
+			Player player = wv.players().byIndex(infoDrop.getPlayerIdx());
 			if (player == null)
 			{
 				continue;

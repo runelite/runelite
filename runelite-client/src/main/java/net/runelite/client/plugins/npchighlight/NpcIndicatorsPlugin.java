@@ -54,6 +54,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -498,8 +499,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	private void tag(MenuEntry entry)
 	{
 		final int id = entry.getIdentifier();
-		final NPC[] cachedNPCs = client.getCachedNPCs();
-		final NPC npc = cachedNPCs[id];
+		WorldView wv = client.getTopLevelWorldView();
+		final NPC npc = wv.npcs().byIndex(id);
 
 		if (npc == null || npc.getName() == null)
 		{
@@ -520,7 +521,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 			else
 			{
-				if (!client.isInInstancedRegion())
+				if (!wv.isInstance())
 				{
 					memorizeNpc(npc);
 					npcTags.add(id);

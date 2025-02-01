@@ -31,16 +31,17 @@ import com.google.inject.name.Named;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
+import net.runelite.api.IndexedObjectSet;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.NPC;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
@@ -150,7 +151,11 @@ public class ClueScrollPluginTest
 		when(client.getWidget(ComponentID.CLUESCROLL_TEXT)).thenReturn(clueWidget);
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 		when(client.getPlane()).thenReturn(0);
-		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
+		WorldView wv = mock(WorldView.class);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
+		IndexedObjectSet npcs = mock(IndexedObjectSet.class);
+		when(npcs.iterator()).thenReturn(Collections.emptyIterator());
+		when(wv.npcs()).thenReturn(npcs);
 		when(config.displayHintArrows()).thenReturn(true);
 
 		// The hint arrow should be reset each game tick from when the clue is read onward
@@ -176,12 +181,10 @@ public class ClueScrollPluginTest
 
 		// Move to SW of DRAYNOR_WHEAT_FIELD (hint arrow should be visible here)
 		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(3105, 3265, 0));
-		WorldView wv = mock(WorldView.class);
 		when(wv.getBaseX()).thenReturn(3056);
 		when(wv.getBaseY()).thenReturn(3216);
 		when(wv.getSizeX()).thenReturn(104);
 		when(wv.getSizeY()).thenReturn(104);
-		when(client.getTopLevelWorldView()).thenReturn(wv);
 		plugin.onGameTick(new GameTick());
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client).setHintArrow(HotColdLocation.DRAYNOR_WHEAT_FIELD.getWorldPoint());
@@ -200,7 +203,11 @@ public class ClueScrollPluginTest
 	@Test
 	public void testSTASHMarkerPersistence()
 	{
-		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
+		WorldView wv = mock(WorldView.class);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
+		IndexedObjectSet npcs = mock(IndexedObjectSet.class);
+		when(npcs.iterator()).thenReturn(Collections.emptyIterator());
+		when(wv.npcs()).thenReturn(npcs);
 
 		// Set up emote clue
 		final Widget clueWidget = mock(Widget.class);

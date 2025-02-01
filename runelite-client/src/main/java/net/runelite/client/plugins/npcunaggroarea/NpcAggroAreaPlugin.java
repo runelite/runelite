@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -294,7 +295,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		return false;
 	}
 
-	private void checkAreaNpcs(final NPC... npcs)
+	private void checkAreaNpcs(Iterable<? extends NPC> npcs)
 	{
 		if (!active)
 		{
@@ -319,7 +320,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	private void recheckActive()
 	{
 		active = config.alwaysActive();
-		checkAreaNpcs(client.getCachedNPCs());
+		checkAreaNpcs(client.getTopLevelWorldView().npcs());
 	}
 
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
@@ -330,7 +331,7 @@ public class NpcAggroAreaPlugin extends Plugin
 			return;
 		}
 
-		checkAreaNpcs(event.getNpc());
+		checkAreaNpcs(Collections.singleton(event.getNpc()));
 	}
 
 	@Subscribe
