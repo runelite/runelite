@@ -50,7 +50,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.ItemStatChangesService;
 import net.runelite.client.plugins.itemstats.StatChange;
-import net.runelite.client.plugins.statusbars.StatusBarsConfig.WarmthDirection;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -294,8 +293,21 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-		BarRenderer left = getBarRenderer(true);
-		BarRenderer right = getBarRenderer(false);
+		StatusBarsConfig.BarMode leftBarMode = config.leftBarMode();
+		StatusBarsConfig.BarMode rightBarMode = config.rightBarMode();
+
+		if (leftBarMode == StatusBarsConfig.BarMode.HITPOINTS && config.replaceHpWithWarmth() && isInWintertodtRegion())
+		{
+			leftBarMode = StatusBarsConfig.BarMode.WARMTH;
+		}
+
+		if (rightBarMode == StatusBarsConfig.BarMode.HITPOINTS && config.replaceHpWithWarmth() && isInWintertodtRegion())
+		{
+			rightBarMode = StatusBarsConfig.BarMode.WARMTH;
+		}
+
+		BarRenderer left = barRenderers.get(leftBarMode);
+		BarRenderer right = barRenderers.get(rightBarMode);
 
 		if (left != null)
 		{
@@ -308,25 +320,6 @@ class StatusBarsOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	private BarRenderer getBarRenderer(boolean left)
-	{
-		if (isInWintertodtRegion() && (config.wintertodtWarmthDirection() == WarmthDirection.BOTH ||
-			(left && config.wintertodtWarmthDirection() == WarmthDirection.LEFT) ||
-			(!left && config.wintertodtWarmthDirection() == WarmthDirection.RIGHT)))
-		{
-			return barRenderers.get(StatusBarsConfig.BarMode.WARMTH);
-		}
-
-		if (left)
-		{
-			return barRenderers.get(config.leftBarMode());
-		}
-		else
-		{
-			return barRenderers.get(config.rightBarMode());
-		}
 	}
 
 	private int getRestoreValue(String skill)

@@ -106,22 +106,14 @@ public interface StatusBarsConfig extends Config
 		return 0;
 	}
 
-	enum WarmthDirection
-	{
-		DISABLED,
-		LEFT,
-		RIGHT,
-		BOTH,
-	}
-
 	@ConfigItem(
-		keyName = "wintertodtWarmthDirection",
-		name = "Wintertodt Warmth",
-		description = "Automatically replace your status bar(s) with Warmth while fighting the Wintertodt"
+		keyName = "replaceHpWithWarmth",
+		name = "Replace HP with Warmth",
+		description = "Automatically replace any HP status bars with Warmth while fighting the Wintertodt"
 	)
-	default WarmthDirection wintertodtWarmthDirection()
+	default boolean replaceHpWithWarmth()
 	{
-		return WarmthDirection.DISABLED;
+		return true;
 	}
 
 	@Range(
