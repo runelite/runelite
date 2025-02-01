@@ -384,6 +384,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.text("VESTE")
+			.npc("Steve")
+			.location(new WorldPoint(2432, 3423, 0))
+			.area("The slayer master in Gnome Stronghold")
+			.question("How many farming patches are there in Gnome stronghold?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
 			.text("IM N ZEZIM")
 			.npc("Immenizz")
 			.location(new WorldPoint(2592, 4324, 0))
@@ -656,14 +664,6 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Rellekka")
 			.question("What is the combined slayer requirement of every monster in the slayer cave?")
 			.answer("302")
-			.build(),
-		AnagramClue.builder()
-			.text("VESTE")
-			.npc("Steve")
-			.location(new WorldPoint(2432, 3423, 0))
-			.area("Upstairs Wyvern Area or Stronghold Slayer Cave")
-			.question("How many farming patches are there in Gnome stronghold?")
-			.answer("2")
 			.build(),
 		AnagramClue.builder()
 			.text("VEIL VEDA")
