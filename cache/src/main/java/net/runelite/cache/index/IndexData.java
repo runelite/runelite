@@ -34,10 +34,12 @@ import net.runelite.cache.io.OutputStream;
 public class IndexData
 {
 	private static final int NAMED = 1;
+	private static final int SIZED = 4;
 
 	private int protocol;
 	private int revision;
 	private boolean named;
+	private boolean sized;
 	private ArchiveData[] archives;
 
 	public void load(byte[] data)
@@ -56,7 +58,9 @@ public class IndexData
 
 		int flags = stream.readUnsignedByte();
 		named = (flags & NAMED) != 0;
-		if ((flags & ~NAMED) != 0)
+		sized = (flags & SIZED) != 0;
+
+		if ((flags & ~(NAMED | SIZED)) != 0)
 		{
 			throw new IllegalArgumentException("Unknown flags: " + flags);
 		}
@@ -91,6 +95,16 @@ public class IndexData
 
 			ArchiveData ad = archives[index];
 			ad.crc = crc;
+		}
+
+		if (sized)
+		{
+			for (int i = 0; i < validArchivesCount; i++)
+			{
+				ArchiveData ad = archives[i];
+				ad.compressedSize = stream.readInt();
+				ad.decompressedSize = stream.readInt();
+			}
 		}
 
 		for (int index = 0; index < validArchivesCount; ++index)
@@ -151,7 +165,7 @@ public class IndexData
 			stream.writeInt(this.revision);
 		}
 
-		stream.writeByte(named ? NAMED : 0);
+		stream.writeByte((named ? NAMED : 0) | (sized ? SIZED : 0));
 		if (protocol >= 7)
 		{
 			stream.writeBigSmart(this.archives.length);
@@ -196,6 +210,16 @@ public class IndexData
 		{
 			ArchiveData a = this.archives[i];
 			stream.writeInt(a.getCrc());
+		}
+
+		if (sized)
+		{
+			for (int i = 0; i < this.archives.length; ++i)
+			{
+				ArchiveData a = this.archives[i];
+				stream.writeInt(a.getCompressedSize());
+				stream.writeInt(a.getDecompressedSize());
+			}
 		}
 
 		for (int i = 0; i < this.archives.length; ++i)

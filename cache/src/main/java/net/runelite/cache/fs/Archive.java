@@ -50,6 +50,12 @@ public class Archive
 	private int crc;
 	@Getter
 	@Setter
+	private int compressedSize;
+	@Getter
+	@Setter
+	private int decompressedSize;
+	@Getter
+	@Setter
 	private int revision;
 	@Getter
 	@Setter
