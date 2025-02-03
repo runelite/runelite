@@ -53,6 +53,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDependency(ItemStatPlugin.class)
 public class StatusBarsPlugin extends Plugin
 {
+	private static final int WINTERTODT_REGION = 6462;
 
 	@Inject
 	private StatusBarsOverlay overlay;
@@ -73,8 +74,6 @@ public class StatusBarsPlugin extends Plugin
 	private boolean barsDisplayed;
 
 	private int lastCombatActionTickCount;
-	private int lastWarmthDamageTickCount;
-	private int lastWarmthValue;
 
 	@Override
 	protected void startUp() throws Exception
@@ -120,9 +119,8 @@ public class StatusBarsPlugin extends Plugin
 		}
 
 		final Actor interacting = localPlayer.getInteracting();
-		final int currentWarmthValue = client.getVarbitValue(Varbits.WINTERTODT_WARMTH);
 
-		if (config.hideAfterCombatDelay() == 0)
+		if (config.hideAfterCombatDelay() == 0 || isInWintertodtRegion())
 		{
 			barsDisplayed = true;
 		}
@@ -132,17 +130,19 @@ public class StatusBarsPlugin extends Plugin
 			lastCombatActionTickCount = client.getTickCount();
 			barsDisplayed = true;
 		}
-		else if (lastWarmthValue > currentWarmthValue)
-		{
-			lastWarmthDamageTickCount = client.getTickCount();
-			barsDisplayed = true;
-		}
-		else if ((client.getTickCount() - lastCombatActionTickCount >= config.hideAfterCombatDelay())
-			&& (client.getTickCount() - lastWarmthDamageTickCount >= config.hideAfterCombatDelay()))
+		else if (client.getTickCount() - lastCombatActionTickCount >= config.hideAfterCombatDelay())
 		{
 			barsDisplayed = false;
 		}
+	}
 
-		lastWarmthValue = currentWarmthValue;
+	private boolean isInWintertodtRegion()
+	{
+		if (client.getLocalPlayer() != null)
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
+		}
+
+		return false;
 	}
 }
