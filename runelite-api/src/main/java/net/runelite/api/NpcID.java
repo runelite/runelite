@@ -8767,6 +8767,7 @@ public final class NpcID
 	public static final int CAPTAIN_ERRDO_10471 = 10471;
 	public static final int CAPTAIN_ERRDO_10472 = 10472;
 	public static final int CAPTAIN_ERRDO_10473 = 10473;
+	public static final int BRAN = 10476;
 	public static final int THESSALIA = 10477;
 	public static final int THESSALIA_10478 = 10478;
 	public static final int CAPTAIN_KLEMFOODLE = 10479;
@@ -10544,7 +10545,11 @@ public final class NpcID
 	public static final int BLOODTHIRSTY_HYDRA = 12588;
 	public static final int MUSPAH = 12590;
 	public static final int THE_LEVIATHAN_12591 = 12591;
+	public static final int RIC = 12592;
+	public static final int BRAN_12593 = 12593;
 	public static final int JALIMKOT_12594 = 12594;
+	public static final int RIC_12595 = 12595;
+	public static final int BRANDA_THE_FIRE_QUEEN = 12596;
 	public static final int GOOSE = 12597;
 	public static final int ANTISANTA = 12598;
 	public static final int KEY_MASTER = 12599;
@@ -11869,6 +11874,15 @@ public final class NpcID
 	public static final int THE_SAGE_14144 = 14144;
 	public static final int LEAGUE_NAVIGATOR = 14145;
 	public static final int BLACK_DRAGON_14146 = 14146;
+	public static final int ELDRIC_THE_ICE_KING = 14147;
+	public static final int BRANDA_THE_FIRE_QUEEN_14148 = 14148;
+	public static final int ELDRIC_THE_ICE_KING_14149 = 14149;
+	public static final int FIRE_ELEMENTAL_14150 = 14150;
+	public static final int ICE_ELEMENTAL = 14151;
+	public static final int FIRE_14152 = 14152;
+	public static final int ICICLES = 14153;
+	public static final int PIRATE_14155 = 14155;
+	public static final int PIRATE_14156 = 14156;
 	public static final int SADIE = 14163;
 	public static final int SIR_BURRUS = 14165;
 	public static final int ARCHIBALD = 14167;
