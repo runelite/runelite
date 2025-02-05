@@ -77,6 +77,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
@@ -146,6 +147,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
 	private static final int ARAXXOR_LAIR = 14489;
+	private static final int ROYAL_TITANS_REGION = 11669;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -376,6 +378,7 @@ public class LootTrackerPlugin extends Plugin
 	private boolean chestLooted;
 	private boolean lastLoadingIntoInstance;
 	private String lastPickpocketTarget;
+	private int lastNpcTypeTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -1219,11 +1222,17 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
-		// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
-		if (isNPCOp(event.getMenuAction()) && event.getMenuOption().equals("Pickpocket"))
+		if (isNPCOp(event.getMenuAction()))
 		{
-			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+			// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
+			// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
+			if (event.getMenuOption().equals("Pickpocket"))
+			{
+				lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+			}
+
+			NPC npc = event.getMenuEntry().getNpc();
+			lastNpcTypeTarget = npc != null ? npc.getId() : -1;
 		}
 		else if (isObjectOp(event.getMenuAction()) && event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
@@ -1339,10 +1348,18 @@ public class LootTrackerPlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		Actor actor = animationChanged.getActor();
-		if (actor == client.getLocalPlayer() && actor.getAnimation() == AnimationID.FARMING_HARVEST_HERB && inAraxxorRegion())
+		if (actor != client.getLocalPlayer() || actor.getAnimation() != AnimationID.FARMING_HARVEST_HERB)
 		{
-			log.debug("Harvest Araxxor");
-			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, "Araxxor"), 4);
+			return;
+		}
+
+		int region = WorldPoint.fromLocalInstance(client, actor.getLocalLocation()).getRegionID();
+		if (region == ARAXXOR_LAIR && lastNpcTypeTarget == NpcID.ARAXXOR_13669
+			|| region == ROYAL_TITANS_REGION && (lastNpcTypeTarget == NpcID.BRANDA_THE_FIRE_QUEEN_14148 || lastNpcTypeTarget == NpcID.ELDRIC_THE_ICE_KING_14149))
+		{
+			NPCComposition type = client.getNpcDefinition(lastNpcTypeTarget);
+			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, type.getName()), 4);
+			log.debug("Harvesting {}", type.getName());
 		}
 	}
 
@@ -1521,12 +1538,6 @@ public class LootTrackerPlugin extends Plugin
 	{
 		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 		return region == THEATRE_OF_BLOOD_REGION || region == THEATRE_OF_BLOOD_LOBBY;
-	}
-
-	private boolean inAraxxorRegion()
-	{
-		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-		return region == ARAXXOR_LAIR;
 	}
 
 	void toggleItem(String name, boolean ignore)
