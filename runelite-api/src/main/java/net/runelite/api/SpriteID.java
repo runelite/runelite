@@ -1833,4 +1833,6 @@ public final class SpriteID
 	public static final int HISCORE_COLOSSEUM_GLORY = 5862;
 	public static final int HEALTHBAR_LAST_STAND_FRONT = 5863;
 	public static final int HEALTHBAR_LAST_STAND_BACK = 5864;
+	/* Unmapped: 5865~6344 */
+	public static final int HISCORE_ROYAL_TITANS = 6345;
 }
