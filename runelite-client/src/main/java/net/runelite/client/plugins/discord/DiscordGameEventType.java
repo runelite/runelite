@@ -91,6 +91,7 @@ enum DiscordGameEventType
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
 	BOSS_TEMPOROSS("Tempoross", DiscordAreaType.BOSSES, 12078),
 	BOSS_THE_LEVIATHAN("The Leviathan", DiscordAreaType.BOSSES, 8291),
+	BOSS_THE_ROYAL_TITANS("The Royal Titans", DiscordAreaType.BOSSES, 11669),
 	BOSS_THE_WHISPERER("The Whisperer", DiscordAreaType.BOSSES, 10595),
 	BOSS_VARDORVIS("Vardorvis", DiscordAreaType.BOSSES, 4405),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
