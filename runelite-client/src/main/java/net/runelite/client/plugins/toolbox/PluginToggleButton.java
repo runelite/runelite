@@ -23,13 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.config;
+package net.runelite.client.plugins.toolbox;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
+
+import net.runelite.client.plugins.toolbox.ConfigPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 

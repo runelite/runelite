@@ -1,31 +1,42 @@
 package net.runelite.client.plugins.toolbox;
 
-import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.swing.SwingUtilities;
+
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.events.*;
-import net.runelite.client.Notifier;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.*;
+import net.runelite.api.MenuAction;
+import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
         name = "Toolbox",
         description = "Toolbox - Custom Made",
-        tags = {"main", "toolbox", "parent"},
-        enabledByDefault = false
+        tags = {"main", "net/runelite/client/plugins/toolbox", "parent"},
+        enabledByDefault = true
 )
 @Slf4j
-public class ToolBoxPlugin extends Plugin{
-
+public class ToolBoxPlugin extends Plugin
+{
     @Inject
     private ClientToolbar clientToolbar;
+
+    @Inject
+    private Provider<PluginListPanel> pluginListPanelProvider;
+
+    @Inject
+    private Provider<TopLevelConfigPanel> topLevelConfigPanelProvider;
 
     @Inject
     private ConfigManager configManager;
@@ -36,83 +47,64 @@ public class ToolBoxPlugin extends Plugin{
     @Inject
     private ChatColorConfig chatColorConfig;
 
-    @Inject
-    private Client client;
+    private TopLevelConfigPanel topLevelConfigPanel;
 
-    @Inject
-    private ClientThread clientThread;
+    private NavigationButton navButton;
 
-    @Inject
-    private Notifier notifier;
-
-    @Inject
-    private OverlayManager overlayManager;
-
-    @Inject
-    private ToolBoxConfig config;
-
-    @Inject
-    private ToolBoxOverlay toolBoxOverlay;
-
-
-    @Provides
-    ToolBoxConfig provideConfig(ConfigManager configManager) {
-        return configManager.getConfig(ToolBoxConfig.class);
-    }
-
-    @Provides
-    ToolBoxOverlay provideOverlay()
+    @Override
+    protected void startUp() throws Exception
     {
-        return new ToolBoxOverlay(this);
+        PluginListPanel pluginListPanel = pluginListPanelProvider.get();
+        /*pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
+                        "RuneLite", "RuneLite client settings",
+                        new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
+                        runeLiteConfig, configManager.getConfigDescriptor(runeLiteConfig)
+                ),
+                new PluginConfigurationDescriptor(
+                        "Chat Color", "Recolor chat text", new String[]{"colour", "messages"},
+                        chatColorConfig, configManager.getConfigDescriptor(chatColorConfig)
+                ));*/
+        pluginListPanel.rebuildPluginList();
+
+        topLevelConfigPanel = topLevelConfigPanelProvider.get();
+
+        final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "beemo.png");
+
+        navButton = NavigationButton.builder()
+                .tooltip("ToolBox")
+                .icon(icon)
+                .priority(-1)
+                .panel(topLevelConfigPanel)
+                .build();
+
+        clientToolbar.addNavigation(navButton);
     }
 
     @Override
-    protected void startUp()
+    protected void shutDown() throws Exception
     {
-        overlayManager.add(toolBoxOverlay);
-        log.info("ToolBox Plugin Started.");
-    }
-
-    @Override
-    protected void shutDown()
-    {
-        overlayManager.remove(toolBoxOverlay);
-        log.info("ToolBox Plugin Stopped.");
+        clientToolbar.removeNavigation(navButton);
     }
 
     @Subscribe
-    public void onGameTick(GameTick event)
+    public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
     {
-        log.debug("Toolbox - onGameTick");
-    }
+        OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+        if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY_CONFIG)
+        {
+            Overlay overlay = overlayMenuClicked.getOverlay();
+            Plugin plugin = overlay.getPlugin();
+            if (plugin == null)
+            {
+                return;
+            }
 
-    @Subscribe
-    public void onChatMessage(ChatMessage event)
-    {
-        log.debug("Toolbox - onChatMessage");
-    }
-
-    @Subscribe
-    public void onPlayerSpawned(PlayerSpawned event)
-    {
-        log.debug("Toolbox - onPlayerSpawned");
-    }
-
-    @Subscribe
-    public void onItemContainerChanged(ItemContainerChanged event)
-    {
-        log.debug("Toolbox - onItemContainerChanged");
-    }
-
-    @Subscribe
-    public void onInteractingChanged(InteractingChanged event)
-    {
-        log.debug("Toolbox - onInteractingChanged");
-    }
-
-    @Subscribe
-    public void onAnimationChanged(AnimationChanged event)
-    {
-        log.debug("Toolbox - onAnimationChanged");
+            // Expand config panel for plugin
+            SwingUtilities.invokeLater(() ->
+            {
+                clientToolbar.openPanel(navButton);
+                topLevelConfigPanel.openConfigurationPanel(plugin.getName());
+            });
+        }
     }
 }

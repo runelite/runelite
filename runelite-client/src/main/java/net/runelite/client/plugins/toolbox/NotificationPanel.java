@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.plugins.toolbox;
 
 import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
@@ -67,6 +67,9 @@ import net.runelite.client.config.Notification;
 import net.runelite.client.config.NotificationSound;
 import net.runelite.client.config.RequestFocusType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.plugins.toolbox.ConfigPanel;
+import net.runelite.client.plugins.toolbox.FixedWidthPanel;
+import net.runelite.client.plugins.toolbox.PluginListPanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;

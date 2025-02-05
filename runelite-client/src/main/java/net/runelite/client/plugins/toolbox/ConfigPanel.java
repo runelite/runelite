@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.plugins.toolbox;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
@@ -95,6 +95,13 @@ import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.toolbox.FixedWidthPanel;
+import net.runelite.client.plugins.toolbox.HotkeyButton;
+import net.runelite.client.plugins.toolbox.NotificationPanel;
+import net.runelite.client.plugins.toolbox.PluginConfigurationDescriptor;
+import net.runelite.client.plugins.toolbox.PluginListItem;
+import net.runelite.client.plugins.toolbox.PluginListPanel;
+import net.runelite.client.plugins.toolbox.PluginToggleButton;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;

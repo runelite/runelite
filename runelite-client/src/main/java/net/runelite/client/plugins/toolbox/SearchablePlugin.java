@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Jack Hodkinson <https://github.com/jrhodkinson>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.plugins.toolbox;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
-import net.runelite.client.ui.PluginPanel;
+import java.util.List;
 
-public class FixedWidthPanel extends JPanel
+public interface SearchablePlugin
 {
-	@Override
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(PluginPanel.PANEL_WIDTH, super.getPreferredSize().height);
-	}
+	String getSearchableName();
 
+	List<String> getKeywords();
+
+	default boolean isPinned()
+	{
+		return false;
+	}
 }
