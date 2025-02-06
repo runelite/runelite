@@ -233,7 +233,7 @@ public class ItemPricesPlugin extends Plugin
 		int haProfit = 0;
 		final int itemHaPrice = itemDef.getHaPrice();
 
-		if (config.showGEPrice())
+		if (config.showGEPrice() && itemDef.isTradeable())
 		{
 			gePrice = itemManager.getItemPrice(id);
 		}
