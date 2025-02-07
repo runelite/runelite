@@ -28,6 +28,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,6 +59,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -147,6 +150,9 @@ public class RuneLite
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
+
+	@Inject
+	private Gson gson;
 
 	@Inject
 	@Nullable
@@ -314,6 +320,7 @@ public class RuneLite
 		}
 
 		setupSystemProps();
+		setupCompilerControl();
 
 		// Start the applet
 		if (applet != null)
@@ -545,6 +552,37 @@ public class RuneLite
 			String key = entry.getKey(), value = entry.getValue();
 			log.debug("Setting property {}={}", key, value);
 			System.setProperty(key, value);
+		}
+	}
+
+	private void setupCompilerControl()
+	{
+		if (runtimeConfig == null || runtimeConfig.getCompilerControl() == null)
+		{
+			return;
+		}
+
+		try
+		{
+			var json = gson.toJson(runtimeConfig.getCompilerControl());
+			var file = Files.createTempFile("rl_compilercontrol", "");
+			try
+			{
+				Files.writeString(file, json, StandardCharsets.UTF_8);
+				ManagementFactory.getPlatformMBeanServer().invoke(
+					new ObjectName("com.sun.management:type=DiagnosticCommand"),
+					"compilerDirectivesAdd",
+					new Object[]{new String[]{file.toFile().getAbsolutePath()}},
+					new String[]{String[].class.getName()});
+			}
+			finally
+			{
+				Files.delete(file);
+			}
+		}
+		catch (Exception e)
+		{
+			log.info("Failed to set compiler control", e);
 		}
 	}
 
