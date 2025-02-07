@@ -138,6 +138,9 @@ public final class Varbits
 	public static final int RUNE_POUCH_AMOUNT5 = 15375;
 	public static final int RUNE_POUCH_AMOUNT6 = 15376;
 
+	public static final int PRAYER_DEADEYE_UNLOCKED = 16097;
+	public static final int PRAYER_MYSTIC_VIGOUR_UNLOCKED = 16098;
+
 	/**
 	 * Prayers
 	 */

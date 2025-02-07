@@ -76,6 +76,9 @@ public final class EnumID
 
 	public static final int PRAYERS_NORMAL = 4956;
 	public static final int PRAYERS_RUINOUS = 4959;
+	public static final int PRAYERS_NORMAL_DEADEYE = 3341;
+	public static final int PRAYERS_NORMAL_MYSTIC_VIGOUR = 3342;
+	public static final int PRAYERS_NORMAL_DEADEYE_MYSTIC_VIGOUR = 3343;
 
 	public static final int WORLD_LOCATIONS = 4992;
 
