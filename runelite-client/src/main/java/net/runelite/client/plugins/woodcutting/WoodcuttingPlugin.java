@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_3A;
@@ -70,12 +69,14 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -89,13 +90,19 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Woodcutting",
@@ -125,6 +132,9 @@ public class WoodcuttingPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -136,9 +146,14 @@ public class WoodcuttingPlugin extends Plugin
 	@Inject
 	private WoodcuttingConfig config;
 
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ItemManager itemManager;
+
 	@Getter
 	@Nullable
-	@Setter(AccessLevel.PACKAGE)
 	private WoodcuttingSession session;
 
 	@Getter
@@ -161,6 +176,8 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> pheasantNests = new ArrayList<>(4);
 	@Getter(AccessLevel.PACKAGE)
+	private final List<GameObject> endOfRainbows = new ArrayList<>(1);
+	@Getter(AccessLevel.PACKAGE)
 	private NPC freakyForester;
 	@Getter(AccessLevel.PACKAGE)
 	private NPC unfinishedBeeHive;
@@ -170,6 +187,16 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private ClueNestTier clueTierSpawned;
+
+	private Counter leprechaunsLuckInfoBox;
+
+	void resetSession()
+	{
+		session = null;
+
+		infoBoxManager.removeInfoBox(leprechaunsLuckInfoBox);
+		leprechaunsLuckInfoBox = null;
+	}
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -197,6 +224,17 @@ public class WoodcuttingPlugin extends Plugin
 		Arrays.fill(saplingOrder, null);
 		session = null;
 		clueTierSpawned = null;
+		infoBoxManager.removeInfoBox(leprechaunsLuckInfoBox);
+		leprechaunsLuckInfoBox = null;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("woodcutting"))
+		{
+			clientThread.invokeLater(this::updateLeprechaunsLuck);
+		}
 	}
 
 	@Subscribe
@@ -223,6 +261,9 @@ public class WoodcuttingPlugin extends Plugin
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
 			session.setActive(false);
+
+			infoBoxManager.removeInfoBox(leprechaunsLuckInfoBox);
+			leprechaunsLuckInfoBox = null;
 		}
 	}
 
@@ -368,6 +409,9 @@ public class WoodcuttingPlugin extends Plugin
 			case ObjectID.PHEASANT_NEST_49937:
 				pheasantNests.add(gameObject);
 				break;
+			case ObjectID.END_OF_RAINBOW:
+				endOfRainbows.add(gameObject);
+				break;
 		}
 	}
 
@@ -417,6 +461,9 @@ public class WoodcuttingPlugin extends Plugin
 				{
 					log.debug("Pheasant event is over");
 				}
+				break;
+			case ObjectID.END_OF_RAINBOW:
+				endOfRainbows.remove(object);
 				break;
 		}
 	}
@@ -606,8 +653,44 @@ public class WoodcuttingPlugin extends Plugin
 				saplingIngredients.clear();
 				Arrays.fill(saplingOrder, null);
 				pheasantNests.clear();
+				endOfRainbows.clear();
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == Varbits.LEPRECHAUNS_LUCK)
+		{
+			updateLeprechaunsLuck();
+		}
+	}
+
+	private void updateLeprechaunsLuck()
+	{
+		// Leprechaun's Luck is drained in intervals of 5
+		final int leprechaunsLuck = client.getVarbitValue(Varbits.LEPRECHAUNS_LUCK) / 5;
+
+		// avoid adding the infobox if not actively woodcutting
+		if (leprechaunsLuck < 1 || session == null || !session.isActive() || !config.showLeprechaunLuck())
+		{
+			if (leprechaunsLuckInfoBox != null)
+			{
+				infoBoxManager.removeInfoBox(leprechaunsLuckInfoBox);
+				leprechaunsLuckInfoBox = null;
+			}
+			return;
+		}
+
+		if (leprechaunsLuckInfoBox == null)
+		{
+			leprechaunsLuckInfoBox = new Counter(itemManager.getImage(ItemID.CLOVER_INSIGNIA), this, leprechaunsLuck);
+			infoBoxManager.addInfoBox(leprechaunsLuckInfoBox);
+		}
+
+		leprechaunsLuckInfoBox.setCount(leprechaunsLuck);
+		leprechaunsLuckInfoBox.setTooltip("Leprechaun's Luck: " + leprechaunsLuck);
 	}
 
 	@Subscribe

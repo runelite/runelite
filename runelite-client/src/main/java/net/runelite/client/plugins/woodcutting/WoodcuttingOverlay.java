@@ -56,7 +56,7 @@ class WoodcuttingOverlay extends OverlayPanel
 		this.plugin = plugin;
 		this.config = config;
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay");
-		addMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay", e -> plugin.setSession(null));
+		addMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay", e -> plugin.resetSession());
 	}
 
 	@Override
