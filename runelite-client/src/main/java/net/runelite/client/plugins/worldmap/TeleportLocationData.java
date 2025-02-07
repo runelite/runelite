@@ -119,6 +119,9 @@ enum TeleportLocationData
 	DARKFROST(TeleportType.JEWELLERY, "Pendant of Ates", "The Darkfrost", new WorldPoint(1490, 3284, 0), "pendant_of_ates_icon.png"),
 	RALOS_RISE(TeleportType.JEWELLERY, "Pendant of Ates", "Ralos' Rise", new WorldPoint(1459, 3137, 0), "pendant_of_ates_icon.png"),
 	TWILIGHT_TEMPLE(TeleportType.JEWELLERY, "Pendant of Ates", "Twilight Temple", new WorldPoint(1666, 3223, 0), "pendant_of_ates_icon.png"),
+	BRYOPHYTA_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Bryophyta's Lair", new WorldPoint(3174, 9898, 0), "giantsoul_amulet_teleport_icon.png"),
+	OBOR_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Obor's Lair", new WorldPoint(3096, 9833, 0), "giantsoul_amulet_teleport_icon.png"),
+	BRANDA_AND_ELDRIC_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Branda and Eldric's Lair", new WorldPoint(2952, 9574, 0), "giantsoul_amulet_teleport_icon.png"),
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
