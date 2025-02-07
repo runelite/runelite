@@ -1357,8 +1357,9 @@ public class LootTrackerPlugin extends Plugin
 		if (region == ARAXXOR_LAIR && lastNpcTypeTarget == NpcID.ARAXXOR_13669
 			|| region == ROYAL_TITANS_REGION && (lastNpcTypeTarget == NpcID.BRANDA_THE_FIRE_QUEEN_14148 || lastNpcTypeTarget == NpcID.ELDRIC_THE_ICE_KING_14149))
 		{
+			Object metadata = region == ROYAL_TITANS_REGION ? client.getPlayers().size() : null;
 			NPCComposition type = client.getNpcDefinition(lastNpcTypeTarget);
-			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, type.getName()), 4);
+			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, type.getName(), metadata), 4);
 			log.debug("Harvesting {}", type.getName());
 		}
 	}
