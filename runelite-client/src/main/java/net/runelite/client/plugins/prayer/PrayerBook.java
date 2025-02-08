@@ -55,17 +55,23 @@ class PrayerBook
 			case PROTECT_FROM_MELEE:
 				return PrayerType.PROTECT_FROM_MELEE;
 			case EAGLE_EYE:
-				if (deadeyeUnlocked) {
-					return PrayerType.DEADEYE;
-				} else {
-					return PrayerType.EAGLE_EYE;
-				}
+				if (deadeyeUnlocked)
+					{
+						return PrayerType.DEADEYE;
+					}
+				else
+					{
+						return PrayerType.EAGLE_EYE;
+					}
 			case MYSTIC_MIGHT:
-				if (mysticVigourUnlocked) {
-					return PrayerType.MYSTIC_VIGOUR;
-				} else {
-					return PrayerType.MYSTIC_MIGHT;
-				}
+				if (mysticVigourUnlocked)
+					{
+						return PrayerType.MYSTIC_VIGOUR;
+					}
+				else
+					{
+						return PrayerType.MYSTIC_MIGHT;
+					}
 			case RETRIBUTION:
 				return PrayerType.RETRIBUTION;
 			case REDEMPTION:
