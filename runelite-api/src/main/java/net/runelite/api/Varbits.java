@@ -197,7 +197,7 @@ public final class Varbits
 	public static final int PRAYER_RP_ANNIHILATE = 14834;
 	public static final int PRAYER_RP_VAPORISE = 14835;
 	public static final int PRAYER_RP_FUMUS_VOW = 14845;
-	public static final int PRAYER_RP_UMBRA_VOW = 14847;
+	public static final int PRAYER_RP_UMBRAS_VOW = 14847;
 	public static final int PRAYER_RP_CRUORS_VOW = 14846;
 	public static final int PRAYER_RP_GLACIES_VOW = 14848;
 	public static final int PRAYER_RP_WRATH = 14842;

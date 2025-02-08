@@ -42,6 +42,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.widgets.ComponentID;
@@ -108,6 +109,9 @@ public class PrayerPlugin extends Plugin
 
 	@Inject
 	private EventBus eventBus;
+
+	@Inject
+	private PrayerBook prayerBook;
 
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
@@ -205,9 +209,12 @@ public class PrayerPlugin extends Plugin
 			return;
 		}
 
-		for (PrayerType prayerType : PrayerType.values())
+		prayerBook.setDeadeyeUnlocked(client.getVarbitValue(Varbits.PRAYER_DEADEYE_UNLOCKED) != 0);
+		prayerBook.setMysticVigourUnlocked(client.getVarbitValue(Varbits.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0);
+
+		for (Prayer prayer : Prayer.values())
 		{
-			Prayer prayer = prayerType.getPrayer();
+			PrayerType prayerType = prayerBook.prayerTypeForPrayer(prayer);
 			int ord = prayerType.ordinal();
 
 			if (client.isPrayerActive(prayer))
@@ -354,13 +361,14 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
-	private static int getDrainEffect(Client client)
+	private int getDrainEffect()
 	{
 		int drainEffect = 0;
 
-		for (PrayerType prayerType : PrayerType.values())
+		for (Prayer prayer : Prayer.values())
 		{
-			if (client.isPrayerActive(prayerType.getPrayer()))
+			PrayerType prayerType = prayerBook.prayerTypeForPrayer(prayer);
+			if (client.isPrayerActive(prayer))
 			{
 				drainEffect += prayerType.getDrainEffect();
 			}
@@ -371,7 +379,7 @@ public class PrayerPlugin extends Plugin
 
 	String getEstimatedTimeRemaining(boolean formatForOrb)
 	{
-		final int drainEffect = getDrainEffect(client);
+		final int drainEffect = getDrainEffect();
 
 		if (drainEffect == 0)
 		{

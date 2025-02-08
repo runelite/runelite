@@ -227,7 +227,7 @@ public enum Prayer
 	/**
 	 * Ruinous Powers Umbra's Vow (Level 88).
 	 */
-	RP_UMBRA_VOW(Varbits.PRAYER_RP_UMBRA_VOW),
+	RP_UMBRAS_VOW(Varbits.PRAYER_RP_UMBRAS_VOW),
 	/**
 	 * Ruinous Powers Cruor's Vow (Level 89).
 	 */
