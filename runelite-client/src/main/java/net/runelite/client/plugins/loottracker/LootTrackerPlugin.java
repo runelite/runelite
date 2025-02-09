@@ -382,6 +382,7 @@ public class LootTrackerPlugin extends Plugin
 	private boolean lastLoadingIntoInstance;
 	private String lastPickpocketTarget;
 	private int lastNpcTypeTarget;
+	private String lastMenuOption;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -1243,6 +1244,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			NPC npc = event.getMenuEntry().getNpc();
+			lastMenuOption = event.getMenuOption();
 			lastNpcTypeTarget = npc != null ? npc.getId() : -1;
 		}
 		else if (isObjectOp(event.getMenuAction()) && event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
@@ -1368,7 +1370,14 @@ public class LootTrackerPlugin extends Plugin
 		if (region == ARAXXOR_LAIR && lastNpcTypeTarget == NpcID.ARAXXOR_13669
 			|| region == ROYAL_TITANS_REGION && (lastNpcTypeTarget == NpcID.BRANDA_THE_FIRE_QUEEN_14148 || lastNpcTypeTarget == NpcID.ELDRIC_THE_ICE_KING_14149))
 		{
-			Object metadata = region == ROYAL_TITANS_REGION ? client.getPlayers().size() : null;
+			Object metadata = null;
+			if (region == ROYAL_TITANS_REGION)
+			{
+				metadata = Map.<String, Object>of(
+					"PLAYERS", client.getPlayers().size(),
+					"OPTION", lastMenuOption
+				);
+			}
 			NPCComposition type = client.getNpcDefinition(lastNpcTypeTarget);
 			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, type.getName(), metadata), 4);
 			log.debug("Harvesting {}", type.getName());
