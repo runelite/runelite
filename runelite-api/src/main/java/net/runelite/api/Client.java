@@ -917,7 +917,9 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param prayer the prayer
 	 * @return true if the prayer is active, false otherwise
+	 * @deprecated this method does not properly handle deadeye/eagle eye or mystic vigour/might
 	 */
+	@Deprecated
 	boolean isPrayerActive(Prayer prayer);
 
 	/**

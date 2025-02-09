@@ -174,6 +174,8 @@ public final class Varbits
 	public static final int PRAYER_PRESERVE = 5466;
 	public static final int PRAYER_RIGOUR = 5464;
 	public static final int PRAYER_AUGURY = 5465;
+	public static final int PRAYER_DEADEYE = 16090;
+	public static final int PRAYER_MYSTIC_VIGOUR = 16091;
 
 	/**
 	 * Ruinous Powers
@@ -994,4 +996,6 @@ public final class Varbits
 	 * @see <a href="https://oldschool.runescape.wiki/w/Gravestone_(Jarvis)">Gravestone (Jarvis) - OSRS Wiki</a>
 	 */
 	public static final int JARVIS_GRAVESTONE = 6008;
+
+	public static final int IN_LMS = 5314;
 }

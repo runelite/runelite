@@ -207,10 +207,9 @@ public class PrayerPlugin extends Plugin
 
 		for (PrayerType prayerType : PrayerType.values())
 		{
-			Prayer prayer = prayerType.getPrayer();
 			int ord = prayerType.ordinal();
 
-			if (client.isPrayerActive(prayer))
+			if (prayerType.isActive(client))
 			{
 				if (prayerType.isOverhead() && !config.prayerIndicatorOverheads())
 				{
@@ -360,7 +359,7 @@ public class PrayerPlugin extends Plugin
 
 		for (PrayerType prayerType : PrayerType.values())
 		{
-			if (client.isPrayerActive(prayerType.getPrayer()))
+			if (prayerType.isActive(client))
 			{
 				drainEffect += prayerType.getDrainEffect();
 			}
