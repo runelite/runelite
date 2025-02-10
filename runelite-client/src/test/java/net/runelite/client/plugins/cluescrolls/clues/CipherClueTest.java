@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
@@ -33,5 +34,14 @@ public class CipherClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(CipherClue.forText(""));
+	}
+
+	@Test
+	public void defaultNpcValue()
+	{
+		CipherClue clue = CipherClue.forText("The cipher reveals who to speak to next: ESBZOPS QJH QFO");
+		assert clue != null;
+
+		assertEquals(-1, clue.getNpc());
 	}
 }
