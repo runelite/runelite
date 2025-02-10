@@ -24,18 +24,21 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.function.Function;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.NullNpcID;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -92,8 +95,8 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.text("OVEXON")
 			.npc(NpcID.ELUNED)
-			.location(new WorldPoint(2289, 3144, 0))
-			.area("Outside Lletya or in Prifddinas after Song of the Elves")
+			.locationProvider((plugin) -> isElunedInPrifddinas(plugin) ? new WorldPoint(3229, 6062, 0) : new WorldPoint(2289, 3144, 0))
+			.areaProvider((plugin) -> isElunedInPrifddinas(plugin) ? "Prifddinas" : "Outside Lletya")
 			.question("A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?")
 			.answer("53,000")
 			.build(),
@@ -176,9 +179,8 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 	private final String text;
 	private final int npc;
-	@Getter(AccessLevel.PRIVATE)
-	private final WorldPoint location;
-	private final String area;
+	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
+	private final Function<ClueScrollPlugin, String> areaProvider;
 	@Nullable
 	private final String question;
 	@Nullable
@@ -188,16 +190,18 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 	private CipherClue(
 		String text,
 		Integer npc,
-		WorldPoint location,
-		String area,
+		@Nullable WorldPoint location,
+		@Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider,
+		@Nullable String area,
+		@Nullable Function<ClueScrollPlugin, String> areaProvider,
 		@Nullable String question,
 		@Nullable String answer
 	)
 	{
 		this.text = "The cipher reveals who to speak to next: " + text;
 		this.npc = npc != null ? npc : -1;
-		this.location = location;
-		this.area = area;
+		this.locationProvider = locationProvider != null ? locationProvider : (plugin) -> location;
+		this.areaProvider = areaProvider != null ? areaProvider : (plugin) -> area;
 		this.question = question;
 		this.answer = answer;
 	}
@@ -205,7 +209,13 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 	@Override
 	public WorldPoint getLocation(ClueScrollPlugin plugin)
 	{
-		return location;
+		return locationProvider.apply(plugin);
+	}
+
+	@VisibleForTesting
+	String getArea(ClueScrollPlugin plugin)
+	{
+		return areaProvider.apply(plugin);
 	}
 
 	@Override
@@ -225,7 +235,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getArea())
+			.left(getArea(plugin))
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
@@ -244,7 +254,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!getLocation().isInScene(plugin.getClient()))
+		if (!getLocation(plugin).isInScene(plugin.getClient()))
 		{
 			return;
 		}
@@ -297,5 +307,10 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			composition = composition.transform();
 		}
 		return composition;
+	}
+
+	private static boolean isElunedInPrifddinas(ClueScrollPlugin plugin)
+	{
+		return Quest.SONG_OF_THE_ELVES.getState(plugin.getClient()) == QuestState.FINISHED;
 	}
 }
