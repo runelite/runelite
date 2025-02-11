@@ -5793,7 +5793,6 @@ public final class ObjectID
 	public static final int TRAP_10034 = 10034;
 	public static final int LOW_WALL_10035 = 10035;
 	public static final int ROCK_10036 = 10036;
-	public static final int ROPE_10037 = 10037;
 	public static final int ROPE_10038 = 10038;
 	public static final int TREE_10041 = 10041;
 	public static final int LADDER_10042 = 10042;
@@ -9301,7 +9300,6 @@ public final class ObjectID
 	public static final int CAVE_ENTRANCE_16308 = 16308;
 	public static final int CAVE_ENTRANCE_16309 = 16309;
 	public static final int POTION_SHELVES_16374 = 16374;
-	public static final int POTION_SHELVES_16375 = 16375;
 	public static final int POTION_SHELF_16376 = 16376;
 	public static final int POTION_SHELF_16377 = 16377;
 	public static final int HEALING_CERTIFICATE_16378 = 16378;
@@ -10685,7 +10683,6 @@ public final class ObjectID
 	public static final int CANDLES_19127 = 19127;
 	public static final int BASKET_19128 = 19128;
 	public static final int BASKET_19129 = 19129;
-	public static final int AIR_BALLOON = 19130;
 	public static final int ROCK_19131 = 19131;
 	public static final int BASKET_19132 = 19132;
 	public static final int ALTAR_19145 = 19145;
@@ -15094,7 +15091,6 @@ public final class ObjectID
 	public static final int KRUK = 28675;
 	public static final int BAMBOO_LADDER_28676 = 28676;
 	public static final int ROWBOAT_28677 = 28677;
-	public static final int ROWBOAT_28678 = 28678;
 	public static final int ROWBOAT_28679 = 28679;
 	public static final int WALL_28681 = 28681;
 	public static final int PASSAGE_28682 = 28682;
@@ -20559,7 +20555,6 @@ public final class ObjectID
 	public static final int DEAD_SOURHOG_40319 = 40319;
 	public static final int SKELETON_40320 = 40320;
 	public static final int SKELETON_40321 = 40321;
-	public static final int SCRAWLED_NOTE = 40323;
 	public static final int PILE_OF_ROPE_40324 = 40324;
 	public static final int DOOR_40325 = 40325;
 	public static final int ROPE_40330 = 40330;

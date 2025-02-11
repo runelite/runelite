@@ -4250,6 +4250,7 @@ public final class NullObjectID
 	public static final int NULL_10030 = 10030;
 	public static final int NULL_10031 = 10031;
 	public static final int NULL_10032 = 10032;
+	public static final int NULL_10037 = 10037;
 	public static final int NULL_10039 = 10039;
 	public static final int NULL_10040 = 10040;
 	public static final int NULL_10044 = 10044;
@@ -8449,6 +8450,7 @@ public final class NullObjectID
 	public static final int NULL_19122 = 19122;
 	public static final int NULL_19123 = 19123;
 	public static final int NULL_19124 = 19124;
+	public static final int NULL_19130 = 19130;
 	public static final int NULL_19133 = 19133;
 	public static final int NULL_19134 = 19134;
 	public static final int NULL_19135 = 19135;
@@ -19751,6 +19753,7 @@ public final class NullObjectID
 	public static final int NULL_40305 = 40305;
 	public static final int NULL_40306 = 40306;
 	public static final int NULL_40322 = 40322;
+	public static final int NULL_40323 = 40323;
 	public static final int NULL_40326 = 40326;
 	public static final int NULL_40327 = 40327;
 	public static final int NULL_40328 = 40328;
