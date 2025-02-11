@@ -140,7 +140,7 @@ public final class Varbits
 
 	public static final int PRAYER_RIGOUR_UNLOCKED = 5451;
 	public static final int PRAYER_AUGURY_UNLOCKED = 5452;
-	public static final int PRAYER_PRESERVE_UNLOCKED = 5452;
+	public static final int PRAYER_PRESERVE_UNLOCKED = 5453;
 	public static final int PRAYER_DEADEYE_UNLOCKED = 16097;
 	public static final int PRAYER_MYSTIC_VIGOUR_UNLOCKED = 16098;
 
