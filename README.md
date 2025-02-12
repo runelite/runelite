@@ -1,50 +1,25 @@
-# LFG Helper - RuneLite Plugin
+![](https://runelite.net/img/logo.png)
+# runelite [![CI](https://github.com/runelite/runelite/workflows/CI/badge.svg)](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/ArdAhnN)
 
-LFG Helper is a RuneLite plugin that helps players find groups for PvM content in Old School RuneScape. It allows users to quickly post LFG (Looking For Group) requests to a designated Discord server via a webhook.
+RuneLite is a free, open source OldSchool RuneScape client.
 
-## Features
-✅ Simple form-based UI for entering LFG details  
-✅ Automatically includes the player's in-game name in the LFG request  
-✅ Supports boss name, clan chat, team size, loot type (splits/FFA), and world selection  
-✅ Sends formatted messages to a Discord webhook  
-✅ Prevents spam by enforcing a cooldown between submissions  
-✅ Disables submission if required fields are empty  
+If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://runelite.net/discord) server.
 
-## How It Works
-1. Open the **LFG Helper** panel in RuneLite.  
-2. **Configure the webhook and role ID**  
-   - Your server owner will provide a **Discord webhook URL** and a **PVMer role ID**.  
-   - Enter these in the plugin configuration settings.  
-3. Fill out the form:  
-   - **Boss Name**: Name of the boss you're looking to fight.  
-   - **Clan Chat**: The in-game clan chat for organizing the group.  
-   - **Team Size**: Enter `99` if there is no limit.  
-   - **Loot Type**: Splits or Free-for-All.  
-   - **World**: The world number for the event.  
-4. Click **Submit** to send the request to the designated Discord channel.  
-5. Ensure you are logged in before submitting. If not, the plugin will notify you.
+## Project Layout
 
-## Setting Up Discord Integration (For Server Owners)
-To use this plugin, server owners need to set up the following:  
+- [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
+- [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
+- [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
-### 1️⃣ Create a Webhook  
-A webhook is required for the plugin to send LFG messages to your Discord server.  
-- In Discord, go to **Server Settings → Integrations → Webhooks**  
-- Create a new webhook and copy the **Webhook URL**  
-- Provide this URL to users who will be using the plugin  
+## Usage
 
-### 2️⃣ Create a "PVMer" Role  
-To allow the plugin to tag players looking for groups, create a role named **PVMer** (or another role of your choice).  
-- Go to **Server Settings → Roles → Create Role**  
-- Assign this role to users who want LFG notifications  
-- Copy the **Role ID** and provide it to plugin users  
+Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
+For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
 
-🔹 **No Security Risk**: Sharing the role ID does not pose any security concerns as long as no additional permissions are assigned to the role. The ID is simply used for tagging in Discord messages.  
+### License
 
-## Example Discord Message
-@PVMer, [Player Name] is starting a group for [Boss Name]!<br>
-Boss: [Boss Name]<br>
-Clan Chat: [Clan Chat]<br>
-Team Size: [Size]<br>
-Loot Type: [Splits/FFA]<br>
-World: [World]
+RuneLite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
+
+## Contribute and Develop
+
+We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/.github/CONTRIBUTING.md).
