@@ -1,11 +1,15 @@
 package net.runelite.client.plugins.toolbox.leveling.woodcutting;
 
 import net.runelite.client.config.*;
+import ch.qos.logback.classic.Level;
+import net.runelite.client.plugins.toolbox.core.LogLevel;
 
 import java.awt.*;
 
 @ConfigGroup("toolbox.leveling.woodcutting.alder_rise")
 public interface AlderRiseConfig extends Config{
+
+    //https://www.osrsbox.com/blog/2018/08/18/writing-runelite-plugins-part-3-config/
 
     @ConfigSection(
             name = "General Settings",
@@ -21,91 +25,31 @@ public interface AlderRiseConfig extends Config{
             position = 1,
             section = generalSection
     )
-    default boolean enablePlugin() {
-        return true;
-    }
+    default boolean enablePlugin() { return false; }
 
     @ConfigItem(
-            keyName = "customText",
-            name = "Custom Label",
-            description = "User-defined text for labeling",
+            keyName = "logLevel",
+            name = "Log Level",
+            description = "Enable logging Level",
             position = 2,
             section = generalSection
     )
-    default String customText() {
-        return "Default Text";
-    }
+    default LogLevel logLevel() { return LogLevel.INFO; }
+
+
+    @ConfigSection(
+            name = "TimberTool",
+            description = "General settings TimberTools",
+            position = 1
+    )
+    String generalTimberToolSection = "generalTimberToolSection";
 
     @ConfigItem(
-            keyName = "notificationSound",
-            name = "Enable Notification Sound",
-            description = "Play a sound when an event occurs",
-            position = 3,
-            section = generalSection
+            keyName = "enableRegularTree",
+            name = "Enable Regular Tree",
+            description = "Toggle the plugin to turn on Regular Tree Felling",
+            position = 1,
+            section = generalTimberToolSection
     )
-    default boolean notificationSound() {
-        return false;
-    }
-
-    @Range(
-            min = 1,
-            max = 100
-    )
-    @ConfigItem(
-            keyName = "opacityLevel",
-            name = "Overlay Opacity",
-            description = "Adjust the opacity of the overlay (1-100%)",
-            position = 4,
-            section = generalSection
-    )
-    default int opacityLevel() {
-        return 75;
-    }
-
-    @ConfigItem(
-            keyName = "toggleFeatureX",
-            name = "Enable Feature X",
-            description = "Turns on Feature X for better performance",
-            position = 5,
-            section = generalSection
-    )
-    default boolean toggleFeatureX() {
-        return true;
-    }
-
-    @ConfigItem(
-            keyName = "refreshRate",
-            name = "Refresh Rate",
-            description = "Adjust how often the plugin updates (in milliseconds)",
-            position = 6,
-            section = generalSection
-    )
-    @Units(Units.MILLISECONDS)
-    default int refreshRate() {
-        return 500;
-    }
-
-    @ConfigItem(
-            keyName = "highlightColor",
-            name = "Highlight Color",
-            description = "Choose a color for highlights",
-            position = 7,
-            section = generalSection
-    )
-
-    @Alpha
-    default Color highlightColor() {
-        return Color.RED;
-    }
-
-    @ConfigItem(
-            keyName = "logActions",
-            name = "Log Actions",
-            description = "Enable logging of actions for debugging",
-            position = 8,
-            section = generalSection
-    )
-    default boolean logActions() {
-        return false;
-    }
+    default boolean enableRegularTree() { return false; }
 }
