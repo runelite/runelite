@@ -47,7 +47,7 @@ Boss: [Boss Name]<br>
 Clan Chat: [Clan Chat]<br>
 Team Size: [Size]<br>
 Loot Type: [Splits/FFA]<br>
-World: [World]
+World: [World]<br>
 ![image](https://github.com/user-attachments/assets/c0d4c6ba-e1a7-4fd6-a042-951b34f11142)
 ![image](https://github.com/user-attachments/assets/5e033f0e-9cd2-4b79-a216-29265a5d84d7)
 ![image](https://github.com/user-attachments/assets/1ea58b69-acf3-44fc-ba33-b205b158db83)
