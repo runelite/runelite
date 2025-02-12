@@ -46,8 +46,6 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
-
-		<rs.version>228</rs.version>
 	</properties>
 
 	<licenses>
