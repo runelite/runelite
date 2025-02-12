@@ -97,4 +97,37 @@ public interface BarrowsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDigLoc",
+		name = "Show dig locations",
+		description = "Configures whether or not the dig locations are displayed",
+		position = 7
+	)
+	default boolean showDigLoc()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "digLocColor",
+		name = "Dig location color",
+		description = "Change the color of the square drawn on the ground",
+		position = 8
+	)
+	default Color digLocColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "emptyDigLocColor",
+		name = "Empty dig loc. color",
+		description = "Change the color of the square drawn on the ground for an empty crypt",
+		position = 9
+	)
+	default Color emptyDigLocColor()
+	{
+		return Color.GRAY;
+	}
 }
