@@ -76,6 +76,8 @@ public class AnimationSmoothingPlugin extends Plugin
 
 			case AnimationID.SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK:
 
+			case AnimationID.DUCK_BOBBING:
+
 			case AnimationID.VIGGORAS_CHAINMACE_IDLE:
 
 			case AnimationID.MLM_WATER_WHEEL_SPINNING:
