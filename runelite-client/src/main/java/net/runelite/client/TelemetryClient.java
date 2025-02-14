@@ -31,6 +31,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.nio.file.Files;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
@@ -110,7 +112,7 @@ public class TelemetryClient
 					.replace(username, "%USERNAME%")
 					.replace(home, "%HOME%");
 
-				submitError("vm crash", hsErr);
+				submitError("vm crash", hsErr, Collections.emptyMap());
 			}
 		}
 		catch (Exception ex)
@@ -119,13 +121,20 @@ public class TelemetryClient
 		}
 	}
 
-	public void submitError(String type, String error)
+	public void submitError(String type, String error, Map<String, String> params)
 	{
-		HttpUrl url = apiBase.newBuilder()
+		HttpUrl.Builder urlBuilder = apiBase.newBuilder()
 			.addPathSegment("telemetry")
 			.addPathSegment("error")
 			.addQueryParameter("type", type)
-			.build();
+			.addQueryParameter("osname", System.getProperty("os.name"))
+			.addQueryParameter("osver", System.getProperty("os.version"))
+			.addQueryParameter("osarch", System.getProperty("os.arch"))
+			.addQueryParameter("javaversion", System.getProperty("java.version"))
+			.addQueryParameter("javavendor", System.getProperty("java.vendor"));
+		params.forEach(urlBuilder::addQueryParameter);
+
+		HttpUrl url = urlBuilder.build();
 
 		Request request = new Request.Builder()
 			.url(url)
