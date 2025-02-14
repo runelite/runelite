@@ -557,6 +557,7 @@ public class HiscorePanel extends PluginPanel
 				case SOUL_WARS_ZEAL:
 				case RIFTS_CLOSED:
 				case COLOSSEUM_GLORY:
+				case COLLECTIONS_LOGGED:
 				{
 					content += buildMinigameTooltip(result.getSkill(skill), skill);
 					break;
