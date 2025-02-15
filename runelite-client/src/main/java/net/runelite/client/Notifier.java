@@ -566,4 +566,9 @@ public class Notifier
 		}
 		return false;
 	}
+
+	public boolean isFlashing()
+	{
+		return flashStart != null;
+	}
 }
