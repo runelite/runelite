@@ -121,7 +121,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(2583, 2990, 0))
-			.directions("Feldip Hills, south-east of Gu'Thanoth (AKS).")
+			.directions("Feldip Hills, south-east of Gu'Tanoth (AKS).")
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(3179, 3344, 0))
