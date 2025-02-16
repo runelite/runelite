@@ -384,4 +384,6 @@ public final class AnimationID
 	public static final int GIANTS_FOUNDRY_WATER_WHEEL_SPINNING = 9450;
 
 	public static final int HUEYCOATL_DEATH = 11679;
+
+	public static final int SLAYER_TOWER_WATER_BUCKET_DRIP = 3558;
 }

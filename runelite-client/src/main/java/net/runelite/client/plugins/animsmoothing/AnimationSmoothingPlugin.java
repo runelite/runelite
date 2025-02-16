@@ -89,6 +89,8 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.MAGIC_ARCEUUS_DEMONBANE:
 
 			case AnimationID.PORTAL_NEXUS_SPIN:
+
+			case AnimationID.SLAYER_TOWER_WATER_BUCKET_DRIP:
 				return false;
 
 			default:
