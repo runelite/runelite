@@ -386,4 +386,6 @@ public final class AnimationID
 	public static final int HUEYCOATL_DEATH = 11679;
 
 	public static final int SLAYER_TOWER_WATER_BUCKET_DRIP = 3558;
+
+	public static final int KEY_MASTER_IDLE = 4519;
 }

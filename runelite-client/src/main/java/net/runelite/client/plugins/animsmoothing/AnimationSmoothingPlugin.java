@@ -91,6 +91,8 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.PORTAL_NEXUS_SPIN:
 
 			case AnimationID.SLAYER_TOWER_WATER_BUCKET_DRIP:
+
+			case AnimationID.KEY_MASTER_IDLE:
 				return false;
 
 			default:
