@@ -361,6 +361,7 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+	public static final int PORTAL_NEXUS_SPIN = 367;
 
 	// Wyrms
 	public static final int WYRM_IDLE_DORMANT = 8266;
