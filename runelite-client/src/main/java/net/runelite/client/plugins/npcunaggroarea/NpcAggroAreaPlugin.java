@@ -45,6 +45,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -53,6 +54,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -94,6 +96,9 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private NpcAggroAreaConfig config;
@@ -320,7 +325,14 @@ public class NpcAggroAreaPlugin extends Plugin
 	private void recheckActive()
 	{
 		active = config.alwaysActive();
-		checkAreaNpcs(client.getTopLevelWorldView().npcs());
+		clientThread.invoke(() ->
+		{
+			WorldView wv = client.getTopLevelWorldView();
+			if (wv != null)
+			{
+				checkAreaNpcs(wv.npcs());
+			}
+		});
 	}
 
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
