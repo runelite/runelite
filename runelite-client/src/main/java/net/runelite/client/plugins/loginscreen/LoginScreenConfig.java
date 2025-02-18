@@ -34,7 +34,7 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "syncusername",
 		name = "Sync username",
-		description = "Syncs the username that is currently remembered between computers"
+		description = "Syncs the username that is currently remembered between computers."
 	)
 	default boolean syncUsername()
 	{
@@ -44,7 +44,7 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "pasteenabled",
 		name = "Ctrl-V paste",
-		description = "Enables Ctrl+V pasting on the login screen"
+		description = "Enables Ctrl-V pasting on the login screen."
 	)
 	default boolean pasteEnabled()
 	{

@@ -39,7 +39,7 @@ enum MiningSiteLocation
 	ALDARIN(new WorldPoint(1430, 2882, 0), new Rock(8, Ore.IRON), new Rock(5, Ore.SILVER), new Rock(6, Ore.COAL), new Rock(5, Ore.GOLD)),
 	AL_KHARID_MINE_NORTH(new WorldPoint(3298, 3312, 0),
 		new Rock(3, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(7, Ore.IRON), new Rock(5, Ore.SILVER),
-		new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
+		new Rock(3, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
 	AL_KHARID_MINE_SOUTH(new WorldPoint(3298, 3282, 0), new Rock(2, Ore.IRON), new Rock(2, Ore.GOLD)),
 	ANCIENT_CAVERN_NORTH(new WorldPoint(1847, 5414, 0), new Rock(4, Ore.MITHRIL)),
 	ANCIENT_CAVERN_SOUTH(new WorldPoint(1826, 5392, 0), new Rock(2, Ore.MITHRIL)),

@@ -87,6 +87,7 @@ class WoodcuttingSceneOverlay extends Overlay
 		renderForestryPheasants(graphics);
 		renderForestryBeeHive(graphics);
 		renderEnchantmentRitual(graphics);
+		renderLeprechaun(graphics);
 		return null;
 	}
 
@@ -286,6 +287,21 @@ class WoodcuttingSceneOverlay extends Overlay
 			if (poly != null)
 			{
 				OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+			}
+		}
+	}
+
+	private void renderLeprechaun(Graphics2D graphics)
+	{
+		if (!plugin.getEndOfRainbows().isEmpty() && config.highlightLeprechaunRainbow())
+		{
+			for (var rainbow : plugin.getEndOfRainbows())
+			{
+				var poly = rainbow.getCanvasTilePoly();
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+				}
 			}
 		}
 	}

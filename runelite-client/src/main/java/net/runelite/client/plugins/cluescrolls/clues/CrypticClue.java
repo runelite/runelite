@@ -125,8 +125,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Come have a cip with this great soot covered denizen.")
 			.location(new WorldPoint(2527, 3891, 0))
 			.npc("Miner Magnus")
-			.solution("Talk to Miner Magnus on Miscellania, east of the fairy ring CIP. Answer: 8")
+			.solution("Talk to Miner Magnus on Miscellania, east of the fairy ring CIP.")
 			.questionText("How many coal rocks are around here?")
+			.answer("8")
 			.build(),
 		CrypticClue.builder()
 			.text("Citric cellar.")
@@ -415,8 +416,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("I have many arms but legs, I have just one. I have little family but my seed you can grow on, I am not dead, yet I am but a spirit, and my power, on your quests, you will earn the right to free it.")
 			.location(new WorldPoint(2544, 3170, 0))
 			.objectId(NullObjectID.NULL_1293)
-			.solution("Spirit Tree in Tree Gnome Village. Answer: 13112221")
+			.solution("Spirit Tree in Tree Gnome Village.")
 			.questionText("What is the next number in the sequence? 1, 11, 21, 1211, 111221, 312211")
+			.answer("13112221")
 			.build(),
 		CrypticClue.builder()
 			.text("I am the one who watches the giants. The giants in turn watch me. I watch with two while they watch with one. Come seek where I may be.")
@@ -591,8 +593,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("He knows just how easy it is to lose track of time.")
 			.location(new WorldPoint(2570, 3250, 0))
 			.npc("Brother Kojo")
-			.solution("Speak to Brother Kojo in the Clock Tower. Answer: 22")
+			.solution("Speak to Brother Kojo in the Clock Tower.")
 			.questionText("On a clock, how many times a day do the minute hand and the hour hand overlap?")
+			.answer("22")
 			.build(),
 		CrypticClue.builder()
 			.text("A great view - watch the rapidly drying hides get splashed. Check the box you are sitting on.")
@@ -1004,8 +1007,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to a referee.")
 			.location(new WorldPoint(2386, 3487, 0))
 			.npc("Gnome ball referee")
-			.solution("Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096")
+			.solution("Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold.")
 			.questionText("What is 57 x 89 + 23?")
+			.answer("5096")
 			.build(),
 		CrypticClue.builder()
 			.text("This crate holds a better reward than a broken arrow.")
@@ -1506,8 +1510,9 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to Uglug Nar.")
 			.location(new WorldPoint(2444, 3049, 0))
 			.npc("Uglug Nar")
-			.solution("Outside Jiggig, south of Castle Wars. Answer: 6859")
+			.solution("Outside Jiggig, south of Castle Wars.")
 			.questionText("What is 19 to the power of 3?")
+			.answer("6859")
 			.build(),
 		CrypticClue.builder()
 			.text("The effects of this fire are magnified.")
@@ -1616,8 +1621,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Talk to the Slayer Master in Burthorpe.")
 			.location(new WorldPoint(2930, 3536, 0))
-			.npc("Turael")
-			.solution("The Slayer Master is located in the small house east of the Toad and Chicken inn in Burthorpe.")
+			.npcProvider(CrypticClue::getBurthorpeSlayerMaster)
+			.solutionProvider((plugin) -> getBurthorpeSlayerMaster(plugin) + " is located in the small house east of the Toad and Chicken inn in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
@@ -1722,7 +1727,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Dig outside the bank on Aldarin.")
 			.location(new WorldPoint(1390, 2926, 0))
-			.solution("Dig outside the bank on Aldarin.")
+			.solution("Dig outside the bank on Aldarin. Fairy ring CKQ.")
 			.build()
 	);
 
@@ -1734,7 +1739,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private final String text;
 	@Nullable
-	private final String npc;
+	@Getter(AccessLevel.PRIVATE)
+	private final Function<ClueScrollPlugin, String> npcProvider;
 	private final int objectId;
 	@Getter(AccessLevel.NONE)
 	private final String solution;
@@ -1745,32 +1751,43 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
 	@Getter(AccessLevel.PRIVATE)
 	private final Function<ClueScrollPlugin, String> solutionProvider;
+	@Nullable
+	private final String answer;
 	private final List<Integer> npcRegions;
 
 	@Builder
 	private CrypticClue(
 		String text,
 		@Nullable String npc,
+		@Nullable Function<ClueScrollPlugin, String> npcProvider,
 		int objectId,
 		@Nullable WorldPoint location,
 		@Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider,
 		@Nullable Function<ClueScrollPlugin, String> solutionProvider,
 		String solution,
 		@Nullable String questionText,
+		@Nullable String answer,
 		boolean requiresLight,
 		@Singular List<Integer> npcRegions
 	)
 	{
 		this.text = text;
-		this.npc = npc;
+		this.npcProvider = npcProvider != null ? npcProvider : (npc != null ? (plugin) -> npc : null);
 		this.objectId = objectId > 0 ? objectId : -1;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.solutionProvider = solutionProvider != null ? solutionProvider : (plugin) -> solution;
 		this.solution = solution;
 		this.questionText = questionText;
+		this.answer = answer;
 		this.npcRegions = npcRegions;
-		setRequiresSpade(this.locationProvider != null && npc == null && this.objectId == -1);
+		setRequiresSpade(this.locationProvider != null && this.npcProvider == null && this.objectId == -1);
 		setRequiresLight(requiresLight);
+	}
+
+	@Nullable
+	public String getNpc(ClueScrollPlugin plugin)
+	{
+		return npcProvider == null ? null : npcProvider.apply(plugin);
 	}
 
 	@Nullable
@@ -1790,11 +1807,12 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue").build());
 
-		if (getNpc() != null)
+		final String npc = getNpc(plugin);
+		if (npc != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getNpc())
+				.left(npc)
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
@@ -1824,6 +1842,15 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
+		if (getAnswer() != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(getAnswer())
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
+
 		renderOverlayNote(panelComponent, plugin);
 	}
 
@@ -1832,7 +1859,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		// Mark dig location
 		WorldPoint location = getLocation(plugin);
-		if (location != null && getNpc() == null && objectId == -1)
+		if (location != null && getNpc(plugin) == null && objectId == -1)
 		{
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), location);
 
@@ -1891,7 +1918,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
-		return new String[]{npc};
+		return new String[]{getNpc(plugin)};
 	}
 
 	@Override
@@ -1946,5 +1973,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		}
 
 		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
+	}
+
+	private static String getBurthorpeSlayerMaster(ClueScrollPlugin plugin)
+	{
+		return plugin.getClient().getVarbitValue(Varbits.BURTHORPE_SLAYER_MASTER) == 0 ? "Turael" : "Aya";
 	}
 }

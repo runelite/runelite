@@ -44,7 +44,6 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Configuration",
-	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin

@@ -375,8 +375,8 @@ public final class ScriptID
 	@ScriptArguments(integer = 6)
 	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
 
-	@ScriptArguments(integer = 6)
-	public static final int COLLECTION_DRAW_LIST = 2730;
+	@ScriptArguments(integer = 8)
+	public static final int COLLECTION_DRAW_LIST = 2731;
 
 	/**
 	 * Draws the active notification in increasing sizes (increasing horizontally first, then vertically) to show a
@@ -476,4 +476,13 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 5)
 	public static final int FAIRYRINGS_SORT_UPDATE = 402;
+
+	@ScriptArguments(integer = 1, string = 1)
+	public static final int POPUP_OVERLAY_YESNO_INIT = 4212;
+
+	@ScriptArguments(integer = 12)
+	public static final int BANK_DEPOSITBOX_INIT = 144;
+
+	@ScriptArguments(integer = 7)
+	public static final int SEED_VAULT_BUILD = 2819;
 }

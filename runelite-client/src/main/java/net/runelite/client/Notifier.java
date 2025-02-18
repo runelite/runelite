@@ -44,8 +44,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
@@ -54,8 +56,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -78,23 +78,6 @@ import net.runelite.client.util.OSType;
 @Slf4j
 public class Notifier
 {
-	@Getter
-	@RequiredArgsConstructor
-	public enum NativeCustomOff
-	{
-		NATIVE("Native"),
-		CUSTOM("Custom"),
-		OFF("Off");
-
-		private final String name;
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-	}
-
 	private static final String DOUBLE_QUOTE = "\"";
 	private static final Escaper SHELL_ESCAPE = Escapers.builder()
 		.addEscape('"', "'")
@@ -105,7 +88,7 @@ public class Notifier
 	private static final int MINIMUM_FLASH_DURATION_TICKS = MINIMUM_FLASH_DURATION_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
-	private static final long CLIP_MTIME_UNLOADED = -2;
+	private static final File NOTIFICATIONS_DIR = RuneLite.NOTIFICATIONS_DIR;
 	private static final long CLIP_MTIME_BUILTIN = -1;
 
 	private final Client client;
@@ -121,8 +104,10 @@ public class Notifier
 	private FlashNotification flashNotification;
 	private Color flashColor;
 	private long mouseLastPressedMillis;
-	private long lastClipMTime = CLIP_MTIME_UNLOADED;
-	private Clip clip = null;
+	private long lastClipMTime;
+	private Clip clip;
+	@Nullable
+	private File clipFile;
 
 	@Inject
 	private Notifier(
@@ -152,6 +137,8 @@ public class Notifier
 		}
 
 		storeIcon();
+
+		NOTIFICATIONS_DIR.mkdirs();
 	}
 
 	private Notification defaultNotification(TrayIcon.MessageType trayMessageType)
@@ -160,7 +147,8 @@ public class Notifier
 		return new Notification(true, true,
 			true, // Not really overriden, but this it to avoid recreating the notification due to !override
 			runeLiteConfig.enableTrayNotifications(), trayMessageType, runeLiteConfig.notificationRequestFocus(),
-			runeLiteConfig.notificationSound(), runeLiteConfig.notificationVolume(), runeLiteConfig.notificationTimeout(),
+			runeLiteConfig.notificationSound(), null, // RuneLite notification settings doesn't support file sounds
+			runeLiteConfig.notificationVolume(), runeLiteConfig.notificationTimeout(),
 			runeLiteConfig.enableGameMessageNotification(), runeLiteConfig.flashNotification(), runeLiteConfig.notificationFlashColor(),
 			runeLiteConfig.sendNotificationsWhenFocused());
 	}
@@ -487,8 +475,9 @@ public class Notifier
 
 	private synchronized void playCustomSound(Notification notification)
 	{
-		long currentMTime = NOTIFICATION_FILE.exists() ? NOTIFICATION_FILE.lastModified() : CLIP_MTIME_BUILTIN;
-		if (clip == null || currentMTime != lastClipMTime || !clip.isOpen())
+		long currentMTime = clipFile != null ? clipFile.lastModified() : CLIP_MTIME_BUILTIN;
+		String clipName = clipFile != null ? clipFile.getName() : null;
+		if (clip == null || currentMTime != lastClipMTime || !clip.isOpen() || !Objects.equals(clipName, notification.getSoundName()))
 		{
 			if (clip != null)
 			{
@@ -501,15 +490,12 @@ public class Notifier
 			}
 			catch (LineUnavailableException e)
 			{
-				lastClipMTime = CLIP_MTIME_UNLOADED;
 				log.warn("Unable to play notification", e);
 				Toolkit.getDefaultToolkit().beep();
 				return;
 			}
 
-			lastClipMTime = currentMTime;
-
-			if (!tryLoadNotification())
+			if (!tryLoadNotification(notification.getSoundName()))
 			{
 				Toolkit.getDefaultToolkit().beep();
 				return;
@@ -524,23 +510,44 @@ public class Notifier
 
 		// Using loop instead of start + setFramePosition prevents the clip
 		// from not being played sometimes, presumably a race condition in the
-		// underlying line driver
-		clip.loop(1);
+		// underlying line driver. Setting the frame position first resets the loop,
+		// otherwise the clip would not pe played on subsequent calls.
+		clip.setFramePosition(0);
+		clip.loop(0);
 	}
 
-	private boolean tryLoadNotification()
+	private boolean tryLoadNotification(String soundName)
 	{
-		if (NOTIFICATION_FILE.exists())
+		if (soundName != null)
 		{
-			try (InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
+			File soundFile = new File(NOTIFICATIONS_DIR, soundName);
+			try (InputStream fileStream = new BufferedInputStream(new FileInputStream(soundFile));
 				AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 			{
+				clipFile = soundFile;
+				lastClipMTime = soundFile.lastModified();
 				clip.open(sound);
 				return true;
 			}
 			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
 			{
-				log.warn("Unable to load notification sound", e);
+				log.warn("Unable to load notification sound from {}", soundFile, e);
+			}
+		}
+
+		if (NOTIFICATION_FILE.exists())
+		{
+			try (InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
+				AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+			{
+				clipFile = NOTIFICATION_FILE;
+				lastClipMTime = NOTIFICATION_FILE.lastModified();
+				clip.open(sound);
+				return true;
+			}
+			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
+			{
+				log.warn("Unable to load notification sound from {}", NOTIFICATION_FILE, e);
 			}
 		}
 
@@ -548,12 +555,14 @@ public class Notifier
 		try (InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
 			AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 		{
+			clipFile = null;
+			lastClipMTime = CLIP_MTIME_BUILTIN;
 			clip.open(sound);
 			return true;
 		}
 		catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
 		{
-			log.warn("Unable to load builtin notification sound", e);
+			log.warn("Unable to load built-in notification sound", e);
 		}
 		return false;
 	}

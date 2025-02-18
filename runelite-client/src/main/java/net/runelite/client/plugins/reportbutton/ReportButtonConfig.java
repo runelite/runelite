@@ -44,7 +44,7 @@ public interface ReportButtonConfig extends Config
 	@ConfigItem(
 		keyName = "switchTimeFormat",
 		name = "Time format",
-		description = "Configures time between 12 or 24 hour time format"
+		description = "Configures time between 12 or 24 hour time format."
 	)
 	default TimeFormat switchTimeFormat()
 	{

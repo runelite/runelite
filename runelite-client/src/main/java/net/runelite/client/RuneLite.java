@@ -28,6 +28,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,6 +59,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -68,7 +71,6 @@ import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import joptsimple.ValueConversionException;
 import joptsimple.ValueConverter;
-import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -80,7 +82,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
-import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
@@ -107,6 +108,7 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
+	public static final File NOTIFICATIONS_DIR = new File(RuneLite.RUNELITE_DIR, "notifications");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
@@ -148,8 +150,7 @@ public class RuneLite
 	private Provider<WorldMapOverlay> worldMapOverlay;
 
 	@Inject
-	@Nullable
-	private Applet applet;
+	private Gson gson;
 
 	@Inject
 	@Nullable
@@ -184,20 +185,6 @@ public class RuneLite
 			.withValuesConvertedBy(new ConfigFileConverter())
 			.defaultsTo(DEFAULT_SESSION_FILE);
 
-		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
-			.accepts("rs", "Select client type")
-			.withRequiredArg()
-			.ofType(ClientUpdateCheckMode.class)
-			.defaultsTo(ClientUpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<>(ClientUpdateCheckMode.class)
-			{
-				@Override
-				public ClientUpdateCheckMode convert(String v)
-				{
-					return super.convert(v.toUpperCase());
-				}
-			});
-
 		final OptionSpec<Void> insecureWriteCredentials = parser.accepts("insecure-write-credentials", "Dump authentication tokens from the Jagex Launcher to a text file to be used for development");
 
 		parser.accepts("help", "Show this text").forHelp();
@@ -228,12 +215,12 @@ public class RuneLite
 		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
-		SplashScreen.stage(0, "Retrieving client", "");
+		SplashScreen.stage(0, "Preparing RuneScape", "");
 
 		try
 		{
 			final RuntimeConfigLoader runtimeConfigLoader = new RuntimeConfigLoader(okHttpClient);
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), runtimeConfigLoader, (String) options.valueOf("jav_config"));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, runtimeConfigLoader, (String) options.valueOf("jav_config"));
 
 			new Thread(() ->
 			{
@@ -303,31 +290,24 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
-		// Load RuneLite or Vanilla client
-		final boolean isOutdated = client == null;
-
-		if (!isOutdated)
-		{
-			// Inject members into client
-			injector.injectMembers(client);
-		}
+		// Inject members into client
+		injector.injectMembers(client);
 
 		setupSystemProps();
+		setupCompilerControl();
 
 		// Start the applet
-		if (applet != null)
-		{
-			copyJagexCache();
+		copyJagexCache();
 
-			// Client size must be set prior to init
-			applet.setSize(Constants.GAME_FIXED_SIZE);
+		// Client size must be set prior to init
+		var applet = (Applet) client;
+		applet.setSize(Constants.GAME_FIXED_SIZE);
 
-			System.setProperty("jagex.disableBouncyCastle", "true");
-			System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
+		System.setProperty("jagex.disableBouncyCastle", "true");
+		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
-			applet.init();
-			applet.start();
-		}
+		applet.init();
+		applet.start();
 
 		SplashScreen.stage(.57, null, "Loading configuration");
 
@@ -336,9 +316,6 @@ public class RuneLite
 
 		// Load user configuration
 		configManager.load();
-
-		// Tell the plugin manager if client is outdated or not
-		pluginManager.setOutdated(isOutdated);
 
 		// Update check requires ConfigManager to be ready before it runs
 		Updater updater = injector.getInstance(Updater.class);
@@ -376,13 +353,10 @@ public class RuneLite
 		eventBus.register(configManager);
 		eventBus.register(discordService);
 
-		if (!isOutdated)
-		{
-			// Add core overlays
-			WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
-			overlayManager.add(worldMapOverlay.get());
-			overlayManager.add(tooltipOverlay.get());
-		}
+		// Add core overlays
+		WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
+		overlayManager.add(worldMapOverlay.get());
+		overlayManager.add(tooltipOverlay.get());
 
 		// Start plugins
 		pluginManager.startPlugins();
@@ -544,6 +518,37 @@ public class RuneLite
 			String key = entry.getKey(), value = entry.getValue();
 			log.debug("Setting property {}={}", key, value);
 			System.setProperty(key, value);
+		}
+	}
+
+	private void setupCompilerControl()
+	{
+		if (runtimeConfig == null || runtimeConfig.getCompilerControl() == null)
+		{
+			return;
+		}
+
+		try
+		{
+			var json = gson.toJson(runtimeConfig.getCompilerControl());
+			var file = Files.createTempFile("rl_compilercontrol", "");
+			try
+			{
+				Files.writeString(file, json, StandardCharsets.UTF_8);
+				ManagementFactory.getPlatformMBeanServer().invoke(
+					new ObjectName("com.sun.management:type=DiagnosticCommand"),
+					"compilerDirectivesAdd",
+					new Object[]{new String[]{file.toFile().getAbsolutePath()}},
+					new String[]{String[].class.getName()});
+			}
+			finally
+			{
+				Files.delete(file);
+			}
+		}
+		catch (Exception e)
+		{
+			log.info("Failed to set compiler control", e);
 		}
 	}
 

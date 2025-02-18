@@ -49,7 +49,7 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigSection(
 		name = "Item lists",
-		description = "The highlighted and hidden item lists",
+		description = "The highlighted and hidden item lists.",
 		position = 0
 	)
 	String itemLists = "itemLists";
@@ -57,7 +57,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted items",
-		description = "Configures specifically highlighted ground items. Format: (item), (item)",
+		description = "Configures specifically highlighted ground items. Format: item1, item2, item3",
 		position = 0,
 		section = itemLists
 	)
@@ -76,7 +76,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "hiddenItems",
 		name = "Hidden items",
-		description = "Configures hidden ground items. Format: (item), (item)",
+		description = "Configures hidden ground items. Format: item1, item2, item3",
 		position = 1,
 		section = itemLists
 	)
@@ -95,7 +95,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "showHighlightedOnly",
 		name = "Show highlighted items only",
-		description = "Configures whether or not to draw items only on your highlighted list",
+		description = "Configures whether or not to draw items only on your highlighted list.",
 		position = 2
 	)
 	default boolean showHighlightedOnly()
@@ -106,7 +106,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "dontHideUntradeables",
 		name = "Do not hide untradeables",
-		description = "Configures whether or not untradeable items ignore hiding under settings",
+		description = "Configures whether or not untradeable items ignore hiding under settings.",
 		position = 3
 	)
 	default boolean dontHideUntradeables()
@@ -117,7 +117,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "showMenuItemQuantities",
 		name = "Show menu item quantities",
-		description = "Configures whether or not to show the item quantities in the menu",
+		description = "Configures whether or not to show the item quantities in the menu.",
 		position = 4
 	)
 	default boolean showMenuItemQuantities()
@@ -128,7 +128,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor menu hidden items",
-		description = "Configures whether or not hidden items in right-click menu will be recolored",
+		description = "Configures whether or not hidden items in right-click menu will be recolored.",
 		position = 5
 	)
 	default boolean recolorMenuHiddenItems()
@@ -150,7 +150,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight tiles",
-		description = "Configures whether or not to highlight tiles containing ground items",
+		description = "Configures whether or not to highlight tiles containing ground items.",
 		position = 6
 	)
 	default boolean highlightTiles()
@@ -161,7 +161,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "notifyHighlightedDrops",
 		name = "Notify for highlighted drops",
-		description = "Configures whether or not to notify for drops on your highlighted list",
+		description = "Configures whether or not to notify for drops on your highlighted list.",
 		position = 7
 	)
 	default boolean notifyHighlightedDrops()
@@ -172,7 +172,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "notifyTier",
 		name = "Notify tier",
-		description = "Configures which price tiers will trigger a notification on drop",
+		description = "Configures which price tiers will trigger a notification on drop.",
 		position = 8
 	)
 	default HighlightTier notifyTier()
@@ -183,7 +183,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "priceDisplayMode",
 		name = "Price display mode",
-		description = "Configures which price types are shown alongside ground item name",
+		description = "Configures which price types are shown alongside ground item name.",
 		position = 9
 	)
 	default PriceDisplayMode priceDisplayMode()
@@ -197,7 +197,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "itemHighlightMode",
 		name = "Item highlight mode",
-		description = "Configures how ground items will be highlighted",
+		description = "Configures how ground items will be highlighted.",
 		position = 10
 	)
 	default ItemHighlightMode itemHighlightMode()
@@ -208,7 +208,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "menuHighlightMode",
 		name = "Menu highlight mode",
-		description = "Configures what to highlight in right-click menu",
+		description = "Configures what to highlight in right-click menu.",
 		position = 11
 	)
 	default MenuHighlightMode menuHighlightMode()
@@ -219,7 +219,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightValueCalculation",
 		name = "Highlight value calculation",
-		description = "Configures which coin value is used to determine highlight color",
+		description = "Configures which coin value is used to determine highlight color.",
 		position = 12
 	)
 	default ValueCalculationMode valueCalculationMode()
@@ -230,7 +230,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "hideUnderValue",
 		name = "Hide under value",
-		description = "Configures hidden ground items under both GE and HA value",
+		description = "Configures hidden ground items under both GE and HA value.",
 		position = 13
 	)
 	default int getHideUnderValue()

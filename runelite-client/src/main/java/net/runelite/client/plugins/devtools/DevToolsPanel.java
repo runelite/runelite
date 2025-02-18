@@ -29,7 +29,6 @@ import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.google.inject.ProvisionException;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.TrayIcon;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -41,7 +40,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.Notification;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -56,6 +54,7 @@ class DevToolsPanel extends PluginPanel
 	private final ClientThread clientThread;
 	private final Notifier notifier;
 	private final DevToolsPlugin plugin;
+	private final DevToolsConfig config;
 
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
@@ -69,6 +68,7 @@ class DevToolsPanel extends PluginPanel
 		Client client,
 		ClientThread clientThread,
 		DevToolsPlugin plugin,
+		DevToolsConfig config,
 		WidgetInspector widgetInspector,
 		VarInspector varInspector,
 		ScriptInspector scriptInspector,
@@ -81,6 +81,7 @@ class DevToolsPanel extends PluginPanel
 		this.client = client;
 		this.clientThread = clientThread;
 		this.plugin = plugin;
+		this.config = config;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
 		this.inventoryInspector = inventoryInspector;
@@ -146,12 +147,7 @@ class DevToolsPanel extends PluginPanel
 		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
 			scheduledExecutorService.schedule(() ->
-			{
-				var notif = new Notification()
-					.withEnabled(true)
-					.withTrayIconType(TrayIcon.MessageType.ERROR);
-				notifier.notify(notif, "Wow!");
-			}, 3, TimeUnit.SECONDS));
+				notifier.notify(config.notification(), "Wow!"), 3, TimeUnit.SECONDS));
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());

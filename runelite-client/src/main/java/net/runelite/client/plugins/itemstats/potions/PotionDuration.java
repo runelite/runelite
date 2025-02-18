@@ -45,6 +45,10 @@ public enum PotionDuration
 		new PotionDurationRange("Anti-venom", Duration.ofMinutes(3)),
 		new PotionDurationRange("Anti-poison", Duration.ofMinutes(15))},
 		ItemID.ANTIVENOM4_12913, ItemID.ANTIVENOM3_12915, ItemID.ANTIVENOM2_12917, ItemID.ANTIVENOM1_12919),
+	EXTENDED_ANTIVENOM_P(new PotionDurationRange[]{
+		new PotionDurationRange("Anti-venom", Duration.ofMinutes(6)),
+		new PotionDurationRange("Anti-poison", Duration.ofMinutes(17))},
+		ItemID.EXTENDED_ANTIVENOM4, ItemID.EXTENDED_ANTIVENOM3, ItemID.EXTENDED_ANTIVENOM2, ItemID.EXTENDED_ANTIVENOM1),
 	ANTIFIRE(Duration.ofMinutes(6), ItemID.ANTIFIRE_POTION4, ItemID.ANTIFIRE_POTION3, ItemID.ANTIFIRE_POTION2, ItemID.ANTIFIRE_POTION1),
 	EXTENDED_ANTIFIRE(Duration.ofMinutes(12), ItemID.EXTENDED_ANTIFIRE4, ItemID.EXTENDED_ANTIFIRE3, ItemID.EXTENDED_ANTIFIRE2, ItemID.EXTENDED_ANTIFIRE1),
 	SUPER_ANTIFIRE(Duration.ofMinutes(3), ItemID.SUPER_ANTIFIRE_POTION4, ItemID.SUPER_ANTIFIRE_POTION3, ItemID.SUPER_ANTIFIRE_POTION2, ItemID.SUPER_ANTIFIRE_POTION1),

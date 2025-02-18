@@ -31,7 +31,6 @@ import lombok.Value;
 @Value
 class XpSnapshotSingle
 {
-	private XpActionType actionType;
 	private int startLevel;
 	private int endLevel;
 	private int startGoalXp;

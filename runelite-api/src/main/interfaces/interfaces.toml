@@ -70,12 +70,12 @@ potion_store=48
 incinerator=49
 incinerator_confirm=50
 potionstore_content=52
-equipment_parent=77
-equipment_set_bonus=118
-settings_button=122
-equipment_button=123
-popup=125
-equipment_stat_bonus=131
+equipment_parent=78
+equipment_set_bonus=119
+settings_button=123
+equipment_button=124
+popup=126
+equipment_stat_bonus=132
 
 [bank_inventory]
 id=15
@@ -159,16 +159,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=35
-container=37
-title=41
-full_input=42
-ge_search_results=50
-messages=53
-transparent_background_lines=54
-input=55
-message_lines=56
-first_message=57
+transparent_background=36
+container=38
+title=42
+full_input=43
+ge_search_results=51
+messages=54
+transparent_background_lines=55
+input=56
+message_lines=57
+first_message=58
 
 [clan]
 id=701
@@ -181,9 +181,6 @@ id=702
 layer=0
 header=1
 members=6
-
-[clanrank_popup]
-id=289
 
 [cluescroll]
 id=203
@@ -210,11 +207,11 @@ id=356
 
 [collection_log]
 id=621
-container=0
+container=87
 tabs=3
 entry=17
-entry_header=19
-entry_items=36
+entry_header=20
+entry_items=37
 
 [combat]
 id=593
@@ -245,7 +242,7 @@ id=13
 
 [deposit_box]
 id=192
-inventory_item_container=2
+inventory_item_container=23
 
 [destroy_item]
 id=584
@@ -772,10 +769,10 @@ init=1
 [settings_side]
 id=116
 camera_zoom_slider_track=57
-music_slider=92
-music_slider_step_holder=104
-sound_effect_slider=106
-area_sound_slider=120
+music_slider=98
+music_slider_step_holder=110
+sound_effect_slider=112
+area_sound_slider=126
 
 [shop]
 id=300
@@ -856,7 +853,7 @@ id=336
 
 [trailblazer_areas]
 id=512
-teleport=66
+teleport=80
 
 [trawler]
 id=366

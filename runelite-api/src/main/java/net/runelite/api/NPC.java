@@ -50,7 +50,6 @@ public interface NPC extends Actor
 	 * NPC array.
 	 *
 	 * @return the NPC index
-	 * @see Client#getCachedNPCs()
 	 */
 	int getIndex();
 

@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -35,6 +37,7 @@ import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -48,7 +51,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-@Builder
 public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
@@ -135,7 +137,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(3243, 3208, 0))
 			.area("Lumbridge Church")
 			.question("How many gravestones are in the church graveyard?")
-			.answer("19 or 20")
+			.answerProvider(AnagramClue::lumbridgeGravestoneCount)
 			.build(),
 		AnagramClue.builder()
 			.text("BAIL TRIMS")
@@ -377,6 +379,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("I EVEN")
 			.npc("Nieve")
 			.location(new WorldPoint(2432, 3422, 0))
+			.area("The slayer master in Gnome Stronghold")
+			.question("How many farming patches are there in Gnome stronghold?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("VESTE")
+			.npc("Steve")
+			.location(new WorldPoint(2432, 3423, 0))
 			.area("The slayer master in Gnome Stronghold")
 			.question("How many farming patches are there in Gnome stronghold?")
 			.answer("2")
@@ -656,14 +666,6 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("302")
 			.build(),
 		AnagramClue.builder()
-			.text("VESTE")
-			.npc("Steve")
-			.location(new WorldPoint(2432, 3423, 0))
-			.area("Upstairs Wyvern Area or Stronghold Slayer Cave")
-			.question("How many farming patches are there in Gnome stronghold?")
-			.answer("2")
-			.build(),
-		AnagramClue.builder()
 			.text("VEIL VEDA")
 			.npc("Evil Dave")
 			.location(new WorldPoint(3079, 9892, 0))
@@ -775,25 +777,66 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Metla")
 			.location(new WorldPoint(1742, 2977, 0))
 			.area("Stonecutter Outpost")
+			.build(),
+		AnagramClue.builder()
+			.text("CIRR JAD")
+			.npc("Jardric")
+			.locationProvider(plugin ->
+			{
+				int q = plugin.getClient().getVarbitValue(Varbits.QUEST_DS2);
+				return q <= 60 ?
+					new WorldPoint(3719, 3810, 0) : // Museum camp
+					new WorldPoint(3661, 3849, 0); // West side of Fossil Island
+			})
+			.area("Fossil Island")
+			.question("What is 3 to the power of 0?")
+			.answer("1")
 			.build()
 	);
 
 	private final String text;
 	private final String npc;
 	@Getter(AccessLevel.PRIVATE)
-	private final WorldPoint location;
+	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
 	private final String area;
 	@Nullable
 	private final String question;
 	@Nullable
-	private final String answer;
-	@Builder.Default
-	private final int objectId = -1;
+	private final Function<ClueScrollPlugin, String> answerProvider;
+	private final int objectId;
+
+	@Builder
+	private AnagramClue(
+		String text,
+		String npc,
+		@Nullable WorldPoint location,
+		@Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider,
+		String area,
+		@Nullable String question,
+		@Nullable String answer,
+		@Nullable Function<ClueScrollPlugin, String> answerProvider,
+		@Nullable Integer objectId
+	)
+	{
+		this.text = text;
+		this.npc = npc;
+		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
+		this.area = area;
+		this.question = question;
+		this.answerProvider = answerProvider != null ? answerProvider : (answer != null ? (plugin) -> answer : null);
+		this.objectId = objectId != null ? objectId : -1;
+	}
 
 	@Override
 	public WorldPoint getLocation(ClueScrollPlugin plugin)
 	{
-		return location;
+		return locationProvider == null ? null : locationProvider.apply(plugin);
+	}
+
+	@VisibleForTesting
+	String getAnswer(ClueScrollPlugin plugin)
+	{
+		return answerProvider == null ? null : answerProvider.apply(plugin);
 	}
 
 	@Override
@@ -812,11 +855,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		if (getAnswer() != null)
+		final String answer = getAnswer(plugin);
+		if (answer != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getAnswer())
+				.left(answer)
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
@@ -887,5 +931,20 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public int[] getConfigKeys()
 	{
 		return new int[]{text.hashCode()};
+	}
+
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
+	private static String lumbridgeGravestoneCount(ClueScrollPlugin plugin)
+	{
+		switch (plugin.getClient().getVarbitValue(Varbits.JARVIS_GRAVESTONE))
+		{
+			case 1:
+				return "20";
+			case 0:
+			case 2:
+			case 3:
+			default:
+				return "19";
+		}
 	}
 }

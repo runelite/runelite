@@ -36,7 +36,7 @@ public interface ChatNotificationsConfig extends Config
 {
 	@ConfigSection(
 		name = "Highlight lists",
-		description = "Custom single word and regex filter lists",
+		description = "Custom single word and regex filter lists.",
 		position = 0
 	)
 	String highlightLists = "highlightLists";
@@ -45,7 +45,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 1,
 		keyName = "highlightWordsString",
 		name = "Highlight words",
-		description = "Highlights the following words in chat, separated by commas",
+		description = "Highlights the following words in chat, separated by commas.",
 		section = highlightLists
 	)
 	default String highlightWordsString()
@@ -57,7 +57,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 2,
 		keyName = "highlightRegexString",
 		name = "Highlight regex",
-		description = "Highlights the following regular expressions in chat, one per line",
+		description = "Highlights the following regular expressions in chat, one per line.",
 		section = highlightLists
 	)
 	default String highlightRegexString()
@@ -69,7 +69,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 1,
 		keyName = "highlightOwnName",
 		name = "Highlight own name",
-		description = "Highlights any instance of your username in chat"
+		description = "Highlights any instance of your username in chat."
 	)
 	default boolean highlightOwnName()
 	{
@@ -80,7 +80,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 2,
 		keyName = "notifyOnOwnName",
 		name = "Notify on own name",
-		description = "Notifies you whenever someone mentions you by name"
+		description = "Notifies you whenever someone mentions you by name."
 	)
 	default Notification notifyOnOwnName()
 	{
@@ -91,7 +91,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 3,
 		keyName = "notifyOnHighlight",
 		name = "Notify on highlight",
-		description = "Notifies you whenever a highlighted word is matched"
+		description = "Notifies you whenever a highlighted word is matched."
 	)
 	default Notification notifyOnHighlight()
 	{
@@ -102,7 +102,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 4,
 		keyName = "notifyOnTrade",
 		name = "Notify on trade",
-		description = "Notifies you whenever you are traded"
+		description = "Notifies you whenever you are traded."
 	)
 	default Notification notifyOnTrade()
 	{
@@ -113,7 +113,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 5,
 		keyName = "notifyOnDuel",
 		name = "Notify on duel",
-		description = "Notifies you whenever you are challenged to a duel"
+		description = "Notifies you whenever you are challenged to a duel."
 	)
 	default Notification notifyOnDuel()
 	{
@@ -124,7 +124,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 6,
 		keyName = "notifyOnBroadcast",
 		name = "Notify on broadcast",
-		description = "Notifies you whenever you receive a broadcast message"
+		description = "Notifies you whenever you receive a broadcast message."
 	)
 	default Notification notifyOnBroadcast()
 	{
@@ -135,7 +135,7 @@ public interface ChatNotificationsConfig extends Config
 		position = 7,
 		keyName = "notifyOnPM",
 		name = "Notify on private message",
-		description = "Notifies you whenever you receive a private message"
+		description = "Notifies you whenever you receive a private message."
 	)
 	default Notification notifyOnPM()
 	{
