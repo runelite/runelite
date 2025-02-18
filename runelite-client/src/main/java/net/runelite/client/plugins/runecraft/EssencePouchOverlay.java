@@ -68,7 +68,7 @@ class EssencePouchOverlay extends WidgetItemOverlay
 			300, 8,
 			200, 9,
 		}, 12),
-		COLOSSAL(Varbits.ESSENCE_POUCH_COLOSSAL_AMOUNT, null, new int[]{
+		COLOSSAL(Varbits.ESSENCE_POUCH_COLOSSAL_AMOUNT, client -> client.getVarbitValue(Varbits.ESSENCE_POUCH_COLOSSAL_DEGRADE), new int[]{
 			// script 4592
 			1020, 0,
 			1015, 5,
