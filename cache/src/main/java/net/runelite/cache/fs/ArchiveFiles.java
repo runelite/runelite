@@ -46,11 +46,6 @@ public class ArchiveFiles
 	{
 		Preconditions.checkArgument(file.getFileId() != -1);
 
-		if (files.isEmpty() && file.getFileId() != 0)
-		{
-			throw new IllegalStateException("the first file must be id 0");
-		}
-
 		if (files.containsKey(file.getFileId()))
 		{
 			throw new IllegalStateException("duplicate file ids");
@@ -82,7 +77,7 @@ public class ArchiveFiles
 
 		if (files.size() == 1)
 		{
-			FSFile f = files.get(0);
+			FSFile f = files.values().iterator().next();
 			f.setContents(data);
 			return;
 		}
@@ -152,7 +147,7 @@ public class ArchiveFiles
 
 		if (filesCount == 1)
 		{
-			FSFile file = files.get(0);
+			FSFile file = files.values().iterator().next();
 			stream.writeBytes(file.getContents());
 		}
 		else
