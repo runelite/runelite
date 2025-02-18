@@ -35,7 +35,6 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -45,6 +44,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -53,6 +53,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -94,6 +95,9 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private NpcAggroAreaConfig config;
@@ -150,7 +154,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		overlayManager.add(overlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
 		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD), this));
-		recheckActive();
+		clientThread.invokeLater(this::scanNpcs);
 	}
 
 	@Override
@@ -295,11 +299,18 @@ public class NpcAggroAreaPlugin extends Plugin
 		return false;
 	}
 
-	private void checkAreaNpcs(Iterable<? extends NPC> npcs)
+	private void scanNpcs()
 	{
+		WorldView wv = client.getTopLevelWorldView();
+		if (wv == null)
+		{
+			return;
+		}
+
+		active = config.alwaysActive();
 		if (!active)
 		{
-			for (NPC npc : npcs)
+			for (NPC npc : wv.npcs())
 			{
 				if (npc == null)
 				{
@@ -317,12 +328,6 @@ public class NpcAggroAreaPlugin extends Plugin
 		calculateLinesToDisplay();
 	}
 
-	private void recheckActive()
-	{
-		active = config.alwaysActive();
-		checkAreaNpcs(client.getTopLevelWorldView().npcs());
-	}
-
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
 	public void onNpcSpawned(NpcSpawned event)
 	{
@@ -331,7 +336,11 @@ public class NpcAggroAreaPlugin extends Plugin
 			return;
 		}
 
-		checkAreaNpcs(Collections.singleton(event.getNpc()));
+		if (isNpcMatch(event.getNpc()))
+		{
+			active = true;
+			calculateLinesToDisplay();
+		}
 	}
 
 	@Subscribe
@@ -396,7 +405,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		{
 			case "npcUnaggroAlwaysActive":
 			case "showOnSlayerTask":
-				recheckActive();
+				clientThread.invokeLater(this::scanNpcs);
 				break;
 			case "npcUnaggroCollisionDetection":
 			case "npcUnaggroShowAreaLines":
@@ -404,7 +413,7 @@ public class NpcAggroAreaPlugin extends Plugin
 				break;
 			case "npcUnaggroNames":
 				npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-				recheckActive();
+				clientThread.invokeLater(this::scanNpcs);
 				break;
 		}
 	}
@@ -480,7 +489,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				recheckActive();
+				calculateLinesToDisplay();
 				break;
 
 			case LOGGING_IN:
