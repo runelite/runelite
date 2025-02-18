@@ -408,7 +408,7 @@ class XpInfoBox extends JPanel
 
 	private static boolean isCombatSkill(Skill skill)
 	{
-		return skill == Skill.AGILITY || skill == Skill.STRENGTH || skill == Skill.DEFENCE || skill == Skill.HITPOINTS || skill == Skill.RANGED;
+		return skill == Skill.ATTACK || skill == Skill.STRENGTH || skill == Skill.DEFENCE || skill == Skill.HITPOINTS || skill == Skill.RANGED;
 	}
 
 	static String htmlLabel(String key, int value)
