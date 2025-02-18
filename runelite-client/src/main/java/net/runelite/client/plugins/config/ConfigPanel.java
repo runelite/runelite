@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Provider;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -150,6 +151,8 @@ class ConfigPanel extends PluginPanel
 
 	private PluginConfigurationDescriptor pluginConfig = null;
 
+	private final boolean developerMode;
+
 	@Inject
 	private ConfigPanel(
 		PluginListPanel pluginList,
@@ -157,7 +160,8 @@ class ConfigPanel extends PluginPanel
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
 		ColorPickerManager colorPickerManager,
-		Provider<NotificationPanel> notificationPanelProvider
+		Provider<NotificationPanel> notificationPanelProvider,
+		@Named("developerMode") final boolean developerMode
 	)
 	{
 		super(false);
@@ -168,6 +172,7 @@ class ConfigPanel extends PluginPanel
 		this.externalPluginManager = externalPluginManager;
 		this.colorPickerManager = colorPickerManager;
 		this.notificationPanelProvider = notificationPanelProvider;
+		this.developerMode = developerMode;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -276,6 +281,12 @@ class ConfigPanel extends PluginPanel
 		for (ConfigSectionDescriptor csd : cd.getSections())
 		{
 			ConfigSection cs = csd.getSection();
+
+			if (cs.developmentModeOnly() && !developerMode)
+			{
+				continue;
+			}
+
 			final boolean isOpen = sectionExpandStates.getOrDefault(csd, !cs.closedByDefault());
 
 			final JPanel section = new JPanel();
