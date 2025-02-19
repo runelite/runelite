@@ -155,7 +155,7 @@ class PartyPingOverlay extends Overlay
 
 		if (ping.getPingType() == PartyPingType.DESTINATION && config.drawDestinationLine())
 		{
-			Player source = client.getCachedPlayers()[ping.getSourcePlayerIdx()];
+			Player source = client.getPlayers().get(ping.getSourcePlayerIdx());
 			if (source != null)
 			{
 				renderSourcePlayerLine(graphics, source, localPoint, color);

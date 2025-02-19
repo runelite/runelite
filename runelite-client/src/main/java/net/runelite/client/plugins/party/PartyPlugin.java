@@ -508,7 +508,7 @@ public class PartyPlugin extends Plugin
 				break;
 
 			case NPC:
-				actor = client.getCachedNPCs()[target];
+				actor = client.getNpcs().get(target);
 				if (actor == null)
 				{
 					return;
