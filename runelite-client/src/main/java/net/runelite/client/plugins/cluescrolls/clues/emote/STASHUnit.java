@@ -143,6 +143,10 @@ public enum STASHUnit
 	FORTIS_GRAND_MUSEUM(NullObjectID.NULL_50738, new WorldPoint(1723, 3153, 0)),
 	TEMPLE_SOUTHEAST_OF_THE_BAZAAR(NullObjectID.NULL_50739, new WorldPoint(1702, 3079, 0)),
 	CAM_TORUM_ENTRANCE(NullObjectID.NULL_50740, new WorldPoint(1428, 3118, 0)),
+	WESTERN_SALVAGER_OVERLOOK(NullObjectID.NULL_54275, new WorldPoint(1614, 3296, 0)),
+	TWILIGHT_TEMPLE_MINE(NullObjectID.NULL_55403, new WorldPoint(1668, 3287, 0)),
+	ORTUS_MEETS_PROUDSPIRE(NullObjectID.NULL_55404, new WorldPoint(1629, 3239, 0)),
+	OUTSIDE_TWILIGHT_TEMPLE(NullObjectID.NULL_55405, new WorldPoint(1693, 3243, 0)),
 	;
 
 	private final int objectId;

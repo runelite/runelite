@@ -38,6 +38,7 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -429,7 +430,7 @@ public class ClueScrollPlugin extends Plugin
 					client.clearHintArrow();
 				}
 
-				checkClueNPCs(clue, client.getCachedNPCs());
+				checkClueNPCs(clue, client.getTopLevelWorldView().npcs());
 			}
 		}
 	}
@@ -463,7 +464,7 @@ public class ClueScrollPlugin extends Plugin
 	public void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
-		checkClueNPCs(clue, npc);
+		checkClueNPCs(clue, Collections.singletonList(npc));
 	}
 
 	@Subscribe
@@ -889,10 +890,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		WorldPoint coordinate = coordinatesToWorldPoint(degX, minX, degY, minY);
-		// Convert from overworld to real
-		WorldPoint mirrorPoint = WorldPoint.getMirrorPoint(coordinate, false);
-		// Use mirror point as mirrorLocation if there is one
-		return new CoordinateClue(text, coordinate, coordinate == mirrorPoint ? null : mirrorPoint);
+		return CoordinateClue.forLocation(coordinate);
 	}
 
 	/**
@@ -964,7 +962,7 @@ public class ClueScrollPlugin extends Plugin
 			});
 	}
 
-	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
+	private void checkClueNPCs(ClueScroll clue, Iterable<? extends NPC> npcs)
 	{
 		if (!(clue instanceof NpcClueScroll))
 		{
@@ -1093,7 +1091,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		resetClue(false);
-		checkClueNPCs(clue, client.getCachedNPCs());
+		checkClueNPCs(clue, client.getTopLevelWorldView().npcs());
 		checkClueNamedObjects(clue);
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.

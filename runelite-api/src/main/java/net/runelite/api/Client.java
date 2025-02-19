@@ -917,7 +917,9 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param prayer the prayer
 	 * @return true if the prayer is active, false otherwise
+	 * @deprecated this method does not properly handle deadeye/eagle eye or mystic vigour/might
 	 */
+	@Deprecated
 	boolean isPrayerActive(Prayer prayer);
 
 	/**
@@ -1080,6 +1082,21 @@ public interface Client extends OAuthApi, GameEngine
 	RuneLiteObject createRuneLiteObject();
 
 	/**
+	 * Registers a new {@link RuneLiteObjectController} to its corresponding {@link WorldView}.
+	 */
+	void registerRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Removes a new {@link RuneLiteObjectController} from its corresponding {@link WorldView}.
+	 */
+	void removeRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Checks whether a {@link RuneLiteObjectController} is registered to any {@link WorldView}.
+	 */
+	boolean isRuneLiteObjectRegistered(RuneLiteObjectController controller);
+
+	/**
 	 * Loads an unlit model from the cache. The returned model shares
 	 * data such as faces, face colors, face transparencies, and vertex points with
 	 * other models. If you want to mutate these you MUST call the relevant {@code cloneX}
@@ -1181,6 +1198,12 @@ public interface Client extends OAuthApi, GameEngine
 	 *               in the settings interface. if the sound effect volume is not muted, uses the set volume
 	 */
 	void playSoundEffect(int id, int volume);
+
+	/**
+	 * Get the currently playing midi requests.
+	 * @return
+	 */
+	List<MidiRequest> getActiveMidiRequests();
 
 	/**
 	 * Gets the clients graphic buffer provider.
@@ -2052,6 +2075,38 @@ public interface Client extends OAuthApi, GameEngine
 	void setCameraShakeDisabled(boolean disabled);
 
 	/**
+	 * Draw all 2D extras. This is the default.
+	 */
+	int DRAW_2D_ALL = ~0;
+	/**
+	 * Hide all 2D extras.
+	 */
+	int DRAW_2D_NONE = 0;
+	/**
+	 * Render overhead text.
+	 */
+	int DRAW_2D_OVERHEAD_TEXT = 1;
+	/**
+	 * Render elements not otherwise specified in this bitflag.
+	 */
+	int DRAW_2D_OTHERS = 1 << 30;
+
+	/**
+	 * Gets the current draw2D mask. 
+	 * @return the current mask
+	 * @see Client#setDraw2DMask(int)
+	 */
+	@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS})
+	int getDraw2DMask();
+
+	/**
+	 * Sets the current draw2D mask.
+	 * Use bit operations on the value returned by {@link Client#getDraw2DMask()} to modify specific features.
+	 * @param mask The new mask.
+	 */
+	void setDraw2DMask(@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS}) int mask);
+
+	/**
 	 * Contains a 3D array of template chunks for instanced areas.
 	 * <p>
 	 * The array returned is of format [z][x][y], where z is the
@@ -2144,32 +2199,6 @@ public interface Client extends OAuthApi, GameEngine
 		return wv == null ? Collections.emptyList() : wv.npcs()
 			.stream()
 			.collect(Collectors.toCollection(ArrayList::new));
-	}
-
-	/**
-	 * Gets an array of all cached NPCs.
-	 *
-	 * @return cached NPCs
-	 * @see WorldView#npcs()
-	 */
-	@Deprecated
-	default NPC[] getCachedNPCs()
-	{
-		var wv = getTopLevelWorldView();
-		return wv == null ? new NPC[0] : wv.npcs().getSparse();
-	}
-
-	/**
-	 * Gets an array of all cached players.
-	 *
-	 * @return cached players
-	 * @see WorldView#players()
-	 */
-	@Deprecated
-	default Player[] getCachedPlayers()
-	{
-		var wv = getTopLevelWorldView();
-		return wv == null ? new Player[0] : wv.players().getSparse();
 	}
 
 	/**
@@ -2325,4 +2354,12 @@ public interface Client extends OAuthApi, GameEngine
 	{
 		return getTopLevelWorldView().getSelectedSceneTile();
 	}
+
+	/**
+	 * Applies an animation to a Model. The returned model is shared and shouldn't be used
+	 * after any other call to applyTransformations, including calls made by the client internally.
+	 * Vertices are cloned from the source model. Face transparencies are copied if either animation
+	 * animates transparency, otherwise it will share a reference. All other fields share a reference.
+	 */
+	Model applyTransformations(Model model, @Nullable Animation animA, int frameA, @Nullable Animation animB, int frameB);
 }

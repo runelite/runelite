@@ -24,68 +24,24 @@
  */
 package net.runelite.api;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.annotation.Nonnull;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class IndexedObjectSet<T> implements Iterable<T>
+public interface IndexedObjectSet<T> extends Iterable<T>
 {
-	@Getter
-	private final T[] sparse;
+	T byIndex(int index);
 
-	private final int[] indexes;
-
-	@Getter
-	private final int size;
-
-	public T byIndex(int index)
-	{
-		return sparse[index];
-	}
-
-	public Stream<T> stream()
+	default Stream<T> stream()
 	{
 		return StreamSupport.stream(this.spliterator(), false);
 	}
 
 	@Override
-	public Spliterator<T> spliterator()
+	default Spliterator<T> spliterator()
 	{
-		return Spliterators.spliterator(this.iterator(), this.size,
-			Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
-	}
-
-	@Nonnull
-	@Override
-	public Iterator<T> iterator()
-	{
-		return new Iterator<T>()
-		{
-			int i;
-
-			@Override
-			public boolean hasNext()
-			{
-				return i < size;
-			}
-
-			@Override
-			public T next()
-			{
-				if (!hasNext())
-				{
-					throw new NoSuchElementException();
-				}
-
-				return sparse[indexes[i++]];
-			}
-		};
+		return Spliterators.spliterator(this.iterator(), 0,
+			Spliterator.DISTINCT | Spliterator.ORDERED);
 	}
 }

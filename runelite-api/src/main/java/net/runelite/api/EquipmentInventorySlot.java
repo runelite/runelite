@@ -42,9 +42,12 @@ public enum EquipmentInventorySlot
 	WEAPON(3),
 	BODY(4),
 	SHIELD(5),
+	ARMS(6),
 	LEGS(7),
+	HAIR(8),
 	GLOVES(9),
 	BOOTS(10),
+	JAW(11),
 	RING(12),
 	AMMO(13);
 

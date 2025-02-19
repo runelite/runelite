@@ -72,7 +72,7 @@ import net.runelite.client.ui.components.IconTextField;
 
 class SkillCalculator extends JPanel
 {
-	private static final int MAX_XP = 200_000_000;
+	static final int MAX_XP_MULTIPLIER = 32;
 	private static final JLabel EMPTY_PANEL = new JLabel("No F2P actions to show.");
 
 	static
@@ -97,6 +97,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
+	private int xpMultiplier = 1;
 	private final Set<SkillBonus> currentBonuses = new HashSet<>();
 
 	@Inject
@@ -141,12 +142,14 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldXPMultiplier().addChangeListener(e -> onFieldXPMultiplierUpdated());
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
 		uiInput.getUiFieldCurrentXP().addFocusListener(buildFocusAdapter(e -> onFieldCurrentXPUpdated()));
 		uiInput.getUiFieldTargetLevel().addFocusListener(buildFocusAdapter(e -> onFieldTargetLevelUpdated()));
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
+		uiInput.getUiFieldXPMultiplier().addFocusListener(buildFocusAdapter(e -> onFieldXPMultiplierUpdated()));
 	}
 
 	void openCalculator(CalculatorType calculatorType, boolean forceReload)
@@ -431,7 +434,7 @@ class SkillCalculator extends JPanel
 					bonus *= skillBonus.getValue();
 				}
 			}
-			final int xp = (int) Math.floor(action.getXp() * 10f * bonus);
+			final int xp = (int) Math.floor(action.getXp() * 10f * bonus * xpMultiplier);
 
 			if (neededXP > 0)
 			{
@@ -471,6 +474,7 @@ class SkillCalculator extends JPanel
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(tXP);
 		uiInput.setNeededXP(nXP + " XP required to reach target XP");
+		uiInput.setXPMultiplier(xpMultiplier);
 		calculate();
 	}
 
@@ -478,6 +482,12 @@ class SkillCalculator extends JPanel
 	{
 		currentLevel = enforceSkillBounds(uiInput.getCurrentLevelInput());
 		currentXP = Experience.getXpForLevel(currentLevel);
+		updateInputFields();
+	}
+
+	private void onFieldXPMultiplierUpdated()
+	{
+		xpMultiplier = enforceMultiplierBounds(uiInput.getXPMultiplierInput());
 		updateInputFields();
 	}
 
@@ -509,7 +519,12 @@ class SkillCalculator extends JPanel
 
 	private static int enforceXPBounds(int input)
 	{
-		return Math.min(MAX_XP, Math.max(0, input));
+		return Math.min(Experience.MAX_SKILL_XP, Math.max(0, input));
+	}
+
+	private static int enforceMultiplierBounds(int input)
+	{
+		return Math.min(MAX_XP_MULTIPLIER, Math.max(1, input));
 	}
 
 	private void onSearch()

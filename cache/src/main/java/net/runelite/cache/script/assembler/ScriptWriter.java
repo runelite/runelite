@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -36,12 +37,14 @@ import net.runelite.cache.script.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScriptWriter extends rs2asmBaseListener
+@RequiredArgsConstructor
+class ScriptWriter extends rs2asmBaseListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWriter.class);
 
 	private final Instructions instructions;
 	private final LabelVisitor labelVisitor;
+	private final Map<String, Object> symbols;
 
 	private int id;
 	private int pos;
@@ -53,12 +56,6 @@ public class ScriptWriter extends rs2asmBaseListener
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
 	private List<LookupSwitch> switches = new ArrayList<>();
-
-	public ScriptWriter(Instructions instructions, LabelVisitor labelVisitor)
-	{
-		this.instructions = instructions;
-		this.labelVisitor = labelVisitor;
-	}
 
 	@Override
 	public void enterId_value(rs2asmParser.Id_valueContext ctx)
@@ -165,6 +162,24 @@ public class ScriptWriter extends rs2asmBaseListener
 
 		int target = instruction - pos - 1; // -1 to go to the instruction prior
 		iops.set(pos, target);
+	}
+
+	@Override
+	public void enterOperand_symbol(rs2asmParser.Operand_symbolContext ctx)
+	{
+		String symbolName = ctx.getText().substring(1);
+		Object symbol = symbols.get(symbolName);
+		if (symbol == null)
+		{
+			throw new RuntimeException("unknown symbol " + symbolName);
+		}
+
+		if (!(symbol instanceof Integer))
+		{
+			throw new RuntimeException("non-integer symbols not supported");
+		}
+
+		iops.set(pos, (int) symbol);
 	}
 
 	@Override

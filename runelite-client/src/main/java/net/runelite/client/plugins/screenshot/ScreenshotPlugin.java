@@ -93,10 +93,10 @@ public class ScreenshotPlugin extends Plugin
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([,0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
-	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=[0-9a-f]{6}>([0-9,]+)</col>");
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: ?<col=[0-9a-f]{6}>([0-9,]+)</col>");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
@@ -127,6 +127,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_DEATHS = "Deaths";
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
+	private static final String SD_LEVELS = "Levels";
+	private static final String SD_LEAGUE_TASKS = "League Tasks";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -255,7 +257,7 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getWidget(ComponentID.LEVEL_UP_LEVEL) != null)
 		{
 			fileName = parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL);
-			screenshotSubDir = "Levels";
+			screenshotSubDir = SD_LEVELS;
 		}
 		else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
 		{
@@ -273,7 +275,7 @@ public class ScreenshotPlugin extends Plugin
 				if (config.screenshotLevels())
 				{
 					fileName = parseLevelUpWidget(ComponentID.DIALOG_SPRITE_TEXT);
-					screenshotSubDir = "Levels";
+					screenshotSubDir = SD_LEVELS;
 				}
 			}
 		}
@@ -354,7 +356,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				clueNumber = Integer.valueOf(m.group());
+				clueNumber = Integer.valueOf(m.group().replace(",", ""));
 				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
 				return;
 			}
@@ -366,7 +368,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.BARROWS;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -377,7 +379,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.COX;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -388,7 +390,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.COX_CM;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -399,7 +401,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : (chatMessage.contains("Story Mode") ? KillType.TOB_SM : KillType.TOB);
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -412,7 +414,7 @@ public class ScreenshotPlugin extends Plugin
 				killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE :
 					chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
 						KillType.TOA;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -423,12 +425,12 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.MOONS_OF_PERIL;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
 
-		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
+		if (chatMessage.equals("Your request to kick/ban this user was successful.") && config.screenshotKick())
 		{
 			if (kickPlayerName == null)
 			{
@@ -439,7 +441,7 @@ public class ScreenshotPlugin extends Plugin
 			kickPlayerName = null;
 		}
 
-		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
+		if (PET_MESSAGES.stream().anyMatch(chatMessage::contains) && config.screenshotPet())
 		{
 			String fileName = "Pet";
 			takeScreenshot(fileName, SD_PETS);
@@ -448,9 +450,9 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotBossKills())
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
-			if (m.matches())
+			if (m.find())
 			{
-				String bossName = m.group(1);
+				String bossName = Text.removeTags(m.group(1));
 				String bossKillcount = m.group(2).replace(",", "");
 				String fileName = bossName + "(" + bossKillcount + ")";
 				takeScreenshot(fileName, SD_BOSS_KILLS);
@@ -472,7 +474,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				int valuableDropValue = Integer.parseInt(m.group(2).replaceAll(",", ""));
+				int valuableDropValue = Integer.parseInt(m.group(2).replace(",", ""));
 				if (valuableDropValue >= config.valuableDropThreshold())
 				{
 					String valuableDropName = m.group(1);
@@ -505,7 +507,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
+		if (chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1 && config.screenshotCollectionLogEntries())
 		{
 			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
 			String fileName = "Collection log (" + entry + ")";
@@ -529,8 +531,7 @@ public class ScreenshotPlugin extends Plugin
 				String skillName = StringUtils.capitalize(m.group("skill") != null ? m.group("skill") : m.group("skill99"));
 				String skillLevel = m.group("level") != null ? m.group("level") : "99";
 				String fileName = skillName + "(" + skillLevel + ")";
-				String screenshotSubDir = "Levels";
-				takeScreenshot(fileName, screenshotSubDir);
+				takeScreenshot(fileName, SD_LEVELS);
 			}
 		}
 	}
@@ -737,8 +738,12 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
+
 				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
 				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+
+				log.debug("Notification: top: {} bottom: {}", topText, bottomText);
+
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());
@@ -751,6 +756,13 @@ public class ScreenshotPlugin extends Plugin
 					String task = s[1];
 					String fileName = "Combat task (" + task.replaceAll("[:?]", "") + ")";
 					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+				}
+				if (topText.equalsIgnoreCase("League Task Complete!") && config.screenshotLeagueTasks())
+				{
+					String[] s = bottomText.split("<.*?>");
+					String task = s[1];
+					String fileName = "League task (" + task.replaceAll("[:?]", "") + ")";
+					takeScreenshot(fileName, SD_LEAGUE_TASKS);
 				}
 				notificationStarted = false;
 				break;

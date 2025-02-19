@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
@@ -46,6 +45,7 @@ import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Nameable;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
+import net.runelite.api.WorldView;
 import net.runelite.api.clan.ClanID;
 import net.runelite.api.clan.ClanMember;
 import net.runelite.api.clan.ClanSettings;
@@ -82,7 +82,7 @@ class NameAutocompleter implements KeyListener
 	private Pattern autocompleteNamePattern;
 
 	@Inject
-	private NameAutocompleter(@Nullable Client client, HiscoreConfig hiscoreConfig)
+	private NameAutocompleter(Client client, HiscoreConfig hiscoreConfig)
 	{
 		this.client = client;
 		this.hiscoreConfig = hiscoreConfig;
@@ -202,11 +202,6 @@ class NameAutocompleter implements KeyListener
 		pattern = Pattern.compile(
 			"(?i)^" + nameStart.replaceAll("[ _-]", "[ _" + NBSP + "-]") + ".+?");
 
-		if (client == null)
-		{
-			return false;
-		}
-
 		// Search all previous successful queries
 		autocompleteName = searchHistory.stream()
 			.filter(n -> pattern.matcher(n).matches())
@@ -257,8 +252,8 @@ class NameAutocompleter implements KeyListener
 		// Search cached players if a friend wasn't found
 		if (!autocompleteName.isPresent())
 		{
-			final Player[] cachedPlayers = client.getCachedPlayers();
-			autocompleteName = Arrays.stream(cachedPlayers)
+			WorldView wv = client.getTopLevelWorldView();
+			autocompleteName = wv.players().stream()
 				.filter(Objects::nonNull)
 				.map(Player::getName)
 				.filter(Objects::nonNull)

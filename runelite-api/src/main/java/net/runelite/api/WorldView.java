@@ -28,6 +28,8 @@ import javax.annotation.Nullable;
 
 public interface WorldView
 {
+	int TOPLEVEL = -1;
+
 	/**
 	 * Get the world view id
 	 * @return the id, or -1 if this is the top level worldview
@@ -202,4 +204,11 @@ public interface WorldView
 	 * @see InstanceTemplates
 	 */
 	int[][][] getInstanceTemplateChunks();
+
+	/**
+	 * Gets an array of map region IDs that are currently loaded.
+	 *
+	 * @return the map regions
+	 */
+	int[] getMapRegions();
 }

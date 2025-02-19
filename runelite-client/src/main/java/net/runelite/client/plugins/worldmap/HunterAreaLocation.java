@@ -33,13 +33,15 @@ import net.runelite.api.coords.WorldPoint;
 @Getter
 enum HunterAreaLocation
 {
+	ALDARIN_NORTH(new WorldPoint(1357, 2977, 0), HunterCreature.COPPER_LONGTAIL),
+	ALDARIN_WEST(new WorldPoint(1342, 2934, 0), HunterCreature.RUBY_HARVEST),
 	AVIUM_SAVANNAH(new WorldPoint(1616, 2999, 0), HunterCreature.PYRE_FOX),
 	AVIUM_SAVANNAH_EAST(new WorldPoint(1745, 3008, 0), HunterCreature.SUNLIGHT_ANTELOPE),
 	BONEYARD_HUNTER_AREA(new WorldPoint(3294, 3673, 0), HunterCreature.BLACK_SALAMANDER),
 	CANIFIS_HUNTER_AREA1(new WorldPoint(3553, 3438, 0), HunterCreature.SWAMP_LIZARD),
 	CANIFIS_HUNTER_AREA2(new WorldPoint(3535, 3445, 0), HunterCreature.SWAMP_LIZARD),
 	FALCONRY(new WorldPoint(2379, 3599, 0), HunterCreature.SPOTTED_KEBBIT, HunterCreature.DARK_KEBBIT,
-		HunterCreature.DASHING_KEBBIT, HunterCreature.GREATER_SIREN),
+		HunterCreature.DASHING_KEBBIT),
 	FELDIP_HUNTER_AREA(new WorldPoint(2557, 2912, 0), HunterCreature.CRIMSON_SWIFT, HunterCreature.FELDIP_WEASEL,
 		HunterCreature.TROPICAL_WAGTAIL, HunterCreature.SPINED_LARUPIA, HunterCreature.BARB_TAILED_KEBBIT,
 		HunterCreature.BLACK_WARLOCK, HunterCreature.CARNIVOROUS_CHINCHOMPA),
@@ -66,6 +68,8 @@ enum HunterAreaLocation
 	LOCUS_OASIS(new WorldPoint(1671, 3001, 0), HunterCreature.EMBERTAILED_JERBOA),
 	LAKE_MOLCH(new WorldPoint(1363, 3632, 0), HunterCreature.BLUEGILL, HunterCreature.COMMON_TENCH,
 		HunterCreature.MOTTLED_EEL, HunterCreature.GREATER_SIREN),
+	MONS_GRATIA(new WorldPoint(1443, 3235, 0), HunterCreature.CERULEAN_TWITCH, HunterCreature.SNOWY_KNIGHT,
+		HunterCreature.SAPPHIRE_GLACIALIS),
 	NECROPOLIS(new WorldPoint(3285, 2739, 0), HunterCreature.ORANGE_SALAMANDER),
 	OURANIA_HUNTER_AREA_EAST(new WorldPoint(2447, 3219, 0), HunterCreature.RED_SALAMANDER),
 	OURANIA_HUNTER_AREA_SOUTH(new WorldPoint(2475, 3240, 0), HunterCreature.RED_SALAMANDER),

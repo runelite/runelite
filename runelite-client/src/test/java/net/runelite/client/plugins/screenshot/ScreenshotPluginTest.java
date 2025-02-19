@@ -66,7 +66,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ScreenshotPluginTest
 {
-	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
+	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 2,823 medium Treasure Trails</col>";
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
@@ -144,7 +144,7 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("medium", screenshotPlugin.getClueType());
-		assertEquals(28, screenshotPlugin.getClueNumber());
+		assertEquals(2823, screenshotPlugin.getClueNumber());
 	}
 
 	@Test
@@ -553,4 +553,25 @@ public class ScreenshotPluginTest
 
 		verify(screenshotPlugin).takeScreenshot("Nightmare(1130)", "Boss Kills");
 	}
+
+	@Test
+	public void testEchoBossKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your <col=6800bf>Kalphite Queen (Echo)</col> kill count is:<col=e00a19>1</col>", null, 1);
+		screenshotPlugin.onChatMessage(chatMessage);
+
+		verify(screenshotPlugin).takeScreenshot("Kalphite Queen (Echo)(1)", "Boss Kills");
+	}
+
+	@Test
+	public void testEchoGauntletKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your <col=a53fff>Corrupted Hunllef (Echo)</col> kill count is: <col=ff3045>31</col>", null, 0);
+		screenshotPlugin.onChatMessage(chatMessage);
+		verify(screenshotPlugin).takeScreenshot("Corrupted Hunllef (Echo)(31)", "Boss Kills");
+	}
+
 }

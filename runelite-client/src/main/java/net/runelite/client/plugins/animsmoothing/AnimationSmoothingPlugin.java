@@ -69,10 +69,14 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.WYRM_ATTACK_MELEE:
 			case AnimationID.WYRM_ATTACK_MAGE:
 
+			case AnimationID.CYCLOPS_ATTACK:
+
 			case AnimationID.TREE_SPIRIT_IDLE:
 			case AnimationID.TREE_SPIRIT_WALK:
 
 			case AnimationID.SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK:
+
+			case AnimationID.DUCK_BOBBING:
 
 			case AnimationID.VIGGORAS_CHAINMACE_IDLE:
 
@@ -83,6 +87,12 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.GIANTS_FOUNDRY_WATER_WHEEL_SPINNING:
 
 			case AnimationID.MAGIC_ARCEUUS_DEMONBANE:
+
+			case AnimationID.PORTAL_NEXUS_SPIN:
+
+			case AnimationID.SLAYER_TOWER_WATER_BUCKET_DRIP:
+
+			case AnimationID.KEY_MASTER_IDLE:
 				return false;
 
 			default:

@@ -83,6 +83,7 @@ public enum Produce
 	IRIT("Irit", PatchImplementation.HERB, ItemID.IRIT_LEAF, 20, 5, 0, 3),
 	AVANTOE("Avantoe", PatchImplementation.HERB, ItemID.AVANTOE, 20, 5, 0, 3),
 	KWUARM("Kwuarm", PatchImplementation.HERB, ItemID.KWUARM, 20, 5, 0, 3),
+	HUASCA("Huasca", PatchImplementation.HERB, ItemID.HUASCA, 20, 5, 0, 3),
 	SNAPDRAGON("Snapdragon", PatchImplementation.HERB, ItemID.SNAPDRAGON, 20, 5, 0, 3),
 	CADANTINE("Cadantine", PatchImplementation.HERB, ItemID.CADANTINE, 20, 5, 0, 3),
 	LANTADYME("Lantadyme", PatchImplementation.HERB, ItemID.LANTADYME, 20, 5, 0, 3),

@@ -99,6 +99,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.ColorJButton;
 import net.runelite.client.ui.components.TitleCaseListCellRenderer;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
@@ -474,7 +475,9 @@ class ConfigPanel extends PluginPanel
 		Units units = cid.getUnits();
 		if (units != null)
 		{
-			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units.value()));
+			// The existing DefaultFormatterFactory with a NumberEditorFormatter. Its model is the same SpinnerModel above.
+			JFormattedTextField.AbstractFormatterFactory delegate = spinnerTextField.getFormatterFactory();
+			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(delegate, units.value()));
 		}
 
 		return spinner;
@@ -494,7 +497,9 @@ class ConfigPanel extends PluginPanel
 		Units units = cid.getUnits();
 		if (units != null)
 		{
-			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(units.value()));
+			// The existing DefaultFormatterFactory with a NumberEditorFormatter. Its model is the same SpinnerModel above.
+			JFormattedTextField.AbstractFormatterFactory delegate = spinnerTextField.getFormatterFactory();
+			spinnerTextField.setFormatterFactory(new UnitFormatterFactory(delegate, units.value()));
 		}
 
 		return spinner;

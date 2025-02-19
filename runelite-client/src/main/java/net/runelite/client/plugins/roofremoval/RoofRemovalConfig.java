@@ -36,14 +36,14 @@ public interface RoofRemovalConfig extends Config
 
 	@ConfigSection(
 		name = "Modes",
-		description = "In what situations should roofs be removed",
+		description = "In what situations should roofs be removed.",
 		position = 0
 	)
 	String modesSection = "modes";
 
 	@ConfigSection(
-		name = "Area Overrides",
-		description = "Always remove roofs in specific areas",
+		name = "Area overrides",
+		description = "Always remove roofs in specific areas.",
 		position = 1
 	)
 	String overridesSection = "overrides";
@@ -51,7 +51,7 @@ public interface RoofRemovalConfig extends Config
 	@ConfigItem(
 		keyName = "removePosition",
 		name = "Player's position",
-		description = "Remove roofs above the player's position",
+		description = "Remove roofs above the player's position.",
 		section = modesSection
 	)
 	default boolean removePosition()
@@ -62,7 +62,7 @@ public interface RoofRemovalConfig extends Config
 	@ConfigItem(
 		keyName = "removeHovered",
 		name = "Hovered tile",
-		description = "Remove roofs above the hovered tile",
+		description = "Remove roofs above the hovered tile.",
 		section = modesSection
 	)
 	default boolean removeHovered()
@@ -73,7 +73,7 @@ public interface RoofRemovalConfig extends Config
 	@ConfigItem(
 		keyName = "removeDestination",
 		name = "Destination tile",
-		description = "Remove roofs above the destination tile",
+		description = "Remove roofs above the destination tile.",
 		section = modesSection
 	)
 	default boolean removeDestination()
@@ -84,7 +84,7 @@ public interface RoofRemovalConfig extends Config
 	@ConfigItem(
 		keyName = "removeBetween",
 		name = "Between camera & player",
-		description = "Remove roofs between the camera and the player at low camera angles",
+		description = "Remove roofs between the camera and the player at low camera angles.",
 		section = modesSection
 	)
 	default boolean removeBetween()
@@ -94,8 +94,8 @@ public interface RoofRemovalConfig extends Config
 
 	@ConfigItem(
 		keyName = "overridePOH",
-		name = "Player Owned House",
-		description = "Always remove roofs while in the Player Owned House",
+		name = "Player owned house",
+		description = "Always remove roofs while in the player owned house.",
 		section = overridesSection
 	)
 	default boolean overridePOH()

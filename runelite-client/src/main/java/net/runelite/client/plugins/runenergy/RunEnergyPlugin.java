@@ -81,7 +81,7 @@ public class RunEnergyPlugin extends Plugin
 		GLOVES(EquipmentInventorySlot.GLOVES.getSlotIdx(), 3, GRACEFUL_GLOVES),
 		BOOTS(EquipmentInventorySlot.BOOTS.getSlotIdx(), 3, GRACEFUL_BOOTS),
 		// Agility skill capes and the non-cosmetic Max capes also count for the Graceful set effect
-		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), 3, GRACEFUL_CAPE, AGILITY_CAPE, MAX_CAPE);
+		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), 3, GRACEFUL_CAPE, AGILITY_CAPE, MAX_CAPE_13342);
 
 		private final int index;
 		private final int boost;
@@ -243,7 +243,7 @@ public class RunEnergyPlugin extends Plugin
 			int charges = -1;
 			while (matcher.find())
 			{
-				charges = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
+				charges = Integer.parseInt(matcher.group(1).replace(",", ""));
 			}
 
 			setRingOfEnduranceCharges(charges);
@@ -292,7 +292,7 @@ public class RunEnergyPlugin extends Plugin
 		final int effectiveWeight = Math.min(Math.max(client.getWeight(), 0), 64);
 
 		// 100% energy is 10000 energy units
-		int energyUnitsLost = effectiveWeight * 67 / 64 + 67;
+		int energyUnitsLost = (int) ((60 + (67 * effectiveWeight / 64)) * (1 - client.getBoostedSkillLevel(Skill.AGILITY) / 300.0));
 
 		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
@@ -373,7 +373,7 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		// Calculate the amount of energy recovered every second
-		double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 3.6;
+		double recoverRate = 25 + client.getBoostedSkillLevel(Skill.AGILITY) / 6.0;
 		recoverRate *= 1.0 + getGracefulRecoveryBoost() / 100.0;
 
 		// Calculate the number of seconds left

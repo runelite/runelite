@@ -34,13 +34,9 @@ import net.runelite.cache.util.BZip2;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.GZip;
 import net.runelite.cache.util.Xtea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Container
 {
-	private static final Logger logger = LoggerFactory.getLogger(Container.class);
-
 	public byte[] data;
 	public int compression; // compression
 	public int revision;

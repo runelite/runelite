@@ -34,6 +34,8 @@ import net.runelite.client.game.FishingSpot;
 @Getter
 enum FishingSpotLocation
 {
+	ALDARIN_NORTH(FishingSpot.SHRIMP, new WorldPoint(1372, 2985, 0)),
+	ALDARIN_WEST(FishingSpot.SHRIMP, new WorldPoint(1313, 2963, 0)),
 	AL_KHARID(FishingSpot.SHRIMP,
 		new WorldPoint(3274, 3140, 0), new WorldPoint(3266, 3148, 0)),
 	APE_ATOLL_SOUTH_WEST(FishingSpot.SHARK, new WorldPoint(2698, 2703, 0)),
@@ -122,6 +124,7 @@ enum FishingSpotLocation
 	LUMBRIDGE_SWAMP_CAVE_WEST(FishingSpot.CAVE_EEL, new WorldPoint(3153, 9544, 0)),
 	LUMBRIDGE_SWAMP_SOUTH_EAST(FishingSpot.SHRIMP, new WorldPoint(3244, 3153, 0)),
 	MARIM(FishingSpot.SHARK, new WorldPoint(2774, 2740, 0)),
+	MISTROCK(FishingSpot.LOBSTER, new WorldPoint(1374, 2841, 0)),
 	MOLCH_ISLAND(FishingSpot.COMMON_TENCH, new WorldPoint(1370, 3632, 0)),
 	MORTTON(FishingSpot.SLIMY_EEL, new WorldPoint(3439, 3273, 0)),
 	MORT_MYRE_SWAMP_NORTH(FishingSpot.SLIMY_EEL,
@@ -169,6 +172,8 @@ enum FishingSpotLocation
 	SAND_CRAB_PENINSULA_WEST(FishingSpot.LOBSTER, new WorldPoint(1668, 3479, 0)),
 	SEERS_VILLAGE(FishingSpot.SALMON,
 		new WorldPoint(2725, 3524, 0), new WorldPoint(2714, 3531, 0)),
+	SHIPWRECK_COVE_NORTH(FishingSpot.SHRIMP, new WorldPoint(1565, 3326, 0)),
+	SHIPWRECK_COVE_SOUTH(FishingSpot.SHARK, new WorldPoint(1586, 3299, 0)),
 	SHILO_VILLAGE(FishingSpot.SALMON,
 		new WorldPoint(2854, 2977, 0), new WorldPoint(2858, 2973, 0)),
 	TAVERLEY_DUNGEON(FishingSpot.LAVA_EEL,
@@ -178,6 +183,7 @@ enum FishingSpotLocation
 		new WorldPoint(3047, 3002, 0), new WorldPoint(3050, 2995, 0),
 		new WorldPoint(3036, 2996, 0), new WorldPoint(3035, 2962, 0),
 		new WorldPoint(3047, 2957, 0), new WorldPoint(3045, 2954, 0)),
+	TOWER_OF_ASCENSION(FishingSpot.SALMON, new WorldPoint(1623, 3235, 0)),
 	TREE_GNOME_STRONGHOLD(FishingSpot.SALMON,
 		new WorldPoint(2389, 3422, 0), new WorldPoint(2382, 3415, 0)),
 	TUTORIAL_ISLAND(FishingSpot.TUTORIAL_SHRIMP, new WorldPoint(3100, 3091, 0)),

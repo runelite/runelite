@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 enum TransportationPointLocation
 {
 	//Ships
+	ALDARIN_TO_SUNSET_COAST("Ship to Sunset Coast", new WorldPoint(1443, 2976, 0), new WorldPoint(1492, 2985, 0)),
 	ARDOUGNE_TO_BRIMHAVEN("Ship to Brimhaven / Rimmington", new WorldPoint(2675, 3275, 0)),
 	ARDOUGNE_TO_FISHINGPLAT("Ship to Fishing Platform", new WorldPoint(2722, 3304, 0), new WorldPoint(2779, 3271, 0)),
 	BRIMHAVEN_TO_ARDOUGNE("Ship to Ardougne / Rimmington", new WorldPoint(2772, 3234, 0)),
@@ -76,6 +77,7 @@ enum TransportationPointLocation
 	RELLEKKA_TO_WEISS_ICEBERG("Ship to Weiss/Iceberg", new WorldPoint(2707, 3735, 0)),
 	RELLEKKA_TO_UNGAEL("Ship to Ungael", new WorldPoint(2638, 3698, 0), new WorldPoint(2276, 4034, 0)),
 	RIMMINGTON_TO_CORSAIR_COVE("Ship to Corsair Cove", new WorldPoint(2909, 3227, 0 ), new WorldPoint(2577, 2839, 0)),
+	SUNSET_COAST_TO_ALDARIN("Ship to Aldarin", new WorldPoint(1492, 2985, 0), new WorldPoint(1443, 2976, 0)),
 	WATERBIRTH_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2549, 3758, 0), new WorldPoint(2618, 3685, 0)),
 	WEISS_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2847, 3967, 0), new WorldPoint(2707, 3735, 0)),
 	UNGAEL_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2276, 4034, 0), new WorldPoint(2638, 3698, 0)),
@@ -110,6 +112,7 @@ enum TransportationPointLocation
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
 
 	//Charter ships
+	CHARTER_ALDARIN("Charter Ship", new WorldPoint(1455, 2968, 0)),
 	CHARTER_BRIMHAVEN("Charter Ship", new WorldPoint(2760, 3238, 0)),
 	CHARTER_CATHERBY("Charter Ship", new WorldPoint(2791, 3415, 0)),
 	CHARTER_CIVITAS_ILLA_FORTIS("Charter Ship", new WorldPoint(1743, 3136, 0)),
@@ -130,21 +133,21 @@ enum TransportationPointLocation
 	FERRY_RUINS_OF_UNKAH("Ferry to Al Kharid", new WorldPoint(3145, 2843, 0), new WorldPoint(3269, 3142, 0)),
 
 	//Minecarts/Carts
-	MINE_CART_ARCEUUS("Lovakengj Minecart Network", new WorldPoint(1673, 3832, 0)),
-	MINE_CART_FARMING_GUILD("Lovakengj Minecart Network", new WorldPoint(1219, 3738, 0)),
+	MINE_CART_ARCEUUS("Lovakengj Minecart Network - Arceuus", new WorldPoint(1673, 3832, 0)),
+	MINE_CART_FARMING_GUILD("Lovakengj Minecart Network - Farming Guild", new WorldPoint(1219, 3738, 0)),
 	MINE_CART_GRANDEXCHANGE("Minecart to Keldagrim", new WorldPoint(3139, 3504, 0)),
-	MINE_CART_HOSIDIUS_SOUTH("Lovakengj Minecart Network", new WorldPoint(1805, 3480, 0)),
-	MINE_CART_HOSIDIUS_WEST("Lovakengj Minecart Network", new WorldPoint(1656, 3542, 0)),
+	MINE_CART_HOSIDIUS_SOUTH("Lovakengj Minecart Network - Hosidius South", new WorldPoint(1805, 3480, 0)),
+	MINE_CART_HOSIDIUS_WEST("Lovakengj Minecart Network - Hosidius West", new WorldPoint(1656, 3542, 0)),
 	MINE_CART_ICE_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2995, 9836, 0)),
 	MINE_CART_KELDAGRIM("Keldagrim Minecart System", new WorldPoint(2908, 10170, 0)),
-	MINE_CART_KINGSTOWN("Lovakengj Minecart Network", new WorldPoint(1697, 3658, 0)),
-	MINE_CART_KOUREND_WOODLAND("Lovakengj Minecart Network", new WorldPoint(1570, 3464, 0)),
-	MINE_CART_LOVAKENGJ("Lovakengj Minecart Network", new WorldPoint(1524, 3725, 0)),
-	MINE_CART_MOUNT_QUIDAMORTEM("Lovakengj Minecart Network", new WorldPoint(1253, 3550, 0)),
-	MINE_CART_NORTHERN_TUNDRAS("Lovakengj Minecart Network", new WorldPoint(1646, 3930, 0)),
-	MINE_CART_PORT_PISCARILIUS("Lovakengj Minecart Network", new WorldPoint(1760, 3708, 0)),
-	MINE_CART_SHAYZIEN_EAST("Lovakengj Minecart Network", new WorldPoint(1586, 3622, 0)),
-	MINE_CART_SHAYZIEN_WEST("Lovakengj Minecart Network", new WorldPoint(1413, 3579, 0)),
+	MINE_CART_KINGSTOWN("Lovakengj Minecart Network - Kingstown", new WorldPoint(1697, 3658, 0)),
+	MINE_CART_KOUREND_WOODLAND("Lovakengj Minecart Network - Kourend Woodland", new WorldPoint(1570, 3464, 0)),
+	MINE_CART_LOVAKENGJ("Lovakengj Minecart Network - Lovakengj", new WorldPoint(1524, 3725, 0)),
+	MINE_CART_MOUNT_QUIDAMORTEM("Lovakengj Minecart Network - Mount Quidamortem", new WorldPoint(1253, 3550, 0)),
+	MINE_CART_NORTHERN_TUNDRAS("Lovakengj Minecart Network - Northern Tundras", new WorldPoint(1646, 3930, 0)),
+	MINE_CART_PORT_PISCARILIUS("Lovakengj Minecart Network - Port Piscarilius", new WorldPoint(1760, 3708, 0)),
+	MINE_CART_SHAYZIEN_EAST("Lovakengj Minecart Network - Shayzien East", new WorldPoint(1586, 3622, 0)),
+	MINE_CART_SHAYZIEN_WEST("Lovakengj Minecart Network - Shayzien West", new WorldPoint(1413, 3579, 0)),
 	MINE_CART_WHITE_WOLF_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2874, 9870, 0)),
 	CART_TO_BRIMHAVEN("Cart to Brimhaven", new WorldPoint(2833, 2958, 0), new WorldPoint(2780, 3214, 0)),
 	CART_TO_SHILO("Cart to Shilo Village", new WorldPoint(2780, 3214, 0), new WorldPoint(2833, 2958, 0)),
@@ -222,11 +225,14 @@ enum TransportationPointLocation
 	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever to Ardougne/Edgeville", new WorldPoint(3154, 3924, 0)),
 
 	//Queztals
+	QUETZAL_ALDARIN("Quetzal", new WorldPoint(1388, 2899, 0)),
 	QUETZAL_AVIUM_SAVANNAH_NORTH_EAST("Quetzal", new WorldPoint(1701, 3037, 0)),
 	QUETZAL_AVIUM_SAVANNAH_SOUTH("Quetzal", new WorldPoint(1671, 2933, 0)),
 	QUETZAL_CAM_TORUM("Quetzal", new WorldPoint(1447, 3108, 0)),
 	QUETZAL_EAST_CIVITAS_ILLA_FORTIS("Quetzal", new WorldPoint(1776, 3111, 0)),
 	QUETZAL_HUNTER_GUILD("Quetzal", new WorldPoint(1584, 3055, 0)),
+	QUETZAL_QUETZACALLI_GORGE("Quetzal", new WorldPoint(1511, 3222, 0)),
+	QUETZAL_SALVAGER_OVERLOOK("Quetzal", new WorldPoint(1612, 3302, 0)),
 	QUETZAL_SUNSET_COAST("Quetzal", new WorldPoint(1547, 2997, 0)),
 	QUETZAL_RALOS_RISE("Quetzal", new WorldPoint(1436, 3169, 0)),
 	QUETZAL_VARLAMORE_VARROCK("Quetzal to Varrock", new WorldPoint(1699, 3142, 0), new WorldPoint(3279, 3413, 0)),

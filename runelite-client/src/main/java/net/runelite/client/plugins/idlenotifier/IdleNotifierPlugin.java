@@ -229,8 +229,17 @@ public class IdleNotifierPlugin extends Plugin
 			case CRAFTING_LEATHER:
 			case CRAFTING_POTTERS_WHEEL:
 			case CRAFTING_POTTERY_OVEN:
+			case CRAFTING_CRUSH_BLESSED_BONES:
 			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
 			case FLETCHING_BOW_CUTTING:
+			case FLETCHING_ATTACH_STOCK_TO_BRONZE_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_BLURITE_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_IRON_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_STEEL_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_MITHRIL_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_ADAMANTITE_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_RUNITE_LIMBS:
+			case FLETCHING_ATTACH_STOCK_TO_DRAGON_LIMBS:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
 			case FLETCHING_STRING_OAK_SHORTBOW:
 			case FLETCHING_STRING_WILLOW_SHORTBOW:
@@ -342,6 +351,10 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
+			case HERBLORE_MIXOLOGY_CONCENTRATE:
+			case HERBLORE_MIXOLOGY_CRYSTALIZE:
+			case HERBLORE_MIXOLOGY_HOMOGENIZE:
+			case HERBLORE_MIXOLOGY_REFINER:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_PLANK_MAKE:
@@ -376,6 +389,9 @@ public class IdleNotifierPlugin extends Plugin
 			case CLEANING_SPECIMENS_1:
 			case CLEANING_SPECIMENS_2:
 			case LOOKING_INTO:
+			case SACRIFICE_BLESSED_BONE_SHARDS:
+			case MAKING_SUNFIRE_WINE:
+			case THIEVING_VARLAMORE_STEALING_VALUABLES:
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();
@@ -509,8 +525,7 @@ public class IdleNotifierPlugin extends Plugin
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| local == null
+		if (local == null
 			// If user has clicked in the last second then they're not idle so don't send idle notification
 			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 1000
 			|| client.getKeyboardIdleTicks() < 10)
@@ -526,7 +541,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (check6hrLogout())
 		{
-			notifier.notify("You are about to log out from being online for 6 hours!");
+			notifier.notify(config.sixHourLogout(), "You are about to log out from being online for 6 hours!");
 		}
 
 		if (checkAnimationIdle(waitDuration, local))
@@ -987,14 +1002,15 @@ public class IdleNotifierPlugin extends Plugin
 
 		// Reset animation idle timer
 		lastAnimating = null;
-		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
+		var gameState = client.getGameState();
+		if (gameState == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
 		{
 			lastAnimation = IDLE;
 		}
 
 		// Reset interaction idle timer
 		lastInteracting = null;
-		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
+		if (gameState == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
 		}

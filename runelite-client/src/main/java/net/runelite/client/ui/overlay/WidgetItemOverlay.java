@@ -133,22 +133,10 @@ public abstract class WidgetItemOverlay extends Overlay
 		Arrays.stream(ids).forEach(this::drawAfterInterface);
 	}
 
-	// Don't allow setting position, priority, or layer
+	// Don't allow setting position or layer
 
 	@Override
 	public void setPosition(OverlayPosition position)
-	{
-		throw new IllegalStateException();
-	}
-
-	@Override
-	public void setPriority(float priority)
-	{
-		throw new IllegalStateException();
-	}
-
-	@Override
-	public void setPriority(OverlayPriority priority)
 	{
 		throw new IllegalStateException();
 	}

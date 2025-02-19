@@ -38,16 +38,15 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemStats;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
@@ -106,7 +105,7 @@ public class PrayerPluginTest
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
-		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
+		when(itemManager.getItemStats(anyInt())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
@@ -149,7 +148,7 @@ public class PrayerPluginTest
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
-		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
+		when(itemManager.getItemStats(anyInt())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);

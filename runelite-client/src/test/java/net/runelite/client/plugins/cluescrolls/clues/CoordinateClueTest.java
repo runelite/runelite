@@ -24,15 +24,87 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CoordinateClueTest
 {
+	@Mock
+	private ClueScrollPlugin plugin;
+
+	@Mock
+	private Client client;
+
 	@Test
 	public void testDuplicateCoordinates()
 	{
 		// If this doesn't throw then the clues map doesn't have duplicate keys
-		new CoordinateClue("test", new WorldPoint(0, 0, 0), null);
+		CoordinateClue.builder().build();
+	}
+
+	@Test
+	public void testRequiresLight()
+	{
+		final CoordinateClue clueWithFirepit = CoordinateClue.forLocation(new WorldPoint(3830, 3060, 0));
+		final CoordinateClue clueWithoutFirepit = CoordinateClue.forLocation(new WorldPoint(2217, 3092, 0));
+
+		assertTrue(clueWithFirepit.isRequiresLight());
+		assertFalse(clueWithoutFirepit.isRequiresLight());
+	}
+
+	@Test
+	public void testIsleOfSoulsNpcs()
+	{
+		for (CoordinateClue clue : CoordinateClue.CLUES.values())
+		{
+			final Enemy enemy = clue.getEnemy();
+			if (!(enemy == Enemy.ARMADYLEAN_GUARD || enemy == Enemy.BANDOSIAN_GUARD))
+			{
+				continue;
+			}
+
+			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clue, clue.getDirections(plugin).contains("Isle of Souls"));
+		}
+	}
+
+	@Test
+	public void testResourceAreaCosts()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1, 0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1, 0, 0);
+
+		CoordinateClue clue = CoordinateClue.forLocation(new WorldPoint(3188, 3933, 0));
+		assert clue != null;
+
+		assertFalse(clue.getDirections(plugin).contains("entry fee"));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 3,750 coins is required."));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 6,000 coins is required."));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 7,500 coins is required."));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 7,500 coins is required."));
+	}
+
+	@Test
+	public void testHardwoodGroveCost()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.DIARY_KARAMJA_ELITE)).thenReturn(1, 0);
+
+		CoordinateClue clue = CoordinateClue.forLocation(new WorldPoint(2820, 3078, 0));
+		assert clue != null;
+
+		assertFalse(clue.getDirections(plugin).contains("entry fee"));
+		assertTrue(clue.getDirections(plugin).contains("100 trading sticks"));
 	}
 }

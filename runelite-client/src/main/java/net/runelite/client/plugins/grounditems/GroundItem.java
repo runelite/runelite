@@ -75,11 +75,6 @@ class GroundItem
 		return gePrice * quantity;
 	}
 
-	boolean isMine()
-	{
-		return ownership == OWNERSHIP_SELF || ownership == OWNERSHIP_GROUP;
-	}
-
 	void reset()
 	{
 		highlighted = hidden = false;

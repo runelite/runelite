@@ -73,7 +73,7 @@ public class BZip2
 		return Arrays.copyOfRange(out, BZIP_HEADER.length, out.length); // remove header..
 	}
 
-	// byte-for-byte compatability with Jagex's compression
+	// byte-for-byte compatibility with Jagex's compression
 	public static byte[] compressLibBZip2(byte[] data) throws IOException
 	{
 		LibBZip2 libBZip2 = LibBZip2.INSTANCE;

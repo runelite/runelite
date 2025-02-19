@@ -76,6 +76,9 @@ public final class EnumID
 
 	public static final int PRAYERS_NORMAL = 4956;
 	public static final int PRAYERS_RUINOUS = 4959;
+	public static final int PRAYERS_NORMAL_DEADEYE = 3341;
+	public static final int PRAYERS_NORMAL_MYSTIC_VIGOUR = 3342;
+	public static final int PRAYERS_NORMAL_DEADEYE_MYSTIC_VIGOUR = 3343;
 
 	public static final int WORLD_LOCATIONS = 4992;
 
@@ -93,4 +96,16 @@ public final class EnumID
 
 	public static final int SPELLBOOKS = 1981;
 	public static final int SPELLBOOKS_SUB = 5280;
+
+	/**
+	 * key: int id
+	 * val: enum potion
+	 */
+	public static final int POTIONSTORE_POTIONS = 4826;
+
+	/**
+	 * key: int id
+	 * val: enum potion
+	 */
+	public static final int POTIONSTORE_UNFINISHED_POTIONS = 4829;
 }

@@ -80,10 +80,10 @@ public class NpcUtil
 				return true;
 			}
 
-			Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
-			if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
+			Set<Integer> healthCheckDeadNpcs = runtimeConfig.getHealthCheckDeadNpcs();
+			if (healthCheckDeadNpcs != null && healthCheckDeadNpcs.contains(id))
 			{
-				return npc.isDead();
+				return npc.getHealthRatio() == 0;
 			}
 		}
 
@@ -179,6 +179,9 @@ public class NpcUtil
 				return true;
 			case NpcID.ZALCANO_9050:
 				return npc.isDead();
+			// Amoxliatl has a nonstandard health bar which isDead() doesn't work with.
+			case NpcID.AMOXLIATL:
+				return npc.getHealthRatio() == 0;
 			default:
 				final NPCComposition npcComposition = npc.getTransformedComposition();
 				if (npcComposition == null)

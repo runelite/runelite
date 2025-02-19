@@ -55,7 +55,7 @@ public class FontManager
 		for (Archive archive : index.getArchives())
 		{
 			byte[] data = storage.loadArchive(archive);
-			FSFile file = archive.getFiles(data).getFiles().get(0);
+			FSFile file = archive.getFiles(data).findFile(0);
 			FontDefinition fontDefinition = fontLoader.load(file.getContents());
 
 			fonts.put(archive.getNameHash(), fontDefinition);

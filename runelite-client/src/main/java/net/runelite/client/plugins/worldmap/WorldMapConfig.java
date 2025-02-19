@@ -35,7 +35,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_TOOLTIPS,
 		name = "Fairy ring code tooltip",
-		description = "Display the code for fairy rings in the icon tooltip",
+		description = "Display the code for fairy rings in the icon tooltip.",
 		position = 1
 	)
 	default boolean fairyRingTooltips()
@@ -46,7 +46,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FAIRY_RING_ICON,
 		name = "Fairy ring travel icon",
-		description = "Override the travel icon for fairy rings",
+		description = "Override the travel icon for fairy rings.",
 		position = 2
 	)
 	default boolean fairyRingIcon()
@@ -57,7 +57,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS,
 		name = "Agility level requirement",
-		description = "Display the required Agility level in the icon tooltip",
+		description = "Display the required agility level in the icon tooltip.",
 		position = 3
 	)
 	default boolean agilityShortcutTooltips()
@@ -68,7 +68,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_SHORTCUT_LEVEL_ICON,
 		name = "Indicate inaccessible shortcuts",
-		description = "Indicate shortcuts you do not have the level to use on the icon",
+		description = "Indicate shortcuts you do not have the level to use on the icon.",
 		position = 4
 	)
 	default boolean agilityShortcutLevelIcon()
@@ -79,7 +79,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_COURSE_TOOLTIPS,
 		name = "Agility course tooltip",
-		description = "Displays the name of the agility course in the tooltip",
+		description = "Displays the name of the agility course in the tooltip.",
 		position = 5
 	)
 	default boolean agilityCourseTooltip()
@@ -90,7 +90,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_COURSE_ROOFTOP_ICON,
 		name = "Indicate rooftop courses",
-		description = "Replace the agility icon with a mark of grace for rooftop courses",
+		description = "Replace the agility icon with a mark of grace for rooftop courses.",
 		position = 6
 	)
 	default boolean agilityCourseRooftop()
@@ -100,8 +100,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
-		name = "Standard Spellbook destinations",
-		description = "Show icons at the destinations for teleports in the Standard Spellbook",
+		name = "Standard spellbook destinations",
+		description = "Show icons at the destinations for teleports in the standard spellbook.",
 		position = 7
 	)
 	default boolean normalTeleportIcon()
@@ -112,7 +112,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_MINIGAME_TOOLTIP,
 		name = "Minigame names",
-		description = "Display the name of the minigame in the icon tooltip",
+		description = "Display the name of the minigame in the icon tooltip.",
 		position = 8
 	)
 	default boolean minigameTooltip()
@@ -122,8 +122,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
-		name = "Ancient Magicks destinations",
-		description = "Show icons at the destinations for teleports in the Ancient Spellbook",
+		name = "Ancient magicks destinations",
+		description = "Show icons at the destinations for teleports in the ancient spellbook.",
 		position = 9
 	)
 	default boolean ancientTeleportIcon()
@@ -133,8 +133,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_LUNAR_TELEPORT_ICON,
-		name = "Lunar Spellbook destinations",
-		description = "Show icons at the destinations for teleports in the Lunar Spellbook",
+		name = "Lunar spellbook destinations",
+		description = "Show icons at the destinations for teleports in the lunar spellbook.",
 		position = 10
 	)
 	default boolean lunarTeleportIcon()
@@ -144,8 +144,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ARCEUUS_TELEPORT_ICON,
-		name = "Arceuus Spellbook destinations",
-		description = "Show icons at the destinations for teleports in the Arceuus Spellbook",
+		name = "Arceuus spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Arceuus spellbook.",
 		position = 11
 	)
 	default boolean arceuusTeleportIcon()
@@ -156,7 +156,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_JEWELLERY_TELEPORT_ICON,
 		name = "Jewellery teleport destinations",
-		description = "Show icons at the destinations for teleports from jewellery",
+		description = "Show icons at the destinations for teleports from jewellery.",
 		position = 12
 	)
 	default boolean jewelleryTeleportIcon()
@@ -167,7 +167,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_SCROLL_TELEPORT_ICON,
 		name = "Teleport scroll destinations",
-		description = "Show icons at the destinations for teleports from scrolls",
+		description = "Show icons at the destinations for teleports from scrolls.",
 		position = 13
 	)
 	default boolean scrollTeleportIcon()
@@ -178,7 +178,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_MISC_TELEPORT_ICON,
 		name = "Misc teleport destinations",
-		description = "Show icons at the destinations for miscellaneous teleport items",
+		description = "Show icons at the destinations for miscellaneous teleport items.",
 		position = 14
 	)
 	default boolean miscellaneousTeleportIcon()
@@ -189,7 +189,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
 		name = "Quest status icons",
-		description = "Shows completion status of quests on the quest's icon",
+		description = "Shows completion status of quests on the quest's icon.",
 		position = 15
 	)
 	default boolean questStartTooltips()
@@ -200,7 +200,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FARMING_PATCH_TOOLTIPS,
 		name = "Farming patch type",
-		description = "Display the type of farming patches in the icon tooltip",
+		description = "Display the type of farming patches in the icon tooltip.",
 		position = 16
 	)
 	default boolean farmingPatchTooltips()
@@ -211,7 +211,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_RARE_TREE_TOOLTIPS,
 		name = "Rare tree type",
-		description = "Display the type of rare tree in the icon tooltip",
+		description = "Display the type of rare tree in the icon tooltip.",
 		position = 17
 	)
 	default boolean rareTreeTooltips()
@@ -222,7 +222,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_RARE_TREE_LEVEL_ICON,
 		name = "Indicate unavailable trees",
-		description = "Indicate rare trees you do not have the level to cut on the icon",
+		description = "Indicate rare trees you do not have the level to cut on the icon.",
 		position = 18
 	)
 	default boolean rareTreeLevelIcon()
@@ -233,7 +233,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_TRANSPORTATION_TELEPORT_TOOLTIPS,
 		name = "Transportation tooltips",
-		description = "Indicates types and destinations of Transportation",
+		description = "Indicates types and destinations of transportation.",
 		position = 19
 	)
 	default boolean transportationTeleportTooltips()
@@ -244,7 +244,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_RUNECRAFTING_ALTAR_ICON,
 		name = "Runecrafting altar locations",
-		description = "Show the icons of runecrafting altars",
+		description = "Show the icons of runecrafting altars.",
 		position = 20
 	)
 	default boolean runecraftingAltarIcon()
@@ -255,7 +255,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_MINING_SITE_TOOLTIPS,
 		name = "Mining site tooltips",
-		description = "Indicates the ore available at mining sites",
+		description = "Indicates the ore available at mining sites.",
 		position = 21
 	)
 	default boolean miningSiteTooltips()
@@ -266,7 +266,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_DUNGEON_TOOLTIPS,
 		name = "Dungeon tooltips",
-		description = "Indicates the names of dungeons",
+		description = "Indicates the names of dungeons.",
 		position = 22
 	)
 	default boolean dungeonTooltips()
@@ -277,7 +277,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_HUNTER_AREA_TOOLTIPS,
 		name = "Hunter area tooltips",
-		description = "Indicates the creatures inside a hunting area",
+		description = "Indicates the creatures inside a hunting area.",
 		position = 23
 	)
 	default boolean hunterAreaTooltips()
@@ -288,7 +288,7 @@ public interface WorldMapConfig extends Config
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_FISHING_SPOT_TOOLTIPS,
 		name = "Fishing spot tooltips",
-		description = "Indicates the type of fish fishable at the fishing spot",
+		description = "Indicates the type of fish fishable at the fishing spot.",
 		position = 24
 	)
 	default boolean fishingSpotTooltips()

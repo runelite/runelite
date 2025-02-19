@@ -63,17 +63,19 @@ content_container=10
 tab_container=11
 item_container=13
 scrollbar=14
-search_button_background=40
-deposit_inventory=42
-deposit_equipment=44
-incinerator=46
-incinerator_confirm=47
-equipment_parent=69
-equipment_set_bonus=110
-settings_button=114
-equipment_button=115
-popup=117
-equipment_stat_bonus=122
+search_button_background=42
+deposit_inventory=44
+deposit_equipment=46
+potion_store=48
+incinerator=49
+incinerator_confirm=50
+potionstore_content=52
+equipment_parent=78
+equipment_set_bonus=119
+settings_button=123
+equipment_button=124
+popup=126
+equipment_stat_bonus=132
 
 [bank_inventory]
 id=15
@@ -157,16 +159,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=35
-container=37
-title=41
-full_input=42
-ge_search_results=50
-messages=53
-transparent_background_lines=54
-input=55
-message_lines=56
-first_message=57
+transparent_background=36
+container=38
+title=42
+full_input=43
+ge_search_results=51
+messages=54
+transparent_background_lines=55
+input=56
+message_lines=57
+first_message=58
 
 [clan]
 id=701
@@ -179,9 +181,6 @@ id=702
 layer=0
 header=1
 members=6
-
-[clanrank_popup]
-id=289
 
 [cluescroll]
 id=203
@@ -208,35 +207,42 @@ id=356
 
 [collection_log]
 id=621
-container=0
+container=87
 tabs=3
 entry=17
-entry_header=19
-entry_items=36
+entry_header=20
+entry_items=37
 
 [combat]
 id=593
-level=3
-style_one=4
-style_two=8
-style_three=12
-style_four=16
-spells=20
-defensive_spell_box=21
-defensive_spell_icon=23
-defensive_spell_shield=24
-defensive_spell_text=25
-spell_box=26
-spell_icon=28
-spell_text=29
-auto_retaliate=30
+weapon_name=2
+level=4
+style_one=5
+style_two=9
+style_three=13
+style_four=17
+spells=21
+defensive_spell_box=22
+defensive_spell_icon=24
+defensive_spell_shield=25
+defensive_spell_text=26
+spell_box=27
+spell_icon=29
+spell_text=30
+auto_retaliate=31
+
+[combat_achievements_tasks]
+id=715
+progress_bar=3
+list=9
+filters=17
 
 [corp_damage]
 id=13
 
 [deposit_box]
 id=192
-inventory_item_container=2
+inventory_item_container=23
 
 [destroy_item]
 id=584
@@ -271,8 +277,8 @@ text=2
 
 [diary]
 id=119
-title=2
-text=3
+title=4
+text=5
 
 [drift_net_fishing_reward]
 id=607
@@ -619,6 +625,7 @@ container=0
 
 [prayer]
 id=541
+parent=0
 
 [private_chat]
 id=163
@@ -746,7 +753,6 @@ id=128
 
 [seed_vault]
 id=631
-inventory_item_container=1
 title_container=2
 item_container=15
 item_text=16
@@ -754,6 +760,7 @@ search_button=24
 
 [seed_vault_inventory]
 id=630
+item_container=1
 
 [settings]
 id=134
@@ -762,10 +769,10 @@ init=1
 [settings_side]
 id=116
 camera_zoom_slider_track=57
-music_slider=92
-music_slider_step_holder=104
-sound_effect_slider=106
-area_sound_slider=120
+music_slider=98
+music_slider_step_holder=110
+sound_effect_slider=112
+area_sound_slider=126
 
 [shop]
 id=300
@@ -846,7 +853,7 @@ id=336
 
 [trailblazer_areas]
 id=512
-teleport=66
+teleport=80
 
 [trawler]
 id=366

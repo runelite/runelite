@@ -181,6 +181,9 @@ public final class VarPlayer
 	 */
 	public static final int HP_HUD_NPC_ID = 1683;
 
+	public static final int CLOG_LOGGED = 2943;
+	public static final int CLOG_TOTAL = 2944;
+
 	/**
 	 * Colors for chat messages
 	 */
@@ -264,4 +267,13 @@ public final class VarPlayer
 	 * @see #DIZANAS_QUIVER_ITEM_COUNT
 	 */
 	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;
+
+	/**
+	 * Runecraft Essence Pouch degrade states
+	 */
+	public static final int ESSENCE_POUCH_MEDIUM_DEGRADE = 488;
+	public static final int ESSENCE_POUCH_LARGE_DEGRADE = 489;
+	public static final int ESSENCE_POUCH_GIANT_DEGRADE = 490;
+
+	public static final int RAIDS_PERSONAL_POINTS = 4609;
 }

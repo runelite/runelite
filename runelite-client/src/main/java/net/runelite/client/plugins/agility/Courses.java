@@ -43,9 +43,11 @@ enum Courses
 	APE_ATOLL(580.0, 11050, new WorldPoint(2770, 2747, 0)),
 	SHAYZIEN_ADVANCED(507.5, 5944, new WorldPoint(1522, 3625, 0)),
 	FALADOR(586, 12084, new WorldPoint(3029, 3332, 0), new WorldPoint(3029, 3333, 0), new WorldPoint(3029, 3334, 0), new WorldPoint(3029, 3335, 0)),
-	WILDERNESS(571.4, 11837, new WorldPoint(2994, 3933, 0)),
+	COLOSSAL_WYRM_BASIC(504),
+	WILDERNESS(571.4, 11837, new WorldPoint(2993, 3933, 0), new WorldPoint(2994, 3933, 0), new WorldPoint(2995, 3933, 0)),
 	WEREWOLF(730.0, 14234, new WorldPoint(3528, 9873, 0)),
 	SEERS(570.0, 10806, new WorldPoint(2704, 3464, 0)),
+	COLOSSAL_WYRM_ADVANCED(685),
 	POLLNIVNEACH(1016.0, 13358, new WorldPoint(3363, 2998, 0)),
 	RELLEKA(920.0, 10553, new WorldPoint(2653, 3676, 0)),
 	PRIFDDINAS(1337.0, 12895, new WorldPoint(3240, 6109, 0)),
@@ -68,10 +70,19 @@ enum Courses
 
 		for (Courses course : values())
 		{
+			if (course.regionId == -1)
+			{
+				continue;
+			}
 			builder.put(course.regionId, course);
 		}
 
 		coursesByRegion = builder.build();
+	}
+
+	Courses(double totalXp)
+	{
+		this(totalXp, -1, null);
 	}
 
 	Courses(double totalXp, int regionId, WorldPoint... courseEndWorldPoints)

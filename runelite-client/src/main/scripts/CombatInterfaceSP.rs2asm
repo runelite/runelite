@@ -6,8 +6,8 @@
    ; Attach specbar redraw listeners to the weapon name text instead of to
    ; auto retaliate text (which is var0). Test by enabling "Hide auto retaliate"
    ; and using a spec.
-   iconst                 38862849 ; 593.1 - weapon name widget
-   istore                 0        ; overwrite script parameter which is the autoretail text
+   iconst                 :combat:weapon_name
+   istore                 0        ; overwrite script parameter which is the auto retaliate text
    iload                  0
    invoke                 187
    iconst                 186
@@ -15,8 +15,9 @@
    iconst                 301
    iconst                 300
    iconst                 3784
+   iconst                 4600
    iconst                 284
-   iconst                 4
+   iconst                 5
    sconst                 "IY"
    iload                  0
    if_setonvartransmit   

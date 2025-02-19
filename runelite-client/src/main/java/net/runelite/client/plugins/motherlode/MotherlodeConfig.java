@@ -28,7 +28,6 @@ package net.runelite.client.plugins.motherlode;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
 
 @ConfigGroup("motherlode")
 public interface MotherlodeConfig extends Config
@@ -54,40 +53,9 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "Configures the time until statistics are reset"
-	)
-	@Units(Units.MINUTES)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
-	)
-	default boolean showMiningStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
-	)
-	default boolean showMiningState()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showGemsFound",
 		name = "Track gems found",
-		description = "Tracks gems found from mining in the loot tracker"
+		description = "Tracks gems found from mining in the loot tracker."
 	)
 	default boolean trackGemsFound()
 	{
@@ -97,7 +65,7 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "showOresFound",
 		name = "Track ores found",
-		description = "Tracks ores found from mining in the loot tracker"
+		description = "Tracks ores found from mining in the loot tracker."
 	)
 	default boolean trackOresFound()
 	{
@@ -107,7 +75,7 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "showBrokenStruts",
 		name = "Show broken struts",
-		description = "Shows broken water wheel struts"
+		description = "Shows broken water wheel struts."
 	)
 	default boolean showBrokenStruts()
 	{
