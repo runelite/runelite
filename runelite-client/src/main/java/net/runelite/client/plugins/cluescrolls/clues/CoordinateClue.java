@@ -509,7 +509,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(2820, 3078, 0))
-			.directions("Tai Bwo Wannai. Hardwood Grove. 100 Trading sticks or elite Karamja diary completion is needed to enter.")
+			.directionsProvider((plugin) -> "Tai Bwo Wannai hardwood grove." + getHardwoodGroveCost(plugin))
 			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
 			.build(),
 		CoordinateClue.builder()
@@ -970,5 +970,15 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		}
 
 		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
+	}
+
+	private static String getHardwoodGroveCost(ClueScrollPlugin plugin)
+	{
+		if (plugin.getClient().getVarbitValue(Varbits.DIARY_KARAMJA_ELITE) == 1)
+		{
+			return "";
+		}
+
+		return " An entry fee of 100 trading sticks is required.";
 	}
 }

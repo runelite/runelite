@@ -94,4 +94,17 @@ public class CoordinateClueTest
 		assertTrue(clue.getDirections(plugin).contains("An entry fee of 7,500 coins is required."));
 		assertTrue(clue.getDirections(plugin).contains("An entry fee of 7,500 coins is required."));
 	}
+
+	@Test
+	public void testHardwoodGroveCost()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.DIARY_KARAMJA_ELITE)).thenReturn(1, 0);
+
+		CoordinateClue clue = CoordinateClue.forLocation(new WorldPoint(2820, 3078, 0));
+		assert clue != null;
+
+		assertFalse(clue.getDirections(plugin).contains("entry fee"));
+		assertTrue(clue.getDirections(plugin).contains("100 trading sticks"));
+	}
 }
