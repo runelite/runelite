@@ -535,4 +535,22 @@ public class LootTrackerPluginTest
 			new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
 		));
 	}
+
+	@Test
+	public void testBaHighGamble()
+	{
+		Player player = mock(Player.class);
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(2534, 3572, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", "Shark (x 114)! High level gamble count: <col=7f0000>3</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		List<ItemStack> items = Collections.singletonList(
+			new ItemStack(ItemID.SHARK, 114)
+		);
+		sendInvChange(InventoryID.INVENTORY, items);
+
+		verify(lootTrackerPlugin).addLoot("Barbarian Assault high gamble", -1, LootRecordType.EVENT, null, items);
+	}
 }

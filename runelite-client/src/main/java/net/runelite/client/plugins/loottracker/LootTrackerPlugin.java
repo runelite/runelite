@@ -148,6 +148,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
 	private static final int ARAXXOR_LAIR = 14489;
 	private static final int ROYAL_TITANS_REGION = 11669;
+	private static final int BA_LOBBY_REGION = 10039;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -326,6 +327,8 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final int FONT_OF_CONSUMPTION_REGION = 12106;
 	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
+
+	private static final String BA_HIGH_GAMBLE = "Barbarian Assault high gamble";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -1175,6 +1178,14 @@ public class LootTrackerPlugin extends Plugin
 		if (regionID == FONT_OF_CONSUMPTION_REGION && message.equals(FONT_OF_CONSUMPTION_USE_MESSAGE))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, "Unsired"));
+		}
+
+		if (regionID == BA_LOBBY_REGION && chatType == ChatMessageType.MESBOX)
+		{
+			if (message.contains("High level gamble count:"))
+			{
+				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BA_HIGH_GAMBLE));
+			}
 		}
 	}
 
