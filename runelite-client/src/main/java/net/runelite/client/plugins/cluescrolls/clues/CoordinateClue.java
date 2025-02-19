@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -53,6 +55,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class CoordinateClue extends ClueScroll implements LocationClueScroll
 {
+	private static final int DEFAULT_RESOURCE_AREA_COST = 7500;
+
 	static final ImmutableMap<WorldPoint, CoordinateClue> CLUES = List.of(
 		// Medium
 		CoordinateClue.builder()
@@ -621,7 +625,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(3188, 3933, 0))
-			.directions("Wilderness. Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed.")
+			.directionsProvider((plugin) -> "Wilderness Resource Area." + getResourceAreaCost(plugin))
 			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
 			.build(),
 		CoordinateClue.builder()
@@ -841,7 +845,8 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			ImmutableMap::copyOf
 		));
 
-	private final String directions;
+	@Getter(AccessLevel.PRIVATE)
+	private final Function<ClueScrollPlugin, String> directionsProvider;
 	@Nullable
 	private final Enemy enemy;
 	@Getter(onMethod_ = {@Varbit})
@@ -856,13 +861,14 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 
 	@Builder
 	private CoordinateClue(
-		String directions,
+		@Nullable String directions,
+		@Nullable Function<ClueScrollPlugin, String> directionsProvider,
 		@Nullable Enemy enemy,
 		WorldPoint location,
 		@Nullable @Varbit Integer lightSourceVarbitId
 	)
 	{
-		this.directions = directions;
+		this.directionsProvider = directionsProvider != null ? directionsProvider : (plugin) -> directions;
 		this.enemy = enemy;
 		this.location = location;
 		this.mirrorLocation = location == null ? null : WorldPoint.getMirrorPoint(location, false);
@@ -876,6 +882,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	public static CoordinateClue forLocation(WorldPoint location)
 	{
 		return CLUES.get(location);
+	}
+
+	@VisibleForTesting
+	String getDirections(ClueScrollPlugin plugin)
+	{
+		return getDirectionsProvider().apply(plugin);
 	}
 
 	@Override
@@ -907,7 +919,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		if (solution != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(solution.getDirections())
+				.left(solution.getDirections(plugin))
 				.build());
 			panelComponent.getChildren().add(LineComponent.builder().build());
 		}
@@ -937,5 +949,26 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	public int[] getConfigKeys()
 	{
 		return new int[]{location.hashCode()};
+	}
+
+	private static String getResourceAreaCost(ClueScrollPlugin plugin)
+	{
+		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE) == 1)
+		{
+			return "";
+		}
+
+		int resourceAreaCost = DEFAULT_RESOURCE_AREA_COST;
+
+		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_HARD) == 1)
+		{
+			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.5);
+		}
+		else if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM) == 1)
+		{
+			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.8);
+		}
+
+		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
 	}
 }

@@ -24,13 +24,27 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CoordinateClueTest
 {
+	@Mock
+	private ClueScrollPlugin plugin;
+
+	@Mock
+	private Client client;
+
 	@Test
 	public void testDuplicateCoordinates()
 	{
@@ -59,7 +73,25 @@ public class CoordinateClueTest
 				continue;
 			}
 
-			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clue, clue.getDirections().contains("Isle of Souls"));
+			assertTrue("Armadylean guard-only and Bandosian guard-only clues only occur on the Isle of Souls; the following entry must be corrected:\n" + clue, clue.getDirections(plugin).contains("Isle of Souls"));
 		}
+	}
+
+	@Test
+	public void testResourceAreaCosts()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1, 0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1, 0, 0);
+
+		CoordinateClue clue = CoordinateClue.forLocation(new WorldPoint(3188, 3933, 0));
+		assert clue != null;
+
+		assertFalse(clue.getDirections(plugin).contains("entry fee"));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 3,750 coins is required."));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 6,000 coins is required."));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 7,500 coins is required."));
+		assertTrue(clue.getDirections(plugin).contains("An entry fee of 7,500 coins is required."));
 	}
 }
