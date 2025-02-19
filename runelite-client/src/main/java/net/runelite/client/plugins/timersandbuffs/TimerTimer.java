@@ -26,10 +26,12 @@ package net.runelite.client.plugins.timersandbuffs;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
+@Getter
 class TimerTimer extends Timer
 {
 	private final GameTimer timer;
@@ -40,11 +42,6 @@ class TimerTimer extends Timer
 		super(duration.toMillis(), ChronoUnit.MILLIS, null, plugin);
 		this.timer = timer;
 		setPriority(InfoBoxPriority.MED);
-	}
-
-	public GameTimer getTimer()
-	{
-		return timer;
 	}
 
 	@Override
