@@ -842,6 +842,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		));
 
 	private final String directions;
+	@Nullable
 	private final Enemy enemy;
 	@Getter(onMethod_ = {@Varbit})
 	private final int lightSourceVarbitId;
@@ -856,9 +857,9 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	@Builder
 	private CoordinateClue(
 		String directions,
-		Enemy enemy,
+		@Nullable Enemy enemy,
 		WorldPoint location,
-		@Varbit Integer lightSourceVarbitId
+		@Nullable @Varbit Integer lightSourceVarbitId
 	)
 	{
 		this.directions = directions;
