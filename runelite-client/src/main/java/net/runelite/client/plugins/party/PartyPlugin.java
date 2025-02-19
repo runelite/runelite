@@ -402,7 +402,7 @@ public class PartyPlugin extends Plugin {
                                         requestHotkeyPressed ? PartyPingType.REQUEST :
                                                 PartyPingType.TARGET; //default to target ping
 
-        final PartyPing ping = new PartyPing(pingType, targetType, location, target, client.getWorld(), client.getLocalPlayer().getId());
+        final PartyPing ping = new PartyPing(targetType, location, target, client.getWorld(), client.getLocalPlayer().getId(), pingType);
         if (pingHotkeyPressed && config.advancedPingMenu()) {
             mouseStartPosition = client.getMouseCanvasPosition();
             pendingPartyPing = ping;
