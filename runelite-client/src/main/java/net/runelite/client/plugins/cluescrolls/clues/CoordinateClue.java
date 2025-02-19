@@ -841,7 +841,6 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			ImmutableMap::copyOf
 		));
 
-	private final String text;
 	private final String directions;
 	private final Enemy enemy;
 	@Getter(onMethod_ = {@Varbit})
@@ -856,14 +855,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 
 	@Builder
 	private CoordinateClue(
-		String text,
 		String directions,
 		Enemy enemy,
 		WorldPoint location,
 		@Varbit Integer lightSourceVarbitId
 	)
 	{
-		this.text = text;
 		this.directions = directions;
 		this.enemy = enemy;
 		this.location = location;
