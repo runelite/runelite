@@ -72,11 +72,11 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "pingHotkey",
-		name = "Ping hotkey",
-            and click on the tile you want to ping.",		description = "Key to hold to send a tile ping.<br>"
-			+ "To ping, hold the ping hotkey down
-		position = 4
+			keyName = "pingHotkey",
+			name = "Ping hotkey",
+			description = "Key to hold to send a tile ping.<br>"
+					+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
+			position = 4
 	)
 	default Keybind pingHotkey()
 	{
