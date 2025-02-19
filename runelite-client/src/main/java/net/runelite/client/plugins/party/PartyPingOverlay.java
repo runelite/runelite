@@ -96,7 +96,7 @@ class PartyPingOverlay extends Overlay
 					continue;
 				}
 
-				double percentageLeft = (double) timeLeft / (double) next.getPingDuration();
+				double percentageLeft = timeLeft / next.getPingDuration();
 				renderPing(graphics, next, percentageLeft);
 				long elapsedTimeMillis = (System.nanoTime() - next.getCreationTime()) / 1000000;
 				next.setAlpha((int) Math.max(0, 255 - (elapsedTimeMillis / 4)));
