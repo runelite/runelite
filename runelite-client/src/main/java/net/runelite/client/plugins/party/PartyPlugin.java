@@ -875,7 +875,8 @@ public class PartyPlugin extends Plugin
 			return null;
 		}
 
-		return partyDataMap.computeIfAbsent(uuid, (u) -> {
+		return partyDataMap.computeIfAbsent(uuid, (u) ->
+		{
 			final WorldMapPoint worldMapPoint = new PartyWorldMapPoint(new WorldPoint(0, 0, 0), memberById);
 
 			// When first joining a party, other members can join before getting a join for self
