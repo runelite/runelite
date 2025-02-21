@@ -107,7 +107,8 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, ComponentID.STRANGLER_OVERLAY, "STRANGLER_INFECTION_OVERLAY", OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, ComponentID.SANITY_OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, ComponentID.MOONS_OF_PERIL_LAYER, "MOONS_OF_PERIL", OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, ComponentID.MLM_LAYER, "MLM_LAYER", OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, ComponentID.MLM_LAYER, "MLM_LAYER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, ComponentID.MASTERING_MIXOLOGY_CONTAINER, "MASTERING_MIXOLOGY", OverlayPosition.TOP_LEFT)
 		);
 	}
 

@@ -531,6 +531,10 @@ looting_bag_inventory=5
 [lunar_chest]
 id=868
 
+[mastering_mixology]
+id=882
+container=0
+
 [minimap]
 id=160
 container=0
