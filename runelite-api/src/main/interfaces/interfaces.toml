@@ -133,14 +133,14 @@ container=2
 id=131
 time_remaining=2
 
-[castlewars_saradomin_game]
+[castlewars_saradomin]
 id=58
 castle_and_rock_group_status=3
 game_timer=16
 score_box=18
 leave_waiting_room=24
 
-[castlewars_zamorak_game]
+[castlewars_zamorak]
 id=59
 castle_and_rock_group_status=3
 score_box=17
