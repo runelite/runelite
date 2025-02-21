@@ -38,6 +38,8 @@ import lombok.Getter;
 import net.runelite.api.MenuAction;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.Actor;
+import net.runelite.api.Hitsplat;
 
 @PluginDescriptor(
     name = "RLBot",
@@ -442,8 +444,36 @@ public class RLBotPlugin extends Plugin {
             state.put("playerHealth", client.getBoostedSkillLevel(Skill.HITPOINTS));
             state.put("playerMaxHealth", client.getRealSkillLevel(Skill.HITPOINTS));
             state.put("playerAnimation", client.getLocalPlayer().getAnimation());
-            state.put("playerInteracting", client.getLocalPlayer().getInteracting() != null);
+            state.put("inCombat", client.getLocalPlayer().getInteracting() != null);
             state.put("playerRunEnergy", client.getEnergy());
+            
+            // Track last hit damage
+            Actor interacting = client.getLocalPlayer().getInteracting();
+            if (interacting instanceof NPC) {
+                NPC npc = (NPC) interacting;
+                Integer healthRatio = npc.getHealthRatio();
+                int lastHitsplat = healthRatio != null ? healthRatio : 0;
+                state.put("lastHitsplat", lastHitsplat);
+                boolean isKilled = npc.isDead();
+                state.put("npcKilled", isKilled);
+                
+                // Update overlay statistics
+                if (isKilled) {
+                    overlay.incrementNPCKilled();
+                }
+                if (lastHitsplat > 0) {
+                    overlay.addDamageDealt(lastHitsplat);
+                }
+            }
+            
+            // Track player's last received hit
+            int totalDamage = 0;
+            if (client.getLocalPlayer().getHealthScale() > 0) {
+                int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
+                int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
+                totalDamage = maxHealth - currentHealth;
+            }
+            state.put("playerLastHit", totalDamage);
             
             // Add nearby NPCs
             List<Map<String, Object>> npcs = client.getNpcs().stream()
@@ -454,12 +484,13 @@ public class RLBotPlugin extends Plugin {
                     "combatLevel", npc.getCombatLevel(),
                     "health", npc.getHealthRatio(),
                     "location", npc.getWorldLocation(),
-                    "interacting", npc.getInteracting() != null
+                    "interacting", npc.getInteracting() != null,
+                    "isDead", npc.isDead()
                 ))
                 .collect(Collectors.toList());
             state.put("npcs", npcs);
             
-            // Add skills
+            // Add skills with experience tracking
             Map<String, Object> skills = new HashMap<>();
             for (Skill skill : Skill.values()) {
                 skills.put(skill.getName(), Map.of(

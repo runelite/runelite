@@ -1,126 +1,122 @@
 package net.runelite.client.plugins.rlbot;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.BasicStroke;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Iterator;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.api.Client;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.api.Skill;
 
-public class RLBotOverlay extends Overlay {
+import javax.inject.Inject;
+import java.awt.*;
+import java.text.NumberFormat;
+import java.util.Locale;
+
+public class RLBotOverlay extends OverlayPanel {
+    private final Client client;
     private final RLBotPlugin plugin;
-    private final Queue<TrailPoint> cursorTrail;
-    private static final int TRAIL_LENGTH = 20; // Increased trail length
-    private static final int TRAIL_FADE_DURATION = 5000; // Increased duration to 2 seconds
-    private static final float TRAIL_THICKNESS = 3.0f; // Thicker trail
-    private static final Color CURSOR_COLOR = new Color(255, 255, 0, 255); // Bright yellow
-    private static final Color TRAIL_COLOR = new Color(255, 255, 0, 128); // Semi-transparent yellow
-
-    private static class TrailPoint {
-        final Point point;
-        final long timestamp;
-
-        TrailPoint(Point point, long timestamp) {
-            this.point = point;
-            this.timestamp = timestamp;
-        }
-    }
+    private long lastExpUpdate = 0;
+    private int totalExperience = 0;
+    private int totalDamageDealt = 0;
+    private int npcsKilled = 0;
 
     @Inject
-    RLBotOverlay(RLBotPlugin plugin) {
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ALWAYS_ON_TOP);
-        setPriority(OverlayPriority.HIGH);
+    private RLBotOverlay(Client client, RLBotPlugin plugin) {
+        super(plugin);
+        setPosition(OverlayPosition.TOP_LEFT);
+        this.client = client;
         this.plugin = plugin;
-        this.cursorTrail = new LinkedList<>();
     }
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        long currentTime = System.currentTimeMillis();
-        
-        // Update trail
-        if (plugin.getLastCursorX() >= 0 && plugin.getLastCursorY() >= 0) {
-            Point newPoint = new Point(plugin.getLastCursorX(), plugin.getLastCursorY());
-            
-            // Only add point if it's different from the last one
-            if (cursorTrail.isEmpty() || !((TrailPoint)cursorTrail.peek()).point.equals(newPoint)) {
-                cursorTrail.offer(new TrailPoint(newPoint, currentTime));
-                if (cursorTrail.size() > TRAIL_LENGTH) {
-                    cursorTrail.poll();
-                }
+        if (client.getGameState() == null) {
+            return null;
+        }
+
+        // Update combat experience
+        int currentExp = getCombatExperience();
+        if (totalExperience == 0) {
+            totalExperience = currentExp;
+        } else if (currentExp > totalExperience) {
+            if (System.currentTimeMillis() - lastExpUpdate > 1000) { // Update every second
+                totalExperience = currentExp;
+                lastExpUpdate = System.currentTimeMillis();
             }
         }
 
-        // Remove old points
-        Iterator<TrailPoint> iterator = cursorTrail.iterator();
-        while (iterator.hasNext()) {
-            TrailPoint point = iterator.next();
-            if (currentTime - point.timestamp > TRAIL_FADE_DURATION) {
-                iterator.remove();
-            }
+        // Title
+        panelComponent.getChildren().add(TitleComponent.builder()
+            .text("Combat Stats")
+            .color(Color.GREEN)
+            .build());
+
+        // Combat Status
+        if (client.getLocalPlayer() != null && client.getLocalPlayer().getInteracting() != null) {
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Status:")
+                .right("In Combat")
+                .rightColor(Color.RED)
+                .build());
+        } else {
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Status:")
+                .right("Idle")
+                .rightColor(Color.WHITE)
+                .build());
         }
 
-        // Set stroke for thicker lines
-        graphics.setStroke(new BasicStroke(TRAIL_THICKNESS, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        // Experience Gained
+        int expGained = currentExp - totalExperience;
+        panelComponent.getChildren().add(LineComponent.builder()
+            .left("Combat XP:")
+            .right(formatNumber(expGained))
+            .build());
 
-        // Draw trail
-        if (!cursorTrail.isEmpty()) {
-            TrailPoint[] points = cursorTrail.toArray(new TrailPoint[0]);
-            for (int i = 0; i < points.length - 1; i++) {
-                // Calculate alpha based on both position in trail and time
-                float positionAlpha = (float)(i + 1) / points.length;
-                float timeAlpha = Math.max(0, 1f - (float)(currentTime - points[i].timestamp) / TRAIL_FADE_DURATION);
-                float alpha = positionAlpha * timeAlpha;
-                
-                Color trailColor = new Color(
-                    TRAIL_COLOR.getRed(),
-                    TRAIL_COLOR.getGreen(),
-                    TRAIL_COLOR.getBlue(),
-                    (int)(alpha * TRAIL_COLOR.getAlpha())
-                );
-                
-                graphics.setColor(trailColor);
-                graphics.drawLine(
-                    points[i].point.x, points[i].point.y,
-                    points[i + 1].point.x, points[i + 1].point.y
-                );
-            }
+        // NPCs Killed
+        panelComponent.getChildren().add(LineComponent.builder()
+            .left("NPCs Killed:")
+            .right(String.valueOf(npcsKilled))
+            .build());
+
+        // Damage Dealt
+        panelComponent.getChildren().add(LineComponent.builder()
+            .left("Damage Dealt:")
+            .right(formatNumber(totalDamageDealt))
+            .build());
+
+        // Player Health
+        if (client.getLocalPlayer() != null) {
+            int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
+            int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
+            panelComponent.getChildren().add(LineComponent.builder()
+                .left("Health:")
+                .right(currentHealth + "/" + maxHealth)
+                .rightColor(currentHealth < maxHealth * 0.3 ? Color.RED : Color.GREEN)
+                .build());
         }
 
-        // Draw current cursor
-        if (plugin.getLastCursorX() >= 0 && plugin.getLastCursorY() >= 0) {
-            // Calculate cursor alpha based on time
-            float timeAlpha = Math.max(0, 1f - (float)(currentTime - plugin.getLastCursorTime()) / TRAIL_FADE_DURATION);
-            Color cursorColorWithAlpha = new Color(
-                CURSOR_COLOR.getRed(),
-                CURSOR_COLOR.getGreen(),
-                CURSOR_COLOR.getBlue(),
-                (int)(timeAlpha * CURSOR_COLOR.getAlpha())
-            );
-            
-            graphics.setColor(cursorColorWithAlpha);
-            
-            int x = plugin.getLastCursorX();
-            int y = plugin.getLastCursorY();
-            int size = 12; // Larger cursor
+        return super.render(graphics);
+    }
 
-            // Draw crosshair with thicker lines
-            graphics.setStroke(new BasicStroke(2.0f));
-            graphics.drawLine(x - size, y, x + size, y);
-            graphics.drawLine(x, y - size, x, y + size);
-            
-            // Draw a circle around the crosshair
-            graphics.drawOval(x - size/2, y - size/2, size, size);
-        }
+    private int getCombatExperience() {
+        int total = 0;
+        total += client.getSkillExperience(Skill.ATTACK);
+        total += client.getSkillExperience(Skill.STRENGTH);
+        total += client.getSkillExperience(Skill.DEFENCE);
+        total += client.getSkillExperience(Skill.HITPOINTS);
+        return total;
+    }
 
-        return null;
+    private String formatNumber(int number) {
+        return NumberFormat.getNumberInstance(Locale.US).format(number);
+    }
+
+    public void incrementNPCKilled() {
+        npcsKilled++;
+    }
+
+    public void addDamageDealt(int damage) {
+        totalDamageDealt += damage;
     }
 } 
