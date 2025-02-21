@@ -40,6 +40,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.Actor;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.events.StatChanged;
 
 @PluginDescriptor(
     name = "RLBot",
@@ -84,6 +85,9 @@ public class RLBotPlugin extends Plugin {
     private long lastCursorTime = 0;
 
     private static final int CURSOR_MOVE_DELAY = 50; // ms delay after cursor movement
+    private static final int ACTION_DELAY = 600; // ms delay between actions
+    private static final int CURSOR_FADE_DURATION = 1000; // ms duration for cursor trail to fade
+    private long lastActionTime = 0;
 
     @Provides
     RLBotConfig provideConfig(ConfigManager configManager) {
@@ -195,6 +199,17 @@ public class RLBotPlugin extends Plugin {
     }
 
     private void moveCursorTo(Canvas canvas, Point target) {
+        // Add delay between actions
+        long currentTime = System.currentTimeMillis();
+        long timeSinceLastAction = currentTime - lastActionTime;
+        if (timeSinceLastAction < ACTION_DELAY) {
+            try {
+                Thread.sleep(ACTION_DELAY - timeSinceLastAction);
+            } catch (InterruptedException e) {
+                log.warn("Action delay interrupted", e);
+            }
+        }
+
         // First move cursor to position
         MouseEvent moved = createMouseEvent(target, MouseEvent.NOBUTTON, MouseEvent.MOUSE_MOVED);
         canvas.dispatchEvent(moved);
@@ -206,6 +221,8 @@ public class RLBotPlugin extends Plugin {
         } catch (InterruptedException e) {
             log.warn("Cursor move delay interrupted", e);
         }
+
+        lastActionTime = System.currentTimeMillis();
     }
 
     private void handleMove(Map<String, Object> data) {
@@ -436,6 +453,28 @@ public class RLBotPlugin extends Plugin {
         }
     }
 
+    @Subscribe
+    public void onStatChanged(StatChanged statChanged) {
+        if (!isRunning) {
+            return;
+        }
+
+        // Update overlay for combat skill changes
+        Skill skill = statChanged.getSkill();
+        if (skill == Skill.ATTACK || skill == Skill.STRENGTH || 
+            skill == Skill.DEFENCE || skill == Skill.RANGED || 
+            skill == Skill.MAGIC || skill == Skill.HITPOINTS) {
+            clientThread.invoke(() -> {
+                try {
+                    // The overlay will handle the experience calculation
+                    overlay.updateExperienceGained();
+                } catch (Exception e) {
+                    log.error("Error updating experience in overlay", e);
+                }
+            });
+        }
+    }
+
     private String createGameState() {
         Map<String, Object> state = new HashMap<>();
         
@@ -509,7 +548,7 @@ public class RLBotPlugin extends Plugin {
         lastCursorX = x;
         lastCursorY = y;
         lastCursorColor = color;
-        lastCursorTime = System.currentTimeMillis();
+        lastCursorTime = System.currentTimeMillis() + CURSOR_FADE_DURATION;
     }
 
     public boolean shouldDrawCursor() {
