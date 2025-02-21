@@ -24,35 +24,43 @@
  */
 package net.runelite.client.util;
 
-import com.apple.eawt.FullScreenAdapter;
-import com.apple.eawt.FullScreenUtilities;
-import com.apple.eawt.event.FullScreenEvent;
 import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-class OSXFullScreenAdapter extends FullScreenAdapter
+class OSXFullScreenAdapter extends WindowAdapter
 {
 	private final Frame frame;
 
 	@Override
-	public void windowEnteredFullScreen(FullScreenEvent e)
+	public void windowStateChanged(WindowEvent e)
 	{
-		log.debug("Window entered fullscreen mode--setting extended state to {}", Frame.MAXIMIZED_BOTH);
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-	}
-
-	@Override
-	public void windowExitedFullScreen(FullScreenEvent e)
-	{
-		log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
-		frame.setExtendedState(Frame.NORMAL);
+		if ((e.getNewState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH)
+		{
+			log.debug("Window entered fullscreen mode--setting extended state to {}", Frame.MAXIMIZED_BOTH);
+			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		}
+		else
+		{
+			log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
+			frame.setExtendedState(Frame.NORMAL);
+		}
 	}
 
 	public static void install(Frame frame)
 	{
-		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		if (gd.isFullScreenSupported())
+		{
+			frame.addWindowStateListener(new OSXFullScreenAdapter(frame));
+			frame.setExtendedState(Frame.NORMAL);
+		}
 	}
 }
