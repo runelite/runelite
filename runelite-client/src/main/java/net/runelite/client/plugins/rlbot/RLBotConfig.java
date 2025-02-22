@@ -33,6 +33,6 @@ public interface RLBotConfig extends Config {
         position = 3
     )
     default int getPort() {
-        return 43594;
+        return 43595;
     }
 } 

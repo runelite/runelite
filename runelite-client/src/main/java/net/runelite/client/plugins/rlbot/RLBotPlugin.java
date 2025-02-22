@@ -3,8 +3,8 @@ package net.runelite.client.plugins.rlbot;
 import com.google.inject.Provides;
 import java.awt.Canvas;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -16,16 +16,18 @@ import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.WorldView;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.DrawManager;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -35,31 +37,25 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.coords.LocalPoint;
-import java.awt.event.KeyEvent;
 import net.runelite.client.game.ItemManager;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 import java.awt.MouseInfo;
 import javax.swing.SwingUtilities;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.ScriptID;
 import net.runelite.api.TileItem;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.nio.file.StandardOpenOption;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 @PluginDescriptor(
     name = "RLBot",
@@ -129,10 +125,14 @@ public class RLBotPlugin extends Plugin {
     @Inject
     private ItemManager itemManager;
 
+    @Inject
+    private DrawManager drawManager;
+
     private WebSocketServer server;
     private boolean isRunning = false;
     private JsonNode commandSchema;
     private JsonNode stateSchema;
+    private boolean shouldSendScreenshots = true; // New flag to control screenshot sending
 
     private final Set<Point> visitedChunks = new HashSet<>();
     private final Map<Point, Long> lastVisitTime = new HashMap<>();
@@ -141,6 +141,8 @@ public class RLBotPlugin extends Plugin {
     // Add tracking variables for health changes
     private int lastHealth = -1;
     private int lastMaxHealth = -1;
+
+    private volatile String pendingScreenshot = null;
 
     private static class AreaInfo {
         int npcDensity;
@@ -277,24 +279,41 @@ public class RLBotPlugin extends Plugin {
 
     @Subscribe
     public void onGameTick(GameTick event) {
-        if (!isRunning || server == null) return;
-
-        try {
-            JsonNode gameState = generateGameState();
-            validateGameState(gameState);
-            
-            // Debug log the state
-            logDebug("Generated game state: " + gameState.toString());
-            
-            // Send state to connected clients
-            for (WebSocket conn : server.getConnections()) {
-                if (conn.isOpen()) {
-                    conn.send(objectMapper.writeValueAsString(gameState));
-                }
-            }
-        } catch (Exception e) {
-            logError("Error processing game tick: " + e.getMessage());
+        if (!isRunning) {
+            return;
         }
+
+        clientThread.invoke(() -> {
+            try {
+                // Update exploration data
+                updateExplorationData();
+                
+                // Update overlay with current state
+                if (client.getLocalPlayer() != null) {
+                    overlay.setStatus(client.getLocalPlayer().getInteracting() != null ? "In Combat" : "Idle");
+                    overlay.updateExperienceGained();
+                }
+
+                // Generate and send game state
+                if (server != null) {
+                    if (client.getGameState() == GameState.LOGGED_IN) {
+                        JsonNode gameState = generateGameState();
+                        validateGameState(gameState);
+                        
+                        // Send state to connected clients
+                        for (WebSocket conn : server.getConnections()) {
+                            if (conn.isOpen()) {
+                                conn.send(objectMapper.writeValueAsString(gameState));
+                            }
+                        }
+                    } else {
+                        logDebug("Not sending game state - client not logged in. Current state: " + client.getGameState());
+                    }
+                }
+            } catch (Exception e) {
+                logError("Error updating state on game tick: " + e.getMessage());
+            }
+        });
     }
 
     private void validateCommand(JsonNode command) throws IllegalArgumentException {
@@ -579,12 +598,30 @@ public class RLBotPlugin extends Plugin {
     }
 
     private void handleCameraZoom(JsonNode data) {
-        int zoom = data.get("zoom").asInt();
+        boolean zoomIn = data.get("in").asBoolean();
         clientThread.invoke(() -> {
             try {
-                client.runScript(ScriptID.CAMERA_DO_ZOOM, zoom, zoom);
+                Canvas canvas = client.getCanvas();
+                if (canvas != null) {
+                    // Create a mouse wheel event to simulate scrolling
+                    MouseWheelEvent wheel = new MouseWheelEvent(
+                        canvas,
+                        MouseEvent.MOUSE_WHEEL,
+                        System.currentTimeMillis(),
+                        0,
+                        canvas.getWidth() / 2,  // center X
+                        canvas.getHeight() / 2, // center Y
+                        1,  // click count
+                        false,  // popup trigger
+                        MouseWheelEvent.WHEEL_UNIT_SCROLL,
+                        (int)CAMERA_ZOOM_AMOUNT,  // scroll amount
+                        zoomIn ? -1 : 1  // wheel rotation (negative for zoom in, positive for zoom out)
+                    );
+                    canvas.dispatchEvent(wheel);
+                    logDebug(String.format("Camera zoom %s event dispatched with amount %f", zoomIn ? "in" : "out", CAMERA_ZOOM_AMOUNT));
+                }
             } catch (Exception e) {
-                logWarn("Error setting camera zoom");
+                logError("Error handling camera zoom: " + e.getMessage());
             }
         });
     }
@@ -782,6 +819,49 @@ public class RLBotPlugin extends Plugin {
         }
     }
 
+    @Subscribe
+    public void onNpcDespawned(NpcDespawned npcDespawned) {
+        if (!isRunning) {
+            return;
+        }
+
+        NPC npc = npcDespawned.getNpc();
+        if (npc.isDead() && npc.getInteracting() == client.getLocalPlayer()) {
+            clientThread.invoke(() -> {
+                try {
+                    overlay.incrementNPCKilled();
+                    logInfo("NPC killed: " + npc.getName());
+                } catch (Exception e) {
+                    logError("Error incrementing NPC kill count: " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    @Subscribe
+    public void onHitsplatApplied(HitsplatApplied hitsplatApplied) {
+        if (!isRunning) {
+            return;
+        }
+
+        Actor target = hitsplatApplied.getActor();
+        // Only count damage to NPCs
+        if (target instanceof NPC && target.getInteracting() == client.getLocalPlayer()) {
+            Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+            // Only count damage dealt by the player
+            if (hitsplat.isMine()) {
+                clientThread.invoke(() -> {
+                    try {
+                        overlay.addDamageDealt(hitsplat.getAmount());
+                        logDebug("Damage dealt: " + hitsplat.getAmount());
+                    } catch (Exception e) {
+                        logError("Error adding damage dealt: " + e.getMessage());
+                    }
+                });
+            }
+        }
+    }
+
     private Point worldToChunk(WorldPoint point) {
         return new Point(
             point.getX() / EXPLORATION_CHUNK_SIZE,
@@ -912,8 +992,63 @@ public class RLBotPlugin extends Plugin {
         return null;
     }
 
+    private String captureGameScreen() {
+        try {
+            if (client.getGameState() != GameState.LOGGED_IN) {
+                return null;
+            }
+
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            drawManager.requestNextFrameListener(image -> {
+                try {
+                    // Convert the BufferedImage to a byte array
+                    ImageIO.write((BufferedImage) image, "png", outputStream);
+                    String base64Screenshot = Base64.getEncoder().encodeToString(outputStream.toByteArray());
+                    
+                    // Send the screenshot in the next game tick
+                    clientThread.invoke(() -> {
+                        if (server != null) {
+                            for (WebSocket conn : server.getConnections()) {
+                                if (conn.isOpen()) {
+                                    try {
+                                        ObjectNode screenshotUpdate = objectMapper.createObjectNode();
+                                        screenshotUpdate.put("type", "screenshot");
+                                        screenshotUpdate.put("data", base64Screenshot);
+                                        conn.send(objectMapper.writeValueAsString(screenshotUpdate));
+                                    } catch (Exception e) {
+                                        logError("Error sending screenshot update: " + e.getMessage());
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    logError("Error encoding screenshot: " + e.getMessage());
+                }
+            });
+
+            // Return null since we're sending the screenshot separately
+            return null;
+
+        } catch (Exception e) {
+            logError("Error capturing game screen: " + e.getMessage());
+            return null;
+        }
+    }
+
     private JsonNode generateGameState() {
         ObjectNode state = objectMapper.createObjectNode();
+        
+        // Add screenshot if enabled
+        if (shouldSendScreenshots) {
+            String screenshot = captureGameScreen();
+            if (screenshot != null) {
+                state.put("screenshot", screenshot);
+                logInfo("Screenshot captured successfully: " + screenshot.length() + " bytes");
+            } else {
+                logWarn("Failed to capture screenshot");
+            }
+        }
         
         // Player info
         ObjectNode player = objectMapper.createObjectNode();

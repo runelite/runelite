@@ -8,9 +8,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -19,8 +16,6 @@ import java.util.Queue;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.BasicStroke;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class RLBotOverlay extends OverlayPanel {
     private static final int CURSOR_SIZE = 12;  // Larger cursor
@@ -44,7 +39,6 @@ public class RLBotOverlay extends OverlayPanel {
     private long lerpStartTime = 0;              // When lerp started
     private long lastTrailUpdate = 0;            // Last trail point added
     private final List<RewardDisplay> rewards = new ArrayList<>();
-    private static final Logger log = LoggerFactory.getLogger(RLBotOverlay.class);
 
     private static class TimestampedPoint {
         final Point point;
@@ -68,15 +62,12 @@ public class RLBotOverlay extends OverlayPanel {
         initializeExpTracking();
     }
 
-    private boolean shouldSkipWidgetGroup(int groupId) {
-        // Only skip viewport widgets
-        return groupId == WidgetID.FIXED_VIEWPORT_GROUP_ID ||
-               groupId == WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID ||
-               groupId == WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID;
-    }
-
     @Override
     public Dimension render(Graphics2D graphics) {
+        if (!config.showOverlay()) {
+            return null;
+        }
+
         // Clear and render panel components
         panelComponent.getChildren().clear();
 
