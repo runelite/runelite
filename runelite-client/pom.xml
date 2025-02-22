@@ -299,7 +299,12 @@
 		<dependency>
 			<groupId>org.java-websocket</groupId>
 			<artifactId>Java-WebSocket</artifactId>
-			<version>1.5.2</version>
+			<version>1.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.networknt</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>1.0.72</version>
 		</dependency>
 	</dependencies>
 

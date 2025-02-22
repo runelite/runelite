@@ -5,8 +5,12 @@ import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -15,6 +19,8 @@ import java.util.Queue;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.BasicStroke;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RLBotOverlay extends OverlayPanel {
     private static final int CURSOR_SIZE = 12;  // Larger cursor
@@ -38,6 +44,7 @@ public class RLBotOverlay extends OverlayPanel {
     private long lerpStartTime = 0;              // When lerp started
     private long lastTrailUpdate = 0;            // Last trail point added
     private final List<RewardDisplay> rewards = new ArrayList<>();
+    private static final Logger log = LoggerFactory.getLogger(RLBotOverlay.class);
 
     private static class TimestampedPoint {
         final Point point;
@@ -52,16 +59,25 @@ public class RLBotOverlay extends OverlayPanel {
     @Inject
     private RLBotOverlay(Client client, RLBotConfig config) {
         super();
-        setPosition(OverlayPosition.TOP_LEFT);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
+        setPosition(OverlayPosition.DYNAMIC);
+        setLayer(OverlayLayer.ALWAYS_ON_TOP);
+        setPriority(OverlayPriority.HIGHEST);
         this.client = client;
         this.config = config;
         this.lastSkillExp = new EnumMap<>(Skill.class);
         initializeExpTracking();
     }
 
+    private boolean shouldSkipWidgetGroup(int groupId) {
+        // Only skip viewport widgets
+        return groupId == WidgetID.FIXED_VIEWPORT_GROUP_ID ||
+               groupId == WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID ||
+               groupId == WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID;
+    }
+
     @Override
     public Dimension render(Graphics2D graphics) {
+        // Clear and render panel components
         panelComponent.getChildren().clear();
 
         // Update lerped cursor position
@@ -215,7 +231,7 @@ public class RLBotOverlay extends OverlayPanel {
         initializeExpTracking();
     }
 
-    private void initializeExpTracking() {
+    public void initializeExpTracking() {
         if (client.getGameState().ordinal() < 30) {
             return;
         }
@@ -231,20 +247,50 @@ public class RLBotOverlay extends OverlayPanel {
         }
 
         int totalExp = 0;
+        int combatExp = 0;
+        StringBuilder expDetails = new StringBuilder();
+
+        // Track experience gains by skill
         for (Skill skill : Skill.values()) {
             int currentExp = client.getSkillExperience(skill);
             Integer lastExp = lastSkillExp.get(skill);
+            
             if (lastExp != null) {
                 int expGained = currentExp - lastExp;
                 if (expGained > 0) {
                     totalExp += expGained;
-                    // Add small reward for XP gain
-                    addReward(0.01 * expGained, skill.getName() + " XP gained: " + expGained);
+                    
+                    // Track combat experience separately
+                    if (isCombatSkill(skill)) {
+                        combatExp += expGained;
+                        expDetails.append(String.format("%s: +%,d  ", skill.getName(), expGained));
+                    }
+                    
+                    // Add reward based on experience type
+                    if (isCombatSkill(skill)) {
+                        addReward(expGained * 0.05, skill.getName() + " XP: +" + expGained);
+                    } else {
+                        addReward(expGained * 0.01, skill.getName() + " XP: +" + expGained);
+                    }
                 }
             }
             lastSkillExp.put(skill, currentExp);
         }
-        sessionExpGained += totalExp;
+
+        if (totalExp > 0) {
+            sessionExpGained += totalExp;
+            status = expDetails.toString().trim();
+            if (status.isEmpty()) {
+                status = String.format("Gained %,d total exp", totalExp);
+            }
+        }
+    }
+
+    private boolean isCombatSkill(Skill skill) {
+        return skill == Skill.ATTACK || skill == Skill.STRENGTH || 
+               skill == Skill.DEFENCE || skill == Skill.RANGED || 
+               skill == Skill.MAGIC || skill == Skill.HITPOINTS || 
+               skill == Skill.PRAYER;
     }
 
     public void addCursorPosition(Point point) {

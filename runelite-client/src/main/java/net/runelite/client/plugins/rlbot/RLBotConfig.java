@@ -7,13 +7,13 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("rlbot")
 public interface RLBotConfig extends Config {
     @ConfigItem(
-        keyName = "port",
-        name = "WebSocket Port",
-        description = "The port to run the WebSocket server on",
+        keyName = "showCursor",
+        name = "Show Cursor",
+        description = "Show the bot's cursor position",
         position = 1
     )
-    default int getPort() {
-        return 8080;
+    default boolean showCursor() {
+        return true;
     }
 
     @ConfigItem(
@@ -27,12 +27,12 @@ public interface RLBotConfig extends Config {
     }
 
     @ConfigItem(
-        keyName = "showCursor",
-        name = "Show Cursor Trail",
-        description = "Show the cursor trail when the bot moves the mouse",
+        keyName = "port",
+        name = "WebSocket Port",
+        description = "The port to run the WebSocket server on",
         position = 3
     )
-    default boolean showCursor() {
-        return true;
+    default int getPort() {
+        return 43594;
     }
 } 

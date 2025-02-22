@@ -3,6 +3,7 @@ package net.runelite.client.plugins.rlbot;
 import com.google.inject.Provides;
 import java.awt.Canvas;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.inject.Inject;
 import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.WorldView;
@@ -27,7 +29,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.coords.LocalPoint;
 import java.awt.event.KeyEvent;
@@ -41,19 +46,67 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.awt.MouseInfo;
 import javax.swing.SwingUtilities;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.ScriptID;
+import net.runelite.api.TileItem;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.nio.file.StandardOpenOption;
 
 @PluginDescriptor(
     name = "RLBot",
-    description = "Plugin for bot control via WebSocket",
-    tags = {"bot", "automation"}
+    description = "RuneLite Bot Plugin for AI Training",
+    tags = {"bot", "ai", "training"}
 )
 public class RLBotPlugin extends Plugin {
-    private static final java.util.logging.Logger fileLogger = java.util.logging.Logger.getLogger("RLBotPlugin");
+    private static final String LOG_FILE = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs/rlbot.log";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     
+    private void log(String level, String message) {
+        try {
+            String logEntry = String.format("%s [%s] %s%n", 
+                LocalDateTime.now().format(DATE_FORMAT), 
+                level, 
+                message);
+            Files.write(Paths.get(LOG_FILE), 
+                       logEntry.getBytes(), 
+                       StandardOpenOption.CREATE, 
+                       StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void logInfo(String message) {
+        log("INFO", message);
+    }
+
+    private void logError(String message) {
+        log("ERROR", message);
+    }
+
+    private void logDebug(String message) {
+        log("DEBUG", message);
+    }
+
+    private void logWarn(String message) {
+        log("WARN", message);
+    }
+
     // Constants for movement
     private static final int CAMERA_ROTATE_AMOUNT = 45;
     private static final float CAMERA_ZOOM_AMOUNT = 25f;
     private static final int EXPLORATION_CHUNK_SIZE = 8; // Size of each exploration chunk
+    private static final int MOUSE_LERP_STEPS = 10;
+    private static final long MOUSE_MOVE_TIME = 150;
 
     @Inject
     private Client client;
@@ -65,7 +118,7 @@ public class RLBotPlugin extends Plugin {
     private RLBotConfig config;
 
     @Inject
-    private Gson gson;
+    private ObjectMapper objectMapper;
 
     @Inject
     private OverlayManager overlayManager;
@@ -78,10 +131,16 @@ public class RLBotPlugin extends Plugin {
 
     private WebSocketServer server;
     private boolean isRunning = false;
+    private JsonNode commandSchema;
+    private JsonNode stateSchema;
 
     private final Set<Point> visitedChunks = new HashSet<>();
     private final Map<Point, Long> lastVisitTime = new HashMap<>();
     private final Map<Point, AreaInfo> areaAssessments = new HashMap<>();
+
+    // Add tracking variables for health changes
+    private int lastHealth = -1;
+    private int lastMaxHealth = -1;
 
     private static class AreaInfo {
         int npcDensity;
@@ -105,170 +164,448 @@ public class RLBotPlugin extends Plugin {
     @Override
     protected void startUp() {
         try {
-            java.nio.file.Path logDir = java.nio.file.Paths.get("../../../rlbot/logs");
-            java.nio.file.Files.createDirectories(logDir);
+            // Load schemas
+            String commandSchemaPath = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/command_schema.json";
+            String stateSchemaPath = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/state_schema.json";
+            logInfo("Command schema path: " + commandSchemaPath);
+            logInfo("State schema path: " + stateSchemaPath);
             
-            // Create a custom formatter that flushes immediately
-            java.util.logging.SimpleFormatter formatter = new java.util.logging.SimpleFormatter() {
-                @Override
-                public synchronized String format(java.util.logging.LogRecord record) {
-                    String formatted = super.format(record);
-                    // Force flush after each log
-                    fileLogger.getHandlers()[0].flush();
-                    return formatted;
-                }
-            };
+            String commandSchemaStr = Files.readString(Path.of(commandSchemaPath));
+            String stateSchemaStr = Files.readString(Path.of(stateSchemaPath));
+
+            commandSchema = objectMapper.readTree(commandSchemaStr);
+            stateSchema = objectMapper.readTree(stateSchemaStr);
+
+            // Set up logging
+            java.nio.file.Path logDir = java.nio.file.Paths.get("/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs");
+            Files.createDirectories(logDir);
+            java.nio.file.Path logFile = logDir.resolve("rlbot.log");
             
-            // Configure FileHandler with immediate flush
-            java.util.logging.FileHandler fileHandler = new java.util.logging.FileHandler(logDir.resolve("rlbot.log").toString(), true);
-            fileHandler.setFormatter(formatter);
-            fileHandler.setLevel(java.util.logging.Level.INFO);
+            logInfo("Starting RLBot plugin...");
             
-            // Remove any existing handlers
-            for (java.util.logging.Handler handler : fileLogger.getHandlers()) {
-                fileLogger.removeHandler(handler);
+            // Start WebSocket server
+            startWebSocketServer();
+            
+            // Verify server is running
+            if (server == null) {
+                logError("WebSocket server failed to start properly");
+                return;
             }
             
-            fileLogger.addHandler(fileHandler);
-            fileLogger.setLevel(java.util.logging.Level.INFO);
-            
-            // Set to not use parent handlers to avoid duplicate logging
-            fileLogger.setUseParentHandlers(false);
-            
-            fileLogger.info("Starting RLBot plugin");
+            isRunning = true;
             overlayManager.add(overlay);
-            startWebSocketServer();
+            logInfo("RLBot plugin started successfully");
+            
         } catch (Exception e) {
-            fileLogger.severe("Error during plugin startup: " + e.getMessage());
+            logError("Error during plugin startup: " + e.getMessage());
         }
     }
 
     @Override
     protected void shutDown() {
-        fileLogger.info("Shutting down RLBot plugin");
-        overlayManager.remove(overlay);
+        logInfo("Shutting down RLBot plugin");
         stopWebSocketServer();
+        isRunning = false;
+        overlayManager.remove(overlay);
     }
 
     private void startWebSocketServer() {
-        server = new WebSocketServer(new InetSocketAddress(config.getPort())) {
-            @Override
-            public void onOpen(WebSocket conn, ClientHandshake handshake) {
-                String msg = "New WebSocket connection established from: " + conn.getRemoteSocketAddress();
-                fileLogger.info(msg);
-            }
-
-            @Override
-            public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-                String msg = "WebSocket connection closed: " + reason;
-                fileLogger.info(msg);
-            }
-
-            @Override
-            public void onMessage(WebSocket conn, String message) {
-                fileLogger.info("Received message from " + conn.getRemoteSocketAddress() + ": " + message);
-                try {
-                    Map<String, Object> data = gson.fromJson(message, Map.class);
-                    String action = (String) data.get("action");
-                    Map<String, Object> actionData = (Map<String, Object>) data.get("data");
-                    
-                    if (action == null || actionData == null) {
-                        throw new IllegalArgumentException("Invalid message format: missing action or data");
-                    }
-                    
-                    switch (action) {
-                        case "moveAndClick":
-                            handleMoveAndClick(actionData);
-                            break;
-                        case "camera_rotate":
-                            handleCameraRotate(actionData);
-                            break;
-                        case "camera_zoom":
-                            handleCameraZoom(actionData);
-                            break;
-                        default:
-                            String msg = "Unknown action: " + action;
-                            fileLogger.warning(msg);
-                    }
-                } catch (Exception e) {
-                    String msg = "Error handling message: " + e.getMessage();
-                    fileLogger.severe(msg);
-                }
-            }
-
-            @Override
-            public void onError(WebSocket conn, Exception ex) {
-                String msg = "WebSocket error: " + ex.getMessage();
-                fileLogger.severe(msg);
-            }
-
-            @Override
-            public void onStart() {
-                String msg = "WebSocket server started on port " + config.getPort();
-                fileLogger.info(msg);
-                isRunning = true;
-            }
-        };
+        if (server != null) {
+            logInfo("WebSocket server already running");
+            return;
+        }
 
         try {
-            // Set connection timeout
-            server.setConnectionLostTimeout(30);
-            // Start the server in a separate thread
-            Thread serverThread = new Thread(() -> {
-                try {
-                    server.run();
-                } catch (Exception e) {
-                    String msg = "WebSocket server error: " + e.getMessage();
-                    fileLogger.severe(msg);
-                    isRunning = false;
+            int port = config.getPort();
+            logInfo("Starting WebSocket server on port " + port);
+            
+            server = new WebSocketServer(new InetSocketAddress(port)) {
+                @Override
+                public void onOpen(WebSocket conn, ClientHandshake handshake) {
+                    logInfo("New WebSocket connection established from: " + conn.getRemoteSocketAddress());
                 }
-            });
-            serverThread.setDaemon(true);
-            serverThread.start();
-            
-            // Wait for server to start with proper timeout
-            if (!waitForServerStart()) {
-                String msg = "Failed to start WebSocket server after timeout";
-                fileLogger.severe(msg);
-                throw new RuntimeException(msg);
-            }
-            
-            String msg = "WebSocket server successfully started and listening on port " + config.getPort();
-            fileLogger.info(msg);
-        } catch (Exception e) {
-            String msg = "Failed to start WebSocket server: " + e.getMessage();
-            fileLogger.severe(msg);
-            isRunning = false;
-            throw new RuntimeException(msg, e);
-        }
-    }
 
-    private boolean waitForServerStart() {
-        long startTime = System.currentTimeMillis();
-        long timeout = TimeUnit.SECONDS.toMillis(10); // 10 second timeout
-        
-        while (!isRunning && System.currentTimeMillis() - startTime < timeout) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return false;
+                @Override
+                public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+                    logInfo("WebSocket connection closed: " + reason);
+                }
+
+                @Override
+                public void onMessage(WebSocket conn, String message) {
+                    logInfo("Received message from " + conn.getRemoteSocketAddress() + ": " + message);
+                    validateAndProcessCommand(message);
+                }
+
+                @Override
+                public void onError(WebSocket conn, Exception ex) {
+                    logError("WebSocket error: " + ex.getMessage());
+                }
+
+                @Override
+                public void onStart() {
+                    logInfo("WebSocket server started successfully on port " + getPort());
+                }
+            };
+
+            server.setReuseAddr(true); // Allow port reuse
+            server.start();
+            logInfo("WebSocket server initialization completed. Waiting for connections on port " + port);
+        } catch (Exception e) {
+            logError("Error starting WebSocket server: " + e.getMessage());
+            if (server != null) {
+                try {
+                    server.stop();
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    logError("Interrupted while stopping WebSocket server");
+                }
+                server = null;
             }
         }
-        
-        return isRunning;
     }
 
     private void stopWebSocketServer() {
-        if (server != null && isRunning) {
-            try {
-                server.stop(1000); // Wait up to 1 second for clean shutdown
-                isRunning = false;
-                fileLogger.info("WebSocket server stopped");
-            } catch (InterruptedException e) {
-                fileLogger.severe("Error stopping WebSocket server: " + e.getMessage());
-            }
+        if (server == null) return;
+
+        try {
+            server.stop();
+            logInfo("WebSocket server stopped");
+        } catch (InterruptedException e) {
+            logError("Error stopping server: " + e.getMessage());
         }
+    }
+
+    @Subscribe
+    public void onGameTick(GameTick event) {
+        if (!isRunning || server == null) return;
+
+        try {
+            JsonNode gameState = generateGameState();
+            validateGameState(gameState);
+            
+            // Debug log the state
+            logDebug("Generated game state: " + gameState.toString());
+            
+            // Send state to connected clients
+            for (WebSocket conn : server.getConnections()) {
+                if (conn.isOpen()) {
+                    conn.send(objectMapper.writeValueAsString(gameState));
+                }
+            }
+        } catch (Exception e) {
+            logError("Error processing game tick: " + e.getMessage());
+        }
+    }
+
+    private void validateCommand(JsonNode command) throws IllegalArgumentException {
+        if (!command.has("action")) {
+            throw new IllegalArgumentException("Command must have an 'action' field");
+        }
+        if (!command.has("data")) {
+            throw new IllegalArgumentException("Command must have a 'data' field");
+        }
+
+        String action = command.get("action").asText();
+        JsonNode data = command.get("data");
+
+        switch (action) {
+            case "moveAndClick":
+                validateMoveAndClick(data);
+                break;
+            case "camera_rotate":
+                validateCameraRotate(data);
+                break;
+            case "camera_zoom":
+                validateCameraZoom(data);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown action: " + action);
+        }
+    }
+
+    private void validateMoveAndClick(JsonNode data) throws IllegalArgumentException {
+        if (!data.has("targetType")) {
+            throw new IllegalArgumentException("moveAndClick command must have a 'targetType' field");
+        }
+        if (!data.has("action")) {
+            throw new IllegalArgumentException("moveAndClick command must have an 'action' field");
+        }
+
+        String targetType = data.get("targetType").asText();
+        String action = data.get("action").asText();
+
+        switch (targetType) {
+            case "npc":
+                if (!data.has("npcId")) {
+                    throw new IllegalArgumentException("npc target must have an 'npcId' field");
+                }
+                if (!"Attack".equals(action)) {
+                    throw new IllegalArgumentException("npc target must have 'Attack' action");
+                }
+                break;
+            case "coordinates":
+                if (!data.has("x") || !data.has("y")) {
+                    throw new IllegalArgumentException("coordinates target must have 'x' and 'y' fields");
+                }
+                if (!"Move".equals(action)) {
+                    throw new IllegalArgumentException("coordinates target must have 'Move' action");
+                }
+                break;
+            case "ground_item":
+                if (!data.has("name") || !data.has("x") || !data.has("y")) {
+                    throw new IllegalArgumentException("ground_item target must have 'name', 'x', and 'y' fields");
+                }
+                if (!"Take".equals(action)) {
+                    throw new IllegalArgumentException("ground_item target must have 'Take' action");
+                }
+                break;
+            case "object":
+                if (!data.has("objectId") || !data.has("x") || !data.has("y")) {
+                    throw new IllegalArgumentException("object target must have 'objectId', 'x', and 'y' fields");
+                }
+                if (!"Use".equals(action)) {
+                    throw new IllegalArgumentException("object target must have 'Use' action");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown targetType: " + targetType);
+        }
+    }
+
+    private void validateCameraRotate(JsonNode data) throws IllegalArgumentException {
+        if (!data.has("right")) {
+            throw new IllegalArgumentException("camera_rotate command must have a 'right' field");
+        }
+    }
+
+    private void validateCameraZoom(JsonNode data) throws IllegalArgumentException {
+        if (!data.has("in")) {
+            throw new IllegalArgumentException("camera_zoom command must have an 'in' field");
+        }
+    }
+
+    private void validateGameState(JsonNode state) throws IllegalArgumentException {
+        if (!state.has("player")) {
+            throw new IllegalArgumentException("Game state must have a 'player' field");
+        }
+        if (!state.has("npcs")) {
+            throw new IllegalArgumentException("Game state must have an 'npcs' field");
+        }
+        if (!state.has("objects")) {
+            throw new IllegalArgumentException("Game state must have an 'objects' field");
+        }
+        if (!state.has("groundItems")) {
+            throw new IllegalArgumentException("Game state must have a 'groundItems' field");
+        }
+
+        JsonNode player = state.get("player");
+        if (!player.has("location") || !player.has("health") || !player.has("inCombat") || !player.has("runEnergy") || !player.has("skills")) {
+            throw new IllegalArgumentException("Player state must have 'location', 'health', 'inCombat', 'runEnergy', and 'skills' fields");
+        }
+    }
+
+    private void validateAndProcessCommand(String message) {
+        try {
+            JsonNode command = objectMapper.readTree(message);
+            logDebug("Received command: " + command.toString());
+            validateCommand(command);
+            
+            // Process command based on action type
+            String action = command.get("action").asText();
+            JsonNode data = command.get("data");
+            
+            // Only log at info level for important actions
+            if (action.equals("moveAndClick")) {
+                logInfo(String.format("Processing moveAndClick - Target: %s, Action: %s", 
+                    data.get("targetType").asText(), 
+                    data.get("action").asText()));
+            } else {
+                logDebug(String.format("Processing command - Action: %s, Data: %s", action, data));
+            }
+            
+            switch (action) {
+                case "moveAndClick":
+                    handleMoveAndClick(data);
+                    break;
+                case "camera_rotate":
+                    handleCameraRotate(data);
+                    break;
+                case "camera_zoom":
+                    handleCameraZoom(data);
+                    break;
+                default:
+                    logWarn("Unknown action type: " + action);
+            }
+        } catch (Exception e) {
+            logError("Error validating/processing command: " + e.getMessage());
+        }
+    }
+
+    private void handleMoveAndClick(JsonNode data) {
+        clientThread.invoke(() -> {
+            try {
+                Point target = null;
+                String targetType = data.get("targetType").asText();
+                
+                switch (targetType) {
+                    case "npc":
+                        int npcId = data.get("npcId").asInt();
+                        NPC npc = findNPCById(npcId);
+                        if (npc != null) {
+                            target = worldToCanvas(npc.getWorldLocation());
+                        }
+                        break;
+                        
+                    case "coordinates":
+                        int x = data.get("x").asInt();
+                        int y = data.get("y").asInt();
+                        target = worldToCanvas(new WorldPoint(x, y, client.getPlane()));
+                        break;
+                        
+                    case "object":
+                        int objectId = data.get("objectId").asInt();
+                        x = data.get("x").asInt();
+                        y = data.get("y").asInt();
+                        WorldPoint objLocation = new WorldPoint(x, y, client.getPlane());
+                        GameObject targetObj = findGameObject(objectId, objLocation);
+                        if (targetObj != null) {
+                            target = worldToCanvas(targetObj.getWorldLocation());
+                        }
+                        break;
+                        
+                    case "ground_item":
+                        String itemName = data.get("name").asText();
+                        x = data.get("x").asInt();
+                        y = data.get("y").asInt();
+                        WorldPoint itemLocation = new WorldPoint(x, y, client.getPlane());
+                        TileItem groundItem = findGroundItem(itemName, itemLocation);
+                        if (groundItem != null) {
+                            target = worldToCanvas(itemLocation);
+                        }
+                        break;
+                }
+                
+                if (target != null) {
+                    smoothMouseMove(target);
+                }
+            } catch (Exception e) {
+                logError("Error in handleMoveAndClick: " + e.getMessage());
+            }
+        });
+    }
+
+    private void smoothMouseMove(Point target) {
+        try {
+            Canvas canvas = client.getCanvas();
+            if (canvas == null) {
+                logError("Canvas is null, cannot move mouse");
+                return;
+            }
+
+            Point currentMouse = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(currentMouse, canvas);
+            
+            logDebug(String.format("Moving mouse from (%d, %d) to (%d, %d)", 
+                currentMouse.x, currentMouse.y, target.x, target.y));
+            
+            // Remove intermediate step logging
+            long stepDelay = MOUSE_MOVE_TIME / MOUSE_LERP_STEPS;
+            
+            for (int i = 1; i <= MOUSE_LERP_STEPS; i++) {
+                float t = (float)i / MOUSE_LERP_STEPS;
+                t = 1.0f - (1.0f - t) * (1.0f - t); // Ease out quad
+                
+                int lerpX = (int)(currentMouse.x + (target.x - currentMouse.x) * t);
+                int lerpY = (int)(currentMouse.y + (target.y - currentMouse.y) * t);
+                
+                MouseEvent moved = new MouseEvent(
+                    canvas, MouseEvent.MOUSE_MOVED,
+                    System.currentTimeMillis(), 0,
+                    lerpX, lerpY, 0, false, MouseEvent.NOBUTTON
+                );
+                canvas.dispatchEvent(moved);
+                overlay.addCursorPosition(new Point(lerpX, lerpY));
+                
+                Thread.sleep(stepDelay);
+            }
+
+            // Only log the final click
+            logDebug("Clicking at target location");
+            
+            MouseEvent pressed = new MouseEvent(
+                canvas, MouseEvent.MOUSE_PRESSED,
+                System.currentTimeMillis(), 0, target.x, target.y,
+                1, false, MouseEvent.BUTTON1
+            );
+            canvas.dispatchEvent(pressed);
+            
+            Thread.sleep(2);
+            
+            MouseEvent released = new MouseEvent(
+                canvas, MouseEvent.MOUSE_RELEASED,
+                System.currentTimeMillis() + 2, 0, target.x, target.y,
+                1, false, MouseEvent.BUTTON1
+            );
+            canvas.dispatchEvent(released);
+            
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logError("Mouse movement interrupted");
+        } catch (Exception e) {
+            logError("Error during mouse movement: " + e.getMessage());
+        }
+    }
+
+    private void handleCameraRotate(JsonNode data) {
+        boolean right = data.get("right").asBoolean();
+        int degrees = data.has("degrees") ? data.get("degrees").asInt() : CAMERA_ROTATE_AMOUNT;
+        
+        clientThread.invoke(() -> {
+            try {
+                // Get current yaw and add/subtract rotation amount
+                int currentYaw = client.getCameraYawTarget();
+                int yawChange = degrees * (right ? 1 : -1);
+                int newYaw = (currentYaw + yawChange) & 2047; // Keep within 0-2047 range
+                
+                // Set new camera yaw
+                client.setCameraYawTarget(newYaw);
+                
+                logDebug(String.format("Rotating camera %s by %d degrees", 
+                    right ? "right" : "left", degrees));
+            } catch (Exception e) {
+                logError("Error rotating camera: " + e.getMessage());
+            }
+        });
+    }
+
+    private void handleCameraZoom(JsonNode data) {
+        int zoom = data.get("zoom").asInt();
+        clientThread.invoke(() -> {
+            try {
+                client.runScript(ScriptID.CAMERA_DO_ZOOM, zoom, zoom);
+            } catch (Exception e) {
+                logWarn("Error setting camera zoom");
+            }
+        });
+    }
+
+    private NPC findNPCById(int id) {
+        return client.getNpcs().stream()
+            .filter(npc -> npc.getId() == id)
+            .findFirst()
+            .orElse(null);
+    }
+
+    private Point worldToCanvas(WorldPoint worldPoint) {
+        if (client.getGameState() != GameState.LOGGED_IN) return null;
+
+        LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+        if (localPoint == null) return null;
+
+        net.runelite.api.Point canvasPoint = Perspective.localToCanvas(client, localPoint, client.getPlane());
+        if (canvasPoint == null) return null;
+
+        return new Point(canvasPoint.getX(), canvasPoint.getY());
     }
 
     private boolean isObstructed(WorldPoint target) {
@@ -406,315 +743,43 @@ public class RLBotPlugin extends Plugin {
         return false;
     }
 
-    private void closeInterfaces() {
-        // Press ESC key to close interfaces
-        clientThread.invoke(() -> {
-            // Use raw script ID for closing modal
-            client.runScript(2622);
-            
-            // Create and dispatch key events
-            KeyEvent escPressed = new KeyEvent(client.getCanvas(), KeyEvent.KEY_PRESSED, 
-                System.currentTimeMillis(), 0, KeyEvent.VK_ESCAPE, KeyEvent.CHAR_UNDEFINED);
-            KeyEvent escReleased = new KeyEvent(client.getCanvas(), KeyEvent.KEY_RELEASED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_ESCAPE, KeyEvent.CHAR_UNDEFINED);
+    @Subscribe
+    public void onStatChanged(StatChanged statChanged) {
+        if (!isRunning) {
+            return;
+        }
 
-            client.getCanvas().dispatchEvent(escPressed);
-            client.getCanvas().dispatchEvent(escReleased);
-        });
-    }
-
-    private void handleMoveAndClick(Map<String, Object> data) {
-        try {
-            fileLogger.info("=== Starting click action ===");
-            fileLogger.info("Received click data: " + gson.toJson(data));
-
-            // More lenient game state check
-            if (client.getGameState().getState() < GameState.LOADING.getState()) {
-                fileLogger.warning("Cannot perform action - client not ready (state: " + client.getGameState() + ")");
-                return;
-            }
-
-            // Get target coordinates or object
-            final String targetType = (String) data.get("targetType");
-            final String action = (String) data.getOrDefault("action", "Click");
-            
-            fileLogger.info(String.format("Processing %s action on %s", action, targetType));
-            
-            // Execute all client operations on client thread
+        // Update overlay for combat skill changes
+        Skill skill = statChanged.getSkill();
+        if (skill == Skill.ATTACK || skill == Skill.STRENGTH || 
+            skill == Skill.DEFENCE || skill == Skill.RANGED || 
+            skill == Skill.MAGIC || skill == Skill.HITPOINTS) {
             clientThread.invoke(() -> {
                 try {
-                    Point target;
-                    
-                    // Determine target point based on target type
-                    switch (targetType) {
-                        case "coordinates":
-                            int x = ((Number) data.get("x")).intValue();
-                            int y = ((Number) data.get("y")).intValue();
-                            WorldPoint worldPoint = new WorldPoint(x, y, client.getPlane());
-                            fileLogger.info(String.format("Walking to coordinates: (%d, %d) on plane %d", x, y, client.getPlane()));
-                            target = worldToCanvas(worldPoint);
-                            break;
-                            
-                        case "npc":
-                            int npcId = ((Number) data.get("npcId")).intValue();
-                            fileLogger.info("Looking for NPC with ID: " + npcId);
-                            NPC npc = findNPCById(npcId);
-                            if (npc == null) {
-                                fileLogger.warning("NPC not found: " + npcId);
-                                return;
-                            }
-                            fileLogger.info(String.format("Found NPC: %s (level %d) at %s", 
-                                npc.getName(), npc.getCombatLevel(), npc.getWorldLocation()));
-                            target = worldToCanvas(npc.getWorldLocation());
-                            break;
-                            
-                        case "object":
-                            String objectName = (String) data.get("name");
-                            WorldPoint location = new WorldPoint(
-                                ((Number) data.get("x")).intValue(),
-                                ((Number) data.get("y")).intValue(),
-                                client.getPlane()
-                            );
-                            fileLogger.info(String.format("Looking for object '%s' at %s", objectName, location));
-                            GameObject obj = findGameObject(location, objectName);
-                            if (obj == null) {
-                                fileLogger.warning("Object not found: " + objectName + " at " + location);
-                                return;
-                            }
-                            fileLogger.info(String.format("Found object: %s (ID: %d) at %s", 
-                                objectName, obj.getId(), obj.getWorldLocation()));
-                            target = worldToCanvas(obj.getWorldLocation());
-                            break;
-                            
-                        default:
-                            fileLogger.warning("Unknown target type: " + targetType);
-                            return;
-                    }
-
-                    if (target == null) {
-                        fileLogger.warning("Failed to get target point - target is off screen or invalid");
-                        return;
-                    }
-                    fileLogger.info(String.format("Converted world location to canvas point: %s", target));
-
-                    // Check if point is off screen or blocked by interface
-                    if (isInterfaceOverlapping(target)) {
-                        fileLogger.warning("Click location blocked by interface");
-                        fileLogger.info("Attempting to close interfaces...");
-                        closeInterfaces();
-                        return;
-                    }
-
-                    // Get canvas and ensure it's available
-                    Canvas canvas = client.getCanvas();
-                    if (canvas == null) {
-                        fileLogger.warning("Canvas is null");
-                        return;
-                    }
-
-                    // Execute click with small delays between events
-                    try {
-                        // Get current mouse position
-                        Point currentMouse = MouseInfo.getPointerInfo().getLocation();
-                        SwingUtilities.convertPointFromScreen(currentMouse, canvas);
-                        
-                        // Calculate lerp steps
-                        int steps = 20;  // Number of interpolation steps
-                        long moveTime = 500;  // Total movement time in ms
-                        long stepDelay = moveTime / steps;  // Time between steps
-                        
-                        // Lerp mouse to target location
-                        for (int i = 1; i <= steps; i++) {
-                            float t = (float)i / steps;
-                            // Ease out quad
-                            t = 1.0f - (1.0f - t) * (1.0f - t);
-                            
-                            int lerpX = (int)(currentMouse.x + (target.getX() - currentMouse.x) * t);
-                            int lerpY = (int)(currentMouse.y + (target.getY() - currentMouse.y) * t);
-                            
-                            MouseEvent moved = new MouseEvent(
-                                canvas,
-                                MouseEvent.MOUSE_MOVED,
-                                System.currentTimeMillis(),
-                                0,
-                                lerpX,
-                                lerpY,
-                                0,
-                                false,
-                                MouseEvent.NOBUTTON
-                            );
-                            canvas.dispatchEvent(moved);
-                            // Update overlay cursor position
-                            overlay.addCursorPosition(new Point(lerpX, lerpY));
-                            Thread.sleep(stepDelay);
-                        }
-
-                        // Small delay before click
-                        Thread.sleep(50);
-
-                        // Click sequence
-                        long clickTime = System.currentTimeMillis();
-                        MouseEvent pressed = new MouseEvent(
-                            canvas,
-                            MouseEvent.MOUSE_PRESSED,
-                            clickTime,
-                            0,
-                            (int)target.getX(),
-                            (int)target.getY(),
-                            1,
-                            false,
-                            MouseEvent.BUTTON1
-                        );
-                        canvas.dispatchEvent(pressed);
-                        Thread.sleep(25);  // Small delay between press and release
-
-                        MouseEvent released = new MouseEvent(
-                            canvas,
-                            MouseEvent.MOUSE_RELEASED,
-                            clickTime + 25,
-                            0,
-                            (int)target.getX(),
-                            (int)target.getY(),
-                            1,
-                            false,
-                            MouseEvent.BUTTON1
-                        );
-                        canvas.dispatchEvent(released);
-
-                        // Log success
-                        fileLogger.info(String.format("Executed click at %s", target));
-                        fileLogger.info("=== Click action completed ===\n");
-                        
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        fileLogger.warning("Click sequence interrupted");
-                    }
-
+                    overlay.updateExperienceGained();
                 } catch (Exception e) {
-                    fileLogger.severe("Error executing click sequence: " + e.getMessage());
-                }
-            });
-            
-        } catch (Exception e) {
-            String msg = "Error in handleMoveAndClick: " + e.getMessage();
-            fileLogger.severe(msg);
-            e.printStackTrace(new java.io.PrintWriter(new java.io.StringWriter()) {
-                @Override
-                public void println(Object x) {
-                    fileLogger.severe(String.valueOf(x));
+                    logError("Error updating experience in overlay: " + e.getMessage());
                 }
             });
         }
     }
 
-    private NPC findNPCById(int id) {
-        return client.getNpcs().stream()
-            .filter(npc -> npc.getId() == id)
-            .findFirst()
-            .orElse(null);
-    }
-
-    private Point worldToCanvas(WorldPoint worldPoint) {
-        if (client.getGameState() != GameState.LOGGED_IN) {
-            fileLogger.warning("Cannot convert coordinates - client not logged in");
-            return null;
+    @Subscribe
+    public void onGameStateChanged(GameStateChanged gameStateChanged) {
+        if (!isRunning) {
+            return;
         }
 
-        LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
-        if (localPoint == null) {
-            fileLogger.warning("Cannot convert world point to local: " + worldPoint);
-            return null;
+        if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
+            clientThread.invoke(() -> {
+                try {
+                    overlay.initializeExpTracking();
+                    logInfo("Experience tracking initialized after login");
+                } catch (Exception e) {
+                    logError("Error initializing experience tracking: " + e.getMessage());
+                }
+            });
         }
-
-        net.runelite.api.Point canvasPoint = Perspective.localToCanvas(client, localPoint, client.getPlane());
-        if (canvasPoint == null) {
-            fileLogger.warning("Cannot convert local point to canvas: " + localPoint);
-            return null;
-        }
-
-        fileLogger.info(String.format("Converting coordinates: World(%s) -> Local(%s) -> Canvas(%s)", 
-            worldPoint, localPoint, canvasPoint));
-
-        // Get client dimensions
-        int canvasX = canvasPoint.getX();
-        int canvasY = canvasPoint.getY();
-
-        // Apply scaling if the client is stretched
-        if (client.isStretchedEnabled()) {
-            // Get stretched dimensions
-            Dimension stretched = client.getStretchedDimensions();
-            Dimension real = client.getRealDimensions();
-            float width = (float) (stretched.width / real.getWidth());
-            float height = (float) (stretched.height / real.getHeight());
-
-            // Apply scaling
-            int oldX = canvasX;
-            int oldY = canvasY;
-            canvasX = Math.round(canvasX * width);
-            canvasY = Math.round(canvasY * height);
-            fileLogger.info(String.format("Applied scaling: (%d,%d) -> (%d,%d) [scale: %.2f,%.2f]", 
-                oldX, oldY, canvasX, canvasY, width, height));
-        }
-
-        // Ensure point is within canvas bounds
-        Canvas canvas = client.getCanvas();
-        if (canvas != null) {
-            int oldX = canvasX;
-            int oldY = canvasY;
-            canvasX = Math.min(Math.max(canvasX, 0), canvas.getWidth());
-            canvasY = Math.min(Math.max(canvasY, 0), canvas.getHeight());
-            if (oldX != canvasX || oldY != canvasY) {
-                fileLogger.info(String.format("Adjusted point to stay within bounds: (%d,%d) -> (%d,%d)", 
-                    oldX, oldY, canvasX, canvasY));
-            }
-        }
-
-        return new Point(canvasX, canvasY);
-    }
-
-    private GameObject findGameObject(WorldPoint location, String name) {
-        Tile tile = client.getScene().getTiles()[client.getPlane()][location.getX()][location.getY()];
-        if (tile != null) {
-            return Arrays.stream(tile.getGameObjects())
-                .filter(obj -> obj != null && 
-                    obj.getRenderable() != null)
-                .filter(obj -> {
-                    ObjectComposition def = client.getObjectDefinition(obj.getId());
-                    return def != null && def.getName().equalsIgnoreCase(name);
-                })
-                .findFirst()
-                .orElse(null);
-        }
-        return null;
-    }
-
-    private void handleCameraRotate(Map<String, Object> data) {
-        boolean right = (boolean) data.get("right");
-        int amount = right ? CAMERA_ROTATE_AMOUNT : -CAMERA_ROTATE_AMOUNT;
-        
-        clientThread.invoke(() -> {
-            try {
-                client.setCameraYawTarget(client.getCameraYaw() + amount);
-            } catch (Exception e) {
-                fileLogger.severe("Error rotating camera: " + e.getMessage());
-            }
-        });
-    }
-
-    private void handleCameraZoom(Map<String, Object> data) {
-        boolean zoomIn = (boolean) data.get("in");
-        float amount = zoomIn ? -CAMERA_ZOOM_AMOUNT : CAMERA_ZOOM_AMOUNT;
-        
-        clientThread.invoke(() -> {
-            try {
-                int currentZoom = client.getVarcIntValue(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
-                int newZoom = currentZoom + (int)amount;
-                // Use raw script ID for camera zoom
-                client.runScript(42, newZoom, newZoom);
-            } catch (Exception e) {
-                fileLogger.severe("Error zooming camera: " + e.getMessage());
-            }
-        });
     }
 
     private Point worldToChunk(WorldPoint point) {
@@ -731,10 +796,7 @@ public class RLBotPlugin extends Plugin {
         Point chunk = worldToChunk(playerLocation);
         
         // Track visited chunk
-        if (visitedChunks.add(chunk)) {
-            // New chunk discovered
-            overlay.addReward(5.0, "New area discovered!");
-        }
+        visitedChunks.add(chunk);
 
         // Update visit time
         lastVisitTime.put(chunk, System.currentTimeMillis());
@@ -771,14 +833,6 @@ public class RLBotPlugin extends Plugin {
             .count();
 
         info.lastAssessment = System.currentTimeMillis();
-
-        // Add rewards based on area quality
-        double areaScore = calculateAreaScore(info);
-        if (areaScore > 0.7) {
-            overlay.addReward(10.0, "High-value area discovered!");
-        } else if (areaScore > 0.4) {
-            overlay.addReward(5.0, "Decent area discovered!");
-        }
     }
 
     private boolean isResource(GameObject obj) {
@@ -793,218 +847,236 @@ public class RLBotPlugin extends Plugin {
                name.contains("fishing spot");
     }
 
-    private double calculateAreaScore(AreaInfo info) {
-        // Normalize each factor to 0-1 range
-        double npcScore = Math.min(info.npcDensity / 10.0, 1.0) * 0.4;
-        double levelScore = Math.min(info.averageNpcLevel / 100.0, 1.0) * 0.3;
-        double resourceScore = Math.min(info.resourceDensity / 5.0, 1.0) * 0.3;
+    private GameObject findGameObject(int objectId, WorldPoint location) {
+        if (client.getGameState() != GameState.LOGGED_IN) return null;
 
-        return npcScore + levelScore + resourceScore;
-    }
-
-    @Subscribe
-    public void onGameTick(GameTick event) {
-        if (!isRunning || server == null) {
-            return;
-        }
-
-        // Update exploration data
-        updateExplorationData();
-
-        // Broadcast game state to connected clients
-        try {
-            String gameState = createGameState();
-            for (WebSocket conn : server.getConnections()) {
-                conn.send(gameState);
-            }
-        } catch (Exception e) {
-            fileLogger.severe("Error broadcasting game state: " + e.getMessage());
-        }
-    }
-
-    @Subscribe
-    public void onStatChanged(StatChanged statChanged) {
-        if (!isRunning) {
-            return;
-        }
-
-        // Update overlay for combat skill changes
-        Skill skill = statChanged.getSkill();
-        if (skill == Skill.ATTACK || skill == Skill.STRENGTH || 
-            skill == Skill.DEFENCE || skill == Skill.RANGED || 
-            skill == Skill.MAGIC || skill == Skill.HITPOINTS) {
-            clientThread.invoke(() -> {
-                try {
-                    overlay.updateExperienceGained();
-                } catch (Exception e) {
-                    fileLogger.severe("Error updating experience in overlay: " + e.getMessage());
-                }
-            });
-        }
-    }
-
-    private String createGameState() {
-        Map<String, Object> state = new HashMap<>();
+        Scene scene = client.getScene();
+        Tile[][][] tiles = scene.getTiles();
+        int plane = location.getPlane();
         
-        if (client.getLocalPlayer() != null) {
-            // Player location and basic stats
-            WorldPoint loc = client.getLocalPlayer().getWorldLocation();
-            Map<String, Integer> playerLocation = new HashMap<>();
-            playerLocation.put("x", loc.getX());
-            playerLocation.put("y", loc.getY());
-            playerLocation.put("plane", loc.getPlane());
-            state.put("playerLocation", playerLocation);
+        // Convert world point to scene coordinates
+        int sceneX = location.getX() - scene.getBaseX();
+        int sceneY = location.getY() - scene.getBaseY();
+        
+        // Check if coordinates are within bounds
+        if (sceneX < 0 || sceneY < 0 || sceneX >= Constants.SCENE_SIZE || sceneY >= Constants.SCENE_SIZE) {
+            return null;
+        }
+
+        Tile tile = tiles[plane][sceneX][sceneY];
+        if (tile == null) return null;
+
+        // Search for the object with matching ID
+        for (GameObject obj : tile.getGameObjects()) {
+            if (obj != null && obj.getId() == objectId) {
+                return obj;
+            }
+        }
+        
+        return null;
+    }
+
+    private TileItem findGroundItem(String itemName, WorldPoint location) {
+        if (client.getGameState() != GameState.LOGGED_IN) return null;
+
+        Scene scene = client.getScene();
+        Tile[][][] tiles = scene.getTiles();
+        int plane = location.getPlane();
+        
+        // Convert world point to scene coordinates
+        int sceneX = location.getX() - scene.getBaseX();
+        int sceneY = location.getY() - scene.getBaseY();
+        
+        // Check if coordinates are within bounds
+        if (sceneX < 0 || sceneY < 0 || sceneX >= Constants.SCENE_SIZE || sceneY >= Constants.SCENE_SIZE) {
+            return null;
+        }
+
+        Tile tile = tiles[plane][sceneX][sceneY];
+        if (tile == null) return null;
+
+        // Get ground items on the tile
+        List<TileItem> groundItems = tile.getGroundItems();
+        if (groundItems == null) return null;
+
+        // Find the item with matching name
+        for (TileItem item : groundItems) {
+            if (item == null) continue;
             
-            // Player stats
-            state.put("playerHealth", client.getBoostedSkillLevel(Skill.HITPOINTS));
-            state.put("playerMaxHealth", client.getRealSkillLevel(Skill.HITPOINTS));
-            state.put("playerAnimation", client.getLocalPlayer().getAnimation());
-            state.put("inCombat", client.getLocalPlayer().getInteracting() != null);
-            state.put("playerRunEnergy", client.getEnergy());
+            ItemComposition itemComp = itemManager.getItemComposition(item.getId());
+            if (itemComp != null && itemName.equalsIgnoreCase(itemComp.getName())) {
+                return item;
+            }
+        }
+        
+        return null;
+    }
+
+    private JsonNode generateGameState() {
+        ObjectNode state = objectMapper.createObjectNode();
+        
+        // Player info
+        ObjectNode player = objectMapper.createObjectNode();
+        Player localPlayer = client.getLocalPlayer();
+        if (localPlayer != null) {
+            // Location
+            ObjectNode location = objectMapper.createObjectNode();
+            WorldPoint worldLoc = localPlayer.getWorldLocation();
+            location.put("x", worldLoc.getX());
+            location.put("y", worldLoc.getY());
+            location.put("plane", worldLoc.getPlane());
+            player.set("location", location);
             
-            // Combat stats
-            Map<String, Map<String, Integer>> skills = new HashMap<>();
+            // Health
+            ObjectNode health = objectMapper.createObjectNode();
+            int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
+            int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
+            // Only log health changes
+            if (currentHealth != lastHealth || maxHealth != lastMaxHealth) {
+                logInfo(String.format("Health changed - Current: %d, Max: %d", currentHealth, maxHealth));
+                lastHealth = currentHealth;
+                lastMaxHealth = maxHealth;
+            }
+            health.put("current", currentHealth);
+            health.put("maximum", maxHealth);
+            player.set("health", health);
+            
+            // Combat state
+            player.put("inCombat", localPlayer.getInteracting() != null);
+            player.put("runEnergy", client.getEnergy() / 100.0);
+            
+            // Skills
+            ObjectNode skills = objectMapper.createObjectNode();
             for (Skill skill : Skill.values()) {
-                Map<String, Integer> skillData = new HashMap<>();
-                skillData.put("level", client.getBoostedSkillLevel(skill));
-                skillData.put("realLevel", client.getRealSkillLevel(skill));
-                skillData.put("experience", client.getSkillExperience(skill));
-                skills.put(skill.getName(), skillData);
+                ObjectNode skillNode = objectMapper.createObjectNode();
+                skillNode.put("level", client.getBoostedSkillLevel(skill));
+                skillNode.put("realLevel", client.getRealSkillLevel(skill));
+                skillNode.put("experience", client.getSkillExperience(skill));
+                skills.set(skill.getName(), skillNode);
             }
-            state.put("skills", skills);
+            player.set("skills", skills);
+        }
+        state.set("player", player);
+        
+        // Add debug logging for player object
+        logInfo("Player object being sent: " + player.toString());
+        
+        // NPCs
+        ArrayNode npcs = objectMapper.createArrayNode();
+        for (NPC npc : client.getNpcs()) {
+            if (npc == null) continue;
             
-            // NPCs
-            List<Map<String, Object>> npcs = new ArrayList<>();
-            for (NPC npc : client.getNpcs()) {
-                if (npc == null) continue;
-                
-                Map<String, Object> npcData = new HashMap<>();
-                WorldPoint npcLoc = npc.getWorldLocation();
-                npcData.put("id", npc.getId());
-                npcData.put("name", npc.getName());
-                npcData.put("combatLevel", npc.getCombatLevel());
-                npcData.put("animation", npc.getAnimation());
-                npcData.put("interacting", npc.getInteracting() != null);
-                
-                Map<String, Integer> location = new HashMap<>();
-                location.put("x", npcLoc.getX());
-                location.put("y", npcLoc.getY());
-                location.put("plane", npcLoc.getPlane());
-                npcData.put("location", location);
-                
-                npcs.add(npcData);
+            ObjectNode npcNode = objectMapper.createObjectNode();
+            npcNode.put("id", npc.getId());
+            npcNode.put("name", npc.getName());
+            npcNode.put("combatLevel", npc.getCombatLevel());
+            
+            // Location
+            ObjectNode location = objectMapper.createObjectNode();
+            WorldPoint npcLoc = npc.getWorldLocation();
+            location.put("x", npcLoc.getX());
+            location.put("y", npcLoc.getY());
+            location.put("plane", npcLoc.getPlane());
+            npcNode.set("location", location);
+            
+            // Health
+            ObjectNode health = objectMapper.createObjectNode();
+            Integer healthRatio = npc.getHealthRatio();
+            health.put("current", healthRatio != null ? healthRatio : 100);
+            health.put("maximum", 100);
+            npcNode.set("health", health);
+            
+            npcNode.put("interacting", npc.getInteracting() != null);
+            if (localPlayer != null) {
+                npcNode.put("distance", npc.getWorldLocation().distanceTo(localPlayer.getWorldLocation()));
             }
-            state.put("npcs", npcs);
-            
-            // Ground items
-            List<Map<String, Object>> groundItems = new ArrayList<>();
-            Scene scene = client.getScene();
-            Tile[][][] tiles = scene.getTiles();
-            for (int z = 0; z < tiles.length; z++) {
-                for (int x = 0; x < tiles[z].length; x++) {
-                    for (int y = 0; y < tiles[z][x].length; y++) {
-                        Tile tile = tiles[z][x][y];
-                        if (tile == null) continue;
+            npcs.add(npcNode);
+        }
+        state.set("npcs", npcs);
+        
+        // Game objects
+        ArrayNode objects = objectMapper.createArrayNode();
+        Scene scene = client.getScene();
+        Tile[][][] tiles = scene.getTiles();
+        for (int z = 0; z < Constants.MAX_Z; z++) {
+            for (int x = 0; x < Constants.SCENE_SIZE; x++) {
+                for (int y = 0; y < Constants.SCENE_SIZE; y++) {
+                    Tile tile = tiles[z][x][y];
+                    if (tile == null) continue;
+                    
+                    for (GameObject object : tile.getGameObjects()) {
+                        if (object == null) continue;
                         
-                        List<TileItem> items = tile.getGroundItems();
-                        if (items == null) continue;
+                        ObjectNode objectNode = objectMapper.createObjectNode();
+                        objectNode.put("id", object.getId());
                         
-                        for (TileItem item : items) {
-                            if (item == null) continue;
+                        ObjectComposition objComp = client.getObjectDefinition(object.getId());
+                        if (objComp != null) {
+                            objectNode.put("name", objComp.getName());
                             
-                            ItemComposition itemComp = itemManager.getItemComposition(item.getId());
-                            WorldPoint itemLoc = tile.getWorldLocation();
-                            Map<String, Object> itemData = new HashMap<>();
-                            itemData.put("id", item.getId());
-                            itemData.put("name", itemComp.getName());
-                            itemData.put("quantity", item.getQuantity());
-                            itemData.put("gePrice", itemComp.getPrice());
-                            itemData.put("haPrice", itemComp.getHaPrice());
+                            // Location
+                            ObjectNode location = objectMapper.createObjectNode();
+                            WorldPoint objLoc = object.getWorldLocation();
+                            location.put("x", objLoc.getX());
+                            location.put("y", objLoc.getY());
+                            location.put("plane", objLoc.getPlane());
+                            objectNode.set("location", location);
                             
-                            Map<String, Integer> location = new HashMap<>();
-                            location.put("x", itemLoc.getX());
-                            location.put("y", itemLoc.getY());
-                            location.put("plane", itemLoc.getPlane());
-                            itemData.put("location", location);
+                            // Actions
+                            ArrayNode actions = objectMapper.createArrayNode();
+                            for (String action : objComp.getActions()) {
+                                if (action != null) actions.add(action);
+                            }
+                            objectNode.set("actions", actions);
                             
-                            // Calculate distance to player
-                            double distance = Math.sqrt(
-                                Math.pow(loc.getX() - itemLoc.getX(), 2) +
-                                Math.pow(loc.getY() - itemLoc.getY(), 2)
-                            );
-                            itemData.put("distance", distance);
-                            
-                            groundItems.add(itemData);
+                            objects.add(objectNode);
                         }
                     }
                 }
             }
-            state.put("groundItems", groundItems);
-            
-            // Interface state
-            state.put("interfacesOpen", isInterfaceOpen());
-            
-            // Path obstruction
-            state.put("pathObstructed", isObstructed(client.getLocalPlayer().getWorldLocation()));
         }
+        state.set("objects", objects);
         
-        try {
-            return gson.toJson(state);
-        } catch (Exception e) {
-            fileLogger.severe("Error converting game state to JSON: " + e.getMessage());
-            return "{}";  // Return empty JSON object on error
-        }
-    }
-
-    private boolean isInterfaceOverlapping(Point point) {
-        Widget[] widgets = client.getWidgetRoots();
-        if (widgets == null) {
-            return false;
-        }
-
-        // Check all visible widgets
-        for (Widget widget : widgets) {
-            if (widget == null || widget.isHidden()) continue;
-            
-            // Skip non-blocking widgets like minimap, combat overlay, chatbox, etc.
-            if (isNonBlockingWidget(widget)) continue;
-            
-            if (widget.getBounds().contains(point)) {
-                fileLogger.info("Click blocked by interface: " + widget.getName() + " (ID: " + widget.getId() + ")");
-                return true;
-            }
-
-            // Check child widgets as well
-            Widget[] children = widget.getDynamicChildren();
-            if (children != null) {
-                for (Widget child : children) {
-                    if (child != null && !child.isHidden() && !isNonBlockingWidget(child) && child.getBounds().contains(point)) {
-                        fileLogger.info("Click blocked by child interface: " + child.getName() + " (ID: " + child.getId() + ")");
-                        return true;
+        // Ground items
+        ArrayNode groundItems = objectMapper.createArrayNode();
+        for (Tile[][] plane : tiles) {
+            for (Tile[] row : plane) {
+                for (Tile tile : row) {
+                    if (tile == null) continue;
+                    
+                    List<TileItem> items = tile.getGroundItems();
+                    if (items != null) {
+                        for (TileItem item : items) {
+                            if (item == null) continue;
+                            
+                            ObjectNode itemNode = objectMapper.createObjectNode();
+                            itemNode.put("id", item.getId());
+                            
+                            ItemComposition itemComp = itemManager.getItemComposition(item.getId());
+                            if (itemComp != null) {
+                                itemNode.put("name", itemComp.getName());
+                                itemNode.put("quantity", item.getQuantity());
+                                
+                                // Location
+                                ObjectNode location = objectMapper.createObjectNode();
+                                WorldPoint itemLoc = tile.getWorldLocation();
+                                location.put("x", itemLoc.getX());
+                                location.put("y", itemLoc.getY());
+                                location.put("plane", itemLoc.getPlane());
+                                itemNode.set("location", location);
+                                
+                                groundItems.add(itemNode);
+                            }
+                        }
                     }
                 }
             }
         }
-        return false;
-    }
-
-    private boolean isNonBlockingWidget(Widget widget) {
-        // List of widget group IDs that we CAN click through
-        // These are widgets that should not block clicks to the game world
-        int[] nonBlockingGroups = {
-            WidgetID.MINIMAP_GROUP_ID,      // Allow clicking through the minimap
-            WidgetID.COMBAT_GROUP_ID,       // Allow clicking through the combat overlay
-            WidgetID.FIXED_VIEWPORT_GROUP_ID,  // Allow clicking through the fixed viewport
-            WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,  // Allow clicking through resizable viewport
-            WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID     // Allow clicking through bottom line viewport
-        };
-
-        int groupId = widget.getId() >> 16;
-        for (int nonBlockingGroup : nonBlockingGroups) {
-            if (groupId == nonBlockingGroup) {
-                return true;
-            }
-        }
-        return false;
+        state.set("groundItems", groundItems);
+        
+        // Only log full state at debug level
+        logDebug("Generated game state: " + state.toString());
+        
+        return state;
     }
 } 
