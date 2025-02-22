@@ -2,7 +2,7 @@
 .int_stack_count    1
 .string_stack_count 0
 .int_var_count      25
-.string_var_count   25
+.string_var_count   26
    get_varc_int           1112
    clientclock           
    if_icmpeq              LABEL4
@@ -44,11 +44,15 @@ LABEL30:
    iconst                 0
    istore                 5
    sconst                 "<col=004f00>"
-   sstore                 1
    sconst                 "<col=0000ff>"
-   sstore                 2
    sconst                 "<col=0000ff>"
+   sconst                 "<col=0000ff>"                ; Custom color added to guest clan name
+   sconst                 "chatClanNameColorDefault"    ; Callback set clan name colors opaque chat
+   runelite_callback
+   sstore                 25                            ; Store custom guest clan name color
    sstore                 3
+   sstore                 2
+   sstore                 1
    sconst                 ""
    sstore                 4
    sconst                 ""
@@ -89,6 +93,10 @@ LABEL72:
    sconst                 "<col=30ff30>"
    sconst                 "<col=9070ff>"
    sconst                 "<col=9070ff>"
+   sconst                 "<col=9070ff>"       ; Custom color added to guest clan name
+   sconst                 "chatClanNameColor"  ; Callback set clan name colors transparent chat
+   runelite_callback
+   sstore                 25                   ; Store custom guest clan name color
    sstore                 3
    sstore                 2
    sstore                 1
@@ -1074,7 +1082,7 @@ LABEL950:
 LABEL959:
    sload                  23
    sconst                 "["
-   sload                  2
+   sload                  25
    sload                  19
    sconst                 "</col>"
    sconst                 "]"
@@ -1108,7 +1116,7 @@ LABEL959:
 LABEL992:
    sload                  23
    sconst                 "["
-   sload                  2
+   sload                  25
    sload                  19
    sconst                 "</col>"
    sconst                 "]"
@@ -1118,7 +1126,7 @@ LABEL992:
    iconst                 -1
    iconst                 0
    iconst                 0
-   sload                  2
+   sload                  25
    sload                  22
    sconst                 "</col>"
    sconst                 " "
@@ -1151,7 +1159,7 @@ LABEL1029:
    sstore                 22
    sload                  23
    sconst                 "["
-   sload                  2
+   sload                  25
    sload                  19
    sconst                 "</col>"
    sconst                 "]"
@@ -1186,7 +1194,7 @@ LABEL1065:
 LABEL1066:
    sload                  23
    sconst                 "["
-   sload                  2
+   sload                  25
    sload                  19
    sconst                 "</col>"
    sconst                 "]"
@@ -1474,7 +1482,7 @@ LABEL1327:
 LABEL1331:
    sload                  23
    sconst                 "["
-   sload                  2
+   sload                  25
    activeclanchannel_getclanname
    sconst                 "</col>"
    sconst                 "]"
