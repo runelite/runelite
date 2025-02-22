@@ -125,12 +125,35 @@ public class RLBotPlugin extends Plugin {
     @Override
     protected void startUp() {
         try {
-            java.nio.file.Path logDir = java.nio.file.Paths.get("rlbot/logs");
+            java.nio.file.Path logDir = java.nio.file.Paths.get("../../../rlbot/logs");
             java.nio.file.Files.createDirectories(logDir);
+            
+            // Create a custom formatter that flushes immediately
+            java.util.logging.SimpleFormatter formatter = new java.util.logging.SimpleFormatter() {
+                @Override
+                public synchronized String format(java.util.logging.LogRecord record) {
+                    String formatted = super.format(record);
+                    // Force flush after each log
+                    fileLogger.getHandlers()[0].flush();
+                    return formatted;
+                }
+            };
+            
+            // Configure FileHandler with immediate flush
             java.util.logging.FileHandler fileHandler = new java.util.logging.FileHandler(logDir.resolve("rlbot.log").toString(), true);
-            fileHandler.setFormatter(new java.util.logging.SimpleFormatter());
+            fileHandler.setFormatter(formatter);
+            fileHandler.setLevel(java.util.logging.Level.INFO);
+            
+            // Remove any existing handlers
+            for (java.util.logging.Handler handler : fileLogger.getHandlers()) {
+                fileLogger.removeHandler(handler);
+            }
+            
             fileLogger.addHandler(fileHandler);
             fileLogger.setLevel(java.util.logging.Level.INFO);
+            
+            // Set to not use parent handlers to avoid duplicate logging
+            fileLogger.setUseParentHandlers(false);
             
             fileLogger.info("Starting RLBot plugin");
             overlayManager.add(overlay);
@@ -425,76 +448,83 @@ public class RLBotPlugin extends Plugin {
             fileLogger.info("=== Starting click action ===");
             fileLogger.info("Received click data: " + gson.toJson(data));
 
+            // More lenient game state check
+            if (client.getGameState().getState() < GameState.LOADING.getState()) {
+                fileLogger.warning("Cannot perform action - client not ready (state: " + client.getGameState() + ")");
+                return;
+            }
+
             // Get target coordinates or object
-            Point target;
             final String targetType = (String) data.get("targetType");
             final String action = (String) data.getOrDefault("action", "Click");
             
             fileLogger.info(String.format("Processing %s action on %s", action, targetType));
             
-            // Determine target point based on target type
-            switch (targetType) {
-                case "coordinates":
-                    int x = ((Number) data.get("x")).intValue();
-                    int y = ((Number) data.get("y")).intValue();
-                    WorldPoint worldPoint = new WorldPoint(x, y, client.getPlane());
-                    fileLogger.info(String.format("Walking to coordinates: (%d, %d) on plane %d", x, y, client.getPlane()));
-                    target = worldToCanvas(worldPoint);
-                    break;
-                    
-                case "npc":
-                    int npcId = ((Number) data.get("npcId")).intValue();
-                    fileLogger.info("Looking for NPC with ID: " + npcId);
-                    NPC npc = findNPCById(npcId);
-                    if (npc == null) {
-                        fileLogger.warning("NPC not found: " + npcId);
-                        return;
-                    }
-                    fileLogger.info(String.format("Found NPC: %s (level %d) at %s", 
-                        npc.getName(), npc.getCombatLevel(), npc.getWorldLocation()));
-                    target = worldToCanvas(npc.getWorldLocation());
-                    break;
-                    
-                case "object":
-                    String objectName = (String) data.get("name");
-                    WorldPoint location = new WorldPoint(
-                        ((Number) data.get("x")).intValue(),
-                        ((Number) data.get("y")).intValue(),
-                        client.getPlane()
-                    );
-                    fileLogger.info(String.format("Looking for object '%s' at %s", objectName, location));
-                    GameObject obj = findGameObject(location, objectName);
-                    if (obj == null) {
-                        fileLogger.warning("Object not found: " + objectName + " at " + location);
-                        return;
-                    }
-                    fileLogger.info(String.format("Found object: %s (ID: %d) at %s", 
-                        objectName, obj.getId(), obj.getWorldLocation()));
-                    target = worldToCanvas(obj.getWorldLocation());
-                    break;
-                    
-                default:
-                    fileLogger.warning("Unknown target type: " + targetType);
-                    return;
-            }
-
-            if (target == null) {
-                fileLogger.warning("Failed to get target point - target is off screen or invalid");
-                return;
-            }
-            fileLogger.info(String.format("Converted world location to canvas point: %s", target));
-
-            // Check if point is off screen or blocked by interface
-            if (isInterfaceOverlapping(target)) {
-                fileLogger.warning("Click location blocked by interface");
-                fileLogger.info("Attempting to close interfaces...");
-                closeInterfaces();
-                return;
-            }
-
-            // Execute click sequence on client thread
+            // Execute all client operations on client thread
             clientThread.invoke(() -> {
                 try {
+                    Point target;
+                    
+                    // Determine target point based on target type
+                    switch (targetType) {
+                        case "coordinates":
+                            int x = ((Number) data.get("x")).intValue();
+                            int y = ((Number) data.get("y")).intValue();
+                            WorldPoint worldPoint = new WorldPoint(x, y, client.getPlane());
+                            fileLogger.info(String.format("Walking to coordinates: (%d, %d) on plane %d", x, y, client.getPlane()));
+                            target = worldToCanvas(worldPoint);
+                            break;
+                            
+                        case "npc":
+                            int npcId = ((Number) data.get("npcId")).intValue();
+                            fileLogger.info("Looking for NPC with ID: " + npcId);
+                            NPC npc = findNPCById(npcId);
+                            if (npc == null) {
+                                fileLogger.warning("NPC not found: " + npcId);
+                                return;
+                            }
+                            fileLogger.info(String.format("Found NPC: %s (level %d) at %s", 
+                                npc.getName(), npc.getCombatLevel(), npc.getWorldLocation()));
+                            target = worldToCanvas(npc.getWorldLocation());
+                            break;
+                            
+                        case "object":
+                            String objectName = (String) data.get("name");
+                            WorldPoint location = new WorldPoint(
+                                ((Number) data.get("x")).intValue(),
+                                ((Number) data.get("y")).intValue(),
+                                client.getPlane()
+                            );
+                            fileLogger.info(String.format("Looking for object '%s' at %s", objectName, location));
+                            GameObject obj = findGameObject(location, objectName);
+                            if (obj == null) {
+                                fileLogger.warning("Object not found: " + objectName + " at " + location);
+                                return;
+                            }
+                            fileLogger.info(String.format("Found object: %s (ID: %d) at %s", 
+                                objectName, obj.getId(), obj.getWorldLocation()));
+                            target = worldToCanvas(obj.getWorldLocation());
+                            break;
+                            
+                        default:
+                            fileLogger.warning("Unknown target type: " + targetType);
+                            return;
+                    }
+
+                    if (target == null) {
+                        fileLogger.warning("Failed to get target point - target is off screen or invalid");
+                        return;
+                    }
+                    fileLogger.info(String.format("Converted world location to canvas point: %s", target));
+
+                    // Check if point is off screen or blocked by interface
+                    if (isInterfaceOverlapping(target)) {
+                        fileLogger.warning("Click location blocked by interface");
+                        fileLogger.info("Attempting to close interfaces...");
+                        closeInterfaces();
+                        return;
+                    }
+
                     // Get canvas and ensure it's available
                     Canvas canvas = client.getCanvas();
                     if (canvas == null) {
@@ -502,70 +532,65 @@ public class RLBotPlugin extends Plugin {
                         return;
                     }
 
-                    // Move cursor to target location
-                    MouseEvent moved = new MouseEvent(
-                        canvas,
-                        MouseEvent.MOUSE_MOVED,
-                        System.currentTimeMillis(),
-                        0,
-                        (int)target.getX(),
-                        (int)target.getY(),
-                        0,
-                        false,
-                        MouseEvent.NOBUTTON
-                    );
-                    canvas.dispatchEvent(moved);
+                    // Execute click with small delays between events
+                    try {
+                        // Move cursor to target location
+                        MouseEvent moved = new MouseEvent(
+                            canvas,
+                            MouseEvent.MOUSE_MOVED,
+                            System.currentTimeMillis(),
+                            0,
+                            (int)target.getX(),
+                            (int)target.getY(),
+                            0,
+                            false,
+                            MouseEvent.NOBUTTON
+                        );
+                        canvas.dispatchEvent(moved);
+                        Thread.sleep(50);  // Small delay after move
 
-                    // Press mouse
-                    MouseEvent pressed = new MouseEvent(
-                        canvas,
-                        MouseEvent.MOUSE_PRESSED,
-                        System.currentTimeMillis(),
-                        0,
-                        (int)target.getX(),
-                        (int)target.getY(),
-                        1,
-                        false,
-                        MouseEvent.BUTTON1
-                    );
-                    canvas.dispatchEvent(pressed);
+                        // Click sequence
+                        long clickTime = System.currentTimeMillis();
+                        MouseEvent pressed = new MouseEvent(
+                            canvas,
+                            MouseEvent.MOUSE_PRESSED,
+                            clickTime,
+                            0,
+                            (int)target.getX(),
+                            (int)target.getY(),
+                            1,
+                            false,
+                            MouseEvent.BUTTON1
+                        );
+                        canvas.dispatchEvent(pressed);
+                        Thread.sleep(25);  // Small delay between press and release
 
-                    // Release mouse
-                    MouseEvent released = new MouseEvent(
-                        canvas,
-                        MouseEvent.MOUSE_RELEASED,
-                        System.currentTimeMillis(),
-                        0,
-                        (int)target.getX(),
-                        (int)target.getY(),
-                        1,
-                        false,
-                        MouseEvent.BUTTON1
-                    );
-                    canvas.dispatchEvent(released);
+                        MouseEvent released = new MouseEvent(
+                            canvas,
+                            MouseEvent.MOUSE_RELEASED,
+                            clickTime + 25,
+                            0,
+                            (int)target.getX(),
+                            (int)target.getY(),
+                            1,
+                            false,
+                            MouseEvent.BUTTON1
+                        );
+                        canvas.dispatchEvent(released);
 
-                    // Click mouse
-                    MouseEvent clicked = new MouseEvent(
-                        canvas,
-                        MouseEvent.MOUSE_CLICKED,
-                        System.currentTimeMillis(),
-                        0,
-                        (int)target.getX(),
-                        (int)target.getY(),
-                        1,
-                        false,
-                        MouseEvent.BUTTON1
-                    );
-                    canvas.dispatchEvent(clicked);
+                        // Log success
+                        fileLogger.info(String.format("Executed click at %s", target));
+                        fileLogger.info("=== Click action completed ===\n");
+                        
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        fileLogger.warning("Click sequence interrupted");
+                    }
 
-                    // Log action
-                    fileLogger.info(String.format("Executed click at %s", target));
                 } catch (Exception e) {
                     fileLogger.severe("Error executing click sequence: " + e.getMessage());
                 }
             });
-            
-            fileLogger.info("=== Click action completed ===\n");
             
         } catch (Exception e) {
             String msg = "Error in handleMoveAndClick: " + e.getMessage();
