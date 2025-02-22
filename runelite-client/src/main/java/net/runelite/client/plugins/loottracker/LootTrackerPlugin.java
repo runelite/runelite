@@ -1164,7 +1164,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (regionID == WINTERTODT_REGION && message.startsWith(WINTERTODT_LOOT_STRING))
+		if (regionID == WINTERTODT_REGION && message.contains(WINTERTODT_LOOT_STRING))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, WINTERTODT_REWARD_CART_EVENT, client.getBoostedSkillLevel(Skill.FIREMAKING)));
 			return;
