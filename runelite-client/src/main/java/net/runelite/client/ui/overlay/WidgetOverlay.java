@@ -107,7 +107,19 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, ComponentID.STRANGLER_OVERLAY, "STRANGLER_INFECTION_OVERLAY", OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, ComponentID.SANITY_OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, ComponentID.MOONS_OF_PERIL_LAYER, "MOONS_OF_PERIL", OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, ComponentID.MLM_LAYER, "MLM_LAYER", OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, ComponentID.MLM_LAYER, "MLM_LAYER", OverlayPosition.TOP_LEFT),
+			// Castle Wars Lobby
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_LOBBY_TIME_REMAINING, "CASTLEWARS_LOBBY_TIME_REMAINING", OverlayPosition.TOP_CENTER),
+			// Castle Wars Saradomin
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_SARADOMIN_LEAVE_WAITING_ROOM, "CASTLEWARS_SARADOMIN_LEAVE_WAITING_ROOM", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_SARADOMIN_GAME_TIMER, "CASTLEWARS_SARADOMIN_GAME_TIMER", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_SARADOMIN_CASTLE_AND_ROCK_GROUP_STATUS, "CASTLEWARS_SARADOMIN_CASTLE_AND_ROCK_GROUP_STATUS", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_SARADOMIN_SCORE_BOX, "CASTLEWARS_SARADOMIN_SCORE_BOX", OverlayPosition.TOP_CENTER),
+			// Castle Wars Zamorak
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_ZAMORAK_LEAVE_WAITING_ROOM, "CASTLEWARS_ZAMORAK_LEAVE_WAITING_ROOM", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_ZAMORAK_GAME_TIMER, "CASTLEWARS_ZAMORAK_GAME_TIMER", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_ZAMORAK_CASTLE_AND_ROCK_GROUP_STATUS, "CASTLEWARS_ZAMORAK_CASTLE_AND_ROCK_GROUP_STATUS", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, ComponentID.CASTLEWARS_ZAMORAK_SCORE_BOX, "CASTLEWARS_ZAMORAK_SCORE_BOX", OverlayPosition.TOP_CENTER)
 		);
 	}
 
