@@ -29,8 +29,19 @@ public class RLBotOverlay extends OverlayPanel {
     private double totalReward = 0.0;
     private final Map<Skill, Integer> lastSkillExp;
     private int sessionExpGained = 0;
-    private final Queue<Point> cursorTrailPoints = new LinkedList<>();
+    private final Queue<TimestampedPoint> cursorTrailPoints = new LinkedList<>();
+    private Point currentCursorPosition = null;  // Store current cursor position separately
     private final List<RewardDisplay> rewards = new ArrayList<>();
+
+    private static class TimestampedPoint {
+        final Point point;
+        final long timestamp;
+
+        TimestampedPoint(Point point) {
+            this.point = point;
+            this.timestamp = System.currentTimeMillis();
+        }
+    }
 
     @Inject
     private RLBotOverlay(Client client, RLBotConfig config) {
@@ -48,40 +59,45 @@ public class RLBotOverlay extends OverlayPanel {
         panelComponent.getChildren().clear();
 
         // Draw cursor trail if enabled
-        if (config.showCursor() && !cursorTrailPoints.isEmpty()) {
+        if (config.showCursor() && currentCursorPosition != null) {
             // Save original graphics state
             Stroke originalStroke = graphics.getStroke();
             Color originalColor = graphics.getColor();
             
             // Remove old trail points
             long currentTime = System.currentTimeMillis();
-            while (!cursorTrailPoints.isEmpty() && currentTime - cursorTrailPoints.peek().x > MAX_TRAIL_AGE_MS) {
+            while (!cursorTrailPoints.isEmpty() && currentTime - cursorTrailPoints.peek().timestamp > MAX_TRAIL_AGE_MS) {
                 cursorTrailPoints.poll();
             }
             
             // Draw trail
-            Point[] points = cursorTrailPoints.toArray(new Point[0]);
+            TimestampedPoint[] points = cursorTrailPoints.toArray(new TimestampedPoint[0]);
             for (int i = 1; i < points.length; i++) {
-                Point prev = points[i - 1];
-                Point curr = points[i];
+                Point prev = points[i - 1].point;
+                Point curr = points[i].point;
                 if (prev != null && curr != null) {
-                    graphics.setColor(new Color(255, 255, 0, 128));
+                    // Calculate alpha based on age
+                    long age = currentTime - points[i].timestamp;
+                    int alpha = (int)(128 * (1 - (float)age / MAX_TRAIL_AGE_MS));
+                    graphics.setColor(new Color(255, 255, 0, alpha));
                     graphics.drawLine(prev.x, prev.y, curr.x, curr.y);
                 }
             }
             
-            // Draw current cursor position
-            if (points.length > 0) {
-                // Draw outer glow
-                graphics.setColor(new Color(255, 255, 0, 64));
-                graphics.fillOval(points[points.length - 1].x - CURSOR_SIZE, points[points.length - 1].y - CURSOR_SIZE, 
-                                CURSOR_SIZE * 2, CURSOR_SIZE * 2);
-                
-                // Draw cursor
-                graphics.setColor(Color.YELLOW);
-                graphics.fillOval(points[points.length - 1].x - CURSOR_SIZE/2, points[points.length - 1].y - CURSOR_SIZE/2, 
-                                CURSOR_SIZE, CURSOR_SIZE);
-            }
+            // Draw current cursor position (adjusted for hotspot offset)
+            // Cursor hotspot is typically at the top-left corner of the pointer
+            int cursorX = currentCursorPosition.x;
+            int cursorY = currentCursorPosition.y;
+            
+            // Draw outer glow
+            graphics.setColor(new Color(255, 255, 0, 64));
+            graphics.fillOval(cursorX - CURSOR_SIZE, cursorY - CURSOR_SIZE, 
+                            CURSOR_SIZE * 2, CURSOR_SIZE * 2);
+            
+            // Draw cursor
+            graphics.setColor(Color.YELLOW);
+            graphics.fillOval(cursorX - CURSOR_SIZE/2, cursorY - CURSOR_SIZE/2, 
+                            CURSOR_SIZE, CURSOR_SIZE);
             
             // Restore original graphics state
             graphics.setStroke(originalStroke);
@@ -201,7 +217,11 @@ public class RLBotOverlay extends OverlayPanel {
     }
 
     public void addCursorPosition(Point point) {
-        cursorTrailPoints.add(point);
+        // Update current cursor position
+        currentCursorPosition = point;
+        
+        // Add to trail
+        cursorTrailPoints.add(new TimestampedPoint(point));
         while (cursorTrailPoints.size() > CURSOR_TRAIL_LENGTH) {
             cursorTrailPoints.poll();
         }

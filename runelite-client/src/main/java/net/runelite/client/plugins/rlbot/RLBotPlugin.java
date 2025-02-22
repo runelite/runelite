@@ -1,27 +1,5 @@
 package net.runelite.client.plugins.rlbot;
 
-/**
- * WebSocket Command Schema:
- * {
- *     "action": string,   // Command type: "moveAndClick", "camera_rotate", "camera_zoom"
- *     "data": {
- *         // For action = "moveAndClick":
- *         "targetType": string,  // "coordinates", "npc", "object"
- *         "x": number,          // Required for coordinates and object
- *         "y": number,          // Required for coordinates and object
- *         "npcId": number,      // Required for npc
- *         "name": string,       // Required for object
- *         "action": string,     // "Move", "Attack", "Take", etc.
- *         
- *         // For action = "camera_rotate":
- *         "right": boolean,     // true = rotate right, false = rotate left
- *         
- *         // For action = "camera_zoom":
- *         "in": boolean         // true = zoom in, false = zoom out
- *     }
- * }
- */
-
 import com.google.inject.Provides;
 import java.awt.Canvas;
 import java.awt.Point;
@@ -547,6 +525,8 @@ public class RLBotPlugin extends Plugin {
                             MouseEvent.NOBUTTON
                         );
                         canvas.dispatchEvent(moved);
+                        // Update overlay cursor position
+                        overlay.addCursorPosition(new Point((int)target.getX(), (int)target.getY()));
                         Thread.sleep(50);  // Small delay after move
 
                         // Click sequence
