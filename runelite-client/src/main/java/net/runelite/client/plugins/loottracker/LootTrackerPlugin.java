@@ -278,7 +278,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
 	private static final String WINTERTODT_REWARD_CART_EVENT = "Reward cart (Wintertodt)";
-	private static final String WINTERTODT_LOOT_STRING = "You found some loot: ";
+	private static final Pattern WINTERTODT_LOOT_PATTERN = Pattern.compile("(<col=ef1020>)?You found some loot: ");
 	private static final int WINTERTODT_REGION = 6461;
 
 	private static final String BAG_FULL_OF_GEMS_PERCY_EVENT = "Bag full of gems (Percy)";
@@ -1164,7 +1164,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (regionID == WINTERTODT_REGION && message.startsWith(WINTERTODT_LOOT_STRING))
+		if (regionID == WINTERTODT_REGION && WINTERTODT_LOOT_PATTERN.matcher(message).find())
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, WINTERTODT_REWARD_CART_EVENT, client.getBoostedSkillLevel(Skill.FIREMAKING)));
 			return;
