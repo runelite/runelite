@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.Queue;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.BasicStroke;
 
 public class RLBotOverlay extends OverlayPanel {
     private static final int CURSOR_SIZE = 12;  // Larger cursor
@@ -21,6 +22,8 @@ public class RLBotOverlay extends OverlayPanel {
     private static final int CURSOR_TRAIL_LENGTH = 10;
     private static final int REWARD_DISPLAY_DURATION = 5000; // milliseconds
     private static final int MAX_REWARDS = 5;
+    private static final int LERP_DURATION_MS = 500; // Time to move between points
+    private static final int TRAIL_UPDATE_INTERVAL_MS = 50; // Update trail every 50ms
     private final Client client;
     private final RLBotConfig config;
     private String status = "Idle";
@@ -31,6 +34,9 @@ public class RLBotOverlay extends OverlayPanel {
     private int sessionExpGained = 0;
     private final Queue<TimestampedPoint> cursorTrailPoints = new LinkedList<>();
     private Point currentCursorPosition = null;  // Store current cursor position separately
+    private Point targetCursorPosition = null;   // Target position for lerping
+    private long lerpStartTime = 0;              // When lerp started
+    private long lastTrailUpdate = 0;            // Last trail point added
     private final List<RewardDisplay> rewards = new ArrayList<>();
 
     private static class TimestampedPoint {
@@ -58,6 +64,29 @@ public class RLBotOverlay extends OverlayPanel {
     public Dimension render(Graphics2D graphics) {
         panelComponent.getChildren().clear();
 
+        // Update lerped cursor position
+        long currentTime = System.currentTimeMillis();
+        if (targetCursorPosition != null) {
+            float t = Math.min(1.0f, (float)(currentTime - lerpStartTime) / LERP_DURATION_MS);
+            t = 1.0f - (1.0f - t) * (1.0f - t); // Ease out quad
+            Point lerpedPosition = lerpPoint(currentCursorPosition, targetCursorPosition, t);
+            currentCursorPosition = lerpedPosition;
+
+            // Add trail points at regular intervals
+            if (currentTime - lastTrailUpdate >= TRAIL_UPDATE_INTERVAL_MS) {
+                cursorTrailPoints.add(new TimestampedPoint(lerpedPosition));
+                while (cursorTrailPoints.size() > CURSOR_TRAIL_LENGTH) {
+                    cursorTrailPoints.poll();
+                }
+                lastTrailUpdate = currentTime;
+            }
+
+            // If lerp is complete, clear target
+            if (t >= 1.0f) {
+                targetCursorPosition = null;
+            }
+        }
+
         // Draw cursor trail if enabled
         if (config.showCursor() && currentCursorPosition != null) {
             // Save original graphics state
@@ -65,27 +94,29 @@ public class RLBotOverlay extends OverlayPanel {
             Color originalColor = graphics.getColor();
             
             // Remove old trail points
-            long currentTime = System.currentTimeMillis();
             while (!cursorTrailPoints.isEmpty() && currentTime - cursorTrailPoints.peek().timestamp > MAX_TRAIL_AGE_MS) {
                 cursorTrailPoints.poll();
             }
             
-            // Draw trail
+            // Draw trail with varying thickness and alpha
             TimestampedPoint[] points = cursorTrailPoints.toArray(new TimestampedPoint[0]);
             for (int i = 1; i < points.length; i++) {
                 Point prev = points[i - 1].point;
                 Point curr = points[i].point;
                 if (prev != null && curr != null) {
-                    // Calculate alpha based on age
+                    // Calculate alpha and thickness based on age
                     long age = currentTime - points[i].timestamp;
-                    int alpha = (int)(128 * (1 - (float)age / MAX_TRAIL_AGE_MS));
+                    float progress = 1.0f - (float)age / MAX_TRAIL_AGE_MS;
+                    int alpha = (int)(192 * progress);
+                    float thickness = 3.0f * progress;
+                    
+                    graphics.setStroke(new BasicStroke(thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
                     graphics.setColor(new Color(255, 255, 0, alpha));
                     graphics.drawLine(prev.x, prev.y, curr.x, curr.y);
                 }
             }
             
-            // Draw current cursor position (adjusted for hotspot offset)
-            // Cursor hotspot is typically at the top-left corner of the pointer
+            // Draw current cursor position
             int cursorX = currentCursorPosition.x;
             int cursorY = currentCursorPosition.y;
             
@@ -217,13 +248,14 @@ public class RLBotOverlay extends OverlayPanel {
     }
 
     public void addCursorPosition(Point point) {
-        // Update current cursor position
-        currentCursorPosition = point;
+        if (point == null) return;
         
-        // Add to trail
-        cursorTrailPoints.add(new TimestampedPoint(point));
-        while (cursorTrailPoints.size() > CURSOR_TRAIL_LENGTH) {
-            cursorTrailPoints.poll();
+        // Set up lerping from current position to new target
+        if (currentCursorPosition == null) {
+            currentCursorPosition = point;
+        } else {
+            targetCursorPosition = point;
+            lerpStartTime = System.currentTimeMillis();
         }
     }
 
@@ -232,6 +264,13 @@ public class RLBotOverlay extends OverlayPanel {
         while (rewards.size() > MAX_REWARDS) {
             rewards.remove(0);
         }
+    }
+
+    private Point lerpPoint(Point start, Point end, float t) {
+        if (start == null || end == null) return end;
+        int x = (int) (start.x + (end.x - start.x) * t);
+        int y = (int) (start.y + (end.y - start.y) * t);
+        return new Point(x, y);
     }
 
     private static class RewardDisplay {

@@ -39,6 +39,8 @@ import java.util.Objects;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.awt.MouseInfo;
+import javax.swing.SwingUtilities;
 
 @PluginDescriptor(
     name = "RLBot",
@@ -512,22 +514,43 @@ public class RLBotPlugin extends Plugin {
 
                     // Execute click with small delays between events
                     try {
-                        // Move cursor to target location
-                        MouseEvent moved = new MouseEvent(
-                            canvas,
-                            MouseEvent.MOUSE_MOVED,
-                            System.currentTimeMillis(),
-                            0,
-                            (int)target.getX(),
-                            (int)target.getY(),
-                            0,
-                            false,
-                            MouseEvent.NOBUTTON
-                        );
-                        canvas.dispatchEvent(moved);
-                        // Update overlay cursor position
-                        overlay.addCursorPosition(new Point((int)target.getX(), (int)target.getY()));
-                        Thread.sleep(50);  // Small delay after move
+                        // Get current mouse position
+                        Point currentMouse = MouseInfo.getPointerInfo().getLocation();
+                        SwingUtilities.convertPointFromScreen(currentMouse, canvas);
+                        
+                        // Calculate lerp steps
+                        int steps = 20;  // Number of interpolation steps
+                        long moveTime = 500;  // Total movement time in ms
+                        long stepDelay = moveTime / steps;  // Time between steps
+                        
+                        // Lerp mouse to target location
+                        for (int i = 1; i <= steps; i++) {
+                            float t = (float)i / steps;
+                            // Ease out quad
+                            t = 1.0f - (1.0f - t) * (1.0f - t);
+                            
+                            int lerpX = (int)(currentMouse.x + (target.getX() - currentMouse.x) * t);
+                            int lerpY = (int)(currentMouse.y + (target.getY() - currentMouse.y) * t);
+                            
+                            MouseEvent moved = new MouseEvent(
+                                canvas,
+                                MouseEvent.MOUSE_MOVED,
+                                System.currentTimeMillis(),
+                                0,
+                                lerpX,
+                                lerpY,
+                                0,
+                                false,
+                                MouseEvent.NOBUTTON
+                            );
+                            canvas.dispatchEvent(moved);
+                            // Update overlay cursor position
+                            overlay.addCursorPosition(new Point(lerpX, lerpY));
+                            Thread.sleep(stepDelay);
+                        }
+
+                        // Small delay before click
+                        Thread.sleep(50);
 
                         // Click sequence
                         long clickTime = System.currentTimeMillis();
@@ -939,39 +962,41 @@ public class RLBotPlugin extends Plugin {
             return false;
         }
 
-        // Check inventory specifically
-        for (Widget widget : widgets) {
-            if (widget == null) continue;
-            
-            if ((widget.getId() >> 16) == WidgetID.INVENTORY_GROUP_ID && !widget.isHidden() && widget.getBounds().contains(point)) {
-                fileLogger.info("Click blocked by inventory interface");
-                return true;
-            }
-        }
-
         // Check all visible widgets
         for (Widget widget : widgets) {
             if (widget == null || widget.isHidden()) continue;
             
-            // Skip non-blocking widgets like minimap, combat overlay, etc.
+            // Skip non-blocking widgets like minimap, combat overlay, chatbox, etc.
             if (isNonBlockingWidget(widget)) continue;
             
             if (widget.getBounds().contains(point)) {
-                fileLogger.info("Click blocked by interface: " + widget.getName());
+                fileLogger.info("Click blocked by interface: " + widget.getName() + " (ID: " + widget.getId() + ")");
                 return true;
+            }
+
+            // Check child widgets as well
+            Widget[] children = widget.getDynamicChildren();
+            if (children != null) {
+                for (Widget child : children) {
+                    if (child != null && !child.isHidden() && !isNonBlockingWidget(child) && child.getBounds().contains(point)) {
+                        fileLogger.info("Click blocked by child interface: " + child.getName() + " (ID: " + child.getId() + ")");
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
     private boolean isNonBlockingWidget(Widget widget) {
-        // List of widget group IDs that should not block clicks
+        // List of widget group IDs that we CAN click through
+        // These are widgets that should not block clicks to the game world
         int[] nonBlockingGroups = {
-            WidgetID.MINIMAP_GROUP_ID,
-            WidgetID.COMBAT_GROUP_ID,
-            WidgetID.FIXED_VIEWPORT_GROUP_ID,
-            WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,
-            WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID
+            WidgetID.MINIMAP_GROUP_ID,      // Allow clicking through the minimap
+            WidgetID.COMBAT_GROUP_ID,       // Allow clicking through the combat overlay
+            WidgetID.FIXED_VIEWPORT_GROUP_ID,  // Allow clicking through the fixed viewport
+            WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,  // Allow clicking through resizable viewport
+            WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID     // Allow clicking through bottom line viewport
         };
 
         int groupId = widget.getId() >> 16;
