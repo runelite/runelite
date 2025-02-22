@@ -196,7 +196,8 @@ public class ChatMessageManager
 			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
 			final Color color = chatColor.getColor();
 			message = ColorUtil.wrapWithColorTag(
-				message.replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
+				message.replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color))
+					.replaceAll("<br>", "<br>" + ColorUtil.colorTag(color)),
 				color);
 			break;
 		}
