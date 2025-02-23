@@ -29,7 +29,7 @@ public interface RLBotConfig extends Config {
     @ConfigItem(
         keyName = "port",
         name = "WebSocket Port",
-        description = "The port to run the WebSocket server on",
+        description = "The port to use for the WebSocket server",
         position = 3
     )
     default int getPort() {
@@ -39,10 +39,20 @@ public interface RLBotConfig extends Config {
     @ConfigItem(
         keyName = "saveScreenshots",
         name = "Save Screenshots",
-        description = "Save screenshots to disk in addition to sending them over WebSocket",
+        description = "Save screenshots to disk",
         position = 4
     )
     default boolean saveScreenshots() {
+        return false;
+    }
+
+    @ConfigItem(
+        keyName = "showStateViewer",
+        name = "Show State Viewer",
+        description = "Show the state viewer window",
+        position = 5
+    )
+    default boolean showStateViewer() {
         return false;
     }
 } 

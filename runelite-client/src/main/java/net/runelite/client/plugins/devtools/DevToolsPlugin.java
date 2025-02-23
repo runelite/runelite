@@ -49,6 +49,7 @@ import javax.swing.JRootPane;
 import javax.swing.RootPaneContainer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.Builder;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -81,11 +82,17 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
+import net.runelite.client.plugins.rlbot.RLBotStateViewer;
+import com.fasterxml.jackson.databind.JsonNode;
+import net.runelite.client.plugins.rlbot.RLBotPlugin;
+import com.google.common.collect.ImmutableMap;
+import javax.swing.SwingUtilities;
 
 @Slf4j
 @PluginDescriptor(
@@ -233,6 +240,15 @@ public class DevToolsPlugin extends Plugin
 		return configManager.getConfig(DevToolsConfig.class);
 	}
 
+	private NavigationButton createNavigationButton(String tooltip, BufferedImage icon, PluginPanel panel, int priority) {
+		return NavigationButton.builder()
+			.tooltip(tooltip)
+			.icon(icon)
+			.priority(priority)
+			.panel(panel)
+			.build();
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -272,7 +288,6 @@ public class DevToolsPlugin extends Plugin
 		tileFlags = new DevToolsButton("Tile flags");
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
-
 		uiDefaultsInspector = new DevToolsButton("Swing Defaults");
 
 		overlayManager.add(overlay);
