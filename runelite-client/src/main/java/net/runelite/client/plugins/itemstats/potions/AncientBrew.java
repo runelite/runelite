@@ -64,7 +64,7 @@ public class AncientBrew implements Effect
 			Stream.of(PRAYER_BOOST.effect(client)),
 			Stream.of(magic.effect(client)),
 			Stream.of(LOWERED_STATS)
-				.filter(stat -> 1 < stat.getValue(client))
+				.filter(stat -> 0 < stat.getValue(client))
 				.map(stat ->
 				{
 					MELEE_DRAIN.setStat(stat);
