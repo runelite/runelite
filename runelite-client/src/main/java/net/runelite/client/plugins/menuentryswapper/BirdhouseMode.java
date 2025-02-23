@@ -31,15 +31,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum BirdhouseMode
 {
-    INTERACT("Interact"),
-    EMPTY("Empty"),
-    RESET("Reset");
+	INTERACT("Interact"),
+	EMPTY("Empty"),
+	RESET("Reset");
 
-    private final String name;
+	private final String name;
 
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }
