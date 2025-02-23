@@ -329,7 +329,7 @@ public class MenuEntrySwapperPluginTest
 	@Test
 	public void testBirdhouse()
 	{
-		when(config.swapBirdhouseEmpty()).thenReturn(true);
+		when(config.swapBirdhouse()).thenReturn(BirdhouseMode.EMPTY);
 
 		entries = new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
