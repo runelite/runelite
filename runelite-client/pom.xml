@@ -396,6 +396,8 @@
 									<manifestEntries>
 										<Main-Class>net.runelite.client.RuneLite</Main-Class>
 										<Multi-Release>true</Multi-Release>
+										<Add-Opens>java.base/java.lang</Add-Opens>
+										<JVM-Args>-ea</JVM-Args>
 									</manifestEntries>
 								</transformer>
 							</transformers>

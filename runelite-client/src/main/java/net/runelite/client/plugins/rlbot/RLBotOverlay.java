@@ -124,18 +124,20 @@ public class RLBotOverlay extends OverlayPanel {
             }
             
             // Draw current cursor position
-            int cursorX = currentCursorPosition.x;
-            int cursorY = currentCursorPosition.y;
-            
-            // Draw outer glow
-            graphics.setColor(new Color(255, 255, 0, 64));
-            graphics.fillOval(cursorX - CURSOR_SIZE, cursorY - CURSOR_SIZE, 
-                            CURSOR_SIZE * 2, CURSOR_SIZE * 2);
-            
-            // Draw cursor
-            graphics.setColor(Color.YELLOW);
-            graphics.fillOval(cursorX - CURSOR_SIZE/2, cursorY - CURSOR_SIZE/2, 
-                            CURSOR_SIZE, CURSOR_SIZE);
+            if (currentCursorPosition != null) {
+                int cursorX = currentCursorPosition.x;
+                int cursorY = currentCursorPosition.y;
+                
+                // Draw outer glow
+                graphics.setColor(new Color(255, 255, 0, 64));
+                graphics.fillOval(cursorX - CURSOR_SIZE, cursorY - CURSOR_SIZE, 
+                                CURSOR_SIZE * 2, CURSOR_SIZE * 2);
+                
+                // Draw cursor
+                graphics.setColor(Color.YELLOW);
+                graphics.fillOval(cursorX - CURSOR_SIZE/2, cursorY - CURSOR_SIZE/2, 
+                                CURSOR_SIZE, CURSOR_SIZE);
+            }
             
             // Restore original graphics state
             graphics.setStroke(originalStroke);
@@ -290,6 +292,8 @@ public class RLBotOverlay extends OverlayPanel {
         // Set up lerping from current position to new target
         if (currentCursorPosition == null) {
             currentCursorPosition = point;
+            cursorTrailPoints.clear(); // Clear trail when starting new movement
+            cursorTrailPoints.add(new TimestampedPoint(point));
         } else {
             targetCursorPosition = point;
             lerpStartTime = System.currentTimeMillis();

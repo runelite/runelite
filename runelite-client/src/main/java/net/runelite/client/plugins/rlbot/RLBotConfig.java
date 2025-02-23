@@ -35,4 +35,14 @@ public interface RLBotConfig extends Config {
     default int getPort() {
         return 43595;
     }
+
+    @ConfigItem(
+        keyName = "saveScreenshots",
+        name = "Save Screenshots",
+        description = "Save screenshots to disk in addition to sending them over WebSocket",
+        position = 4
+    )
+    default boolean saveScreenshots() {
+        return false;
+    }
 } 
