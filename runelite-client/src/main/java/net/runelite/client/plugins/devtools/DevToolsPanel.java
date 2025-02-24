@@ -218,6 +218,18 @@ class DevToolsPanel extends PluginPanel
 		{
 		}
 
+		// Add RLBot state viewer button
+		DevToolsButton rlBotStateBtn = plugin.getRlBotState();
+		rlBotStateBtn.addFrame(new DevToolsFrame()
+		{
+			{
+				getContentPane().add(plugin.getRlBotStateViewer(), BorderLayout.CENTER);
+				setTitle("RLBot State Viewer");
+				pack();
+			}
+		});
+		container.add(rlBotStateBtn);
+
 		return container;
 	}
 }
