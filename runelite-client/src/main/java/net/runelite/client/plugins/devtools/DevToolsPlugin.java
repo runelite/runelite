@@ -317,6 +317,11 @@ public class DevToolsPlugin extends Plugin
 		eventBus.register(soundEffectOverlay);
 
 		Toolkit.getDefaultToolkit().addAWTEventListener(swingInspectorKeyListener, AWTEvent.KEY_EVENT_MASK);
+
+		// Activate the RLBot state viewer by default
+		if (rlBotState != null) {
+			rlBotState.setActive(true);
+		}
 	}
 
 	@Override

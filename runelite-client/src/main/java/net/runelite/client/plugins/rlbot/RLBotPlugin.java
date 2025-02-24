@@ -96,7 +96,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     private static final String LOG_FILE = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs/rlbot-plugin.log";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private static final String SCREENSHOTS_DIR = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/screenshots";
-    private static final long STATE_VIEWER_REFRESH_INTERVAL = 600; // Refresh every 600ms
     
     // Constants for movement
     private static final int CAMERA_ROTATE_AMOUNT = 45;
@@ -172,8 +171,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
     private volatile String pendingScreenshot = null;
 
-    private long lastStateViewerRefresh = 0;
-
     private static class AreaInfo {
         int npcDensity;
         int resourceDensity;
@@ -233,6 +230,11 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 JsonNode gameState = generateGameState();
                 SwingUtilities.invokeLater(() -> stateViewer.updateState(gameState));
             });
+
+            // Activate the RLBot state viewer by default
+            if (this.getRlBotState() != null) {
+                this.getRlBotState().setActive(true);
+            }
 
             final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "rlbot_icon.png");
 
@@ -361,13 +363,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 if (client.getLocalPlayer() != null) {
                     overlay.setStatus(client.getLocalPlayer().getInteracting() != null ? "In Combat" : "Idle");
                     overlay.updateExperienceGained();
-                }
-
-                // Check if it's time to refresh the state viewer
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastStateViewerRefresh >= STATE_VIEWER_REFRESH_INTERVAL) {
-                    refreshStateViewer();
-                    lastStateViewerRefresh = currentTime;
                 }
 
                 // Generate and send game state
@@ -1023,7 +1018,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 try {
                     overlay.initializeExpTracking();
                     logInfo("Experience tracking initialized after login");
-                    refreshStateViewer();
                 } catch (Exception e) {
                     logError("Error initializing experience tracking: " + e.getMessage());
                 }
@@ -1304,9 +1298,137 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
     public JsonNode generateGameState() {
         ObjectNode state = objectMapper.createObjectNode();
-        ArrayNode interfaces = state.putArray("interfaces");
 
-        // Get root widgets
+        // Add player data
+        ObjectNode player = state.putObject("player");
+        if (client.getLocalPlayer() != null) {
+            // Location
+            ObjectNode location = player.putObject("location");
+            WorldPoint pos = client.getLocalPlayer().getWorldLocation();
+            location.put("x", pos.getX());
+            location.put("y", pos.getY());
+            location.put("plane", pos.getPlane());
+
+            // Health
+            ObjectNode health = player.putObject("health");
+            health.put("current", client.getBoostedSkillLevel(Skill.HITPOINTS));
+            health.put("maximum", client.getRealSkillLevel(Skill.HITPOINTS));
+
+            // Combat state
+            player.put("inCombat", client.getLocalPlayer().getInteracting() != null);
+            player.put("isRunning", client.getVarpValue(173) == 1);
+            player.put("runEnergy", client.getEnergy());
+
+            // Skills
+            ObjectNode skills = player.putObject("skills");
+            for (Skill skill : Skill.values()) {
+                ObjectNode skillNode = skills.putObject(skill.getName());
+                skillNode.put("level", client.getBoostedSkillLevel(skill));
+                skillNode.put("realLevel", client.getRealSkillLevel(skill));
+                skillNode.put("experience", client.getSkillExperience(skill));
+            }
+        }
+
+        // Add NPCs
+        ArrayNode npcs = state.putArray("npcs");
+        for (NPC npc : client.getNpcs()) {
+            if (npc == null) continue;
+            ObjectNode npcNode = npcs.addObject();
+            npcNode.put("id", npc.getId());
+            npcNode.put("name", npc.getName());
+            npcNode.put("combatLevel", npc.getCombatLevel());
+
+            // NPC location
+            ObjectNode npcLocation = npcNode.putObject("location");
+            WorldPoint npcPos = npc.getWorldLocation();
+            npcLocation.put("x", npcPos.getX());
+            npcLocation.put("y", npcPos.getY());
+            npcLocation.put("plane", npcPos.getPlane());
+
+            // NPC health if available
+            if (npc.getHealthRatio() != -1) {
+                ObjectNode npcHealth = npcNode.putObject("health");
+                npcHealth.put("current", npc.getHealthRatio());
+                npcHealth.put("maximum", npc.getHealthScale());
+            }
+
+            npcNode.put("interacting", npc.getInteracting() == client.getLocalPlayer());
+            npcNode.put("distance", npc.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()));
+        }
+
+        // Add game objects
+        ArrayNode objects = state.putArray("objects");
+        Scene scene = client.getScene();
+        Tile[][][] tiles = scene.getTiles();
+        for (int z = 0; z < tiles.length; z++) {
+            for (int x = 0; x < tiles[z].length; x++) {
+                for (int y = 0; y < tiles[z][x].length; y++) {
+                    Tile tile = tiles[z][x][y];
+                    if (tile == null) continue;
+
+                    for (GameObject obj : tile.getGameObjects()) {
+                        if (obj == null) continue;
+                        ObjectComposition def = client.getObjectDefinition(obj.getId());
+                        if (def == null) continue;
+
+                        ObjectNode objNode = objects.addObject();
+                        objNode.put("id", obj.getId());
+                        objNode.put("name", def.getName());
+
+                        // Object location
+                        ObjectNode objLocation = objNode.putObject("location");
+                        WorldPoint objPos = obj.getWorldLocation();
+                        objLocation.put("x", objPos.getX());
+                        objLocation.put("y", objPos.getY());
+                        objLocation.put("plane", objPos.getPlane());
+
+                        // Object actions
+                        ArrayNode actions = objNode.putArray("actions");
+                        String[] objActions = def.getActions();
+                        if (objActions != null) {
+                            for (String action : objActions) {
+                                if (action != null) {
+                                    actions.add(action);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Add ground items
+        ArrayNode groundItems = state.putArray("groundItems");
+        for (Tile[][] plane : tiles) {
+            for (Tile[] row : plane) {
+                for (Tile tile : row) {
+                    if (tile == null) continue;
+                    List<TileItem> items = tile.getGroundItems();
+                    if (items == null) continue;
+
+                    for (TileItem item : items) {
+                        if (item == null) continue;
+                        ItemComposition def = client.getItemDefinition(item.getId());
+                        if (def == null) continue;
+
+                        ObjectNode itemNode = groundItems.addObject();
+                        itemNode.put("id", item.getId());
+                        itemNode.put("name", def.getName());
+                        itemNode.put("quantity", item.getQuantity());
+
+                        // Item location
+                        ObjectNode itemLocation = itemNode.putObject("location");
+                        WorldPoint itemPos = tile.getWorldLocation();
+                        itemLocation.put("x", itemPos.getX());
+                        itemLocation.put("y", itemPos.getY());
+                        itemLocation.put("plane", itemPos.getPlane());
+                    }
+                }
+            }
+        }
+
+        // Add interfaces
+        ArrayNode interfaces = state.putArray("interfaces");
         Widget[] rootWidgets = client.getWidgetRoots();
         if (rootWidgets != null) {
             for (Widget widget : rootWidgets) {
@@ -1462,41 +1584,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 logError("Error in handleInterfaceAction: " + e.getMessage());
             }
         });
-    }
-
-    private void refreshStateViewer() {
-        if (stateViewer != null) {
-            JsonNode state = generateGameState();
-            if (state != null) {
-                SwingUtilities.invokeLater(() -> {
-                    stateViewer.updateState(state);
-                });
-            }
-        }
-    }
-
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (!event.getGroup().equals("rlbot"))
-        {
-            return;
-        }
-
-        if (event.getKey().equals("showStateViewer"))
-        {
-            SwingUtilities.invokeLater(() -> {
-                if (config.showStateViewer())
-                {
-                    clientToolbar.addNavigation(stateViewerButton);
-                    refreshStateViewer();
-                }
-                else
-                {
-                    clientToolbar.removeNavigation(stateViewerButton);
-                }
-            });
-        }
     }
 
     private void log(String level, String message) {
