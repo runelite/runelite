@@ -897,6 +897,22 @@ public final class Varbits
 	 */
 	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
 
+	/**
+	 * How many remaining prayer points the player will restore through the prayer enhance effect, in Chambers of Xeric.
+	 * <p>
+	 * This value is determined by the player's prayer level and will decrement
+	 * by 1 for every period of ticks set by {@link #COX_PRAYER_ENHANCE_PERIOD}.
+	 * Each period restores 1 prayer point.
+	 */
+	public static final int COX_PRAYER_ENHANCE_RESTORES_REMAINING = 5417;
+
+	/**
+	 * The interval, in ticks, for which {@link #COX_PRAYER_ENHANCE_RESTORES_REMAINING} is updated.
+	 * <p>
+	 * The value is determined by the player's prayer level.
+	 */
+	public static final int COX_PRAYER_ENHANCE_PERIOD = 5419;
+
 	public static final int SLAYER_POINTS = 4068;
 	public static final int SLAYER_TASK_STREAK = 4069;
 
