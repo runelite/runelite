@@ -171,7 +171,7 @@ public class LootTrackerPlugin extends Plugin
 	// Used by Stone Chest, Isle of Souls chest, Dark Chest
 	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
-	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
+	private static final Pattern GRUBBY_CHEST_LOOTED_MESSAGE = Pattern.compile("You find treasure(?: and supplies|, supplies, and a weirdly coloured egg sac) within the chest.");
 	private static final String ANCIENT_CHEST_LOOTED_MESSAGE = "You open the chest and find";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
 	private static final int HAM_STOREROOM_REGION = 10321;
@@ -1013,7 +1013,7 @@ public class LootTrackerPlugin extends Plugin
 		final String message = event.getMessage();
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
-			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
+			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || GRUBBY_CHEST_LOOTED_MESSAGE.matcher(message).matches()
 			|| message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
