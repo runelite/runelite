@@ -2028,7 +2028,7 @@ LABEL1808:
    sload                  24
    invoke                 3436
    istore                 22
-   iconst                 4
+   iconst                 6
    sconst                 "View"
    iload                  9
    if_setop              
@@ -2054,7 +2054,7 @@ LABEL1808:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
-   iconst                 5
+   iconst                 7
    sconst                 "Open"
    iload                  9
    if_setop              
@@ -2437,7 +2437,7 @@ LABEL2183:
    sload                  24
    invoke                 3436
    istore                 22
-   iconst                 4
+   iconst                 6
    sconst                 "View"
    iload                  9
    if_setop              
@@ -2463,7 +2463,7 @@ LABEL2183:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
-   iconst                 5
+   iconst                 7
    sconst                 "Open"
    iload                  9
    if_setop              
