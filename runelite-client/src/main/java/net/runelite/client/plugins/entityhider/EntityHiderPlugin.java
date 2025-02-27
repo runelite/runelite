@@ -115,6 +115,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideNPCs2D;
 	private boolean hideDeadNpcs;
 	private boolean hidePets;
+	private boolean hideOwnPet;
 	private boolean hideThralls;
 	private boolean hideRandomEvents;
 	private boolean hideAttackers;
@@ -170,6 +171,7 @@ public class EntityHiderPlugin extends Plugin
 		hideDeadNpcs = config.hideDeadNpcs();
 
 		hidePets = config.hidePets();
+		hideOwnPet = config.hideOwnPet();
 
 		hideThralls = config.hideThralls();
 		hideRandomEvents = config.hideRandomEvents();
@@ -245,6 +247,12 @@ public class EntityHiderPlugin extends Plugin
 
 			if (npc.getInteracting() == client.getLocalPlayer())
 			{
+				// Handle the player's own pet first so its visibility can be controlled separately.
+				if (npc == client.getFollower())
+				{
+					return !hideOwnPet;
+				}
+
 				boolean b = hideAttackers;
 				// Kludge to make hide attackers only affect 2d or 3d if the 2d or 3d hide is on
 				// This allows hiding 2d for all npcs, including attackers.
