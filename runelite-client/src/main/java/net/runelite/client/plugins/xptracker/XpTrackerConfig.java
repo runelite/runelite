@@ -42,6 +42,16 @@ public interface XpTrackerConfig extends Config
 	String overlaySection = "overlay";
 
 	@ConfigItem(
+		keyName = "saveState",
+		name = "Save between sessions",
+		description = "Saves xp trackers between sessions."
+	)
+	default boolean saveState()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 0,
 		keyName = "hideMaxed",
 		name = "Hide maxed skills",

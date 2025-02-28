@@ -26,8 +26,10 @@ package net.runelite.client.plugins.prayer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 
 @AllArgsConstructor
 @Getter
@@ -52,13 +54,47 @@ enum PrayerType
 	PROTECT_FROM_MAGIC("protect from magic", Prayer.PROTECT_FROM_MAGIC, "Protects against magic attacks", SpriteID.PRAYER_PROTECT_FROM_MAGIC, true, 12),
 	PROTECT_FROM_MISSILES("Protect from missiles", Prayer.PROTECT_FROM_MISSILES, "Protects against ranged attacks", SpriteID.PRAYER_PROTECT_FROM_MISSILES, true, 12),
 	PROTECT_FROM_MELEE("Protect from melee", Prayer.PROTECT_FROM_MELEE, "Protects against melee attacks", SpriteID.PRAYER_PROTECT_FROM_MELEE, true, 12),
-	EAGLE_EYE("Eagle Eye", Prayer.EAGLE_EYE, "+15% Ranged", SpriteID.PRAYER_EAGLE_EYE, false, 12),
-	MYSTIC_MIGHT("Mystic Might", Prayer.MYSTIC_MIGHT, "+15% Magical attack and defence", SpriteID.PRAYER_MYSTIC_MIGHT, false, 12),
+	EAGLE_EYE("Eagle Eye", Prayer.EAGLE_EYE, "+15% Ranged", SpriteID.PRAYER_EAGLE_EYE, false, 12)
+	{
+		@Override
+		boolean isEnabled(Client client)
+		{
+			return !DEADEYE.isEnabled(client);
+		}
+	},
+	MYSTIC_MIGHT("Mystic Might", Prayer.MYSTIC_MIGHT, "+15% Magical attack and defence", SpriteID.PRAYER_MYSTIC_MIGHT, false, 12)
+	{
+		@Override
+		boolean isEnabled(Client client)
+		{
+			return !MYSTIC_VIGOUR.isEnabled(client);
+		}
+	},
 	RETRIBUTION("Retribution", Prayer.RETRIBUTION, "Deals damage up to 25% of your Prayer level to nearby targets upon the user's death", SpriteID.PRAYER_RETRIBUTION, true, 3),
 	REDEMPTION("Redemption", Prayer.REDEMPTION, "Heals the player if they fall below 10% health", SpriteID.PRAYER_REDEMPTION, true, 6),
 	SMITE("Smite", Prayer.SMITE, "Removes 1 Prayer point from an enemy for every 4 damage inflicted on the enemy", SpriteID.PRAYER_SMITE, true, 18),
 	PRESERVE("Preserve", Prayer.PRESERVE, "Boosted stats last 50% longer", SpriteID.PRAYER_PRESERVE, false, 2),
 	CHIVALRY("Chivalry", Prayer.CHIVALRY, "+15% Attack, +18% Strength, +20% Defence", SpriteID.PRAYER_CHIVALRY, false, 24),
+	DEADEYE("Deadeye", Prayer.DEADEYE, "+18% Ranged attack, +18% Ranged strength, +5% Defence", SpriteID.PRAYER_DEADEYE, false, 12)
+	{
+		@Override
+		boolean isEnabled(Client client)
+		{
+			boolean inLms = client.getVarbitValue(Varbits.IN_LMS) != 0;
+			boolean deadeye = client.getVarbitValue(Varbits.PRAYER_DEADEYE_UNLOCKED) != 0;
+			return deadeye && !inLms;
+		}
+	},
+	MYSTIC_VIGOUR("Mystic Vigour", Prayer.MYSTIC_VIGOUR, "+18% Magical attack and defence, +3% Magic damage, +5% Defence", SpriteID.PRAYER_MYSTIC_VIGOUR, false, 12)
+	{
+		@Override
+		boolean isEnabled(Client client)
+		{
+			boolean inLms = client.getVarbitValue(Varbits.IN_LMS) != 0;
+			boolean vigour = client.getVarbitValue(Varbits.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0;
+			return vigour && !inLms;
+		}
+	},
 	PIETY("Piety", Prayer.PIETY, "+20% Attack, +23% Strength, +25% Defence", SpriteID.PRAYER_PIETY, false, 24),
 	RIGOUR("Rigour", Prayer.RIGOUR, "+20% Ranged attack, +23% Ranged strength, +25% Defence", SpriteID.PRAYER_RIGOUR, false, 24),
 	AUGURY("Augury", Prayer.AUGURY, "+25% Magical attack and defence, +25% Defence", SpriteID.PRAYER_AUGURY, false, 24),
@@ -95,4 +131,14 @@ enum PrayerType
 	private final int spriteID;
 	private final boolean overhead;
 	private final int drainEffect;
+
+	boolean isEnabled(Client client)
+	{
+		return true;
+	}
+
+	boolean isActive(Client client)
+	{
+		return client.isPrayerActive(prayer) && isEnabled(client);
+	}
 }

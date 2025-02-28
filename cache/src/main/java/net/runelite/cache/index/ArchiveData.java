@@ -35,5 +35,7 @@ public class ArchiveData
 	int nameHash;
 	int crc;
 	int revision;
+	int compressedSize;
+	int decompressedSize;
 	FileData[] files;
 }

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
@@ -53,6 +54,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -449,7 +451,8 @@ public class SpecialCounterPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			NPC target = client.getCachedNPCs()[event.getNpcIndex()];
+			WorldView wv = client.getTopLevelWorldView();
+			@Nullable NPC target = wv.npcs().byIndex(event.getNpcIndex());
 			SpecialWeapon specialWeapon = event.getWeapon();
 			int counterHit = specialWeapon.isDamage() ? specialWeapon.computeHit(event.getHit(), target) : Math.min(event.getHit(), 1);
 			float defenceDrain = event.getWeapon().computeDrainPercent(event.getHit(), target);

@@ -115,7 +115,6 @@ public class GameEventManager
 
 		clientThread.invoke(() ->
 		{
-
 			eventBus.register(subscriber);
 
 			for (final ItemContainer itemContainer : client.getItemContainers())
@@ -123,7 +122,7 @@ public class GameEventManager
 				eventBus.post(new ItemContainerChanged(itemContainer.getId(), itemContainer));
 			}
 
-			for (NPC npc : client.getCachedNPCs())
+			for (NPC npc : client.getTopLevelWorldView().npcs())
 			{
 				if (npc != null)
 				{
@@ -132,7 +131,7 @@ public class GameEventManager
 				}
 			}
 
-			for (Player player : client.getCachedPlayers())
+			for (Player player : client.getTopLevelWorldView().players())
 			{
 				if (player != null)
 				{

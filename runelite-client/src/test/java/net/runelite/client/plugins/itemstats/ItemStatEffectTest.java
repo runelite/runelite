@@ -200,6 +200,21 @@ public class ItemStatEffectTest
 		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, ancientBrew));
 		assertEquals(1, skillChange(Skill.PRAYER, 1, 0, ancientBrew));
 		assertEquals(0, skillChange(Skill.PRAYER, 99, 125, ancientBrew));
+
+		assertEquals(5, skillChange(Skill.MAGIC, 65, 1, ancientBrew));
+		assertEquals(3, skillChange(Skill.MAGIC, 65, 67, ancientBrew));
+		assertEquals(6, skillChange(Skill.MAGIC, 99, 19, ancientBrew));
+		assertEquals(6, skillChange(Skill.MAGIC, 99, 99, ancientBrew));
+
+		assertEquals(-1, skillChange(Skill.ATTACK, 99, 1, ancientBrew));
+		assertEquals(-9, skillChange(Skill.ATTACK, 79, 79, ancientBrew));
+		assertEquals(-11, skillChange(Skill.ATTACK, 99, 99, ancientBrew));
+		assertEquals(-13, skillChange(Skill.ATTACK, 99, 118, ancientBrew));
+
+		assertEquals(0, skillChange(Skill.STRENGTH, 1, 0, ancientBrew));
+		assertEquals(-2, skillChange(Skill.STRENGTH, 7, 2, ancientBrew));
+		assertEquals(-3, skillChange(Skill.STRENGTH, 7, 10, ancientBrew));
+		assertEquals(-14, skillChange(Skill.STRENGTH, 99, 120, ancientBrew));
 	}
 
 	@Test

@@ -120,10 +120,14 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void prepareSceneDraw(
+	default void preSceneDraw(
 		Scene scene,
 		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
 		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
+	{
+	}
+
+	default void postSceneDraw(Scene scene)
 	{
 	}
 

@@ -27,9 +27,9 @@ package net.runelite.client.hiscore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.SpriteID;
-import static net.runelite.client.hiscore.HiscoreSkillType.SKILL;
 import static net.runelite.client.hiscore.HiscoreSkillType.ACTIVITY;
 import static net.runelite.client.hiscore.HiscoreSkillType.BOSS;
+import static net.runelite.client.hiscore.HiscoreSkillType.SKILL;
 
 @AllArgsConstructor
 @Getter
@@ -74,6 +74,7 @@ public enum HiscoreSkill
 	SOUL_WARS_ZEAL("Soul Wars Zeal", ACTIVITY, SpriteID.HISCORE_SOUL_WARS_ZEAL),
 	RIFTS_CLOSED("Rifts closed", ACTIVITY, SpriteID.HISCORE_RIFTS_CLOSED),
 	COLOSSEUM_GLORY("Colosseum Glory", ACTIVITY, SpriteID.HISCORE_COLOSSEUM_GLORY),
+	COLLECTIONS_LOGGED("Collections Logged", ACTIVITY),
 	ABYSSAL_SIRE("Abyssal Sire", BOSS, SpriteID.HISCORE_ABYSSAL_SIRE),
 	ALCHEMICAL_HYDRA("Alchemical Hydra", BOSS, SpriteID.HISCORE_ALCHEMICAL_HYDRA),
 	AMOXLIATL("Amoxliatl", BOSS, SpriteID.HISCORE_AMOXLIATL),
@@ -123,6 +124,7 @@ public enum HiscoreSkill
 	THE_CORRUPTED_GAUNTLET("The Corrupted Gauntlet", BOSS, SpriteID.HISCORE_THE_CORRUPTED_GAUNTLET),
 	THE_HUEYCOATL("The Hueycoatl", BOSS, SpriteID.HISCORE_THE_HUEYCOATL),
 	THE_LEVIATHAN("The Leviathan", BOSS, SpriteID.HISCORE_THE_LEVIATHAN),
+	THE_ROYAL_TITANS("The Royal Titans", BOSS, SpriteID.HISCORE_ROYAL_TITANS),
 	THE_WHISPERER("The Whisperer", BOSS, SpriteID.HISCORE_THE_WHISPERER),
 	THEATRE_OF_BLOOD("Theatre of Blood", BOSS, SpriteID.HISCORE_THEATRE_OF_BLOOD),
 	THEATRE_OF_BLOOD_HARD_MODE("Theatre of Blood: Hard Mode", BOSS, SpriteID.HISCORE_THEATRE_OF_BLOOD),

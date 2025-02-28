@@ -535,4 +535,72 @@ public class LootTrackerPluginTest
 			new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
 		));
 	}
+
+	@Test
+	public void testBaHighGamble()
+	{
+		Player player = mock(Player.class);
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(2534, 3572, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", "Shark (x 114)! High level gamble count: <col=7f0000>3</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		List<ItemStack> items = Collections.singletonList(
+			new ItemStack(ItemID.SHARK, 114)
+		);
+		sendInvChange(InventoryID.INVENTORY, items);
+
+		verify(lootTrackerPlugin).addLoot("Barbarian Assault high gamble", -1, LootRecordType.EVENT, null, items);
+	}
+
+	@Test
+	public void testWintertodtRewardCart()
+	{
+		Player player = mock(Player.class);
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(1636, 3944, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getBoostedSkillLevel(Skill.FIREMAKING)).thenReturn(99);
+
+		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), anyCollection());
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.KNIFE, 1),
+			new Item(ItemID.BRUMA_TORCH, 1),
+			new Item(ItemID.HAMMER, 1)
+		});
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=ef1020>You found some loot: 17 x Burnt page", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BURNT_PAGE, 17),
+			new Item(ItemID.KNIFE, 1),
+			new Item(ItemID.BRUMA_TORCH, 1),
+			new Item(ItemID.HAMMER, 1)
+		});
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
+			new ItemStack(ItemID.BURNT_PAGE, 17)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 4,694 x Coins", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BURNT_PAGE, 17),
+			new Item(ItemID.COINS_995, 4694),
+			new Item(ItemID.KNIFE, 1),
+			new Item(ItemID.BRUMA_TORCH, 1),
+			new Item(ItemID.HAMMER, 1)
+		});
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
+			new ItemStack(ItemID.COINS_995, 4694)
+		));
+	}
 }

@@ -24,27 +24,23 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.NonNull;
-import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 
 /**
  * Internal state for the XpTrackerPlugin
- * <p>
- * Note: This class's operations are not currently synchronized.
- * It is intended to be called by the XpTrackerPlugin on the client thread.
  */
 class XpState
 {
-	private static final double DEFAULT_XP_MODIFIER = 4.0;
-	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
+	// this is keeping a copy of the panel skill order so that serialization keeps the order
+	private final List<Skill> order = new ArrayList<>(Skill.values().length);
 	private XpStateSingle overall = new XpStateSingle(-1);
-	private NPC interactedNPC;
 
 	@Inject
 	private XpTrackerConfig xpTrackerConfig;
@@ -55,6 +51,7 @@ class XpState
 	void reset()
 	{
 		xpSkills.clear();
+		order.clear();
 		overall = new XpStateSingle(-1);
 	}
 
@@ -114,6 +111,7 @@ class XpState
 				}
 
 				state.updateGoals(currentXp, goalStartXp, goalEndXp);
+				updateOrder(skill);
 				return XpUpdateResult.UPDATED;
 			}
 		}
@@ -129,78 +127,6 @@ class XpState
 		{
 			overall.update(currentXp);
 		}
-	}
-
-	private double getCombatXPModifier(Skill skill)
-	{
-		if (skill == Skill.HITPOINTS)
-		{
-			return SHARED_XP_MODIFIER;
-		}
-
-		return DEFAULT_XP_MODIFIER;
-	}
-
-	/**
-	 * Updates skill with average actions based on currently interacted NPC.
-	 *
-	 * @param skill     experience gained skill
-	 * @param npc       currently interacted NPC
-	 * @param npcHealth health of currently interacted NPC
-	 */
-	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth, int xpModifier)
-	{
-		if (npc == null || npc.getCombatLevel() <= 0 || npcHealth == null)
-		{
-			return;
-		}
-
-		final XpStateSingle state = getSkill(skill);
-		final int actionExp = (int) (npcHealth * getCombatXPModifier(skill) * xpModifier);
-		final XpAction action = state.getXpAction(XpActionType.ACTOR_HEALTH);
-
-		if (action.isActionsHistoryInitialized())
-		{
-			action.getActionExps()[action.getActionExpIndex()] = actionExp;
-
-			if (interactedNPC != npc)
-			{
-				action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
-			}
-		}
-		else
-		{
-			// So we have a decent average off the bat, lets populate all values with what we see.
-			Arrays.fill(action.getActionExps(), actionExp);
-
-			action.setActionsHistoryInitialized(true);
-		}
-
-		interactedNPC = npc;
-		state.setActionType(XpActionType.ACTOR_HEALTH);
-	}
-
-	/**
-	 * Update number of actions performed for skill if last interacted NPC died.
-	 * (eg. amount of kills in this case)
-	 *
-	 * @param skill     skill to update actions for
-	 * @param npc       npc that just died
-	 * @param npcHealth max health of npc that just died
-	 * @return UPDATED in case new kill was successfully added
-	 */
-	XpUpdateResult updateNpcKills(Skill skill, NPC npc, Integer npcHealth)
-	{
-		XpStateSingle state = getSkill(skill);
-
-		if (state.getXpGainedSinceReset() <= 0 || npcHealth == null || npc != interactedNPC)
-		{
-			return XpUpdateResult.NO_CHANGE;
-		}
-
-		final XpAction xpAction = state.getXpAction(XpActionType.ACTOR_HEALTH);
-		xpAction.setActionsSinceReset(xpAction.getActionsSinceReset() + 1);
-		return xpAction.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
 	}
 
 	void tick(Skill skill, long delta)
@@ -289,5 +215,61 @@ class XpState
 	XpSnapshotSingle getTotalSnapshot()
 	{
 		return overall.snapshot();
+	}
+
+	private void updateOrder(Skill skill)
+	{
+		if (xpTrackerConfig.prioritizeRecentXpSkills())
+		{
+			int idx = order.indexOf(skill);
+			if (idx != 0)
+			{
+				order.remove(skill);
+				order.add(0, skill);
+			}
+		}
+		else
+		{
+			if (!order.contains(skill))
+			{
+				order.add(skill);
+			}
+		}
+	}
+
+	XpSave save()
+	{
+		if (overall.getStartXp() == -1)
+		{
+			return null;
+		}
+
+		XpSave save = new XpSave();
+		for (Skill skill : order)
+		{
+			XpStateSingle state = xpSkills.get(skill);
+			if (state.getTotalXpGained() > 0)
+			{
+				save.skills.put(skill, state.save());
+			}
+		}
+		save.overall = overall.save();
+		return save;
+	}
+
+	void restore(XpSave save)
+	{
+		reset();
+
+		for (Map.Entry<Skill, XpSaveSingle> entry : save.skills.entrySet())
+		{
+			Skill skill = entry.getKey();
+			XpSaveSingle s = entry.getValue();
+			XpStateSingle state = new XpStateSingle(s.startXp);
+			state.restore(s);
+			xpSkills.put(skill, state);
+			order.add(skill);
+		}
+		overall.restore(save.overall);
 	}
 }

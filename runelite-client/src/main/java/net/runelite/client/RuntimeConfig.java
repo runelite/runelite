@@ -25,6 +25,7 @@
 package net.runelite.client;
 
 import com.google.common.base.Strings;
+import com.google.gson.JsonArray;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class RuntimeConfig
 {
 	private Map<String, ?> props = Collections.emptyMap();
 	private Map<String, String> sysProps = Collections.emptyMap();
+	private JsonArray compilerControl;
 
 	private String outageMessage;
 	private Map<String, String> outageLinks;

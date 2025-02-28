@@ -74,10 +74,5 @@ public @interface PluginDescriptor
 
 	boolean developerPlugin() default false;
 
-	/**
-	 * If this plugin should be loaded when there is no {@link net.runelite.api.Client}
-	 */
-	boolean loadWhenOutdated() default false;
-
 	boolean loadInSafeMode() default true;
 }

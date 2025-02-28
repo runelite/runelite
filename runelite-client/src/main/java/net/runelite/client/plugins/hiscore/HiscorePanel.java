@@ -112,12 +112,12 @@ public class HiscorePanel extends PluginPanel
 		SCORPIA, SCURRIUS, SKOTIZO,
 		SOL_HEREDIT, SPINDEL, TEMPOROSS,
 		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THE_HUEYCOATL,
-		THE_LEVIATHAN, THE_WHISPERER, THEATRE_OF_BLOOD,
-		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TOMBS_OF_AMASCUT,
-		TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK, TZTOK_JAD,
-		VARDORVIS, VENENATIS, VETION,
-		VORKATH, WINTERTODT, ZALCANO,
-		ZULRAH
+		THE_LEVIATHAN, THE_ROYAL_TITANS, THE_WHISPERER,
+		THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL,
+		TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK,
+		TZTOK_JAD, VARDORVIS, VENENATIS,
+		VETION, VORKATH, WINTERTODT,
+		ZALCANO, ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
@@ -276,9 +276,7 @@ public class HiscorePanel extends PluginPanel
 		c.gridy++;
 
 		JPanel minigamePanel = new JPanel();
-		// These aren't all on one row because when there's a label with four or more digits it causes the details
-		// panel to change its size for some reason...
-		minigamePanel.setLayout(new GridLayout(3, 3));
+		minigamePanel.setLayout(new GridLayout(0, 3));
 		minigamePanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		minigamePanel.add(makeHiscorePanel(CLUE_SCROLL_ALL));
@@ -287,6 +285,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
 		minigamePanel.add(makeHiscorePanel(RIFTS_CLOSED));
 		minigamePanel.add(makeHiscorePanel(COLOSSEUM_GLORY));
+		minigamePanel.add(makeHiscorePanel(COLLECTIONS_LOGGED));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
 		minigamePanel.add(makeHiscorePanel(PVP_ARENA_RANK));
@@ -332,14 +331,23 @@ public class HiscorePanel extends PluginPanel
 		label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText(pad("--", skillType));
-		spriteManager.getSpriteAsync(skill == null ? TAB_COMBAT : skill.getSpriteId(), 0, (sprite) ->
-			SwingUtilities.invokeLater(() ->
-			{
-				// Icons are all 25x25 or smaller, so they're fit into a 25x25 canvas to give them a consistent size for
-				// better alignment. Further, they are then scaled down to 20x20 to not be overly large in the panel.
-				final BufferedImage scaledSprite = ImageUtil.resizeImage(ImageUtil.resizeCanvas(sprite, 25, 25), 20, 20);
-				label.setIcon(new ImageIcon(scaledSprite));
-			}));
+
+		// Collections logged don't have a sprite, so we provide our own..
+		if (skill == COLLECTIONS_LOGGED)
+		{
+			label.setIcon(new ImageIcon(ImageUtil.loadImageResource(getClass(), "activities/collections_logged.png")));
+		}
+		else
+		{
+			spriteManager.getSpriteAsync(skill == null ? TAB_COMBAT : skill.getSpriteId(), 0, (sprite) ->
+				SwingUtilities.invokeLater(() ->
+				{
+					// Icons are all 25x25 or smaller, so they're fit into a 25x25 canvas to give them a consistent size for
+					// better alignment. Further, they are then scaled down to 20x20 to not be overly large in the panel.
+					final BufferedImage scaledSprite = ImageUtil.resizeImage(ImageUtil.resizeCanvas(sprite, 25, 25), 20, 20);
+					label.setIcon(new ImageIcon(scaledSprite));
+				}));
+		}
 
 		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
@@ -549,6 +557,7 @@ public class HiscorePanel extends PluginPanel
 				case SOUL_WARS_ZEAL:
 				case RIFTS_CLOSED:
 				case COLOSSEUM_GLORY:
+				case COLLECTIONS_LOGGED:
 				{
 					content += buildMinigameTooltip(result.getSkill(skill), skill);
 					break;

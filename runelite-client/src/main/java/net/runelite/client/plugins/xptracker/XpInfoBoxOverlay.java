@@ -90,7 +90,7 @@ class XpInfoBoxOverlay extends OverlayPanel
 
 		final XpSnapshotSingle snapshot = plugin.getSkillSnapshot(skill);
 
-		final String leftStr = config.onScreenDisplayMode().getActionKey(snapshot);
+		final String leftStr = config.onScreenDisplayMode().getKey();
 		final String rightNum = config.onScreenDisplayMode().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLine = LineComponent.builder()
@@ -98,7 +98,7 @@ class XpInfoBoxOverlay extends OverlayPanel
 			.right(rightNum)
 			.build();
 
-		final String bottomLeftStr = config.onScreenDisplayModeBottom().getActionKey(snapshot);
+		final String bottomLeftStr = config.onScreenDisplayModeBottom().getKey();
 		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLineBottom = LineComponent.builder()

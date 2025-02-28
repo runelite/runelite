@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -148,7 +149,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(3243, 3208, 0))
 			.area("Lumbridge Church")
 			.question("How many gravestones are in the church graveyard?")
-			.answer("19 or 20")
+			.answerProvider(AnagramClue::lumbridgeGravestoneCount)
 			.build(),
 		AnagramClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_3612)
@@ -424,6 +425,15 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("I EVEN")
 			.npc("Nieve")
 			.location(new WorldPoint(2432, 3422, 0))
+			.area("The slayer master in Gnome Stronghold")
+			.question("How many farming patches are there in Gnome stronghold?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.itemId(ItemID.CLUE_SCROLL_MEDIUM_12059)
+			.text("VESTE")
+			.npc("Steve")
+			.location(new WorldPoint(2432, 3423, 0))
 			.area("The slayer master in Gnome Stronghold")
 			.question("How many farming patches are there in Gnome stronghold?")
 			.answer("2")
@@ -740,15 +750,6 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("302")
 			.build(),
 		AnagramClue.builder()
-			.itemId(ItemID.CLUE_SCROLL_MEDIUM_12059)
-			.text("VESTE")
-			.npc("Steve")
-			.location(new WorldPoint(2432, 3423, 0))
-			.area("Upstairs Wyvern Area or Stronghold Slayer Cave")
-			.question("How many farming patches are there in Gnome stronghold?")
-			.answer("2")
-			.build(),
-		AnagramClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_19882)
 			.text("VEIL VEDA")
 			.npc("Evil Dave")
@@ -904,7 +905,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Nullable
 	private final String question;
 	@Nullable
-	private final String answer;
+	private final Function<ClueScrollPlugin, String> answerProvider;
 	private final int objectId;
 
 	@Builder
@@ -917,6 +918,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		String area,
 		@Nullable String question,
 		@Nullable String answer,
+		@Nullable Function<ClueScrollPlugin, String> answerProvider,
 		@Nullable Integer objectId
 	)
 	{
@@ -926,7 +928,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.area = area;
 		this.question = question;
-		this.answer = answer;
+		this.answerProvider = answerProvider != null ? answerProvider : (answer != null ? (plugin) -> answer : null);
 		this.objectId = objectId != null ? objectId : -1;
 	}
 
@@ -934,6 +936,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public WorldPoint getLocation(ClueScrollPlugin plugin)
 	{
 		return locationProvider == null ? null : locationProvider.apply(plugin);
+	}
+
+	@VisibleForTesting
+	String getAnswer(ClueScrollPlugin plugin)
+	{
+		return answerProvider == null ? null : answerProvider.apply(plugin);
 	}
 
 	@Override
@@ -952,11 +960,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		if (getAnswer() != null)
+		final String answer = getAnswer(plugin);
+		if (answer != null)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Answer:").build());
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getAnswer())
+				.left(answer)
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
@@ -1040,5 +1049,20 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public int[] getConfigKeys()
 	{
 		return new int[]{text.hashCode()};
+	}
+
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
+	private static String lumbridgeGravestoneCount(ClueScrollPlugin plugin)
+	{
+		switch (plugin.getClient().getVarbitValue(Varbits.JARVIS_GRAVESTONE))
+		{
+			case 1:
+				return "20";
+			case 0:
+			case 2:
+			case 3:
+			default:
+				return "19";
+		}
 	}
 }

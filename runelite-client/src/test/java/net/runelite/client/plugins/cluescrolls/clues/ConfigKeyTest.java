@@ -38,9 +38,7 @@ public class ConfigKeyTest
 	{
 		List<ClueScroll> allClues = new ArrayList<>();
 		allClues.addAll(FairyRingClue.CLUES);
-		CoordinateClue.CLUES.keySet().stream()
-			.map(l -> new CoordinateClue("location", l, null))
-			.forEach(allClues::add);
+		allClues.addAll(CoordinateClue.CLUES.values());
 		allClues.addAll(CipherClue.CLUES);
 		allClues.addAll(CrypticClue.CLUES);
 		allClues.addAll(FaloTheBardClue.CLUES);

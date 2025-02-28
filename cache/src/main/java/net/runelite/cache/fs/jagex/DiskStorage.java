@@ -143,12 +143,15 @@ public class DiskStorage implements Storage
 		index.setProtocol(id.getProtocol());
 		index.setRevision(id.getRevision());
 		index.setNamed(id.isNamed());
+		index.setSized(id.isSized());
 
 		for (ArchiveData ad : id.getArchives())
 		{
 			Archive archive = index.addArchive(ad.getId());
 			archive.setNameHash(ad.getNameHash());
 			archive.setCrc(ad.getCrc());
+			archive.setCompressedSize(ad.getCompressedSize());
+			archive.setDecompressedSize(ad.getDecompressedSize());
 			archive.setRevision(ad.getRevision());
 			archive.setFileData(ad.getFiles());
 

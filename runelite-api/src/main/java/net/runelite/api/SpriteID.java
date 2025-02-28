@@ -1341,10 +1341,12 @@ public final class SpriteID
 	/* Unmapped: 1419 */
 	public static final int PRAYER_RIGOUR = 1420;
 	public static final int PRAYER_AUGURY = 1421;
-	/* Unmapped: 1422, 1423 */
+	public static final int PRAYER_DEADEYE = 1422;
+	public static final int PRAYER_MYSTIC_VIGOUR = 1423;
 	public static final int PRAYER_RIGOUR_DISABLED = 1424;
 	public static final int PRAYER_AUGURY_DISABLED = 1425;
-	/* Unmapped: 1426, 1427 */
+	public static final int PRAYER_DEADEYE_DISABLED = 1426;
+	public static final int PRAYER_MYSTIC_VIGOUR_DISABLED = 1427;
 	public static final int UNKNOWN_BLACK_ANTICLOCKWISE_ARROW_SHADOWED = 1428;
 	public static final int UNKNOWN_BLACK_ANTICLOCKWISE_ARROW = 1429;
 	public static final int YELLOW_CLICK_ANIMATION_1_1430 = 1430;
@@ -1833,4 +1835,6 @@ public final class SpriteID
 	public static final int HISCORE_COLOSSEUM_GLORY = 5862;
 	public static final int HEALTHBAR_LAST_STAND_FRONT = 5863;
 	public static final int HEALTHBAR_LAST_STAND_BACK = 5864;
+	/* Unmapped: 5865~6344 */
+	public static final int HISCORE_ROYAL_TITANS = 6345;
 }

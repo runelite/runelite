@@ -49,6 +49,9 @@ public class Index
 	private boolean named = true;
 	@Setter
 	@Getter
+	private boolean sized = false;
+	@Setter
+	@Getter
 	private int revision;
 	@Setter
 	@Getter
@@ -146,6 +149,7 @@ public class Index
 		data.setProtocol(protocol);
 		data.setRevision(revision);
 		data.setNamed(named);
+		data.setSized(sized);
 
 		ArchiveData[] archiveDatas = new ArchiveData[archives.size()];
 		data.setArchives(archiveDatas);
@@ -158,6 +162,8 @@ public class Index
 			ad.setNameHash(archive.getNameHash());
 			ad.setCrc(archive.getCrc());
 			ad.setRevision(archive.getRevision());
+			ad.setCompressedSize(archive.getCompressedSize());
+			ad.setDecompressedSize(archive.getDecompressedSize());
 
 			FileData[] files = archive.getFileData();
 			ad.setFiles(files);

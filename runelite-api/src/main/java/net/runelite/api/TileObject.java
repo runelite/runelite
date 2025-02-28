@@ -37,20 +37,20 @@ import net.runelite.api.coords.WorldPoint;
  */
 public interface TileObject
 {
-	int HASH_PLANE_SHIFT = 60;
+	int HASH_PLANE_SHIFT = 62;
 
 	/**
 	 * A bitfield containing various flags:
 	 * <pre>{@code
-	 * (RL) plane = bits >> 60 & 3
-	 * worldView = bits >> 49 & 2047
-	 * id = bits >> 17 & 0xffffffff
-	 * wall = bits >> 16 & 1
-	 * type = bits >> 14 & 3
+	 * (RL) plane = bits >> 62 & 3
+	 * worldView = bits >> 50 & 4095
+	 * id = bits >> 18 & 0xffffffff
+	 * wall = bits >> 17 & 1
+	 * type = bits >> 14 & 7
 	 * scene y = bits >> 7 & 127
 	 * scene x = bits >> 0 & 127
 	 * }</pre>
-	 * Type 0 = player, 1 = npc, 2 = game object, 3 = item
+	 * Type 0 = player, 1 = npc, 2 = game object, 3 = item, 4 = world entity
 	 */
 	long getHash();
 

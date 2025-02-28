@@ -24,14 +24,44 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AnagramClueTest
 {
+	@Mock
+	private ClueScrollPlugin plugin;
+
+	@Mock
+	private Client client;
+
 	@Test
 	public void forTextEmptyString()
 	{
 		assertNull(AnagramClue.forText(""));
+	}
+
+	@Test
+	public void countLumbridgeGravestones()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.JARVIS_GRAVESTONE)).thenReturn(0, 1, 2, 3);
+
+		AnagramClue clue = AnagramClue.forText("How many gravestones are in the church graveyard?");
+		assert clue != null;
+
+		assertEquals("19", clue.getAnswer(plugin));
+		assertEquals("20", clue.getAnswer(plugin));
+		assertEquals("19", clue.getAnswer(plugin));
+		assertEquals("19", clue.getAnswer(plugin));
 	}
 }
