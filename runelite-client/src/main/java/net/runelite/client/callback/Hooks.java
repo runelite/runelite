@@ -49,6 +49,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
@@ -632,8 +633,12 @@ public class Hooks implements Callbacks
 			String coord = "unk";
 			if (client.getClientThread() == Thread.currentThread())
 			{
-				WorldPoint p = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
-				coord = String.format("%d_%d_%d_%d_%d", p.getPlane(), p.getX() / 64, p.getY() / 64, p.getX() & 63, p.getY() & 63);
+				Player player = client.getLocalPlayer();
+				if (player != null)
+				{
+					WorldPoint p = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+					coord = String.format("%d_%d_%d_%d_%d", p.getPlane(), p.getX() / 64, p.getY() / 64, p.getX() & 63, p.getY() & 63);
+				}
 			}
 
 			telemetryClient.submitError(
