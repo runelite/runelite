@@ -1327,7 +1327,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.")
 			.locationProvider(CrypticClue::getViggoraLocation)
 			.npc("Viggora")
-			.solution("Speak to Viggora while wearing a ring of visibility or ring of shadows, and a Ghostspeak amulet.")
+			.solutionProvider(p -> "Speak to Viggora in " + getViggoraLocationString(p) + " while wearing a ring of visibility or ring of shadows, and a Ghostspeak amulet.")
 			.build(),
 		CrypticClue.builder()
 			.text("2 musical birds. Dig in front of the spinning light.")
@@ -1951,6 +1951,22 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			default:
 				log.warn("Unknown viggora location for unexpected varb value {}", varb);
 				return null;
+		}
+	}
+
+	private static String getViggoraLocationString(ClueScrollPlugin plugin)
+	{
+		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);
+		switch (varb)
+		{
+			case 1:
+				return "the Rogue's Castle";
+			case 2:
+				return "the Slayer tower";
+			case 3:
+				return "the Edgeville dungeon";
+			default:
+				return "?";
 		}
 	}
 
