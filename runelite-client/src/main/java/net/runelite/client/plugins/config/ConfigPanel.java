@@ -561,7 +561,7 @@ class ConfigPanel extends PluginPanel
 			public void mouseClicked(MouseEvent e)
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(
-					SwingUtilities.windowForComponent(ConfigPanel.this),
+					ConfigPanel.this,
 					colorPickerBtn.getColor(),
 					cid.getItem().name(),
 					alphaHidden);

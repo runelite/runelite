@@ -32,7 +32,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.FALSE;
@@ -574,7 +573,7 @@ public class GroundItemsPlugin extends Plugin
 				.onClick(e ->
 					SwingUtilities.invokeLater(() ->
 					{
-						RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+						RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 							color != null ? color : Color.decode("#FFFFFF"), "Item color", true);
 						colorPicker.setOnClose(c -> setItemColor(itemId, c));
 						colorPicker.setVisible(true);
