@@ -489,7 +489,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				calculateLinesToDisplay();
+				scanNpcs();
 				break;
 
 			case LOGGING_IN:
