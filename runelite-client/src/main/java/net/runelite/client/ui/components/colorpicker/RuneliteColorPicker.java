@@ -115,7 +115,6 @@ public class RuneliteColorPicker extends JDialog
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
-		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
