@@ -38,6 +38,7 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -49,8 +50,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class TearsOfGuthixPlugin extends Plugin
 {
-	private static final int TOG_REGION = 12948;
-
 	@Inject
 	private Client client;
 
@@ -104,7 +103,7 @@ public class TearsOfGuthixPlugin extends Plugin
 			object.getId() == ObjectID.GREEN_TEARS ||
 			object.getId() == ObjectID.GREEN_TEARS_6666)
 		{
-			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
+			if (GameArea.CHASM_OF_TEARS.containsRegion(client.getLocalPlayer().getWorldLocation().getRegionID()))
 			{
 				streams.put(event.getDecorativeObject(), Instant.now());
 			}
