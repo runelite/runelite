@@ -28,6 +28,7 @@ package net.runelite.client.plugins.devtools;
 import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.google.inject.ProvisionException;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -217,18 +218,6 @@ class DevToolsPanel extends PluginPanel
 		catch (LinkageError e)
 		{
 		}
-
-		// Add RLBot state viewer button
-		DevToolsButton rlBotStateBtn = plugin.getRlBotState();
-		rlBotStateBtn.addFrame(new DevToolsFrame()
-		{
-			{
-				getContentPane().add(plugin.getRlBotStateViewer(), BorderLayout.CENTER);
-				setTitle("RLBot State Viewer");
-				pack();
-			}
-		});
-		container.add(rlBotStateBtn);
 
 		return container;
 	}

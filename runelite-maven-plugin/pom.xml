@@ -43,13 +43,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>injected-client</artifactId>
+			<artifactId>cache</artifactId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>cache</artifactId>
+			<artifactId>injected-client</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

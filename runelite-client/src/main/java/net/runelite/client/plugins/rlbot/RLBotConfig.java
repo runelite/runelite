@@ -53,6 +53,6 @@ public interface RLBotConfig extends Config {
         position = 5
     )
     default boolean showStateViewer() {
-        return false;
+        return true;
     }
 } 

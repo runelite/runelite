@@ -35,6 +35,8 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
@@ -85,12 +87,10 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
-import net.runelite.client.plugins.rlbot.RLBotStateViewer;
-import com.fasterxml.jackson.databind.JsonNode;
 import net.runelite.client.plugins.rlbot.RLBotPlugin;
 import com.google.common.collect.ImmutableMap;
 import javax.swing.SwingUtilities;
-import net.runelite.api.events.GameTick;
+import net.runelite.client.plugins.rlbot.RLBotConfig;
 
 @Slf4j
 @PluginDescriptor(
@@ -147,7 +147,10 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsConfig config;
 
 	@Inject
-	private RLBotStateViewer rlBotStateViewer;
+	private RLBotConfig rlBotConfig;
+
+	@Inject
+	private RLBotPlugin rlBotPlugin;
 
 	private DevToolsButton players;
 	private DevToolsButton npcs;
@@ -180,7 +183,6 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton shell;
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
-	private DevToolsButton rlBotState;
 	private NavigationButton navButton;
 
 	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
@@ -242,6 +244,12 @@ public class DevToolsPlugin extends Plugin
 		return configManager.getConfig(DevToolsConfig.class);
 	}
 
+	@Provides
+	RLBotConfig provideRLBotConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RLBotConfig.class);
+	}
+
 	private NavigationButton createNavigationButton(String tooltip, BufferedImage icon, PluginPanel panel, int priority) {
 		return NavigationButton.builder()
 			.tooltip(tooltip)
@@ -291,7 +299,6 @@ public class DevToolsPlugin extends Plugin
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
 		uiDefaultsInspector = new DevToolsButton("Swing Defaults");
-		rlBotState = new DevToolsButton("RLBot State");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -317,11 +324,6 @@ public class DevToolsPlugin extends Plugin
 		eventBus.register(soundEffectOverlay);
 
 		Toolkit.getDefaultToolkit().addAWTEventListener(swingInspectorKeyListener, AWTEvent.KEY_EVENT_MASK);
-
-		// Activate the RLBot state viewer by default
-		if (rlBotState != null) {
-			rlBotState.setActive(true);
-		}
 	}
 
 	@Override
@@ -672,34 +674,5 @@ public class DevToolsPlugin extends Plugin
 					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
 			}
 		}
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick tick)
-	{
-		if (rlBotState != null && rlBotState.isActive())
-		{
-			// Get the RLBot plugin instance
-			RLBotPlugin rlBotPlugin = injector.getInstance(RLBotPlugin.class);
-			if (rlBotPlugin != null)
-			{
-				// Update the state viewer with the current game state
-				JsonNode state = rlBotPlugin.generateGameState();
-				if (state != null)
-				{
-					rlBotStateViewer.updateState(state);
-				}
-			}
-		}
-	}
-
-	public RLBotStateViewer getRlBotStateViewer()
-	{
-		return rlBotStateViewer;
-	}
-
-	public DevToolsButton getRlBotState()
-	{
-		return rlBotState;
 	}
 }

@@ -6,6 +6,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.KeyEvent;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +31,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.KeyListener;
@@ -53,12 +56,9 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.nio.file.StandardOpenOption;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Iterator;
-import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.imageio.ImageWriter;
 import javax.imageio.ImageWriteParam;
@@ -84,7 +84,6 @@ import com.google.inject.Module;
 import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Color;
 import javax.swing.JTree;
 
 @PluginDescriptor(
@@ -130,12 +129,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     private ObjectMapper objectMapper;
 
     @Inject
-    private OverlayManager overlayManager;
-
-    @Inject
-    private RLBotOverlay overlay;
-
-    @Inject
     private ItemManager itemManager;
 
     @Inject
@@ -144,7 +137,8 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     @Inject
     private KeyManager keyManager;
 
-    private WebSocketServer server;
+    // Renamed from server to webSocketServer to avoid duplication
+    private WebSocketServer webSocketServer;
 
     @Inject
     private RLBotStateViewer stateViewer;
@@ -155,6 +149,8 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     private NavigationButton stateViewerButton;
 
     private boolean isRunning = false;
+    private int tickCount = 0;
+    private JsonNode latestGameState; // Store the latest game state for manual refresh
     private JsonNode commandSchema;
     private JsonNode stateSchema;
     private boolean shouldSendScreenshots = true; // Flag to control screenshot sending
@@ -192,73 +188,118 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
     @Override
     protected void startUp() throws Exception {
-        try {
-            // Load schemas
-            String commandSchemaPath = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/command_schema.json";
-            String stateSchemaPath = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/state_schema.json";
-            logInfo("Command schema path: " + commandSchemaPath);
-            logInfo("State schema path: " + stateSchemaPath);
-            
-            String commandSchemaStr = Files.readString(Path.of(commandSchemaPath));
-            String stateSchemaStr = Files.readString(Path.of(stateSchemaPath));
+        logInfo("Starting RLBot plugin...");
+        startWebSocketServer();
 
-            commandSchema = objectMapper.readTree(commandSchemaStr);
-            stateSchema = objectMapper.readTree(stateSchemaStr);
-
-            // Set up logging
-            java.nio.file.Path logDir = java.nio.file.Paths.get("/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs");
-            Files.createDirectories(logDir);
-            java.nio.file.Path logFile = logDir.resolve("rlbot.log");
-            
-            logInfo("Starting RLBot plugin...");
-            
-            // Start WebSocket server
-            startWebSocketServer();
-            
-            // Verify server is running
-            if (server == null) {
-                logError("WebSocket server failed to start properly");
-                return;
-            }
-            
-            keyManager.registerKeyListener(this);
-            isRunning = true;
-            overlayManager.add(overlay);
-            logInfo("RLBot plugin started successfully");
-            
-            stateViewer.setRefreshCallback(() -> {
-                JsonNode gameState = generateGameState();
-                SwingUtilities.invokeLater(() -> stateViewer.updateState(gameState));
-            });
-
-            // Activate the RLBot state viewer by default
-            if (this.getRlBotState() != null) {
-                this.getRlBotState().setActive(true);
-            }
-
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "rlbot_icon.png");
-
-            stateViewerButton = NavigationButton.builder()
-                .tooltip("RLBot State")
-                .icon(icon)
-                .priority(5)
-                .panel(stateViewer)
-                .build();
-
-            clientToolbar.addNavigation(stateViewerButton);
-            
-        } catch (Exception e) {
-            logError("Error during plugin startup: " + e.getMessage());
+        if (webSocketServer == null) {
+            logError("WebSocket server failed to start properly");
+            return;
         }
-    }
 
+        keyManager.registerKeyListener(this);
+        isRunning = true;
+        logInfo("RLBot plugin started successfully");
+
+        stateViewer.setRefreshCallback(() -> {
+            try {
+                logInfo("StateViewer refresh callback called");
+                
+                // Use the latest game state if available, otherwise generate a new one
+                final JsonNode stateToUse;
+                
+                if (latestGameState == null) {
+                    logInfo("No cached state available, generating new game state");
+                    stateToUse = generateGameState();
+                } else {
+                    logInfo("Using cached game state from latest tick");
+                    stateToUse = latestGameState;
+                }
+                
+                if (stateToUse != null) {
+                    logInfo("Updating state viewer with game state");
+                    
+                    // Use a final reference to avoid capture issues
+                    final JsonNode finalState = stateToUse;
+                    
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            stateViewer.updateState(finalState);
+                            logInfo("State viewer updated via refresh callback");
+                        } catch (Exception e) {
+                            logError("Error updating state viewer in refresh callback: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    logError("Cannot update state viewer - game state is null");
+                }
+            } catch (Exception e) {
+                logError("Error in refresh callback: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
+
+        BufferedImage icon;
+        try {
+            icon = ImageUtil.loadImageResource(getClass(), "rlbot_icon.png");
+        } catch (Exception e) {
+            // Use a fallback icon from RuneLite's UI
+            icon = ImageUtil.loadImageResource(RLBotPlugin.class, "/net/runelite/client/ui/runescape.png");
+            logInfo("Could not load rlbot_icon.png, using fallback icon");
+        }
+
+        stateViewerButton = NavigationButton.builder()
+            .tooltip("RLBot State")
+            .icon(icon)
+            .priority(5)
+            .panel(stateViewer)
+            .build();
+
+        clientToolbar.addNavigation(stateViewerButton);
+
+        // Perform an initial update of the state viewer
+        clientThread.invokeLater(() -> {
+            try {
+                // Wait until client is fully loaded before generating initial state
+                if (client == null || client.getGameState() != GameState.LOGGED_IN) {
+                    logInfo("Client not ready for initial state update, will update on first game tick");
+                    return;
+                }
+                
+                // Additional safety check for scene
+                if (client.getScene() == null) {
+                    logInfo("Scene not available yet, will update state on first game tick");
+                    return;
+                }
+                
+                logInfo("Generating initial game state");
+                JsonNode initialState = generateGameState();
+                if (initialState != null) {
+                    // Store the initial state
+                    latestGameState = initialState;
+                    
+                    // Update the UI with the initial state
+                    SwingUtilities.invokeLater(() -> {
+                        stateViewer.updateState(initialState);
+                        logInfo("State viewer initialized with initial game state");
+                    });
+                } else {
+                    logInfo("Initial game state generation returned null, will update on first game tick");
+                }
+            } catch (Exception e) {
+                logError("Error initializing state viewer: " + e.getMessage());
+                e.printStackTrace();
+                logInfo("State viewer will be updated on first game tick");
+            }
+        });
+    }
+    
     @Override
     protected void shutDown() {
         logInfo("Shutting down RLBot plugin");
         keyManager.unregisterKeyListener(this);
         stopWebSocketServer();
         isRunning = false;
-        overlayManager.remove(overlay);
         screenshotExecutor.shutdown();
         try {
             if (!screenshotExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
@@ -270,122 +311,155 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     }
 
     private void startWebSocketServer() {
-        if (server != null) {
+        if (webSocketServer != null) {
             logInfo("WebSocket server already running");
             return;
         }
 
         try {
-            int port = config.getPort();
+            // Use port 43595 by default to match Python client
+            int port = config.getPort() > 0 ? config.getPort() : 43595;
             logInfo("Starting WebSocket server on port " + port);
             
-            server = new WebSocketServer(new InetSocketAddress(port)) {
-                @Override
-                public void onOpen(WebSocket conn, ClientHandshake handshake) {
-                    logInfo("New WebSocket connection established from " + conn.getRemoteSocketAddress());
+            RLBotWebSocketServer server = new RLBotWebSocketServer(new InetSocketAddress("localhost", port));
+            webSocketServer = server;
+            
+            // Server configuration
+            server.setReuseAddr(true);
+            server.setConnectionLostTimeout(300); // Increased timeout to 5 minutes
+            
+            // Start the server in a separate thread
+            Thread serverThread = new Thread(() -> {
+                try {
+                    server.start();
+                } catch (Exception e) {
+                    logError("Error in WebSocket server thread: " + e.getMessage());
+                    e.printStackTrace();
                 }
-
-                @Override
-                public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-                    logInfo("WebSocket connection closed: " + reason);
-                }
-
-                @Override
-                public void onMessage(WebSocket conn, String message) {
-                    try {
-                        validateAndProcessCommand(message);
-                    } catch (Exception e) {
-                        logError("Error processing message: " + e.getMessage());
-                        try {
-                            ObjectNode errorResponse = objectMapper.createObjectNode();
-                            errorResponse.put("error", e.getMessage());
-                            conn.send(errorResponse.toString());
-                        } catch (Exception sendError) {
-                            logError("Error sending error response: " + sendError.getMessage());
+            }, "websocket-server");
+            serverThread.setDaemon(true);
+            serverThread.start();
+            
+            // Wait for server to start
+            int maxWaitTime = 10000; // 10 seconds
+            long startTime = System.currentTimeMillis();
+            while (!server.isStarted() && System.currentTimeMillis() - startTime < maxWaitTime) {
+                Thread.sleep(100);
+            }
+            
+            if (!server.isStarted()) {
+                logError("WebSocket server failed to start within timeout period");
+                stopWebSocketServer();
+                return;
+            }
+            
+            // Create a thread to periodically log connection status
+            Thread monitorThread = new Thread(() -> {
+                try {
+                    while (webSocketServer != null) {
+                        Thread.sleep(60000); // Log every minute
+                        if (webSocketServer.getConnections().isEmpty()) {
+                            logInfo("WebSocket server running but no active connections");
+                        } else {
+                            logInfo("WebSocket server has " + webSocketServer.getConnections().size() + " active connections");
                         }
                     }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
-
-                @Override
-                public void onError(WebSocket conn, Exception ex) {
-                    logError("WebSocket error: " + ex.getMessage());
-                }
-
-                @Override
-                public void onStart() {
-                    logInfo("WebSocket server started on port " + port);
-                }
-            };
-            server.setReuseAddr(true);
-            server.setConnectionLostTimeout(60); // Increased timeout
-            server.start();
+            }, "ws-monitor");
+            monitorThread.setDaemon(true);
+            monitorThread.start();
+            
         } catch (Exception e) {
             logError("Error starting WebSocket server: " + e.getMessage());
-            if (server != null) {
+            e.printStackTrace();
+            if (webSocketServer != null) {
                 try {
-                    server.stop();
+                    webSocketServer.stop();
                 } catch (InterruptedException ie) {
                     Thread.currentThread().interrupt();
                 }
-                server = null;
+                webSocketServer = null;
             }
         }
     }
 
     private void stopWebSocketServer() {
-        if (server == null) return;
+        if (webSocketServer == null) return;
 
         try {
-            server.stop();
+            webSocketServer.stop();
             logInfo("WebSocket server stopped");
         } catch (InterruptedException e) {
             logError("Error stopping server: " + e.getMessage());
         }
     }
 
-    @Subscribe
-    public void onGameTick(GameTick event) {
-        if (!isRunning) {
+    private void updateStateViewer(JsonNode gameState) {
+        // Store the latest game state but don't update UI
+        if (gameState == null) {
+            logError("Cannot update state viewer - game state is null");
             return;
         }
-
-        // Update screenshot asynchronously if enabled
-        if (shouldSendScreenshots) {
-            updateScreenshotAsync();
+        
+        // Just store the state for later refresh - don't update UI
+        this.latestGameState = gameState;
+        logDebug("Game state stored for manual refresh");
+    }
+    
+    @Subscribe
+    public void onGameTick(GameTick tick)
+    {
+        tickCount++;
+        
+        // Only run this code every 100 ticks to avoid spam
+        if (tickCount % 100 == 0)
+        {
+            // Ensure the client is fully logged in before we attempt to log widgets
+            if (client != null && client.getGameState() == GameState.LOGGED_IN)
+            {
+                logUpperLevelWidgetIds();
+            }
+            else 
+            {
+                logInfo("Client not ready for widget logging (not logged in)");
+            }
         }
 
-        clientThread.invoke(() -> {
-            try {
-                // Update exploration data
-                updateExplorationData();
-                
-                // Update overlay with current state
-                if (client.getLocalPlayer() != null) {
-                    overlay.setStatus(client.getLocalPlayer().getInteracting() != null ? "In Combat" : "Idle");
-                    overlay.updateExperienceGained();
-                }
+        // Get the latest game state, but don't auto-update the UI
+        latestGameState = generateGameState();
+    }
 
-                // Generate and send game state
-                if (server != null && !server.getConnections().isEmpty()) {
-                    JsonNode gameState = generateGameState();
-                    
-                    // Always send at least a minimal state
-                    if (gameState == null) {
-                        gameState = objectMapper.createObjectNode();
-                        ((ObjectNode)gameState).put("status", "waiting");
-                    }
-                    
-                    // Send state to all connected clients
-                    String stateJson = objectMapper.writeValueAsString(gameState);
-                    for (WebSocket conn : server.getConnections()) {
-                        if (conn.isOpen()) {
-                            conn.send(stateJson);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                logError("Error in game tick: " + e.getMessage());
+    private void logUpperLevelWidgetIds()
+    {
+        // Execute on the client thread to ensure thread safety
+        clientThread.invoke(() -> {
+            if (client == null || client.getGameState() != GameState.LOGGED_IN)
+            {
+                logInfo("Client not ready for widget logging");
+                return;
             }
+            
+            Widget[] rootWidgets = client.getWidgetRoots();
+            if (rootWidgets == null || rootWidgets.length == 0)
+            {
+                logInfo("No root widgets found");
+                return;
+            }
+            
+            StringBuilder sb = new StringBuilder("Upper level widget IDs:\n");
+            for (Widget widget : rootWidgets)
+            {
+                if (widget != null)
+                {
+                    sb.append(String.format("ID: %d, Group ID: %d, Child ID: %d, Type: %d, IsVisible: %b, Text: %s\n",
+                            widget.getId(), widget.getParentId(), widget.getIndex(),
+                            widget.getType(), !widget.isHidden(), widget.getText()));
+                }
+            }
+            
+            logInfo(sb.toString());
         });
     }
 
@@ -542,7 +616,8 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                     handlePressKey(data);
                     break;
                 case "interfaceAction":
-                    handleInterfaceAction(data);
+                    // Skip interface actions for now
+                    logWarn("Interface actions are not implemented yet");
                     break;
                 default:
                     logWarn("Unknown action type: " + action);
@@ -632,8 +707,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 );
                 canvas.dispatchEvent(moved);
                 
-                // Update overlay with the actual canvas position
-                overlay.addCursorPosition(target);
+                // Remove overlay update
                 Thread.sleep(MIN_MOVE_DELAY);
             } else {
                 // Adjust steps and timing based on distance
@@ -664,9 +738,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 // Dispatch all move events with delays
                 for (int i = 0; i < steps; i++) {
                     canvas.dispatchEvent(moveEvents[i]);
-                    if (i % 2 == 0) { // Update cursor trail less frequently
-                        overlay.addCursorPosition(positions[i]);
-                    }
+                    // Remove overlay update
                     Thread.sleep(stepDelay);
                 }
             }
@@ -687,8 +759,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 canvas.dispatchEvent(event);
             }
             
-            // Ensure final position is updated in overlay
-            overlay.addCursorPosition(target);
+            // Remove overlay update
             
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -992,19 +1063,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             return;
         }
 
-        // Update overlay for combat skill changes
-        Skill skill = statChanged.getSkill();
-        if (skill == Skill.ATTACK || skill == Skill.STRENGTH || 
-            skill == Skill.DEFENCE || skill == Skill.RANGED || 
-            skill == Skill.MAGIC || skill == Skill.HITPOINTS) {
-            clientThread.invoke(() -> {
-                try {
-                    overlay.updateExperienceGained();
-                } catch (Exception e) {
-                    logError("Error updating experience in overlay: " + e.getMessage());
-                }
-            });
-        }
+        // Remove overlay update for combat skill changes
     }
 
     @Subscribe
@@ -1016,10 +1075,10 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
             clientThread.invoke(() -> {
                 try {
-                    overlay.initializeExpTracking();
-                    logInfo("Experience tracking initialized after login");
+                    // Remove overlay initialization
+                    logInfo("Game state changed to logged in");
                 } catch (Exception e) {
-                    logError("Error initializing experience tracking: " + e.getMessage());
+                    logError("Error handling game state change: " + e.getMessage());
                 }
             });
         }
@@ -1035,10 +1094,10 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         if (npc.isDead() && npc.getInteracting() == client.getLocalPlayer()) {
             clientThread.invoke(() -> {
                 try {
-                    overlay.incrementNPCKilled();
+                    // Remove overlay update
                     logInfo("NPC killed: " + npc.getName());
                 } catch (Exception e) {
-                    logError("Error incrementing NPC kill count: " + e.getMessage());
+                    logError("Error handling NPC despawn: " + e.getMessage());
                 }
             });
         }
@@ -1058,10 +1117,10 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             if (hitsplat.isMine()) {
                 clientThread.invoke(() -> {
                     try {
-                        overlay.addDamageDealt(hitsplat.getAmount());
+                        // Remove overlay update
                         logDebug("Damage dealt: " + hitsplat.getAmount());
                     } catch (Exception e) {
-                        logError("Error adding damage dealt: " + e.getMessage());
+                        logError("Error handling hitsplat: " + e.getMessage());
                     }
                 });
             }
@@ -1182,11 +1241,11 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         if (tile == null) return null;
 
         // Get ground items on the tile
-        List<TileItem> groundItems = tile.getGroundItems();
-        if (groundItems == null) return null;
+        List<TileItem> itemsList = tile.getGroundItems();
+        if (itemsList == null) return null;
 
         // Find the item with matching name
-        for (TileItem item : groundItems) {
+        for (TileItem item : itemsList) {
             if (item == null) continue;
             
             ItemComposition itemComp = client.getItemDefinition(item.getId());
@@ -1205,6 +1264,12 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
         try {
             CompletableFuture<String> future = new CompletableFuture<>();
+            
+            // Skip if we're taking screenshots too frequently
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - lastScreenshotTime < SCREENSHOT_COOLDOWN) {
+                return lastScreenshot;  // Return the most recent screenshot instead
+            }
             
             clientThread.invoke(() -> {
                 try {
@@ -1259,18 +1324,25 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                             }
                             writer.dispose();
 
-                            future.complete(Base64.getEncoder().encodeToString(out.toByteArray()));
+                            String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
+                            lastScreenshot = encoded;  // Cache the screenshot
+                            lastScreenshotTime = currentTime;  // Update timestamp
+                            
+                            future.complete(encoded);
                         } catch (Exception e) {
                             future.complete(null);
+                            logError("Error processing screenshot frame: " + e.getMessage());
                         }
                     });
                 } catch (Exception e) {
                     future.complete(null);
+                    logError("Error requesting screenshot frame: " + e.getMessage());
                 }
             });
 
             return future.get(500, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
+            logError("Error capturing screenshot: " + e.getMessage());
             return null;
         }
     }
@@ -1297,293 +1369,210 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     }
 
     public JsonNode generateGameState() {
+        if (client == null || !client.getGameState().equals(GameState.LOGGED_IN)) {
+            logInfo("Cannot generate game state - client not logged in");
+            return null;
+        }
+
         ObjectNode state = objectMapper.createObjectNode();
 
-        // Add player data
-        ObjectNode player = state.putObject("player");
-        if (client.getLocalPlayer() != null) {
-            // Location
-            ObjectNode location = player.putObject("location");
-            WorldPoint pos = client.getLocalPlayer().getWorldLocation();
-            location.put("x", pos.getX());
-            location.put("y", pos.getY());
-            location.put("plane", pos.getPlane());
-
-            // Health
-            ObjectNode health = player.putObject("health");
-            health.put("current", client.getBoostedSkillLevel(Skill.HITPOINTS));
-            health.put("maximum", client.getRealSkillLevel(Skill.HITPOINTS));
-
-            // Combat state
-            player.put("inCombat", client.getLocalPlayer().getInteracting() != null);
+        try {
+            // Player info
+            ObjectNode player = state.putObject("player");
+            Player localPlayer = client.getLocalPlayer();
+            
+            if (localPlayer == null) {
+                logInfo("Cannot generate game state - local player is null");
+                return null;
+            }
+            
+            // Location info
+            ObjectNode locationNode = player.putObject("location");
+            WorldPoint location = localPlayer.getWorldLocation();
+            locationNode.put("x", location.getX());
+            locationNode.put("y", location.getY());
+            locationNode.put("plane", location.getPlane());
+            
+            // Health info
+            ObjectNode healthNode = player.putObject("health");
+            healthNode.put("current", client.getBoostedSkillLevel(Skill.HITPOINTS));
+            healthNode.put("maximum", client.getRealSkillLevel(Skill.HITPOINTS));
+            
+            player.put("inCombat", localPlayer.getInteracting() != null);
             player.put("isRunning", client.getVarpValue(173) == 1);
             player.put("runEnergy", client.getEnergy());
-
-            // Skills
+            
+            // Skills info
             ObjectNode skills = player.putObject("skills");
             for (Skill skill : Skill.values()) {
-                ObjectNode skillNode = skills.putObject(skill.getName());
+                ObjectNode skillNode = skills.putObject(skill.getName().toLowerCase());
                 skillNode.put("level", client.getBoostedSkillLevel(skill));
                 skillNode.put("realLevel", client.getRealSkillLevel(skill));
                 skillNode.put("experience", client.getSkillExperience(skill));
             }
-        }
 
-        // Add NPCs
-        ArrayNode npcs = state.putArray("npcs");
-        for (NPC npc : client.getNpcs()) {
-            if (npc == null) continue;
-            ObjectNode npcNode = npcs.addObject();
-            npcNode.put("id", npc.getId());
-            npcNode.put("name", npc.getName());
-            npcNode.put("combatLevel", npc.getCombatLevel());
-
-            // NPC location
-            ObjectNode npcLocation = npcNode.putObject("location");
-            WorldPoint npcPos = npc.getWorldLocation();
-            npcLocation.put("x", npcPos.getX());
-            npcLocation.put("y", npcPos.getY());
-            npcLocation.put("plane", npcPos.getPlane());
-
-            // NPC health if available
-            if (npc.getHealthRatio() != -1) {
+            // NPCs array
+            ArrayNode npcs = state.putArray("npcs");
+            for (NPC npc : client.getNpcs()) {
+                if (npc == null) continue;
+                ObjectNode npcNode = npcs.addObject();
+                npcNode.put("id", npc.getId());
+                String npcName = npc.getName();
+                npcNode.put("name", npcName != null ? npcName : "");
+                npcNode.put("combatLevel", npc.getCombatLevel());
+                
+                WorldPoint npcLoc = npc.getWorldLocation();
+                ObjectNode npcLocation = npcNode.putObject("location");
+                npcLocation.put("x", npcLoc.getX());
+                npcLocation.put("y", npcLoc.getY());
+                npcLocation.put("plane", npcLoc.getPlane());
+                
                 ObjectNode npcHealth = npcNode.putObject("health");
-                npcHealth.put("current", npc.getHealthRatio());
-                npcHealth.put("maximum", npc.getHealthScale());
+                Integer healthRatio = npc.getHealthRatio();
+                npcHealth.put("current", healthRatio != null ? healthRatio : 100);
+                npcHealth.put("maximum", 100);
+                
+                npcNode.put("interacting", npc.getInteracting() != null);
+                npcNode.put("distance", location.distanceTo(npcLoc));
             }
 
-            npcNode.put("interacting", npc.getInteracting() == client.getLocalPlayer());
-            npcNode.put("distance", npc.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()));
-        }
-
-        // Add game objects
-        ArrayNode objects = state.putArray("objects");
-        Scene scene = client.getScene();
-        Tile[][][] tiles = scene.getTiles();
-        for (int z = 0; z < tiles.length; z++) {
-            for (int x = 0; x < tiles[z].length; x++) {
-                for (int y = 0; y < tiles[z][x].length; y++) {
-                    Tile tile = tiles[z][x][y];
-                    if (tile == null) continue;
-
-                    for (GameObject obj : tile.getGameObjects()) {
-                        if (obj == null) continue;
-                        ObjectComposition def = client.getObjectDefinition(obj.getId());
-                        if (def == null) continue;
-
-                        ObjectNode objNode = objects.addObject();
-                        objNode.put("id", obj.getId());
-                        objNode.put("name", def.getName());
-
-                        // Object location
-                        ObjectNode objLocation = objNode.putObject("location");
-                        WorldPoint objPos = obj.getWorldLocation();
-                        objLocation.put("x", objPos.getX());
-                        objLocation.put("y", objPos.getY());
-                        objLocation.put("plane", objPos.getPlane());
-
-                        // Object actions
-                        ArrayNode actions = objNode.putArray("actions");
-                        String[] objActions = def.getActions();
-                        if (objActions != null) {
-                            for (String action : objActions) {
-                                if (action != null) {
-                                    actions.add(action);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Add ground items
-        ArrayNode groundItems = state.putArray("groundItems");
-        for (Tile[][] plane : tiles) {
-            for (Tile[] row : plane) {
-                for (Tile tile : row) {
-                    if (tile == null) continue;
-                    List<TileItem> items = tile.getGroundItems();
-                    if (items == null) continue;
-
-                    for (TileItem item : items) {
-                        if (item == null) continue;
-                        ItemComposition def = client.getItemDefinition(item.getId());
-                        if (def == null) continue;
-
-                        ObjectNode itemNode = groundItems.addObject();
-                        itemNode.put("id", item.getId());
-                        itemNode.put("name", def.getName());
-                        itemNode.put("quantity", item.getQuantity());
-
-                        // Item location
-                        ObjectNode itemLocation = itemNode.putObject("location");
-                        WorldPoint itemPos = tile.getWorldLocation();
-                        itemLocation.put("x", itemPos.getX());
-                        itemLocation.put("y", itemPos.getY());
-                        itemLocation.put("plane", itemPos.getPlane());
-                    }
-                }
-            }
-        }
-
-        // Add interfaces
-        ArrayNode interfaces = state.putArray("interfaces");
-        Widget[] rootWidgets = client.getWidgetRoots();
-        if (rootWidgets != null) {
-            for (Widget widget : rootWidgets) {
-                if (widget != null) {
-                    ObjectNode widgetNode = addWidgetToNode(interfaces.addObject(), widget);
-                    widgetNode.put("type", "R"); // Mark as root widget
-                }
-            }
-        }
-
-        return state;
-    }
-
-    private ObjectNode addWidgetToNode(ObjectNode node, Widget widget) {
-        if (widget == null) {
-            return node;
-        }
-
-        // Add basic widget properties
-        node.put("id", widget.getId());
-        node.put("type", widget.getType());
-        node.put("contentType", widget.getContentType());
-        node.put("parentId", widget.getParentId());
-        node.put("selfHidden", widget.isSelfHidden());
-        node.put("hidden", widget.isHidden());
-        node.put("text", widget.getText());
-        node.put("textColor", widget.getTextColor());
-        node.put("opacity", widget.getOpacity());
-        node.put("fontId", widget.getFontId());
-        node.put("textShadowed", widget.getTextShadowed());
-        node.put("name", widget.getName());
-        node.put("itemId", widget.getItemId());
-        node.put("itemQuantity", widget.getItemQuantity());
-        node.put("modelId", widget.getModelId());
-        node.put("spriteId", widget.getSpriteId());
-        node.put("width", widget.getWidth());
-        node.put("height", widget.getHeight());
-        node.put("x", widget.getRelativeX());
-        node.put("y", widget.getRelativeY());
-        node.put("scrollX", widget.getScrollX());
-        node.put("scrollY", widget.getScrollY());
-        node.put("scrollWidth", widget.getScrollWidth());
-        node.put("scrollHeight", widget.getScrollHeight());
-        node.put("originalX", widget.getOriginalX());
-        node.put("originalY", widget.getOriginalY());
-        node.put("originalWidth", widget.getOriginalWidth());
-        node.put("originalHeight", widget.getOriginalHeight());
-
-        // Add dynamic children
-        Widget[] children = widget.getDynamicChildren();
-        if (children != null && children.length > 0) {
-            ArrayNode childrenArray = node.putArray("children");
-            for (Widget child : children) {
-                if (child != null) {
-                    ObjectNode childNode = addWidgetToNode(childrenArray.addObject(), child);
-                    childNode.put("type", "D"); // Mark as dynamic child
-                }
-            }
-        }
-
-        // Add static children
-        children = widget.getStaticChildren();
-        if (children != null && children.length > 0) {
-            ArrayNode staticArray = node.putArray("staticChildren");
-            for (Widget child : children) {
-                if (child != null) {
-                    ObjectNode childNode = addWidgetToNode(staticArray.addObject(), child);
-                    childNode.put("type", "S"); // Mark as static child
-                }
-            }
-        }
-
-        // Add nested children
-        children = widget.getNestedChildren();
-        if (children != null && children.length > 0) {
-            ArrayNode nestedArray = node.putArray("nestedChildren");
-            for (Widget child : children) {
-                if (child != null) {
-                    ObjectNode childNode = addWidgetToNode(nestedArray.addObject(), child);
-                    childNode.put("type", "N"); // Mark as nested child
-                }
-            }
-        }
-
-        return node;
-    }
-
-    private void handleInterfaceAction(JsonNode data) {
-        clientThread.invoke(() -> {
-            try {
-                int interfaceId = data.get("interfaceId").asInt();
-                int groupId = data.get("groupId").asInt();
-                String optionText = data.get("optionText").asText();
-
-                // Special handling for toggle run
-                if (interfaceId == 10485787 && groupId == 160 && "Toggle Run".equals(optionText)) {
-                    Widget runOrbWidget = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
-                    if (runOrbWidget != null) {
-                        boolean currentRunState = client.getVarpValue(173) == 1;
-                        logInfo("Toggling run state from " + (currentRunState ? "on" : "off") + " to " + (!currentRunState ? "on" : "off"));
-                        
-                        client.createMenuEntry(-1)
-                            .setOption("Toggle Run")
-                            .setTarget("")
-                            .setType(MenuAction.CC_OP)
-                            .setParam0(1)  // First option
-                            .setParam1(runOrbWidget.getId())
-                            .onClick(e -> logInfo("Run state toggled from " + (currentRunState ? "on" : "off") + " to " + (!currentRunState ? "on" : "off")));
-                        return;
-                    }
-                }
-
-                // Regular interface handling
-                Widget[] widgets = client.getWidgetRoots();
-                if (widgets != null) {
-                    for (Widget widget : widgets) {
-                        if (widget == null) continue;
-                        
-                        Widget[] children = widget.getDynamicChildren();
-                        if (children == null) continue;
-                        
-                        for (Widget child : children) {
-                            if (child == null || child.isHidden()) continue;
+            // Objects array
+            ArrayNode objects = state.putArray("objects");
+            Scene scene = client.getScene();
+            if (scene != null) {
+                Tile[][][] tiles = scene.getTiles();
+                if (tiles != null) {
+                    int z = client.getPlane();
+                    for (int x = 0; x < Constants.SCENE_SIZE; x++) {
+                        for (int y = 0; y < Constants.SCENE_SIZE; y++) {
+                            Tile tile = tiles[z][x][y];
+                            if (tile == null) continue;
                             
-                            if (child.getId() == interfaceId) {
-                                // Found the widget, simulate click
-                                String[] actions = child.getActions();
-                                if (actions != null) {
-                                    for (int i = 0; i < actions.length; i++) {
-                                        if (actions[i] != null && actions[i].equals(optionText)) {
-                                            // Create menu entry for the action
-                                            client.createMenuEntry(
-                                                -1)
-                                                .setOption(optionText)
-                                                .setTarget("")
-                                                .setType(MenuAction.CC_OP)
-                                                .setParam0(i + 1)
-                                                .setParam1(child.getId())
-                                                .onClick(e -> {
-                                                    // Log the interaction
-                                                    logInfo(String.format("Clicked interface option: %s on widget %d", 
-                                                        optionText, child.getId()));
-                                                });
-                                            return;
+                            GameObject[] gameObjects = tile.getGameObjects();
+                            if (gameObjects != null) {
+                                for (GameObject obj : gameObjects) {
+                                    if (obj == null) continue;
+                                    ObjectNode objNode = objects.addObject();
+                                    objNode.put("id", obj.getId());
+                                    
+                                    WorldPoint objLoc = obj.getWorldLocation();
+                                    ObjectNode objLocation = objNode.putObject("location");
+                                    objLocation.put("x", objLoc.getX());
+                                    objLocation.put("y", objLoc.getY());
+                                    objLocation.put("plane", objLoc.getPlane());
+                                    
+                                    objNode.put("name", objectComposition(obj) != null ? objectComposition(obj) : "");
+                                    
+                                    // Add actions array
+                                    ObjectComposition objComp = client.getObjectDefinition(obj.getId());
+                                    if (objComp != null && objComp.getActions() != null) {
+                                        ArrayNode actions = objNode.putArray("actions");
+                                        for (String action : objComp.getActions()) {
+                                            if (action != null) {
+                                                actions.add(action);
+                                            } else {
+                                                // Add empty string for null actions to ensure consistent types
+                                                actions.add("");
+                                            }
                                         }
+                                    } else {
+                                        // Ensure actions is at least an empty array
+                                        objNode.putArray("actions");
                                     }
                                 }
                             }
                         }
                     }
                 }
-            } catch (Exception e) {
-                logError("Error in handleInterfaceAction: " + e.getMessage());
             }
-        });
+
+            // Ground items array
+            ArrayNode groundItems = state.putArray("groundItems");
+            if (scene != null && scene.getTiles() != null) {
+                int z = client.getPlane();
+                for (Tile[][] plane : scene.getTiles()) {
+                    if (plane == null) continue;
+                    for (Tile[] row : plane) {
+                        if (row == null) continue;
+                        for (Tile tile : row) {
+                            if (tile == null) continue;
+                            List<TileItem> items = tile.getGroundItems();
+                            if (items == null) continue;
+                            for (TileItem item : items) {
+                                if (item == null || item.getId() <= 0) continue;  // Changed from -1 to handle null case
+                                ObjectNode itemNode = groundItems.addObject();
+                                itemNode.put("id", item.getId());
+                                itemNode.put("name", itemManager.getItemComposition(item.getId()).getName());
+                                itemNode.put("quantity", item.getQuantity());
+                                
+                                WorldPoint itemLoc = tile.getWorldLocation();
+                                ObjectNode itemLocation = itemNode.putObject("location");
+                                itemLocation.put("x", itemLoc.getX());
+                                itemLocation.put("y", itemLoc.getY());
+                                itemLocation.put("plane", itemLoc.getPlane());
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Add interfaces array
+            ArrayNode interfaces = state.putArray("interfaces");
+            Widget[] widgets = client.getWidgetRoots();
+            if (widgets != null) {
+                for (Widget widget : widgets) {
+                    if (widget == null || widget.isHidden()) continue;
+                    ObjectNode interfaceNode = interfaces.addObject();
+                    interfaceNode.put("id", widget.getId());
+                    interfaceNode.put("type", String.valueOf(widget.getType()));
+                    // Ensure widget text is always a string
+                    String text = widget.getText();
+                    interfaceNode.put("text", text != null ? text : "");
+                    
+                    // Add actions array
+                    if (widget.getActions() != null) {
+                        ArrayNode actions = interfaceNode.putArray("actions");
+                        for (String action : widget.getActions()) {
+                            if (action != null) {
+                                actions.add(action);
+                            } else {
+                                // Add empty string for null actions to ensure consistent types
+                                actions.add("");
+                            }
+                        }
+                    } else {
+                        // Ensure actions is at least an empty array
+                        interfaceNode.putArray("actions");
+                    }
+                }
+            }
+
+            // Add interface and path state
+            state.put("interfacesOpen", isInterfaceOpen());
+            state.put("pathObstructed", false);
+
+            // Add exploration info
+            ObjectNode exploration = state.putObject("exploration");
+            ObjectNode currentChunk = exploration.putObject("currentChunk");
+            Point chunk = worldToChunk(location);
+            currentChunk.put("x", chunk.x);
+            currentChunk.put("y", chunk.y);
+            exploration.put("visitedChunks", visitedChunks.size());
+
+            return state;
+        } catch (Exception e) {
+            logError("Error generating game state: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String objectComposition(GameObject object) {
+        if (object == null) {
+            return "null";
+        }
+        ObjectComposition def = client.getObjectDefinition(object.getId());
+        return def != null ? def.getName() : "unknown";
     }
 
     private void log(String level, String message) {
@@ -1634,5 +1623,118 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // Not needed for our purposes
+    }
+
+    public RLBotStateViewer getStateViewer() {
+        return stateViewer;
+    }
+
+    private class RLBotWebSocketServer extends WebSocketServer {
+        private volatile boolean hasStarted = false;
+        
+        public RLBotWebSocketServer(InetSocketAddress address) {
+            super(address);
+        }
+        
+        @Override
+        public void onOpen(WebSocket conn, ClientHandshake handshake) {
+            String address = conn.getRemoteSocketAddress().toString();
+            logInfo("New WebSocket connection established from " + address);
+            
+            // Send initial state to new connection using client thread and wait for result
+            clientThread.invoke(() -> {
+                try {
+                    logInfo("Generating initial state on client thread for new connection: " + address);
+                    JsonNode gameState = generateGameState();
+                    if (gameState != null) {
+                        final String stateJson = objectMapper.writeValueAsString(gameState);
+                        conn.send(stateJson);
+                        logInfo("Sent initial state to new connection: " + address);
+                    } else {
+                        logError("Failed to generate initial state for: " + address);
+                        ObjectNode errorResponse = objectMapper.createObjectNode();
+                        errorResponse.put("error", "Failed to generate initial state: The player might not be logged in");
+                        conn.send(errorResponse.toString());
+                    }
+                } catch (Exception e) {
+                    logError("Error generating initial state: " + e.getMessage());
+                    try {
+                        ObjectNode errorResponse = objectMapper.createObjectNode();
+                        errorResponse.put("error", "Failed to generate initial state: " + e.getMessage());
+                        conn.send(errorResponse.toString());
+                    } catch (Exception sendError) {
+                        logError("Error sending error response: " + sendError.getMessage());
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onMessage(WebSocket conn, String message) {
+            // Always use the client thread for any game-related processing
+            clientThread.invoke(() -> {
+                try {
+                    logInfo("Processing message on client thread: " + message);
+                    if (message.equals("state") || message.equals("getState")) {
+                        JsonNode gameState = generateGameState();
+                        final String response;
+                        if (gameState != null) {
+                            response = objectMapper.writeValueAsString(gameState);
+                            logInfo("Generated state in response to request");
+                        } else {
+                            logError("Failed to generate game state for request");
+                            response = "{\"error\": \"Failed to generate game state\"}";
+                        }
+                        
+                        conn.send(response);
+                    } else {
+                        // Process other commands
+                        logInfo("Processing command: " + message);
+                        validateAndProcessCommand(message);
+                        
+                        // Send updated state after processing command
+                        JsonNode gameState = generateGameState();
+                        if (gameState != null) {
+                            final String stateJson = objectMapper.writeValueAsString(gameState);
+                            conn.send(stateJson);
+                            logInfo("Sent updated state after command");
+                        }
+                    }
+                } catch (Exception e) {
+                    logError("Error processing message: " + e.getMessage());
+                    try {
+                        ObjectNode errorResponse = objectMapper.createObjectNode();
+                        errorResponse.put("error", e.getMessage());
+                        conn.send(errorResponse.toString());
+                    } catch (Exception sendError) {
+                        logError("Error sending error response: " + sendError.getMessage());
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onClose(WebSocket conn, int code, String reason, boolean remote) {
+            logInfo("WebSocket connection closed: " + conn.getRemoteSocketAddress() + 
+                   ", code: " + code + ", reason: " + reason + ", remote: " + remote);
+        }
+
+        @Override
+        public void onError(WebSocket conn, Exception ex) {
+            String address = conn != null ? conn.getRemoteSocketAddress().toString() : "unknown";
+            logError("WebSocket error with " + address + ": " + ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        @Override
+        public void onStart() {
+            hasStarted = true;
+            logInfo("WebSocket server started successfully on port " + getPort());
+            logInfo("Connect using: ws://localhost:" + getPort());
+        }
+
+        public boolean isStarted() {
+            return hasStarted;
+        }
     }
 } 
