@@ -93,6 +93,8 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.SLAYER_TOWER_WATER_BUCKET_DRIP:
 
 			case AnimationID.KEY_MASTER_IDLE:
+
+			case AnimationID.LIZARDMAN_TEMPLE_MYSTICAL_BARRIER_SPIN:
 				return false;
 
 			default:
