@@ -70,12 +70,12 @@ potion_store=48
 incinerator=49
 incinerator_confirm=50
 potionstore_content=52
-equipment_parent=78
-equipment_set_bonus=119
-settings_button=123
-equipment_button=124
-popup=126
-equipment_stat_bonus=132
+equipment_parent=79
+equipment_set_bonus=120
+settings_button=124
+equipment_button=125
+popup=127
+equipment_stat_bonus=133
 
 [bank_inventory]
 id=15
