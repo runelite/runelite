@@ -85,6 +85,8 @@ import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JTree;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.plugins.rlbot.RLBotOverlay;
 
 @PluginDescriptor(
     name = "RLBot",
@@ -167,6 +169,12 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
     private volatile String pendingScreenshot = null;
 
+    @Inject
+    private OverlayManager overlayManager;
+    
+    @Inject
+    private RLBotOverlay overlay;
+
     private static class AreaInfo {
         int npcDensity;
         int resourceDensity;
@@ -198,6 +206,10 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
         keyManager.registerKeyListener(this);
         isRunning = true;
+        
+        // Register the overlay
+        overlayManager.add(overlay);
+        
         logInfo("RLBot plugin started successfully");
 
         stateViewer.setRefreshCallback(() -> {
@@ -300,6 +312,10 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         keyManager.unregisterKeyListener(this);
         stopWebSocketServer();
         isRunning = false;
+        
+        // Remove the overlay
+        overlayManager.remove(overlay);
+        
         screenshotExecutor.shutdown();
         try {
             if (!screenshotExecutor.awaitTermination(500, TimeUnit.MILLISECONDS)) {
@@ -409,25 +425,24 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     }
     
     @Subscribe
-    public void onGameTick(GameTick tick)
-    {
+    public void onGameTick(GameTick tick) {
         tickCount++;
         
-        // Only run this code every 100 ticks to avoid spam
-        if (tickCount % 100 == 0)
-        {
-            // Ensure the client is fully logged in before we attempt to log widgets
-            if (client != null && client.getGameState() == GameState.LOGGED_IN)
-            {
-                logUpperLevelWidgetIds();
-            }
-            else 
-            {
-                logInfo("Client not ready for widget logging (not logged in)");
-            }
+        // Track mouse position for cursor trail - always update regardless of whether bot is running
+        net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+        if (mouseCanvasPosition != null) {
+            java.awt.Point point = new java.awt.Point((int)mouseCanvasPosition.getX(), (int)mouseCanvasPosition.getY());
+            overlay.updateCursorPosition(point);
         }
-
-        // Get the latest game state, but don't auto-update the UI
+        
+        if (!isRunning) return;
+        
+        // Update exploration data periodically - every 10 ticks
+        if (tickCount % 10 == 0) {
+            updateExplorationData();
+        }
+        
+        // Original code for getting game state
         latestGameState = generateGameState();
     }
 
@@ -1004,7 +1019,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         }
 
         // Check object actions for keywords that suggest it's blocking
-        ObjectComposition objComp = client.getObjectDefinition(objId);
+        ObjectComposition objComp = client.getObjectDefinition(obj.getId());
         if (objComp != null) {
             String[] actions = objComp.getActions();
             if (actions != null) {
@@ -1063,7 +1078,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             return;
         }
 
-        // Remove overlay update for combat skill changes
+        // We don't need to update experience for the simplified overlay
     }
 
     @Subscribe
@@ -1075,7 +1090,8 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         if (gameStateChanged.getGameState() == GameState.LOGGED_IN) {
             clientThread.invoke(() -> {
                 try {
-                    // Remove overlay initialization
+                    // Clear trail on login
+                    overlay.clearTrail();
                     logInfo("Game state changed to logged in");
                 } catch (Exception e) {
                     logError("Error handling game state change: " + e.getMessage());
@@ -1094,7 +1110,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         if (npc.isDead() && npc.getInteracting() == client.getLocalPlayer()) {
             clientThread.invoke(() -> {
                 try {
-                    // Remove overlay update
+                    // We don't need to track NPC kills for the simplified overlay
                     logInfo("NPC killed: " + npc.getName());
                 } catch (Exception e) {
                     logError("Error handling NPC despawn: " + e.getMessage());
@@ -1117,7 +1133,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             if (hitsplat.isMine()) {
                 clientThread.invoke(() -> {
                     try {
-                        // Remove overlay update
+                        // We don't need to track damage for the simplified overlay
                         logDebug("Damage dealt: " + hitsplat.getAmount());
                     } catch (Exception e) {
                         logError("Error handling hitsplat: " + e.getMessage());

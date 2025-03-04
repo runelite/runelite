@@ -18,9 +18,9 @@ public interface RLBotConfig extends Config {
 
     @ConfigItem(
         keyName = "showOverlay",
-        name = "Show Overlay",
-        description = "Show the RLBot overlay with stats and rewards",
-        position = 2
+        name = "Show Cursor Trail",
+        description = "Show the cursor trail overlay",
+        position = 12
     )
     default boolean showOverlay() {
         return true;
@@ -44,15 +44,5 @@ public interface RLBotConfig extends Config {
     )
     default boolean saveScreenshots() {
         return false;
-    }
-
-    @ConfigItem(
-        keyName = "showStateViewer",
-        name = "Show State Viewer",
-        description = "Show the state viewer window",
-        position = 5
-    )
-    default boolean showStateViewer() {
-        return true;
     }
 } 
