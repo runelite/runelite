@@ -42,4 +42,15 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "autoIdentifyClues",
+			name = "Auto-identify clue scrolls",
+			description = "Automatically identify clue scrolls when added to inventory",
+			warning = "Does not work for Beginner and Master clues due to their shared Item IDs"
+	)
+	default boolean autoIdentifyClues()
+	{
+		return false;
+	}
 }
