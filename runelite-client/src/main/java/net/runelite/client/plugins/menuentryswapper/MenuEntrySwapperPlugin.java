@@ -57,6 +57,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ParamID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostMenuSort;
@@ -1220,13 +1221,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 					final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
-					final int identifier = entry.getIdentifier();
+					final int identifier = getMungedId(entry);
 					final Integer leftClick = getUiSwapConfig(false, componentId, itemId);
 					final Integer shiftClick = getUiSwapConfig(true, componentId, itemId);
 
 					// find lowest op from the widget actions, to prevent setting a swap to the default left click
 					// action regardless of what is swapped.
-					final int lowestOp = findLowestOp(w);
+					final int lowestOp = getMungedId(findLowestOp(w), w.getId(), w.getIndex());
 
 					// find highest op from the current menu, post any existing swaps, for inserting Reset
 					int highestOp = 10;
@@ -1238,7 +1239,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							continue;
 						}
 
-						highestOp = opEntry.getIdentifier();
+						highestOp = getMungedId(opEntry);
 					}
 
 					if (!initialized)
@@ -1390,12 +1391,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final boolean isDepositBoxPlayerInventory = widgetGroupId == InterfaceID.DEPOSIT_BOX;
 		final boolean isChambersOfXericStorageUnitPlayerInventory = widgetGroupId == InterfaceID.CHAMBERS_OF_XERIC_INVENTORY;
 		final boolean isGroupStoragePlayerInventory = widgetGroupId == InterfaceID.GROUP_STORAGE_INVENTORY;
+		int ident = getMungedId(menuEntry);
 		// Swap to shift-click deposit behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x for deposit box interface and chambers of xeric storage unit.
 		// Deposit- op 2 is the current withdraw amount 1/5/10/x for bank interface
 		if (shiftModifier() && config.bankDepositShiftClick() != ShiftDepositMode.OFF
 			&& type == MenuAction.CC_OP
-			&& menuEntry.getIdentifier() == (isDepositBoxPlayerInventory || isGroupStoragePlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
+			&& ident == (isDepositBoxPlayerInventory || isGroupStoragePlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
 			&& (menuEntry.getOption().startsWith("Deposit-") || menuEntry.getOption().startsWith("Store") || menuEntry.getOption().startsWith("Donate")))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
@@ -1411,7 +1413,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// Swap to shift-click withdraw behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x
 		if (shiftModifier() && config.bankWithdrawShiftClick() != ShiftWithdrawMode.OFF
-			&& type == MenuAction.CC_OP && menuEntry.getIdentifier() == 1
+			&& type == MenuAction.CC_OP && ident == 1
 			&& menuEntry.getOption().startsWith("Withdraw"))
 		{
 			ShiftWithdrawMode shiftWithdrawMode = config.bankWithdrawShiftClick();
@@ -1442,7 +1444,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			MenuEntry entry = menuEntries[i];
 
-			if (entry.getType() == entryType && entry.getIdentifier() == entryIdentifier)
+			if (entry.getType() == entryType && getMungedId(entry) == entryIdentifier)
 			{
 				// Raise the priority of the op so it doesn't get sorted later
 				entry.setType(MenuAction.CC_OP);
@@ -1603,7 +1605,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
 				final Integer op = getUiSwapConfig(shiftModifier(), componentId, itemId);
-				if (op != null && op == menuEntry.getIdentifier())
+				if (op != null && op == getMungedId(menuEntry))
 				{
 					swap(menu, menuEntries, index, menuEntries.length - 1);
 					return;
@@ -2005,5 +2007,81 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""));
+	}
+
+	private int getMungedId(MenuEntry entry)
+	{
+		if ((entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY))
+		{
+			return getMungedId(entry.getIdentifier(), entry.getParam1(), entry.getParam0());
+		}
+
+		return entry.getIdentifier();
+	}
+
+	private int getMungedId(int ident, int widgetId, int childIdx)
+	{
+		if (widgetId == ComponentID.BANK_ITEM_CONTAINER
+			&& childIdx >= 0
+			&& client.getVarbitValue(Varbits.BANK_ITEM_OPTIONS) != 0)
+		{
+			int delta = ident;
+			int exclude = client.getVarbitValue(Varbits.BANK_QUANTITY_TYPE);
+			if (delta == 1)
+			{
+				return 1;
+			}
+			if (exclude != 0)
+			{
+				// Withdraw-1
+				if (--delta == 1)
+				{
+					return 2;
+				}
+			}
+			if (exclude != 1)
+			{
+				// Withdraw-5
+				if (--delta == 1)
+				{
+					return 3;
+				}
+			}
+			if (exclude != 2)
+			{
+				// Withdraw-10
+				if (--delta == 1)
+				{
+					return 4;
+				}
+			}
+			if (exclude != 3 && client.getVarbitValue(Varbits.BANK_REQUESTEDQUANTITY) > 0)
+			{
+				// Withdraw-<>
+				if (--delta == 1)
+				{
+					return 5;
+				}
+			}
+			// Withdraw-X
+			if (--delta == 1)
+			{
+				return 6;
+			}
+			if (exclude != 4)
+			{
+				// Withdraw-All
+				if (--delta == 1)
+				{
+					return 7;
+				}
+			}
+			// Withdraw-All-but-1
+			if (--delta == 1)
+			{
+				return 8;
+			}
+		}
+		return ident;
 	}
 }
