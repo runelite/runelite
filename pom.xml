@@ -237,6 +237,8 @@
 				<configuration>
 					<!-- Javadoc the delombok sources -->
 					<sourcepath>${project.build.directory}/delombok</sourcepath>
+					<!-- default bottom uses outputTimestamp for the year and generates 2014-1970 otherwise -->
+					<bottom>Copyright &#169; {inceptionYear}</bottom>
 				</configuration>
 				<!-- maven-release-plugin runs maven-javadoc-plugin:jar as one of its
 				     release steps, so we will run it as well for the CI. Note this
