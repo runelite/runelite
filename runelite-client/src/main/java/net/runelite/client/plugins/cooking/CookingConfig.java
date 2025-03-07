@@ -55,4 +55,15 @@ public interface CookingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showCookingTooltips",
+		name = "Show Cooking Tooltips",
+		description = "Show cooking success chances in tooltips",
+		position = 3
+	)
+	default boolean showCookingTooltips()
+	{
+		return true;
+	}
 }
