@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,18 +43,24 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
@@ -69,6 +76,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -78,10 +86,10 @@ import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
-import net.runelite.client.plugins.party.data.PartyTilePingData;
+import net.runelite.client.plugins.party.data.PartyPingData;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
+import net.runelite.client.plugins.party.messages.PartyPing;
 import net.runelite.client.plugins.party.messages.StatusUpdate;
-import net.runelite.client.plugins.party.messages.TilePing;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -93,61 +101,48 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
-@PluginDescriptor(
-	name = "Party",
-	configName = "PartyPlugin2",
-	description = "Party management and basic info",
-	enabledByDefault = false
-)
+@PluginDescriptor(name = "Party", configName = "PartyPlugin2", description = "Party management and basic info", enabledByDefault = false)
 @Slf4j
 public class PartyPlugin extends Plugin
 {
-	@Inject
-	private Client client;
-
-	@Inject
-	private PartyService party;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private PartyPingOverlay partyPingOverlay;
-
-	@Inject
-	private PartyStatusOverlay partyStatusOverlay;
-
-	@Inject
-	private WSClient wsClient;
-
-	@Inject
-	private WorldMapPointManager worldMapManager;
-
-	@Inject
-	private PartyConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private ClientToolbar clientToolbar;
-
-	@Inject
-	private KeyManager keyManager;
-
+	// deadzone (radius in px) within radial menu that will cancel out ping selection
+	static final int PING_MENU_DEADZONE = 25;
+	@Getter
+	private final Map<Long, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
+	@Getter
+	private final List<PartyPingData> pendingPartyPings = Collections.synchronizedList(new ArrayList<>());
 	@Inject
 	@Named("developerMode")
 	boolean developerMode;
-
-	@Getter
-	private final Map<Long, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
-
-	@Getter
-	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
-
+	@Inject
+	private Client client;
+	@Inject
+	@Getter(AccessLevel.PACKAGE)
+	private PartyService party;
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private PartyPingOverlay partyPingOverlay;
+	@Inject
+	private PartyStatusOverlay partyStatusOverlay;
+	@Inject
+	private PartyPingSelectionOverlay partyPingSelectionOverlay;
+	@Inject
+	private WSClient wsClient;
+	@Inject
+	private WorldMapPointManager worldMapManager;
+	@Inject
+	private PartyConfig config;
+	@Inject
+	private ChatMessageManager chatMessageManager;
+	@Inject
+	private ClientThread clientThread;
+	@Inject
+	private ClientToolbar clientToolbar;
+	@Inject
+	private KeyManager keyManager;
+	@Inject
+	private MouseManager mouseManager;
 	private Instant lastLogout;
 
 	private PartyPanel panel;
@@ -156,22 +151,108 @@ public class PartyPlugin extends Plugin
 	private WorldPoint lastLocation;
 	private StatusUpdate lastStatus;
 
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
+	@Getter(AccessLevel.PACKAGE)
+	private Point mouseStartPosition;
+	private PartyPingMouseListener pingMouseListener;
+
+	@Getter(AccessLevel.PACKAGE)
+	private PartyPing pendingPartyPing;
+
+	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	private boolean advancedPingMenuOpen = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean pingHotkeyPressed = false;
+	private final HotkeyListener pingHotkeyListener = new HotkeyListener(() -> config.pingHotkey())
 	{
 		@Override
 		public void hotkeyPressed()
 		{
-			hotkeyPressed = true;
+			pingHotkeyPressed = true;
 		}
 
 		@Override
 		public void hotkeyReleased()
 		{
-			hotkeyPressed = false;
+			pingHotkeyPressed = false;
 		}
 	};
 
-	private boolean hotkeyPressed = false;
+	private boolean dangerHotkeyPressed = false;
+	private final HotkeyListener dangerHotkeyListener = new HotkeyListener(() -> config.dangerPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			dangerHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			dangerHotkeyPressed = false;
+		}
+	};
+
+	private boolean destinationHotkeyPressed = false;
+	private final HotkeyListener destinationHotkeyListener = new HotkeyListener(() -> config.destinationPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			destinationHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			destinationHotkeyPressed = false;
+		}
+	};
+
+	private boolean requestHotkeyPressed = false;
+	private final HotkeyListener requestHotkeyListener = new HotkeyListener(() -> config.requestPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			requestHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			requestHotkeyPressed = false;
+		}
+	};
+
+	private boolean questionHotkeyPressed = false;
+	private final HotkeyListener questionHotkeyListener = new HotkeyListener(() -> config.questionPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			questionHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			questionHotkeyPressed = false;
+		}
+	};
+
+	private static int messageFreq(int partySize)
+	{
+		// introduce a tick delay for each member >6
+		return Math.max(1, partySize - 6);
+	}
+
+	private boolean isHotkeyPressed()
+	{
+		return pingHotkeyPressed || dangerHotkeyPressed || destinationHotkeyPressed || requestHotkeyPressed || questionHotkeyPressed;
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -187,19 +268,21 @@ public class PartyPlugin extends Plugin
 
 		final BufferedImage icon = ImageUtil.loadImageResource(PartyPlugin.class, "panel_icon.png");
 
-		navButton = NavigationButton.builder()
-			.tooltip("Party")
-			.icon(icon)
-			.priority(9)
-			.panel(panel)
-			.build();
+		navButton = NavigationButton.builder().tooltip("Party").icon(icon).priority(9).panel(panel).build();
 
 		clientToolbar.addNavigation(navButton);
 
+		pingMouseListener = new PartyPingMouseListener(client, this, config);
+		mouseManager.registerMouseListener(pingMouseListener);
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
-		keyManager.registerKeyListener(hotkeyListener);
-		wsClient.registerMessage(TilePing.class);
+		overlayManager.add(partyPingSelectionOverlay);
+		keyManager.registerKeyListener(pingHotkeyListener);
+		keyManager.registerKeyListener(questionHotkeyListener);
+		keyManager.registerKeyListener(dangerHotkeyListener);
+		keyManager.registerKeyListener(destinationHotkeyListener);
+		keyManager.registerKeyListener(requestHotkeyListener);
+		wsClient.registerMessage(PartyPing.class);
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
@@ -215,12 +298,19 @@ public class PartyPlugin extends Plugin
 		panel = null;
 
 		partyDataMap.clear();
-		pendingTilePings.clear();
+		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
+		mouseManager.unregisterMouseListener(pingMouseListener);
+		pingMouseListener = null;
 		overlayManager.remove(partyPingOverlay);
 		overlayManager.remove(partyStatusOverlay);
-		keyManager.unregisterKeyListener(hotkeyListener);
-		wsClient.unregisterMessage(TilePing.class);
+		overlayManager.remove(partyPingSelectionOverlay);
+		keyManager.unregisterKeyListener(pingHotkeyListener);
+		keyManager.unregisterKeyListener(questionHotkeyListener);
+		keyManager.unregisterKeyListener(dangerHotkeyListener);
+		keyManager.unregisterKeyListener(destinationHotkeyListener);
+		keyManager.unregisterKeyListener(requestHotkeyListener);
+		wsClient.unregisterMessage(PartyPing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(StatusUpdate.class);
 		lastLocation = null;
@@ -238,7 +328,11 @@ public class PartyPlugin extends Plugin
 	{
 		if (!focusChanged.isFocused())
 		{
-			hotkeyPressed = false;
+			pingHotkeyPressed = false;
+			questionHotkeyPressed = false;
+			dangerHotkeyPressed = false;
+			destinationHotkeyPressed = false;
+			requestHotkeyPressed = false;
 		}
 	}
 
@@ -261,40 +355,68 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!hotkeyPressed || client.isMenuOpen() || !party.isInParty() || !config.pings())
+		if (!isHotkeyPressed() || client.isMenuOpen() || !party.isInParty() || !config.pings())
 		{
 			return;
 		}
 
-		Tile selectedSceneTile = client.getSelectedSceneTile();
-		if (selectedSceneTile == null)
+		final Integer target;
+		final PartyPingTargetType targetType;
+		final WorldPoint location;
+
+		switch (event.getMenuAction())
 		{
-			return;
+			case NPC_FIRST_OPTION:
+			case NPC_SECOND_OPTION:
+			case NPC_THIRD_OPTION:
+			case NPC_FOURTH_OPTION:
+			case NPC_FIFTH_OPTION:
+				targetType = PartyPingTargetType.NPC;
+				target = event.getId();
+				location = null;
+				break;
+
+			case GAME_OBJECT_FIRST_OPTION:
+			case GAME_OBJECT_SECOND_OPTION:
+			case GAME_OBJECT_THIRD_OPTION:
+			case GAME_OBJECT_FOURTH_OPTION:
+			case GAME_OBJECT_FIFTH_OPTION:
+				targetType = PartyPingTargetType.OBJECT;
+				target = event.getId();
+				location = WorldPoint.fromScene(client, event.getParam0(), event.getParam1(), client.getPlane());
+				break;
+
+			case WALK:
+				Tile selectedSceneTile = client.getSelectedSceneTile();
+				if (selectedSceneTile == null)
+				{
+					return;
+				}
+
+				targetType = PartyPingTargetType.TILE;
+				target = null;
+				location = selectedSceneTile.getWorldLocation();
+				break;
+
+			default:
+				log.debug("Ping attempt failed due to unhandled menu action {}", event.getMenuAction());
+				return;
 		}
 
-		boolean isOnCanvas = false;
+		PartyPingType pingType = questionHotkeyPressed ? PartyPingType.QUESTION : dangerHotkeyPressed ? PartyPingType.DANGER : destinationHotkeyPressed ? PartyPingType.DESTINATION : requestHotkeyPressed ? PartyPingType.REQUEST : PartyPingType.TARGET; //default to target ping
 
-		for (MenuEntry menuEntry : client.getMenuEntries())
+		final PartyPing ping = new PartyPing(targetType, location, target, client.getWorld(), client.getLocalPlayer().getId(), pingType);
+		if (pingHotkeyPressed && config.advancedPingMenu())
 		{
-			if (menuEntry == null)
-			{
-				continue;
-			}
-
-			if ("walk here".equalsIgnoreCase(menuEntry.getOption()))
-			{
-				isOnCanvas = true;
-			}
+			mouseStartPosition = client.getMouseCanvasPosition();
+			pendingPartyPing = ping;
 		}
-
-		if (!isOnCanvas)
+		else
 		{
-			return;
+			party.send(ping);
 		}
 
 		event.consume();
-		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
-		party.send(tilePing);
 	}
 
 	@Subscribe
@@ -308,33 +430,157 @@ public class PartyPlugin extends Plugin
 		checkStateChanged(false);
 	}
 
-	@Subscribe
-	public void onTilePing(TilePing event)
+	void resetPingMenu()
 	{
-		if (config.pings())
+		advancedPingMenuOpen = false;
+		mouseStartPosition = null;
+		pendingPartyPing = null;
+	}
+
+	private boolean pingIsSameSourceAndTarget(PartyPingData data, PartyPingData other)
+	{
+		if (data.getSourcePlayerIdx() != other.getSourcePlayerIdx() && data.getTargetType() != other.getTargetType())
 		{
-			final PartyData partyData = getPartyData(event.getMemberId());
-			final Color color = partyData != null ? partyData.getColor() : Color.RED;
-			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color));
+			return false;
 		}
 
-		if (config.sounds())
+		if (data.getPoint() == null)
 		{
-			WorldPoint point = event.getPoint();
+			return other.getPoint() == null && data.getTargetActor() == other.getTargetActor() && data.getTargetObject() == other.getTargetObject();
+		}
 
-			if (point.getPlane() != client.getPlane() || !WorldPoint.isInScene(client, point.getX(), point.getY()))
-			{
+		return data.getPoint().equals(other.getPoint());
+	}
+
+	@Subscribe
+	public void onPartyPing(PartyPing ping)
+	{
+		if (ping.getWorld() != client.getWorld() || !config.pings())
+		{
+			return;
+		}
+
+		PartyPingTargetType targetType = ping.getTargetType();
+		if (targetType != PartyPingTargetType.NPC && (ping.getPoint().getPlane() != client.getPlane() || !WorldPoint.isInScene(client, ping.getPoint().getX(), ping.getPoint().getY())))
+		{
+			return;
+		}
+
+		Integer target = ping.getTarget();
+		Color color = null;
+		int soundId;
+		WorldPoint point = null;
+		Actor actor = null;
+		TileObject object = null;
+
+		switch (targetType)
+		{
+			case TILE:
+				point = ping.getPoint();
+				break;
+
+			case NPC:
+				actor = client.getNpcs().get(target);
+				if (actor == null)
+				{
+					return;
+				}
+				break;
+
+			case OBJECT:
+				object = findTileObject(ping.getPoint(), target);
+				if (object == null)
+				{
+					// couldn't find the object so target tile instead
+					targetType = PartyPingTargetType.TILE;
+					point = ping.getPoint();
+				}
+				break;
+		}
+
+		final PartyPingType type = ping.getPingType();
+		switch (type)
+		{
+			case TARGET:
+				color = config.targetPingColor();
+				soundId = !config.targetPingSound() ? -1 : targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.SOTE_BELL_HIGH_C;
+				break;
+
+			case QUESTION:
+				color = config.questionPingColor();
+				soundId = config.questionPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case DANGER:
+				color = config.dangerPingColor();
+				soundId = config.dangerPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case DESTINATION:
+				color = config.destinationPingColor();
+				soundId = config.destinationPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case REQUEST:
+				color = config.requestPingColor();
+				soundId = config.requestPingSound() ? type.getSoundId() : -1;
+				break;
+
+			default:
+				log.debug("Received PartyPing with unhandled type: {}", type);
 				return;
-			}
+		}
 
-			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK));
+		// if user has not set a color preference, use unique hash based color instead
+		if (color == null)
+		{
+			final PartyData partyData = getPartyData(ping.getMemberId());
+			color = partyData != null ? partyData.getColor() : Color.ORANGE;
+		}
+
+		final long pingDuration = (long) (config.pingDuration() * 1000);
+		final Instant expiresAt = Instant.now().plusMillis(pingDuration);
+		final PartyPingData pingData = new PartyPingData(pingDuration, expiresAt, type, targetType, ping.getPlayerId(), actor, object, point, color);
+		pendingPartyPings.removeIf(p -> pingIsSameSourceAndTarget(p, pingData));
+		pendingPartyPings.add(pingData);
+
+		if (soundId > -1)
+		{
+			clientThread.invoke(() -> client.playSoundEffect(soundId));
 		}
 	}
 
-	@Schedule(
-		period = 10,
-		unit = ChronoUnit.SECONDS
-	)
+	private TileObject findTileObject(WorldPoint point, int objectId)
+	{
+		LocalPoint local = LocalPoint.fromWorld(client, point);
+		Tile tile = client.getScene().getTiles()[client.getPlane()][local.getSceneX()][local.getSceneY()];
+		if (tile == null)
+		{
+			return null;
+		}
+
+		if (tile.getWallObject() != null && tile.getWallObject().getId() == objectId)
+		{
+			return tile.getWallObject();
+		}
+
+		if (tile.getDecorativeObject() != null && tile.getDecorativeObject().getId() == objectId)
+		{
+			return tile.getDecorativeObject();
+		}
+
+		for (GameObject gameObject : tile.getGameObjects())
+		{
+			if (gameObject != null && gameObject.getId() == objectId)
+			{
+				return gameObject;
+			}
+		}
+
+		return null;
+	}
+
+	@Schedule(period = 10, unit = ChronoUnit.SECONDS)
 	public void scheduledTick()
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
@@ -368,8 +614,7 @@ public class PartyPlugin extends Plugin
 
 	private void checkIdle()
 	{
-		if (lastLogout != null && lastLogout.isBefore(Instant.now().minus(30, ChronoUnit.MINUTES))
-			&& party.isInParty())
+		if (lastLogout != null && lastLogout.isBefore(Instant.now().minus(30, ChronoUnit.MINUTES)) && party.isInParty())
 		{
 			log.info("Leaving party due to inactivity");
 			party.changeParty(null);
@@ -562,17 +807,7 @@ public class PartyPlugin extends Plugin
 		{
 			party.send(update);
 			// non-null values for next-tick comparison
-			lastStatus = new StatusUpdate(
-				characterName,
-				healthCurrent,
-				healthMax,
-				prayerCurrent,
-				prayerMax,
-				runEnergy,
-				specEnergy,
-				vengActive,
-				memberColor
-			);
+			lastStatus = new StatusUpdate(characterName, healthCurrent, healthMax, prayerCurrent, prayerMax, runEnergy, specEnergy, vengActive, memberColor);
 		}
 	}
 
@@ -594,7 +829,7 @@ public class PartyPlugin extends Plugin
 	{
 		// Reset party
 		partyDataMap.clear();
-		pendingTilePings.clear();
+		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 
 		if (event.getPartyId() != null)
@@ -679,11 +914,5 @@ public class PartyPlugin extends Plugin
 		}
 
 		return memberColor;
-	}
-
-	private static int messageFreq(int partySize)
-	{
-		// introduce a tick delay for each member >6
-		return Math.max(1, partySize - 6);
 	}
 }
