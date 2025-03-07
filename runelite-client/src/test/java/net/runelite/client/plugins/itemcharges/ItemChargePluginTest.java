@@ -35,7 +35,12 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -105,9 +110,22 @@ public class ItemChargePluginTest
 
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
 
+	private static final String CHECK_ALCHEMISTS_AMULET = "Your Alchemist's amulet has 25 charges left.";
+	private static final String CHECK_ALCHEMISTS_AMULET_1 = "Your Alchemist's amulet has 1 charge left.";
+	private static final String ACTIVATE_ALCHEMISTS_AMULET = "Your Alchemist's amulet helps you create a 4-dose potion. It has 25 charges left.";
+	private static final String ACTIVATE_ALCHEMISTS_AMULET_1 = "Your Alchemist's amulet helps you create a 4-dose potion. It has one charge left.";
+	private static final String DEPLETED_ALCHEMISTS_AMULET = "Your Alchemist's amulet helps you create a 4-dose potion. It no longer has any charges.";
+	private static final String INITIAL_APPLY_ALCHEMISTS_AMULET = "You apply 30 charges to your Alchemist's amulet.";
+	private static final String ADDITIONAL_APPLY_ALCHEMISTS_AMULET = "You apply an additional 70 charges to your Alchemist's<br>amulet. It now has 86 charges in total.";
+	private static final String UNCHARGE_ALCHEMISTS_AMULET = "You uncharge your Alchemist's amulet, regaining 3<br>amulets of chemistry in the process.";
+
 	@Mock
 	@Bind
 	private Client client;
+
+	@Mock
+	@Bind
+	private ClientThread clientThread;
 
 	@Mock
 	@Bind
@@ -140,6 +158,14 @@ public class ItemChargePluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		// Stub the clientThread to run immediately in tests
+		Mockito.doAnswer(invocation ->
+		{
+			Runnable runnable = invocation.getArgument(0);
+			runnable.run();
+			return null;
+		}).when(clientThread).invokeLater(Mockito.any(Runnable.class));
 	}
 
 	// Dodgy necklace
@@ -507,6 +533,7 @@ public class ItemChargePluginTest
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
 	}
+
 	@Test
 	public void testBraceletOfClayUseTrahaearn()
 	{
@@ -553,5 +580,90 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager, Mockito.times(0)).setRSProfileConfiguration(Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
+	}
+
+	@Test
+	public void testAlchemistsAmuletCheck()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_ALCHEMISTS_AMULET, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 25);
+	}
+
+	@Test
+	public void testAlchemistsAmuletCheck1Charge()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_ALCHEMISTS_AMULET_1, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 1);
+	}
+
+	@Test
+	public void testAlchemistsAmuletActivate()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", ACTIVATE_ALCHEMISTS_AMULET, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 25);
+	}
+
+	@Test
+	public void testAlchemistsAmuletActivate1Charge()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", ACTIVATE_ALCHEMISTS_AMULET_1, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 1);
+	}
+
+	@Test
+	public void testAlchemistsAmuletDepleted()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", DEPLETED_ALCHEMISTS_AMULET, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 0);
+	}
+
+	@Test
+	public void testAlchemistsAmuletInitialApply()
+	{
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(InterfaceID.DIALOG_SPRITE);
+
+		Widget textWidget = mock(Widget.class);
+		when(client.getWidget(ComponentID.DIALOG_SPRITE_TEXT)).thenReturn(textWidget);
+		when(textWidget.getText()).thenReturn(INITIAL_APPLY_ALCHEMISTS_AMULET);
+
+		itemChargePlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 30);
+	}
+
+	@Test
+	public void testAlchemistsAmuletAdditionalApply()
+	{
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(InterfaceID.DIALOG_SPRITE);
+
+		Widget textWidget = mock(Widget.class);
+		when(client.getWidget(ComponentID.DIALOG_SPRITE_TEXT)).thenReturn(textWidget);
+		when(textWidget.getText()).thenReturn(ADDITIONAL_APPLY_ALCHEMISTS_AMULET);
+
+		itemChargePlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 86);
+	}
+
+	@Test
+	public void testAlchemistsAmuletUncharge()
+	{
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(InterfaceID.DIALOG_SPRITE);
+
+		Widget textWidget = mock(Widget.class);
+		when(client.getWidget(ComponentID.DIALOG_SPRITE_TEXT)).thenReturn(textWidget);
+		when(textWidget.getText()).thenReturn(UNCHARGE_ALCHEMISTS_AMULET);
+
+		itemChargePlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_ALCHEMISTS_AMULET, 0);
 	}
 }
