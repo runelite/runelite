@@ -479,6 +479,28 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showBurnDamageAccumulated",
+		name = "Burn damage accumulated",
+		description = "Configures whether the accumulated burn damage on the local player is displayed.",
+		section = miscellaneousSection
+	)
+	default boolean showBurnDamageAccumulated()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBurnDamageNextHit",
+		name = "Burn damage next hit",
+		description = "Configures whether the next hit of burn damage on the local player is displayed.",
+		section = miscellaneousSection
+	)
+	default boolean showBurnDamageNextHit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showScurriusFoodPile",
 		name = "Scurrius food pile",
 		description = "Configures whether the Scurrius food pile timer is displayed.",

@@ -30,15 +30,19 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.api.NullItemID;
 import net.runelite.api.SpriteID;
 
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 enum GameCounter
 {
+	BURN_DAMAGE_ACCUMULATED(SpriteID.BURN_DAMAGE, GameTimerImageType.SPRITE, "Burn damage accumulated"),
+	BURN_DAMAGE_NEXT_HIT(ItemID.BURNING_CLAW, GameTimerImageType.ITEM, "Burn damage next hit"),
 	COLOSSEUM_DOOM(SpriteID.COLOSSEUM_DOOM, GameTimerImageType.SPRITE, "Doom"),
 	CURSE_OF_THE_MOONS_BLUE(ItemID.BLUE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Blue Moon)", ColorBoundaryType.GREATER_THAN_EQUAL_TO, 18, Color.RED),
 	CURSE_OF_THE_MOONS_ECLIPSE(ItemID.ECLIPSE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Eclipse Moon)"),
+	STONE_OF_JAS_EMPOWERMENT(NullItemID.NULL_29559, GameTimerImageType.ITEM, "Stone of Jas empowerment", false),
 	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
 	;
 
