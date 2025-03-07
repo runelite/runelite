@@ -58,7 +58,7 @@ enum GameTimer
 	VENGEANCE(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance", 30, ChronoUnit.SECONDS),
 	HEAL_GROUP(SpriteID.SPELL_HEAL_GROUP, GameTimerImageType.SPRITE, "Heal Group", 150, GAME_TICKS),
 	OVERLOAD_RAID(ItemID.OVERLOAD_4_20996, GameTimerImageType.ITEM, "Overload", false),
-	PRAYER_ENHANCE(ItemID.PRAYER_ENHANCE_4, GameTimerImageType.ITEM, "Prayer enhance", 290, ChronoUnit.SECONDS, true),
+	PRAYER_ENHANCE(ItemID.PRAYER_ENHANCE_4, GameTimerImageType.ITEM, "Prayer enhance", false),
 	GOD_WARS_ALTAR(SpriteID.SKILL_PRAYER, GameTimerImageType.SPRITE, "God wars altar", false),
 	SCURRIUS_FOOD_PILE(ItemID.CHEESE, GameTimerImageType.ITEM, "Scurrius food pile", false),
 	CHARGE(SpriteID.SPELL_CHARGE, GameTimerImageType.SPRITE, "Charge", false),
