@@ -218,6 +218,20 @@ class DevToolsPanel extends PluginPanel
 		{
 		}
 
+		final JButton audioPlayerBtn = new JButton("Test Audio");
+		audioPlayerBtn.addActionListener(e ->
+		{
+			try
+			{
+				plugin.getAudioPlayer().play(Notifier.class, "notification.wav", 0);
+			}
+			catch (Exception ex)
+			{
+				log.info("Test audio error", ex);
+			}
+		});
+		container.add(audioPlayerBtn);
+
 		return container;
 	}
 }
