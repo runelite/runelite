@@ -55,6 +55,8 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -77,6 +79,7 @@ public class PohPlugin extends Plugin
 {
 	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
 	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
+	static final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
@@ -89,6 +92,12 @@ public class PohPlugin extends Plugin
 
 	@Inject
 	private PohOverlay overlay;
+
+	@Inject
+	private PohConfig config;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private Client client;
@@ -135,6 +144,7 @@ public class PohPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
+		final boolean litBurnerSpawned = BURNER_LIT.contains(gameObject.getId());
 
 		if (!BURNER_LIT.contains(gameObject.getId()) && !BURNER_UNLIT.contains(gameObject.getId()))
 		{
@@ -148,8 +158,13 @@ public class PohPlugin extends Plugin
 
 		IncenseBurner incenseBurner = incenseBurners.computeIfAbsent(event.getTile(), k -> new IncenseBurner());
 		incenseBurner.setStart(Instant.now());
-		incenseBurner.setLit(BURNER_LIT.contains(gameObject.getId()));
 		incenseBurner.setEnd(null);
+
+		if (incenseBurner.isLit() && !litBurnerSpawned)
+		{
+			notifier.notify(config.burnerNotifyOnUnlit(), "One of your burners have burned out!");
+		}
+		incenseBurner.setLit(litBurnerSpawned);
 		// The burner timers are set when observing a player light the burner
 	}
 
@@ -188,6 +203,31 @@ public class PohPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		// We exit early to avoid the foreach logic despite config-based notifier already failing if disabled.
+		if (!config.burnerNotifyOnExpiring().isEnabled())
+		{
+			return;
+		}
+
+		incenseBurners.forEach((tile, burner) ->
+		{
+			if (tile.getPlane() != client.getPlane() || !burner.isLit())
+			{
+				return;
+			}
+
+			final int countdownTimerTicks = (int)(burner.getCountdownTimer() / tickLengthSeconds);
+			final int leadTick = burner.getLitTick() + countdownTimerTicks - config.burnerNotificationLeadTime();
+			if (client.getTickCount() == leadTick)
+			{
+				notifier.notify(config.burnerNotifyOnExpiring(), "One of your burners are about to randomly burn out!");
+			}
+		});
+	}
+
+	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		final Actor actor = event.getActor();
@@ -212,7 +252,7 @@ public class PohPlugin extends Plugin
 				if (actor == client.getLocalPlayer())
 				{
 					int level = client.getRealSkillLevel(net.runelite.api.Skill.FIREMAKING);
-					updateBurner(incenseBurner, level);
+					updateBurner(incenseBurner, level, client.getTickCount());
 				}
 				else if (actorName != null)
 				{
@@ -237,7 +277,7 @@ public class PohPlugin extends Plugin
 
 				final Skill fm = playerStats.getSkill(HiscoreSkill.FIREMAKING);
 				final int level = fm.getLevel();
-				updateBurner(incenseBurner, Math.max(level, 1));
+				updateBurner(incenseBurner, Math.max(level, 1), client.getTickCount());
 			}
 			catch (IOException e)
 			{
@@ -246,11 +286,11 @@ public class PohPlugin extends Plugin
 		});
 	}
 
-	private static void updateBurner(IncenseBurner incenseBurner, int fmLevel)
+	private static void updateBurner(IncenseBurner incenseBurner, int fmLevel, int litTick)
 	{
-		final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
 		incenseBurner.setCountdownTimer((200 + fmLevel) * tickLengthSeconds);
 		incenseBurner.setRandomTimer((fmLevel - 1) * tickLengthSeconds);
+		incenseBurner.setLitTick(litTick);
 		log.debug("Set burner timer for firemaking level {}", fmLevel);
 	}
 }
