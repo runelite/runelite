@@ -61,6 +61,7 @@ public class CombatLevelPlugin extends Plugin
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
 	private static final String CONFIG_GROUP = "combatlevel";
 	private static final String ATTACK_RANGE_CONFIG_KEY = "wildernessAttackLevelRange";
+	private static final String PRECISE_LEVEL_CONFIG_KEY = "showPreciseCombatLevel";
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+)$");
 	private static final int MIN_COMBAT_LEVEL = 3;
 	private static final String COMBAT_LEVEL_SECTION_TEXT = "Combat Level:";
@@ -112,18 +113,8 @@ public class CombatLevelPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		Widget combatLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
 
-		if (combatLevelWidget != null)
-		{
-			String widgetText = combatLevelWidget.getText();
-
-			if (widgetText.contains("."))
-			{
-				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
-			}
-		}
-
+		shutDownCombatLevelPrecise();
 		shutDownAttackLevelRange();
 	}
 
@@ -162,7 +153,7 @@ public class CombatLevelPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!CONFIG_GROUP.equals(event.getGroup()) || !ATTACK_RANGE_CONFIG_KEY.equals(event.getKey()))
+		if (!CONFIG_GROUP.equals(event.getGroup()) || (!ATTACK_RANGE_CONFIG_KEY.equals(event.getKey()) && !PRECISE_LEVEL_CONFIG_KEY.equals(event.getKey())))
 		{
 			return;
 		}
@@ -174,6 +165,11 @@ public class CombatLevelPlugin extends Plugin
 		else
 		{
 			shutDownAttackLevelRange();
+		}
+
+		if (!config.showPreciseCombatLevel())
+		{
+			shutDownCombatLevelPrecise();
 		}
 	}
 
@@ -266,6 +262,19 @@ public class CombatLevelPlugin extends Plugin
 			if (wildernessLevelText.contains("<br>"))
 			{
 				wildernessLevelWidget.setText(wildernessLevelText.substring(0, wildernessLevelText.indexOf("<br>")));
+			}
+		}
+	}
+
+	private void shutDownCombatLevelPrecise()
+	{
+		final Widget combatLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
+		if (combatLevelWidget != null)
+		{
+			String widgetText = combatLevelWidget.getText();
+			if(widgetText.contains("."))
+			{
+				combatLevelWidget.setText(widgetText.substring(0, widgetText.indexOf(".")));
 			}
 		}
 	}
