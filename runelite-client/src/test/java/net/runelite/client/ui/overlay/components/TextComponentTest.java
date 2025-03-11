@@ -138,7 +138,8 @@ public class TextComponentTest
 	public void testRenderResetsToDefaultColor()
 	{
 		TextComponent textComponent = new TextComponent();
-		textComponent.setText("<col=ff0000>red</col>white<col=00ff00>green");
+		textComponent.setText("<col=ff0000>red</col>original<col=00ff00>green");
+		textComponent.setColor(Color.BLUE);
 		textComponent.render(graphics);
 
 		InOrder g = inOrder(graphics);
@@ -148,9 +149,9 @@ public class TextComponentTest
 		g.verify(graphics).drawString(eq("red"), anyInt(), anyInt());
 
 		g.verify(graphics).setColor(Color.BLACK);
-		g.verify(graphics).drawString(eq("white"), anyInt(), anyInt());
-		g.verify(graphics).setColor(Color.WHITE);
-		g.verify(graphics).drawString(eq("white"), anyInt(), anyInt());
+		g.verify(graphics).drawString(eq("original"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.BLUE);
+		g.verify(graphics).drawString(eq("original"), anyInt(), anyInt());
 
 		g.verify(graphics).setColor(Color.BLACK);
 		g.verify(graphics).drawString(eq("green"), anyInt(), anyInt());
