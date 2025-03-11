@@ -905,6 +905,12 @@ public class ClientUI
 	 */
 	public void flashTaskbar()
 	{
+		if (!Taskbar.isTaskbarSupported())
+		{
+			log.debug("Taskbar is not supported on this platform");
+			return;
+		}
+
 		Taskbar taskbar = Taskbar.getTaskbar();
 		if (taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW))
 		{
