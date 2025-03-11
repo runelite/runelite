@@ -104,4 +104,67 @@ public class TextComponentTest
 		g.verify(graphics).setColor(Color.BLUE);
 		g.verify(graphics).drawString(eq("test2"), anyInt(), anyInt());
 	}
+
+	@Test
+	public void testRenderWithUnclosedColorTags()
+	{
+		TextComponent textComponent = new TextComponent();
+		textComponent.setText("white<col=ff0000>red<col=00ff00>green<col=0000ff>blue");
+		textComponent.render(graphics);
+
+		InOrder g = inOrder(graphics);
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("white"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.WHITE);
+		g.verify(graphics).drawString(eq("white"), anyInt(), anyInt());
+
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("red"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.RED);
+		g.verify(graphics).drawString(eq("red"), anyInt(), anyInt());
+
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("green"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.GREEN);
+		g.verify(graphics).drawString(eq("green"), anyInt(), anyInt());
+
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("blue"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.BLUE);
+		g.verify(graphics).drawString(eq("blue"), anyInt(), anyInt());
+	}
+
+	@Test
+	public void testRenderResetsToDefaultColor()
+	{
+		TextComponent textComponent = new TextComponent();
+		textComponent.setText("<col=ff0000>red</col>white<col=00ff00>green");
+		textComponent.render(graphics);
+
+		InOrder g = inOrder(graphics);
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("red"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.RED);
+		g.verify(graphics).drawString(eq("red"), anyInt(), anyInt());
+
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("white"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.WHITE);
+		g.verify(graphics).drawString(eq("white"), anyInt(), anyInt());
+
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("green"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.GREEN);
+		g.verify(graphics).drawString(eq("green"), anyInt(), anyInt());
+	}
+
+	@Test
+	public void testRenderWithIsolatedClosingTag()
+	{
+		TextComponent textComponent = new TextComponent();
+		textComponent.setText("test1</col>test2");
+		textComponent.render(graphics);
+		verify(graphics, times(2)).drawString(eq("test1"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq("test2"), anyInt(), anyInt());
+	}
 }

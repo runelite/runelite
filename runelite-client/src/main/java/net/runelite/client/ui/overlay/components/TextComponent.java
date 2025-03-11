@@ -39,11 +39,12 @@ import net.runelite.client.ui.overlay.RenderableEntity;
 @Setter
 public class TextComponent implements RenderableEntity
 {
-	private static final Pattern COL_TAG_PATTERN = Pattern.compile("<col=([0-9a-fA-F]{2,6})>");
+	private static final Pattern COL_TAG_PATTERN = Pattern.compile("(<col=(?<color>[0-9a-fA-F]{2,6})>)|(</col>)");
+	private static final Color DEFAULT_COLOR = Color.WHITE;
 
 	private String text;
 	private Point position = new Point();
-	private Color color = Color.WHITE;
+	private Color color = DEFAULT_COLOR;
 	private boolean outline;
 	/**
 	 * The text font.
@@ -69,14 +70,14 @@ public class TextComponent implements RenderableEntity
 		int width = 0;
 		while (matcher.find())
 		{
-			String color = matcher.group(1);
 			String s = text.substring(idx, matcher.start());
 			idx = matcher.end();
 
 			renderText(graphics, textColor, position.x + width, position.y, s);
 			width += fontMetrics.stringWidth(s);
 
-			textColor = Color.decode("#" + color);
+			String color = matcher.group("color");
+			textColor = color != null ? Color.decode("#" + color) : DEFAULT_COLOR;
 		}
 
 		{
