@@ -49,6 +49,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
+	String KEY_ALCHEMISTS_AMULET = "alchemistsAmulet";
 
 	@ConfigSection(
 		name = "Charge settings",
@@ -463,6 +464,30 @@ public interface ItemChargeConfig extends Config
 		section = notificationSection
 	)
 	default Notification amuletOfChemistryNotification()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "showAlchemistsAmulet",
+		name = "Alchemist's Amulet Charges",
+		description = "Show Alchemist's Amulet item charges",
+		position = 34,
+		section = chargesSection
+	)
+	default boolean showAlchemistsAmulet()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "alchemistsAmuletNotification",
+		name = "Alchemist's Amulet Notification",
+		description = "Send a notification when the Alchemist's Amulet runs out of charges",
+		position = 35,
+		section = notificationSection
+	)
+	default Notification alchemistsAmuletNotification()
 	{
 		return Notification.ON;
 	}
