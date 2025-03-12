@@ -494,9 +494,11 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 validateMoveAndClick(data);
                 break;
             case "camera_rotate":
+            case "cameraRotate":
                 validateCameraRotate(data);
                 break;
             case "camera_zoom":
+            case "cameraZoom":
                 validateCameraZoom(data);
                 break;
             case "pressKey":
@@ -560,14 +562,20 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     }
 
     private void validateCameraRotate(JsonNode data) throws IllegalArgumentException {
-        if (!data.has("right")) {
-            throw new IllegalArgumentException("camera_rotate command must have a 'right' field");
+        if (!data.has("direction")) {
+            // For backward compatibility also check for 'right' field
+            if (!data.has("right")) {
+                throw new IllegalArgumentException("camera_rotate command must have a 'direction' field ('left', 'right', 'up', 'down') or legacy 'right' field");
+            }
         }
     }
 
     private void validateCameraZoom(JsonNode data) throws IllegalArgumentException {
-        if (!data.has("in")) {
-            throw new IllegalArgumentException("camera_zoom command must have an 'in' field");
+        if (!data.has("direction")) {
+            // For backward compatibility also check for 'in' field
+            if (!data.has("in")) {
+                throw new IllegalArgumentException("camera_zoom command must have a 'direction' field ('in', 'out') or legacy 'in' field");
+            }
         }
     }
 
@@ -624,7 +632,13 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 case "camera_rotate":
                     handleCameraRotate(data);
                     break;
+                case "cameraRotate":  // New command name from Python
+                    handleCameraRotate(data);
+                    break;
                 case "camera_zoom":
+                    handleCameraZoom(data);
+                    break;
+                case "cameraZoom":  // New command name from Python
                     handleCameraZoom(data);
                     break;
                 case "pressKey":
@@ -783,30 +797,27 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         }
     }
 
-    private void handleCameraRotate(JsonNode data) {
-        boolean right = data.get("right").asBoolean();
-        int degrees = data.has("degrees") ? data.get("degrees").asInt() : CAMERA_ROTATE_AMOUNT;
-        
-        clientThread.invoke(() -> {
-            try {
-                // Get current yaw and add/subtract rotation amount
-                int currentYaw = client.getCameraYawTarget();
-                int yawChange = degrees * (right ? 1 : -1);
-                int newYaw = (currentYaw + yawChange) & 2047; // Keep within 0-2047 range
-                
-                // Set new camera yaw
-                client.setCameraYawTarget(newYaw);
-                
-                logDebug(String.format("Rotating camera %s by %d degrees", 
-                    right ? "right" : "left", degrees));
-            } catch (Exception e) {
-                logError("Error rotating camera: " + e.getMessage());
-            }
-        });
-    }
-
     private void handleCameraZoom(JsonNode data) {
-        boolean zoomIn = data.get("in").asBoolean();
+        boolean zoomIn;
+        
+        if (data.has("direction")) {
+            String direction = data.get("direction").asText().toLowerCase();
+            if ("in".equals(direction)) {
+                zoomIn = true;
+            } else if ("out".equals(direction)) {
+                zoomIn = false;
+            } else {
+                logWarn("Unknown camera zoom direction: " + direction);
+                return;
+            }
+        } else if (data.has("in")) {
+            // Legacy support
+            zoomIn = data.get("in").asBoolean();
+        } else {
+            logError("No valid direction for camera zoom");
+            return;
+        }
+        
         clientThread.invoke(() -> {
             try {
                 Canvas canvas = client.getCanvas();
@@ -1574,6 +1585,14 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             currentChunk.put("x", chunk.x);
             currentChunk.put("y", chunk.y);
             exploration.put("visitedChunks", visitedChunks.size());
+            
+            // Always include the latest screenshot
+            String screenshot = captureGameScreen();
+            if (screenshot == null) {
+                // If unable to capture a new screenshot, use the last one
+                screenshot = lastScreenshot != null ? lastScreenshot : "";
+            }
+            state.put("screenshot", screenshot);
 
             return state;
         } catch (Exception e) {
@@ -1752,5 +1771,72 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         public boolean isStarted() {
             return hasStarted;
         }
+    }
+
+    private void handleCameraRotate(JsonNode data) {
+        // Check for direction field first, then fall back to right field for backward compatibility
+        boolean horizontal = true;
+        boolean positive = true;
+        
+        if (data.has("direction")) {
+            String direction = data.get("direction").asText().toLowerCase();
+            switch (direction) {
+                case "left":
+                    horizontal = true;
+                    positive = false;
+                    break;
+                case "right":
+                    horizontal = true;
+                    positive = true;
+                    break;
+                case "up":
+                    horizontal = false;
+                    positive = false;
+                    break;
+                case "down":
+                    horizontal = false;
+                    positive = true;
+                    break;
+                default:
+                    logWarn("Unknown camera rotation direction: " + direction);
+                    return;
+            }
+        } else if (data.has("right")) {
+            // Legacy field support
+            horizontal = true;
+            positive = data.get("right").asBoolean();
+        } else {
+            logError("No valid direction for camera rotation");
+            return;
+        }
+        
+        int degrees = data.has("degrees") ? data.get("degrees").asInt() : CAMERA_ROTATE_AMOUNT;
+        final boolean isHorizontal = horizontal;
+        final boolean isPositive = positive;
+        
+        clientThread.invoke(() -> {
+            try {
+                if (isHorizontal) {
+                    // Handle yaw (left/right) rotation
+                    int currentYaw = client.getCameraYawTarget();
+                    int yawChange = degrees * (isPositive ? 1 : -1);
+                    int newYaw = (currentYaw + yawChange) & 2047; // Keep within 0-2047 range
+                    client.setCameraYawTarget(newYaw);
+                    logDebug(String.format("Rotating camera %s by %d degrees", 
+                        isPositive ? "right" : "left", degrees));
+                } else {
+                    // Handle pitch (up/down) rotation
+                    int currentPitch = client.getCameraPitchTarget();
+                    int pitchChange = degrees * (isPositive ? 1 : -1);
+                    // Pitch is normally bounded between 128 (looking up) and 383 (looking down)
+                    int newPitch = Math.max(128, Math.min(383, currentPitch + pitchChange));
+                    client.setCameraPitchTarget(newPitch);
+                    logDebug(String.format("Rotating camera %s by %d degrees", 
+                        isPositive ? "down" : "up", degrees));
+                }
+            } catch (Exception e) {
+                logError("Error rotating camera: " + e.getMessage());
+            }
+        });
     }
 } 
