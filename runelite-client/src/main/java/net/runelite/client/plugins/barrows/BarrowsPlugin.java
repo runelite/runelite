@@ -51,6 +51,7 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -76,8 +77,6 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
-	private static final int CRYPT_REGION_ID = 14231;
-	private static final int BARROWS_REGION_ID = 14131;
 
 	private LoopTimer barrowsPrayerDrainTimer;
 
@@ -282,11 +281,19 @@ public class BarrowsPlugin extends Plugin
 	private boolean isInCrypt()
 	{
 		Player localPlayer = client.getLocalPlayer();
-		return localPlayer != null && localPlayer.getWorldLocation().getRegionID() == CRYPT_REGION_ID;
+		return localPlayer != null
+			&& GameArea.BARROWS_CRYPT.containsRegion(localPlayer.getWorldLocation().getRegionID());
 	}
 
 	boolean isBarrowsLoaded()
 	{
-		return ArrayUtils.contains(client.getMapRegions(), BARROWS_REGION_ID);
+		for (final int region : GameArea.BARROWS.getFullRegions())
+		{
+			if (ArrayUtils.contains(client.getMapRegions(), region))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
