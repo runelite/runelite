@@ -194,7 +194,10 @@ public class PartyPlugin extends Plugin
 			.panel(panel)
 			.build();
 
-		clientToolbar.addNavigation(navButton);
+		if (!config.hidePanel())
+		{
+			clientToolbar.addNavigation(navButton);
+		}
 
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
@@ -255,6 +258,22 @@ public class PartyPlugin extends Plugin
 			partyStatusOverlay.updateConfig();
 			// rebuild the panel in the event the "Recolor names" option changes
 			SwingUtilities.invokeLater(panel::updateAll);
+
+			// Handle panel visibility
+			if (event.getKey().equals("hidePanel"))
+			{
+				SwingUtilities.invokeLater(() ->
+				{
+					if (config.hidePanel())
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+				});
+			}
 		}
 	}
 
