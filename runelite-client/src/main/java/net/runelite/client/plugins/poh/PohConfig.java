@@ -24,13 +24,26 @@
  */
 package net.runelite.client.plugins.poh;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("poh")
 public interface PohConfig extends Config
 {
+	@ConfigSection(
+		name = "Incense burners",
+		description = "All settings for incense burner overlays and notifications.",
+		position = 1
+	)
+	String burnerSection = "burners";
+
 	@ConfigItem(
 		keyName = "showPortals",
 		name = "Show portals",
@@ -87,16 +100,6 @@ public interface PohConfig extends Config
 		description = "Configures whether or not the exit portal is displayed."
 	)
 	default boolean showExitPortal()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showBurner",
-		name = "Show incense burner timers",
-		description = "Configures whether or not unlit/lit burners are displayed."
-	)
-	default boolean showBurner()
 	{
 		return true;
 	}
@@ -169,5 +172,83 @@ public interface PohConfig extends Config
 	default boolean showMythicalCape()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBurner",
+		name = "Show incense burner timers",
+		description = "Configures whether or not unlit/lit burner timers are displayed.",
+		section = burnerSection,
+		position = 0
+	)
+	default boolean showBurner()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "burnerCertainTimerColor",
+		name = "Certain timer color",
+		description = "Configures the color for the certain burner timer.",
+		section = burnerSection,
+		position = 1
+	)
+	default Color burnerCertainTimerColor()
+	{
+		return Color.GREEN;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "burnerRandomTimerColor",
+		name = "Random timer color",
+		description = "Configures the color for the random burner timer.",
+		section = burnerSection,
+		position = 2
+	)
+	default Color burnerRandomTimerColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+		keyName = "burnerNotifyOnUnlit",
+		name = "Notify on unlit burner",
+		description = "Configures whether or not to notify you when lit burners become unlit.",
+		section = burnerSection,
+		position = 3
+	)
+	default Notification burnerNotifyOnUnlit()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "burnerNotifyOnExpiring",
+		name = "Notify on expiring burner",
+		description = "Configures whether or not to notify you when lit burners enter their random expiring phase.",
+		section = burnerSection,
+		position = 4
+	)
+	default Notification burnerNotifyOnExpiring()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "burnerNotificationLeadTime",
+		name = "Notification lead time",
+		description = "Configures how soon (in ticks) to preemptively send the expiring burner notification.",
+		section = burnerSection,
+		position = 5
+	)
+	@Range(
+		max = 200 // 201 is the minimum certain timer duration at 1 Firemaking. Capped to avoid negative lead times.
+	)
+	@Units(Units.TICKS)
+	default int burnerNotificationLeadTime()
+	{
+		return 0;
 	}
 }
