@@ -135,6 +135,9 @@ public enum FishingSpot
 	CIVITAS_ILLA_FORTIS_PARK("House Keys", "House Keys", ItemID.HOUSE_KEYS,
 		FISHING_SPOT_13329
 	),
+	STRANGLEWOOD_PIKE("Pike", ItemID.RAW_PIKE,
+		FISHING_SPOT_12267
+	),
 	;
 
 	private static final Map<Integer, FishingSpot> SPOTS;
