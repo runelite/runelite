@@ -8,6 +8,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.TileItem;
+import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.rlbot.RLBotConstants;
@@ -113,9 +114,9 @@ public class RLBotActionHandler {
         
         for (NPC npc : client.getNpcs()) {
             if (npc.getName() != null && npc.getName().equalsIgnoreCase(npcName)) {
-                net.runelite.api.Point npcPoint = npc.getCanvasLocation();
-                if (npcPoint != null) {
-                    Point canvasPoint = new Point(npcPoint.getX(), npcPoint.getY());
+                net.runelite.api.Point modelPoint = Perspective.localToCanvas(client, npc.getLocalLocation(), client.getPlane(), npc.getLogicalHeight());
+                if (modelPoint != null) {
+                    Point canvasPoint = new Point(modelPoint.getX(), modelPoint.getY());
                     logger.debug("Moving to NPC: " + npcName);
                     inputHandler.smoothMouseMove(canvasPoint);
                     inputHandler.click();
@@ -140,7 +141,7 @@ public class RLBotActionHandler {
         LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
         
         if (localPoint != null) {
-            net.runelite.api.Point canvasPointApi = client.localToCanvas(localPoint);
+            net.runelite.api.Point canvasPointApi = Perspective.localToCanvas(client, localPoint, client.getPlane());
             if (canvasPointApi != null) {
                 Point canvasPoint = new Point(canvasPointApi.getX(), canvasPointApi.getY());
                 logger.debug("Moving to coordinates: " + x + ", " + y);
@@ -214,7 +215,7 @@ public class RLBotActionHandler {
         if (groundItem != null) {
             LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
             if (localPoint != null) {
-                net.runelite.api.Point canvasPointApi = client.localToCanvas(localPoint);
+                net.runelite.api.Point canvasPointApi = Perspective.localToCanvas(client, localPoint, client.getPlane());
                 if (canvasPointApi != null) {
                     Point canvasPoint = new Point(canvasPointApi.getX(), canvasPointApi.getY());
                     logger.debug("Moving to ground item: " + itemName);

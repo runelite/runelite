@@ -334,7 +334,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
         try {
             // Use port 43595 by default to match Python client
-            int port = config.getPort() > 0 ? config.getPort() : 43595;
+            int port = config.websocketPort() > 0 ? config.websocketPort() : 43595;
             logInfo("Starting WebSocket server on port " + port);
             
             RLBotWebSocketServer server = new RLBotWebSocketServer(new InetSocketAddress("localhost", port));
