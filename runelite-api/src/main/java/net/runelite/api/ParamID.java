@@ -234,4 +234,6 @@ public final class ParamID
 	public static final int SPELL_LEVELREQ = 604;
 
 	public static final int BANK_AUTOCHARGE = 2257;
+
+	public static final int CLUE_SCROLL = 623;
 }
