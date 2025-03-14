@@ -202,7 +202,10 @@ enum FishingSpotLocation
 	private final WorldPoint[] locations;
 	private final boolean iconRequired;
 
-	FishingSpotLocation(FishingSpot fishingSpot, WorldPoint... locations) { this(fishingSpot, false, locations); }
+	FishingSpotLocation(FishingSpot fishingSpot, WorldPoint... locations)
+	{
+		this(fishingSpot, false, locations);
+	}
 
 	FishingSpotLocation(FishingSpot fishingSpot, boolean iconRequired, WorldPoint... locations)
 	{
