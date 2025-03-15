@@ -72,6 +72,7 @@ public class RunecraftPlugin extends Plugin
 		ItemID.GIANT_POUCH_5515,
 		ItemID.COLOSSAL_POUCH_26786
 	);
+	static final int ABYSS_REGION = 12107;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
