@@ -33,8 +33,11 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Point;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.geometry.RectangleUnion.Rectangle;
 import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -90,88 +93,106 @@ class MouseHighlightOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+public Dimension render(Graphics2D graphics)
+{
+	if (client.isMenuOpen())
 	{
-		if (client.isMenuOpen())
-		{
-			return null;
-		}
-
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		int last = menuEntries.length - 1;
-
-		if (last < 0)
-		{
-			return null;
-		}
-
-		MenuEntry menuEntry = menuEntries[last];
-		String target = menuEntry.getTarget();
-		String option = menuEntry.getOption();
-		MenuAction type = menuEntry.getType();
-
-		if (type == MenuAction.RUNELITE_OVERLAY || type == MenuAction.CC_OP_LOW_PRIORITY)
-		{
-			// These are always right click only
-			return null;
-		}
-
-		if (Strings.isNullOrEmpty(option))
-		{
-			return null;
-		}
-
-		// Trivial options that don't need to be highlighted, add more as they appear.
-		switch (option)
-		{
-			case "Walk here":
-			case "Cancel":
-			case "Continue":
-				return null;
-			case "Move":
-				// Hide overlay on sliding puzzle boxes
-				if (target.contains("Sliding piece"))
-				{
-					return null;
-				}
-		}
-
-		if (WIDGET_MENU_ACTIONS.contains(type))
-		{
-			final int widgetId = menuEntry.getParam1();
-			final int groupId = WidgetUtil.componentToInterface(widgetId);
-
-			if (!config.uiTooltip())
-			{
-				return null;
-			}
-
-			if (!config.chatboxTooltip() && groupId == InterfaceID.CHATBOX)
-			{
-				return null;
-			}
-
-			if (config.disableSpellbooktooltip() && groupId == InterfaceID.SPELLBOOK)
-			{
-				return null;
-			}
-		}
-
-		// If this varc is set, a tooltip will be displayed soon
-		int tooltipTimeout = client.getVarcIntValue(VarClientInt.TOOLTIP_TIMEOUT);
-		if (tooltipTimeout > client.getGameCycle())
-		{
-			return null;
-		}
-
-		// If this varc is set, a tooltip is already being displayed
-		int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
-		if (tooltipDisplayed == 1)
-		{
-			return null;
-		}
-
-		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
 	}
+
+	// Get mouse position
+	Point mousePos = client.getMouseCanvasPosition();
+
+	// Get minimap widget bounds
+	Widget minimapWidget = client.getWidget(InterfaceID.MINIMAP);
+
+	if (minimapWidget != null)
+	{
+		Rectangle minimapBounds = minimapWidget.getBounds();
+		
+		// If the mouse is inside the minimap, don't display the highlight
+		if (minimapBounds.contains(mousePos.getX(), mousePos.getY()))
+		{
+			return null;
+		}
+	}
+
+	MenuEntry[] menuEntries = client.getMenuEntries();
+	int last = menuEntries.length - 1;
+
+	if (last < 0)
+	{
+		return null;
+	}
+
+	MenuEntry menuEntry = menuEntries[last];
+	String target = menuEntry.getTarget();
+	String option = menuEntry.getOption();
+	MenuAction type = menuEntry.getType();
+
+	if (type == MenuAction.RUNELITE_OVERLAY || type == MenuAction.CC_OP_LOW_PRIORITY)
+	{
+		// These are always right-click only
+		return null;
+	}
+
+	if (Strings.isNullOrEmpty(option))
+	{
+		return null;
+	}
+
+	// Trivial options that don't need to be highlighted
+	switch (option)
+	{
+		case "Walk here":
+		case "Cancel":
+		case "Continue":
+			return null;
+		case "Move":
+			// Hide overlay on sliding puzzle boxes
+			if (target.contains("Sliding piece"))
+			{
+				return null;
+			}
+	}
+
+	if (WIDGET_MENU_ACTIONS.contains(type))
+	{
+		final int widgetId = menuEntry.getParam1();
+		final int groupId = WidgetUtil.componentToInterface(widgetId);
+
+		if (!config.uiTooltip())
+		{
+			return null;
+		}
+
+		if (!config.chatboxTooltip() && groupId == InterfaceID.CHATBOX)
+		{
+			return null;
+		}
+
+		if (config.disableSpellbooktooltip() && groupId == InterfaceID.SPELLBOOK)
+		{
+			return null;
+		}
+	}
+
+	// If this varc is set, a tooltip will be displayed soon
+	int tooltipTimeout = client.getVarcIntValue(VarClientInt.TOOLTIP_TIMEOUT);
+	if (tooltipTimeout > client.getGameCycle())
+	{
+		return null;
+	}
+
+	// If this varc is set, a tooltip is already being displayed
+	int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
+	if (tooltipDisplayed == 1)
+	{
+		return null;
+	}
+
+	tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
+	return null;
+}
+
 }
