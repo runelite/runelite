@@ -108,15 +108,18 @@ public Dimension render(Graphics2D graphics)
 
 	if (minimapWidget != null)
 	{
-		Rectangle minimapBounds = minimapWidget.getBounds();
-		
+		java.awt.Rectangle awtBounds = minimapWidget.getBounds();
+		Rectangle minimapBounds = new Rectangle(awtBounds.x, awtBounds.y, awtBounds.width, awtBounds.height);
+
 		// If the mouse is inside the minimap, don't display the highlight
-		if (minimapBounds.contains(mousePos.getX(), mousePos.getY()))
+		if (mousePos.getX() >= minimapBounds.getX() &&
+			mousePos.getX() <= minimapBounds.getX() + minimapBounds.getWidth() &&
+			mousePos.getY() >= minimapBounds.getY() &&
+			mousePos.getY() <= minimapBounds.getY() + minimapBounds.getHeight())
 		{
 			return null;
 		}
 	}
-
 	MenuEntry[] menuEntries = client.getMenuEntries();
 	int last = menuEntries.length - 1;
 
