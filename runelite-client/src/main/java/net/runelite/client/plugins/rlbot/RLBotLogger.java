@@ -7,13 +7,22 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import javax.inject.Singleton;
+import javax.inject.Inject;
 
 /**
  * Handles logging for the RLBot plugin.
  * Provides methods for logging at different levels and writing to a log file.
  */
 @Slf4j
+@Singleton
 public class RLBotLogger {
+    
+    // Log level constants
+    private static final String LEVEL_INFO = "INFO";
+    private static final String LEVEL_ERROR = "ERROR";
+    private static final String LEVEL_WARN = "WARN";
+    private static final String LEVEL_DEBUG = "DEBUG";
     
     /**
      * The path to the log file.
@@ -21,24 +30,62 @@ public class RLBotLogger {
     private final Path logPath;
     
     /**
-     * Whether debug logging is enabled.
+     * The plugin configuration.
      */
-    private final boolean debugEnabled;
+    private final RLBotConfig config;
     
     /**
-     * Creates a new RLBotLogger.
+     * Creates a new RLBotLogger with dependency injection.
      * 
-     * @param debugEnabled Whether debug logging is enabled
+     * @param config The plugin configuration
      */
-    public RLBotLogger(boolean debugEnabled) {
-        this.debugEnabled = debugEnabled;
+    @Inject
+    public RLBotLogger(RLBotConfig config) {
+        this.config = config;
         this.logPath = Paths.get(RLBotConstants.LOG_FILE);
         
-        // Create log directory if it doesn't exist
+        // Create log directory if it doesn't exist and ensure we can write to the log file
         try {
-            Files.createDirectories(logPath.getParent());
-        } catch (IOException e) {
-            log.error("Failed to create log directory", e);
+            Path logDir = logPath.getParent();
+            
+            // Make sure the log directory exists
+            if (Files.notExists(logDir)) {
+                Files.createDirectories(logDir);
+                System.out.println("Created log directory: " + logDir);
+            }
+            
+            // Log startup message to both file and console
+            String startupMessage = "[STARTUP] RLBot logger initialized at: " + LocalDateTime.now().format(RLBotConstants.DATE_FORMAT);
+            String logFilePathMessage = "[STARTUP] Log file location: " + logPath.toAbsolutePath();
+            
+            // Try to write directly to the log file to verify permissions
+            try {
+                if (!Files.exists(logPath)) {
+                    Files.createFile(logPath);
+                    System.out.println("Created new log file: " + logPath);
+                }
+                
+                Files.write(
+                    logPath,
+                    (startupMessage + "\n" + logFilePathMessage + "\n").getBytes(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+                );
+                
+                System.out.println("Successfully wrote to log file: " + logPath);
+            } catch (IOException e) {
+                System.err.println("ERROR: Could not write to log file: " + e.getMessage());
+                e.printStackTrace();
+            }
+            
+            // Now use the SLF4J logging for the startup message
+            log.info(startupMessage);
+            log.info(logFilePathMessage);
+            
+        } catch (Exception e) {
+            System.err.println("CRITICAL ERROR: Failed to initialize logger: " + e.getMessage());
+            e.printStackTrace();
+            log.error("Failed to initialize logger", e);
         }
     }
     
@@ -49,7 +96,7 @@ public class RLBotLogger {
      */
     public void info(String message) {
         log.info(message);
-        writeToLogFile("INFO", message);
+        writeToLogFile(LEVEL_INFO, message);
     }
     
     /**
@@ -59,7 +106,7 @@ public class RLBotLogger {
      */
     public void error(String message) {
         log.error(message);
-        writeToLogFile("ERROR", message);
+        writeToLogFile(LEVEL_ERROR, message);
     }
     
     /**
@@ -69,7 +116,7 @@ public class RLBotLogger {
      */
     public void warn(String message) {
         log.warn(message);
-        writeToLogFile("WARN", message);
+        writeToLogFile(LEVEL_WARN, message);
     }
     
     /**
@@ -78,9 +125,9 @@ public class RLBotLogger {
      * @param message The message to log
      */
     public void debug(String message) {
-        if (debugEnabled) {
+        if (config.debugLogging()) {
             log.debug(message);
-            writeToLogFile("DEBUG", message);
+            writeToLogFile(LEVEL_DEBUG, message);
         }
     }
     
@@ -91,17 +138,26 @@ public class RLBotLogger {
      * @param message The message to log
      */
     private void writeToLogFile(String level, String message) {
+        // Format: [TIMESTAMP] [LEVEL] MESSAGE
+        String formattedMessage = String.format("[%s] [%s] %s%n",
+            LocalDateTime.now().format(RLBotConstants.DATE_FORMAT),
+            level,
+            message);
+        
+        // Write to log file - handle exception internally without try-catch
+        writeToFile(formattedMessage);
+    }
+    
+    /**
+     * Writes content to the log file, handling exceptions internally.
+     * 
+     * @param content The content to write
+     */
+    private void writeToFile(String content) {
         try {
-            // Format: [TIMESTAMP] [LEVEL] MESSAGE
-            String formattedMessage = String.format("[%s] [%s] %s%n",
-                LocalDateTime.now().format(RLBotConstants.DATE_FORMAT),
-                level,
-                message);
-            
-            // Write to log file
             Files.write(
                 logPath,
-                formattedMessage.getBytes(),
+                content.getBytes(),
                 StandardOpenOption.CREATE,
                 StandardOpenOption.APPEND
             );

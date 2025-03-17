@@ -76,7 +76,7 @@ public interface RLBotConfig extends Config {
         description = "Enable debug logging"
     )
     default boolean debugLogging() {
-        return false;
+        return true;
     }
     
     /**

@@ -1,6 +1,8 @@
 package net.runelite.client.plugins.rlbot;
 
 import java.time.format.DateTimeFormatter;
+import java.io.File;
+import net.runelite.client.RuneLite;
 
 /**
  * Constants used by the RLBot plugin.
@@ -9,8 +11,8 @@ public final class RLBotConstants {
     /**
      * Path to the log file for plugin logging.
      */
-    public static final String LOG_FILE = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs/rlbot-plugin.log";
-    
+    public static final String LOG_FILE = new File("rlbot/logs", "rlbot-plugin.log").getAbsolutePath();
+        
     /**
      * Date format for logging.
      */
@@ -24,7 +26,7 @@ public final class RLBotConstants {
     /**
      * Directory for storing screenshots.
      */
-    public static final String SCREENSHOTS_DIR = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/screenshots";
+    public static final String SCREENSHOTS_DIR = new File(RuneLite.RUNELITE_DIR, "rlbot/screenshots").getAbsolutePath();
     
     /**
      * Default WebSocket port.

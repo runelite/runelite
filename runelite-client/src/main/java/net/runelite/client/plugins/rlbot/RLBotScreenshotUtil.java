@@ -35,6 +35,10 @@ public class RLBotScreenshotUtil {
      */
     private final RLBotConfig config;
     
+    // Image format constants
+    private static final String IMAGE_FORMAT = "png";
+    private static final String SCREENSHOT_PREFIX = "screenshot_";
+    
     /**
      * Captures a screenshot and processes it.
      * 
@@ -42,22 +46,21 @@ public class RLBotScreenshotUtil {
      */
     public void captureScreenshot(ScreenshotHandler screenshotHandler) {
         drawManager.requestNextFrameListener(image -> {
-            try {
-                // Process the screenshot
-                BufferedImage resizedImage = resizeImage(image);
-                
-                // Save screenshot if enabled
-                if (config.saveScreenshots()) {
-                    saveScreenshot(resizedImage);
-                }
-                
-                // Encode the screenshot
-                String encodedImage = encodeImage(resizedImage);
-                
+            // Process the screenshot
+            BufferedImage resizedImage = resizeImage(image);
+            
+            // Save screenshot if enabled
+            if (config.saveScreenshots()) {
+                saveScreenshotSafely(resizedImage);
+            }
+            
+            // Encode the screenshot
+            String encodedImage = encodeImageSafely(resizedImage);
+            if (encodedImage != null) {
                 // Handle the processed screenshot
                 screenshotHandler.handle(encodedImage);
-            } catch (Exception e) {
-                logger.error("Error processing screenshot: " + e.getMessage());
+            } else {
+                logger.error("Failed to encode screenshot");
             }
         });
     }
@@ -129,6 +132,34 @@ public class RLBotScreenshotUtil {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(image, "png", outputStream);
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
+    }
+    
+    /**
+     * Safely saves a screenshot, handling any exceptions internally.
+     * 
+     * @param image The image to save
+     */
+    private void saveScreenshotSafely(BufferedImage image) {
+        try {
+            saveScreenshot(image);
+        } catch (IOException e) {
+            logger.error("Error saving screenshot: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Safely encodes an image, handling any exceptions internally.
+     * 
+     * @param image The image to encode
+     * @return The encoded image, or null if encoding failed
+     */
+    private String encodeImageSafely(BufferedImage image) {
+        try {
+            return encodeImage(image);
+        } catch (IOException e) {
+            logger.error("Error encoding screenshot: " + e.getMessage());
+            return null;
+        }
     }
     
     /**

@@ -2,8 +2,8 @@ package net.runelite.client.plugins.rlbot.action;
 
 import com.google.gson.JsonObject;
 import java.awt.Point;
+import java.awt.Canvas;
 import java.awt.event.KeyEvent;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
@@ -19,7 +19,6 @@ import net.runelite.client.ui.ClientUI;
 /**
  * Handles processing of actions from the WebSocket for the RLBot plugin.
  */
-@RequiredArgsConstructor
 public class RLBotActionHandler {
     
     /**
@@ -38,6 +37,19 @@ public class RLBotActionHandler {
     private final RLBotInputHandler inputHandler;
     
     /**
+     * Creates a new RLBotActionHandler.
+     * 
+     * @param client The RuneLite client
+     * @param logger The logger
+     * @param inputHandler The input handler
+     */
+    public RLBotActionHandler(Client client, RLBotLogger logger, RLBotInputHandler inputHandler) {
+        this.client = client;
+        this.logger = logger;
+        this.inputHandler = inputHandler;
+    }
+    
+    /**
      * Process an action from the WebSocket.
      *
      * @param action The action JSON object
@@ -51,6 +63,8 @@ public class RLBotActionHandler {
         try {
             String type = action.get("type").getAsString();
             JsonObject data = action.getAsJsonObject("data");
+            
+            logger.info("Processing action: " + type + " with data: " + data);
             
             switch (type) {
                 case RLBotConstants.ACTION_MOVE_AND_CLICK:
@@ -72,8 +86,11 @@ public class RLBotActionHandler {
                     logger.warn("Unknown action type: " + type);
                     break;
             }
+            
+            logger.info("Action processed: " + type);
         } catch (Exception e) {
             logger.error("Error processing action: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
@@ -137,6 +154,9 @@ public class RLBotActionHandler {
         int x = data.get("x").getAsInt();
         int y = data.get("y").getAsInt();
         
+        logger.info("Processing click at world coordinates: " + x + ", " + y);
+        
+        // Convert world coordinates to canvas point
         WorldPoint worldPoint = new WorldPoint(x, y, client.getPlane());
         LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
         
@@ -144,9 +164,13 @@ public class RLBotActionHandler {
             net.runelite.api.Point canvasPointApi = Perspective.localToCanvas(client, localPoint, client.getPlane());
             if (canvasPointApi != null) {
                 Point canvasPoint = new Point(canvasPointApi.getX(), canvasPointApi.getY());
-                logger.debug("Moving to coordinates: " + x + ", " + y);
+                logger.info("Moving to coordinates: " + x + ", " + y + " (canvas: " + canvasPoint.x + "," + canvasPoint.y + ")");
+                
+                // Simply move the mouse and click - no delays
                 inputHandler.smoothMouseMove(canvasPoint);
                 inputHandler.click();
+                
+                logger.info("Click action at world coordinates complete: " + x + ", " + y);
                 return;
             }
         }
@@ -248,22 +272,118 @@ public class RLBotActionHandler {
      * @param data The action data
      */
     private void handleCameraRotate(JsonObject data) {
-        int direction = data.get("direction").getAsInt();
-        int amount = data.has("amount") ? data.get("amount").getAsInt() : RLBotConstants.CAMERA_ROTATE_AMOUNT;
+        System.out.println("\n\n===== CAMERA ROTATION HANDLER STARTED =====");
         
-        int keyCode = direction > 0 ? KeyEvent.VK_RIGHT : KeyEvent.VK_LEFT;
-        
-        logger.debug("Rotating camera: " + direction);
-        
-        for (int i = 0; i < Math.abs(direction); i++) {
-            inputHandler.pressKey(keyCode);
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
+        try {
+            // Debug the entire JSON object
+            System.out.println("Full camera rotation data: " + data.toString());
+            
+            // Safely extract direction with null check
+            String directionStr = null;
+            if (data.has("direction") && !data.get("direction").isJsonNull()) {
+                directionStr = data.get("direction").getAsString();
+                System.out.println("Direction: " + directionStr);
+            } else {
+                System.out.println("ERROR: No valid direction specified in camera rotation command");
+                logger.error("No valid direction specified in camera rotation command. Data: " + data);
+                return;
             }
+            
+            // Safely extract amount with default
+            int amount = RLBotConstants.CAMERA_ROTATE_AMOUNT;
+            if (data.has("amount") && !data.get("amount").isJsonNull()) {
+                amount = data.get("amount").getAsInt();
+            }
+            System.out.println("Amount: " + amount);
+            
+            // Convert string direction to keycode
+            int keyCode;
+            if ("left".equalsIgnoreCase(directionStr)) {
+                keyCode = KeyEvent.VK_LEFT;
+            } else if ("right".equalsIgnoreCase(directionStr)) {
+                keyCode = KeyEvent.VK_RIGHT;
+            } else if ("up".equalsIgnoreCase(directionStr)) {
+                keyCode = KeyEvent.VK_UP;
+            } else if ("down".equalsIgnoreCase(directionStr)) {
+                keyCode = KeyEvent.VK_DOWN;
+            } else {
+                logger.error("Invalid camera rotation direction: " + directionStr);
+                System.out.println("ERROR: Invalid camera rotation direction: " + directionStr);
+                return;
+            }
+            
+            System.out.println("Using key code: " + keyCode + " (" + KeyEvent.getKeyText(keyCode) + ")");
+            
+            // Calculate number of key presses
+            int numPresses = Math.max(3, Math.min(10, amount / 15));
+            System.out.println("Will press key " + numPresses + " times");
+            
+            // Get the canvas directly from the client
+            Canvas canvas = client.getCanvas();
+            if (canvas == null) {
+                System.out.println("ERROR: Canvas is null, cannot rotate camera");
+                logger.error("Canvas is null, cannot rotate camera");
+                return;
+            }
+            
+            System.out.println("Canvas obtained: " + canvas);
+            
+            // DIRECT KEY PRESS APPROACH
+            System.out.println("Starting direct key press sequence");
+            for (int i = 0; i < numPresses; i++) {
+                try {
+                    System.out.println("Press #" + (i+1) + " of " + numPresses);
+                    
+                    // KEY PRESSED event
+                    long when = System.currentTimeMillis();
+                    KeyEvent pressEvent = new KeyEvent(
+                        canvas,
+                        KeyEvent.KEY_PRESSED, 
+                        when, 
+                        0, // no modifiers
+                        keyCode,
+                        KeyEvent.CHAR_UNDEFINED
+                    );
+                    
+                    System.out.println("Dispatching KEY_PRESSED");
+                    canvas.dispatchEvent(pressEvent);
+                    System.out.println("KEY_PRESSED dispatched");
+                    
+                    // Small delay
+                    Thread.sleep(30);
+                    
+                    // KEY RELEASED event
+                    KeyEvent releaseEvent = new KeyEvent(
+                        canvas,
+                        KeyEvent.KEY_RELEASED, 
+                        when + 30, 
+                        0, // no modifiers
+                        keyCode,
+                        KeyEvent.CHAR_UNDEFINED
+                    );
+                    
+                    System.out.println("Dispatching KEY_RELEASED");
+                    canvas.dispatchEvent(releaseEvent);
+                    System.out.println("KEY_RELEASED dispatched");
+                    
+                    // Delay between presses
+                    Thread.sleep(30);
+                } catch (Exception e) {
+                    System.out.println("ERROR during key press " + (i+1) + ": " + e.getMessage());
+                    e.printStackTrace();
+                    logger.error("Error during key press " + (i+1) + ": " + e.getMessage());
+                }
+            }
+            
+            System.out.println("Camera rotation completed: " + directionStr + " with " + numPresses + " presses");
+            logger.info("Camera rotation completed: " + directionStr + " with " + numPresses + " presses");
+        } catch (Exception e) {
+            System.out.println("EXCEPTION in handleCameraRotate: " + e.getMessage());
+            e.printStackTrace();
+            logger.error("Error rotating camera: " + e.getMessage());
         }
+        
+        System.out.println("===== CAMERA ROTATION HANDLER FINISHED =====\n\n");
     }
     
     /**
@@ -272,22 +392,61 @@ public class RLBotActionHandler {
      * @param data The action data
      */
     private void handleCameraZoom(JsonObject data) {
-        int direction = data.get("direction").getAsInt();
-        float amount = data.has("amount") ? data.get("amount").getAsFloat() : RLBotConstants.CAMERA_ZOOM_AMOUNT;
+        logger.info("[RLBOT_ACTION] BEGIN handleCameraZoom: " + data.toString());
         
-        int keyCode = direction > 0 ? KeyEvent.VK_PAGE_UP : KeyEvent.VK_PAGE_DOWN;
-        
-        logger.debug("Zooming camera: " + direction);
-        
-        for (int i = 0; i < Math.abs(direction); i++) {
-            inputHandler.pressKey(keyCode);
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
+        try {
+            String directionStr = data.get("direction").getAsString();
+            logger.info("[RLBOT_ACTION] Camera zoom direction: " + directionStr);
+            
+            float amount = data.has("amount") ? data.get("amount").getAsFloat() : RLBotConstants.CAMERA_ZOOM_AMOUNT;
+            logger.info("[RLBOT_ACTION] Camera zoom amount: " + amount);
+            
+            // Convert string direction to keycode
+            int keyCode;
+            if ("in".equalsIgnoreCase(directionStr)) {
+                keyCode = KeyEvent.VK_PAGE_UP;
+                logger.info("[RLBOT_ACTION] Direction 'in' maps to keyCode: " + keyCode + " (" + KeyEvent.getKeyText(keyCode) + ")");
+            } else if ("out".equalsIgnoreCase(directionStr)) {
+                keyCode = KeyEvent.VK_PAGE_DOWN;
+                logger.info("[RLBOT_ACTION] Direction 'out' maps to keyCode: " + keyCode + " (" + KeyEvent.getKeyText(keyCode) + ")");
+            } else {
+                logger.error("[RLBOT_ACTION] Invalid camera zoom direction: " + directionStr);
+                return;
             }
+            
+            logger.info("[RLBOT_ACTION] Zooming camera direction: " + directionStr + ", amount: " + amount);
+            
+            // Default to a minimum number of key presses to ensure noticeable movement
+            int numPresses = Math.max(5, (int)Math.ceil(amount / 10));
+            logger.info("[RLBOT_ACTION] Calculated " + numPresses + " key presses needed for zoom");
+            
+            // Perform multiple key presses to achieve desired zoom amount
+            for (int i = 0; i < numPresses; i++) {
+                logger.info("[RLBOT_ACTION] Executing key press " + (i+1) + " of " + numPresses + " for key: " + KeyEvent.getKeyText(keyCode));
+                inputHandler.pressKey(keyCode);
+                
+                try {
+                    logger.info("[RLBOT_ACTION] Sleeping for 100ms between zoom key presses");
+                    Thread.sleep(100); // Longer delay between key presses for camera zoom
+                    logger.info("[RLBOT_ACTION] Sleep completed");
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    logger.error("[RLBOT_ACTION] Camera zoom interrupted: " + e.getMessage() + ": " + e.toString());
+                    break;
+                }
+                
+                // Log progress every few presses
+                if (i > 0 && i % 3 == 0) {
+                    logger.info("[RLBOT_ACTION] Completed " + (i+1) + " of " + numPresses + " key presses");
+                }
+            }
+            
+            logger.info("[RLBOT_ACTION] Camera zoom completed: " + directionStr + " with " + numPresses + " key presses");
+        } catch (Exception e) {
+            logger.error("[RLBOT_ACTION] Error zooming camera: " + e.getMessage() + ": " + e.toString());
         }
+        
+        logger.info("[RLBOT_ACTION] END handleCameraZoom");
     }
     
     /**
@@ -296,10 +455,52 @@ public class RLBotActionHandler {
      * @param data The action data
      */
     private void handlePressKey(JsonObject data) {
-        int keyCode = data.get("keyCode").getAsInt();
-        
-        logger.debug("Pressing key: " + keyCode);
-        inputHandler.pressKey(keyCode);
+        try {
+            // Support both numeric keyCode and string key name
+            int keyCode;
+            if (data.has("keyCode")) {
+                keyCode = data.get("keyCode").getAsInt();
+            } else if (data.has("key")) {
+                // Convert string key name to keycode
+                String key = data.get("key").getAsString().toUpperCase();
+                
+                // Map common key names to keycodes
+                switch (key) {
+                    case "ESC":
+                    case "ESCAPE":
+                        keyCode = KeyEvent.VK_ESCAPE;
+                        break;
+                    case "SPACE":
+                        keyCode = KeyEvent.VK_SPACE;
+                        break;
+                    case "ENTER":
+                        keyCode = KeyEvent.VK_ENTER;
+                        break;
+                    case "F1":
+                        keyCode = KeyEvent.VK_F1;
+                        break;
+                    // Add more key mappings as needed
+                    default:
+                        // Try to get keycode from first character of key string
+                        if (key.length() > 0) {
+                            keyCode = KeyEvent.getExtendedKeyCodeForChar(key.charAt(0));
+                        } else {
+                            logger.error("Invalid key: Empty string");
+                            return;
+                        }
+                }
+            } else {
+                logger.error("No key or keyCode specified in pressKey action");
+                return;
+            }
+            
+            logger.info("Pressing key: " + keyCode);
+            inputHandler.pressKey(keyCode);
+            logger.info("Key press completed: " + keyCode);
+        } catch (Exception e) {
+            logger.error("Error pressing key: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     /**

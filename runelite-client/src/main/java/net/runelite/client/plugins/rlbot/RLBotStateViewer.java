@@ -54,6 +54,8 @@ import java.time.format.DateTimeFormatter;
 import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
+import java.io.File;
+import net.runelite.client.RuneLite;
 
 @Slf4j
 @Singleton
@@ -941,7 +943,7 @@ public class RLBotStateViewer extends PluginPanel
     // Add file logging method similar to the one in RLBotPlugin
     private void logToFile(String level, String message) {
         try {
-            String LOG_FILE = "/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs/rlbot-stateviewer.log";
+            String LOG_FILE = new File(RuneLite.RUNELITE_DIR, "rlbot/logs/rlbot-stateviewer.log").getAbsolutePath();
             
             // Create parent directories if they don't exist
             Path logPath = Paths.get(LOG_FILE);
