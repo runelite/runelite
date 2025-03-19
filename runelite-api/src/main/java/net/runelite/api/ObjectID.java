@@ -6925,7 +6925,6 @@ public final class ObjectID
 	public static final int CANDLES_12301 = 12301;
 	public static final int CANDLES_12302 = 12302;
 	public static final int CHEST_12309 = 12309;
-	public static final int CHAIR_12310 = 12310;
 	public static final int CHAIR_12311 = 12311;
 	public static final int CHAIR_12312 = 12312;
 	public static final int CHAIR_12313 = 12313;
@@ -7575,6 +7574,7 @@ public final class ObjectID
 	public static final int TABLE_BLOCKADE_13440 = 13440;
 	public static final int KOUREND_SIGIL = 13465;
 	public static final int FISHING_SPOT_13476 = 13476;
+	public static final int CHAIR_13481 = 13481;
 	public static final int MITHRIL_ARMOUR = 13491;
 	public static final int ADAMANT_ARMOUR = 13492;
 	public static final int RUNE_ARMOUR = 13493;
