@@ -41,6 +41,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -523,18 +524,24 @@ public class RuneLite
 
 	private void setupCompilerControl()
 	{
-		if (runtimeConfig == null || runtimeConfig.getCompilerControl() == null)
-		{
-			return;
-		}
-
 		try
 		{
-			var json = gson.toJson(runtimeConfig.getCompilerControl());
 			var file = Files.createTempFile("rl_compilercontrol", "");
 			try
 			{
-				Files.writeString(file, json, StandardCharsets.UTF_8);
+				if (runtimeConfig != null && runtimeConfig.getCompilerControl() != null)
+				{
+					var json = gson.toJson(runtimeConfig.getCompilerControl());
+					Files.writeString(file, json, StandardCharsets.UTF_8);
+				}
+				else
+				{
+					try (var in = RuneLite.class.getResourceAsStream("/compilercontrol.json"))
+					{
+						Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
+					}
+				}
+
 				ManagementFactory.getPlatformMBeanServer().invoke(
 					new ObjectName("com.sun.management:type=DiagnosticCommand"),
 					"compilerDirectivesAdd",
