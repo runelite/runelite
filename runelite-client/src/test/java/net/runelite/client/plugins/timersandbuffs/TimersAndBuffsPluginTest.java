@@ -220,7 +220,7 @@ public class TimersAndBuffsPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.ABYSSAL_SIRE_STUN, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(30), infoBox.getDuration());
+		assertEquals(Duration.of(48, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
