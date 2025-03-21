@@ -24,19 +24,19 @@ public interface RLBotConfig extends Config {
     }
     
     /**
-     * The port to use for the WebSocket server.
+     * The port to use for the REST server.
      */
     @ConfigItem(
-        keyName = "websocketPort",
-        name = "WebSocket Port",
-        description = "The port to use for the WebSocket server"
+        keyName = "restPort",
+        name = "REST API Port",
+        description = "The port to use for the REST API server"
     )
     @Range(
         min = 1024,
         max = 65535
     )
     default int websocketPort() {
-        return RLBotConstants.DEFAULT_WEBSOCKET_PORT;
+        return RLBotConstants.DEFAULT_REST_PORT;
     }
     
     /**

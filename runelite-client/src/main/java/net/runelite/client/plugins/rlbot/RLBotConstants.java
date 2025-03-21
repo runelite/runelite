@@ -11,7 +11,7 @@ public final class RLBotConstants {
     /**
      * Path to the log file for plugin logging.
      */
-    public static final String LOG_FILE = new File("rlbot/logs", "rlbot-plugin.log").getAbsolutePath();
+    public static final String LOG_FILE = new File(new File(RuneLite.RUNELITE_DIR, "rlbot/logs"), "rlbot-plugin.log").getAbsolutePath();
         
     /**
      * Date format for logging.
@@ -29,9 +29,9 @@ public final class RLBotConstants {
     public static final String SCREENSHOTS_DIR = new File(RuneLite.RUNELITE_DIR, "rlbot/screenshots").getAbsolutePath();
     
     /**
-     * Default WebSocket port.
+     * Default REST API port.
      */
-    public static final int DEFAULT_WEBSOCKET_PORT = 43595;
+    public static final int DEFAULT_REST_PORT = 43595;
     
     /**
      * Size of each exploration chunk.
@@ -65,9 +65,10 @@ public final class RLBotConstants {
     public static final float SCREENSHOT_COMPRESSION = 0.3f;
     
     /**
-     * WebSocket related constants.
+     * REST API endpoints.
      */
-    public static final int WEBSOCKET_TIMEOUT = 300;
+    public static final String ENDPOINT_STATE = "/state";
+    public static final String ENDPOINT_COMMAND = "/command";
     
     /**
      * Action types.

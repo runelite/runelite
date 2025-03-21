@@ -43,7 +43,7 @@ import net.runelite.client.plugins.rlbot.gamestate.RLBotGameStateGenerator;
 import net.runelite.client.plugins.rlbot.ui.RLBotOverlay;
 import net.runelite.client.plugins.rlbot.input.RLBotInputHandler;
 import net.runelite.client.plugins.rlbot.action.RLBotActionHandler;
-import net.runelite.client.plugins.rlbot.websocket.RLBotWebSocketHandler;
+import net.runelite.client.plugins.rlbot.rest.RLBotRestHandler;
 import java.awt.Robot;
 import java.awt.MouseInfo;
 
@@ -104,7 +104,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
     private RLBotGameStateGenerator gameStateGenerator;
 
-    private RLBotWebSocketHandler webSocketHandler;
+    private RLBotRestHandler restHandler;
 
     @Inject
     private RLBotStateViewer stateViewer;
@@ -189,7 +189,10 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         verifyInputHandler();
         actionHandler = new RLBotActionHandler(client, logger, inputHandler);
 
-        webSocketHandler = new RLBotWebSocketHandler(
+        // Add the overlay to the overlay manager
+        overlayManager.add(overlay);
+
+        restHandler = new RLBotRestHandler(
             logger,
             clientThread,
             objectMapper,
@@ -203,13 +206,12 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             }
         );
         int port = config.websocketPort() > 0 ? config.websocketPort() : 43595;
-        if (!webSocketHandler.startServer(port)) {
-            logger.error("WebSocket server failed to start properly");
+        if (!restHandler.startServer(port)) {
+            logger.error("REST server failed to start properly");
             return;
         }
         keyManager.registerKeyListener(this);
         isRunning = true;
-        overlayManager.add(overlay);
         logger.info("RLBot plugin started successfully");
 
         stateViewer.setRefreshCallback(() -> {
@@ -229,7 +231,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
         BufferedImage icon;
         try {
-            icon = ImageUtil.loadImageResource(getClass(), "rlbot_icon.png");
+            icon = ImageUtil.loadImageResource(RLBotPlugin.class, "/net/runelite/client/plugins/rlbot/rlbot_icon.png");
         } catch (Exception e) {
             icon = ImageUtil.loadImageResource(RLBotPlugin.class, "/net/runelite/client/ui/runescape.png");
             logger.info("Could not load rlbot_icon.png, using fallback icon");
@@ -265,11 +267,12 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     protected void shutDown() {
         logger.info("Shutting down RLBot plugin");
         keyManager.unregisterKeyListener(this);
-        if (webSocketHandler != null) {
-            webSocketHandler.stopServer();
+        if (restHandler != null) {
+            restHandler.stopServer();
         }
         isRunning = false;
         overlayManager.remove(overlay);
+        clientToolbar.removeNavigation(stateViewerButton);
         screenshotExecutor.shutdown();
         gameStateExecutor.shutdown();
         try {
@@ -314,52 +317,95 @@ public class RLBotPlugin extends Plugin implements KeyListener {
      */
     private void updateGameState() {
         if (isGeneratingState) {
-            logger.debug("Already generating state, skipping request");
+            logger.debug("Already generating state, skipping update");
             return;
         }
+
         isGeneratingState = true;
-        gameStateGenerator.generateGameStateAsync().whenComplete((gsonState, ex) -> {
-            if (ex != null || gsonState == null) {
-                logger.error("Error generating game state: " + (ex != null ? ex.getMessage() : "null state"));
-            } else {
-                try {
-                    // Convert the Gson JsonObject to Jackson JsonNode
-                    JsonNode state = objectMapper.readTree(gsonState.toString());
-                    latestGameState = state;
-                    SwingUtilities.invokeLater(() -> stateViewer.updateState(state));
-                } catch (Exception e) {
-                    logger.error("Error converting game state: " + e.getMessage());
-                }
+        gameStateExecutor.submit(() -> {
+            try {
+                clientThread.invoke(() -> {
+                    try {
+                        if (client == null || client.getGameState() != GameState.LOGGED_IN) {
+                            logger.debug("Client not ready for state update");
+                            return;
+                        }
+
+                        gameStateGenerator.generateGameStateAsync().whenComplete((gsonState, ex) -> {
+                            if (ex != null || gsonState == null) {
+                                logger.error("Error generating game state: " + (ex != null ? ex.getMessage() : "null state"));
+                            } else {
+                                try {
+                                    // Convert the Gson JsonObject to Jackson JsonNode
+                                    JsonNode state = objectMapper.readTree(gsonState.toString());
+                                    latestGameState = state;
+                                    SwingUtilities.invokeLater(() -> stateViewer.updateState(state));
+                                } catch (Exception e) {
+                                    logger.error("Error converting game state: " + e.getMessage());
+                                }
+                            }
+                            isGeneratingState = false;
+                        });
+                    } catch (Exception e) {
+                        logger.error("Error generating game state: " + e.getMessage());
+                        e.printStackTrace();
+                        isGeneratingState = false;
+                    }
+                });
+            } catch (Exception e) {
+                logger.error("Error in game state executor: " + e.getMessage());
+                e.printStackTrace();
+                isGeneratingState = false;
             }
-            isGeneratingState = false;
         });
     }
 
     private boolean validateAndProcessCommand(String json) {
         try {
-            System.out.println("\n\n==== RLBOT RECEIVED COMMAND ====\n" + json + "\n================================\n\n");
+            logger.info("==== RLBOT RECEIVED COMMAND ====\n" + json);
             if (json == null || json.isEmpty()) {
                 logger.error("Empty command received");
                 return false;
             }
+
             JsonNode jsonNode = objectMapper.readTree(json);
             if (jsonNode.has("type") && ACTION_GET_STATE.equals(jsonNode.get("type").asText())) {
                 updateGameState();
                 return true;
             }
+
             if (!jsonNode.has("action")) {
                 logger.error("No action specified in command: " + json);
                 return false;
             }
+
             String action = jsonNode.get("action").asText();
-            System.out.println("\n*** RLBOT ACTION: " + action + " ***\n");
+            logger.info("*** RLBOT ACTION: " + action + " ***");
             if (action == null || action.isEmpty()) {
                 logger.error("Empty action specified");
                 return false;
             }
+
             updateCurrentAction("Action: " + action);
-            // Process additional actions...
-            // (The action handler code remains unchanged)
+            
+            // Process the action asynchronously
+            gameStateExecutor.submit(() -> {
+                try {
+                    clientThread.invoke(() -> {
+                        try {
+                            // Process additional actions...
+                            // (The action handler code remains unchanged)
+                        } catch (Exception e) {
+                            logger.error("Error processing action: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    });
+                } catch (Exception e) {
+                    logger.error("Error in action executor: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            });
+
             return true;
         } catch (Exception e) {
             logger.error("Error processing command: " + e.getMessage());

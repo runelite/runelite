@@ -323,6 +323,11 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.13.3</version>
 		</dependency>
+		<dependency>
+			<groupId>com.sparkjava</groupId>
+			<artifactId>spark-core</artifactId>
+			<version>2.9.4</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
