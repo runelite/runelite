@@ -34,6 +34,7 @@ class IncenseBurner
 {
 	private Instant start;
 	private boolean lit;
+	private int litTick;
 	private double countdownTimer;
 	private double randomTimer;
 	private Instant end;
@@ -42,5 +43,6 @@ class IncenseBurner
 	{
 		countdownTimer = 0;
 		randomTimer = 0;
+		litTick = 0;
 	}
 }
