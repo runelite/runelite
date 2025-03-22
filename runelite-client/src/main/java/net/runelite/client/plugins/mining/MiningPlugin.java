@@ -309,6 +309,8 @@ public class MiningPlugin extends Plugin
 				case DEPLETED_VEIN: // Gold vein
 				case ROCKS_51486: // Calcified rock
 				case ROCKS_51488: // Calcified rock
+				case ROCKS_51490: // Calcified rock
+				case ROCKS_51492: // Calcified rock
 				{
 					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
 					break;
