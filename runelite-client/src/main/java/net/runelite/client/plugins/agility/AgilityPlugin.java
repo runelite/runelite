@@ -38,9 +38,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
@@ -60,6 +62,7 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.StatChanged;
@@ -67,6 +70,10 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -115,6 +122,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private Client client;
@@ -464,5 +474,30 @@ public class AgilityPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 		npcs.remove(npc);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!config.examineShortcutTextEnabled())
+		{
+			return;
+		}
+		if (event.getMenuAction().equals(MenuAction.EXAMINE_OBJECT))
+		{
+			Obstacles.SHORTCUT_OBSTACLE_IDS.get(event.getId()).stream().findFirst()
+					.ifPresent(element ->
+					{
+						final ChatMessageBuilder message = new ChatMessageBuilder()
+								.append(ChatColorType.HIGHLIGHT)
+								.append(element.getTooltip())
+								.append(ChatColorType.NORMAL);
+
+						chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.ITEM_EXAMINE)
+								.runeLiteFormattedMessage(message.build())
+								.build());
+					});
+		}
 	}
 }

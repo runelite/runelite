@@ -284,4 +284,15 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "examineShortcutTextEnabled",
+		name = "Show Details on Shortcut Examine",
+		description = "Show level requirement when examining Agility Shortcuts",
+		position = 21
+	)
+	default boolean examineShortcutTextEnabled()
+	{
+		return true;
+	}
 }
