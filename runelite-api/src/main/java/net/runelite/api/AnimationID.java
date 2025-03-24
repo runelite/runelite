@@ -167,8 +167,10 @@ public final class AnimationID
 	public static final int FISHING_DRAGON_HARPOON = 7401;
 	public static final int FISHING_DRAGON_HARPOON_OR = 88;
 	public static final int FISHING_INFERNAL_HARPOON = 7402;
+	public static final int FISHING_INFERNAL_HARPOON_OR = 8783;
+	public static final int FISHING_INFERNAL_HARPOON_TRAILBLAZER = 11867;
 	public static final int FISHING_CRYSTAL_HARPOON = 8336;
-	public static final int FISHING_TRAILBLAZER_HARPOON = 8784; // Same animation as Infernal harpoon (or)
+	public static final int FISHING_TRAILBLAZER_HARPOON = 11868;
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
@@ -203,6 +205,7 @@ public final class AnimationID
 	public static final int MINING_DRAGON_PICKAXE_UPGRADED = 642;
 	public static final int MINING_DRAGON_PICKAXE_OR = 8346;
 	public static final int MINING_DRAGON_PICKAXE_OR_TRAILBLAZER = 8887;
+	public static final int MINING_DRAGON_PICKAXE_OR_TRAILBLAZER_30351 = 11833;
 	public static final int MINING_INFERNAL_PICKAXE = 4482;
 	public static final int MINING_3A_PICKAXE = 7283;
 	public static final int MINING_CRYSTAL_PICKAXE = 8347;
@@ -221,6 +224,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON_UPGRADED = 335;
 	public static final int MINING_MOTHERLODE_DRAGON_OR = 8344;
 	public static final int MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER = 8886;
+	public static final int MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER_30351 = 11827;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int MINING_MOTHERLODE_CRYSTAL = 8345;
@@ -237,6 +241,7 @@ public final class AnimationID
 	public final static int MINING_CRASHEDSTAR_DRAGON_UPGRADED = 643;
 	public final static int MINING_CRASHEDSTAR_DRAGON_OR = 8349;
 	public final static int MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER = 8888;
+	public final static int MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER_30351 = 11839;
 	public final static int MINING_CRASHEDSTAR_INFERNAL = 4483;
 	public final static int MINING_CRASHEDSTAR_3A = 7284;
 	public final static int MINING_CRASHEDSTAR_CRYSTAL = 8350;
