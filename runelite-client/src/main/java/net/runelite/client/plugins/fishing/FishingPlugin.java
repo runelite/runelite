@@ -250,6 +250,7 @@ public class FishingPlugin extends Plugin
 			{
 				case ItemID.DRAGON_HARPOON:
 				case ItemID.DRAGON_HARPOON_OR:
+				case ItemID.DRAGON_HARPOON_OR_30349:
 				case ItemID.INFERNAL_HARPOON:
 				case ItemID.INFERNAL_HARPOON_UNCHARGED:
 				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
