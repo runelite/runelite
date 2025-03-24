@@ -326,22 +326,45 @@ public class RLBotPlugin extends Plugin implements KeyListener {
             try {
                 clientThread.invoke(() -> {
                     try {
-                        if (client == null || client.getGameState() != GameState.LOGGED_IN) {
-                            logger.debug("Client not ready for state update");
+                        if (client == null) {
+                            logger.error("Client is null");
+                            isGeneratingState = false;
                             return;
                         }
 
+                        if (client.getGameState() != GameState.LOGGED_IN) {
+                            logger.error("Client not logged in. Current state: " + client.getGameState());
+                            isGeneratingState = false;
+                            return;
+                        }
+
+                        if (client.getLocalPlayer() == null) {
+                            logger.error("Local player is null");
+                            isGeneratingState = false;
+                            return;
+                        }
+
+                        logger.info("Generating game state. Player name: " + client.getLocalPlayer().getName());
                         gameStateGenerator.generateGameStateAsync().whenComplete((gsonState, ex) -> {
                             if (ex != null || gsonState == null) {
                                 logger.error("Error generating game state: " + (ex != null ? ex.getMessage() : "null state"));
+                                if (ex != null) {
+                                    ex.printStackTrace();
+                                }
                             } else {
                                 try {
                                     // Convert the Gson JsonObject to Jackson JsonNode
-                                    JsonNode state = objectMapper.readTree(gsonState.toString());
+                                    String jsonString = gsonState.toString();
+                                    logger.debug("Generated game state JSON: " + jsonString);
+                                    JsonNode state = objectMapper.readTree(jsonString);
+                                    if (!state.has("player")) {
+                                        logger.error("Generated state is missing player data");
+                                    }
                                     latestGameState = state;
                                     SwingUtilities.invokeLater(() -> stateViewer.updateState(state));
                                 } catch (Exception e) {
                                     logger.error("Error converting game state: " + e.getMessage());
+                                    e.printStackTrace();
                                 }
                             }
                             isGeneratingState = false;

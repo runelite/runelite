@@ -64,8 +64,17 @@ public class RLBotGameStateGenerator {
 
     private void addPlayerInfo(JsonObject gameState) {
         JsonObject playerInfo = new JsonObject();
-        Player localPlayer = client.getLocalPlayer();
-        if (localPlayer != null) {
+        try {
+            Player localPlayer = client.getLocalPlayer();
+            if (localPlayer == null) {
+                logger.error("Local player is null in addPlayerInfo");
+                gameState.add("player", playerInfo);
+                return;
+            }
+
+            logger.debug("Adding player info for: " + localPlayer.getName());
+            
+            // Basic info
             playerInfo.addProperty("name", localPlayer.getName());
             playerInfo.addProperty("combatLevel", localPlayer.getCombatLevel());
             
@@ -77,23 +86,53 @@ public class RLBotGameStateGenerator {
                 positionObj.addProperty("y", position.getY());
                 positionObj.addProperty("plane", position.getPlane());
                 playerInfo.add("location", positionObj);
+                logger.debug("Player location: " + position.getX() + ", " + position.getY() + ", " + position.getPlane());
+            } else {
+                logger.error("Player position is null");
             }
 
             // Health
-            JsonObject healthObj = new JsonObject();
-            healthObj.addProperty("current", client.getBoostedSkillLevel(Skill.HITPOINTS));
-            healthObj.addProperty("maximum", client.getRealSkillLevel(Skill.HITPOINTS));
-            playerInfo.add("health", healthObj);
+            try {
+                JsonObject healthObj = new JsonObject();
+                int currentHp = client.getBoostedSkillLevel(Skill.HITPOINTS);
+                int maxHp = client.getRealSkillLevel(Skill.HITPOINTS);
+                healthObj.addProperty("current", currentHp);
+                healthObj.addProperty("maximum", maxHp);
+                playerInfo.add("health", healthObj);
+                logger.debug("Player health: " + currentHp + "/" + maxHp);
+            } catch (Exception e) {
+                logger.error("Error adding health info: " + e.getMessage());
+            }
 
             // Combat and movement state
             playerInfo.addProperty("inCombat", localPlayer.getInteracting() != null);
             playerInfo.addProperty("isRunning", client.getVarpValue(173) == 1);
             playerInfo.addProperty("runEnergy", client.getEnergy() / 100.0);
             playerInfo.addProperty("prayer", client.getBoostedSkillLevel(Skill.PRAYER));
-
             playerInfo.addProperty("animation", localPlayer.getAnimation());
+
+            // Skills
+            try {
+                JsonObject skillsObj = new JsonObject();
+                for (Skill skill : Skill.values()) {
+                    JsonObject skillObj = new JsonObject();
+                    skillObj.addProperty("level", client.getBoostedSkillLevel(skill));
+                    skillObj.addProperty("realLevel", client.getRealSkillLevel(skill));
+                    skillObj.addProperty("experience", client.getSkillExperience(skill));
+                    skillsObj.add(skill.getName(), skillObj);
+                }
+                playerInfo.add("skills", skillsObj);
+            } catch (Exception e) {
+                logger.error("Error adding skills info: " + e.getMessage());
+            }
+
+        } catch (Exception e) {
+            logger.error("Error in addPlayerInfo: " + e.getMessage());
+            e.printStackTrace();
         }
+        
         gameState.add("player", playerInfo);
+        logger.debug("Player info added to game state");
     }
 
     private void addSkillInfo(JsonObject gameState) {
