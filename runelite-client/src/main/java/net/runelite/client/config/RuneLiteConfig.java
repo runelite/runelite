@@ -414,7 +414,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "overlayBackgroundColor",
 		name = "Overlay color",
-		description = "Configures the background color of infoboxes and overlays.",
+		description = "Configures the background color of overlays.",
 		position = 44,
 		section = overlaySettings
 	)
@@ -423,11 +423,24 @@ public interface RuneLiteConfig extends Config
 		return ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	}
 
+	@Alpha
+	@ConfigItem(
+			keyName = "infoBoxOverlayBackgroundColor",
+			name = "Infobox overlay color",
+			description = "Configures the background color of infobox overlays.",
+			position = 45,
+			section = overlaySettings
+	)
+	default Color infoBoxOverlayBackgroundColor()
+	{
+		return ComponentConstants.STANDARD_BACKGROUND_COLOR;
+	}
+
 	@ConfigItem(
 		keyName = "sidebarToggleKey",
 		name = "Sidebar toggle key",
 		description = "The key that will toggle the sidebar (accepts modifiers).",
-		position = 45,
+		position = 46,
 		section = windowSettings
 	)
 	default Keybind sidebarToggleKey()
@@ -439,7 +452,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "panelToggleKey",
 		name = "Plugin panel toggle key",
 		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers).",
-		position = 46,
+		position = 47,
 		section = windowSettings
 	)
 	default Keybind panelToggleKey()
