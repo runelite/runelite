@@ -73,6 +73,7 @@ enum Task
 	CHAOS_FANATIC("The Chaos Fanatic", ItemID.ANCIENT_STAFF),
 	COCKATRICE("Cockatrice", ItemID.COCKATRICE, "Cockathrice"),
 	COWS("Cows", ItemID.COW_MASK),
+	CRABS("Crabs", ItemID.FRESH_CRAB_CLAW, "Crab"),
 	CRAWLING_HANDS("Crawling hands", ItemID.CRAWLING_HAND, "Crushing hand"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA),
 	CROCODILES("Crocodiles", ItemID.SWAMP_LIZARD),
