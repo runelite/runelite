@@ -48,10 +48,10 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
-		name = "Item Prices",
-		description = "Show prices on hover for items in your inventory and bank",
-		tags = {"bank", "inventory", "overlay", "high", "alchemy", "grand", "exchange", "tooltips"},
-		enabledByDefault = false
+	name = "Item Prices",
+	description = "Show prices on hover for items in your inventory and bank",
+	tags = {"bank", "inventory", "overlay", "high", "alchemy", "grand", "exchange", "tooltips"},
+	enabledByDefault = false
 )
 public class ItemPricesPlugin extends Plugin
 {
@@ -184,14 +184,14 @@ public class ItemPricesPlugin extends Plugin
 
 		// Inventory item
 		if (componentId == ComponentID.INVENTORY_CONTAINER ||
-				componentId == ComponentID.BANK_INVENTORY_ITEM_CONTAINER ||
-				componentId == ComponentID.EXPLORERS_RING_INVENTORY ||
-				componentId == ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER ||
-				componentId == ComponentID.POH_TREASURE_CHEST_INV_CONTAINER ||
-				// Bank item
-				componentId == ComponentID.BANK_ITEM_CONTAINER ||
-				// Seed vault item
-				componentId == ComponentID.SEED_VAULT_ITEM_CONTAINER
+			componentId == ComponentID.BANK_INVENTORY_ITEM_CONTAINER ||
+			componentId == ComponentID.EXPLORERS_RING_INVENTORY ||
+			componentId == ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER ||
+			componentId == ComponentID.POH_TREASURE_CHEST_INV_CONTAINER ||
+			// Bank item
+			componentId == ComponentID.BANK_ITEM_CONTAINER ||
+			// Seed vault item
+			componentId == ComponentID.SEED_VAULT_ITEM_CONTAINER
 		)
 		{
 			Widget w = menuEntry.getWidget();
@@ -267,13 +267,13 @@ public class ItemPricesPlugin extends Plugin
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("GE: ")
-					.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
-					.append(" gp");
+				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(gePrice))
-						.append(" ea)");
+					.append(QuantityFormatter.quantityToStackSize(gePrice))
+					.append(" ea)");
 			}
 		}
 		if (haValue > 0)
@@ -284,13 +284,13 @@ public class ItemPricesPlugin extends Plugin
 			}
 
 			itemStringBuilder.append("HA: ")
-					.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
-					.append(" gp");
+				.append(QuantityFormatter.quantityToStackSize((long) haValue * qty))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(haValue))
-						.append(" ea)");
+					.append(QuantityFormatter.quantityToStackSize(haValue))
+					.append(" ea)");
 			}
 		}
 		if (laValue > 0)
@@ -301,13 +301,13 @@ public class ItemPricesPlugin extends Plugin
 			}
 
 			itemStringBuilder.append("LA: ")
-					.append(QuantityFormatter.quantityToStackSize((long) laValue * qty))
-					.append(" gp");
+				.append(QuantityFormatter.quantityToStackSize((long) laValue * qty))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(laValue))
-						.append(" ea)");
+					.append(QuantityFormatter.quantityToStackSize(laValue))
+					.append(" ea)");
 			}
 		}
 
@@ -317,13 +317,13 @@ public class ItemPricesPlugin extends Plugin
 
 			itemStringBuilder.append("</br>");
 			itemStringBuilder.append("HA Profit: ")
-					.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
-					.append(" gp");
+				.append(ColorUtil.wrapWithColorTag(String.valueOf((long) haProfit * qty), haColor))
+				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-						.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
-						.append(" ea)");
+					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
+					.append(" ea)");
 			}
 		}
 
