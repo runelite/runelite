@@ -346,7 +346,7 @@ class XpInfoBox extends JPanel
 
 			XpProgressBarLabel tooltipLabel = xpTrackerConfig.progressBarTooltipLabel();
 
-			if (isCombatSkill(skill))
+			if (isCombatSkill(skill) && !xpTrackerConfig.showCombatSkillsTilStat())
 			{
 				progressBar.setToolTipText(String.format(
 					PROGRESS_BAR_TOOLTIP_NO_ACTIONS,
@@ -391,7 +391,7 @@ class XpInfoBox extends JPanel
 	private String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
 	{
 		// hide actions for combat skills
-		if (isActions(panelLabel) && isCombatSkill(skill))
+		if (isActions(panelLabel) && isCombatSkill(skill)  && !xpTrackerConfig.showCombatSkillsTilStat())
 		{
 			return "";
 		}
