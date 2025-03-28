@@ -63,6 +63,7 @@ class MiningRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+
 		List<RockRespawn> respawns = plugin.getRespawns();
 		if (respawns.isEmpty())
 		{
@@ -77,15 +78,39 @@ class MiningRocksOverlay extends Overlay
 			{
 				continue;
 			}
+			Rock rock = rockRespawn.getRock();
+			Point point = null;
+			final int tileHeight = Perspective.getTileHeight(client, loc, client.getPlane());
+			final int offset = 100;
 
 			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
-			Point point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
+			if (rock == Rock.DAEYALT_WALL)
+			{
+				switch (rockRespawn.getDirection())
+				{
+					case EAST:
+						point = Perspective.localToCanvas(client,  loc.getX() + offset, loc.getY(), tileHeight - rockRespawn.getZOffset());
+						break;
+					case NORTH:
+						point = Perspective.localToCanvas(client,  loc.getX(), loc.getY() + offset, tileHeight - rockRespawn.getZOffset());
+						break;
+					case SOUTH:
+						point = Perspective.localToCanvas(client,  loc.getX(), loc.getY() - offset, tileHeight - rockRespawn.getZOffset());
+						break;
+					case WEST:
+						point = Perspective.localToCanvas(client,  loc.getX() - offset, loc.getY(), tileHeight - rockRespawn.getZOffset());
+						break;
+				}
+			}
+			else
+			{
+				point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
+			}
 			if (point == null || percent > 1.0f)
 			{
 				continue;
 			}
 
-			Rock rock = rockRespawn.getRock();
 
 			// Only draw timer for veins on the same level in motherlode mine
 			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
