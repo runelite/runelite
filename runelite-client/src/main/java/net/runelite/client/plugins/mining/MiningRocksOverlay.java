@@ -87,8 +87,10 @@ class MiningRocksOverlay extends Overlay
 			final int offset = 100;
 
 			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
-			if (rock == Rock.DAEYALT_WALL) {
-				switch (rockRespawn.getDirection()) {
+			if (rock == Rock.DAEYALT_WALL)
+			{
+				switch (rockRespawn.getDirection())
+				{
 					case EAST:
 						point = Perspective.localToCanvas(client,  loc.getX() + offset, loc.getY(), tileHeight - rockRespawn.getZOffset());
 						break;
@@ -103,7 +105,8 @@ class MiningRocksOverlay extends Overlay
 						break;
 				}
 			}
-			else {
+			else
+			{
 				point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
 			}
 			if (point == null || percent > 1.0f)

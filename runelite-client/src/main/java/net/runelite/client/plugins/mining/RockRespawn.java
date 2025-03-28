@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.mining;
 
 import java.time.Instant;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.WorldPoint;
@@ -45,7 +44,8 @@ class RockRespawn
 		return Instant.now().isAfter(startTime.plusMillis(respawnTime));
 	}
 	RockRespawn (
-			Rock rock, WorldPoint worldpoint, Instant startTime, int respawnTime, int zOffset) {
+			Rock rock, WorldPoint worldpoint, Instant startTime, int respawnTime, int zOffset)
+	{
 		this.rock = rock;
 		this.worldPoint = worldpoint;
 		this.startTime = startTime;
@@ -54,7 +54,8 @@ class RockRespawn
 		this.direction = null;
 	}
 	RockRespawn (
-			Rock rock, WorldPoint worldpoint, Instant startTime, int respawnTime, int zOffset, Direction direction) {
+			Rock rock, WorldPoint worldpoint, Instant startTime, int respawnTime, int zOffset, Direction direction)
+	{
 		this.rock = rock;
 		this.worldPoint = worldpoint;
 		this.startTime = startTime;
