@@ -153,7 +153,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 
 	private static final AnyRequirementCollection ANY_HAMMER = any("Hammer",
 		item(ItemID.HAMMER),
-		item(ItemID.IMCANDO_HAMMER)
+		item(ItemID.IMCANDO_HAMMER),
+		item(ItemID.IMCANDO_HAMMER_OFFHAND)
 	);
 
 	private static final AllRequirementsCollection A_FULL_GRACEFUL_SET = all("A full Graceful set",
