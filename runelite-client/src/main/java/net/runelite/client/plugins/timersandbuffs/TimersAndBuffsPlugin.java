@@ -68,6 +68,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -1254,6 +1255,16 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (npcId == NpcID.ZOMBIFIED_SPAWN || npcId == NpcID.ZOMBIFIED_SPAWN_8063)
 		{
 			removeGameTimer(ICEBARRAGE);
+		}
+	}
+
+	@Subscribe
+	void onNpcSpawned(NpcSpawned event)
+	{
+		final NPC npc = event.getNpc();
+		if (npc.getId() == NpcID.ABYSSAL_SIRE_5889)
+		{
+			removeGameTimer(ABYSSAL_SIRE_STUN);
 		}
 	}
 
