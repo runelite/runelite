@@ -35,6 +35,7 @@ enum Rock
 	AMETHYST(120),
 	DAEYALT_ESSENCE(0),
 	BARRONITE(140),
+	DAEYALT_WALL(100),
 	;
 
 	@Getter(AccessLevel.PACKAGE)
