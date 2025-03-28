@@ -33,8 +33,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.coords.Angle;
-import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -65,7 +63,6 @@ class MiningRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Direction playerOrientation = new Angle(client.getLocalPlayer().getOrientation()).getNearestDirection();
 
 		List<RockRespawn> respawns = plugin.getRespawns();
 		if (respawns.isEmpty())
