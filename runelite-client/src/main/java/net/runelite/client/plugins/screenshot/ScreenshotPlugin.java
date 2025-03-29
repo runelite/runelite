@@ -144,7 +144,8 @@ public class ScreenshotPlugin extends Plugin
 		TOB_HM,
 		TOA_ENTRY_MODE,
 		TOA,
-		TOA_EXPERT_MODE
+		TOA_EXPERT_MODE,
+		FORTIS_COLOSSEUM
 	}
 
 	private KillType killType;
@@ -430,6 +431,12 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Seatch the chest nearby to retrieve your earned rewards!"))
+		{
+			killType = KillType.FORTIS_COLOSSEUM;
+			return;
+		}
+
 		if (chatMessage.equals("Your request to kick/ban this user was successful.") && config.screenshotKick())
 		{
 			if (kickPlayerName == null)
@@ -552,6 +559,7 @@ public class ScreenshotPlugin extends Plugin
 			case InterfaceID.TOA_REWARD:
 			case InterfaceID.BARROWS_REWARD:
 			case InterfaceID.LUNAR_CHEST:
+			case InterfaceID.FORTIS_COLOSSEUM_REWARD:
 				if (!config.screenshotRewards())
 				{
 					return;
@@ -716,6 +724,18 @@ public class ScreenshotPlugin extends Plugin
 			{
 				fileName = "Loot key";
 				screenshotSubDir = SD_WILDERNESS_LOOT_CHEST;
+				break;
+			}
+			case InterfaceID.FORTIS_COLOSSEUM_REWARD:
+			{
+				if (killType != KillType.FORTIS_COLOSSEUM)
+				{
+					return;
+				}
+				
+				fileName = "Fortis Colosseum Chest";
+				screenshotSubDir = SD_CHEST_LOOT;
+				killType = null;
 				break;
 			}
 			default:
