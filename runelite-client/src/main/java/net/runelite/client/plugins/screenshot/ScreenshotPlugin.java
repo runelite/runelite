@@ -431,7 +431,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (chatMessage.startsWith("Seatch the chest nearby to retrieve your earned rewards!"))
+		if (chatMessage.startsWith("Search the chest nearby to retrieve your earned rewards!"))
 		{
 			killType = KillType.FORTIS_COLOSSEUM;
 			return;
@@ -732,7 +732,7 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				
+
 				fileName = "Fortis Colosseum Chest";
 				screenshotSubDir = SD_CHEST_LOOT;
 				killType = null;
