@@ -488,4 +488,9 @@ public class Notifier
 			log.warn("Unable to play notification sound", e);
 		}
 	}
+
+	public boolean isFlashing()
+	{
+		return flashStart != null;
+	}
 }
