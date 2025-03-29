@@ -39,6 +39,7 @@ import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_CRYSTAL;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_OR;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_UPGRADED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_GILDED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_INFERNAL;
@@ -71,11 +72,13 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_2;
 import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_3;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_RELOADED_PICKAXE;
 import static net.runelite.api.ItemID.ADAMANT_PICKAXE;
 import static net.runelite.api.ItemID.BLACK_PICKAXE;
 import static net.runelite.api.ItemID.BRONZE_PICKAXE;
@@ -113,7 +116,8 @@ enum Pickaxe
 	THIRDAGE(_3RD_AGE_PICKAXE, MINING_3A_PICKAXE, MINING_MOTHERLODE_3A, MINING_CRASHEDSTAR_3A),
 	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL, MINING_CRASHEDSTAR_CRYSTAL),
 	TRAILBLAZER(INFERNAL_PICKAXE_OR, MINING_TRAILBLAZER_PICKAXE, MINING_TRAILBLAZER_PICKAXE_2,
-		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER);
+		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER,
+		MINING_TRAILBLAZER_RELOADED_PICKAXE, MINING_MOTHERLODE_TRAILBLAZER_RELOADED, MINING_CRASHEDSTAR_TRAILBLAZER_RELOADED);
 
 	private final int itemId;
 	private final int[] animIds;
