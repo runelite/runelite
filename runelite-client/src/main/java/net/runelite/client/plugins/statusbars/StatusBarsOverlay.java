@@ -70,12 +70,15 @@ class StatusBarsOverlay extends Overlay
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
+	private static final Color WARMTH_COLOR = new Color(244, 97, 0);
+	private static final Color WARMTH_HEAL_COLOR = new Color(244, 97, 0, 75);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
+	private static final int WINTERTODT_REGION = 6462;
 
 	private final Client client;
 	private final StatusBarsPlugin plugin;
@@ -214,9 +217,26 @@ class StatusBarsOverlay extends Overlay
 		barRenderers.put(StatusBarsConfig.BarMode.WARMTH, new BarRenderer(
 			() -> 100,
 			() -> client.getVarbitValue(Varbits.WINTERTODT_WARMTH) / 10,
-			() -> 0,
-			() -> new Color(244, 97, 0),
-			() -> null,
+			() ->
+			{
+				int warmthValue = getRestoreValue("Warmth");
+
+				if (warmthValue > 0)
+				{
+					return warmthValue;
+				}
+
+				int hitpointsValue = getRestoreValue(Skill.HITPOINTS.getName());
+
+				if (hitpointsValue >= 4)
+				{
+					return 35;
+				}
+
+				return 0;
+			},
+			() -> WARMTH_COLOR,
+			() -> WARMTH_HEAL_COLOR,
 			() -> skillIconManager.getSkillImage(Skill.FIREMAKING, true)
 		));
 	}
@@ -273,8 +293,21 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-		BarRenderer left = barRenderers.get(config.leftBarMode());
-		BarRenderer right = barRenderers.get(config.rightBarMode());
+		StatusBarsConfig.BarMode leftBarMode = config.leftBarMode();
+		StatusBarsConfig.BarMode rightBarMode = config.rightBarMode();
+
+		if (leftBarMode == StatusBarsConfig.BarMode.HITPOINTS && config.replaceHpWithWarmth() && isInWintertodtRegion())
+		{
+			leftBarMode = StatusBarsConfig.BarMode.WARMTH;
+		}
+
+		if (rightBarMode == StatusBarsConfig.BarMode.HITPOINTS && config.replaceHpWithWarmth() && isInWintertodtRegion())
+		{
+			rightBarMode = StatusBarsConfig.BarMode.WARMTH;
+		}
+
+		BarRenderer left = barRenderers.get(leftBarMode);
+		BarRenderer right = barRenderers.get(rightBarMode);
 
 		if (left != null)
 		{
@@ -331,5 +364,15 @@ class StatusBarsOverlay extends Overlay
 	private boolean inLms()
 	{
 		return client.getWidget(ComponentID.LMS_INGAME_INFO) != null;
+	}
+
+	private boolean isInWintertodtRegion()
+	{
+		if (client.getLocalPlayer() != null)
+		{
+			return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
+		}
+
+		return false;
 	}
 }
