@@ -37,6 +37,7 @@ public class PartyTilePingData
 {
 	private final WorldPoint point;
 	private final Color color;
+	private final String displayName;
 	private int alpha = 255;
 	private final long creationTime = System.nanoTime();
 }
