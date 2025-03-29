@@ -261,6 +261,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "miscellania", config::swapTravel);
 		swap("talk-to", "follow", config::swapTravel);
 		swap("talk-to", "transport", config::swapTravel);
+		swap("talk-to", "ferry", config::swapTravel);
 		swap("talk-to", "quick-travel", config::swapQuick);
 		swap("talk-to", ESSENCE_MINE_NPCS::contains, "teleport", config::swapEssenceMineTeleport);
 		swap("talk-to", "deposit-items", config::swapDepositItems);
