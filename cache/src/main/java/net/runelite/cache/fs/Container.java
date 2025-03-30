@@ -96,7 +96,7 @@ public class Container
 
 		int compression = stream.readUnsignedByte();
 		int compressedLength = stream.readInt();
-		if (compressedLength < 0 || compressedLength > 1000000)
+		if (compressedLength < 0)
 		{
 			throw new RuntimeException("Invalid data");
 		}
