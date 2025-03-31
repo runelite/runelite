@@ -276,4 +276,13 @@ public final class VarPlayer
 	public static final int ESSENCE_POUCH_GIANT_DEGRADE = 490;
 
 	public static final int RAIDS_PERSONAL_POINTS = 4609;
+
+	/**
+	 * The priority setting for attack options in NPC menus
+	 * <br> 0 = Depends on combat levels
+	 * <br> 1 = Always right click
+	 * <br> 2 = Left click where available
+	 * <br> 3 = Hidden
+	 */
+	public static final int NPC_ATTACK_SETTING = 1306;
 }
