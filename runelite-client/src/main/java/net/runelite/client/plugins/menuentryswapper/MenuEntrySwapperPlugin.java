@@ -1277,10 +1277,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 					if (identifier == highestOp)
 					{
+						String defaultOption = w.getActions()[Math.max(0, lowestOp - 1)];
+						defaultOption = Strings.isNullOrEmpty(defaultOption) ? w.getTargetVerb() : Text.removeTags(defaultOption);
+
 						if (leftClick != null)
 						{
 							subLeft.createMenuEntry(0)
-								.setOption("Reset")
+								.setOption("Reset" + ColorUtil.prependColorTag(" (" + defaultOption + ')', RESET_DEFAULT_COLOR))
 								.setType(MenuAction.RUNELITE)
 								.onClick(menuEntry ->
 								{
@@ -1303,7 +1306,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						if (shiftClick != null)
 						{
 							subShift.createMenuEntry(0)
-								.setOption("Reset")
+								.setOption("Reset" + ColorUtil.prependColorTag(" (" + defaultOption + ')', RESET_DEFAULT_COLOR))
 								.setType(MenuAction.RUNELITE)
 								.onClick(menuEntry ->
 								{
