@@ -125,7 +125,7 @@ public class InfoBoxOverlay extends OverlayPanel
 
 		final Font font = config.infoboxFontType().getFont();
 		final boolean infoBoxTextOutline = config.infoBoxTextOutline();
-		final Color overlayBackgroundColor = config.overlayBackgroundColor();
+		final Color overlayBackgroundColor = config.infoboxBackgroundColor();
 		final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
 		for (InfoBox box : infoBoxes)
 		{
