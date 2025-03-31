@@ -58,10 +58,12 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ParamID;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostMenuSort;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
@@ -214,6 +216,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private final ArrayListMultimap<String, Integer> cacheOptionIndexes = ArrayListMultimap.create();
 	private Menu cacheOptionMenu;
 	private boolean lastShift, curShift;
+	private int npcAttackSetting;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -530,6 +533,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configureUiSwap(event);
 	}
 
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarpId() == VarPlayer.NPC_ATTACK_SETTING)
+		{
+			npcAttackSetting = event.getValue();
+		}
+	}
+
 	private void configureObjectClick(MenuOpened event)
 	{
 		if (!shiftModifier() || !config.objectCustomization())
@@ -706,6 +718,43 @@ public class MenuEntrySwapperPlugin extends Plugin
 		};
 	}
 
+	private int getDefaultNpcActionIdx(NPCComposition composition)
+	{
+		if (composition == null)
+		{
+			return 0;
+		}
+
+		int dependsOnCombatLevel = 0;
+		int rightClickAlways = 1;
+		int leftClickAlways = 2;
+		int hidden = 3;
+
+		if (npcAttackSetting == rightClickAlways
+			|| npcAttackSetting == hidden
+			|| (composition.getActions() != null && composition.getActions()[1] == null))
+		{
+			String[] actions = composition.getActions();
+			for (int i = 0; i < NPC_MENU_TYPES.size(); ++i)
+			{
+				if (i == 1)
+				{
+					continue;
+				}
+				if (!Strings.isNullOrEmpty(actions[i]))
+				{
+					return i;
+				}
+			}
+		}
+		else if (npcAttackSetting == leftClickAlways || (npcAttackSetting == dependsOnCombatLevel && client.getLocalPlayer().getCombatLevel() >= composition.getCombatLevel()))
+		{
+			return 1;
+		}
+
+		return -1;
+	}
+
 	private void configureNpcClick(MenuOpened event)
 	{
 		if (!shiftModifier() || !config.npcCustomization())
@@ -726,6 +775,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final NPCComposition composition = npc.getTransformedComposition();
 				assert composition != null;
 				final String[] actions = composition.getActions();
+				final int defaultActionIndex = getDefaultNpcActionIdx(composition);
 
 				final Integer swapConfig = getNpcSwapConfig(false, composition.getId());
 				final Integer shiftSwapConfig = getNpcSwapConfig(true, composition.getId());
@@ -772,7 +822,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 
 					final MenuAction menuAction = NPC_MENU_TYPES.get(actionIdx);
-					if (menuAction != currentAction)
+					if (menuAction != currentAction && actionIdx != defaultActionIndex)
 					{
 						subLeft.createMenuEntry(0)
 							.setOption(actions[actionIdx])
@@ -780,7 +830,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, false));
 					}
 
-					if (menuAction != currentShiftAction)
+					if (menuAction != currentShiftAction && actionIdx != defaultActionIndex)
 					{
 						subShift.createMenuEntry(0)
 							.setOption(actions[actionIdx])
@@ -789,29 +839,36 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 
+				MenuAction defaultAction = defaultActionIndex == -1 ? null : NPC_MENU_TYPES.get(defaultActionIndex);
 				// Walk here swap
-				subLeft.createMenuEntry(0)
-					.setOption("Walk here")
-					.setType(MenuAction.RUNELITE)
-					.onClick(walkHereConsumer(false, composition));
-
-				subShift.createMenuEntry(0)
-					.setOption("Walk here")
-					.setType(MenuAction.RUNELITE)
-					.onClick(walkHereConsumer(true, composition));
-
-				if (getNpcSwapConfig(false, composition.getId()) != null)
+				if ((currentAction == null || currentAction != MenuAction.WALK) && defaultAction != null)
 				{
 					subLeft.createMenuEntry(0)
-						.setOption("Reset")
+						.setOption("Walk here")
+						.setType(MenuAction.RUNELITE)
+						.onClick(walkHereConsumer(false, composition));
+				}
+
+				if ((currentShiftAction == null || currentShiftAction != MenuAction.WALK) && defaultAction != null)
+				{
+					subShift.createMenuEntry(0)
+						.setOption("Walk here")
+						.setType(MenuAction.RUNELITE)
+						.onClick(walkHereConsumer(true, composition));
+				}
+
+				if (getNpcSwapConfig(false, composition.getId()) != null && defaultAction != null && currentAction != defaultAction)
+				{
+					subLeft.createMenuEntry(0)
+						.setOption("Reset" + ColorUtil.prependColorTag(" (" + actions[defaultActionIndex] + ')', RESET_DEFAULT_COLOR))
 						.setType(MenuAction.RUNELITE)
 						.onClick(npcResetConsumer(composition, false));
 				}
 
-				if (getNpcSwapConfig(true, composition.getId()) != null)
+				if (getNpcSwapConfig(true, composition.getId()) != null && defaultAction != null && currentShiftAction != defaultAction)
 				{
 					subShift.createMenuEntry(0)
-						.setOption("Reset")
+						.setOption("Reset" + ColorUtil.prependColorTag(" (" + actions[defaultActionIndex] + ')', RESET_DEFAULT_COLOR))
 						.setType(MenuAction.RUNELITE)
 						.onClick(npcResetConsumer(composition, true));
 				}
