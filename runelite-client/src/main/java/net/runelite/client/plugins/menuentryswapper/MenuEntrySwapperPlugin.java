@@ -573,7 +573,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 
 					final MenuAction menuAction = OBJECT_MENU_TYPES.get(actionIdx);
-					if (menuAction != currentAction)
+					if (menuAction != currentAction && menuAction != defaultAction(composition))
 					{
 						subLeft.createMenuEntry(0)
 							.setOption(actions[actionIdx])
@@ -581,7 +581,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, false));
 					}
 
-					if (menuAction != currentShiftAction && menuAction != currentAction)
+					if (menuAction != currentShiftAction && menuAction != defaultAction(composition))
 					{
 						subShift.createMenuEntry(0)
 							.setOption(actions[actionIdx])
@@ -591,7 +591,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 
 				// Walk here
-				if (currentAction != MenuAction.WALK)
+				if (currentAction != MenuAction.WALK && defaultAction(composition) != null)
 				{
 					subLeft.createMenuEntry(0)
 						.setOption("Walk here")
@@ -599,7 +599,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.onClick(walkHereConsumer(false, composition));
 				}
 
-				if (currentShiftAction != MenuAction.WALK)
+				if (currentShiftAction != null && currentShiftAction != MenuAction.WALK && defaultAction(composition) != null)
 				{
 					subShift.createMenuEntry(0)
 						.setOption("Walk here")
@@ -611,7 +611,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				if (swapConfig != null)
 				{
 					subLeft.createMenuEntry(0)
-						.setOption("Reset")
+						.setOption("Reset" + ColorUtil.prependColorTag(" (" + actions[OBJECT_MENU_TYPES.indexOf(currentAction) + 1] + ')', RESET_DEFAULT_COLOR))
 						.setType(MenuAction.RUNELITE)
 						.onClick(objectResetConsumer(composition, false));
 				}
@@ -619,7 +619,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				if (shiftSwapConfig != null)
 				{
 					subShift.createMenuEntry(0)
-						.setOption("Reset")
+						.setOption("Reset" + ColorUtil.prependColorTag(" (" + actions[OBJECT_MENU_TYPES.indexOf(currentShiftAction) + 1] + ')', RESET_DEFAULT_COLOR))
 						.setType(MenuAction.RUNELITE)
 						.onClick(objectResetConsumer(composition, true));
 				}
@@ -673,7 +673,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final String message = new ChatMessageBuilder()
 				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(composition.getName())).append("' ")
-				.append("has been set to Walk here.")
+				.append("has been set to 'Walk here'.")
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
@@ -692,7 +692,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final String message = new ChatMessageBuilder()
 				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(composition.getName())).append("' ")
-				.append("has been set to Walk here.")
+				.append("has been set to 'Walk here'.")
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
@@ -896,6 +896,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					for (int paramId = ParamID.OC_ITEM_OP1, componentOpId = 2, itemOpId = 1; paramId <= ParamID.OC_ITEM_OP8; ++paramId, ++componentOpId, ++itemOpId)
 					{
 						final String opName = itemComposition.getStringValue(paramId);
+
 						if (Strings.isNullOrEmpty(opName))
 						{
 							continue;
