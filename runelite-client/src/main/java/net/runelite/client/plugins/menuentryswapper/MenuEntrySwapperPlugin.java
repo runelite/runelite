@@ -554,11 +554,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		MenuEntry swapLeftClick = null, swapShiftClick = null;
+		Menu subLeft = null, subShift = null;
+
 		MenuEntry[] entries = event.getMenuEntries();
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
-			MenuEntry entry = entries[idx];
-			if (entry.getType() == MenuAction.EXAMINE_OBJECT)
+			final MenuEntry entry = entries[idx];
+			final MenuAction type = entry.getType();
+
+			if (type == MenuAction.EXAMINE_OBJECT)
 			{
 				final ObjectComposition composition = client.getObjectDefinition(entry.getIdentifier());
 				final String[] actions = composition.getActions();
@@ -571,16 +576,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final MenuAction currentShiftAction = shiftSwapConfig == null ? defaultAction(composition) :
 					(shiftSwapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(shiftSwapConfig));
 
-				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+				swapLeftClick = client.createMenuEntry(idx)
 					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+				swapShiftClick = client.createMenuEntry(idx)
 					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				Menu subLeft = swapLeftClick.createSubMenu();
-				Menu subShift = swapShiftClick.createSubMenu();
+				subLeft = swapLeftClick.createSubMenu();
+				subShift = swapShiftClick.createSubMenu();
 
 				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -642,6 +647,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+
+		removeEmptyMenu(swapLeftClick);
+		removeEmptyMenu(swapShiftClick);
 	}
 
 	private Consumer<MenuEntry> objectConsumer(ObjectComposition composition, String[] actions, int menuIdx,
@@ -767,6 +775,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		MenuEntry swapLeftClick = null, swapShiftClick = null;
+		Menu subLeft = null, subShift = null;
 		MenuEntry[] entries = event.getMenuEntries();
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
@@ -798,16 +808,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 					(hasAttack ? null : defaultAction(composition)) :
 					(shiftSwapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(shiftSwapConfig));
 
-				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+				swapLeftClick = client.createMenuEntry(idx)
 					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+				swapShiftClick = client.createMenuEntry(idx)
 					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				Menu subLeft = swapLeftClick.createSubMenu();
-				Menu subShift = swapShiftClick.createSubMenu();
+				subLeft = swapLeftClick.createSubMenu();
+				subShift = swapShiftClick.createSubMenu();
 
 				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -879,6 +889,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+
+		removeEmptyMenu(swapLeftClick);
+		removeEmptyMenu(swapShiftClick);
 	}
 
 	private Consumer<MenuEntry> npcConsumer(NPCComposition composition, String[] actions, int menuIdx,
@@ -928,6 +941,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		MenuEntry swapLeftClick = null, swapShiftClick = null;
+		Menu subLeft = null, subShift = null;
+
 		final MenuEntry[] entries = event.getMenuEntries();
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
@@ -944,16 +960,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer leftClickOp = getWornItemSwapConfig(false, itemComposition.getId());
 					final Integer shiftClickOp = getWornItemSwapConfig(true, itemComposition.getId());
 
-					MenuEntry swapLeftClick = client.createMenuEntry(idx)
+					swapLeftClick = client.createMenuEntry(idx)
 						.setOption("Swap left-click")
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE);
-					MenuEntry swapShiftClick = client.createMenuEntry(idx)
+					swapShiftClick = client.createMenuEntry(idx)
 						.setOption("Swap shift-click")
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE);
-					Menu subLeft = swapLeftClick.createSubMenu();
-					Menu subShift = swapShiftClick.createSubMenu();
+					subLeft = swapLeftClick.createSubMenu();
+					subShift = swapShiftClick.createSubMenu();
 
 					for (int paramId = ParamID.OC_ITEM_OP1, componentOpId = 2, itemOpId = 1; paramId <= ParamID.OC_ITEM_OP8; ++paramId, ++componentOpId, ++itemOpId)
 					{
@@ -1050,6 +1066,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				break;
 			}
 		}
+
+		removeEmptyMenu(swapLeftClick);
+		removeEmptyMenu(swapShiftClick);
 	}
 
 	private Consumer<MenuEntry> wornItemConsumer(ItemComposition itemComposition, String opName, int opIdx, boolean shift)
@@ -1078,6 +1097,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		MenuEntry swapLeftClick = null, swapShiftClick = null;
+		Menu subLeft = null, subShift = null;
+
 		final MenuEntry[] entries = event.getMenuEntries();
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
@@ -1095,8 +1117,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final int defaultLeftClickOp = defaultOp(itemComposition, false);
 				final int defaultShiftClickOp = defaultOp(itemComposition, true);
 
-				MenuEntry swapLeftClick;
-				Menu subLeft = null;
 				if (config.leftClickCustomization())
 				{
 					swapLeftClick = client.createMenuEntry(idx)
@@ -1106,8 +1126,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 					subLeft = swapLeftClick.createSubMenu();
 				}
 
-				MenuEntry swapShiftClick;
-				Menu subShift = null;
 				if (config.shiftClickCustomization())
 				{
 					swapShiftClick = client.createMenuEntry(idx)
@@ -1255,6 +1273,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				break;
 			}
 		}
+
+		removeEmptyMenu(swapLeftClick);
+		removeEmptyMenu(swapShiftClick);
 	}
 
 	private Consumer<MenuEntry> heldItemConsumer(ItemComposition itemComposition, String opName, int opIdx, boolean shift)
@@ -1423,6 +1444,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+
+		removeEmptyMenu(swapLeftClick);
+		removeEmptyMenu(swapShiftClick);
 	}
 
 	private int findLowestOp(Widget w)
@@ -1737,6 +1761,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 				}
 			}
+		}
+	}
+
+	private void removeEmptyMenu(MenuEntry menuEntry)
+	{
+		if (menuEntry != null && menuEntry.getSubMenu() != null && menuEntry.getSubMenu().getMenuEntries().length < 1)
+		{
+			menuEntry.deleteSubMenu();
+			client.getMenu().removeMenuEntry(menuEntry);
 		}
 	}
 
