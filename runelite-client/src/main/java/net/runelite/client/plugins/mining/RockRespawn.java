@@ -25,11 +25,10 @@
 package net.runelite.client.plugins.mining;
 
 import java.time.Instant;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.WorldPoint;
 
-@AllArgsConstructor
 @Getter
 class RockRespawn
 {
@@ -38,9 +37,30 @@ class RockRespawn
 	private final Instant startTime;
 	private final int respawnTime;
 	private final int zOffset;
+	private final Direction direction;
 
 	boolean isExpired()
 	{
 		return Instant.now().isAfter(startTime.plusMillis(respawnTime));
+	}
+	RockRespawn (
+			Rock rock, WorldPoint worldpoint, Instant startTime, int respawnTime, int zOffset)
+	{
+		this.rock = rock;
+		this.worldPoint = worldpoint;
+		this.startTime = startTime;
+		this.respawnTime = respawnTime;
+		this.zOffset = zOffset;
+		this.direction = null;
+	}
+	RockRespawn (
+			Rock rock, WorldPoint worldpoint, Instant startTime, int respawnTime, int zOffset, Direction direction)
+	{
+		this.rock = rock;
+		this.worldPoint = worldpoint;
+		this.startTime = startTime;
+		this.respawnTime = respawnTime;
+		this.zOffset = zOffset;
+		this.direction = direction;
 	}
 }

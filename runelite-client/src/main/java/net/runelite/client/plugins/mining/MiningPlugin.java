@@ -46,6 +46,8 @@ import net.runelite.api.HintArrowType;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
+import net.runelite.api.coords.Angle;
+import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -237,7 +239,6 @@ public class MiningPlugin extends Plugin
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		final GameObject object = event.getGameObject();
-
 		if (object.getId() == DAEYALT_ESSENCE_39095)
 		{
 			final WorldPoint point = object.getWorldLocation();
@@ -258,7 +259,6 @@ public class MiningPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject object = event.getGameObject();
-
 		// Inverse timer to track daeyalt essence active duration
 		if (object.getId() == DAEYALT_ESSENCE_39095 && client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_ESSENCE_MINE_REGION)
 		{
@@ -291,6 +291,7 @@ public class MiningPlugin extends Plugin
 	{
 		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC)
 		{
+			Direction playerOrientation = new Angle(client.getLocalPlayer().getOrientation()).getNearestDirection();
 			var args = scriptPreFired.getScriptEvent().getArguments();
 			int locCoord = (int) args[1];
 			int locId = (int) args[2];
@@ -303,14 +304,14 @@ public class MiningPlugin extends Plugin
 				case DEPLETED_VEIN_26667: // Depleted motherlode vein
 				case DEPLETED_VEIN_26668: // Depleted motherlode vein
 				{
-					addRockRespawn(Rock.MLM_ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
+					addRockRespawn(Rock.MLM_ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks, playerOrientation);
 					break;
 				}
 				case DEPLETED_VEIN: // Gold vein
 				case ROCKS_51486: // Calcified rock
 				case ROCKS_51488: // Calcified rock
 				{
-					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
+					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks, playerOrientation);
 					break;
 				}
 				case ROCKS_11390:
@@ -320,29 +321,41 @@ public class MiningPlugin extends Plugin
 				case ROCKS_36202: // Trahaearn mine
 				case EMPTY_ASH_PILE:
 				{
-					addRockRespawn(Rock.ROCK, WorldPoint.fromCoord(locCoord), ticks);
+					addRockRespawn(Rock.ROCK, WorldPoint.fromCoord(locCoord), ticks, playerOrientation);
 					break;
 				}
 				// Amethyst
 				case EMPTY_WALL:
 				{
-					addRockRespawn(Rock.AMETHYST, WorldPoint.fromCoord(locCoord), ticks);
+					addRockRespawn(Rock.AMETHYST, WorldPoint.fromCoord(locCoord), ticks, playerOrientation);
 					break;
 				}
 				// Barronite
 				case ROCKS_41549:
 				case ROCKS_41550:
 				{
-					addRockRespawn(Rock.BARRONITE, WorldPoint.fromCoord(locCoord), ticks);
+					addRockRespawn(Rock.BARRONITE, WorldPoint.fromCoord(locCoord), ticks, playerOrientation);
+					break;
+				}
+
+				case DAEYALT_ROCKS_17965:
+				{
+					addRockRespawn(Rock.DAEYALT_WALL, WorldPoint.fromCoord(locCoord), ticks, playerOrientation);
 					break;
 				}
 			}
 		}
 	}
 
-	private void addRockRespawn(Rock rock, WorldPoint point, int ticks)
+
+	private void addRockRespawn(Rock rock, WorldPoint point, int ticks, Direction playerOrientation)
 	{
-		RockRespawn rockRespawn = new RockRespawn(rock, point, Instant.now(), ticks * Constants.GAME_TICK_LENGTH, rock.getZOffset());
+		RockRespawn rockRespawn = new RockRespawn(rock,
+				point,
+				Instant.now(),
+				ticks * Constants.GAME_TICK_LENGTH,
+				rock.getZOffset(),
+				playerOrientation);
 		respawns.add(rockRespawn);
 		log.debug("Adding respawn for rock: {} coord: {} ticks: {}", rock, point, ticks);
 	}
