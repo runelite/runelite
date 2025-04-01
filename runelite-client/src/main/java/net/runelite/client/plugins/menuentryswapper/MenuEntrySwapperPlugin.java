@@ -958,7 +958,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 					for (int paramId = ParamID.OC_ITEM_OP1, componentOpId = 2, itemOpId = 1; paramId <= ParamID.OC_ITEM_OP8; ++paramId, ++componentOpId, ++itemOpId)
 					{
 						final String opName = itemComposition.getStringValue(paramId);
-
 						if (Strings.isNullOrEmpty(opName))
 						{
 							continue;
@@ -1008,7 +1007,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					if (leftClickOp != null)
 					{
 						subLeft.createMenuEntry(0)
-							.setOption("Reset")
+							.setOption("Reset" + ColorUtil.prependColorTag(" (Remove)", RESET_DEFAULT_COLOR))
 							.setType(MenuAction.RUNELITE)
 							.onClick(e ->
 							{
@@ -1029,7 +1028,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					if (shiftClickOp != null)
 					{
 						subShift.createMenuEntry(0)
-							.setOption("Reset")
+							.setOption("Reset" + ColorUtil.prependColorTag(" (Remove)", RESET_DEFAULT_COLOR))
 							.setType(MenuAction.RUNELITE)
 							.onClick(e ->
 							{
