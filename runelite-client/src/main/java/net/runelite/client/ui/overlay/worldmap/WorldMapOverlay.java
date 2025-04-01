@@ -40,6 +40,7 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Point;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
@@ -214,7 +215,8 @@ public class WorldMapOverlay extends Overlay
 				Rectangle clickbox = new Rectangle(drawX, drawY, image.getWidth(), image.getHeight());
 				if (mousePos != null && clickbox.contains(mousePos.getX(), mousePos.getY()))
 				{
-					if (!Strings.isNullOrEmpty(worldPoint.getTooltip()))
+					if (!Strings.isNullOrEmpty(worldPoint.getTooltip()) &&
+						(client.getVarbitValue(Varbits.WORLDMAP_TOGGLES) & 0b1000) == 0)
 					{
 						tooltipPoint = worldPoint;
 					}
