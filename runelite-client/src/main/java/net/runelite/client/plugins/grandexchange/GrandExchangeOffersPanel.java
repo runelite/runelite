@@ -49,7 +49,7 @@ class GrandExchangeOffersPanel extends JPanel
 	private static final int MAX_OFFERS = 8;
 
 	private final GrandExchangePlugin grandExchangePlugin;
-	private RuneLiteConfig openGeLinkText;
+	private final RuneLiteConfig openGeLinkText;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
