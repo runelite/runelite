@@ -31,10 +31,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Player;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
@@ -123,6 +126,9 @@ public class ScreenshotPluginTest
 	@Mock
 	@Bind
 	private ImageCapture imageCapture;
+
+	@Mock
+	private Player player;
 
 	@Before
 	public void before()
@@ -541,6 +547,20 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(screenshotPlugin).takeScreenshot("Loot key", "Wilderness Loot Chest");
+	}
+
+	@Test
+	public void testDoomDeath()
+	{
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(screenshotConfig.screenshotPlayerDeath()).thenReturn(true);
+		when(player.getAnimation()).thenReturn(AnimationID.DOOM_DEATH);
+
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+		screenshotPlugin.onAnimationChanged(animationChanged);
+
+		verify(screenshotPlugin).takeScreenshot("Death", "Deaths");
 	}
 
 	@Test
