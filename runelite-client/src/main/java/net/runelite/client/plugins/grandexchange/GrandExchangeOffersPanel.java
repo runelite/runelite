@@ -63,7 +63,8 @@ class GrandExchangeOffersPanel extends JPanel
 	private final GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
 
 	@Inject
-	private GrandExchangeOffersPanel(final GrandExchangePlugin grandExchangePlugin, final RuneLiteConfig openGeLinkText)	{
+	private GrandExchangeOffersPanel(final GrandExchangePlugin grandExchangePlugin, final RuneLiteConfig openGeLinkText)
+	{
 		this.grandExchangePlugin = grandExchangePlugin;
 		this.openGeLinkText = openGeLinkText;
 
