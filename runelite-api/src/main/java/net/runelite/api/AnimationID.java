@@ -247,6 +247,7 @@ public final class AnimationID
 	public static final int HERBLORE_MIXOLOGY_CRYSTALIZE = 11639;
 	public static final int HERBLORE_MIXOLOGY_HOMOGENIZE = 11634;
 	public static final int HERBLORE_MIXOLOGY_REFINER = 11604;
+	public static final int HERBLORE_MIXOLOGY_CONVEYOR_BELT = 11626;
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
@@ -388,4 +389,7 @@ public final class AnimationID
 	public static final int SLAYER_TOWER_WATER_BUCKET_DRIP = 3558;
 
 	public static final int KEY_MASTER_IDLE = 4519;
+
+	public static final int LIZARDMAN_TEMPLE_MYSTICAL_BARRIER_SPIN = 7503;
+
 }
