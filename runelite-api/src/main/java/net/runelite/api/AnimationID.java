@@ -48,6 +48,8 @@ public final class AnimationID
 	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int WOODCUTTING_CRYSTAL = 8324;
 	public static final int WOODCUTTING_TRAILBLAZER = 8778; // Same animation as Infernal axe (or)
+	public static final int WOODCUTTING_TRAILBLAZER_RELOADED = 11940;
+	public static final int WOODCUTTING_INFERNAL_TRAILBLAZER_RELOADED = 11939;
 	public static final int WOODCUTTING_2H_BRONZE = 10064;
 	public static final int WOODCUTTING_2H_IRON = 10065;
 	public static final int WOODCUTTING_2H_STEEL = 10066;
@@ -168,7 +170,10 @@ public final class AnimationID
 	public static final int FISHING_DRAGON_HARPOON_OR = 88;
 	public static final int FISHING_INFERNAL_HARPOON = 7402;
 	public static final int FISHING_CRYSTAL_HARPOON = 8336;
+	public static final int FISHING_INFERNAL_TRAILBLAZER_HARPOON = 8783;
+	public static final int FISHING_INFERNAL_TRAILBLAZER_RELOADED_HARPOON = 11867;
 	public static final int FISHING_TRAILBLAZER_HARPOON = 8784; // Same animation as Infernal harpoon (or)
+	public static final int FISHING_TRAILBLAZER_RELOADED_HARPOON = 11868;
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
@@ -209,6 +214,8 @@ public final class AnimationID
 	public static final int MINING_TRAILBLAZER_PICKAXE = 8787; // Same animation as Infernal pickaxe (or)
 	public static final int MINING_TRAILBLAZER_PICKAXE_2 = 8788;
 	public static final int MINING_TRAILBLAZER_PICKAXE_3 = 8789;
+	public static final int MINING_TRAILBLAZER_RELOADED_PICKAXE = 11833;
+	//public static final int MINING_INFERNAL_TRAILBLAZER_RELOADED_PICKAXE = Cannot create Infernal pick
 	public static final int MINING_MOTHERLODE_BRONZE = 6753;
 	public static final int MINING_MOTHERLODE_IRON = 6754;
 	public static final int MINING_MOTHERLODE_STEEL = 6755;
@@ -225,6 +232,8 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int MINING_MOTHERLODE_CRYSTAL = 8345;
 	public static final int MINING_MOTHERLODE_TRAILBLAZER = 8786; // Same animation as Infernal pickaxe (or)
+	public static final int MINING_MOTHERLODE_TRAILBLAZER_RELOADED = 11827;
+	//public static final int MINING_MOTHERLODE_INFERNAL_TRAILBLAZER_RELOADED_PICKAXE = Cannot create Infernal pick
 	public final static int MINING_CRASHEDSTAR_BRONZE = 6747;
 	public final static int MINING_CRASHEDSTAR_IRON = 6748;
 	public final static int MINING_CRASHEDSTAR_STEEL = 6749;
@@ -237,6 +246,8 @@ public final class AnimationID
 	public final static int MINING_CRASHEDSTAR_DRAGON_UPGRADED = 643;
 	public final static int MINING_CRASHEDSTAR_DRAGON_OR = 8349;
 	public final static int MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER = 8888;
+	public static final int MINING_CRASHEDSTAR_TRAILBLAZER_RELOADED = 11839;
+	//public static final int MINING_CRASHEDSTAR_INFERNAL_TRAILBLAZER_RELOADED_PICKAXE = Cannot create Infernal pick
 	public final static int MINING_CRASHEDSTAR_INFERNAL = 4483;
 	public final static int MINING_CRASHEDSTAR_3A = 7284;
 	public final static int MINING_CRASHEDSTAR_CRYSTAL = 8350;
