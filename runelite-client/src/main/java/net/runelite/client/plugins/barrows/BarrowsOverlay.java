@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -77,7 +78,7 @@ class BarrowsOverlay extends Overlay
 	{
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation());
+			LocalPoint localLocation = LocalPoint.fromWorld(client, new WorldPoint(brother.getLocation().getX() + brother.getLocation().getWidth() / 2, brother.getLocation().getY() + brother.getLocation().getHeight() / 2, brother.getLocation().getPlane()));
 			if (localLocation == null)
 			{
 				continue;

@@ -91,6 +91,9 @@ public class BarrowsPlugin extends Plugin
 	private BarrowsOverlay barrowsOverlay;
 
 	@Inject
+	private BarrowsDigOverlay barrowsDigOverlay;
+
+	@Inject
 	private BarrowsBrotherSlainOverlay brotherOverlay;
 
 	@Inject
@@ -121,6 +124,7 @@ public class BarrowsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(barrowsOverlay);
+		overlayManager.add(barrowsDigOverlay);
 		overlayManager.add(brotherOverlay);
 	}
 
@@ -128,6 +132,7 @@ public class BarrowsPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(barrowsOverlay);
+		overlayManager.remove(barrowsDigOverlay);
 		overlayManager.remove(brotherOverlay);
 		puzzleAnswer = null;
 		stopPrayerDrainTimer();
