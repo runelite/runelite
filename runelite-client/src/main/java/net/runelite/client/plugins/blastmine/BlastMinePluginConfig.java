@@ -101,4 +101,27 @@ public interface BlastMinePluginConfig extends Config
 	{
 		return new Color(217, 54, 0);
 	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "showExperienceOverlay",
+			name = "Show experience overlay",
+			description = "Configures whether or not the experience stored in the sack overlay is displayed"
+	)
+	default boolean showExperienceOverlay()
+	{
+		return true;
+	}
+
+	//developer note: this config also allows for users to adjust for xp boosted events like leagues and dmm
+	@ConfigItem(
+			position = 7,
+			keyName = "experienceMultiplier",
+			name = "Bonus XP as %",
+			description = "Configures bonus for total xp stored in the blast mine sack (2.5 for full prospector outfit)"
+	)
+	default double experienceMultiplier()
+	{
+		return 2.5;
+	}
 }
