@@ -138,7 +138,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
-	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
+	@VisibleForTesting
+	final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
 	private int nextPoisonTick;
 	private int nextOverloadRefreshTick;
@@ -481,15 +482,16 @@ public class TimersAndBuffsPlugin extends Plugin
 				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
 				// When drinking a dose of moonlight potion while already under its effects, desync between
 				// Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick
-				// greater
-				|| client.getVarbitValue(Varbits.MOONLIGHT_POTION) >= event.getValue())
+				// greater due to Varbits.MOONLIGHT_POTION ticking down twice in its first tick.
+
+				// When the user drinks a dose of moonlight potion at the exact tick the potion runs out, i.e. right
+				// after Varbits.MOONLIGHT_POTION == 0, the first tick behaves exactly as the above described desync.
+				// However, after the first tick, Varbits.MOONLIGHT_POTION is suddenly transmitted BEFORE
+				// Varbits.DIVINE_SUPER_DEFENCE every tick. Thus, when the latter is transmitted, the
+				// Varbits.MOONLIGHT_POTION value might be 1 less than the Varbits.DIVINE_SUPER_DEFENCE value.
+				|| (client.getVarbitValue(Varbits.MOONLIGHT_POTION) + 1 >= event.getValue()) && config.showMoonlightPotion())
 			{
 				return;
-			}
-
-			if (client.getVarbitValue(Varbits.MOONLIGHT_POTION) < event.getValue())
-			{
-				removeVarTimer(MOONLIGHT_POTION);
 			}
 
 			updateVarTimer(DIVINE_SUPER_DEFENCE, event.getValue(), IntUnaryOperator.identity());
@@ -609,9 +611,24 @@ public class TimersAndBuffsPlugin extends Plugin
 			int moonlightValue = event.getValue();
 			// Increase the timer by 1 tick in case of desync due to drinking a dose of moonlight potion while already
 			// under its effects. Otherwise, the timer would be 1 tick shorter than it is meant to be.
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue + 1)
+
+			// When the user drinks a dose of moonlight potion at the exact tick the potion runs out, i.e. right after
+			// Varbits.MOONLIGHT_POTION == 0, the first tick behaves exactly as 'normal' desync. However, after the
+			// first tick, Varbits.MOONLIGHT_POTION is suddenly transmitted BEFORE Varbits.DIVINE_SUPER_DEFENCE every
+			// tick. Thus, when the former is transmitted, there might be a difference of 2 between the varbit values.
+			final int divSupDefValue = client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE);
+			if (divSupDefValue == moonlightValue + 1 || divSupDefValue == moonlightValue + 2)
 			{
 				moonlightValue++;
+			}
+			// Varbits.DIVINE_SUPER_DEFENCE updates before Varbits.MOONLIGHT_POTION (at least during its first tick).
+			// Thus, the early return that prevents creation of the divine super defence timer does not work for the
+			// first game tick. Additionally, the divine super defence timer needs to be removed when
+			// showMoonLightPotion is toggled to true while showDivine is true, and one needs to account for the
+			// previously described desync combined with the varbit transmission order change.
+			if (divSupDefValue == moonlightValue || divSupDefValue == moonlightValue + 1)
+			{
+				removeVarTimer(DIVINE_SUPER_DEFENCE);
 			}
 
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
