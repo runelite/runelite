@@ -772,6 +772,7 @@ id=128
 [seed_vault]
 id=631
 title_container=2
+content_container=11
 item_container=15
 item_text=16
 search_button=24
