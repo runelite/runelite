@@ -2212,6 +2212,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "bando":
 			case "bandos":
 			case "graardor":
+			case "graar":
 				return "General Graardor";
 
 			// dks
@@ -2457,7 +2458,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			// The Gauntlet
 			case "gaunt":
-			case "gauntlet":
 			case "the gauntlet":
 				return "Gauntlet";
 
@@ -2679,6 +2679,7 @@ public class ChatCommandsPlugin extends Plugin
 			// Tempoross
 			case "fishingtodt":
 			case "fishtodt":
+			case "temp":
 				return "Tempoross";
 
 			// Phantom Muspah
