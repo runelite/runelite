@@ -365,8 +365,7 @@ public class InterfaceLoader
 
 	}
 
-	private void decodeIf3(InterfaceDefinition iface, InputStream var1)
-	{
+	private void decodeIf3(InterfaceDefinition iface, InputStream var1) {
 		var1.readUnsignedByte();
 		iface.isIf3 = true;
 		iface.type = var1.readUnsignedByte();
@@ -374,122 +373,38 @@ public class InterfaceLoader
 		iface.originalX = var1.readShort();
 		iface.originalY = var1.readShort();
 		iface.originalWidth = var1.readUnsignedShort();
-		if (iface.type == 9)
-		{
-			iface.originalHeight = var1.readShort();
-		}
-		else
-		{
-			iface.originalHeight = var1.readUnsignedShort();
-		}
 
-		iface.widthMode = var1.readByte();
-		iface.heightMode = var1.readByte();
-		iface.xPositionMode = var1.readByte();
-		iface.yPositionMode = var1.readByte();
-		iface.parentId = var1.readUnsignedShort();
-		if (iface.parentId == 0xFFFF)
-		{
-			iface.parentId = -1;
-		}
-		else
-		{
-			iface.parentId += iface.id & ~0xFFFF;
-		}
-
-		iface.isHidden = var1.readUnsignedByte() == 1;
-		if (iface.type == 0)
-		{
-			iface.scrollWidth = var1.readUnsignedShort();
-			iface.scrollHeight = var1.readUnsignedShort();
-			iface.noClickThrough = var1.readUnsignedByte() == 1;
-		}
-
-		if (iface.type == 5)
-		{
-			iface.spriteId = var1.readInt();
-			iface.textureId = var1.readUnsignedShort();
-			iface.spriteTiling = var1.readUnsignedByte() == 1;
-			iface.opacity = var1.readUnsignedByte();
-			iface.borderType = var1.readUnsignedByte();
-			iface.shadowColor = var1.readInt();
-			iface.flippedVertically = var1.readUnsignedByte() == 1;
-			iface.flippedHorizontally = var1.readUnsignedByte() == 1;
-		}
-
-		if (iface.type == 6)
-		{
-			iface.modelType = 1;
-			iface.modelId = var1.readUnsignedShort();
-			if (iface.modelId == 0xFFFF)
-			{
-				iface.modelId = -1;
-			}
-
-			iface.offsetX2d = var1.readShort();
-			iface.offsetY2d = var1.readShort();
-			iface.rotationX = var1.readUnsignedShort();
-			iface.rotationZ = var1.readUnsignedShort();
-			iface.rotationY = var1.readUnsignedShort();
-			iface.modelZoom = var1.readUnsignedShort();
-			iface.animation = var1.readUnsignedShort();
-			if (iface.animation == 0xFFFF)
-			{
-				iface.animation = -1;
-			}
-
-			iface.orthogonal = var1.readUnsignedByte() == 1;
-			var1.readUnsignedShort();
-			if (iface.widthMode != 0)
-			{
-				iface.modelHeightOverride = var1.readUnsignedShort();
-			}
-
-			if (iface.heightMode != 0)
-			{
-				var1.readUnsignedShort();
-			}
-		}
-
-		if (iface.type == 4)
-		{
-			iface.fontId = var1.readUnsignedShort();
-			if (iface.fontId == 0xFFFF)
-			{
-				iface.fontId = -1;
-			}
-
-			iface.text = var1.readString();
-			iface.lineHeight = var1.readUnsignedByte();
-			iface.xTextAlignment = var1.readUnsignedByte();
-			iface.yTextAlignment = var1.readUnsignedByte();
-			iface.textShadowed = var1.readUnsignedByte() == 1;
-			iface.textColor = var1.readInt();
-		}
-
-		if (iface.type == 3)
-		{
-			iface.textColor = var1.readInt();
-			iface.filled = var1.readUnsignedByte() == 1;
-			iface.opacity = var1.readUnsignedByte();
-		}
-
-		if (iface.type == 9)
-		{
-			iface.lineWidth = var1.readUnsignedByte();
-			iface.textColor = var1.readInt();
-			iface.lineDirection = var1.readUnsignedByte() == 1;
+		switch (iface.type) {
+			case 9:
+				decodeIfType9(iface, var1);
+				break;
+			case 0:
+				decodeIfType0(iface, var1);
+				break;
+			case 5:
+				decodeIfType5(iface, var1);
+				break;
+			case 6:
+				decodeIfType6(iface, var1);
+				break;
+			case 4:
+				decodeIfType4(iface, var1);
+				break;
+			case 3:
+				decodeIfType3(iface, var1);
+				break;
+			default:
+				break;
 		}
 
 		iface.clickMask = var1.read24BitInt();
 		iface.name = var1.readString();
 		int var2 = var1.readUnsignedByte();
-		if (var2 > 0)
-		{
+
+		if (var2 > 0) {
 			iface.actions = new String[var2];
 
-			for (int var3 = 0; var3 < var2; ++var3)
-			{
+			for (int var3 = 0; var3 < var2; ++var3) {
 				iface.actions[var3] = var1.readString();
 			}
 		}
@@ -498,28 +413,101 @@ public class InterfaceLoader
 		iface.dragDeadTime = var1.readUnsignedByte();
 		iface.dragRenderBehavior = var1.readUnsignedByte() == 1;
 		iface.targetVerb = var1.readString();
-		iface.onLoadListener = this.decodeListener(iface, var1);
-		iface.onMouseOverListener = this.decodeListener(iface, var1);
-		iface.onMouseLeaveListener = this.decodeListener(iface, var1);
-		iface.onTargetLeaveListener = this.decodeListener(iface, var1);
-		iface.onTargetEnterListener = this.decodeListener(iface, var1);
-		iface.onVarTransmitListener = this.decodeListener(iface, var1);
-		iface.onInvTransmitListener = this.decodeListener(iface, var1);
-		iface.onStatTransmitListener = this.decodeListener(iface, var1);
-		iface.onTimerListener = this.decodeListener(iface, var1);
-		iface.onOpListener = this.decodeListener(iface, var1);
-		iface.onMouseRepeatListener = this.decodeListener(iface, var1);
-		iface.onClickListener = this.decodeListener(iface, var1);
-		iface.onClickRepeatListener = this.decodeListener(iface, var1);
-		iface.onReleaseListener = this.decodeListener(iface, var1);
-		iface.onHoldListener = this.decodeListener(iface, var1);
-		iface.onDragListener = this.decodeListener(iface, var1);
-		iface.onDragCompleteListener = this.decodeListener(iface, var1);
-		iface.onScrollWheelListener = this.decodeListener(iface, var1);
-		iface.varTransmitTriggers = this.decodeTriggers(var1);
-		iface.invTransmitTriggers = this.decodeTriggers(var1);
-		iface.statTransmitTriggers = this.decodeTriggers(var1);
+		iface.onLoadListener = decodeListener(iface, var1);
+		iface.onMouseOverListener = decodeListener(iface, var1);
+		iface.onMouseLeaveListener = decodeListener(iface, var1);
+		iface.onTargetLeaveListener = decodeListener(iface, var1);
+		iface.onTargetEnterListener = decodeListener(iface, var1);
+		iface.onVarTransmitListener = decodeListener(iface, var1);
+		iface.onInvTransmitListener = decodeListener(iface, var1);
+		iface.onStatTransmitListener = decodeListener(iface, var1);
+		iface.onTimerListener = decodeListener(iface, var1);
+		iface.onOpListener = decodeListener(iface, var1);
+		iface.onMouseRepeatListener = decodeListener(iface, var1);
+		iface.onClickListener = decodeListener(iface, var1);
+		iface.onClickRepeatListener = decodeListener(iface, var1);
+		iface.onReleaseListener = decodeListener(iface, var1);
+		iface.onHoldListener = decodeListener(iface, var1);
+		iface.onDragListener = decodeListener(iface, var1);
+		iface.onDragCompleteListener = decodeListener(iface, var1);
+		iface.onScrollWheelListener = decodeListener(iface, var1);
+		iface.varTransmitTriggers = decodeTriggers(var1);
+		iface.invTransmitTriggers = decodeTriggers(var1);
+		iface.statTransmitTriggers = decodeTriggers(var1);
 	}
+
+	private void decodeIfType0(InterfaceDefinition iface, InputStream var1) {
+		iface.scrollHeight = var1.readUnsignedShort();
+		iface.scrollWidth = var1.readUnsignedShort();
+		iface.noClickThrough = var1.readUnsignedByte() == 1;
+	}
+
+	private void decodeIfType5(InterfaceDefinition iface, InputStream var1) {
+		iface.spriteId = var1.readInt();
+		iface.textureId = var1.readUnsignedShort();
+		iface.spriteTiling = var1.readUnsignedByte() == 1;
+		iface.opacity = var1.readUnsignedByte();
+		iface.borderType = var1.readUnsignedByte();
+		iface.shadowColor = var1.readInt();
+		iface.flippedVertically = var1.readUnsignedByte() == 1;
+		iface.flippedHorizontally = var1.readUnsignedByte() == 1;
+	}
+
+	private void decodeIfType6(InterfaceDefinition iface, InputStream var1) {
+		iface.modelType = 1;
+		iface.modelId = var1.readUnsignedShort();
+		if (iface.modelId == 0xFFFF) {
+			iface.modelId = -1;
+		}
+
+		iface.offsetX2d = var1.readShort();
+		iface.offsetY2d = var1.readShort();
+		iface.rotationX = var1.readUnsignedShort();
+		iface.rotationZ = var1.readUnsignedShort();
+		iface.rotationY = var1.readUnsignedShort();
+		iface.modelZoom = var1.readUnsignedShort();
+		iface.animation = var1.readUnsignedShort();
+		if (iface.animation == 0xFFFF) {
+			iface.animation = -1;
+		}
+
+		iface.orthogonal = var1.readUnsignedByte() == 1;
+		var1.readUnsignedShort();
+		if (iface.widthMode != 0) {
+			iface.modelHeightOverride = var1.readUnsignedShort();
+		}
+
+		if (iface.heightMode != 0) {
+			var1.readUnsignedShort();
+		}
+	}
+
+	private void decodeIfType4(InterfaceDefinition iface, InputStream var1) {
+		iface.fontId = var1.readUnsignedShort();
+		if (iface.fontId == 0xFFFF) {
+			iface.fontId = -1;
+		}
+
+		iface.text = var1.readString();
+		iface.lineHeight = var1.readUnsignedByte();
+		iface.xTextAlignment = var1.readUnsignedByte();
+		iface.yTextAlignment = var1.readUnsignedByte();
+		iface.textShadowed = var1.readUnsignedByte() == 1;
+		iface.textColor = var1.readInt();
+	}
+
+	private void decodeIfType3(InterfaceDefinition iface, InputStream var1) {
+		iface.textColor = var1.readInt();
+		iface.filled = var1.readUnsignedByte() == 1;
+		iface.opacity = var1.readUnsignedByte();
+	}
+
+	private void decodeIfType9(InterfaceDefinition iface, InputStream var1) {
+		iface.lineWidth = var1.readUnsignedByte();
+		iface.textColor = var1.readInt();
+		iface.lineDirection = var1.readUnsignedByte() == 1;
+	}
+
 
 	private Object[] decodeListener(InterfaceDefinition iface, InputStream var1)
 	{
