@@ -155,4 +155,20 @@ public interface PyramidPlunderConfig extends Config
 	{
 		return 9;
 	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "highlightPenultimateUrnsAndUp",
+		name = "Highlight urns from penultimate floor",
+		description = "Highlights the urns from the penultimate floor and up"
+	)
+	default boolean highlightPenultimateUrns() { return false;}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "highlightPenultimateUntil",
+		name = "Highlight until seconds",
+		description = "Highlights the urns in the penultimate floor until the configured seconds remain"
+	)
+	default int highlightUrnsUntil() { return 150;}
 }
