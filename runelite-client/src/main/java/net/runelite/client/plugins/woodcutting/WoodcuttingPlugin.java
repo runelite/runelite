@@ -107,7 +107,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Woodcutting",
 	description = "Show woodcutting statistics and/or bird nest notifications",
-	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc", "forestry"},
+	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc", "forestry", "clue"},
 	enabledByDefault = false
 )
 @Slf4j
