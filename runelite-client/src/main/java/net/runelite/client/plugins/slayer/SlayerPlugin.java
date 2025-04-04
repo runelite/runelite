@@ -108,6 +108,9 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
 
+	// Task streak
+	private static final int KRYSTILIA_SLAYER_MASTER = 7;
+
 	@Inject
 	private Client client;
 
@@ -339,22 +342,25 @@ public class SlayerPlugin extends Plugin
 		{
 			clientThread.invokeLater(this::updateTask);
 		}
-		else if (varbitId == Varbits.SLAYER_POINTS)
+		else if (varbitId == Varbits.SLAYER_POINTS
+			|| varbitId == Varbits.SLAYER_TASK_STREAK
+			|| varbitId == Varbits.SLAYER_WILDERNESS_TASK_STREAK)
 		{
-			setProfileConfig(SlayerConfig.POINTS_KEY, varbitChanged.getValue());
-
-			// points is on a tooltip on the counter, so requires a rebuild if it changes
-			if (counter != null)
+			final int varbitValue = varbitChanged.getValue();
+			switch (varbitId)
 			{
-				removeCounter();
-				addCounter();
+				case Varbits.SLAYER_POINTS:
+					setProfileConfig(SlayerConfig.POINTS_KEY, varbitValue);
+					break;
+				case Varbits.SLAYER_TASK_STREAK:
+					setProfileConfig(SlayerConfig.STREAK_KEY, varbitValue);
+					break;
+				case Varbits.SLAYER_WILDERNESS_TASK_STREAK:
+					setProfileConfig(SlayerConfig.WILDERNESS_STREAK_KEY, varbitValue);
+					break;
 			}
-		}
-		else if (varbitId == Varbits.SLAYER_TASK_STREAK)
-		{
-			setProfileConfig(SlayerConfig.STREAK_KEY, varbitChanged.getValue());
 
-			// streak is on a tooltip on the counter, so requires a rebuild if it changes
+			// points and streak are on a tooltip on the counter, so requires a rebuild if it changes
 			if (counter != null)
 			{
 				removeCounter();
@@ -402,6 +408,7 @@ public class SlayerPlugin extends Plugin
 				// initialize streak and points in the event the plugin was toggled on after login
 				setProfileConfig(SlayerConfig.POINTS_KEY, client.getVarbitValue(Varbits.SLAYER_POINTS));
 				setProfileConfig(SlayerConfig.STREAK_KEY, client.getVarbitValue(Varbits.SLAYER_TASK_STREAK));
+				setProfileConfig(SlayerConfig.WILDERNESS_STREAK_KEY, client.getVarbitValue(Varbits.SLAYER_WILDERNESS_TASK_STREAK));
 			}
 			else if (!Objects.equals(taskName, this.taskName) || !Objects.equals(taskLocation, this.taskLocation))
 			{
@@ -657,8 +664,10 @@ public class SlayerPlugin extends Plugin
 				+ " " + initialAmount;
 		}
 
+		final int streak = client.getVarbitValue(Varbits.SLAYER_MASTER) == KRYSTILIA_SLAYER_MASTER ?
+			getIntProfileConfig(SlayerConfig.WILDERNESS_STREAK_KEY) : getIntProfileConfig(SlayerConfig.STREAK_KEY);
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format(taskTooltip, capsString(taskName), getIntProfileConfig(SlayerConfig.POINTS_KEY), getIntProfileConfig(SlayerConfig.STREAK_KEY)));
+		counter.setTooltip(String.format(taskTooltip, capsString(taskName), getIntProfileConfig(SlayerConfig.POINTS_KEY),  streak));
 
 		infoBoxManager.addInfoBox(counter);
 	}
