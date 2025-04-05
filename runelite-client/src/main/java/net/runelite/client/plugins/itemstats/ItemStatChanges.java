@@ -36,6 +36,7 @@ import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.food.CookedBream;
 import net.runelite.client.plugins.itemstats.food.CookedMossLizard;
+import net.runelite.client.plugins.itemstats.potions.CastleWarsBrew;
 import net.runelite.client.plugins.itemstats.special.SunlightMoth;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
@@ -66,6 +67,7 @@ public class ItemStatChanges
 	public static final SingleEffect SUPER_ATTACK_POT = boost(ATTACK, perc(.15, 5));
 	public static final SingleEffect SUPER_STRENGTH_POT = boost(STRENGTH, perc(.15, 5));
 	public static final SingleEffect SUPER_DEFENCE_POT = boost(DEFENCE, perc(.15, 5));
+	public static final Effect SUPER_RESTORE_POT = new SuperRestore(.25, 8);
 
 	private void init()
 	{
@@ -241,8 +243,7 @@ public class ItemStatChanges
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, divinePot), DIVINE_SUPER_COMBAT_POTION1, DIVINE_SUPER_COMBAT_POTION2, DIVINE_SUPER_COMBAT_POTION3, DIVINE_SUPER_COMBAT_POTION4);
 		add(combo(rangingPot, SUPER_DEFENCE_POT, divinePot), DIVINE_BASTION_POTION1, DIVINE_BASTION_POTION2, DIVINE_BASTION_POTION3, DIVINE_BASTION_POTION4);
 		add(combo(magicPot, SUPER_DEFENCE_POT, divinePot), DIVINE_BATTLEMAGE_POTION1, DIVINE_BATTLEMAGE_POTION2, DIVINE_BATTLEMAGE_POTION3, DIVINE_BATTLEMAGE_POTION4);
-		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, rangingPot, imbuedHeart),
-			CASTLEWARS_BREW4, CASTLEWARS_BREW3, CASTLEWARS_BREW2, CASTLEWARS_BREW1);
+		add(new CastleWarsBrew(), CASTLEWARS_BREW4, CASTLEWARS_BREW3, CASTLEWARS_BREW2, CASTLEWARS_BREW1);
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT),
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
 		add(ancientBrew, ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
@@ -277,14 +278,13 @@ public class ItemStatChanges
 		final Effect energyPot = heal(RUN_ENERGY, 10);
 		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
-		final Effect superRestorePot = new SuperRestore(.25, 8);
 		final Effect staminaPot = new StaminaPotion();
 		final DeltaPercentage remedyHeal = perc(0.16, 6);
 		add(restorePot, RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
 		add(energyPot, ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
 		add(prayerPot, PRAYER_POTION1, PRAYER_POTION2, PRAYER_POTION3, PRAYER_POTION4);
 		add(superEnergyPot, SUPER_ENERGY1, SUPER_ENERGY2, SUPER_ENERGY3, SUPER_ENERGY4);
-		add(superRestorePot, SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4,
+		add(SUPER_RESTORE_POT, SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4,
 			BLIGHTED_SUPER_RESTORE1, BLIGHTED_SUPER_RESTORE2, BLIGHTED_SUPER_RESTORE3, BLIGHTED_SUPER_RESTORE4,
 			SUPER_RESTORE4_23567, SUPER_RESTORE3_23569, SUPER_RESTORE2_23571, SUPER_RESTORE1_23573 /* LMS */);
 		add(new SuperRestore(.30, 4), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4,
@@ -297,7 +297,7 @@ public class ItemStatChanges
 		add(new MixedPotion(3, energyPot), ENERGY_MIX1, ENERGY_MIX2);
 		add(new MixedPotion(6, prayerPot), PRAYER_MIX1, PRAYER_MIX2);
 		add(new MixedPotion(6, superEnergyPot), SUPER_ENERGY_MIX1, SUPER_ENERGY_MIX2);
-		add(new MixedPotion(6, superRestorePot), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2);
+		add(new MixedPotion(6, SUPER_RESTORE_POT), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2);
 		add(new MixedPotion(6, staminaPot), STAMINA_MIX1, STAMINA_MIX2);
 
 		// Chambers of Xeric potions (+)
