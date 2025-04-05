@@ -289,6 +289,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
 	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
 
+	// Castle Wars
+	private static final String CASTLE_WARS_CRATE_EVENT = "Castle wars supply crate";
+
 	// Tempoross
 	private static final String TEMPOROSS_EVENT = "Reward pool (Tempoross)";
 	private static final String TEMPOROSS_CASKET_EVENT = "Casket (Tempoross)";
@@ -1283,6 +1286,9 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					case ItemID.SPOILS_OF_WAR:
 						onInvChange(collectInvItems(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT));
+						break;
+					case 30690:
+						onInvChange(collectInvItems(LootRecordType.EVENT, CASTLE_WARS_CRATE_EVENT));
 						break;
 					case ItemID.CASKET_25590:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT));
