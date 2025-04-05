@@ -24,16 +24,22 @@
  */
 package net.runelite.client.plugins.hunter;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
+import static net.runelite.api.NullNpcID.NULL_8740;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
@@ -43,6 +49,9 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -77,6 +86,8 @@ public class HunterPlugin extends Plugin
 	@Getter
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
+	@VisibleForTesting
+	@Setter(AccessLevel.PACKAGE)
 	private WorldPoint lastTickLocalPlayerLocation;
 
 	@Provides
@@ -384,6 +395,89 @@ public class HunterPlugin extends Plugin
 		}
 
 		lastTickLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned npcSpawned)
+	{
+		NPC npc = npcSpawned.getNpc();
+		// the trap is a multinpc, therefore the ID must be retrieved from the untransformed composition or it will be -1
+		if (npc.getComposition().getId() == NULL_8740)
+		{
+			traps.forEach((worldPoint, trap) ->
+			{
+				// Check if source is a trap in the list of traps the player put down
+				if (npc.getWorldLocation().equals(worldPoint))
+				{
+					log.debug("NPC for trap {} is {}", trap, npc);
+					trap.setNpc(npc);
+				}
+			});
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged interactingChanged)
+	{
+		final Actor source = interactingChanged.getSource();
+		final Actor target = interactingChanged.getTarget();
+
+		if (traps.isEmpty() || target == null)
+		{
+			return;
+		}
+
+		for (HunterTrap trap : traps.values())
+		{
+			if (source == trap.getNpc())
+			{
+				log.debug("Trap {} changes target to {}", trap, target);
+				trap.setInteracting(target);
+				break;
+			}
+			if (target == trap.getNpc())
+			{
+				log.debug("Chin {} targets trap {}", source, trap);
+				trap.setInteracting(null);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		if (traps.isEmpty())
+		{
+			return;
+		}
+
+		final NPC npc = npcDespawned.getNpc();
+		for (HunterTrap trap : traps.values())
+		{
+			/*
+			 *                     DEAD TRAP MECHANICS
+			 * When spawning a trap, an invisible null NPC is spawned at the same location.
+			 * This "null" npc handles all the interactions between a trap and a target.
+			 * If two hunter traps target the same Actor, then the trap
+			 * which did not catch the target will get stuck in a "dead" state.
+			 * It will no longer be able to re-target another actor.
+			 * Therefore, the user can remove these traps and re-place them.
+			 */
+			if (trap.getInteracting() == npc && trap.getNpc().getInteracting() == null && trap.getState() == HunterTrap.State.OPEN)
+			{
+				log.debug("Trap {} is dead", trap);
+				trap.setState(HunterTrap.State.DEAD);
+			}
+
+			if (npc == trap.getNpc())
+			{
+				trap.setNpc(null);
+			}
+			if (npc == trap.getInteracting())
+			{
+				trap.setInteracting(null);
+			}
+		}
 	}
 
 	@Subscribe

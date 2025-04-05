@@ -28,7 +28,9 @@ import java.time.Duration;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.Actor;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 
 /**
@@ -53,6 +55,22 @@ class HunterTrap
 	@Getter
 	@Setter
 	private State state;
+
+	/**
+	 * The trap NPC
+	 */
+	@Getter
+	@Setter
+	private NPC npc;
+
+	/**
+	 * Actor the trap is interacting with. When a chin is caught, the trap is changed
+	 * to interact with null immediately before the npc despawns, so we can't use
+	 * npc.getInteracting() at the time of despawn
+	 */
+	@Getter
+	@Setter
+	private Actor interacting;
 
 	/**
 	 * The ID of the game object this is representing
@@ -80,6 +98,10 @@ class HunterTrap
 		 * A trap that caught something.
 		 */
 		FULL,
+		/**
+		 * A trap that is open but is unable to catch anything.
+		 */
+		DEAD,
 		/**
 		 * A trap that is closing.
 		 */
