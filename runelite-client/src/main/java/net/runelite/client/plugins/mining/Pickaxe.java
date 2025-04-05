@@ -39,9 +39,12 @@ import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_CRYSTAL;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_OR;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_DRAGON_UPGRADED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_GILDED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_INFERNAL;
+import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_INFERNAL_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_INFERNAL_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_IRON;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_MITHRIL;
 import static net.runelite.api.AnimationID.MINING_CRASHEDSTAR_RUNE;
@@ -53,6 +56,8 @@ import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_OR_TRAILBLAZER;
 import static net.runelite.api.AnimationID.MINING_DRAGON_PICKAXE_UPGRADED;
 import static net.runelite.api.AnimationID.MINING_GILDED_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE;
+import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_INFERNAL_PICKAXE_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_IRON_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_MITHRIL_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_3A;
@@ -66,16 +71,20 @@ import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZ
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_UPGRADED;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_GILDED;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
 import static net.runelite.api.AnimationID.MINING_MOTHERLODE_TRAILBLAZER;
+import static net.runelite.api.AnimationID.MINING_MOTHERLODE_TRAILBLAZER_RELOADED;
 import static net.runelite.api.AnimationID.MINING_RUNE_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_STEEL_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE;
 import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_2;
 import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_PICKAXE_3;
+import static net.runelite.api.AnimationID.MINING_TRAILBLAZER_RELOADED_PICKAXE;
 import static net.runelite.api.ItemID.ADAMANT_PICKAXE;
 import static net.runelite.api.ItemID.BLACK_PICKAXE;
 import static net.runelite.api.ItemID.BRONZE_PICKAXE;
@@ -83,15 +92,17 @@ import static net.runelite.api.ItemID.CRYSTAL_PICKAXE;
 import static net.runelite.api.ItemID.DRAGON_PICKAXE;
 import static net.runelite.api.ItemID.DRAGON_PICKAXE_OR;
 import static net.runelite.api.ItemID.DRAGON_PICKAXE_OR_25376;
+import static net.runelite.api.ItemID.DRAGON_PICKAXE_OR_30351;
 import static net.runelite.api.ItemID.DRAGON_PICKAXE_12797;
 import static net.runelite.api.ItemID.GILDED_PICKAXE;
 import static net.runelite.api.ItemID.INFERNAL_PICKAXE;
+import static net.runelite.api.ItemID.INFERNAL_PICKAXE_OR;
+import static net.runelite.api.ItemID.INFERNAL_PICKAXE_OR_30345;
 import static net.runelite.api.ItemID.IRON_PICKAXE;
 import static net.runelite.api.ItemID.MITHRIL_PICKAXE;
 import static net.runelite.api.ItemID.RUNE_PICKAXE;
 import static net.runelite.api.ItemID.STEEL_PICKAXE;
 import static net.runelite.api.ItemID._3RD_AGE_PICKAXE;
-import static net.runelite.api.ItemID.INFERNAL_PICKAXE_OR;
 import net.runelite.api.Player;
 
 @Getter
@@ -108,12 +119,15 @@ enum Pickaxe
 	DRAGON(DRAGON_PICKAXE, MINING_DRAGON_PICKAXE, MINING_MOTHERLODE_DRAGON, MINING_CRASHEDSTAR_DRAGON),
 	DRAGON_OR(DRAGON_PICKAXE_OR, MINING_DRAGON_PICKAXE_OR, MINING_MOTHERLODE_DRAGON_OR, MINING_CRASHEDSTAR_DRAGON_OR),
 	DRAGON_OR_TRAILBLAZER(DRAGON_PICKAXE_OR_25376, MINING_DRAGON_PICKAXE_OR_TRAILBLAZER, MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER, MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER),
+	DRAGON_OR_TRAILBLAZER_RELOADED(DRAGON_PICKAXE_OR_30351, MINING_TRAILBLAZER_RELOADED_PICKAXE, MINING_MOTHERLODE_TRAILBLAZER_RELOADED, MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER_RELOADED),
 	DRAGON_UPGRADED(DRAGON_PICKAXE_12797, MINING_DRAGON_PICKAXE_UPGRADED, MINING_MOTHERLODE_DRAGON_UPGRADED, MINING_CRASHEDSTAR_DRAGON_UPGRADED),
 	INFERNAL(INFERNAL_PICKAXE, MINING_INFERNAL_PICKAXE, MINING_MOTHERLODE_INFERNAL, MINING_CRASHEDSTAR_INFERNAL),
+	INFERNAL_OR_TRAILBLAZER(INFERNAL_PICKAXE_OR, MINING_INFERNAL_PICKAXE_TRAILBLAZER,  MINING_MOTHERLODE_INFERNAL_TRAILBLAZER, MINING_CRASHEDSTAR_INFERNAL_TRAILBLAZER),
+	INFERNAL_OR_TRAILBLAZER_RELOADED(INFERNAL_PICKAXE_OR_30345, MINING_INFERNAL_PICKAXE_TRAILBLAZER_RELOADED, MINING_MOTHERLODE_INFERNAL_TRAILBLAZER_RELOADED, MINING_CRASHEDSTAR_INFERNAL_TRAILBLAZER_RELOADED),
 	THIRDAGE(_3RD_AGE_PICKAXE, MINING_3A_PICKAXE, MINING_MOTHERLODE_3A, MINING_CRASHEDSTAR_3A),
 	CRYSTAL(CRYSTAL_PICKAXE, MINING_CRYSTAL_PICKAXE, MINING_MOTHERLODE_CRYSTAL, MINING_CRASHEDSTAR_CRYSTAL),
 	TRAILBLAZER(INFERNAL_PICKAXE_OR, MINING_TRAILBLAZER_PICKAXE, MINING_TRAILBLAZER_PICKAXE_2,
-		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER);
+		MINING_TRAILBLAZER_PICKAXE_3, MINING_MOTHERLODE_TRAILBLAZER, MINING_TRAILBLAZER_RELOADED_PICKAXE, MINING_MOTHERLODE_TRAILBLAZER_RELOADED);
 
 	private final int itemId;
 	private final int[] animIds;
