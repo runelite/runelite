@@ -33,6 +33,7 @@ import lombok.Value;
 public class SequenceDefinition
 {
 	private final int id;
+	public String debugName;
 	public int[] frameIDs; // top 16 bits are FrameDefinition ids
 	public int[] chatFrameIds;
 	public int[] frameLengths;
