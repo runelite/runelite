@@ -162,6 +162,11 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 			.map(ItemRequirements::item).toArray(SingleItemRequirement[]::new))
 	);
 
+	private static final AnyRequirementCollection ANY_ESSENCE = any("Pure essence or Dark essence fragments",
+		item(ItemID.PURE_ESSENCE),
+		item(ItemID.DARK_ESSENCE_FRAGMENTS)
+	);
+
 	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
 		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked pike.", item(ItemID.PIKE)),
@@ -229,7 +234,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				any("", item(ItemID.PROSPECTOR_BOOTS), item(ItemID.GOLDEN_PROSPECTOR_BOOTS)))),
 		new SkillChallengeClue("Steal a gem from the Ardougne market."),
 		new SkillChallengeClue("Pickpocket an elf."),
-		new SkillChallengeClue("Bind a blood rune at the blood altar.", item(ItemID.DARK_ESSENCE_FRAGMENTS)),
+		new SkillChallengeClue("Bind a blood rune at the blood altar.", ANY_ESSENCE),
 		new SkillChallengeClue("Create a ranging mix potion.", "mix a ranging mix potion.", item(ItemID.RANGING_POTION2), item(ItemID.CAVIAR)),
 		new SkillChallengeClue("Fletch a rune dart.", item(ItemID.RUNE_DART_TIP), item(ItemID.FEATHER)),
 		new SkillChallengeClue("Cremate a set of fiyr remains.", any("Magic or Redwood Pyre Logs", item(ItemID.MAGIC_PYRE_LOGS), item(ItemID.REDWOOD_PYRE_LOGS)), item(ItemID.TINDERBOX), item(ItemID.FIYR_REMAINS)),
