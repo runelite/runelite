@@ -58,8 +58,8 @@ public class ChatKeyboardListener implements KeyListener
 	{
 		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
-			int inputTye = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
-			String input = inputTye == InputType.NONE.getType()
+			int inputType = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
+			String input = inputType == InputType.NONE.getType()
 				? client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)
 				: client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 
@@ -78,14 +78,28 @@ public class ChatKeyboardListener implements KeyListener
 				int idx = input.lastIndexOf(' ') + 1;
 				final String replacement = input.substring(0, idx);
 
-				clientThread.invoke(() -> applyText(inputTye, replacement));
+				clientThread.invoke(() -> applyText(inputType, replacement));
 			}
 		}
 		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
 			e.consume();
-			int inputTye = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
-			clientThread.invoke(() -> applyText(inputTye, ""));
+			int inputType = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
+			clientThread.invoke(() -> applyText(inputType, ""));
+		}
+		else if (chatCommandsConfig.clearCharacter().matches(e))
+		{
+			int inputType = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
+			String input = inputType == InputType.NONE.getType()
+					? client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)
+					: client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+
+			e.consume();
+			if (input != null && input.length() > 0)
+			{
+				final String replacement = input.substring(0, input.length() - 1);
+				clientThread.invoke(() -> applyText(inputType, replacement));
+			}
 		}
 	}
 

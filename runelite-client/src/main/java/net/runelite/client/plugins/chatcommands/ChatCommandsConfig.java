@@ -231,4 +231,14 @@ public interface ChatCommandsConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+	@ConfigItem(
+			position = 22,
+			keyName = "clearCharacter",
+			name = "Backspace",
+			description = "Enable hotkey to press backspace"
+	)
+	default Keybind clearCharacter()
+	{
+		return Keybind.NOT_SET;
+	}
 }
