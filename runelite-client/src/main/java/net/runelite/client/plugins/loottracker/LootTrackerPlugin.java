@@ -1287,7 +1287,7 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.SPOILS_OF_WAR:
 						onInvChange(collectInvItems(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT));
 						break;
-					case 30690:
+					case ItemID.CASTLE_WARS_SUPPLY_CRATE:
 						onInvChange(collectInvItems(LootRecordType.EVENT, CASTLE_WARS_CRATE_EVENT));
 						break;
 					case ItemID.CASKET_25590:
