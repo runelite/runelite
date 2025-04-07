@@ -397,6 +397,10 @@ n
 m 30 78
 C 4 4 7 7
 
+// giant mole lair
+n
+R 27 80 27 81
+
 // robert the strong battle (ds2)
 n
 r 28 81
@@ -417,6 +421,22 @@ r 27 79
 n
 r 28 79
 
+// varrock museum basement
+n
+r 27 77
+
+// barrows
+n
+r 55 151
+
+// shade catacombs
+n
+r 54 151
+
+// trollweiss dungeon
+n
+r 43 159
+
 // lamistard's tunnels (curse of arrav)
 n
 r 43 160
@@ -428,3 +448,15 @@ r 41 157
 // the kendal's cave (mountain daughter)
 n
 r 43 157
+
+// polar eagle cave
+n
+r 42 159
+
+// brine rat cavern
+n
+r 42 158
+
+// keldagrim tunnel
+n
+r 43 158
