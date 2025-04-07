@@ -396,3 +396,35 @@ C 0 0 3 3
 n
 m 30 78
 C 4 4 7 7
+
+// robert the strong battle (ds2)
+n
+r 28 81
+
+// ancient cavern (ds2)
+n
+R 25 82 25 83
+
+// dream mentor battle
+//n
+r 28 80
+
+// dream world puzzles (lunar diplomacy)
+n
+r 27 79
+
+// dream world battle (lunar diplomacy)
+n
+r 28 79
+
+// lamistard's tunnels (curse of arrav)
+n
+r 43 160
+
+// koschei the deathless fight (fremennik trials)
+n
+r 41 157
+
+// the kendal's cave (mountain daughter)
+n
+r 43 157
