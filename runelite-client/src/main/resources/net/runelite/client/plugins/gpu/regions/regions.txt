@@ -373,3 +373,26 @@ r 49 81
 // king black dragon lair
 n
 r 35 73
+
+// evil twin random
+n
+r 29 80
+
+// surprise exam random
+n
+r 29 78
+
+// beekeeper random
+n
+m 30 78
+C 0 4 3 7
+
+// gravedigger random
+n
+m 30 78
+C 0 0 3 3
+
+// pinball random
+n
+m 30 78
+C 4 4 7 7
