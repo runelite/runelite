@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,42 +24,15 @@
  */
 package net.runelite.cache.definitions;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import java.util.Map;
 import lombok.Data;
-import lombok.Value;
 
 @Data
-public class SequenceDefinition
+public class GameValDefinition
 {
-	private final int id;
-	public String debugName;
-	public int[] frameIDs; // top 16 bits are FrameDefinition ids
-	public int[] chatFrameIds;
-	public int[] frameLengths;
-	public int frameStep = -1;
-	public int[] interleaveLeave;
-	public boolean stretches = false;
-	public int forcedPriority = 5;
-	public int leftHandItem = -1;
-	public int rightHandItem = -1;
-	public int maxLoops = 99;
-	public int precedenceAnimating = -1;
-	public int priority = -1;
-	public int replyMode = 2;
-	public int animMayaID = -1;
-	public Multimap<Integer, Sound> frameSounds = ArrayListMultimap.create();
-	public int animMayaStart;
-	public int animMayaEnd;
-	public boolean[] animMayaMasks;
+	private int gameValId;
+	private int id;
 
-	@Value
-	public static class Sound
-	{
-		public int id;
-		public int loops;
-		public int location;
-		public int retain;
-		public int weight;
-	}
+	private String name;
+	private Map<Integer, String> files = Map.of();
 }
