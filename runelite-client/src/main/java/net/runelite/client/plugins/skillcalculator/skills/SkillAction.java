@@ -64,7 +64,7 @@ public interface SkillAction
 	 * value {@code 0} or greater.
 	 *
 	 * @return The item icon ID of this skill action, or {@code -1} if its icon should be represented using a sprite.
-	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 * @see #getSprite()
 	 */
 	default int getIcon()

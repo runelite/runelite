@@ -45,17 +45,16 @@ import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
@@ -170,7 +169,7 @@ public class ChatCommandsPluginTest
 
 		EnumComposition enum_ = mock(EnumComposition.class);
 		when(enum_.size()).thenReturn(1);
-		when(enum_.getIntValue(0)).thenReturn(ItemID.CHOMPY_CHICK);
+		when(enum_.getIntValue(0)).thenReturn(ItemID.CHOMPYBIRD_PET);
 		when(client.getEnum(EnumID.PETS)).thenReturn(enum_);
 
 		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 1, 1, BufferedImage.TYPE_INT_ARGB));
@@ -217,8 +216,8 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBlood()
 	{
-		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
-		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB2)).thenReturn(15);
+		when(client.getVarbitValue(VarbitID.TOB_CLIENT_P0)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.TOB_CLIENT_P1)).thenReturn(15);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
 			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
@@ -240,7 +239,7 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBloodNoPb()
 	{
-		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.TOB_CLIENT_P0)).thenReturn(1);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
 			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
@@ -262,7 +261,7 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBloodEntryMode()
 	{
-		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.TOB_CLIENT_P0)).thenReturn(1);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
 			"Wave 'The Final Challenge' (Entry Mode) complete!<br>" +
@@ -937,7 +936,7 @@ public class ChatCommandsPluginTest
 	public void testPlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+		when(client.getWidget(InterfaceID.Collection.HEADER_TEXT)).thenReturn(logEntryHeaderWidget);
 
 		Widget[] logEntryHeaderItemsWidget = new Widget[1];
 		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
@@ -948,7 +947,7 @@ public class ChatCommandsPluginTest
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+		when(client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS)).thenReturn(logEntryItemsWidget);
 
 		Widget[] logPetEntriesWidget = new Widget[3];
 		for (int i = 0; i < 3; i++)
@@ -958,7 +957,7 @@ public class ChatCommandsPluginTest
 		}
 
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
-		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.IKKLE_HYDRA);
+		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.HYDRAPET);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
@@ -967,14 +966,14 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.HYDRAPET}));
 	}
 
 	@Test
 	public void testEmptyPlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+		when(client.getWidget(InterfaceID.Collection.HEADER_TEXT)).thenReturn(logEntryHeaderWidget);
 
 		Widget[] logEntryHeaderItemsWidget = new Widget[1];
 		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
@@ -985,7 +984,7 @@ public class ChatCommandsPluginTest
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+		when(client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS)).thenReturn(logEntryItemsWidget);
 
 		Widget[] logPetEntriesWidget = new Widget[3];
 		for (int i = 0; i < 3; i++)
@@ -1008,7 +1007,7 @@ public class ChatCommandsPluginTest
 	public void testUpdatePlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+		when(client.getWidget(InterfaceID.Collection.HEADER_TEXT)).thenReturn(logEntryHeaderWidget);
 
 		Widget[] logEntryHeaderItemsWidget = new Widget[1];
 		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
@@ -1019,7 +1018,7 @@ public class ChatCommandsPluginTest
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+		when(client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS)).thenReturn(logEntryItemsWidget);
 
 		Widget[] logPetEntriesWidget = new Widget[3];
 		for (int i = 0; i < 3; i++)
@@ -1029,7 +1028,7 @@ public class ChatCommandsPluginTest
 		}
 
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
-		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.IKKLE_HYDRA);
+		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.HYDRAPET);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
@@ -1038,22 +1037,22 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.HYDRAPET}));
 
 		// chompy chick item
 		ItemComposition chompy = mock(ItemComposition.class);
-		when(chompy.getId()).thenReturn(ItemID.CHOMPY_CHICK);
+		when(chompy.getId()).thenReturn(ItemID.CHOMPYBIRD_PET);
 		when(chompy.getName()).thenReturn("Chompy chick");
-		when(itemManager.getItemComposition(ItemID.CHOMPY_CHICK)).thenReturn(chompy);
+		when(itemManager.getItemComposition(ItemID.CHOMPYBIRD_PET)).thenReturn(chompy);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setMessage("New item added to your collection log: Chompy chick");
 		chatMessage.setType(GAMEMESSAGE);
 		when(configManager.getRSProfileConfiguration("chatcommands", "pets2",
-			String.class)).thenReturn(gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
+			String.class)).thenReturn(gson.toJson(new int[]{ItemID.HYDRAPET}));
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA, ItemID.CHOMPY_CHICK}));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.HYDRAPET, ItemID.CHOMPYBIRD_PET}));
 	}
 
 	@Test
@@ -1223,10 +1222,10 @@ public class ChatCommandsPluginTest
 		Widget advLogExploitsTextWidget = mock(Widget.class);
 		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
 		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
-		when(client.getWidget(ComponentID.ADVENTURE_LOG_CONTAINER)).thenReturn(advLogWidget);
+		when(client.getWidget(InterfaceID.Menu.LJ_LAYER2)).thenReturn(advLogWidget);
 
 		// counters
-		when(client.getWidget(ComponentID.ACHIEVEMENT_DIARY_SCROLL_TEXT)).thenAnswer(a ->
+		when(client.getWidget(InterfaceID.Journalscroll.TEXTLAYER)).thenAnswer(a ->
 		{
 			Widget widget = mock(Widget.class);
 			Widget[] children = Arrays.stream(log)
@@ -1242,12 +1241,12 @@ public class ChatCommandsPluginTest
 		});
 
 		WidgetLoaded advLogEvent = new WidgetLoaded();
-		advLogEvent.setGroupId(InterfaceID.ADVENTURE_LOG);
+		advLogEvent.setGroupId(InterfaceID.MENU);
 		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(InterfaceID.ACHIEVEMENT_DIARY_SCROLL);
+		countersLogEvent.setGroupId(InterfaceID.JOURNALSCROLL);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -1351,10 +1350,10 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testToaPbNew()
 	{
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(27);
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(30);
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH)).thenReturn(20);
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH)).thenReturn(13);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P1)).thenReturn(27);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P2)).thenReturn(30);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P3)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P4)).thenReturn(13);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>8:30</col><br>Tombs of Amascut challenge completion time: <col=ef1020>8:31</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -1373,8 +1372,8 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testToaPb()
 	{
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(24);
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(15);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P1)).thenReturn(24);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P2)).thenReturn(15);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
@@ -1393,8 +1392,8 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testToaPbEntry()
 	{
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(24);
-		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(15);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P1)).thenReturn(24);
+		when(client.getVarbitValue(VarbitID.TOA_CLIENT_P2)).thenReturn(15);
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Entry Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 20:31", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);

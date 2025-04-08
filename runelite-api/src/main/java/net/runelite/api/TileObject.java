@@ -86,8 +86,7 @@ public interface TileObject
 	/**
 	 * Gets the ID of the object.
 	 *
-	 * @see ObjectID
-	 * @see NullObjectID
+	 * @see net.runelite.api.gameval.ObjectID
 	 */
 	int getId();
 

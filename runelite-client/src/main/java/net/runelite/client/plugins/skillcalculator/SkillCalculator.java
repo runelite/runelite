@@ -56,9 +56,9 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
 import net.runelite.api.annotations.Varp;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -567,51 +567,51 @@ class SkillCalculator extends JPanel
 		switch (skill)
 		{
 			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_END;
+				return VarPlayerID.XPDROPS_ATTACK_END;
 			case MINING:
-				return VarPlayer.MINING_GOAL_END;
+				return VarPlayerID.XPDROPS_MINING_END;
 			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_END;
+				return VarPlayerID.XPDROPS_WOODCUTTING_END;
 			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_END;
+				return VarPlayerID.XPDROPS_DEFENCE_END;
 			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_END;
+				return VarPlayerID.XPDROPS_MAGIC_END;
 			case RANGED:
-				return VarPlayer.RANGED_GOAL_END;
+				return VarPlayerID.XPDROPS_RANGED_END;
 			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_END;
+				return VarPlayerID.XPDROPS_HITPOINTS_END;
 			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_END;
+				return VarPlayerID.XPDROPS_AGILITY_END;
 			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_END;
+				return VarPlayerID.XPDROPS_STRENGTH_END;
 			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_END;
+				return VarPlayerID.XPDROPS_PRAYER_END;
 			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_END;
+				return VarPlayerID.XPDROPS_SLAYER_END;
 			case FISHING:
-				return VarPlayer.FISHING_GOAL_END;
+				return VarPlayerID.XPDROPS_FISHING_END;
 			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_END;
+				return VarPlayerID.XPDROPS_RUNECRAFT_END;
 			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_END;
+				return VarPlayerID.XPDROPS_HERBLORE_END;
 			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_END;
+				return VarPlayerID.XPDROPS_FIREMAKING_END;
 			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_END;
+				return VarPlayerID.XPDROPS_CONSTRUCTION_END;
 			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_END;
+				return VarPlayerID.XPDROPS_HUNTER_END;
 			case COOKING:
-				return VarPlayer.COOKING_GOAL_END;
+				return VarPlayerID.XPDROPS_COOKING_END;
 			case FARMING:
-				return VarPlayer.FARMING_GOAL_END;
+				return VarPlayerID.XPDROPS_FARMING_END;
 			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_END;
+				return VarPlayerID.XPDROPS_CRAFTING_END;
 			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_END;
+				return VarPlayerID.XPDROPS_SMITHING_END;
 			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_END;
+				return VarPlayerID.XPDROPS_THIEVING_END;
 			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_END;
+				return VarPlayerID.XPDROPS_FLETCHING_END;
 			default:
 				throw new IllegalArgumentException();
 		}

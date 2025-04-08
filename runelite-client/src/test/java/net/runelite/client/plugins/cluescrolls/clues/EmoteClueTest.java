@@ -25,8 +25,8 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.api.Item;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import static net.runelite.api.ItemID.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -53,12 +53,12 @@ public class EmoteClueTest
 
 		ItemRequirement fullBarrowsSetRequirement = requirements[0];
 
-		assertTrue("Full Ahrim set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(AHRIMS_STAFF), item(AHRIMS_HOOD), item(AHRIMS_ROBETOP), item(AHRIMS_ROBESKIRT) }));
-		assertTrue("Full Dharok set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(DHAROKS_GREATAXE), item(DHAROKS_HELM), item(DHAROKS_PLATEBODY), item(DHAROKS_PLATELEGS) }));
-		assertTrue("Full Guthan set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(GUTHANS_WARSPEAR), item(GUTHANS_HELM), item(GUTHANS_PLATEBODY), item(GUTHANS_CHAINSKIRT) }));
-		assertTrue("Full Karil set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(KARILS_CROSSBOW), item(KARILS_COIF), item(KARILS_LEATHERTOP), item(KARILS_LEATHERSKIRT) }));
-		assertTrue("Full Torag set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS), item(TORAGS_HELM), item(TORAGS_PLATEBODY), item(TORAGS_PLATELEGS) }));
-		assertTrue("Full Verac set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL), item(VERACS_HELM), item(VERACS_BRASSARD), item(VERACS_PLATESKIRT) }));
+		assertTrue("Full Ahrim set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_AHRIM_WEAPON), item(ItemID.BARROWS_AHRIM_HEAD), item(ItemID.BARROWS_AHRIM_BODY), item(ItemID.BARROWS_AHRIM_LEGS) }));
+		assertTrue("Full Dharok set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_DHAROK_WEAPON), item(ItemID.BARROWS_DHAROK_HEAD), item(ItemID.BARROWS_DHAROK_BODY), item(ItemID.BARROWS_DHAROK_LEGS) }));
+		assertTrue("Full Guthan set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_GUTHAN_WEAPON), item(ItemID.BARROWS_GUTHAN_HEAD), item(ItemID.BARROWS_GUTHAN_BODY), item(ItemID.BARROWS_GUTHAN_LEGS) }));
+		assertTrue("Full Karil set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_KARIL_WEAPON), item(ItemID.BARROWS_KARIL_HEAD), item(ItemID.BARROWS_KARIL_BODY), item(ItemID.BARROWS_KARIL_LEGS) }));
+		assertTrue("Full Torag set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_TORAG_WEAPON), item(ItemID.BARROWS_TORAG_HEAD), item(ItemID.BARROWS_TORAG_BODY), item(ItemID.BARROWS_TORAG_LEGS) }));
+		assertTrue("Full Verac set, nondegraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_VERAC_WEAPON), item(ItemID.BARROWS_VERAC_HEAD), item(ItemID.BARROWS_VERAC_BODY), item(ItemID.BARROWS_VERAC_LEGS) }));
 	}
 
 	@Test
@@ -71,12 +71,12 @@ public class EmoteClueTest
 
 		ItemRequirement fullBarrowsSetRequirement = requirements[0];
 
-		assertTrue("Full Ahrim set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(AHRIMS_STAFF_50), item(AHRIMS_HOOD_50), item(AHRIMS_ROBETOP_50), item(AHRIMS_ROBESKIRT_50) }));
-		assertTrue("Full Dharok set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(DHAROKS_GREATAXE_50), item(DHAROKS_HELM_50), item(DHAROKS_PLATEBODY_50), item(DHAROKS_PLATELEGS_50) }));
-		assertTrue("Full Guthan set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(GUTHANS_WARSPEAR_50), item(GUTHANS_HELM_50), item(GUTHANS_PLATEBODY_50), item(GUTHANS_CHAINSKIRT_50) }));
-		assertTrue("Full Karil set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(KARILS_CROSSBOW_50), item(KARILS_COIF_50), item(KARILS_LEATHERTOP_50), item(KARILS_LEATHERSKIRT_50) }));
-		assertTrue("Full Torag set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS_50), item(TORAGS_HELM_50), item(TORAGS_PLATEBODY_50), item(TORAGS_PLATELEGS_50) }));
-		assertTrue("Full Verac set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL_50), item(VERACS_HELM_50), item(VERACS_BRASSARD_50), item(VERACS_PLATESKIRT_50) }));
+		assertTrue("Full Ahrim set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_AHRIM_WEAPON_50), item(ItemID.BARROWS_AHRIM_HEAD_50), item(ItemID.BARROWS_AHRIM_BODY_50), item(ItemID.BARROWS_AHRIM_LEGS_50) }));
+		assertTrue("Full Dharok set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_DHAROK_WEAPON_50), item(ItemID.BARROWS_DHAROK_HEAD_50), item(ItemID.BARROWS_DHAROK_BODY_50), item(ItemID.BARROWS_DHAROK_LEGS_50) }));
+		assertTrue("Full Guthan set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_GUTHAN_WEAPON_50), item(ItemID.BARROWS_GUTHAN_HEAD_50), item(ItemID.BARROWS_GUTHAN_BODY_50), item(ItemID.BARROWS_GUTHAN_LEGS_50) }));
+		assertTrue("Full Karil set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_KARIL_WEAPON_50), item(ItemID.BARROWS_KARIL_HEAD_50), item(ItemID.BARROWS_KARIL_BODY_50), item(ItemID.BARROWS_KARIL_LEGS_50) }));
+		assertTrue("Full Torag set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_TORAG_WEAPON_50), item(ItemID.BARROWS_TORAG_HEAD_50), item(ItemID.BARROWS_TORAG_BODY_50), item(ItemID.BARROWS_TORAG_LEGS_50) }));
+		assertTrue("Full Verac set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(ItemID.BARROWS_VERAC_WEAPON_50), item(ItemID.BARROWS_VERAC_HEAD_50), item(ItemID.BARROWS_VERAC_BODY_50), item(ItemID.BARROWS_VERAC_LEGS_50) }));
 	}
 
 	@Test
@@ -89,12 +89,12 @@ public class EmoteClueTest
 
 		ItemRequirement combatBraceletRequirement = requirements[1];
 
-		assertTrue("Combat Bracelet", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET));
-		assertTrue("Combat Bracelet (1)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET1));
-		assertTrue("Combat Bracelet (2)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET2));
-		assertTrue("Combat Bracelet (3)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET3));
-		assertTrue("Combat Bracelet (4)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET4));
-		assertTrue("Combat Bracelet (5)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET5));
-		assertTrue("Combat Bracelet (6)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET6));
+		assertTrue("Combat Bracelet", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT));
+		assertTrue("Combat Bracelet (1)", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT_1));
+		assertTrue("Combat Bracelet (2)", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT_2));
+		assertTrue("Combat Bracelet (3)", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT_3));
+		assertTrue("Combat Bracelet (4)", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT_4));
+		assertTrue("Combat Bracelet (5)", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT_5));
+		assertTrue("Combat Bracelet (6)", combatBraceletRequirement.fulfilledBy(ItemID.JEWL_BRACELET_OF_COMBAT_6));
 	}
 }

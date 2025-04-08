@@ -32,6 +32,7 @@ package net.runelite.api;
  * if it thinks they will change the next tick as a lag-hiding measure.
  * The client CANNOT directly make the server change a varp.
  */
+@Deprecated
 public final class VarPlayer
 {
 	public static final int CANNON_STATE = 2;
@@ -177,7 +178,7 @@ public final class VarPlayer
 	public static final int MOUSE_BUTTONS = 170;
 
 	/**
-	 * {@link NpcID} for the HP HUD
+	 * {@link net.runelite.api.gameval.NpcID} for the HP HUD
 	 */
 	public static final int HP_HUD_NPC_ID = 1683;
 

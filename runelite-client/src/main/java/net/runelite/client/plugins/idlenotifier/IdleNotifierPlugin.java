@@ -32,18 +32,14 @@ import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
-import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -53,6 +49,10 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.SpotanimID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
@@ -90,7 +90,7 @@ public class IdleNotifierPlugin extends Plugin
 	private ConfigManager configManager;
 
 	private Instant lastAnimating;
-	private int lastAnimation = IDLE;
+	private int lastAnimation = -1;
 	private Instant lastInteracting;
 	private Actor lastInteract;
 	private Instant lastMoving;
@@ -143,273 +143,272 @@ public class IdleNotifierPlugin extends Plugin
 		switch (animation)
 		{
 			/* Woodcutting */
-			case WOODCUTTING_BRONZE:
-			case WOODCUTTING_IRON:
-			case WOODCUTTING_STEEL:
-			case WOODCUTTING_BLACK:
-			case WOODCUTTING_MITHRIL:
-			case WOODCUTTING_ADAMANT:
-			case WOODCUTTING_RUNE:
-			case WOODCUTTING_GILDED:
-			case WOODCUTTING_DRAGON:
-			case WOODCUTTING_DRAGON_OR:
-			case WOODCUTTING_INFERNAL:
-			case WOODCUTTING_3A_AXE:
-			case WOODCUTTING_CRYSTAL:
-			case WOODCUTTING_TRAILBLAZER:
-			case WOODCUTTING_2H_BRONZE:
-			case WOODCUTTING_2H_IRON:
-			case WOODCUTTING_2H_STEEL:
-			case WOODCUTTING_2H_BLACK:
-			case WOODCUTTING_2H_MITHRIL:
-			case WOODCUTTING_2H_ADAMANT:
-			case WOODCUTTING_2H_RUNE:
-			case WOODCUTTING_2H_DRAGON:
-			case WOODCUTTING_2H_CRYSTAL:
-			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
-			case WOODCUTTING_2H_3A:
+			case AnimationID.HUMAN_WOODCUTTING_BRONZE_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_IRON_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_STEEL_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_BLACK_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_MITHRIL_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_ADAMANT_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_RUNE_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_GILDED_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_DRAGON_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_TRAILBLAZER_AXE_NO_INFERNAL:
+			case AnimationID.HUMAN_WOODCUTTING_INFERNAL_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_3A_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_CRYSTAL_AXE:
+			case AnimationID.HUMAN_OPENHEAVYCHEST:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_BRONZE:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_IRON:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_STEEL:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_BLACK:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_MITHRIL:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_ADAMANT:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_RUNE:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_DRAGON:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_CRYSTAL:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_CRYSTAL_INACTIVE:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_3A:
 			/* Woodcutting: Ents & Canoes */
-			case WOODCUTTING_ENT_BRONZE:
-			case WOODCUTTING_ENT_IRON:
-			case WOODCUTTING_ENT_STEEL:
-			case WOODCUTTING_ENT_BLACK:
-			case WOODCUTTING_ENT_MITHRIL:
-			case WOODCUTTING_ENT_ADAMANT:
-			case WOODCUTTING_ENT_RUNE:
-			case WOODCUTTING_ENT_GILDED:
-			case WOODCUTTING_ENT_DRAGON:
-			case WOODCUTTING_ENT_DRAGON_OR:
-			case WOODCUTTING_ENT_INFERNAL:
-			case WOODCUTTING_ENT_INFERNAL_OR:
-			case WOODCUTTING_ENT_3A:
-			case WOODCUTTING_ENT_CRYSTAL:
-			case WOODCUTTING_ENT_CRYSTAL_INACTIVE:
-			case WOODCUTTING_ENT_TRAILBLAZER:
-			case WOODCUTTING_ENT_2H_BRONZE:
-			case WOODCUTTING_ENT_2H_IRON:
-			case WOODCUTTING_ENT_2H_STEEL:
-			case WOODCUTTING_ENT_2H_BLACK:
-			case WOODCUTTING_ENT_2H_MITHRIL:
-			case WOODCUTTING_ENT_2H_ADAMANT:
-			case WOODCUTTING_ENT_2H_RUNE:
-			case WOODCUTTING_ENT_2H_DRAGON:
-			case WOODCUTTING_ENT_2H_CRYSTAL:
-			case WOODCUTTING_ENT_2H_CRYSTAL_INACTIVE:
-			case WOODCUTTING_ENT_2H_3A:
-			case BLISTERWOOD_JUMP_SCARE:
+			case AnimationID.HUMAN_CANOEING_CARVE_BRONZE_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_IRON_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_STEEL_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_BLACK_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_MITHRIL_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_ADAMANT_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_RUNE_AXE:
+			case AnimationID.BRUT_HUMAN_CANOEING_CARVE_GILDED_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_DRAGON_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_TRAILBLAZER_AXE_NO_INFERNAL:
+			case AnimationID.HUMAN_CANOEING_CARVE_INFERNAL_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_LEAGUE_TRAILBLAZER_AXE:
+			case AnimationID.BRUT_HUMAN_CANOEING_CARVE_3A_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_CRYSTAL_AXE:
+			case AnimationID.BRUT_HUMAN_CANOEING_CARVE_CRYSTAL_AXE:
+			case AnimationID.BRUT_HUMAN_CANOEING_CARVE_LEAGUE_TRAILBLAZER_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_BRONZE_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_IRON_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_STEEL_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_BLACK_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_MITHRIL_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_ADAMANT_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_RUNE_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_DRAGON_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_CRYSTAL_2H_AXE:
+			case AnimationID.HUMAN_CANOEING_CARVE_CRYSTAL_2H_AXE_INACTIVE:
+			case AnimationID.HUMAN_CANOEING_CARVE_3A_2H_AXE:
+			case AnimationID.TBW_CLEANUP_PLAYER_SURPRISE_STEPBACK:
 			/* Firemaking */
-			case FIREMAKING_FORESTERS_CAMPFIRE_ARCTIC_PINE:
-			case FIREMAKING_FORESTERS_CAMPFIRE_BLISTERWOOD:
-			case FIREMAKING_FORESTERS_CAMPFIRE_LOGS:
-			case FIREMAKING_FORESTERS_CAMPFIRE_MAGIC:
-			case FIREMAKING_FORESTERS_CAMPFIRE_MAHOGANY:
-			case FIREMAKING_FORESTERS_CAMPFIRE_MAPLE:
-			case FIREMAKING_FORESTERS_CAMPFIRE_OAK:
-			case FIREMAKING_FORESTERS_CAMPFIRE_REDWOOD:
-			case FIREMAKING_FORESTERS_CAMPFIRE_TEAK:
-			case FIREMAKING_FORESTERS_CAMPFIRE_WILLOW:
-			case FIREMAKING_FORESTERS_CAMPFIRE_YEW:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_ARCTIC_PINE_LOG:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_BLISTERWOOD_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAGIC_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAHOGANY_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_MAPLE_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_OAK_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_REDWOOD_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_TEAK_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_WILLOW_LOGS:
+			case AnimationID.FORESTRY_CAMPFIRE_BURNING_YEW_LOGS:
 			/* Cooking(Fire, Range) */
-			case COOKING_FIRE:
-			case COOKING_RANGE:
-			case COOKING_WINE:
+			case AnimationID.HUMAN_FIRECOOKING:
+			case AnimationID.HUMAN_COOKING:
+			case AnimationID.HUMAN_MAKE_WINE:
 			/* Crafting(Gem Cutting, Glassblowing, Spinning, Weaving, Battlestaves, Pottery) */
-			case GEM_CUTTING_OPAL:
-			case GEM_CUTTING_JADE:
-			case GEM_CUTTING_REDTOPAZ:
-			case GEM_CUTTING_SAPPHIRE:
-			case GEM_CUTTING_EMERALD:
-			case GEM_CUTTING_RUBY:
-			case GEM_CUTTING_DIAMOND:
-			case GEM_CUTTING_AMETHYST:
-			case CRAFTING_GLASSBLOWING:
-			case CRAFTING_SPINNING:
-			case CRAFTING_LOOM:
-			case CRAFTING_BATTLESTAVES:
-			case CRAFTING_LEATHER:
-			case CRAFTING_POTTERS_WHEEL:
-			case CRAFTING_POTTERY_OVEN:
-			case CRAFTING_CRUSH_BLESSED_BONES:
+			case AnimationID.HUMAN_OPALCUTTING:
+			case AnimationID.HUMAN_JADECUTTING:
+			case AnimationID.HUMAN_REDTOPAZCUTTING:
+			case AnimationID.HUMAN_SAPPHIRECUTTING:
+			case AnimationID.HUMAN_EMERALDCUTTING:
+			case AnimationID.HUMAN_RUBYCUTTING:
+			case AnimationID.HUMAN_DIAMONDCUTTING:
+			case AnimationID.HUMAN_AMETHYSTCUTTING:
+			case AnimationID.HUMAN_GLASSBLOWING:
+			case AnimationID.HUMAN_SPINNINGWHEEL:
+			case AnimationID.FARMING_USELOOM:
+			case AnimationID.HUMAN_BATTLESTAFF_CRAFTING:
+			case AnimationID.HUMAN_LEATHER_CRAFTING:
+			case AnimationID.HUMAN_POTTERYWHEEL:
+			case AnimationID.HUMAN_CUTTING_RESTART:
 			/* Fletching(Cutting, Stringing, Adding feathers and heads) */
-			case FLETCHING_BOW_CUTTING:
-			case FLETCHING_ATTACH_STOCK_TO_BRONZE_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_BLURITE_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_IRON_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_STEEL_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_MITHRIL_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_ADAMANTITE_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_RUNITE_LIMBS:
-			case FLETCHING_ATTACH_STOCK_TO_DRAGON_LIMBS:
-			case FLETCHING_STRING_NORMAL_SHORTBOW:
-			case FLETCHING_STRING_OAK_SHORTBOW:
-			case FLETCHING_STRING_WILLOW_SHORTBOW:
-			case FLETCHING_STRING_MAPLE_SHORTBOW:
-			case FLETCHING_STRING_YEW_SHORTBOW:
-			case FLETCHING_STRING_MAGIC_SHORTBOW:
-			case FLETCHING_STRING_NORMAL_LONGBOW:
-			case FLETCHING_STRING_OAK_LONGBOW:
-			case FLETCHING_STRING_WILLOW_LONGBOW:
-			case FLETCHING_STRING_MAPLE_LONGBOW:
-			case FLETCHING_STRING_YEW_LONGBOW:
-			case FLETCHING_STRING_MAGIC_LONGBOW:
-			case FLETCHING_ATTACH_FEATHERS_TO_ARROWSHAFT:
-			case FLETCHING_ATTACH_HEADS:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_BRONZE_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_IRON_BROAD_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_BLURITE_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_STEEL_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_MITHRIL_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_ADAMANT_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_RUNE_BOLT:
-			case FLETCHING_ATTACH_BOLT_TIPS_TO_DRAGON_BOLT:
+			case AnimationID.HUMAN_FLETCHING:
+			case AnimationID.XBOWS_FLETCHING_WOOD_BRONZE:
+			case AnimationID.XBOWS_FLETCHING_OAK_BLURITE:
+			case AnimationID.XBOWS_FLETCHING_WILLOW_IRON:
+			case AnimationID.XBOWS_FLETCHING_TEAK_STEEL:
+			case AnimationID.XBOWS_FLETCHING_MAPLE_MITHRIL:
+			case AnimationID.XBOWS_FLETCHING_MAHOGANY_ADAMANTITE:
+			case AnimationID.XBOWS_FLETCHING_YEW_RUNITE:
+			case AnimationID.XBOWS_FLETCHING_YEW_DRAGON:
+			case AnimationID.STRINGING_SHORTBOW:
+			case AnimationID.STRINGING_OAK_SHORTBOW:
+			case AnimationID.STRINGING_WILLOW_SHORTBOW:
+			case AnimationID.STRINGING_MAPLE_SHORTBOW:
+			case AnimationID.STRINGING_YEW_SHORTBOW:
+			case AnimationID.STRINGING_MAGIC_SHORTBOW:
+			case AnimationID.STRINGING_LONGBOW:
+			case AnimationID.STRINGING_OAK_LONGBOW:
+			case AnimationID.STRINGING_WILLOW_LONGBOW:
+			case AnimationID.STRINGING_MAPLE_LONGBOW:
+			case AnimationID.STRINGING_YEW_LONGBOW:
+			case AnimationID.STRINGING_MAGIC_LONGBOW:
+			case AnimationID.HUMAN_FLETCHING_ADD_FEATHER:
+			case AnimationID.HUMAN_FLETCHING_ADD_ARROW_TIPS:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_BRONZE:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_IRON:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_BLURITE:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_STEEL:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_MITHRIL:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_ADAMANT:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_RUNE:
+			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_DRAGON:
 			/* Smithing(Anvil, Furnace, Cannonballs */
-			case SMITHING_ANVIL:
-			case SMITHING_IMCANDO_HAMMER:
-			case SMITHING_SMELTING:
-			case SMITHING_CANNONBALL:
+			case AnimationID.HUMAN_SMITHING:
+			case AnimationID.HUMAN_SMITHING_IMCANDO_HAMMER:
+			case AnimationID.HUMAN_FURNACE:
+			case AnimationID.HUMAN_PICKUPFLOOR:
 			/* Fishing */
-			case FISHING_CRUSHING_INFERNAL_EELS:
-			case FISHING_CRUSHING_INFERNAL_EELS_IMCANDO_HAMMER:
-			case FISHING_CUTTING_SACRED_EELS:
-			case FISHING_BIG_NET:
-			case FISHING_NET:
-			case FISHING_POLE_CAST:
-			case FISHING_CAGE:
-			case FISHING_HARPOON:
-			case FISHING_BARBTAIL_HARPOON:
-			case FISHING_DRAGON_HARPOON:
-			case FISHING_DRAGON_HARPOON_OR:
-			case FISHING_INFERNAL_HARPOON:
-			case FISHING_CRYSTAL_HARPOON:
-			case FISHING_TRAILBLAZER_HARPOON:
-			case FISHING_OILY_ROD:
-			case FISHING_KARAMBWAN:
-			case FISHING_BAREHAND:
-			case FISHING_PEARL_ROD:
-			case FISHING_PEARL_FLY_ROD:
-			case FISHING_PEARL_BARBARIAN_ROD:
-			case FISHING_PEARL_ROD_2:
-			case FISHING_PEARL_FLY_ROD_2:
-			case FISHING_PEARL_BARBARIAN_ROD_2:
-			case FISHING_PEARL_OILY_ROD:
-			case FISHING_BARBARIAN_ROD:
+			case AnimationID.INFERNALEEL_BREAK:
+			case AnimationID.INFERNALEEL_BREAK_IMCANDO:
+			case AnimationID.SNAKEBOSS_SLICEEEL:
+			case AnimationID.HUMAN_LARGENET:
+			case AnimationID.HUMAN_SMALLNET:
+			case AnimationID.HUMAN_FISH_ONSPOT:
+			case AnimationID.HUMAN_LOBSTER:
+			case AnimationID.HUMAN_HARPOON:
+			case AnimationID.HUMAN_HARPOON_BARBED:
+			case AnimationID.HUMAN_HARPOON_DRAGON:
+			case AnimationID.HUMAN_HARPOON_TRAILBLAZER_NO_INFERNAL:
+			case AnimationID.HUMAN_HARPOON_INFERNAL:
+			case AnimationID.HUMAN_HARPOON_CRYSTAL:
+			case AnimationID.HUMAN_HARPOON_LEAGUE_TRAILBLAZER:
+			case AnimationID.HUMAN_FISHING_CASTING:
+			case AnimationID.HUMAN_OCTOPUS_POT:
+			case AnimationID.BRUT_PLAYER_HAND_FISHING_END_BLANK:
+			case AnimationID.HUMAN_FISHING_CASTING_PEARL:
+			case AnimationID.HUMAN_FISHING_CASTING_PEARL_FLY:
+			case AnimationID.HUMAN_FISHING_CASTING_PEARL_BRUT:
+			case AnimationID.HUMAN_FISH_ONSPOT_PEARL:
+			case AnimationID.HUMAN_FISH_ONSPOT_PEARL_FLY:
+			case AnimationID.HUMAN_FISH_ONSPOT_PEARL_BRUT:
+			case AnimationID.HUMAN_FISHING_CASTING_PEARL_OILY:
+			case AnimationID.HUMAN_FISHING_ONSPOT_BRUT:
 			/* Mining(Normal) */
-			case MINING_BRONZE_PICKAXE:
-			case MINING_IRON_PICKAXE:
-			case MINING_STEEL_PICKAXE:
-			case MINING_BLACK_PICKAXE:
-			case MINING_MITHRIL_PICKAXE:
-			case MINING_ADAMANT_PICKAXE:
-			case MINING_RUNE_PICKAXE:
-			case MINING_GILDED_PICKAXE:
-			case MINING_DRAGON_PICKAXE:
-			case MINING_DRAGON_PICKAXE_UPGRADED:
-			case MINING_DRAGON_PICKAXE_OR:
-			case MINING_DRAGON_PICKAXE_OR_TRAILBLAZER:
-			case MINING_INFERNAL_PICKAXE:
-			case MINING_3A_PICKAXE:
-			case MINING_CRYSTAL_PICKAXE:
-			case MINING_TRAILBLAZER_PICKAXE:
-			case MINING_TRAILBLAZER_PICKAXE_2:
-			case MINING_TRAILBLAZER_PICKAXE_3:
-			case DENSE_ESSENCE_CHIPPING:
-			case DENSE_ESSENCE_CHISELING:
+			case AnimationID.HUMAN_MINING_BRONZE_PICKAXE:
+			case AnimationID.HUMAN_MINING_IRON_PICKAXE:
+			case AnimationID.HUMAN_MINING_STEEL_PICKAXE:
+			case AnimationID.HUMAN_MINING_BLACK_PICKAXE:
+			case AnimationID.HUMAN_MINING_MITHRIL_PICKAXE:
+			case AnimationID.HUMAN_MINING_ADAMANT_PICKAXE:
+			case AnimationID.HUMAN_MINING_RUNE_PICKAXE:
+			case AnimationID.HUMAN_MINING_GILDED_PICKAXE:
+			case AnimationID.HUMAN_MINING_DRAGON_PICKAXE:
+			case AnimationID.HUMAN_MINING_DRAGON_PICKAXE_PRETTY:
+			case AnimationID.HUMAN_MINING_ZALCANO_PICKAXE:
+			case AnimationID.HUMAN_MINING_TRAILBLAZER_PICKAXE_NO_INFERNAL:
+			case AnimationID.HUMAN_MINING_INFERNAL_PICKAXE:
+			case AnimationID.HUMAN_MINING_3A_PICKAXE:
+			case AnimationID.HUMAN_MINING_CRYSTAL_PICKAXE:
+			case AnimationID.HUMAN_MINING_LEAGUE_TRAILBLAZER_PICKAXE:
+			case AnimationID.HUMAN_MINING_LEAGUE_TRAILBLAZER_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_ZALCANO_LEAGUE_TRAILBLAZER_PICKAXE:
+			case AnimationID.ARCEUUS_CHISEL_ESSENCE:
+			case AnimationID.ARCEUUS_CHISEL_ESSENCEBLOCK:
 			/* Mining(Motherlode) */
-			case MINING_MOTHERLODE_BRONZE:
-			case MINING_MOTHERLODE_IRON:
-			case MINING_MOTHERLODE_STEEL:
-			case MINING_MOTHERLODE_BLACK:
-			case MINING_MOTHERLODE_MITHRIL:
-			case MINING_MOTHERLODE_ADAMANT:
-			case MINING_MOTHERLODE_RUNE:
-			case MINING_MOTHERLODE_GILDED:
-			case MINING_MOTHERLODE_DRAGON:
-			case MINING_MOTHERLODE_DRAGON_UPGRADED:
-			case MINING_MOTHERLODE_DRAGON_OR:
-			case MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER:
-			case MINING_MOTHERLODE_INFERNAL:
-			case MINING_MOTHERLODE_3A:
-			case MINING_MOTHERLODE_CRYSTAL:
-			case MINING_MOTHERLODE_TRAILBLAZER:
+			case AnimationID.HUMAN_MINING_BRONZE_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_IRON_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_STEEL_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_BLACK_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_MITHRIL_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_ADAMANT_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_RUNE_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_GILDED_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_DRAGON_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_DRAGON_PICKAXE_PRETTY_WALL:
+			case AnimationID.HUMAN_MINING_ZALCANO_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_TRAILBLAZER_PICKAXE_NO_INFERNAL_WALL:
+			case AnimationID.HUMAN_MINING_INFERNAL_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_3A_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_CRYSTAL_PICKAXE_WALL:
+			case AnimationID.HUMAN_MINING_LEAGUE_TRAILBLAZER_PICKAXE_WALL:
 			/* Mining(Crashed Star) */
-			case MINING_CRASHEDSTAR_BRONZE:
-			case MINING_CRASHEDSTAR_IRON:
-			case MINING_CRASHEDSTAR_STEEL:
-			case MINING_CRASHEDSTAR_BLACK:
-			case MINING_CRASHEDSTAR_MITHRIL:
-			case MINING_CRASHEDSTAR_ADAMANT:
-			case MINING_CRASHEDSTAR_RUNE:
-			case MINING_CRASHEDSTAR_GILDED:
-			case MINING_CRASHEDSTAR_DRAGON:
-			case MINING_CRASHEDSTAR_DRAGON_UPGRADED:
-			case MINING_CRASHEDSTAR_DRAGON_OR:
-			case MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER:
-			case MINING_CRASHEDSTAR_INFERNAL:
-			case MINING_CRASHEDSTAR_3A:
-			case MINING_CRASHEDSTAR_CRYSTAL:
+			case AnimationID.HUMAN_MINING_BRONZE_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_IRON_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_STEEL_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_BLACK_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_MITHRIL_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_ADAMANT_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_RUNE_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_GILDED_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_DRAGON_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_DRAGON_PICKAXE_PRETTY_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_ZALCANO_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_TRAILBLAZER_PICKAXE_NO_INFERNAL_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_INFERNAL_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_3A_PICKAXE_NOREACHFORWARD:
+			case AnimationID.HUMAN_MINING_CRYSTAL_PICKAXE_NOREACHFORWARD:
 			/* Herblore */
-			case HERBLORE_PESTLE_AND_MORTAR:
-			case HERBLORE_POTIONMAKING:
-			case HERBLORE_MAKE_TAR:
-			case HERBLORE_MIXOLOGY_CONCENTRATE:
-			case HERBLORE_MIXOLOGY_CRYSTALIZE:
-			case HERBLORE_MIXOLOGY_HOMOGENIZE:
-			case HERBLORE_MIXOLOGY_REFINER:
+			case AnimationID.HUMAN_HERBING_GRIND:
+			case AnimationID.HUMAN_HERBING_VIAL:
+			case AnimationID.HUMAN_SALAMANDER_TAR_GRIND:
+			case AnimationID.HUMAN_MACHINERY_ALCHEMY01_RETORT01_INTERACT01:
+			case AnimationID.HUMAN_MACHINERY_ALCHEMY01_ALEMBIC01_INTERACT01:
+			case AnimationID.HUMAN_MACHINERY_ALCHEMY01_AGITATOR01_INTERACT01:
+			case AnimationID.HUMAN_ALCHEMY01_MILL01_INTERACT01:
 			/* Magic */
-			case MAGIC_CHARGING_ORBS:
-			case MAGIC_LUNAR_PLANK_MAKE:
-			case MAGIC_LUNAR_STRING_JEWELRY:
-			case MAGIC_MAKE_TABLET:
-			case MAGIC_ENCHANTING_JEWELRY:
-			case MAGIC_ENCHANTING_AMULET_1:
-			case MAGIC_ENCHANTING_AMULET_2:
-			case MAGIC_ENCHANTING_AMULET_3:
-			case MAGIC_ENCHANTING_BOLTS:
+			case AnimationID.HUMAN_CASTCHARGEORB:
+			case AnimationID.DREAM_PLAYER_MAKE_PLANK_SPELL:
+			case AnimationID.LUNAR_HUMAN_MAGIC_SUMMON1:
+			case AnimationID.POH_CREATE_MAGIC_TABLET_WITHSTAFF:
+			case AnimationID.HUMAN_CAST_ENCHANTRING:
+			case AnimationID.HUMAN_ENCHANTAMULETLVL1:
+			case AnimationID.HUMAN_ENCHANTAMULETLVL2:
+			case AnimationID.HUMAN_ENCHANTAMULETLVL3:
+			case AnimationID.HUMAN_XBOW_ENCHANT_ARROWTIP:
 			/* Prayer */
-			case USING_GILDED_ALTAR:
-			case ECTOFUNTUS_FILL_SLIME_BUCKET:
-			case ECTOFUNTUS_INSERT_BONES:
-			case ECTOFUNTUS_GRIND_BONES:
-			case ECTOFUNTUS_EMPTY_BIN:
+			case AnimationID.HUMAN_BONE_SACRIFICE:
+			case AnimationID.QUEST_AHOY_HUMAN_FILLING_BUCKET:
+			case AnimationID.AHOY_BONE_DUMP:
+			case AnimationID.AHOY_BONE_GRIND:
+			case AnimationID.AHOY_FILLBUCKET_BONEDUST:
 			/* Farming */
-			case FARMING_MIX_ULTRACOMPOST:
-			case FARMING_HARVEST_BUSH:
-			case FARMING_HARVEST_HERB:
-			case FARMING_HARVEST_FRUIT_TREE:
-			case FARMING_HARVEST_FLOWER:
-			case FARMING_HARVEST_ALLOTMENT:
+			case AnimationID.ULTRACOMPOST_MAKE:
+			case AnimationID.PICKING_MID:
+			case AnimationID.PICKING_LOW:
+			case AnimationID.PICKING_HIGH:
+			case AnimationID.FARMING_PICK_MUSHROOM:
+			case AnimationID.HUMAN_DIG:
 			/* Misc */
-			case PISCARILIUS_CRANE_REPAIR:
-			case HOME_MAKE_TABLET:
-			case SAND_COLLECTION:
-			case MILKING_COW:
-			case CHURN_MILK_SHORT:
-			case CHURN_MILK_MEDIUM:
-			case CHURN_MILK_LONG:
-			case CLEANING_SPECIMENS_1:
-			case CLEANING_SPECIMENS_2:
-			case LOOKING_INTO:
-			case SACRIFICE_BLESSED_BONE_SHARDS:
-			case MAKING_SUNFIRE_WINE:
-			case THIEVING_VARLAMORE_STEALING_VALUABLES:
+			case AnimationID.PISC_REPAIR_HAMMER:
+			case AnimationID.POH_CREATE_MAGIC_TABLET:
+			case AnimationID.HUMAN_FILLBUCKET_SANDPIT:
+			case AnimationID.MILKIT:
+			case AnimationID.PLAYER_CHURNS_MILK_SHORT:
+			case AnimationID.PLAYER_CHURNS_MILK_MEDIUM:
+			case AnimationID.PLAYER_CHURNS_MILK_LONG:
+			case AnimationID.VM_PLAYER_USE_SPECIMEN_BRUSH:
+			case AnimationID.VM_PLAYER_USE_ROCKPICK:
+			case AnimationID.HUMAN_PICKUPTABLE:
+			case AnimationID.HUMAN_PRAY_BLESSED_BONE_SHARDS_01:
+			case AnimationID.HUMAN_HERBING_GRIND_RESTART:
+			case AnimationID.VARLAMORE_THIEVING_SEARCH:
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();
 				break;
-			case MAGIC_LUNAR_SHARED:
-				if (graphic == GraphicID.BAKE_PIE)
+			case AnimationID.LUNAR_HUMAN_MAGIC_SUMMON2:
+				if (graphic == SpotanimID.QUEST_LUNAR_BAKEPIE_SPOTANIM)
 				{
 					resetTimers();
 					lastAnimation = animation;
 					lastAnimating = Instant.now();
 					break;
 				}
-			case IDLE:
+			case -1:
 				lastAnimating = Instant.now();
 				break;
 			default:
 				// On unknown animation simply assume the animation is invalid and dont throw notification
-				lastAnimation = IDLE;
+				lastAnimation = -1;
 				lastAnimating = null;
 		}
 	}
@@ -512,7 +511,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getGraphic() == GraphicID.SPLASH)
+		if (actor.getGraphic() == SpotanimID.FAILEDSPELL_IMPACT)
 		{
 			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
@@ -600,10 +599,10 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.BUFF_BAR_WC_GROUP_BONUS && event.getValue() == BUFF_BAR_NOT_DISPLAYED)
+		if (event.getVarpId() == VarPlayerID.GROUP_GATHERING_ACTIVE_BUFF && event.getValue() == BUFF_BAR_NOT_DISPLAYED)
 		{
 			resetTimers();
-			lastAnimation = WOODCUTTING_RUNE;
+			lastAnimation = AnimationID.HUMAN_WOODCUTTING_RUNE_AXE;
 			lastAnimating = Instant.now();
 		}
 	}
@@ -710,7 +709,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkFullSpecEnergy()
 	{
-		int currentSpecEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		int currentSpecEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY);
 
 		int threshold = config.getSpecEnergyThreshold() * 10;
 		if (threshold == 0)
@@ -733,7 +732,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			return false;
 		}
-		if (config.getOxygenThreshold() >= client.getVarbitValue(Varbits.OXYGEN_LEVEL) * 0.1)
+		if (config.getOxygenThreshold() >= client.getVarbitValue(VarbitID.FOSSIL_UNDERWATER_OXYGEN) * 0.1)
 		{
 			if (!notifyOxygen)
 			{
@@ -756,7 +755,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVarbitValue(Varbits.NMZ_ABSORPTION) <= config.getHitpointsThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVarbitValue(VarbitID.NZONE_ABSORB_POTION_EFFECTS) <= config.getHitpointsThreshold())
 			{
 				if (!notifyHitpoints)
 				{
@@ -863,7 +862,7 @@ public class IdleNotifierPlugin extends Plugin
 				lastInteracting = null;
 
 				// prevent animation notifications from firing too
-				lastAnimation = IDLE;
+				lastAnimation = -1;
 				lastAnimating = null;
 
 				return true;
@@ -936,18 +935,18 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkAnimationIdle(Duration waitDuration, Player local)
 	{
-		if (lastAnimation == IDLE)
+		if (lastAnimation == -1)
 		{
 			return false;
 		}
 
 		final int animation = local.getAnimation();
 
-		if (animation == IDLE)
+		if (animation == -1)
 		{
 			if (lastAnimating != null && Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 			{
-				lastAnimation = IDLE;
+				lastAnimation = -1;
 				lastAnimating = null;
 
 				// prevent interaction notifications from firing too
@@ -978,12 +977,12 @@ public class IdleNotifierPlugin extends Plugin
 		if (lastPosition.equals(position))
 		{
 			if (notifyPosition
-				&& local.getAnimation() == IDLE
+				&& local.getAnimation() == -1
 				&& Instant.now().compareTo(lastMoving.plus(waitDuration)) >= 0)
 			{
 				notifyPosition = false;
 				// Return true only if we weren't just breaking out of an animation
-				return lastAnimation == IDLE;
+				return lastAnimation == -1;
 			}
 		}
 		else
@@ -1005,7 +1004,7 @@ public class IdleNotifierPlugin extends Plugin
 		var gameState = client.getGameState();
 		if (gameState == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
 		{
-			lastAnimation = IDLE;
+			lastAnimation = -1;
 		}
 
 		// Reset interaction idle timer

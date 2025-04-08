@@ -29,7 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MusicClue;
@@ -68,14 +68,14 @@ class ClueScrollMusicOverlay extends Overlay
 
 		MusicClue musicClue = (MusicClue) clue;
 
-		Widget musicContainer = client.getWidget(ComponentID.MUSIC_CONTAINER);
+		Widget musicContainer = client.getWidget(InterfaceID.Music.UNIVERSE);
 
 		if (musicContainer == null || musicContainer.isHidden())
 		{
 			return null;
 		}
 
-		Widget trackList = client.getWidget(ComponentID.MUSIC_LIST);
+		Widget trackList = client.getWidget(InterfaceID.Music.JUKEBOX);
 		String trackToFind = musicClue.getSong();
 		Widget found = null;
 
@@ -101,7 +101,7 @@ class ClueScrollMusicOverlay extends Overlay
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			plugin.scrollToWidget(ComponentID.MUSIC_SCROLL_CONTAINER, ComponentID.MUSIC_SCROLLBAR, found);
+			plugin.scrollToWidget(InterfaceID.Music.SCROLLABLE, InterfaceID.Music.SCROLLBAR, found);
 		}
 		plugin.highlightWidget(graphics, found, trackList, PADDING, null);
 

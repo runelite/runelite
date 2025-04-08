@@ -43,12 +43,9 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -58,8 +55,10 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -170,15 +169,15 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)
-			&& event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INV)
+			&& event.getItemContainer() != client.getItemContainer(InventoryID.WORN))
 		{
 			return;
 		}
 
 		final boolean showOverlays = session.getLastFishCaught() != null
-			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
-			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
+			|| canPlayerFish(client.getItemContainer(InventoryID.INV))
+			|| canPlayerFish(client.getItemContainer(InventoryID.WORN));
 
 		if (!showOverlays)
 		{
@@ -249,31 +248,31 @@ public class FishingPlugin extends Plugin
 			switch (item.getId())
 			{
 				case ItemID.DRAGON_HARPOON:
-				case ItemID.DRAGON_HARPOON_OR:
+				case ItemID.TRAILBLAZER_HARPOON_NO_INFERNAL:
 				case ItemID.INFERNAL_HARPOON:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
+				case ItemID.INFERNAL_HARPOON_EMPTY:
+				case ItemID.TRAILBLAZER_HARPOON_EMPTY:
 				case ItemID.HARPOON:
-				case ItemID.BARBTAIL_HARPOON:
-				case ItemID.BIG_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET_6209:
+				case ItemID.HUNTING_BARBED_HARPOON:
+				case ItemID.BIG_NET:
+				case ItemID.NET:
+				case ItemID.EVIL_BOB_NET:
 				case ItemID.FISHING_ROD:
 				case ItemID.FLY_FISHING_ROD:
-				case ItemID.PEARL_BARBARIAN_ROD:
-				case ItemID.PEARL_FISHING_ROD:
-				case ItemID.PEARL_FLY_FISHING_ROD:
-				case ItemID.BARBARIAN_ROD:
+				case ItemID.FISHINGROD_PEARL_BRUT:
+				case ItemID.FISHINGROD_PEARL:
+				case ItemID.FISHINGROD_PEARL_FLY:
+				case ItemID.BRUT_FISHING_ROD:
 				case ItemID.OILY_FISHING_ROD:
 				case ItemID.LOBSTER_POT:
-				case ItemID.KARAMBWAN_VESSEL:
-				case ItemID.KARAMBWAN_VESSEL_3159:
-				case ItemID.CORMORANTS_GLOVE:
-				case ItemID.CORMORANTS_GLOVE_22817:
-				case ItemID.INFERNAL_HARPOON_OR:
-				case ItemID.ECHO_HARPOON:
+				case ItemID.TBWT_KARAMBWAN_VESSEL:
+				case ItemID.TBWT_KARAMBWAN_VESSEL_LOADED_WITH_KARAMBWANJI:
+				case ItemID.AERIAL_FISHING_GLOVES_NO_BIRD:
+				case ItemID.AERIAL_FISHING_GLOVES_BIRD:
+				case ItemID.TRAILBLAZER_HARPOON:
+				case ItemID.LEAGUE_TRAILBLAZER_HARPOON:
 				case ItemID.CRYSTAL_HARPOON:
-				case ItemID.CRYSTAL_HARPOON_23864:
+				case ItemID.GAUNTLET_HARPOON:
 				case ItemID.CRYSTAL_HARPOON_INACTIVE:
 					return true;
 			}
@@ -352,7 +351,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == InterfaceID.TRAWLER)
+		if (event.getGroupId() == InterfaceID.TRAWLER_OVERLAY)
 		{
 			trawlerStartTime = Instant.now();
 			log.debug("Trawler session started");
@@ -375,13 +374,13 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		Widget trawlerContributionWidget = client.getWidget(ComponentID.TRAWLER_CONTRIBUTION);
+		Widget trawlerContributionWidget = client.getWidget(InterfaceID.TrawlerOverlay.CATCH);
 		if (trawlerContributionWidget == null)
 		{
 			return;
 		}
 
-		int trawlerContribution = client.getVarbitValue(Varbits.FISHING_TRAWLER_ACTIVITY);
+		int trawlerContribution = client.getVarbitValue(VarbitID.TRAWLER_ACTIVITY);
 		trawlerContributionWidget.setText("Contribution: " + trawlerContribution);
 	}
 
@@ -408,7 +407,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		Widget trawlerTimerWidget = client.getWidget(ComponentID.TRAWLER_TIMER);
+		Widget trawlerTimerWidget = client.getWidget(InterfaceID.TrawlerOverlay.TIME);
 		if (trawlerTimerWidget == null)
 		{
 			return;

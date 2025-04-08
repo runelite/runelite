@@ -30,15 +30,15 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 
 @AllArgsConstructor
 @Getter
 public enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::dragonWarhammerThreshold)
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.BH_DRAGON_WARHAMMER_CORRUPTED}, false, SpecialCounterConfig::dragonWarhammerThreshold)
 		{
 			@Override
 			public float computeDrainPercent(int hit, @Nullable NPC target)
@@ -56,7 +56,7 @@ public enum SpecialWeapon
 		},
 	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
 	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
-	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold)
+	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BGS, ItemID.BGSG}, true, SpecialCounterConfig::bandosGodswordThreshold)
 		{
 			@Override
 			public int computeHit(int hit, @Nullable NPC target)
@@ -68,11 +68,11 @@ public enum SpecialWeapon
 				return super.computeHit(hit, target);
 			}
 		},
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BRAIN_ANCHOR}, true, (c) -> 0),
+	BONE_DAGGER("Bone Dagger", new int[]{ItemID.DTTD_BONE_DAGGER, ItemID.DTTD_BONE_DAGGER_P, ItemID.DTTD_BONE_DAGGER_P_, ItemID.DTTD_BONE_DAGGER_P__}, true, (c) -> 0),
 	DORGESHUUN_CROSSBOW(
 		"Dorgeshuun Crossbow",
-		new int[]{ItemID.DORGESHUUN_CROSSBOW},
+		new int[]{ItemID.DTTD_BONE_CROSSBOW},
 		true,
 		(distance) -> 60 + distance * 3,
 		(c) -> 0
@@ -80,20 +80,20 @@ public enum SpecialWeapon
 	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold),
 	ACCURSED_SCEPTRE(
 		"Accursed Sceptre",
-		new int[]{ItemID.ACCURSED_SCEPTRE, ItemID.ACCURSED_SCEPTRE_A},
+		new int[]{ItemID.WILD_CAVE_ACCURSED_CHARGED, ItemID.WILD_CAVE_ACCURSED_CHARGED_RECOL},
 		false,
 		(distance) -> 46 + distance * 10,
 		(c) -> 0
 	),
 	TONALZTICS_OF_RALOS(
 		"Tonalztics of Ralos",
-		new int[]{ItemID.TONALZTICS_OF_RALOS},
+		new int[]{ItemID.TONALZTICS_OF_RALOS_CHARGED},
 		true, // Not really, but we convert the number of hits into a single hit
 		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
 		(c) -> 0
 	),
 	ELDER_MAUL("Elder Maul",
-		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_OR},
+		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_ORNAMENT},
 		false,
 		(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
 		SpecialCounterConfig::elderMaulThreshold)
@@ -112,16 +112,16 @@ public enum SpecialWeapon
 				return 0;
 			}
 		},
-	SEERCULL("Seercull", new int[]{ItemID.SEERCULL}, true, (d) -> 46 + (d * 5), (c) -> 0),
+	SEERCULL("Seercull", new int[]{ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW}, true, (d) -> 46 + (d * 5), (c) -> 0),
 	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold);
 
 	private static final Set<Integer> TEKTON_VARIANTS = ImmutableSet.of(
-		NpcID.TEKTON,
-		NpcID.TEKTON_7541,
-		NpcID.TEKTON_7542,
-		NpcID.TEKTON_7545,
-		NpcID.TEKTON_ENRAGED,
-		NpcID.TEKTON_ENRAGED_7544
+		NpcID.RAIDS_TEKTON_WAITING,
+		NpcID.RAIDS_TEKTON_WALKING_STANDARD,
+		NpcID.RAIDS_TEKTON_FIGHTING_STANDARD,
+		NpcID.RAIDS_TEKTON_HAMMERING,
+		NpcID.RAIDS_TEKTON_WALKING_ENRAGED,
+		NpcID.RAIDS_TEKTON_FIGHTING_ENRAGED
 	);
 
 	private final String name;

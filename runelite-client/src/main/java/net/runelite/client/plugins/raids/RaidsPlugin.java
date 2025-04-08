@@ -53,17 +53,17 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.MessageNode;
-import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatColorType;
@@ -246,7 +246,7 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		// if the player's party state has changed
-		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY)
+		if (event.getVarpId() == VarPlayerID.RAIDS_PARTY_GROUPHOLDER)
 		{
 			boolean inRaid = inRaidChambers;
 			int prevRaidID = raidPartyID;
@@ -264,7 +264,7 @@ public class RaidsPlugin extends Plugin
 		}
 
 		// if the player's raid state has changed
-		if (event.getVarbitId() == Varbits.IN_RAID)
+		if (event.getVarbitId() == VarbitID.RAIDS_CLIENT_INDUNGEON)
 		{
 			boolean inRaid = event.getValue() == 1;
 			inRaidChambers = inRaid;
@@ -314,8 +314,8 @@ public class RaidsPlugin extends Plugin
 
 				if (config.pointsMessage())
 				{
-					int totalPoints = client.getVarbitValue(Varbits.TOTAL_POINTS);
-					int personalPoints = client.getVarpValue(VarPlayer.RAIDS_PERSONAL_POINTS);
+					int totalPoints = client.getVarbitValue(VarbitID.RAIDS_CLIENT_PARTYSCORE);
+					int personalPoints = client.getVarpValue(VarPlayerID.RAIDS_PLAYERSCORE);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
@@ -362,7 +362,7 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
-		inRaidChambers = client.getVarbitValue(Varbits.IN_RAID) == 1;
+		inRaidChambers = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1;
 
 		if (!inRaidChambers)
 		{
@@ -489,7 +489,7 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == ObjectID.BLACK_WALL)
 				{
 					return tiles[x][y].getSceneLocation();
 				}

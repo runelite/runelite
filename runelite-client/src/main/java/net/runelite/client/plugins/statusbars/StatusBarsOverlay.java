@@ -40,9 +40,9 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.AlternateSprites;
 import net.runelite.client.game.SkillIconManager;
@@ -116,7 +116,7 @@ class StatusBarsOverlay extends Overlay
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
 			() ->
 			{
-				final int poisonState = client.getVarpValue(VarPlayer.POISON);
+				final int poisonState = client.getVarpValue(VarPlayerID.POISON);
 
 				if (poisonState >= 1000000)
 				{
@@ -128,12 +128,12 @@ class StatusBarsOverlay extends Overlay
 					return POISONED_COLOR;
 				}
 
-				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+				if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
 				{
 					return DISEASE_COLOR;
 				}
 
-				if (client.getVarbitValue(Varbits.PARASITE) >= 1)
+				if (client.getVarbitValue(VarbitID.PARASITE) >= 1)
 				{
 					return PARASITE_COLOR;
 				}
@@ -143,7 +143,7 @@ class StatusBarsOverlay extends Overlay
 			() -> HEAL_COLOR,
 			() ->
 			{
-				final int poisonState = client.getVarpValue(VarPlayer.POISON);
+				final int poisonState = client.getVarpValue(VarPlayerID.POISON);
 
 				if (poisonState > 0 && poisonState < 50)
 				{
@@ -155,7 +155,7 @@ class StatusBarsOverlay extends Overlay
 					return heartVenom;
 				}
 
-				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+				if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
 				{
 					return heartDisease;
 				}
@@ -191,7 +191,7 @@ class StatusBarsOverlay extends Overlay
 			() -> getRestoreValue("Run Energy"),
 			() ->
 			{
-				if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+				if (client.getVarbitValue(VarbitID.STAMINA_ACTIVE) != 0)
 				{
 					return RUN_STAMINA_COLOR;
 				}
@@ -205,7 +205,7 @@ class StatusBarsOverlay extends Overlay
 		));
 		barRenderers.put(StatusBarsConfig.BarMode.SPECIAL_ATTACK, new BarRenderer(
 			() -> MAX_SPECIAL_ATTACK_VALUE,
-			() -> client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
+			() -> client.getVarpValue(VarPlayerID.SA_ENERGY) / 10,
 			() -> 0,
 			() -> SPECIAL_ATTACK_COLOR,
 			() -> null,
@@ -213,7 +213,7 @@ class StatusBarsOverlay extends Overlay
 		));
 		barRenderers.put(StatusBarsConfig.BarMode.WARMTH, new BarRenderer(
 			() -> 100,
-			() -> client.getVarbitValue(Varbits.WINTERTODT_WARMTH) / 10,
+			() -> client.getVarbitValue(VarbitID.WINT_WARMTH) / 10,
 			() -> 0,
 			() -> new Color(244, 97, 0),
 			() -> null,
@@ -302,7 +302,7 @@ class StatusBarsOverlay extends Overlay
 		final Widget widget = entry.getWidget();
 		int restoreValue = 0;
 
-		if (widget != null && widget.getId() == ComponentID.INVENTORY_CONTAINER)
+		if (widget != null && widget.getId() == InterfaceID.Inventory.ITEMS)
 		{
 			final Effect change = itemStatService.getItemStatChanges(widget.getItemId());
 
@@ -330,6 +330,6 @@ class StatusBarsOverlay extends Overlay
 
 	private boolean inLms()
 	{
-		return client.getWidget(ComponentID.LMS_INGAME_INFO) != null;
+		return client.getWidget(InterfaceID.BrOverlay.CONTENT) != null;
 	}
 }

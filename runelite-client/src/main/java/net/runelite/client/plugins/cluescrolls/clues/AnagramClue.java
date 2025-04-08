@@ -35,10 +35,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
-import net.runelite.api.ObjectID;
 import net.runelite.api.TileObject;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
@@ -676,7 +676,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("WOO AN EGG KIWI")
 			.npc("Awowogei")
-			.objectId(ObjectID.AWOWOGEI)
+			.objectId(ObjectID.MM_THRONE)
 			.location(new WorldPoint(2802, 2765, 0))
 			.area("Ape Atoll")
 			.question("If I have 303 bananas, and share them between 31 friends evenly, only handing out full bananas. How many will I have left over?")
@@ -783,7 +783,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Jardric")
 			.locationProvider(plugin ->
 			{
-				int q = plugin.getClient().getVarbitValue(Varbits.QUEST_DS2);
+				int q = plugin.getClient().getVarbitValue(VarbitID.DS2);
 				return q <= 60 ?
 					new WorldPoint(3719, 3810, 0) : // Museum camp
 					new WorldPoint(3661, 3849, 0); // West side of Fossil Island
@@ -936,7 +936,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static String lumbridgeGravestoneCount(ClueScrollPlugin plugin)
 	{
-		switch (plugin.getClient().getVarbitValue(Varbits.JARVIS_GRAVESTONE))
+		switch (plugin.getClient().getVarbitValue(VarbitID.HW17_JARVIS_DEAD))
 		{
 			case 1:
 				return "20";

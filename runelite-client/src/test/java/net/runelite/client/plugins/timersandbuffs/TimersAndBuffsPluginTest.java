@@ -36,10 +36,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -118,7 +118,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
+		varbitChanged.setVarbitId(VarbitID.DIVINERANGE_POTION_TIME);
 		varbitChanged.setValue(500);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -134,19 +134,19 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
 
 		VarbitChanged rangingVarbitChanged = new VarbitChanged();
-		rangingVarbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
+		rangingVarbitChanged.setVarbitId(VarbitID.DIVINERANGE_POTION_TIME);
 		rangingVarbitChanged.setValue(500);
 		timersAndBuffsPlugin.onVarbitChanged(rangingVarbitChanged);
-		when(client.getVarbitValue(Varbits.DIVINE_RANGING)).thenReturn(500);
+		when(client.getVarbitValue(VarbitID.DIVINERANGE_POTION_TIME)).thenReturn(500);
 
 		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
-		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setVarbitId(VarbitID.DIVINEDEFENCE_POTION_TIME);
 		superDefenceVarbitChanged.setValue(500);
 		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
-		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+		when(client.getVarbitValue(VarbitID.DIVINEDEFENCE_POTION_TIME)).thenReturn(500);
 
 		VarbitChanged bastionVarbitChanged = new VarbitChanged();
-		bastionVarbitChanged.setVarbitId(Varbits.DIVINE_BASTION);
+		bastionVarbitChanged.setVarbitId(VarbitID.DIVINEBASTION_POTION_TIME);
 		bastionVarbitChanged.setValue(500);
 		timersAndBuffsPlugin.onVarbitChanged(bastionVarbitChanged);
 
@@ -177,10 +177,10 @@ public class TimersAndBuffsPluginTest
 	public void testDivineRangingAfterBastion()
 	{
 		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.DIVINE_BASTION)).thenReturn(400);
+		when(client.getVarbitValue(VarbitID.DIVINEBASTION_POTION_TIME)).thenReturn(400);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
+		varbitChanged.setVarbitId(VarbitID.DIVINERANGE_POTION_TIME);
 		varbitChanged.setValue(500);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -194,12 +194,12 @@ public class TimersAndBuffsPluginTest
 	public void testStamina()
 	{
 		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
-		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
-		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.STAMINA_ACTIVE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.STAMINA_DURATION)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA)).thenReturn(0);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
+		varbitChanged.setVarbitId(VarbitID.STAMINA_ACTIVE); // just has to be one of the vars
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -227,12 +227,12 @@ public class TimersAndBuffsPluginTest
 	public void testEndurance()
 	{
 		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
-		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
-		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.STAMINA_ACTIVE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.STAMINA_DURATION)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA)).thenReturn(20);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
+		varbitChanged.setVarbitId(VarbitID.STAMINA_ACTIVE); // just has to be one of the vars
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -242,7 +242,7 @@ public class TimersAndBuffsPluginTest
 		assertEquals(Duration.ofMinutes(4), infoBox.getDuration());
 
 		// unwield ring
-		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA)).thenReturn(0);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 		int mins = (int) infoBox.getDuration().toMinutes();
 		assertEquals(2, mins);
@@ -351,7 +351,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(50);
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.DEATH_CHARGE);
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE);
 		varbitChanged.setValue(1);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -368,7 +368,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.DEATH_CHARGE_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN);
 		varbitChanged.setValue(1);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -399,7 +399,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.WARD_OF_ARCEUUS_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_WARD_COOLDOWN);
 		varbitChanged.setValue(1);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -415,7 +415,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.CORRUPTION_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_CORRUPTION_COOLDOWN);
 		varbitChanged.setValue(1);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -446,7 +446,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.SHADOW_VEIL_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_SHADOW_VEIL_COOLDOWN);
 		varbitChanged.setValue(1);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -478,7 +478,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.RESURRECT_THRALL_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_RESURRECTION_COOLDOWN);
 		varbitChanged.setValue(1);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -495,7 +495,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showImbuedHeart()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.IMBUED_HEART_TIMER);
 		varbitChanged.setValue(70);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -512,7 +512,7 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showImbuedHeart()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.IMBUED_HEART_TIMER);
 		varbitChanged.setValue(70);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once (on createGameTimer)
 
@@ -524,7 +524,7 @@ public class TimersAndBuffsPluginTest
 		assertTrue(pred.test(imbuedHeartInfoBox));
 
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setVarbitId(VarbitID.IMBUED_HEART_TIMER);
 		varbitChanged.setValue(0);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once
 
@@ -554,9 +554,9 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showOverload()).thenReturn(true);
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 
-		when(client.getVarbitValue(Varbits.IN_RAID)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON)).thenReturn(1);
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.COX_OVERLOAD_REFRESHES_REMAINING);
+		varbitChanged.setVarbitId(VarbitID.RAIDS_OVERLOAD_TIMER);
 		varbitChanged.setValue(15);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
@@ -581,7 +581,7 @@ public class TimersAndBuffsPluginTest
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING);
+		varbitChanged.setVarbitId(VarbitID.NZONE_OVERLOAD_POTION_EFFECTS);
 		varbitChanged.setValue(9);
 		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 

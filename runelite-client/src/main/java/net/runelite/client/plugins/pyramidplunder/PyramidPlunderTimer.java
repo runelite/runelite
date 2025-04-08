@@ -30,7 +30,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
 class PyramidPlunderTimer extends Timer
@@ -61,8 +61,8 @@ class PyramidPlunderTimer extends Timer
 	@Override
 	public String getTooltip()
 	{
-		int floor = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM);
-		int thievingLevel = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_THIEVING_LEVEL);
+		int floor = client.getVarbitValue(VarbitID.NTK_ROOM_NUMBER);
+		int thievingLevel = client.getVarbitValue(VarbitID.NTK_THIEVING_REQUIRED);
 		return String.format("Time remaining. Floor: %d. Thieving level: %d", floor, thievingLevel);
 	}
 

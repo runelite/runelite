@@ -31,10 +31,10 @@ import java.awt.Graphics2D;
 import java.time.Instant;
 import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -46,22 +46,22 @@ class MiningOverlay extends OverlayPanel
 {
 	private static final String MINING_RESET = "Reset";
 	private static final Set<Integer> WAll_ANIMATIONS = ImmutableSet.of(
-		AnimationID.MINING_MOTHERLODE_3A,
-		AnimationID.MINING_MOTHERLODE_ADAMANT,
-		AnimationID.MINING_MOTHERLODE_BLACK,
-		AnimationID.MINING_MOTHERLODE_BRONZE,
-		AnimationID.MINING_MOTHERLODE_CRYSTAL,
-		AnimationID.MINING_MOTHERLODE_DRAGON,
-		AnimationID.MINING_MOTHERLODE_DRAGON_OR,
-		AnimationID.MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER,
-		AnimationID.MINING_MOTHERLODE_DRAGON_UPGRADED,
-		AnimationID.MINING_MOTHERLODE_GILDED,
-		AnimationID.MINING_MOTHERLODE_INFERNAL,
-		AnimationID.MINING_MOTHERLODE_IRON,
-		AnimationID.MINING_MOTHERLODE_MITHRIL,
-		AnimationID.MINING_MOTHERLODE_RUNE,
-		AnimationID.MINING_MOTHERLODE_STEEL,
-		AnimationID.MINING_MOTHERLODE_TRAILBLAZER);
+		AnimationID.HUMAN_MINING_3A_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_ADAMANT_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_BLACK_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_BRONZE_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_CRYSTAL_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_DRAGON_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_ZALCANO_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_TRAILBLAZER_PICKAXE_NO_INFERNAL_WALL,
+		AnimationID.HUMAN_MINING_DRAGON_PICKAXE_PRETTY_WALL,
+		AnimationID.HUMAN_MINING_GILDED_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_INFERNAL_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_IRON_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_MITHRIL_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_RUNE_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_STEEL_PICKAXE_WALL,
+		AnimationID.HUMAN_MINING_LEAGUE_TRAILBLAZER_PICKAXE_WALL);
 
 	private final Client client;
 	private final MiningPlugin plugin;
@@ -93,7 +93,7 @@ class MiningOverlay extends OverlayPanel
 		Pickaxe pickaxe = plugin.getPickaxe();
 		if (pickaxe != null &&
 				(pickaxe.matchesMiningAnimation(client.getLocalPlayer())
-						|| client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING
+						|| client.getLocalPlayer().getAnimation() == AnimationID.ARCEUUS_CHISEL_ESSENCE
 						// when receiving ore from a wall the animation sets to -1 before starting up again
 						|| (WAll_ANIMATIONS.contains(plugin.getLastActionAnimationId())
 								&& plugin.getLastAnimationChange().isAfter(Instant.now().minusMillis(1800))))

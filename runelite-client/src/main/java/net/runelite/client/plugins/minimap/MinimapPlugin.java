@@ -34,7 +34,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -137,21 +137,21 @@ public class MinimapPlugin extends Plugin
 
 	private void updateMinimapWidgetVisibility(boolean enable)
 	{
-		final Widget resizableStonesWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP);
+		final Widget resizableStonesWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MAP_CONTAINER);
 
 		if (resizableStonesWidget != null)
 		{
 			resizableStonesWidget.setHidden(enable);
 		}
 
-		final Widget resizableNormalWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP);
+		final Widget resizableNormalWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MAP_CONTAINER);
 
 		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
 		{
 			for (Widget widget : resizableNormalWidget.getStaticChildren())
 			{
-				if (widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY &&
-					widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON)
+				if (widget.getId() != InterfaceID.ToplevelPreEoc.STONE10 &&
+					widget.getId() != InterfaceID.ToplevelPreEoc.ICON10)
 				{
 					widget.setHidden(enable);
 				}

@@ -37,13 +37,12 @@ import lombok.Getter;
 import lombok.Singular;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectComposition;
-import net.runelite.api.ObjectID;
 import net.runelite.api.TileObject;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
@@ -88,7 +87,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search for a crate in a building in Hemenster.")
 			.location(new WorldPoint(2636, 3453, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("House northwest of the Ranging Guild. West of Grandpa Jack.")
 			.build(),
 		CrypticClue.builder()
@@ -100,13 +99,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the bucket in the Port Sarim jail.")
 			.location(new WorldPoint(3013, 3179, 0))
-			.objectId(ObjectID.BUCKET_9568)
+			.objectId(ObjectID.PRISON_BUCKET)
 			.solution("Talk to Shantay & identify yourself as an outlaw, refuse to pay the 5gp fine twice and you will be sent to the Port Sarim jail.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in a bank in Varrock.")
 			.location(new WorldPoint(3187, 9825, 0))
-			.objectId(ObjectID.CRATE_5107)
+			.objectId(ObjectID.FAI_VARROCK_LARGE_CRATES)
 			.solution("Search in the basement of the West Varrock bank.")
 			.build(),
 		CrypticClue.builder()
@@ -118,7 +117,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search a bookcase in the Wizards tower.")
 			.location(new WorldPoint(3113, 3159, 0))
-			.objectId(ObjectID.BOOKCASE_12539)
+			.objectId(ObjectID.FAI_WIZTOWER_BOOKCASE)
 			.solution("The bookcase located on the ground floor of the Wizards' Tower. Fairy ring DIS.")
 			.build(),
 		CrypticClue.builder()
@@ -151,7 +150,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search for a crate on the ground floor of a house in Seers' Village.")
 			.location(new WorldPoint(2699, 3470, 0))
-			.objectId(ObjectID.CRATE_25775)
+			.objectId(ObjectID.KR_CRATE)
 			.solution("Search inside Phantuwti Fanstuwi Farsight's house, located south of the pub in Seers' Village.")
 			.build(),
 		CrypticClue.builder()
@@ -175,7 +174,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Find a crate close to the monks that like to paaarty!")
 			.location(new WorldPoint(2614, 3204, 0))
-			.objectId(ObjectID.CRATE_354)
+			.objectId(ObjectID.CRATE2)
 			.solution("The crate is in the east side of the Ardougne monastery, near Brother Omad.")
 			.build(),
 		CrypticClue.builder()
@@ -192,7 +191,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npcRegion(10292)
 			.npcRegion(10547)
 			.npcRegion(10548)
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("Kill any Guard located around East Ardougne for a medium key. Then search the drawers in the upstairs hallway of Jerico's house, which is the house with pigeon cages located south of the northern East Ardougne bank.")
 			.build(),
 		CrypticClue.builder()
@@ -209,13 +208,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("A town with a different sort of night-life is your destination. Search for some crates in one of the houses.")
 			.location(new WorldPoint(3498, 3507, 0))
-			.objectId(ObjectID.CRATE_24344)
+			.objectId(ObjectID.CANAFIS_CRATE)
 			.solution("Search the crate inside of the clothes shop in Canifis.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crate near a cart in Port Khazard.")
 			.location(new WorldPoint(2660, 3149, 0))
-			.objectId(ObjectID.CRATE_366)
+			.objectId(ObjectID.CRATE)
 			.solution("Search by the southern Khazard General Store in Port Khazard.")
 			.build(),
 		CrypticClue.builder()
@@ -234,7 +233,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in the shed just north of East Ardougne.")
 			.location(new WorldPoint(2617, 3347, 0))
-			.objectId(ObjectID.CRATE_355)
+			.objectId(ObjectID.CRATE3)
 			.solution("The crates in the shed north of the northern Ardougne bank.")
 			.build(),
 		CrypticClue.builder()
@@ -246,13 +245,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crate in the Toad and Chicken pub.")
 			.location(new WorldPoint(2913, 3536, 0))
-			.objectId(ObjectID.CRATE_354)
+			.objectId(ObjectID.CRATE2)
 			.solution("The Toad and Chicken pub is located in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search chests found in the upstairs of shops in Port Sarim.")
 			.location(new WorldPoint(3016, 3205, 1))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("Search the chest on the east wall found upstairs of Wydin's Food Store in Port Sarim.")
 			.build(),
 		CrypticClue.builder()
@@ -264,13 +263,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("The dead, red dragon watches over this chest. He must really dig the view.")
 			.location(new WorldPoint(3353, 3332, 0))
 			.npc("Barbarian")
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("Search the chest underneath the Red Dragon's head in the Exam Centre. Kill a Barbarian in Barbarian Village or Barbarian Outpost to receive the key.")
 			.build(),
 		CrypticClue.builder()
 			.text("My home is grey, and made of stone; A castle with a search for a meal. Hidden in some drawers I am, across from a wooden wheel.")
 			.location(new WorldPoint(3213, 3216, 1))
-			.objectId(ObjectID.DRAWERS_5618)
+			.objectId(ObjectID.DRAWERS4)
 			.solution("Open the drawers inside the room with the spinning wheel on the first floor of Lumbridge Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -281,7 +280,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Look in the ground floor crates of houses in Falador.")
 			.location(new WorldPoint(3029, 3355, 0))
-			.objectId(ObjectID.CRATES_24088)
+			.objectId(ObjectID.FAI_FALADOR_SMALL_CRATES)
 			.solution("The house east of the eastern bank in Falador.")
 			.build(),
 		CrypticClue.builder()
@@ -293,31 +292,31 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in Draynor Manor.")
 			.location(new WorldPoint(3106, 3369, 2))
-			.objectId(ObjectID.CRATE_11485)
+			.objectId(ObjectID.DRAYNOR_CRATE)
 			.solution("Top floor of the Draynor Manor.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates near a cart in Varrock.")
 			.location(new WorldPoint(3226, 3452, 0))
-			.objectId(ObjectID.CRATE_5107)
+			.objectId(ObjectID.FAI_VARROCK_LARGE_CRATES)
 			.solution("South east of Varrock Palace, south of the tree farming patch.")
 			.build(),
 		CrypticClue.builder()
 			.text("A Guthixian ring lies between two peaks. Search the stones and you'll find what you seek.")
 			.location(new WorldPoint(2922, 3484, 0))
-			.objectId(ObjectID.STONES_26633)
+			.objectId(ObjectID.BOULDER4_SEARCH)
 			.solution("Search the stones several steps west of the Guthixian stone circle in Taverley.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the boxes in the house near the south entrance to Varrock.")
 			.location(new WorldPoint(3203, 3384, 0))
-			.objectId(ObjectID.BOXES_5111)
+			.objectId(ObjectID.FAI_VARROCK_BOXES)
 			.solution("The first house on the left when entering Varrock from the southern entrance.")
 			.build(),
 		CrypticClue.builder()
 			.text("His head might be hollow, but the crates nearby are filled with surprises.")
 			.location(new WorldPoint(3478, 3091, 0))
-			.objectId(ObjectID.CRATE_354)
+			.objectId(ObjectID.CRATE2)
 			.solution("Search the crates near the Clay golem in the ruins of Uzer.")
 			.build(),
 		CrypticClue.builder()
@@ -352,19 +351,19 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in Canifis.")
 			.location(new WorldPoint(3509, 3497, 0))
-			.objectId(ObjectID.CRATE_24344)
+			.objectId(ObjectID.CANAFIS_CRATE)
 			.solution("Search inside Rufus' Meat Emporium in Canifis.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the Dwarven mine.")
 			.location(new WorldPoint(3035, 9849, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Search the crate in the room east of the Ice Mountain ladder entrance in the Drogo's Mining Emporium in the Dwarven Mine.")
 			.build(),
 		CrypticClue.builder()
 			.text("A crate found in the tower of a church is your next location.")
 			.location(new WorldPoint(2612, 3304, 1))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Climb the ladder and search the crates on the first floor in the Church in Ardougne.")
 			.build(),
 		CrypticClue.builder()
@@ -409,13 +408,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search a wardrobe in Draynor.")
 			.location(new WorldPoint(3087, 3261, 0))
-			.objectId(ObjectID.WARDROBE_5622)
+			.objectId(ObjectID.DRAYNOR_WARDROBE)
 			.solution("Go to Aggie's house in Draynor Village and search the wardrobe in northern wall.")
 			.build(),
 		CrypticClue.builder()
 			.text("I have many arms but legs, I have just one. I have little family but my seed you can grow on, I am not dead, yet I am but a spirit, and my power, on your quests, you will earn the right to free it.")
 			.location(new WorldPoint(2544, 3170, 0))
-			.objectId(NullObjectID.NULL_1293)
+			.objectId(ObjectID.ENT)
 			.solution("Spirit Tree in Tree Gnome Village.")
 			.questionText("What is the next number in the sequence? 1, 11, 21, 1211, 111221, 312211")
 			.answer("13112221")
@@ -431,7 +430,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(2593, 3108, 1))
 			.npc("Man")
 			.npcRegion(10288)
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("Search the chest upstairs in the house north of Yanille Wizards' Guild. Kill a man for the key.")
 			.build(),
 		CrypticClue.builder()
@@ -440,13 +439,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Wizard")
 			.npcRegion(12337)
 			.npcRegion(12437)
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Search the drawers in the basement of the Wizards' Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
 			.build(),
 		CrypticClue.builder()
 			.text("Even the seers say this clue goes right over their heads.")
 			.location(new WorldPoint(2707, 3488, 2))
-			.objectId(ObjectID.CRATE_14934)
+			.objectId(ObjectID.ROOFTOPS_SEERS_CRATE)
 			.solution("Search the crate on the Seers Agility Course in Seers Village")
 			.build(),
 		CrypticClue.builder()
@@ -460,7 +459,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(3256, 3487, 0))
 			.npc("Monk")
 			.npcRegion(10290)
-			.objectId(ObjectID.CLOSED_CHEST_5108)
+			.objectId(ObjectID.FAI_VARROCK_CHEST_CLOSED)
 			.solution("Search the chest by the stairs in the Varrock church. Kill a Monk in Ardougne Monastery to obtain the key.")
 			.build(),
 		CrypticClue.builder()
@@ -477,7 +476,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search for a crate in Varrock Castle.")
 			.location(new WorldPoint(3224, 3492, 0))
-			.objectId(ObjectID.CRATE_5113)
+			.objectId(ObjectID.FAI_VARROCK_RED_CRATE)
 			.solution("Search the crate in the corner of the kitchen in Varrock Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -494,25 +493,25 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in the Barbarian Village helmet shop.")
 			.location(new WorldPoint(3073, 3430, 0))
-			.objectId(ObjectID.CRATES_11600)
+			.objectId(ObjectID.FAI_BARBARIAN_SMALL_CRATES)
 			.solution("Peksa's Helmet Shop in Barbarian Village.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the boxes of Falador's general store.")
 			.location(new WorldPoint(2955, 3390, 0))
-			.objectId(ObjectID.CRATES_24088)
+			.objectId(ObjectID.FAI_FALADOR_SMALL_CRATES)
 			.solution("Falador general store.")
 			.build(),
 		CrypticClue.builder()
 			.text("In a village made of bamboo, look for some crates under one of the houses.")
 			.location(new WorldPoint(2800, 3074, 0))
-			.objectId(ObjectID.CRATE_356)
+			.objectId(ObjectID.CRATE_OLD)
 			.solution("Search the crate by the house at the northern point of the broken jungle fence in Tai Bwo Wannai.")
 			.build(),
 		CrypticClue.builder()
 			.text("This crate is mine, all mine, even if it is in the middle of the desert.")
 			.location(new WorldPoint(3289, 3022, 0))
-			.objectId(ObjectID.CRATE_18889)
+			.objectId(ObjectID.TOURTRAP_QIP_CRATE_SINGLE)
 			.solution("Center of desert Mining Camp. Search the crates. Requires the metal key from Tourist Trap to enter.")
 			.build(),
 		CrypticClue.builder()
@@ -526,37 +525,37 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Guard dog")
 			.npcRegion(10547)
 			.npcRegion(10548)
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("Search the drawers upstairs in the pub north of Ardougne Castle. Kill a Guard dog at Handelmort Mansion to obtain the key.")
 			.build(),
 		CrypticClue.builder()
 			.text("Four blades I have, yet draw no blood; Still I turn my prey to powder. If you are brave, come search my roof; It is there my blades are louder.")
 			.location(new WorldPoint(3166, 3309, 2))
-			.objectId(ObjectID.CRATE_12963)
+			.objectId(ObjectID.QIP_COOK_CRATE_STACKED)
 			.solution("Lumbridge windmill, search the crates on the top floor.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search through some drawers in the upstairs of a house in Rimmington.")
 			.location(new WorldPoint(2970, 3214, 1))
-			.objectId(ObjectID.DRAWERS_352)
+			.objectId(ObjectID.DRAWERS3)
 			.solution("On the first floor of the house north of Hetty the Witch's house in Rimmington.")
 			.build(),
 		CrypticClue.builder()
 			.text("Probably filled with books on magic.")
 			.location(new WorldPoint(3096, 9572, 0))
-			.objectId(ObjectID.BOOKCASE_380)
+			.objectId(ObjectID.BOOKCASE)
 			.solution("Search the bookcase in the basement of Wizards' Tower. Fairy ring DIS.")
 			.build(),
 		CrypticClue.builder()
 			.text("If you look closely enough, it seems that the archers have lost more than their needles.")
 			.location(new WorldPoint(2672, 3416, 0))
-			.objectId(ObjectID.HAYSTACK)
+			.objectId(ObjectID.HAYSTACK3)
 			.solution("Search the haystack by the south corner of the Ranging Guild.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crate in the left-hand tower of Lumbridge Castle.")
 			.location(new WorldPoint(3228, 3212, 1))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Located on the first floor of the southern tower at the Lumbridge Castle entrance.")
 			.build(),
 		CrypticClue.builder()
@@ -612,13 +611,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("When no weapons are at hand, then is the time to reflect. In Saradomin's name, redemption draws closer...")
 			.location(new WorldPoint(2818, 3351, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("On Entrana, search the southern drawer in the house with the cooking range.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in a house in Yanille that has a piano.")
 			.location(new WorldPoint(2598, 3105, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("The house is located northwest of the bank in Yanille.")
 			.build(),
 		CrypticClue.builder()
@@ -647,7 +646,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Must be full of railings.")
 			.location(new WorldPoint(2576, 3464, 0))
-			.objectId(ObjectID.BOXES_6176)
+			.objectId(ObjectID.DWARF_KELDAGRIM_WOODEN_BOXES)
 			.solution("Search the boxes around the hut where the broken Dwarf Cannon is, close to the start of the Dwarf Cannon quest.")
 			.build(),
 		CrypticClue.builder()
@@ -659,13 +658,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Read 'How to breed scorpions.' By O.W.Thathurt.")
 			.location(new WorldPoint(2703, 3409, 1))
-			.objectId(ObjectID.BOOKCASE_380)
+			.objectId(ObjectID.BOOKCASE)
 			.solution("Search the northern bookcase on the first floor of the Sorcerer's Tower.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the Port Sarim Fishing shop.")
 			.location(new WorldPoint(3012, 3222, 0))
-			.objectId(ObjectID.CRATE_9534)
+			.objectId(ObjectID.SARIM_CRATE2)
 			.solution("Search the crates, by the door, in Gerrant's Fishy Business in Port Sarim.")
 			.build(),
 		CrypticClue.builder()
@@ -734,7 +733,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers in Falador's chain mail shop.")
 			.location(new WorldPoint(2969, 3311, 0))
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("Wayne's Chains - Chainmail Specialist store at the southern Falador walls.")
 			.build(),
 		CrypticClue.builder()
@@ -758,7 +757,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the bush at the digsite centre.")
 			.location(new WorldPoint(3345, 3378, 0))
-			.objectId(ObjectID.BUSH_2357)
+			.objectId(ObjectID.DIGSITEBUSH)
 			.solution("The bush is on the east side of the first pathway towards the digsite from the Exam Centre.")
 			.build(),
 		CrypticClue.builder()
@@ -770,7 +769,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("It seems to have reached the end of the line, and it's still empty.")
 			.location(new WorldPoint(3041, 9820, 0))
-			.objectId(ObjectID.MINE_CART_6045)
+			.objectId(ObjectID.DWARFROCK_BOOK_CART)
 			.solution("Search the carts in the northern part of the Dwarven Mine.")
 			.build(),
 		CrypticClue.builder()
@@ -780,13 +779,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("When you get tired of fighting, go deep, deep down until you need an antidote.")
 			.location(new WorldPoint(2576, 9583, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Go to Yanille Agility dungeon and fall into the place with the poison spiders by praying at the Chaos altar. Search the crate by the stairs leading up.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the bookcase in the monastery.")
 			.location(new WorldPoint(3054, 3484, 0))
-			.objectId(ObjectID.BOOKCASE_380)
+			.objectId(ObjectID.BOOKCASE)
 			.solution("Search the southeastern bookcase at Edgeville Monastery.")
 			.build(),
 		CrypticClue.builder()
@@ -798,7 +797,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search upstairs in the houses of Seers' Village for some drawers.")
 			.location(new WorldPoint(2716, 3471, 1))
-			.objectId(ObjectID.DRAWERS_25766)
+			.objectId(ObjectID.KR_SEERS_VILLAGE_DRAWERS1)
 			.solution("Located in the house with the spinning wheel. South of the Seers' Village bank.")
 			.build(),
 		CrypticClue.builder()
@@ -833,19 +832,19 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Try not to step on any aquatic nasties while searching this crate.")
 			.location(new WorldPoint(2764, 3273, 0))
-			.objectId(ObjectID.CRATE_18204)
+			.objectId(ObjectID.SLUG2_CRATE_SINGLE)
 			.solution("Search the crate in Bailey's house on the Fishing Platform.")
 			.build(),
 		CrypticClue.builder()
 			.text("The cheapest water for miles around, but they react badly to religious icons.")
 			.location(new WorldPoint(3178, 2987, 0))
-			.objectId(ObjectID.CRATE_354)
+			.objectId(ObjectID.CRATE2)
 			.solution("Search the crates in the General Store tent in the Desert Bandit Camp.")
 			.build(),
 		CrypticClue.builder()
 			.text("This village has a problem with cartloads of the undead. Try checking the bookcase to find an answer.")
 			.location(new WorldPoint(2833, 2992, 0))
-			.objectId(ObjectID.BOOKCASE_394)
+			.objectId(ObjectID.SHELVES_BAMBOO)
 			.solution("Search the bookcase by the doorway of the building just south east of the Shilo Village Gem Mine.")
 			.build(),
 		CrypticClue.builder()
@@ -868,13 +867,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the chest in Barbarian Village.")
 			.location(new WorldPoint(3085, 3429, 0))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("The chest located in the house with a spinning wheel in Barbarian Village.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the outhouse of the long building in Taverley.")
 			.location(new WorldPoint(2914, 3433, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Located in the small building attached by a fence to the main building in Taverley. Climb over the stile.")
 			.build(),
 		CrypticClue.builder()
@@ -890,7 +889,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search through chests found in the upstairs of houses in eastern Falador.")
 			.location(new WorldPoint(3041, 3364, 1))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("The house is located southwest of the Falador Party Room. There are two chests in the room, search the northern chest.")
 			.build(),
 		CrypticClue.builder()
@@ -904,7 +903,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search a bookcase in Lumbridge Swamp.")
 			.location(new WorldPoint(3146, 3177, 0))
-			.objectId(ObjectID.BOOKCASE_9523)
+			.objectId(ObjectID.SARIM_BOOKCASE2)
 			.solution("Located in Father Urhney's house in Lumbridge Swamp.")
 			.build(),
 		CrypticClue.builder()
@@ -925,7 +924,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the boxes in one of the tents in Al Kharid.")
 			.location(new WorldPoint(3308, 3206, 0))
-			.objectId(ObjectID.BOXES_361)
+			.objectId(ObjectID.BOXES3)
 			.solution("Search the boxes in the tent east of the Al Kharid Silk trader.")
 			.build(),
 		CrypticClue.builder()
@@ -937,7 +936,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers on the ground floor of a building facing Ardougne's market.")
 			.location(new WorldPoint(2653, 3320, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Inside Noella's house north of the East Ardougne market.")
 			.build(),
 		CrypticClue.builder()
@@ -949,7 +948,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers upstairs in Falador's shield shop.")
 			.location(new WorldPoint(2971, 3386, 1))
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("Cassie's Shield Shop at the northern Falador entrance.")
 			.build(),
 		CrypticClue.builder()
@@ -957,7 +956,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(2512, 3641, 1))
 			.npc("Market Guard")
 			.npcRegion(10553)
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Search the drawers in the first floor of the Lighthouse. Kill a Rellekka marketplace guard to obtain the key.")
 			.build(),
 		CrypticClue.builder()
@@ -973,13 +972,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers above Varrock's shops.")
 			.location(new WorldPoint(3206, 3419, 1))
-			.objectId(ObjectID.DRAWERS_7194)
+			.objectId(ObjectID.FAI_VARROCK_DRAWERS)
 			.solution("Located upstairs in Thessalia's Fine Clothes shop in Varrock.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the drawers in one of Gertrude's bedrooms.")
 			.location(new WorldPoint(3156, 3406, 0))
-			.objectId(ObjectID.DRAWERS_7194)
+			.objectId(ObjectID.FAI_VARROCK_DRAWERS)
 			.solution("Kanel's bedroom (southeastern room), in Gertrude's house south of the Cooking Guild.")
 			.build(),
 		CrypticClue.builder()
@@ -1014,13 +1013,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("This crate holds a better reward than a broken arrow.")
 			.location(new WorldPoint(2671, 3437, 0))
-			.objectId(ObjectID.CRATE_356)
+			.objectId(ObjectID.CRATE_OLD)
 			.solution("Inside the Ranging Guild. Search the crate behind the northern most building.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the drawers in the house next to the Port Sarim mage shop.")
 			.location(new WorldPoint(3024, 3259, 0))
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("House east of Betty's Mage shop in Port Sarim. Contains a cooking sink.")
 			.build(),
 		CrypticClue.builder()
@@ -1044,13 +1043,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("You will need to under-cook to solve this one.")
 			.location(new WorldPoint(3219, 9617, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Search the crate in the Lumbridge basement.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search through some drawers found in Taverley's houses.")
 			.location(new WorldPoint(2894, 3418, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("The south-eastern most house in Taverley, south of Jatix's Herblore Shop.")
 			.build(),
 		CrypticClue.builder()
@@ -1068,7 +1067,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Scattered coins and gems fill the floor. The chest you seek is in the north east.")
 			.location(new WorldPoint(2288, 4702, 0))
 			.npc("King Black Dragon")
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("Kill the King Black Dragon for a key (elite), and then open the closed chest in the NE corner of the lair.")
 			.build(),
 		CrypticClue.builder()
@@ -1086,7 +1085,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Here, there are tears, but nobody is crying. Speak to the guardian and show off your alignment to balance.")
 			.location(new WorldPoint(3252, 9517, 2))
 			.npc("Juna")
-			.objectId(ObjectID.JUNA)
+			.objectId(ObjectID.TOG_JUNA_1OP)
 			.solution("Talk to Juna while wearing three Guthix related items.")
 			.build(),
 		CrypticClue.builder()
@@ -1117,7 +1116,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the tents in the Imperial Guard camp in Burthorpe for some boxes.")
 			.location(new WorldPoint(2885, 3540, 0))
-			.objectId(ObjectID.BOXES_3686)
+			.objectId(ObjectID.DEATH_BOXES_2)
 			.solution("Search in the tents in the northwest corner of the soldiers' camp in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
@@ -1140,13 +1139,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers in the ground floor of a shop in Yanille.")
 			.location(new WorldPoint(2570, 3085, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Search the drawers in Yanille's hunting shop.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the drawers of houses in Burthorpe.")
 			.location(new WorldPoint(2929, 3570, 0))
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("Inside Hild's house in the northeast corner of Burthorpe.")
 			.build(),
 		CrypticClue.builder()
@@ -1159,14 +1158,14 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in the guard house of the northern gate of East Ardougne.")
 			.location(new WorldPoint(2645, 3338, 0))
-			.objectId(ObjectID.CRATE_356)
+			.objectId(ObjectID.CRATE_OLD)
 			.solution("The guard house northwest of the East Ardougne market.")
 			.build(),
 		CrypticClue.builder()
 			.text("Go to the village being attacked by trolls, search the drawers in one of the houses.")
 			.location(new WorldPoint(2921, 3577, 0))
 			.npc("Penda")
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Go to Dunstan's house in the northeast corner of Burthorpe. Kill Penda in the Toad and Chicken to obtain the key.")
 			.build(),
 		CrypticClue.builder()
@@ -1193,13 +1192,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers downstairs of houses in the eastern part of Falador.")
 			.location(new WorldPoint(3039, 3342, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("House is located east of the eastern Falador bank and south of the fountain. The house is indicated by a cooking range icon on the minimap.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the drawers found upstairs in East Ardougne's houses.")
 			.location(new WorldPoint(2574, 3326, 1))
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("Upstairs of the pub north of the Ardougne Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -1210,13 +1209,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers in a house in Draynor Village.")
 			.location(new WorldPoint(3097, 3277, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("The drawer is located in the northernmost house in Draynor Village.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the boxes in a shop in Taverley.")
 			.location(new WorldPoint(2886, 3449, 0))
-			.objectId(ObjectID.BOXES_360)
+			.objectId(ObjectID.BOXES2)
 			.solution("The box inside Gaius' Two Handed Shop in Taverley.")
 			.build(),
 		CrypticClue.builder()
@@ -1228,13 +1227,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Search the upstairs drawers of a house in a village where pirates are known to have a good time.")
 			.location(new WorldPoint(2809, 3165, 1))
 			.npc("Pirate")
-			.objectId(ObjectID.DRAWERS)
+			.objectId(ObjectID.DRAWERS1)
 			.solution("The house in the southeast corner of Brimhaven, northeast of Davon's Amulet Store. Kill any Pirate located around Brimhaven to obtain the key.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the chest in the Duke of Lumbridge's bedroom.")
 			.location(new WorldPoint(3209, 3218, 1))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("The Duke's room is on the first floor in Lumbridge Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -1246,13 +1245,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the chests upstairs in Al Kharid Palace.")
 			.location(new WorldPoint(3301, 3169, 1))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("The chest is located, in the northeast corner, on the first floor of the Al Kharid Palace.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the boxes just outside the Armour shop in East Ardougne.")
 			.location(new WorldPoint(2654, 3299, 0))
-			.objectId(ObjectID.BOXES_361)
+			.objectId(ObjectID.BOXES3)
 			.solution("Outside Zenesha's Plate Mail Body Shop in East Ardougne.")
 			.build(),
 		CrypticClue.builder()
@@ -1264,13 +1263,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Monk's residence in the far west. See robe storage device.")
 			.location(new WorldPoint(1746, 3490, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Search the drawers in the south tent of the monk's camp on the southern coast of Hosidius, directly south of the player-owned house portal.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the drawers in Catherby's Archery shop.")
 			.location(new WorldPoint(2825, 3442, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Hickton's Archery Emporium in Catherby.")
 			.build(),
 		CrypticClue.builder()
@@ -1282,7 +1281,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the chest in the left-hand tower of Camelot Castle.")
 			.location(new WorldPoint(2748, 3495, 2))
-			.objectId(ObjectID.CLOSED_CHEST_25592)
+			.objectId(ObjectID.KR_CAMELOT_CHESTCLOSED)
 			.solution("Located on the second floor of the western tower of Camelot.")
 			.build(),
 		CrypticClue.builder()
@@ -1314,13 +1313,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.")
 			.location(new WorldPoint(2709, 3478, 0))
 			.npc("Chicken")
-			.objectId(ObjectID.DRAWERS_25766)
+			.objectId(ObjectID.KR_SEERS_VILLAGE_DRAWERS1)
 			.solution("The Seers' Village house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in East Ardougne's general store.")
 			.location(new WorldPoint(2615, 3291, 0))
-			.objectId(ObjectID.CRATE_357)
+			.objectId(ObjectID.CRATE2_OLD)
 			.solution("Located south of the Ardougne church.")
 			.build(),
 		CrypticClue.builder()
@@ -1337,7 +1336,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the wheelbarrow in Rimmington mine.")
 			.location(new WorldPoint(2978, 3239, 0))
-			.objectId(ObjectID.WHEELBARROW_9625)
+			.objectId(ObjectID.RIMMINGTON_WHEEL_BARROW)
 			.solution("The Rimmington mining site is located north of Rimmington.")
 			.build(),
 		CrypticClue.builder()
@@ -1350,7 +1349,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in Horvik's armoury.")
 			.location(new WorldPoint(3228, 3433, 0))
-			.objectId(ObjectID.CRATE_5106)
+			.objectId(ObjectID.FAI_VARROCK_LARGE_CRATE)
 			.solution("Horvik's in Varrock.")
 			.build(),
 		CrypticClue.builder()
@@ -1385,13 +1384,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers in the upstairs of a house in Catherby.")
 			.location(new WorldPoint(2809, 3451, 1))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Perdu's house in Catherby.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search a crate in the Haymaker's arms.")
 			.location(new WorldPoint(1720, 3652, 1))
-			.objectId(ObjectID.CRATE_27532)
+			.objectId(ObjectID.HOS_CRATE_01)
 			.solution("Search the crate in the north-east corner of The Haymaker's Arms tavern east of Kourend Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -1402,7 +1401,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in the most north-western house in Al Kharid.")
 			.location(new WorldPoint(3289, 3202, 0))
-			.objectId(ObjectID.CRATE_358)
+			.objectId(ObjectID.CRATE3_OLD)
 			.solution("Search the crates in the house, marked with a cooking range icon, southeast of the gem stall in Al Kharid.")
 			.build(),
 		CrypticClue.builder()
@@ -1427,7 +1426,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the chests in the Dwarven Mine.")
 			.location(new WorldPoint(3000, 9798, 0))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("The chest is on the western wall, where Hura's Crossbow Shop is, in the Dwarven Mine.")
 			.build(),
 		CrypticClue.builder()
@@ -1443,7 +1442,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("You have all of the elements available to solve this clue. Fortunately you do not have to go as far as to stand in a draft.")
 			.location(new WorldPoint(2723, 9891, 0))
-			.objectId(ObjectID.CRATE_18506)
+			.objectId(ObjectID.ELEM_CRATE_1)
 			.solution("Search the crate, west of the Air Elementals, inside the Elemental Workshop.")
 			.build(),
 		CrypticClue.builder()
@@ -1492,7 +1491,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the open crate found in the Hosidius kitchens.")
 			.location(new WorldPoint(1683, 3616, 0))
-			.objectId(ObjectID.CRATES_27533)
+			.objectId(ObjectID.HOS_CRATE_02)
 			.solution("The kitchens are north-west of the town in Hosidius.")
 			.build(),
 		CrypticClue.builder()
@@ -1503,7 +1502,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the drawers, upstairs in the bank to the East of Varrock.")
 			.location(new WorldPoint(3250, 3420, 1))
-			.objectId(ObjectID.DRAWERS_7194)
+			.objectId(ObjectID.FAI_VARROCK_DRAWERS)
 			.solution("Search the drawers upstairs in Varrock east bank.")
 			.build(),
 		CrypticClue.builder()
@@ -1553,13 +1552,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the chest in Fred the Farmer's bedroom.")
 			.location(new WorldPoint(3185, 3274, 0))
-			.objectId(ObjectID.CLOSED_CHEST_375)
+			.objectId(ObjectID.CHESTCLOSED)
 			.solution("Search the chest by Fred the Farmer's bed in his house north-west of Lumbridge.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the eastern bookcase in Father Urhney's house.")
 			.location(new WorldPoint(3149, 3177, 0))
-			.objectId(ObjectID.BOOKCASE_9523)
+			.objectId(ObjectID.SARIM_BOOKCASE2)
 			.solution("Father Urhney's house is found in the western end of the Lumbridge Swamp.")
 			.build(),
 		CrypticClue.builder()
@@ -1578,7 +1577,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crate in Rommiks crafting shop in Rimmington.")
 			.location(new WorldPoint(2946, 3207, 0))
-			.objectId(ObjectID.CRATE_9533)
+			.objectId(ObjectID.SARIM_CRATE)
 			.solution("The crates in Rommik's Crafty Supplies in Rimmington.")
 			.build(),
 		CrypticClue.builder()
@@ -1597,13 +1596,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the single crate in Horvik's smithy in Varrock.")
 			.location(new WorldPoint(3228, 3433, 0))
-			.objectId(ObjectID.CRATE_5106)
+			.objectId(ObjectID.FAI_VARROCK_LARGE_CRATE)
 			.solution("Horvik's Smithy is found north-east of of Varrock Square.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in Falador General store.")
 			.location(new WorldPoint(2955, 3390, 0))
-			.objectId(ObjectID.CRATES_24088)
+			.objectId(ObjectID.FAI_FALADOR_SMALL_CRATES)
 			.solution("The Falador General Store can be found by the northern entrance to the city.")
 			.build(),
 		CrypticClue.builder()
@@ -1615,7 +1614,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the boxes next to a chest that needs a crystal key.")
 			.location(new WorldPoint(2915, 3452, 0))
-			.objectId(ObjectID.BOXES_360)
+			.objectId(ObjectID.BOXES2)
 			.solution("The Crystal chest can be found in the house directly south of the Witch's house in Taverley.")
 			.build(),
 		CrypticClue.builder()
@@ -1659,20 +1658,20 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the crates in the fruit store just east of the Hosidius town centre.")
 			.location(new WorldPoint(1799, 3613, 0))
-			.objectId(ObjectID.CRATES_27533)
+			.objectId(ObjectID.HOS_CRATE_02)
 			.solution("Search the crates in the back room of the Hosidius fruit store.")
 			.build(),
 		CrypticClue.builder()
 			.text("A graceful man of many colours, his crates must be full of many delights.")
 			.location(new WorldPoint(1506, 3590, 2))
 			.npc("Hill Giant")
-			.objectId(ObjectID.CRATE_42067)
+			.objectId(ObjectID.SHAYZIEN_CRATE_01_DARK_OP)
 			.solution("Kill any Hill Giant for a medium key. Then search the crate on the top floor of Osten's clothing shop in Shayzien.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the basket of apples in an orchard, south of the unknown grave surrounded by white roses.")
 			.location(new WorldPoint(1718, 3626, 0))
-			.objectId(ObjectID.APPLE_BASKET)
+			.objectId(ObjectID.HOS_BASKET_APPLE)
 			.solution("Search the middle apple basket in the apple orchard north of Hosidius.")
 			.build(),
 		CrypticClue.builder()
@@ -1688,7 +1687,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Try not to let yourself be dazzled when you search these drawers.")
 			.location(new WorldPoint(2561, 3323, 0))
-			.objectId(ObjectID.DRAWERS_350)
+			.objectId(ObjectID.DRAWERS2)
 			.solution("Search the western drawers in Jimmy Dazzler's home near the East Ardougne Rat Pits.")
 			.build(),
 		CrypticClue.builder()
@@ -1699,7 +1698,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Search the food barrel at the top of the Hunter Guild.")
 			.location(new WorldPoint(1560, 3048, 2))
-			.objectId(ObjectID.FOOD_POT)
+			.objectId(ObjectID.HG_BARREL_CLAY01_FOOD01_CLUE)
 			.solution("Search the food pot at the top of the Hunter Guild.")
 			.build(),
 		CrypticClue.builder()
@@ -1936,7 +1935,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static WorldPoint getViggoraLocation(ClueScrollPlugin plugin)
 	{
-		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);
+		int varb = plugin.getClient().getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER);
 		switch (varb)
 		{
 			case 1:
@@ -1956,7 +1955,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private static String getViggoraLocationString(ClueScrollPlugin plugin)
 	{
-		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);
+		int varb = plugin.getClient().getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER);
 		switch (varb)
 		{
 			case 1:
@@ -1972,18 +1971,18 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private static String getResourceAreaCost(ClueScrollPlugin plugin)
 	{
-		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE) == 1)
+		if (plugin.getClient().getVarbitValue(VarbitID.WILDERNESS_DIARY_ELITE_COMPLETE) == 1)
 		{
 			return "";
 		}
 
 		int resourceAreaCost = DEFAULT_RESOURCE_AREA_COST;
 
-		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_HARD) == 1)
+		if (plugin.getClient().getVarbitValue(VarbitID.WILDERNESS_DIARY_HARD_COMPLETE) == 1)
 		{
 			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.5);
 		}
-		else if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM) == 1)
+		else if (plugin.getClient().getVarbitValue(VarbitID.WILDERNESS_DIARY_MEDIUM_COMPLETE) == 1)
 		{
 			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.8);
 		}
@@ -1993,6 +1992,6 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private static String getBurthorpeSlayerMaster(ClueScrollPlugin plugin)
 	{
-		return plugin.getClient().getVarbitValue(Varbits.BURTHORPE_SLAYER_MASTER) == 0 ? "Turael" : "Aya";
+		return plugin.getClient().getVarbitValue(VarbitID.WGS_HERO_PART_1_VIS) == 0 ? "Turael" : "Aya";
 	}
 }

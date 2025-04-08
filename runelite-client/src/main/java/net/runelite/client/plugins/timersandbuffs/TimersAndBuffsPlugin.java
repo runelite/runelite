@@ -44,20 +44,11 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.FIRE_CAPE;
-import static net.runelite.api.ItemID.INFERNAL_CAPE;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import static net.runelite.api.VarPlayer.LAST_HOME_TELEPORT;
-import static net.runelite.api.VarPlayer.LAST_MINIGAME_TELEPORT;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
@@ -70,6 +61,11 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -118,8 +114,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
 	private static final Set<Integer> STAVES_OF_THE_DEAD = new ImmutableSet.Builder<Integer>()
-		.addAll(ItemVariationMapping.getVariations(ItemID.STAFF_OF_THE_DEAD))
-		.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_STAFF_UNCHARGED))
+		.addAll(ItemVariationMapping.getVariations(ItemID.SOTD))
+		.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_SOTD))
 		.add(ItemID.STAFF_OF_LIGHT)
 		.add(ItemID.STAFF_OF_BALANCE)
 		.build();
@@ -176,8 +172,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	{
 		if (config.showHomeMinigameTeleports())
 		{
-			checkTeleport(LAST_HOME_TELEPORT);
-			checkTeleport(LAST_MINIGAME_TELEPORT);
+			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
+			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
 		}
 	}
 
@@ -199,13 +195,13 @@ public class TimersAndBuffsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.IN_RAID)
+		if (event.getVarbitId() == VarbitID.RAIDS_CLIENT_INDUNGEON)
 		{
 			removeVarTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
 		}
 
-		if (event.getVarbitId() == Varbits.VENGEANCE_COOLDOWN && config.showVengeance())
+		if (event.getVarbitId() == VarbitID.VENGEANCE_TIMELIMIT && config.showVengeance())
 		{
 			if (event.getValue() == 1)
 			{
@@ -217,7 +213,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.SPELLBOOK_SWAP && config.showSpellbookSwap())
+		if (event.getVarbitId() == VarbitID.LUNAR_SPELLBOOK_CHANGE && config.showSpellbookSwap())
 		{
 			if (event.getValue() == 1)
 			{
@@ -229,7 +225,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.HEAL_GROUP_COOLDOWN && config.showHealGroup())
+		if (event.getVarbitId() == VarbitID.HEAL_GROUP_TIMELIMIT && config.showHealGroup())
 		{
 			if (event.getValue() == 1)
 			{
@@ -241,7 +237,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.DEATH_CHARGE_COOLDOWN && config.showArceuusCooldown())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_DEATH_CHARGE_COOLDOWN && config.showArceuusCooldown())
 		{
 			if (event.getValue() == 1)
 			{
@@ -253,7 +249,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.CORRUPTION_COOLDOWN && config.showArceuusCooldown())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_CORRUPTION_COOLDOWN && config.showArceuusCooldown())
 		{
 			if (event.getValue() == 1)
 			{
@@ -265,7 +261,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.RESURRECT_THRALL_COOLDOWN && config.showArceuusCooldown())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_RESURRECTION_COOLDOWN && config.showArceuusCooldown())
 		{
 			if (event.getValue() == 1)
 			{
@@ -277,7 +273,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.SHADOW_VEIL_COOLDOWN && config.showArceuusCooldown())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_SHADOW_VEIL_COOLDOWN && config.showArceuusCooldown())
 		{
 			if (event.getValue() == 1)
 			{
@@ -289,7 +285,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.WARD_OF_ARCEUUS_COOLDOWN && config.showArceuusCooldown())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_WARD_COOLDOWN && config.showArceuusCooldown())
 		{
 			if (event.getValue() == 1)
 			{
@@ -301,12 +297,12 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.VENGEANCE_ACTIVE && config.showVengeanceActive())
+		if (event.getVarbitId() == VarbitID.VENGEANCE_REBOUND && config.showVengeanceActive())
 		{
 			updateVarCounter(VENGEANCE_ACTIVE, event.getValue());
 		}
 
-		if (event.getVarbitId() == Varbits.DEATH_CHARGE && config.showArceuus())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE && config.showArceuus())
 		{
 			if (event.getValue() == 1)
 			{
@@ -318,17 +314,17 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.RESURRECT_THRALL && event.getValue() == 0 && config.showArceuus())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_RESURRECTION_ACTIVE && event.getValue() == 0 && config.showArceuus())
 		{
 			removeGameTimer(RESURRECT_THRALL);
 		}
 
-		if (event.getVarbitId() == Varbits.SHADOW_VEIL && event.getValue() == 0 && config.showArceuus())
+		if (event.getVarbitId() == VarbitID.ARCEUUS_SHADOW_VEIL_ACTIVE && event.getValue() == 0 && config.showArceuus())
 		{
 			removeGameTimer(SHADOW_VEIL);
 		}
 
-		if (event.getVarpId() == VarPlayer.POISON && config.showAntiPoison())
+		if (event.getVarpId() == VarPlayerID.POISON && config.showAntiPoison())
 		{
 			final int poisonVarp = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -350,8 +346,8 @@ public class TimersAndBuffsPlugin extends Plugin
 				i -> nextPoisonTick - tickCount + Math.abs((i + 1 - VENOM_VALUE_CUTOFF) * POISON_TICK_LENGTH));
 		}
 
-		if ((event.getVarbitId() == Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING
-			|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING) && config.showOverload())
+		if ((event.getVarbitId() == VarbitID.NZONE_OVERLOAD_POTION_EFFECTS
+			|| event.getVarbitId() == VarbitID.RAIDS_OVERLOAD_TIMER) && config.showOverload())
 		{
 			final int overloadVarb = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -365,48 +361,48 @@ public class TimersAndBuffsPlugin extends Plugin
 				nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
 			}
 
-			GameTimer overloadTimer = client.getVarbitValue(Varbits.IN_RAID) == 1 ? OVERLOAD_RAID : OVERLOAD;
+			GameTimer overloadTimer = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1 ? OVERLOAD_RAID : OVERLOAD;
 			updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
 		}
 
-		if (event.getVarbitId() == Varbits.TELEBLOCK && config.showTeleblock())
+		if (event.getVarbitId() == VarbitID.TELEBLOCK_CYCLES && config.showTeleblock())
 		{
 			updateVarTimer(TELEBLOCK, event.getValue() - 100, i -> i <= 0, IntUnaryOperator.identity());
 		}
 
-		if (event.getVarpId() == VarPlayer.CHARGE_GOD_SPELL && config.showCharge())
+		if (event.getVarpId() == VarPlayerID.MAGEARENA_CHARGE && config.showCharge())
 		{
 			updateVarTimer(CHARGE, event.getValue(), i -> i * 2);
 		}
 
-		if (event.getVarbitId() == Varbits.IMBUED_HEART_COOLDOWN && config.showImbuedHeart())
+		if (event.getVarbitId() == VarbitID.IMBUED_HEART_TIMER && config.showImbuedHeart())
 		{
 			updateVarTimer(IMBUEDHEART, event.getValue(), i -> i * 10);
 		}
 
-		if (event.getVarbitId() == Varbits.DRAGONFIRE_SHIELD_COOLDOWN && config.showDFSSpecial())
+		if (event.getVarbitId() == VarbitID.DRAGONFIRE_SHIELD_RECHARGE && config.showDFSSpecial())
 		{
 			updateVarTimer(DRAGON_FIRE_SHIELD, event.getValue(), i -> i * 8);
 		}
 
-		if (event.getVarpId() == LAST_HOME_TELEPORT && config.showHomeMinigameTeleports())
+		if (event.getVarpId() == VarPlayerID.AIDE_TELE_TIMER && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(LAST_HOME_TELEPORT);
+			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
 		}
 
-		if (event.getVarpId() == LAST_MINIGAME_TELEPORT && config.showHomeMinigameTeleports())
+		if (event.getVarpId() == VarPlayerID.SLUG2_REGIONUID && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(LAST_MINIGAME_TELEPORT);
+			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
 		}
 
-		if (event.getVarbitId() == Varbits.RUN_SLOWED_DEPLETION_ACTIVE
-			|| event.getVarbitId() == Varbits.STAMINA_EFFECT
-			|| event.getVarbitId() == Varbits.RING_OF_ENDURANCE_EFFECT)
+		if (event.getVarbitId() == VarbitID.STAMINA_ACTIVE
+			|| event.getVarbitId() == VarbitID.STAMINA_DURATION
+			|| event.getVarbitId() == VarbitID.STAMINA_DURATION_EXTRA)
 		{
 			// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
-			int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
-			int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
-			int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
+			int staminaEffectActive = client.getVarbitValue(VarbitID.STAMINA_ACTIVE);
+			int staminaPotionEffectVarb = client.getVarbitValue(VarbitID.STAMINA_DURATION);
+			int enduranceRingEffectVarb = client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA);
 
 			final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 			if (staminaEffectActive == 1 && config.showStamina())
@@ -415,7 +411,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.ANTIFIRE && config.showAntiFire())
+		if (event.getVarbitId() == VarbitID.ANTIFIRE_POTION && config.showAntiFire())
 		{
 			final int antifireVarb = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -432,7 +428,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(ANTIFIRE, antifireVarb, i -> nextAntifireTick - tickCount + (i - 1) * ANTIFIRE_TICK_LENGTH);
 		}
 
-		if (event.getVarbitId() == Varbits.SUPER_ANTIFIRE && config.showAntiFire())
+		if (event.getVarbitId() == VarbitID.SUPER_ANTIFIRE_POTION && config.showAntiFire())
 		{
 			final int superAntifireVarb = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -449,14 +445,14 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(SUPERANTIFIRE, event.getValue(), i -> nextSuperAntifireTick - tickCount + (i - 1) * SUPERANTIFIRE_TICK_LENGTH);
 		}
 
-		if (event.getVarbitId() == Varbits.MAGIC_IMBUE && config.showMagicImbue())
+		if (event.getVarbitId() == VarbitID.MAGIC_IMBUE_ACTIVE && config.showMagicImbue())
 		{
 			updateVarTimer(MAGICIMBUE, event.getValue(), i -> i * 10);
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_SUPER_ATTACK && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINEATTACK_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINECOMBAT_POTION_TIME) > event.getValue())
 			{
 				return;
 			}
@@ -464,9 +460,9 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_SUPER_ATTACK, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_SUPER_STRENGTH && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINESTRENGTH_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINECOMBAT_POTION_TIME) > event.getValue())
 			{
 				return;
 			}
@@ -474,20 +470,20 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_SUPER_STRENGTH, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_SUPER_DEFENCE && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINEDEFENCE_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue()
-				|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
-				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
+			if (client.getVarbitValue(VarbitID.DIVINECOMBAT_POTION_TIME) > event.getValue()
+				|| client.getVarbitValue(VarbitID.DIVINEBASTION_POTION_TIME) > event.getValue()
+				|| client.getVarbitValue(VarbitID.DIVINEBATTLEMAGE_POTION_TIME) > event.getValue()
 				// When drinking a dose of moonlight potion while already under its effects, desync between
 				// Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick
 				// greater
-				|| client.getVarbitValue(Varbits.MOONLIGHT_POTION) >= event.getValue())
+				|| client.getVarbitValue(VarbitID.MOONLIGHT_POTION_TIME) >= event.getValue())
 			{
 				return;
 			}
 
-			if (client.getVarbitValue(Varbits.MOONLIGHT_POTION) < event.getValue())
+			if (client.getVarbitValue(VarbitID.MOONLIGHT_POTION_TIME) < event.getValue())
 			{
 				removeVarTimer(MOONLIGHT_POTION);
 			}
@@ -495,9 +491,9 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_SUPER_DEFENCE, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_RANGING && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINERANGE_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEBASTION_POTION_TIME) > event.getValue())
 			{
 				return;
 			}
@@ -505,9 +501,9 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_RANGING, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_MAGIC && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINEMAGIC_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEBATTLEMAGE_POTION_TIME) > event.getValue())
 			{
 				return;
 			}
@@ -515,17 +511,17 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_MAGIC, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_SUPER_COMBAT && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINECOMBAT_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_ATTACK) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEATTACK_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_SUPER_ATTACK);
 			}
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_STRENGTH) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINESTRENGTH_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_SUPER_STRENGTH);
 			}
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEDEFENCE_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_SUPER_DEFENCE);
 			}
@@ -533,13 +529,13 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_SUPER_COMBAT, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_BASTION && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINEBASTION_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_RANGING) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINERANGE_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_RANGING);
 			}
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEDEFENCE_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_SUPER_DEFENCE);
 			}
@@ -547,13 +543,13 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_BASTION, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.DIVINE_BATTLEMAGE && config.showDivine())
+		if (event.getVarbitId() == VarbitID.DIVINEBATTLEMAGE_POTION_TIME && config.showDivine())
 		{
-			if (client.getVarbitValue(Varbits.DIVINE_MAGIC) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEMAGIC_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_MAGIC);
 			}
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == event.getValue())
+			if (client.getVarbitValue(VarbitID.DIVINEDEFENCE_POTION_TIME) == event.getValue())
 			{
 				removeVarTimer(DIVINE_SUPER_DEFENCE);
 			}
@@ -561,32 +557,32 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_BATTLEMAGE, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST && config.showOverload())
+		if (event.getVarbitId() == VarbitID.TOA_MIDRAIDLOOT_STATS_TIMER && config.showOverload())
 		{
 			updateVarTimer(SMELLING_SALTS, event.getValue(), i -> i * 25);
 		}
 
-		if (event.getVarbitId() == Varbits.MENAPHITE_REMEDY && config.showMenaphiteRemedy())
+		if (event.getVarbitId() == VarbitID.STATRENEWAL_POTION_TIMER && config.showMenaphiteRemedy())
 		{
 			updateVarTimer(MENAPHITE_REMEDY, event.getValue(), i -> i * 25);
 		}
 
-		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && event.getValue() == 0 && config.showLiquidAdrenaline())
+		if (event.getVarbitId() == VarbitID.TOA_MIDRAIDLOOT_ENERGY_ACTIVE && event.getValue() == 0 && config.showLiquidAdrenaline())
 		{
 			removeGameTimer(LIQUID_ADRENALINE);
 		}
 
-		if (event.getVarbitId() == Varbits.FARMERS_AFFINITY && config.showFarmersAffinity())
+		if (event.getVarbitId() == VarbitID.II_AFFINITY_TIME_LEFT && config.showFarmersAffinity())
 		{
 			updateVarTimer(FARMERS_AFFINITY, event.getValue(), i -> i * 20);
 		}
 
-		if (event.getVarbitId() == Varbits.GOD_WARS_ALTAR_COOLDOWN && config.showGodWarsAltar())
+		if (event.getVarbitId() == VarbitID.GODWARS_ALTAR_DELAY && config.showGodWarsAltar())
 		{
 			updateVarTimer(GOD_WARS_ALTAR, event.getValue(), i -> i * 100);
 		}
 
-		if (event.getVarbitId() == Varbits.CURSE_OF_THE_MOONS && config.showCurseOfTheMoons())
+		if (event.getVarbitId() == VarbitID.PMOON_BOSS_CONDITION && config.showCurseOfTheMoons())
 		{
 			final int regionID = WorldPoint.fromLocal(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 			if (regionID == ECLIPSE_MOON_REGION_ID)
@@ -599,17 +595,17 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.COLOSSEUM_DOOM && config.showColosseumDoom())
+		if (event.getVarbitId() == VarbitID.COLOSSEUM_DOOM_STACKS_CLIENT && config.showColosseumDoom())
 		{
 			updateVarCounter(COLOSSEUM_DOOM, event.getValue());
 		}
 
-		if (event.getVarbitId() == Varbits.MOONLIGHT_POTION && config.showMoonlightPotion())
+		if (event.getVarbitId() == VarbitID.MOONLIGHT_POTION_TIME && config.showMoonlightPotion())
 		{
 			int moonlightValue = event.getValue();
 			// Increase the timer by 1 tick in case of desync due to drinking a dose of moonlight potion while already
 			// under its effects. Otherwise, the timer would be 1 tick shorter than it is meant to be.
-			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue + 1)
+			if (client.getVarbitValue(VarbitID.DIVINEDEFENCE_POTION_TIME) == moonlightValue + 1)
 			{
 				moonlightValue++;
 			}
@@ -617,17 +613,17 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.BUFF_GOADING_POTION && config.showGoading())
+		if (event.getVarbitId() == VarbitID.GOADING_POTION_TIMER && config.showGoading())
 		{
 			updateVarTimer(GOADING, event.getValue(), i -> i * 6);
 		}
 
-		if (event.getVarbitId() == Varbits.BUFF_PRAYER_REGENERATION && config.showPrayerRegneration())
+		if (event.getVarbitId() == VarbitID.PRAYER_REGENERATION_POTION_TIMER && config.showPrayerRegneration())
 		{
 			updateVarTimer(PRAYER_REGENERATION, event.getValue(), i -> i * 12);
 		}
 
-		if (event.getVarbitId() == Varbits.SCURRIUS_FOOD_PILE_COOLDOWN && config.showScurriusFoodPile())
+		if (event.getVarbitId() == VarbitID.RAT_BOSS_FOOD_PILE_PLAYER_EAT_DELAY && config.showScurriusFoodPile())
 		{
 			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
 		}
@@ -648,8 +644,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 		else
 		{
-			checkTeleport(LAST_HOME_TELEPORT);
-			checkTeleport(LAST_MINIGAME_TELEPORT);
+			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
+			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
 		}
 
 		if (!config.showAntiFire())
@@ -965,11 +961,11 @@ public class TimersAndBuffsPlugin extends Plugin
 				// by default the thrall lasts 1 tick per magic level
 				int t = client.getBoostedSkillLevel(Skill.MAGIC);
 				// ca tiers being completed boosts this
-				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
+				if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_GRANDMASTER) == 2)
 				{
 					t += t; // 100% boost
 				}
-				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
+				else if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_MASTER) == 2)
 				{
 					t += t / 2; // 50% boost
 				}
@@ -1066,7 +1062,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	{
 		removeTzhaarTimer();
 
-		int imageItem = isInFightCaves() ? FIRE_CAPE : (isInInferno() ? INFERNAL_CAPE : -1);
+		int imageItem = isInFightCaves() ? ItemID.TZHAAR_CAPE_FIRE : (isInInferno() ? ItemID.INFERNAL_CAPE : -1);
 		if (imageItem == -1)
 		{
 			return;
@@ -1090,10 +1086,10 @@ public class TimersAndBuffsPlugin extends Plugin
 		final GameTimer teleport;
 		switch (varPlayer)
 		{
-			case LAST_HOME_TELEPORT:
+			case VarPlayerID.AIDE_TELE_TIMER:
 				teleport = HOME_TELEPORT;
 				break;
-			case LAST_MINIGAME_TELEPORT:
+			case VarPlayerID.SLUG2_REGIONUID:
 				teleport = MINIGAME_TELEPORT;
 				break;
 			default:
@@ -1224,7 +1220,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
-		if (itemContainerChanged.getContainerId() != InventoryID.EQUIPMENT.getId())
+		if (itemContainerChanged.getContainerId() != InventoryID.WORN)
 		{
 			return;
 		}
@@ -1252,7 +1248,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		int npcId = npc.getId();
 
-		if (npcId == NpcID.ZOMBIFIED_SPAWN || npcId == NpcID.ZOMBIFIED_SPAWN_8063)
+		if (npcId == NpcID.VORKATH_SPAWN_QUEST || npcId == NpcID.VORKATH_SPAWN)
 		{
 			removeGameTimer(ICEBARRAGE);
 		}
@@ -1262,7 +1258,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
-		if (npc.getId() == NpcID.ABYSSAL_SIRE_5889)
+		if (npc.getId() == NpcID.ABYSSALSIRE_SIRE_PUPPET)
 		{
 			removeGameTimer(ABYSSAL_SIRE_STUN);
 		}
@@ -1272,7 +1268,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	void onNpcChanged(NpcChanged event)
 	{
 		final NPC npc = event.getNpc();
-		if (npc.getId() == NpcID.ABYSSAL_SIRE_5889)
+		if (npc.getId() == NpcID.ABYSSALSIRE_SIRE_PUPPET)
 		{
 			removeGameTimer(ABYSSAL_SIRE_STUN);
 		}

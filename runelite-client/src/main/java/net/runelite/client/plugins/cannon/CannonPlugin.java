@@ -34,16 +34,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -121,7 +121,7 @@ public class CannonPlugin extends Plugin
 	{
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
-		clientThread.invoke(() -> cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO));
+		clientThread.invoke(() -> cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER));
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INV))
 		{
 			return;
 		}
@@ -164,20 +164,20 @@ public class CannonPlugin extends Plugin
 
 				switch (item.getId())
 				{
-					case ItemID.CANNON_BASE:
-					case ItemID.CANNON_BASE_OR:
+					case ItemID.TWPART1:
+					case ItemID.LEAGUE_3_MULTICANNON_BASE:
 						hasBase = true;
 						break;
-					case ItemID.CANNON_STAND:
-					case ItemID.CANNON_STAND_OR:
+					case ItemID.TWPART2:
+					case ItemID.LEAGUE_3_MULTICANNON_STAND:
 						hasStand = true;
 						break;
-					case ItemID.CANNON_BARRELS:
-					case ItemID.CANNON_BARRELS_OR:
+					case ItemID.TWPART3:
+					case ItemID.LEAGUE_3_MULTICANNON_BARRELS:
 						hasBarrels = true;
 						break;
-					case ItemID.CANNON_FURNACE:
-					case ItemID.CANNON_FURNACE_OR:
+					case ItemID.TWPART4:
+					case ItemID.LEAGUE_3_MULTICANNON_FURNACE:
 						hasFurnace = true;
 						break;
 				}
@@ -234,7 +234,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarpId() == VarPlayer.CANNON_AMMO)
+		if (varbitChanged.getVarpId() == VarPlayerID.ROCKTHROWER)
 		{
 			int old = cballsLeft;
 			cballsLeft = varbitChanged.getValue();
@@ -250,12 +250,12 @@ public class CannonPlugin extends Plugin
 				cannonBallNotificationSent = true;
 			}
 		}
-		else if (varbitChanged.getVarpId() == VarPlayer.CANNON_COORD)
+		else if (varbitChanged.getVarpId() == VarPlayerID.OWNEDMCANNON)
 		{
 			WorldPoint c = WorldPoint.fromCoord(varbitChanged.getValue());
 			cannonPosition = buildCannonWorldArea(c);
 		}
-		else if (varbitChanged.getVarpId() == VarPlayer.CANNON_STATE)
+		else if (varbitChanged.getVarpId() == VarPlayerID.DROPCANNON)
 		{
 			cannonPlaced = varbitChanged.getValue() == 4;
 
@@ -309,7 +309,7 @@ public class CannonPlugin extends Plugin
 			return;
 		}
 
-		counter = new CannonCounter(itemManager.getImage(ItemID.CANNONBALL), this);
+		counter = new CannonCounter(itemManager.getImage(ItemID.MCANNONBALL), this);
 		counter.setTooltip("Cannonballs");
 
 		infoBoxManager.addInfoBox(counter);

@@ -46,10 +46,10 @@ import static net.runelite.api.ScriptID.XPDROPS_SETDROPSIZE;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -217,7 +217,7 @@ public class XpDropPlugin extends Plugin
 		else
 		{
 			EnumComposition colorEnum = client.getEnum(EnumID.XPDROP_COLORS);
-			int defaultColorId = client.getVarbitValue(Varbits.EXPERIENCE_DROP_COLOR);
+			int defaultColorId = client.getVarbitValue(VarbitID.XPDROPS_COLOUR);
 			int color = colorEnum.getIntValue(defaultColorId);
 			widget.setTextColor(color);
 		}

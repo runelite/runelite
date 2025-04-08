@@ -33,10 +33,10 @@ import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.runepouch.RunepouchConfig.RunepouchOverlayMode.BOTH;
@@ -53,12 +53,12 @@ class RunepouchOverlay extends WidgetItemOverlay
 {
 	private static final int NUM_SLOTS = 6;
 	private static final int[] AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4,
-		Varbits.RUNE_POUCH_AMOUNT5, Varbits.RUNE_POUCH_AMOUNT6
+		VarbitID.RUNE_POUCH_QUANTITY_1, VarbitID.RUNE_POUCH_QUANTITY_2, VarbitID.RUNE_POUCH_QUANTITY_3, VarbitID.RUNE_POUCH_QUANTITY_4,
+		VarbitID.RUNE_POUCH_QUANTITY_5, VarbitID.RUNE_POUCH_QUANTITY_6
 	};
 	private static final int[] RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4,
-		Varbits.RUNE_POUCH_RUNE5, Varbits.RUNE_POUCH_RUNE6
+		VarbitID.RUNE_POUCH_TYPE_1, VarbitID.RUNE_POUCH_TYPE_2, VarbitID.RUNE_POUCH_TYPE_3, VarbitID.RUNE_POUCH_TYPE_4,
+		VarbitID.RUNE_POUCH_TYPE_5, VarbitID.RUNE_POUCH_TYPE_6
 	};
 	private static final int IMAGE_SIZE = 11;
 	private static final BufferedImage[] RUNE_IMAGES = {
@@ -105,8 +105,8 @@ class RunepouchOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L
-			&& itemId != ItemID.DIVINE_RUNE_POUCH && itemId != ItemID.DIVINE_RUNE_POUCH_L)
+		if (itemId != ItemID.BH_RUNE_POUCH && itemId != ItemID.BH_RUNE_POUCH_TROUVER
+			&& itemId != ItemID.DIVINE_RUNE_POUCH && itemId != ItemID.DIVINE_RUNE_POUCH_TROUVER)
 		{
 			return;
 		}

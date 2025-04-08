@@ -31,8 +31,8 @@ package net.runelite.api;
  * {@link ItemContainer} corresponding. For obtaining information about equipment
  * in the {@link PlayerComposition}, use {@link net.runelite.api.kit.KitType}.
  *
- * @see Client#getItemContainer(InventoryID)
- * @see InventoryID#EQUIPMENT
+ * @see Client#getItemContainer(int)
+ * @see net.runelite.api.gameval.InventoryID#WORN
  */
 public enum EquipmentInventorySlot
 {

@@ -29,48 +29,48 @@ import java.util.EnumSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
 public enum RunecraftAction implements ItemSkillAction
 {
-	AIR_RUNE(ItemID.AIR_RUNE, 1, 5, false),
-	AIR_TIARA(ItemID.AIR_TIARA, 1, 25, true),
-	MIND_TIARA(ItemID.MIND_TIARA, 1, 27.5f, true),
-	WATER_TIARA(ItemID.WATER_TIARA, 1, 30, true),
-	EARTH_TIARA(ItemID.EARTH_TIARA, 1, 32.5f, true),
-	FIRE_TIARA(ItemID.FIRE_TIARA, 1, 35, true),
-	BODY_TIARA(ItemID.BODY_TIARA, 1, 37.5f, true),
-	COSMIC_TIARA(ItemID.COSMIC_TIARA, 1, 40, true),
-	CHAOS_TIARA(ItemID.CHAOS_TIARA, 1, 42.5f, true),
-	NATURE_TIARA(ItemID.NATURE_TIARA, 1, 45, true),
-	LAW_TIARA(ItemID.LAW_TIARA, 1, 47.5f, true),
-	DEATH_TIARA(ItemID.DEATH_TIARA, 1, 50, true),
-	WRATH_TIARA(ItemID.WRATH_TIARA, 1, 52.5f, true),
-	MIND_RUNE(ItemID.MIND_RUNE, 2, 5.5f, false),
-	MIND_CORE(ItemID.MIND_CORE, 2, 55, true),
-	WATER_RUNE(ItemID.WATER_RUNE, 5, 6, false),
-	MIST_RUNE(ItemID.MIST_RUNE, 6, 8.5f, false),
-	EARTH_RUNE(ItemID.EARTH_RUNE, 9, 6.5f, false),
-	DUST_RUNE(ItemID.DUST_RUNE, 10, 9, false),
-	MUD_RUNE(ItemID.MUD_RUNE, 13, 9.5f, false),
-	FIRE_RUNE(ItemID.FIRE_RUNE, 14, 7, false),
-	SMOKE_RUNE(ItemID.SMOKE_RUNE, 15, 9.5f, false),
-	STEAM_RUNE(ItemID.STEAM_RUNE, 19, 10, false),
-	BODY_RUNE(ItemID.BODY_RUNE, 20, 7.5f, false),
-	BODY_CORE(ItemID.BODY_CORE, 20, 75, true),
-	LAVA_RUNE(ItemID.LAVA_RUNE, 23, 10.5f, false),
-	COSMIC_RUNE(ItemID.COSMIC_RUNE, 27, 8, false, true),
-	SUNFIRE_RUNE(ItemID.SUNFIRE_RUNE, 33, 9, false),
-	CHAOS_RUNE(ItemID.CHAOS_RUNE, 35, 8.5f, false, true),
-	CHAOS_CORE(ItemID.CHAOS_CORE, 35, 85, true),
-	ASTRAL_RUNE(ItemID.ASTRAL_RUNE, 40, 8.7f, false),
-	NATURE_RUNE(ItemID.NATURE_RUNE, 44, 9, false, true),
-	LAW_RUNE(ItemID.LAW_RUNE, 54, 9.5f, false, true),
-	DEATH_RUNE(ItemID.DEATH_RUNE, 65, 10, false, true),
-	TRUE_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 10.5f, false)
+	AIR_RUNE(ItemID.AIRRUNE, 1, 5, false),
+	AIR_TIARA(ItemID.TIARA_AIR, 1, 25, true),
+	MIND_TIARA(ItemID.TIARA_MIND, 1, 27.5f, true),
+	WATER_TIARA(ItemID.TIARA_WATER, 1, 30, true),
+	EARTH_TIARA(ItemID.TIARA_EARTH, 1, 32.5f, true),
+	FIRE_TIARA(ItemID.TIARA_FIRE, 1, 35, true),
+	BODY_TIARA(ItemID.TIARA_BODY, 1, 37.5f, true),
+	COSMIC_TIARA(ItemID.TIARA_COSMIC, 1, 40, true),
+	CHAOS_TIARA(ItemID.TIARA_CHAOS, 1, 42.5f, true),
+	NATURE_TIARA(ItemID.TIARA_NATURE, 1, 45, true),
+	LAW_TIARA(ItemID.TIARA_LAW, 1, 47.5f, true),
+	DEATH_TIARA(ItemID.TIARA_DEATH, 1, 50, true),
+	WRATH_TIARA(ItemID.TIARA_WRATH, 1, 52.5f, true),
+	MIND_RUNE(ItemID.MINDRUNE, 2, 5.5f, false),
+	MIND_CORE(ItemID.CAMDOZAAL_GOLEM_CORE_MIND, 2, 55, true),
+	WATER_RUNE(ItemID.WATERRUNE, 5, 6, false),
+	MIST_RUNE(ItemID.MISTRUNE, 6, 8.5f, false),
+	EARTH_RUNE(ItemID.EARTHRUNE, 9, 6.5f, false),
+	DUST_RUNE(ItemID.DUSTRUNE, 10, 9, false),
+	MUD_RUNE(ItemID.MUDRUNE, 13, 9.5f, false),
+	FIRE_RUNE(ItemID.FIRERUNE, 14, 7, false),
+	SMOKE_RUNE(ItemID.SMOKERUNE, 15, 9.5f, false),
+	STEAM_RUNE(ItemID.STEAMRUNE, 19, 10, false),
+	BODY_RUNE(ItemID.BODYRUNE, 20, 7.5f, false),
+	BODY_CORE(ItemID.CAMDOZAAL_GOLEM_CORE_BODY, 20, 75, true),
+	LAVA_RUNE(ItemID.LAVARUNE, 23, 10.5f, false),
+	COSMIC_RUNE(ItemID.COSMICRUNE, 27, 8, false, true),
+	SUNFIRE_RUNE(ItemID.SUNFIRERUNE, 33, 9, false),
+	CHAOS_RUNE(ItemID.CHAOSRUNE, 35, 8.5f, false, true),
+	CHAOS_CORE(ItemID.CAMDOZAAL_GOLEM_CORE_CHAOS, 35, 85, true),
+	ASTRAL_RUNE(ItemID.ASTRALRUNE, 40, 8.7f, false),
+	NATURE_RUNE(ItemID.NATURERUNE, 44, 9, false, true),
+	LAW_RUNE(ItemID.LAWRUNE, 54, 9.5f, false, true),
+	DEATH_RUNE(ItemID.DEATHRUNE, 65, 10, false, true),
+	TRUE_BLOOD_RUNE(ItemID.BLOODRUNE, 77, 10.5f, false)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)
@@ -78,7 +78,7 @@ public enum RunecraftAction implements ItemSkillAction
 			return "Blood rune (True Altar)";
 		}
 	},
-	ZEAH_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 24.425f, true)
+	ZEAH_BLOOD_RUNE(ItemID.BLOODRUNE, 77, 24.425f, true)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)
@@ -86,8 +86,8 @@ public enum RunecraftAction implements ItemSkillAction
 			return "Blood rune (Zeah)";
 		}
 	},
-	SOUL_RUNE(ItemID.SOUL_RUNE, 90, 30.325f, true),
-	WRATH_RUNE(ItemID.WRATH_RUNE, 95, 8, false),
+	SOUL_RUNE(ItemID.SOULRUNE, 90, 30.325f, true),
+	WRATH_RUNE(ItemID.WRATHRUNE, 95, 8, false),
 	;
 
 	private static final Set<RunecraftBonus> RUNECRAFT_BONUSES = EnumSet.allOf(RunecraftBonus.class);

@@ -40,7 +40,6 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
@@ -51,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -153,7 +153,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD), this));
+		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ARCEUUS_CORPSE_DEMON_INITIAL), this));
 		clientThread.invokeLater(this::scanNpcs);
 	}
 
@@ -242,7 +242,7 @@ public class NpcAggroAreaPlugin extends Plugin
 			return;
 		}
 
-		BufferedImage image = itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD);
+		BufferedImage image = itemManager.getImage(ItemID.ARCEUUS_CORPSE_DEMON_INITIAL);
 		infoBoxManager.addInfoBox(new AggressionTimer(duration, image, this));
 	}
 

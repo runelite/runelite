@@ -132,6 +132,7 @@
 								<exclude>net/runelite/api/VarClientInt.class</exclude>
 								<exclude>net/runelite/api/VarClientStr.class</exclude>
 								<exclude>net/runelite/api/VarPlayer.class</exclude>
+								<exclude>net/runelite/api/gameval/*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

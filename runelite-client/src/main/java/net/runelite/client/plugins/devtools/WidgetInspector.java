@@ -58,6 +58,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -392,7 +393,7 @@ class WidgetInspector extends DevToolsFrame
 		removePickerWidget();
 
 		int x = 10, y = 2;
-		Widget parent = client.getWidget(ComponentID.MINIMAP_CONTAINER);
+		Widget parent = client.getWidget(InterfaceID.Orbs.UNIVERSE);
 		if (parent == null)
 		{
 			Widget[] roots = client.getWidgetRoots();

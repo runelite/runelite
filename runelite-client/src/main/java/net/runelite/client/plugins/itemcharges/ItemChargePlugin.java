@@ -41,19 +41,18 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -200,7 +199,7 @@ public class ItemChargePlugin extends Plugin
 		overlayManager.add(overlay);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() -> updateExplorerRingCharges(client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS)));
+			clientThread.invokeLater(() -> updateExplorerRingCharges(client.getVarbitValue(VarbitID.LUMBRIDGE_FREE_ALCHS)));
 		}
 	}
 
@@ -332,8 +331,8 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bindingNecklaceUsedMatcher.find())
 			{
-				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-				if (equipment.contains(ItemID.BINDING_NECKLACE))
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+				if (equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
 				{
 					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
 				}
@@ -363,8 +362,8 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(RING_OF_FORGING_USED_TEXT) || message.equals(RING_OF_FORGING_VARROCK_PLATEBODY))
 			{
-				final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+				final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 
 				// Determine if the player smelted with a Ring of Forging equipped.
 				if (equipment == null)
@@ -466,12 +465,12 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT) || message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN))
 			{
-				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 
 				// Determine if the player mined with a Bracelet of Clay equipped.
-				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
+				if (equipment != null && equipment.contains(ItemID.JEWL_BRACELET_OF_CLAY))
 				{
-					final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+					final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 
 					// Charge is not used if only 1 inventory slot is available when mining in Prifddinas
 					boolean ignore = inventory != null
@@ -496,7 +495,7 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.EQUIPMENT.getId())
+		if (event.getContainerId() != InventoryID.WORN)
 		{
 			return;
 		}
@@ -522,7 +521,7 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.EXPLORER_RING_ALCHS)
+		if (event.getVarbitId() == VarbitID.LUMBRIDGE_FREE_ALCHS)
 		{
 			updateExplorerRingCharges(event.getValue());
 		}
@@ -531,11 +530,11 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == InterfaceID.DIALOG_SPRITE)
+		if (widgetLoaded.getGroupId() == InterfaceID.OBJECTBOX)
 		{
 			clientThread.invokeLater(() ->
 			{
-				Widget sprite = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
+				Widget sprite = client.getWidget(InterfaceID.Objectbox.ITEM);
 				if (sprite != null)
 				{
 					switch (sprite.getItemId())
@@ -636,7 +635,7 @@ public class ItemChargePlugin extends Plugin
 		}
 		lastCheckTick = currentTick;
 
-		final Widget widgetDestroyItemName = client.getWidget(ComponentID.DESTROY_ITEM_NAME);
+		final Widget widgetDestroyItemName = client.getWidget(InterfaceID.Confirmdestroy.NAME);
 		if (widgetDestroyItemName == null)
 		{
 			return;
@@ -651,7 +650,7 @@ public class ItemChargePlugin extends Plugin
 
 	private void updateInfoboxes()
 	{
-		final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.WORN);
 
 		if (itemContainer == null)
 		{

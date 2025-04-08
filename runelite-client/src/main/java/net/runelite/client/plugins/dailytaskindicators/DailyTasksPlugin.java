@@ -32,10 +32,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -168,9 +168,9 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkHerbBoxes(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 0
-			&& client.getVarpValue(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
-			&& (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
+		if (client.getVarbitValue(VarbitID.IRONMAN) == 0
+			&& client.getVarpValue(VarPlayerID.NZONE_REWARDPOINTS) >= HERB_BOX_COST
+			&& (client.getVarbitValue(VarbitID.NZONE_HERBBOXES_PURCHASED) < HERB_BOX_MAX
 			|| dailyReset))
 		{
 			sendChatMessage(HERB_BOX_MESSAGE);
@@ -179,8 +179,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkStaves(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0
+		if (client.getVarbitValue(VarbitID.VARROCK_DIARY_EASY_COMPLETE) == 1
+			&& (client.getVarbitValue(VarbitID.ZAFF_LAST_CLAIMED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(STAVES_MESSAGE);
@@ -189,8 +189,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkEssence(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0
+		if (client.getVarbitValue(VarbitID.ARDOUGNE_DIARY_MEDIUM_COMPLETE) == 1
+			&& (client.getVarbitValue(VarbitID.ARDOUGNE_FREE_ESSENCE) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(ESSENCE_MESSAGE);
@@ -199,8 +199,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkRunes(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0
+		if (client.getVarbitValue(VarbitID.WILDERNESS_DIARY_EASY_COMPLETE) == 1
+			&& (client.getVarbitValue(VarbitID.LUNDAIL_LAST_CLAIMED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(RUNES_MESSAGE);
@@ -209,9 +209,9 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkSand(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2 /* UIM */
-			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
-			&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
+		if (client.getVarbitValue(VarbitID.IRONMAN) != 2 /* UIM */
+			&& client.getVarbitValue(VarbitID.HANDSAND_QUEST) >= SAND_QUEST_COMPLETE
+			&& (client.getVarbitValue(VarbitID.YANILLE_SAND_CLAIMED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(SAND_MESSAGE);
@@ -220,8 +220,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkFlax(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0
+		if (client.getVarbitValue(VarbitID.KANDARIN_DIARY_EASY_COMPLETE) == 1
+			&& (client.getVarbitValue(VarbitID.SEERS_FREE_FLAX) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(FLAX_MESSAGE);
@@ -230,8 +230,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkArrows(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0
+		if (client.getVarbitValue(VarbitID.WESTERN_DIARY_EASY_COMPLETE) == 1
+			&& (client.getVarbitValue(VarbitID.WESTERN_RANTZ_ARROWS) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(ARROWS_MESSAGE);
@@ -240,14 +240,14 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkBonemeal(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		if (client.getVarbitValue(VarbitID.MORYTANIA_DIARY_MEDIUM_COMPLETE) == 1)
 		{
-			int collected = client.getVarbitValue(Varbits.DAILY_BONEMEAL_STATE);
+			int collected = client.getVarbitValue(VarbitID.MORYTANIA_SLIME_CLAIMED);
 			int max = BONEMEAL_PER_DIARY;
-			if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_HARD) == 1)
+			if (client.getVarbitValue(VarbitID.MORYTANIA_DIARY_HARD_COMPLETE) == 1)
 			{
 				max += BONEMEAL_PER_DIARY;
-				if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_ELITE) == 1)
+				if (client.getVarbitValue(VarbitID.MORYTANIA_DIARY_ELITE_COMPLETE) == 1)
 				{
 					max += BONEMEAL_PER_DIARY;
 				}
@@ -261,8 +261,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkDynamite(boolean dailyReset)
 	{
-		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
+		if (client.getVarbitValue(VarbitID.KOUREND_DIARY_MEDIUM_COMPLETE) == 1
+			&& (client.getVarbitValue(VarbitID.KOUREND_FREE_DYNAMITE) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(DYNAMITE_MESSAGE);

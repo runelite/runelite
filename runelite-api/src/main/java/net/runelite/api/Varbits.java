@@ -27,14 +27,15 @@ package net.runelite.api;
 /**
  * Server controlled "content-developer" integers.
  *
- * @see VarPlayer
+ * @see net.runelite.api.gameval.VarPlayerID
  * <p>
- * These differ from a {@link VarPlayer} in that VarBits can be
+ * These differ from a {@link net.runelite.api.gameval.VarPlayerID} in that VarBits can be
  * less than 32 bits. One or more VarBits can be assigned to a
  * backing VarPlayer, each with a static range of bits that it is
  * allowed to access. This allows a more compact representation
  * of small values, like booleans
  */
+@Deprecated
 public final class Varbits
 {
 	/*

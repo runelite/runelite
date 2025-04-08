@@ -35,7 +35,7 @@ import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -76,12 +76,12 @@ class RegenMeterOverlay extends Overlay
 
 		if (config.showHitpoints())
 		{
-			renderRegen(g, ComponentID.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_HEALTH, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
 		}
 
 		if (config.showSpecial())
 		{
-			renderRegen(g, ComponentID.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_SPECENERGY, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
 		return null;

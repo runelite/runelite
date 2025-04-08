@@ -37,14 +37,14 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
@@ -164,12 +164,12 @@ public class PrayerPlugin extends Plugin
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final int id = event.getContainerId();
-		if (id == InventoryID.INVENTORY.getId())
+		if (id == InventoryID.INV)
 		{
 			updatePotionBonus(event.getItemContainer(),
-				client.getItemContainer(InventoryID.EQUIPMENT));
+				client.getItemContainer(InventoryID.WORN));
 		}
-		else if (id == InventoryID.EQUIPMENT.getId())
+		else if (id == InventoryID.WORN)
 		{
 			prayerBonus = totalPrayerBonus(event.getItemContainer().getItems());
 		}
@@ -346,7 +346,7 @@ public class PrayerPlugin extends Plugin
 
 	private void setPrayerOrbText(String text)
 	{
-		Widget prayerOrbText = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB_TEXT);
+		Widget prayerOrbText = client.getWidget(InterfaceID.Orbs.PRAYER_TEXT);
 		if (prayerOrbText != null)
 		{
 			prayerOrbText.setText(text);

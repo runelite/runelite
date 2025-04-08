@@ -38,16 +38,16 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -67,10 +67,10 @@ public class RunecraftPlugin extends Plugin
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
-		ItemID.MEDIUM_POUCH_5511,
-		ItemID.LARGE_POUCH_5513,
-		ItemID.GIANT_POUCH_5515,
-		ItemID.COLOSSAL_POUCH_26786
+		ItemID.RCU_POUCH_MEDIUM_DEGRADE,
+		ItemID.RCU_POUCH_LARGE_DEGRADE,
+		ItemID.RCU_POUCH_GIANT_DEGRADE,
+		ItemID.RCU_POUCH_COLOSSAL_DEGRADE
 	);
 	static final int ABYSS_REGION = 12107;
 
@@ -172,7 +172,7 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		if (event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
@@ -183,7 +183,7 @@ public class RunecraftPlugin extends Plugin
 
 	private HighlightedNpc highlightDarkMage(NPC npc)
 	{
-		if (npc.getId() == NpcID.DARK_MAGE)
+		if (npc.getId() == NpcID.RCU_ZAMMY_MAGE2)
 		{
 			return HighlightedNpc.builder()
 				.npc(npc)
