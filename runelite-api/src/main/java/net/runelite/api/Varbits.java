@@ -999,4 +999,11 @@ public final class Varbits
 	public static final int JARVIS_GRAVESTONE = 6008;
 
 	public static final int IN_LMS = 5314;
+
+	/**
+	 * The shift-drop in game setting
+	 * <br> 0 = disabled
+	 * <br> 1 = enabled
+	 */
+	public static final int SHIFT_DROP = 11556;
 }
