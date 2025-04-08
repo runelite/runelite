@@ -28,11 +28,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.time.Duration;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.ComponentID;
@@ -51,14 +53,23 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.RSTimeUnit;
 
 class PyramidPlunderOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
 	private final Client client;
+
 	private final PyramidPlunderPlugin plugin;
+
 	private final PyramidPlunderConfig config;
+
+	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
+
+
+	private Integer penultimateFloor;
+	private int thievingLevel;
 
 	@Inject
 	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin, PyramidPlunderConfig config)
@@ -69,6 +80,8 @@ class PyramidPlunderOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+
+		this.thievingLevel = client.getRealSkillLevel(Skill.THIEVING);
 	}
 
 	@Override
@@ -84,29 +97,21 @@ class PyramidPlunderOverlay extends Overlay
 
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
+		int realThievingLevel = client.getRealSkillLevel(Skill.THIEVING);
+
+		if (this.thievingLevel != realThievingLevel)
+		{
+			this.thievingLevel = realThievingLevel;
+			this.penultimateFloor = (realThievingLevel - 1) / 10 - 2;
+		}
+
 		// Highlight convex hulls of urns, chests, and sarcophagus
 		int currentFloor = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM);
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
-			if (config.highlightUrnsFloor() > currentFloor && URN_IDS.contains(object.getId())
-				|| config.highlightChestFloor() > currentFloor && GRAND_GOLD_CHEST_ID == object.getId()
-				|| config.highlightSarcophagusFloor() > currentFloor && SARCOPHAGUS_ID == object.getId()
-				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
+			if (shouldHighlightObjectOnFloor(object.getId(), currentFloor) && object.getLocalLocation().distanceTo(playerLocation) <= MAX_DISTANCE)
 			{
-				continue;
-			}
-
-			ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
-			if (URN_CLOSED_IDS.contains(imposter.getId())
-				|| GRAND_GOLD_CHEST_CLOSED_ID == imposter.getId()
-				|| SARCOPHAGUS_CLOSED_ID == imposter.getId())
-			{
-				Shape shape = object.getConvexHull();
-
-				if (shape != null)
-				{
-					OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
-				}
+				highlightObject(graphics, object);
 			}
 		}
 
@@ -136,8 +141,8 @@ class PyramidPlunderOverlay extends Overlay
 			}
 			else
 			{
-				ObjectComposition imposter = client.getObjectDefinition(object.getId()).getImpostor();
-				if (imposter.getId() != TOMB_DOOR_CLOSED_ID)
+				ObjectComposition impostor = client.getObjectDefinition(object.getId()).getImpostor();
+				if (impostor.getId() != TOMB_DOOR_CLOSED_ID)
 				{
 					return;
 				}
@@ -164,5 +169,57 @@ class PyramidPlunderOverlay extends Overlay
 		});
 
 		return null;
+	}
+
+	private void highlightObject(Graphics2D graphics, GameObject object)
+	{
+		ObjectComposition impostor = client.getObjectDefinition(object.getId()).getImpostor();
+
+		if (URN_CLOSED_IDS.contains(impostor.getId())
+			|| GRAND_GOLD_CHEST_CLOSED_ID == impostor.getId()
+			|| SARCOPHAGUS_CLOSED_ID == impostor.getId())
+		{
+			Shape shape = object.getConvexHull();
+
+			if (shape != null)
+			{
+				OverlayUtil.renderPolygon(graphics, shape, config.highlightContainersColor());
+			}
+		}
+	}
+
+	private boolean shouldHighlightObjectOnFloor(int objectId, int currentFloor)
+	{
+		if (URN_IDS.contains(objectId))
+		{
+			boolean shouldHighlightPenultimateUrns = config.highlightPenultimateUrns() && URN_IDS.contains(objectId);
+			return
+				currentFloor > this.penultimateFloor && shouldHighlightPenultimateUrns ||
+					currentFloor >= config.highlightUrnsFloor() ||
+					currentFloor == this.penultimateFloor && shouldHighlightPenultimateUrns && stillWithinTimeLimit();
+
+		}
+		else if (GRAND_GOLD_CHEST_ID == objectId)
+		{
+			return currentFloor >= config.highlightChestFloor();
+		}
+		else if (SARCOPHAGUS_ID == objectId)
+		{
+			return currentFloor >= config.highlightSarcophagusFloor();
+		}
+		return false;
+	}
+
+	private boolean stillWithinTimeLimit()
+	{
+		if (config.highlightUrnsUntil() == 0)
+		{
+			return true;
+		}
+		int ppTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+		Duration remaining = PYRAMID_PLUNDER_DURATION.minus(ppTimer, RSTimeUnit.GAME_TICKS);
+		// Want to stop highlighting on the second, plus another second to account for 501 ticks
+		int correctedTimeUtil = config.highlightUrnsUntil() + 2;
+		return remaining.compareTo(Duration.ofSeconds(correctedTimeUtil)) >= 0;
 	}
 }
