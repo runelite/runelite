@@ -44,7 +44,7 @@ public interface TileObject
 	 * <pre>{@code
 	 * worldView = bits >> 52 & 4095
 	 * id = bits >> 20 & 0xffffffff
-	 * wall = bits >> 19 1
+	 * wall = bits >> 19 & 1
 	 * type = bits >> 16 & 7
 	 * plane = bits >> 14 & 3
 	 * scene y = bits >> 7 & 127
