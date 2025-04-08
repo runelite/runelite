@@ -944,6 +944,36 @@ public final class Varbits
 	 */
 	public static final int COLOSSEUM_DOOM = 9801;
 
+	/**
+	 * If the player has the Stone of Jas empowerment
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int STONE_OF_JAS_EMPOWERMENT = 10934;
+
+	/**
+	 * The amount of burn damage accumulated on the local player.
+	 */
+	public static final int BURN_DAMAGE_ACCUMULATED = 10964;
+
+	/**
+	 * The next hit of burn damage the local player will receive.
+	 */
+	public static final int BURN_DAMAGE_NEXT_HIT = 10965;
+
+	/**
+	 * Smouldering heart duration
+	 * Number of game ticks remaining in intervals of 25; for a value X there are 25 * X game ticks remaining.
+	 */
+	public static final int SMOULDERING_HEART = 10944;
+
+	/**
+	 * Smouldering gland duration
+	 * Number of game ticks remaining in intervals of 4; for a value X there are 4 * X game ticks remaining.
+	 */
+	public static final int SMOULDERING_GLAND = 10945;
+
 	public static final int BUFF_GOADING_POTION = 11294;
 
 	public static final int BUFF_PRAYER_REGENERATION = 11361;
