@@ -860,21 +860,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (buy && config.enableGELimits())
 		{
-			// if we've already set the text, don't set it again
-			return;
-		}
-
-		if (defaultGeTextLineHeight == -1) {
-			defaultGeTextLineHeight = geText.getLineHeight();
-		}
-		
-		geText.setLineHeight(defaultGeTextLineHeight);
-		
-		String text = geText.getText();
-		
-		if (config.enableGELimits())
-		{
-			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
+			final ItemStats itemStats = itemManager.getItemStats(itemId);
 
 			// If we have item buy limit, append it
 			if (itemStats != null && itemStats.getGeLimit() > 0)
@@ -903,6 +889,16 @@ public class GrandExchangePlugin extends Plugin
 					sb.append(" / ");
 				}
 				sb.append("Actively traded price: ").append(QuantityFormatter.formatNumber(price));
+			}
+		}
+
+		if (config.showHighAlchValue())
+		{
+			final int highAlchValue = client.getItemDefinition(itemId).getHaPrice();
+			final int profit = highAlchValue - (itemManager.getItemPriceWithSource(itemId, true) + itemManager.getItemPriceWithSource(ItemID.NATURE_RUNE, true));
+			if (highAlchValue > 0)
+			{
+				sb.append("<br>High alch value: ").append(QuantityFormatter.formatNumber(highAlchValue)).append(" (").append(profit > 0 ? "+" : "").append(QuantityFormatter.formatNumber(profit)).append(")");
 			}
 		}
 
@@ -936,21 +932,6 @@ public class GrandExchangePlugin extends Plugin
 				break; // use from
 			}
 			from = idx + 1;
-		}
-		
-		if (config.showHighAlchValue())
-		{
-			final int highAlchValue = client.getItemDefinition(itemId).getHaPrice();
-			final int profit = highAlchValue - (itemManager.getItemPriceWithSource(itemId, true) + itemManager.getItemPriceWithSource(ItemID.NATURE_RUNE, true));
-			if (highAlchValue > 0)
-			{
-				text += "<br>High alch value: " + QuantityFormatter.formatNumber(highAlchValue) + " (" + (profit > 0 ? "+" : "") + QuantityFormatter.formatNumber(profit) + ")";
-				
-				//If examine text takes 2 lines then decrese lineHeight by two so the high alch text will fit
-				if (geText.getText().length() > 55) {
-					geText.setLineHeight(defaultGeTextLineHeight - 2);
-				}
-			}
 		}
 
 		return examine.substring(0, from - 1) + "...";
