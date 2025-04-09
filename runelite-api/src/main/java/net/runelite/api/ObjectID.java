@@ -10052,6 +10052,7 @@ public final class ObjectID
 	public static final int DAEYALT_ROCKS = 17962;
 	public static final int DAEYALT_ROCKS_17963 = 17963;
 	public static final int DAEYALT_ROCKS_17964 = 17964;
+	public static final int DAEYALT_ROCKS_17965 = 17965;
 	public static final int MINE_CART_17966 = 17966;
 	public static final int MINE_CART_17967 = 17967;
 	public static final int MINE_CART_17968 = 17968;
