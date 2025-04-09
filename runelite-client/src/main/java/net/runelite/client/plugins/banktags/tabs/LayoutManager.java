@@ -269,7 +269,7 @@ public class LayoutManager
 			}
 
 			Widget c = itemContainer.getChild(pos);
-			drawItem(l, c, bankItemId, count(bank, bankItemId), pos);
+			drawItem(l, c, bank, bankItemId, pos);
 		}
 
 		int lastEmptySlot = -1;
@@ -289,7 +289,7 @@ public class LayoutManager
 				break;
 			}
 
-			drawItem(l, c, itemId, count(bank, itemId), lastEmptySlot);
+			drawItem(l, c, bank, itemId, lastEmptySlot);
 
 			if (log.isDebugEnabled())
 			{
@@ -319,7 +319,7 @@ public class LayoutManager
 				break;
 			}
 
-			drawItem(l, c, -1, 0, lastEmptySlot);
+			drawItem(l, c, bank, -1, lastEmptySlot);
 		}
 
 		if (modified)
@@ -328,22 +328,17 @@ public class LayoutManager
 		}
 	}
 
-	private int count(ItemContainer bank, int itemId)
-	{
-		int count = bank.count(itemId);
-		if (count > 0)
-		{
-			return count;
-		}
-		return potionStorage.count(itemId);
-	}
-
 	// mostly from ~bankmain_drawitem
-	private void drawItem(Layout l, Widget c, int item, int qty, int idx)
+	private void drawItem(Layout l, Widget c, ItemContainer bank, int item, int idx)
 	{
 		if (item > -1 && item != ItemID.BANK_FILLER)
 		{
 			ItemComposition def = client.getItemDefinition(item);
+
+			int bankCount = bank.count(item);
+			int qty = bankCount > 0 ? bankCount : potionStorage.count(item);
+
+			boolean isPotStorage = bankCount <= 0 && qty > 0;
 
 			c.setItemId(item);
 			c.setItemQuantity(qty);
@@ -424,16 +419,18 @@ public class LayoutManager
 					c.setAction(opIdx++, "Withdraw-All");
 				}
 				c.setAction(opIdx++, "Withdraw-All-but-1");
-				if (client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
 				{
 					c.setAction(opIdx++, "Configure-Charges");
 				}
-				if (client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
 				{
 					c.setAction(opIdx++, "Placeholder");
 				}
-
-				c.setAction(9, "Examine");
+				if (!isPotStorage)
+				{
+					c.setAction(9, "Examine");
+				}
 				c.setOpacity(0);
 			}
 
@@ -704,11 +701,77 @@ public class LayoutManager
 				if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
+					menu.setIdentifier(mungeBankToPotionStore(menu.getIdentifier()));
 					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
 					menu.setParam0(idx * PotionStorage.COMPONENTS_PER_POTION);
 				}
 			}
 		}
+	}
+
+	private int mungeBankToPotionStore(int ident)
+	{
+		// bank and potion store use different ops for different things,
+		// so we convert here for consistency for both users & menu entry swapper
+		int delta = ident;
+		int exclude = client.getVarbitValue(VarbitID.BANK_QUANTITY_TYPE);
+		if (delta == 1)
+		{
+			// Withdraw-<1|5|10|X|All>
+			return 1;
+		}
+		if (exclude != 0)
+		{
+			// Withdraw-1
+			if (--delta == 1)
+			{
+				return 2;
+			}
+		}
+		if (exclude != 1)
+		{
+			// Withdraw-5
+			if (--delta == 1)
+			{
+				return 3;
+			}
+		}
+		if (exclude != 2)
+		{
+			// Withdraw-10
+			if (--delta == 1)
+			{
+				return 4;
+			}
+		}
+		if (exclude != 3 && client.getVarbitValue(VarbitID.BANK_REQUESTEDQUANTITY) > 0)
+		{
+			// Withdraw-<>
+			if (--delta == 1)
+			{
+				return 5;
+			}
+		}
+		// Withdraw-X
+		if (--delta == 1)
+		{
+			return 6;
+		}
+		if (exclude != 4)
+		{
+			// Withdraw-All
+			if (--delta == 1)
+			{
+				return 7;
+			}
+		}
+		// Withdraw-All-but-1
+		if (--delta == 1)
+		{
+			return 8;
+		}
+
+		return ident;
 	}
 
 	// adjust the bank scroll position so that some items are always in view
