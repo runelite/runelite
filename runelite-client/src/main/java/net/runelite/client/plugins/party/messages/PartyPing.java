@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +23,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.data;
+package net.runelite.client.plugins.party.messages;
 
-import java.awt.Color;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.party.messages.PartyMemberMessage;
+import net.runelite.client.plugins.party.PartyPingTargetType;
+import net.runelite.client.plugins.party.PartyPingType;
 
-@RequiredArgsConstructor
-@Getter
-@Setter
-public class PartyTilePingData
+@Data
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class PartyPing extends PartyMemberMessage
 {
+	@SerializedName("tt")
+	private final PartyPingTargetType targetType;
+	// this will either be the targeted tile, the tile the game object is on or null for npc pings
 	private final WorldPoint point;
-	private final Color color;
-	private int alpha = 255;
-	private final long creationTime = System.nanoTime();
+	// this will either be the object ID, the npc's index or null for regular pings
+	private final Integer target;
+	private final int world;
+	@SerializedName("pid")
+	private final int playerId;
+	@SerializedName("pt")
+	private PartyPingType pingType;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.messages;
+package net.runelite.client.plugins.party;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.party.messages.PartyMemberMessage;
-
-@Value
-@EqualsAndHashCode(callSuper = true)
-public class TilePing extends PartyMemberMessage
+public enum PartyPingTargetType
 {
-	private final WorldPoint point;
+	NPC, OBJECT, TILE
 }
