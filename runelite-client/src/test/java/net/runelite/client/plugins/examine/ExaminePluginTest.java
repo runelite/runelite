@@ -30,7 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.ItemManager;
@@ -73,7 +73,7 @@ public class ExaminePluginTest
 	public void testGetItemPrice()
 	{
 		ItemComposition itemComposition = mock(ItemComposition.class);
-		when(itemComposition.getName()).thenReturn("Abyssal whip");
+		when(itemComposition.getMembersName()).thenReturn("Abyssal whip");
 		when(itemComposition.getHaPrice()).thenReturn(2);
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP)).thenReturn(3);
 		examinePlugin.getItemPrice(ItemID.ABYSSAL_WHIP, itemComposition, 2_000_000_000);

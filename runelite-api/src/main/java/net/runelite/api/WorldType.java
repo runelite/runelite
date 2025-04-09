@@ -47,9 +47,17 @@ public enum WorldType
 	 */
 	BOUNTY(1 << 5),
 	/**
+	 * PVP arena world type.
+	 */
+	PVP_ARENA(1 << 6),
+	/**
 	 * Skill total world type.
 	 */
 	SKILL_TOTAL(1 << 7),
+	/**
+	 * Quest speedrunning
+	 */
+	QUEST_SPEEDRUNNING(1 << 8),
 	/**
 	 * High risk world type.
 	 */
@@ -59,6 +67,12 @@ public enum WorldType
 	 */
 	LAST_MAN_STANDING(1 << 14),
 	/**
+	 * Beta world.
+	 */
+	BETA_WORLD(1 << 16),
+	LEGACY_ONLY(1 << 22),
+	EOC_ONLY(1 << 23),
+	/**
 	 * Beta worlds without profiles that are saved.
 	 */
 	NOSAVE_MODE(1 << 25),
@@ -66,6 +80,10 @@ public enum WorldType
 	 * Tournament world type
 	 */
 	TOURNAMENT_WORLD(1 << 26),
+	/**
+	 * Fresh start world type
+	 */
+	FRESH_START_WORLD(1 << 27),
 	/**
 	 * Deadman world type.
 	 */

@@ -24,13 +24,14 @@
  */
 package net.runelite.client.config;
 
+import java.lang.reflect.Type;
 import lombok.Value;
 
 @Value
 public class ConfigItemDescriptor implements ConfigObject
 {
 	private final ConfigItem item;
-	private final Class<?> type;
+	private final Type type;
 	private final Range range;
 	private final Alpha alpha;
 	private final Units units;

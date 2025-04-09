@@ -1,0 +1,247 @@
+.id                 5517
+.int_stack_count    4
+.string_stack_count 1
+.int_var_count      4
+.string_var_count   2
+   get_varbit             4394
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   LABEL24
+LABEL4:
+   iload                  0
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL16
+LABEL8:
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=2020ef>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            5
+   mes                   
+   jump                   LABEL23
+LABEL16:
+   chat_playername       
+   sconst                 ": "
+   sconst                 "<col=0000ff>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            5
+   mes                   
+LABEL23:
+   return                
+LABEL24:
+   invoke                 5262
+   iconst                 0
+   if_icmpeq              LABEL28
+   jump                   LABEL34
+LABEL28:
+   iload                  3
+   iconst                 4
+   if_icmpeq              LABEL32
+   jump                   LABEL34
+LABEL32:
+   get_varc_int           945
+   istore                 3
+LABEL34:
+   iload                  3
+   iconst                 -1
+   if_icmpne              LABEL38
+   jump                   LABEL75
+LABEL38:
+   iload                  3
+   iconst                 4
+   if_icmple              LABEL42
+   jump                   LABEL75
+LABEL42:
+   iload                  3
+   get_varc_int           945
+   if_icmpne              LABEL46
+   jump                   LABEL75
+LABEL46:
+   iload                  3
+   set_varc_int           945
+   iload                  3
+   iconst                 0
+   if_icmpne              LABEL52
+   jump                   LABEL66
+LABEL52:
+   sconst                 "Your chatbox mode is now set to "
+   iconst                 105
+   iconst                 115
+   iconst                 4070
+   iload                  3
+   enum                  
+   sconst                 " chat. To reset your mode, type "
+   sconst                 "<col=ef1020>"
+   sconst                 "/@p"
+   sconst                 "</col>"
+   sconst                 "."
+   join_string            7
+   mes                   
+   jump                   LABEL75
+LABEL66:
+   sconst                 "Your chatbox mode has been reset to "
+   iconst                 105
+   iconst                 115
+   iconst                 4070
+   iload                  3
+   enum                  
+   sconst                 " chat."
+   join_string            3
+   mes                   
+LABEL75:
+   iload                  2
+   iconst                 1
+   if_icmpeq              LABEL79
+   jump                   LABEL99
+LABEL79:
+   get_varc_int           945
+   switch                
+      1: LABEL82
+      2: LABEL85
+      3: LABEL90
+      4: LABEL95
+   jump                   LABEL99
+LABEL82:
+   iconst                 2
+   istore                 0
+   jump                   LABEL99
+LABEL85:
+   iconst                 3
+   iconst                 0
+   istore                 1
+   istore                 0
+   jump                   LABEL99
+LABEL90:
+   iconst                 4
+   iconst                 0
+   istore                 1
+   istore                 0
+   jump                   LABEL99
+LABEL95:
+   iconst                 3
+   iconst                 1
+   istore                 1
+   istore                 0
+LABEL99:
+   sload                  0              ; load input
+   iload                  0              ; load chat type
+   iload                  1              ; load clan target
+   sconst                 "chatboxInput" ; event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop clan target
+   pop_int               ; pop chat type
+   string_length         ; get string length of chat message
+   iconst                 0              ; load 0
+   if_icmpne              CONTINUE       ; if length is not 0, continue
+   return                
+CONTINUE:
+   sconst                 ""
+   sstore                 1
+   iload                  0
+   switch                
+      3: LABEL104
+      4: LABEL104
+   jump                   LABEL154
+LABEL104:
+   sload                  0
+   invoke                 5501
+   iconst                 1
+   if_icmpeq              LABEL109
+   jump                   LABEL113
+LABEL109:
+   sload                  0
+   invoke                 632
+   sstore                 0
+   sstore                 1
+LABEL113:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL117
+   jump                   LABEL143
+LABEL117:
+   sload                  0
+   iconst                 0
+   iconst                 1
+   substring             
+   4122                  
+   sload                  0
+   iconst                 1
+   sload                  0
+   string_length         
+   substring             
+   append                
+   sstore                 0
+   sconst                 "|"
+   sload                  0
+   append                
+   sstore                 0
+   sload                  0
+   string_length         
+   iconst                 80
+   if_icmpgt              LABEL138
+   jump                   LABEL143
+LABEL138:
+   sload                  0
+   iconst                 0
+   iconst                 80
+   substring             
+   sstore                 0
+LABEL143:
+   sload                  0
+   string_length         
+   iconst                 0
+   if_icmple              LABEL148
+   jump                   LABEL149
+LABEL148:
+   return                
+LABEL149:
+   sload                  0
+   iload                  0
+   iload                  1
+   chat_sendclan         
+   jump                   LABEL185
+LABEL154:
+   iload                  0
+   iconst                 2
+   if_icmpeq              LABEL158
+   jump                   LABEL176
+LABEL158:
+   sload                  0
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL163
+   jump                   LABEL176
+LABEL163:
+   sload                  0
+   iconst                 0
+   iconst                 1
+   substring             
+   sconst                 "/"
+   compare               
+   iconst                 0
+   if_icmpne              LABEL172
+   jump                   LABEL176
+LABEL172:
+   sconst                 "/"
+   sload                  0
+   append                
+   sstore                 0
+LABEL176:
+   sload                  0
+   string_length         
+   iconst                 0
+   if_icmple              LABEL181
+   jump                   LABEL182
+LABEL181:
+   return                
+LABEL182:
+   sload                  0
+   iload                  0
+   chat_sendpublic       
+LABEL185:
+   clientclock           
+   set_varc_int           61
+   return                

@@ -34,8 +34,8 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -44,8 +44,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Minimap",
-	description = "Customize the color of minimap dots, and hide the minimap",
-	tags = {"items", "npcs", "players"}
+	description = "Customize the color of minimap dots, hide the minimap, and zoom",
+	tags = {"items", "npcs", "players", "zoom"}
 )
 public class MinimapPlugin extends Plugin
 {
@@ -77,6 +77,7 @@ public class MinimapPlugin extends Plugin
 		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
+		client.setMinimapZoom(config.zoom());
 	}
 
 	@Override
@@ -84,12 +85,18 @@ public class MinimapPlugin extends Plugin
 	{
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
+		client.setMinimapZoom(false);
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
+		var state = event.getGameState();
+		if (state == GameState.STARTING)
+		{
+			originalDotSprites = null;
+		}
+		else if (state == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
 			storeOriginalDots();
 			replaceMapDots();
@@ -109,7 +116,13 @@ public class MinimapPlugin extends Plugin
 			updateMinimapWidgetVisibility(config.hideMinimap());
 			return;
 		}
+		else if (event.getKey().equals("zoom"))
+		{
+			client.setMinimapZoom(config.zoom());
+			return;
+		}
 
+		restoreOriginalDots();
 		replaceMapDots();
 	}
 
@@ -124,21 +137,21 @@ public class MinimapPlugin extends Plugin
 
 	private void updateMinimapWidgetVisibility(boolean enable)
 	{
-		final Widget resizableStonesWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET);
+		final Widget resizableStonesWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MAP_CONTAINER);
 
 		if (resizableStonesWidget != null)
 		{
 			resizableStonesWidget.setHidden(enable);
 		}
 
-		final Widget resizableNormalWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_WIDGET);
+		final Widget resizableNormalWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MAP_CONTAINER);
 
 		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
 		{
 			for (Widget widget : resizableNormalWidget.getStaticChildren())
 			{
-				if (widget.getId() != WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON.getId() &&
-					widget.getId() != WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON.getId())
+				if (widget.getId() != InterfaceID.ToplevelPreEoc.STONE10 &&
+					widget.getId() != InterfaceID.ToplevelPreEoc.ICON10)
 				{
 					widget.setHidden(enable);
 				}

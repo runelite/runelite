@@ -26,30 +26,49 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.formdev.flatlaf.extras.FlatInspector;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
+import java.awt.AWTEvent;
+import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.RootPaneContainer;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.IndexedSprite;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.PlayerComposition;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -64,9 +83,11 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Developer Tools",
 	tags = {"panel"},
@@ -117,6 +138,9 @@ public class DevToolsPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private DevToolsConfig config;
+
 	private DevToolsButton players;
 	private DevToolsButton npcs;
 	private DevToolsButton groundItems;
@@ -125,11 +149,11 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton graphicsObjects;
 	private DevToolsButton walls;
 	private DevToolsButton decorations;
-	private DevToolsButton inventory;
 	private DevToolsButton projectiles;
 	private DevToolsButton location;
-	private DevToolsButton chunkBorders;
+	private DevToolsButton zoneBorders;
 	private DevToolsButton mapSquares;
+	private DevToolsButton loadingLines;
 	private DevToolsButton validMovement;
 	private DevToolsButton movementFlags;
 	private DevToolsButton lineOfSight;
@@ -144,9 +168,64 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton soundEffects;
 	private DevToolsButton scriptInspector;
 	private DevToolsButton inventoryInspector;
-	private DevToolsButton roofs;
+	private DevToolsButton tileFlags;
 	private DevToolsButton shell;
+	private DevToolsButton menus;
+	private DevToolsButton uiDefaultsInspector;
 	private NavigationButton navButton;
+
+	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
+	{
+		Object inspector;
+
+		@Override
+		public void hotkeyPressed()
+		{
+			Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
+			try
+			{
+				if (inspector == null)
+				{
+					JRootPane rootPane = ((RootPaneContainer) window).getRootPane();
+					FlatInspector fi = new FlatInspector(rootPane);
+					fi.setEnabled(true);
+					inspector = fi;
+					fi.addPropertyChangeListener(ev ->
+					{
+						if ("enabled".equals(ev.getPropertyName()) && !fi.isEnabled() && inspector == ev.getSource())
+						{
+							inspector = null;
+						}
+					});
+				}
+				else
+				{
+					((FlatInspector) inspector).setEnabled(false);
+				}
+			}
+			catch (LinkageError | Exception e)
+			{
+				log.warn("unable to open swing inspector", e);
+				JOptionPane.showMessageDialog(window, "The swing inspector is not available.");
+			}
+		}
+	};
+
+	private final AWTEventListener swingInspectorKeyListener = rawEv ->
+	{
+		if (rawEv instanceof KeyEvent)
+		{
+			KeyEvent kev = (KeyEvent) rawEv;
+			if (kev.getID() == KeyEvent.KEY_PRESSED)
+			{
+				swingInspectorHotkeyListener.keyPressed(kev);
+			}
+			else if (kev.getID() == KeyEvent.KEY_RELEASED)
+			{
+				swingInspectorHotkeyListener.keyReleased(kev);
+			}
+		}
+	};
 
 	@Provides
 	DevToolsConfig provideConfig(ConfigManager configManager)
@@ -167,7 +246,6 @@ public class DevToolsPlugin extends Plugin
 		walls = new DevToolsButton("Walls");
 		decorations = new DevToolsButton("Decorations");
 
-		inventory = new DevToolsButton("Inventory");
 		projectiles = new DevToolsButton("Projectiles");
 
 		location = new DevToolsButton("Location");
@@ -175,8 +253,9 @@ public class DevToolsPlugin extends Plugin
 		tileLocation = new DevToolsButton("Tile Location");
 		cameraPosition = new DevToolsButton("Camera Position");
 
-		chunkBorders = new DevToolsButton("Chunk Borders");
+		zoneBorders = new DevToolsButton("Zone Borders");
 		mapSquares = new DevToolsButton("Map Squares");
+		loadingLines = new DevToolsButton("Loading Lines");
 
 		lineOfSight = new DevToolsButton("Line Of Sight");
 		validMovement = new DevToolsButton("Valid Movement");
@@ -190,8 +269,11 @@ public class DevToolsPlugin extends Plugin
 		soundEffects = new DevToolsButton("Sound Effects");
 		scriptInspector = new DevToolsButton("Script Inspector");
 		inventoryInspector = new DevToolsButton("Inventory Inspector");
-		roofs = new DevToolsButton("Roofs");
+		tileFlags = new DevToolsButton("Tile flags");
 		shell = new DevToolsButton("Shell");
+		menus = new DevToolsButton("Menus");
+
+		uiDefaultsInspector = new DevToolsButton("Swing Defaults");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -215,6 +297,8 @@ public class DevToolsPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		eventBus.register(soundEffectOverlay);
+
+		Toolkit.getDefaultToolkit().addAWTEventListener(swingInspectorKeyListener, AWTEvent.KEY_EVENT_MASK);
 	}
 
 	@Override
@@ -229,6 +313,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(mapRegionOverlay);
 		overlayManager.remove(soundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
+		Toolkit.getDefaultToolkit().removeAWTEventListener(swingInspectorKeyListener);
 	}
 
 	@Subscribe
@@ -236,7 +321,7 @@ public class DevToolsPlugin extends Plugin
 	{
 		String[] args = commandExecuted.getArguments();
 
-		switch (commandExecuted.getCommand())
+		switch (commandExecuted.getCommand().toLowerCase())
 		{
 			case "logger":
 			{
@@ -275,7 +360,8 @@ public class DevToolsPlugin extends Plugin
 				client.queueChangedVarp(varp);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
 				VarbitChanged varbitChanged = new VarbitChanged();
-				varbitChanged.setIndex(varp);
+				varbitChanged.setVarpId(varp);
+				varbitChanged.setValue(value);
 				eventBus.post(varbitChanged); // fake event
 				break;
 			}
@@ -294,7 +380,10 @@ public class DevToolsPlugin extends Plugin
 				VarbitComposition varbitComposition = client.getVarbit(varbit);
 				client.queueChangedVarp(varbitComposition.getIndex());
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
-				eventBus.post(new VarbitChanged()); // fake event
+				VarbitChanged varbitChanged = new VarbitChanged();
+				varbitChanged.setVarbitId(varbit);
+				varbitChanged.setValue(value);
+				eventBus.post(varbitChanged); // fake event
 				break;
 			}
 			case "addxp":
@@ -368,11 +457,36 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
-			case "cape":
+			case "wear":
 			{
-				int id = Integer.parseInt(args[0]);
+				int slot = Integer.parseInt(args[0]);
+				int id = Integer.parseInt(args[1]);
 				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
+				player.getPlayerComposition().getEquipmentIds()[slot] = id + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "tex":
+			{
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.TZHAAR_CAPE_FIRE + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.SLAYER_MIRROR_SHIELD + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "alpha":
+			{
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.HEAD.getIndex()] = ItemID.SECRET_GHOST_HAT + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = ItemID.ZENYTE_AMULET_ORNAMENT + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.SECRET_GHOST_CLOAK + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = ItemID.SECRET_GHOST_TOP + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.ELYSIAN + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.ARMS.getIndex()] = -1;
+				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.SECRET_GHOST_BOTTOM + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HAIR.getIndex()] = -1;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.SECRET_GHOST_GLOVES + PlayerComposition.ITEM_OFFSET;
+				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.SECRET_GHOST_BOOTS + PlayerComposition.ITEM_OFFSET;
 				player.getPlayerComposition().setHash();
 				break;
 			}
@@ -465,15 +579,15 @@ public class DevToolsPlugin extends Plugin
 
 		if (EXAMINE_MENU_ACTIONS.contains(action))
 		{
-			MenuEntry[] entries = client.getMenuEntries();
-			MenuEntry entry = entries[entries.length - 1];
+			MenuEntry entry = event.getMenuEntry();
 
 			final int identifier = event.getIdentifier();
 			String info = "ID: ";
 
 			if (action == MenuAction.EXAMINE_NPC)
 			{
-				NPC npc = client.getCachedNPCs()[identifier];
+				NPC npc = entry.getNpc();
+				assert npc != null;
 				info += npc.getId();
 			}
 			else
@@ -488,7 +602,70 @@ public class DevToolsPlugin extends Plugin
 			}
 
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
-			client.setMenuEntries(entries);
 		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
+	{
+		if ("devtoolsEnabled".equals(ev.getEventName()))
+		{
+			client.getIntStack()[client.getIntStackSize() - 1] = 1;
+		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick clientTick)
+	{
+		if (menus.isActive() && !client.isMenuOpen())
+		{
+			for (int i = 0; i < 100; ++i)
+			{
+				final int i_ = i;
+				if (i % 30 == 0)
+				{
+					MenuEntry parent = client.createMenuEntry(1)
+						.setOption("pmenu" + i)
+						.setTarget(i % 60 == 0 ? "devtools devtools devtools devtools" : "devtools")
+						.setType(MenuAction.RUNELITE);
+					Menu submenu = parent.createSubMenu();
+
+					for (int j = 0; j < 4; ++j)
+					{
+						final int j_ = j;
+						submenu.createMenuEntry(0)
+							.setOption("submenu" + j)
+							.setTarget("devtools")
+							.setType(MenuAction.RUNELITE)
+							.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_ + " sub " + j_, null));
+					}
+					continue;
+				}
+
+				client.createMenuEntry(1)
+					.setOption("menu" + i)
+					.setTarget("devtools")
+					.setType(MenuAction.RUNELITE)
+					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
+			}
+		}
+	}
+
+	static Map<Integer, String> loadFieldNames(Class<?> clazz)
+	{
+		var map = ImmutableMap.<Integer, String>builder();
+		try
+		{
+			for (Field f : clazz.getDeclaredFields())
+			{
+				map.put(f.getInt(null), f.getName());
+			}
+		}
+		catch (ReflectiveOperationException e)
+		{
+			log.debug("Failed to load fields", e);
+		}
+
+		return map.build();
 	}
 }

@@ -173,9 +173,26 @@ public enum ChatMessageType
 	 */
 	CLAN_CREATION_INVITATION(109),
 	/**
-	 * Clan wars challenge for clans rather than FCs
+	 * Challenge offer for the clan tab
 	 */
-	CLAN_CLAN_WARS_CHALLENGE(110),
+	CHALREQ_CLANCHAT(110),
+
+	CLAN_GIM_FORM_GROUP(111),
+	CLAN_GIM_GROUP_WITH(112),
+	CLAN_GIM_CHAT(-1),
+	CLAN_GIM_MESSAGE(-1),
+	/**
+	 * Chat type for npc and player dialog
+	 */
+	DIALOG(114),
+	/**
+	 * Chat type for dialog with a graphic/object
+	 */
+	MESBOX(115),
+	/**
+	 * Chat type for some npcs overhead text
+	 */
+	NPC_SAY(116),
 	/**
 	 * An unknown message type.
 	 */
@@ -189,7 +206,10 @@ public enum ChatMessageType
 	{
 		for (ChatMessageType chatMessageType : values())
 		{
-			CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			if (chatMessageType.type != -1)
+			{
+				CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			}
 		}
 	}
 

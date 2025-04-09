@@ -44,12 +44,10 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.plugins.xptracker.XpActionType;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -66,7 +64,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final int PROGRESS_BACKGROUND_SIZE = 5;
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 	private static final Color DARK_OVERLAY_COLOR = new Color(0, 0, 0, 180);
-	static final String FLIP_ACTION = "Flip";
+	private static final String FLIP_ACTION = "Flip";
 	private static final double GLOBE_ICON_RATIO = 0.65;
 
 	private final Client client;
@@ -95,8 +93,8 @@ public class XpGlobesOverlay extends Overlay
 		this.tooltipManager = tooltipManager;
 		this.xpTooltip.getComponent().setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
 		setPosition(OverlayPosition.TOP_CENTER);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Globes overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, FLIP_ACTION, "XP Globes overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Globes overlay");
+		addMenuEntry(RUNELITE_OVERLAY, FLIP_ACTION, "XP Globes overlay", e -> config.setAlignOrbsVertically(!config.alignOrbsVertically()));
 	}
 
 	@Override
@@ -312,8 +310,6 @@ public class XpGlobesOverlay extends Overlay
 
 		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
-			XpActionType xpActionType = xpTrackerService.getActionType(mouseOverSkill.getSkill());
-
 			if (config.showActionsLeft())
 			{
 				int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
@@ -321,7 +317,7 @@ public class XpGlobesOverlay extends Overlay
 				{
 					String actionsLeftString = decimalFormat.format(actionsLeft);
 					xpTooltip.getChildren().add(LineComponent.builder()
-							.left(xpActionType.getLabel() + " left:")
+							.left("Actions left:")
 							.leftColor(Color.ORANGE)
 							.right(actionsLeftString)
 							.build());
@@ -351,6 +347,16 @@ public class XpGlobesOverlay extends Overlay
 							.right(xpHrString)
 							.build());
 				}
+			}
+
+			if (config.showTimeTilGoal())
+			{
+				String timeLeft = xpTrackerService.getTimeTilGoal(mouseOverSkill.getSkill());
+				xpTooltip.getChildren().add(LineComponent.builder()
+					.left("Time left:")
+					.leftColor(Color.ORANGE)
+					.right(timeLeft)
+					.build());
 			}
 		}
 

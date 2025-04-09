@@ -40,4 +40,14 @@ public interface GroundObject extends TileObject
 	 * @see net.runelite.api.model.Jarvis
 	 */
 	Shape getConvexHull();
+
+	/**
+	 * A bitfield containing various flags:
+	 * <pre>{@code
+	 * object type id = bits & 0x20
+	 * orientation (0-3) = bits >>> 6 & 3
+	 * supports items = bits >>> 8 & 1
+	 * }</pre>
+	 */
+	int getConfig();
 }

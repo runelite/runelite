@@ -24,30 +24,47 @@
  */
 package net.runelite.api;
 
+import com.jagex.oldscape.pub.OAuthApi;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntPredicate;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.annotations.Interface;
+import net.runelite.api.annotations.VarCInt;
+import net.runelite.api.annotations.VarCStr;
+import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.annotations.VisibleForDevtools;
-import net.runelite.api.annotations.VisibleForExternalPlugins;
 import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanID;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.dbtable.DBRowConfig;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.vars.AccountType;
+import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetModalMode;
+import net.runelite.api.worldmap.MapElementConfig;
+import net.runelite.api.worldmap.WorldMap;
+import org.intellij.lang.annotations.MagicConstant;
 
 /**
  * Represents the RuneScape client.
  */
-public interface Client extends GameEngine
+public interface Client extends OAuthApi, GameEngine
 {
 	/**
 	 * The injected client invokes these callbacks to send events to us
@@ -63,34 +80,6 @@ public interface Client extends GameEngine
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
 
 	String getBuildID();
-
-	/**
-	 * Gets a list of all valid players from the player cache.
-	 *
-	 * @return a list of all players
-	 */
-	List<Player> getPlayers();
-
-	/**
-	 * Gets a list of all valid NPCs from the NPC cache.
-	 *
-	 * @return a list of all NPCs
-	 */
-	List<NPC> getNpcs();
-
-	/**
-	 * Gets an array of all cached NPCs.
-	 *
-	 * @return cached NPCs
-	 */
-	NPC[] getCachedNPCs();
-
-	/**
-	 * Gets an array of all cached players.
-	 *
-	 * @return cached players
-	 */
-	Player[] getCachedPlayers();
 
 	/**
 	 * Gets the current modified level of a skill.
@@ -160,10 +149,21 @@ public interface Client extends GameEngine
 	void stopNow();
 
 	/**
+	 * Gets the display name of the active account when launched from the Jagex launcher.
+	 *
+	 * @return The active account's display name, or {@code null} if not launched from the Jagex launcher
+	 */
+	@Nullable
+	String getLauncherDisplayName();
+
+	/**
+	 * DEPRECATED. See getAccountHash instead.
 	 * Gets the current logged in username.
 	 *
 	 * @return the logged in username
+	 * @see OAuthApi#getAccountHash()
 	 */
+	@Deprecated
 	String getUsername();
 
 	/**
@@ -205,7 +205,9 @@ public interface Client extends GameEngine
 	 * Gets the account type of the logged in player.
 	 *
 	 * @return the account type
+	 * @deprecated see Varbits#ACCOUNT_TYPE
 	 */
+	@Deprecated
 	AccountType getAccountType();
 
 	@Override
@@ -229,6 +231,13 @@ public interface Client extends GameEngine
 	int getCameraX();
 
 	/**
+	 * Floating point camera position, x-axis
+	 * @see #getCameraX()
+	 * @return
+	 */
+	double getCameraFpX();
+
+	/**
 	 * Gets the y-axis coordinate of the camera.
 	 * <p>
 	 * This value is a local coordinate value similar to
@@ -237,6 +246,13 @@ public interface Client extends GameEngine
 	 * @return the camera y coordinate
 	 */
 	int getCameraY();
+
+	/**
+	 * Floating point camera position, y-axis
+	 * @see #getCameraY()
+	 * @return
+	 */
+	double getCameraFpY();
 
 	/**
 	 * Gets the z-axis coordinate of the camera.
@@ -249,7 +265,14 @@ public interface Client extends GameEngine
 	int getCameraZ();
 
 	/**
-	 * Gets the actual pitch of the camera.
+	 * Floating point camera position, z-axis
+	 * @see #getCameraZ()
+	 * @return
+	 */
+	double getCameraFpZ();
+
+	/**
+	 * Gets the pitch of the camera.
 	 * <p>
 	 * The value returned by this method is measured in JAU, or Jagex
 	 * Angle Unit, which is 1/1024 of a revolution.
@@ -259,11 +282,25 @@ public interface Client extends GameEngine
 	int getCameraPitch();
 
 	/**
+	 * Floating point camera pitch.
+	 * @see #getCameraPitch()
+	 * @return
+	 */
+	double getCameraFpPitch();
+
+	/**
 	 * Gets the yaw of the camera.
 	 *
 	 * @return the camera yaw
 	 */
 	int getCameraYaw();
+
+	/**
+	 * Floating point camera yaw
+	 * @see #getCameraYaw()
+	 * @return
+	 */
+	double getCameraFpYaw();
 
 	/**
 	 * Gets the current world number of the logged in player.
@@ -327,54 +364,25 @@ public interface Client extends GameEngine
 	Point getMouseCanvasPosition();
 
 	/**
-	 * Gets a 3D array containing the heights of tiles in the
-	 * current scene.
-	 *
-	 * @return the tile heights
-	 */
-	int[][][] getTileHeights();
-
-	/**
-	 * Gets a 3D array containing the settings of tiles in the
-	 * current scene.
-	 *
-	 * @return the tile settings
-	 */
-	byte[][][] getTileSettings();
-
-	/**
-	 * Gets the current plane the player is on.
-	 * <p>
-	 * This value indicates the current map level above ground level, where
-	 * ground level is 0. For example, going up a ladder in Lumbridge castle
-	 * will put the player on plane 1.
-	 * <p>
-	 * Note: This value will never be below 0. Basements and caves below ground
-	 * level use a tile offset and are still considered plane 0 by the game.
-	 *
-	 * @return the plane
-	 */
-	int getPlane();
-
-	/**
-	 * Gets the current scene
-	 */
-	Scene getScene();
-
-	/**
 	 * Gets the logged in player instance.
 	 *
 	 * @return the logged in player
 	 */
-	@Nullable
 	Player getLocalPlayer();
+
+	/**
+	 * Get the local player's follower, such as a pet
+	 * @return
+	 */
+	@Nullable
+	NPC getFollower();
 
 	/**
 	 * Gets the item composition corresponding to an items ID.
 	 *
 	 * @param id the item ID
 	 * @return the corresponding item composition
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	@Nonnull
 	ItemComposition getItemDefinition(int id);
@@ -392,7 +400,21 @@ public interface Client extends GameEngine
 	 * @return the created sprite
 	 */
 	@Nullable
-	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
+	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, @MagicConstant(valuesFromClass = ItemQuantityMode.class) int stackable, boolean noted, int scale);
+
+	/**
+	 * Get the item model cache. These models are used for drawing widgets of type {@link net.runelite.api.widgets.WidgetType#MODEL}
+	 * and inventory item icons
+	 * @return
+	 */
+	NodeCache getItemModelCache();
+
+	/**
+	 * Get the item sprite cache. These are 2d SpritePixels which are used to raster item images on the inventory and
+	 * on widgets of type {@link net.runelite.api.widgets.WidgetType#GRAPHIC}
+	 * @return
+	 */
+	NodeCache getItemSpriteCache();
 
 	/**
 	 * Loads and creates the sprite images of the passed archive and file IDs.
@@ -421,24 +443,9 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexConfig();
 
 	/**
-	 * Returns the x-axis base coordinate.
-	 * <p>
-	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in the scene).
-	 *
-	 * @return the base x-axis coordinate
+	 * Gets an index by id
 	 */
-	int getBaseX();
-
-	/**
-	 * Returns the y-axis base coordinate.
-	 * <p>
-	 * This value is the y-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in the scene).
-	 *
-	 * @return the base y-axis coordinate
-	 */
-	int getBaseY();
+	IndexDataBase getIndex(int id);
 
 	/**
 	 * Gets the current mouse button that is pressed.
@@ -446,14 +453,6 @@ public interface Client extends GameEngine
 	 * @return the pressed mouse button
 	 */
 	int getMouseCurrentButton();
-
-	/**
-	 * Gets the currently selected tile. (ie. last right clicked tile)
-	 *
-	 * @return the selected tile
-	 */
-	@Nullable
-	Tile getSelectedSceneTile();
 
 	/**
 	 * Checks whether a widget is currently being dragged.
@@ -473,7 +472,7 @@ public interface Client extends GameEngine
 	/**
 	 * Gets the widget that is being dragged on.
 	 * <p>
-	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG_ON}
+	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG}
 	 * flag set, and is the widget currently under the dragged widget.
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
@@ -489,8 +488,17 @@ public interface Client extends GameEngine
 	void setDraggedOnWidget(Widget widget);
 
 	/**
+	 * Get the number of client cycles the current dragged widget
+	 * has been dragged for.
+	 *
+	 * @return
+	 */
+	int getDragTime();
+
+	/**
 	 * Gets Interface ID of the root widget
 	 */
+	@Interface
 	int getTopLevelInterfaceId();
 
 	/**
@@ -507,30 +515,26 @@ public interface Client extends GameEngine
 	 * @return the widget
 	 */
 	@Nullable
+	@Deprecated
 	Widget getWidget(WidgetInfo widget);
 
 	/**
 	 * Gets a widget by its raw group ID and child ID.
-	 * <p>
-	 * Note: Use {@link #getWidget(WidgetInfo)} for a more human-readable
-	 * version of this method.
 	 *
 	 * @param groupId the group ID
 	 * @param childId the child widget ID
 	 * @return the widget corresponding to the group and child pair
 	 */
 	@Nullable
-	Widget getWidget(int groupId, int childId);
+	Widget getWidget(@Interface int groupId, int childId);
 
 	/**
-	 * Gets a widget by it's packed ID.
+	 * Gets a widget by its component id.
 	 *
-	 * <p>
-	 * Note: Use {@link #getWidget(WidgetInfo)} or {@link #getWidget(int, int)} for
-	 * a more readable version of this method.
+	 * @param componentId the component id
 	 */
 	@Nullable
-	Widget getWidget(int packedID);
+	Widget getWidget(@Component int componentId);
 
 	/**
 	 * Gets an array containing the x-axis canvas positions
@@ -551,7 +555,7 @@ public interface Client extends GameEngine
 	/**
 	 * Gets the current run energy of the logged in player.
 	 *
-	 * @return the run energy
+	 * @return the run energy in units of 1/100th of an percentage
 	 */
 	int getEnergy();
 
@@ -594,11 +598,30 @@ public interface Client extends GameEngine
 	World[] getWorldList();
 
 	/**
+	 * Get the client menu.
+	 */
+	@Nonnull
+	Menu getMenu();
+
+	/**
+	 * Create a new menu entry
+	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
+	 * @return the newly created menu entry
+	 * @see #getMenu()
+	 * @see Menu#createMenuEntry(int)
+	 */
+	@Deprecated
+	MenuEntry createMenuEntry(int idx);
+
+	/**
 	 * Gets an array of currently open right-click menu entries that can be
 	 * clicked and activated.
 	 *
 	 * @return array of open menu entries
+	 * @see #getMenu()
+	 * @see Menu#getMenuEntries()
 	 */
+	@Deprecated
 	MenuEntry[] getMenuEntries();
 
 	/**
@@ -608,7 +631,10 @@ public interface Client extends GameEngine
 	 * event, since setting the menu entries will be overwritten the next frame
 	 *
 	 * @param entries new array of open menu entries
+	 * @see #getMenu()
+	 * @see Menu#setMenuEntries(MenuEntry[])
 	 */
+	@Deprecated
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
@@ -619,46 +645,67 @@ public interface Client extends GameEngine
 	boolean isMenuOpen();
 
 	/**
+	 * Returns whether the currently open menu is scrollable.
+	 * @return
+	 */
+	boolean isMenuScrollable();
+
+	/**
+	 * Get the number of entries the currently open menu has been scrolled down.
+	 * @return
+	 */
+	int getMenuScroll();
+
+	/**
+	 * Set the number of entries the currently open menu has been scrolled down.
+	 * @param scroll
+	 */
+	void setMenuScroll(int scroll);
+
+	/**
 	 * Get the menu x location. Only valid if the menu is open.
 	 *
 	 * @return the menu x location
+	 * @see Menu#getMenuX()
 	 */
+	@Deprecated
 	int getMenuX();
 
 	/**
 	 * Get the menu y location. Only valid if the menu is open.
 	 *
 	 * @return the menu y location
+	 * @see Menu#getMenuY()
 	 */
+	@Deprecated
 	int getMenuY();
 
 	/**
 	 * Get the menu height. Only valid if the menu is open.
 	 *
 	 * @return the menu height
+	 * @see Menu#getMenuHeight()
 	 */
+	@Deprecated
 	int getMenuHeight();
 
 	/**
 	 * Get the menu width. Only valid if the menu is open.
 	 *
 	 * @return the menu width
+	 * @see Menu#getMenuWidth()
 	 */
+	@Deprecated
 	int getMenuWidth();
 
 	/**
 	 * Gets the angle of the map, or target camera yaw.
 	 *
 	 * @return the map angle
+	 * @see #getCameraYawTarget()
 	 */
+	@Deprecated
 	int getMapAngle();
-
-	/**
-	 * Set the target camera yaw
-	 *
-	 * @param cameraYawTarget
-	 */
-	void setCameraYawTarget(int cameraYawTarget);
 
 	/**
 	 * Checks whether the client window is currently resized.
@@ -675,55 +722,21 @@ public interface Client extends GameEngine
 	int getRevision();
 
 	/**
-	 * Gets an array of map region IDs that are currently loaded.
-	 *
-	 * @return the map regions
-	 */
-	int[] getMapRegions();
-
-	/**
-	 * Contains a 3D array of template chunks for instanced areas.
-	 * <p>
-	 * The array returned is of format [z][x][y], where z is the
-	 * plane, x and y the x-axis and y-axis coordinates of a tile
-	 * divided by the size of a chunk.
-	 * <p>
-	 * The bits of the int value held by the coordinates are -1 if there is no data,
-	 * structured in the following format:
-	 * <pre>{@code
-	 *  0                   1                   2                   3
-	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
-	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	 * }</pre>
-	 * @return the array of instance template chunks
-	 * @see Constants#CHUNK_SIZE
-	 * @see InstanceTemplates
-	 */
-	int[][][] getInstanceTemplateChunks();
-
-	/**
-	 * Returns a 2D array containing XTEA encryption keys used to decrypt
-	 * map region files.
-	 * <p>
-	 * The array maps the region keys at index {@code n} to the region
-	 * ID held in {@link #getMapRegions()} at {@code n}.
-	 * <p>
-	 * The array of keys for the region make up a 128-bit encryption key
-	 * spread across 4 integers.
-	 *
-	 * @return the XTEA encryption keys
-	 */
-	int[][] getXteaKeys();
-
-	/**
-	 * Gets an array of all client variables.
+	 * Gets an array of all client varplayers.
 	 *
 	 * @return local player variables
 	 */
 	@VisibleForDevtools
 	int[] getVarps();
+
+	/**
+	 * Get an array of all server varplayers. These vars are only
+	 * modified by the server, and so represent the server's idea of
+	 * the varp values.
+	 * @return the server varps
+	 */
+	@VisibleForDevtools
+	int[] getServerVarps();
 
 	/**
 	 * Gets an array of all client variables.
@@ -732,36 +745,32 @@ public interface Client extends GameEngine
 	Map<Integer, Object> getVarcMap();
 
 	/**
-	 * Gets the value corresponding to the passed player variable.
+	 * Gets a value corresponding to the passed varbit.
 	 *
-	 * @param varPlayer the player variable
+	 * @param varbit the varbit id
 	 * @return the value
+	 * @see Client#getVarbitValue(int)
 	 */
-	int getVar(VarPlayer varPlayer);
+	@Deprecated
+	int getVar(@Varbit int varbit);
 
 	/**
-	 * Gets a value corresponding to the passed variable.
+	 * Gets the value of the given varbit.
 	 *
-	 * @param varbit the variable
+	 * @param varbit the varbit id
 	 * @return the value
 	 */
-	int getVar(Varbits varbit);
+	int getVarbitValue(@Varbit int varbit);
 
 	/**
-	 * Gets an int value corresponding to the passed variable.
-	 *
-	 * @param varClientInt the variable
+	 * Gets the value of the given varbit.
+	 * This returns the server's idea of the value, not the client's. This is
+	 * specifically the last value set by the server regardless of changes to
+	 * the var by the client.
+	 * @param varbit the varbit id
 	 * @return the value
 	 */
-	int getVar(VarClientInt varClientInt);
-
-	/**
-	 * Gets a String value corresponding to the passed variable.
-	 *
-	 * @param varClientStr the variable
-	 * @return the value
-	 */
-	String getVar(VarClientStr varClientStr);
+	int getServerVarbitValue(@Varbit int varbit);
 
 	/**
 	 * Gets the value of a given VarPlayer.
@@ -769,53 +778,58 @@ public interface Client extends GameEngine
 	 * @param varpId the VarPlayer id
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
-	int getVarpValue(int varpId);
+	int getVarpValue(@Varp int varpId);
 
 	/**
-	 * Gets the value of a given Varbit.
+	 * Gets the value of a given VarPlayer.
+	 * This returns the server's idea of the value, not the client's. This is
+	 * specifically the last value set by the server regardless of changes to
+	 * the var by the client.
 	 *
-	 * @param varbitId the varbit id
+	 * @param varpId the VarPlayer id
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
-	int getVarbitValue(int varbitId);
+	int getServerVarpValue(@Varp int varpId);
 
 	/**
 	 * Gets the value of a given VarClientInt
 	 *
-	 * @param varcIntId the VarClientInt id
+	 * @param var the {@link VarClientInt}
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
-	int getVarcIntValue(int varcIntId);
+	int getVarcIntValue(@VarCInt int var);
 
 	/**
 	 * Gets the value of a given VarClientStr
 	 *
-	 * @param varcStrId the VarClientStr id
+	 * @param var the {@link VarClientStr}
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
-	String getVarcStrValue(int varcStrId);
+	String getVarcStrValue(@VarCStr int var);
 
 	/**
 	 * Sets a VarClientString to the passed value
+	 *
+	 * @param var the {@link VarClientStr}
+	 * @param value the new value
 	 */
-	void setVar(VarClientStr varClientStr, String value);
+	void setVarcStrValue(@VarCStr int var, String value);
 
 	/**
 	 * Sets a VarClientInt to the passed value
-	 */
-	void setVar(VarClientInt varClientStr, int value);
-
-	/**
-	 * Sets the value of a given variable.
 	 *
-	 * @param varbit the variable
+	 * @param var the {@link VarClientInt}
 	 * @param value the new value
 	 */
-	void setVarbit(Varbits varbit, int value);
+	void setVarcIntValue(@VarCInt int var, int value);
+
+	/**
+	 * Sets the value of a varbit
+	 *
+	 * @param varbit the varbit id
+	 * @param value the new value
+	 */
+	void setVarbit(@Varbit int varbit, int value);
 
 	/**
 	 * Gets the varbit composition for a given varbit id
@@ -833,10 +847,10 @@ public interface Client extends GameEngine
 	 * @param varps passed varbits
 	 * @param varbitId the variable ID
 	 * @return the value
-	 * @see Varbits#id
+	 * @see net.runelite.api.gameval.VarbitID
 	 */
 	@VisibleForDevtools
-	int getVarbitValue(int[] varps, int varbitId);
+	int getVarbitValue(int[] varps, @Varbit int varbitId);
 
 	/**
 	 * Sets the value of a given variable.
@@ -844,24 +858,44 @@ public interface Client extends GameEngine
 	 * @param varps passed varbits
 	 * @param varbit the variable
 	 * @param value the value
-	 * @see Varbits#id
+	 * @see net.runelite.api.gameval.VarbitID
 	 */
 	@VisibleForDevtools
-	void setVarbitValue(int[] varps, int varbit, int value);
+	void setVarbitValue(int[] varps, @Varbit int varbit, int value);
 
 	/**
 	 * Mark the given varp as changed, causing var listeners to be
 	 * triggered next tick
 	 * @param varp
 	 */
-	void queueChangedVarp(int varp);
+	void queueChangedVarp(@Varp int varp);
+
+	/**
+	 * Open an interface.
+	 * @param componentId component id to open the interface at
+	 * @param interfaceId the interface to open
+	 * @param modalMode see {@link WidgetModalMode}
+	 * @throws IllegalStateException if the component does not exist or it not a layer, or the interface is already
+	 * open on a different component
+	 * @return the {@link WidgetNode} for the interface. This should be closed later by calling
+	 * {{@link #closeInterface(WidgetNode, boolean)}.
+	 */
+	WidgetNode openInterface(int componentId, int interfaceId, @MagicConstant(valuesFromClass = WidgetModalMode.class) int modalMode);
+
+	/**
+	 * Close an interface
+	 * @param interfaceNode the {@link WidgetNode} linking the interface into the component tree
+	 * @param unload whether to null the client's widget table
+	 * @throws IllegalArgumentException if the interfaceNode is not linked into the component tree
+	 */
+	void closeInterface(WidgetNode interfaceNode, boolean unload);
 
 	/**
 	 * Gets the widget flags table.
 	 *
 	 * @return the widget flags table
 	 */
-	HashTable getWidgetFlags();
+	HashTable<IntegerNode> getWidgetFlags();
 
 	/**
 	 * Gets the widget node component table.
@@ -883,7 +917,9 @@ public interface Client extends GameEngine
 	 *
 	 * @param prayer the prayer
 	 * @return true if the prayer is active, false otherwise
+	 * @deprecated this method does not properly handle deadeye/eagle eye or mystic vigour/might
 	 */
+	@Deprecated
 	boolean isPrayerActive(Prayer prayer);
 
 	/**
@@ -900,20 +936,6 @@ public interface Client extends GameEngine
 	 * @return
 	 */
 	long getOverallExperience();
-
-	/**
-	 * Gets the game drawing mode.
-	 *
-	 * @return the game drawing mode
-	 */
-	int getGameDrawingMode();
-
-	/**
-	 * Sets the games drawing mode.
-	 *
-	 * @param gameDrawingMode the new drawing mode
-	 */
-	void setGameDrawingMode(int gameDrawingMode);
 
 	/**
 	 * Refreshes the chat.
@@ -939,7 +961,7 @@ public interface Client extends GameEngine
 	 *
 	 * @param objectId the object ID
 	 * @return the corresponding object composition
-	 * @see ObjectID
+	 * @see net.runelite.api.gameval.ObjectID
 	 */
 	ObjectComposition getObjectDefinition(int objectId);
 
@@ -948,7 +970,7 @@ public interface Client extends GameEngine
 	 *
 	 * @param npcId the npc ID
 	 * @return the corresponding NPC composition
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	NPCComposition getNpcDefinition(int npcId);
 
@@ -965,11 +987,24 @@ public interface Client extends GameEngine
 	NodeCache getStructCompositionCache();
 
 	/**
-	 * Gets an array of all world areas
-	 *
-	 * @return the world areas
+	 * Gets a entry out of a DBTable Row
 	 */
-	MapElementConfig[] getMapElementConfigs();
+	Object[] getDBTableField(int rowID, int column, int tupleIndex);
+
+	DBRowConfig getDBRowConfig(int rowID);
+
+	/**
+	 * Uses an index to find rows containing a certain value in a column.
+	 * An index must exist for this column.
+	 */
+	List<Integer> getDBRowsByValue(int table, int column, int tupleIndex, Object value);
+
+	/**
+	 * Get a map element config by id
+	 *
+	 * @param id the id
+	 */
+	MapElementConfig getMapElementConfig(int id);
 
 	/**
 	 * Gets a sprite of the map scene
@@ -1042,29 +1077,51 @@ public interface Client extends GameEngine
 	LocalPoint getLocalDestinationLocation();
 
 	/**
-	 * Gets a list of all projectiles currently spawned.
-	 *
-	 * @return all projectiles
-	 */
-	List<Projectile> getProjectiles();
-
-	/**
-	 * Gets a list of all graphics objects currently drawn.
-	 *
-	 * @return all graphics objects
-	 */
-	List<GraphicsObject> getGraphicsObjects();
-
-	/**
 	 * Creates a RuneLiteObject, which is a modified {@link GraphicsObject}
 	 */
 	RuneLiteObject createRuneLiteObject();
 
 	/**
-	 * Loads a model from the cache
+	 * Registers a new {@link RuneLiteObjectController} to its corresponding {@link WorldView}.
+	 */
+	void registerRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Removes a new {@link RuneLiteObjectController} from its corresponding {@link WorldView}.
+	 */
+	void removeRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Checks whether a {@link RuneLiteObjectController} is registered to any {@link WorldView}.
+	 */
+	boolean isRuneLiteObjectRegistered(RuneLiteObjectController controller);
+
+	/**
+	 * Loads an unlit model from the cache. The returned model shares
+	 * data such as faces, face colors, face transparencies, and vertex points with
+	 * other models. If you want to mutate these you MUST call the relevant {@code cloneX}
+	 * method.
+	 *
+	 * @see ModelData#cloneColors()
 	 *
 	 * @param id the ID of the model
+	 * @return the model or null if it is loading or nonexistent
 	 */
+	@Nullable
+	ModelData loadModelData(int id);
+
+	ModelData mergeModels(ModelData[] models, int length);
+	ModelData mergeModels(ModelData ...models);
+
+	/**
+	 * Loads and lights a model from the cache
+	 *
+	 * This is equivalent to {@code loadModelData(id).light()}
+	 *
+	 * @param id the ID of the model
+	 * @return the model or null if it is loading or nonexistent
+	 */
+	@Nullable
 	Model loadModel(int id);
 
 	/**
@@ -1073,16 +1130,18 @@ public interface Client extends GameEngine
 	 * @param id the ID of the model
 	 * @param colorToFind array of hsl color values to find in the model to replace
 	 * @param colorToReplace array of hsl color values to replace in the model
+	 * @return the model or null if it is loading or nonexistent
 	 */
+	@Nullable
 	Model loadModel(int id, short[] colorToFind, short[] colorToReplace);
 
 	/**
 	 * Loads an animation from the cache
 	 *
 	 * @param id the ID of the animation. Any int is allowed, but implementations in the client
-	 * should be defined in {@link AnimationID}
+	 * should be defined in {@link net.runelite.api.gameval.AnimationID}
 	 */
-	Sequence loadAnimation(int id);
+	Animation loadAnimation(int id);
 
 	/**
 	 * Gets the music volume
@@ -1141,6 +1200,12 @@ public interface Client extends GameEngine
 	void playSoundEffect(int id, int volume);
 
 	/**
+	 * Get the currently playing midi requests.
+	 * @return
+	 */
+	List<MidiRequest> getActiveMidiRequests();
+
+	/**
 	 * Gets the clients graphic buffer provider.
 	 *
 	 * @return the buffer provider
@@ -1182,9 +1247,26 @@ public interface Client extends GameEngine
 	 *
 	 * @param inventory the inventory type
 	 * @return the item container
+	 * @see net.runelite.api.gameval.InventoryID
 	 */
 	@Nullable
 	ItemContainer getItemContainer(InventoryID inventory);
+
+	/**
+	 * Get an item container by id
+	 *
+	 * @param id the inventory id
+	 * @return the item container
+	 * @see net.runelite.api.gameval.InventoryID
+	 */
+	@Nullable
+	ItemContainer getItemContainer(int id);
+
+	/**
+	 * Get all item containers
+	 * @return
+	 */
+	HashTable<ItemContainer> getItemContainers();
 
 	/**
 	 * Gets the length of the cs2 vm's int stack
@@ -1215,6 +1297,21 @@ public interface Client extends GameEngine
 	 * Gets the cs2 vm's string stack
 	 */
 	String[] getStringStack();
+
+	/**
+	 * Get the size of one of the cs2 vm's arrays.
+	 * @param arrayId the array id
+	 * @return
+	 */
+	int getArraySizes(int arrayId);
+
+	/**
+	 * Get one of the cs2 vm's arrays. Use {@link #getArraySizes(int)} to get
+	 * the array length.
+	 * @param arrayId the array id
+	 * @return
+	 */
+	int[] getArray(int arrayId);
 
 	/**
 	 * Gets the cs2 vm's active widget
@@ -1252,7 +1349,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return
 	 */
-	NameableContainer<Friend> getFriendContainer();
+	FriendContainer getFriendContainer();
 
 	/**
 	 * Retrieve the nameable container containing ignores
@@ -1267,6 +1364,53 @@ public interface Client extends GameEngine
 	 * @return the client preferences
 	 */
 	Preferences getPreferences();
+
+	/**
+	 * Get the target camera yaw.
+	 * The target yaw is the yaw the camera should use based on player input.
+	 * The actual camera yaw, from {@link #getCameraYaw()}, is what the camera
+	 * is actually using, which can be overridden by eg. cutscenes.
+	 *
+	 * @return the target camera yaw
+	 */
+	int getCameraYawTarget();
+
+	/**
+	 * Get the target camera pitch
+	 * The target pitch is the pitch the camera should use based on player input.
+	 * The actual camera pitch, from {@link #getCameraPitch()} ()}, is what the camera
+	 * is actually using, which can be overridden by eg. cutscenes.
+	 *
+	 * @return the target camera pitch
+	 */
+	int getCameraPitchTarget();
+
+	/**
+	 * Set the target camera yaw
+	 *
+	 * @param cameraYawTarget target camera yaw
+	 */
+	void setCameraYawTarget(int cameraYawTarget);
+
+	/**
+	 * Set the target camera pitch
+	 *
+	 * @param cameraPitchTarget target camera pitch
+	 */
+	void setCameraPitchTarget(int cameraPitchTarget);
+
+	/**
+	 * Sets the camera speed
+	 * @param speed
+	 */
+	void setCameraSpeed(float speed);
+
+	/**
+	 * Sets the mask for which mouse buttons control the camera.
+	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
+	 * @param mask
+	 */
+	void setCameraMouseButtonMask(int mask);
 
 	/**
 	 * Sets whether the camera pitch can exceed the normal limits set
@@ -1290,8 +1434,15 @@ public interface Client extends GameEngine
 	 * Gets the world map overview.
 	 *
 	 * @return the world map overview
+	 * @see #getWorldMap()
 	 */
+	@Deprecated
 	RenderOverview getRenderOverview();
+
+	/**
+	 * Get the world map
+	 */
+	WorldMap getWorldMap();
 
 	/**
 	 * Checks whether the client is in stretched mode.
@@ -1424,7 +1575,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the hint arrow type
 	 */
-	HintArrowType getHintArrowType();
+	@MagicConstant(valuesFromClass = HintArrowType.class) int getHintArrowType();
 
 	/**
 	 * Clears the current hint arrow.
@@ -1437,6 +1588,13 @@ public interface Client extends GameEngine
 	 * @param point the location
 	 */
 	void setHintArrow(WorldPoint point);
+
+	/**
+	 * Sets the hint arrow to the passsed point
+	 *
+	 * @param point
+	 */
+	void setHintArrow(LocalPoint point);
 
 	/**
 	 * Sets a hint arrow to point to the passed player.
@@ -1473,170 +1631,8 @@ public interface Client extends GameEngine
 	 */
 	NPC getHintArrowNpc();
 
-	/**
-	 * Checks whether animation smoothing is enabled for players.
-	 *
-	 * @return true if player animation smoothing is enabled, false otherwise
-	 */
-	boolean isInterpolatePlayerAnimations();
-
-	/**
-	 * Sets the animation smoothing state for players.
-	 *
-	 * @param interpolate the new smoothing state
-	 */
-	void setInterpolatePlayerAnimations(boolean interpolate);
-
-	/**
-	 * Checks whether animation smoothing is enabled for NPC.
-	 *
-	 * @return true if NPC animation smoothing is enabled, false otherwise
-	 */
-	boolean isInterpolateNpcAnimations();
-
-	/**
-	 * Sets the animation smoothing state for NPCs.
-	 *
-	 * @param interpolate the new smoothing state
-	 */
-	void setInterpolateNpcAnimations(boolean interpolate);
-
-	/**
-	 * Checks whether animation smoothing is enabled for objects.
-	 *
-	 * @return true if object animation smoothing is enabled, false otherwise
-	 */
-	boolean isInterpolateObjectAnimations();
-
-	/**
-	 * Sets the animation smoothing state for objects.
-	 *
-	 * @param interpolate the new smoothing state
-	 */
-	void setInterpolateObjectAnimations(boolean interpolate);
-
-	/**
-	 * Checks whether the logged in player is in an instanced region.
-	 *
-	 * @return true if the player is in instanced region, false otherwise
-	 */
-	boolean isInInstancedRegion();
-
-	/**
-	 * Get the number of client ticks an item has been pressed
-	 *
-	 * @return the number of client ticks an item has been pressed
-	 */
-	int getItemPressedDuration();
-
-	/**
-	 * Sets whether the client is hiding entities.
-	 * <p>
-	 * This method does not itself hide any entities. It behaves as a master
-	 * switch for whether or not any of the related entities are hidden or
-	 * shown. If this method is set to false, changing the configurations for
-	 * specific entities will have no effect.
-	 *
-	 * @param state new entity hiding state
-	 */
-	void setIsHidingEntities(boolean state);
-
-	/**
-	 * Sets whether or not other players are hidden.
-	 *
-	 * @param state the new player hidden state
-	 */
-	void setOthersHidden(boolean state);
-
-	/**
-	 * Sets whether 2D sprites related to the other players are hidden.
-	 * (ie. overhead prayers, PK skull)
-	 *
-	 * @param state the new player 2D hidden state
-	 */
-	void setOthersHidden2D(boolean state);
-
-	/**
-	 * Sets whether or not friends are hidden.
-	 *
-	 * @param state the new friends hidden state
-	 */
-	void setFriendsHidden(boolean state);
-
-	/**
-	 * Sets whether or not friends chat members are hidden.
-	 *
-	 * @param state the new friends chat member hidden state
-	 */
-	void setFriendsChatMembersHidden(boolean state);
-
-	/**
-	 * Sets whether or not ignored players are hidden.
-	 *
-	 * @param state the new ignored player hidden state
-	 */
-	void setIgnoresHidden(boolean state);
-
-	/**
-	 * Sets whether the local player is hidden.
-	 *
-	 * @param state new local player hidden state
-	 */
-	void setLocalPlayerHidden(boolean state);
-
-	/**
-	 * Sets whether 2D sprites related to the local player are hidden.
-	 * (ie. overhead prayers, PK skull)
-	 *
-	 * @param state new local player 2D hidden state
-	 */
-	void setLocalPlayerHidden2D(boolean state);
-
-	/**
-	 * Sets whether NPCs are hidden.
-	 *
-	 * @param state new NPC hidden state
-	 */
-	void setNPCsHidden(boolean state);
-
-	/**
-	 * Sets whether 2D sprites related to the NPCs are hidden.
-	 * (ie. overhead prayers)
-	 *
-	 * @param state new NPC 2D hidden state
-	 */
-	void setNPCsHidden2D(boolean state);
-
-	/**
-	 * Sets whether Pets from other players are hidden.
-	 *
-	 * @param state new pet hidden state
-	 */
-	void setPetsHidden(boolean state);
-
-	/**
-	 * Sets whether attacking players or NPCs are hidden.
-	 *
-	 * @param state new attacker hidden state
-	 */
-	void setAttackersHidden(boolean state);
-
-	/**
-	 * Sets whether projectiles are hidden.
-	 *
-	 * @param state new projectile hidden state
-	 */
-	void setProjectilesHidden(boolean state);
-
-	/**
-	 * Gets an array of tile collision data.
-	 * <p>
-	 * The index into the array is the plane/z-axis coordinate.
-	 *
-	 * @return the collision data
-	 */
-	@Nullable
-	CollisionData[] getCollisionMaps();
+	IntPredicate getAnimationInterpolationFilter();
+	void setAnimationInterpolationFilter(IntPredicate filter);
 
 	@VisibleForDevtools
 	int[] getBoostedSkillLevels();
@@ -1698,7 +1694,14 @@ public interface Client extends GameEngine
 	 *
 	 * @param delay the number of game cycles to delay dragging
 	 */
+	@Deprecated
 	void setInventoryDragDelay(int delay);
+
+	/**
+	 * Get the hostname of the current world
+	 * @return
+	 */
+	String getWorldHost();
 
 	/**
 	 * Gets a set of current world types that apply to the logged in world.
@@ -1708,8 +1711,65 @@ public interface Client extends GameEngine
 	EnumSet<WorldType> getWorldType();
 
 	/**
+	 * Get the camera mode
+	 * @return 0 for normal, 1 for free camera
+	 */
+	int getCameraMode();
+
+	/**
+	 * Set the camera mode
+	 * @param mode 0 for normal, 1 for free camera
+	 */
+	void setCameraMode(int mode);
+
+	/**
+	 * Get the camera focus point x
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointX();
+
+	/**
+	 * Sets the camera focus point x. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param x
+	 */
+	void setCameraFocalPointX(double x);
+
+	/**
+	 * Get the camera focus point y
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointY();
+
+	/**
+	 * Sets the camera focus point y. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param y
+	 */
+	void setCameraFocalPointY(double y);
+
+	/**
+	 * Get the camera focus point z
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointZ();
+
+	/**
+	 * Sets the camera focus point z. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param z
+	 */
+	void setCameraFocalPointZ(double z);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 */
+	void setFreeCameraSpeed(int speed);
+
+	/**
 	 * Gets the enabled state for the Oculus orb mode
 	 */
+	@Deprecated
 	int getOculusOrbState();
 
 	/**
@@ -1717,21 +1777,25 @@ public interface Client extends GameEngine
 	 *
 	 * @param state boolean enabled value
 	 */
+	@Deprecated
 	void setOculusOrbState(int state);
 
 	/**
 	 * Sets the normal moving speed when using oculus orb (default value is 12)
 	 */
+	@Deprecated
 	void setOculusOrbNormalSpeed(int speed);
 
 	/**
 	 * Gets local X coord where the camera is pointing when the Oculus orb is active
 	 */
+	@Deprecated
 	int getOculusOrbFocalPointX();
 
 	/**
 	 * Gets local Y coord where the camera is pointing when the Oculus orb is active
 	 */
+	@Deprecated
 	int getOculusOrbFocalPointY();
 
 	/**
@@ -1756,55 +1820,56 @@ public interface Client extends GameEngine
 	int getSkyboxColor();
 
 	boolean isGpu();
+	void setGpuFlags(int gpuflags);
 
-	void setGpu(boolean gpu);
+	void setExpandedMapLoading(int chunks);
+	int getExpandedMapLoading();
 
 	int get3dZoom();
 	int getCenterX();
 	int getCenterY();
 
-	int getCameraX2();
-	int getCameraY2();
-	int getCameraZ2();
-
 	TextureProvider getTextureProvider();
-
-	void setRenderArea(boolean[][] renderArea);
 
 	int getRasterizer3D_clipMidX2();
 	int getRasterizer3D_clipNegativeMidX();
 	int getRasterizer3D_clipNegativeMidY();
 	int getRasterizer3D_clipMidY2();
 
-	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
-
-	/**
-	 * Get the if1 widget whose item is being dragged
-	 *
-	 * @return
-	 */
-	Widget getIf1DraggedWidget();
-
-	/**
-	 * Get the item index of the item being dragged on an if1 widget
-	 * @return
-	 */
-	int getIf1DraggedItemIndex();
+	void checkClickbox(Projection projection, Model model, int orientation, int x, int y, int z, long hash);
 
 	/**
 	 * Is a widget is in target mode?
 	 */
-	boolean getSpellSelected();
+	boolean isWidgetSelected();
 
 	/**
 	 * Sets if a widget is in target mode
 	 */
-	void setSpellSelected(boolean selected);
+	void setWidgetSelected(boolean selected);
+
+	/**
+	 * Get the selected widget, such as a selected spell or selected item (eg. "Use")
+	 * @return the selected widget
+	 */
+	@Nullable
+	Widget getSelectedWidget();
 
 	/**
 	 * Returns client item composition cache
 	 */
 	NodeCache getItemCompositionCache();
+
+	/**
+	 * Returns client object composition cache
+	 * @return
+	 */
+	NodeCache getObjectCompositionCache();
+
+	/**
+	 * Returns the client {@link Animation} cache
+	 */
+	NodeCache getAnimationCache();
 
 	/**
 	 * Returns the array of cross sprites that appear and animate when left-clicking
@@ -1872,7 +1937,7 @@ public interface Client extends GameEngine
 	 * @return
 	 * @see KeyCode
 	 */
-	boolean isKeyPressed(int keycode);
+	boolean isKeyPressed(@MagicConstant(valuesFromClass = KeyCode.class) int keycode);
 
 	/**
 	 * Get the list of message ids for the recently received cross-world messages. The upper 32 bits of the
@@ -1916,4 +1981,391 @@ public interface Client extends GameEngine
 	 */
 	@Nullable
 	ClanSettings getGuestClanSettings();
+
+	/**
+	 * Get clan channel by id.
+	 * @param clanId the clan id
+	 * @return
+	 * @see net.runelite.api.clan.ClanID
+	 */
+	@Nullable
+	ClanChannel getClanChannel(@MagicConstant(valuesFromClass = ClanID.class) int clanId);
+
+	/**
+	 * Get clan settings by id
+	 * @param clanId the clan id
+	 * @return
+	 * @see net.runelite.api.clan.ClanID
+	 */
+	@Nullable
+	ClanSettings getClanSettings(@MagicConstant(valuesFromClass = ClanID.class) int clanId);
+
+	void setUnlockedFps(boolean unlock);
+	void setUnlockedFpsTarget(int fps);
+
+	/**
+	 * Gets the ambient sound effects
+	 * @return
+	 */
+	Deque<AmbientSoundEffect> getAmbientSoundEffects();
+
+	/**
+	 * Set the amount of time until the client automatically logs out due to idle input.
+	 * @param ticks client ticks
+	 */
+	void setIdleTimeout(int ticks);
+
+	/**
+	 * Get the amount of time until the client automatically logs out due to idle input.
+	 * @return client ticks
+	 */
+	int getIdleTimeout();
+
+	/**
+	 * Get whether minimap zoom is enabled
+	 * @return
+	 */
+	boolean isMinimapZoom();
+
+	/**
+	 * Set whether minimap zoom is enabled
+	 * @param minimapZoom
+	 */
+	void setMinimapZoom(boolean minimapZoom);
+
+	/**
+	 * Gets the number of pixels per tile on the minimap. The default is 4.
+	 * @return
+	 */
+	double getMinimapZoom();
+
+	/**
+	 * Set the number of pixels per tile on the minimap. The default is 4.
+	 * @param zoom
+	 */
+	void setMinimapZoom(double zoom);
+
+	/**
+	 * Sets a callback to override the drawing of tiles on the minimap.
+	 * Will be called per tile per frame.
+	 */
+	void setMinimapTileDrawer(TileFunction drawTile);
+
+	Rasterizer getRasterizer();
+
+	void menuAction(int p0, int p1, MenuAction action, int id, int itemId, String option, String target);
+
+	/**
+	 * Get worldview by id
+	 * @param id id, or -1 for top level worldview
+	 * @return
+	 */
+	WorldView getWorldView(int id);
+
+	/**
+	 * Get the top level world view
+	 * @return
+	 */
+	WorldView getTopLevelWorldView();
+
+	/**
+	 * Whether camera shaking effects are disabled at e.g. Barrows, ToA
+	 * @return
+	 */
+	boolean isCameraShakeDisabled();
+
+	/**
+	 * Set whether to disable camera shaking effects at e.g. Barrows, ToA
+	 * @param disabled
+	 */
+	void setCameraShakeDisabled(boolean disabled);
+
+	/**
+	 * Draw all 2D extras. This is the default.
+	 */
+	int DRAW_2D_ALL = ~0;
+	/**
+	 * Hide all 2D extras.
+	 */
+	int DRAW_2D_NONE = 0;
+	/**
+	 * Render overhead text.
+	 */
+	int DRAW_2D_OVERHEAD_TEXT = 1;
+	/**
+	 * Render elements not otherwise specified in this bitflag.
+	 */
+	int DRAW_2D_OTHERS = 1 << 30;
+
+	/**
+	 * Gets the current draw2D mask. 
+	 * @return the current mask
+	 * @see Client#setDraw2DMask(int)
+	 */
+	@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS})
+	int getDraw2DMask();
+
+	/**
+	 * Sets the current draw2D mask.
+	 * Use bit operations on the value returned by {@link Client#getDraw2DMask()} to modify specific features.
+	 * @param mask The new mask.
+	 */
+	void setDraw2DMask(@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS}) int mask);
+
+	/**
+	 * Contains a 3D array of template chunks for instanced areas.
+	 * <p>
+	 * The array returned is of format [z][x][y], where z is the
+	 * plane, x and y the x-axis and y-axis coordinates of a tile
+	 * divided by the size of a chunk.
+	 * <p>
+	 * The bits of the int value held by the coordinates are -1 if there is no data,
+	 * structured in the following format:
+	 * <pre>{@code
+	 *  0                   1                   2                   3
+	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * }</pre>
+	 * @return the array of instance template chunks
+	 * @see Constants#CHUNK_SIZE
+	 * @see InstanceTemplates
+	 * @see WorldView#getInstanceTemplateChunks()
+	 */
+	@Deprecated
+	int[][][] getInstanceTemplateChunks();
+
+	/**
+	 * Returns a 2D array containing XTEA encryption keys used to decrypt
+	 * map region files.
+	 * <p>
+	 * The array maps the region keys at index {@code n} to the region
+	 * ID held in {@link #getMapRegions()} at {@code n}.
+	 * <p>
+	 * The array of keys for the region make up a 128-bit encryption key
+	 * spread across 4 integers.
+	 *
+	 * @return the XTEA encryption keys
+	 */
+	@Deprecated
+	int[][] getXteaKeys();
+
+	/**
+	 * Checks whether the scene is in an instanced region.
+	 * @see WorldView#isInstance()
+	 */
+	@Deprecated
+	boolean isInInstancedRegion();
+
+	/**
+	 * Gets an array of map region IDs that are currently loaded.
+	 *
+	 * @return the map regions
+	 */
+	@Deprecated
+	int[] getMapRegions();
+
+	/**
+	 * Gets the current scene
+	 * @see WorldView#getScene()
+	 */
+	@Deprecated
+	default Scene getScene()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? null : wv.getScene();
+	}
+
+	/**
+	 * Gets a list of all valid players from the player cache.
+	 *
+	 * @return a list of all players
+	 * @see WorldView#players()
+	 */
+	@Deprecated
+	default List<Player> getPlayers()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? Collections.emptyList() : wv.players()
+			.stream()
+			.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	/**
+	 * Gets a list of all valid NPCs from the NPC cache.
+	 *
+	 * @return a list of all NPCs
+	 * @see WorldView#npcs()
+	 */
+	@Deprecated
+	default List<NPC> getNpcs()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? Collections.emptyList() : wv.npcs()
+			.stream()
+			.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	/**
+	 * Gets an array of tile collision data.
+	 * <p>
+	 * The index into the array is the plane/z-axis coordinate.
+	 *
+	 * @return the collision data
+	 * @see WorldView#getCollisionMaps()
+	 */
+	@Nullable
+	@Deprecated
+	default CollisionData[] getCollisionMaps()
+	{
+		return getTopLevelWorldView().getCollisionMaps();
+	}
+
+	/**
+	 * Gets the current plane the player is on.
+	 * <p>
+	 * This value indicates the current map level above ground level, where
+	 * ground level is 0. For example, going up a ladder in Lumbridge castle
+	 * will put the player on plane 1.
+	 * <p>
+	 * Note: This value will never be below 0. Basements and caves below ground
+	 * level use a tile offset and are still considered plane 0 by the game.
+	 *
+	 * @return the plane
+	 * @see WorldView#getPlane()
+	 */
+	@Deprecated
+	default int getPlane()
+	{
+		return getTopLevelWorldView().getPlane();
+	}
+
+	/**
+	 * Gets a 3D array containing the heights of tiles in the
+	 * current scene.
+	 *
+	 * @return the tile heights
+	 * @see WorldView#getTileHeights()
+	 */
+	@Deprecated
+	default int[][][] getTileHeights()
+	{
+		return getTopLevelWorldView().getTileHeights();
+	}
+
+	/**
+	 * Gets a 3D array containing the settings of tiles in the
+	 * current scene.
+	 *
+	 * @return the tile settings
+	 * @see WorldView#getTileSettings()
+	 */
+	@Deprecated
+	default byte[][][] getTileSettings()
+	{
+		return getTopLevelWorldView().getTileSettings();
+	}
+
+	/**
+	 * Returns the x-axis base coordinate.
+	 * <p>
+	 * This value is the x-axis world coordinate of tile (0, 0) in
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base x-axis coordinate
+	 * @see WorldView#getBaseX()
+	 */
+	@Deprecated
+	default int getBaseX()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? 0 : wv.getBaseX();
+	}
+
+	/**
+	 * Returns the y-axis base coordinate.
+	 * <p>
+	 * This value is the y-axis world coordinate of tile (0, 0) in
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base y-axis coordinate
+	 * @see WorldView#getBaseY()
+	 */
+	@Deprecated
+	default int getBaseY()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? 0 : wv.getBaseY();
+	}
+
+	/**
+	 * Create a projectile.
+	 * @param id projectile/spotanim id
+	 * @param plane plane the projectile is on
+	 * @param startX local x coordinate the projectile starts at
+	 * @param startY local y coordinate the projectile starts at
+	 * @param startZ local z coordinate the projectile starts at - includes tile height
+	 * @param startCycle cycle the project starts
+	 * @param endCycle cycle the projectile ends
+	 * @param slope
+	 * @param startHeight start height of projectile - excludes tile height
+	 * @param endHeight end height of projectile - excludes tile height
+	 * @param target optional actor target
+	 * @param targetX target x - if an actor target is supplied should be the target x
+	 * @param targetY target y - if an actor target is supplied should be the target y
+	 * @return the new projectile
+	 * @see WorldView#createProjectile(int, int, int, int, int, int, int, int, int, int, Actor, int, int)
+	 */
+	@Deprecated
+	default Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
+		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY)
+	{
+		return getTopLevelWorldView().createProjectile(id, plane, startX, startY, startZ, startCycle, endCycle, slope, startHeight, endHeight, target, targetX, targetY);
+	}
+
+	/**
+	 * Gets a list of all projectiles currently spawned.
+	 *
+	 * @return all projectiles
+	 * @see WorldView#getProjectiles()
+	 */
+	@Deprecated
+	default Deque<Projectile> getProjectiles()
+	{
+		return getTopLevelWorldView().getProjectiles();
+	}
+
+	/**
+	 * Gets a list of all graphics objects currently drawn.
+	 *
+	 * @return all graphics objects
+	 * @see WorldView#getGraphicsObjects()
+	 */
+	@Deprecated
+	default Deque<GraphicsObject> getGraphicsObjects()
+	{
+		return getTopLevelWorldView().getGraphicsObjects();
+	}
+
+	/**
+	 * Gets the currently selected tile. (ie. last right clicked tile)
+	 *
+	 * @return the selected tile
+	 * @see WorldView#getSelectedSceneTile()
+	 */
+	@Deprecated
+	@Nullable
+	default Tile getSelectedSceneTile()
+	{
+		return getTopLevelWorldView().getSelectedSceneTile();
+	}
+
+	/**
+	 * Applies an animation to a Model. The returned model is shared and shouldn't be used
+	 * after any other call to applyTransformations, including calls made by the client internally.
+	 * Vertices are cloned from the source model. Face transparencies are copied if either animation
+	 * animates transparency, otherwise it will share a reference. All other fields share a reference.
+	 */
+	Model applyTransformations(Model model, @Nullable Animation animA, int frameA, @Nullable Animation animB, int frameB);
 }

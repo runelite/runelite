@@ -35,7 +35,7 @@ public interface NPC extends Actor
 	 * Gets the ID of the NPC.
 	 *
 	 * @return the ID of the NPC
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 
@@ -50,7 +50,6 @@ public interface NPC extends Actor
 	 * NPC array.
 	 *
 	 * @return the NPC index
-	 * @see Client#getCachedNPCs()
 	 */
 	int getIndex();
 
@@ -68,4 +67,10 @@ public interface NPC extends Actor
 	 */
 	@Nullable
 	NPCComposition getTransformedComposition();
+
+	@Nullable
+	NpcOverrides getModelOverrides();
+
+	@Nullable
+	NpcOverrides getChatheadOverrides();
 }

@@ -25,9 +25,10 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.google.inject.ProvisionException;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.TrayIcon;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -53,6 +54,7 @@ class DevToolsPanel extends PluginPanel
 	private final ClientThread clientThread;
 	private final Notifier notifier;
 	private final DevToolsPlugin plugin;
+	private final DevToolsConfig config;
 
 	private final WidgetInspector widgetInspector;
 	private final VarInspector varInspector;
@@ -66,6 +68,7 @@ class DevToolsPanel extends PluginPanel
 		Client client,
 		ClientThread clientThread,
 		DevToolsPlugin plugin,
+		DevToolsConfig config,
 		WidgetInspector widgetInspector,
 		VarInspector varInspector,
 		ScriptInspector scriptInspector,
@@ -78,6 +81,7 @@ class DevToolsPanel extends PluginPanel
 		this.client = client;
 		this.clientThread = clientThread;
 		this.plugin = plugin;
+		this.config = config;
 		this.widgetInspector = widgetInspector;
 		this.varInspector = varInspector;
 		this.inventoryInspector = inventoryInspector;
@@ -91,6 +95,7 @@ class DevToolsPanel extends PluginPanel
 		add(createOptionsPanel());
 	}
 
+	@SuppressWarnings("PMD.DoubleBraceInitialization")
 	private JPanel createOptionsPanel()
 	{
 		final JPanel container = new JPanel();
@@ -107,7 +112,6 @@ class DevToolsPanel extends PluginPanel
 		container.add(plugin.getWalls());
 		container.add(plugin.getDecorations());
 
-		container.add(plugin.getInventory());
 		container.add(plugin.getProjectiles());
 
 		container.add(plugin.getLocation());
@@ -115,8 +119,9 @@ class DevToolsPanel extends PluginPanel
 		container.add(plugin.getTileLocation());
 		container.add(plugin.getCameraPosition());
 
-		container.add(plugin.getChunkBorders());
+		container.add(plugin.getZoneBorders());
 		container.add(plugin.getMapSquares());
+		container.add(plugin.getLoadingLines());
 
 		container.add(plugin.getLineOfSight());
 		container.add(plugin.getValidMovement());
@@ -141,9 +146,8 @@ class DevToolsPanel extends PluginPanel
 
 		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
-		{
-			scheduledExecutorService.schedule(() -> notifier.notify("Wow!", TrayIcon.MessageType.ERROR), 3, TimeUnit.SECONDS);
-		});
+			scheduledExecutorService.schedule(() ->
+				notifier.notify(config.notification(), "Wow!"), 3, TimeUnit.SECONDS));
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());
@@ -177,7 +181,7 @@ class DevToolsPanel extends PluginPanel
 		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
 		container.add(disconnectBtn);
 
-		container.add(plugin.getRoofs());
+		container.add(plugin.getTileFlags());
 
 		try
 		{
@@ -192,6 +196,26 @@ class DevToolsPanel extends PluginPanel
 		catch (Exception e)
 		{
 			log.info("Shell couldn't be loaded", e);
+		}
+
+		container.add(plugin.getMenus());
+
+		try
+		{
+			FlatUIDefaultsInspector.class.getName();
+
+			DevToolsButton uiDefaultsBtn = plugin.getUiDefaultsInspector();
+			uiDefaultsBtn.addFrame(new DevToolsFrame()
+			{
+				{
+					getContentPane().add(FlatUIDefaultsInspector.createInspectorPanel(), BorderLayout.CENTER);
+					pack();
+				}
+			});
+			container.add(uiDefaultsBtn);
+		}
+		catch (LinkageError e)
+		{
 		}
 
 		return container;

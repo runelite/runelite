@@ -25,19 +25,35 @@
 package net.runelite.api;
 
 /**
- * Represents the entire 3D scene
+ * Represents a 3D scene
  */
-public interface Scene
+public interface Scene extends Renderable
 {
 	/**
 	 * Gets the tiles in the scene
 	 *
-	 * @return the tiles in [plane][x][y]
+	 * @return a 4x104x104 array of tiles in [plane][x][y]
 	 */
 	Tile[][][] getTiles();
 
+	/**
+	 * Get the extended scene. This is larger than 104x104, and its size is {@link Constants#EXTENDED_SCENE_SIZE}.
+	 */
+	Tile[][][] getExtendedTiles();
+
+	/**
+	 * Get the extended tile settings. This is larger than 104x104, and its size is {@link Constants#EXTENDED_SCENE_SIZE}.
+	 */
+	byte[][][] getExtendedTileSettings();
+
 	int getDrawDistance();
 	void setDrawDistance(int drawDistance);
+
+	/**
+	 * Get the world view id of this scene
+	 * @return the world view id, or -1 if this is the top level scene
+	 */
+	int getWorldViewId();
 
 	/**
 	 * Get the minimum scene level which will be rendered
@@ -54,30 +70,107 @@ public interface Scene
 	void setMinLevel(int minLevel);
 
 	/**
+	 * Remove a tile from the scene
+	 * @param tile
+	 */
+	void removeTile(Tile tile);
+
+	/**
 	 * Remove a game object from the scene
 	 * @param gameObject
 	 */
 	void removeGameObject(GameObject gameObject);
 
-	void generateHouses();
+	void buildRoofs();
+
+	int[][][] getRoofs();
 
 	void setRoofRemovalMode(int flags);
+
+	int getRoofRemovalMode();
 
 	/**
 	 * Get the underlay ids for the scene. The value stored is id + 1, with 0 for no underlay.
 	 * @return
 	 */
-	byte[][][] getUnderlayIds();
+	short[][][] getUnderlayIds();
 
 	/**
 	 * Get the overlay ids for the scene. The value stored is id + 1, with 0 for no overlay.
 	 * @return
 	 */
-	byte[][][] getOverlayIds();
+	short[][][] getOverlayIds();
 
 	/**
 	 * Get the shapes of the tiles for the scene.
 	 * @return
 	 */
 	byte[][][] getTileShapes();
+
+	/**
+	 * Get the heights of the tiles on the scene.
+	 * @return
+	 */
+	int[][][] getTileHeights();
+
+	/**
+	 * Returns the x-axis base coordinate.
+	 * <p>
+	 * This value is the x-axis world coordinate of tile (0, 0) in
+	 * this scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base x-axis coordinate
+	 */
+	int getBaseX();
+
+	/**
+	 * Returns the y-axis base coordinate.
+	 * <p>
+	 * This value is the y-axis world coordinate of tile (0, 0) in
+	 * this scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base y-axis coordinate
+	 */
+	int getBaseY();
+
+	/**
+	 * Check if this scene is an instance
+	 * @see #getInstanceTemplateChunks()
+	 * @return
+	 */
+	boolean isInstance();
+
+	/**
+	 * Contains a 3D array of template chunks for instanced areas.
+	 * <p>
+	 * The array returned is of format [z][x][y], where z is the
+	 * plane, x and y the x-axis and y-axis coordinates of a tile
+	 * divided by the size of a chunk.
+	 * <p>
+	 * The bits of the int value held by the coordinates are -1 if there is no data,
+	 * structured in the following format:
+	 * <pre>{@code
+	 *  0                   1                   2                   3
+	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * }</pre>
+	 * @return the array of instance template chunks
+	 * @see Constants#CHUNK_SIZE
+	 * @see InstanceTemplates
+	 */
+	int[][][] getInstanceTemplateChunks();
+
+	/**
+	 * Gets an array of map region IDs that are currently loaded.
+	 *
+	 * @return the map regions
+	 */
+	int[] getMapRegions();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
 }

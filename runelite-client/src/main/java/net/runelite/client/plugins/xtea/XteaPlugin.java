@@ -24,21 +24,33 @@
  */
 package net.runelite.client.plugins.xtea;
 
-import com.google.inject.Provides;
-import java.util.HashSet;
-import java.util.Set;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.http.api.xtea.XteaClient;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
-import okhttp3.OkHttpClient;
 
 @PluginDescriptor(
 	name = "Xtea",
@@ -47,7 +59,7 @@ import okhttp3.OkHttpClient;
 @Slf4j
 public class XteaPlugin extends Plugin
 {
-	private final Set<Integer> sentRegions = new HashSet<>();
+	private static final File XTEA_CACHE = new File(RuneLite.CACHE_DIR, "xtea.json");
 
 	@Inject
 	private Client client;
@@ -55,10 +67,60 @@ public class XteaPlugin extends Plugin
 	@Inject
 	private XteaClient xteaClient;
 
-	@Provides
-	XteaClient provideXteaClient(OkHttpClient okHttpClient)
+	@Inject
+	private ScheduledExecutorService executorService;
+
+	@Inject
+	private Gson gson;
+
+	private Map<Integer, int[]> xteas;
+
+	@Override
+	protected void startUp()
 	{
-		return new XteaClient(okHttpClient);
+		executorService.execute(() -> xteas = load());
+	}
+
+	private Map<Integer, int[]> load()
+	{
+		try (FileInputStream in = new FileInputStream(XTEA_CACHE);
+			FileChannel channel = in.getChannel();
+			InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
+		{
+			channel.lock(0, Long.MAX_VALUE, true);
+			return gson.fromJson(reader,
+				new TypeToken<Map<Integer, int[]>>()
+				{
+				}.getType());
+		}
+		catch (FileNotFoundException ex)
+		{
+			return new HashMap<>();
+		}
+		catch (IOException | JsonSyntaxException e)
+		{
+			log.debug("error loading xteas", e);
+			return new HashMap<>();
+		}
+	}
+
+	private void save()
+	{
+		try (FileOutputStream out = new FileOutputStream(XTEA_CACHE);
+			FileChannel channel = out.getChannel();
+			OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
+		{
+			channel.lock();
+			gson.toJson(xteas,
+				new TypeToken<Map<Integer, int[]>>()
+				{
+				}.getType(),
+				writer);
+		}
+		catch (IOException e)
+		{
+			log.debug("error saving xteas", e);
+		}
 	}
 
 	@Subscribe
@@ -81,12 +143,13 @@ public class XteaPlugin extends Plugin
 			int region = regions[idx];
 			int[] keys = xteaKeys[idx];
 
-			if (sentRegions.contains(region))
+			int[] seenKeys = xteas.get(region);
+			if (Arrays.equals(seenKeys, keys))
 			{
 				continue;
 			}
 
-			sentRegions.add(region);
+			xteas.put(region, keys);
 
 			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
 
@@ -102,5 +165,6 @@ public class XteaPlugin extends Plugin
 		}
 
 		xteaClient.submit(xteaRequest);
+		executorService.execute(this::save);
 	}
 }

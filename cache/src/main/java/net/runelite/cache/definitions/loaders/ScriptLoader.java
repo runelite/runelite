@@ -24,7 +24,7 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
@@ -61,7 +61,7 @@ public class ScriptLoader
 
 			for (int i = 0; i < numSwitches; ++i)
 			{
-				switches[i] = new HashMap<>();
+				switches[i] = new LinkedHashMap<>();
 
 				int count = in.readUnsignedShort();
 				while (count-- > 0)

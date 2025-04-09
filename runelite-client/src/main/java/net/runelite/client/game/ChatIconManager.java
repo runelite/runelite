@@ -27,10 +27,13 @@ package net.runelite.client.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
@@ -39,8 +42,10 @@ import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 
 @Singleton
@@ -51,19 +56,88 @@ public class ChatIconManager
 
 	private final Client client;
 	private final SpriteManager spriteManager;
+	private final ClientThread clientThread;
 
 	private BufferedImage[] friendsChatRankImages;
 	private BufferedImage[] clanRankImages;
 
-	private int friendsChatOffset;
-	private int clanOffset;
+	private int friendsChatOffset = -1;
+	private int clanOffset = -1;
+
+	private final List<ChatIcon> icons = new ArrayList<>();
 
 	@Inject
-	private ChatIconManager(Client client, SpriteManager spriteManager, EventBus eventBus)
+	private ChatIconManager(Client client, SpriteManager spriteManager, ClientThread clientThread, EventBus eventBus)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
+		this.clientThread = clientThread;
 		eventBus.register(this);
+		clientThread.invokeLater(() ->
+		{
+			// if the client is not booted yet, this will be picked up by the game state change handler below instead
+			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
+			{
+				if (friendsChatOffset == -1)
+				{
+					loadRankIcons();
+				}
+				refreshIcons();
+			}
+		});
+	}
+
+	@AllArgsConstructor
+	private static class ChatIcon
+	{
+		int idx;
+		IndexedSprite sprite;
+	}
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		var state = gameStateChanged.getGameState();
+		if (state == GameState.STARTING)
+		{
+			friendsChatOffset = clanOffset = -1;
+			synchronized (this)
+			{
+				for (var icon : icons)
+				{
+					icon.idx = -1;
+				}
+			}
+		}
+		else if (state == GameState.LOGIN_SCREEN)
+		{
+			if (friendsChatOffset == -1)
+			{
+				loadRankIcons();
+			}
+			refreshIcons();
+		}
+	}
+
+	public synchronized int registerChatIcon(BufferedImage image)
+	{
+		if (image == null || image instanceof AsyncBufferedImage)
+		{
+			throw new IllegalArgumentException("invalid image");
+		}
+		var i = ImageUtil.getImageIndexedSprite(image, client);
+		icons.add(new ChatIcon(-1, i));
+		clientThread.invokeLater(this::refreshIcons);
+		return icons.size() - 1;
+	}
+
+	public int chatIconIndex(int iconId)
+	{
+		if (iconId < 0 || iconId >= icons.size())
+		{
+			return -1;
+		}
+		return icons.get(iconId).idx;
 	}
 
 	@Nullable
@@ -87,22 +161,53 @@ public class ChatIconManager
 
 	public int getIconNumber(final FriendsChatRank friendsChatRank)
 	{
-		return friendsChatOffset + friendsChatRank.ordinal() - 1;
+		return friendsChatOffset == -1 ? -1 : friendsChatOffset + friendsChatRank.ordinal() - 1;
 	}
 
 	public int getIconNumber(final ClanTitle clanTitle)
 	{
 		int rank = clanTitle.getId();
-		return clanOffset + clanRankToIdx(rank);
+		return clanOffset == -1 ? -1 : clanOffset + clanRankToIdx(rank);
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private synchronized void refreshIcons()
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN && friendsChatOffset == 0)
+		var chatIcons = client.getModIcons();
+		if (chatIcons == null)
 		{
-			loadRankIcons();
+			return;
 		}
+
+		final var offset = chatIcons.length;
+
+		int newIcons = 0;
+		for (var icon : icons)
+		{
+			assert icon.idx < offset;
+			if (icon.idx == -1)
+			{
+				++newIcons;
+			}
+		}
+
+		if (newIcons == 0)
+		{
+			return;
+		}
+
+		var newChatIcons = Arrays.copyOf(chatIcons, chatIcons.length + newIcons);
+
+		newIcons = 0;
+		for (var icon : icons)
+		{
+			if (icon.idx == -1)
+			{
+				icon.idx = offset + newIcons++;
+				newChatIcons[icon.idx] = icon.sprite;
+			}
+		}
+
+		client.setModIcons(newChatIcons);
 	}
 
 	private void loadRankIcons()
@@ -128,14 +233,13 @@ public class ChatIconManager
 		friendsChatRankImages = new BufferedImage[friendsChatIcons.size()];
 		clanRankImages = new BufferedImage[clanIcons.size()];
 
-		final IndexedSprite[] modIcons = client.getModIcons();
-
 		for (int i = 0; i < friendsChatIcons.size(); i++)
 		{
 			final int fi = i;
 
 			spriteManager.getSpriteAsync(friendsChatIcons.getIntValue(friendsChatIcons.getKeys()[i]), 0, sprite ->
 			{
+				final IndexedSprite[] modIcons = client.getModIcons();
 				friendsChatRankImages[fi] = friendsChatImageFromSprite(sprite);
 				modIcons[friendsChatOffset + fi] = ImageUtil.getImageIndexedSprite(friendsChatRankImages[fi], client);
 			});
@@ -150,6 +254,7 @@ public class ChatIconManager
 
 			spriteManager.getSpriteAsync(clanIcons.getIntValue(key), 0, sprite ->
 			{
+				final IndexedSprite[] modIcons = client.getModIcons();
 				final BufferedImage img = ImageUtil.resizeCanvas(sprite, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
 				clanRankImages[idx] = img;
 				modIcons[clanOffset + idx] = ImageUtil.getImageIndexedSprite(img, client);

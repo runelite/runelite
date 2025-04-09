@@ -93,6 +93,11 @@ enum Emoji
 	XD("Xd"),
 	SPOON("--o"),
 	WEARY_FACE("Dx"),
+	ROCKETSHIP("<gt>==<gt>"), // >==>
+	CLOWN(":O)"),
+	COW("3:O"),
+	HANDSHAKE("(=)"),
+	RABBIT("=:3"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;

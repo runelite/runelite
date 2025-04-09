@@ -25,32 +25,30 @@
 package net.runelite.client.account;
 
 import com.google.gson.Gson;
+import com.sun.net.httpserver.HttpServer;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
-import net.runelite.http.api.ws.messages.LoginResponse;
-import okhttp3.OkHttpClient;
+import okhttp3.HttpUrl;
 
 @Singleton
 @Slf4j
@@ -60,27 +58,30 @@ public class SessionManager
 	private AccountSession accountSession;
 
 	private final EventBus eventBus;
-	private final ConfigManager configManager;
-	private final WSClient wsClient;
 	private final File sessionFile;
 	private final AccountClient accountClient;
 	private final Gson gson;
+	private final String oauthRedirect;
+	private final ScheduledExecutorService scheduledExecutorService;
+
+	private HttpServer server;
 
 	@Inject
 	private SessionManager(
 		@Named("sessionfile") File sessionfile,
-		ConfigManager configManager,
 		EventBus eventBus,
-		WSClient wsClient,
-		OkHttpClient okHttpClient,
-		Gson gson)
+		AccountClient accountClient,
+		Gson gson,
+		@Named("runelite.oauth.redirect") String oauthRedirect,
+		ScheduledExecutorService scheduledExecutorService
+	)
 	{
-		this.configManager = configManager;
 		this.eventBus = eventBus;
-		this.wsClient = wsClient;
 		this.sessionFile = sessionfile;
-		this.accountClient = new AccountClient(okHttpClient);
+		this.accountClient = accountClient;
 		this.gson = gson;
+		this.oauthRedirect = oauthRedirect;
+		this.scheduledExecutorService = scheduledExecutorService;
 
 		eventBus.register(this);
 	}
@@ -115,7 +116,7 @@ public class SessionManager
 			return;
 		}
 
-		openSession(session, false);
+		accountSession = session;
 	}
 
 	private void saveSession()
@@ -125,7 +126,7 @@ public class SessionManager
 			return;
 		}
 
-		try (Writer fw = new OutputStreamWriter(new FileOutputStream(sessionFile), StandardCharsets.UTF_8))
+		try (Writer fw = new OutputStreamWriter(Files.newOutputStream(sessionFile.toPath()), StandardCharsets.UTF_8))
 		{
 			gson.toJson(accountSession, fw);
 
@@ -143,35 +144,18 @@ public class SessionManager
 	}
 
 	/**
-	 * Set the given session as the active session and open a socket to the
-	 * server with the given session
+	 * Set the given session as the active session
 	 *
 	 * @param session session
 	 */
-	private void openSession(AccountSession session, boolean openSocket)
+	private void openSession(AccountSession session)
 	{
-		// Change session on the websocket
-		if (openSocket)
-		{
-			wsClient.changeSession(session.getUuid());
-		}
-
 		accountSession = session;
-
-		if (session.getUsername() != null)
-		{
-			// Initialize config for new session
-			// If the session isn't logged in yet, don't switch to the new config
-			configManager.switchSession(session);
-		}
-
 		eventBus.post(new SessionOpen());
 	}
 
 	private void closeSession()
 	{
-		wsClient.changeSession(null);
-
 		if (accountSession == null)
 		{
 			return;
@@ -179,6 +163,7 @@ public class SessionManager
 
 		log.debug("Logging out of account {}", accountSession.getUsername());
 
+		// Delete session
 		accountClient.setUuid(accountSession.getUuid());
 		try
 		{
@@ -191,57 +176,95 @@ public class SessionManager
 
 		accountSession = null; // No more account
 
-		// Restore config
-		configManager.switchSession(null);
-
 		eventBus.post(new SessionClose());
 	}
 
 	public void login()
 	{
-		// If a session is already open, use that id. Otherwise generate a new id.
-		UUID uuid = wsClient.getSessionId() != null ? wsClient.getSessionId() : UUID.randomUUID();
-		accountClient.setUuid(uuid);
+		if (server == null)
+		{
+			try
+			{
+				startServer();
+			}
+			catch (IOException ex)
+			{
+				log.error("Unable to start http server", ex);
+				return;
+			}
+		}
 
 		final OAuthResponse login;
 
 		try
 		{
-			login = accountClient.login();
+			login = accountClient.login(server.getAddress().getPort());
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to get oauth url", ex);
+			log.error("Unable to get oauth url", ex);
 			return;
 		}
 
-		// Create new session
-		openSession(new AccountSession(login.getUid(), Instant.now()), true);
-
 		// Navigate to login link
 		LinkBrowser.browse(login.getOauthUrl());
-	}
-
-	@Subscribe
-	public void onLoginResponse(LoginResponse loginResponse)
-	{
-		log.debug("Now signed in as {}", loginResponse.getUsername());
-
-		AccountSession session = getAccountSession();
-		session.setUsername(loginResponse.getUsername());
-
-		// Open session, again, now that we have a username
-		// This triggers onSessionOpen
-		// The socket is already opened here anyway so we pass true for openSocket
-		openSession(session, true);
-
-		// Save session to disk
-		saveSession();
 	}
 
 	public void logout()
 	{
 		closeSession();
 		deleteSession();
+	}
+
+	private void startServer() throws IOException
+	{
+		server = HttpServer.create(new InetSocketAddress("localhost", 0), 1);
+		server.createContext("/oauth", req ->
+		{
+			try
+			{
+				final HttpUrl url = HttpUrl.get("http://localhost" + req.getRequestURI());
+				final String username = url.queryParameter("username");
+				final UUID sessionId = UUID.fromString(url.queryParameter("sessionId"));
+
+				log.debug("Now signed in as {}", username);
+
+				// open the session, which triggers the sessionopen event
+				AccountSession session = new AccountSession(sessionId, Instant.now(), username);
+				openSession(session);
+
+				// Save session to disk
+				saveSession();
+
+				final HttpUrl redirect = HttpUrl.get(oauthRedirect).newBuilder()
+					.addQueryParameter("username", username)
+					.addQueryParameter("sessionId", sessionId.toString())
+					.build();
+
+				req.getResponseHeaders().set("Location", redirect.toString());
+				req.sendResponseHeaders(302, 0);
+			}
+			catch (Exception e)
+			{
+				log.warn("failure serving oauth response", e);
+				req.sendResponseHeaders(400, 0);
+				req.getResponseBody().write(e.getMessage().getBytes(StandardCharsets.UTF_8));
+			}
+			finally
+			{
+				req.close();
+				scheduledExecutorService.execute(this::stopServer);
+			}
+		});
+
+		log.debug("Starting server {}", server);
+		server.start();
+	}
+
+	private void stopServer()
+	{
+		log.debug("Stopping server {}", server);
+		server.stop(0);
+		server = null;
 	}
 }

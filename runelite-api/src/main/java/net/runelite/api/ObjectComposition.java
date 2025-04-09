@@ -24,8 +24,11 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
+
 /**
- * Information about a specific {@link ObjectID}
+ * Information about a specific {@link net.runelite.api.gameval.ObjectID}
  */
 public interface ObjectComposition extends ParamHolder
 {
@@ -55,14 +58,28 @@ public interface ObjectComposition extends ParamHolder
 	int getMapSceneId();
 
 	/**
+	 * Set the map scene index into the {@link Client#getMapScene()}
+	 * array, or -1 if it has no map scene icon
+	 * @param mapSceneId
+	 */
+	void setMapSceneId(int mapSceneId);
+
+	/**
 	 * Gets the index of this object in the {@link Client#getMapIcons()}
 	 * array, or -1 if it has no full map icon
 	 */
 	int getMapIconId();
 
 	/**
-	 * Get the {@link ObjectID}s of objects this can transform into, depending
-	 * on a {@link Varbits} or {@link VarPlayer}
+	 * Set the index of the object in the {@link Client#getMapIcons()}
+	 * array, or -1 if it has no map icon
+	 * @param mapIconId
+	 */
+	void setMapIconId(int mapIconId);
+
+	/**
+	 * Get the {@link net.runelite.api.gameval.ObjectID}s of objects this can transform into, depending
+	 * on a {@link net.runelite.api.gameval.VarbitID} or {@link net.runelite.api.gameval.VarPlayerID}
 	 */
 	int[] getImpostorIds();
 
@@ -73,4 +90,34 @@ public interface ObjectComposition extends ParamHolder
 	 * @throws NullPointerException if {@link #getImpostorIds()} is null
 	 */
 	ObjectComposition getImpostor();
+
+	/**
+	 * Gets the {@link net.runelite.api.gameval.VarbitID} used to switch this multiloc, or {@code -1} if this is not switched by a Varbit
+	 *
+	 * @see #getImpostor()
+	 * @see #getImpostorIds()
+	 */
+	@Varbit
+	int getVarbitId();
+
+	/**
+	 * Gets the {@link net.runelite.api.gameval.VarPlayerID} used to switch this multiloc, or {@code -1} if this is not switched by a VarPlayer
+	 *
+	 * @see #getImpostor()
+	 * @see #getImpostorIds()
+	 */
+	@Varp
+	int getVarPlayerId();
+
+	/**
+	 * Get the size of the object on the X-axis in tiles
+	 * @return
+	 */
+	int getSizeX();
+
+	/**
+	 * Get the size of the object on the Y-axis in tiles
+	 * @return
+	 */
+	int getSizeY();
 }

@@ -35,31 +35,26 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 
-@Singleton
 public class InfoPanel extends PluginPanel
 {
 	private static final String RUNELITE_LOGIN = "https://runelite_login/";
@@ -69,15 +64,12 @@ public class InfoPanel extends PluginPanel
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon PATREON_ICON;
 	private static final ImageIcon WIKI_ICON;
-	private static final ImageIcon IMPORT_ICON;
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
-	private JPanel syncPanel;
 	private JPanel actionsContainer;
 
 	@Inject
-	@Nullable
 	private Client client;
 
 	@Inject
@@ -88,9 +80,6 @@ public class InfoPanel extends PluginPanel
 
 	@Inject
 	private ScheduledExecutorService executor;
-
-	@Inject
-	private ConfigManager configManager;
 
 	@Inject
 	@Named("runelite.version")
@@ -119,7 +108,6 @@ public class InfoPanel extends PluginPanel
 		DISCORD_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "discord_icon.png"));
 		PATREON_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "patreon_icon.png"));
 		WIKI_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "wiki_icon.png"));
-		IMPORT_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "import_icon.png"));
 	}
 
 	void init()
@@ -141,11 +129,7 @@ public class InfoPanel extends PluginPanel
 		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
 
-		String engineVer = "Unknown";
-		if (client != null)
-		{
-			engineVer = String.format("Rev %d", client.getRevision());
-		}
+		String engineVer = engineVer = String.format("Rev %d", client.getRevision());
 
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
 
@@ -181,19 +165,6 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
 		actionsContainer.setLayout(new GridLayout(0, 1, 0, 10));
 
-		syncPanel = buildLinkPanel(IMPORT_ICON, "Import signed-out", "settings", () ->
-		{
-			final int result = JOptionPane.showOptionDialog(syncPanel,
-				"<html>This will overwrite your settings with settings from your local profile, which<br/>is the profile used when not signed into RuneLite with a RuneLite account.</html>",
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
-
-			if (result == JOptionPane.YES_OPTION)
-			{
-				configManager.importLocal();
-			}
-		});
-
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", githubLink));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "Discord server", discordInvite));
 		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", patreonLink));
@@ -204,6 +175,11 @@ public class InfoPanel extends PluginPanel
 
 		updateLoggedIn();
 		eventBus.register(this);
+	}
+
+	void deinit()
+	{
+		eventBus.unregister(this);
 	}
 
 	/**
@@ -299,14 +275,12 @@ public class InfoPanel extends PluginPanel
 			emailLabel.setContentType("text/plain");
 			emailLabel.setText(name);
 			loggedLabel.setText("Signed in as");
-			actionsContainer.add(syncPanel, 0);
 		}
 		else
 		{
 			emailLabel.setContentType("text/html");
 			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Sign in</a> to sync settings to the cloud.");
 			loggedLabel.setText("Not signed in");
-			actionsContainer.remove(syncPanel);
 		}
 	}
 

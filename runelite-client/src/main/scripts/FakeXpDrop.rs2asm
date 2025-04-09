@@ -12,259 +12,224 @@
    iconst                 105
    iconst                 83
    iconst                 681
-   get_varc_int           207
-   coordx                
+   get_varc_int           953
    enum                  
    iload                  0
-   if_icmpeq              LABEL9
-   jump                   LABEL16
-LABEL9:
-   get_varc_int           207
-   iconst                 0
-   iconst                 0
+   if_icmpeq              LABEL8
+   jump                   LABEL13
+LABEL8:
+   get_varc_int           960
    iload                  1
-   movecoord             
-   set_varc_int           207
-   jump                   LABEL227
-LABEL16:
+   add                   
+   set_varc_int           960
+   jump                   LABEL192
+LABEL13:
    iconst                 105
    iconst                 83
    iconst                 681
-   get_varc_int           208
-   coordx                
+   get_varc_int           954
    enum                  
    iload                  0
-   if_icmpeq              LABEL25
-   jump                   LABEL32
-LABEL25:
-   get_varc_int           208
-   iconst                 0
-   iconst                 0
+   if_icmpeq              LABEL21
+   jump                   LABEL26
+LABEL21:
+   get_varc_int           961
    iload                  1
-   movecoord             
-   set_varc_int           208
-   jump                   LABEL227
-LABEL32:
+   add                   
+   set_varc_int           961
+   jump                   LABEL192
+LABEL26:
    iconst                 105
    iconst                 83
    iconst                 681
-   get_varc_int           209
-   coordx                
+   get_varc_int           955
    enum                  
    iload                  0
-   if_icmpeq              LABEL41
-   jump                   LABEL48
-LABEL41:
-   get_varc_int           209
-   iconst                 0
-   iconst                 0
+   if_icmpeq              LABEL34
+   jump                   LABEL39
+LABEL34:
+   get_varc_int           962
    iload                  1
-   movecoord             
-   set_varc_int           209
-   jump                   LABEL227
-LABEL48:
+   add                   
+   set_varc_int           962
+   jump                   LABEL192
+LABEL39:
    iconst                 105
    iconst                 83
    iconst                 681
-   get_varc_int           210
-   coordx                
+   get_varc_int           956
    enum                  
    iload                  0
-   if_icmpeq              LABEL57
-   jump                   LABEL64
-LABEL57:
-   get_varc_int           210
-   iconst                 0
-   iconst                 0
+   if_icmpeq              LABEL47
+   jump                   LABEL52
+LABEL47:
+   get_varc_int           963
    iload                  1
-   movecoord             
-   set_varc_int           210
-   jump                   LABEL227
-LABEL64:
+   add                   
+   set_varc_int           963
+   jump                   LABEL192
+LABEL52:
    iconst                 105
    iconst                 83
    iconst                 681
-   get_varc_int           211
-   coordx                
+   get_varc_int           957
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL60
+   jump                   LABEL65
+LABEL60:
+   get_varc_int           964
+   iload                  1
+   add                   
+   set_varc_int           964
+   jump                   LABEL192
+LABEL65:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           958
    enum                  
    iload                  0
    if_icmpeq              LABEL73
-   jump                   LABEL80
+   jump                   LABEL78
 LABEL73:
-   get_varc_int           211
-   iconst                 0
-   iconst                 0
+   get_varc_int           965
    iload                  1
-   movecoord             
-   set_varc_int           211
-   jump                   LABEL227
-LABEL80:
+   add                   
+   set_varc_int           965
+   jump                   LABEL192
+LABEL78:
    iconst                 105
    iconst                 83
    iconst                 681
-   get_varc_int           212
-   coordx                
+   get_varc_int           959
    enum                  
    iload                  0
-   if_icmpeq              LABEL89
-   jump                   LABEL96
-LABEL89:
-   get_varc_int           212
-   iconst                 0
-   iconst                 0
+   if_icmpeq              LABEL86
+   jump                   LABEL91
+LABEL86:
+   get_varc_int           966
    iload                  1
-   movecoord             
-   set_varc_int           212
-   jump                   LABEL227
-LABEL96:
-   iconst                 105
-   iconst                 83
-   iconst                 681
-   get_varc_int           213
-   coordx                
-   enum                  
-   iload                  0
-   if_icmpeq              LABEL105
-   jump                   LABEL112
-LABEL105:
-   get_varc_int           213
-   iconst                 0
-   iconst                 0
-   iload                  1
-   movecoord             
-   set_varc_int           213
-   jump                   LABEL227
-LABEL112:
+   add                   
+   set_varc_int           966
+   jump                   LABEL192
+LABEL91:
    iload                  0
    iconst                 3
-   if_icmpeq              LABEL116
-   jump                   LABEL123
-LABEL116:
+   if_icmpeq              LABEL95
+   jump                   LABEL102
+LABEL95:
    iload                  1
    iconst                 20000001
-   if_icmpeq              LABEL120
-   jump                   LABEL123
-LABEL120:
-   iconst                 269500481
-   set_varc_int           207
-   jump                   LABEL227
-LABEL123:
-   get_varc_int           207
+   if_icmpeq              LABEL99
+   jump                   LABEL102
+LABEL99:
+   iconst                 -10
+   set_varc_int           960
+   jump                   LABEL192
+LABEL102:
+   get_varc_int           953
    iconst                 -1
-   if_icmpeq              LABEL127
-   jump                   LABEL138
-LABEL127:
-   iconst                 0
+   if_icmpeq              LABEL106
+   jump                   LABEL115
+LABEL106:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           953
    iload                  1
-   movecoord             
-   set_varc_int           207
-   jump                   LABEL227
-LABEL138:
-   get_varc_int           208
+   set_varc_int           960
+   jump                   LABEL192
+LABEL115:
+   get_varc_int           954
    iconst                 -1
-   if_icmpeq              LABEL142
-   jump                   LABEL153
-LABEL142:
-   iconst                 0
+   if_icmpeq              LABEL119
+   jump                   LABEL128
+LABEL119:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           954
    iload                  1
-   movecoord             
-   set_varc_int           208
-   jump                   LABEL227
-LABEL153:
-   get_varc_int           209
+   set_varc_int           961
+   jump                   LABEL192
+LABEL128:
+   get_varc_int           955
    iconst                 -1
-   if_icmpeq              LABEL157
-   jump                   LABEL168
-LABEL157:
-   iconst                 0
+   if_icmpeq              LABEL132
+   jump                   LABEL141
+LABEL132:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           955
    iload                  1
-   movecoord             
-   set_varc_int           209
-   jump                   LABEL227
-LABEL168:
-   get_varc_int           210
+   set_varc_int           962
+   jump                   LABEL192
+LABEL141:
+   get_varc_int           956
    iconst                 -1
-   if_icmpeq              LABEL172
-   jump                   LABEL183
-LABEL172:
-   iconst                 0
+   if_icmpeq              LABEL145
+   jump                   LABEL154
+LABEL145:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           956
    iload                  1
-   movecoord             
-   set_varc_int           210
-   jump                   LABEL227
-LABEL183:
-   get_varc_int           211
+   set_varc_int           963
+   jump                   LABEL192
+LABEL154:
+   get_varc_int           957
    iconst                 -1
-   if_icmpeq              LABEL187
-   jump                   LABEL198
-LABEL187:
-   iconst                 0
+   if_icmpeq              LABEL158
+   jump                   LABEL167
+LABEL158:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           957
    iload                  1
-   movecoord             
-   set_varc_int           211
-   jump                   LABEL227
-LABEL198:
-   get_varc_int           212
+   set_varc_int           964
+   jump                   LABEL192
+LABEL167:
+   get_varc_int           958
    iconst                 -1
-   if_icmpeq              LABEL202
-   jump                   LABEL213
-LABEL202:
-   iconst                 0
+   if_icmpeq              LABEL171
+   jump                   LABEL180
+LABEL171:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           958
    iload                  1
-   movecoord             
-   set_varc_int           212
-   jump                   LABEL227
-LABEL213:
-   get_varc_int           213
+   set_varc_int           965
+   jump                   LABEL192
+LABEL180:
+   get_varc_int           959
    iconst                 -1
-   if_icmpeq              LABEL217
-   jump                   LABEL227
-LABEL217:
-   iconst                 0
+   if_icmpeq              LABEL184
+   jump                   LABEL192
+LABEL184:
    iconst                 83
    iconst                 105
    iconst                 81
    iload                  0
    enum                  
-   iconst                 0
+   set_varc_int           959
    iload                  1
-   movecoord             
-   set_varc_int           213
-LABEL227:
+   set_varc_int           966
+LABEL192:
    return                

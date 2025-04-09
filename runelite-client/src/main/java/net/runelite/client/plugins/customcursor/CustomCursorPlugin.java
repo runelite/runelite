@@ -32,10 +32,10 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -101,7 +101,7 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON && event.getContainerId() == InventoryID.EQUIPMENT.getId())
+		if (config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON && event.getContainerId() == InventoryID.WORN)
 		{
 			updateCursor();
 		}
@@ -139,7 +139,7 @@ public class CustomCursorPlugin extends Plugin
 		{
 			clientThread.invokeLater(() ->
 			{
-				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 
 				if (equipment == null)
 				{

@@ -34,49 +34,76 @@ import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.ColorBlindMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 
-@ConfigGroup("gpu")
+@ConfigGroup(GpuPluginConfig.GROUP)
 public interface GpuPluginConfig extends Config
 {
+	String GROUP = "gpu";
+
 	@Range(
 		max = MAX_DISTANCE
 	)
 	@ConfigItem(
 		keyName = "drawDistance",
-		name = "Draw Distance",
-		description = "Draw distance",
+		name = "Draw distance",
+		description = "Draw distance.",
 		position = 1
 	)
 	default int drawDistance()
 	{
-		return 25;
+		return 50;
+	}
+
+	@ConfigItem(
+		keyName = "hideUnrelatedMaps",
+		name = "Hide unrelated maps",
+		description = "Hide unrelated map areas you shouldn't see.",
+		position = 2
+	)
+	default boolean hideUnrelatedMaps()
+	{
+		return true;
+	}
+
+	@Range(
+		max = 5
+	)
+	@ConfigItem(
+		keyName = "expandedMapLoadingChunks",
+		name = "Extended map loading",
+		description = "Extra map area to load, in 8 tile chunks.",
+		position = 1
+	)
+	default int expandedMapLoadingChunks()
+	{
+		return 3;
 	}
 
 	@ConfigItem(
 		keyName = "smoothBanding",
-		name = "Remove Color Banding",
-		description = "Smooths out the color banding that is present in the CPU renderer",
+		name = "Remove color banding",
+		description = "Smooths out the color banding that is present in the CPU renderer.",
 		position = 2
 	)
 	default boolean smoothBanding()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "antiAliasingMode",
-		name = "Anti Aliasing",
-		description = "Configures the anti-aliasing mode",
+		name = "Anti aliasing",
+		description = "Configures the anti-aliasing mode.",
 		position = 3
 	)
 	default AntiAliasingMode antiAliasingMode()
 	{
-		return AntiAliasingMode.DISABLED;
+		return AntiAliasingMode.MSAA_2;
 	}
 
 	@ConfigItem(
 		keyName = "uiScalingMode",
 		name = "UI scaling mode",
-		description = "Sampling function to use for the UI in stretched mode",
+		description = "Sampling function to use for the UI in stretched mode.",
 		position = 4
 	)
 	default UIScalingMode uiScalingMode()
@@ -90,7 +117,7 @@ public interface GpuPluginConfig extends Config
 	@ConfigItem(
 		keyName = "fogDepth",
 		name = "Fog depth",
-		description = "Distance from the scene edge the fog starts",
+		description = "Distance from the scene edge the fog starts.",
 		position = 5
 	)
 	default int fogDepth()
@@ -100,8 +127,8 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "useComputeShaders",
-		name = "Compute Shaders",
-		description = "Offloads face sorting to GPU, enabling extended draw distance. Requires plugin restart.",
+		name = "Compute shaders",
+		description = "Offloads face sorting to GPU. Requires plugin restart.",
 		warning = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect.",
 		position = 6
 	)
@@ -116,19 +143,19 @@ public interface GpuPluginConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "anisotropicFilteringLevel",
-		name = "Anisotropic Filtering",
+		name = "Anisotropic filtering",
 		description = "Configures the anisotropic filtering level.",
 		position = 7
 	)
 	default int anisotropicFilteringLevel()
 	{
-		return 0;
+		return 1;
 	}
 
 	@ConfigItem(
 		keyName = "colorBlindMode",
-		name = "Colorblindness Correction",
-		description = "Adjusts colors to account for colorblindness",
+		name = "Colorblindness correction",
+		description = "Adjusts colors to account for colorblindness.",
 		position = 8
 	)
 	default ColorBlindMode colorBlindMode()
@@ -138,12 +165,67 @@ public interface GpuPluginConfig extends Config
 
 	@ConfigItem(
 		keyName = "brightTextures",
-		name = "Bright Textures",
-		description = "Use old texture lighting method which results in brighter game textures",
+		name = "Bright textures",
+		description = "Use old texture lighting method which results in brighter game textures.",
 		position = 9
 	)
 	default boolean brightTextures()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "unlockFps",
+		name = "Unlock FPS",
+		description = "Removes the 50 FPS cap for camera movement.",
+		position = 10
+	)
+	default boolean unlockFps()
+	{
+		return true;
+	}
+
+	enum SyncMode
+	{
+		OFF,
+		ON,
+		ADAPTIVE
+	}
+
+	@ConfigItem(
+		keyName = "vsyncMode",
+		name = "Vsync mode",
+		description = "Method to synchronize frame rate with refresh rate.",
+		position = 11
+	)
+	default SyncMode syncMode()
+	{
+		return SyncMode.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "fpsTarget",
+		name = "FPS target",
+		description = "Target FPS when 'Unlock FPS' is enabled and 'Vsync mode' is off.",
+		position = 12
+	)
+	@Range(
+		min = 1,
+		max = 999
+	)
+	default int fpsTarget()
+	{
+		return 60;
+	}
+
+	@ConfigItem(
+		keyName = "removeVertexSnapping",
+		name = "Remove vertex snapping",
+		description = "Removes vertex snapping from most animations.",
+		position = 13
+	)
+	default boolean removeVertexSnapping()
+	{
+		return true;
 	}
 }

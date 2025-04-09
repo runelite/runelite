@@ -41,7 +41,8 @@ enum FarmingPatchLocation
 		new WorldPoint(3598, 3524, 0),
 		new WorldPoint(3052, 3309, 0),
 		new WorldPoint(2810, 3462, 0),
-		new WorldPoint(2663, 3375, 0)
+		new WorldPoint(2663, 3375, 0),
+		new WorldPoint(1587, 3101, 0)
 	),
 	ANIMA_HERB("Anima/Herb", new WorldPoint(1235, 3724, 0)),
 	BELLADONNA("Belladonna", new WorldPoint(3084, 3356, 0)),
@@ -72,7 +73,8 @@ enum FarmingPatchLocation
 	),
 	GRAPES("Grapes", new WorldPoint(1807, 3555, 0)),
 	HARDWOOD("Hardwood",
-		new WorldPoint(3707, 3838, 0)
+		new WorldPoint(3707, 3838, 0),
+		new WorldPoint(1683, 2971, 0)
 	),
 	HERB("Herb",
 		new WorldPoint(3789, 2840, 0),
@@ -84,7 +86,8 @@ enum FarmingPatchLocation
 		new WorldPoint(2572, 3102, 0),
 		new WorldPoint(2661, 3523, 0),
 		new WorldPoint(3224, 3313, 0),
-		new WorldPoint(3812, 3334, 0)
+		new WorldPoint(2812, 3334, 0),
+		new WorldPoint(1367, 2938, 0)
 	),
 	MUSHROOM("Mushroom", new WorldPoint(3449, 3471, 0)),
 	REDWOOD("Redwood", new WorldPoint(1233, 3754, 0)),

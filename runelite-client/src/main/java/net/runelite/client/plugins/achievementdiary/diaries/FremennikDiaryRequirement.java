@@ -111,7 +111,7 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
 
 		// ELITE
-		add("Craft 56 astral runes at once from Essence.",
+		add("Craft 56 astral runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 82),
 			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
 		add("Create a dragonstone amulet in the Neitiznot furnace.",
@@ -119,7 +119,7 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.THE_FREMENNIK_ISLES, true));
 		add("Complete a lap of the Rellekka agility course.",
 			new SkillRequirement(Skill.AGILITY, 80));
-		add("Kill each of the Godwars generals.",
+		add("Kill the generals of Armadyl, Bandos, Saradomin and Zamorak in the God Wars Dungeon.",
 			new SkillRequirement(Skill.AGILITY, 70),
 			new SkillRequirement(Skill.STRENGTH, 70),
 			new SkillRequirement(Skill.HITPOINTS, 70),

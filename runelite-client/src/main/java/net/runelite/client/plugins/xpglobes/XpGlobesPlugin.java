@@ -34,13 +34,11 @@ import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Experience;
-import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -59,7 +57,7 @@ public class XpGlobesPlugin extends Plugin
 {
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
 
-	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length];
 
 	@Getter
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
@@ -169,22 +167,7 @@ public class XpGlobesPlugin extends Plugin
 	private void resetGlobeState()
 	{
 		xpGlobes.clear();
-		globeCache = new XpGlobe[Skill.values().length - 1];
-	}
-
-	@Subscribe
-	public void onOverlayMenuClicked(final OverlayMenuClicked event)
-	{
-		if (!(event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY
-			&& event.getOverlay() == overlay))
-		{
-			return;
-		}
-
-		if (event.getEntry().getOption().equals(XpGlobesOverlay.FLIP_ACTION))
-		{
-			config.setAlignOrbsVertically(!config.alignOrbsVertically());
-		}
+		globeCache = new XpGlobe[Skill.values().length];
 	}
 
 	@Subscribe

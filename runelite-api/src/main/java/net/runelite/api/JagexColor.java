@@ -28,11 +28,35 @@ import java.awt.Color;
 
 public final class JagexColor
 {
+	public static final int HUE_MAX = 63;
+	public static final int SATURATION_MAX = 7;
+	public static final int LUMINANCE_MAX = 127;
+
 	public static short packHSL(int hue, int saturation, int luminance)
 	{
-		return (short) ((short) (hue & 63) << 10
-			| (short) (saturation & 7) << 7
-			| (short) (luminance & 127));
+		return (short) ((short) (hue & HUE_MAX) << 10
+			| (short) (saturation & SATURATION_MAX) << 7
+			| (short) (luminance & LUMINANCE_MAX));
+	}
+
+	public static int unpackHue(short hsl)
+	{
+		return hsl >> 10 & HUE_MAX;
+	}
+
+	public static int unpackSaturation(short hsl)
+	{
+		return hsl >> 7 & SATURATION_MAX;
+	}
+
+	public static int unpackLuminance(short hsl)
+	{
+		return hsl & LUMINANCE_MAX;
+	}
+
+	public static String formatHSL(short hsl)
+	{
+		return String.format("%02Xh%Xs%02Xl", unpackHue(hsl), unpackSaturation(hsl), unpackLuminance(hsl));
 	}
 
 	public static short rgbToHSL(int rgb, double brightness)

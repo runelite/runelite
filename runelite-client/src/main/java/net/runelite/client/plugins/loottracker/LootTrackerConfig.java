@@ -30,12 +30,14 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("loottracker")
+@ConfigGroup(LootTrackerConfig.GROUP)
 public interface LootTrackerConfig extends Config
 {
+	String GROUP = "loottracker";
+
 	@ConfigSection(
-		name = "Ignored Entries",
-		description = "The Ignore items and Ignore groups options",
+		name = "Ignored entries",
+		description = "The ignored items and sources.",
 		position = -2,
 		closedByDefault = true
 	)
@@ -61,7 +63,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "priceType",
-		name = "Price Type",
+		name = "Price type",
 		description = "What type of price to use for calculating value."
 	)
 	default LootTrackerPriceType priceType()
@@ -71,8 +73,8 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPriceType",
-		name = "Show Price Type",
-		description = "Whether to show a GE: or HA: next to the total values in the tracker"
+		name = "Show price type",
+		description = "Whether to show a GE: or HA: next to the total values in the tracker."
 	)
 	default boolean showPriceType()
 	{
@@ -80,21 +82,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "saveLoot",
-		name = "Submit loot tracker data",
-		description = "Submit loot tracker data"
-	)
-	default boolean saveLoot()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "syncPanel",
-		name = "Synchronize panel contents",
-		description = "Synchronize your local loot tracker with your server data (requires being signed in).<br/>" +
-			" This means the panel is filled with portions of your remote data on startup<br/>" +
-			" and deleting data in the panel also deletes it on the server."
+		name = "Remember loot",
+		description = "Saves loot between client sessions."
 	)
 	default boolean syncPanel()
 	{
@@ -103,8 +93,8 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "ignoredEvents",
-		name = "Ignored Loot Sources",
-		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
+		name = "Ignored loot sources",
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., goblin, barrows chest, H.A.M. member).",
 		section = ignored
 	)
 	default String getIgnoredEvents()
@@ -131,7 +121,7 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "pvpKillChatMessage",
-		name = "Show chat message for PVP kills",
+		name = "Show chat message for PvP kills",
 		description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
 	)
 	default boolean pvpKillChatMessage()

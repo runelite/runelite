@@ -27,17 +27,17 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.gameval.InterfaceID;
 
 @Getter
 public class BeginnerMapClue extends MapClue implements LocationClueScroll
 {
 	private static final ImmutableList<BeginnerMapClue> CLUES = ImmutableList.of(
-		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD, new WorldPoint(3166, 3361, 0), MapClue.CHAMPIONS_GUILD),
-		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_VARROCK_EAST_MINE, new WorldPoint(3290, 3374, 0), MapClue.VARROCK_EAST_MINE),
-		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_DRAYNOR, new WorldPoint(3093, 3226, 0), MapClue.SOUTH_OF_DRAYNOR_BANK),
-		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_NORTH_OF_FALADOR, new WorldPoint(3043, 3398, 0), MapClue.STANDING_STONES),
-		new BeginnerMapClue(WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER, new WorldPoint(3110, 3152, 0), MapClue.WIZARDS_TOWER_DIS)
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP01, new WorldPoint(3166, 3361, 0), MapClue.CHAMPIONS_GUILD),
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP02, new WorldPoint(3290, 3374, 0), MapClue.VARROCK_EAST_MINE),
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP03, new WorldPoint(3093, 3226, 0), MapClue.SOUTH_OF_DRAYNOR_BANK),
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP06, new WorldPoint(3043, 3398, 0), MapClue.STANDING_STONES),
+		new BeginnerMapClue(InterfaceID.TRAIL_MAP11, new WorldPoint(3110, 3152, 0), MapClue.WIZARDS_TOWER_DIS)
 	);
 
 	private final int widgetGroupID;

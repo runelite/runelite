@@ -43,7 +43,9 @@ public class HighlightedNpc
 	Color fillColor = new Color(0, 0, 0, 50);
 	boolean hull;
 	boolean tile;
+	boolean trueTile;
 	boolean swTile;
+	boolean swTrueTile;
 	boolean outline;
 	boolean name;
 	boolean nameOnMinimap;

@@ -1,0 +1,56 @@
+; used by TimestampPlugin via Chat(Split)Builder to display timestamps
+; add a timestamp to a message
+; string0 = timestamp
+; string1 = message
+; string2 = timestamp color
+.id                 4742
+.int_stack_count    0
+.string_stack_count 3
+.int_var_count      0
+.string_var_count   3
+   jump                   ENABLED ; jump over ~on_enhanced_any = 0 | chat_gettimestamps = 0
+   invoke                 100
+   iconst                 0
+   if_icmpeq              LABEL11
+   5025                  
+   iconst                 0
+   if_icmpeq              LABEL11
+ENABLED:
+   sload                  0
+   invoke                 5529
+   iconst                 1
+   if_icmpeq              LABEL11
+   jump                   LABEL13
+LABEL11:
+   sload                  1
+   return                
+LABEL13:
+   sload                  1
+   invoke                 5530
+   invoke                 5529
+   iconst                 1
+   if_icmpeq              LABEL19
+   jump                   LABEL21
+LABEL19:
+   sload                  1
+   return                
+LABEL21:
+   sload                  2
+   invoke                 5529
+   iconst                 0
+   if_icmpeq              LABEL26
+   jump                   LABEL31
+LABEL26:
+   sload                  2
+   sload                  0
+   sconst                 "</col>"
+   join_string            3
+   sstore                 0
+LABEL31:
+   sload                  0
+   sconst                 " "
+   sload                  1
+   join_string            3
+   return                
+   sconst                 ""
+   return                

@@ -45,7 +45,7 @@ import okhttp3.Response;
 public class CrowdsourcingManager
 {
 	private static final String CROWDSOURCING_BASE = "https://crowdsource.runescape.wiki/runelite";
-	private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+	private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
 	@Inject
 	private OkHttpClient okHttpClient;

@@ -27,6 +27,7 @@ package net.runelite.api;
 /**
  * An enumeration of possible inventory types.
  */
+@Deprecated
 public enum InventoryID
 {
 	/**
@@ -81,11 +82,34 @@ public enum InventoryID
 	 * Theater of Blood reward chest inventory (Raids 2)
 	 */
 	THEATRE_OF_BLOOD_CHEST(612),
-
 	/**
 	 * Seed vault located inside the Farming Guild
 	 */
-	SEED_VAULT(626);
+	SEED_VAULT(626),
+	/**
+	 * Group ironman shared storage
+	 */
+	GROUP_STORAGE(659),
+	/**
+	 * Player inventory when accessing group ironman shared storage
+	 */
+	GROUP_STORAGE_INV(660),
+	/**
+	 * Wilderness loot chest
+	 */
+	WILDERNESS_LOOT_CHEST(797),
+	/**
+	 * TOA reward chest
+	 */
+	TOA_REWARD_CHEST(811),
+	/**
+	 * Reward chest for Moons of Peril
+	 */
+	LUNAR_CHEST(847),
+	/**
+	 * Reward chest for the Fortis Colosseum
+	 */
+	FORTIS_COLOSSEUM_REWARD_CHEST(843);
 
 	private final int id;
 

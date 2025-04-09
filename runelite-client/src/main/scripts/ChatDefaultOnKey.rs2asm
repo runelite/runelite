@@ -1,0 +1,1102 @@
+.id                 73
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      10
+.string_var_count   0
+   iconst                 10616886
+   if_gethide            
+   iconst                 1
+   if_icmpeq              LABEL9
+   iconst                 10616887
+   if_gethide            
+   iconst                 1
+   if_icmpeq              LABEL9
+   jump                   LABEL10
+LABEL9:
+   return                
+LABEL10:
+   get_varbit             8119
+   iconst                 0
+   if_icmpeq              LABEL19
+   iconst                 -1
+   iconst                 162
+   invoke                 1701
+   iconst                 0
+   if_icmpeq              LABEL19
+   jump                   LABEL20
+LABEL19:
+   return                
+LABEL20:
+   get_varc_string        335
+   string_length         
+   istore                 2
+   iconst                 0
+   istore                 3
+   staffmodlevel         
+   iconst                 0
+   if_icmpgt              LABEL29
+   jump                   LABEL60
+LABEL29:
+   iconst                 1
+   istore                 3
+   sconst                 "`"
+   iload                  1
+   string_indexof_char   
+   iconst                 -1
+   if_icmpne              LABEL37
+   jump                   LABEL42
+LABEL37:
+   iload                  2
+   iconst                 0
+   if_icmpeq              LABEL41
+   jump                   LABEL42
+LABEL41:
+   return                
+LABEL42:
+   sconst                 ":"
+   iload                  1
+   string_indexof_char   
+   iconst                 -1
+   if_icmpne              LABEL48
+   jump                   LABEL60
+LABEL48:
+   get_varc_string        335
+   sconst                 "::"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL55
+   jump                   LABEL60
+LABEL55:
+   iload                  2
+   iconst                 2
+   if_icmpeq              LABEL59
+   jump                   LABEL60
+LABEL59:
+   return                
+LABEL60:
+   iconst                 0
+   istore                 4
+   iconst                 -1
+   istore                 5
+   iconst                 0
+   istore                 6
+   iconst                 -1
+   istore                 7
+   iconst                 0
+   istore                 8
+   iconst                 -1
+   istore                 9
+   iload                  0
+   iconst                 84
+   if_icmpeq              LABEL76
+   jump                   LABEL808
+LABEL76:
+   invoke                 1984
+   iload                  2
+   iconst                 0
+   if_icmpgt              LABEL81
+   jump                   LABEL807
+LABEL81:
+   iload                  3
+   iconst                 1
+   if_icmpeq              LABEL85
+   jump                   LABEL152
+LABEL85:
+   sconst                 "give"
+   iload                  2
+   invoke                 4481
+   iconst                 1
+   if_icmpeq              LABEL91
+   jump                   LABEL95
+LABEL91:
+   get_varc_string        335
+   string_length         
+   istore                 2
+   jump                   LABEL152
+LABEL95:
+   sconst                 "set"
+   iload                  2
+   invoke                 4481
+   iconst                 1
+   if_icmpeq              LABEL101
+   jump                   LABEL105
+LABEL101:
+   get_varc_string        335
+   string_length         
+   istore                 2
+   jump                   LABEL152
+LABEL105:
+   sconst                 "get"
+   iload                  2
+   invoke                 4481
+   iconst                 1
+   if_icmpeq              LABEL111
+   jump                   LABEL115
+LABEL111:
+   get_varc_string        335
+   string_length         
+   istore                 2
+   jump                   LABEL152
+LABEL115:
+   sconst                 "tele"
+   iload                  2
+   invoke                 4481
+   iconst                 1
+   if_icmpeq              LABEL121
+   jump                   LABEL125
+LABEL121:
+   get_varc_string        335
+   string_length         
+   istore                 2
+   jump                   LABEL152
+LABEL125:
+   sconst                 "~"
+   iload                  2
+   invoke                 4481
+   iconst                 1
+   if_icmpeq              LABEL131
+   jump                   LABEL135
+LABEL131:
+   get_varc_string        335
+   string_length         
+   istore                 2
+   jump                   LABEL152
+LABEL135:
+   get_varc_string        335
+   sconst                 "::"
+   iconst                 0
+   string_indexof_string 
+   istore                 7
+   iload                  7
+   iconst                 0
+   if_icmpgt              LABEL144
+   jump                   LABEL152
+LABEL144:
+   get_varc_string        335
+   iload                  7
+   iload                  2
+   substring             
+   set_varc_string        335
+   get_varc_string        335
+   string_length         
+   istore                 2
+LABEL152:
+   get_varc_string        335
+   invoke                 7304
+   iconst                 1
+   if_icmpeq              LABEL157
+   jump                   LABEL159
+LABEL157:
+   sconst                 ""
+   set_varc_string        335
+LABEL159:
+   get_varc_string        335
+   sconst                 "::"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL166
+   jump                   LABEL169
+LABEL166:
+   iconst                 1
+   istore                 4
+   jump                   LABEL195
+LABEL169:
+   get_varc_int           41
+   iconst                 5
+   if_icmpeq              LABEL173
+   jump                   LABEL176
+LABEL173:
+   iconst                 41
+   istore                 5
+   jump                   LABEL195
+LABEL176:
+   get_varc_int           41
+   iconst                 4
+   if_icmpeq              LABEL180
+   jump                   LABEL183
+LABEL180:
+   iconst                 9
+   istore                 5
+   jump                   LABEL195
+LABEL183:
+   get_varc_int           41
+   iconst                 6
+   if_icmpeq              LABEL187
+   jump                   LABEL195
+LABEL187:
+   invoke                 5262
+   iconst                 1
+   if_icmpeq              LABEL191
+   jump                   LABEL195
+LABEL191:
+   iconst                 41
+   iconst                 1
+   istore                 8
+   istore                 5
+LABEL195:
+   get_varc_string        335
+   sconst                 "////"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL202
+   jump                   LABEL230
+LABEL202:
+   invoke                 5262
+   iconst                 1
+   if_icmpeq              LABEL206
+   jump                   LABEL230
+LABEL206:
+   iconst                 4
+   iconst                 41
+   iconst                 1
+   istore                 8
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "////@"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL219
+   jump                   LABEL223
+LABEL219:
+   iconst                 4
+   istore                 9
+   iconst                 5
+   istore                 6
+LABEL223:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL227
+   jump                   LABEL229
+LABEL227:
+   iconst                 4
+   istore                 9
+LABEL229:
+   jump                   LABEL565
+LABEL230:
+   get_varc_string        335
+   sconst                 "///"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL237
+   jump                   LABEL259
+LABEL237:
+   iconst                 3
+   iconst                 44
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "///@"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL248
+   jump                   LABEL252
+LABEL248:
+   iconst                 3
+   istore                 9
+   iconst                 4
+   istore                 6
+LABEL252:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL256
+   jump                   LABEL258
+LABEL256:
+   iconst                 3
+   istore                 9
+LABEL258:
+   jump                   LABEL565
+LABEL259:
+   get_varc_string        335
+   sconst                 "//"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL266
+   jump                   LABEL288
+LABEL266:
+   iconst                 2
+   iconst                 41
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "//@"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL277
+   jump                   LABEL281
+LABEL277:
+   iconst                 2
+   istore                 9
+   iconst                 3
+   istore                 6
+LABEL281:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL285
+   jump                   LABEL287
+LABEL285:
+   iconst                 2
+   istore                 9
+LABEL287:
+   jump                   LABEL565
+LABEL288:
+   get_varc_string        335
+   lowercase             
+   sconst                 "/gc "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL303
+   get_varc_string        335
+   lowercase             
+   sconst                 "/@gc "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL303
+   jump                   LABEL326
+LABEL303:
+   iconst                 4
+   iconst                 44
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   lowercase             
+   sconst                 "/@gc "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL315
+   jump                   LABEL319
+LABEL315:
+   iconst                 3
+   istore                 9
+   iconst                 5
+   istore                 6
+LABEL319:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL323
+   jump                   LABEL325
+LABEL323:
+   iconst                 3
+   istore                 9
+LABEL325:
+   jump                   LABEL565
+LABEL326:
+   get_varc_string        335
+   lowercase             
+   sconst                 "/c "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL341
+   get_varc_string        335
+   lowercase             
+   sconst                 "/@c "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL341
+   jump                   LABEL363
+LABEL341:
+   iconst                 3
+   iconst                 41
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "/@c "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL352
+   jump                   LABEL356
+LABEL352:
+   iconst                 2
+   istore                 9
+   iconst                 4
+   istore                 6
+LABEL356:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL360
+   jump                   LABEL362
+LABEL360:
+   iconst                 2
+   istore                 9
+LABEL362:
+   jump                   LABEL565
+LABEL363:
+   invoke                 5262
+   iconst                 1
+   if_icmpeq              LABEL367
+   jump                   LABEL406
+LABEL367:
+   get_varc_string        335
+   lowercase             
+   sconst                 "/g "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL382
+   get_varc_string        335
+   lowercase             
+   sconst                 "/@g "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL382
+   jump                   LABEL406
+LABEL382:
+   iconst                 3
+   iconst                 41
+   iconst                 1
+   istore                 8
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "/@g "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL395
+   jump                   LABEL399
+LABEL395:
+   iconst                 4
+   istore                 9
+   iconst                 4
+   istore                 6
+LABEL399:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL403
+   jump                   LABEL405
+LABEL403:
+   iconst                 4
+   istore                 9
+LABEL405:
+   jump                   LABEL565
+LABEL406:
+   get_varc_string        335
+   lowercase             
+   sconst                 "/f "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL420
+   get_varc_string        335
+   sconst                 "/@f "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL420
+   jump                   LABEL442
+LABEL420:
+   iconst                 3
+   iconst                 9
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "/@f "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL431
+   jump                   LABEL435
+LABEL431:
+   iconst                 1
+   istore                 9
+   iconst                 4
+   istore                 6
+LABEL435:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL439
+   jump                   LABEL441
+LABEL439:
+   iconst                 1
+   istore                 9
+LABEL441:
+   jump                   LABEL565
+LABEL442:
+   get_varc_string        335
+   lowercase             
+   sconst                 "/p "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL456
+   get_varc_string        335
+   sconst                 "/@p "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL456
+   jump                   LABEL478
+LABEL456:
+   iconst                 3
+   iconst                 2
+   istore                 5
+   istore                 6
+   get_varc_string        335
+   sconst                 "/@p "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL467
+   jump                   LABEL471
+LABEL467:
+   iconst                 0
+   istore                 9
+   iconst                 4
+   istore                 6
+LABEL471:
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL475
+   jump                   LABEL477
+LABEL475:
+   iconst                 0
+   istore                 9
+LABEL477:
+   jump                   LABEL565
+LABEL478:
+   get_varc_string        335
+   sconst                 "/"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL485
+   jump                   LABEL565
+LABEL485:
+   get_varc_string        335
+   sconst                 "/@p"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL492
+   jump                   LABEL499
+LABEL492:
+   iconst                 0
+   iconst                 2
+   iconst                 3
+   istore                 6
+   istore                 5
+   istore                 9
+   jump                   LABEL565
+LABEL499:
+   get_varc_string        335
+   sconst                 "/@f"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL506
+   jump                   LABEL513
+LABEL506:
+   iconst                 1
+   iconst                 9
+   iconst                 3
+   istore                 6
+   istore                 5
+   istore                 9
+   jump                   LABEL565
+LABEL513:
+   get_varc_string        335
+   sconst                 "/@c"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL520
+   jump                   LABEL527
+LABEL520:
+   iconst                 2
+   iconst                 41
+   iconst                 3
+   istore                 6
+   istore                 5
+   istore                 9
+   jump                   LABEL565
+LABEL527:
+   get_varc_string        335
+   sconst                 "/@gc"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL534
+   jump                   LABEL541
+LABEL534:
+   iconst                 3
+   iconst                 44
+   iconst                 4
+   istore                 6
+   istore                 5
+   istore                 9
+   jump                   LABEL565
+LABEL541:
+   get_varc_string        335
+   sconst                 "/@g"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL548
+   jump                   LABEL555
+LABEL548:
+   iconst                 4
+   iconst                 41
+   iconst                 3
+   istore                 6
+   istore                 5
+   istore                 9
+   jump                   LABEL565
+LABEL555:
+   iconst                 1
+   iconst                 9
+   istore                 5
+   istore                 6
+   get_varbit             13120
+   iconst                 1
+   if_icmpeq              LABEL563
+   jump                   LABEL565
+LABEL563:
+   iconst                 1
+   istore                 9
+LABEL565:
+   iconst                 0                   ; 1 to block
+   iload                  5                   ; chat type
+   iload                  6                   ; message prefix length
+   sconst                 "chatDefaultReturn" ; event name
+   runelite_callback                          ; callback
+   istore                 6                   ; message prefix length
+   istore                 5                   ; chat type
+   iconst                 1                   ; load 1
+   if_icmpeq              AFTER_CHATOUT_ADD   ; skip chatout_add (due to comment below) and jump to varcstring355 = ""
+   iload                  5
+   iconst                 44
+   if_icmpeq              LABEL569
+   jump                   LABEL603
+LABEL569:
+   activeclansettings_find_listened
+   iconst                 1
+   if_icmpeq              LABEL573
+   jump                   LABEL600
+LABEL573:
+   activeclanchannel_find_listened
+   iconst                 1
+   if_icmpeq              LABEL577
+   jump                   LABEL600
+LABEL577:
+   activeclansettings_getallowunaffined
+   iconst                 1
+   if_icmpeq              LABEL581
+   jump                   LABEL597
+LABEL581:
+   get_varclansetting     33
+   switch                
+      1001: LABEL584
+      1002: LABEL584
+      1003: LABEL584
+      1004: LABEL584
+      1005: LABEL584
+      1006: LABEL584
+   jump                   LABEL587
+LABEL584:
+   sconst                 "You are not chatting as a guest in a channel at the moment."
+   mes                   
+   jump                   LABEL596
+LABEL587:
+   get_varc_string        335
+   iload                  6
+   iload                  2
+   substring             
+   iconst                 4
+   iconst                 0
+   iconst                 0
+   iload                  9
+   invoke                 5517
+LABEL596:
+   jump                   LABEL599
+LABEL597:
+   sconst                 "Guests are not invited to speak in this clan's channel."
+   mes                   
+LABEL599:
+   jump                   LABEL602
+LABEL600:
+   sconst                 "You are not chatting as a guest in a clan channel at the moment."
+   mes                   
+LABEL602:
+   jump                   LABEL803
+LABEL603:
+   iload                  5
+   iconst                 41
+   if_icmpeq              LABEL607
+   jump                   LABEL671
+LABEL607:
+   iload                  8
+   iconst                 0
+   if_icmpeq              LABEL611
+   jump                   LABEL642
+LABEL611:
+   iconst                 0
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL616
+   jump                   LABEL642
+LABEL616:
+   chat_playername       
+   removetags            
+   activeclanchannel_getuserslot
+   istore                 7
+   iload                  7
+   iconst                 -1
+   if_icmpne              LABEL624
+   jump                   LABEL639
+LABEL624:
+   iload                  7
+   activeclanchannel_getuserrank
+   activeclanchannel_getranktalk
+   if_icmpge              LABEL629
+   jump                   LABEL639
+LABEL629:
+   get_varc_string        335
+   iload                  6
+   iload                  2
+   substring             
+   iconst                 3
+   iconst                 0
+   iconst                 0
+   iload                  9
+   invoke                 5517
+   jump                   LABEL641
+LABEL639:
+   sconst                 "You do not have the required rank to talk in the clan's channel."
+   mes                   
+LABEL641:
+   jump                   LABEL670
+LABEL642:
+   iload                  8
+   iconst                 1
+   if_icmpeq              LABEL646
+   jump                   LABEL661
+LABEL646:
+   iconst                 1
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL651
+   jump                   LABEL661
+LABEL651:
+   get_varc_string        335
+   iload                  6
+   iload                  2
+   substring             
+   iconst                 3
+   iconst                 1
+   iconst                 0
+   iload                  9
+   invoke                 5517
+   jump                   LABEL670
+LABEL661:
+   iload                  8
+   iconst                 1
+   if_icmpeq              LABEL665
+   jump                   LABEL668
+LABEL665:
+   sconst                 "You are not chatting in the channel of your Ironman Group at the moment."
+   mes                   
+   jump                   LABEL670
+LABEL668:
+   sconst                 "You are not chatting in the channel of your Clan at the moment."
+   mes                   
+LABEL670:
+   jump                   LABEL803
+LABEL671:
+   iload                  5
+   iconst                 9
+   if_icmpeq              LABEL675
+   jump                   LABEL705
+LABEL675:
+   clan_getchatcount     
+   iconst                 0
+   if_icmpgt              LABEL679
+   jump                   LABEL695
+LABEL679:
+   get_varbit             4394
+   iconst                 1
+   if_icmpeq              LABEL683
+   jump                   LABEL685
+LABEL683:
+   clan_leavechat        
+   jump                   LABEL694
+LABEL685:
+   get_varc_string        335
+   iload                  6
+   iload                  2
+   substring             
+   iconst                 2
+   iconst                 -1
+   iconst                 0
+   iload                  9
+   invoke                 5517
+LABEL694:
+   jump                   LABEL704
+LABEL695:
+   get_varc_string        335
+   iload                  6
+   iload                  2
+   substring             
+   iconst                 0
+   iconst                 -1
+   iconst                 0
+   iconst                 -1
+   invoke                 5517
+LABEL704:
+   jump                   LABEL803
+LABEL705:
+   iload                  5
+   iconst                 2
+   if_icmpeq              LABEL709
+   jump                   LABEL719
+LABEL709:
+   get_varc_string        335
+   iload                  6
+   iload                  2
+   substring             
+   iconst                 0
+   iconst                 -1
+   iconst                 0
+   iload                  9
+   invoke                 5517
+   jump                   LABEL803
+LABEL719:
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL723
+   jump                   LABEL797
+LABEL723:
+   iload                  2
+   iconst                 2
+   if_icmpgt              LABEL727
+   jump                   LABEL790
+LABEL727:
+   ; move chatout_add under if ($length2 > 2) to only add for :: commands
+   get_varc_string        335
+   invoke                 77 ; chatout_add
+   get_varc_string        335
+   sconst                 "::toggleroof"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL734
+   jump                   LABEL749
+LABEL734:
+   iconst                 1
+   3215                  
+   iconst                 1
+   if_icmpeq              LABEL739
+   jump                   LABEL744
+LABEL739:
+   iconst                 0
+   invoke                 4583
+   sconst                 "Roofs will only be removed selectively. This setting will not be saved."
+   mes                   
+   jump                   LABEL748
+LABEL744:
+   iconst                 1
+   invoke                 4583
+   sconst                 "Roofs are now all hidden. This setting will not be saved."
+   mes                   
+LABEL748:
+   jump                   LABEL789
+LABEL749:
+   get_varc_string        335
+   sconst                 "::wiki "
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL761
+   get_varc_string        335
+   sconst                 "::wiki"
+   compare               
+   iconst                 0
+   if_icmpeq              LABEL761
+   sconst                 "runeliteCommand" ; load callback name
+   runelite_callback     ; invoke callback
+   jump                   LABEL764
+LABEL761:
+   get_varc_string        335
+   invoke                 3299
+   jump                   LABEL789
+LABEL764:
+   get_varc_string        335
+   sconst                 "::bank"
+   iconst                 0
+   string_indexof_string 
+   iconst                 0
+   if_icmpeq              LABEL771
+   jump                   LABEL778
+LABEL771:
+   sconst                 "Hey, everyone, I just tried to do something very silly!"
+   iconst                 0
+   iconst                 -1
+   iconst                 0
+   iconst                 -1
+   invoke                 5517
+   jump                   LABEL789
+LABEL778:
+   get_varc_string        335
+   invoke                 224
+   set_varc_string        335
+   get_varc_string        335
+   string_length         
+   istore                 2
+   get_varc_string        335
+   iconst                 2
+   iload                  2
+   substring             
+   docheat               
+LABEL789:
+   jump                   LABEL796
+LABEL790:
+   get_varc_string        335
+   iconst                 0
+   iconst                 -1
+   iconst                 0
+   iconst                 -1
+   invoke                 5517
+LABEL796:
+   jump                   LABEL803
+LABEL797:
+   get_varc_string        335
+   iconst                 0
+   iconst                 -1
+   iconst                 1
+   iload                  9
+   invoke                 5517
+LABEL803:
+   ; see comment above
+   jump                   AFTER_CHATOUT_ADD
+   get_varc_string        335
+   invoke                 77
+AFTER_CHATOUT_ADD:
+   sconst                 ""
+   set_varc_string        335
+LABEL807:
+   jump                   LABEL883
+LABEL808:
+   iload                  0
+   iconst                 104
+   if_icmpeq              LABEL812
+   jump                   LABEL818
+LABEL812:
+   iload                  3
+   sconst                 "devtoolsEnabled"
+   runelite_callback     
+   iconst                 1
+   if_icmpeq              LABEL816
+   jump                   LABEL817
+LABEL816:
+   invoke                 75
+LABEL817:
+   jump                   LABEL883
+LABEL818:
+   iload                  0
+   iconst                 105
+   if_icmpeq              LABEL822
+   jump                   LABEL828
+LABEL822:
+   iload                  3
+   sconst                 "devtoolsEnabled"
+   runelite_callback     
+   iconst                 1
+   if_icmpeq              LABEL826
+   jump                   LABEL827
+LABEL826:
+   invoke                 76
+LABEL827:
+   jump                   LABEL883
+LABEL828:
+   iload                  0
+   iconst                 80
+   if_icmpeq              LABEL832
+   jump                   LABEL877
+LABEL832:
+   iconst                 40697932
+   iconst                 1
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL838
+   jump                   LABEL839
+LABEL838:
+   return                
+LABEL839:
+   get_varc_string        356
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL844
+   jump                   LABEL864
+LABEL844:
+   get_varc_string        356
+   friend_test           
+   iconst                 1
+   if_icmpeq              LABEL849
+   jump                   LABEL852
+LABEL849:
+   get_varc_string        356
+   invoke                 107
+   return                
+LABEL852:
+   get_varc_int           60
+   clientclock           
+   if_icmpgt              LABEL856
+   jump                   LABEL857
+LABEL856:
+   return                
+LABEL857:
+   clientclock           
+   iconst                 50
+   add                   
+   set_varc_int           60
+   sconst                 "That player was not found on your Friends list."
+   mes                   
+   return                
+LABEL864:
+   get_varc_int           60
+   clientclock           
+   if_icmpgt              LABEL868
+   jump                   LABEL869
+LABEL868:
+   return                
+LABEL869:
+   clientclock           
+   iconst                 50
+   add                   
+   set_varc_int           60
+   sconst                 "You haven't received any messages to which you can reply."
+   mes                   
+   return                
+   jump                   LABEL883
+LABEL877:
+   get_varc_string        335
+   iconst                 0
+   iload                  0
+   iload                  1
+   invoke                 74
+   iconst                 1                 ; check if we're ignoring input
+   iconst                 0                 ;
+   sconst                 "blockChatInput"  ;
+   runelite_callback     ;
+   if_icmpeq              SKIPSETVARC       ; skip setting varc with input
+   set_varc_string        335
+   jump                   LABEL883          ; jump over SKIPSETVARC
+SKIPSETVARC:
+   pop_string            ; pop message
+LABEL883:
+   invoke                 223
+   return                

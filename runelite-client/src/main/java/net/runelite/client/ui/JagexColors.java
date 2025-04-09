@@ -35,7 +35,7 @@ public class JagexColors
 	 * Colors of chat text when displayed on an opaque background.
 	 */
 	public static final Color CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND = Color.BLUE;
-	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND = Color.CYAN;
+	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND = new Color(0x7F0000); // in chatbox, not split chat
 	public static final Color CHAT_FC_TEXT_OPAQUE_BACKGROUND = new Color(127, 0, 0);
 	public static final Color CHAT_FC_NAME_OPAQUE_BACKGROUND = Color.BLUE;
 	public static final Color CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND = Color.BLACK;
@@ -45,7 +45,7 @@ public class JagexColors
 	 * Colors of chat text when displayed on a transparent background.
 	 */
 	public static final Color CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND = new Color(144, 144, 255);
-	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND = Color.CYAN;
+	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND = new Color(0xBF2020); // in chatbox, not split chat
 	public static final Color CHAT_FC_TEXT_TRANSPARENT_BACKGROUND = new Color(239, 80, 80);
 	public static final Color CHAT_FC_NAME_TRANSPARENT_BACKGROUND = new Color(144, 112, 255);
 	public static final Color CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND = Color.WHITE;

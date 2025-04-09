@@ -18,7 +18,10 @@ LABEL4:
 LABEL7:
    sconst                 "-Attempting to kick player from chat-channel..."
    iconst                 2
-   invoke                 96
+   iconst                 -1
+   iconst                 0
+   iconst                 -1
+   invoke                 5517
    sload                  0
    clan_kickuser         
 RETURN:

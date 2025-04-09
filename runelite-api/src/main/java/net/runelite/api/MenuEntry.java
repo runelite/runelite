@@ -24,46 +24,160 @@
  */
 package net.runelite.api;
 
-import lombok.Data;
+import java.util.function.Consumer;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import net.runelite.api.widgets.Widget;
 
 /**
  * A menu entry in a right-click menu.
  */
-@Data
-public class MenuEntry
+public interface MenuEntry
 {
 	/**
 	 * The option text added to the menu. (ie. "Walk here", "Use")
 	 */
-	private String option;
+	String getOption();
+	MenuEntry setOption(String option);
+
 	/**
 	 * The target of the action. (ie. Item or Actor name)
 	 * <p>
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
 	 */
-	private String target;
+	String getTarget();
+	MenuEntry setTarget(String target);
+
 	/**
 	 * An identifier value for the target of the action.
 	 */
-	private int identifier;
+	int getIdentifier();
+	MenuEntry setIdentifier(int identifier);
+
 	/**
 	 * The action the entry will trigger.
 	 */
-	private int type;
+	MenuAction getType();
+	MenuEntry setType(MenuAction type);
+
 	/**
 	 * An additional parameter for the action.
 	 */
-	private int param0;
+	int getParam0();
+	MenuEntry setParam0(int param0);
+
 	/**
 	 * A second additional parameter for the action.
 	 */
-	private int param1;
+	int getParam1();
+	MenuEntry setParam1(int param1);
+
 	/**
-	 * If this field is true and you have single mouse button on and this entry is
+	 * If this is true and you have single mouse button on and this entry is
 	 * the top entry the right click menu will not be opened when you left click
 	 *
 	 * This is used  for shift click
 	 */
-	private boolean forceLeftClick;
+	boolean isForceLeftClick();
+	MenuEntry setForceLeftClick(boolean forceLeftClick);
+
+	int getWorldViewId();
+	MenuEntry setWorldViewId(int worldViewId);
+
+	/**
+	 * Deprioritized menus are sorted in the menu to be below the other menu entries.
+	 * @return
+	 */
+	boolean isDeprioritized();
+	MenuEntry setDeprioritized(boolean deprioritized);
+
+	/**
+	 * Set a callback to be called when this menu option is clicked
+	 * @param callback
+	 * @return
+	 */
+	MenuEntry onClick(Consumer<MenuEntry> callback);
+
+	/**
+	 * Get the callback called when the menu option is clicked
+	 * @return
+	 */
+	Consumer<MenuEntry> onClick();
+
+	/**
+	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
+	 * @return
+	 */
+	boolean isItemOp();
+
+	/**
+	 * If this menu entry is an item op, get the item op id
+	 * @return 1-5
+	 */
+	int getItemOp();
+
+	/**
+	 * Get the item id
+	 * @return
+	 * @see net.runelite.api.gameval.ItemID
+	 */
+	int getItemId();
+
+	/**
+	 * Set the item id
+	 * @param itemId
+	 * @return
+	 */
+	MenuEntry setItemId(int itemId);
+
+	/**
+	 * Get the widget this menu entry is on, if this is a menu entry
+	 * with an associated widget. Such as eg, CC_OP.
+	 * @return
+	 */
+	@Nullable
+	Widget getWidget();
+
+	/**
+	 * Get the {@link NPC} this menu entry is targeting, if any.
+	 * @return
+	 */
+	@Nullable
+	NPC getNpc();
+
+	/**
+	 * Get the {@link Player} this menu entry is targeting, if any.
+	 * @return
+	 */
+	@Nullable
+	Player getPlayer();
+
+	/**
+	 * Get the {@link Actor} this menu entry is targeting, if any.
+	 * @return
+	 */
+	@Nullable
+	Actor getActor();
+
+	/**
+	 * Get the submenu for this menu entry.
+	 * @return the submenu, or null if one doesn't exist
+	 * @see #createSubMenu()
+	 */
+	@Nullable
+	Menu getSubMenu();
+
+	/**
+	 * Create a new submenu for this menu entry.
+	 * This will erase any previous submenu.
+	 * @return the new submenu
+	 */
+	@Nonnull
+	Menu createSubMenu();
+
+	/**
+	 * Remove the submenu from this menu entry.
+	 */
+	void deleteSubMenu();
 }

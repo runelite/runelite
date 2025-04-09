@@ -28,6 +28,7 @@ package net.runelite.client.ui.overlay.infobox;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -122,6 +123,10 @@ public class InfoBoxOverlay extends OverlayPanel
 		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
 		panelComponent.setOrientation(orientation);
 
+		final Font font = config.infoboxFontType().getFont();
+		final boolean infoBoxTextOutline = config.infoBoxTextOutline();
+		final Color overlayBackgroundColor = config.overlayBackgroundColor();
+		final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
 		for (InfoBox box : infoBoxes)
 		{
 			if (!box.render())
@@ -134,15 +139,16 @@ public class InfoBoxOverlay extends OverlayPanel
 
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
 			infoBoxComponent.setText(text);
+			infoBoxComponent.setFont(font);
 			if (color != null)
 			{
 				infoBoxComponent.setColor(color);
 			}
-			infoBoxComponent.setOutline(config.infoBoxTextOutline());
+			infoBoxComponent.setOutline(infoBoxTextOutline);
 			infoBoxComponent.setImage(box.getScaledImage());
 			infoBoxComponent.setTooltip(box.getTooltip());
-			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
-			infoBoxComponent.setBackgroundColor(config.overlayBackgroundColor());
+			infoBoxComponent.setPreferredSize(preferredSize);
+			infoBoxComponent.setBackgroundColor(overlayBackgroundColor);
 			infoBoxComponent.setInfoBox(box);
 			panelComponent.getChildren().add(infoBoxComponent);
 		}

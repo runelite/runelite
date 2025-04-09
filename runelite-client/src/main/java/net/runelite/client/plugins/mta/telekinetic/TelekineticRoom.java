@@ -43,8 +43,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.Angle;
@@ -58,7 +56,9 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
@@ -66,9 +66,9 @@ import net.runelite.client.plugins.mta.MTARoom;
 @Slf4j
 public class TelekineticRoom extends MTARoom
 {
-	private static final int MAZE_GUARDIAN_MOVING = 6778;
-	private static final int TELEKINETIC_WALL = NullObjectID.NULL_10755;
-	private static final int TELEKINETIC_FINISH = NullObjectID.NULL_23672;
+	private static final int MAZE_GUARDIAN_MOVING = NpcID.MAGICTRAINING_GUARD_MAZE_MOVING;
+	private static final int TELEKINETIC_WALL = ObjectID.MAGICTRAINING_MINIWALL;
+	private static final int TELEKINETIC_FINISH = ObjectID.MAGICTRAINING_MINI_STATUE_PITFALL;
 
 	private final Client client;
 
@@ -80,7 +80,7 @@ public class TelekineticRoom extends MTARoom
 	private WorldPoint finishLocation;
 	private Rectangle bounds;
 	private NPC guardian;
-	private Maze maze;
+	private int numMazeWalls;
 
 	@Inject
 	private TelekineticRoom(MTAConfig config, Client client)
@@ -131,19 +131,17 @@ public class TelekineticRoom extends MTARoom
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!config.telekinetic()
-				|| !inside()
-				|| client.getGameState() != GameState.LOGGED_IN)
+		if (!inside() || !config.telekinetic())
 		{
-			maze = null;
+			numMazeWalls = 0;
 			moves.clear();
 			return;
 		}
 
-		if (maze == null || telekineticWalls.size() != maze.getWalls())
+		if (telekineticWalls.size() != numMazeWalls)
 		{
 			bounds = getBounds(telekineticWalls.toArray(new WallObject[0]));
-			maze = Maze.fromWalls(telekineticWalls.size());
+			numMazeWalls = telekineticWalls.size();
 			client.clearHintArrow();
 		}
 		else if (guardian != null)
@@ -193,7 +191,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getId() == NpcID.MAZE_GUARDIAN)
+		if (npc.getId() == NpcID.MAGICTRAINING_GUARD_MAZE_INCOMPLETE || npc.getId() == MAZE_GUARDIAN_MOVING)
 		{
 			guardian = npc;
 		}
@@ -213,13 +211,13 @@ public class TelekineticRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		return client.getWidget(WidgetID.MTA_TELEKINETIC_GROUP_ID, 0) != null;
+		return client.getWidget(InterfaceID.MAGICTRAINING_TELE, 0) != null;
 	}
 
 	@Override
 	public void under(Graphics2D graphics2D)
 	{
-		if (inside() && maze != null && guardian != null)
+		if (inside() && numMazeWalls > 0 && guardian != null)
 		{
 			if (destination != null)
 			{
@@ -228,7 +226,11 @@ public class TelekineticRoom extends MTARoom
 			}
 			if (!moves.isEmpty())
 			{
-				if (moves.peek() == getPosition())
+				if (guardian.getId() == MAZE_GUARDIAN_MOVING)
+				{
+					graphics2D.setColor(Color.YELLOW);
+				}
+				else if (moves.peek() == getPosition())
 				{
 					graphics2D.setColor(Color.GREEN);
 				}
@@ -243,7 +245,7 @@ public class TelekineticRoom extends MTARoom
 					graphics2D.drawPolygon(tile);
 				}
 
-				WorldPoint optimal = optimal();
+				WorldPoint optimal = optimal(0);
 
 				if (optimal != null)
 				{
@@ -251,26 +253,34 @@ public class TelekineticRoom extends MTARoom
 					renderWorldPoint(graphics2D, optimal);
 				}
 			}
+			// show next move.
+			if (moves.size() >= 2)
+			{
+				WorldPoint optimal = optimal(1);
+
+				if (optimal != null)
+				{
+					graphics2D.setColor(Color.CYAN);
+					renderWorldPoint(graphics2D, optimal);
+				}
+			}
 		}
 	}
 
-	private WorldPoint optimal()
+	private WorldPoint optimal(int index)
 	{
 		WorldPoint current = client.getLocalPlayer().getWorldLocation();
 
-		Direction next = moves.pop();
+		Direction next = moves.get(moves.size() - 1 - index);
 		WorldArea areaNext = getIndicatorLine(next);
 		WorldPoint nearestNext = nearest(areaNext, current);
 
-		if (moves.isEmpty())
+		if (moves.size() <= 1 + index)
 		{
-			moves.push(next);
-
 			return nearestNext;
 		}
 
-		Direction after = moves.peek();
-		moves.push(next);
+		Direction after = moves.get(moves.size() - 2 - index);
 		WorldArea areaAfter = getIndicatorLine(after);
 		WorldPoint nearestAfter = nearest(areaAfter, nearestNext);
 
@@ -425,7 +435,7 @@ public class TelekineticRoom extends MTARoom
 	private LocalPoint neighbour(LocalPoint point, Direction direction)
 	{
 		WorldPoint worldPoint = WorldPoint.fromLocal(client, point);
-		WorldArea area = new WorldArea(worldPoint, 1, 1);
+		WorldArea area = worldPoint.toWorldArea();
 
 		int dx, dy;
 
@@ -451,12 +461,12 @@ public class TelekineticRoom extends MTARoom
 				throw new IllegalStateException();
 		}
 
-		while (area.canTravelInDirection(client, dx, dy))
+		while (area.canTravelInDirection(client.getTopLevelWorldView(), dx, dy))
 		{
 			worldPoint = area.toWorldPoint()
 				.dx(dx)
 				.dy(dy);
-			area = new WorldArea(worldPoint, 1, 1);
+			area = worldPoint.toWorldArea();
 		}
 
 		return LocalPoint.fromWorld(client, worldPoint);

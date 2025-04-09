@@ -34,8 +34,8 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -49,13 +49,13 @@ class MouseHighlightOverlay extends Overlay
 	 */
 	private static final Set<MenuAction> WIDGET_MENU_ACTIONS = ImmutableSet.of(
 		MenuAction.WIDGET_TYPE_1,
-		MenuAction.WIDGET_TYPE_2,
-		MenuAction.WIDGET_TYPE_3,
+		MenuAction.WIDGET_TARGET,
+		MenuAction.WIDGET_CLOSE,
 		MenuAction.WIDGET_TYPE_4,
 		MenuAction.WIDGET_TYPE_5,
-		MenuAction.WIDGET_TYPE_6,
-		MenuAction.ITEM_USE_ON_WIDGET_ITEM,
-		MenuAction.ITEM_USE_ON_WIDGET,
+		MenuAction.WIDGET_CONTINUE,
+		MenuAction.ITEM_USE_ON_ITEM,
+		MenuAction.WIDGET_USE_ON_ITEM,
 		MenuAction.ITEM_FIRST_OPTION,
 		MenuAction.ITEM_SECOND_OPTION,
 		MenuAction.ITEM_THIRD_OPTION,
@@ -68,7 +68,7 @@ class MouseHighlightOverlay extends Overlay
 		MenuAction.WIDGET_FOURTH_OPTION,
 		MenuAction.WIDGET_FIFTH_OPTION,
 		MenuAction.EXAMINE_ITEM,
-		MenuAction.SPELL_CAST_ON_WIDGET,
+		MenuAction.WIDGET_TARGET_ON_WIDGET,
 		MenuAction.CC_OP_LOW_PRIORITY,
 		MenuAction.CC_OP
 	);
@@ -83,7 +83,7 @@ class MouseHighlightOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		// additionally allow tooltips above the full screen world map and welcome screen
-		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
+		drawAfterInterface(InterfaceID.TOPLEVEL_DISPLAY);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.config = config;
@@ -108,7 +108,7 @@ class MouseHighlightOverlay extends Overlay
 		MenuEntry menuEntry = menuEntries[last];
 		String target = menuEntry.getTarget();
 		String option = menuEntry.getOption();
-		MenuAction type = MenuAction.of(menuEntry.getType());
+		MenuAction type = menuEntry.getType();
 
 		if (type == MenuAction.RUNELITE_OVERLAY || type == MenuAction.CC_OP_LOW_PRIORITY)
 		{
@@ -139,33 +139,33 @@ class MouseHighlightOverlay extends Overlay
 		if (WIDGET_MENU_ACTIONS.contains(type))
 		{
 			final int widgetId = menuEntry.getParam1();
-			final int groupId = WidgetInfo.TO_GROUP(widgetId);
+			final int groupId = WidgetUtil.componentToInterface(widgetId);
 
 			if (!config.uiTooltip())
 			{
 				return null;
 			}
 
-			if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+			if (!config.chatboxTooltip() && groupId == InterfaceID.CHATBOX)
 			{
 				return null;
 			}
 
-			if (config.disableSpellbooktooltip() && groupId == WidgetID.SPELLBOOK_GROUP_ID)
+			if (config.disableSpellbooktooltip() && groupId == InterfaceID.MAGIC_SPELLBOOK)
 			{
 				return null;
 			}
 		}
 
 		// If this varc is set, a tooltip will be displayed soon
-		int tooltipTimeout = client.getVar(VarClientInt.TOOLTIP_TIMEOUT);
+		int tooltipTimeout = client.getVarcIntValue(VarClientInt.TOOLTIP_TIMEOUT);
 		if (tooltipTimeout > client.getGameCycle())
 		{
 			return null;
 		}
 
 		// If this varc is set, a tooltip is already being displayed
-		int tooltipDisplayed = client.getVar(VarClientInt.TOOLTIP_VISIBLE);
+		int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
 		if (tooltipDisplayed == 1)
 		{
 			return null;

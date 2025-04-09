@@ -32,7 +32,7 @@ import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Collection;
+import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -56,20 +56,19 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -77,7 +76,7 @@ import net.runelite.client.util.ColorUtil;
 @Singleton
 class WidgetInspector extends DevToolsFrame
 {
-	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
+	private static final Map<Integer, String> widgetNames = new HashMap<>();
 
 	static final Color SELECTED_WIDGET_COLOR = Color.CYAN;
 	private static final float SELECTED_WIDGET_HUE;
@@ -104,9 +103,6 @@ class WidgetInspector extends DevToolsFrame
 
 	@Getter
 	private Widget selectedWidget;
-
-	@Getter
-	private int selectedItem;
 
 	private Widget picker = null;
 
@@ -146,12 +142,7 @@ class WidgetInspector extends DevToolsFrame
 			{
 				WidgetTreeNode node = (WidgetTreeNode) selected;
 				Widget widget = node.getWidget();
-				setSelectedWidget(widget, -1, false);
-			}
-			else if (selected instanceof WidgetItemNode)
-			{
-				WidgetItemNode node = (WidgetItemNode) selected;
-				setSelectedWidget(node.getWidgetItem().getWidget(), node.getWidgetItem().getIndex(), false);
+				setSelectedWidget(widget, false);
 			}
 		});
 
@@ -216,10 +207,8 @@ class WidgetInspector extends DevToolsFrame
 			root = new DefaultMutableTreeNode();
 
 			Widget wasSelectedWidget = selectedWidget;
-			int wasSelectedItem = selectedItem;
 
 			selectedWidget = null;
-			selectedItem = -1;
 
 			for (Widget widget : rootWidgets)
 			{
@@ -233,7 +222,7 @@ class WidgetInspector extends DevToolsFrame
 			SwingUtilities.invokeLater(() ->
 			{
 				widgetTree.setModel(new DefaultTreeModel(root));
-				setSelectedWidget(wasSelectedWidget, wasSelectedItem, true);
+				setSelectedWidget(wasSelectedWidget, true);
 			});
 		});
 	}
@@ -286,34 +275,19 @@ class WidgetInspector extends DevToolsFrame
 			}
 		}
 
-		Collection<WidgetItem> items = widget.getWidgetItems();
-		if (items != null)
-		{
-			for (WidgetItem item : items)
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				node.add(new WidgetItemNode(item));
-			}
-		}
-
 		return node;
 	}
 
-	private void setSelectedWidget(Widget widget, int item, boolean updateTree)
+	private void setSelectedWidget(Widget widget, boolean updateTree)
 	{
 		infoTableModel.setWidget(widget);
 
-		if (this.selectedWidget == widget && this.selectedItem == item)
+		if (this.selectedWidget == widget)
 		{
 			return;
 		}
 
 		this.selectedWidget = widget;
-		this.selectedItem = item;
 
 		if (root == null || !updateTree)
 		{
@@ -343,22 +317,6 @@ class WidgetInspector extends DevToolsFrame
 					}
 				}
 			}
-			if (selectedItem != -1)
-			{
-				for (Enumeration<?> it = node.children(); it.hasMoreElements(); )
-				{
-					Object wiw = it.nextElement();
-					if (wiw instanceof WidgetItemNode)
-					{
-						WidgetItemNode inner = (WidgetItemNode) wiw;
-						if (inner.getWidgetItem().getIndex() == selectedItem)
-						{
-							node = inner;
-							break;
-						}
-					}
-				}
-			}
 
 			final DefaultMutableTreeNode fnode = node;
 			SwingUtilities.invokeLater(() ->
@@ -369,20 +327,26 @@ class WidgetInspector extends DevToolsFrame
 		});
 	}
 
-	static WidgetInfo getWidgetInfo(int packedId)
+	static String getWidgetName(int componentId)
 	{
-		if (widgetIdMap.isEmpty())
+		if (widgetNames.isEmpty())
 		{
-			//Initialize map here so it doesn't create the index
+			//Initialize map here, so it doesn't create the index
 			//until it's actually needed.
-			WidgetInfo[] widgets = WidgetInfo.values();
-			for (WidgetInfo w : widgets)
+			try
 			{
-				widgetIdMap.put(w.getPackedId(), w);
+				for (Field f : ComponentID.class.getDeclaredFields())
+				{
+					widgetNames.put(f.getInt(null), f.getName());
+				}
+			}
+			catch (IllegalAccessException ex)
+			{
+				log.error("error setting up widget names", ex);
 			}
 		}
 
-		return widgetIdMap.get(packedId);
+		return widgetNames.get(componentId);
 	}
 
 	@Override
@@ -398,7 +362,7 @@ class WidgetInspector extends DevToolsFrame
 	{
 		overlayManager.remove(this.overlay.get());
 		clientThread.invokeLater(this::removePickerWidget);
-		setSelectedWidget(null, -1, false);
+		setSelectedWidget(null, false);
 		super.close();
 	}
 
@@ -429,16 +393,16 @@ class WidgetInspector extends DevToolsFrame
 		removePickerWidget();
 
 		int x = 10, y = 2;
-		Widget parent = client.getWidget(WidgetInfo.MINIMAP_ORBS);
+		Widget parent = client.getWidget(InterfaceID.Orbs.UNIVERSE);
 		if (parent == null)
 		{
 			Widget[] roots = client.getWidgetRoots();
 
 			parent = Stream.of(roots)
 				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
-				.sorted(Comparator.comparing((Widget w) -> w.getRelativeX() + w.getRelativeY())
+				.sorted(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
 					.reversed()
-					.thenComparing(Widget::getId)
+					.thenComparingInt(Widget::getId)
 					.reversed())
 				.findFirst().get();
 			x = 4;
@@ -447,7 +411,7 @@ class WidgetInspector extends DevToolsFrame
 
 		picker = parent.createChild(-1, WidgetType.GRAPHIC);
 
-		log.info("Picker is {}.{} [{}]", WidgetInfo.TO_GROUP(picker.getId()), WidgetInfo.TO_CHILD(picker.getId()), picker.getIndex());
+		log.info("Picker is {}.{} [{}]", WidgetUtil.componentToInterface(picker.getId()), WidgetUtil.componentToId(picker.getId()), picker.getIndex());
 
 		picker.setSpriteId(SpriteID.MOBILE_FINGER_ON_INTERFACE);
 		picker.setOriginalWidth(15);
@@ -457,7 +421,7 @@ class WidgetInspector extends DevToolsFrame
 		picker.revalidate();
 		picker.setTargetVerb("Select");
 		picker.setName("Pick");
-		picker.setClickMask(WidgetConfig.USE_WIDGET | WidgetConfig.USE_ITEM);
+		picker.setClickMask(WidgetConfig.USE_WIDGET);
 		picker.setNoClickThrough(true);
 		picker.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
@@ -484,23 +448,16 @@ class WidgetInspector extends DevToolsFrame
 		}
 
 		onPickerDeselect();
-		client.setSpellSelected(false);
+		client.setWidgetSelected(false);
 		ev.consume();
 
-		Object target = getWidgetOrWidgetItemForMenuOption(ev.getMenuAction().getId(), ev.getParam0(), ev.getParam1());
+		Widget target = getWidgetForMenuOption(ev.getMenuAction(), ev.getParam0(), ev.getParam1());
 		if (target == null)
 		{
 			return;
 		}
-		if (target instanceof WidgetItem)
-		{
-			WidgetItem iw = (WidgetItem) target;
-			setSelectedWidget(iw.getWidget(), iw.getIndex(), true);
-		}
-		else
-		{
-			setSelectedWidget((Widget) target, -1, true);
-		}
+
+		setSelectedWidget(target, true);
 	}
 
 	@Subscribe
@@ -516,12 +473,11 @@ class WidgetInspector extends DevToolsFrame
 		for (int i = 0; i < menuEntries.length; i++)
 		{
 			MenuEntry entry = menuEntries[i];
-			if (entry.getType() != MenuAction.ITEM_USE_ON_WIDGET.getId()
-				&& entry.getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId())
+			if (entry.getType() != MenuAction.WIDGET_TARGET_ON_WIDGET)
 			{
 				continue;
 			}
-			String name = WidgetInfo.TO_GROUP(entry.getParam1()) + "." + WidgetInfo.TO_CHILD(entry.getParam1());
+			String name = WidgetUtil.componentToInterface(entry.getParam1()) + "." + WidgetUtil.componentToId(entry.getParam1());
 
 			if (entry.getParam0() != -1)
 			{
@@ -532,8 +488,6 @@ class WidgetInspector extends DevToolsFrame
 
 			entry.setTarget(ColorUtil.wrapWithColorTag(name, color));
 		}
-
-		client.setMenuEntries(menuEntries);
 	}
 
 	Color colorForWidget(int index, int length)
@@ -543,9 +497,9 @@ class WidgetInspector extends DevToolsFrame
 		return Color.getHSBColor(h, 1, 1);
 	}
 
-	Object getWidgetOrWidgetItemForMenuOption(int type, int param0, int param1)
+	Widget getWidgetForMenuOption(MenuAction type, int param0, int param1)
 	{
-		if (type == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+		if (type == MenuAction.WIDGET_TARGET_ON_WIDGET)
 		{
 			Widget w = client.getWidget(param1);
 			if (param0 != -1)
@@ -555,11 +509,6 @@ class WidgetInspector extends DevToolsFrame
 
 			return w;
 		}
-		else if (type == MenuAction.ITEM_USE_ON_WIDGET.getId())
-		{
-			Widget w = client.getWidget(param1);
-			return w.getWidgetItem(param0);
-		}
 
 		return null;
 	}
@@ -567,17 +516,17 @@ class WidgetInspector extends DevToolsFrame
 	public static String getWidgetIdentifier(Widget widget)
 	{
 		int id = widget.getId();
-		String str = TO_GROUP(id) + "." + TO_CHILD(id);
+		String str = WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
 
 		if (widget.getIndex() != -1)
 		{
 			str += "[" + widget.getIndex() + "]";
 		}
 
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
+		var name = getWidgetName(id);
+		if (name != null)
 		{
-			str += " " + info.name();
+			str += " " + name;
 		}
 
 		return str;

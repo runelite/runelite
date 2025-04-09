@@ -29,54 +29,57 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.gameval.InterfaceID;
 
 @Getter
 enum ChatboxTab
 {
 
-	ALL("All", "Switch tab", WidgetInfo.CHATBOX_TAB_ALL,
+	ALL("Switch tab", InterfaceID.Chatbox.CHAT_ALL,
 		ChatMessageType.values()),
 
 	// null 'after' var since we're not adding to menu
-	PRIVATE("Private", null, WidgetInfo.CHATBOX_TAB_PRIVATE,
+	PRIVATE(null, InterfaceID.Chatbox.CHAT_PRIVATE,
 		ChatMessageType.PRIVATECHAT, ChatMessageType.PRIVATECHATOUT, ChatMessageType.MODPRIVATECHAT,
 		ChatMessageType.LOGINLOGOUTNOTIFICATION),
 
 	// null 'after' var since we're not adding to menu
-	PUBLIC("Public", null, WidgetInfo.CHATBOX_TAB_PUBLIC,
+	PUBLIC(null, InterfaceID.Chatbox.CHAT_PUBLIC,
 		ChatMessageType.PUBLICCHAT, ChatMessageType.AUTOTYPER, ChatMessageType.MODCHAT, ChatMessageType.MODAUTOTYPER),
 
-	GAME("Game", "Game: Filter", WidgetInfo.CHATBOX_TAB_GAME,
+	GAME("Filter", InterfaceID.Chatbox.CHAT_GAME,
 		ChatMessageType.GAMEMESSAGE, ChatMessageType.ENGINE, ChatMessageType.BROADCAST,
 		ChatMessageType.SNAPSHOTFEEDBACK, ChatMessageType.ITEM_EXAMINE, ChatMessageType.NPC_EXAMINE,
 		ChatMessageType.OBJECT_EXAMINE, ChatMessageType.FRIENDNOTIFICATION, ChatMessageType.IGNORENOTIFICATION,
 		ChatMessageType.CONSOLE, ChatMessageType.SPAM, ChatMessageType.PLAYERRELATED, ChatMessageType.TENSECTIMEOUT,
 		ChatMessageType.WELCOME, ChatMessageType.UNKNOWN),
 
-	CHANNEL("Channel", null, WidgetInfo.CHATBOX_TAB_CHANNEL,
+	CHANNEL(null, InterfaceID.Chatbox.CHAT_FRIENDSCHAT,
 		ChatMessageType.FRIENDSCHATNOTIFICATION, ChatMessageType.FRIENDSCHAT, ChatMessageType.CHALREQ_FRIENDSCHAT),
 
-	CLAN("Clan", null, WidgetInfo.CHATBOX_TAB_CLAN,
-		ChatMessageType.CLAN_CHAT, ChatMessageType.CLAN_MESSAGE, ChatMessageType.CLAN_GUEST_CHAT, ChatMessageType.CLAN_GUEST_MESSAGE),
+	CLAN(null, InterfaceID.Chatbox.CHAT_CLAN,
+		ChatMessageType.CLAN_CHAT, ChatMessageType.CLAN_MESSAGE,
+		ChatMessageType.CLAN_GUEST_CHAT, ChatMessageType.CLAN_GUEST_MESSAGE),
 
-	TRADE("Trade", "Trade: Show none", WidgetInfo.CHATBOX_TAB_TRADE,
-		ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE),
+	// Group has its own Clear option, but Trade does not
+	TRADE_GROUP("Trade:</col> Show none", InterfaceID.Chatbox.CHAT_TRADE,
+		ChatMessageType.TRADE_SENT, ChatMessageType.TRADEREQ, ChatMessageType.TRADE, ChatMessageType.CHALREQ_TRADE,
+		ChatMessageType.CLAN_GIM_CHAT, ChatMessageType.CLAN_GIM_MESSAGE),
 	;
 
 	private static final Map<Integer, ChatboxTab> TAB_MESSAGE_TYPES;
 
-	private final String name;
 	@Nullable
 	private final String after;
+	@Component
 	private final int widgetId;
 	private final ChatMessageType[] messageTypes;
 
-	ChatboxTab(String name, String after, WidgetInfo widgetId, ChatMessageType... messageTypes)
+	ChatboxTab(String after, @Component int widgetId, ChatMessageType... messageTypes)
 	{
-		this.name = name;
 		this.after = after;
-		this.widgetId = widgetId.getId();
+		this.widgetId = widgetId;
 		this.messageTypes = messageTypes;
 	}
 

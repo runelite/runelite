@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Guice;
@@ -33,24 +35,28 @@ import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.google.inject.util.Modules;
-import java.applet.Applet;
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
+import net.runelite.client.RuntimeConfig;
+import net.runelite.client.RuntimeConfigLoader;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,6 +64,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -70,13 +77,12 @@ public class PluginManagerTest
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-	@Mock
 	@Bind
-	public Applet applet;
+	public Client client = (Client) mock(Component.class, Mockito.withSettings().extraInterfaces(Client.class));
 
 	@Mock
 	@Bind
-	public Client client;
+	private ConfigManager configManager;
 
 	private Set<Class<?>> pluginClasses;
 	private Set<Class<?>> configClasses;
@@ -88,10 +94,21 @@ public class PluginManagerTest
 		when(okHttpClient.newCall(any(Request.class)))
 			.thenThrow(new RuntimeException("in plugin manager test"));
 
+		when(configManager.getConfig(any(Class.class)))
+			.thenAnswer(a ->
+			{
+				Class<?> c = a.getArgument(0);
+				return mock(c);
+			});
+
+		RuntimeConfigLoader configLoader = mock(RuntimeConfigLoader.class);
+		when(configLoader.get()).thenReturn(mock(RuntimeConfig.class));
+
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, configLoader, true, false, false,
 				RuneLite.DEFAULT_SESSION_FILE,
-				RuneLite.DEFAULT_CONFIG_FILE))
+				null, false, false
+			))
 			.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
@@ -120,26 +137,15 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null);
-		pluginManager.setOutdated(true);
+		var pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		Collection<Plugin> plugins = pluginManager.getPlugins();
-		long expected = pluginClasses.stream()
-			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(PluginDescriptor::loadWhenOutdated)
-			.count();
-		assertEquals(expected, plugins.size());
-
-		pluginManager = new PluginManager(false, false, null, null, null, null);
-		pluginManager.loadCorePlugins();
-		plugins = pluginManager.getPlugins();
+		var plugins = pluginManager.getPlugins();
 
 		// Check that the plugins register with the eventbus without errors
 		EventBus eventBus = new EventBus();
 		plugins.forEach(eventBus::register);
 
-		expected = pluginClasses.stream()
+		var expected = pluginClasses.stream()
 			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(pd -> !pd.developerPlugin())
@@ -208,4 +214,23 @@ public class PluginManagerTest
 		}
 	}
 
+	@Test
+	public void testTopologicalSort()
+	{
+		MutableGraph<Integer> graph = GraphBuilder
+			.directed()
+			.build();
+
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+
+		graph.putEdge(1, 2);
+		graph.putEdge(1, 3);
+
+		List<Integer> sorted = PluginManager.topologicalSort(graph);
+
+		assertTrue(sorted.indexOf(1) < sorted.indexOf(2));
+		assertTrue(sorted.indexOf(1) < sorted.indexOf(3));
+	}
 }

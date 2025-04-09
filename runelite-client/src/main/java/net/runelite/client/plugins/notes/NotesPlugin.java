@@ -27,9 +27,9 @@ package net.runelite.client.plugins.notes;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -39,8 +39,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Notes",
 	description = "Enable the Notes panel",
-	tags = {"panel"},
-	loadWhenOutdated = true
+	tags = {"panel"}
 )
 public class NotesPlugin extends Plugin
 {
@@ -84,7 +83,7 @@ public class NotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		// update notes
 		String data = config.notesData();

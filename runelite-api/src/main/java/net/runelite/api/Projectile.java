@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+import net.runelite.api.coords.LocalPoint;
+
 /**
  * Represents a projectile entity. (ie. cannonball, arrow)
  */
@@ -33,9 +36,24 @@ public interface Projectile extends Renderable
 	 * Gets the ID of the projectile.
 	 *
 	 * @return the projectile ID
-	 * @see ProjectileID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 */
 	int getId();
+
+	/**
+	 * Gets the actor that is targeted by this projectile.
+	 *
+	 * @return the target actor, or null if this projectile is an AoE attack
+	 */
+	Actor getInteracting();
+
+	/**
+	 * Get the target point of the projectile. For projectiles with an actor target,
+	 * this is updated each frame to the actor position.
+	 *
+	 * @return
+	 */
+	LocalPoint getTarget();
 
 	/**
 	 * Gets the original x-axis coordinate that this projectile started from.
@@ -77,7 +95,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return the start game cycle
 	 */
-	int getStartMovementCycle();
+	int getStartCycle();
 
 	/**
 	 * Gets the game cycle that the projectile will reach its target at.
@@ -85,6 +103,15 @@ public interface Projectile extends Renderable
 	 * @return the end game cycle
 	 */
 	int getEndCycle();
+
+	/**
+	 * Sets the game cycle the projectile will reach its target at. The
+	 * projectile automatically despawns after this time, and setting the
+	 * end cycle to a time in the past is an effective way of removing the
+	 * projectile.
+	 * @param cycle
+	 */
+	void setEndCycle(int cycle);
 
 	/**
 	 * Gets the remaining game cycles until the projectile reaches its
@@ -159,4 +186,17 @@ public interface Projectile extends Renderable
 	 * @return the z-axis velocity
 	 */
 	double getVelocityZ();
+
+	/**
+	 * The animation of the projectile
+	 * @return
+	 */
+	@Nullable
+	Animation getAnimation();
+
+	/**
+	 * The frame of the current animation
+	 * @return
+	 */
+	int getAnimationFrame();
 }

@@ -31,33 +31,32 @@ import net.runelite.api.coords.WorldPoint;
 
 enum Courses
 {
-	GNOME(86.5, 46, 9781),
-	SHAYZIEN_BASIC(133.2, 92, 6200),
-	DRAYNOR(120.0, 79, 12338),
-	AL_KHARID(180.0, 0, 13105, new WorldPoint(3299, 3194, 0)),
-	PYRAMID(722.0, 0, 13356, new WorldPoint(3364, 2830, 0)),
-	VARROCK(238.0, 125, 12853),
-	PENGUIN(540.0, 65, 10559),
-	BARBARIAN(139.5, 60, 10039),
-	CANIFIS(240.0, 175, 13878),
-	APE_ATOLL(580.0, 300, 11050),
-	SHAYZIEN_ADVANCED(474.3, 382, 5944),
-	FALADOR(440, 180, 12084),
-	WILDERNESS(571.0, 499, 11837),
-	WEREWOLF(730.0, 380, 14234),
-	SEERS(570.0, 435, 10806),
-	POLLNIVNEACH(890.0, 540, 13358),
-	RELLEKA(780.0, 475, 10553),
-	PRIFDDINAS(1337.0, 1037, 12895),
-	ARDOUGNE(793.0, 529, 10547);
+	GNOME(110.5, 9781, new WorldPoint(2484, 3437, 0), new WorldPoint(2487, 3437, 0)),
+	SHAYZIEN_BASIC(153.5, 6200, new WorldPoint(1554, 3640, 0)),
+	DRAYNOR(120.0, 12338, new WorldPoint(3103, 3261, 0)),
+	AL_KHARID(216.0, 13105, new WorldPoint(3299, 3194, 0)),
+	PYRAMID(722.0, 13356, new WorldPoint(3364, 2830, 0)),
+	VARROCK(270.0, 12853, new WorldPoint(3236, 3417, 0)),
+	PENGUIN(540.0, 10559, new WorldPoint(2652, 4039, 1)),
+	BARBARIAN(153.2, 10039, new WorldPoint(2543, 3553, 0)),
+	CANIFIS(240.0, 13878, new WorldPoint(3510, 3485, 0)),
+	APE_ATOLL(580.0, 11050, new WorldPoint(2770, 2747, 0)),
+	SHAYZIEN_ADVANCED(507.5, 5944, new WorldPoint(1522, 3625, 0)),
+	FALADOR(586, 12084, new WorldPoint(3029, 3332, 0), new WorldPoint(3029, 3333, 0), new WorldPoint(3029, 3334, 0), new WorldPoint(3029, 3335, 0)),
+	COLOSSAL_WYRM_BASIC(504),
+	WILDERNESS(571.4, 11837, new WorldPoint(2993, 3933, 0), new WorldPoint(2994, 3933, 0), new WorldPoint(2995, 3933, 0)),
+	WEREWOLF(730.0, 14234, new WorldPoint(3528, 9873, 0)),
+	SEERS(570.0, 10806, new WorldPoint(2704, 3464, 0)),
+	COLOSSAL_WYRM_ADVANCED(685),
+	POLLNIVNEACH(1016.0, 13358, new WorldPoint(3363, 2998, 0)),
+	RELLEKA(920.0, 10553, new WorldPoint(2653, 3676, 0)),
+	PRIFDDINAS(1337.0, 12895, new WorldPoint(3240, 6109, 0)),
+	ARDOUGNE(889.0, 10547, new WorldPoint(2668, 3297, 0));
 
 	private final static Map<Integer, Courses> coursesByRegion;
 
 	@Getter
 	private final double totalXp;
-
-	@Getter
-	private final int lastObstacleXp;
 
 	@Getter
 	private final int regionId;
@@ -71,16 +70,24 @@ enum Courses
 
 		for (Courses course : values())
 		{
+			if (course.regionId == -1)
+			{
+				continue;
+			}
 			builder.put(course.regionId, course);
 		}
 
 		coursesByRegion = builder.build();
 	}
 
-	Courses(double totalXp, int lastObstacleXp, int regionId, WorldPoint... courseEndWorldPoints)
+	Courses(double totalXp)
+	{
+		this(totalXp, -1, null);
+	}
+
+	Courses(double totalXp, int regionId, WorldPoint... courseEndWorldPoints)
 	{
 		this.totalXp = totalXp;
-		this.lastObstacleXp = lastObstacleXp;
 		this.regionId = regionId;
 		this.courseEndWorldPoints = courseEndWorldPoints;
 	}

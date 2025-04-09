@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.kit.KitType;
 
@@ -32,12 +33,24 @@ import net.runelite.api.kit.KitType;
  */
 public interface PlayerComposition
 {
+	int KIT_OFFSET = 256;
+	int ITEM_OFFSET = 2048;
+
 	/**
 	 * Checks if the player is female.
 	 *
 	 * @return true if the player is female
+	 * @deprecated use getGender
 	 */
+	@Deprecated
 	boolean isFemale();
+
+	/**
+	 * Get the player gender
+	 *
+	 * @return 0 for male, 1 for female
+	 */
+	int getGender();
 
 	/**
 	 * Get the body part colors for this player composition.
@@ -49,9 +62,8 @@ public interface PlayerComposition
 	/**
 	 * Gets an array of IDs related to equipment slots.
 	 * <p>
-	 * If the ID for a specific slot is between 256 and 512, subtracting
-	 * 256 will result in the kit ID. Values above 512 indicate an item
-	 * and can be converted to the item ID by subtracting 512.
+	 * IDs between {@link #KIT_OFFSET} and {@link #ITEM_OFFSET} are kits, offset by {@link #KIT_OFFSET}.
+	 * IDs greater than or equal to {@link #ITEM_OFFSET} are items, offset by {@link #ITEM_OFFSET}.
 	 *
 	 * @return the equipment IDs
 	 */
@@ -80,6 +92,29 @@ public interface PlayerComposition
 	@VisibleForDevtools
 	void setHash();
 
+	/**
+	 * Get the ID of the NPC that the player is currently transformed into.
+	 * Used natively for cutscenes.
+	 * @return the id of the npc that the player is rendering as
+	 * @see PlayerComposition#setTransformedNpcId(int)
+	 */
+	int getTransformedNpcId();
+
+	/**
+	 * Set the ID of the NPC that the player should transform into.
+	 * Used natively for cutscenes.
+	 * @see PlayerComposition#getTransformedNpcId()
+	 * @param id the id of the npc that the player should render as
+	 */
 	@VisibleForDevtools
 	void setTransformedNpcId(int id);
+
+	/**
+	 * Get the overrides for this player composition, indexed by kit id. The overrides
+	 * replace the target color/textures for the item instead of using the target colors/textures
+	 * from the item composition. Only works if the kittype is an item.
+	 * @return
+	 */
+	@Nullable
+	ColorTextureOverride[] getColorTextureOverrides();
 }

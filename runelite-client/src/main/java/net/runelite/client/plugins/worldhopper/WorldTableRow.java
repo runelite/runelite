@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.EnumSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.ImageIcon;
@@ -51,6 +52,8 @@ class WorldTableRow extends JPanel
 	private static final ImageIcon FLAG_AUS;
 	private static final ImageIcon FLAG_UK;
 	private static final ImageIcon FLAG_US;
+	private static final ImageIcon FLAG_US_EAST;
+	private static final ImageIcon FLAG_US_WEST;
 	private static final ImageIcon FLAG_GER;
 
 	private static final int WORLD_COLUMN_WIDTH = 60;
@@ -59,18 +62,33 @@ class WorldTableRow extends JPanel
 
 	private static final Color CURRENT_WORLD = new Color(66, 227, 17);
 	private static final Color DANGEROUS_WORLD = new Color(251, 62, 62);
-	private static final Color TOURNAMENT_WORLD = new Color(79, 145, 255);
+	private static final Color BETA_WORLD = new Color(79, 145, 255);
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
 	private static final Color SEASONAL_WORLD = new Color(133, 177, 178);
+	private static final Color PVP_ARENA_WORLD = new Color(144, 179, 255);
+	private static final Color QUEST_SPEEDRUNNING_WORLD = new Color(94, 213, 201);
+	private static final Color FRESH_START_WORLD = new Color(255, 211, 83);
 
 	static
 	{
 		FLAG_AUS = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_aus.png"));
 		FLAG_UK = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_uk.png"));
 		FLAG_US = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us.png"));
+		FLAG_US_EAST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_east.png"));
+		FLAG_US_WEST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_west.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
 	}
+
+	private static final int LOCATION_US_WEST = -73;
+	private static final int LOCATION_US_EAST = -42;
+
+	@Getter
+	private final World world;
+	private final BiConsumer<World, Boolean> onFavorite;
+	@Getter(AccessLevel.PACKAGE)
+	private int playerCount;
+	private final int worldLocation; // from enum WORLD_LOCATIONS
 
 	private final JMenuItem favoriteMenuOption = new JMenuItem();
 
@@ -78,23 +96,17 @@ class WorldTableRow extends JPanel
 	private JLabel playerCountField;
 	private JLabel activityField;
 	private JLabel pingField;
-	private final BiConsumer<World, Boolean> onFavorite;
-
-	@Getter
-	private final World world;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int updatedPlayerCount;
 
 	private int ping;
 
 	private Color lastBackground;
 
-	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
+	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite, int worldLocation)
 	{
 		this.world = world;
 		this.onFavorite = onFavorite;
-		this.updatedPlayerCount = world.getPlayers();
+		this.playerCount = world.getPlayers();
+		this.worldLocation = worldLocation;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -198,15 +210,12 @@ class WorldTableRow extends JPanel
 			favoriteMenuOption.removeActionListener(listener);
 		}
 
-		favoriteMenuOption.addActionListener(e ->
-		{
-			onFavorite.accept(world, !favorite);
-		});
+		favoriteMenuOption.addActionListener(e -> onFavorite.accept(world, !favorite));
 	}
 
 	void updatePlayerCount(int playerCount)
 	{
-		this.updatedPlayerCount = playerCount;
+		this.playerCount = playerCount;
 		playerCountField.setText(playerCountString(playerCount));
 	}
 
@@ -247,26 +256,42 @@ class WorldTableRow extends JPanel
 			worldField.setForeground(CURRENT_WORLD);
 			return;
 		}
-		else if (world.getTypes().contains(WorldType.PVP)
-			|| world.getTypes().contains(WorldType.HIGH_RISK)
-			|| world.getTypes().contains(WorldType.DEADMAN))
+
+
+		EnumSet<WorldType> types = world.getTypes();
+		if (types.contains(WorldType.PVP)
+			|| types.contains(WorldType.HIGH_RISK)
+			|| types.contains(WorldType.DEADMAN))
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.SEASONAL))
+		else if (types.contains(WorldType.SEASONAL))
 		{
 			activityField.setForeground(SEASONAL_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.NOSAVE_MODE))
+		else if (types.contains(WorldType.NOSAVE_MODE) || types.contains(WorldType.BETA_WORLD)
+			|| types.contains(WorldType.LEGACY_ONLY)) // sometimes used for arbitrarily restricted worlds
 		{
-			activityField.setForeground(TOURNAMENT_WORLD);
+			activityField.setForeground(BETA_WORLD);
+		}
+		else if (types.contains(WorldType.PVP_ARENA))
+		{
+			activityField.setForeground(PVP_ARENA_WORLD);
+		}
+		else if (types.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			activityField.setForeground(QUEST_SPEEDRUNNING_WORLD);
+		}
+		else if (types.contains(WorldType.FRESH_START_WORLD))
+		{
+			activityField.setForeground(FRESH_START_WORLD);
 		}
 		else
 		{
 			activityField.setForeground(Color.WHITE);
 		}
 
-		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
+		worldField.setForeground(types.contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
 	}
 
 	/**
@@ -367,7 +392,7 @@ class WorldTableRow extends JPanel
 
 		worldField = new JLabel(world.getId() + "");
 
-		ImageIcon flagIcon = getFlag(world.getRegion());
+		ImageIcon flagIcon = getFlag(world.getRegion(), worldLocation);
 		if (flagIcon != null)
 		{
 			JLabel flag = new JLabel(flagIcon);
@@ -378,7 +403,7 @@ class WorldTableRow extends JPanel
 		return column;
 	}
 
-	private static ImageIcon getFlag(WorldRegion region)
+	private static ImageIcon getFlag(WorldRegion region, int worldLocation)
 	{
 		if (region == null)
 		{
@@ -388,7 +413,15 @@ class WorldTableRow extends JPanel
 		switch (region)
 		{
 			case UNITED_STATES_OF_AMERICA:
-				return FLAG_US;
+				switch (worldLocation)
+				{
+					case LOCATION_US_WEST:
+						return FLAG_US_WEST;
+					case LOCATION_US_EAST:
+						return FLAG_US_EAST;
+					default:
+						return FLAG_US;
+				}
 			case UNITED_KINGDOM:
 				return FLAG_UK;
 			case AUSTRALIA:

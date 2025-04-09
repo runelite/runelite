@@ -25,14 +25,27 @@
 package net.runelite.cache.definitions.loaders;
 
 import java.util.HashMap;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class NpcLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
+	public static final int REV_210_NPC_ARCHIVE_REV = 1493;
+
+	private int defaultHeadIconArchive = -1;
+	private boolean rev210HeadIcons = true;
+
+	public NpcLoader configureForRevision(int rev)
+	{
+		this.rev210HeadIcons = rev >= NpcLoader.REV_210_NPC_ARCHIVE_REV;
+		return this;
+	}
 
 	public NpcDefinition load(int id, byte[] b)
 	{
@@ -85,18 +98,18 @@ public class NpcLoader
 		}
 		else if (opcode == 15)
 		{
-			def.rotateLeftAnimation = stream.readUnsignedShort();
+			def.idleRotateLeftAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 16)
 		{
-			def.rotateRightAnimation = stream.readUnsignedShort();
+			def.idleRotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 17)
 		{
 			def.walkingAnimation = stream.readUnsignedShort();
 			def.rotate180Animation = stream.readUnsignedShort();
-			def.rotate90RightAnimation = stream.readUnsignedShort();
-			def.rotate90LeftAnimation = stream.readUnsignedShort();
+			def.rotateLeftAnimation = stream.readUnsignedShort();
+			def.rotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 18)
 		{
@@ -145,7 +158,30 @@ public class NpcLoader
 			{
 				def.chatheadModels[index] = stream.readUnsignedShort();
 			}
-
+		}
+		else if (opcode == 74)
+		{
+			def.stats[0] = stream.readUnsignedShort();
+		}
+		else if (opcode == 75)
+		{
+			def.stats[1] = stream.readUnsignedShort();
+		}
+		else if (opcode == 76)
+		{
+			def.stats[2] = stream.readUnsignedShort();
+		}
+		else if (opcode == 77)
+		{
+			def.stats[3] = stream.readUnsignedShort();
+		}
+		else if (opcode == 78)
+		{
+			def.stats[4] = stream.readUnsignedShort();
+		}
+		else if (opcode == 79)
+		{
+			def.stats[5] = stream.readUnsignedShort();
 		}
 		else if (opcode == 93)
 		{
@@ -177,7 +213,37 @@ public class NpcLoader
 		}
 		else if (opcode == 102)
 		{
-			def.headIcon = stream.readUnsignedShort();
+			if (!rev210HeadIcons)
+			{
+				def.headIconArchiveIds = new int[]{defaultHeadIconArchive};
+				def.headIconSpriteIndex = new short[]{(short) stream.readUnsignedShort()};
+			}
+			else
+			{
+				int bitfield = stream.readUnsignedByte();
+				int len = 0;
+				for (int var5 = bitfield; var5 != 0; var5 >>= 1)
+				{
+					++len;
+				}
+
+				def.headIconArchiveIds = new int[len];
+				def.headIconSpriteIndex = new short[len];
+
+				for (int i = 0; i < len; i++)
+				{
+					if ((bitfield & 1 << i) == 0)
+					{
+						def.headIconArchiveIds[i] = -1;
+						def.headIconSpriteIndex[i] = -1;
+					}
+					else
+					{
+						def.headIconArchiveIds[i] = stream.readBigSmart2();
+						def.headIconSpriteIndex[i] = (short) stream.readUnsignedShortSmartMinusOne();
+					}
+				}
+			}
 		}
 		else if (opcode == 103)
 		{
@@ -222,7 +288,31 @@ public class NpcLoader
 		}
 		else if (opcode == 111)
 		{
-			def.isPet = true;
+			// removed in 220
+			def.isFollower = true;
+			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 114)
+		{
+			def.runAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 115)
+		{
+			def.runAnimation = stream.readUnsignedShort();
+			def.runRotate180Animation = stream.readUnsignedShort();
+			def.runRotateLeftAnimation = stream.readUnsignedShort();
+			def.runRotateRightAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 116)
+		{
+			def.crawlAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 117)
+		{
+			def.crawlAnimation = stream.readUnsignedShort();
+			def.crawlRotate180Animation = stream.readUnsignedShort();
+			def.crawlRotateLeftAnimation = stream.readUnsignedShort();
+			def.crawlRotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 118)
 		{
@@ -258,6 +348,18 @@ public class NpcLoader
 
 			def.configs[length + 1] = var;
 		}
+		else if (opcode == 122)
+		{
+			def.isFollower = true;
+		}
+		else if (opcode == 123)
+		{
+			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 124)
+		{
+			def.height = stream.readUnsignedShort();
+		}
 		else if (opcode == 249)
 		{
 			length = stream.readUnsignedByte();
@@ -285,7 +387,7 @@ public class NpcLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			log.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 }

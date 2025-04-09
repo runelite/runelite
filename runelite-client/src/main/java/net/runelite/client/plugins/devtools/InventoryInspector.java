@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JButton;
@@ -49,10 +48,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -76,6 +75,8 @@ class InventoryInspector extends DevToolsFrame
 	private final JTree tree = new JTree(trackerRootNode);
 	private final InventoryDeltaPanel deltaPanel;
 
+	private static final Map<Integer, String> INV_NAMES = DevToolsPlugin.loadFieldNames(InventoryID.class);
+
 	@Inject
 	InventoryInspector(Client client, EventBus eventBus, ItemManager itemManager, ClientThread clientThread)
 	{
@@ -87,7 +88,7 @@ class InventoryInspector extends DevToolsFrame
 
 		setLayout(new BorderLayout());
 		setTitle("RuneLite Inventory Inspector");
-		setIconImage(ClientUI.ICON);
+		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
 		tree.setBorder(new EmptyBorder(2, 2, 2, 2));
 		tree.setRootVisible(false);
@@ -179,7 +180,7 @@ class InventoryInspector extends DevToolsFrame
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final int id = event.getContainerId();
-		final InventoryLog log = new InventoryLog(id, getNameForInventoryID(id), event.getItemContainer().getItems(), client.getTickCount());
+		final InventoryLog log = new InventoryLog(id, INV_NAMES.getOrDefault(id, "" + id), event.getItemContainer().getItems(), client.getTickCount());
 
 		// Delay updates until refresh button is pressed
 		logMap.put(id, log);
@@ -261,7 +262,7 @@ class InventoryInspector extends DevToolsFrame
 		{
 			final Item item = items[i];
 			final ItemComposition c = itemManager.getItemComposition(item.getId());
-			out[i] = new InventoryItem(i, item, c.getName(), c.isStackable());
+			out[i] = new InventoryItem(i, item, c.getMembersName(), c.isStackable());
 		}
 
 		return out;
@@ -303,7 +304,7 @@ class InventoryInspector extends DevToolsFrame
 				final ItemComposition c = itemManager.getItemComposition(e.getKey());
 
 				InventoryItem[] items = {
-					new InventoryItem(-1, new Item(id, qty), c.getName(), c.isStackable())
+					new InventoryItem(-1, new Item(id, qty), c.getMembersName(), c.isStackable())
 				};
 				if (!c.isStackable() && (qty > 1 || qty < -1))
 				{
@@ -311,7 +312,7 @@ class InventoryInspector extends DevToolsFrame
 					for (int i = 0; i < Math.abs(qty); i++)
 					{
 						final Item item = new Item(id, Integer.signum(qty));
-						items[i] = new InventoryItem(-1, item, c.getName(), c.isStackable());
+						items[i] = new InventoryItem(-1, item, c.getMembersName(), c.isStackable());
 					}
 				}
 
@@ -328,19 +329,5 @@ class InventoryInspector extends DevToolsFrame
 		return new InventoryItem[][]{
 			added, removed
 		};
-	}
-
-	@Nullable
-	private static String getNameForInventoryID(final int id)
-	{
-		for (final InventoryID inv : InventoryID.values())
-		{
-			if (inv.getId() == id)
-			{
-				return inv.name();
-			}
-		}
-
-		return null;
 	}
 }

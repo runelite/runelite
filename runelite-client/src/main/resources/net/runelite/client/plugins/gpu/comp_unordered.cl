@@ -24,17 +24,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include cl_types.cl
+#include "cl_types.cl"
 
-__kernel
-__attribute__((reqd_work_group_size(6, 1, 1)))
-void computeUnordered(__global const struct modelinfo *ol,
-                      __global const int4 *vb,
-                      __global const int4 *tempvb,
-                      __global const float4 *uv,
-                      __global const float4 *tempuv,
-                      __global int4 *vout,
-                      __global float4 *uvout) {
+__kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__global const struct modelinfo *ol, __global const struct vert *vb,
+                                                                              __global const struct vert *tempvb, __global const float4 *texb,
+                                                                              __global const float4 *temptexb, __global struct vert *vout,
+                                                                              __global float4 *uvout) {
   size_t groupId = get_group_id(0);
   size_t localId = get_local_id(0);
   struct modelinfo minfo = ol[groupId];
@@ -42,16 +37,15 @@ void computeUnordered(__global const struct modelinfo *ol,
   int offset = minfo.offset;
   int size = minfo.size;
   int outOffset = minfo.idx;
-  int uvOffset = minfo.uvOffset;
+  int toffset = minfo.toffset;
   int flags = minfo.flags;
-  int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId >= size) {
     return;
   }
 
   uint ssboOffset = localId;
-  int4 thisA, thisB, thisC;
+  struct vert thisA, thisB, thisC;
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
@@ -65,23 +59,29 @@ void computeUnordered(__global const struct modelinfo *ol,
   }
 
   uint myOffset = localId;
+  float3 pos = convert_float3((int3)(minfo.x, minfo.y, minfo.z));
+  float4 texPos = (float4)(0, minfo.x, minfo.y, minfo.z);
+
+  float3 vertA = (float3)(thisA.x, thisA.y, thisA.z) + pos;
+  float3 vertB = (float3)(thisB.x, thisB.y, thisB.z) + pos;
+  float3 vertC = (float3)(thisC.x, thisC.y, thisC.z) + pos;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3]     = pos + thisA;
-  vout[outOffset + myOffset * 3 + 1] = pos + thisB;
-  vout[outOffset + myOffset * 3 + 2] = pos + thisC;
+  vout[outOffset + myOffset * 3] = (struct vert){vertA.x, vertA.y, vertA.z, thisA.ahsl};
+  vout[outOffset + myOffset * 3 + 1] = (struct vert){vertB.x, vertB.y, vertB.z, thisB.ahsl};
+  vout[outOffset + myOffset * 3 + 2] = (struct vert){vertC.x, vertC.y, vertC.z, thisC.ahsl};
 
-  if (uvOffset < 0) {
-    uvout[outOffset + myOffset * 3]     = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
+  if (toffset < 0) {
+    uvout[outOffset + myOffset * 3] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
     uvout[outOffset + myOffset * 3 + 1] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
     uvout[outOffset + myOffset * 3 + 2] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + temptexb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + texb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + texb[toffset + localId * 3 + 2];
   }
 }

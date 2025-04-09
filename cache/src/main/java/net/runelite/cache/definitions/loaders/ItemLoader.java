@@ -40,7 +40,7 @@ public class ItemLoader
 	{
 		ItemDefinition def = new ItemDefinition(id);
 		InputStream is = new InputStream(b);
-		
+
 		while (true)
 		{
 			int opcode = is.readUnsignedByte();
@@ -51,6 +51,8 @@ public class ItemLoader
 
 			this.decodeValues(opcode, def, is);
 		}
+
+		post(def);
 
 		return def;
 	}
@@ -64,6 +66,10 @@ public class ItemLoader
 		else if (opcode == 2)
 		{
 			def.name = stream.readString();
+		}
+		else if (opcode == 3)
+		{
+			def.examine = stream.readString();
 		}
 		else if (opcode == 4)
 		{
@@ -105,6 +111,14 @@ public class ItemLoader
 		{
 			def.cost = stream.readInt();
 		}
+		else if (opcode == 13)
+		{
+			def.wearPos1 = stream.readByte();
+		}
+		else if (opcode == 14)
+		{
+			def.wearPos2 = stream.readByte();
+		}
 		else if (opcode == 16)
 		{
 			def.members = true;
@@ -126,6 +140,10 @@ public class ItemLoader
 		else if (opcode == 26)
 		{
 			def.femaleModel1 = stream.readUnsignedShort();
+		}
+		else if (opcode == 27)
+		{
+			def.wearPos3 = stream.readByte();
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
@@ -169,9 +187,42 @@ public class ItemLoader
 		{
 			def.shiftClickDropIndex = stream.readByte();
 		}
+		else if (opcode == 43)
+		{
+			int opId = stream.readUnsignedByte();
+			if (def.subops == null)
+			{
+				def.subops = new String[5][];
+			}
+
+			boolean valid = opId >= 0 && opId < 5;
+			if (valid && def.subops[opId] == null)
+			{
+				def.subops[opId] = new String[20];
+			}
+
+			while (true)
+			{
+				int subopId = stream.readUnsignedByte() - 1;
+				if (subopId == -1)
+				{
+					break;
+				}
+
+				String op = stream.readString();
+				if (valid && subopId >= 0 && subopId < 20)
+				{
+					def.subops[opId][subopId] = op;
+				}
+			}
+		}
 		else if (opcode == 65)
 		{
 			def.isTradeable = true;
+		}
+		else if (opcode == 75)
+		{
+			def.weight = stream.readShort();
 		}
 		else if (opcode == 78)
 		{
@@ -292,6 +343,14 @@ public class ItemLoader
 		else
 		{
 			logger.warn("Unrecognized opcode {}", opcode);
+		}
+	}
+
+	private void post(ItemDefinition def)
+	{
+		if (def.stackable == 1)
+		{
+			def.weight = 0;
 		}
 	}
 }

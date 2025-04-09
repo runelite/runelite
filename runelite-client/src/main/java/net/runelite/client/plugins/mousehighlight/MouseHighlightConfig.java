@@ -34,8 +34,8 @@ public interface MouseHighlightConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "uiTooltip",
-		name = "Interface Tooltips",
-		description = "Whether or not tooltips are shown on interfaces"
+		name = "Interface tooltips",
+		description = "Whether or not tooltips are shown on interfaces."
 	)
 	default boolean uiTooltip()
 	{
@@ -45,8 +45,8 @@ public interface MouseHighlightConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "chatboxTooltip",
-		name = "Chatbox Tooltips",
-		description = "Whether or not tooltips are shown over the chatbox"
+		name = "Chatbox tooltips",
+		description = "Whether or not tooltips are shown over the chatbox."
 	)
 	default boolean chatboxTooltip()
 	{
@@ -56,8 +56,8 @@ public interface MouseHighlightConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "disableSpellbooktooltip",
-		name = "Disable Spellbook Tooltips",
-		description = "Disable Spellbook Tooltips so they don't cover descriptions"
+		name = "Disable spellbook tooltips",
+		description = "Disable spellbook tooltips so they don't cover descriptions."
 	)
 	default boolean disableSpellbooktooltip()
 	{

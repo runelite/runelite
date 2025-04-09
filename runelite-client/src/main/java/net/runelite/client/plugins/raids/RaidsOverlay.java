@@ -30,18 +30,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.raids.solver.Room;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -52,8 +50,7 @@ import net.runelite.http.api.worlds.WorldResult;
 class RaidsOverlay extends OverlayPanel
 {
 	private static final int OLM_PLANE = 0;
-	static final String BROADCAST_ACTION = "Broadcast layout";
-	static final String SCREENSHOT_ACTION = "Screenshot";
+	private static final String SCREENSHOT_ACTION = "Screenshot";
 
 	private final Client client;
 	private final RaidsPlugin plugin;
@@ -68,14 +65,13 @@ class RaidsOverlay extends OverlayPanel
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 		this.worldService = worldService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay");
+		addMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay", e -> plugin.screenshotScoutOverlay());
 	}
 
 	@Override
@@ -206,7 +202,7 @@ class RaidsOverlay extends OverlayPanel
 		if (plugin.isInRaidChambers())
 		{
 			// If the raid has started
-			if (client.getVar(Varbits.RAID_STATE) > 0)
+			if (client.getVarbitValue(VarbitID.RAIDS_CLIENT_PROGRESS) > 0)
 			{
 				if (client.getPlane() == OLM_PLANE)
 				{

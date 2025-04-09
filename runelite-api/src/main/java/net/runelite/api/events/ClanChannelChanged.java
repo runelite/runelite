@@ -27,6 +27,8 @@ package net.runelite.api.events;
 import javax.annotation.Nullable;
 import lombok.Value;
 import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanID;
+import org.intellij.lang.annotations.MagicConstant;
 
 /**
  * An event fired when the local player joins or leaves a clan channel.
@@ -39,6 +41,12 @@ public class ClanChannelChanged
 	 */
 	@Nullable
 	private final ClanChannel clanChannel;
+	/**
+	 * The clan id, or -1 for guest clan
+	 * @see net.runelite.api.clan.ClanID
+	 */
+	@MagicConstant(valuesFromClass = ClanID.class)
+	private int clanId;
 	/**
 	 * Whether or not this was the guest clan channel
 	 */

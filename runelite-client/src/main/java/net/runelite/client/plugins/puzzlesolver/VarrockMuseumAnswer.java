@@ -30,8 +30,8 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 
 @Getter
 @RequiredArgsConstructor
@@ -152,11 +152,11 @@ enum VarrockMuseumAnswer
 	private final String question;
 	private final String answer;
 
-	static Widget findCorrect(final Client client, final String question, final WidgetInfo... widgets)
+	static Widget findCorrect(final Client client, final String question, @Component final int... widgets)
 	{
 		final String s = MATCHES.get(question);
 
-		for (WidgetInfo widgetInfo : widgets)
+		for (int widgetInfo : widgets)
 		{
 			final Widget widget = client.getWidget(widgetInfo);
 

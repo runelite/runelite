@@ -24,8 +24,10 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+
 /**
- * Information about a specific {@link NpcID}
+ * Information about a specific {@link net.runelite.api.gameval.NpcID}
  */
 public interface NPCComposition extends ParamHolder
 {
@@ -46,8 +48,6 @@ public interface NPCComposition extends ParamHolder
 	 */
 	String[] getActions();
 
-	boolean isClickable();
-
 	/**
 	 * NPC can be interacting with via menu options
 	 * @return
@@ -64,7 +64,7 @@ public interface NPCComposition extends ParamHolder
 	/**
 	 * Gets the ID of the NPC.
 	 *
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 
@@ -74,8 +74,8 @@ public interface NPCComposition extends ParamHolder
 	int getCombatLevel();
 
 	/**
-	 * Get the {@link NpcID}s of NPCs this can transform into, depending
-	 * on a {@link Varbits} or {@link VarPlayer}
+	 * Get the {@link net.runelite.api.gameval.NpcID}s of NPCs this can transform into, depending
+	 * on a {@link net.runelite.api.gameval.VarbitID} or {@link net.runelite.api.gameval.VarPlayerID}
 	 */
 	int[] getConfigs();
 
@@ -93,7 +93,37 @@ public interface NPCComposition extends ParamHolder
 	int getSize();
 
 	/**
-	 * Gets the displayed overhead icon of the NPC.
+	 * If the npc is a follower, such as a pet. Is affected by the
+	 * "Move follower options lower down" setting.
+	 * @return
 	 */
-	HeadIcon getOverheadIcon();
+	boolean isFollower();
+
+	/**
+	 * Get the colors to be replaced on this npc's model for this npc.
+	 * @see JagexColor
+	 * @return the colors to be replaced
+	 */
+	@Nullable
+	short[] getColorToReplace();
+
+	/**
+	 * Get the colors applied to this npc's model for this npc.
+	 * @see JagexColor
+	 * @return the colors to replace with
+	 */
+	@Nullable
+	short[] getColorToReplaceWith();
+
+	/**
+	 * Horizontal scaling of the npc model (1/128th of a tile).
+	 * @return
+	 */
+	int getWidthScale();
+
+	/**
+	 * Vertical scaling of the npc model (1/128th of a tile).
+	 * @return
+	 */
+	int getHeightScale();
 }

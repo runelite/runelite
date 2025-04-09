@@ -30,19 +30,19 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
 {
 	String GROUND_MARKER_CONFIG_GROUP = "groundMarker";
 	String SHOW_IMPORT_EXPORT_KEY_NAME = "showImportExport";
-	String SHOW_CLEAR_KEY_NAME = "showClear";
 
 	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
 		name = "Tile color",
-		description = "Configures the color of marked tile"
+		description = "The default color for marked tiles."
 	)
 	default Color markerColor()
 	{
@@ -50,19 +50,9 @@ public interface GroundMarkerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rememberTileColors",
-		name = "Remember color per tile",
-		description = "Color tiles using the color from time of placement"
-	)
-	default boolean rememberTileColors()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "drawOnMinimap",
 		name = "Draw tiles on minimap",
-		description = "Configures whether marked tiles should be drawn on minimap"
+		description = "Configures whether marked tiles should be drawn on minimap."
 	)
 	default boolean drawTileOnMinimmap()
 	{
@@ -71,8 +61,8 @@ public interface GroundMarkerConfig extends Config
 
 	@ConfigItem(
 		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
-		name = "Show Import/Export options",
-		description = "Show the Import/Export options on the minimap right-click menu"
+		name = "Show import/export/clear options",
+		description = "Show the Import, Export, and Clear options on the world map orb right-click menu."
 	)
 	default boolean showImportExport()
 	{
@@ -80,19 +70,9 @@ public interface GroundMarkerConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = SHOW_CLEAR_KEY_NAME,
-		name = "Show Clear option",
-		description = "Show the Clear option on the minimap right-click menu, which deletes all currently loaded markers"
-	)
-	default boolean showClear()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "borderWidth",
-		name = "Border Width",
-		description = "Width of the marked tile border"
+		name = "Border width",
+		description = "Width of the marked tile border."
 	)
 	default double borderWidth()
 	{
@@ -101,8 +81,11 @@ public interface GroundMarkerConfig extends Config
 
 	@ConfigItem(
 		keyName = "fillOpacity",
-		name = "Fill Opacity",
-		description = "Opacity of the tile fill color"
+		name = "Fill opacity",
+		description = "Opacity of the tile fill color."
+	)
+	@Range(
+		max = 255
 	)
 	default int fillOpacity()
 	{

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.clocks;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Comparators;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import joptsimple.internal.Strings;
 import lombok.Getter;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -63,7 +63,7 @@ public class ClockManager
 	private final List<Stopwatch> stopwatches = new ArrayList<>();
 
 	@Getter
-	private ClockTabPanel clockTabPanel = new ClockTabPanel(this);
+	private final ClockTabPanel clockTabPanel = new ClockTabPanel(this);
 
 	void addTimer()
 	{
@@ -121,10 +121,7 @@ public class ClockManager
 				timer.pause();
 				changed = true;
 
-				if (config.timerNotification())
-				{
-					notifier.notify("[" + timer.getName() + "] has finished counting down.");
-				}
+				notifier.notify(config.timerNotification(), "[" + timer.getName() + "] has finished counting down.");
 
 				if (timer.isLoop())
 				{

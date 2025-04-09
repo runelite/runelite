@@ -39,10 +39,10 @@ public class MapDefinition
 		public Integer height;
 		public int attrOpcode;
 		public byte settings;
-		public byte overlayId;
+		public short overlayId;
 		public byte overlayPath;
 		public byte overlayRotation;
-		public byte underlayId;
+		public short underlayId;
 	}
 
 	private int regionX;

@@ -45,16 +45,17 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IndexDataBase;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.VarbitComposition;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -62,6 +63,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
+@Slf4j
 class VarInspector extends DevToolsFrame
 {
 	@Getter
@@ -84,6 +86,10 @@ class VarInspector extends DevToolsFrame
 
 	private final static int MAX_LOG_ENTRIES = 10_000;
 	private static final int VARBITS_ARCHIVE_ID = 14;
+	private static final Map<Integer, String> VARBIT_NAMES = DevToolsPlugin.loadFieldNames(VarbitID.class);
+	private static final Map<Integer, String> VARCINT_NAMES = DevToolsPlugin.loadFieldNames(VarClientInt.class);
+	private static final Map<Integer, String> VARCSTR_NAMES = DevToolsPlugin.loadFieldNames(VarClientStr.class);
+	private static final Map<Integer, String> VARP_NAMES = DevToolsPlugin.loadFieldNames(VarPlayerID.class);
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -218,15 +224,7 @@ class VarInspector extends DevToolsFrame
 				// Example: 4101 collides with 4104-4129
 				client.setVarbitValue(oldVarps2, i, neew);
 
-				String name = Integer.toString(i);
-				for (Varbits varbit : Varbits.values())
-				{
-					if (varbit.getId() == i)
-					{
-						name = String.format("%s(%d)", varbit.name(), i);
-						break;
-					}
-				}
+				final String name = VARBIT_NAMES.getOrDefault(i, Integer.toString(i));
 				addVarLog(VarType.VARBIT, name, old, neew);
 			}
 		}
@@ -236,14 +234,14 @@ class VarInspector extends DevToolsFrame
 		int neew = varps[index];
 		if (old != neew)
 		{
-			String name = Integer.toString(index);
-			for (VarPlayer varp : VarPlayer.values())
+			String name = VARP_NAMES.get(index);
+			if (name != null)
 			{
-				if (varp.getId() == index)
-				{
-					name = String.format("%s(%d)", varp.name(), index);
-					break;
-				}
+				name += "(" + index + ")";
+			}
+			else
+			{
+				name = Integer.toString(index);
 			}
 			addVarLog(VarType.VARP, name, old, neew);
 		}
@@ -262,15 +260,7 @@ class VarInspector extends DevToolsFrame
 
 		if (old != neew)
 		{
-			String name = String.format("%d", idx);
-			for (VarClientInt varc : VarClientInt.values())
-			{
-				if (varc.getIndex() == idx)
-				{
-					name = String.format("%s(%d)", varc.name(), idx);
-					break;
-				}
-			}
+			final String name = VARCINT_NAMES.getOrDefault(idx, Integer.toString(idx));
 			addVarLog(VarType.VARCINT, name, old, neew);
 		}
 	}
@@ -285,15 +275,7 @@ class VarInspector extends DevToolsFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			String name = String.format("%d", idx);
-			for (VarClientStr varc : VarClientStr.values())
-			{
-				if (varc.getIndex() == idx)
-				{
-					name = String.format("%s(%d)", varc.name(), idx);
-					break;
-				}
-			}
+			final String name = VARCSTR_NAMES.getOrDefault(idx, Integer.toString(idx));
 			if (old != null)
 			{
 				old = "\"" + old + "\"";

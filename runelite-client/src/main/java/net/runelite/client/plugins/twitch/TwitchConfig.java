@@ -34,15 +34,15 @@ public interface TwitchConfig extends Config
 	@ConfigItem(
 		keyName = "username",
 		name = "Username",
-		description = "Twitch Username",
+		description = "Twitch username.",
 		position = 0
 	)
 	String username();
 
 	@ConfigItem(
 		keyName = "oauth",
-		name = "OAuth Token",
-		description = "Enter your OAuth token here. This can be found at http://www.twitchapps.com/tmi/",
+		name = "OAuth token",
+		description = "Enter your OAuth token here.",
 		secret = true,
 		position = 1
 	)
@@ -51,7 +51,7 @@ public interface TwitchConfig extends Config
 	@ConfigItem(
 		keyName = "channel",
 		name = "Channel",
-		description = "Username of Twitch chat to join",
+		description = "Username of Twitch chat to join.",
 		position = 2
 	)
 	String channel();

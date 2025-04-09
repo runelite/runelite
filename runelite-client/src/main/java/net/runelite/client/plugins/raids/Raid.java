@@ -41,11 +41,11 @@ public class Raid
 
 	// The south west tile of the lobby room
 	@Getter
-	private WorldPoint gridBase;
+	private final WorldPoint gridBase;
 
 	// The index of the lobby room in the rooms array
 	@Getter
-	private int lobbyIndex;
+	private final int lobbyIndex;
 
 	public Raid(WorldPoint gridBase, int lobbyIndex)
 	{
@@ -144,7 +144,7 @@ public class Raid
 			}
 			else
 			{
-				builder.append(" ");
+				builder.append(' ');
 			}
 		}
 

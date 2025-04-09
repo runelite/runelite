@@ -32,25 +32,23 @@ import java.util.Optional;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
-import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -80,6 +78,7 @@ public class CookingPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private CookingSession session;
 
 	@Provides
@@ -101,18 +100,6 @@ public class CookingPlugin extends Plugin
 		infoBoxManager.removeIf(FermentTimer.class::isInstance);
 		overlayManager.remove(overlay);
 		session = null;
-	}
-
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
-	{
-		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
-		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
-			&& overlayMenuClicked.getEntry().getOption().equals(CookingOverlay.COOKING_RESET)
-			&& overlayMenuClicked.getOverlay() == overlay)
-		{
-			session = null;
-		}
 	}
 
 	@Subscribe
@@ -142,7 +129,7 @@ public class CookingPlugin extends Plugin
 			return;
 		}
 
-		if (player.getGraphic() == GraphicID.WINE_MAKE && config.fermentTimer())
+		if (player.getGraphic() == SpotanimID.COOKING_MAKE_WINE_SPOTANIM && config.fermentTimer())
 		{
 			Optional<FermentTimer> fermentTimerOpt = infoBoxManager.getInfoBoxes().stream()
 				.filter(FermentTimer.class::isInstance)
@@ -156,7 +143,7 @@ public class CookingPlugin extends Plugin
 			}
 			else
 			{
-				FermentTimer fermentTimer = new FermentTimer(itemManager.getImage(ItemID.JUG_OF_WINE), this);
+				FermentTimer fermentTimer = new FermentTimer(itemManager.getImage(ItemID.JUG_WINE), this);
 				infoBoxManager.addInfoBox(fermentTimer);
 			}
 		}

@@ -26,7 +26,6 @@ package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.Graphs;
@@ -38,6 +37,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -62,7 +62,6 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
@@ -71,8 +70,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -88,6 +86,7 @@ public class PluginManager
 	 * Base package where the core plugins are
 	 */
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
+	private static final File SIDELOADED_PLUGINS = new File(RuneLite.RUNELITE_DIR, "sideloaded-plugins");
 
 	private final boolean developerMode;
 	private final boolean safeMode;
@@ -97,9 +96,6 @@ public class PluginManager
 	private final Provider<GameEventManager> sceneTileManager;
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
-
-	@Setter
-	boolean isOutdated;
 
 	@Inject
 	@VisibleForTesting
@@ -120,13 +116,7 @@ public class PluginManager
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
-	{
-		refreshPlugins();
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		refreshPlugins();
 	}
@@ -154,7 +144,7 @@ public class PluginManager
 				}
 				catch (PluginInstantiationException e)
 				{
-					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
+					log.error("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
 			}
 		});
@@ -181,7 +171,7 @@ public class PluginManager
 		}
 		catch (Throwable e)
 		{
-			log.warn("Unable to get plugin config", e);
+			log.error("Unable to get plugin config", e);
 		}
 		return null;
 	}
@@ -217,7 +207,7 @@ public class PluginManager
 	{
 		try
 		{
-			for (Object config : getPluginConfigProxies(plugins))
+			for (Config config : getPluginConfigProxies(plugins))
 			{
 				configManager.setDefaultConfiguration(config, false);
 			}
@@ -228,7 +218,7 @@ public class PluginManager
 		}
 		catch (Throwable ex)
 		{
-			log.warn("Unable to reset plugin configuration", ex);
+			log.error("Unable to reset plugin configuration", ex);
 		}
 	}
 
@@ -248,7 +238,7 @@ public class PluginManager
 					}
 					catch (PluginInstantiationException ex)
 					{
-						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
+						log.error("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
 						plugins.remove(plugin);
 					}
 				});
@@ -261,11 +251,16 @@ public class PluginManager
 			loaded++;
 			SplashScreen.stage(.80, 1, null, "Starting plugins", loaded, scannedPlugins.size(), false);
 		}
+
+		for (Plugin plugin : plugins)
+		{
+			ReflectUtil.queueInjectorAnnotationCacheInvalidation(plugin.injector);
+		}
 	}
 
 	public void loadCorePlugins() throws IOException, PluginInstantiationException
 	{
-		SplashScreen.stage(.59, null, "Loading Plugins");
+		SplashScreen.stage(.59, null, "Loading plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
 		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
@@ -273,7 +268,46 @@ public class PluginManager
 			.collect(Collectors.toList());
 
 		loadPlugins(plugins, (loaded, total) ->
-			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
+			SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));
+	}
+
+	public void loadSideLoadPlugins()
+	{
+		if (!developerMode)
+		{
+			return;
+		}
+
+		File[] files = SIDELOADED_PLUGINS.listFiles();
+		if (files == null)
+		{
+			return;
+		}
+
+		for (File f : files)
+		{
+			if (f.getName().endsWith(".jar"))
+			{
+				log.info("Side-loading plugin {}", f);
+
+				try
+				{
+					ClassLoader classLoader = new PluginClassLoader(f, getClass().getClassLoader());
+
+					List<Class<?>> plugins = ClassPath.from(classLoader)
+						.getAllClasses()
+						.stream()
+						.map(ClassInfo::load)
+						.collect(Collectors.toList());
+
+					loadPlugins(plugins, null);
+				}
+				catch (PluginInstantiationException | IOException ex)
+				{
+					log.error("error sideloading plugin", ex);
+				}
+			}
+		}
 	}
 
 	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
@@ -290,19 +324,14 @@ public class PluginManager
 			{
 				if (clazz.getSuperclass() == Plugin.class)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+					log.error("Class {} is a plugin, but has no plugin descriptor", clazz);
 				}
 				continue;
 			}
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
-				continue;
-			}
-
-			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
-			{
+				log.error("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
 			}
 
@@ -320,8 +349,7 @@ public class PluginManager
 				continue;
 			}
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
-			graph.addNode(pluginClass);
+			graph.addNode((Class<Plugin>) clazz);
 		}
 
 		// Build plugin graph
@@ -333,7 +361,7 @@ public class PluginManager
 			{
 				if (graph.nodes().contains(pluginDependency.value()))
 				{
-					graph.putEdge(pluginClazz, pluginDependency.value());
+					graph.putEdge(pluginDependency.value(), pluginClazz);
 				}
 			}
 		}
@@ -344,7 +372,6 @@ public class PluginManager
 		}
 
 		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
-		sortedPlugins = Lists.reverse(sortedPlugins);
 
 		int loaded = 0;
 		List<Plugin> newPlugins = new ArrayList<>();
@@ -359,7 +386,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Error instantiating plugin!", ex);
+				log.error("Error instantiating plugin!", ex);
 			}
 
 			loaded++;
@@ -402,7 +429,7 @@ public class PluginManager
 			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
-			if (!isOutdated && sceneTileManager != null)
+			if (sceneTileManager != null)
 			{
 				final GameEventManager gameEventManager = this.sceneTileManager.get();
 				if (gameEventManager != null)
@@ -631,11 +658,14 @@ public class PluginManager
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
 	 *
-	 * @param graph
-	 * @param <T>
-	 * @return
+	 * @param graph - A directed graph
+	 * @param <T>   - The type of the item contained in the nodes of the graph
+	 * @return - A topologically sorted list corresponding to graph.
+	 * <p>
+	 * Multiple invocations with the same arguments may return lists that are not equal.
 	 */
-	private <T> List<T> topologicalSort(Graph<T> graph)
+	@VisibleForTesting
+	static <T> List<T> topologicalSort(Graph<T> graph)
 	{
 		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
 		List<T> l = new ArrayList<>();
@@ -650,7 +680,7 @@ public class PluginManager
 
 			l.add(n);
 
-			for (T m : graphCopy.successors(n))
+			for (T m : new HashSet<>(graphCopy.successors(n)))
 			{
 				graphCopy.removeEdge(n, m);
 				if (graphCopy.inDegree(m) == 0)

@@ -40,4 +40,6 @@ public interface IndexDataBase
 	 * @return
 	 */
 	int[] getFileIds(int archiveId);
+
+	byte[] loadData(int archiveID, int fileID);
 }

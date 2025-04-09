@@ -41,8 +41,8 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,6 +52,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
+import static net.runelite.api.SpriteID.TAB_COMBAT;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -60,14 +62,13 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreSkill;
-import static net.runelite.http.api.hiscore.HiscoreSkill.*;
-import net.runelite.http.api.hiscore.HiscoreSkillType;
-import net.runelite.http.api.hiscore.Skill;
-import okhttp3.OkHttpClient;
+import net.runelite.client.hiscore.HiscoreClient;
+import net.runelite.client.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
+import static net.runelite.client.hiscore.HiscoreSkill.*;
+import net.runelite.client.hiscore.HiscoreSkillType;
+import net.runelite.client.hiscore.Skill;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -95,32 +96,40 @@ public class HiscorePanel extends PluginPanel
 	 * Bosses, ordered in the way they should be displayed in the panel.
 	 */
 	private static final List<HiscoreSkill> BOSSES = ImmutableList.of(
-		ABYSSAL_SIRE, ALCHEMICAL_HYDRA, BARROWS_CHESTS,
-		BRYOPHYTA, CALLISTO, CERBERUS,
-		CHAMBERS_OF_XERIC, CHAMBERS_OF_XERIC_CHALLENGE_MODE, CHAOS_ELEMENTAL,
-		CHAOS_FANATIC, COMMANDER_ZILYANA, CORPOREAL_BEAST,
-		DAGANNOTH_PRIME, DAGANNOTH_REX, DAGANNOTH_SUPREME,
-		CRAZY_ARCHAEOLOGIST, DERANGED_ARCHAEOLOGIST, GENERAL_GRAARDOR,
-		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
-		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
-		KREEARRA, KRIL_TSUTSAROTH, MIMIC,
-		NIGHTMARE, PHOSANIS_NIGHTMARE, OBOR, SARACHNIS,
-		SCORPIA, SKOTIZO, TEMPOROSS,
-		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD,
-		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK,
-		TZTOK_JAD, VENENATIS, VETION,
-		VORKATH, WINTERTODT, ZALCANO,
-		ZULRAH
+		ABYSSAL_SIRE, ALCHEMICAL_HYDRA, AMOXLIATL,
+		ARAXXOR, ARTIO, BARROWS_CHESTS,
+		BRYOPHYTA, CALLISTO, CALVARION,
+		CERBERUS, CHAMBERS_OF_XERIC, CHAMBERS_OF_XERIC_CHALLENGE_MODE,
+		CHAOS_ELEMENTAL, CHAOS_FANATIC, COMMANDER_ZILYANA,
+		CORPOREAL_BEAST, CRAZY_ARCHAEOLOGIST, DAGANNOTH_PRIME,
+		DAGANNOTH_REX, DAGANNOTH_SUPREME, DERANGED_ARCHAEOLOGIST,
+		DUKE_SUCELLUS, GENERAL_GRAARDOR, GIANT_MOLE,
+		GROTESQUE_GUARDIANS, HESPORI, KALPHITE_QUEEN,
+		KING_BLACK_DRAGON, KRAKEN, KREEARRA,
+		KRIL_TSUTSAROTH, LUNAR_CHESTS, MIMIC,
+		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
+		OBOR, PHANTOM_MUSPAH, SARACHNIS,
+		SCORPIA, SCURRIUS, SKOTIZO,
+		SOL_HEREDIT, SPINDEL, TEMPOROSS,
+		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THE_HUEYCOATL,
+		THE_LEVIATHAN, THE_ROYAL_TITANS, THE_WHISPERER,
+		THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL,
+		TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK,
+		TZTOK_JAD, VARDORVIS, VENENATIS,
+		VETION, VORKATH, WINTERTODT,
+		ZALCANO, ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
-		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.TOURNAMENT
+		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN,
+		HiscoreEndpoint.DEADMAN, HiscoreEndpoint.PURE, HiscoreEndpoint.LEVEL_3_SKILLER, HiscoreEndpoint.LEAGUE
 	};
 
 	private final HiscorePlugin plugin;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
 	private final HiscoreClient hiscoreClient;
+	private final SpriteManager spriteManager;
 
 	private final IconTextField searchBar;
 
@@ -137,18 +146,16 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(@Nullable Client client, HiscorePlugin plugin, HiscoreConfig config,
-		NameAutocompleter nameAutocompleter, OkHttpClient okHttpClient)
+	public HiscorePanel(Client client, HiscorePlugin plugin, HiscoreConfig config,
+		NameAutocompleter nameAutocompleter, HiscoreClient hiscoreClient, SpriteManager spriteManager)
 	{
 		this.plugin = plugin;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
-		this.hiscoreClient = new HiscoreClient(okHttpClient);
+		this.hiscoreClient = hiscoreClient;
+		this.spriteManager = spriteManager;
 
-		// The layout seems to be ignoring the top margin and only gives it
-		// a 2-3 pixel margin, so I set the value to 18 to compensate
-		// TODO: Figure out why this layout is ignoring most of the top margin
-		setBorder(new EmptyBorder(18, 10, 0, 10));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridBagLayout());
 
@@ -177,10 +184,6 @@ public class HiscorePanel extends PluginPanel
 				{
 					return;
 				}
-				if (client == null)
-				{
-					return;
-				}
 
 				Player localPlayer = client.getLocalPlayer();
 
@@ -201,7 +204,7 @@ public class HiscorePanel extends PluginPanel
 		c.gridy++;
 
 		tabGroup = new MaterialTabGroup();
-		tabGroup.setLayout(new GridLayout(1, 5, 7, 7));
+		tabGroup.setLayout(new GridLayout(2, 4, 7, 7));
 
 		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
@@ -273,17 +276,19 @@ public class HiscorePanel extends PluginPanel
 		c.gridy++;
 
 		JPanel minigamePanel = new JPanel();
-		// These aren't all on one row because when there's a label with four or more digits it causes the details
-		// panel to change its size for some reason...
-		minigamePanel.setLayout(new GridLayout(2, 3));
+		minigamePanel.setLayout(new GridLayout(0, 3));
 		minigamePanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		minigamePanel.add(makeHiscorePanel(CLUE_SCROLL_ALL));
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
+		minigamePanel.add(makeHiscorePanel(RIFTS_CLOSED));
+		minigamePanel.add(makeHiscorePanel(COLOSSEUM_GLORY));
+		minigamePanel.add(makeHiscorePanel(COLLECTIONS_LOGGED));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
+		minigamePanel.add(makeHiscorePanel(PVP_ARENA_RANK));
 
 		add(minigamePanel, c);
 		c.gridy++;
@@ -327,25 +332,14 @@ public class HiscorePanel extends PluginPanel
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText(pad("--", skillType));
 
-		String directory;
-		if (skill == null || skill == OVERALL)
-		{
-			directory = "/skill_icons/";
-		}
-		else if (skill.getType() == HiscoreSkillType.BOSS)
-		{
-			directory = "bosses/";
-		}
-		else
-		{
-			directory = "/skill_icons_small/";
-		}
-
-		String skillName = (skill == null ? "combat" : skill.name().toLowerCase());
-		String skillIcon = directory + skillName + ".png";
-		log.debug("Loading skill icon from {}", skillIcon);
-
-		label.setIcon(new ImageIcon(ImageUtil.loadImageResource(getClass(), skillIcon)));
+		spriteManager.getSpriteAsync(skill == null ? TAB_COMBAT : skill.getSpriteId(), 0, (sprite) ->
+			SwingUtilities.invokeLater(() ->
+			{
+				// Icons are all 25x25 or smaller, so they're fit into a 25x25 canvas to give them a consistent size for
+				// better alignment. Further, they are then scaled down to 20x20 to not be overly large in the panel.
+				final BufferedImage scaledSprite = ImageUtil.resizeImage(ImageUtil.resizeCanvas(sprite, 25, 25), 20, 20);
+				label.setIcon(new ImageIcon(scaledSprite));
+			}));
 
 		boolean totalLabel = skill == OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
@@ -382,6 +376,8 @@ public class HiscorePanel extends PluginPanel
 			loading = false;
 			return;
 		}
+
+		repaint();
 
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
@@ -437,6 +433,7 @@ public class HiscorePanel extends PluginPanel
 	private void applyHiscoreResult(HiscoreResult result)
 	{
 		assert SwingUtilities.isEventDispatchThread();
+		repaint();
 
 		nameAutocompleter.addToSearchHistory(result.getPlayer().toLowerCase());
 
@@ -451,13 +448,13 @@ public class HiscorePanel extends PluginPanel
 				if (result.getPlayer() != null)
 				{
 					int combatLevel = Experience.getCombatLevel(
-						result.getAttack().getLevel(),
-						result.getStrength().getLevel(),
-						result.getDefence().getLevel(),
-						result.getHitpoints().getLevel(),
-						result.getMagic().getLevel(),
-						result.getRanged().getLevel(),
-						result.getPrayer().getLevel()
+						result.getSkill(ATTACK).getLevel(),
+						result.getSkill(STRENGTH).getLevel(),
+						result.getSkill(DEFENCE).getLevel(),
+						result.getSkill(HITPOINTS).getLevel(),
+						result.getSkill(MAGIC).getLevel(),
+						result.getSkill(RANGED).getLevel(),
+						result.getSkill(PRAYER).getLevel()
 					);
 					label.setText(Integer.toString(combatLevel));
 				}
@@ -511,19 +508,19 @@ public class HiscorePanel extends PluginPanel
 		if (skill == null)
 		{
 			double combatLevel = Experience.getCombatLevelPrecise(
-				result.getAttack().getLevel(),
-				result.getStrength().getLevel(),
-				result.getDefence().getLevel(),
-				result.getHitpoints().getLevel(),
-				result.getMagic().getLevel(),
-				result.getRanged().getLevel(),
-				result.getPrayer().getLevel()
+				result.getSkill(ATTACK).getLevel(),
+				result.getSkill(STRENGTH).getLevel(),
+				result.getSkill(DEFENCE).getLevel(),
+				result.getSkill(HITPOINTS).getLevel(),
+				result.getSkill(MAGIC).getLevel(),
+				result.getSkill(RANGED).getLevel(),
+				result.getSkill(PRAYER).getLevel()
 			);
 
-			double combatExperience = result.getAttack().getExperience()
-				+ result.getStrength().getExperience() + result.getDefence().getExperience()
-				+ result.getHitpoints().getExperience() + result.getMagic().getExperience()
-				+ result.getRanged().getExperience() + result.getPrayer().getExperience();
+			double combatExperience = result.getSkill(ATTACK).getExperience()
+				+ result.getSkill(STRENGTH).getExperience() + result.getSkill(DEFENCE).getExperience()
+				+ result.getSkill(HITPOINTS).getExperience() + result.getSkill(MAGIC).getExperience()
+				+ result.getSkill(RANGED).getExperience() + result.getSkill(PRAYER).getExperience();
 
 			content += "<p><span style = 'color:white'>Combat</span></p>";
 			content += "<p><span style = 'color:white'>Exact Combat Level:</span> " + QuantityFormatter.formatNumber(combatLevel) + "</p>";
@@ -535,81 +532,31 @@ public class HiscorePanel extends PluginPanel
 			{
 				case CLUE_SCROLL_ALL:
 				{
-					String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollAll().getRank());
-					String beginnerRank = (result.getClueScrollBeginner().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollBeginner().getRank());
-					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollEasy().getRank());
-					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollMedium().getRank());
-					String hardRank = (result.getClueScrollHard().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollHard().getRank());
-					String eliteRank = (result.getClueScrollElite().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollElite().getRank());
-					String masterRank = (result.getClueScrollMaster().getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(result.getClueScrollMaster().getRank());
-					String all = (result.getClueScrollAll().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollAll().getLevel()));
-					String beginner = (result.getClueScrollBeginner().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollBeginner().getLevel()));
-					String easy = (result.getClueScrollEasy().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollEasy().getLevel()));
-					String medium = (result.getClueScrollMedium().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollMedium().getLevel()));
-					String hard = (result.getClueScrollHard().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollHard().getLevel()));
-					String elite = (result.getClueScrollElite().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollElite().getLevel()));
-					String master = (result.getClueScrollMaster().getLevel() == -1 ? "0" : QuantityFormatter.formatNumber(result.getClueScrollMaster().getLevel()));
 					content += "<p><span style = 'color:white'>Clues</span></p>";
-					content += "<p><span style = 'color:white'>All:</span> " + all + " <span style = 'color:white'>Rank:</span> " + allRank + "</p>";
-					content += "<p><span style = 'color:white'>Beginner:</span> " + beginner + " <span style = 'color:white'>Rank:</span> " + beginnerRank + "</p>";
-					content += "<p><span style = 'color:white'>Easy:</span> " + easy + " <span style = 'color:white'>Rank:</span> " + easyRank + "</p>";
-					content += "<p><span style = 'color:white'>Medium:</span> " + medium + " <span style = 'color:white'>Rank:</span> " + mediumRank + "</p>";
-					content += "<p><span style = 'color:white'>Hard:</span> " + hard + " <span style = 'color:white'>Rank:</span> " + hardRank + "</p>";
-					content += "<p><span style = 'color:white'>Elite:</span> " + elite + " <span style = 'color:white'>Rank:</span> " + eliteRank + "</p>";
-					content += "<p><span style = 'color:white'>Master:</span> " + master + " <span style = 'color:white'>Rank:</span> " + masterRank + "</p>";
+					content += buildClueLine(result, "All", CLUE_SCROLL_ALL);
+					content += buildClueLine(result, "Beginner", CLUE_SCROLL_BEGINNER);
+					content += buildClueLine(result, "Easy", CLUE_SCROLL_EASY);
+					content += buildClueLine(result, "Medium", CLUE_SCROLL_MEDIUM);
+					content += buildClueLine(result, "Hard", CLUE_SCROLL_HARD);
+					content += buildClueLine(result, "Elite", CLUE_SCROLL_ELITE);
+					content += buildClueLine(result, "Master", CLUE_SCROLL_MASTER);
 					break;
 				}
 				case BOUNTY_HUNTER_ROGUE:
-				{
-					Skill bountyHunterRogue = result.getBountyHunterRogue();
-					String rank = (bountyHunterRogue.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterRogue.getRank());
-					content += "<p><span style = 'color:white'>Bounty Hunter - Rogue</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (bountyHunterRogue.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterRogue.getLevel()) + "</p>";
-					}
-					break;
-				}
 				case BOUNTY_HUNTER_HUNTER:
-				{
-					Skill bountyHunterHunter = result.getBountyHunterHunter();
-					String rank = (bountyHunterHunter.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterHunter.getRank());
-					content += "<p><span style = 'color:white'>Bounty Hunter - Hunter</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (bountyHunterHunter.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterHunter.getLevel()) + "</p>";
-					}
-					break;
-				}
+				case PVP_ARENA_RANK:
 				case LAST_MAN_STANDING:
-				{
-					Skill lastManStanding = result.getLastManStanding();
-					String rank = (lastManStanding.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(lastManStanding.getRank());
-					content += "<p><span style = 'color:white'>Last Man Standing</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (lastManStanding.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(lastManStanding.getLevel()) + "</p>";
-					}
-					break;
-				}
 				case SOUL_WARS_ZEAL:
+				case RIFTS_CLOSED:
+				case COLOSSEUM_GLORY:
+				case COLLECTIONS_LOGGED:
 				{
-					Skill soulWarsZeal = result.getSoulWarsZeal();
-					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
-					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (soulWarsZeal.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getSkill(skill), skill);
 					break;
 				}
 				case LEAGUE_POINTS:
 				{
-					Skill leaguePoints = result.getLeaguePoints();
+					Skill leaguePoints = result.getSkill(LEAGUE_POINTS);
 					String rank = (leaguePoints.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(leaguePoints.getRank());
 					content += "<p><span style = 'color:white'>League Points</span></p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
@@ -709,6 +656,31 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		return openingTags + content + closingTags;
+	}
+
+	private static String buildMinigameTooltip(Skill s, HiscoreSkill hiscoreSkill)
+	{
+		String rank = (s.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(s.getRank());
+		String content = "";
+		content += "<p><span style = 'color:white'>" + hiscoreSkill.getName() + "</span></p>";
+		content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+		if (s.getLevel() > -1)
+		{
+			content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(s.getLevel()) + "</p>";
+		}
+		return content;
+	}
+
+	private static String buildClueLine(HiscoreResult result, String name, HiscoreSkill skill)
+	{
+		Skill sk = result.getSkill(skill);
+		String count = sk.getLevel() == -1
+			? "0"
+			: QuantityFormatter.formatNumber(sk.getLevel());
+		String rank = sk.getRank() == -1
+			? "Unranked"
+			: QuantityFormatter.formatNumber(sk.getRank());
+		return "<p><span style = 'color:white'>" + name + ":</span> " + count + " <span style = 'color:white'>Rank:</span> " + rank + "</p>";
 	}
 
 	private static String sanitize(String lookup)

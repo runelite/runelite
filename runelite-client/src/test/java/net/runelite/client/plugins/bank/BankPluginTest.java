@@ -31,11 +31,11 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -97,13 +97,29 @@ public class BankPluginTest
 		assertTrue(bankPlugin.valueSearch(itemId, "< 5.5b"));
 		assertTrue(bankPlugin.valueSearch(itemId, "500k - 20.6m"));
 
+		assertTrue(bankPlugin.valueSearch(itemId, "per=400k"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ge per 50k - 20.6m"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ge per > 300k"));
+
 		assertTrue(bankPlugin.valueSearch(itemId, "ha=1.8m"));
 		assertTrue(bankPlugin.valueSearch(itemId, "ha 500k - 20.6m"));
 		assertTrue(bankPlugin.valueSearch(itemId, "ha > 940k"));
 
+		assertTrue(bankPlugin.valueSearch(itemId, "ha per=60k"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ha per 50k - 20.6m"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ha per > 9k"));
+
+		assertTrue(bankPlugin.valueSearch(itemId, "qty=0"));
+		assertTrue(bankPlugin.valueSearch(itemId, "qty<600"));
+
 		assertFalse(bankPlugin.valueSearch(itemId, "<500k"));
 		assertFalse(bankPlugin.valueSearch(itemId, "ha >2m"));
 		assertFalse(bankPlugin.valueSearch(itemId, "ge > 0.02b"));
+		assertFalse(bankPlugin.valueSearch(itemId, "ha per >100k"));
+		assertFalse(bankPlugin.valueSearch(itemId, "ge per > 1m"));
+
+		assertFalse(bankPlugin.valueSearch(itemId, "qty=1"));
+		assertFalse(bankPlugin.valueSearch(itemId, "qty>30"));
 
 		assertFalse(bankPlugin.valueSearch(itemId, "1000k"));
 	}
@@ -111,7 +127,7 @@ public class BankPluginTest
 	@Test
 	public void testCalculate()
 	{
-		Item coins = new Item(ItemID.COINS_995, Integer.MAX_VALUE);
+		Item coins = new Item(ItemID.COINS, Integer.MAX_VALUE);
 
 		Item whip = new Item(ItemID.ABYSSAL_WHIP, 1_000_000_000);
 

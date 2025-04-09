@@ -29,7 +29,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 import net.runelite.client.input.MouseAdapter;
 
-public class ScreenMarkerMouseListener extends MouseAdapter
+class ScreenMarkerMouseListener extends MouseAdapter
 {
 	private final ScreenMarkerPlugin plugin;
 

@@ -30,7 +30,7 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.ws.PartyMember;
+import net.runelite.client.party.PartyMember;
 
 class PartyWorldMapPoint extends WorldMapPoint
 {
@@ -45,10 +45,21 @@ class PartyWorldMapPoint extends WorldMapPoint
 		this.member = member;
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
-		this.setName(member.getName());
 		this.setImagePoint(new Point(
 			ARROW.getWidth() / 2,
 			ARROW.getHeight()));
+	}
+
+	@Override
+	public String getName()
+	{
+		return member.getDisplayName();
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return member.getDisplayName();
 	}
 
 	@Override

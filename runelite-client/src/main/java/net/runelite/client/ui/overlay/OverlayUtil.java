@@ -46,7 +46,6 @@ import net.runelite.client.util.ColorUtil;
 public class OverlayUtil
 {
 	private static final int MINIMAP_DOT_RADIUS = 4;
-	private static final double UNIT = Math.PI / 1024.0d;
 
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
@@ -77,14 +76,15 @@ public class OverlayUtil
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 	}
 
+	@Deprecated
 	public static void renderMinimapRect(Client client, Graphics2D graphics, Point center, int width, int height, Color color)
 	{
-		double angle = client.getMapAngle() * UNIT;
+		double angle = client.getCameraYawTarget() * Perspective.UNIT;
 
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());
-		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width, height);
-		graphics.rotate(-angle , center.getX(), center.getY());
+		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width - 1, height - 1);
+		graphics.rotate(-angle, center.getX(), center.getY());
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
@@ -106,7 +106,7 @@ public class OverlayUtil
 
 	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
 	{
-		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
+		Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -183,7 +183,7 @@ public class OverlayUtil
 		renderImageLocation(client, graphics, localLocation, image, 0);
 	}
 
-	public static void renderHoverableArea(Graphics2D graphics, Shape area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
+	public static void renderHoverableArea(Graphics2D graphics, Shape area, Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
 	{
 		if (area != null)
 		{
@@ -214,19 +214,19 @@ public class OverlayUtil
 		switch (overlayPosition)
 		{
 			case BOTTOM_LEFT:
-				sX = bounds.x + bounds.width + padding;
+				sX = Math.max(sX, bounds.x + bounds.width + padding);
 				break;
 			case BOTTOM_RIGHT:
-				sX = bounds.x - padding;
+				sX = Math.min(sX, bounds.x - padding);
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
-				sY = bounds.y + bounds.height + padding;
+				sY = Math.max(sY, bounds.y + bounds.height + padding);
 				break;
 			case ABOVE_CHATBOX_RIGHT:
-				sY = bounds.y - padding;
+				sY = Math.min(sY, bounds.y - padding);
 				break;
 			default:
 				throw new IllegalArgumentException();
@@ -241,8 +241,6 @@ public class OverlayUtil
 
 		switch (position)
 		{
-			case DYNAMIC:
-			case TOOLTIP:
 			case TOP_LEFT:
 				break;
 			case TOP_CENTER:
@@ -259,6 +257,8 @@ public class OverlayUtil
 			case TOP_RIGHT:
 				result.x = -dimension.width;
 				break;
+			default:
+				throw new IllegalArgumentException();
 		}
 
 		return result;

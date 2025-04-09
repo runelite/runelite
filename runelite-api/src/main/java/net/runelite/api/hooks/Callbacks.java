@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.Renderable;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 
@@ -53,14 +54,24 @@ public interface Callbacks
 	void postDeferred(Object event);
 
 	/**
-	 * Called each client cycle.
+	 * Called at the beginning of each tick
 	 */
-	void clientMainLoop();
+	void tick();
 
 	/**
-	 * Called after receiving update NPCs packet from server.
+	 * Called at the end of each tick
 	 */
-	void updateNpcs();
+	void tickEnd();
+
+	/**
+	 * Called each frame
+	 */
+	void frame();
+
+	/**
+	 * Called each server tick
+	 */
+	void serverTick();
 
 	/**
 	 * Called after the scene is drawn.
@@ -180,4 +191,32 @@ public interface Callbacks
 	 * @param keyEvent the key event
 	 */
 	void keyTyped(KeyEvent keyEvent);
+
+	/**
+	 * Called to test if a renderable should be drawn this frame
+	 * @param renderable the renderable
+	 * @param drawingUi if this is the 2d ui, such as hp bars or hitsplats
+	 * @return false to prevent drawing
+	 */
+	boolean draw(Renderable renderable, boolean drawingUi);
+
+	/**
+	 * Called when a client error occurs
+	 * @param message
+	 * @param reason
+	 */
+	void error(String message, Throwable reason);
+
+	/**
+	 * Called when the client wants to open a URL
+	 * @param url
+	 */
+	void openUrl(String url);
+
+	/**
+	 * Returns if the current runelite client is outdated or not
+	 *
+	 * @return
+	 */
+	boolean isRuneLiteClientOutdated();
 }

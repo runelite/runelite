@@ -260,6 +260,8 @@ under the License.
         <maven.javadoc.skip>false</maven.javadoc.skip>
         <checkstyle.skip>false</checkstyle.skip>
         <pmd.skip>false</pmd.skip>
+        <pmd.analysisCacheLocation>${user.home}/.cache/runelite/pmd.cache</pmd.analysisCacheLocation>
+        <shade.skip>true</shade.skip>
       </properties>
     </profile>
   </profiles>

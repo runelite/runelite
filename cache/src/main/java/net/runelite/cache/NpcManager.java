@@ -59,6 +59,8 @@ public class NpcManager
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.NPC.getId());
 
+		loader.configureForRevision(archive.getRevision());
+
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);
 

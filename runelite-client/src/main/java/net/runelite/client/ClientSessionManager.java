@@ -29,7 +29,6 @@ import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +37,6 @@ import net.runelite.api.GameState;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.util.RunnableExceptionLogger;
-import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -53,25 +51,28 @@ public class ClientSessionManager
 
 	@Inject
 	ClientSessionManager(ScheduledExecutorService executorService,
-		@Nullable Client client,
-		OkHttpClient okHttpClient)
+		Client client,
+		SessionClient sessionClient)
 	{
 		this.executorService = executorService;
 		this.client = client;
-		this.sessionClient = new SessionClient(okHttpClient);
+		this.sessionClient = sessionClient;
 	}
 
 	public void start()
 	{
-		try
+		executorService.execute(() ->
 		{
-			sessionId = sessionClient.open();
-			log.debug("Opened session {}", sessionId);
-		}
-		catch (IOException ex)
-		{
-			log.warn("error opening session", ex);
-		}
+			try
+			{
+				sessionId = sessionClient.open();
+				log.debug("Opened session {}", sessionId);
+			}
+			catch (IOException ex)
+			{
+				log.warn("error opening session", ex);
+			}
+		});
 
 		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
 	}
@@ -101,6 +102,11 @@ public class ClientSessionManager
 
 	private void ping()
 	{
+		if (!isWorldHostValid())
+		{
+			return;
+		}
+
 		try
 		{
 			if (sessionId == null)
@@ -116,12 +122,8 @@ public class ClientSessionManager
 			return;
 		}
 
-		boolean loggedIn = false;
-		if (client != null)
-		{
-			GameState gameState = client.getGameState();
-			loggedIn = gameState.getState() >= GameState.LOADING.getState();
-		}
+		GameState gameState = client.getGameState();
+		boolean loggedIn = gameState.getState() >= GameState.LOADING.getState();
 
 		try
 		{
@@ -133,5 +135,11 @@ public class ClientSessionManager
 			sessionId = null;
 		}
 
+	}
+
+	private boolean isWorldHostValid()
+	{
+		String host = client.getWorldHost();
+		return host != null && host.endsWith(".runescape.com");
 	}
 }

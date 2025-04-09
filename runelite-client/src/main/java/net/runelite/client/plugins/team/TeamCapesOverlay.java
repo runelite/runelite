@@ -28,14 +28,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 
@@ -50,13 +48,13 @@ class TeamCapesOverlay extends OverlayPanel
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		this.plugin = plugin;
 		this.config = config;
 		this.manager = manager;
 		panelComponent.setWrap(true);
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Teamcapes overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Teamcapes overlay");
 	}
 
 	@Override
@@ -82,12 +80,12 @@ class TeamCapesOverlay extends OverlayPanel
 			if (teamcapeNumber < 50)
 			{
 				// The team cape is every 2nd item id based on tc number
-				itemID = 2 * teamcapeNumber + ItemID.TEAM1_CAPE;
+				itemID = 2 * teamcapeNumber + ItemID.WILDERNESS_CAPE_1;
 			}
 			else
 			{
 				// The team cape is every 3rd item id based on tc number starting from 0
-				itemID = 3 * (teamcapeNumber - 50) + ItemID.TEAM_CAPE_ZERO;
+				itemID = 3 * (teamcapeNumber - 50) + ItemID.WILDERNESS_CAPE_ZERO;
 			}
 
 			panelComponent.getChildren().add(new ImageComponent(manager.getImage(itemID, team.getValue(), true)));

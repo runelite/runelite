@@ -33,9 +33,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -68,7 +67,7 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget draggingWidget = getDraggedWidget();
+		final Widget draggingWidget = client.getDraggedWidget();
 		if (draggingWidget == null)
 		{
 			initialMousePoint = null;
@@ -77,20 +76,20 @@ class InventoryGridOverlay extends Overlay
 			return null;
 		}
 
-		// grid is only supported on bank inventory and inventory
-		Widget inventoryWidget = draggingWidget.isIf3() ?
-			client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) :
-			client.getWidget(WidgetInfo.INVENTORY);
+		assert draggingWidget.isIf3();
 
-		// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
-		if (inventoryWidget == null || (draggingWidget.isIf3() ? draggingWidget.getParent() != inventoryWidget : draggingWidget != inventoryWidget))
+		// grid is only supported on bank inventory and inventory
+		if (draggingWidget.getId() != InterfaceID.Bankside.ITEMS
+			&& draggingWidget.getId() != InterfaceID.Bankside.WORNOPS
+			&& draggingWidget.getId() != InterfaceID.Inventory.ITEMS)
 		{
 			return null;
 		}
 
+		final Widget inventoryWidget = draggingWidget.getParent();
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
-		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
+		final int draggedItemIndex = draggingWidget.getIndex();
 		final WidgetItem draggedItem = getWidgetItem(inventoryWidget, draggedItemIndex);
 		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
 
@@ -100,7 +99,7 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| !(client.getDragTime() > draggingWidget.getDragDeadTime())
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
@@ -135,27 +134,11 @@ class InventoryGridOverlay extends Overlay
 		return null;
 	}
 
-	private Widget getDraggedWidget()
-	{
-		Widget widget = client.getIf1DraggedWidget(); // if1 drag
-		if (widget != null)
-		{
-			return widget;
-		}
-		return client.getDraggedWidget(); // if3 drag
-	}
-
 	private static WidgetItem getWidgetItem(Widget parentWidget, int idx)
 	{
-		if (parentWidget.isIf3())
-		{
-			Widget wi = parentWidget.getChild(idx);
-			return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), -1, wi.getBounds(), parentWidget, wi.getBounds());
-		}
-		else
-		{
-			return parentWidget.getWidgetItem(idx);
-		}
+		assert parentWidget.isIf3();
+		Widget wi = parentWidget.getChild(idx);
+		return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), wi.getBounds(), parentWidget, wi.getBounds());
 	}
 
 	private void drawItem(Graphics2D graphics, Rectangle bounds, WidgetItem item)

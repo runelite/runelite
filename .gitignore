@@ -10,3 +10,4 @@ project.properties
 .classpath
 .vscode
 .factorypath
+.DS_Store

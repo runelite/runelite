@@ -182,12 +182,12 @@ public class LineComponent implements LayoutableRenderableEntity
 
 			if (wordLen + spaceWidth > spaceLeft)
 			{
-				wrapped.append("\n").append(word);
+				wrapped.append('\n').append(word);
 				spaceLeft = maxWidth - wordLen;
 			}
 			else
 			{
-				wrapped.append(" ").append(word);
+				wrapped.append(' ').append(word);
 				spaceLeft -= spaceWidth + wordLen;
 			}
 		}

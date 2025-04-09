@@ -36,7 +36,7 @@ public interface InventoryViewerConfig extends Config
 
 	@ConfigItem(
 		keyName = "toggleKeybind",
-		name = "Toggle Overlay",
+		name = "Toggle overlay",
 		description = "Binds a key (combination) to toggle the overlay.",
 		position = 0
 	)

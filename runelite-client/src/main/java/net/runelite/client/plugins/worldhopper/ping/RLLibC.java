@@ -37,6 +37,7 @@ interface RLLibC extends LibC
 	int SOCK_DGRAM = 2;
 	int SOL_SOCKET = OSType.getOSType() == OSType.MacOS ? 0xffff : 1;
 	int IPPROTO_ICMP = 1;
+	int SO_SNDTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1005 : 21;
 	int SO_RCVTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1006 : 20;
 
 	int socket(int domain, int type, int protocol);

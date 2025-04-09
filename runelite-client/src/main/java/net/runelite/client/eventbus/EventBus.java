@@ -100,7 +100,7 @@ public class EventBus
 	{
 		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
 		builder.putAll(subscribers);
-		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
+		builder.orderValuesBy(Comparator.comparingDouble(Subscriber::getPriority).reversed()
 			.thenComparing(s -> s.object.getClass().getName()));
 
 		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
@@ -171,7 +171,7 @@ public class EventBus
 	{
 		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
 		builder.putAll(subscribers);
-		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority).reversed()
+		builder.orderValuesBy(Comparator.comparingDouble(Subscriber::getPriority).reversed()
 			.thenComparing(s -> s.object.getClass().getName()));
 
 		Subscriber sub = new Subscriber(subFn, null, priority, (Consumer<Object>) subFn);

@@ -30,11 +30,12 @@ import java.util.Properties;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
-import okhttp3.HttpUrl;
 
 public class RuneLiteProperties
 {
 	private static final String RUNELITE_VERSION = "runelite.version";
+	private static final String RUNELITE_COMMIT = "runelite.commit";
+	private static final String RUNELITE_DIRTY = "runelite.dirty";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
 	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
 	private static final String INSECURE_SKIP_TLS_VERIFICATION_PROPERTY = "runelite.insecure-skip-tls-verification";
@@ -43,8 +44,10 @@ public class RuneLiteProperties
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
 	private static final String JAV_CONFIG = "runelite.jav_config";
 	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
-	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
 	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
+	private static final String API_BASE = "runelite.api.base";
+	private static final String RUNELITE_CONFIG = "runelite.config";
+	private static final String OSRS_TWITTER_LINK = "runelite.osrstwitter.link";
 
 	@Getter(AccessLevel.PACKAGE)
 	private static final Properties properties = new Properties();
@@ -64,6 +67,16 @@ public class RuneLiteProperties
 	public static String getVersion()
 	{
 		return properties.getProperty(RUNELITE_VERSION);
+	}
+
+	public static String getCommit()
+	{
+		return properties.getProperty(RUNELITE_COMMIT);
+	}
+
+	public static boolean isDirty()
+	{
+		return Boolean.parseBoolean(properties.getProperty(RUNELITE_DIRTY));
 	}
 
 	public static String getDiscordInvite()
@@ -107,9 +120,23 @@ public class RuneLiteProperties
 		return properties.getProperty(JAV_CONFIG_BACKUP);
 	}
 
-	public static HttpUrl getPluginHubBase()
+	public static String getPluginHubVersion()
 	{
-		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
-		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
+		return System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
+	}
+
+	public static String getApiBase()
+	{
+		return properties.getProperty(API_BASE);
+	}
+
+	public static String getRuneLiteConfig()
+	{
+		return properties.getProperty(RUNELITE_CONFIG);
+	}
+
+	public static String getOSRSTwitterLink()
+	{
+		return properties.getProperty(OSRS_TWITTER_LINK);
 	}
 }

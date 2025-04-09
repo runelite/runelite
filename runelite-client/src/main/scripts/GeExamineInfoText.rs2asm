@@ -1,0 +1,216 @@
+; script used to position the ge buy offer "Convenience fee" info icon as well as set the
+; examine text
+; component0 = text component for the examine text
+; component1 = parent of the info icon
+; string0 = item examine
+; string1 = Convenience fee text
+.id                 5730
+.int_stack_count    2
+.string_stack_count 2
+.int_var_count      6
+.string_var_count   3
+   sconst                 ""
+   sstore                 2
+   iconst                 0
+   istore                 2
+   iconst                 0
+   istore                 3
+   iconst                 0
+   istore                 4
+   iconst                 5
+   istore                 5
+   sload                  1
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL15
+   jump                   LABEL149
+LABEL15:
+   iload                  0
+   if_getwidth           
+   istore                 2
+   invoke                 6811
+   iconst                 1
+   if_icmpeq              LABEL22
+   jump                   LABEL25
+LABEL22:
+   sload                  0
+   sstore                 2
+   jump                   LABEL44
+LABEL25:
+   sload                  0
+   iload                  2
+   iconst                 494
+   paraheight            
+   iconst                 2
+   if_icmple              LABEL32
+   jump                   LABEL39
+LABEL32:
+   sload                  0
+   sconst                 "<br>"
+   sconst                 "<br>"
+   sload                  1
+   join_string            4
+   sstore                 2
+   jump                   LABEL44
+LABEL39:
+   sload                  0
+   sconst                 "<br>"
+   sload                  1
+   join_string            3
+   sstore                 2
+LABEL44:
+
+   sload                  0 ; examine
+   sload                  1 ; Convenience fee
+   sload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
+   sconst                 "geSellExamineText"
+   runelite_callback     
+   sstore                 2 ; final text
+   pop_string               ; Convenience fee
+   pop_string               ; examine
+
+   iload                  0
+   if_getx               
+   sload                  1
+   iload                  2
+   iconst                 494
+   parawidth             
+   add                   
+   iconst                 5
+   add                   
+   iload                  0
+   if_gety               
+   sload                  2
+   iload                  2
+   iconst                 494
+   paraheight            
+   iconst                 15
+   multiply              
+   add                   
+   iconst                 2
+   add                   
+   istore                 4
+   istore                 3
+   iload                  3
+   iload                  1
+   if_getwidth           
+   iload                  5
+   sub                   
+   iconst                 2
+   div                   
+   sub                   
+   iload                  4
+   iconst                 11
+   iload                  1
+   if_getheight          
+   iconst                 2
+   div                   
+   add                   
+   sub                   
+   istore                 4
+   istore                 3
+   iload                  3
+   iload                  4
+   iconst                 0
+   iconst                 0
+   iload                  1
+   if_setposition        
+   invoke                 6811
+   iconst                 1
+   if_icmpeq              LABEL94
+   jump                   LABEL98
+LABEL94:
+   iconst                 1
+   iload                  1
+   if_sethide            
+   jump                   LABEL148
+LABEL98:
+   iconst                 0
+   iload                  1
+   if_sethide            
+   iload                  1
+   cc_deleteall          
+   iload                  1
+   iconst                 5
+   iconst                 0
+   iconst                 0
+   cc_create             
+   iconst                 15
+   iconst                 15
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 1
+   iconst                 1
+   cc_setposition        
+   iconst                 1094
+   cc_setgraphic         
+   iconst                 50
+   cc_settrans           
+   iconst                 244
+   iconst                 -2147483645
+   cc_getid              
+   iconst                 0
+   iconst                 -1
+   sconst                 "IiiI"
+   iload                  1
+   if_setonmouserepeat   
+   iconst                 244
+   iconst                 -2147483645
+   cc_getid              
+   iconst                 50
+   iconst                 -1
+   sconst                 "IiiI"
+   iload                  1
+   if_setonmouseleave    
+   iconst                 489
+   iconst                 -2147483644
+   iconst                 2
+   sconst                 "ii"
+   iload                  1
+   if_setonop            
+   iconst                 1
+   sconst                 "Info"
+   iload                  1
+   if_setop              
+LABEL148:
+   jump                   LABEL170
+LABEL149:
+   sload                  0
+   sstore                 2
+
+   sload                  0 ; examine
+   sload                  1 ; ""
+   sload                  2 ; examine
+   sconst                 "geBuyExamineText"
+   runelite_callback     
+   sstore                 2 ; final text
+   pop_string               ; ""
+   pop_string               ; examine
+
+   iconst                 1
+   iload                  1
+   if_sethide            
+   iload                  1
+   cc_deleteall          
+   iconst                 -1
+   sconst                 ""
+   iload                  1
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iload                  1
+   if_setonmouseleave    
+   iconst                 -1
+   sconst                 ""
+   iload                  1
+   if_setonop            
+   iload                  1
+   if_clearops           
+LABEL170:
+   sload                  2
+   iload                  0
+   if_settext            
+   return                

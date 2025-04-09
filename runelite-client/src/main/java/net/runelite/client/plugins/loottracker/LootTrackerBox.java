@@ -50,7 +50,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -72,6 +72,7 @@ class LootTrackerBox extends JPanel
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
+	@Getter(AccessLevel.PACKAGE)
 	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
@@ -241,8 +242,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice / kills) + " gp (average)");
 		}
 
-		validate();
-		repaint();
+		revalidate();
 	}
 
 	void collapse()
@@ -316,6 +316,7 @@ class LootTrackerBox extends JPanel
 		itemContainer.removeAll();
 		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
+		final EmptyBorder emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
 			final JPanel slotContainer = new JPanel();
@@ -333,13 +334,11 @@ class LootTrackerBox extends JPanel
 
 				if (item.isIgnored())
 				{
-					Runnable addTransparency = () ->
+					itemImage.onLoaded(() ->
 					{
 						BufferedImage transparentImage = ImageUtil.alphaOffset(itemImage, .3f);
 						imageLabel.setIcon(new ImageIcon(transparentImage));
-					};
-					itemImage.onLoaded(addTransparency);
-					addTransparency.run();
+					});
 				}
 				else
 				{
@@ -350,7 +349,7 @@ class LootTrackerBox extends JPanel
 
 				// Create popup menu
 				final JPopupMenu popupMenu = new JPopupMenu();
-				popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+				popupMenu.setBorder(emptyBorder);
 				slotContainer.setComponentPopupMenu(popupMenu);
 
 				final JMenuItem toggle = new JMenuItem("Toggle item");
@@ -366,7 +365,7 @@ class LootTrackerBox extends JPanel
 			itemContainer.add(slotContainer);
 		}
 
-		itemContainer.repaint();
+		itemContainer.revalidate();
 	}
 
 	private static String buildToolTip(LootTrackerItem item)
@@ -378,7 +377,7 @@ class LootTrackerBox extends JPanel
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
 		final StringBuilder sb = new StringBuilder("<html>");
 		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
-		if (item.getId() == ItemID.COINS_995)
+		if (item.getId() == ItemID.COINS)
 		{
 			sb.append("</html>");
 			return sb.toString();
@@ -390,7 +389,7 @@ class LootTrackerBox extends JPanel
 			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
 		}
 
-		if (item.getId() == ItemID.PLATINUM_TOKEN)
+		if (item.getId() == ItemID.PLATINUM)
 		{
 			sb.append("</html>");
 			return sb.toString();

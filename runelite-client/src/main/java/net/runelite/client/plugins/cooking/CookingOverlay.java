@@ -32,15 +32,13 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.COOKING_FIRE;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -50,7 +48,7 @@ class CookingOverlay extends OverlayPanel
 {
 	private static final int COOK_TIMEOUT = 3;
 	private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
-	static final String COOKING_RESET = "Reset";
+	private static final String COOKING_RESET = "Reset";
 
 	private final Client client;
 	private final CookingPlugin plugin;
@@ -64,8 +62,8 @@ class CookingOverlay extends OverlayPanel
 		this.client = client;
 		this.plugin = plugin;
 		this.xpTrackerService = xpTrackerService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, COOKING_RESET, "Cooking overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay");
+		addMenuEntry(RUNELITE_OVERLAY, COOKING_RESET, "Cooking overlay", e -> plugin.setSession(null));
 	}
 
 	@Override
@@ -109,8 +107,8 @@ class CookingOverlay extends OverlayPanel
 	{
 		switch (client.getLocalPlayer().getAnimation())
 		{
-			case COOKING_FIRE:
-			case COOKING_RANGE:
+			case AnimationID.HUMAN_FIRECOOKING:
+			case AnimationID.HUMAN_COOKING:
 				return true;
 			default:
 				return false;

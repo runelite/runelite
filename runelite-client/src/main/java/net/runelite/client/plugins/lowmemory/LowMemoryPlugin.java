@@ -57,10 +57,16 @@ public class LowMemoryPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
+		clientThread.invoke(() ->
 		{
-			clientThread.invoke(() -> client.changeMemoryMode(config.lowDetail()));
-		}
+			// When the client starts it initializes the texture size based on the memory mode setting.
+			// Don't set low memory before the login screen is ready to prevent loading the low detail textures,
+			// which breaks the gpu plugin due to it requiring the 128x128px textures
+			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
+			{
+				client.changeMemoryMode(config.lowDetail());
+			}
+		});
 	}
 
 	@Override
@@ -76,23 +82,30 @@ public class LowMemoryPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (configChanged.getGroup().equals(LowMemoryConfig.GROUP))
+		if (gameStateChanged.getGameState() == GameState.STARTING)
 		{
-			clientThread.invoke(() -> client.changeMemoryMode(config.lowDetail()));
+			client.changeMemoryMode(false);
+		}
+		else if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			client.changeMemoryMode(config.lowDetail());
 		}
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		// When the client starts it initializes the texture size based on the memory mode setting.
-		// Don't set low memory before the login screen is ready to prevent loading the low detail textures,
-		// which breaks the gpu plugin due to it requiring the 128x128px textures
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		if (configChanged.getGroup().equals(LowMemoryConfig.GROUP))
 		{
-			client.changeMemoryMode(config.lowDetail());
+			clientThread.invoke(() ->
+			{
+				if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
+				{
+					client.changeMemoryMode(config.lowDetail());
+				}
+			});
 		}
 	}
 

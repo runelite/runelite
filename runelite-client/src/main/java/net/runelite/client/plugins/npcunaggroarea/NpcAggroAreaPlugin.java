@@ -40,24 +40,29 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.slayer.SlayerPlugin;
+import net.runelite.client.plugins.slayer.SlayerPluginService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.WildcardMatcher;
@@ -68,6 +73,7 @@ import net.runelite.client.util.WildcardMatcher;
 	tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "slayer"},
 	enabledByDefault = false
 )
+@PluginDependency(SlayerPlugin.class)
 public class NpcAggroAreaPlugin extends Plugin
 {
 	/*
@@ -82,7 +88,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private static final int SAFE_AREA_RADIUS = 10;
 	private static final int UNKNOWN_AREA_RADIUS = SAFE_AREA_RADIUS * 2;
-	private static final int AGGRESSIVE_TIME_SECONDS = 600;
+	private static final Duration AGGRESSIVE_TIME_DURATION = Duration.ofSeconds(600);
 	private static final Splitter NAME_SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
 	private static final WorldArea WILDERNESS_ABOVE_GROUND = new WorldArea(2944, 3523, 448, 448, 0);
 	private static final WorldArea WILDERNESS_UNDERGROUND = new WorldArea(2944, 9918, 320, 442, 0);
@@ -91,13 +97,13 @@ public class NpcAggroAreaPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private NpcAggroAreaConfig config;
 
 	@Inject
 	private NpcAggroAreaOverlay overlay;
-
-	@Inject
-	private NpcAggroAreaNotWorkingOverlay notWorkingOverlay;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -114,6 +120,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private SlayerPluginService slayerPluginService;
+
 	@Getter
 	private final WorldPoint[] safeCenters = new WorldPoint[2];
 
@@ -124,7 +133,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	private boolean active;
 
 	@Getter
-	private AggressionTimer currentTimer;
+	private Instant endTime;
 
 	private WorldPoint lastPlayerLocation;
 	private WorldPoint previousUnknownCenter;
@@ -143,9 +152,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(notWorkingOverlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-		recheckActive();
+		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ARCEUUS_CORPSE_DEMON_INITIAL), this));
+		clientThread.invokeLater(this::scanNpcs);
 	}
 
 	@Override
@@ -153,10 +162,10 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		removeTimer();
 		overlayManager.remove(overlay);
-		overlayManager.remove(notWorkingOverlay);
+		infoBoxManager.removeIf(UncalibratedInfobox.class::isInstance);
 		Arrays.fill(safeCenters, null);
 		lastPlayerLocation = null;
-		currentTimer = null;
+		endTime = null;
 		loggingIn = false;
 		npcNamePatterns = null;
 		active = false;
@@ -188,19 +197,9 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void transformWorldToLocal(float[] coords)
 	{
-		final LocalPoint lp = LocalPoint.fromWorld(client, (int)coords[0], (int)coords[1]);
+		final LocalPoint lp = LocalPoint.fromWorld(client, (int) coords[0], (int) coords[1]);
 		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2f;
 		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2f;
-	}
-
-	private void reevaluateActive()
-	{
-		if (currentTimer != null)
-		{
-			currentTimer.setVisible(active && config.showTimer());
-		}
-
-		calculateLinesToDisplay();
 	}
 
 	private void calculateLinesToDisplay()
@@ -227,23 +226,29 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void removeTimer()
 	{
-		infoBoxManager.removeInfoBox(currentTimer);
-		currentTimer = null;
+		infoBoxManager.removeIf(t -> t instanceof AggressionTimer);
+		endTime = null;
 		notifyOnce = false;
 	}
 
 	private void createTimer(Duration duration)
 	{
 		removeTimer();
-		BufferedImage image = itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD);
-		currentTimer = new AggressionTimer(duration, image, this, active && config.showTimer());
-		infoBoxManager.addInfoBox(currentTimer);
+		endTime = Instant.now().plus(duration);
 		notifyOnce = true;
+
+		if (duration.isNegative())
+		{
+			return;
+		}
+
+		BufferedImage image = itemManager.getImage(ItemID.ARCEUUS_CORPSE_DEMON_INITIAL);
+		infoBoxManager.addInfoBox(new AggressionTimer(duration, image, this));
 	}
 
 	private void resetTimer()
 	{
-		createTimer(Duration.ofSeconds(AGGRESSIVE_TIME_SECONDS));
+		createTimer(AGGRESSIVE_TIME_DURATION);
 	}
 
 	private static boolean isInWilderness(WorldPoint location)
@@ -274,6 +279,15 @@ public class NpcAggroAreaPlugin extends Plugin
 			return false;
 		}
 
+		if (config.showOnSlayerTask())
+		{
+			List<NPC> targets = slayerPluginService.getTargets();
+			if (targets.contains(npc))
+			{
+				return true;
+			}
+		}
+
 		for (String pattern : npcNamePatterns)
 		{
 			if (WildcardMatcher.matches(pattern, npcName))
@@ -285,40 +299,48 @@ public class NpcAggroAreaPlugin extends Plugin
 		return false;
 	}
 
-	private void checkAreaNpcs(final NPC... npcs)
+	private void scanNpcs()
 	{
-		for (NPC npc : npcs)
-		{
-			if (npc == null)
-			{
-				continue;
-			}
-
-			if (isNpcMatch(npc))
-			{
-				active = true;
-				break;
-			}
-		}
-
-		reevaluateActive();
-	}
-
-	private void recheckActive()
-	{
-		active = config.alwaysActive();
-		checkAreaNpcs(client.getCachedNPCs());
-	}
-
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
-	{
-		if (config.alwaysActive())
+		WorldView wv = client.getTopLevelWorldView();
+		if (wv == null)
 		{
 			return;
 		}
 
-		checkAreaNpcs(event.getNpc());
+		active = config.alwaysActive();
+		if (!active)
+		{
+			for (NPC npc : wv.npcs())
+			{
+				if (npc == null)
+				{
+					continue;
+				}
+
+				if (isNpcMatch(npc))
+				{
+					active = true;
+					break;
+				}
+			}
+		}
+
+		calculateLinesToDisplay();
+	}
+
+	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (active)
+		{
+			return;
+		}
+
+		if (isNpcMatch(event.getNpc()))
+		{
+			active = true;
+			calculateLinesToDisplay();
+		}
 	}
 
 	@Subscribe
@@ -326,12 +348,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (active && currentTimer != null && currentTimer.cull() && notifyOnce)
+		if (active && notifyOnce && Instant.now().isAfter(endTime))
 		{
-			if (config.notifyExpire())
-			{
-				notifier.notify("NPC aggression has expired!");
-			}
+			notifier.notify(config.notifyExpire(), "NPC aggression has expired!");
 
 			notifyOnce = false;
 		}
@@ -385,13 +404,8 @@ public class NpcAggroAreaPlugin extends Plugin
 		switch (key)
 		{
 			case "npcUnaggroAlwaysActive":
-				recheckActive();
-				break;
-			case "npcUnaggroShowTimer":
-				if (currentTimer != null)
-				{
-					currentTimer.setVisible(active && config.showTimer());
-				}
+			case "showOnSlayerTask":
+				clientThread.invokeLater(this::scanNpcs);
 				break;
 			case "npcUnaggroCollisionDetection":
 			case "npcUnaggroShowAreaLines":
@@ -399,19 +413,24 @@ public class NpcAggroAreaPlugin extends Plugin
 				break;
 			case "npcUnaggroNames":
 				npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
-				recheckActive();
+				clientThread.invokeLater(this::scanNpcs);
 				break;
 		}
 	}
 
+	boolean shouldDisplayTimer()
+	{
+		return active && config.showTimer();
+	}
+
 	private void loadConfig()
 	{
-		safeCenters[0] = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, WorldPoint.class);
-		safeCenters[1] = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, WorldPoint.class);
-		lastPlayerLocation = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, WorldPoint.class);
+		safeCenters[0] = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, WorldPoint.class);
+		safeCenters[1] = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, WorldPoint.class);
+		lastPlayerLocation = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, WorldPoint.class);
 
-		Duration timeLeft = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.class);
-		if (timeLeft != null && !timeLeft.isNegative())
+		Duration timeLeft = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.class);
+		if (timeLeft != null)
 		{
 			createTimer(timeLeft);
 		}
@@ -419,24 +438,24 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void resetConfig()
 	{
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION);
 	}
 
 	private void saveConfig()
 	{
-		if (safeCenters[0] == null || safeCenters[1] == null || lastPlayerLocation == null || currentTimer == null)
+		if (safeCenters[0] == null || safeCenters[1] == null || lastPlayerLocation == null || endTime == null)
 		{
 			resetConfig();
 		}
 		else
 		{
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, safeCenters[0]);
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, safeCenters[1]);
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, lastPlayerLocation);
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.between(Instant.now(), currentTimer.getEndTime()));
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, safeCenters[0]);
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, safeCenters[1]);
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, lastPlayerLocation);
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.between(Instant.now(), endTime));
 		}
 	}
 
@@ -470,7 +489,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				recheckActive();
+				scanNpcs();
 				break;
 
 			case LOGGING_IN:
@@ -486,6 +505,7 @@ public class NpcAggroAreaPlugin extends Plugin
 				safeCenters[0] = null;
 				safeCenters[1] = null;
 				lastPlayerLocation = null;
+				endTime = null;
 				break;
 		}
 	}

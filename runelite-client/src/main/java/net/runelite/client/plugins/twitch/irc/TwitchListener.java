@@ -28,7 +28,7 @@ import java.util.Map;
 
 public interface TwitchListener
 {
-	void privmsg(Map<String, String> tags, String message);
+	void privmsg(String source, Map<String, String> tags, String message);
 
 	void roomstate(Map<String, String> tags);
 

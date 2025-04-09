@@ -68,7 +68,9 @@ public class SuperRestore implements Effect
 					return calc.effect(client);
 				})
 			).toArray(StatChange[]::new));
-		changes.setPositivity(Stream.of(changes.getStatChanges()).map(sc -> sc.getPositivity()).max(Comparator.comparing(Enum::ordinal)).get());
+		changes.setPositivity(Stream.of(changes.getStatChanges())
+			.map(sc -> sc.getPositivity())
+			.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 

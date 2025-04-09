@@ -34,13 +34,9 @@ import net.runelite.cache.util.BZip2;
 import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.GZip;
 import net.runelite.cache.util.Xtea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Container
 {
-	private static final Logger logger = LoggerFactory.getLogger(Container.class);
-
 	public byte[] data;
 	public int compression; // compression
 	public int revision;
@@ -88,6 +84,10 @@ public class Container
 		}
 
 		this.data = stream.flip();
+
+		Crc32 crc32 = new Crc32();
+		crc32.update(this.data, 0, this.data.length - (revision != -1 ? 2 : 0));
+		this.crc = crc32.getHash();
 	}
 
 	public static Container decompress(byte[] b, int[] keys) throws IOException
@@ -96,7 +96,7 @@ public class Container
 
 		int compression = stream.readUnsignedByte();
 		int compressedLength = stream.readInt();
-		if (compressedLength < 0 || compressedLength > 1000000)
+		if (compressedLength < 0)
 		{
 			throw new RuntimeException("Invalid data");
 		}
@@ -144,12 +144,6 @@ public class Container
 
 				int decompressedLength = stream.readInt();
 				data = BZip2.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
 				assert data.length == decompressedLength;
 
 				break;
@@ -172,12 +166,6 @@ public class Container
 
 				int decompressedLength = stream.readInt();
 				data = GZip.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
 				assert data.length == decompressedLength;
 
 				break;

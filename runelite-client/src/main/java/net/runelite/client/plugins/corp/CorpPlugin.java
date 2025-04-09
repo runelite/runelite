@@ -35,17 +35,19 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -66,6 +68,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class CorpPlugin extends Plugin
 {
+	private static final String ATTACK = "Attack";
+	private static final String DARK_ENERGY_CORE = "Dark energy core";
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
 
@@ -79,9 +84,6 @@ public class CorpPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<Actor> players = new HashSet<>();
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -153,14 +155,14 @@ public class CorpPlugin extends Plugin
 
 		switch (npc.getId())
 		{
-			case NpcID.CORPOREAL_BEAST:
+			case NpcID.CORP_BEAST:
 				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
 				yourDamage = 0;
 				totalDamage = 0;
 				players.clear();
 				break;
-			case NpcID.DARK_ENERGY_CORE:
+			case NpcID.DARK_CORE:
 				core = npc;
 				break;
 		}
@@ -233,14 +235,34 @@ public class CorpPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (corp != null)
+		if (corp != null && varbitChanged.getVarbitId() == VarbitID.CORP_BEAST_DAMAGE)
 		{
-			int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+			int myDamage = varbitChanged.getValue();
 			// avoid resetting our counter when the client's is reset
 			if (myDamage > 0)
 			{
 				yourDamage = myDamage;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		final MenuEntry menuEntry = menuEntryAdded.getMenuEntry();
+		final NPC npc = menuEntry.getNpc();
+		if (npc == null || !DARK_ENERGY_CORE.equals(npc.getName()))
+		{
+			return;
+		}
+
+		if (menuEntry.getType() != MenuAction.NPC_SECOND_OPTION
+			|| !menuEntry.getOption().equals(ATTACK)
+			|| !config.leftClickCore())
+		{
+			return;
+		}
+
+		menuEntry.setDeprioritized(true);
 	}
 }
