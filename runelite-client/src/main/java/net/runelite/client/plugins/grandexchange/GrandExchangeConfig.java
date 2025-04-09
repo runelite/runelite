@@ -86,7 +86,7 @@ public interface GrandExchangeConfig extends Config
 	)
 	default boolean showHighAlchValue()
 	{
-		return true;
+		return false;
 	}
 	
 	@ConfigItem(
