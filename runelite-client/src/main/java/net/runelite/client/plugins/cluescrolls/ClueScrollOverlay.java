@@ -69,6 +69,7 @@ public class ClueScrollOverlay extends OverlayPanel
 		item(KANDARIN_HEADGEAR_3),
 		item(KANDARIN_HEADGEAR_4),
 		item(BRUMA_TORCH),
+		item(BRUMA_TORCH_OFFHAND),
 		item(MAX_CAPE),
 		item(MAX_CAPE_13342),
 		item(ABYSSAL_LANTERN_NORMAL_LOGS),
