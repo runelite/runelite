@@ -941,6 +941,14 @@ public final class Varbits
 	public static final int CURSE_OF_THE_MOONS = 9853;
 
 	/**
+	 * Moons of Peril boss death status
+	 * 0=alive 1=dead
+	 */
+	public static final int MOON_BOSS_BLOOD_DEAD = 9858;
+	public static final int MOON_BOSS_BLUE_DEAD = 9859;
+	public static final int MOON_BOSS_ECLIPSE_DEAD = 9860;
+
+	/**
 	 * The amount of Doom stacks received in the Fortis Colosseum.
 	 */
 	public static final int COLOSSEUM_DOOM = 9801;
