@@ -461,7 +461,7 @@ public class ClueScrollPlugin extends Plugin
 			clueItemId = itemId;
 			updateClue(clueScroll);
 		}
-		else if (itemId != ItemID.CLUE_SCROLL_BEGINNER && itemId != ItemID.CLUE_SCROLL_MASTER)
+		else if (itemId != ItemID.TRAIL_CLUE_BEGINNER && itemId != ItemID.TRAIL_CLUE_MASTER)
 		{
 			// Item is a valid clue which should be identifiable by ID, but is not associated with any ClueScroll
 			log.info("Unknown clue scroll for id '{}'", itemId);
@@ -919,7 +919,7 @@ public class ClueScrollPlugin extends Plugin
 
 	private ClueScroll findClueScroll(int itemId)
 	{
-		if (itemId == ItemID.CLUE_SCROLL_BEGINNER || itemId == ItemID.CLUE_SCROLL_MASTER)
+		if (itemId == ItemID.TRAIL_CLUE_BEGINNER || itemId == ItemID.TRAIL_CLUE_MASTER)
 		{
 			return null;
 		}

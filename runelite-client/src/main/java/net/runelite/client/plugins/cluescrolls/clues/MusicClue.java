@@ -33,9 +33,9 @@ import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -53,30 +53,30 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	private static final Pattern SONG_PATTERN = Pattern.compile("<col=ffffff>([A-Za-z !&',.]+)</col>");
 
 	static final List<MusicClue> CLUES = ImmutableList.of(
-		new MusicClue(ItemID.CLUE_SCROLL_EASY_23155, "Vision"),
-		new MusicClue(ItemID.CLUE_SCROLL_EASY_23156, "The Forlorn Homestead"),
-		new MusicClue(ItemID.CLUE_SCROLL_EASY_23157, "Tiptoe"),
-		new MusicClue(ItemID.CLUE_SCROLL_EASY_23158, "Rugged Terrain"),
-		new MusicClue(ItemID.CLUE_SCROLL_EASY_23159, "On the Shore"),
-		new MusicClue(ItemID.CLUE_SCROLL_EASY_23160, "Alone"),
-		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23138, "Karamja Jam"),
-		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23139, "Faerie"),
-		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23140, "Forgotten"),
-		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23141, "Catch Me If You Can"),
-		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23142, "Cave of Beasts"),
-		new MusicClue(ItemID.CLUE_SCROLL_MEDIUM_23143, "Devils May Care"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23174, "Scorpia Dances"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23175, "Complication"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23176, "Subterranea"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23177, "Little Cave of Horrors"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23178, "Roc and Roll"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23179, "La Mort"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23180, "Fossilised"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_23181, "Hells Bells"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_25792, "Regal Pomp"),
-		new MusicClue(ItemID.CLUE_SCROLL_HARD_28918, "The Moons of Ruin"),
-		new MusicClue(ItemID.CLUE_SCROLL_ELITE_24773, "Lament for the Hallowed"),
-		new MusicClue(ItemID.CLUE_SCROLL_ELITE_26943, "The Pharaoh")
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC001, "Vision"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC002, "The Forlorn Homestead"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC003, "Tiptoe"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC004, "Rugged Terrain"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC005, "On the Shore"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC006, "Alone"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC001, "Karamja Jam"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC002, "Faerie"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC003, "Forgotten"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC004, "Catch Me If You Can"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC005, "Cave of Beasts"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC006, "Devils May Care"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC001, "Scorpia Dances"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC002, "Complication"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC003, "Subterranea"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC004, "Little Cave of Horrors"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC005, "Roc and Roll"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC006, "La Mort"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC007, "Fossilised"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC008, "Hells Bells"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC009, "Regal Pomp"),
+		new MusicClue(ItemID.TRAIL_HARD_MUSIC_VM01, "The Moons of Ruin"),
+		new MusicClue(ItemID.TRAIL_CLUE_ELITE_MUSIC001, "Lament for the Hallowed"),
+		new MusicClue(ItemID.TRAIL_CLUE_ELITE_MUSIC002, "The Pharaoh")
 		);
 
 	private final int itemId;
