@@ -27,16 +27,16 @@ package net.runelite.client.plugins.barbarianassault;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 
 @AllArgsConstructor
 @Getter
 enum Role
 {
-	ATTACKER(ComponentID.BA_ATTACKER_ROLE, ComponentID.BA_ATTACKER_ROLE_SPRITE),
-	DEFENDER(ComponentID.BA_DEFENDER_ROLE, ComponentID.BA_DEFENDER_ROLE_SPRITE),
-	COLLECTOR(ComponentID.BA_COLLECTOR_ROLE, ComponentID.BA_COLLECTOR_ROLE_SPRITE),
-	HEALER(ComponentID.BA_HEALER_ROLE, ComponentID.BA_HEALER_ROLE_SPRITE);
+	ATTACKER(InterfaceID.BarbassaultOverAtt.BARBASSAULT_ATTACKER_HORN_TEXT, InterfaceID.BarbassaultOverAtt.BARBASSAULT_ATTACKER_HORN),
+	DEFENDER(InterfaceID.BarbassaultOverDef.BARBASSAULT_DEFENDER_HORN_TEXT, InterfaceID.BarbassaultOverDef.BARBASSAULT_DEFENDER_HORN),
+	COLLECTOR(InterfaceID.BarbassaultOverCol.BARBASSAULT_COLLECTOR_HORN_TEXT, InterfaceID.BarbassaultOverCol.BARBASSAULT_COLLECTOR_HORN),
+	HEALER(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_HORN_TEXT, InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_HORN);
 
 	@Component
 	private final int roleText;

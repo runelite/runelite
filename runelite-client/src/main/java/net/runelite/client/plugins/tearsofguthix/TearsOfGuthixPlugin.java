@@ -32,10 +32,10 @@ import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.ObjectID;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -99,10 +99,10 @@ public class TearsOfGuthixPlugin extends Plugin
 	{
 		DecorativeObject object = event.getDecorativeObject();
 
-		if (object.getId() == ObjectID.BLUE_TEARS ||
-			object.getId() == ObjectID.BLUE_TEARS_6665 ||
-			object.getId() == ObjectID.GREEN_TEARS ||
-			object.getId() == ObjectID.GREEN_TEARS_6666)
+		if (object.getId() == ObjectID.TOG_WEEPING_WALL_GOOD_R ||
+			object.getId() == ObjectID.TOG_WEEPING_WALL_GOOD_L ||
+			object.getId() == ObjectID.TOG_WEEPING_WALL_BAD_R ||
+			object.getId() == ObjectID.TOG_WEEPING_WALL_BAD_L)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{

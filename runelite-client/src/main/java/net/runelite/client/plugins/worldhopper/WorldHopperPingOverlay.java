@@ -30,7 +30,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -76,7 +76,7 @@ class WorldHopperPingOverlay extends Overlay
 		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
 
 		// Adjust ping offset for logout button
-		Widget logoutButton = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON);
+		Widget logoutButton = client.getWidget(InterfaceID.ToplevelPreEoc.ICON10);
 		int xOffset = X_OFFSET;
 		if (logoutButton != null && !logoutButton.isHidden())
 		{

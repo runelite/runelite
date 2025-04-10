@@ -37,19 +37,19 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.*;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -75,13 +75,13 @@ public class RunEnergyPlugin extends Plugin
 	@Getter
 	private enum GracefulEquipmentSlot
 	{
-		HEAD(EquipmentInventorySlot.HEAD.getSlotIdx(), 3, GRACEFUL_HOOD),
-		BODY(EquipmentInventorySlot.BODY.getSlotIdx(), 4, GRACEFUL_TOP),
-		LEGS(EquipmentInventorySlot.LEGS.getSlotIdx(), 4, GRACEFUL_LEGS),
-		GLOVES(EquipmentInventorySlot.GLOVES.getSlotIdx(), 3, GRACEFUL_GLOVES),
-		BOOTS(EquipmentInventorySlot.BOOTS.getSlotIdx(), 3, GRACEFUL_BOOTS),
+		HEAD(EquipmentInventorySlot.HEAD.getSlotIdx(), 3, ItemID.GRACEFUL_HOOD),
+		BODY(EquipmentInventorySlot.BODY.getSlotIdx(), 4, ItemID.GRACEFUL_TOP),
+		LEGS(EquipmentInventorySlot.LEGS.getSlotIdx(), 4, ItemID.GRACEFUL_LEGS),
+		GLOVES(EquipmentInventorySlot.GLOVES.getSlotIdx(), 3, ItemID.GRACEFUL_GLOVES),
+		BOOTS(EquipmentInventorySlot.BOOTS.getSlotIdx(), 3, ItemID.GRACEFUL_BOOTS),
 		// Agility skill capes and the non-cosmetic Max capes also count for the Graceful set effect
-		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), 3, GRACEFUL_CAPE, AGILITY_CAPE, MAX_CAPE_13342);
+		CAPE(EquipmentInventorySlot.CAPE.getSlotIdx(), 3, ItemID.GRACEFUL_CAPE, ItemID.SKILLCAPE_AGILITY, ItemID.SKILLCAPE_MAX_WORN);
 
 		private final int index;
 		private final int boost;
@@ -166,8 +166,8 @@ public class RunEnergyPlugin extends Plugin
 
 	boolean isRingOfEnduranceEquipped()
 	{
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-		return equipment != null && equipment.count(RING_OF_ENDURANCE) == 1;
+		final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+		return equipment != null && equipment.count(ItemID.RING_OF_ENDURANCE) == 1;
 	}
 
 	@Subscribe
@@ -272,7 +272,7 @@ public class RunEnergyPlugin extends Plugin
 
 	private void setRunOrbText(String text)
 	{
-		Widget runOrbText = client.getWidget(ComponentID.MINIMAP_RUN_ORB_TEXT);
+		Widget runOrbText = client.getWidget(InterfaceID.Orbs.RUNENERGY_TEXT);
 
 		if (runOrbText != null)
 		{
@@ -294,7 +294,7 @@ public class RunEnergyPlugin extends Plugin
 		// 100% energy is 10000 energy units
 		int energyUnitsLost = (int) ((60 + (67 * effectiveWeight / 64)) * (1 - client.getBoostedSkillLevel(Skill.AGILITY) / 300.0));
 
-		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+		if (client.getVarbitValue(VarbitID.STAMINA_ACTIVE) != 0)
 		{
 			energyUnitsLost *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}
@@ -331,7 +331,7 @@ public class RunEnergyPlugin extends Plugin
 
 	private int getGracefulRecoveryBoost()
 	{
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 
 		if (equipment == null)
 		{
@@ -390,7 +390,7 @@ public class RunEnergyPlugin extends Plugin
 		}
 		lastCheckTick = currentTick;
 
-		final Widget widgetDestroyItemName = client.getWidget(ComponentID.DESTROY_ITEM_NAME);
+		final Widget widgetDestroyItemName = client.getWidget(InterfaceID.Confirmdestroy.NAME);
 		if (widgetDestroyItemName == null)
 		{
 			return;

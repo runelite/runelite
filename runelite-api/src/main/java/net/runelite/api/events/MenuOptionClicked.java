@@ -142,8 +142,7 @@ public class MenuOptionClicked
 	/**
 	 * If this menu entry is an item op, get the item id
 	 * @return
-	 * @see net.runelite.api.ItemID
-	 * @see net.runelite.api.NullItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	public int getItemId()
 	{

@@ -39,15 +39,14 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -121,13 +120,13 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		mouseManager.registerMouseListener(this);
 		clientThread.invoke(() ->
 		{
-			Widget sideSlider = client.getWidget(ComponentID.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			Widget sideSlider = client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER);
 			if (sideSlider != null)
 			{
 				addZoomTooltip(sideSlider);
 			}
 
-			Widget settingsInit = client.getWidget(ComponentID.SETTINGS_INIT);
+			Widget settingsInit = client.getWidget(InterfaceID.Settings.UNIVERSE);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
@@ -152,13 +151,13 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 		clientThread.invoke(() ->
 		{
-			Widget sideSlider = client.getWidget(ComponentID.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			Widget sideSlider = client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER);
 			if (sideSlider != null)
 			{
 				sideSlider.setOnMouseRepeatListener((Object[]) null);
 			}
 
-			Widget settingsInit = client.getWidget(ComponentID.SETTINGS_INIT);
+			Widget settingsInit = client.getWidget(InterfaceID.Settings.UNIVERSE);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
@@ -395,7 +394,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (ev.getGroupId() == InterfaceID.SETTINGS_SIDE)
 		{
-			addZoomTooltip(client.getWidget(ComponentID.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK));
+			addZoomTooltip(client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER));
 		}
 	}
 
@@ -431,7 +430,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
 		{
-			boolean oneButton = client.getVarpValue(VarPlayer.MOUSE_BUTTONS) == 1;
+			boolean oneButton = client.getVarpValue(VarPlayerID.OPTION_MOUSE) == 1;
 			// Only move the camera if there is nothing at the menu, or if
 			// in one-button mode. In one-button mode, left and right click always do the same thing,
 			// so always treat it as the menu is empty

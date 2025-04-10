@@ -40,7 +40,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
@@ -297,9 +297,9 @@ public class OverlayManager
 					break;
 				case ABOVE_WIDGETS:
 					// draw after each of the top level interfaces
-					overlayMap.put(InterfaceID.FIXED_VIEWPORT << 16 | 0xffff, overlay);
-					overlayMap.put(InterfaceID.RESIZABLE_VIEWPORT << 16 | 0xffff, overlay);
-					overlayMap.put(InterfaceID.RESIZABLE_VIEWPORT_BOTTOM_LINE << 16 | 0xffff, overlay);
+					overlayMap.put(InterfaceID.TOPLEVEL << 16 | 0xffff, overlay);
+					overlayMap.put(InterfaceID.TOPLEVEL_OSRS_STRETCH << 16 | 0xffff, overlay);
+					overlayMap.put(InterfaceID.TOPLEVEL_PRE_EOC << 16 | 0xffff, overlay);
 					break;
 			}
 

@@ -286,14 +286,14 @@ public interface Widget
 	/**
 	 * Gets the sequence ID used to animate the model in the widget
 	 *
-	 * @see net.runelite.api.AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getAnimationId();
 
 	/**
 	 * Sets the sequence ID used to animate the model in the widget
 	 *
-	 * @see net.runelite.api.AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	Widget setAnimationId(int animationId);
 
@@ -994,12 +994,12 @@ public interface Widget
 	void setNoScrollThrough(boolean noScrollThrough);
 
 	/**
-	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 * {@link net.runelite.api.gameval.VarPlayerID}s that triggers this widgets varTransmitListener
 	 */
 	int[] getVarTransmitTrigger();
 
 	/**
-	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 * {@link net.runelite.api.gameval.VarPlayerID}s that triggers this widgets varTransmitListener
 	 */
 	void setVarTransmitTrigger(int ...trigger);
 

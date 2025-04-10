@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Prayer;
 import net.runelite.api.SpriteID;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 
 @AllArgsConstructor
 @Getter
@@ -80,8 +80,8 @@ enum PrayerType
 		@Override
 		boolean isEnabled(Client client)
 		{
-			boolean inLms = client.getVarbitValue(Varbits.IN_LMS) != 0;
-			boolean deadeye = client.getVarbitValue(Varbits.PRAYER_DEADEYE_UNLOCKED) != 0;
+			boolean inLms = client.getVarbitValue(VarbitID.BR_INGAME) != 0;
+			boolean deadeye = client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED) != 0;
 			return deadeye && !inLms;
 		}
 	},
@@ -90,8 +90,8 @@ enum PrayerType
 		@Override
 		boolean isEnabled(Client client)
 		{
-			boolean inLms = client.getVarbitValue(Varbits.IN_LMS) != 0;
-			boolean vigour = client.getVarbitValue(Varbits.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0;
+			boolean inLms = client.getVarbitValue(VarbitID.BR_INGAME) != 0;
+			boolean vigour = client.getVarbitValue(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0;
 			return vigour && !inLms;
 		}
 	},

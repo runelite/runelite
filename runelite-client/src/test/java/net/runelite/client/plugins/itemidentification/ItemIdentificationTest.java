@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.itemidentification;
 
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

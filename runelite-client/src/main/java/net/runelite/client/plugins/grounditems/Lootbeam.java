@@ -27,7 +27,6 @@ package net.runelite.client.plugins.grounditems;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Animation;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.JagexColor;
 import net.runelite.api.Model;
@@ -36,6 +35,7 @@ import net.runelite.api.RuneLiteObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import java.awt.Color;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.callback.ClientThread;
 
 class Lootbeam
@@ -53,7 +53,7 @@ class Lootbeam
 			5809,
 			new short[]{6371},
 			new short[]{JagexColor.rgbToHSL(l.color.getRGB(), 1.0d)}
-		), anim(AnimationID.RAID_LIGHT_ANIMATION)),
+		), anim(AnimationID.ENAKH_LIGHT_STREAMING)),
 		MODERN(l ->
 		{
 			ModelData md = l.client.loadModelData(43330);
@@ -73,7 +73,7 @@ class Lootbeam
 				.recolor((short) 26584, JagexColor.packHSL(hue, sat, Math.min(lum + 24, JagexColor.LUMINANCE_MAX)))
 				.light(75 + ModelData.DEFAULT_AMBIENT, 1875 + ModelData.DEFAULT_CONTRAST,
 					ModelData.DEFAULT_X, ModelData.DEFAULT_Y, ModelData.DEFAULT_Z);
-		}, anim(AnimationID.LOOTBEAM_ANIMATION)),
+		}, anim(AnimationID.FX_BEAM_IDLE)),
 		;
 
 		private final Function<Lootbeam, Model> modelSupplier;

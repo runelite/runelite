@@ -34,14 +34,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -54,11 +53,11 @@ public class BlastMineRockOverlay extends Overlay
 	private static final int MAX_DISTANCE = 16;
 	private static final int WARNING_DISTANCE = 1;
 	private static final ImmutableSet<Integer> WALL_OBJECTS = ImmutableSet.of(
-		NullObjectID.NULL_28570, NullObjectID.NULL_28571, NullObjectID.NULL_28572, NullObjectID.NULL_28573, NullObjectID.NULL_28574,
-		NullObjectID.NULL_28575, NullObjectID.NULL_28576, NullObjectID.NULL_28577, NullObjectID.NULL_28578,
-		ObjectID.HARD_ROCK, ObjectID.HARD_ROCK_28580, ObjectID.CAVITY, ObjectID.CAVITY_28582,
-		ObjectID.POT_OF_DYNAMITE, ObjectID.POT_OF_DYNAMITE_28584, ObjectID.POT_OF_DYNAMITE_28585, ObjectID.POT_OF_DYNAMITE_28586,
-		ObjectID.SHATTERED_ROCKFACE, ObjectID.SHATTERED_ROCKFACE_28588);
+		ObjectID.BLAST_MINING_WALL_TYPE_TWO, ObjectID.BLAST_MINING_WALL_TYPE_THREE, ObjectID.BLAST_MINING_WALL_TYPE_FIVE, ObjectID.BLAST_MINING_ROOF_START_01, ObjectID.BLAST_MINING_ROOF_START_02,
+		ObjectID.BLAST_MINING_ROOF_FOR_TYPE_2_01, ObjectID.BLAST_MINING_ROOF_FOR_TYPE_2_02, ObjectID.BLAST_MINING_ROOF_FOR_TYPE_2_03, ObjectID.BLAST_MINING_ROOF_FOR_TYPE_3_01,
+		ObjectID.BLAST_MINING_WALL_01, ObjectID.BLAST_MINING_WALL_02, ObjectID.BLAST_MINING_WALL_CHISELED_01, ObjectID.BLAST_MINING_WALL_CHISELED_02,
+		ObjectID.BLAST_MINING_WALL_POT_01, ObjectID.BLAST_MINING_WALL_POT_02, ObjectID.BLAST_MINING_WALL_BURNING_01, ObjectID.BLAST_MINING_WALL_BURNING_02,
+		ObjectID.BLAST_MINING_WALL_DESTROYED_01, ObjectID.BLAST_MINING_WALL_DESTROYED_02);
 
 	private final Client client;
 	private final BlastMinePlugin plugin;
@@ -77,7 +76,7 @@ public class BlastMineRockOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		chiselIcon = itemManager.getImage(ItemID.CHISEL);
-		dynamiteIcon = itemManager.getImage(ItemID.DYNAMITE);
+		dynamiteIcon = itemManager.getImage(ItemID.LOVAKENGJ_DYNAMITE_FUSED);
 		tinderboxIcon = itemManager.getImage(ItemID.TINDERBOX);
 	}
 

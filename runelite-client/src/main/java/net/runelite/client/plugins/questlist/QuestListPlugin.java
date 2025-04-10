@@ -28,17 +28,17 @@ package net.runelite.client.plugins.questlist;
 import com.google.common.base.Strings;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.DBTableID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -81,7 +81,7 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		Widget header = client.getWidget(ComponentID.QUEST_LIST_BOX);
+		Widget header = client.getWidget(InterfaceID.Questlist.UNIVERSE);
 		if (header != null)
 		{
 			header.deleteAllChildren();
@@ -99,7 +99,7 @@ public class QuestListPlugin extends Plugin
 
 	private void addQuestButtons()
 	{
-		Widget header = client.getWidget(ComponentID.QUEST_LIST_BOX);
+		Widget header = client.getWidget(InterfaceID.Questlist.UNIVERSE);
 		if (header != null)
 		{
 			header.deleteAllChildren();
@@ -158,14 +158,14 @@ public class QuestListPlugin extends Plugin
 		final int intStackSize = client.getIntStackSize();
 
 		final int row = intStack[intStackSize - 1];
-		final String questName = (String) client.getDBTableField(row, DBTableID.Quest.NAME, 0)[0];
+		final String questName = (String) client.getDBTableField(row, DBTableID.Quest.COL_DISPLAYNAME, 0)[0];
 
 		intStack[intStackSize - 2] = questName.toLowerCase().contains(filter.toLowerCase()) ? 0 : 1;
 	}
 
 	private boolean isOnQuestTab()
 	{
-		return client.getVarbitValue(Varbits.QUEST_TAB) == 1 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVarbitValue(VarbitID.SIDE_JOURNAL_TAB) == 1 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
 	}
 
 	private boolean isChatboxOpen()
@@ -199,7 +199,7 @@ public class QuestListPlugin extends Plugin
 
 	private void redrawQuests()
 	{
-		Widget w = client.getWidget(ComponentID.QUEST_LIST_CONTAINER);
+		Widget w = client.getWidget(InterfaceID.Questlist.CONTAINER);
 		if (w == null)
 		{
 			return;

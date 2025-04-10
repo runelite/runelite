@@ -36,7 +36,7 @@ public interface Projectile extends Renderable
 	 * Gets the ID of the projectile.
 	 *
 	 * @return the projectile ID
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 */
 	int getId();
 

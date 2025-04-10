@@ -1837,4 +1837,6 @@ public final class SpriteID
 	public static final int HEALTHBAR_LAST_STAND_BACK = 5864;
 	/* Unmapped: 5865~6344 */
 	public static final int HISCORE_ROYAL_TITANS = 6345;
+	/* Unmapped: 6346~6389 */
+	public static final int HISCORE_COLLECTIONS_LOGGED = 6390;
 }

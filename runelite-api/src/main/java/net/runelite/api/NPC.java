@@ -35,7 +35,7 @@ public interface NPC extends Actor
 	 * Gets the ID of the NPC.
 	 *
 	 * @return the ID of the NPC
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 

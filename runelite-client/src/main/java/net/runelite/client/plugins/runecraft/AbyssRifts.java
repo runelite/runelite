@@ -29,38 +29,25 @@ import java.util.Map;
 import java.util.function.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import static net.runelite.api.ItemID.AIR_RUNE;
-import static net.runelite.api.ItemID.BLOOD_RUNE;
-import static net.runelite.api.ItemID.BODY_RUNE;
-import static net.runelite.api.ItemID.CHAOS_RUNE;
-import static net.runelite.api.ItemID.COSMIC_RUNE;
-import static net.runelite.api.ItemID.DEATH_RUNE;
-import static net.runelite.api.ItemID.EARTH_RUNE;
-import static net.runelite.api.ItemID.FIRE_RUNE;
-import static net.runelite.api.ItemID.LAW_RUNE;
-import static net.runelite.api.ItemID.MIND_RUNE;
-import static net.runelite.api.ItemID.NATURE_RUNE;
-import static net.runelite.api.ItemID.SOUL_RUNE;
-import static net.runelite.api.ItemID.WATER_RUNE;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 
 @AllArgsConstructor
 enum AbyssRifts
 {
-	AIR_RIFT(ObjectID.AIR_RIFT, AIR_RUNE, RunecraftConfig::showAir),
-	BLOOD_RIFT(NullObjectID.NULL_43848, BLOOD_RUNE, RunecraftConfig::showBlood),
-	BODY_RIFT(ObjectID.BODY_RIFT, BODY_RUNE, RunecraftConfig::showBody),
-	CHAOS_RIFT(ObjectID.CHAOS_RIFT, CHAOS_RUNE, RunecraftConfig::showChaos),
-	COSMIC_RIFT(ObjectID.COSMIC_RIFT, COSMIC_RUNE, RunecraftConfig::showCosmic),
-	DEATH_RIFT(ObjectID.DEATH_RIFT, DEATH_RUNE, RunecraftConfig::showDeath),
-	EARTH_RIFT(ObjectID.EARTH_RIFT, EARTH_RUNE, RunecraftConfig::showEarth),
-	FIRE_RIFT(ObjectID.FIRE_RIFT, FIRE_RUNE, RunecraftConfig::showFire),
-	LAW_RIFT(ObjectID.LAW_RIFT, LAW_RUNE, RunecraftConfig::showLaw),
-	MIND_RIFT(ObjectID.MIND_RIFT, MIND_RUNE, RunecraftConfig::showMind),
-	NATURE_RIFT(ObjectID.NATURE_RIFT, NATURE_RUNE, RunecraftConfig::showNature),
-	SOUL_RIFT(ObjectID.SOUL_RIFT, SOUL_RUNE, RunecraftConfig::showSoul),
-	WATER_RIFT(ObjectID.WATER_RIFT, WATER_RUNE, RunecraftConfig::showWater);
+	AIR_RIFT(ObjectID.ABYSS_EXIT_TO_AIR, ItemID.AIRRUNE, RunecraftConfig::showAir),
+	BLOOD_RIFT(ObjectID.ABYSS_EXIT_TO_BLOOD_PARENT, ItemID.BLOODRUNE, RunecraftConfig::showBlood),
+	BODY_RIFT(ObjectID.ABYSS_EXIT_TO_BODY, ItemID.BODYRUNE, RunecraftConfig::showBody),
+	CHAOS_RIFT(ObjectID.ABYSS_EXIT_TO_CHAOS, ItemID.CHAOSRUNE, RunecraftConfig::showChaos),
+	COSMIC_RIFT(ObjectID.ABYSS_EXIT_TO_COSMIC, ItemID.COSMICRUNE, RunecraftConfig::showCosmic),
+	DEATH_RIFT(ObjectID.ABYSS_EXIT_TO_DEATH, ItemID.DEATHRUNE, RunecraftConfig::showDeath),
+	EARTH_RIFT(ObjectID.ABYSS_EXIT_TO_EARTH, ItemID.EARTHRUNE, RunecraftConfig::showEarth),
+	FIRE_RIFT(ObjectID.ABYSS_EXIT_TO_FIRE, ItemID.FIRERUNE, RunecraftConfig::showFire),
+	LAW_RIFT(ObjectID.ABYSS_EXIT_TO_LAW, ItemID.LAWRUNE, RunecraftConfig::showLaw),
+	MIND_RIFT(ObjectID.ABYSS_EXIT_TO_MIND, ItemID.MINDRUNE, RunecraftConfig::showMind),
+	NATURE_RIFT(ObjectID.ABYSS_EXIT_TO_NATURE, ItemID.NATURERUNE, RunecraftConfig::showNature),
+	SOUL_RIFT(ObjectID.ABYSS_EXIT_TO_SOUL, ItemID.SOULRUNE, RunecraftConfig::showSoul),
+	WATER_RIFT(ObjectID.ABYSS_EXIT_TO_WATER, ItemID.WATERRUNE, RunecraftConfig::showWater);
 
 	@Getter
 	private final int objectId;

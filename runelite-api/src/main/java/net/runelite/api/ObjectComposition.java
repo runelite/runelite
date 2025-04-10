@@ -25,9 +25,10 @@
 package net.runelite.api;
 
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
 
 /**
- * Information about a specific {@link ObjectID}
+ * Information about a specific {@link net.runelite.api.gameval.ObjectID}
  */
 public interface ObjectComposition extends ParamHolder
 {
@@ -77,8 +78,8 @@ public interface ObjectComposition extends ParamHolder
 	void setMapIconId(int mapIconId);
 
 	/**
-	 * Get the {@link ObjectID}s of objects this can transform into, depending
-	 * on a {@link Varbits} or {@link VarPlayer}
+	 * Get the {@link net.runelite.api.gameval.ObjectID}s of objects this can transform into, depending
+	 * on a {@link net.runelite.api.gameval.VarbitID} or {@link net.runelite.api.gameval.VarPlayerID}
 	 */
 	int[] getImpostorIds();
 
@@ -91,7 +92,7 @@ public interface ObjectComposition extends ParamHolder
 	ObjectComposition getImpostor();
 
 	/**
-	 * Gets the {@link Varbits} used to switch this multiloc, or {@code -1} if this is not switched by a Varbit
+	 * Gets the {@link net.runelite.api.gameval.VarbitID} used to switch this multiloc, or {@code -1} if this is not switched by a Varbit
 	 *
 	 * @see #getImpostor()
 	 * @see #getImpostorIds()
@@ -100,11 +101,12 @@ public interface ObjectComposition extends ParamHolder
 	int getVarbitId();
 
 	/**
-	 * Gets the {@link VarPlayer} used to switch this multiloc, or {@code -1} if this is not switched by a VarPlayer
+	 * Gets the {@link net.runelite.api.gameval.VarPlayerID} used to switch this multiloc, or {@code -1} if this is not switched by a VarPlayer
 	 *
 	 * @see #getImpostor()
 	 * @see #getImpostorIds()
 	 */
+	@Varp
 	int getVarPlayerId();
 
 	/**

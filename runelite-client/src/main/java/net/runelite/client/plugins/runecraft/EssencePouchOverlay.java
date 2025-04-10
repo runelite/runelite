@@ -30,11 +30,11 @@ import java.util.function.ToIntFunction;
 import javax.inject.Inject;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
@@ -43,22 +43,22 @@ class EssencePouchOverlay extends WidgetItemOverlay
 	@RequiredArgsConstructor
 	enum EssPouch
 	{
-		SMALL(Varbits.ESSENCE_POUCH_SMALL_AMOUNT, null, new int[]{
+		SMALL(VarbitID.SMALL_ESSENCE_POUCH, null, new int[]{
 			// script 3198
 		}, 3),
-		MEDIUM(Varbits.ESSENCE_POUCH_MEDIUM_AMOUNT, client -> client.getVarpValue(VarPlayer.ESSENCE_POUCH_MEDIUM_DEGRADE), new int[]{
+		MEDIUM(VarbitID.MEDIUM_ESSENCE_POUCH, client -> client.getVarpValue(VarPlayerID.RCU_POUCH_DEGRADATION_MED), new int[]{
 			// script 3670
 			800, 0,
 			400, 3,
 		}, 6),
-		LARGE(Varbits.ESSENCE_POUCH_LARGE_AMOUNT, client -> client.getVarpValue(VarPlayer.ESSENCE_POUCH_LARGE_DEGRADE), new int[]{
+		LARGE(VarbitID.LARGE_ESSENCE_POUCH, client -> client.getVarpValue(VarPlayerID.RCU_POUCH_DEGRADATION_LARGE), new int[]{
 			// script 3671
 			1000, 0,
 			800, 3,
 			600, 5,
 			400, 7,
 		}, 9),
-		GIANT(Varbits.ESSENCE_POUCH_GIANT_AMOUNT, client -> client.getVarpValue(VarPlayer.ESSENCE_POUCH_GIANT_DEGRADE), new int[]{
+		GIANT(VarbitID.GIANT_ESSENCE_POUCH, client -> client.getVarpValue(VarPlayerID.RCU_POUCH_DEGRADATION_GIANT), new int[]{
 			// script 3695
 			1200, 0,
 			1000, 3,
@@ -68,7 +68,7 @@ class EssencePouchOverlay extends WidgetItemOverlay
 			300, 8,
 			200, 9,
 		}, 12),
-		COLOSSAL(Varbits.ESSENCE_POUCH_COLOSSAL_AMOUNT, client -> client.getVarbitValue(Varbits.ESSENCE_POUCH_COLOSSAL_DEGRADE), new int[]{
+		COLOSSAL(VarbitID.COLOSSAL_ESSENCE_POUCH, client -> client.getVarbitValue(VarbitID.RCU_POUCH_DEGRADATION_COLOSSAL), new int[]{
 			// script 4592
 			1020, 0,
 			1015, 5,
@@ -199,31 +199,31 @@ class EssencePouchOverlay extends WidgetItemOverlay
 		boolean degraded = false;
 		switch (itemId)
 		{
-			case ItemID.SMALL_POUCH:
+			case ItemID.RCU_POUCH_SMALL:
 				pouch = EssPouch.SMALL;
 				break;
-			case ItemID.MEDIUM_POUCH_5511:
+			case ItemID.RCU_POUCH_MEDIUM_DEGRADE:
 				degraded = true;
 				// fallthrough
-			case ItemID.MEDIUM_POUCH:
+			case ItemID.RCU_POUCH_MEDIUM:
 				pouch = EssPouch.MEDIUM;
 				break;
-			case ItemID.LARGE_POUCH_5513:
+			case ItemID.RCU_POUCH_LARGE_DEGRADE:
 				degraded = true;
 				// fallthrough
-			case ItemID.LARGE_POUCH:
+			case ItemID.RCU_POUCH_LARGE:
 				pouch = EssPouch.LARGE;
 				break;
-			case ItemID.GIANT_POUCH_5515:
+			case ItemID.RCU_POUCH_GIANT_DEGRADE:
 				degraded = true;
 				// fallthrough
-			case ItemID.GIANT_POUCH:
+			case ItemID.RCU_POUCH_GIANT:
 				pouch = EssPouch.GIANT;
 				break;
-			case ItemID.COLOSSAL_POUCH_26786:
+			case ItemID.RCU_POUCH_COLOSSAL_DEGRADE:
 				degraded = true;
 				// fallthrough
-			case ItemID.COLOSSAL_POUCH:
+			case ItemID.RCU_POUCH_COLOSSAL:
 				pouch = EssPouch.COLOSSAL;
 				break;
 			default:

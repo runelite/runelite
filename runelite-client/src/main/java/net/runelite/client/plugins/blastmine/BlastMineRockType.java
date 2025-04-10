@@ -27,15 +27,15 @@ package net.runelite.client.plugins.blastmine;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
-import net.runelite.api.ObjectID;
+import net.runelite.api.gameval.ObjectID;
 
 public enum BlastMineRockType
 {
-	NORMAL(ObjectID.HARD_ROCK, ObjectID.HARD_ROCK_28580),
-	CHISELED(ObjectID.CAVITY, ObjectID.CAVITY_28582),
-	LOADED(ObjectID.POT_OF_DYNAMITE, ObjectID.POT_OF_DYNAMITE_28584),
-	LIT(ObjectID.POT_OF_DYNAMITE_28585, ObjectID.POT_OF_DYNAMITE_28586),
-	EXPLODED(ObjectID.SHATTERED_ROCKFACE, ObjectID.SHATTERED_ROCKFACE_28588);
+	NORMAL(ObjectID.BLAST_MINING_WALL_01, ObjectID.BLAST_MINING_WALL_02),
+	CHISELED(ObjectID.BLAST_MINING_WALL_CHISELED_01, ObjectID.BLAST_MINING_WALL_CHISELED_02),
+	LOADED(ObjectID.BLAST_MINING_WALL_POT_01, ObjectID.BLAST_MINING_WALL_POT_02),
+	LIT(ObjectID.BLAST_MINING_WALL_BURNING_01, ObjectID.BLAST_MINING_WALL_BURNING_02),
+	EXPLODED(ObjectID.BLAST_MINING_WALL_DESTROYED_01, ObjectID.BLAST_MINING_WALL_DESTROYED_02);
 
 	private static final Map<Integer, BlastMineRockType> rockTypes;
 

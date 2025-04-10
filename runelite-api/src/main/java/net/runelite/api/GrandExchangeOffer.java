@@ -40,7 +40,7 @@ public interface GrandExchangeOffer
 	 * Gets the ID of the item being bought or sold.
 	 *
 	 * @return item ID
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	int getItemId();
 

@@ -26,25 +26,25 @@ package net.runelite.client.plugins.timetracking;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @RequiredArgsConstructor
 @Getter
 public enum Tab
 {
-	OVERVIEW("Overview", ItemID.OLD_NOTES),
-	CLOCK("Timers & Stopwatches", ItemID.WATCH),
-	BIRD_HOUSE("Bird Houses", ItemID.OAK_BIRD_HOUSE),
+	OVERVIEW("Overview", ItemID.DS2_CRANDOR_NOTES),
+	CLOCK("Timers & Stopwatches", ItemID.TRAIL_WATCH),
+	BIRD_HOUSE("Bird Houses", ItemID.BIRDHOUSE_OAK),
 	ALLOTMENT("Allotment Patches", ItemID.CABBAGE),
-	FLOWER("Flower Patches", ItemID.RED_FLOWERS),
-	HERB("Herb Patches", ItemID.GRIMY_RANARR_WEED),
+	FLOWER("Flower Patches", ItemID.FLOWERS_WATERFALL_QUEST_RED),
+	HERB("Herb Patches", ItemID.UNIDENTIFIED_RANARR),
 	TREE("Tree Patches", ItemID.YEW_LOGS),
 	FRUIT_TREE("Fruit Tree Patches", ItemID.PINEAPPLE),
 	HOPS("Hops Patches", ItemID.BARLEY),
-	BUSH("Bush Patches", ItemID.POISON_IVY_BERRIES),
+	BUSH("Bush Patches", ItemID.POISONIVY_BERRIES),
 	GRAPE("Grape Patches", ItemID.GRAPES),
-	SPECIAL("Special Patches", ItemID.MUSHROOM),
-	TIME_OFFSET("Farming Tick Offset", ItemID.WATERING_CAN);
+	SPECIAL("Special Patches", ItemID.BITTERCAP_MUSHROOM),
+	TIME_OFFSET("Farming Tick Offset", ItemID.WATERING_CAN_0);
 
 	public static final Tab[] FARMING_TABS = {HERB, TREE, FRUIT_TREE, SPECIAL, FLOWER, ALLOTMENT, BUSH, GRAPE, HOPS};
 

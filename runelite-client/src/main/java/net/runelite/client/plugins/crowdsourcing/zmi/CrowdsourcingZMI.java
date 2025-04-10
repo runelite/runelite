@@ -31,15 +31,15 @@ import com.google.common.collect.Multisets;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -61,7 +61,7 @@ public class CrowdsourcingZMI
 
 	private Multiset<Integer> getInventorySnapshot()
 	{
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 		Multiset<Integer> inventorySnapshot = HashMultiset.create();
 
 		if (inventory != null)
@@ -125,13 +125,13 @@ public class CrowdsourcingZMI
 	{
 		int itemContainerChangedTick = client.getTickCount();
 
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY) || gameTickZMI != itemContainerChangedTick)
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INV) || gameTickZMI != itemContainerChangedTick)
 		{
 			return;
 		}
 
 		int tickDelta = itemContainerChangedTick - illegalActionTick;
-		boolean ardougneMedium = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1;
+		boolean ardougneMedium = client.getVarbitValue(VarbitID.ARDOUGNE_DIARY_MEDIUM_COMPLETE) == 1;
 		int runecraftBoostedLevel = client.getBoostedSkillLevel(Skill.RUNECRAFT);
 		Multiset<Integer> currentInventorySnapshot = getInventorySnapshot();
 		final Multiset<Integer> itemsReceived = Multisets.difference(currentInventorySnapshot, previousInventorySnapshot);

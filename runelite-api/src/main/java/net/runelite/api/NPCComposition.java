@@ -27,7 +27,7 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 
 /**
- * Information about a specific {@link NpcID}
+ * Information about a specific {@link net.runelite.api.gameval.NpcID}
  */
 public interface NPCComposition extends ParamHolder
 {
@@ -64,7 +64,7 @@ public interface NPCComposition extends ParamHolder
 	/**
 	 * Gets the ID of the NPC.
 	 *
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 
@@ -74,8 +74,8 @@ public interface NPCComposition extends ParamHolder
 	int getCombatLevel();
 
 	/**
-	 * Get the {@link NpcID}s of NPCs this can transform into, depending
-	 * on a {@link Varbits} or {@link VarPlayer}
+	 * Get the {@link net.runelite.api.gameval.NpcID}s of NPCs this can transform into, depending
+	 * on a {@link net.runelite.api.gameval.VarbitID} or {@link net.runelite.api.gameval.VarPlayerID}
 	 */
 	int[] getConfigs();
 

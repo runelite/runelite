@@ -31,14 +31,13 @@ import com.google.inject.Provides;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,34 +56,34 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class EntityHiderPlugin extends Plugin
 {
 	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
-		NullNpcID.NULL_10878, NullNpcID.NULL_10881, NullNpcID.NULL_10884,  // Lesser Thrall (ghost, skeleton, zombie)
-		NullNpcID.NULL_10879, NullNpcID.NULL_10882, NullNpcID.NULL_10885,  // Superior Thrall (ghost, skeleton, zombie)
-		NullNpcID.NULL_10880, NullNpcID.NULL_10883, NullNpcID.NULL_10886   // Greater Thrall (ghost, skeleton, zombie)
+		NpcID.ARCEUUS_THRALL_GHOST_LESSER, NpcID.ARCEUUS_THRALL_SKELETON_LESSER, NpcID.ARCEUUS_THRALL_ZOMBIE_LESSER,  // Lesser Thrall (ghost, skeleton, zombie)
+		NpcID.ARCEUUS_THRALL_GHOST_SUPERIOR, NpcID.ARCEUUS_THRALL_SKELETON_SUPERIOR, NpcID.ARCEUUS_THRALL_ZOMBIE_SUPERIOR,  // Superior Thrall (ghost, skeleton, zombie)
+		NpcID.ARCEUUS_THRALL_GHOST_GREATER, NpcID.ARCEUUS_THRALL_SKELETON_GREATER, NpcID.ARCEUUS_THRALL_ZOMBIE_GREATER   // Greater Thrall (ghost, skeleton, zombie)
 	);
 	private static final Set<Integer> RANDOM_EVENT_NPC_IDS = ImmutableSet.of(
-		NpcID.BEE_KEEPER_6747,
-		NpcID.CAPT_ARNAV,
-		NpcID.DR_JEKYLL, NpcID.DR_JEKYLL_314,
-		NpcID.DRUNKEN_DWARF,
-		NpcID.DUNCE_6749,
-		NpcID.EVIL_BOB, NpcID.EVIL_BOB_6754,
-		NpcID.FLIPPA_6744,
-		NpcID.FREAKY_FORESTER_6748,
-		NpcID.FROG_5429, NpcID.FROG_5430, NpcID.FROG_5431, NpcID.FROG_5432, NpcID.FROG, NpcID.FROG_PRINCE, NpcID.FROG_PRINCESS, NpcID.FROG_PRIN, NpcID.FROG_PRIN_13444,
-		NpcID.GENIE, NpcID.GENIE_327,
-		NpcID.GILES, NpcID.GILES_5441,
-		NpcID.LEO_6746,
-		NpcID.MILES, NpcID.MILES_5440,
-		NpcID.MYSTERIOUS_OLD_MAN_6750, NpcID.MYSTERIOUS_OLD_MAN_6751,
-		NpcID.MYSTERIOUS_OLD_MAN_6752, NpcID.MYSTERIOUS_OLD_MAN_6753,
-		NpcID.NILES, NpcID.NILES_5439,
-		NpcID.PILLORY_GUARD,
-		NpcID.POSTIE_PETE_6738,
-		NpcID.QUIZ_MASTER_6755,
-		NpcID.RICK_TURPENTINE, NpcID.RICK_TURPENTINE_376,
-		NpcID.SANDWICH_LADY,
-		NpcID.SERGEANT_DAMIEN_6743,
-		NpcID.COUNT_CHECK_12551, NpcID.COUNT_CHECK_12552
+		NpcID.MACRO_BEEKEEPER_INVITATION,
+		NpcID.MACRO_COMBILOCK_PIRATE,
+		NpcID.MACRO_JEKYLL, NpcID.MACRO_JEKYLL_UNDERWATER,
+		NpcID.MACRO_DWARF,
+		NpcID.PATTERN_INVITATION,
+		NpcID.MACRO_EVIL_BOB_OUTSIDE, NpcID.MACRO_EVIL_BOB_PRISON,
+		NpcID.PINBALL_INVITATION,
+		NpcID.MACRO_FORESTER_INVITATION,
+		NpcID.MACRO_FROG_CRIER, NpcID.MACRO_FROG_GENERIC, NpcID.MACRO_FROG_SULKING, NpcID.MACRO_FROG_NONCOMBAT, NpcID.MACRO_FROG_NOHAT, NpcID.MACRO_FROG_PRIN_HE, NpcID.MACRO_FROG_PRIN_SHE, NpcID.MACRO_FROG_PRIN_A, NpcID.MACRO_FROG_PRIN_B,
+		NpcID.MACRO_GENI, NpcID.MACRO_GENI_UNDERWATER,
+		NpcID.MACRO_GILES, NpcID.MACRO_GILES_UNDERWATER,
+		NpcID.MACRO_GRAVEDIGGER_INVITATION,
+		NpcID.MACRO_MILES, NpcID.MACRO_MILES_UNDERWATER,
+		NpcID.MACRO_MYSTERIOUS_OLD_MAN, NpcID.MACRO_MYSTERIOUS_OLD_MAN_UNDERWATER,
+		NpcID.MACRO_MAZE_INVITATION, NpcID.MACRO_MIME_INVITATION,
+		NpcID.MACRO_NILES, NpcID.MACRO_NILES_UNDERWATER,
+		NpcID.MACRO_PILLORY_GUARD,
+		NpcID.GRAB_POSTMAN,
+		NpcID.MACRO_MAGNESON_INVITATION,
+		NpcID.MACRO_HIGHWAYMAN, NpcID.MACRO_HIGHWAYMAN_UNDERWATER,
+		NpcID.MACRO_SANDWICH_LADY_NPC,
+		NpcID.MACRO_DRILLDEMON_INVITATION,
+		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
 	);
 
 	@Inject
@@ -280,12 +279,12 @@ public class EntityHiderPlugin extends Plugin
 
 			switch (((GraphicsObject) renderable).getId())
 			{
-				case GraphicID.MELEE_NYLO_DEATH:
-				case GraphicID.RANGE_NYLO_DEATH:
-				case GraphicID.MAGE_NYLO_DEATH:
-				case GraphicID.MELEE_NYLO_EXPLOSION:
-				case GraphicID.RANGE_NYLO_EXPLOSION:
-				case GraphicID.MAGE_NYLO_EXPLOSION:
+				case SpotanimID.TOB_NYLOCAS_DEATH_MELEE_STANDARD:
+				case SpotanimID.TOB_NYLOCAS_DEATH_RANGED_STANDARD:
+				case SpotanimID.TOB_NYLOCAS_DEATH_MAGIC_STANDARD:
+				case SpotanimID.TOB_NYLOCAS_DEATH_MELEE_DETONATE:
+				case SpotanimID.TOB_NYLOCAS_DEATH_RANGED_DETONATE:
+				case SpotanimID.TOB_NYLOCAS_DEATH_MAGIC_DETONATE:
 					return false;
 				default:
 					return true;

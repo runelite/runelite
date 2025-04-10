@@ -34,11 +34,11 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
-import static net.runelite.api.ItemID.CANNONBALL;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -88,7 +88,7 @@ class CannonSpotOverlay extends Overlay
 
 			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_OVERLAY_DISTANCE)
 			{
-				renderCannonSpot(graphics, client, spotPoint, itemManager.getImage(CANNONBALL), Color.RED);
+				renderCannonSpot(graphics, client, spotPoint, itemManager.getImage(ItemID.MCANNONBALL), Color.RED);
 			}
 		}
 

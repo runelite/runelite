@@ -43,19 +43,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import static net.runelite.api.ObjectID.BROKEN_STRUT;
-import static net.runelite.api.ObjectID.ORE_VEIN;
-import static net.runelite.api.ObjectID.ORE_VEIN_26662;
-import static net.runelite.api.ObjectID.ORE_VEIN_26663;
-import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-import static net.runelite.api.ObjectID.ROCKFALL;
-import static net.runelite.api.ObjectID.ROCKFALL_26680;
 import net.runelite.api.Perspective;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
@@ -67,7 +57,11 @@ import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -89,10 +83,10 @@ import net.runelite.http.api.loottracker.LootRecordType;
 public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
-	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
+	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ObjectID.MOTHERLODE_ORE_SINGLE, ObjectID.MOTHERLODE_ORE_LEFT, ObjectID.MOTHERLODE_ORE_MIDDLE, ObjectID.MOTHERLODE_ORE_RIGHT);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
-	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
+		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.MOTHERLODE_NUGGET);
+	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ObjectID.MOTHERLODE_ROCKFALL_1, ObjectID.MOTHERLODE_ROCKFALL_2);
 
 	private static final int SACK_LARGE_SIZE = 189;
 	private static final int SACK_SIZE = 108;
@@ -171,7 +165,7 @@ public class MotherlodePlugin extends Plugin
 			if (shouldUpdateOres)
 			{
 				// Take a snapshot of the inventory before the new ore is added.
-				ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+				ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 				if (itemContainer != null)
 				{
 					inventorySnapshot = HashMultiset.create();
@@ -248,19 +242,19 @@ public class MotherlodePlugin extends Plugin
 
 	private void recolorSackOverlay()
 	{
-		ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer inv = client.getItemContainer(InventoryID.INV);
 		if (inv == null)
 		{
 			return;
 		}
 
-		int sackSize = client.getVarbitValue(Varbits.SACK_NUMBER);
-		boolean sackUpgraded = client.getVarbitValue(Varbits.SACK_UPGRADED) == 1;
+		int sackSize = client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT);
+		boolean sackUpgraded = client.getVarbitValue(VarbitID.MOTHERLODE_BIGGERSACK) == 1;
 		int sackCapacity = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 		int payDir = inv.count(ItemID.PAYDIRT);
 
-		Widget sackSizeWidget = client.getWidget(ComponentID.MLM_SACK_SIZE_TEXT);
-		Widget spaceTextWidget = client.getWidget(ComponentID.MLM_SPACE_TEXT);
+		Widget sackSizeWidget = client.getWidget(InterfaceID.MotherlodeHud.PAY_DIRT);
+		Widget spaceTextWidget = client.getWidget(InterfaceID.MotherlodeHud.DEPOSITS);
 		if (sackSizeWidget != null && spaceTextWidget != null)
 		{
 			if (payDir >= sackCapacity - sackSize)
@@ -354,7 +348,7 @@ public class MotherlodePlugin extends Plugin
 
 		recolorSackOverlay();
 
-		if (!shouldUpdateOres || inventorySnapshot == null || event.getContainerId() != InventoryID.INVENTORY.getId())
+		if (!shouldUpdateOres || inventorySnapshot == null || event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
@@ -413,7 +407,7 @@ public class MotherlodePlugin extends Plugin
 
 	private void refreshSackValues()
 	{
-		curSackSize = client.getVarbitValue(Varbits.SACK_NUMBER);
+		curSackSize = client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT);
 	}
 
 	/**
@@ -435,7 +429,7 @@ public class MotherlodePlugin extends Plugin
 			rocks.add(gameObject);
 		}
 
-		if (BROKEN_STRUT == gameObject.getId())
+		if (ObjectID.MOTHERLODE_WHEEL_STRUT_BROKEN == gameObject.getId())
 		{
 			brokenStruts.add(gameObject);
 		}

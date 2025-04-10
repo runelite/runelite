@@ -30,10 +30,10 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -120,7 +120,7 @@ public class CookingPluginTest
 	public void testOnGraphicChanged()
 	{
 		Player player = mock(Player.class);
-		when(player.getGraphic()).thenReturn(GraphicID.WINE_MAKE);
+		when(player.getGraphic()).thenReturn(SpotanimID.COOKING_MAKE_WINE_SPOTANIM);
 
 		when(config.fermentTimer()).thenReturn(true);
 		when(client.getLocalPlayer()).thenReturn(player);

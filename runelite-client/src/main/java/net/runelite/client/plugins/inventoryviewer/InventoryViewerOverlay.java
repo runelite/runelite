@@ -31,12 +31,12 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -76,13 +76,13 @@ class InventoryViewerOverlay extends OverlayPanel
 			return null;
 		}
 
-		if ((client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 3 || client.getWidget(ComponentID.BANK_CONTAINER) != null)
+		if ((client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 3 || client.getWidget(InterfaceID.Bankmain.UNIVERSE) != null)
 				&& config.hideIfInventoryActive())
 		{
 			return null;
 		}
 
-		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 
 		if (itemContainer == null)
 		{

@@ -38,19 +38,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -146,11 +145,11 @@ class WikiDpsManager
 
 			if (!setBonus)
 			{
-				if (interfaceId == InterfaceID.BANK)
+				if (interfaceId == InterfaceID.BANKMAIN)
 				{
 					clientThread.invokeLater(() -> addButton(Screen.BANK_EQUIPMENT, this::launch));
 				}
-				else if (interfaceId == InterfaceID.EQUIPMENT_BONUSES)
+				else if (interfaceId == InterfaceID.EQUIPMENT)
 				{
 					addButton(Screen.EQUIPMENT_BONUSES, this::launch);
 				}
@@ -162,8 +161,8 @@ class WikiDpsManager
 	@RequiredArgsConstructor
 	enum Screen
 	{
-		EQUIPMENT_BONUSES(ComponentID.EQUIPMENT_BONUSES_PARENT, ComponentID.EQUIPMENT_BONUSES_SET_BONUS, ComponentID.EQUIPMENT_BONUSES_STAT_BONUS, 55),
-		BANK_EQUIPMENT(ComponentID.BANK_EQUIPMENT_PARENT, ComponentID.BANK_EQUIPMENT_SET_BONUS, ComponentID.BANK_EQUIPMENT_STAT_BONUS, 49),
+		EQUIPMENT_BONUSES(InterfaceID.Equipment.CONTENTS, InterfaceID.Equipment.NEXT_PAGE, InterfaceID.Equipment.PREVIOUS_PAGE, 55),
+		BANK_EQUIPMENT(InterfaceID.Bankmain.WORNITEMS_CONTAINER, InterfaceID.Bankmain.NEXT_PAGE, InterfaceID.Bankmain.PREVIOUS_PAGE, 49),
 		;
 
 		/**
@@ -346,7 +345,7 @@ class WikiDpsManager
 		if (slot == EquipmentInventorySlot.BOOTS && itemContainer.count() == 1 && itemContainer.contains(ItemID.CHEFS_HAT))
 		{
 			JsonObject o = new JsonObject();
-			o.addProperty("id", ItemID.SNAIL_SHELL);
+			o.addProperty("id", ItemID.TEMPLETREK_SNAIL_SHELL);
 			return o;
 		}
 
@@ -366,7 +365,7 @@ class WikiDpsManager
 
 		// Build the player's loadout data
 		JsonArray loadouts = new JsonArray();
-		ItemContainer eqContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer eqContainer = client.getItemContainer(InventoryID.WORN);
 
 		JsonObject l = new JsonObject();
 		JsonObject eq = new JsonObject();
@@ -396,10 +395,10 @@ class WikiDpsManager
 		l.add("skills", skills);
 
 		JsonObject buffs = new JsonObject();
-		buffs.addProperty("inWilderness", client.getVarbitValue(Varbits.IN_WILDERNESS) == 1);
-		buffs.addProperty("kandarinDiary", client.getVarbitValue(Varbits.DIARY_KANDARIN_HARD) == 1);
-		buffs.addProperty("onSlayerTask", client.getVarpValue(VarPlayer.SLAYER_TASK_SIZE) > 0);
-		buffs.addProperty("chargeSpell", client.getVarpValue(VarPlayer.CHARGE_GOD_SPELL) > 0);
+		buffs.addProperty("inWilderness", client.getVarbitValue(VarbitID.INSIDE_WILDERNESS) == 1);
+		buffs.addProperty("kandarinDiary", client.getVarbitValue(VarbitID.KANDARIN_DIARY_HARD_COMPLETE) == 1);
+		buffs.addProperty("onSlayerTask", client.getVarpValue(VarPlayerID.SLAYER_COUNT) > 0);
+		buffs.addProperty("chargeSpell", client.getVarpValue(VarPlayerID.MAGEARENA_CHARGE) > 0);
 		l.add("buffs", buffs);
 
 		l.addProperty("name", client.getLocalPlayer().getName());

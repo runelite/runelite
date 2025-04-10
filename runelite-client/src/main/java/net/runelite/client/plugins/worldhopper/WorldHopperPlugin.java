@@ -55,7 +55,6 @@ import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NameableContainer;
-import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.events.ChatMessage;
@@ -65,8 +64,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
@@ -369,11 +368,11 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVORITE_1
-			|| varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVORITE_2)
+		if (varbitChanged.getVarbitId() == VarbitID.WORLDSWITCHER_FAVOURITE_1
+			|| varbitChanged.getVarbitId() == VarbitID.WORLDSWITCHER_FAVOURITE_2)
 		{
-			favoriteWorld1 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVORITE_1);
-			favoriteWorld2 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVORITE_2);
+			favoriteWorld1 = client.getVarbitValue(VarbitID.WORLDSWITCHER_FAVOURITE_1);
+			favoriteWorld2 = client.getVarbitValue(VarbitID.WORLDSWITCHER_FAVOURITE_2);
 			SwingUtilities.invokeLater(panel::updateList);
 		}
 	}
@@ -390,8 +389,8 @@ public class WorldHopperPlugin extends Plugin
 		int groupId = WidgetUtil.componentToInterface(componentId);
 		String option = event.getOption();
 
-		if (groupId == InterfaceID.FRIEND_LIST || groupId == InterfaceID.FRIENDS_CHAT
-			|| componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS)
+		if (groupId == InterfaceID.FRIENDS || groupId == InterfaceID.CHATCHANNEL_CURRENT
+			|| componentId == InterfaceID.ClansSidepanel.PLAYERLIST || componentId == InterfaceID.ClansGuestSidepanel.PLAYERLIST)
 		{
 			boolean after;
 
@@ -711,7 +710,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		if (client.getWidget(ComponentID.WORLD_SWITCHER_WORLD_LIST) == null)
+		if (client.getWidget(InterfaceID.Worldswitcher.BUTTONS) == null)
 		{
 			client.openWorldHopper();
 

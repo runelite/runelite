@@ -36,7 +36,7 @@ import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.RUNELITE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
@@ -59,7 +59,7 @@ public class MenuManagerTest
 	@Bind
 	private Client client;
 
-	private final MenuEntry CANCEL = createMenuEntry("Cancel", "", MenuAction.CANCEL, ComponentID.MINIMAP_WORLDMAP_OPTIONS);
+	private final MenuEntry CANCEL = createMenuEntry("Cancel", "", MenuAction.CANCEL, InterfaceID.Orbs.WORLDMAP);
 
 	private final List<MenuEntry> createdMenuEntries = new ArrayList<>();
 
@@ -91,14 +91,14 @@ public class MenuManagerTest
 	@Test
 	public void testManagedMenuOrder()
 	{
-		final MenuEntry first = createMenuEntry("Test", "First Entry", RUNELITE, ComponentID.MINIMAP_WORLDMAP_OPTIONS);
-		final MenuEntry second = createMenuEntry("Test", "Second Entry", RUNELITE, ComponentID.MINIMAP_WORLDMAP_OPTIONS);
-		final MenuEntry third = createMenuEntry("Test", "Third Entry", RUNELITE, ComponentID.MINIMAP_WORLDMAP_OPTIONS);
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), ComponentID.MINIMAP_WORLDMAP_OPTIONS), null);
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), ComponentID.MINIMAP_WORLDMAP_OPTIONS), null);
-		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), ComponentID.MINIMAP_WORLDMAP_OPTIONS), null);
+		final MenuEntry first = createMenuEntry("Test", "First Entry", RUNELITE, InterfaceID.Orbs.WORLDMAP);
+		final MenuEntry second = createMenuEntry("Test", "Second Entry", RUNELITE, InterfaceID.Orbs.WORLDMAP);
+		final MenuEntry third = createMenuEntry("Test", "Third Entry", RUNELITE, InterfaceID.Orbs.WORLDMAP);
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(first.getOption(), first.getTarget(), InterfaceID.Orbs.WORLDMAP), null);
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), InterfaceID.Orbs.WORLDMAP), null);
+		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), InterfaceID.Orbs.WORLDMAP), null);
 
-		menuManager.onMenuEntryAdded(new MenuEntryAdded(createMenuEntry("Cancel", "", MenuAction.CC_OP, ComponentID.MINIMAP_WORLDMAP_OPTIONS)));
+		menuManager.onMenuEntryAdded(new MenuEntryAdded(createMenuEntry("Cancel", "", MenuAction.CC_OP, InterfaceID.Orbs.WORLDMAP)));
 
 		verify(client, times(3)).createMenuEntry(anyInt());
 

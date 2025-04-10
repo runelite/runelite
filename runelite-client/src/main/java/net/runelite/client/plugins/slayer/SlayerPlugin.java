@@ -53,14 +53,11 @@ import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ParamID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
@@ -69,6 +66,9 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -332,14 +332,14 @@ public class SlayerPlugin extends Plugin
 	{
 		int varpId = varbitChanged.getVarpId();
 		int varbitId = varbitChanged.getVarbitId();
-		if (varpId == VarPlayer.SLAYER_TASK_SIZE
-			|| varpId == VarPlayer.SLAYER_TASK_LOCATION
-			|| varpId == VarPlayer.SLAYER_TASK_CREATURE
-			|| varbitId == Varbits.SLAYER_TASK_BOSS)
+		if (varpId == VarPlayerID.SLAYER_COUNT
+			|| varpId == VarPlayerID.SLAYER_AREA
+			|| varpId == VarPlayerID.SLAYER_TARGET
+			|| varbitId == VarbitID.SLAYER_TARGET_BOSSID)
 		{
 			clientThread.invokeLater(this::updateTask);
 		}
-		else if (varbitId == Varbits.SLAYER_POINTS)
+		else if (varbitId == VarbitID.SLAYER_POINTS)
 		{
 			setProfileConfig(SlayerConfig.POINTS_KEY, varbitChanged.getValue());
 
@@ -350,7 +350,7 @@ public class SlayerPlugin extends Plugin
 				addCounter();
 			}
 		}
-		else if (varbitId == Varbits.SLAYER_TASK_STREAK)
+		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED)
 		{
 			setProfileConfig(SlayerConfig.STREAK_KEY, varbitChanged.getValue());
 
@@ -365,15 +365,15 @@ public class SlayerPlugin extends Plugin
 
 	private void updateTask()
 	{
-		int amount = client.getVarpValue(VarPlayer.SLAYER_TASK_SIZE);
+		int amount = client.getVarpValue(VarPlayerID.SLAYER_COUNT);
 		if (amount > 0)
 		{
-			int taskId = client.getVarpValue(VarPlayer.SLAYER_TASK_CREATURE);
+			int taskId = client.getVarpValue(VarPlayerID.SLAYER_TARGET);
 			String taskName;
 			if (taskId == 98 /* Bosses, from [proc,helper_slayer_current_assignment] */)
 			{
 				int structId = client.getEnum(EnumID.SLAYER_TASK)
-					.getIntValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
+					.getIntValue(client.getVarbitValue(VarbitID.SLAYER_TARGET_BOSSID));
 				taskName = client.getStructComposition(structId)
 					.getStringValue(ParamID.SLAYER_TASK_NAME);
 			}
@@ -383,7 +383,7 @@ public class SlayerPlugin extends Plugin
 					.getStringValue(taskId);
 			}
 
-			int areaId = client.getVarpValue(VarPlayer.SLAYER_TASK_LOCATION);
+			int areaId = client.getVarpValue(VarPlayerID.SLAYER_AREA);
 			String taskLocation = null;
 			if (areaId > 0)
 			{
@@ -400,8 +400,8 @@ public class SlayerPlugin extends Plugin
 				setTask(taskName, amount, initialAmount, taskLocation, false);
 
 				// initialize streak and points in the event the plugin was toggled on after login
-				setProfileConfig(SlayerConfig.POINTS_KEY, client.getVarbitValue(Varbits.SLAYER_POINTS));
-				setProfileConfig(SlayerConfig.STREAK_KEY, client.getVarbitValue(Varbits.SLAYER_TASK_STREAK));
+				setProfileConfig(SlayerConfig.POINTS_KEY, client.getVarbitValue(VarbitID.SLAYER_POINTS));
+				setProfileConfig(SlayerConfig.STREAK_KEY, client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED));
 			}
 			else if (!Objects.equals(taskName, this.taskName) || !Objects.equals(taskLocation, this.taskLocation))
 			{
@@ -522,8 +522,8 @@ public class SlayerPlugin extends Plugin
 			}
 
 			itemId = ItemVariationMapping.map(itemId);
-			if (itemId == ItemID.SLAYER_HELMET || itemId == ItemID.SLAYER_RING_8
-				|| itemId == ItemID.ENCHANTED_GEM)
+			if (itemId == ItemID.SLAYER_HELM || itemId == ItemID.SLAYER_RING_8
+				|| itemId == ItemID.SLAYER_GEM)
 			{
 				log.debug("Checked slayer task");
 				infoTimer = Instant.now();
@@ -631,7 +631,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		Task task = Task.getTask(taskName);
-		int itemSpriteId = ItemID.ENCHANTED_GEM;
+		int itemSpriteId = ItemID.SLAYER_GEM;
 		if (task != null)
 		{
 			itemSpriteId = task.getItemSpriteId();

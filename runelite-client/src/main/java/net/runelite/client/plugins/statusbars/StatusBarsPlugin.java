@@ -32,8 +32,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -123,7 +123,7 @@ public class StatusBarsPlugin extends Plugin
 			barsDisplayed = true;
 		}
 		else if ((interacting instanceof NPC && ArrayUtils.contains(((NPC) interacting).getComposition().getActions(), "Attack"))
-			|| (interacting instanceof Player && client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1))
+			|| (interacting instanceof Player && client.getVarbitValue(VarbitID.PVP_AREA_CLIENT) == 1))
 		{
 			lastCombatActionTickCount = client.getTickCount();
 			barsDisplayed = true;

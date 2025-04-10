@@ -36,14 +36,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.HintArrowType;
-import static net.runelite.api.ObjectID.*;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
@@ -54,6 +52,8 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -163,7 +163,7 @@ public class MiningPlugin extends Plugin
 			lastActionAnimationId = animId;
 		}
 
-		if (animId == AnimationID.DENSE_ESSENCE_CHIPPING)
+		if (animId == AnimationID.ARCEUUS_CHISEL_ESSENCE)
 		{
 			// Can't use chat messages to start mining session on Dense Essence as they don't have a chat message when mined,
 			// so we track the session here instead.
@@ -238,7 +238,7 @@ public class MiningPlugin extends Plugin
 	{
 		final GameObject object = event.getGameObject();
 
-		if (object.getId() == DAEYALT_ESSENCE_39095)
+		if (object.getId() == ObjectID.DAEYALT_STONE_TOP_ACTIVE)
 		{
 			final WorldPoint point = object.getWorldLocation();
 			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
@@ -260,7 +260,7 @@ public class MiningPlugin extends Plugin
 		GameObject object = event.getGameObject();
 
 		// Inverse timer to track daeyalt essence active duration
-		if (object.getId() == DAEYALT_ESSENCE_39095 && client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_ESSENCE_MINE_REGION)
+		if (object.getId() == ObjectID.DAEYALT_STONE_TOP_ACTIVE && client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_ESSENCE_MINE_REGION)
 		{
 			RockRespawn rockRespawn = new RockRespawn(Rock.DAEYALT_ESSENCE, object.getWorldLocation(), Instant.now(),
 				(int) Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, RSTimeUnit.GAME_TICKS).toMillis(), Rock.DAEYALT_ESSENCE.getZOffset());
@@ -298,40 +298,40 @@ public class MiningPlugin extends Plugin
 
 			switch (locId)
 			{
-				case DEPLETED_VEIN_26665: // Depleted motherlode vein
-				case DEPLETED_VEIN_26666: // Depleted motherlode vein
-				case DEPLETED_VEIN_26667: // Depleted motherlode vein
-				case DEPLETED_VEIN_26668: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_SINGLE: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_LEFT: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_MIDDLE: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_RIGHT: // Depleted motherlode vein
 				{
 					addRockRespawn(Rock.MLM_ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
 					break;
 				}
-				case DEPLETED_VEIN: // Gold vein
-				case ROCKS_51486: // Calcified rock
-				case ROCKS_51488: // Calcified rock
+				case ObjectID.DWARF_GOLD_DEPLETED: // Gold vein
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY02: // Calcified rock
 				{
 					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
 					break;
 				}
-				case ROCKS_11390:
-				case ROCKS_11391:
-				case ROCKS_11392:
-				case ROCKS_33253: // Basalt etc
-				case ROCKS_36202: // Trahaearn mine
-				case EMPTY_ASH_PILE:
+				case ObjectID.ROCKS1:
+				case ObjectID.ROCKS2:
+				case ObjectID.ROCKS3:
+				case ObjectID.MY2ARM_SALTROCK_EMPTY: // Basalt etc
+				case ObjectID.PRIF_MINE_ROCKS1_EMPTY: // Trahaearn mine
+				case ObjectID.FOSSIL_ASHPILE_EMPTY:
 				{
 					addRockRespawn(Rock.ROCK, WorldPoint.fromCoord(locCoord), ticks);
 					break;
 				}
 				// Amethyst
-				case EMPTY_WALL:
+				case ObjectID.AMETHYSTROCK_EMPTY:
 				{
 					addRockRespawn(Rock.AMETHYST, WorldPoint.fromCoord(locCoord), ticks);
 					break;
 				}
 				// Barronite
-				case ROCKS_41549:
-				case ROCKS_41550:
+				case ObjectID.CAMDOZAALROCK1_EMPTY:
+				case ObjectID.CAMDOZAALROCK2_EMPTY:
 				{
 					addRockRespawn(Rock.BARRONITE, WorldPoint.fromCoord(locCoord), ticks);
 					break;

@@ -136,16 +136,16 @@ time_remaining=2
 [castlewars_saradomin]
 id=58
 castle_and_rock_group_status=3
-game_timer=16
-score_box=18
-leave_waiting_room=24
+game_timer=18
+score_box=20
+leave_waiting_room=26
 
 [castlewars_zamorak]
 id=59
 castle_and_rock_group_status=3
-score_box=17
-leave_waiting_room=23
-game_timer=26
+score_box=19
+leave_waiting_room=25
+game_timer=28
 
 [chambers_of_xeric_storage_unit_private]
 id=271

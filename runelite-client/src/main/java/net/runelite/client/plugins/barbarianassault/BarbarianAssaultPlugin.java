@@ -32,12 +32,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -117,9 +116,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		switch (event.getGroupId())
 		{
-			case InterfaceID.BA_REWARD:
+			case InterfaceID.BARBASSAULT_WAVECOMPLETE:
 			{
-				Widget rewardWidget = client.getWidget(ComponentID.BA_REWARD_REWARD_TEXT);
+				Widget rewardWidget = client.getWidget(InterfaceID.BarbassaultWavecomplete.BARBASSAULT_COMPL_QUEENREWARDS);
 
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
@@ -129,22 +128,22 @@ public class BarbarianAssaultPlugin extends Plugin
 
 				break;
 			}
-			case InterfaceID.BA_ATTACKER:
+			case InterfaceID.BARBASSAULT_OVER_ATT:
 			{
 				setRound(Role.ATTACKER);
 				break;
 			}
-			case InterfaceID.BA_DEFENDER:
+			case InterfaceID.BARBASSAULT_OVER_DEF:
 			{
 				setRound(Role.DEFENDER);
 				break;
 			}
-			case InterfaceID.BA_HEALER:
+			case InterfaceID.BARBASSAULT_OVER_HEAL:
 			{
 				setRound(Role.HEALER);
 				break;
 			}
-			case InterfaceID.BA_COLLECTOR:
+			case InterfaceID.BARBASSAULT_OVER_COL:
 			{
 				setRound(Role.COLLECTOR);
 				break;
@@ -155,7 +154,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.IN_GAME_BA && event.getValue() == 0)
+		if (event.getVarbitId() == VarbitID.BARBASSAULT_AREAEXIT_PENDING && event.getValue() == 0)
 		{
 			currentRound = null;
 

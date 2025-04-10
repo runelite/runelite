@@ -28,14 +28,14 @@ public interface ActorSpotAnim extends Node
 {
 	/**
 	 * Get the spotanim id
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 * @return
 	 */
 	int getId();
 
 	/**
 	 * Set the spotanim id
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 * @param id
 	 */
 	void setId(int id);

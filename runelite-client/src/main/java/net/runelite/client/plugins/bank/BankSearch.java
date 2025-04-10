@@ -31,8 +31,8 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.vars.InputType;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import org.apache.commons.lang3.ArrayUtils;
@@ -55,7 +55,7 @@ public class BankSearch
 
 	public void layoutBank()
 	{
-		Widget bankContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (bankContainer == null)
 		{
 			return;
@@ -74,7 +74,7 @@ public class BankSearch
 	{
 		clientThread.invoke(() ->
 		{
-			Widget bankContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+			Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 			if (bankContainer == null || bankContainer.isHidden())
 			{
 				return;

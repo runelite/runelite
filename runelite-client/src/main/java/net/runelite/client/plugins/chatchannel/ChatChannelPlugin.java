@@ -54,7 +54,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
@@ -70,7 +69,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientStrChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
@@ -293,10 +293,10 @@ public class ChatChannelPlugin extends Plugin
 			return;
 		}
 
-		Widget chatList = client.getWidget(ComponentID.FRIENDS_CHAT_LIST);
+		Widget chatList = client.getWidget(InterfaceID.ChatchannelCurrent.LIST);
 		if (chatList != null)
 		{
-			Widget owner = client.getWidget(ComponentID.FRIENDS_CHAT_OWNER);
+			Widget owner = client.getWidget(InterfaceID.ChatchannelCurrent.CHANNELOWNER);
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
 			if ((friendsChatManager == null || friendsChatManager.getCount() <= 0)
 				&& chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText())
@@ -405,7 +405,7 @@ public class ChatChannelPlugin extends Plugin
 		int rankIcon = -1;
 
 		// Use configured friends chat info colors if set, otherwise default to the jagex text and fc name colors
-		if (client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1)
+		if (client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1)
 		{
 			textColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatInfo(), CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
 			channelColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatChannelName(), CHAT_FC_NAME_TRANSPARENT_BACKGROUND);
@@ -461,7 +461,7 @@ public class ChatChannelPlugin extends Plugin
 
 		final Color textColor;
 		// Use configured clan chat info colors if set, otherwise default to the jagex text and fc name colors
-		if (client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1)
+		if (client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1)
 		{
 			textColor = MoreObjects.firstNonNull(
 				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.transparentClanChatInfo() : chatColorConfig.transparentClanChatGuestInfo(),
@@ -608,7 +608,7 @@ public class ChatChannelPlugin extends Plugin
 			}
 
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
-			Widget chatTitle = client.getWidget(ComponentID.FRIENDS_CHAT_TITLE);
+			Widget chatTitle = client.getWidget(InterfaceID.ChatchannelCurrent.CHANNELNAME);
 			if (friendsChatManager != null && friendsChatManager.getCount() > 0 && chatTitle != null)
 			{
 				chatTitle.setText(chatTitle.getText() + " (" + friendsChatManager.getCount() + "/" + friendsChatManager.getSize() + ")");
@@ -618,12 +618,12 @@ public class ChatChannelPlugin extends Plugin
 		{
 			if (config.clanChatShowOnlineMemberCount())
 			{
-				updateClanTitle(ComponentID.CLAN_HEADER, client.getClanChannel());
+				updateClanTitle(InterfaceID.ClansSidepanel.HEADER, client.getClanChannel());
 			}
 
 			if (config.guestClanChatShowOnlineMemberCount())
 			{
-				updateClanTitle(ComponentID.CLAN_GUEST_HEADER, client.getGuestClanChannel());
+				updateClanTitle(InterfaceID.ClansGuestSidepanel.HEADER, client.getGuestClanChannel());
 			}
 		}
 	}
@@ -642,7 +642,7 @@ public class ChatChannelPlugin extends Plugin
 
 	private void rebuildFriendsChat()
 	{
-		Widget chat = client.getWidget(ComponentID.FRIENDS_CHAT_ROOT);
+		Widget chat = client.getWidget(InterfaceID.ChatchannelCurrent.UNIVERSE);
 		if (chat == null)
 		{
 			return;
@@ -654,8 +654,8 @@ public class ChatChannelPlugin extends Plugin
 
 	private void loadFriendsChats()
 	{
-		Widget chatOwner = client.getWidget(ComponentID.FRIENDS_CHAT_OWNER);
-		Widget chatList = client.getWidget(ComponentID.FRIENDS_CHAT_LIST);
+		Widget chatOwner = client.getWidget(InterfaceID.ChatchannelCurrent.CHANNELOWNER);
+		Widget chatList = client.getWidget(InterfaceID.ChatchannelCurrent.LIST);
 		if (chatList == null || chatOwner == null)
 		{
 			return;
@@ -718,7 +718,7 @@ public class ChatChannelPlugin extends Plugin
 
 	private void colorIgnoredPlayers(Color ignoreColor)
 	{
-		Widget chatList = client.getWidget(ComponentID.FRIENDS_CHAT_LIST);
+		Widget chatList = client.getWidget(InterfaceID.ChatchannelCurrent.LIST);
 		if (chatList == null || chatList.getChildren() == null)
 		{
 			return;
@@ -743,7 +743,7 @@ public class ChatChannelPlugin extends Plugin
 	{
 		clientThread.invokeLater(() ->
 		{
-			Widget w = client.getWidget(ComponentID.CLAN_LAYER);
+			Widget w = client.getWidget(InterfaceID.ClansSidepanel.UNIVERSE);
 			if (w != null)
 			{
 				client.runScript(w.getOnVarTransmitListener());
@@ -752,7 +752,7 @@ public class ChatChannelPlugin extends Plugin
 
 		clientThread.invokeLater(() ->
 		{
-			Widget w = client.getWidget(ComponentID.CLAN_GUEST_LAYER);
+			Widget w = client.getWidget(InterfaceID.ClansGuestSidepanel.UNIVERSE);
 			if (w != null)
 			{
 				client.runScript(w.getOnVarTransmitListener());

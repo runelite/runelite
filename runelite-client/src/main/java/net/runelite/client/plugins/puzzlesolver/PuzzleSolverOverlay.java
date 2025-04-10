@@ -39,11 +39,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
@@ -106,12 +106,12 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		boolean useNormalSolver = true;
-		ItemContainer container = client.getItemContainer(InventoryID.PUZZLE_BOX);
+		ItemContainer container = client.getItemContainer(InventoryID.TRAIL_PUZZLEINV);
 
 		if (container == null)
 		{
 			useNormalSolver = false;
-			container = client.getItemContainer(InventoryID.MONKEY_MADNESS_PUZZLE_BOX);
+			container = client.getItemContainer(InventoryID.REINITIALISATION_INV);
 
 			if (container == null)
 			{
@@ -119,7 +119,7 @@ public class PuzzleSolverOverlay extends Overlay
 			}
 		}
 
-		Widget puzzleBox = client.getWidget(ComponentID.PUZZLE_BOX_VISIBLE_BOX);
+		Widget puzzleBox = client.getWidget(InterfaceID.TrailSlidepuzzle.PIECES);
 
 		if (puzzleBox == null)
 		{

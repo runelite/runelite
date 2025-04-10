@@ -35,17 +35,17 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.HitsplatID;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.annotations.HitsplatType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.Notification;
@@ -129,12 +129,12 @@ public class SpecialCounterPluginTest
 
 		// Set up spec weapon
 		ItemContainer equipment = mock(ItemContainer.class);
-		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD, 1));
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BGS, 1));
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 
 		// Set up special attack energy
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
 		varbitChanged.setValue(100);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -164,7 +164,7 @@ public class SpecialCounterPluginTest
 
 		// spec npc
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -201,7 +201,7 @@ public class SpecialCounterPluginTest
 
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -220,13 +220,13 @@ public class SpecialCounterPluginTest
 
 		// Set up spec weapon as BGS(OR)
 		ItemContainer equipment = mock(ItemContainer.class);
-		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD_OR, 1));
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BGSG, 1));
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 
 		// Second special attack
 		reset(clientThread);
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -260,7 +260,7 @@ public class SpecialCounterPluginTest
 
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -280,7 +280,7 @@ public class SpecialCounterPluginTest
 		reset(clientThread);
 		// Second special attack
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 

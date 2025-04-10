@@ -47,7 +47,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -171,7 +171,7 @@ public class InteractHighlightPlugin extends Plugin
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
 					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC
 						&& client.getSelectedWidget() != null
-						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK;
+						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.MAGIC_SPELLBOOK;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;

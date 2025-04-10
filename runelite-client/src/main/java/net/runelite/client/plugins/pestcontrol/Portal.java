@@ -28,17 +28,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 
 @AllArgsConstructor
 @Getter
 @ToString
 enum Portal
 {
-	PURPLE(ComponentID.PEST_CONTROL_PURPLE_SHIELD, ComponentID.PEST_CONTROL_PURPLE_HEALTH, ComponentID.PEST_CONTROL_PURPLE_ICON),
-	BLUE(ComponentID.PEST_CONTROL_BLUE_SHIELD, ComponentID.PEST_CONTROL_BLUE_HEALTH, ComponentID.PEST_CONTROL_BLUE_ICON),
-	YELLOW(ComponentID.PEST_CONTROL_YELLOW_SHIELD, ComponentID.PEST_CONTROL_YELLOW_HEALTH, ComponentID.PEST_CONTROL_YELLOW_ICON),
-	RED(ComponentID.PEST_CONTROL_RED_SHIELD, ComponentID.PEST_CONTROL_RED_HEALTH, ComponentID.PEST_CONTROL_RED_ICON);
+	PURPLE(InterfaceID.PestStatusOverlay.PEST_STATUS_PORT1, InterfaceID.PestStatusOverlay.PEST_STATUS_PORTTXT1, InterfaceID.PestStatusOverlay.PEST_PORTAL_1_DONE),
+	BLUE(InterfaceID.PestStatusOverlay.PEST_STATUS_PORT2, InterfaceID.PestStatusOverlay.PEST_STATUS_PORTTXT2, InterfaceID.PestStatusOverlay.PEST_PORTAL_2_DONE),
+	YELLOW(InterfaceID.PestStatusOverlay.PEST_STATUS_PORT3, InterfaceID.PestStatusOverlay.PEST_STATUS_PORTTXT3, InterfaceID.PestStatusOverlay.PEST_PORTAL_3_DONE),
+	RED(InterfaceID.PestStatusOverlay.PEST_STATUS_PORT4, InterfaceID.PestStatusOverlay.PEST_STATUS_PORTTXT4, InterfaceID.PestStatusOverlay.PEST_PORTAL_4_DONE);
 
 	@Component
 	private final int shield;

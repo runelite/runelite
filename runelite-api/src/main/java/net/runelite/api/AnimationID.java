@@ -30,6 +30,7 @@ package net.runelite.api;
  * Note: This class is not complete and may not contain a specific animation
  * required.
  */
+@Deprecated
 public final class AnimationID
 {
 	public static final int IDLE = -1;

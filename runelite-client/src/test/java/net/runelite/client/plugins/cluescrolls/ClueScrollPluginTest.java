@@ -38,14 +38,10 @@ import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.IndexedObjectSet;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
-import net.runelite.api.Varbits;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -53,8 +49,11 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -148,7 +147,7 @@ public class ClueScrollPluginTest
 		hotColdMessage.setType(ChatMessageType.GAMEMESSAGE);
 		final Player localPlayer = mock(Player.class);
 
-		when(client.getWidget(ComponentID.CLUESCROLL_TEXT)).thenReturn(clueWidget);
+		when(client.getWidget(InterfaceID.TrailCluetext.TEXT)).thenReturn(clueWidget);
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 		when(client.getPlane()).thenReturn(0);
 		WorldView wv = mock(WorldView.class);
@@ -164,7 +163,7 @@ public class ClueScrollPluginTest
 
 		// Initialize a beginner hot-cold clue (which will have an end point of LUMBRIDGE_COW_FIELD)
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.CLUESCROLL);
+		widgetLoaded.setGroupId(InterfaceID.TRAIL_CLUETEXT);
 		plugin.onWidgetLoaded(widgetLoaded);
 
 		// clientthread callback
@@ -212,11 +211,11 @@ public class ClueScrollPluginTest
 		// Set up emote clue
 		final Widget clueWidget = mock(Widget.class);
 		when(clueWidget.getText()).thenReturn("Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.");
-		when(client.getWidget(ComponentID.CLUESCROLL_TEXT)).thenReturn(clueWidget);
+		when(client.getWidget(InterfaceID.TrailCluetext.TEXT)).thenReturn(clueWidget);
 
 		// open clue
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.CLUESCROLL);
+		widgetLoaded.setGroupId(InterfaceID.TRAIL_CLUETEXT);
 		plugin.onWidgetLoaded(widgetLoaded);
 
 		// clientthread callback
@@ -228,7 +227,7 @@ public class ClueScrollPluginTest
 		MenuOptionClicked menuOptionClicked = mock(MenuOptionClicked.class);
 		when(menuOptionClicked.getMenuOption()).thenReturn("Search");
 		lenient().when(menuOptionClicked.getMenuTarget()).thenReturn("<col=ffff>STASH unit (easy)");
-		when(menuOptionClicked.getId()).thenReturn(NullObjectID.NULL_28983);
+		when(menuOptionClicked.getId()).thenReturn(ObjectID.HH_EASY_EXP1);
 		plugin.onMenuOptionClicked(menuOptionClicked);
 
 		// Check that the STASH is stored after withdrawing
@@ -243,7 +242,7 @@ public class ClueScrollPluginTest
 
 		// open clue
 		reset(clientThread);
-		widgetLoaded.setGroupId(InterfaceID.CLUESCROLL);
+		widgetLoaded.setGroupId(InterfaceID.TRAIL_CLUETEXT);
 		plugin.onWidgetLoaded(widgetLoaded);
 
 		// clientthread callback
@@ -270,31 +269,31 @@ public class ClueScrollPluginTest
 	public void testThatRunepouchIsAddedToInventory()
 	{
 		ItemContainer container = mock(ItemContainer.class);
-		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), container);
+		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INV, container);
 
 		final Item[] inventory = {
-			new Item(ItemID.COINS_995, 100),
+			new Item(ItemID.COINS, 100),
 			new Item(ItemID.MITHRIL_BAR, 1),
 			new Item(ItemID.MITHRIL_BAR, 1),
 			new Item(ItemID.MITHRIL_BAR, 1),
-			new Item(ItemID.SOUL_RUNE, 30),
-			new Item(ItemID.COSMIC_RUNE, 100),
-			new Item(ItemID.RUNE_POUCH, 1),
+			new Item(ItemID.SOULRUNE, 30),
+			new Item(ItemID.COSMICRUNE, 100),
+			new Item(ItemID.BH_RUNE_POUCH, 1),
 			new Item(ItemID.SPADE, 1),
-			new Item(ItemID.CLUE_SCROLL_MASTER, 1)
+			new Item(ItemID.TRAIL_CLUE_MASTER, 1)
 		};
 
 		when(container.getItems()).thenReturn(inventory);
-		when(container.contains(ItemID.RUNE_POUCH)).thenReturn(true);
+		when(container.contains(ItemID.BH_RUNE_POUCH)).thenReturn(true);
 
-		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
-		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
-		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
-		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_1)).thenReturn(9); // Cosmic Rune
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_1)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_3)).thenReturn(4); // Fire Rune
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_3)).thenReturn(4000);
 
 		EnumComposition enumComposition = mock(EnumComposition.class);
-		when(enumComposition.getIntValue(9)).thenReturn(ItemID.COSMIC_RUNE);
-		when(enumComposition.getIntValue(4)).thenReturn(ItemID.FIRE_RUNE);
+		when(enumComposition.getIntValue(9)).thenReturn(ItemID.COSMICRUNE);
+		when(enumComposition.getIntValue(4)).thenReturn(ItemID.FIRERUNE);
 		when(client.getEnum(EnumID.RUNEPOUCH_RUNE)).thenReturn(enumComposition);
 
 		plugin.onItemContainerChanged(event);
@@ -303,7 +302,7 @@ public class ClueScrollPluginTest
 
 		List<Item> inventoryList = Arrays.asList(plugin.getInventoryItems());
 
-		assertThat(inventoryList, hasItem(new Item(ItemID.COSMIC_RUNE, 120)));
-		assertThat(inventoryList, hasItem(new Item(ItemID.FIRE_RUNE, 4000)));
+		assertThat(inventoryList, hasItem(new Item(ItemID.COSMICRUNE, 120)));
+		assertThat(inventoryList, hasItem(new Item(ItemID.FIRERUNE, 4000)));
 	}
 }

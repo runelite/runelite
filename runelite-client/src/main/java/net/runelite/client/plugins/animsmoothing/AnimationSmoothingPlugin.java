@@ -25,8 +25,8 @@
 package net.runelite.client.plugins.animsmoothing;
 
 import javax.inject.Inject;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -62,37 +62,37 @@ public class AnimationSmoothingPlugin extends Plugin
 	{
 		switch (animId)
 		{
-			case AnimationID.HELLHOUND_DEFENCE:
+			case AnimationID.DOG_UPDATE_JACKAL_DEFEND:
 
-			case AnimationID.WYRM_IDLE_DORMANT:
-			case AnimationID.WYRM_IDLE_ACTIVE:
+			case AnimationID.WYRM_WALK:
+			case AnimationID.WYRM_READY:
 			case AnimationID.WYRM_ATTACK_MELEE:
-			case AnimationID.WYRM_ATTACK_MAGE:
+			case AnimationID.WYRM_ATTACK_MAGIC:
 
-			case AnimationID.CYCLOPS_ATTACK:
+			case AnimationID.GIANT_UPDATE_BASIC_ATTACK:
 
-			case AnimationID.TREE_SPIRIT_IDLE:
-			case AnimationID.TREE_SPIRIT_WALK:
+			case AnimationID.GHOST_UPDATE_NORMAL_READY:
+			case AnimationID.GHOST_UPDATE_NORMAL_WALK:
 
-			case AnimationID.SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK:
+			case AnimationID.ZOMBIE_UPDATE_SIGN_WALK:
 
-			case AnimationID.DUCK_BOBBING:
+			case AnimationID.DUCK_REWORK_UNDERWATER_READY_AND_EXTRA:
 
-			case AnimationID.VIGGORAS_CHAINMACE_IDLE:
+			case AnimationID.WILD_CAVE_CHAINMACE_READY:
 
-			case AnimationID.MLM_WATER_WHEEL_SPINNING:
-			case AnimationID.HARMONY_ISLAND_WINDMILL_SPINNING:
-			case AnimationID.GWENITH_WINDMILL_SPINNING:
-			case AnimationID.LITHKREN_GENERATOR_SPINNING:
-			case AnimationID.GIANTS_FOUNDRY_WATER_WHEEL_SPINNING:
+			case AnimationID.ELEMENTAL_WHEEL_SPIN:
+			case AnimationID.BRAIN_MILL_SAIL_ROTATE:
+			case AnimationID.FAI_VARROCK_MILLSAIL:
+			case AnimationID.DS2_LITHKREN_GENERATOR_WHEEL:
+			case AnimationID.WATERWHEEL_CHUTE:
 
-			case AnimationID.MAGIC_ARCEUUS_DEMONBANE:
+			case AnimationID.HUMAN_SPELLCAST_DEMONBANE:
 
-			case AnimationID.PORTAL_NEXUS_SPIN:
+			case AnimationID.POH_NEXUS:
 
-			case AnimationID.SLAYER_TOWER_WATER_BUCKET_DRIP:
+			case AnimationID.BURGH_BUCKET_DRIP:
 
-			case AnimationID.KEY_MASTER_IDLE:
+			case AnimationID.KEYKEEPER:
 				return false;
 
 			default:

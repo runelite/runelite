@@ -27,6 +27,7 @@ package net.runelite.api;
 /**
  * An enumeration of possible inventory types.
  */
+@Deprecated
 public enum InventoryID
 {
 	/**

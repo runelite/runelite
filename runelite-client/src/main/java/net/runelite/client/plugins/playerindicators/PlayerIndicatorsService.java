@@ -36,12 +36,12 @@ import net.runelite.api.FriendsChatMember;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.util.Text;
 
@@ -85,7 +85,7 @@ class PlayerIndicatorsService
 		}
 
 		final Predicate<PlayerIndicatorsConfig.HighlightSetting> isEnabled = (hs) -> hs == PlayerIndicatorsConfig.HighlightSetting.ENABLED ||
-			(hs == PlayerIndicatorsConfig.HighlightSetting.PVP && (client.getVarbitValue(Varbits.IN_WILDERNESS) == 1 || client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1));
+			(hs == PlayerIndicatorsConfig.HighlightSetting.PVP && (client.getVarbitValue(VarbitID.INSIDE_WILDERNESS) == 1 || client.getVarbitValue(VarbitID.PVP_AREA_CLIENT) == 1));
 
 		Color color = null;
 		if (player == client.getLocalPlayer())

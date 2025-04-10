@@ -42,15 +42,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
@@ -62,6 +56,11 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -102,13 +101,13 @@ public class DriftNetPlugin extends Plugin
 	private final Map<NPC, Integer> taggedFish = new HashMap<>();
 	@Getter
 	private final List<DriftNet> NETS = ImmutableList.of(
-		new DriftNet(NullObjectID.NULL_31433, Varbits.NORTH_NET_STATUS, Varbits.NORTH_NET_CATCH_COUNT, ImmutableSet.of(
+		new DriftNet(ObjectID.FOSSIL_DRIFT_NET1_MULTI, VarbitID.FOSSIL_DRIFT_NET1, VarbitID.FOSSIL_DRIFT_NET1_CATCH, ImmutableSet.of(
 			new WorldPoint(3746, 10297, 1),
 			new WorldPoint(3747, 10297, 1),
 			new WorldPoint(3748, 10297, 1),
 			new WorldPoint(3749, 10297, 1)
 		)),
-		new DriftNet(NullObjectID.NULL_31434, Varbits.SOUTH_NET_STATUS, Varbits.SOUTH_NET_CATCH_COUNT, ImmutableSet.of(
+		new DriftNet(ObjectID.FOSSIL_DRIFT_NET2_MULTI, VarbitID.FOSSIL_DRIFT_NET2, VarbitID.FOSSIL_DRIFT_NET2_CATCH, ImmutableSet.of(
 			new WorldPoint(3742, 10288, 1),
 			new WorldPoint(3742, 10289, 1),
 			new WorldPoint(3742, 10290, 1),
@@ -212,7 +211,7 @@ public class DriftNetPlugin extends Plugin
 		if (armInteraction
 			&& event.getSource() == client.getLocalPlayer()
 			&& event.getTarget() instanceof NPC
-			&& ((NPC) event.getTarget()).getId() == NpcID.FISH_SHOAL)
+			&& ((NPC) event.getTarget()).getId() == NpcID.FOSSIL_FISH_SHOAL)
 		{
 			tagFish(event.getTarget());
 			armInteraction = false;
@@ -264,7 +263,7 @@ public class DriftNetPlugin extends Plugin
 		{
 			Actor target = client.getLocalPlayer().getInteracting();
 
-			if (target instanceof NPC && ((NPC) target).getId() == NpcID.FISH_SHOAL)
+			if (target instanceof NPC && ((NPC) target).getId() == NpcID.FOSSIL_FISH_SHOAL)
 			{
 				tagFish(target);
 			}
@@ -287,7 +286,7 @@ public class DriftNetPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
-		if (npc.getId() == NpcID.FISH_SHOAL)
+		if (npc.getId() == NpcID.FOSSIL_FISH_SHOAL)
 		{
 			fish.add(npc);
 		}
@@ -305,7 +304,7 @@ public class DriftNetPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject object = event.getGameObject();
-		if (object.getId() == ObjectID.ANNETTE)
+		if (object.getId() == ObjectID.FOSSIL_MERMAID_DRIFTNETS)
 		{
 			annette = object;
 		}
@@ -341,12 +340,12 @@ public class DriftNetPlugin extends Plugin
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final ItemContainer itemContainer = event.getItemContainer();
-		if (itemContainer != client.getItemContainer(InventoryID.INVENTORY))
+		if (itemContainer != client.getItemContainer(InventoryID.INV))
 		{
 			return;
 		}
 
-		driftNetsInInventory = itemContainer.contains(ItemID.DRIFT_NET);
+		driftNetsInInventory = itemContainer.contains(ItemID.FOSSIL_DRIFT_NET);
 	}
 
 	private boolean checkArea()

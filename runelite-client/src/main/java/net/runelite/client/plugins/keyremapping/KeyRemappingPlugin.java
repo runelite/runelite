@@ -35,9 +35,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -117,14 +117,14 @@ public class KeyRemappingPlugin extends Plugin
 	 */
 	boolean chatboxFocused()
 	{
-		Widget chatboxParent = client.getWidget(ComponentID.CHATBOX_PARENT);
+		Widget chatboxParent = client.getWidget(InterfaceID.Chatbox.UNIVERSE);
 		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null)
 		{
 			return false;
 		}
 
 		// If the search box on the world map is open and focused, ~keypress_permit blocks the keypress
-		Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
+		Widget worldMapSearch = client.getWidget(InterfaceID.Worldmap.MAPLIST_DISPLAY);
 		if (worldMapSearch != null && client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) == 1)
 		{
 			return false;
@@ -132,7 +132,7 @@ public class KeyRemappingPlugin extends Plugin
 
 		// The report interface blocks input due to 162:54 being hidden, however player/npc dialog and
 		// options do this too, and so we can't disable remapping just due to 162:54 being hidden.
-		Widget report = client.getWidget(ComponentID.REPORT_ABUSE_PARENT);
+		Widget report = client.getWidget(InterfaceID.Reportabuse.UNIVERSE);
 		if (report != null)
 		{
 			return false;
@@ -152,15 +152,15 @@ public class KeyRemappingPlugin extends Plugin
 		// Most chat dialogs with numerical input are added without the chatbox or its key listener being removed,
 		// so chatboxFocused() is true. The chatbox onkey script uses the following logic to ignore key presses,
 		// so we will use it too to not remap F-keys.
-		return isHidden(ComponentID.CHATBOX_MESSAGES) || isHidden(ComponentID.CHATBOX_TRANSPARENT_BACKGROUND_LINES)
+		return isHidden(InterfaceID.Chatbox.MES_LAYER_HIDE) || isHidden(InterfaceID.Chatbox.CHATDISPLAY)
 			// We want to block F-key remapping in the bank pin interface too, so it does not interfere with the
 			// Keyboard Bankpin feature of the Bank plugin
-			|| !isHidden(ComponentID.BANK_PIN_CONTAINER);
+			|| !isHidden(InterfaceID.BankpinKeypad.UNIVERSE);
 	}
 
 	boolean isOptionsDialogOpen()
 	{
-		return client.getWidget(ComponentID.DIALOG_OPTION_OPTIONS) != null;
+		return client.getWidget(InterfaceID.Chatmenu.OPTIONS) != null;
 	}
 
 	private boolean isHidden(int component)
@@ -175,7 +175,7 @@ public class KeyRemappingPlugin extends Plugin
 		switch (scriptCallbackEvent.getEventName())
 		{
 			case "setChatboxInput":
-				Widget chatboxInput = client.getWidget(ComponentID.CHATBOX_INPUT);
+				Widget chatboxInput = client.getWidget(InterfaceID.Chatbox.INPUT);
 				if (chatboxInput != null && !typing)
 				{
 					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
@@ -194,7 +194,7 @@ public class KeyRemappingPlugin extends Plugin
 
 	void lockChat()
 	{
-		Widget chatboxInput = client.getWidget(ComponentID.CHATBOX_INPUT);
+		Widget chatboxInput = client.getWidget(InterfaceID.Chatbox.INPUT);
 		if (chatboxInput != null)
 		{
 			setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
@@ -203,12 +203,12 @@ public class KeyRemappingPlugin extends Plugin
 
 	void unlockChat()
 	{
-		Widget chatboxInput = client.getWidget(ComponentID.CHATBOX_INPUT);
+		Widget chatboxInput = client.getWidget(InterfaceID.Chatbox.INPUT);
 		if (chatboxInput != null)
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
+				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1;
 				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
 				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 			}

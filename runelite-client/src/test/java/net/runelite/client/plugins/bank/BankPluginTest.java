@@ -31,11 +31,11 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -127,7 +127,7 @@ public class BankPluginTest
 	@Test
 	public void testCalculate()
 	{
-		Item coins = new Item(ItemID.COINS_995, Integer.MAX_VALUE);
+		Item coins = new Item(ItemID.COINS, Integer.MAX_VALUE);
 
 		Item whip = new Item(ItemID.ABYSSAL_WHIP, 1_000_000_000);
 

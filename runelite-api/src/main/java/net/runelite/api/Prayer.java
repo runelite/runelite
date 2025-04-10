@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.gameval.VarbitID;
 
 /**
  * An enumeration of prayers.
@@ -34,224 +35,224 @@ public enum Prayer
 	/**
 	 * Thick Skin (Level 1, Defence).
 	 */
-	THICK_SKIN(Varbits.PRAYER_THICK_SKIN),
+	THICK_SKIN(VarbitID.PRAYER_THICKSKIN),
 	/**
 	 * Burst of Strength (Level 4, Strength).
 	 */
-	BURST_OF_STRENGTH(Varbits.PRAYER_BURST_OF_STRENGTH),
+	BURST_OF_STRENGTH(VarbitID.PRAYER_BURSTOFSTRENGTH),
 	/**
 	 * Clarity of Thought (Level 7, Attack).
 	 */
-	CLARITY_OF_THOUGHT(Varbits.PRAYER_CLARITY_OF_THOUGHT),
+	CLARITY_OF_THOUGHT(VarbitID.PRAYER_CLARITYOFTHOUGHT),
 	/**
 	 * Sharp Eye (Level 8, Ranging).
 	 */
-	SHARP_EYE(Varbits.PRAYER_SHARP_EYE),
+	SHARP_EYE(VarbitID.PRAYER_SHARPEYE),
 	/**
 	 * Mystic Will (Level 9, Magic).
 	 */
-	MYSTIC_WILL(Varbits.PRAYER_MYSTIC_WILL),
+	MYSTIC_WILL(VarbitID.PRAYER_MYSTICWILL),
 	/**
 	 * Rock Skin (Level 10, Defence).
 	 */
-	ROCK_SKIN(Varbits.PRAYER_ROCK_SKIN),
+	ROCK_SKIN(VarbitID.PRAYER_ROCKSKIN),
 	/**
 	 * Superhuman Strength (Level 13, Strength).
 	 */
-	SUPERHUMAN_STRENGTH(Varbits.PRAYER_SUPERHUMAN_STRENGTH),
+	SUPERHUMAN_STRENGTH(VarbitID.PRAYER_SUPERHUMANSTRENGTH),
 	/**
 	 * Improved Reflexes (Level 16, Attack).
 	 */
-	IMPROVED_REFLEXES(Varbits.PRAYER_IMPROVED_REFLEXES),
+	IMPROVED_REFLEXES(VarbitID.PRAYER_IMPROVEDREFLEXES),
 	/**
 	 * Rapid Restore (Level 19, Stats).
 	 */
-	RAPID_RESTORE(Varbits.PRAYER_RAPID_RESTORE),
+	RAPID_RESTORE(VarbitID.PRAYER_RAPIDRESTORE),
 	/**
 	 * Rapid Heal (Level 22, Hitpoints).
 	 */
-	RAPID_HEAL(Varbits.PRAYER_RAPID_HEAL),
+	RAPID_HEAL(VarbitID.PRAYER_RAPIDHEAL),
 	/**
 	 * Protect Item (Level 25).
 	 */
-	PROTECT_ITEM(Varbits.PRAYER_PROTECT_ITEM),
+	PROTECT_ITEM(VarbitID.PRAYER_PROTECTITEM),
 	/**
 	 * Hawk Eye (Level 26, Ranging).
 	 */
-	HAWK_EYE(Varbits.PRAYER_HAWK_EYE),
+	HAWK_EYE(VarbitID.PRAYER_HAWKEYE),
 	/**
 	 * Mystic Lore (Level 27, Magic).
 	 */
-	MYSTIC_LORE(Varbits.PRAYER_MYSTIC_LORE),
+	MYSTIC_LORE(VarbitID.PRAYER_MYSTICLORE),
 	/**
 	 * Steel Skin (Level 28, Defence).
 	 */
-	STEEL_SKIN(Varbits.PRAYER_STEEL_SKIN),
+	STEEL_SKIN(VarbitID.PRAYER_STEELSKIN),
 	/**
 	 * Ultimate Strength (Level 31, Strength).
 	 */
-	ULTIMATE_STRENGTH(Varbits.PRAYER_ULTIMATE_STRENGTH),
+	ULTIMATE_STRENGTH(VarbitID.PRAYER_ULTIMATESTRENGTH),
 	/**
 	 * Incredible Reflexes (Level 34, Attack).
 	 */
-	INCREDIBLE_REFLEXES(Varbits.PRAYER_INCREDIBLE_REFLEXES),
+	INCREDIBLE_REFLEXES(VarbitID.PRAYER_INCREDIBLEREFLEXES),
 	/**
 	 * Protect from Magic (Level 37).
 	 */
-	PROTECT_FROM_MAGIC(Varbits.PRAYER_PROTECT_FROM_MAGIC),
+	PROTECT_FROM_MAGIC(VarbitID.PRAYER_PROTECTFROMMAGIC),
 	/**
 	 * Protect from Missiles (Level 40).
 	 */
-	PROTECT_FROM_MISSILES(Varbits.PRAYER_PROTECT_FROM_MISSILES),
+	PROTECT_FROM_MISSILES(VarbitID.PRAYER_PROTECTFROMMISSILES),
 	/**
 	 * Protect from Melee (Level 43).
 	 */
-	PROTECT_FROM_MELEE(Varbits.PRAYER_PROTECT_FROM_MELEE),
+	PROTECT_FROM_MELEE(VarbitID.PRAYER_PROTECTFROMMELEE),
 	/**
 	 * Eagle Eye (Level 44, Ranging).
 	 */
-	EAGLE_EYE(Varbits.PRAYER_EAGLE_EYE),
+	EAGLE_EYE(VarbitID.PRAYER_EAGLEEYE),
 	/**
 	 * Mystic Might (Level 45, Magic).
 	 */
-	MYSTIC_MIGHT(Varbits.PRAYER_MYSTIC_MIGHT),
+	MYSTIC_MIGHT(VarbitID.PRAYER_MYSTICMIGHT),
 	/**
 	 * Retribution (Level 46).
 	 */
-	RETRIBUTION(Varbits.PRAYER_RETRIBUTION),
+	RETRIBUTION(VarbitID.PRAYER_RETRIBUTION),
 	/**
 	 * Redemption (Level 49).
 	 */
-	REDEMPTION(Varbits.PRAYER_REDEMPTION),
+	REDEMPTION(VarbitID.PRAYER_REDEMPTION),
 	/**
 	 * Smite (Level 52).
 	 */
-	SMITE(Varbits.PRAYER_SMITE),
+	SMITE(VarbitID.PRAYER_SMITE),
 	/**
 	 * Chivalry (Level 60, Defence/Strength/Attack).
 	 */
-	CHIVALRY(Varbits.PRAYER_CHIVALRY),
+	CHIVALRY(VarbitID.PRAYER_CHIVALRY),
 	/**
 	 * Deadeye (Level 62, Ranging/Damage/Defence).
 	 */
-	DEADEYE(Varbits.PRAYER_DEADEYE),
+	DEADEYE(VarbitID.PRAYER_DEADEYE),
 	/**
 	 * Mystic Vigour (Level 63, Magic/Magic Def./Defence).
 	 */
-	MYSTIC_VIGOUR(Varbits.PRAYER_MYSTIC_VIGOUR),
+	MYSTIC_VIGOUR(VarbitID.PRAYER_MYSTICVIGOUR),
 	/**
 	 * Piety (Level 70, Defence/Strength/Attack).
 	 */
-	PIETY(Varbits.PRAYER_PIETY),
+	PIETY(VarbitID.PRAYER_PIETY),
 	/**
 	 * Preserve (Level 55).
 	 */
-	PRESERVE(Varbits.PRAYER_PRESERVE),
+	PRESERVE(VarbitID.PRAYER_PRESERVE),
 	/**
 	 * Rigour (Level 74, Ranging/Damage/Defence).
 	 */
-	RIGOUR(Varbits.PRAYER_RIGOUR),
+	RIGOUR(VarbitID.PRAYER_RIGOUR),
 	/**
 	 * Augury (Level 77, Magic/Magic Def./Defence).
 	 */
-	AUGURY(Varbits.PRAYER_AUGURY),
+	AUGURY(VarbitID.PRAYER_AUGURY),
 
 	/**
 	 * Ruinous Powers Rejuvenation (Level 60).
 	 */
-	RP_REJUVENATION(Varbits.PRAYER_RP_REJUVENATION),
+	RP_REJUVENATION(VarbitID.PRAYER_REJUVENATION),
 	/**
 	 * Ruinous Powers Ancient Strength (Level 61).
 	 */
-	RP_ANCIENT_STRENGTH(Varbits.PRAYER_RP_ANCIENT_STRENGTH),
+	RP_ANCIENT_STRENGTH(VarbitID.PRAYER_ANCIENT_STRENGTH),
 	/**
 	 * Ruinous Powers Ancient Sight (Level 62).
 	 */
-	RP_ANCIENT_SIGHT(Varbits.PRAYER_RP_ANCIENT_SIGHT),
+	RP_ANCIENT_SIGHT(VarbitID.PRAYER_ANCIENT_SIGHT),
 	/**
 	 * Ruinous Powers Ancient Will (Level 63).
 	 */
-	RP_ANCIENT_WILL(Varbits.PRAYER_RP_ANCIENT_WILL),
+	RP_ANCIENT_WILL(VarbitID.PRAYER_ANCIENT_WILL),
 	/**
 	 * Ruinous Powers Protect Item (Level 65).
 	 */
-	RP_PROTECT_ITEM(Varbits.PRAYER_RP_PROTECT_ITEM),
+	RP_PROTECT_ITEM(VarbitID.PRAYER_PROTECT_ITEM_R),
 	/**
 	 * Ruinous Powers Ruinous Grace (Level 66).
 	 */
-	RP_RUINOUS_GRACE(Varbits.PRAYER_RP_RUINOUS_GRACE),
+	RP_RUINOUS_GRACE(VarbitID.PRAYER_RUINOUS_GRACE),
 	/**
 	 * Ruinous Powers Dampen Magic (Level 67).
 	 */
-	RP_DAMPEN_MAGIC(Varbits.PRAYER_RP_DAMPEN_MAGIC),
+	RP_DAMPEN_MAGIC(VarbitID.PRAYER_DAMPEN_MAGIC),
 	/**
 	 * Ruinous Powers Dampen Ranged (Level 69).
 	 */
-	RP_DAMPEN_RANGED(Varbits.PRAYER_RP_DAMPEN_RANGED),
+	RP_DAMPEN_RANGED(VarbitID.PRAYER_DAMPEN_RANGED),
 	/**
 	 * Ruinous Powers Dampen Melee (Level 71).
 	 */
-	RP_DAMPEN_MELEE(Varbits.PRAYER_RP_DAMPEN_MELEE),
+	RP_DAMPEN_MELEE(VarbitID.PRAYER_DAMPEN_MELEE),
 	/**
 	 * Ruinous Powers Trinitas (Level 72).
 	 */
-	RP_TRINITAS(Varbits.PRAYER_RP_TRINITAS),
+	RP_TRINITAS(VarbitID.PRAYER_TRINITAS),
 	/**
 	 * Ruinous Powers Berserker (Level 74).
 	 */
-	RP_BERSERKER(Varbits.PRAYER_RP_BERSERKER),
+	RP_BERSERKER(VarbitID.PRAYER_BERSERKER),
 	/**
 	 * Ruinous Powers Purge (Level 75).
 	 */
-	RP_PURGE(Varbits.PRAYER_RP_PURGE),
+	RP_PURGE(VarbitID.PRAYER_PURGE),
 	/**
 	 * Ruinous Powers Metabolise (Level 77).
 	 */
-	RP_METABOLISE(Varbits.PRAYER_RP_METABOLISE),
+	RP_METABOLISE(VarbitID.PRAYER_METABOLISE),
 	/**
 	 * Ruinous Powers Rebuke (Level 78).
 	 */
-	RP_REBUKE(Varbits.PRAYER_RP_REBUKE),
+	RP_REBUKE(VarbitID.PRAYER_REBUKE),
 	/**
 	 * Ruinous Powers Vindication (Level 80).
 	 */
-	RP_VINDICATION(Varbits.PRAYER_RP_VINDICATION),
+	RP_VINDICATION(VarbitID.PRAYER_VINDICATION),
 	/**
 	 * Ruinous Powers Decimate (Level 82).
 	 */
-	RP_DECIMATE(Varbits.PRAYER_RP_DECIMATE),
+	RP_DECIMATE(VarbitID.PRAYER_DECIMATE),
 	/**
 	 * Ruinous Powers Annihilate (Level 84).
 	 */
-	RP_ANNIHILATE(Varbits.PRAYER_RP_ANNIHILATE),
+	RP_ANNIHILATE(VarbitID.PRAYER_ANNIHILATE),
 	/**
 	 * Ruinous Powers Vaporise (Level 86).
 	 */
-	RP_VAPORISE(Varbits.PRAYER_RP_VAPORISE),
+	RP_VAPORISE(VarbitID.PRAYER_VAPORISE),
 	/**
 	 * Ruinous Powers Fumus' Vow (Level 87).
 	 */
-	RP_FUMUS_VOW(Varbits.PRAYER_RP_FUMUS_VOW),
+	RP_FUMUS_VOW(VarbitID.PRAYER_FUMUS_VOW),
 	/**
 	 * Ruinous Powers Umbra's Vow (Level 88).
 	 */
-	RP_UMBRA_VOW(Varbits.PRAYER_RP_UMBRA_VOW),
+	RP_UMBRA_VOW(VarbitID.PRAYER_UMBRAS_VOW),
 	/**
 	 * Ruinous Powers Cruor's Vow (Level 89).
 	 */
-	RP_CRUORS_VOW(Varbits.PRAYER_RP_CRUORS_VOW),
+	RP_CRUORS_VOW(VarbitID.PRAYER_CRUORS_VOW),
 	/**
 	 * Ruinous Powers Glacies' Vow (Level 90).
 	 */
-	RP_GLACIES_VOW(Varbits.PRAYER_RP_GLACIES_VOW),
+	RP_GLACIES_VOW(VarbitID.PRAYER_GLACIES_VOW),
 	/**
 	 * Ruinous Powers Wrath (Level 91).
 	 */
-	RP_WRATH(Varbits.PRAYER_RP_WRATH),
+	RP_WRATH(VarbitID.PRAYER_WRATH),
 	/**
 	 * Ruinous Powers Intensify (Level 92).
 	 */
-	RP_INTENSIFY(Varbits.PRAYER_RP_INTENSIFY),
+	RP_INTENSIFY(VarbitID.PRAYER_INTENSIFY),
 	;
 
 	private final int varbit;

@@ -37,13 +37,12 @@ import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -148,13 +147,13 @@ public class HiscorePlugin extends Plugin
 		final int componentId = event.getActionParam1();
 		final int groupId = WidgetUtil.componentToInterface(componentId);
 
-		if (groupId == InterfaceID.FRIEND_LIST && option.equals("Delete")
-			|| groupId == InterfaceID.FRIENDS_CHAT && (option.equals("Add ignore") || option.equals("Remove friend"))
+		if (groupId == InterfaceID.FRIENDS && option.equals("Delete")
+			|| groupId == InterfaceID.CHATCHANNEL_CURRENT && (option.equals("Add ignore") || option.equals("Remove friend"))
 			|| groupId == InterfaceID.CHATBOX && (option.equals("Add ignore") || option.equals("Message"))
-			|| groupId == InterfaceID.IGNORE_LIST && option.equals("Delete")
-			|| (componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS) && (option.equals("Add ignore") || option.equals("Remove friend"))
-			|| groupId == InterfaceID.PRIVATE_CHAT && (option.equals("Add ignore") || option.equals("Message"))
-			|| groupId == InterfaceID.GROUP_IRON && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
+			|| groupId == InterfaceID.IGNORE && option.equals("Delete")
+			|| (componentId == InterfaceID.ClansSidepanel.PLAYERLIST || componentId == InterfaceID.ClansGuestSidepanel.PLAYERLIST) && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == InterfaceID.PM_CHAT && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == InterfaceID.GIM_SIDEPANEL && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
 		)
 		{
 			client.createMenuEntry(-2)
@@ -235,7 +234,7 @@ public class HiscorePlugin extends Plugin
 			return profile;
 		}
 
-		switch (client.getVarbitValue(Varbits.ACCOUNT_TYPE))
+		switch (client.getVarbitValue(VarbitID.IRONMAN))
 		{
 			case 1:
 				return HiscoreEndpoint.IRONMAN;

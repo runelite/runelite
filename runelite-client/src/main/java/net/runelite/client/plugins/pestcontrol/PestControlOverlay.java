@@ -36,7 +36,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
 import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
@@ -68,7 +68,7 @@ public class PestControlOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		// See if we are in a game or not
-		if (client.getWidget(ComponentID.PEST_CONTROL_BLUE_SHIELD) == null)
+		if (client.getWidget(InterfaceID.PestStatusOverlay.PEST_STATUS_PORT2) == null)
 		{
 			if (game != null)
 			{
@@ -146,10 +146,10 @@ public class PestControlOverlay extends Overlay
 
 	private void renderProgressWidget(Graphics2D graphics)
 	{
-		Widget bar = client.getWidget(ComponentID.PEST_CONTROL_ACTIVITY_BAR).getChild(0);
+		Widget bar = client.getWidget(InterfaceID.PestStatusOverlay.ACTIVITY_CONTAINER).getChild(0);
 		Rectangle2D bounds = bar.getBounds().getBounds2D();
 
-		Widget prgs = client.getWidget(ComponentID.PEST_CONTROL_ACTIVITY_PROGRESS).getChild(0);
+		Widget prgs = client.getWidget(InterfaceID.PestStatusOverlay.ACTIVITY_BAR).getChild(0);
 		int perc = (int) ((prgs.getBounds().getWidth() / bounds.getWidth()) * 100);
 
 		Color color = Color.GREEN;
@@ -177,7 +177,7 @@ public class PestControlOverlay extends Overlay
 		Widget icon = client.getWidget(portal.getIcon());
 		Widget hp = client.getWidget(portal.getHitpoints());
 
-		Widget bar = client.getWidget(ComponentID.PEST_CONTROL_ACTIVITY_BAR).getChild(0);
+		Widget bar = client.getWidget(InterfaceID.PestStatusOverlay.ACTIVITY_CONTAINER).getChild(0);
 
 		Rectangle2D barBounds = bar.getBounds().getBounds2D();
 

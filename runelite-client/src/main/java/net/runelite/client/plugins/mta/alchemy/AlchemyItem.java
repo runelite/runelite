@@ -25,17 +25,17 @@
 package net.runelite.client.plugins.mta.alchemy;
 
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 enum AlchemyItem
 {
-	LEATHER_BOOTS("Leather Boots", ItemID.LEATHER_BOOTS_6893),
-	ADAMANT_KITESHIELD("Adamant Kiteshield", ItemID.ADAMANT_KITESHIELD_6894),
-	ADAMANT_MED_HELM("Helm", ItemID.ADAMANT_MED_HELM_6895),
-	EMERALD("Emerald", ItemID.EMERALD_6896),
-	RUNE_LONGSWORD("Rune Longsword", ItemID.RUNE_LONGSWORD_6897),
+	LEATHER_BOOTS("Leather Boots", ItemID.MAGICTRAINING_LEATHER_BOOTS),
+	ADAMANT_KITESHIELD("Adamant Kiteshield", ItemID.MAGICTRAINING_ADAMANT_KITESHIELD),
+	ADAMANT_MED_HELM("Helm", ItemID.MAGICTRAINING_ADAMANT_MED_HELM),
+	EMERALD("Emerald", ItemID.MAGICTRAINING_EMERALD),
+	RUNE_LONGSWORD("Rune Longsword", ItemID.MAGICTRAINING_RUNE_LONGSWORD),
 	EMPTY("", -1),
-	UNKNOWN("Unknown", ItemID.CAKE_OF_GUIDANCE);
+	UNKNOWN("Unknown", ItemID._100GUIDE_GUIDECAKE);
 
 	@Getter
 	private final int id;

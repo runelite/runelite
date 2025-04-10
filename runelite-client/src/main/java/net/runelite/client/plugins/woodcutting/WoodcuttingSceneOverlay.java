@@ -36,12 +36,12 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -97,7 +97,7 @@ class WoodcuttingSceneOverlay extends Overlay
 		{
 			for (GameObject treeRoot : plugin.getRoots())
 			{
-				if (treeRoot.getId() != ObjectID.ANIMAINFUSED_TREE_ROOTS)
+				if (treeRoot.getId() != ObjectID.GATHERING_EVENT_RISING_ROOTS_SPECIAL)
 				{
 					continue;
 				}
@@ -132,25 +132,25 @@ class WoodcuttingSceneOverlay extends Overlay
 				Color color;
 				switch (ingredient.getId())
 				{
-					case ObjectID.ROTTING_LEAVES:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_1:
 						letter = 'R';
 						color = ROTTING_LEAVES;
 						break;
-					case ObjectID.GREEN_LEAVES:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_2:
 						letter = 'G';
 						color = GREEN_LEAVES;
 						break;
-					case ObjectID.DROPPINGS:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_3:
 						letter = 'D';
 						color = DROPPINGS;
 						break;
-					case ObjectID.WILD_MUSHROOMS:
-					case ObjectID.WILD_MUSHROOMS_47497:
-					case ObjectID.WILD_MUSHROOMS_47498:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4A:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4B:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4C:
 						letter = 'M';
 						color = WILD_MUSHROOMS;
 						break;
-					case ObjectID.SPLINTERED_BARK:
+					case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_5:
 						letter = 'B';
 						color = SPLINTERED_BARK;
 						break;
@@ -243,7 +243,7 @@ class WoodcuttingSceneOverlay extends Overlay
 		{
 			for (var nest : plugin.getPheasantNests())
 			{
-				if (nest.getId() == ObjectID.PHEASANT_NEST_49937)
+				if (nest.getId() == ObjectID.GATHERING_EVENT_PHEASANT_NEST02)
 				{
 					var poly = nest.getCanvasTilePoly();
 					if (poly != null)

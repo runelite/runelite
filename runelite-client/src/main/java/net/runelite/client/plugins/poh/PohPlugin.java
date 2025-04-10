@@ -38,13 +38,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -55,6 +53,8 @@ import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -75,8 +75,8 @@ import net.runelite.client.hiscore.Skill;
 @Slf4j
 public class PohPlugin extends Plugin
 {
-	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
-	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
+	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.POH_TORCH_5, ObjectID.POH_TORCH_6, ObjectID.POH_TORCH_7);
+	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.POH_TORCH_5_LIT, ObjectID.POH_TORCH_6_LIT, ObjectID.POH_TORCH_7_LIT);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
@@ -193,7 +193,7 @@ public class PohPlugin extends Plugin
 		final Actor actor = event.getActor();
 		final String actorName = actor.getName();
 
-		if (!(actor instanceof Player) || actor.getAnimation() != AnimationID.INCENSE_BURNER)
+		if (!(actor instanceof Player) || actor.getAnimation() != AnimationID.HUMAN_LIGHT_TORCH)
 		{
 			return;
 		}

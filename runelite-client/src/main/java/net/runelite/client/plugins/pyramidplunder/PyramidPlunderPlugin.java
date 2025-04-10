@@ -37,18 +37,17 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
-import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -72,21 +71,21 @@ public class PyramidPlunderPlugin extends Plugin
 	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
 	private static final int PYRAMID_PLUNDER_REGION = 7749;
 
-	static final Set<Integer> TOMB_DOOR_WALL_IDS = ImmutableSet.of(NullObjectID.NULL_26618, NullObjectID.NULL_26619, NullObjectID.NULL_26620, NullObjectID.NULL_26621);
-	static final int TOMB_DOOR_CLOSED_ID = ObjectID.TOMB_DOOR_20948;
+	static final Set<Integer> TOMB_DOOR_WALL_IDS = ImmutableSet.of(ObjectID.NTK_TOMB_DOOR1, ObjectID.NTK_TOMB_DOOR2, ObjectID.NTK_TOMB_DOOR3, ObjectID.NTK_TOMB_DOOR4);
+	static final int TOMB_DOOR_CLOSED_ID = ObjectID.NTK_TOMB_DOOR_NOANIM;
 
-	static final int SPEARTRAP_ID = ObjectID.SPEARTRAP;
+	static final int SPEARTRAP_ID = ObjectID.NTK_SPEARTRAP_INMOTION;
 
-	static final Set<Integer> URN_IDS = ImmutableSet.of(NullObjectID.NULL_26580, NullObjectID.NULL_26600, NullObjectID.NULL_26601, NullObjectID.NULL_26602,
-		NullObjectID.NULL_26603, NullObjectID.NULL_26604, NullObjectID.NULL_26605, NullObjectID.NULL_26606, NullObjectID.NULL_26607, NullObjectID.NULL_26608,
-		NullObjectID.NULL_26609, NullObjectID.NULL_26610, NullObjectID.NULL_26611, NullObjectID.NULL_26612, NullObjectID.NULL_26613);
-	static final Set<Integer> URN_CLOSED_IDS = ImmutableSet.of(ObjectID.URN_21261, ObjectID.URN_21262, ObjectID.URN_21263);
+	static final Set<Integer> URN_IDS = ImmutableSet.of(ObjectID.NTK_URN_TYPE1_MULTI_1, ObjectID.NTK_URN_TYPE1_MULTI_2, ObjectID.NTK_URN_TYPE1_MULTI_3, ObjectID.NTK_URN_TYPE1_MULTI_4,
+		ObjectID.NTK_URN_TYPE1_MULTI_5, ObjectID.NTK_URN_TYPE2_MULTI_6, ObjectID.NTK_URN_TYPE2_MULTI_7, ObjectID.NTK_URN_TYPE2_MULTI_8, ObjectID.NTK_URN_TYPE2_MULTI_9, ObjectID.NTK_URN_TYPE2_MULTI_10,
+		ObjectID.NTK_URN_TYPE3_MULTI_11, ObjectID.NTK_URN_TYPE3_MULTI_12, ObjectID.NTK_URN_TYPE3_MULTI_13, ObjectID.NTK_URN_TYPE3_MULTI_14, ObjectID.NTK_URN_TYPE3_MULTI_15);
+	static final Set<Integer> URN_CLOSED_IDS = ImmutableSet.of(ObjectID.NTK_URN1_CLOSED, ObjectID.NTK_URN2_CLOSED, ObjectID.NTK_URN3_CLOSED);
 
-	static final int GRAND_GOLD_CHEST_ID = NullObjectID.NULL_26616;
-	static final int GRAND_GOLD_CHEST_CLOSED_ID = ObjectID.GRAND_GOLD_CHEST;
+	static final int GRAND_GOLD_CHEST_ID = ObjectID.NTK_GOLDEN_CHEST_MULTI;
+	static final int GRAND_GOLD_CHEST_CLOSED_ID = ObjectID.NTK_GOLDEN_CHEST_CLOSED;
 
-	static final int SARCOPHAGUS_ID = NullObjectID.NULL_26626;
-	static final int SARCOPHAGUS_CLOSED_ID = ObjectID.SARCOPHAGUS_21255;
+	static final int SARCOPHAGUS_ID = ObjectID.NTK_SARCOPHAGUS_MULTI;
+	static final int SARCOPHAGUS_CLOSED_ID = ObjectID.NTK_SARCOPHAGUS;
 
 	@Inject
 	private Client client;
@@ -140,7 +139,7 @@ public class PyramidPlunderPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			Widget ppWidget = client.getWidget(ComponentID.PYRAMID_PLUNDER_DATA);
+			Widget ppWidget = client.getWidget(InterfaceID.NtkOverlay.CONTENT);
 			if (ppWidget != null)
 			{
 				ppWidget.setHidden(false);
@@ -165,9 +164,9 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			if (timer == null)
 			{
-				int ppTimer = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_TIMER);
+				int ppTimer = client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT);
 				Duration remaining = PYRAMID_PLUNDER_DURATION.minus(ppTimer, RSTimeUnit.GAME_TICKS);
-				timer = new PyramidPlunderTimer(remaining, itemManager.getImage(ItemID.PHARAOHS_SCEPTRE), this,
+				timer = new PyramidPlunderTimer(remaining, itemManager.getImage(ItemID.NTK_JEWELLED_SCEPTRE_3), this,
 					config, client);
 				infoBoxManager.addInfoBox(timer);
 			}
@@ -211,6 +210,6 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		return client.getLocalPlayer() != null
 			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID()
-			&& client.getVarbitValue(Varbits.PYRAMID_PLUNDER_TIMER) > 0;
+			&& client.getVarbitValue(VarbitID.NTK_PLAYER_TIMER_COUNT) > 0;
 	}
 }

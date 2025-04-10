@@ -36,11 +36,11 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -54,11 +54,11 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class PestControlPlugin extends Plugin
 {
 	private static final Set<Integer> SPINNER_IDS = ImmutableSet.of(
-		NpcID.SPINNER,
-		NpcID.SPINNER_1710,
-		NpcID.SPINNER_1711,
-		NpcID.SPINNER_1712,
-		NpcID.SPINNER_1713
+		NpcID.PEST_SPINNER_1,
+		NpcID.PEST_SPINNER_2,
+		NpcID.PEST_SPINNER_3,
+		NpcID.PEST_SPINNER_4,
+		NpcID.PEST_SPINNER_5
 	);
 
 	private final Pattern SHIELD_DROP = Pattern.compile("The ([a-z]+), [^ ]+ portal shield has dropped!", Pattern.CASE_INSENSITIVE);

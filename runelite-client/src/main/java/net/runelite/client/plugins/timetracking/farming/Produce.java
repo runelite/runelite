@@ -28,15 +28,14 @@ package net.runelite.client.plugins.timetracking.farming;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullItemID;
+import net.runelite.api.gameval.ItemID;
 
 @RequiredArgsConstructor
 @Getter
 public enum Produce
 {
 	WEEDS("Weeds", ItemID.WEEDS, 5, 4),
-	SCARECROW("Scarecrow", ItemID.SCARECROW, 5, 4),
+	SCARECROW("Scarecrow", ItemID.SCARECROW_COMPLETE, 5, 4),
 
 	// Allotment crops
 	POTATO("Potato", "Potatoes", PatchImplementation.ALLOTMENT, ItemID.POTATO, 10, 5, 0, 3),
@@ -49,20 +48,20 @@ public enum Produce
 	SNAPE_GRASS("Snape grass", PatchImplementation.ALLOTMENT, ItemID.SNAPE_GRASS, 10, 8, 0, 3),
 
 	// Flower crops
-	MARIGOLD("Marigold", "Marigolds", PatchImplementation.FLOWER, ItemID.MARIGOLDS, 5, 5),
+	MARIGOLD("Marigold", "Marigolds", PatchImplementation.FLOWER, ItemID.MARIGOLD, 5, 5),
 	ROSEMARY("Rosemary", PatchImplementation.FLOWER, ItemID.ROSEMARY, 5, 5),
-	NASTURTIUM("Nasturtium", "Nasturtiums", PatchImplementation.FLOWER, ItemID.NASTURTIUMS, 5, 5),
-	WOAD("Woad", PatchImplementation.FLOWER, ItemID.WOAD_LEAF, 5, 5),
+	NASTURTIUM("Nasturtium", "Nasturtiums", PatchImplementation.FLOWER, ItemID.NASTURTIUM, 5, 5),
+	WOAD("Woad", PatchImplementation.FLOWER, ItemID.WOADLEAF, 5, 5),
 	LIMPWURT("Limpwurt", "Limpwurt roots", PatchImplementation.FLOWER, ItemID.LIMPWURT_ROOT, 5, 5),
-	WHITE_LILY("White lily", "White lillies", PatchImplementation.FLOWER, ItemID.WHITE_LILY, 5, 5),
+	WHITE_LILY("White lily", "White lillies", PatchImplementation.FLOWER, ItemID.WHITELILLY, 5, 5),
 
 	// Bush crops
 	REDBERRIES("Redberry", "Redberries", PatchImplementation.BUSH, ItemID.REDBERRIES, 20, 6, 20, 5),
-	CADAVABERRIES("Cadavaberry", "Cadava berries", PatchImplementation.BUSH, ItemID.CADAVA_BERRIES, 20, 7, 20, 5),
+	CADAVABERRIES("Cadavaberry", "Cadava berries", PatchImplementation.BUSH, ItemID.CADAVABERRIES, 20, 7, 20, 5),
 	DWELLBERRIES("Dwellberry", "Dwellberries", PatchImplementation.BUSH, ItemID.DWELLBERRIES, 20, 8, 20, 5),
 	JANGERBERRIES("Jangerberry", "Jangerberries", PatchImplementation.BUSH, ItemID.JANGERBERRIES, 20, 9, 20, 5),
 	WHITEBERRIES("Whiteberry", "White berries", PatchImplementation.BUSH, ItemID.WHITE_BERRIES, 20, 9, 20, 5),
-	POISON_IVY("Poison ivy", "Poison ivy berries", PatchImplementation.BUSH, ItemID.POISON_IVY_BERRIES, 20, 9, 20, 5),
+	POISON_IVY("Poison ivy", "Poison ivy berries", PatchImplementation.BUSH, ItemID.POISONIVY_BERRIES, 20, 9, 20, 5),
 
 	// Hop crops
 	BARLEY("Barley", PatchImplementation.HOPS, ItemID.BARLEY, 10, 5, 0, 3),
@@ -75,7 +74,7 @@ public enum Produce
 
 	// Herb crops
 	GUAM("Guam", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
-	MARRENTILL("Marrentill", PatchImplementation.HERB, ItemID.MARRENTILL, 20, 5, 0, 3),
+	MARRENTILL("Marrentill", PatchImplementation.HERB, ItemID.MARENTILL, 20, 5, 0, 3),
 	TARROMIN("Tarromin", PatchImplementation.HERB, ItemID.TARROMIN, 20, 5, 0, 3),
 	HARRALANDER("Harralander", PatchImplementation.HERB, ItemID.HARRALANDER, 20, 5, 0, 3),
 	RANARR("Ranarr", PatchImplementation.HERB, ItemID.RANARR_WEED, 20, 5, 0, 3),
@@ -89,7 +88,7 @@ public enum Produce
 	LANTADYME("Lantadyme", PatchImplementation.HERB, ItemID.LANTADYME, 20, 5, 0, 3),
 	DWARF_WEED("Dwarf weed", PatchImplementation.HERB, ItemID.DWARF_WEED, 20, 5, 0, 3),
 	TORSTOL("Torstol", PatchImplementation.HERB, ItemID.TORSTOL, 20, 5, 0, 3),
-	GOUTWEED("Goutweed", PatchImplementation.HERB, ItemID.GOUTWEED, 20, 5, 0, 2),
+	GOUTWEED("Goutweed", PatchImplementation.HERB, ItemID.EADGAR_GOUTWEED_HERB, 20, 5, 0, 2),
 	ANYHERB("Any herb", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
 
 	// Tree crops
@@ -105,45 +104,45 @@ public enum Produce
 	ORANGE("Orange", "Orange tree", PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
 	CURRY("Curry", "Curry tree", PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
 	PINEAPPLE("Pineapple", "Pineapple plant", PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
-	PAPAYA("Papaya", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
+	PAPAYA("Papaya", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA, 160, 7, 45, 7),
 	PALM("Palm", "Palm tree", PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
 	DRAGONFRUIT("Dragonfruit", "Dragonfruit tree", PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
 
 	// Cactus
 	CACTUS("Cactus", PatchImplementation.CACTUS, ItemID.CACTUS_SPINE, 80, 8, 20, 4),
-	POTATO_CACTUS("Potato cactus", "Potato cacti", PatchImplementation.CACTUS, ItemID.POTATO_CACTUS, 10, 8, 5, 7),
+	POTATO_CACTUS("Potato cactus", "Potato cacti", PatchImplementation.CACTUS, ItemID.CACTUS_POTATO, 10, 8, 5, 7),
 
 	// Hardwood
 	TEAK("Teak", PatchImplementation.HARDWOOD_TREE, ItemID.TEAK_LOGS, 640, 8),
 	MAHOGANY("Mahogany", PatchImplementation.HARDWOOD_TREE, ItemID.MAHOGANY_LOGS, 640, 9),
 
 	// Anima
-	ATTAS("Attas", PatchImplementation.ANIMA, NullItemID.NULL_22940, 640, 9),
-	IASOR("Iasor", PatchImplementation.ANIMA, NullItemID.NULL_22939, 640, 9),
-	KRONOS("Kronos", PatchImplementation.ANIMA, NullItemID.NULL_22938, 640, 9),
+	ATTAS("Attas", PatchImplementation.ANIMA, ItemID.ANIMA_ATTAS, 640, 9),
+	IASOR("Iasor", PatchImplementation.ANIMA, ItemID.ANIMA_IASOR, 640, 9),
+	KRONOS("Kronos", PatchImplementation.ANIMA, ItemID.ANIMA_KRONOS, 640, 9),
 
 	// Special crops
 	SEAWEED("Seaweed", PatchImplementation.SEAWEED, ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
 	GRAPE("Grape", PatchImplementation.GRAPES, ItemID.GRAPES, 5, 8, 0, 5),
-	MUSHROOM("Mushroom", PatchImplementation.MUSHROOM, ItemID.MUSHROOM, 40, 7, 0, 7),
-	BELLADONNA("Belladonna", PatchImplementation.BELLADONNA, ItemID.CAVE_NIGHTSHADE, 80, 5),
+	MUSHROOM("Mushroom", PatchImplementation.MUSHROOM, ItemID.BITTERCAP_MUSHROOM, 40, 7, 0, 7),
+	BELLADONNA("Belladonna", PatchImplementation.BELLADONNA, ItemID.NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", PatchImplementation.CALQUAT, ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
-	SPIRIT_TREE("Spirit tree", PatchImplementation.SPIRIT_TREE, ItemID.SPIRIT_TREE, 320, 13),
+	SPIRIT_TREE("Spirit tree", PatchImplementation.SPIRIT_TREE, ItemID.SPIRIT_TREE_DUMMY, 320, 13),
 	CELASTRUS("Celastrus", "Celastrus tree", PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
 	REDWOOD("Redwood", "Redwood tree", PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
-	HESPORI("Hespori", PatchImplementation.HESPORI, NullItemID.NULL_23044, 640, 4, 0, 2),
-	CRYSTAL_TREE("Crystal tree", PatchImplementation.CRYSTAL_TREE, ItemID.CRYSTAL_SHARDS, 80, 7),
+	HESPORI("Hespori", PatchImplementation.HESPORI, ItemID.HESPORI, 640, 4, 0, 2),
+	CRYSTAL_TREE("Crystal tree", PatchImplementation.CRYSTAL_TREE, ItemID.GAUNTLET_CRYSTAL_SHARD, 80, 7),
 
 	// Compost bins
-	EMPTY_COMPOST_BIN("Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
-	COMPOST("Compost", PatchImplementation.COMPOST, ItemID.COMPOST, 40, 3, 0, 15),
-	SUPERCOMPOST("Supercompost", PatchImplementation.COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 15),
-	ULTRACOMPOST("Ultracompost", PatchImplementation.COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 15), // Ultra doesn't compost,
+	EMPTY_COMPOST_BIN("Compost Bin", PatchImplementation.COMPOST, ItemID.EADGAR_FADE_TO_BLACK_INV, 0, 1, 0, 0), // Dummy produce for the empty state
+	COMPOST("Compost", PatchImplementation.COMPOST, ItemID.BUCKET_COMPOST, 40, 3, 0, 15),
+	SUPERCOMPOST("Supercompost", PatchImplementation.COMPOST, ItemID.BUCKET_SUPERCOMPOST, 40, 3, 0, 15),
+	ULTRACOMPOST("Ultracompost", PatchImplementation.COMPOST, ItemID.BUCKET_ULTRACOMPOST, 0, 3, 0, 15), // Ultra doesn't compost,
 	ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 15),
-	EMPTY_BIG_COMPOST_BIN("Big Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
-	BIG_COMPOST("Compost", PatchImplementation.BIG_COMPOST, ItemID.COMPOST, 40, 3, 0, 30),
-	BIG_SUPERCOMPOST("Supercompost", PatchImplementation.BIG_COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 30),
-	BIG_ULTRACOMPOST("Ultracompost", PatchImplementation.BIG_COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 30), // Ultra doesn't compost
+	EMPTY_BIG_COMPOST_BIN("Big Compost Bin", PatchImplementation.COMPOST, ItemID.EADGAR_FADE_TO_BLACK_INV, 0, 1, 0, 0), // Dummy produce for the empty state
+	BIG_COMPOST("Compost", PatchImplementation.BIG_COMPOST, ItemID.BUCKET_COMPOST, 40, 3, 0, 30),
+	BIG_SUPERCOMPOST("Supercompost", PatchImplementation.BIG_COMPOST, ItemID.BUCKET_SUPERCOMPOST, 40, 3, 0, 30),
+	BIG_ULTRACOMPOST("Ultracompost", PatchImplementation.BIG_COMPOST, ItemID.BUCKET_ULTRACOMPOST, 0, 3, 0, 30), // Ultra doesn't compost
 	BIG_ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.BIG_COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 30);
 
 	/**

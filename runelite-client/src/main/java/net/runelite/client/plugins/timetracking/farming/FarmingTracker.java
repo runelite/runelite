@@ -42,10 +42,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -109,7 +109,7 @@ public class FarmingTracker
 		}
 
 		{
-			String autoweed = Integer.toString(client.getVarbitValue(Varbits.AUTOWEED));
+			String autoweed = Integer.toString(client.getVarbitValue(VarbitID.FARMING_BLOCKWEEDS));
 			if (!autoweed.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED)))
 			{
 				configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED, autoweed);

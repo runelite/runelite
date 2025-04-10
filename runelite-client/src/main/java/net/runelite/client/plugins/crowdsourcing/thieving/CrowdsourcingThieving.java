@@ -29,15 +29,15 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -58,34 +58,34 @@ public class CrowdsourcingThieving
 
 	private boolean hasGlovesOfSilence()
 	{
-		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipmentContainer == null)
 		{
 			return false;
 		}
 
-		return equipmentContainer.contains(ItemID.GLOVES_OF_SILENCE);
+		return equipmentContainer.contains(ItemID.HUNTING_SILENT_GLOVES);
 	}
 
 	private boolean hasThievingCape()
 	{
-		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipmentContainer == null)
 		{
 			return false;
 		}
 
-		return equipmentContainer.contains(ItemID.THIEVING_CAPE) ||
-			equipmentContainer.contains(ItemID.THIEVING_CAPET) ||
-			equipmentContainer.contains(ItemID.MAX_CAPE_13342);
+		return equipmentContainer.contains(ItemID.SKILLCAPE_THIEVING) ||
+			equipmentContainer.contains(ItemID.SKILLCAPE_THIEVING_TRIMMED) ||
+			equipmentContainer.contains(ItemID.SKILLCAPE_MAX_WORN);
 	}
 
 	private int getArdougneDiary()
 	{
-		int easy = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_EASY);
-		int medium = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM);
-		int hard = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_HARD);
-		int elite = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_ELITE);
+		int easy = client.getVarbitValue(VarbitID.ARDOUGNE_DIARY_EASY_COMPLETE);
+		int medium = client.getVarbitValue(VarbitID.ARDOUGNE_DIARY_MEDIUM_COMPLETE);
+		int hard = client.getVarbitValue(VarbitID.ARDOUGNE_DIARY_HARD_COMPLETE);
+		int elite = client.getVarbitValue(VarbitID.ARDOUGNE_DIARY_ELITE_COMPLETE);
 		return easy + 2 * medium + 4 * hard + 8 * elite;
 	}
 

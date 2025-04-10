@@ -34,12 +34,10 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_1;
-import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_2;
-import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_3;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -123,11 +121,11 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 
 	public boolean update(int containerId, final ItemContainer itemContainer)
 	{
-		if (containerId == InventoryID.INVENTORY.getId())
+		if (containerId == InventoryID.INV)
 		{
-			return checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_1, 0) ||
-				checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_2, 1) ||
-				checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_3, 2);
+			return checkForPart(itemContainer, ItemID.TRAIL_MASTER_PART1, 0) ||
+				checkForPart(itemContainer, ItemID.TRAIL_MASTER_PART2, 1) ||
+				checkForPart(itemContainer, ItemID.TRAIL_MASTER_PART3, 2);
 		}
 
 		return false;

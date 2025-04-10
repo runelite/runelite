@@ -39,13 +39,13 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
@@ -174,7 +174,7 @@ public class GroundItemsOverlay extends Overlay
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
 		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
-		final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
 
 		for (GroundItem item : groundItemList)
 		{
@@ -229,7 +229,7 @@ public class GroundItemsOverlay extends Overlay
 					.append(')');
 			}
 
-			if (item.getId() != ItemID.COINS_995)
+			if (item.getId() != ItemID.COINS)
 			{
 				PriceDisplayMode displayMode = config.priceDisplayMode();
 				if (displayMode == PriceDisplayMode.BOTH)

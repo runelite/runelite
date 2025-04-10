@@ -195,6 +195,10 @@ public class SequenceLoader
 				def.animMayaMasks[stream.readUnsignedByte()] = true;
 			}
 		}
+		else if (opcode == 18)
+		{
+			def.debugName = stream.readString();
+		}
 		else
 		{
 			log.warn("Unrecognized opcode {}", opcode);

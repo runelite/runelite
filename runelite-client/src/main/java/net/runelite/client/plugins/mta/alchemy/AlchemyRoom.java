@@ -37,18 +37,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.ObjectID.CUPBOARD_23678;
-import static net.runelite.api.ObjectID.CUPBOARD_23679;
-import static net.runelite.api.ObjectID.CUPBOARD_23680;
-import static net.runelite.api.ObjectID.CUPBOARD_23681;
-import static net.runelite.api.ObjectID.CUPBOARD_23682;
-import static net.runelite.api.ObjectID.CUPBOARD_23683;
-import static net.runelite.api.ObjectID.CUPBOARD_23684;
-import static net.runelite.api.ObjectID.CUPBOARD_23685;
-import static net.runelite.api.ObjectID.CUPBOARD_23686;
-import static net.runelite.api.ObjectID.CUPBOARD_23687;
-import static net.runelite.api.ObjectID.CUPBOARD_23688;
-import static net.runelite.api.ObjectID.CUPBOARD_23689;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -57,7 +45,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
@@ -149,33 +138,33 @@ public class AlchemyRoom extends MTARoom
 		switch (spawn.getId())
 		{
 			// Closed and opened versions of each
-			case CUPBOARD_23678:
-			case CUPBOARD_23679:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD0:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD0_OPEN:
 				cupboardId = 0;
 				break;
 
-			case CUPBOARD_23680:
-			case CUPBOARD_23681:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD1:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD1_OPEN:
 				cupboardId = 1;
 				break;
 
-			case CUPBOARD_23682:
-			case CUPBOARD_23683:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD2:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD2_OPEN:
 				cupboardId = 2;
 				break;
 
-			case CUPBOARD_23684:
-			case CUPBOARD_23685:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD3:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD3_OPEN:
 				cupboardId = 3;
 				break;
 
-			case CUPBOARD_23686:
-			case CUPBOARD_23687:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD4:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD4_OPEN:
 				cupboardId = 4;
 				break;
 
-			case CUPBOARD_23688:
-			case CUPBOARD_23689:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD5:
+			case ObjectID.MAGICTRAINING_ALCHEM_CUPBOARD5_OPEN:
 				cupboardId = 5;
 				break;
 
@@ -265,14 +254,14 @@ public class AlchemyRoom extends MTARoom
 	{
 		for (int i = 0; i < INFO_LENGTH; i++)
 		{
-			Widget textWidget = client.getWidget(InterfaceID.MTA_ALCHEMY, INFO_ITEM_START + i);
+			Widget textWidget = client.getWidget(InterfaceID.MAGICTRAINING_ALCHEM, INFO_ITEM_START + i);
 			if (textWidget == null)
 			{
 				return null;
 			}
 
 			String item = textWidget.getText();
-			Widget pointsWidget = client.getWidget(InterfaceID.MTA_ALCHEMY, INFO_POINT_START + i);
+			Widget pointsWidget = client.getWidget(InterfaceID.MAGICTRAINING_ALCHEM, INFO_POINT_START + i);
 			int points = Integer.parseInt(pointsWidget.getText());
 
 			if (points == BEST_POINTS)

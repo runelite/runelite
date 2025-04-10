@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -57,7 +57,7 @@ public class CrypticClueTest
 	public void forViggoraLocations()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.VIGGORA_LOCATION)).thenReturn(0, 1, 2, 3, 4);
+		when(client.getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER)).thenReturn(0, 1, 2, 3, 4);
 
 		CrypticClue clue = CrypticClue.forText("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.");
 		assert clue != null;
@@ -73,9 +73,9 @@ public class CrypticClueTest
 	public void forResourceAreaCosts()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_ELITE_COMPLETE)).thenReturn(1, 0, 0, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_HARD_COMPLETE)).thenReturn(1, 0, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_MEDIUM_COMPLETE)).thenReturn(1, 0, 0);
 
 		CrypticClue clue = CrypticClue.forText("One of several rhyming brothers, in business attire with an obsession for paper work.");
 		assert clue != null;
@@ -91,7 +91,7 @@ public class CrypticClueTest
 	public void testBurthorpeSlayerMaster()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.BURTHORPE_SLAYER_MASTER)).thenReturn(0, 1, 2);
+		when(client.getVarbitValue(VarbitID.WGS_HERO_PART_1_VIS)).thenReturn(0, 1, 2);
 
 		CrypticClue clue = CrypticClue.forText("Talk to the Slayer Master in Burthorpe.");
 		assert clue != null;

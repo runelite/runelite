@@ -33,52 +33,21 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.api.AnimationID.CONSTRUCTION;
-import static net.runelite.api.AnimationID.CONSTRUCTION_IMCANDO;
-import static net.runelite.api.AnimationID.FIREMAKING;
-import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
-import static net.runelite.api.AnimationID.IDLE;
-import static net.runelite.api.AnimationID.LOOKING_INTO;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_3A;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL_INACTIVE;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_STEEL;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON_OR;
-import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
-import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.BRUMA_KINDLING;
-import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -206,7 +175,7 @@ public class WintertodtPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarbitId() == Varbits.WINTERTODT_TIMER)
+		if (varbitChanged.getVarbitId() == VarbitID.WINT_TRANSMIT_RESPAWNDELAY)
 		{
 			int timeToNotify = config.roundNotification();
 			// Sometimes wt var updates are sent to players even after leaving wt.
@@ -237,7 +206,7 @@ public class WintertodtPlugin extends Plugin
 		}
 
 		int currentAnimation = client.getLocalPlayer() != null ? client.getLocalPlayer().getAnimation() : -1;
-		if (currentAnimation != IDLE || lastActionTime == null)
+		if (currentAnimation != -1 || lastActionTime == null)
 		{
 			return;
 		}
@@ -422,48 +391,48 @@ public class WintertodtPlugin extends Plugin
 		final int animId = local.getAnimation();
 		switch (animId)
 		{
-			case WOODCUTTING_BRONZE:
-			case WOODCUTTING_IRON:
-			case WOODCUTTING_STEEL:
-			case WOODCUTTING_BLACK:
-			case WOODCUTTING_MITHRIL:
-			case WOODCUTTING_ADAMANT:
-			case WOODCUTTING_RUNE:
-			case WOODCUTTING_GILDED:
-			case WOODCUTTING_DRAGON:
-			case WOODCUTTING_DRAGON_OR:
-			case WOODCUTTING_INFERNAL:
-			case WOODCUTTING_3A_AXE:
-			case WOODCUTTING_CRYSTAL:
-			case WOODCUTTING_TRAILBLAZER:
-			case WOODCUTTING_2H_BRONZE:
-			case WOODCUTTING_2H_IRON:
-			case WOODCUTTING_2H_STEEL:
-			case WOODCUTTING_2H_BLACK:
-			case WOODCUTTING_2H_MITHRIL:
-			case WOODCUTTING_2H_ADAMANT:
-			case WOODCUTTING_2H_RUNE:
-			case WOODCUTTING_2H_DRAGON:
-			case WOODCUTTING_2H_CRYSTAL:
-			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
-			case WOODCUTTING_2H_3A:
+			case AnimationID.HUMAN_WOODCUTTING_BRONZE_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_IRON_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_STEEL_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_BLACK_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_MITHRIL_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_ADAMANT_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_RUNE_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_GILDED_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_DRAGON_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_TRAILBLAZER_AXE_NO_INFERNAL:
+			case AnimationID.HUMAN_WOODCUTTING_INFERNAL_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_3A_AXE:
+			case AnimationID.HUMAN_WOODCUTTING_CRYSTAL_AXE:
+			case AnimationID.HUMAN_OPENHEAVYCHEST:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_BRONZE:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_IRON:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_STEEL:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_BLACK:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_MITHRIL:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_ADAMANT:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_RUNE:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_DRAGON:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_CRYSTAL:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_CRYSTAL_INACTIVE:
+			case AnimationID.FORESTRY_2H_AXE_CHOPPING_3A:
 				setActivity(WintertodtActivity.WOODCUTTING);
 				break;
 
-			case FLETCHING_BOW_CUTTING:
+			case AnimationID.HUMAN_FLETCHING:
 				setActivity(WintertodtActivity.FLETCHING);
 				break;
 
-			case LOOKING_INTO:
+			case AnimationID.HUMAN_PICKUPTABLE:
 				setActivity(WintertodtActivity.FEEDING_BRAZIER);
 				break;
 
-			case FIREMAKING:
+			case AnimationID.HUMAN_CREATEFIRE:
 				setActivity(WintertodtActivity.LIGHTING_BRAZIER);
 				break;
 
-			case CONSTRUCTION:
-			case CONSTRUCTION_IMCANDO:
+			case AnimationID.HUMAN_POH_BUILD:
+			case AnimationID.HUMAN_POH_BUILD_IMCANDO_HAMMER:
 				setActivity(WintertodtActivity.FIXING_BRAZIER);
 				break;
 		}
@@ -474,7 +443,7 @@ public class WintertodtPlugin extends Plugin
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!isInWintertodt || container != client.getItemContainer(InventoryID.INVENTORY))
+		if (!isInWintertodt || container != client.getItemContainer(InventoryID.INV))
 		{
 			return;
 		}
@@ -493,10 +462,10 @@ public class WintertodtPlugin extends Plugin
 
 			switch (item.getId())
 			{
-				case BRUMA_ROOT:
+				case ItemID.WINT_BRUMA_ROOT:
 					++numLogs;
 					break;
-				case BRUMA_KINDLING:
+				case ItemID.WINT_BRUMA_KINDLING:
 					++numKindling;
 					break;
 			}
@@ -524,9 +493,9 @@ public class WintertodtPlugin extends Plugin
 	{
 		switch (id)
 		{
-			case BRUMA_ROOT:
+			case ItemID.WINT_BRUMA_ROOT:
 				return 10;
-			case BRUMA_KINDLING:
+			case ItemID.WINT_BRUMA_KINDLING:
 				return 25;
 			default:
 				return 0;
@@ -537,8 +506,8 @@ public class WintertodtPlugin extends Plugin
 	{
 		switch (id)
 		{
-			case BRUMA_ROOT:
-			case BRUMA_KINDLING:
+			case ItemID.WINT_BRUMA_ROOT:
+			case ItemID.WINT_BRUMA_KINDLING:
 				return 25;
 			default:
 				return 0;

@@ -28,21 +28,21 @@ package net.runelite.client.plugins.interfacestyles;
 
 import lombok.Getter;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 
 @Getter
 enum WidgetOverride
 {
-	FIXED_CORNER_TOP_LEFT_2005(Skin.AROUND_2005, "1026", ComponentID.FIXED_VIEWPORT_COMBAT_TAB),
-	FIXED_CORNER_TOP_RIGHT_2005(Skin.AROUND_2005, "1027", ComponentID.FIXED_VIEWPORT_MAGIC_TAB),
-	FIXED_CORNER_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1028", ComponentID.FIXED_VIEWPORT_FRIENDS_CHAT_TAB),
-	FIXED_CORNER_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1029", ComponentID.FIXED_VIEWPORT_MUSIC_TAB),
-	FIXED_TOP_LEFT_2005(Skin.AROUND_2005, "1030_top_left", ComponentID.FIXED_VIEWPORT_STATS_TAB, ComponentID.FIXED_VIEWPORT_QUESTS_TAB),
-	FIXED_TOP_RIGHT_2005(Skin.AROUND_2005, "1030_top_right", ComponentID.FIXED_VIEWPORT_EQUIPMENT_TAB, ComponentID.FIXED_VIEWPORT_PRAYER_TAB),
-	FIXED_TOP_MIDDLE_2005(Skin.AROUND_2005, "1030_top_middle", ComponentID.FIXED_VIEWPORT_INVENTORY_TAB),
-	FIXED_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1030_bottom_left", ComponentID.FIXED_VIEWPORT_FRIENDS_TAB, ComponentID.FIXED_VIEWPORT_IGNORES_TAB),
-	FIXED_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1030_bottom_middle", ComponentID.FIXED_VIEWPORT_LOGOUT_TAB),
-	FIXED_BOTTOM_MIDDLE_2005(Skin.AROUND_2005, "1030_bottom_right", ComponentID.FIXED_VIEWPORT_OPTIONS_TAB, ComponentID.FIXED_VIEWPORT_EMOTES_TAB);
+	FIXED_CORNER_TOP_LEFT_2005(Skin.AROUND_2005, "1026", InterfaceID.Toplevel.STONE0),
+	FIXED_CORNER_TOP_RIGHT_2005(Skin.AROUND_2005, "1027", InterfaceID.Toplevel.STONE6),
+	FIXED_CORNER_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1028", InterfaceID.Toplevel.STONE7),
+	FIXED_CORNER_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1029", InterfaceID.Toplevel.STONE13),
+	FIXED_TOP_LEFT_2005(Skin.AROUND_2005, "1030_top_left", InterfaceID.Toplevel.STONE1, InterfaceID.Toplevel.STONE2),
+	FIXED_TOP_RIGHT_2005(Skin.AROUND_2005, "1030_top_right", InterfaceID.Toplevel.STONE4, InterfaceID.Toplevel.STONE5),
+	FIXED_TOP_MIDDLE_2005(Skin.AROUND_2005, "1030_top_middle", InterfaceID.Toplevel.STONE3),
+	FIXED_BOTTOM_LEFT_2005(Skin.AROUND_2005, "1030_bottom_left", InterfaceID.Toplevel.STONE9, InterfaceID.Toplevel.STONE8),
+	FIXED_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1030_bottom_middle", InterfaceID.Toplevel.STONE10),
+	FIXED_BOTTOM_MIDDLE_2005(Skin.AROUND_2005, "1030_bottom_right", InterfaceID.Toplevel.STONE11, InterfaceID.Toplevel.STONE12);
 
 	private final Skin skin;
 	private final String name;

@@ -48,9 +48,8 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.vars.InputType;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
@@ -237,14 +236,14 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			final Widget widget = client.getWidget(groupId, childId);
 			final Widget parent = widget.getParent();
 
-			if (ComponentID.CHATBOX_MESSAGE_LINES != parent.getId())
+			if (InterfaceID.Chatbox.SCROLLAREA != parent.getId())
 			{
 				return;
 			}
 
 			// Get child id of first chat message static child so we can substract this offset to link to dynamic child
 			// later
-			final int first = WidgetUtil.componentToId(ComponentID.CHATBOX_FIRST_MESSAGE);
+			final int first = WidgetUtil.componentToId(InterfaceID.Chatbox.LINE0);
 
 			// Convert current message static widget id to dynamic widget id of message node with message contents
 			// When message is right clicked, we are actually right clicking static widget that contains only sender.

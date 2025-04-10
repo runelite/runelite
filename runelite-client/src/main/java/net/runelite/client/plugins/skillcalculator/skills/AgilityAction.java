@@ -28,7 +28,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.DESERT_HARD_DIARY;
 import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.FREMENNIK_HARD_DIARY;
@@ -41,34 +41,34 @@ import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WI
 public enum AgilityAction implements NamedSkillAction
 {
 	GNOME_STRONGHOLD_COURSE("Gnome Stronghold", 1, 110.5f, ItemID.SWAMP_TOAD),
-	DRAYNOR_VILLAGE_ROOFTOP("Draynor Village Rooftop", 1, 120, ItemID.MARK_OF_GRACE),
+	DRAYNOR_VILLAGE_ROOFTOP("Draynor Village Rooftop", 1, 120, ItemID.GRACE),
 	SHAYZIEN_BASIC_COURSE("Shayzien Basic Course", 1, 153.5f, ItemID.SHAYZIEN_BANNER),
-	LEAPING_TROUT("Leaping trout", 15, 5, ItemID.LEAPING_TROUT),
-	AL_KHARID_ROOFTOP("Al Kharid Rooftop", 20, 216, ItemID.MARK_OF_GRACE),
-	LEAPING_SALMON("Leaping salmon", 30, 6, ItemID.LEAPING_SALMON),
-	VARROCK_ROOFTOP("Varrock Rooftop", 30, 269.7f, ItemID.MARK_OF_GRACE),
-	PENGUIN_AGILITY_COURSE("Penguin Agility Course", 30, 540, ItemID.CLOCKWORK_SUIT),
+	LEAPING_TROUT("Leaping trout", 15, 5, ItemID.BRUT_SPAWNING_TROUT),
+	AL_KHARID_ROOFTOP("Al Kharid Rooftop", 20, 216, ItemID.GRACE),
+	LEAPING_SALMON("Leaping salmon", 30, 6, ItemID.BRUT_SPAWNING_SALMON),
+	VARROCK_ROOFTOP("Varrock Rooftop", 30, 269.7f, ItemID.GRACE),
+	PENGUIN_AGILITY_COURSE("Penguin Agility Course", 30, 540, ItemID.PENG_SUIT_UNWOUND),
 	BARBARIAN_OUTPOST("Barbarian Outpost", 35, 152.5f, ItemID.STEEL_BATTLEAXE),
-	CANIFIS_ROOFTOP("Canifis Rooftop", 40, 240, ItemID.MARK_OF_GRACE),
-	LEAPING_STURGEON("Leaping sturgeon", 45, 7, ItemID.LEAPING_STURGEON),
+	CANIFIS_ROOFTOP("Canifis Rooftop", 40, 240, ItemID.GRACE),
+	LEAPING_STURGEON("Leaping sturgeon", 45, 7, ItemID.BRUT_STURGEON),
 	SHAYZIEN_ADVANCED_COURSE("Shayzien Advanced Course", 45, 508, ItemID.SHAYZIEN_BANNER),
-	APE_ATOLL_COURSE("Ape Atoll", 48, 580, ItemID.GORILLA_GREEGREE),
-	COLOSSAL_WYRM_BASIC_COURSE("Colossal Wyrm Basic", 50, 504.1f, ItemID.TERMITES),
-	FALADOR_ROOFTOP("Falador Rooftop", 50, 586, ItemID.MARK_OF_GRACE),
-	WILDERNESS_AGILITY_COURSE_TICKET("Wilderness Agility Ticket", 52, 200, ItemID.WILDERNESS_AGILITY_TICKET),
+	APE_ATOLL_COURSE("Ape Atoll", 48, 580, ItemID.MM_MONKEY_GREEGREE_FOR_NORMAL_GORILLA),
+	COLOSSAL_WYRM_BASIC_COURSE("Colossal Wyrm Basic", 50, 504.1f, ItemID.VARLAMORE_WYRM_AGILITY_TERMITE),
+	FALADOR_ROOFTOP("Falador Rooftop", 50, 586, ItemID.GRACE),
+	WILDERNESS_AGILITY_COURSE_TICKET("Wilderness Agility Ticket", 52, 200, ItemID.WILDY_AGILITY_TOKEN),
 	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", 52, 571.4f, ItemID.SKULL),
 	HALLOWED_SEPULCHRE_FLOOR_1("Hallowed Sepulchre Floor 1", 52, 575, ItemID.RING_OF_ENDURANCE),
-	SEERS_VILLAGE_ROOFTOP("Seers' Village Rooftop", 60, 570, ItemID.MARK_OF_GRACE),
-	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", 60, 730, ItemID.STICK),
-	COLOSSAL_WYRM_ADVANCED_COURSE("Colossal Wyrm Advanced", 62, 749.6f, ItemID.TERMITES),
+	SEERS_VILLAGE_ROOFTOP("Seers' Village Rooftop", 60, 570, ItemID.GRACE),
+	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", 60, 730, ItemID.WAA_STICK),
+	COLOSSAL_WYRM_ADVANCED_COURSE("Colossal Wyrm Advanced", 62, 749.6f, ItemID.VARLAMORE_WYRM_AGILITY_TERMITE),
 	HALLOWED_SEPULCHRE_FLOOR_2("Hallowed Sepulchre Floor 2", 62, 925, ItemID.RING_OF_ENDURANCE),
-	POLLNIVNEACH_ROOFTOP("Pollnivneach Rooftop", 70, 890, ItemID.MARK_OF_GRACE),
-	DORGESH_KAAN_AGILITY_COURSE("Dorgesh-Kaan Agility Course", 70, 2750, ItemID.POWERBOX),
+	POLLNIVNEACH_ROOFTOP("Pollnivneach Rooftop", 70, 890, ItemID.GRACE),
+	DORGESH_KAAN_AGILITY_COURSE("Dorgesh-Kaan Agility Course", 70, 2750, ItemID.DORGESH_POWERSTATION_POWERBOX),
 	HALLOWED_SEPULCHRE_FLOOR_3("Hallowed Sepulchre Floor 3", 72, 1600, ItemID.RING_OF_ENDURANCE),
-	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", 75, 1337, ItemID.CRYSTAL_SHARD),
-	RELLEKKA_ROOFTOP("Rellekka Rooftop", 80, 780, ItemID.MARK_OF_GRACE),
+	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", 75, 1337, ItemID.PRIF_CRYSTAL_SHARD),
+	RELLEKKA_ROOFTOP("Rellekka Rooftop", 80, 780, ItemID.GRACE),
 	HALLOWED_SEPULCHRE_FLOOR_4("Hallowed Sepulchre Floor 4", 82, 2875, ItemID.RING_OF_ENDURANCE),
-	ARDOUGNE_ROOFTOP("Ardougne Rooftop", 90, 889, ItemID.MARK_OF_GRACE),
+	ARDOUGNE_ROOFTOP("Ardougne Rooftop", 90, 889, ItemID.GRACE),
 	HALLOWED_SEPULCHRE_FLOOR_5("Hallowed Sepulchre Floor 5", 92, 5725, ItemID.RING_OF_ENDURANCE),
 	;
 

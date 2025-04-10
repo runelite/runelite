@@ -36,11 +36,10 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullNpcID;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -56,7 +55,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_19768)
 			.text("BMJ UIF LFCBC TFMMFS")
-			.npc(NullNpcID.NULL_11875) // base npc for Ali or Isma'il the Kebab seller
+			.npc(NpcID.FEUD_KEBABMAN_MULTI) // base npc for Ali or Isma'il the Kebab seller
 			.location(new WorldPoint(3354, 2974, 0))
 			.area("Pollnivneach")
 			.question("How many coins would you need to purchase 133 kebabs from me?")
@@ -65,7 +64,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_19772)
 			.text("GUHCHO")
-			.npc(NpcID.DREZEL)
+			.npc(NpcID.PRIESTPERILTRAPPEDMONK_VIS)
 			.location(new WorldPoint(3440, 9895, 0))
 			.area("Paterdomus")
 			.question("Please solve this for x: 7x - 28=21")
@@ -74,7 +73,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_19770)
 			.text("HQNM LZM STSNQ")
-			.npc(NpcID.IRONMAN_TUTOR)
+			.npc(NpcID.IRONMAN_TUTOR_1)
 			.location(new WorldPoint(3227, 3227, 0))
 			.area("Outside Lumbridge castle")
 			.question("How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?")
@@ -83,7 +82,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_19904)
 			.text("ZHLUG ROG PDQ")
-			.npc(NpcID.WEIRD_OLD_MAN)
+			.npc(NpcID.KALPHITE_OLDMAN)
 			.location(new WorldPoint(3224, 3112, 0))
 			.area("Kalphite Lair entrance. Fairy ring BIQ")
 			.question("SIX LEGS! All of them have 6! There are 25 of them! How many legs?")
@@ -92,7 +91,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_19766)
 			.text("ECRVCKP MJCNGF")
-			.npc(NpcID.CAPTAIN_KHALED)
+			.npc(NpcID.PISCARILIUS_CAPTAIN_KHALED_DEFAULT)
 			.location(new WorldPoint(1845, 3754, 0))
 			.area("Large eastern building in Port Piscarilius")
 			.question("How many fishing cranes can you find around here?")
@@ -101,7 +100,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_19898)
 			.text("OVEXON")
-			.npc(NpcID.ELUNED)
+			.npc(NpcID.ROVING_FEMALE_WOODELF_TEMP_1)
 			.locationProvider((plugin) -> isElunedInPrifddinas(plugin) ? new WorldPoint(3229, 6062, 0) : new WorldPoint(2289, 3144, 0))
 			.areaProvider((plugin) -> isElunedInPrifddinas(plugin) ? "Prifddinas" : "Outside Lletya")
 			.question("A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?")
@@ -119,7 +118,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_19900)
 			.text("UZZU MUJHRKYYKJ")
-			.npc(NpcID.OTTO_GODBLESSED)
+			.npc(NpcID.BRUT_OTTO)
 			.location(new WorldPoint(2501, 3487, 0))
 			.area("Otto's Grotto")
 			.question("How many pyre sites are found around this lake?")
@@ -128,7 +127,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_19764)
 			.text("XJABSE USBJCPSO")
-			.npc(NpcID.WIZARD_TRAIBORN)
+			.npc(NpcID.TRAIBORN)
 			.location(new WorldPoint(3112, 3162, 0))
 			.area("First floor of Wizards Tower. Fairy ring DIS")
 			.question("How many air runes would I need to cast 630 wind waves?")
@@ -137,7 +136,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_19908)
 			.text("HCKTA IQFHCVJGT")
-			.npc(NpcID.FAIRY_GODFATHER)
+			.npc(NpcID.FAIRY_GODFATHER2)
 			.location(new WorldPoint(2446, 4428, 0))
 			.area("Zanaris throne room")
 			.question("There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?")
@@ -146,7 +145,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_19902)
 			.text("ZSBKDO ZODO")
-			.npc(NpcID.PIRATE_PETE)
+			.npc(NpcID.DEAL_PETE)
 			.location(new WorldPoint(3680, 3537, 0))
 			.area("Dock northeast of the Ectofuntus")
 			.build(),
@@ -160,7 +159,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MEDIUM_19762)
 			.text("QSPGFTTPS HSBDLMFCPOF")
-			.npc(NpcID.PROFESSOR_GRACKLEBONE)
+			.npc(NpcID.ARCEUUS_LIBRARY_CUSTOMER_3)
 			.location(new WorldPoint(1625, 3802, 0))
 			.area("Ground floor of Arceuus Library")
 			.question("How many round tables can be found on this floor of the library?")
@@ -176,7 +175,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_23170)
 			.text("BSOPME MZETQPS")
-			.npc(NpcID.ARNOLD_LYDSPOR)
+			.npc(NpcID.SWAN_ARNOLD)
 			.location(new WorldPoint(2329, 3689, 0))
 			.area("Piscatoris Fishing Colony general store/bank")
 			.build(),
@@ -189,7 +188,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		CipherClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_HARD_28916)
 			.text("BXJA UNJMNA YRCAR")
-			.npc(NpcID.SOAR_LEADER_PITRI)
+			.npc(NpcID.HUNTER_GUILD_PITRI)
 			.location(new WorldPoint(1559, 3045, 0))
 			.area("Top of the Hunter Guild")
 			.build()

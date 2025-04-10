@@ -41,8 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.worldmap.WorldMap;
@@ -81,7 +80,7 @@ public class WorldMapOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGHEST);
 		setLayer(OverlayLayer.MANUAL);
-		drawAfterInterface(InterfaceID.WORLD_MAP);
+		drawAfterInterface(InterfaceID.WORLDMAP);
 	}
 
 	@Override
@@ -94,8 +93,8 @@ public class WorldMapOverlay extends Overlay
 			return null;
 		}
 
-		Widget widget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
-		Widget bottomBar = client.getWidget(ComponentID.WORLD_MAP_BOTTOM_BAR);
+		Widget widget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
+		Widget bottomBar = client.getWidget(InterfaceID.Worldmap.BOTTOM_GRAPHIC0);
 		if (widget == null || bottomBar == null)
 		{
 			return null;
@@ -228,7 +227,7 @@ public class WorldMapOverlay extends Overlay
 			}
 		}
 
-		final Widget rsTooltip = client.getWidget(ComponentID.WORLD_MAP_TOOLTIP);
+		final Widget rsTooltip = client.getWidget(InterfaceID.Worldmap.TOOLTIP);
 		if (rsTooltip != null)
 		{
 			rsTooltip.setHidden(tooltipPoint != null);
@@ -259,7 +258,7 @@ public class WorldMapOverlay extends Overlay
 
 		float pixelsPerTile = worldMap.getWorldMapZoom();
 
-		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		Widget map = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 		if (map != null)
 		{
 			Rectangle worldMapRect = map.getBounds();
@@ -299,8 +298,8 @@ public class WorldMapOverlay extends Overlay
 	 */
 	private Shape getWorldMapClipArea(Rectangle baseRectangle)
 	{
-		final Widget overview = client.getWidget(ComponentID.WORLD_MAP_OVERVIEW_MAP);
-		final Widget surfaceSelector = client.getWidget(ComponentID.WORLD_MAP_SURFACE_SELECTOR);
+		final Widget overview = client.getWidget(InterfaceID.Worldmap.OVERVIEW_CONTAINER);
+		final Widget surfaceSelector = client.getWidget(InterfaceID.Worldmap.MAPLIST_BOX_GRAPHIC0);
 
 		Area clipArea = new Area(baseRectangle);
 		boolean subtracted = false;

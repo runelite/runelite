@@ -31,7 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Named;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.http.api.item.ItemPrice;

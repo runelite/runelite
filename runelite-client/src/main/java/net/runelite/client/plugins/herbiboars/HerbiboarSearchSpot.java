@@ -32,90 +32,90 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.*;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 @Getter
 enum HerbiboarSearchSpot
 {
 	// Wiki A location
 	A_MUSHROOM(Group.A, new WorldPoint(3670, 3889, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31318, 1, NULL_31318),
-		new TrailToSpot(Varbits.HB_TRAIL_31321, 1, NULL_31321)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_5, 1, ObjectID.HUNTING_TRAIL9_5),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_6, 1, ObjectID.HUNTING_TRAIL9_6)),
 	A_PATCH(Group.A, new WorldPoint(3672, 3890, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31306, 2, NULL_31306)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_1, 2, ObjectID.HUNTING_TRAIL9_1)),
 
 	// Wiki B location
 	B_SEAWEED(Group.B, new WorldPoint(3728, 3893, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31315, 2, NULL_31315),
-		new TrailToSpot(Varbits.HB_TRAIL_31318, 2, NULL_31318),
-		new TrailToSpot(Varbits.HB_TRAIL_31336, 1, NULL_31336),
-		new TrailToSpot(Varbits.HB_TRAIL_31339, 1, NULL_31339)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_4, 2, ObjectID.HUNTING_TRAIL9_4),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_5, 2, ObjectID.HUNTING_TRAIL9_5),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_1, 1, ObjectID.HUNTING_TRAIL10_1),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_2, 1, ObjectID.HUNTING_TRAIL10_2)),
 
 	// Wiki C location
 	C_MUSHROOM(Group.C, new WorldPoint(3697, 3875, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31303, 2, NULL_31303)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_0, 2, ObjectID.HUNTING_TRAIL9_0)),
 	C_PATCH(Group.C, new WorldPoint(3699, 3875, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31312, 1, NULL_31312),
-		new TrailToSpot(Varbits.HB_TRAIL_31315, 1, NULL_31315)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_3, 1, ObjectID.HUNTING_TRAIL9_3),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_4, 1, ObjectID.HUNTING_TRAIL9_4)),
 
 	// Wiki D location
 	D_PATCH(Group.D, new WorldPoint(3708, 3876, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31330, 1, NULL_31330),
-		new TrailToSpot(Varbits.HB_TRAIL_31333, 1, NULL_31333)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_9, 1, ObjectID.HUNTING_TRAIL9_9),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_0, 1, ObjectID.HUNTING_TRAIL10_0)),
 	D_SEAWEED(Group.D, new WorldPoint(3710, 3877, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31312, 2, NULL_31312),
-		new TrailToSpot(Varbits.HB_TRAIL_31339, 2, NULL_31339)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_3, 2, ObjectID.HUNTING_TRAIL9_3),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_2, 2, ObjectID.HUNTING_TRAIL10_2)),
 
 	// Wiki E location
 	E_MUSHROOM(Group.E, new WorldPoint(3668, 3865, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31342, 1, NULL_31342),
-		new TrailToSpot(Varbits.HB_TRAIL_31345, 1, NULL_31345)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_3, 1, ObjectID.HUNTING_TRAIL10_3),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_4, 1, ObjectID.HUNTING_TRAIL10_4)),
 	E_PATCH(Group.E, new WorldPoint(3667, 3862, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31321, 2, NULL_31321)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_6, 2, ObjectID.HUNTING_TRAIL9_6)),
 
 	// Wiki F location
 	F_MUSHROOM(Group.F, new WorldPoint(3681, 3860, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31324, 1, NULL_31324),
-		new TrailToSpot(Varbits.HB_TRAIL_31327, 1, NULL_31327),
-		new TrailToSpot(Varbits.HB_TRAIL_31342, 2, NULL_31342)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_7, 1, ObjectID.HUNTING_TRAIL9_7),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_8, 1, ObjectID.HUNTING_TRAIL9_8),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_3, 2, ObjectID.HUNTING_TRAIL10_3)),
 	F_PATCH(Group.F, new WorldPoint(3681, 3859, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31309, 2, NULL_31309)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_2, 2, ObjectID.HUNTING_TRAIL9_2)),
 
 	// Wiki G location
 	G_MUSHROOM(Group.G, new WorldPoint(3694, 3847, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31333, 2, NULL_31333),
-		new TrailToSpot(Varbits.HB_TRAIL_31354, 1, NULL_31354)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_0, 2, ObjectID.HUNTING_TRAIL10_0),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_7, 1, ObjectID.HUNTING_TRAIL10_7)),
 	G_PATCH(Group.G, new WorldPoint(3698, 3847, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31327, 2, NULL_31327)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_8, 2, ObjectID.HUNTING_TRAIL9_8)),
 
 	// Wiki H location
 	H_SEAWEED_EAST(Group.H, new WorldPoint(3715, 3851, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31357, 1, NULL_31357),
-		new TrailToSpot(Varbits.HB_TRAIL_31360, 1, NULL_31360)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_8, 1, ObjectID.HUNTING_TRAIL10_8),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_9, 1, ObjectID.HUNTING_TRAIL10_9)),
 	H_SEAWEED_WEST(Group.H, new WorldPoint(3713, 3850, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31330, 2, NULL_31330),
-		new TrailToSpot(Varbits.HB_TRAIL_31363, 1, NULL_31363)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_9, 2, ObjectID.HUNTING_TRAIL9_9),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE11_0, 1, ObjectID.HUNTING_TRAIL11_0)),
 
 	// Wiki I location
 	I_MUSHROOM(Group.I, new WorldPoint(3680, 3838, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31348, 1, NULL_31348),
-		new TrailToSpot(Varbits.HB_TRAIL_31351, 1, NULL_31351)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_5, 1, ObjectID.HUNTING_TRAIL10_5),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_6, 1, ObjectID.HUNTING_TRAIL10_6)),
 	I_PATCH(Group.I, new WorldPoint(3680, 3836, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31324, 2, NULL_31324),
-		new TrailToSpot(Varbits.HB_TRAIL_31345, 2, NULL_31345)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE9_7, 2, ObjectID.HUNTING_TRAIL9_7),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_4, 2, ObjectID.HUNTING_TRAIL10_4)),
 
 	// Wiki J location
 	J_PATCH(Group.J, new WorldPoint(3713, 3840, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31357, 2, NULL_31357),
-		new TrailToSpot(Varbits.HB_TRAIL_31372, 1, NULL_31372)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_8, 2, ObjectID.HUNTING_TRAIL10_8),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE11_3, 1, ObjectID.HUNTING_TRAIL11_3)),
 
 	// Wiki K location
 	K_PATCH(Group.K, new WorldPoint(3706, 3811, 0),
-		new TrailToSpot(Varbits.HB_TRAIL_31348, 2, NULL_31348),
-		new TrailToSpot(Varbits.HB_TRAIL_31366, 1, NULL_31366),
-		new TrailToSpot(Varbits.HB_TRAIL_31369, 1, NULL_31369)),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE10_5, 2, ObjectID.HUNTING_TRAIL10_5),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE11_1, 1, ObjectID.HUNTING_TRAIL11_1),
+		new TrailToSpot(VarbitID.HUNTING_TRAIL_STATE11_2, 1, ObjectID.HUNTING_TRAIL11_2)),
 	;
 
 	private static final ImmutableMultimap<Group, HerbiboarSearchSpot> GROUPS;

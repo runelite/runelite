@@ -43,9 +43,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullNpcID;
-import net.runelite.api.NullObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.Angle;
@@ -59,7 +56,9 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
@@ -67,9 +66,9 @@ import net.runelite.client.plugins.mta.MTARoom;
 @Slf4j
 public class TelekineticRoom extends MTARoom
 {
-	private static final int MAZE_GUARDIAN_MOVING = NullNpcID.NULL_6778;
-	private static final int TELEKINETIC_WALL = NullObjectID.NULL_10755;
-	private static final int TELEKINETIC_FINISH = NullObjectID.NULL_23672;
+	private static final int MAZE_GUARDIAN_MOVING = NpcID.MAGICTRAINING_GUARD_MAZE_MOVING;
+	private static final int TELEKINETIC_WALL = ObjectID.MAGICTRAINING_MINIWALL;
+	private static final int TELEKINETIC_FINISH = ObjectID.MAGICTRAINING_MINI_STATUE_PITFALL;
 
 	private final Client client;
 
@@ -192,7 +191,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getId() == NpcID.MAZE_GUARDIAN || npc.getId() == MAZE_GUARDIAN_MOVING)
+		if (npc.getId() == NpcID.MAGICTRAINING_GUARD_MAZE_INCOMPLETE || npc.getId() == MAZE_GUARDIAN_MOVING)
 		{
 			guardian = npc;
 		}
@@ -212,7 +211,7 @@ public class TelekineticRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		return client.getWidget(InterfaceID.MTA_TELEKINETIC, 0) != null;
+		return client.getWidget(InterfaceID.MAGICTRAINING_TELE, 0) != null;
 	}
 
 	@Override

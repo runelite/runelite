@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
@@ -47,7 +47,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		this.itemManager = itemManager;
 		showOnInventory();
 		showOnBank();
-		showOnInterfaces(InterfaceID.KEPT_ON_DEATH, InterfaceID.GUIDE_PRICES, InterfaceID.LOOTING_BAG, InterfaceID.SEED_BOX, InterfaceID.KINGDOM);
+		showOnInterfaces(InterfaceID.DEATHKEEP, InterfaceID.GE_PRICECHECKER, InterfaceID.WILDERNESS_LOOTINGBAG, InterfaceID.HOSIDIUS_SEEDBOX, InterfaceID.MISC_COLLECTION);
 	}
 
 	@Override

@@ -69,10 +69,12 @@ public class ComponentMojo extends AbstractMojo
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 		TypeSpec.Builder interfaceType = TypeSpec.classBuilder("InterfaceID")
-			.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+			.addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+			.addAnnotation(Deprecated.class);
 
 		TypeSpec.Builder componentType = TypeSpec.classBuilder("ComponentID")
-			.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+			.addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+			.addAnnotation(Deprecated.class);
 
 		for (File file : inputDirectory.listFiles((dir, name) -> name.endsWith(".toml")))
 		{

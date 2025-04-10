@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.gameval.VarPlayerID;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -69,7 +69,7 @@ class WoodcuttingOverlay extends OverlayPanel
 		}
 
 		if (WoodcuttingPlugin.WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation())
-			|| client.getVarpValue(VarPlayer.BUFF_BAR_WC_GROUP_BONUS) == BUFF_BAR_DISPLAYED)
+			|| client.getVarpValue(VarPlayerID.GROUP_GATHERING_ACTIVE_BUFF) == BUFF_BAR_DISPLAYED)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")

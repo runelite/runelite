@@ -386,11 +386,12 @@ LABEL339:
    iconst                 1
    cc_sethide             1
 LABEL341:
-   jump                   LABEL369
+   jump                   LABEL370
 LABEL342:
    iload                  1
    iconst                 5
    iconst                 5
+   iconst                 0
    cc_create              1
    iconst                 6
    iconst                 0
@@ -408,31 +409,31 @@ LABEL342:
    cc_setgraphicshadow    1
    iload                  9
    iconst                 1
-   if_icmpeq              LABEL364
-   jump                   LABEL367
-LABEL364:
+   if_icmpeq              LABEL365
+   jump                   LABEL368
+LABEL365:
    iconst                 0
    cc_sethide             1
-   jump                   LABEL369
-LABEL367:
+   jump                   LABEL370
+LABEL368:
    iconst                 1
    cc_sethide             1
-LABEL369:
+LABEL370:
    iload                  3
    iconst                 1
-   if_icmpeq              LABEL373
-   jump                   LABEL392
-LABEL373:
+   if_icmpeq              LABEL374
+   jump                   LABEL393
+LABEL374:
    map_members           
    iconst                 0
-   if_icmpeq              LABEL377
-   jump                   LABEL392
-LABEL377:
+   if_icmpeq              LABEL378
+   jump                   LABEL393
+LABEL378:
    get_varc_int           103
    iconst                 0
-   if_icmpeq              LABEL381
-   jump                   LABEL392
-LABEL381:
+   if_icmpeq              LABEL382
+   jump                   LABEL393
+LABEL382:
    sconst                 "<col=ff0000>"
    sload                  0
    sconst                 ":"
@@ -444,12 +445,12 @@ LABEL381:
    sconst                 "</col>"
    join_string            3
    sstore                 3
-LABEL392:
+LABEL393:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL396
-   jump                   LABEL423
-LABEL396:
+   if_icmpeq              LABEL397
+   jump                   LABEL424
+LABEL397:
    iconst                 2367
    iconst                 -2147483644
    iconst                 -2147483645
@@ -463,14 +464,14 @@ LABEL396:
    if_setonop            
    get_varc_int           218
    iload                  1
-   if_icmpeq              LABEL411
-   jump                   LABEL422
-LABEL411:
+   if_icmpeq              LABEL412
+   jump                   LABEL423
+LABEL412:
    get_varc_int           217
    iconst                 -1
-   if_icmpeq              LABEL415
-   jump                   LABEL422
-LABEL415:
+   if_icmpeq              LABEL416
+   jump                   LABEL423
+LABEL416:
    iload                  1
    iconst                 -1
    iload                  2
@@ -478,9 +479,9 @@ LABEL415:
    sload                  3
    iconst                 495
    invoke                 2344
-LABEL422:
-   jump                   LABEL438
 LABEL423:
+   jump                   LABEL439
+LABEL424:
    iconst                 992
    iconst                 -2147483645
    iconst                 -1
@@ -496,5 +497,5 @@ LABEL423:
    if_setonmouserepeat   
    iconst                 0
    set_varc_int           2
-LABEL438:
+LABEL439:
    return                

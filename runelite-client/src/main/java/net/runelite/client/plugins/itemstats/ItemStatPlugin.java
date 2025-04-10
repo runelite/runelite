@@ -37,17 +37,17 @@ import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.FontID;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetTextAlignment;
@@ -135,8 +135,8 @@ public class ItemStatPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		if (itemInformationTitle != null && config.geStats()
-			&& (client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
-			|| client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
+			&& (client.getWidget(InterfaceID.GeOffers.UNIVERSE) == null
+			|| client.getWidget(InterfaceID.GeOffers.UNIVERSE).isHidden()))
 		{
 			resetGEInventory();
 		}
@@ -145,7 +145,7 @@ public class ItemStatPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.CURRENT_GE_ITEM && config.geStats())
+		if (event.getVarpId() == VarPlayerID.TRADINGPOST_SEARCH && config.geStats())
 		{
 			resetGEInventory();
 		}
@@ -156,8 +156,8 @@ public class ItemStatPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.GE_OFFERS_SETUP_BUILD && config.geStats())
 		{
-			int currentGeItem = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
-			if (currentGeItem != -1 && client.getVarbitValue(Varbits.GE_OFFER_CREATION_TYPE) == 0)
+			int currentGeItem = client.getVarpValue(VarPlayerID.TRADINGPOST_SEARCH);
+			if (currentGeItem != -1 && client.getVarbitValue(VarbitID.GE_NEWOFFER_TYPE) == 0)
 			{
 				createItemInformation(currentGeItem);
 			}
@@ -180,7 +180,7 @@ public class ItemStatPlugin extends Plugin
 			return;
 		}
 
-		final Widget geInv = client.getWidget(ComponentID.GRAND_EXCHANGE_INVENTORY_INVENTORY_ITEM_CONTAINER);
+		final Widget geInv = client.getWidget(InterfaceID.GeOffersSide.ITEMS);
 
 		if (geInv == null)
 		{
@@ -390,7 +390,7 @@ public class ItemStatPlugin extends Plugin
 			itemInformationTitle = null;
 		}
 
-		final Widget geInv = client.getWidget(ComponentID.GRAND_EXCHANGE_INVENTORY_INVENTORY_ITEM_CONTAINER);
+		final Widget geInv = client.getWidget(InterfaceID.GeOffersSide.ITEMS);
 		if (geInv != null)
 		{
 			geInv.setHidden(false);
@@ -399,32 +399,32 @@ public class ItemStatPlugin extends Plugin
 
 	private int getCurrentGP()
 	{
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 
 		if (inventory == null)
 		{
 			return 0;
 		}
 
-		return inventory.count(ItemID.COINS_995);
+		return inventory.count(ItemID.COINS);
 	}
 
 	private Widget getInventoryContainer()
 	{
 		if (client.isResized())
 		{
-			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
 			{
-				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_CONTAINER);
+				return client.getWidget(InterfaceID.ToplevelPreEoc.SIDE3);
 			}
 			else
 			{
-				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_INVENTORY_CONTAINER);
+				return client.getWidget(InterfaceID.ToplevelOsrsStretch.SIDE3);
 			}
 		}
 		else
 		{
-			return client.getWidget(ComponentID.FIXED_VIEWPORT_INVENTORY_CONTAINER);
+			return client.getWidget(InterfaceID.Toplevel.SIDE3);
 		}
 	}
 }

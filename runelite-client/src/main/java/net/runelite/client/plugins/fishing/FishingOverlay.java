@@ -30,12 +30,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -49,36 +49,36 @@ class FishingOverlay extends OverlayPanel
 	private static final String FISHING_RESET = "Reset";
 
 	private static final Set<Integer> FISHING_ANIMATIONS = ImmutableSet.of(
-		AnimationID.FISHING_BARBTAIL_HARPOON,
-		AnimationID.FISHING_BAREHAND,
-		AnimationID.FISHING_BAREHAND_CAUGHT_SHARK_1,
-		AnimationID.FISHING_BAREHAND_CAUGHT_SHARK_2,
-		AnimationID.FISHING_BAREHAND_CAUGHT_SWORDFISH_1,
-		AnimationID.FISHING_BAREHAND_CAUGHT_SWORDFISH_2,
-		AnimationID.FISHING_BAREHAND_CAUGHT_TUNA_1,
-		AnimationID.FISHING_BAREHAND_CAUGHT_TUNA_2,
-		AnimationID.FISHING_BAREHAND_WINDUP_1,
-		AnimationID.FISHING_BAREHAND_WINDUP_2,
-		AnimationID.FISHING_BIG_NET,
-		AnimationID.FISHING_CAGE,
-		AnimationID.FISHING_CRYSTAL_HARPOON,
-		AnimationID.FISHING_DRAGON_HARPOON,
-		AnimationID.FISHING_DRAGON_HARPOON_OR,
-		AnimationID.FISHING_HARPOON,
-		AnimationID.FISHING_INFERNAL_HARPOON,
-		AnimationID.FISHING_TRAILBLAZER_HARPOON,
-		AnimationID.FISHING_KARAMBWAN,
-		AnimationID.FISHING_NET,
-		AnimationID.FISHING_OILY_ROD,
-		AnimationID.FISHING_POLE_CAST,
-		AnimationID.FISHING_PEARL_ROD,
-		AnimationID.FISHING_PEARL_FLY_ROD,
-		AnimationID.FISHING_PEARL_BARBARIAN_ROD,
-		AnimationID.FISHING_PEARL_ROD_2,
-		AnimationID.FISHING_PEARL_FLY_ROD_2,
-		AnimationID.FISHING_PEARL_BARBARIAN_ROD_2,
-		AnimationID.FISHING_PEARL_OILY_ROD,
-		AnimationID.FISHING_BARBARIAN_ROD);
+		AnimationID.HUMAN_HARPOON_BARBED,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_BLANK,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_SHARK_2,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_SHARK_1,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_SWORDFISH_1,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_SWORDFISH_2,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_TUNA_1,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_END_TUNA_2,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_START,
+		AnimationID.BRUT_PLAYER_HAND_FISHING_READY,
+		AnimationID.HUMAN_LARGENET,
+		AnimationID.HUMAN_LOBSTER,
+		AnimationID.HUMAN_HARPOON_CRYSTAL,
+		AnimationID.HUMAN_HARPOON_DRAGON,
+		AnimationID.HUMAN_HARPOON_TRAILBLAZER_NO_INFERNAL,
+		AnimationID.HUMAN_HARPOON,
+		AnimationID.HUMAN_HARPOON_INFERNAL,
+		AnimationID.HUMAN_HARPOON_LEAGUE_TRAILBLAZER,
+		AnimationID.HUMAN_OCTOPUS_POT,
+		AnimationID.HUMAN_SMALLNET,
+		AnimationID.HUMAN_FISHING_CASTING,
+		AnimationID.HUMAN_FISH_ONSPOT,
+		AnimationID.HUMAN_FISHING_CASTING_PEARL,
+		AnimationID.HUMAN_FISHING_CASTING_PEARL_FLY,
+		AnimationID.HUMAN_FISHING_CASTING_PEARL_BRUT,
+		AnimationID.HUMAN_FISH_ONSPOT_PEARL,
+		AnimationID.HUMAN_FISH_ONSPOT_PEARL_FLY,
+		AnimationID.HUMAN_FISH_ONSPOT_PEARL_BRUT,
+		AnimationID.HUMAN_FISHING_CASTING_PEARL_OILY,
+		AnimationID.HUMAN_FISHING_ONSPOT_BRUT);
 
 	private final Client client;
 	private final FishingPlugin plugin;
@@ -108,7 +108,7 @@ class FishingOverlay extends OverlayPanel
 
 		if (client.getLocalPlayer().getInteracting() != null
 			&& client.getLocalPlayer().getInteracting().getName().contains(FISHING_SPOT)
-			&& client.getLocalPlayer().getInteracting().getGraphic() != GraphicID.FLYING_FISH
+			&& client.getLocalPlayer().getInteracting().getGraphic() != SpotanimID.MINNOW_FISHING_FLYINGFISH
 			&& FISHING_ANIMATIONS.contains(client.getLocalPlayer().getAnimation()))
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()

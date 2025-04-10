@@ -46,11 +46,10 @@ import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -151,11 +150,11 @@ public class FairyRingPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == InterfaceID.FAIRY_RING_PANEL)
+		if (widgetLoaded.getGroupId() == InterfaceID.FAIRYRINGS_LOG)
 		{
 			setWidgetTextToDestination();
 
-			Widget header = client.getWidget(ComponentID.FAIRY_RING_PANEL_HEADER);
+			Widget header = client.getWidget(InterfaceID.FairyringsLog.TITLEBOX);
 			if (header != null)
 			{
 				searchBtn = header.createChild(-1, WidgetType.GRAPHIC);
@@ -195,14 +194,14 @@ public class FairyRingPlugin extends Plugin
 
 	private void setWidgetTextToDestination()
 	{
-		Widget fairyRingTeleportButton = client.getWidget(ComponentID.FAIRY_RING_TELEPORT_BUTTON);
+		Widget fairyRingTeleportButton = client.getWidget(InterfaceID.Fairyrings.CONFIRM);
 		if (fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden())
 		{
 			String destination;
 			try
 			{
-				FairyRings fairyRingDestination = getFairyRingDestination(client.getVarbitValue(Varbits.FAIRY_RING_DIAL_ADCB),
-					client.getVarbitValue(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVarbitValue(Varbits.FAIRY_RING_DIAL_PSRQ));
+				FairyRings fairyRingDestination = getFairyRingDestination(client.getVarbitValue(VarbitID.FAIRYRING_1),
+					client.getVarbitValue(VarbitID.FAIRYRING_2), client.getVarbitValue(VarbitID.FAIRYRING_3));
 				destination = fairyRingDestination.getDestination();
 			}
 			catch (IllegalArgumentException ex)
@@ -240,7 +239,7 @@ public class FairyRingPlugin extends Plugin
 	public void onGameTick(GameTick t)
 	{
 		// This has to happen because the only widget that gets hidden is the tli one
-		Widget fairyRingTeleportButton = client.getWidget(ComponentID.FAIRY_RING_TELEPORT_BUTTON);
+		Widget fairyRingTeleportButton = client.getWidget(InterfaceID.Fairyrings.CONFIRM);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
 		boolean searchInputBoxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
 		boolean tagInputBoxOpen = tagInput != null && chatboxPanelManager.getCurrentInput() == tagInput;
@@ -254,8 +253,8 @@ public class FairyRingPlugin extends Plugin
 	private void updateFilter(String input)
 	{
 		final String filter = input.toLowerCase();
-		final Widget list = client.getWidget(ComponentID.FAIRY_RING_PANEL_LIST);
-		final Widget favorites = client.getWidget(ComponentID.FAIRY_RING_PANEL_FAVORITES);
+		final Widget list = client.getWidget(InterfaceID.FairyringsLog.CONTENTS);
+		final Widget favorites = client.getWidget(InterfaceID.FairyringsLog.FAVES);
 
 		if (list == null)
 		{
@@ -317,7 +316,7 @@ public class FairyRingPlugin extends Plugin
 			{
 				for (Widget w : favorites.getStaticChildren())
 				{
-					if (w.getId() == ComponentID.FAIRY_RING_PANEL_SEPARATOR)
+					if (w.getId() == InterfaceID.FairyringsLog.DIVIDER)
 					{
 						continue;
 					}
@@ -342,7 +341,7 @@ public class FairyRingPlugin extends Plugin
 		}
 
 		// reset the separator widget
-		Widget separator = client.getWidget(ComponentID.FAIRY_RING_PANEL_SEPARATOR);
+		Widget separator = client.getWidget(InterfaceID.FairyringsLog.DIVIDER);
 		if (separator != null)
 		{
 			separator.setHidden(true);
@@ -445,8 +444,8 @@ public class FairyRingPlugin extends Plugin
 		list.revalidateScroll();
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			ComponentID.FAIRY_RING_PANEL_SCROLLBAR,
-			ComponentID.FAIRY_RING_PANEL_LIST,
+			InterfaceID.FairyringsLog.SCROLLBAR,
+			InterfaceID.FairyringsLog.CONTENTS,
 			newHeight
 		);
 	}
@@ -454,7 +453,7 @@ public class FairyRingPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRY_RING_PANEL &&
+		if (WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRYRINGS_LOG &&
 			event.getOption().equals("Use code"))
 		{
 			client.getMenu().createMenuEntry(-1)

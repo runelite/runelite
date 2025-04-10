@@ -25,8 +25,8 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -81,9 +81,9 @@ public class CoordinateClueTest
 	public void testResourceAreaCosts()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_ELITE_COMPLETE)).thenReturn(1, 0, 0, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_HARD_COMPLETE)).thenReturn(1, 0, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_MEDIUM_COMPLETE)).thenReturn(1, 0, 0);
 
 		CoordinateClue clue = CoordinateClue.forLocation(new WorldPoint(3188, 3933, 0));
 		assert clue != null;
@@ -99,7 +99,7 @@ public class CoordinateClueTest
 	public void testHardwoodGroveCost()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.DIARY_KARAMJA_ELITE)).thenReturn(1, 0);
+		when(client.getVarbitValue(VarbitID.KARAMJA_DIARY_ELITE_COMPLETE)).thenReturn(1, 0);
 
 		CoordinateClue clue = CoordinateClue.forLocation(new WorldPoint(2820, 3078, 0));
 		assert clue != null;

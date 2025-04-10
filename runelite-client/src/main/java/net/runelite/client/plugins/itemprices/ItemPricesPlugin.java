@@ -29,12 +29,11 @@ import java.awt.Color;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.BeforeRender;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
@@ -112,7 +111,7 @@ public class ItemPricesPlugin extends Plugin
 		{
 			case WIDGET_TARGET_ON_WIDGET:
 				// Check target widget is the inventory
-				if (menuEntry.getWidget().getId() != ComponentID.INVENTORY_CONTAINER)
+				if (menuEntry.getWidget().getId() != InterfaceID.Inventory.ITEMS)
 				{
 					break;
 				}
@@ -135,7 +134,7 @@ public class ItemPricesPlugin extends Plugin
 				break;
 			case WIDGET_TARGET:
 				// Check that this is the inventory
-				if (menuEntry.getWidget().getId() == ComponentID.INVENTORY_CONTAINER)
+				if (menuEntry.getWidget().getId() == InterfaceID.Inventory.ITEMS)
 				{
 					addTooltip(menuEntry, isAlching, groupId);
 				}
@@ -147,22 +146,22 @@ public class ItemPricesPlugin extends Plugin
 		// Item tooltip values
 		switch (groupId)
 		{
-			case InterfaceID.EXPLORERS_RING:
+			case InterfaceID.LUMBRIDGE_ALCHEMY:
 				if (!config.showWhileAlching())
 				{
 					return;
 				}
 			case InterfaceID.INVENTORY:
-			case InterfaceID.POH_TREASURE_CHEST_INV:
+			case InterfaceID.POH_COSTUMES_SIDE:
 				if (config.hideInventory() && (!config.showWhileAlching() || !isAlching))
 				{
 					return;
 				}
 				// FALLTHROUGH
-			case InterfaceID.BANK:
-			case InterfaceID.BANK_INVENTORY:
+			case InterfaceID.BANKMAIN:
+			case InterfaceID.BANKSIDE:
 			case InterfaceID.SEED_VAULT:
-			case InterfaceID.SEED_VAULT_INVENTORY:
+			case InterfaceID.SEED_VAULT_DEPOSIT:
 				// Make tooltip
 				final String text = makeValueTooltip(menuEntry);
 				if (text != null)
@@ -183,15 +182,15 @@ public class ItemPricesPlugin extends Plugin
 		final int componentId = menuEntry.getParam1();
 
 		// Inventory item
-		if (componentId == ComponentID.INVENTORY_CONTAINER ||
-			componentId == ComponentID.BANK_INVENTORY_ITEM_CONTAINER ||
-			componentId == ComponentID.EXPLORERS_RING_INVENTORY ||
-			componentId == ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER ||
-			componentId == ComponentID.POH_TREASURE_CHEST_INV_CONTAINER ||
+		if (componentId == InterfaceID.Inventory.ITEMS ||
+			componentId == InterfaceID.Bankside.ITEMS ||
+			componentId == InterfaceID.LumbridgeAlchemy.ITEMS ||
+			componentId == InterfaceID.SeedVaultDeposit.INV ||
+			componentId == InterfaceID.PohCostumesSide.ITEMS ||
 			// Bank item
-			componentId == ComponentID.BANK_ITEM_CONTAINER ||
+			componentId == InterfaceID.Bankmain.ITEMS ||
 			// Seed vault item
-			componentId == ComponentID.SEED_VAULT_ITEM_CONTAINER
+			componentId == InterfaceID.SeedVault.OBJ_LIST
 		)
 		{
 			Widget w = menuEntry.getWidget();
@@ -211,11 +210,11 @@ public class ItemPricesPlugin extends Plugin
 		id = itemManager.canonicalize(id);
 
 		// Special case for coins and platinum tokens
-		if (id == ItemID.COINS_995)
+		if (id == ItemID.COINS)
 		{
 			return QuantityFormatter.formatNumber(qty) + " gp";
 		}
-		else if (id == ItemID.PLATINUM_TOKEN)
+		else if (id == ItemID.PLATINUM)
 		{
 			return QuantityFormatter.formatNumber(qty * 1000L) + " gp";
 		}
@@ -310,7 +309,7 @@ public class ItemPricesPlugin extends Plugin
 
 	private int calculateHAProfit(int haPrice, int gePrice)
 	{
-		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURERUNE);
 		return haPrice - gePrice - natureRunePrice;
 	}
 

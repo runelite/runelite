@@ -30,8 +30,8 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Point;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -68,7 +68,7 @@ class TearsOfGuthixOverlay extends Overlay
 
 		plugin.getStreams().forEach((object, timer) ->
 		{
-			if ((object.getId() == ObjectID.GREEN_TEARS || object.getId() == ObjectID.GREEN_TEARS_6666)
+			if ((object.getId() == ObjectID.TOG_WEEPING_WALL_BAD_R || object.getId() == ObjectID.TOG_WEEPING_WALL_BAD_L)
 				&& !config.showGreenTearsTimer())
 			{
 				return;
@@ -84,14 +84,14 @@ class TearsOfGuthixOverlay extends Overlay
 			final ProgressPieComponent progressPie = new ProgressPieComponent();
 			progressPie.setDiameter(15);
 
-			if (object.getId() == ObjectID.BLUE_TEARS ||
-				object.getId() == ObjectID.BLUE_TEARS_6665)
+			if (object.getId() == ObjectID.TOG_WEEPING_WALL_GOOD_R ||
+				object.getId() == ObjectID.TOG_WEEPING_WALL_GOOD_L)
 			{
 				progressPie.setFill(blueTearsFill);
 				progressPie.setBorderColor(blueTearsBorder);
 			}
-			else if (object.getId() == ObjectID.GREEN_TEARS ||
-				object.getId() == ObjectID.GREEN_TEARS_6666)
+			else if (object.getId() == ObjectID.TOG_WEEPING_WALL_BAD_R ||
+				object.getId() == ObjectID.TOG_WEEPING_WALL_BAD_L)
 			{
 				progressPie.setFill(greenTearsFill);
 				progressPie.setBorderColor(greenTearsBorder);

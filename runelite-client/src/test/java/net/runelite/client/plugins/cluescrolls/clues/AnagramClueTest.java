@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -54,7 +54,7 @@ public class AnagramClueTest
 	public void countLumbridgeGravestones()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.JARVIS_GRAVESTONE)).thenReturn(0, 1, 2, 3);
+		when(client.getVarbitValue(VarbitID.HW17_JARVIS_DEAD)).thenReturn(0, 1, 2, 3);
 
 		AnagramClue clue = AnagramClue.forText("How many gravestones are in the church graveyard?");
 		assert clue != null;

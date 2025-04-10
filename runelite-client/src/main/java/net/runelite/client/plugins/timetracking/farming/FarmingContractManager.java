@@ -35,9 +35,9 @@ import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.NullNpcID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -51,7 +51,7 @@ import net.runelite.client.util.Text;
 @Singleton
 public class FarmingContractManager
 {
-	private static final int GUILDMASTER_JANE_NPC_ID = NullNpcID.NULL_8628;
+	private static final int GUILDMASTER_JANE_NPC_ID = NpcID.FARMING_GUILD_MASTER;
 	private static final int FARMING_GUILD_REGION_ID = 4922;
 	private static final Pattern CONTRACT_ASSIGN_PATTERN = Pattern.compile("(?:We need you to grow|Please could you grow) (?:some|a|an) ([a-zA-Z ]+)(?: for us\\?|\\.)");
 	private static final String CONTRACT_REWARDED = "You'll be wanting a reward then. Here you go.";
@@ -183,14 +183,14 @@ public class FarmingContractManager
 
 	private void handleGuildmasterJaneWidgetDialog()
 	{
-		Widget npcDialog = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
+		Widget npcDialog = client.getWidget(InterfaceID.ChatLeft.HEAD);
 
 		if (npcDialog == null || npcDialog.getModelId() != GUILDMASTER_JANE_NPC_ID)
 		{
 			return;
 		}
 
-		String dialogText = Text.removeTags(client.getWidget(ComponentID.DIALOG_NPC_TEXT).getText());
+		String dialogText = Text.removeTags(client.getWidget(InterfaceID.ChatLeft.TEXT).getText());
 
 		if (dialogText.equals(CONTRACT_REWARDED))
 		{

@@ -41,7 +41,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -95,7 +95,7 @@ public class ReportButtonPlugin extends Plugin
 	{
 		clientThread.invoke(() ->
 		{
-			Widget reportButton = client.getWidget(ComponentID.CHATBOX_REPORT_TEXT);
+			Widget reportButton = client.getWidget(InterfaceID.Chatbox.REPORTABUSE_TEXT1);
 			if (reportButton != null)
 			{
 				reportButton.setText("Report");
@@ -161,7 +161,7 @@ public class ReportButtonPlugin extends Plugin
 			return;
 		}
 
-		Widget reportButton = client.getWidget(ComponentID.CHATBOX_REPORT_TEXT);
+		Widget reportButton = client.getWidget(InterfaceID.Chatbox.REPORTABUSE_TEXT1);
 		if (reportButton == null)
 		{
 			return;

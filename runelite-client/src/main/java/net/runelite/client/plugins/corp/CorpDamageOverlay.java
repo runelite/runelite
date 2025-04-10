@@ -32,9 +32,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -65,7 +65,7 @@ class CorpDamageOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget damageWidget = client.getWidget(InterfaceID.CORP_DAMAGE, 0);
+		Widget damageWidget = client.getWidget(InterfaceID.CORP_BEAST, 0);
 		if (damageWidget != null)
 		{
 			damageWidget.setHidden(true);
@@ -77,7 +77,7 @@ class CorpDamageOverlay extends OverlayPanel
 			return null;
 		}
 
-		int myDamage = client.getVarbitValue(Varbits.CORP_DAMAGE);
+		int myDamage = client.getVarbitValue(VarbitID.CORP_BEAST_DAMAGE);
 		int totalDamage = corpPlugin.getTotalDamage();
 		int players = corpPlugin.getPlayers().size();
 

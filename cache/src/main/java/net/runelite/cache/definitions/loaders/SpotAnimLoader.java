@@ -83,6 +83,10 @@ public class SpotAnimLoader
 		{
 			def.contrast = stream.readUnsignedByte();
 		}
+		else if (opcode == 9)
+		{
+			def.debugName = stream.readString();
+		}
 		else if (opcode == 40)
 		{
 			int var3 = stream.readUnsignedByte();

@@ -34,14 +34,13 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.NullObjectID.NULL_9092;
-import static net.runelite.api.ObjectID.CONVEYOR_BELT;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -59,7 +58,7 @@ import net.runelite.client.util.Text;
 )
 public class BlastFurnacePlugin extends Plugin
 {
-	private static final int BAR_DISPENSER = NULL_9092;
+	private static final int BAR_DISPENSER = ObjectID.BLAST_FURNACE_DISPENSER;
 	private static final String FOREMAN_PERMISSION_TEXT = "Okay, you can use the furnace for ten minutes. Remember, you only need half as much coal as with a regular furnace.";
 
 	@Getter(AccessLevel.PACKAGE)
@@ -124,7 +123,7 @@ public class BlastFurnacePlugin extends Plugin
 
 		switch (gameObject.getId())
 		{
-			case CONVEYOR_BELT:
+			case ObjectID.BLAST_FURNACE_CONVEYER_BELT_CLICKABLE:
 				conveyorBelt = gameObject;
 				break;
 
@@ -141,7 +140,7 @@ public class BlastFurnacePlugin extends Plugin
 
 		switch (gameObject.getId())
 		{
-			case CONVEYOR_BELT:
+			case ObjectID.BLAST_FURNACE_CONVEYER_BELT_CLICKABLE:
 				conveyorBelt = null;
 				break;
 
@@ -164,7 +163,7 @@ public class BlastFurnacePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget npcDialog = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
+		Widget npcDialog = client.getWidget(InterfaceID.ChatLeft.TEXT);
 		if (npcDialog == null)
 		{
 			return;

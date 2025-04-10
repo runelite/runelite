@@ -32,12 +32,11 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.game.ItemEquipmentStats;
@@ -101,9 +100,9 @@ public class ItemStatOverlay extends Overlay
 		final int group = WidgetUtil.componentToInterface(widget.getId());
 		int itemId = -1;
 
-		if (group == InterfaceID.EQUIPMENT ||
+		if (group == InterfaceID.WORNITEMS ||
 			// For bank worn equipment, check widget parent to differentiate from normal bank items
-			(group == InterfaceID.BANK && widget.getParentId() == ComponentID.BANK_INVENTORY_EQUIPMENT_ITEM_CONTAINER))
+			(group == InterfaceID.BANKMAIN && widget.getParentId() == InterfaceID.Bankside.WORNOPS))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -111,12 +110,12 @@ public class ItemStatOverlay extends Overlay
 				itemId = widgetItem.getItemId();
 			}
 		}
-		else if (widget.getId() == ComponentID.INVENTORY_CONTAINER
-			|| group == InterfaceID.EQUIPMENT_INVENTORY
-			|| widget.getId() == ComponentID.BANK_ITEM_CONTAINER && config.showStatsInBank()
-			|| group == InterfaceID.BANK_INVENTORY && config.showStatsInBank()
-			|| widget.getId() == ComponentID.GROUP_STORAGE_ITEM_CONTAINER && config.showStatsInBank()
-			|| group == InterfaceID.GROUP_STORAGE_INVENTORY && config.showStatsInBank())
+		else if (widget.getId() == InterfaceID.Inventory.ITEMS
+			|| group == InterfaceID.EQUIPMENT_SIDE
+			|| widget.getId() == InterfaceID.Bankmain.ITEMS && config.showStatsInBank()
+			|| group == InterfaceID.BANKSIDE && config.showStatsInBank()
+			|| widget.getId() == InterfaceID.SharedBank.ITEMS && config.showStatsInBank()
+			|| group == InterfaceID.SHARED_BANK_SIDE && config.showStatsInBank())
 		{
 			itemId = widget.getItemId();
 		}
@@ -286,7 +285,7 @@ public class ItemStatOverlay extends Overlay
 		ItemStats offHand = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
-		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer c = client.getItemContainer(InventoryID.WORN);
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
 			final int slot = currentEquipment.getSlot();

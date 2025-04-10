@@ -31,12 +31,12 @@ import java.awt.Shape;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
@@ -60,7 +60,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		int dispenserState = client.getVarbitValue(Varbits.BAR_DISPENSER);
+		int dispenserState = client.getVarbitValue(VarbitID.BLAST_FURNACE_BARS_HOT);
 
 		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
@@ -81,13 +81,13 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 
 	private boolean hasIceGloves()
 	{
-		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipmentContainer == null)
 		{
 			return false;
 		}
 
-		return (equipmentContainer.contains(ItemID.ICE_GLOVES) || equipmentContainer.contains(ItemID.SMITHS_GLOVES_I));
+		return (equipmentContainer.contains(ItemID.ICE_GLOVES) || equipmentContainer.contains(ItemID.SMITHING_UNIFORM_GLOVES_ICE));
 	}
 
 	private void renderObject(GameObject object, Graphics2D graphics, Color color)

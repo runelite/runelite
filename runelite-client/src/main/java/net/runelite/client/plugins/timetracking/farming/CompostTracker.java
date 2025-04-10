@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Tile;
 import net.runelite.api.annotations.Varbit;
@@ -50,7 +49,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -83,10 +83,10 @@ public class CompostTracker
 		"This is an? .+\\. The soil has been treated with (?<compostType>ultra|super|)compost\\..*");
 
 	private static final ImmutableSet<Integer> COMPOST_ITEMS = ImmutableSet.of(
-		ItemID.COMPOST,
-		ItemID.SUPERCOMPOST,
-		ItemID.ULTRACOMPOST,
-		ItemID.BOTTOMLESS_COMPOST_BUCKET_22997
+		ItemID.BUCKET_COMPOST,
+		ItemID.BUCKET_SUPERCOMPOST,
+		ItemID.BUCKET_ULTRACOMPOST,
+		ItemID.BOTTOMLESS_COMPOST_BUCKET_FILLED
 	);
 
 	private final Client client;
@@ -160,7 +160,7 @@ public class CompostTracker
 		{
 			case WIDGET_TARGET_ON_GAME_OBJECT:
 				Widget w = client.getSelectedWidget();
-				return w != null && (COMPOST_ITEMS.contains(w.getItemId()) || w.getId() == ComponentID.SPELLBOOK_FERTILE_SOIL);
+				return w != null && (COMPOST_ITEMS.contains(w.getItemId()) || w.getId() == InterfaceID.MagicSpellbook.FERTILE_SOIL);
 
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:

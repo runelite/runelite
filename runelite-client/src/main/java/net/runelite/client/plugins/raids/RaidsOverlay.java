@@ -34,7 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.FriendsChatManager;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.raids.solver.Room;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -202,7 +202,7 @@ class RaidsOverlay extends OverlayPanel
 		if (plugin.isInRaidChambers())
 		{
 			// If the raid has started
-			if (client.getVarbitValue(Varbits.RAID_STATE) > 0)
+			if (client.getVarbitValue(VarbitID.RAIDS_CLIENT_PROGRESS) > 0)
 			{
 				if (client.getPlane() == OLM_PLANE)
 				{

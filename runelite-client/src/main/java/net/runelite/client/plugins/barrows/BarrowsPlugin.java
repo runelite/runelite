@@ -32,7 +32,6 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
@@ -41,8 +40,8 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -70,9 +69,9 @@ import org.apache.commons.lang3.ArrayUtils;
 public class BarrowsPlugin extends Plugin
 {
 	private static final ImmutableList<Integer> POSSIBLE_SOLUTIONS = ImmutableList.of(
-		ComponentID.BARROWS_PUZZLE_ANSWER1,
-		ComponentID.BARROWS_PUZZLE_ANSWER2,
-		ComponentID.BARROWS_PUZZLE_ANSWER3
+		InterfaceID.BarrowsPuzzle.PIC_A,
+		InterfaceID.BarrowsPuzzle.PIC_B,
+		InterfaceID.BarrowsPuzzle.PIC_C
 	);
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
@@ -133,13 +132,13 @@ public class BarrowsPlugin extends Plugin
 		stopPrayerDrainTimer();
 
 		// Restore widgets
-		final Widget potential = client.getWidget(ComponentID.BARROWS_POTENTIAL);
+		final Widget potential = client.getWidget(InterfaceID.BarrowsOverlay.KILLCOUNT);
 		if (potential != null)
 		{
 			potential.setHidden(false);
 		}
 
-		final Widget barrowsBrothers = client.getWidget(ComponentID.BARROWS_BROTHERS);
+		final Widget barrowsBrothers = client.getWidget(InterfaceID.BarrowsOverlay.BROTHERS);
 		if (barrowsBrothers != null)
 		{
 			barrowsBrothers.setHidden(false);
@@ -177,7 +176,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (event.getGroupId() == InterfaceID.BARROWS_REWARD && config.showChestValue())
 		{
-			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
+			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.TRAIL_REWARDINV);
 			if (barrowsRewardContainer == null)
 			{
 				return;
@@ -206,7 +205,7 @@ public class BarrowsPlugin extends Plugin
 		}
 		else if (event.getGroupId() == InterfaceID.BARROWS_PUZZLE)
 		{
-			final int answer = client.getWidget(ComponentID.BARROWS_PUZZLE_SEQUENCE_1).getModelId() - 3;
+			final int answer = client.getWidget(InterfaceID.BarrowsPuzzle._1).getModelId() - 3;
 			puzzleAnswer = null;
 
 			for (int puzzleComponent : POSSIBLE_SOLUTIONS)
@@ -229,13 +228,13 @@ public class BarrowsPlugin extends Plugin
 		// hidden here instead of in the overlay, because if the overlay renders on the ABOVE_WIDGETS
 		// layer due to being moved outside of the snap corner, it will be running after the overlays
 		// had already been rendered.
-		final Widget barrowsBrothers = client.getWidget(ComponentID.BARROWS_BROTHERS);
+		final Widget barrowsBrothers = client.getWidget(InterfaceID.BarrowsOverlay.BROTHERS);
 		if (barrowsBrothers != null)
 		{
 			barrowsBrothers.setHidden(true);
 		}
 
-		final Widget potential = client.getWidget(ComponentID.BARROWS_POTENTIAL);
+		final Widget potential = client.getWidget(InterfaceID.BarrowsOverlay.KILLCOUNT);
 		if (potential != null)
 		{
 			potential.setHidden(true);

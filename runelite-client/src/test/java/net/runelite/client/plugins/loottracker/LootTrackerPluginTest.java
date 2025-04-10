@@ -39,11 +39,9 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
@@ -55,7 +53,9 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -90,19 +90,19 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class LootTrackerPluginTest
 {
 	private static final Map<Integer, String> HERB_IDS_TO_NAMES = ImmutableMap.<Integer, String>builder()
-		.put(ItemID.GRIMY_GUAM_LEAF, "Grimy guam leaf")
-		.put(ItemID.GRIMY_MARRENTILL, "Grimy marrentill")
-		.put(ItemID.GRIMY_TARROMIN, "Grimy tarromin")
-		.put(ItemID.GRIMY_HARRALANDER, "Grimy harralander")
-		.put(ItemID.GRIMY_RANARR_WEED, "Grimy ranarr weed")
-		.put(ItemID.GRIMY_IRIT_LEAF, "Grimy irit leaf")
-		.put(ItemID.GRIMY_AVANTOE, "Grimy avantoe")
-		.put(ItemID.GRIMY_KWUARM, "Grimy kwuarm")
-		.put(ItemID.GRIMY_SNAPDRAGON, "Grimy snapdragon")
-		.put(ItemID.GRIMY_CADANTINE, "Grimy cadantine")
-		.put(ItemID.GRIMY_LANTADYME, "Grimy lantadyme")
-		.put(ItemID.GRIMY_DWARF_WEED, "Grimy dwarf weed")
-		.put(ItemID.GRIMY_TORSTOL, "Grimy torstol")
+		.put(ItemID.UNIDENTIFIED_GUAM, "Grimy guam leaf")
+		.put(ItemID.UNIDENTIFIED_MARENTILL, "Grimy marrentill")
+		.put(ItemID.UNIDENTIFIED_TARROMIN, "Grimy tarromin")
+		.put(ItemID.UNIDENTIFIED_HARRALANDER, "Grimy harralander")
+		.put(ItemID.UNIDENTIFIED_RANARR, "Grimy ranarr weed")
+		.put(ItemID.UNIDENTIFIED_IRIT, "Grimy irit leaf")
+		.put(ItemID.UNIDENTIFIED_AVANTOE, "Grimy avantoe")
+		.put(ItemID.UNIDENTIFIED_KWUARM, "Grimy kwuarm")
+		.put(ItemID.UNIDENTIFIED_SNAPDRAGON, "Grimy snapdragon")
+		.put(ItemID.UNIDENTIFIED_CADANTINE, "Grimy cadantine")
+		.put(ItemID.UNIDENTIFIED_LANTADYME, "Grimy lantadyme")
+		.put(ItemID.UNIDENTIFIED_DWARF_WEED, "Grimy dwarf weed")
+		.put(ItemID.UNIDENTIFIED_TORSTOL, "Grimy torstol")
 		.build();
 
 	@Mock
@@ -168,7 +168,7 @@ public class LootTrackerPluginTest
 		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
 	}
 
-	private void sendInvChange(InventoryID inv, Collection<ItemStack> items)
+	private void sendInvChange(int inv, Collection<ItemStack> items)
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(items.stream()
@@ -176,7 +176,7 @@ public class LootTrackerPluginTest
 			.toArray(Item[]::new));
 		when(client.getItemContainer(inv)).thenReturn(itemContainer);
 
-		ItemContainerChanged event = new ItemContainerChanged(inv.getId(), itemContainer);
+		ItemContainerChanged event = new ItemContainerChanged(inv, itemContainer);
 		lootTrackerPlugin.onItemContainerChanged(event);
 	}
 
@@ -187,9 +187,9 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 1)
+			new ItemStack(ItemID.COINS, 1)
 		);
-		sendInvChange(InventoryID.INVENTORY, items);
+		sendInvChange(InventoryID.INV, items);
 
 		verify(lootTrackerPlugin).addLoot("Hero", -1, LootRecordType.PICKPOCKET, null, items);
 	}
@@ -201,9 +201,9 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 1)
+			new ItemStack(ItemID.COINS, 1)
 		);
-		sendInvChange(InventoryID.BARROWS_REWARD, items);
+		sendInvChange(InventoryID.TRAIL_REWARDINV, items);
 
 		verify(lootTrackerPlugin).addLoot("Clue Scroll (Master)", -1, LootRecordType.EVENT, null, items);
 	}
@@ -259,15 +259,15 @@ public class LootTrackerPluginTest
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.PURE_ESSENCE, 42)
+			new Item(ItemID.BLANKRUNE_HIGH, 42)
 		});
-		when(client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.RAIDS_REWARDS)).thenReturn(itemContainer);
 
 		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn(1_100_000_000);
-		when(itemManager.getItemPrice(ItemID.PURE_ESSENCE)).thenReturn(6);
+		when(itemManager.getItemPrice(ItemID.BLANKRUNE_HIGH)).thenReturn(6);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.CHAMBERS_OF_XERIC_REWARD);
+		widgetLoaded.setGroupId(InterfaceID.RAIDS_REWARDS);
 		lootTrackerPlugin.onWidgetLoaded(widgetLoaded);
 
 		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
@@ -292,7 +292,7 @@ public class LootTrackerPluginTest
 			new Item(ItemID.SCYTHE_OF_VITUR, 1),
 			new Item(ItemID.MAHOGANY_SEED, 10)
 		});
-		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.TOB_CHESTS)).thenReturn(itemContainer);
 
 		ItemComposition compScythe = mock(ItemComposition.class);
 		when(itemManager.getItemComposition(ItemID.SCYTHE_OF_VITUR)).thenReturn(compScythe);
@@ -308,7 +308,7 @@ public class LootTrackerPluginTest
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
+		widgetLoaded.setGroupId(InterfaceID.TOB_CHESTS);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
@@ -323,32 +323,32 @@ public class LootTrackerPluginTest
 	{
 		when(client.getBoostedSkillLevel(Skill.HUNTER)).thenReturn(42);
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.BIRD_NEST, 42)
+			new ItemStack(ItemID.BIRD_NEST_EGG_RED, 42)
 		);
 
 		// No bird nests
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 10 dead birds, 30 feathers and 1140 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		sendInvChange(InventoryID.INVENTORY, items);
+		sendInvChange(InventoryID.INV, items);
 		verify(lootTrackerPlugin).addLoot("Magic Bird House", -1, LootRecordType.EVENT, 42, items);
 
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(null);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(null);
 
 		// Single bird nest
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving a nest, 10 dead birds, 50 feathers and 700 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		sendInvChange(InventoryID.INVENTORY, items);
+		sendInvChange(InventoryID.INV, items);
 		verify(lootTrackerPlugin).addLoot("Teak Bird House", -1, LootRecordType.EVENT, 42, items);
 
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(null);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(null);
 
 		// Multiple nests
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 2 nests, 10 dead birds, 40 feathers and 280 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		sendInvChange(InventoryID.INVENTORY, items);
+		sendInvChange(InventoryID.INV, items);
 		verify(lootTrackerPlugin).addLoot("Regular Bird House", -1, LootRecordType.EVENT, 42, items);
 	}
 
@@ -365,9 +365,9 @@ public class LootTrackerPluginTest
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.GRUBBY_KEY, 1)
+			new Item(ItemID.HOSDUN_GRUBBY_KEY, 1)
 		});
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(itemContainer);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You unlock the chest with your key.", "", 0);
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
@@ -375,7 +375,7 @@ public class LootTrackerPluginTest
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.TWISTED_BOW, 1)
 		});
-		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have opened the Grubby Chest 2 times.", "", 0);
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
@@ -384,7 +384,7 @@ public class LootTrackerPluginTest
 			new Item(ItemID.TWISTED_BOW, 1),
 			new Item(ItemID.SHARK, 42)
 		});
-		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
 			new ItemStack(ItemID.SHARK, 42)
@@ -403,20 +403,20 @@ public class LootTrackerPluginTest
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.BUCKET_WATER, 1),
 			new Item(ItemID.ROPE, 1)
 		});
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(itemContainer);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 30 x Raw tuna", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.BUCKET_WATER, 1),
 			new Item(ItemID.ROPE, 1),
 			new Item(ItemID.RAW_TUNA, 30)
 		});
-		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.RAW_TUNA, 30)
@@ -426,15 +426,15 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.BUCKET_WATER, 1),
 			new Item(ItemID.ROPE, 1),
 			new Item(ItemID.RAW_TUNA, 30),
-			new Item(ItemID.TOME_OF_WATER_EMPTY, 1)
+			new Item(ItemID.TOME_OF_WATER_UNCHARGED, 1)
 		});
-		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
-			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1)
+			new ItemStack(ItemID.TOME_OF_WATER_UNCHARGED, 1)
 		));
 	}
 
@@ -453,13 +453,13 @@ public class LootTrackerPluginTest
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		});
-		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.TOB_CHESTS)).thenReturn(itemContainer);
 
 		when(client.isInInstancedRegion()).thenReturn(true);
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
+		widgetLoaded.setGroupId(InterfaceID.TOB_CHESTS);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -482,13 +482,13 @@ public class LootTrackerPluginTest
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		});
-		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.TOB_CHESTS)).thenReturn(itemContainer);
 
 		when(client.isInInstancedRegion()).thenReturn(false);
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
+		widgetLoaded.setGroupId(InterfaceID.TOB_CHESTS);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -511,13 +511,13 @@ public class LootTrackerPluginTest
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		});
-		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.TOB_CHESTS)).thenReturn(itemContainer);
 
 		when(client.isInInstancedRegion()).thenReturn(false);
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
+		widgetLoaded.setGroupId(InterfaceID.TOB_CHESTS);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -549,7 +549,7 @@ public class LootTrackerPluginTest
 		List<ItemStack> items = Collections.singletonList(
 			new ItemStack(ItemID.SHARK, 114)
 		);
-		sendInvChange(InventoryID.INVENTORY, items);
+		sendInvChange(InventoryID.INV, items);
 
 		verify(lootTrackerPlugin).addLoot("Barbarian Assault high gamble", -1, LootRecordType.EVENT, null, items);
 	}
@@ -567,40 +567,40 @@ public class LootTrackerPluginTest
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.KNIFE, 1),
-			new Item(ItemID.BRUMA_TORCH, 1),
+			new Item(ItemID.WINT_TORCH, 1),
 			new Item(ItemID.HAMMER, 1)
 		});
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(itemContainer);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=ef1020>You found some loot: 17 x Burnt page", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BURNT_PAGE, 17),
+			new Item(ItemID.WINT_BURNT_PAGE, 17),
 			new Item(ItemID.KNIFE, 1),
-			new Item(ItemID.BRUMA_TORCH, 1),
+			new Item(ItemID.WINT_TORCH, 1),
 			new Item(ItemID.HAMMER, 1)
 		});
-		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
-			new ItemStack(ItemID.BURNT_PAGE, 17)
+			new ItemStack(ItemID.WINT_BURNT_PAGE, 17)
 		));
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 4,694 x Coins", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.BURNT_PAGE, 17),
-			new Item(ItemID.COINS_995, 4694),
+			new Item(ItemID.WINT_BURNT_PAGE, 17),
+			new Item(ItemID.COINS, 4694),
 			new Item(ItemID.KNIFE, 1),
-			new Item(ItemID.BRUMA_TORCH, 1),
+			new Item(ItemID.WINT_TORCH, 1),
 			new Item(ItemID.HAMMER, 1)
 		});
-		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 4694)
+			new ItemStack(ItemID.COINS, 4694)
 		));
 	}
 }

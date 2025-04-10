@@ -31,8 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Setter;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 
@@ -104,28 +103,28 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected void showOnInventory()
 	{
 		showOnInterfaces(
-			InterfaceID.DEPOSIT_BOX,
-			InterfaceID.BANK_INVENTORY,
-			InterfaceID.SHOP_INVENTORY,
-			InterfaceID.GRAND_EXCHANGE_INVENTORY,
-			InterfaceID.GUIDE_PRICES_INVENTORY,
-			InterfaceID.EQUIPMENT_INVENTORY,
+			InterfaceID.BANK_DEPOSITBOX,
+			InterfaceID.BANKSIDE,
+			InterfaceID.SHOPSIDE,
+			InterfaceID.GE_OFFERS_SIDE,
+			InterfaceID.GE_PRICECHECKER_SIDE,
+			InterfaceID.EQUIPMENT_SIDE,
 			InterfaceID.INVENTORY,
-			InterfaceID.SEED_VAULT_INVENTORY,
-			InterfaceID.TRADE,
-			InterfaceID.TRADE_INVENTORY,
-			InterfaceID.POH_TREASURE_CHEST_INV);
+			InterfaceID.SEED_VAULT_DEPOSIT,
+			InterfaceID.TRADEMAIN,
+			InterfaceID.TRADESIDE,
+			InterfaceID.POH_COSTUMES_SIDE);
 	}
 
 	protected void showOnBank()
 	{
-		drawAfterLayer(ComponentID.BANK_ITEM_CONTAINER);
-		drawAfterLayer(ComponentID.GROUP_STORAGE_ITEM_CONTAINER);
+		drawAfterLayer(InterfaceID.Bankmain.ITEMS);
+		drawAfterLayer(InterfaceID.SharedBank.ITEMS);
 	}
 
 	protected void showOnEquipment()
 	{
-		showOnInterfaces(InterfaceID.EQUIPMENT);
+		showOnInterfaces(InterfaceID.WORNITEMS);
 	}
 
 	protected void showOnInterfaces(int... ids)

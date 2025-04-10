@@ -61,8 +61,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -70,8 +68,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
@@ -736,7 +735,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			advLogLoaded = false;
 
-			Widget adventureLog = client.getWidget(ComponentID.ADVENTURE_LOG_CONTAINER);
+			Widget adventureLog = client.getWidget(InterfaceID.Menu.LJ_LAYER2);
 
 			if (adventureLog != null)
 			{
@@ -752,9 +751,9 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			bossLogLoaded = false;
 
-			Widget title = client.getWidget(ComponentID.KILL_LOG_TITLE);
-			Widget bossMonster = client.getWidget(ComponentID.KILL_LOG_MONSTER);
-			Widget bossKills = client.getWidget(ComponentID.KILL_LOG_KILLS);
+			Widget title = client.getWidget(InterfaceID.KillLog.INTERFACE_TITLE);
+			Widget bossMonster = client.getWidget(InterfaceID.KillLog.NAME);
+			Widget bossKills = client.getWidget(InterfaceID.KillLog.KILL);
 
 			if (title == null || bossMonster == null || bossKills == null
 				|| !"Boss Kill Log".equals(title.getText()))
@@ -786,7 +785,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (client.getLocalPlayer().getName().equals(pohOwner))
 			{
-				Widget parent = client.getWidget(ComponentID.ACHIEVEMENT_DIARY_SCROLL_TEXT);
+				Widget parent = client.getWidget(InterfaceID.Journalscroll.TEXTLAYER);
 				// Each line is a separate static child
 				Widget[] children = parent.getStaticChildren();
 				String[] text = Arrays.stream(children)
@@ -851,14 +850,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		if (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName()))
 		{
-			Widget collectionLogEntryHeader = client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER);
+			Widget collectionLogEntryHeader = client.getWidget(InterfaceID.Collection.HEADER_TEXT);
 			if (collectionLogEntryHeader != null && collectionLogEntryHeader.getChildren() != null)
 			{
 				Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
 				// Make sure that the player is looking in the All Pets tab of the collection log
 				if (entryTitle.getText().equals("All Pets"))
 				{
-					Widget collectionLogEntryItems = client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS);
+					Widget collectionLogEntryItems = client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS);
 					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 					{
 						List<Integer> petList = new ArrayList<>();
@@ -883,13 +882,13 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		switch (widget.getGroupId())
 		{
-			case InterfaceID.ADVENTURE_LOG:
+			case InterfaceID.MENU:
 				advLogLoaded = true;
 				break;
 			case InterfaceID.KILL_LOG:
 				bossLogLoaded = true;
 				break;
-			case InterfaceID.ACHIEVEMENT_DIARY_SCROLL:
+			case InterfaceID.JOURNALSCROLL:
 				scrollInterfaceLoaded = true;
 				break;
 		}
@@ -1143,7 +1142,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean questPointsSubmit(ChatInput chatInput, String value)
 	{
-		final int qp = client.getVarpValue(VarPlayer.QUEST_POINTS);
+		final int qp = client.getVarpValue(VarPlayerID.QP);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1295,7 +1294,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean gambleCountSubmit(ChatInput chatInput, String value)
 	{
-		final int gc = client.getVarbitValue(Varbits.BA_GC);
+		final int gc = client.getVarbitValue(VarbitID.BARBASSAULT_GAMBLECOUNT);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1464,12 +1463,12 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean caSubmit(ChatInput chatInput, String value)
 	{
-		final int tasks = client.getVarbitValue(Varbits.COMBAT_TASK_EASY) +
-			client.getVarbitValue(Varbits.COMBAT_TASK_MEDIUM) +
-			client.getVarbitValue(Varbits.COMBAT_TASK_HARD) +
-			client.getVarbitValue(Varbits.COMBAT_TASK_ELITE) +
-			client.getVarbitValue(Varbits.COMBAT_TASK_MASTER) +
-			client.getVarbitValue(Varbits.COMBAT_TASK_GRANDMASTER);
+		final int tasks = client.getVarbitValue(VarbitID.CA_TOTAL_TASKS_COMPLETED_EASY) +
+			client.getVarbitValue(VarbitID.CA_TOTAL_TASKS_COMPLETED_MEDIUM) +
+			client.getVarbitValue(VarbitID.CA_TOTAL_TASKS_COMPLETED_HARD) +
+			client.getVarbitValue(VarbitID.CA_TOTAL_TASKS_COMPLETED_ELITE) +
+			client.getVarbitValue(VarbitID.CA_TOTAL_TASKS_COMPLETED_MASTER) +
+			client.getVarbitValue(VarbitID.CA_TOTAL_TASKS_COMPLETED_GRANDMASTER);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1536,7 +1535,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean clogSubmit(ChatInput chatInput, String value)
 	{
-		final int clog = client.getVarpValue(VarPlayer.CLOG_LOGGED);
+		final int clog = client.getVarpValue(VarPlayerID.COLLECTION_COUNT);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -2059,7 +2058,7 @@ public class ChatCommandsPlugin extends Plugin
 			return endpoint;
 		}
 
-		return toEndPoint(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
+		return toEndPoint(client.getVarbitValue(VarbitID.IRONMAN));
 	}
 
 	/**
@@ -2869,23 +2868,23 @@ public class ChatCommandsPlugin extends Plugin
 
 	private int tobTeamSize()
 	{
-		return Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1), 1) +
-			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB2), 1) +
-			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB3), 1) +
-			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB4), 1) +
-			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB5), 1);
+		return Math.min(client.getVarbitValue(VarbitID.TOB_CLIENT_P0), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOB_CLIENT_P1), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOB_CLIENT_P2), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOB_CLIENT_P3), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOB_CLIENT_P4), 1);
 	}
 
 	private int toaTeamSize()
 	{
-		return Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
-			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
+		return Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P0), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P1), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P2), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P3), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P4), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P5), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P6), 1) +
+			Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P7), 1);
 	}
 
 	private int findPet(String name)

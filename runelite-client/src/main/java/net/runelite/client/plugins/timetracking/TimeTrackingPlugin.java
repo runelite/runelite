@@ -40,7 +40,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetClosed;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.client.config.ConfigManager;
@@ -220,7 +220,7 @@ public class TimeTrackingPlugin extends Plugin
 		}
 
 		// bird house data is only sent after exiting the post-login screen
-		Widget motd = client.getWidget(ComponentID.LOGIN_CLICK_TO_PLAY_SCREEN_MESSAGE_OF_THE_DAY);
+		Widget motd = client.getWidget(InterfaceID.WelcomeScreen.MOTW);
 		if (motd != null && !motd.isHidden())
 		{
 			lastTickPostLogin = true;

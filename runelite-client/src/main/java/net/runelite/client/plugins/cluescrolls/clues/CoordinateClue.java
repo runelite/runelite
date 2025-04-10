@@ -35,11 +35,11 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ANCIENT_WIZARDS;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ARMADYLEAN_GUARD;
@@ -616,7 +616,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.location(new WorldPoint(3811, 3060, 0))
 			.directions("Small island north-east of Mos Le'Harmless.")
 			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
-			.lightSourceVarbitId(Varbits.FIRE_PIT_MOS_LE_HARMLESS)
+			.lightSourceVarbitId(VarbitID.MY2ARM_FIRE_HORRORS)
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_ELITE_12111)
@@ -858,7 +858,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.location(new WorldPoint(3830, 3060, 0))
 			.directions("Small island located north-east of Mos Le'Harmless.")
 			.enemy(BRASSICAN_MAGE)
-			.lightSourceVarbitId(Varbits.FIRE_PIT_MOS_LE_HARMLESS)
+			.lightSourceVarbitId(VarbitID.MY2ARM_FIRE_HORRORS)
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.CLUE_SCROLL_MASTER)
@@ -1132,18 +1132,18 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 
 	private static String getResourceAreaCost(ClueScrollPlugin plugin)
 	{
-		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE) == 1)
+		if (plugin.getClient().getVarbitValue(VarbitID.WILDERNESS_DIARY_ELITE_COMPLETE) == 1)
 		{
 			return "";
 		}
 
 		int resourceAreaCost = DEFAULT_RESOURCE_AREA_COST;
 
-		if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_HARD) == 1)
+		if (plugin.getClient().getVarbitValue(VarbitID.WILDERNESS_DIARY_HARD_COMPLETE) == 1)
 		{
 			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.5);
 		}
-		else if (plugin.getClient().getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM) == 1)
+		else if (plugin.getClient().getVarbitValue(VarbitID.WILDERNESS_DIARY_MEDIUM_COMPLETE) == 1)
 		{
 			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.8);
 		}
@@ -1153,7 +1153,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 
 	private static String getHardwoodGroveCost(ClueScrollPlugin plugin)
 	{
-		if (plugin.getClient().getVarbitValue(Varbits.DIARY_KARAMJA_ELITE) == 1)
+		if (plugin.getClient().getVarbitValue(VarbitID.KARAMJA_DIARY_ELITE_COMPLETE) == 1)
 		{
 			return "";
 		}
