@@ -38,6 +38,7 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -52,6 +53,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 {
 	static final List<CipherClue> CLUES = ImmutableList.of(
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER004)
 			.text("BMJ UIF LFCBC TFMMFS")
 			.npc(NpcID.FEUD_KEBABMAN_MULTI) // base npc for Ali or Isma'il the Kebab seller
 			.location(new WorldPoint(3354, 2974, 0))
@@ -60,6 +62,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("399")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER006)
 			.text("GUHCHO")
 			.npc(NpcID.PRIESTPERILTRAPPEDMONK_VIS)
 			.location(new WorldPoint(3440, 9895, 0))
@@ -68,6 +71,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("7")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER005)
 			.text("HQNM LZM STSNQ")
 			.npc(NpcID.IRONMAN_TUTOR_1)
 			.location(new WorldPoint(3227, 3227, 0))
@@ -76,6 +80,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("666")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER004)
 			.text("ZHLUG ROG PDQ")
 			.npc(NpcID.KALPHITE_OLDMAN)
 			.location(new WorldPoint(3224, 3112, 0))
@@ -84,6 +89,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("150")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER003)
 			.text("ECRVCKP MJCNGF")
 			.npc(NpcID.PISCARILIUS_CAPTAIN_KHALED_DEFAULT)
 			.location(new WorldPoint(1845, 3754, 0))
@@ -92,6 +98,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("5")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER001)
 			.text("OVEXON")
 			.npc(NpcID.ROVING_FEMALE_WOODELF_TEMP_1)
 			.locationProvider((plugin) -> isElunedInPrifddinas(plugin) ? new WorldPoint(3229, 6062, 0) : new WorldPoint(2289, 3144, 0))
@@ -100,6 +107,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("53,000")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER005)
 			.text("VTYR APCNTGLW")
 			.npc(NpcID.KING_PERCIVAL)
 			.location(new WorldPoint(2634, 4682, 1))
@@ -108,6 +116,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("5")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER002)
 			.text("UZZU MUJHRKYYKJ")
 			.npc(NpcID.BRUT_OTTO)
 			.location(new WorldPoint(2501, 3487, 0))
@@ -116,6 +125,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("3")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER002)
 			.text("XJABSE USBJCPSO")
 			.npc(NpcID.TRAIBORN)
 			.location(new WorldPoint(3112, 3162, 0))
@@ -124,6 +134,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("3150")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER006)
 			.text("HCKTA IQFHCVJGT")
 			.npc(NpcID.FAIRY_GODFATHER2)
 			.location(new WorldPoint(2446, 4428, 0))
@@ -132,18 +143,21 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("64")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER003)
 			.text("ZSBKDO ZODO")
 			.npc(NpcID.DEAL_PETE)
 			.location(new WorldPoint(3680, 3537, 0))
 			.area("Dock northeast of the Ectofuntus")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER007)
 			.text("GBJSZ RVFFO")
 			.npc(NpcID.FAIRY_QUEEN)
 			.location(new WorldPoint(2347, 4435, 0))
 			.area("Fairy Resistance Hideout")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER001)
 			.text("QSPGFTTPS HSBDLMFCPOF")
 			.npc(NpcID.ARCEUUS_LIBRARY_CUSTOMER_3)
 			.location(new WorldPoint(1625, 3802, 0))
@@ -152,23 +166,27 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.answer("9")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER009)
 			.text("IWPPLQTP")
 			.npc(NpcID.GUNNJORN)
 			.location(new WorldPoint(2541, 3548, 0))
 			.area("Barbarian Outpost Agility course")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_CIPHER008)
 			.text("BSOPME MZETQPS")
 			.npc(NpcID.SWAN_ARNOLD)
 			.location(new WorldPoint(2329, 3689, 0))
 			.area("Piscatoris Fishing Colony general store/bank")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.CLUEQUEST_CLUE1)
 			.text("ESBZOPS QJH QFO")
 			.location(new WorldPoint(3077, 3260, 0))
 			.area("Inside of Martin the Master Gardener's pig pen in Draynor Village.")
 			.build(),
 		CipherClue.builder()
+			.itemId(ItemID.TRAIL_HARD_CIPHER_VM01)
 			.text("BXJA UNJMNA YRCAR")
 			.npc(NpcID.HUNTER_GUILD_PITRI)
 			.location(new WorldPoint(1559, 3045, 0))
@@ -176,6 +194,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.build()
 	);
 
+	private final int itemId;
 	private final String text;
 	private final int npc;
 	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
@@ -187,6 +206,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 	@Builder
 	private CipherClue(
+		@Nullable Integer itemId,
 		String text,
 		Integer npc,
 		@Nullable WorldPoint location,
@@ -197,6 +217,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		@Nullable String answer
 	)
 	{
+		this.itemId = itemId != null ? itemId : -1;
 		this.text = "The cipher reveals who to speak to next: " + text;
 		this.npc = npc != null ? npc : -1;
 		this.locationProvider = locationProvider != null ? locationProvider : (plugin) -> location;
@@ -265,6 +286,19 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 				OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 			}
 		}
+	}
+
+	public static CipherClue forItemId(int itemId)
+	{
+		for (CipherClue clue : CLUES)
+		{
+			if (clue.itemId == itemId)
+			{
+				return clue;
+			}
+		}
+
+		return null;
 	}
 
 	public static CipherClue forText(String text)
