@@ -1000,4 +1000,16 @@ public final class Varbits
 	public static final int JARVIS_GRAVESTONE = 6008;
 
 	public static final int IN_LMS = 5314;
+
+	/**
+	 * Bit field used to toggle functions on the world map. A set bit indicates a specific function being toggled off.
+	 * <p>
+	 * Bit position 0 = 'You are here' widget.<br>
+	 * Bit position 1 = Intra-map links.<br>
+	 * Bit position 2 = Map labels.<br>
+	 * Bit position 3 = Icon tooltips.<br>
+	 * Bit position 4 = Effects.
+	 * </p>
+	 */
+	public static final int WORLDMAP_TOGGLES = 5640;
 }
