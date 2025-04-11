@@ -88,7 +88,7 @@ public interface GrandExchangeConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		position = 5,
 		keyName = "enableGeLimits",
