@@ -32,18 +32,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 import net.runelite.client.plugins.crowdsourcing.skilling.SkillingEndReason;
@@ -55,101 +55,101 @@ public class CrowdsourcingWoodcutting
 	private static final String INVENTORY_FULL_MESSAGE = "Your inventory is too full to hold any more logs.";
 	private static final String NEST_MESSAGE = "A bird's nest falls out of the tree";
 	private static final Set<Integer> TREE_OBJECTS = new ImmutableSet.Builder<Integer>().
-		add(ObjectID.OAK_TREE_8462 ).
-		add(ObjectID.OAK_TREE_10820).
-		add(ObjectID.OAK_TREE_8467).
-		add(ObjectID.OAK_TREE_9734).
+		add(ObjectID.OAK_TREE_SEEDLING).
+		add(ObjectID.OAKTREE).
+		add(ObjectID.OAK_TREE_FULLYGROWN_2).
+		add(ObjectID.NEWBIEOAKTREE).
 
-		add(ObjectID.YEW_TREE_10822).
-		add(ObjectID.YEW_TREE_8513).
+		add(ObjectID.YEWTREE).
+		add(ObjectID.YEW_TREE_FULLYGROWN_2).
 
 		add(ObjectID.TREE).
-		add(ObjectID.TREE_1277).
-		add(ObjectID.TREE_1278).
-		add(ObjectID.TREE_1279).
-		add(ObjectID.TREE_1280).
-		add(ObjectID.DEAD_TREE).
-		add(ObjectID.DEAD_TREE_1283).
-		add(ObjectID.DEAD_TREE_1284).
-		add(ObjectID.DEAD_TREE_1285).
-		add(ObjectID.DEAD_TREE_1286).
-		add(ObjectID.DEAD_TREE_1289).
-		add(ObjectID.DEAD_TREE_1290).
-		add(ObjectID.DEAD_TREE_1291).
-		add(ObjectID.EVERGREEN_TREE).
-		add(ObjectID.EVERGREEN_TREE_1319).
-		add(ObjectID.TREE_1330).
-		add(ObjectID.TREE_1331).
-		add(ObjectID.TREE_1332).
-		add(ObjectID.DEAD_TREE_1365).
-		add(ObjectID.DEAD_TREE_1383).
-		add(ObjectID.DEAD_TREE_1384).
-		add(ObjectID.EVERGREEN_TREE_2091).
-		add(ObjectID.EVERGREEN_TREE_2092).
-		add(ObjectID.TREE_2409).
-		add(ObjectID.TREE_3879).
-		add(ObjectID.TREE_3881).
-		add(ObjectID.TREE_3882).
-		add(ObjectID.TREE_3883).
-		add(ObjectID.DEAD_TREE_5902).
-		add(ObjectID.DEAD_TREE_5903).
-		add(ObjectID.DEAD_TREE_5904).
-		add(ObjectID.TREE_9730).
-		add(ObjectID.TREE_9731).
-		add(ObjectID.TREE_9732).
-		add(ObjectID.TREE_9733).
-		add(ObjectID.TREE_10041).
-		add(ObjectID.TREE_14308).
-		add(ObjectID.TREE_14309).
-		add(ObjectID.TREE_16264).
-		add(ObjectID.TREE_16265).
-		add(ObjectID.EVERGREEN_TREE_27060).
-		add(ObjectID.BURNT_TREE).
-		add(ObjectID.BURNT_TREE_30854).
+		add(ObjectID.LIGHTTREE).
+		add(ObjectID.TREE2).
+		add(ObjectID.TREE3).
+		add(ObjectID.LIGHTTREE2).
+		add(ObjectID.DEADTREE1).
+		add(ObjectID.DEADTREE1_LARGE).
+		add(ObjectID.DEADTREE4).
+		add(ObjectID.LIGHTDEADTREE1).
+		add(ObjectID.DEADTREE2).
+		add(ObjectID.DEADTREE2_DARK).
+		add(ObjectID.DEADTREE3).
+		add(ObjectID.DEADTREE2_SNOWY).
+		add(ObjectID.EVERGREEN_VSNOWY_LARGE).
+		add(ObjectID.EVERGREEN_SNOWY_LARGE).
+		add(ObjectID.SNOWTREE1).
+		add(ObjectID.SNOWTREE2).
+		add(ObjectID.SNOWTREE3).
+		add(ObjectID.DEADTREE2_SWAMP).
+		add(ObjectID.DEADTREE6).
+		add(ObjectID.DEADTREE_BURNT).
+		add(ObjectID.EVERGREEN).
+		add(ObjectID.EVERGREEN_LARGE).
+		add(ObjectID.LEPRECHAUNTREE).
+		add(ObjectID.REGICIDE_TREE_LARGE).
+		add(ObjectID.REGICIDE_TREE_LARGE2).
+		add(ObjectID.REGICIDE_TREE_LARGE3).
+		add(ObjectID.REGICIDE_TREE_SMALL).
+		add(ObjectID.MDAUGHTER_IMPASSABLE_TREE).
+		add(ObjectID.MDAUGHTER_IMPASSABLE_TREE2).
+		add(ObjectID.MDAUGHTER_PASSABLE_TREE).
+		add(ObjectID.NEWBIETREE).
+		add(ObjectID.NEWBIETREE2).
+		add(ObjectID.NEWBIEDEADTREE).
+		add(ObjectID.NEWBIEDEADTREE2).
+		add(ObjectID.WOM_TREE).
+		add(ObjectID.PEST_TREE).
+		add(ObjectID.PEST_TREE2).
+		add(ObjectID.FAIRY2_PINE_TREE_MEDIUM).
+		add(ObjectID.FAIRY2_PINE_TREE_LARGE).
+		add(ObjectID.MAX_EVERGREEN).
+		add(ObjectID.FOSSIL_DEADTREE_LARGE1).
+		add(ObjectID.FOSSIL_DEADTREE_SMALL1).
 
 		add(ObjectID.MATURE_JUNIPER_TREE).
 
-		add(ObjectID.WILLOW_TREE_10819).
-		add(ObjectID.WILLOW_TREE_10829).
-		add(ObjectID.WILLOW_TREE_10831).
-		add(ObjectID.WILLOW_TREE_10833).
-		add(ObjectID.WILLOW_TREE_8488).
-		add(ObjectID.SCRAPEY_TREE).
-		add(ObjectID.JUNGLE_TREE_15951).
-		add(ObjectID.JUNGLE_TREE_15954).
-		add(ObjectID.JUNGLE_TREE_15948).
-		add(ObjectID.MAPLE_TREE_10832).
-		add(ObjectID.MAPLE_TREE_4674).
-		add(ObjectID.MAPLE_TREE_8444).
-		add(ObjectID.MAHOGANY_TREE_36688).
-		add(ObjectID.TEAK_TREE_15062).
-		add(ObjectID.TEAK_TREE_15062).
-		add(ObjectID.MAGIC_TREE_10834).
-		add(ObjectID.MAGIC_TREE_8409).
-		add(ObjectID.HOLLOW_TREE_10821).
-		add(ObjectID.HOLLOW_TREE_10830).
+		add(ObjectID.WILLOWTREE).
+		add(ObjectID.WILLOW_TREE2).
+		add(ObjectID.WILLOW_TREE3).
+		add(ObjectID.WILLOW_TREE4).
+		add(ObjectID.WILLOW_TREE_FULLYGROWN_2).
+		add(ObjectID.BREW_SCRAPEY_TREE).
+		add(ObjectID.BREW_JUNGLE_TREE_2).
+		add(ObjectID.BREW_JUNGLE_TREE_3).
+		add(ObjectID.BREW_JUNGLE_TREE_1).
+		add(ObjectID.MAPLETREE).
+		add(ObjectID.MISC_DUMMY_MAPLETREE).
+		add(ObjectID.MAPLE_TREE_FULLYGROWN_2).
+		add(ObjectID.PRIF_MAHOGANYTREE).
+		add(ObjectID.MISC_DUMMY_TEAKTREE).
+		add(ObjectID.MISC_DUMMY_TEAKTREE).
+		add(ObjectID.MAGICTREE).
+		add(ObjectID.MAGIC_TREE_FULLYGROWN_2).
+		add(ObjectID.HOLLOW_TREE).
+		add(ObjectID.HOLLOW_TREE_BIG).
 		add(ObjectID.ACHEY_TREE).
-		add(ObjectID.REDWOOD_TREE).
-		add(ObjectID.REDWOOD_TREE_29670).
-		add(ObjectID.BRUMA_ROOTS).
-		add(ObjectID.ARCTIC_PINE_TREE).
-		add(ObjectID.SULLIUSCEP).
+		add(ObjectID.REDWOODTREE_L).
+		add(ObjectID.REDWOODTREE_R).
+		add(ObjectID.WINT_ROOTS).
+		add(ObjectID.ARCTIC_PINE).
+		add(ObjectID.FOSSIL_CEP_GROWN).
 		build();
 
 	private static final Map<Integer, Integer> AXE_ANIMS = new ImmutableMap.Builder<Integer, Integer>().
-		put(AnimationID.WOODCUTTING_BRONZE, ItemID.BRONZE_AXE).
-		put(AnimationID.WOODCUTTING_IRON, ItemID.IRON_AXE).
-		put(AnimationID.WOODCUTTING_STEEL, ItemID.STEEL_AXE).
-		put(AnimationID.WOODCUTTING_BLACK, ItemID.BLACK_AXE).
-		put(AnimationID.WOODCUTTING_MITHRIL, ItemID.MITHRIL_AXE).
-		put(AnimationID.WOODCUTTING_ADAMANT, ItemID.ADAMANT_AXE).
-		put(AnimationID.WOODCUTTING_RUNE, ItemID.RUNE_AXE).
-		put(AnimationID.WOODCUTTING_DRAGON, ItemID.DRAGON_AXE).
-		put(AnimationID.WOODCUTTING_DRAGON_OR, ItemID.DRAGON_AXE_OR).
-		put(AnimationID.WOODCUTTING_INFERNAL, ItemID.INFERNAL_AXE).
-		put(AnimationID.WOODCUTTING_3A_AXE, ItemID._3RD_AGE_AXE).
-		put(AnimationID.WOODCUTTING_CRYSTAL, ItemID.CRYSTAL_AXE).
-		put(AnimationID.WOODCUTTING_TRAILBLAZER, ItemID.INFERNAL_AXE_OR).build();
+		put(AnimationID.HUMAN_WOODCUTTING_BRONZE_AXE, ItemID.BRONZE_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_IRON_AXE, ItemID.IRON_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_STEEL_AXE, ItemID.STEEL_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_BLACK_AXE, ItemID.BLACK_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_MITHRIL_AXE, ItemID.MITHRIL_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_ADAMANT_AXE, ItemID.ADAMANT_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_RUNE_AXE, ItemID.RUNE_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_DRAGON_AXE, ItemID.DRAGON_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_TRAILBLAZER_AXE_NO_INFERNAL, ItemID.TRAILBLAZER_AXE_NO_INFERNAL).
+		put(AnimationID.HUMAN_WOODCUTTING_INFERNAL_AXE, ItemID.INFERNAL_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_3A_AXE, ItemID._3A_AXE).
+		put(AnimationID.HUMAN_WOODCUTTING_CRYSTAL_AXE, ItemID.CRYSTAL_AXE).
+		put(AnimationID.HUMAN_OPENHEAVYCHEST, ItemID.TRAILBLAZER_AXE).build();
 
 	private static final Set<String> SUCCESS_MESSAGES = new ImmutableSet.Builder<String>().
 		add("You get some logs.").

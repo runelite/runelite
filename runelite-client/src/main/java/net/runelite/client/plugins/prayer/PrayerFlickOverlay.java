@@ -29,7 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -62,7 +62,7 @@ class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-		Widget xpOrb = client.getWidget(ComponentID.MINIMAP_QUICK_PRAYER_ORB);
+		Widget xpOrb = client.getWidget(InterfaceID.Orbs.PRAYERBUTTON);
 		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;

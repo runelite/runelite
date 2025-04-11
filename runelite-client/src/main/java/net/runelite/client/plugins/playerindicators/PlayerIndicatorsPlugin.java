@@ -49,7 +49,7 @@ import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -274,7 +274,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			clientThread.invokeLater(() ->
 			{
-				Widget tradeTitle = client.getWidget(ComponentID.TRADE_HEADER);
+				Widget tradeTitle = client.getWidget(InterfaceID.Trademain.TITLE);
 				String header = tradeTitle.getText();
 				String playerName = header.substring(TRADING_WITH_TEXT.length());
 

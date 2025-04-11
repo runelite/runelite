@@ -52,14 +52,14 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -496,8 +496,8 @@ public class PartyPlugin extends Plugin
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
-		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
-		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
+		final int specEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY) / 10;
+		final boolean vengActive = client.getVarbitValue(VarbitID.VENGEANCE_REBOUND) == 1;
 		final Color memberColor = getLocalMemberColor();
 
 		final Player localPlayer = client.getLocalPlayer();

@@ -30,12 +30,12 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemEquipmentStats;
@@ -110,7 +110,7 @@ public class PrayerPluginTest
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("1:19:12", prayerPlugin.getEstimatedTimeRemaining(false));
 	}
@@ -124,7 +124,7 @@ public class PrayerPluginTest
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("29:42", prayerPlugin.getEstimatedTimeRemaining(false));
 	}
@@ -138,7 +138,7 @@ public class PrayerPluginTest
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("29m", prayerPlugin.getEstimatedTimeRemaining(true));
 	}
@@ -153,7 +153,7 @@ public class PrayerPluginTest
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("79m", prayerPlugin.getEstimatedTimeRemaining(true));
 	}

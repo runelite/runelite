@@ -58,7 +58,7 @@ public interface ItemComposition extends ParamHolder
 	 * Gets the items ID.
 	 *
 	 * @return the items ID
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	int getId();
 

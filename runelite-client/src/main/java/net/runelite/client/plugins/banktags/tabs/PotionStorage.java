@@ -38,8 +38,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
@@ -83,7 +82,7 @@ class PotionStorage
 			cachePotions = false;
 			rebuildPotions();
 
-			Widget w = client.getWidget(ComponentID.BANK_POTIONSTORE_CONTENT);
+			Widget w = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
 			if (w != null && potionStoreVars == null)
 			{
 				// cache varps that the potion store rebuilds on
@@ -120,7 +119,7 @@ class PotionStorage
 	@Subscribe
 	public void onWidgetClosed(WidgetClosed event)
 	{
-		if (event.getGroupId() == InterfaceID.BANK && event.isUnload())
+		if (event.getGroupId() == InterfaceID.BANKMAIN && event.isUnload())
 		{
 			log.debug("Invalidating potions");
 			potions = null;
@@ -239,7 +238,7 @@ class PotionStorage
 	{
 		// if the potion store hasn't been opened yet, the client components won't have been made yet.
 		// they need to exist for the click to work correctly.
-		Widget potStoreContent = client.getWidget(ComponentID.BANK_POTIONSTORE_CONTENT);
+		Widget potStoreContent = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
 		if (potStoreContent.getChildren() == null)
 		{
 			int childIdx = 0;

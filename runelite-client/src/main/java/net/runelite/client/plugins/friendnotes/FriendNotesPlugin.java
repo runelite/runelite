@@ -46,8 +46,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.events.RemovedFriend;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -229,8 +228,8 @@ public class FriendNotesPlugin extends Plugin
 		final int groupId = WidgetUtil.componentToInterface(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if ((groupId == InterfaceID.FRIEND_LIST && event.getOption().equals("Message")) ||
-				(groupId == InterfaceID.IGNORE_LIST && event.getOption().equals("Delete")))
+		if ((groupId == InterfaceID.FRIENDS && event.getOption().equals("Message")) ||
+				(groupId == InterfaceID.IGNORE && event.getOption().equals("Delete")))
 		{
 			// Friends have color tags
 			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
@@ -341,15 +340,15 @@ public class FriendNotesPlugin extends Plugin
 			log.debug("Rebuilding friends list");
 			client.runScript(
 				ScriptID.FRIENDS_UPDATE,
-				ComponentID.FRIEND_LIST_FULL_CONTAINER,
-				ComponentID.FRIEND_LIST_SORT_BY_NAME_BUTTON,
-				ComponentID.FRIEND_LIST_SORT_BY_LAST_WORLD_CHANGE_BUTTON,
-				ComponentID.FRIEND_LIST_SORT_BY_WORLD_BUTTON,
-				ComponentID.FRIEND_LIST_LEGACY_SORT_BUTTON,
-				ComponentID.FRIEND_LIST_NAMES_CONTAINER,
-				ComponentID.FRIEND_LIST_SCROLL_BAR,
-				ComponentID.FRIEND_LIST_LOADING_TEXT,
-				ComponentID.FRIEND_LIST_PREVIOUS_NAME_HOLDER
+				InterfaceID.Friends.LIST_CONTAINER,
+				InterfaceID.Friends.SORT_NAME,
+				InterfaceID.Friends.SORT_RECENT,
+				InterfaceID.Friends.SORT_WORLD,
+				InterfaceID.Friends.SORT_LEGACY,
+				InterfaceID.Friends.LIST,
+				InterfaceID.Friends.SCROLLBAR,
+				InterfaceID.Friends.LOADING,
+				InterfaceID.Friends.TOOLTIP
 			);
 		});
 	}
@@ -361,13 +360,13 @@ public class FriendNotesPlugin extends Plugin
 			log.debug("Rebuilding ignore list");
 			client.runScript(
 				ScriptID.IGNORE_UPDATE,
-				ComponentID.IGNORE_LIST_FULL_CONTAINER,
-				ComponentID.IGNORE_LIST_SORT_BY_NAME_BUTTON,
-				ComponentID.IGNORE_LIST_LEGACY_SORT_BUTTON,
-				ComponentID.IGNORE_LIST_NAMES_CONTAINER,
-				ComponentID.IGNORE_LIST_SCROLL_BAR,
-				ComponentID.IGNORE_LIST_LOADING_TEXT,
-				ComponentID.IGNORE_LIST_PREVIOUS_NAME_HOLDER
+				InterfaceID.Ignore.LIST_CONTAINER,
+				InterfaceID.Ignore.SORT_NAME,
+				InterfaceID.Ignore.SORT_LEGACY,
+				InterfaceID.Ignore.LIST,
+				InterfaceID.Ignore.SCROLLBAR,
+				InterfaceID.Ignore.LOADING,
+				InterfaceID.Ignore.TOOLTIP
 			);
 		});
 	}

@@ -30,12 +30,11 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
-import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -122,8 +121,8 @@ class SmeltingOverlay extends OverlayPanel
 	{
 		switch (client.getLocalPlayer().getAnimation())
 		{
-			case SMITHING_SMELTING:
-			case SMITHING_CANNONBALL:
+			case AnimationID.HUMAN_FURNACE:
+			case AnimationID.HUMAN_PICKUPFLOOR:
 				return true;
 			default:
 				return false;

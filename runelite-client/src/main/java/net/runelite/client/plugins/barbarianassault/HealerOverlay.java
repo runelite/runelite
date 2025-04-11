@@ -32,7 +32,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -44,10 +44,10 @@ class HealerOverlay extends Overlay
 	@AllArgsConstructor
 	private enum HealerTeam
 	{
-		TEAMMATE1(ComponentID.BA_HEALER_TEAMMATE1, 28, 2, 115),
-		TEAMMATE2(ComponentID.BA_HEALER_TEAMMATE2, 26, 2, 115),
-		TEAMMATE3(ComponentID.BA_HEALER_TEAMMATE3, 26, 2, 115),
-		TEAMMATE4(ComponentID.BA_HEALER_TEAMMATE4, 25, 2, 115);
+		TEAMMATE1(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER1_HP, 28, 2, 115),
+		TEAMMATE2(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER2_HP, 26, 2, 115),
+		TEAMMATE3(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER3_HP, 26, 2, 115),
+		TEAMMATE4(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER4_HP, 25, 2, 115);
 
 		@Component
 		private int teammate;

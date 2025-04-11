@@ -27,7 +27,7 @@ package net.runelite.client.plugins.itemstats.special;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.itemstats.*;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.client.plugins.itemstats.stats.Stats;
@@ -41,10 +41,10 @@ public class SpicyStew implements Effect
 		/*
 		 * Spice boosts listed in the colour order of [Spicy stew -> Smell]
 		 */
-		int redBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_RED_SPICES));
-		int yellowBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_YELLOW_SPICES));
-		int orangeBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_ORANGE_SPICES));
-		int brownBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_BROWN_SPICES));
+		int redBoost = spiceBoostOf(client.getVarbitValue(VarbitID.HUNDRED_DAVE_RED));
+		int yellowBoost = spiceBoostOf(client.getVarbitValue(VarbitID.HUNDRED_DAVE_YELLOW));
+		int orangeBoost = spiceBoostOf(client.getVarbitValue(VarbitID.HUNDRED_DAVE_ORANGE));
+		int brownBoost = spiceBoostOf(client.getVarbitValue(VarbitID.HUNDRED_DAVE_BROWN));
 
 		List<StatChange> changes = new ArrayList<>();
 

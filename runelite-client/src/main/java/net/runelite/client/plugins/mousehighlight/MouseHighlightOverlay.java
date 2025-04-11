@@ -34,7 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -83,7 +83,7 @@ class MouseHighlightOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		// additionally allow tooltips above the full screen world map and welcome screen
-		drawAfterInterface(InterfaceID.FULLSCREEN_CONTAINER_TLI);
+		drawAfterInterface(InterfaceID.TOPLEVEL_DISPLAY);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.config = config;
@@ -151,7 +151,7 @@ class MouseHighlightOverlay extends Overlay
 				return null;
 			}
 
-			if (config.disableSpellbooktooltip() && groupId == InterfaceID.SPELLBOOK)
+			if (config.disableSpellbooktooltip() && groupId == InterfaceID.MAGIC_SPELLBOOK)
 			{
 				return null;
 			}

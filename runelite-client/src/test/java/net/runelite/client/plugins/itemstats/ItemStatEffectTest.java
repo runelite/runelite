@@ -29,12 +29,12 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -145,27 +145,27 @@ public class ItemStatEffectTest
 	{
 		when(client.getBoostedSkillLevel(any(Skill.class)))
 			.thenReturn(0);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(mock(ItemContainer.class));
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(mock(ItemContainer.class));
 	}
 
 	@Test
 	public void testRevitalisationPlus()
 	{
-		final Effect item = itemStats.get(ItemID.REVITALISATION_1_20957);
+		final Effect item = itemStats.get(ItemID.RAIDS_VIAL_REVITALISATION_STRONG_1);
 		matchWikiTable(REVITALISATION_TABLE, item);
 	}
 
 	@Test
 	public void testSuperRestore()
 	{
-		final Effect item = itemStats.get(ItemID.SUPER_RESTORE1);
+		final Effect item = itemStats.get(ItemID._1DOSE2RESTORE);
 		matchWikiTable(SUPER_RESTORE_TABLE, item);
 	}
 
 	@Test
 	public void testSanfewSerum()
 	{
-		final Effect item = itemStats.get(ItemID.SANFEW_SERUM1);
+		final Effect item = itemStats.get(ItemID.SANFEW_SALVE_1_DOSE);
 		matchWikiTable(SANFEW_TABLE, item);
 	}
 
@@ -190,7 +190,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testAncientBrew()
 	{
-		final Effect ancientBrew = new ItemStatChanges().get(ItemID.ANCIENT_BREW4);
+		final Effect ancientBrew = new ItemStatChanges().get(ItemID._4DOSEANCIENTBREW);
 
 		assertEquals(4, skillChange(Skill.PRAYER, 99, 99, ancientBrew));
 		assertEquals(11, skillChange(Skill.PRAYER, 99, 90, ancientBrew));
@@ -220,7 +220,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testZamorakBrew()
 	{
-		final Effect zamorakBrew = new ItemStatChanges().get(ItemID.ZAMORAK_BREW4);
+		final Effect zamorakBrew = new ItemStatChanges().get(ItemID._4DOSEPOTIONOFZAMORAK);
 
 		assertEquals(-10, skillChange(Skill.HITPOINTS, 91, 91, zamorakBrew));
 		assertEquals(-9, skillChange(Skill.HITPOINTS, 91, 81, zamorakBrew));
@@ -235,7 +235,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testZamorakMix()
 	{
-		final Effect zamorakMix = new ItemStatChanges().get(ItemID.ZAMORAK_MIX2);
+		final Effect zamorakMix = new ItemStatChanges().get(ItemID.BRUTAL_2DOSEPOTIONOFZAMORAK);
 
 		assertEquals(-10, skillChange(Skill.HITPOINTS, 91, 91, zamorakMix));
 		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 81, zamorakMix));
@@ -251,7 +251,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testAmbrosia()
 	{
-		final Effect ambrosia = new ItemStatChanges().get(ItemID.AMBROSIA_2);
+		final Effect ambrosia = new ItemStatChanges().get(ItemID.TOA_SUPPLY_PANICHEAL_2);
 
 		assertEquals(124, skillChange(Skill.HITPOINTS, 99, 1, ambrosia));
 		assertEquals(26, skillChange(Skill.HITPOINTS, 99, 99, ambrosia));
@@ -267,7 +267,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testMoonlightPotion()
 	{
-		final Effect moonlightPotion = new ItemStatChanges().get(ItemID.MOONLIGHT_POTION1);
+		final Effect moonlightPotion = new ItemStatChanges().get(ItemID._1DOSEMOONLIGHTPOTION);
 
 		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(11);
 		assertEquals(12, skillChange(Skill.ATTACK, 99, 1, moonlightPotion));
@@ -321,7 +321,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testMoonlightMoth()
 	{
-		final Effect moonlightMoth = new ItemStatChanges().get(ItemID.MOONLIGHT_MOTH_28893);
+		final Effect moonlightMoth = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_MOONMOTH);
 
 		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, moonlightMoth));
 		assertEquals(5, skillChange(Skill.PRAYER, 7, 2, moonlightMoth));
@@ -329,7 +329,7 @@ public class ItemStatEffectTest
 		assertEquals(19, skillChange(Skill.PRAYER, 68, 49, moonlightMoth));
 		assertEquals(22, skillChange(Skill.PRAYER, 99, 70, moonlightMoth));
 
-		final Effect moonlightMothMix = new ItemStatChanges().get(ItemID.MOONLIGHT_MOTH_MIX_1);
+		final Effect moonlightMothMix = new ItemStatChanges().get(ItemID.HUNTER_MIX_MOONMOTH_1DOSE);
 
 		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, moonlightMothMix));
 		assertEquals(5, skillChange(Skill.PRAYER, 7, 2, moonlightMothMix));
@@ -341,7 +341,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testSunlightMoth()
 	{
-		final Effect sunlightMoth = new ItemStatChanges().get(ItemID.SUNLIGHT_MOTH_28890);
+		final Effect sunlightMoth = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_SUNMOTH);
 
 		assertEquals(16, skillChange(Skill.AGILITY, 50, 1, sunlightMoth));
 		assertEquals(0, skillChange(Skill.ATTACK, 70, 70, sunlightMoth));
@@ -367,7 +367,7 @@ public class ItemStatEffectTest
 		assertEquals(11, skillChange(Skill.THIEVING, 28, 10, sunlightMoth));
 		assertEquals(3, skillChange(Skill.WOODCUTTING, 54, 51, sunlightMoth));
 
-		final Effect sunlightMothMix = new ItemStatChanges().get(ItemID.SUNLIGHT_MOTH_MIX_1);
+		final Effect sunlightMothMix = new ItemStatChanges().get(ItemID.HUNTER_MIX_SUNMOTH_1DOSE);
 
 		assertEquals(16, skillChange(Skill.AGILITY, 50, 1, sunlightMothMix));
 		assertEquals(0, skillChange(Skill.ATTACK, 70, 70, sunlightMothMix));
@@ -397,7 +397,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testRubyHarvest()
 	{
-		final Effect rubyHarvest = new ItemStatChanges().get(ItemID.RUBY_HARVEST);
+		final Effect rubyHarvest = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_RUBY);
 
 		assertEquals(16, skillChange(Skill.ATTACK, 82, 82, rubyHarvest));
 	}
@@ -405,7 +405,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testSapphireGlacial()
 	{
-		final Effect sapphireGlacial = new ItemStatChanges().get(ItemID.SAPPHIRE_GLACIALIS);
+		final Effect sapphireGlacial = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_GLACIALIS);
 
 		assertEquals(13, skillChange(Skill.DEFENCE, 64, 64, sapphireGlacial));
 	}
@@ -413,7 +413,7 @@ public class ItemStatEffectTest
 	@Test
 	public void testBlackWarlock()
 	{
-		final Effect blackWarlock = new ItemStatChanges().get(ItemID.BLACK_WARLOCK);
+		final Effect blackWarlock = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_WARLOCK);
 
 		assertEquals(13, skillChange(Skill.STRENGTH, 64, 64, blackWarlock));
 	}
@@ -421,13 +421,13 @@ public class ItemStatEffectTest
 	@Test
 	public void testSnowyKnight()
 	{
-		final Effect snowyKnight = new ItemStatChanges().get(ItemID.SNOWY_KNIGHT);
+		final Effect snowyKnight = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_SNOWY);
 
 		assertEquals(5, skillChange(Skill.HITPOINTS, 49, 44, snowyKnight));
 		assertEquals(0, skillChange(Skill.HITPOINTS, 64, 64, snowyKnight));
 		assertEquals(15, skillChange(Skill.HITPOINTS, 99, 77, snowyKnight));
 
-		final Effect snowyKnightMix = new ItemStatChanges().get(ItemID.SNOWY_KNIGHT_MIX_1);
+		final Effect snowyKnightMix = new ItemStatChanges().get(ItemID.HUNTER_MIX_SNOWY_1DOSE);
 
 		assertEquals(5, skillChange(Skill.HITPOINTS, 50, 45, snowyKnightMix));
 		assertEquals(0, skillChange(Skill.HITPOINTS, 64, 64, snowyKnightMix));
@@ -438,15 +438,15 @@ public class ItemStatEffectTest
 	public void prayerRestoreVariants()
 	{
 		final ItemContainer equipment = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 
-		final Effect ppot = new ItemStatChanges().get(ItemID.PRAYER_POTION2);
+		final Effect ppot = new ItemStatChanges().get(ItemID._2DOSEPRAYERRESTORE);
 
 		// no holy wrench boost for non-imbued ring equipped
-		when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ItemID.RING_OF_THE_GODS, 1));
+		when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ItemID.ROTG, 1));
 		assertEquals(31, skillChange(Skill.PRAYER, 99, 0, ppot));
 
-		for (final int ring : new int[] { ItemID.RING_OF_THE_GODS_I, ItemID.RING_OF_THE_GODS_I_25252, ItemID.RING_OF_THE_GODS_I_26764 })
+		for (final int ring : new int[] {ItemID.NZONE_ROTG, ItemID.SW_ROTG, ItemID.PVPA_ROTG})
 		{
 			when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ring, 1));
 			assertEquals(33, skillChange(Skill.PRAYER, 99, 0, ppot));
@@ -457,17 +457,17 @@ public class ItemStatEffectTest
 	public void leagueCombatMasteryHealingPassives()
 	{
 		final Effect shark = new ItemStatChanges().get(ItemID.SHARK);
-		final Effect saradominBrew = new ItemStatChanges().get(ItemID.SARADOMIN_BREW4);
-		final Effect moonlightMoth = new ItemStatChanges().get(ItemID.MOONLIGHT_MOTH_28893);
-		final Effect prayerPotion = new ItemStatChanges().get(ItemID.PRAYER_POTION4);
-		final Effect divineSuperCombat = new ItemStatChanges().get(ItemID.DIVINE_SUPER_COMBAT_POTION4);
+		final Effect saradominBrew = new ItemStatChanges().get(ItemID._4DOSEPOTIONOFSARADOMIN);
+		final Effect moonlightMoth = new ItemStatChanges().get(ItemID.BUTTERFLY_JAR_MOONMOTH);
+		final Effect prayerPotion = new ItemStatChanges().get(ItemID._4DOSEPRAYERRESTORE);
+		final Effect divineSuperCombat = new ItemStatChanges().get(ItemID._4DOSEDIVINECOMBAT);
 		final Effect bloodPint = new ItemStatChanges().get(ItemID.BLOOD_PINT);
 
 		assertEquals(20, skillChange(Skill.HITPOINTS, 99, 1, shark));
 		assertEquals(16, skillChange(Skill.HITPOINTS, 99, 1, saradominBrew));
 		assertEquals(-10, skillChange(Skill.HITPOINTS, 99, 99, divineSuperCombat));
 
-		when(client.getVarbitValue(Varbits.LEAGUES_MELEE_COMBAT_MASTERY_LEVEL)).thenReturn(2);
+		when(client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MELEE_PROGRESS)).thenReturn(2);
 
 		assertEquals(24, skillChange(Skill.HITPOINTS, 99, 1, shark));
 		assertEquals(19, skillChange(Skill.HITPOINTS, 99, 1, saradominBrew));
@@ -476,7 +476,7 @@ public class ItemStatEffectTest
 		assertEquals(-10, skillChange(Skill.HITPOINTS, 99, 99, divineSuperCombat));
 		assertEquals(-5, skillChange(Skill.PRAYER, 99, 99, bloodPint));
 
-		when(client.getVarbitValue(Varbits.LEAGUES_MELEE_COMBAT_MASTERY_LEVEL)).thenReturn(5);
+		when(client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MELEE_PROGRESS)).thenReturn(5);
 
 		assertEquals(27, skillChange(Skill.PRAYER, 99, 1, moonlightMoth));
 		assertEquals(38, skillChange(Skill.PRAYER, 99, 1, prayerPotion));
@@ -486,20 +486,20 @@ public class ItemStatEffectTest
 	@Test
 	public void sunlitBracerHealingBoost()
 	{
-		final Effect karambwan = new ItemStatChanges().get(ItemID.COOKED_KARAMBWAN);
+		final Effect karambwan = new ItemStatChanges().get(ItemID.TBWT_COOKED_KARAMBWAN);
 		final Effect shark = new ItemStatChanges().get(ItemID.SHARK);
-		final Effect saradominBrew = new ItemStatChanges().get(ItemID.SARADOMIN_BREW4);
+		final Effect saradominBrew = new ItemStatChanges().get(ItemID._4DOSEPOTIONOFSARADOMIN);
 
 		final ItemContainer equipment = mock(ItemContainer.class);
-		when(equipment.contains(ItemID.SUNLIT_BRACERS)).thenReturn(true);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		when(equipment.contains(ItemID.SUNLIGHT_CUFFS)).thenReturn(true);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 
 		assertEquals(36, skillChange(Skill.HITPOINTS, 99, 1, karambwan));
 		assertEquals(40, skillChange(Skill.HITPOINTS, 99, 1, shark));
 		assertEquals(32, skillChange(Skill.HITPOINTS, 99, 99, saradominBrew));
 
 		// Test combined with tier 2 combat relic passive
-		when(client.getVarbitValue(Varbits.LEAGUES_MELEE_COMBAT_MASTERY_LEVEL)).thenReturn(2);
+		when(client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MELEE_PROGRESS)).thenReturn(2);
 
 		assertEquals(39, skillChange(Skill.HITPOINTS, 99, 1, karambwan));
 		assertEquals(44, skillChange(Skill.HITPOINTS, 99, 1, shark));

@@ -40,8 +40,8 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ParamID;
 import net.runelite.api.Player;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.hiscore.HiscoreResult;
@@ -225,10 +225,10 @@ class OpponentInfoOverlay extends OverlayPanel
 	 */
 	private boolean hasHpHud(Actor opponent)
 	{
-		boolean settingEnabled = client.getVarbitValue(Varbits.BOSS_HEALTH_OVERLAY) == 0;
+		boolean settingEnabled = client.getVarbitValue(VarbitID.HPBAR_HUD_BOSS_DISABLED) == 0;
 		if (settingEnabled && opponent instanceof NPC)
 		{
-			int opponentId = client.getVarpValue(VarPlayer.HP_HUD_NPC_ID);
+			int opponentId = client.getVarpValue(VarPlayerID.HPBAR_HUD_NPC);
 			NPC npc = (NPC) opponent;
 			return opponentId != -1 && npc.getComposition() != null && opponentId == npc.getComposition().getId();
 		}

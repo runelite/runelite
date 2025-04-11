@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Abex
+ * Copyright (c) 2025 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.dbtable;
+package net.runelite.cache.definitions;
 
-public final class DBTableID
+import java.util.Map;
+import lombok.Data;
+
+@Data
+public class GameValDefinition
 {
-	public interface Quest
-	{
-		int TABLE = 0;
-		int NAME = 2;
-		int MAP_ELEMENT = 16;
-		int MAIN_QUEST = 21;
-	}
+	private int gameValId;
+	private int id;
+
+	private String name;
+	private Map<Integer, String> files = Map.of();
 }

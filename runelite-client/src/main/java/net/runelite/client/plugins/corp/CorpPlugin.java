@@ -39,8 +39,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
@@ -48,6 +46,8 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -155,14 +155,14 @@ public class CorpPlugin extends Plugin
 
 		switch (npc.getId())
 		{
-			case NpcID.CORPOREAL_BEAST:
+			case NpcID.CORP_BEAST:
 				log.debug("Corporeal beast spawn: {}", npc);
 				corp = npc;
 				yourDamage = 0;
 				totalDamage = 0;
 				players.clear();
 				break;
-			case NpcID.DARK_ENERGY_CORE:
+			case NpcID.DARK_CORE:
 				core = npc;
 				break;
 		}
@@ -235,7 +235,7 @@ public class CorpPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (corp != null && varbitChanged.getVarbitId() == Varbits.CORP_DAMAGE)
+		if (corp != null && varbitChanged.getVarbitId() == VarbitID.CORP_BEAST_DAMAGE)
 		{
 			int myDamage = varbitChanged.getValue();
 			// avoid resetting our counter when the client's is reset

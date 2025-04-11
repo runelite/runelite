@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.11.5-SNAPSHOT</version>
+		<version>1.11.7-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -132,6 +132,7 @@
 								<exclude>net/runelite/api/VarClientInt.class</exclude>
 								<exclude>net/runelite/api/VarClientStr.class</exclude>
 								<exclude>net/runelite/api/VarPlayer.class</exclude>
+								<exclude>net/runelite/api/gameval/*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

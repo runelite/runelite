@@ -39,44 +39,13 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_3A;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL_INACTIVE;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_2H_STEEL;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON_OR;
-import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
-import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullObjectID;
-import net.runelite.api.ObjectID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -91,6 +60,11 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -114,12 +88,12 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class WoodcuttingPlugin extends Plugin
 {
 	static final Set<Integer> WOODCUTTING_ANIMS = ImmutableSet.of(
-		WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK, WOODCUTTING_MITHRIL,
-		WOODCUTTING_ADAMANT, WOODCUTTING_RUNE, WOODCUTTING_GILDED, WOODCUTTING_DRAGON, WOODCUTTING_DRAGON_OR,
-		WOODCUTTING_INFERNAL, WOODCUTTING_3A_AXE, WOODCUTTING_CRYSTAL, WOODCUTTING_TRAILBLAZER,
-		WOODCUTTING_2H_BRONZE, WOODCUTTING_2H_IRON, WOODCUTTING_2H_STEEL, WOODCUTTING_2H_BLACK,
-		WOODCUTTING_2H_MITHRIL, WOODCUTTING_2H_ADAMANT, WOODCUTTING_2H_RUNE, WOODCUTTING_2H_DRAGON,
-		WOODCUTTING_2H_CRYSTAL, WOODCUTTING_2H_CRYSTAL_INACTIVE, WOODCUTTING_2H_3A
+		AnimationID.HUMAN_WOODCUTTING_BRONZE_AXE, AnimationID.HUMAN_WOODCUTTING_IRON_AXE, AnimationID.HUMAN_WOODCUTTING_STEEL_AXE, AnimationID.HUMAN_WOODCUTTING_BLACK_AXE, AnimationID.HUMAN_WOODCUTTING_MITHRIL_AXE,
+		AnimationID.HUMAN_WOODCUTTING_ADAMANT_AXE, AnimationID.HUMAN_WOODCUTTING_RUNE_AXE, AnimationID.HUMAN_WOODCUTTING_GILDED_AXE, AnimationID.HUMAN_WOODCUTTING_DRAGON_AXE, AnimationID.HUMAN_WOODCUTTING_TRAILBLAZER_AXE_NO_INFERNAL,
+		AnimationID.HUMAN_WOODCUTTING_INFERNAL_AXE, AnimationID.HUMAN_WOODCUTTING_3A_AXE, AnimationID.HUMAN_WOODCUTTING_CRYSTAL_AXE, AnimationID.HUMAN_OPENHEAVYCHEST,
+		AnimationID.FORESTRY_2H_AXE_CHOPPING_BRONZE, AnimationID.FORESTRY_2H_AXE_CHOPPING_IRON, AnimationID.FORESTRY_2H_AXE_CHOPPING_STEEL, AnimationID.FORESTRY_2H_AXE_CHOPPING_BLACK,
+		AnimationID.FORESTRY_2H_AXE_CHOPPING_MITHRIL, AnimationID.FORESTRY_2H_AXE_CHOPPING_ADAMANT, AnimationID.FORESTRY_2H_AXE_CHOPPING_RUNE, AnimationID.FORESTRY_2H_AXE_CHOPPING_DRAGON,
+		AnimationID.FORESTRY_2H_AXE_CHOPPING_CRYSTAL, AnimationID.FORESTRY_2H_AXE_CHOPPING_CRYSTAL_INACTIVE, AnimationID.FORESTRY_2H_AXE_CHOPPING_3A
 	);
 
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
@@ -366,21 +340,21 @@ public class WoodcuttingPlugin extends Plugin
 		switch (gameObject.getId())
 		{
 			/* redwood trees */
-			case ObjectID.REDWOOD_TREE:
-			case ObjectID.REDWOOD_TREE_29670:
-			case NullObjectID.NULL_34633:
-			case NullObjectID.NULL_34635:
-			case NullObjectID.NULL_34637:
-			case NullObjectID.NULL_34639:
-			case ObjectID.REDWOOD_TREE_34284:
-			case ObjectID.REDWOOD_TREE_34286:
-			case ObjectID.REDWOOD_TREE_34288:
-			case ObjectID.REDWOOD_TREE_34290:
+			case ObjectID.REDWOODTREE_L:
+			case ObjectID.REDWOODTREE_R:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_2:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_4:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_6:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_8:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_2:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_4:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_6:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_8:
 				redwoods.add(gameObject);
 				break;
 
-			case ObjectID.TREE_ROOTS:
-			case ObjectID.ANIMAINFUSED_TREE_ROOTS:
+			case ObjectID.GATHERING_EVENT_RISING_ROOTS:
+			case ObjectID.GATHERING_EVENT_RISING_ROOTS_SPECIAL:
 				if (roots.isEmpty())
 				{
 					notifier.notify(config.forestryRisingRootsNotification(), "A Rising Roots Forestry event spawned!");
@@ -388,28 +362,28 @@ public class WoodcuttingPlugin extends Plugin
 
 				roots.add(gameObject);
 				break;
-			case ObjectID.STRUGGLING_SAPLING:
-			case ObjectID.STRUGGLING_SAPLING_47485:
-			case ObjectID.STRUGGLING_SAPLING_47487:
-			case ObjectID.STRUGGLING_SAPLING_47488:
-			case ObjectID.STRUGGLING_SAPLING_47490:
-			case ObjectID.STRUGGLING_SAPLING_47491:
+			case ObjectID.GATHERING_EVENT_SAPLING_1X1:
+			case ObjectID.GATHERING_EVENT_SAPLING_WITHERING_1X1:
+			case ObjectID.GATHERING_EVENT_SAPLING_2X2:
+			case ObjectID.GATHERING_EVENT_SAPLING_WITHERING_2X2:
+			case ObjectID.GATHERING_EVENT_SAPLING_3X3:
+			case ObjectID.GATHERING_EVENT_SAPLING_WITHERING_3X3:
 				notifier.notify(config.forestryStrugglingSaplingNotification(), "A Struggling Sapling Forestry event spawned!");
 				break;
-			case ObjectID.ROTTING_LEAVES:
-			case ObjectID.GREEN_LEAVES:
-			case ObjectID.DROPPINGS:
-			case ObjectID.WILD_MUSHROOMS:
-			case ObjectID.WILD_MUSHROOMS_47497:
-			case ObjectID.WILD_MUSHROOMS_47498:
-			case ObjectID.SPLINTERED_BARK:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_1:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_2:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_3:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4A:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4B:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4C:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_5:
 				saplingIngredients.add(gameObject);
 				break;
-			case ObjectID.PHEASANT_NEST:
-			case ObjectID.PHEASANT_NEST_49937:
+			case ObjectID.GATHERING_EVENT_PHEASANT_NEST01:
+			case ObjectID.GATHERING_EVENT_PHEASANT_NEST02:
 				pheasantNests.add(gameObject);
 				break;
-			case ObjectID.END_OF_RAINBOW:
+			case ObjectID.GATHERING_EVENT_WOODCUTTING_LEPRECHAUN_RAINBOW:
 				endOfRainbows.add(gameObject);
 				break;
 		}
@@ -423,30 +397,30 @@ public class WoodcuttingPlugin extends Plugin
 		switch (object.getId())
 		{
 			/* redwood trees */
-			case ObjectID.REDWOOD_TREE:
-			case ObjectID.REDWOOD_TREE_29670:
-			case NullObjectID.NULL_34633:
-			case NullObjectID.NULL_34635:
-			case NullObjectID.NULL_34637:
-			case NullObjectID.NULL_34639:
-			case ObjectID.REDWOOD_TREE_34284:
-			case ObjectID.REDWOOD_TREE_34286:
-			case ObjectID.REDWOOD_TREE_34288:
-			case ObjectID.REDWOOD_TREE_34290:
+			case ObjectID.REDWOODTREE_L:
+			case ObjectID.REDWOODTREE_R:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_2:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_4:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_6:
+			case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_8:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_2:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_4:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_6:
+			case ObjectID.REDWOOD_TREE_FULLYGROWN_1_8:
 				redwoods.remove(object);
 				break;
 
-			case ObjectID.TREE_ROOTS:
-			case ObjectID.ANIMAINFUSED_TREE_ROOTS:
+			case ObjectID.GATHERING_EVENT_RISING_ROOTS:
+			case ObjectID.GATHERING_EVENT_RISING_ROOTS_SPECIAL:
 				roots.remove(object);
 				break;
-			case ObjectID.ROTTING_LEAVES:
-			case ObjectID.GREEN_LEAVES:
-			case ObjectID.DROPPINGS:
-			case ObjectID.WILD_MUSHROOMS:
-			case ObjectID.WILD_MUSHROOMS_47497:
-			case ObjectID.WILD_MUSHROOMS_47498:
-			case ObjectID.SPLINTERED_BARK:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_1:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_2:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_3:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4A:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4B:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4C:
+			case ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_5:
 				saplingIngredients.remove(object);
 				if (saplingIngredients.isEmpty())
 				{
@@ -454,15 +428,15 @@ public class WoodcuttingPlugin extends Plugin
 					log.debug("Struggling Sapling event is over");
 				}
 				break;
-			case ObjectID.PHEASANT_NEST:
-			case ObjectID.PHEASANT_NEST_49937:
+			case ObjectID.GATHERING_EVENT_PHEASANT_NEST01:
+			case ObjectID.GATHERING_EVENT_PHEASANT_NEST02:
 				pheasantNests.remove(object);
 				if (pheasantNests.isEmpty())
 				{
 					log.debug("Pheasant event is over");
 				}
 				break;
-			case ObjectID.END_OF_RAINBOW:
+			case ObjectID.GATHERING_EVENT_WOODCUTTING_LEPRECHAUN_RAINBOW:
 				endOfRainbows.remove(object);
 				break;
 		}
@@ -482,39 +456,39 @@ public class WoodcuttingPlugin extends Plugin
 
 			switch (locId)
 			{
-				case ObjectID.TREE_STUMP:
-				case ObjectID.TREE_STUMP_1342: // regular
-				case ObjectID.TREE_STUMP_1343:
-				case ObjectID.TREE_STUMP_1344:
-				case ObjectID.TREE_STUMP_1345:
-				case ObjectID.TREE_STUMP_1346:
-				case ObjectID.TREE_STUMP_1347:
-				case ObjectID.TREE_STUMP_1348:
-				case ObjectID.TREE_STUMP_1349:
-				case ObjectID.TREE_STUMP_1350:
-				case ObjectID.TREE_STUMP_1351:
-				case ObjectID.TREE_STUMP_1352:
-				case ObjectID.TREE_STUMP_1353:
-				case ObjectID.TREE_STUMP_1354:
-				case ObjectID.TREE_STUMP_1355:
-				case ObjectID.TREE_STUMP_1356: // oak
-				case ObjectID.TREE_STUMP_1357:
-				case ObjectID.TREE_STUMP_1358:
-				case ObjectID.TREE_STUMP_1359:
-				case ObjectID.TREE_STUMP_2310:
-				case ObjectID.TREE_STUMP_2891:
+				case ObjectID.TREESTUMP:
+				case ObjectID.TREESTUMP2: // regular
+				case ObjectID.TREESTUMP2_LIGHT:
+				case ObjectID.TREESTUMP2_GREEN:
+				case ObjectID.TREESTUMP2_SMALL:
+				case ObjectID.TREESTUMP2_BIG:
+				case ObjectID.DEADTREE1_LARGE_STUMP:
+				case ObjectID.DEADTREE1_STUMP:
+				case ObjectID.DEADTREE1_LIGHT_STUMP:
+				case ObjectID.DEADTREE1_SMALL_STUMP:
+				case ObjectID.DEADTREE2_STUMP:
+				case ObjectID.DEADTREE2_STUMP_SWAMP:
+				case ObjectID.DEADTREE2_STUMP_DARK:
+				case ObjectID.DEADTREE3_STUMP:
+				case ObjectID.EVERGREEN_LARGE_STUMP:
+				case ObjectID.OAKTREE_STUMP: // oak
+				case ObjectID.YEWTREE_STUMP:
+				case ObjectID.DEADTREE6_STUMP:
+				case ObjectID.DEADTREE_BURNT_STUMP:
+				case ObjectID.HOLLOW_TREE_STUMP:
+				case ObjectID.JUNGLESTUMP_KHARAZI:
 				case ObjectID.ACHEY_TREE_STUMP:
-				case ObjectID.DYING_TREE_STUMP:
-				case ObjectID.TREE_STUMP_3880:
-				case ObjectID.TREE_STUMP_3884:
-				case ObjectID.TREE_STUMP_4061:
-				case ObjectID.TREE_STUMP_4328:
-				case ObjectID.TREE_STUMP_4329:
-				case ObjectID.JUNGLE_TREE_STUMP:
-				case ObjectID.JUNGLE_TREE_STUMP_4821:
-				case ObjectID.TREE_STUMP_4822:
-				case ObjectID.TREE_STUMP_5905:
-				case ObjectID.TREE_STUMP_6212:
+				case ObjectID.FAI_VARROCK_DEAD_TREE_STUMP:
+				case ObjectID.REGICIDE_TREE_STUMP:
+				case ObjectID.REGICIDE_TREE_STUMP_SMALL:
+				case ObjectID.HOLLOW_TREE_STUMP_BIG:
+				case ObjectID.VIKING_TREESTUMP:
+				case ObjectID.VIKING_TREESTUMP2:
+				case ObjectID.MM_BUSH_KHARAZI_JUNGLE_TREE1_STUMP:
+				case ObjectID.MM_BUSH_KHARAZI_JUNGLE_TREE2_STUMP:
+				case ObjectID.MM_BUSH_KHARAZI_JUNGLESTUMP:
+				case ObjectID.MDAUGHTER_PASSABLE_TREE_STUMP:
+				case ObjectID.DEADTREE4_STUMP:
 				case ObjectID.APPLE_TREE_STUMP:
 				case ObjectID.BANANA_TREE_STUMP:
 				case ObjectID.CURRY_TREE_STUMP:
@@ -523,71 +497,71 @@ public class WoodcuttingPlugin extends Plugin
 				case ObjectID.PAPAYA_TREE_STUMP:
 				case ObjectID.SPIRIT_TREE_STUMP:
 				case ObjectID.MAGIC_TREE_STUMP:
-				case ObjectID.TREE_STUMP_8445:
+				case ObjectID.MAPLE_TREE_STUMP:
 				case ObjectID.OAK_TREE_STUMP:
 				case ObjectID.WILLOW_TREE_STUMP:
 				case ObjectID.YEW_TREE_STUMP:
-				case ObjectID.TREE_STUMP_9035:
-				case ObjectID.TREE_STUMP_9037:
-				case ObjectID.TREE_STUMP_9471: // willow
-				case ObjectID.TREE_STUMP_9661:
-				case ObjectID.TREE_STUMP_9711:
-				case ObjectID.TREE_STUMP_9712:
-				case ObjectID.TREE_STUMP_9713:
-				case ObjectID.TREE_STUMP_9714: // yew
-				case ObjectID.TREE_STUMP_10057:
-				case ObjectID.TREE_STUMP_12894:
-				case ObjectID.TREE_STUMP_14516:
-				case ObjectID.TREE_STUMP_14517:
-				case ObjectID.TREE_STUMP_14567:
-				case ObjectID.TREE_STUMP_14596:
-				case ObjectID.TREE_STUMP_14638:
-				case ObjectID.TREE_STUMP_14667:
-				case ObjectID.TREE_STUMP_14697:
-				case ObjectID.TREE_STUMP_16266:
-				case ObjectID.DREAM_TREE_STUMP:
-				case ObjectID.TREE_STUMP_21274:
-				case ObjectID.TREE_STUMP_23054:
-				case ObjectID.TREE_STUMP_25186:
-				case ObjectID.TREE_STUMP_26834:
-				case ObjectID.TREE_STUMP_27061:
+				case ObjectID.MAHOGANY_STUMP:
+				case ObjectID.TEAK_STUMP:
+				case ObjectID.WILLOW_TREE2OR3OR4_STUMP: // willow
+				case ObjectID.TREESTUMP_MODELLED:
+				case ObjectID.WILLOW_TREE_STUMP_NEW:
+				case ObjectID.MAPLE_TREE_STUMP_NEW:
+				case ObjectID.MAGIC_TREE_STUMP_NEW:
+				case ObjectID.YEW_TREE_STUMP_NEW: // yew
+				case ObjectID.MACRO_DIGGER_STUMP:
+				case ObjectID.BURGH_TREE_STUMP:
+				case ObjectID.WILD0_TREE_STUMP:
+				case ObjectID.WILD1_TREE_STUMP:
+				case ObjectID.WILD2_TREE_STUMP:
+				case ObjectID.WILD3_TREE_STUMP:
+				case ObjectID.WILD4_TREE_STUMP:
+				case ObjectID.WILD5_TREE_STUMP:
+				case ObjectID.WILD6_TREE_STUMP:
+				case ObjectID.FAIRY2_PINE_TREE_STUMP:
+				case ObjectID.LUNAR_DREAM_DREAM_TREE_STUMP:
+				case ObjectID.ARCTIC_PINE_TREE_STUMP:
+				case ObjectID.DEADTREE2_STUMP_SNOW:
+				case ObjectID.DRAGON_SLAYER_QIP_WILD5_TREE_STUMP:
+				case ObjectID.POH_MENAGERIE_HABITAT_FEATURE_1:
+				case ObjectID.MAX_TREESTUMP:
 				case ObjectID.MAHOGANY_TREE_STUMP:
-				case ObjectID.TREE_STUMP_30446:
-				case ObjectID.DEAD_TREE_STUMP:
-				case ObjectID.DEAD_TREE_STUMP_30856:
-				case ObjectID.TREE_STUMP_33583:
-				case ObjectID.TREE_STUMP_33584:
+				case ObjectID.TEAK_TREE_STUMP:
+				case ObjectID.FOSSIL_DEADTREE_LARGE1_STUMP:
+				case ObjectID.FOSSIL_DEADTREE_SMALL1_STUMP:
+				case ObjectID.ARCQUEST_HUNTING_TREE_STUMP_OP:
+				case ObjectID.ARCQUEST_HUNTING_TREE_STUMP_NOOP:
 				case ObjectID.CELASTRUS_TREE_STUMP:
 				case ObjectID.DRAGONFRUIT_TREE_STUMP:
-				case ObjectID.TREE_STUMP_36673:
-				case ObjectID.TREE_STUMP_36675:
-				case ObjectID.TREE_STUMP_36678:
-				case ObjectID.TREE_STUMP_36680:
-				case ObjectID.TREE_STUMP_36684:
-				case ObjectID.TREE_STUMP_36687:
-				case ObjectID.TREE_STUMP_36689:
-				case ObjectID.TREE_STUMP_40751:
-				case ObjectID.TREE_STUMP_40753:
-				case ObjectID.TREE_STUMP_40757:
-				case ObjectID.TREE_STUMP_40759:
-				case ObjectID.TREE_STUMP_40761:
-				case ObjectID.TREE_STUMP_42392:
-				case ObjectID.TREE_STUMP_42394:
-				case ObjectID.TREE_STUMP_42396:
-				case ObjectID.TREE_STUMP_46582:
-				case ObjectID.TREE_STUMP_46583:
-				case ObjectID.TREE_STUMP_50035:
+				case ObjectID.PRIF_TREE_NORMAL_1_STUMP:
+				case ObjectID.PRIF_TREE_NORMAL_2_STUMP:
+				case ObjectID.PRIF_OUTSIDE_TREE_NORMAL_1_STUMP:
+				case ObjectID.PRIF_OUTSIDE_TREE_NORMAL_2_STUMP:
+				case ObjectID.PRIF_YEWTREE_STUMP:
+				case ObjectID.PRIF_TEAK_STUMP:
+				case ObjectID.PRIF_MAHOGANY_STUMP:
+				case ObjectID.TREE_UPDATE_1_STUMP:
+				case ObjectID.TREE_UPDATE_2_STUMP:
+				case ObjectID.YEWTREE_UPDATE_STUMP:
+				case ObjectID.TEAKTREE_UPDATE_STUMP:
+				case ObjectID.MAHOGANYTREE_UPDATE_STUMP:
+				case ObjectID.TREE_YEW_STUMP01:
+				case ObjectID.TREE_NORMAL_STUMP01:
+				case ObjectID.TREE_OAK_STUMP01:
+				case ObjectID.SOTN_HUNTING_TREESTUMP_OP:
+				case ObjectID.SOTN_HUNTING_TREESTUMP_NOOP:
+				case ObjectID.XMAS18_STUMP_SNOW:
 
 				// depleted redwood
-				case ObjectID.REDWOOD_TREE_29669:
-				case ObjectID.REDWOOD_TREE_29670:
-				case ObjectID.REDWOOD_TREE_29671:
+				case ObjectID.REDWOODTREE_L_CUT:
+				case ObjectID.REDWOODTREE_R:
+				case ObjectID.REDWOODTREE_R_CUT:
 
 				// farming guild redwood
-				case NullObjectID.NULL_34633:
-				case NullObjectID.NULL_34635:
-				case NullObjectID.NULL_34637:
-				case NullObjectID.NULL_34639:
+				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_2:
+				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_4:
+				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_6:
+				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_8:
 				{
 					WorldPoint worldPoint = WorldPoint.fromCoord(locCoord);
 					GameObject gameObject = findObject(worldPoint);
@@ -661,7 +635,7 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.LEPRECHAUNS_LUCK)
+		if (event.getVarbitId() == VarbitID.GATHERING_EVENT_WOODCUTTING_LEPRECHAUN_TOTAL_RAINBOWS)
 		{
 			updateLeprechaunsLuck();
 		}
@@ -670,7 +644,7 @@ public class WoodcuttingPlugin extends Plugin
 	private void updateLeprechaunsLuck()
 	{
 		// Leprechaun's Luck is drained in intervals of 5
-		final int leprechaunsLuck = client.getVarbitValue(Varbits.LEPRECHAUNS_LUCK) / 5;
+		final int leprechaunsLuck = client.getVarbitValue(VarbitID.GATHERING_EVENT_WOODCUTTING_LEPRECHAUN_TOTAL_RAINBOWS) / 5;
 
 		// avoid adding the infobox if not actively woodcutting
 		if (leprechaunsLuck < 1 || session == null || !session.isActive() || !config.showLeprechaunLuck())
@@ -685,7 +659,7 @@ public class WoodcuttingPlugin extends Plugin
 
 		if (leprechaunsLuckInfoBox == null)
 		{
-			leprechaunsLuckInfoBox = new Counter(itemManager.getImage(ItemID.CLOVER_INSIGNIA), this, leprechaunsLuck);
+			leprechaunsLuckInfoBox = new Counter(itemManager.getImage(ItemID.GATHERING_EVENT_LEPRECHAUN_INSIGNIA), this, leprechaunsLuck);
 			infoBoxManager.addInfoBox(leprechaunsLuckInfoBox);
 		}
 
@@ -697,7 +671,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onAnimationChanged(final AnimationChanged event)
 	{
 		var actor = event.getActor();
-		if (actor.getAnimation() == AnimationID.LOOKING_INTO && flowers.contains(actor.getInteracting()))
+		if (actor.getAnimation() == AnimationID.HUMAN_PICKUPTABLE && flowers.contains(actor.getInteracting()))
 		{
 			var flower = (NPC) actor.getInteracting();
 			if (!activeFlowers.contains(flower))
@@ -728,41 +702,41 @@ public class WoodcuttingPlugin extends Plugin
 
 			flowers.add(npc);
 		}
-		else if (id == NpcID.WOODCUTTING_LEPRECHAUN)
+		else if (id == NpcID.GATHERING_EVENT_WOODCUTTING_LEPRECHAUN)
 		{
 			notifier.notify(config.forestryLeprechaunNotification(), "A Leprechaun event spawned!");
 		}
-		else if ((id == NpcID.FRIGHTENED_FOX || id == NpcID.FRIGHTENED_FOX_12560))
+		else if ((id == NpcID.GATHERING_EVENT_POACHERS_FOX_OUTDOORS || id == NpcID.GATHERING_EVENT_POACHERS_FOX_INDOORS))
 		{
 			notifier.notify(config.forestryPoachersNotification(), "A Poachers event spawned!");
 		}
-		else if (id == NpcID.FOX_TRAP)
+		else if (id == NpcID.GATHERING_EVENT_POACHERS_TRAP)
 		{
 			foxTrap = npc;
 		}
-		else if (id == NpcID.FREAKY_FORESTER_12536)
+		else if (id == NpcID.GATHERING_EVENT_PHEASANT_FORESTER)
 		{
 			freakyForester = npc;
 
 			notifier.notify(config.forestryPheasantControlNotification(), "A Pheasant Control event has spawned!");
 		}
-		else if (id == NpcID.WILD_BEEHIVE)
+		else if (id == NpcID.GATHERING_EVENT_BEES_BEEBOX_4)
 		{
 			notifier.notify(config.forestryBeeHiveNotification(), "A Bee Hive event has spawned!");
 		}
-		else if (id == NpcID.UNFINISHED_BEEHIVE || id == NpcID.UNFINISHED_BEEHIVE_12516)
+		else if (id == NpcID.GATHERING_EVENT_BEES_BEEBOX_1 || id == NpcID.GATHERING_EVENT_BEES_BEEBOX_2)
 		{
 			unfinishedBeeHive = npc;
 		}
-		else if (id >= NpcID.RITUAL_CIRCLE_GREEN && id <= NpcID.RITUAL_CIRCLE_RED_12535)
+		else if (id >= NpcID.GATHERING_EVENT_ENCHANTED_RITUAL_A_1 && id <= NpcID.GATHERING_EVENT_ENCHANTED_RITUAL_D_4)
 		{
 			circles.add(npc);
 		}
-		else if (id == NpcID.DRYAD_12519)
+		else if (id == NpcID.GATHERING_EVENT_ENCHANTED_RITUAL_DRYAD)
 		{
 			notifier.notify(config.forestryEnchantmentRitualNotification(), "An Enchantment Ritual event has spawned!");
 		}
-		else if (id == NpcID.ENTLING)
+		else if (id == NpcID.GATHERING_EVENT_ENTLINGS_NPC_01)
 		{
 			entlings.add(npc);
 			if (entlings.size() == 1)
@@ -818,14 +792,14 @@ public class WoodcuttingPlugin extends Plugin
 
 	private static boolean isFloweringBush(int npcId)
 	{
-		return npcId == NpcID.FLOWERING_BUSH_LILAC ||
-			npcId == NpcID.FLOWERING_BUSH_PINK ||
-			npcId == NpcID.FLOWERING_BUSH_RED ||
-			npcId == NpcID.FLOWERING_BUSH_ORANGE ||
-			npcId == NpcID.FLOWERING_BUSH_YELLOW ||
-			npcId == NpcID.FLOWERING_BUSH_WHITE ||
-			npcId == NpcID.FLOWERING_BUSH_GREEN ||
-			npcId == NpcID.FLOWERING_BUSH_BLUE;
+		return npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL01 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL02 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL03 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL04 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL05 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL06 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL07 ||
+			npcId == NpcID.GATHERING_EVENT_FLOWERING_TREE_BUSH_COL08;
 	}
 
 	NPC solveCircles()
@@ -838,7 +812,7 @@ public class WoodcuttingPlugin extends Plugin
 		int s = 0;
 		for (var npc : circles)
 		{
-			int off = npc.getId() - NpcID.RITUAL_CIRCLE_GREEN;
+			int off = npc.getId() - NpcID.GATHERING_EVENT_ENCHANTED_RITUAL_A_1;
 			int shape = off / 4;
 			int color = off % 4;
 			int id = (16 << shape) | (1 << color);
@@ -846,7 +820,7 @@ public class WoodcuttingPlugin extends Plugin
 		}
 		for (var npc : circles)
 		{
-			int off = npc.getId() - NpcID.RITUAL_CIRCLE_GREEN;
+			int off = npc.getId() - NpcID.GATHERING_EVENT_ENCHANTED_RITUAL_A_1;
 			int shape = off / 4;
 			int color = off % 4;
 			int id = (16 << shape) | (1 << color);

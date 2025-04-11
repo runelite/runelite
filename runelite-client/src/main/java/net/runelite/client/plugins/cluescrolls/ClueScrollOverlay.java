@@ -33,9 +33,9 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
-import static net.runelite.api.ItemID.*;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
@@ -48,43 +48,43 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 public class ClueScrollOverlay extends OverlayPanel
 {
 	private static final ItemRequirement HAS_SPADE = new AnyRequirementCollection("Spade",
-		item(SPADE),
-		item(EASTFLOOR_SPADE));
+		item(ItemID.SPADE),
+		item(ItemID.EASTER23_SPADE));
 	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source",
-		item(LIT_TORCH),
-		item(LIT_CANDLE),
-		item(LIT_BLACK_CANDLE),
-		item(CANDLE_LANTERN_4531),
-		item(CANDLE_LANTERN_4534), // lit black candle lantern
-		item(OIL_LAMP_4524),
-		item(OIL_LANTERN_4539),
-		item(BULLSEYE_LANTERN_4550),
-		item(SAPPHIRE_LANTERN_4702),
-		item(EMERALD_LANTERN_9065),
-		item(MINING_HELMET),
-		item(FIREMAKING_CAPE),
-		item(FIREMAKING_CAPET),
-		item(KANDARIN_HEADGEAR_1),
-		item(KANDARIN_HEADGEAR_2),
-		item(KANDARIN_HEADGEAR_3),
-		item(KANDARIN_HEADGEAR_4),
-		item(BRUMA_TORCH),
-		item(MAX_CAPE),
-		item(MAX_CAPE_13342),
-		item(ABYSSAL_LANTERN_NORMAL_LOGS),
-		item(ABYSSAL_LANTERN_BLUE_LOGS),
-		item(ABYSSAL_LANTERN_RED_LOGS),
-		item(ABYSSAL_LANTERN_WHITE_LOGS),
-		item(ABYSSAL_LANTERN_PURPLE_LOGS),
-		item(ABYSSAL_LANTERN_GREEN_LOGS),
-		item(ABYSSAL_LANTERN_OAK_LOGS),
-		item(ABYSSAL_LANTERN_WILLOW_LOGS),
-		item(ABYSSAL_LANTERN_MAPLE_LOGS),
-		item(ABYSSAL_LANTERN_YEW_LOGS),
-		item(ABYSSAL_LANTERN_BLISTERWOOD_LOGS),
-		item(ABYSSAL_LANTERN_MAGIC_LOGS),
-		item(ABYSSAL_LANTERN_REDWOOD_LOGS),
-		item(CLUE_COMPASS));
+		item(ItemID.TORCH_LIT),
+		item(ItemID.LIT_CANDLE),
+		item(ItemID.LIT_BLACK_CANDLE),
+		item(ItemID.CANDLE_LANTERN_LIT),
+		item(ItemID.CANDLE_LANTERN_BLACK_LIT), // lit black candle lantern
+		item(ItemID.OIL_LAMP_LIT),
+		item(ItemID.OIL_LANTERN_LIT),
+		item(ItemID.BULLSEYE_LANTERN_LIT),
+		item(ItemID.TOG_SAPPHIRE_LANTERN_LIT),
+		item(ItemID.BULLSEYE_LANTERN_LIT_LUNAR_QUEST),
+		item(ItemID.CAVE_GOBLIN_MINING_HELMET_LIT),
+		item(ItemID.SKILLCAPE_FIREMAKING),
+		item(ItemID.SKILLCAPE_FIREMAKING_TRIMMED),
+		item(ItemID.SEERS_HEADBAND_EASY),
+		item(ItemID.SEERS_HEADBAND_MEDIUM),
+		item(ItemID.SEERS_HEADBAND_HARD),
+		item(ItemID.SEERS_HEADBAND_ELITE),
+		item(ItemID.WINT_TORCH),
+		item(ItemID.SKILLCAPE_MAX),
+		item(ItemID.SKILLCAPE_MAX_WORN),
+		item(ItemID.ABYSSAL_LANTERN_NORMAL),
+		item(ItemID.ABYSSAL_LANTERN_NORMAL_BLUE),
+		item(ItemID.ABYSSAL_LANTERN_NORMAL_RED),
+		item(ItemID.ABYSSAL_LANTERN_NORMAL_WHITE),
+		item(ItemID.ABYSSAL_LANTERN_NORMAL_PURPLE),
+		item(ItemID.ABYSSAL_LANTERN_NORMAL_GREEN),
+		item(ItemID.ABYSSAL_LANTERN_OAK),
+		item(ItemID.ABYSSAL_LANTERN_WILLOW),
+		item(ItemID.ABYSSAL_LANTERN_MAPLE),
+		item(ItemID.ABYSSAL_LANTERN_YEW),
+		item(ItemID.ABYSSAL_LANTERN_BLISTERWOOD),
+		item(ItemID.ABYSSAL_LANTERN_MAGIC),
+		item(ItemID.ABYSSAL_LANTERN_REDWOOD),
+		item(ItemID.LEAGUE_CLUE_COMPASS_TELEPORT));
 
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 

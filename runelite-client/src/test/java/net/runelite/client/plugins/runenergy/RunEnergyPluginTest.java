@@ -31,13 +31,13 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.RING_OF_ENDURANCE;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -127,12 +127,12 @@ public class RunEnergyPluginTest
 	@Test
 	public void testUncharge()
 	{
-		when(client.getIntStack()).thenReturn(new int[]{1, RING_OF_ENDURANCE});
+		when(client.getIntStack()).thenReturn(new int[]{1, ItemID.RING_OF_ENDURANCE});
 		when(client.getIntStackSize()).thenReturn(1);
 		when(client.getTickCount()).thenReturn(1);
 
 		Widget enduranceWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.DESTROY_ITEM_NAME)).thenReturn(enduranceWidget);
+		when(client.getWidget(InterfaceID.Confirmdestroy.NAME)).thenReturn(enduranceWidget);
 		when(enduranceWidget.getText()).thenReturn("Ring of endurance");
 
 		ScriptCallbackEvent scriptCallbackEvent = new ScriptCallbackEvent();
@@ -146,14 +146,14 @@ public class RunEnergyPluginTest
 	public void testEstimatedRuntimeRemaining()
 	{
 		ItemContainer equipment = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
-		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
-		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
+		when(equipment.count(ItemID.RING_OF_ENDURANCE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.STAMINA_ACTIVE)).thenReturn(1);
 		when(client.getEnergy()).thenReturn(10000);
 		when(client.getBoostedSkillLevel(Skill.AGILITY)).thenReturn(99);
 		assertEquals("500s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
 
-		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.STAMINA_ACTIVE)).thenReturn(0);
 		when(configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class)).thenReturn(512);
 		assertEquals("2:57", runEnergyPlugin.getEstimatedRunTimeRemaining(false));
 	}

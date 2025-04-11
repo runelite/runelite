@@ -27,10 +27,10 @@ package net.runelite.api.annotations;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import org.intellij.lang.annotations.MagicConstant;
 
-@MagicConstant(valuesFromClass = Varbits.class)
+@MagicConstant(valuesFromClass = VarbitID.class)
 @Documented
 @Retention(RetentionPolicy.SOURCE)
 public @interface Varbit

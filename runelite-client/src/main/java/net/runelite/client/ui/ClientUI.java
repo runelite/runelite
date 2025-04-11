@@ -102,7 +102,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
@@ -1019,7 +1019,7 @@ public class ClientUI
 		final int x = client.getRealDimensions().width - sidebarOpenIcon.getWidth() - 5;
 
 		// Offset sidebar button if resizable mode logout is visible
-		final Widget logoutButton = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY);
+		final Widget logoutButton = client.getWidget(InterfaceID.ToplevelPreEoc.STONE10);
 		final int y = logoutButton != null && !logoutButton.isHidden() && logoutButton.getParent() != null
 			? logoutButton.getHeight() + logoutButton.getRelativeY()
 			: 5;

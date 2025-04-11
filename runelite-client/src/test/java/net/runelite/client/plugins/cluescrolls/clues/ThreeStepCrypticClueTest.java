@@ -26,8 +26,8 @@ package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.base.Joiner;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertNotNull;
@@ -57,7 +57,7 @@ public class ThreeStepCrypticClueTest
 	public void nonNullLocations()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.VIGGORA_LOCATION)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER)).thenReturn(1);
 
 		final String clueText = Joiner.on("<br><br>").join(CrypticClue.CLUES.stream().map(CrypticClue::getText).toArray());
 		final ThreeStepCrypticClue clue = ThreeStepCrypticClue.forText(Text.sanitizeMultilineText(clueText).toLowerCase(), clueText);

@@ -30,13 +30,13 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.NpcID;
 import net.runelite.api.ParamID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcChanged;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.RuntimeConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -90,94 +90,94 @@ public class NpcUtil
 		switch (id)
 		{
 			// These NPCs hit 0hp but don't actually die
-			case NpcID.GARGOYLE:
-			case NpcID.GARGOYLE_1543:
-			case NpcID.MARBLE_GARGOYLE:
-			case NpcID.DAWN_7884:
-			case NpcID.DUSK_7888:
-			case NpcID.ZYGOMITE:
-			case NpcID.ZYGOMITE_1024:
-			case NpcID.ANCIENT_ZYGOMITE:
-			case NpcID.ROCKSLUG:
-			case NpcID.ROCKSLUG_422:
-			case NpcID.GIANT_ROCKSLUG:
-			case NpcID.DESERT_LIZARD:
-			case NpcID.DESERT_LIZARD_460:
-			case NpcID.DESERT_LIZARD_461:
-			case NpcID.LIZARD:
-			case NpcID.SMALL_LIZARD:
-			case NpcID.SMALL_LIZARD_463:
-			case NpcID.GROWTHLING:
-			case NpcID.BEE_SWARM:
+			case NpcID.SLAYER_GARGOYLE_1:
+			case NpcID.SLAYER_CAVE_GARGOYLE:
+			case NpcID.SUPERIOR_GARGOYLE:
+			case NpcID.GARGBOSS_DAWN_PHASE3:
+			case NpcID.GARGBOSS_DUSK_PHASE4:
+			case NpcID.SLAYER_MUTATED_ZYGOMITE_ADOLESCENT:
+			case NpcID.SLAYER_MUTATED_ZYGOMITE_ADULT:
+			case NpcID.FOSSIL_ZYGOMITE:
+			case NpcID.SLAYER_ROCKSLUG:
+			case NpcID.SLAYER_ROCKSLUG_BABY:
+			case NpcID.SUPERIOR_ROCKSLUG:
+			case NpcID.SLAYER_LIZARD_LARGE1_GREEN:
+			case NpcID.SLAYER_LIZARD_LARGE2_SANDY:
+			case NpcID.SLAYER_LIZARD_LARGE3_SANDY:
+			case NpcID.SLAYER_LIZARD_MASSIVE:
+			case NpcID.SLAYER_LIZARD_SMALL1_GREEN:
+			case NpcID.SLAYER_LIZARD_SMALL2_SANDY:
+			case NpcID.GB_GROWTHLING:
+			case NpcID.COLOSSEUM_MODIFIER_BEES:
 			// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
 			// them to be considered dead when reaching 0hp.
-			case NpcID.KALPHITE_QUEEN_963:
+			case NpcID.KALPHITE_QUEEN:
 			case NpcID.VETION:
-			case NpcID.CALVARION:
-			case NpcID.WITCHS_EXPERIMENT:
-			case NpcID.WITCHS_EXPERIMENT_6394:
-			case NpcID.WITCHS_EXPERIMENT_HARD:
-			case NpcID.WITCHS_EXPERIMENT_SECOND_FORM:
-			case NpcID.WITCHS_EXPERIMENT_SECOND_FORM_6395:
-			case NpcID.WITCHS_EXPERIMENT_SECOND_FORM_HARD:
-			case NpcID.WITCHS_EXPERIMENT_THIRD_FORM:
-			case NpcID.WITCHS_EXPERIMENT_THIRD_FORM_6396:
-			case NpcID.WITCHS_EXPERIMENT_THIRD_FORM_HARD:
-			case NpcID.NAZASTAROOL:
-			case NpcID.NAZASTAROOL_5354:
-			case NpcID.NAZASTAROOL_6398:
-			case NpcID.NAZASTAROOL_6399:
-			case NpcID.NAZASTAROOL_HARD:
-			case NpcID.NAZASTAROOL_HARD_6338:
-			case NpcID.KOLODION_1605:
-			case NpcID.KOLODION_1606:
-			case NpcID.KOLODION_1607:
-			case NpcID.KOLODION_1608:
-			case NpcID.MUTANT_TARN:
-			case NpcID.XAMPHUR_10955:
-			case NpcID.XAMPHUR_10956:
-			case NpcID.KOSCHEI_THE_DEATHLESS:
-			case NpcID.KOSCHEI_THE_DEATHLESS_3898:
-			case NpcID.KOSCHEI_THE_DEATHLESS_3899:
-			case NpcID.DAMIS:
-			case NpcID.DAMIS_6346:
-			case NpcID.DAMIS_HARD:
-			case NpcID.CHOMPY_BIRD:
-			case NpcID.JUBBLY_BIRD:
-			case NpcID.ENT:
-			case NpcID.ENT_7234:
-			case NpcID.HOPELESS_CREATURE:
-			case NpcID.HOPELESS_CREATURE_1073:
-			case NpcID.GADDERANKS_4484:
-			case NpcID.WALL_BEAST:
-			case NpcID.RUNITE_GOLEM:
-			case NpcID.RUNITE_ROCKS:
-			case NpcID.STRANGE_CREATURE_12076: // Secrets of the North transitioning to Jhallan
-			case NpcID.BOUNCER_3509:
+			case NpcID.VETION_SINGLE:
+			case NpcID.SHAPESHIFTERGLOB:
+			case NpcID.NZONE_SHAPESHIFTERGLOB_NORMAL:
+			case NpcID.NZONE_SHAPESHIFTERGLOB_HARD:
+			case NpcID.SHAPESHIFTERSPIDER:
+			case NpcID.NZONE_SHAPESHIFTERSPIDER_NORMAL:
+			case NpcID.NZONE_SHAPESHIFTERSPIDER_HARD:
+			case NpcID.SHAPESHIFTERBEAR:
+			case NpcID.NZONE_SHAPESHIFTERBEAR_NORMAL:
+			case NpcID.NZONE_SHAPESHIFTERBEAR_HARD:
+			case NpcID.ZQ_MAINZOMBIE1:
+			case NpcID.ZQ_MAINZOMBIE2:
+			case NpcID.NZONE_ZQ_MAINZOMBIE1_NORMAL:
+			case NpcID.NZONE_ZQ_MAINZOMBIE2_NORMAL:
+			case NpcID.NZONE_ZQ_MAINZOMBIE1_HARD:
+			case NpcID.NZONE_ZQ_MAINZOMBIE2_HARD:
+			case NpcID.KOLHUMAN:
+			case NpcID.KOLOGRE:
+			case NpcID.KOLSPIDER:
+			case NpcID.KOLETHEREAL:
+			case NpcID.LOTR_TRAN_RAZORLOR_MUTANT:
+			case NpcID.AKD_XAMPHUR_COMBAT:
+			case NpcID.AKD_XAMPHUR_COMBAT_NOHANDS:
+			case NpcID.VIKING_ENEMY1:
+			case NpcID.VIKING_ENEMY2:
+			case NpcID.VIKING_ENEMY3:
+			case NpcID.FD_DAMIS_NORMAL:
+			case NpcID.NZONE_FD_DAMIS_NORMAL_NORMAL:
+			case NpcID.NZONE_FD_DAMIS_NORMAL_HARD:
+			case NpcID.CHOMPYBIRD:
+			case NpcID._100_JUBBLY_BIRD:
+			case NpcID.WILDERNESS_ENT:
+			case NpcID.WCGUILD_ENT:
+			case NpcID.SOULBANE_HOPE_MONST3:
+			case NpcID.SOULBANE_HOPE_MONST2:
+			case NpcID.BURGH_GADDERANKS_ATTACKABLE:
+			case NpcID.SWAMP_WALLBEAST_COMBAT:
+			case NpcID.WILDERNESS_RUNE_GOLEM:
+			case NpcID.WILDERNESS_GOLEM_RUNE_ROCK:
+			case NpcID.MUSPAH_FINAL_QUEST: // Secrets of the North transitioning to Jhallan
+			case NpcID.SHADOW_MAJ_BOUNCER:
 			// Tutorial island giant rats respawn instantly.
-			case NpcID.GIANT_RAT_3313:
+			case NpcID.NEWBIEGIANTRAT:
 			// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
 			// equipped, or moved away immediately after applying the killing blow.
 			case NpcID.AGRITH_NAAR:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
 			// thus should not be considered alive.
-			case NpcID.DRAKE_8613:
-			case NpcID.GUARDIAN_DRAKE_10401:
-			case NpcID.ALCHEMICAL_HYDRA_8622:
-			case NpcID.XARPUS_8341:
-			case NpcID.XARPUS_10769:
-			case NpcID.XARPUS_10773:
-			case NpcID.THE_NIGHTMARE_9433:
-			case NpcID.PHOSANIS_NIGHTMARE_9424:
+			case NpcID.DRAKE_DEATH:
+			case NpcID.SUPERIOR_DRAKE_DEATH:
+			case NpcID.HYDRABOSS_FINALDEATH:
+			case NpcID.XARPUS_DEATH:
+			case NpcID.XARPUS_DEATH_STORY:
+			case NpcID.XARPUS_DEATH_HARD:
+			case NpcID.NIGHTMARE_DYING:
+			case NpcID.NIGHTMARE_CHALLENGE_DYING:
 			// Gargoyles, Dawn, and Dusk each have cracking forms which contain their death animations, so should always
 			// be considered dead.
-			case NpcID.GARGOYLE_413:
-			case NpcID.MARBLE_GARGOYLE_7408:
-			case NpcID.DAWN_7885:
-			case NpcID.DUSK_7889:
+			case NpcID.SLAYER_GARGOYLE_DEAD:
+			case NpcID.SUPERIOR_GARGOYLE_DEAD:
+			case NpcID.GARGBOSS_DAWN_DEATH:
+			case NpcID.GARGBOSS_DUSK_DEATH:
 				return true;
-			case NpcID.ZALCANO_9050:
+			case NpcID.ZALCANO_WEAK:
 				return npc.isDead();
 			// Amoxliatl has a nonstandard health bar which isDead() doesn't work with.
 			case NpcID.AMOXLIATL:
@@ -214,32 +214,32 @@ public class NpcUtil
 			// These NPCs are final new forms of previous NPCs and should not be considered dead upon transformation.
 			// Prior form(s) should be added to the `isDying()` exceptions list above to ensure they are not hidden or
 			// made uninteractable during their death animations.
-			case NpcID.KALPHITE_QUEEN_965:
-			case NpcID.VETION_12002:    // Vet'ion and Calvar'ion have a non-attackable form for the animation between
-			case NpcID.CALVARION_11995: // their first and second phase; resetting isDead() for that form works best
-			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM:
-			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_6397:
-			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_HARD:
-			case NpcID.NAZASTAROOL_5355:
-			case NpcID.NAZASTAROOL_6400:
-			case NpcID.NAZASTAROOL_HARD_6339:
-			case NpcID.KOLODION_1609:
-			case NpcID.TARN_6476:
-			case NpcID.KOSCHEI_THE_DEATHLESS_3900:
-			case NpcID.DAMIS_683:
-			case NpcID.DAMIS_6347:
-			case NpcID.DAMIS_HARD_1135:
-			case NpcID.HOPELESS_CREATURE_1074:
-			case NpcID.GADDERANKS_4485:
+			case NpcID.KALPHITE_FLYINGQUEEN:
+			case NpcID.VETION_TRANS:    // Vet'ion and Calvar'ion have a non-attackable form for the animation between
+			case NpcID.VETION_TRANS_SINGLE: // their first and second phase; resetting isDead() for that form works best
+			case NpcID.SHAPESHIFTERWOLF:
+			case NpcID.NZONE_SHAPESHIFTERWOLF_NORMAL:
+			case NpcID.NZONE_SHAPESHIFTERWOLF_HARD:
+			case NpcID.ZQ_MAINZOMBIE3:
+			case NpcID.NZONE_ZQ_MAINZOMBIE3_NORMAL:
+			case NpcID.NZONE_ZQ_MAINZOMBIE3_HARD:
+			case NpcID.KOLDEMON:
+			case NpcID.LOTR_TRAN_RAZORLOR_GHOST:
+			case NpcID.VIKING_ENEMY4:
+			case NpcID.FD_DAMIS_TOUGHER:
+			case NpcID.NZONE_FD_DAMIS_TOUGHER_NORMAL:
+			case NpcID.NZONE_FD_DAMIS_TOUGHER_HARD:
+			case NpcID.SOULBANE_HOPE_MONST1:
+			case NpcID.BURGH_GADDERANKS_WOUNDED:
 			// The Nightmare should be considered alive again once reaching its sleeping form
-			case NpcID.THE_NIGHTMARE:
-			case NpcID.PHOSANIS_NIGHTMARE:
+			case NpcID.NIGHTMARE_DEAD:
+			case NpcID.NIGHTMARE_CHALLENGE_DEAD:
 			// Skotizo's altars should be considered alive again once they "respawn" from their inactive altar forms
-			case NpcID.AWAKENED_ALTAR:
-			case NpcID.AWAKENED_ALTAR_7290:
-			case NpcID.AWAKENED_ALTAR_7292:
-			case NpcID.AWAKENED_ALTAR_7294:
-			case NpcID.BOUNCER_3508:
+			case NpcID.CATA_BOSS_ALTAR_OPEN_N:
+			case NpcID.CATA_BOSS_ALTAR_OPEN_E:
+			case NpcID.CATA_BOSS_ALTAR_OPEN_S:
+			case NpcID.CATA_BOSS_ALTAR_OPEN_W:
+			case NpcID.SHADOW_MAJ_BOUNCER_CUTSCENE:
 				npc.setDead(false);
 				break;
 			default:
@@ -264,17 +264,17 @@ public class NpcUtil
 		{
 			// Corp frequently dies in masses with hitpoints remaining, so additionally use the death anim
 			// to determine if it is dead
-			case AnimationID.CORP_DEATH:
-				if (!(actor instanceof NPC) || ((NPC) actor).getId() != NpcID.CORPOREAL_BEAST)
+			case AnimationID.CORPBEAST_DEATH:
+				if (!(actor instanceof NPC) || ((NPC) actor).getId() != NpcID.CORP_BEAST)
 				{
 					break;
 				}
 				// intentional fallthrough
-			case AnimationID.VERZIK_P2_BLUE_NYLO_EXPLOSION:
-			case AnimationID.VERZIK_P2_GREEN_NYLO_EXPLOSION:
-			case AnimationID.VERZIK_P2_WHITE_NYLO_EXPLOSION:
-			case AnimationID.VERZIK_P2_PURPLE_NYLO_EXPLOSION:
-			case AnimationID.VERZIK_P2_RED_NYLO_EXPLOSION:
+			case AnimationID.TOP_SPIDER_MAGIC_DEATH_DETONATE:
+			case AnimationID.TOP_SPIDER_RANGED_DEATH_DETONATE:
+			case AnimationID.TOP_SPIDER_MELEE_DEATH_DETONATE:
+			case AnimationID.TOB_SPIDER_TANK_DEATH:
+			case AnimationID.ELEMENTAL_DEATH:
 				actor.setDead(true);
 				break;
 			default:

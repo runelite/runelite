@@ -33,7 +33,7 @@ import lombok.Getter;
 import net.runelite.api.Item;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.api.ItemID.*;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -51,25 +51,25 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 {
 	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
-		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),
-		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any completed god book", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS), item(HOLY_BOOK_OR), item(BOOK_OF_BALANCE_OR), item(UNHOLY_BOOK_OR), item(BOOK_OF_LAW_OR), item(BOOK_OF_WAR_OR), item(BOOK_OF_DARKNESS_OR))),
+		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_ORNAMENT))),
+		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any completed god book", item(ItemID.SARADOMINBOOK_COMPLETE), item(ItemID.GUTHIXBOOK_COMPLETE), item(ItemID.ZAMORAKBOOK_COMPLETE), item(ItemID.ARMADYLBOOK_COMPLETE), item(ItemID.BANDOSBOOK_COMPLETE), item(ItemID.ZAROSBOOK_COMPLETE), item(ItemID.LEAGUE_3_BOOK_SARADOMIN), item(ItemID.LEAGUE_3_BOOK_GUTHIX), item(ItemID.LEAGUE_3_BOOK_ZAMORAK), item(ItemID.LEAGUE_3_BOOK_ARMADYL), item(ItemID.LEAGUE_3_BOOK_BANDOS), item(ItemID.LEAGUE_3_BOOK_ZAROS))),
 		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", EmoteClue.ACTIVE_CRYSTAL_BOW_OR_BOW_OF_FAERDHINEN)),
-		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", any("Infernal axe", item(INFERNAL_AXE), item(INFERNAL_AXE_OR))),
-		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
-		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
-		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
-		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(DRAGON_DEFENDER_LT), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L), item(GHOMMALS_AVERNIC_DEFENDER_5), item(GHOMMALS_AVERNIC_DEFENDER_5_L), item(GHOMMALS_AVERNIC_DEFENDER_6), item(GHOMMALS_AVERNIC_DEFENDER_6_L))),
-		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
-		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
-		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", any("Barrelchest anchor", item(BARRELCHEST_ANCHOR), item(BARRELCHEST_ANCHOR_BH))),
-		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(BASALT)),
-		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", any("Tzhaar-ket-om", item(TZHAARKETOM), item(TZHAARKETOM_T))),
-		new FaloTheBardClue("Penance healers runners and more, obtaining this body often gives much deplore.", any("Fighter Torso", item(FIGHTER_TORSO), item(FIGHTER_TORSO_L))),
-		new FaloTheBardClue("Strangely found in a chest, many believe these gloves are the best.", item(BARROWS_GLOVES)),
-		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(COOKING_GAUNTLETS)),
-		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(NUMULITE)),
-		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(RUNE_PLATEBODY)),
-		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ROD_OF_IVANDIS_10, ROD_OF_IVANDIS_1), item(IVANDIS_FLAIL), item(BLISTERWOOD_FLAIL)))
+		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", any("Infernal axe", item(ItemID.INFERNAL_AXE), item(ItemID.TRAILBLAZER_AXE))),
+		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(ItemID.GRACE)),
+		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(ItemID.LAVA_DRAGON_BONES)),
+		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ItemID.ARMADYL_HELMET)),
+		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(ItemID.DRAGON_PARRYINGDAGGER), item(ItemID.DRAGON_PARRYINGDAGGER_T), item(ItemID.DRAGON_PARRYINGDAGGER_TROUVER), item(ItemID.DRAGON_PARRYINGDAGGER_T_TROUVER), item(ItemID.INFERNAL_DEFENDER), item(ItemID.INFERNAL_DEFENDER_TROUVER), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_5), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_5_TROUVER), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_6), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_6_TROUVER))),
+		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(ItemID.WARGUILD_TOKENS)),
+		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(ItemID.MATURE_GREENMANS_ALE)),
+		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", any("Barrelchest anchor", item(ItemID.BRAIN_ANCHOR), item(ItemID.BH_BRAIN_ANCHOR_IMBUE))),
+		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(ItemID.BASALT)),
+		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", any("Tzhaar-ket-om", item(ItemID.TZHAAR_MAUL), item(ItemID.TZHAAR_MAUL_T))),
+		new FaloTheBardClue("Penance healers runners and more, obtaining this body often gives much deplore.", any("Fighter Torso", item(ItemID.BARBASSAULT_PENANCE_FIGHTER_TORSO), item(ItemID.BARBASSAULT_PENANCE_FIGHTER_TORSO_TROUVER))),
+		new FaloTheBardClue("Strangely found in a chest, many believe these gloves are the best.", item(ItemID.HUNDRED_GAUNTLETS_LEVEL_10)),
+		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(ItemID.GAUNTLETS_OF_COOKING)),
+		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(ItemID.FOSSIL_NUMULITE)),
+		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(ItemID.RUNE_PLATEBODY)),
+		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ItemID.BURGH_ROD_COMMAND_FINAL_10, ItemID.BURGH_ROD_COMMAND_FINAL_1), item(ItemID.IVANDIS_FLAIL), item(ItemID.BLISTERWOOD_FLAIL)))
 	);
 
 	private static final WorldPoint LOCATION = new WorldPoint(2689, 3550, 0);

@@ -31,10 +31,10 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
@@ -91,7 +91,7 @@ public class WintertodtPluginTest
 		when(config.roundNotification()).thenReturn(15);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.WINTERTODT_TIMER);
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
 
 		varbitChanged.setValue(35);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
@@ -108,7 +108,7 @@ public class WintertodtPluginTest
 		when(config.roundNotification()).thenReturn(10);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.WINTERTODT_TIMER);
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
 
 		varbitChanged.setValue(20);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
@@ -125,7 +125,7 @@ public class WintertodtPluginTest
 		when(config.roundNotification()).thenReturn(5);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.WINTERTODT_TIMER);
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
 
 		varbitChanged.setValue(10);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
@@ -142,7 +142,7 @@ public class WintertodtPluginTest
 		when(config.roundNotification()).thenReturn(5);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.WINTERTODT_TIMER);
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
 
 		varbitChanged.setValue(0);
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
@@ -166,7 +166,7 @@ public class WintertodtPluginTest
 		when(config.roundNotification()).thenReturn(5);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.WINTERTODT_TIMER);
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
 
 		wintertodtPlugin.onVarbitChanged(varbitChanged);
 		verify(notifier, times(0)).notify("Wintertodt round is about to start");

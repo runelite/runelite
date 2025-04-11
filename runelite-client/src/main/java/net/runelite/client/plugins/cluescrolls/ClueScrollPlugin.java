@@ -57,11 +57,9 @@ import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -71,7 +69,6 @@ import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -92,8 +89,10 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -153,10 +152,10 @@ public class ClueScrollPlugin extends Plugin
 	private static final String CAPE_RACK_TAG_NAME = "cape rack";
 	private static final String TOY_BOX_TAG_NAME = "toy box";
 	private static final int[] RUNEPOUCH_AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
+		VarbitID.RUNE_POUCH_QUANTITY_1, VarbitID.RUNE_POUCH_QUANTITY_2, VarbitID.RUNE_POUCH_QUANTITY_3, VarbitID.RUNE_POUCH_QUANTITY_4
 	};
 	private static final int[] RUNEPOUCH_RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
+		VarbitID.RUNE_POUCH_TYPE_1, VarbitID.RUNE_POUCH_TYPE_2, VarbitID.RUNE_POUCH_TYPE_3, VarbitID.RUNE_POUCH_TYPE_4
 	};
 	private static final String CLUE_NOTE_KEY_PREFIX = "note_";
 
@@ -340,7 +339,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.MYSTERIOUS_ORB_23069;
+		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.CLUEQUEST_CLUE3;
 		if (isXMarksTheSpotOrb || event.getMenuOption().equals("Read"))
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(event.getItemId());
@@ -368,13 +367,13 @@ public class ClueScrollPlugin extends Plugin
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final ItemContainer itemContainer = event.getItemContainer();
-		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
+		if (event.getContainerId() == InventoryID.WORN)
 		{
 			equippedItems = itemContainer.getItems();
 			return;
 		}
 
-		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		if (event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
@@ -382,8 +381,8 @@ public class ClueScrollPlugin extends Plugin
 		inventoryItems = itemContainer.getItems();
 
 		// Add runes from rune pouch to inventoryItems
-		if (itemContainer.contains(ItemID.RUNE_POUCH) || itemContainer.contains(ItemID.RUNE_POUCH_L)
-			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH) || itemContainer.contains(ItemID.DIVINE_RUNE_POUCH_L))
+		if (itemContainer.contains(ItemID.BH_RUNE_POUCH) || itemContainer.contains(ItemID.BH_RUNE_POUCH_TROUVER)
+			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH) || itemContainer.contains(ItemID.DIVINE_RUNE_POUCH_TROUVER))
 		{
 			List<Item> runePouchContents = getRunepouchContents();
 
@@ -653,9 +652,9 @@ public class ClueScrollPlugin extends Plugin
 
 		// Reset clue when receiving a new beginner or master clue
 		// These clues use a single item ID, so we cannot detect step changes based on the item ID changing
-		final Widget chatDialogClueItem = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
+		final Widget chatDialogClueItem = client.getWidget(InterfaceID.Objectbox.ITEM);
 		if (chatDialogClueItem != null
-			&& (chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_BEGINNER || chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_MASTER))
+			&& (chatDialogClueItem.getItemId() == ItemID.TRAIL_CLUE_BEGINNER || chatDialogClueItem.getItemId() == ItemID.TRAIL_CLUE_MASTER))
 		{
 			resetClue(false);
 		}
@@ -664,16 +663,16 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() >= InterfaceID.CLUE_BEGINNER_MAP_CHAMPIONS_GUILD
-			&& event.getGroupId() <= InterfaceID.CLUE_BEGINNER_MAP_WIZARDS_TOWER)
+		if (event.getGroupId() >= InterfaceID.TRAIL_MAP01
+			&& event.getGroupId() <= InterfaceID.TRAIL_MAP11)
 		{
 			updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
 		}
-		else if (event.getGroupId() == InterfaceID.CLUESCROLL)
+		else if (event.getGroupId() == InterfaceID.TRAIL_CLUETEXT)
 		{
 			clientThread.invokeLater(() ->
 			{
-				final Widget clueScrollText = client.getWidget(ComponentID.CLUESCROLL_TEXT);
+				final Widget clueScrollText = client.getWidget(InterfaceID.TrailCluetext.TEXT);
 				if (clueScrollText != null)
 				{
 					ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
@@ -713,7 +712,7 @@ public class ClueScrollPlugin extends Plugin
 
 	public BufferedImage getClueScrollImage()
 	{
-		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
+		return itemManager.getImage(ItemID.TRAIL_CLUE_MASTER);
 	}
 
 	public BufferedImage getEmoteImage()

@@ -8,6 +8,7 @@
    iload                  0
    iconst                 3
    iconst                 0
+   iconst                 0
    cc_create             
    iconst                 64
    iconst                 64
@@ -28,6 +29,7 @@
    iload                  0
    iconst                 4
    iconst                 1
+   iconst                 0
    cc_create              1
    iconst                 10
    iconst                 15

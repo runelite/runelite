@@ -26,11 +26,11 @@ package net.runelite.client.plugins.itemstats;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.api.Client;
 
@@ -63,9 +63,9 @@ public abstract class StatBoost extends SingleEffect
 		if (calcedDelta > 0)
 		{
 			final String statName = stat.getName();
-			final int meleeMastery = client.getVarbitValue(Varbits.LEAGUES_MELEE_COMBAT_MASTERY_LEVEL);
-			final int rangedMastery = client.getVarbitValue(Varbits.LEAGUES_RANGED_COMBAT_MASTERY_LEVEL);
-			final int magicMastery = client.getVarbitValue(Varbits.LEAGUES_MAGIC_COMBAT_MASTERY_LEVEL);
+			final int meleeMastery = client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MELEE_PROGRESS);
+			final int rangedMastery = client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_RANGED_PROGRESS);
+			final int magicMastery = client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MAGIC_PROGRESS);
 
 			if (statName.equals(Skill.HITPOINTS.getName()))
 			{
@@ -76,8 +76,8 @@ public abstract class StatBoost extends SingleEffect
 					multiplier += 0.2;
 				}
 
-				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-				if (equipment != null && equipment.contains(ItemID.SUNLIT_BRACERS))
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+				if (equipment != null && equipment.contains(ItemID.SUNLIGHT_CUFFS))
 				{
 					multiplier += 1;
 				}

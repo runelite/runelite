@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.woodcutting.config;
 
 import com.google.common.collect.ImmutableMap;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 public enum ClueNestTier
 {
@@ -38,11 +38,11 @@ public enum ClueNestTier
 
 
 	private static final ImmutableMap<Integer, ClueNestTier> CLUE_NEST_ID_TO_TIER = new ImmutableMap.Builder<Integer, ClueNestTier>()
-		.put(ItemID.CLUE_NEST_ELITE, ClueNestTier.ELITE)
-		.put(ItemID.CLUE_NEST_HARD, ClueNestTier.HARD)
-		.put(ItemID.CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
-		.put(ItemID.CLUE_NEST_EASY, ClueNestTier.EASY)
-		.put(ItemID.CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
+		.put(ItemID.WC_CLUE_NEST_ELITE, ClueNestTier.ELITE)
+		.put(ItemID.WC_CLUE_NEST_HARD, ClueNestTier.HARD)
+		.put(ItemID.WC_CLUE_NEST_MEDIUM, ClueNestTier.MEDIUM)
+		.put(ItemID.WC_CLUE_NEST_EASY, ClueNestTier.EASY)
+		.put(ItemID.WC_CLUE_NEST_BEGINNER, ClueNestTier.BEGINNER)
 		.build();
 
 	static public ClueNestTier getTierFromItem(int itemId)

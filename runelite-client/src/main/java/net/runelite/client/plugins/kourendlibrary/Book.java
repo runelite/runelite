@@ -28,28 +28,28 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
 enum Book
 {
-	RADAS_CENSUS(ItemID.RADAS_CENSUS, "Rada's Census", "Census of King Rada III, by Matthias Vorseth."),
-	RICKTORS_DIARY_7(ItemID.RICKTORS_DIARY_7, "Ricktor's Diary 7", "Diary of Steklan Ricktor, volume 7."),
-	EATHRAM_RADA_EXTRACT(ItemID.EATHRAM__RADA_EXTRACT, "Eathram & Rada extract", "An extract from Eathram & Rada, by Anonymous."),
-	KILLING_OF_A_KING(ItemID.KILLING_OF_A_KING, "Killing of a King", "Killing of a King, by Griselle."),
-	HOSIDIUS_LETTER(ItemID.HOSIDIUS_LETTER, "Hosidius Letter", "A letter from Lord Hosidius to the Council of Elders."),
-	WINTERTODT_PARABLE(ItemID.WINTERTODT_PARABLE, "Wintertodt Parable", "The Parable of the Wintertodt, by Anonymous."),
-	TWILL_ACCORD(ItemID.TWILL_ACCORD, "Twill Accord", "The Royal Accord of Twill."),
-	BYRNES_CORONATION_SPEECH(ItemID.BYRNES_CORONATION_SPEECH, "Byrnes Coronation Speech", "Speech of King Byrne I, on the occasion of his coronation."),
-	IDEOLOGY_OF_DARKNESS(ItemID.IDEOLOGY_OF_DARKNESS, "The Ideology of Darkness", "The Ideology of Darkness, by Philophaire."),
-	RADAS_JOURNEY(ItemID.RADAS_JOURNEY, "Rada's Journey", "The Journey of Rada, by Griselle."),
-	TRANSVERGENCE_THEORY(ItemID.TRANSVERGENCE_THEORY, "Transvergence Theory", "The Theory of Transvergence, by Amon Ducot."),
-	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "Tristessa's Tragedy", "The Tragedy of Tristessa."),
-	TREACHERY_OF_ROYALTY(ItemID.TREACHERY_OF_ROYALTY, "The Treachery of Royalty", "The Treachery of Royalty, by Professor Answith."),
-	TRANSPORTATION_INCANTATIONS(ItemID.TRANSPORTATION_INCANTATIONS, "Transportation Incantations", "Transportation Incantations, by Amon Ducot."),
-	SOUL_JOURNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),
-	VARLAMORE_ENVOY(ItemID.VARLAMORE_ENVOY, "Varlamore Envoy", "The Envoy to Varlamore, by Deryk Paulson.");
+	RADAS_CENSUS(ItemID.ARCEUUS_LIBRARY_CENSUSRADA, "Rada's Census", "Census of King Rada III, by Matthias Vorseth."),
+	RICKTORS_DIARY_7(ItemID.ARCEUUS_LIBRARY_DIARYRICKTOR7, "Ricktor's Diary 7", "Diary of Steklan Ricktor, volume 7."),
+	EATHRAM_RADA_EXTRACT(ItemID.ARCEUUS_LIBRARY_EATHRAMRADA, "Eathram & Rada extract", "An extract from Eathram & Rada, by Anonymous."),
+	KILLING_OF_A_KING(ItemID.ARCEUUS_LIBRARY_KILLINGKING, "Killing of a King", "Killing of a King, by Griselle."),
+	HOSIDIUS_LETTER(ItemID.ARCEUUS_LIBRARY_HOSIDIUSLETTER, "Hosidius Letter", "A letter from Lord Hosidius to the Council of Elders."),
+	WINTERTODT_PARABLE(ItemID.ARCEUUS_LIBRARY_WINTERTODTPARABLE, "Wintertodt Parable", "The Parable of the Wintertodt, by Anonymous."),
+	TWILL_ACCORD(ItemID.ARCEUUS_LIBRARY_TWILLACCORD, "Twill Accord", "The Royal Accord of Twill."),
+	BYRNES_CORONATION_SPEECH(ItemID.ARCEUUS_LIBRARY_BYRNESPEECH, "Byrnes Coronation Speech", "Speech of King Byrne I, on the occasion of his coronation."),
+	IDEOLOGY_OF_DARKNESS(ItemID.ARCEUUS_LIBRARY_IDEOLOGYDARKNESS, "The Ideology of Darkness", "The Ideology of Darkness, by Philophaire."),
+	RADAS_JOURNEY(ItemID.ARCEUUS_LIBRARY_RADAJOURNEY, "Rada's Journey", "The Journey of Rada, by Griselle."),
+	TRANSVERGENCE_THEORY(ItemID.ARCEUUS_LIBRARY_TRANSVERGENCETHEORY, "Transvergence Theory", "The Theory of Transvergence, by Amon Ducot."),
+	TRISTESSAS_TRAGEDY(ItemID.ARCEUUS_LIBRARY_TRISTESSATRAGEDY, "Tristessa's Tragedy", "The Tragedy of Tristessa."),
+	TREACHERY_OF_ROYALTY(ItemID.ARCEUUS_LIBRARY_TREACHERYROYALTY, "The Treachery of Royalty", "The Treachery of Royalty, by Professor Answith."),
+	TRANSPORTATION_INCANTATIONS(ItemID.ARCEUUS_LIBRARY_TELEPORTUNLOCK, "Transportation Incantations", "Transportation Incantations, by Amon Ducot."),
+	SOUL_JOURNEY(ItemID.ARCEUUS_LIBRARY_SOULBEARERBOOK, "Soul Journey", "The Journey of Souls, by Aretha."),
+	VARLAMORE_ENVOY(ItemID.HOSIDIUSQUEST_BOOK, "Varlamore Envoy", "The Envoy to Varlamore, by Deryk Paulson.");
 
 	private static final Map<Integer, Book> BY_ID = buildById();
 
