@@ -108,6 +108,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, InterfaceID.Sanity.OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, InterfaceID.PmoonHud.CONTENT, "MOONS_OF_PERIL", OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, InterfaceID.MotherlodeHud.DATA, "MLM_LAYER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.WintStatus.STATUS, "WINTERTODT", OverlayPosition.TOP_LEFT),
 			// Castle Wars Lobby
 			new WidgetOverlay(client, InterfaceID.CastlewarsWaitingroom.CONTENT, "CASTLEWARS_LOBBY_TIME_REMAINING", OverlayPosition.TOP_CENTER),
 			// Castle Wars Saradomin
