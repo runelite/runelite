@@ -549,9 +549,6 @@ looting_bag_inventory=5
 [lunar_chest]
 id=868
 
-[wintertodt]
-id=303
-
 [minimap]
 id=160
 container=0
