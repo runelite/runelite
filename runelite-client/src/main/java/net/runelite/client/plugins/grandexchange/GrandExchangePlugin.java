@@ -896,7 +896,7 @@ public class GrandExchangePlugin extends Plugin
 			final int profit = highAlchValue - (itemManager.getItemPriceWithSource(itemId, true) + itemManager.getItemPriceWithSource(ItemID.NATURE_RUNE, true));
 			if (highAlchValue > 0)
 			{
-				sb.append("<br>High alch value: ").append(QuantityFormatter.formatNumber(highAlchValue)).append(" (").append(profit > 0 ? "+" : "").append(QuantityFormatter.formatNumber(profit)).append(")");
+				sb.append("<br>High alch value: ").append(QuantityFormatter.formatNumber(highAlchValue)).append(' ').append('(').append(profit > 0 ? '+' : "").append(QuantityFormatter.formatNumber(profit)).append(')');
 			}
 		}
 
