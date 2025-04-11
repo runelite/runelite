@@ -199,8 +199,6 @@ public class GrandExchangePlugin extends Plugin
 	private String machineUuid;
 	private long lastAccount;
 	private int tradeSeq;
-	
-	private int defaultGeTextLineHeight = -1;
 
 	private SavedOffer getOffer(int slot)
 	{
