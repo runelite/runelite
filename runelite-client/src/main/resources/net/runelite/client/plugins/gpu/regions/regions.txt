@@ -373,3 +373,13 @@ r 49 81
 // king black dragon lair
 n
 r 35 73
+
+// asgarnia ice dungeon
+n
+r 45 149
+r 46 149
+r 47 149
+m 48 149
+C 0 0 1 7
+m 47 150
+C 0 0 7 0
