@@ -954,7 +954,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+				final int magicLevelMoD = getMagicLevelMoD(client.getRealSkillLevel(Skill.MAGIC));
+				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevelMoD - 10, RSTimeUnit.GAME_TICKS));
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
@@ -975,8 +976,8 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (message.endsWith(MARK_OF_DARKNESS_MESSAGE) && config.showArceuusCooldown())
 		{
-			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-			createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
+			final int magicLevelMoD = getMagicLevelMoD(client.getRealSkillLevel(Skill.MAGIC));
+			createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevelMoD - 10, RSTimeUnit.GAME_TICKS));
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
@@ -1110,6 +1111,21 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeGameTimer(teleport);
 		}
+	}
+
+
+	private int getMagicLevelMoD(int magicLevel)
+	{
+		final ItemContainer container = client.getItemContainer(InventoryID.WORN);
+		if (container != null)
+		{
+			final Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+			if (weapon != null && weapon.getId() == ItemID.PURGING_STAFF)
+			{
+				return magicLevel * 5;
+			}
+		}
+		return magicLevel;
 	}
 
 	@Subscribe
