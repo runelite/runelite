@@ -95,7 +95,7 @@ public class WorldMapOverlay extends Overlay
 
 		Widget widget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 		Widget bottomBar = client.getWidget(InterfaceID.Worldmap.BOTTOM_GRAPHIC0);
-		if (widget == null || bottomBar == null)
+		if (widget == null || bottomBar == null || widget.isHidden())
 		{
 			return null;
 		}
