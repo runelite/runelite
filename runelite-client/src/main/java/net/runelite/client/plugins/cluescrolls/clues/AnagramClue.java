@@ -37,6 +37,7 @@ import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.api.gameval.VarbitID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -58,6 +59,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	static final List<AnagramClue> CLUES = ImmutableList.of(
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP2)
 			.text("A BAKER")
 			.npc("Baraek")
 			.location(new WorldPoint(3217, 3434, 0))
@@ -66,6 +68,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("5")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP4)
 			.text("A BASIC ANTI POT")
 			.npc("Captain Tobias")
 			.location(new WorldPoint(3026, 3216, 0))
@@ -74,12 +77,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("6")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("A ELF KNOWS")
 			.npc("Snowflake")
 			.location(new WorldPoint(2872, 3934, 0))
 			.area("Weiss")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP22)
 			.text("A HEART")
 			.npc("Aretha")
 			.location(new WorldPoint(1814, 3851, 0))
@@ -88,12 +93,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM018)
 			.text("AHA JAR")
 			.npc("Jaraah")
 			.location(new WorldPoint(3359, 3276, 0))
 			.area("Emir's Arena hospital")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM024)
 			.text("ARC O LINE")
 			.npc("Caroline")
 			.location(new WorldPoint(2715, 3302, 0))
@@ -102,6 +109,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("11")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM007)
 			.text("ARE COL")
 			.npc("Oracle")
 			.location(new WorldPoint(3013, 3501, 0))
@@ -110,6 +118,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("48")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP18)
 			.text("ARMCHAIR THE PELT")
 			.npc("Charlie the Tramp")
 			.location(new WorldPoint(3209, 3392, 0))
@@ -118,6 +127,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("0")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP9)
 			.text("AT HERG")
 			.npc("Regath")
 			.location(new WorldPoint(1719, 3723, 0))
@@ -126,12 +136,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("25")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM015)
 			.text("A BAS")
 			.npc("Saba")
 			.location(new WorldPoint(2858, 3577, 0))
 			.area("Death Plateau")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP16)
 			.text("AREA CHEF TREK")
 			.npc("Father Aereck")
 			.location(new WorldPoint(3243, 3208, 0))
@@ -140,24 +152,28 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answerProvider(AnagramClue::lumbridgeGravestoneCount)
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM014)
 			.text("BAIL TRIMS")
 			.npc("Brimstail")
 			.location(new WorldPoint(2402, 3419, 0))
 			.area("West of Stronghold Slayer Cave")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP13)
 			.text("BAKER CLIMB")
 			.npc("Brambickle")
 			.location(new WorldPoint(2783, 3861, 0))
 			.area("Trollweiss mountain")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP9)
 			.text("BLUE GRIM GUIDED")
 			.npc("Lumbridge Guide")
 			.location(new WorldPoint(3238, 3220, 0))
 			.area("Lumbridge")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_ANAGRAM002)
 			.text("BY LOOK")
 			.npc("Bolkoy")
 			.location(new WorldPoint(2526, 3162, 0))
@@ -166,6 +182,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("13")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP24)
 			.text("CALAMARI MADE MUD")
 			.npc("Madame Caldarium")
 			.location(new WorldPoint(2553, 2868, 0))
@@ -174,12 +191,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("6")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("CAR IF ICES")
 			.npc("Sacrifice")
 			.location(new WorldPoint(2209, 3056, 0))
 			.area("Zul-Andra")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP1)
 			.text("CAREER IN MOON")
 			.npc("Oneiromancer")
 			.location(new WorldPoint(2150, 3866, 0))
@@ -188,6 +207,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("25")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP23)
 			.text("CLASH ION")
 			.npc("Nicholas")
 			.location(new WorldPoint(1841, 3803, 0))
@@ -196,6 +216,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("4")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_ANAGRAM001)
 			.text("C ON GAME HOC")
 			.npc("Gnome Coach")
 			.location(new WorldPoint(2395, 3486, 0))
@@ -204,6 +225,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("6")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP7)
 			.text("COOL NERD")
 			.npc("Old crone")
 			.location(new WorldPoint(3462, 3557, 0))
@@ -212,6 +234,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("619")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP1)
 			.text("COPPER ORE CRYPTS")
 			.npc("Prospector Percy")
 			.location(new WorldPoint(3061, 3377, 0))
@@ -220,18 +243,21 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("12")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP15)
 			.text("DARN DRAKE")
 			.npc("Daer Krand")
 			.location(new WorldPoint(3728, 3302, 0))
 			.area("Sisterhood Sanctuary (Slepe Dungeon, northeast of Nightmare Arena)")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("DED WAR")
 			.npc("Edward")
 			.location(new WorldPoint(3284, 3943, 0))
 			.area("Inside Rogue's Castle")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP10)
 			.text("DEKAGRAM")
 			.npc("Dark Mage")
 			.location(new WorldPoint(3039, 4834, 0))
@@ -240,6 +266,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("13")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP6)
 			.text("DO SAY MORE")
 			.npc("Doomsayer")
 			.location(new WorldPoint(3230, 3230, 0))
@@ -248,12 +275,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("95")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("DIM THARN")
 			.npc("Mandrith")
 			.location(new WorldPoint(3182, 3946, 0))
 			.area("Wilderness Resource Area")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP3)
 			.text("DR HITMAN")
 			.npc("Mandrith")
 			.location(new WorldPoint(3182, 3946, 0))
@@ -262,12 +291,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("28")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP11)
 			.text("DR WARDEN FUNK")
 			.npc("Drunken Dwarf")
 			.location(new WorldPoint(2913, 10221, 0))
 			.area("East Side of Keldagrim")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP2)
 			.text("DRAGONS LAMENT")
 			.npc("Strange Old Man")
 			.location(new WorldPoint(3564, 3288, 0))
@@ -276,6 +307,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("40")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM021)
 			.text("DT RUN B")
 			.npc("Brundt the Chieftain")
 			.location(new WorldPoint(2658, 3670, 0))
@@ -284,12 +316,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("4")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("DUO PLUG")
 			.npc("Dugopul")
 			.location(new WorldPoint(2803, 2744, 0))
 			.area("Graveyard on Ape Atoll")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM003)
 			.text("EEK ZERO OP")
 			.npc("Zoo keeper")
 			.location(new WorldPoint(2613, 3269, 0))
@@ -298,24 +332,28 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("40")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM004)
 			.text("EL OW")
 			.npc("Lowe")
 			.location(new WorldPoint(3233, 3423, 0))
 			.area("Varrock archery store")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("FORLUN")
 			.npc("Runolf")
 			.location(new WorldPoint(2512, 10256, 0))
 			.area("Miscellania & Etceteria Dungeon")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM011)
 			.text("GOBLIN KERN")
 			.npc("King Bolren")
 			.location(new WorldPoint(2541, 3170, 0))
 			.area("Tree Gnome Village")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM021)
 			.text("GOT A BOY")
 			.npc("Gabooty")
 			.location(new WorldPoint(2790, 3066, 0))
@@ -324,6 +362,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("11")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP1)
 			.text("GOBLETS ODD TOES")
 			.npc("Otto Godblessed")
 			.location(new WorldPoint(2501, 3487, 0))
@@ -332,12 +371,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM012)
 			.text("HALT US")
 			.npc("Luthas")
 			.location(new WorldPoint(2938, 3152, 0))
 			.area("Banana plantation, Karamja")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP9)
 			.text("HEORIC")
 			.npc("Eohric")
 			.location(new WorldPoint(2897, 3565, 0))
@@ -346,6 +387,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("36")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP14)
 			.text("HIS PHOR")
 			.npc("Horphis")
 			.location(new WorldPoint(1639, 3812, 0))
@@ -354,6 +396,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("1")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP21)
 			.text("I AM SIR")
 			.npc("Marisi")
 			.location(new WorldPoint(1737, 3557, 0))
@@ -362,12 +405,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("5")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM020)
 			.text("ICY FE")
 			.npc("Fycie")
 			.location(new WorldPoint(2630, 2997, 0))
 			.area("East Feldip Hills")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP11)
 			.text("I DOOM ICON INN")
 			.npc("Dominic Onion")
 			.location(new WorldPoint(2609, 3116, 0))
@@ -376,6 +421,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("9,500")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP3)
 			.text("I EVEN")
 			.npc("Nieve")
 			.location(new WorldPoint(2432, 3422, 0))
@@ -384,6 +430,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP3)
 			.text("VESTE")
 			.npc("Steve")
 			.location(new WorldPoint(2432, 3423, 0))
@@ -392,12 +439,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("IM N ZEZIM")
 			.npc("Immenizz")
 			.location(new WorldPoint(2592, 4324, 0))
 			.area("The Imp inside Puro-Puro")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP8)
 			.text("KAY SIR")
 			.npc("Sir Kay")
 			.location(new WorldPoint(2760, 3496, 0))
@@ -406,6 +455,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("6")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP6)
 			.text("LEAKEY")
 			.npc("Kaylee")
 			.location(new WorldPoint(2957, 3370, 0))
@@ -414,6 +464,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("18")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM026)
 			.text("LARK IN DOG")
 			.npc("King Roald")
 			.location(new WorldPoint(3220, 3476, 0))
@@ -422,6 +473,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("24")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP12)
 			.text("LOW LAG")
 			.npc("Gallow")
 			.location(new WorldPoint(1805, 3566, 0))
@@ -430,6 +482,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("12")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP8)
 			.text("LADDER MEMO GUV")
 			.npc("Guard Vemmeldo")
 			.location(new WorldPoint(2447, 3418, 1))
@@ -438,12 +491,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("3")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("MAL IN TAU")
 			.npc("Luminata")
 			.location(new WorldPoint(3508, 3237, 0))
 			.area("Near Burgh de Rott entrance")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP5)
 			.text("MACHETE CLAM")
 			.npc("Cam the Camel")
 			.location(new WorldPoint(3300, 3231, 0))
@@ -452,18 +507,21 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("6")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM013)
 			.text("ME IF")
 			.npc("Femi")
 			.location(new WorldPoint(2461, 3382, 0))
 			.area("Gates of Tree Gnome Stronghold")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("MOLD LA RAN")
 			.npc("Old Man Ral")
 			.location(new WorldPoint(3602, 3209, 0))
 			.area("Meiyerditch")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP5)
 			.text("MOTHERBOARD")
 			.npc("Brother Omad")
 			.location(new WorldPoint(2606, 3211, 0))
@@ -472,18 +530,21 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("129")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("MUS KIL READER")
 			.npc("Radimus Erkle")
 			.location(new WorldPoint(2726, 3368, 0))
 			.area("Legends' Guild")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP14)
 			.text("MY MANGLE LAL")
 			.npc("Lammy Langle")
 			.location(new WorldPoint(1688, 3540, 0))
 			.area("Hosidius spirit tree patch")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP4)
 			.text("NO OWNER")
 			.npc("Oronwen")
 			.location(new WorldPoint(2326, 3178, 0))
@@ -492,6 +553,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("20")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM025)
 			.text("NOD MED")
 			.npc("Edmond")
 			.location(new WorldPoint(2566, 3332, 0))
@@ -500,6 +562,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("3")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_HARD_ANAGRAM003)
 			.text("O BIRDZ A ZANY EN PC")
 			.npc("Cap'n Izzy No-Beard")
 			.location(new WorldPoint(2807, 3191, 0))
@@ -508,6 +571,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("33")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM002)
 			.text("OK CO")
 			.npc("Cook")
 			.location(new WorldPoint(3207, 3214, 0))
@@ -516,6 +580,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("9")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP10)
 			.text("OUR OWN NEEDS")
 			.npc("Nurse Wooned")
 			.location(new WorldPoint(1511, 3619, 0))
@@ -524,6 +589,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("16")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP10)
 			.text("PACINNG A TAIE")
 			.npc("Captain Ginea")
 			.location(new WorldPoint(1504, 3632, 0))
@@ -532,6 +598,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("113")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP19)
 			.text("PEAK REFLEX")
 			.npc("Flax keeper")
 			.location(new WorldPoint(2744, 3444, 0))
@@ -540,12 +607,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("676")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM010)
 			.text("PEATY PERT")
 			.npc("Party Pete")
 			.location(new WorldPoint(3047, 3376, 0))
 			.area("Falador Party Room")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP12)
 			.text("QUIT HORRIBLE TYRANT")
 			.npc("Brother Tranquility")
 			.location(new WorldPoint(3681, 2963, 0))
@@ -554,6 +623,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("7")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP20)
 			.text("QUE SIR")
 			.npc("Squire")
 			.location(new WorldPoint(2975, 3343, 0))
@@ -562,6 +632,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("654")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM006)
 			.text("R AK MI")
 			.npc("Karim")
 			.location(new WorldPoint(3273, 3181, 0))
@@ -570,6 +641,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("5")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP3)
 			.text("RAT MAT WITHIN")
 			.npc("Martin Thwait")
 			.location(new WorldPoint(2906, 3537, 0))
@@ -578,6 +650,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP5)
 			.text("RATAI")
 			.npc("Taria")
 			.location(new WorldPoint(2940, 3223, 0))
@@ -586,6 +659,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("7")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP13)
 			.text("R SLICER")
 			.npc("Clerris")
 			.location(new WorldPoint(1761, 3850, 0))
@@ -594,12 +668,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("738")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("RIP MAUL")
 			.npc("Primula")
 			.location(new WorldPoint(2454, 2853, 1))
 			.area("Myth's Guild, first floor")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP17)
 			.text("SAND NUT")
 			.npc("Dunstan")
 			.location(new WorldPoint(2919, 3574, 0))
@@ -608,12 +684,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("8")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("SLAM DUSTER GRAIL")
 			.npc("Guildmaster Lars")
 			.location(new WorldPoint(1649, 3498, 0))
 			.area("Woodcutting guild, Zeah")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP4)
 			.text("SLIDE WOMAN")
 			.npc("Wise Old Man")
 			.location(new WorldPoint(3088, 3253, 0))
@@ -622,6 +700,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("28")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP11)
 			.text("SNAKES SO I SAIL")
 			.npc("Lisse Isaakson")
 			.location(new WorldPoint(2351, 3801, 0))
@@ -630,6 +709,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP15)
 			.text("TAMED ROCKS")
 			.npc("Dockmaster")
 			.location(new WorldPoint(1822, 3739, 0))
@@ -638,12 +718,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("5")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("TEN WIGS ON")
 			.npc("Wingstone")
 			.location(new WorldPoint(3389, 2877, 0))
 			.area("Between Nardah & Agility Pyramid")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP7)
 			.text("THICKNO")
 			.npc("Hickton")
 			.location(new WorldPoint(2822, 3442, 0))
@@ -652,12 +734,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("TWENTY CURE IRON")
 			.npc("New Recruit Tony")
 			.location(new WorldPoint(1503, 3553, 0))
 			.area("Shayzien Graveyard")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP6)
 			.text("UNLEASH NIGHT MIST")
 			.npc("Sigli the Huntsman")
 			.location(new WorldPoint(2660, 3654, 0))
@@ -666,6 +750,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("302")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP7)
 			.text("VEIL VEDA")
 			.npc("Evil Dave")
 			.location(new WorldPoint(3079, 9892, 0))
@@ -674,6 +759,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("666")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_HARD_ANAGRAM_EXP8)
 			.text("WOO AN EGG KIWI")
 			.npc("Awowogei")
 			.objectId(ObjectID.MM_THRONE)
@@ -683,6 +769,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("24")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP2)
 			.text("MAJORS LAVA BADS AIR")
 			.npc("Ambassador Alvijar")
 			.location(new WorldPoint(2736, 5351, 1))
@@ -691,60 +778,70 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("2505")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("AN EARL")
 			.npc("Ranael")
 			.location(new WorldPoint(3315, 3163, 0))
 			.area("Al Kharid skirt shop")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("CARPET AHOY")
 			.npc("Apothecary")
 			.location(new WorldPoint(3195, 3404, 0))
 			.area("Southwest Varrock")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("CHAR GAME DISORDER")
 			.npc("Archmage Sedridor")
 			.location(new WorldPoint(3102, 9570, 0))
 			.area("Wizards' Tower basement")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("I CORD")
 			.npc("Doric")
 			.location(new WorldPoint(2951, 3450, 0))
 			.area("North of Falador")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("IN BAR")
 			.npc("Brian")
 			.location(new WorldPoint(3026, 3246, 0))
 			.area("Port Sarim battleaxe shop")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("RAIN COVE")
 			.npc("Veronica")
 			.location(new WorldPoint(3110, 3330, 0))
 			.area("Outside Draynor Manor")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("RUG DETER")
 			.npc("Gertrude")
 			.location(new WorldPoint(3151, 3412, 0))
 			.area("West of Varrock, south of the Cooks' Guild")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("SIR SHARE RED")
 			.npc("Hairdresser")
 			.location(new WorldPoint(2944, 3381, 0))
 			.area("Western Falador")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_BEGINNER)
 			.text("TAUNT ROOF")
 			.npc("Fortunato")
 			.location(new WorldPoint(3080, 3250, 0))
 			.area("Draynor Village Market")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM023)
 			.text("HICK JET")
 			.npc("Jethick")
 			.location(new WorldPoint(2541, 3305, 0))
@@ -753,18 +850,21 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("38")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("RUE GO")
 			.npc("Goreu")
 			.location(new WorldPoint(2335, 3162, 0))
 			.area("Lletya")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("BRUCIE CATNAP")
 			.npc("Captain Bruce")
 			.location(new WorldPoint(1529, 3567, 0))
 			.area("East of Shayzien Graveyard")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_CIPHER007)
 			.text("UESNKRL NRIEDDO")
 			.npc("Drunken soldier")
 			.location(new WorldPoint(1551, 3565, 0))
@@ -773,12 +873,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.answer("598")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_VM01)
 			.text("LAME T")
 			.npc("Metla")
 			.location(new WorldPoint(1742, 2977, 0))
 			.area("Stonecutter Outpost")
 			.build(),
 		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_ANAGRAM_EXP12)
 			.text("CIRR JAD")
 			.npc("Jardric")
 			.locationProvider(plugin ->
@@ -794,6 +896,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build()
 	);
 
+	private final int itemId;
 	private final String text;
 	private final String npc;
 	@Getter(AccessLevel.PRIVATE)
@@ -807,6 +910,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	@Builder
 	private AnagramClue(
+		@Nullable Integer itemId,
 		String text,
 		String npc,
 		@Nullable WorldPoint location,
@@ -818,6 +922,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Nullable Integer objectId
 	)
 	{
+		this.itemId = itemId != null ? itemId : -1;
 		this.text = text;
 		this.npc = npc;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
@@ -898,6 +1003,19 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 				OverlayUtil.renderImageLocation(plugin.getClient(), graphics, gameObject.getLocalLocation(), plugin.getClueScrollImage(), IMAGE_Z_OFFSET);
 			}
 		}
+	}
+
+	public static AnagramClue forItemId(int itemId)
+	{
+		for (AnagramClue clue : CLUES)
+		{
+			if (clue.itemId == itemId)
+			{
+				return clue;
+			}
+		}
+
+		return null;
 	}
 
 	public static AnagramClue forText(String text)
