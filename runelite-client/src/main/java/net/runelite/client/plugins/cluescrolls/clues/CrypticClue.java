@@ -1478,12 +1478,6 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Talk to the Chemist in Rimmington")
 			.build(),
 		CrypticClue.builder()
-			.text("Show this to Hazelmere.")
-			.location(new WorldPoint(2677, 3088, 0))
-			.npc("Hazelmere")
-			.solution("Located upstairs in the house east of Yanille, north of fairy ring CLS.")
-			.build(),
-		CrypticClue.builder()
 			.text("Does one really need a fire to stay warm here?")
 			.location(new WorldPoint(3816, 3810, 0))
 			.solution("Dig next to the fire near the Volcanic Mine entrance on Fossil Island.")
