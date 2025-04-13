@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.rlbot.RLBotLogger;
 import net.runelite.client.plugins.rlbot.RLBotConstants;
+import net.runelite.client.plugins.rlbot.action.RLBotActionHandler;
 import spark.Spark;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -18,6 +19,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.Collections;
 import java.util.concurrent.Future;
+import java.awt.Point;
 
 /**
  * Handles REST API endpoints for the RLBot plugin.
@@ -30,6 +32,7 @@ public class RLBotRestHandler {
     private final Consumer<String> commandProcessor;
     private final Runnable gameStateGenerator;
     private final Consumer<Boolean> connectionStatusCallback;
+    private final RLBotActionHandler actionHandler;
     private boolean isRunning = false;
 
     // Request handling and rate limiting
@@ -46,7 +49,8 @@ public class RLBotRestHandler {
             Supplier<JsonNode> gameStateSupplier,
             Consumer<String> commandProcessor,
             Runnable gameStateGenerator,
-            Consumer<Boolean> connectionStatusCallback) {
+            Consumer<Boolean> connectionStatusCallback,
+            RLBotActionHandler actionHandler) {
         this.logger = logger;
         this.clientThread = clientThread;
         this.objectMapper = objectMapper;
@@ -54,6 +58,7 @@ public class RLBotRestHandler {
         this.commandProcessor = commandProcessor;
         this.gameStateGenerator = gameStateGenerator;
         this.connectionStatusCallback = connectionStatusCallback;
+        this.actionHandler = actionHandler;
 
         // Initialize request handling components
         this.requestQueue = new LinkedBlockingQueue<>(MAX_QUEUE_SIZE);
@@ -117,7 +122,73 @@ public class RLBotRestHandler {
                 });
             });
 
-            // POST endpoint for commands
+            // POST endpoint for mouse movement
+            Spark.post("/mouse/move", (request, response) -> {
+                response.type("application/json");
+                return handleRequest(() -> {
+                    try {
+                        JsonNode data = objectMapper.readTree(request.body());
+                        int x = data.get("x").asInt();
+                        int y = data.get("y").asInt();
+                        Point point = new Point(x, y);
+                        clientThread.invoke(() -> actionHandler.handleMouseMove(point));
+                        return "{\"status\": \"success\", \"message\": \"Mouse moved to " + x + "," + y + "\"}";
+                    } catch (Exception e) {
+                        logger.error("Error moving mouse: " + e.getMessage());
+                        return "{\"error\": \"Failed to move mouse\"}";
+                    }
+                });
+            });
+
+            // POST endpoint for mouse clicks
+            Spark.post("/mouse/click", (request, response) -> {
+                response.type("application/json");
+                return handleRequest(() -> {
+                    try {
+                        JsonNode data = objectMapper.readTree(request.body());
+                        String button = data.has("button") ? data.get("button").asText("left") : "left";
+                        clientThread.invoke(() -> actionHandler.handleMouseClick(button));
+                        return "{\"status\": \"success\", \"message\": \"Mouse clicked with " + button + " button\"}";
+                    } catch (Exception e) {
+                        logger.error("Error clicking mouse: " + e.getMessage());
+                        return "{\"error\": \"Failed to click mouse\"}";
+                    }
+                });
+            });
+
+            // POST endpoint for key presses
+            Spark.post("/key/press", (request, response) -> {
+                response.type("application/json");
+                return handleRequest(() -> {
+                    try {
+                        JsonNode data = objectMapper.readTree(request.body());
+                        String key = data.get("key").asText();
+                        clientThread.invoke(() -> actionHandler.handleKeyPress(key));
+                        return "{\"status\": \"success\", \"message\": \"Key pressed: " + key + "\"}";
+                    } catch (Exception e) {
+                        logger.error("Error pressing key: " + e.getMessage());
+                        return "{\"error\": \"Failed to press key\"}";
+                    }
+                });
+            });
+
+            // POST endpoint for text input
+            Spark.post("/key/type", (request, response) -> {
+                response.type("application/json");
+                return handleRequest(() -> {
+                    try {
+                        JsonNode data = objectMapper.readTree(request.body());
+                        String text = data.get("text").asText();
+                        clientThread.invoke(() -> actionHandler.handleTextInput(text));
+                        return "{\"status\": \"success\", \"message\": \"Text typed: " + text + "\"}";
+                    } catch (Exception e) {
+                        logger.error("Error typing text: " + e.getMessage());
+                        return "{\"error\": \"Failed to type text\"}";
+                    }
+                });
+            });
+
+            // POST endpoint for general commands
             Spark.post("/command", (request, response) -> handleRequest(() -> {
                 try {
                     commandProcessor.accept(request.body());

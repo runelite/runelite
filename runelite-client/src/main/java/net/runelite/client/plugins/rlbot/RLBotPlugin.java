@@ -115,7 +115,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     private NavigationButton stateViewerButton;
 
     private boolean isRunning = false;
-    private boolean shouldSendScreenshots = true;
     private boolean shouldSaveScreenshots = false;
 
     @Inject
@@ -187,7 +186,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         inputHandler = new RLBotInputHandler(logger, client, clientThread, keyManager, mouseManager);
         inputHandler.initialize();
         verifyInputHandler();
-        actionHandler = new RLBotActionHandler(client, logger, inputHandler);
+        actionHandler = new RLBotActionHandler(client, logger, inputHandler, keyManager, mouseManager);
 
         // Add the overlay to the overlay manager
         overlayManager.add(overlay);
@@ -203,7 +202,8 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 if (overlay != null) {
                     overlay.setWebsocketConnected(connected);
                 }
-            }
+            },
+            actionHandler
         );
         int port = config.websocketPort() > 0 ? config.websocketPort() : 43595;
         if (!restHandler.startServer(port)) {

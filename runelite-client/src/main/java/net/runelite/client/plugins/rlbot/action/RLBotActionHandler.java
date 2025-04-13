@@ -15,6 +15,11 @@ import net.runelite.client.plugins.rlbot.RLBotConstants;
 import net.runelite.client.plugins.rlbot.RLBotLogger;
 import net.runelite.client.plugins.rlbot.input.RLBotInputHandler;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
+import java.awt.event.MouseEvent;
+import java.awt.Component;
+import javax.inject.Inject;
 
 /**
  * Handles processing of actions from the WebSocket for the RLBot plugin.
@@ -36,17 +41,23 @@ public class RLBotActionHandler {
      */
     private final RLBotInputHandler inputHandler;
     
-    /**
-     * Creates a new RLBotActionHandler.
-     * 
-     * @param client The RuneLite client
-     * @param logger The logger
-     * @param inputHandler The input handler
-     */
-    public RLBotActionHandler(Client client, RLBotLogger logger, RLBotInputHandler inputHandler) {
+    private final KeyManager keyManager;
+    private final MouseManager mouseManager;
+    private final Component canvas;
+
+    @Inject
+    public RLBotActionHandler(
+            Client client,
+            RLBotLogger logger,
+            RLBotInputHandler inputHandler,
+            KeyManager keyManager,
+            MouseManager mouseManager) {
         this.client = client;
         this.logger = logger;
         this.inputHandler = inputHandler;
+        this.keyManager = keyManager;
+        this.mouseManager = mouseManager;
+        this.canvas = client.getCanvas();
     }
     
     /**
@@ -515,5 +526,193 @@ public class RLBotActionHandler {
         
         // Interface action logic would go here
         logger.debug("Interface action: " + parentId + ", " + childId + ", " + menuIndex);
+    }
+
+    /**
+     * Handles mouse movement to a specific point.
+     *
+     * @param point The point to move the mouse to
+     */
+    public void handleMouseMove(Point point) {
+        try {
+            logger.info("Moving mouse to: " + point.x + "," + point.y);
+            
+            // Create and dispatch mouse movement event
+            MouseEvent moveEvent = new MouseEvent(
+                canvas,
+                MouseEvent.MOUSE_MOVED,
+                System.currentTimeMillis(),
+                0,
+                point.x,
+                point.y,
+                0,
+                false
+            );
+            
+            mouseManager.processMouseMoved(moveEvent);
+            logger.info("Mouse move completed");
+            
+        } catch (Exception e) {
+            logger.error("Error moving mouse: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handles mouse clicks.
+     *
+     * @param button The mouse button to click ("left" or "right")
+     */
+    public void handleMouseClick(String button) {
+        try {
+            logger.info("Clicking mouse button: " + button);
+            
+            int buttonMask = button.equalsIgnoreCase("right") ? 
+                MouseEvent.BUTTON3_DOWN_MASK : MouseEvent.BUTTON1_DOWN_MASK;
+            int buttonNum = button.equalsIgnoreCase("right") ? 
+                MouseEvent.BUTTON3 : MouseEvent.BUTTON1;
+            
+            Point mousePos = new Point(client.getMouseCanvasPosition().getX(), 
+                                     client.getMouseCanvasPosition().getY());
+            long when = System.currentTimeMillis();
+            
+            // Mouse press
+            MouseEvent pressEvent = new MouseEvent(
+                canvas,
+                MouseEvent.MOUSE_PRESSED,
+                when,
+                buttonMask,
+                mousePos.x,
+                mousePos.y,
+                1,
+                false,
+                buttonNum
+            );
+            mouseManager.processMousePressed(pressEvent);
+            
+            // Small delay between press and release
+            Thread.sleep(50);
+            
+            // Mouse release
+            MouseEvent releaseEvent = new MouseEvent(
+                canvas,
+                MouseEvent.MOUSE_RELEASED,
+                when + 50,
+                buttonMask,
+                mousePos.x,
+                mousePos.y,
+                1,
+                false,
+                buttonNum
+            );
+            mouseManager.processMouseReleased(releaseEvent);
+            
+            logger.info("Mouse click completed");
+            
+        } catch (Exception e) {
+            logger.error("Error clicking mouse: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handles key press events.
+     *
+     * @param keyChar The key to press
+     */
+    public void handleKeyPress(String keyChar) {
+        try {
+            logger.info("Pressing key: " + keyChar);
+            
+            // Convert string to key code
+            int keyCode = KeyEvent.getExtendedKeyCodeForChar(keyChar.charAt(0));
+            long when = System.currentTimeMillis();
+            
+            // Key press
+            KeyEvent pressEvent = new KeyEvent(
+                canvas,
+                KeyEvent.KEY_PRESSED,
+                when,
+                0,
+                keyCode,
+                keyChar.charAt(0)
+            );
+            keyManager.processKeyPressed(pressEvent);
+            
+            // Small delay between press and release
+            Thread.sleep(50);
+            
+            // Key release
+            KeyEvent releaseEvent = new KeyEvent(
+                canvas,
+                KeyEvent.KEY_RELEASED,
+                when + 50,
+                0,
+                keyCode,
+                keyChar.charAt(0)
+            );
+            keyManager.processKeyReleased(releaseEvent);
+            
+            logger.info("Key press completed");
+            
+        } catch (Exception e) {
+            logger.error("Error pressing key: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Handles text input by simulating multiple key presses.
+     *
+     * @param text The text to type
+     */
+    public void handleTextInput(String text) {
+        try {
+            logger.info("Typing text: " + text);
+            
+            for (char c : text.toCharArray()) {
+                // Convert char to key code
+                int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+                long when = System.currentTimeMillis();
+                
+                // Key press
+                KeyEvent pressEvent = new KeyEvent(
+                    canvas,
+                    KeyEvent.KEY_PRESSED,
+                    when,
+                    0,
+                    keyCode,
+                    c
+                );
+                keyManager.processKeyPressed(pressEvent);
+                
+                // Key typed (for character input)
+                KeyEvent typedEvent = new KeyEvent(
+                    canvas,
+                    KeyEvent.KEY_TYPED,
+                    when + 10,
+                    0,
+                    KeyEvent.VK_UNDEFINED,
+                    c
+                );
+                keyManager.processKeyTyped(typedEvent);
+                
+                // Key release
+                KeyEvent releaseEvent = new KeyEvent(
+                    canvas,
+                    KeyEvent.KEY_RELEASED,
+                    when + 20,
+                    0,
+                    keyCode,
+                    c
+                );
+                keyManager.processKeyReleased(releaseEvent);
+                
+                // Small delay between characters
+                Thread.sleep(50);
+            }
+            
+            logger.info("Text input completed");
+            
+        } catch (Exception e) {
+            logger.error("Error typing text: " + e.getMessage());
+        }
     }
 } 
