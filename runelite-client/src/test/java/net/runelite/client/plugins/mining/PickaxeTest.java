@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.mining;
 
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class PickaxeTest
@@ -32,5 +33,14 @@ public class PickaxeTest
 	public void testInit()
 	{
 		Pickaxe.fromAnimation(0);
+	}
+
+	@Test
+	public void listAllAnimations()
+	{
+		for (Pickaxe pickaxe : Pickaxe.values())
+		{
+			assertEquals(pickaxe.name() + " does not have the expected 3 animations. (default, wall, noreachforward)", 3, pickaxe.getAnimIds().length);
+		}
 	}
 }
