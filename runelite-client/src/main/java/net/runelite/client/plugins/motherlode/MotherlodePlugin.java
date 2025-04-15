@@ -53,6 +53,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -73,6 +74,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.loottracker.PluginLootReceived;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.loottracker.LootRecordType;
+import net.runelite.client.Notifier;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -111,10 +113,15 @@ public class MotherlodePlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
+	@Inject
+	private Notifier notifier;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
 	private int curSackSize;
+	private int maxSackSize;
+	private int pendingPaydirt; // Track paydirt in the hopper not yet processed
 
 	private boolean shouldUpdateOres;
 	private Multiset<Integer> inventorySnapshot;
@@ -138,6 +145,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(sceneOverlay);
 
 		inMlm = checkInMlm();
+		pendingPaydirt = 0; // Reset pending paydirt on startup
 
 		if (inMlm)
 		{
@@ -152,6 +160,7 @@ public class MotherlodePlugin extends Plugin
 		veins.clear();
 		rocks.clear();
 		brokenStruts.clear();
+		pendingPaydirt = 0; // Reset pending paydirt on shutdown
 	}
 
 	@Subscribe
@@ -161,6 +170,14 @@ public class MotherlodePlugin extends Plugin
 		{
 			int lastSackValue = curSackSize;
 			refreshSackValues();
+			
+			// If sack value increased, reduce pending paydirt accordingly
+			int sackIncrease = curSackSize - lastSackValue;
+			if (sackIncrease > 0)
+			{
+				pendingPaydirt = Math.max(0, pendingPaydirt - sackIncrease);
+			}
+			
 			shouldUpdateOres = curSackSize < lastSackValue;
 			if (shouldUpdateOres)
 			{
@@ -382,6 +399,70 @@ public class MotherlodePlugin extends Plugin
 		shouldUpdateOres = false;
 	}
 
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!inMlm)
+		{
+			return;
+		}
+
+		// Track depositing paydirt into the hopper
+		if (event.getMenuOption().equals("Deposit") && event.getMenuTarget().contains("Hopper"))
+		{
+			ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+			if (inventory != null)
+			{
+				int paydirtCount = inventory.count(ItemID.PAYDIRT);
+				if (paydirtCount > 0)
+				{
+					// Remember the amount being deposited
+					pendingPaydirt += paydirtCount;
+				}
+			}
+		}
+		
+		// Handle preventing mining when sack would be full
+		if (config.preventMiningWhenSackFull() && event.getMenuOption().equals("Mine") && isSackFull())
+		{
+			// Check if the menu target contains "vein" which would indicate it's a mining action on a vein
+			String target = event.getMenuTarget().toLowerCase();
+			if (target.contains("vein") || target.contains("ore"))
+			{
+				// Get inventory paydirt count
+				ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+				int paydirtCount = 0;
+				if (inventory != null)
+				{
+					paydirtCount = inventory.count(ItemID.PAYDIRT);
+				}
+				
+				// Create appropriate message based on situation
+				String message;
+				if (curSackSize >= maxSackSize)
+				{
+					message = "Your sack is full of pay-dirt.";
+				}
+				else
+				{
+					int remainingSpace = maxSackSize - curSackSize;
+					message = "You have " + paydirtCount + " pay-dirt in your inventory";
+					
+					if (pendingPaydirt > 0)
+					{
+						message += ", " + pendingPaydirt + " in the hopper";
+					}
+					
+					message += ", and only " + remainingSpace + " space left in your sack.";
+				}
+				
+				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
+				event.consume();
+				notifier.notify("Sack full or would be full after depositing");
+			}
+		}
+	}
+
 	private boolean checkInMlm()
 	{
 		GameState gameState = client.getGameState();
@@ -408,6 +489,34 @@ public class MotherlodePlugin extends Plugin
 	private void refreshSackValues()
 	{
 		curSackSize = client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT);
+		boolean sackUpgraded = client.getVarbitValue(VarbitID.MOTHERLODE_BIGGERSACK) == 1;
+		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+	}
+
+	/**
+	 * Checks if the player's sack is full of pay-dirt or would be full after depositing inventory items
+	 *
+	 * @return true if the sack is full or would be full after depositing, false otherwise
+	 */
+	boolean isSackFull()
+	{
+		// Check current sack amount
+		if (curSackSize >= maxSackSize)
+		{
+			return true;
+		}
+		
+		// Check if sack would be full after depositing paydirt in inventory
+		// and considering pending paydirt in the hopper
+		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+		if (inventory != null)
+		{
+			int paydirtCount = inventory.count(ItemID.PAYDIRT);
+			return (curSackSize + paydirtCount + pendingPaydirt) >= maxSackSize;
+		}
+		
+		// If no inventory, just check pending paydirt
+		return (curSackSize + pendingPaydirt) >= maxSackSize;
 	}
 
 	/**

@@ -81,4 +81,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "preventMiningWhenSackFull",
+		name = "Prevent mining when sack full",
+		description = "Highlights pay-dirt veins in red when your sack is full to prevent you from mining more."
+	)
+	default boolean preventMiningWhenSackFull()
+	{
+		return false;
+	}
 }
