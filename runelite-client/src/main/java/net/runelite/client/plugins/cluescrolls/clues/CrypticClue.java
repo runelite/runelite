@@ -181,7 +181,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Identify the back of this over-acting brother. (He's a long way from home.)")
 			.location(new WorldPoint(3376, 3284, 0))
 			.npc("Hamid")
-			.solution("Talk to Hamid, the monk at the altar in the PvP Arena.")
+			.solution("Talk to Hamid, the monk at the altar in Emir's Arena.")
 			.build(),
 		CrypticClue.builder()
 			.text("In a town where thieves steal from stalls, search for some drawers in the upstairs of a house near the bank.")
@@ -764,7 +764,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Someone watching the fights at the Emir's Arena is your next destination.")
 			.location(new WorldPoint(3367, 3221, 0))
 			.npc("Jeed")
-			.solution("Talk to Jeed, found on the upper floors at the PvP Arena.")
+			.solution("Talk to Jeed, found on the upper floors at Emir's Arena.")
 			.build(),
 		CrypticClue.builder()
 			.text("It seems to have reached the end of the line, and it's still empty.")
