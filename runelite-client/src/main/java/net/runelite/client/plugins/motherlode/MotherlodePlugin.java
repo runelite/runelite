@@ -205,7 +205,6 @@ public class MotherlodePlugin extends Plugin
 
 		switch (chatMessage)
 		{
-
 			case "You just found a Diamond!":
 				if (config.trackGemsFound())
 				{
