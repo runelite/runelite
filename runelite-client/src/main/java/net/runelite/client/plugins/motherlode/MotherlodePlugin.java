@@ -77,17 +77,17 @@ import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.client.Notifier;
 
 @PluginDescriptor(
-	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherlode Mine",
-	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
-	enabledByDefault = false
+		name = "Motherlode Mine",
+		description = "Show helpful information inside the Motherlode Mine",
+		tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
+		enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ObjectID.MOTHERLODE_ORE_SINGLE, ObjectID.MOTHERLODE_ORE_LEFT, ObjectID.MOTHERLODE_ORE_MIDDLE, ObjectID.MOTHERLODE_ORE_RIGHT);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.MOTHERLODE_NUGGET);
+			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.MOTHERLODE_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ObjectID.MOTHERLODE_ROCKFALL_1, ObjectID.MOTHERLODE_ROCKFALL_2);
 
 	private static final int SACK_LARGE_SIZE = 189;
@@ -170,13 +170,13 @@ public class MotherlodePlugin extends Plugin
 		{
 			int lastSackValue = curSackSize;
 			refreshSackValues();
-			
+
 			int sackIncrease = curSackSize - lastSackValue;
 			if (sackIncrease > 0)
 			{
 				pendingPaydirt = Math.max(0, pendingPaydirt - sackIncrease);
 			}
-			
+
 			shouldUpdateOres = curSackSize < lastSackValue;
 			if (shouldUpdateOres)
 			{
@@ -186,8 +186,8 @@ public class MotherlodePlugin extends Plugin
 				{
 					inventorySnapshot = HashMultiset.create();
 					Arrays.stream(itemContainer.getItems())
-						.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
-						.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+							.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
+							.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 				}
 			}
 		}
@@ -239,11 +239,11 @@ public class MotherlodePlugin extends Plugin
 	private void broadcastLootItem(int itemId)
 	{
 		var lootEvent = PluginLootReceived.builder()
-			.source(this)
-			.name("Motherlode Mine")
-			.type(LootRecordType.EVENT)
-			.items(Collections.singleton(new ItemStack(itemId, 1, client.getLocalPlayer().getLocalLocation())))
-			.build();
+				.source(this)
+				.name("Motherlode Mine")
+				.type(LootRecordType.EVENT)
+				.items(Collections.singleton(new ItemStack(itemId, 1, client.getLocalPlayer().getLocalLocation())))
+				.build();
 		eventBus.post(lootEvent);
 	}
 
@@ -374,21 +374,21 @@ public class MotherlodePlugin extends Plugin
 		// Build set of current inventory
 		Multiset<Integer> current = HashMultiset.create();
 		Arrays.stream(container.getItems())
-			.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
-			.forEach(item -> current.add(item.getId(), item.getQuantity()));
+				.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
+				.forEach(item -> current.add(item.getId(), item.getQuantity()));
 
 		// Take the difference
 		Multiset<Integer> delta = Multisets.difference(current, inventorySnapshot);
 
 		// Advertise the loot
 		var lootEvent = PluginLootReceived.builder()
-			.source(this)
-			.name("Motherlode Mine")
-			.type(LootRecordType.EVENT)
-			.items(delta.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount()))
-				.collect(Collectors.toList()))
-			.build();
+				.source(this)
+				.name("Motherlode Mine")
+				.type(LootRecordType.EVENT)
+				.items(delta.entrySet().stream()
+						.map(e -> new ItemStack(e.getElement(), e.getCount()))
+						.collect(Collectors.toList()))
+				.build();
 		if (config.trackOresFound())
 		{
 			eventBus.post(lootEvent);
@@ -419,7 +419,7 @@ public class MotherlodePlugin extends Plugin
 				}
 			}
 		}
-		
+
 		// Prevent mining when sack would be full
 		if (config.preventMiningWhenSackFull() && event.getMenuOption().equals("Mine") && isSackFull())
 		{
@@ -432,7 +432,7 @@ public class MotherlodePlugin extends Plugin
 				{
 					paydirtCount = inventory.count(ItemID.PAYDIRT);
 				}
-				
+
 				String message;
 				if (curSackSize >= maxSackSize)
 				{
@@ -442,15 +442,15 @@ public class MotherlodePlugin extends Plugin
 				{
 					int remainingSpace = maxSackSize - curSackSize;
 					message = "You have " + paydirtCount + " pay-dirt in your inventory";
-					
+
 					if (pendingPaydirt > 0)
 					{
 						message += ", " + pendingPaydirt + " in the hopper";
 					}
-					
+
 					message += ", and only " + remainingSpace + " space left in your sack.";
 				}
-				
+
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
 				event.consume();
 				notifier.notify("Sack full or would be full after depositing");
@@ -462,7 +462,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		GameState gameState = client.getGameState();
 		if (gameState != GameState.LOGGED_IN
-			&& gameState != GameState.LOADING)
+				&& gameState != GameState.LOADING)
 		{
 			return false;
 		}
@@ -500,7 +500,7 @@ public class MotherlodePlugin extends Plugin
 		{
 			return true;
 		}
-		
+
 		// Check if sack would be full after depositing paydirt in inventory
 		// and considering pending paydirt in the hopper
 		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
@@ -509,7 +509,7 @@ public class MotherlodePlugin extends Plugin
 			int paydirtCount = inventory.count(ItemID.PAYDIRT);
 			return (curSackSize + paydirtCount + pendingPaydirt) >= maxSackSize;
 		}
-		
+
 		// If no inventory, just check pending paydirt
 		return (curSackSize + pendingPaydirt) >= maxSackSize;
 	}
