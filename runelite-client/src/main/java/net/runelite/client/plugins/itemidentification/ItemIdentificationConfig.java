@@ -336,4 +336,15 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showWines",
+		name = "Wines",
+		description = "Show identification on jugs of wine.",
+		section = identificationSection
+	)
+	default boolean showWines()
+	{
+		return false;
+	}
 }

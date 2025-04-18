@@ -577,7 +577,21 @@ enum ItemIdentification
 
 	OCCULT_NECKLACE(Type.JEWELLERY_ENCHANTED, "Occult", "OCC", ItemID.OCCULT_NECKLACE),
 	DRAGONBONE_NECKLACE(Type.JEWELLERY_ENCHANTED, "Dragon", "DRA", ItemID.DRAGONBONE_NECKLACE),
-	SLAYER_RING(Type.JEWELLERY_ENCHANTED, "Slayer", "SLA", ItemID.SLAYER_RING_1, ItemID.SLAYER_RING_2, ItemID.SLAYER_RING_3, ItemID.SLAYER_RING_4, ItemID.SLAYER_RING_5, ItemID.SLAYER_RING_6, ItemID.SLAYER_RING_7, ItemID.SLAYER_RING_8, ItemID.SLAYER_RING_ETERNAL);
+	SLAYER_RING(Type.JEWELLERY_ENCHANTED, "Slayer", "SLA", ItemID.SLAYER_RING_1, ItemID.SLAYER_RING_2, ItemID.SLAYER_RING_3, ItemID.SLAYER_RING_4, ItemID.SLAYER_RING_5, ItemID.SLAYER_RING_6, ItemID.SLAYER_RING_7, ItemID.SLAYER_RING_8, ItemID.SLAYER_RING_ETERNAL),
+
+	// Wines
+	JUG_OF_WATER(Type.WINES, "Water", "Wat", ItemID.JUG_WATER),
+	UNFERMENTED_WINE(Type.WINES, "Unf.", "U", ItemID.JUG_UNFERMENTED_WINE),
+	ZAMORAKS_UNFERMENTED_WINE(Type.WINES, "Unf. Z", "UZ", ItemID.JUG_UNFERMENTED_ZAMORAK_WINE),
+
+	JUG_OF_WINE(Type.WINES, "Wine", "W", ItemID.JUG_WINE),
+	WINE_OF_ZAMORAK(Type.WINES, "Zammy", "Z", ItemID.WINE_OF_ZAMORAK),
+	JUG_OF_BAD_WINE(Type.WINES, "Bad", "Bad", ItemID.JUG_BAD_WINE),
+	HALF_FULL_WINE_JUG(Type.WINES, "Half", "HF", ItemID.HALF_FULL_WINE_JUG),
+
+	JUG_OF_BLESSED_WINE(Type.WINES, "Blessed", "B", ItemID.JUG_WINE_BLESSED),
+	JUG_OF_SUNFIRE_WINE(Type.WINES, "Sunfire", "S", ItemID.JUG_SUNFIRE_WINE),
+	JUG_OF_BLESSED_SUNFIRE_WINE(Type.WINES, "B. Sun", "BS", ItemID.JUG_SUNFIRE_WINE_BLESSED);
 
 	final Type type;
 	final String medName;
@@ -641,7 +655,8 @@ enum ItemIdentification
 		TABLET(ItemIdentificationConfig::showTablets),
 		SCROLL(ItemIdentificationConfig::showTeleportScrolls),
 		JEWELLERY(ItemIdentificationConfig::showJewellery),
-		JEWELLERY_ENCHANTED(ItemIdentificationConfig::showEnchantedJewellery);
+		JEWELLERY_ENCHANTED(ItemIdentificationConfig::showEnchantedJewellery),
+		WINES(ItemIdentificationConfig::showWines);
 
 		final Predicate<ItemIdentificationConfig> enabled;
 	}
