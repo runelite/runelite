@@ -79,16 +79,14 @@ public interface GroundMarkerConfig extends Config
 		return 2;
 	}
 
+	@Alpha
 	@ConfigItem(
-		keyName = "fillOpacity",
-		name = "Fill opacity",
-		description = "Opacity of the tile fill color."
+		keyName = "fillColor",
+		name = "Fill color",
+		description = "The default fill color for marked tiles."
 	)
-	@Range(
-		max = 255
-	)
-	default int fillOpacity()
+	default Color fillColor()
 	{
-		return 50;
+		return new Color(0, 0, 0, 50);
 	}
 }
