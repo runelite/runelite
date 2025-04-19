@@ -30,7 +30,6 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
 @ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
