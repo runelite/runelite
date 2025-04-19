@@ -35,6 +35,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -69,6 +70,7 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -454,6 +456,8 @@ class PluginHubPanel extends PluginPanel
 	private final JPanel mainPanel;
 	private List<PluginItem> plugins = null;
 	private PluginHubManifest.ManifestFull lastManifest;
+	private final Timer filterTimer;
+	private static final int FILTER_DELAY = 400; // in milliseconds
 
 	@Inject
 	PluginHubPanel(
@@ -494,19 +498,28 @@ class PluginHubPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				filter();
+				filterTimer.restart();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				filter();
+				filterTimer.restart();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
+				filterTimer.restart();
+			}
+		});
+		filterTimer = new Timer(FILTER_DELAY, new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
 				filter();
+				filterTimer.stop();
 			}
 		});
 
