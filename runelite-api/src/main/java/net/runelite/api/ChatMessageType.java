@@ -194,6 +194,10 @@ public enum ChatMessageType
 	 */
 	NPC_SAY(116),
 	/**
+	 * Did you know?-es
+	 */
+	DIDYOUKNOW(117),
+	/**
 	 * An unknown message type.
 	 */
 	UNKNOWN(-1);
