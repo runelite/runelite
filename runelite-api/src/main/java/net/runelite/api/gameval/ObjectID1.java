@@ -65070,5 +65070,198 @@ class ObjectID1
 	 * Ladder
 	 */
 	public static final int GRANDTREE_LADDERMIDDLE_BOTTOM = 56233;
+	public static final int EASTER25_CARROT_CRATE_TRAIL_INVESTIGATE_1 = 56234;
+
+	/**
+	 * Curiously positioned crate of carrots
+	 */
+	public static final int EASTER25_CARROT_CRATE_TRAIL_1 = 56235;
+
+	/**
+	 * Curiously positioned crate of carrots
+	 */
+	public static final int EASTER25_CARROT_CRATE_INVESTIGATED_1 = 56236;
+
+	/**
+	 * Curiously positioned crate of carrots
+	 */
+	public static final int EASTER25_CARROT_CRATE_NOOP_1 = 56237;
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_INVESTIGATE_2 = 56238;
+
+	/**
+	 * Conspicuous carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_2 = 56239;
+
+	/**
+	 * Carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_INVESTIGATED_2 = 56240;
+
+	/**
+	 * Carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_NOOP_2 = 56241;
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_INVESTIGATE_3 = 56242;
+
+	/**
+	 * Suspicious carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_3 = 56243;
+
+	/**
+	 * Carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_INVESTIGATED_3 = 56244;
+
+	/**
+	 * Carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_TRAIL_NOOP_3 = 56245;
+	public static final int EASTER25_CARROT_TRAIL_1 = 56246;
+	public static final int EASTER25_CARROT_TRAIL_2 = 56247;
+	public static final int EASTER25_CARROT_TRAIL_3 = 56248;
+	public static final int EASTER25_RABBITHOLE_ENTRANCE = 56249;
+
+	/**
+	 * Bush
+	 */
+	public static final int EASTER25_RABBITHOLE_BUSH = 56250;
+
+	/**
+	 * Bush
+	 */
+	public static final int EASTER25_RABBITHOLE_ENTRANCE_BUSH = 56251;
+
+	/**
+	 * Hole
+	 */
+	public static final int EASTER25_RABBITHOLE_ENTRANCE_HOLE = 56252;
+
+	/**
+	 * Ladder
+	 */
+	public static final int EASTER25_RABBITHOLE_EXIT_LADDER = 56253;
+	public static final int EASTER25_PLANKS01 = 56254;
+	public static final int EASTER25_PLANKS02 = 56255;
+	public static final int EASTER25_PLANKS03 = 56256;
+	public static final int EASTER25_PLANKS01_LAYED01 = 56257;
+	public static final int EASTER25_PLANKS01_LAYED02 = 56258;
+	public static final int EASTER25_CARROT01_PILE01 = 56259;
+	public static final int EASTER25_CARROT01_PILE02 = 56260;
+	public static final int EASTER25_CARROT01_PILE03 = 56261;
+	public static final int EASTER25_CARROT01_PILE04 = 56262;
+
+	/**
+	 * Crate
+	 */
+	public static final int EASTER25_CRATE01_CARROT01 = 56263;
+	public static final int EASTER25_STALL01_DEFAULT01_MULTI01 = 56264;
+	public static final int EASTER25_STALL01_DEFAULT01_MULTI02 = 56265;
+	public static final int EASTER25_STALL01_DEFAULT01_MULTI03 = 56266;
+
+	/**
+	 * Market stall
+	 */
+	public static final int EASTER25_STALL01_DEFAULT01 = 56267;
+
+	/**
+	 * Market stall
+	 */
+	public static final int EASTER25_STALL01_BROKEN01 = 56268;
+
+	/**
+	 * Market stall
+	 */
+	public static final int EASTER25_STALL01_INCOMPLETE01 = 56269;
+
+	/**
+	 * Market stall
+	 */
+	public static final int EASTER25_STALL01_COMPLETE01 = 56270;
+
+	/**
+	 * Market stall
+	 */
+	public static final int EASTER25_STALL01_COMPLETE02 = 56271;
+
+	/**
+	 * Market stall
+	 */
+	public static final int EASTER25_STALL01_COMPLETE03 = 56272;
+	public static final int EASTER25_EGGS01_MULTI = 56273;
+	public static final int EASTER25_EGGS02_MULTI = 56274;
+	public static final int EASTER25_EGGS03_MULTI = 56275;
+	public static final int EASTER25_EGGS04_MULTI = 56276;
+
+	/**
+	 * Crate
+	 */
+	public static final int EASTER25_CRATE01 = 56277;
+	public static final int EASTER25_BUNTING01_MIDDLE01 = 56278;
+	public static final int EASTER25_BUNTING01_MIDDLE02 = 56279;
+	public static final int EASTER25_BUNTING01_POST01 = 56280;
+	public static final int EASTER25_BUNTING01_POST02 = 56281;
+
+	/**
+	 * Juice press
+	 */
+	public static final int EASTER25_JUICE_PRESS = 56282;
+	public static final int EASTER25_JUICE_SPLAT_1 = 56283;
+	public static final int EASTER25_JUICE_SPLAT_2 = 56284;
+	public static final int WALLKIT_EASTER25_CAVE01 = 56285;
+	public static final int EASTER25_PLANT01_CRYPT01 = 56286;
+	public static final int EASTER25_PLANT01_CRYPT02 = 56287;
+	public static final int EASTER25_PLANT01_CRYPT03 = 56288;
+	public static final int EASTER25_TORCH01_CRYPT01 = 56289;
+
+	/**
+	 * Fungus
+	 */
+	public static final int EASTER25_MUSHROOM01_CRYPT01 = 56290;
+
+	/**
+	 * Fungi
+	 */
+	public static final int EASTER25_MUSHROOM01_CRYPT02 = 56291;
+	public static final int EASTER25_MUSHROOM01_CRYPT03 = 56292;
+	public static final int EASTER25_SKEWSTEPS01_BRICK02 = 56293;
+	public static final int EASTER25_RAISIN_ROCK_FLAT = 56294;
+
+	/**
+	 * Sack of grapes
+	 */
+	public static final int EASTER25_GRAPE_SACK = 56295;
+
+	/**
+	 * Sack of raisins
+	 */
+	public static final int EASTER25_RAISIN_SACK = 56296;
+	public static final int EASTER25_SACK_MULTI = 56297;
+
+	/**
+	 * Old bookcase
+	 */
+	public static final int EASTER25_PERFORMANCE_BOOKCASE = 56298;
+
+	/**
+	 * Wardrobe
+	 */
+	public static final int EASTER25_PERFORMANCE_WARDROBE = 56299;
+	public static final int EASTER25_PILLAR01_CURTAIN01 = 56300;
+	public static final int EASTER25_PILLAR01_CURTAIN01_M = 56301;
+	public static final int EASTER25_PILLAR01_POLE01 = 56302;
+	public static final int EASTER25_STEPS_BASIC01 = 56303;
+	public static final int EASTER25_SCAFFOLD_RAIL = 56304;
+	public static final int EASTER25_THEATRE_CURTAINS_RIGHT = 56305;
+	public static final int EASTER25_THEATRE_CURTAINS_LEFT = 56306;
+	public static final int EASTER25_THEATRE_CURTAINS_SIDE = 56307;
+	public static final int EASTER25_THEATRE_CURTAINS_CORNER_LEFT = 56308;
+	public static final int EASTER25_THEATRE_CURTAINS_CORNER_RIGHT = 56309;
+
+	/**
+	 * Carrot Pin
+	 */
+	public static final int EASTER25_CARROT_BOWLINGPIN01 = 56310;
 /* This file is automatically generated. Do not edit. */
 }

@@ -6443,11 +6443,6 @@ public final class ObjectID extends ObjectID1
 	public static final int WIZARDS_TOWER_LADDER = 2148;
 
 	/**
-	 * Obelisk
-	 */
-	public static final int OBELISK = 2149;
-
-	/**
 	 * Obelisk of Earth
 	 */
 	public static final int OBELISK_EARTH = 2150;
@@ -9308,6 +9303,11 @@ public final class ObjectID extends ObjectID1
 	public static final int ALIDOOR = 2881;
 	public static final int BCS_MAISA_CAMP_TENT = 2882;
 	public static final int BCS_FURNACE = 2883;
+
+	/**
+	 * Carrot scraps
+	 */
+	public static final int EASTER25_CARROT_SCRAPS_NO_TRAIL = 2884;
 
 	/**
 	 * Cupboard
