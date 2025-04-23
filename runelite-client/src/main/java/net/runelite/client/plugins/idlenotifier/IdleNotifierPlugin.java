@@ -492,6 +492,7 @@ public class IdleNotifierPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
+		lastCombatStarted = null;
 
 		GameState state = gameStateChanged.getGameState();
 
@@ -913,7 +914,6 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				lastInteract = null;
 				lastInteracting = null;
-				lastCombatStarted = null;
 
 				// prevent animation notifications from firing too
 				lastAnimation = -1;
@@ -1063,6 +1063,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		// Reset interaction idle timer
 		lastInteracting = null;
+		lastCombatStarted = null;
 		if (gameState == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
