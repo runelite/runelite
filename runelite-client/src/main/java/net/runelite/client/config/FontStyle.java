@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tanner <https://github.com/Reasel>
+ * Copyright (c) 2025, Hamish <https://github.com/DustyRealm>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,45 +24,21 @@
  */
 package net.runelite.client.config;
 
-import lombok.RequiredArgsConstructor;
 import lombok.Getter;
-import net.runelite.client.ui.FontManager;
-import javax.swing.text.StyleContext;
+import lombok.RequiredArgsConstructor;
 import java.awt.Font;
 
-
 @RequiredArgsConstructor
-public enum FontType
+public enum FontStyle
 {
-	REGULAR("Regular", FontManager.getRunescapeFont()),
-	BOLD("Bold", FontManager.getRunescapeBoldFont()),
-	SMALL("Small", FontManager.getRunescapeSmallFont()),
-	CUSTOM("Custom", FontManager.getRunescapeSmallFont());
+	PLAIN("Plain", Font.PLAIN),
+	BOLD("Bold", Font.BOLD),
+	ITALIC("Italic", Font.ITALIC);
 
 	@Getter
 	private final String name;
 	@Getter
-	private final Font defaultFont;
-
-	/**
-	 * @deprecated This method is deprecated because handling CUSTOM font types requires a {@code RuneLiteConfig}.
-	 * Use {@link #getFont(RuneLiteConfig)} instead.
-	 */
-	@Deprecated
-	public Font getFont()
-	{
-		return getFont(null);
-	}
-
-	public Font getFont(final RuneLiteConfig config)
-	{
-		if (this == CUSTOM && config != null)
-		{
-			return StyleContext.getDefaultStyleContext()
-				.getFont(config.customFont(), config.customFontStyle().getStyle(), config.customFontSize());
-		}
-		return defaultFont;
-	}
+	private final int style;
 
 	@Override
 	public String toString()

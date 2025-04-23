@@ -29,9 +29,15 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 import javax.swing.text.StyleContext;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 
+@Slf4j
 public class FontManager
 {
 	@Getter
@@ -54,31 +60,25 @@ public class FontManager
 			InputStream inRunescapeBold = FontManager.class.getResourceAsStream("runescape_bold.ttf"))
 		{
 			// runescape
-			Font font = Font.createFont(Font.TRUETYPE_FONT, inRunescape)
-				.deriveFont(Font.PLAIN, 16);
+			Font font = Font.createFont(Font.TRUETYPE_FONT, inRunescape);
 			ge.registerFont(font);
 
 			runescapeFont = StyleContext.getDefaultStyleContext()
-				.getFont(font.getName(), Font.PLAIN, 16);
-			ge.registerFont(runescapeFont);
+				.getFont(font.getFamily(), Font.PLAIN, 16);
 
 			// small
-			Font smallFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeSmall)
-				.deriveFont(Font.PLAIN, 16);
+			Font smallFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeSmall);
 			ge.registerFont(smallFont);
 
 			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-				.getFont(smallFont.getName(), Font.PLAIN, 16);
-			ge.registerFont(runescapeSmallFont);
+				.getFont(smallFont.getFamily(), Font.PLAIN, 16);
 
 			// bold
-			Font boldFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeBold)
-				.deriveFont(Font.BOLD, 16);
+			Font boldFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeBold);
 			ge.registerFont(boldFont);
 
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-				.getFont(boldFont.getName(), Font.BOLD, 16);
-			ge.registerFont(runescapeBoldFont);
+				.getFont(boldFont.getFamily(), Font.BOLD, 16);
 		}
 		catch (FontFormatException ex)
 		{
@@ -87,6 +87,41 @@ public class FontManager
 		catch (IOException ex)
 		{
 			throw new RuntimeException("Font file not found.", ex);
+		}
+
+		// Load custom fonts
+		Path customFontsPath = RuneLite.FONTS_DIR.toPath();
+		if (Files.isDirectory(customFontsPath))
+		{
+			try (Stream<Path> paths = Files.list(customFontsPath))
+			{
+				paths.filter(Files::isRegularFile)
+					.filter(path ->
+						{
+							String name = path.getFileName().toString().toLowerCase();
+							return name.endsWith(".ttf") || name.endsWith(".otf");
+						}
+					)
+					.forEach(path ->
+						{
+							try (InputStream inFont = Files.newInputStream(path))
+							{
+								Font font = Font.createFont(Font.TRUETYPE_FONT, inFont);
+								ge.registerFont(font);
+
+								log.info("Loaded custom font: {}", font.getFamily());
+							}
+							catch (IOException | FontFormatException ex)
+							{
+								log.error("Error loading custom font: {}", path, ex);
+							}
+						}
+					);
+			}
+			catch (IOException ex)
+			{
+				log.error("Error loading fonts from: {}", customFontsPath, ex);
+			}
 		}
 
 		defaultFont = new Font(Font.DIALOG, Font.PLAIN, 16);

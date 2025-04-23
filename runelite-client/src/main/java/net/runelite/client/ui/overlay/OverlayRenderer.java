@@ -714,15 +714,15 @@ public class OverlayRenderer extends MouseAdapter
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			graphics.setFont(runeLiteConfig.fontType().getFont());
+			graphics.setFont(runeLiteConfig.fontType().getFont(runeLiteConfig));
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			graphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			graphics.setFont(runeLiteConfig.tooltipFontType().getFont(runeLiteConfig));
 		}
 		else
 		{
-			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			graphics.setFont(runeLiteConfig.interfaceFontType().getFont(runeLiteConfig));
 		}
 
 		graphics.translate(point.x, point.y);

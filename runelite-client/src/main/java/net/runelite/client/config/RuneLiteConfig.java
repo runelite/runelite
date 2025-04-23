@@ -424,6 +424,43 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "customFont",
+		name = "Custom font",
+		description = "Place TTF/OTF fonts in .runelite/fonts/ and enter the font family name here, e.g., Serif. All system fonts are also available.",
+		position = 45,
+		section = overlaySettings
+	)
+	default String customFont()
+	{
+		return FontType.CUSTOM.getDefaultFont().getFamily();
+	}
+
+	@ConfigItem(
+		keyName = "customFontStyle",
+		name = "Custom font Style",
+		description = "Configures the custom font style.",
+		position = 46,
+		section = overlaySettings
+	)
+	default FontStyle customFontStyle()
+	{
+		return FontStyle.PLAIN;
+	}
+
+	@Range
+	@ConfigItem(
+		keyName = "customFontSize",
+		name = "Custom font size",
+		description = "Configures the custom font size.",
+		position = 47,
+		section = overlaySettings
+	)
+	default int customFontSize()
+	{
+		return 12;
+	}
+
+	@ConfigItem(
 		keyName = "sidebarToggleKey",
 		name = "Sidebar toggle key",
 		description = "The key that will toggle the sidebar (accepts modifiers).",
