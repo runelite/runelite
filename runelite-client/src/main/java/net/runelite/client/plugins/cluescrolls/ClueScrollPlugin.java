@@ -351,7 +351,7 @@ public class ClueScrollPlugin extends Plugin
 				|| itemComposition.getName().startsWith("Treasure scroll"))
 			{
 				clueItemId = itemComposition.getId();
-				updateClue(MapClue.forItemId(clueItemId));
+				updateClue(findClueScroll(clueItemId));
 			}
 		}
 		else if (event.getMenuOption().equals("Search")	&& clue instanceof EmoteClue)
