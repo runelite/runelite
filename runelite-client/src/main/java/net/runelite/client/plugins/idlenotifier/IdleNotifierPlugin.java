@@ -28,6 +28,7 @@ package net.runelite.client.plugins.idlenotifier;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
@@ -47,6 +48,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.AnimationID;
@@ -68,6 +70,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
+	private static final int IDLE_AUTO_RETALIATE_TRIGGER_TICKS = 20 * 60 * 1000 / Constants.CLIENT_TICK_LENGTH;
 	private static final int IDLE_LOGOUT_WARNING_BUFFER = 20_000 / Constants.CLIENT_TICK_LENGTH;
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
 	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / Constants.CLIENT_TICK_LENGTH;
@@ -94,6 +97,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant lastInteracting;
 	private Actor lastInteract;
 	private Instant lastMoving;
+	private Instant lastCombatStarted;
 	private WorldPoint lastPosition;
 	private boolean notifyPosition = false;
 	private boolean notifyHitpoints = true;
@@ -125,6 +129,19 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!"Attack".equals(event.getMenuOption()))
+		{
+			lastCombatStarted = null;
+		}
+		else
+		{
+			lastCombatStarted = Instant.now();
+		}
+	}
+
+	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -138,7 +155,6 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		int graphic = localPlayer.getGraphic();
 		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
@@ -411,7 +427,7 @@ public class IdleNotifierPlugin extends Plugin
 				lastAnimating = Instant.now();
 				break;
 			case AnimationID.LUNAR_HUMAN_MAGIC_SUMMON2:
-				if (graphic == SpotanimID.QUEST_LUNAR_BAKEPIE_SPOTANIM)
+				if (localPlayer.hasSpotAnim(SpotanimID.QUEST_LUNAR_BAKEPIE_SPOTANIM))
 				{
 					resetTimers();
 					lastAnimation = animation;
@@ -526,7 +542,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getGraphic() == SpotanimID.FAILEDSPELL_IMPACT)
+		if (actor.hasSpotAnim(SpotanimID.FAILEDSPELL_IMPACT))
 		{
 			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
@@ -572,7 +588,14 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			if (lastInteractWasCombat)
 			{
-				notifier.notify(config.interactionIdle(), "You are now out of combat!");
+				if (lastCombatStarted == null)
+				{
+					notifier.notify(config.interactionIdle(), "You are no longer auto-retaliating!");
+				}
+				else
+				{
+					notifier.notify(config.interactionIdle(), "You are now out of combat!");
+				}
 			}
 			else
 			{
@@ -711,6 +734,10 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteract = target;
 			lastInteracting = Instant.now();
 			lastInteractWasCombat = true;
+			if (lastCombatStarted == null)
+			{
+				lastCombatStarted = Instant.now();
+			}
 		}
 		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
 		{
@@ -860,6 +887,17 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkInteractionIdle(Duration waitDuration, Player local)
 	{
+		if (lastCombatStarted != null)
+		{
+			final int idleClientTicks = Math.min(client.getKeyboardIdleTicks(), client.getMouseIdleTicks());
+			boolean isTimeElapsed = Instant.now().compareTo(lastCombatStarted.plus(20, ChronoUnit.MINUTES)) >= 0;
+			if (isTimeElapsed && idleClientTicks >= IDLE_AUTO_RETALIATE_TRIGGER_TICKS)
+			{
+				lastCombatStarted = null;
+				return true;
+			}
+		}
+
 		if (lastInteract == null)
 		{
 			return false;
@@ -875,6 +913,7 @@ public class IdleNotifierPlugin extends Plugin
 			{
 				lastInteract = null;
 				lastInteracting = null;
+				lastCombatStarted = null;
 
 				// prevent animation notifications from firing too
 				lastAnimation = -1;
