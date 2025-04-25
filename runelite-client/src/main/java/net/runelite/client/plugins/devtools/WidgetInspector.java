@@ -146,13 +146,13 @@ class WidgetInspector extends DevToolsFrame
 		});
 
 		final JScrollPane treeScrollPane = new JScrollPane(widgetTree);
-		treeScrollPane.setPreferredSize(new Dimension(200, 400));
+		treeScrollPane.setPreferredSize(new Dimension(400, 800));
 
 
 		final JTable widgetInfo = new JTable(infoTableModel);
 
 		final JScrollPane infoScrollPane = new JScrollPane(widgetInfo);
-		infoScrollPane.setPreferredSize(new Dimension(400, 400));
+		infoScrollPane.setPreferredSize(new Dimension(600, 800));
 
 
 		final JPanel bottomPanel = new JPanel();
