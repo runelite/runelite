@@ -59,7 +59,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
@@ -335,9 +334,21 @@ class WidgetInspector extends DevToolsFrame
 			//until it's actually needed.
 			try
 			{
-				for (Field f : ComponentID.class.getDeclaredFields())
+				for (Field field : InterfaceID.class.getDeclaredFields())  // is this block unnecessary?
 				{
-					widgetNames.put(f.getInt(null), f.getName());
+					int id = field.getInt(null);
+					String name = field.getName();
+					widgetNames.put(id * 65536, name);
+				}
+
+				for (Class<?> innerClass : InterfaceID.class.getDeclaredClasses())
+				{
+					for (Field field : innerClass.getDeclaredFields())
+					{
+						int id = field.getInt(null);
+						String name = innerClass.getSimpleName() + "." + field.getName();
+						widgetNames.put(id, name);
+					}
 				}
 			}
 			catch (IllegalAccessException ex)
