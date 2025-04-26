@@ -313,51 +313,51 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "fontType",
+		keyName = "dynamicOverlayFont",
 		name = "Dynamic overlay font",
-		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
+		description = "Configures what font is used for in-game overlays such as player name, ground items, etc.",
 		position = 30,
 		section = overlaySettings
 	)
-	default FontType fontType()
+	default RuneLiteFont dynamicOverlayFont()
 	{
-		return FontType.SMALL;
+		return RuneLiteFont.DEFAULT_SMALL;
 	}
 
 	@ConfigItem(
-		keyName = "tooltipFontType",
+		keyName = "tooltipFont",
 		name = "Tooltip font",
-		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
+		description = "Configures what font is used for in-game tooltips such as food stats, NPC names, etc.",
 		position = 31,
 		section = overlaySettings
 	)
-	default FontType tooltipFontType()
+	default RuneLiteFont tooltipFont()
 	{
-		return FontType.SMALL;
+		return RuneLiteFont.DEFAULT_SMALL;
 	}
 
 	@ConfigItem(
-		keyName = "interfaceFontType",
+		keyName = "interfaceFont",
 		name = "Interface font",
-		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
+		description = "Configures what font is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
 		position = 32,
 		section = overlaySettings
 	)
-	default FontType interfaceFontType()
+	default RuneLiteFont interfaceFont()
 	{
-		return FontType.REGULAR;
+		return RuneLiteFont.DEFAULT;
 	}
 
 	@ConfigItem(
-		keyName = "infoboxFontType",
+		keyName = "infoboxFont",
 		name = "Infobox font",
-		description = "Configures what font type is used for infoboxes.",
+		description = "Configures what font is used for infoboxes.",
 		position = 33,
 		section = overlaySettings
 	)
-	default FontType infoboxFontType()
+	default RuneLiteFont infoboxFont()
 	{
-		return FontType.REGULAR;
+		return RuneLiteFont.DEFAULT;
 	}
 
 	@ConfigItem(
@@ -421,43 +421,6 @@ public interface RuneLiteConfig extends Config
 	default Color overlayBackgroundColor()
 	{
 		return ComponentConstants.STANDARD_BACKGROUND_COLOR;
-	}
-
-	@ConfigItem(
-		keyName = "customFont",
-		name = "Custom font",
-		description = "Place TTF/OTF fonts in .runelite/fonts/ and enter the font family name here, e.g., Serif. All system fonts are also available.",
-		position = 45,
-		section = overlaySettings
-	)
-	default String customFont()
-	{
-		return FontType.CUSTOM.getDefaultFont().getFamily();
-	}
-
-	@ConfigItem(
-		keyName = "customFontStyle",
-		name = "Custom font Style",
-		description = "Configures the custom font style.",
-		position = 46,
-		section = overlaySettings
-	)
-	default FontStyle customFontStyle()
-	{
-		return FontStyle.PLAIN;
-	}
-
-	@Range
-	@ConfigItem(
-		keyName = "customFontSize",
-		name = "Custom font size",
-		description = "Configures the custom font size.",
-		position = 47,
-		section = overlaySettings
-	)
-	default int customFontSize()
-	{
-		return 12;
 	}
 
 	@ConfigItem(

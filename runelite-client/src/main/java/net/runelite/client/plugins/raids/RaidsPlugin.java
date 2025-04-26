@@ -811,7 +811,7 @@ public class RaidsPlugin extends Plugin
 		Rectangle overlayDimensions = overlay.getBounds();
 		BufferedImage overlayImage = new BufferedImage(overlayDimensions.width, overlayDimensions.height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphic = overlayImage.createGraphics();
-		graphic.setFont(runeLiteConfig.interfaceFontType().getFont(runeLiteConfig));
+		graphic.setFont(runeLiteConfig.interfaceFont().getFont());
 		graphic.setColor(Color.BLACK);
 		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
 		overlay.render(graphic);

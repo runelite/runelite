@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tanner <https://github.com/Reasel>
+ * Copyright (c) 2025, Hamish <https://github.com/DustyRealm>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,54 @@
  */
 package net.runelite.client.config;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Getter;
-import net.runelite.client.ui.FontManager;
-import javax.swing.text.StyleContext;
+import com.google.gson.Gson;
+import com.google.inject.Inject;
 import java.awt.Font;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.With;
+import net.runelite.client.ui.FontManager;
 
-
-@RequiredArgsConstructor
-public enum FontType
+@ConfigSerializer(RuneLiteFontSerializer.class)
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Getter
+@With
+public class RuneLiteFont
 {
-	REGULAR("Regular", FontManager.getRunescapeFont()),
-	BOLD("Bold", FontManager.getRunescapeBoldFont()),
-	SMALL("Small", FontManager.getRunescapeSmallFont()),
-	CUSTOM("Custom", FontManager.getRunescapeSmallFont());
+	public static final RuneLiteFont DEFAULT = new RuneLiteFont(FontManager.getRunescapeFont().getFamily(), FontStyle.PLAIN, 16);
+	public static final RuneLiteFont DEFAULT_SMALL = new RuneLiteFont(FontManager.getRunescapeSmallFont().getFamily(), FontStyle.PLAIN, 16);
 
-	@Getter
-	private final String name;
-	@Getter
-	private final Font defaultFont;
+	String family;
+	FontStyle style;
+	int size;
 
-	/**
-	 * @deprecated This method is deprecated because handling CUSTOM font types requires a {@code RuneLiteConfig}.
-	 * Use {@link #getFont(RuneLiteConfig)} instead.
-	 */
-	@Deprecated
 	public Font getFont()
 	{
-		return getFont(null);
+		return FontManager.getFont(family, style.getStyle(), size);
 	}
+}
 
-	public Font getFont(final RuneLiteConfig config)
+class RuneLiteFontSerializer implements Serializer<RuneLiteFont>
+{
+	private final Gson gson;
+
+	@Inject
+	private RuneLiteFontSerializer(Gson gson)
 	{
-		if (this == CUSTOM && config != null)
-		{
-			return StyleContext.getDefaultStyleContext()
-				.getFont(config.customFont(), config.customFontStyle().getStyle(), config.customFontSize());
-		}
-		return defaultFont;
+		this.gson = gson;
 	}
 
 	@Override
-	public String toString()
+	public String serialize(RuneLiteFont value)
 	{
-		return name;
+		return gson.toJson(value);
+	}
+
+	@Override
+	public RuneLiteFont deserialize(String s)
+	{
+		return gson.fromJson(s, RuneLiteFont.class);
 	}
 }

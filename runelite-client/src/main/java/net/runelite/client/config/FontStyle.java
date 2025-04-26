@@ -28,6 +28,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import java.awt.Font;
 
+@Getter
 @RequiredArgsConstructor
 public enum FontStyle
 {
@@ -35,9 +36,7 @@ public enum FontStyle
 	BOLD("Bold", Font.BOLD),
 	ITALIC("Italic", Font.ITALIC);
 
-	@Getter
 	private final String name;
-	@Getter
 	private final int style;
 
 	@Override

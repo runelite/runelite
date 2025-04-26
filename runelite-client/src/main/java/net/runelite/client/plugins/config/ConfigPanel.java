@@ -83,6 +83,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ConfigObject;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ConfigSectionDescriptor;
+import net.runelite.client.config.RuneLiteFont;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Notification;
@@ -141,6 +142,7 @@ class ConfigPanel extends PluginPanel
 	private final ExternalPluginManager externalPluginManager;
 	private final ColorPickerManager colorPickerManager;
 	private final Provider<NotificationPanel> notificationPanelProvider;
+	private final Provider<FontConfigPanel> fontConfigPanelProvider;
 
 	private final TitleCaseListCellRenderer listCellRenderer = new TitleCaseListCellRenderer();
 
@@ -157,7 +159,8 @@ class ConfigPanel extends PluginPanel
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
 		ColorPickerManager colorPickerManager,
-		Provider<NotificationPanel> notificationPanelProvider
+		Provider<NotificationPanel> notificationPanelProvider,
+		Provider<FontConfigPanel> fontConfigPanelProvider
 	)
 	{
 		super(false);
@@ -168,6 +171,7 @@ class ConfigPanel extends PluginPanel
 		this.externalPluginManager = externalPluginManager;
 		this.colorPickerManager = colorPickerManager;
 		this.notificationPanelProvider = notificationPanelProvider;
+		this.fontConfigPanelProvider = fontConfigPanelProvider;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -389,6 +393,10 @@ class ConfigPanel extends PluginPanel
 			else if (cid.getType() == Notification.class)
 			{
 				item.add(createNotification(cd, cid), BorderLayout.EAST);
+			}
+			else if (cid.getType() == RuneLiteFont.class)
+			{
+				item.add(createRuneLiteFont(cd, cid), BorderLayout.EAST);
 			}
 			else if (cid.getType() instanceof ParameterizedType)
 			{
@@ -700,6 +708,30 @@ class ConfigPanel extends PluginPanel
 
 		// button visibility is tied to the checkbox
 		button.setVisible(checkbox.isSelected());
+		return panel;
+	}
+
+	private JPanel createRuneLiteFont(ConfigDescriptor cd, ConfigItemDescriptor cid)
+	{
+		RuneLiteFont runeLiteFont = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), RuneLiteFont.class);
+		configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), runeLiteFont);
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+
+		JButton button = new JButton(ConfigPanel.CONFIG_ICON);
+		SwingUtil.removeButtonDecorations(button);
+		button.setPreferredSize(new Dimension(25, 0));
+		button.addActionListener(l ->
+		{
+			var muxer = pluginList.getMuxer();
+			var fontConfigPanel = fontConfigPanelProvider.get();
+			fontConfigPanel.init(cd, cid);
+			muxer.pushState(fontConfigPanel);
+		});
+		panel.add(button, BorderLayout.WEST);
+
+		button.setVisible(true);
 		return panel;
 	}
 

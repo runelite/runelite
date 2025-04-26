@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -31,6 +32,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import javax.swing.text.StyleContext;
 import lombok.Getter;
@@ -40,6 +44,10 @@ import net.runelite.client.RuneLite;
 @Slf4j
 public class FontManager
 {
+	public static final ImmutableList<String> RUNESCAPE_FONTS;
+	public static final ImmutableList<String> CUSTOM_FONTS;
+	public static final ImmutableList<String> SYSTEM_FONTS;
+
 	@Getter
 	private static final Font runescapeFont;
 	@Getter
@@ -55,30 +63,27 @@ public class FontManager
 	{
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 
+		SYSTEM_FONTS = ImmutableList.copyOf(ge.getAvailableFontFamilyNames());
+
 		try (InputStream inRunescape = FontManager.class.getResourceAsStream("runescape.ttf");
-			InputStream inRunescapeSmall = FontManager.class.getResourceAsStream("runescape_small.ttf");
-			InputStream inRunescapeBold = FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+			InputStream inRunescapeBold = FontManager.class.getResourceAsStream("runescape_bold.ttf");
+			InputStream inRunescapeSmall = FontManager.class.getResourceAsStream("runescape_small.ttf"))
 		{
-			// runescape
 			Font font = Font.createFont(Font.TRUETYPE_FONT, inRunescape);
-			ge.registerFont(font);
-
-			runescapeFont = StyleContext.getDefaultStyleContext()
-				.getFont(font.getFamily(), Font.PLAIN, 16);
-
-			// small
+			Font boldFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeBold);
 			Font smallFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeSmall);
+
+			ge.registerFont(font);
+			ge.registerFont(boldFont);
 			ge.registerFont(smallFont);
 
-			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-				.getFont(smallFont.getFamily(), Font.PLAIN, 16);
+			runescapeFont = getFont(font.getFamily(), Font.PLAIN, 16);
+			runescapeBoldFont = getFont(boldFont.getFamily(), Font.BOLD, 16);
+			runescapeSmallFont = getFont(smallFont.getFamily(), Font.PLAIN, 16);
 
-			// bold
-			Font boldFont = Font.createFont(Font.TRUETYPE_FONT, inRunescapeBold);
-			ge.registerFont(boldFont);
+			// Note: font and boldFont share the same font family name
+			RUNESCAPE_FONTS = ImmutableList.of(font.getFamily(), smallFont.getFamily());
 
-			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-				.getFont(boldFont.getFamily(), Font.BOLD, 16);
 		}
 		catch (FontFormatException ex)
 		{
@@ -90,6 +95,7 @@ public class FontManager
 		}
 
 		// Load custom fonts
+		List<String> customFontFamilies = new ArrayList<>();
 		Path customFontsPath = RuneLite.FONTS_DIR.toPath();
 		if (Files.isDirectory(customFontsPath))
 		{
@@ -102,7 +108,7 @@ public class FontManager
 							return name.endsWith(".ttf") || name.endsWith(".otf");
 						}
 					)
-					.forEach(path ->
+					.map(path ->
 						{
 							try (InputStream inFont = Files.newInputStream(path))
 							{
@@ -110,21 +116,33 @@ public class FontManager
 								ge.registerFont(font);
 
 								log.info("Loaded custom font: {}", font.getFamily());
+								return font.getFamily();
 							}
 							catch (IOException | FontFormatException ex)
 							{
 								log.error("Error loading custom font: {}", path, ex);
+								return null;
 							}
 						}
-					);
+					)
+					.filter(Objects::nonNull)
+					.forEach(customFontFamilies::add);
 			}
 			catch (IOException ex)
 			{
 				log.error("Error loading fonts from: {}", customFontsPath, ex);
 			}
 		}
+		CUSTOM_FONTS = ImmutableList.copyOf(customFontFamilies);
 
 		defaultFont = new Font(Font.DIALOG, Font.PLAIN, 16);
 		defaultBoldFont = new Font(Font.DIALOG, Font.BOLD, 16);
+
+		RuneLite.FONTS_DIR.mkdirs();
+	}
+
+	public static Font getFont(String family, int style, int size)
+	{
+		return StyleContext.getDefaultStyleContext().getFont(family, style, size);
 	}
 }

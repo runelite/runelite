@@ -28,15 +28,20 @@ package net.runelite.client.ui.components;
 import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
+import javax.swing.JSeparator;
 import net.runelite.client.util.Text;
 
-public final class TitleCaseListCellRenderer extends DefaultListCellRenderer
+public class TitleCaseListCellRenderer extends DefaultListCellRenderer
 {
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 	{
 		String text;
-		if (value instanceof Enum<?>)
+		if (value.equals("---"))
+		{
+			return new JSeparator(JSeparator.HORIZONTAL);
+		}
+		else if (value instanceof Enum<?>)
 		{
 			text = Text.titleCase((Enum<?>) value);
 		}
