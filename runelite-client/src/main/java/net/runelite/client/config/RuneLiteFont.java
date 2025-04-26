@@ -40,16 +40,24 @@ import net.runelite.client.ui.FontManager;
 @With
 public class RuneLiteFont
 {
-	public static final RuneLiteFont DEFAULT = new RuneLiteFont(FontManager.getRunescapeFont().getFamily(), FontStyle.PLAIN, 16);
-	public static final RuneLiteFont DEFAULT_SMALL = new RuneLiteFont(FontManager.getRunescapeSmallFont().getFamily(), FontStyle.PLAIN, 16);
+	public static final RuneLiteFont DEFAULT = new RuneLiteFont().withFamily(FontManager.getRunescapeFont().getFamily()).withSize(16);
+	public static final RuneLiteFont DEFAULT_SMALL = new RuneLiteFont().withFamily(FontManager.getRunescapeSmallFont().getFamily()).withSize(16);
 
 	String family;
-	FontStyle style;
 	int size;
+
+	boolean bold = false;
+	boolean italic = false;
+
+	private int getStyle()
+	{
+		return (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN);
+	}
 
 	public Font getFont()
 	{
-		return FontManager.getFont(family, style.getStyle(), size);
+
+		return FontManager.getFont(family, getStyle(), size);
 	}
 }
 

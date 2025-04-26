@@ -33,13 +33,16 @@ import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
@@ -51,40 +54,43 @@ import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteFont;
-import net.runelite.client.config.FontStyle;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.UnitFormatterFactory;
-import net.runelite.client.ui.components.TitleCaseListCellRenderer;
 import net.runelite.client.util.SwingUtil;
-import net.runelite.client.util.Text;
 
 @AllArgsConstructor
-final class TruncatedTitleCaseListCellRenderer extends TitleCaseListCellRenderer
+final class TruncatedTitleCaseListCellRenderer extends DefaultListCellRenderer
 {
 	private final int maxLength;
+
+	private String truncateValue(String value)
+	{
+		if (value.length() > maxLength)
+		{
+			return value.substring(0, maxLength) + "…";
+		}
+
+		return value;
+	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 	{
-		Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		if (component instanceof JLabel)
+		if (value.equals("---"))
 		{
-			JLabel label = (JLabel) component;
-			if (label.getText().length() > maxLength)
-			{
-				String shortenedText = label.getText().substring(0, maxLength) + "…";
-				label.setText(shortenedText);
-			}
+			return new JSeparator(JSeparator.HORIZONTAL);
 		}
-		return component;
+
+		String text = truncateValue(value.toString());
+		return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
 	}
 }
 
 @Slf4j
-class FontConfigPanel extends PluginPanel
+class FontPanel extends PluginPanel
 {
 	private final ConfigManager configManager;
 
@@ -95,7 +101,7 @@ class FontConfigPanel extends PluginPanel
 	private ConfigItemDescriptor configItemDescriptor;
 
 	@Inject
-	private FontConfigPanel(
+	private FontPanel(
 		ConfigManager configManager,
 		PluginListPanel pluginList
 	)
@@ -154,6 +160,13 @@ class FontConfigPanel extends PluginPanel
 		mainPanel.add(item);
 	}
 
+	private JCheckBox checkbox(boolean selected)
+	{
+		JCheckBox checkbox = new JCheckBox();
+		checkbox.setSelected(selected);
+		return checkbox;
+	}
+
 	private <T> JComboBox<T> combobox(T[] options, T value)
 	{
 		JComboBox<T> box = new JComboBox<>(options);
@@ -163,14 +176,13 @@ class FontConfigPanel extends PluginPanel
 		box.setRenderer(new TruncatedTitleCaseListCellRenderer(28));
 		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 22));
 		box.setSelectedItem(value);
-		// use TitleCaseListCellRenderer capitalization logic for tooltip
-		box.setToolTipText(value instanceof Enum ? Text.titleCase((Enum<?>) value) : value.toString());
+		box.setToolTipText(value.toString());
 
 		box.addItemListener(e ->
 		{
 			if (e.getStateChange() == ItemEvent.SELECTED)
 			{
-				box.setToolTipText(box.getSelectedItem() instanceof Enum ? Text.titleCase((Enum<?>) box.getSelectedItem()) : box.getSelectedItem().toString());
+				box.setToolTipText(box.getSelectedItem().toString());
 			}
 		});
 
@@ -224,17 +236,6 @@ class FontConfigPanel extends PluginPanel
 		});
 		item("Font", "Configures the font.", comboboxFont);
 
-		var comboboxStyle = combobox(FontStyle.class.getEnumConstants(), runeLiteFont.getStyle());
-		comboboxStyle.addItemListener(e ->
-		{
-			if (e.getStateChange() == ItemEvent.SELECTED)
-			{
-				var f = loadRuneLiteFont();
-				saveRuneLiteFont(f.withStyle((FontStyle) comboboxStyle.getSelectedItem()));
-			}
-		});
-		item("Style", "Configures the font style.", comboboxStyle);
-
 		var spinnerSize = createIntSpinner(1, Integer.MAX_VALUE, runeLiteFont.getSize(), "pt");
 		spinnerSize.addChangeListener(ce ->
 		{
@@ -242,6 +243,22 @@ class FontConfigPanel extends PluginPanel
 			saveRuneLiteFont(f.withSize((int) spinnerSize.getValue()));
 		});
 		item("Size", "Configures the font size.", spinnerSize);
+
+		var checkboxBold = checkbox(runeLiteFont.isBold());
+		checkboxBold.addActionListener(ae ->
+		{
+			var f = loadRuneLiteFont();
+			saveRuneLiteFont(f.withBold(checkboxBold.isSelected()));
+		});
+		item("Bold", "Toggle bold styling for the font.", checkboxBold);
+
+		var checkboxItalic = checkbox(runeLiteFont.isItalic());
+		checkboxItalic.addActionListener(ae ->
+		{
+			var f = loadRuneLiteFont();
+			saveRuneLiteFont(f.withItalic(checkboxItalic.isSelected()));
+		});
+		item("Italic", "Toggle italic styling for the font.", checkboxItalic);
 	}
 
 	private RuneLiteFont loadRuneLiteFont()

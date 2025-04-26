@@ -142,7 +142,7 @@ class ConfigPanel extends PluginPanel
 	private final ExternalPluginManager externalPluginManager;
 	private final ColorPickerManager colorPickerManager;
 	private final Provider<NotificationPanel> notificationPanelProvider;
-	private final Provider<FontConfigPanel> fontConfigPanelProvider;
+	private final Provider<FontPanel> fontPanelProvider;
 
 	private final TitleCaseListCellRenderer listCellRenderer = new TitleCaseListCellRenderer();
 
@@ -160,7 +160,7 @@ class ConfigPanel extends PluginPanel
 		ExternalPluginManager externalPluginManager,
 		ColorPickerManager colorPickerManager,
 		Provider<NotificationPanel> notificationPanelProvider,
-		Provider<FontConfigPanel> fontConfigPanelProvider
+		Provider<FontPanel> fontPanelProvider
 	)
 	{
 		super(false);
@@ -171,7 +171,7 @@ class ConfigPanel extends PluginPanel
 		this.externalPluginManager = externalPluginManager;
 		this.colorPickerManager = colorPickerManager;
 		this.notificationPanelProvider = notificationPanelProvider;
-		this.fontConfigPanelProvider = fontConfigPanelProvider;
+		this.fontPanelProvider = fontPanelProvider;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -725,9 +725,9 @@ class ConfigPanel extends PluginPanel
 		button.addActionListener(l ->
 		{
 			var muxer = pluginList.getMuxer();
-			var fontConfigPanel = fontConfigPanelProvider.get();
-			fontConfigPanel.init(cd, cid);
-			muxer.pushState(fontConfigPanel);
+			var fontPanel = fontPanelProvider.get();
+			fontPanel.init(cd, cid);
+			muxer.pushState(fontPanel);
 		});
 		panel.add(button, BorderLayout.WEST);
 
