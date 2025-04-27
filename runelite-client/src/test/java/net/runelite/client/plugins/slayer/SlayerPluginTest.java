@@ -317,9 +317,6 @@ public class SlayerPluginTest
 				return e;
 			});
 
-		// initial amount is fetched from config at sync
-		when(configManager.getRSProfileConfiguration("slayer", "initialAmount", int.class)).thenReturn(99);
-
 		slayerPlugin.setTaskName("mocked npc");
 		slayerPlugin.setAmount(42);
 		slayerPlugin.setInitialAmount(99);
@@ -340,6 +337,7 @@ public class SlayerPluginTest
 
 		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT)).thenReturn(0);
 		when(client.getVarpValue(VarPlayerID.SLAYER_TARGET)).thenReturn(0);
+		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL)).thenReturn(0);
 
 		VarbitChanged taskSizeChanged = new VarbitChanged();
 		taskSizeChanged.setVarpId(VarPlayerID.SLAYER_COUNT);
@@ -349,11 +347,17 @@ public class SlayerPluginTest
 		taskCreatureChanged.setVarpId(VarPlayerID.SLAYER_TARGET);
 		slayerPlugin.onVarbitChanged(taskCreatureChanged);
 
+		VarbitChanged taskOriginalAmountChanged = new VarbitChanged();
+		taskOriginalAmountChanged.setVarpId(VarPlayerID.SLAYER_COUNT_ORIGINAL);
+		slayerPlugin.onVarbitChanged(taskOriginalAmountChanged);
+
 		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT)).thenReturn(42);
 		when(client.getVarpValue(VarPlayerID.SLAYER_TARGET)).thenReturn(1);
+		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL)).thenReturn(99);
 
 		slayerPlugin.onVarbitChanged(taskSizeChanged);
 		slayerPlugin.onVarbitChanged(taskCreatureChanged);
+		slayerPlugin.onVarbitChanged(taskOriginalAmountChanged);
 
 		assertEquals("mocked npc", slayerPlugin.getTaskName());
 		assertEquals(42, slayerPlugin.getAmount());
