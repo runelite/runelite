@@ -173,7 +173,7 @@ class FontPanel extends PluginPanel
 		// set renderer prior to calling box.getPreferredSize(), since it will invoke the renderer
 		// to build components for each combobox element in order to compute the display size of the
 		// combobox
-		box.setRenderer(new TruncatedListCellRenderer(28));
+		box.setRenderer(new TruncatedListCellRenderer(23));
 		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 22));
 		box.setSelectedItem(value);
 		box.setToolTipText(value.toString());
