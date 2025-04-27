@@ -62,7 +62,7 @@ import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.util.SwingUtil;
 
 @AllArgsConstructor
-final class TruncatedTitleCaseListCellRenderer extends DefaultListCellRenderer
+final class TruncatedListCellRenderer extends DefaultListCellRenderer
 {
 	private final int maxLength;
 
@@ -173,7 +173,7 @@ class FontPanel extends PluginPanel
 		// set renderer prior to calling box.getPreferredSize(), since it will invoke the renderer
 		// to build components for each combobox element in order to compute the display size of the
 		// combobox
-		box.setRenderer(new TruncatedTitleCaseListCellRenderer(28));
+		box.setRenderer(new TruncatedListCellRenderer(28));
 		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 22));
 		box.setSelectedItem(value);
 		box.setToolTipText(value.toString());
