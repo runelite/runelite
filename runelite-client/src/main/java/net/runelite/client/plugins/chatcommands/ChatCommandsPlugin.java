@@ -2556,6 +2556,19 @@ public class ChatCommandsPlugin extends Plugin
 			case "shayzien":
 				return "Shayzien Armour";
 
+			case "stars":
+				return "Shooting Stars";
+
+			case "pets skilling":
+			case "skill pets":
+				return "Skilling Pets";
+
+			case "tds":
+				return "Tormented Demons";
+
+			case "misc":
+				return "Miscellaneous";
+
 			default:
 				return WordUtils.capitalize(searchParam);
 		}
