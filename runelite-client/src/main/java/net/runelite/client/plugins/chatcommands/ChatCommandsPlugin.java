@@ -146,6 +146,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String CLOG_COMMAND = "!clog";
 	private static final String LOG_COMMAND = "!log";
 
+	private static final int CLOG_MAGIC_CONSTANT = 1000000;
+
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
 	static final int COL_LOG_ENTRY_HEADER_TITLE_INDEX = 0;
@@ -229,7 +231,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
 		chatCommandManager.registerCommandAsync(CA_COMMAND, this::caLookup, this::caSubmit);
 		chatCommandManager.registerCommandAsync(CLOG_COMMAND, this::clogLookup, this::clogSubmit);
-		chatCommandManager.registerCommandAsync(LOG_COMMAND, this::collectionLogLookup);
+		chatCommandManager.registerCommandAsync(LOG_COMMAND, this::collectionLogLookup, this::collectionLogSubmit );
 
 		clientThread.invoke(() ->
 		{
@@ -1996,7 +1998,6 @@ public class ChatCommandsPlugin extends Plugin
 	@VisibleForTesting
 	void collectionLogLookup(ChatMessage chatMessage, String message)
 	{
-
 		if ( !config.collectionlog() )
 		{
 			return;
@@ -2014,10 +2015,26 @@ public class ChatCommandsPlugin extends Plugin
 		search = parseCollectionLogBossName( search );
 
 		List<Integer> playerClogList = Collections.emptyList();
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
 
 		try
 		{
-			playerClogList = getCollectionLogList( search );
+			playerClogList = chatClient.getCollectionLogList( player, search );
+
+			for ( int i = 0; i < playerClogList.size(); ++i )
+			{
+				playerClogList.set(i, playerClogList.get(i) % ( CLOG_MAGIC_CONSTANT ) );
+			}
 		}
 		catch ( Exception ex )
 		{
@@ -2053,6 +2070,51 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		client.refreshChat();
 	}
+
+	/**
+	 * Submits the pet list for the local player
+	 *
+	 * @param chatInput The chat message containing the command.
+	 * @param value     The chat message
+	 */
+	private boolean collectionLogSubmit(ChatInput chatInput, String value)
+	{
+		final String playerName = client.getLocalPlayer().getName();
+
+		String search;
+
+		if (value.length() <= LOG_COMMAND.length())
+		{
+			return false;
+		}
+
+		search = value.substring(LOG_COMMAND.length() + 1);
+
+		final String searchParam = parseCollectionLogBossName( search );
+
+		executor.execute(() ->
+		{
+			try
+			{
+				List<Integer> clogList = getCollectionLogList( searchParam );
+				if (!clogList.isEmpty())
+				{
+					chatClient.submitCollectionLogList(playerName, clogList, searchParam );
+				}
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit clog list", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
 
 	/**
 	 * Gets the stored configuration json for the collection log entries for a search parameter
@@ -2624,23 +2686,24 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
 
-			List<Integer> clogList = new ArrayList<>();
+			List<Integer> clogList = new ArrayList<Integer>();
 
 			Widget collectionLogEntryItems = client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS);
 
 			int numEntries = 0;
-
+			int jsonIndexing = CLOG_MAGIC_CONSTANT;
 			if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 			{
 				numEntries = collectionLogEntryItems.getChildren().length;
 
-				clogList.add(numEntries);
+				clogList.add( jsonIndexing + numEntries );
 				for (Widget child : collectionLogEntryItems.getChildren())
 				{
 					if (child.getOpacity() == 0)
 					{
-						clogList.add(child.getItemQuantity());
-						clogList.add(child.getItemId());
+						jsonIndexing += CLOG_MAGIC_CONSTANT;
+						clogList.add( jsonIndexing + child.getItemQuantity() );
+						clogList.add( jsonIndexing + child.getItemId() );
 					}
 				}
 

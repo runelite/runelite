@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Set;
+import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import net.runelite.http.api.RuneLiteAPI;
@@ -422,6 +423,56 @@ public class ChatClient
 			// CHECKSTYLE:OFF
 			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
 				new TypeToken<Set<Integer>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public boolean submitCollectionLogList(String username, Collection<Integer> clogList, String bossName ) throws IOException
+	{
+		HttpUrl url = apiBase.newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment( "pets" )
+				.addQueryParameter("name", username + "BossnameOf" + bossName )
+				.build();
+
+		Request request = new Request.Builder()
+				.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson( clogList ) ))
+				.url(url)
+				.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public List<Integer> getCollectionLogList(String username, String bossName ) throws IOException
+	{
+		HttpUrl url = apiBase.newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment( "pets" )
+				.addQueryParameter("name", username + "BossnameOf" + bossName  )
+				.build();
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up clog list!");
+			}
+
+			InputStream in = response.body().byteStream();
+			// CHECKSTYLE:OFF
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
+					new TypeToken<List<Integer>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)
