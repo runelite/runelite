@@ -1994,7 +1994,8 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param message       Message contents from registered callback
 	 */
 	@VisibleForTesting
-	void collectionLogLookup(ChatMessage chatMessage, String message) {
+	void collectionLogLookup(ChatMessage chatMessage, String message)
+	{
 
 		if ( !config.collectionlog() )
 		{
@@ -2003,7 +2004,8 @@ public class ChatCommandsPlugin extends Plugin
 
 		String search;
 
-		if (message.length() <= LOG_COMMAND.length()) {
+		if (message.length() <= LOG_COMMAND.length())
+		{
 			return;
 		}
 
@@ -2096,7 +2098,8 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		String lowerSearch = searchParam.toLowerCase();
 
-		switch (lowerSearch) {
+		switch (lowerSearch)
+		{
 			case "abby sire":
 			case "sire":
 				return "Abyssal Sire";
@@ -2588,7 +2591,7 @@ public class ChatCommandsPlugin extends Plugin
 
 		if ( clogList.size() > 0 )
 		{
-			for (int i = 2; i < clogList.size(); i+=2)
+			for (int i = 2; i < clogList.size(); i += 2)
 			{
 				final int clogID = clogList.get(i);
 
