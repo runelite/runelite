@@ -211,6 +211,17 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
+			position = 16,
+			keyName = "collectionlog",
+			name = "LOG command",
+			description = "Configures whether the detailed clog command is enabled: !log"
+	)
+	default boolean collectionlog()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 20,
 		keyName = "clearSingleWord",
 		name = "Clear single word",
