@@ -313,7 +313,7 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dynamicOverlayFont",
+		keyName = "fontType",
 		name = "Dynamic overlay font",
 		description = "Configures what font is used for in-game overlays such as player name, ground items, etc.",
 		position = 30,
@@ -321,11 +321,11 @@ public interface RuneLiteConfig extends Config
 	)
 	default RuneLiteFont dynamicOverlayFont()
 	{
-		return RuneLiteFont.DEFAULT_SMALL;
+		return RuneLiteFont.SMALL;
 	}
 
 	@ConfigItem(
-		keyName = "tooltipFont",
+		keyName = "tooltipFontType",
 		name = "Tooltip font",
 		description = "Configures what font is used for in-game tooltips such as food stats, NPC names, etc.",
 		position = 31,
@@ -333,11 +333,11 @@ public interface RuneLiteConfig extends Config
 	)
 	default RuneLiteFont tooltipFont()
 	{
-		return RuneLiteFont.DEFAULT_SMALL;
+		return RuneLiteFont.SMALL;
 	}
 
 	@ConfigItem(
-		keyName = "interfaceFont",
+		keyName = "interfaceFontType",
 		name = "Interface font",
 		description = "Configures what font is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
 		position = 32,
@@ -345,11 +345,11 @@ public interface RuneLiteConfig extends Config
 	)
 	default RuneLiteFont interfaceFont()
 	{
-		return RuneLiteFont.DEFAULT;
+		return RuneLiteFont.REGULAR;
 	}
 
 	@ConfigItem(
-		keyName = "infoboxFont",
+		keyName = "infoboxFontType",
 		name = "Infobox font",
 		description = "Configures what font is used for infoboxes.",
 		position = 33,
@@ -357,7 +357,7 @@ public interface RuneLiteConfig extends Config
 	)
 	default RuneLiteFont infoboxFont()
 	{
-		return RuneLiteFont.DEFAULT;
+		return RuneLiteFont.REGULAR;
 	}
 
 	@ConfigItem(

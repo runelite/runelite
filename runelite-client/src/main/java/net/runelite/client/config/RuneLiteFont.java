@@ -27,6 +27,7 @@ package net.runelite.client.config;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.awt.Font;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,8 +41,9 @@ import net.runelite.client.ui.FontManager;
 @With
 public class RuneLiteFont
 {
-	public static final RuneLiteFont DEFAULT = new RuneLiteFont().withFamily(FontManager.getRunescapeFont().getFamily()).withSize(16);
-	public static final RuneLiteFont DEFAULT_SMALL = new RuneLiteFont().withFamily(FontManager.getRunescapeSmallFont().getFamily()).withSize(16);
+	public static final RuneLiteFont REGULAR = new RuneLiteFont().withFamily(FontManager.getRunescapeFont().getFamily()).withSize(16);
+	public static final RuneLiteFont BOLD = new RuneLiteFont().withFamily(FontManager.getRunescapeBoldFont().getFamily()).withSize(16).withBold(true);
+	public static final RuneLiteFont SMALL = new RuneLiteFont().withFamily(FontManager.getRunescapeSmallFont().getFamily()).withSize(16);
 
 	String family;
 	int size;
@@ -63,6 +65,12 @@ public class RuneLiteFont
 
 class RuneLiteFontSerializer implements Serializer<RuneLiteFont>
 {
+	private static final Map<String, RuneLiteFont> FONT_TYPE_MAP = Map.of(
+		FontType.REGULAR.name(), RuneLiteFont.REGULAR,
+		FontType.BOLD.name(), RuneLiteFont.BOLD,
+		FontType.SMALL.name(), RuneLiteFont.SMALL
+	);
+
 	private final Gson gson;
 
 	@Inject
@@ -80,6 +88,12 @@ class RuneLiteFontSerializer implements Serializer<RuneLiteFont>
 	@Override
 	public RuneLiteFont deserialize(String s)
 	{
+		// Handle legacy config values
+		if (FONT_TYPE_MAP.containsKey(s))
+		{
+			return FONT_TYPE_MAP.get(s);
+		}
+
 		return gson.fromJson(s, RuneLiteFont.class);
 	}
 }
