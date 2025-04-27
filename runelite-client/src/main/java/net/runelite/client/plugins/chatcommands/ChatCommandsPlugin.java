@@ -2686,7 +2686,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
 
-			List<Integer> clogList = new ArrayList<Integer>();
+			List<Integer> clogList = new ArrayList<>();
 
 			Widget collectionLogEntryItems = client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS);
 
