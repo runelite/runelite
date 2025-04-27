@@ -45,6 +45,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ARMADYLEAN_GUA
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ARMADYLEAN_OR_BANDOSIAN_GUARD;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.BANDOSIAN_GUARD;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.BRASSICAN_MAGE;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.BRASSICAN_OR_WIZARDS;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.SARADOMIN_WIZARD;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ZAMORAK_WIZARD;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -738,7 +739,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.location(new WorldPoint(2303, 3328, 0))
 			.directions("East of Prifddinas.")
-			.enemy(BRASSICAN_MAGE)
+			.enemy(BRASSICAN_OR_WIZARDS)
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(3570, 3405, 0))
