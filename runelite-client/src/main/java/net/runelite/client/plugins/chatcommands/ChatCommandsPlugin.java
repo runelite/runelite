@@ -2013,8 +2013,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		search = parseCollectionLogBossName( search );
 
-		ChatMessageType type = chatMessage.getType();
-
 		List<Integer> playerClogList = Collections.emptyList();
 
 		try
