@@ -2015,16 +2015,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		ChatMessageType type = chatMessage.getType();
 
-		final String player;
-		if (type.equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.sanitize(chatMessage.getName());
-		}
-
 		List<Integer> playerClogList = Collections.emptyList();
 
 		try
@@ -2631,10 +2621,8 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 			{
-				for (Widget child : collectionLogEntryItems.getChildren())
-				{
-					numEntries++;
-				}
+				numEntries = collectionLogEntryItems.getChildren().length;
+
 				clogList.add(numEntries);
 				for (Widget child : collectionLogEntryItems.getChildren())
 				{
