@@ -221,7 +221,7 @@ class FontPanel extends PluginPanel
 		List<String> fontOptions = new ArrayList<>();
 		fontOptions.addAll(FontManager.RUNESCAPE_FONTS);
 		fontOptions.add("---");
-		fontOptions.addAll(FontManager.CUSTOM_FONTS);
+		fontOptions.addAll(FontManager.getCustomFonts());
 		fontOptions.add("---");
 		fontOptions.addAll(FontManager.SYSTEM_FONTS);
 

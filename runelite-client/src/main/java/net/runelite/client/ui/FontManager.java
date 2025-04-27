@@ -32,9 +32,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 import javax.swing.text.StyleContext;
 import lombok.Getter;
@@ -45,8 +45,9 @@ import net.runelite.client.RuneLite;
 public class FontManager
 {
 	public static final ImmutableList<String> RUNESCAPE_FONTS;
-	public static final ImmutableList<String> CUSTOM_FONTS;
 	public static final ImmutableList<String> SYSTEM_FONTS;
+
+	private static final Set<String> customFontFamilies = new LinkedHashSet<>();
 
 	@Getter
 	private static final Font runescapeFont;
@@ -94,8 +95,16 @@ public class FontManager
 			throw new RuntimeException("Font file not found.", ex);
 		}
 
-		// Load custom fonts
-		List<String> customFontFamilies = new ArrayList<>();
+		loadCustomFonts(ge);
+
+		defaultFont = new Font(Font.DIALOG, Font.PLAIN, 16);
+		defaultBoldFont = new Font(Font.DIALOG, Font.BOLD, 16);
+
+		RuneLite.FONTS_DIR.mkdirs();
+	}
+
+	private static void loadCustomFonts(GraphicsEnvironment ge)
+	{
 		Path customFontsPath = RuneLite.FONTS_DIR.toPath();
 		if (Files.isDirectory(customFontsPath))
 		{
@@ -112,11 +121,7 @@ public class FontManager
 						{
 							try (InputStream inFont = Files.newInputStream(path))
 							{
-								Font font = Font.createFont(Font.TRUETYPE_FONT, inFont);
-								ge.registerFont(font);
-
-								log.info("Loaded custom font: {}", font.getFamily());
-								return font.getFamily();
+								return Font.createFont(Font.TRUETYPE_FONT, inFont);
 							}
 							catch (IOException | FontFormatException ex)
 							{
@@ -126,19 +131,29 @@ public class FontManager
 						}
 					)
 					.filter(Objects::nonNull)
-					.forEach(customFontFamilies::add);
+					.filter(font -> !customFontFamilies.contains(font.getFamily()))
+					.peek(font -> log.info("Loaded custom font: {}", font.getFamily()))
+					.forEach(font ->
+						{
+							ge.registerFont(font);
+							customFontFamilies.add(font.getFamily());
+						}
+					);
 			}
 			catch (IOException ex)
 			{
 				log.error("Error loading fonts from: {}", customFontsPath, ex);
 			}
 		}
-		CUSTOM_FONTS = ImmutableList.copyOf(customFontFamilies);
+	}
 
-		defaultFont = new Font(Font.DIALOG, Font.PLAIN, 16);
-		defaultBoldFont = new Font(Font.DIALOG, Font.BOLD, 16);
+	public static ImmutableList<String> getCustomFonts()
+	{
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		loadCustomFonts(ge);
 
-		RuneLite.FONTS_DIR.mkdirs();
+		return ImmutableList.copyOf(customFontFamilies);
+
 	}
 
 	public static Font getFont(String family, int style, int size)
