@@ -662,8 +662,10 @@ class PluginHubPanel extends PluginPanel
 				pluginCounts.getOrDefault(id, -1), installed.contains(id)))
 			.collect(Collectors.toList());
 
-		refreshing.setVisible(false);
-		filter();
+		SwingUtilities.invokeLater(() -> {
+			refreshing.setVisible(false);
+			filter();
+		});
 	}
 
 	void filter()
@@ -694,11 +696,8 @@ class PluginHubPanel extends PluginPanel
 					.collect(Collectors.toList());
 			}
 			SwingUtilities.invokeLater(() -> {
-				synchronized (PluginHubPanel.class)
-				{
-					pluginItems.forEach(mainPanel::add);
-					mainPanel.revalidate();
-				}
+				pluginItems.forEach(mainPanel::add);
+				mainPanel.revalidate();
 			});
 		});
 	}
