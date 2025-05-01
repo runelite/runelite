@@ -104,7 +104,7 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
+		LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), point);
 		if (lp == null)
 		{
 			return;

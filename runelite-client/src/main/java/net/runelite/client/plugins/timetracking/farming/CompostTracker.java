@@ -220,7 +220,7 @@ public class CompostTracker
 		// find gameobject instance in scene
 		// it is possible that the scene has reloaded between use and action occurring so we use worldpoint
 		// instead of storing scene coords in the menuoptionclicked event
-		LocalPoint localPatchLocation = LocalPoint.fromWorld(client, pendingCompost.getPatchLocation());
+		LocalPoint localPatchLocation = LocalPoint.fromWorld(client.getTopLevelWorldView(), pendingCompost.getPatchLocation());
 		if (localPatchLocation == null)
 		{
 			return false;

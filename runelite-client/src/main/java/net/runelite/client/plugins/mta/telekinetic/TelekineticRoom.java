@@ -312,7 +312,7 @@ public class TelekineticRoom extends MTARoom
 
 	private void renderWorldPoint(Graphics2D graphics, WorldPoint worldPoint)
 	{
-		renderLocalPoint(graphics, LocalPoint.fromWorld(client, worldPoint));
+		renderLocalPoint(graphics, LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint));
 	}
 
 	private void renderLocalPoint(Graphics2D graphics, LocalPoint local)
@@ -361,7 +361,7 @@ public class TelekineticRoom extends MTARoom
 			WorldPoint next = visit.poll();
 			closed.add(next);
 
-			LocalPoint localNext = LocalPoint.fromWorld(client, next);
+			LocalPoint localNext = LocalPoint.fromWorld(client.getTopLevelWorldView(), next);
 			LocalPoint[] neighbours = neighbours(localNext);
 
 			for (LocalPoint neighbour : neighbours)
@@ -469,7 +469,7 @@ public class TelekineticRoom extends MTARoom
 			area = worldPoint.toWorldArea();
 		}
 
-		return LocalPoint.fromWorld(client, worldPoint);
+		return LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
 	}
 
 	private Rectangle getBounds(WallObject[] walls)

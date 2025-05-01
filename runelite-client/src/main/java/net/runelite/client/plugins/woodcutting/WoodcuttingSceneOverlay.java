@@ -333,7 +333,7 @@ class WoodcuttingSceneOverlay extends Overlay
 		Instant now = Instant.now();
 		for (TreeRespawn treeRespawn : respawns)
 		{
-			LocalPoint minLocation = LocalPoint.fromWorld(client, treeRespawn.getWorldLocation());
+			LocalPoint minLocation = LocalPoint.fromWorld(client.getTopLevelWorldView(), treeRespawn.getWorldLocation());
 			if (minLocation == null)
 			{
 				continue;

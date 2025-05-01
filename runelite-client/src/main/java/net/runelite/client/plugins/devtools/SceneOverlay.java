@@ -219,8 +219,8 @@ public class SceneOverlay extends Overlay
 		GeneralPath path = new GeneralPath();
 		for (int x = startX; x <= endX; x += MAP_SQUARE_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
+			LocalPoint lp1 = LocalPoint.fromWorld(client.getTopLevelWorldView(), x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
+			LocalPoint lp2 = LocalPoint.fromWorld(client.getTopLevelWorldView(), x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
 
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
@@ -244,8 +244,8 @@ public class SceneOverlay extends Overlay
 		}
 		for (int y = startY; y <= endY; y += MAP_SQUARE_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
+			LocalPoint lp1 = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
+			LocalPoint lp2 = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
 
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
@@ -351,7 +351,7 @@ public class SceneOverlay extends Overlay
 		// seem to use much CPU time, however rendering 100 tiles does
 		if (start.hasLineOfSightTo(client.getTopLevelWorldView(), targetLocation))
 		{
-			LocalPoint lp = LocalPoint.fromWorld(client, targetLocation);
+			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), targetLocation);
 			if (lp == null)
 			{
 				return;

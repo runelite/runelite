@@ -79,7 +79,7 @@ public class TileIndicatorsOverlay extends Overlay
 				return null;
 			}
 
-			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, playerPos);
+			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client.getTopLevelWorldView(), playerPos);
 			if (playerPosLocal == null)
 			{
 				return null;

@@ -91,7 +91,7 @@ public class FairyRingClue extends ClueScroll implements LocationClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation(plugin));
+		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), getLocation(plugin));
 
 		if (localLocation == null)
 		{

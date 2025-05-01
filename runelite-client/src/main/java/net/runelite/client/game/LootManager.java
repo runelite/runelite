@@ -153,7 +153,7 @@ public class LootManager
 		}
 
 		final WorldPoint worldPoint = player.getWorldLocation();
-		final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
+		final LocalPoint location = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
 		if (location == null || killPoints.contains(worldPoint))
 		{
 			return;
@@ -300,7 +300,7 @@ public class LootManager
 		for (final WorldArea dropLocation : areas)
 		{
 			final WorldPoint worldPoint = dropLocation.toWorldPoint();
-			final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
+			final LocalPoint location = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
 			if (location == null)
 			{
 				continue;
@@ -388,7 +388,7 @@ public class LootManager
 			case NpcID.NEX_DYING:
 			{
 				// Nex loot is under the player, or under nex
-				LocalPoint localPoint = LocalPoint.fromWorld(client, playerLocationLastTick);
+				LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), playerLocationLastTick);
 				if (localPoint != null)
 				{
 					int x = localPoint.getSceneX();
@@ -485,7 +485,7 @@ public class LootManager
 	 */
 	public Collection<ItemStack> getItemSpawns(WorldPoint worldPoint)
 	{
-		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
 		if (localPoint == null)
 		{
 			return Collections.emptyList();

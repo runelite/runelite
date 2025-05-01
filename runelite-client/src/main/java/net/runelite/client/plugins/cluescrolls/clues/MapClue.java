@@ -167,7 +167,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
+		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), getLocation());
 
 		if (localLocation == null)
 		{
@@ -213,7 +213,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public int[] getObjectIds()
 	{
-		return new int[] {objectId};
+		return new int[]{objectId};
 	}
 
 	@Override

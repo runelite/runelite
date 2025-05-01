@@ -137,7 +137,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		LocalPoint localLoc = LocalPoint.fromWorld(client, trap.getWorldLocation());
+		LocalPoint localLoc = LocalPoint.fromWorld(client.getTopLevelWorldView(), trap.getWorldLocation());
 		if (localLoc == null)
 		{
 			return;
@@ -173,7 +173,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		LocalPoint localLoc = LocalPoint.fromWorld(client, trap.getWorldLocation());
+		LocalPoint localLoc = LocalPoint.fromWorld(client.getTopLevelWorldView(), trap.getWorldLocation());
 		if (localLoc == null)
 		{
 			return;

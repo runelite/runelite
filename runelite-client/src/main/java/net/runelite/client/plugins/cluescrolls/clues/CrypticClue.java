@@ -1860,7 +1860,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		WorldPoint location = getLocation(plugin);
 		if (location != null && getNpc(plugin) == null && objectId == -1)
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), location);
+			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), location);
 
 			if (localLocation != null)
 			{

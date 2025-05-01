@@ -96,7 +96,7 @@ class Lootbeam
 		update();
 		runeLiteObject.setShouldLoop(true);
 
-		LocalPoint lp = LocalPoint.fromWorld(client, worldPoint);
+		LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), worldPoint);
 		runeLiteObject.setLocation(lp, client.getPlane());
 
 		runeLiteObject.setActive(true);

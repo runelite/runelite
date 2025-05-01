@@ -553,12 +553,12 @@ public class WoodcuttingPlugin extends Plugin
 				case ObjectID.SOTN_HUNTING_TREESTUMP_NOOP:
 				case ObjectID.XMAS18_STUMP_SNOW:
 
-				// depleted redwood
+					// depleted redwood
 				case ObjectID.REDWOODTREE_L_CUT:
 				case ObjectID.REDWOODTREE_R:
 				case ObjectID.REDWOODTREE_R_CUT:
 
-				// farming guild redwood
+					// farming guild redwood
 				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_2:
 				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_4:
 				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_6:
@@ -580,7 +580,7 @@ public class WoodcuttingPlugin extends Plugin
 
 	private GameObject findObject(WorldPoint point)
 	{
-		LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), point);
 		if (localPoint == null)
 		{
 			return null;

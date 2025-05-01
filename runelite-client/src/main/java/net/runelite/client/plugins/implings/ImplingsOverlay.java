@@ -83,7 +83,7 @@ class ImplingsOverlay extends Overlay
 			return;
 		}
 
-		LocalPoint localPoint = LocalPoint.fromWorld(client, point);
+		LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), point);
 		if (localPoint == null)
 		{
 			return;

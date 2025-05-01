@@ -926,7 +926,7 @@ public class ClueScrollPlugin extends Plugin
 
 	private void highlightObjectsForLocation(final WorldPoint location, final int... objectIds)
 	{
-		final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+		final LocalPoint localLocation = LocalPoint.fromWorld(client.getTopLevelWorldView(), location);
 
 		if (localLocation == null)
 		{

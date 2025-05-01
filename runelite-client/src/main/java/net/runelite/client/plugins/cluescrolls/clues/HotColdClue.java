@@ -221,7 +221,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		// when final location has been found
 		if (location != null)
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
+			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), getLocation());
 
 			if (localLocation != null)
 			{

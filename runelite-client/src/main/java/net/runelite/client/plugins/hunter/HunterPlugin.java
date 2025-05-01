@@ -321,7 +321,7 @@ public class HunterPlugin extends Plugin
 			Map.Entry<WorldPoint, HunterTrap> entry = it.next();
 			HunterTrap trap = entry.getValue();
 			WorldPoint world = entry.getKey();
-			LocalPoint local = LocalPoint.fromWorld(client, world);
+			LocalPoint local = LocalPoint.fromWorld(client.getTopLevelWorldView(), world);
 
 			// Not within the client's viewport
 			if (local == null)

@@ -97,7 +97,7 @@ class KourendLibraryOverlay extends Overlay
 				continue;
 			}
 
-			LocalPoint localBookcase = LocalPoint.fromWorld(client, caseLoc);
+			LocalPoint localBookcase = LocalPoint.fromWorld(client.getTopLevelWorldView(), caseLoc);
 			if (localBookcase == null)
 			{
 				continue;

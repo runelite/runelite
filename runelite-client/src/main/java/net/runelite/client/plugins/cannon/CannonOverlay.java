@@ -68,7 +68,7 @@ class CannonOverlay extends Overlay
 
 		// WorldAreas return the SW point, whereas we want the centre point
 		WorldPoint cannonLocation = plugin.getCannonPosition().toWorldPoint().dx(1).dy(1);
-		LocalPoint cannonPoint = LocalPoint.fromWorld(client, cannonLocation);
+		LocalPoint cannonPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), cannonLocation);
 
 		if (cannonPoint == null)
 		{
