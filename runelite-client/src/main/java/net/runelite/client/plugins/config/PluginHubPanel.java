@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019 Abex
+ * Modified 2025 hawolt
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -68,7 +70,6 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -88,6 +89,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.Debouncer;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
@@ -102,6 +104,7 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon CONFIGURE_ICON;
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
+	private static final Debouncer DEBOUNCER = new Debouncer();
 
 	static
 	{
@@ -158,7 +161,7 @@ class PluginHubPanel extends PluginPanel
 				BufferedImage img = externalPluginClient.downloadIcon(manifest);
 
 				loaded = true;
-				SwingUtilities.invokeLater(() -> setIcon(new ImageIcon(img)));
+				executor.submit(() -> setIcon(new ImageIcon(img)));
 			}
 			catch (IOException e)
 			{
@@ -494,19 +497,19 @@ class PluginHubPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				filter();
+				DEBOUNCER.debounce(executor, "filter-hub-entries", () -> filter(), 200, TimeUnit.MILLISECONDS);
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				filter();
+				DEBOUNCER.debounce(executor, "filter-hub-entries", () -> filter(), 200, TimeUnit.MILLISECONDS);
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
-				filter();
+				DEBOUNCER.debounce(executor, "filter-hub-entries", () -> filter(), 200, TimeUnit.MILLISECONDS);
 			}
 		});
 
@@ -606,15 +609,13 @@ class PluginHubPanel extends PluginPanel
 			catch (IOException | VerificationException e)
 			{
 				log.error("", e);
-				SwingUtilities.invokeLater(() ->
-				{
-					refreshing.setVisible(false);
-					mainPanel.add(new JLabel("Downloading the plugin manifest failed"));
 
-					JButton retry = new JButton("Retry");
-					retry.addActionListener(l -> reloadPluginList());
-					mainPanel.add(retry);
-				});
+				refreshing.setVisible(false);
+				mainPanel.add(new JLabel("Downloading the plugin manifest failed"));
+
+				JButton retry = new JButton("Retry");
+				retry.addActionListener(l -> reloadPluginList());
+				mainPanel.add(retry);
 				return;
 			}
 
@@ -653,22 +654,21 @@ class PluginHubPanel extends PluginPanel
 
 		Set<String> installed = new HashSet<>(externalPluginManager.getInstalledExternalPlugins());
 
-		SwingUtilities.invokeLater(() ->
+
+		if (!refreshing.isVisible())
 		{
-			if (!refreshing.isVisible())
-			{
-				return;
-			}
+			return;
+		}
 
-			plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
-				.stream()
-				.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
-					pluginCounts.getOrDefault(id, -1), installed.contains(id)))
-				.collect(Collectors.toList());
+		plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
+			.stream()
+			.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
+				pluginCounts.getOrDefault(id, -1), installed.contains(id)))
+			.collect(Collectors.toList());
 
-			refreshing.setVisible(false);
-			filter();
-		});
+		refreshing.setVisible(false);
+		//filter();
+
 	}
 
 	void filter()
@@ -732,17 +732,15 @@ class PluginHubPanel extends PluginPanel
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
 	{
-		Map<String, Integer> pluginCounts = Collections.emptyMap();
-		if (plugins != null)
-		{
-			pluginCounts = plugins.stream()
+		final Map<String, Integer> pluginCounts = plugins == null ?
+			Collections.emptyMap() :
+			plugins.stream()
 				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
-		}
 
 		if (!refreshing.isVisible() && lastManifest != null)
 		{
 			refreshing.setVisible(true);
-			reloadPluginList(lastManifest, pluginCounts);
+			executor.submit(() -> reloadPluginList(lastManifest, pluginCounts));
 		}
 	}
 }
