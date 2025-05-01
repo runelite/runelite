@@ -135,7 +135,9 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
+		{
+		}.getType());
 		// CHECKSTYLE:ON
 	}
 
@@ -171,7 +173,7 @@ public class GroundMarkerPlugin extends Plugin
 	 *
 	 * @param points {@link GroundMarkerPoint}s to be converted to {@link ColorTileMarker}s
 	 * @return A collection of color tile markers, converted from the passed ground marker points, accounting for local
-	 *         instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
+	 * instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
 	 */
 	private Collection<ColorTileMarker> translateToColorTileMarker(Collection<GroundMarkerPoint> points)
 	{
@@ -254,7 +256,7 @@ public class GroundMarkerPlugin extends Plugin
 				.filter(p -> p.getRegionX() == worldPoint.getRegionX() && p.getRegionY() == worldPoint.getRegionY() && p.getZ() == worldPoint.getPlane())
 				.findFirst();
 
-			client.createMenuEntry(-1)
+			client.getMenu().createMenuEntry(-1)
 				.setOption(existingOpt.isPresent() ? "Unmark" : "Mark")
 				.setTarget("Tile")
 				.setType(MenuAction.RUNELITE)
@@ -271,13 +273,13 @@ public class GroundMarkerPlugin extends Plugin
 			{
 				var existing = existingOpt.get();
 
-				client.createMenuEntry(-2)
+				client.getMenu().createMenuEntry(-2)
 					.setOption("Label")
 					.setTarget("Tile")
 					.setType(MenuAction.RUNELITE)
 					.onClick(e -> labelTile(existing));
 
-				MenuEntry menuColor = client.createMenuEntry(-3)
+				MenuEntry menuColor = client.getMenu().createMenuEntry(-3)
 					.setOption("Color")
 					.setTarget("Tile")
 					.setType(MenuAction.RUNELITE);

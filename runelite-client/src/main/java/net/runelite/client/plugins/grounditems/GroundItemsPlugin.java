@@ -551,7 +551,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 		else if (hotKeyPressed && type == MenuAction.EXAMINE_ITEM_GROUND)
 		{
-			MenuEntry parent = client.createMenuEntry(-1)
+			MenuEntry parent = client.getMenu().createMenuEntry(-1)
 				.setOption("Color")
 				.setTarget(event.getTarget())
 				.setType(MenuAction.RUNELITE);

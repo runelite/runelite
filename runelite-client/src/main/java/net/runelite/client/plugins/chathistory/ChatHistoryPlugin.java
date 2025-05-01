@@ -202,7 +202,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
 		if (tab != null && tab.getAfter() != null && config.clearHistory() && entry.getOption().endsWith(tab.getAfter()))
 		{
-			final MenuEntry clearEntry = client.createMenuEntry(-2)
+			final MenuEntry clearEntry = client.getMenu().createMenuEntry(-2)
 					.setType(MenuAction.RUNELITE_HIGH_PRIORITY);
 			clearEntry.setParam1(entry.getActionParam1());
 
@@ -263,7 +263,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 			String currentMessage = messageContents.getText();
 
-			client.createMenuEntry(1)
+			client.getMenu().createMenuEntry(1)
 					.setOption(COPY_TO_CLIPBOARD)
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE)

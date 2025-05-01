@@ -550,11 +550,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final MenuAction currentShiftAction = shiftSwapConfig == null ? defaultAction(composition) :
 					(shiftSwapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(shiftSwapConfig));
 
-				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+				MenuEntry swapLeftClick = client.getMenu().createMenuEntry(idx)
 					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+				MenuEntry swapShiftClick = client.getMenu().createMenuEntry(idx)
 					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
@@ -739,11 +739,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					(hasAttack ? null : defaultAction(composition)) :
 					(shiftSwapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(shiftSwapConfig));
 
-				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+				MenuEntry swapLeftClick = client.getMenu().createMenuEntry(idx)
 					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+				MenuEntry swapShiftClick = client.getMenu().createMenuEntry(idx)
 					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
@@ -878,11 +878,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer leftClickOp = getWornItemSwapConfig(false, itemComposition.getId());
 					final Integer shiftClickOp = getWornItemSwapConfig(true, itemComposition.getId());
 
-					MenuEntry swapLeftClick = client.createMenuEntry(idx)
+					MenuEntry swapLeftClick = client.getMenu().createMenuEntry(idx)
 						.setOption("Swap left-click")
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE);
-					MenuEntry swapShiftClick = client.createMenuEntry(idx)
+					MenuEntry swapShiftClick = client.getMenu().createMenuEntry(idx)
 						.setOption("Swap shift-click")
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE);
@@ -1029,11 +1029,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final int defaultLeftClickOp = defaultOp(itemComposition, false);
 				final int defaultShiftClickOp = defaultOp(itemComposition, true);
 
-				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+				MenuEntry swapLeftClick = client.getMenu().createMenuEntry(idx)
 					.setOption("Swap left-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
-				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+				MenuEntry swapShiftClick = client.getMenu().createMenuEntry(idx)
 					.setOption("Swap shift-click")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);
@@ -1244,10 +1244,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 					if (!initialized)
 					{
 						initialized = true;
-						swapLeftClick = client.createMenuEntry(2)
+						swapLeftClick = client.getMenu().createMenuEntry(2)
 							.setOption("Swap left-click")
 							.setType(MenuAction.RUNELITE);
-						swapShiftClick = client.createMenuEntry(2)
+						swapShiftClick = client.getMenu().createMenuEntry(2)
 							.setOption("Swap shift-click")
 							.setType(MenuAction.RUNELITE);
 						subLeft = swapLeftClick.createSubMenu();
@@ -1495,7 +1495,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				else if (parent != null && menuEntry.getOption().hashCode() == swapIndex)
 				{
 					// Since it isn't possible to reparent the menu to the top level, just copy it
-					client.createMenuEntry(-1)
+					client.getMenu().createMenuEntry(-1)
 						.setOption(menuEntry.getOption())
 						.setTarget(menuEntry.getTarget())
 						.setIdentifier(menuEntry.getIdentifier())
@@ -1526,7 +1526,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					else if (parent != null && menuEntry.getOption().hashCode() == wornItemSwapConfig)
 					{
 						// Since it isn't possible to reparent the menu to the top level, just copy it
-						client.createMenuEntry(-1)
+						client.getMenu().createMenuEntry(-1)
 							.setOption(menuEntry.getOption())
 							.setTarget(menuEntry.getTarget())
 							.setIdentifier(menuEntry.getIdentifier())

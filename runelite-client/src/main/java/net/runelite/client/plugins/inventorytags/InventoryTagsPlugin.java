@@ -180,7 +180,7 @@ public class InventoryTagsPlugin extends Plugin
 				final int itemId = w.getItemId();
 				final Tag tag = getTag(itemId);
 
-				final MenuEntry parent = client.createMenuEntry(idx)
+				final MenuEntry parent = client.getMenu().createMenuEntry(idx)
 					.setOption("Inventory tag")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE);

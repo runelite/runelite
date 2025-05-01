@@ -444,7 +444,7 @@ public class WikiPlugin extends Plugin
 				return;
 			}
 
-			client.createMenuEntry(-1)
+			client.getMenu().createMenuEntry(-1)
 				.setTarget(action.replace("View ", "").replace(" guide", ""))
 				.setOption(MENUOP_WIKI)
 				.setType(MenuAction.RUNELITE)
