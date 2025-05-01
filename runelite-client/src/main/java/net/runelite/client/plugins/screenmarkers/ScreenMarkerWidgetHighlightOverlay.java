@@ -61,7 +61,7 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 			return null;
 		}
 
-		final MenuEntry[] menuEntries = client.getMenuEntries();
+		final MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		if (client.isMenuOpen() || menuEntries.length == 0)
 		{
 			plugin.setSelectedWidgetBounds(null);

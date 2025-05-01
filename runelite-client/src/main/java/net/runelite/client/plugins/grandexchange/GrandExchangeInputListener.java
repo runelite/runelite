@@ -52,7 +52,7 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 		// Check if left click + alt
 		if (e.getButton() == MouseEvent.BUTTON1 && e.isAltDown())
 		{
-			final MenuEntry[] menuEntries = client.getMenuEntries();
+			final MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 			for (final MenuEntry menuEntry : menuEntries)
 			{
 				if (menuEntry.getOption().equals(SEARCH_GRAND_EXCHANGE))

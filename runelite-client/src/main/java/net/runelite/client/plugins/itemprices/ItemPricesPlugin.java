@@ -92,7 +92,7 @@ public class ItemPricesPlugin extends Plugin
 			return;
 		}
 
-		final MenuEntry[] menuEntries = client.getMenuEntries();
+		final MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		final int last = menuEntries.length - 1;
 
 		if (last < 0)

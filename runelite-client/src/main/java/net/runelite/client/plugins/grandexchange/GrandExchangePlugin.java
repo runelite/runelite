@@ -601,7 +601,7 @@ public class GrandExchangePlugin extends Plugin
 			return;
 		}
 
-		final MenuEntry[] entries = client.getMenuEntries();
+		final MenuEntry[] entries = client.getMenu().getMenuEntries();
 		final MenuEntry menuEntry = entries[entries.length - 1];
 		final int widgetId = menuEntry.getParam1();
 		final int groupId = WidgetUtil.componentToInterface(widgetId);

@@ -1662,7 +1662,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// cancel -> npc op -> walk here -> ground item op
 		// which cannot be achieved with a simple swap.
 
-		for (MenuEntry menuEntry : client.getMenuEntries())
+		for (MenuEntry menuEntry : client.getMenu().getMenuEntries())
 		{
 			MenuAction type = menuEntry.getType();
 
@@ -1744,7 +1744,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void removeDeadNpcs()
 	{
-		MenuEntry[] oldEntries = client.getMenuEntries();
+		MenuEntry[] oldEntries = client.getMenu().getMenuEntries();
 		MenuEntry[] newEntries = Arrays.stream(oldEntries)
 			.filter(e ->
 			{

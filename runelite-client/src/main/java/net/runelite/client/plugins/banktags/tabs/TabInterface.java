@@ -966,7 +966,7 @@ public class TabInterface
 		}
 		else if (draggedWidget.getItemId() != -1)
 		{
-			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry[] entries = client.getMenu().getMenuEntries();
 
 			if (entries.length > 0)
 			{

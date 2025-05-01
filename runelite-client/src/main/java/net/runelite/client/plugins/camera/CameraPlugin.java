@@ -362,7 +362,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		menuHasEntries = hasMenuEntries(client.getMenuEntries());
+		menuHasEntries = hasMenuEntries(client.getMenu().getMenuEntries());
 		sliderTooltip = null;
 	}
 
