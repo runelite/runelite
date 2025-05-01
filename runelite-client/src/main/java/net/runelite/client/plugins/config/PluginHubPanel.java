@@ -667,7 +667,7 @@ class PluginHubPanel extends PluginPanel
 			.collect(Collectors.toList());
 
 		refreshing.setVisible(false);
-		//filter();
+		filter();
 
 	}
 
