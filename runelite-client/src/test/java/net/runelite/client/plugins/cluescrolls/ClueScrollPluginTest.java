@@ -149,7 +149,7 @@ public class ClueScrollPluginTest
 
 		when(client.getWidget(InterfaceID.TrailCluetext.TEXT)).thenReturn(clueWidget);
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
-		when(client.getTopLevelWorldView().getPlane()).thenReturn(0);
+		when(client.getPlane()).thenReturn(0);
 		WorldView wv = mock(WorldView.class);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
 		IndexedObjectSet npcs = mock(IndexedObjectSet.class);
