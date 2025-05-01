@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Modified 2025 hawolt
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,6 +50,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.ui.JagexColors;
+import net.runelite.client.util.Debouncer;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -67,8 +69,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 	private static final int PREDICTION_DEBOUNCE_DELAY_MS = 200;
 
 	private final ChatboxPanelManager chatboxPanelManager;
-
-	private Future<?> runningRequest = null;
+	private final Debouncer debouncer = new Debouncer();
 	private List<String> predictions = ImmutableList.of();
 
 	private int selectedPrediction = -1;
@@ -76,8 +77,8 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 
 	@Inject
 	public WikiSearchChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread,
-		ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
-		OkHttpClient okHttpClient, Gson gson)
+									  ScheduledExecutorService scheduledExecutorService, @Named("developerMode") final boolean developerMode,
+									  OkHttpClient okHttpClient, Gson gson)
 	{
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
@@ -94,14 +95,8 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 		onChanged(searchString ->
 		{
 			selectedPrediction = -1;
-			Future<?> rr = runningRequest;
-			if (rr != null)
-			{
-				rr.cancel(false);
-			}
 			if (searchString.length() <= 1)
 			{
-				runningRequest = null;
 				clientThread.invokeLater(() ->
 				{
 					predictions = ImmutableList.of();
@@ -109,7 +104,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 				});
 				return;
 			}
-			runningRequest = scheduledExecutorService.schedule(() ->
+			debouncer.debounce(scheduledExecutorService, "wiki-search", () ->
 			{
 				HttpUrl url = WikiPlugin.WIKI_API.newBuilder()
 					.addQueryParameter("action", "opensearch")
@@ -161,8 +156,6 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 						}
 					}
 				});
-
-				runningRequest = null;
 			}, PREDICTION_DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
 		});
 	}
