@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,6 +71,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -161,7 +163,7 @@ class PluginHubPanel extends PluginPanel
 				BufferedImage img = externalPluginClient.downloadIcon(manifest);
 
 				loaded = true;
-				executor.submit(() -> setIcon(new ImageIcon(img)));
+				SwingUtilities.invokeLater(() -> setIcon(new ImageIcon(img)));
 			}
 			catch (IOException e)
 			{
@@ -449,9 +451,7 @@ class PluginHubPanel extends PluginPanel
 	private final PluginManager pluginManager;
 	private final ExternalPluginClient externalPluginClient;
 	private final ScheduledExecutorService executor;
-
 	private final Deque<PluginIcon> iconLoadQueue = new ArrayDeque<>();
-
 	private final IconTextField searchBar;
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
@@ -609,13 +609,15 @@ class PluginHubPanel extends PluginPanel
 			catch (IOException | VerificationException e)
 			{
 				log.error("", e);
+				SwingUtilities.invokeLater(() ->
+				{
+					refreshing.setVisible(false);
+					mainPanel.add(new JLabel("Downloading the plugin manifest failed"));
 
-				refreshing.setVisible(false);
-				mainPanel.add(new JLabel("Downloading the plugin manifest failed"));
-
-				JButton retry = new JButton("Retry");
-				retry.addActionListener(l -> reloadPluginList());
-				mainPanel.add(retry);
+					JButton retry = new JButton("Retry");
+					retry.addActionListener(l -> reloadPluginList());
+					mainPanel.add(retry);
+				});
 				return;
 			}
 
@@ -654,12 +656,6 @@ class PluginHubPanel extends PluginPanel
 
 		Set<String> installed = new HashSet<>(externalPluginManager.getInstalledExternalPlugins());
 
-
-		if (!refreshing.isVisible())
-		{
-			return;
-		}
-
 		plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
 			.stream()
 			.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
@@ -668,7 +664,6 @@ class PluginHubPanel extends PluginPanel
 
 		refreshing.setVisible(false);
 		filter();
-
 	}
 
 	void filter()
@@ -677,30 +672,35 @@ class PluginHubPanel extends PluginPanel
 		{
 			return;
 		}
+		executor.submit(() -> {
+			Stream<PluginItem> stream = plugins.stream();
 
-		mainPanel.removeAll();
-
-		Stream<PluginItem> stream = plugins.stream();
-
-		String query = searchBar.getText();
-		boolean isSearching = query != null && !query.trim().isEmpty();
-		if (isSearching)
-		{
-			PluginSearch.search(plugins, query).forEach(mainPanel::add);
-		}
-		else
-		{
-			stream.filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
-					.thenComparing(PluginItem::isInstalled)
-					.thenComparingInt(PluginItem::getUserCount)
-					.reversed()
-					.thenComparing(p -> p.manifest.getDisplayName())
-				)
-				.forEach(mainPanel::add);
-		}
-
-		mainPanel.revalidate();
+			String query = searchBar.getText();
+			boolean isSearching = query != null && !query.trim().isEmpty();
+			List<PluginItem> pluginItems;
+			if (isSearching)
+			{
+				pluginItems = PluginSearch.search(plugins, query);
+			}
+			else
+			{
+				pluginItems = stream.filter(p -> p.isInstalled() || p.getJarData() != null)
+					.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+						.thenComparing(PluginItem::isInstalled)
+						.thenComparingInt(PluginItem::getUserCount)
+						.reversed()
+						.thenComparing(p -> p.manifest.getDisplayName())
+					)
+					.collect(Collectors.toList());
+			}
+			SwingUtilities.invokeLater(() -> {
+				synchronized (PluginHubPanel.class)
+				{
+					pluginItems.forEach(mainPanel::add);
+					mainPanel.revalidate();
+				}
+			});
+		});
 	}
 
 	@Override
