@@ -34,13 +34,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
-import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
@@ -166,11 +166,11 @@ class PotionStorage
 
 	int matches(Set<Integer> bank, int itemId)
 	{
-		if (itemId == ItemID.VIAL)
+		if (itemId == ItemID.VIAL_EMPTY)
 		{
 			if (hasVialsInPotionStorage())
 			{
-				return ItemID.VIAL;
+				return ItemID.VIAL_EMPTY;
 			}
 
 			return -1;
@@ -212,7 +212,7 @@ class PotionStorage
 
 	int count(int itemId)
 	{
-		if (itemId == ItemID.VIAL)
+		if (itemId == ItemID.VIAL_EMPTY)
 		{
 			return getVialsInPotionStorage();
 		}
@@ -239,7 +239,7 @@ class PotionStorage
 			return -1;
 		}
 
-		if (itemId == ItemID.VIAL)
+		if (itemId == ItemID.VIAL_EMPTY)
 		{
 			if (hasVialsInPotionStorage())
 			{
@@ -268,7 +268,7 @@ class PotionStorage
 
 	int getVialsInPotionStorage()
 	{
-		return client.getVarpValue(VarPlayer.POTION_STORAGE_VIALS_COUNT);
+		return client.getVarpValue(VarPlayerID.POTIONSTORE_VIALS);
 	}
 
 	void prepareWidgets()

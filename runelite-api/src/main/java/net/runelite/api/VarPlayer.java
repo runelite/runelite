@@ -277,9 +277,4 @@ public final class VarPlayer
 	public static final int ESSENCE_POUCH_GIANT_DEGRADE = 490;
 
 	public static final int RAIDS_PERSONAL_POINTS = 4609;
-
-	/**
-	 * The amount of vials in the Potion Storage.
-	 */
-	public static final int POTION_STORAGE_VIALS_COUNT = 4286;
 }
