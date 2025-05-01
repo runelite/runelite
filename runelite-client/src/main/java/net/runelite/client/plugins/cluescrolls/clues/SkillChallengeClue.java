@@ -163,9 +163,9 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		any("" /* graceful gloves */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_GLOVES).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
 		any("" /* graceful boots  */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_BOOTS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
 		any("" /* graceful cape   */, Stream.of(
-			ItemVariationMapping.getVariations(ItemID.GRACEFUL_CAPE).stream(),
-			ItemVariationMapping.getVariations(ItemID.SKILLCAPE_AGILITY).stream(),
-			ItemVariationMapping.getVariations(ItemID.SKILLCAPE_MAX).stream())
+				ItemVariationMapping.getVariations(ItemID.GRACEFUL_CAPE).stream(),
+				ItemVariationMapping.getVariations(ItemID.SKILLCAPE_AGILITY).stream(),
+				ItemVariationMapping.getVariations(ItemID.SKILLCAPE_MAX).stream())
 			.reduce(Stream::concat)
 			.orElseGet(Stream::empty)
 			.map(ItemRequirements::item).toArray(SingleItemRequirement[]::new))
@@ -189,7 +189,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 			any("Earth Rune x15", xOfItem(ItemID.EARTHRUNE, 15), xOfItem(ItemID.DUSTRUNE, 15), xOfItem(ItemID.MUDRUNE, 15), xOfItem(ItemID.LAVARUNE, 15), item(ItemID.STAFF_OF_EARTH), item(ItemID.EARTH_BATTLESTAFF), item(ItemID.MYSTIC_EARTH_STAFF), item(ItemID.MUD_BATTLESTAFF), item(ItemID.MYSTIC_MUD_STAFF), item(ItemID.DUST_BATTLESTAFF), item(ItemID.MYSTIC_DUST_BATTLESTAFF), item(ItemID.LAVA_BATTLESTAFF), item(ItemID.MYSTIC_LAVA_STAFF), item(ItemID.LAVA_BATTLESTAFF_PRETTY), item(ItemID.MYSTIC_LAVA_STAFF_PRETTY)),
 			any("Unenchanted Dragonstone Jewellery", item(ItemID.DRAGONSTONE_RING), item(ItemID.DRAGONSTONE_NECKLACE), item(ItemID.JEWL_DRAGONSTONE_BRACELET), item(ItemID.STRUNG_DRAGONSTONE_AMULET))),
 		new SkillChallengeClue("Craft a nature rune.", any("Pure essence or Daeyalt essence", item(ItemID.BLANKRUNE_HIGH), item(ItemID.BLANKRUNE_DAEYALT))),
-		new SkillChallengeClue("Catch a mottled eel with aerial fishing in Lake Molch.", any("Fish chunks or King worms", item(ItemID.FISH_CHUNKS), item(ItemID.KING_WORM)), emptySlot("No Gloves", EquipmentInventorySlot.GLOVES), any("No Weapon", emptySlot("",  EquipmentInventorySlot.WEAPON), item(ItemID.AERIAL_FISHING_GLOVES_NO_BIRD), item(ItemID.AERIAL_FISHING_GLOVES_BIRD)), emptySlot("No Shield", EquipmentInventorySlot.SHIELD)),
+		new SkillChallengeClue("Catch a mottled eel with aerial fishing in Lake Molch.", any("Fish chunks or King worms", item(ItemID.FISH_CHUNKS), item(ItemID.KING_WORM)), emptySlot("No Gloves", EquipmentInventorySlot.GLOVES), any("No Weapon", emptySlot("", EquipmentInventorySlot.WEAPON), item(ItemID.AERIAL_FISHING_GLOVES_NO_BIRD), item(ItemID.AERIAL_FISHING_GLOVES_BIRD)), emptySlot("No Shield", EquipmentInventorySlot.SHIELD)),
 		new SkillChallengeClue("Score a goal in skullball.", true, any("Ring of Charos", item(ItemID.RING_OF_CHAROS), item(ItemID.RING_OF_CHAROS_UNLOCKED))),
 		new SkillChallengeClue("Complete a lap of Ape atoll agility course.", true, any("Ninja Monkey Greegree", item(ItemID.MM_MONKEY_GREEGREE_FOR_SMALL_NINJA_MONKEY), item(ItemID.MM_MONKEY_GREEGREE_FOR_MEDIUM_NINJA_MONKEY), item(ItemID.MM2_KRUK_GREEGREE))),
 		new SkillChallengeClue("Create a super defence potion.", item(ItemID.CADANTINEVIAL), item(ItemID.WHITE_BERRIES)),
@@ -199,8 +199,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true,
 			any("Facemask or Slayer Helmet",
 				Stream.of(
-					ItemVariationMapping.getVariations(ItemID.SLAYER_HELM).stream(),
-					Stream.of(ItemID.SLAYER_FACEMASK))
+						ItemVariationMapping.getVariations(ItemID.SLAYER_HELM).stream(),
+						Stream.of(ItemID.SLAYER_FACEMASK))
 					.reduce(Stream::concat)
 					.orElseGet(Stream::empty)
 					.map(ItemRequirements::item)
@@ -211,7 +211,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Smith a mithril 2h sword.", ANY_HAMMER, xOfItem(ItemID.MITHRIL_BAR, 3)),
 		new SkillChallengeClue("Catch a raw shark.", ANY_HARPOON),
 		new SkillChallengeClue("Cut a yew log.", ANY_AXE),
-		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", new String[] { "Broken lamp" }, new int[] { 10834, 10835 }, item(ItemID.DORGESH_LIGHT_BULB)),
+		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", new String[]{"Broken lamp"}, new int[]{10834, 10835}, item(ItemID.DORGESH_LIGHT_BULB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),
 		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", any("Pure essence or Daeyalt essence", item(ItemID.BLANKRUNE_HIGH), item(ItemID.BLANKRUNE_DAEYALT))),
@@ -294,37 +294,37 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	}
 
 	// Non-cryptic Sherlock Tasks
-	private SkillChallengeClue(String challenge, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, ItemRequirement... itemRequirements)
 	{
 		this(challenge, challenge.toLowerCase(), itemRequirements);
 	}
 
 	// Non-cryptic Sherlock Tasks
-	private SkillChallengeClue(String challenge, String[] objectNames, int[] objectRegions, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String[] objectNames, int[] objectRegions, ItemRequirement... itemRequirements)
 	{
 		this(challenge, challenge.toLowerCase(), false, objectNames, objectRegions, itemRequirements);
 	}
 
 	// Non-cryptic Sherlock Tasks
-	private SkillChallengeClue(String challenge, boolean requireEquip, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, boolean requireEquip, ItemRequirement... itemRequirements)
 	{
 		this(challenge, challenge.toLowerCase(), requireEquip, new String[0], null, itemRequirements);
 	}
 
 	// Sherlock Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, ItemRequirement... itemRequirements)
 	{
 		this(challenge, rawChallenge, false, new String[0], null, itemRequirements);
 	}
 
 	// Sherlock Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, ItemRequirement... itemRequirements)
 	{
 		this(challenge, rawChallenge, requireEquip, new String[0], null, itemRequirements);
 	}
 
 	// Sherlock Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, String[] objectNames, int[] objectRegions, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(String challenge, String rawChallenge, boolean requireEquip, String[] objectNames, int[] objectRegions, ItemRequirement... itemRequirements)
 	{
 		this.type = ChallengeType.SHERLOCK;
 		this.challenge = challenge;
@@ -408,7 +408,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 
 			for (final TileObject object : plugin.getNamedObjectsToMark())
 			{
-				if (plugin.getClient().getPlane() != object.getPlane())
+				if (plugin.getClient().getTopLevelWorldView().getPlane() != object.getPlane())
 				{
 					continue;
 				}
@@ -421,7 +421,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		}
 	}
 
-	private static List<LineComponent> getRequirements(ClueScrollPlugin plugin, boolean requireEquipped, ItemRequirement ... requirements)
+	private static List<LineComponent> getRequirements(ClueScrollPlugin plugin, boolean requireEquipped, ItemRequirement... requirements)
 	{
 		List<LineComponent> components = new ArrayList<>();
 
@@ -482,7 +482,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
-		return new String[] {type.getName()};
+		return new String[]{type.getName()};
 	}
 
 	@Override

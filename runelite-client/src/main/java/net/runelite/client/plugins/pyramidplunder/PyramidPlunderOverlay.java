@@ -117,7 +117,7 @@ class PyramidPlunderOverlay extends Overlay
 		{
 			if (!config.highlightDoors() && TOMB_DOOR_WALL_IDS.contains(object.getId())
 				|| !config.highlightSpeartraps() && SPEARTRAP_ID == object.getId()
-				|| tile.getPlane() != client.getPlane()
+				|| tile.getPlane() != client.getTopLevelWorldView().getPlane()
 				|| object.getLocalLocation().distanceTo(playerLocation) >= MAX_DISTANCE)
 			{
 				return;

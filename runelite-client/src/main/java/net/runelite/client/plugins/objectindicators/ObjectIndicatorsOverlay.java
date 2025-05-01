@@ -91,7 +91,7 @@ class ObjectIndicatorsOverlay extends Overlay
 		{
 			TileObject object = obj.getTileObject();
 
-			if (object.getPlane() != client.getPlane())
+			if (object.getPlane() != client.getTopLevelWorldView().getPlane())
 			{
 				continue;
 			}

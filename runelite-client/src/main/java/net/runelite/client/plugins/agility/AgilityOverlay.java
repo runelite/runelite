@@ -85,7 +85,7 @@ class AgilityOverlay extends Overlay
 			}
 
 			Tile tile = obstacle.getTile();
-			if (tile.getPlane() == client.getPlane()
+			if (tile.getPlane() == client.getTopLevelWorldView().getPlane()
 				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
 				// This assumes that the obstacle is not clickable.
@@ -168,7 +168,7 @@ class AgilityOverlay extends Overlay
 
 	private void highlightTile(Graphics2D graphics, LocalPoint playerLocation, Tile tile, Color color)
 	{
-		if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null
+		if (tile.getPlane() == client.getTopLevelWorldView().getPlane() && tile.getItemLayer() != null
 			&& tile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 		{
 			final Polygon poly = tile.getItemLayer().getCanvasTilePoly();

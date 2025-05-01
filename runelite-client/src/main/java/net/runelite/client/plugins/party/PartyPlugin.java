@@ -322,7 +322,7 @@ public class PartyPlugin extends Plugin
 		{
 			WorldPoint point = event.getPoint();
 
-			if (point.getPlane() != client.getPlane() || !WorldPoint.isInScene(client, point.getX(), point.getY()))
+			if (point.getPlane() != client.getTopLevelWorldView().getPlane() || !WorldPoint.isInScene(client, point.getX(), point.getY()))
 			{
 				return;
 			}

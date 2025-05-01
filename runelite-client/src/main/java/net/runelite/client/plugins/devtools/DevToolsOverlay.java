@@ -139,7 +139,7 @@ class DevToolsOverlay extends Overlay
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
 		byte[][][] settings = client.getTileSettings();
-		int z = client.getPlane();
+		int z = client.getTopLevelWorldView().getPlane();
 
 		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
@@ -255,7 +255,7 @@ class DevToolsOverlay extends Overlay
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
 
-		int z = client.getPlane();
+		int z = client.getTopLevelWorldView().getPlane();
 
 		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
@@ -342,7 +342,7 @@ class DevToolsOverlay extends Overlay
 
 		if (client.getCollisionMaps() != null)
 		{
-			int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
+			int[][] flags = client.getCollisionMaps()[client.getTopLevelWorldView().getPlane()].getFlags();
 			int data = flags[tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
 
 			Set<MovementFlag> movementFlags = MovementFlag.getSetFlags(data);

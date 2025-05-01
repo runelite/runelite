@@ -596,7 +596,7 @@ public class DevToolsPlugin extends Plugin
 
 				if (action == MenuAction.EXAMINE_OBJECT)
 				{
-					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
+					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getTopLevelWorldView().getPlane());
 					info += " X: " + point.getX() + " Y: " + point.getY();
 				}
 			}

@@ -204,7 +204,7 @@ public class InteractHighlightPlugin extends Plugin
 		y += (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getExtendedTiles();
-		Tile tile = tiles[client.getPlane()][x][y];
+		Tile tile = tiles[client.getTopLevelWorldView().getPlane()][x][y];
 		if (tile != null)
 		{
 			for (GameObject gameObject : tile.getGameObjects())

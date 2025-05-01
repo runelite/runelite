@@ -132,7 +132,7 @@ public class CompostTracker
 		}
 
 		ObjectComposition patchDef = client.getObjectDefinition(e.getId());
-		WorldPoint actionLocation = WorldPoint.fromScene(client, e.getParam0(), e.getParam1(), client.getPlane());
+		WorldPoint actionLocation = WorldPoint.fromScene(client, e.getParam0(), e.getParam1(), client.getTopLevelWorldView().getPlane());
 		FarmingPatch targetPatch = farmingWorld.getRegionsForLocation(actionLocation)
 			.stream()
 			.flatMap(fr -> Arrays.stream(fr.getPatches()))
@@ -228,7 +228,7 @@ public class CompostTracker
 
 		@Varbit int patchVarb = pendingCompost.getFarmingPatch().getVarbit();
 		Tile patchTile = client.getScene()
-			.getTiles()[client.getPlane()][localPatchLocation.getSceneX()][localPatchLocation.getSceneY()];
+			.getTiles()[client.getTopLevelWorldView().getPlane()][localPatchLocation.getSceneX()][localPatchLocation.getSceneY()];
 		GameObject patchObject = null;
 		for (GameObject go : patchTile.getGameObjects())
 		{

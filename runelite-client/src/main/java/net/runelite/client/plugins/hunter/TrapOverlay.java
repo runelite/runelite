@@ -133,7 +133,7 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTimerOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border, Color fillTimeLow, Color borderTimeLow)
 	{
-		if (trap.getWorldLocation().getPlane() != client.getPlane())
+		if (trap.getWorldLocation().getPlane() != client.getTopLevelWorldView().getPlane())
 		{
 			return;
 		}
@@ -142,7 +142,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getTopLevelWorldView().getPlane());
 
 		if (loc == null)
 		{
@@ -169,7 +169,7 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, HunterTrap trap, Color fill, Color border)
 	{
-		if (trap.getWorldLocation().getPlane() != client.getPlane())
+		if (trap.getWorldLocation().getPlane() != client.getTopLevelWorldView().getPlane())
 		{
 			return;
 		}
@@ -178,7 +178,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getTopLevelWorldView().getPlane());
 
 		ProgressPieComponent pie = new ProgressPieComponent();
 		pie.setFill(fill);

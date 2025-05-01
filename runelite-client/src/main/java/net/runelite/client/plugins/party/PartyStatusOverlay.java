@@ -163,7 +163,7 @@ class PartyStatusOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player player, String text, Color color, int renderIx)
 	{
-		Point point = Perspective.localToCanvas(client, player.getLocalLocation(), client.getPlane(), player.getLogicalHeight());
+		Point point = Perspective.localToCanvas(client, player.getLocalLocation(), client.getTopLevelWorldView().getPlane(), player.getLogicalHeight());
 
 		if (point != null)
 		{

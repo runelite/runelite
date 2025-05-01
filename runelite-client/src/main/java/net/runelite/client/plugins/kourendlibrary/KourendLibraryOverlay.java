@@ -85,7 +85,7 @@ class KourendLibraryOverlay extends Overlay
 			return null;
 		}
 
-		List<Bookcase> allBookcases = library.getBookcasesOnLevel(client.getPlane());
+		List<Bookcase> allBookcases = library.getBookcasesOnLevel(client.getTopLevelWorldView().getPlane());
 
 		for (Bookcase bookcase : allBookcases)
 		{
@@ -214,7 +214,7 @@ class KourendLibraryOverlay extends Overlay
 				LocalPoint local = n.getLocalLocation();
 				Polygon poly = getCanvasTilePoly(client, local);
 				OverlayUtil.renderPolygon(g, poly, doesPlayerContainBook ? Color.GREEN : Color.WHITE);
-				Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
+				Point screen = Perspective.localToCanvas(client, local, client.getTopLevelWorldView().getPlane(), n.getLogicalHeight());
 				if (screen != null)
 				{
 					g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);

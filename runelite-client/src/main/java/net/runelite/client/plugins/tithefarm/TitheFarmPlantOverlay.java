@@ -94,7 +94,7 @@ public class TitheFarmPlantOverlay extends Overlay
 				continue;
 			}
 
-			final Point canvasLocation = Perspective.localToCanvas(client, localLocation, client.getPlane());
+			final Point canvasLocation = Perspective.localToCanvas(client, localLocation, client.getTopLevelWorldView().getPlane());
 
 			if (canvasLocation != null)
 			{

@@ -77,7 +77,7 @@ public class LocationOverlay extends OverlayPanel
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("World")
-			.right(worldPoint.getX() + ", " + worldPoint.getY() + ", " + client.getPlane())
+			.right(worldPoint.getX() + ", " + worldPoint.getY() + ", " + client.getTopLevelWorldView().getPlane())
 			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
@@ -88,7 +88,7 @@ public class LocationOverlay extends OverlayPanel
 		if (client.isInInstancedRegion())
 		{
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			int z = client.getPlane();
+			int z = client.getTopLevelWorldView().getPlane();
 			for (int cy = 0; cy < SCENE_SIZE / CHUNK_SIZE; ++cy)
 			{
 				for (int cx = 0; cx < SCENE_SIZE / CHUNK_SIZE; ++cx)

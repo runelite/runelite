@@ -78,7 +78,7 @@ class CannonSpotOverlay extends Overlay
 
 		for (WorldPoint spot : spotPoints)
 		{
-			if (spot.getPlane() != client.getPlane())
+			if (spot.getPlane() != client.getTopLevelWorldView().getPlane())
 			{
 				continue;
 			}

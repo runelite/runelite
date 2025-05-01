@@ -636,10 +636,10 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// Delay one tick when changing planes before scanning for new named objects on the new plane
-		if (currentPlane != client.getPlane())
+		if (currentPlane != client.getTopLevelWorldView().getPlane())
 		{
 			namedObjectsToMark.clear();
-			currentPlane = client.getPlane();
+			currentPlane = client.getTopLevelWorldView().getPlane();
 			namedObjectCheckThisTick = true;
 		}
 		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
@@ -935,7 +935,7 @@ public class ClueScrollPlugin extends Plugin
 
 		final Scene scene = client.getScene();
 		final Tile[][][] tiles = scene.getTiles();
-		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+		final Tile tile = tiles[client.getTopLevelWorldView().getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
 		Stream.concat(Stream.of(tile.getGameObjects()), Stream.of(tile.getDecorativeObject()))
 			.filter(Objects::nonNull)
@@ -1022,7 +1022,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		// Search loaded tiles for objects
-		for (final Tile[] tiles : client.getScene().getTiles()[client.getPlane()])
+		for (final Tile[] tiles : client.getScene().getTiles()[client.getTopLevelWorldView().getPlane()])
 		{
 			for (final Tile tile : tiles)
 			{

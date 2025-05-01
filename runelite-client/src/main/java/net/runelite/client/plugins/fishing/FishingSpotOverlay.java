@@ -136,7 +136,7 @@ class FishingSpotOverlay extends Overlay
 					}
 
 					LocalPoint localPoint = npc.getLocalLocation();
-					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
+					Point location = Perspective.localToCanvas(client, localPoint, client.getTopLevelWorldView().getPlane());
 
 					if (location != null)
 					{

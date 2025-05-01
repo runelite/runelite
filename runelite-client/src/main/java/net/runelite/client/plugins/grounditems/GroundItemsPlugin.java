@@ -510,7 +510,7 @@ public class GroundItemsPlugin extends Plugin
 			MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
+			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getTopLevelWorldView().getPlane());
 			GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
 
 			updateItemColor(groundItem);

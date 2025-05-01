@@ -240,7 +240,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		final TileObject tileObject = findTileObject(client.getPlane(), event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
+		final TileObject tileObject = findTileObject(client.getTopLevelWorldView().getPlane(), event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
 		if (tileObject == null)
 		{
 			return;
@@ -403,7 +403,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void markObject(MenuEntry entry)
 	{
-		TileObject object = findTileObject(client.getPlane(), entry.getParam0(), entry.getParam1(), entry.getIdentifier());
+		TileObject object = findTileObject(client.getTopLevelWorldView().getPlane(), entry.getParam0(), entry.getParam1(), entry.getIdentifier());
 		if (object == null)
 		{
 			return;

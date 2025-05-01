@@ -320,7 +320,7 @@ public class WikiPlugin extends Plugin
 					}
 					id = lc.getId();
 					name = lc.getName();
-					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
+					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getTopLevelWorldView().getPlane());
 					break;
 				}
 				case WIDGET_TARGET_ON_WIDGET:
