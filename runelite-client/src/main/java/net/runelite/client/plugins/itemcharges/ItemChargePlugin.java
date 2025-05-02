@@ -373,9 +373,9 @@ public class ItemChargePlugin extends Plugin
 					return;
 				}
 
-				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT)))
+				if (equipment.contains(ItemID.RING_OF_FORGING))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - varrockPlatebodySmeltTwo ? 2 : 1, 0,
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - (varrockPlatebodySmeltTwo ? 2 : 1), 0,
 						MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
 				}
