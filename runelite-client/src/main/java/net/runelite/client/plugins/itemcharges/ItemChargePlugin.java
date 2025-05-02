@@ -151,6 +151,8 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
+	private boolean varrockPlatebodySmeltTwo;
+
 	@Inject
 	private Client client;
 
@@ -333,22 +335,11 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateRingOfForgingCharges(charges);
 			}
-			else if (message.equals(RING_OF_FORGING_USED_TEXT) || message.equals(RING_OF_FORGING_VARROCK_PLATEBODY))
+			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
-				final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
-				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
-
-				// Determine if the player smelted with a Ring of Forging equipped.
-				if (equipment == null)
-				{
-					return;
-				}
-
-				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
-				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
-					updateRingOfForgingCharges(charges);
-				}
+				final int chargesUsed = varrockPlatebodySmeltTwo ? 2 : 1;
+				int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - chargesUsed, 0, MAX_RING_OF_FORGING_CHARGES);
+				updateRingOfForgingCharges(charges);
 			}
 			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
 			{
@@ -462,6 +453,8 @@ public class ItemChargePlugin extends Plugin
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+
+			varrockPlatebodySmeltTwo = message.equals(RING_OF_FORGING_VARROCK_PLATEBODY);
 		}
 	}
 

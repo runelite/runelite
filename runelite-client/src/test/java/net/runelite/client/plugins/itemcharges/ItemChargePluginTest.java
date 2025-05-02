@@ -62,6 +62,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_RING_OF_FORGING_ONE = "You can smelt one more piece of iron ore before a ring melts.";
 	private static final String USED_RING_OF_FORGING = "You retrieve a bar of iron.";
 	private static final String BREAK_RING_OF_FORGING = "<col=7f007f>Your Ring of Forging has melted.</col>";
+	private static final String USED_RING_OF_FORGING_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously.";
 
 	private static final String CHECK_AMULET_OF_CHEMISTRY = "Your amulet of chemistry has 5 charges left.";
 	private static final String CHECK_AMULET_OF_CHEMISTRY_1 = "Your amulet of chemistry has 1 charge left.";
@@ -185,6 +186,25 @@ public class ItemChargePluginTest
 	}
 
 	@Test
+	public void testRofTwo()
+	{
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(140);
+
+		// varrock platebody proc
+		ChatMessage chatMessageEffect = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING_VARROCK_PLATEBODY, "", 0);
+		// ring of forging proc
+		ChatMessage chatMessageUse = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING, "", 0);
+
+		itemChargePlugin.onChatMessage(chatMessageEffect);
+		itemChargePlugin.onChatMessage(chatMessageUse);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 138);
+
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(138);
+		itemChargePlugin.onChatMessage(chatMessageUse);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 137);
+	}
+
+	@Test
 	public void testRofFull()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
@@ -196,25 +216,16 @@ public class ItemChargePluginTest
 	public void testRof()
 	{
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(90);
-		// Create equipment inventory with ring of forging
-		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipmentItemContainer);
-		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
-		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
-		// Run message
+
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
+
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 89);
 	}
 
 	@Test
 	public void testRofBreak()
 	{
-		// Create equipment inventory with ring of forging
-		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipmentItemContainer);
-		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
-		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
 		// Run message to break ring and then use ring, to simulate actual client behavior
 		ChatMessage breakMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(breakMessage);
@@ -507,6 +518,7 @@ public class ItemChargePluginTest
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
 	}
+
 	@Test
 	public void testBraceletOfClayUseTrahaearn()
 	{
