@@ -155,6 +155,8 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
+	private boolean varrockPlatebodySmeltTwo = false;
+
 	@Inject
 	private Client client;
 
@@ -360,7 +362,7 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateRingOfForgingCharges(charges);
 			}
-			else if (message.equals(RING_OF_FORGING_USED_TEXT) || message.equals(RING_OF_FORGING_VARROCK_PLATEBODY))
+			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
 				final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
@@ -371,9 +373,10 @@ public class ItemChargePlugin extends Plugin
 					return;
 				}
 
-				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
+				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT)))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - varrockPlatebodySmeltTwo ? 2 : 1, 0,
+						MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
 				}
 			}
@@ -489,6 +492,7 @@ public class ItemChargePlugin extends Plugin
 				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+			varrockPlatebodySmeltTwo = message.matches(RING_OF_FORGING_VARROCK_PLATEBODY); //Set to true if the message matches and only survives one iteration (one chat message) before being set back to false
 		}
 	}
 
