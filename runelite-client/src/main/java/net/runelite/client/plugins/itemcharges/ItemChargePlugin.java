@@ -334,7 +334,7 @@ public class ItemChargePlugin extends Plugin
 			else if (bindingNecklaceUsedMatcher.find())
 			{
 				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
-				if (equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
+				if (equipment != null && equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
 				{
 					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
 				}
@@ -364,7 +364,6 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
-				final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
 				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 
 				// Determine if the player smelted with a Ring of Forging equipped.
