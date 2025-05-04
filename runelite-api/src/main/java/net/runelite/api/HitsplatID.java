@@ -32,6 +32,7 @@ public final class HitsplatID
 	public static final int DAMAGE_OTHER = 17;
 	public static final int POISON = 65;
 	public static final int DISEASE = 4;
+	public static final int DISEASE_BLOCKED = 3;
 	public static final int VENOM = 5;
 	public static final int HEAL = 6;
 	public static final int CYAN_UP = 11;
