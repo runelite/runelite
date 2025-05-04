@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import com.google.inject.Provider;
 import net.runelite.api.Client;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WorldChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -87,5 +88,12 @@ public class SkillCalculatorPlugin extends Plugin
 			uiPanel.get().reloadCurrentCalculator();
 		}
 		lastWorldWasMembers = currentWorldIsMembers;
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged event)
+	{
+		uiPanel.get().shouldUpdateXP = true;
+		uiPanel.get().reloadCurrentCalculator();
 	}
 }
