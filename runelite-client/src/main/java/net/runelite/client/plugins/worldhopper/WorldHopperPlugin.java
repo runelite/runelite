@@ -157,6 +157,7 @@ public class WorldHopperPlugin extends Plugin
 	private ScheduledFuture<?> pingFuture, currPingFuture;
 	private int currentWorld;
 	private Instant lastFetch;
+	private Integer hoppedFrom = null;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int currentPing;
@@ -452,6 +453,7 @@ public class WorldHopperPlugin extends Plugin
 			{
 				int newWorld = client.getWorld();
 				panel.switchCurrentHighlight(newWorld, lastWorld);
+				hoppedFrom = lastWorld;
 				lastWorld = newWorld;
 			}
 		}
@@ -474,6 +476,28 @@ public class WorldHopperPlugin extends Plugin
 
 		panel.updateListData(worldData);
 		this.lastFetch = Instant.now(); // This counts as a fetch as it updates populations
+
+		if (hoppedFrom != null && hoppedFrom > 0)
+		{
+			String hoppedFromMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Hopped from world ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(hoppedFrom))
+				.append(ChatColorType.NORMAL)
+				.append(" to world ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(lastWorld))
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(hoppedFromMessage)
+				.build());
+			
+			hoppedFrom = null;
+		}
+
 	}
 
 	void refresh()
