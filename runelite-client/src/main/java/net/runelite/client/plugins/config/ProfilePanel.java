@@ -616,6 +616,39 @@ class ProfilePanel extends PluginPanel
 					}
 					return true;
 				}
+
+				@Override
+				public void mousePressed(MouseEvent e)
+				{
+					// Don't allow dragging on this while editing the name, otherwise it won't be possible to move the
+					// cursor or make selections with the mouse.
+					if (!name.isEditable())
+					{
+						super.mousePressed(e);
+					}
+				}
+
+				@Override
+				public void mouseDragged(MouseEvent e)
+				{
+					// Don't allow dragging on this while editing the name, otherwise it won't be possible to move the
+					// cursor or make selections with the mouse.
+					if (!name.isEditable())
+					{
+						super.mouseDragged(e);
+					}
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					// Don't allow dragging on this while editing the name, otherwise it won't be possible to move the
+					// cursor or make selections with the mouse.
+					if (!name.isEditable())
+					{
+						super.mouseReleased(e);
+					}
+				}
 			};
 			addMouseListener(expandListener);
 			addMouseMotionListener(expandListener);
