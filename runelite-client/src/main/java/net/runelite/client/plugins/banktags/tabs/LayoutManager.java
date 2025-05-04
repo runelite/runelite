@@ -648,7 +648,7 @@ public class LayoutManager
 			int idx = -1;
 			for (PluginAutoLayout autoLayout : autoLayouts)
 			{
-				client.createMenuEntry(--idx)
+				client.getMenu().createMenuEntry(--idx)
 					.setOption("Auto layout: " + autoLayout.getName())
 					.setTarget(event.getTarget())
 					.setType(MenuAction.RUNELITE_HIGH_PRIORITY)

@@ -96,7 +96,7 @@ class NpcRespawnOverlay extends Overlay
 		}
 
 		final WorldPoint respawnLocation = npc.getPossibleRespawnLocations().get(0);
-		final LocalPoint lp = LocalPoint.fromWorld(client, respawnLocation.getX(), respawnLocation.getY());
+		final LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), respawnLocation.getX(), respawnLocation.getY());
 
 		if (lp == null)
 		{

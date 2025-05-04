@@ -59,7 +59,7 @@ public class CrowdsourcingMusic
 				// Need to delay this by a tick because the location is not set until after the message
 				clientThread.invokeLater(() ->
 				{
-					LocalPoint local = LocalPoint.fromWorld(client, client.getLocalPlayer().getWorldLocation());
+					LocalPoint local = LocalPoint.fromWorld(client.getTopLevelWorldView(), client.getLocalPlayer().getWorldLocation());
 					WorldPoint location = WorldPoint.fromLocalInstance(client, local);
 					boolean isInInstance = client.isInInstancedRegion();
 					MusicUnlockData data = new MusicUnlockData(location, isInInstance, message);

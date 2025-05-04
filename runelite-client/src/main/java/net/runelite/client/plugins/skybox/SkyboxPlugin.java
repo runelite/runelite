@@ -142,7 +142,7 @@ public class SkyboxPlugin extends Plugin
 			baseY + ((py + spy) / 128.f),
 			baseX + (px / 128),
 			baseY + (py / 128),
-			client.getPlane(),
+			client.getTopLevelWorldView().getPlane(),
 			client.getTextureProvider().getBrightness(),
 			client.isInInstancedRegion() ? this::mapChunk : null
 		));

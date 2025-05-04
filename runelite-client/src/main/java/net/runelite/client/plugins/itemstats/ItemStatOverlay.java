@@ -83,7 +83,7 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-		final MenuEntry[] menu = client.getMenuEntries();
+		final MenuEntry[] menu = client.getMenu().getMenuEntries();
 		final int menuSize = menu.length;
 		if (menuSize <= 0)
 		{

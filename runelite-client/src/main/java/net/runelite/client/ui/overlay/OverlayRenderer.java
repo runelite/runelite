@@ -203,7 +203,7 @@ public class OverlayRenderer extends MouseAdapter
 		{
 			OverlayMenuEntry overlayMenuEntry = menuEntries.get(i);
 
-			client.createMenuEntry(-1)
+			client.getMenu().createMenuEntry(-1)
 				.setOption(overlayMenuEntry.getOption())
 				.setTarget(ColorUtil.wrapWithColorTag(overlayMenuEntry.getTarget(), JagexColors.MENU_TARGET))
 				.setType(overlayMenuEntry.getMenuAction())

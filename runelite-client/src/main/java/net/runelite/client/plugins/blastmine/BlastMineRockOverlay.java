@@ -163,7 +163,7 @@ public class BlastMineRockOverlay extends Overlay
 			return;
 		}
 
-		final int z = client.getPlane();
+		final int z = client.getTopLevelWorldView().getPlane();
 		int x = rock.getGameObject().getLocalLocation().getX() / Perspective.LOCAL_TILE_SIZE;
 		int y = rock.getGameObject().getLocalLocation().getY() / Perspective.LOCAL_TILE_SIZE;
 		final int orientation = tiles[z][x][y].getWallObject().getOrientationA();

@@ -72,14 +72,14 @@ class MiningRocksOverlay extends Overlay
 		Instant now = Instant.now();
 		for (RockRespawn rockRespawn : respawns)
 		{
-			LocalPoint loc = LocalPoint.fromWorld(client, rockRespawn.getWorldPoint());
+			LocalPoint loc = LocalPoint.fromWorld(client.getTopLevelWorldView(), rockRespawn.getWorldPoint());
 			if (loc == null)
 			{
 				continue;
 			}
 
 			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
-			Point point = Perspective.localToCanvas(client, loc, client.getPlane(), rockRespawn.getZOffset());
+			Point point = Perspective.localToCanvas(client, loc, client.getTopLevelWorldView().getPlane(), rockRespawn.getZOffset());
 			if (point == null || percent > 1.0f)
 			{
 				continue;

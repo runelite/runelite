@@ -137,7 +137,7 @@ public class SceneOverlay extends Overlay
 			for (int z = startZ; z <= endZ; z += Constants.CHUNK_SIZE)
 			{
 				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS);
-				Point p = Perspective.localToCanvas(client, lp, client.getPlane());
+				Point p = Perspective.localToCanvas(client, lp, client.getTopLevelWorldView().getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -158,7 +158,7 @@ public class SceneOverlay extends Overlay
 			for (int x = startX; x <= endX; x += Constants.CHUNK_SIZE)
 			{
 				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS);
-				Point p = Perspective.localToCanvas(client, lp, client.getPlane());
+				Point p = Perspective.localToCanvas(client, lp, client.getTopLevelWorldView().getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -196,8 +196,8 @@ public class SceneOverlay extends Overlay
 			LocalPoint lp0 = points[i];
 			LocalPoint lp1 = points[(i + 1) % 4];
 
-			Point p0 = Perspective.localToCanvas(client, lp0, client.getPlane());
-			Point p1 = Perspective.localToCanvas(client, lp1, client.getPlane());
+			Point p0 = Perspective.localToCanvas(client, lp0, client.getTopLevelWorldView().getPlane());
+			Point p1 = Perspective.localToCanvas(client, lp1, client.getTopLevelWorldView().getPlane());
 			if (p0 != null && p1 != null)
 			{
 				graphics.drawLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
@@ -219,15 +219,15 @@ public class SceneOverlay extends Overlay
 		GeneralPath path = new GeneralPath();
 		for (int x = startX; x <= endX; x += MAP_SQUARE_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
+			LocalPoint lp1 = LocalPoint.fromWorld(client.getTopLevelWorldView(), x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
+			LocalPoint lp2 = LocalPoint.fromWorld(client.getTopLevelWorldView(), x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
 
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
 			{
 				Point p = Perspective.localToCanvas(client,
 					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
-					client.getPlane());
+					client.getTopLevelWorldView().getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -244,15 +244,15 @@ public class SceneOverlay extends Overlay
 		}
 		for (int y = startY; y <= endY; y += MAP_SQUARE_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
+			LocalPoint lp1 = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
+			LocalPoint lp2 = LocalPoint.fromWorld(client.getTopLevelWorldView(), wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
 
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
 			{
 				Point p = Perspective.localToCanvas(client,
 					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
-					client.getPlane());
+					client.getTopLevelWorldView().getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -351,7 +351,7 @@ public class SceneOverlay extends Overlay
 		// seem to use much CPU time, however rendering 100 tiles does
 		if (start.hasLineOfSightTo(client.getTopLevelWorldView(), targetLocation))
 		{
-			LocalPoint lp = LocalPoint.fromWorld(client, targetLocation);
+			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), targetLocation);
 			if (lp == null)
 			{
 				return;
@@ -397,7 +397,7 @@ public class SceneOverlay extends Overlay
 			}
 
 			LocalPoint fl = fa.getLocalLocation();
-			Point fs = Perspective.localToCanvas(client, fl, client.getPlane(), fa.getLogicalHeight() / 2);
+			Point fs = Perspective.localToCanvas(client, fl, client.getTopLevelWorldView().getPlane(), fa.getLogicalHeight() / 2);
 			if (fs == null)
 			{
 				return;
@@ -406,7 +406,7 @@ public class SceneOverlay extends Overlay
 			int fsy = fs.getY() - INTERACTING_SHIFT;
 
 			LocalPoint tl = ta.getLocalLocation();
-			Point ts = Perspective.localToCanvas(client, tl, client.getPlane(), ta.getLogicalHeight() / 2);
+			Point ts = Perspective.localToCanvas(client, tl, client.getTopLevelWorldView().getPlane(), ta.getLogicalHeight() / 2);
 			if (ts == null)
 			{
 				return;

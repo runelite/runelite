@@ -108,7 +108,7 @@ public class WorldMapOverlay extends Overlay
 				return;
 			}
 
-			client.createMenuEntry(-1)
+			client.getMenu().createMenuEntry(-1)
 				.setTarget(ColorUtil.wrapWithColorTag(worldPoint.getName(), JagexColors.MENU_TARGET))
 				.setOption(FOCUS_ON)
 				.setType(MenuAction.RUNELITE)

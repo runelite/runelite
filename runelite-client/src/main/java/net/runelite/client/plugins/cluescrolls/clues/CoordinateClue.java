@@ -937,7 +937,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	{
 		for (WorldPoint worldPoint : getLocations(plugin))
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), worldPoint);
 
 			if (localLocation != null)
 			{

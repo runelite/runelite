@@ -74,7 +74,7 @@ class InteractHighlightOverlay extends Overlay
 
 	private void renderMouseover()
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		if (menuEntries.length == 0)
 		{
 			return;

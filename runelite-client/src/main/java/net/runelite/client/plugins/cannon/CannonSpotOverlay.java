@@ -78,12 +78,12 @@ class CannonSpotOverlay extends Overlay
 
 		for (WorldPoint spot : spotPoints)
 		{
-			if (spot.getPlane() != client.getPlane())
+			if (spot.getPlane() != client.getTopLevelWorldView().getPlane())
 			{
 				continue;
 			}
 
-			LocalPoint spotPoint = LocalPoint.fromWorld(client, spot);
+			LocalPoint spotPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), spot);
 			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
 			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_OVERLAY_DISTANCE)

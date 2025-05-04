@@ -596,7 +596,7 @@ public class DevToolsPlugin extends Plugin
 
 				if (action == MenuAction.EXAMINE_OBJECT)
 				{
-					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
+					WorldPoint point = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getTopLevelWorldView().getPlane());
 					info += " X: " + point.getX() + " Y: " + point.getY();
 				}
 			}
@@ -624,7 +624,7 @@ public class DevToolsPlugin extends Plugin
 				final int i_ = i;
 				if (i % 30 == 0)
 				{
-					MenuEntry parent = client.createMenuEntry(1)
+					MenuEntry parent = client.getMenu().createMenuEntry(1)
 						.setOption("pmenu" + i)
 						.setTarget(i % 60 == 0 ? "devtools devtools devtools devtools" : "devtools")
 						.setType(MenuAction.RUNELITE);
@@ -642,7 +642,7 @@ public class DevToolsPlugin extends Plugin
 					continue;
 				}
 
-				client.createMenuEntry(1)
+				client.getMenu().createMenuEntry(1)
 					.setOption("menu" + i)
 					.setTarget("devtools")
 					.setType(MenuAction.RUNELITE)

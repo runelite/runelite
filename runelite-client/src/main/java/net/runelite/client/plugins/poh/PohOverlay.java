@@ -76,7 +76,7 @@ public class PohOverlay extends Overlay
 		plugin.getPohObjects().forEach((object, tile) ->
 		{
 			LocalPoint location = object.getLocalLocation();
-			if (tile.getPlane() == client.getPlane() && localLocation.distanceTo(location) <= MAX_DISTANCE)
+			if (tile.getPlane() == client.getTopLevelWorldView().getPlane() && localLocation.distanceTo(location) <= MAX_DISTANCE)
 			{
 				PohIcons icon = PohIcons.getIcon(object.getId());
 

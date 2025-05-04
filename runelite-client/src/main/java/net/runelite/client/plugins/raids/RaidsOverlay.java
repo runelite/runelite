@@ -204,7 +204,7 @@ class RaidsOverlay extends OverlayPanel
 			// If the raid has started
 			if (client.getVarbitValue(VarbitID.RAIDS_CLIENT_PROGRESS) > 0)
 			{
-				if (client.getPlane() == OLM_PLANE)
+				if (client.getTopLevelWorldView().getPlane() == OLM_PLANE)
 				{
 					return false;
 				}

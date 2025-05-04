@@ -426,7 +426,7 @@ public class WorldHopperPlugin extends Plugin
 				return;
 			}
 
-			client.createMenuEntry(after ? -2 : -1)
+			client.getMenu().createMenuEntry(after ? -2 : -1)
 				.setOption(HOP_TO)
 				.setTarget(event.getTarget())
 				.setType(MenuAction.RUNELITE)

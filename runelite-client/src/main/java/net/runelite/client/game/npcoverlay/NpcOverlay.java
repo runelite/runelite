@@ -105,7 +105,7 @@ class NpcOverlay extends Overlay
 
 		if (highlightedNpc.isTrueTile())
 		{
-			LocalPoint lp = LocalPoint.fromWorld(client, actor.getWorldLocation()); // centered on sw tile
+			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), actor.getWorldLocation()); // centered on sw tile
 			if (lp != null)
 			{
 				final int size = npcComposition.getSize();
@@ -130,7 +130,7 @@ class NpcOverlay extends Overlay
 
 		if (highlightedNpc.isSwTrueTile())
 		{
-			LocalPoint lp = LocalPoint.fromWorld(client, actor.getWorldLocation());
+			LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), actor.getWorldLocation());
 			if (lp != null)
 			{
 				Polygon tilePoly = Perspective.getCanvasTilePoly(client, lp);

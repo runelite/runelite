@@ -775,7 +775,7 @@ public class TabInterface
 		{
 			if (activeLayout != null)
 			{
-				client.createMenuEntry(-1)
+				client.getMenu().createMenuEntry(-1)
 					.setParam0(event.getActionParam0())
 					.setParam1(event.getActionParam1())
 					.setTarget(event.getTarget())
@@ -788,7 +788,7 @@ public class TabInterface
 
 			if (activeLayout != null && activeLayout.count(itemManager.canonicalize(event.getItemId())) > 1)
 			{
-				client.createMenuEntry(-1)
+				client.getMenu().createMenuEntry(-1)
 					.setParam0(event.getActionParam0())
 					.setParam1(event.getActionParam1())
 					.setTarget(event.getTarget())
@@ -800,7 +800,7 @@ public class TabInterface
 			else
 			{
 				boolean hidden = tagManager.isHidden(activeTag);
-				client.createMenuEntry(-1)
+				client.getMenu().createMenuEntry(-1)
 					.setParam0(event.getActionParam0())
 					.setParam1(event.getActionParam1())
 					.setTarget(event.getTarget())
@@ -966,7 +966,7 @@ public class TabInterface
 		}
 		else if (draggedWidget.getItemId() != -1)
 		{
-			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry[] entries = client.getMenu().getMenuEntries();
 
 			if (entries.length > 0)
 			{
@@ -1414,7 +1414,7 @@ public class TabInterface
 
 	private void createMenuEntry(MenuEntryAdded event, String option, String target)
 	{
-		client.createMenuEntry(-1)
+		client.getMenu().createMenuEntry(-1)
 			.setParam0(event.getActionParam0())
 			.setParam1(event.getActionParam1())
 			.setTarget(target)

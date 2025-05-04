@@ -85,7 +85,7 @@ class PartyPingOverlay extends Overlay
 
 	private void renderPing(final Graphics2D graphics, final PartyTilePingData ping)
 	{
-		final LocalPoint localPoint = LocalPoint.fromWorld(client, ping.getPoint());
+		final LocalPoint localPoint = LocalPoint.fromWorld(client.getTopLevelWorldView(), ping.getPoint());
 
 		if (localPoint == null)
 		{

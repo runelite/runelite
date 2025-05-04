@@ -377,7 +377,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		LocalPoint localPoint = LocalPoint.fromWorld(plugin.getClient(), getLocation());
+		LocalPoint localPoint = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), getLocation());
 
 		if (localPoint != null)
 		{
@@ -401,7 +401,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 
 			for (final WorldPoint worldPoint : worldPoints)
 			{
-				final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+				final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient().getTopLevelWorldView(), worldPoint);
 
 				if (stashUnitLocalPoint != null)
 				{

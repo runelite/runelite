@@ -122,7 +122,7 @@ class InstanceMapOverlay extends Overlay
 		if (showMap)
 		{
 			//When we open the map show the current plane
-			viewedPlane = client.getPlane();
+			viewedPlane = client.getTopLevelWorldView().getPlane();
 		}
 		mapImage = null;
 		closeButtonBounds = null;
@@ -193,7 +193,7 @@ class InstanceMapOverlay extends Overlay
 		backgroundComponent.setRectangle(new Rectangle(0, 0, image.getWidth(), image.getHeight()));
 		backgroundComponent.render(graphics);
 
-		if (client.getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
+		if (client.getTopLevelWorldView().getPlane() == viewedPlane)//If we are not viewing the plane we are on, don't show player's position
 		{
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black, client.isResized() ? client.getExpandedMapLoading() : 0);
 		}

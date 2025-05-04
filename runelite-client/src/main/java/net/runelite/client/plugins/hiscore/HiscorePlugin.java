@@ -156,7 +156,7 @@ public class HiscorePlugin extends Plugin
 			|| groupId == InterfaceID.GIM_SIDEPANEL && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
 		)
 		{
-			client.createMenuEntry(-2)
+			client.getMenu().createMenuEntry(-2)
 				.setOption(LOOKUP)
 				.setTarget(event.getTarget())
 				.setType(MenuAction.RUNELITE)

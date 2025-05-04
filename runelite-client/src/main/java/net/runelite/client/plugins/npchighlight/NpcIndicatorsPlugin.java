@@ -297,7 +297,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
 			int idx = -1;
 
-			client.createMenuEntry(idx--)
+			client.getMenu().createMenuEntry(idx--)
 				.setOption(idMatch ? UNTAG : TAG)
 				.setTarget(event.getTarget())
 				.setIdentifier(event.getIdentifier())
@@ -307,7 +307,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			// Only add Untag-All option to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
 			if (!wildcardMatch)
 			{
-				client.createMenuEntry(idx--)
+				client.getMenu().createMenuEntry(idx--)
 					.setOption(nameMatch ? UNTAG_ALL : TAG_ALL)
 					.setTarget(event.getTarget())
 					.setIdentifier(event.getIdentifier())
@@ -408,7 +408,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 		}
 
-		MenuEntry parent = client.createMenuEntry(idx--)
+		MenuEntry parent = client.getMenu().createMenuEntry(idx--)
 			.setOption("Tag color")
 			.setTarget(target)
 			.setType(MenuAction.RUNELITE);
@@ -458,7 +458,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private int createTagStyleMenu(int idx, String target, NPC npc)
 	{
-		MenuEntry parent = client.createMenuEntry(idx--)
+		MenuEntry parent = client.getMenu().createMenuEntry(idx--)
 			.setOption("Tag style")
 			.setTarget(target)
 			.setType(MenuAction.RUNELITE);

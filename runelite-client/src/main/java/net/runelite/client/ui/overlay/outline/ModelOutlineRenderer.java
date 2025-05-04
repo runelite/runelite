@@ -999,7 +999,7 @@ public class ModelOutlineRenderer
 			final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY);
 
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, northEastLp, client.getPlane()),
+				Perspective.getTileHeight(client, northEastLp, client.getTopLevelWorldView().getPlane()),
 				npc.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
@@ -1010,7 +1010,7 @@ public class ModelOutlineRenderer
 		if (lp != null)
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, lp, client.getPlane()),
+				Perspective.getTileHeight(client, lp, client.getTopLevelWorldView().getPlane()),
 				player.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}

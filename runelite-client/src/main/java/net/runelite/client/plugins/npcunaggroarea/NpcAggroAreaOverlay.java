@@ -76,7 +76,7 @@ class NpcAggroAreaOverlay extends Overlay
 			return null;
 		}
 
-		GeneralPath lines = plugin.getLinesToDisplay()[client.getPlane()];
+		GeneralPath lines = plugin.getLinesToDisplay()[client.getTopLevelWorldView().getPlane()];
 		if (lines == null)
 		{
 			return null;
@@ -106,11 +106,11 @@ class NpcAggroAreaOverlay extends Overlay
 
 		path = Geometry.clipPath(path, viewArea);
 		path = Geometry.filterPath(path, (p1, p2) ->
-			Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
-			Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
+			Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getTopLevelWorldView().getPlane()) != null &&
+			Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getTopLevelWorldView().getPlane()) != null);
 		path = Geometry.transformPath(path, coords ->
 		{
-			Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
+			Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getTopLevelWorldView().getPlane());
 			coords[0] = point.getX();
 			coords[1] = point.getY();
 		});

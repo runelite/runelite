@@ -365,7 +365,7 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		final MenuEntry[] menuEntries = client.getMenuEntries();
+		final MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		final List<MenuEntryWithCount> newEntries = new ArrayList<>(menuEntries.length);
 
 		outer:
@@ -507,10 +507,10 @@ public class GroundItemsPlugin extends Plugin
 			final int sceneX = event.getActionParam0();
 			final int sceneY = event.getActionParam1();
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
+			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getTopLevelWorldView().getPlane());
 			GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
 
 			updateItemColor(groundItem);
@@ -551,7 +551,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 		else if (hotKeyPressed && type == MenuAction.EXAMINE_ITEM_GROUND)
 		{
-			MenuEntry parent = client.createMenuEntry(-1)
+			MenuEntry parent = client.getMenu().createMenuEntry(-1)
 				.setOption("Color")
 				.setTarget(event.getTarget())
 				.setType(MenuAction.RUNELITE);

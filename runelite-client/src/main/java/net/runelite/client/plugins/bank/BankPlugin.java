@@ -220,7 +220,7 @@ public class BankPlugin extends Plugin
 		}
 
 		forceRightClickFlag = false;
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		for (MenuEntry entry : menuEntries)
 		{
 

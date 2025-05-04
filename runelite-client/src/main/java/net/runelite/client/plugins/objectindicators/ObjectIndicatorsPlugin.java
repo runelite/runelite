@@ -240,7 +240,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		final TileObject tileObject = findTileObject(client.getPlane(), event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
+		final TileObject tileObject = findTileObject(client.getTopLevelWorldView().getPlane(), event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
 		if (tileObject == null)
 		{
 			return;
@@ -248,7 +248,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 		int idx = -1;
 		final var marked = objects.stream().filter(o -> o.getTileObject() == tileObject).findFirst();
-		client.createMenuEntry(idx--)
+		client.getMenu().createMenuEntry(idx--)
 			.setOption(marked.isPresent() ? UNMARK : MARK)
 			.setTarget(event.getTarget())
 			.setParam0(event.getActionParam0())
@@ -277,7 +277,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		MenuEntry parent = client.createMenuEntry(idx--)
+		MenuEntry parent = client.getMenu().createMenuEntry(idx--)
 			.setOption("Mark border color")
 			.setTarget(target)
 			.setType(MenuAction.RUNELITE);
@@ -320,7 +320,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		MenuEntry parent = client.createMenuEntry(idx--)
+		MenuEntry parent = client.getMenu().createMenuEntry(idx--)
 			.setOption("Mark fill color")
 			.setTarget(target)
 			.setType(MenuAction.RUNELITE);
@@ -360,7 +360,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private int createTagStyleMenu(int idx, String target, TileObject object)
 	{
-		MenuEntry parent = client.createMenuEntry(idx--)
+		MenuEntry parent = client.getMenu().createMenuEntry(idx--)
 			.setOption("Mark style")
 			.setTarget(target)
 			.setType(MenuAction.RUNELITE);
@@ -403,7 +403,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void markObject(MenuEntry entry)
 	{
-		TileObject object = findTileObject(client.getPlane(), entry.getParam0(), entry.getParam1(), entry.getIdentifier());
+		TileObject object = findTileObject(client.getTopLevelWorldView().getPlane(), entry.getParam0(), entry.getParam1(), entry.getIdentifier());
 		if (object == null)
 		{
 			return;

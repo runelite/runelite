@@ -77,7 +77,7 @@ class BarrowsOverlay extends Overlay
 	{
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation());
+			LocalPoint localLocation = LocalPoint.fromWorld(client.getTopLevelWorldView(), brother.getLocation());
 			if (localLocation == null)
 			{
 				continue;

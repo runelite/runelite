@@ -422,7 +422,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 				text += " (" + tagCount + ")";
 			}
 
-			client.createMenuEntry(-1)
+			client.getMenu().createMenuEntry(-1)
 				.setParam0(event.getActionParam0())
 				.setParam1(event.getActionParam1())
 				.setTarget(event.getTarget())

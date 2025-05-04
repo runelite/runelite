@@ -147,7 +147,7 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void condensePlayerOptions()
 	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		MenuEntry[] newMenus = new MenuEntry[menuEntries.length];
 		int newIdx = 0;
 

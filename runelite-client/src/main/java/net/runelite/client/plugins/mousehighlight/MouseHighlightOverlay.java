@@ -97,7 +97,7 @@ class MouseHighlightOverlay extends Overlay
 			return null;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 		int last = menuEntries.length - 1;
 
 		if (last < 0)

@@ -77,7 +77,7 @@ public class GroundMarkerOverlay extends Overlay
 		for (final ColorTileMarker point : points)
 		{
 			WorldPoint worldPoint = point.getWorldPoint();
-			if (worldPoint.getPlane() != client.getPlane())
+			if (worldPoint.getPlane() != client.getTopLevelWorldView().getPlane())
 			{
 				continue;
 			}
@@ -104,7 +104,7 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
+		LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), point);
 		if (lp == null)
 		{
 			return;

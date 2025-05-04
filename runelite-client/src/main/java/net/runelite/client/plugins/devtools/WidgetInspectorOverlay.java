@@ -75,7 +75,7 @@ public class WidgetInspectorOverlay extends Overlay
 		{
 			boolean menuOpen = client.isMenuOpen();
 
-			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry[] entries = client.getMenu().getMenuEntries();
 			for (int i = menuOpen ? 0 : entries.length - 1; i < entries.length; i++)
 			{
 				MenuEntry e = entries[i];

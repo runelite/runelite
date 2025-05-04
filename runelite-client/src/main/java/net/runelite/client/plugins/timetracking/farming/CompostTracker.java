@@ -132,7 +132,7 @@ public class CompostTracker
 		}
 
 		ObjectComposition patchDef = client.getObjectDefinition(e.getId());
-		WorldPoint actionLocation = WorldPoint.fromScene(client, e.getParam0(), e.getParam1(), client.getPlane());
+		WorldPoint actionLocation = WorldPoint.fromScene(client, e.getParam0(), e.getParam1(), client.getTopLevelWorldView().getPlane());
 		FarmingPatch targetPatch = farmingWorld.getRegionsForLocation(actionLocation)
 			.stream()
 			.flatMap(fr -> Arrays.stream(fr.getPatches()))
@@ -220,7 +220,7 @@ public class CompostTracker
 		// find gameobject instance in scene
 		// it is possible that the scene has reloaded between use and action occurring so we use worldpoint
 		// instead of storing scene coords in the menuoptionclicked event
-		LocalPoint localPatchLocation = LocalPoint.fromWorld(client, pendingCompost.getPatchLocation());
+		LocalPoint localPatchLocation = LocalPoint.fromWorld(client.getTopLevelWorldView(), pendingCompost.getPatchLocation());
 		if (localPatchLocation == null)
 		{
 			return false;
@@ -228,7 +228,7 @@ public class CompostTracker
 
 		@Varbit int patchVarb = pendingCompost.getFarmingPatch().getVarbit();
 		Tile patchTile = client.getScene()
-			.getTiles()[client.getPlane()][localPatchLocation.getSceneX()][localPatchLocation.getSceneY()];
+			.getTiles()[client.getTopLevelWorldView().getPlane()][localPatchLocation.getSceneX()][localPatchLocation.getSceneY()];
 		GameObject patchObject = null;
 		for (GameObject go : patchTile.getGameObjects())
 		{

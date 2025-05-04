@@ -235,7 +235,7 @@ public class FriendNotesPlugin extends Plugin
 			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
 
 			// Build "Add Note" or "Edit Note" menu entry
-			client.createMenuEntry(-1)
+			client.getMenu().createMenuEntry(-1)
 				.setOption(hoveredFriend == null || hoveredFriend.getNote() == null ? ADD_NOTE : EDIT_NOTE)
 				.setType(MenuAction.RUNELITE)
 				.setTarget(event.getTarget()) //Preserve color codes here

@@ -186,7 +186,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry[] menuEntries = client.getMenu().getMenuEntries();
 
 		for (MenuEntry entry : menuEntries)
 		{
