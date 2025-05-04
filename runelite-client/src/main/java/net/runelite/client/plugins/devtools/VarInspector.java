@@ -224,7 +224,8 @@ class VarInspector extends DevToolsFrame
 				// Example: 4101 collides with 4104-4129
 				client.setVarbitValue(oldVarps2, i, neew);
 
-				final String name = VARBIT_NAMES.getOrDefault(i, Integer.toString(i));
+				String name = VARBIT_NAMES.get(i);
+				name = String.format(name == null ? "%d" : name + "(%d)", i);
 				addVarLog(VarType.VARBIT, name, old, neew);
 			}
 		}
@@ -260,7 +261,8 @@ class VarInspector extends DevToolsFrame
 
 		if (old != neew)
 		{
-			final String name = VARCINT_NAMES.getOrDefault(idx, Integer.toString(idx));
+			String name = VARCINT_NAMES.get(idx);
+			name = String.format(name == null ? "%d" : name + "(%d)", idx);
 			addVarLog(VarType.VARCINT, name, old, neew);
 		}
 	}
@@ -275,7 +277,8 @@ class VarInspector extends DevToolsFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			final String name = VARCSTR_NAMES.getOrDefault(idx, Integer.toString(idx));
+			String name = VARCSTR_NAMES.get(idx);
+			name = String.format(name == null ? "%d" : name + "(%d)", idx);
 			if (old != null)
 			{
 				old = "\"" + old + "\"";
