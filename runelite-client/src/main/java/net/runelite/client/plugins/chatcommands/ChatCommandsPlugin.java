@@ -144,6 +144,9 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String PET_LIST_COMMAND = "!pets";
 	private static final String CA_COMMAND = "!ca";
 	private static final String CLOG_COMMAND = "!clog";
+	private static final String LOG_COMMAND = "!log";
+
+	private static final int CLOG_MAGIC_CONSTANT = 1000000;
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -164,6 +167,7 @@ public class ChatCommandsPlugin extends Plugin
 	private String lastTeamSize;
 	private int petsIconIdx = -1;
 	private int[] pets;
+	private int collectionLogIconsIdx = -1;
 
 	@Inject
 	private Client client;
@@ -227,6 +231,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
 		chatCommandManager.registerCommandAsync(CA_COMMAND, this::caLookup, this::caSubmit);
 		chatCommandManager.registerCommandAsync(CLOG_COMMAND, this::clogLookup, this::clogSubmit);
+		chatCommandManager.registerCommandAsync(LOG_COMMAND, this::collectionLogLookup, this::collectionLogSubmit );
 
 		clientThread.invoke(() ->
 		{
@@ -267,6 +272,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
 		chatCommandManager.unregisterCommand(CA_COMMAND);
 		chatCommandManager.unregisterCommand(CLOG_COMMAND);
+		chatCommandManager.unregisterCommand(LOG_COMMAND);
 	}
 
 	@Provides
@@ -850,6 +856,8 @@ public class ChatCommandsPlugin extends Plugin
 
 		if (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName()))
 		{
+			interfacePullCollectionLogData();
+
 			Widget collectionLogEntryHeader = client.getWidget(InterfaceID.Collection.HEADER_TEXT);
 			if (collectionLogEntryHeader != null && collectionLogEntryHeader.getChildren() != null)
 			{
@@ -1979,6 +1987,740 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			log.warn("error looking up clues", ex);
 		}
+	}
+
+	/**
+	 * Looks up the collection log entries for a character and posts them to chat
+	 *
+	 * @param chatMessage   Chat message from registered callback
+	 * @param message       Message contents from registered callback
+	 */
+	@VisibleForTesting
+	void collectionLogLookup(ChatMessage chatMessage, String message)
+	{
+		if ( !config.collectionlog() )
+		{
+			return;
+		}
+
+		String search;
+
+		if (message.length() <= LOG_COMMAND.length())
+		{
+			return;
+		}
+
+		search = message.substring(LOG_COMMAND.length() + 1);
+
+		search = parseCollectionLogBossName( search );
+
+		List<Integer> playerClogList = Collections.emptyList();
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		try
+		{
+			playerClogList = chatClient.getCollectionLogList( player, search );
+
+			for ( int i = 0; i < playerClogList.size(); ++i )
+			{
+				playerClogList.set(i, playerClogList.get(i) % ( CLOG_MAGIC_CONSTANT ) );
+			}
+		}
+		catch ( Exception ex )
+		{
+			String response = "Open the boss specific tab in the Collection Log to update your log";
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setValue(response);
+			client.refreshChat();
+		}
+
+		if ( !playerClogList.isEmpty() )
+		{
+			loadCollectionLogIcons( playerClogList );
+
+			ChatMessageBuilder responseBuilder = new ChatMessageBuilder()
+					.append(ChatColorType.NORMAL)
+					.append( search )
+					.append(": (" + ( playerClogList.size() - 1 ) / 2 )
+					.append("/" + playerClogList.get(0).toString() + ")");
+
+			// Append pets that the player owns
+
+			int imgIdx = 0;
+			for (int clogIdx = 2; clogIdx < playerClogList.size(); clogIdx += 2)
+			{
+				responseBuilder.append( " " + playerClogList.get( clogIdx - 1 ).toString() + "x" ).img( collectionLogIconsIdx + imgIdx );
+				imgIdx++;
+			}
+			String response = responseBuilder.build();
+
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			client.refreshChat();
+		}
+		client.refreshChat();
+	}
+
+	/**
+	 * Submits the pet list for the local player
+	 *
+	 * @param chatInput The chat message containing the command.
+	 * @param value     The chat message
+	 */
+	private boolean collectionLogSubmit(ChatInput chatInput, String value)
+	{
+		final String playerName = client.getLocalPlayer().getName();
+
+		String search;
+
+		if (value.length() <= LOG_COMMAND.length())
+		{
+			return false;
+		}
+
+		search = value.substring(LOG_COMMAND.length() + 1);
+
+		final String searchParam = parseCollectionLogBossName( search );
+
+		executor.execute(() ->
+		{
+			try
+			{
+				List<Integer> clogList = getCollectionLogList( searchParam );
+				if (!clogList.isEmpty())
+				{
+					chatClient.submitCollectionLogList(playerName, clogList, searchParam );
+				}
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit clog list", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+
+	/**
+	 * Gets the stored configuration json for the collection log entries for a search parameter
+	 *
+	 * @param searchParam   Exact collection log entry name, i.e. "Monkey Backpacks"
+	 * @return Json list for data stored in player's configuration for this entry
+	 */
+	private List<Integer> getCollectionLogList( String searchParam )
+	{
+		List<Integer> clogList = null;
+		String clogListJson = configManager.getRSProfileConfiguration("collectionlog", searchParam,
+				String.class);
+
+		if ( clogListJson.length() > 0 )
+		{
+			// CHECKSTYLE:OFF
+			clogList = gson.fromJson(clogListJson, new TypeToken<List<Integer>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+
+		return clogList != null ? clogList : Collections.emptyList();
+	}
+
+	/**
+	 * Parses the parameter passed to the collection log command to find the correctly formated name
+	 *
+	 * @param searchParam - Parameter passed to collection log command
+	 * @return String that matches exact collection log entry if found, defaults to first letter caps of each word
+	 */
+	String parseCollectionLogBossName( String searchParam )
+	{
+		String lowerSearch = searchParam.toLowerCase();
+
+		switch (lowerSearch)
+		{
+			case "abby sire":
+			case "sire":
+				return "Abyssal Sire";
+
+			case "hydra":
+				return "Alchemical Hydra";
+
+			case "amox":
+				return "Amoxliatl";
+
+			case "arax":
+				return "Araxxor";
+
+			case "barrows":
+				return "Barrows Chests";
+
+			case "bryo":
+				return "Bryophyta";
+
+			case "callisto":
+			case "artio":
+				return "Callisto and Artio";
+
+			case "cerb":
+				return "Cerberus";
+
+			case "chaos ele":
+				return "Chaos Elemental";
+
+			case "chaos fan":
+				return "Chaos Fanatic";
+
+			case "sara":
+			case "saradomin":
+			case "zilyana":
+			case "zily":
+				return "Commander Zilyana";
+
+			case "corp beast":
+			case "corporeal beast":
+			case "corp":
+				return "Corporeal Beast";
+
+			case "crazy arch":
+				return "Crazy Archaeologist";
+
+			case "supreme":
+			case "rex":
+			case "prime":
+			case "dks":
+				return "Dagannoth Kings";
+
+			case "duke":
+				return "Duke Sucellus";
+
+			case "fight caves":
+			case "the fight caves":
+			case "jad":
+			case "tzhaar fight cave":
+				return "The Fight Caves";
+
+			case "sol heredit":
+			case "sol":
+			case "colo":
+			case "colosseum":
+			case "fortis colosseum":
+				return "Fortis Colosseum";
+
+			case "cgaunt":
+			case "cgauntlet":
+			case "the corrupted gauntlet":
+			case "cg":
+			case "gaunt":
+			case "gauntlet":
+			case "the gauntlet":
+				return "The Gauntlet";
+
+			case "bando":
+			case "bandos":
+			case "graardor":
+				return "General Graardor";
+
+			case "mole":
+				return "Giant Mole";
+
+			case "dusk":
+			case "dawn":
+			case "gargs":
+			case "ggs":
+			case "gg":
+				return "Grotesque Guardians";
+
+			case "huey":
+			case "hueycoatl":
+				return "The Hueycoatl";
+
+			case "zuk":
+			case "inferno":
+				return "The Inferno";
+
+			case "kq":
+				return "Kalphite Queen";
+
+			case "kbd":
+				return "King Black Dragon";
+
+			case "arma":
+			case "kree":
+			case "kreearra":
+			case "armadyl":
+				return "Kree'arra";
+
+			case "zammy":
+			case "zamorak":
+			case "kril":
+			case "kril tsutsaroth":
+				return "K'ril Tsutsaroth";
+
+			case "leviathan":
+			case "levi":
+				return "The Leviathan";
+
+			case "moons":
+			case "lunar chests":
+			case "perilous moons":
+			case "perilous moon":
+				return "Moons of Peril";
+
+			case "nightmare":
+			case "nm":
+			case "tnm":
+			case "nmare":
+			case "pnm":
+			case "phosani":
+			case "phosanis":
+			case "phosani nm":
+			case "phosani nightmare":
+			case "phosanis nightmare":
+				return "The Nightmare";
+
+			case "phantom":
+			case "muspah":
+			case "pm":
+				return "Phantom Muspah";
+
+			case "titans":
+			case "rt":
+				return "Royal Titans";
+
+			case "sarach":
+				return "Sarachnis";
+
+			case "scorp":
+				return "Scorpia";
+
+			case "scurry":
+				return "Scurrius";
+
+			case "temp":
+			case "fishingtodt":
+			case "fishtodt":
+				return "Tempoross";
+
+			case "smoke devil":
+			case "thermy":
+				return "Thermonuclear Smoke Devil";
+
+			case "vard":
+				return "Vardorvis";
+
+			case "spindel":
+			case "venenatis":
+			case "vene":
+				return "Venenatis and Spindel";
+
+			case "vetion":
+			case "calvarion":
+			case "calv":
+				return "Vet'ion and Calvar'ion";
+
+			case "vork":
+				return "Vorkath";
+
+			case "wisperer":
+			case "whisperer":
+			case "whisp":
+			case "wisp":
+				return "The Whisperer";
+
+			case "wt":
+				return "Wintertodt";
+
+			case "zalc":
+				return "Zalcano";
+
+			case "cm cox":
+			case "cox cm":
+			case "cox":
+			case "xeric":
+			case "chambers":
+			case "olm":
+			case "raids":
+				return "Chambers of Xeric";
+
+			case "hmt":
+			case "tob":
+			case "theatre":
+			case "verzik":
+			case "verzik vitur":
+			case "raids 2":
+				return "Theatre of Blood";
+
+			case "toa":
+			case "tombs":
+			case "amascut":
+			case "warden":
+			case "wardens":
+			case "raids 3":
+				return "Tombs of Amascut";
+
+			case "beginner":
+			case "beginners":
+			case "clues beginner":
+			case "beginner clues":
+				return "Beginner Treasure Trails";
+
+			case "easy":
+			case "easies":
+			case "easys":
+			case "clues easy":
+			case "easy clues":
+				return "Easy Treasure Trails";
+
+			case "medium":
+			case "clues medium":
+			case "medium clues":
+			case "mediums":
+				return "Medium Treasure Trails";
+
+			case "hard":
+			case "clues hard":
+			case "hard clues":
+			case "hards":
+				return "Hard Treasure Trails";
+
+			case "elite":
+			case "clues elite":
+			case "elite clues":
+			case "elites":
+				return "Elite Treasure Trails";
+
+			case "master":
+			case "clues master":
+			case "master clues":
+			case "masters":
+				return "Master Treasure Trails";
+
+			case "clues hard rare":
+			case "hard clues rare":
+			case "hard rare":
+			case "hard rares":
+			case "hard treasure trails rare":
+				return "Hard Treasure Trails (Rare)";
+
+			case "clues elite rare":
+			case "elite clues rare":
+			case "elite rare":
+			case "elite rares":
+			case "elite treasure trails rare":
+				return "Elite Treasure Trails (Rare)";
+
+			case "clues master rare":
+			case "master clues rare":
+			case "master rare":
+			case "master rares":
+			case "master treasure trails rare":
+				return "Master Treasure Trails (Rare)";
+
+			case "clues":
+			case "clues shared":
+			case "shared clues":
+				return "Shared Treasure Trail Rewards";
+
+			case "ba":
+			case "barb assault":
+				return "Barbarian Assault";
+
+			case "brim":
+			case "brimhaven":
+			case "brimhaven agility":
+				return "Brimhaven Agility Arena";
+
+			case "cwars":
+			case "cw":
+				return "Castle Wars";
+
+			case "trawler":
+				return "Fishing Trawler";
+
+			case "gf":
+			case "foundry":
+			case "giants foundry":
+				return "Giant's Foundry";
+
+			case "gnome":
+			case "restaurant":
+			case "gnome rest":
+				return "Gnome Restaurant";
+
+			case "gotr":
+			case "runetodt":
+			case "rifts closed":
+				return "Guardians of the Rift";
+
+			case "sep":
+			case "seppy":
+			case "hs":
+			case "sepulchre":
+			case "ghc":
+				return "Hallowed Sepulchre";
+
+			case "lms":
+				return "Last Man Standing";
+
+			case "mta":
+			case "mage training arena":
+				return "Magic Training Arena";
+
+			case "mh":
+			case "mahog homes":
+				return "Mahogany Homes";
+
+			case "mixology":
+			case "mm":
+			case "master mixology":
+			case "master mix":
+			case "mastering mix":
+				return "Mastering Mixology";
+
+			case "pc":
+			case "pest":
+			case "pest ctrl":
+				return "Pest Control";
+
+			case "rogues":
+			case "rogues den":
+				return "Rogue's Den";
+
+			case "shades":
+			case "morton":
+			case "mortton":
+			case "shades of morton":
+			case "shades of mortton":
+				return "Shades of Mort'ton";
+
+			case "sw":
+			case "zeal":
+				return "Soul Wars";
+
+			case "trek":
+			case "trekking":
+				return "Temple Trekking";
+
+			case "tithe":
+				return "Tithe Farm";
+
+			case "tb":
+			case "brewing":
+			case "trouble brew":
+				return "Trouble Brewing";
+
+			case "vm":
+			case "volcanic":
+				return "Volcanic Mine";
+
+			case "aerial":
+				return "Aerial Fishing";
+
+			case "pets":
+				return "All Pets";
+
+			case "cam":
+				return "Camdozaal";
+
+			case "scrolls":
+			case "champion scrolls":
+			case "champions challenge":
+				return "Champion's Challenge";
+
+			case "chompy":
+			case "chompies":
+			case "chompy birds":
+				return "Chompy Bird Hunting";
+
+			// Colossal Wyrm Basic Agility Course
+			case "wyrm course":
+			case "wbac":
+			case "cwbac":
+			case "wyrmb":
+			case "wyrmbasic":
+			case "wyrm basic":
+			case "colossal basic":
+			case "colossal wyrm basic":
+			case "colossal wyrm advanced":
+				return "Colossal Wyrm Agility";
+
+			case "defenders":
+			case "cyclops":
+				return "Cyclopes";
+
+			case "chaos druids":
+				return "Elder Chaos Druids";
+
+			case "fossil island":
+				return "Fossil Island Notes";
+
+			case "demonics":
+			case "demonic gorillas":
+			case "gloughs experiments":
+			case "zenytes":
+			case "zennys":
+				return "Glough's Experiments";
+
+			case "hunters guild":
+			case "hunter guild":
+			case "hunterrumour":
+			case "hunter contract":
+			case "hunter contracts":
+			case "hunter tasks":
+			case "hunter task":
+			case "hunter rumours":
+			case "hunter rumors":
+			case "rumors":
+			case "rumor":
+			case "rumours":
+			case "rumour":
+				return "Hunter Guild";
+
+			case "aa":
+			case "ape atoll":
+			case "ape atoll agility course":
+			case "ape atoll agi":
+			case "ape atoll agility":
+				return "Monkey Backpacks";
+
+			case "mlm":
+				return "Motherlode Mine";
+
+			case "notes":
+				return "My Notes";
+
+			case "randoms":
+			case "random":
+				return "Random Events";
+
+			case "revs":
+			case "rev":
+				return "Revenants";
+
+			case "rooftops":
+			case "rooftop":
+			case "graceful":
+			case "mogs":
+				return "Rooftop Agility";
+
+			case "shayzien":
+				return "Shayzien Armour";
+
+			case "stars":
+				return "Shooting Stars";
+
+			case "pets skilling":
+			case "skill pets":
+				return "Skilling Pets";
+
+			case "tds":
+				return "Tormented Demons";
+
+			case "misc":
+				return "Miscellaneous";
+
+			default:
+				return WordUtils.capitalize(searchParam);
+		}
+	}
+
+	/**
+	 * Loads the sprites of a set of item ids within the collection log list to be able to display the images
+	 *
+	 * @param clogList   Full collection log list from json, not all entries will be converted to images
+	 */
+	private void loadCollectionLogIcons( List<Integer> clogList )
+	{
+		final IndexedSprite[] modIcons = client.getModIcons();
+		assert modIcons != null;
+
+		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + clogList.size());
+		collectionLogIconsIdx = modIcons.length;
+
+		client.setModIcons(newModIcons);
+		int imgIdx = 0;
+
+		if ( clogList.size() > 0 )
+		{
+			for (int i = 2; i < clogList.size(); i += 2)
+			{
+				final int clogID = clogList.get(i);
+
+				final AsyncBufferedImage abi = itemManager.getImage(clogID);
+				final int idx = collectionLogIconsIdx + imgIdx;
+				abi.onLoaded(() ->
+				{
+					final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
+					final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
+					// modicons array might be replaced in between when we assign it and the callback,
+					// so fetch modicons again
+					client.getModIcons()[idx] = sprite;
+				});
+
+				imgIdx++;
+			}
+		}
+
+	}
+
+	/**
+	 * Pulls the collection log entry data from the collection log interface to store into profile configuration
+	 *
+	 */
+	private void interfacePullCollectionLogData( )
+	{
+		Widget collectionLogEntryHeader = client.getWidget(InterfaceID.Collection.HEADER_TEXT);
+		if (collectionLogEntryHeader != null && collectionLogEntryHeader.getChildren() != null)
+		{
+			Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
+
+			List<Integer> clogList = new ArrayList<>();
+
+			Widget collectionLogEntryItems = client.getWidget(InterfaceID.Collection.ITEMS_CONTENTS);
+
+			int numEntries = 0;
+			int jsonIndexing = CLOG_MAGIC_CONSTANT;
+			if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
+			{
+				numEntries = collectionLogEntryItems.getChildren().length;
+
+				clogList.add( jsonIndexing + numEntries );
+				for (Widget child : collectionLogEntryItems.getChildren())
+				{
+					if (child.getOpacity() == 0)
+					{
+						jsonIndexing += CLOG_MAGIC_CONSTANT;
+						clogList.add( jsonIndexing + child.getItemQuantity() );
+						clogList.add( jsonIndexing + child.getItemId() );
+					}
+				}
+
+				setCollectionLogList(clogList, entryTitle.getText() );
+			}
+		}
+	}
+
+	private void setCollectionLogList(List<Integer> clogList, String bossName )
+	{
+		if (clogList == null)
+		{
+			return;
+		}
+
+		configManager.setRSProfileConfiguration("collectionlog", bossName,
+				gson.toJson(clogList));
 	}
 
 	/**
