@@ -63,4 +63,15 @@ public interface MouseHighlightConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "forceTooltip",
+		name = "Force Tooltips",
+		description = "Forces tooltips to be shown even if the client says a tooltip is being shown"
+	)
+	default boolean forceTooltip()
+	{
+		return false;
+	}
 }
