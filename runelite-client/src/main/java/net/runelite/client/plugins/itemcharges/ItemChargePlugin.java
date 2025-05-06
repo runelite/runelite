@@ -90,7 +90,7 @@ public class ItemChargePlugin extends Plugin
 		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
 	private static final String RING_OF_FORGING_BREAK_TEXT = "Your Ring of Forging has melted.";
-	private static final String RING_OF_FORGING_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously.";
+	private static final String RING_OF_FORGING_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously\\.";
 	private static final Pattern AMULET_OF_CHEMISTRY_CHECK_PATTERN = Pattern.compile(
 		"Your amulet of chemistry has (\\d) charges? left\\."
 	);
@@ -155,7 +155,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
-	private boolean varrockPlatebodySmeltTwo = false;
+	private boolean varrockPlatebodySmeltTwo;
 
 	@Inject
 	private Client client;
@@ -334,7 +334,7 @@ public class ItemChargePlugin extends Plugin
 			else if (bindingNecklaceUsedMatcher.find())
 			{
 				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
-				if (equipment != null && equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
+				if (equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
 				{
 					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
 				}
