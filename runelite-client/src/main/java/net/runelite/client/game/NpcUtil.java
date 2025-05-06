@@ -170,6 +170,10 @@ public class NpcUtil
 			case NpcID.XARPUS_DEATH_HARD:
 			case NpcID.NIGHTMARE_DYING:
 			case NpcID.NIGHTMARE_CHALLENGE_DYING:
+			case NpcID.NIGHTMARE_TOTEM_1_CHARGED:
+			case NpcID.NIGHTMARE_TOTEM_2_CHARGED:
+			case NpcID.NIGHTMARE_TOTEM_3_CHARGED:
+			case NpcID.NIGHTMARE_TOTEM_4_CHARGED:
 			// Gargoyles, Dawn, and Dusk each have cracking forms which contain their death animations, so should always
 			// be considered dead.
 			case NpcID.SLAYER_GARGOYLE_DEAD:
