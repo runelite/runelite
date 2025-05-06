@@ -186,7 +186,8 @@ public class ItemChargePluginTest
 	}
 
 	@Test
-	public void testRofTwo(){
+	public void testRofTwo()
+	{
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(140);
 		// Create equipment inventory with ring of forging
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
@@ -197,7 +198,7 @@ public class ItemChargePluginTest
 		//varrock platebody proc
 		ChatMessage chatMessageEffect = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING_VARROCK_PLATEBODY, "", 0);
 		//ring of forging proc
-		ChatMessage chatMessageUse = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING,"",0);
+		ChatMessage chatMessageUse = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING, "", 0);
 
 		itemChargePlugin.onChatMessage(chatMessageEffect);
 		itemChargePlugin.onChatMessage(chatMessageUse);
@@ -531,6 +532,7 @@ public class ItemChargePluginTest
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
 	}
+
 	@Test
 	public void testBraceletOfClayUseTrahaearn()
 	{
