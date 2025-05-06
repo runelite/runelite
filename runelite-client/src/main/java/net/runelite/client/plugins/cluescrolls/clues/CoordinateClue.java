@@ -250,7 +250,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(3399, 3246, 0))
-			.directions("Behind the PvP Arena.")
+			.directions("Behind Emir's Arena.")
 			.build(),
 		CoordinateClue.builder()
 			.location(new WorldPoint(2699, 3251, 0))

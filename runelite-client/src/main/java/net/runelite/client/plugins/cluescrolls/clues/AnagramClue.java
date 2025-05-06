@@ -91,7 +91,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("AHA JAR")
 			.npc("Jaraah")
 			.location(new WorldPoint(3359, 3276, 0))
-			.area("PvP Arena hospital")
+			.area("Emir's Arena hospital")
 			.build(),
 		AnagramClue.builder()
 			.text("ARC O LINE")
@@ -447,7 +447,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("MACHETE CLAM")
 			.npc("Cam the Camel")
 			.location(new WorldPoint(3300, 3231, 0))
-			.area("Outside PvP Arena")
+			.area("Outside Emir's Arena")
 			.question("How many items can carry water in Gielinor?")
 			.answer("6")
 			.build(),
