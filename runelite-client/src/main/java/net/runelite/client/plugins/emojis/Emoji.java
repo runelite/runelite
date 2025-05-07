@@ -93,6 +93,7 @@ enum Emoji
 	XD("Xd"),
 	SPOON("--o"),
 	WEARY_FACE("Dx"),
+	COINS("$$"), //:$:
 	ROCKETSHIP("<gt>==<gt>"), // >==>
 	CLOWN(":O)"),
 	COW("3:O"),
