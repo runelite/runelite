@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.emojis;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.image.BufferedImage;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -77,7 +78,8 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (iconIds == null)
 		{
@@ -113,7 +115,7 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onOverheadTextChanged(final OverheadTextChanged event)
+	private void onOverheadTextChanged(final OverheadTextChanged event)
 	{
 		if (!(event.getActor() instanceof Player))
 		{

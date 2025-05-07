@@ -245,7 +245,7 @@ public class ConfigManager
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession session = sessionManager.getAccountSession();
 		configClient.setUuid(session.getUuid());
@@ -273,7 +273,7 @@ public class ConfigManager
 	}
 
 	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
+	private void onSessionClose(SessionClose sessionClose)
 	{
 		configClient.setUuid(null);
 
