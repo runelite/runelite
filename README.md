@@ -1,25 +1,48 @@
-![](https://runelite.net/img/logo.png)
-# runelite [![CI](https://github.com/runelite/runelite/workflows/CI/badge.svg)](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/ArdAhnN)
+![RuneLite Logo](https://runelite.net/img/logo.png)
 
-RuneLite is a free, open source OldSchool RuneScape client.
+# RuneLite
 
-If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://runelite.net/discord) server.
+[![CI](https://github.com/runelite/runelite/workflows/CI/badge.svg)](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster)  
+[![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/ArdAhnN)
 
-## Project Layout
+**RuneLite** is a free, open-source client for **Old School RuneScape (OSRS)**.
 
-- [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
-- [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
-- [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
+---
 
-## Usage
+## 💬 Community
 
-Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
-For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
+Need help or want to chat?
 
-### License
+- IRC: [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4)
+- Discord: [Join Server](https://runelite.net/discord)
 
-RuneLite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
+---
 
-## Contribute and Develop
+## 🗂️ Project Structure
 
-We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/.github/CONTRIBUTING.md).
+- `cache/` – Tools for reading/writing cache files and their data  
+- `runelite-api/` – Public API interfaces for accessing the OSRS client  
+- `runelite-client/` – Main game client with built-in plugin system
+
+---
+
+## 🚀 Getting Started
+
+1. Open the project in your IDE as a **Maven project**  
+2. Build the **root module**  
+3. Run the `RuneLite` class from `runelite-client`
+
+More help: [RuneLite Wiki](https://github.com/runelite/runelite/wiki)
+
+---
+
+## 📄 License
+
+Licensed under the **BSD 2-Clause License**.  
+See license headers in each file for more info.
+
+---
+
+## 🤝 Contribute
+
+Want to help improve RuneLite? Read our [Contribution Guidelines](https://github.com/runelite/runelite/blob/master/.github/CONTRIBUTING.md)
