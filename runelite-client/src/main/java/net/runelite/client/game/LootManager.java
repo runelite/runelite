@@ -43,6 +43,8 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptEvent;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
@@ -55,11 +57,13 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 
@@ -83,6 +87,10 @@ public class LootManager
 	private NPC delayedLootNpc;
 	private int delayedLootTick;
 	private List<WorldArea> delayedLootAreas;
+
+	private NPCComposition scriptNpc;
+	private int scriptEventId;
+	private final List<ItemStack> scriptItems = new ArrayList<>(4);
 
 	@Inject
 	private LootManager(EventBus eventBus, Client client, NpcUtil npcUtil)
@@ -262,6 +270,44 @@ public class LootManager
 
 		itemSpawns.clear();
 		killPoints.clear();
+
+		processScriptLoot();
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.LOOTTRACKER_ADD_LOOT)
+		{
+			ScriptEvent scriptEvent = event.getScriptEvent();
+			int npcId = (int) scriptEvent.getArguments()[1];
+			int eventId = (int) scriptEvent.getArguments()[2];
+			int itemId = (int) scriptEvent.getArguments()[3];
+			int qty = (int) scriptEvent.getArguments()[4];
+
+			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
+
+			NPCComposition npcComposition = client.getNpcDefinition(npcId);
+
+			if (scriptEventId != eventId)
+			{
+				processScriptLoot();
+			}
+
+			scriptNpc = npcComposition;
+			scriptEventId = eventId;
+			scriptItems.add(new ItemStack(itemId, qty));
+		}
+	}
+
+	private void processScriptLoot()
+	{
+		if (scriptNpc != null && !scriptItems.isEmpty())
+		{
+			eventBus.post(new ServerNpcLoot(scriptNpc, scriptItems));
+		}
+		scriptNpc = null;
+		scriptItems.clear();
 	}
 
 	private void processDelayedLoot()
