@@ -35,6 +35,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -329,7 +331,11 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(2613, 3269, 0))
 			.area("Ardougne Zoo")
 			.question("How many animals in total are there in the zoo?")
-			.answer("40")
+			.answerProvider(plugin ->
+			{
+				QuestState state = Quest.EAGLES_PEAK.getState(plugin.getClient());
+				return state == QuestState.FINISHED ? "51" : "50";
+			})
 			.build(),
 		AnagramClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM004)
