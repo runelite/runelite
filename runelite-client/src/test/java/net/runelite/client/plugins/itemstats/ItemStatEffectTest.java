@@ -506,6 +506,26 @@ public class ItemStatEffectTest
 		assertEquals(35, skillChange(Skill.HITPOINTS, 99, 99, saradominBrew));
 	}
 
+	@Test
+	public void testCastleWarsBrew()
+	{
+		final Effect castleWarsBrew = new ItemStatChanges().get(ItemID._4DOSE_CASTLEWARS_SKILL_POTION);
+
+		assertEquals(9, skillChange(Skill.PRAYER, 99, 90, castleWarsBrew));
+		assertEquals(32, skillChange(Skill.PRAYER, 99, 0, castleWarsBrew));
+
+		assertEquals(3, skillChange(Skill.STRENGTH, 99, 115, castleWarsBrew));
+		assertEquals(19, skillChange(Skill.STRENGTH, 99, 99, castleWarsBrew));
+
+		assertEquals(1, skillChange(Skill.RANGED, 99, 111, castleWarsBrew));
+		assertEquals(13, skillChange(Skill.RANGED, 99, 99, castleWarsBrew));
+
+		assertEquals(3, skillChange(Skill.MAGIC, 99, 106, castleWarsBrew));
+		assertEquals(10, skillChange(Skill.MAGIC, 99, 99, castleWarsBrew));
+
+		assertEquals(10, skillChange(Skill.MAGIC, 99, 99, castleWarsBrew));
+	}
+
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
 	{
 		if (effect == null)
