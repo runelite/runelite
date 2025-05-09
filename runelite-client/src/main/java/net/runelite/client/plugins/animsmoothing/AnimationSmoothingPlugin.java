@@ -93,6 +93,10 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.BURGH_BUCKET_DRIP:
 
 			case AnimationID.KEYKEEPER:
+
+			case AnimationID.TOA_SOT_CAST_B:
+
+			case AnimationID.BASILISK_KNIGHT_MELEE:
 				return false;
 
 			default:
