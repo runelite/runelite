@@ -769,14 +769,15 @@ public class TabInterface
 	@Subscribe
 	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		boolean potionStorage = false;
 		if ((activeOptions & BankTagsService.OPTION_ALLOW_MODIFICATIONS) != 0
 			&& event.getActionParam1() == InterfaceID.Bankmain.ITEMS
 			&& (event.getOption().equals("Examine")
-				|| (event.getOption().equals("Withdraw-All-but-1") && client.getItemContainer(InventoryID.BANK) != null && !Objects.requireNonNull(client.getItemContainer(InventoryID.BANK)).contains(event.getItemId()))))
+				|| (potionStorage = event.getOption().equals("Withdraw-All-but-1") && client.getItemContainer(InventoryID.BANK) != null && !Objects.requireNonNull(client.getItemContainer(InventoryID.BANK)).contains(event.getItemId()))))
 		{
 			if (activeLayout != null)
 			{
-				client.createMenuEntry(-1)
+				client.createMenuEntry(!potionStorage ? -1 : 1)
 					.setParam0(event.getActionParam0())
 					.setParam1(event.getActionParam1())
 					.setTarget(event.getTarget())
@@ -789,7 +790,7 @@ public class TabInterface
 
 			if (activeLayout != null && activeLayout.count(itemManager.canonicalize(event.getItemId())) > 1)
 			{
-				client.createMenuEntry(-1)
+				client.createMenuEntry(!potionStorage ? -1 : 2)
 					.setParam0(event.getActionParam0())
 					.setParam1(event.getActionParam1())
 					.setTarget(event.getTarget())
