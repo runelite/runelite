@@ -26,7 +26,9 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Function;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 
 enum Courses
@@ -56,7 +58,7 @@ enum Courses
 	private final static Map<Integer, Courses> coursesByRegion;
 
 	@Getter
-	private final double totalXp;
+	private final Function<Client, Double> totalXpProvider;
 
 	@Getter
 	private final int regionId;
@@ -87,7 +89,12 @@ enum Courses
 
 	Courses(double totalXp, int regionId, WorldPoint... courseEndWorldPoints)
 	{
-		this.totalXp = totalXp;
+		this((client) -> totalXp, regionId, courseEndWorldPoints);
+	}
+
+	Courses(Function<Client, Double> totalXpProvider, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		this.totalXpProvider = totalXpProvider;
 		this.regionId = regionId;
 		this.courseEndWorldPoints = courseEndWorldPoints;
 	}
