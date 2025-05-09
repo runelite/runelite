@@ -391,8 +391,9 @@ class ProfilePanel extends PluginPanel
 				private String filter(String in)
 				{
 					// characters commonly forbidden in file names
-					return CharMatcher.noneOf("/\\<>:\"|?*\r\n\0")
-						.retainFrom(in);
+					return CharMatcher.noneOf("/\\<>:\"|?*\r\n\0$")
+						.retainFrom(in)
+						.substring(0, 30);
 				}
 			});
 
