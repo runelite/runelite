@@ -771,7 +771,7 @@ public class TabInterface
 	{
 		if ((activeOptions & BankTagsService.OPTION_ALLOW_MODIFICATIONS) != 0
 			&& event.getActionParam1() == InterfaceID.Bankmain.ITEMS
-			&& event.getOption().equals("Examine"))
+			&& event.getOption().equals("Withdraw-1"))
 		{
 			if (activeLayout != null)
 			{
