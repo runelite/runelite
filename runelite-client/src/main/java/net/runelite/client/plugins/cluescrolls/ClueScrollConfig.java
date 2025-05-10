@@ -57,6 +57,6 @@ public interface ClueScrollConfig extends Config
 	)
 	default IdentificationMode identify()
 	{
-		return IdentificationMode.ON_PICKUP;
+		return IdentificationMode.ON_READ;
 	}
 }
