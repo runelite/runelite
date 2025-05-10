@@ -125,6 +125,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild\\.");
 	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?\\.");
 	private static final Pattern CHEST_OPENING_PATTERN = Pattern.compile("You have (?<never>never )?opened (the )?(?<chest>crystal chest|Larran's big chest|Larran's small chest|Brimstone chest)( (?<kc>[\\d,]+ times|once))?\\.");
+	private static final Pattern CASTLE_WARS_WINS_PATTERN = Pattern.compile("<col=ef1020>You've won (?<kc>[\\d,]+|a) games? of Castle Wars!</col>");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -663,6 +664,22 @@ public class ChatCommandsPlugin extends Plugin
 			String chest = matcher.group("chest");
 
 			setKc(chest, kc);
+		}
+
+		matcher = CASTLE_WARS_WINS_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			String kcString = matcher.group("kc");
+			int kc;
+			if (kcString.equals("a"))
+			{
+				kc = 1;
+			}
+			else
+			{
+				kc = Integer.parseInt(kcString.replace(",", ""));
+			}
+			setKc("Castle Wars wins", kc);
 		}
 	}
 
@@ -2768,6 +2785,9 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "brimstone chest":
 				return "Brimstone chest";
+
+			case "cw":
+				return "Castle Wars wins";
 
 			default:
 				return WordUtils.capitalize(boss);
