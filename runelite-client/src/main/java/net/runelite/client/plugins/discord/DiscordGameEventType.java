@@ -96,6 +96,7 @@ enum DiscordGameEventType
 	BOSS_VARDORVIS("Vardorvis", DiscordAreaType.BOSSES, 4405),
 	BOSS_VORKATH("Vorkath", DiscordAreaType.BOSSES, 9023),
 	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
+	BOSS_YAMA("Yama", DiscordAreaType.BOSSES, 6045),
 	BOSS_ZALCANO("Zalcano", DiscordAreaType.BOSSES, 12126),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
