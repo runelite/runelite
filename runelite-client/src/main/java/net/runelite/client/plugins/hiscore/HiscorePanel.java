@@ -117,7 +117,7 @@ public class HiscorePanel extends PluginPanel
 		TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK,
 		TZTOK_JAD, VARDORVIS, VENENATIS,
 		VETION, VORKATH, WINTERTODT,
-		ZALCANO, ZULRAH
+		YAMA, ZALCANO, ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
