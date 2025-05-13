@@ -24,23 +24,17 @@
  */
 package net.runelite.client.plugins.mining;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Assert;
 import org.junit.Test;
 
-public class PickaxeTest
+public class MiningAnimationTest
 {
 	@Test
 	public void testInit()
 	{
-		Pickaxe.fromAnimation(0);
-	}
-
-	@Test
-	public void listAllAnimations()
-	{
-		for (Pickaxe pickaxe : Pickaxe.values())
+		for (var anim : MiningAnimation.WAll_ANIMATIONS)
 		{
-			assertEquals(pickaxe.name() + " does not have the expected 3 animations. (default, wall, noreachforward)", 3, pickaxe.getAnimIds().length);
+			Assert.assertTrue(MiningAnimation.MINING_ANIMATIONS.contains(anim));
 		}
 	}
 }
