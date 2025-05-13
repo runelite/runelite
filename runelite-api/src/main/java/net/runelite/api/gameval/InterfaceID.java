@@ -917,6 +917,9 @@ public final class InterfaceID
 	public static final int POH_BOOKCASE = 910;
 	public static final int POH_TROPHY_SIDE = 911;
 	public static final int POH_TROPHY_MENU = 912;
+	public static final int YAMA_SCOREBOARD = 913;
+	public static final int YAMA_CONTRACT_FIGHT = 914;
+	public static final int YAMA_CONTRACT = 915;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -17707,10 +17710,9 @@ public final class InterfaceID
 		public static final int MAPPOOL_LAYER_GRAPHIC0 = 0x01fb_002a;
 		public static final int MAPPOOL_LAYER_GRAPHIC1 = 0x01fb_002b;
 		public static final int MAPPOOL_LAYER_GRAPHIC2 = 0x01fb_002c;
-		public static final int MAPPOOL_CHECKBOX = 0x01fb_002d;
-		public static final int SCALING_LAYER_GRAPHIC0 = 0x01fb_002e;
-		public static final int SCALING_LAYER_GRAPHIC1 = 0x01fb_002f;
-		public static final int SCALING_LAYER_GRAPHIC2 = 0x01fb_0030;
+		public static final int SCALING_LAYER_GRAPHIC0 = 0x01fb_002d;
+		public static final int SCALING_LAYER_GRAPHIC1 = 0x01fb_002e;
+		public static final int SCALING_LAYER_GRAPHIC2 = 0x01fb_002f;
 	}
 
 	public static final class TolHomonculusOverlay
@@ -20632,15 +20634,15 @@ public final class InterfaceID
 		public static final int GFX_ZULANDRA = 0x0255_0032;
 		public static final int TEXT_ZULANDRA = 0x0255_0033;
 		public static final int TITLE_ZULANDRA = 0x0255_0034;
-		public static final int TELEPORTSCROLL_CERBERUS = 0x0255_0035;
-		public static final int GFX_CERBERUS = 0x0255_0036;
-		public static final int TEXT_CERBERUS = 0x0255_0037;
-		public static final int TITLE_CERBERUS = 0x0255_0038;
+		public static final int GFX_CERBERUS = 0x0255_0035;
+		public static final int TEXT_CERBERUS = 0x0255_0036;
+		public static final int TITLE_CERBERUS = 0x0255_0037;
+		public static final int TELEPORTSCROLL_CERBERUS = 0x0255_0038;
 		public static final int TELEPORTSCROLL_REVENANTS = 0x0255_0039;
-		public static final int GFX_REVENANTS = 0x0255_003a;
-		public static final int TEXT_REVENANTS = 0x0255_003b;
-		public static final int TITLE_REVENANTS = 0x0255_003c;
-		public static final int TELEPORTSCROLL_WATSON = 0x0255_003d;
+		public static final int TELEPORTSCROLL_WATSON = 0x0255_003a;
+		public static final int GFX_REVENANTS = 0x0255_003b;
+		public static final int TEXT_REVENANTS = 0x0255_003c;
+		public static final int TITLE_REVENANTS = 0x0255_003d;
 		public static final int TELEPORTSCROLL_GUTHIXIAN_TEMPLE = 0x0255_003e;
 		public static final int TELEPORTSCROLL_SPIDERCAVE = 0x0255_003f;
 		public static final int GFX_WATSON = 0x0255_0040;
@@ -20653,9 +20655,13 @@ public final class InterfaceID
 		public static final int TEXT_SPIDERCAVE = 0x0255_0047;
 		public static final int TITLE_SPIDERCAVE = 0x0255_0048;
 		public static final int TELEPORTSCROLL_COLOSSAL_WYRM = 0x0255_0049;
-		public static final int GFX_COLOSSAL_WYRM = 0x0255_004a;
-		public static final int TEXT_COLOSSAL_WYRM = 0x0255_004b;
-		public static final int TITLE_COLOSSAL_WYRM = 0x0255_004c;
+		public static final int TELEPORTSCROLL_CHASMOFFIRE = 0x0255_004a;
+		public static final int GFX_COLOSSAL_WYRM = 0x0255_004b;
+		public static final int TEXT_COLOSSAL_WYRM = 0x0255_004c;
+		public static final int TITLE_COLOSSAL_WYRM = 0x0255_004d;
+		public static final int GFX_CHASMOFFIRE = 0x0255_004e;
+		public static final int TEXT_CHASMOFFIRE = 0x0255_004f;
+		public static final int TITLE_CHASMOFFIRE = 0x0255_0050;
 	}
 
 	public static final class LovakengjBlastMiningHud
@@ -29353,6 +29359,62 @@ public final class InterfaceID
 		public static final int TIER1 = 0x0390_0004;
 		public static final int TIER2 = 0x0390_0005;
 		public static final int TIER3 = 0x0390_0006;
+	}
+
+	public static final class YamaScoreboard
+	{
+		public static final int UNIVERSE = 0x0391_0000;
+		public static final int BACKGROUND = 0x0391_0001;
+		public static final int CLOSE = 0x0391_0002;
+		public static final int CLOSE_ICON = 0x0391_0003;
+		public static final int CONTENT = 0x0391_0004;
+		public static final int TITLE = 0x0391_0005;
+		public static final int TITLE_TEXT = 0x0391_0006;
+		public static final int STATS = 0x0391_0007;
+		public static final int PKC = 0x0391_0008;
+		public static final int PKC_CONTENT = 0x0391_0009;
+		public static final int PD = 0x0391_000a;
+		public static final int PD_CONTENT = 0x0391_000b;
+		public static final int PBT = 0x0391_000c;
+		public static final int PBT_CONTENT = 0x0391_000d;
+		public static final int GKC = 0x0391_000e;
+		public static final int GKC_CONTENT = 0x0391_000f;
+		public static final int GD = 0x0391_0010;
+		public static final int GD_CONTENT = 0x0391_0011;
+		public static final int GBT = 0x0391_0012;
+		public static final int GBT_CONTENT = 0x0391_0013;
+		public static final int SUBHEADER_TEXT = 0x0391_0014;
+	}
+
+	public static final class YamaContractFight
+	{
+		public static final int UNIVERSE = 0x0392_0000;
+		public static final int DODGER = 0x0392_0001;
+		public static final int CONTENTS = 0x0392_0002;
+		public static final int CONTRACT_NAME = 0x0392_0003;
+		public static final int CONTRACT_MODEL = 0x0392_0004;
+	}
+
+	public static final class YamaContract
+	{
+		public static final int UNIVERSE = 0x0393_0000;
+		public static final int BACKGROUND = 0x0393_0001;
+		public static final int CLOSE = 0x0393_0002;
+		public static final int CLOSE_ICON = 0x0393_0003;
+		public static final int CONTENT = 0x0393_0004;
+		public static final int TITLE = 0x0393_0005;
+		public static final int TERMS = 0x0393_0006;
+		public static final int REWARDS = 0x0393_0007;
+		public static final int REWARD = 0x0393_0008;
+		public static final int TITLE_1 = 0x0393_0009;
+		public static final int TERM_TEXT1 = 0x0393_000a;
+		public static final int TERM_TEXT2 = 0x0393_000b;
+		public static final int TERM_TEXT3 = 0x0393_000c;
+		public static final int TERM_TEXT4 = 0x0393_000d;
+		public static final int TERM_TEXT5 = 0x0393_000e;
+		public static final int TERM_TEXT6 = 0x0393_000f;
+		public static final int TITLE_3 = 0x0393_0010;
+		public static final int REWARD_TEXT = 0x0393_0011;
 	}
 /* This file is automatically generated. Do not edit. */
 }

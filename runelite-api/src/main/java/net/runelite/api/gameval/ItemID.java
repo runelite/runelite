@@ -4444,7 +4444,7 @@ public final class ItemID
 	public static final int CERT_LAW_TALISMAN = 1459;
 
 	/**
-	 * Null
+	 * Soul talisman
 	 */
 	public static final int SOUL_TALISMAN = 1460;
 	public static final int CERT_SOUL_TALISMAN = 1461;
@@ -78951,72 +78951,72 @@ public final class ItemID
 	public static final int CASTLEWARS_BOLTS5 = 30705;
 
 	/**
-	 * Fancy carrot
+	 * Null
 	 */
 	public static final int EASTER25_FANCY_CARROT = 30706;
 
 	/**
-	 * Fancy carrot juice
+	 * Null
 	 */
 	public static final int EASTER25_FANCY_CARROTJUICE = 30707;
 
 	/**
-	 * Carrot juice glass
+	 * Null
 	 */
 	public static final int EASTER25_CARROTJUICE_GLASS = 30708;
 
 	/**
-	 * Recipe for easter buns
+	 * Null
 	 */
 	public static final int EASTER25_BUN_RECIPE = 30709;
 
 	/**
-	 * Easter spices
+	 * Null
 	 */
 	public static final int EASTER25_SPICES = 30710;
 
 	/**
-	 * Raisins
+	 * Null
 	 */
 	public static final int EASTER25_RAISINS = 30711;
 
 	/**
-	 * Yeastier dough
+	 * Null
 	 */
 	public static final int EASTER25_DOUGH = 30712;
 
 	/**
-	 * Special egg
+	 * Null
 	 */
 	public static final int EASTER25_EGG = 30713;
 
 	/**
-	 * Uncooked easter bun
+	 * Null
 	 */
 	public static final int EASTER25_BUN_RAW = 30714;
 
 	/**
-	 * Easter bun
+	 * Null
 	 */
 	public static final int EASTER25_BUN = 30715;
 
 	/**
-	 * Grapes
+	 * Null
 	 */
 	public static final int EASTER25_GRAPES_CUTSCENE = 30716;
 
 	/**
-	 * Raisins
+	 * Null
 	 */
 	public static final int EASTER25_RAISINS_CUTSCENE = 30717;
 
 	/**
-	 * Jumbled script
+	 * Null
 	 */
 	public static final int EASTER25_PERFORMANCE_SCRIPT = 30718;
 
 	/**
-	 * Jumbled script
+	 * Null
 	 */
 	public static final int EASTER25_PERFORMANCE_SCRIPT_SORT = 30719;
 
@@ -79039,6 +79039,294 @@ public final class ItemID
 	 * Carrot costume gloves
 	 */
 	public static final int EASTER25_CARROT_HANDS = 30726;
+	public static final int TELEPORTSCROLL_CHASMOFFIRE_DUMMY = 30742;
+	public static final int TELEPORTSCROLL_CHASMOFFIRE_SELECTED_DUMMY = 30743;
+
+	/**
+	 * Oathplate armour set
+	 */
+	public static final int SET_OATHPLATE_ARMOUR = 30744;
+
+	/**
+	 * Demon dung
+	 */
+	public static final int YAMA_LOOT_POO = 30747;
+
+	/**
+	 * Oathplate helm
+	 */
+	public static final int OATHPLATE_HELM = 30750;
+
+	/**
+	 * Oathplate chest
+	 */
+	public static final int OATHPLATE_CHEST = 30753;
+
+	/**
+	 * Oathplate legs
+	 */
+	public static final int OATHPLATE_LEGS = 30756;
+
+	/**
+	 * Soulflame horn
+	 */
+	public static final int SOULFLAME_HORN = 30759;
+	public static final int SOULFLAME_HORN_SPECIAL_DUMMY = 30762;
+
+	/**
+	 * Forgotten lockbox
+	 */
+	public static final int FORGOTTEN_LOCKBOX = 30763;
+
+	/**
+	 * Oathplate shards
+	 */
+	public static final int OATHPLATE_SHARDS = 30765;
+	public static final int OATHPLATE_SHARDS_2 = 30767;
+	public static final int OATHPLATE_SHARDS_3 = 30768;
+	public static final int OATHPLATE_SHARDS_4 = 30769;
+	public static final int OATHPLATE_SHARDS_5 = 30770;
+
+	/**
+	 * Aether catalyst
+	 */
+	public static final int COSMIC_SOUL_CATALYST = 30771;
+
+	/**
+	 * Diabolic worms
+	 */
+	public static final int DIABOLIC_WORMS = 30773;
+
+	/**
+	 * Chasm teleport scroll
+	 */
+	public static final int TELEPORTSCROLL_CHASMOFFIRE = 30775;
+
+	/**
+	 * Radiant oathplate helm
+	 */
+	public static final int RADIANT_OATHPLATE_HELM = 30777;
+
+	/**
+	 * Radiant oathplate chest
+	 */
+	public static final int RADIANT_OATHPLATE_CHEST = 30779;
+
+	/**
+	 * Radiant oathplate legs
+	 */
+	public static final int RADIANT_OATHPLATE_LEGS = 30781;
+
+	/**
+	 * Purifying sigil (left)
+	 */
+	public static final int PURIFYING_SIGIL_LEFT = 30783;
+
+	/**
+	 * Purifying sigil (right)
+	 */
+	public static final int PURIFYING_SIGIL_RIGHT = 30785;
+
+	/**
+	 * Purifying sigil (middle)
+	 */
+	public static final int PURIFYING_SIGIL_MIDDLE = 30787;
+
+	/**
+	 * Purifying sigil (top)
+	 */
+	public static final int PURIFYING_SIGIL_TOP = 30789;
+
+	/**
+	 * Purifying sigil (bottom)
+	 */
+	public static final int PURIFYING_SIGIL_BOTTOM = 30791;
+
+	/**
+	 * Purifying sigil
+	 */
+	public static final int PURIFYING_SIGIL = 30793;
+
+	/**
+	 * Barrel of demonic tallow (full)
+	 */
+	public static final int DEMONIC_TALLOW_BARREL_FULL = 30795;
+
+	/**
+	 * Barrel of demonic tallow
+	 */
+	public static final int DEMONIC_TALLOW_BARREL_VAR = 30798;
+
+	/**
+	 * Demonic tallow
+	 */
+	public static final int DEMONIC_TALLOW = 30800;
+
+	/**
+	 * Dossier
+	 */
+	public static final int YAMA_DOSSIER = 30803;
+
+	/**
+	 * Dossier
+	 */
+	public static final int YAMA_DOSSIER_DUMMY = 30805;
+
+	/**
+	 * Rite of vile transference
+	 */
+	public static final int DEATH_CHARGE_SCROLL = 30806;
+
+	/**
+	 * Jim's wet cloth
+	 */
+	public static final int WET_CLOTH = 30808;
+
+	/**
+	 * Contract of glyphic attenuation
+	 */
+	public static final int YAMA_SPECIAL_CONTRACT = 30810;
+
+	/**
+	 * Contract of sensory clouding
+	 */
+	public static final int YAMA_SPELL_CONTRACT = 30813;
+
+	/**
+	 * Contract of bloodied blows
+	 */
+	public static final int YAMA_2H_CONTRACT = 30816;
+
+	/**
+	 * Contract of divine severance
+	 */
+	public static final int YAMA_HEAVYRANGED_CONTRACT = 30819;
+
+	/**
+	 * Contract of forfeit breath
+	 */
+	public static final int YAMA_BINDING_CONTRACT = 30822;
+
+	/**
+	 * Contract of oathplate acquisition
+	 */
+	public static final int YAMA_ARMOUR_CONTRACT = 30825;
+
+	/**
+	 * Contract of shard acquisition
+	 */
+	public static final int YAMA_SHARD_CONTRACT = 30828;
+
+	/**
+	 * Contract of catalyst acquisition
+	 */
+	public static final int YAMA_CATALYST_CONTRACT = 30831;
+
+	/**
+	 * Contract of worm acquisition
+	 */
+	public static final int YAMA_WORM_CONTRACT = 30834;
+
+	/**
+	 * Contract of harmony acquisition
+	 */
+	public static final int YAMA_HORN_CONTRACT = 30837;
+
+	/**
+	 * Contract of familiar acquisition
+	 */
+	public static final int YAMA_PET_CONTRACT = 30840;
+
+	/**
+	 * Aether rune
+	 */
+	public static final int AETHERRUNE = 30843;
+
+	/**
+	 * Infernal shale
+	 */
+	public static final int INFERNAL_SHALE = 30846;
+
+	/**
+	 * Crushed infernal shale
+	 */
+	public static final int CRUSHED_INFERNAL_SHALE = 30848;
+	public static final int CRUSHED_INFERNAL_SHALE_2 = 30850;
+	public static final int CRUSHED_INFERNAL_SHALE_3 = 30851;
+	public static final int CRUSHED_INFERNAL_SHALE_4 = 30852;
+	public static final int CRUSHED_INFERNAL_SHALE_5 = 30853;
+
+	/**
+	 * Infernal blend
+	 */
+	public static final int INFERNAL_BLEND = 30854;
+
+	/**
+	 * Malformed infernal blend
+	 */
+	public static final int MALFORMED_INFERNAL_BLEND = 30856;
+
+	/**
+	 * Infernal nugget
+	 */
+	public static final int INFERNAL_NUGGET = 30858;
+
+	/**
+	 * Cooled infernal chunk
+	 */
+	public static final int COOLED_INFERNAL_CHUNK = 30860;
+
+	/**
+	 * Infernal chunk
+	 */
+	public static final int INFERNAL_CHUNK = 30862;
+
+	/**
+	 * Infernal plate
+	 */
+	public static final int INFERNAL_PLATE = 30864;
+	public static final int INFERNAL_PLATE_2 = 30866;
+	public static final int INFERNAL_PLATE_3 = 30867;
+	public static final int INFERNAL_PLATE_4 = 30868;
+	public static final int INFERNAL_PLATE_5 = 30869;
+	public static final int INFERNAL_PLATE_6 = 30870;
+	public static final int INFERNAL_PLATE_7 = 30871;
+
+	/**
+	 * 
+	 */
+	public static final int INV_SETCUSTOMWEAR_PLACEHOLDER = 30872;
+	public static final int WET_CLOTH_DUMMY = 30874;
+
+	/**
+	 * Surge potion(4)
+	 */
+	public static final int _4DOSESURGE = 30875;
+
+	/**
+	 * Surge potion(3)
+	 */
+	public static final int _3DOSESURGE = 30878;
+
+	/**
+	 * Surge potion(2)
+	 */
+	public static final int _2DOSESURGE = 30881;
+
+	/**
+	 * Surge potion(1)
+	 */
+	public static final int _1DOSESURGE = 30884;
+
+	/**
+	 * Polycatalytic guardian stone
+	 */
+	public static final int GOTR_GUARDIAN_STONE_POLYCATALYTIC = 30887;
+
+	/**
+	 * Yami
+	 */
+	public static final int YAMAPET = 30888;
 
 	public static final class Cert
 	{
@@ -83463,6 +83751,29 @@ public final class ItemID
 		public static final int DEADMAN_ACCUMULATION_CHARM = 30683;
 		public static final int DEADMAN_VULNERABILITY_CHARM = 30686;
 		public static final int CASTLEWARS_RUNE_REPLACEMENT = 30693;
+		public static final int SET_OATHPLATE_ARMOUR = 30745;
+		public static final int YAMA_LOOT_POO = 30748;
+		public static final int OATHPLATE_HELM = 30751;
+		public static final int OATHPLATE_CHEST = 30754;
+		public static final int OATHPLATE_LEGS = 30757;
+		public static final int SOULFLAME_HORN = 30760;
+		public static final int DEMONIC_TALLOW_BARREL_FULL = 30796;
+		public static final int DEMONIC_TALLOW = 30801;
+		public static final int YAMA_SPECIAL_CONTRACT = 30811;
+		public static final int YAMA_SPELL_CONTRACT = 30814;
+		public static final int YAMA_2H_CONTRACT = 30817;
+		public static final int YAMA_HEAVYRANGED_CONTRACT = 30820;
+		public static final int YAMA_BINDING_CONTRACT = 30823;
+		public static final int YAMA_ARMOUR_CONTRACT = 30826;
+		public static final int YAMA_SHARD_CONTRACT = 30829;
+		public static final int YAMA_CATALYST_CONTRACT = 30832;
+		public static final int YAMA_WORM_CONTRACT = 30835;
+		public static final int YAMA_HORN_CONTRACT = 30838;
+		public static final int YAMA_PET_CONTRACT = 30841;
+		public static final int _4DOSESURGE = 30876;
+		public static final int _3DOSESURGE = 30879;
+		public static final int _2DOSESURGE = 30882;
+		public static final int _1DOSESURGE = 30885;
 	}
 
 	public static final class Placeholder
@@ -92411,6 +92722,73 @@ public final class ItemID
 		public static final int EASTER25_CARROT_TORSO = 30723;
 		public static final int EASTER25_CARROT_LEGS = 30725;
 		public static final int EASTER25_CARROT_HANDS = 30727;
+		public static final int EASTER25_FANCY_CARROT = 30728;
+		public static final int EASTER25_FANCY_CARROTJUICE = 30729;
+		public static final int EASTER25_CARROTJUICE_GLASS = 30730;
+		public static final int EASTER25_BUN_RECIPE = 30731;
+		public static final int EASTER25_SPICES = 30732;
+		public static final int EASTER25_RAISINS = 30733;
+		public static final int EASTER25_DOUGH = 30734;
+		public static final int EASTER25_EGG = 30735;
+		public static final int EASTER25_BUN_RAW = 30736;
+		public static final int EASTER25_BUN = 30737;
+		public static final int EASTER25_GRAPES_CUTSCENE = 30738;
+		public static final int EASTER25_RAISINS_CUTSCENE = 30739;
+		public static final int EASTER25_PERFORMANCE_SCRIPT = 30740;
+		public static final int EASTER25_PERFORMANCE_SCRIPT_SORT = 30741;
+		public static final int SET_OATHPLATE_ARMOUR = 30746;
+		public static final int YAMA_LOOT_POO = 30749;
+		public static final int OATHPLATE_HELM = 30752;
+		public static final int OATHPLATE_CHEST = 30755;
+		public static final int OATHPLATE_LEGS = 30758;
+		public static final int SOULFLAME_HORN = 30761;
+		public static final int FORGOTTEN_LOCKBOX = 30764;
+		public static final int OATHPLATE_SHARDS = 30766;
+		public static final int COSMIC_SOUL_CATALYST = 30772;
+		public static final int DIABOLIC_WORMS = 30774;
+		public static final int TELEPORTSCROLL_CHASMOFFIRE = 30776;
+		public static final int RADIANT_OATHPLATE_HELM = 30778;
+		public static final int RADIANT_OATHPLATE_CHEST = 30780;
+		public static final int RADIANT_OATHPLATE_LEGS = 30782;
+		public static final int PURIFYING_SIGIL_LEFT = 30784;
+		public static final int PURIFYING_SIGIL_RIGHT = 30786;
+		public static final int PURIFYING_SIGIL_MIDDLE = 30788;
+		public static final int PURIFYING_SIGIL_TOP = 30790;
+		public static final int PURIFYING_SIGIL_BOTTOM = 30792;
+		public static final int PURIFYING_SIGIL = 30794;
+		public static final int DEMONIC_TALLOW_BARREL_FULL = 30797;
+		public static final int DEMONIC_TALLOW_BARREL_VAR = 30799;
+		public static final int DEMONIC_TALLOW = 30802;
+		public static final int YAMA_DOSSIER = 30804;
+		public static final int DEATH_CHARGE_SCROLL = 30807;
+		public static final int WET_CLOTH = 30809;
+		public static final int YAMA_SPECIAL_CONTRACT = 30812;
+		public static final int YAMA_SPELL_CONTRACT = 30815;
+		public static final int YAMA_2H_CONTRACT = 30818;
+		public static final int YAMA_HEAVYRANGED_CONTRACT = 30821;
+		public static final int YAMA_BINDING_CONTRACT = 30824;
+		public static final int YAMA_ARMOUR_CONTRACT = 30827;
+		public static final int YAMA_SHARD_CONTRACT = 30830;
+		public static final int YAMA_CATALYST_CONTRACT = 30833;
+		public static final int YAMA_WORM_CONTRACT = 30836;
+		public static final int YAMA_HORN_CONTRACT = 30839;
+		public static final int YAMA_PET_CONTRACT = 30842;
+		public static final int AETHERRUNE = 30844;
+		public static final int SOUL_TALISMAN = 30845;
+		public static final int INFERNAL_SHALE = 30847;
+		public static final int CRUSHED_INFERNAL_SHALE = 30849;
+		public static final int INFERNAL_BLEND = 30855;
+		public static final int MALFORMED_INFERNAL_BLEND = 30857;
+		public static final int INFERNAL_NUGGET = 30859;
+		public static final int COOLED_INFERNAL_CHUNK = 30861;
+		public static final int INFERNAL_CHUNK = 30863;
+		public static final int INFERNAL_PLATE = 30865;
+		public static final int INV_SETCUSTOMWEAR_PLACEHOLDER = 30873;
+		public static final int _4DOSESURGE = 30877;
+		public static final int _3DOSESURGE = 30880;
+		public static final int _2DOSESURGE = 30883;
+		public static final int _1DOSESURGE = 30886;
+		public static final int YAMAPET = 30889;
 	}
 /* This file is automatically generated. Do not edit. */
 }
