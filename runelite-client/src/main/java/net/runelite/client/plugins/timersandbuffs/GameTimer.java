@@ -102,6 +102,7 @@ enum GameTimer
 	SMOULDERING_GLAND(ItemID.SMOULDERING_GLAND, GameTimerImageType.ITEM, "Smouldering gland", false),
 	GOADING(ItemID._4DOSEGOADING, GameTimerImageType.ITEM, "Goading potion", false),
 	PRAYER_REGENERATION(ItemID._4DOSE1PRAYER_REGENERATION, GameTimerImageType.ITEM, "Prayer regeneration", false),
+	SURGE_POTION(ItemID._4DOSESURGE, GameTimerImageType.ITEM, "Surge potion", false),
 	;
 
 	@Nullable

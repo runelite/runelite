@@ -652,6 +652,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
 		}
+
+		if (event.getVarbitId() == VarbitID.SURGE_POTION_TIMER && config.showSurge())
+		{
+			updateVarTimer(SURGE_POTION, event.getValue(), i -> i * 10);
+		}
 	}
 
 	@Subscribe
@@ -895,6 +900,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showScurriusFoodPile())
 		{
 			removeVarTimer(SCURRIUS_FOOD_PILE);
+		}
+
+		if (!config.showSurge())
+		{
+			removeVarTimer(SURGE_POTION);
 		}
 	}
 
