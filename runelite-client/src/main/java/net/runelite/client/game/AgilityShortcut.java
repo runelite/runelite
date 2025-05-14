@@ -27,6 +27,8 @@ package net.runelite.client.game;
 
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ObjectID;
@@ -137,6 +139,14 @@ public enum AgilityShortcut
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE(34, "Pipe Squeeze", null, new WorldPoint(2698, 9501, 0), ObjectID.KARAM_DUNGEON_PIPE),
 	KOUREND_CATACOMBS_NORTH_EAST_CRACK_NORTH(34, "Crack", new WorldPoint(1715, 10057, 0), ObjectID.ZEAH_CATA_CRACK),
 	KOUREND_CATACOMBS_NORTH_EAST_CRACK_SOUTH(34, "Crack", new WorldPoint(1705, 10077, 0), ObjectID.ZEAH_CATA_CRACK),
+	VARROCK_CASTLE_GARDEN_TRELLIS(35, "Trellis", new WorldPoint(3227, 3471, 0), ObjectID.GARDEN_TRELLIS_CONCAVE_SHORTCUT)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return Quest.GARDEN_OF_TRANQUILLITY.getState(client) == QuestState.FINISHED;
+		}
+	},
 	CATHERBY_OBELISK_GRAPPLE(36, "Grapple Rock", null, ObjectID.XBOWS_BEACH_TO_ISLAND_TREE_BASIC),
 	GNOME_STRONGHOLD_ROCKS(37, "Rocks", new WorldPoint(2485, 3515, 0), ObjectID.GNOME_STRONGHOLD_SC_ROCK_TOP, ObjectID.GNOME_STRONGHOLD_SC_ROCK_BOTTOM),
 	AL_KHARID_MINING_PITCLIFF_SCRAMBLE(38, "Rocks", new WorldPoint(3305, 3315, 0), ObjectID.ALKHARID_MINE_SC_TOP, ObjectID.ALKHARID_MINE_SC_BOTTOM),
