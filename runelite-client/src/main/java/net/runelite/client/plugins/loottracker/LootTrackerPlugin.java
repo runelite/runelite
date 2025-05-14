@@ -1177,6 +1177,7 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.MM_POTION_PACK_HIGH:
 					case ItemID.CASTLEWARS_CRATE:
 					case ItemID.FORGOTTEN_LOCKBOX:
+					case ItemID.YAMA_DOSSIER:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.CONSTRUCTION_SUPPLY_CRATE:
