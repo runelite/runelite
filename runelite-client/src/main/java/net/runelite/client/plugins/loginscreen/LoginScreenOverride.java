@@ -49,6 +49,7 @@ public enum LoginScreenOverride
 	VARLAMORE("varlamore.jpg", "398c396e0c35eedc728adb9f31bc1f229d47910cf3f0c6dc119734ec832dd34b"),
 	VARLAMORE_2("varlamore2.jpg", "18611f89960369718bbd54ca9c673f964ded4573a6f7cc9e9317ec6c96c36072"),
 	WHILE_GUTHIX_SLEEPS("wgs.jpg", "51599649f077576f2c4a786dc0793cf32c43ba1d7982832fcecb0b85668b0f4f"),
+	YAMA("yama.jpg", "f4324a4effb5ad6d0e581a3ccf07d85d930df3f8fd41200ce6e4455b4750cbbc"),
 	CUSTOM,
 	RANDOM;
 
