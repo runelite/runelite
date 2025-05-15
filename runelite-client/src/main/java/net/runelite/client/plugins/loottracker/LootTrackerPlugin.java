@@ -288,23 +288,6 @@ public class LootTrackerPlugin extends Plugin
 	// Mahogany Homes
 	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
 
-	// Implings
-	private static final Set<Integer> IMPLING_JARS = ImmutableSet.of(
-		ItemID.II_CAPTURED_IMPLING_1,
-		ItemID.II_CAPTURED_IMPLING_2,
-		ItemID.II_CAPTURED_IMPLING_3,
-		ItemID.II_CAPTURED_IMPLING_4,
-		ItemID.II_CAPTURED_IMPLING_5,
-		ItemID.II_CAPTURED_IMPLING_6,
-		ItemID.II_CAPTURED_IMPLING_7,
-		ItemID.II_CAPTURED_IMPLING_8,
-		ItemID.II_CAPTURED_IMPLING_9,
-		ItemID.II_CAPTURED_IMPLING_12,
-		ItemID.II_CAPTURED_IMPLING_10,
-		ItemID.II_CAPTURED_IMPLING_11
-	);
-	private static final String IMPLING_CATCH_MESSAGE = "You manage to catch the impling and acquire some loot.";
-
 	// Raids
 	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
@@ -1044,12 +1027,6 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (message.equals(IMPLING_CATCH_MESSAGE))
-		{
-			onInvChange(collectInvItems(LootRecordType.EVENT, client.getLocalPlayer().getInteracting().getName()));
-			return;
-		}
-
 		if (regionID == FONT_OF_CONSUMPTION_REGION && message.equals(FONT_OF_CONSUMPTION_USE_MESSAGE))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, "Unsired"));
@@ -1213,19 +1190,6 @@ public class LootTrackerPlugin extends Plugin
 						})));
 						break;
 				}
-			}
-			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getItemId()))
-			{
-				final int itemId = event.getItemId();
-				onInvChange(((invItems, groundItems, removedItems) ->
-				{
-					int cnt = removedItems.count(itemId);
-					if (cnt > 0)
-					{
-						String name = itemManager.getItemComposition(itemId).getMembersName();
-						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
-					}
-				}));
 			}
 		}
 	}
