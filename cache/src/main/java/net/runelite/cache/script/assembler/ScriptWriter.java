@@ -235,6 +235,7 @@ class ScriptWriter extends rs2asmBaseListener
 	public ScriptDefinition buildScript()
 	{
 		setSwitchOperands();
+		computeLocalSizes();
 
 		ScriptDefinition script = new ScriptDefinition();
 		script.setId(id);
@@ -250,6 +251,29 @@ class ScriptWriter extends rs2asmBaseListener
 		script.setStringOperands(sops.toArray(new String[0]));
 		script.setSwitches(buildSwitches());
 		return script;
+	}
+
+	private void computeLocalSizes()
+	{
+		int maxIntVars = intStackCount;
+		int maxObjVars = stringStackCount;
+		for (int i = 0; i < opcodes.size(); ++i)
+		{
+			int opcode = opcodes.get(i);
+			if (opcode == Opcodes.ILOAD || opcode == Opcodes.ISTORE)
+			{
+				int op = iops.get(i);
+				maxIntVars = Math.max(maxIntVars, op + 1);
+			}
+			else if (opcode == Opcodes.SLOAD || opcode == Opcodes.SSTORE)
+			{
+				int op = iops.get(i);
+				maxObjVars = Math.max(maxObjVars, op + 1);
+			}
+		}
+
+		localIntCount = maxIntVars;
+		localStringCount = maxObjVars;
 	}
 
 	private void setSwitchOperands()
