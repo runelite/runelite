@@ -146,7 +146,9 @@ class ScriptWriter extends rs2asmBaseListener
 	public void enterOperand_qstring(rs2asmParser.Operand_qstringContext ctx)
 	{
 		String text = ctx.getText();
-		text = text.substring(1, text.length() - 1);
+		text = text.substring(1, text.length() - 1)
+			.replace("\\\\", "\\")
+			.replace("\\\"", "\"");
 		sops.set(pos, text);
 	}
 
