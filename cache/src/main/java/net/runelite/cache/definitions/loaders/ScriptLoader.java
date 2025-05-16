@@ -49,9 +49,9 @@ public class ScriptLoader
 		in.setOffset(endIdx);
 		int numOpcodes = in.readInt();
 		int localIntCount = in.readUnsignedShort();
-		int localStringCount = in.readUnsignedShort();
-		int intStackCount = in.readUnsignedShort();
-		int stringStackCount = in.readUnsignedShort();
+		int localObjCount = in.readUnsignedShort();
+		int intArgCount = in.readUnsignedShort();
+		int objArgCount = in.readUnsignedShort();
 
 		int numSwitches = in.readUnsignedByte();
 		if (numSwitches > 0)
@@ -75,9 +75,9 @@ public class ScriptLoader
 		}
 
 		def.setLocalIntCount(localIntCount);
-		def.setLocalStringCount(localStringCount);
-		def.setIntStackCount(intStackCount);
-		def.setStringStackCount(stringStackCount);
+		def.setLocalObjCount(localObjCount);
+		def.setIntArgCount(intArgCount);
+		def.setObjArgCount(objArgCount);
 
 		in.setOffset(0);
 		in.readStringOrNull();

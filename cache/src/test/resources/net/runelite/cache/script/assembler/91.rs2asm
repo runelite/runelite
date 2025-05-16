@@ -1,6 +1,6 @@
-.id                 91
-.int_stack_count    2
-.string_stack_count 1
+.id                       91
+.int_arg_count            2
+.obj_arg_count            1
    iload                  0
    switch                
       3: LABEL20

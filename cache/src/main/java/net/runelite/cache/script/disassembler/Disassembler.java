@@ -244,11 +244,11 @@ public class Disassembler
 	private void writerHeader(StringBuilder writer, ScriptDefinition script)
 	{
 		int id = script.getId();
-		int intStackCount = script.getIntStackCount();
-		int stringStackCount = script.getStringStackCount();
+		int intStackCount = script.getIntArgCount();
+		int stringStackCount = script.getObjArgCount();
 
-		writer.append(".id                 ").append(id).append('\n');
-		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
-		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
+		writer.append(".id                       ").append(id).append('\n');
+		writer.append(".int_arg_count            ").append(intStackCount).append('\n');
+		writer.append(".obj_arg_count            ").append(stringStackCount).append('\n');
 	}
 }

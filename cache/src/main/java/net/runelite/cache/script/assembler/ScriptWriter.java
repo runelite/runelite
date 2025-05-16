@@ -48,10 +48,10 @@ class ScriptWriter extends rs2asmBaseListener
 
 	private int id;
 	private int pos;
-	private int intStackCount;
-	private int stringStackCount;
+	private int intArgCount;
+	private int objArgCount;
 	private int localIntCount;
-	private int localStringCount;
+	private int localObjCount;
 	private List<Integer> opcodes = new ArrayList<>();
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
@@ -65,17 +65,17 @@ class ScriptWriter extends rs2asmBaseListener
 	}
 
 	@Override
-	public void enterInt_stack_value(rs2asmParser.Int_stack_valueContext ctx)
+	public void enterInt_arg_value(rs2asmParser.Int_arg_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
-		intStackCount = value;
+		intArgCount = value;
 	}
 
 	@Override
-	public void enterString_stack_value(rs2asmParser.String_stack_valueContext ctx)
+	public void enterObj_arg_value(rs2asmParser.Obj_arg_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
-		stringStackCount = value;
+		objArgCount = value;
 	}
 
 	@Override
@@ -221,10 +221,10 @@ class ScriptWriter extends rs2asmBaseListener
 
 		ScriptDefinition script = new ScriptDefinition();
 		script.setId(id);
-		script.setIntStackCount(intStackCount);
-		script.setStringStackCount(stringStackCount);
+		script.setIntArgCount(intArgCount);
+		script.setObjArgCount(objArgCount);
 		script.setLocalIntCount(localIntCount);
-		script.setLocalStringCount(localStringCount);
+		script.setLocalObjCount(localObjCount);
 		script.setInstructions(opcodes.stream().mapToInt(Integer::valueOf).toArray());
 		script.setIntOperands(iops.stream()
 			.map(i -> i == null ? 0 : i)
@@ -237,8 +237,8 @@ class ScriptWriter extends rs2asmBaseListener
 
 	private void computeLocalSizes()
 	{
-		int maxIntVars = intStackCount;
-		int maxObjVars = stringStackCount;
+		int maxIntVars = intArgCount;
+		int maxObjVars = objArgCount;
 		for (int i = 0; i < opcodes.size(); ++i)
 		{
 			int opcode = opcodes.get(i);
@@ -255,7 +255,7 @@ class ScriptWriter extends rs2asmBaseListener
 		}
 
 		localIntCount = maxIntVars;
-		localStringCount = maxObjVars;
+		localObjCount = maxObjVars;
 	}
 
 	private void setSwitchOperands()

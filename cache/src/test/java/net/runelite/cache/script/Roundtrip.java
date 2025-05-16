@@ -85,9 +85,9 @@ public class Roundtrip
 				String message = "script " + archive.getArchiveId();
 				assertEquals(message, oldScript.getId(), newScript.getId());
 				assertEquals(message, oldScript.getLocalIntCount(), newScript.getLocalIntCount());
-				assertEquals(message, oldScript.getLocalStringCount(), newScript.getLocalStringCount());
-				assertEquals(message, oldScript.getIntStackCount(), newScript.getIntStackCount());
-				assertEquals(message, oldScript.getStringStackCount(), newScript.getStringStackCount());
+				assertEquals(message, oldScript.getLocalObjCount(), newScript.getLocalObjCount());
+				assertEquals(message, oldScript.getIntArgCount(), newScript.getIntArgCount());
+				assertEquals(message, oldScript.getObjArgCount(), newScript.getObjArgCount());
 				assertArrayEquals(message, oldScript.getInstructions(), newScript.getInstructions());
 				assertArrayEquals(message, oldScript.getIntOperands(), newScript.getIntOperands());
 				assertArrayEquals(message, oldScript.getStringOperands(), newScript.getStringOperands());

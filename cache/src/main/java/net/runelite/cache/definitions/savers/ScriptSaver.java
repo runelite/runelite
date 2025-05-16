@@ -63,9 +63,9 @@ public class ScriptSaver
 		}
 		out.writeInt(instructions.length);
 		out.writeShort(script.getLocalIntCount());
-		out.writeShort(script.getLocalStringCount());
-		out.writeShort(script.getIntStackCount());
-		out.writeShort(script.getStringStackCount());
+		out.writeShort(script.getLocalObjCount());
+		out.writeShort(script.getIntArgCount());
+		out.writeShort(script.getObjArgCount());
 		int switchStart = out.getOffset();
 		if (switches == null)
 		{
