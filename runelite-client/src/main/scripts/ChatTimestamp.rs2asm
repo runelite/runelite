@@ -3,11 +3,9 @@
 ; string0 = timestamp
 ; string1 = message
 ; string2 = timestamp color
-.id                 4742
-.int_stack_count    0
-.string_stack_count 3
-.int_var_count      0
-.string_var_count   3
+.id                       4742
+.int_arg_count            0
+.obj_arg_count            3
    jump                   ENABLED ; jump over ~on_enhanced_any = 0 | chat_gettimestamps = 0
    invoke                 100
    iconst                 0

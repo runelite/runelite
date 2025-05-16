@@ -1,8 +1,6 @@
-.id                 679
-.int_stack_count    21
-.string_stack_count 0
-.int_var_count      21
-.string_var_count   0
+.id                       679
+.int_arg_count            21
+.obj_arg_count            0
    iload                  0
    cc_deleteall          
    iload                  0

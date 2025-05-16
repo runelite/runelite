@@ -22,10 +22,8 @@
 ; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 .id                 10004
-.int_stack_count    0
-.string_stack_count 2
-.int_var_count      0
-.string_var_count   2
+.int_arg_count      0
+.obj_arg_count      2
 
 ; Send a private message
    sload                  0

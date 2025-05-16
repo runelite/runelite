@@ -1,8 +1,6 @@
-.id                 279 ; [proc,bankmain_filteritem]
-.int_stack_count    1
-.string_stack_count 0
-.int_var_count      2 ; +1 for storage of search filter result
-.string_var_count   2
+.id                       279 ; [proc,bankmain_filteritem]
+.int_arg_count            1
+.obj_arg_count            0
    iconst                 -1                 ; return value
    iload                  0                  ; load item id
    get_varc_string        359

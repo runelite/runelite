@@ -1,8 +1,6 @@
-.id                 681
-.int_stack_count    0
-.string_stack_count 0
-.int_var_count      2
-.string_var_count   1
+.id                       681
+.int_arg_count            0
+.obj_arg_count            0
    get_varc_int           5
    iconst                 14
    if_icmpeq              LABEL7

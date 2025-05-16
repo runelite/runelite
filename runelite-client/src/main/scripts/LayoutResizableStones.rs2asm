@@ -1,8 +1,6 @@
-.id                 920
-.int_stack_count    2
-.string_stack_count 0
-.int_var_count      5
-.string_var_count   0
+.id                       920
+.int_arg_count            2
+.obj_arg_count            0
 ; callback "forceStackStones"
 ;   Used by the InterfaceStylesPlugin to enable it's Always stack bottom bar option
 ;   Toggle the option when you have the bottom line top level interface on and your screen is large enough for the stones to be in a single line
