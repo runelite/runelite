@@ -151,7 +151,7 @@ public class Disassembler
 			Instruction ins = this.instructions.find(opcode);
 			if (ins == null)
 			{
-				logger.warn("Unknown instruction {} in script {}", opcode, script.getId());
+				logger.debug("Unknown instruction {} in script {}", opcode, script.getId());
 			}
 
 			if (jumps[i])
