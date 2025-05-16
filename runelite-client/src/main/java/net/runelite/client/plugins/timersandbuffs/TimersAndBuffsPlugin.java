@@ -143,6 +143,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private ElapsedTimer tzhaarTimer;
 
+	private int lastDeathChargeVarb;
+
 	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
 	private static final int ECLIPSE_MOON_REGION_ID = 6038;
 
@@ -186,6 +188,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		nextOverloadRefreshTick = 0;
 		nextAntifireTick = 0;
 		nextSuperAntifireTick = 0;
+		lastDeathChargeVarb = 0;
 		removeTzhaarTimer();
 		varTimers.clear();
 		infoBoxManager.removeIf(buffCounter -> buffCounter instanceof BuffCounter);
@@ -304,14 +307,25 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE && config.showArceuus())
 		{
-			if (event.getValue() == 1)
+			final int deathChargeVarb = event.getValue();
+
+			switch (deathChargeVarb)
 			{
-				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+				case 2:
+					createGameTimer(DEATH_CHARGE);
+					break;
+				case 1:
+					if (lastDeathChargeVarb == 0)
+					{
+						createGameTimer(DEATH_CHARGE);
+					}
+					break;
+				case 0:
+					removeGameTimer(DEATH_CHARGE);
+					break;
 			}
-			else
-			{
-				removeGameTimer(DEATH_CHARGE);
-			}
+
+			lastDeathChargeVarb = deathChargeVarb;
 		}
 
 		if (event.getVarbitId() == VarbitID.ARCEUUS_RESURRECTION_ACTIVE && event.getValue() == 0 && config.showArceuus())
