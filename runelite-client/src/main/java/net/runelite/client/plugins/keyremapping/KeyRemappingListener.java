@@ -162,15 +162,9 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_SPACE;
 			}
 
-			if (config.control().matches(e))
+			if (!plugin.isOptionsDialogOpen() && config.control().matches(e))
 			{
 				mappedKeyCode = KeyEvent.VK_CONTROL;
-			}
-
-			// Allow numeric keys to select dialog options, ignoring CTRL mapping
-			if (plugin.isOptionsDialogOpen() && config.control().matches(e))
-			{
-				mappedKeyCode = e.getKeyCode();
 			}
 
 			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
