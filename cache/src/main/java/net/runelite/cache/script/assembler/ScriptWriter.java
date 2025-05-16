@@ -117,7 +117,15 @@ class ScriptWriter extends rs2asmBaseListener
 		opcodes.add(opcode);
 		iops.add(null);
 		sops.add(null);
-		switches.add(null);
+
+		if (opcode == Opcodes.SWITCH)
+		{
+			switches.add(new LookupSwitch());
+		}
+		else
+		{
+			switches.add(null);
+		}
 	}
 
 	@Override
@@ -168,18 +176,6 @@ class ScriptWriter extends rs2asmBaseListener
 		}
 
 		iops.set(pos, (int) symbol);
-	}
-
-	@Override
-	public void enterSwitch_lookup(rs2asmParser.Switch_lookupContext ctx)
-	{
-		if (switches.get(pos - 1) != null)
-		{
-			return;
-		}
-
-		LookupSwitch ls = new LookupSwitch();
-		switches.set(pos - 1, ls);
 	}
 
 	@Override

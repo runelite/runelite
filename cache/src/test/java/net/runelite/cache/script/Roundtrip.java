@@ -91,6 +91,7 @@ public class Roundtrip
 				assertArrayEquals(message, oldScript.getInstructions(), newScript.getInstructions());
 				assertArrayEquals(message, oldScript.getIntOperands(), newScript.getIntOperands());
 				assertArrayEquals(message, oldScript.getStringOperands(), newScript.getStringOperands());
+				assertArrayEquals(message, oldScript.getSwitches(), newScript.getSwitches());
 			}
 		}
 	}
