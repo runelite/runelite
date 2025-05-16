@@ -79,20 +79,6 @@ class ScriptWriter extends rs2asmBaseListener
 	}
 
 	@Override
-	public void enterInt_var_value(rs2asmParser.Int_var_valueContext ctx)
-	{
-		int value = Integer.parseInt(ctx.getText());
-		localIntCount = value;
-	}
-
-	@Override
-	public void enterString_var_value(rs2asmParser.String_var_valueContext ctx)
-	{
-		int value = Integer.parseInt(ctx.getText());
-		localStringCount = value;
-	}
-
-	@Override
 	public void exitInstruction(rs2asmParser.InstructionContext ctx)
 	{
 		++pos;
