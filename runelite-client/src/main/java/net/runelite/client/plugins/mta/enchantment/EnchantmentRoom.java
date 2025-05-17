@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -38,7 +39,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
@@ -60,7 +60,7 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
@@ -74,7 +74,7 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!inside() || !config.enchantment())
 		{
@@ -112,12 +112,12 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
 
-		if (item.getId() == ItemID.MAGICTRAINING_DRAGONSTONE)
+		if (item.getId() == ItemID.DRAGONSTONE_6903)
 		{
 			WorldPoint location = tile.getWorldLocation();
 			log.debug("Adding dragonstone at {}", location);
@@ -126,12 +126,12 @@ public class EnchantmentRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final TileItem item = itemDespawned.getItem();
 		final Tile tile = itemDespawned.getTile();
 
-		if (item.getId() == ItemID.MAGICTRAINING_DRAGONSTONE)
+		if (item.getId() == ItemID.DRAGONSTONE_6903)
 		{
 			WorldPoint location = tile.getWorldLocation();
 			log.debug("Removed dragonstone at {}", location);

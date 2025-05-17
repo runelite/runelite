@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.cooking;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -103,7 +104,7 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (session == null || config.statTimeout() == 0)
 		{
@@ -120,7 +121,8 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicChanged(GraphicChanged graphicChanged)
+	@VisibleForTesting
+	void onGraphicChanged(GraphicChanged graphicChanged)
 	{
 		Player player = client.getLocalPlayer();
 
@@ -150,7 +152,8 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
 		{

@@ -277,7 +277,7 @@ public class ScriptInspector extends DevToolsFrame
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
+	private void onScriptPreFired(ScriptPreFired event)
 	{
 		ScriptTreeNode newNode = new ScriptTreeNode(event.getScriptId());
 		if (event.getScriptEvent() != null)
@@ -315,7 +315,7 @@ public class ScriptInspector extends DevToolsFrame
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (currentNode == null || currentNode.getScriptId() != event.getScriptId())
 		{

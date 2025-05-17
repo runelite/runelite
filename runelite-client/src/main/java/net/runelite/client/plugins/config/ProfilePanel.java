@@ -262,7 +262,7 @@ class ProfilePanel extends PluginPanel
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		if (!active)
 		{
@@ -273,7 +273,7 @@ class ProfilePanel extends PluginPanel
 	}
 
 	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
+	private void onSessionClose(SessionClose sessionClose)
 	{
 		if (!active)
 		{

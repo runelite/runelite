@@ -134,6 +134,8 @@ public class EventBus
 				final String preferredName = "on" + parameterClazz.getSimpleName();
 				Preconditions.checkArgument(method.getName().equals(preferredName), "Subscribed method " + method + " should be named " + preferredName);
 
+				assert !Modifier.isPublic(method.getModifiers()) : "Subscribed method " + method + " should not be public";
+
 				method.setAccessible(true);
 				Consumer<Object> lambda = null;
 
