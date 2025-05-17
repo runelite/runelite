@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
 import javax.annotation.Nullable;
@@ -2281,7 +2282,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			resourceAreaCost = (int) (DEFAULT_RESOURCE_AREA_COST * 0.8);
 		}
 
-		return String.format(" An entry fee of %,d coins is required.", resourceAreaCost);
+		return String.format(Locale.ENGLISH, " An entry fee of %,d coins is required.", resourceAreaCost);
 	}
 
 	private static String getBurthorpeSlayerMaster(ClueScrollPlugin plugin)

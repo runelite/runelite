@@ -35,13 +35,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -373,7 +367,9 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -401,7 +397,9 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Integer>>(){}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Integer>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -692,7 +690,7 @@ public class ChatCommandsPlugin extends Plugin
 
 		// If the seconds is an integer, it is ambiguous if the pb is a precise
 		// pb or not. So we always show it without the trailing .00.
-		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format("%05.2f", seconds));
+		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format(Locale.ENGLISH, "%05.2f", seconds));
 	}
 
 	private void matchPb(Matcher matcher)
@@ -1562,7 +1560,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1619,7 +1617,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
