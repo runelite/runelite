@@ -554,6 +554,17 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
+	public void testYamaKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Yama success count is: <col=ff0000>227</col>", null, 0);
+		screenshotPlugin.onChatMessage(chatMessage);
+
+		verify(screenshotPlugin).takeScreenshot("Yama(227)", "Boss Kills");
+	}
+
+	@Test
 	public void testEchoBossKillCount()
 	{
 		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
