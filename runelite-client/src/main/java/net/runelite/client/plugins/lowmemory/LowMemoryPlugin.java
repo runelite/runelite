@@ -112,9 +112,14 @@ public class LowMemoryPlugin extends Plugin
 	@Subscribe
 	public void onBeforeRender(BeforeRender beforeRender)
 	{
+		var wv = client.getTopLevelWorldView();
+		if (wv == null)
+		{
+			return;
+		}
 		// This needs to be set to the current plane, but there is no event for plane change, so
 		// just set it each render.
-		client.getScene().
-			setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
+		wv.getScene().
+			setMinLevel(config.hideLowerPlanes() ? wv.getPlane() : 0);
 	}
 }
