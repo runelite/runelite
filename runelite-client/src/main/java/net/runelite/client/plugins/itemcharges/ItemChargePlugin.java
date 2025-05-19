@@ -334,7 +334,7 @@ public class ItemChargePlugin extends Plugin
 				if (equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
 				{
 					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1, 0, MAX_BINDING_CHARGES);
-					updateRingOfForgingCharges(charges);
+					updateBindingNecklaceCharges(charges);
 				}
 
 			}
