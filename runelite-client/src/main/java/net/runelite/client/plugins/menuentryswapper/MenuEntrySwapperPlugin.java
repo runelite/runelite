@@ -2080,7 +2080,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				return 8;
 			}
 			// Placeholder
-			if (-- delta == 1)
+			if (--delta == 1)
 			{
 				return 9;
 			}
