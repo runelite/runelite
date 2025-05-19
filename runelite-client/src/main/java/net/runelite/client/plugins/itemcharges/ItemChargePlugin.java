@@ -82,6 +82,9 @@ public class ItemChargePlugin extends Plugin
 		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
 	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "Your Ring of Recoil has shattered.";
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
+	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
+		"You bind the temple's power into (?:Mist|Dust|Smoke|Mud|Steam|Lava|Aether) rune."
+	);
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
 		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
 	private static final String RING_OF_FORGING_USED_TEXT = "You retrieve a bar of iron.";
@@ -263,6 +266,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher necklaceOfBindingCheckMatcher = BINDING_USED_PATTERN.matcher(message);
 
 			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -315,6 +319,24 @@ public class ItemChargePlugin extends Plugin
 			else if (message.equals(AMULET_OF_BOUNTY_BREAK_TEXT))
 			{
 				updateAmuletOfBountyCharges(MAX_AMULET_OF_BOUNTY_CHARGES);
+			}
+			else if (necklaceOfBindingCheckMatcher.find())
+			{
+				final ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+
+				// Determine if the player made combination runes with Necklace of Binding equipped
+				if (equipment == null)
+				{
+					return;
+				}
+
+				if (equipment.contains(ItemID.MAGIC_EMERALD_NECKLACE))
+				{
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1, 0, MAX_BINDING_CHARGES);
+					updateRingOfForgingCharges(charges);
+				}
+
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
