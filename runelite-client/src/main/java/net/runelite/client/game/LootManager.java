@@ -66,6 +66,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
@@ -288,6 +289,11 @@ public class LootManager
 			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
 
 			NPCComposition npcComposition = client.getNpcDefinition(npcId);
+			String name = Text.removeTags(npcComposition.getName());
+			if (name.isEmpty() || "null".equals(name))
+			{
+				return;
+			}
 
 			if (scriptEventId != eventId)
 			{
