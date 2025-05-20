@@ -46,17 +46,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.KeyCode;
-import net.runelite.api.Menu;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.ObjectComposition;
-import net.runelite.api.ParamID;
+import net.runelite.api.*;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostMenuSort;
@@ -2079,10 +2069,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				return 8;
 			}
-			// Placeholder
-			if (--delta == 1)
+			// Placeholder or Configure-Charges
+			if (--delta == 1 && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 0)
 			{
 				return 9;
+			}
+			if (client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1) {
+				return 10;
 			}
 		}
 		return ident;
