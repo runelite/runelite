@@ -46,7 +46,17 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostMenuSort;
@@ -614,7 +624,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	private Consumer<MenuEntry> objectConsumer(ObjectComposition composition, String[] actions, int menuIdx,
-		MenuAction menuAction, boolean shift)
+											   MenuAction menuAction, boolean shift)
 	{
 		return e ->
 		{
@@ -806,7 +816,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	private Consumer<MenuEntry> npcConsumer(NPCComposition composition, String[] actions, int menuIdx,
-		MenuAction menuAction, boolean shift)
+											MenuAction menuAction, boolean shift)
 	{
 		return e ->
 		{
