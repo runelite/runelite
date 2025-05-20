@@ -2069,13 +2069,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				return 8;
 			}
-			// Placeholder or Configure-Charges
+			// Placeholder, only works if configure charges is off
 			if (--delta == 1 && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 0)
 			{
 				return 9;
-			}
-			if (client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1) {
-				return 10;
 			}
 		}
 		return ident;
