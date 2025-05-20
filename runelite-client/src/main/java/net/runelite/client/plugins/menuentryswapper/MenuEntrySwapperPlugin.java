@@ -624,7 +624,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	private Consumer<MenuEntry> objectConsumer(ObjectComposition composition, String[] actions, int menuIdx,
-											   MenuAction menuAction, boolean shift)
+			MenuAction menuAction, boolean shift)
 	{
 		return e ->
 		{
@@ -816,7 +816,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	private Consumer<MenuEntry> npcConsumer(NPCComposition composition, String[] actions, int menuIdx,
-											MenuAction menuAction, boolean shift)
+			MenuAction menuAction, boolean shift)
 	{
 		return e ->
 		{
