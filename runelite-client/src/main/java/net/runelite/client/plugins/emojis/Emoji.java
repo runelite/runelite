@@ -103,6 +103,7 @@ enum Emoji
 	MIRROR("<lt>|<gt>"), // <|>
 	GOAT("3:V"),
 	SKULL("(x_x)"),
+	LION("(:3=)"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
