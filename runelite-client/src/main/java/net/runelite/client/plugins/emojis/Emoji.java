@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.emojis;
 
-import com.google.common.collect.ImmutableMap;
 import java.awt.image.BufferedImage;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
 import net.runelite.client.util.ImageUtil;
 
 enum Emoji
@@ -98,6 +100,9 @@ enum Emoji
 	COW("3:O"),
 	HANDSHAKE("(=)"),
 	RABBIT("=:3"),
+	MIRROR("<lt>|<gt>"), // <|>
+	GOAT("3:V"),
+	SKULL("(x_x)"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
