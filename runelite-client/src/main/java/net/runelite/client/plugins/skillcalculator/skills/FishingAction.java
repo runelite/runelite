@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.skillcalculator.skills;
 
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.ANGLERS_OUTFIT;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.DIABOLIC_WORMS;
 
 @AllArgsConstructor
 @Getter
@@ -95,10 +97,11 @@ public enum FishingAction implements ItemSkillAction
 			case RAW_HALIBUT:
 			case RAW_BLUEFIN:
 			case RAW_MARLIN:
-				return Set.of(ANGLERS_OUTFIT);
-			default:
+				return Set.of(ANGLERS_OUTFIT, DIABOLIC_WORMS);
+			case RAW_ANGLERFISH:
 				return Collections.emptySet();
+			default:
+				return EnumSet.of(DIABOLIC_WORMS);
 		}
 	}
-
 }
