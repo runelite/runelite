@@ -376,24 +376,29 @@ class ProfilePanel extends PluginPanel
 			});
 			((AbstractDocument) name.getDocument()).setDocumentFilter(new DocumentFilter()
 			{
+				private final int MaxProfileNameLength = 30;
 				@Override
 				public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException
 				{
-					super.insertString(fb, offset, filter(string), attr);
+					if (fb.getDocument().getLength() + string.length() <= MaxProfileNameLength) {
+						super.insertString(fb, offset, filter(string), attr);
+					}
 				}
 
 				@Override
 				public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException
 				{
-					super.replace(fb, offset, length, filter(text), attrs);
+					if ((fb.getDocument().getLength() + text.length() - length) <= MaxProfileNameLength) {
+						super.replace(fb, offset, length, filter(text), attrs);
+					}
 				}
 
 				private String filter(String in)
 				{
 					// characters commonly forbidden in file names
 					return CharMatcher.noneOf("/\\<>:\"|?*\r\n\0$")
-						.retainFrom(in)
-						.substring(0, 30);
+						.retainFrom(in);
+
 				}
 			});
 
