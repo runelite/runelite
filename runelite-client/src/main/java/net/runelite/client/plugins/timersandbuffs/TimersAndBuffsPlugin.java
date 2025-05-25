@@ -1041,8 +1041,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (message.endsWith(MARK_OF_DARKNESS_MESSAGE) && config.showArceuusCooldown())
 		{
-			final int magicLevelMoD = getMagicLevelMoD(client.getRealSkillLevel(Skill.MAGIC));
-			createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevelMoD - 10, RSTimeUnit.GAME_TICKS));
+			createGameTimer(MARK_OF_DARKNESS_COOLDOWN);
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
