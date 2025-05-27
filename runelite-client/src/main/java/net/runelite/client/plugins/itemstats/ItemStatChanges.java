@@ -36,6 +36,7 @@ import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.food.CookedBream;
 import net.runelite.client.plugins.itemstats.food.CookedMossLizard;
+import net.runelite.client.plugins.itemstats.potions.CastleWarsBrew;
 import net.runelite.client.plugins.itemstats.special.SunlightMoth;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
@@ -66,6 +67,7 @@ public class ItemStatChanges
 	public static final SingleEffect SUPER_ATTACK_POT = boost(ATTACK, perc(.15, 5));
 	public static final SingleEffect SUPER_STRENGTH_POT = boost(STRENGTH, perc(.15, 5));
 	public static final SingleEffect SUPER_DEFENCE_POT = boost(DEFENCE, perc(.15, 5));
+	public static final Effect SUPER_RESTORE_POT = new SuperRestore(.25, 8);
 
 	private void init()
 	{
@@ -241,8 +243,7 @@ public class ItemStatChanges
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, divinePot), ItemID._1DOSEDIVINECOMBAT, ItemID._2DOSEDIVINECOMBAT, ItemID._3DOSEDIVINECOMBAT, ItemID._4DOSEDIVINECOMBAT);
 		add(combo(rangingPot, SUPER_DEFENCE_POT, divinePot), ItemID._1DOSEDIVINEBASTION, ItemID._2DOSEDIVINEBASTION, ItemID._3DOSEDIVINEBASTION, ItemID._4DOSEDIVINEBASTION);
 		add(combo(magicPot, SUPER_DEFENCE_POT, divinePot), ItemID._1DOSEDIVINEBATTLEMAGE, ItemID._2DOSEDIVINEBATTLEMAGE, ItemID._3DOSEDIVINEBATTLEMAGE, ItemID._4DOSEDIVINEBATTLEMAGE);
-		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, rangingPot, imbuedHeart),
-			ItemID._4DOSE_CASTLEWARS_SKILL_POTION, ItemID._3DOSE_CASTLEWARS_SKILL_POTION, ItemID._2DOSE_CASTLEWARS_SKILL_POTION, ItemID._1DOSE_CASTLEWARS_SKILL_POTION);
+		add(new CastleWarsBrew(), ItemID._4DOSE_CASTLEWARS_SKILL_POTION, ItemID._3DOSE_CASTLEWARS_SKILL_POTION, ItemID._2DOSE_CASTLEWARS_SKILL_POTION, ItemID._1DOSE_CASTLEWARS_SKILL_POTION);
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT),
 			ItemID.BR_4DOSE2COMBAT, ItemID.BR_3DOSE2COMBAT, ItemID.BR_2DOSE2COMBAT, ItemID.BR_1DOSE2COMBAT /* LMS */);
 		add(ancientBrew, ItemID._1DOSEANCIENTBREW, ItemID._2DOSEANCIENTBREW, ItemID._3DOSEANCIENTBREW, ItemID._4DOSEANCIENTBREW);
@@ -277,14 +278,13 @@ public class ItemStatChanges
 		final Effect energyPot = heal(RUN_ENERGY, 10);
 		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
-		final Effect superRestorePot = new SuperRestore(.25, 8);
 		final Effect staminaPot = new StaminaPotion();
 		final DeltaPercentage remedyHeal = perc(0.16, 6);
 		add(restorePot, ItemID._1DOSESTATRESTORE, ItemID._2DOSESTATRESTORE, ItemID._3DOSESTATRESTORE, ItemID._4DOSESTATRESTORE);
 		add(energyPot, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY);
 		add(prayerPot, ItemID._1DOSEPRAYERRESTORE, ItemID._2DOSEPRAYERRESTORE, ItemID._3DOSEPRAYERRESTORE, ItemID._4DOSEPRAYERRESTORE);
 		add(superEnergyPot, ItemID._1DOSE2ENERGY, ItemID._2DOSE2ENERGY, ItemID._3DOSE2ENERGY, ItemID._4DOSE2ENERGY);
-		add(superRestorePot, ItemID._1DOSE2RESTORE, ItemID._2DOSE2RESTORE, ItemID._3DOSE2RESTORE, ItemID._4DOSE2RESTORE,
+		add(SUPER_RESTORE_POT, ItemID._1DOSE2RESTORE, ItemID._2DOSE2RESTORE, ItemID._3DOSE2RESTORE, ItemID._4DOSE2RESTORE,
 			ItemID.BLIGHTED_1DOSE2RESTORE, ItemID.BLIGHTED_2DOSE2RESTORE, ItemID.BLIGHTED_3DOSE2RESTORE, ItemID.BLIGHTED_4DOSE2RESTORE,
 			ItemID.BR_4DOSE2RESTORE, ItemID.BR_3DOSE2RESTORE, ItemID.BR_2DOSE2RESTORE, ItemID.BR_1DOSE2RESTORE /* LMS */);
 		add(new SuperRestore(.30, 4), ItemID.SANFEW_SALVE_1_DOSE, ItemID.SANFEW_SALVE_2_DOSE, ItemID.SANFEW_SALVE_3_DOSE, ItemID.SANFEW_SALVE_4_DOSE,
@@ -297,7 +297,7 @@ public class ItemStatChanges
 		add(new MixedPotion(3, energyPot), ItemID.BRUTAL_1DOSE1ENERGY, ItemID.BRUTAL_2DOSE1ENERGY);
 		add(new MixedPotion(6, prayerPot), ItemID.BRUTAL_1DOSEPRAYERRESTORE, ItemID.BRUTAL_2DOSEPRAYERRESTORE);
 		add(new MixedPotion(6, superEnergyPot), ItemID.BRUTAL_1DOSE2ENERGY, ItemID.BRUTAL_2DOSE2ENERGY);
-		add(new MixedPotion(6, superRestorePot), ItemID.BRUTAL_1DOSE2RESTORE, ItemID.BRUTAL_2DOSE2RESTORE);
+		add(new MixedPotion(6, SUPER_RESTORE_POT), ItemID.BRUTAL_1DOSE2RESTORE, ItemID.BRUTAL_2DOSE2RESTORE);
 		add(new MixedPotion(6, staminaPot), ItemID.BRUTAL_1DOSESTAMINA, ItemID.BRUTAL_2DOSESTAMINA);
 
 		// Chambers of Xeric potions (+)
