@@ -60,6 +60,7 @@ public interface Opcodes
 	int GET_VARC_STRING = 49;
 	int SET_VARC_STRING = 50;
 	int SWITCH = 60;
+	int PUSH_NULL = 63;
 	int GET_VARCLANSETTING = 74;
 	int GET_VARCLAN = 76;
 	int CC_CREATE = 100;

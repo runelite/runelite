@@ -68,6 +68,7 @@ public class Instructions implements Opcodes
 		add(GET_VARC_STRING, "get_varc_string");
 		add(SET_VARC_STRING, "set_varc_string");
 		add(SWITCH, "switch");
+		add(PUSH_NULL, "push_null");
 		add(GET_VARCLANSETTING, "get_varclansetting");
 		add(GET_VARCLAN, "get_varclan");
 		add(CC_CREATE, "cc_create");

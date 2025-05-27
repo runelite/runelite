@@ -117,4 +117,6 @@ LABEL84:
    iconst                 0
    return                
    iconst                 -1
+   push_null             
+   pop_string            
    return                
