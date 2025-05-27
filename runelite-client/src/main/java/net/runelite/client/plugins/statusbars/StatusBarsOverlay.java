@@ -292,8 +292,21 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-		BarRenderer left = barRenderers.get(config.leftBarMode());
-		BarRenderer right = barRenderers.get(config.rightBarMode());
+		StatusBarsConfig.BarMode leftBarMode = config.leftBarMode();
+		StatusBarsConfig.BarMode rightBarMode = config.rightBarMode();
+
+		if (leftBarMode == StatusBarsConfig.BarMode.HITPOINTS && config.replaceHpWithWarmth() && plugin.isInWintertodtRegion())
+		{
+			leftBarMode = StatusBarsConfig.BarMode.WARMTH;
+		}
+
+		if (rightBarMode == StatusBarsConfig.BarMode.HITPOINTS && config.replaceHpWithWarmth() && plugin.isInWintertodtRegion())
+		{
+			rightBarMode = StatusBarsConfig.BarMode.WARMTH;
+		}
+
+		BarRenderer left = barRenderers.get(leftBarMode);
+		BarRenderer right = barRenderers.get(rightBarMode);
 
 		if (left != null)
 		{
