@@ -1322,6 +1322,12 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testDorgeshKaanLightOrbs()
+	{
+		testKillCountChatMessage("dorgesh-kaan light orbs", "You replace the orb. Total lights fixed: <col=ff0000>50", 50);
+	}
+
+	@Test
 	public void testReward()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your reward is: <col=ff0000>1</col> x <col=ff0000>Kebab</col>.", null, 0);
