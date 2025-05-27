@@ -333,9 +333,9 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		final String[] stringStack = client.getStringStack();
-		final int stringSize = client.getStringStackSize();
-		kickPlayerName = stringStack[stringSize - 1];
+		final Object[] objectStack = client.getObjectStack();
+		final int objectStackSize = client.getObjectStackSize();
+		kickPlayerName = (String) objectStack[objectStackSize - 1];
 	}
 
 	@Subscribe

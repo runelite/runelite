@@ -98,8 +98,8 @@ public class VirtualLevelsPlugin extends Plugin
 
 		final int[] intStack = client.getIntStack();
 		final int intStackSize = client.getIntStackSize();
-		final String[] stringStack = client.getStringStack();
-		final int stringStackSize = client.getStringStackSize();
+		final Object[] objectStack = client.getObjectStack();;
+		final int objectStackSize = client.getObjectStackSize();
 
 		switch (eventName)
 		{
@@ -127,7 +127,7 @@ public class VirtualLevelsPlugin extends Plugin
 					level += Experience.getLevelForXp(client.getSkillExperience(s));
 				}
 
-				stringStack[stringStackSize - 1] = TOTAL_LEVEL_TEXT_PREFIX + level;
+				objectStack[objectStackSize - 1] = TOTAL_LEVEL_TEXT_PREFIX + level;
 				break;
 		}
 	}

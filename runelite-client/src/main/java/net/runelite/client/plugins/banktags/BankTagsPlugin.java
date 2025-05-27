@@ -325,24 +325,24 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		String eventName = event.getEventName();
 
 		int[] intStack = client.getIntStack();
-		String[] stringStack = client.getStringStack();
+		Object[] objectStack = client.getObjectStack();
 		int intStackSize = client.getIntStackSize();
-		int stringStackSize = client.getStringStackSize();
+		int objectStackSize = client.getObjectStackSize();
 
 		switch (eventName)
 		{
 			case "setSearchBankInputText":
-				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
+				objectStack[objectStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
 			case "setSearchBankInputTextFound":
 			{
 				int matches = intStack[intStackSize - 1];
-				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
+				objectStack[objectStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
 				break;
 			}
 			case "bankSearchFilter":
 				final int itemId = intStack[intStackSize - 1];
-				String searchfilter = stringStack[stringStackSize - 1];
+				String searchfilter = (String) objectStack[objectStackSize - 1];
 
 				BankTag tag = activeBankTag;
 				boolean tagSearch = true;

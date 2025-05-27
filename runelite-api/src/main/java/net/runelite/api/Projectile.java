@@ -41,11 +41,58 @@ public interface Projectile extends Renderable
 	int getId();
 
 	/**
+	 * Get the level the projectile starts on.
+	 *
+	 * @return
+	 */
+	int getSourceLevel();
+
+	/**
+	 * Get the point the projectile starts at.
+	 *
+	 * @return
+	 */
+	LocalPoint getSourcePoint();
+
+	/**
+	 * Get the actor the projectile starts at.
+	 *
+	 * @return
+	 */
+	@Nullable
+	Actor getSourceActor();
+
+	/**
+	 * Get the level the projectile ends on.
+	 * @return
+	 */
+	int getTargetLevel();
+
+	/**
+	 * Get the point the projectile ends at.
+	 *
+	 * @return
+	 */
+	LocalPoint getTargetPoint();
+
+	/**
+	 * Get the actor the projectile ends at.
+	 *
+	 * @return
+	 */
+	@Nullable
+	Actor getTargetActor();
+
+	/**
 	 * Gets the actor that is targeted by this projectile.
 	 *
 	 * @return the target actor, or null if this projectile is an AoE attack
 	 */
-	Actor getInteracting();
+	@Deprecated
+	default Actor getInteracting()
+	{
+		return getTargetActor();
+	}
 
 	/**
 	 * Get the target point of the projectile. For projectiles with an actor target,
@@ -53,28 +100,44 @@ public interface Projectile extends Renderable
 	 *
 	 * @return
 	 */
-	LocalPoint getTarget();
+	@Deprecated
+	default LocalPoint getTarget()
+	{
+		return getTargetPoint();
+	}
 
 	/**
 	 * Gets the original x-axis coordinate that this projectile started from.
 	 *
 	 * @return the original coordinate
 	 */
-	int getX1();
+	@Deprecated
+	default int getX1()
+	{
+		return getSourcePoint().getX();
+	}
 
 	/**
 	 * Gets the original y-axis coordinate that this projectile started from.
 	 *
 	 * @return the original coordinate
 	 */
-	int getY1();
+	@Deprecated
+	default int getY1()
+	{
+		return getSourcePoint().getY();
+	}
 
 	/**
 	 * Gets the plane that the projectile is on.
 	 *
 	 * @return the plane
 	 */
-	int getFloor();
+	@Deprecated
+	default int getFloor()
+	{
+		return getSourceLevel();
+	}
 
 	/**
 	 * Gets the height of the projectile.
@@ -160,32 +223,11 @@ public interface Projectile extends Renderable
 	double getZ();
 
 	/**
-	 * Gets the scalar quantity (speed) at which the projectile is travelling.
+	 * Get the projectile orientation in JAU
 	 *
-	 * @return the scalar quantity
+	 * @return
 	 */
-	double getScalar();
-
-	/**
-	 * Gets the x-axis velocity of the projectile.
-	 *
-	 * @return the x-axis velocity
-	 */
-	double getVelocityX();
-
-	/**
-	 * Gets the y-axis velocity of the projectile.
-	 *
-	 * @return the y-axis velocity
-	 */
-	double getVelocityY();
-
-	/**
-	 * Gets the z-axis velocity of the projectile.
-	 *
-	 * @return the z-axis velocity
-	 */
-	double getVelocityZ();
+	int getOrientation();
 
 	/**
 	 * The animation of the projectile

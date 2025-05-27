@@ -760,10 +760,10 @@ public class GrandExchangePlugin extends Plugin
 			case "geSellExamineText":
 			{
 				boolean buy = "geBuyExamineText".equals(event.getEventName());
-				String[] stack = client.getStringStack();
-				int sz = client.getStringStackSize();
-				String fee = stack[sz - 2];
-				String examine = stack[sz - 3];
+				Object[] stack = client.getObjectStack();
+				int sz = client.getObjectStackSize();
+				String fee = (String) stack[sz - 2];
+				String examine = (String) stack[sz - 3];
 				String text = setExamineText(examine, fee, buy);
 				if (text != null)
 				{
@@ -810,10 +810,10 @@ public class GrandExchangePlugin extends Plugin
 		titleBuilder.append(')');
 
 		// Append to title
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
-		stringStack[stringStackSize - 1] += titleBuilder.toString();
+		objectStack[objectStackSize - 1] += titleBuilder.toString();
 	}
 
 	private void setLimitResetTime(int itemId)

@@ -55,6 +55,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetConfigNode;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.api.worldmap.MapElementConfig;
@@ -897,7 +898,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the widget flags table
 	 */
-	HashTable<IntegerNode> getWidgetFlags();
+	HashTable<WidgetConfigNode> getWidgetFlags();
 
 	/**
 	 * Gets the widget node component table.
@@ -1286,19 +1287,19 @@ public interface Client extends OAuthApi, GameEngine
 	int[] getIntStack();
 
 	/**
-	 * Gets the length of the cs2 vm's string stack
+	 * Gets the length of the cs2 vm's object stack
 	 */
-	int getStringStackSize();
+	int getObjectStackSize();
 
 	/**
-	 * Sets the length of the cs2 vm's string stack
+	 * Sets the length of the cs2 vm's object stack
 	 */
-	void setStringStackSize(int stackSize);
+	void setObjectStackSize(int stackSize);
 
 	/**
-	 * Gets the cs2 vm's string stack
+	 * Gets the cs2 vm's object stack
 	 */
-	String[] getStringStack();
+	Object[] getObjectStack();
 
 	/**
 	 * Get the size of one of the cs2 vm's arrays.
@@ -2009,6 +2010,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets the ambient sound effects
 	 * @return
 	 */
+	@Deprecated
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
 
 	/**
@@ -2317,26 +2319,16 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param targetX target x - if an actor target is supplied should be the target x
 	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
-	 * @see WorldView#createProjectile(int, int, int, int, int, int, int, int, int, int, Actor, int, int)
 	 */
-	@Deprecated
-	default Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
-		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY)
-	{
-		return getTopLevelWorldView().createProjectile(id, plane, startX, startY, startZ, startCycle, endCycle, slope, startHeight, endHeight, target, targetX, targetY);
-	}
+	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
+		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
 
 	/**
 	 * Gets a list of all projectiles currently spawned.
 	 *
 	 * @return all projectiles
-	 * @see WorldView#getProjectiles()
 	 */
-	@Deprecated
-	default Deque<Projectile> getProjectiles()
-	{
-		return getTopLevelWorldView().getProjectiles();
-	}
+	Deque<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.

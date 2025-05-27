@@ -123,7 +123,7 @@ public class TimestampPlugin extends Plugin
 			timestamp = ColorUtil.wrapWithColorTag(timestamp, timestampColour);
 		}
 
-		client.getStringStack()[client.getStringStackSize() - 1] = timestamp;
+		client.getObjectStack()[client.getObjectStackSize() - 1] = timestamp;
 	}
 
 	private Color getTimestampColour()
