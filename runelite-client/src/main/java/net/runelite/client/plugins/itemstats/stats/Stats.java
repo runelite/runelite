@@ -52,4 +52,5 @@ public class Stats
 	public static final Stat HUNTER = new SkillStat(Skill.HUNTER);
 	public static final Stat CONSTRUCTION = new SkillStat(Skill.CONSTRUCTION);
 	public static final Stat RUN_ENERGY = new EnergyStat();
+	public static final Stat WARMTH = new WarmthStat();
 }

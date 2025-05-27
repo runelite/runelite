@@ -389,6 +389,9 @@ public class ItemStatChanges
 		add(boost(STRENGTH, perc(.15, 4)), ItemID.BUTTERFLY_JAR_WARLOCK, ItemID.HUNTER_MIX_WARLOCK_1DOSE, ItemID.HUNTER_MIX_WARLOCK_2DOSE);
 		add(boost(DEFENCE, perc(.15, 4)), ItemID.BUTTERFLY_JAR_GLACIALIS, ItemID.HUNTER_MIX_GLACIALIS_1DOSE, ItemID.HUNTER_MIX_GLACIALIS_2DOSE);
 
+		// Wintertodt
+		add(heal(WARMTH, 30), ItemID.WINT_POTION1, ItemID.WINT_POTION2, ItemID.WINT_POTION3, ItemID.WINT_POTION4);
+
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
 
