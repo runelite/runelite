@@ -444,7 +444,7 @@ LABEL385:
    sstore                 2 ; message timestamp
    sstore                 0 ; message
    sstore                 1 ; message name
-   pop_string               ; message channel
+   pop_object               ; message channel
    iload                  18
    switch                
       3: LABEL388

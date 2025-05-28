@@ -29,7 +29,7 @@ CONFIRM_KICK:
    iconst                 0             ; Modified if we are confirming the kick inside the plugin
    sconst                 "confirmFriendsChatKick"
    runelite_callback     
-   pop_string            ; Pop username
+   pop_object            ; Pop username
    iconst                 0             ; Compare against zero
    if_icmpgt              RETURN       ; Early return for chatbox panel confirmation
    jump                   LABEL7

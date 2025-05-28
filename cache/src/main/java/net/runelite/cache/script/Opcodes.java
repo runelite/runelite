@@ -48,7 +48,7 @@ public interface Opcodes
 	int SSTORE = 36;
 	int JOIN_STRING = 37;
 	int POP_INT = 38;
-	int POP_STRING = 39;
+	int POP_OBJECT = 39;
 	int INVOKE = 40;
 	int GET_VARC_INT = 42;
 	int SET_VARC_INT = 43;

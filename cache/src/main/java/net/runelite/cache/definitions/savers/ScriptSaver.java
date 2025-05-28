@@ -31,7 +31,7 @@ import net.runelite.cache.io.OutputStream;
 import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
-import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.POP_OBJECT;
 import static net.runelite.cache.script.Opcodes.RETURN;
 
 public class ScriptSaver
@@ -56,7 +56,7 @@ public class ScriptSaver
 					break;
 				case RETURN:
 				case POP_INT:
-				case POP_STRING:
+				case POP_OBJECT:
 				case PUSH_NULL:
 					out.writeByte(intOperands[i]);
 					break;

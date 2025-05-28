@@ -1094,7 +1094,7 @@ LABEL877:
    set_varc_string        335
    jump                   LABEL883          ; jump over SKIPSETVARC
 SKIPSETVARC:
-   pop_string            ; pop message
+   pop_object            ; pop message
 LABEL883:
    invoke                 223
    return                

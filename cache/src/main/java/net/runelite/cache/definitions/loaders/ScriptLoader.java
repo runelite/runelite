@@ -31,7 +31,7 @@ import net.runelite.cache.io.InputStream;
 import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
-import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.POP_OBJECT;
 import static net.runelite.cache.script.Opcodes.RETURN;
 
 public class ScriptLoader
@@ -102,7 +102,7 @@ public class ScriptLoader
 					break;
 				case RETURN:
 				case POP_INT:
-				case POP_STRING:
+				case POP_OBJECT:
 				case PUSH_NULL:
 					intOperands[i] = in.readUnsignedByte();
 					break;

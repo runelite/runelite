@@ -64,8 +64,8 @@ LABEL44:
    sconst                 "geSellExamineText"
    runelite_callback     
    sstore                 2 ; final text
-   pop_string               ; Convenience fee
-   pop_string               ; examine
+   pop_object               ; Convenience fee
+   pop_object               ; examine
 
    iload                  0
    if_getx               
@@ -185,8 +185,8 @@ LABEL149:
    sconst                 "geBuyExamineText"
    runelite_callback     
    sstore                 2 ; final text
-   pop_string               ; ""
-   pop_string               ; examine
+   pop_object               ; ""
+   pop_object               ; examine
 
    iconst                 1
    iload                  1

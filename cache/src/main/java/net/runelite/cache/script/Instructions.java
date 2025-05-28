@@ -56,7 +56,7 @@ public class Instructions implements Opcodes
 		add(SSTORE, "sstore");
 		add(JOIN_STRING, "join_string");
 		add(POP_INT, "pop_int");
-		add(POP_STRING, "pop_string");
+		add(POP_OBJECT, "pop_object");
 		add(INVOKE, "invoke");
 		add(GET_VARC_INT, "get_varc_int");
 		add(SET_VARC_INT, "set_varc_int");

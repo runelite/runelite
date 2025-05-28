@@ -8,7 +8,7 @@
    sconst                 "bankSearchFilter" ; push event name
    runelite_callback                         ; invoke callback
    pop_int                                   ; pop item id
-   pop_string                                ; pop search string
+   pop_object                                ; pop search string
    istore                 1                  ; store return value
    iload                  1                  ; continue if it is still -1
    iconst                 -1
