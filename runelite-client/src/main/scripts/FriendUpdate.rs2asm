@@ -74,9 +74,9 @@
    iconst                 0
    istore                 10
    sconst                 ""
-   sstore                 0
+   ostore                 0
    sconst                 ""
-   sstore                 1
+   ostore                 1
    iconst                 0
    istore                 11
    iconst                 0
@@ -291,8 +291,8 @@ LABEL234:
 LABEL238:
    iload                  9
    friend_getname        
-   sstore                 1
-   sstore                 0
+   ostore                 1
+   ostore                 0
    iload                  5
    iconst                 4
    iload                  10
@@ -302,7 +302,7 @@ LABEL238:
    iconst                 1
    add                   
    istore                 10
-   sload                  0
+   oload                  0
    sconst                 "friendsChatSetText"
    runelite_callback     
    cc_settext            
@@ -327,7 +327,7 @@ LABEL238:
    iconst                 1
    cc_settextshadow      
    sconst                 "<col=ff9040>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            3
    cc_setopbase          
@@ -390,7 +390,7 @@ LABEL313:
    iconst                 0
    iconst                 0
    cc_setsize             1
-   sload                  0
+   oload                  0
    iconst                 190
    iconst                 495
    parawidth             
@@ -412,7 +412,7 @@ LABEL313:
    cc_setgraphic          1
    iconst                 3355443
    cc_setgraphicshadow    1
-   sload                  1
+   oload                  1
    string_length         
    iconst                 0
    if_icmpgt              LABEL355
@@ -432,8 +432,8 @@ LABEL359:
    iconst                 -2147483645
    cc_getid              
    cc_getid               1
-   sload                  1
-   sload                  0
+   oload                  1
+   oload                  0
    iload                  11
    sconst                 "isIiissi"
    cc_setonop            
@@ -441,14 +441,14 @@ LABEL359:
 LABEL374:
    sconst                 "Previous name:"
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            3
-   sstore                 1
+   ostore                 1
    iconst                 526
    iconst                 -2147483645
    iconst                 -2147483643
    iload                  8
-   sload                  1
+   oload                  1
    iconst                 25
    iconst                 190
    sconst                 "IiIsii"

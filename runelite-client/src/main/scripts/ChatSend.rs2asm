@@ -14,7 +14,7 @@ LABEL8:
    chat_playername       
    sconst                 ": "
    sconst                 "<col=2020ef>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            5
    mes                   
@@ -23,7 +23,7 @@ LABEL16:
    chat_playername       
    sconst                 ": "
    sconst                 "<col=0000ff>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            5
    mes                   
@@ -124,7 +124,7 @@ LABEL95:
    istore                 1
    istore                 0
 LABEL99:
-   sload                  0              ; load input
+   oload                  0              ; load input
    iload                  0              ; load chat type
    iload                  1              ; load clan target
    sconst                 "chatboxInput" ; event name
@@ -137,58 +137,58 @@ LABEL99:
    return                
 CONTINUE:
    sconst                 ""
-   sstore                 1
+   ostore                 1
    iload                  0
    switch                
       3: LABEL104
       4: LABEL104
    jump                   LABEL154
 LABEL104:
-   sload                  0
+   oload                  0
    invoke                 5501
    iconst                 1
    if_icmpeq              LABEL109
    jump                   LABEL113
 LABEL109:
-   sload                  0
+   oload                  0
    invoke                 632
-   sstore                 0
-   sstore                 1
+   ostore                 0
+   ostore                 1
 LABEL113:
    iload                  1
    iconst                 1
    if_icmpeq              LABEL117
    jump                   LABEL143
 LABEL117:
-   sload                  0
+   oload                  0
    iconst                 0
    iconst                 1
    substring             
    4122                  
-   sload                  0
+   oload                  0
    iconst                 1
-   sload                  0
+   oload                  0
    string_length         
    substring             
    append                
-   sstore                 0
+   ostore                 0
    sconst                 "|"
-   sload                  0
+   oload                  0
    append                
-   sstore                 0
-   sload                  0
+   ostore                 0
+   oload                  0
    string_length         
    iconst                 80
    if_icmpgt              LABEL138
    jump                   LABEL143
 LABEL138:
-   sload                  0
+   oload                  0
    iconst                 0
    iconst                 80
    substring             
-   sstore                 0
+   ostore                 0
 LABEL143:
-   sload                  0
+   oload                  0
    string_length         
    iconst                 0
    if_icmple              LABEL148
@@ -196,7 +196,7 @@ LABEL143:
 LABEL148:
    return                
 LABEL149:
-   sload                  0
+   oload                  0
    iload                  0
    iload                  1
    chat_sendclan         
@@ -207,13 +207,13 @@ LABEL154:
    if_icmpeq              LABEL158
    jump                   LABEL176
 LABEL158:
-   sload                  0
+   oload                  0
    string_length         
    iconst                 0
    if_icmpgt              LABEL163
    jump                   LABEL176
 LABEL163:
-   sload                  0
+   oload                  0
    iconst                 0
    iconst                 1
    substring             
@@ -224,11 +224,11 @@ LABEL163:
    jump                   LABEL176
 LABEL172:
    sconst                 "/"
-   sload                  0
+   oload                  0
    append                
-   sstore                 0
+   ostore                 0
 LABEL176:
-   sload                  0
+   oload                  0
    string_length         
    iconst                 0
    if_icmple              LABEL181
@@ -236,7 +236,7 @@ LABEL176:
 LABEL181:
    return                
 LABEL182:
-   sload                  0
+   oload                  0
    iload                  0
    chat_sendpublic       
 LABEL185:

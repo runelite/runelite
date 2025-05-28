@@ -52,8 +52,8 @@ public class Instructions implements Opcodes
 		add(IF_ICMPGE, "if_icmpge");
 		add(ILOAD, "iload");
 		add(ISTORE, "istore");
-		add(SLOAD, "sload");
-		add(SSTORE, "sstore");
+		add(OLOAD, "oload");
+		add(OSTORE, "ostore");
 		add(JOIN_STRING, "join_string");
 		add(POP_INT, "pop_int");
 		add(POP_OBJECT, "pop_object");

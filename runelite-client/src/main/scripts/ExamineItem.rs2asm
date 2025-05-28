@@ -29,7 +29,7 @@ LABEL4:
    ;invoke                 6005
    jump                   LABEL34
 LABEL23:
-   sload                  0
+   oload                  0
    iconst                 27 ; ITEM_EXAMINE
    sconst                 "mes"
    runelite_callback

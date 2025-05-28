@@ -38,9 +38,9 @@
    iconst                 0
    istore                 8
    sconst                 ""
-   sstore                 0
+   ostore                 0
    sconst                 ""
-   sstore                 1
+   ostore                 1
    iconst                 0
    istore                 9
    iconst                 15
@@ -144,8 +144,8 @@ LABEL113:
 LABEL117:
    iload                  7
    ignore_getname        
-   sstore                 1
-   sstore                 0
+   ostore                 1
+   ostore                 0
    iload                  3
    iconst                 4
    iload                  8
@@ -155,7 +155,7 @@ LABEL117:
    iconst                 1
    add                   
    istore                 8
-   sload                  0
+   oload                  0
    sconst                 "friendsChatSetText"
    runelite_callback     
    cc_settext            
@@ -180,7 +180,7 @@ LABEL117:
    iconst                 1
    cc_settextshadow      
    sconst                 "<col=ff9040>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            3
    cc_setopbase          
@@ -201,7 +201,7 @@ LABEL117:
    iconst                 0
    iconst                 0
    cc_setsize             1
-   sload                  0
+   oload                  0
    iconst                 190
    iconst                 495
    parawidth             
@@ -223,7 +223,7 @@ LABEL117:
    cc_setgraphic          1
    iconst                 3355443
    cc_setgraphicshadow    1
-   sload                  1
+   oload                  1
    string_length         
    iconst                 0
    if_icmpgt              LABEL199
@@ -243,22 +243,22 @@ LABEL203:
    iconst                 -2147483645
    cc_getid              
    cc_getid               1
-   sload                  1
-   sload                  0
+   oload                  1
+   oload                  0
    sconst                 "isIiiss"
    cc_setonop            
    jump                   LABEL245
 LABEL217:
    sconst                 "Previous name:"
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            3
-   sstore                 1
+   ostore                 1
    iconst                 526
    iconst                 -2147483645
    iconst                 -2147483643
    iload                  6
-   sload                  1
+   oload                  1
    iconst                 25
    iconst                 190
    sconst                 "IiIsii"

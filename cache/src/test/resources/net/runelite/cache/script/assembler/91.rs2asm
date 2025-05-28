@@ -17,7 +17,7 @@ LABEL7:
    iconst                 0
    return                
 LABEL9:
-   sload                  0
+   oload                  0
    removetags            
    ignore_test           
    iconst                 1
@@ -39,7 +39,7 @@ LABEL24:
    iconst                 0
    return                
 LABEL26:
-   sload                  0
+   oload                  0
    removetags            
    ignore_test           
    iconst                 1
@@ -62,7 +62,7 @@ LABEL40:
    if_icmpeq              LABEL44
    jump                   LABEL51
 LABEL44:
-   sload                  0
+   oload                  0
    friend_test           
    iconst                 1
    if_icmpeq              LABEL49

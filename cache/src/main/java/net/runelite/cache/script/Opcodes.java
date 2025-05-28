@@ -44,8 +44,8 @@ public interface Opcodes
 	int IF_ICMPGE = 32;
 	int ILOAD = 33;
 	int ISTORE = 34;
-	int SLOAD = 35;
-	int SSTORE = 36;
+	int OLOAD = 35;
+	int OSTORE = 36;
 	int JOIN_STRING = 37;
 	int POP_INT = 38;
 	int POP_OBJECT = 39;

@@ -20,12 +20,12 @@ LABEL7:
    iconst                 0
    iconst                 -1
    invoke                 5517
-   sload                  0
+   oload                  0
    clan_kickuser         
 RETURN:
    return                
 CONFIRM_KICK:
-   sload                  0             ; Username we are trying to kick
+   oload                  0             ; Username we are trying to kick
    iconst                 0             ; Modified if we are confirming the kick inside the plugin
    sconst                 "confirmFriendsChatKick"
    runelite_callback     

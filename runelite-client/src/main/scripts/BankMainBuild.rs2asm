@@ -347,7 +347,7 @@ LABEL277:
    iconst                 0
    istore                 31
    sconst                 ""
-   sstore                 0
+   ostore                 0
    iconst                 0                  ;
    sconst                 "bankBuildTab"     ;
    runelite_callback                         ;
@@ -788,8 +788,8 @@ LABEL713:
 GET_INPUT_TEXT:                          ;
    get_varc_string        359            ;
    lowercase                             ; instead get the var directly and lowercase it
-   sstore                 0
-   sload                  0
+   ostore                 0
+   oload                  0
    string_length         
    iconst                 0
    if_icmpgt              LABEL720
@@ -797,7 +797,7 @@ GET_INPUT_TEXT:                          ;
 LABEL720:
    sconst                 "Showing items: "
    sconst                 "<col=ff0000>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            4
    iload                  5

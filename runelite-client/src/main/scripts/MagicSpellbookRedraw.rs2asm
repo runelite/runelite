@@ -33,11 +33,11 @@ LABEL10:
    iconst                 0
    iload                  4
    if_sethide            
-   sload                  0
+   oload                  0
    iconst                 190
    iconst                 494
    parawidth             
-   sload                  1
+   oload                  1
    iconst                 190
    iconst                 494
    parawidth             
@@ -109,8 +109,8 @@ LABEL80:
    iload                  8
    iload                  9
    iload                  2
-   sload                  0
-   sload                  1
+   oload                  0
+   oload                  1
    invoke                 2603
    jump                   LABEL147
 LABEL109:
@@ -135,7 +135,7 @@ LABEL109:
    iconst                 0
    iload                  4
    if_sethide            
-   sload                  1
+   oload                  1
    iconst                 190
    iconst                 494
    parawidth             

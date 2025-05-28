@@ -247,7 +247,7 @@ class ScriptWriter extends rs2asmBaseListener
 				int op = iops.get(i);
 				maxIntVars = Math.max(maxIntVars, op + 1);
 			}
-			else if (opcode == Opcodes.SLOAD || opcode == Opcodes.SSTORE)
+			else if (opcode == Opcodes.OLOAD || opcode == Opcodes.OSTORE)
 			{
 				int op = iops.get(i);
 				maxObjVars = Math.max(maxObjVars, op + 1);

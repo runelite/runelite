@@ -13,7 +13,7 @@ LABEL7:
    iconst                 -1
    istore                 0
    sconst                 ""
-   sstore                 0
+   ostore                 0
    get_varc_string_old    22
    string_length         
    istore                 1
@@ -201,13 +201,13 @@ LABEL146:
    iconst                 0
    iconst                 9
    substring             
-   sstore                 0
+   ostore                 0
    jump                   LABEL154
 LABEL152:
    get_varc_string_old    22
-   sstore                 0
+   ostore                 0
 LABEL154:
-   sload                  0
+   oload                  0
    lowercase             
    chat_setmessagefilter 
    invoke                 553

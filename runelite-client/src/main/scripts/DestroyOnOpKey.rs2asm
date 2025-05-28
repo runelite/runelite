@@ -9,7 +9,7 @@
    if_icmpne              LABEL7
    jump                   LABEL74
 LABEL7:
-   sload                  1
+   oload                  1
    iload                  1
    string_indexof_char   
    iconst                 -1
@@ -70,9 +70,9 @@ LABEL38:
    if_setonkey           
    iconst                 1652
    iload                  2
-   sload                  0
+   oload                  0
    iload                  3
-   sload                  1
+   oload                  1
    clientclock           
    iconst                 40
    add                   

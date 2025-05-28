@@ -26,7 +26,7 @@
 .obj_arg_count      2
 
 ; Send a private message
-   sload                  0
-   sload                  1
+   oload                  0
+   oload                  1
    chat_sendprivate      
    return                

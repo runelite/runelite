@@ -231,9 +231,9 @@ public class Disassembler
 		{
 			case Opcodes.ICONST:
 			case Opcodes.ILOAD:
-			case Opcodes.SLOAD:
+			case Opcodes.OLOAD:
 			case Opcodes.ISTORE:
-			case Opcodes.SSTORE:
+			case Opcodes.OSTORE:
 				return true;
 		}
 

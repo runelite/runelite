@@ -27,15 +27,15 @@
    stat_xp               
    istore                 5
    sconst                 ","
-   sstore                 1
-   sload                  0
+   ostore                 1
+   oload                  0
    sconst                 " XP:"
    join_string            2
-   sstore                 2
+   ostore                 2
    iload                  5
-   sload                  1
+   oload                  1
    invoke                 46
-   sstore                 3
+   ostore                 3
    iconst                 0
    istore                 6
    get_varbit             4181
@@ -58,32 +58,32 @@ LABEL39:
    add                   
    enum                  
    istore                 6
-   sload                  2
+   oload                  2
    sconst                 "|Next level at:|Remaining XP:"
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    iload                  6
-   sload                  1
+   oload                  1
    invoke                 46
    sconst                 "|"
    iload                  6
    iload                  5
    sub                   
-   sload                  1
+   oload                  1
    invoke                 46
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
 LABEL65:
    jump                   LABEL84
 LABEL66:
-   sload                  2
+   oload                  2
    sconst                 "|Next level at:"
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    iconst                 105
    iconst                 105
@@ -92,11 +92,11 @@ LABEL66:
    iconst                 1
    add                   
    enum                  
-   sload                  1
+   oload                  1
    invoke                 46
    join_string            2
    append                
-   sstore                 3
+   ostore                 3
 LABEL84:
    iconst                 1736
    invoke                 3697
@@ -104,21 +104,21 @@ LABEL84:
    if_icmpeq              LABEL89
    jump                   LABEL104
 LABEL89:
-   sload                  2
+   oload                  2
    sconst                 "|"
    invoke                 7699
    join_string            2
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    iload                  0
    invoke                 7698
-   sload                  1
+   oload                  1
    invoke                 46
    join_string            2
    append                
-   sstore                 3
+   ostore                 3
 LABEL104:
    iconst                 0
    istore                 7
@@ -150,7 +150,7 @@ LABEL123:
    if_icmpgt              LABEL131
    jump                   LABEL157
 LABEL131:
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -159,8 +159,8 @@ LABEL131:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -168,12 +168,12 @@ LABEL131:
    iload                  7
    iload                  5
    sub                   
-   sload                  1
+   oload                  1
    invoke                 46
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
    iconst                 1
    istore                 8
 LABEL157:
@@ -204,7 +204,7 @@ LABEL168:
    if_icmpgt              LABEL175
    jump                   LABEL198
 LABEL175:
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -213,24 +213,24 @@ LABEL175:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
    invoke                 6850
    iload                  10
-   sload                  1
+   oload                  1
    invoke                 46
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
    jump                   LABEL220
 LABEL198:
    iconst                 1
    istore                 9
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -239,8 +239,8 @@ LABEL198:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -249,7 +249,7 @@ LABEL198:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
 LABEL220:
    jump                   LABEL326
 LABEL221:
@@ -261,7 +261,7 @@ LABEL221:
    if_icmpgt              LABEL228
    jump                   LABEL251
 LABEL228:
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -270,24 +270,24 @@ LABEL228:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
    invoke                 6850
    iload                  10
-   sload                  1
+   oload                  1
    invoke                 46
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
    jump                   LABEL273
 LABEL251:
    iconst                 1
    istore                 9
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -296,8 +296,8 @@ LABEL251:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -306,7 +306,7 @@ LABEL251:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
 LABEL273:
    jump                   LABEL326
 LABEL274:
@@ -318,7 +318,7 @@ LABEL274:
    if_icmpgt              LABEL281
    jump                   LABEL304
 LABEL281:
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -327,24 +327,24 @@ LABEL281:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
    invoke                 6850
    iload                  10
-   sload                  1
+   oload                  1
    invoke                 46
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
    jump                   LABEL326
 LABEL304:
    iconst                 1
    istore                 9
-   sload                  2
+   oload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -353,8 +353,8 @@ LABEL304:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 2
-   sload                  3
+   ostore                 2
+   oload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
    sconst                 "<col=ef1020>"
@@ -363,7 +363,7 @@ LABEL304:
    sconst                 "</col>"
    join_string            4
    append                
-   sstore                 3
+   ostore                 3
 LABEL326:
    iload                  1
    iconst                 5
@@ -433,16 +433,16 @@ LABEL378:
    jump                   LABEL393
 LABEL382:
    sconst                 "<col=ff0000>"
-   sload                  0
+   oload                  0
    sconst                 ":"
    sconst                 "</col>"
    join_string            4
-   sstore                 2
+   ostore                 2
    sconst                 "<col=ff0000>"
    sconst                 "Members Only"
    sconst                 "</col>"
    join_string            3
-   sstore                 3
+   ostore                 3
 LABEL393:
    invoke                 1972
    iconst                 1
@@ -454,8 +454,8 @@ LABEL397:
    iconst                 -2147483645
    iconst                 -1
    iload                  2
-   sload                  2
-   sload                  3
+   oload                  2
+   oload                  3
    iconst                 495
    sconst                 "iIiIssf"
    iload                  1
@@ -473,8 +473,8 @@ LABEL416:
    iload                  1
    iconst                 -1
    iload                  2
-   sload                  2
-   sload                  3
+   oload                  2
+   oload                  3
    iconst                 495
    invoke                 2344
 LABEL423:
@@ -484,8 +484,8 @@ LABEL424:
    iconst                 -2147483645
    iconst                 -1
    iload                  2
-   sload                  2
-   sload                  3
+   oload                  2
+   oload                  3
    iconst                 495
    iconst                 25
    iconst                 5
