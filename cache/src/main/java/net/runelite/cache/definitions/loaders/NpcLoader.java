@@ -63,7 +63,17 @@ public class NpcLoader
 			this.decodeValues(opcode, def, is);
 		}
 
+		post(def);
+
 		return def;
+	}
+
+	private void post(NpcDefinition def)
+	{
+		if (def.footprintSize == -1)
+		{
+			def.footprintSize = (int) (0.4F * (float) (def.size * 128));
+		}
 	}
 
 	private void decodeValues(int opcode, NpcDefinition def, InputStream stream)
@@ -359,6 +369,10 @@ public class NpcLoader
 		else if (opcode == 124)
 		{
 			def.height = stream.readUnsignedShort();
+		}
+		else if (opcode == 126)
+		{
+			def.footprintSize = stream.readUnsignedShort();
 		}
 		else if (opcode == 249)
 		{
