@@ -120,6 +120,7 @@ public interface StatusBarsConfig extends Config
 		return BarRenderer.DEFAULT_WIDTH;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "poisonedColor",
 		name = "Poisoned color",
@@ -130,6 +131,7 @@ public interface StatusBarsConfig extends Config
 		return new Color(0, 145, 0, 150);
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "venomedColor",
 		name = "Venomed color",
@@ -140,6 +142,7 @@ public interface StatusBarsConfig extends Config
 		return new Color(0, 65, 0, 150);
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "diseaseColor",
 		name = "Disease color",
@@ -150,6 +153,7 @@ public interface StatusBarsConfig extends Config
 		return new Color(255, 193, 75, 181);
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "parasiteColor",
 		name = "Parasite color",
