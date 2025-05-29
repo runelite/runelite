@@ -124,7 +124,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "poisonedColor",
 		name = "Poisoned color",
-		description = "Changes the color of the hitpoints bar when poisoned.",
+		description = "Changes the color of the hitpoints bar when poisoned."
 	)
 	default Color poisonedColor()
 	{
@@ -135,7 +135,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "venomedColor",
 		name = "Venomed color",
-		description = "Changes the color of the hitpoints bar when venomed.",
+		description = "Changes the color of the hitpoints bar when venomed."
 	)
 	default Color venomedColor()
 	{
@@ -146,7 +146,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "diseaseColor",
 		name = "Disease color",
-		description = "Changes the color of the hitpoints bar when diseased.",
+		description = "Changes the color of the hitpoints bar when diseased."
 	)
 	default Color diseaseColor()
 	{
@@ -157,7 +157,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "parasiteColor",
 		name = "Parasite color",
-		description = "Changes the color of the hitpoints bar when infected with parasites.",
+		description = "Changes the color of the hitpoints bar when infected with parasites."
 	)
 	default Color parasiteColor()
 	{
