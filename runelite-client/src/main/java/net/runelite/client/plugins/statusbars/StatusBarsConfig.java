@@ -119,4 +119,44 @@ public interface StatusBarsConfig extends Config
 	{
 		return BarRenderer.DEFAULT_WIDTH;
 	}
+
+	@ConfigItem(
+		keyName = "poisonedColor",
+		name = "Poisoned color",
+		description = "Changes the color of the hitpoints bar when poisoned.",
+	)
+	default Color poisonedColor()
+	{
+		return new Color(0, 145, 0, 150);
+	}
+
+	@ConfigItem(
+		keyName = "venomedColor",
+		name = "Venomed color",
+		description = "Changes the color of the hitpoints bar when venomed.",
+	)
+	default Color venomedColor()
+	{
+		return new Color(0, 65, 0, 150);
+	}
+
+	@ConfigItem(
+		keyName = "diseaseColor",
+		name = "Disease color",
+		description = "Changes the color of the hitpoints bar when diseased.",
+	)
+	default Color diseaseColor()
+	{
+		return new Color(255, 193, 75, 181);
+	}
+
+	@ConfigItem(
+		keyName = "parasiteColor",
+		name = "Parasite color",
+		description = "Changes the color of the hitpoints bar when infected with parasites.",
+	)
+	default Color parasiteColor()
+	{
+		return new Color(196, 62, 109, 181);
+	}
 }
