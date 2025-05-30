@@ -98,6 +98,10 @@ enum Emoji
 	COW("3:O"),
 	HANDSHAKE("(=)"),
 	RABBIT("=:3"),
+	MIRROR("<lt>|<gt>"), // <|>
+	GOAT("3:V"),
+	SKULL("(x_x)"),
+	LION("(:3=)"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
