@@ -624,7 +624,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	private Consumer<MenuEntry> objectConsumer(ObjectComposition composition, String[] actions, int menuIdx,
-		MenuAction menuAction, boolean shift)
+			MenuAction menuAction, boolean shift)
 	{
 		return e ->
 		{
@@ -816,7 +816,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	private Consumer<MenuEntry> npcConsumer(NPCComposition composition, String[] actions, int menuIdx,
-		MenuAction menuAction, boolean shift)
+			MenuAction menuAction, boolean shift)
 	{
 		return e ->
 		{
@@ -2078,6 +2078,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (--delta == 1)
 			{
 				return 8;
+			}
+			// Placeholder, only works if configure charges is off
+			if (--delta == 1 && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 0)
+			{
+				return 9;
 			}
 		}
 		return ident;
