@@ -36,6 +36,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Singular;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
@@ -58,6 +59,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @Slf4j
+@ToString
 public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	static final List<CrypticClue> CLUES = ImmutableList.of(

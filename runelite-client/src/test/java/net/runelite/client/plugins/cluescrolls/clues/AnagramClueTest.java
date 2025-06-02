@@ -24,7 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertArrayEquals;
@@ -57,6 +60,24 @@ public class AnagramClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(AnagramClue.forText(plugin, ""));
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<AnagramClue> cluesWithIds = AnagramClue.CLUES.stream()
+			.filter((clue) ->
+			{
+				final int clueId = clue.getItemId();
+				return clueId != -1 && clueId != ItemID.TRAIL_CLUE_MASTER && clueId != ItemID.TRAIL_CLUE_BEGINNER;
+			})
+			.collect(Collectors.toUnmodifiableSet());
+		final Set<Integer> clueIds = cluesWithIds.stream()
+			.mapToInt(AnagramClue::getItemId)
+			.boxed()
+			.collect(Collectors.toSet());
+
+		assertEquals(cluesWithIds.size(), clueIds.size());
 	}
 
 	@Test

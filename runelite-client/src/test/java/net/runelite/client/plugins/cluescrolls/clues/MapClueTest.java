@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2025, Jordan Atwood <nightfirecat@nightfirec.at>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,62 +26,19 @@ package net.runelite.client.plugins.cluescrolls.clues;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-import net.runelite.api.Client;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import static org.mockito.Mockito.when;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CipherClueTest
+public class MapClueTest
 {
-	@Mock
-	private ClueScrollPlugin plugin;
-
-	@Mock
-	private Client client;
-
-	@Test
-	public void forTextEmptyString()
-	{
-		assertNull(CipherClue.forText(""));
-	}
-
 	@Test
 	public void uniqueIds()
 	{
-		final Set<Integer> clueIds = CipherClue.CLUES.stream()
-			.mapToInt(CipherClue::getItemId)
+		final Set<Integer> clueIds = MapClue.CLUES.stream()
+			.mapToInt(MapClue::getItemId)
 			.boxed()
 			.collect(Collectors.toUnmodifiableSet());
 
-		assertEquals(CipherClue.CLUES.size(), clueIds.size());
-	}
-
-	@Test
-	public void defaultNpcValue()
-	{
-		CipherClue clue = CipherClue.forText("The cipher reveals who to speak to next: ESBZOPS QJH QFO");
-		assert clue != null;
-
-		assertEquals(-1, clue.getNpc());
-	}
-
-	@Test
-	public void elunedLocation()
-	{
-		when(plugin.getClient()).thenReturn(client);
-		when(client.getIntStack()).thenReturn(new int[]{1}, new int[]{0}, new int[]{2}); // NOT_STARTED, IN_PROGRESS, FINISHED
-
-		CipherClue clue = CipherClue.forText("The cipher reveals who to speak to next: OVEXON");
-		assert clue != null;
-
-		assertEquals("Outside Lletya", clue.getArea(plugin));
-		assertEquals("Outside Lletya", clue.getArea(plugin));
-		assertEquals("Prifddinas", clue.getArea(plugin));
+		assertEquals(MapClue.CLUES.size(), clueIds.size());
 	}
 }

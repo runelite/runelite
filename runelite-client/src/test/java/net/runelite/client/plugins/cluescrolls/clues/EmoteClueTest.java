@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.api.Item;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
@@ -41,6 +43,24 @@ public class EmoteClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(EmoteClue.forText(""));
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<EmoteClue> cluesWithIds = EmoteClue.CLUES.stream()
+			.filter((clue) ->
+			{
+				final int itemId = clue.getItemId();
+				return itemId != ItemID.TRAIL_CLUE_MASTER && itemId != ItemID.TRAIL_CLUE_BEGINNER;
+			})
+			.collect(Collectors.toUnmodifiableSet());
+		final Set<Integer> clueIds = cluesWithIds.stream()
+			.mapToInt(EmoteClue::getItemId)
+			.boxed()
+			.collect(Collectors.toUnmodifiableSet());
+
+		assertEquals(cluesWithIds.size(), clueIds.size());
 	}
 
 	@Test
