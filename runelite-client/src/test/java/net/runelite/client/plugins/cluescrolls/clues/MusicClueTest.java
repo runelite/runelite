@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
@@ -33,5 +36,16 @@ public class MusicClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(MusicClue.forText(""));
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<Integer> clueIds = MusicClue.CLUES.stream()
+			.mapToInt(MusicClue::getItemId)
+			.boxed()
+			.collect(Collectors.toUnmodifiableSet());
+
+		assertEquals(MusicClue.CLUES.size(), clueIds.size());
 	}
 }
