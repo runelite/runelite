@@ -1655,7 +1655,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Ellis is tanner just north of Al Kharid bank.")
 			.build(),
 		CrypticClue.builder()
-			.itemId(ItemID.TRAIL_CLUE_EASY_VAGUE010)
+			.itemId(ItemID.TRAIL_CLUE_EASY_VAGUE009)
 			.text("Search the chests in the Dwarven Mine.")
 			.location(new WorldPoint(3000, 9798, 0))
 			.objectId(ObjectID.CHESTCLOSED)
