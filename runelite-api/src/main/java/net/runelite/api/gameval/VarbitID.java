@@ -11062,6 +11062,8 @@ public final class VarbitID
 	public static final int LEAGUE_TASK_USE_A_PRAYER_ALTAR_TO_RESTORE_90_PRAYER_IN_PRIFDDINAS = 16544;
 	public static final int LEAGUE_TASK_DISMANTLE_A_ZULRAH_SCALE_UNIQUE = 16545;
 	public static final int LEAGUE_TASK_OBTAIN_A_MAGIC_SEED_FROM_A_BIRDS_NEST = 16546;
+	public static final int YAMA_TRANSITION_DAMAGE_TAKEN = 16549;
+	public static final int YAMA_TRANSITION_PHASE = 16550;
 	public static final int LEAGUE_TASK_EQUIP_A_WIZARD_ROBE_AND_HAT = 16554;
 	public static final int LEAGUE_TASK_EQUIP_A_PIECE_OF_A_MYSTIC_SET = 16555;
 	public static final int LEAGUE_TASK_STEAL_A_GOLOVANOVA_FRUIT_TOP = 16568;

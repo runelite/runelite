@@ -79328,6 +79328,11 @@ public final class ItemID
 	 */
 	public static final int YAMAPET = 30888;
 
+	/**
+	 * Rotten turnip
+	 */
+	public static final int PLUGIN_DEV_WORLD_TOOL = 30890;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
