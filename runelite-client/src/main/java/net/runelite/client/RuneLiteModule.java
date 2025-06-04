@@ -198,6 +198,17 @@ public class RuneLiteModule extends AbstractModule
 				{
 					throw new IOException("Blocking network calls are not allowed on the event dispatch thread");
 				}
+				if (client.getEnvironment() != 0)
+				{
+					HttpUrl url = chain.request().url();
+					for (String domain : RuneLiteProperties.getJagexBlockedDomains())
+					{
+						if (url.host().endsWith(domain))
+						{
+							throw new IOException("Network call to " + url + " blocked ourside of LIVE environment");
+						}
+					}
+				}
 				return chain.proceed(chain.request());
 			})
 			.build();

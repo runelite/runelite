@@ -388,6 +388,11 @@ public class GrandExchangePlugin extends Plugin
 	@VisibleForTesting
 	void submitTrade(int slot, GrandExchangeOffer offer)
 	{
+		if (client.getEnvironment() != 0)
+		{
+			return;
+		}
+
 		GrandExchangeOfferState state = offer.getState();
 
 		if (state != GrandExchangeOfferState.CANCELLED_BUY && state != GrandExchangeOfferState.CANCELLED_SELL && state != GrandExchangeOfferState.BUYING && state != GrandExchangeOfferState.SELLING)
