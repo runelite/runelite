@@ -298,6 +298,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_FISH_ONSPOT_PEARL_BRUT:
 			case AnimationID.HUMAN_FISHING_CASTING_PEARL_OILY:
 			case AnimationID.HUMAN_FISHING_ONSPOT_BRUT:
+			case AnimationID.BRUT_HUMAN_KNIFEUSE:
 			/* Mining(Normal) */
 			case AnimationID.HUMAN_MINING_BRONZE_PICKAXE:
 			case AnimationID.HUMAN_MINING_IRON_PICKAXE:
