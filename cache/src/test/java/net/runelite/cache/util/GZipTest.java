@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.zip.Deflater;
+import static org.junit.Assert.assertArrayEquals;
+import org.junit.Test;
 
-public class GZip
+public class GZipTest
 {
-	public static byte[] compress(byte[] bytes) throws IOException
+	private static final int GZIP_MAGIC = 0x8b1f;
+
+	@Test
+	public void testCompress() throws IOException
 	{
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-
-		try (InputStream is = new ByteArrayInputStream(bytes);
-			OutputStream os = new GZIPOutputStream(bout))
-		{
-			is.transferTo(os);
-		}
-
-		byte[] out = bout.toByteArray();
-		out[9] = 0; // JDK-8244706: set OS to 0
-		return out;
-	}
-
-	public static byte[] decompress(byte[] bytes, int len) throws IOException
-	{
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes, 0, len)))
-		{
-			is.transferTo(os);
-		}
-
-		return os.toByteArray();
+		byte[] data = GZip.compress("data".getBytes(StandardCharsets.UTF_8));
+		byte[] header = {
+			(byte) GZIP_MAGIC,        // Magic number (short)
+			(byte) (GZIP_MAGIC >> 8), // Magic number (short)
+			Deflater.DEFLATED,        // Compression method (CM)
+			0,                        // Flags (FLG)
+			0,                        // Modification time MTIME (int)
+			0,                        // Modification time MTIME (int)
+			0,                        // Modification time MTIME (int)
+			0,                        // Modification time MTIME (int)
+			0,                        // Extra flags (XFLG)
+			0                         // Operating system (OS)
+		};
+		assertArrayEquals(header, Arrays.copyOfRange(data, 0, header.length));
 	}
 }

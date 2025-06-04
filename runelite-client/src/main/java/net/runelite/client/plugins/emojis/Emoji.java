@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,9 +26,7 @@
 package net.runelite.client.plugins.emojis;
 
 import com.google.common.collect.ImmutableMap;
-import java.awt.image.BufferedImage;
 import java.util.Map;
-import net.runelite.client.util.ImageUtil;
 
 enum Emoji
 {
@@ -107,6 +106,7 @@ enum Emoji
 	private static final Map<String, Emoji> emojiMap;
 
 	private final String trigger;
+	final int codepoint;
 
 	static
 	{
@@ -120,14 +120,10 @@ enum Emoji
 		emojiMap = builder.build();
 	}
 
-	Emoji(String trigger)
+	Emoji(int codepoint, String shortName)
 	{
-		this.trigger = trigger;
-	}
-
-	BufferedImage loadImage()
-	{
-		return ImageUtil.loadImageResource(getClass(), this.name().toLowerCase() + ".png");
+		this.trigger = shortName;
+		this.codepoint = codepoint;
 	}
 
 	static Emoji getEmoji(String trigger)

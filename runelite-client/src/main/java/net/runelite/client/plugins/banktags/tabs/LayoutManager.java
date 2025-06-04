@@ -599,15 +599,15 @@ public class LayoutManager
 		{
 			resetWidgets();
 
+			// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
+			// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
+			// which is after this is run, but before the var/inv transmit listeners run, so that we will have
+			// them by the time the inv transmit listener runs.
+			potionStorage.cachePotions = true;
+
 			BankTag activeTag = plugin.getActiveBankTag();
 			if (activeTag != null)
 			{
-				// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
-				// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
-				// which is after this is run, but before the var/inv transmit listeners run, so that we will have
-				// them by the time the inv transmit listener runs.
-				potionStorage.cachePotions = true;
-
 				Layout layout = plugin.getActiveLayout();
 				if (layout != null)
 				{

@@ -288,19 +288,17 @@ public class LootManager
 
 			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
 
-			NPCComposition npcComposition = client.getNpcDefinition(npcId);
-			String name = Text.removeTags(npcComposition.getName());
-			if (name.isEmpty() || "null".equals(name))
-			{
-				return;
-			}
-
 			if (scriptEventId != eventId)
 			{
 				processScriptLoot();
 			}
 
-			scriptNpc = npcComposition;
+			NPCComposition npcComposition = client.getNpcDefinition(npcId);
+			String name = Text.removeTags(npcComposition.getName());
+			if (!name.isEmpty() && !"null".equals(name))
+			{
+				scriptNpc = npcComposition;
+			}
 			scriptEventId = eventId;
 			scriptItems.add(new ItemStack(itemId, qty));
 		}
