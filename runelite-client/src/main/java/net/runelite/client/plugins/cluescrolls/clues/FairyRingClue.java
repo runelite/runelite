@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -55,6 +56,7 @@ public class FairyRingClue extends ClueScroll implements LocationClueScroll
 		new FairyRingClue(ItemID.TRAIL_CLUE_HARD_FAIRY009, "D K S 2 3 1 0", new WorldPoint(2747, 3720, 0))
 	);
 
+	@Getter(AccessLevel.PACKAGE)
 	private final int itemId;
 	@Getter
 	private final String text;
