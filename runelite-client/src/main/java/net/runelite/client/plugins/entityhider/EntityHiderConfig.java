@@ -49,7 +49,7 @@ public interface EntityHiderConfig extends Config
 		position = 2,
 		keyName = "hidePlayers2D",
 		name = "Hide others 2D",
-		description = "Configures whether or not other players 2D elements are hidden."
+		description = "Configures whether or not other players' 2D elements are hidden."
 	)
 	default boolean hideOthers2D()
 	{
@@ -148,7 +148,7 @@ public interface EntityHiderConfig extends Config
 		position = 11,
 		keyName = "hideNPCs2D",
 		name = "Hide NPCs 2D",
-		description = "Configures whether or not NPCs 2D elements are hidden."
+		description = "Configures whether or not NPCs' 2D elements are hidden."
 	)
 	default boolean hideNPCs2D()
 	{
@@ -159,7 +159,7 @@ public interface EntityHiderConfig extends Config
 		position = 12,
 		keyName = "hidePets",
 		name = "Hide other players' pets",
-		description = "Configures whether or not other player pets are hidden."
+		description = "Configures whether or not other players' pets are hidden."
 	)
 	default boolean hidePets()
 	{
@@ -168,6 +168,17 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 13,
+		keyName = "hideOwnPet",
+		name = "Hide own pet",
+		description = "Configures whether or not the local player's own pet is hidden."
+	)
+	default boolean hideOwnPet()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "hideAttackers",
 		name = "Hide attackers",
 		description = "Configures whether or not NPCs/players attacking you are hidden."
@@ -178,7 +189,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "hideProjectiles",
 		name = "Hide projectiles",
 		description = "Configures whether or not projectiles are hidden."
@@ -189,7 +200,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 16,
 		keyName = "hideDeadNpcs",
 		name = "Hide dead NPCs",
 		description = "Hides NPCs when their health reaches 0."
@@ -200,7 +211,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 17,
 		keyName = "hideThralls",
 		name = "Hide thralls",
 		description = "Configures whether or not thralls are hidden."
@@ -211,7 +222,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 18,
 		keyName = "hideRandomEvents",
 		name = "Hide random events",
 		description = "Configures whether or not random events are hidden."
