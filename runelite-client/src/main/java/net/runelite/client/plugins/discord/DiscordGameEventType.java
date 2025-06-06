@@ -87,7 +87,7 @@ enum DiscordGameEventType
 	BOSS_NIGHTMARE("Nightmare of Ashihama", DiscordAreaType.BOSSES, 15515),
 	BOSS_PHANTOM_MUSPAH("Phantom Muspah", DiscordAreaType.BOSSES, 11330),
 	BOSS_SARACHNIS("Sarachnis", DiscordAreaType.BOSSES, 7322),
-	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),
+	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 9048),
 	BOSS_SMOKE_DEVIL("Thermonuclear smoke devil", DiscordAreaType.BOSSES, 9363, 9619),
 	BOSS_TEMPOROSS("Tempoross", DiscordAreaType.BOSSES, 12078),
 	BOSS_THE_LEVIATHAN("The Leviathan", DiscordAreaType.BOSSES, 8291),
