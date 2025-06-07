@@ -78,7 +78,7 @@ public class SkillCalculatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWorldChanged(WorldChanged event)
+	private void onWorldChanged(WorldChanged event)
 	{
 		// We only need to reload the interface if the player switches from P2P to F2P or vice versa
 		boolean currentWorldIsMembers = client.getWorldType().contains(WorldType.MEMBERS);

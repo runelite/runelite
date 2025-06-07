@@ -317,7 +317,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
+	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		String[] args = commandExecuted.getArguments();
 
@@ -568,7 +568,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!examine.isActive())
 		{
@@ -606,7 +606,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
+	private void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		if ("devtoolsEnabled".equals(ev.getEventName()))
 		{
@@ -615,7 +615,7 @@ public class DevToolsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	private void onClientTick(ClientTick clientTick)
 	{
 		if (menus.isActive() && !client.isMenuOpen())
 		{

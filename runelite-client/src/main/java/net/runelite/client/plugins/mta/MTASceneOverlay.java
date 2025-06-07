@@ -37,7 +37,7 @@ public class MTASceneOverlay extends Overlay
 	private final MTAPlugin plugin;
 
 	@Inject
-	public MTASceneOverlay(MTAPlugin plugin)
+	private MTASceneOverlay(MTAPlugin plugin)
 	{
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
