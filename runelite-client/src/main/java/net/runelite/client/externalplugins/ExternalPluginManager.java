@@ -28,6 +28,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.Files;
@@ -35,6 +36,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -65,7 +67,11 @@ import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.task.Scheduler;
+import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.ui.SplashScreen;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.CountingInputStream;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.VerificationException;
@@ -124,8 +130,71 @@ public class ExternalPluginManager
 		{
 			// builtin external's don't actually have a manifest or a separate classloader...
 			pluginManager.loadPlugins(Lists.newArrayList(builtinExternals), null);
-		}
-	}
+                }
+        }
+
+        private void cleanupPluginReferences(Plugin plugin)
+        {
+                ClassLoader cl = plugin.getClass().getClassLoader();
+
+                try
+                {
+                        Field schedulerField = PluginManager.class.getDeclaredField("scheduler");
+                        schedulerField.setAccessible(true);
+                        Scheduler scheduler = (Scheduler) schedulerField.get(pluginManager);
+                        for (ScheduledMethod method : new ArrayList<>(scheduler.getScheduledMethods()))
+                        {
+                                if (method.getObject().getClass().getClassLoader() == cl)
+                                {
+                                        scheduler.removeScheduledMethod(method);
+                                }
+                        }
+                }
+                catch (Exception e)
+                {
+                        log.warn("Unable to verify scheduler cleanup for {}", plugin.getClass(), e);
+                }
+
+                try
+                {
+                        Field subField = EventBus.class.getDeclaredField("subscribers");
+                        subField.setAccessible(true);
+                        ImmutableMultimap<Class<?>, EventBus.Subscriber> subs =
+                                (ImmutableMultimap<Class<?>, EventBus.Subscriber>) subField.get(eventBus);
+                        for (EventBus.Subscriber sub : new ArrayList<>(subs.values()))
+                        {
+                                Object obj = sub.getObject();
+                                if (obj.getClass().getClassLoader() == cl)
+                                {
+                                        eventBus.unregister(obj);
+                                }
+                        }
+                }
+                catch (Exception e)
+                {
+                        log.warn("Unable to verify event bus cleanup for {}", plugin.getClass(), e);
+                }
+
+                try
+                {
+                        OverlayManager overlayManager = RuneLite.getInjector().getInstance(OverlayManager.class);
+                        overlayManager.removeIf(o -> o.getClass().getClassLoader() == cl);
+                }
+                catch (Exception e)
+                {
+                        log.warn("Unable to verify overlay cleanup for {}", plugin.getClass(), e);
+                }
+
+                try
+                {
+                        InfoBoxManager infoBoxManager = RuneLite.getInjector().getInstance(InfoBoxManager.class);
+                        infoBoxManager.removeIf(i -> i.getClass().getClassLoader() == cl);
+                }
+                catch (Exception e)
+                {
+                        log.warn("Unable to verify infobox cleanup for {}", plugin.getClass(), e);
+                }
+        }
 
 	@Subscribe(
 		// run before PluginManager to avoid it starting plugins which we are about to uninstall
@@ -298,8 +367,9 @@ public class ExternalPluginManager
 				{
 					log.warn("Unable to stop external plugin \"{}\"", p.getClass().getName(), e);
 				}
-				pluginManager.remove(p);
-			}
+                                pluginManager.remove(p);
+                                cleanupPluginReferences(p);
+                        }
 
 			for (PluginHubManifest.JarData jarData : add)
 			{
@@ -378,10 +448,11 @@ public class ExternalPluginManager
 							{
 								log.info("Unable to fully stop plugin \"{}\"", jarData.getInternalName(), e2);
 							}
-							pluginManager.remove(p);
-						}
-					}
-				}
+                                                        pluginManager.remove(p);
+                                                        cleanupPluginReferences(p);
+                                                }
+                                        }
+                                }
 			}
 
 			if (!startup)
