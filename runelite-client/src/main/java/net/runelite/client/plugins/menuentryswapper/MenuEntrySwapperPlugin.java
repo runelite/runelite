@@ -1815,7 +1815,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private List<Integer> findOptionIndex(Menu menu, String option)
 	{
-		if (cacheOptionMenu == null || cacheOptionIndexes.isEmpty())
+		if (cacheOptionMenu != menu || cacheOptionIndexes.isEmpty())
 		{
 			int idx = 0;
 			cacheOptionMenu = menu;
