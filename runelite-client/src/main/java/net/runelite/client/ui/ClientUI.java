@@ -940,24 +940,54 @@ public class ClientUI
 		return defaultCursor != null ? defaultCursor : Cursor.getDefaultCursor();
 	}
 
-	/**
-	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
-	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
-	 * @param image cursor image
-	 * @param name  cursor name
-	 */
-	public void setCursor(final BufferedImage image, final String name)
-	{
-		if (content == null)
-		{
-			return;
-		}
+       /**
+        * Changes the cursor for the client window. Requires {@link ClientUI#init()} to be called first.
+        * <p>
+        * On some platforms {@link Toolkit#createCustomCursor} can fail or only
+        * support cursors up to a certain size. This method scales the cursor to
+        * the platform recommended size and falls back to the default cursor when
+        * custom cursors are not supported.
+        *
+        * @param image cursor image
+        * @param name  cursor name
+        */
+       public void setCursor(final BufferedImage image, final String name)
+       {
+               if (content == null)
+               {
+                       return;
+               }
 
-		final Point hotspot = new Point(0, 0);
-		final Cursor cursorAwt = Toolkit.getDefaultToolkit().createCustomCursor(image, hotspot, name);
-		defaultCursor = cursorAwt;
-		setCursor(cursorAwt);
-	}
+               final Toolkit toolkit = Toolkit.getDefaultToolkit();
+               Dimension bestSize = toolkit.getBestCursorSize(image.getWidth(), image.getHeight());
+
+               if (bestSize.width == 0 || bestSize.height == 0)
+               {
+                       log.warn("Custom cursors unsupported, falling back to default");
+                       setCursor(Cursor.getDefaultCursor());
+                       return;
+               }
+
+               BufferedImage cursorImage = image;
+               if (bestSize.width != image.getWidth() || bestSize.height != image.getHeight())
+               {
+                       cursorImage = ImageUtil.resizeImage(image, bestSize.width, bestSize.height, true);
+               }
+
+               final Point hotspot = new Point(0, 0);
+
+               try
+               {
+                       final Cursor cursorAwt = toolkit.createCustomCursor(cursorImage, hotspot, name);
+                       defaultCursor = cursorAwt;
+                       setCursor(cursorAwt);
+               }
+               catch (Exception e)
+               {
+                       log.warn("Unable to create custom cursor", e);
+                       setCursor(Cursor.getDefaultCursor());
+               }
+       }
 
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
