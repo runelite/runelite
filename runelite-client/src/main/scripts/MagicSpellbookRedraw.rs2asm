@@ -380,7 +380,10 @@ LABEL343:
    iconst                 0
    istore                 25
    iload                  22
-   iconst                 2 ; run our filter+sort even when there is only one vanilla spell
+   jump                   USE_FILTERSORT ;
+   iconst                 2
+USE_FILTERSORT:
+   iconst                 1 ; run our filter+sort even when there is only one vanilla spell
    if_icmpge              LABEL349
    jump                   LABEL357
 LABEL349:
@@ -394,7 +397,7 @@ LABEL349:
 
    ; after sorting the spell array
    iload                  14 ; spellbook enum
-   iconst                 0  ; spell array id
+   iconst                 2  ; spell array id
    iload                  22 ; number of spells
    sconst                 "spellbookSort"
    runelite_callback     
