@@ -268,7 +268,7 @@ LABEL244:
    enum_getoutputcount   
    istore                 21
    iload                  21
-   define_array           105
+   define_array           131177
    iconst                 0
    istore                 22
    iconst                 -1
@@ -312,7 +312,7 @@ LABEL280:
    if_sethide            
    iload                  22
    iload                  24
-   set_array_int         
+   set_array_int          2
    iload                  22
    iconst                 1
    add                   
@@ -358,7 +358,7 @@ LABEL320:
    if_sethide            
    iload                  22
    iload                  24
-   set_array_int         
+   set_array_int          2
    iload                  22
    iconst                 1
    add                   
@@ -384,7 +384,7 @@ LABEL343:
    if_icmpge              LABEL349
    jump                   LABEL357
 LABEL349:
-   iconst                 0
+   oload                  2
    iconst                 0
    iload                  22
    iconst                 1
@@ -761,7 +761,7 @@ LABEL680:
    iconst                 111
    iload                  14
    iload                  24
-   get_array_int         
+   get_array_int          2
    enum                  
    istore                 23
    invoke                 3160
@@ -909,7 +909,7 @@ LABEL794:
    iload                  1
    iload                  2
    iload                  12
-   sconst                 "oIIi"
+   sconst                 "iiii"
    cc_setonclick         
    jump                   LABEL854
 LABEL822:
@@ -926,7 +926,7 @@ LABEL822:
    iconst                 94
    iconst                 5
    inv_getobj            
-   sconst                 "1oIiIioo"
+   sconst                 "iiiiiiii"
    iload                  33
    if_setonmouserepeat   
    iconst                 2622
@@ -942,7 +942,7 @@ LABEL822:
    iconst                 94
    iconst                 5
    inv_getobj            
-   sconst                 "1oIiIioo"
+   sconst                 "iiiiiiii"
    iload                  33
    if_setonmouseleave    
 LABEL854:

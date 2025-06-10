@@ -307,7 +307,7 @@ LABEL271:
    if_getlayer           
    iload                  9
    iconst                 16777215
-   sconst                 "Iii"
+   sconst                 "iii"
    iload                  10
    if_setonmouserepeat   
    iconst                 2065
@@ -315,7 +315,7 @@ LABEL271:
    if_getlayer           
    iload                  9
    iconst                 16776960
-   sconst                 "Iii"
+   sconst                 "iii"
    iload                  10
    if_setonmouseleave    
    jump                   LABEL304
@@ -552,7 +552,7 @@ LABEL472:
    set_varc_int           65
    iconst                 664
    iconst                 0
-   sconst                 "1"
+   sconst                 "i"
    iconst                 10616832
    if_setontimer         
 LABEL483:

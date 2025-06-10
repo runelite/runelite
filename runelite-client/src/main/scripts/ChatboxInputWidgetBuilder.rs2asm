@@ -247,13 +247,13 @@ LABEL193:
    iconst                 45
    iconst                 -2147483645
    iload                  1
-   sconst                 "Ii"
+   sconst                 "ii"
    iconst                 10616888
    if_setonmouserepeat   
    iconst                 45
    iconst                 -2147483645
    iload                  0
-   sconst                 "Ii"
+   sconst                 "ii"
    iconst                 10616888
    if_setonmouseleave    
    iconst                 489

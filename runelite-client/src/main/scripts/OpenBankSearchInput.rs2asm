@@ -23,7 +23,7 @@ LABEL5:
    iconst                 -2147483640
    iconst                 -2147483639
    oload                  0
-   sconst                 "izs"
+   sconst                 "iis"
    iconst                 10616875
    if_setonkey           
    iconst                 138

@@ -12,7 +12,7 @@ LABEL4:
    set_varc_int           65
    iconst                 664
    iconst                 0
-   sconst                 "1"
+   sconst                 "i"
    iconst                 10616832
    if_setontimer         
    return                
@@ -664,7 +664,7 @@ LABEL573:
    set_varc_int           65
    iconst                 664
    iconst                 0
-   sconst                 "1"
+   sconst                 "i"
    iconst                 10616832
    if_setontimer         
 LABEL584:
@@ -2265,7 +2265,7 @@ LABEL2025:
    if_getlayer           
    iload                  8
    iconst                 3158271
-   sconst                 "Iii"
+   sconst                 "iii"
    iload                  9
    if_setonmouseover     
    iconst                 2065
@@ -2273,7 +2273,7 @@ LABEL2025:
    if_getlayer           
    iload                  8
    iload                  3
-   sconst                 "Iii"
+   sconst                 "iii"
    iload                  9
    if_setonmouseleave    
    jump                   LABEL2058

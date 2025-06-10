@@ -152,7 +152,7 @@ LABEL98:
    cc_getid              
    iconst                 0
    iconst                 -1
-   sconst                 "IiiI"
+   sconst                 "iiii"
    iload                  1
    if_setonmouserepeat   
    iconst                 244
@@ -160,7 +160,7 @@ LABEL98:
    cc_getid              
    iconst                 50
    iconst                 -1
-   sconst                 "IiiI"
+   sconst                 "iiii"
    iload                  1
    if_setonmouseleave    
    iconst                 489

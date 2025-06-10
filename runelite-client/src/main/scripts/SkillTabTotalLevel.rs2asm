@@ -82,7 +82,7 @@ LABEL61:
    oload                  0
    oload                  1
    iconst                 495
-   sconst                 "iIiIssf"
+   sconst                 "iiiissi"
    iload                  0
    if_setonop            
    get_varc_int           218
@@ -115,12 +115,12 @@ LABEL92:
    iconst                 25
    iconst                 5
    div                   
-   sconst                 "IiIssfi"
+   sconst                 "iiissii"
    iload                  0
    if_setonmouserepeat   
    iconst                 40
    iload                  1
-   sconst                 "I"
+   sconst                 "i"
    iload                  0
    if_setonmouseleave    
    iconst                 0

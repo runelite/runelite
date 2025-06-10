@@ -57,7 +57,7 @@ LABEL36:
    iload                  16
    iconst                 1141
    iconst                 1
-   sconst                 "IY"
+   sconst                 "iY"
    iload                  16
    if_setonvartransmit   
    iconst                 441

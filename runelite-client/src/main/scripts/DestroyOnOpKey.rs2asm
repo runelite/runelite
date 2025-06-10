@@ -76,7 +76,7 @@ LABEL38:
    clientclock           
    iconst                 40
    add                   
-   sconst                 "Isisi"
+   sconst                 "isisi"
    iload                  2
    if_setontimer         
    iconst                 38273024

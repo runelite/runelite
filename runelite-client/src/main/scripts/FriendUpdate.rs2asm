@@ -435,7 +435,7 @@ LABEL359:
    oload                  1
    oload                  0
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
    jump                   LABEL403
 LABEL374:
@@ -451,11 +451,11 @@ LABEL374:
    oload                  1
    iconst                 25
    iconst                 190
-   sconst                 "IiIsii"
+   sconst                 "iiisii"
    cc_setonmouserepeat   
    iconst                 40
    iload                  8
-   sconst                 "I"
+   sconst                 "i"
    cc_setonmouseleave    
    iconst                 126
    iconst                 -2147483644
@@ -466,7 +466,7 @@ LABEL374:
    sconst                 "null"
    sconst                 "null"
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
 LABEL403:
    iconst                 0
@@ -475,7 +475,7 @@ LABEL403:
 LABEL406:
    iconst                 40
    iload                  8
-   sconst                 "I"
+   sconst                 "i"
    cc_setonmouseover     
    iconst                 1
    cc_sethide             1
@@ -488,7 +488,7 @@ LABEL406:
    sconst                 "null"
    sconst                 "null"
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
 LABEL423:
    iload                  5

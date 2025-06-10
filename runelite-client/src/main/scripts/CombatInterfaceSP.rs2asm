@@ -16,21 +16,21 @@
    iconst                 4600
    iconst                 284
    iconst                 5
-   sconst                 "IY"
+   sconst                 "iY"
    iload                  0
    if_setonvartransmit   
    iconst                 186
    iload                  0
    iconst                 3
    iconst                 1
-   sconst                 "IY"
+   sconst                 "iY"
    iload                  0
    if_setonstattransmit  
    iconst                 186
    iload                  0
    iconst                 94
    iconst                 1
-   sconst                 "IY"
+   sconst                 "iY"
    iload                  0
    if_setoninvtransmit   
    return                

@@ -70,21 +70,21 @@
    clientclock           
    iconst                 5
    add                   
-   sconst                 "Iiii"
+   sconst                 "iiii"
    cc_setontimer          1
    iconst                 684
    iconst                 0
    iconst                 -2147483645
    iconst                 -2147483643
    cc_getid               1
-   sconst                 "1Iii"
+   sconst                 "iiii"
    cc_setonmouserepeat   
    iconst                 684
    iconst                 1
    iconst                 -2147483645
    iconst                 -2147483643
    cc_getid               1
-   sconst                 "1Iii"
+   sconst                 "iiii"
    cc_setonmouseleave    
    iconst                 1
    sconst                 "Select"
@@ -110,7 +110,7 @@
    iload                  18
    iload                  19
    iload                  20
-   sconst                 "iiiIIIIIIIIIIIIIIIII"
+   sconst                 "iiiiiiiiiiiiiiiiiiii"
    cc_setonop            
    iload                  0 ; button component id
    iload                  1 ; 0-9

@@ -328,7 +328,7 @@ LABEL247:
    iconst                 552
    iconst                 -2147483645
    iconst                 1
-   sconst                 "I1"
+   sconst                 "ii"
    iconst                 10616843
    if_setontimer         
    jump                   LABEL267
