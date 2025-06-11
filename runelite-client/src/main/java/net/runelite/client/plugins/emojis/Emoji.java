@@ -31,7 +31,7 @@ import java.util.Map;
 enum Emoji
 {
 	SLIGHT_SMILE(0x1f642, ":)"),
-	JOY(0x1f639, "=')"),
+	JOY(0x1f602, "=')"),
 	COWBOY(0x1f920, "3:)"),
 	BLUSH(0x1f60a, "^_^"),
 	SMILE(0x1f601, ":D"),
@@ -48,7 +48,7 @@ enum Emoji
 	EXPRESSIONLESS(0x1f611, ":|"),
 	UNAMUSED(0x1f612, ":-|"),
 	SLIGHT_FROWN(0x1f641, ":("),
-	FROWNING2(0x1f626, "=("),
+	FROWNING2(0x2639, "=("),
 	CRY(0x1f622, ":'("),
 	SOB(0x1f62d, ":_("),
 	FLUSHED(0x1f633, ":$"),
@@ -70,7 +70,7 @@ enum Emoji
 	BROKEN_HEART(0x1f494, "<lt>/3"), // </3
 	ZZZ(0x1f4a4, "Zzz"),
 	FISH(0x1f41f, "<lt><gt><lt>"), // <><
-	CAT(0x1f431, ":3"),
+	CAT(0x1f63a, ":3"),
 	DOG(0x1f436, "=3"),
 	CRAB(0x1f980, "V(;,;)V"),
 	FORK_AND_KNIFE(0x1f374, "--E"),
