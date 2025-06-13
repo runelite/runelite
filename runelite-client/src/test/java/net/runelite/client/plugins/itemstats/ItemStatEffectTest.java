@@ -516,6 +516,47 @@ public class ItemStatEffectTest
 		assertEquals(18, skillChange(Skill.HITPOINTS, 99, 1, haddock));
 	}
 
+	@Test
+	public void testBlightedOverload()
+	{
+		final Effect blightedOverload = new ItemStatChanges().get(ItemID.DEADMAN4DOSEOVERLOAD);
+
+		assertEquals(-25, skillChange(Skill.HITPOINTS, 49, 44, blightedOverload));
+		assertEquals(-25, skillChange(Skill.HITPOINTS, 64, 64, blightedOverload));
+		assertEquals(-25, skillChange(Skill.HITPOINTS, 99, 77, blightedOverload));
+
+		assertEquals(13, skillChange(Skill.STRENGTH, 36, 36, blightedOverload));
+		assertEquals(17, skillChange(Skill.STRENGTH, 66, 66, blightedOverload));
+		assertEquals(19, skillChange(Skill.STRENGTH, 74, 74, blightedOverload));
+		assertEquals(20, skillChange(Skill.STRENGTH, 83, 83, blightedOverload));
+		assertEquals(22, skillChange(Skill.STRENGTH, 99, 99, blightedOverload));
+
+		assertEquals(0, skillChange(Skill.DEFENCE, 1, 0, blightedOverload));
+		assertEquals(-1, skillChange(Skill.DEFENCE, 1, 1, blightedOverload));
+		assertEquals(-3, skillChange(Skill.DEFENCE, 29, 29, blightedOverload));
+		assertEquals(-6, skillChange(Skill.DEFENCE, 54, 54, blightedOverload));
+		assertEquals(-8, skillChange(Skill.DEFENCE, 71, 71, blightedOverload));
+		assertEquals(-10, skillChange(Skill.DEFENCE, 90, 90, blightedOverload));
+		assertEquals(-9, skillChange(Skill.DEFENCE, 99, 89, blightedOverload));
+		assertEquals(-10, skillChange(Skill.DEFENCE, 99, 99, blightedOverload));
+		assertEquals(-11, skillChange(Skill.DEFENCE, 99, 101, blightedOverload));
+		assertEquals(-12, skillChange(Skill.DEFENCE, 99, 113, blightedOverload));
+
+		assertEquals(7, skillChange(Skill.RANGED, 3, 3, blightedOverload));
+		assertEquals(11, skillChange(Skill.RANGED, 49, 49, blightedOverload));
+		assertEquals(14, skillChange(Skill.RANGED, 72, 72, blightedOverload));
+		assertEquals(15, skillChange(Skill.RANGED, 87, 87, blightedOverload));
+		assertEquals(16, skillChange(Skill.RANGED, 99, 99, blightedOverload));
+
+		assertEquals(1, skillChange(Skill.MAGIC, 8, 8, blightedOverload));
+		assertEquals(3, skillChange(Skill.MAGIC, 28, 28, blightedOverload));
+		assertEquals(7, skillChange(Skill.MAGIC, 68, 68, blightedOverload));
+		assertEquals(9, skillChange(Skill.MAGIC, 80, 80, blightedOverload));
+		assertEquals(9, skillChange(Skill.MAGIC, 89, 89, blightedOverload));
+		assertEquals(10, skillChange(Skill.MAGIC, 99, 89, blightedOverload));
+		assertEquals(9, skillChange(Skill.MAGIC, 99, 100, blightedOverload));
+	}
+
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
 	{
 		if (effect == null)

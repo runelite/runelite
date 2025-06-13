@@ -279,6 +279,8 @@ public class ItemStatChanges
 
 		// Regular overload (NMZ)
 		add(combo(SUPER_ATTACK_POT, SUPER_STRENGTH_POT, SUPER_DEFENCE_POT, superRangingPot, superMagicPot, heal(HITPOINTS, -50)), ItemID.NZONE1DOSEOVERLOADPOTION, ItemID.NZONE2DOSEOVERLOADPOTION, ItemID.NZONE3DOSEOVERLOADPOTION, ItemID.NZONE4DOSEOVERLOADPOTION);
+		// Blighted overload (DMM)
+		add(combo(boost(ATTACK, perc(.15, 8)), boost(STRENGTH, perc(.15, 8)), new BoostedStatBoost(DEFENCE, false, perc(.1, -1)), boost(RANGED, perc(.1, 7)), boost(MAGIC, perc(.1, 1)), heal(HITPOINTS, -25)), ItemID.DEADMAN1DOSEOVERLOAD, ItemID.DEADMAN2DOSEOVERLOAD, ItemID.DEADMAN3DOSEOVERLOAD, ItemID.DEADMAN4DOSEOVERLOAD);
 
 		// Bandages (Castle Wars)
 		add(new CastleWarsBandage(), ItemID.CASTLEWARS_BANDAGES);
