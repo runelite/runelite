@@ -110,6 +110,7 @@ public class ConfigManager
 
 	@Nullable
 	private final String configProfileName;
+	private final ScheduledExecutorService executor;
 	private final EventBus eventBus;
 	private final Client client;
 	private final Gson gson;
@@ -145,6 +146,7 @@ public class ConfigManager
 	)
 	{
 		this.configProfileName = profile;
+		this.executor = scheduledExecutorService;
 		this.eventBus = eventBus;
 		this.client = client;
 		this.gson = gson;
@@ -1596,29 +1598,23 @@ public class ConfigManager
 	@Subscribe
 	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
 	{
-		ConfigProfile switchToProfile = null;
 		try (ProfileManager.Lock lock = profileManager.lock())
 		{
-			for (final ConfigProfile lockProfile : lock.getProfiles())
+			for (final ConfigProfile profile : lock.getProfiles())
 			{
-				final List<String> get = lockProfile.getDefaultForRsProfiles();
+				final List<String> get = profile.getDefaultForRsProfiles();
 				if (get != null && get.contains(rsProfileKey))
 				{
-					switchToProfile = lockProfile;
-
 					// change active profile
 					lock.getProfiles().forEach(p -> p.setActive(false));
-					switchToProfile.setActive(true);
+					profile.setActive(true);
 					lock.dirty();
+
+					log.debug("Switching to default profile {} for rsprofile {}", profile.getName(), rsProfileKey);
+					executor.submit(() -> switchProfile(profile));
 					break;
 				}
 			}
-		}
-
-		if (switchToProfile != null)
-		{
-			log.debug("Switching to default profile {} for rsprofile {}", switchToProfile.getName(), rsProfileKey);
-			switchProfile(switchToProfile);
 		}
 	}
 
