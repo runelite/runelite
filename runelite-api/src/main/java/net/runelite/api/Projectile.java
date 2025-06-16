@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 
 /**
  * Represents a projectile entity. (ie. cannonball, arrow)
@@ -52,7 +53,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return
 	 */
-	LocalPoint getSourcePoint();
+	WorldPoint getSourcePoint();
 
 	/**
 	 * Get the actor the projectile starts at.
@@ -73,7 +74,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return
 	 */
-	LocalPoint getTargetPoint();
+	WorldPoint getTargetPoint();
 
 	/**
 	 * Get the actor the projectile ends at.
@@ -101,10 +102,7 @@ public interface Projectile extends Renderable
 	 * @return
 	 */
 	@Deprecated
-	default LocalPoint getTarget()
-	{
-		return getTargetPoint();
-	}
+	LocalPoint getTarget();
 
 	/**
 	 * Gets the original x-axis coordinate that this projectile started from.
@@ -112,10 +110,7 @@ public interface Projectile extends Renderable
 	 * @return the original coordinate
 	 */
 	@Deprecated
-	default int getX1()
-	{
-		return getSourcePoint().getX();
-	}
+	int getX1();
 
 	/**
 	 * Gets the original y-axis coordinate that this projectile started from.
@@ -123,10 +118,7 @@ public interface Projectile extends Renderable
 	 * @return the original coordinate
 	 */
 	@Deprecated
-	default int getY1()
-	{
-		return getSourcePoint().getY();
-	}
+	int getY1();
 
 	/**
 	 * Gets the plane that the projectile is on.
@@ -134,16 +126,14 @@ public interface Projectile extends Renderable
 	 * @return the plane
 	 */
 	@Deprecated
-	default int getFloor()
-	{
-		return getSourceLevel();
-	}
+	int getFloor();
 
 	/**
 	 * Gets the height of the projectile.
 	 *
 	 * @return the height
 	 */
+	@Deprecated
 	int getHeight();
 
 	/**
@@ -193,6 +183,12 @@ public interface Projectile extends Renderable
 	 * @return the slope of the projectile
 	 */
 	int getSlope();
+
+	/**
+	 * Get the offset position from the start position where the projectile starts
+	 * @return
+	 */
+	int getStartPos();
 
 	/**
 	 * Gets the starting height of the projectile.

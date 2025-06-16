@@ -2320,8 +2320,31 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 */
+	@Deprecated
 	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
 		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
+
+
+	/**
+	 * Create a projectile.
+	 * @param spotanimId spotanim id
+	 * @param source source position
+	 * @param sourceHeightOffset source height offset
+	 * @param sourceActor source actor
+	 * @param target target position
+	 * @param targetHeightOffset target height offset
+	 * @param targetActor target actor
+	 * @param startCycle start time
+	 * @param endCycle end time
+	 * @param slope slope
+	 * @param startPos offset from the start where the projectile starts
+	 * @see net.runelite.api.gameval.SpotanimID
+	 * @return the new projectile
+	 */
+	Projectile createProjectile(int spotanimId,
+		WorldPoint source, int sourceHeightOffset, @Nullable Actor sourceActor,
+		WorldPoint target, int targetHeightOffset, @Nullable Actor targetActor,
+		int startCycle, int endCycle, int slope, int startPos);
 
 	/**
 	 * Gets a list of all projectiles currently spawned.
