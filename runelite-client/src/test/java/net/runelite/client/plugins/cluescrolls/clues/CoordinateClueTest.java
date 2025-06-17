@@ -24,10 +24,14 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -50,6 +54,20 @@ public class CoordinateClueTest
 	{
 		// If this doesn't throw then the clues map doesn't have duplicate keys
 		CoordinateClue.builder().build();
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<CoordinateClue> cluesWithIds = CoordinateClue.CLUES.values().stream()
+			.filter((clue) -> clue.getItemId() != ItemID.TRAIL_CLUE_MASTER)
+			.collect(Collectors.toUnmodifiableSet());
+		final Set<Integer> clueIds = cluesWithIds.stream()
+			.mapToInt(CoordinateClue::getItemId)
+			.boxed()
+			.collect(Collectors.toUnmodifiableSet());
+
+		assertEquals(cluesWithIds.size(), clueIds.size());
 	}
 
 	@Test

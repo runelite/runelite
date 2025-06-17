@@ -359,7 +359,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Tree Gnome Village")
 			.build(),
 		AnagramClue.builder()
-			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM021)
+			.itemId(ItemID.TRAIL_CLUE_MEDIUM_ANAGRAM022)
 			.text("GOT A BOY")
 			.npc("Gabooty")
 			.location(new WorldPoint(2790, 3066, 0))
