@@ -258,15 +258,10 @@ public class SlayerPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
-			// client (or with CONNECTION_LOST, the server...) will soon zero the slayer varps.
-			// zero task/amount so that this doesn't cause the plugin to reset the task, which
-			// would forget the initial amount. The vars are then resynced shortly after
 			case HOPPING:
 			case LOGGING_IN:
 			case CONNECTION_LOST:
-				taskName = "";
-				amount = 0;
-				loginFlag = true; // to reinitialize initialAmount and avoid re-adding the infobox
+				loginFlag = true; // to avoid re-adding the infobox
 				targets.clear();
 				break;
 		}
@@ -335,7 +330,8 @@ public class SlayerPlugin extends Plugin
 		if (varpId == VarPlayerID.SLAYER_COUNT
 			|| varpId == VarPlayerID.SLAYER_AREA
 			|| varpId == VarPlayerID.SLAYER_TARGET
-			|| varbitId == VarbitID.SLAYER_TARGET_BOSSID)
+			|| varbitId == VarbitID.SLAYER_TARGET_BOSSID
+			|| varpId == VarPlayerID.SLAYER_COUNT_ORIGINAL)
 		{
 			clientThread.invokeLater(this::updateTask);
 		}
@@ -391,12 +387,11 @@ public class SlayerPlugin extends Plugin
 					.getStringValue(areaId);
 			}
 
+			int initialAmount = client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL);
+
 			if (loginFlag)
 			{
 				log.debug("Sync slayer task: {}x {} at {}", amount, taskName, taskLocation);
-
-				// initial amount is not in a var, so we initialize it from the stored amount
-				initialAmount = getIntProfileConfig(SlayerConfig.INIT_AMOUNT_KEY);
 				setTask(taskName, amount, initialAmount, taskLocation, false);
 
 				// initialize streak and points in the event the plugin was toggled on after login
@@ -406,7 +401,7 @@ public class SlayerPlugin extends Plugin
 			else if (!Objects.equals(taskName, this.taskName) || !Objects.equals(taskLocation, this.taskLocation))
 			{
 				log.debug("Task change: {}x {} at {}", amount, taskName, taskLocation);
-				setTask(taskName, amount, amount, taskLocation, true);
+				setTask(taskName, amount, initialAmount, taskLocation, true);
 			}
 			else if (amount != this.amount)
 			{
