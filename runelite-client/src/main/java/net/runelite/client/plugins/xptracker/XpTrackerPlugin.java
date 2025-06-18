@@ -236,6 +236,7 @@ public class XpTrackerPlugin extends Plugin
 		{
 			saveSaveState(event.getPreviousProfile(), save);
 		}
+		resetState();
 	}
 
 	@Subscribe
