@@ -207,7 +207,7 @@ class VarInspector extends DevToolsFrame
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		int index = varbitChanged.getIndex();
 		int[] varps = client.getVarps();
@@ -251,7 +251,7 @@ class VarInspector extends DevToolsFrame
 	}
 
 	@Subscribe
-	public void onVarClientIntChanged(VarClientIntChanged e)
+	private void onVarClientIntChanged(VarClientIntChanged e)
 	{
 		int idx = e.getIndex();
 		int neew = (Integer) client.getVarcMap().getOrDefault(idx, 0);
@@ -266,7 +266,7 @@ class VarInspector extends DevToolsFrame
 	}
 
 	@Subscribe
-	public void onVarClientStrChanged(VarClientStrChanged e)
+	private void onVarClientStrChanged(VarClientStrChanged e)
 	{
 		int idx = e.getIndex();
 		String neew = (String) client.getVarcMap().getOrDefault(idx, "");

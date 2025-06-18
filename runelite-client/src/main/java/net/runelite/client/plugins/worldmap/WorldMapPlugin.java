@@ -188,7 +188,7 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(CONFIG_KEY))
 		{
@@ -199,7 +199,7 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	private void onStatChanged(StatChanged statChanged)
 	{
 		switch (statChanged.getSkill())
 		{
@@ -227,7 +227,7 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	private void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
 		{
@@ -237,7 +237,7 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	private void onClientTick(ClientTick clientTick)
 	{
 		WorldMap worldMap = client.getWorldMap();
 		WorldMapRenderer wmm = worldMap.getWorldMapRenderer();

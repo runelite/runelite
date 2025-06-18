@@ -88,7 +88,7 @@ public class DefaultWorldPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWorldChanged(WorldChanged worldChanged)
+	private void onWorldChanged(WorldChanged worldChanged)
 	{
 		int world = client.getWorld();
 		config.lastWorld(world);

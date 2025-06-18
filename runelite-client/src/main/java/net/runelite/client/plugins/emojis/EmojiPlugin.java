@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.emojis;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.Runnables;
@@ -64,7 +65,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.jetbrains.annotations.VisibleForTesting;
 
 @PluginDescriptor(
 	name = "Emojis",
@@ -109,7 +109,8 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		switch (chatMessage.getType())
 		{
@@ -140,7 +141,7 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onOverheadTextChanged(final OverheadTextChanged event)
+	private void onOverheadTextChanged(final OverheadTextChanged event)
 	{
 		if (!(event.getActor() instanceof Player))
 		{

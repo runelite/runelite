@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
@@ -122,7 +123,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("hiscore"))
 		{
@@ -136,7 +137,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((event.getType() != MenuAction.CC_OP.getId() && event.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId()) || !config.menuOption())
 		{
@@ -173,7 +174,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER && event.getMenuOption().equals(LOOKUP))
 		{
@@ -191,7 +192,8 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE || !config.bountylookup())
 		{
@@ -207,7 +209,7 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
 	}
