@@ -232,7 +232,8 @@ public class KingdomPlugin extends Plugin
 		float dailyPercentage = isRoyalTroubleCompleted() ? APPROVAL_DECREMENT_ROYAL_TROUBLE : APPROVAL_DECREMENT_BASE;
 
 		int newApproval = lastApproval;
-		if (newApproval > 25) {
+		if (newApproval > 25)
+		{
 			newApproval -= (int) (daysSince * dailyPercentage * MAX_APPROVAL);
 			newApproval = Math.max(newApproval, 25);
 		}
