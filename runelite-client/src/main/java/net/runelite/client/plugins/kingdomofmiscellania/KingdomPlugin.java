@@ -231,8 +231,12 @@ public class KingdomPlugin extends Plugin
 		int daysSince = getNumbersOfDaysPassed(lastChanged);
 		float dailyPercentage = isRoyalTroubleCompleted() ? APPROVAL_DECREMENT_ROYAL_TROUBLE : APPROVAL_DECREMENT_BASE;
 
-		lastApproval -= (int) (daysSince * dailyPercentage * MAX_APPROVAL);
-		return Math.max(lastApproval, 0);
+		int newApproval = lastApproval;
+		if (newApproval > 25) {
+			newApproval -= (int) (daysSince * dailyPercentage * MAX_APPROVAL);
+			newApproval = Math.max(newApproval, 25);
+		}
+		return newApproval;
 	}
 
 	private static int getNumbersOfDaysPassed(Instant lastChanged)
