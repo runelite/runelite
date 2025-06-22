@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -151,7 +150,12 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		final JComponent infoBoxPanel = new DragAndDropReorderPane();
+		final DragAndDropReorderPane infoBoxPanel = new DragAndDropReorderPane();
+		infoBoxPanel.addDragListener(component ->
+		{
+			XpInfoBox c = (XpInfoBox) component;
+			xpTrackerPlugin.updateSkillOrderState(c.getSkill(), infoBoxPanel.getPosition(component));
+		});
 
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);

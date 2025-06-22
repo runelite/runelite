@@ -60,6 +60,10 @@ class XpStateSingle
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
 
+	@Getter
+	@Setter
+	private boolean compactView;
+
 	XpStateSingle(long startXp)
 	{
 		this.startXp = startXp;
@@ -305,6 +309,7 @@ class XpStateSingle
 			.timeTillGoalShort(getTimeTillLevel(XpGoalTimeType.SHORT))
 			.startGoalXp(startLevelExp)
 			.endGoalXp(endLevelExp)
+			.compactView(compactView)
 			.build();
 	}
 
