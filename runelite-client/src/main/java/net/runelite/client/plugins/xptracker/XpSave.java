@@ -27,8 +27,10 @@ package net.runelite.client.plugins.xptracker;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.inject.Inject;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import net.runelite.api.Skill;
 import net.runelite.client.config.ConfigSerializer;
 import net.runelite.client.config.Serializer;
@@ -37,6 +39,7 @@ import net.runelite.client.config.Serializer;
 class XpSave
 {
 	Map<Skill, XpSaveSingle> skills = new LinkedHashMap<>();
+	Set<Skill> compactViewSkills = EnumSet.noneOf(Skill.class);
 	XpSaveSingle overall;
 }
 

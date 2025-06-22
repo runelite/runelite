@@ -380,6 +380,28 @@ public class XpTrackerPlugin extends Plugin
 		xpState.resetOverallPerHour();
 	}
 
+	/**
+	 * Update the stored order of a skill, following a drag-and-drop operation that has moved it in the UI.
+	 *
+	 * @param skill       Skill that has been moved
+	 * @param newPosition New 0-indexed position of this skill
+	 */
+	void updateSkillOrderState(Skill skill, int newPosition)
+	{
+		xpState.setOrder(skill, newPosition);
+	}
+
+	/**
+	 * Update the stored 'compact view' state of a skill, following it being toggled via the UI.
+	 *
+	 * @param skill       Skill that has been toggled
+	 * @param compactView New 'compact view' flag
+	 */
+	void setSkillCompactViewState(Skill skill, boolean compactView)
+	{
+		xpState.setCompactView(skill, compactView);
+	}
+
 	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
