@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2025 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.api.gameval;
 
-import net.runelite.api.gameval.SpriteID;
-
-public interface SpriteOverride
+@SuppressWarnings("unused")
+public final class SpriteID
 {
-	/**
-	 * An ID for a sprite. Negative numbers are used by RuneLite specific sprites
-	 *
-	 * @see SpriteID
-	 */
-	int getSpriteId();
+	// This file is partially automatically generated. All fields with an integer
+	// literal initializer are generated. All other fields (with a reference
+	// initializer) are created manually and not named by Jagex.
 
-	/**
-	 * The file name for the resource to be loaded, relative to the implementing class
-	 */
-	String getFileName();
+	int foo = 123;
+
+	public static final class _2XStandardSpellsOn
+	{
+		int bar = 123;
+	}
 }
