@@ -1033,7 +1033,7 @@ public class TimersAndBuffsPlugin extends Plugin
 				}
 				else if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_MASTER) == 2)
 				{
-					t += t / 2; // 50% boost
+					t += t; // 100% boost
 				}
 				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
 			}
