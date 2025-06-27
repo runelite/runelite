@@ -627,6 +627,57 @@ public final class SpriteID
 		public static final int _47 = 62;
 		public static final int _48 = 63;
 		public static final int _49 = 64;
+
+		public static final int WIND_STRIKE = _0;
+		public static final int CONFUSE = _1;
+		public static final int WATER_STRIKE = _2;
+		public static final int LVL_1_ENCHANT = _3;
+		public static final int EARTH_STRIKE = _4;
+		public static final int WEAKEN = _5;
+		public static final int FIRE_STRIKE = _6;
+		public static final int BONES_TO_BANANAS = _7;
+		public static final int WIND_BOLT = _8;
+		public static final int CURSE = _9;
+		public static final int LOW_LEVEL_ALCHEMY = _10;
+		public static final int WATER_BOLT = _11;
+		public static final int VARROCK_TELEPORT = _12;
+		public static final int LVL_2_ENCHANT = _13;
+		public static final int EARTH_BOLT = _14;
+		public static final int LUMBRIDGE_TELEPORT = _15;
+		public static final int TELEKINETIC_GRAB = _16;
+		public static final int FIRE_BOLT = _17;
+		public static final int FALADOR_TELEPORT = _18;
+		public static final int CRUMBLE_UNDEAD = _19;
+		public static final int WIND_BLAST = _20;
+		public static final int SUPERHEAT_ITEM = _21;
+		public static final int CAMELOT_TELEPORT = _22;
+		public static final int WATER_BLAST = _23;
+		public static final int LVL_3_ENCHANT = _24;
+		public static final int EARTH_BLAST = _25;
+		public static final int HIGH_LEVEL_ALCHEMY = _26;
+		public static final int CHARGE_WATER_ORB = _27;
+		public static final int LVL_4_ENCHANT = _28;
+		public static final int FIRE_BLAST = _29;
+		public static final int CHARGE_EARTH_ORB = _30;
+		public static final int WIND_WAVE = _31;
+		public static final int CHARGE_FIRE_ORB = _32;
+		public static final int WATER_WAVE = _33;
+		public static final int CHARGE_AIR_ORB = _34;
+		public static final int LVL_5_ENCHANT = _35;
+		public static final int EARTH_WAVE = _36;
+		public static final int FIRE_WAVE = _37;
+		public static final int IBAN_BLAST = _38;
+		public static final int ARDOUGNE_TELEPORT = _39;
+		public static final int WATCHTOWER_TELEPORT = _40;
+		public static final int VULNERABILITY = _41;
+		public static final int ENFEEBLE = _42;
+		public static final int STUN = _43;
+		public static final int FLAMES_OF_ZAMORAK = _44;
+		public static final int CLAWS_OF_GUTHIX = _45;
+		public static final int SARADOMIN_STRIKE = _46;
+		public static final int CALL_ANIMAL = _47;
+		public static final int RAISE_SKELETON = _48;
+		public static final int SUMMON_DEMON = _49;
 	}
 
 	public static final class Magicoff
@@ -681,6 +732,57 @@ public final class SpriteID
 		public static final int _47 = 112;
 		public static final int _48 = 113;
 		public static final int _49 = 114;
+
+		public static final int WIND_STRIKE = _0;
+		public static final int CONFUSE = _1;
+		public static final int WATER_STRIKE = _2;
+		public static final int LVL_1_ENCHANT = _3;
+		public static final int EARTH_STRIKE = _4;
+		public static final int WEAKEN = _5;
+		public static final int FIRE_STRIKE = _6;
+		public static final int BONES_TO_BANANAS = _7;
+		public static final int WIND_BOLT = _8;
+		public static final int CURSE = _9;
+		public static final int LOW_LEVEL_ALCHEMY = _10;
+		public static final int WATER_BOLT = _11;
+		public static final int VARROCK_TELEPORT = _12;
+		public static final int LVL_2_ENCHANT = _13;
+		public static final int EARTH_BOLT = _14;
+		public static final int LUMBRIDGE_TELEPORT = _15;
+		public static final int TELEKINETIC_GRAB = _16;
+		public static final int FIRE_BOLT = _17;
+		public static final int FALADOR_TELEPORT = _18;
+		public static final int CRUMBLE_UNDEAD = _19;
+		public static final int WIND_BLAST = _20;
+		public static final int SUPERHEAT_ITEM = _21;
+		public static final int CAMELOT_TELEPORT = _22;
+		public static final int WATER_BLAST = _23;
+		public static final int LVL_3_ENCHANT = _24;
+		public static final int EARTH_BLAST = _25;
+		public static final int HIGH_LEVEL_ALCHEMY = _26;
+		public static final int CHARGE_WATER_ORB = _27;
+		public static final int LVL_4_ENCHANT = _28;
+		public static final int FIRE_BLAST = _29;
+		public static final int CHARGE_EARTH_ORB = _30;
+		public static final int WIND_WAVE = _31;
+		public static final int CHARGE_FIRE_ORB = _32;
+		public static final int WATER_WAVE = _33;
+		public static final int CHARGE_AIR_ORB = _34;
+		public static final int LVL_5_ENCHANT = _35;
+		public static final int EARTH_WAVE = _36;
+		public static final int FIRE_WAVE = _37;
+		public static final int IBAN_BLAST = _38;
+		public static final int ARDOUGNE_TELEPORT = _39;
+		public static final int WATCHTOWER_TELEPORT = _40;
+		public static final int VULNERABILITY = _41;
+		public static final int ENFEEBLE = _42;
+		public static final int STUN = _43;
+		public static final int FLAMES_OF_ZAMORAK = _44;
+		public static final int CLAWS_OF_GUTHIX = _45;
+		public static final int SARADOMIN_STRIKE = _46;
+		public static final int CALL_ANIMAL = _47;
+		public static final int RAISE_SKELETON = _48;
+		public static final int SUMMON_DEMON = _49;
 	}
 
 	public static final class Prayeron
@@ -717,6 +819,39 @@ public final class SpriteID
 		public static final int _29 = 1421;
 		public static final int _30 = 1422;
 		public static final int _31 = 1423;
+
+		public static final int THICK_SKIN = _0;
+		public static final int BURST_OF_STRENGTH = _1;
+		public static final int CLARITY_OF_THOUGHT = _2;
+		public static final int ROCK_SKIN = _3;
+		public static final int SUPERHUMAN_STRENGTH = _4;
+		public static final int IMPROVED_REFLEXES = _5;
+		public static final int RAPID_RESTORE = _6;
+		public static final int RAPID_HEAL = _7;
+		public static final int PROTECT_ITEM = _8;
+		public static final int STEEL_SKIN = _9;
+		public static final int ULTIMATE_STRENGTH = _10;
+		public static final int INCREDIBLE_REFLEXES = _11;
+		public static final int PROTECT_FROM_MAGIC = _12;
+		public static final int PROTECT_FROM_MISSILES = _13;
+		public static final int PROTECT_FROM_MELEE = _14;
+		public static final int REDEMPTION = _15;
+		public static final int RETRIBUTION = _16;
+		public static final int SMITE = _17;
+		public static final int SHARP_EYE = _18;
+		public static final int MYSTIC_WILL = _19;
+		public static final int HAWK_EYE = _20;
+		public static final int MYSTIC_LORE = _21;
+		public static final int EAGLE_EYE = _22;
+		public static final int MYSTIC_MIGHT = _23;
+		public static final int PROTECT_FROM_SUMMONING = _24;
+		public static final int CHIVALRY = _25;
+		public static final int PIETY = _26;
+		public static final int PRESERVE = _27;
+		public static final int RIGOUR = _28;
+		public static final int AUGURY = _29;
+		public static final int DEADEYE = _30;
+		public static final int MYSTIC_VIGOUR = _31;
 	}
 
 	public static final class Prayeroff
@@ -753,6 +888,39 @@ public final class SpriteID
 		public static final int _29 = 1425;
 		public static final int _30 = 1426;
 		public static final int _31 = 1427;
+
+		public static final int THICK_SKIN_DISABLED = _0;
+		public static final int BURST_OF_STRENGTH_DISABLED = _1;
+		public static final int CLARITY_OF_THOUGHT_DISABLED = _2;
+		public static final int ROCK_SKIN_DISABLED = _3;
+		public static final int SUPERHUMAN_STRENGTH_DISABLED = _4;
+		public static final int IMPROVED_REFLEXES_DISABLED = _5;
+		public static final int RAPID_RESTORE_DISABLED = _6;
+		public static final int RAPID_HEAL_DISABLED = _7;
+		public static final int PROTECT_ITEM_DISABLED = _8;
+		public static final int STEEL_SKIN_DISABLED = _9;
+		public static final int ULTIMATE_STRENGTH_DISABLED = _10;
+		public static final int INCREDIBLE_REFLEXES_DISABLED = _11;
+		public static final int PROTECT_FROM_MAGIC_DISABLED = _12;
+		public static final int PROTECT_FROM_MISSILES_DISABLED = _13;
+		public static final int PROTECT_FROM_MELEE_DISABLED = _14;
+		public static final int REDEMPTION_DISABLED = _15;
+		public static final int RETRIBUTION_DISABLED = _16;
+		public static final int SMITE_DISABLED = _17;
+		public static final int SHARP_EYE_DISABLED = _18;
+		public static final int MYSTIC_WILL_DISABLED = _19;
+		public static final int HAWK_EYE_DISABLED = _20;
+		public static final int MYSTIC_LORE_DISABLED = _21;
+		public static final int EAGLE_EYE_DISABLED = _22;
+		public static final int MYSTIC_MIGHT_DISABLED = _23;
+		public static final int PROTECT_FROM_SUMMONING_DISABLED = _24;
+		public static final int CHIVALRY_DISABLED = _25;
+		public static final int PIETY_DISABLED = _26;
+		public static final int PRESERVE_DISABLED = _27;
+		public static final int RIGOUR_DISABLED = _28;
+		public static final int AUGURY_DISABLED = _29;
+		public static final int DEADEYE_DISABLED = _30;
+		public static final int MYSTIC_VIGOUR_DISABLED = _31;
 	}
 
 	public static final class GeItembackdrop
@@ -760,6 +928,9 @@ public final class SpriteID
 		public static final int _2 = 155;
 		public static final int _0 = 1120;
 		public static final int _1 = 1121;
+
+		public static final int BOX = _0;
+		public static final int GLOWING = _1;
 	}
 
 	public static final class Wornicons
@@ -776,6 +947,18 @@ public final class SpriteID
 		public static final int _9 = 165;
 		public static final int _10 = 166;
 		public static final int _11 = 167;
+
+		public static final int HEAD = _0;
+		public static final int CAPE = _1;
+		public static final int NECK = _2;
+		public static final int WEAPON = _3;
+		public static final int RING = _4;
+		public static final int TORSO = _5;
+		public static final int SHIELD = _6;
+		public static final int LEGS = _7;
+		public static final int HANDS = _8;
+		public static final int FEET = _9;
+		public static final int AMMUNITION = _10;
 	}
 
 	public static final class SideIcons
@@ -852,6 +1035,26 @@ public final class SpriteID
 		public static final int _69 = 5802;
 		public static final int _70 = 5803;
 		public static final int _71 = 5804;
+
+		public static final int COMBAT = _0;
+		public static final int STATS = _1;
+		public static final int QUEST = _2;
+		public static final int INVENTORY = _3;
+		public static final int EQUIPMENT = _4;
+		public static final int MAGIC = _6;
+		public static final int FRIENDS_CHAT = _7;
+		public static final int LOGOUT = _10;
+		public static final int OPTIONS = _11;
+		public static final int EMOTES = _12;
+		public static final int MUSIC = _13;
+		public static final int HOUSE = _14;
+		public static final int MINIGAMES = _15;
+		public static final int ACHIEVEMENT_DIARIES = _16;
+		public static final int KOUREND = _17;
+		public static final int RAIDING_PARTY = _18;
+		public static final int SPELLBOOK_ANCIENT_MAGICKS = _19;
+		public static final int SPELLBOOK_LUNAR = _20;
+		public static final int SPELLBOOK_ARCEUUS = _21;
 	}
 
 	public static final class Miscgraphics
@@ -871,6 +1074,22 @@ public final class SpriteID
 		public static final int _12 = 182;
 		public static final int _13 = 183;
 		public static final int _14 = 184;
+
+		public static final int EQUIPMENT_SLOT_TILE = _0;
+		public static final int IRON_RIVETS_SQUARE = _1;
+		public static final int IRON_RIVETS_VERTICAL = _2;
+		public static final int IRON_RIVETS_HORIZONTAL = _3;
+		public static final int STATS_TILE_HALF_LEFT = _4;
+		public static final int STATS_TILE_HALF_RIGHT_WITH_SLASH = _5;
+		public static final int STATS_TILE_HALF_RIGHT = _6;
+		public static final int STATS_TILE_HALF_LEFT_SELECTED = _7;
+		public static final int STATS_TILE_HALF_RIGHT_SELECTED = _8;
+		public static final int EQUIPMENT_SLOT_SELECTED = _9;
+		public static final int PURO_PURO_ROUND_CHECK_BOX = _10;
+		public static final int PURO_PURO_ROUND_CHECK_BOX_CHECKED_RED = _11;
+		public static final int STATS_TILE_HALF_RIGHT_WITH_SLASH_SELECTED = _12;
+		public static final int STATS_TILE_HALF_LEFT_BLACK = _13;
+		public static final int STATS_TILE_HALF_RIGHT_BLACK = _14;
 	}
 
 	public static final class Miscgraphics2
@@ -885,6 +1104,9 @@ public final class SpriteID
 		public static final int _7 = 192;
 		public static final int _8 = 193;
 		public static final int _9 = 194;
+
+		public static final int MUSIC_PLAYER_BUTTON = _0;
+		public static final int MUSIC_PLAYER_BUTTON_SELECTED = _1;
 	}
 
 	public static final class Miscgraphics3
@@ -893,6 +1115,11 @@ public final class SpriteID
 		public static final int _1 = 196;
 		public static final int _2 = 1366;
 		public static final int _3 = 1367;
+
+		public static final int UNKNOWN_BUTTON_SQUARE_SMALL = _0;
+		public static final int UNKNOWN_BUTTON_SQUARE_SMALL_SELECTED = _1;
+		public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = _2;
+		public static final int HOUSE_VIEWER_ROTATE_ANTICLOCKWISE = _3;
 	}
 
 	public static final class Staticons
@@ -915,6 +1142,25 @@ public final class SpriteID
 		public static final int _15 = 212;
 		public static final int _16 = 213;
 		public static final int _17 = 214;
+
+		public static final int ATTACK = _0;
+		public static final int STRENGTH = _1;
+		public static final int DEFENCE = _2;
+		public static final int RANGED = _3;
+		public static final int PRAYER = _4;
+		public static final int MAGIC = _5;
+		public static final int HITPOINTS = _6;
+		public static final int AGILITY = _7;
+		public static final int HERBLORE = _8;
+		public static final int THIEVING = _9;
+		public static final int CRAFTING = _10;
+		public static final int FLETCHING = _11;
+		public static final int MINING = _12;
+		public static final int SMITHING = _13;
+		public static final int FISHING = _14;
+		public static final int COOKING = _15;
+		public static final int FIREMAKING = _16;
+		public static final int WOODCUTTING = _17;
 	}
 
 	public static final class Staticons2
@@ -937,6 +1183,17 @@ public final class SpriteID
 		public static final int _15 = 230;
 		public static final int _16 = 231;
 		public static final int _17 = 232;
+
+		public static final int RUNECRAFT = _0;
+		public static final int SLAYER = _1;
+		public static final int FARMING = _2;
+		public static final int SHOVEL = _3;
+		public static final int RAT_PITS_ZONE_RAT = _4;
+		public static final int HUNTER = _5;
+		public static final int CONSTRUCTION = _6;
+		public static final int TOTAL = _7;
+		public static final int UNKNOWN_EMPTY_VIAL = _8;
+		public static final int UNKNOWN_DRAGON_DAGGER_P = _9;
 	}
 
 	public static final class Combaticons
@@ -961,6 +1218,27 @@ public final class SpriteID
 		public static final int _17 = 250;
 		public static final int _18 = 251;
 		public static final int _19 = 252;
+
+		public static final int AXE_BLOCK = _0;
+		public static final int AXE_CHOP = _1;
+		public static final int AXE_HACK = _2;
+		public static final int AXE_SMASH = _3;
+		public static final int SWORD_BLOCK = _4;
+		public static final int SWORD_SLASH = _5;
+		public static final int SWORD_CHOP = _6;
+		public static final int SWORD_STAB = _7;
+		public static final int SPEAR_LUNGE = _8;
+		public static final int SPEAR_POUND = _9;
+		public static final int MACE_BLOCK = _10;
+		public static final int MACE_PUMMEL = _11;
+		public static final int MACE_SPIKE = _12;
+		public static final int MACE_POUND = _13;
+		public static final int UNARMED_PUNCH = _14;
+		public static final int UNARMED_KICK = _15;
+		public static final int UNARMED_BLOCK = _16;
+		public static final int SPEAR_BLOCK = _17;
+		public static final int SPEAR_SWIPE = _18;
+		public static final int STAFF_BLOCK = _19;
 	}
 
 	public static final class Combaticons2
@@ -985,6 +1263,27 @@ public final class SpriteID
 		public static final int _17 = 270;
 		public static final int _18 = 271;
 		public static final int _19 = 272;
+
+		public static final int HAMMER_BLOCK = _0;
+		public static final int HAMMER = _1;
+		public static final int HAMMER_POUND = _2;
+		public static final int HAMMER_PUMMEL = _3;
+		public static final int STAKE = _4;
+		public static final int CROSSBOW_ACCURATE = _5;
+		public static final int CROSSBOW_RAPID = _6;
+		public static final int CROSSBOW_LONGRANGE = _7;
+		public static final int SCYTHE_BLOCK = _8;
+		public static final int SCYTHE_CHOP = _9;
+		public static final int MAGIC_ACCURATE = _10;
+		public static final int MAGIC_RAPID = _11;
+		public static final int MAGIC_LONGRANGE = _12;
+		public static final int STAFF_BASH = _13;
+		public static final int STAFF_POUND = _14;
+		public static final int BOW_ACCURATE = _15;
+		public static final int BOW_RAPID = _16;
+		public static final int BOW_LONGRANGE = _17;
+		public static final int SCYTHE_JAB = _18;
+		public static final int SCYTHE_REAP = _19;
 	}
 
 	public static final class Combaticons3
@@ -1009,6 +1308,26 @@ public final class SpriteID
 		public static final int _17 = 290;
 		public static final int _18 = 291;
 		public static final int _19 = 292;
+
+		public static final int PICKAXE_BLOCK = _0;
+		public static final int PICKAXE_SPIKE = _1;
+		public static final int PICKAXE_SMASH = _2;
+		public static final int PICKAXE_IMPALE = _3;
+		public static final int CLAWS_LUNGE = _4;
+		public static final int CLAWS_SLASH = _5;
+		public static final int CLAWS_CHOP = _6;
+		public static final int CLAWS_BLOCK = _7;
+		public static final int CHINCHOMPA_LONG_FUSE = _8;
+		public static final int CHINCHOMPA_MEDIUM_FUSE = _9;
+		public static final int HALBERD_BLOCK = _10;
+		public static final int HALBERD_JAB = _11;
+		public static final int HALBERD_SWIPE = _12;
+		public static final int WHIP_FLICK = _13;
+		public static final int WHIP_LASH = _14;
+		public static final int CHINCHOMPA_SHORT_FUSE = _15;
+		public static final int SALAMANDER_SCORCH = _16;
+		public static final int SALAMANDER_FLARE = _17;
+		public static final int SALAMANDER_BLAZE = _18;
 	}
 
 	public static final class Combatboxes
@@ -1017,6 +1336,11 @@ public final class SpriteID
 		public static final int _1 = 294;
 		public static final int _2 = 295;
 		public static final int _3 = 296;
+
+		public static final int BUTTON_NARROW = _0;
+		public static final int BUTTON_NARROW_SELECTED = _1;
+		public static final int BUTTON_THIN = _2;
+		public static final int BUTTON_THIN_SELECTED = _3;
 	}
 
 	public static final class HeadiconsPkInterface
@@ -1056,6 +1380,17 @@ public final class SpriteID
 		public static final int _32 = 6387;
 		public static final int _33 = 6388;
 		public static final int _34 = 6389;
+
+		public static final int PLAYER_KILLER_SKULL = _0;
+		public static final int FIGHT_PITS_WINNER_SKULL_RED = _1;
+		public static final int BOUNTY_HUNTER_TARGET_WEALTH_5_VERY_HIGH = _2;
+		public static final int BOUNTY_HUNTER_TARGET_WEALTH_4_HIGH = _3;
+		public static final int BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW = _7;
+		public static final int DEADMAN_BANK_KEYS_5 = _8;
+		public static final int DEADMAN_BANK_KEYS_4 = _9;
+		public static final int DEADMAN_BANK_KEYS_3 = _10;
+		public static final int DEADMAN_BANK_KEYS_2 = _11;
+		public static final int DEADMAN_BANK_KEYS_1 = _12;
 	}
 
 	public static final class Sworddecor
@@ -1064,6 +1399,11 @@ public final class SpriteID
 		public static final int _1 = 302;
 		public static final int _2 = 303;
 		public static final int _3 = 304;
+
+		public static final int LEFT = _0;
+		public static final int RIGHT = _1;
+		public static final int RIGHT_SHADOWED = _2;
+		public static final int LEFT_SHADOWED = _3;
 	}
 
 	public static final class Steelborder
@@ -1072,12 +1412,20 @@ public final class SpriteID
 		public static final int _1 = 311;
 		public static final int _2 = 312;
 		public static final int _3 = 313;
+
+		public static final int TOP_LEFT = _0;
+		public static final int TOP_RIGHT = _1;
+		public static final int BOTTOM_LEFT = _2;
+		public static final int BOTTOM_RIGHT = _3;
 	}
 
 	public static final class Steelborder2
 	{
 		public static final int _0 = 314;
 		public static final int _1 = 315;
+
+		public static final int EDGE_TOP = _0;
+		public static final int EDGE_RIGHT = _1;
 	}
 
 	public static final class Magicon2
@@ -1132,6 +1480,55 @@ public final class SpriteID
 		public static final int _47 = 366;
 		public static final int _48 = 367;
 		public static final int _49 = 368;
+
+		public static final int BIND = _0;
+		public static final int SNARE = _1;
+		public static final int ENTANGLE = _2;
+		public static final int CHARGE = _3;
+		public static final int TROLLHEIM_TELEPORT = _4;
+		public static final int MAGIC_DART = _5;
+		public static final int ICE_RUSH = _6;
+		public static final int ICE_BURST = _7;
+		public static final int ICE_BLITZ = _8;
+		public static final int ICE_BARRAGE = _9;
+		public static final int SMOKE_RUSH = _10;
+		public static final int SMOKE_BURST = _11;
+		public static final int SMOKE_BLITZ = _12;
+		public static final int SMOKE_BARRAGE = _13;
+		public static final int BLOOD_RUSH = _14;
+		public static final int BLOOD_BURST = _15;
+		public static final int BLOOD_BLITZ = _16;
+		public static final int BLOOD_BARRAGE = _17;
+		public static final int SHADOW_RUSH = _18;
+		public static final int SHADOW_BURST = _19;
+		public static final int SHADOW_BLITZ = _20;
+		public static final int SHADOW_BARRAGE = _21;
+		public static final int PADDEWWA_TELEPORT = _22;
+		public static final int SENNTISTEN_TELEPORT = _23;
+		public static final int KHARYRLL_TELEPORT = _24;
+		public static final int LASSAR_TELEPORT = _25;
+		public static final int DAREEYAK_TELEPORT = _26;
+		public static final int CARRALLANGAR_TELEPORT = _27;
+		public static final int ANNAKARL_TELEPORT = _28;
+		public static final int GHORROCK_TELEPORT = _29;
+		public static final int TELEOTHER_LUMBRIDGE = _30;
+		public static final int TELEOTHER_FALADOR = _31;
+		public static final int TELEOTHER_CAMELOT = _32;
+		public static final int TELE_BLOCK = _33;
+		public static final int LVL_6_ENCHANT = _34;
+		public static final int BONES_TO_PEACHES = _35;
+		public static final int TELEPORT_TO_HOUSE = _36;
+		public static final int LUMBRIDGE_HOME_TELEPORT = _37;
+		public static final int TELEPORT_TO_APE_ATOLL = _38;
+		public static final int ENCHANT_CROSSBOW_BOLT = _39;
+		public static final int TELEPORT_TO_BOUNTY_TARGET = _40;
+		public static final int TELEPORT_TO_KOUREND = _41;
+		public static final int LVL_7_ENCHANT = _42;
+		public static final int WIND_SURGE = _43;
+		public static final int WATER_SURGE = _44;
+		public static final int EARTH_SURGE = _45;
+		public static final int FIRE_SURGE = _46;
+		public static final int CIVITAS_ILLA_FORTIS_TELEPORT = _48;
 	}
 
 	public static final class Magicoff2
@@ -1186,6 +1583,54 @@ public final class SpriteID
 		public static final int _47 = 416;
 		public static final int _48 = 417;
 		public static final int _49 = 418;
+
+		public static final int BIND = _0;
+		public static final int SNARE = _1;
+		public static final int ENTANGLE = _2;
+		public static final int CHARGE = _3;
+		public static final int TROLLHEIM_TELEPORT = _4;
+		public static final int MAGIC_DART = _5;
+		public static final int ICE_RUSH = _6;
+		public static final int ICE_BURST = _7;
+		public static final int ICE_BLITZ = _8;
+		public static final int ICE_BARRAGE = _9;
+		public static final int SMOKE_RUSH = _10;
+		public static final int SMOKE_BURST = _11;
+		public static final int SMOKE_BLITZ = _12;
+		public static final int SMOKE_BARRAGE = _13;
+		public static final int BLOOD_RUSH = _14;
+		public static final int BLOOD_BURST = _15;
+		public static final int BLOOD_BLITZ = _16;
+		public static final int BLOOD_BARRAGE = _17;
+		public static final int SHADOW_RUSH = _18;
+		public static final int SHADOW_BURST = _19;
+		public static final int SHADOW_BLITZ = _20;
+		public static final int SHADOW_BARRAGE = _21;
+		public static final int PADDEWWA_TELEPORT = _22;
+		public static final int SENNTISTEN_TELEPORT = _23;
+		public static final int KHARYRLL_TELEPORT = _24;
+		public static final int LASSAR_TELEPORT = _25;
+		public static final int DAREEYAK_TELEPORT = _26;
+		public static final int CARRALLANGAR_TELEPORT = _27;
+		public static final int ANNAKARL_TELEPORT = _28;
+		public static final int GHORROCK_TELEPORT = _29;
+		public static final int TELEOTHER_LUMBRIDGE = _30;
+		public static final int TELEOTHER_FALADOR = _31;
+		public static final int TELEOTHER_CAMELOT = _32;
+		public static final int TELE_BLOCK = _33;
+		public static final int LVL_6_ENCHANT = _34;
+		public static final int BONES_TO_PEACHES = _35;
+		public static final int TELEPORT_TO_HOUSE = _36;
+		public static final int LUMBRIDGE_HOME_TELEPORT = _37;
+		public static final int TELEPORT_TO_APE_ATOLL = _38;
+		public static final int ENCHANT_CROSSBOW_BOLT = _39;
+		public static final int TELEPORT_TO_BOUNTY_TARGET = _40;
+		public static final int TELEPORT_TO_KOUREND = _41;
+		public static final int LVL_7_ENCHANT = _42;
+		public static final int WIND_SURGE = _43;
+		public static final int WATER_SURGE = _44;
+		public static final int EARTH_SURGE = _45;
+		public static final int FIRE_SURGE = _46;
 	}
 
 	public static final class GnomeballButtons
@@ -1199,6 +1644,9 @@ public final class SpriteID
 	{
 		public static final int _0 = 489;
 		public static final int _1 = 534;
+
+		public static final int GREEN_UP = _0;
+		public static final int RED_DOWN = _1;
 	}
 
 	public static final class MapdotsInterface
@@ -1210,6 +1658,13 @@ public final class SpriteID
 		public static final int _4 = 514;
 		public static final int _5 = 1044;
 		public static final int _6 = 3337;
+
+		public static final int RED_ITEM = _0;
+		public static final int YELLOW_NPC = _1;
+		public static final int WHITE_PLAYER = _2;
+		public static final int GREEN_PLAYER_FRIEND = _3;
+		public static final int BLUE_PLAYER_TEAM_CAPE = _4;
+		public static final int PURPLE_PLAYER_FRIENDS_CHAT = _5;
 	}
 
 	public static final class CrossInterface
@@ -1222,6 +1677,15 @@ public final class SpriteID
 		public static final int _5 = 520;
 		public static final int _6 = 521;
 		public static final int _7 = 522;
+
+		public static final int YELLOW_CLICK_ANIMATION_1 = _0;
+		public static final int YELLOW_CLICK_ANIMATION_2 = _1;
+		public static final int YELLOW_CLICK_ANIMATION_3 = _2;
+		public static final int YELLOW_CLICK_ANIMATION_4 = _3;
+		public static final int RED_CLICK_ANIMATION_1 = _4;
+		public static final int RED_CLICK_ANIMATION_2 = _5;
+		public static final int RED_CLICK_ANIMATION_3 = _6;
+		public static final int RED_CLICK_ANIMATION_4 = _7;
 	}
 
 	public static final class CloseButtons
@@ -1244,6 +1708,15 @@ public final class SpriteID
 		public static final int _15 = 2951;
 		public static final int _16 = 2952;
 		public static final int _17 = 2953;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
+		public static final int PARCHMENT = _2;
+		public static final int PARCHMENT_HOVERED = _3;
+		public static final int RED_X = _4;
+		public static final int RED_X_HOVERED = _5;
+		public static final int BROWN_X = _6;
+		public static final int BROWN_X_HOVERED = _7;
 	}
 
 	public static final class LunarMagicOn
@@ -1298,6 +1771,51 @@ public final class SpriteID
 		public static final int _47 = 590;
 		public static final int _48 = 591;
 		public static final int _49 = 592;
+
+		public static final int BAKE_PIE = _0;
+		public static final int MOONCLAN_TELEPORT = _1;
+		public static final int WATERBIRTH_TELEPORT = _2;
+		public static final int BOW_AND_ARROW = _3;
+		public static final int BARBARIAN_TELEPORT = _4;
+		public static final int SUPERGLASS_MAKE = _5;
+		public static final int KHAZARD_TELEPORT = _6;
+		public static final int STRING_JEWELLERY = _7;
+		public static final int BOOST_POTION_SHARE = _8;
+		public static final int MAGIC_IMBUE = _9;
+		public static final int FERTILE_SOIL = _10;
+		public static final int STAT_RESTORE_POT_SHARE = _11;
+		public static final int FISHING_GUILD_TELEPORT = _12;
+		public static final int CATHERBY_TELEPORT = _13;
+		public static final int ICE_PLATEAU_TELEPORT = _14;
+		public static final int ENERGY_TRANSFER = _15;
+		public static final int CURE_OTHER = _16;
+		public static final int HEAL_OTHER = _17;
+		public static final int VENGEANCE_OTHER = _18;
+		public static final int CURE_ME = _19;
+		public static final int GEOMANCY = _20;
+		public static final int VENGEANCE = _21;
+		public static final int CURE_GROUP = _22;
+		public static final int HEAL_GROUP = _23;
+		public static final int CURE_PLANT = _24;
+		public static final int NPC_CONTACT = _25;
+		public static final int TELE_GROUP_MOONCLAN = _26;
+		public static final int TELE_GROUP_WATERBIRTH = _27;
+		public static final int TELE_GROUP_BARBARIAN = _28;
+		public static final int TELE_GROUP_KHAZARD = _29;
+		public static final int TELE_GROUP_FISHING_GUILD = _30;
+		public static final int TELE_GROUP_CATHERBY = _31;
+		public static final int TELE_GROUP_ICE_PLATEAU = _32;
+		public static final int STAT_SPY = _33;
+		public static final int MONSTER_EXAMINE = _34;
+		public static final int HUMIDIFY = _35;
+		public static final int HUNTER_KIT = _36;
+		public static final int DREAM = _37;
+		public static final int PLANK_MAKE = _38;
+		public static final int SPELLBOOK_SWAP = _39;
+		public static final int TAN_LEATHER = _40;
+		public static final int RECHARGE_DRAGONSTONE = _41;
+		public static final int SPIN_FLAX = _42;
+		public static final int OURANIA_TELEPORT = _43;
 	}
 
 	public static final class LunarMagicOff
@@ -1352,6 +1870,51 @@ public final class SpriteID
 		public static final int _47 = 640;
 		public static final int _48 = 641;
 		public static final int _49 = 642;
+
+		public static final int BAKE_PIE = _0;
+		public static final int MOONCLAN_TELEPORT = _1;
+		public static final int WATERBIRTH_TELEPORT = _2;
+		public static final int BOW_AND_ARROW = _3;
+		public static final int BARBARIAN_TELEPORT = _4;
+		public static final int SUPERGLASS_MAKE = _5;
+		public static final int KHAZARD_TELEPORT = _6;
+		public static final int STRING_JEWELLERY = _7;
+		public static final int BOOST_POTION_SHARE = _8;
+		public static final int MAGIC_IMBUE = _9;
+		public static final int FERTILE_SOIL = _10;
+		public static final int STAT_RESTORE_POT_SHARE = _11;
+		public static final int FISHING_GUILD_TELEPORT = _12;
+		public static final int CATHERBY_TELEPORT = _13;
+		public static final int ICE_PLATEAU_TELEPORT = _14;
+		public static final int ENERGY_TRANSFER = _15;
+		public static final int CURE_OTHER = _16;
+		public static final int HEAL_OTHER = _17;
+		public static final int VENGEANCE_OTHER = _18;
+		public static final int CURE_ME = _19;
+		public static final int GEOMANCY = _20;
+		public static final int VENGEANCE = _21;
+		public static final int CURE_GROUP = _22;
+		public static final int HEAL_GROUP = _23;
+		public static final int CURE_PLANT = _24;
+		public static final int NPC_CONTACT = _25;
+		public static final int TELE_GROUP_MOONCLAN = _26;
+		public static final int TELE_GROUP_WATERBIRTH = _27;
+		public static final int TELE_GROUP_BARBARIAN = _28;
+		public static final int TELE_GROUP_KHAZARD = _29;
+		public static final int TELE_GROUP_FISHING_GUILD = _30;
+		public static final int TELE_GROUP_CATHERBY = _31;
+		public static final int TELE_GROUP_ICE_PLATEAU = _32;
+		public static final int STAT_SPY = _33;
+		public static final int MONSTER_EXAMINE = _34;
+		public static final int HUMIDIFY = _35;
+		public static final int HUNTER_KIT = _36;
+		public static final int DREAM = _37;
+		public static final int PLANK_MAKE = _38;
+		public static final int SPELLBOOK_SWAP = _39;
+		public static final int TAN_LEATHER = _40;
+		public static final int RECHARGE_DRAGONSTONE = _41;
+		public static final int SPIN_FLAX = _42;
+		public static final int OURANIA_TELEPORT = _43;
 	}
 
 	public static final class OptionsIconsSmall
@@ -1376,18 +1939,32 @@ public final class SpriteID
 		public static final int _17 = 3348;
 		public static final int _18 = 3349;
 		public static final int _19 = 3350;
+
+		public static final int EQUIPMENT_WEIGHT = _0;
+		public static final int WORLD_MAP_KEY_EFFECTS_THUNDERBOLT = _1;
+		public static final int PRAYER = _2;
+		public static final int RUN_ENERGY = _3;
+		public static final int SOUND = _6;
+		public static final int FRIENDS = _4;
+		public static final int IGNORES = _5;
 	}
 
 	public static final class CombatboxesLarge
 	{
 		public static final int _0 = 653;
 		public static final int _1 = 654;
+
+		public static final int BUTTON = _0;
+		public static final int SELECTED = _1;
 	}
 
 	public static final class CombatboxesVeryLarge
 	{
 		public static final int _0 = 655;
 		public static final int _1 = 656;
+
+		public static final int BUTTON = _0;
+		public static final int SELECTED = _1;
 	}
 
 	public static final class OptionsIcons
@@ -1452,6 +2029,55 @@ public final class SpriteID
 		public static final int _57 = 1660;
 		public static final int _58 = 1661;
 		public static final int _59 = 1662;
+
+		public static final int SCREEN_BRIGHTNESS = _0;
+		public static final int MUSIC_VOLUME = _1;
+		public static final int SOUND_EFFECT_VOLUME = _2;
+		public static final int CHAT_EFFECTS = _3;
+		public static final int MOUSE_BUTTONS = _4;
+		public static final int SPLIT_PRIVATE_CHAT = _5;
+		public static final int ACCEPT_AID = _6;
+		public static final int MUSIC_DISABLED = _7;
+		public static final int SOUND_EFFECTS_DISABLED = _8;
+		public static final int UNKNOWN_SWORD_GRIP = _9;
+		public static final int WALKING = _10;
+		public static final int RUNNING = _11;
+		public static final int WALKING_DISABLED = _12;
+		public static final int RUNNING_DISABLED = _13;
+		public static final int AREA_SOUND_VOLUME = _14;
+		public static final int AREA_SOUND_DISABLED = _15;
+		public static final int EQUIPMENT_EQUIPMENT_STATS = _16;
+		public static final int HOUSE_OPTIONS = _17;
+		public static final int EQUIPMENT_ITEMS_LOST_ON_DEATH = _18;
+		public static final int PROFANITY_FILTER = _19;
+		public static final int DATA_ORBS = _20;
+		public static final int CAMERA = _21;
+		public static final int DISPLAY = _22;
+		public static final int CHAT = _23;
+		public static final int ROOFS = _24;
+		public static final int XP_TO_NEXT_LEVEL = _25;
+		public static final int CONTROLS = _26;
+		public static final int LOGIN_LOGOUT_NOTIFICATION_TIMEOUT = _27;
+		public static final int EQUIPMENT_GUIDE_PRICES = _28;
+		public static final int SIDE_PANELS = _29;
+		public static final int TRANSPARENT_CHATBOX = _30;
+		public static final int TRANSPARENT_SIDE_PANEL = _31;
+		public static final int KEYBINDINGS = _32;
+		public static final int SCROLL_WHEEL_ZOOM = _33;
+		public static final int HIDE_PRIVATE_CHAT = _34;
+		public static final int NOTIFICATIONS = _35;
+		public static final int SHIFT_CLICK_DROP = _36;
+		public static final int FOLLOWER_RIGHT_CLICK_MENU = _37;
+		public static final int PRAYER_TOOLTIPS = _38;
+		public static final int SPECIAL_ATTACK_TOOLTIP = _39;
+		public static final int FINGER_POINTING_AT_MENU = _40;
+		public static final int DISPLAY_ICON_VERTICAL = _41;
+		public static final int F1_BUTTON_DISABLED = _42;
+		public static final int TWO_FINGERS_POINTING_AT_MAGNIFYING_GLASS = _43;
+		public static final int SHIFT_KEY_DISABLED = _44;
+		public static final int FINGER_POINTING_AT_PET = _45;
+		public static final int SCROLL = _46;
+		public static final int MOBILE_FINGER_ON_INTERFACE = _50;
 	}
 
 	public static final class OptionsSlider
@@ -1468,6 +2094,15 @@ public final class SpriteID
 		public static final int _9 = 1622;
 		public static final int _10 = 1638;
 		public static final int _11 = 1639;
+
+		public static final int _1_OF_4 = _0;
+		public static final int _2_OF_4 = _1;
+		public static final int _3_OF_4 = _2;
+		public static final int _4_OF_4 = _3;
+		public static final int THUMB_1_OF_4 = _4;
+		public static final int THUMB_2_OF_4 = _5;
+		public static final int THUMB_3_OF_4 = _6;
+		public static final int THUMB_4_OF_4 = _7;
 	}
 
 	public static final class OptionsSliderFive
@@ -1482,6 +2117,17 @@ public final class SpriteID
 		public static final int _7 = 694;
 		public static final int _8 = 695;
 		public static final int _9 = 696;
+
+		public static final int THUMB_1_OF_5 = _0;
+		public static final int THUMB_2_OF_5 = _1;
+		public static final int THUMB_3_OF_5 = _2;
+		public static final int THUMB_4_OF_5 = _3;
+		public static final int THUMB_5_OF_5 = _4;
+		public static final int _1_OF_5 = _5;
+		public static final int _2_OF_5 = _6;
+		public static final int _3_OF_5 = _7;
+		public static final int _4_OF_5 = _8;
+		public static final int _5_OF_5 = _9;
 	}
 
 	public static final class OptionsRadioButtons
@@ -1494,6 +2140,15 @@ public final class SpriteID
 		public static final int _5 = 1212;
 		public static final int _6 = 1213;
 		public static final int _7 = 1214;
+
+		public static final int EMPTY = _0;
+		public static final int CROSS_RED = _1;
+		public static final int CHECK_GREEN = _2;
+		public static final int CHECK_RED = _3;
+		public static final int EMPTY_HOVER = _4;
+		public static final int CROSS_RED_HOVER = _5;
+		public static final int CHECK_GREEN_HOVER = _6;
+		public static final int CHECK_RED_HOVER = _7;
 	}
 
 	public static final class Emotes
@@ -1558,6 +2213,55 @@ public final class SpriteID
 		public static final int _57 = 5246;
 		public static final int _58 = 5247;
 		public static final int _59 = 5248;
+
+		public static final int YES = _0;
+		public static final int NO = _1;
+		public static final int THINK = _2;
+		public static final int BOW = _3;
+		public static final int ANGRY = _4;
+		public static final int CRY = _5;
+		public static final int LAUGH = _6;
+		public static final int CHEER = _7;
+		public static final int WAVE = _8;
+		public static final int BECKON = _9;
+		public static final int DANCE = _10;
+		public static final int CLAP = _11;
+		public static final int PANIC = _12;
+		public static final int JIG = _13;
+		public static final int SPIN = _14;
+		public static final int HEADBANG = _15;
+		public static final int JUMP_FOR_JOY = _16;
+		public static final int RASPBERRY = _17;
+		public static final int YAWN = _18;
+		public static final int SALUTE = _19;
+		public static final int SHRUG = _20;
+		public static final int BLOW_KISS = _21;
+		public static final int GLASS_BOX = _22;
+		public static final int CLIMB_ROPE = _23;
+		public static final int LEAN = _24;
+		public static final int GLASS_WALL = _25;
+		public static final int GOBLIN_BOW = _26;
+		public static final int GOBLIN_SALUTE = _27;
+		public static final int SCARED = _28;
+		public static final int SLAP_HEAD = _29;
+		public static final int STAMP = _30;
+		public static final int FLAP = _31;
+		public static final int IDEA = _32;
+		public static final int ZOMBIE_WALK = _33;
+		public static final int ZOMBIE_DANCE = _34;
+		public static final int RABBIT_HOP = _35;
+		public static final int SKILLCAPE = _36;
+		public static final int ZOMBIE_HAND = _37;
+		public static final int AIR_GUITAR = _38;
+		public static final int JOG = _39;
+		public static final int SIT_UP = _40;
+		public static final int STAR_JUMP = _41;
+		public static final int PUSH_UP = _42;
+		public static final int HYPERMOBILE_DRINKER = _43;
+		public static final int URI_TRANSFORM = _44;
+		public static final int SMOOTH_DANCE = _45;
+		public static final int CRAZY_DANCE = _46;
+		public static final int PREMIER_SHIELD = _47;
 	}
 
 	public static final class EmotesLocked
@@ -1602,12 +2306,45 @@ public final class SpriteID
 		public static final int _37 = 6340;
 		public static final int _38 = 6341;
 		public static final int _39 = 6342;
+
+		public static final int SHRUG = _0;
+		public static final int BLOW_KISS = _1;
+		public static final int GLASS_BOX = _2;
+		public static final int CLIMB_ROPE = _3;
+		public static final int LEAN = _4;
+		public static final int GLASS_WALL = _5;
+		public static final int GOBLIN_BOW = _6;
+		public static final int GOBLIN_SALUTE = _7;
+		public static final int SCARED = _8;
+		public static final int SLAP_HEAD = _9;
+		public static final int STAMP = _10;
+		public static final int FLAP = _11;
+		public static final int IDEA = _12;
+		public static final int ZOMBIE_WALK = _13;
+		public static final int ZOMBIE_DANCE = _14;
+		public static final int RABBIT_HOP = _15;
+		public static final int SKILLCAPE = _16;
+		public static final int ZOMBIE_HAND = _17;
+		public static final int AIR_GUITAR = _18;
+		public static final int JOG = _19;
+		public static final int SIT_UP = _20;
+		public static final int STAR_JUMP = _21;
+		public static final int PUSH_UP = _22;
+		public static final int HYPERMOBILE_DRINKER = _23;
+		public static final int URI_TRANSFORM = _24;
+		public static final int SMOOTH_DANCE = _25;
+		public static final int CRAZY_DANCE = _26;
+		public static final int PREMIER_SHIELD = _27;
+		public static final int FORTIS_SALUTE = _34;
 	}
 
 	public static final class OptionsBoxes
 	{
 		public static final int _0 = 761;
 		public static final int _1 = 762;
+
+		public static final int EMPTY = _0;
+		public static final int SELECTED = _1;
 	}
 
 	public static final class BarbassaultIcons
@@ -1621,6 +2358,14 @@ public final class SpriteID
 		public static final int _6 = 771;
 		public static final int _7 = 772;
 		public static final int _8 = 1750;
+
+		public static final int WAVE = _0;
+		public static final int EAR = _1;
+		public static final int MOUTH = _2;
+		public static final int HORN_FOR_ATTACKER = _3;
+		public static final int HORN_FOR_DEFENDER = _4;
+		public static final int HORN_FOR_COLLECTOR = _5;
+		public static final int HORN_FOR_HEALER = _6;
 	}
 
 	public static final class ScrollbarV2
@@ -1629,6 +2374,11 @@ public final class SpriteID
 		public static final int _1 = 788;
 		public static final int _2 = 4533;
 		public static final int _3 = 4534;
+
+		public static final int ARROW_UP = _0;
+		public static final int ARROW_DOWN = _1;
+		public static final int ARROW_LEFT = _2;
+		public static final int ARROW_RIGHT = _3;
 	}
 
 	public static final class SideiconsInterface
@@ -1705,6 +2455,31 @@ public final class SpriteID
 		public static final int _69 = 5810;
 		public static final int _70 = 5811;
 		public static final int _71 = 5812;
+
+		public static final int COMBAT = _0;
+		public static final int STATS = _1;
+		public static final int QUESTS = _2;
+		public static final int INVENTORY = _3;
+		public static final int EQUIPMENT = _4;
+		public static final int PRAYER = _5;
+		public static final int MAGIC = _6;
+		public static final int CHAT_CHANNEL = _7;
+		public static final int FRIENDS = _8;
+		public static final int IGNORES = _9;
+		public static final int LOGOUT = _10;
+		public static final int OPTIONS = _11;
+		public static final int EMOTES = _12;
+		public static final int MUSIC = _13;
+		public static final int MINIGAMES = _15;
+		public static final int ACHIEVEMENT_DIARIES = _16;
+		public static final int KOUREND = _17;
+		public static final int RAIDING_PARTY = _18;
+		public static final int SPELLBOOK_ANCIENT_MAGICKS = _19;
+		public static final int SPELLBOOK_LUNAR = _20;
+		public static final int SPELLBOOK_ARCEUUS = _21;
+		public static final int ADVENTURE_PATHS = _23;
+		public static final int CLAN = _28;
+		public static final int CHARACTER_SUMMARY = _30;
 	}
 
 	public static final class ScrollbarDraggerV2
@@ -1713,12 +2488,20 @@ public final class SpriteID
 		public static final int _1 = 790;
 		public static final int _2 = 791;
 		public static final int _3 = 792;
+
+		public static final int TOP = _0;
+		public static final int MIDDLE = _1;
+		public static final int BOTTOM = _2;
+		public static final int TRACK = _3;
 	}
 
 	public static final class ScrollbarParchmentV2
 	{
 		public static final int _0 = 793;
 		public static final int _1 = 794;
+
+		public static final int UP = _0;
+		public static final int DOWN = _1;
 	}
 
 	public static final class ScrollbarParchmentDraggerV2
@@ -1727,18 +2510,29 @@ public final class SpriteID
 		public static final int _1 = 796;
 		public static final int _2 = 797;
 		public static final int _3 = 798;
+
+		public static final int TOP = _0;
+		public static final int MIDDLE = _1;
+		public static final int BOTTOM = _2;
+		public static final int TRACK = _3;
 	}
 
 	public static final class CloseButtonsV2
 	{
 		public static final int _0 = 799;
 		public static final int _1 = 800;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class ScrollbarSep
 	{
 		public static final int _0 = 801;
 		public static final int _1 = 802;
+
+		public static final int ARROW_UP = _0;
+		public static final int ARROW_DOWN = _1;
 	}
 
 	public static final class PengEmotes
@@ -1751,12 +2545,24 @@ public final class SpriteID
 		public static final int _5 = 808;
 		public static final int _6 = 809;
 		public static final int _7 = 810;
+
+		public static final int SHIVER = _0;
+		public static final int SPIN = _1;
+		public static final int CLAP = _2;
+		public static final int BOW = _3;
+		public static final int CHEER = _4;
+		public static final int WAVE = _5;
+		public static final int PREEN = _6;
+		public static final int FLAP = _7;
 	}
 
 	public static final class Combatboxesmed
 	{
 		public static final int _0 = 812;
 		public static final int _1 = 813;
+
+		public static final int BUTTON = _0;
+		public static final int SELECTED = _1;
 	}
 
 	public static final class V2StoneBorders
@@ -1794,12 +2600,39 @@ public final class SpriteID
 		public static final int _30 = 858;
 		public static final int _31 = 859;
 		public static final int _32 = 860;
+
+		public static final int SIDE_PANEL_EDGE_TOP = _0;
+		public static final int SIDE_PANEL_EDGE_LEFT = _1;
+		public static final int SIDE_PANEL_EDGE_BOTTOM = _2;
+		public static final int SIDE_PANEL_EDGE_RIGHT = _3;
+		public static final int SIDE_PANEL_CORNER_TOP_LEFT = _4;
+		public static final int SIDE_PANEL_CORNER_TOP_RIGHT = _5;
+		public static final int SIDE_PANEL_CORNER_BOTTOM_LEFT = _6;
+		public static final int SIDE_PANEL_CORNER_BOTTOM_RIGHT = _7;
+		public static final int SIDE_PANEL_EDGE_HORIZONTAL = _8;
+		public static final int SIDE_PANEL_INTERSECTION_LEFT = _9;
+		public static final int SIDE_PANEL_INTERSECTION_RIGHT = _10;
+		public static final int SIDE_PANEL_INTERSECTION_BOTTOM = _11;
+		public static final int SIDE_PANEL_INTERSECTION_TOP = _12;
+		public static final int EDGE_VERTICAL = _13;
+		public static final int INTERSECTION_TOP = _14;
+		public static final int INTERSECTION_BOTTOM = _15;
+		public static final int INTERSECTION_LEFT = _16;
+		public static final int INTERSECTION_RIGHT = _17;
+		public static final int CORNER_TOP_LEFT = _18;
+		public static final int CORNER_TOP_RIGHT = _19;
+		public static final int CORNER_BOTTOM_LEFT = _20;
+		public static final int CORNER_BOTTOM_RIGHT = _21;
+		public static final int INTERSECTION_MIDDLE = _22;
 	}
 
 	public static final class V2StoneCloseButton
 	{
 		public static final int _0 = 831;
 		public static final int _1 = 832;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class WildDitchSignButton
@@ -1807,6 +2640,10 @@ public final class SpriteID
 		public static final int _0 = 833;
 		public static final int _1 = 834;
 		public static final int _2 = 943;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
+		public static final int HOVERED_WITH_RED_X = _2;
 	}
 
 	public static final class AchievementDiaryIcons
@@ -1826,6 +2663,13 @@ public final class SpriteID
 		public static final int _12 = 3611;
 		public static final int _13 = 3612;
 		public static final int _14 = 3613;
+
+		public static final int BLUE_QUESTS = _0;
+		public static final int GREEN_ACHIEVEMENT_DIARIES = _1;
+		public static final int RED_MINIGAMES = _2;
+		public static final int PURPLE_KOUREND = _3;
+		public static final int ORANGE_ADVENTURE_PATHS = _4;
+		public static final int BROWN_CHARACTER_SUMMARY = _9;
 	}
 
 	public static final class GrimMusicalnotes
@@ -1833,6 +2677,10 @@ public final class SpriteID
 		public static final int _0 = 862;
 		public static final int _1 = 863;
 		public static final int _2 = 864;
+
+		public static final int BEAMED = _0;
+		public static final int CROTCHET = _1;
+		public static final int MINIM = _2;
 	}
 
 	public static final class IiImplingIcons
@@ -1849,12 +2697,28 @@ public final class SpriteID
 		public static final int _9 = 876;
 		public static final int _10 = 877;
 		public static final int _11 = 878;
+
+		public static final int GOURMET = _0;
+		public static final int BABY = _1;
+		public static final int DRAGON = _2;
+		public static final int NATURE = _3;
+		public static final int ECLECTIC = _4;
+		public static final int IMPLING_IN_JAR = _5;
+		public static final int YOUNG = _6;
+		public static final int MAGPIE = _7;
+		public static final int ESSENCE = _8;
+		public static final int EARTH = _9;
+		public static final int NINJA = _10;
+		public static final int LUCKY = _11;
 	}
 
 	public static final class AmeConfirmButton
 	{
 		public static final int _0 = 879;
 		public static final int _1 = 880;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class SideiconsNew
@@ -1875,6 +2739,21 @@ public final class SpriteID
 		public static final int _13 = 894;
 		public static final int _14 = 895;
 		public static final int _15 = 896;
+
+		public static final int COMBAT = _0;
+		public static final int STATS = _1;
+		public static final int QUESTS = _2;
+		public static final int EQUIPMENT = _4;
+		public static final int PRAYER = _5;
+		public static final int MAGIC = _6;
+		public static final int FRIENDS = _7;
+		public static final int IGNORES = _8;
+		public static final int LOGOUT = _9;
+		public static final int OPTIONS = _10;
+		public static final int EMOTES = _11;
+		public static final int MUSIC = _12;
+		public static final int HOUSE = _13;
+		public static final int SUMMONING = _15;
 	}
 
 	public static final class V2StoneButton
@@ -1887,6 +2766,15 @@ public final class SpriteID
 		public static final int _5 = 918;
 		public static final int _6 = 919;
 		public static final int _7 = 920;
+
+		public static final int TOP_LEFT = _0;
+		public static final int TOP_RIGHT = _1;
+		public static final int BOTTOM_LEFT = _2;
+		public static final int BOTTOM_RIGHT = _3;
+		public static final int LEFT = _4;
+		public static final int TOP = _5;
+		public static final int RIGHT = _6;
+		public static final int BOTTOM = _7;
 	}
 
 	public static final class V2StoneButtonIn
@@ -1915,6 +2803,23 @@ public final class SpriteID
 		public static final int _21 = 4697;
 		public static final int _22 = 4698;
 		public static final int _23 = 4699;
+
+		public static final int A_TOP_LEFT = _0;
+		public static final int A_TOP_RIGHT = _1;
+		public static final int A_BOTTOM_LEFT = _2;
+		public static final int A_BOTTOM_RIGHT = _3;
+		public static final int A_LEFT = _4;
+		public static final int A_TOP = _5;
+		public static final int A_RIGHT = _6;
+		public static final int A_BOTTOM = _7;
+		public static final int B_TOP_LEFT = _8;
+		public static final int B_TOP_RIGHT = _9;
+		public static final int B_BOTTOM_LEFT = _10;
+		public static final int B_BOTTOM_RIGHT = _11;
+		public static final int B_LEFT = _12;
+		public static final int B_TOP = _13;
+		public static final int B_RIGHT = _14;
+		public static final int B_BOTTOM = _15;
 	}
 
 	public static final class V2StoneButtonOut
@@ -1943,12 +2848,32 @@ public final class SpriteID
 		public static final int _21 = 4705;
 		public static final int _22 = 4706;
 		public static final int _23 = 4707;
+
+		public static final int A_TOP_LEFT = _0;
+		public static final int A_TOP_RIGHT = _1;
+		public static final int A_BOTTOM_LEFT = _2;
+		public static final int A_BOTTOM_RIGHT = _3;
+		public static final int A_MAP_EDGE_LEFT = _4;
+		public static final int A_MAP_EDGE_TOP = _5;
+		public static final int A_MAP_EDGE_RIGHT = _6;
+		public static final int A_MAP_EDGE_BOTTOM = _7;
+		public static final int B_TOP_LEFT = _8;
+		public static final int B_TOP_RIGHT = _9;
+		public static final int B_BOTTOM_LEFT = _10;
+		public static final int B_BOTTOM_RIGHT = _11;
+		public static final int B_LEFT = _12;
+		public static final int B_TOP = _13;
+		public static final int B_RIGHT = _14;
+		public static final int B_BOTTOM = _15;
 	}
 
 	public static final class AmeConfirmButtonNoBack
 	{
 		public static final int _0 = 938;
 		public static final int _1 = 939;
+
+		public static final int THUMB_UP = _0;
+		public static final int THUMB_UP_HOVERED = _1;
 	}
 
 	public static final class WarningIcons
@@ -1956,12 +2881,19 @@ public final class SpriteID
 		public static final int _0 = 940;
 		public static final int _1 = 941;
 		public static final int _2 = 942;
+
+		public static final int DISABLED = _0;
+		public static final int ROUND_CHECK_BUTTON = _1;
+		public static final int ROUND_CHECK_BUTTON_CHECKED = _2;
 	}
 
 	public static final class Tabs
 	{
 		public static final int _0 = 952;
 		public static final int _1 = 953;
+
+		public static final int SLANTED_TAB = _0;
+		public static final int SLANTED_TAB_HOVERED = _1;
 	}
 
 	public static final class V2StoneBordersAlt
@@ -2047,6 +2979,18 @@ public final class SpriteID
 		public static final int _41 = 2894;
 		public static final int _42 = 2895;
 		public static final int _43 = 2896;
+
+		public static final int HORIZONTAL_A = _0;
+		public static final int VERTICAL_A = _1;
+		public static final int HORIZONTAL_B = _2;
+		public static final int VERTICAL_B = _3;
+		public static final int TOP_LEFT = _4;
+		public static final int TOP_RIGHT = _5;
+		public static final int BOTTOM_LEFT = _6;
+		public static final int BOTTOM_RIGHT = _7;
+		public static final int HORIZONTAL_C = _8;
+		public static final int INTERSECTION_LEFT = _9;
+		public static final int INTERSECTION_RIGHT = _10;
 	}
 
 	public static final class TabsSplit
@@ -2057,6 +3001,13 @@ public final class SpriteID
 		public static final int _3 = 1001;
 		public static final int _4 = 1002;
 		public static final int _5 = 1003;
+
+		public static final int EDGE_LEFT = _0;
+		public static final int MIDDLE = _1;
+		public static final int EDGE_RIGHT = _2;
+		public static final int EDGE_LEFT_HOVERED = _3;
+		public static final int MIDDLE_HOVERED = _4;
+		public static final int EDGE_RIGHT_HOVERED = _5;
 	}
 
 	public static final class SettingsTabs
@@ -2099,6 +3050,9 @@ public final class SpriteID
 	{
 		public static final int _0 = 1015;
 		public static final int _1 = 1016;
+
+		public static final int TAB = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class PvpwIcons
@@ -2111,6 +3065,10 @@ public final class SpriteID
 		public static final int _5 = 3380;
 		public static final int _6 = 3381;
 		public static final int _7 = 3406;
+
+		public static final int PLAYER_KILLER_SKULL = _0;
+		public static final int PLAYER_KILLING_DISABLED_OVERLAY = _1;
+		public static final int DEADMAN_EXCLAMATION_MARK_SKULLED_WARNING = _2;
 	}
 
 	public static final class MenuButtons
@@ -2191,6 +3149,43 @@ public final class SpriteID
 		public static final int _47 = 2982;
 		public static final int _48 = 2983;
 		public static final int _49 = 2984;
+
+		public static final int BASIC_REANIMATION = _0;
+		public static final int ADEPT_REANIMATION = _1;
+		public static final int EXPERT_REANIMATION = _2;
+		public static final int MASTER_REANIMATION = _3;
+		public static final int ARCEUUS_LIBRARY_TELEPORT = _5;
+		public static final int DRAYNOR_MANOR_TELEPORT = _6;
+		public static final int SALVE_GRAVEYARD_TELEPORT = _7;
+		public static final int MIND_ALTAR_TELEPORT = _9;
+		public static final int RESPAWN_TELEPORT = _10;
+		public static final int FENKENSTRAINS_CASTLE_TELEPORT = _12;
+		public static final int WEST_ARDOUGNE_TELEPORT = _13;
+		public static final int HARMONY_ISLAND_TELEPORT = _14;
+		public static final int BARROWS_TELEPORT = _15;
+		public static final int APE_ATOLL_TELEPORT = _16;
+		public static final int CEMETERY_TELEPORT = _17;
+		public static final int RESURRECT_CROPS = _19;
+		public static final int GHOSTLY_GRASP = _20;
+		public static final int SKELETAL_GRASP = _21;
+		public static final int UNDEAD_GRASP = _22;
+		public static final int RESURRECT_LESSER_GHOST = _23;
+		public static final int INFERIOR_DEMONBANE = _27;
+		public static final int SUPERIOR_DEMONBANE = _28;
+		public static final int DARK_DEMONBANE = _29;
+		public static final int MARK_OF_DARKNESS = _30;
+		public static final int WARD_OF_ARCEUUS = _31;
+		public static final int LESSER_CORRUPTION = _32;
+		public static final int GREATER_CORRUPTION = _33;
+		public static final int DEATH_CHARGE = _35;
+		public static final int DEMONIC_OFFERING = _36;
+		public static final int SINISTER_OFFERING = _37;
+		public static final int SHADOW_VEIL = _40;
+		public static final int DARK_LURE = _41;
+		public static final int VILE_VIGOUR = _42;
+		public static final int DEGRIME = _43;
+		public static final int RESURRECT_SUPERIOR_SKELETON = _46;
+		public static final int RESURRECT_GREATER_ZOMBIE = _49;
 	}
 
 	public static final class SideStoneHighlights
@@ -2200,6 +3195,12 @@ public final class SpriteID
 		public static final int _2 = 1028;
 		public static final int _3 = 1029;
 		public static final int _4 = 1030;
+
+		public static final int TOP_LEFT = _0;
+		public static final int TOP_RIGHT = _1;
+		public static final int BOTTOM_LEFT = _2;
+		public static final int BOTTOM_RIGHT = _3;
+		public static final int MIDDLE = _4;
 	}
 
 	public static final class Bankbuttons
@@ -2220,12 +3221,24 @@ public final class SpriteID
 		public static final int _13 = 2822;
 		public static final int _14 = 2823;
 		public static final int _15 = 2824;
+
+		public static final int DEPOSIT_INVENTORY = _0;
+		public static final int DEPOSIT_EQUIPMENT = _1;
+		public static final int SEARCH = _2;
+		public static final int DEPOSIT_LOOTING_BAG = _3;
+		public static final int RAID_SEND_TO_INVENTORY = _4;
+		public static final int RAID_SEND_TO_BANK = _5;
+		public static final int RAID_SEND_TO_TRASH = _6;
+		public static final int PLACEHOLDERS_LOCK = _7;
 	}
 
 	public static final class Sortarrows
 	{
 		public static final int _0 = 1050;
 		public static final int _1 = 1051;
+
+		public static final int ASCENDING = _0;
+		public static final int DESCENDING = _1;
 	}
 
 	public static final class OrbIcon
@@ -2254,6 +3267,14 @@ public final class SpriteID
 		public static final int _21 = 5760;
 		public static final int _22 = 5761;
 		public static final int _23 = 5762;
+
+		public static final int PRAYER_ICON_ACTIVATED = _4;
+		public static final int HITPOINTS = _0;
+		public static final int PRAYER = _1;
+		public static final int WALK = _2;
+		public static final int RUN = _3;
+		public static final int RUN_ICON_SLOWED_DEPLETION = _5;
+		public static final int SPECIAL = _6;
 	}
 
 	public static final class OrbFiller
@@ -2279,6 +3300,18 @@ public final class SpriteID
 		public static final int _18 = 4547;
 		public static final int _19 = 4548;
 		public static final int _20 = 4549;
+
+		public static final int EMPTY = _0;
+		public static final int HITPOINTS = _1;
+		public static final int HITPOINTS_POISON = _2;
+		public static final int HITPOINTS_DISEASE = _3;
+		public static final int PRAYER = _4;
+		public static final int RUN = _5;
+		public static final int RUN_ACTIVATED = _6;
+		public static final int PRAYER_ACTIVATED = _7;
+		public static final int HITPOINTS_VENOM = _8;
+		public static final int SPECIAL = _9;
+		public static final int SPECIAL_ACTIVATED = _10;
 	}
 
 	public static final class OrbFrame
@@ -2286,6 +3319,9 @@ public final class SpriteID
 		public static final int _0 = 1071;
 		public static final int _1 = 1072;
 		public static final int _2 = 2140;
+
+		public static final int FRAME = _0;
+		public static final int FRAME_HOVERED = _1;
 	}
 
 	public static final class Banktabs
@@ -2294,6 +3330,11 @@ public final class SpriteID
 		public static final int _1 = 1078;
 		public static final int _2 = 1079;
 		public static final int _3 = 1080;
+
+		public static final int TAB = _0;
+		public static final int HOVERED = _1;
+		public static final int SELECTED = _2;
+		public static final int EMPTY = _3;
 	}
 
 	public static final class BanktabIcons
@@ -2302,6 +3343,11 @@ public final class SpriteID
 		public static final int _1 = 1082;
 		public static final int _2 = 1083;
 		public static final int _3 = 2417;
+
+		public static final int ALL_ITEMS = _0;
+		public static final int ADD = _1;
+		public static final int WRENCH = _2;
+		public static final int EQUIPMENT = _3;
 	}
 
 	public static final class SpeedrunTrophies
@@ -2360,6 +3406,14 @@ public final class SpriteID
 		public static final int _42 = 4768;
 		public static final int _43 = 4769;
 		public static final int _44 = 4770;
+
+		public static final int SPECIALEFFECT_PROMO_BANNER = _14;
+		public static final int HITSPLAT_BLUE_MISS = _0;
+		public static final int HITSPLAT_GREEN_POISON = _2;
+		public static final int DEADMAN_SPECIAL_LOGO = _16;
+		public static final int HITSPLAT_DARK_GREEN_VENOM = _11;
+		public static final int COLOSSEUM_DOOM = _40;
+		public static final int BURN_DAMAGE = _41;
 	}
 
 	public static final class GeIcons
@@ -2370,6 +3424,13 @@ public final class SpriteID
 		public static final int _3 = 1109;
 		public static final int _4 = 1110;
 		public static final int _5 = 1111;
+
+		public static final int MAKE_OFFER_SELL = _0;
+		public static final int MAKE_OFFER_SELL_HOVERED = _1;
+		public static final int MAKE_OFFER_BUY = _2;
+		public static final int MAKE_OFFER_BUY_HOVERED = _3;
+		public static final int BUTTON = _4;
+		public static final int BUTTON_HOVERED = _5;
 	}
 
 	public static final class GeSmallicons
@@ -2382,6 +3443,15 @@ public final class SpriteID
 		public static final int _5 = 1117;
 		public static final int _6 = 1118;
 		public static final int _7 = 1119;
+
+		public static final int GUIDE_PRICE = _0;
+		public static final int SEARCH = _1;
+		public static final int FAST_DECREMENT_ARROW = _2;
+		public static final int FAST_INCREMENT_ARROW = _3;
+		public static final int DECREMENT_BUTTON = _4;
+		public static final int INCREMENT_BUTTON = _5;
+		public static final int COLLECTION_BOX_OFFER_BUY = _6;
+		public static final int COLLECTION_BOX_OFFER_SELL = _7;
 	}
 
 	public static final class GeTextbackdrop
@@ -2389,12 +3459,19 @@ public final class SpriteID
 		public static final int _0 = 1123;
 		public static final int _1 = 1124;
 		public static final int _2 = 1125;
+
+		public static final int LEFT = _0;
+		public static final int MIDDLE = _1;
+		public static final int RIGHT = _2;
 	}
 
 	public static final class GeCancel
 	{
 		public static final int _0 = 1126;
 		public static final int _1 = 1127;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class IconBuffbar32x32
@@ -2423,6 +3500,12 @@ public final class SpriteID
 		public static final int _15 = 4933;
 		public static final int _16 = 4934;
 		public static final int _17 = 4935;
+
+		public static final int FREE = _0;
+		public static final int MEMBERS = _1;
+		public static final int PVP = _2;
+		public static final int DEADMAN = _3;
+		public static final int BLUE = _4;
 	}
 
 	public static final class WorldswitcherFlags
@@ -2439,6 +3522,18 @@ public final class SpriteID
 		public static final int _9 = 4936;
 		public static final int _10 = 4937;
 		public static final int _11 = 4938;
+
+		public static final int NONE = _0;
+		public static final int USA = _1;
+		public static final int CANADA = _2;
+		public static final int UK = _3;
+		public static final int NETHERLANDS = _4;
+		public static final int AUSTRALIA = _5;
+		public static final int SWEDEN = _6;
+		public static final int FINLAND = _7;
+		public static final int GERMANY = _8;
+		public static final int US_WEST = _9;
+		public static final int US_EAST = _10;
 	}
 
 	public static final class WindowmodeIcons
@@ -2451,30 +3546,51 @@ public final class SpriteID
 		public static final int _5 = 1573;
 		public static final int _6 = 1574;
 		public static final int _7 = 1575;
+
+		public static final int FIXED_MODE_DISABLED = _0;
+		public static final int RESIZEABLE_MODE_DISABLED = _1;
+		public static final int FIXED_MODE_DISABLED_VERTICAL = _2;
+		public static final int RESIZEABLE_MODE_DISABLED_VERTICAL = _3;
+		public static final int FIXED_MODE_ENABLED = _4;
+		public static final int RESIZEABLE_MODE_ENABLED = _5;
+		public static final int FIXED_MODE_ENABLED_VERTICAL = _6;
+		public static final int RESIZEABLE_MODE_ENABLED_VERTICAL = _7;
 	}
 
 	public static final class OsrsStretchSideTopbottom
 	{
 		public static final int _0 = 1173;
 		public static final int _1 = 1174;
+
+		public static final int TOP_ROW = _0;
+		public static final int BOTTOM_ROW = _1;
 	}
 
 	public static final class OsrsStretchSideColumns
 	{
 		public static final int _0 = 1175;
 		public static final int _1 = 1176;
+
+		public static final int EDGE_LEFT = _0;
+		public static final int EDGE_RIGHT = _1;
 	}
 
 	public static final class PreEocStones
 	{
 		public static final int _0 = 1180;
 		public static final int _1 = 1181;
+
+		public static final int MIDDLE = _0;
+		public static final int MIDDLE_SELECTED = _1;
 	}
 
 	public static final class ScrollbarTransArrows
 	{
 		public static final int _0 = 1185;
 		public static final int _1 = 1186;
+
+		public static final int UP = _0;
+		public static final int DOWN = _1;
 	}
 
 	public static final class ScrollbarTransDragger
@@ -2483,6 +3599,10 @@ public final class SpriteID
 		public static final int _1 = 1188;
 		public static final int _2 = 1189;
 		public static final int _3 = 1190;
+
+		public static final int THUMB_TOP = _0;
+		public static final int THUMB_MIDDLE = _1;
+		public static final int THUMB_BOTTOM = _3;
 	}
 
 	public static final class OrbXp
@@ -2491,6 +3611,11 @@ public final class SpriteID
 		public static final int _1 = 1197;
 		public static final int _2 = 1198;
 		public static final int _3 = 1199;
+
+		public static final int ORB = _0;
+		public static final int ACTIVATED = _1;
+		public static final int HOVERED = _2;
+		public static final int ACTIVATED_HOVERED = _3;
 	}
 
 	public static final class Checkbox
@@ -2501,6 +3626,13 @@ public final class SpriteID
 		public static final int _3 = 1218;
 		public static final int _4 = 1219;
 		public static final int _5 = 1220;
+
+		public static final int EMPTY = _0;
+		public static final int CROSSED = _1;
+		public static final int CHECKED = _2;
+		public static final int HOVERED = _3;
+		public static final int CROSSED_HOVERED = _4;
+		public static final int CHECKED_HOVERED = _5;
 	}
 
 	public static final class CombatboxesSplit
@@ -2511,12 +3643,22 @@ public final class SpriteID
 		public static final int _3 = 1232;
 		public static final int _4 = 1233;
 		public static final int _5 = 1234;
+
+		public static final int LEFT = _0;
+		public static final int MIDDLE = _1;
+		public static final int RIGHT = _2;
+		public static final int LEFT_SELECTED = _3;
+		public static final int MIDDLE_SELECTED = _4;
+		public static final int RIGHT_SELECTED = _5;
 	}
 
 	public static final class ZeahBook
 	{
 		public static final int _0 = 1240;
 		public static final int _1 = 1241;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class MagicNecroOff
@@ -2581,12 +3723,22 @@ public final class SpriteID
 		public static final int _57 = 3357;
 		public static final int _58 = 3358;
 		public static final int _59 = 3359;
+
+		public static final int MARK_OF_DARKNESS_DISABLED = _30;
+		public static final int WARD_OF_ARCEUUS_DISABLED = _31;
+		public static final int GREATER_CORRUPTION_DISABLED = _33;
+		public static final int DEATH_CHARGE_DISABLED = _35;
+		public static final int SHADOW_VEIL_DISABLED = _40;
+		public static final int RESURRECT_SUPERIOR_SKELETON_DISABLED = _46;
 	}
 
 	public static final class FavouriteIcons
 	{
 		public static final int _0 = 1340;
 		public static final int _1 = 1341;
+
+		public static final int REMOVE = _0;
+		public static final int ADD = _1;
 	}
 
 	public static final class BanktabsSmall
@@ -2601,12 +3753,20 @@ public final class SpriteID
 		public static final int _1 = 1347;
 		public static final int _2 = 1348;
 		public static final int _3 = 1349;
+
+		public static final int DEATH_TO_PVM = _0;
+		public static final int DEATH_TO_PVP = _1;
+		public static final int DEATH_WHILE_SKULLED = _2;
+		public static final int DEATH_WHILE_SKULLED_IN_SAFE_ZONE = _3;
 	}
 
 	public static final class FastForward
 	{
 		public static final int _0 = 1364;
 		public static final int _1 = 1365;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class PohRoomLayouts
@@ -2639,6 +3799,32 @@ public final class SpriteID
 		public static final int _25 = 1393;
 		public static final int _26 = 1394;
 		public static final int _27 = 1395;
+
+		public static final int PARLOUR = _0;
+		public static final int GARDEN = _1;
+		public static final int KITCHEN = _2;
+		public static final int DINING_ROOM = _3;
+		public static final int BEDROOM = _4;
+		public static final int GAMES_ROOM = _5;
+		public static final int SKILL_HALL = _6;
+		public static final int QUEST_HALL = _7;
+		public static final int CHAPEL = _8;
+		public static final int WORKSHOP = _9;
+		public static final int STUDY = _10;
+		public static final int PORTAL_CHAMBER = _11;
+		public static final int THRONE_ROOM = _12;
+		public static final int OUBLIETTE = _13;
+		public static final int DUNGEON_CORRIDOR = _14;
+		public static final int DUNGEON_JUNCTION = _15;
+		public static final int DUNGEON_STAIRS_ROOM = _16;
+		public static final int TREASURE_ROOM = _17;
+		public static final int FORMAL_GARDEN = _18;
+		public static final int COMBAT_ROOM = _19;
+		public static final int COSTUME_ROOM = _20;
+		public static final int MENAGERIE_INDOORS = _21;
+		public static final int MENAGERIE_OUTDOORS = _22;
+		public static final int SUPERIOR_GARDEN = _23;
+		public static final int ACHIEVEMENT_GALLERY = _24;
 	}
 
 	public static final class WintIcons
@@ -2647,6 +3833,11 @@ public final class SpriteID
 		public static final int _1 = 1398;
 		public static final int _2 = 1399;
 		public static final int _3 = 1400;
+
+		public static final int CRAFTING = _0;
+		public static final int FIREMAKING_LOGS = _1;
+		public static final int FIREMAKING = _2;
+		public static final int MAGIC_RED = _3;
 	}
 
 	public static final class TinyCombatStaticons
@@ -2658,6 +3849,14 @@ public final class SpriteID
 		public static final int _4 = 1405;
 		public static final int _5 = 1406;
 		public static final int _6 = 1407;
+
+		public static final int ATTACK = _0;
+		public static final int STRENGTH = _1;
+		public static final int DEFENCE = _2;
+		public static final int RANGED = _3;
+		public static final int PRAYER = _4;
+		public static final int MAGIC = _5;
+		public static final int HITPOINTS = _6;
 	}
 
 	public static final class IronIcons
@@ -2686,18 +3885,27 @@ public final class SpriteID
 	{
 		public static final int _0 = 1415;
 		public static final int _1 = 1416;
+
+		public static final int COX_GREEN = _0;
+		public static final int COX_BLUE = _1;
 	}
 
 	public static final class HeadbarOlmtimer100
 	{
 		public static final int _0 = 1417;
 		public static final int _1 = 1418;
+
+		public static final int YELLOW = _0;
+		public static final int RED = _1;
 	}
 
 	public static final class Reset
 	{
 		public static final int _0 = 1428;
 		public static final int _1 = 1429;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class Clickcross
@@ -2710,6 +3918,15 @@ public final class SpriteID
 		public static final int _5 = 1435;
 		public static final int _6 = 1436;
 		public static final int _7 = 1437;
+
+		public static final int YELLOW_CLICK_ANIMATION_1 = _0;
+		public static final int YELLOW_CLICK_ANIMATION_2 = _1;
+		public static final int YELLOW_CLICK_ANIMATION_3 = _2;
+		public static final int YELLOW_CLICK_ANIMATION_4 = _3;
+		public static final int RED_CLICK_ANIMATION_1 = _4;
+		public static final int RED_CLICK_ANIMATION_2 = _5;
+		public static final int RED_CLICK_ANIMATION_3 = _6;
+		public static final int RED_CLICK_ANIMATION_4 = _7;
 	}
 
 	public static final class WorldmapIcon
@@ -2718,6 +3935,9 @@ public final class SpriteID
 		public static final int _1 = 1440;
 		public static final int _2 = 2204;
 		public static final int _3 = 2205;
+
+		public static final int PLANET = _0;
+		public static final int PLANET_HOVERED = _1;
 	}
 
 	public static final class Mapfunction
@@ -2862,6 +4082,95 @@ public final class SpriteID
 		public static final int _137 = 4945;
 		public static final int _138 = 4946;
 		public static final int _139 = 4947;
+
+		public static final int GENERAL_STORE = _0;
+		public static final int SWORD_SHOP = _1;
+		public static final int MAGIC_SHOP = _2;
+		public static final int AXE_SHOP = _3;
+		public static final int HELMET_SHOP = _4;
+		public static final int BANK = _5;
+		public static final int QUEST_START = _6;
+		public static final int AMULET_SHOP = _7;
+		public static final int MINING_SITE = _8;
+		public static final int FURNACE = _9;
+		public static final int ANVIL = _10;
+		public static final int COMBAT_TRAINING = _11;
+		public static final int DUNGEON = _12;
+		public static final int STAFF_SHOP = _13;
+		public static final int PLATEBODY_SHOP = _14;
+		public static final int PLATELEGS_SHOP = _15;
+		public static final int SCIMITAR_SHOP = _16;
+		public static final int ARCHERY_SHOP = _17;
+		public static final int SHIELD_SHOP = _18;
+		public static final int ALTAR = _19;
+		public static final int HERBALIST = _20;
+		public static final int JEWELLERY_SHOP = _21;
+		public static final int GEM_SHOP = _22;
+		public static final int CRAFTING_SHOP = _23;
+		public static final int CANDLE_SHOP = _24;
+		public static final int FISHING_SHOP = _25;
+		public static final int FISHING_SPOT = _26;
+		public static final int CLOTHES_SHOP = _27;
+		public static final int APOTHECARY = _28;
+		public static final int SILK_TRADER = _29;
+		public static final int FOOD_SHOP_KEBAB = _30;
+		public static final int PUB = _31;
+		public static final int MACE_SHOP = _32;
+		public static final int TANNERY = _33;
+		public static final int RARE_TREES = _34;
+		public static final int SPINNING_WHEEL = _35;
+		public static final int FOOD_SHOP = _36;
+		public static final int FOOD_SHOP_CUTLERY = _37;
+		public static final int MINIGAME = _38;
+		public static final int WATER_SOURCE = _39;
+		public static final int COOKING_RANGE = _40;
+		public static final int PLATESKIRT_SHOP = _41;
+		public static final int POTTERY_WHEEL = _42;
+		public static final int WINDMILL = _43;
+		public static final int MINING_SHOP = _44;
+		public static final int CHAINMAIL_SHOP = _45;
+		public static final int SILVER_SHOP = _46;
+		public static final int FUR_TRADER = _47;
+		public static final int SPICE_SHOP = _48;
+		public static final int AGILITY_TRAINING = _49;
+		public static final int FOOD_SHOP_FRUIT = _50;
+		public static final int SLAYER_MASTER = _51;
+		public static final int HAIRDRESSER = _52;
+		public static final int FARMING_PATCH = _53;
+		public static final int MAKEOVER_MAGE = _54;
+		public static final int GUIDE = _55;
+		public static final int TRANSPORTATION = _56;
+		public static final int HOUSE_PORTAL = _57;
+		public static final int FARMING_SHOP = _58;
+		public static final int LOOM = _59;
+		public static final int BREWERY = _60;
+		public static final int DAIRY_CHURN = _61;
+		public static final int STAGNANT_WATER_SOURCE = _62;
+		public static final int HUNTER_TRAINING = _63;
+		public static final int POLL_BOOTH = _64;
+		public static final int HUNTER_SHOP = _65;
+		public static final int INFORMATION_I_1514 = _66;
+		public static final int ESTATE_AGENT = _67;
+		public static final int SAWMILL = _68;
+		public static final int STONEMASON = _69;
+		public static final int AGILITY_SHORT_CUT = _70;
+		public static final int WOODCUTTING_STUMP = _71;
+		public static final int HOLIDAY_EVENT = _72;
+		public static final int SANDPIT = _73;
+		public static final int TASK_MASTER = _74;
+		public static final int PET_SHOP = _75;
+		public static final int BOUNTY_HUNTER_TRADER = _76;
+		public static final int IRON_MAN_TUTORS = _77;
+		public static final int PRICING_EXPERT_WEAPONS_AND_ARMOUR = _78;
+		public static final int PRICING_EXPERT_LOGS = _79;
+		public static final int PRICING_EXPERT_HERBS = _80;
+		public static final int PRICING_EXPERT_RUNES = _81;
+		public static final int PRICING_EXPERT_ORES_AND_BARS = _82;
+		public static final int GRAND_EXCHANGE = _83;
+		public static final int KOUREND_TASK = _84;
+		public static final int RAIDS_LOBBY = _85;
+		public static final int MAP_LINK_DOWNSTAIRS = _86;
+		public static final int MAP_LINK_UPSTAIRS = _87;
 	}
 
 	public static final class WorldmapMarker
@@ -2875,12 +4184,19 @@ public final class SpriteID
 		public static final int _6 = 4550;
 		public static final int _7 = 4551;
 		public static final int _8 = 4552;
+
+		public static final int YOU_ARE_HERE = _0;
+		public static final int OFFSCREEN_FOCUS_ARROW = _1;
+		public static final int OFFSCREEN_FOCUS_ARROW_DIAGONAL = _2;
 	}
 
 	public static final class Arrow
 	{
 		public static final int _0 = 1542;
 		public static final int _1 = 1543;
+
+		public static final int BROWN_UP = _0;
+		public static final int YELLOW_UP = _1;
 	}
 
 	public static final class PohDoors
@@ -2888,6 +4204,10 @@ public final class SpriteID
 		public static final int _0 = 1576;
 		public static final int _1 = 1577;
 		public static final int _2 = 1578;
+
+		public static final int CLOSED = _0;
+		public static final int OPEN = _1;
+		public static final int INVISIBLE = _2;
 	}
 
 	public static final class Miscgraphics4
@@ -2915,6 +4235,11 @@ public final class SpriteID
 		public static final int _1 = 1601;
 		public static final int _2 = 1602;
 		public static final int _3 = 1603;
+
+		public static final int UP = _0;
+		public static final int DOWN = _1;
+		public static final int UP_HOVERED = _2;
+		public static final int DOWN_HOVERED = _3;
 	}
 
 	public static final class Spectator
@@ -2922,6 +4247,10 @@ public final class SpriteID
 		public static final int _0 = 1604;
 		public static final int _1 = 1605;
 		public static final int _2 = 1606;
+
+		public static final int HITPOINTS = _0;
+		public static final int PRAYER = _1;
+		public static final int SPECIAL = _2;
 	}
 
 	public static final class OsmFnModeIcons
@@ -2936,6 +4265,9 @@ public final class SpriteID
 		public static final int _7 = 1665;
 		public static final int _8 = 1666;
 		public static final int _9 = 1667;
+
+		public static final int ENABLED = _0;
+		public static final int DISABLED = _1;
 	}
 
 	public static final class OsmStatusIcons
@@ -3511,48 +4843,72 @@ public final class SpriteID
 	{
 		public static final int _0 = 2176;
 		public static final int _1 = 2177;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth50
 	{
 		public static final int _0 = 2178;
 		public static final int _1 = 2179;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth60
 	{
 		public static final int _0 = 2180;
 		public static final int _1 = 2181;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth80
 	{
 		public static final int _0 = 2182;
 		public static final int _1 = 2183;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth100
 	{
 		public static final int _0 = 2184;
 		public static final int _1 = 2185;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth120
 	{
 		public static final int _0 = 2186;
 		public static final int _1 = 2187;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth140
 	{
 		public static final int _0 = 2188;
 		public static final int _1 = 2189;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardHealth160
 	{
 		public static final int _0 = 2190;
 		public static final int _1 = 2191;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class GauntletMapIcons
@@ -3809,174 +5165,261 @@ public final class SpriteID
 	{
 		public static final int _0 = 2420;
 		public static final int _1 = 2421;
+
+		public static final int DESELECTED = _0;
+		public static final int SELECTED = _1;
 	}
 
 	public static final class StandardHealth40
 	{
 		public static final int _0 = 2431;
 		public static final int _1 = 2432;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield30
 	{
 		public static final int _0 = 2433;
 		public static final int _1 = 2434;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield40
 	{
 		public static final int _0 = 2435;
 		public static final int _1 = 2436;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield50
 	{
 		public static final int _0 = 2437;
 		public static final int _1 = 2438;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield60
 	{
 		public static final int _0 = 2439;
 		public static final int _1 = 2440;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield80
 	{
 		public static final int _0 = 2441;
 		public static final int _1 = 2442;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield100
 	{
 		public static final int _0 = 2443;
 		public static final int _1 = 2444;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield120
 	{
 		public static final int _0 = 2445;
 		public static final int _1 = 2446;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield140
 	{
 		public static final int _0 = 2447;
 		public static final int _1 = 2448;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield160
 	{
 		public static final int _0 = 2449;
 		public static final int _1 = 2450;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour30
 	{
 		public static final int _0 = 2451;
 		public static final int _1 = 2452;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour40
 	{
 		public static final int _0 = 2453;
 		public static final int _1 = 2454;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour50
 	{
 		public static final int _0 = 2455;
 		public static final int _1 = 2456;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour60
 	{
 		public static final int _0 = 2457;
 		public static final int _1 = 2458;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour80
 	{
 		public static final int _0 = 2459;
 		public static final int _1 = 2460;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour100
 	{
 		public static final int _0 = 2461;
 		public static final int _1 = 2462;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour120
 	{
 		public static final int _0 = 2463;
 		public static final int _1 = 2464;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour140
 	{
 		public static final int _0 = 2465;
 		public static final int _1 = 2466;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour160
 	{
 		public static final int _0 = 2467;
 		public static final int _1 = 2468;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge30
 	{
 		public static final int _0 = 2469;
 		public static final int _1 = 2470;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge40
 	{
 		public static final int _0 = 2471;
 		public static final int _1 = 2472;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge50
 	{
 		public static final int _0 = 2473;
 		public static final int _1 = 2474;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge60
 	{
 		public static final int _0 = 2475;
 		public static final int _1 = 2476;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge80
 	{
 		public static final int _0 = 2477;
 		public static final int _1 = 2478;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge100
 	{
 		public static final int _0 = 2479;
 		public static final int _1 = 2480;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge120
 	{
 		public static final int _0 = 2481;
 		public static final int _1 = 2482;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge140
 	{
 		public static final int _0 = 2483;
 		public static final int _1 = 2484;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge160
 	{
 		public static final int _0 = 2485;
 		public static final int _1 = 2486;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class ApBorder
@@ -4334,6 +5777,16 @@ public final class SpriteID
 		public static final int _6 = 2831;
 		public static final int _7 = 2832;
 		public static final int _8 = 2833;
+
+		public static final int SMILEY_FRIEND = _0;
+		public static final int CROWN_JAGEX_MODERATOR = _1;
+		public static final int KEY_CHANNEL_OWNER = _2;
+		public static final int GOLD_STAR_GENERAL = _3;
+		public static final int SILVER_STAR_CAPTAIN = _4;
+		public static final int BRONZE_STAR_LIEUTENANT = _5;
+		public static final int TRIPLE_CHEVRON_SERGEANT = _6;
+		public static final int DOUBLE_CHEVRON_CORPORAL = _7;
+		public static final int SINGLE_CHEVRON_RECRUIT = _8;
 	}
 
 	public static final class ToggleBox
@@ -4365,6 +5818,10 @@ public final class SpriteID
 		public static final int _15 = 4897;
 		public static final int _16 = 4898;
 		public static final int _17 = 4899;
+
+		public static final int HANDLE_BLUE = _6;
+		public static final int HANDLE_RED = _7;
+		public static final int HANDLE_GREEN = _8;
 	}
 
 	public static final class V2BordersSlimJoins
@@ -4432,6 +5889,9 @@ public final class SpriteID
 	{
 		public static final int _0 = 2967;
 		public static final int _1 = 2968;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class GiantsFoundryMouldsBig
@@ -4477,24 +5937,36 @@ public final class SpriteID
 	{
 		public static final int _0 = 2971;
 		public static final int _1 = 2972;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield70
 	{
 		public static final int _0 = 2973;
 		public static final int _1 = 2974;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour70
 	{
 		public static final int _0 = 2975;
 		public static final int _1 = 2976;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge70
 	{
 		public static final int _0 = 2977;
 		public static final int _1 = 2978;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class MagicSpellPadlocks
@@ -4513,12 +5985,21 @@ public final class SpriteID
 		public static final int _3 = 3054;
 		public static final int _4 = 3055;
 		public static final int _5 = 3056;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
+		public static final int NEW_MESSAGES = _4;
+		public static final int SELECTED = _2;
+		public static final int SELECTED_HOVERED = _3;
 	}
 
 	public static final class ReportButton
 	{
 		public static final int _0 = 3057;
 		public static final int _1 = 3058;
+
+		public static final int BUTTON = _0;
+		public static final int HOVERED = _1;
 	}
 
 	public static final class ChatTypeIcon
@@ -5821,6 +7302,68 @@ public final class SpriteID
 		public static final int _67 = 6350;
 		public static final int _68 = 6351;
 		public static final int _69 = 6352;
+
+		public static final int MIMIC = _0;
+		public static final int OBOR = _1;
+		public static final int BRYOPHYTA = _2;
+		public static final int GIANT_MOLE = _3;
+		public static final int GROTESQUE_GUARDIANS = _4;
+		public static final int TEMPOROSS = _5;
+		public static final int WINTERTODT = _6;
+		public static final int BARROWS_CHESTS = _7;
+		public static final int SARACHNIS = _9;
+		public static final int KALPHITE_QUEEN = _10;
+		public static final int HESPORI = _11;
+		public static final int SKOTIZO = _12;
+		public static final int ZALCANO = _13;
+		public static final int KING_BLACK_DRAGON = _14;
+		public static final int KRAKEN = _15;
+		public static final int ABYSSAL_SIRE = _16;
+		public static final int THERMONUCLEAR_SMOKE_DEVIL = _17;
+		public static final int THE_GAUNTLET = _18;
+		public static final int ZULRAH = _19;
+		public static final int CERBERUS = _20;
+		public static final int VORKATH = _21;
+		public static final int GENERAL_GRAARDOR = _22;
+		public static final int KRIL_TSUTSAROTH = _23;
+		public static final int COMMANDER_ZILYANA = _24;
+		public static final int KREEARRA = _25;
+		public static final int NIGHTMARE = _26;
+		public static final int CORPOREAL_BEAST = _27;
+		public static final int CHAMBERS_OF_XERIC = _28;
+		public static final int ALCHEMICAL_HYDRA = _29;
+		public static final int THEATRE_OF_BLOOD = _30;
+		public static final int NEX = _31;
+		public static final int DAGANNOTH_SUPREME = _32;
+		public static final int DAGANNOTH_REX = _33;
+		public static final int DAGANNOTH_PRIME = _34;
+		public static final int THE_CORRUPTED_GAUNTLET = _35;
+		public static final int CHAMBERS_OF_XERIC_CHALLENGE_MODE = _36;
+		public static final int TOMBS_OF_AMASCUT = _37;
+		public static final int TOMBS_OF_AMASCUT_EXPERT = _38;
+		public static final int PHANTOM_MUSPAH = _39;
+		public static final int CHAOS_ELEMENTAL = _40;
+		public static final int ARTIO_CALLISTO = _41;
+		public static final int CALVARION_VETION = _42;
+		public static final int SPINDEL_VENENATIS = _43;
+		public static final int CHAOS_FANATIC = _44;
+		public static final int CRAZY_ARCHAEOLOGIST = _45;
+		public static final int DERANGED_ARCHAEOLOGIST = _46;
+		public static final int SCORPIA = _47;
+		public static final int TZTOK_JAD = _48;
+		public static final int TZKAL_ZUK = _49;
+		public static final int THE_WHISPERER = _50;
+		public static final int DUKE_SUCELLUS = _51;
+		public static final int THE_LEVIATHAN = _52;
+		public static final int VARDORVIS = _53;
+		public static final int SCURRIUS = _54;
+		public static final int SOL_HEREDIT = _55;
+		public static final int LUNAR_CHESTS = _56;
+		public static final int ARAXXOR = _57;
+		public static final int AMOXLIATL = _58;
+		public static final int THE_HUEYCOATL = _59;
+		public static final int ROYAL_TITANS = _62;
+		public static final int YAMA = _63;
 	}
 
 	public static final class IconBoss50x50
@@ -6210,60 +7753,90 @@ public final class SpriteID
 	{
 		public static final int _0 = 4708;
 		public static final int _1 = 4709;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer40
 	{
 		public static final int _0 = 4710;
 		public static final int _1 = 4711;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer50
 	{
 		public static final int _0 = 4712;
 		public static final int _1 = 4713;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer60
 	{
 		public static final int _0 = 4714;
 		public static final int _1 = 4715;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer70
 	{
 		public static final int _0 = 4716;
 		public static final int _1 = 4717;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer80
 	{
 		public static final int _0 = 4718;
 		public static final int _1 = 4719;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer100
 	{
 		public static final int _0 = 4720;
 		public static final int _1 = 4721;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer120
 	{
 		public static final int _0 = 4722;
 		public static final int _1 = 4723;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer140
 	{
 		public static final int _0 = 4724;
 		public static final int _1 = 4725;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer160
 	{
 		public static final int _0 = 4726;
 		public static final int _1 = 4727;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class Lockpicking
@@ -6324,60 +7897,90 @@ public final class SpriteID
 	{
 		public static final int _0 = 4771;
 		public static final int _1 = 4772;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison40
 	{
 		public static final int _0 = 4773;
 		public static final int _1 = 4774;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison50
 	{
 		public static final int _0 = 4775;
 		public static final int _1 = 4776;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison60
 	{
 		public static final int _0 = 4777;
 		public static final int _1 = 4778;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison70
 	{
 		public static final int _0 = 4779;
 		public static final int _1 = 4780;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison80
 	{
 		public static final int _0 = 4781;
 		public static final int _1 = 4782;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison100
 	{
 		public static final int _0 = 4783;
 		public static final int _1 = 4784;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison120
 	{
 		public static final int _0 = 4785;
 		public static final int _1 = 4786;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison140
 	{
 		public static final int _0 = 4787;
 		public static final int _1 = 4788;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison160
 	{
 		public static final int _0 = 4789;
 		public static final int _1 = 4790;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class CrossBig
@@ -6413,6 +8016,31 @@ public final class SpriteID
 		public static final int _21 = 4863;
 		public static final int _22 = 4864;
 		public static final int _23 = 4865;
+
+		public static final int ANCIENT_STRENGTH = _1;
+		public static final int ANCIENT_SIGHT = _2;
+		public static final int ANCIENT_WILL = _3;
+		public static final int TRINITAS = _8;
+		public static final int DECIMATE = _12;
+		public static final int ANNIHILATE = _13;
+		public static final int VAPORISE = _14;
+		public static final int DAMPEN_MELEE = _7;
+		public static final int DAMPEN_RANGED = _6;
+		public static final int DAMPEN_MAGIC = _5;
+		public static final int PURGE = _10;
+		public static final int REJUVENATION = _0;
+		public static final int RUINOUS_GRACE = _4;
+		public static final int WRATH = _20;
+		public static final int METABOLISE = _11;
+		public static final int BERSERKER = _9;
+		public static final int FUMUS_VOW = _16;
+		public static final int CRUORS_VOW = _18;
+		public static final int UMBRAS_VOW = _17;
+		public static final int GLACIES_VOW = _19;
+		public static final int INTENSIFY = _22;
+		public static final int REBUKE = _15;
+		public static final int VINDICATION = _21;
+		public static final int PROTECT_ITEM = _23;
 	}
 
 	public static final class IconPrayerZaros02_30x30
@@ -6447,6 +8075,8 @@ public final class SpriteID
 	{
 		public static final int _0 = 4892;
 		public static final int _1 = 4893;
+
+		public static final int ACTIVATED = _0;
 	}
 
 	public static final class GroundItemsPlusminus
@@ -7229,18 +8859,27 @@ public final class SpriteID
 	{
 		public static final int _0 = 5579;
 		public static final int _1 = 5580;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class HeadbarIce120
 	{
 		public static final int _0 = 5581;
 		public static final int _1 = 5582;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class HeadbarHeat120
 	{
 		public static final int _0 = 5583;
 		public static final int _1 = 5584;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class Arrows25
@@ -7267,36 +8906,54 @@ public final class SpriteID
 	{
 		public static final int _0 = 5609;
 		public static final int _1 = 5610;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardShield90
 	{
 		public static final int _0 = 5611;
 		public static final int _1 = 5612;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardArmour90
 	{
 		public static final int _0 = 5613;
 		public static final int _1 = 5614;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardCharge90
 	{
 		public static final int _0 = 5615;
 		public static final int _1 = 5616;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPrayer90
 	{
 		public static final int _0 = 5617;
 		public static final int _1 = 5618;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class StandardPoison90
 	{
 		public static final int _0 = 5619;
 		public static final int _1 = 5620;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class OverlayTdMultiway
@@ -7310,18 +8967,27 @@ public final class SpriteID
 	{
 		public static final int _0 = 5644;
 		public static final int _1 = 5645;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class HeadbarIce90
 	{
 		public static final int _0 = 5646;
 		public static final int _1 = 5647;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class HeadbarHeat90
 	{
 		public static final int _0 = 5648;
 		public static final int _1 = 5649;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class NumberPadButtons
@@ -7604,12 +9270,27 @@ public final class SpriteID
 		public static final int _17 = 6397;
 		public static final int _18 = 6398;
 		public static final int _19 = 6399;
+
+		public static final int CLUE_SCROLL_ALL = _0;
+		public static final int BOUNTY_HUNTER_HUNTER = _1;
+		public static final int BOUNTY_HUNTER_ROGUE = _2;
+		public static final int LAST_MAN_STANDING = _3;
+		public static final int LEAGUE_POINTS = _4;
+		public static final int SOUL_WARS_ZEAL = _5;
+		public static final int PVP_ARENA_RANK = _6;
+		public static final int RIFTS_CLOSED = _7;
+		public static final int DEADMAN_POINTS = _8;
+		public static final int COLOSSEUM_GLORY = _9;
+		public static final int COLLECTIONS_LOGGED = _10;
 	}
 
 	public static final class HeadbarBlood30
 	{
 		public static final int _0 = 5863;
 		public static final int _1 = 5864;
+
+		public static final int FRONT = _0;
+		public static final int BACK = _1;
 	}
 
 	public static final class League5MapShields01

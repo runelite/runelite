@@ -55,10 +55,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.SpriteID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
@@ -417,7 +417,7 @@ class WidgetInspector extends DevToolsFrame
 
 		log.info("Picker is {}.{} [{}]", WidgetUtil.componentToInterface(picker.getId()), WidgetUtil.componentToId(picker.getId()), picker.getIndex());
 
-		picker.setSpriteId(SpriteID.MOBILE_FINGER_ON_INTERFACE);
+		picker.setSpriteId(SpriteID.OptionsIcons.MOBILE_FINGER_ON_INTERFACE);
 		picker.setOriginalWidth(15);
 		picker.setOriginalHeight(17);
 		picker.setOriginalX(x);

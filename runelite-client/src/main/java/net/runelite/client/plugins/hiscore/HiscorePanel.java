@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
-import static net.runelite.api.SpriteID.TAB_COMBAT;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -332,7 +332,7 @@ public class HiscorePanel extends PluginPanel
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText(pad("--", skillType));
 
-		spriteManager.getSpriteAsync(skill == null ? TAB_COMBAT : skill.getSpriteId(), 0, (sprite) ->
+		spriteManager.getSpriteAsync(skill == null ? SpriteID.SideIcons.COMBAT : skill.getSpriteId(), 0, (sprite) ->
 			SwingUtilities.invokeLater(() ->
 			{
 				// Icons are all 25x25 or smaller, so they're fit into a 25x25 canvas to give them a consistent size for

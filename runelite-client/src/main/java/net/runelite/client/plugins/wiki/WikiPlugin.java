@@ -38,7 +38,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -46,6 +45,7 @@ import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -188,7 +188,7 @@ public class WikiPlugin extends Plugin
 		}
 
 		icon = wikiBannerParent.createChild(0, WidgetType.GRAPHIC);
-		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
+		icon.setSpriteId(SpriteID.WikiIcon.DESELECTED);
 		icon.setOriginalX(0);
 		icon.setOriginalY(0);
 		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
@@ -203,7 +203,7 @@ public class WikiPlugin extends Plugin
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
 			wikiSelected = true;
-			icon.setSpriteId(SpriteID.WIKI_SELECTED);
+			icon.setSpriteId(SpriteID.WikiIcon.SELECTED);
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 
@@ -258,7 +258,7 @@ public class WikiPlugin extends Plugin
 		wikiSelected = false;
 		if (icon != null)
 		{
-			icon.setSpriteId(SpriteID.WIKI_DESELECTED);
+			icon.setSpriteId(SpriteID.WikiIcon.DESELECTED);
 		}
 	}
 

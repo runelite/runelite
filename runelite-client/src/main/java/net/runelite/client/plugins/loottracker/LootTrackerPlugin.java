@@ -74,7 +74,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -87,6 +86,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
@@ -552,7 +552,7 @@ public class LootTrackerPlugin extends Plugin
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
 		ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
 		panel = new LootTrackerPanel(this, itemManager, config);
-		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
+		spriteManager.getSpriteAsync(SpriteID.SideIcons.INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 

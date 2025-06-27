@@ -50,7 +50,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -66,6 +65,7 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -593,7 +593,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		int cycle = client.getGameCycle();
 		BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(weapon.getItemID()[0]), 24, 24);
-		BufferedImage background = hit == 0 ? spriteManager.getSprite(SpriteID.HITSPLAT_BLUE_MISS, 0) : null;
+		BufferedImage background = hit == 0 ? spriteManager.getSprite(SpriteID.Hitmark.HITSPLAT_BLUE_MISS, 0) : null;
 
 		return PlayerInfoDrop.builder()
 			.startCycle(cycle)

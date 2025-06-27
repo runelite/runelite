@@ -48,7 +48,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
@@ -58,6 +57,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
@@ -229,7 +229,7 @@ public class ScreenshotPlugin extends Plugin
 
 		clientToolbar.addNavigation(titleBarButton);
 
-		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
+		spriteManager.getSpriteAsync(SpriteID.ReportButton.BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override

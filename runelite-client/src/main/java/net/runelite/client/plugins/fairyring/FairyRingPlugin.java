@@ -45,10 +45,10 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
@@ -158,7 +158,7 @@ public class FairyRingPlugin extends Plugin
 			if (header != null)
 			{
 				searchBtn = header.createChild(-1, WidgetType.GRAPHIC);
-				searchBtn.setSpriteId(SpriteID.GE_SEARCH);
+				searchBtn.setSpriteId(SpriteID.GeSmallicons.SEARCH);
 				searchBtn.setOriginalWidth(17);
 				searchBtn.setOriginalHeight(17);
 				searchBtn.setOriginalX(11);
@@ -379,7 +379,7 @@ public class FairyRingPlugin extends Plugin
 			));
 
 			// add padding to the first widget after the separator
-			if (!hidden && lastFavorite != null && (c.getFavorite() == null || c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_ADD_FAVOURITE))
+			if (!hidden && lastFavorite != null && (c.getFavorite() == null || c.getFavorite().getSpriteId() == SpriteID.FavouriteIcons.ADD))
 			{
 				y += ENTRY_PADDING;
 				lastFavorite = null;
@@ -404,7 +404,7 @@ public class FairyRingPlugin extends Plugin
 			{
 				y += c.getDescription().getHeight() + ENTRY_PADDING;
 
-				if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+				if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FavouriteIcons.REMOVE)
 				{
 					hasFavorites = true;
 					lastFavorite = c;
@@ -420,7 +420,7 @@ public class FairyRingPlugin extends Plugin
 					separator.setHidden(false);
 				}
 			}
-			else if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+			else if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FavouriteIcons.REMOVE)
 			{
 				// separator widget layouts from the bottom of the favorites container
 				separator.setOriginalY(separator.getOriginalY() + c.getDescription().getHeight() + ENTRY_PADDING);
