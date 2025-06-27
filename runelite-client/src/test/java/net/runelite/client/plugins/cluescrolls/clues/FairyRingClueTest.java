@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
@@ -33,5 +36,16 @@ public class FairyRingClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(FairyRingClue.forText(""));
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<Integer> clueIds = FairyRingClue.CLUES.stream()
+			.mapToInt(FairyRingClue::getItemId)
+			.boxed()
+			.collect(Collectors.toUnmodifiableSet());
+
+		assertEquals(FairyRingClue.CLUES.size(), clueIds.size());
 	}
 }
