@@ -60,9 +60,17 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		final boolean shouldDrawTiles = config.drawTiles();
+		final boolean shouldDrawTrueTile = config.partyDrawTrueTile();
+
+		if (!shouldDrawTiles && !shouldDrawTrueTile)
+		{
+			return null;
+		}
+
 		playerIndicatorsService.forEachPlayer((player, decorations) ->
 		{
-			if (config.drawTiles())
+			if (shouldDrawTiles)
 			{
 				final Polygon poly = player.getCanvasTilePoly();
 
@@ -73,7 +81,7 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 			}
 
 			// Only consider true tile for party members
-			if (config.partyDrawTrueTile() && (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null))
+			if (shouldDrawTrueTile && (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null))
 			{
 				final LocalPoint lp = LocalPoint.fromWorld(client.getTopLevelWorldView(), player.getWorldLocation());
 				if (lp != null)
