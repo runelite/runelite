@@ -261,6 +261,11 @@
 			<version>1.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>jaco-mp3-player</artifactId>
+			<version>0.10.2-rl1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
