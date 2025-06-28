@@ -61,7 +61,7 @@ public class BossTimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 		Boss boss = Boss.find(npc.getId());
@@ -73,7 +73,7 @@ public class BossTimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged npcChanged)
+	private void onNpcChanged(NpcChanged npcChanged)
 	{
 		NPC npc = npcChanged.getNpc();
 		Boss boss = Boss.find(npc.getId());

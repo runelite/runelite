@@ -85,7 +85,7 @@ public class ItemPricesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		if (client.isMenuOpen())
 		{

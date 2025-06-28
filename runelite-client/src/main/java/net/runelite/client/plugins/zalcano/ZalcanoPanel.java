@@ -38,7 +38,7 @@ class ZalcanoPanel extends OverlayPanel
 	private final ZalcanoPlugin plugin;
 
 	@Inject
-	public ZalcanoPanel(ZalcanoPlugin plugin)
+	private ZalcanoPanel(ZalcanoPlugin plugin)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
