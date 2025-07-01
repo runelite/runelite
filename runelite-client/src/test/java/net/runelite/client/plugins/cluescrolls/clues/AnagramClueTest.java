@@ -27,8 +27,11 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import net.runelite.api.Client;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -44,24 +47,46 @@ public class AnagramClueTest
 	@Mock
 	private Client client;
 
+	@Before
+	public void before()
+	{
+		when(plugin.getClient()).thenReturn(client);
+	}
+
 	@Test
 	public void forTextEmptyString()
 	{
-		assertNull(AnagramClue.forText(""));
+		assertNull(AnagramClue.forText(plugin, ""));
 	}
 
 	@Test
 	public void countLumbridgeGravestones()
 	{
-		when(plugin.getClient()).thenReturn(client);
 		when(client.getVarbitValue(VarbitID.HW17_JARVIS_DEAD)).thenReturn(0, 1, 2, 3);
 
-		AnagramClue clue = AnagramClue.forText("How many gravestones are in the church graveyard?");
+		AnagramClue clue = AnagramClue.forText(plugin, "How many gravestones are in the church graveyard?");
 		assert clue != null;
 
 		assertEquals("19", clue.getAnswer(plugin));
 		assertEquals("20", clue.getAnswer(plugin));
 		assertEquals("19", clue.getAnswer(plugin));
 		assertEquals("19", clue.getAnswer(plugin));
+	}
+
+	@Test
+	public void nieveSteve()
+	{
+		when(client.getVarbitValue(VarbitID.MM2_SLAYER_MASTER)).thenReturn(0);
+
+		AnagramClue clue1 = AnagramClue.forText(plugin, AnagramClue.ANAGRAM_TEXT + "I EVEN");
+
+		assertArrayEquals(new String[]{"Nieve"}, clue1.getNpcs(plugin));
+
+		when(client.getVarbitValue(VarbitID.MM2_SLAYER_MASTER)).thenReturn(1);
+
+		AnagramClue clue2 = AnagramClue.forText(plugin, AnagramClue.ANAGRAM_TEXT + "VESTE");
+
+		assertArrayEquals(new String[]{"Steve"}, clue2.getNpcs(plugin));
+		assertSame(clue1, clue2);
 	}
 }

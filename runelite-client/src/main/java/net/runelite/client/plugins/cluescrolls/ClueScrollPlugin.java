@@ -832,7 +832,7 @@ public class ClueScrollPlugin extends Plugin
 			return coordinatesToWorldPoint(text);
 		}
 
-		final AnagramClue anagramClue = AnagramClue.forText(text);
+		final AnagramClue anagramClue = AnagramClue.forText(this, text);
 		if (anagramClue != null)
 		{
 			return anagramClue;

@@ -56,7 +56,8 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
-	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
+	@VisibleForTesting
+	static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
 	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";
 
 	static final List<AnagramClue> CLUES = ImmutableList.of(
@@ -428,18 +429,9 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		AnagramClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP3)
-			.text("I EVEN")
-			.npc("Nieve")
+			.textProvider((plugin) -> plugin.getClient().getVarbitValue(VarbitID.MM2_SLAYER_MASTER) == 0 ? "I EVEN" : "VESTE")
+			.npcProvider((plugin) -> plugin.getClient().getVarbitValue(VarbitID.MM2_SLAYER_MASTER) == 0 ? "Nieve" : "Steve")
 			.location(new WorldPoint(2432, 3422, 0))
-			.area("The slayer master in Gnome Stronghold")
-			.question("How many farming patches are there in Gnome stronghold?")
-			.answer("2")
-			.build(),
-		AnagramClue.builder()
-			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_EXP3)
-			.text("VESTE")
-			.npc("Steve")
-			.location(new WorldPoint(2432, 3423, 0))
 			.area("The slayer master in Gnome Stronghold")
 			.question("How many farming patches are there in Gnome stronghold?")
 			.answer("2")
@@ -903,8 +895,11 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	);
 
 	private final int itemId;
+	@Getter(AccessLevel.NONE)
+	@Nullable
 	private final String text;
-	private final String npc;
+	private final Function<ClueScrollPlugin, String> textProvider;
+	private final Function<ClueScrollPlugin, String> npcProvider;
 	@Getter(AccessLevel.PRIVATE)
 	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
 	private final String area;
@@ -917,8 +912,10 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Builder
 	private AnagramClue(
 		@Nullable Integer itemId,
-		String text,
-		String npc,
+		@Nullable String text,
+		@Nullable Function<ClueScrollPlugin, String> textProvider,
+		@Nullable String npc,
+		@Nullable Function<ClueScrollPlugin, String> npcProvider,
 		@Nullable WorldPoint location,
 		@Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider,
 		String area,
@@ -930,7 +927,8 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		this.itemId = itemId != null ? itemId : -1;
 		this.text = text;
-		this.npc = npc;
+		this.textProvider = textProvider != null ? textProvider : (plugin) -> text;
+		this.npcProvider = npcProvider != null ? npcProvider : (plugin) -> npc;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.area = area;
 		this.question = question;
@@ -956,7 +954,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		panelComponent.getChildren().add(TitleComponent.builder().text("Anagram Clue").build());
 		panelComponent.getChildren().add(LineComponent.builder().left("NPC:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getNpc())
+			.left(npcProvider.apply(plugin))
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
@@ -1024,12 +1022,14 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		return null;
 	}
 
-	public static AnagramClue forText(String text)
+	public static AnagramClue forText(ClueScrollPlugin plugin, String text)
 	{
 		for (AnagramClue clue : CLUES)
 		{
-			if (text.equalsIgnoreCase(ANAGRAM_TEXT + clue.text)
-				|| text.equalsIgnoreCase(ANAGRAM_TEXT_BEGINNER + clue.text)
+			final String clueText = clue.textProvider.apply(plugin);
+
+			if (text.equalsIgnoreCase(ANAGRAM_TEXT + clueText)
+				|| text.equalsIgnoreCase(ANAGRAM_TEXT_BEGINNER + clueText)
 				|| text.equalsIgnoreCase(clue.question))
 			{
 				return clue;
@@ -1042,7 +1042,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
-		return new String[]{npc};
+		return new String[]{npcProvider.apply(plugin)};
 	}
 
 	@Override
@@ -1054,7 +1054,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public int[] getConfigKeys()
 	{
-		return new int[]{text.hashCode()};
+		return new int[]{text != null ? text.hashCode() : objectId};
 	}
 
 	@SuppressWarnings("PMD.UnusedPrivateMethod")
