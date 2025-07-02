@@ -146,7 +146,7 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("barrows") && !config.showPrayerDrainTimer())
 		{
@@ -155,7 +155,7 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -172,7 +172,7 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == InterfaceID.BARROWS_REWARD && config.showChestValue())
 		{
@@ -222,7 +222,7 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender beforeRender)
+	private void onBeforeRender(BeforeRender beforeRender)
 	{
 		// The barrows brothers and potential overlays have timers to unhide them each tick. Set them
 		// hidden here instead of in the overlay, because if the overlay renders on the ABOVE_WIDGETS
@@ -242,7 +242,7 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetClosed(WidgetClosed widgetClosed)
+	private void onWidgetClosed(WidgetClosed widgetClosed)
 	{
 		if (widgetClosed.getGroupId() == InterfaceID.BARROWS_PUZZLE)
 		{

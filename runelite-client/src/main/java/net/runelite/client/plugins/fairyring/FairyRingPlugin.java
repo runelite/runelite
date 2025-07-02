@@ -142,13 +142,13 @@ public class FairyRingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		setWidgetTextToDestination();
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == InterfaceID.FAIRYRINGS_LOG)
 		{
@@ -236,7 +236,7 @@ public class FairyRingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick t)
+	private void onGameTick(GameTick t)
 	{
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(InterfaceID.Fairyrings.CONFIRM);
@@ -451,7 +451,7 @@ public class FairyRingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRYRINGS_LOG &&
 			event.getOption().equals("Use code"))
@@ -468,7 +468,7 @@ public class FairyRingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.FAIRYRINGS_SORT_UPDATE && searchInput != null && tagInput == null)
 		{

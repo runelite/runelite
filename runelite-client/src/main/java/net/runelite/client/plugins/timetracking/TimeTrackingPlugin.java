@@ -179,7 +179,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+	private void onConfigChanged(ConfigChanged e)
 	{
 		if (!e.getGroup().equals(CONFIG_GROUP))
 		{
@@ -201,7 +201,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
+	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		if (commandExecuted.getCommand().equalsIgnoreCase("resetfarmtick"))
 		{
@@ -211,7 +211,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick t)
+	private void onGameTick(GameTick t)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -252,7 +252,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
 	{
 		farmingTracker.loadCompletionTimes();
 		birdHouseTracker.loadFromConfig();
@@ -261,7 +261,7 @@ public class TimeTrackingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(CONTRACT_COMPLETED))
 		{
