@@ -87,6 +87,7 @@ public enum RunecraftAction implements ItemSkillAction
 		}
 	},
 	SOUL_RUNE(ItemID.SOULRUNE, 90, 30.325f, true),
+	AETHER_RUNE(ItemID.AETHERRUNE, 90, 20, false),
 	WRATH_RUNE(ItemID.WRATHRUNE, 95, 8, false),
 	;
 
