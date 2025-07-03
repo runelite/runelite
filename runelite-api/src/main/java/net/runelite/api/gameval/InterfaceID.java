@@ -8787,16 +8787,17 @@ public final class InterfaceID
 		public static final int RESURRECT_GREATER_GHOST = 0x00da_00be;
 		public static final int RESURRECT_GREATER_SKELETON = 0x00da_00bf;
 		public static final int RESURRECT_GREATER_ZOMBIE = 0x00da_00c0;
-		public static final int INFOLAYER = 0x00da_00c1;
-		public static final int INFOLAYER_GRAPHIC0 = 0x00da_00c2;
-		public static final int FILTERMENU_CONTAINER = 0x00da_00c3;
-		public static final int FILTERMENU_CONTAINER_GRAPHIC0 = 0x00da_00c4;
-		public static final int FILTERMENU_CONTAINER_TEXT1 = 0x00da_00c5;
-		public static final int FILTERMENU = 0x00da_00c6;
-		public static final int BOTTOM = 0x00da_00c7;
-		public static final int INFOBUTTON = 0x00da_00c8;
-		public static final int FILTERBUTTON = 0x00da_00c9;
-		public static final int TOOLTIP = 0x00da_00ca;
+		public static final int MONSTER_INSPECT = 0x00da_00c1;
+		public static final int INFOLAYER = 0x00da_00c2;
+		public static final int INFOLAYER_GRAPHIC0 = 0x00da_00c3;
+		public static final int FILTERMENU_CONTAINER = 0x00da_00c4;
+		public static final int FILTERMENU_CONTAINER_GRAPHIC0 = 0x00da_00c5;
+		public static final int FILTERMENU_CONTAINER_TEXT1 = 0x00da_00c6;
+		public static final int FILTERMENU = 0x00da_00c7;
+		public static final int BOTTOM = 0x00da_00c8;
+		public static final int INFOBUTTON = 0x00da_00c9;
+		public static final int FILTERBUTTON = 0x00da_00ca;
+		public static final int TOOLTIP = 0x00da_00cb;
 	}
 
 	public static final class Chatmenu
@@ -26352,7 +26353,7 @@ public final class InterfaceID
 		public static final int POPUP = 0x0301_0009;
 	}
 
-	public static final class PvpArena1V1Info
+	public static final class PvpArena1v1Info
 	{
 		public static final int UNIVERSE = 0x0302_0000;
 		public static final int DODGER = 0x0302_0001;
