@@ -86,6 +86,7 @@ public enum RunecraftAction implements ItemSkillAction
 			return "Blood rune (Zeah)";
 		}
 	},
+	AETHER_RUNE(ItemID.AETHERRUNE, 90, 20, false),
 	SOUL_RUNE(ItemID.SOULRUNE, 90, 30.325f, true),
 	WRATH_RUNE(ItemID.WRATHRUNE, 95, 8, false),
 	;
