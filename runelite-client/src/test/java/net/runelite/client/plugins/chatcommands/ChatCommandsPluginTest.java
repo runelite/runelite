@@ -1322,6 +1322,13 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testCastleWars()
+	{
+		testKillCountChatMessage("castle wars wins", "<col=ef1020>You've won 1,224 games of Castle Wars!</col>", 1224);
+		testKillCountChatMessage("castle wars wins", "<col=ef1020>You've won a game of Castle Wars!</col>", 1);
+	}
+
+	@Test
 	public void testReward()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your reward is: <col=ff0000>1</col> x <col=ff0000>Kebab</col>.", null, 0);
