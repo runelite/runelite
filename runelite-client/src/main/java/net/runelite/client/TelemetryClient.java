@@ -25,8 +25,10 @@
 package net.runelite.client;
 
 import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.nio.file.Files;
@@ -35,6 +37,7 @@ import java.util.Collections;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.OSType;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.telemetry.Telemetry;
 import okhttp3.Call;
@@ -131,7 +134,8 @@ public class TelemetryClient
 			.addQueryParameter("osver", System.getProperty("os.version"))
 			.addQueryParameter("osarch", System.getProperty("os.arch"))
 			.addQueryParameter("javaversion", System.getProperty("java.version"))
-			.addQueryParameter("javavendor", System.getProperty("java.vendor"));
+			.addQueryParameter("javavendor", System.getProperty("java.vendor"))
+			.addQueryParameter("cpumodel", cpuName());
 		params.forEach(urlBuilder::addQueryParameter);
 
 		HttpUrl url = urlBuilder.build();
@@ -173,6 +177,40 @@ public class TelemetryClient
 			long totalPhysicalMemorySize = ((com.sun.management.OperatingSystemMXBean) operatingSystemMXBean).getTotalPhysicalMemorySize();
 			telemetry.setTotalMemory(totalPhysicalMemorySize);
 		}
+		telemetry.setCpuName(cpuName());
 		return telemetry;
+	}
+
+	private static String cpuName()
+	{
+		if (OSType.getOSType() != OSType.Windows)
+		{
+			return null;
+		}
+
+		try
+		{
+			Process p = Runtime.getRuntime().exec("wmic cpu get name");
+
+			try (var in = new BufferedReader(new InputStreamReader(p.getInputStream())))
+			{
+				String line;
+				while ((line = in.readLine()) != null)
+				{
+					line = line.trim();
+					if (line.isEmpty() || line.equalsIgnoreCase("name"))
+					{
+						continue;
+					}
+
+					return line;
+				}
+			}
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to get cpu name", ex);
+		}
+		return null;
 	}
 }
