@@ -34,6 +34,7 @@ enum CannonSpots
 {
 	ABERRANT_SPECTRES(new WorldPoint(2456, 9791, 0)),
 	ANKOU(new WorldPoint(3177, 10193, 0)),
+	ARAXYTE(new WorldPoint(3694, 9819, 0)),
 	BANDIT(new WorldPoint(3037, 3700, 0)),
 	BEAR(new WorldPoint(3113, 3672, 0)),
 	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0), new WorldPoint(1421, 10089, 1), new WorldPoint(3174, 10154, 0), new WorldPoint(3089, 9960, 0)),
