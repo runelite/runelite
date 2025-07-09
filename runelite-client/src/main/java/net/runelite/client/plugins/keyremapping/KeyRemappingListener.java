@@ -168,7 +168,7 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}
 
-			if (!plugin.isOptionsDialogOpen() && config.worldmap().matches(e))
+			if (!plugin.isDialogOpen() && config.worldmap().matches(e))
 			{
 				// World map uses ctrl + m as hotkey, so we need a modifier set
 				mappedKeyCode = KeyEvent.VK_M;
