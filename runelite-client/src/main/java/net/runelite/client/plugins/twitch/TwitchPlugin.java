@@ -183,9 +183,9 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		String spamSuffix = Character.toString(0xE0000);
 		return message.endsWith(spamSuffix)
 				? message
-                	.substring(0, message.length() - spamSuffix.length())
-                	.stripTrailing()
-                : message;
+					.substring(0, message.length() - spamSuffix.length())
+					.stripTrailing()
+				: message;
 	}
 
 	@Override
