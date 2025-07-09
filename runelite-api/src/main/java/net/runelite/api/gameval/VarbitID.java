@@ -11109,6 +11109,10 @@ public final class VarbitID
 	public static final int LEAGUE_TASK_75_SUPERIOR_SLAYER_ENCOUNTERS = 16614;
 	public static final int LEAGUE_TASK_100_SUPERIOR_SLAYER_ENCOUNTERS = 16615;
 	public static final int GIANT_BONE_BURY_WARNING_DISABLE = 16616;
+	public static final int SETTINGS_HD_NEW_RENDERER_TOGGLE = 16617;
+	public static final int SETTINGS_HD_WARNING_SHOWN = 16618;
+	public static final int SETTINGS_SD_BETA_ENABLED = 16619;
+	public static final int SETTINGS_WORLD_MAP_HOTKEY_DISABLED = 16621;
 	public static final int LEAGUE_TASK_1_SARACHNIS_KILL = 16625;
 	public static final int LEAGUE_TASK_50_SARACHNIS_KILLS = 16626;
 	public static final int LEAGUE_TASK_150_SARACHNIS_KILLS = 16627;
