@@ -176,6 +176,18 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			.build());
 	}
 
+	public String filter7TVChatSpam(String message)
+	{
+		// From https://github.com/SevenTV/Extension/blob/7d94d683be8792d96b4cac2d2c08f649d343a451/src/common/Constant.ts#L20
+		// and https://github.com/SevenTV/Extension/blob/7d94d683be8792d96b4cac2d2c08f649d343a451/src/site/twitch.tv/modules/chat-input/ChatSpam.vue#L94
+		String spamSuffix = Character.toString(0xE0000);
+		return message.endsWith(spamSuffix)
+				? message
+					.substring(0, message.length() - spamSuffix.length())
+					.stripTrailing()
+				: message;
+	}
+
 	@Override
 	public void privmsg(String source, Map<String, String> tags, String message)
 	{
@@ -186,6 +198,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 
 		String displayName = tags.get("display-name");
 		String name = source.equalsIgnoreCase(displayName) ? displayName : source;
+		message = filter7TVChatSpam(message);
 		addChatMessage(name, message);
 	}
 
