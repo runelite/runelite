@@ -49,7 +49,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Ammo",
 	description = "Shows the current ammo the player has equipped",
-	tags = {"bolts", "darts", "chinchompa", "equipment"}
+	tags = {"bolts", "darts", "chinchompa", "equipment"},
+	enabledByDefault = false
 )
 public class AmmoPlugin extends Plugin
 {
