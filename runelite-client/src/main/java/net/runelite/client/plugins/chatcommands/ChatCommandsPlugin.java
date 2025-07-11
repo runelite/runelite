@@ -125,6 +125,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild\\.");
 	private static final Pattern BIRD_EGG_OFFERING_PATTERN = Pattern.compile("You have made <col=ff0000>(?<kc>[\\d,]+|one)</col> offerings?\\.");
 	private static final Pattern CHEST_OPENING_PATTERN = Pattern.compile("You have (?<never>never )?opened (the )?(?<chest>crystal chest|Larran's big chest|Larran's small chest|Brimstone chest)( (?<kc>[\\d,]+ times|once))?\\.");
+	private static final Pattern DORGESH_KAAN_LIGHT_ORB_PATTERN = Pattern.compile("You replace the orb\\. Total lights fixed: <col=[0-9a-f]{6}>(?<kc>[0-9,]+)");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -663,6 +664,14 @@ public class ChatCommandsPlugin extends Plugin
 			String chest = matcher.group("chest");
 
 			setKc(chest, kc);
+		}
+
+		matcher = DORGESH_KAAN_LIGHT_ORB_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			String kcString = matcher.group("kc");
+			int kc = Integer.parseInt(kcString.replace(",", ""));
+			setKc("Dorgesh-Kaan Light Orbs", kc);
 		}
 	}
 
@@ -2768,6 +2777,13 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "brimstone chest":
 				return "Brimstone chest";
+
+			case "dorbs":
+			case "light orb":
+			case "light orbs":
+			case "dorgesh-kaan light orb":
+			case "dorgesh-kaan light orbs":
+				return "Dorgesh-Kaan Light Orbs";
 
 			default:
 				return WordUtils.capitalize(boss);
