@@ -2284,30 +2284,41 @@ public class ChatCommandsPlugin extends Plugin
 			case "xeric cm":
 			case "chambers cm":
 			case "olm cm":
+			case "cm":
 			case "raids cm":
 			case "chambers of xeric - challenge mode":
 				return "Chambers of Xeric Challenge Mode";
 			case "cox cm 1":
+			case "cm 1":
 			case "cox cm solo":
 				return "Chambers of Xeric Challenge Mode Solo";
 			case "cox cm 2":
+			case "cm 2":
 			case "cox cm duo":
 				return "Chambers of Xeric Challenge Mode 2 players";
 			case "cox cm 3":
+			case "cm 3":
 				return "Chambers of Xeric Challenge Mode 3 players";
 			case "cox cm 4":
+			case "cm 4":
 				return "Chambers of Xeric Challenge Mode 4 players";
 			case "cox cm 5":
+			case "cm 5":
 				return "Chambers of Xeric Challenge Mode 5 players";
 			case "cox cm 6":
+			case "cm 6":
 				return "Chambers of Xeric Challenge Mode 6 players";
 			case "cox cm 7":
+			case "cm 7":
 				return "Chambers of Xeric Challenge Mode 7 players";
 			case "cox cm 8":
+			case "cm 8":
 				return "Chambers of Xeric Challenge Mode 8 players";
 			case "cox cm 9":
+			case "cm 9":
 				return "Chambers of Xeric Challenge Mode 9 players";
 			case "cox cm 10":
+			case "cm 10":
 				return "Chambers of Xeric Challenge Mode 10 players";
 			case "cox cm 11-15":
 			case "cox cm 11":
@@ -2315,6 +2326,12 @@ public class ChatCommandsPlugin extends Plugin
 			case "cox cm 13":
 			case "cox cm 14":
 			case "cox cm 15":
+			case "cm 11-15":
+			case "cm 11":
+			case "cm 12":
+			case "cm 13":
+			case "cm 14":
+			case "cm 15":
 				return "Chambers of Xeric Challenge Mode 11-15 players";
 			case "cox cm 16-23":
 			case "cox cm 16":
@@ -2325,9 +2342,20 @@ public class ChatCommandsPlugin extends Plugin
 			case "cox cm 21":
 			case "cox cm 22":
 			case "cox cm 23":
+			case "cm 16-23":
+			case "cm 16":
+			case "cm 17":
+			case "cm 18":
+			case "cm 19":
+			case "cm 20":
+			case "cm 21":
+			case "cm 22":
+			case "cm 23":
 				return "Chambers of Xeric Challenge Mode 16-23 players";
 			case "cox cm 24":
 			case "cox cm 24+":
+			case "cm 24":
+			case "cm 24+":
 				return "Chambers of Xeric Challenge Mode 24+ players";
 
 			// Theatre of Blood
