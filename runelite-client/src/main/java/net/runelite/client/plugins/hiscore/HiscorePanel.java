@@ -367,7 +367,8 @@ public class HiscorePanel extends PluginPanel
 
 	private void lookup()
 	{
-		executor.execute(() -> {
+		executor.execute(() ->
+		{
 			final String lookup = sanitize(searchBar.getText());
 
 			if (Strings.isNullOrEmpty(lookup))
@@ -382,7 +383,8 @@ public class HiscorePanel extends PluginPanel
 				loading = false;
 				return;
 			}
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				repaint();
 
 				searchBar.setEditable(false);
