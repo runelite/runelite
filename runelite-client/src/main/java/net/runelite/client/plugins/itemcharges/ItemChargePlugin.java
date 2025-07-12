@@ -487,6 +487,10 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateBindingNecklaceCharges(event.getValue());
 		}
+		else if (event.getVarbitId() == VarbitID.RING_OF_THE_ELEMENTS_CHARGES)
+		{
+			updateRingOfElementsCharges(event.getValue());
+		}
 	}
 
 	@Subscribe
@@ -555,6 +559,12 @@ public class ItemChargePlugin extends Plugin
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
 		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING, MAX_EXPLORER_RING_CHARGES - value);
+		updateInfoboxes();
+	}
+
+	private void updateRingOfElementsCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_RING_OF_THE_ELEMENTS, value);
 		updateInfoboxes();
 	}
 
