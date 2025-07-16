@@ -319,17 +319,12 @@ public class ScreenshotPlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		Actor actor = animationChanged.getActor();
-		if (actor instanceof Player)
+		if (actor == client.getLocalPlayer()
+			&& actor.getAnimation() == AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01
+			&& config.screenshotPlayerDeath())
 		{
-			Player player = (Player) actor;
-			if (player == client.getLocalPlayer()
-				&& player.getAnimation() == AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01
-				&& config.screenshotPlayerDeath())
-			{
-				takeScreenshot("Death", SD_DEATHS);
-			}
+			takeScreenshot("Doom Death", SD_DEATHS);
 		}
-
 	}
 
 	@Subscribe
