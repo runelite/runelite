@@ -27,6 +27,8 @@ package net.runelite.client.game;
 
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ObjectID;
@@ -137,6 +139,14 @@ public enum AgilityShortcut
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE(34, "Pipe Squeeze", null, new WorldPoint(2698, 9501, 0), ObjectID.KARAM_DUNGEON_PIPE),
 	KOUREND_CATACOMBS_NORTH_EAST_CRACK_NORTH(34, "Crack", new WorldPoint(1715, 10057, 0), ObjectID.ZEAH_CATA_CRACK),
 	KOUREND_CATACOMBS_NORTH_EAST_CRACK_SOUTH(34, "Crack", new WorldPoint(1705, 10077, 0), ObjectID.ZEAH_CATA_CRACK),
+	VARROCK_CASTLE_GARDEN_TRELLIS(35, "Trellis", new WorldPoint(3227, 3471, 0), ObjectID.GARDEN_TRELLIS_CONCAVE_SHORTCUT)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return Quest.GARDEN_OF_TRANQUILLITY.getState(client) == QuestState.FINISHED;
+		}
+	},
 	CATHERBY_OBELISK_GRAPPLE(36, "Grapple Rock", null, ObjectID.XBOWS_BEACH_TO_ISLAND_TREE_BASIC),
 	GNOME_STRONGHOLD_ROCKS(37, "Rocks", new WorldPoint(2485, 3515, 0), ObjectID.GNOME_STRONGHOLD_SC_ROCK_TOP, ObjectID.GNOME_STRONGHOLD_SC_ROCK_BOTTOM),
 	AL_KHARID_MINING_PITCLIFF_SCRAMBLE(38, "Rocks", new WorldPoint(3305, 3315, 0), ObjectID.ALKHARID_MINE_SC_TOP, ObjectID.ALKHARID_MINE_SC_BOTTOM),
@@ -245,6 +255,8 @@ public enum AgilityShortcut
 	CHAOS_TEMPLE_STEPPING_STONE(72, "Stepping stone", new WorldPoint(3267, 3628, 0), ObjectID.WILDERNESS_CHAOS_TEMPLE_SHORTCUT),
 	BARROWS_WALL_JUMP(72, "Dry stone wall", new WorldPoint(3544, 3282, 0), ObjectID.BARROWS_DRYSTONEWALL_SHORTCUT),
 	TROLL_STRONGHOLD_WALL_CLIMB(73, "Rocks", new WorldPoint(2841, 3694, 0), ObjectID.DIARY_TROLL_CLIMBINGROCKS),
+	COF_PLATFORM_TOP(73, "Platform Edge", new WorldPoint(1309, 10099, 0), new WorldPoint(1438, 10098, 2), ObjectID.COF_AGILITY_LIP),
+	COF_PLATFORM_MID(73, "Jump", new WorldPoint(1314, 10002, 0), new WorldPoint(1443, 10097, 1), ObjectID.COF_AGILITY_JUMP),
 	ARCEUUS_ESSENSE_MINE_WEST(73, "Rock Climb", new WorldPoint(1742, 3853, 0), ObjectID.ARCHEUUS_RUNESTONE_SHORTCUT_GREY_TOP, ObjectID.ARCHEUUS_RUNESTONE_SHORTCUT_GREY_BOTTOM),
 	LAVA_DRAGON_ISLE_JUMP(74, "Stepping Stone", new WorldPoint(3200, 3807, 0), ObjectID.WILDERNESS_LAVA_DRAGONS_SHORTCUT),
 	MEIYERDITCH_LAB_TUNNELS_NORTH(74, "Cave", new WorldPoint(3623, 9747, 0), ObjectID.MYQ5_WALL_CAVE_SHORTCUT_1, ObjectID.MYQ5_WALL_CAVE_SHORTCUT_2),
@@ -266,6 +278,7 @@ public enum AgilityShortcut
 	LAVA_MAZE_NORTH_JUMP(82, "Stepping Stone", new WorldPoint(3092, 3880, 0), ObjectID.WILDERNESS_LAVA_MAZE_NORTHERN_SHORTCUT),
 	ASGARNIA_ICE_DUNGEON_ADEPT_WEST(82, "Tunnel", new WorldPoint(3012, 9549, 0), ObjectID.CAVEWALL_SHORTCUT_WYVERN_WEST),
 	ASGARNIA_ICE_DUNGEON_ADEPT_EAST(82, "Tunnel", new WorldPoint(3022, 9553, 0), ObjectID.CAVEWALL_SHORTCUT_WYVERN_EAST),
+	COF_SHORTCUT_TOP(83, "Chain", new WorldPoint(1307, 10076, 0), new WorldPoint(1436, 10075, 2), ObjectID.COF_SHORTCUT_TOP),
 	IORWERTHS_DUNGEON_SOUTHERN_SHORTCUT_EAST(84, "Tight Gap", new WorldPoint(3241, 12420, 0), ObjectID.PRIF_SLAYER_DUNGEON_SHORTCUT_2A),
 	IORWERTHS_DUNGEON_SOUTHERN_SHORTCUT_WEST(84, "Tight Gap", new WorldPoint(3231, 12420, 0), ObjectID.PRIF_SLAYER_DUNGEON_SHORTCUT_2B),
 	CRANDOR_ROCK_CLIMB(84, "Rocks", new WorldPoint(2831, 3252, 0), ObjectID.CRANDOR_SHORTCUT_TOP, ObjectID.CRANDOR_SHORTCUT_BOTTOM),

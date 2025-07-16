@@ -599,6 +599,12 @@ public final class NpcID
 	 */
 	public static final int AGGIE_2OPS = 121;
 	public static final int GRANDTREE_CHARLIE_MULTI = 122;
+	public static final int YAMA_THRONE = 123;
+
+	/**
+	 * Yama
+	 */
+	public static final int YAMA_THRONE_OCCUPIED = 124;
 
 	/**
 	 * Left head
@@ -35150,15 +35156,7 @@ public final class NpcID
 	 * Hieve
 	 */
 	public static final int KARAM_DUNGEON_METALDRAGONGUARDIAN = 7667;
-
-	/**
-	 * Voice of Yama
-	 */
 	public static final int VOICE_OF_YAMA = 7668;
-
-	/**
-	 * Disciple of Yama
-	 */
 	public static final int DISCIPLE_OF_YAMA_ENTRANCE = 7669;
 
 	/**
@@ -61765,6 +61763,11 @@ public final class NpcID
 	public static final int PIRATE3_AGGRESSIVE = 14156;
 
 	/**
+	 * &#60;col=00ffff&#62;Yama's throne&#60;/col&#62;
+	 */
+	public static final int YAMA_THRONE_UNOCCUPIED = 14157;
+
+	/**
 	 * Crawling hand
 	 */
 	public static final int POH_MOUNTED_CRAWLINGHAND_TEAK = 14158;
@@ -61855,6 +61858,11 @@ public final class NpcID
 	public static final int POH_MOUNTED_ABYSSALDEMON_GILDED = 14175;
 
 	/**
+	 * Yama
+	 */
+	public static final int YAMA = 14176;
+
+	/**
 	 * Zombie pirate
 	 */
 	public static final int WILDY_ZOMBIE_PIRATE_FRIENDLY_1OP = 14177;
@@ -61865,125 +61873,101 @@ public final class NpcID
 	public static final int WILDY_ZOMBIE_PIRATE_FRIENDLY_2OPS = 14178;
 
 	/**
-	 * Concerned man
+	 * Void Flare
 	 */
-	public static final int EASTER25_CONCERNED_MAN_01 = 14179;
+	public static final int YAMA_VOIDFLARE = 14179;
 
 	/**
-	 * Easter Bunny
+	 * Judge of Yama
 	 */
-	public static final int EASTER25_EASTER_BUNNY = 14180;
+	public static final int YAMA_JUDGE_OF_YAMA = 14180;
 
 	/**
-	 * Glanton
+	 * Imp
 	 */
-	public static final int EASTER25_GLANTON = 14181;
+	public static final int YAMA_IMP = 14181;
+	public static final int YAMA_METEOR_NPC = 14182;
 
 	/**
-	 * Glanton
+	 * Voice of Yama
 	 */
-	public static final int EASTER25_GLANTON_CUTSCENE = 14182;
+	public static final int VOICE_OF_YAMA_1OP = 14183;
 
 	/**
-	 * Rinder
+	 * Voice of Yama
 	 */
-	public static final int EASTER25_RINDER = 14183;
+	public static final int VOICE_OF_YAMA_2OP = 14184;
 
 	/**
-	 * Rinder
+	 * Voice of Yama
 	 */
-	public static final int EASTER25_RINDER_CUTSCENE = 14184;
+	public static final int VOICE_OF_YAMA_3OP = 14185;
 
 	/**
-	 * Cooky Weasel
+	 * Disciple of Yama
 	 */
-	public static final int EASTER25_COOK_WEASEL = 14185;
+	public static final int DISCIPLE_OF_YAMA_ENTRANCE_1OP = 14186;
 
 	/**
-	 * Wheeler
+	 * Disciple of Yama
 	 */
-	public static final int EASTER25_WHEELER = 14186;
+	public static final int DISCIPLE_OF_YAMA_ENTRANCE_2OP = 14187;
+	public static final int SHAYZIEN_CHASM_GUARD_HAMMER = 14188;
 
 	/**
-	 * Eggus Manus
+	 * Soldier
 	 */
-	public static final int EASTER25_PRIEST_EGGUS_MANUS = 14187;
+	public static final int SHAYZIEN_CHASM_GUARD_HAMMER_VIS = 14189;
+	public static final int SHAYZIEN_CHASM_GUARD_SCIM = 14190;
 
 	/**
-	 * Bowley Moley
+	 * Soldier
 	 */
-	public static final int EASTER25_BOWLEY_MOLEY = 14188;
+	public static final int SHAYZIEN_CHASM_GUARD_SCIM_VIS = 14191;
+	public static final int SHAYZIEN_CHASM_GUARD_DDS = 14192;
 
 	/**
-	 * Fry
+	 * Soldier
 	 */
-	public static final int EASTER25_FRY = 14189;
+	public static final int SHAYZIEN_CHASM_GUARD_DDS_VIS = 14193;
+	public static final int SHAYZIEN_CHASM_GUARD_DLONG = 14194;
 
 	/**
-	 * Scorpion
+	 * Lieutenant
 	 */
-	public static final int EASTER25_SCORPION_CUTSCENE = 14190;
+	public static final int SHAYZIEN_CHASM_GUARD_DLONG_VIS = 14195;
+	public static final int SHAYZIEN_CHASM_GUARD_AXE = 14196;
 
 	/**
-	 * Bowley Moley
+	 * Sergeant
 	 */
-	public static final int EASTER25_BOWLEY_MOLEY_CUTSCENE = 14191;
+	public static final int SHAYZIEN_CHASM_GUARD_AXE_VIS = 14197;
+	public static final int ANVIL_HEADBAR_NPC = 14198;
+	public static final int CHASM_SMITHING_IMP = 14199;
 
 	/**
-	 * Easter Bunny
+	 * Imp
 	 */
-	public static final int EASTER25_EASTER_BUNNY_CUTSCENE = 14192;
+	public static final int CHASM_SMITHING_IMP_NONAME = 14200;
 
 	/**
-	 * Eggus Manus
+	 * Jim
 	 */
-	public static final int EASTER25_PRIEST_EGGUS_MANUS_CUTSCENE = 14193;
+	public static final int CHASM_SMITHING_IMP_NAMED = 14201;
 
 	/**
-	 * Fry
+	 * Jim
 	 */
-	public static final int EASTER25_FRY_CUTSCENE = 14194;
-	public static final int EASTER25_VARROCK_END_GLANTON_MULTI = 14195;
-	public static final int EASTER25_VARROCK_END_RINDER_MULTI = 14196;
-	public static final int EASTER25_VARROCK_END_BOWLEY_MOLEY_MULTI = 14197;
-	public static final int EASTER25_VARROCK_END_COOKY_WEASEL_MULTI = 14198;
-	public static final int EASTER25_VARROCK_END_PRIEST_EGGUS_MANUS_MULTI = 14199;
-	public static final int EASTER25_VARROCK_END_EASTER_BUNNY_MULTI = 14200;
+	public static final int CHASM_SMITHING_IMP_CLOTH = 14202;
 
 	/**
-	 * Clarence
+	 * Yami
 	 */
-	public static final int EASTER25_CLARENCE_CHICKEN = 14201;
+	public static final int POH_YAMA_PET = 14203;
 
 	/**
-	 * The mouth of Clarence
+	 * Yami
 	 */
-	public static final int EASTER25_CLARENCE_MOUTH = 14202;
-
-	/**
-	 * Doughphie
-	 */
-	public static final int EASTER25_DOUGHPHIE = 14203;
-	public static final int EASTER25_INVIS_NPC = 14204;
-
-	/**
-	 * Eggus manus
-	 */
-	public static final int EASTER25_PRIEST_EGGUS_MANUS_CUTSCENE_DANCE = 14205;
-
-	/**
-	 * Glanton
-	 */
-	public static final int EASTER25_GLANTON_CUTSCENE_DANCE = 14206;
-
-	/**
-	 * Rinder
-	 */
-	public static final int EASTER25_RINDER_CUTSCENE_DANCE = 14207;
-
-	/**
-	 * Bella Le Bowle
-	 */
-	public static final int EASTER25_BELLA = 14208;
+	public static final int YAMA_PET = 14204;
 /* This file is automatically generated. Do not edit. */
 }

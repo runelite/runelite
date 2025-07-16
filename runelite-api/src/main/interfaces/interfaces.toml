@@ -435,8 +435,8 @@ display=2
 [grand_exchange]
 id=465
 window_container=0
-offer_container=25
-offer_description=26
+offer_container=26
+offer_description=27
 
 [grand_exchange_inventory]
 id=467

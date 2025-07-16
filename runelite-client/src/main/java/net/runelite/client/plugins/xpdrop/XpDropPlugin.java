@@ -45,10 +45,10 @@ import net.runelite.api.Prayer;
 import static net.runelite.api.ScriptID.XPDROPS_SETDROPSIZE;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -153,15 +153,15 @@ public class XpDropPlugin extends Plugin
 				.map(Widget::getSpriteId)
 				.map(id ->
 				{
-					if (id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE)
+					if (id == SpriteID.Staticons.ATTACK || id == SpriteID.Staticons.STRENGTH || id == SpriteID.Staticons.DEFENCE)
 					{
 						return PrayerType.MELEE;
 					}
-					if (id == SpriteID.SKILL_RANGED)
+					if (id == SpriteID.Staticons.RANGED)
 					{
 						return PrayerType.RANGE;
 					}
-					if (id == SpriteID.SKILL_MAGIC)
+					if (id == SpriteID.Staticons.MAGIC)
 					{
 						return PrayerType.MAGIC;
 					}

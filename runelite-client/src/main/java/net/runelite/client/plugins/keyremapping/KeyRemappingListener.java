@@ -162,7 +162,7 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_SPACE;
 			}
 
-			if (config.control().matches(e))
+			if (!plugin.isOptionsDialogOpen() && config.control().matches(e))
 			{
 				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}

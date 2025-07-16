@@ -107,12 +107,12 @@ class ChatInputManager
 
 	private void handleInput(ScriptCallbackEvent event)
 	{
-		final String[] stringStack = client.getStringStack();
+		final Object[] objectStack = client.getObjectStack();
 		final int[] intStack = client.getIntStack();
-		int stringStackCount = client.getStringStackSize();
+		int objectStackCount = client.getObjectStackSize();
 		int intStackCount = client.getIntStackSize();
 
-		final String typedText = stringStack[stringStackCount - 1];
+		final String typedText = (String) objectStack[objectStackCount - 1];
 		final int chatType = intStack[intStackCount - 2];
 		final int clanTarget = intStack[intStackCount - 1];
 
@@ -122,19 +122,19 @@ class ChatInputManager
 		if (chatboxInput.isConsumed())
 		{
 			// input was blocked.
-			stringStack[stringStackCount - 1] = ""; // prevent script from sending
+			objectStack[objectStackCount - 1] = ""; // prevent script from sending
 		}
 	}
 
 	private void handlePrivateMessage(ScriptCallbackEvent event)
 	{
-		final String[] stringStack = client.getStringStack();
+		final Object[] objectStack = client.getObjectStack();
 		final int[] intStack = client.getIntStack();
-		int stringStackCount = client.getStringStackSize();
+		int objectStackCount = client.getObjectStackSize();
 		int intStackCount = client.getIntStackSize();
 
-		final String target = stringStack[stringStackCount - 2];
-		final String message = stringStack[stringStackCount - 1];
+		final String target = (String) objectStack[objectStackCount - 2];
+		final String message = (String) objectStack[objectStackCount - 1];
 
 		PrivateMessageInput privateMessageInput = new PrivateMessageInput(target, message, () -> clientThread.invokeLater(() -> sendPrivmsg(target, message)));
 		eventBus.post(privateMessageInput);
@@ -142,7 +142,7 @@ class ChatInputManager
 		if (privateMessageInput.isConsumed())
 		{
 			intStack[intStackCount - 1] = 1;
-			client.setStringStackSize(stringStackCount - 2); // remove both target and message
+			client.setObjectStackSize(objectStackCount - 2); // remove both target and message
 		}
 	}
 

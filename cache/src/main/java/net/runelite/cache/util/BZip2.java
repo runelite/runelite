@@ -36,7 +36,6 @@ import static net.runelite.cache.util.LibBZip2.BZ_OK;
 import static net.runelite.cache.util.LibBZip2.BZ_STREAM_END;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
 
 public class BZip2
 {
@@ -60,7 +59,7 @@ public class BZip2
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		try (OutputStream os = new BZip2CompressorOutputStream(bout, 1))
 		{
-			IOUtils.copy(is, os);
+			is.transferTo(os);
 		}
 
 		byte[] out = bout.toByteArray();
@@ -138,7 +137,7 @@ public class BZip2
 
 		try (InputStream is = new BZip2CompressorInputStream(new ByteArrayInputStream(data)))
 		{
-			IOUtils.copy(is, os);
+			is.transferTo(os);
 		}
 
 		return os.toByteArray();

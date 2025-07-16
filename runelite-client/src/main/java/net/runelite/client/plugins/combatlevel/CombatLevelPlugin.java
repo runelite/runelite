@@ -186,13 +186,13 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		final String[] stringStack = client.getStringStack();
-		final int stringStackSize = client.getStringStackSize();
+		final Object[] objectStack = client.getObjectStack();
+		final int objectStackSize = client.getObjectStackSize();
 
 		if (scriptId == ScriptID.ACCOUNT_SUMMARY_TEXT_FORMAT)
 		{
 			// This script is used for both total level and combat level, so verify the script is modifying the combat level
-			final String levelText = Text.removeTags(stringStack[stringStackSize - 1]); // first argument
+			final String levelText = Text.removeTags((String) objectStack[objectStackSize - 1]); // first argument
 			if (client.getLocalPlayer().getCombatLevel() != Integer.parseInt(levelText))
 			{
 				return;
@@ -201,7 +201,7 @@ public class CombatLevelPlugin extends Plugin
 		else // scriptId == ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT
 		{
 			// This script is used for all account summary sections, so verify the script is running for the combat level section
-			final String sectionText = Text.removeTags(stringStack[stringStackSize - 3]); // third argument
+			final String sectionText = Text.removeTags((String) objectStack[objectStackSize - 3]); // third argument
 			if (!COMBAT_LEVEL_SECTION_TEXT.equals(sectionText))
 			{
 				return;
@@ -218,7 +218,7 @@ public class CombatLevelPlugin extends Plugin
 			client.getRealSkillLevel(Skill.PRAYER)
 		);
 
-		stringStack[stringStackSize - 1] = ColorUtil.wrapWithColorTag(DECIMAL_FORMAT.format(combatLevelPrecise), CHARACTER_SUMMARY_GREEN);
+		objectStack[objectStackSize - 1] = ColorUtil.wrapWithColorTag(DECIMAL_FORMAT.format(combatLevelPrecise), CHARACTER_SUMMARY_GREEN);
 	}
 
 	@Subscribe

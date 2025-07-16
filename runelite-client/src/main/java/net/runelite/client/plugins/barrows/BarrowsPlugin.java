@@ -35,13 +35,13 @@ import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
-import net.runelite.api.SpriteID;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -262,7 +262,7 @@ public class BarrowsPlugin extends Plugin
 				this,
 				true);
 
-			spriteManager.getSpriteAsync(SpriteID.TAB_PRAYER, 0, loopTimer);
+			spriteManager.getSpriteAsync(SpriteID.SideiconsInterface.PRAYER, 0, loopTimer);
 
 			loopTimer.setPriority(InfoBoxPriority.MED);
 			loopTimer.setTooltip("Prayer Drain");

@@ -68,7 +68,7 @@ void main() {
     // textured triangles hsl is a 7 bit lightness 2-126
     float light = fHsl / 127.f;
     vec3 mul = (1.f - textureLightMode) * vec3(light) + textureLightMode * fColor.rgb;
-    c = textureColorBrightness * vec4(mul, 1.f);
+    c = textureColorBrightness * vec4(mul, fColor.a);
   } else {
     // pick interpolated hsl or rgb depending on smooth banding setting
     vec3 rgb = hslToRgb(int(fHsl)) * smoothBanding + fColor.rgb * (1.f - smoothBanding);

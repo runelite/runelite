@@ -39,13 +39,13 @@ import net.runelite.api.Constants;
 import net.runelite.api.FontID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -212,15 +212,15 @@ public class ItemStatPlugin extends Plugin
 		closeButton.setOriginalX(invContainer.getWidth() - 24);
 		closeButton.setOriginalHeight(16);
 		closeButton.setOriginalWidth(16);
-		closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL);
+		closeButton.setSpriteId(SpriteID.V2StoneCloseButton.BUTTON);
 		closeButton.setAction(0, "Close");
 		closeButton.setOnMouseOverListener((JavaScriptCallback) (ev) ->
 		{
-			closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL_HOVERED);
+			closeButton.setSpriteId(SpriteID.V2StoneCloseButton.HOVERED);
 		});
 		closeButton.setOnMouseLeaveListener((JavaScriptCallback) (ev) ->
 		{
-			closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL);
+			closeButton.setSpriteId(SpriteID.V2StoneCloseButton.BUTTON);
 		});
 		closeButton.setOnOpListener((JavaScriptCallback) (ev) -> resetGEInventory());
 		closeButton.setHasListener(true);
@@ -371,7 +371,7 @@ public class ItemStatPlugin extends Plugin
 		separator.setOriginalWidth(parent.getWidth());
 		separator.setOriginalY(y);
 		separator.setOriginalHeight(32);
-		separator.setSpriteId(SpriteID.UNKNOWN_BORDER_EDGE_HORIZONTAL_995);
+		separator.setSpriteId(SpriteID.V2BordersSlim.HORIZONTAL_C);
 		separator.revalidate();
 	}
 

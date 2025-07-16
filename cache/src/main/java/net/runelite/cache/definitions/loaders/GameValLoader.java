@@ -77,15 +77,27 @@ public class GameValLoader
 			v.setName(is.readString());
 			v.setFiles(new HashMap<>());
 
+			int endIdx = data.length - 1;
+			while (data[endIdx] != -1)
+			{
+				--endIdx;
+			}
+
+			int msb = 0;
 			for (; ; )
 			{
 				int iid = is.readUnsignedByte();
-				if (iid == 0xFF)
+				if (iid == 0xFF && is.getOffset() == endIdx + 1)
 				{
 					break;
 				}
 
-				v.getFiles().put(iid, is.readString());
+				v.getFiles().put(msb | iid, is.readString());
+
+				if (iid == 0xFF)
+				{
+					msb += 0x100;
+				}
 			}
 		}
 		else

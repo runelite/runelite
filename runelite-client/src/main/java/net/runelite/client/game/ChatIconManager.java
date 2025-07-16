@@ -131,6 +131,43 @@ public class ChatIconManager
 		return icons.size() - 1;
 	}
 
+	/**
+	 * Reserves a chat icon id with a dummy image
+	 */
+	public synchronized int reserveChatIcon()
+	{
+		assert client.isClientThread();
+
+		BufferedImage dummy = new BufferedImage(13, 13, BufferedImage.TYPE_INT_RGB);
+		IndexedSprite sprite = ImageUtil.getImageIndexedSprite(dummy, client);
+
+		IndexedSprite[] modicons = client.getModIcons();
+		modicons = Arrays.copyOf(modicons, modicons.length + 1);
+		modicons[modicons.length - 1] = sprite;
+		client.setModIcons(modicons);
+
+		icons.add(new ChatIcon(modicons.length - 1, sprite));
+		return icons.size() - 1;
+	}
+
+	/**
+	 * Update an existing chat icons image
+	 */
+	public synchronized void updateChatIcon(int iconId, BufferedImage image)
+	{
+		ChatIcon ci = icons.get(iconId);
+		IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
+		int idx = ci.idx;
+		if (idx == -1)
+		{
+			ci.sprite = sprite;
+			return;
+		}
+
+		IndexedSprite[] modicons = client.getModIcons();
+		modicons[idx] = sprite;
+	}
+
 	public int chatIconIndex(int iconId)
 	{
 		if (iconId < 0 || iconId >= icons.size())

@@ -58,7 +58,7 @@ class AgilitySession
 		final int currentExp = client.getSkillExperience(Skill.AGILITY);
 		final int goalXp = xpTrackerService.getEndGoalXp(Skill.AGILITY);
 		final int goalRemainingXp = goalXp - currentExp;
-		double courseTotalExp = course.getTotalXp();
+		double courseTotalExp = course.getTotalXpProvider().apply(client);
 		if (course == Courses.PYRAMID)
 		{
 			// agility pyramid has a bonus exp drop on the last obstacle that scales with player level and caps at 1000

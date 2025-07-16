@@ -349,7 +349,6 @@ public class TimersAndBuffsPluginTest
 	public void testDeathChargeCast()
 	{
 		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
-		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(50);
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE);
 		varbitChanged.setValue(1);
@@ -359,7 +358,21 @@ public class TimersAndBuffsPluginTest
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
 		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
 		assertEquals(GameTimer.DEATH_CHARGE, infoBox.getTimer());
-		assertEquals(Duration.of(50, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
+	}
+
+	@Test
+	public void testImprovedDeathChargeCast()
+	{
+		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE);
+		varbitChanged.setValue(2);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
+
+		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
+		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
+		assertEquals(GameTimer.DEATH_CHARGE, infoBox.getTimer());
 	}
 
 	@Test
@@ -486,6 +499,35 @@ public class TimersAndBuffsPluginTest
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
 		TimerTimer infoBox = (TimerTimer) ibcaptor.getValue();
 		assertEquals(GameTimer.RESURRECT_THRALL_COOLDOWN, infoBox.getTimer());
+	}
+
+	@Test
+	public void testMarkOfDarkness()
+	{
+		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(61);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have placed a Mark of Darkness upon yourself.</col>", "", 0);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.MARK_OF_DARKNESS, infoBox.getTimer());
+		assertEquals(Duration.of(61, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
+	}
+
+	@Test
+	public void testMarkOfDarknessCooldown()
+	{
+		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have placed a Mark of Darkness upon yourself.</col>", "", 0);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.MARK_OF_DARKNESS_COOLDOWN, infoBox.getTimer());
+		assertEquals(Duration.of(10, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 	// endregion
 

@@ -39,8 +39,8 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -160,7 +160,7 @@ class StatusBarsOverlay extends Overlay
 					return heartDisease;
 				}
 
-				return loadSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
+				return loadSprite(SpriteID.OrbIcon.HITPOINTS);
 			}
 		));
 		barRenderers.put(StatusBarsConfig.BarMode.PRAYER, new BarRenderer(
@@ -201,7 +201,7 @@ class StatusBarsOverlay extends Overlay
 				}
 			},
 			() -> ENERGY_HEAL_COLOR,
-			() -> loadSprite(SpriteID.MINIMAP_ORB_WALK_ICON)
+			() -> loadSprite(SpriteID.OrbIcon.WALK)
 		));
 		barRenderers.put(StatusBarsConfig.BarMode.SPECIAL_ATTACK, new BarRenderer(
 			() -> MAX_SPECIAL_ATTACK_VALUE,
@@ -209,7 +209,7 @@ class StatusBarsOverlay extends Overlay
 			() -> 0,
 			() -> SPECIAL_ATTACK_COLOR,
 			() -> null,
-			() -> loadSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON)
+			() -> loadSprite(SpriteID.OrbIcon.SPECIAL)
 		));
 		barRenderers.put(StatusBarsConfig.BarMode.WARMTH, new BarRenderer(
 			() -> 100,

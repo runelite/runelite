@@ -1000,7 +1000,7 @@ class SceneUploader
 	private static int packAlphaPriority(short[] faceTextures, byte[] faceTransparencies, byte[] facePriorities, int face)
 	{
 		int alpha = 0;
-		if (faceTransparencies != null && (faceTextures == null || faceTextures[face] == -1))
+		if (faceTransparencies != null)
 		{
 			alpha = (faceTransparencies[face] & 0xFF) << 24;
 		}

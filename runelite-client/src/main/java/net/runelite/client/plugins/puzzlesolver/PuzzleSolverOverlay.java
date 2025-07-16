@@ -41,9 +41,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
@@ -450,7 +450,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private BufferedImage getDownArrow()
 	{
-		return spriteManager.getSprite(MINIMAP_DESTINATION_FLAG, 1);
+		return spriteManager.getSprite(SpriteID.MAPMARKER, 1);
 	}
 
 	private BufferedImage getUpArrow()

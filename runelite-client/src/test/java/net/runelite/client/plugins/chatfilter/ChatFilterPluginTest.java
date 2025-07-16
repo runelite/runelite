@@ -98,8 +98,8 @@ public class ChatFilterPluginTest
 		MessageNode mockedMsgNode = mockMessageNode(sender);
 		when(client.getIntStack()).thenReturn(simulatedIntStack);
 		when(client.getIntStackSize()).thenReturn(simulatedIntStack.length);
-		when(client.getStringStack()).thenReturn(simulatedStringStack);
-		when(client.getStringStackSize()).thenReturn(simulatedStringStack.length);
+		when(client.getObjectStack()).thenReturn(simulatedStringStack);
+		when(client.getObjectStackSize()).thenReturn(simulatedStringStack.length);
 		when(client.getMessages()).thenReturn(messageTable);
 		when(messageTable.get(1)).thenReturn(mockedMsgNode);
 		return event;
@@ -334,7 +334,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.updateFilteredPatterns();
 		ScriptCallbackEvent event = createCallbackEvent("Gamble 1234", "filterme", ChatMessageType.PUBLICCHAT);
 		chatFilterPlugin.onScriptCallbackEvent(event);
-		assertEquals("********", client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals("********", client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test
@@ -346,7 +346,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.updateFilteredPatterns();
 		ScriptCallbackEvent event = createCallbackEvent("Adam", "please filterme plugin", ChatMessageType.PUBLICCHAT);
 		chatFilterPlugin.onScriptCallbackEvent(event);
-		assertEquals("please ******** plugin", client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals("please ******** plugin", client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test
@@ -358,7 +358,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.updateFilteredPatterns();
 		ScriptCallbackEvent event = createCallbackEvent("Gamble 1234", "filterme", ChatMessageType.PUBLICCHAT);
 		chatFilterPlugin.onScriptCallbackEvent(event);
-		assertEquals(CENSOR_MESSAGE, client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals(CENSOR_MESSAGE, client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test
@@ -370,7 +370,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.updateFilteredPatterns();
 		ScriptCallbackEvent event = createCallbackEvent("Adam", "please filterme plugin", ChatMessageType.PUBLICCHAT);
 		chatFilterPlugin.onScriptCallbackEvent(event);
-		assertEquals(CENSOR_MESSAGE, client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals(CENSOR_MESSAGE, client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test
@@ -393,7 +393,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.onScriptCallbackEvent(event);
 
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
-		assertEquals("testMessage", client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals("testMessage", client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test
@@ -408,7 +408,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.onScriptCallbackEvent(event);
 
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
-		assertEquals("testMessage (4)", client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals("testMessage (4)", client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test
@@ -437,7 +437,7 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.onScriptCallbackEvent(event);
 
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]);
-		assertEquals("<col=000000>testMessage</col> (4)", client.getStringStack()[client.getStringStackSize() - 1]);
+		assertEquals("<col=000000>testMessage</col> (4)", client.getObjectStack()[client.getObjectStackSize() - 1]);
 	}
 
 	@Test

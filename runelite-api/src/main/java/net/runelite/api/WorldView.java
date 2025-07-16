@@ -151,15 +151,9 @@ public interface WorldView
 	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 */
+	@Deprecated
 	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
 		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
-
-	/**
-	 * Gets a list of all projectiles currently spawned.
-	 *
-	 * @return all projectiles
-	 */
-	Deque<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.

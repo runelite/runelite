@@ -1,8 +1,6 @@
-.id                 300
-.int_stack_count    0
-.string_stack_count 0
-.int_var_count      0
-.string_var_count   1
+.id                       300
+.int_arg_count            0
+.obj_arg_count            0
    get_varc_int           11
    iconst                 1
    if_icmpeq              LABEL4
@@ -20,12 +18,12 @@ LABEL5:
    sconst                 ""
    invoke                 222
    sconst                 ""
-   sstore                 0
+   ostore                 0
    iconst                 112
    iconst                 -2147483640
    iconst                 -2147483639
-   sload                  0
-   sconst                 "izs"
+   oload                  0
+   sconst                 "iis"
    iconst                 10616875
    if_setonkey           
    iconst                 138

@@ -539,9 +539,9 @@ public class ChatChannelPlugin extends Plugin
 				intStack[size - 1] = 1;
 
 				// Get name of player we are trying to kick
-				final String[] stringStack = client.getStringStack();
-				final int stringSize = client.getStringStackSize();
-				final String kickPlayerName = stringStack[stringSize - 1];
+				final Object[] objectStack = client.getObjectStack();
+				final int objectStackSize = client.getObjectStackSize();
+				final String kickPlayerName = (String) objectStack[objectStackSize - 1];
 
 				// Show a chatbox panel confirming the kick
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
@@ -580,9 +580,9 @@ public class ChatChannelPlugin extends Plugin
 						return;
 				}
 
-				final String[] stringStack = client.getStringStack();
-				final int stringSize = client.getStringStackSize();
-				final String name = stringStack[stringSize - 3];
+				final Object[] objectStack = client.getObjectStack();
+				final int objectStackSize = client.getObjectStackSize();
+				final String name = (String) objectStack[objectStackSize - 3];
 				final FriendsChatRank rank = getRank(Text.removeTags(name));
 				if (rank != null && rank != FriendsChatRank.UNRANKED)
 				{
@@ -590,7 +590,7 @@ public class ChatChannelPlugin extends Plugin
 					if (iconNumber > -1)
 					{
 						final String img = "<img=" + iconNumber + ">";
-						stringStack[stringSize - 3] = img + name;
+						objectStack[objectStackSize - 3] = img + name;
 					}
 				}
 			}
