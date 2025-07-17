@@ -558,7 +558,7 @@ public class ScreenshotPluginTest
 		animationChanged.setActor(player);
 		screenshotPlugin.onAnimationChanged(animationChanged);
 
-		verify(screenshotPlugin).takeScreenshot("Death", "Deaths");
+		verify(screenshotPlugin).takeScreenshot("Doom Death", "Deaths");
 	}
 
 	@Test
