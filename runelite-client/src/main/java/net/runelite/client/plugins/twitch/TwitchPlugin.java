@@ -160,7 +160,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		connect();
 	}
 
-	private void addChatMessage(String sender, String message, boolean bypassFormatting)
+	private void addChatMessage(String sender, String message, boolean isSystemMessage)
 	{
 		String chatMessage = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
@@ -173,7 +173,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 				.name(sender)
 				.timestamp((int) (System.currentTimeMillis() / 1000));
 
-		if (bypassFormatting || twitchConfig.bypassPluginFormatting())
+		if (isSystemMessage)
 		{
 			queuedMessage.runeLiteFormattedMessage(chatMessage);
 		}
