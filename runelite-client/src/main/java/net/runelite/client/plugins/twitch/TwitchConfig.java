@@ -62,5 +62,8 @@ public interface TwitchConfig extends Config
 		description = "Prevent other plugins (such as emoji) from modifying the message.",
 		position = 3
 	)
-	boolean bypassPluginFormatting();
+	default boolean bypassPluginFormatting()
+	{
+		return false;
+	}
 }
