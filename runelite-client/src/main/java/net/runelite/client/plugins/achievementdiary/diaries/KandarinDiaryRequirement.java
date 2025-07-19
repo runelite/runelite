@@ -98,7 +98,7 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FIREMAKING, 65));
 		add("Kill a Shadow Hound in the Shadow dungeon.",
 			new SkillRequirement(Skill.THIEVING, 53),
-			new QuestRequirement(Quest.DESERT_TREASURE, true));
+			new QuestRequirement(Quest.DESERT_TREASURE_I, true));
 		add("Purchase and equip a granite body from Barbarian Assault.",
 			new SkillRequirement(Skill.STRENGTH, 50),
 			new SkillRequirement(Skill.DEFENCE, 50));

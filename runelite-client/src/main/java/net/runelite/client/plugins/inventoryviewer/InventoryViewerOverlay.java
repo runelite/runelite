@@ -31,10 +31,12 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -49,9 +51,11 @@ class InventoryViewerOverlay extends OverlayPanel
 
 	private final Client client;
 	private final ItemManager itemManager;
+	private final InventoryViewerConfig config;
+	private boolean hidden;
 
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ItemManager itemManager, InventoryViewerConfig config)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrap(true);
@@ -60,12 +64,25 @@ class InventoryViewerOverlay extends OverlayPanel
 		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
+		this.config = config;
+		this.hidden = config.hiddenDefault();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (hidden)
+		{
+			return null;
+		}
+
+		if ((client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 3 || client.getWidget(InterfaceID.Bankmain.UNIVERSE) != null)
+				&& config.hideIfInventoryActive())
+		{
+			return null;
+		}
+
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 
 		if (itemContainer == null)
 		{
@@ -101,5 +118,10 @@ class InventoryViewerOverlay extends OverlayPanel
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
 		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
+	}
+
+	protected void toggle()
+	{
+		hidden = !hidden;
 	}
 }

@@ -31,9 +31,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +41,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -62,20 +60,17 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.Text;
 
 @Slf4j
-public class ScriptInspector extends JFrame
+public class ScriptInspector extends DevToolsFrame
 {
 	// These scripts are the only ones that fire every client tick regardless of location.
 	private final static String DEFAULT_BLACKLIST = "3174,1004";
@@ -90,8 +85,8 @@ public class ScriptInspector extends JFrame
 	private int lastTick;
 	private Set<Integer> blacklist;
 	private Set<Integer> highlights;
-	private JList jList;
-	private DefaultListModel listModel;
+	private final JList<Integer> jList;
+	private final DefaultListModel<Integer> listModel;
 	private ListState state = ListState.BLACKLIST;
 
 	private enum ListState
@@ -101,11 +96,12 @@ public class ScriptInspector extends JFrame
 	}
 
 	@Data
-	private class ScriptTreeNode extends DefaultMutableTreeNode
+	private static class ScriptTreeNode extends DefaultMutableTreeNode
 	{
 		private final int scriptId;
 		private Widget source;
 		private int duplicateNumber = 1;
+		private Object[] args;
 
 		@Override
 		public String toString()
@@ -120,18 +116,23 @@ public class ScriptInspector extends JFrame
 			if (source != null)
 			{
 				int id = source.getId();
-				output += "  -  " + TO_GROUP(id) + "." + TO_CHILD(id);
+				output += "  -  " + WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
 
 				if (source.getIndex() != -1)
 				{
 					output += "[" + source.getIndex() + "]";
 				}
 
-				WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-				if (info != null)
+				var name = WidgetInspector.getWidgetName(id);
+				if (name != null)
 				{
-					output += " " + info.name();
+					output += " " + name;
 				}
+			}
+
+			if (args != null)
+			{
+				output += " args: " + Arrays.toString(args);
 			}
 
 			return output;
@@ -139,27 +140,15 @@ public class ScriptInspector extends JFrame
 	}
 
 	@Inject
-	ScriptInspector(Client client, EventBus eventBus, DevToolsPlugin plugin, ConfigManager configManager)
+	ScriptInspector(Client client, EventBus eventBus, ConfigManager configManager)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
 		this.configManager = configManager;
 
 		setTitle("RuneLite Script Inspector");
-		setIconImage(ClientUI.ICON);
 
 		setLayout(new BorderLayout());
-
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				close();
-				plugin.getScriptInspector().setActive(false);
-			}
-		});
 
 		tracker.setLayout(new DynamicGridLayout(0, 1, 0, 3));
 
@@ -243,9 +232,9 @@ public class ScriptInspector extends JFrame
 		final JPanel rightSide = new JPanel();
 		rightSide.setLayout(new BorderLayout());
 
-		listModel = new DefaultListModel();
+		listModel = new DefaultListModel<>();
 		changeState(ListState.BLACKLIST);
-		jList = new JList(listModel);
+		jList = new JList<>(listModel);
 		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(jList);
 
@@ -294,6 +283,7 @@ public class ScriptInspector extends JFrame
 		if (event.getScriptEvent() != null)
 		{
 			newNode.setSource(event.getScriptEvent().getSource());
+			newNode.setArgs(event.getScriptEvent().getArguments());
 		}
 
 		if (currentNode == null)
@@ -344,14 +334,14 @@ public class ScriptInspector extends JFrame
 		}
 	}
 
+	@Override
 	public void open()
 	{
 		eventBus.register(this);
-		setVisible(true);
-		toFront();
-		repaint();
+		super.open();
 	}
 
+	@Override
 	public void close()
 	{
 		configManager.setConfiguration("devtools", "highlights",
@@ -360,7 +350,7 @@ public class ScriptInspector extends JFrame
 			Text.toCSV(Lists.transform(new ArrayList<>(blacklist), String::valueOf)));
 		currentNode = null;
 		eventBus.unregister(this);
-		setVisible(false);
+		super.close();
 	}
 
 	private void addScriptLog(ScriptTreeNode treeNode)
@@ -401,7 +391,7 @@ public class ScriptInspector extends JFrame
 			tracker.add(tree);
 
 			// Cull very old stuff
-			for (; tracker.getComponentCount() > MAX_LOG_ENTRIES; )
+			while (tracker.getComponentCount() > MAX_LOG_ENTRIES)
 			{
 				tracker.remove(0);
 			}
@@ -434,7 +424,7 @@ public class ScriptInspector extends JFrame
 			return;
 		}
 
-		int script = (Integer) listModel.get(index);
+		int script = listModel.get(index);
 		getSet().remove(script);
 		refreshList();
 	}

@@ -34,7 +34,7 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "syncusername",
 		name = "Sync username",
-		description = "Syncs the username that is currently remembered between computers"
+		description = "Syncs the username that is currently remembered between computers."
 	)
 	default boolean syncUsername()
 	{
@@ -44,7 +44,7 @@ public interface LoginScreenConfig extends Config
 	@ConfigItem(
 		keyName = "pasteenabled",
 		name = "Ctrl-V paste",
-		description = "Enables Ctrl+V pasting on the login screen"
+		description = "Enables Ctrl-V pasting on the login screen."
 	)
 	default boolean pasteEnabled()
 	{
@@ -68,4 +68,24 @@ public interface LoginScreenConfig extends Config
 		description = ""
 	)
 	void username(String key);
+
+	@ConfigItem(
+		keyName = "loginScreen",
+		name = "Custom background",
+		description = "Force the login screen to use an image from the past instead of the current one."
+	)
+	default LoginScreenOverride loginScreen()
+	{
+		return LoginScreenOverride.OFF;
+	}
+
+	@ConfigItem(
+		keyName = "showLoginFire",
+		name = "Display fire",
+		description = "Whether or not the fire in the braziers at the sides of the login screen should be on fire."
+	)
+	default boolean showLoginFire()
+	{
+		return true;
+	}
 }

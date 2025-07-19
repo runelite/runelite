@@ -27,13 +27,10 @@
 package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
@@ -49,23 +46,20 @@ class GrandExchangePanel extends PluginPanel
 	private final MaterialTab searchTab;
 
 	@Getter
-	private GrandExchangeSearchPanel searchPanel;
+	private final GrandExchangeSearchPanel searchPanel;
 	@Getter
-	private GrandExchangeOffersPanel offersPanel;
+	private final GrandExchangeOffersPanel offersPanel;
 
 	@Inject
-	private GrandExchangePanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	private GrandExchangePanel(GrandExchangeSearchPanel searchPanel, GrandExchangeOffersPanel offersPanel)
 	{
 		super(false);
 
+		this.searchPanel = searchPanel;
+		this.offersPanel = offersPanel;
+
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
-
-		//Offers Panel
-		offersPanel = new GrandExchangeOffersPanel();
 
 		MaterialTab offersTab = new MaterialTab("Offers", tabGroup, offersPanel);
 		searchTab = new MaterialTab("Search", tabGroup, searchPanel);

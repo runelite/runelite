@@ -28,12 +28,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import javax.inject.Inject;
+import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 class DriftNetOverlay extends Overlay
@@ -47,7 +47,7 @@ class DriftNetOverlay extends Overlay
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
@@ -66,6 +66,10 @@ class DriftNetOverlay extends Overlay
 		if (config.showNetStatus())
 		{
 			renderNets(graphics);
+		}
+		if (config.tagAnnetteWhenNoNets())
+		{
+			renderAnnette(graphics);
 		}
 
 		return null;
@@ -99,6 +103,15 @@ class DriftNetOverlay extends Overlay
 			{
 				OverlayUtil.renderTextLocation(graphics, textLocation, text, config.countColor());
 			}
+		}
+	}
+
+	private void renderAnnette(Graphics2D graphics)
+	{
+		GameObject annette = plugin.getAnnette();
+		if (annette != null && !plugin.isDriftNetsInInventory())
+		{
+			OverlayUtil.renderPolygon(graphics, annette.getConvexHull(), config.annetteTagColor());
 		}
 	}
 }

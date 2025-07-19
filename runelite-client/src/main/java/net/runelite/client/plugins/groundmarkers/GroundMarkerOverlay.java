@@ -25,20 +25,24 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
+import com.google.common.base.Strings;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Stroke;
 import java.util.Collection;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class GroundMarkerOverlay extends Overlay
@@ -56,7 +60,7 @@ public class GroundMarkerOverlay extends Overlay
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
@@ -64,6 +68,12 @@ public class GroundMarkerOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final Collection<ColorTileMarker> points = plugin.getPoints();
+		if (points.isEmpty())
+		{
+			return null;
+		}
+
+		Stroke stroke = new BasicStroke((float) config.borderWidth());
 		for (final ColorTileMarker point : points)
 		{
 			WorldPoint worldPoint = point.getWorldPoint();
@@ -73,19 +83,19 @@ public class GroundMarkerOverlay extends Overlay
 			}
 
 			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
+			if (tileColor == null)
 			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
+				// If this is an old tile which has no color, use marker color
 				tileColor = config.markerColor();
 			}
 
-			drawTile(graphics, worldPoint, tileColor);
+			drawTile(graphics, worldPoint, tileColor, point.getLabel(), stroke);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -101,11 +111,18 @@ public class GroundMarkerOverlay extends Overlay
 		}
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
+		if (poly != null)
 		{
-			return;
+			OverlayUtil.renderPolygon(graphics, poly, color, new Color(0, 0, 0, config.fillOpacity()), borderStroke);
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, color);
+		if (!Strings.isNullOrEmpty(label))
+		{
+			Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, lp, label, 0);
+			if (canvasTextLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasTextLocation, label, color);
+			}
+		}
 	}
 }

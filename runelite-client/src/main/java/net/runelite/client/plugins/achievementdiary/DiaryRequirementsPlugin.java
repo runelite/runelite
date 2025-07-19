@@ -35,13 +35,10 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.FontTypeFace;
-import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -80,11 +77,11 @@ public class DiaryRequirementsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(final WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.DIARY_QUEST_GROUP_ID)
+		if (event.getGroupId() == InterfaceID.JOURNALSCROLL)
 		{
 			String widgetTitle = Text.removeTags(
 				client.getWidget(
-					WidgetInfo.DIARY_QUEST_WIDGET_TITLE)
+						InterfaceID.Journalscroll.TITLE)
 					.getText())
 				.replace(' ', '_')
 				.toUpperCase();
@@ -97,7 +94,7 @@ public class DiaryRequirementsPlugin extends Plugin
 
 	private void showDiaryRequirements()
 	{
-		Widget widget = client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT);
+		Widget widget = client.getWidget(InterfaceID.Journalscroll.TEXTLAYER);
 		Widget[] children = widget.getStaticChildren();
 
 		Widget titleWidget = children[0];
@@ -201,7 +198,7 @@ public class DiaryRequirementsPlugin extends Plugin
 		}
 
 		int numLines = lastLine;
-		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_QUEST_UPDATE_LINECOUNT, 1, numLines));
+		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_UPDATE_LINECOUNT, 1, numLines));
 	}
 
 	private List<String> getOriginalAchievements(Widget[] children)
@@ -217,7 +214,7 @@ public class DiaryRequirementsPlugin extends Plugin
 	private GenericDiaryRequirement getRequirementsForTitle(String title)
 	{
 		String diaryName = Text.removeTags(title
-			.replaceAll(" ", "_")
+			.replace(" ", "_")
 			.toUpperCase());
 
 		GenericDiaryRequirement diaryRequirementContainer;
@@ -277,7 +274,7 @@ public class DiaryRequirementsPlugin extends Plugin
 			assert !req.getRequirements().isEmpty();
 			for (Requirement ireq : req.getRequirements())
 			{
-				boolean satifisfied = satisfiesRequirement(ireq);
+				boolean satifisfied = ireq.satisfiesRequirement(client);
 				b.append(satifisfied ? "<col=000080><str>" : "<col=800000>");
 				b.append(ireq.toString());
 				b.append(satifisfied ? "</str>" : "<col=000080>");
@@ -291,46 +288,5 @@ public class DiaryRequirementsPlugin extends Plugin
 			reqs.put(req.getTask(), b.toString());
 		}
 		return reqs;
-	}
-
-	private boolean satisfiesRequirement(Requirement r)
-	{
-		if (r instanceof OrRequirement)
-		{
-			return ((OrRequirement) r).getRequirements()
-				.stream()
-				.anyMatch(this::satisfiesRequirement);
-		}
-		if (r instanceof SkillRequirement)
-		{
-			SkillRequirement s = (SkillRequirement) r;
-			return client.getRealSkillLevel(s.getSkill()) >= s.getLevel();
-		}
-		if (r instanceof CombatLevelRequirement)
-		{
-			return client.getLocalPlayer().getCombatLevel() >= ((CombatLevelRequirement) r).getLevel();
-		}
-		if (r instanceof QuestRequirement)
-		{
-			QuestRequirement q = (QuestRequirement) r;
-			QuestState state = q.getQuest().getState(client);
-			if (q.isStarted())
-			{
-				return state != QuestState.NOT_STARTED;
-			}
-			return state == QuestState.FINISHED;
-		}
-		if (r instanceof QuestPointRequirement)
-		{
-			return client.getVar(VarPlayer.QUEST_POINTS) >= ((QuestPointRequirement) r).getQp();
-		}
-		if (r instanceof FavourRequirement)
-		{
-			FavourRequirement f = (FavourRequirement) r;
-			int realFavour = client.getVar(f.getHouse().getVarbit());
-			return (realFavour / 10) >= f.getPercent();
-		}
-		log.warn("Unknown requirement {}", r);
-		return false;
 	}
 }

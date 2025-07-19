@@ -24,32 +24,24 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.gameval.InterfaceID;
 
+@AllArgsConstructor
+@Getter
 enum Role
 {
-	ATTACKER(WidgetInfo.BA_ATK_LISTEN_TEXT, WidgetInfo.BA_ATK_CALL_TEXT, WidgetInfo.BA_ATK_ROLE_TEXT, WidgetInfo.BA_ATK_ROLE_SPRITE),
-	DEFENDER(WidgetInfo.BA_DEF_LISTEN_TEXT, WidgetInfo.BA_DEF_CALL_TEXT, WidgetInfo.BA_DEF_ROLE_TEXT, WidgetInfo.BA_DEF_ROLE_SPRITE),
-	COLLECTOR(WidgetInfo.BA_COLL_LISTEN_TEXT, WidgetInfo.BA_COLL_CALL_TEXT, WidgetInfo.BA_COLL_ROLE_TEXT, WidgetInfo.BA_COLL_ROLE_SPRITE),
-	HEALER(WidgetInfo.BA_HEAL_LISTEN_TEXT, WidgetInfo.BA_HEAL_CALL_TEXT, WidgetInfo.BA_HEAL_ROLE_TEXT, WidgetInfo.BA_HEAL_ROLE_SPRITE);
+	ATTACKER(InterfaceID.BarbassaultOverAtt.BARBASSAULT_ATTACKER_HORN_TEXT, InterfaceID.BarbassaultOverAtt.BARBASSAULT_ATTACKER_HORN),
+	DEFENDER(InterfaceID.BarbassaultOverDef.BARBASSAULT_DEFENDER_HORN_TEXT, InterfaceID.BarbassaultOverDef.BARBASSAULT_DEFENDER_HORN),
+	COLLECTOR(InterfaceID.BarbassaultOverCol.BARBASSAULT_COLLECTOR_HORN_TEXT, InterfaceID.BarbassaultOverCol.BARBASSAULT_COLLECTOR_HORN),
+	HEALER(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_HORN_TEXT, InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_HORN);
 
-	@Getter
-	private final WidgetInfo listen;
-	@Getter
-	private final WidgetInfo call;
-	@Getter
-	private final WidgetInfo roleText;
-	@Getter
-	private final WidgetInfo roleSprite;
-
-	Role(WidgetInfo listen, WidgetInfo call, WidgetInfo role, WidgetInfo roleSprite)
-	{
-		this.listen = listen;
-		this.call = call;
-		this.roleText = role;
-		this.roleSprite = roleSprite;
-	}
+	@Component
+	private final int roleText;
+	@Component
+	private final int roleSprite;
 
 	@Override
 	public String toString()

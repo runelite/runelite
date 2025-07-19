@@ -31,9 +31,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +44,12 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
+import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
+import net.runelite.client.plugins.grounditems.config.OwnershipFilterMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -56,7 +59,6 @@ import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.QuantityFormatter;
-import org.apache.commons.lang3.ArrayUtils;
 
 public class GroundItemsOverlay extends Overlay
 {
@@ -64,9 +66,6 @@ public class GroundItemsOverlay extends Overlay
 	// We must offset the text on the z-axis such that
 	// it doesn't obscure the ground items below it.
 	private static final int OFFSET_Z = 20;
-	// The game won't send anything higher than this value to the plugin -
-	// so we replace any item quantity higher with "Lots" instead.
-	private static final int MAX_QUANTITY = 65535;
 	// The 15 pixel gap between each drawn ground item.
 	private static final int STRING_GAP = 15;
 	// Size of the hidden/highlight boxes
@@ -74,10 +73,6 @@ public class GroundItemsOverlay extends Overlay
 	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
 	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
 	private static final int TIMER_OVERLAY_DIAMETER = 10;
-	private static final Duration DESPAWN_TIME_INSTANCE = Duration.ofMinutes(30);
-	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
-	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
-	private static final int KRAKEN_REGION = 9116;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -101,7 +96,8 @@ public class GroundItemsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || plugin.isHideAll()) && !plugin.isHotKeyPressed();
+		final boolean dontShowOverlay = (config.itemHighlightMode() == MENU || config.itemHighlightMode() == NONE
+			|| plugin.isHideAll()) && !plugin.isHotKeyPressed();
 
 		if (dontShowOverlay && !config.highlightTiles())
 		{
@@ -111,7 +107,7 @@ public class GroundItemsOverlay extends Overlay
 		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
-		if (player == null || client.getViewportWidget() == null)
+		if (player == null)
 		{
 			return null;
 		}
@@ -175,26 +171,27 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
-		final boolean onlyShowLoot = config.onlyShowLoot();
-		final boolean groundItemTimers = config.groundItemTimers();
+		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
+		final boolean outline = config.textOutline();
+		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
+		final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
 
 		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE
-				|| (onlyShowLoot && !item.isMine()))
+				|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
 			{
 				continue;
 			}
 
-			final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			plugin.updateItemColor(item);
 
-			if (highlighted == null && !plugin.isHotKeyPressed())
+			if (!item.highlighted && !plugin.isHotKeyPressed())
 			{
 				// Do not display hidden items
-				if (hidden != null)
+				if (item.hidden)
 				{
 					continue;
 				}
@@ -206,11 +203,11 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			final Color color = plugin.getItemColor(highlighted, hidden);
+			final Color color = item.color;
 
 			if (config.highlightTiles())
 			{
-				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint, item.getHeight());
 
 				if (poly != null)
 				{
@@ -227,46 +224,43 @@ public class GroundItemsOverlay extends Overlay
 
 			if (item.getQuantity() > 1)
 			{
-				if (item.getQuantity() >= MAX_QUANTITY)
-				{
-					itemStringBuilder.append(" (Lots!)");
-				}
-				else
-				{
-					itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
-						.append(")");
-				}
+				itemStringBuilder.append(" (")
+					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
+					.append(')');
 			}
 
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if (item.getId() != ItemID.COINS)
 			{
-				if (item.getGePrice() > 0)
+				PriceDisplayMode displayMode = config.priceDisplayMode();
+				if (displayMode == PriceDisplayMode.BOTH)
 				{
-					itemStringBuilder.append(" (GE: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
-				}
+					if (item.getGePrice() > 0)
+					{
+						itemStringBuilder.append(" (GE: ")
+							.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
+							.append(" gp)");
+					}
 
-				if (item.getHaPrice() > 0)
-				{
-					itemStringBuilder.append(" (HA: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+					if (item.getHaPrice() > 0)
+					{
+						itemStringBuilder.append(" (HA: ")
+							.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
+							.append(" gp)");
+					}
 				}
-			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
-
-				if (price > 0)
+				else if (displayMode != PriceDisplayMode.OFF)
 				{
-					itemStringBuilder
-						.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(price))
-						.append(" gp)");
+					final int price = displayMode == PriceDisplayMode.GE
+						? item.getGePrice()
+						: item.getHaPrice();
+
+					if (price > 0)
+					{
+						itemStringBuilder
+							.append(" (")
+							.append(QuantityFormatter.quantityToStackSize(price))
+							.append(" gp)");
+					}
 				}
 			}
 
@@ -341,19 +335,49 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Draw hidden box
-				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden != null, true);
+				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, item.hidden, true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
+				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, item.highlighted, false);
 			}
 
-			if (groundItemTimers || plugin.isHotKeyPressed())
+			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
+			// so always draw the pie since it is on the left hand side.
+			if (groundItemTimers == DespawnTimerMode.PIE || plugin.isHotKeyPressed())
 			{
-				drawTimerOverlay(graphics, textX, textY, item);
+				drawTimerPieOverlay(graphics, textX, textY, item);
+			}
+			else if (groundItemTimers == DespawnTimerMode.SECONDS || groundItemTimers == DespawnTimerMode.TICKS)
+			{
+				Instant despawnTime = calculateDespawnTime(item);
+				Color timerColor = getItemTimerColor(item);
+				if (despawnTime != null && timerColor != null)
+				{
+					long despawnTimeMillis = despawnTime.toEpochMilli() - Instant.now().toEpochMilli();
+					final String timerText;
+					if (groundItemTimers == DespawnTimerMode.SECONDS)
+					{
+						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
+					}
+					else // TICKS
+					{
+						timerText = String.format(" - %d", despawnTimeMillis / 600);
+					}
+
+					// The timer text is drawn separately to have its own color, and is intentionally not included
+					// in the getCanvasTextLocation() call because the timer text can change per frame and we do not
+					// use a monospaced font, which causes the text location on screen to jump around slightly each frame.
+					textComponent.setText(timerText);
+					textComponent.setColor(timerColor);
+					textComponent.setOutline(outline);
+					textComponent.setPosition(new java.awt.Point(textX + fm.stringWidth(itemString), textY));
+					textComponent.render(graphics);
+				}
 			}
 
 			textComponent.setText(itemString);
 			textComponent.setColor(color);
+			textComponent.setOutline(outline);
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
@@ -361,63 +385,68 @@ public class GroundItemsOverlay extends Overlay
 		return null;
 	}
 
-	private void drawTimerOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
+	private Instant calculateDespawnTime(GroundItem groundItem)
 	{
-		// We can only accurately guess despawn times for our own pvm loot and dropped items
-		if (groundItem.getLootType() != LootType.PVM && groundItem.getLootType() != LootType.DROPPED)
-		{
-			return;
-		}
-
-		// Loot appears to others after 1 minute, and despawns after 2 minutes
-		// Dropped items appear to others after 1 minute, and despawns after 3 minutes
-		// Items in instances never appear to anyone and despawn after 30 minutes
-
 		Instant spawnTime = groundItem.getSpawnTime();
 		if (spawnTime == null)
 		{
-			return;
+			return null;
 		}
 
-		Instant despawnTime;
-		Instant now = Instant.now();
-		Color fillColor;
-		if (client.isInInstancedRegion())
-		{
-			// Items in the Kraken instance appear to never despawn?
-			if (isInKraken())
-			{
-				return;
-			}
-
-			despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
-			fillColor = PRIVATE_TIMER_COLOR;
-		}
-		else
-		{
-			if (groundItem.getLootType() == LootType.DROPPED)
-			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
-			}
-			else
-			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
-			}
-
-			// If it has not yet been a minute, the item is private
-			if (spawnTime.plus(1, ChronoUnit.MINUTES).isAfter(now))
-			{
-				fillColor = PRIVATE_TIMER_COLOR;
-			}
-			else
-			{
-				fillColor = PUBLIC_TIMER_COLOR;
-			}
-		}
-
-		if (now.isBefore(spawnTime) || now.isAfter(despawnTime))
+		Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
+		if (Instant.now().isAfter(despawnTime))
 		{
 			// that's weird
+			return null;
+		}
+
+		return despawnTime;
+	}
+
+	private Color getItemTimerColor(GroundItem groundItem)
+	{
+		final Instant spawnTime = groundItem.getSpawnTime();
+		if (spawnTime == null)
+		{
+			return null;
+		}
+
+		final Instant now = Instant.now();
+		final Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
+
+		if (groundItem.isPrivate())
+		{
+			if (despawnTime.isAfter(now))
+			{
+				return PRIVATE_TIMER_COLOR;
+			}
+
+			return null;
+		}
+
+		// otherwise it is private until visibleTime, then it is public
+		final Instant visibleTime = spawnTime.plus(groundItem.getVisibleTime());
+		if (visibleTime.isAfter(now))
+		{
+			return PRIVATE_TIMER_COLOR;
+		}
+		if (despawnTime.isAfter(now))
+		{
+			return PUBLIC_TIMER_COLOR;
+		}
+
+		return null;
+	}
+
+	private void drawTimerPieOverlay(Graphics2D graphics, int textX, int textY, GroundItem groundItem)
+	{
+		Instant now = Instant.now();
+		Instant spawnTime = groundItem.getSpawnTime();
+		Instant despawnTime = calculateDespawnTime(groundItem);
+		Color fillColor = getItemTimerColor(groundItem);
+
+		if (spawnTime == null || despawnTime == null || fillColor == null)
+		{
 			return;
 		}
 
@@ -470,10 +499,4 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 	}
-
-	private boolean isInKraken()
-	{
-		return ArrayUtils.contains(client.getMapRegions(), KRAKEN_REGION);
-	}
-
 }

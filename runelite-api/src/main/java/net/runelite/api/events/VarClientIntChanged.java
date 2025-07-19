@@ -26,6 +26,7 @@
 package net.runelite.api.events;
 
 import lombok.Value;
+import net.runelite.api.annotations.VarCInt;
 
 /**
  * @see net.runelite.api.VarClientInt
@@ -33,5 +34,6 @@ import lombok.Value;
 @Value
 public class VarClientIntChanged
 {
-	private int index;
+	@VarCInt
+	int index;
 }

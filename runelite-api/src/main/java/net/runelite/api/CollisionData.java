@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import org.intellij.lang.annotations.MagicConstant;
+
 /**
  * Represents tile collision data for the scene
  */
@@ -42,5 +44,6 @@ public interface CollisionData
 	 * @return all collision flags for the tiles in the scene
 	 * @see Constants#SCENE_SIZE
 	 */
+	@MagicConstant(flagsFromClass = CollisionDataFlag.class)
 	int[][] getFlags();
 }

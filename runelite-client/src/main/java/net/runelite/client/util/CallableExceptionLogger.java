@@ -43,7 +43,7 @@ public class CallableExceptionLogger<V> implements Callable<V>
 		}
 		catch (Throwable ex)
 		{
-			log.warn("Uncaught exception in callable {}", callable, ex);
+			log.error("Uncaught exception in callable {}", callable, ex);
 			throw ex;
 		}
 	}

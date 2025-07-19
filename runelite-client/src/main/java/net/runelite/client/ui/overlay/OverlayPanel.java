@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public abstract class OverlayPanel extends Overlay
 	protected final PanelComponent panelComponent = new PanelComponent();
 
 	/**
-	 * Enables/disables automatic clearing of {@link this#getPanelComponent()} children after rendering (enabled by default)
+	 * Enables/disables automatic clearing of {@link OverlayPanel#getPanelComponent()} children after rendering (enabled by default)
 	 */
 	private boolean clearChildren = true;
 
@@ -48,6 +49,11 @@ public abstract class OverlayPanel extends Overlay
 	 * Enables/disables automatic font size changes based on panel component size relative to default panel component size.
 	 */
 	private boolean dynamicFont = false;
+
+	/**
+	 * Preferred color used for panel component background
+	 */
+	private Color preferredColor = null;
 
 	protected OverlayPanel()
 	{
@@ -83,14 +89,28 @@ public abstract class OverlayPanel extends Overlay
 			}
 		}
 
-		final Dimension dimension = panelComponent.render(graphics);
+		final Color oldBackgroundColor = panelComponent.getBackgroundColor();
 
-		if (clearChildren)
+		if (getPreferredColor() != null && ComponentConstants.STANDARD_BACKGROUND_COLOR.equals(oldBackgroundColor))
 		{
-			panelComponent.getChildren().clear();
+			panelComponent.setBackgroundColor(getPreferredColor());
+		}
+
+		final Dimension dimension;
+		try
+		{
+			dimension = panelComponent.render(graphics);
+		}
+		finally
+		{
+			if (clearChildren)
+			{
+				panelComponent.getChildren().clear();
+			}
 		}
 
 		panelComponent.setPreferredSize(oldSize);
+		panelComponent.setBackgroundColor(oldBackgroundColor);
 		return dimension;
 	}
 }

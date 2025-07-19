@@ -40,12 +40,21 @@ public final class ScriptID
 	/**
 	 * Sends a chat message
 	 * <ul>
-	 * <li> int (byte) Flags </li>
 	 * <li> String Message to send </li>
+	 * <li> int modes </li>
+	 * <li> int (clan type) </li>
+	 * <li> int (boolean) use target</li>
+	 * <li> int set target </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 1, string = 1)
-	public static final int CHATBOX_INPUT = 96;
+	@ScriptArguments(integer = 4, string = 1)
+	public static final int CHAT_SEND = 5517;
+
+	/**
+	 * Rebuilds the chatbox and the pmbox
+	 */
+	@ScriptArguments()
+	public static final int SPLITPM_CHANGED = 83;
 
 	/**
 	 * Rebuilds the chatbox
@@ -78,20 +87,11 @@ public final class ScriptID
 	 * <ul>
 	 * <li> int (boolean) Clear the current text </li>
 	 * <li> int (boolean) Restore to chat view </li>
+	 * <li> int (boolean) Submit close to server </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 2)
+	@ScriptArguments(integer = 3)
 	public static final int MESSAGE_LAYER_CLOSE = 299;
-
-	/**
-	 * Sets the background for sound option bars
-	 * <ul>
-	 * <li> int  Value of the slider (0-4) </li>
-	 * <li> int (WidgetID) * 5, segments of the slider </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 6)
-	public static final int OPTIONS_ALLSOUNDS = 358;
 
 	/**
 	 * Readies the chatbox panel for things like the chatbox input
@@ -108,17 +108,6 @@ public final class ScriptID
 	 */
 	@ScriptArguments()
 	public static final int CHAT_PROMPT_INIT = 223;
-
-	/**
-	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
-	 * <ul>
-	 * <li> int (boolean) Item kept on death </li>
-	 * <li> int Item Quantity </li>
-	 * <li> String Item Name </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 2, string = 1)
-	public static final int DEATH_KEEP_ITEM_EXAMINE = 1603;
 
 	/**
 	 * Checks the state of the given stash unit.
@@ -145,17 +134,27 @@ public final class ScriptID
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 1)
-	public static final int QUESTLIST_PROGRESS = 2267;
+	public static final int QUEST_STATUS_GET = 4029;
 
 	/**
-	 * Updates the Diary/Quest interface's scrollbar
+	 * Updates the Quest interface's scrollbar
 	 * <ul>
 	 * <li> int (boolean) Reset scroll position </li>
 	 * <li> int Number of lines </li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
-	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
+	public static final int QUEST_UPDATE_LINECOUNT = 2523;
+
+	/**
+	 * Updates the Diary interface's scrollbar
+	 * <ul>
+	 * <li> int (boolean) Reset scroll position </li>
+	 * <li> int Number of lines </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int DIARY_UPDATE_LINECOUNT = 6845;
 
 	/**
 	 * Handles zoom input
@@ -176,6 +175,7 @@ public final class ScriptID
 	 * because you need an op listener attached to it for it to work
 	 */
 	@ScriptArguments()
+	@Deprecated
 	public static final int NULL = 10003;
 
 	/**
@@ -196,30 +196,30 @@ public final class ScriptID
 	public static final int XPDROP_DISABLED = 2091;
 
 	/**
-	 * Attempts to kick the specified player from the Clan Chat
+	 * Attempts to kick the specified player from the friends chat
 	 * <ul>
 	 * <li>String Players in-game name</li>
 	 * </ul>
 	 */
 	@ScriptArguments(string = 1)
-	public static final int CLAN_SEND_KICK = 215;
+	public static final int FRIENDS_CHAT_SEND_KICK = 3764;
 
 	/**
-	 * Builds the items kept on death widget
+	 * Builds the widget that holds all of the players inside a friends chat
 	 */
-	@ScriptArguments(integer = 4, string = 2)
-	public static final int DEATH_KEEP_BUILD = 1601;
+	@ScriptArguments(integer = 15)
+	public static final int FRIENDS_CHAT_CHANNEL_REBUILD = 1658;
 
 	/**
 	 * Builds the widget that holds all of the players inside a clan chat
 	 */
-	@ScriptArguments(integer = 15)
-	public static final int CLAN_CHAT_CHANNEL_BUILD = 1658;
+	@ScriptArguments(integer = 7)
+	public static final int CLAN_SIDEPANEL_DRAW = 4396;
 
 	/**
 	 * Builds the widget for making an offer in Grand Exchange
 	 */
-	@ScriptArguments(integer = 15)
+	@ScriptArguments(integer = 17)
 	public static final int GE_OFFERS_SETUP_BUILD = 779;
 
 	/**
@@ -229,10 +229,10 @@ public final class ScriptID
 	public static final int GE_ITEM_SEARCH = 752;
 
 	/**
-	 * Builds the quest list inside the quest tab that shows each quest's progress
+	 * On load listener for building the quest list interface
 	 */
-	@ScriptArguments(integer = 3)
-	public static final int QUESTLIST_PROGRESS_LIST_SHOW = 1354;
+	@ScriptArguments(integer = 8)
+	public static final int QUESTLIST_INIT = 1350;
 
 	/**
 	 * Called when the friends list is updated
@@ -272,12 +272,220 @@ public final class ScriptID
 	 * <li> int (WidgetID) * 16, various widgets making up the bank interface </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 16)
+	@ScriptArguments(integer = 17)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
+
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_DRAGSCROLL = 284;
 
 	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */
 	@ScriptArguments(integer = 1)
 	public static final int PVP_WIDGET_BUILDER = 388;
+
+	/**
+	 * Called to build the combat interface
+	 */
+	@ScriptArguments()
+	public static final int COMBAT_INTERFACE_SETUP = 7593;
+
+	/**
+	 * Called to build the toplevel interface
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_REDRAW = 907;
+
+	/**
+	 * Called to set position of an xpdrop text and sprite(s)
+	 * <ul>
+	 * <li> XP drop parent component </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 4, string = 1)
+	public static final int XPDROPS_SETDROPSIZE = 996;
+
+	@ScriptArguments(integer = 34)
+	public static final int BANKMAIN_INIT = 274;
+
+	/**
+	 * Main layout script for the bank
+	 * <ul>
+	 * <li>int (WidgetID) * 17, various widgets making up the bank interface</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 17)
+	public static final int BANKMAIN_BUILD = 277;
+
+	@ScriptArguments(integer = 19)
+	public static final int BANKMAIN_FINISHBUILDING = 505;
+
+	@ScriptArguments()
+	public static final int BANKMAIN_SEARCHING = 514;
+
+	/**
+	 * Toggles the bank search
+	 *
+	 * <ul>
+	 * <li>int 1 (must be 1 or script immediately returns)</li>
+	 * </ul>
+	 *
+	 * Also takes 17 widget IDs corresponding to various bank widgets.
+	 * These can be retrieved from the onInvTransmitListener of BANK_ITEM_CONTAINER. Note that this array also
+	 * contains the script ID for the bank layout script in the first index
+	 */
+	@ScriptArguments(integer = 18)
+	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
+
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_SIZE_CHECK = 840;
+
+	/**
+	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
+	 *
+	 * The active widget is set to the track created by {@link ParamID#SETTING_FOREGROUND_CLICKZONE}
+	 * <ul>
+	 * <li>int {@link ParamID#SETTING_ID}</li>
+	 * <li>int (WidgetID) Slider handle ID</li>
+	 * <li>int (widget index) Slider handle index</li>
+	 * <li>int track width</li>
+	 * <li>int y offset</li>
+	 * <li>int x offset</li>
+	 * <li>int (WidgetID) drag parent</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 11, string = 1)
+	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
+
+	/**
+	 * Position and size the wiki button, as well as hide/unhide it
+	 */
+	@ScriptArguments(integer = 4)
+	public static final int WIKI_ICON_UPDATE = 3306;
+
+	/**
+	 * Drag callback for the camera zoom slider in the options side panel.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int ZOOM_SLIDER_ONDRAG = 833;
+
+	/**
+	 * Drag callback for the camera zoom slider in the settings.
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
+
+	@ScriptArguments(integer = 8)
+	public static final int COLLECTION_DRAW_LIST = 2731;
+
+	/**
+	 * Draws the active notification in increasing sizes (increasing horizontally first, then vertically) to show a
+	 * starting animation.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int NOTIFICATION_START = 3346;
+
+	/**
+	 * Draws the active notification in full size for a specified number of client ticks. In essence, delayed between
+	 * the open and close animations.
+	 */
+	@ScriptArguments(integer = 1)
+	public static final int NOTIFICATION_DELAY = 3347;
+
+	@ScriptArguments(integer = 7)
+	public static final int GROUP_IRONMAN_STORAGE_BUILD = 5269;
+
+	@ScriptArguments(integer = 6)
+	public static final int INVENTORY_DRAWITEM = 6011;
+
+	/**
+	 * Initializes the trade interface
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int TRADE_MAIN_INIT = 755;
+
+	/**
+	 * Transitions the tob hud into the white flash that happens when sotetseg teleports the players to the maze.
+	 */
+	@ScriptArguments(string = 1)
+	public static final int TOB_HUD_SOTETSEG_FADE = 2308;
+
+	@ScriptArguments(integer = 3)
+	public static final int RAIDS_STORAGE_PRIVATE_ITEMS = 1607;
+
+	@ScriptArguments(integer = 12)
+	public static final int HP_HUD_UPDATE = 2103;
+
+	@ScriptArguments(integer = 7)
+	public static final int ORBS_UPDATE_RUNENERGY = 447;
+
+	@ScriptArguments(integer = 9)
+	public static final int WORLDMAP_LOADMAP = 1712;
+
+	@ScriptArguments(integer = 5)
+	public static final int PRAYER_UPDATEBUTTON = 463;
+
+	@ScriptArguments(integer = 9, string = 2)
+	public static final int PRAYER_REDRAW = 547;
+
+	@ScriptArguments(integer = 3)
+	public static final int QUICKPRAYER_INIT = 466;
+
+	/**
+	 * Called to add a loc overlay timer
+	 * <ul>
+	 * <li> loc coord </li>
+	 * <li> loc id </li>
+	 * <li> loc type </li>
+	 * <li> overlay type </li>
+	 * <li> overlay ticks </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int ADD_OVERLAYTIMER_LOC = 5474;
+
+	@ScriptArguments(integer = 7, string = 1)
+	public static final int ACCOUNT_SUMMARY_TEXT_FORMAT = 3948;
+
+	@ScriptArguments(integer = 10, string = 3)
+	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
+
+	@ScriptArguments(integer = 6, string = 2)
+	public static final int CHATBOX_KEYINPUT_MATCHED = 2153;
+
+	@ScriptArguments(integer = 6)
+	public static final int EQUIPMENT_SET_STAT_BONUS_SETUP = 3517;
+
+	@ScriptArguments(integer = 12, string = 2)
+	public static final int MAGIC_SPELLBOOK_INITIALISESPELLS = 2616;
+
+	@ScriptArguments(integer = 2)
+	public static final int MOTHERLODE_HUD_UPDATE = 1634;
+
+	@ScriptArguments(integer = 1)
+	public static final int POTIONSTORE_DOSES = 3750;
+
+	@ScriptArguments(integer = 1)
+	public static final int POTIONSTORE_WITHDRAW_DOSES = 4818;
+
+	@ScriptArguments()
+	public static final int POTIONSTORE_BUILD = 6080;
+
+	@ScriptArguments(integer = 3)
+	public static final int POTIONSTORE_DOSE_CHANGE = 6555;
+
+	@ScriptArguments(integer = 5)
+	public static final int FAIRYRINGS_SORT_UPDATE = 402;
+
+	@ScriptArguments(integer = 1, string = 1)
+	public static final int POPUP_OVERLAY_YESNO_INIT = 4212;
+
+	@ScriptArguments(integer = 12)
+	public static final int BANK_DEPOSITBOX_INIT = 144;
+
+	@ScriptArguments(integer = 7)
+	public static final int SEED_VAULT_BUILD = 2819;
+
+	@ScriptArguments(integer = 4)
+	public static final int LOOTTRACKER_ADD_LOOT = 7192;
 }

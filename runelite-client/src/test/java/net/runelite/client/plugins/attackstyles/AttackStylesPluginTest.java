@@ -30,23 +30,33 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
+import net.runelite.api.ParamID;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.StructComposition;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.Notification;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
-import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,11 +71,23 @@ public class AttackStylesPluginTest
 
 	@Mock
 	@Bind
+	ClientThread clientThread;
+
+	@Mock
+	@Bind
 	OverlayManager overlayManager;
 
 	@Mock
 	@Bind
 	AttackStylesConfig attackConfig;
+
+	@Mock
+	@Bind
+	ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	Notifier notifier;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;
@@ -74,6 +96,40 @@ public class AttackStylesPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		doAnswer(a ->
+		{
+			final Runnable r = a.getArgument(0);
+			r.run();
+			return null;
+		}).when(clientThread).invokeLater(any(Runnable.class));
+
+		final int TYPE_ENUM_ID = 1;
+		final int[] STYLE_STRUCT_IDS = {2, 3, 4, 5};
+		final String[] STYLE_NAME = {"Accurate", "Aggressive", "Controlled", "Defensive"};
+		EnumComposition stylesEnum = mock(EnumComposition.class);
+		when(stylesEnum.getIntValue(4)).thenReturn(TYPE_ENUM_ID);
+
+		EnumComposition typeEnum = mock(EnumComposition.class);
+		when(typeEnum.getIntVals()).thenReturn(STYLE_STRUCT_IDS);
+
+		EnumComposition empty = mock(EnumComposition.class);
+		when(empty.getIntVals()).thenReturn(new int[0]);
+
+		when(client.getEnum(EnumID.WEAPON_STYLES)).thenReturn(stylesEnum);
+		when(client.getEnum(TYPE_ENUM_ID)).thenReturn(typeEnum);
+		when(client.getEnum(0)).thenReturn(empty);
+
+		int i = 0;
+		for (int styleStructId : STYLE_STRUCT_IDS)
+		{
+			StructComposition s = mock(StructComposition.class);
+			when(s.getStringValue(ParamID.ATTACK_STYLE_NAME)).thenReturn(STYLE_NAME[i++]);
+
+			when(client.getStructComposition(styleStructId)).thenReturn(s);
+		}
+
+		when(attackConfig.warningNotification()).thenReturn(Notification.OFF);
 	}
 
 	/*
@@ -93,18 +149,25 @@ public class AttackStylesPluginTest
 		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 
-		// Set mock client to attack in style that gives attack xp
-		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
+		// Setup attack in style that gives attack xp
+		when(client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY)).thenReturn(4);
+		when(client.getVarpValue(VarPlayerID.COM_MODE)).thenReturn(AttackStyle.ACCURATE.ordinal());
 
 		// verify that earning xp in a warned skill will display red text on the widget
-		attackPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayerID.COM_MODE);
+		attackPlugin.onVarbitChanged(varbitChanged);
+
 		assertTrue(attackPlugin.isWarnedSkillSelected());
 
+		attackPlugin.onGameTick(new GameTick());
+		verify(notifier).notify(any(Notification.class), eq("Attack style changed to Accurate!"));
+
 		// Switch to attack style that doesn't give attack xp
-		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
+		when(client.getVarpValue(VarPlayerID.COM_MODE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
 
 		// Verify the widget will now display white text
-		attackPlugin.onVarbitChanged(new VarbitChanged());
+		attackPlugin.onVarbitChanged(varbitChanged);
 		warnedSkills = attackPlugin.getWarnedSkills();
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 		assertFalse(attackPlugin.isWarnedSkillSelected());
@@ -120,20 +183,23 @@ public class AttackStylesPluginTest
 		warnForAttackEvent.setGroup("attackIndicator");
 		warnForAttackEvent.setKey("warnForAttack");
 		warnForAttackEvent.setNewValue("true");
+		lenient().when(attackConfig.warnForAttack()).thenReturn(true);
 		attackPlugin.onConfigChanged(warnForAttackEvent);
 
 		// Set up mock widgets for atk and str attack styles
 		Widget atkWidget = mock(Widget.class);
 		Widget strWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COMBAT_STYLE_ONE)).thenReturn(atkWidget);
-		when(client.getWidget(WidgetInfo.COMBAT_STYLE_TWO)).thenReturn(strWidget);
+		when(client.getWidget(InterfaceID.CombatInterface._0)).thenReturn(atkWidget);
+		when(client.getWidget(InterfaceID.CombatInterface._1)).thenReturn(strWidget);
 		// Set widgets to return their hidden value in widgetsToHide when isHidden() is called
 		when(atkWidget.isHidden()).thenAnswer(x -> isAtkHidden());
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
 
 		// equip type_4 weapon type on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
-		attackPlugin.onVarbitChanged(new VarbitChanged());
+		when(client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY)).thenReturn(4);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.COMBAT_WEAPON_CATEGORY);
+		attackPlugin.onVarbitChanged(varbitChanged);
 
 		// Verify there is a warned skill
 		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();
@@ -144,8 +210,8 @@ public class AttackStylesPluginTest
 		hideWidgetEvent.setGroup("attackIndicator");
 		hideWidgetEvent.setKey("removeWarnedStyles");
 		hideWidgetEvent.setNewValue("true");
-		attackPlugin.onConfigChanged(hideWidgetEvent);
 		when(attackConfig.removeWarnedStyles()).thenReturn(true);
+		attackPlugin.onConfigChanged(hideWidgetEvent);
 
 		// verify that the accurate attack style widget is hidden
 		assertTrue(atkWidget.isHidden());
@@ -155,6 +221,7 @@ public class AttackStylesPluginTest
 		warnForStrengthEvent.setGroup("attackIndicator");
 		warnForStrengthEvent.setKey("warnForStrength");
 		warnForStrengthEvent.setNewValue("true");
+		lenient().when(attackConfig.warnForStrength()).thenReturn(true);
 		attackPlugin.onConfigChanged(warnForStrengthEvent);
 
 		// verify that the aggressive attack style widget is now hidden
@@ -164,67 +231,14 @@ public class AttackStylesPluginTest
 		hideWidgetEvent.setGroup("attackIndicator");
 		hideWidgetEvent.setKey("removeWarnedStyles");
 		hideWidgetEvent.setNewValue("false");
+		when(attackConfig.removeWarnedStyles()).thenReturn(false);
 		attackPlugin.onConfigChanged(hideWidgetEvent);
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
-		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
-			WidgetInfo.COMBAT_STYLE_ONE));
-		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
-			WidgetInfo.COMBAT_STYLE_THREE));
-	}
-
-	/*
-	 * Verify that the defensive style is hidden when switching from bludgeon to bow
-	 */
-	@Test
-	public void testHiddenLongrange()
-	{
-		final ArgumentCaptor<Boolean> captor = ArgumentCaptor.forClass(Boolean.class);
-		final ConfigChanged warnForAttackEvent = new ConfigChanged();
-		warnForAttackEvent.setGroup("attackIndicator");
-		warnForAttackEvent.setKey("warnForDefensive");
-		warnForAttackEvent.setNewValue("true");
-		attackPlugin.onConfigChanged(warnForAttackEvent);
-
-		// verify there is a warned skill
-		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();
-		assertTrue(warnedSkills.contains(Skill.DEFENCE));
-
-		// Set up mock widget for strength and longrange
-		final Widget widget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR)).thenReturn(widget);
-
-		// Set up hidden changed event
-		final WidgetHiddenChanged widgetHiddenChanged = new WidgetHiddenChanged();
-		widgetHiddenChanged.setWidget(widget);
-		when(widget.getId()).thenReturn(WidgetInfo.COMBAT_STYLE_FOUR.getPackedId());
-
-		// Enable hiding widgets
-		final ConfigChanged hideWidgetEvent = new ConfigChanged();
-		hideWidgetEvent.setGroup("attackIndicator");
-		hideWidgetEvent.setKey("removeWarnedStyles");
-		hideWidgetEvent.setNewValue("true");
-		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.removeWarnedStyles()).thenReturn(true);
-
-		// equip bludgeon on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_26.ordinal());
-		attackPlugin.onVarbitChanged(new VarbitChanged());
-		attackPlugin.onWidgetHiddenChanged(widgetHiddenChanged);
-
-		// verify that the agressive style style widget is showing
-		verify(widget, atLeastOnce()).setHidden(captor.capture());
-		assertFalse(captor.getValue());
-
-		// equip bow on player
-		// the equipped weaopn varbit will change after the hiddenChanged event has been dispatched
-		attackPlugin.onWidgetHiddenChanged(widgetHiddenChanged);
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_3.ordinal());
-		attackPlugin.onVarbitChanged(new VarbitChanged());
-
-		// verify that the longrange attack style widget is now hidden
-		verify(widget, atLeastOnce()).setHidden(captor.capture());
-		assertTrue(captor.getValue());
+		assertFalse(attackPlugin.getHiddenWidgets().get(4,
+			InterfaceID.CombatInterface._0));
+		assertFalse(attackPlugin.getHiddenWidgets().get(4,
+			InterfaceID.CombatInterface._2));
 	}
 
 	private boolean isAtkHidden()
@@ -233,7 +247,7 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_ONE);
+		return attackPlugin.getHiddenWidgets().get(4, InterfaceID.CombatInterface._0);
 	}
 
 	private boolean isStrHidden()
@@ -242,6 +256,6 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_TWO);
+		return attackPlugin.getHiddenWidgets().get(4, InterfaceID.CombatInterface._1);
 	}
 }

@@ -32,9 +32,9 @@ class GpuFloatBuffer
 {
 	private FloatBuffer buffer = allocateDirect(65536);
 
-	void put(float texture, float u, float v, float pad)
+	void put(float s, float t, float p, float q)
 	{
-		buffer.put(texture).put(u).put(v).put(pad);
+		buffer.put(s).put(t).put(p).put(q);
 	}
 
 	void flip()
@@ -49,9 +49,17 @@ class GpuFloatBuffer
 
 	void ensureCapacity(int size)
 	{
-		while (buffer.remaining() < size)
+		int capacity = buffer.capacity();
+		final int position = buffer.position();
+		if ((capacity - position) < size)
 		{
-			FloatBuffer newB = allocateDirect(buffer.capacity() * 2);
+			do
+			{
+				capacity *= 2;
+			}
+			while ((capacity - position) < size);
+
+			FloatBuffer newB = allocateDirect(capacity);
 			buffer.flip();
 			newB.put(buffer);
 			buffer = newB;

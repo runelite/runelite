@@ -24,10 +24,11 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 
 /**
- * Represents a graphics object.
+ * Represents a graphics object/spotanim.
  */
 public interface GraphicsObject extends Renderable
 {
@@ -45,14 +46,48 @@ public interface GraphicsObject extends Renderable
 	 */
 	LocalPoint getLocation();
 
+	/**
+	 * Get the time this spotanim starts
+	 *
+	 * @return
+	 */
 	int getStartCycle();
 
+	/**
+	 * The plane the spotanim is on.
+	 *
+	 * @return
+	 */
 	int getLevel();
 
 	/**
-	 * Gets the height of the graphic.
-	 *
-	 * @return the height
+	 * Gets the z coordinate
 	 */
-	int getHeight();
+	int getZ();
+
+	/**
+	 * Checks if this spotanim is done animating
+	 *
+	 * @return
+	 */
+	boolean finished();
+
+	/**
+	 * Set if this spotanim is done animating. If finished, the spotanim will despawn next frame.
+	 * @param finished
+	 */
+	void setFinished(boolean finished);
+
+	/**
+	 * The animation of the spotanim
+	 * @return
+	 */
+	@Nullable
+	Animation getAnimation();
+
+	/**
+	 * The frame of the current animation
+	 * @return
+	 */
+	int getAnimationFrame();
 }

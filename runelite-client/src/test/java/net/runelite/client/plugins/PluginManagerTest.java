@@ -24,23 +24,22 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.google.inject.util.Modules;
-import java.applet.Applet;
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -48,16 +47,25 @@ import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
+import net.runelite.client.RuntimeConfig;
+import net.runelite.client.RuntimeConfigLoader;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
+import okhttp3.OkHttpClient;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,24 +76,41 @@ public class PluginManagerTest
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-	@Mock
 	@Bind
-	public Applet applet;
+	public Client client = (Client) mock(Component.class, Mockito.withSettings().extraInterfaces(Client.class));
 
 	@Mock
 	@Bind
-	public Client client;
+	private ConfigManager configManager;
 
-	private Set<Class> pluginClasses;
-	private Set<Class> configClasses;
+	private Set<Class<?>> pluginClasses;
+	private Set<Class<?>> configClasses;
 
 	@Before
 	public void before() throws IOException
 	{
+		OkHttpClient okHttpClient = new OkHttpClient.Builder()
+			.addInterceptor(chain ->
+			{
+				throw new RuntimeException("in plugin manager test");
+			})
+			.build();
+
+		when(configManager.getConfig(any(Class.class)))
+			.thenAnswer(a ->
+			{
+				Class<?> c = a.getArgument(0);
+				return mock(c);
+			});
+
+		RuntimeConfigLoader configLoader = mock(RuntimeConfigLoader.class);
+		when(configLoader.get()).thenReturn(mock(RuntimeConfig.class));
+
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(() -> null, true,
+			.override(new RuneLiteModule(okHttpClient, () -> null, configLoader, true, false, false,
 				RuneLite.DEFAULT_SESSION_FILE,
-				RuneLite.DEFAULT_CONFIG_FILE))
+				null, false, false
+			))
 			.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
@@ -114,27 +139,16 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, null, null, null, null, null);
-		pluginManager.setOutdated(true);
+		var pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		Collection<Plugin> plugins = pluginManager.getPlugins();
-		long expected = pluginClasses.stream()
-			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(PluginDescriptor::loadWhenOutdated)
-			.count();
-		assertEquals(expected, plugins.size());
-
-		pluginManager = new PluginManager(false, null, null, null, null, null);
-		pluginManager.loadCorePlugins();
-		plugins = pluginManager.getPlugins();
+		var plugins = pluginManager.getPlugins();
 
 		// Check that the plugins register with the eventbus without errors
 		EventBus eventBus = new EventBus();
 		plugins.forEach(eventBus::register);
 
-		expected = pluginClasses.stream()
-			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+		var expected = pluginClasses.stream()
+			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(pd -> !pd.developerPlugin())
 			.count();
@@ -144,34 +158,35 @@ public class PluginManagerTest
 	@Test
 	public void dumpGraph() throws Exception
 	{
-		List<Module> modules = new ArrayList<>();
-		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(() -> null, true,
-			RuneLite.DEFAULT_SESSION_FILE,
-			RuneLite.DEFAULT_CONFIG_FILE));
-
-		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		for (Plugin p : pluginManager.getPlugins())
+
+		Injector graphvizInjector = Guice.createInjector(new GraphvizModule());
+		GraphvizGrapher graphvizGrapher = graphvizInjector.getInstance(GraphvizGrapher.class);
+
+		File dotFolder = folder.newFolder();
+		try (PrintWriter out = new PrintWriter(new File(dotFolder, "runelite.dot"), "UTF-8"))
 		{
-			modules.add(p);
+			graphvizGrapher.setOut(out);
+			graphvizGrapher.setRankdir("TB");
+			graphvizGrapher.graph(RuneLite.getInjector());
 		}
 
-		File file = folder.newFile();
-		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
+		for (Plugin p : pluginManager.getPlugins())
 		{
-			Injector injector = Guice.createInjector(modules);
-			GraphvizGrapher grapher = injector.getInstance(GraphvizGrapher.class);
-			grapher.setOut(out);
-			grapher.setRankdir("TB");
-			grapher.graph(injector);
+			try (PrintWriter out = new PrintWriter(new File(dotFolder, p.getName() + ".dot"), "UTF-8"))
+			{
+				graphvizGrapher.setOut(out);
+				graphvizGrapher.setRankdir("TB");
+				graphvizGrapher.graph(p.getInjector());
+			}
 		}
 	}
 
 	@Test
 	public void ensureNoDuplicateConfigKeyNames()
 	{
-		for (final Class clazz : configClasses)
+		for (final Class<?> clazz : configClasses)
 		{
 			final Set<String> configKeyNames = new HashSet<>();
 
@@ -201,4 +216,23 @@ public class PluginManagerTest
 		}
 	}
 
+	@Test
+	public void testTopologicalSort()
+	{
+		MutableGraph<Integer> graph = GraphBuilder
+			.directed()
+			.build();
+
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+
+		graph.putEdge(1, 2);
+		graph.putEdge(1, 3);
+
+		List<Integer> sorted = PluginManager.topologicalSort(graph);
+
+		assertTrue(sorted.indexOf(1) < sorted.indexOf(2));
+		assertTrue(sorted.indexOf(1) < sorted.indexOf(3));
+	}
 }

@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
@@ -59,7 +58,7 @@ class KeyRemappingListener implements KeyListener
 	public void keyTyped(KeyEvent e)
 	{
 		char keyChar = e.getKeyChar();
-		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar))
+		if (keyChar != KeyEvent.CHAR_UNDEFINED && blockedChars.contains(keyChar) && plugin.chatboxFocused())
 		{
 			e.consume();
 		}
@@ -68,7 +67,7 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (client.getGameState() == GameState.LOGIN_SCREEN || !plugin.chatboxFocused())
+		if (!plugin.chatboxFocused())
 		{
 			return;
 		}
@@ -156,7 +155,19 @@ class KeyRemappingListener implements KeyListener
 				}
 			}
 
-			if (mappedKeyCode != KeyEvent.VK_UNDEFINED)
+			// Do not remap to space key when the options dialog is open, since the options dialog never
+			// listens for space, and the remapped key may be one of keys it listens for.
+			if (plugin.isDialogOpen() && !plugin.isOptionsDialogOpen() && config.space().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_SPACE;
+			}
+
+			if (!plugin.isOptionsDialogOpen() && config.control().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_CONTROL;
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
 			{
 				final char keyChar = e.getKeyChar();
 				modified.put(e.getKeyCode(), mappedKeyCode);
@@ -194,7 +205,7 @@ class KeyRemappingListener implements KeyListener
 					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
-						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+						client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
 						plugin.lockChat();
 					});
 					break;
@@ -204,7 +215,7 @@ class KeyRemappingListener implements KeyListener
 					break;
 				case KeyEvent.VK_BACK_SPACE:
 					// Only lock chat on backspace when the typed text is now empty
-					if (Strings.isNullOrEmpty(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT)))
+					if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)))
 					{
 						plugin.setTyping(false);
 						clientThread.invoke(plugin::lockChat);
@@ -217,115 +228,19 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
+		final int keyCode = e.getKeyCode();
 		final char keyChar = e.getKeyChar();
+
 		if (keyChar != KeyEvent.CHAR_UNDEFINED)
 		{
 			blockedChars.remove(keyChar);
 		}
 
-		if (client.getGameState() == GameState.LOGIN_SCREEN)
+		final Integer mappedKeyCode = modified.remove(keyCode);
+		if (mappedKeyCode != null)
 		{
-			return;
-		}
-
-		if (plugin.chatboxFocused() && !plugin.isTyping())
-		{
-			modified.remove(e.getKeyCode());
-
-			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
-
-			if (config.cameraRemap())
-			{
-				if (config.up().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_UP;
-				}
-				else if (config.down().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_DOWN;
-				}
-				else if (config.left().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_LEFT;
-				}
-				else if (config.right().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_RIGHT;
-				}
-			}
-
-			if (config.fkeyRemap())
-			{
-				if (config.f1().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F1;
-				}
-				else if (config.f2().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F2;
-				}
-				else if (config.f3().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F3;
-				}
-				else if (config.f4().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F4;
-				}
-				else if (config.f5().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F5;
-				}
-				else if (config.f6().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F6;
-				}
-				else if (config.f7().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F7;
-				}
-				else if (config.f8().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F8;
-				}
-				else if (config.f9().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F9;
-				}
-				else if (config.f10().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F10;
-				}
-				else if (config.f11().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F11;
-				}
-				else if (config.f12().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_F12;
-				}
-				else if (config.esc().matches(e))
-				{
-					mappedKeyCode = KeyEvent.VK_ESCAPE;
-				}
-			}
-
-			if (mappedKeyCode != KeyEvent.VK_UNDEFINED)
-			{
-				e.setKeyCode(mappedKeyCode);
-				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
-			}
-		}
-		else
-		{
-			// press d + enter + release d - causes the right arrow to never be released
-			Integer m = modified.get(e.getKeyCode());
-			if (m != null)
-			{
-				modified.remove(e.getKeyCode());
-				e.setKeyCode(m);
-				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
-			}
+			e.setKeyCode(mappedKeyCode);
+			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 		}
 	}
 }

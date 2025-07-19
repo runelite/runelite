@@ -29,30 +29,33 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
+import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
+import net.runelite.client.plugins.itemstats.potions.PotionDuration;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemStats;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 public class ItemStatOverlay extends Overlay
 {
 	// Unarmed attack speed is 4
 	@VisibleForTesting
-	static final ItemStats UNARMED = new ItemStats(false, true, 0, 0,
+	static final ItemStats UNARMED = new ItemStats(true, 0, 0,
 		ItemEquipmentStats.builder()
 			.aspeed(4)
 			.build());
@@ -82,33 +85,24 @@ public class ItemStatOverlay extends Overlay
 
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
-
 		if (menuSize <= 0)
 		{
 			return null;
 		}
 
 		final MenuEntry entry = menu[menuSize - 1];
-		final int group = WidgetInfo.TO_GROUP(entry.getParam1());
-		final int child = WidgetInfo.TO_CHILD(entry.getParam1());
-		final Widget widget = client.getWidget(group, child);
-
-		if (widget == null
-			|| !(group == WidgetInfo.INVENTORY.getGroupId()
-				|| group == WidgetInfo.EQUIPMENT.getGroupId()
-				|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
-				|| (config.showStatsInBank()
-					&& (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
-						|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()))))
+		final Widget widget = entry.getWidget();
+		if (widget == null)
 		{
 			return null;
 		}
 
-		int itemId = entry.getIdentifier();
+		final int group = WidgetUtil.componentToInterface(widget.getId());
+		int itemId = -1;
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+		if (group == InterfaceID.WORNITEMS ||
 			// For bank worn equipment, check widget parent to differentiate from normal bank items
-			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
+			(group == InterfaceID.BANKMAIN && widget.getParentId() == InterfaceID.Bankside.WORNOPS))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -116,19 +110,19 @@ public class ItemStatOverlay extends Overlay
 				itemId = widgetItem.getItemId();
 			}
 		}
-		else if (group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
-			|| group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()
-			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId())
+		else if (widget.getId() == InterfaceID.Inventory.ITEMS
+			|| group == InterfaceID.EQUIPMENT_SIDE
+			|| widget.getId() == InterfaceID.Bankmain.ITEMS && config.showStatsInBank()
+			|| group == InterfaceID.BANKSIDE && config.showStatsInBank()
+			|| widget.getId() == InterfaceID.SharedBank.ITEMS && config.showStatsInBank()
+			|| group == InterfaceID.SHARED_BANK_SIDE && config.showStatsInBank())
 		{
-			int index = entry.getParam0();
-			if (index > -1)
-			{
-				final Widget widgetItem = widget.getChild(index);
-				if (widgetItem != null)
-				{
-					itemId = widgetItem.getItemId();
-				}
-			}
+			itemId = widget.getItemId();
+		}
+
+		if (itemId == -1)
+		{
+			return null;
 		}
 
 		if (config.consumableStats())
@@ -151,11 +145,49 @@ public class ItemStatOverlay extends Overlay
 					tooltipManager.add(new Tooltip(tooltip));
 				}
 			}
+
+			PotionDuration p = PotionDuration.get(itemId);
+			if (p != null)
+			{
+				PotionDuration.PotionDurationRange[] durationRanges = p.getDurationRanges();
+				StringBuilder sb = new StringBuilder();
+				if (durationRanges.length == 1)
+				{
+					// Only show "Duration: <time>" if there is one tooltip
+					Duration duration = durationRanges[0].getLowestDuration();
+					sb.append("Duration: ").append(DurationFormatUtils.formatDuration(duration.toMillis(), "m:ss"));
+				}
+				else
+				{
+					// List the effect names and their duration (ranges)
+					for (PotionDuration.PotionDurationRange durationRange : durationRanges)
+					{
+						if (sb.length() > 0)
+						{
+							sb.append("</br>");
+						}
+
+						sb.append(durationRange.getPotionName()).append(": ");
+
+						Duration lowestDuration = durationRange.getLowestDuration();
+						sb.append(DurationFormatUtils.formatDuration(lowestDuration.toMillis(), "m:ss"));
+
+						Duration highestDuration = durationRange.getHighestDuration();
+						if (lowestDuration != highestDuration)
+						{
+							sb.append('~');
+							sb.append(DurationFormatUtils.formatDuration(highestDuration.toMillis(), "m:ss"));
+						}
+					}
+				}
+
+				tooltipManager.add(new Tooltip(sb.toString()));
+			}
 		}
 
 		if (config.equipmentStats())
 		{
-			final ItemStats stats = itemManager.getItemStats(itemId, false);
+			final ItemStats stats = itemManager.getItemStats(itemId);
 
 			if (stats != null)
 			{
@@ -239,31 +271,58 @@ public class ItemStatOverlay extends Overlay
 		return b.toString();
 	}
 
+	private ItemStats getItemStatsFromContainer(ItemContainer container, int slotID)
+	{
+		final Item item = container.getItem(slotID);
+		return item != null ? itemManager.getItemStats(item.getId()) : null;
+	}
+
 	@VisibleForTesting
 	String buildStatBonusString(ItemStats s)
 	{
 		ItemStats other = null;
+		// Used if switching into a 2 handed weapon to store off-hand stats
+		ItemStats offHand = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
-		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer c = client.getItemContainer(InventoryID.WORN);
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
 			final int slot = currentEquipment.getSlot();
 
-			final Item item = c.getItem(slot);
-			if (item != null)
+			other = getItemStatsFromContainer(c, slot);
+			// Check if this is a shield and there's a two-handed weapon equipped
+			if (other == null && slot == EquipmentInventorySlot.SHIELD.getSlotIdx())
 			{
-				other = itemManager.getItemStats(item.getId(), false);
+				other = getItemStatsFromContainer(c, EquipmentInventorySlot.WEAPON.getSlotIdx());
+				if (other != null)
+				{
+					final ItemEquipmentStats otherEquip = other.getEquipment();
+					if (otherEquip != null)
+					{
+						// Account for speed change when two handed weapon gets removed
+						// shield - (2h - unarmed) == shield - 2h + unarmed
+						other = otherEquip.isTwoHanded() ? subtract(other, UNARMED) : null;
+					}
+				}
 			}
 
-			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+			if (slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
 			{
-				// Unarmed
-				other = UNARMED;
+				if (other == null)
+				{
+					other = UNARMED;
+				}
+
+				// Get offhand's stats to be removed from equipping a 2h weapon
+				if (currentEquipment.isTwoHanded())
+				{
+					offHand = getItemStatsFromContainer(c, EquipmentInventorySlot.SHIELD.getSlotIdx());
+				}
 			}
 		}
 
-		final ItemStats subtracted = s.subtract(other);
+		final ItemStats subtracted = subtract(subtract(s, other), offHand);
 		final ItemEquipmentStats e = subtracted.getEquipment();
 
 		final StringBuilder b = new StringBuilder();
@@ -310,6 +369,49 @@ public class ItemStatOverlay extends Overlay
 		return b.toString();
 	}
 
+	private static ItemStats subtract(ItemStats one, ItemStats two)
+	{
+		if (two == null)
+		{
+			return one;
+		}
+
+		final double newWeight = one.getWeight() - two.getWeight();
+		final ItemEquipmentStats newEquipment;
+
+		if (two.getEquipment() != null)
+		{
+			final ItemEquipmentStats equipment = one.getEquipment() != null
+				? one.getEquipment()
+				: ItemEquipmentStats.builder().build();
+
+			newEquipment = ItemEquipmentStats.builder()
+				.slot(equipment.getSlot())
+				.astab(equipment.getAstab() - two.getEquipment().getAstab())
+				.aslash(equipment.getAslash() - two.getEquipment().getAslash())
+				.acrush(equipment.getAcrush() - two.getEquipment().getAcrush())
+				.amagic(equipment.getAmagic() - two.getEquipment().getAmagic())
+				.arange(equipment.getArange() - two.getEquipment().getArange())
+				.dstab(equipment.getDstab() - two.getEquipment().getDstab())
+				.dslash(equipment.getDslash() - two.getEquipment().getDslash())
+				.dcrush(equipment.getDcrush() - two.getEquipment().getDcrush())
+				.dmagic(equipment.getDmagic() - two.getEquipment().getDmagic())
+				.drange(equipment.getDrange() - two.getEquipment().getDrange())
+				.str(equipment.getStr() - two.getEquipment().getStr())
+				.rstr(equipment.getRstr() - two.getEquipment().getRstr())
+				.mdmg(equipment.getMdmg() - two.getEquipment().getMdmg())
+				.prayer(equipment.getPrayer() - two.getEquipment().getPrayer())
+				.aspeed(equipment.getAspeed() - two.getEquipment().getAspeed())
+				.build();
+		}
+		else
+		{
+			newEquipment = one.getEquipment();
+		}
+
+		return new ItemStats(one.isEquipable(), newWeight, 0, newEquipment);
+	}
+
 	private String buildStatChangeString(StatChange c)
 	{
 		StringBuilder b = new StringBuilder();
@@ -324,7 +426,7 @@ public class ItemStatOverlay extends Overlay
 		{
 			if (config.relative())
 			{
-				b.append("/");
+				b.append('/');
 			}
 			b.append(c.getFormattedTheoretical());
 		}
@@ -340,9 +442,9 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.absolute() && (config.relative() || config.theoretical()))
 		{
-			b.append(")");
+			b.append(')');
 		}
-		b.append(" ").append(c.getStat().getName());
+		b.append(' ').append(c.getStat().getName());
 		b.append("</br>");
 
 		return b.toString();

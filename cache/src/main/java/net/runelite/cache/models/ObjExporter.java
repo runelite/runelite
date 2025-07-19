@@ -24,7 +24,6 @@
  */
 package net.runelite.cache.models;
 
-import java.awt.Color;
 import java.io.PrintWriter;
 import net.runelite.cache.TextureManager;
 import net.runelite.cache.definitions.ModelDefinition;
@@ -32,6 +31,8 @@ import net.runelite.cache.definitions.TextureDefinition;
 
 public class ObjExporter
 {
+	private static final double BRIGHTNESS = JagexColor.BRIGHTNESS_MIN;
+
 	private final TextureManager textureManager;
 	private final ModelDefinition model;
 
@@ -52,9 +53,9 @@ public class ObjExporter
 
 		for (int i = 0; i < model.vertexCount; ++i)
 		{
-			objWriter.println("v " + model.vertexPositionsX[i] + " "
-				+ model.vertexPositionsY[i] * -1 + " "
-				+ model.vertexPositionsZ[i] * -1);
+			objWriter.println("v " + model.vertexX[i] + " "
+				+ model.vertexY[i] * -1 + " "
+				+ model.vertexZ[i] * -1);
 		}
 
 		if (model.faceTextures != null)
@@ -77,9 +78,9 @@ public class ObjExporter
 
 		for (int i = 0; i < model.faceCount; ++i)
 		{
-			int x = model.faceVertexIndices1[i] + 1;
-			int y = model.faceVertexIndices2[i] + 1;
-			int z = model.faceVertexIndices3[i] + 1;
+			int x = model.faceIndices1[i] + 1;
+			int y = model.faceIndices2[i] + 1;
+			int z = model.faceIndices3[i] + 1;
 
 			objWriter.println("usemtl m" + i);
 			if (model.faceTextures != null)
@@ -111,11 +112,10 @@ public class ObjExporter
 
 			if (textureId == -1)
 			{
-				Color color = rs2hsbToColor(model.faceColors[i]);
-
-				double r = color.getRed() / 255.0;
-				double g = color.getGreen() / 255.0;
-				double b = color.getBlue() / 255.0;
+				int rgb = JagexColor.HSLtoRGB( model.faceColors[i], BRIGHTNESS);
+				double r = ((rgb >> 16) & 0xff) / 255.0;
+				double g = ((rgb >> 8) & 0xff) / 255.0;
+				double b = (rgb & 0xff) / 255.0;
 
 				mtlWriter.println("Kd " + r + " " + g + " " + b);
 			}
@@ -129,9 +129,9 @@ public class ObjExporter
 
 			int alpha = 0;
 
-			if (model.faceAlphas != null)
+			if (model.faceTransparencies != null)
 			{
-				alpha = model.faceAlphas[i] & 0xFF;
+				alpha = model.faceTransparencies[i] & 0xFF;
 			}
 
 			if (alpha != 0)
@@ -139,13 +139,5 @@ public class ObjExporter
 				mtlWriter.println("d " + (alpha / 255.0));
 			}
 		}
-	}
-
-	private static Color rs2hsbToColor(int hsb)
-	{
-		int decode_hue = (hsb >> 10) & 0x3f;
-		int decode_saturation = (hsb >> 7) & 0x07;
-		int decode_brightness = (hsb & 0x7f);
-		return Color.getHSBColor((float) decode_hue / 63, (float) decode_saturation / 7, (float) decode_brightness / 127);
 	}
 }

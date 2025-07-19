@@ -30,7 +30,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-enum RoomType
+public enum RoomType
 {
 	START("Start", '#'),
 	END("End", '¤'),

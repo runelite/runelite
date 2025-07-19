@@ -37,6 +37,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
 class HerbiboarOverlay extends Overlay
 {
@@ -87,20 +88,9 @@ class HerbiboarOverlay extends Overlay
 		// Draw trail objects (mushrooms, mud, etc)
 		if (config.isObjectShown() && !(finishId > 0 || currentGroup == null))
 		{
-			if (plugin.isRuleApplicable())
-			{
-				WorldPoint correct = Iterables.getLast(plugin.getCurrentPath()).getLocation();
-				TileObject object = plugin.getTrailObjects().get(correct);
-				drawObjectLocation(graphics, object, config.getObjectColor());
-			}
-			else
-			{
-				for (WorldPoint trailLoc : HerbiboarSearchSpot.getGroupLocations(plugin.getCurrentGroup()))
-				{
-					TileObject object = plugin.getTrailObjects().get(trailLoc);
-					drawObjectLocation(graphics, object, config.getObjectColor());
-				}
-			}
+			WorldPoint correct = Iterables.getLast(plugin.getCurrentPath()).getLocation();
+			TileObject object = plugin.getTrailObjects().get(correct);
+			drawObjectLocation(graphics, object, config.getObjectColor());
 		}
 
 		// Draw finish tunnels
@@ -126,7 +116,7 @@ class HerbiboarOverlay extends Overlay
 			Shape clickbox = object.getClickbox();
 			if (clickbox != null)
 			{
-				Color clickBoxColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 20);
+				Color clickBoxColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
 
 				graphics.setColor(color);
 				graphics.draw(clickbox);

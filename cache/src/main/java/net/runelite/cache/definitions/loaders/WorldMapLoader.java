@@ -46,24 +46,15 @@ public class WorldMapLoader
 		def.name = in.readString();
 
 		int packedPos = in.readInt();
-		if (packedPos == -1)
-		{
-			def.position = new Position(-1, -1, -1);
-		}
-		else
-		{
-			int y = packedPos >> 28 & 3;
-			int x = packedPos >> 14 & 16383;
-			int z = packedPos & 16383;
-			def.position = new Position(x, y, z);
-		}
+		def.position = Position.fromPacked(packedPos);
 
-		def.field450 = in.readInt();
+		def.emptyTileColor = in.readInt();
+		def.backgroundColor = in.readInt();
 		in.readUnsignedByte();
 		def.isSurface = in.readUnsignedByte() == 1;
 		def.defaultZoom = in.readUnsignedByte();
 		int var3 = in.readUnsignedByte();
-		def.regionList = new LinkedList();
+		def.regionList = new LinkedList<>();
 
 		for (int var4 = 0; var4 < var3; ++var4)
 		{
@@ -76,10 +67,6 @@ public class WorldMapLoader
 	private WorldMapTypeBase loadType(InputStream var1)
 	{
 		int var2 = var1.readUnsignedByte();
-		//      field397 = new class27(1, (byte)0);
-		//      field390 = new class27(2, (byte)1);
-		//      field399 = new class27(3, (byte)2);
-		//      field393 = new class27(0, (byte)3);
 		WorldMapTypeBase base;
 		switch (var2)
 		{

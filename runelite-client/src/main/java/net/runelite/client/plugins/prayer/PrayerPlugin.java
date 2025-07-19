@@ -30,30 +30,33 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -70,6 +73,7 @@ public class PrayerPlugin extends Plugin
 	private boolean prayersActive = false;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int prayerBonus;
 
 	@Inject
@@ -99,6 +103,12 @@ public class PrayerPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private PrayerReorder prayerReorder;
+
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
 	{
@@ -111,6 +121,9 @@ public class PrayerPlugin extends Plugin
 		overlayManager.add(flickOverlay);
 		overlayManager.add(doseOverlay);
 		overlayManager.add(barOverlay);
+
+		prayerReorder.startUp();
+		eventBus.register(prayerReorder);
 	}
 
 	@Override
@@ -120,12 +133,21 @@ public class PrayerPlugin extends Plugin
 		overlayManager.remove(doseOverlay);
 		overlayManager.remove(barOverlay);
 		removeIndicators();
+
+		prayerReorder.shutDown();
+		eventBus.unregister(prayerReorder);
+	}
+
+	@Override
+	public void resetConfiguration()
+	{
+		prayerReorder.reset();
 	}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("prayer"))
+		if (event.getGroup().equals(PrayerConfig.GROUP))
 		{
 			if (!config.prayerIndicator())
 			{
@@ -141,26 +163,15 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		final ItemContainer container = event.getItemContainer();
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-
-		if (container == inventory || container == equipment)
+		final int id = event.getContainerId();
+		if (id == InventoryID.INV)
 		{
-			doseOverlay.setHasHolyWrench(false);
-			doseOverlay.setHasPrayerRestore(false);
-			doseOverlay.setBonusPrayer(0);
-
-			if (inventory != null)
-			{
-				checkContainerForPrayer(inventory.getItems());
-			}
-
-			if (equipment != null)
-			{
-				prayerBonus = checkContainerForPrayer(equipment.getItems());
-			}
-
+			updatePotionBonus(event.getItemContainer(),
+				client.getItemContainer(InventoryID.WORN));
+		}
+		else if (id == InventoryID.WORN)
+		{
+			prayerBonus = totalPrayerBonus(event.getItemContainer().getItems());
 		}
 	}
 
@@ -196,10 +207,9 @@ public class PrayerPlugin extends Plugin
 
 		for (PrayerType prayerType : PrayerType.values())
 		{
-			Prayer prayer = prayerType.getPrayer();
 			int ord = prayerType.ordinal();
 
-			if (client.isPrayerActive(prayer))
+			if (prayerType.isActive(client))
 			{
 				if (prayerType.isOverhead() && !config.prayerIndicatorOverheads())
 				{
@@ -222,26 +232,29 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
-	private int checkContainerForPrayer(Item[] items)
+	private int totalPrayerBonus(Item[] items)
 	{
-		if (items == null)
-		{
-			return 0;
-		}
-
 		int total = 0;
+		for (Item item : items)
+		{
+			ItemStats is = itemManager.getItemStats(item.getId());
+			if (is != null && is.getEquipment() != null)
+			{
+				total += is.getEquipment().getPrayer();
+			}
+		}
+		return total;
+	}
 
+	private void updatePotionBonus(ItemContainer inventory, @Nullable ItemContainer equip)
+	{
 		boolean hasPrayerPotion = false;
 		boolean hasSuperRestore = false;
 		boolean hasSanfew = false;
+		boolean hasWrench = false;
 
-		for (Item item : items)
+		for (Item item : inventory.getItems())
 		{
-			if (item == null)
-			{
-				continue;
-			}
-
 			final PrayerRestoreType type = PrayerRestoreType.getType(item.getId());
 
 			if (type != null)
@@ -258,32 +271,45 @@ public class PrayerPlugin extends Plugin
 						hasSanfew = true;
 						break;
 					case HOLYWRENCH:
-						doseOverlay.setHasHolyWrench(true);
+						hasWrench = true;
 						break;
 				}
 			}
-
-			ItemStats is = itemManager.getItemStats(item.getId(), false);
-			if (is != null && is.getEquipment() != null)
-			{
-				total += is.getEquipment().getPrayer();
-			}
 		}
 
-		if (hasSanfew || hasSuperRestore || hasPrayerPotion)
+		// Some items providing the holy wrench bonus can also be worn
+		if (!hasWrench && equip != null)
 		{
-			doseOverlay.setHasPrayerRestore(true);
-			if (hasSanfew)
+			for (Item item : equip.getItems())
 			{
-				doseOverlay.setBonusPrayer(2);
-			}
-			else if (hasSuperRestore)
-			{
-				doseOverlay.setBonusPrayer(1);
+				final PrayerRestoreType type = PrayerRestoreType.getType(item.getId());
+				if (type == PrayerRestoreType.HOLYWRENCH)
+				{
+					hasWrench = true;
+					break;
+				}
 			}
 		}
 
-		return total;
+		// Prayer potion: floor(7 + 25% of base level) - 27% with holy wrench
+		// Super restore: floor(8 + 25% of base level) - 27% with holy wrench
+		// Sanfew serum: floor(4 + 30% of base level) - 32% with holy wrench
+		final int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
+		int restored = 0;
+		if (hasSanfew)
+		{
+			restored = Math.max(restored, 4 + (int) Math.floor(prayerLevel *  (hasWrench ? .32 : .30)));
+		}
+		if (hasSuperRestore)
+		{
+			restored = Math.max(restored, 8 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+		}
+		if (hasPrayerPotion)
+		{
+			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+		}
+
+		doseOverlay.setRestoreAmount(restored);
 	}
 
 	double getTickProgress()
@@ -320,50 +346,56 @@ public class PrayerPlugin extends Plugin
 
 	private void setPrayerOrbText(String text)
 	{
-		Widget prayerOrbText = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB_TEXT);
+		Widget prayerOrbText = client.getWidget(InterfaceID.Orbs.PRAYER_TEXT);
 		if (prayerOrbText != null)
 		{
 			prayerOrbText.setText(text);
 		}
 	}
 
-	private static double getPrayerDrainRate(Client client)
+	private static int getDrainEffect(Client client)
 	{
-		double drainRate = 0.0;
+		int drainEffect = 0;
 
-		for (Prayer prayer : Prayer.values())
+		for (PrayerType prayerType : PrayerType.values())
 		{
-			if (client.isPrayerActive(prayer))
+			if (prayerType.isActive(client))
 			{
-				drainRate += prayer.getDrainRate();
+				drainEffect += prayerType.getDrainEffect();
 			}
 		}
 
-		return drainRate;
+		return drainEffect;
 	}
 
 	String getEstimatedTimeRemaining(boolean formatForOrb)
 	{
-		final double drainRate = getPrayerDrainRate(client);
+		final int drainEffect = getDrainEffect(client);
 
-		if (drainRate == 0)
+		if (drainEffect == 0)
 		{
 			return "N/A";
 		}
 
-		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-
 		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
-		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
+		// https://oldschool.runescape.wiki/w/Prayer#Prayer_drain_mechanics
+		final int drainResistance = 2 * prayerBonus + 60;
+		final double secondsPerPoint = 0.6 * ((double) drainResistance / drainEffect);
 
 		// Calculate the number of seconds left
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 		final double secondsLeft = (currentPrayer * secondsPerPoint);
 
 		LocalTime timeLeft = LocalTime.ofSecondOfDay((long) secondsLeft);
 
-		if (formatForOrb && timeLeft.getMinute() > 9)
+		if (formatForOrb && (timeLeft.getHour() > 0 || timeLeft.getMinute() > 9))
 		{
-			return timeLeft.format(DateTimeFormatter.ofPattern("m")) + "m";
+			long minutes = Duration.ofSeconds((long) secondsLeft).toMinutes();
+			return String.format("%dm", minutes);
+		}
+		else if (timeLeft.getHour() > 0)
+		{
+			return timeLeft.format(DateTimeFormatter.ofPattern("H:mm:ss"));
 		}
 		else
 		{

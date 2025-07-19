@@ -26,22 +26,29 @@
  */
 package net.runelite.client.plugins.camera;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.SettingID;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -52,7 +59,8 @@ import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 @PluginDescriptor(
 	name = "Camera",
@@ -66,11 +74,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private static final int DEFAULT_OUTER_ZOOM_LIMIT = 128;
 	static final int DEFAULT_INNER_ZOOM_LIMIT = 896;
 
-	private static final String LOOK_NORTH = "Look North";
-	private static final String LOOK_SOUTH = "Look South";
-	private static final String LOOK_EAST = "Look East";
-	private static final String LOOK_WEST = "Look West";
-
 	private boolean controlDown;
 	// flags used to store the mousedown states
 	private boolean rightClick;
@@ -79,7 +82,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	
+
 	@Inject
 	private Client client;
 
@@ -96,10 +99,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private MouseManager mouseManager;
 
 	@Inject
-	private OverlayManager overlayManager;
+	private TooltipManager tooltipManager;
 
-	@Inject
-	private CameraOverlay cameraOverlay;
+	private Tooltip sliderTooltip;
 
 	@Provides
 	CameraConfig getConfig(ConfigManager configManager)
@@ -116,59 +118,71 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
-		overlayManager.add(cameraOverlay);
+		clientThread.invoke(() ->
+		{
+			Widget sideSlider = client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER);
+			if (sideSlider != null)
+			{
+				addZoomTooltip(sideSlider);
+			}
+
+			Widget settingsInit = client.getWidget(InterfaceID.Settings.UNIVERSE);
+			if (settingsInit != null)
+			{
+				client.createScriptEvent(settingsInit.getOnLoadListener())
+					.setSource(settingsInit)
+					.run();
+			}
+		});
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(cameraOverlay);
+		client.setCameraMouseButtonMask(0);
+		client.setCameraSpeed(1f);
 		client.setCameraPitchRelaxerEnabled(false);
 		client.setInvertYaw(false);
 		client.setInvertPitch(false);
+		client.setCameraShakeDisabled(false);
 		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseListener(this);
 		controlDown = false;
+
+		clientThread.invoke(() ->
+		{
+			Widget sideSlider = client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER);
+			if (sideSlider != null)
+			{
+				sideSlider.setOnMouseRepeatListener((Object[]) null);
+			}
+
+			Widget settingsInit = client.getWidget(InterfaceID.Settings.UNIVERSE);
+			if (settingsInit != null)
+			{
+				client.createScriptEvent(settingsInit.getOnLoadListener())
+					.setSource(settingsInit)
+					.run();
+			}
+		});
 	}
 
 	void copyConfigs()
 	{
+		// rightClickMenuBlocksCamera=true works because mousePressed() does *not* remap rmb->mmb when the menu has object menus.
+		// The camera click mask is mmb, so no camera movement happens.
+		//
+		// rightClickMenuBlocksCamera=false works because the camera click mask is set to 2 or 4. Clicking on objects does *not*
+		// remap rmb->mmb, so the rmb click both opens the menu and moves the camera. Clicking on nothing *does* remap rmb->mmb
+		// which moves the camera, but won't open a Walk-here only menu.
+		// If rightClickMovesCamera=false, we use a mask of 0 which gives us the default behaviour. There's no need to consider
+		// rightClickMenuBlocksCamera if rmb isn't used to move the camera to begin with.
+		client.setCameraMouseButtonMask((config.rightClickMovesCamera() && !config.rightClickMenuBlocksCamera()) ? ((1 << MouseEvent.BUTTON2) | (1 << 4 /* button 4 */)) : 0);
+		client.setCameraSpeed((float) config.cameraSpeed());
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		client.setInvertYaw(config.invertYaw());
 		client.setInvertPitch(config.invertPitch());
-	}
-
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
-	{
-		if (menuEntryAdded.getType() == MenuAction.CC_OP.getId() && menuEntryAdded.getOption().equals(LOOK_NORTH) && config.compassLook())
-		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			int len = menuEntries.length;
-			MenuEntry north = menuEntries[len - 1];
-
-			menuEntries = Arrays.copyOf(menuEntries, len + 3);
-
-			// The handling for these entries is done in ToplevelCompassOp.rs2asm
-			menuEntries[--len] = createCameraLookEntry(menuEntryAdded, 4, LOOK_WEST);
-			menuEntries[++len] = createCameraLookEntry(menuEntryAdded, 3, LOOK_EAST);
-			menuEntries[++len] = createCameraLookEntry(menuEntryAdded, 2, LOOK_SOUTH);
-			menuEntries[++len] = north;
-
-			client.setMenuEntries(menuEntries);
-		}
-	}
-
-	private MenuEntry createCameraLookEntry(MenuEntryAdded lookNorth, int identifier, String option)
-	{
-		MenuEntry m = new MenuEntry();
-		m.setOption(option);
-		m.setTarget(lookNorth.getTarget());
-		m.setIdentifier(identifier);
-		m.setType(MenuAction.CC_OP.getId());
-		m.setParam0(lookNorth.getActionParam0());
-		m.setParam1(lookNorth.getActionParam1());
-		return m;
+		client.setCameraShakeDisabled(config.disableCameraShake());
 	}
 
 	@Subscribe
@@ -247,7 +261,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
-		copyConfigs();
+		if (ev.getGroup().equals("zoom"))
+		{
+			copyConfigs();
+		}
 	}
 
 	@Override
@@ -282,11 +299,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	/**
 	 * Checks if the menu has any non-ignored entries
 	 */
-	private boolean hasMenuEntries(MenuEntry[] menuEntries)
+	@VisibleForTesting
+	boolean hasMenuEntries(MenuEntry[] menuEntries)
 	{
 		for (MenuEntry menuEntry : menuEntries)
 		{
-			MenuAction action = MenuAction.of(menuEntry.getType());
+			MenuAction action = menuEntry.getType();
 			switch (action)
 			{
 				case CANCEL:
@@ -297,10 +315,39 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				case EXAMINE_ITEM_GROUND:
 				case EXAMINE_ITEM:
 				case CC_OP_LOW_PRIORITY:
-					if (config.ignoreExamine())
+					if (config.rightClickExamine())
 					{
-						break;
+						return true;
 					}
+					break;
+				case GAME_OBJECT_FIRST_OPTION:
+				case GAME_OBJECT_SECOND_OPTION:
+				case GAME_OBJECT_THIRD_OPTION:
+				case GAME_OBJECT_FOURTH_OPTION:
+				case GAME_OBJECT_FIFTH_OPTION:
+				case NPC_FIRST_OPTION:
+				case NPC_SECOND_OPTION:
+				case NPC_THIRD_OPTION:
+				case NPC_FOURTH_OPTION:
+				case NPC_FIFTH_OPTION:
+				case GROUND_ITEM_FIRST_OPTION:
+				case GROUND_ITEM_SECOND_OPTION:
+				case GROUND_ITEM_THIRD_OPTION:
+				case GROUND_ITEM_FOURTH_OPTION:
+				case GROUND_ITEM_FIFTH_OPTION:
+				case PLAYER_FIRST_OPTION:
+				case PLAYER_SECOND_OPTION:
+				case PLAYER_THIRD_OPTION:
+				case PLAYER_FOURTH_OPTION:
+				case PLAYER_FIFTH_OPTION:
+				case PLAYER_SIXTH_OPTION:
+				case PLAYER_SEVENTH_OPTION:
+				case PLAYER_EIGHTH_OPTION:
+					if (config.rightClickObjects())
+					{
+						return true;
+					}
+					break;
 				default:
 					return true;
 			}
@@ -316,6 +363,60 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	public void onClientTick(ClientTick event)
 	{
 		menuHasEntries = hasMenuEntries(client.getMenuEntries());
+		sliderTooltip = null;
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired ev)
+	{
+		switch (ev.getScriptId())
+		{
+			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
+			{
+				int arg = client.getIntStackSize() - 11;
+				int[] is = client.getIntStack();
+
+				if (is[arg] == SettingID.CAMERA_ZOOM)
+				{
+					addZoomTooltip(client.getScriptActiveWidget());
+				}
+				break;
+			}
+			case ScriptID.ZOOM_SLIDER_ONDRAG:
+			case ScriptID.SETTINGS_ZOOM_SLIDER_ONDRAG:
+				sliderTooltip = makeSliderTooltip();
+				break;
+		}
+	}
+
+	@Subscribe
+	private void onWidgetLoaded(WidgetLoaded ev)
+	{
+		if (ev.getGroupId() == InterfaceID.SETTINGS_SIDE)
+		{
+			addZoomTooltip(client.getWidget(InterfaceID.SettingsSide.ZOOM_SLIDER));
+		}
+	}
+
+	private void addZoomTooltip(Widget w)
+	{
+		w.setOnMouseRepeatListener((JavaScriptCallback) ev -> sliderTooltip = makeSliderTooltip());
+	}
+
+	private Tooltip makeSliderTooltip()
+	{
+		int value = client.getVarcIntValue(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+		return new Tooltip("Camera Zoom: " + value + " / " + max);
+	}
+
+	@Subscribe
+	private void onBeforeRender(BeforeRender ev)
+	{
+		if (sliderTooltip != null)
+		{
+			tooltipManager.add(sliderTooltip);
+		}
 	}
 
 	/**
@@ -329,7 +430,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
 		{
-			boolean oneButton = client.getVar(VarPlayer.MOUSE_BUTTONS) == 1;
+			boolean oneButton = client.getVarpValue(VarPlayerID.OPTION_MOUSE) == 1;
 			// Only move the camera if there is nothing at the menu, or if
 			// in one-button mode. In one-button mode, left and right click always do the same thing,
 			// so always treat it as the menu is empty

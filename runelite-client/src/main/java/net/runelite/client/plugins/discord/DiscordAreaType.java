@@ -30,5 +30,6 @@ enum DiscordAreaType
 	CITIES,
 	DUNGEONS,
 	MINIGAMES,
-	RAIDS
+	RAIDS,
+	REGIONS
 }

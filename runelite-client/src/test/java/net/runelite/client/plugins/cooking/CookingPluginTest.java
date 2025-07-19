@@ -30,10 +30,10 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -59,8 +59,11 @@ public class CookingPluginTest
 		"You cook the karambwan. It looks delicious.",
 		"You roast a lobster.",
 		"You cook a bass.",
-		"You successfully bake a tasty garden pie."
+		"You successfully bake a tasty garden pie.",
+		"You dry a piece of meat and extract the sinew."
 	};
+
+	private static final String incenseBurnerMessage = "You burn some marrentill in the incense burner.";
 
 	@Inject
 	CookingPlugin cookingPlugin;
@@ -104,16 +107,20 @@ public class CookingPluginTest
 			cookingPlugin.onChatMessage(chatMessage);
 		}
 
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", incenseBurnerMessage, "", 0);
+		cookingPlugin.onChatMessage(chatMessage);
+
 		CookingSession cookingSession = cookingPlugin.getSession();
 		assertNotNull(cookingSession);
 		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
+		assertEquals(0, cookingSession.getBurnAmount());
 	}
 
 	@Test
 	public void testOnGraphicChanged()
 	{
 		Player player = mock(Player.class);
-		when(player.getGraphic()).thenReturn(GraphicID.WINE_MAKE);
+		when(player.getGraphic()).thenReturn(SpotanimID.COOKING_MAKE_WINE_SPOTANIM);
 
 		when(config.fermentTimer()).thenReturn(true);
 		when(client.getLocalPlayer()).thenReturn(player);

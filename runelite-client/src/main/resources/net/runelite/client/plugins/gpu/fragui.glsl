@@ -24,7 +24,6 @@
  */
 #version 330
 
-#define SAMPLING_DEFAULT 0
 #define SAMPLING_MITCHELL 1
 #define SAMPLING_CATROM 2
 #define SAMPLING_XBR 3
@@ -34,24 +33,35 @@ uniform sampler2D tex;
 uniform int samplingMode;
 uniform ivec2 sourceDimensions;
 uniform ivec2 targetDimensions;
+uniform int colorBlindMode;
+uniform vec4 alphaOverlay;
 
-#include scale/bicubic.glsl
-#include scale/xbr_lv2_frag.glsl
+#include "scale/bicubic.glsl"
+#include "scale/xbr_lv2_frag.glsl"
+#include "colorblind.glsl"
 
 in vec2 TexCoord;
 in XBRTable xbrTable;
 
 out vec4 FragColor;
 
+vec4 alphaBlend(vec4 src, vec4 dst) {
+  return vec4(src.rgb + dst.rgb * (1.0f - src.a), src.a + dst.a * (1.0f - src.a));
+}
+
 void main() {
-    vec4 c;
+  vec4 c;
 
-    if (samplingMode == SAMPLING_DEFAULT)
-        c = texture(tex, TexCoord);
-    else if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL)
-        c = textureCubic(tex, TexCoord, samplingMode);
-    else if (samplingMode == SAMPLING_XBR)
-        c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+  if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL) {
+    c = textureCubic(tex, TexCoord, samplingMode);
+  } else if (samplingMode == SAMPLING_XBR) {
+    c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+  } else {  // NEAREST or LINEAR, which uses GL_TEXTURE_MIN_FILTER/GL_TEXTURE_MAG_FILTER to affect sampling
+    c = texture(tex, TexCoord);
+  }
 
-    FragColor = c;
+  c = alphaBlend(c, alphaOverlay);
+  c.rgb = colorblind(colorBlindMode, c.rgb);
+
+  FragColor = c;
 }

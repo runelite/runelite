@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OSXUtil
 {
 	/**
-	 * Enables the osx native fullscreen if running on a mac.
+	 * Enables the osx native fullscreen if running on a Mac.
 	 *
 	 * @param gui The gui to enable the fullscreen on.
 	 */
@@ -44,21 +44,29 @@ public class OSXUtil
 	{
 		if (OSType.getOSType() == OSType.MacOS)
 		{
+			OSXFullScreenAdapter.install(gui);
 			FullScreenUtilities.setWindowCanFullScreen(gui, true);
 			log.debug("Enabled fullscreen on macOS");
 		}
 	}
 
 	/**
+	 * Request user attention on macOS
+	 */
+	public static void requestUserAttention()
+	{
+		Application app = Application.getApplication();
+		app.requestUserAttention(true);
+		log.debug("Requested user attention on macOS");
+	}
+
+	/**
 	 * Requests the foreground in a macOS friendly way.
 	 */
-	public static void requestFocus()
+	public static void requestForeground()
 	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			Application app = Application.getApplication();
-			app.requestForeground(true);
-			log.debug("Requested focus on macOS");
-		}
+		Application app = Application.getApplication();
+		app.requestForeground(true);
+		log.debug("Forced focus on macOS");
 	}
 }

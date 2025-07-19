@@ -40,6 +40,12 @@ import net.runelite.api.coords.WorldPoint;
 public interface Actor extends Renderable
 {
 	/**
+	 * Get the {@link WorldView} this actor belongs to
+	 * @return
+	 */
+	WorldView getWorldView();
+
+	/**
 	 * Gets the combat level of the actor.
 	 *
 	 * @return the combat level
@@ -53,6 +59,14 @@ public interface Actor extends Renderable
 	 */
 	@Nullable
 	String getName();
+
+	/**
+	 * Gets if the actor is interacting with another actor.
+	 * {@link #getInteracting()} will return the interacting actor,
+	 * unless they are outside of the visibility range.
+	 * @return
+	 */
+	boolean isInteracting();
 
 	/**
 	 * Gets the actor being interacted with.
@@ -103,14 +117,8 @@ public interface Actor extends Renderable
 	 */
 	LocalPoint getLocalLocation();
 
-	@VisibleForDevtools
-	void setIdlePoseAnimation(int animation);
-
-	@VisibleForDevtools
-	void setPoseAnimation(int animation);
-
 	/**
-	 * Gets the orientation of the actor.
+	 * Gets the target orientation of the actor.
 	 *
 	 * @return the orientation
 	 * @see net.runelite.api.coords.Angle
@@ -118,46 +126,258 @@ public interface Actor extends Renderable
 	int getOrientation();
 
 	/**
+	 * Gets the current orientation of the actor.
+	 *
+	 * @return the orientation
+	 * @see net.runelite.api.coords.Angle
+	 */
+	int getCurrentOrientation();
+
+	/**
 	 * Gets the current animation the actor is performing.
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getAnimation();
+
+	/**
+	 * Gets the secondary animation the actor is performing. Usually an idle animation, or one of the walking ones.
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getPoseAnimation();
+
+	/**
+	 * Set the idle pose animation.
+	 * @param animation
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	void setPoseAnimation(int animation);
+
+	/**
+	 * Get the frame of the idle animation the actor is performing
+	 * @return
+	 */
+	int getPoseAnimationFrame();
+
+	/**
+	 * Set the frame of the idle animation the actor is performing
+	 * @param frame
+	 */
+	void setPoseAnimationFrame(int frame);
+
+	/**
+	 * The idle pose animation. If the actor is not walking or otherwise animating, this will be used
+	 * for their pose animation.
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getIdlePoseAnimation();
+
+	@VisibleForDevtools
+	void setIdlePoseAnimation(int animation);
+
+	/**
+	 * Animation used for rotating left if the actor is also not walking
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getIdleRotateLeft();
+
+	void setIdleRotateLeft(int animationID);
+
+	/**
+	 * Animation used for rotating right if the actor is also not walking
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getIdleRotateRight();
+
+	void setIdleRotateRight(int animationID);
+
+	/**
+	 * Animation used for walking
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getWalkAnimation();
+
+	void setWalkAnimation(int animationID);
+
+	/**
+	 * Animation used for rotating left while walking
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getWalkRotateLeft();
+
+	void setWalkRotateLeft(int animationID);
+
+	/**
+	 * Animation used for rotating right while walking
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getWalkRotateRight();
+
+	void setWalkRotateRight(int animationID);
+
+	/**
+	 * Animation used for an about-face while walking
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getWalkRotate180();
+
+	void setWalkRotate180(int animationID);
+
+	/**
+	 * Animation used for running
+	 *
+	 * @return the animation ID
+	 * @see net.runelite.api.gameval.AnimationID
+	 */
+	int getRunAnimation();
+
+	void setRunAnimation(int animationID);
 
 	/**
 	 * Sets an animation for the actor to perform.
 	 *
 	 * @param animation the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	@VisibleForDevtools
 	void setAnimation(int animation);
 
 	/**
-	 * Sets the frame of the animation the actor is performing.
+	 * Get the frame of the animation the actor is performing
 	 *
-	 * @param actionFrame the animation frame
+	 * @return the frame
 	 */
-	@VisibleForDevtools
-	void setActionFrame(int actionFrame);
+	int getAnimationFrame();
 
 	/**
-	 * Gets the graphic that is currently on the player.
+	 * Sets the frame of the animation the actor is performing.
 	 *
-	 * @return the graphic of the actor
-	 * @see GraphicID
+	 * @param frame the animation frame
+	 * @deprecated use setAnimationFrame
 	 */
+	@Deprecated
+	void setActionFrame(int frame);
+
+	/**
+	 * Sets the frame of the animation the actor is performing.
+	 *
+	 * @param frame the animation frame
+	 */
+	void setAnimationFrame(int frame);
+
+	/**
+	 * Get the spotanims on the actor.
+	 * It is important to not modify the table directly or indirectly via
+	 * eg. iterator remove().
+	 * @see #createSpotAnim(int, int, int, int)
+	 * @see #removeSpotAnim(int)
+	 * @see #clearSpotAnims()
+	 * @return
+	 */
+	IterableHashTable<ActorSpotAnim> getSpotAnims();
+
+	/**
+	 * Check if the actor has a spotanim
+	 * @param spotAnimId the spot anim id
+	 * @see net.runelite.api.gameval.SpotanimID
+	 * @return
+	 */
+	boolean hasSpotAnim(int spotAnimId);
+
+	/**
+	 * Create an actor spotanim
+	 * @param id key for the {@link #getSpotAnims()} table
+	 * @param spotAnimId spotanim id {@link net.runelite.api.gameval.SpotanimID}
+	 * @param height height offspot for spot anim
+	 * @param delay initial delay, in client ticks, before spotanim is active
+	 */
+	void createSpotAnim(int id, int spotAnimId, int height, int delay);
+
+	/**
+	 * Remove an actor spotanim
+	 * @param id key for the {@link #getSpotAnims()} table
+	 */
+	void removeSpotAnim(int id);
+
+	/**
+	 * Remove all actor spotanims
+	 */
+	void clearSpotAnims();
+
+	/**
+	 * Get the graphic/spotanim that is currently on the actor.
+	 * Actors can have multiple spotanims, this gets only one of them. Use {@link #hasSpotAnim(int)} instead.
+	 *
+	 * @return the spotanim of the actor
+	 * @see net.runelite.api.gameval.SpotanimID
+	 * @deprecated see {@link #hasSpotAnim(int)}
+	 */
+	@Deprecated
 	int getGraphic();
 
-	@VisibleForDevtools
+	/**
+	 * Set the graphic/spotanim that is currently on the actor.
+	 *
+	 * @param graphic The spotanim id
+	 * @see net.runelite.api.gameval.SpotanimID
+	 * @deprecated see {@link #createSpotAnim(int, int, int, int)}
+	 */
+	@Deprecated
 	void setGraphic(int graphic);
 
-	@VisibleForDevtools
+	/**
+	 * Get the height of the graphic/spotanim on the actor
+	 * @return
+	 * @deprecated see {@link ActorSpotAnim#getHeight()}
+	 */
+	@Deprecated
+	int getGraphicHeight();
+
+	/**
+	 * Set the height of the graphic/spotanim on the actor
+	 * @param height
+	 * @deprecated see {@link ActorSpotAnim#setHeight(int)}
+	 */
+	@Deprecated
+	void setGraphicHeight(int height);
+
+	/**
+	 * Get the frame of the currently playing spotanim
+	 *
+	 * @return
+	 * @deprecated see {@link ActorSpotAnim#getFrame()}
+	 */
+	@Deprecated
+	int getSpotAnimFrame();
+
+	/**
+	 * Set the frame of the currently playing spotanim
+	 *
+	 * @param spotAnimFrame
+	 * @deprecated see {@link ActorSpotAnim#setFrame(int)}
+	 */
+	@Deprecated
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	/**
-	 * Gets the canvas area of the current tile the actor is standing on.
+	 * Gets the canvas area of the current tiles the actor is standing on.
 	 *
 	 * @return the current tile canvas area
 	 */
@@ -169,21 +389,21 @@ public interface Actor extends Renderable
 	 *
 	 * @param graphics engine graphics
 	 * @param text the text to draw
-	 * @param zOffset the z-axis offset
+	 * @param heightOffset the height offset
 	 * @return the text drawing location
 	 */
 	@Nullable
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
+	Point getCanvasTextLocation(Graphics2D graphics, String text, int heightOffset);
 
 	/**
 	 * Gets the point at which an image should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
 	 * @param image the image to draw
-	 * @param zOffset the z-axis offset
+	 * @param heightOffset the height offset
 	 * @return the image drawing location
 	 */
-	Point getCanvasImageLocation(BufferedImage image, int zOffset);
+	Point getCanvasImageLocation(BufferedImage image, int heightOffset);
 
 
 	/**
@@ -191,10 +411,10 @@ public interface Actor extends Renderable
 	 * current location with the given z-axis offset.
 	 *
 	 * @param sprite the sprite to draw
-	 * @param zOffset the z-axis offset
+	 * @param heightOffset the height offset
 	 * @return the sprite drawing location
 	 */
-	Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset);
+	Point getCanvasSpriteLocation(SpritePixels sprite, int heightOffset);
 
 	/**
 	 * Gets a point on the canvas of where this actors mini-map indicator
@@ -242,4 +462,33 @@ public interface Actor extends Renderable
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
+
+	/**
+	 * Get the number of cycles/client ticks remaining before the overhead text is timed out
+	 *
+	 * @return
+	 */
+	int getOverheadCycle();
+
+	/**
+	 * Set the number of cycles/client ticks before the overhead text is timed out
+	 *
+	 * @param cycles
+	 */
+	void setOverheadCycle(int cycles);
+
+	/**
+	 * Returns true if this actor has died
+	 *
+	 * @return
+	 */
+	boolean isDead();
+
+	/**
+	 * Sets the dead status of this actor
+	 *
+	 * @param dead
+	 * @see #isDead()
+	 */
+	void setDead(boolean dead);
 }

@@ -32,14 +32,12 @@ class GpuIntBuffer
 {
 	private IntBuffer buffer = allocateDirect(65536);
 
-	void put(int x, int y, int z)
+	void put(float x, float y, float z, int w)
 	{
-		buffer.put(x).put(y).put(z);
-	}
-
-	void put(int x, int y, int z, int c)
-	{
-		buffer.put(x).put(y).put(z).put(c);
+		buffer.put(Float.floatToIntBits(x))
+			.put(Float.floatToIntBits(y))
+			.put(Float.floatToIntBits(z))
+			.put(w);
 	}
 
 	void flip()
@@ -54,9 +52,17 @@ class GpuIntBuffer
 
 	void ensureCapacity(int size)
 	{
-		while (buffer.remaining() < size)
+		int capacity = buffer.capacity();
+		final int position = buffer.position();
+		if ((capacity - position) < size)
 		{
-			IntBuffer newB = allocateDirect(buffer.capacity() * 2);
+			do
+			{
+				capacity *= 2;
+			}
+			while ((capacity - position) < size);
+
+			IntBuffer newB = allocateDirect(capacity);
 			buffer.flip();
 			newB.put(buffer);
 			buffer = newB;

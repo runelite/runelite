@@ -24,36 +24,23 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
 
+@AllArgsConstructor
 public class Combo implements Effect
 {
 	private final SingleEffect[] calcs;
-	private final int numPrimaries;
-
-	public Combo(SingleEffect[] calcs)
-	{
-		this(1, calcs);
-	}
-
-	public Combo(int numPrimaries, SingleEffect[] calcs)
-	{
-		this.numPrimaries = numPrimaries;
-		this.calcs = calcs;
-	}
 
 	@Override
 	public StatsChanges calculate(Client client)
 	{
 		StatsChanges out = new StatsChanges(calcs.length);
 		StatChange[] statChanges = out.getStatChanges();
+		Positivity positivity = Positivity.NO_CHANGE;
 		for (int i = 0; i < calcs.length; i++)
 		{
 			statChanges[i] = calcs[i].effect(client);
-		}
-		Positivity positivity = Positivity.NO_CHANGE;
-		for (int i = 0; i < numPrimaries; i++)
-		{
 			if (positivity.ordinal() < statChanges[i].getPositivity().ordinal())
 			{
 				positivity = statChanges[i].getPositivity();

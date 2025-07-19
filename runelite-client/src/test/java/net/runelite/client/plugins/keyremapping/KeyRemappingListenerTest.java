@@ -27,10 +27,10 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.client.config.ModifierlessKeybind;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,8 +64,7 @@ public class KeyRemappingListenerTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-
-		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
 	}
 
 	@Test
@@ -99,13 +98,45 @@ public class KeyRemappingListenerTest
 
 		verify(event).consume();
 
+		lenient().when(keyRemappingPlugin.isTyping()).thenReturn(true); // release handler no longer checks this
 		// with the plugin now in typing mode, previously pressed and remapped keys should still be mapped
 		// on key release regardless
-		when(keyRemappingPlugin.isTyping()).thenReturn(true);
 		event = mock(KeyEvent.class);
 		when(event.getKeyCode()).thenReturn(KeyEvent.VK_D);
 		keyRemappingListener.keyReleased(event);
 		verify(event).setKeyCode(KeyEvent.VK_RIGHT);
 		verify(event).setKeyChar(KeyEvent.CHAR_UNDEFINED);
+	}
+
+	@Test
+	public void testSpaceRemap()
+	{
+		when(keyRemappingConfig.space()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
+
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+		when(keyRemappingPlugin.isDialogOpen()).thenReturn(true);
+
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getKeyChar()).thenReturn('1');
+		when(event.getKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
+
+		keyRemappingListener.keyPressed(event);
+
+		verify(event).setKeyCode(KeyEvent.VK_SPACE);
+	}
+
+	@Test
+	public void testControlRemap()
+	{
+		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+
+		KeyEvent event = mock(KeyEvent.class);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
+
+		keyRemappingListener.keyPressed(event);
+
+		verify(event).setKeyCode(KeyEvent.VK_CONTROL);
 	}
 }

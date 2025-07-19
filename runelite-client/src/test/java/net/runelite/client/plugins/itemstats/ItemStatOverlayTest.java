@@ -31,12 +31,12 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.Color;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemStats;
 import org.apache.commons.lang3.StringUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -53,9 +53,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ItemStatOverlayTest
 {
 	// Weapon definitions
-	private static final ItemStats ABYSSAL_DAGGER = new ItemStats(false, true, 0.453, 8,
+	private static final ItemStats ABYSSAL_DAGGER = new ItemStats(true, 0.453, 8,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+			.isTwoHanded(false)
 			.astab(75)
 			.aslash(40)
 			.acrush(-4)
@@ -64,9 +65,10 @@ public class ItemStatOverlayTest
 			.str(75)
 			.aspeed(4)
 			.build());
-	private static final ItemStats KATANA = new ItemStats(false, true, 0, 8,
+	private static final ItemStats KATANA = new ItemStats(true, 0, 8,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+			.isTwoHanded(true)
 			.astab(7)
 			.aslash(45)
 			.dstab(3)
@@ -76,16 +78,18 @@ public class ItemStatOverlayTest
 			.str(40)
 			.aspeed(4)
 			.build());
-	private static final ItemStats BLOWPIPE = new ItemStats(false, true, 0, 0,
+	private static final ItemStats BLOWPIPE = new ItemStats(true, 0, 0,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+			.isTwoHanded(true)
 			.arange(60)
 			.rstr(40)
 			.aspeed(3)
 			.build());
-	private static final ItemStats HEAVY_BALLISTA = new ItemStats(false, true, 4, 8,
+	private static final ItemStats HEAVY_BALLISTA = new ItemStats(true, 4, 8,
 		ItemEquipmentStats.builder()
 			.slot(EquipmentInventorySlot.WEAPON.getSlotIdx())
+			.isTwoHanded(true)
 			.arange(110)
 			.aspeed(7)
 			.build());
@@ -128,7 +132,7 @@ public class ItemStatOverlayTest
 	{
 		// Empty equipment (fully unarmed)
 		final ItemContainer equipment = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 
 		String tooltip;
 		String sanitizedTooltip;

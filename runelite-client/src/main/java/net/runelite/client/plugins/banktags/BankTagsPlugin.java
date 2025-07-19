@@ -28,60 +28,47 @@ package net.runelite.client.plugins.banktags;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.api.events.DraggingWidgetChanged;
-import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.InputType;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseManager;
-import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.banktags.tabs.BankSearch;
+import net.runelite.client.plugins.bank.BankSearch;
+import net.runelite.client.plugins.banktags.tabs.Layout;
+import net.runelite.client.plugins.banktags.tabs.LayoutManager;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -89,14 +76,23 @@ import net.runelite.client.util.Text;
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@PluginDependency(ClueScrollPlugin.class)
-public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
+@Slf4j
+public class BankTagsPlugin extends Plugin implements BankTagsService
 {
+	// banktags:item_<id>=tag,tag,tag,...
+	// banktags:icon_<tag>=id
+	// banktags:tagtabs=tab,tab,tab,...
+	// banktags:layout_<tag>=item,item,item,...
+	// banktags:hidden_<tag>=true
 	public static final String CONFIG_GROUP = "banktags";
+	public static final String TAG_ICON_PREFIX = "icon_";
+	public static final String TAG_TABS_CONFIG = "tagtabs";
+	public static final String TAG_LAYOUT_PREFIX = "layout_";
+	static final String ITEM_KEY_PREFIX = "item_";
+	static final String TAG_HIDDEN_PREFIX = "hidden_";
+
 	public static final String TAG_SEARCH = "tag:";
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
-	public static final String ICON_SEARCH = "icon_";
-	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
 
 	private static final int MAX_RESULT_COUNT = 250;
@@ -107,6 +103,14 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
 			"(To show only tagged items, start your search with 'tag:')";
+
+	public static final int BANK_ITEM_WIDTH = 36;
+	public static final int BANK_ITEM_HEIGHT = 32;
+	public static final int BANK_ITEM_X_PADDING = 12;
+	public static final int BANK_ITEM_Y_PADDING = 4;
+	public static final int BANK_ITEMS_PER_ROW = 8;
+	public static final int BANK_ITEM_START_X = 51;
+	public static final int BANK_ITEM_START_Y = 0;
 
 	@Inject
 	private ItemManager itemManager;
@@ -121,22 +125,13 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
-	private MouseManager mouseManager;
-
-	@Inject
-	private BankTagsConfig config;
-
-	@Inject
 	private TagManager tagManager;
 
 	@Inject
 	private TabInterface tabInterface;
 
 	@Inject
-	private BankSearch bankSearch;
-
-	@Inject
-	private KeyManager keyManager;
+	private LayoutManager layoutManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -144,7 +139,36 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Inject
 	private ConfigManager configManager;
 
-	private boolean shiftPressed = false;
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private BankSearch bankSearch;
+
+	@Inject
+	private BankTagsConfig config;
+
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
+
+	@Getter
+	private String activeTag;
+
+	@Getter
+	private BankTag activeBankTag;
+
+	@Getter
+	private Layout activeLayout;
+
+	@Getter
+	private int options;
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(BankTagsService.class).toInstance(this);
+	}
 
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
@@ -156,9 +180,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public void resetConfiguration()
 	{
 		List<String> extraKeys = Lists.newArrayList(
-			CONFIG_GROUP + "." + TagManager.ITEM_KEY_PREFIX,
-			CONFIG_GROUP + "." + ICON_SEARCH,
-			CONFIG_GROUP + "." + TAG_TABS_CONFIG
+			CONFIG_GROUP + "." + ITEM_KEY_PREFIX,
+			CONFIG_GROUP + "." + TAG_ICON_PREFIX,
+			CONFIG_GROUP + "." + TAG_TABS_CONFIG,
+			CONFIG_GROUP + "." + TAG_LAYOUT_PREFIX
 		);
 
 		for (String prefix : extraKeys)
@@ -174,22 +199,44 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			}
 		}
 
-		clientThread.invokeLater(() ->
-		{
-			tabInterface.destroy();
-			tabInterface.init();
-		});
+		clientThread.invokeLater(this::reinitBank);
 	}
-
 
 	@Override
 	public void startUp()
 	{
 		cleanConfig();
-		keyManager.registerKeyListener(this);
-		mouseManager.registerMouseWheelListener(this);
-		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+		eventBus.register(tabInterface);
+		layoutManager.register();
+		clientThread.invokeLater(this::reinitBank);
+	}
+
+	@Override
+	public void shutDown()
+	{
+		eventBus.unregister(tabInterface);
+		layoutManager.unregister();
+		clientThread.invokeLater(() ->
+		{
+			// since the tab interface is unregistered from the eventbus, manually deinit it
+			// and then reinit the bank.
+			tabInterface.deinit();
+			reinitBank();
+		});
+		spriteManager.removeSpriteOverrides(TabSprites.values());
+	}
+
+	private void reinitBank()
+	{
+		// call [clientscript,bankmain_init]
+		Widget w = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
+		if (w != null)
+		{
+			client.createScriptEvent(w.getOnLoadListener())
+				.setSource(w)
+				.run();
+		}
 	}
 
 	@Deprecated
@@ -230,7 +277,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			return;
 		}
 
-		String replaced = value.replaceAll("[<>/]", "");
+		String replaced = value.replaceAll("[<>:/]", "");
 		if (!value.equals(replaced))
 		{
 			replaced = Text.toCSV(Text.fromCSV(replaced));
@@ -245,21 +292,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 	}
 
-	@Override
-	public void shutDown()
-	{
-		keyManager.unregisterKeyListener(this);
-		mouseManager.unregisterMouseWheelListener(this);
-		clientThread.invokeLater(tabInterface::destroy);
-		spriteManager.removeSpriteOverrides(TabSprites.values());
-
-		shiftPressed = false;
-	}
-
 	@Subscribe
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
-		final String input = client.getVar(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 		if (!input.startsWith(TAG_SEARCH))
 		{
 			return;
@@ -289,45 +325,77 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		String eventName = event.getEventName();
 
 		int[] intStack = client.getIntStack();
-		String[] stringStack = client.getStringStack();
+		Object[] objectStack = client.getObjectStack();
 		int intStackSize = client.getIntStackSize();
-		int stringStackSize = client.getStringStackSize();
-
-		tabInterface.handleScriptEvent(event);
+		int objectStackSize = client.getObjectStackSize();
 
 		switch (eventName)
 		{
 			case "setSearchBankInputText":
-				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
+				objectStack[objectStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
 			case "setSearchBankInputTextFound":
 			{
 				int matches = intStack[intStackSize - 1];
-				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
+				objectStack[objectStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
 				break;
 			}
 			case "bankSearchFilter":
-				int itemId = intStack[intStackSize - 1];
-				String search = stringStack[stringStackSize - 1];
+				final int itemId = intStack[intStackSize - 1];
+				String searchfilter = (String) objectStack[objectStackSize - 1];
 
-				boolean tagSearch = search.startsWith(TAG_SEARCH);
-				if (tagSearch)
+				BankTag tag = activeBankTag;
+				boolean tagSearch = true;
+				// Shared storage uses ~bankmain_filteritem too. Allow using tag searches in it but don't
+				// apply the tag search from the active tab.
+				final boolean bankOpen = client.getItemContainer(InventoryID.BANK) != null;
+				if (tag == null || !bankOpen)
 				{
-					search = search.substring(TAG_SEARCH.length()).trim();
+					if (searchfilter.isEmpty())
+					{
+						return;
+					}
+
+					tagSearch = searchfilter.startsWith(TAG_SEARCH);
+					if (tagSearch)
+					{
+						searchfilter = searchfilter.substring(TAG_SEARCH.length()).trim();
+					}
+
+					// Build a temporary BankTag using the search filter
+					tag = buildSearchFilterBankTag(searchfilter);
 				}
 
-				if (tagManager.findTag(itemId, search))
+				if (itemId == -1 && activeLayout != null)
+				{
+					// item -1 always passes on a laid out tab so items can be dragged to it
+					return;
+				}
+
+				if (itemId > -1 && tag.contains(itemId))
 				{
 					// return true
 					intStack[intStackSize - 2] = 1;
 				}
 				else if (tagSearch)
 				{
+					// if the item isn't tagged we return false to prevent the item matching if the item name happens
+					// to contain the tag name.
 					intStack[intStackSize - 2] = 0;
 				}
 				break;
 			case "getSearchingTagTab":
-				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
+				intStack[intStackSize - 1] = activeBankTag != null ? 1 : 0;
+				break;
+			case "bankBuildTab":
+				// Use the per-tab view when we want to hide the separators to avoid having to reposition items &
+				// recomputing the scroll height.
+				if (activeBankTag != null && (tabInterface.isTagTabActive() || config.removeSeparators() || activeLayout != null))
+				{
+					var stack = client.getIntStack();
+					var sz = client.getIntStackSize();
+					stack[sz - 1] = 1; // use single tab view mode
+				}
 				break;
 		}
 	}
@@ -335,111 +403,80 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		MenuEntry[] entries = client.getMenuEntries();
-
-		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getOption().equals("Examine"))
+		if (event.getActionParam1() == InterfaceID.Bankmain.ITEMS
+			&& (event.getOption().equals("Examine")
+			// Potion storage has no Examine
+			|| (event.getOption().equals("Withdraw-All-but-1") && !client.getItemContainer(InventoryID.BANK).contains(event.getItemId()))))
 		{
-			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+			Widget container = client.getWidget(InterfaceID.Bankmain.ITEMS);
 			Widget item = container.getChild(event.getActionParam0());
-			int itemID = item.getItemId();
-			String text = EDIT_TAGS_MENU_OPTION;
-			int tagCount = tagManager.getTags(itemID, false).size() + tagManager.getTags(itemID, true).size();
+			int itemId = item.getItemId();
 
+			Collection<String> tags = tagManager.getTags(itemId, false);
+			tags.addAll(tagManager.getTags(itemId, true));
+			int tagCount = (int) tags.stream()
+				.filter(tag -> developerMode || !tagManager.isHidden(tag))
+				.count();
+
+			String text = EDIT_TAGS_MENU_OPTION;
 			if (tagCount > 0)
 			{
 				text += " (" + tagCount + ")";
 			}
 
-			MenuEntry editTags = new MenuEntry();
-			editTags.setParam0(event.getActionParam0());
-			editTags.setParam1(event.getActionParam1());
-			editTags.setTarget(event.getTarget());
-			editTags.setOption(text);
-			editTags.setType(MenuAction.RUNELITE.getId());
-			editTags.setIdentifier(event.getIdentifier());
-			entries = Arrays.copyOf(entries, entries.length + 1);
-			entries[entries.length - 1] = editTags;
-			client.setMenuEntries(entries);
+			int index = event.getOption().equals("Examine") ? -1 : -2;
+			client.createMenuEntry(index)
+				.setParam0(event.getActionParam0())
+				.setParam1(event.getActionParam1())
+				.setTarget(event.getTarget())
+				.setOption(text)
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(event.getIdentifier())
+				.setItemId(event.getItemId())
+				.onClick(this::editTags);
 		}
-
-		tabInterface.handleAdd(event);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void editTags(MenuEntry entry)
 	{
-		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
-			&& event.getMenuAction() == MenuAction.RUNELITE
-			&& event.getMenuOption().startsWith(EDIT_TAGS_MENU_OPTION))
-		{
-			event.consume();
-			int inventoryIndex = event.getActionParam();
-			ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-			if (bankContainer == null)
-			{
-				return;
-			}
-			Item[] items = bankContainer.getItems();
-			if (inventoryIndex < 0 || inventoryIndex >= items.length)
-			{
-				return;
-			}
-			Item item = bankContainer.getItems()[inventoryIndex];
-			if (item == null)
-			{
-				return;
-			}
+		int itemId = entry.getItemId();
+		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		String name = itemComposition.getName();
 
-			int itemId = item.getId();
-			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			String name = itemComposition.getName();
+		// Get both tags and vartags and append * to end of vartags name
+		List<String> tags = tagManager.getTags(itemId, false).stream()
+			.filter(tag -> developerMode || !tagManager.isHidden(tag))
+			.collect(Collectors.toList());
 
-			// Get both tags and vartags and append * to end of vartags name
-			Collection<String> tags = tagManager.getTags(itemId, false);
-			tagManager.getTags(itemId, true).stream()
-				.map(i -> i + "*")
-				.forEach(tags::add);
+		tagManager.getTags(itemId, true).stream()
+			.filter(tag -> developerMode || !tagManager.isHidden(tag))
+			.map(tag -> tag + "*")
+			.forEach(tags::add);
 
-			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
-			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
-			String initialValue = Text.toCSV(tags);
+		String initialValue = Text.toCSV(tags);
 
-			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
-				.addCharValidator(FILTERED_CHARS)
-				.value(initialValue)
-				.onDone((Consumer<String>) (newValue) ->
-					clientThread.invoke(() ->
+		chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
+			.addCharValidator(FILTERED_CHARS)
+			.value(initialValue)
+			.onDone((Consumer<String>) (newValue) ->
+				clientThread.invoke(() ->
+				{
+					// Split inputted tags to vartags (ending with *) and regular tags
+					final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
+					final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
 					{
-						// Split inputted tags to vartags (ending with *) and regular tags
-						final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
-						final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
-						{
-							newTags.remove(s);
-							return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
-						}).collect(Collectors.toList());
+						newTags.remove(s);
+						return s.substring(0, s.length() - VAR_TAG_SUFFIX.length());
+					}).collect(Collectors.toList());
 
-						// And save them
-						tagManager.setTagString(itemId, Text.toCSV(newTags), false);
-						tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
+					// And save them
+					tagManager.setTagString(itemId, Text.toCSV(newTags), false);
+					tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
 
-						// Check both previous and current tags in case the tag got removed in new tags or in case
-						// the tag got added in new tags
-						tabInterface.updateTabIfActive(Text.fromCSV(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-						tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-					}))
-				.build();
-
-			if (isSearchOpen)
-			{
-				bankSearch.reset(false);
-				bankSearch.search(InputType.SEARCH, searchText, false);
-			}
-		}
-		else
-		{
-			tabInterface.handleClick(event);
-		}
+					// If a tab if active, rebuild the bank to apply the changes
+					tabInterface.reloadActiveTab();
+				}))
+			.build();
 	}
 
 	@Subscribe
@@ -447,74 +484,62 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	{
 		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))
 		{
-			if (config.tabs())
-			{
-				clientThread.invokeLater(tabInterface::init);
-			}
-			else
-			{
-				clientThread.invokeLater(tabInterface::destroy);
-			}
+			clientThread.invokeLater(this::reinitBank);
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	public void openTag(String tag, Layout layout)
 	{
-		tabInterface.update();
+		openTag(tag, layout, OPTION_ALLOW_MODIFICATIONS);
 	}
 
-	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	public void openTag(String tag, Layout layout, int options)
 	{
-		tabInterface.handleDrag(event.isDraggingWidget(), shiftPressed);
-	}
-
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() == WidgetID.BANK_GROUP_ID)
+		if (tag == null)
 		{
-			tabInterface.init();
+			this.activeTag = null;
+			this.activeBankTag = null;
+			this.activeLayout = null;
+			this.options = 0;
+			return;
 		}
+
+		this.activeTag = tag;
+		this.activeBankTag = buildSearchFilterBankTag(tag);
+		this.activeLayout = layout;
+		this.options = options;
+
+		tabInterface.openTag(tag, layout, options, true);
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private BankTag buildSearchFilterBankTag(String tag)
 	{
-		if (!event.isFocused())
-		{
-			shiftPressed = false;
-		}
+		// custom tags are combined with the tab
+		final BankTag custom = tagManager.findTag(tag);
+		return itemId -> tagManager.findTag(itemId, tag)
+			|| (custom != null && custom.contains(itemId));
+	}
+
+	public void openBankTag(String name)
+	{
+		openBankTag(name, OPTION_ALLOW_MODIFICATIONS);
 	}
 
 	@Override
-	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	public void openBankTag(String name, int options)
 	{
-		tabInterface.handleWheel(event);
-		return event;
+		Layout layout = (options & OPTION_NO_LAYOUT) != 0 ? null : layoutManager.loadLayout(name);
+		openTag(name, layout, options);
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
+	public void closeBankTag()
 	{
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			shiftPressed = true;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			shiftPressed = false;
-		}
+		tabInterface.closeTag(false);
+		this.activeTag = null;
+		this.activeBankTag = null;
+		this.activeLayout = null;
+		this.options = 0;
+		bankSearch.layoutBank();
 	}
 }

@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.loottracker;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode
 class LootTrackerItem
 {
 	private final int id;
