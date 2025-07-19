@@ -79,19 +79,20 @@ class CannonOverlay extends Overlay
 
 		if (localLocation.distanceTo(cannonPoint) <= MAX_OVERLAY_DISTANCE)
 		{
-			Point cannonLoc = Perspective.getCanvasTextLocation(client,
-				graphics,
-				cannonPoint,
-				String.valueOf(plugin.getCballsLeft()), 150);
+			if (config.showAmmoCount()) {
+				Point cannonLoc = Perspective.getCanvasTextLocation(client,
+						graphics,
+						cannonPoint,
+						String.valueOf(plugin.getCballsLeft()), 150);
 
-			if (cannonLoc != null)
-			{
-				textComponent.setText(String.valueOf(plugin.getCballsLeft()));
-				textComponent.setPosition(new java.awt.Point(cannonLoc.getX(), cannonLoc.getY()));
-				textComponent.setColor(plugin.getStateColor());
-				textComponent.render(graphics);
+				if (cannonLoc != null)
+				{
+					textComponent.setText(String.valueOf(plugin.getCballsLeft()));
+					textComponent.setPosition(new java.awt.Point(cannonLoc.getX(), cannonLoc.getY()));
+					textComponent.setColor(plugin.getStateColor());
+					textComponent.render(graphics);
+				}
 			}
-
 			if (config.showDoubleHitSpot())
 			{
 				Color color = config.highlightDoubleHitColor();
