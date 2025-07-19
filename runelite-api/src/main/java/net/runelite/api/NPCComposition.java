@@ -31,6 +31,13 @@ import javax.annotation.Nullable;
  */
 public interface NPCComposition extends ParamHolder
 {
+	int STAT_ATTACK = 0;
+	int STAT_DEFENCE = 1;
+	int STAT_STRENGTH = 2;
+	int STAT_HITPOINTS = 3;
+	int STAT_RANGED = 4;
+	int STAT_MAGIC = 5;
+
 	/**
 	 * Gets the name of the NPC.
 	 */
@@ -132,4 +139,16 @@ public interface NPCComposition extends ParamHolder
 	 * @return
 	 */
 	int getFootprintSize();
+
+	/**
+	 * Get the npc's stats
+	 * @see #STAT_ATTACK
+	 * @see #STAT_DEFENCE
+	 * @see #STAT_STRENGTH
+	 * @see #STAT_HITPOINTS
+	 * @see #STAT_RANGED
+	 * @see #STAT_MAGIC
+	 * @return
+	 */
+	int[] getStats();
 }
