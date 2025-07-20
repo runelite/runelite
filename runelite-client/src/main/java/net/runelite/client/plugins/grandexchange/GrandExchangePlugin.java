@@ -79,6 +79,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.Notifier;
@@ -857,8 +858,21 @@ public class GrandExchangePlugin extends Plugin
 
 	private String setExamineText(String examine, String fee, boolean buy)
 	{
-		final int itemId = client.getVarpValue(VarPlayerID.TRADINGPOST_SEARCH);
 		StringBuilder sb = new StringBuilder();
+		int itemId = client.getVarpValue(VarPlayerID.TRADINGPOST_SEARCH);
+
+		// tradingpost_search is -1 in offer status
+		if (itemId == -1)
+		{
+			final int selectedSlot = client.getVarbitValue(VarbitID.GE_SELECTEDSLOT);
+			SavedOffer savedOffer = getOffer(selectedSlot - 1);
+
+			if (savedOffer != null && selectedSlot > 0)
+			{
+				itemId = savedOffer.getItemId();
+			}
+		}
+
 
 		if (buy && config.enableGELimits())
 		{
