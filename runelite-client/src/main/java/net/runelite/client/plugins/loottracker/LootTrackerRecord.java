@@ -42,7 +42,7 @@ class LootTrackerRecord
 	{
 		return matches(id, type, "");
 	}
-	
+
 	/**
 	 * Checks if this record matches specified id
 	 *
