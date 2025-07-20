@@ -31,6 +31,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -74,7 +76,7 @@ import net.runelite.http.api.loottracker.LootRecordType;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
-	private static final int DEBOUNCE_DELAY_MS = 250;
+	private static final int SEARCH_DEBOUNCE_DELAY_MS = 200;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -133,6 +135,7 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
 	private final LootTrackerConfig config;
+	private final ScheduledExecutorService scheduledExecutorService;
 
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
@@ -175,6 +178,7 @@ class LootTrackerPanel extends PluginPanel
 		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.config = config;
+		this.scheduledExecutorService = scheduledExecutorService;
 		this.hideIgnoredItems = true;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -188,11 +192,13 @@ class LootTrackerPanel extends PluginPanel
 
 		actionsPanel = buildActionsPanel();
 		overallPanel = buildOverallPanel();
+		searchBar = buildSearchBar();
 
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(actionsPanel);
 		layoutPanel.add(overallPanel);
+		layoutPanel.add(searchBar);
 		layoutPanel.add(logsContainer);
 
 		// Add error pane
@@ -300,33 +306,6 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setLayout(new BorderLayout());
 		overallPanel.setVisible(false);
 
-		// Create Search Bar
-		searchBar = new IconTextField();
-		searchBar.setIcon(IconTextField.Icon.SEARCH);
-		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 35));
-		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		searchBar.setMinimumSize(new Dimension(0, 35));
-		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
-		searchBar.addKeyListener(k ->
-		{
-			if (runningRequest != null)
-			{
-				runningRequest.cancel(false);
-			}
-
-			runningRequest = scheduledExecutorService.schedule(() ->
-			{
-				SwingUtilities.invokeLater(() ->
-				{
-					rebuild();
-				});
-
-				runningRequest = null;
-			}, this.DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
-		});
-		searchBar.addClearListener(c -> rebuild());
-
 		// Add icon and contents
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -380,6 +359,40 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		return overallPanel;
+	}
+
+	private IconTextField buildSearchBar()
+	{
+		final IconTextField searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 35));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setMinimumSize(new Dimension(0, 35));
+		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
+		searchBar.setVisible(false);
+		searchBar.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if (runningRequest != null)
+				{
+					runningRequest.cancel(false);
+				}
+
+				runningRequest = scheduledExecutorService.schedule(() ->
+				{
+					SwingUtilities.invokeLater(() -> rebuild());
+
+					runningRequest = null;
+				}, SEARCH_DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
+
+			}
+		});
+
+		searchBar.addClearListener(this::rebuild);
+		return searchBar;
 	}
 
 	void updateCollapseText()
@@ -590,6 +603,7 @@ class LootTrackerPanel extends PluginPanel
 		remove(errorPanel);
 		actionsPanel.setVisible(true);
 		overallPanel.setVisible(true);
+		searchBar.setVisible(true);
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
