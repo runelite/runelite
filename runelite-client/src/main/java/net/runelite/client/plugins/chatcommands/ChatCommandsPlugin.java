@@ -2745,6 +2745,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "fortis colosseum":
 				return "Sol Heredit";
 
+			// colosseum glory
+			case "glory":
+			case "colo glory":
+				return "Colosseum Glory";
+
 			case "bird egg":
 			case "bird eggs":
 			case "bird's egg":
