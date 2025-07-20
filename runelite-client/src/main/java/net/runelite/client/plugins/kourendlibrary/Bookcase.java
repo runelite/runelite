@@ -60,7 +60,7 @@ class Bookcase
 	 * Books that can be in this slot. Will only be populated if library.state != SolvedState.NO_DATA
 	 */
 	@Getter
-	private Set<Book> possibleBooks = new HashSet<>();
+	private final Set<Book> possibleBooks = new HashSet<>();
 
 	void clearBook()
 	{
@@ -106,7 +106,7 @@ class Bookcase
 			b.append("Center");
 		}
 
-		b.append(" ");
+		b.append(' ');
 
 		switch (location.getPlane())
 		{
@@ -123,7 +123,7 @@ class Bookcase
 
 		if (KourendLibraryPlugin.debug)
 		{
-			b.append(" ").append(index.stream().map(Object::toString).collect(Collectors.joining(", ")));
+			b.append(' ').append(index.stream().map(Object::toString).collect(Collectors.joining(", ")));
 		}
 		return b.toString();
 	}

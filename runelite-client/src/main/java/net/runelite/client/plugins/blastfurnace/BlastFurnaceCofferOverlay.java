@@ -29,31 +29,33 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.api.Varbits.BLAST_FURNACE_COFFER;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
+import static org.apache.commons.lang3.time.DurationFormatUtils.formatDuration;
 
-class BlastFurnaceCofferOverlay extends Overlay
+class BlastFurnaceCofferOverlay extends OverlayPanel
 {
+	private static final float COST_PER_HOUR = 72000.0f;
+
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final BlastFurnaceConfig config;
 
 	@Inject
-	private BlastFurnaceCofferOverlay(Client client, BlastFurnacePlugin plugin)
+	private BlastFurnaceCofferOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Coffer overlay"));
+		this.config = config;
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Coffer overlay");
 	}
 
 	@Override
@@ -64,20 +66,30 @@ class BlastFurnaceCofferOverlay extends Overlay
 			return null;
 		}
 
-		Widget sack = client.getWidget(WidgetInfo.BLAST_FURNACE_COFFER);
-
-		panelComponent.getChildren().clear();
+		Widget sack = client.getWidget(InterfaceID.BlastFurnaceHud.DISPLAY);
 
 		if (sack != null)
 		{
+			final int coffer = client.getVarbitValue(VarbitID.BLAST_FURNACE_COFFER);
+
 			sack.setHidden(true);
 
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Coffer:")
-				.right(StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp")
+				.right(QuantityFormatter.quantityToStackSize(coffer) + " gp")
 				.build());
+
+			if (config.showCofferTime())
+			{
+				final long millis = (long) (coffer / COST_PER_HOUR * 60 * 60 * 1000);
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Time:")
+					.right(formatDuration(millis, "H'h' m'm' s's'", true))
+					.build());
+			}
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

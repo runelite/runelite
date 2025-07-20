@@ -1,0 +1,78 @@
+name: Bug Report
+description: Report a clearly broken issue.
+labels: ["needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # RuneLite bug report
+
+        Before filing a bug report, please:
+        - Confirm your issue happens in safe mode (with the exception of GPU-plugin related issues).
+        - Search for your issue in both [the issue listing](https://github.com/runelite/runelite/issues) and the [Q&A discussion listing](https://github.com/runelite/runelite/discussions/categories/q-a). If you find that it already exists, respond with a reaction or add any further information that may be helpful.
+
+        We do not accept bug reports for 3rd party/pluginhub plugins. Confirm your issue is not caused by a 3rd party plugin by running RuneLite in [safe mode](https://github.com/runelite/runelite/wiki/FAQ#how-do-i-run-runelite-in-safe-mode).
+  - type: dropdown
+    attributes:
+      label: Type
+      options:
+        - Crash or hang
+        - Incorrect behavior
+        - Performance
+        - GPU
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Operating System
+      options:
+        - Windows
+        - MacOS
+        - Linux
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: OS Version
+      description: Version information for your operating system, ex. Windows 11, MacOS Big Sur, Ubuntu Linux, etc.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Bug description
+      description: How did you find the bug? Any additional details that might help?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots or videos
+      description: Add screenshots or videos that show the bug here.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: RuneLite version
+      description: RuneLite and launcher version used. (Open the info panel to find this information)
+      placeholder: |
+        RuneLite version:
+        Launcher version:
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        ## Logs
+
+        Attaching log files is encouraged for reported bugs. You can find them in one of two ways:
+
+        1. Open the screenshot directory (by right-clicking the \"Camera\" button if you have access to the client) and navigate one directory up and then open logs folder
+        2. Navigate to `%userprofile%\.runelite\logs` on **Windows** or `$HOME/.runelite/logs` on **Linux** and **MacOS**
+
+        You should upload both your `client.log` and `launcher.log` files, along with recently-created `jvm_crash_pid` files if this bug report is regarding the client crashing.
+  - type: textarea
+    attributes:
+      label: Logs
+      placeholder: Drag and drop log files into this box.
+    validations:
+      required: false

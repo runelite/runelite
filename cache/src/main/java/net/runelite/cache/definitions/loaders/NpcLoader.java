@@ -24,16 +24,28 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import java.util.HashMap;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class NpcLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
+	public static final int REV_210_NPC_ARCHIVE_REV = 1493;
+
+	private int defaultHeadIconArchive = -1;
+	private boolean rev210HeadIcons = true;
+
+	public NpcLoader configureForRevision(int rev)
+	{
+		this.rev210HeadIcons = rev >= NpcLoader.REV_210_NPC_ARCHIVE_REV;
+		return this;
+	}
 
 	public NpcDefinition load(int id, byte[] b)
 	{
@@ -51,7 +63,17 @@ public class NpcLoader
 			this.decodeValues(opcode, def, is);
 		}
 
+		post(def);
+
 		return def;
+	}
+
+	private void post(NpcDefinition def)
+	{
+		if (def.footprintSize == -1)
+		{
+			def.footprintSize = (int) (0.4F * (float) (def.size * 128));
+		}
 	}
 
 	private void decodeValues(int opcode, NpcDefinition def, InputStream stream)
@@ -67,7 +89,6 @@ public class NpcLoader
 			{
 				def.models[index] = stream.readUnsignedShort();
 			}
-
 		}
 		else if (opcode == 2)
 		{
@@ -75,37 +96,41 @@ public class NpcLoader
 		}
 		else if (opcode == 12)
 		{
-			def.tileSpacesOccupied = stream.readUnsignedByte();
+			def.size = stream.readUnsignedByte();
 		}
 		else if (opcode == 13)
 		{
-			def.stanceAnimation = stream.readUnsignedShort();
+			def.standingAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 14)
 		{
-			def.walkAnimation = stream.readUnsignedShort();
+			def.walkingAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 15)
 		{
-			def.anInt2165 = stream.readUnsignedShort();
+			def.idleRotateLeftAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 16)
 		{
-			def.anInt2189 = stream.readUnsignedShort();
+			def.idleRotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 17)
 		{
-			def.walkAnimation = stream.readUnsignedShort();
+			def.walkingAnimation = stream.readUnsignedShort();
 			def.rotate180Animation = stream.readUnsignedShort();
-			def.rotate90RightAnimation = stream.readUnsignedShort();
-			def.rotate90LeftAnimation = stream.readUnsignedShort();
+			def.rotateLeftAnimation = stream.readUnsignedShort();
+			def.rotateRightAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 18)
+		{
+			def.category = stream.readUnsignedShort();
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			def.options[opcode - 30] = stream.readString();
-			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
+			def.actions[opcode - 30] = stream.readString();
+			if (def.actions[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
-				def.options[opcode - 30] = null;
+				def.actions[opcode - 30] = null;
 			}
 		}
 		else if (opcode == 40)
@@ -137,17 +162,40 @@ public class NpcLoader
 		else if (opcode == 60)
 		{
 			length = stream.readUnsignedByte();
-			def.models_2 = new int[length];
+			def.chatheadModels = new int[length];
 
 			for (index = 0; index < length; ++index)
 			{
-				def.models_2[index] = stream.readUnsignedShort();
+				def.chatheadModels[index] = stream.readUnsignedShort();
 			}
-
+		}
+		else if (opcode == 74)
+		{
+			def.stats[0] = stream.readUnsignedShort();
+		}
+		else if (opcode == 75)
+		{
+			def.stats[1] = stream.readUnsignedShort();
+		}
+		else if (opcode == 76)
+		{
+			def.stats[2] = stream.readUnsignedShort();
+		}
+		else if (opcode == 77)
+		{
+			def.stats[3] = stream.readUnsignedShort();
+		}
+		else if (opcode == 78)
+		{
+			def.stats[4] = stream.readUnsignedShort();
+		}
+		else if (opcode == 79)
+		{
+			def.stats[5] = stream.readUnsignedShort();
 		}
 		else if (opcode == 93)
 		{
-			def.renderOnMinimap = false;
+			def.isMinimapVisible = false;
 		}
 		else if (opcode == 95)
 		{
@@ -155,11 +203,11 @@ public class NpcLoader
 		}
 		else if (opcode == 97)
 		{
-			def.resizeX = stream.readUnsignedShort();
+			def.widthScale = stream.readUnsignedShort();
 		}
 		else if (opcode == 98)
 		{
-			def.resizeY = stream.readUnsignedShort();
+			def.heightScale = stream.readUnsignedShort();
 		}
 		else if (opcode == 99)
 		{
@@ -175,22 +223,52 @@ public class NpcLoader
 		}
 		else if (opcode == 102)
 		{
-			def.headIcon = stream.readUnsignedShort();
+			if (!rev210HeadIcons)
+			{
+				def.headIconArchiveIds = new int[]{defaultHeadIconArchive};
+				def.headIconSpriteIndex = new short[]{(short) stream.readUnsignedShort()};
+			}
+			else
+			{
+				int bitfield = stream.readUnsignedByte();
+				int len = 0;
+				for (int var5 = bitfield; var5 != 0; var5 >>= 1)
+				{
+					++len;
+				}
+
+				def.headIconArchiveIds = new int[len];
+				def.headIconSpriteIndex = new short[len];
+
+				for (int i = 0; i < len; i++)
+				{
+					if ((bitfield & 1 << i) == 0)
+					{
+						def.headIconArchiveIds[i] = -1;
+						def.headIconSpriteIndex[i] = -1;
+					}
+					else
+					{
+						def.headIconArchiveIds[i] = stream.readBigSmart2();
+						def.headIconSpriteIndex[i] = (short) stream.readUnsignedShortSmartMinusOne();
+					}
+				}
+			}
 		}
 		else if (opcode == 103)
 		{
-			def.rotation = stream.readUnsignedShort();
+			def.rotationSpeed = stream.readUnsignedShort();
 		}
 		else if (opcode == 106)
 		{
-			def.varbitIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varbitIndex)
+			def.varbitId = stream.readUnsignedShort();
+			if (def.varbitId == 65535)
 			{
-				def.varbitIndex = -1;
+				def.varbitId = -1;
 			}
 
 			def.varpIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varpIndex)
+			if (def.varpIndex == 65535)
 			{
 				def.varpIndex = -1;
 			}
@@ -212,26 +290,50 @@ public class NpcLoader
 		}
 		else if (opcode == 107)
 		{
-			def.isClickable = false;
+			def.isInteractable = false;
 		}
 		else if (opcode == 109)
 		{
-			def.aBool2170 = false;
+			def.rotationFlag = false;
 		}
 		else if (opcode == 111)
 		{
-			def.aBool2190 = true;
+			// removed in 220
+			def.isFollower = true;
+			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 114)
+		{
+			def.runAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 115)
+		{
+			def.runAnimation = stream.readUnsignedShort();
+			def.runRotate180Animation = stream.readUnsignedShort();
+			def.runRotateLeftAnimation = stream.readUnsignedShort();
+			def.runRotateRightAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 116)
+		{
+			def.crawlAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 117)
+		{
+			def.crawlAnimation = stream.readUnsignedShort();
+			def.crawlRotate180Animation = stream.readUnsignedShort();
+			def.crawlRotateLeftAnimation = stream.readUnsignedShort();
+			def.crawlRotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 118)
 		{
-			def.varbitIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varbitIndex)
+			def.varbitId = stream.readUnsignedShort();
+			if (def.varbitId == 65535)
 			{
-				def.varbitIndex = -1;
+				def.varbitId = -1;
 			}
 
 			def.varpIndex = stream.readUnsignedShort();
-			if ('\uffff' == def.varpIndex)
+			if (def.varpIndex == 65535)
 			{
 				def.varpIndex = -1;
 			}
@@ -255,6 +357,22 @@ public class NpcLoader
 			}
 
 			def.configs[length + 1] = var;
+		}
+		else if (opcode == 122)
+		{
+			def.isFollower = true;
+		}
+		else if (opcode == 123)
+		{
+			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 124)
+		{
+			def.height = stream.readUnsignedShort();
+		}
+		else if (opcode == 126)
+		{
+			def.footprintSize = stream.readUnsignedShort();
 		}
 		else if (opcode == 249)
 		{
@@ -283,7 +401,7 @@ public class NpcLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			log.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 }

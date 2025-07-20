@@ -29,18 +29,15 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class AttackStylesOverlay extends Overlay
+class AttackStylesOverlay extends OverlayPanel
 {
 	private final AttackStylesPlugin plugin;
 	private final AttackStylesConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
@@ -49,18 +46,24 @@ class AttackStylesOverlay extends Overlay
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
 		this.config = config;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Attack style overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Attack style overlay");
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		panelComponent.getChildren().clear();
 		boolean warnedSkillSelected = plugin.isWarnedSkillSelected();
 
 		if (warnedSkillSelected || config.alwaysShowStyle())
 		{
-			final String attackStyleString = plugin.getAttackStyle().getName();
+			final AttackStyle attackStyle = plugin.getAttackStyle();
+
+			if (attackStyle == null)
+			{
+				return null;
+			}
+
+			final String attackStyleString = attackStyle.getName();
 
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text(attackStyleString)
@@ -71,7 +74,7 @@ class AttackStylesOverlay extends Overlay
 				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
 				0));
 
-			return panelComponent.render(graphics);
+			return super.render(graphics);
 		}
 
 		return null;

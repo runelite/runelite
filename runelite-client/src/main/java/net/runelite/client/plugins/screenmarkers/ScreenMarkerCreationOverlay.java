@@ -32,19 +32,19 @@ import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
-public class ScreenMarkerCreationOverlay extends Overlay
+class ScreenMarkerCreationOverlay extends Overlay
 {
-	private ScreenMarkerPlugin plugin;
+	private final ScreenMarkerPlugin plugin;
 
 	@Inject
 	private ScreenMarkerCreationOverlay(final ScreenMarkerPlugin plugin)
 	{
 		this.plugin = plugin;
-		setPosition(OverlayPosition.DETACHED);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
-		setPriority(OverlayPriority.HIGH);
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(PRIORITY_HIGH);
+		setMovable(true);
 	}
 
 	@Override

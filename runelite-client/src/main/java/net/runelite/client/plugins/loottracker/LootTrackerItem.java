@@ -25,21 +25,30 @@
 package net.runelite.client.plugins.loottracker;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
+@Getter
+@EqualsAndHashCode
 class LootTrackerItem
 {
-	@Getter
 	private final int id;
-	@Getter
 	private final String name;
-	@Getter
-	private final int quantity;
-	@Getter
-	private final long price;
-	@Getter
+	private int quantity;
+	private final int gePrice;
+	private final int haPrice;
 	@Setter
 	private boolean ignored;
+
+	long getTotalGePrice()
+	{
+		return (long) gePrice * quantity;
+	}
+
+	long getTotalHaPrice()
+	{
+		return (long) haPrice * quantity;
+	}
 }

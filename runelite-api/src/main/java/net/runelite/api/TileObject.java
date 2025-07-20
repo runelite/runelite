@@ -26,96 +26,113 @@ package net.runelite.api;
 
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.geom.Area;
+import java.awt.Shape;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 /**
- * Represents an object that a tile holds.
+ * Represents an object on a Tile
  */
 public interface TileObject
 {
+	int HASH_PLANE_SHIFT = 14;
+
 	/**
-	 * Gets the hashed value of this object.
-	 *
-	 * @return the object hash
+	 * A bitfield containing various flags:
+	 * <pre>{@code
+	 * worldView = bits >> 52 & 4095
+	 * id = bits >> 20 & 0xffffffff
+	 * wall = bits >> 19 & 1
+	 * type = bits >> 16 & 7
+	 * plane = bits >> 14 & 3
+	 * scene y = bits >> 7 & 127
+	 * scene x = bits >> 0 & 127
+	 * }</pre>
+	 * Type 0 = player, 1 = npc, 2 = game object, 3 = item, 4 = world entity
 	 */
 	long getHash();
 
 	/**
 	 * Gets the x-axis coordinate of the object in local context.
 	 *
-	 * @return the x-axis coordinate
+	 * @see LocalPoint
 	 */
 	int getX();
 
 	/**
 	 * Gets the y-axis coordinate of the object in local context.
 	 *
-	 * @return the y-axis coordinate
+	 * @see LocalPoint
 	 */
 	int getY();
 
 	/**
+	 * Gets the vertical coordinate of this object
+	 */
+	int getZ();
+
+	/**
 	 * Gets the plane of the tile that the object is on.
-	 *
-	 * @return the tile plane
 	 */
 	int getPlane();
 
 	/**
+	 * Gets the WorldView this TileObject is a part of.
+	 */
+	WorldView getWorldView();
+
+	/**
 	 * Gets the ID of the object.
 	 *
-	 * @return the object ID
+	 * @see net.runelite.api.gameval.ObjectID
 	 */
 	int getId();
 
 	/**
-	 * Gets the location coordinate of the object in the world.
-	 *
-	 * @return the world location
+	 * Get the world location for this object. For objects which are larger than 1 tile, this is the
+	 * center most tile, rounded to the south-west.
+	 * @return
 	 */
+	@Nonnull
 	WorldPoint getWorldLocation();
 
 	/**
-	 * Gets the local location of the object.
-	 *
-	 * @return the local location
+	 * Get the local location for this object. This point is the center point of the object.
+	 * @return
 	 */
+	@Nonnull
 	LocalPoint getLocalLocation();
 
 	/**
-	 * Gets the upper-left canvas point where this object is drawn.
-	 *
-	 * @return the canvas location
+	 * Calculates the position of the center of this tile on the canvas
 	 */
+	@Nullable
 	Point getCanvasLocation();
 
 	/**
-	 * Gets the upper-left canvas point where this object is drawn,
-	 * offset by the passed value.
+	 * Calculates the position of the center of this tile on the canvas
 	 *
-	 * @param zOffset the z-axis offset
-	 * @return the canvas location
+	 * @param zOffset Vertical offset to apply before projection
 	 */
+	@Nullable
 	Point getCanvasLocation(int zOffset);
 
 	/**
-	 * Gets the polygon of the objects model as drawn on the canvas.
-	 *
-	 * @return the canvas polygon
+	 * Creates a polygon outlining the tile this object is on
 	 */
+	@Nullable
 	Polygon getCanvasTilePoly();
 
 	/**
-	 * Gets the text position on the canvas.
+	 * Calculates the canvas point to center {@code text} above the tile this object is on.
 	 *
-	 * @param graphics the client graphics
-	 * @param text the text to draw
-	 * @param zOffset the offset from ground plane
+	 * @param graphics the graphics to use for font size calculation
+	 * @param zOffset Vertical offset to apply before projection
 	 * @return the canvas point to draw the text at
 	 */
+	@Nullable
 	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 
 	/**
@@ -124,13 +141,12 @@ public interface TileObject
 	 *
 	 * @return mini-map location on canvas
 	 */
+	@Nullable
 	Point getMinimapLocation();
 
 	/**
-	 * Get the on-screen clickable area of the object.
-	 *
-	 * @return the clickable area
+	 * Calculate the on-screen clickable area of the object.
 	 */
 	@Nullable
-	Area getClickbox();
+	Shape getClickbox();
 }

@@ -1,4 +1,4 @@
-/*'
+/*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Abexlry <abexlry@gmail.com>
  * All rights reserved.
@@ -33,13 +33,12 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -58,8 +57,6 @@ import net.runelite.client.util.ColorUtil;
 public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
-	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
-	private static final String SCRIPT_EVENT_BLOCK_CHAT_INPUT = "blockChatInput";
 
 	@Inject
 	private Client client;
@@ -88,6 +85,8 @@ public class KeyRemappingPlugin extends Plugin
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				lockChat();
+				// Clear any typed text
+				client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
 		});
 	}
@@ -112,18 +111,34 @@ public class KeyRemappingPlugin extends Plugin
 		return configManager.getConfig(KeyRemappingConfig.class);
 	}
 
+	/**
+	 * Check if something other than the chatbox is accepting key input.
+	 * @return
+	 */
 	boolean chatboxFocused()
 	{
-		Widget chatboxParent = client.getWidget(WidgetInfo.CHATBOX_PARENT);
+		Widget chatboxParent = client.getWidget(InterfaceID.Chatbox.UNIVERSE);
 		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null)
 		{
 			return false;
 		}
 
-		// the search box on the world map can be focused, and chat input goes there, even
-		// though the chatbox still has its key listener.
-		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
-		return worldMapSearch == null || client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
+		// If the search box on the world map is open and focused, ~keypress_permit blocks the keypress
+		Widget worldMapSearch = client.getWidget(InterfaceID.Worldmap.MAPLIST_DISPLAY);
+		if (worldMapSearch != null && client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) == 1)
+		{
+			return false;
+		}
+
+		// The report interface blocks input due to 162:54 being hidden, however player/npc dialog and
+		// options do this too, and so we can't disable remapping just due to 162:54 being hidden.
+		Widget report = client.getWidget(InterfaceID.Reportabuse.UNIVERSE);
+		if (report != null)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -137,12 +152,20 @@ public class KeyRemappingPlugin extends Plugin
 		// Most chat dialogs with numerical input are added without the chatbox or its key listener being removed,
 		// so chatboxFocused() is true. The chatbox onkey script uses the following logic to ignore key presses,
 		// so we will use it too to not remap F-keys.
-		return isHidden(WidgetInfo.CHATBOX_MESSAGES) || isHidden(WidgetInfo.CHATBOX_TRANSPARENT_LINES);
+		return isHidden(InterfaceID.Chatbox.MES_LAYER_HIDE) || isHidden(InterfaceID.Chatbox.CHATDISPLAY)
+			// We want to block F-key remapping in the bank pin interface too, so it does not interfere with the
+			// Keyboard Bankpin feature of the Bank plugin
+			|| !isHidden(InterfaceID.BankpinKeypad.UNIVERSE);
 	}
 
-	private boolean isHidden(WidgetInfo widgetInfo)
+	boolean isOptionsDialogOpen()
 	{
-		Widget w = client.getWidget(widgetInfo);
+		return client.getWidget(InterfaceID.Chatmenu.OPTIONS) != null;
+	}
+
+	private boolean isHidden(int component)
+	{
+		Widget w = client.getWidget(component);
 		return w == null || w.isSelfHidden();
 	}
 
@@ -151,17 +174,14 @@ public class KeyRemappingPlugin extends Plugin
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
-			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
-				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-				if (chatboxInput != null)
+			case "setChatboxInput":
+				Widget chatboxInput = client.getWidget(InterfaceID.Chatbox.INPUT);
+				if (chatboxInput != null && !typing)
 				{
-					if (chatboxFocused() && !typing)
-					{
-						chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
-					}
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 				break;
-			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
+			case "blockChatInput":
 				if (!typing)
 				{
 					int[] intStack = client.getIntStack();
@@ -174,46 +194,35 @@ public class KeyRemappingPlugin extends Plugin
 
 	void lockChat()
 	{
-		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+		Widget chatboxInput = client.getWidget(InterfaceID.Chatbox.INPUT);
 		if (chatboxInput != null)
 		{
-			chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
-			// Typed text can be non-empty on plugin start, so clear it now
-			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+			setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 		}
 	}
 
 	void unlockChat()
 	{
-		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+		Widget chatboxInput = client.getWidget(InterfaceID.Chatbox.INPUT);
 		if (chatboxInput != null)
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1;
 				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-				chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 			}
 		}
 	}
 
-	private String getPlayerNameWithIcon()
+	private void setChatboxWidgetInput(Widget widget, String input)
 	{
-		IconID icon;
-		switch (client.getAccountType())
+		String text = widget.getText();
+		int idx = text.indexOf(':');
+		if (idx != -1)
 		{
-			case IRONMAN:
-				icon = IconID.IRONMAN;
-				break;
-			case ULTIMATE_IRONMAN:
-				icon = IconID.ULTIMATE_IRONMAN;
-				break;
-			case HARDCORE_IRONMAN:
-				icon = IconID.HARDCORE_IRONMAN;
-				break;
-			default:
-				return client.getLocalPlayer().getName();
+			String newText = text.substring(0, idx) + ": " + input;
+			widget.setText(newText);
 		}
-		return icon + client.getLocalPlayer().getName();
 	}
 }

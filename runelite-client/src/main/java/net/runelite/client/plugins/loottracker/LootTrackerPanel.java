@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import static com.google.common.collect.Iterables.concat;
+import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,17 +34,27 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -50,8 +62,9 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.loottracker.LootTrackerClient;
+import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.SwingUtil;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 class LootTrackerPanel extends PluginPanel
 {
@@ -69,9 +82,17 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon VISIBLE_ICON_HOVER;
 	private static final ImageIcon INVISIBLE_ICON;
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
+	private static final ImageIcon COLLAPSE_ICON;
+	private static final ImageIcon EXPAND_ICON;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+	private static final String RESET_ALL_WARNING_TEXT =
+		"<html>This will permanently delete <b>all</b> loot.</html>";
+	private static final String RESET_CURRENT_WARNING_TEXT =
+		"This will permanently delete \"%s\" loot.";
+	private static final String RESET_ONE_WARNING_TEXT =
+		"This will delete one kill.";
 
 	// When there is no loot, display this
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
@@ -80,21 +101,24 @@ class LootTrackerPanel extends PluginPanel
 	private final JPanel logsContainer = new JPanel();
 
 	// Handle overall session data
-	private final JPanel overallPanel = new JPanel();
+	private final JPanel overallPanel;
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
 	// Details and navigation
-	private final JPanel actionsContainer = new JPanel();
+	private final JPanel actionsPanel;
 	private final JLabel detailsTitle = new JLabel();
-	private final JLabel backBtn = new JLabel();
-	private final JLabel viewHiddenBtn = new JLabel();
-	private final JLabel singleLootBtn = new JLabel();
-	private final JLabel groupedLootBtn = new JLabel();
+	private final JButton backBtn = new JButton();
+	private final JToggleButton viewHiddenBtn = new JToggleButton();
+	private final JRadioButton singleLootBtn = new JRadioButton();
+	private final JRadioButton groupedLootBtn = new JRadioButton();
+	private final JButton collapseBtn = new JButton();
 
-	// Log collection
-	private final List<LootTrackerRecord> records = new ArrayList<>();
+	// Aggregate of all kills
+	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
+	// Individual records for the individual kills this session
+	private final List<LootTrackerRecord> sessionRecords = new ArrayList<>();
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
 	private final ItemManager itemManager;
@@ -104,14 +128,17 @@ class LootTrackerPanel extends PluginPanel
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
 	private String currentView;
+	private LootRecordType currentType;
 
 	static
 	{
-		final BufferedImage singleLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "single_loot_icon.png");
-		final BufferedImage groupedLootImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "grouped_loot_icon.png");
-		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
-		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
-		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage singleLootImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "single_loot_icon.png");
+		final BufferedImage groupedLootImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "grouped_loot_icon.png");
+		final BufferedImage backArrowImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "back_icon.png");
+		final BufferedImage visibleImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "visible_icon.png");
+		final BufferedImage invisibleImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage collapseImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "collapsed.png");
+		final BufferedImage expandedImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "expanded.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -129,6 +156,9 @@ class LootTrackerPanel extends PluginPanel
 
 		INVISIBLE_ICON = new ImageIcon(invisibleImg);
 		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
+
+		COLLAPSE_ICON = new ImageIcon(collapseImg);
+		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
@@ -147,6 +177,28 @@ class LootTrackerPanel extends PluginPanel
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
+		actionsPanel = buildActionsPanel();
+		overallPanel = buildOverallPanel();
+
+		// Create loot boxes wrapper
+		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
+		layoutPanel.add(actionsPanel);
+		layoutPanel.add(overallPanel);
+		layoutPanel.add(logsContainer);
+
+		// Add error pane
+		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
+		add(errorPanel);
+	}
+
+	/**
+	 * The actions panel includes the back/title label for the current view,
+	 * as well as the view controls panel which includes hidden, single/grouped, and
+	 * collapse buttons.
+	 */
+	private JPanel buildActionsPanel()
+	{
+		final JPanel actionsContainer = new JPanel();
 		actionsContainer.setLayout(new BorderLayout());
 		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		actionsContainer.setPreferredSize(new Dimension(0, 30));
@@ -156,119 +208,81 @@ class LootTrackerPanel extends PluginPanel
 		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		singleLootBtn.setIcon(SINGLE_LOOT_VIEW);
+		SwingUtil.removeButtonDecorations(collapseBtn);
+		collapseBtn.setIcon(EXPAND_ICON);
+		collapseBtn.setSelectedIcon(COLLAPSE_ICON);
+		SwingUtil.addModalTooltip(collapseBtn, "Expand All", "Collapse All");
+		collapseBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		collapseBtn.setUI(new BasicButtonUI()); // substance breaks the layout
+		collapseBtn.addActionListener(ev -> changeCollapse());
+		viewControls.add(collapseBtn);
+
+		SwingUtil.removeButtonDecorations(singleLootBtn);
+		singleLootBtn.setIcon(SINGLE_LOOT_VIEW_FADED);
+		singleLootBtn.setRolloverIcon(SINGLE_LOOT_VIEW_HOVER);
+		singleLootBtn.setSelectedIcon(SINGLE_LOOT_VIEW);
 		singleLootBtn.setToolTipText("Show each kill separately");
-		singleLootBtn.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				changeGrouping(false);
-			}
+		singleLootBtn.addActionListener(e -> changeGrouping(false));
 
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				singleLootBtn.setIcon(groupLoot ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				singleLootBtn.setIcon(groupLoot ? SINGLE_LOOT_VIEW_HOVER : SINGLE_LOOT_VIEW);
-			}
-		});
-
-		groupedLootBtn.setIcon(GROUPED_LOOT_VIEW);
+		SwingUtil.removeButtonDecorations(groupedLootBtn);
+		groupedLootBtn.setIcon(GROUPED_LOOT_VIEW_FADED);
+		groupedLootBtn.setRolloverIcon(GROUPED_LOOT_VIEW_HOVER);
+		groupedLootBtn.setSelectedIcon(GROUPED_LOOT_VIEW);
 		groupedLootBtn.setToolTipText("Group loot by source");
-		groupedLootBtn.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				changeGrouping(true);
-			}
+		groupedLootBtn.addActionListener(e -> changeGrouping(true));
 
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				groupedLootBtn.setIcon(groupLoot ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				groupedLootBtn.setIcon(groupLoot ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_HOVER);
-			}
-		});
-
-		viewHiddenBtn.setIcon(VISIBLE_ICON);
-		viewHiddenBtn.setToolTipText("Show ignored items");
-		viewHiddenBtn.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				changeItemHiding(!hideIgnoredItems);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				viewHiddenBtn.setIcon(hideIgnoredItems ? INVISIBLE_ICON : VISIBLE_ICON);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				viewHiddenBtn.setIcon(hideIgnoredItems ? INVISIBLE_ICON_HOVER : VISIBLE_ICON_HOVER);
-			}
-		});
+		ButtonGroup groupSingleGroup = new ButtonGroup();
+		groupSingleGroup.add(singleLootBtn);
+		groupSingleGroup.add(groupedLootBtn);
 
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
-		viewControls.add(viewHiddenBtn);
 		changeGrouping(true);
+
+		SwingUtil.removeButtonDecorations(viewHiddenBtn);
+		viewHiddenBtn.setIconTextGap(0);
+		viewHiddenBtn.setIcon(VISIBLE_ICON);
+		viewHiddenBtn.setRolloverIcon(INVISIBLE_ICON_HOVER);
+		viewHiddenBtn.setSelectedIcon(INVISIBLE_ICON);
+		viewHiddenBtn.setRolloverSelectedIcon(VISIBLE_ICON_HOVER);
+		viewHiddenBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		viewHiddenBtn.setUI(new BasicToggleButtonUI()); // substance breaks the layout and the pressed icon
+		viewHiddenBtn.addActionListener(e -> changeItemHiding(viewHiddenBtn.isSelected()));
+		SwingUtil.addModalTooltip(viewHiddenBtn, "Show ignored items", "Hide ignored items");
 		changeItemHiding(true);
+		viewControls.add(viewHiddenBtn);
 
 		final JPanel leftTitleContainer = new JPanel(new BorderLayout(5, 0));
 		leftTitleContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		detailsTitle.setForeground(Color.WHITE);
 
+		SwingUtil.removeButtonDecorations(backBtn);
 		backBtn.setIcon(BACK_ARROW_ICON);
+		backBtn.setRolloverIcon(BACK_ARROW_ICON_HOVER);
 		backBtn.setVisible(false);
-		backBtn.addMouseListener(new MouseAdapter()
+		backBtn.addActionListener(ev ->
 		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				currentView = null;
-				backBtn.setVisible(false);
-				detailsTitle.setText("");
-				rebuild();
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				backBtn.setIcon(BACK_ARROW_ICON);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				backBtn.setIcon(BACK_ARROW_ICON_HOVER);
-			}
+			currentView = null;
+			currentType = null;
+			backBtn.setVisible(false);
+			detailsTitle.setText("");
+			rebuild();
 		});
 
 		leftTitleContainer.add(backBtn, BorderLayout.WEST);
 		leftTitleContainer.add(detailsTitle, BorderLayout.CENTER);
 
-		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 		actionsContainer.add(viewControls, BorderLayout.EAST);
+		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 
+		return actionsContainer;
+	}
+
+	private JPanel buildOverallPanel()
+	{
 		// Create panel that will contain overall data
+		final JPanel overallPanel = new JPanel();
 		overallPanel.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
 			BorderFactory.createEmptyBorder(8, 10, 8, 10)
@@ -293,18 +307,33 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
+			final int result = JOptionPane.showOptionDialog(overallPanel,
+				currentView == null ? RESET_ALL_WARNING_TEXT : String.format(RESET_CURRENT_WARNING_TEXT, currentView),
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+
 			// If not in detailed view, remove all, otherwise only remove for the currently detailed title
-			records.removeIf(r -> r.matches(currentView));
-			boxes.removeIf(b -> b.matches(currentView));
+			sessionRecords.removeIf(r -> r.matches(currentView, currentType));
+			aggregateRecords.removeIf(r -> r.matches(currentView, currentType));
+			boxes.removeIf(b -> b.matches(currentView, currentType));
 			updateOverall();
 			logsContainer.removeAll();
-			logsContainer.repaint();
+			logsContainer.revalidate();
 
 			// Delete all loot, or loot matching the current view
-			LootTrackerClient client = plugin.getLootTrackerClient();
-			if (client != null && config.syncPanel())
+			if (currentView != null)
 			{
-				client.delete(currentView);
+				assert currentType != null;
+				plugin.removeLootConfig(currentType, currentView);
+			}
+			else
+			{
+				plugin.removeAllLoot();
 			}
 		});
 
@@ -314,15 +343,19 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.add(reset);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-		// Create loot boxes wrapper
-		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
-		layoutPanel.add(actionsContainer);
-		layoutPanel.add(overallPanel);
-		layoutPanel.add(logsContainer);
+		return overallPanel;
+	}
 
-		// Add error pane
-		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
-		add(errorPanel);
+	void updateCollapseText()
+	{
+		collapseBtn.setSelected(isAllCollapsed());
+	}
+
+	private boolean isAllCollapsed()
+	{
+		return boxes.stream()
+			.filter(LootTrackerBox::isCollapsed)
+			.count() == boxes.size();
 	}
 
 	void loadHeaderIcon(BufferedImage img)
@@ -335,11 +368,25 @@ class LootTrackerPanel extends PluginPanel
 	 * Creates a subtitle, adds a new entry and then passes off to the render methods, that will decide
 	 * how to display this new data.
 	 */
-	void add(final String eventName, final int actorLevel, LootTrackerItem[] items)
+	void add(final String eventName, final LootRecordType type, final int actorLevel, LootTrackerItem[] items, int kills)
 	{
-		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
-		records.add(record);
+		final String subTitle;
+		if (type == LootRecordType.PICKPOCKET)
+		{
+			subTitle = "(pickpocket)";
+		}
+		else
+		{
+			subTitle = actorLevel > 0 ? "(lvl-" + actorLevel + ")" : "";
+		}
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, kills);
+		sessionRecords.add(record);
+
+		if (hideIgnoredItems && plugin.isEventIgnored(eventName))
+		{
+			return;
+		}
+
 		LootTrackerBox box = buildBox(record);
 		if (box != null)
 		{
@@ -349,11 +396,20 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
+	 * Clear all records in the panel
+	 */
+	void clearRecords()
+	{
+		aggregateRecords.clear();
+		sessionRecords.clear();
+	}
+
+	/**
 	 * Adds a Collection of records to the panel
 	 */
 	void addRecords(Collection<LootTrackerRecord> recs)
 	{
-		records.addAll(recs);
+		aggregateRecords.addAll(recs);
 		rebuild();
 	}
 
@@ -365,9 +421,8 @@ class LootTrackerPanel extends PluginPanel
 	private void changeGrouping(boolean group)
 	{
 		groupLoot = group;
+		(group ? groupedLootBtn : singleLootBtn).setSelected(true);
 		rebuild();
-		groupedLootBtn.setIcon(group ? GROUPED_LOOT_VIEW : GROUPED_LOOT_VIEW_FADED);
-		singleLootBtn.setIcon(group ? SINGLE_LOOT_VIEW_FADED : SINGLE_LOOT_VIEW);
 	}
 
 	/**
@@ -378,8 +433,30 @@ class LootTrackerPanel extends PluginPanel
 	private void changeItemHiding(boolean hide)
 	{
 		hideIgnoredItems = hide;
+		viewHiddenBtn.setSelected(hide);
 		rebuild();
-		viewHiddenBtn.setIcon(hideIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+	}
+
+	/**
+	 * Changes the collapse status of loot entries
+	 */
+	private void changeCollapse()
+	{
+		boolean isAllCollapsed = isAllCollapsed();
+
+		for (LootTrackerBox box : boxes)
+		{
+			if (isAllCollapsed)
+			{
+				box.expand();
+			}
+			else if (!box.isCollapsed())
+			{
+				box.collapse();
+			}
+		}
+
+		updateCollapseText();
 	}
 
 	/**
@@ -388,17 +465,22 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	void updateIgnoredRecords()
 	{
-		for (LootTrackerRecord r : records)
+		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
 		{
-			for (LootTrackerItem item : r.getItems())
+			for (LootTrackerItem item : record.getItems())
 			{
-				if (plugin.isIgnored(item.getName()) != item.isIgnored())
-				{
-					item.setIgnored(plugin.isIgnored(item.getName()));
-				}
+				item.setIgnored(plugin.isIgnored(item.getName()));
 			}
 		}
 
+		rebuild();
+	}
+
+	/**
+	 * Rebuilds loot entries when one of the price type config options is changed
+	 */
+	void updatePriceTypeDisplay()
+	{
 		rebuild();
 	}
 
@@ -407,21 +489,31 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	private void rebuild()
 	{
-		logsContainer.removeAll();
+		SwingUtil.fastRemoveAll(logsContainer);
 		boxes.clear();
-		int start = 0;
-		if (!groupLoot && records.size() > MAX_LOOT_BOXES)
+
+		if (groupLoot)
 		{
-			start = records.size() - MAX_LOOT_BOXES;
+			aggregateRecords.forEach(this::buildBox);
+			sessionRecords.forEach(this::buildBox);
 		}
-		for (int i = start; i < records.size(); i++)
+		else
 		{
-			buildBox(records.get(i));
+			// Loop in reverse insertion order so limiting includes most recent data
+			Lists.reverse(sessionRecords).stream()
+				// filter records prior to limiting so that it is limited to the correct amount
+				.filter(r -> !hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
+				.limit(MAX_LOOT_BOXES)
+				// The box that is built last is first inside the UI.
+				// since we are looping in reverse order we need to use a data type that support reverse iterating
+				.collect(Collectors.toCollection(ArrayDeque::new))
+				.descendingIterator()
+				.forEachRemaining(this::buildBox);
 		}
+
 		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		logsContainer.revalidate();
-		logsContainer.repaint();
 	}
 
 	/**
@@ -432,7 +524,13 @@ class LootTrackerPanel extends PluginPanel
 	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
-		if (!record.matches(currentView))
+		if (!record.matches(currentView, currentType))
+		{
+			return null;
+		}
+
+		final boolean isIgnored = plugin.isEventIgnored(record.getTitle());
+		if (hideIgnoredItems && isIgnored)
 		{
 			return null;
 		}
@@ -444,7 +542,9 @@ class LootTrackerPanel extends PluginPanel
 			{
 				if (box.matches(record))
 				{
-					box.combine(record);
+					// float the matched box to the top of the UI list if it's not already first
+					logsContainer.setComponentZOrder(box, 0);
+					box.addKill(record);
 					return box;
 				}
 			}
@@ -452,33 +552,74 @@ class LootTrackerPanel extends PluginPanel
 
 		// Show main view
 		remove(errorPanel);
-		actionsContainer.setVisible(true);
+		actionsPanel.setVisible(true);
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem);
-		box.combine(record);
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
+		box.addKill(record);
 
-		// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		box.setComponentPopupMenu(popupMenu);
+		// Use the existing popup menu or create a new one
+		JPopupMenu popupMenu = box.getComponentPopupMenu();
+		if (popupMenu == null)
+		{
+			popupMenu = new JPopupMenu();
+			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+			box.setComponentPopupMenu(popupMenu);
+		}
+
+		// Create collapse event
+		box.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					if (box.isCollapsed())
+					{
+						box.expand();
+					}
+					else
+					{
+						box.collapse();
+					}
+					updateCollapseText();
+				}
+			}
+		});
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			records.removeAll(box.getRecords());
+			final int result = JOptionPane.showOptionDialog(box,
+				groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+
+			Predicate<LootTrackerRecord> match = groupLoot
+				// With grouped loot, remove any record with this title
+				? r -> r.matches(record.getTitle(), record.getType())
+				// Otherwise remove specifically this entry
+				: r -> r.equals(record);
+			sessionRecords.removeIf(match);
+			aggregateRecords.removeIf(match);
 			boxes.remove(box);
 			updateOverall();
 			logsContainer.remove(box);
-			logsContainer.repaint();
+			logsContainer.revalidate();
 
-			LootTrackerClient client = plugin.getLootTrackerClient();
 			// Without loot being grouped we have no way to identify single kills to be deleted
-			if (client != null && groupLoot && config.syncPanel())
+			if (groupLoot)
 			{
-				client.delete(box.getId());
+				plugin.removeLootConfig(box.getLootRecordType(), box.getId());
 			}
 		});
 
@@ -489,6 +630,7 @@ class LootTrackerPanel extends PluginPanel
 		details.addActionListener(e ->
 		{
 			currentView = record.getTitle();
+			currentType = record.getType();
 			detailsTitle.setText(currentView);
 			backBtn.setVisible(true);
 			rebuild();
@@ -511,11 +653,23 @@ class LootTrackerPanel extends PluginPanel
 	private void updateOverall()
 	{
 		long overallKills = 0;
-		long overallGp = 0;
+		long overallGe = 0;
+		long overallHa = 0;
+
+		Iterable<LootTrackerRecord> records = sessionRecords;
+		if (groupLoot)
+		{
+			records = concat(aggregateRecords, sessionRecords);
+		}
 
 		for (LootTrackerRecord record : records)
 		{
-			if (!record.matches(currentView))
+			if (!record.matches(currentView, currentType))
+			{
+				continue;
+			}
+
+			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle()))
 			{
 				continue;
 			}
@@ -530,22 +684,32 @@ class LootTrackerPanel extends PluginPanel
 					continue;
 				}
 
-				overallGp += item.getPrice();
+				overallGe += item.getTotalGePrice();
+				overallHa += item.getTotalHaPrice();
 			}
 
 			if (present > 0)
 			{
-				overallKills++;
+				overallKills += record.getKills();
 			}
 		}
 
+		String priceType = "";
+		if (config.showPriceType())
+		{
+			priceType = config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? "HA " : "GE ";
+		}
+
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
-		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
+		overallGpLabel.setText(htmlLabel("Total " + priceType + "value: ", config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? overallHa : overallGe));
+		overallGpLabel.setToolTipText("<html>Total GE price: " + QuantityFormatter.formatNumber(overallGe)
+			+ "<br>Total HA price: " + QuantityFormatter.formatNumber(overallHa) + "</html>");
+		updateCollapseText();
 	}
 
 	private static String htmlLabel(String key, long value)
 	{
-		final String valueStr = StackFormatter.quantityToStackSize(value);
+		final String valueStr = QuantityFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

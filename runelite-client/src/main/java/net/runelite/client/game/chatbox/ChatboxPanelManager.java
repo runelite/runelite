@@ -34,11 +34,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -79,6 +79,8 @@ public class ChatboxPanelManager
 
 		this.chatboxTextMenuInputProvider = chatboxTextMenuInputProvider;
 		this.chatboxTextInputProvider = chatboxTextInputProvider;
+
+		eventBus.register(this);
 	}
 
 	public void close()
@@ -89,9 +91,10 @@ public class ChatboxPanelManager
 	private void unsafeCloseInput()
 	{
 		client.runScript(
-			ScriptID.RESET_CHATBOX_INPUT,
+			ScriptID.MESSAGE_LAYER_CLOSE,
 			0,
-			1
+			1,
+			0
 		);
 		if (currentInput != null)
 		{
@@ -101,7 +104,7 @@ public class ChatboxPanelManager
 
 	private void unsafeOpenInput(ChatboxInput input)
 	{
-		client.runScript(ScriptID.CLEAR_CHATBOX_PANEL);
+		client.runScript(ScriptID.MESSAGE_LAYER_OPEN, 0);
 
 		eventBus.register(input);
 		if (input instanceof KeyListener)
@@ -123,9 +126,9 @@ public class ChatboxPanelManager
 		}
 
 		currentInput = input;
-		client.setVar(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
-		client.getWidget(WidgetInfo.CHATBOX_TITLE).setHidden(true);
-		client.getWidget(WidgetInfo.CHATBOX_FULL_INPUT).setHidden(true);
+		client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
+		client.getWidget(InterfaceID.Chatbox.MES_TEXT).setHidden(true);
+		client.getWidget(InterfaceID.Chatbox.MES_TEXT2).setHidden(true);
 
 		Widget c = getContainerWidget();
 		c.deleteAllChildren();
@@ -151,9 +154,9 @@ public class ChatboxPanelManager
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
+	public void onScriptPreFired(ScriptPreFired ev)
 	{
-		if (currentInput != null && "resetChatboxInput".equals(ev.getEventName()))
+		if (currentInput != null && ev.getScriptId() == ScriptID.MESSAGE_LAYER_CLOSE)
 		{
 			killCurrentPanel();
 		}
@@ -197,6 +200,14 @@ public class ChatboxPanelManager
 
 	public Widget getContainerWidget()
 	{
-		return client.getWidget(WidgetInfo.CHATBOX_CONTAINER);
+		return client.getWidget(InterfaceID.Chatbox.MES_LAYER);
+	}
+
+	public boolean shouldTakeInput()
+	{
+		// the search box on the world map can be focused, and chat input goes there, even
+		// though the chatbox still has its key listener.
+		Widget worldMapSearch = client.getWidget(InterfaceID.Worldmap.MAPLIST_DISPLAY);
+		return worldMapSearch == null || client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
 	}
 }

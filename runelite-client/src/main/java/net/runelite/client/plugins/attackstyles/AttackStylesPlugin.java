@@ -28,29 +28,38 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.Provides;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
+import net.runelite.api.ParamID;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.StructComposition;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -58,17 +67,18 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Attack Styles",
 	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"}
+	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"},
+	enabledByDefault = false
 )
 public class AttackStylesPlugin extends Plugin
 {
-	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
-	private int castingModeVarbit = -1;
 	private AttackStyle attackStyle;
-	private final Set<Skill> warnedSkills = new HashSet<>();
-	private boolean warnedSkillSelected = false;
-	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
+	private AttackStyle prevAttackStyle;
+	private final Set<Skill> warnedSkills = EnumSet.noneOf(Skill.class);
+	private boolean warnedSkillSelected;
+	// Weapon type, component, hidden
+	private final Table<Integer, Integer, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
 	private Client client;
@@ -85,6 +95,12 @@ public class AttackStylesPlugin extends Plugin
 	@Inject
 	private AttackStylesOverlay overlay;
 
+	@Inject
+	private ChatMessageManager chatManager;
+
+	@Inject
+	private Notifier notifier;
+
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -96,69 +112,56 @@ public class AttackStylesPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 
-		if (client.getGameState() == GameState.LOGGED_IN)
+		clientThread.invoke(() ->
 		{
-			clientThread.invoke(this::start);
-		}
-	}
+			resetWarnings(); // setup warnedSkills
 
-	private void start()
-	{
-		updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
-		updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
-		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
-		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
-		attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-		equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-		castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-		updateAttackStyle(
-			equippedWeaponTypeVarbit,
-			attackStyleVarbit,
-			castingModeVarbit);
-		updateWarning(false);
-		processWidgets();
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				int attackStyleVarbit = client.getVarpValue(VarPlayerID.COM_MODE);
+				equippedWeaponTypeVarbit = client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY);
+				int castingModeVarbit = client.getVarbitValue(VarbitID.AUTOCAST_DEFMODE);
+				updateAttackStyle(
+					equippedWeaponTypeVarbit,
+					attackStyleVarbit,
+					castingModeVarbit);
+				updateWarning();
+				processWidgets();
+			}
+		});
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		hideWarnedStyles(false);
-		processWidgets();
-		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
+		clientThread.invokeLater(() ->
+		{
+			updateWidgetsToHide(false);
+			processWidgets();
+			hideWidget(client.getWidget(InterfaceID.CombatInterface.RETALIATE), false);
+		});
+		warnedSkills.clear();
 	}
 
-	public AttackStyle getAttackStyle()
+	@Nullable
+	AttackStyle getAttackStyle()
 	{
 		return attackStyle;
 	}
 
-	public boolean isWarnedSkillSelected()
+	boolean isWarnedSkillSelected()
 	{
 		return warnedSkillSelected;
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (event.getWidget().isSelfHidden() || TO_GROUP(event.getWidget().getId()) != COMBAT_GROUP_ID)
+		if (scriptPostFired.getScriptId() == ScriptID.COMBAT_INTERFACE_SETUP)
 		{
-			return;
+			processWidgets();
 		}
-
-		processWidgets();
-	}
-
-	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() != COMBAT_GROUP_ID)
-		{
-			return;
-		}
-
-		processWidgets();
 	}
 
 	/**
@@ -166,56 +169,38 @@ public class AttackStylesPlugin extends Plugin
 	 */
 	private void processWidgets()
 	{
-		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
-
-		if (widgetsToHide.containsRow(equippedWeaponType))
+		for (int componentId : widgetsToHide.row(equippedWeaponTypeVarbit).keySet())
 		{
-			for (WidgetInfo widgetKey : widgetsToHide.row(equippedWeaponType).keySet())
-			{
-				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
-			}
+			hideWidget(client.getWidget(componentId), widgetsToHide.get(equippedWeaponTypeVarbit, componentId));
 		}
-		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
-			updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
-			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
-			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
-			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
-		}
+		hideWidget(client.getWidget(InterfaceID.CombatInterface.RETALIATE), config.hideAutoRetaliate());
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
+		if (event.getVarpId() == VarPlayerID.COM_MODE
+			|| event.getVarbitId() == VarbitID.COMBAT_WEAPON_CATEGORY
+			|| event.getVarbitId() == VarbitID.AUTOCAST_DEFMODE)
 		{
-			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(false);
-		}
+			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayerID.COM_MODE);
+			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY);
+			final int currentCastingModeVarbit = client.getVarbitValue(VarbitID.AUTOCAST_DEFMODE);
 
-		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
-		{
-			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
-			updateWarning(true);
-		}
+			boolean weaponSwitch = currentEquippedWeaponTypeVarbit != equippedWeaponTypeVarbit;
 
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
-		{
-			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
-				castingModeVarbit);
-			updateWarning(false);
+			equippedWeaponTypeVarbit = currentEquippedWeaponTypeVarbit;
+
+			updateAttackStyle(equippedWeaponTypeVarbit, currentAttackStyleVarbit,
+				currentCastingModeVarbit);
+			updateWarning();
+
+			// this is required because the widgets need to be hidden prior to interface tick, which is soon after this,
+			// and before the client tick event.
+			if (weaponSwitch)
+			{
+				processWidgets();
+			}
 		}
 	}
 
@@ -224,47 +209,138 @@ public class AttackStylesPlugin extends Plugin
 	{
 		if (event.getGroup().equals("attackIndicator"))
 		{
-			boolean enabled = event.getNewValue().equals("true");
-			switch (event.getKey())
+			boolean enabled = Boolean.TRUE.toString().equals(event.getNewValue());
+			clientThread.invokeLater(() ->
 			{
-				case "warnForDefensive":
-					updateWarnedSkills(enabled, Skill.DEFENCE);
-					break;
-				case "warnForAttack":
-					updateWarnedSkills(enabled, Skill.ATTACK);
-					break;
-				case "warnForStrength":
-					updateWarnedSkills(enabled, Skill.STRENGTH);
-					break;
-				case "warnForRanged":
-					updateWarnedSkills(enabled, Skill.RANGED);
-					break;
-				case "warnForMagic":
-					updateWarnedSkills(enabled, Skill.MAGIC);
-					break;
-				case "removeWarnedStyles":
-					hideWarnedStyles(enabled);
-					break;
-			}
-			processWidgets();
+				switch (event.getKey())
+				{
+					case "warnForDefensive":
+						updateWarnedSkills(enabled, Skill.DEFENCE);
+						break;
+					case "warnForAttack":
+						updateWarnedSkills(enabled, Skill.ATTACK);
+						break;
+					case "warnForStrength":
+						updateWarnedSkills(enabled, Skill.STRENGTH);
+						break;
+					case "warnForRanged":
+						updateWarnedSkills(enabled, Skill.RANGED);
+						break;
+					case "warnForMagic":
+						updateWarnedSkills(enabled, Skill.MAGIC);
+						break;
+					case "removeWarnedStyles":
+						updateWidgetsToHide(enabled);
+						break;
+				}
+				updateWarning();
+				processWidgets();
+			});
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (attackStyle != prevAttackStyle && warnedSkillSelected)
+		{
+			if (config.showChatWarnings())
+			{
+				final String message = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your attack style has been changed to " + attackStyle.getName())
+					.build();
+
+				chatManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
+
+			notifier.notify(config.warningNotification(), "Attack style changed to " + attackStyle.getName() + "!");
+		}
+		prevAttackStyle = attackStyle;
+	}
+
+	private void resetWarnings()
+	{
+		updateWarnedSkills(config.warnForAttack(), Skill.ATTACK);
+		updateWarnedSkills(config.warnForStrength(), Skill.STRENGTH);
+		updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
+		updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
+		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 	}
 
 	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
 	{
-		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
+		AttackStyle[] attackStyles = getWeaponTypeStyles(equippedWeaponType);
 		if (attackStyleIndex < attackStyles.length)
 		{
+			// from script4525
+			// Even though the client has 5 attack styles for Staffs, only attack styles 0-4 are used, with an additional
+			// casting mode set for defensive casting
+			if (attackStyleIndex == 4)
+			{
+				attackStyleIndex += castingMode;
+			}
+
 			attackStyle = attackStyles[attackStyleIndex];
 			if (attackStyle == null)
 			{
 				attackStyle = OTHER;
 			}
-			else if ((attackStyle == CASTING) && (castingMode == 1))
+		}
+	}
+
+	private AttackStyle[] getWeaponTypeStyles(int weaponType)
+	{
+		// from script4525
+		int weaponStyleEnum = client.getEnum(EnumID.WEAPON_STYLES).getIntValue(weaponType);
+		if (weaponStyleEnum == -1)
+		{
+			// Blue moon spear
+			if (weaponType == 22)
+			{
+				return new AttackStyle[]{
+					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING
+				};
+			}
+
+			if (weaponType == 30)
+			{
+				// Partisan
+				return new AttackStyle[]{
+					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, AttackStyle.AGGRESSIVE, DEFENSIVE
+				};
+			}
+			return new AttackStyle[0];
+		}
+		int[] weaponStyleStructs = client.getEnum(weaponStyleEnum).getIntVals();
+
+		AttackStyle[] styles = new AttackStyle[weaponStyleStructs.length];
+		int i = 0;
+		for (int style : weaponStyleStructs)
+		{
+			StructComposition attackStyleStruct = client.getStructComposition(style);
+			String attackStyleName = attackStyleStruct.getStringValue(ParamID.ATTACK_STYLE_NAME);
+
+			AttackStyle attackStyle = AttackStyle.valueOf(attackStyleName.toUpperCase());
+			if (attackStyle == OTHER)
+			{
+				// "Other" is used for no style
+				++i;
+				continue;
+			}
+
+			// "Defensive" is used for Defensive and also Defensive casting
+			if (i == 5 && attackStyle == DEFENSIVE)
 			{
 				attackStyle = DEFENSIVE_CASTING;
 			}
+
+			styles[i++] = attackStyle;
 		}
+		return styles;
 	}
 
 	private void updateWarnedSkills(boolean enabled, Skill skill)
@@ -277,10 +353,10 @@ public class AttackStylesPlugin extends Plugin
 		{
 			warnedSkills.remove(skill);
 		}
-		updateWarning(false);
 	}
 
-	private void updateWarning(boolean weaponSwitch)
+	// update the 'warned skill selected' flag and also rebuild the hide widgets table
+	private void updateWarning()
 	{
 		warnedSkillSelected = false;
 		if (attackStyle != null)
@@ -289,27 +365,17 @@ public class AttackStylesPlugin extends Plugin
 			{
 				if (warnedSkills.contains(skill))
 				{
-					if (weaponSwitch)
-					{
-						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
-					}
 					warnedSkillSelected = true;
 					break;
 				}
 			}
 		}
-		hideWarnedStyles(config.removeWarnedStyles());
+		updateWidgetsToHide(config.removeWarnedStyles());
 	}
 
-	private void hideWarnedStyles(boolean enabled)
+	private void updateWidgetsToHide(boolean enabled)
 	{
-		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
-		if (equippedWeaponType == null)
-		{
-			return;
-		}
-
-		AttackStyle[] attackStyles = equippedWeaponType.getAttackStyles();
+		AttackStyle[] attackStyles = getWeaponTypeStyles(equippedWeaponTypeVarbit);
 
 		// Iterate over attack styles
 		for (int i = 0; i < attackStyles.length; i++)
@@ -330,40 +396,36 @@ public class AttackStylesPlugin extends Plugin
 				}
 			}
 
-			// Magic staves defensive casting mode
-			if (attackStyle == AttackStyle.DEFENSIVE_CASTING || !enabled)
-			{
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, enabled && warnedSkill);
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, enabled && warnedSkill);
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_SHIELD, enabled && warnedSkill);
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_TEXT, enabled && warnedSkill);
-			}
-
 			// Remove appropriate combat option
 			switch (i)
 			{
 				case 0:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_ONE, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._0, enabled && warnedSkill);
 					break;
 				case 1:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_TWO, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._1, enabled && warnedSkill);
 					break;
 				case 2:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_THREE, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._2, enabled && warnedSkill);
 					break;
 				case 3:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_FOUR, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._3, enabled && warnedSkill);
 					break;
 				case 4:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_SPELLS, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.AUTOCAST_BUTTONS, enabled && warnedSkill);
 					break;
-				default:
-					// 5 can be defensive casting
+				case 5:
+					// Magic staves defensive casting mode
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.AUTOCAST_DEFENSIVE, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.DEFENSIVE_CONTAINER_GRAPHIC0, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.DEFENSIVE_CONTAINER_GRAPHIC1, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.DEFENSIVE_CONTAINER_TEXT2, enabled && warnedSkill);
+					break;
 			}
 		}
 	}
 
-	private void hideWidget(Widget widget, boolean hidden)
+	private static void hideWidget(Widget widget, boolean hidden)
 	{
 		if (widget != null)
 		{
@@ -378,7 +440,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	Table<WeaponType, WidgetInfo, Boolean> getHiddenWidgets()
+	Table<Integer, Integer, Boolean> getHiddenWidgets()
 	{
 		return widgetsToHide;
 	}

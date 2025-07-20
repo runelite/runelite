@@ -47,7 +47,7 @@ public class Keybind
 		.put(InputEvent.META_DOWN_MASK, KeyEvent.VK_META)
 		.build();
 
-	// Bitmask of all supported modifers
+	// Bitmask of all supported modifiers
 	private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
 		.reduce((a, b) -> a | b).get();
 
@@ -65,7 +65,7 @@ public class Keybind
 		modifiers &= KEYBOARD_MODIFIER_MASK;
 
 		// If the keybind is just modifiers we don't want the keyCode to contain the modifier too,
-		// becasue this breaks if you do the keycode backwards
+		// because this breaks if you do the keycode backwards
 		Integer mf = getModifierForKeyCode(keyCode);
 		if (mf != null)
 		{
@@ -125,9 +125,16 @@ public class Keybind
 			keyCode = KeyEvent.VK_UNDEFINED;
 		}
 
-		if (e.getID() == KeyEvent.KEY_RELEASED && keyCode != KeyEvent.VK_UNDEFINED)
+		if (e.getID() == KeyEvent.KEY_RELEASED)
 		{
-			return this.keyCode == keyCode;
+			if (keyCode != KeyEvent.VK_UNDEFINED)
+			{
+				return this.keyCode == keyCode;
+			}
+			else if (mf != null)
+			{
+				return this.keyCode == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
+			}
 		}
 
 		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
@@ -159,7 +166,7 @@ public class Keybind
 		String mod = "";
 		if (modifiers != 0)
 		{
-			mod = getModifiersExText(modifiers);
+			mod = InputEvent.getModifiersExText(modifiers);
 		}
 
 		if (mod.isEmpty() && key.isEmpty())
@@ -175,33 +182,6 @@ public class Keybind
 			return key;
 		}
 		return mod;
-	}
-
-	public static String getModifiersExText(int modifiers)
-	{
-		StringBuilder buf = new StringBuilder();
-		if ((modifiers & InputEvent.META_DOWN_MASK) != 0)
-		{
-			buf.append("Meta+");
-		}
-		if ((modifiers & InputEvent.CTRL_DOWN_MASK) != 0)
-		{
-			buf.append("Ctrl+");
-		}
-		if ((modifiers & InputEvent.ALT_DOWN_MASK) != 0)
-		{
-			buf.append("Alt+");
-		}
-		if ((modifiers & InputEvent.SHIFT_DOWN_MASK) != 0)
-		{
-			buf.append("Shift+");
-		}
-
-		if (buf.length() > 0)
-		{
-			buf.setLength(buf.length() - 1); // remove trailing '+'
-		}
-		return buf.toString();
 	}
 
 	@Nullable

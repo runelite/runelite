@@ -27,6 +27,7 @@ package net.runelite.client.plugins.regenmeter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
 @ConfigGroup("regenmeter")
 public interface RegenMeterConfig extends Config
@@ -34,7 +35,8 @@ public interface RegenMeterConfig extends Config
 	@ConfigItem(
 		keyName = "showHitpoints",
 		name = "Show hitpoints regen",
-		description = "Show a ring around the hitpoints orb")
+		description = "Show a ring around the hitpoints orb."
+	)
 	default boolean showHitpoints()
 	{
 		return true;
@@ -42,8 +44,9 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSpecial",
-		name = "Show Spec. Attack regen",
-		description = "Show a ring around the Special Attack orb")
+		name = "Show spec. attack regen",
+		description = "Show a ring around the special attack orb."
+	)
 	default boolean showSpecial()
 	{
 		return true;
@@ -51,8 +54,9 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWhenNoChange",
-		name = "Show hitpoints regen at full hitpoints",
-		description = "Always show the hitpoints regen orb, even if there will be no stat change")
+		name = "Show at full hitpoints",
+		description = "Always show the hitpoints regen orb, even if there will be no stat change."
+	)
 	default boolean showWhenNoChange()
 	{
 		return false;
@@ -60,9 +64,10 @@ public interface RegenMeterConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyBeforeHpRegenDuration",
-		name = "Hitpoint Regen Notification (seconds)",
+		name = "Hitpoint notification",
 		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
 	)
+	@Units(Units.SECONDS)
 	default int getNotifyBeforeHpRegenSeconds()
 	{
 		return 0;

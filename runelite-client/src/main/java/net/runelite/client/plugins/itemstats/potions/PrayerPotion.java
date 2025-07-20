@@ -25,63 +25,69 @@
 package net.runelite.client.plugins.itemstats.potions;
 
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.itemstats.StatBoost;
 import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
 
 public class PrayerPotion extends StatBoost
 {
+	private static final double BASE_PERC = .25;
 	private final int delta;
+	private final double perc;
 
 	public PrayerPotion(int delta)
 	{
-		super(PRAYER, false);
-		this.delta = delta;
+		this(delta, BASE_PERC);
 	}
 
-	private static final int RING_SLOT = 12;
-	private static final int CAPE_SLOT = 1;
+	PrayerPotion(int delta, double perc)
+	{
+		super(PRAYER, false);
+		this.delta = delta;
+		this.perc = perc;
+	}
+
+	private static final int RING_SLOT = EquipmentInventorySlot.RING.getSlotIdx();
+	private static final int CAPE_SLOT = EquipmentInventorySlot.CAPE.getSlotIdx();
 
 	@Override
 	public int heals(Client client)
 	{
 		boolean hasHolyWrench = false;
 
-		ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipContainer != null)
 		{
-			Item[] equip = equipContainer.getItems();
+			Item cape = equipContainer.getItem(CAPE_SLOT);
+			Item ring = equipContainer.getItem(RING_SLOT);
 
-			hasHolyWrench |= equip.length > RING_SLOT && equip[RING_SLOT].getId() == ItemID.RING_OF_THE_GODS_I;
-			if (equip.length > CAPE_SLOT)
+			hasHolyWrench = ring != null && ItemVariationMapping.getVariations(ItemID.ROTG)
+				.stream()
+				.filter(itemId -> itemId != ItemID.ROTG) // remove non-imbued rotg; it does not have the wrench effect
+				.anyMatch(itemId -> itemId == ring.getId());
+			if (cape != null)
 			{
-				int cape = equip[CAPE_SLOT].getId();
-				hasHolyWrench |= cape == ItemID.PRAYER_CAPE;
-				hasHolyWrench |= cape == ItemID.PRAYER_CAPET;
-				hasHolyWrench |= cape == ItemID.PRAYER_CAPE_10643; // No idea what this is
-				hasHolyWrench |= cape == ItemID.MAX_CAPE;
-				hasHolyWrench |= cape == ItemID.MAX_CAPE_13282; // Or these
-				hasHolyWrench |= cape == ItemID.MAX_CAPE_13342;
+				int capeId = cape.getId();
+				hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_PRAYER).contains(capeId);
+				hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_MAX).contains(capeId);
 			}
 		}
 		if (!hasHolyWrench)
 		{
-			ItemContainer invContainer = client.getItemContainer(InventoryID.INVENTORY);
+			ItemContainer invContainer = client.getItemContainer(InventoryID.INV);
 			if (invContainer != null)
 			{
 				for (Item itemStack : invContainer.getItems())
 				{
 					int item = itemStack.getId();
-					hasHolyWrench |= item == ItemID.HOLY_WRENCH;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPE;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPET;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPE_10643;
-					hasHolyWrench |= item == ItemID.MAX_CAPE;
-					hasHolyWrench |= item == ItemID.MAX_CAPE_13282;
-					hasHolyWrench |= item == ItemID.MAX_CAPE_13342;
+					hasHolyWrench = item == ItemID.DEAL_WRENCH_BLESSED;
+					hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_PRAYER).contains(item);
+					hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_MAX).contains(item);
 
 					if (hasHolyWrench)
 					{
@@ -91,9 +97,9 @@ public class PrayerPotion extends StatBoost
 			}
 		}
 
-		double perc = hasHolyWrench ? .27 : .25;
+		double percent = hasHolyWrench ? perc + .02 : perc;
 		int max = getStat().getMaximum(client);
-		return (((int) (max * perc)) * (delta >= 0 ? 1 : -1)) + delta;
+		return (((int) (max * percent)) * (delta >= 0 ? 1 : -1)) + delta;
 	}
 
 }

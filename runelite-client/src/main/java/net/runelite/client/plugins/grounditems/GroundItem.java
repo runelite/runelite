@@ -24,10 +24,18 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.awt.Color;
+import java.time.Duration;
+import java.time.Instant;
+import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
+import static net.runelite.api.TileItem.OWNERSHIP_GROUP;
+import static net.runelite.api.TileItem.OWNERSHIP_NONE;
+import static net.runelite.api.TileItem.OWNERSHIP_OTHER;
+import static net.runelite.api.TileItem.OWNERSHIP_SELF;
 import net.runelite.api.coords.WorldPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 @Data
 @Builder
@@ -43,7 +51,19 @@ class GroundItem
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
-	private boolean isMine;
+	@MagicConstant(intValues = {OWNERSHIP_NONE, OWNERSHIP_SELF, OWNERSHIP_OTHER, OWNERSHIP_GROUP})
+	private int ownership;
+	private boolean isPrivate;
+	@Nullable
+	private Instant spawnTime;
+	private boolean stackable;
+	private Duration despawnTime;
+	private Duration visibleTime;
+
+	// cached values derived from config
+	boolean highlighted;
+	boolean hidden;
+	Color color;
 
 	int getHaPrice()
 	{
@@ -55,10 +75,9 @@ class GroundItem
 		return gePrice * quantity;
 	}
 
-	@Value
-	static class GroundItemKey
+	void reset()
 	{
-		private int itemId;
-		private WorldPoint location;
+		highlighted = hidden = false;
+		color = null;
 	}
 }

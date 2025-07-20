@@ -28,10 +28,10 @@ import com.google.common.base.Strings;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.events.DiscordDisconnected;
 import net.runelite.client.discord.events.DiscordErrored;
 import net.runelite.client.discord.events.DiscordJoinGame;
@@ -49,12 +49,12 @@ import net.runelite.discord.DiscordUser;
 public class DiscordService implements AutoCloseable
 {
 	private final EventBus eventBus;
-	private final RuneLiteProperties runeLiteProperties;
 	private final ScheduledExecutorService executorService;
+	private final String discordAppId;
 	private final DiscordRPC discordRPC;
 
 	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
-	private final DiscordEventHandlers discordEventHandlers;
+	private DiscordEventHandlers discordEventHandlers;
 
 	@Getter
 	private DiscordUser currentUser;
@@ -62,29 +62,36 @@ public class DiscordService implements AutoCloseable
 	@Inject
 	private DiscordService(
 		final EventBus eventBus,
-		final RuneLiteProperties runeLiteProperties,
-		final ScheduledExecutorService executorService)
+		final ScheduledExecutorService executorService,
+		@Named("runelite.discord.enable") boolean enable,
+		@Named("runelite.discord.appid") final String discordAppId
+	)
 	{
 
 		this.eventBus = eventBus;
-		this.runeLiteProperties = runeLiteProperties;
 		this.executorService = executorService;
+		this.discordAppId = discordAppId;
 
-		DiscordRPC discordRPC = null;
-		DiscordEventHandlers discordEventHandlers = null;
+		if (!enable)
+		{
+			this.discordRPC = null;
+			return;
+		}
+
+		DiscordRPC discordRPC;
 
 		try
 		{
 			discordRPC = DiscordRPC.INSTANCE;
-			discordEventHandlers = new DiscordEventHandlers();
 		}
 		catch (Error e)
 		{
 			log.warn("Failed to load Discord library, Discord support will be disabled.");
+			this.discordRPC = null;
+			return;
 		}
 
 		this.discordRPC = discordRPC;
-		this.discordEventHandlers = discordEventHandlers;
 	}
 
 	/**
@@ -94,19 +101,20 @@ public class DiscordService implements AutoCloseable
 	 */
 	public void init()
 	{
-		if (discordEventHandlers == null)
+		if (discordRPC == null)
 		{
 			return;
 		}
 
 		log.info("Initializing Discord RPC service.");
+		discordEventHandlers = new DiscordEventHandlers();
 		discordEventHandlers.ready = this::ready;
 		discordEventHandlers.disconnected = this::disconnected;
 		discordEventHandlers.errored = this::errored;
 		discordEventHandlers.joinGame = this::joinGame;
 		discordEventHandlers.spectateGame = this::spectateGame;
 		discordEventHandlers.joinRequest = this::joinRequest;
-		discordRPC.Discord_Initialize(runeLiteProperties.getDiscordAppId(), discordEventHandlers, true, null);
+		discordRPC.Discord_Initialize(discordAppId, discordEventHandlers, true, null);
 		executorService.scheduleAtFixedRate(discordRPC::Discord_RunCallbacks, 0, 2, TimeUnit.SECONDS);
 	}
 
@@ -185,12 +193,15 @@ public class DiscordService implements AutoCloseable
 	 *
 	 * @param userId The id of the user to respond to
 	 * @param reply  The reply type
+	 * @see DiscordRPC#DISCORD_REPLY_NO
+	 * @see DiscordRPC#DISCORD_REPLY_YES
+	 * @see DiscordRPC#DISCORD_REPLY_IGNORE
 	 */
-	public void respondToRequest(String userId, DiscordReplyType reply)
+	public void respondToRequest(String userId, int reply)
 	{
 		if (discordRPC != null)
 		{
-			discordRPC.Discord_Respond(userId, reply.ordinal());
+			discordRPC.Discord_Respond(userId, reply);
 		}
 	}
 
@@ -207,6 +218,7 @@ public class DiscordService implements AutoCloseable
 
 	private void disconnected(int errorCode, String message)
 	{
+		log.debug("Discord disconnected {}: {}", errorCode, message);
 		eventBus.post(new DiscordDisconnected(errorCode, message));
 	}
 
@@ -218,16 +230,19 @@ public class DiscordService implements AutoCloseable
 
 	private void joinGame(String joinSecret)
 	{
+		log.debug("Discord join game: {}", joinSecret);
 		eventBus.post(new DiscordJoinGame(joinSecret));
 	}
 
 	private void spectateGame(String spectateSecret)
 	{
+		log.debug("Discord spectate game: {}", spectateSecret);
 		eventBus.post(new DiscordSpectateGame(spectateSecret));
 	}
 
 	private void joinRequest(DiscordUser user)
 	{
+		log.debug("Discord join request: {}", user);
 		eventBus.post(new DiscordJoinRequest(
 			user.userId,
 			user.username,

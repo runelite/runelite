@@ -67,7 +67,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private static final Pattern BREAK_MATCHER = Pattern.compile("[^a-zA-Z0-9']");
 
 	private final ChatboxPanelManager chatboxPanelManager;
-	private final ClientThread clientThread;
+	protected final ClientThread clientThread;
 
 	private static IntPredicate getDefaultCharValidator()
 	{
@@ -106,7 +106,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private Runnable onClose = null;
 
 	@Getter
-	private Consumer<String> onDone = null;
+	private Predicate<String> onDone = null;
 
 	@Getter
 	private Consumer<String> onChanged = null;
@@ -127,6 +127,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	{
 		this.chatboxPanelManager = chatboxPanelManager;
 		this.clientThread = clientThread;
+	}
+
+	public ChatboxTextInput addCharValidator(IntPredicate validator)
+	{
+		this.charValidator = this.charValidator.and(validator);
+		return this;
 	}
 
 	public ChatboxTextInput lines(int lines)
@@ -151,7 +157,15 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	public ChatboxTextInput value(String value)
 	{
-		this.value = new StringBuffer(value);
+		StringBuffer sb = new StringBuffer();
+		for (char c : value.toCharArray())
+		{
+			if (charValidator.test(c))
+			{
+				sb.append(c);
+			}
+		}
+		this.value = sb;
 		cursorAt(this.value.length());
 		return this;
 	}
@@ -221,6 +235,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	}
 
 	public ChatboxTextInput onDone(Consumer<String> onDone)
+	{
+		this.onDone = (s) ->
+		{
+			onDone.accept(s);
+			return true;
+		};
+		return this;
+	}
+
+	/**
+	 * Called when the user attempts to close the input by pressing enter
+	 * Return false to cancel the close
+	 */
+	public ChatboxTextInput onDone(Predicate<String> onDone)
 	{
 		this.onDone = onDone;
 		return this;
@@ -581,6 +609,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	public void keyTyped(KeyEvent e)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
@@ -600,6 +633,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent ev)
 	{
+		if (!chatboxPanelManager.shouldTakeInput())
+		{
+			return;
+		}
+
 		int code = ev.getKeyCode();
 		if (ev.isControlDown())
 		{
@@ -650,6 +688,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 					{
 						log.warn("Unable to get clipboard", ex);
 					}
+					return;
+				case KeyEvent.VK_A:
+					selectionStart = 0;
+					selectionEnd = value.length();
+					cursorAt(0, selectionEnd);
 					return;
 			}
 			return;
@@ -715,11 +758,25 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				return;
 			case KeyEvent.VK_LEFT:
 				ev.consume();
-				newPos--;
+				if (cursorStart != cursorEnd)
+				{
+					newPos = cursorStart;
+				}
+				else
+				{
+					newPos--;
+				}
 				break;
 			case KeyEvent.VK_RIGHT:
 				ev.consume();
-				newPos++;
+				if (cursorStart != cursorEnd)
+				{
+					newPos = cursorEnd;
+				}
+				else
+				{
+					newPos++;
+				}
 				break;
 			case KeyEvent.VK_UP:
 				ev.consume();
@@ -739,9 +796,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_ENTER:
 				ev.consume();
-				if (onDone != null)
+				if (onDone != null && !onDone.test(getValue()))
 				{
-					onDone.accept(getValue());
+					return;
 				}
 				chatboxPanelManager.close();
 				return;

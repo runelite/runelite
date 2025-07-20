@@ -41,6 +41,7 @@ enum RareTreeLocation
 
 		// Desert
 		new WorldPoint(3510, 3073, 0),
+		new WorldPoint(3440, 2789, 0),
 
 		// Mos Le'Harmless
 		new WorldPoint(3832, 3067, 0),
@@ -50,7 +51,13 @@ enum RareTreeLocation
 		new WorldPoint(2899, 2897, 0),
 
 		// Feldip Hills
-		new WorldPoint(2333, 3049, 0)),
+		new WorldPoint(2333, 3049, 0),
+
+		// Prifddinas
+		new WorldPoint(3309, 6123, 0),
+
+		// Varlamore
+		new WorldPoint(1694, 2989, 0)),
 
 	SWAYING("Swaying tree", 40,
 		// The Fremennik Trials
@@ -78,7 +85,18 @@ enum RareTreeLocation
 		new WorldPoint(2726, 3501, 0),
 		new WorldPoint(2728, 3481, 0),
 		new WorldPoint(2748, 3466, 0),
-		new WorldPoint(2710, 3570, 0)),
+		new WorldPoint(2710, 3570, 0),
+
+		// Isle of Souls
+		new WorldPoint(2254, 2808, 0),
+
+		// Prifddinas
+		new WorldPoint(2209, 3427, 0),
+		new WorldPoint(3233, 6179, 0),
+
+		// Aldarin
+		new WorldPoint(1362, 2862, 0),
+		new WorldPoint(1398, 2856, 0)),
 
 	MAHOGANY("Mahogany tree", 50,
 		// Zeah
@@ -92,7 +110,10 @@ enum RareTreeLocation
 		new WorldPoint(3824, 3053, 0),
 
 		// Karamja
-		new WorldPoint(2946, 2908, 0)),
+		new WorldPoint(2946, 2908, 0),
+
+		// Prifddinas
+		new WorldPoint(3301, 6129, 0)),
 
 	TEAK_MAHOGANY("Teak/Mahogany trees", 50,
 		// Miscellania
@@ -100,6 +121,9 @@ enum RareTreeLocation
 
 		// Mos Le'Harmless
 		new WorldPoint(3810, 3058, 0),
+
+		// Isle of Souls
+		new WorldPoint(2194, 2991, 0),
 
 		// Karamja
 		new WorldPoint(2821, 3084, 0)),
@@ -122,9 +146,24 @@ enum RareTreeLocation
 		new WorldPoint(1642, 3533, 0),
 		new WorldPoint(1671, 3657, 0),
 		new WorldPoint(1680, 3657, 0),
+		new WorldPoint(1572, 3618, 0),
+		new WorldPoint(1553, 3551, 0),
+		new WorldPoint(1496, 3582, 0),
+
+		// Varlamore
+		new WorldPoint(1733, 3119, 0),
+		new WorldPoint(1749, 3106, 0),
+		new WorldPoint(1498, 3245, 0),
+
+		// Aldarin
+		new WorldPoint(1412, 2992, 0),
 
 		// Tirannwn
 		new WorldPoint(2217, 3141, 0),
+
+		// Prifddinas
+		new WorldPoint(3288, 6066, 0),
+		new WorldPoint(3305, 6032, 0),
 
 		// Kandarin
 		new WorldPoint(2315, 3610, 0),
@@ -133,7 +172,7 @@ enum RareTreeLocation
 		new WorldPoint(2360, 3471, 0),
 		new WorldPoint(2434, 3432, 0),
 		new WorldPoint(2493, 3396, 0),
-		new WorldPoint(2494, 3490, 0),
+		new WorldPoint(2495, 3490, 0),
 		new WorldPoint(2733, 3334, 0),
 		new WorldPoint(2757, 3431, 0),
 		new WorldPoint(2714, 3460, 0),
@@ -166,6 +205,10 @@ enum RareTreeLocation
 		new WorldPoint(3674, 3447, 0),
 		new WorldPoint(3684, 3385, 0),
 
+		// Isle of Souls
+		new WorldPoint(2147, 2972, 0),
+		new WorldPoint(2165, 2863, 0),
+
 		// Zanaris
 		new WorldPoint(2412, 4464, 0),
 		new WorldPoint(2465, 4427, 0),
@@ -173,7 +216,14 @@ enum RareTreeLocation
 
 	MAPLE_YEW("Maple/Yew trees", 60,
 		// Feldip Hills
-		new WorldPoint(2476, 2893, 0)),
+		new WorldPoint(2476, 2893, 0),
+
+		// Aldarin
+		new WorldPoint(1379, 2876, 0)),
+
+	BLISTERWOOD("Blisterwood tree", 62,
+		// Darkmeyer
+		new WorldPoint(3631, 3362, 0)),
 
 	SULLIUSCEP("Sulliuscep", 65,
 		// Fossil Island
@@ -195,12 +245,21 @@ enum RareTreeLocation
 		new WorldPoint(1751, 3564, 0),
 		new WorldPoint(1796, 3600, 0),
 
+		// Varlamore
+		new WorldPoint(1394, 3164, 0),
+
+		// Aldarin
+		new WorldPoint(1323, 2974, 0),
+
 		// Misthalin
 		new WorldPoint(3355, 3312, 0),
 		new WorldPoint(3368, 3312, 0),
 
 		// Tirannwn
 		new WorldPoint(2284, 3141, 0),
+
+		// Prifddinas
+		new WorldPoint(3229, 6101, 0),
 
 		// Kandarin
 		new WorldPoint(2371, 3427, 0),

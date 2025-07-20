@@ -31,73 +31,45 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Item;
-import static net.runelite.api.ItemID.ARMADYL_HELMET;
-import static net.runelite.api.ItemID.BARRELCHEST_ANCHOR;
-import static net.runelite.api.ItemID.BARROWS_GLOVES;
-import static net.runelite.api.ItemID.BASALT;
-import static net.runelite.api.ItemID.BOOK_OF_BALANCE;
-import static net.runelite.api.ItemID.BOOK_OF_DARKNESS;
-import static net.runelite.api.ItemID.BOOK_OF_LAW;
-import static net.runelite.api.ItemID.BOOK_OF_WAR;
-import static net.runelite.api.ItemID.COOKING_GAUNTLETS;
-import static net.runelite.api.ItemID.CRYSTAL_BOW_110;
-import static net.runelite.api.ItemID.CRYSTAL_BOW_110_I;
-import static net.runelite.api.ItemID.DRAGON_DEFENDER;
-import static net.runelite.api.ItemID.DRAGON_SCIMITAR;
-import static net.runelite.api.ItemID.FIGHTER_TORSO;
-import static net.runelite.api.ItemID.GREENMANS_ALEM;
-import static net.runelite.api.ItemID.HOLY_BOOK;
-import static net.runelite.api.ItemID.INFERNAL_AXE;
-import static net.runelite.api.ItemID.IVANDIS_FLAIL;
-import static net.runelite.api.ItemID.LAVA_DRAGON_BONES;
-import static net.runelite.api.ItemID.MARK_OF_GRACE;
-import static net.runelite.api.ItemID.NEW_CRYSTAL_BOW;
-import static net.runelite.api.ItemID.NEW_CRYSTAL_BOW_I;
-import static net.runelite.api.ItemID.NUMULITE;
-import static net.runelite.api.ItemID.ROD_OF_IVANDIS_1;
-import static net.runelite.api.ItemID.ROD_OF_IVANDIS_10;
-import static net.runelite.api.ItemID.RUNE_PLATEBODY;
-import static net.runelite.api.ItemID.TZHAARKETOM;
-import static net.runelite.api.ItemID.UNHOLY_BOOK;
-import static net.runelite.api.ItemID.WARRIOR_GUILD_TOKEN;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
-import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.RangeItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 {
-	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
-		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", item(DRAGON_SCIMITAR)),
-		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS))),
-		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", range(NEW_CRYSTAL_BOW, CRYSTAL_BOW_110), range(NEW_CRYSTAL_BOW_I, CRYSTAL_BOW_110_I))),
-		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", item(INFERNAL_AXE)),
-		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
-		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
-		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
-		// The wiki doesn't specify whether the trimmed dragon defender will work so I've assumed that it doesn't
-		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", item(DRAGON_DEFENDER)),
-		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
-		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
-		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", item(BARRELCHEST_ANCHOR)),
-		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(BASALT)),
-		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", item(TZHAARKETOM)),
-		new FaloTheBardClue("Penance healers runners and more, obtaining this body often gives much deplore.", item(FIGHTER_TORSO)),
-		new FaloTheBardClue("Strangely found in a chest, many believe these gloves are the best.", item(BARROWS_GLOVES)),
-		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(COOKING_GAUNTLETS)),
-		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(NUMULITE)),
-		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(RUNE_PLATEBODY)),
-		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis flail", range(ROD_OF_IVANDIS_10, ROD_OF_IVANDIS_1), item(IVANDIS_FLAIL)))
+	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
+		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_ORNAMENT))),
+		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any completed god book", item(ItemID.SARADOMINBOOK_COMPLETE), item(ItemID.GUTHIXBOOK_COMPLETE), item(ItemID.ZAMORAKBOOK_COMPLETE), item(ItemID.ARMADYLBOOK_COMPLETE), item(ItemID.BANDOSBOOK_COMPLETE), item(ItemID.ZAROSBOOK_COMPLETE), item(ItemID.LEAGUE_3_BOOK_SARADOMIN), item(ItemID.LEAGUE_3_BOOK_GUTHIX), item(ItemID.LEAGUE_3_BOOK_ZAMORAK), item(ItemID.LEAGUE_3_BOOK_ARMADYL), item(ItemID.LEAGUE_3_BOOK_BANDOS), item(ItemID.LEAGUE_3_BOOK_ZAROS))),
+		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", EmoteClue.ACTIVE_CRYSTAL_BOW_OR_BOW_OF_FAERDHINEN)),
+		new FaloTheBardClue("A fiery axe of great inferno, when you use it, you'll wonder where the logs go.", any("Infernal axe", item(ItemID.INFERNAL_AXE), item(ItemID.INFERNAL_AXE_EMPTY), item(ItemID.TRAILBLAZER_AXE), item(ItemID.TRAILBLAZER_AXE_EMPTY), item(ItemID.TRAILBLAZER_RELOADED_AXE), item(ItemID.TRAILBLAZER_RELOADED_AXE_EMPTY))),
+		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(ItemID.GRACE)),
+		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(ItemID.LAVA_DRAGON_BONES)),
+		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ItemID.ARMADYL_HELMET)),
+		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(ItemID.DRAGON_PARRYINGDAGGER), item(ItemID.DRAGON_PARRYINGDAGGER_T), item(ItemID.DRAGON_PARRYINGDAGGER_TROUVER), item(ItemID.DRAGON_PARRYINGDAGGER_T_TROUVER), item(ItemID.INFERNAL_DEFENDER), item(ItemID.INFERNAL_DEFENDER_TROUVER), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_5), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_5_TROUVER), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_6), item(ItemID.INFERNAL_DEFENDER_GHOMMAL_6_TROUVER))),
+		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(ItemID.WARGUILD_TOKENS)),
+		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(ItemID.MATURE_GREENMANS_ALE)),
+		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", any("Barrelchest anchor", item(ItemID.BRAIN_ANCHOR), item(ItemID.BH_BRAIN_ANCHOR_IMBUE))),
+		new FaloTheBardClue("It comes from the ground, underneath the snowy plain. Trolls aplenty, with what looks like a mane.", item(ItemID.BASALT)),
+		new FaloTheBardClue("No attack to wield, only strength is required, made of obsidian, but with no room for a shield.", any("Tzhaar-ket-om", item(ItemID.TZHAAR_MAUL), item(ItemID.TZHAAR_MAUL_T))),
+		new FaloTheBardClue("Penance healers runners and more, obtaining this body often gives much deplore.", any("Fighter Torso", item(ItemID.BARBASSAULT_PENANCE_FIGHTER_TORSO), item(ItemID.BARBASSAULT_PENANCE_FIGHTER_TORSO_TROUVER))),
+		new FaloTheBardClue("Strangely found in a chest, many believe these gloves are the best.", item(ItemID.HUNDRED_GAUNTLETS_LEVEL_10)),
+		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(ItemID.GAUNTLETS_OF_COOKING)),
+		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(ItemID.FOSSIL_NUMULITE)),
+		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(ItemID.RUNE_PLATEBODY)),
+		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ItemID.BURGH_ROD_COMMAND_FINAL_10, ItemID.BURGH_ROD_COMMAND_FINAL_1), item(ItemID.IVANDIS_FLAIL), item(ItemID.BLISTERWOOD_FLAIL)))
 	);
 
 	private static final WorldPoint LOCATION = new WorldPoint(2689, 3550, 0);
@@ -162,9 +134,12 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 				.left(requirement.getCollectiveName(plugin.getClient()))
 				.leftColor(TITLED_CONTENT_COLOR)
 				.right(inventoryFulfilled ? "\u2713" : "\u2717")
+				.rightFont(FontManager.getDefaultFont())
 				.rightColor(inventoryFulfilled ? Color.GREEN : Color.RED)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -182,9 +157,15 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {FALO_THE_BARD};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 
 	public static FaloTheBardClue forText(String text)

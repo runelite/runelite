@@ -24,15 +24,76 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Represents an inventory that contains items.
  */
 public interface ItemContainer extends Node
 {
 	/**
+	 * Get the item container id
+	 *
+	 * @return
+	 * @see net.runelite.api.gameval.InventoryID
+	 */
+	int getId();
+
+	/**
 	 * Gets an array of all items in the container.
 	 *
 	 * @return the items held
 	 */
+	@Nonnull
 	Item[] getItems();
+
+	/**
+	 * Gets an item from the container at the given slot.
+	 *
+	 * @param slot
+	 * @return the item
+	 * @see Item
+	 */
+	@Nullable
+	Item getItem(int slot);
+
+	/**
+	 * Check if this item container contains the given item
+	 *
+	 * @param itemId
+	 * @return
+	 * @see net.runelite.api.gameval.ItemID
+	 */
+	boolean contains(int itemId);
+
+	/**
+	 * Counts how many of an item this item container contains
+	 *
+	 * @param itemId
+	 * @return
+	 * @see net.runelite.api.gameval.ItemID
+	 */
+	int count(int itemId);
+
+	/**
+	 * Get the number of slots in this item container. This includes empty slots.
+	 * For example for the player inventory it can be 28 even with no items in the inventory.
+	 * @see #count() to get the number of filled slots instead
+	 * @return
+	 */
+	int size();
+
+	/**
+	 * Get the total number of filled slots in the item container.
+	 * @return
+	 */
+	int count();
+
+	/**
+	 * Find the first index of an item in the container
+	 * @param itemId the item
+	 * @return the item index, or -1 if not found
+	 */
+	int find(int itemId);
 }

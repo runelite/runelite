@@ -26,14 +26,26 @@ package net.runelite.cache.definitions.loaders;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class ObjectLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(ObjectLoader.class);
+	public static final int REV_220_OBJ_ARCHIVE_REV = 1673;
+
+	private boolean rev220SoundData = true;
+
+	public ObjectLoader configureForRevision(int rev)
+	{
+		this.rev220SoundData = rev >= REV_220_OBJ_ARCHIVE_REV;
+		return this;
+	}
 
 	public ObjectDefinition load(int id, byte[] b)
 	{
@@ -117,15 +129,15 @@ public class ObjectLoader
 		}
 		else if (opcode == 19)
 		{
-			def.setAnInt2088(is.readUnsignedByte());
+			def.setWallOrDoor(is.readUnsignedByte());
 		}
 		else if (opcode == 21)
 		{
-			def.setAnInt2105(0);
+			def.setContouredGround(0);
 		}
 		else if (opcode == 22)
 		{
-			def.setNonFlatShading(false);
+			def.setMergeNormals(true);
 		}
 		else if (opcode == 23)
 		{
@@ -145,7 +157,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 28)
 		{
-			def.setAnInt2069(is.readUnsignedByte());
+			def.setDecorDisplacement(is.readUnsignedByte());
 		}
 		else if (opcode == 29)
 		{
@@ -153,7 +165,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 39)
 		{
-			def.setContrast(is.readByte());
+			def.setContrast(is.readByte() * 25);
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
@@ -194,13 +206,17 @@ public class ObjectLoader
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
 		}
+		else if (opcode == 61)
+		{
+			def.setCategory(is.readUnsignedShort());
+		}
 		else if (opcode == 62)
 		{
 			def.setRotated(true);
 		}
 		else if (opcode == 64)
 		{
-			def.setABool2097(false);
+			def.setShadow(false);
 		}
 		else if (opcode == 65)
 		{
@@ -220,7 +236,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 69)
 		{
-			is.readByte();
+			def.setBlockingMask(is.readByte());
 		}
 		else if (opcode == 70)
 		{
@@ -236,15 +252,15 @@ public class ObjectLoader
 		}
 		else if (opcode == 73)
 		{
-			def.setABool2104(true);
+			def.setObstructsGround(true);
 		}
 		else if (opcode == 74)
 		{
-			def.setSolid(true);
+			def.setHollow(true);
 		}
 		else if (opcode == 75)
 		{
-			def.setAnInt2106(is.readUnsignedByte());
+			def.setSupportsItems(is.readUnsignedByte());
 		}
 		else if (opcode == 77)
 		{
@@ -280,31 +296,47 @@ public class ObjectLoader
 		}
 		else if (opcode == 78)
 		{
-			def.setAnInt2110(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundId(is.readUnsignedShort());
+			def.setAmbientSoundDistance(is.readUnsignedByte());
+			if (rev220SoundData)
+			{
+				def.setAmbientSoundRetain(is.readUnsignedByte());
+			}
 		}
 		else if (opcode == 79)
 		{
-			def.setAnInt2112(is.readUnsignedShort());
-			def.setAnInt2113(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundChangeTicksMin(is.readUnsignedShort());
+			def.setAmbientSoundChangeTicksMax(is.readUnsignedShort());
+			def.setAmbientSoundDistance(is.readUnsignedByte());
+			if (rev220SoundData)
+			{
+				def.setAmbientSoundRetain(is.readUnsignedByte());
+			}
 			int length = is.readUnsignedByte();
-			int[] anIntArray2084 = new int[length];
+			int[] ambientSoundIds = new int[length];
 
 			for (int index = 0; index < length; ++index)
 			{
-				anIntArray2084[index] = is.readUnsignedShort();
+				ambientSoundIds[index] = is.readUnsignedShort();
 			}
 
-			def.setAnIntArray2084(anIntArray2084);
+			def.setAmbientSoundIds(ambientSoundIds);
 		}
 		else if (opcode == 81)
 		{
-			def.setAnInt2105(is.readUnsignedByte() * 256);
+			def.setContouredGround(is.readUnsignedByte() * 256);
 		}
 		else if (opcode == 82)
 		{
 			def.setMapAreaId(is.readUnsignedShort());
+		}
+		else if (opcode == 89)
+		{
+			def.setRandomizeAnimStart(true);
+		}
+		else if (opcode == 90)
+		{
+			def.setDeferAnimChange(true);
 		}
 		else if (opcode == 92)
 		{
@@ -373,33 +405,33 @@ public class ObjectLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			log.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 
 
 	private void post(ObjectDefinition def)
 	{
-		if (def.getAnInt2088() == -1)
+		if (def.getWallOrDoor() == -1)
 		{
-			def.setAnInt2088(0);
+			def.setWallOrDoor(0);
 			if (def.getObjectModels() != null && (def.getObjectTypes() == null || def.getObjectTypes()[0] == 10))
 			{
-				def.setAnInt2088(1);
+				def.setWallOrDoor(1);
 			}
 
 			for (int var1 = 0; var1 < 5; ++var1)
 			{
 				if (def.getActions()[var1] != null)
 				{
-					def.setAnInt2088(1);
+					def.setWallOrDoor(1);
 				}
 			}
 		}
 
-		if (def.getAnInt2106() == -1)
+		if (def.getSupportsItems() == -1)
 		{
-			def.setAnInt2106(def.getInteractType() != 0 ? 1 : 0);
+			def.setSupportsItems(def.getInteractType() != 0 ? 1 : 0);
 		}
 	}
 }

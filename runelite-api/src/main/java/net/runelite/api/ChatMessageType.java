@@ -69,11 +69,11 @@ public enum ChatMessageType
 	 */
 	MODPRIVATECHAT(7),
 	/**
-	 * A message received in clan chat.
+	 * A message received in friends chat.
 	 */
 	FRIENDSCHAT(9),
 	/**
-	 * A message received with information about the current clan chat.
+	 * A message received with information about the current friends chat.
 	 */
 	FRIENDSCHATNOTIFICATION(11),
 	/**
@@ -109,6 +109,22 @@ public enum ChatMessageType
 	 */
 	IGNORENOTIFICATION(31),
 	/**
+	 * A chat message in a clan chat.
+	 */
+	CLAN_CHAT(41),
+	/**
+	 * A system message in a clan chat.
+	 */
+	CLAN_MESSAGE(43),
+	/**
+	 * A chat message in the guest clan chat.
+	 */
+	CLAN_GUEST_CHAT(44),
+	/**
+	 * A system message in the guest clan chat.
+	 */
+	CLAN_GUEST_MESSAGE(46),
+	/**
 	 * An autotyper message from a player.
 	 */
 	AUTOTYPER(90),
@@ -117,7 +133,7 @@ public enum ChatMessageType
 	 */
 	MODAUTOTYPER(91),
 	/**
-	 * A game message (ie. when a setting is changed).
+	 * A game message. (ie. when a setting is changed)
 	 */
 	CONSOLE(99),
 	/**
@@ -133,7 +149,7 @@ public enum ChatMessageType
 	 */
 	CHALREQ_TRADE(103),
 	/**
-	 * A message received when someone sends a clan challenge offer.
+	 * A message received when someone sends a friends chat challenge offer.
 	 */
 	CHALREQ_FRIENDSCHAT(104),
 	/**
@@ -149,6 +165,39 @@ public enum ChatMessageType
 	 */
 	TENSECTIMEOUT(107),
 	/**
+	 * The "Welcome to RuneScape" message
+	 */
+	WELCOME(108),
+	/**
+	 * Clan creation invitation.
+	 */
+	CLAN_CREATION_INVITATION(109),
+	/**
+	 * Challenge offer for the clan tab
+	 */
+	CHALREQ_CLANCHAT(110),
+
+	CLAN_GIM_FORM_GROUP(111),
+	CLAN_GIM_GROUP_WITH(112),
+	CLAN_GIM_CHAT(-1),
+	CLAN_GIM_MESSAGE(-1),
+	/**
+	 * Chat type for npc and player dialog
+	 */
+	DIALOG(114),
+	/**
+	 * Chat type for dialog with a graphic/object
+	 */
+	MESBOX(115),
+	/**
+	 * Chat type for some npcs overhead text
+	 */
+	NPC_SAY(116),
+	/**
+	 * Did you know?-es
+	 */
+	DIDYOUKNOW(117),
+	/**
 	 * An unknown message type.
 	 */
 	UNKNOWN(-1);
@@ -161,7 +210,10 @@ public enum ChatMessageType
 	{
 		for (ChatMessageType chatMessageType : values())
 		{
-			CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			if (chatMessageType.type != -1)
+			{
+				CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			}
 		}
 	}
 

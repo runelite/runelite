@@ -34,12 +34,12 @@ public class AreaDefinition
 	public int spriteId = -1;
 	public int field3294 = -1;
 	public String name;
-	public int field3296;
-	public int field3297 = -1;
+	public int textColor;
+	public int category = -1;
 	public String[] field3298 = new String[5];
 	public int[] field3300;
 	public String field3308;
 	public byte[] field3309;
-	public int field3310;
+	public int textScale;
 
 }

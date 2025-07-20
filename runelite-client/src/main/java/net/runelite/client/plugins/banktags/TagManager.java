@@ -27,43 +27,35 @@ package net.runelite.client.plugins.banktags;
 
 import com.google.common.base.Strings;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import net.runelite.client.plugins.cluescrolls.ClueScrollService;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
-import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
-import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
-import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
-import net.runelite.client.plugins.cluescrolls.clues.MapClue;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.ITEM_KEY_PREFIX;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_HIDDEN_PREFIX;
 import net.runelite.client.util.Text;
 
 @Singleton
 public class TagManager
 {
-	private static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
-	private final ClueScrollService clueScrollService;
+	private final Map<String, BankTag> customTags = new HashMap<>();
 
 	@Inject
 	private TagManager(
 		final ItemManager itemManager,
-		final ConfigManager configManager,
-		final ClueScrollService clueScrollService)
+		final ConfigManager configManager)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
-		this.clueScrollService = clueScrollService;
 	}
 
 	String getTagString(int itemId, boolean variation)
@@ -123,11 +115,6 @@ public class TagManager
 
 	boolean findTag(int itemId, String search)
 	{
-		if (search.equals("clue") && testClue(itemId))
-		{
-			return true;
-		}
-
 		Collection<String> tags = getTags(itemId, false);
 		tags.addAll(getTags(itemId, true));
 		return tags.stream().anyMatch(tag -> tag.startsWith(Text.standardize(search)));
@@ -150,6 +137,8 @@ public class TagManager
 			int id = Integer.parseInt(item.replace(prefix, ""));
 			removeTag(id, tag);
 		});
+
+		setHidden(tag, false);
 	}
 
 	public void removeTag(int itemId, String tag)
@@ -181,6 +170,23 @@ public class TagManager
 		});
 	}
 
+	public boolean isHidden(String tag)
+	{
+		return Boolean.TRUE.equals(configManager.getConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag), Boolean.class));
+	}
+
+	public void setHidden(String tag, boolean hidden)
+	{
+		if (hidden)
+		{
+			configManager.setConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag), true);
+		}
+		else
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag));
+		}
+	}
+
 	private int getItemId(int itemId, boolean variation)
 	{
 		itemId = Math.abs(itemId);
@@ -194,38 +200,18 @@ public class TagManager
 		return itemId;
 	}
 
-	private boolean testClue(int itemId)
+	public void registerTag(String name, BankTag tag)
 	{
-		ClueScroll c = clueScrollService.getClue();
+		customTags.put(name, tag);
+	}
 
-		if (c == null)
-		{
-			return false;
-		}
+	public void unregisterTag(String name)
+	{
+		customTags.remove(name);
+	}
 
-		if (c instanceof EmoteClue)
-		{
-			EmoteClue emote = (EmoteClue) c;
-
-			for (ItemRequirement ir : emote.getItemRequirements())
-			{
-				if (ir.fulfilledBy(itemId))
-				{
-					return true;
-				}
-			}
-		}
-		else if (c instanceof CoordinateClue || c instanceof HotColdClue || c instanceof FairyRingClue)
-		{
-			return itemId == ItemID.SPADE;
-		}
-		else if (c instanceof MapClue)
-		{
-			MapClue mapClue = (MapClue) c;
-
-			return mapClue.getObjectId() == -1 && itemId == ItemID.SPADE;
-		}
-
-		return false;
+	BankTag findTag(String name)
+	{
+		return customTags.get(name);
 	}
 }

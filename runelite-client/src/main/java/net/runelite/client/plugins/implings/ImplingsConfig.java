@@ -25,33 +25,50 @@
 package net.runelite.client.plugins.implings;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
-/**
- *
- * @author robin
- */
-@ConfigGroup("implings")
+@ConfigGroup(ImplingsConfig.GROUP)
 public interface ImplingsConfig extends Config
 {
+	String GROUP = "implings";
+
+	enum ImplingMode
+	{
+		NONE,
+		HIGHLIGHT,
+		NOTIFY
+	}
+
+	@ConfigSection(
+		name = "Impling type settings",
+		description = "Configuration for each type of impling.",
+		position = 99
+	)
+	String implingSection = "implings";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "showbaby",
-		name = "Show Baby implings",
-		description = "Configures whether or not Baby impling tags are displayed"
+		name = "Baby implings",
+		description = "Configures whether or not baby impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showBaby()
+	default ImplingMode showBaby()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 2,
 		keyName = "babyColor",
 		name = "Baby impling color",
-		description = "Text color for Baby implings"
+		description = "Text color for baby implings.",
+		section = implingSection
 	)
 	default Color getBabyColor()
 	{
@@ -61,19 +78,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "showyoung",
-		name = "Show Young implings",
-		description = "Configures whether or not Young impling tags are displayed"
+		name = "Young implings",
+		description = "Configures whether or not young impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showYoung()
+	default ImplingMode showYoung()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 4,
 		keyName = "youngColor",
 		name = "Young impling color",
-		description = "Text color for Young implings"
+		description = "Text color for young implings.",
+		section = implingSection
 	)
 	default Color getYoungColor()
 	{
@@ -83,19 +103,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 5,
 		keyName = "showgourmet",
-		name = "Show Gourmet implings",
-		description = "Configures whether or not Gourmet impling tags are displayed"
+		name = "Gourmet implings",
+		description = "Configures whether or not gourmet impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showGourmet()
+	default ImplingMode showGourmet()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 6,
 		keyName = "gourmetColor",
 		name = "Gourmet impling color",
-		description = "Text color for Gourmet implings"
+		description = "Text color for gourmet implings.",
+		section = implingSection
 	)
 	default Color getGourmetColor()
 	{
@@ -105,19 +128,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "showearth",
-		name = "Show Earth implings",
-		description = "Configures whether or not Earth impling tags are displayed"
+		name = "Earth implings",
+		description = "Configures whether or not earth impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showEarth()
+	default ImplingMode showEarth()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 8,
 		keyName = "earthColor",
 		name = "Earth impling color",
-		description = "Text color for Earth implings"
+		description = "Text color for earth implings.",
+		section = implingSection
 	)
 	default Color getEarthColor()
 	{
@@ -127,19 +153,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "showessence",
-		name = "Show Essence implings",
-		description = "Configures whether or not Essence impling tags are displayed"
+		name = "Essence implings",
+		description = "Configures whether or not essence impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showEssence()
+	default ImplingMode showEssence()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 10,
 		keyName = "essenceColor",
 		name = "Essence impling color",
-		description = "Text color for Essence implings"
+		description = "Text color for essence implings.",
+		section = implingSection
 	)
 	default Color getEssenceColor()
 	{
@@ -149,19 +178,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "showeclectic",
-		name = "Show Eclectic implings",
-		description = "Configures whether or not Eclectic impling tags are displayed"
+		name = "Eclectic implings",
+		description = "Configures whether or not eclectic impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showEclectic()
+	default ImplingMode showEclectic()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 12,
 		keyName = "eclecticColor",
 		name = "Eclectic impling color",
-		description = "Text color for Eclectic implings"
+		description = "Text color for eclectic implings.",
+		section = implingSection
 	)
 	default Color getEclecticColor()
 	{
@@ -171,19 +203,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "shownature",
-		name = "Show Nature implings",
-		description = "Configures whether or not Nature impling tags are displayed"
+		name = "Nature implings",
+		description = "Configures whether or not nature impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showNature()
+	default ImplingMode showNature()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 14,
 		keyName = "natureColor",
 		name = "Nature impling color",
-		description = "Text color for Nature implings"
+		description = "Text color for nature implings.",
+		section = implingSection
 	)
 	default Color getNatureColor()
 	{
@@ -193,19 +228,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 15,
 		keyName = "showmagpie",
-		name = "Show Magpie implings",
-		description = "Configures whether or not Magpie impling tags are displayed"
+		name = "Magpie implings",
+		description = "Configures whether or not magpie impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showMagpie()
+	default ImplingMode showMagpie()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 16,
 		keyName = "magpieColor",
 		name = "Magpie impling color",
-		description = "Text color for Magpie implings"
+		description = "Text color for magpie implings.",
+		section = implingSection
 	)
 	default Color getMagpieColor()
 	{
@@ -215,19 +253,22 @@ public interface ImplingsConfig extends Config
 	@ConfigItem(
 		position = 17,
 		keyName = "showninja",
-		name = "Show Ninja implings",
-		description = "Configures whether or not Ninja impling tags are displayed"
+		name = "Ninja implings",
+		description = "Configures whether or not ninja impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showNinja()
+	default ImplingMode showNinja()
 	{
-		return false;
+		return ImplingMode.NONE;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 18,
 		keyName = "ninjaColor",
 		name = "Ninja impling color",
-		description = "Text color for Ninja implings"
+		description = "Text color for ninja implings.",
+		section = implingSection
 	)
 	default Color getNinjaColor()
 	{
@@ -236,20 +277,48 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 19,
-		keyName = "showdragon",
-		name = "Show Dragon implings",
-		description = "Configures whether or not Dragon impling tags are displayed"
+		keyName = "showCrystal",
+		name = "Crystal implings",
+		description = "Configures whether or not crystal implings are displayed.",
+		section = implingSection
 	)
-	default boolean showDragon()
+	default ImplingMode showCrystal()
 	{
-		return true;
+		return ImplingMode.NONE;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 20,
+		keyName = "crystalColor",
+		name = "Crystal impling color",
+		description = "Text color for crystal implings.",
+		section = implingSection
+	)
+	default Color getCrystalColor()
+	{
+		return new Color(93, 188, 210);
 	}
 
 	@ConfigItem(
-		position = 20,
+		position = 21,
+		keyName = "showdragon",
+		name = "Dragon implings",
+		description = "Configures whether or not dragon impling tags are displayed.",
+		section = implingSection
+	)
+	default ImplingMode showDragon()
+	{
+		return ImplingMode.HIGHLIGHT;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 22,
 		keyName = "dragonColor",
 		name = "Dragon impling color",
-		description = "Text color for Dragon implings"
+		description = "Text color for dragon implings.",
+		section = implingSection
 	)
 	default Color getDragonColor()
 	{
@@ -257,21 +326,24 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 23,
 		keyName = "showlucky",
-		name = "Show Lucky implings",
-		description = "Configures whether or not Lucky impling tags are displayed"
+		name = "Lucky implings",
+		description = "Configures whether or not lucky impling tags are displayed.",
+		section = implingSection
 	)
-	default boolean showLucky()
+	default ImplingMode showLucky()
 	{
-		return true;
+		return ImplingMode.HIGHLIGHT;
 	}
 
+	@Alpha
 	@ConfigItem(
-		position = 22,
+		position = 24,
 		keyName = "luckyColor",
 		name = "Lucky impling color",
-		description = "Text color for Lucky implings"
+		description = "Text color for lucky implings.",
+		section = implingSection
 	)
 	default Color getLuckyColor()
 	{
@@ -279,21 +351,22 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
+		position = 25,
 		keyName = "showspawn",
-		name = "Show Spawn locations",
-		description = "Configures whether or not spawn locations are displayed in Puro Puro"
+		name = "Show spawn locations",
+		description = "Configures whether or not spawn locations are displayed in Puro-Puro."
 	)
 	default boolean showSpawn()
 	{
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
-		position = 24,
+		position = 26,
 		keyName = "spawnColor",
 		name = "Impling spawn color",
-		description = "Text color for impling spawns in Puro Puro"
+		description = "Text color for impling spawns in Puro-Puro."
 	)
 	default Color getSpawnColor()
 	{
@@ -301,10 +374,10 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 25,
+		position = 27,
 		keyName = "showname",
 		name = "Show name on minimap",
-		description = "Configures whether or not impling names are displayed on minimap"
+		description = "Configures whether or not impling names are displayed on minimap."
 	)
 	default boolean showName()
 	{

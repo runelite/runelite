@@ -24,52 +24,18 @@
  */
 package net.runelite.api;
 
-import java.util.List;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
+import javax.annotation.Nonnull;
 
 /**
  * Represents the model of an object.
  */
-public interface Model extends Renderable
+public interface Model extends Mesh<Model>, Renderable
 {
-	/**
-	 * Gets a list of all vertices of the model.
-	 *
-	 * @return the vertices
-	 */
-	List<Vertex> getVertices();
-
-	/**
-	 * Gets a list of all triangles of the model.
-	 *
-	 * @return the triangle
-	 */
-	List<Triangle> getTriangles();
-
-	int getVerticesCount();
-
-	int[] getVerticesX();
-
-	int[] getVerticesY();
-
-	int[] getVerticesZ();
-
-	int getTrianglesCount();
-
-	int[] getTrianglesX();
-
-	int[] getTrianglesY();
-
-	int[] getTrianglesZ();
-
 	int[] getFaceColors1();
 
 	int[] getFaceColors2();
 
 	int[] getFaceColors3();
-
-	byte[] getTriangleTransparencies();
 
 	int getSceneId();
 	void setSceneId(int sceneId);
@@ -80,27 +46,44 @@ public interface Model extends Renderable
 	int getUvBufferOffset();
 	void setUvBufferOffset(int bufferOffset);
 
-	int getModelHeight();
+	int getBottomY();
 
 	void calculateBoundsCylinder();
 
 	byte[] getFaceRenderPriorities();
 
 	int getRadius();
+	int getDiameter();
 
-	short[] getFaceTextures();
-
-	float[][] getFaceTextureUCoordinates();
-	float[][] getFaceTextureVCoordinates();
-
+	/**
+	 * @see #getAABB(int)
+	 */
+	@Deprecated
 	void calculateExtreme(int orientation);
 
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
+	@Nonnull
+	AABB getAABB(int orientation);
 
 	int getXYZMag();
+	boolean useBoundingBox();
+
+	int[] getVertexNormalsX();
+	int[] getVertexNormalsY();
+	int[] getVertexNormalsZ();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
+
+	byte[] getTextureFaces();
+
+	int[] getTexIndices1();
+	int[] getTexIndices2();
+	int[] getTexIndices3();
+
+	Model getUnskewedModel();
+
+	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
+	void drawOrtho(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera, int zoom);
 }

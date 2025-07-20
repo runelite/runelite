@@ -27,6 +27,7 @@ package net.runelite.client.plugins.poh;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,33 +38,34 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.HiscoreManager;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.hiscore.HiscoreManager;
+import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.Skill;
+import net.runelite.client.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.Skill;
 
 @PluginDescriptor(
 	name = "Player-owned House",
@@ -73,8 +75,8 @@ import net.runelite.http.api.hiscore.Skill;
 @Slf4j
 public class PohPlugin extends Plugin
 {
-	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.INCENSE_BURNER, ObjectID.INCENSE_BURNER_13210, ObjectID.INCENSE_BURNER_13212);
-	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.INCENSE_BURNER_13209, ObjectID.INCENSE_BURNER_13211, ObjectID.INCENSE_BURNER_13213);
+	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.POH_TORCH_5, ObjectID.POH_TORCH_6, ObjectID.POH_TORCH_7);
+	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.POH_TORCH_5_LIT, ObjectID.POH_TORCH_6_LIT, ObjectID.POH_TORCH_7_LIT);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
@@ -144,9 +146,11 @@ public class PohPlugin extends Plugin
 			return;
 		}
 
-		final double countdownTimer = 130.0; // Minimum amount of seconds a burner will light
-		final double randomTimer = 30.0; // Minimum amount of seconds a burner will light
-		incenseBurners.put(event.getTile(), new IncenseBurner(gameObject.getId(), countdownTimer, randomTimer, null));
+		IncenseBurner incenseBurner = incenseBurners.computeIfAbsent(event.getTile(), k -> new IncenseBurner());
+		incenseBurner.setStart(Instant.now());
+		incenseBurner.setLit(BURNER_LIT.contains(gameObject.getId()));
+		incenseBurner.setEnd(null);
+		// The burner timers are set when observing a player light the burner
 	}
 
 	@Subscribe
@@ -189,7 +193,7 @@ public class PohPlugin extends Plugin
 		final Actor actor = event.getActor();
 		final String actorName = actor.getName();
 
-		if (!(actor instanceof Player) || actor.getAnimation() != AnimationID.INCENSE_BURNER)
+		if (!(actor instanceof Player) || actor.getAnimation() != AnimationID.HUMAN_LIGHT_TORCH)
 		{
 			return;
 		}
@@ -203,6 +207,7 @@ public class PohPlugin extends Plugin
 			.ifPresent(tile ->
 			{
 				final IncenseBurner incenseBurner = incenseBurners.get(tile);
+				incenseBurner.reset();
 
 				if (actor == client.getLocalPlayer())
 				{
@@ -230,7 +235,7 @@ public class PohPlugin extends Plugin
 					return;
 				}
 
-				final Skill fm = playerStats.getFiremaking();
+				final Skill fm = playerStats.getSkill(HiscoreSkill.FIREMAKING);
 				final int level = fm.getLevel();
 				updateBurner(incenseBurner, Math.max(level, 1));
 			}
@@ -245,6 +250,7 @@ public class PohPlugin extends Plugin
 	{
 		final double tickLengthSeconds = Constants.GAME_TICK_LENGTH / 1000.0;
 		incenseBurner.setCountdownTimer((200 + fmLevel) * tickLengthSeconds);
-		incenseBurner.setRandomTimer(fmLevel * tickLengthSeconds);
+		incenseBurner.setRandomTimer((fmLevel - 1) * tickLengthSeconds);
+		log.debug("Set burner timer for firemaking level {}", fmLevel);
 	}
 }

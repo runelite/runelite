@@ -62,6 +62,13 @@ public interface Tile
 	GroundObject getGroundObject();
 
 	/**
+	 * Sets the object on the ground layer of the tile.
+	 *
+	 * @param groundObject the ground object
+	 */
+	void setGroundObject(GroundObject groundObject);
+
+	/**
 	 * Gets the wall of the tile.
 	 *
 	 * @return the wall object
@@ -118,19 +125,11 @@ public interface Tile
 	int getRenderLevel();
 
 	/**
-	 * Computes and returns whether this tile has line of sight to another.
-	 *
-	 * @param other the other tile
-	 * @return true if there is no sight obstruction, false otherwise
-	 */
-	boolean hasLineOfSightTo(Tile other);
-
-	/**
 	 * Get all the ground items for this tile
 	 *
 	 * @return the ground items
 	 */
-	List<Item> getGroundItems();
+	List<TileItem> getGroundItems();
 
 	/**
 	 * Return the tile under this one, if this tile is a bridge

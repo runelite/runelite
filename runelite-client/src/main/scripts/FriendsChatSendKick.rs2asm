@@ -1,0 +1,35 @@
+.id                       3764
+.int_arg_count            0
+.obj_arg_count            1
+; callback "confirmFriendsChatKick"
+; 	Used by the friends chat plugin to show a chatbox panel confirming the requested kick
+;	Also requires the "confirmKicks" option of FriendsChatConfig to be enabled
+   invoke                 1942
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   CONFIRM_KICK  ; Jump to our new label instead
+   jump                   LABEL7
+LABEL4:
+   sconst                 "You can't kick players from your team during Wilderness Wars."
+   mes                   
+   return                
+LABEL7:
+   sconst                 "-Attempting to kick player from chat-channel..."
+   iconst                 2
+   iconst                 -1
+   iconst                 0
+   iconst                 -1
+   invoke                 5517
+   oload                  0
+   clan_kickuser         
+RETURN:
+   return                
+CONFIRM_KICK:
+   oload                  0             ; Username we are trying to kick
+   iconst                 0             ; Modified if we are confirming the kick inside the plugin
+   sconst                 "confirmFriendsChatKick"
+   runelite_callback     
+   pop_object            ; Pop username
+   iconst                 0             ; Compare against zero
+   if_icmpgt              RETURN       ; Early return for chatbox panel confirmation
+   jump                   LABEL7

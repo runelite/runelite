@@ -36,11 +36,13 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
@@ -55,6 +57,9 @@ public class TimestampPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private TimestampConfig config;
@@ -83,31 +88,34 @@ public class TimestampPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("timestamp") && event.getKey().equals("format"))
+		if (event.getGroup().equals(TimestampConfig.GROUP))
 		{
-			updateFormatter();
+			switch (event.getKey())
+			{
+				case "format":
+					updateFormatter();
+					break;
+				case "opaqueTimestamp":
+				case "transparentTimestamp":
+					clientThread.invokeLater(() -> client.runScript(ScriptID.SPLITPM_CHANGED));
+					break;
+			}
 		}
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (!event.getEventName().equals("addTimestamp"))
+		if (!"chatMessageBuilding".equals(event.getEventName()))
 		{
 			return;
 		}
 
-		int[] intStack = client.getIntStack();
-		int intStackSize = client.getIntStackSize();
+		int uid = client.getIntStack()[client.getIntStackSize() - 1];
+		final MessageNode messageNode = client.getMessages().get(uid);
+		assert messageNode != null : "chat message build for unknown message";
 
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
-
-		int messageId = intStack[intStackSize - 1];
-
-		MessageNode messageNode = (MessageNode) client.getMessages().get(messageId);
-
-		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault()) + " ";
+		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault());
 
 		Color timestampColour = getTimestampColour();
 		if (timestampColour != null)
@@ -115,12 +123,12 @@ public class TimestampPlugin extends Plugin
 			timestamp = ColorUtil.wrapWithColorTag(timestamp, timestampColour);
 		}
 
-		stringStack[stringStackSize - 1] = timestamp;
+		client.getObjectStack()[client.getObjectStackSize() - 1] = timestamp;
 	}
 
 	private Color getTimestampColour()
 	{
-		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1;
 
 		return isChatboxTransparent ? config.transparentTimestamp() : config.opaqueTimestamp();
 	}

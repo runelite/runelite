@@ -26,19 +26,17 @@ package net.runelite.client.plugins.implings;
 
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Function;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -50,9 +48,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ImplingsPlugin extends Plugin
 {
-	@Getter(AccessLevel.PACKAGE)
-	private final List<NPC> implings = new ArrayList<>();
-
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -60,10 +55,30 @@ public class ImplingsPlugin extends Plugin
 	private ImplingsOverlay overlay;
 
 	@Inject
-	private ImplingMinimapOverlay minimapOverlay;
+	private ImplingsConfig config;
 
 	@Inject
-	private ImplingsConfig config;
+	private Notifier notifier;
+
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
+	public final Function<NPC, HighlightedNpc> isTarget = (npc) ->
+	{
+		Impling impling = Impling.findImpling(npc.getId());
+		if (impling != null && showImpling(impling))
+		{
+			Color color = implingColor(impling);
+			return HighlightedNpc.builder()
+				.npc(npc)
+				.highlightColor(color)
+				.tile(true)
+				.name(true)
+				.nameOnMinimap(config.showName())
+				.build();
+		}
+		return null;
+	};
 
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
@@ -75,15 +90,25 @@ public class ImplingsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(minimapOverlay);
+		npcOverlayService.registerHighlighter(isTarget);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		implings.clear();
+		npcOverlayService.unregisterHighlighter(isTarget);
 		overlayManager.remove(overlay);
-		overlayManager.remove(minimapOverlay);
+	}
+
+	@Subscribe
+	private void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(ImplingsConfig.GROUP))
+		{
+			return;
+		}
+
+		npcOverlayService.rebuild();
 	}
 
 	@Subscribe
@@ -94,7 +119,10 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
-			implings.add(npc);
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
 		}
 	}
 
@@ -104,45 +132,22 @@ public class ImplingsPlugin extends Plugin
 		NPC npc = npcCompositionChanged.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());
 
-		if (impling != null && !implings.contains(npc))
+		if (impling != null)
 		{
-			implings.add(npc);
+			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			{
+				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+			}
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private boolean showImpling(Impling impling)
 	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
-		{
-			implings.clear();
-		}
+		ImplingsConfig.ImplingMode impMode = showImplingType(impling.getImplingType());
+		return impMode == ImplingsConfig.ImplingMode.HIGHLIGHT || impMode == ImplingsConfig.ImplingMode.NOTIFY;
 	}
 
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
-	{
-		if (implings.isEmpty())
-		{
-			return;
-		}
-
-		NPC npc = npcDespawned.getNpc();
-		implings.remove(npc);
-	}
-
-	boolean showNpc(NPC npc)
-	{
-		Impling impling = Impling.findImpling(npc.getId());
-		if (impling == null)
-		{
-			return false;
-		}
-
-		return showImplingType(impling.getImplingType());
-	}
-
-	boolean showImplingType(ImplingType implingType)
+	ImplingsConfig.ImplingMode showImplingType(ImplingType implingType)
 	{
 		switch (implingType)
 		{
@@ -164,26 +169,21 @@ public class ImplingsPlugin extends Plugin
 				return config.showMagpie();
 			case NINJA:
 				return config.showNinja();
+			case CRYSTAL:
+				return config.showCrystal();
 			case DRAGON:
 				return config.showDragon();
 			case LUCKY:
 				return config.showLucky();
 			default:
-				return false;
+				return ImplingsConfig.ImplingMode.NONE;
 		}
 	}
 
-	Color npcToColor(NPC npc)
+	private Color implingColor(Impling impling)
 	{
-		Impling impling = Impling.findImpling(npc.getId());
-		if (impling == null)
-		{
-			return null;
-		}
-
 		switch (impling.getImplingType())
 		{
-
 			case BABY:
 				return config.getBabyColor();
 			case YOUNG:
@@ -202,12 +202,14 @@ public class ImplingsPlugin extends Plugin
 				return config.getMagpieColor();
 			case NINJA:
 				return config.getNinjaColor();
+			case CRYSTAL:
+				return config.getCrystalColor();
 			case DRAGON:
 				return config.getDragonColor();
 			case LUCKY:
 				return config.getLuckyColor();
 			default:
-				return null;
+				throw new IllegalArgumentException();
 		}
 	}
 }

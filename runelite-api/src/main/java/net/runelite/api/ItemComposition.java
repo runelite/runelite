@@ -24,23 +24,41 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents the template of a specific item type.
  */
-public interface ItemComposition
+public interface ItemComposition extends ParamHolder
 {
 	/**
-	 * Gets the items name.
+	 * Gets the item's name as it appears in game.
+	 * On a members server, this is always the item's actual name.
+	 * On a free server, this will be the actual name, with " (Members)" appended to it, e.g. Twisted bow (Members)
 	 *
-	 * @return the name of the item
+	 * @return the name of the item as it appears in game
 	 */
 	String getName();
+
+	/**
+	 * Gets the real item name, even if the player is on a F2P server.
+	 * Unlike {@link ItemComposition#getName()}, this will not have " (Members)" at the end on F2P servers.
+	 *
+	 * @return the real name of the item
+	 */
+	String getMembersName();
+
+	/**
+	 * Sets the item's name.
+	 * @param name the new name
+	 */
+	void setName(String name);
 
 	/**
 	 * Gets the items ID.
 	 *
 	 * @return the items ID
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	int getId();
 
@@ -89,8 +107,17 @@ public interface ItemComposition
 	 * @return the general store value of the item
 	 *
 	 * @see Constants#HIGH_ALCHEMY_MULTIPLIER
+	 * @see ItemComposition#getHaPrice()
 	 */
 	int getPrice();
+
+	/**
+	 * Get the high alchemy price for this item. All items have a high alchemy price,
+	 * but not all items can be alched.
+	 *
+	 * @return the high alch price
+	 */
+	int getHaPrice();
 
 	/**
 	 * Checks whether the item is members only.
@@ -120,6 +147,12 @@ public interface ItemComposition
 	String[] getInventoryActions();
 
 	/**
+	 * The subops for each op, indexed by op id.
+	 * @return
+	 */
+	String[][] getSubops();
+
+	/**
 	 * Gets the menu action index of the shift-click action.
 	 *
 	 * @return the index of the shift-click action
@@ -129,13 +162,133 @@ public interface ItemComposition
 	/**
 	 * Sets the menu action index of the shift-click action.
 	 *
-	 * @param shiftclickActionIndex the new index of the shift-click action
+	 * @param shiftClickActionIndex the new index of the shift-click action
 	 */
-	void setShiftClickActionIndex(int shiftclickActionIndex);
+	void setShiftClickActionIndex(int shiftClickActionIndex);
 
 	/**
-	 * Resets the menu action index of the shift-click action to its
-	 * default value.
+	 * Gets the model ID of the inventory item.
+	 *
+	 * @return the model ID
 	 */
-	void resetShiftClickActionIndex();
+	int getInventoryModel();
+
+	/**
+	 * Set the model ID of the inventory item. You will also need to flush the item model cache and the item
+	 * sprite cache to have the changes fully propagated after changing this value.
+	 * @see Client#getItemModelCache()
+	 * @see Client#getItemSpriteCache()
+	 */
+	void setInventoryModel(int model);
+
+	/**
+	 * Get the colors to be replaced on this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#getColorToReplaceWith()
+	 * @return the colors to be replaced
+	 */
+	@Nullable
+	short[] getColorToReplace();
+
+	/**
+	 * Set the colors to be replaced on this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#setColorToReplaceWith(short[])
+	 */
+	void setColorToReplace(short[] colorsToReplace);
+
+	/**
+	 * Get the colors applied to this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#getColorToReplace()
+	 * @return the colors to replace with
+	 */
+	@Nullable
+	short[] getColorToReplaceWith();
+
+	/**
+	 * Set the colors applied to this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#setColorToReplace(short[])
+	 */
+	void setColorToReplaceWith(short[] colorToReplaceWith);
+
+	/**
+	 * Get the textures to be replaced on this item's model for this item.
+	 * @see ItemComposition#getTextureToReplaceWith()
+	 * @return the textures to be replaced
+	 */
+	@Nullable
+	short[] getTextureToReplace();
+
+	/**
+	 * Set the textures to be replaced on this item's model for this item.
+	 * @see ItemComposition#setTextureToReplaceWith(short[])
+	 */
+	void setTextureToReplace(short[] textureToFind);
+
+	/**
+	 * Get the textures applied to this item's model for this item.
+	 * @see ItemComposition#getTextureToReplace()
+	 * @return the textures to replace with
+	 */
+	@Nullable
+	short[] getTextureToReplaceWith();
+
+	/**
+	 * Set the textures applied to this item's model for this item.
+	 * @see ItemComposition#setTextureToReplace(short[])
+	 */
+	void setTextureToReplaceWith(short[] textureToReplaceWith);
+
+	/**
+	 * Get the x angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getXan2d();
+
+	/**
+	 * Get the y angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getYan2d();
+
+	/**
+	 * Get the z angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getZan2d();
+
+	/**
+	 * Set the x angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 */
+	void setXan2d(int angle);
+
+	/**
+	 * Set the y angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 */
+	void setYan2d(int angle);
+
+	/**
+	 * Set the z angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 */
+	void setZan2d(int angle);
+
+	/**
+	 * Get the ambient light value
+	 * @return
+	 */
+	int getAmbient();
+
+	/**
+	 * Get the contrast light value
+	 * @return
+	 */
+	int getContrast();
 }

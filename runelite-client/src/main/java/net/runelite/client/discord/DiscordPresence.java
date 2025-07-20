@@ -31,7 +31,7 @@ import lombok.Value;
 /**
  * Represents Discord Rich Presence RPC data
  */
-@Builder
+@Builder(toBuilder = true)
 @Value
 public class DiscordPresence
 {

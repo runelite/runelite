@@ -24,24 +24,42 @@
  */
 package net.runelite.cache.definitions;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import lombok.Data;
+import lombok.Value;
 
 @Data
 public class SequenceDefinition
 {
 	private final int id;
+	public String debugName;
 	public int[] frameIDs; // top 16 bits are FrameDefinition ids
-	public int[] field3048;
-	public int[] frameLenghts;
-	public int rightHandItem = -1;
+	public int[] chatFrameIds;
+	public int[] frameLengths;
+	public int frameStep = -1;
 	public int[] interleaveLeave;
 	public boolean stretches = false;
 	public int forcedPriority = 5;
-	public int maxLoops = 99;
-	public int[] field3056;
-	public int precedenceAnimating = -1;
 	public int leftHandItem = -1;
-	public int replyMode = 2;
-	public int frameStep = -1;
+	public int rightHandItem = -1;
+	public int maxLoops = 99;
+	public int precedenceAnimating = -1;
 	public int priority = -1;
+	public int replyMode = 2;
+	public int animMayaID = -1;
+	public Multimap<Integer, Sound> frameSounds = ArrayListMultimap.create();
+	public int animMayaStart;
+	public int animMayaEnd;
+	public boolean[] animMayaMasks;
+
+	@Value
+	public static class Sound
+	{
+		public int id;
+		public int loops;
+		public int location;
+		public int retain;
+		public int weight;
+	}
 }

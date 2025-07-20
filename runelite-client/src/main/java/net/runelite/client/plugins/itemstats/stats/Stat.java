@@ -52,7 +52,7 @@ public abstract class Stat
 	public abstract int getValue(Client client);
 
 	/**
-	 * Get the base stat maximum, ie. the bottom half of the stat fraction.
+	 * Get the base stat maximum. (ie. the bottom half of the stat fraction)
 	 */
 	public abstract int getMaximum(Client client);
 }

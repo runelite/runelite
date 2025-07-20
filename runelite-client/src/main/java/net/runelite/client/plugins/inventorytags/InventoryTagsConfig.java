@@ -24,57 +24,72 @@
  */
 package net.runelite.client.plugins.inventorytags;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
-@ConfigGroup("inventorytags")
+@ConfigGroup(InventoryTagsConfig.GROUP)
 public interface InventoryTagsConfig extends Config
 {
 	String GROUP = "inventorytags";
 
+	@ConfigSection(
+		name = "Tag display mode",
+		description = "How tags are displayed in the inventory.",
+		position = 0
+	)
+	String tagStyleSection = "tagStyleSection";
+
 	@ConfigItem(
 		position = 0,
-		keyName = "groupColor1",
-		name = "Group 1 Color",
-		description = "Color of the Tag"
+		keyName = "showTagOutline",
+		name = "Outline",
+		description = "Configures whether or not item tags show be outlined.",
+		section = tagStyleSection
 	)
-	default Color getGroup1Color()
+	default boolean showTagOutline()
 	{
-		return new Color(255, 0, 0);
+		return true;
 	}
 
 	@ConfigItem(
 		position = 1,
-		keyName = "groupColor2",
-		name = "Group 2 Color",
-		description = "Color of the Tag"
+		keyName = "tagUnderline",
+		name = "Underline",
+		description = "Configures whether or not item tags should be underlined.",
+		section = tagStyleSection
 	)
-	default Color getGroup2Color()
+	default boolean showTagUnderline()
 	{
-		return new Color(0, 255, 0);
+		return false;
 	}
 
 	@ConfigItem(
 		position = 2,
-		keyName = "groupColor3",
-		name = "Group 3 Color",
-		description = "Color of the Tag"
+		keyName = "tagFill",
+		name = "Fill",
+		description = "Configures whether or not item tags should be filled.",
+		section = tagStyleSection
 	)
-	default Color getGroup3Color()
+	default boolean showTagFill()
 	{
-		return new Color(0, 0, 255);
+		return false;
 	}
 
+	@Range(
+		max = 255
+	)
 	@ConfigItem(
 		position = 3,
-		keyName = "groupColor4",
-		name = "Group 4 Color",
-		description = "Color of the Tag"
+		keyName = "fillOpacity",
+		name = "Fill opacity",
+		description = "Configures the opacity of the tag fill",
+		section = tagStyleSection
 	)
-	default Color getGroup4Color()
+	default int fillOpacity()
 	{
-		return new Color(255, 0, 255);
+		return 50;
 	}
 }

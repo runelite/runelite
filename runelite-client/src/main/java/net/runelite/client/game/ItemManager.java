@@ -28,18 +28,21 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -48,16 +51,13 @@ import net.runelite.api.Constants;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.http.api.item.ItemClient;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
 
 @Singleton
 @Slf4j
@@ -80,85 +80,129 @@ public class ItemManager
 	}
 
 	private final Client client;
-	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
+	private final ItemClient itemClient;
+	private final RuneLiteConfig runeLiteConfig;
 
-	private final ItemClient itemClient = new ItemClient();
+	@Inject(optional = true)
+	@Named("activePriceThreshold")
+	@SuppressWarnings("PMD.ImmutableField")
+	private double activePriceThreshold = 5;
+
+	@Inject(optional = true)
+	@Named("lowPriceThreshold")
+	@SuppressWarnings("PMD.ImmutableField")
+	private int lowPriceThreshold = 1000;
+
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
-	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	// Worn items with weight reducing property have a different worn and inventory ItemID
 	private static final ImmutableMap<Integer, Integer> WORN_ITEMS = ImmutableMap.<Integer, Integer>builder().
-		put(BOOTS_OF_LIGHTNESS_89, BOOTS_OF_LIGHTNESS).
-		put(PENANCE_GLOVES_10554, PENANCE_GLOVES).
+		put(ItemID.IKOV_BOOTSOFLIGHTNESSWORN, ItemID.IKOV_BOOTSOFLIGHTNESS).
+		put(ItemID.BARBASSAULT_PENANCE_GLOVES_WORN, ItemID.BARBASSAULT_PENANCE_GLOVES).
 
-		put(GRACEFUL_HOOD_11851, GRACEFUL_HOOD).
-		put(GRACEFUL_CAPE_11853, GRACEFUL_CAPE).
-		put(GRACEFUL_TOP_11855, GRACEFUL_TOP).
-		put(GRACEFUL_LEGS_11857, GRACEFUL_LEGS).
-		put(GRACEFUL_GLOVES_11859, GRACEFUL_GLOVES).
-		put(GRACEFUL_BOOTS_11861, GRACEFUL_BOOTS).
-		put(GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13579).
-		put(GRACEFUL_CAPE_13582, GRACEFUL_CAPE_13581).
-		put(GRACEFUL_TOP_13584, GRACEFUL_TOP_13583).
-		put(GRACEFUL_LEGS_13586, GRACEFUL_LEGS_13585).
-		put(GRACEFUL_GLOVES_13588, GRACEFUL_GLOVES_13587).
-		put(GRACEFUL_BOOTS_13590, GRACEFUL_BOOTS_13589).
-		put(GRACEFUL_HOOD_13592, GRACEFUL_HOOD_13591).
-		put(GRACEFUL_CAPE_13594, GRACEFUL_CAPE_13593).
-		put(GRACEFUL_TOP_13596, GRACEFUL_TOP_13595).
-		put(GRACEFUL_LEGS_13598, GRACEFUL_LEGS_13597).
-		put(GRACEFUL_GLOVES_13600, GRACEFUL_GLOVES_13599).
-		put(GRACEFUL_BOOTS_13602, GRACEFUL_BOOTS_13601).
-		put(GRACEFUL_HOOD_13604, GRACEFUL_HOOD_13603).
-		put(GRACEFUL_CAPE_13606, GRACEFUL_CAPE_13605).
-		put(GRACEFUL_TOP_13608, GRACEFUL_TOP_13607).
-		put(GRACEFUL_LEGS_13610, GRACEFUL_LEGS_13609).
-		put(GRACEFUL_GLOVES_13612, GRACEFUL_GLOVES_13611).
-		put(GRACEFUL_BOOTS_13614, GRACEFUL_BOOTS_13613).
-		put(GRACEFUL_HOOD_13616, GRACEFUL_HOOD_13615).
-		put(GRACEFUL_CAPE_13618, GRACEFUL_CAPE_13617).
-		put(GRACEFUL_TOP_13620, GRACEFUL_TOP_13619).
-		put(GRACEFUL_LEGS_13622, GRACEFUL_LEGS_13621).
-		put(GRACEFUL_GLOVES_13624, GRACEFUL_GLOVES_13623).
-		put(GRACEFUL_BOOTS_13626, GRACEFUL_BOOTS_13625).
-		put(GRACEFUL_HOOD_13628, GRACEFUL_HOOD_13627).
-		put(GRACEFUL_CAPE_13630, GRACEFUL_CAPE_13629).
-		put(GRACEFUL_TOP_13632, GRACEFUL_TOP_13631).
-		put(GRACEFUL_LEGS_13634, GRACEFUL_LEGS_13633).
-		put(GRACEFUL_GLOVES_13636, GRACEFUL_GLOVES_13635).
-		put(GRACEFUL_BOOTS_13638, GRACEFUL_BOOTS_13637).
-		put(GRACEFUL_HOOD_13668, GRACEFUL_HOOD_13667).
-		put(GRACEFUL_CAPE_13670, GRACEFUL_CAPE_13669).
-		put(GRACEFUL_TOP_13672, GRACEFUL_TOP_13671).
-		put(GRACEFUL_LEGS_13674, GRACEFUL_LEGS_13673).
-		put(GRACEFUL_GLOVES_13676, GRACEFUL_GLOVES_13675).
-		put(GRACEFUL_BOOTS_13678, GRACEFUL_BOOTS_13677).
-		put(GRACEFUL_HOOD_21063, GRACEFUL_HOOD_21061).
-		put(GRACEFUL_CAPE_21066, GRACEFUL_CAPE_21064).
-		put(GRACEFUL_TOP_21069, GRACEFUL_TOP_21067).
-		put(GRACEFUL_LEGS_21072, GRACEFUL_LEGS_21070).
-		put(GRACEFUL_GLOVES_21075, GRACEFUL_GLOVES_21073).
-		put(GRACEFUL_BOOTS_21078, GRACEFUL_BOOTS_21076).
+		put(ItemID.GRACEFUL_HOOD_WORN, ItemID.GRACEFUL_HOOD).
+		put(ItemID.GRACEFUL_CAPE_WORN, ItemID.GRACEFUL_CAPE).
+		put(ItemID.GRACEFUL_TOP_WORN, ItemID.GRACEFUL_TOP).
+		put(ItemID.GRACEFUL_LEGS_WORN, ItemID.GRACEFUL_LEGS).
+		put(ItemID.GRACEFUL_GLOVES_WORN, ItemID.GRACEFUL_GLOVES).
+		put(ItemID.GRACEFUL_BOOTS_WORN, ItemID.GRACEFUL_BOOTS).
+		put(ItemID.ZEAH_GRACEFUL_HOOD_ARCEUUS_WORN, ItemID.ZEAH_GRACEFUL_HOOD_ARCEUUS).
+		put(ItemID.ZEAH_GRACEFUL_CAPE_ARCEUUS_WORN, ItemID.ZEAH_GRACEFUL_CAPE_ARCEUUS).
+		put(ItemID.ZEAH_GRACEFUL_TOP_ARCEUUS_WORN, ItemID.ZEAH_GRACEFUL_TOP_ARCEUUS).
+		put(ItemID.ZEAH_GRACEFUL_LEGS_ARCEUUS_WORN, ItemID.ZEAH_GRACEFUL_LEGS_ARCEUUS).
+		put(ItemID.ZEAH_GRACEFUL_GLOVES_ARCEUUS_WORN, ItemID.ZEAH_GRACEFUL_GLOVES_ARCEUUS).
+		put(ItemID.ZEAH_GRACEFUL_BOOTS_ARCEUUS_WORN, ItemID.ZEAH_GRACEFUL_BOOTS_ARCEUUS).
+		put(ItemID.ZEAH_GRACEFUL_HOOD_PISCARILIUS_WORN, ItemID.ZEAH_GRACEFUL_HOOD_PISCARILIUS).
+		put(ItemID.ZEAH_GRACEFUL_CAPE_PISCARILIUS_WORN, ItemID.ZEAH_GRACEFUL_CAPE_PISCARILIUS).
+		put(ItemID.ZEAH_GRACEFUL_TOP_PISCARILIUS_WORN, ItemID.ZEAH_GRACEFUL_TOP_PISCARILIUS).
+		put(ItemID.ZEAH_GRACEFUL_LEGS_PISCARILIUS_WORN, ItemID.ZEAH_GRACEFUL_LEGS_PISCARILIUS).
+		put(ItemID.ZEAH_GRACEFUL_GLOVES_PISCARILIUS_WORN, ItemID.ZEAH_GRACEFUL_GLOVES_PISCARILIUS).
+		put(ItemID.ZEAH_GRACEFUL_BOOTS_PISCARILIUS_WORN, ItemID.ZEAH_GRACEFUL_BOOTS_PISCARILIUS).
+		put(ItemID.ZEAH_GRACEFUL_HOOD_LOVAKENGJ_WORN, ItemID.ZEAH_GRACEFUL_HOOD_LOVAKENGJ).
+		put(ItemID.ZEAH_GRACEFUL_CAPE_LOVAKENGJ_WORN, ItemID.ZEAH_GRACEFUL_CAPE_LOVAKENGJ).
+		put(ItemID.ZEAH_GRACEFUL_TOP_LOVAKENGJ_WORN, ItemID.ZEAH_GRACEFUL_TOP_LOVAKENGJ).
+		put(ItemID.ZEAH_GRACEFUL_LEGS_LOVAKENGJ_WORN, ItemID.ZEAH_GRACEFUL_LEGS_LOVAKENGJ).
+		put(ItemID.ZEAH_GRACEFUL_GLOVES_LOVAKENGJ_WORN, ItemID.ZEAH_GRACEFUL_GLOVES_LOVAKENGJ).
+		put(ItemID.ZEAH_GRACEFUL_BOOTS_LOVAKENGJ_WORN, ItemID.ZEAH_GRACEFUL_BOOTS_LOVAKENGJ).
+		put(ItemID.ZEAH_GRACEFUL_HOOD_SHAYZIEN_WORN, ItemID.ZEAH_GRACEFUL_HOOD_SHAYZIEN).
+		put(ItemID.ZEAH_GRACEFUL_CAPE_SHAYZIEN_WORN, ItemID.ZEAH_GRACEFUL_CAPE_SHAYZIEN).
+		put(ItemID.ZEAH_GRACEFUL_TOP_SHAYZIEN_WORN, ItemID.ZEAH_GRACEFUL_TOP_SHAYZIEN).
+		put(ItemID.ZEAH_GRACEFUL_LEGS_SHAYZIEN_WORN, ItemID.ZEAH_GRACEFUL_LEGS_SHAYZIEN).
+		put(ItemID.ZEAH_GRACEFUL_GLOVES_SHAYZIEN_WORN, ItemID.ZEAH_GRACEFUL_GLOVES_SHAYZIEN).
+		put(ItemID.ZEAH_GRACEFUL_BOOTS_SHAYZIEN_WORN, ItemID.ZEAH_GRACEFUL_BOOTS_SHAYZIEN).
+		put(ItemID.ZEAH_GRACEFUL_HOOD_HOSIDIUS_WORN, ItemID.ZEAH_GRACEFUL_HOOD_HOSIDIUS).
+		put(ItemID.ZEAH_GRACEFUL_CAPE_HOSIDIUS_WORN, ItemID.ZEAH_GRACEFUL_CAPE_HOSIDIUS).
+		put(ItemID.ZEAH_GRACEFUL_TOP_HOSIDIUS_WORN, ItemID.ZEAH_GRACEFUL_TOP_HOSIDIUS).
+		put(ItemID.ZEAH_GRACEFUL_LEGS_HOSIDIUS_WORN, ItemID.ZEAH_GRACEFUL_LEGS_HOSIDIUS).
+		put(ItemID.ZEAH_GRACEFUL_GLOVES_HOSIDIUS_WORN, ItemID.ZEAH_GRACEFUL_GLOVES_HOSIDIUS).
+		put(ItemID.ZEAH_GRACEFUL_BOOTS_HOSIDIUS_WORN, ItemID.ZEAH_GRACEFUL_BOOTS_HOSIDIUS).
+		put(ItemID.ZEAH_GRACEFUL_HOOD_KOUREND_WORN, ItemID.ZEAH_GRACEFUL_HOOD_KOUREND).
+		put(ItemID.ZEAH_GRACEFUL_CAPE_KOUREND_WORN, ItemID.ZEAH_GRACEFUL_CAPE_KOUREND).
+		put(ItemID.ZEAH_GRACEFUL_TOP_KOUREND_WORN, ItemID.ZEAH_GRACEFUL_TOP_KOUREND).
+		put(ItemID.ZEAH_GRACEFUL_LEGS_KOUREND_WORN, ItemID.ZEAH_GRACEFUL_LEGS_KOUREND).
+		put(ItemID.ZEAH_GRACEFUL_GLOVES_KOUREND_WORN, ItemID.ZEAH_GRACEFUL_GLOVES_KOUREND).
+		put(ItemID.ZEAH_GRACEFUL_BOOTS_KOUREND_WORN, ItemID.ZEAH_GRACEFUL_BOOTS_KOUREND).
+		put(ItemID.GRACEFUL_HOOD_SKILLCAPECOLOUR_WORN, ItemID.GRACEFUL_HOOD_SKILLCAPECOLOUR).
+		put(ItemID.GRACEFUL_CAPE_SKILLCAPECOLOUR_WORN, ItemID.GRACEFUL_CAPE_SKILLCAPECOLOUR).
+		put(ItemID.GRACEFUL_TOP_SKILLCAPECOLOUR_WORN, ItemID.GRACEFUL_TOP_SKILLCAPECOLOUR).
+		put(ItemID.GRACEFUL_LEGS_SKILLCAPECOLOUR_WORN, ItemID.GRACEFUL_LEGS_SKILLCAPECOLOUR).
+		put(ItemID.GRACEFUL_GLOVES_SKILLCAPECOLOUR_WORN, ItemID.GRACEFUL_GLOVES_SKILLCAPECOLOUR).
+		put(ItemID.GRACEFUL_BOOTS_SKILLCAPECOLOUR_WORN, ItemID.GRACEFUL_BOOTS_SKILLCAPECOLOUR).
+		put(ItemID.GRACEFUL_HOOD_HALLOWED_WORN, ItemID.GRACEFUL_HOOD_HALLOWED).
+		put(ItemID.GRACEFUL_CAPE_HALLOWED_WORN, ItemID.GRACEFUL_CAPE_HALLOWED).
+		put(ItemID.GRACEFUL_TOP_HALLOWED_WORN, ItemID.GRACEFUL_TOP_HALLOWED).
+		put(ItemID.GRACEFUL_LEGS_HALLOWED_WORN, ItemID.GRACEFUL_LEGS_HALLOWED).
+		put(ItemID.GRACEFUL_GLOVES_HALLOWED_WORN, ItemID.GRACEFUL_GLOVES_HALLOWED).
+		put(ItemID.GRACEFUL_BOOTS_HALLOWED_WORN, ItemID.GRACEFUL_BOOTS_HALLOWED).
+		put(ItemID.GRACEFUL_HOOD_TRAILBLAZER_WORN, ItemID.GRACEFUL_HOOD_TRAILBLAZER).
+		put(ItemID.GRACEFUL_CAPE_TRAILBLAZER_WORN, ItemID.GRACEFUL_CAPE_TRAILBLAZER).
+		put(ItemID.GRACEFUL_TOP_TRAILBLAZER_WORN, ItemID.GRACEFUL_TOP_TRAILBLAZER).
+		put(ItemID.GRACEFUL_LEGS_TRAILBLAZER_WORN, ItemID.GRACEFUL_LEGS_TRAILBLAZER).
+		put(ItemID.GRACEFUL_GLOVES_TRAILBLAZER_WORN, ItemID.GRACEFUL_GLOVES_TRAILBLAZER).
+		put(ItemID.GRACEFUL_BOOTS_TRAILBLAZER_WORN, ItemID.GRACEFUL_BOOTS_TRAILBLAZER).
+		put(ItemID.GRACEFUL_HOOD_ADVENTURER_WORN, ItemID.GRACEFUL_HOOD_ADVENTURER).
+		put(ItemID.GRACEFUL_CAPE_ADVENTURER_WORN, ItemID.GRACEFUL_CAPE_ADVENTURER).
+		put(ItemID.GRACEFUL_TOP_ADVENTURER_WORN, ItemID.GRACEFUL_TOP_ADVENTURER).
+		put(ItemID.GRACEFUL_LEGS_ADVENTURER_WORN, ItemID.GRACEFUL_LEGS_ADVENTURER).
+		put(ItemID.GRACEFUL_GLOVES_ADVENTURER_WORN, ItemID.GRACEFUL_GLOVES_ADVENTURER).
+		put(ItemID.GRACEFUL_BOOTS_ADVENTURER_WORN, ItemID.GRACEFUL_BOOTS_ADVENTURER).
+		put(ItemID.GRACEFUL_HOOD_WYRM_WORN, ItemID.GRACEFUL_HOOD_WYRM).
+		put(ItemID.GRACEFUL_CAPE_WYRM_WORN, ItemID.GRACEFUL_CAPE_WYRM).
+		put(ItemID.GRACEFUL_TOP_WYRM_WORN, ItemID.GRACEFUL_TOP_WYRM).
+		put(ItemID.GRACEFUL_LEGS_WYRM_WORN, ItemID.GRACEFUL_LEGS_WYRM).
+		put(ItemID.GRACEFUL_GLOVES_WYRM_WORN, ItemID.GRACEFUL_GLOVES_WYRM).
+		put(ItemID.GRACEFUL_BOOTS_WYRM_WORN, ItemID.GRACEFUL_BOOTS_WYRM).
 
-		put(MAX_CAPE_13342, MAX_CAPE).
+		put(ItemID.SKILLCAPE_MAX_WORN, ItemID.SKILLCAPE_MAX).
 
-		put(SPOTTED_CAPE_10073, SPOTTED_CAPE).
-		put(SPOTTIER_CAPE_10074, SPOTTIER_CAPE).
+		put(ItemID.HUNTING_LIGHT_CAPE_WORN, ItemID.HUNTING_LIGHT_CAPE).
+		put(ItemID.HUNTING_LIGHTER_CAPE_WORN, ItemID.HUNTING_LIGHTER_CAPE).
 
-		put(AGILITY_CAPET_13341, AGILITY_CAPET).
-		put(AGILITY_CAPE_13340, AGILITY_CAPE).
+		put(ItemID.SKILLCAPE_AGILITY_TRIMMED_WORN, ItemID.SKILLCAPE_AGILITY_TRIMMED).
+		put(ItemID.SKILLCAPE_AGILITY_WORN, ItemID.SKILLCAPE_AGILITY).
+
+		put(ItemID.HUNTING_CAMOFLAUGE_ROBE_WOOD_WORN, ItemID.HUNTING_CAMOFLAUGE_ROBE_WOOD).
+		put(ItemID.HUNTING_TROUSERS_WOOD_WORN, ItemID.HUNTING_TROUSERS_WOOD).
+		put(ItemID.HUNTING_CAMOFLAUGE_ROBE_JUNGLE_WORN, ItemID.HUNTING_CAMOFLAUGE_ROBE_JUNGLE).
+		put(ItemID.HUNTING_TROUSERS_JUNGLE_WORN, ItemID.HUNTING_TROUSERS_JUNGLE).
+		put(ItemID.HUNTING_CAMOFLAUGE_ROBE_DESERT_WORN, ItemID.HUNTING_CAMOFLAUGE_ROBE_DESERT).
+		put(ItemID.HUNTING_TROUSERS_DESERT_WORN, ItemID.HUNTING_TROUSERS_DESERT).
+		put(ItemID.HUNTING_CAMOFLAUGE_ROBE_POLAR_WORN, ItemID.HUNTING_CAMOFLAUGE_ROBE_POLAR).
+		put(ItemID.HUNTING_TROUSERS_POLAR_WORN, ItemID.HUNTING_TROUSERS_POLAR).
 		build();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
+	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
+		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
-		this.scheduledExecutorService = executor;
 		this.clientThread = clientThread;
+		this.itemClient = itemClient;
+		this.runeLiteConfig = runeLiteConfig;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
 		scheduledExecutorService.submit(this::loadStats);
@@ -166,7 +210,7 @@ public class ItemManager
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
+			.build(new CacheLoader<>()
 			{
 				@Override
 				public AsyncBufferedImage load(ImageKey key) throws Exception
@@ -175,22 +219,10 @@ public class ItemManager
 				}
 			});
 
-		itemCompositions = CacheBuilder.newBuilder()
-			.maximumSize(1024L)
-			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<Integer, ItemComposition>()
-			{
-				@Override
-				public ItemComposition load(Integer key) throws Exception
-				{
-					return client.getItemDefinition(key);
-				}
-			});
-
 		itemOutlines = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<OutlineKey, BufferedImage>()
+			.build(new CacheLoader<>()
 			{
 				@Override
 				public BufferedImage load(OutlineKey key) throws Exception
@@ -241,31 +273,6 @@ public class ItemManager
 		}
 	}
 
-
-	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			itemCompositions.invalidateAll();
-		}
-	}
-
-	@Subscribe
-	public void onPostItemComposition(PostItemComposition event)
-	{
-		itemCompositions.put(event.getItemComposition().getId(), event.getItemComposition());
-	}
-
-	/**
-	 * Invalidates internal item manager item composition cache (but not client item composition cache)
-	 * @see Client#getItemCompositionCache()
-	 */
-	public void invalidateItemCompositionCache()
-	{
-		itemCompositions.invalidateAll();
-	}
-
 	/**
 	 * Look up an item's price
 	 *
@@ -274,47 +281,76 @@ public class ItemManager
 	 */
 	public int getItemPrice(int itemID)
 	{
-		return getItemPrice(itemID, false);
+		return getItemPriceWithSource(itemID, runeLiteConfig.useWikiItemPrices());
 	}
 
 	/**
 	 * Look up an item's price
 	 *
 	 * @param itemID item id
-	 * @param ignoreUntradeableMap should the price returned ignore the {@link UntradeableItemMapping}
+	 * @param useWikiPrice use the actively traded/wiki price
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID, boolean ignoreUntradeableMap)
+	public int getItemPriceWithSource(int itemID, boolean useWikiPrice)
 	{
-		if (itemID == ItemID.COINS_995)
+		if (itemID == ItemID.COINS)
 		{
 			return 1;
 		}
-		if (itemID == ItemID.PLATINUM_TOKEN)
+		if (itemID == ItemID.PLATINUM)
 		{
 			return 1000;
 		}
 
-		if (!ignoreUntradeableMap)
+		ItemComposition itemComposition = getItemComposition(itemID);
+		if (itemComposition.getNote() != -1)
 		{
-			UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
-			if (p != null)
-			{
-				return getItemPrice(p.getPriceID()) * p.getQuantity();
-			}
+			itemID = itemComposition.getLinkedNoteId();
 		}
+		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
 		int price = 0;
-		for (int mappedID : ItemMapping.map(itemID))
+
+		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
+
+		if (mappedItems == null)
 		{
-			ItemPrice ip = itemPrices.get(mappedID);
+			final ItemPrice ip = itemPrices.get(itemID);
+
 			if (ip != null)
 			{
-				price += ip.getPrice();
+				price = useWikiPrice ? getWikiPrice(ip) : ip.getPrice();
+			}
+		}
+		else
+		{
+			for (final ItemMapping mappedItem : mappedItems)
+			{
+				price += getItemPriceWithSource(mappedItem.getTradeableItem(), useWikiPrice) * mappedItem.getQuantity();
 			}
 		}
 
 		return price;
+	}
+
+	/**
+	 * Get the wiki price for an item, with checks to try and avoid excessive price manipulation
+	 * @param itemPrice
+	 * @return
+	 */
+	public int getWikiPrice(ItemPrice itemPrice)
+	{
+		final int wikiPrice = itemPrice.getWikiPrice();
+		final int jagPrice = itemPrice.getPrice();
+		if (wikiPrice <= 0)
+		{
+			return jagPrice;
+		}
+		if (wikiPrice <= lowPriceThreshold)
+		{
+			return wikiPrice;
+		}
+		return wikiPrice < jagPrice * activePriceThreshold ? wikiPrice : jagPrice;
 	}
 
 	/**
@@ -323,16 +359,38 @@ public class ItemManager
 	 * @return item stats
 	 */
 	@Nullable
-	public ItemStats getItemStats(int itemId, boolean allowNote)
+	public ItemStats getItemStats(int itemId)
 	{
 		ItemComposition itemComposition = getItemComposition(itemId);
 
-		if (itemComposition == null || itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
+		if (itemComposition.getName() == null || itemComposition.getNote() != -1)
 		{
 			return null;
 		}
 
 		return itemStats.get(canonicalize(itemId));
+	}
+
+	/**
+	 * Look up an item's stats
+	 *
+	 * @param itemId item id
+	 * @return item stats
+	 * @deprecated See {@link #getItemStats(int)}
+	 */
+	@Nullable
+	@Deprecated
+	public net.runelite.http.api.item.ItemStats getItemStats(int itemId, boolean allowNote)
+	{
+		ItemComposition itemComposition = getItemComposition(itemId);
+
+		if (itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
+		{
+			return null;
+		}
+
+		var stats = itemStats.get(canonicalize(itemId));
+		return stats != null ? stats.toHttpApiFormat() : null;
 	}
 
 	/**
@@ -363,10 +421,10 @@ public class ItemManager
 	 * @param itemId item id
 	 * @return item composition
 	 */
+	@Nonnull
 	public ItemComposition getItemComposition(int itemId)
 	{
-		assert client.isClientThread() : "getItemComposition must be called on client thread";
-		return itemCompositions.getUnchecked(itemId);
+		return client.getItemDefinition(itemId);
 	}
 
 	/**
@@ -397,7 +455,7 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		AsyncBufferedImage img = new AsyncBufferedImage(clientThread, Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
@@ -405,13 +463,13 @@ public class ItemManager
 				return false;
 			}
 			SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
-				stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
+				stackable ? ItemQuantityMode.ALWAYS : ItemQuantityMode.NEVER, false, CLIENT_DEFAULT_ZOOM);
 			if (sprite == null)
 			{
 				return false;
 			}
 			sprite.toBufferedImage(img);
-			img.changed();
+			img.loaded();
 			return true;
 		});
 		return img;
@@ -465,7 +523,7 @@ public class ItemManager
 	 */
 	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
 	{
-		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, false, CLIENT_DEFAULT_ZOOM);
 		return itemSprite.toBufferedOutline(outlineColor);
 	}
 

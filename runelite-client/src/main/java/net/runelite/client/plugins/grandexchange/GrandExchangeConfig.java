@@ -27,15 +27,18 @@ package net.runelite.client.plugins.grandexchange;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
-@ConfigGroup("grandexchange")
+@ConfigGroup(GrandExchangeConfig.CONFIG_GROUP)
 public interface GrandExchangeConfig extends Config
 {
+	String CONFIG_GROUP = "grandexchange";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "quickLookup",
-		name = "Hotkey lookup (Alt + Left click)",
-		description = "Configures whether to enable the hotkey lookup for ge searches"
+		name = "Hotkey lookup (ALT + left-click)",
+		description = "Configures whether to enable the hotkey lookup for GE searches."
 	)
 	default boolean quickLookup()
 	{
@@ -45,30 +48,41 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "enableNotifications",
-		name = "Enable Notifications",
-		description = "Configures whether to enable notifications when an offer updates"
+		name = "Notify on offer update",
+		description = "Configures whether to enable notifications when an offer updates."
 	)
-	default boolean enableNotifications()
+	default Notification enableNotifications()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "notifyOnOfferComplete",
+		name = "Notify on offer complete",
+		description = "Configures whether to enable notifications when an offer completes."
+	)
+	default Notification notifyOnOfferComplete()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "showActivelyTradedPrice",
+		name = "Enable actively traded prices",
+		description = "Shows the actively traded price on the GE buy interface, sourced from the RuneScape wiki."
+	)
+	default boolean showActivelyTradedPrice()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price at the GE"
-	)
-	default boolean enableOsbPrices()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		position = 4,
 		keyName = "enableGeLimits",
-		name = "Enable GE Limits on GE",
-		description = "Shows the GE Limits on the GE"
+		name = "Enable GE limits on GE",
+		description = "Shows the GE limits on the GE."
 	)
 	default boolean enableGELimits()
 	{
@@ -77,9 +91,21 @@ public interface GrandExchangeConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "enableGELimitReset",
+		name = "Enable GE limit reset timer",
+		description = "Shows when GE trade limits reset (H:MM)."
+	)
+
+	default boolean enableGELimitReset()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "showTotal",
-		name = "Show grand exchange total",
-		description = "Show grand exchange total"
+		name = "Show GE total",
+		description = "Display the total value of all trades at the top of the GE interface."
 	)
 	default boolean showTotal()
 	{
@@ -87,13 +113,38 @@ public interface GrandExchangeConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "showExact",
 		name = "Show exact total value",
-		description = "Show exact total value"
+		description = "When enabled along with the ‘Show GE total’ option, the unabbreviated value will be displayed."
 	)
 	default boolean showExact()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "highlightSearchMatch",
+		name = "Highlight search match",
+		description = "Highlights the search match with an underline."
+	)
+	default boolean highlightSearchMatch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "geSearchMode",
+		name = "Search mode",
+		description = "The search mode to use for the GE:<br>"
+			+ "Default - Matches exact text only<br>"
+			+ "Fuzzy Only - Matches inexact text such as 'sara sword'<br>"
+			+ "Fuzzy Fallback - Uses default search, falling back to fuzzy search if no results were found"
+	)
+	default GrandExchangeSearchMode geSearchMode()
+	{
+		return GrandExchangeSearchMode.DEFAULT;
 	}
 }

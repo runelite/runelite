@@ -24,24 +24,36 @@
  */
 package net.runelite.api;
 
+import java.awt.Shape;
+
 /**
  * Represents one or two walls on a tile
  */
 public interface WallObject extends TileObject
 {
 	/**
-	 * A bitfield with the orientation of a wall
-	 * 1 = East
+	 * A bitfield with the orientation of the first wall
+	 * 1 = West
 	 * 2 = North
-	 * 4 = West
+	 * 4 = East
 	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationA();
 
 	/**
-	 * A bitfield containing the orientation of the second wall on this tile,
-	 * or 0 if there is no second wall.
-	 * @see #getOrientationA
+	 * A bitfield with the orientation of the second wall
+	 * 1 = West
+	 * 2 = North
+	 * 4 = East
+	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationB();
 
@@ -54,6 +66,15 @@ public interface WallObject extends TileObject
 	 * }</pre>
 	 */
 	int getConfig();
+
+	/**
+	 * Gets the convex hull of the objects model.
+	 *
+	 * @return the convex hull
+	 * @see net.runelite.api.model.Jarvis
+	 */
+	Shape getConvexHull();
+	Shape getConvexHull2();
 
 	Renderable getRenderable1();
 	Renderable getRenderable2();

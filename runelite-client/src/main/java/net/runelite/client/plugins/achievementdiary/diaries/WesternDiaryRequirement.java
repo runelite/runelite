@@ -45,9 +45,9 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MINING, 15));
 		add("Claim any Chompy bird hat from Rantz.",
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
-		add("Have Brimstail teleport you to the Essence mine.",
+		add("Have Brimstail teleport you to the Essence Mine.",
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
-		add("Fletch an Oak shortbow from the Gnome Stronghold.",
+		add("Fletch an Oak Shortbow in the Gnome Stronghold.",
 			new SkillRequirement(Skill.FLETCHING, 20));
 
 		// MEDIUM
@@ -65,7 +65,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Chop and burn some teak logs on Ape Atoll.",
 			new SkillRequirement(Skill.WOODCUTTING, 35),
 			new SkillRequirement(Skill.FIREMAKING, 35),
-			new QuestRequirement(Quest.MONKEY_MADNESS_I));
+			new QuestRequirement(Quest.MONKEY_MADNESS_I, true));
 		add("Complete an intermediate game of Pest Control.",
 			new CombatLevelRequirement(70));
 		add("Travel to the Feldip Hills by Gnome Glider.",
@@ -78,7 +78,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Make a Chocolate Bomb at the Grand Tree.",
 			new SkillRequirement(Skill.COOKING, 42));
 		add("Complete a delivery for the Gnome Restaurant.",
-			new SkillRequirement(Skill.COOKING, 42));
+			new SkillRequirement(Skill.COOKING, 29));
 		add("Turn your small crystal seed into a Crystal saw.",
 			new QuestRequirement(Quest.THE_EYES_OF_GLOUPHRIE));
 		add("Mine some Gold ore underneath the Grand Tree.",
@@ -110,7 +110,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.REGICIDE));
 		add("Check the health of your Palm tree in Lletya.",
 			new SkillRequirement(Skill.FARMING, 68),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I, true));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_I, true));
 		add("Claim a Chompy bird hat from Rantz after registering at least 300 kills.",
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Build an Isafdar painting in your POH Quest hall.",
@@ -122,13 +122,12 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MAGIC, 64),
 			new QuestRequirement(Quest.RECIPE_FOR_DISASTER, true));
 		add("Pickpocket a Gnome.",
-			new SkillRequirement(Skill.THIEVING, 75),
-			new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
+			new SkillRequirement(Skill.THIEVING, 75));
 
 		// ELITE
-		add("Fletch a Magic Longbow in the Elven lands.",
+		add("Fletch a Magic Longbow in Tirannwn.",
 			new SkillRequirement(Skill.FLETCHING, 85),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_I));
 		add("Kill the Thermonuclear Smoke devil (Does not require task).",
 			new SkillRequirement(Skill.SLAYER, 93));
 		add("Have Prissy Scilla protect your Magic tree.",
@@ -140,6 +139,6 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Pickpocket an Elf.",
 			new SkillRequirement(Skill.THIEVING, 85),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I, true));
+			new QuestRequirement(Quest.MOURNINGS_END_PART_I, true));
 	}
 }

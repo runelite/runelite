@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.29-SNAPSHOT</version>
+		<version>1.11.12-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cache</artifactId>
@@ -38,16 +38,10 @@
 	<properties>
 		<cache.version>165</cache.version>
 		
-		<antlr4.version>4.6</antlr4.version>
+		<antlr4.version>4.13.1</antlr4.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>http-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -57,6 +51,11 @@
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 			<version>1.10</version>
@@ -64,11 +63,6 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-buffer</artifactId>
-			<version>4.1.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -85,17 +79,16 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.12</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -154,6 +147,20 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Delombok after generating ANTLR sources, if they are not available
+			delombok fails due to the missing classes -->
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- Include generated ANTLR sources in javadoc generation -->
+					<sourcepath>${project.build.directory}/delombok;${project.build.directory}/generated-sources/antlr4</sourcepath>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

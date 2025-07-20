@@ -24,14 +24,27 @@
  */
 package net.runelite.client;
 
+import com.google.common.base.Strings;
+import com.google.common.math.DoubleMath;
+import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.binder.ConstantBindingBuilder;
 import com.google.inject.name.Names;
+import com.google.inject.util.Providers;
 import java.applet.Applet;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
+import java.util.function.Supplier;
+import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
+import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
@@ -44,41 +57,86 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.rs.ClientLoader;
-import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@AllArgsConstructor
 public class RuneLiteModule extends AbstractModule
 {
-	private final ClientUpdateCheckMode updateCheckMode;
+	private final OkHttpClient bootupHttpClient;
+	private final Supplier<Client> clientLoader;
+	private final RuntimeConfigLoader configLoader;
 	private final boolean developerMode;
-
-	public RuneLiteModule(final ClientUpdateCheckMode updateCheckMode, final boolean developerMode)
-	{
-		this.updateCheckMode = updateCheckMode;
-		this.developerMode = developerMode;
-	}
+	private final boolean safeMode;
+	private final boolean disableTelemetry;
+	private final File sessionfile;
+	private final String profile;
+	private final boolean insecureWriteCredentials;
+	private final boolean noupdate;
 
 	@Override
 	protected void configure()
 	{
-		bindConstant().annotatedWith(Names.named("updateCheckMode")).to(updateCheckMode);
+		Properties properties = RuneLiteProperties.getProperties();
+		Map<Object, Object> props = new HashMap<>(properties);
+
+		RuntimeConfig runtimeConfig = configLoader.get();
+		if (runtimeConfig != null && runtimeConfig.getProps() != null)
+		{
+			props.putAll(runtimeConfig.getProps());
+		}
+
+		// bind runelite.properties & runtime config
+		for (Map.Entry<?, ?> entry : props.entrySet())
+		{
+			String key = (String) entry.getKey();
+			if (entry.getValue() instanceof String)
+			{
+				ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(key));
+				binder.to((String) entry.getValue());
+			}
+			else if (entry.getValue() instanceof Double)
+			{
+				ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(key));
+				if (DoubleMath.isMathematicalInteger((double) entry.getValue()))
+				{
+					binder.to((int) (double) entry.getValue());
+				}
+				else
+				{
+					binder.to((double) entry.getValue());
+				}
+			}
+			else if (entry.getValue() instanceof Boolean)
+			{
+				ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(key));
+				binder.to((boolean) entry.getValue());
+			}
+		}
+
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
+		bindConstant().annotatedWith(Names.named("safeMode")).to(safeMode);
+		bindConstant().annotatedWith(Names.named("disableTelemetry")).to(disableTelemetry);
+		bind(File.class).annotatedWith(Names.named("sessionfile")).toInstance(sessionfile);
+		bind(String.class).annotatedWith(Names.named("profile")).toProvider(Providers.of(profile));
+		bindConstant().annotatedWith(Names.named("insecureWriteCredentials")).to(insecureWriteCredentials);
+		bindConstant().annotatedWith(Names.named("noupdate")).to(noupdate);
+		bind(File.class).annotatedWith(Names.named("runeLiteDir")).toInstance(RuneLite.RUNELITE_DIR);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
-		bind(OkHttpClient.class).toInstance(RuneLiteAPI.CLIENT);
+		bind(RuntimeConfigLoader.class).toInstance(configLoader);
+		bind(RuntimeConfigRefresher.class).asEagerSingleton();
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
 		bind(Scheduler.class);
 		bind(PluginManager.class);
-		bind(RuneLiteProperties.class);
 		bind(SessionManager.class);
+
+		bind(Gson.class).toInstance(RuneLiteAPI.GSON);
 
 		bind(Callbacks.class).to(Hooks.class);
 
@@ -88,24 +146,27 @@ public class RuneLiteModule extends AbstractModule
 		bind(EventBus.class)
 			.annotatedWith(Names.named("Deferred EventBus"))
 			.to(DeferredEventBus.class);
-
-		bind(Logger.class)
-			.annotatedWith(Names.named("Core Logger"))
-			.toInstance(LoggerFactory.getLogger(RuneLite.class));
 	}
 
 	@Provides
 	@Singleton
-	Applet provideApplet(ClientLoader clientLoader)
+	Applet provideApplet(Client client)
 	{
-		return clientLoader.load();
+		return (Applet) client;
 	}
 
 	@Provides
 	@Singleton
-	Client provideClient(@Nullable Applet applet)
+	Client provideClient()
 	{
-		return applet instanceof Client ? (Client) applet : null;
+		return clientLoader.get();
+	}
+
+	@Provides
+	@Singleton
+	RuntimeConfig provideRuntimeConfig()
+	{
+		return configLoader.get();
 	}
 
 	@Provides
@@ -120,5 +181,85 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+	OkHttpClient provideHttpClient(Client client)
+	{
+		return bootupHttpClient.newBuilder()
+			.addInterceptor(chain ->
+			{
+				if (client.isClientThread())
+				{
+					throw new IOException("Blocking network calls are not allowed on the client thread");
+				}
+				if (SwingUtilities.isEventDispatchThread())
+				{
+					throw new IOException("Blocking network calls are not allowed on the event dispatch thread");
+				}
+				if (client.getEnvironment() != 0)
+				{
+					HttpUrl url = chain.request().url();
+					for (String domain : RuneLiteProperties.getJagexBlockedDomains())
+					{
+						if (url.host().endsWith(domain))
+						{
+							throw new IOException("Network call to " + url + " blocked outside of LIVE environment");
+						}
+					}
+				}
+				return chain.proceed(chain.request());
+			})
+			.build();
+	}
+
+	@Provides
+	@Named("runelite.api.base")
+	HttpUrl provideApiBase(@Named("runelite.api.base") String s)
+	{
+		final String prop = System.getProperty("runelite.http-service.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.session")
+	HttpUrl provideSession(@Named("runelite.session") String s)
+	{
+		final String prop = System.getProperty("runelite.session.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.static.base")
+	HttpUrl provideStaticBase(@Named("runelite.static.base") String s)
+	{
+		final String prop = System.getProperty("runelite.static.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.ws")
+	HttpUrl provideWs(@Named("runelite.ws") String s)
+	{
+		final String prop = System.getProperty("runelite.ws.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.pluginhub.url")
+	HttpUrl providePluginHubBase(@Named("runelite.pluginhub.url") String s)
+	{
+		return HttpUrl.get(System.getProperty("runelite.pluginhub.url", s));
+	}
+
+	@Provides
+	@Singleton
+	TelemetryClient provideTelemetry(
+		OkHttpClient okHttpClient,
+		Gson gson,
+		@Named("runelite.api.base") HttpUrl apiBase)
+	{
+		return disableTelemetry ? null : new TelemetryClient(okHttpClient, gson, apiBase);
 	}
 }

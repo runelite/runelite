@@ -27,16 +27,20 @@
 package net.runelite.client.plugins.devtools;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Collection;
+import java.lang.reflect.Field;
+import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
+import java.util.stream.Stream;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -45,31 +49,64 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.ClientUI;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @Slf4j
-class WidgetInspector extends JFrame
+@Singleton
+class WidgetInspector extends DevToolsFrame
 {
+	private static final Map<Integer, String> widgetNames = new HashMap<>();
+
+	static final Color SELECTED_WIDGET_COLOR = Color.CYAN;
+	private static final float SELECTED_WIDGET_HUE;
+
+	static
+	{
+		float[] hsb = new float[3];
+		Color.RGBtoHSB(SELECTED_WIDGET_COLOR.getRed(), SELECTED_WIDGET_COLOR.getGreen(), SELECTED_WIDGET_COLOR.getBlue(), hsb);
+		SELECTED_WIDGET_HUE = hsb[0];
+	}
+
 	private final Client client;
 	private final ClientThread clientThread;
 	private final DevToolsConfig config;
-	private final DevToolsOverlay overlay;
-	private final DevToolsPlugin plugin;
+	private final Provider<WidgetInspectorOverlay> overlay;
+	private final OverlayManager overlayManager;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
 	private final JCheckBox alwaysOnTop;
+	private final JCheckBox hideHidden;
 
-	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
+	private DefaultMutableTreeNode root;
+
+	@Getter
+	private Widget selectedWidget;
+
+	private Widget picker = null;
+
+	@Getter
+	private boolean pickerSelected = false;
 
 	@Inject
 	private WidgetInspector(
@@ -78,31 +115,19 @@ class WidgetInspector extends JFrame
 		WidgetInfoTableModel infoTableModel,
 		DevToolsConfig config,
 		EventBus eventBus,
-		DevToolsOverlay overlay,
-		DevToolsPlugin plugin)
+		Provider<WidgetInspectorOverlay> overlay,
+		OverlayManager overlayManager)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.infoTableModel = infoTableModel;
 		this.config = config;
 		this.overlay = overlay;
-		this.plugin = plugin;
+		this.overlayManager = overlayManager;
 
 		eventBus.register(this);
 
 		setTitle("RuneLite Widget Inspector");
-		setIconImage(ClientUI.ICON);
-
-		// Reset highlight on close
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				close();
-				plugin.getWidgetInspector().setActive(false);
-			}
-		});
 
 		setLayout(new BorderLayout());
 
@@ -116,27 +141,18 @@ class WidgetInspector extends JFrame
 			{
 				WidgetTreeNode node = (WidgetTreeNode) selected;
 				Widget widget = node.getWidget();
-				overlay.setWidget(widget);
-				overlay.setItemIndex(widget.getItemId());
-				refreshInfo();
-				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
-			}
-			else if (selected instanceof WidgetItemNode)
-			{
-				WidgetItemNode node = (WidgetItemNode) selected;
-				overlay.setItemIndex(node.getWidgetItem().getIndex());
-				log.debug("Set item index to {}", node.getWidgetItem().getIndex());
+				setSelectedWidget(widget, false);
 			}
 		});
 
 		final JScrollPane treeScrollPane = new JScrollPane(widgetTree);
-		treeScrollPane.setPreferredSize(new Dimension(200, 400));
+		treeScrollPane.setPreferredSize(new Dimension(400, 800));
 
 
 		final JTable widgetInfo = new JTable(infoTableModel);
 
 		final JScrollPane infoScrollPane = new JScrollPane(widgetInfo);
-		infoScrollPane.setPreferredSize(new Dimension(400, 400));
+		infoScrollPane.setPreferredSize(new Dimension(600, 800));
 
 
 		final JPanel bottomPanel = new JPanel();
@@ -151,15 +167,20 @@ class WidgetInspector extends JFrame
 		onConfigChanged(null);
 		bottomPanel.add(alwaysOnTop);
 
+		hideHidden = new JCheckBox("Hide hidden");
+		hideHidden.setSelected(true);
+		hideHidden.addItemListener(ev -> refreshWidgets());
+		bottomPanel.add(hideHidden);
+
 		final JButton revalidateWidget = new JButton("Revalidate");
 		revalidateWidget.addActionListener(ev -> clientThread.invokeLater(() ->
 		{
-			if (overlay.getWidget() == null)
+			if (selectedWidget == null)
 			{
 				return;
 			}
 
-			overlay.getWidget().revalidate();
+			selectedWidget.revalidate();
 		}));
 		bottomPanel.add(revalidateWidget);
 
@@ -182,10 +203,11 @@ class WidgetInspector extends JFrame
 		clientThread.invokeLater(() ->
 		{
 			Widget[] rootWidgets = client.getWidgetRoots();
-			DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+			root = new DefaultMutableTreeNode();
 
-			overlay.setWidget(null);
-			overlay.setItemIndex(-1);
+			Widget wasSelectedWidget = selectedWidget;
+
+			selectedWidget = null;
 
 			for (Widget widget : rootWidgets)
 			{
@@ -198,17 +220,15 @@ class WidgetInspector extends JFrame
 
 			SwingUtilities.invokeLater(() ->
 			{
-				overlay.setWidget(null);
-				overlay.setItemIndex(-1);
-				refreshInfo();
 				widgetTree.setModel(new DefaultTreeModel(root));
+				setSelectedWidget(wasSelectedWidget, true);
 			});
 		});
 	}
 
 	private DefaultMutableTreeNode addWidget(String type, Widget widget)
 	{
-		if (widget == null || widget.isHidden())
+		if (widget == null || (hideHidden.isSelected() && widget.isHidden()))
 		{
 			return null;
 		}
@@ -254,55 +274,265 @@ class WidgetInspector extends JFrame
 			}
 		}
 
-		Collection<WidgetItem> items = widget.getWidgetItems();
-		if (items != null)
-		{
-			for (WidgetItem item : items)
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				node.add(new WidgetItemNode(item));
-			}
-		}
-
 		return node;
 	}
 
-	private void refreshInfo()
+	private void setSelectedWidget(Widget widget, boolean updateTree)
 	{
-		infoTableModel.setWidget(overlay.getWidget());
+		infoTableModel.setWidget(widget);
+
+		if (this.selectedWidget == widget)
+		{
+			return;
+		}
+
+		this.selectedWidget = widget;
+
+		if (root == null || !updateTree)
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			Stack<Widget> treePath = new Stack<>();
+			for (Widget w = widget; w != null; w = w.getParent())
+			{
+				treePath.push(w);
+			}
+
+			DefaultMutableTreeNode node = root;
+			deeper:
+			while (!treePath.empty())
+			{
+				Widget w = treePath.pop();
+				for (Enumeration<?> it = node.children(); it.hasMoreElements(); )
+				{
+					WidgetTreeNode inner = (WidgetTreeNode) it.nextElement();
+					if (inner.getWidget().getId() == w.getId() && inner.getWidget().getIndex() == w.getIndex())
+					{
+						node = inner;
+						continue deeper;
+					}
+				}
+			}
+
+			final DefaultMutableTreeNode fnode = node;
+			SwingUtilities.invokeLater(() ->
+			{
+				widgetTree.getSelectionModel().clearSelection();
+				widgetTree.getSelectionModel().addSelectionPath(new TreePath(fnode.getPath()));
+			});
+		});
 	}
 
-	static WidgetInfo getWidgetInfo(int packedId)
+	static String getWidgetName(int componentId)
 	{
-		if (widgetIdMap.isEmpty())
+		if (widgetNames.isEmpty())
 		{
-			//Initialize map here so it doesn't create the index
+			//Initialize map here, so it doesn't create the index
 			//until it's actually needed.
-			WidgetInfo[] widgets = WidgetInfo.values();
-			for (WidgetInfo w : widgets)
+			try
 			{
-				widgetIdMap.put(w.getPackedId(), w);
+				for (Class<?> innerClass : InterfaceID.class.getDeclaredClasses())
+				{
+					for (Field field : innerClass.getDeclaredFields())
+					{
+						int id = field.getInt(null);
+						String name = innerClass.getSimpleName() + "." + field.getName();
+						widgetNames.put(id, name);
+					}
+				}
+			}
+			catch (IllegalAccessException ex)
+			{
+				log.error("error setting up widget names", ex);
 			}
 		}
 
-		return widgetIdMap.get(packedId);
+		return widgetNames.get(componentId);
 	}
 
+	@Override
 	public void open()
 	{
-		setVisible(true);
-		toFront();
-		repaint();
+		super.open();
+		overlayManager.add(this.overlay.get());
+		clientThread.invokeLater(this::addPickerWidget);
 	}
 
+	@Override
 	public void close()
 	{
-		overlay.setWidget(null);
-		overlay.setItemIndex(-1);
-		setVisible(false);
+		overlayManager.remove(this.overlay.get());
+		clientThread.invokeLater(this::removePickerWidget);
+		setSelectedWidget(null, false);
+		super.close();
+	}
+
+	private void removePickerWidget()
+	{
+		if (picker == null)
+		{
+			return;
+		}
+
+		Widget parent = picker.getParent();
+		if (parent == null)
+		{
+			return;
+		}
+
+		Widget[] children = parent.getChildren();
+		if (children == null || children.length <= picker.getIndex() || children[picker.getIndex()] != picker)
+		{
+			return;
+		}
+
+		children[picker.getIndex()] = null;
+	}
+
+	private void addPickerWidget()
+	{
+		removePickerWidget();
+
+		int x = 10, y = 2;
+		Widget parent = client.getWidget(InterfaceID.Orbs.UNIVERSE);
+		if (parent == null)
+		{
+			Widget[] roots = client.getWidgetRoots();
+
+			parent = Stream.of(roots)
+				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
+				.sorted(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
+					.reversed()
+					.thenComparingInt(Widget::getId)
+					.reversed())
+				.findFirst().get();
+			x = 4;
+			y = 4;
+		}
+
+		picker = parent.createChild(-1, WidgetType.GRAPHIC);
+
+		log.info("Picker is {}.{} [{}]", WidgetUtil.componentToInterface(picker.getId()), WidgetUtil.componentToId(picker.getId()), picker.getIndex());
+
+		picker.setSpriteId(SpriteID.OptionsIcons.MOBILE_FINGER_ON_INTERFACE);
+		picker.setOriginalWidth(15);
+		picker.setOriginalHeight(17);
+		picker.setOriginalX(x);
+		picker.setOriginalY(y);
+		picker.revalidate();
+		picker.setTargetVerb("Select");
+		picker.setName("Pick");
+		picker.setClickMask(WidgetConfig.USE_WIDGET);
+		picker.setNoClickThrough(true);
+		picker.setOnTargetEnterListener((JavaScriptCallback) ev ->
+		{
+			pickerSelected = true;
+			picker.setOpacity(30);
+			client.setAllWidgetsAreOpTargetable(true);
+		});
+		picker.setOnTargetLeaveListener((JavaScriptCallback) ev -> onPickerDeselect());
+	}
+
+	private void onPickerDeselect()
+	{
+		client.setAllWidgetsAreOpTargetable(false);
+		picker.setOpacity(0);
+		pickerSelected = false;
+	}
+
+	@Subscribe
+	private void onMenuOptionClicked(MenuOptionClicked ev)
+	{
+		if (!pickerSelected)
+		{
+			return;
+		}
+
+		onPickerDeselect();
+		client.setWidgetSelected(false);
+		ev.consume();
+
+		Widget target = getWidgetForMenuOption(ev.getMenuAction(), ev.getParam0(), ev.getParam1());
+		if (target == null)
+		{
+			return;
+		}
+
+		setSelectedWidget(target, true);
+	}
+
+	@Subscribe
+	private void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!pickerSelected)
+		{
+			return;
+		}
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		for (int i = 0; i < menuEntries.length; i++)
+		{
+			MenuEntry entry = menuEntries[i];
+			if (entry.getType() != MenuAction.WIDGET_TARGET_ON_WIDGET)
+			{
+				continue;
+			}
+			String name = WidgetUtil.componentToInterface(entry.getParam1()) + "." + WidgetUtil.componentToId(entry.getParam1());
+
+			if (entry.getParam0() != -1)
+			{
+				name += " [" + entry.getParam0() + "]";
+			}
+
+			Color color = colorForWidget(i, menuEntries.length);
+
+			entry.setTarget(ColorUtil.wrapWithColorTag(name, color));
+		}
+	}
+
+	Color colorForWidget(int index, int length)
+	{
+		float h = SELECTED_WIDGET_HUE + .1f + (.8f / length) * index;
+
+		return Color.getHSBColor(h, 1, 1);
+	}
+
+	Widget getWidgetForMenuOption(MenuAction type, int param0, int param1)
+	{
+		if (type == MenuAction.WIDGET_TARGET_ON_WIDGET)
+		{
+			Widget w = client.getWidget(param1);
+			if (param0 != -1)
+			{
+				w = w.getChild(param0);
+			}
+
+			return w;
+		}
+
+		return null;
+	}
+
+	public static String getWidgetIdentifier(Widget widget)
+	{
+		int id = widget.getId();
+		String str = WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
+
+		if (widget.getIndex() != -1)
+		{
+			str += "[" + widget.getIndex() + "]";
+		}
+
+		var name = getWidgetName(id);
+		if (name != null)
+		{
+			str += " " + name;
+		}
+
+		return str;
 	}
 }

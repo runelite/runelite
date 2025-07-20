@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
 import net.runelite.api.widgets.Widget;
 
 public interface ScriptEvent
@@ -40,19 +41,54 @@ public interface ScriptEvent
 	String NAME = "event_opbase";
 
 	/**
-	 * Gets the widget of the event.
-	 *
-	 * @return the widget
-	 * @see net.runelite.api.widgets.Widget
+	 * Gets the widget the {@link #WIDGET_ID} and {@link #WIDGET_INDEX} args
+	 * are substituted with
 	 */
 	Widget getSource();
 
 	/**
-	 * Gets the menu index of the event
+	 * Sets the widget the {@link #WIDGET_ID} and {@link #WIDGET_INDEX} args
+	 * are substituted with. This is useful for running widget listeners
 	 *
-	 * @return the index
+	 * @see Widget#getOnLoadListener()
+	 */
+	ScriptEvent setSource(Widget widget);
+
+	/**
+	 * Gets the {@link Widget} target. This is only used for the drag complete listener
+	 * @see Widget#setOnDragCompleteListener(Object...)
+	 * @return
+	 */
+	@Nullable
+	Widget getTarget();
+
+	/**
+	 * Sets the {@link Widget} target. This is only used for the drag complete listener.
+	 * @param target
+	 * @see Widget#setOnDragCompleteListener(Object...)
+	 * @return
+	 */
+	ScriptEvent setTarget(Widget target);
+
+	/**
+	 * Arguments passed to the script. Index 0 is the script being run and is not an argument.
+	 * @return
+	 */
+	Object[] getArguments();
+
+	/**
+	 * Gets the menu op of the event
+	 *
+	 * @return the menu op
 	 */
 	int getOp();
+
+	/**
+	 * Set the menu op of the event
+	 *
+	 * @param op
+	 */
+	ScriptEvent setOp(int op);
 
 	/**
 	 * Gets the target of the menu option
@@ -61,4 +97,35 @@ public interface ScriptEvent
 	 * @see net.runelite.api.events.MenuOptionClicked
 	 */
 	String getOpbase();
+
+	/**
+	 * Parent relative x coordinate for mouse related events
+	 */
+	int getMouseX();
+
+	/**
+	 * Parent relative y coordinate for mouse related events
+	 */
+	int getMouseY();
+
+	/**
+	 * Jagex typed keycode
+	 *
+	 * @return
+	 */
+	int getTypedKeyCode();
+
+	/**
+	 * Get the typed character, ascii.
+	 *
+	 * @return
+	 */
+	int getTypedKeyChar();
+
+	/**
+	 * Executes a cs2 script specified by this event
+	 *
+	 * This method must be ran on the client thread and is not reentrant
+	 */
+	void run();
 }

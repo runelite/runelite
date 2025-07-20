@@ -30,25 +30,32 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Minimap",
-	description = "Customize the color of minimap dots",
-	tags = {"items", "npcs", "players"}
+	description = "Customize the color of minimap dots, hide the minimap, and zoom",
+	tags = {"items", "npcs", "players", "zoom"}
 )
 public class MinimapPlugin extends Plugin
 {
-	private static final int NUM_MAPDOTS = 6;
+	private static final int DOT_ITEM = 0;
+	private static final int DOT_NPC = 1;
+	private static final int DOT_PLAYER = 2;
+	private static final int DOT_FRIEND = 3;
+	private static final int DOT_TEAM = 4;
+	private static final int DOT_FRIENDSCHAT = 5;
+	private static final int DOT_CLAN = 6;
 
 	@Inject
 	private Client client;
@@ -65,24 +72,31 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
+		client.setMinimapZoom(config.zoom());
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
+		client.setMinimapZoom(false);
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
+		var state = event.getGameState();
+		if (state == GameState.STARTING)
+		{
+			originalDotSprites = null;
+		}
+		else if (state == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
 			storeOriginalDots();
 			replaceMapDots();
@@ -92,7 +106,7 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals("minimap"))
+		if (!event.getGroup().equals(MinimapConfig.GROUP))
 		{
 			return;
 		}
@@ -102,33 +116,42 @@ public class MinimapPlugin extends Plugin
 			updateMinimapWidgetVisibility(config.hideMinimap());
 			return;
 		}
+		else if (event.getKey().equals("zoom"))
+		{
+			client.setMinimapZoom(config.zoom());
+			return;
+		}
 
+		restoreOriginalDots();
 		replaceMapDots();
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
+		{
+			updateMinimapWidgetVisibility(config.hideMinimap());
+		}
 	}
 
 	private void updateMinimapWidgetVisibility(boolean enable)
 	{
-		final Widget resizableStonesWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET);
+		final Widget resizableStonesWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MAP_CONTAINER);
 
 		if (resizableStonesWidget != null)
 		{
 			resizableStonesWidget.setHidden(enable);
 		}
 
-		final Widget resizableNormalWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_WIDGET);
+		final Widget resizableNormalWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MAP_CONTAINER);
 
 		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
 		{
 			for (Widget widget : resizableNormalWidget.getStaticChildren())
 			{
-				if (widget.getId() != WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON.getId() &&
-					widget.getId() != WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON.getId())
+				if (widget.getId() != InterfaceID.ToplevelPreEoc.STONE10 &&
+					widget.getId() != InterfaceID.ToplevelPreEoc.ICON10)
 				{
 					widget.setHidden(enable);
 				}
@@ -145,23 +168,21 @@ public class MinimapPlugin extends Plugin
 			return;
 		}
 
-		Color[] minimapDotColors = getColors();
-		for (int i = 0; i < mapDots.length && i < minimapDotColors.length; ++i)
-		{
-			mapDots[i] = MinimapDot.create(this.client, minimapDotColors[i]);
-		}
+		applyDot(mapDots, DOT_ITEM, config.itemColor());
+		applyDot(mapDots, DOT_NPC, config.npcColor());
+		applyDot(mapDots, DOT_PLAYER, config.playerColor());
+		applyDot(mapDots, DOT_FRIEND, config.friendColor());
+		applyDot(mapDots, DOT_TEAM, config.teamColor());
+		applyDot(mapDots, DOT_FRIENDSCHAT, config.friendsChatColor());
+		applyDot(mapDots, DOT_CLAN, config.clanChatColor());
 	}
 
-	private Color[] getColors()
+	private void applyDot(SpritePixels[] mapDots, int id, Color color)
 	{
-		Color[] colors = new Color[NUM_MAPDOTS];
-		colors[0] = config.itemColor();
-		colors[1] = config.npcColor();
-		colors[2] = config.playerColor();
-		colors[3] = config.friendColor();
-		colors[4] = config.teamColor();
-		colors[5] = config.clanColor();
-		return colors;
+		if (id < mapDots.length && color != null)
+		{
+			mapDots[id] = MinimapDot.create(client, color);
+		}
 	}
 
 	private void storeOriginalDots()

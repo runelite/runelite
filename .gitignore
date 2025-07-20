@@ -8,3 +8,6 @@ project.properties
 .project
 .settings/
 .classpath
+.vscode
+.factorypath
+.DS_Store

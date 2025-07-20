@@ -25,92 +25,120 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptEvent;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
+import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
 public class LootManager
 {
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
-		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH
+		NpcID.SLAYER_KRAKEN, AnimationID.SWAN_QUEEN_DEATH,
+		NpcID.HUEY_HEAD_DEFEATED, AnimationID.HUEY_KNOCKOUT
 	);
 
 	private final EventBus eventBus;
 	private final Client client;
-	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
-	private final Set<LocalPoint> killPoints = new HashSet<>();
+	private final NpcUtil npcUtil;
+	private final ListMultimap<Integer, TileItem> itemSpawns = ArrayListMultimap.create();
+	private final Set<WorldPoint> killPoints = new HashSet<>();
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint krakenPlayerLocation;
 
+	private NPC delayedLootNpc;
+	private int delayedLootTick;
+	private List<WorldArea> delayedLootAreas;
+
+	private NPCComposition scriptNpc;
+	private int scriptEventId;
+	private final List<ItemStack> scriptItems = new ArrayList<>(4);
+
 	@Inject
-	private LootManager(EventBus eventBus, Client client)
+	private LootManager(EventBus eventBus, Client client, NpcUtil npcUtil)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		this.npcUtil = npcUtil;
+		eventBus.register(this);
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
-		if (!npc.isDead())
+
+		if (npc == delayedLootNpc)
+		{
+			clearDelayedLootNpc();
+		}
+
+		if (!npcUtil.isDying(npc))
 		{
 			int id = npc.getId();
 			switch (id)
 			{
-				case NpcID.GARGOYLE:
-				case NpcID.GARGOYLE_413:
-				case NpcID.GARGOYLE_1543:
-				case NpcID.MARBLE_GARGOYLE:
-				case NpcID.MARBLE_GARGOYLE_7408:
-				case NpcID.DUSK_7888:
-				case NpcID.DUSK_7889:
+				case NpcID.SLAYER_GARGOYLE_1:
+				case NpcID.SLAYER_GARGOYLE_DEAD:
+				case NpcID.SLAYER_CAVE_GARGOYLE:
+				case NpcID.SUPERIOR_GARGOYLE:
+				case NpcID.SUPERIOR_GARGOYLE_DEAD:
+				case NpcID.GARGBOSS_DUSK_PHASE4:
+				case NpcID.GARGBOSS_DUSK_DEATH:
 
-				case NpcID.ROCKSLUG:
-				case NpcID.ROCKSLUG_422:
-				case NpcID.GIANT_ROCKSLUG:
+				case NpcID.SLAYER_ROCKSLUG:
+				case NpcID.SLAYER_ROCKSLUG_BABY:
+				case NpcID.SUPERIOR_ROCKSLUG:
 
-				case NpcID.SMALL_LIZARD:
-				case NpcID.SMALL_LIZARD_463:
-				case NpcID.DESERT_LIZARD:
-				case NpcID.DESERT_LIZARD_460:
-				case NpcID.DESERT_LIZARD_461:
-				case NpcID.LIZARD:
+				case NpcID.SLAYER_LIZARD_SMALL1_GREEN:
+				case NpcID.SLAYER_LIZARD_SMALL2_SANDY:
+				case NpcID.SLAYER_LIZARD_LARGE1_GREEN:
+				case NpcID.SLAYER_LIZARD_LARGE2_SANDY:
+				case NpcID.SLAYER_LIZARD_LARGE3_SANDY:
+				case NpcID.SLAYER_LIZARD_MASSIVE:
 
-				case NpcID.ZYGOMITE:
-				case NpcID.ZYGOMITE_1024:
-				case NpcID.ANCIENT_ZYGOMITE:
+				case NpcID.SLAYER_MUTATED_ZYGOMITE_ADOLESCENT:
+				case NpcID.SLAYER_MUTATED_ZYGOMITE_ADULT:
+				case NpcID.FOSSIL_ZYGOMITE:
 
 					// these monsters die with >0 hp, so we just look for coincident
 					// item spawn with despawn
@@ -133,8 +161,9 @@ public class LootManager
 			return;
 		}
 
-		final LocalPoint location = LocalPoint.fromWorld(client, player.getWorldLocation());
-		if (location == null || killPoints.contains(location))
+		final WorldPoint worldPoint = player.getWorldLocation();
+		final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
+		if (location == null || killPoints.contains(worldPoint))
 		{
 			return;
 		}
@@ -142,51 +171,36 @@ public class LootManager
 		final int x = location.getSceneX();
 		final int y = location.getSceneY();
 		final int packed = x << 8 | y;
-		final Collection<ItemStack> items = itemSpawns.get(packed);
+		final Collection<ItemStack> items = itemSpawns.get(packed).stream()
+			.map(i -> new ItemStack(i.getId(), i.getQuantity()))
+			.collect(Collectors.toList());
 
 		if (items.isEmpty())
 		{
 			return;
 		}
 
-		killPoints.add(location);
+		killPoints.add(worldPoint);
 		eventBus.post(new PlayerLootReceived(player, items));
 	}
 
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
-		final Item item = itemSpawned.getItem();
+		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
-		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
-		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+		itemSpawns.put(packed, item);
+		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
+		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
-		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
-	}
-
-	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
-	{
-		final Item item = itemQuantityChanged.getItem();
-		final Tile tile = itemQuantityChanged.getTile();
-		final LocalPoint location = tile.getLocalLocation();
-		final int packed = location.getSceneX() << 8 | location.getSceneY();
-		final int diff = itemQuantityChanged.getNewQuantity() - itemQuantityChanged.getOldQuantity();
-
-		if (diff <= 0)
-		{
-			return;
-		}
-
-		itemSpawns.put(packed, new ItemStack(item.getId(), diff, location));
+		log.debug("Item despawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
@@ -206,7 +220,7 @@ public class LootManager
 		// Current animation is death animation?
 		if (deathAnim != null && deathAnim == npc.getAnimation())
 		{
-			if (id == NpcID.CAVE_KRAKEN)
+			if (id == NpcID.SLAYER_KRAKEN)
 			{
 				// Big Kraken drops loot wherever player is standing when animation starts.
 				krakenPlayerLocation = client.getLocalPlayer().getWorldLocation();
@@ -220,80 +234,185 @@ public class LootManager
 	}
 
 	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		final NPC npc = npcChanged.getNpc();
+		if (npc.getId() == NpcID.NIGHTMARE_DYING || npc.getId() == NpcID.NIGHTMARE_CHALLENGE_DYING)
+		{
+			delayedLootNpc = npc;
+			delayedLootTick = 10;
+			// it is too early to call getAdjacentSquareLootTile() because the player might move before the
+			// loot location is calculated by the server.
+		}
+		else if (npc.getId() == NpcID.SWAMP_WALLBEAST)
+		{
+			delayedLootNpc = npc;
+			delayedLootTick = 1;
+			delayedLootAreas = getDropLocations(npc);
+		}
+		else if (npc.getId() == NpcID.DUKE_SUCELLUS_DEAD || npc.getId() == NpcID.DUKE_SUCELLUS_DEAD_QUEST)
+		{
+			delayedLootNpc = npc;
+			delayedLootTick = 5;
+			delayedLootAreas = getDropLocations(npc);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		if (delayedLootNpc != null && --delayedLootTick == 0)
+		{
+			processDelayedLoot();
+			clearDelayedLootNpc();
+		}
+
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
+
 		itemSpawns.clear();
 		killPoints.clear();
+
+		processScriptLoot();
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.LOOTTRACKER_ADD_LOOT)
+		{
+			ScriptEvent scriptEvent = event.getScriptEvent();
+			int npcId = (int) scriptEvent.getArguments()[1];
+			int eventId = (int) scriptEvent.getArguments()[2];
+			int itemId = (int) scriptEvent.getArguments()[3];
+			int qty = (int) scriptEvent.getArguments()[4];
+
+			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
+
+			if (scriptEventId != eventId)
+			{
+				processScriptLoot();
+			}
+
+			NPCComposition npcComposition = client.getNpcDefinition(npcId);
+			String name = Text.removeTags(npcComposition.getName());
+			if (!name.isEmpty() && !"null".equals(name))
+			{
+				scriptNpc = npcComposition;
+			}
+			scriptEventId = eventId;
+			scriptItems.add(new ItemStack(itemId, qty));
+		}
+	}
+
+	private void processScriptLoot()
+	{
+		if (scriptNpc != null && !scriptItems.isEmpty())
+		{
+			eventBus.post(new ServerNpcLoot(scriptNpc, scriptItems));
+		}
+		scriptNpc = null;
+		scriptItems.clear();
+	}
+
+	private void processDelayedLoot()
+	{
+		if (delayedLootAreas == null)
+		{
+			// This is only for nightmare
+			delayedLootAreas = List.of(getAdjacentSquareLootTile(delayedLootNpc).toWorldArea());
+		}
+
+		final List<ItemStack> itemStacks = getItemStacksFromAreas(delayedLootAreas);
+		if (!itemStacks.isEmpty())
+		{
+			log.debug("Got delayed loot stack from {}: {}", delayedLootNpc.getName(), itemStacks);
+			eventBus.post(new NpcLootReceived(delayedLootNpc, itemStacks));
+		}
+		else
+		{
+			log.debug("Delayed loot expired with no loot");
+		}
 	}
 
 	private void processNpcLoot(NPC npc)
 	{
-		final LocalPoint location = LocalPoint.fromWorld(client, getDropLocation(npc, npc.getWorldLocation()));
-		if (location == null || killPoints.contains(location))
+		final List<ItemStack> allItems = getItemStacksFromAreas(getDropLocations(npc));
+
+		if (!allItems.isEmpty())
 		{
-			return;
+			eventBus.post(new NpcLootReceived(npc, allItems));
 		}
+	}
 
-		final int x = location.getSceneX();
-		final int y = location.getSceneY();
-		final int size = npc.getComposition().getSize();
-
-		// Some NPCs drop items onto multiple tiles
+	private List<ItemStack> getItemStacksFromAreas(final List<WorldArea> areas)
+	{
 		final List<ItemStack> allItems = new ArrayList<>();
-		for (int i = 0; i < size; ++i)
+		for (final WorldArea dropLocation : areas)
 		{
-			for (int j = 0; j < size; ++j)
+			final WorldPoint worldPoint = dropLocation.toWorldPoint();
+			final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
+			if (location == null)
 			{
-				final int packed = (x + i) << 8 | (y + j);
-				final Collection<ItemStack> items = itemSpawns.get(packed);
-				allItems.addAll(items);
+				continue;
+			}
+
+			final int x = location.getSceneX();
+			final int y = location.getSceneY();
+
+			for (int i = 0; i < dropLocation.getWidth(); ++i)
+			{
+				for (int j = 0; j < dropLocation.getHeight(); ++j)
+				{
+					WorldPoint dropPoint = new WorldPoint(worldPoint.getX() + i, worldPoint.getY() + j, worldPoint.getPlane());
+					if (!killPoints.add(dropPoint))
+					{
+						continue;
+					}
+
+					final int packed = (x + i) << 8 | (y + j);
+					final Collection<TileItem> items = itemSpawns.get(packed);
+					items.forEach(item -> allItems.add(new ItemStack(item.getId(), item.getQuantity())));
+				}
 			}
 		}
 
-		if (allItems.isEmpty())
-		{
-			return;
-		}
-
-		killPoints.add(location);
-		eventBus.post(new NpcLootReceived(npc, allItems));
+		return allItems;
 	}
 
-	private WorldPoint getDropLocation(NPC npc, WorldPoint worldLocation)
+	private List<WorldArea> getDropLocations(NPC npc)
 	{
 		switch (npc.getId())
 		{
-			case NpcID.KRAKEN:
-			case NpcID.KRAKEN_6640:
-			case NpcID.KRAKEN_6656:
-				worldLocation = playerLocationLastTick;
-				break;
-			case NpcID.CAVE_KRAKEN:
-				worldLocation = krakenPlayerLocation;
-				break;
-			case NpcID.ZULRAH:      // Green
-			case NpcID.ZULRAH_2043: // Red
-			case NpcID.ZULRAH_2044: // Blue
-				for (Map.Entry<Integer, ItemStack> entry : itemSpawns.entries())
+			case NpcID.SLAYER_KRAKEN_BOSS:
+			case NpcID.KRAKEN_PET:
+			case NpcID.POH_KRAKEN_PET:
+				return Collections.singletonList(playerLocationLastTick.toWorldArea());
+			case NpcID.SLAYER_KRAKEN:
+				return Collections.singletonList(krakenPlayerLocation.toWorldArea());
+			case NpcID.SNAKEBOSS_BOSS_RANGED:      // Green
+			case NpcID.SNAKEBOSS_BOSS_MELEE: // Red
+			case NpcID.SNAKEBOSS_BOSS_MAGIC: // Blue
+				for (Map.Entry<Integer, TileItem> entry : itemSpawns.entries())
 				{
-					if (entry.getValue().getId() == ItemID.ZULRAHS_SCALES)
+					if (entry.getValue().getId() == ItemID.SNAKEBOSS_SCALE)
 					{
 						int packed = entry.getKey();
 						int unpackedX = packed >> 8;
 						int unpackedY = packed & 0xFF;
-						worldLocation = WorldPoint.fromScene(client, unpackedX, unpackedY, worldLocation.getPlane());
-						break;
+						final WorldPoint lootPoint = WorldPoint.fromScene(client, unpackedX, unpackedY, npc.getWorldLocation().getPlane());
+						return Collections.singletonList(lootPoint.toWorldArea());
 					}
 				}
 				break;
+			case NpcID.POH_MOUNTED_VORKATH:
+			case NpcID.VORKATH_SLEEPING_NOOP:
+			case NpcID.VORKATH_SLEEPING:
+			case NpcID.VORKATH_QUEST:
 			case NpcID.VORKATH:
-			case NpcID.VORKATH_8058:
-			case NpcID.VORKATH_8059:
-			case NpcID.VORKATH_8060:
-			case NpcID.VORKATH_8061:
-				int x = worldLocation.getX() + 3;
-				int y = worldLocation.getY() + 3;
+			{
+				final WorldPoint bossLocation = npc.getWorldLocation();
+				int x = bossLocation.getX() + 3;
+				int y = bossLocation.getY() + 3;
 				if (playerLocationLastTick.getX() < x)
 				{
 					x -= 4;
@@ -310,10 +429,131 @@ public class LootManager
 				{
 					y += 4;
 				}
-				worldLocation = new WorldPoint(x, y, worldLocation.getPlane());
+				return Collections.singletonList(new WorldArea(x, y, 1, 1, bossLocation.getPlane()));
+			}
+			case NpcID.NEX:
+			case NpcID.NEX_SPAWNING:
+			case NpcID.NEX_SOULSPLIT:
+			case NpcID.NEX_DEFLECT:
+			case NpcID.NEX_DYING:
+			{
+				// Nex loot is under the player, or under nex
+				LocalPoint localPoint = LocalPoint.fromWorld(client, playerLocationLastTick);
+				if (localPoint != null)
+				{
+					int x = localPoint.getSceneX();
+					int y = localPoint.getSceneY();
+					final int packed = x << 8 | y;
+					if (itemSpawns.containsKey(packed))
+					{
+						return Collections.singletonList(playerLocationLastTick.toWorldArea());
+					}
+				}
 				break;
+			}
+			case NpcID.VETION_2:
+			case NpcID.CLANCUP_CALLISTO:
+			case NpcID.CALLISTO:
+			case NpcID.CLANCUP_VENENATIS:
+			case NpcID.VENENATIS:
+			case NpcID.VETION_2_SINGLE:
+			case NpcID.CALLISTO_SINGLES:
+			case NpcID.VENENATIS_SINGLES:
+				// Bones are dropped under the center of the boss and loot is dropped under the player
+				return ImmutableList.of(npc.getWorldArea(), playerLocationLastTick.toWorldArea());
+			case NpcID.DUKE_SUCELLUS_DEAD:
+			case NpcID.DUKE_SUCELLUS_DEAD_QUEST:
+			{
+				final WorldPoint bossLocation = npc.getWorldLocation();
+				final int x = bossLocation.getX() + npc.getComposition().getSize() / 2;
+				final int y = bossLocation.getY() - 1;
+
+				return List.of(new WorldPoint(x, y, bossLocation.getPlane()).toWorldArea());
+			}
+			case NpcID.VARDORVIS:
+			case NpcID.VARDORVIS_QUEST:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 2, bossArea.getWidth() + 4, bossArea.getHeight() + 4, bossArea.getPlane()));
+			}
+			case NpcID.LEVIATHAN:
+			case NpcID.LEVIATHAN_QUEST:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				final int expand = 8;
+				final WorldArea expandedArea = new WorldArea(bossArea.getX() - expand, bossArea.getY() - expand, bossArea.getWidth() + expand * 2, bossArea.getHeight() + expand * 2, bossArea.getPlane());
+				return List.of(expandedArea);
+			}
+			case NpcID.SWAMP_WALLBEAST:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				return List.of(new WorldArea(bossArea.getX() - 1, bossArea.getY() - 1, 3, 3, bossArea.getPlane()));
+			}
+			case NpcID.HUEY_HEAD_DEFEATED:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 10, 10, 10, bossArea.getPlane()));
+			}
 		}
 
-		return worldLocation;
+		return Collections.singletonList(npc.getWorldArea());
+	}
+
+	private WorldPoint getAdjacentSquareLootTile(NPC npc)
+	{
+		final NPCComposition composition = npc.getComposition();
+		final WorldPoint worldLocation = npc.getWorldLocation();
+		int x = worldLocation.getX();
+		int y = worldLocation.getY();
+
+		if (playerLocationLastTick.getX() < x)
+		{
+			x -= 1;
+		}
+		else
+		{
+			x += Math.min(playerLocationLastTick.getX() - x, composition.getSize());
+		}
+
+		if (playerLocationLastTick.getY() < y)
+		{
+			y -= 1;
+		}
+		else
+		{
+			y += Math.min(playerLocationLastTick.getY() - y, composition.getSize());
+		}
+
+		return new WorldPoint(x, y, worldLocation.getPlane());
+	}
+
+	/**
+	 * Get the list of items present at the provided WorldPoint that spawned this tick.
+	 *
+	 * @param worldPoint the location in question
+	 * @return the list of item stacks
+	 */
+	public Collection<ItemStack> getItemSpawns(WorldPoint worldPoint)
+	{
+		LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+		if (localPoint == null)
+		{
+			return Collections.emptyList();
+		}
+
+		final int sceneX = localPoint.getSceneX();
+		final int sceneY = localPoint.getSceneY();
+		final int packed = sceneX << 8 | sceneY;
+		final List<TileItem> itemStacks = itemSpawns.get(packed);
+		return itemStacks.stream()
+			.map(ti -> new ItemStack(ti.getId(), ti.getQuantity()))
+			.collect(Collectors.toList());
+	}
+
+	private void clearDelayedLootNpc()
+	{
+		delayedLootNpc = null;
+		delayedLootTick = 0;
+		delayedLootAreas = null;
 	}
 }

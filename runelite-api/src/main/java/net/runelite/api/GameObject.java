@@ -24,8 +24,7 @@
  */
 package net.runelite.api;
 
-import java.awt.Polygon;
-import net.runelite.api.coords.Angle;
+import java.awt.Shape;
 
 /**
  * Represents a game object.
@@ -35,6 +34,19 @@ import net.runelite.api.coords.Angle;
  */
 public interface GameObject extends TileObject
 {
+	/**
+	 * Get the size of this object, in tiles, on the x axis
+	 *
+	 * @return
+	 */
+	int sizeX();
+
+	/**
+	 * Get the size of this object, in tiles, on the y axis
+	 *
+	 * @return
+	 */
+	int sizeY();
 
 	/**
 	 * Gets the minimum x and y scene coordinate pair for this game object.
@@ -54,19 +66,40 @@ public interface GameObject extends TileObject
 	Point getSceneMaxLocation();
 
 	/**
-	 * Gets the convex hull of the actors model.
+	 * Gets the convex hull of the object's model.
 	 *
 	 * @return the convex hull
 	 * @see net.runelite.api.model.Jarvis
 	 */
-	Polygon getConvexHull();
+	Shape getConvexHull();
 
 	/**
-	 * Gets the orientation of the object.
-	 *
-	 * @return the orientation
+	 * Get the orientation of the object
+	 * @see net.runelite.api.coords.Angle
+	 * @return
 	 */
-	Angle getOrientation();
+	int getOrientation();
 
 	Renderable getRenderable();
+
+	/**
+	 * Gets the orientation of the model in JAU.
+	 * This is typically 0 for non-actors, since
+	 * most object's models are oriented prior to
+	 * lighting during scene loading. See {@link #getOrientation()}
+	 * instead for object orientation.
+	 *
+	 * @see net.runelite.api.coords.Angle
+	 */
+	int getModelOrientation();
+
+	/**
+	 * A bitfield containing various flags:
+	 * <pre>{@code
+	 * object type = bits & 31
+	 * orientation = bits >>> 6 & 3
+	 * supports items = bits >>> 8 & 1
+	 * }</pre>
+	 */
+	int getConfig();
 }

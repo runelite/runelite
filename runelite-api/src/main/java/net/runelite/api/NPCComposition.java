@@ -24,94 +24,131 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+
 /**
- * Represents the template of a specific NPC type.
+ * Information about a specific {@link net.runelite.api.gameval.NpcID}
  */
-public interface NPCComposition
+public interface NPCComposition extends ParamHolder
 {
+	int STAT_ATTACK = 0;
+	int STAT_DEFENCE = 1;
+	int STAT_STRENGTH = 2;
+	int STAT_HITPOINTS = 3;
+	int STAT_RANGED = 4;
+	int STAT_MAGIC = 5;
+
 	/**
 	 * Gets the name of the NPC.
-	 *
-	 * @return the name
 	 */
 	String getName();
 
 	/**
 	 * Gets the model IDs that compose this NPC.
-	 *
-	 * @return the NPCs model IDs
 	 */
 	int[] getModels();
 
 	/**
-	 * Gets an array of possible right-click menu actions that can be
-	 * performed on the NPC.
-	 *
-	 * @return the menu actions
+	 * The 5 menuops this NPC has when in world. Index 0 corresponds to
+	 * {@link MenuAction#NPC_FIRST_OPTION}, Index 2 to
+	 * {@link MenuAction#NPC_SECOND_OPTION} and so on.
 	 */
 	String[] getActions();
 
 	/**
-	 * Gets whether the NPC can be clicked.
-	 *
-	 * @return true if the NPC can be clicked, false otherwise
+	 * NPC can be interacting with via menu options
+	 * @return
 	 */
-	boolean isClickable();
+	boolean isInteractible();
 
 	/**
 	 * Gets whether the NPC is visible on the mini-map.
-	 *
-	 * @return the mini-map visible state
 	 */
 	boolean isMinimapVisible();
 
-	/**
-	 * Gets whether the NPC is visible.
-	 *
-	 * @return the visible state
-	 */
 	boolean isVisible();
 
 	/**
 	 * Gets the ID of the NPC.
 	 *
-	 * @return the ID of the NPC
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 
 	/**
-	 * Gets the combat level of the NPC.
-	 *
 	 * @return the combat level, -1 if none
 	 */
 	int getCombatLevel();
 
 	/**
-	 * Gets the configuration data for the NPC.
-	 *
-	 * @return the configuration data
+	 * Get the {@link net.runelite.api.gameval.NpcID}s of NPCs this can transform into, depending
+	 * on a {@link net.runelite.api.gameval.VarbitID} or {@link net.runelite.api.gameval.VarPlayerID}
 	 */
 	int[] getConfigs();
 
 	/**
-	 * Transforms this NPC into a new state, which may have a different ID.
+	 * Get the NPC composition the player's state says this NPC should
+	 * transmogrify into.
 	 *
-	 * @return the transformed composition
+	 * @throws NullPointerException if {@link #getConfigs()} is null
 	 */
 	NPCComposition transform();
 
 	/**
-	 * Gets the size of the NPC.
-	 *
-	 * @return the NPCs size
+	 * How many tiles wide this NPC is
 	 */
 	int getSize();
 
 	/**
-	 * Gets the displayed overhead icon of the NPC.
-	 *
-	 * @return the overhead icon
+	 * If the npc is a follower, such as a pet. Is affected by the
+	 * "Move follower options lower down" setting.
+	 * @return
 	 */
-	HeadIcon getOverheadIcon();
+	boolean isFollower();
+
+	/**
+	 * Get the colors to be replaced on this npc's model for this npc.
+	 * @see JagexColor
+	 * @return the colors to be replaced
+	 */
+	@Nullable
+	short[] getColorToReplace();
+
+	/**
+	 * Get the colors applied to this npc's model for this npc.
+	 * @see JagexColor
+	 * @return the colors to replace with
+	 */
+	@Nullable
+	short[] getColorToReplaceWith();
+
+	/**
+	 * Horizontal scaling of the npc model (1/128th of a tile).
+	 * @return
+	 */
+	int getWidthScale();
+
+	/**
+	 * Vertical scaling of the npc model (1/128th of a tile).
+	 * @return
+	 */
+	int getHeightScale();
+
+	/**
+	 * Get the npc footprint size
+	 * @return
+	 */
+	int getFootprintSize();
+
+	/**
+	 * Get the npc's stats
+	 * @see #STAT_ATTACK
+	 * @see #STAT_DEFENCE
+	 * @see #STAT_STRENGTH
+	 * @see #STAT_HITPOINTS
+	 * @see #STAT_RANGED
+	 * @see #STAT_MAGIC
+	 * @return
+	 */
+	int[] getStats();
 }

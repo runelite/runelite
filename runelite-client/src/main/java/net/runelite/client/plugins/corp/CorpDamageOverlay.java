@@ -32,27 +32,22 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class CorpDamageOverlay extends Overlay
+class CorpDamageOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final CorpPlugin corpPlugin;
 	private final CorpConfig config;
-
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
@@ -60,17 +55,17 @@ class CorpDamageOverlay extends Overlay
 		super(corpPlugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		this.client = client;
 		this.corpPlugin = corpPlugin;
 		this.config = config;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Corp overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Corp overlay");
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget damageWidget = client.getWidget(WidgetID.CORP_DAMAGE, 0);
+		Widget damageWidget = client.getWidget(InterfaceID.CORP_BEAST, 0);
 		if (damageWidget != null)
 		{
 			damageWidget.setHidden(true);
@@ -82,14 +77,12 @@ class CorpDamageOverlay extends Overlay
 			return null;
 		}
 
-		int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+		int myDamage = client.getVarbitValue(VarbitID.CORP_BEAST_DAMAGE);
 		int totalDamage = corpPlugin.getTotalDamage();
 		int players = corpPlugin.getPlayers().size();
 
 		// estimate how much damage is required for kill based on number of players
 		int damageForKill = players != 0 ? totalDamage / players : 0;
-
-		panelComponent.getChildren().clear();
 
 		NPC core = corpPlugin.getCore();
 		if (core != null)
@@ -135,6 +128,6 @@ class CorpDamageOverlay extends Overlay
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

@@ -34,11 +34,15 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.EnumComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -55,6 +59,9 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private final JPanel listContainer = new JPanel();
 
+	@Getter(AccessLevel.PACKAGE)
+	private boolean active;
+
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
 	private WorldTableHeader activityHeader;
@@ -63,10 +70,14 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
 
-	private ArrayList<WorldTableRow> rows = new ArrayList<>();
-	private WorldHopperPlugin plugin;
+	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
+	private final WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
-	private SubscriptionFilterMode filterMode;
+	private SubscriptionFilterMode subscriptionFilterMode;
+	@Setter(AccessLevel.PACKAGE)
+	private Set<RegionFilterMode> regionFilterMode;
+	@Setter(AccessLevel.PACKAGE)
+	private Set<WorldTypeFilter> worldTypeFilters;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -81,6 +92,19 @@ class WorldSwitcherPanel extends PluginPanel
 
 		add(headerContainer);
 		add(listContainer);
+	}
+
+	@Override
+	public void onActivate()
+	{
+		active = true;
+		updateList();
+	}
+
+	@Override
+	public void onDeactivate()
+	{
+		active = false;
 	}
 
 	void switchCurrentHighlight(int newWorld, int lastWorld)
@@ -168,7 +192,7 @@ class WorldSwitcherPanel extends PluginPanel
 				case WORLD:
 					return getCompareValue(r1, r2, row -> row.getWorld().getId());
 				case PLAYERS:
-					return getCompareValue(r1, r2, WorldTableRow::getUpdatedPlayerCount);
+					return getCompareValue(r1, r2, WorldTableRow::getPlayerCount);
 				case ACTIVITY:
 					// Leave empty activity worlds on the bottom of the list
 					return getCompareValue(r1, r2, row ->
@@ -223,16 +247,7 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void resetAllFavoriteMenus()
-	{
-		for (WorldTableRow row : rows)
-		{
-			row.setFavoriteMenu(false);
-		}
-
-	}
-
-	void populate(List<World> worlds)
+	void populate(List<World> worlds, @Nullable EnumComposition worldLocations)
 	{
 		rows.clear();
 
@@ -240,7 +255,7 @@ class WorldSwitcherPanel extends PluginPanel
 		{
 			World world = worlds.get(i);
 
-			switch (filterMode)
+			switch (subscriptionFilterMode)
 			{
 				case FREE:
 					if (world.getTypes().contains(WorldType.MEMBERS))
@@ -256,7 +271,28 @@ class WorldSwitcherPanel extends PluginPanel
 					break;
 			}
 
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
+			if (!regionFilterMode.isEmpty() && !regionFilterMode.contains(RegionFilterMode.of(world.getRegion())))
+			{
+				continue;
+			}
+
+			if (!worldTypeFilters.isEmpty())
+			{
+				boolean matches = false;
+				for (WorldTypeFilter worldTypeFilter : worldTypeFilters)
+				{
+					matches |= worldTypeFilter.matches(world.getTypes());
+				}
+				if (!matches)
+				{
+					continue;
+				}
+			}
+
+			rows.add(buildRow(world, i % 2 == 0,
+				world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0,
+				plugin.isFavorite(world),
+				worldLocations != null ? worldLocations.getIntValue(world.getId()) : -1));
 		}
 
 		updateList();
@@ -376,26 +412,24 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, int worldLocation)
 	{
-		WorldTableRow row = new WorldTableRow(world, current, favorite,
-			world1 ->
-			{
-				plugin.hopTo(world1);
-			},
-			(world12, add) ->
+		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
+			plugin::hopTo,
+			(w, add) ->
 			{
 				if (add)
 				{
-					plugin.addToFavorites(world12);
+					plugin.addToFavorites(w);
 				}
 				else
 				{
-					plugin.removeFromFavorites(world12);
+					plugin.removeFromFavorites(w);
 				}
 
 				updateList();
-			}
+			},
+			worldLocation
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;

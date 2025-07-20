@@ -24,19 +24,56 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
-public class WoodcuttingSession
+class WoodcuttingSession
 {
-	private Instant lastLogCut;
+	private final Instant start = Instant.now();
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastChopping;
+	@Getter(AccessLevel.PACKAGE)
+	private int logsCut;
+	@Getter(AccessLevel.PACKAGE)
+	private int logsPerHr;
+	@Getter(AccessLevel.PACKAGE)
+	private int bark;
+	@Getter(AccessLevel.PACKAGE)
+	private int barkPerHr;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean active = true;
 
-	public void setLastLogCut()
+	void setLastChopping()
 	{
-		lastLogCut = Instant.now();
+		lastChopping = Instant.now();
+		setActive(true);
 	}
 
-	public Instant getLastLogCut()
+	void incrementLogsCut()
 	{
-		return lastLogCut;
+		++logsCut;
+
+		Duration elapsed = Duration.between(start, Instant.now());
+		long elapsedMs = elapsed.toMillis();
+		if (logsCut >= 3 && elapsedMs > 0)
+		{
+			logsPerHr = (int) ((double) logsCut * Duration.ofHours(1).toMillis() / elapsedMs);
+		}
+	}
+
+	void incrementBark(int num)
+	{
+		bark += num;
+
+		Duration elapsed = Duration.between(start, Instant.now());
+		long elapsedMs = elapsed.toMillis();
+		if (elapsedMs > 0)
+		{
+			barkPerHr = (int) ((double) bark * Duration.ofHours(1).toMillis() / elapsedMs);
+		}
 	}
 }

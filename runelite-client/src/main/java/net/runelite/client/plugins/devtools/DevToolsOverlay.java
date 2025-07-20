@@ -28,23 +28,21 @@ package net.runelite.client.plugins.devtools;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
+import java.awt.Shape;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.Setter;
+import net.runelite.api.Animation;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.DynamicObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
-import net.runelite.api.GroundObject;
-import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -55,11 +53,10 @@ import net.runelite.api.Point;
 import net.runelite.api.Projectile;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
+import net.runelite.api.TileItem;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -71,9 +68,6 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 @Singleton
 class DevToolsOverlay extends Overlay
 {
-	private static final int ITEM_EMPTY = 6512;
-	private static final int ITEM_FILLED = 20594;
-
 	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
@@ -91,18 +85,12 @@ class DevToolsOverlay extends Overlay
 	private final DevToolsPlugin plugin;
 	private final TooltipManager toolTipManager;
 
-	@Setter
-	@Getter
-	private Widget widget;
-
-	@Setter
-	private int itemIndex = -1;
-
 	@Inject
 	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_MAP);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setPriority(PRIORITY_HIGHEST);
 		this.client = client;
 		this.plugin = plugin;
 		this.toolTipManager = toolTipManager;
@@ -123,14 +111,9 @@ class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
-		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive())
+		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive() || plugin.getMovementFlags().isActive())
 		{
 			renderTileObjects(graphics);
-		}
-
-		if (plugin.getInventory().isActive())
-		{
-			renderInventory(graphics);
 		}
 
 		if (plugin.getProjectiles().isActive())
@@ -143,9 +126,64 @@ class DevToolsOverlay extends Overlay
 			renderGraphicsObjects(graphics);
 		}
 
-		renderWidgets(graphics);
+		if (plugin.getTileFlags().isActive())
+		{
+			renderTileFlags(graphics);
+		}
 
 		return null;
+	}
+
+	private void renderTileFlags(Graphics2D graphics)
+	{
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		byte[][][] settings = client.getTileSettings();
+		int z = client.getPlane();
+
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		{
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			{
+				Tile tile = tiles[z][x][y];
+
+				if (tile == null)
+				{
+					continue;
+				}
+
+				boolean isbridge = (settings[1][x][y] & Constants.TILE_FLAG_BRIDGE) != 0;
+				int flag = settings[z][x][y];
+				boolean isvisbelow = (flag & Constants.TILE_FLAG_VIS_BELOW) != 0;
+				boolean hasroof = (flag & Constants.TILE_FLAG_UNDER_ROOF) != 0;
+				if (!isbridge && !isvisbelow && !hasroof)
+				{
+					continue;
+				}
+
+				String s = "";
+				if (isbridge)
+				{
+					s += "B";
+				}
+				if (isvisbelow)
+				{
+					s += "V";
+				}
+				if (hasroof)
+				{
+					s += "R";
+				}
+
+				Point loc = Perspective.getCanvasTextLocation(client, graphics, tile.getLocalLocation(), s, z);
+				if (loc == null)
+				{
+					continue;
+				}
+
+				OverlayUtil.renderTextLocation(graphics, loc, s, Color.RED);
+			}
+		}
 	}
 
 	private void renderPlayers(Graphics2D graphics)
@@ -157,14 +195,13 @@ class DevToolsOverlay extends Overlay
 		{
 			if (p != local)
 			{
-				String text = p.getName() + " (A: " + p.getAnimation() + ") (G: " + p.getGraphic() + ")";
+				String text = p.getName() + " (A: " + p.getAnimation() + ") (P: " + p.getPoseAnimation() + ") (G: " + p.getGraphic() + ")";
 				OverlayUtil.renderActorOverlay(graphics, p, text, BLUE);
 			}
 		}
 
-		String text = local.getName() + " (A: " + local.getAnimation() + ") (G: " + local.getGraphic() + ")";
+		String text = local.getName() + " (A: " + local.getAnimation() + ") (P: " + local.getPoseAnimation() + ") (G: " + local.getGraphic() + ")";
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
-		renderPlayerWireframe(graphics, local, CYAN);
 	}
 
 	private void renderNpcs(Graphics2D graphics)
@@ -187,12 +224,28 @@ class DevToolsOverlay extends Overlay
 				}
 			}
 
-			String text = String.format("%s (ID: %d) (A: %d) (G: %d)",
-				composition.getName(),
-				composition.getId(),
-				npc.getAnimation(),
-				npc.getGraphic());
-
+			String text = composition.getName() + " (ID:" + composition.getId() + ")" +
+				" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
+			if (npc.getModelOverrides() != null)
+			{
+				var mo = npc.getModelOverrides();
+				if (mo.getModelIds() != null)
+				{
+					text += " (M: " + Arrays.toString(mo.getModelIds()) + ")";
+				}
+				if (mo.getColorToReplaceWith() != null)
+				{
+					text += " (C: " + Arrays.toString(mo.getColorToReplaceWith()) + ")";
+				}
+				if (mo.getTextureToReplaceWith() != null)
+				{
+					text += " (T: " + Arrays.toString(mo.getTextureToReplaceWith()) + ")";
+				}
+				if (mo.useLocalPlayer())
+				{
+					text += " (LocalPlayer)";
+				}
+			}
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
 	}
@@ -228,7 +281,7 @@ class DevToolsOverlay extends Overlay
 
 				if (plugin.getGroundObjects().isActive())
 				{
-					renderGroundObject(graphics, tile, player);
+					renderTileObject(graphics, tile.getGroundObject(), player, PURPLE);
 				}
 
 				if (plugin.getGameObjects().isActive())
@@ -238,7 +291,7 @@ class DevToolsOverlay extends Overlay
 
 				if (plugin.getWalls().isActive())
 				{
-					renderWallObject(graphics, tile, player);
+					renderTileObject(graphics, tile.getWallObject(), player, GRAY);
 				}
 
 				if (plugin.getDecorations().isActive())
@@ -250,16 +303,59 @@ class DevToolsOverlay extends Overlay
 				{
 					renderTileTooltip(graphics, tile);
 				}
+
+				if (plugin.getMovementFlags().isActive())
+				{
+					renderMovementInfo(graphics, tile);
+				}
 			}
 		}
 	}
 
 	private void renderTileTooltip(Graphics2D graphics, Tile tile)
 	{
-		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+		final LocalPoint tileLocalLocation = tile.getLocalLocation();
+		Polygon poly = Perspective.getCanvasTilePoly(client, tileLocalLocation);
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			toolTipManager.add(new Tooltip("World Location: " + tile.getWorldLocation().getX() + ", " + tile.getWorldLocation().getY() + ", " + client.getPlane()));
+			WorldPoint worldLocation = WorldPoint.fromLocalInstance(client, tileLocalLocation);
+			byte flags = client.getTileSettings()[tile.getRenderLevel()][tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
+			String tooltip = String.format("World location: %d, %d, %d<br>" +
+					"Region ID: %d location: %d, %d<br>" +
+					"Flags: %d",
+				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
+				worldLocation.getRegionID(), worldLocation.getRegionX(), worldLocation.getRegionY(),
+				flags);
+			toolTipManager.add(new Tooltip(tooltip));
+			OverlayUtil.renderPolygon(graphics, poly, GREEN);
+		}
+	}
+
+	private void renderMovementInfo(Graphics2D graphics, Tile tile)
+	{
+		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
+
+		if (poly == null || !poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			return;
+		}
+
+		if (client.getCollisionMaps() != null)
+		{
+			int[][] flags = client.getCollisionMaps()[client.getPlane()].getFlags();
+			int data = flags[tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
+
+			Set<MovementFlag> movementFlags = MovementFlag.getSetFlags(data);
+
+			if (movementFlags.isEmpty())
+			{
+				toolTipManager.add(new Tooltip("No movement flags"));
+			}
+			else
+			{
+				movementFlags.forEach(flag -> toolTipManager.add(new Tooltip(flag.toString())));
+			}
+
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
 	}
@@ -271,10 +367,10 @@ class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				Node current = itemLayer.getBottom();
-				while (current instanceof Item)
+				Node current = itemLayer.getTop();
+				while (current instanceof TileItem)
 				{
-					Item item = (Item) current;
+					TileItem item = (TileItem) current;
 					OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
 					current = current.getNext();
 				}
@@ -289,45 +385,35 @@ class DevToolsOverlay extends Overlay
 		{
 			for (GameObject gameObject : gameObjects)
 			{
-				if (gameObject != null)
+				if (gameObject != null && gameObject.getSceneMinLocation().equals(tile.getSceneLocation()))
 				{
 					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
 					{
-						OverlayUtil.renderTileOverlay(graphics, gameObject, "ID: " + gameObject.getId(), GREEN);
-					}
+						StringBuilder stringBuilder = new StringBuilder();
+						stringBuilder.append("ID: ").append(gameObject.getId());
+						if (gameObject.getRenderable() instanceof DynamicObject)
+						{
+							Animation animation = ((DynamicObject) gameObject.getRenderable()).getAnimation();
+							if (animation != null)
+							{
+								stringBuilder.append(" A: ").append(animation.getId());
+							}
+						}
 
-					// Draw a polygon around the convex hull
-					// of the model vertices
-					Polygon p = gameObject.getConvexHull();
-					if (p != null)
-					{
-						graphics.drawPolygon(p);
+						OverlayUtil.renderTileOverlay(graphics, gameObject, stringBuilder.toString(), GREEN);
 					}
 				}
 			}
 		}
 	}
 
-	private void renderGroundObject(Graphics2D graphics, Tile tile, Player player)
+	private void renderTileObject(Graphics2D graphics, TileObject tileObject, Player player, Color color)
 	{
-		GroundObject groundObject = tile.getGroundObject();
-		if (groundObject != null)
+		if (tileObject != null)
 		{
-			if (player.getLocalLocation().distanceTo(groundObject.getLocalLocation()) <= MAX_DISTANCE)
+			if (player.getLocalLocation().distanceTo(tileObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				OverlayUtil.renderTileOverlay(graphics, groundObject, "ID: " + groundObject.getId(), PURPLE);
-			}
-		}
-	}
-
-	private void renderWallObject(Graphics2D graphics, Tile tile, Player player)
-	{
-		WallObject wallObject = tile.getWallObject();
-		if (wallObject != null)
-		{
-			if (player.getLocalLocation().distanceTo(wallObject.getLocalLocation()) <= MAX_DISTANCE)
-			{
-				OverlayUtil.renderTileOverlay(graphics, wallObject, "ID: " + wallObject.getId(), GRAY);
+				OverlayUtil.renderTileOverlay(graphics, tileObject, "ID: " + tileObject.getId(), color);
 			}
 		}
 	}
@@ -342,54 +428,23 @@ class DevToolsOverlay extends Overlay
 				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 			}
 
-			Polygon p = decorObject.getConvexHull();
+			Shape p = decorObject.getConvexHull();
 			if (p != null)
 			{
-				graphics.drawPolygon(p);
+				graphics.draw(p);
 			}
 
 			p = decorObject.getConvexHull2();
 			if (p != null)
 			{
-				graphics.drawPolygon(p);
+				graphics.draw(p);
 			}
-		}
-	}
-
-	private void renderInventory(Graphics2D graphics)
-	{
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-		if (inventoryWidget == null || inventoryWidget.isHidden())
-		{
-			return;
-		}
-
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
-		{
-			Rectangle slotBounds = item.getCanvasBounds();
-
-			String idText = "" + item.getId();
-			FontMetrics fm = graphics.getFontMetrics();
-			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
-
-			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
-
-			graphics.setColor(new Color(255, 255, 255, 65));
-			graphics.fill(slotBounds);
-
-			graphics.setColor(Color.BLACK);
-			graphics.drawString(idText, textX + 1, textY + 1);
-			graphics.setColor(YELLOW);
-			graphics.drawString(idText, textX, textY);
 		}
 	}
 
 	private void renderProjectiles(Graphics2D graphics)
 	{
-		List<Projectile> projectiles = client.getProjectiles();
-
-		for (Projectile projectile : projectiles)
+		for (Projectile projectile : client.getProjectiles())
 		{
 			int projectileId = projectile.getId();
 			String text = "(ID: " + projectileId + ")";
@@ -406,9 +461,7 @@ class DevToolsOverlay extends Overlay
 
 	private void renderGraphicsObjects(Graphics2D graphics)
 	{
-		List<GraphicsObject> graphicsObjects = client.getGraphicsObjects();
-
-		for (GraphicsObject graphicsObject : graphicsObjects)
+		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
 		{
 			LocalPoint lp = graphicsObject.getLocation();
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
@@ -427,86 +480,4 @@ class DevToolsOverlay extends Overlay
 			}
 		}
 	}
-
-	private void renderWidgets(Graphics2D graphics)
-	{
-		if (widget == null || widget.isHidden())
-		{
-			return;
-		}
-
-		Rectangle childBounds = widget.getBounds();
-		graphics.setColor(CYAN);
-		graphics.draw(childBounds);
-
-		if (itemIndex == -1)
-		{
-			return;
-		}
-
-		if (widget.getItemId() != ITEM_EMPTY
-			&& widget.getItemId() != ITEM_FILLED)
-		{
-			Rectangle componentBounds = widget.getBounds();
-
-			graphics.setColor(ORANGE);
-			graphics.draw(componentBounds);
-
-			renderWidgetText(graphics, componentBounds, widget.getItemId(), YELLOW);
-		}
-
-		WidgetItem widgetItem = widget.getWidgetItem(itemIndex);
-		if (widgetItem == null
-			|| widgetItem.getId() < 0
-			|| widgetItem.getId() == ITEM_EMPTY
-			|| widgetItem.getId() == ITEM_FILLED)
-		{
-			return;
-		}
-
-		Rectangle itemBounds = widgetItem.getCanvasBounds();
-
-		graphics.setColor(ORANGE);
-		graphics.draw(itemBounds);
-
-		renderWidgetText(graphics, itemBounds, widgetItem.getId(), YELLOW);
-	}
-
-	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int itemId, Color color)
-	{
-		if (itemId == -1)
-		{
-			return;
-		}
-
-		String text = itemId + "";
-		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
-
-		int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-		int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
-
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, textX + 1, textY + 1);
-		graphics.setColor(color);
-		graphics.drawString(text, textX, textY);
-	}
-
-	private void renderPlayerWireframe(Graphics2D graphics, Player player, Color color)
-	{
-		Polygon[] polys = player.getPolygons();
-
-		if (polys == null)
-		{
-			return;
-		}
-
-		graphics.setColor(color);
-
-		for (Polygon p : polys)
-		{
-			graphics.drawPolygon(p);
-		}
-	}
-
 }

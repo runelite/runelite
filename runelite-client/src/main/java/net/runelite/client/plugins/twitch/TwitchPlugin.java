@@ -26,6 +26,7 @@ package net.runelite.client.plugins.twitch;
 
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.inject.Inject;
@@ -33,17 +34,15 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.ChatboxInputListener;
-import net.runelite.client.chat.CommandManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ChatboxInput;
-import net.runelite.client.events.PrivateMessageInput;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
@@ -56,7 +55,7 @@ import net.runelite.client.task.Schedule;
 	enabledByDefault = false
 )
 @Slf4j
-public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInputListener
+public class TwitchPlugin extends Plugin implements TwitchListener
 {
 	@Inject
 	private TwitchConfig twitchConfig;
@@ -67,16 +66,12 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	@Inject
-	private CommandManager commandManager;
-
 	private TwitchIRCClient twitchIRCClient;
 
 	@Override
 	protected void startUp()
 	{
 		connect();
-		commandManager.register(this);
 	}
 
 	@Override
@@ -87,8 +82,6 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			twitchIRCClient.close();
 			twitchIRCClient = null;
 		}
-
-		commandManager.unregister(this);
 	}
 
 	@Provides
@@ -111,9 +104,18 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			&& !Strings.isNullOrEmpty(twitchConfig.channel()))
 		{
 			String channel = twitchConfig.channel().toLowerCase();
+			if (channel.startsWith("https://www.twitch.tv/"))
+			{
+				channel = channel.substring("https://www.twitch.tv/".length());
+			}
 			if (!channel.startsWith("#"))
 			{
 				channel = "#" + channel;
+			}
+			String token = twitchConfig.oauthToken().trim();
+			if (!token.startsWith("oauth:"))
+			{
+				token = "oauth:" + token;
 			}
 
 			log.debug("Connecting to Twitch as {}", twitchConfig.username());
@@ -121,7 +123,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			twitchIRCClient = new TwitchIRCClient(
 				this,
 				twitchConfig.username(),
-				twitchConfig.oauthToken(),
+				token,
 				channel
 			);
 			twitchIRCClient.start();
@@ -170,11 +172,12 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
+			.timestamp((int) (System.currentTimeMillis() / 1000))
 			.build());
 	}
 
 	@Override
-	public void privmsg(Map<String, String> tags, String message)
+	public void privmsg(String source, Map<String, String> tags, String message)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -182,7 +185,8 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 		}
 
 		String displayName = tags.get("display-name");
-		addChatMessage(displayName, message);
+		String name = source.equalsIgnoreCase(displayName) ? displayName : source;
+		addChatMessage(name, message);
 	}
 
 	@Override
@@ -205,29 +209,38 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 		addChatMessage("[System]", sysmsg);
 	}
 
-	@Override
-	public boolean onChatboxInput(ChatboxInput chatboxInput)
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
-		String message = chatboxInput.getValue();
-		if (message.startsWith("//"))
+		if (!"chatDefaultReturn".equals(scriptCallbackEvent.getEventName()))
 		{
-			message = message.substring(2);
+			return;
+		}
+
+		final int[] intStack = client.getIntStack();
+		int intStackCount = client.getIntStackSize();
+
+		String message = client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT);
+
+		if (message.startsWith("/t "))
+		{
+			message = message.substring("/t ".length());
+			intStack[intStackCount - 3] = 1; // block the message
+
 			if (message.isEmpty() || twitchIRCClient == null)
 			{
-				return true;
+				return;
 			}
 
-			twitchIRCClient.privmsg(message);
-			addChatMessage(twitchConfig.username(), message);
-
-			return true;
+			try
+			{
+				twitchIRCClient.privmsg(message);
+				addChatMessage(twitchConfig.username(), message);
+			}
+			catch (IOException e)
+			{
+				log.warn("failed to send message", e);
+			}
 		}
-		return false;
-	}
-
-	@Override
-	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
-	{
-		return false;
 	}
 }

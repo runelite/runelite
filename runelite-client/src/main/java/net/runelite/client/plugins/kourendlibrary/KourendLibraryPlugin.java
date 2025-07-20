@@ -27,28 +27,41 @@ package net.runelite.client.plugins.kourendlibrary;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
+import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -69,9 +82,9 @@ public class KourendLibraryPlugin extends Plugin
 {
 	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
 	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-	final static int REGION = 6459;
+	static final int REGION = 6459;
 
-	final static boolean debug = false;
+	static final boolean debug = false;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -89,17 +102,27 @@ public class KourendLibraryPlugin extends Plugin
 	private KourendLibraryOverlay overlay;
 
 	@Inject
+	private KourendLibraryTutorialOverlay tutorialOverlay;
+
+	@Inject
 	private KourendLibraryConfig config;
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private ClientThread clientThread;
 
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
-	private EnumSet<Book> playerBooks = null;
+	private EnumSet<Book> playerBooks = EnumSet.noneOf(Book.class);
+	private QuestState depthsOfDespairState = QuestState.FINISHED;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<NPC> npcsToMark = new HashSet<>();
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -115,7 +138,7 @@ public class KourendLibraryPlugin extends Plugin
 		panel = injector.getInstance(KourendLibraryPanel.class);
 		panel.init();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Kourend Library")
@@ -125,8 +148,15 @@ public class KourendLibraryPlugin extends Plugin
 			.build();
 
 		overlayManager.add(overlay);
+		overlayManager.add(tutorialOverlay);
 
-		updatePlayerBooks();
+		clientThread.invoke(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				updatePlayerBooks();
+			}
+		});
 
 		if (!config.hideButton())
 		{
@@ -137,13 +167,14 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		overlay.setHidden(true);
 		overlayManager.remove(overlay);
+		overlayManager.remove(tutorialOverlay);
 		clientToolbar.removeNavigation(navButton);
 		buttonAttached = false;
 		lastBookcaseClick = null;
 		lastBookcaseAnimatedOn = null;
-		playerBooks = null;
+		playerBooks = EnumSet.noneOf(Book.class);
+		npcsToMark.clear();
 	}
 
 	@Subscribe
@@ -154,26 +185,42 @@ public class KourendLibraryPlugin extends Plugin
 			return;
 		}
 
-		SwingUtilities.invokeLater(() ->
+		if (ev.getKey().equals("hideVarlamoreEnvoy"))
 		{
-			if (!config.hideButton())
+			SwingUtilities.invokeLater(panel::reload);
+		}
+		else if (ev.getKey().equals("hideButton"))
+		{
+			SwingUtilities.invokeLater(() ->
 			{
-				clientToolbar.addNavigation(navButton);
-			}
-			else
-			{
-				Player lp = client.getLocalPlayer();
-				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
-				if (inRegion)
+				if (!config.hideButton())
 				{
 					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					clientToolbar.removeNavigation(navButton);
+					Player lp = client.getLocalPlayer();
+					boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+					if (inRegion)
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
 				}
+			});
+		}
+		else if (ev.getKey().equals("showTargetHintArrow"))
+		{
+			if (client.getLocalPlayer() == null || client.getLocalPlayer().getWorldLocation().getRegionID() != REGION)
+			{
+				return;
 			}
-		});
+
+			updateBookcaseHintArrow();
+		}
 	}
 
 	@Subscribe
@@ -181,15 +228,14 @@ public class KourendLibraryPlugin extends Plugin
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
-			overlay.setHidden(false);
+			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getParam0(), menuOpt.getParam1(), client.getPlane());
 		}
 	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged anim)
 	{
-		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
+		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.HUMAN_PICKUPTABLE)
 		{
 			lastBookcaseAnimatedOn = lastBookcaseClick;
 		}
@@ -198,14 +244,35 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		if (lastBookcaseAnimatedOn != null)
 		{
 			if (event.getMessage().equals("You don't find anything useful here."))
 			{
 				library.mark(lastBookcaseAnimatedOn, null);
-				panel.update();
+				updateBooksPanel();
 				lastBookcaseAnimatedOn = null;
 			}
+		}
+
+		// has a color tag at start
+		if (event.getMessage().endsWith("You hear the shifting of books due to a mysterious force...or are you just hearing things?"))
+		{
+			library.reset();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN ||
+			event.getGameState() == GameState.HOPPING)
+		{
+			npcsToMark.clear();
 		}
 	}
 
@@ -219,6 +286,7 @@ public class KourendLibraryPlugin extends Plugin
 			{
 				if (inRegion)
 				{
+					panel.reload();
 					clientToolbar.addNavigation(navButton);
 				}
 				else
@@ -234,28 +302,29 @@ public class KourendLibraryPlugin extends Plugin
 			return;
 		}
 
+		depthsOfDespairState = Quest.THE_DEPTHS_OF_DESPAIR.getState(client);
+
 		if (lastBookcaseAnimatedOn != null)
 		{
-			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+			Widget find = client.getWidget(InterfaceID.Objectbox.ITEM);
 			if (find != null)
 			{
 				Book book = Book.byId(find.getItemId());
 				if (book != null)
 				{
 					library.mark(lastBookcaseAnimatedOn, book);
-					panel.update();
+					updateBooksPanel();
 					lastBookcaseAnimatedOn = null;
 				}
 			}
 		}
 
-		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+		Widget npcHead = client.getWidget(InterfaceID.ChatLeft.HEAD);
 		if (npcHead != null)
 		{
-			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
-			if (cust != null)
+			if (isLibraryCustomer(npcHead.getModelId()))
 			{
-				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+				Widget textw = client.getWidget(InterfaceID.ChatLeft.TEXT);
 				String text = textw.getText();
 				Matcher m = BOOK_EXTRACTOR.matcher(text);
 				if (m.find())
@@ -268,14 +337,13 @@ public class KourendLibraryPlugin extends Plugin
 						return;
 					}
 
-					overlay.setHidden(false);
-					library.setCustomer(cust, book);
-					panel.update();
+					library.setCustomer(npcHead.getModelId(), book);
+					updateBooksPanel();
 				}
 				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 				{
-					library.setCustomer(null, null);
-					panel.update();
+					library.setCustomer(-1, null);
+					updateBooksPanel();
 				}
 			}
 		}
@@ -287,6 +355,21 @@ public class KourendLibraryPlugin extends Plugin
 		updatePlayerBooks();
 	}
 
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		if (isLibraryCustomer(event.getNpc().getId()))
+		{
+			npcsToMark.add(event.getNpc());
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		npcsToMark.remove(event.getNpc());
+	}
+
 	boolean doesPlayerContainBook(Book book)
 	{
 		return playerBooks.contains(book);
@@ -294,12 +377,11 @@ public class KourendLibraryPlugin extends Plugin
 
 	private void updatePlayerBooks()
 	{
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
+		EnumSet<Book> books = EnumSet.noneOf(Book.class);
 
 		if (itemContainer != null)
 		{
-			EnumSet<Book> books = EnumSet.noneOf(Book.class);
-
 			for (Item item : itemContainer.getItems())
 			{
 				Book book = Book.byId(item.getId());
@@ -309,8 +391,61 @@ public class KourendLibraryPlugin extends Plugin
 					books.add(book);
 				}
 			}
-
-			playerBooks = books;
 		}
+
+		playerBooks = books;
+	}
+
+	private void updateBooksPanel()
+	{
+		panel.update();
+		updateBookcaseHintArrow();
+	}
+
+	private void updateBookcaseHintArrow()
+	{
+		final Book customerBook = library.getCustomerBook();
+		final SolvedState state = library.getState();
+
+		// Clear the hint arrow if the player has no book requested of them
+		// or if the player is already holding the correct book
+		// or if this plugin is configured not to show the target book hint arrow
+		if (customerBook == null || doesPlayerContainBook(customerBook) || !config.showTargetHintArrow())
+		{
+			client.clearHintArrow();
+		}
+		else if (state == SolvedState.COMPLETE && client.getHintArrowPoint() == null)
+		{
+			// Show a hint arrow pointing toward the target book if all book locations are known
+			// and a hint arrow is not already being displayed
+			for (Bookcase bookcase : library.getBookcases())
+			{
+				final Set<Book> books = bookcase.getPossibleBooks();
+
+				if (!books.isEmpty())
+				{
+					final Book book = books.iterator().next();
+
+					// Each bookcase in a complete solved state will contain only one book. If that book is the book
+					// the customer wants, mark the bookcase which contains it with a hint arrow.
+					if (book == customerBook)
+					{
+						WorldPoint correctLocation = bookcase.getLocation();
+						client.setHintArrow(correctLocation);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	boolean showVarlamoreEnvoy()
+	{
+		return config.alwaysShowVarlamoreEnvoy() || depthsOfDespairState == QuestState.IN_PROGRESS;
+	}
+
+	static boolean isLibraryCustomer(int npcId)
+	{
+		return npcId == NpcID.ARCEUUS_LIBRARY_CUSTOMER_2 || npcId == NpcID.ARCEUUS_LIBRARY_CUSTOMER_3 || npcId == NpcID.ARCEUUS_LIBRARY_CUSTOMER_4;
 	}
 }

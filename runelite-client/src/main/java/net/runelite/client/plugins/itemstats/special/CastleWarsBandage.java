@@ -29,10 +29,10 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.itemstats.Builders.heal;
 import static net.runelite.client.plugins.itemstats.Builders.perc;
 import net.runelite.client.plugins.itemstats.Effect;
@@ -44,16 +44,16 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 public class CastleWarsBandage implements Effect
 {
 	private static final ImmutableSet<Integer> BRACELETS = ImmutableSet.of(
-			ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3
+		ItemID.JEWL_CASTLEWARS_BRACELET, ItemID.JEWL_CASTLEWARS_BRACELET2, ItemID.JEWL_CASTLEWARS_BRACELET3
 	);
 
 	private static final double BASE_HP_PERC = .10;
-	private static final double BRACELET_HP_PERC = .50;
+	private static final double BRACELET_HP_PERC = .15;
 
 	@Override
 	public StatsChanges calculate(Client client)
 	{
-		final ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		final ItemContainer equipmentContainer = client.getItemContainer(InventoryID.WORN);
 		final double percH = hasBracelet(equipmentContainer) ? BRACELET_HP_PERC : BASE_HP_PERC;
 		final StatChange hitPoints = heal(HITPOINTS, perc(percH, 0)).effect(client);
 		final StatChange runEnergy = heal(RUN_ENERGY, 30).effect(client);
@@ -61,7 +61,7 @@ public class CastleWarsBandage implements Effect
 		changes.setStatChanges(new StatChange[]{hitPoints, runEnergy});
 		changes.setPositivity(Stream.of(changes.getStatChanges())
 			.map(StatChange::getPositivity)
-			.max(Comparator.comparing(Enum::ordinal)).get());
+			.max(Comparator.naturalOrder()).get());
 
 		return changes;
 	}
@@ -73,11 +73,11 @@ public class CastleWarsBandage implements Effect
 			return false;
 		}
 
-		final Item[] equipment = equipmentContainer.getItems();
+		final Item gloves = equipmentContainer.getItem(EquipmentInventorySlot.GLOVES.getSlotIdx());
 
-		if (equipment.length > EquipmentInventorySlot.GLOVES.getSlotIdx())
+		if (gloves != null)
 		{
-			return BRACELETS.contains(equipment[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId());
+			return BRACELETS.contains(gloves.getId());
 		}
 
 		return false;

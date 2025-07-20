@@ -31,10 +31,11 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 /**
@@ -48,7 +49,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class FpsOverlay extends Overlay
 {
 	private static final int Y_OFFSET = 1;
-	private static final int VALUE_X_OFFSET = 1;
+	private static final int X_OFFSET = 1;
 	private static final String FPS_STRING = " FPS";
 
 	// Local dependencies
@@ -64,7 +65,7 @@ public class FpsOverlay extends Overlay
 		this.config = config;
 		this.client = client;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
@@ -75,8 +76,8 @@ public class FpsOverlay extends Overlay
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return config.limitFps()
+			|| (config.limitFpsUnfocused() && !isFocused);
 	}
 
 	private Color getFpsValueColor()
@@ -91,13 +92,22 @@ public class FpsOverlay extends Overlay
 		{
 			return null;
 		}
-		
+
+		// On resizable bottom line mode the logout button is at the top right, so offset the overlay
+		// to account for it
+		Widget logoutButton = client.getWidget(InterfaceID.ToplevelPreEoc.ICON10);
+		int xOffset = X_OFFSET;
+		if (logoutButton != null && !logoutButton.isHidden())
+		{
+			xOffset += logoutButton.getWidth();
+		}
+
 		final String text = client.getFPS() + FPS_STRING;
 		final int textWidth = graphics.getFontMetrics().stringWidth(text);
 		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
 
 		final int width = (int) client.getRealDimensions().getWidth();
-		final Point point = new Point(width - textWidth - VALUE_X_OFFSET, textHeight + Y_OFFSET);
+		final Point point = new Point(width - textWidth - xOffset, textHeight + Y_OFFSET);
 		OverlayUtil.renderTextLocation(graphics, point, text, getFpsValueColor());
 
 		return null;

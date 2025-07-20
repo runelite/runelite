@@ -25,7 +25,7 @@
 package net.runelite.api.events;
 
 import lombok.Value;
-import net.runelite.api.Item;
+import net.runelite.api.TileItem;
 import net.runelite.api.Tile;
 
 /**
@@ -36,5 +36,5 @@ import net.runelite.api.Tile;
 public class ItemSpawned
 {
 	private final Tile tile;
-	private final Item item;
+	private final TileItem item;
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,229 +26,195 @@
  */
 package net.runelite.client.rs;
 
-import com.google.common.hash.Hashing;
-import com.google.common.io.ByteStreams;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import io.sigpipe.jbsdiff.InvalidHeaderException;
-import io.sigpipe.jbsdiff.Patch;
+import com.google.common.base.Strings;
 import java.applet.Applet;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import java.util.function.Supplier;
+import javax.annotation.Nonnull;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
-import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
-import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.apache.commons.compress.compressors.CompressorException;
+import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.RuntimeConfig;
+import net.runelite.client.RuntimeConfigLoader;
+import net.runelite.client.ui.FatalErrorDialog;
+import net.runelite.client.ui.SplashScreen;
+import net.runelite.http.api.worlds.World;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 
 @Slf4j
-@Singleton
-public class ClientLoader
+@SuppressWarnings({"deprecation"})
+public class ClientLoader implements Supplier<Client>
 {
-	private final ClientConfigLoader clientConfigLoader;
-	private ClientUpdateCheckMode updateCheckMode;
+	private static final int NUM_ATTEMPTS = 6;
 
-	@Inject
-	private ClientLoader(
-		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
-		final ClientConfigLoader clientConfigLoader)
+	private final ClientConfigLoader clientConfigLoader;
+	private final WorldSupplier worldSupplier;
+	private final RuntimeConfigLoader runtimeConfigLoader;
+	private final String javConfigUrl;
+
+	private Object client;
+
+	public ClientLoader(OkHttpClient okHttpClient, RuntimeConfigLoader runtimeConfigLoader, String javConfigUrl)
 	{
-		this.updateCheckMode = updateCheckMode;
-		this.clientConfigLoader = clientConfigLoader;
+		this.clientConfigLoader = new ClientConfigLoader(okHttpClient);
+		this.worldSupplier = new WorldSupplier(okHttpClient);
+		this.runtimeConfigLoader = runtimeConfigLoader;
+		this.javConfigUrl = javConfigUrl;
 	}
 
-	public Applet load()
+	@Override
+	public synchronized Client get()
 	{
-		if (updateCheckMode == NONE)
+		if (client == null)
 		{
-			return null;
+			client = doLoad();
 		}
 
+		if (client instanceof Throwable)
+		{
+			throw new RuntimeException((Throwable) client);
+		}
+		return (Client) client;
+	}
+
+	private Object doLoad()
+	{
 		try
 		{
-			RSConfig config = clientConfigLoader.fetch();
+			SplashScreen.stage(0, null, "Fetching applet viewer config");
+			RSConfig config = downloadConfig();
 
-			Map<String, byte[]> zipFile = new HashMap<>();
-			{
-				Certificate[] jagexCertificateChain = getJagexCertificateChain();
-				String codebase = config.getCodeBase();
-				String initialJar = config.getInitialJar();
-				URL url = new URL(codebase + initialJar);
-				Request request = new Request.Builder()
-					.url(url)
-					.build();
+			SplashScreen.stage(.3, "Starting", "Starting Old School RuneScape");
 
-				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-				{
-					JarInputStream jis = new JarInputStream(response.body().byteStream());
+			Client rs = loadClient(config);
 
-					byte[] tmp = new byte[4096];
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-					for (; ; )
-					{
-						JarEntry metadata = jis.getNextJarEntry();
-						if (metadata == null)
-						{
-							break;
-						}
-
-						buffer.reset();
-						for (; ; )
-						{
-							int n = jis.read(tmp);
-							if (n <= -1)
-							{
-								break;
-							}
-							buffer.write(tmp, 0, n);
-						}
-
-						if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
-						{
-							if (metadata.getName().startsWith("META-INF/"))
-							{
-								// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
-								// anything in META-INF anyway.
-								continue;
-							}
-							else
-							{
-								throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
-							}
-						}
-
-						zipFile.put(metadata.getName(), buffer.toByteArray());
-					}
-				}
-			}
-
-			if (updateCheckMode == AUTO)
-			{
-				Map<String, String> hashes;
-				try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
-				{
-					hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
-					{
-					}.getType());
-				}
-
-				for (Map.Entry<String, String> file : hashes.entrySet())
-				{
-					byte[] bytes = zipFile.get(file.getKey());
-
-					String ourHash = null;
-					if (bytes != null)
-					{
-						ourHash = Hashing.sha512().hashBytes(bytes).toString();
-					}
-
-					if (!file.getValue().equals(ourHash))
-					{
-						log.debug("{} had a hash mismatch; falling back to vanilla. {} != {}", file.getKey(), file.getValue(), ourHash);
-						log.info("Client is outdated!");
-						updateCheckMode = VANILLA;
-						break;
-					}
-				}
-			}
-
-			if (updateCheckMode == AUTO)
-			{
-				ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
-				int patchCount = 0;
-
-				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
-				{
-					byte[] bytes;
-					try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/" + file.getKey() + ".bs"))
-					{
-						if (is == null)
-						{
-							continue;
-						}
-
-						bytes = ByteStreams.toByteArray(is);
-					}
-
-					patchOs.reset();
-					Patch.patch(file.getValue(), bytes, patchOs);
-					file.setValue(patchOs.toByteArray());
-
-					++patchCount;
-				}
-
-				log.debug("Patched {} classes", patchCount);
-			}
-
-			String initialClass = config.getInitialClass();
-
-			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
-			{
-				@Override
-				protected Class<?> findClass(String name) throws ClassNotFoundException
-				{
-					String path = name.replace('.', '/').concat(".class");
-					byte[] data = zipFile.get(path);
-					if (data == null)
-					{
-						throw new ClassNotFoundException(name);
-					}
-
-					return defineClass(name, data, 0, data.length);
-				}
-			};
-
-			Class<?> clientClass = rsClassLoader.loadClass(initialClass);
-
-			Applet rs = (Applet) clientClass.newInstance();
-			rs.setStub(new RSAppletStub(config));
-
-			if (rs instanceof Client)
-			{
-				log.info("client-patch {}", ((Client) rs).getBuildID());
-			}
+			SplashScreen.stage(.4, null, "Starting core classes");
 
 			return rs;
 		}
-		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-			| CompressorException | InvalidHeaderException | CertificateException | VerificationException
-			| SecurityException e)
+		catch (OutageException e)
 		{
-			if (e instanceof ClassNotFoundException)
-			{
-				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the client patch"
-					+ " is not in your classpath.");
-			}
-
+			return e;
+		}
+		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException e)
+		{
 			log.error("Error loading RS!", e);
-			return null;
+
+			if (!checkOutages())
+			{
+				SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
+			}
+			return e;
 		}
 	}
 
-	private static Certificate[] getJagexCertificateChain() throws CertificateException
+	private RSConfig downloadConfig() throws IOException
 	{
-		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
-		return certificates.toArray(new Certificate[certificates.size()]);
+		HttpUrl url = HttpUrl.get(javConfigUrl);
+		IOException err = null;
+		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
+		{
+			try
+			{
+				RSConfig config = clientConfigLoader.fetch(url);
+
+				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
+				{
+					throw new IOException("Invalid or missing jav_config");
+				}
+
+				return config;
+			}
+			catch (IOException e)
+			{
+				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+				if (checkOutages())
+				{
+					throw new OutageException(e);
+				}
+
+				if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()))
+				{
+					throw e;
+				}
+
+				String host = worldSupplier.get().getAddress();
+				url = url.newBuilder().host(host).build();
+				err = e;
+			}
+		}
+
+		log.info("Falling back to backup client config");
+
+		try
+		{
+			return downloadFallbackConfig();
+		}
+		catch (IOException ex)
+		{
+			log.debug("error downloading backup config", ex);
+			throw err; // NOPMD: PreserveStackTrace - use error from Jagex's servers
+		}
+	}
+
+	@Nonnull
+	private RSConfig downloadFallbackConfig() throws IOException
+	{
+		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.get(RuneLiteProperties.getJavConfigBackup()));
+
+		if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
+		{
+			throw new IOException("Invalid or missing jav_config");
+		}
+
+		if (Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
+		{
+			throw new IOException("Backup config does not have RuneLite gamepack url");
+		}
+
+		// Randomize the codebase
+		World world = worldSupplier.get();
+		backupConfig.setCodebase("http://" + world.getAddress() + "/");
+
+		// Update the world applet parameter
+		Map<String, String> appletProperties = backupConfig.getAppletProperties();
+		appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
+
+		return backupConfig;
+	}
+
+	private Client loadClient(RSConfig config) throws ClassNotFoundException, IllegalAccessException, InstantiationException
+	{
+		String initialClass = config.getInitialClass();
+		Class<?> clientClass = ClientLoader.class.getClassLoader()
+			.loadClass(initialClass);
+
+		Client rs = (Client) clientClass.newInstance();
+		((Applet) rs).setStub(new RSAppletStub(config, runtimeConfigLoader));
+
+		log.info("injected-client {}", rs.getBuildID());
+
+		return rs;
+	}
+
+	private static class OutageException extends RuntimeException
+	{
+		private OutageException(Throwable cause)
+		{
+			super(cause);
+		}
+	}
+
+	private boolean checkOutages()
+	{
+		RuntimeConfig rtc = runtimeConfigLoader.tryGet();
+		if (rtc != null)
+		{
+			return rtc.showOutageMessage();
+		}
+		return false;
 	}
 }

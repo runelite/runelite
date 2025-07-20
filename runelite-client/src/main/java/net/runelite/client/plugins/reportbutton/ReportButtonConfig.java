@@ -33,11 +33,21 @@ public interface ReportButtonConfig extends Config
 {
 	@ConfigItem(
 		keyName = "time",
-		name = "Display Options",
+		name = "Display options",
 		description = "Configures what text the report button shows."
 	)
 	default TimeStyle time()
 	{
 		return TimeStyle.LOGIN_TIME;
+	}
+
+	@ConfigItem(
+		keyName = "switchTimeFormat",
+		name = "Time format",
+		description = "Configures time between 12 or 24 hour time format."
+	)
+	default TimeFormat switchTimeFormat()
+	{
+		return TimeFormat.TIME_12H;
 	}
 }
