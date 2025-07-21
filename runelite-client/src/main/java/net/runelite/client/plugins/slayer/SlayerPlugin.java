@@ -91,6 +91,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Slayer",
@@ -387,8 +388,8 @@ public class SlayerPlugin extends Plugin
 			String taskLocation = null;
 			if (areaId > 0)
 			{
-				taskLocation = client.getEnum(EnumID.SLAYER_TASK_LOCATION)
-					.getStringValue(areaId);
+				taskLocation = StringUtils.capitalize(client.getEnum(EnumID.SLAYER_TASK_LOCATION)
+					.getStringValue(areaId));
 			}
 
 			if (loginFlag)
