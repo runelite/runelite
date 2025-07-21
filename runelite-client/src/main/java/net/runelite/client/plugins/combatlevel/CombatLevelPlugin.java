@@ -36,7 +36,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
-import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
@@ -148,7 +148,7 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onClientTick(ClientTick tick)
+	private void onBeforeRender(BeforeRender event)
 	{
 		Widget combatLevelWidget = client.getWidget(InterfaceID.CombatInterface.LEVEL);
 		if (combatLevelWidget == null || !config.showPreciseCombatLevel())
