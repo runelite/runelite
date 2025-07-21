@@ -278,7 +278,7 @@ public class ItemStatChanges
 		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);
-		final Effect staminaPot = new StaminaPotion();
+		final SingleEffect staminaPot = new StaminaPotion();
 		final DeltaPercentage remedyHeal = perc(0.16, 6);
 		add(restorePot, ItemID._1DOSESTATRESTORE, ItemID._2DOSESTATRESTORE, ItemID._3DOSESTATRESTORE, ItemID._4DOSESTATRESTORE);
 		add(energyPot, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY);
@@ -372,6 +372,7 @@ public class ItemStatChanges
 		add(boost(MAGIC, perc(.10, 4)), ItemID.SATURATED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(PRAYER, 1), heal(DEFENCE, -1)), ItemID.JANGERBERRIES);
 		add(new CaveNightshade(), ItemID.NIGHTSHADE);
+		add(combo(food(15), heal(PRAYER, perc(.25, 0)), staminaPot), ItemID.DT2_SCAR_MAZE_STAMINA);
 
 		// Gauntlet
 		add(combo(heal(PRAYER, perc(.25, 7)), heal(RUN_ENERGY, 40)), ItemID.GAUNTLET_POTION_1, ItemID.GAUNTLET_POTION_2, ItemID.GAUNTLET_POTION_3, ItemID.GAUNTLET_POTION_4);
