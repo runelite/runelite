@@ -25,9 +25,9 @@ public final class DBTableID
 		public static final int COL_DISPLAYNAME = 2;
 
 		/**
-		 * boolean
+		 * integer
 		 */
-		public static final int COL_IN_PRERELEASE = 3;
+		public static final int COL_RELEASE_TYPE = 3;
 
 		/**
 		 * integer
@@ -394,6 +394,12 @@ public final class DBTableID
 			public static final int QUEST_MEATANDGREET = 3712;
 			public static final int QUEST_ETHICALLYACQUIREDANTIQUITIES = 3713;
 			public static final int QUEST_CURSEOFARRAV = 3937;
+			public static final int QUEST_FINALDAWN = 5189;
+			public static final int QUEST_SHADOWSOFCUSTODIA = 5190;
+			public static final int QUEST_SCRAMBLED = 5191;
+			public static final int QUEST_EXISTENTIALCRISIS = 5192;
+			public static final int QUEST_IMPENDINGCHAOS = 5193;
+			public static final int MINIQUEST_VALETOTEMS = 5194;
 		}
 	}
 
@@ -652,6 +658,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_ANAGRAM_MASTER_NEW_RECRUIT_TONY = 1598;
 			public static final int CLUEHELPER_ANAGRAM_SOTE_3 = 2299;
 			public static final int CLUEHELPER_ANAGRAM_MEDIUM_METLA = 3498;
+			public static final int CLUEHELPER_ANAGRAM_MEDIUM_TEICUH = 5175;
 		}
 	}
 
@@ -798,6 +805,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_CIPHER_HARD_7 = 2276;
 			public static final int CLUEHELPER_CIPHER_HARD_8 = 2277;
 			public static final int CLUEHELPER_CIPHER_HARD_VM01 = 3510;
+			public static final int CLUEHELPER_CIPHER_HARD_VM02 = 5183;
 		}
 	}
 
@@ -1012,6 +1020,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_COORDINATE_MEDIUM_VM01 = 3505;
 			public static final int CLUEHELPER_COORDINATE_ELITE_VM01 = 3506;
 			public static final int CLUEHELPER_COORDINATE_ELITE_VM02 = 3697;
+			public static final int CLUEHELPER_COORDINATE_HARD_53 = 5171;
 		}
 	}
 
@@ -1365,6 +1374,9 @@ public final class DBTableID
 			public static final int CLUEHELPER_CRYPTIC_EASY_0_23_50_18_57 = 3695;
 			public static final int CLUEHELPER_CRYPTIC_ELITE_FROST_NAGUA = 3696;
 			public static final int CLUEHELPER_CRYPTIC_EASY_0_21_45_46_46 = 3812;
+			public static final int CLUEHELPER_CRYPTIC_EASY_RANULPH = 5178;
+			public static final int CLUEHELPER_CRYPTIC_MEDIUM_AUBURN = 5179;
+			public static final int CLUEHELPER_CRYPTIC_ELITE_EARTH_NAGUA = 5180;
 		}
 	}
 
@@ -1872,6 +1884,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_SUNSET = 3488;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_BAZAAR = 3489;
 			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_ALDARIN_THEATRE = 3689;
+			public static final int CLUEHELPER_HOTCOLD_MASTER_VARLAMORE_RAINFOREST_CENTRE = 5182;
 		}
 	}
 
@@ -2295,6 +2308,9 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_NPC_FUNBO = 3492;
 			public static final int CLUEHELPER_TARGET_NPC_GLORY = 3493;
 			public static final int CLUEHELPER_TARGET_NPC_UGLUG_NAR = 3596;
+			public static final int CLUEHELPER_TARGET_NPC_TEICUH = 5184;
+			public static final int CLUEHELPER_TARGET_NPC_RANULPH = 5185;
+			public static final int CLUEHELPER_TARGET_NPC_SULISAL = 5186;
 		}
 	}
 
@@ -2428,6 +2444,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_LOC_ENT = 1145;
 			public static final int CLUEHELPER_TARGET_LOC_JUNA = 2305;
 			public static final int CLUEHELPER_TARGET_LOC_HUNTERGUILD_SHELF = 3494;
+			public static final int CLUEHELPER_TARGET_LOC_AUBURN_CRATE = 5174;
 		}
 	}
 
@@ -2975,6 +2992,8 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_COORD_0_26_50_30_47 = 3810;
 			public static final int CLUEHELPER_TARGET_COORD_0_25_51_10_38 = 3811;
 			public static final int CLUEHELPER_TARGET_COORD_1_25_83_40_54 = 3936;
+			public static final int CLUEHELPER_TARGET_COORD_VARLAMORE_RAINFOREST_CENTRE = 5172;
+			public static final int CLUEHELPER_TARGET_COORD_0_20_51_41_59 = 5173;
 		}
 	}
 
@@ -3072,6 +3091,7 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_KILL_CROCODILE = 827;
 			public static final int CLUEHELPER_TARGET_KILL_HELLHOUND = 828;
 			public static final int CLUEHELPER_TARGET_KILL_FROST_NAGUA = 3688;
+			public static final int CLUEHELPER_TARGET_KILL_EARTH_NAGUA = 5181;
 		}
 	}
 
@@ -3356,6 +3376,8 @@ public final class DBTableID
 			public static final int CLUEHELPER_CHALLENGE_QUESTION_CIPHER_HARD_4 = 1232;
 			public static final int CLUEHELPER_CHALLENGE_QUESTION_KING_AWOWOGEI = 2417;
 			public static final int CLUEHELPER_CHALLENGE_QUESTION_UGLUG_NAR = 3595;
+			public static final int CLUEHELPER_CHALLENGE_QUESTION_CIPHER_HARD_5 = 5176;
+			public static final int CLUEHELPER_CHALLENGE_QUESTION_MEDIUM_CRYPTIC_VM02 = 5177;
 		}
 	}
 
@@ -3771,6 +3793,11 @@ public final class DBTableID
 		 */
 		public static final int COL_UI_OP_NAME = 5;
 
+		/**
+		 * boolean
+		 */
+		public static final int COL_SHOW_WHEN_UNAVAILABLE = 6;
+
 		public static final class Row
 		{
 			public static final int PRIDE22_FLOWER_CROWN_PRIDE = 174;
@@ -3964,6 +3991,13 @@ public final class DBTableID
 			public static final int XMAS24_PRESENT_HAT_SIMPLE = 4230;
 			public static final int XMAS24_PRESENT_HAT_ICY = 4231;
 			public static final int XMAS24_PRESENT_HAT_ANTISANTA = 4232;
+			public static final int GREENMAN_MASK_TRANSMOG = 5390;
+			public static final int GREENMAN_MASK_REGULAR_TRANSMOG = 5391;
+			public static final int GREENMAN_MASK_OAK_TRANSMOG = 5392;
+			public static final int GREENMAN_MASK_WILLOW_TRANSMOG = 5393;
+			public static final int GREENMAN_MASK_MAPLE_TRANSMOG = 5394;
+			public static final int GREENMAN_MASK_YEW_TRANSMOG = 5395;
+			public static final int GREENMAN_MASK_MAGIC_TRANSMOG = 5396;
 		}
 	}
 
@@ -4004,6 +4038,7 @@ public final class DBTableID
 			public static final int COMBINATION_LOCK_DATASET_SYMBOLIC = 3414;
 			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_REVERSED = 3511;
 			public static final int VMQ3_TOWER_LOCK_DATASET_ALPHABETIC = 3783;
+			public static final int COMBINATION_LOCK_DATASET_VMQ4_JANUS_LOCK = 5195;
 		}
 	}
 
@@ -4035,6 +4070,9 @@ public final class DBTableID
 			public static final int VMQ3_TOWER_LOCK_VALUES_ALPHABETIC_2 = 3699;
 			public static final int VMQ3_TOWER_LOCK_VALUES_ALPHABETIC_3 = 3700;
 			public static final int VMQ3_TOWER_LOCK_VALUES_ALPHABETIC_4 = 3701;
+			public static final int COMBINATION_LOCK_VALUES_VMQ4_JANUS_LOCK_1 = 5196;
+			public static final int COMBINATION_LOCK_VALUES_VMQ4_JANUS_LOCK_2 = 5197;
+			public static final int COMBINATION_LOCK_VALUES_VMQ4_JANUS_LOCK_3 = 5198;
 		}
 	}
 
@@ -4267,6 +4305,8 @@ public final class DBTableID
 			public static final int WYRM_AGILITY_REWARDS_SHOP = 3764;
 			public static final int TITHE_SHOP_DATA = 4981;
 			public static final int CW_SHOP_DATA = 5063;
+			public static final int ENT_TOTEMS_SHOP = 5458;
+			public static final int ENT_TOTEMS_SHOP_IRONMAN = 5459;
 		}
 	}
 
@@ -4551,6 +4591,11 @@ public final class DBTableID
 			public static final int CW_SHOP_DATA_CASTLEWARS_SARADOMIN_HALO = 5101;
 			public static final int CW_SHOP_DATA_CASTLEWARS_ZAMORAK_HALO = 5102;
 			public static final int CW_SHOP_DATA_CASTLEWARS_GUTHIX_HALO = 5103;
+			public static final int ENT_TOTEMS_SHOP_STOCK_SPOOL = 5461;
+			public static final int ENT_TOTEMS_SHOP_STOCK_KNIFE = 5462;
+			public static final int ENT_TOTEMS_SHOP_STOCK_MASK = 5463;
+			public static final int ENT_TOTEMS_SHOP_IRONMAN_STOCK_MASK = 5464;
+			public static final int ENT_TOTEMS_SHOP_STOCK_BRANCH = 5465;
 		}
 	}
 
@@ -4622,6 +4667,7 @@ public final class DBTableID
 			public static final int OMNISHOP_CURRENCY_TITHE_POINTS = 4982;
 			public static final int OMNISHOP_CURRENCY_CW_TICKETS = 5104;
 			public static final int OMNISHOP_CURRENCY_CW_PLAUDITS = 5105;
+			public static final int OMNISHOP_CURRENCY_ENT_TOTEMS_RESEARCH_POINTS = 5460;
 		}
 	}
 
@@ -5526,6 +5572,19 @@ public final class DBTableID
 			public static final int MUSIC_HEAVY_SECURITY = 3972;
 			public static final int MUSIC_THE_PLUNDERED_TOMB = 3973;
 			public static final int MUSIC_YAMA_COMBAT = 5154;
+			public static final int MUSIC_TLATI_RAINFOREST = 5377;
+			public static final int MUSIC_AUBURN_VALLEY_1 = 5378;
+			public static final int MUSIC_AUBURN_VALLEY_2 = 5379;
+			public static final int MUSIC_KASTORI = 5380;
+			public static final int MUSIC_TAL_TEKLAN = 5381;
+			public static final int MUSIC_EMISSARY_COMBAT_1 = 5382;
+			public static final int MUSIC_EMISSARY_COMBAT_2 = 5383;
+			public static final int MUSIC_FINAL_DAWN_METZLI_BOSS = 5384;
+			public static final int MUSIC_AVIUM_SAVANNAH_3 = 5385;
+			public static final int MUSIC_CUSTODIA_MOUNTAINS = 5386;
+			public static final int MUSIC_MOKHAIOTL = 5387;
+			public static final int MUSIC_DOOM_BOSS = 5388;
+			public static final int MUSIC_STALKER_DUNGEON = 5389;
 		}
 	}
 
@@ -5939,6 +5998,9 @@ public final class DBTableID
 			public static final int QUETZAL_ALDARIN = 3780;
 			public static final int QUETZAL_QUETZACALLIGORGE = 3781;
 			public static final int QUETZAL_SALVAGEROVERLOOK = 3782;
+			public static final int QUETZAL_TALTEKLAN = 5466;
+			public static final int QUETZAL_AUBURNVALLEY = 5467;
+			public static final int QUETZAL_KASTORI = 5468;
 		}
 	}
 
@@ -6241,6 +6303,8 @@ public final class DBTableID
 			public static final int PENDANT_OF_ATES_TWILIGHT_TEMPLE = 182;
 			public static final int PENDANT_OF_ATES_RALOS_RISE = 183;
 			public static final int PENDANT_OF_ATES_ALDARIN = 184;
+			public static final int PENDANT_OF_ATES_TLATI = 5485;
+			public static final int PENDANT_OF_ATES_AUBURN = 5486;
 		}
 	}
 
@@ -6429,6 +6493,7 @@ public final class DBTableID
 			public static final int COMBAT_INTERFACE_BULWARK = 3967;
 			public static final int COMBAT_INTERFACE_PARTISAN = 3968;
 			public static final int COMBAT_INTERFACE_TRIBRID = 4091;
+			public static final int COMBAT_INTERFACE_EGG = 5376;
 		}
 	}
 
@@ -6600,6 +6665,7 @@ public final class DBTableID
 			public static final int HISCORES_BOSSES_THE_HUEYCOATL = 4069;
 			public static final int HISCORES_BOSSES_THE_ROYAL_TITANS = 4234;
 			public static final int HISCORES_BOSSES_YAMA = 5130;
+			public static final int HISCORES_BOSSES_DOOM_OF_MOKHAIOTL = 5484;
 		}
 	}
 
@@ -7110,6 +7176,8 @@ public final class DBTableID
 			public static final int CHARGES_ALCHEMIST_AMULET = 4362;
 			public static final int CHARGES_GIANTSOUL_AMULET = 4363;
 			public static final int CHARGES_PENDANT_OF_ATES = 4364;
+			public static final int CHARGES_EYE_OF_AYAK_TEARS = 5187;
+			public static final int CHARGES_EYE_OF_AYAK_RUNES = 5188;
 		}
 	}
 
@@ -7986,6 +8054,477 @@ public final class DBTableID
 			public static final int MIST_FROM_AIRALTAR = 5168;
 			public static final int SUNFIRE_FROM_RALOSSHRINE = 5169;
 			public static final int COSMICSOUL_FROM_COSMICALTAR = 5170;
+		}
+	}
+
+	public static final class Vmq4MetzliBossSpecialTeleport
+	{
+		public static final int ID = 93;
+
+		public static final class Row
+		{
+			public static final int VMQ4_METZLI_BOSS_SUN_TELEPORT_1 = 5199;
+			public static final int VMQ4_METZLI_BOSS_SUN_TELEPORT_2 = 5200;
+			public static final int VMQ4_METZLI_BOSS_SUN_TELEPORT_3 = 5201;
+			public static final int VMQ4_METZLI_BOSS_SUN_TELEPORT_4 = 5202;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_NE_1 = 5203;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_SE_1 = 5204;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_SW_1 = 5205;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_NW_1 = 5206;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_NE_2 = 5207;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_SE_2 = 5208;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_SW_2 = 5209;
+			public static final int VMQ4_METZLI_BOSS_MOON_TELEPORT_NW_2 = 5210;
+		}
+	}
+
+	public static final class Vmq4Teleporters
+	{
+		public static final int ID = 94;
+
+		public static final class Row
+		{
+			public static final int VMQ4_TELEPORTER_MOON_PUZZLE = 5211;
+			public static final int VMQ4_TELEPORTER_SUN_PUZZLE = 5212;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_1 = 5213;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_2 = 5214;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_3 = 5215;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_4 = 5216;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_5 = 5217;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_6 = 5218;
+			public static final int CRYPT_OF_TONALI_TELEPORTER_7 = 5219;
+		}
+	}
+
+	public static final class Vmq4ZemaTahtTranslations
+	{
+		public static final int ID = 95;
+
+		public static final class Row
+		{
+			public static final int VMQ4_TRANSLATION_NORTH = 5220;
+			public static final int VMQ4_TRANSLATION_EAST = 5221;
+			public static final int VMQ4_TRANSLATION_SOUTH = 5222;
+			public static final int VMQ4_TRANSLATION_WEST = 5223;
+			public static final int VMQ4_TRANSLATION_0 = 5224;
+			public static final int VMQ4_TRANSLATION_1 = 5225;
+			public static final int VMQ4_TRANSLATION_2 = 5226;
+			public static final int VMQ4_TRANSLATION_3 = 5227;
+			public static final int VMQ4_TRANSLATION_4 = 5228;
+			public static final int VMQ4_TRANSLATION_5 = 5229;
+			public static final int VMQ4_TRANSLATION_6 = 5230;
+			public static final int VMQ4_TRANSLATION_7 = 5231;
+			public static final int VMQ4_TRANSLATION_8 = 5232;
+			public static final int VMQ4_TRANSLATION_9 = 5233;
+			public static final int VMQ4_TRANSLATION_10 = 5234;
+			public static final int VMQ4_TRANSLATION_20 = 5235;
+			public static final int VMQ4_TRANSLATION_20_ALT = 5236;
+			public static final int VMQ4_TRANSLATION_30 = 5237;
+			public static final int VMQ4_TRANSLATION_30_ALT = 5238;
+			public static final int VMQ4_TRANSLATION_40 = 5239;
+			public static final int VMQ4_TRANSLATION_40_ALT = 5240;
+			public static final int VMQ4_TRANSLATION_50 = 5241;
+			public static final int VMQ4_TRANSLATION_50_ALT = 5242;
+			public static final int VMQ4_TRANSLATION_60 = 5243;
+			public static final int VMQ4_TRANSLATION_60_ALT = 5244;
+			public static final int VMQ4_TRANSLATION_70 = 5245;
+			public static final int VMQ4_TRANSLATION_70_ALT = 5246;
+			public static final int VMQ4_TRANSLATION_80 = 5247;
+			public static final int VMQ4_TRANSLATION_80_ALT = 5248;
+			public static final int VMQ4_TRANSLATION_90 = 5249;
+			public static final int VMQ4_TRANSLATION_90_ALT = 5250;
+			public static final int VMQ4_TRANSLATION_FUN_1 = 5251;
+		}
+	}
+
+	public static final class Vmq4SunPuzzleAltars
+	{
+		public static final int ID = 96;
+
+		public static final class Row
+		{
+			public static final int VMQ4_SUN_ALTAR_NORTH = 5252;
+			public static final int VMQ4_SUN_ALTAR_NORTHEAST = 5253;
+			public static final int VMQ4_SUN_ALTAR_EAST = 5254;
+			public static final int VMQ4_SUN_ALTAR_SOUTHEAST = 5255;
+			public static final int VMQ4_SUN_ALTAR_SOUTH = 5256;
+			public static final int VMQ4_SUN_ALTAR_SOUTHWEST = 5257;
+			public static final int VMQ4_SUN_ALTAR_WEST = 5258;
+			public static final int VMQ4_SUN_ALTAR_NORTHWEST = 5259;
+		}
+	}
+
+	public static final class Vmq4MoonPuzzleRoots
+	{
+		public static final int ID = 97;
+
+		public static final class Row
+		{
+			public static final int VMQ4_MOON_ROOT_0 = 5260;
+			public static final int VMQ4_MOON_ROOT_1 = 5261;
+			public static final int VMQ4_MOON_ROOT_2 = 5262;
+			public static final int VMQ4_MOON_ROOT_3 = 5263;
+			public static final int VMQ4_MOON_ROOT_4 = 5264;
+			public static final int VMQ4_MOON_ROOT_5 = 5265;
+			public static final int VMQ4_MOON_ROOT_6 = 5266;
+		}
+	}
+
+	public static final class Vmq4MoonPuzzleBraziers
+	{
+		public static final int ID = 98;
+
+		public static final class Row
+		{
+			public static final int VMQ4_MOON_BRAZIER_0 = 5267;
+			public static final int VMQ4_MOON_BRAZIER_1 = 5268;
+			public static final int VMQ4_MOON_BRAZIER_2 = 5269;
+			public static final int VMQ4_MOON_BRAZIER_3 = 5270;
+			public static final int VMQ4_MOON_BRAZIER_4 = 5271;
+			public static final int VMQ4_MOON_BRAZIER_5 = 5272;
+			public static final int VMQ4_MOON_BRAZIER_6 = 5273;
+			public static final int VMQ4_MOON_BRAZIER_7 = 5274;
+		}
+	}
+
+	public static final class Vmq4CryptWaves
+	{
+		public static final int ID = 99;
+
+		public static final class Row
+		{
+			public static final int VMQ4_WAVE1 = 5275;
+			public static final int VMQ4_WAVE2 = 5276;
+			public static final int VMQ4_WAVE3 = 5277;
+			public static final int VMQ4_WAVE4 = 5278;
+			public static final int VMQ4_WAVE5 = 5279;
+		}
+	}
+
+	public static final class PohHeraldicDecorVariant
+	{
+		public static final int ID = 100;
+
+		public static final class Row
+		{
+			public static final int POH_HERALDIC_DECOR_TEAK_ARRAV = 5280;
+			public static final int POH_HERALDIC_DECOR_TEAK_ASGARNIA = 5281;
+			public static final int POH_HERALDIC_DECOR_TEAK_DORGESHUUN = 5282;
+			public static final int POH_HERALDIC_DECOR_TEAK_DRAGON = 5283;
+			public static final int POH_HERALDIC_DECOR_TEAK_FAIRY = 5284;
+			public static final int POH_HERALDIC_DECOR_TEAK_GUTHIX = 5285;
+			public static final int POH_HERALDIC_DECOR_TEAK_HAM = 5286;
+			public static final int POH_HERALDIC_DECOR_TEAK_HORSE = 5287;
+			public static final int POH_HERALDIC_DECOR_TEAK_JOGRE = 5288;
+			public static final int POH_HERALDIC_DECOR_TEAK_KANDARIN = 5289;
+			public static final int POH_HERALDIC_DECOR_TEAK_MISTHALIN = 5290;
+			public static final int POH_HERALDIC_DECOR_TEAK_MONEY = 5291;
+			public static final int POH_HERALDIC_DECOR_TEAK_SARADOMIN = 5292;
+			public static final int POH_HERALDIC_DECOR_TEAK_SKULL = 5293;
+			public static final int POH_HERALDIC_DECOR_TEAK_VARROCK = 5294;
+			public static final int POH_HERALDIC_DECOR_TEAK_ZAMORAK = 5295;
+			public static final int POH_HERALDIC_DECOR_OAK_ARRAV = 5296;
+			public static final int POH_HERALDIC_DECOR_OAK_ASGARNIA = 5297;
+			public static final int POH_HERALDIC_DECOR_OAK_DORGESHUUN = 5298;
+			public static final int POH_HERALDIC_DECOR_OAK_DRAGON = 5299;
+			public static final int POH_HERALDIC_DECOR_OAK_FAIRY = 5300;
+			public static final int POH_HERALDIC_DECOR_OAK_GUTHIX = 5301;
+			public static final int POH_HERALDIC_DECOR_OAK_HAM = 5302;
+			public static final int POH_HERALDIC_DECOR_OAK_HORSE = 5303;
+			public static final int POH_HERALDIC_DECOR_OAK_JOGRE = 5304;
+			public static final int POH_HERALDIC_DECOR_OAK_KANDARIN = 5305;
+			public static final int POH_HERALDIC_DECOR_OAK_MISTHALIN = 5306;
+			public static final int POH_HERALDIC_DECOR_OAK_MONEY = 5307;
+			public static final int POH_HERALDIC_DECOR_OAK_SARADOMIN = 5308;
+			public static final int POH_HERALDIC_DECOR_OAK_SKULL = 5309;
+			public static final int POH_HERALDIC_DECOR_OAK_VARROCK = 5310;
+			public static final int POH_HERALDIC_DECOR_OAK_ZAMORAK = 5311;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_ARRAV = 5312;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_ASGARNIA = 5313;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_DORGESHUUN = 5314;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_DRAGON = 5315;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_FAIRY = 5316;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_GUTHIX = 5317;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_HAM = 5318;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_HORSE = 5319;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_JOGRE = 5320;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_KANDARIN = 5321;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_MISTHALIN = 5322;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_MONEY = 5323;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_SARADOMIN = 5324;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_SKULL = 5325;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_VARROCK = 5326;
+			public static final int POH_HERALDIC_DECOR_MAHOGANY_ZAMORAK = 5327;
+			public static final int POH_HERALDIC_KITE_SHIELD_ARRAV = 5328;
+			public static final int POH_HERALDIC_KITE_SHIELD_ASGARNIA = 5329;
+			public static final int POH_HERALDIC_KITE_SHIELD_DORGESHUUN = 5330;
+			public static final int POH_HERALDIC_KITE_SHIELD_DRAGON = 5331;
+			public static final int POH_HERALDIC_KITE_SHIELD_FAIRY = 5332;
+			public static final int POH_HERALDIC_KITE_SHIELD_GUTHIX = 5333;
+			public static final int POH_HERALDIC_KITE_SHIELD_HAM = 5334;
+			public static final int POH_HERALDIC_KITE_SHIELD_HORSE = 5335;
+			public static final int POH_HERALDIC_KITE_SHIELD_JOGRE = 5336;
+			public static final int POH_HERALDIC_KITE_SHIELD_KANDARIN = 5337;
+			public static final int POH_HERALDIC_KITE_SHIELD_MISTHALIN = 5338;
+			public static final int POH_HERALDIC_KITE_SHIELD_MONEY = 5339;
+			public static final int POH_HERALDIC_KITE_SHIELD_SARADOMIN = 5340;
+			public static final int POH_HERALDIC_KITE_SHIELD_SKULL = 5341;
+			public static final int POH_HERALDIC_KITE_SHIELD_VARROCK = 5342;
+			public static final int POH_HERALDIC_KITE_SHIELD_ZAMORAK = 5343;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_ARRAV = 5344;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_ASGARNIA = 5345;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_DORGESHUUN = 5346;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_DRAGON = 5347;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_FAIRY = 5348;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_GUTHIX = 5349;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_HAM = 5350;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_HORSE = 5351;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_JOGRE = 5352;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_KANDARIN = 5353;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_MISTHALIN = 5354;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_MONEY = 5355;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_SARADOMIN = 5356;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_SKULL = 5357;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_VARROCK = 5358;
+			public static final int POH_HERALDIC_SQUARE_SHIELD_ZAMORAK = 5359;
+			public static final int POH_HERALDIC_ROUND_SHIELD_ARRAV = 5360;
+			public static final int POH_HERALDIC_ROUND_SHIELD_ASGARNIA = 5361;
+			public static final int POH_HERALDIC_ROUND_SHIELD_DORGESHUUN = 5362;
+			public static final int POH_HERALDIC_ROUND_SHIELD_DRAGON = 5363;
+			public static final int POH_HERALDIC_ROUND_SHIELD_FAIRY = 5364;
+			public static final int POH_HERALDIC_ROUND_SHIELD_GUTHIX = 5365;
+			public static final int POH_HERALDIC_ROUND_SHIELD_HAM = 5366;
+			public static final int POH_HERALDIC_ROUND_SHIELD_HORSE = 5367;
+			public static final int POH_HERALDIC_ROUND_SHIELD_JOGRE = 5368;
+			public static final int POH_HERALDIC_ROUND_SHIELD_KANDARIN = 5369;
+			public static final int POH_HERALDIC_ROUND_SHIELD_MISTHALIN = 5370;
+			public static final int POH_HERALDIC_ROUND_SHIELD_MONEY = 5371;
+			public static final int POH_HERALDIC_ROUND_SHIELD_SARADOMIN = 5372;
+			public static final int POH_HERALDIC_ROUND_SHIELD_SKULL = 5373;
+			public static final int POH_HERALDIC_ROUND_SHIELD_VARROCK = 5374;
+			public static final int POH_HERALDIC_ROUND_SHIELD_ZAMORAK = 5375;
+		}
+	}
+
+	public static final class Jigsaw
+	{
+		public static final int ID = 101;
+
+		/**
+		 * (model, integer, integer)
+		 */
+		public static final int COL_PIECE = 0;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_PIECE_START_POSITION = 1;
+
+		/**
+		 * model
+		 */
+		public static final int COL_BACKING = 2;
+
+		/**
+		 * string
+		 */
+		public static final int COL_PIECE_NAME = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_SNAP_LEEWAY = 4;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_PIECE_ZOOM = 5;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_PIECE_SIZE_X = 6;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_PIECE_SIZE_Y = 7;
+
+		/**
+		 * (model, integer, integer, integer)
+		 */
+		public static final int COL_PREVIEW = 8;
+
+		public static final class Row
+		{
+			public static final int JIGSAW_SCRAMBLED = 5397;
+		}
+	}
+
+	public static final class FletchGreenmanData
+	{
+		public static final int ID = 102;
+
+		public static final class Row
+		{
+			public static final int FLETCH_GREENMAN_STATUE = 5398;
+			public static final int FLETCH_GREENMAN_WALL_DECORATION = 5399;
+		}
+	}
+
+	public static final class GreenmanMask
+	{
+		public static final int ID = 103;
+
+		/**
+		 * namedobj
+		 */
+		public static final int COL_MASK_OBJECT = 0;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_LEAF_REQUIRED = 1;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_LEAF_REQUIRED_AMOUNT = 2;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_UNLOCKED_BIT = 3;
+
+		public static final class Row
+		{
+			public static final int GREENMAN_MASK_BASE = 5400;
+			public static final int GREENMAN_MASK_REGULAR = 5401;
+			public static final int GREENMAN_MASK_OAK = 5402;
+			public static final int GREENMAN_MASK_WILLOW = 5403;
+			public static final int GREENMAN_MASK_MAPLE = 5404;
+			public static final int GREENMAN_MASK_YEW = 5405;
+			public static final int GREENMAN_MASK_MAGIC = 5406;
+		}
+	}
+
+	public static final class EntTotemsBaseData
+	{
+		public static final int ID = 104;
+
+		public static final class Row
+		{
+			public static final int ENT_TOTEMS_BASE_OAK = 5407;
+			public static final int ENT_TOTEMS_BASE_WILLOW = 5408;
+			public static final int ENT_TOTEMS_BASE_MAPLE = 5409;
+			public static final int ENT_TOTEMS_BASE_YEW = 5410;
+			public static final int ENT_TOTEMS_BASE_MAGIC = 5411;
+			public static final int ENT_TOTEMS_BASE_REDWOOD = 5412;
+		}
+	}
+
+	public static final class EntTotemsAnimalData
+	{
+		public static final int ID = 105;
+
+		public static final class Row
+		{
+			public static final int ENT_TOTEMS_ANIMAL_A = 5413;
+			public static final int ENT_TOTEMS_ANIMAL_B = 5414;
+			public static final int ENT_TOTEMS_ANIMAL_C = 5415;
+			public static final int ENT_TOTEMS_ANIMAL_D = 5416;
+			public static final int ENT_TOTEMS_ANIMAL_E = 5417;
+		}
+	}
+
+	public static final class EntTotemsSiteData
+	{
+		public static final int ID = 106;
+
+		public static final class Row
+		{
+			public static final int ENT_TOTEMS_SITE_1 = 5418;
+			public static final int ENT_TOTEMS_SITE_2 = 5419;
+			public static final int ENT_TOTEMS_SITE_3 = 5420;
+			public static final int ENT_TOTEMS_SITE_4 = 5421;
+			public static final int ENT_TOTEMS_SITE_5 = 5422;
+			public static final int ENT_TOTEMS_SITE_6 = 5423;
+			public static final int ENT_TOTEMS_SITE_7 = 5424;
+			public static final int ENT_TOTEMS_SITE_8 = 5425;
+		}
+	}
+
+	public static final class EntTotemsDecorationData
+	{
+		public static final int ID = 107;
+
+		public static final class Row
+		{
+			public static final int ENT_TOTEMS_DECORATION_OAK_SHORTBOW = 5426;
+			public static final int ENT_TOTEMS_DECORATION_OAK_SHORTBOW_UNSTRUNG = 5427;
+			public static final int ENT_TOTEMS_DECORATION_OAK_LONGBOW = 5428;
+			public static final int ENT_TOTEMS_DECORATION_OAK_LONGBOW_UNSTRUNG = 5429;
+			public static final int ENT_TOTEMS_DECORATION_OAK_STOCK = 5430;
+			public static final int ENT_TOTEMS_DECORATION_OAK_SHIELD = 5431;
+			public static final int ENT_TOTEMS_DECORATION_WILLOW_SHORTBOW = 5432;
+			public static final int ENT_TOTEMS_DECORATION_WILLOW_SHORTBOW_UNSTRUNG = 5433;
+			public static final int ENT_TOTEMS_DECORATION_WILLOW_LONGBOW = 5434;
+			public static final int ENT_TOTEMS_DECORATION_WILLOW_LONGBOW_UNSTRUNG = 5435;
+			public static final int ENT_TOTEMS_DECORATION_WILLOW_STOCK = 5436;
+			public static final int ENT_TOTEMS_DECORATION_WILLOW_SHIELD = 5437;
+			public static final int ENT_TOTEMS_DECORATION_MAPLE_SHORTBOW = 5438;
+			public static final int ENT_TOTEMS_DECORATION_MAPLE_SHORTBOW_UNSTRUNG = 5439;
+			public static final int ENT_TOTEMS_DECORATION_MAPLE_LONGBOW = 5440;
+			public static final int ENT_TOTEMS_DECORATION_MAPLE_LONGBOW_UNSTRUNG = 5441;
+			public static final int ENT_TOTEMS_DECORATION_MAPLE_STOCK = 5442;
+			public static final int ENT_TOTEMS_DECORATION_MAPLE_SHIELD = 5443;
+			public static final int ENT_TOTEMS_DECORATION_YEW_SHORTBOW = 5444;
+			public static final int ENT_TOTEMS_DECORATION_YEW_SHORTBOW_UNSTRUNG = 5445;
+			public static final int ENT_TOTEMS_DECORATION_YEW_LONGBOW = 5446;
+			public static final int ENT_TOTEMS_DECORATION_YEW_LONGBOW_UNSTRUNG = 5447;
+			public static final int ENT_TOTEMS_DECORATION_YEW_STOCK = 5448;
+			public static final int ENT_TOTEMS_DECORATION_YEW_SHIELD = 5449;
+			public static final int ENT_TOTEMS_DECORATION_MAGIC_SHORTBOW = 5450;
+			public static final int ENT_TOTEMS_DECORATION_MAGIC_SHORTBOW_UNSTRUNG = 5451;
+			public static final int ENT_TOTEMS_DECORATION_MAGIC_LONGBOW = 5452;
+			public static final int ENT_TOTEMS_DECORATION_MAGIC_LONGBOW_UNSTRUNG = 5453;
+			public static final int ENT_TOTEMS_DECORATION_MAGIC_STOCK = 5454;
+			public static final int ENT_TOTEMS_DECORATION_MAGIC_SHIELD = 5455;
+			public static final int ENT_TOTEMS_DECORATION_REDWOOD_HIKING_STAFF = 5456;
+			public static final int ENT_TOTEMS_DECORATION_REDWOOD_SHIELD = 5457;
+		}
+	}
+
+	public static final class DomDroptable
+	{
+		public static final int ID = 108;
+
+		public static final class Row
+		{
+			public static final int DOM_BASIC_DROPTABLE = 5469;
+			public static final int DOM_UNIQUE_DROPTABLE_BASIC = 5470;
+			public static final int DOM_UNIQUE_DROPTABLE_ENHANCED = 5471;
+			public static final int DOM_UNIQUE_DROPTABLE_ULTIMATE = 5472;
+			public static final int DOM_UNIQUE_DROPTABLE_FINALE = 5473;
+			public static final int DOM_PET_DROPTABLE = 5474;
+		}
+	}
+
+	public static final class DomDelveLevel
+	{
+		public static final int ID = 109;
+
+		public static final class Row
+		{
+			public static final int DOM_DELVE_LEVEL_0 = 5475;
+			public static final int DOM_DELVE_LEVEL_1 = 5476;
+			public static final int DOM_DELVE_LEVEL_2 = 5477;
+			public static final int DOM_DELVE_LEVEL_3 = 5478;
+			public static final int DOM_DELVE_LEVEL_4 = 5479;
+			public static final int DOM_DELVE_LEVEL_5 = 5480;
+			public static final int DOM_DELVE_LEVEL_6 = 5481;
+			public static final int DOM_DELVE_LEVEL_7 = 5482;
+			public static final int DOM_DELVE_LEVEL_7_ = 5483;
 		}
 	}
 /* This file is automatically generated. Do not edit. */
