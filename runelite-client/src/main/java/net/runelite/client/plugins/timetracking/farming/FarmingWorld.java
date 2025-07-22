@@ -85,6 +85,11 @@ class FarmingWorld
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_E, PatchImplementation.COMPOST)
 		));
 
+		add(new FarmingRegion("Auburnvale", 5427, false,
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.TREE, NpcID.FARMING_GARDENER_TREE_7),
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_B, PatchImplementation.BELLADONNA)
+		), 5428, 5684);
+
 		add(new FarmingRegion("Avium Savannah", 6702, true,
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.HARDWOOD_TREE, NpcID.FROG_QUEST_MARCELLUS)
 		), 6446);
@@ -138,7 +143,7 @@ class FarmingWorld
 		));
 
 		add(new FarmingRegion("Draynor Manor", 12340, false,
-			new FarmingPatch("Belladonna", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.BELLADONNA)
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.BELLADONNA)
 		));
 
 		add(new FarmingRegion("Entrana", 11060, false,
@@ -211,6 +216,12 @@ class FarmingWorld
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_B, PatchImplementation.HERB)
 		));
+
+		add(new FarmingRegion("Kastori", 5243, false,
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.CALQUAT, NpcID.FARMING_GARDENER_CALQUAT_2),
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_B, PatchImplementation.FRUIT_TREE, NpcID.FARMING_GARDENER_FRUIT_7),
+			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_C, PatchImplementation.FLOWER)
+		), 5167, 5424);
 
 		add(new FarmingRegion("Kourend", 6967, false,
 			new FarmingPatch("North East", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.ALLOTMENT, NpcID.HOSIDIUS_ALLOTMENT_GARDENER, 0),
