@@ -228,6 +228,12 @@ public enum Quest
 	MEAT_AND_GREET(3712, "Meat and Greet"),
 	ETHICALLY_ACQUIRED_ANTIQUITIES(3713, "Ethically Acquired Antiquities"),
 	THE_CURSE_OF_ARRAV(3937, "The Curse of Arrav"),
+	THE_FINAL_DAWN(5189, "The Final Dawn"),
+	SHADOWS_OF_CUSTODIA(5190, "Shadows of Custodia"),
+	SCRAMBLED(5191, "Scrambled!"),
+	AN_EXISTENTIAL_CRISIS(5192, "An Existential Crisis"),
+	IMPENDING_CHAOS(5193, "Impending Chaos"),
+	VALE_TOTEMS(5194, "Vale Totems"),
 	;
 
 	@Getter
