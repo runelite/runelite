@@ -73,6 +73,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
@@ -81,6 +82,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostClientTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
@@ -291,6 +293,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
 
 	private static final String BA_HIGH_GAMBLE = "Barbarian Assault high gamble";
+
+	private static final String DOM = "Doom of Mokhaiotl";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -826,7 +830,7 @@ public class LootTrackerPlugin extends Plugin
 
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
-			.filter(item -> item.getId() > 0)
+			.filter(item -> item.getId() > -1)
 			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
 			.collect(Collectors.toList());
 
@@ -861,6 +865,26 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		addLoot(event, -1, LootRecordType.EVENT, metadata, items);
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.DOM_LOOT_CLAIM)
+		{
+			// this is called after the loot has been claimed
+			ItemContainer inv = client.getItemContainer(InventoryID.DOM_LOOTPILE);
+
+			final Collection<ItemStack> items = Arrays.stream(inv.getItems())
+				.filter(item -> item.getId() > -1)
+				.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+				.collect(Collectors.toList());
+
+			String title = client.getWidget(InterfaceID.DomEndLevelUi.FRAME).getChild(1).getText(); // Level 2 Complete!
+			int level = Integer.parseInt(title.split(" ")[1]);
+
+			addLoot(DOM, -1, LootRecordType.EVENT, level, items);
+		}
 	}
 
 	@Subscribe
