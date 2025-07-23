@@ -7366,6 +7366,7 @@ public final class SpriteID
 		public static final int THE_HUEYCOATL = _59;
 		public static final int ROYAL_TITANS = _62;
 		public static final int YAMA = _63;
+		public static final int DOOM_OF_MOKHAIOTL = _64;
 	}
 
 	public static final class IconBoss50x50
