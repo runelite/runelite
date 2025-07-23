@@ -268,7 +268,8 @@ class StatusBarsOverlay extends Overlay
 				offsetRightBarX = (location.getX());
 				offsetRightBarY = (location.getY() - barHeightOffset);
 			}
-			else {
+			else
+			{
 				width = config.barWidth();
 				height = RESIZED_BOTTOM_HEIGHT;
 				final int barWidthOffset = width - BarRenderer.DEFAULT_WIDTH;

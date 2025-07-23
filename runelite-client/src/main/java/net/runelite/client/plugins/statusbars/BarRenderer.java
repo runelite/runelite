@@ -119,7 +119,8 @@ class BarRenderer
 		// Icons and counters overlap the bar at small widths/heights, so they are not drawn when the bars are too small
 		if (config.topBarMode())
 		{
-			if (height < MIN_ICON_AND_COUNTER_HEIGHT) {
+			if (height < MIN_ICON_AND_COUNTER_HEIGHT)
+			{
 				return;
 			}
 		}
@@ -150,7 +151,8 @@ class BarRenderer
 
 		if (config.enableCounter())
 		{
-			if (config.topBarMode() && !isFixedLayout) {
+			if (config.topBarMode() && !isFixedLayout)
+			{
 				graphics.setFont(FontManager.getRunescapeSmallFont());
 				final String counterText = Integer.toString(currentValue);
 				final int heightOfCounter = graphics.getFontMetrics().getHeight();
@@ -188,7 +190,8 @@ class BarRenderer
 			return;
 		}
 
-		if (config.topBarMode() && !isFixedLayout) {
+		if (config.topBarMode() && !isFixedLayout)
+		{
 			final int filledCurrentWidth = getBarHeight(maxValue, currentValue, width);
 			final int filledHealWidth = getBarHeight(maxValue, heal, width);
 			final int fillX, fillWidth;

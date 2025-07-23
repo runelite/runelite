@@ -70,7 +70,10 @@ public interface StatusBarsConfig extends Config
 		name = "Draw bars on top",
 		description = "Draws bars on top of inventory. Not compatible with Fixed mode."
 	)
-	default boolean topBarMode() { return false; }
+	default boolean topBarMode()
+	{
+		return false;
+	}
 
 	enum BarMode
 	{
