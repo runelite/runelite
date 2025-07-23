@@ -83,6 +83,7 @@ enum MinigameLocation
 	THE_GAUNTLET("The Gauntlet", new WorldPoint(3223, 12505, 1)),
 	THE_MESS("The Mess", new WorldPoint(1640, 3626, 0)),
 	TITHE_FARM("Tithe Farm", new WorldPoint(1796, 3501, 0)),
+	TOTEM_FLETCHING("Totem Fletching", new WorldPoint(1366, 3368, 0)),
 	TROUBLE_BREWING("Trouble Brewing", new WorldPoint(3811, 3021, 0)),
 	TZHAAR_FIGHT_CAVE("TzHaar Fight Cave", new WorldPoint(2437, 5168, 0)),
 	TZHAAR_FIGHT_PIT("TzHaar Fight Pit", new WorldPoint(2398, 5177, 0)),

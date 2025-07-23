@@ -490,6 +490,8 @@ public final class SpriteID
 	public static final int LEAFYTREE_FROSTY = 6313;
 	public static final int LEAFYTREE_TILED_FROSTY = 6314;
 	public static final int INVISIBLE_FONT = 6315;
+	public static final int HEADICONS_ET = 6405;
+	public static final int TEXTURE_THATCHED02 = 6408;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -7364,6 +7366,7 @@ public final class SpriteID
 		public static final int THE_HUEYCOATL = _59;
 		public static final int ROYAL_TITANS = _62;
 		public static final int YAMA = _63;
+		public static final int DOOM_OF_MOKHAIOTL = _64;
 	}
 
 	public static final class IconBoss50x50
@@ -9808,5 +9811,11 @@ public final class SpriteID
 		public static final int _2 = 6402;
 		public static final int _3 = 6403;
 		public static final int _4 = 6404;
+	}
+
+	public static final class JigsawButtons
+	{
+		public static final int _0 = 6406;
+		public static final int _1 = 6407;
 	}
 }
