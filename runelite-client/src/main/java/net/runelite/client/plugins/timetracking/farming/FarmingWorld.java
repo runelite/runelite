@@ -217,7 +217,7 @@ class FarmingWorld
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_B, PatchImplementation.HERB)
 		));
 
-		add(new FarmingRegion("Kastori", 5243, false,
+		add(new FarmingRegion("Kastori", 5423, false,
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_A, PatchImplementation.CALQUAT, NpcID.FARMING_GARDENER_CALQUAT_2),
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_B, PatchImplementation.FRUIT_TREE, NpcID.FARMING_GARDENER_FRUIT_7),
 			new FarmingPatch("", VarbitID.FARMING_TRANSMIT_C, PatchImplementation.FLOWER)
