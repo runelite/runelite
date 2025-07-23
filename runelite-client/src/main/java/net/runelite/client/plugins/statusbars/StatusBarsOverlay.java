@@ -72,6 +72,7 @@ class StatusBarsOverlay extends Overlay
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
+	private static final int RESIZED_BOTTOM_WIDTH = 200;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
@@ -252,19 +253,34 @@ class StatusBarsOverlay extends Overlay
 		final Point offsetRight = curViewport.getOffsetRight();
 		final Point location = curWidget.getCanvasLocation();
 		final int width, height, offsetLeftBarX, offsetLeftBarY, offsetRightBarX, offsetRightBarY;
+		boolean isFixedLayout;
 
 		if (curViewport == Viewport.RESIZED_BOTTOM)
 		{
-			width = config.barWidth();
-			height = RESIZED_BOTTOM_HEIGHT;
-			final int barWidthOffset = width - BarRenderer.DEFAULT_WIDTH;
-			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX() - 2 * barWidthOffset);
-			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
-			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX() - barWidthOffset);
-			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+			isFixedLayout = false;
+			if (config.topBarMode())
+			{
+				width = RESIZED_BOTTOM_WIDTH;
+				height = config.barWidth();
+				final int barHeightOffset = height + BarRenderer.DEFAULT_HEIGHT;
+				offsetLeftBarX = (location.getX());
+				offsetLeftBarY = (location.getY() - 2 * barHeightOffset );
+				offsetRightBarX = (location.getX());
+				offsetRightBarY = (location.getY() - barHeightOffset);
+			}
+			else {
+				width = config.barWidth();
+				height = RESIZED_BOTTOM_HEIGHT;
+				final int barWidthOffset = width - BarRenderer.DEFAULT_WIDTH;
+				offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX() - 2 * barWidthOffset);
+				offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
+				offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX() - barWidthOffset);
+				offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+			}
 		}
 		else
 		{
+			isFixedLayout = true;
 			width = BarRenderer.DEFAULT_WIDTH;
 			height = HEIGHT;
 			offsetLeftBarX = (location.getX() - offsetLeft.getX());
@@ -278,12 +294,12 @@ class StatusBarsOverlay extends Overlay
 
 		if (left != null)
 		{
-			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height);
+			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height, isFixedLayout);
 		}
 
 		if (right != null)
 		{
-			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, width, height);
+			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, width, height, isFixedLayout);
 		}
 
 		return null;
