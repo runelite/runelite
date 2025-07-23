@@ -96,6 +96,7 @@ public enum HiscoreSkill
 	DAGANNOTH_REX("Dagannoth Rex", BOSS, SpriteID.IconBoss25x25.DAGANNOTH_REX),
 	DAGANNOTH_SUPREME("Dagannoth Supreme", BOSS, SpriteID.IconBoss25x25.DAGANNOTH_SUPREME),
 	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist", BOSS, SpriteID.IconBoss25x25.DERANGED_ARCHAEOLOGIST),
+	DOOM_OF_MOKHAIOTL("Doom of Mokhaiotl", BOSS, SpriteID.IconBoss25x25.DOOM_OF_MOKHAIOTL),
 	DUKE_SUCELLUS("Duke Sucellus", BOSS, SpriteID.IconBoss25x25.DUKE_SUCELLUS),
 	GENERAL_GRAARDOR("General Graardor", BOSS, SpriteID.IconBoss25x25.GENERAL_GRAARDOR),
 	GIANT_MOLE("Giant Mole", BOSS, SpriteID.IconBoss25x25.GIANT_MOLE),

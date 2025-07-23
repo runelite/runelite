@@ -4568,7 +4568,7 @@ public final class ObjectID extends ObjectID1
 	public static final int BODY_ROOT2 = 1389;
 
 	/**
-	 * Jungle plant
+	 * Plant
 	 */
 	public static final int JUNGLE2 = 1390;
 
@@ -30361,7 +30361,7 @@ public final class ObjectID extends ObjectID1
 	public static final int FEUD_CLOTHESEQUIP_TABLE = 9082;
 
 	/**
-	 * Dye Pots
+	 * Dye pots
 	 */
 	public static final int DYE_POTS = 9083;
 
@@ -49440,7 +49440,7 @@ public final class ObjectID extends ObjectID1
 	public static final int ROYAL_CLOTHESEQUIP_TABLE = 15137;
 
 	/**
-	 * Dye Pots
+	 * Dye pots
 	 */
 	public static final int ROYAL_DYE_POTS = 15138;
 
@@ -63772,25 +63772,9 @@ public final class ObjectID extends ObjectID1
 	public static final int TRAIL_PURPLE_FIRE = 20001;
 	public static final int RIMMINGTON_WOOD_WALLS_WINDOW_SINGLE01 = 20002;
 	public static final int RIMMINGTON_WOOD_WALLS_WINDOW_DOUBLE01 = 20003;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_MIDDLE = 20004;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_MIDDLE_MIRROR = 20005;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_END = 20006;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_END_MIRROR = 20007;
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_ROPE_END = 20008;
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_ROPE_END_MIRROR = 20009;

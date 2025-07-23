@@ -210,7 +210,12 @@ class LootTrackerBox extends JPanel
 				LootTrackerItem i = items.get(idx);
 				if (mappedItemId == i.getId())
 				{
-					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getHaPrice(), i.isIgnored()));
+					int qty = i.getQuantity() + item.getQuantity();
+					if (qty < 0)
+					{
+						qty = Integer.MAX_VALUE;
+					}
+					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), qty, i.getGePrice(), i.getHaPrice(), i.isIgnored()));
 					continue outer;
 				}
 			}

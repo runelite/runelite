@@ -87,6 +87,8 @@ enum TransportationPointLocation
 	ROW_BOAT_BRAIN_DEATH("Rowboat to Port Phasmatys", new WorldPoint(2161, 5117, 0), new WorldPoint(3680, 3538, 0)),
 	ROW_BOAT_BURGH_DE_ROTT("Rowboat to Meiyerditch", new WorldPoint(3522, 3168, 0), new WorldPoint(3589, 3172, 0)),
 	ROW_BOAT_CRABCLAW("Rowboat to Hosidius", new WorldPoint(1780, 3417, 0), new WorldPoint(1779, 3457, 0)),
+	ROW_BOAT_CUSTODIA_SOUTH("Rowboat to North Custodia Pass", new WorldPoint(1281, 3386, 0)),
+	ROW_BOAT_CUSTODIA_WEST("Rowboat to South Custodia Pass", new WorldPoint(1256, 3395, 0)),
 	ROW_BOAT_DIVING_ISLAND("Rowboat to Barge/Camp/North of Island", new WorldPoint(3764, 3901, 0)),
 	ROW_BOAT_FISHING_GUILD("Rowboat to Hemenster", new WorldPoint(2598, 3426, 0), new WorldPoint(2613, 3439, 0)),
 	ROW_BOAT_GNOME_STRONGHOLD("Rowboat to Fishing Colony", new WorldPoint(2368, 3487, 0), new WorldPoint(2356, 3641, 0)),
@@ -108,6 +110,9 @@ enum TransportationPointLocation
 	ROW_BOAT_SLEPE("Rowboat to Port Phasmatys", new WorldPoint(3661, 3279, 0), new WorldPoint(3670, 3545, 0)),
 	ROW_BOAT_MOUNT_QUIDAMORTEM("Rowboat to The Stranglewood", new WorldPoint(1228, 3470, 0), new WorldPoint(1193, 3452, 0)),
 	ROW_BOAT_STRANGLEWOOD("Rowboat to Mount Quidamortem", new WorldPoint(1193, 3452, 0), new WorldPoint(1228, 3470, 0)),
+	SMALL_BOAT_GLOOMTHORN_TRAIL("Rowboat to Tal Teklan/Kastori", new WorldPoint(1398, 3245, 0)),
+	SMALL_BOAT_TAL_TEKLAN("Rowboat to Kastori/Gloomthorn Trail", new WorldPoint(1258, 3124, 0)),
+	SMALL_BOAT_KASTORI("Rowboat to Tal Teklan/Gloomthorn Trail", new WorldPoint(1389, 3074, 0)),
 	OGRE_BOAT_FELDIP("Ogre Boat to Karamja", new WorldPoint(2653, 2964, 0), new WorldPoint(2757, 3085, 0)),
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
 
@@ -200,13 +205,17 @@ enum TransportationPointLocation
 	TELEPORT_SORCERESS_GARDEN("Teleport to Sorceress's Garden", new WorldPoint(3320, 3141, 0)),
 	TELEPORT_PRIFDDINAS_LIBRARY("Teleport to Prifddinas Library", new WorldPoint(3254, 6082, 2)),
 
+	// Mountain guides
+	MOUNTAIN_GUIDE_QUIDAMORTEM("Mountain Guide", new WorldPoint(1275, 3559, 0)),
+	MOUNTAIN_GUIDE_QUIDAMORTEM_SOUTH("Mountain Guide", new WorldPoint(1270, 3477, 0)),
+	MOUNTAIN_GUIDE_WALL("Mountain Guide", new WorldPoint(1400, 3538, 0)),
+	MOUNTAIN_GUIDE_QUETZACALLI_GORGE("Guide to Auburn Valley", new WorldPoint(1486, 3230, 0)),
+	MOUNTAIN_GUIDE_AUBURN_VALLEY("Guide to Quetzacalli Gorge", new WorldPoint(1358, 3310, 0)),
+
 	//Other
 	ALTER_KOUREND_UNDERGROUND("Altar to Skotizo", new WorldPoint(1662, 10047, 0)),
 	FAIRY_RING_ZANARIS_TO_KHARID("Fairy Ring to Al Kharid", new WorldPoint(2483, 4471, 0)),
 	FAIRY_RING_ZANARIS_TO_SHACK("Fairy Ring to Shack", new WorldPoint(2451, 4471, 0)),
-	MOUNTAIN_GUIDE_QUIDAMORTEM("Mountain Guide", new WorldPoint(1275, 3559, 0)),
-	MOUNTAIN_GUIDE_QUIDAMORTEM_SOUTH("Mountain Guide", new WorldPoint(1270, 3477, 0)),
-	MOUNTAIN_GUIDE_WALL("Mountain Guide", new WorldPoint(1400, 3538, 0)),
 	MUSHTREE_MUSHROOM_FOREST("Mushtree", new WorldPoint(3674, 3871, 0)),
 	MUSHTREE_TAR_SWAMP("Mushtree", new WorldPoint(3676, 3755, 0)),
 	MUSHTREE_VERDANT_VALLEY("Mushtree", new WorldPoint(3757, 3756, 0)),
@@ -226,17 +235,20 @@ enum TransportationPointLocation
 
 	//Queztals
 	QUETZAL_ALDARIN("Quetzal", new WorldPoint(1388, 2899, 0)),
+	QUETZAL_AUBURNVALE("Quetzal", new WorldPoint(1410, 3363, 0)),
 	QUETZAL_AVIUM_SAVANNAH_NORTH_EAST("Quetzal", new WorldPoint(1701, 3037, 0)),
 	QUETZAL_AVIUM_SAVANNAH_SOUTH("Quetzal", new WorldPoint(1671, 2933, 0)),
 	QUETZAL_CAM_TORUM("Quetzal", new WorldPoint(1447, 3108, 0)),
 	QUETZAL_EAST_CIVITAS_ILLA_FORTIS("Quetzal", new WorldPoint(1776, 3111, 0)),
 	QUETZAL_HUNTER_GUILD("Quetzal", new WorldPoint(1584, 3055, 0)),
+	QUETZAL_KASTORI("Quetzal", new WorldPoint(1343, 3020, 0)),
 	QUETZAL_QUETZACALLI_GORGE("Quetzal", new WorldPoint(1511, 3222, 0)),
 	QUETZAL_SALVAGER_OVERLOOK("Quetzal", new WorldPoint(1612, 3302, 0)),
 	QUETZAL_SUNSET_COAST("Quetzal", new WorldPoint(1547, 2997, 0)),
 	QUETZAL_RALOS_RISE("Quetzal", new WorldPoint(1436, 3169, 0)),
+	QUETZAL_TAL_TEKLAN("Quetzal", new WorldPoint(1225, 3089, 0)),
 	QUETZAL_VARLAMORE_VARROCK("Quetzal to Varrock", new WorldPoint(1699, 3142, 0), new WorldPoint(3279, 3413, 0)),
-	QUETZAL_VARROCK_VARLAMORE("Quetzal to Varlamore", new WorldPoint(3279, 3413, 0), new WorldPoint(1699, 3142, 0)),
+	QUETZAL_VARROCK_VARLAMORE("Quetzal to Varlamore", new WorldPoint(3279, 3413, 0), new WorldPoint(1699, 3142, 0))
 	;
 
 	private final String tooltip;
