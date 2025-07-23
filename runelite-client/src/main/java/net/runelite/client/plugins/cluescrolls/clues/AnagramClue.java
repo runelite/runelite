@@ -891,6 +891,15 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Fossil Island")
 			.question("What is 3 to the power of 0?")
 			.answer("1")
+			.build(),
+		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_VM02)
+			.text("CUTE HI")
+			.npc("Teicuh")
+			.location(new WorldPoint(1212, 3119, 0))
+			.area("Tal Teklan")
+			.question("If a death rune costs 220 coins, an air rune costs 3 coins, and a water rune costs 4 coins, how many coins do I need to cast Water Blast 17 times?")
+			.answer("4097")
 			.build()
 	);
 
