@@ -790,31 +790,40 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 
 		Tile[][] planeTiles = tiles[plane];
-		for (Tile[] planeTile : planeTiles) {
-			if (planeTile == null) {
+		for (Tile[] planeTile : planeTiles)
+		{
+			if (planeTile == null)
+			{
 				continue;
 			}
 
-			for (Tile tile : planeTile) {
-				if (tile == null) {
+			for (Tile tile : planeTile)
+			{
+				if (tile == null)
+				{
 					continue;
 				}
 
 				// Check all types of objects on this tile
-				if (tile.getWallObject() != null) {
+				if (tile.getWallObject() != null)
+				{
 					checkObjectPoints(tile.getWallObject());
 				}
 
-				if (tile.getDecorativeObject() != null) {
+				if (tile.getDecorativeObject() != null)
+				{
 					checkObjectPoints(tile.getDecorativeObject());
 				}
 
-				if (tile.getGroundObject() != null) {
+				if (tile.getGroundObject() != null)
+				{
 					checkObjectPoints(tile.getGroundObject());
 				}
 
-				for (GameObject gameObject : tile.getGameObjects()) {
-					if (gameObject != null) {
+				for (GameObject gameObject : tile.getGameObjects())
+				{
+					if (gameObject != null)
+					{
 						checkObjectPoints(gameObject);
 					}
 				}
