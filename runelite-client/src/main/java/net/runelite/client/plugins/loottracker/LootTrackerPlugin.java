@@ -155,6 +155,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern ROGUES_CHEST_PATTERN = Pattern.compile("You find (a|some)([a-z\\s]*) inside.");
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
+	private static final String ALCHEMIST_SIGNET_CHEST_MESSAGE = "You take some loot from inside.";
 	// Used by Stone Chest, Isle of Souls chest, Dark Chest
 	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
@@ -180,6 +181,7 @@ public class LootTrackerPlugin extends Plugin
 		put(LAVA_MAZE_NORTH_EAST_REGION, "Muddy Chest").
 		put(5422, "Chest (Aldarin Villas)").
 		put(6550, "Chest (Moon key)").
+		put(5521, "Chest (Alchemist's signet)").
 		build();
 
 	// Chests opened with keys from slayer tasks
@@ -900,8 +902,8 @@ public class LootTrackerPlugin extends Plugin
 		final String message = event.getMessage();
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
-			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || GRUBBY_CHEST_LOOTED_MESSAGE.matcher(message).matches()
-			|| message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
+			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.equals(ALCHEMIST_SIGNET_CHEST_MESSAGE)
+			|| GRUBBY_CHEST_LOOTED_MESSAGE.matcher(message).matches() || message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
