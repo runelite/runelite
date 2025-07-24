@@ -671,6 +671,17 @@ public class LootTrackerPlugin extends Plugin
 			md.setR8(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_7));
 			return md;
 		}
+		else if (npc.getName() != null && npc.getName().equals("Cave horror"))
+		{
+			WorldPoint location = client.getLocalPlayer().getWorldLocation();
+			return Map.of(
+				"id", npc.getId(),
+				"x", location.getX(),
+				"y", location.getY(),
+				"plane", location.getPlane(),
+				"world", client.getWorld()
+			);
+		}
 		else
 		{
 			return npc.getId();
