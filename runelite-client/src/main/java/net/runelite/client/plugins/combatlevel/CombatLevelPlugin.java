@@ -147,7 +147,7 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!CONFIG_GROUP.equals(event.getGroup()) || !ATTACK_RANGE_CONFIG_KEY.equals(event.getKey()))
 		{
@@ -165,7 +165,7 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	private void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		final int scriptId = scriptPreFired.getScriptId();
 		if (scriptId != ScriptID.ACCOUNT_SUMMARY_TEXT_FORMAT && scriptId != ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT || !config.showPreciseCombatLevel())
@@ -209,7 +209,7 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	private void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.PVP_WIDGET_BUILDER && config.wildernessAttackLevelRange())
 		{

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -90,7 +91,8 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	@VisibleForTesting
+	void onStatChanged(StatChanged statChanged)
 	{
 		Skill skill = statChanged.getSkill();
 		int currentXp = statChanged.getXp();
@@ -171,7 +173,7 @@ public class XpGlobesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{

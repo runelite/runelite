@@ -124,7 +124,8 @@ public class CompostTracker
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked e)
+	@VisibleForTesting
+	void onMenuOptionClicked(MenuOptionClicked e)
 	{
 		if (!isCompostAction(e))
 		{
@@ -175,7 +176,8 @@ public class CompostTracker
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage e)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage e)
 	{
 		if (e.getType() != ChatMessageType.GAMEMESSAGE && e.getType() != ChatMessageType.SPAM)
 		{
@@ -202,7 +204,7 @@ public class CompostTracker
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
+	private void onGameStateChanged(GameStateChanged e)
 	{
 		switch (e.getGameState())
 		{

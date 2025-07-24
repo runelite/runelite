@@ -112,7 +112,7 @@ public class RandomEventPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	private void onInteractingChanged(InteractingChanged event)
 	{
 		Actor source = event.getSource();
 		Actor target = event.getTarget();
@@ -142,7 +142,7 @@ public class RandomEventPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 
@@ -153,7 +153,7 @@ public class RandomEventPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (event.getType() >= MenuAction.NPC_FIRST_OPTION.getId()
 			&& event.getType() <= MenuAction.NPC_FIFTH_OPTION.getId()

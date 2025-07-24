@@ -103,7 +103,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
 
@@ -152,7 +152,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	private void onPlayerDespawned(PlayerDespawned playerDespawned)
 	{
 		final Player player = playerDespawned.getPlayer();
 		// Only care about dead Players
@@ -185,7 +185,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	private void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		final TileItem item = itemSpawned.getItem();
 		final Tile tile = itemSpawned.getTile();
@@ -196,7 +196,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
@@ -204,7 +204,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged e)
+	private void onAnimationChanged(AnimationChanged e)
 	{
 		if (!(e.getActor() instanceof NPC))
 		{
@@ -234,7 +234,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged npcChanged)
+	private void onNpcChanged(NpcChanged npcChanged)
 	{
 		final NPC npc = npcChanged.getNpc();
 		if (npc.getId() == NpcID.NIGHTMARE_DYING || npc.getId() == NpcID.NIGHTMARE_CHALLENGE_DYING)
@@ -259,7 +259,7 @@ public class LootManager
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (delayedLootNpc != null && --delayedLootTick == 0)
 		{
