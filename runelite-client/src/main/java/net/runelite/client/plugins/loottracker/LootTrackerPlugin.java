@@ -1071,6 +1071,19 @@ public class LootTrackerPlugin extends Plugin
 				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BA_HIGH_GAMBLE));
 			}
 		}
+
+		if (message.equals("You rummage through the offerings..."))
+		{
+			onInvChange((((invItems, groundItems, removedItems) ->
+			{
+				int cnt = removedItems.count(ItemID.ENT_TOTEMS_LOOT);
+				if (cnt > 0)
+				{
+					String name = itemManager.getItemComposition(ItemID.ENT_TOTEMS_LOOT).getMembersName();
+					addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
+				}
+			})));
+		}
 	}
 
 	@Subscribe
