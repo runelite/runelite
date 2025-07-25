@@ -1074,16 +1074,28 @@ public class LootTrackerPlugin extends Plugin
 
 		if (message.equals("You rummage through the offerings..."))
 		{
-			onInvChange((((invItems, groundItems, removedItems) ->
-			{
-				int cnt = removedItems.count(ItemID.ENT_TOTEMS_LOOT);
-				if (cnt > 0)
-				{
-					String name = itemManager.getItemComposition(ItemID.ENT_TOTEMS_LOOT).getMembersName();
-					addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
-				}
-			})));
+			countChangedItems(ItemID.ENT_TOTEMS_LOOT);
 		}
+		else if (message.equals("You clean a batch of arrowtips."))
+		{
+			countChangedItems(ItemID.DIRTY_ARROWTIPS);
+		}
+	}
+
+	private void countChangedItems(int itemId)
+	{
+		onInvChange((((invItems, groundItems, removedItems) ->
+		{
+			int cnt = removedItems.count(itemId);
+			if (cnt > 0)
+			{
+				String name = itemManager.getItemComposition(itemId).getMembersName();
+				List<ItemStack> combined = new ArrayList<>();
+				combined.addAll(invItems);
+				combined.addAll(groundItems);
+				addLoot(name, -1, LootRecordType.EVENT, null, combined, cnt);
+			}
+		})));
 	}
 
 	@Subscribe
@@ -1235,19 +1247,6 @@ public class LootTrackerPlugin extends Plugin
 						})));
 						break;
 				}
-			}
-			else if (event.getItemId() == ItemID.DIRTY_ARROWTIPS && event.getMenuOption().equals("Clean"))
-			{
-				final int itemId = event.getItemId();
-				onInvChange((((invItems, groundItems, removedItems) ->
-				{
-					int cnt = removedItems.count(itemId);
-					if (cnt > 0)
-					{
-						String name = itemManager.getItemComposition(itemId).getMembersName();
-						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
-					}
-				})));
 			}
 		}
 	}
