@@ -1074,15 +1074,15 @@ public class LootTrackerPlugin extends Plugin
 
 		if (message.equals("You rummage through the offerings..."))
 		{
-			countChangedItems(ItemID.ENT_TOTEMS_LOOT);
+			countChangedItems(ItemID.ENT_TOTEMS_LOOT, client.getBoostedSkillLevel(Skill.FLETCHING));
 		}
 		else if (message.equals("You clean a batch of arrowtips."))
 		{
-			countChangedItems(ItemID.DIRTY_ARROWTIPS);
+			countChangedItems(ItemID.DIRTY_ARROWTIPS, client.getBoostedSkillLevel(Skill.FLETCHING));
 		}
 	}
 
-	private void countChangedItems(int itemId)
+	private void countChangedItems(int itemId, Object metadata)
 	{
 		onInvChange((((invItems, groundItems, removedItems) ->
 		{
@@ -1093,7 +1093,7 @@ public class LootTrackerPlugin extends Plugin
 				List<ItemStack> combined = new ArrayList<>();
 				combined.addAll(invItems);
 				combined.addAll(groundItems);
-				addLoot(name, -1, LootRecordType.EVENT, null, combined, cnt);
+				addLoot(name, -1, LootRecordType.EVENT, metadata, combined, cnt);
 			}
 		})));
 	}
