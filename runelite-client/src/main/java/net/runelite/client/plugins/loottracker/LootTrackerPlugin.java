@@ -1129,6 +1129,20 @@ public class LootTrackerPlugin extends Plugin
 			{
 				onInvChange(collectInvItems(LootRecordType.EVENT, BIRDNEST_EVENT));
 			}
+			else if (event.getMenuOption().equals("Clean") && event.getItemId() == ItemID.DIRTY_ARROWTIPS)
+			{
+				// Entire stack gets cleaned at once, want to track how many
+				onInvChange((((invItems, groundItems, removedItems) ->
+				{
+					int itemId = event.getItemId();
+					int cnt = removedItems.count(itemId);
+					if (cnt > 0)
+					{
+						String name = itemManager.getItemComposition(itemId).getMembersName();
+						addLoot(name, -1, LootRecordType.EVENT, -1, invItems, cnt);
+					}
+				})));
+			}
 			else if (event.getMenuOption().equals("Open"))
 			{
 				switch (event.getItemId())
