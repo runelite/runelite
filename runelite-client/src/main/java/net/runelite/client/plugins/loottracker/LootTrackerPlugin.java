@@ -1236,6 +1236,19 @@ public class LootTrackerPlugin extends Plugin
 						break;
 				}
 			}
+			else if (event.getItemId() == ItemID.DIRTY_ARROWTIPS && event.getMenuOption().equals("Clean"))
+			{
+				final int itemId = event.getItemId();
+				onInvChange((((invItems, groundItems, removedItems) ->
+				{
+					int cnt = removedItems.count(itemId);
+					if (cnt > 0)
+					{
+						String name = itemManager.getItemComposition(itemId).getMembersName();
+						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
+					}
+				})));
+			}
 		}
 	}
 
