@@ -75,7 +75,6 @@ class KeyRemappingListener implements KeyListener
 		if (!plugin.isTyping())
 		{
 			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
-			int mappedModifiers = 0;
 
 			if (config.cameraRemap())
 			{
@@ -168,22 +167,11 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}
 
-			if (!plugin.isDialogOpen() && config.worldmap().matches(e))
-			{
-				// World map uses ctrl+m as hotkey
-				mappedKeyCode = KeyEvent.VK_M;
-				mappedModifiers = KeyEvent.CTRL_DOWN_MASK;
-			}
-
-			if (mappedKeyCode != KeyEvent.VK_UNDEFINED)
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
 			{
 				final char keyChar = e.getKeyChar();
 				modified.put(e.getKeyCode(), mappedKeyCode);
 				e.setKeyCode(mappedKeyCode);
-				if (mappedModifiers != 0)
-				{
-					e.setModifiers(mappedModifiers);
-				}
 				// arrow keys and fkeys do not have a character
 				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 				if (keyChar != KeyEvent.CHAR_UNDEFINED)
