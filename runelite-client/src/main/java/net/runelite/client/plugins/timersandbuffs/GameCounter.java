@@ -43,6 +43,7 @@ enum GameCounter
 	CURSE_OF_THE_MOONS_ECLIPSE(ItemID.ECLIPSE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Eclipse Moon)"),
 	STONE_OF_JAS_EMPOWERMENT(ItemID.WGS_STONE_OF_JAS_DUMMY_ITEM, GameTimerImageType.ITEM, "Stone of Jas empowerment", false),
 	VENGEANCE_ACTIVE(SpriteID.LunarMagicOn.VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
+	DEMONIC_CHARGE(SpriteID.IconBoss25x25.DOOM_OF_MOKHAIOTL, GameTimerImageType.SPRITE, "Demonic charge", true),
 	;
 
 	private final int imageId;
