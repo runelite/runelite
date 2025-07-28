@@ -57,7 +57,7 @@ public enum FletchingAction implements ItemSkillAction
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
-			return "Oak Vale Totem";
+			return "Oak vale totem";
 		}
 	},
 	IRON_DART(ItemID.IRON_DART, 22, 3.8f),
@@ -77,7 +77,7 @@ public enum FletchingAction implements ItemSkillAction
 			@Override
 			public String getName(final ItemManager itemManager)
 			{
-				return "Willow Vale Totem";
+				return "Willow vale totem";
 			}
 		},
 	STEEL_DART(ItemID.STEEL_DART, 37, 7.5f),
@@ -105,7 +105,7 @@ public enum FletchingAction implements ItemSkillAction
 			@Override
 			public String getName(final ItemManager itemManager)
 			{
-				return "Maple Vale Totem";
+				return "Maple vale totem";
 			}
 		},
 	BARBED_BOLTS(ItemID.BARBED_BOLT, 51, 9.5f),
@@ -137,7 +137,7 @@ public enum FletchingAction implements ItemSkillAction
 			@Override
 			public String getName(final ItemManager itemManager)
 			{
-				return "Yew Vale Totem";
+				return "Yew vale totem";
 			}
 		},
 	ADAMANT_DART(ItemID.ADAMANT_DART, 67, 15),
@@ -168,7 +168,7 @@ public enum FletchingAction implements ItemSkillAction
 			@Override
 			public String getName(final ItemManager itemManager)
 			{
-				return "Magic Vale Totem";
+				return "Magic vale totem";
 			}
 		},
 	RUNE_DART(ItemID.RUNE_DART, 81, 18.8f),
@@ -179,16 +179,16 @@ public enum FletchingAction implements ItemSkillAction
 	MAGIC_LONGBOW_U(ItemID.UNSTRUNG_MAGIC_LONGBOW, 85, 91.5f),
 	MAGIC_SHIELD(ItemID.MAGIC_SHIELD, 87, 183),
 	REDWOOD_HIKING_STAFF(ItemID.REDWOOD_HIKING_STAFF, 90, 10.5f),
+	DRAGON_ARROW(ItemID.DRAGON_ARROW, 90, 15),
+	AMETHYST_DART(ItemID.AMETHYST_DART, 90, 21),
 	REDWOOD_VALE_TOTEM(ItemID.ENT_TOTEMS_LOOT, 90, 3788)
 		{
 			@Override
 			public String getName(final ItemManager itemManager)
 			{
-				return "Redwood Vale Totem";
+				return "Redwood vale totem";
 			}
 		},
-	DRAGON_ARROW(ItemID.DRAGON_ARROW, 90, 15),
-	AMETHYST_DART(ItemID.AMETHYST_DART, 90, 21),
 	DRAGON_JAVELIN(ItemID.DRAGON_JAVELIN, 92, 15),
 	REDWOOD_SHIELD(ItemID.REDWOOD_SHIELD, 92, 216),
 	DRAGON_DART(ItemID.DRAGON_DART, 95, 25),
