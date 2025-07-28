@@ -1549,7 +1549,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("2 musical birds. Dig in front of the spinning light.")
 			.location(new WorldPoint(2671, 10396, 0))
-			.solution("Dig in front of the spinning light in Ping and Pong's room inside the Iceberg")
+			.solution("Dig in front of the spinning light in Ping and Pong's room inside the Iceberg, A clockwork suit is required to enter the Penguin Outpost.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_EASY_SIMPLE_EXP9)
