@@ -35,57 +35,57 @@ import net.runelite.client.ui.FontManager;
 
 public class MousebindButton extends JButton
 {
-    @Getter
-    private Mousebind value;
+	@Getter
+	private Mousebind value;
 
-    public MousebindButton(Mousebind value, boolean modifierless)
-    {
-        // Disable focus traversal keys such as tab to allow tab key to be bound
-        setFocusTraversalKeysEnabled(false);
-        setFont(FontManager.getDefaultFont().deriveFont(12.f));
-        setValue(value);
-        // Capture bind on press, reset on left-click release
-        addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseReleased(MouseEvent e)
-            {
-                // Mouse buttons other than button1 don't give focus
-                if (e.getButton() == MouseEvent.BUTTON1)
-                {
-                    // We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
-                    setValue(Mousebind.NOT_SET);
-                }
-            }
+	public MousebindButton(Mousebind value, boolean modifierless)
+	{
+		// Disable focus traversal keys such as tab to allow tab key to be bound
+		setFocusTraversalKeysEnabled(false);
+		setFont(FontManager.getDefaultFont().deriveFont(12.f));
+		setValue(value);
+		// Capture bind on press, reset on left-click release
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				// Mouse buttons other than button1 don't give focus
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
+					setValue(Mousebind.NOT_SET);
+				}
+			}
 
-            @Override
-            public void mousePressed(MouseEvent me)
-            {
-                if (me.getButton() == MouseEvent.BUTTON1)
-                {
-                    return;
-                }
-                if (modifierless)
-                {
-                    setValue(new ModifierlessMousebind(me));
-                }
-                else
-                {
-                    setValue(new Mousebind(me));
-                }
-            }
-        });
-    }
+			@Override
+			public void mousePressed(MouseEvent me)
+			{
+				if (me.getButton() == MouseEvent.BUTTON1)
+				{
+					return;
+				}
+				if (modifierless)
+				{
+					setValue(new ModifierlessMousebind(me));
+				}
+				else
+				{
+					setValue(new Mousebind(me));
+				}
+			}
+		});
+	}
 
-    public void setValue(Mousebind value)
-    {
-        if (value == null)
-        {
-            value = Mousebind.NOT_SET;
-        }
+	public void setValue(Mousebind value)
+	{
+		if (value == null)
+		{
+			value = Mousebind.NOT_SET;
+		}
 
-        this.value = value;
-        setText(value.toString());
-    }
+		this.value = value;
+		setText(value.toString());
+	}
 
 }

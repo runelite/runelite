@@ -29,30 +29,30 @@ import java.awt.event.MouseEvent;
 
 public class ModifierlessMousebind extends Mousebind
 {
-    // Modifiers are ignored in this case for matching
-    public ModifierlessMousebind(int mouseButton, int modifiers)
-    {
-        super(mouseButton, modifiers, true);
-    }
+	// Modifiers are ignored in this case for matching
+	public ModifierlessMousebind(int mouseButton, int modifiers)
+	{
+		super(mouseButton, modifiers, true);
+	}
 
-    /**
-     * Constructs a mousebind that matches the passed MouseEvent
-     */
-    public ModifierlessMousebind(MouseEvent me)
-    {
-        this(me.getButton(), me.getModifiersEx());
+	/**
+	 * Constructs a mousebind that matches the passed MouseEvent
+	 */
+	public ModifierlessMousebind(MouseEvent me)
+	{
+		this(me.getButton(), me.getModifiersEx());
 
-        assert matches(me);
-    }
+		assert matches(me);
+	}
 
-    /**
-     * Returns true if the given MouseEvent matches this Mousebind.
-     * Typically used to check if a mouse button (with optional modifiers)
-     * was pressed or released in accordance with this bind.
-     */
-    @Override
-    public boolean matches(MouseEvent me)
-    {
-        return matches(me, true);
-    }
+	/**
+	 * Returns true if the given MouseEvent matches this Mousebind.
+	 * Typically used to check if a mouse button (with optional modifiers)
+	 * was pressed or released in accordance with this bind.
+	 */
+	@Override
+	public boolean matches(MouseEvent me)
+	{
+		return matches(me, true);
+	}
 }
