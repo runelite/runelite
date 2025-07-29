@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019 Abex
+ * Copyright (c) 2025, Leif
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
