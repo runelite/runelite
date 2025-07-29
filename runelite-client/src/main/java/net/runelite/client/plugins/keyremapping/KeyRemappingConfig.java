@@ -129,10 +129,7 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F1.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f1()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_1, 0);
-	}
+	default ModifierlessKeybind f1() { return new ModifierlessKeybind(KeyEvent.VK_1, 0); }
 
 	@ConfigItem(
 		position = 8,

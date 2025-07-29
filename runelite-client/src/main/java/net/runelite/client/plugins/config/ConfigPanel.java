@@ -85,6 +85,8 @@ import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ConfigSectionDescriptor;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.Mousebind;
+import net.runelite.client.config.ModifierlessMousebind;
 import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
@@ -386,6 +388,10 @@ class ConfigPanel extends PluginPanel
 			{
 				item.add(createKeybind(cd, cid), BorderLayout.EAST);
 			}
+			else if (cid.getType() == Mousebind.class || cid.getType() == ModifierlessMousebind.class)
+			{
+				item.add(createMousebind(cd, cid), BorderLayout.EAST);
+			}
 			else if (cid.getType() == Notification.class)
 			{
 				item.add(createNotification(cd, cid), BorderLayout.EAST);
@@ -653,6 +659,26 @@ class ConfigPanel extends PluginPanel
 			(Class<? extends Keybind>) cid.getType());
 
 		HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
+
+		button.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				changeConfiguration(button, cd, cid);
+			}
+		});
+
+		return button;
+	}
+
+	private MousebindButton createMousebind(ConfigDescriptor cd, ConfigItemDescriptor cid)
+	{
+		Mousebind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(),
+				(Class<? extends Mousebind>) cid.getType());
+
+		MousebindButton button = new MousebindButton(startingValue, cid.getType() == ModifierlessMousebind.class);
 
 		button.addFocusListener(new FocusAdapter()
 		{
