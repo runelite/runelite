@@ -60,6 +60,10 @@ public class MousebindButton extends JButton
             @Override
             public void mousePressed(MouseEvent me)
             {
+                if (me.getButton() == MouseEvent.BUTTON1)
+                {
+                    return;
+                }
                 if (modifierless)
                 {
                     setValue(new ModifierlessMousebind(me));

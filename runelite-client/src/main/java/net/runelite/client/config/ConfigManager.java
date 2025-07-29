@@ -1221,6 +1221,17 @@ public class ConfigManager
 			}
 			return new Keybind(code, mods);
 		}
+		if (type == Mousebind.class || type == ModifierlessMousebind.class)
+		{
+			String[] splitStr = str.split(":");
+			int button = Integer.parseInt(splitStr[0]);
+			int mods = Integer.parseInt(splitStr[1]);
+			if (type == ModifierlessMousebind.class)
+			{
+				return new ModifierlessMousebind(button, mods);
+			}
+			return new Mousebind(button, mods);
+		}
 		if (type == WorldPoint.class)
 		{
 			String[] splitStr = str.split(":");
@@ -1303,6 +1314,11 @@ public class ConfigManager
 		{
 			Keybind k = (Keybind) object;
 			return k.getKeyCode() + ":" + k.getModifiers();
+		}
+		if (object instanceof Mousebind)
+		{
+			Mousebind m = (Mousebind) object;
+			return m.getMouseButton() + ":" + m.getModifiers();
 		}
 		if (object instanceof WorldPoint)
 		{
