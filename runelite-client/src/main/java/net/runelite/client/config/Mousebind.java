@@ -35,7 +35,8 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public class Mousebind {
+public class Mousebind
+{
 
 	private static final BiMap<Integer, Integer> MODIFIER_TO_KEY_CODE = new ImmutableBiMap.Builder<Integer, Integer>()
 			.put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
@@ -152,11 +153,23 @@ public class Mousebind {
 		return mod;
 	}
 
-	private static String getMouseButtonText(int button) {
-		if (button == MouseEvent.BUTTON1) { return "Left Click"; }
-		else if (button == MouseEvent.BUTTON2) { return "Middle Click"; }
-		else if (button == MouseEvent.BUTTON3) { return "Right Click"; }
-		else { return "Button " + button; }
+	private static String getMouseButtonText(int button)
+	{
+		if (button == MouseEvent.BUTTON1)
+		{
+			return "Left Click";
+		}
+		else if (button == MouseEvent.BUTTON2)
+		{ return "Middle Click";
+		}
+		else if (button == MouseEvent.BUTTON3)
+		{
+			return "Right Click";
+		}
+		else
+		{
+			return "Button " + button;
+		}
 	}
 
 }
