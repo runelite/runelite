@@ -46,8 +46,7 @@ public class LootTrackerBoxTest
 			LootTrackerPriceType.GRAND_EXCHANGE,
 			false,
 			null, null,
-			false,
-				null);
+			false);
 
 		LootTrackerItem[] items = new LootTrackerItem[]{
 			new LootTrackerItem(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT001, "Clue scroll (medium)", 1, 0, 0, false),

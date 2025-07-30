@@ -139,10 +139,4 @@ public interface LootTrackerConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "searchType",
-		name = "Search By",
-		description = "Search by monster / event or item"
-	)
-	default LootTrackerSearchType searchType() { return LootTrackerSearchType.ITEMS; }
 }
