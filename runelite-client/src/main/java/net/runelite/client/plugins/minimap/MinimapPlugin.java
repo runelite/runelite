@@ -78,6 +78,7 @@ public class MinimapPlugin extends Plugin
 		storeOriginalDots();
 		replaceMapDots();
 		client.setMinimapZoom(config.zoom());
+		client.setMinimapZoom(normalizeZoomPct(config.defaultZoom()));
 	}
 
 	@Override
@@ -111,15 +112,21 @@ public class MinimapPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("hideMinimap"))
+		switch (event.getKey())
 		{
-			updateMinimapWidgetVisibility(config.hideMinimap());
-			return;
-		}
-		else if (event.getKey().equals("zoom"))
-		{
-			client.setMinimapZoom(config.zoom());
-			return;
+			case "hideMinimap":
+				updateMinimapWidgetVisibility(config.hideMinimap());
+				return;
+			case "zoom":
+				client.setMinimapZoom(config.zoom());
+				if (config.zoom())
+				{
+					client.setMinimapZoom(normalizeZoomPct(config.defaultZoom()));
+				}
+				return;
+			case "defaultZoom":
+				client.setMinimapZoom(normalizeZoomPct(config.defaultZoom()));
+				return;
 		}
 
 		restoreOriginalDots();
@@ -207,5 +214,12 @@ public class MinimapPlugin extends Plugin
 		}
 
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
+	}
+
+	private static double normalizeZoomPct(int zoomPct)
+	{
+		double minZoom = 2.0;
+		double maxZoom = 8.0;
+		return (zoomPct * (maxZoom - minZoom) / 100) + minZoom;
 	}
 }

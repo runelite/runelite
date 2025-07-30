@@ -29,6 +29,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
 @ConfigGroup(MinimapConfig.GROUP)
 public interface MinimapConfig extends Config
@@ -38,14 +40,15 @@ public interface MinimapConfig extends Config
 	@ConfigSection(
 		name = "Minimap dot colors",
 		description = "The colors of dots on the minimap.",
-		position = 0
+		position = 4
 	)
 	String minimapDotSection = "minimapDotSection";
 
 	@ConfigItem(
 		keyName = "zoom",
 		name = "Zoom",
-		description = "Enables zooming on the minimap."
+		description = "Enables zooming on the minimap.",
+		position = 2
 	)
 	default boolean zoom()
 	{
@@ -53,9 +56,23 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "defaultZoom",
+		name = "Default Zoom",
+		description = "Sets the default zoom level.",
+		position = 3
+	)
+	@Units(Units.PERCENT)
+	@Range(min = 0, max = 100)
+	default int defaultZoom()
+	{
+		return 50;
+	}
+
+	@ConfigItem(
 		keyName = "hideMinimap",
 		name = "Hide minimap",
-		description = "Do not show the minimap on screen (resizable only)."
+		description = "Do not show the minimap on screen (resizable only).",
+		position = 1
 	)
 	default boolean hideMinimap()
 	{
