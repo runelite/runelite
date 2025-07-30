@@ -143,6 +143,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private ElapsedTimer tzhaarTimer;
 
+	private int lastDeathChargeVarb;
+
 	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
 	private static final int ECLIPSE_MOON_REGION_ID = 6038;
 
@@ -186,6 +188,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		nextOverloadRefreshTick = 0;
 		nextAntifireTick = 0;
 		nextSuperAntifireTick = 0;
+		lastDeathChargeVarb = 0;
 		removeTzhaarTimer();
 		varTimers.clear();
 		infoBoxManager.removeIf(buffCounter -> buffCounter instanceof BuffCounter);
@@ -304,14 +307,25 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE && config.showArceuus())
 		{
-			if (event.getValue() == 1)
+			final int deathChargeVarb = event.getValue();
+
+			switch (deathChargeVarb)
 			{
-				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+				case 2:
+					createGameTimer(DEATH_CHARGE);
+					break;
+				case 1:
+					if (lastDeathChargeVarb == 0)
+					{
+						createGameTimer(DEATH_CHARGE);
+					}
+					break;
+				case 0:
+					removeGameTimer(DEATH_CHARGE);
+					break;
 			}
-			else
-			{
-				removeGameTimer(DEATH_CHARGE);
-			}
+
+			lastDeathChargeVarb = deathChargeVarb;
 		}
 
 		if (event.getVarbitId() == VarbitID.ARCEUUS_RESURRECTION_ACTIVE && event.getValue() == 0 && config.showArceuus())
@@ -652,6 +666,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
 		}
+
+		if (event.getVarbitId() == VarbitID.SURGE_POTION_TIMER && config.showSurge())
+		{
+			updateVarTimer(SURGE_POTION, event.getValue(), i -> i * 10);
+		}
 	}
 
 	@Subscribe
@@ -896,6 +915,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeVarTimer(SCURRIUS_FOOD_PILE);
 		}
+
+		if (!config.showSurge())
+		{
+			removeVarTimer(SURGE_POTION);
+		}
 	}
 
 	@Subscribe
@@ -1003,13 +1027,9 @@ public class TimersAndBuffsPlugin extends Plugin
 				// by default the thrall lasts 1 tick per magic level
 				int t = client.getBoostedSkillLevel(Skill.MAGIC);
 				// ca tiers being completed boosts this
-				if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_GRANDMASTER) == 2)
+				if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_MASTER) == 2)
 				{
 					t += t; // 100% boost
-				}
-				else if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_MASTER) == 2)
-				{
-					t += t / 2; // 50% boost
 				}
 				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
 			}
@@ -1017,8 +1037,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (message.endsWith(MARK_OF_DARKNESS_MESSAGE) && config.showArceuusCooldown())
 		{
-			final int magicLevelMoD = getMagicLevelMoD(client.getRealSkillLevel(Skill.MAGIC));
-			createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevelMoD - 10, RSTimeUnit.GAME_TICKS));
+			createGameTimer(MARK_OF_DARKNESS_COOLDOWN);
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())

@@ -1,8 +1,6 @@
-.id                 2091
-.int_stack_count    2
-.string_stack_count 0
-.int_var_count      2
-.string_var_count   0
+.id                       2091
+.int_arg_count            2
+.obj_arg_count            0
    iload                  0 ; stat
    iload                  1 ; xp
    sconst                 "fakeXpDrop"

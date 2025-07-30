@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -433,6 +434,7 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.TELEPORT));
+		Map<String, BufferedImage> imageCache = new HashMap<>();
 		Arrays.stream(TeleportLocationData.values())
 			.filter(data ->
 			{
@@ -461,7 +463,7 @@ public class WorldMapPlugin extends Plugin
 					.type(MapPoint.Type.TELEPORT)
 					.worldPoint(l.getLocation())
 					.tooltip(l.getTooltip())
-					.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
+					.image(imageCache.computeIfAbsent(l.getIconPath(), p -> ImageUtil.loadImageResource(WorldMapPlugin.class, p)))
 					.build()
 			)
 			.forEach(worldMapPointManager::add);

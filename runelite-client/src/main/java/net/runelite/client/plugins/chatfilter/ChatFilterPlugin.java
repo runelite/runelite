@@ -185,12 +185,12 @@ public class ChatFilterPlugin extends Plugin
 
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
 		final int messageType = intStack[intStackSize - 2];
 		final int messageId = intStack[intStackSize - 1];
-		String message = stringStack[stringStackSize - 1];
+		String message = (String) objectStack[objectStackSize - 1];
 
 		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
 		final MessageNode messageNode = client.getMessages().get(messageId);
@@ -266,7 +266,7 @@ public class ChatFilterPlugin extends Plugin
 				message += " (" + duplicateCount + ")";
 			}
 
-			stringStack[stringStackSize - 1] = message;
+			objectStack[objectStackSize - 1] = message;
 		}
 	}
 

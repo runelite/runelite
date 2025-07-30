@@ -77,4 +77,5 @@ public class NpcDefinition
 	public int category;
 	public int height = -1;
 	public int[] stats = {1, 1, 1, 1, 1, 1};
+	public int footprintSize = -1;
 }

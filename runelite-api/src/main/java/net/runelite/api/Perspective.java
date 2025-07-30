@@ -464,6 +464,37 @@ public class Perspective
 		return 0;
 	}
 
+	public static int getFootprintTileHeight(@Nonnull Client client, @Nonnull LocalPoint p, int level, int footprintSize)
+	{
+		final int x = p.getX(), z = p.getY();
+		int halfFootprint = footprintSize / 2;
+		int lx = x - halfFootprint;
+		int lz = z - halfFootprint;
+		int ux = x + halfFootprint;
+		int uz = z + halfFootprint;
+		int lsx = (lx >> LOCAL_COORD_BITS) + 1;
+		int lsz = (lz >> LOCAL_COORD_BITS) + 1;
+		int usx = ux >> LOCAL_COORD_BITS;
+		int usz = uz >> LOCAL_COORD_BITS;
+		int h = Integer.MAX_VALUE;
+
+		for (int tx = lsx; tx <= usx; ++tx)
+		{
+			for (int tz = lsz; tz <= usz; ++tz)
+			{
+				h = Math.min(h, getTileHeight(client, new LocalPoint(tx << LOCAL_COORD_BITS, tz << LOCAL_COORD_BITS, p.getWorldView()), level));
+			}
+		}
+
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x, z, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z - halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z + halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z - halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z + halfFootprint, p.getWorldView()), level));
+
+		return h;
+	}
+
 	/**
 	 * Get the height of a location, in local coordinates. Interpolates the height from the adjacent tiles.
 	 * Does not account for bridges.

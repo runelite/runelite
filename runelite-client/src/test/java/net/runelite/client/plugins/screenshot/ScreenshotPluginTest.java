@@ -33,11 +33,14 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Player;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -543,6 +546,22 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
+	public void testDoomDeath()
+	{
+		when(screenshotConfig.screenshotPlayerDeath()).thenReturn(true);
+
+		Player player = mock(Player.class);
+		when(player.getAnimation()).thenReturn(AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+		screenshotPlugin.onAnimationChanged(animationChanged);
+
+		verify(screenshotPlugin).takeScreenshot("Doom Death", "Deaths");
+	}
+
+	@Test
 	public void testBossKillCount()
 	{
 		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
@@ -551,6 +570,17 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessage);
 
 		verify(screenshotPlugin).takeScreenshot("Nightmare(1130)", "Boss Kills");
+	}
+
+	@Test
+	public void testYamaKillCount()
+	{
+		when(screenshotConfig.screenshotBossKills()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Yama success count is: <col=ff0000>227</col>", null, 0);
+		screenshotPlugin.onChatMessage(chatMessage);
+
+		verify(screenshotPlugin).takeScreenshot("Yama(227)", "Boss Kills");
 	}
 
 	@Test

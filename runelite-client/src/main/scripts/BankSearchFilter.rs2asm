@@ -1,8 +1,6 @@
-.id                 279 ; [proc,bankmain_filteritem]
-.int_stack_count    1
-.string_stack_count 0
-.int_var_count      2 ; +1 for storage of search filter result
-.string_var_count   2
+.id                       279 ; [proc,bankmain_filteritem]
+.int_arg_count            1
+.obj_arg_count            0
    iconst                 -1                 ; return value
    iload                  0                  ; load item id
    get_varc_string        359
@@ -10,7 +8,7 @@
    sconst                 "bankSearchFilter" ; push event name
    runelite_callback                         ; invoke callback
    pop_int                                   ; pop item id
-   pop_string                                ; pop search string
+   pop_object                                ; pop search string
    istore                 1                  ; store return value
    iload                  1                  ; continue if it is still -1
    iconst                 -1
@@ -20,9 +18,9 @@
 
 CONTINUE:
    sconst                 ""
-   sstore                 0
+   ostore                 0
    sconst                 ""
-   sstore                 1
+   ostore                 1
    invoke                 514
    iconst                 1
    if_icmpeq              LABEL8
@@ -30,8 +28,8 @@ CONTINUE:
 LABEL8:
    get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
    lowercase             ; instead get the var directly and lowercase it
-   sstore                 1
-   sload                  1
+   ostore                 1
+   oload                  1
    string_length         
    iconst                 0
    if_icmpgt              LABEL15
@@ -45,10 +43,10 @@ LABEL19:
    iload                  0
    oc_name               
    lowercase             
-   sstore                 0
+   ostore                 0
 LABEL23:
-   sload                  0
-   sload                  1
+   oload                  0
+   oload                  1
    iconst                 0
    string_indexof_string 
    iconst                 -1

@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertEquals;
@@ -47,6 +49,17 @@ public class CipherClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(CipherClue.forText(""));
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<Integer> clueIds = CipherClue.CLUES.stream()
+			.mapToInt(CipherClue::getItemId)
+			.boxed()
+			.collect(Collectors.toUnmodifiableSet());
+
+		assertEquals(CipherClue.CLUES.size(), clueIds.size());
 	}
 
 	@Test

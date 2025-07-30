@@ -485,4 +485,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 7)
 	public static final int SEED_VAULT_BUILD = 2819;
+
+	@ScriptArguments(integer = 4)
+	public static final int LOOTTRACKER_ADD_LOOT = 7192;
+
+	@ScriptArguments(integer = 1)
+	public static final int DOM_LOOT_CLAIM = 7928;
 }

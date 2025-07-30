@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
-import static net.runelite.api.SpriteID.TAB_COMBAT;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -103,21 +103,22 @@ public class HiscorePanel extends PluginPanel
 		CHAOS_ELEMENTAL, CHAOS_FANATIC, COMMANDER_ZILYANA,
 		CORPOREAL_BEAST, CRAZY_ARCHAEOLOGIST, DAGANNOTH_PRIME,
 		DAGANNOTH_REX, DAGANNOTH_SUPREME, DERANGED_ARCHAEOLOGIST,
-		DUKE_SUCELLUS, GENERAL_GRAARDOR, GIANT_MOLE,
-		GROTESQUE_GUARDIANS, HESPORI, KALPHITE_QUEEN,
-		KING_BLACK_DRAGON, KRAKEN, KREEARRA,
-		KRIL_TSUTSAROTH, LUNAR_CHESTS, MIMIC,
-		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
-		OBOR, PHANTOM_MUSPAH, SARACHNIS,
-		SCORPIA, SCURRIUS, SKOTIZO,
-		SOL_HEREDIT, SPINDEL, TEMPOROSS,
-		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THE_HUEYCOATL,
-		THE_LEVIATHAN, THE_ROYAL_TITANS, THE_WHISPERER,
-		THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL,
-		TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK,
-		TZTOK_JAD, VARDORVIS, VENENATIS,
-		VETION, VORKATH, WINTERTODT,
-		ZALCANO, ZULRAH
+		DOOM_OF_MOKHAIOTL, DUKE_SUCELLUS, GENERAL_GRAARDOR,
+		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
+		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
+		KREEARRA, KRIL_TSUTSAROTH, LUNAR_CHESTS,
+		MIMIC, NEX, NIGHTMARE,
+		PHOSANIS_NIGHTMARE, OBOR, PHANTOM_MUSPAH,
+		SARACHNIS, SCORPIA, SCURRIUS,
+		SKOTIZO, SOL_HEREDIT, SPINDEL,
+		TEMPOROSS, THE_GAUNTLET, THE_CORRUPTED_GAUNTLET,
+		THE_HUEYCOATL, THE_LEVIATHAN, THE_ROYAL_TITANS,
+		THE_WHISPERER, THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE,
+		THERMONUCLEAR_SMOKE_DEVIL, TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT,
+		TZKAL_ZUK, TZTOK_JAD, VARDORVIS,
+		VENENATIS, VETION, VORKATH,
+		WINTERTODT, YAMA, ZALCANO,
+		ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
@@ -332,7 +333,7 @@ public class HiscorePanel extends PluginPanel
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText(pad("--", skillType));
 
-		spriteManager.getSpriteAsync(skill == null ? TAB_COMBAT : skill.getSpriteId(), 0, (sprite) ->
+		spriteManager.getSpriteAsync(skill == null ? SpriteID.SideIcons.COMBAT : skill.getSpriteId(), 0, (sprite) ->
 			SwingUtilities.invokeLater(() ->
 			{
 				// Icons are all 25x25 or smaller, so they're fit into a 25x25 canvas to give them a consistent size for

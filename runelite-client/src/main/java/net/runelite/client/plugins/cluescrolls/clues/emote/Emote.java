@@ -25,40 +25,40 @@
 package net.runelite.client.plugins.cluescrolls.clues.emote;
 
 import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import net.runelite.api.gameval.SpriteID;
 
 @Getter
 public enum Emote
 {
 	BULL_ROARER("Bull Roarer", -1),
-	YES("Yes", EMOTE_YES),
-	NO("No", EMOTE_NO),
-	THINK("Think", EMOTE_THINK),
-	BOW("Bow", EMOTE_BOW),
-	ANGRY("Angry", EMOTE_ANGRY),
-	CRY("Cry", EMOTE_CRY),
-	LAUGH("Laugh", EMOTE_LAUGH),
-	CHEER("Cheer", EMOTE_CHEER),
-	WAVE("Wave", EMOTE_WAVE),
-	BECKON("Beckon", EMOTE_BECKON),
-	DANCE("Dance", EMOTE_DANCE),
-	CLAP("Clap", EMOTE_CLAP),
-	PANIC("Panic", EMOTE_PANIC),
-	JIG("Jig", EMOTE_JIG),
-	SPIN("Spin", EMOTE_SPIN),
-	HEADBANG("Headbang", EMOTE_HEADBANG),
-	JUMP_FOR_JOY("Jump for Joy", EMOTE_JUMP_FOR_JOY),
-	RASPBERRY("Raspberry", EMOTE_RASPBERRY),
-	YAWN("Yawn", EMOTE_YAWN),
-	SALUTE("Salute", EMOTE_SALUTE),
-	SHRUG("Shrug", EMOTE_SHRUG),
-	BLOW_KISS("Blow Kiss", EMOTE_BLOW_KISS),
-	GOBLIN_SALUTE("Goblin Salute", EMOTE_GOBLIN_SALUTE),
-	SLAP_HEAD("Slap Head", EMOTE_SLAP_HEAD),
-	STAMP("Stamp", EMOTE_STAMP),
-	FLAP("Flap", EMOTE_FLAP),
-	PUSH_UP("Push up", EMOTE_PUSH_UP),
-	FORTIS_SALUTE("Fortis Salute", EMOTE_FORTIS_SALUTE);
+	YES("Yes", SpriteID.Emotes.YES),
+	NO("No", SpriteID.Emotes.NO),
+	THINK("Think", SpriteID.Emotes.THINK),
+	BOW("Bow", SpriteID.Emotes.BOW),
+	ANGRY("Angry", SpriteID.Emotes.ANGRY),
+	CRY("Cry", SpriteID.Emotes.CRY),
+	LAUGH("Laugh", SpriteID.Emotes.LAUGH),
+	CHEER("Cheer", SpriteID.Emotes.CHEER),
+	WAVE("Wave", SpriteID.Emotes.WAVE),
+	BECKON("Beckon", SpriteID.Emotes.BECKON),
+	DANCE("Dance", SpriteID.Emotes.DANCE),
+	CLAP("Clap", SpriteID.Emotes.CLAP),
+	PANIC("Panic", SpriteID.Emotes.PANIC),
+	JIG("Jig", SpriteID.Emotes.JIG),
+	SPIN("Spin", SpriteID.Emotes.SPIN),
+	HEADBANG("Headbang", SpriteID.Emotes.HEADBANG),
+	JUMP_FOR_JOY("Jump for Joy", SpriteID.Emotes.JUMP_FOR_JOY),
+	RASPBERRY("Raspberry", SpriteID.Emotes.RASPBERRY),
+	YAWN("Yawn", SpriteID.Emotes.YAWN),
+	SALUTE("Salute", SpriteID.Emotes.SALUTE),
+	SHRUG("Shrug", SpriteID.Emotes.SHRUG),
+	BLOW_KISS("Blow Kiss", SpriteID.Emotes.BLOW_KISS),
+	GOBLIN_SALUTE("Goblin Salute", SpriteID.Emotes.GOBLIN_SALUTE),
+	SLAP_HEAD("Slap Head", SpriteID.Emotes.SLAP_HEAD),
+	STAMP("Stamp", SpriteID.Emotes.STAMP),
+	FLAP("Flap", SpriteID.Emotes.FLAP),
+	PUSH_UP("Push up", SpriteID.Emotes.PUSH_UP),
+	FORTIS_SALUTE("Fortis Salute", SpriteID.EmotesLocked.FORTIS_SALUTE);
 
 	private final String name;
 	private final int spriteId;

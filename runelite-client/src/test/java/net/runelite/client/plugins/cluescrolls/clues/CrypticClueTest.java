@@ -24,7 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertEquals;
@@ -32,6 +35,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -51,6 +55,25 @@ public class CrypticClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(CrypticClue.forText(""));
+	}
+
+	@Test
+	public void uniqueIds()
+	{
+		final Set<Integer> clueIds = new HashSet<>();
+		for (final CrypticClue clue : CrypticClue.CLUES)
+		{
+			final Set<Integer> clueItemIds = clue.getItemIds();
+			if (clueItemIds.size() == 1 && (clueItemIds.contains(ItemID.TRAIL_CLUE_MASTER) || clueItemIds.contains(ItemID.TRAIL_CLUE_BEGINNER)))
+			{
+				continue;
+			}
+
+			if (!clueIds.addAll(clue.getItemIds()))
+			{
+				fail("Duplicate item ID(s) in clue " + clue);
+			}
+		}
 	}
 
 	@Test

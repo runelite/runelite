@@ -45,7 +45,6 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Model;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Renderable;
@@ -983,23 +982,11 @@ public class ModelOutlineRenderer
 
 	public void drawOutline(NPC npc, int outlineWidth, Color color, int feather)
 	{
-		int size = 1;
-		NPCComposition composition = npc.getTransformedComposition();
-		if (composition != null)
-		{
-			size = composition.getSize();
-		}
-
 		LocalPoint lp = npc.getLocalLocation();
 		if (lp != null)
 		{
-			// NPCs z position are calculated based on the tile height of the northeastern tile
-			final int northEastX = lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
-			final int northEastY = lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
-			final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY);
-
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, northEastLp, client.getPlane()),
+				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), npc.getComposition().getFootprintSize()),
 				npc.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
@@ -1010,7 +997,7 @@ public class ModelOutlineRenderer
 		if (lp != null)
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, lp, client.getPlane()),
+				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), player.getFootprintSize()),
 				player.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}

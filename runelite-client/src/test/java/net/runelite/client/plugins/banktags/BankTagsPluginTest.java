@@ -104,14 +104,14 @@ public class BankTagsPluginTest
 
 		when(itemManager.canonicalize(ItemID.ABYSSAL_WHIP)).thenReturn(ItemID.ABYSSAL_WHIP);
 		when(client.getIntStackSize()).thenReturn(2);
-		when(client.getStringStackSize()).thenReturn(1);
+		when(client.getObjectStackSize()).thenReturn(1);
 	}
 
 	@Test
 	public void testExplicitSearch()
 	{
 		when(client.getIntStack()).thenReturn(new int[]{0, ItemID.ABYSSAL_WHIP});
-		when(client.getStringStack()).thenReturn(new String[]{"tag:whip"});
+		when(client.getObjectStack()).thenReturn(new String[]{"tag:whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
 			ITEM_KEY_PREFIX + ItemID.ABYSSAL_WHIP)).thenReturn("herb,bossing,whip");
@@ -137,7 +137,7 @@ public class BankTagsPluginTest
 	public void testFallThrough()
 	{
 		when(client.getIntStack()).thenReturn(new int[]{1, ItemID.ABYSSAL_WHIP});
-		when(client.getStringStack()).thenReturn(new String[]{"whip"});
+		when(client.getObjectStack()).thenReturn(new String[]{"whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
 			ITEM_KEY_PREFIX + ItemID.ABYSSAL_WHIP)).thenReturn("herb,bossing");
@@ -151,7 +151,7 @@ public class BankTagsPluginTest
 	public void testNonExplicitSearch()
 	{
 		when(client.getIntStack()).thenReturn(new int[]{0, ItemID.ABYSSAL_WHIP});
-		when(client.getStringStack()).thenReturn(new String[]{"whip"});
+		when(client.getObjectStack()).thenReturn(new String[]{"whip"});
 
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
 			ITEM_KEY_PREFIX + ItemID.ABYSSAL_WHIP)).thenReturn("herb,bossing,whip long tag");

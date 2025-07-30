@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
@@ -274,7 +275,7 @@ public class WidgetOverlay extends Overlay
 		@Override
 		public OverlayPosition getPosition()
 		{
-			if (!client.isClientThread())
+			if (!client.isClientThread() || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
 			{
 				// During overlay drag, getPosition() is called on the EDT, so we just
 				// cache and reuse the last known configured position.

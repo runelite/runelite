@@ -64,6 +64,7 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetConfigNode;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -1348,15 +1349,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private boolean testOpMask(Widget w, int op)
 	{
-		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
-		int mask = n != null ? n.getValue() : w.getClickMask();
+		WidgetConfigNode n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		int mask = n != null ? n.getClickMask() : w.getClickMask();
 		return (mask >> op + 1 & 1) != 0;
 	}
 
 	private boolean isOpTarget(Widget w)
 	{
-		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
-		int mask = n != null ? n.getValue() : w.getClickMask();
+		WidgetConfigNode n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		int mask = n != null ? n.getClickMask() : w.getClickMask();
 		return (mask & (WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT | WidgetConfig.USE_PLAYER | WidgetConfig.USE_ITEM | WidgetConfig.USE_WIDGET)) != 0;
 	}
 
@@ -1815,7 +1816,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private List<Integer> findOptionIndex(Menu menu, String option)
 	{
-		if (cacheOptionMenu == null || cacheOptionIndexes.isEmpty())
+		if (cacheOptionMenu != menu || cacheOptionIndexes.isEmpty())
 		{
 			int idx = 0;
 			cacheOptionMenu = menu;

@@ -252,15 +252,15 @@ public class BankPlugin extends Plugin
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		int[] intStack = client.getIntStack();
-		String[] stringStack = client.getStringStack();
+		Object[] objectStack = client.getObjectStack();
 		int intStackSize = client.getIntStackSize();
-		int stringStackSize = client.getStringStackSize();
+		int objectStackSize = client.getObjectStackSize();
 
 		switch (event.getEventName())
 		{
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
-				String search = stringStack[stringStackSize - 1];
+				String search = (String) objectStack[objectStackSize - 1];
 
 				if (valueSearch(itemId, search))
 				{
