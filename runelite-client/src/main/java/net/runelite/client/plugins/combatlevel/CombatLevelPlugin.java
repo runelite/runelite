@@ -36,7 +36,6 @@ import net.runelite.api.Experience;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
@@ -148,18 +147,6 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onClientTick(ClientTick tick)
-	{
-		Widget combatLevelWidget = client.getWidget(InterfaceID.CombatInterface.LEVEL);
-		if (combatLevelWidget == null || !config.showPreciseCombatLevel())
-		{
-			return;
-		}
-
-		combatLevelWidget.setText("Combat Lvl: " + combatLevelStr);
-	}
-
-	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (!CONFIG_GROUP.equals(event.getGroup()) || !ATTACK_RANGE_CONFIG_KEY.equals(event.getKey()))
@@ -227,6 +214,12 @@ public class CombatLevelPlugin extends Plugin
 		if (scriptPostFired.getScriptId() == ScriptID.PVP_WIDGET_BUILDER && config.wildernessAttackLevelRange())
 		{
 			appendAttackLevelRangeText();
+		}
+
+		if (scriptPostFired.getScriptId() == ScriptID.COMBAT_INTERFACE_SETUP && config.showPreciseCombatLevel())
+		{
+			Widget combatLevelWidget = client.getWidget(InterfaceID.CombatInterface.LEVEL);
+			combatLevelWidget.setText("Combat Lvl: " + combatLevelStr);
 		}
 	}
 

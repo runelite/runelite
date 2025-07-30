@@ -57,7 +57,10 @@ enum RareTreeLocation
 		new WorldPoint(3309, 6123, 0),
 
 		// Varlamore
-		new WorldPoint(1694, 2989, 0)),
+		new WorldPoint(1694, 2989, 0),
+		new WorldPoint(1363, 3143, 0),
+		new WorldPoint(1326, 3169, 0),
+		new WorldPoint(1257, 3009, 0)),
 
 	SWAYING("Swaying tree", 40,
 		// The Fremennik Trials
@@ -68,7 +71,7 @@ enum RareTreeLocation
 		new WorldPoint(1690, 3524, 0)),
 
 	MAPLE("Maple tree", 45,
-		// Zeah
+		// Kourend
 		new WorldPoint(1231, 3704, 0),
 		new WorldPoint(1293, 3756, 0),
 		new WorldPoint(1640, 3496, 0),
@@ -96,7 +99,13 @@ enum RareTreeLocation
 
 		// Aldarin
 		new WorldPoint(1362, 2862, 0),
-		new WorldPoint(1398, 2856, 0)),
+		new WorldPoint(1398, 2856, 0),
+
+		// Auburn Valley
+		new WorldPoint(1389, 3381, 0),
+		new WorldPoint(1370, 3344, 0),
+		new WorldPoint(1392, 3339, 0),
+		new WorldPoint(1431, 3352, 0)),
 
 	MAHOGANY("Mahogany tree", 50,
 		// Zeah
@@ -113,7 +122,11 @@ enum RareTreeLocation
 		new WorldPoint(2946, 2908, 0),
 
 		// Prifddinas
-		new WorldPoint(3301, 6129, 0)),
+		new WorldPoint(3301, 6129, 0),
+
+		// Tlati Rainforest
+		new WorldPoint(1249, 3077, 0),
+		new WorldPoint(1263, 3002, 0)),
 
 	TEAK_MAHOGANY("Teak/Mahogany trees", 50,
 		// Miscellania
@@ -154,6 +167,10 @@ enum RareTreeLocation
 		new WorldPoint(1733, 3119, 0),
 		new WorldPoint(1749, 3106, 0),
 		new WorldPoint(1498, 3245, 0),
+		new WorldPoint(1296, 3409, 0),
+		new WorldPoint(1361, 3320, 0),
+		new WorldPoint(1380, 3323, 0),
+		new WorldPoint(1354, 3289, 0),
 
 		// Aldarin
 		new WorldPoint(1412, 2992, 0),
@@ -219,7 +236,10 @@ enum RareTreeLocation
 		new WorldPoint(2476, 2893, 0),
 
 		// Aldarin
-		new WorldPoint(1379, 2876, 0)),
+		new WorldPoint(1379, 2876, 0),
+
+		// Auburnvale
+		new WorldPoint(1358, 3302, 0)),
 
 	BLISTERWOOD("Blisterwood tree", 62,
 		// Darkmeyer
@@ -250,6 +270,14 @@ enum RareTreeLocation
 
 		// Aldarin
 		new WorldPoint(1323, 2974, 0),
+
+		// Auburnvale
+		new WorldPoint(1455, 3321, 0),
+		new WorldPoint(1387, 3281, 0),
+
+		// Tlati Rainforest
+		new WorldPoint(1328, 3059, 0),
+		new WorldPoint(1328, 3033, 0),
 
 		// Misthalin
 		new WorldPoint(3355, 3312, 0),

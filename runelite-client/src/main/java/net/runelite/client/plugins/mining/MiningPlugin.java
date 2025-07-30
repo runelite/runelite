@@ -304,6 +304,8 @@ public class MiningPlugin extends Plugin
 				case ObjectID.DWARF_GOLD_DEPLETED: // Gold vein
 				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY: // Calcified rock
 				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY02: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY03: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY04: // Calcified rock
 				{
 					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
 					break;

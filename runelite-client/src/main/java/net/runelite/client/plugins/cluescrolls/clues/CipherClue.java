@@ -191,6 +191,15 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 			.npc(NpcID.HUNTER_GUILD_PITRI)
 			.location(new WorldPoint(1559, 3045, 0))
 			.area("Top of the Hunter Guild")
+			.build(),
+		CipherClue.builder()
+			.itemId(ItemID.TRAIL_HARD_CIPHER_VM02)
+			.text("YAROYGR")
+			.npc(NpcID.KASTORI_FISHING_TRADER)
+			.location(new WorldPoint(1376, 3037, 0))
+			.area("Kastori")
+			.question("If a fish can feed four people, and I'm hosting 15 guests, how many whole fish will I need?")
+			.answer("4")
 			.build()
 	);
 

@@ -1137,3 +1137,7 @@ R 44 156 45 157
 // chasm of fire
 #090504
 R 22 157 23 157
+
+// DT2 silent choir water cutscene
+#18192d
+r 50 98
