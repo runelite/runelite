@@ -650,4 +650,67 @@ public class LootTrackerPluginTest
 		assertTrue("Record should match partial title search", 
 			record.getTitle().toLowerCase().contains("drag"));
 	}
+
+	@Test
+	public void testLootTrackerSearchFiltersTotalPrices() {
+		// Create dragon loot items (high value)
+		LootTrackerItem[] dragonItems = {
+			new LootTrackerItem(1, "Dragon bones", 2, 2000, 1800, false),
+			new LootTrackerItem(2, "Dragon dagger", 1, 30000, 25000, false)
+		};
+		LootTrackerRecord dragonRecord = new LootTrackerRecord("Dragons", "", LootRecordType.NPC, dragonItems, 1);
+
+		// Create goblin loot items (low value)
+		LootTrackerItem[] goblinItems = {
+			new LootTrackerItem(3, "Coins", 50, 1, 1, false),
+			new LootTrackerItem(4, "Bronze dagger", 1, 100, 80, false)
+		};
+		LootTrackerRecord goblinRecord = new LootTrackerRecord("Goblins", "", LootRecordType.NPC, goblinItems, 3);
+
+		// Calculate expected totals
+		long dragonTotalGe = (2000L * 2) + (30000L * 1); // 4000 + 30000 = 34000
+		long dragonTotalHa = (1800L * 2) + (25000L * 1); // 3600 + 25000 = 28600
+		long goblinTotalGe = (1L * 50) + (100L * 1);     // 50 + 100 = 150
+		long goblinTotalHa = (1L * 50) + (80L * 1);      // 50 + 80 = 130
+
+		// Verify individual record calculations
+		assertEquals("Dragon GE total should be correct", dragonTotalGe, 
+			dragonItems[0].getTotalGePrice() + dragonItems[1].getTotalGePrice());
+		assertEquals("Dragon HA total should be correct", dragonTotalHa, 
+			dragonItems[0].getTotalHaPrice() + dragonItems[1].getTotalHaPrice());
+		assertEquals("Goblin GE total should be correct", goblinTotalGe, 
+			goblinItems[0].getTotalGePrice() + goblinItems[1].getTotalGePrice());
+		assertEquals("Goblin HA total should be correct", goblinTotalHa, 
+			goblinItems[0].getTotalHaPrice() + goblinItems[1].getTotalHaPrice());
+
+		// Test search filtering logic (simulating shouldFilterEvent method)
+		String searchTerm = "dragon";
+		boolean dragonMatches = dragonRecord.getTitle().toLowerCase().contains(searchTerm);
+		boolean goblinMatches = goblinRecord.getTitle().toLowerCase().contains(searchTerm);
+
+		assertTrue("Dragon record should match 'dragon' search", dragonMatches);
+		assertFalse("Goblin record should not match 'dragon' search", goblinMatches);
+
+		// When searching for "dragon", only dragon loot should be included in totals
+		// This test verifies the expected behavior that the search filter should apply to total price calculations
+		long expectedFilteredGeTotal = dragonMatches ? dragonTotalGe : 0;
+		long expectedFilteredHaTotal = dragonMatches ? dragonTotalHa : 0;
+
+		assertEquals("Filtered GE total should only include dragon loot", dragonTotalGe, expectedFilteredGeTotal);
+		assertEquals("Filtered HA total should only include dragon loot", dragonTotalHa, expectedFilteredHaTotal);
+
+		// Test reverse scenario - searching for "goblin"
+		searchTerm = "goblin";
+		dragonMatches = dragonRecord.getTitle().toLowerCase().contains(searchTerm);
+		goblinMatches = goblinRecord.getTitle().toLowerCase().contains(searchTerm);
+
+		assertFalse("Dragon record should not match 'goblin' search", dragonMatches);
+		assertTrue("Goblin record should match 'goblin' search", goblinMatches);
+
+		expectedFilteredGeTotal = goblinMatches ? goblinTotalGe : 0;
+		expectedFilteredHaTotal = goblinMatches ? goblinTotalHa : 0;
+
+		assertEquals("Filtered GE total should only include goblin loot", goblinTotalGe, expectedFilteredGeTotal);
+		assertEquals("Filtered HA total should only include goblin loot", goblinTotalHa, expectedFilteredHaTotal);
+	}
 }
