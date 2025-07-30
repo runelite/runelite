@@ -597,7 +597,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
-			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored, null);
+			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
 		box.addKill(record);
 
 		// Use the existing popup menu or create a new one
@@ -711,8 +711,7 @@ class LootTrackerPanel extends PluginPanel
 				continue;
 			}
 
-			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle())
-				|| config.searchType() == LootTrackerSearchType.EVENTS && searchTerm != null && !record.getTitle().toLowerCase().contains(searchTerm))
+			if (hideIgnoredItems && plugin.isEventIgnored(record.getTitle()))
 			{
 				continue;
 			}
@@ -721,8 +720,7 @@ class LootTrackerPanel extends PluginPanel
 
 			for (LootTrackerItem item : record.getItems())
 			{
-				if (hideIgnoredItems && item.isIgnored()
-					|| (config.searchType() == LootTrackerSearchType.ITEMS && searchTerm != null && !item.getName().toLowerCase().contains(searchTerm)))
+				if (hideIgnoredItems && item.isIgnored())
 				{
 					present--;
 					continue;
@@ -730,14 +728,9 @@ class LootTrackerPanel extends PluginPanel
 
 				overallGe += item.getTotalGePrice();
 				overallHa += item.getTotalHaPrice();
-
-				if (config.searchType() == LootTrackerSearchType.ITEMS && searchTerm != null)
-				{
-					overallKills += item.getQuantity();
-				}
 			}
 
-			if (present > 0 && (config.searchType() == LootTrackerSearchType.EVENTS || searchTerm == null))
+			if (present > 0)
 			{
 				overallKills += record.getKills();
 			}
@@ -764,21 +757,12 @@ class LootTrackerPanel extends PluginPanel
 
 	private boolean shouldFilterEvent(LootTrackerRecord rec)
 	{
-		final String searchTerm = getSearchTerm(LootTrackerSearchType.EVENTS);
+		final String searchTerm = getSearchTerm();
 		return searchTerm == null || rec.getTitle().toLowerCase().contains(searchTerm);
 	}
 
 	private String getSearchTerm()
 	{
-		return getSearchTerm(config.searchType());
-	}
-
-	private String getSearchTerm(LootTrackerSearchType type)
-	{
-		if (type != config.searchType())
-		{
-			return null;
-		}
 		final String term = searchBar.getText();
 		return Strings.isNullOrEmpty(term) ? null : term.toLowerCase();
 	}
