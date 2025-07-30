@@ -78,6 +78,10 @@ class WorldSwitcherPanel extends PluginPanel
 	private Set<RegionFilterMode> regionFilterMode;
 	@Setter(AccessLevel.PACKAGE)
 	private Set<WorldTypeFilter> worldTypeFilters;
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hideUnjoinableWorlds;
+	@Setter(AccessLevel.PACKAGE)
+	private Set<Integer> hiddenWorlds;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -287,6 +291,22 @@ class WorldSwitcherPanel extends PluginPanel
 				{
 					continue;
 				}
+			}
+
+			if (hideUnjoinableWorlds)
+			{
+				if (world.getTypes().contains(WorldType.SKILL_TOTAL))
+				{
+					if (!this.plugin.isTotalLevelWorldJoinable(world.getActivity().substring(0, world.getActivity().indexOf(" "))))
+					{
+						continue;
+					}
+				}
+			}
+
+			if (!hiddenWorlds.isEmpty() && hiddenWorlds.contains(world.getId()))
+			{
+				continue;
 			}
 
 			rows.add(buildRow(world, i % 2 == 0,
