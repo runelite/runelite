@@ -491,4 +491,10 @@ public interface Actor extends Renderable
 	 * @see #isDead()
 	 */
 	void setDead(boolean dead);
+
+	/**
+	 * Get the height offset of the actor from their current animation
+	 * @return
+	 */
+	int getAnimationHeightOffset();
 }

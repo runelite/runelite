@@ -986,7 +986,7 @@ public class ModelOutlineRenderer
 		if (lp != null)
 		{
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
-				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), npc.getComposition().getFootprintSize()),
+				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), npc.getComposition().getFootprintSize()) - npc.getAnimationHeightOffset(),
 				npc.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
@@ -997,7 +997,7 @@ public class ModelOutlineRenderer
 		if (lp != null)
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
-				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), player.getFootprintSize()),
+				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), player.getFootprintSize()) - player.getAnimationHeightOffset(),
 				player.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}

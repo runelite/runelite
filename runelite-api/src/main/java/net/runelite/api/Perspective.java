@@ -52,7 +52,8 @@ import org.jetbrains.annotations.ApiStatus;
  */
 public class Perspective
 {
-	public static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
+	// How much of the unit circle each unit of SINE/COSINE is
+	public static final double UNIT = 0.0030679615d; // ~pi/1024
 
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
@@ -63,14 +64,19 @@ public class Perspective
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
+	private static final float[] SINF = new float[2048];
+	private static final float[] COSF = new float[2048];
+
 	private static final int ESCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
 	static
 	{
 		for (int i = 0; i < 2048; ++i)
 		{
-			SINE[i] = (int) (65536.0D * Math.sin((double) i * UNIT));
-			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
+			SINF[i] = (float) Math.sin(i * UNIT);
+			COSF[i] = (float) Math.cos(i * UNIT);
+			SINE[i] = (int) (65536.0F * SINF[i]);
+			COSINE[i] = (int) (65536.0F * COSF[i]);
 		}
 	}
 
@@ -287,15 +293,17 @@ public class Perspective
 	{
 		final int
 			cameraPitch = client.getCameraPitch(),
-			cameraYaw = client.getCameraYaw(),
+			cameraYaw = client.getCameraYaw();
 
-			pitchSin = SINE[cameraPitch],
-			pitchCos = COSINE[cameraPitch],
-			yawSin = SINE[cameraYaw],
-			yawCos = COSINE[cameraYaw],
-			rotateSin = SINE[rotate],
-			rotateCos = COSINE[rotate],
+		final float
+			pitchSin = SINF[cameraPitch],
+			pitchCos = COSF[cameraPitch],
+			yawSin = SINF[cameraYaw],
+			yawCos = COSF[cameraYaw],
+			rotateSin = SINF[rotate],
+			rotateCos = COSF[rotate];
 
+		final int
 			cx = x3dCenter - client.getCameraX(),
 			cy = y3dCenter - client.getCameraY(),
 			cz = z3dCenter - client.getCameraZ(),
@@ -309,26 +317,26 @@ public class Perspective
 
 		for (int i = 0; i < end; i++)
 		{
-			int x = (int) x3d[i];
-			int y = (int) y3d[i];
-			int z = (int) z3d[i];
+			float x = x3d[i];
+			float y = y3d[i];
+			float z = z3d[i];
 
 			if (rotate != 0)
 			{
-				int x0 = x;
-				x = x0 * rotateCos + y * rotateSin >> 16;
-				y = y * rotateCos - x0 * rotateSin >> 16;
+				float x0 = x;
+				x = x0 * rotateCos + y * rotateSin;
+				y = y * rotateCos - x0 * rotateSin;
 			}
 
 			x += cx;
 			y += cy;
 			z += cz;
 
-			final int
-				x1 = x * yawCos + y * yawSin >> 16,
-				y1 = y * yawCos - x * yawSin >> 16,
-				y2 = z * pitchCos - y1 * pitchSin >> 16,
-				z1 = y1 * pitchCos + z * pitchSin >> 16;
+			final float
+				x1 = x * yawCos + y * yawSin,
+				y1 = y * yawCos - x * yawSin,
+				y2 = z * pitchCos - y1 * pitchSin,
+				z1 = y1 * pitchCos + z * pitchSin;
 
 			int viewX, viewY;
 
@@ -339,8 +347,8 @@ public class Perspective
 			}
 			else
 			{
-				viewX = (viewportXMiddle + x1 * zoom3d / z1) + viewportXOffset;
-				viewY = (viewportYMiddle + y2 * zoom3d / z1) + viewportYOffset;
+				viewX = (int) (viewportXMiddle + x1 * zoom3d / z1) + viewportXOffset;
+				viewY = (int) (viewportYMiddle + y2 * zoom3d / z1) + viewportYOffset;
 			}
 
 			x2d[i] = viewX;

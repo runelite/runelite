@@ -901,6 +901,14 @@ public interface Client extends OAuthApi, GameEngine
 	HashTable<WidgetConfigNode> getWidgetFlags();
 
 	/**
+	 * Get the widget config for a given widget
+	 * @param w
+	 * @return
+	 */
+	@Nullable
+	WidgetConfigNode getWidgetConfig(Widget w);
+
+	/**
 	 * Gets the widget node component table.
 	 *
 	 * @return the widget node component table

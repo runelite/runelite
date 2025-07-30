@@ -1349,14 +1349,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private boolean testOpMask(Widget w, int op)
 	{
-		WidgetConfigNode n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		WidgetConfigNode n = client.getWidgetConfig(w);
 		int mask = n != null ? n.getClickMask() : w.getClickMask();
 		return (mask >> op + 1 & 1) != 0;
 	}
 
 	private boolean isOpTarget(Widget w)
 	{
-		WidgetConfigNode n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		WidgetConfigNode n = client.getWidgetConfig(w);
 		int mask = n != null ? n.getClickMask() : w.getClickMask();
 		return (mask & (WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT | WidgetConfig.USE_PLAYER | WidgetConfig.USE_ITEM | WidgetConfig.USE_WIDGET)) != 0;
 	}
