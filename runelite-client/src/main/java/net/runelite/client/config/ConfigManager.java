@@ -1212,14 +1212,31 @@ public class ConfigManager
 		}
 		if (type == Keybind.class || type == ModifierlessKeybind.class)
 		{
+			Keybind.Type bindType;
+			int code;
+			int mods;
 			String[] splitStr = str.split(":");
-			int code = Integer.parseInt(splitStr[0]);
-			int mods = Integer.parseInt(splitStr[1]);
+			if (splitStr.length == 3)
+			{
+				bindType = Keybind.Type.valueOf(splitStr[0]);
+				code = Integer.parseInt(splitStr[1]);
+				mods = Integer.parseInt(splitStr[2]);
+			}
+			else if (splitStr.length == 2) // Checks for 2 value legacy binds
+			{
+				bindType = Keybind.Type.KEYBOARD;
+				code = Integer.parseInt(splitStr[0]);
+				mods= Integer.parseInt(splitStr[1]);
+			}
+			else
+			{
+				throw new IllegalArgumentException("Invalid keybind format: " + str);
+			}
 			if (type == ModifierlessKeybind.class)
 			{
-				return new ModifierlessKeybind(code, mods);
+				return new ModifierlessKeybind(bindType, code);
 			}
-			return new Keybind(code, mods);
+			return new Keybind(bindType, code, mods);
 		}
 		if (type == WorldPoint.class)
 		{
@@ -1302,7 +1319,7 @@ public class ConfigManager
 		if (object instanceof Keybind)
 		{
 			Keybind k = (Keybind) object;
-			return k.getKeyCode() + ":" + k.getModifiers();
+			return k.getType() + ":" + k.getCode() + ":" + k.getModifiers();
 		}
 		if (object instanceof WorldPoint)
 		{

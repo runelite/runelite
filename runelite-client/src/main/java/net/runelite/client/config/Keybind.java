@@ -67,11 +67,11 @@ public class Keybind
 	public static final Keybind SHIFT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
 
 	// Static modifier variants for mouse binds
-	public static final Keybind NOT_SET_MOUSE = new Keybind(MouseEvent.NOBUTTON, 0);
+	public static final Keybind NOT_SET_MOUSE = new Keybind(Type.MOUSE, MouseEvent.NOBUTTON, 0, false);
 
-	public static final Keybind CTRL_MOUSE = new Keybind(MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK);
-	public static final Keybind ALT_MOUSE = new Keybind(MouseEvent.NOBUTTON, InputEvent.ALT_DOWN_MASK);
-	public static final Keybind SHIFT_MOUSE = new Keybind(MouseEvent.NOBUTTON, InputEvent.SHIFT_DOWN_MASK);
+	public static final Keybind CTRL_MOUSE = new Keybind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK, false);
+	public static final Keybind ALT_MOUSE = new Keybind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.ALT_DOWN_MASK, false);
+	public static final Keybind SHIFT_MOUSE = new Keybind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.SHIFT_DOWN_MASK, false);
 
 	private final Type type;
 	private final int code;
@@ -110,12 +110,21 @@ public class Keybind
 		this.modifiers = modifiers;
 	}
 
-	// Legacy constructor for keybinds
+	/**
+	 * Legacy constructor for keybinds without a type declaration
+	 */
 	public Keybind(int keyCode, int modifiers)
 	{
 		this(Type.KEYBOARD, keyCode, modifiers, false);
 	}
 
+	/**
+	 * Constructor for binds with type declaration (for mouse binds)
+	 */
+	public Keybind(Type type, int code, int modifiers)
+	{
+		this(type, code, modifiers, false);
+	}
 	/**
 	 * Constructs a keybind that matches the passed KeyEvent
 	 */

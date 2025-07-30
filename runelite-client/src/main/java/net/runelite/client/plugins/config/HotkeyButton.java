@@ -57,6 +57,23 @@ class HotkeyButton extends JButton
 					setValue(Keybind.NOT_SET);
 				}
 			}
+
+			@Override
+			public void mousePressed(MouseEvent me)
+			{
+				if (me.getButton() == MouseEvent.BUTTON1)
+				{
+					return;
+				}
+				if (modifierless)
+				{
+					setValue(new ModifierlessKeybind(me));
+				}
+				else
+				{
+					setValue(new Keybind(me));
+				}
+			}
 		});
 
 		addKeyListener(new KeyAdapter()
