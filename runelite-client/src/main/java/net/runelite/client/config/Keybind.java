@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2025 Leif
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +29,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,6 +42,12 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class Keybind
 {
+	public enum Type
+	{
+		KEYBOARD,
+		MOUSE
+	}
+
 	private static final BiMap<Integer, Integer> MODIFIER_TO_KEY_CODE = new ImmutableBiMap.Builder<Integer, Integer>()
 		.put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
 		.put(InputEvent.ALT_DOWN_MASK, KeyEvent.VK_ALT)
@@ -51,50 +59,81 @@ public class Keybind
 	private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
 		.reduce((a, b) -> a | b).get();
 
+	// Static modifier variants for key binds
 	public static final Keybind NOT_SET = new Keybind(KeyEvent.VK_UNDEFINED, 0);
 
 	public static final Keybind CTRL = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	public static final Keybind ALT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
 	public static final Keybind SHIFT = new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
 
-	private final int keyCode;
+	// Static modifier variants for mouse binds
+	public static final Keybind NOT_SET_MOUSE = new Keybind(MouseEvent.NOBUTTON, 0);
+
+	public static final Keybind CTRL_MOUSE = new Keybind(MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK);
+	public static final Keybind ALT_MOUSE = new Keybind(MouseEvent.NOBUTTON, InputEvent.ALT_DOWN_MASK);
+	public static final Keybind SHIFT_MOUSE = new Keybind(MouseEvent.NOBUTTON, InputEvent.SHIFT_DOWN_MASK);
+
+	private final Type type;
+	private final int code;
 	private final int modifiers;
 
-	protected Keybind(int keyCode, int modifiers, boolean ignoreModifiers)
+	protected Keybind(Type type, int code, int modifiers, boolean ignoreModifiers)
 	{
 		modifiers &= KEYBOARD_MODIFIER_MASK;
 
 		// If the keybind is just modifiers we don't want the keyCode to contain the modifier too,
 		// because this breaks if you do the keycode backwards
-		Integer mf = getModifierForKeyCode(keyCode);
-		if (mf != null)
+		if (type == Type.KEYBOARD)
 		{
-			assert (modifiers & mf) != 0;
-			keyCode = KeyEvent.VK_UNDEFINED;
+			Integer mf = getModifierForKeyCode(code);
+			if (mf != null)
+			{
+				assert (modifiers & mf) != 0;
+				code = KeyEvent.VK_UNDEFINED;
+			}
+
+			if (ignoreModifiers && (code != KeyEvent.VK_UNDEFINED))
+			{
+				modifiers = 0;
+			}
+		}
+		else if (type == Type.MOUSE)
+		{
+			if (ignoreModifiers && code != MouseEvent.NOBUTTON)
+			{
+				modifiers = 0;
+			}
 		}
 
-		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
-		{
-			modifiers = 0;
-		}
-
-		this.keyCode = keyCode;
+		this.type = type;
+		this.code = code;
 		this.modifiers = modifiers;
 	}
 
+	// Legacy constructor for keybinds
 	public Keybind(int keyCode, int modifiers)
 	{
-		this(keyCode, modifiers, false);
+		this(Type.KEYBOARD, keyCode, modifiers, false);
 	}
 
 	/**
-	 * Constructs a keybind with that matches the passed KeyEvent
+	 * Constructs a keybind that matches the passed KeyEvent
 	 */
 	public Keybind(KeyEvent e)
 	{
-		this(e.getExtendedKeyCode(), e.getModifiersEx());
+		this(Type.KEYBOARD, e.getExtendedKeyCode(), e.getModifiersEx(), false);
 
 		assert matches(e);
+	}
+
+	/**
+	 * Constructs a keybind that matches the passed MouseEvent
+	 */
+	public Keybind(MouseEvent me)
+	{
+		this(Type.MOUSE, me.getButton(), me.getModifiersEx(), false);
+
+		assert matches(me);
 	}
 
 	/**
@@ -129,38 +168,73 @@ public class Keybind
 		{
 			if (keyCode != KeyEvent.VK_UNDEFINED)
 			{
-				return this.keyCode == keyCode;
+				return this.code == keyCode;
 			}
 			else if (mf != null)
 			{
-				return this.keyCode == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
+				return this.code == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
 			}
 		}
 
 		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
 		{
-			return this.keyCode == keyCode;
+			return this.code == keyCode;
 		}
 
-		return this.keyCode == keyCode && this.modifiers == modifiers;
+		return this.code == keyCode && this.modifiers == modifiers;
+	}
+
+
+	/**
+	 * Returns true if the given MouseEvent matches this Mousebind.
+	 * Typically used to check if a mouse button (with optional modifiers)
+	 * was pressed or released in accordance with this bind.
+	 */
+	public boolean matches(MouseEvent me)
+	{
+		return matches(me, false);
+	}
+
+	protected boolean matches(MouseEvent me, boolean ignoreModifiers)
+	{
+		if (NOT_SET.equals(this))
+		{
+			return false;
+		}
+
+		int mouseButton = me.getButton();
+		int modifiers = me.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
+
+		if (ignoreModifiers && mouseButton != MouseEvent.NOBUTTON)
+		{
+			return this.code == mouseButton;
+		}
+
+		return this.code == mouseButton && this.modifiers == modifiers;
 	}
 
 	@Override
 	public String toString()
 	{
-		if (keyCode == KeyEvent.VK_UNDEFINED && modifiers == 0)
+		boolean undefined = (type == Type.KEYBOARD && code == KeyEvent.VK_UNDEFINED) || (type == Type.MOUSE && code == MouseEvent.NOBUTTON);
+
+		if (undefined && modifiers == 0)
 		{
 			return "Not set";
 		}
 
-		String key;
-		if (keyCode == KeyEvent.VK_UNDEFINED)
+		String input;
+		if (undefined)
 		{
-			key = "";
+			input = "";
+		}
+		else if (type == Type.KEYBOARD)
+		{
+			input = KeyEvent.getKeyText(code);
 		}
 		else
 		{
-			key = KeyEvent.getKeyText(keyCode);
+			input = getMouseButtonText(code);
 		}
 
 		String mod = "";
@@ -169,19 +243,39 @@ public class Keybind
 			mod = InputEvent.getModifiersExText(modifiers);
 		}
 
-		if (mod.isEmpty() && key.isEmpty())
+		if (mod.isEmpty() && input.isEmpty())
 		{
 			return "Not set";
 		}
-		if (!mod.isEmpty() && !key.isEmpty())
+		if (!mod.isEmpty() && !input.isEmpty())
 		{
-			return mod + "+" + key;
+			return mod + "+" + input;
 		}
 		if (mod.isEmpty())
 		{
-			return key;
+			return input;
 		}
 		return mod;
+	}
+
+	private static String getMouseButtonText(int button)
+	{
+		if (button == MouseEvent.BUTTON1)
+		{
+			return "Left Click";
+		}
+		else if (button == MouseEvent.BUTTON2)
+		{
+			return "Middle Click";
+		}
+		else if (button == MouseEvent.BUTTON3)
+		{
+			return "Right Click";
+		}
+		else
+		{
+			return "Button " + button;
+		}
 	}
 
 	@Nullable
