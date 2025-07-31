@@ -1203,8 +1203,8 @@ public class LootTrackerPlugin extends Plugin
 			&& lastFarmXpTime > 0
 			&& System.currentTimeMillis() - lastFarmXpTime < 3000)
 		{
-			log.debug("Checking herb run: lastFarmXpTime={}, now={}, diff={}", 
-    					lastFarmXpTime, System.currentTimeMillis(), diff);
+			log.debug("Checking herb run: lastFarmXpTime={}, now={}, diff={}",
+						lastFarmXpTime, System.currentTimeMillis(), diff);
 			List<ItemStack> stacks = diff.elementSet().stream()
 				.filter(HERB_ITEM_IDS::contains)
 				.map(id -> new ItemStack(id, diff.count(id)))
