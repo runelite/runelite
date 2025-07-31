@@ -653,7 +653,8 @@ public class LootTrackerPluginTest
 	}
 
 	@Test
-	public void testLootTrackerSearchFiltersTotalPrices() {
+	public void testLootTrackerSearchFiltersTotalPrices()
+	{
 		// Create dragon loot items (high value)
 		LootTrackerItem[] dragonItems = {
 			new LootTrackerItem(1, "Dragon bones", 2, 2000, 1800, false),
