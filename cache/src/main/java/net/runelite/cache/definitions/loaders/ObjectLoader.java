@@ -141,7 +141,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 23)
 		{
-			def.setABool2111(true);
+			def.setModelClipped(true);
 		}
 		else if (opcode == 24)
 		{
@@ -338,6 +338,10 @@ public class ObjectLoader
 		{
 			def.setDeferAnimChange(true);
 		}
+		else if (opcode == 91)
+		{
+			def.setSoundDistanceFadeCurve(is.readUnsignedByte());
+		}
 		else if (opcode == 92)
 		{
 			int varpID = is.readUnsignedShort();
@@ -376,6 +380,13 @@ public class ObjectLoader
 			configChangeDest[length + 1] = var;
 
 			def.setConfigChangeDest(configChangeDest);
+		}
+		else if (opcode == 93)
+		{
+			def.setSoundFadeInCurve(is.readUnsignedByte());
+			def.setSoundFadeInDuration(is.readUnsignedShort());
+			def.setSoundFadeOutCurve(is.readUnsignedByte());
+			def.setSoundFadeOutDuration(is.readUnsignedShort());
 		}
 		else if (opcode == 249)
 		{
