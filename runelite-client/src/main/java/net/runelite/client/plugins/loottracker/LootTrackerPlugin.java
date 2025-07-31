@@ -67,6 +67,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
@@ -83,6 +84,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
@@ -362,6 +364,32 @@ public class LootTrackerPlugin extends Plugin
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
 
+	// === Farming (herb‐run) tracking ===
+	private static final Set<Integer> HERB_ITEM_IDS = ImmutableSet.of(
+		ItemID.UNIDENTIFIED_GUAM,
+		ItemID.UNIDENTIFIED_MARENTILL,
+		ItemID.UNIDENTIFIED_RANARR,
+		ItemID.UNIDENTIFIED_TORSTOL,
+		ItemID.UNIDENTIFIED_TARROMIN,
+		ItemID.UNIDENTIFIED_HARRALANDER,
+		ItemID.UNIDENTIFIED_TOADFLAX,
+		ItemID.UNIDENTIFIED_IRIT,
+		ItemID.UNIDENTIFIED_AVANTOE,
+		ItemID.UNIDENTIFIED_KWUARM,
+		ItemID.UNIDENTIFIED_HUASCA,
+		ItemID.UNIDENTIFIED_SNAPDRAGON,
+		ItemID.UNIDENTIFIED_CADANTINE,
+		ItemID.UNIDENTIFIED_LANTADYME,
+		ItemID.UNIDENTIFIED_DWARF_WEED
+	);
+
+	private static final String LOOT_SOURCE_FARMING = "Herb Runs";
+
+	// timestamp of last Farming XP gain
+	private long lastFarmXpTime = 0;
+
+	// ================================
+
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
 		final List<ItemStack> list = new ArrayList<>();
@@ -612,6 +640,19 @@ public class LootTrackerPlugin extends Plugin
 			lastLoadingIntoInstance = inInstancedRegion;
 			chestLooted = false;
 		}
+
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			ItemContainer inv = client.getItemContainer(InventoryID.INV);
+			if (inv != null)
+			{
+				inventorySnapshot = HashMultiset.create();
+				for (Item i : inv.getItems())
+				{
+					inventorySnapshot.add(i.getId(), i.getQuantity());
+				}
+			}
+		}
 	}
 
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items)
@@ -711,6 +752,16 @@ public class LootTrackerPlugin extends Plugin
 				: "a";
 
 			lootReceivedChatMessage(items, prefix + ' ' + name);
+		}
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged event)
+	{
+		if (event.getSkill() == Skill.FARMING)
+		{
+			log.debug("Farming XP bump: {}", event.getXp());
+			lastFarmXpTime = System.currentTimeMillis();
 		}
 	}
 
@@ -1101,6 +1152,10 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		int cid = event.getContainerId();
+		// Always allow the main Backpack so we can detect Farming gains
+		boolean isBackpack = cid == InventoryID.INV;
+
 		// when the wilderness chest empties, clear chest loot flag for the next key
 		if (event.getContainerId() == InventoryID.LOOT_INV_ACCESS
 			&& Arrays.stream(event.getItemContainer().getItems()).noneMatch(i -> i.getId() > -1))
@@ -1109,7 +1164,7 @@ public class LootTrackerPlugin extends Plugin
 			chestLooted = false;
 		}
 
-		if (inventoryId == -1 || event.getContainerId() != inventoryId)
+		if (!isBackpack && (inventoryId == -1 || cid != inventoryId))
 		{
 			return;
 		}
@@ -1121,6 +1176,13 @@ public class LootTrackerPlugin extends Plugin
 
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 		final Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
+
+		if (inventorySnapshot == null)
+		{
+			// first backpack event – seed the snapshot and continue
+			inventorySnapshot = HashMultiset.create();
+			inventorySnapshot.addAll(currentInventory);
+		}
 
 		final Multiset<Integer> diff = Multisets.difference(currentInventory, inventorySnapshot);
 		final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
@@ -1136,7 +1198,36 @@ public class LootTrackerPlugin extends Plugin
 			inventorySnapshotCb.accept(items, groundItems, diffr);
 		}
 
-		resetEvent();
+		// Farming/herb‐run special case
+		if (config.enableFarmingLootTracking()
+			&& lastFarmXpTime > 0
+			&& System.currentTimeMillis() - lastFarmXpTime < 3000)
+		{
+			log.debug("Checking herb run: lastFarmXpTime={}, now={}, diff={}", 
+    					lastFarmXpTime, System.currentTimeMillis(), diff);
+			List<ItemStack> stacks = diff.elementSet().stream()
+				.filter(HERB_ITEM_IDS::contains)
+				.map(id -> new ItemStack(id, diff.count(id)))
+				.collect(Collectors.toList());
+
+			if (!stacks.isEmpty())
+			{
+				addLoot(
+					LOOT_SOURCE_FARMING,
+					-1, // Don't show combat level
+					LootRecordType.EVENT,
+					null,
+					stacks
+				);
+				lastFarmXpTime = 0;
+				return;
+			}
+		}
+		// Only reset if we were handling a LOOT_INV_ACCESS (wilderness chests, seed boxes, etc.)
+		if (event.getContainerId() == InventoryID.LOOT_INV_ACCESS)
+		{
+			resetEvent();
+		}
 	}
 
 	@Subscribe
