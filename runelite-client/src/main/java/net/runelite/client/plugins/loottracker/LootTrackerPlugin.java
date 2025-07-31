@@ -383,7 +383,7 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.UNIDENTIFIED_DWARF_WEED
 	);
 
-	private static final String LOOT_SOURCE_FARMING = "Herb Runs";
+	private static final String LOOT_SOURCE_FARMING = "Herb Patch";
 
 	// timestamp of last Farming XP gain
 	private long lastFarmXpTime = 0;
@@ -1219,6 +1219,9 @@ public class LootTrackerPlugin extends Plugin
 					null,
 					stacks
 				);
+
+				inventorySnapshot = HashMultiset.create();
+				inventorySnapshot.addAll(currentInventory);
 				lastFarmXpTime = 0;
 				return;
 			}
@@ -1228,6 +1231,9 @@ public class LootTrackerPlugin extends Plugin
 		{
 			resetEvent();
 		}
+
+		inventorySnapshot = HashMultiset.create();
+		inventorySnapshot.addAll(currentInventory);
 	}
 
 	@Subscribe
