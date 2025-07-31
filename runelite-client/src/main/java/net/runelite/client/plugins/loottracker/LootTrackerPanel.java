@@ -716,6 +716,12 @@ class LootTrackerPanel extends PluginPanel
 				continue;
 			}
 
+			// Apply search filter - same logic as shouldFilterEvent method
+			if (searchTerm != null && !record.getTitle().toLowerCase().contains(searchTerm))
+			{
+				continue;
+			}
+
 			int present = record.getItems().length;
 
 			for (LootTrackerItem item : record.getItems())
