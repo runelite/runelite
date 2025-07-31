@@ -627,10 +627,11 @@ public class LootTrackerPluginTest
 	}
 
 	@Test
-	public void testLootTrackerSearch() {
+	public void testLootTrackerSearch()
+	{
 		// Create mocked items
 		LootTrackerItem[] items = {
-			new LootTrackerItem(1,"Dragon bones", 1, 1000, 1000, false),
+			new LootTrackerItem(1, "Dragon bones", 1, 1000, 1000, false),
 			new LootTrackerItem(2, "Dragon dagger", 1, 20000, 20000, false)
 		};
 
@@ -639,15 +640,15 @@ public class LootTrackerPluginTest
 
 		// Test record title matching - case insensitive search by event/monster name
 		// Search term "dragon" should match record title "Dragons"
-		assertTrue("Record should match when search term matches title (case insensitive)", 
+		assertTrue("Record should match when search term matches title (case insensitive)",
 			record.getTitle().toLowerCase().contains("dragon"));
 
 		// Test non-matching search term
-		assertFalse("Record should not match when search term doesn't match title", 
+		assertFalse("Record should not match when search term doesn't match title",
 			record.getTitle().toLowerCase().contains("goblin"));
 
 		// Test partial matching
-		assertTrue("Record should match partial title search", 
+		assertTrue("Record should match partial title search",
 			record.getTitle().toLowerCase().contains("drag"));
 	}
 
@@ -674,13 +675,13 @@ public class LootTrackerPluginTest
 		long goblinTotalHa = (1L * 50) + (80L * 1);      // 50 + 80 = 130
 
 		// Verify individual record calculations
-		assertEquals("Dragon GE total should be correct", dragonTotalGe, 
+		assertEquals("Dragon GE total should be correct", dragonTotalGe,
 			dragonItems[0].getTotalGePrice() + dragonItems[1].getTotalGePrice());
-		assertEquals("Dragon HA total should be correct", dragonTotalHa, 
+		assertEquals("Dragon HA total should be correct", dragonTotalHa,
 			dragonItems[0].getTotalHaPrice() + dragonItems[1].getTotalHaPrice());
-		assertEquals("Goblin GE total should be correct", goblinTotalGe, 
+		assertEquals("Goblin GE total should be correct", goblinTotalGe,
 			goblinItems[0].getTotalGePrice() + goblinItems[1].getTotalGePrice());
-		assertEquals("Goblin HA total should be correct", goblinTotalHa, 
+		assertEquals("Goblin HA total should be correct", goblinTotalHa,
 			goblinItems[0].getTotalHaPrice() + goblinItems[1].getTotalHaPrice());
 
 		// Test search filtering logic (simulating shouldFilterEvent method)
