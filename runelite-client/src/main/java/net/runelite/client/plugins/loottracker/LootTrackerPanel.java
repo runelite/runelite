@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.loottracker;
 
 import static com.google.common.collect.Iterables.concat;
-
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
@@ -42,16 +41,27 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
+import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
-
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui	.FontManager;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
@@ -279,11 +289,10 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
-	 * The search panel includes the search bar and the loot filter button.
+	 * The search panel includes the search bar and the loot filter button
 	 */
 	private JPanel buildSearchPanel()
 	{
-		// Set up search bar
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setToolTipText("Search for loot");
 		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
@@ -716,7 +725,6 @@ class LootTrackerPanel extends PluginPanel
 				continue;
 			}
 
-			// Apply search filter - same logic as shouldFilterEvent method
 			if (searchTerm != null && !record.getTitle().toLowerCase().contains(searchTerm))
 			{
 				continue;
@@ -772,5 +780,4 @@ class LootTrackerPanel extends PluginPanel
 		final String term = searchBar.getText();
 		return Strings.isNullOrEmpty(term) ? null : term.toLowerCase();
 	}
-
 }

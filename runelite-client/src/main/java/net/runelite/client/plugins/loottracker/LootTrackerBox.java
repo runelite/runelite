@@ -408,5 +408,4 @@ class LootTrackerBox extends JPanel
 		sb.append("</html>");
 		return sb.toString();
 	}
-
 }

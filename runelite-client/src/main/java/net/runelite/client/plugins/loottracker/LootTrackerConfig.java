@@ -138,5 +138,4 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
-
 }
