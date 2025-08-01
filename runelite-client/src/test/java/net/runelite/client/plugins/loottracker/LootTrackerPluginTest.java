@@ -661,7 +661,6 @@ public class LootTrackerPluginTest
 		};
 		LootTrackerRecord goblinRecord = new LootTrackerRecord("Goblins", "", LootRecordType.NPC, goblinItems, 3);
 
-		// Calculate expected totals
 		long dragonTotalGe = (2000L * 2) + (30000L * 1);
 		long dragonTotalHa = (1800L * 2) + (25000L * 1);
 		long goblinTotalGe = (1L * 50) + (100L * 1);
