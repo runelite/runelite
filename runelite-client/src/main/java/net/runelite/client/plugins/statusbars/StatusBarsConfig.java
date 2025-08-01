@@ -65,6 +65,16 @@ public interface StatusBarsConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "topBarMode",
+		name = "Draw bars on top",
+		description = "Draws bars on top of inventory. Not compatible with Fixed mode."
+	)
+	default boolean topBarMode()
+	{
+		return false;
+	}
+
 	enum BarMode
 	{
 		DISABLED,
@@ -77,8 +87,8 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "leftBarMode",
-		name = "Left bar",
-		description = "Configures the left status bar."
+		name = "Left/Top bar",
+		description = "Configures the left/top status bar."
 	)
 	default BarMode leftBarMode()
 	{
@@ -87,8 +97,8 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightBarMode",
-		name = "Right bar",
-		description = "Configures the right status bar."
+		name = "Right/Bottom bar",
+		description = "Configures the right/bottom status bar."
 	)
 	default BarMode rightBarMode()
 	{
