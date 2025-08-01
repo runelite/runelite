@@ -137,13 +137,13 @@ public class RoofRemovalPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPreMapLoad(PreMapLoad preMapLoad)
+	private void onPreMapLoad(PreMapLoad preMapLoad)
 	{
 		performRoofRemoval(preMapLoad.getScene());
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+	private void onConfigChanged(ConfigChanged e)
 	{
 		if (!e.getGroup().equals(RoofRemovalConfig.CONFIG_GROUP))
 		{
