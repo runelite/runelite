@@ -1072,7 +1072,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 		}
 
-		if (message.equals("You rummage through the offerings..."))
+		if (message.startsWith("You rummage through the offerings"))
 		{
 			countChangedItems(ItemID.ENT_TOTEMS_LOOT, client.getBoostedSkillLevel(Skill.FLETCHING));
 		}
