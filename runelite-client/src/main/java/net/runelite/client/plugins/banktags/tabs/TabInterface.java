@@ -206,7 +206,7 @@ public class TabInterface
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
+	private void onScriptPreFired(ScriptPreFired event)
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_INIT)
 		{
@@ -289,7 +289,7 @@ public class TabInterface
 	}
 
 	@Subscribe
-	public void onWidgetClosed(WidgetClosed event)
+	private void onWidgetClosed(WidgetClosed event)
 	{
 		if (event.getGroupId() == InterfaceID.BANKMAIN && event.isUnload())
 		{
@@ -883,7 +883,7 @@ public class TabInterface
 	}
 
 	@Subscribe(priority = -1)
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		// Close the chatbox input when clicking on things in the bank, to mimic how actions like withdrawing
 		// items or changing tabs close the withdraw-x input or the bank search input.
@@ -914,7 +914,7 @@ public class TabInterface
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	private void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
 		if (!enabled)
 		{

@@ -67,7 +67,7 @@ public class LogoutTimerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(LogoutTimerConfig.GROUP))
 		{
