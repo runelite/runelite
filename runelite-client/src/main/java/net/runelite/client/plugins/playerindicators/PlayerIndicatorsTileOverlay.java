@@ -28,6 +28,7 @@ package net.runelite.client.plugins.playerindicators;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.BasicStroke;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -63,7 +64,7 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 
 			if (poly != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, decorations.getColor());
+				OverlayUtil.renderPolygon(graphics, poly, decorations.getColor(), new BasicStroke((float) config.tileBorderWidth()));
 			}
 		});
 
