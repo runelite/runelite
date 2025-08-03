@@ -214,7 +214,7 @@ enum DungeonLocation
 	TEMPLE_DESERT_TREASURE_2("Temple - Desert Treasure 2", new WorldPoint(1174, 3429, 0)),
 	TEMPLE_OF_IKOV("Temple of Ikov", new WorldPoint(2676, 3404, 0)),
 	THEATRE_OF_BLOOD("Theatre of Blood", new WorldPoint(3676, 3219, 0)),
-	TLATI_RAINFOREST_DRAGON_NEST("Dragon nest", new WorldPoint(1289, 3134, 0)),
+	TLATI_RAINFOREST_DRAGON_NEST("Dragon Nest", new WorldPoint(1289, 3134, 0)),
 	TLATI_RAINFOREST_NORTH("Passage to Gemstone Crab", new WorldPoint(1278, 3168, 0)),
 	TLATI_RAINFOREST_EAST("Passage to Gemstone Crab", new WorldPoint(1351, 3124, 0)),
 	TLATI_RAINFOREST_SOUTH("Passage to Gemstone Crab", new WorldPoint(1246, 3036, 0)),

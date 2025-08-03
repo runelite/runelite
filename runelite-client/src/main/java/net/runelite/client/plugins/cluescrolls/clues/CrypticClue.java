@@ -2012,7 +2012,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("He's been studying unusual tree migrations.")
 			.npc("Ranulph")
 			.location(new WorldPoint(1367, 3367, 0))
-			.solution("Talk to Ranulph in Auburnvalue.")
+			.solution("Talk to Ranulph in Auburnvale.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_VM03)
