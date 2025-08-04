@@ -1226,7 +1226,7 @@ public class ConfigManager
 			{
 				bindType = Keybind.Type.KEYBOARD;
 				code = Integer.parseInt(splitStr[0]);
-				mods= Integer.parseInt(splitStr[1]);
+				mods = Integer.parseInt(splitStr[1]);
 			}
 			else
 			{

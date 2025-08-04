@@ -381,12 +381,14 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	}
 
 	@Override
-	public MouseEvent mouseReleased(MouseEvent me) {
+	public MouseEvent mouseReleased(MouseEvent me)
+	{
 		final int mouseButton = me.getButton();
 
 		final Integer mappedKeyCode = modified.remove(mouseButton);
 
-		if (mappedKeyCode != null) {
+		if (mappedKeyCode != null)
+		{
 			int modifiers = me.getModifiersEx();
 
 			KeyEvent syntheticKeyRelease = new KeyEvent(
