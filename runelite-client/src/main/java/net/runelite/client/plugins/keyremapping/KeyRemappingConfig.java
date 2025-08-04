@@ -31,7 +31,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ModifierlessKeybind;
-import net.runelite.client.config.Keybind;
 
 @ConfigGroup("keyremapping")
 public interface KeyRemappingConfig extends Config
@@ -298,16 +297,5 @@ public interface KeyRemappingConfig extends Config
 	default ModifierlessKeybind control()
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
-	}
-
-	@ConfigItem(
-		position = 22,
-		keyName = "worldmap",
-		name = "World Map",
-		description = "The key which will open the world map."
-	)
-	default Keybind worldmap()
-	{
-		return new Keybind(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
 	}
 }
