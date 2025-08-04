@@ -61,7 +61,7 @@ class HotkeyButton extends JButton
 			@Override
 			public void mousePressed(MouseEvent me)
 			{
-				if (me.getButton() == MouseEvent.BUTTON1)
+				if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
 				{
 					return;
 				}
