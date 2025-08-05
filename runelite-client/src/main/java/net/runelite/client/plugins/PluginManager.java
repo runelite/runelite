@@ -452,7 +452,7 @@ public class PluginManager
 			{
 				stopPlugin(plugin);
 			}
-			catch (PluginInstantiationException ex2)
+			catch (Throwable ex2)
 			{
 				log.error("unable to stop plugin", ex2);
 			}
