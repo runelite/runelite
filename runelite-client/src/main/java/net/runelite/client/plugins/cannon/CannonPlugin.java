@@ -121,7 +121,10 @@ public class CannonPlugin extends Plugin
 	{
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
-		clientThread.invoke(() -> cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER));
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER);
+		}
 	}
 
 	@Override
