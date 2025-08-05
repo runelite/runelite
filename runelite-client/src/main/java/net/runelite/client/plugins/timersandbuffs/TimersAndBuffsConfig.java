@@ -532,4 +532,15 @@ public interface TimersAndBuffsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showForinthrySurge",
+		name = "Forinthry Surge timer",
+		description = "Configures whether forinthry surge timer is displayed",
+		section = miscellaneousSection
+	)
+	default boolean showForinthrySurge()
+	{
+		return true;
+	}
 }

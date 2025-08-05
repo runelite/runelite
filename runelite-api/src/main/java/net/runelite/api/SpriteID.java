@@ -1087,7 +1087,7 @@ public final class SpriteID
 	public static final int GE_NUMBER_FIELD_EDGE_RIGHT = 1125;
 	public static final int GE_CANCEL_OFFER_BUTTON = 1126;
 	public static final int GE_CANCEL_OFFER_BUTTON_HOVERED = 1127;
-	public static final int DIALOG_BONDS_MEMBERSHIP_JEWEL = 1128;
+	public static final int FORINTHRY_SURGE = 1128;
 	public static final int DIALOG_BONDS_MEMBERSHIP_JEWEL_SMALL = 1129;
 	public static final int WORLD_SWITCHER_STAR_FREE = 1130;
 	public static final int WORLD_SWITCHER_STAR_MEMBERS = 1131;
