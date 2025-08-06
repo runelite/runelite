@@ -2759,6 +2759,7 @@ public final class AnimationID
 	public static final int UNDERNET = 2752;
 	public static final int OVERNET = 2753;
 	public static final int STARJUMP = 2754;
+	public static final int VFX_DOOM_HOLE_IDLE_UNIQUE = 2755;
 	public static final int PUSHUPS = 2756;
 	public static final int SITUPS_GETDOWN = 2758;
 	public static final int SITUPS = 2759;
