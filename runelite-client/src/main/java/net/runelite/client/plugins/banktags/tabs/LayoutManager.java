@@ -52,13 +52,13 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.ParamID;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -799,7 +799,7 @@ public class LayoutManager
 
 			log.debug("Adjusting tab scroll to {} from {}", scrollY, w.getScrollY());
 			w.setScrollY(scrollY);
-			client.setVarcIntValue(VarClientInt.BANK_SCROLL, scrollY);
+			client.setVarcIntValue(VarClientID.BANK_SCROLLPOS, scrollY);
 		}
 	}
 

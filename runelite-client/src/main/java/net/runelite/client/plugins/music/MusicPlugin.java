@@ -55,7 +55,6 @@ import net.runelite.api.SettingID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.StructComposition;
 import net.runelite.api.StructID;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.annotations.Varp;
@@ -72,6 +71,7 @@ import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -375,7 +375,7 @@ public class MusicPlugin extends Plugin
 
 	private boolean isOnMusicTab()
 	{
-		return client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 13;
+		return client.getVarcIntValue(VarClientID.TOPLEVEL_PANEL) == 13;
 	}
 
 	private boolean isChatboxOpen()
