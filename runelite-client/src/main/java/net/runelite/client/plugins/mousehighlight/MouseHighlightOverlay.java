@@ -33,8 +33,8 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -158,14 +158,14 @@ class MouseHighlightOverlay extends Overlay
 		}
 
 		// If this varc is set, a tooltip will be displayed soon
-		int tooltipTimeout = client.getVarcIntValue(VarClientInt.TOOLTIP_TIMEOUT);
+		int tooltipTimeout = client.getVarcIntValue(VarClientID.TOOLTIP_TIME);
 		if (tooltipTimeout > client.getGameCycle())
 		{
 			return null;
 		}
 
 		// If this varc is set, a tooltip is already being displayed
-		int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
+		int tooltipDisplayed = client.getVarcIntValue(VarClientID.TOOLTIP_BUILT);
 		if (tooltipDisplayed == 1)
 		{
 			return null;

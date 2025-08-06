@@ -29,7 +29,7 @@ import lombok.Value;
 import net.runelite.api.annotations.VarCInt;
 
 /**
- * @see net.runelite.api.VarClientInt
+ * @see net.runelite.api.gameval.VarClientID
  */
 @Value
 public class VarClientIntChanged

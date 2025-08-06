@@ -48,12 +48,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IndexDataBase;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.VarbitComposition;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
@@ -87,8 +86,7 @@ class VarInspector extends DevToolsFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 	private static final int VARBITS_ARCHIVE_ID = 14;
 	private static final Map<Integer, String> VARBIT_NAMES = DevToolsPlugin.loadFieldNames(VarbitID.class);
-	private static final Map<Integer, String> VARCINT_NAMES = DevToolsPlugin.loadFieldNames(VarClientInt.class);
-	private static final Map<Integer, String> VARCSTR_NAMES = DevToolsPlugin.loadFieldNames(VarClientStr.class);
+	private static final Map<Integer, String> VARC_NAMES = DevToolsPlugin.loadFieldNames(VarClientID.class);
 	private static final Map<Integer, String> VARP_NAMES = DevToolsPlugin.loadFieldNames(VarPlayerID.class);
 
 	private final Client client;
@@ -260,7 +258,7 @@ class VarInspector extends DevToolsFrame
 
 		if (old != neew)
 		{
-			final String name = VARCINT_NAMES.getOrDefault(idx, Integer.toString(idx));
+			final String name = VARC_NAMES.getOrDefault(idx, Integer.toString(idx));
 			addVarLog(VarType.VARCINT, name, old, neew);
 		}
 	}
@@ -275,7 +273,7 @@ class VarInspector extends DevToolsFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			final String name = VARCSTR_NAMES.getOrDefault(idx, Integer.toString(idx));
+			final String name = VARC_NAMES.getOrDefault(idx, Integer.toString(idx));
 			if (old != null)
 			{
 				old = "\"" + old + "\"";

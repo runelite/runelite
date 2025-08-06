@@ -73,7 +73,12 @@ public class ObjectDefinition
 	private boolean isRotated = false;
 	private int varpID = -1;
 	private int ambientSoundId = -1;
-	private boolean aBool2111 = false;
+	private boolean modelClipped = false;
+	private int soundDistanceFadeCurve;
+	private int soundFadeInDuration = 300;
+	private int soundFadeOutDuration = 300;
+	private int soundFadeInCurve;
+	private int soundFadeOutCurve;
 	private int ambientSoundChangeTicksMin = 0;
 	private int ambientSoundChangeTicksMax = 0;
 	private boolean blocksProjectile = true;

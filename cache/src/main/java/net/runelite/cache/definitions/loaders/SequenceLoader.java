@@ -184,6 +184,10 @@ public class SequenceLoader
 			def.animMayaStart = stream.readUnsignedShort();
 			def.animMayaEnd = stream.readUnsignedShort();
 		}
+		else if (opcode == 16)
+		{
+			def.verticalOffset = stream.readByte();
+		}
 		else if (opcode == 17)
 		{
 			def.animMayaMasks = new boolean[256];

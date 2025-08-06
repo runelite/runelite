@@ -38,6 +38,7 @@ public class SequenceDefinition
 	public int[] chatFrameIds;
 	public int[] frameLengths;
 	public int frameStep = -1;
+	public int verticalOffset;
 	public int[] interleaveLeave;
 	public boolean stretches = false;
 	public int forcedPriority = 5;
