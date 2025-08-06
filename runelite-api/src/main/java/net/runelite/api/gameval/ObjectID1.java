@@ -22589,7 +22589,7 @@ class ObjectID1
 	public static final int DADDYSHOME_CARPET_CORNER = 40306;
 
 	/**
-	 * Noticeboard
+	 * Notice board
 	 */
 	public static final int PORCINE_NOTICEBOARD = 40307;
 
@@ -50664,9 +50664,19 @@ class ObjectID1
 	public static final int TLATI_TREE_TOP01 = 50937;
 
 	/**
+	 * Chest
+	 */
+	public static final int DOM_CHEST_LOOT = 50938;
+
+	/**
 	 * Fern
 	 */
 	public static final int TLATI_PLANT_FERN01 = 50939;
+
+	/**
+	 * Burrow hole
+	 */
+	public static final int DOM_DESCEND_HOLE_UNIQUE = 50940;
 
 	/**
 	 * Mushroom
@@ -65595,7 +65605,7 @@ class ObjectID1
 	public static final int QUEST_START_ICON_IMPENDINGCHAOS = 56415;
 
 	/**
-	 * Noticeboard
+	 * Notice board
 	 */
 	public static final int SOC_MISSING_PERSONS = 56416;
 	public static final int SOC_LOG = 56417;
