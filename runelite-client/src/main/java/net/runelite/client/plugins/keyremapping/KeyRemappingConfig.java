@@ -24,13 +24,14 @@
  */
 package net.runelite.client.plugins.keyremapping;
 
+import static net.runelite.client.config.Unifiedbind.Type.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
-import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.ModifierlessUnifiedbind;
 
 @ConfigGroup("keyremapping")
 public interface KeyRemappingConfig extends Config
@@ -68,9 +69,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace up.",
 		section = cameraSection
 	)
-	default ModifierlessKeybind up()
+	default ModifierlessUnifiedbind up()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_W, 0);
 	}
 
 	@ConfigItem(
@@ -80,9 +81,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace down.",
 		section = cameraSection
 	)
-	default ModifierlessKeybind down()
+	default ModifierlessUnifiedbind down()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_S, 0);
 	}
 
 	@ConfigItem(
@@ -92,9 +93,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace left.",
 		section = cameraSection
 	)
-	default ModifierlessKeybind left()
+	default ModifierlessUnifiedbind left()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_A, 0);
 	}
 
 	@ConfigItem(
@@ -104,9 +105,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace right.",
 		section = cameraSection
 	)
-	default ModifierlessKeybind right()
+	default ModifierlessUnifiedbind right()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_D, 0);
 	}
 
 	@ConfigItem(
@@ -128,9 +129,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F1.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f1()
+	default ModifierlessUnifiedbind f1()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_1, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_1, 0);
 	}
 
 	@ConfigItem(
@@ -140,9 +141,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F2.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f2()
+	default ModifierlessUnifiedbind f2()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_2, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_2, 0);
 	}
 
 	@ConfigItem(
@@ -152,9 +153,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F3.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f3()
+	default ModifierlessUnifiedbind f3()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_3, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_3, 0);
 	}
 
 	@ConfigItem(
@@ -164,9 +165,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F4.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f4()
+	default ModifierlessUnifiedbind f4()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_4, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_4, 0);
 	}
 
 	@ConfigItem(
@@ -176,9 +177,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F5.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f5()
+	default ModifierlessUnifiedbind f5()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_5, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_5, 0);
 	}
 
 	@ConfigItem(
@@ -188,9 +189,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F6.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f6()
+	default ModifierlessUnifiedbind f6()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_6, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_6, 0);
 	}
 
 	@ConfigItem(
@@ -200,9 +201,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F7.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f7()
+	default ModifierlessUnifiedbind f7()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_7, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_7, 0);
 	}
 
 	@ConfigItem(
@@ -212,9 +213,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F8.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f8()
+	default ModifierlessUnifiedbind f8()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_8, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_8, 0);
 	}
 
 	@ConfigItem(
@@ -224,9 +225,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F9.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f9()
+	default ModifierlessUnifiedbind f9()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_9, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_9, 0);
 	}
 
 	@ConfigItem(
@@ -236,9 +237,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F10.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f10()
+	default ModifierlessUnifiedbind f10()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_0, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_0, 0);
 	}
 
 	@ConfigItem(
@@ -248,9 +249,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F11.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f11()
+	default ModifierlessUnifiedbind f11()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_MINUS, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_MINUS, 0);
 	}
 
 	@ConfigItem(
@@ -260,9 +261,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace F12.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind f12()
+	default ModifierlessUnifiedbind f12()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_EQUALS, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_EQUALS, 0);
 	}
 
 	@ConfigItem(
@@ -272,9 +273,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace ESC.",
 		section = fKeySection
 	)
-	default ModifierlessKeybind esc()
+	default ModifierlessUnifiedbind esc()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_ESCAPE, 0);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_ESCAPE, 0);
 	}
 
 	@ConfigItem(
@@ -283,9 +284,9 @@ public interface KeyRemappingConfig extends Config
 		name = "Space",
 		description = "The key which will replace space when dialogs are open."
 	)
-	default ModifierlessKeybind space()
+	default ModifierlessUnifiedbind space()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_SPACE, 0);
+		return new ModifierlessUnifiedbind( KeyEvent.VK_SPACE, 0);
 	}
 
 	@ConfigItem(
@@ -294,8 +295,8 @@ public interface KeyRemappingConfig extends Config
 		name = "Control",
 		description = "The key which will replace control."
 	)
-	default ModifierlessKeybind control()
+	default ModifierlessUnifiedbind control()
 	{
-		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+		return new ModifierlessUnifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	}
 }

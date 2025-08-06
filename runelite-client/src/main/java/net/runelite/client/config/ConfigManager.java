@@ -1221,6 +1221,34 @@ public class ConfigManager
 			}
 			return new Keybind(code, mods);
 		}
+        if (type == Unifiedbind.class || type == ModifierlessUnifiedbind.class)
+        {
+            String[] splitStr = str.split(":");
+            Unifiedbind.Type bindType;
+            int code;
+            int mods;
+            if (splitStr.length == 3)
+            {
+                bindType = Unifiedbind.Type.valueOf(splitStr[0]);
+                code = Integer.parseInt(splitStr[1]);
+                mods = Integer.parseInt(splitStr[2]);
+            }
+            else if (splitStr.length == 2)
+            {
+                bindType = Unifiedbind.Type.KEYBOARD;
+                code = Integer.parseInt(splitStr[0]);
+                mods = Integer.parseInt(splitStr[1]);
+            }
+            else
+            {
+                throw new IllegalArgumentException("Invalid keybind format: " + str);
+            }
+            if (type == ModifierlessUnifiedbind.class)
+            {
+                return new ModifierlessUnifiedbind(bindType, code);
+            }
+            return new Unifiedbind(bindType, code, mods);
+        }
 		if (type == WorldPoint.class)
 		{
 			String[] splitStr = str.split(":");
@@ -1304,6 +1332,11 @@ public class ConfigManager
 			Keybind k = (Keybind) object;
 			return k.getKeyCode() + ":" + k.getModifiers();
 		}
+        if (object instanceof Unifiedbind)
+        {
+            Unifiedbind u = (Unifiedbind) object;
+            return u.getType() + ":" + u.getCode() + ":" + u.getModifiers();
+        }
 		if (object instanceof WorldPoint)
 		{
 			WorldPoint wp = (WorldPoint) object;
