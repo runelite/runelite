@@ -20529,7 +20529,7 @@ public final class ObjectID
 	public static final int DRAWERS_40282 = 40282;
 	public static final int DRAWERS_40283 = 40283;
 	public static final int BOXES_40284 = 40284;
-	public static final int NOTICEBOARD_40307 = 40307;
+	public static final int NOTICE_BOARD_40307 = 40307;
 	public static final int STRANGE_HOLE_40308 = 40308;
 	public static final int STRANGE_HOLE_40309 = 40309;
 	public static final int CABBAGE_40310 = 40310;
@@ -24886,7 +24886,9 @@ public final class ObjectID
 	public static final int TROPICAL_TREE_50935 = 50935;
 	public static final int TROPICAL_TREE_50936 = 50936;
 	public static final int TROPICAL_TREE_50937 = 50937;
+	public static final int CHEST_50938 = 50938;
 	public static final int FERN_50939 = 50939;
+	public static final int BURROW_HOLE = 50940;
 	public static final int MUSHROOM_50942 = 50942;
 	public static final int DOOR_51005 = 51005;
 	public static final int DOOR_51006 = 51006;
@@ -27250,7 +27252,7 @@ public final class ObjectID
 	public static final int LIGHTNING_56399 = 56399;
 	public static final int LIGHTNING_56400 = 56400;
 	public static final int LIGHTNING_56401 = 56401;
-	public static final int NOTICEBOARD_56416 = 56416;
+	public static final int NOTICE_BOARD_56416 = 56416;
 	public static final int PLANK_56418 = 56418;
 	public static final int PLANK_56419 = 56419;
 	public static final int PUDDLE_56420 = 56420;
@@ -27685,7 +27687,7 @@ public final class ObjectID
 	public static final int POTTED_FAN_57280 = 57280;
 	public static final int ACID_BLOOD = 57283;
 	public static final int ACID_BLOOD_57284 = 57284;
-	public static final int BURROW_HOLE = 57285;
+	public static final int BURROW_HOLE_57285 = 57285;
 	public static final int RUBBLE_57287 = 57287;
 	public static final int SCOREBOARD_57288 = 57288;
 	public static final int GAP_57289 = 57289;
