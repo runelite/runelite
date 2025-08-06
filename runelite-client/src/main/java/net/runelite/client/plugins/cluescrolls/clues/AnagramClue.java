@@ -316,7 +316,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(2658, 3670, 0))
 			.area("Rellekka, main hall")
 			.question("How many people are waiting for the next bard to perform?")
-			.answer("4")
+			.answer("5")
 			.build(),
 		AnagramClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
