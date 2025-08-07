@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2025 Leif
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,6 +62,7 @@ class UnifiedbindButton extends JButton
             @Override
             public void mousePressed(MouseEvent me)
             {
+                // Does not allow left or right click to be bound
                 if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
                 {
                     return;

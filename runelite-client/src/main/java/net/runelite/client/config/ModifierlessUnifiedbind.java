@@ -47,7 +47,7 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     }
 
     /**
-     * Constructs a Unifiedbind with that matches the passed KeyEvent
+     * Constructs a Unifiedbind that matches the passed KeyEvent
      */
     public ModifierlessUnifiedbind(KeyEvent ke)
     {
@@ -56,6 +56,9 @@ public class ModifierlessUnifiedbind extends Unifiedbind
         assert matches(ke);
     }
 
+    /**
+     * Constructs a Unifiedbind that matches the passed MouseEvent
+     */
     public ModifierlessUnifiedbind(MouseEvent me)
     {
         this(Type.MOUSE, me.getButton());

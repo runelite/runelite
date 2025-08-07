@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ModifierlessUnifiedbind;
+import net.runelite.client.config.ModifierlessKeybind;
 
 @ConfigGroup("keyremapping")
 public interface KeyRemappingConfig extends Config
@@ -69,9 +70,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace up.",
 		section = cameraSection
 	)
-	default ModifierlessUnifiedbind up()
+	default ModifierlessKeybind up()
 	{
-		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_W);
+		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
 	}
 
 	@ConfigItem(
@@ -81,9 +82,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace down.",
 		section = cameraSection
 	)
-	default ModifierlessUnifiedbind down()
+	default ModifierlessKeybind down()
 	{
-		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_S);
+		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
 	}
 
 	@ConfigItem(
@@ -93,9 +94,9 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace left.",
 		section = cameraSection
 	)
-	default ModifierlessUnifiedbind left()
+	default ModifierlessKeybind left()
 	{
-		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_A);
+		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
 	}
 
 	@ConfigItem(
@@ -105,16 +106,16 @@ public interface KeyRemappingConfig extends Config
 		description = "The key which will replace right.",
 		section = cameraSection
 	)
-	default ModifierlessUnifiedbind right()
+	default ModifierlessKeybind right()
 	{
-		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_D);
+		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
 	}
 
 	@ConfigItem(
 		position = 6,
 		keyName = "fkeyRemap",
 		name = "Remap F-keys",
-		description = "Configures whether f-keys use remapped keys.",
+		description = "Configures whether f-keys use remapped keys." + "<br><font color ='red'>Note: To use mouse buttons, disable \"Block Extra Mouse Buttons\" in the RuneLite Config.</font>",
 		section = fKeySection
 	)
 	default boolean fkeyRemap()

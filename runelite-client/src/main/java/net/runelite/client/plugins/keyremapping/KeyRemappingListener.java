@@ -254,11 +254,13 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
             return me;
         }
 
+        // Early return if mouse event is left/right click and can't be bound
         if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
         {
             return me;
         }
 
+        // Consumes mouse events from extra buttons to prevent game from defaulting to primary click
         if (me.getButton() > 3)
         {
             me.consume();
@@ -267,26 +269,6 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
         if (!plugin.isTyping())
         {
             int mappedKeyCode = KeyEvent.VK_UNDEFINED;
-
-            if (config.cameraRemap())
-            {
-                if (config.up().matches(me))
-                {
-                    mappedKeyCode = KeyEvent.VK_UP;
-                }
-                else if (config.down().matches(me))
-                {
-                    mappedKeyCode = KeyEvent.VK_DOWN;
-                }
-                else if (config.left().matches(me))
-                {
-                    mappedKeyCode = KeyEvent.VK_LEFT;
-                }
-                else if (config.right().matches(me))
-                {
-                    mappedKeyCode = KeyEvent.VK_RIGHT;
-                }
-            }
 
             // In addition to the above checks, the F-key remapping shouldn't
             // activate when dialogs are open which listen for number keys
@@ -390,13 +372,9 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
     {
         final int mouseButton = me.getButton();
 
-        if (mouseButton == MouseEvent.BUTTON1 || mouseButton == MouseEvent.BUTTON3)
-        {
-            return me;
-        }
-
         final Integer mappedKeyCode = modified.remove(mouseButton);
 
+        // Creates a KeyEvent for mapped key code and dispatches it to the client
         if (mappedKeyCode != null)
         {
             int modifiers = me.getModifiersEx();
