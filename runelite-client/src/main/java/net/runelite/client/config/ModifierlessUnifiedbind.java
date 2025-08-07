@@ -30,62 +30,62 @@ import java.awt.event.MouseEvent;
 
 public class ModifierlessUnifiedbind extends Unifiedbind
 {
-    /**
-     * Constructs a modifierless bind based on type, code, and modifiers for completeness
-     */
-    public ModifierlessUnifiedbind(Type type, int code, int modifiers)
-    {
-        super(type, code, modifiers, true);
-    }
+	/**
+	 * Constructs a modifierless bind based on type, code, and modifiers for completeness
+	 */
+	public ModifierlessUnifiedbind(Type type, int code, int modifiers)
+	{
+		super(type, code, modifiers, true);
+	}
 
-    /**
-     * Constructs a modifierless bind based on type and code to simplify usage
-     */
-    public ModifierlessUnifiedbind(Type type, int code)
-    {
-        super(type, code, 0, true);
-    }
+	/**
+	 * Constructs a modifierless bind based on type and code to simplify usage
+	 */
+	public ModifierlessUnifiedbind(Type type, int code)
+	{
+		super(type, code, 0, true);
+	}
 
-    /**
-     * Constructs a Unifiedbind that matches the passed KeyEvent
-     */
-    public ModifierlessUnifiedbind(KeyEvent ke)
-    {
-        this(Type.KEYBOARD, ke.getExtendedKeyCode(), ke.getModifiersEx());
+	/**
+	 * Constructs a Unifiedbind that matches the passed KeyEvent
+	 */
+	public ModifierlessUnifiedbind(KeyEvent ke)
+	{
+		this(Type.KEYBOARD, ke.getExtendedKeyCode(), ke.getModifiersEx());
 
-        assert matches(ke);
-    }
+		assert matches(ke);
+	}
 
-    /**
-     * Constructs a Unifiedbind that matches the passed MouseEvent
-     */
-    public ModifierlessUnifiedbind(MouseEvent me)
-    {
-        this(Type.MOUSE, me.getButton());
+	/**
+	 * Constructs a Unifiedbind that matches the passed MouseEvent
+	 */
+	public ModifierlessUnifiedbind(MouseEvent me)
+	{
+		this(Type.MOUSE, me.getButton());
 
-        assert matches(me);
-    }
+		assert matches(me);
+	}
 
-    /**
-     * If the KeyEvent is from a KeyPressed event this returns if the
-     * Event is this hotkey being pressed. If the KeyEvent is a
-     * KeyReleased event this returns if the event is this hotkey being
-     * released
-     */
-    @Override
-    public boolean matches(KeyEvent ke)
-    {
-        return matches(ke, true);
-    }
+	/**
+	 * If the KeyEvent is from a KeyPressed event this returns if the
+	 * Event is this hotkey being pressed. If the KeyEvent is a
+	 * KeyReleased event this returns if the event is this hotkey being
+	 * released
+	 */
+	@Override
+	public boolean matches(KeyEvent ke)
+	{
+		return matches(ke, true);
+	}
 
-    /**
-     * Returns true if the given MouseEvent matches this Mousebind.
-     * Typically used to check if a mouse button (with optional modifiers)
-     * was pressed or released in accordance with this bind.
-     */
-    @Override
-    public boolean matches(MouseEvent me)
-    {
-        return matches(me, true);
-    }
+	/**
+	 * Returns true if the given MouseEvent matches this Mousebind.
+	 * Typically used to check if a mouse button (with optional modifiers)
+	 * was pressed or released in accordance with this bind.
+	 */
+	@Override
+	public boolean matches(MouseEvent me)
+	{
+		return matches(me, true);
+	}
 }

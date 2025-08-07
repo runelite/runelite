@@ -99,7 +99,7 @@ public class MouseManager
 				break;
 			}
 		}
-        checkExtraMouseButtons(mouseEvent);
+		checkExtraMouseButtons(mouseEvent);
 		return mouseEvent;
 	}
 
@@ -118,7 +118,7 @@ public class MouseManager
 				break;
 			}
 		}
-        checkExtraMouseButtons(mouseEvent);
+		checkExtraMouseButtons(mouseEvent);
 		return mouseEvent;
 	}
 
@@ -137,7 +137,7 @@ public class MouseManager
 				break;
 			}
 		}
-        checkExtraMouseButtons(mouseEvent);
+		checkExtraMouseButtons(mouseEvent);
 		return mouseEvent;
 	}
 

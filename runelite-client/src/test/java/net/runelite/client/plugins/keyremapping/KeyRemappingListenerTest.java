@@ -64,9 +64,9 @@ public class KeyRemappingListenerTest
 	@Bind
 	private KeyRemappingConfig keyRemappingConfig;
 
-    @Mock
-    @Bind
-    private MouseManager mouseManager;
+	@Mock
+	@Bind
+	private MouseManager mouseManager;
 
 	@Before
 	public void setUp()

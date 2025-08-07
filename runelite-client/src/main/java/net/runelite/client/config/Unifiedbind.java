@@ -42,245 +42,245 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class Unifiedbind
 {
-    public enum Type
-    {
-        KEYBOARD,
-        MOUSE
-    }
+	public enum Type
+	{
+		KEYBOARD,
+		MOUSE
+	}
 
-    private static final BiMap<Integer, Integer> MODIFIER_TO_KEY_CODE = new ImmutableBiMap.Builder<Integer, Integer>()
-            .put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
-            .put(InputEvent.ALT_DOWN_MASK, KeyEvent.VK_ALT)
-            .put(InputEvent.SHIFT_DOWN_MASK, KeyEvent.VK_SHIFT)
-            .put(InputEvent.META_DOWN_MASK, KeyEvent.VK_META)
-            .build();
+	private static final BiMap<Integer, Integer> MODIFIER_TO_KEY_CODE = new ImmutableBiMap.Builder<Integer, Integer>()
+			.put(InputEvent.CTRL_DOWN_MASK, KeyEvent.VK_CONTROL)
+			.put(InputEvent.ALT_DOWN_MASK, KeyEvent.VK_ALT)
+			.put(InputEvent.SHIFT_DOWN_MASK, KeyEvent.VK_SHIFT)
+			.put(InputEvent.META_DOWN_MASK, KeyEvent.VK_META)
+			.build();
 
-    // Bitmask of all supported modifiers
-    private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
-            .reduce((a, b) -> a | b).get();
+	// Bitmask of all supported modifiers
+	private static final int KEYBOARD_MODIFIER_MASK = MODIFIER_TO_KEY_CODE.keySet().stream()
+			.reduce((a, b) -> a | b).get();
 
-    // Static modifier variants for key binds
-    public static final Unifiedbind NOT_SET = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, 0);
+	// Static modifier variants for key binds
+	public static final Unifiedbind NOT_SET = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, 0);
 
-    public static final Unifiedbind CTRL = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
-    public static final Unifiedbind ALT = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
-    public static final Unifiedbind SHIFT = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
+	public static final Unifiedbind CTRL = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+	public static final Unifiedbind ALT = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
+	public static final Unifiedbind SHIFT = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
 
-    // Static modifier variants for mouse binds
-    public static final Unifiedbind NOT_SET_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, 0);
+	// Static modifier variants for mouse binds
+	public static final Unifiedbind NOT_SET_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, 0);
 
-    public static final Unifiedbind CTRL_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK);
-    public static final Unifiedbind ALT_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.ALT_DOWN_MASK);
-    public static final Unifiedbind SHIFT_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.SHIFT_DOWN_MASK);
+	public static final Unifiedbind CTRL_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK);
+	public static final Unifiedbind ALT_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.ALT_DOWN_MASK);
+	public static final Unifiedbind SHIFT_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.SHIFT_DOWN_MASK);
 
-    private final Type type;
-    private final int code;
-    private final int modifiers;
+	private final Type type;
+	private final int code;
+	private final int modifiers;
 
-    protected Unifiedbind(Type type, int code, int modifiers, boolean ignoreModifiers)
-    {
-        modifiers &= KEYBOARD_MODIFIER_MASK;
+	protected Unifiedbind(Type type, int code, int modifiers, boolean ignoreModifiers)
+	{
+		modifiers &= KEYBOARD_MODIFIER_MASK;
 
-        // If the Unifiedbind is just modifiers we don't want the keyCode to contain the modifier too,
-        // because this breaks if you do the keycode backwards
-        if (type == Type.KEYBOARD)
-        {
-            Integer mf = getModifierForKeyCode(code);
-            if (mf != null)
-            {
-                assert (modifiers & mf) != 0;
-                code = KeyEvent.VK_UNDEFINED;
-            }
+		// If the Unifiedbind is just modifiers we don't want the keyCode to contain the modifier too,
+		// because this breaks if you do the keycode backwards
+		if (type == Type.KEYBOARD)
+		{
+			Integer mf = getModifierForKeyCode(code);
+			if (mf != null)
+			{
+				assert (modifiers & mf) != 0;
+				code = KeyEvent.VK_UNDEFINED;
+			}
 
-            if (ignoreModifiers && (code != KeyEvent.VK_UNDEFINED))
-            {
-                modifiers = 0;
-            }
-        }
-        else if (type == Type.MOUSE)
-        {
-            if (ignoreModifiers && code != MouseEvent.NOBUTTON)
-            {
-                modifiers = 0;
-            }
-        }
+			if (ignoreModifiers && (code != KeyEvent.VK_UNDEFINED))
+			{
+				modifiers = 0;
+			}
+		}
+		else if (type == Type.MOUSE)
+		{
+			if (ignoreModifiers && code != MouseEvent.NOBUTTON)
+			{
+				modifiers = 0;
+			}
+		}
 
-        this.type = type;
-        this.code = code;
-        this.modifiers = modifiers;
-    }
+		this.type = type;
+		this.code = code;
+		this.modifiers = modifiers;
+	}
 
-    /**
-     * Constructor for binds with type declaration
-     */
-    public Unifiedbind(Type type, int code, int modifiers)
-    {
-        this(type, code, modifiers, false);
-    }
+	/**
+	 * Constructor for binds with type declaration
+	 */
+	public Unifiedbind(Type type, int code, int modifiers)
+	{
+		this(type, code, modifiers, false);
+	}
 
-    /**
-     * Constructs a Unifiedbind that matches the passed KeyEvent
-     */
-    public Unifiedbind(KeyEvent ke)
-    {
-        this(Type.KEYBOARD, ke.getExtendedKeyCode(), ke.getModifiersEx(), false);
+	/**
+	 * Constructs a Unifiedbind that matches the passed KeyEvent
+	 */
+	public Unifiedbind(KeyEvent ke)
+	{
+		this(Type.KEYBOARD, ke.getExtendedKeyCode(), ke.getModifiersEx(), false);
 
-        assert matches(ke);
-    }
+		assert matches(ke);
+	}
 
-    /**
-     * Constructs a Unifiedbind that matches the passed MouseEvent
-     */
-    public Unifiedbind(MouseEvent me)
-    {
-        this(Type.MOUSE, me.getButton(), me.getModifiersEx(), false);
+	/**
+	 * Constructs a Unifiedbind that matches the passed MouseEvent
+	 */
+	public Unifiedbind(MouseEvent me)
+	{
+		this(Type.MOUSE, me.getButton(), me.getModifiersEx(), false);
 
-        assert matches(me);
-    }
+		assert matches(me);
+	}
 
-    /**
-     * If the KeyEvent is from a KeyPressed event this returns if the
-     * Event is this hotkey being pressed. If the KeyEvent is a
-     * KeyReleased event this returns if the event is this hotkey being
-     * released
-     */
-    public boolean matches(KeyEvent ke)
-    {
-        return matches(ke, false);
-    }
+	/**
+	 * If the KeyEvent is from a KeyPressed event this returns if the
+	 * Event is this hotkey being pressed. If the KeyEvent is a
+	 * KeyReleased event this returns if the event is this hotkey being
+	 * released
+	 */
+	public boolean matches(KeyEvent ke)
+	{
+		return matches(ke, false);
+	}
 
-    protected boolean matches(KeyEvent ke, boolean ignoreModifiers)
-    {
-        if (NOT_SET.equals(this))
-        {
-            return false;
-        }
+	protected boolean matches(KeyEvent ke, boolean ignoreModifiers)
+	{
+		if (NOT_SET.equals(this))
+		{
+			return false;
+		}
 
-        int keyCode = ke.getExtendedKeyCode();
-        int modifiers = ke.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
+		int keyCode = ke.getExtendedKeyCode();
+		int modifiers = ke.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
 
-        Integer mf = getModifierForKeyCode(keyCode);
-        if (mf != null)
-        {
-            modifiers |= mf;
-            keyCode = KeyEvent.VK_UNDEFINED;
-        }
+		Integer mf = getModifierForKeyCode(keyCode);
+		if (mf != null)
+		{
+			modifiers |= mf;
+			keyCode = KeyEvent.VK_UNDEFINED;
+		}
 
-        if (ke.getID() == KeyEvent.KEY_RELEASED)
-        {
-            if (keyCode != KeyEvent.VK_UNDEFINED)
-            {
-                return this.code == keyCode;
-            }
-            else if (mf != null)
-            {
-                return this.code == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
-            }
-        }
+		if (ke.getID() == KeyEvent.KEY_RELEASED)
+		{
+			if (keyCode != KeyEvent.VK_UNDEFINED)
+			{
+				return this.code == keyCode;
+			}
+			else if (mf != null)
+			{
+				return this.code == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
+			}
+		}
 
-        if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
-        {
-            return this.code == keyCode;
-        }
-        return this.code == keyCode && this.modifiers == modifiers;
-    }
+		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
+		{
+			return this.code == keyCode;
+		}
+		return this.code == keyCode && this.modifiers == modifiers;
+	}
 
 
-    /**
-     * Returns true if the given MouseEvent matches this Mousebind.
-     * Typically used to check if a mouse button (with optional modifiers)
-     * was pressed or released in accordance with this bind.
-     */
-    public boolean matches(MouseEvent me)
-    {
-        return matches(me, false);
-    }
+	/**
+	 * Returns true if the given MouseEvent matches this Mousebind.
+	 * Typically used to check if a mouse button (with optional modifiers)
+	 * was pressed or released in accordance with this bind.
+	 */
+	public boolean matches(MouseEvent me)
+	{
+		return matches(me, false);
+	}
 
-    protected boolean matches(MouseEvent me, boolean ignoreModifiers)
-    {
-        if (NOT_SET.equals(this))
-        {
-            return false;
-        }
+	protected boolean matches(MouseEvent me, boolean ignoreModifiers)
+	{
+		if (NOT_SET.equals(this))
+		{
+			return false;
+		}
 
-        int mouseButton = me.getButton();
-        int modifiers = me.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
+		int mouseButton = me.getButton();
+		int modifiers = me.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
 
-        if (ignoreModifiers && mouseButton != MouseEvent.NOBUTTON)
-        {
-            return this.code == mouseButton;
-        }
-        return this.code == mouseButton && this.modifiers == modifiers;
-    }
+		if (ignoreModifiers && mouseButton != MouseEvent.NOBUTTON)
+		{
+			return this.code == mouseButton;
+		}
+		return this.code == mouseButton && this.modifiers == modifiers;
+	}
 
-    @Override
-    public String toString()
-    {
-        boolean undefined = (type == Type.KEYBOARD && code == KeyEvent.VK_UNDEFINED) || (type == Type.MOUSE && code == MouseEvent.NOBUTTON);
+	@Override
+	public String toString()
+	{
+		boolean undefined = (type == Type.KEYBOARD && code == KeyEvent.VK_UNDEFINED) || (type == Type.MOUSE && code == MouseEvent.NOBUTTON);
 
-        if (undefined && modifiers == 0)
-        {
-            return "Not set";
-        }
+		if (undefined && modifiers == 0)
+		{
+			return "Not set";
+		}
 
-        String input;
-        if (undefined)
-        {
-            input = "";
-        }
-        else if (type == Type.KEYBOARD)
-        {
-            input = KeyEvent.getKeyText(code);
-        }
-        else
-        {
-            input = getMouseButtonText(code);
-        }
+		String input;
+		if (undefined)
+		{
+			input = "";
+		}
+		else if (type == Type.KEYBOARD)
+		{
+			input = KeyEvent.getKeyText(code);
+		}
+		else
+		{
+			input = getMouseButtonText(code);
+		}
 
-        String mod = "";
-        if (modifiers != 0)
-        {
-            mod = InputEvent.getModifiersExText(modifiers);
-        }
+		String mod = "";
+		if (modifiers != 0)
+		{
+			mod = InputEvent.getModifiersExText(modifiers);
+		}
 
-        if (mod.isEmpty() && input.isEmpty())
-        {
-            return "Not set";
-        }
-        if (!mod.isEmpty() && !input.isEmpty())
-        {
-            return mod + "+" + input;
-        }
-        if (mod.isEmpty())
-        {
-            return input;
-        }
-        return mod;
-    }
+		if (mod.isEmpty() && input.isEmpty())
+		{
+			return "Not set";
+		}
+		if (!mod.isEmpty() && !input.isEmpty())
+		{
+			return mod + "+" + input;
+		}
+		if (mod.isEmpty())
+		{
+			return input;
+		}
+		return mod;
+	}
 
-    private static String getMouseButtonText(int button)
-    {
-        if (button == MouseEvent.BUTTON1)
-        {
-            return "Left Click";
-        }
-        else if (button == MouseEvent.BUTTON2)
-        {
-            return "Middle Click";
-        }
-        else if (button == MouseEvent.BUTTON3)
-        {
-            return "Right Click";
-        }
-        else
-        {
-            return "Button " + button;
-        }
-    }
+	private static String getMouseButtonText(int button)
+	{
+		if (button == MouseEvent.BUTTON1)
+		{
+			return "Left Click";
+		}
+		else if (button == MouseEvent.BUTTON2)
+		{
+			return "Middle Click";
+		}
+		else if (button == MouseEvent.BUTTON3)
+		{
+			return "Right Click";
+		}
+		else
+		{
+			return "Button " + button;
+		}
+	}
 
-    @Nullable
-    public static Integer getModifierForKeyCode(int keyCode)
-    {
-        return MODIFIER_TO_KEY_CODE.inverse().get(keyCode);
-    }
+	@Nullable
+	public static Integer getModifierForKeyCode(int keyCode)
+	{
+		return MODIFIER_TO_KEY_CODE.inverse().get(keyCode);
+	}
 }

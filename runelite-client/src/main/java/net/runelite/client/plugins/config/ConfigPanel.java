@@ -388,10 +388,10 @@ class ConfigPanel extends PluginPanel
 			{
 				item.add(createKeybind(cd, cid), BorderLayout.EAST);
 			}
-            else if (cid.getType() == Unifiedbind.class || cid.getType() == ModifierlessUnifiedbind.class)
-            {
-                item.add(createUnifiedbind(cd, cid), BorderLayout.EAST);
-            }
+			else if (cid.getType() == Unifiedbind.class || cid.getType() == ModifierlessUnifiedbind.class)
+			{
+				item.add(createUnifiedbind(cd, cid), BorderLayout.EAST);
+			}
 			else if (cid.getType() == Notification.class)
 			{
 				item.add(createNotification(cd, cid), BorderLayout.EAST);
@@ -672,25 +672,25 @@ class ConfigPanel extends PluginPanel
 		return button;
 	}
 
-    private UnifiedbindButton createUnifiedbind(ConfigDescriptor cd, ConfigItemDescriptor cid)
-    {
-        Unifiedbind startingValue = configManager.getConfiguration(cd.getGroup().value(),
-                cid.getItem().keyName(),
-                (Class<? extends Unifiedbind>) cid.getType());
+	private UnifiedbindButton createUnifiedbind(ConfigDescriptor cd, ConfigItemDescriptor cid)
+	{
+		Unifiedbind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(),
+				(Class<? extends Unifiedbind>) cid.getType());
 
-        UnifiedbindButton button = new UnifiedbindButton(startingValue, cid.getType() == ModifierlessUnifiedbind.class);
+		UnifiedbindButton button = new UnifiedbindButton(startingValue, cid.getType() == ModifierlessUnifiedbind.class);
 
-        button.addFocusListener(new FocusAdapter()
-        {
-            @Override
-            public void focusLost(FocusEvent e)
-            {
-                changeConfiguration(button, cd, cid);
-            }
-        });
+		button.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				changeConfiguration(button, cd, cid);
+			}
+		});
 
-        return button;
-    }
+		return button;
+	}
 
 	private JPanel createNotification(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
@@ -804,11 +804,11 @@ class ConfigPanel extends PluginPanel
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
 		}
-        else if (component instanceof UnifiedbindButton)
-        {
-            UnifiedbindButton unifiedbindButton = (UnifiedbindButton) component;
-            configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), unifiedbindButton.getValue());
-        }
+		else if (component instanceof UnifiedbindButton)
+		{
+			UnifiedbindButton unifiedbindButton = (UnifiedbindButton) component;
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), unifiedbindButton.getValue());
+		}
 		else if (component instanceof JList)
 		{
 			JList<?> list = (JList<?>) component;

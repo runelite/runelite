@@ -37,72 +37,72 @@ import net.runelite.client.ui.FontManager;
 
 class UnifiedbindButton extends JButton
 {
-    @Getter
-    private Unifiedbind value;
+	@Getter
+	private Unifiedbind value;
 
-    public UnifiedbindButton(Unifiedbind value, boolean modifierless)
-    {
-        // Disable focus traversal keys such as tab to allow tab key to be bound
-        setFocusTraversalKeysEnabled(false);
-        setFont(FontManager.getDefaultFont().deriveFont(12.f));
-        setValue(value);
-        addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseClicked(MouseEvent e)
-            {
-                // Mouse buttons other than button1 don't give focus
-                if (e.getButton() == MouseEvent.BUTTON1)
-                {
-                    // We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
-                    setValue(Unifiedbind.NOT_SET);
-                }
-            }
+	public UnifiedbindButton(Unifiedbind value, boolean modifierless)
+	{
+		// Disable focus traversal keys such as tab to allow tab key to be bound
+		setFocusTraversalKeysEnabled(false);
+		setFont(FontManager.getDefaultFont().deriveFont(12.f));
+		setValue(value);
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				// Mouse buttons other than button1 don't give focus
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
+					setValue(Unifiedbind.NOT_SET);
+				}
+			}
 
-            @Override
-            public void mousePressed(MouseEvent me)
-            {
-                // Does not allow left or right click to be bound
-                if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
-                {
-                    return;
-                }
-                if (modifierless)
-                {
-                    setValue(new ModifierlessUnifiedbind(me));
-                }
-                else
-                {
-                    setValue(new Unifiedbind(me));
-                }
-            }
-        });
+			@Override
+			public void mousePressed(MouseEvent me)
+			{
+				// Does not allow left or right click to be bound
+				if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
+				{
+					return;
+				}
+				if (modifierless)
+				{
+					setValue(new ModifierlessUnifiedbind(me));
+				}
+				else
+				{
+					setValue(new Unifiedbind(me));
+				}
+			}
+		});
 
-        addKeyListener(new KeyAdapter()
-        {
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                if (modifierless)
-                {
-                    setValue(new ModifierlessUnifiedbind(e));
-                }
-                else
-                {
-                    setValue(new Unifiedbind(e));
-                }
-            }
-        });
-    }
+		addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (modifierless)
+				{
+					setValue(new ModifierlessUnifiedbind(e));
+				}
+				else
+				{
+					setValue(new Unifiedbind(e));
+				}
+			}
+		});
+	}
 
-    public void setValue(Unifiedbind value)
-    {
-        if (value == null)
-        {
-            value = Unifiedbind.NOT_SET;
-        }
+	public void setValue(Unifiedbind value)
+	{
+		if (value == null)
+		{
+			value = Unifiedbind.NOT_SET;
+		}
 
-        this.value = value;
-        setText(value.toString());
-    }
+		this.value = value;
+		setText(value.toString());
+	}
 }
