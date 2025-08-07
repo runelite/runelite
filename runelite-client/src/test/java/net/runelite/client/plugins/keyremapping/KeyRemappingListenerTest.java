@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.config.ModifierlessUnifiedbind;
+import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.input.MouseManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,10 +79,10 @@ public class KeyRemappingListenerTest
 	public void testTypingStateChange()
 	{
 		when(keyRemappingConfig.cameraRemap()).thenReturn(true);
-		when(keyRemappingConfig.up()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_W));
-		when(keyRemappingConfig.down()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_S));
-		when(keyRemappingConfig.left()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_A));
-		when(keyRemappingConfig.right()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_D));
+		when(keyRemappingConfig.up()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_W, 0));
+		when(keyRemappingConfig.down()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_S, 0));
+		when(keyRemappingConfig.left()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_A, 0));
+		when(keyRemappingConfig.right()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_D, 0));
 
 		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
 
