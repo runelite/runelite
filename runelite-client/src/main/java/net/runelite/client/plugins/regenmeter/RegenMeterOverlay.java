@@ -34,9 +34,8 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -46,7 +45,6 @@ class RegenMeterOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
-	private static final Color OVERLAY_COLOR = new Color(255, 255, 255, 60);
 	private static final double DIAMETER = 26D;
 	private static final int OFFSET = 27;
 
@@ -78,27 +76,12 @@ class RegenMeterOverlay extends Overlay
 
 		if (config.showHitpoints())
 		{
-			renderRegen(g, ComponentID.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_HEALTH, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
 		}
 
 		if (config.showSpecial())
 		{
-			if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_ENABLED) == 1)
-			{
-				final Widget widget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB);
-
-				if (widget != null && !widget.isHidden())
-				{
-					final Rectangle bounds = widget.getBounds();
-					g.setColor(RegenMeterOverlay.OVERLAY_COLOR);
-					g.fillOval(
-						bounds.x + OFFSET,
-						bounds.y + (int) (bounds.height / 2 - (DIAMETER) / 2),
-						(int) DIAMETER, (int) DIAMETER);
-				}
-			}
-
-			renderRegen(g, ComponentID.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_SPECENERGY, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
 		return null;

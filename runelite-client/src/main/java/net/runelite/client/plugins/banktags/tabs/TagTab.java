@@ -27,9 +27,17 @@ package net.runelite.client.plugins.banktags.tabs;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+/**
+ * A bank tag tab. This represents one of the tabs on the left hand side of the bank.
+ *
+ * @see TabManager#add(TagTab)
+ * @see TabManager#remove(String)
+ */
 @Data
 @EqualsAndHashCode(of = "tag")
+@NoArgsConstructor
 public class TagTab
 {
 	private String tag;

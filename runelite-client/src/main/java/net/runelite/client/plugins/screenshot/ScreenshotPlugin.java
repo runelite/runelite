@@ -48,18 +48,19 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -93,10 +94,10 @@ public class ScreenshotPlugin extends Plugin
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
-	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("([,0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
-	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) (?:kill|success) count is: ?<col=[0-9a-f]{6}>([0-9,]+)</col>");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
@@ -110,9 +111,9 @@ public class ScreenshotPlugin extends Plugin
 		"You have a funny feeling like you would have been followed");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
-		InterfaceID.FIXED_VIEWPORT,
-		InterfaceID.RESIZABLE_VIEWPORT,
-		InterfaceID.RESIZABLE_VIEWPORT_BOTTOM_LINE);
+		InterfaceID.TOPLEVEL,
+		InterfaceID.TOPLEVEL_OSRS_STRETCH,
+		InterfaceID.TOPLEVEL_PRE_EOC);
 	private static final String SD_KINGDOM_REWARDS = "Kingdom Rewards";
 	private static final String SD_BOSS_KILLS = "Boss Kills";
 	private static final String SD_CLUE_SCROLL_REWARDS = "Clue Scroll Rewards";
@@ -127,6 +128,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_DEATHS = "Deaths";
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
 	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
+	private static final String SD_LEVELS = "Levels";
+	private static final String SD_LEAGUE_TASKS = "League Tasks";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -136,12 +139,14 @@ public class ScreenshotPlugin extends Plugin
 		BARROWS,
 		COX,
 		COX_CM,
+		MOONS_OF_PERIL,
 		TOB,
 		TOB_SM,
 		TOB_HM,
 		TOA_ENTRY_MODE,
 		TOA,
-		TOA_EXPERT_MODE
+		TOA_EXPERT_MODE,
+		FORTIS_COLOSSEUM
 	}
 
 	private KillType killType;
@@ -226,7 +231,7 @@ public class ScreenshotPlugin extends Plugin
 
 		clientToolbar.addNavigation(titleBarButton);
 
-		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
+		spriteManager.getSpriteAsync(SpriteID.ReportButton.BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override
@@ -251,14 +256,14 @@ public class ScreenshotPlugin extends Plugin
 		String screenshotSubDir = null;
 
 		String fileName = null;
-		if (client.getWidget(ComponentID.LEVEL_UP_LEVEL) != null)
+		if (client.getWidget(InterfaceID.LevelupDisplay.TEXT2) != null)
 		{
-			fileName = parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL);
-			screenshotSubDir = "Levels";
+			fileName = parseLevelUpWidget(InterfaceID.LevelupDisplay.TEXT2);
+			screenshotSubDir = SD_LEVELS;
 		}
-		else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
+		else if (client.getWidget(InterfaceID.Objectbox.TEXT) != null)
 		{
-			String text = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT).getText();
+			String text = client.getWidget(InterfaceID.Objectbox.TEXT).getText();
 			if (Text.removeTags(text).contains("High level gamble"))
 			{
 				if (config.screenshotHighGamble())
@@ -271,14 +276,14 @@ public class ScreenshotPlugin extends Plugin
 			{
 				if (config.screenshotLevels())
 				{
-					fileName = parseLevelUpWidget(ComponentID.DIALOG_SPRITE_TEXT);
-					screenshotSubDir = "Levels";
+					fileName = parseLevelUpWidget(InterfaceID.Objectbox.TEXT);
+					screenshotSubDir = SD_LEVELS;
 				}
 			}
 		}
-		else if (client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT) != null)
+		else if (client.getWidget(InterfaceID.Questscroll.QUEST_TITLE) != null)
 		{
-			String text = client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT).getText();
+			String text = client.getWidget(InterfaceID.Questscroll.QUEST_TITLE).getText();
 			fileName = parseQuestCompletedWidget(text);
 			screenshotSubDir = "Quests";
 		}
@@ -311,6 +316,18 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		Actor actor = animationChanged.getActor();
+		if (actor == client.getLocalPlayer()
+			&& actor.getAnimation() == AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01
+			&& config.screenshotPlayerDeath())
+		{
+			takeScreenshot("Doom Death", SD_DEATHS);
+		}
+	}
+
+	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (config.screenshotKills())
@@ -330,9 +347,9 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		final String[] stringStack = client.getStringStack();
-		final int stringSize = client.getStringStackSize();
-		kickPlayerName = stringStack[stringSize - 1];
+		final Object[] objectStack = client.getObjectStack();
+		final int objectStackSize = client.getObjectStackSize();
+		kickPlayerName = (String) objectStack[objectStackSize - 1];
 	}
 
 	@Subscribe
@@ -353,7 +370,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
 			if (m.find())
 			{
-				clueNumber = Integer.valueOf(m.group());
+				clueNumber = Integer.valueOf(m.group().replace(",", ""));
 				clueType = chatMessage.substring(chatMessage.lastIndexOf(m.group()) + m.group().length() + 1, chatMessage.indexOf("Treasure") - 1);
 				return;
 			}
@@ -365,7 +382,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.BARROWS;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -376,7 +393,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.COX;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -387,7 +404,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = KillType.COX_CM;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -398,7 +415,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.find())
 			{
 				killType = chatMessage.contains("Hard Mode") ? KillType.TOB_HM : (chatMessage.contains("Story Mode") ? KillType.TOB_SM : KillType.TOB);
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
@@ -411,12 +428,29 @@ public class ScreenshotPlugin extends Plugin
 				killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE :
 					chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
 						KillType.TOA;
-				killCountNumber = Integer.valueOf(m.group());
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
 		}
 
-		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
+		if (chatMessage.startsWith("Your Lunar Chest count is"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killType = KillType.MOONS_OF_PERIL;
+				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
+				return;
+			}
+		}
+
+		if (chatMessage.contains("Search the chest nearby to retrieve your earned rewards!"))
+		{
+			killType = KillType.FORTIS_COLOSSEUM;
+			return;
+		}
+
+		if (chatMessage.equals("Your request to kick/ban this user was successful.") && config.screenshotKick())
 		{
 			if (kickPlayerName == null)
 			{
@@ -427,7 +461,7 @@ public class ScreenshotPlugin extends Plugin
 			kickPlayerName = null;
 		}
 
-		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
+		if (PET_MESSAGES.stream().anyMatch(chatMessage::contains) && config.screenshotPet())
 		{
 			String fileName = "Pet";
 			takeScreenshot(fileName, SD_PETS);
@@ -436,10 +470,10 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotBossKills())
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
-			if (m.matches())
+			if (m.find())
 			{
-				String bossName = m.group(1);
-				String bossKillcount = m.group(2);
+				String bossName = Text.removeTags(m.group(1));
+				String bossKillcount = m.group(2).replace(",", "");
 				String fileName = bossName + "(" + bossKillcount + ")";
 				takeScreenshot(fileName, SD_BOSS_KILLS);
 			}
@@ -460,7 +494,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				int valuableDropValue = Integer.parseInt(m.group(2).replaceAll(",", ""));
+				int valuableDropValue = Integer.parseInt(m.group(2).replace(",", ""));
 				if (valuableDropValue >= config.valuableDropThreshold())
 				{
 					String valuableDropName = m.group(1);
@@ -493,14 +527,14 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
+		if (chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(VarbitID.OPTION_COLLECTION_NEW_ITEM) == 1 && config.screenshotCollectionLogEntries())
 		{
 			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
 			String fileName = "Collection log (" + entry + ")";
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
 
-		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 1)
+		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVarbitValue(VarbitID.CA_TASK_POPUP) == 1)
 		{
 			String fileName = parseCombatAchievementWidget(chatMessage);
 			if (!fileName.isEmpty())
@@ -509,7 +543,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE) == 1 && config.screenshotLevels())
+		if (client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE) == 1 && config.screenshotLevels())
 		{
 			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -517,8 +551,7 @@ public class ScreenshotPlugin extends Plugin
 				String skillName = StringUtils.capitalize(m.group("skill") != null ? m.group("skill") : m.group("skill99"));
 				String skillLevel = m.group("level") != null ? m.group("level") : "99";
 				String fileName = skillName + "(" + skillLevel + ")";
-				String screenshotSubDir = "Levels";
-				takeScreenshot(fileName, screenshotSubDir);
+				takeScreenshot(fileName, SD_LEVELS);
 			}
 		}
 	}
@@ -532,36 +565,39 @@ public class ScreenshotPlugin extends Plugin
 
 		switch (groupId)
 		{
-			case InterfaceID.QUEST_COMPLETED:
-			case InterfaceID.CLUESCROLL_REWARD:
-			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
-			case InterfaceID.TOB_REWARD:
-			case InterfaceID.TOA_REWARD:
+			case InterfaceID.QUESTSCROLL:
+			case InterfaceID.TRAIL_REWARDSCREEN:
+			case InterfaceID.RAIDS_REWARDS:
+			case InterfaceID.TOB_CHESTS:
+			case InterfaceID.TOA_CHESTS:
 			case InterfaceID.BARROWS_REWARD:
+			case InterfaceID.PMOON_REWARD:
+			case InterfaceID.COLOSSEUM_REWARD_CHEST_2:
+
 				if (!config.screenshotRewards())
 				{
 					return;
 				}
 				break;
-			case InterfaceID.LEVEL_UP:
+			case InterfaceID.LEVELUP_DISPLAY:
 				if (!config.screenshotLevels())
 				{
 					return;
 				}
 				break;
-			case InterfaceID.DIALOG_SPRITE:
+			case InterfaceID.OBJECTBOX:
 				if (!(config.screenshotLevels() || config.screenshotHighGamble()))
 				{
 					return;
 				}
 				break;
-			case InterfaceID.KINGDOM:
+			case InterfaceID.MISC_COLLECTION:
 				if (!config.screenshotKingdom())
 				{
 					return;
 				}
 				break;
-			case InterfaceID.WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDY_LOOT_CHEST:
 				if (!config.screenshotWildernessLootChest())
 				{
 					return;
@@ -571,13 +607,13 @@ public class ScreenshotPlugin extends Plugin
 
 		switch (groupId)
 		{
-			case InterfaceID.KINGDOM:
+			case InterfaceID.MISC_COLLECTION:
 			{
 				fileName = "Kingdom " + LocalDate.now();
 				screenshotSubDir = SD_KINGDOM_REWARDS;
 				break;
 			}
-			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
+			case InterfaceID.RAIDS_REWARDS:
 			{
 				if (killType == KillType.COX)
 				{
@@ -597,7 +633,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 				return;
 			}
-			case InterfaceID.TOB_REWARD:
+			case InterfaceID.TOB_CHESTS:
 			{
 				if (killType != KillType.TOB && killType != KillType.TOB_SM && killType != KillType.TOB_HM)
 				{
@@ -624,7 +660,7 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
-			case InterfaceID.TOA_REWARD:
+			case InterfaceID.TOA_CHESTS:
 			{
 				if (killType != KillType.TOA && killType != KillType.TOA_ENTRY_MODE && killType != KillType.TOA_EXPERT_MODE)
 				{
@@ -664,15 +700,28 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
-			case InterfaceID.LEVEL_UP:
-			case InterfaceID.DIALOG_SPRITE:
-			case InterfaceID.QUEST_COMPLETED:
+			case InterfaceID.PMOON_REWARD:
+			{
+				if (killType != KillType.MOONS_OF_PERIL)
+				{
+					return;
+				}
+
+				fileName = "Moons of Peril(" + killCountNumber + ")";
+				screenshotSubDir = SD_BOSS_KILLS;
+				killType = null;
+				killCountNumber = 0;
+				break;
+			}
+			case InterfaceID.LEVELUP_DISPLAY:
+			case InterfaceID.OBJECTBOX:
+			case InterfaceID.QUESTSCROLL:
 			{
 				// level up widget gets loaded prior to the text being set, so wait until the next tick
 				shouldTakeScreenshot = true;
 				return;
 			}
-			case InterfaceID.CLUESCROLL_REWARD:
+			case InterfaceID.TRAIL_REWARDSCREEN:
 			{
 				if (clueType == null || clueNumber == null)
 				{
@@ -685,10 +734,22 @@ public class ScreenshotPlugin extends Plugin
 				clueNumber = null;
 				break;
 			}
-			case InterfaceID.WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDY_LOOT_CHEST:
 			{
 				fileName = "Loot key";
 				screenshotSubDir = SD_WILDERNESS_LOOT_CHEST;
+				break;
+			}
+			case InterfaceID.COLOSSEUM_REWARD_CHEST_2:
+			{
+				if (killType != KillType.FORTIS_COLOSSEUM)
+				{
+					return;
+				}
+
+				fileName = "Fortis Colosseum Chest";
+				screenshotSubDir = SD_CHEST_LOOT;
+				killType = null;
 				break;
 			}
 			default:
@@ -711,20 +772,31 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
-				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+
+				String topText = client.getVarcStrValue(VarClientID.NOTIFICATION_TITLE);
+				String bottomText = client.getVarcStrValue(VarClientID.NOTIFICATION_MAIN);
+
+				log.debug("Notification: top: {} bottom: {}", topText, bottomText);
+
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());
 					String fileName = "Collection log (" + entry + ")";
 					takeScreenshot(fileName, SD_COLLECTION_LOG);
 				}
-				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
+				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVarbitValue(VarbitID.CA_TASK_POPUP) == 0)
 				{
 					String[] s = bottomText.split("<.*?>");
 					String task = s[1];
 					String fileName = "Combat task (" + task.replaceAll("[:?]", "") + ")";
 					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+				}
+				if (topText.equalsIgnoreCase("League Task Complete!") && config.screenshotLeagueTasks())
+				{
+					String[] s = bottomText.split("<.*?>");
+					String task = s[1];
+					String fileName = "League task (" + task.replaceAll("[:?]", "") + ")";
+					takeScreenshot(fileName, SD_LEAGUE_TASKS);
 				}
 				notificationStarted = false;
 				break;

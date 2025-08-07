@@ -33,9 +33,9 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.GRAND_GOLD_CHEST_CLOSED_ID;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.GRAND_GOLD_CHEST_ID;
@@ -74,7 +74,7 @@ class PyramidPlunderOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget ppWidget = client.getWidget(ComponentID.PYRAMID_PLUNDER_DATA);
+		Widget ppWidget = client.getWidget(InterfaceID.NtkOverlay.CONTENT);
 		if (ppWidget == null)
 		{
 			return null;
@@ -85,7 +85,7 @@ class PyramidPlunderOverlay extends Overlay
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
 		// Highlight convex hulls of urns, chests, and sarcophagus
-		int currentFloor = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM);
+		int currentFloor = client.getVarbitValue(VarbitID.NTK_ROOM_NUMBER);
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
 			if (config.highlightUrnsFloor() > currentFloor && URN_IDS.contains(object.getId())
@@ -127,7 +127,7 @@ class PyramidPlunderOverlay extends Overlay
 			if (SPEARTRAP_ID == object.getId())
 			{
 				// this varbit is set to 1 when you enter a room and 0 once you get passed the spike traps
-				if (client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM_LOCATION) != 1)
+				if (client.getVarbitValue(VarbitID.NTK_TRAP_ACTIVE) != 1)
 				{
 					return;
 				}

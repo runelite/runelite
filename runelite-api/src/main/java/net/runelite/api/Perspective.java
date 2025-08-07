@@ -37,6 +37,7 @@ import javax.annotation.Nullable;
 import static net.runelite.api.Constants.EXTENDED_SCENE_SIZE;
 import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.geometry.RectangleUnion;
 import net.runelite.api.geometry.Shapes;
 import net.runelite.api.geometry.SimplePolygon;
@@ -51,7 +52,8 @@ import org.jetbrains.annotations.ApiStatus;
  */
 public class Perspective
 {
-	public static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
+	// How much of the unit circle each unit of SINE/COSINE is
+	public static final double UNIT = 0.0030679615d; // ~pi/1024
 
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
@@ -62,14 +64,19 @@ public class Perspective
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
+	private static final float[] SINF = new float[2048];
+	private static final float[] COSF = new float[2048];
+
 	private static final int ESCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
 	static
 	{
 		for (int i = 0; i < 2048; ++i)
 		{
-			SINE[i] = (int) (65536.0D * Math.sin((double) i * UNIT));
-			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
+			SINF[i] = (float) Math.sin(i * UNIT);
+			COSF[i] = (float) Math.cos(i * UNIT);
+			SINE[i] = (int) (65536.0F * SINF[i]);
+			COSINE[i] = (int) (65536.0F * COSF[i]);
 		}
 	}
 
@@ -203,7 +210,7 @@ public class Perspective
 	/**
 	 * Translates a model's vertices into 2d space.
 	 */
-	public static void modelToCanvas(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	public static void modelToCanvas(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, float[] x3d, float[] y3d, float[] z3d, int[] x2d, int[] y2d)
 	{
 		// There is a separate implementation for GPU since GPU uses a slightly more precise projection that can
 		// cause features like model outlines being noticeably off otherwise.
@@ -217,7 +224,7 @@ public class Perspective
 		}
 	}
 
-	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, float[] x3d, float[] y3d, float[] z3d, int[] x2d, int[] y2d)
 	{
 		final double
 			cameraPitch = client.getCameraFpPitch(),
@@ -282,19 +289,21 @@ public class Perspective
 		}
 	}
 
-	private static void modelToCanvasCpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	private static void modelToCanvasCpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, float[] x3d, float[] y3d, float[] z3d, int[] x2d, int[] y2d)
 	{
 		final int
 			cameraPitch = client.getCameraPitch(),
-			cameraYaw = client.getCameraYaw(),
+			cameraYaw = client.getCameraYaw();
 
-			pitchSin = SINE[cameraPitch],
-			pitchCos = COSINE[cameraPitch],
-			yawSin = SINE[cameraYaw],
-			yawCos = COSINE[cameraYaw],
-			rotateSin = SINE[rotate],
-			rotateCos = COSINE[rotate],
+		final float
+			pitchSin = SINF[cameraPitch],
+			pitchCos = COSF[cameraPitch],
+			yawSin = SINF[cameraYaw],
+			yawCos = COSF[cameraYaw],
+			rotateSin = SINF[rotate],
+			rotateCos = COSF[rotate];
 
+		final int
 			cx = x3dCenter - client.getCameraX(),
 			cy = y3dCenter - client.getCameraY(),
 			cz = z3dCenter - client.getCameraZ(),
@@ -308,26 +317,26 @@ public class Perspective
 
 		for (int i = 0; i < end; i++)
 		{
-			int x = x3d[i];
-			int y = y3d[i];
-			int z = z3d[i];
+			float x = x3d[i];
+			float y = y3d[i];
+			float z = z3d[i];
 
 			if (rotate != 0)
 			{
-				int x0 = x;
-				x = x0 * rotateCos + y * rotateSin >> 16;
-				y = y * rotateCos - x0 * rotateSin >> 16;
+				float x0 = x;
+				x = x0 * rotateCos + y * rotateSin;
+				y = y * rotateCos - x0 * rotateSin;
 			}
 
 			x += cx;
 			y += cy;
 			z += cz;
 
-			final int
-				x1 = x * yawCos + y * yawSin >> 16,
-				y1 = y * yawCos - x * yawSin >> 16,
-				y2 = z * pitchCos - y1 * pitchSin >> 16,
-				z1 = y1 * pitchCos + z * pitchSin >> 16;
+			final float
+				x1 = x * yawCos + y * yawSin,
+				y1 = y * yawCos - x * yawSin,
+				y2 = z * pitchCos - y1 * pitchSin,
+				z1 = y1 * pitchCos + z * pitchSin;
 
 			int viewX, viewY;
 
@@ -338,8 +347,8 @@ public class Perspective
 			}
 			else
 			{
-				viewX = (viewportXMiddle + x1 * zoom3d / z1) + viewportXOffset;
-				viewY = (viewportYMiddle + y2 * zoom3d / z1) + viewportYOffset;
+				viewX = (int) (viewportXMiddle + x1 * zoom3d / z1) + viewportXOffset;
+				viewY = (int) (viewportYMiddle + y2 * zoom3d / z1) + viewportYOffset;
 			}
 
 			x2d[i] = viewX;
@@ -389,7 +398,7 @@ public class Perspective
 			Widget minimapDrawWidget;
 			if (client.isResized())
 			{
-				if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
+				if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
 				{
 					minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
 				}
@@ -443,8 +452,9 @@ public class Perspective
 		int sceneY = point.getSceneY();
 		if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE)
 		{
-			byte[][][] tileSettings = client.getTileSettings();
-			int[][][] tileHeights = client.getTileHeights();
+			var wv = client.getWorldView(point.getWorldView());
+			byte[][][] tileSettings = wv.getTileSettings();
+			int[][][] tileHeights = wv.getTileHeights();
 
 			int z1 = plane;
 			if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
@@ -460,6 +470,37 @@ public class Perspective
 		}
 
 		return 0;
+	}
+
+	public static int getFootprintTileHeight(@Nonnull Client client, @Nonnull LocalPoint p, int level, int footprintSize)
+	{
+		final int x = p.getX(), z = p.getY();
+		int halfFootprint = footprintSize / 2;
+		int lx = x - halfFootprint;
+		int lz = z - halfFootprint;
+		int ux = x + halfFootprint;
+		int uz = z + halfFootprint;
+		int lsx = (lx >> LOCAL_COORD_BITS) + 1;
+		int lsz = (lz >> LOCAL_COORD_BITS) + 1;
+		int usx = ux >> LOCAL_COORD_BITS;
+		int usz = uz >> LOCAL_COORD_BITS;
+		int h = Integer.MAX_VALUE;
+
+		for (int tx = lsx; tx <= usx; ++tx)
+		{
+			for (int tz = lsz; tz <= usz; ++tz)
+			{
+				h = Math.min(h, getTileHeight(client, new LocalPoint(tx << LOCAL_COORD_BITS, tz << LOCAL_COORD_BITS, p.getWorldView()), level));
+			}
+		}
+
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x, z, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z - halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x - halfFootprint, z + halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z - halfFootprint, p.getWorldView()), level));
+		h = Math.min(h, getTileHeight(client, new LocalPoint(x + halfFootprint, z + halfFootprint, p.getWorldView()), level));
+
+		return h;
 	}
 
 	/**
@@ -509,7 +550,7 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTilePoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int zOffset)
 	{
-		return getCanvasTileAreaPoly(client, localLocation, 1, 1, client.getPlane(), zOffset);
+		return getCanvasTileAreaPoly(client, localLocation, 1, 1, -1, zOffset);
 	}
 
 	/**
@@ -522,7 +563,7 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
-		return getCanvasTileAreaPoly(client, localLocation, size, size, client.getPlane(), 0);
+		return getCanvasTileAreaPoly(client, localLocation, size, size, -1, 0);
 	}
 
 	/**
@@ -546,14 +587,20 @@ public class Perspective
 	{
 		final int msx = localLocation.getSceneX() + ESCENE_OFFSET;
 		final int msy = localLocation.getSceneY() + ESCENE_OFFSET;
+		final var wv = client.getWorldView(localLocation.getWorldView());
 
-		if (msx < 0 || msy < 0 || msx >= EXTENDED_SCENE_SIZE || msy >= EXTENDED_SCENE_SIZE)
+		if (msx < 0 || msy < 0 || msx >= EXTENDED_SCENE_SIZE || msy >= EXTENDED_SCENE_SIZE || wv == null)
 		{
 			// out of scene
 			return null;
 		}
 
-		var scene = client.getScene();
+		if (plane == -1)
+		{
+			plane = wv.getPlane();
+		}
+
+		var scene = wv.getScene();
 		final byte[][][] tileSettings = scene.getExtendedTileSettings();
 
 		int tilePlane = plane;
@@ -621,7 +668,13 @@ public class Perspective
 			return null;
 		}
 
-		int plane = client.getPlane();
+		var wv = client.getWorldView(localLocation.getWorldView());
+		if (wv == null)
+		{
+			return null;
+		}
+
+		int plane = wv.getPlane();
 
 		Point p = localToCanvas(client, localLocation, plane, zOffset);
 
@@ -653,7 +706,13 @@ public class Perspective
 		@Nonnull BufferedImage image,
 		int zOffset)
 	{
-		int plane = client.getPlane();
+		var wv = client.getWorldView(localLocation.getWorldView());
+		if (wv == null)
+		{
+			return null;
+		}
+
+		int plane = wv.getPlane();
 
 		Point p = localToCanvas(client, localLocation, plane, zOffset);
 
@@ -710,7 +769,13 @@ public class Perspective
 		@Nonnull SpritePixels sprite,
 		int zOffset)
 	{
-		int plane = client.getPlane();
+		var wv = client.getWorldView(localLocation.getWorldView());
+		if (wv == null)
+		{
+			return null;
+		}
+
+		int plane = wv.getPlane();
 
 		Point p = localToCanvas(client, localLocation, plane, zOffset);
 
@@ -754,7 +819,7 @@ public class Perspective
 			return null;
 		}
 
-		if (model.isClickable())
+		if (model.useBoundingBox())
 		{
 			return bounds;
 		}
@@ -793,15 +858,15 @@ public class Perspective
 		y1 -= ey;
 		z1 -= ez;
 
-		int[] xa = new int[]{
+		float[] xa = new float[]{
 			x1, x2, x1, x2,
 			x1, x2, x1, x2
 		};
-		int[] ya = new int[]{
+		float[] ya = new float[]{
 			y1, y1, y2, y2,
 			y1, y1, y2, y2
 		};
-		int[] za = new int[]{
+		float[] za = new float[]{
 			z1, z1, z1, z1,
 			z2, z2, z2, z2
 		};

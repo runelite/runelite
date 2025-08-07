@@ -29,11 +29,12 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.27-SNAPSHOT</version>
+		<version>1.11.14-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
 	<name>RuneLite API</name>
+	<url>https://static.runelite.net/runelite-api</url> <!-- for javadoc external urls -->
 
 	<dependencies>
 		<dependency>
@@ -122,6 +123,7 @@
 								<exclude>net/runelite/api/ParamID.class</exclude>
 								<exclude>net/runelite/api/ScriptID.class</exclude>
 								<exclude>net/runelite/api/SettingID.class</exclude>
+								<exclude>net/runelite/api/SkullIcon.class</exclude>
 								<exclude>net/runelite/api/SoundEffectID.class</exclude>
 								<exclude>net/runelite/api/SoundEffectVolume.class</exclude>
 								<exclude>net/runelite/api/SpriteID.class</exclude>
@@ -130,6 +132,7 @@
 								<exclude>net/runelite/api/VarClientInt.class</exclude>
 								<exclude>net/runelite/api/VarClientStr.class</exclude>
 								<exclude>net/runelite/api/VarPlayer.class</exclude>
+								<exclude>net/runelite/api/gameval/*.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

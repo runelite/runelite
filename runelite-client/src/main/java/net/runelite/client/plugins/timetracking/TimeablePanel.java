@@ -122,8 +122,8 @@ public class TimeablePanel<T> extends JPanel
 
 		JLayeredPane layeredIconPane = new JLayeredPane();
 		layeredIconPane.setPreferredSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
-		layeredIconPane.add(icon, Integer.valueOf(0));
-		layeredIconPane.add(overlayIcon, Integer.valueOf(1));
+		layeredIconPane.add(icon, (Object) 0);
+		layeredIconPane.add(overlayIcon, (Object) 1);
 		icon.setBounds(0, 0, Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT);
 		overlayIcon.setBounds(OVERLAY_ICON_BOUNDS);
 

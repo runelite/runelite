@@ -25,37 +25,47 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.regex.Pattern;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import lombok.Getter;
+import static net.runelite.client.plugins.skillcalculator.SkillCalculator.MAX_XP_MULTIPLIER;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.FlatTextField;
 
 @Getter
 @Singleton
 class UICalculatorInputArea extends JPanel
 {
+	private static final Pattern NON_NUMERIC = Pattern.compile("\\D");
 	private final JTextField uiFieldCurrentLevel;
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
+	private final JSpinner uiFieldXPMultiplier;
 
 	@Inject
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(2, 2, 7, 7));
+		setLayout(new GridLayout(3, 2, 7, 7));
 		uiFieldCurrentLevel = addComponent("Current Level");
 		uiFieldCurrentXP = addComponent("Current Experience");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target Experience");
+		uiFieldXPMultiplier = addMultiplicationSpinnerComponent("XP Multiplier", MAX_XP_MULTIPLIER);
 	}
 
 	int getCurrentLevelInput()
@@ -98,16 +108,26 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
+	int getXPMultiplierInput()
+	{
+		return getInput(uiFieldXPMultiplier);
+	}
+
+	void setXPMultiplier(Object value)
+	{
+		setInput(uiFieldXPMultiplier, value);
+	}
+
 	void setNeededXP(Object value)
 	{
 		uiFieldTargetXP.setToolTipText((String) value);
 	}
 
-	private int getInput(JTextField field)
+	private static int getInput(JTextField field)
 	{
 		try
 		{
-			return Integer.parseInt(field.getText().replaceAll("\\D", ""));
+			return Integer.parseInt(NON_NUMERIC.matcher(field.getText()).replaceAll(""));
 		}
 		catch (NumberFormatException e)
 		{
@@ -115,9 +135,26 @@ class UICalculatorInputArea extends JPanel
 		}
 	}
 
-	private void setInput(JTextField field, Object value)
+	private static int getInput(JSpinner field)
+	{
+		try
+		{
+			return Integer.parseInt(NON_NUMERIC.matcher(field.getModel().getValue().toString()).replaceAll(""));
+		}
+		catch (NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+
+	private static void setInput(JTextField field, Object value)
 	{
 		field.setText(String.valueOf(value));
+	}
+
+	private static void setInput(JSpinner field, Object value)
+	{
+		((JSpinner.DefaultEditor) field.getEditor()).getTextField().setValue(value);
 	}
 
 	private JTextField addComponent(String label)
@@ -142,5 +179,34 @@ class UICalculatorInputArea extends JPanel
 		add(container);
 
 		return uiInput.getTextField();
+	}
+
+	private JSpinner addMultiplicationSpinnerComponent(String label, int max)
+	{
+		final JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
+
+		final JLabel uiLabel = new JLabel(label);
+
+		SpinnerModel model = new SpinnerNumberModel(1, 1, max, 1);
+		final JSpinner uiInput = new JSpinner(model);
+
+		JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) uiInput.getEditor();
+		JFormattedTextField spinnerTextField = editor.getTextField();
+		spinnerTextField.setHorizontalAlignment(JTextField.LEFT);
+		spinnerTextField.setFormatterFactory(new UnitFormatterFactory(spinnerTextField.getFormatterFactory(), "x"));
+		uiInput.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiInput.setBorder(new EmptyBorder(5, 7, 5, 7));
+
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+		uiLabel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		uiLabel.setForeground(Color.WHITE);
+
+		container.add(uiLabel, BorderLayout.NORTH);
+		container.add(uiInput, BorderLayout.CENTER);
+
+		add(container);
+
+		return uiInput;
 	}
 }

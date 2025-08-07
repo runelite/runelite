@@ -32,8 +32,6 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.GraphicID.GRAPHICS_OBJECT_ROCKFALL;
-import static net.runelite.api.GraphicID.ZALCANO_PROJECTILE_FIREBALL;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Hitsplat;
 import static net.runelite.api.HitsplatID.DAMAGE_MAX_ME;
@@ -41,11 +39,7 @@ import static net.runelite.api.HitsplatID.DAMAGE_MAX_ME_ORANGE;
 import static net.runelite.api.HitsplatID.DAMAGE_ME;
 import static net.runelite.api.HitsplatID.DAMAGE_ME_ORANGE;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import static net.runelite.api.NpcID.ZALCANO;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
@@ -57,6 +51,10 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpotanimID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -70,8 +68,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ZalcanoPlugin extends Plugin
 {
-	private static final int ZALCANO_WEAKENED = NpcID.ZALCANO_9050;
-	private static final int GOLEM = NpcID.GOLEM_9051;
+	private static final int ZALCANO_WEAKENED = NpcID.ZALCANO_WEAK;
+	private static final int GOLEM = NpcID.ZALCANO_GOLEM;
 
 	@Inject
 	private Client client;
@@ -132,7 +130,7 @@ public class ZalcanoPlugin extends Plugin
 	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
 	{
 		GraphicsObject graphicsObject = graphicsObjectCreated.getGraphicsObject();
-		if (graphicsObject.getId() == GRAPHICS_OBJECT_ROCKFALL)
+		if (graphicsObject.getId() == SpotanimID.ZALCANO_ROCK_FALL)
 		{
 			rocks.add(graphicsObject);
 		}
@@ -151,7 +149,7 @@ public class ZalcanoPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.HP_HUD_NPC_ID)
+		if (event.getVarpId() == VarPlayerID.HPBAR_HUD_NPC)
 		{
 			boolean wasInCavern = inCavern;
 			inCavern = isHealthbarActive();
@@ -203,7 +201,7 @@ public class ZalcanoPlugin extends Plugin
 	{
 		final GameObject gameObject = event.getGameObject();
 
-		if (gameObject.getId() == ObjectID.ROCK_FORMATION_GLOWING)
+		if (gameObject.getId() == ObjectID.ZALCANO_ROCK_ACTIVE)
 		{
 			WorldPoint worldLocation = lastGlowingRock = gameObject.getWorldLocation();
 			client.setHintArrow(worldLocation);
@@ -219,7 +217,7 @@ public class ZalcanoPlugin extends Plugin
 		{
 			client.setHintArrow(npc);
 		}
-		else if (npc.getId() == ZALCANO)
+		else if (npc.getId() == NpcID.ZALCANO)
 		{
 			if (lastGlowingRock != null)
 			{
@@ -233,7 +231,7 @@ public class ZalcanoPlugin extends Plugin
 	{
 		final Projectile projectile = event.getProjectile();
 
-		if (projectile.getId() == ZALCANO_PROJECTILE_FIREBALL)
+		if (projectile.getId() == SpotanimID.ZALCANO_FIRE_ATTACK)
 		{
 			targetedGlowingRock = event.getPosition();
 			targetedGlowingRockEndCycle = projectile.getEndCycle();
@@ -251,7 +249,7 @@ public class ZalcanoPlugin extends Plugin
 		}
 
 		int npcId = ((NPC) actor).getId();
-		if (!(npcId == ZALCANO_WEAKENED || npcId == ZALCANO))
+		if (!(npcId == ZALCANO_WEAKENED || npcId == NpcID.ZALCANO))
 		{
 			return;
 		}
@@ -274,7 +272,7 @@ public class ZalcanoPlugin extends Plugin
 
 	private boolean isHealthbarActive()
 	{
-		int npcId = client.getVarpValue(VarPlayer.HP_HUD_NPC_ID);
-		return npcId == ZALCANO_WEAKENED || npcId == ZALCANO;
+		int npcId = client.getVarpValue(VarPlayerID.HPBAR_HUD_NPC);
+		return npcId == ZALCANO_WEAKENED || npcId == NpcID.ZALCANO;
 	}
 }

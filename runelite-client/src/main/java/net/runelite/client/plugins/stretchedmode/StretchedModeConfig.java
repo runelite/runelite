@@ -55,7 +55,7 @@ public interface StretchedModeConfig extends Config
 
 	@ConfigItem(
 		keyName = "integerScaling",
-		name = "Integer Scaling",
+		name = "Integer scaling",
 		description = "Forces use of a whole number scale factor when stretching."
 	)
 	default boolean integerScaling()
@@ -65,7 +65,7 @@ public interface StretchedModeConfig extends Config
 
 	@ConfigItem(
 		keyName = "scalingFactor",
-		name = "Resizable Scaling",
+		name = "Resizable scaling",
 		description = "In resizable mode, the game is reduced in size this much before it's stretched."
 	)
 	@Units(Units.PERCENT)

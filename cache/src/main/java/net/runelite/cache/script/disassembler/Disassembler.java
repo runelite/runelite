@@ -27,6 +27,8 @@ package net.runelite.cache.script.disassembler;
 import com.google.common.escape.Escaper;
 import com.google.common.escape.Escapers;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
@@ -45,10 +47,23 @@ public class Disassembler
 		.build();
 
 	private final Instructions instructions = new Instructions();
+	private final Map<Object, String> symbols;
 
 	public Disassembler()
 	{
 		instructions.init();
+		this.symbols = Collections.emptyMap();
+	}
+
+	public Disassembler(Map<String, Object> symbols)
+	{
+		instructions.init();
+		this.symbols = new HashMap<>();
+
+		for (Entry<String, Object> e : symbols.entrySet())
+		{
+			this.symbols.put(e.getValue(), e.getKey());
+		}
 	}
 
 	private boolean isJump(int opcode)
@@ -136,7 +151,7 @@ public class Disassembler
 			Instruction ins = this.instructions.find(opcode);
 			if (ins == null)
 			{
-				logger.warn("Unknown instruction {} in script {}", opcode, script.getId());
+				logger.debug("Unknown instruction {} in script {}", opcode, script.getId());
 			}
 
 			if (jumps[i])
@@ -162,6 +177,10 @@ public class Disassembler
 				if (isJump(opcode))
 				{
 					writer.append(" LABEL").append(i + iop + 1);
+				}
+				else if (symbols.containsKey(iop))
+				{
+					writer.append(" :").append(symbols.get(iop));
 				}
 				else
 				{
@@ -212,9 +231,9 @@ public class Disassembler
 		{
 			case Opcodes.ICONST:
 			case Opcodes.ILOAD:
-			case Opcodes.SLOAD:
+			case Opcodes.OLOAD:
 			case Opcodes.ISTORE:
-			case Opcodes.SSTORE:
+			case Opcodes.OSTORE:
 				return true;
 		}
 
@@ -225,15 +244,11 @@ public class Disassembler
 	private void writerHeader(StringBuilder writer, ScriptDefinition script)
 	{
 		int id = script.getId();
-		int intStackCount = script.getIntStackCount();
-		int stringStackCount = script.getStringStackCount();
-		int localIntCount = script.getLocalIntCount();
-		int localStringCount = script.getLocalStringCount();
+		int intStackCount = script.getIntArgCount();
+		int stringStackCount = script.getObjArgCount();
 
-		writer.append(".id                 ").append(id).append('\n');
-		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
-		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
-		writer.append(".int_var_count      ").append(localIntCount).append('\n');
-		writer.append(".string_var_count   ").append(localStringCount).append('\n');
+		writer.append(".id                       ").append(id).append('\n');
+		writer.append(".int_arg_count            ").append(intStackCount).append('\n');
+		writer.append(".obj_arg_count            ").append(stringStackCount).append('\n');
 	}
 }

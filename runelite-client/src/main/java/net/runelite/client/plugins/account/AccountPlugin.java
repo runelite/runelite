@@ -44,8 +44,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Account",
 	description = "Sync RuneLite config settings with your Google account",
-	tags = {"external", "google", "integration"},
-	loadWhenOutdated = true
+	tags = {"external", "google", "integration"}
 )
 @Slf4j
 public class AccountPlugin extends Plugin

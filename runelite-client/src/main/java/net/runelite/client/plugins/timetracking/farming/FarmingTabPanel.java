@@ -35,7 +35,7 @@ import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
@@ -239,7 +239,7 @@ public class FarmingTabPanel extends TabContentPanel
 			JLabel farmingContractIcon = panel.getFarmingContractIcon();
 			if (farmingContractManager.shouldHighlightFarmingTabPanel(patch))
 			{
-				itemManager.getImage(ItemID.SEED_PACK).addTo(farmingContractIcon);
+				itemManager.getImage(ItemID.SEEDBOX).addTo(farmingContractIcon);
 				farmingContractIcon.setToolTipText(farmingContractManager.getContract().getName());
 			}
 			else
@@ -259,7 +259,7 @@ public class FarmingTabPanel extends TabContentPanel
 
 	private AsyncBufferedImage getPatchImage(CompostState compostState, boolean protected_)
 	{
-		return protected_ ? itemManager.getImage(ItemID.APPLES5) :
+		return protected_ ? itemManager.getImage(ItemID.BASKET_APPLE_5) :
 			(compostState != null ? itemManager.getImage(compostState.getItemId()) : null);
 	}
 

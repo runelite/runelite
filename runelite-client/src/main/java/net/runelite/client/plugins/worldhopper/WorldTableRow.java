@@ -269,7 +269,8 @@ class WorldTableRow extends JPanel
 		{
 			activityField.setForeground(SEASONAL_WORLD);
 		}
-		else if (types.contains(WorldType.NOSAVE_MODE) || types.contains(WorldType.BETA_WORLD))
+		else if (types.contains(WorldType.NOSAVE_MODE) || types.contains(WorldType.BETA_WORLD)
+			|| types.contains(WorldType.LEGACY_ONLY)) // sometimes used for arbitrarily restricted worlds
 		{
 			activityField.setForeground(BETA_WORLD);
 		}

@@ -69,9 +69,9 @@ public interface Callbacks
 	void frame();
 
 	/**
-	 * Called after receiving update NPCs packet from server.
+	 * Called each server tick
 	 */
-	void updateNpcs();
+	void serverTick();
 
 	/**
 	 * Called after the scene is drawn.

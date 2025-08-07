@@ -32,8 +32,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InOrder;
 import org.mockito.Mock;
-import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -60,7 +61,7 @@ public class TextComponentTest
 		textComponent.setColor(Color.RED);
 		textComponent.render(graphics);
 		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).setColor(Color.RED);
+		verify(graphics).setColor(Color.RED);
 	}
 
 	@Test
@@ -70,7 +71,7 @@ public class TextComponentTest
 		textComponent.setText("<col=0000ff>test");
 		textComponent.render(graphics);
 		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
+		verify(graphics).setColor(Color.BLUE);
 	}
 
 	@Test
@@ -79,9 +80,28 @@ public class TextComponentTest
 		TextComponent textComponent = new TextComponent();
 		textComponent.setText("<col=0000ff>test<col=00ff00> test");
 		textComponent.render(graphics);
-		verify(graphics, atLeastOnce()).drawString(eq("test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).drawString(eq(" test"), anyInt(), anyInt());
-		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
-		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
+		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
+		verify(graphics, times(2)).drawString(eq(" test"), anyInt(), anyInt());
+		verify(graphics).setColor(Color.BLUE);
+		verify(graphics).setColor(Color.GREEN);
+	}
+
+	@Test
+	public void testRender4()
+	{
+		TextComponent textComponent = new TextComponent();
+		textComponent.setText("test<col=0000ff>test2");
+		textComponent.render(graphics);
+
+		InOrder g = inOrder(graphics);
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("test"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.WHITE);
+		g.verify(graphics).drawString(eq("test"), anyInt(), anyInt());
+
+		g.verify(graphics).setColor(Color.BLACK);
+		g.verify(graphics).drawString(eq("test2"), anyInt(), anyInt());
+		g.verify(graphics).setColor(Color.BLUE);
+		g.verify(graphics).drawString(eq("test2"), anyInt(), anyInt());
 	}
 }

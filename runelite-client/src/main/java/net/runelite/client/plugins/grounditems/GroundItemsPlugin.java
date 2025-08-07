@@ -28,16 +28,15 @@ package net.runelite.client.plugins.grounditems;
 import com.google.common.base.MoreObjects;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -61,12 +59,15 @@ import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import static net.runelite.api.TileItem.OWNERSHIP_GROUP;
+import static net.runelite.api.TileItem.OWNERSHIP_OTHER;
+import static net.runelite.api.TileItem.OWNERSHIP_SELF;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -75,17 +76,15 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.NpcLootReceived;
-import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemStack;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -96,11 +95,13 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
+import net.runelite.client.plugins.grounditems.config.OwnershipFilterMode;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.RSTimeUnit;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -120,7 +121,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	// ItemID for coins
-	private static final int COINS = ItemID.COINS_995;
+	private static final int COINS = ItemID.COINS;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -192,8 +193,6 @@ public class GroundItemsPlugin extends Plugin
 	private List<PriceHighlight> priceChecks = ImmutableList.of();
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
-	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
-	private int lastUsedItem;
 	private final Map<WorldPoint, Lootbeam> lootbeams = new HashMap<>();
 
 	@Provides
@@ -208,8 +207,8 @@ public class GroundItemsPlugin extends Plugin
 		overlayManager.add(overlay);
 		mouseManager.registerMouseListener(mouseAdapter);
 		keyManager.registerKeyListener(hotkeyListener);
+		migrate();
 		executor.execute(this::reset);
-		lastUsedItem = -1;
 	}
 
 	@Override
@@ -234,6 +233,27 @@ public class GroundItemsPlugin extends Plugin
 		if (event.getGroup().equals(GroundItemsConfig.GROUP))
 		{
 			executor.execute(this::reset);
+		}
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged profileChanged)
+	{
+		migrate();
+	}
+
+	private void migrate()
+	{
+		//This was the old "Only show own items" config, which is now obsolete and replaced by ownership filter
+		Boolean onlyShowOwnItems = configManager.getConfiguration(GroundItemsConfig.GROUP, "onlyShowLoot", Boolean.class);
+		if (onlyShowOwnItems != null)
+		{
+			if (onlyShowOwnItems)
+			{
+				//The old behavior maps to 'Drops' in the new dropdown
+				configManager.setConfiguration(GroundItemsConfig.GROUP, GroundItemsConfig.OWNERSHIP_FILTER_MODE, OwnershipFilterMode.DROPS);
+			}
+			configManager.unsetConfiguration(GroundItemsConfig.GROUP, "onlyShowLoot");
 		}
 	}
 
@@ -266,7 +286,7 @@ public class GroundItemsPlugin extends Plugin
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
 		}
 
-		if (!config.onlyShowLoot())
+		if (shouldDisplayItem(config.ownershipFilterMode(), groundItem.getOwnership(), client.getVarbitValue(VarbitID.IRONMAN)))
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -331,23 +351,10 @@ public class GroundItemsPlugin extends Plugin
 		if (groundItem != null)
 		{
 			groundItem.setQuantity(groundItem.getQuantity() + diff);
+			groundItem.reset();
 		}
 
 		handleLootbeam(tile.getWorldLocation());
-	}
-
-	@Subscribe
-	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
-	{
-		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items, LootType.PVM);
-	}
-
-	@Subscribe
-	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
-	{
-		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items, LootType.PVP);
 	}
 
 	@Subscribe
@@ -399,31 +406,6 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items, LootType lootType)
-	{
-		for (ItemStack itemStack : items)
-		{
-			WorldPoint location = WorldPoint.fromLocal(client, itemStack.getLocation());
-			GroundItem groundItem = collectedGroundItems.get(location, itemStack.getId());
-			if (groundItem != null)
-			{
-				groundItem.setLootType(lootType);
-
-				if (config.onlyShowLoot())
-				{
-					notifyHighlightedItem(groundItem);
-				}
-			}
-		}
-
-		// Since the loot can potentially be over multiple tiles, make sure to process lootbeams on all those tiles
-		items.stream()
-			.map(ItemStack::getLocation)
-			.map(l -> WorldPoint.fromLocal(client, l))
-			.distinct()
-			.forEach(this::handleLootbeam);
-	}
-
 	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
 	{
 		// Collect the data for the item
@@ -431,8 +413,8 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemComposition.getHaPrice();
-		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
-		final boolean table = itemId == lastUsedItem && tile.getItemLayer().getHeight() > 0;
+		final int despawnTime = item.getDespawnTime() - client.getTickCount();
+		final int visibleTime = item.getVisibleTime() - client.getTickCount();
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -443,9 +425,12 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
+			.ownership(item.getOwnership())
+			.isPrivate(item.isPrivate())
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
+			.despawnTime(Duration.of(despawnTime, RSTimeUnit.GAME_TICKS))
+			.visibleTime(Duration.of(visibleTime, RSTimeUnit.GAME_TICKS))
 			.build();
 
 		// Update item price in case it is coins
@@ -569,27 +554,26 @@ public class GroundItemsPlugin extends Plugin
 			MenuEntry parent = client.createMenuEntry(-1)
 				.setOption("Color")
 				.setTarget(event.getTarget())
-				.setType(MenuAction.RUNELITE_SUBMENU);
+				.setType(MenuAction.RUNELITE);
+			Menu submenu = parent.createSubMenu();
 			final int itemId = event.getIdentifier();
 			Color color = getItemColor(itemId);
 
 			if (color != null)
 			{
-				client.createMenuEntry(-1)
+				submenu.createMenuEntry(-1)
 					.setOption("Reset")
 					.setType(MenuAction.RUNELITE)
-					.setParent(parent)
 					.onClick(e -> unsetItemColor(itemId));
 			}
 
-			client.createMenuEntry(-1)
+			submenu.createMenuEntry(-1)
 				.setOption("Pick")
 				.setType(MenuAction.RUNELITE)
-				.setParent(parent)
 				.onClick(e ->
 					SwingUtilities.invokeLater(() ->
 					{
-						RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+						RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 							color != null ? color : Color.decode("#FFFFFF"), "Item color", true);
 						colorPicker.setOnClose(c -> setItemColor(itemId, c));
 						colorPicker.setVisible(true);
@@ -608,10 +592,9 @@ public class GroundItemsPlugin extends Plugin
 
 			colors.stream()
 				.filter(c -> !c.equals(color))
-				.forEach(c -> client.createMenuEntry(-1)
+				.forEach(c -> submenu.createMenuEntry(-1)
 					.setOption(ColorUtil.prependColorTag("Color", c))
 					.setType(MenuAction.RUNELITE)
-					.setParent(parent)
 					.onClick(e -> setItemColor(itemId, c)));
 		}
 	}
@@ -765,24 +748,6 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
-	{
-		if (menuOptionClicked.isItemOp() && menuOptionClicked.getMenuOption().equals("Drop"))
-		{
-			int itemId = menuOptionClicked.getItemId();
-			// Keep a queue of recently dropped items to better detect
-			// item spawns that are drops
-			droppedItemQueue.add(itemId);
-		}
-		else if (menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
-			&& client.getSelectedWidget() != null
-			&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
-		{
-			lastUsedItem = client.getSelectedWidget().getItemId();
-		}
-	}
-
 	private void handleLootbeam(WorldPoint worldPoint)
 	{
 		/*
@@ -798,9 +763,11 @@ public class GroundItemsPlugin extends Plugin
 		int highestPrice = -1;
 		GroundItem highestItem = null;
 		Collection<GroundItem> groundItems = collectedGroundItems.row(worldPoint).values();
+		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
+		final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
 		for (GroundItem groundItem : groundItems)
 		{
-			if ((config.onlyShowLoot() && !groundItem.isMine()))
+			if (!shouldDisplayItem(ownershipFilterMode, groundItem.getOwnership(), accountType))
 			{
 				continue;
 			}
@@ -904,5 +871,23 @@ public class GroundItemsPlugin extends Plugin
 	void unsetItemColor(int itemId)
 	{
 		configManager.unsetConfiguration(GroundItemsConfig.GROUP, HIGHLIGHT_COLOR_PREFIX + itemId);
+	}
+
+	/*
+	 * All      -> none | self | other | group
+	 * Drops    -> self | group
+	 * Takeable -> none | self | group | (if a main then other)
+	 */
+	boolean shouldDisplayItem(OwnershipFilterMode filterMode, int ownership, int accountType)
+	{
+		switch (filterMode)
+		{
+			case DROPS:
+				return ownership == OWNERSHIP_SELF || ownership == OWNERSHIP_GROUP;
+			case TAKEABLE:
+				return ownership != OWNERSHIP_OTHER || accountType == 0; // Mains can always take items
+			default:
+				return true;
+		}
 	}
 }

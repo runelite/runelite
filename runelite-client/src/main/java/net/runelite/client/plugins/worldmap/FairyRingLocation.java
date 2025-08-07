@@ -33,6 +33,7 @@ enum FairyRingLocation
 {
 	AIQ("AIQ", new WorldPoint(2995, 3112, 0)),
 	AIR("AIR", new WorldPoint(2699, 3249, 0)),
+	AIS("AIS", new WorldPoint(1430, 3323, 0)),
 	AJP("AJP", new WorldPoint(1648, 3011, 0)),
 	// AJQ - Exists in game but not on World Map
 	AJR("AJR", new WorldPoint(2779, 3615, 0)),
@@ -65,6 +66,7 @@ enum FairyRingLocation
 	CIS("CIS", new WorldPoint(1636, 3869, 0)),
 	CJR("CJR", new WorldPoint(2704, 3578, 0)),
 	// CKP - Exists in game but not on World Map
+	CKQ("CKQ", new WorldPoint(1358, 2943, 0)),
 	CKR("CKR", new WorldPoint(2800, 3005, 0)),
 	CKS("CKS", new WorldPoint(3446, 3472, 0)),
 	CLP("CLP", new WorldPoint(3081, 3208, 0)),

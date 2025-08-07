@@ -35,7 +35,7 @@ public interface ItemSkillAction extends SkillAction
 	 * Gets the item ID used for this action.
 	 *
 	 * @return The item ID used for this action.
-	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	int getItemId();
 
@@ -43,7 +43,7 @@ public interface ItemSkillAction extends SkillAction
 	 * Gets the item icon ID for this skill action.
 	 *
 	 * @return The item icon ID of this skill action.
-	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 * @see #getItemId()
 	 */
 	@Override

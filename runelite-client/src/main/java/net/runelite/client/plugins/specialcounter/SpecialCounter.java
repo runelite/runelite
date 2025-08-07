@@ -46,10 +46,10 @@ class SpecialCounter extends Counter
 		this.config = config;
 	}
 
-	void addHits(double hit)
+	void addHits(int hit)
 	{
 		int count = getCount();
-		setCount(count + (int) hit);
+		setCount(count + hit);
 	}
 
 	@Override

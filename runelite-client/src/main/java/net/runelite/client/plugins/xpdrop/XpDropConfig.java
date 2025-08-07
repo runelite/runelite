@@ -36,7 +36,7 @@ public interface XpDropConfig extends Config
 	@ConfigItem(
 		keyName = "hideSkillIcons",
 		name = "Hide skill icons",
-		description = "Configure if XP drops will show their respective skill icons",
+		description = "Configure if XP drops will show their respective skill icons.",
 		position = 0
 	)
 	default boolean hideSkillIcons()
@@ -46,16 +46,16 @@ public interface XpDropConfig extends Config
 
 	@ConfigItem(
 		keyName = "standardColor",
-		name = "Standard Color",
-		description = "XP drop color when no prayer is active",
+		name = "Standard color",
+		description = "XP drop color when no prayer is active.",
 		position = 1
 	)
 	Color standardColor();
 
 	@ConfigItem(
 		keyName = "meleePrayerColor",
-		name = "Melee Prayer Color",
-		description = "XP drop color when a melee prayer is active",
+		name = "Melee prayer color",
+		description = "XP drop color when a melee prayer is active.",
 		position = 2
 	)
 	default Color getMeleePrayerColor()
@@ -65,8 +65,8 @@ public interface XpDropConfig extends Config
 
 	@ConfigItem(
 		keyName = "rangePrayerColor",
-		name = "Range Prayer Color",
-		description = "XP drop color when a range prayer is active",
+		name = "Range prayer color",
+		description = "XP drop color when a range prayer is active.",
 		position = 3
 	)
 	default Color getRangePrayerColor()
@@ -76,8 +76,8 @@ public interface XpDropConfig extends Config
 
 	@ConfigItem(
 		keyName = "magePrayerColor",
-		name = "Mage Prayer Color",
-		description = "XP drop color when a mage prayer is active",
+		name = "Mage prayer color",
+		description = "XP drop color when a mage prayer is active.",
 		position = 4
 	)
 	default Color getMagePrayerColor()
@@ -87,8 +87,8 @@ public interface XpDropConfig extends Config
 
 	@ConfigItem(
 		keyName = "fakeXpDropDelay",
-		name = "Fake Xp Drop delay",
-		description = "Configures how many ticks should pass between fake XP drops, 0 to disable",
+		name = "Fake XP drop delay",
+		description = "Configures how many ticks should pass between fake XP drops, 0 to disable.",
 		position = 5
 	)
 	@Units(Units.TICKS)

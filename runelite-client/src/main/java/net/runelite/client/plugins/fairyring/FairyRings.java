@@ -33,6 +33,7 @@ public enum FairyRings
 	// A
 	AIQ("Mudskipper Point"),
 	AIR("(Island) South-east of Ardougne"),
+	AIS("Auburn Valley"),
 	AJP("Avium Savannah"),
 	AJQ("Cave south of Dorgesh-Kaan"),
 	AJR("Slayer cave"),
@@ -69,6 +70,7 @@ public enum FairyRings
 	CIS("North of the Arceuus Library"),
 	CJR("Sinclair Mansion", "falo bard"),
 	CKP("Cosmic entity's plane"),
+	CKQ("Aldarin"),
 	CKR("South of Tai Bwo Wannai Village"),
 	CKS("Canifis"),
 	CLP("(Island) South of Draynor Village"),

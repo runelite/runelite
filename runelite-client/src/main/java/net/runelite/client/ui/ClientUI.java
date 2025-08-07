@@ -30,7 +30,6 @@ import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import java.applet.Applet;
 import java.awt.AWTException;
 import java.awt.Canvas;
 import java.awt.Component;
@@ -58,10 +57,10 @@ import java.awt.desktop.QuitStrategy;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -85,8 +84,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
@@ -105,7 +102,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
@@ -117,6 +114,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
@@ -146,7 +144,7 @@ public class ClientUI
 
 	private final RuneLiteConfig config;
 	private final MouseManager mouseManager;
-	private final Applet client;
+	private final Component client;
 	private final ConfigManager configManager;
 	private final Provider<ClientThread> clientThreadProvider;
 	private final EventBus eventBus;
@@ -177,10 +175,12 @@ public class ClientUI
 
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int minMemoryLimit = 400;
 
 	@Inject(optional = true)
 	@Named("recommendedMemoryLimit")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int recommendedMemoryLimit = 512;
 
 	private List<KeyListener> keyListeners;
@@ -196,7 +196,7 @@ public class ClientUI
 	private ClientUI(
 		RuneLiteConfig config,
 		MouseManager mouseManager,
-		@Nullable Applet client,
+		Client client,
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
@@ -206,7 +206,7 @@ public class ClientUI
 	{
 		this.config = config;
 		this.mouseManager = mouseManager;
-		this.client = client;
+		this.client = (Component) client;
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
@@ -282,7 +282,7 @@ public class ClientUI
 	@Subscribe
 	private void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN || !(client instanceof Client) || !config.usernameInTitle())
+		if (event.getGameState() != GameState.LOGGED_IN || !config.usernameInTitle())
 		{
 			return;
 		}
@@ -500,6 +500,23 @@ public class ClientUI
 				});
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
 
+			frame.addWindowFocusListener(new WindowFocusListener()
+			{
+				@Override
+				public void windowGainedFocus(WindowEvent e)
+				{
+				}
+
+				@Override
+				public void windowLostFocus(WindowEvent e)
+				{
+					for (KeyListener keyListener : keyListeners)
+					{
+						keyListener.focusLost();
+					}
+				}
+			});
+
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
 			{
@@ -678,26 +695,6 @@ public class ClientUI
 			frame.updateContainsInScreen();
 		});
 
-		// Show out of date dialog if needed
-		if (client != null && !(client instanceof Client))
-		{
-			if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()))
-			{
-				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-					"RuneLite has not yet been updated to work with the latest\n"
-						+ "game update, it will work with reduced functionality until then.",
-					"RuneLite is outdated", INFORMATION_MESSAGE));
-			}
-			else
-			{
-				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-					"RuneLite is outdated and is not compatible with the latest game update.\n"
-						+ "If you are doing pluginhub development, update the runeliteVersion property in build.gradle."
-						+ " Otherwise, git pull and rebuild.",
-					"RuneLite is outdated", ERROR_MESSAGE));
-			}
-		}
-
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 		if (maxMemory < minMemoryLimit)
 		{
@@ -789,7 +786,7 @@ public class ClientUI
 			return true;
 		}
 
-		if (config.warningOnExit() == WarningOnExit.LOGGED_IN && client instanceof Client)
+		if (config.warningOnExit() == WarningOnExit.LOGGED_IN)
 		{
 			return ((Client) client).getGameState() != GameState.LOGIN_SCREEN;
 		}
@@ -806,31 +803,16 @@ public class ClientUI
 		{
 			csev.waitForAllConsumers(Duration.ofSeconds(10));
 
-			if (client != null)
-			{
-				// The client can call System.exit when it's done shutting down
-				// if it doesn't though, we want to exit anyway, so race it
-				int clientShutdownWaitMS;
-				if (client instanceof Client)
-				{
-					((Client) client).stopNow();
-					clientShutdownWaitMS = 1000;
-				}
-				else
-				{
-					// it will continue rendering for about 4 seconds before attempting shutdown if its vanilla
-					client.stop();
-					frame.setVisible(false);
-					clientShutdownWaitMS = 6000;
-				}
+			// The client can call System.exit when it's done shutting down
+			// if it doesn't though, we want to exit anyway, so race it
+			((Client) client).stopNow();
 
-				try
-				{
-					Thread.sleep(clientShutdownWaitMS);
-				}
-				catch (InterruptedException ignored)
-				{
-				}
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException ignored)
+			{
 			}
 			System.exit(0);
 		}, "RuneLite Shutdown").start();
@@ -905,6 +887,7 @@ public class ClientUI
 		{
 			case MacOS:
 				OSXUtil.requestForeground();
+				frame.setState(Frame.NORMAL);
 				break;
 			case Windows:
 				WinUtil.requestForeground(frame);
@@ -922,7 +905,21 @@ public class ClientUI
 	 */
 	public void flashTaskbar()
 	{
-		Taskbar.getTaskbar().requestWindowUserAttention(frame);
+		if (!Taskbar.isTaskbarSupported())
+		{
+			log.debug("Taskbar is not supported on this platform");
+			return;
+		}
+
+		Taskbar taskbar = Taskbar.getTaskbar();
+		if (taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW))
+		{
+			taskbar.requestWindowUserAttention(frame);
+		}
+		else
+		{
+			log.debug("USER_ATTENTION_WINDOW is not supported");
+		}
 	}
 
 	/**
@@ -993,13 +990,10 @@ public class ClientUI
 	 */
 	public Point getCanvasOffset()
 	{
-		if (client instanceof Client)
+		final Canvas canvas = ((Client) client).getCanvas();
+		if (canvas != null)
 		{
-			final Canvas canvas = ((Client) client).getCanvas();
-			if (canvas != null)
-			{
-				return SwingUtilities.convertPoint(canvas, 0, 0, frame);
-			}
+			return SwingUtilities.convertPoint(canvas, 0, 0, frame);
 		}
 
 		return new Point(0, 0);
@@ -1016,7 +1010,7 @@ public class ClientUI
 	 */
 	public void paintOverlays(final Graphics2D graphics)
 	{
-		if (!(client instanceof Client) || withTitleBar)
+		if (withTitleBar)
 		{
 			return;
 		}
@@ -1025,7 +1019,7 @@ public class ClientUI
 		final int x = client.getRealDimensions().width - sidebarOpenIcon.getWidth() - 5;
 
 		// Offset sidebar button if resizable mode logout is visible
-		final Widget logoutButton = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY);
+		final Widget logoutButton = client.getWidget(InterfaceID.ToplevelPreEoc.STONE10);
 		final int y = logoutButton != null && !logoutButton.isHidden() && logoutButton.getParent() != null
 			? logoutButton.getHeight() + logoutButton.getRelativeY()
 			: 5;
@@ -1168,15 +1162,12 @@ public class ClientUI
 
 	private void giveClientFocus()
 	{
-		if (client instanceof Client)
+		final Canvas c = ((Client) client).getCanvas();
+		if (c != null)
 		{
-			final Canvas c = ((Client) client).getCanvas();
-			if (c != null)
-			{
-				c.requestFocusInWindow();
-			}
+			c.requestFocusInWindow();
 		}
-		else if (client != null)
+		else
 		{
 			client.requestFocusInWindow();
 		}
@@ -1195,7 +1186,7 @@ public class ClientUI
 			frame.setOpacity(config.windowOpacity() / 100.0f);
 		}
 
-		if (config.usernameInTitle() && (client instanceof Client))
+		if (config.usernameInTitle())
 		{
 			final Player player = ((Client) client).getLocalPlayer();
 

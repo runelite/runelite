@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
-import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.util.OSType;
@@ -40,22 +39,22 @@ public interface RuneLiteConfig extends Config
 	String GROUP_NAME = "runelite";
 
 	@ConfigSection(
-		name = "Window Settings",
-		description = "Settings relating to the client's window and frame",
+		name = "Window settings",
+		description = "Settings relating to the client's window and frame.",
 		position = 0
 	)
 	String windowSettings = "windowSettings";
 
 	@ConfigSection(
-		name = "Notification Settings",
-		description = "Settings relating to notifications",
+		name = "Notification settings",
+		description = "Settings relating to notifications.",
 		position = 1
 	)
 	String notificationSettings = "notificationSettings";
 
 	@ConfigSection(
-		name = "Overlay Settings",
-		description = "Settings relating to fonts",
+		name = "Overlay settings",
+		description = "Settings relating to fonts.",
 		position = 2
 	)
 	String overlaySettings = "overlaySettings";
@@ -63,7 +62,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "gameSize",
 		name = "Game size",
-		description = "The game will resize to this resolution upon starting the client",
+		description = "The game will resize to this resolution upon starting the client.",
 		position = 10,
 		section = windowSettings
 	)
@@ -75,7 +74,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "automaticResizeType",
 		name = "Resize type",
-		description = "Choose how the window should resize when opening and closing panels",
+		description = "Choose how the window should resize when opening and closing panels.",
 		position = 11,
 		section = windowSettings
 	)
@@ -87,7 +86,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "lockWindowSize",
 		name = "Lock window size",
-		description = "Determines if the window resizing is allowed or not",
+		description = "Determines if the window resizing is allowed or not.",
 		position = 12,
 		section = windowSettings
 	)
@@ -99,7 +98,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "containInScreen2",
 		name = "Contain in screen",
-		description = "Makes the client move itself to stay within the screen when resizing..<br>Note: 'Always' only works on Windows and if custom chrome is enabled.",
+		description = "Makes the client move itself to stay within the screen when resizing.<br>Note: 'Always' only works on Windows and if custom chrome is enabled.",
 		position = 13,
 		section = windowSettings
 	)
@@ -111,7 +110,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "rememberScreenBounds",
 		name = "Remember client position",
-		description = "Save the position and size of the client after exiting",
+		description = "Save the position and size of the client after exiting.",
 		position = 14,
 		section = windowSettings
 	)
@@ -152,7 +151,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
 		name = "Always on top",
-		description = "The game will always be on the top of the screen",
+		description = "The game will always be on the top of the screen.",
 		position = 17,
 		section = windowSettings
 	)
@@ -164,7 +163,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "warningOnExit",
 		name = "Exit warning",
-		description = "Shows a warning popup when trying to exit the client",
+		description = "Shows a warning popup when trying to exit the client.",
 		position = 18,
 		section = windowSettings
 	)
@@ -176,7 +175,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "usernameInTitle",
 		name = "Show display name in title",
-		description = "Toggles displaying of local player's display name in client title",
+		description = "Toggles displaying of local player's display name in client title.",
 		position = 19,
 		section = windowSettings
 	)
@@ -188,7 +187,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "trayIcon",
 		name = "Enable tray icon",
-		description = "Enables icon in system tray",
+		description = "Enables icon in system tray.",
 		warning = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting.",
 		position = 20,
 		section = notificationSettings
@@ -201,7 +200,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
-		description = "Enables tray notifications",
+		description = "Enables tray notifications.",
 		position = 21,
 		section = notificationSettings
 	)
@@ -213,7 +212,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationRequestFocus",
 		name = "Request focus",
-		description = "Configures the window focus request type on notification",
+		description = "Configures the window focus request type on notification.",
 		position = 22,
 		section = notificationSettings
 	)
@@ -225,13 +224,13 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationSound",
 		name = "Notification sound",
-		description = "Enables the playing of a beep sound when notifications are displayed",
+		description = "Enables the playing of a beep sound when notifications are displayed.",
 		position = 23,
 		section = notificationSettings
 	)
-	default Notifier.NativeCustomOff notificationSound()
+	default NotificationSound notificationSound()
 	{
-		return Notifier.NativeCustomOff.NATIVE;
+		return NotificationSound.NATIVE;
 	}
 
 	@Range(
@@ -267,7 +266,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationGameMessage",
 		name = "Game message notifications",
-		description = "Adds a notification message to the chatbox",
+		description = "Adds a notification message to the chatbox.",
 		position = 26,
 		section = notificationSettings
 	)
@@ -279,7 +278,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "flashNotification",
 		name = "Flash",
-		description = "Flashes the game frame as a notification",
+		description = "Flashes the game frame as a notification.",
 		position = 27,
 		section = notificationSettings
 	)
@@ -291,7 +290,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
-		description = "Toggles all notifications for when the client is focused",
+		description = "Send notifications even when the client is focused.",
 		position = 28,
 		section = notificationSettings
 	)
@@ -303,8 +302,8 @@ public interface RuneLiteConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "notificationFlashColor",
-		name = "Notification Flash",
-		description = "Sets the color of the notification flashes.",
+		name = "Notification flash",
+		description = "The color of the notification flashes.",
 		position = 29,
 		section = notificationSettings
 	)
@@ -315,7 +314,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "fontType",
-		name = "Dynamic Overlay Font",
+		name = "Dynamic overlay font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",
 		position = 30,
 		section = overlaySettings
@@ -327,7 +326,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "tooltipFontType",
-		name = "Tooltip Font",
+		name = "Tooltip font",
 		description = "Configures what font type is used for in-game tooltips such as food stats, NPC names, etc.",
 		position = 31,
 		section = overlaySettings
@@ -339,7 +338,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "interfaceFontType",
-		name = "Interface Font",
+		name = "Interface font",
 		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
 		position = 32,
 		section = overlaySettings
@@ -351,7 +350,7 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "infoboxFontType",
-		name = "Infobox Font",
+		name = "Infobox font",
 		description = "Configures what font type is used for infoboxes.",
 		position = 33,
 		section = overlaySettings
@@ -363,8 +362,8 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "tooltipPosition",
-		name = "Tooltip Position",
-		description = "Configures whether to show the tooltip above or under the cursor",
+		name = "Tooltip position",
+		description = "Configures whether to show the tooltip above or under the cursor.",
 		position = 35,
 		section = overlaySettings
 	)
@@ -376,7 +375,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
-		description = "Toggles the infoboxes to display vertically",
+		description = "Toggles the infoboxes to display vertically.",
 		position = 40,
 		section = overlaySettings,
 		hidden = true
@@ -389,7 +388,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "infoBoxSize",
 		name = "Infobox size",
-		description = "Configures the size of each infobox in pixels",
+		description = "Configures the size of each infobox in pixels.",
 		position = 42,
 		section = overlaySettings
 	)
@@ -402,7 +401,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "infoBoxTextOutline",
 		name = "Outline infobox text",
-		description = "Draw a full outline instead of a simple shadow for infobox text",
+		description = "Draw a full outline instead of a simple shadow for infobox text.",
 		position = 43,
 		section = overlaySettings
 	)
@@ -414,8 +413,8 @@ public interface RuneLiteConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "overlayBackgroundColor",
-		name = "Overlay Color",
-		description = "Configures the background color of infoboxes and overlays",
+		name = "Overlay color",
+		description = "Configures the background color of infoboxes and overlays.",
 		position = 44,
 		section = overlaySettings
 	)
@@ -426,8 +425,8 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "sidebarToggleKey",
-		name = "Sidebar Toggle Key",
-		description = "The key that will toggle the sidebar (accepts modifiers)",
+		name = "Sidebar toggle key",
+		description = "The key that will toggle the sidebar (accepts modifiers).",
 		position = 45,
 		section = windowSettings
 	)
@@ -438,8 +437,8 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "panelToggleKey",
-		name = "Plugin Panel Toggle Key",
-		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
+		name = "Plugin panel toggle key",
+		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers).",
 		position = 46,
 		section = windowSettings
 	)
@@ -451,7 +450,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "blockExtraMouseButtons",
 		name = "Block extra mouse buttons",
-		description = "Blocks extra mouse buttons (4 and above)",
+		description = "Blocks extra mouse buttons (4 and above).",
 		position = 50
 	)
 	default boolean blockExtraMouseButtons()
@@ -462,7 +461,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "useWikiItemPrices",
 		name = "Use actively traded price",
-		description = "Use actively traded prices, sourced from the RuneScape wiki, for item prices",
+		description = "Use actively traded prices, sourced from the RuneScape wiki, for item prices.",
 		position = 51
 	)
 	default boolean useWikiItemPrices()
@@ -472,8 +471,8 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "dragHotkey",
-		name = "Drag Hotkey",
-		description = "Configures the hotkey used to drag UI elements around",
+		name = "Drag hotkey",
+		description = "Configures the hotkey used to drag UI elements around.",
 		position = 52
 	)
 	default Keybind dragHotkey()

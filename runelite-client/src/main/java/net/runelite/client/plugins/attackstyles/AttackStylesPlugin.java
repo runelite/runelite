@@ -40,13 +40,14 @@ import net.runelite.api.ParamID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.StructComposition;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -57,6 +58,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
@@ -65,7 +67,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Attack Styles",
 	description = "Show your current attack style as an overlay",
-	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"}
+	tags = {"combat", "defence", "magic", "overlay", "ranged", "strength", "warn", "pure"},
+	enabledByDefault = false
 )
 public class AttackStylesPlugin extends Plugin
 {
@@ -95,6 +98,9 @@ public class AttackStylesPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatManager;
 
+	@Inject
+	private Notifier notifier;
+
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -112,9 +118,9 @@ public class AttackStylesPlugin extends Plugin
 
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				int attackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
-				equippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
-				int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
+				int attackStyleVarbit = client.getVarpValue(VarPlayerID.COM_MODE);
+				equippedWeaponTypeVarbit = client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY);
+				int castingModeVarbit = client.getVarbitValue(VarbitID.AUTOCAST_DEFMODE);
 				updateAttackStyle(
 					equippedWeaponTypeVarbit,
 					attackStyleVarbit,
@@ -133,8 +139,8 @@ public class AttackStylesPlugin extends Plugin
 		{
 			updateWidgetsToHide(false);
 			processWidgets();
+			hideWidget(client.getWidget(InterfaceID.CombatInterface.RETALIATE), false);
 		});
-		hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), false);
 		warnedSkills.clear();
 	}
 
@@ -167,19 +173,19 @@ public class AttackStylesPlugin extends Plugin
 		{
 			hideWidget(client.getWidget(componentId), widgetsToHide.get(equippedWeaponTypeVarbit, componentId));
 		}
-		hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
+		hideWidget(client.getWidget(InterfaceID.CombatInterface.RETALIATE), config.hideAutoRetaliate());
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.ATTACK_STYLE
-			|| event.getVarbitId() == Varbits.EQUIPPED_WEAPON_TYPE
-			|| event.getVarbitId() == Varbits.DEFENSIVE_CASTING_MODE)
+		if (event.getVarpId() == VarPlayerID.COM_MODE
+			|| event.getVarbitId() == VarbitID.COMBAT_WEAPON_CATEGORY
+			|| event.getVarbitId() == VarbitID.AUTOCAST_DEFMODE)
 		{
-			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
-			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
-			final int currentCastingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
+			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayerID.COM_MODE);
+			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY);
+			final int currentCastingModeVarbit = client.getVarbitValue(VarbitID.AUTOCAST_DEFMODE);
 
 			boolean weaponSwitch = currentEquippedWeaponTypeVarbit != equippedWeaponTypeVarbit;
 
@@ -236,17 +242,22 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (attackStyle != prevAttackStyle && warnedSkillSelected && config.showChatWarnings())
+		if (attackStyle != prevAttackStyle && warnedSkillSelected)
 		{
-			final String message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Your attack style has been changed to " + attackStyle.getName())
-				.build();
+			if (config.showChatWarnings())
+			{
+				final String message = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your attack style has been changed to " + attackStyle.getName())
+					.build();
 
-			chatManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(message)
-				.build());
+				chatManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
+
+			notifier.notify(config.warningNotification(), "Attack style changed to " + attackStyle.getName() + "!");
 		}
 		prevAttackStyle = attackStyle;
 	}
@@ -285,6 +296,25 @@ public class AttackStylesPlugin extends Plugin
 	{
 		// from script4525
 		int weaponStyleEnum = client.getEnum(EnumID.WEAPON_STYLES).getIntValue(weaponType);
+		if (weaponStyleEnum == -1)
+		{
+			// Blue moon spear
+			if (weaponType == 22)
+			{
+				return new AttackStyle[]{
+					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, null, DEFENSIVE, CASTING, DEFENSIVE_CASTING
+				};
+			}
+
+			if (weaponType == 30)
+			{
+				// Partisan
+				return new AttackStyle[]{
+					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, AttackStyle.AGGRESSIVE, DEFENSIVE
+				};
+			}
+			return new AttackStyle[0];
+		}
 		int[] weaponStyleStructs = client.getEnum(weaponStyleEnum).getIntVals();
 
 		AttackStyle[] styles = new AttackStyle[weaponStyleStructs.length];
@@ -370,26 +400,26 @@ public class AttackStylesPlugin extends Plugin
 			switch (i)
 			{
 				case 0:
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_STYLE_ONE, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._0, enabled && warnedSkill);
 					break;
 				case 1:
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_STYLE_TWO, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._1, enabled && warnedSkill);
 					break;
 				case 2:
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_STYLE_THREE, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._2, enabled && warnedSkill);
 					break;
 				case 3:
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_STYLE_FOUR, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface._3, enabled && warnedSkill);
 					break;
 				case 4:
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_SPELLS, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.AUTOCAST_BUTTONS, enabled && warnedSkill);
 					break;
 				case 5:
 					// Magic staves defensive casting mode
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_DEFENSIVE_SPELL_BOX, enabled && warnedSkill);
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_DEFENSIVE_SPELL_ICON, enabled && warnedSkill);
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_DEFENSIVE_SPELL_SHIELD, enabled && warnedSkill);
-					widgetsToHide.put(equippedWeaponTypeVarbit, ComponentID.COMBAT_DEFENSIVE_SPELL_TEXT, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.AUTOCAST_DEFENSIVE, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.DEFENSIVE_CONTAINER_GRAPHIC0, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.DEFENSIVE_CONTAINER_GRAPHIC1, enabled && warnedSkill);
+					widgetsToHide.put(equippedWeaponTypeVarbit, InterfaceID.CombatInterface.DEFENSIVE_CONTAINER_TEXT2, enabled && warnedSkill);
 					break;
 			}
 		}

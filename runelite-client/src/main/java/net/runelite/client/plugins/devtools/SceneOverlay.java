@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -58,8 +59,7 @@ public class SceneOverlay extends Overlay
 	private static final Color INTERACTING_COLOR = Color.CYAN;
 
 	private static final int LOCAL_TILE_SIZE = Perspective.LOCAL_TILE_SIZE;
-	private static final int CHUNK_SIZE = 8;
-	private static final int MAP_SQUARE_SIZE = CHUNK_SIZE * CHUNK_SIZE; // 64
+	private static final int MAP_SQUARE_SIZE = Constants.CHUNK_SIZE * Constants.CHUNK_SIZE; // 64
 	private static final int CULL_CHUNK_BORDERS_RANGE = 16;
 	private static final int STROKE_WIDTH = 4;
 	private static final int CULL_LINE_OF_SIGHT_RANGE = 10;
@@ -87,9 +87,9 @@ public class SceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getChunkBorders().isActive())
+		if (plugin.getZoneBorders().isActive())
 		{
-			renderChunkBorders(graphics);
+			renderZoneBorders(graphics);
 		}
 
 		if (plugin.getMapSquares().isActive())
@@ -120,29 +120,24 @@ public class SceneOverlay extends Overlay
 		return null;
 	}
 
-	private void renderChunkBorders(Graphics2D graphics)
+	private void renderZoneBorders(Graphics2D graphics)
 	{
-		WorldPoint wp = client.getLocalPlayer().getWorldLocation();
-		int startX = (wp.getX() - CULL_CHUNK_BORDERS_RANGE + CHUNK_SIZE - 1) / CHUNK_SIZE * CHUNK_SIZE;
-		int startY = (wp.getY() - CULL_CHUNK_BORDERS_RANGE + CHUNK_SIZE - 1) / CHUNK_SIZE * CHUNK_SIZE;
-		int endX = (wp.getX() + CULL_CHUNK_BORDERS_RANGE) / CHUNK_SIZE * CHUNK_SIZE;
-		int endY = (wp.getY() + CULL_CHUNK_BORDERS_RANGE) / CHUNK_SIZE * CHUNK_SIZE;
+		int startX = Constants.CHUNK_SIZE;
+		int startZ = Constants.CHUNK_SIZE;
+		int endX = Constants.SCENE_SIZE - Constants.CHUNK_SIZE;
+		int endZ = Constants.SCENE_SIZE - Constants.CHUNK_SIZE;
 
 		graphics.setStroke(new BasicStroke(STROKE_WIDTH));
 		graphics.setColor(CHUNK_BORDER_COLOR);
 
 		GeneralPath path = new GeneralPath();
-		for (int x = startX; x <= endX; x += CHUNK_SIZE)
+		for (int x = startX; x <= endX; x += Constants.CHUNK_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, x, wp.getY() - CULL_CHUNK_BORDERS_RANGE);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, x, wp.getY() + CULL_CHUNK_BORDERS_RANGE);
-
 			boolean first = true;
-			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
+			for (int z = startZ; z <= endZ; z += Constants.CHUNK_SIZE)
 			{
-				Point p = Perspective.localToCanvas(client,
-					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
-					client.getPlane());
+				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS);
+				Point p = Perspective.localToCanvas(client, lp, client.getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -157,17 +152,13 @@ public class SceneOverlay extends Overlay
 				}
 			}
 		}
-		for (int y = startY; y <= endY; y += CHUNK_SIZE)
+		for (int z = startZ; z <= endZ; z += Constants.CHUNK_SIZE)
 		{
-			LocalPoint lp1 = LocalPoint.fromWorld(client, wp.getX() - CULL_CHUNK_BORDERS_RANGE, y);
-			LocalPoint lp2 = LocalPoint.fromWorld(client, wp.getX() + CULL_CHUNK_BORDERS_RANGE, y);
-
 			boolean first = true;
-			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
+			for (int x = startX; x <= endX; x += Constants.CHUNK_SIZE)
 			{
-				Point p = Perspective.localToCanvas(client,
-					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
-					client.getPlane());
+				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, z << Perspective.LOCAL_COORD_BITS);
+				Point p = Perspective.localToCanvas(client, lp, client.getPlane());
 				if (p != null)
 				{
 					if (first)
@@ -287,7 +278,7 @@ public class SceneOverlay extends Overlay
 			return;
 		}
 
-		if (area.canTravelInDirection(client, dx, dy))
+		if (area.canTravelInDirection(client.getTopLevelWorldView(), dx, dy))
 		{
 			LocalPoint lp = actor.getLocalLocation();
 			if (lp == null)
@@ -358,7 +349,7 @@ public class SceneOverlay extends Overlay
 
 		// Running the line of sight algorithm 100 times per frame doesn't
 		// seem to use much CPU time, however rendering 100 tiles does
-		if (start.hasLineOfSightTo(client, targetLocation))
+		if (start.hasLineOfSightTo(client.getTopLevelWorldView(), targetLocation))
 		{
 			LocalPoint lp = LocalPoint.fromWorld(client, targetLocation);
 			if (lp == null)

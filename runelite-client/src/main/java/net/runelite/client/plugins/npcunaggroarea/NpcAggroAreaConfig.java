@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("npcUnaggroArea")
 public interface NpcAggroAreaConfig extends Config
@@ -42,7 +43,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroAlwaysActive",
 		name = "Always active",
-		description = "Always show this plugins overlays<br>Otherwise, they will only be shown when any NPC name matches the list",
+		description = "Always show this plugin's overlays.<br>Otherwise, they will only be shown when any NPC name matches the list.",
 		position = 1
 	)
 	default boolean alwaysActive()
@@ -53,7 +54,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroNames",
 		name = "NPC names",
-		description = "Enter names of NPCs where you wish to use this plugin",
+		description = "Enter names of NPCs where you wish to use this plugin.",
 		position = 2
 	)
 	default String npcNamePatterns()
@@ -64,7 +65,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroShowTimer",
 		name = "Show timer",
-		description = "Display a timer until NPCs become unaggressive",
+		description = "Display a timer until NPCs become unaggressive.",
 		position = 3
 	)
 	default boolean showTimer()
@@ -75,7 +76,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroShowAreaLines",
 		name = "Show area lines",
-		description = "Display lines, when walked past, the unaggressive timer resets",
+		description = "Display lines, when walked past, the unaggressive timer resets.",
 		position = 4
 	)
 	default boolean showAreaLines()
@@ -86,8 +87,8 @@ public interface NpcAggroAreaConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "npcAggroAreaColor",
-		name = "Aggressive colour",
-		description = "Choose colour to use for marking NPC unaggressive area when NPCs are aggressive",
+		name = "Aggressive color",
+		description = "Choose color to use for marking NPC unaggressive area when NPCs are aggressive.",
 		position = 5
 	)
 	default Color aggroAreaColor()
@@ -98,8 +99,8 @@ public interface NpcAggroAreaConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "npcUnaggroAreaColor",
-		name = "Unaggressive colour",
-		description = "Choose colour to use for marking NPC unaggressive area after NPCs have lost aggression",
+		name = "Unaggressive color",
+		description = "Choose color to use for marking NPC unaggressive area after NPCs have lost aggression.",
 		position = 6
 	)
 	default Color unaggroAreaColor()
@@ -109,13 +110,13 @@ public interface NpcAggroAreaConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyExpire",
-		name = "Notify Expiration",
-		description = "Send a notification when the unaggressive timer expires",
+		name = "Notify expiration",
+		description = "Send a notification when the unaggressive timer expires.",
 		position = 7
 	)
-	default boolean notifyExpire()
+	default Notification notifyExpire()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -132,7 +133,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "showOnSlayerTask",
 		name = "Show on slayer task",
-		description = "Enable for current slayer task NPCs",
+		description = "Enable for current slayer task NPCs.",
 		position = 9
 	)
 	default boolean showOnSlayerTask()

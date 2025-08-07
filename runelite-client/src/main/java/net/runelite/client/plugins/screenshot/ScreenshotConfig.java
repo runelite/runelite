@@ -34,7 +34,7 @@ import net.runelite.client.config.Keybind;
 public interface ScreenshotConfig extends Config
 {
 	@ConfigSection(
-		name = "What to Screenshot",
+		name = "What to screenshot",
 		description = "All the options that select what to screenshot.",
 		position = 99
 	)
@@ -42,7 +42,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "includeFrame",
-		name = "Include Client Frame",
+		name = "Include client frame",
 		description = "Configures whether or not the client frame is included in screenshots.",
 		position = 0
 	)
@@ -53,7 +53,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayDate",
-		name = "Display Date",
+		name = "Display date",
 		description = "Configures whether or not the report button shows the date the screenshot was taken.",
 		position = 1
 	)
@@ -64,7 +64,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyWhenTaken",
-		name = "Notify When Taken",
+		name = "Notify when taken",
 		description = "Configures whether or not you are notified when a screenshot has been taken.",
 		position = 2
 	)
@@ -97,7 +97,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "rewards",
-		name = "Screenshot Rewards",
+		name = "Screenshot rewards",
 		description = "Configures whether screenshots are taken of clues, barrows, and quest completion.",
 		position = 3,
 		section = whatSection
@@ -109,7 +109,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "levels",
-		name = "Screenshot Levels",
+		name = "Screenshot levels",
 		description = "Configures whether screenshots are taken of level ups.",
 		position = 4,
 		section = whatSection
@@ -121,8 +121,8 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "kingdom",
-		name = "Screenshot Kingdom Reward",
-		description = "Configures whether screenshots are taken of Kingdom Reward.",
+		name = "Screenshot kingdom reward",
+		description = "Configures whether screenshots are taken of kingdom reward.",
 		position = 5,
 		section = whatSection
 	)
@@ -133,7 +133,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "pets",
-		name = "Screenshot Pet",
+		name = "Screenshot pet",
 		description = "Configures whether screenshots are taken of receiving pets.",
 		position = 6,
 		section = whatSection
@@ -145,7 +145,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "kills",
-		name = "Screenshot PvP Kills",
+		name = "Screenshot PvP kills",
 		description = "Configures whether or not screenshots are automatically taken of PvP kills.",
 		position = 8,
 		section = whatSection
@@ -157,7 +157,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "boss",
-		name = "Screenshot Boss Kills",
+		name = "Screenshot boss kills",
 		description = "Configures whether or not screenshots are automatically taken of boss kills.",
 		position = 9,
 		section = whatSection
@@ -169,7 +169,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "playerDeath",
-		name = "Screenshot Deaths",
+		name = "Screenshot deaths",
 		description = "Configures whether or not screenshots are automatically taken when you die.",
 		position = 10,
 		section = whatSection
@@ -181,7 +181,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "friendDeath",
-		name = "Screenshot Friend Deaths",
+		name = "Screenshot friend deaths",
 		description = "Configures whether or not screenshots are automatically taken when friends or friends chat members die.",
 		position = 11,
 		section = whatSection
@@ -193,7 +193,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "clanDeath",
-		name = "Screenshot Clan Deaths",
+		name = "Screenshot clan deaths",
 		description = "Configures whether or not screenshots are automatically taken when clan members die.",
 		position = 12,
 		section = whatSection
@@ -205,7 +205,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "duels",
-		name = "Screenshot Duels",
+		name = "Screenshot duels",
 		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
 		position = 13,
 		section = whatSection
@@ -217,8 +217,8 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "valuableDrop",
-		name = "Screenshot Valuable drops",
-		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.<br>"
+		name = "Screenshot valuable drops",
+		description = "Configures whether screenshots are automatically taken when you receive a valuable drop.<br>"
 			+ "Requires 'Loot drop notifications' to be enabled in the RuneScape settings.",
 		position = 14,
 		section = whatSection
@@ -230,7 +230,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "valuableDropThreshold",
-		name = "Valuable Threshold",
+		name = "Valuable threshold",
 		description = "The minimum value to save screenshots of valuable drops.<br>"
 			+ "Requires 'Minimum item value needed for loot notification' to be set to a lesser or equal value in the RuneScape settings.",
 		position = 15,
@@ -243,8 +243,8 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "untradeableDrop",
-		name = "Screenshot Untradeable drops",
-		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.<br>"
+		name = "Screenshot untradeable drops",
+		description = "Configures whether screenshots are automatically taken when you receive an untradeable drop.<br>"
 			+ "Requires 'Untradeable loot notifications' to be enabled in the RuneScape settings.",
 		position = 16,
 		section = whatSection
@@ -256,7 +256,7 @@ public interface ScreenshotConfig extends Config
 
 	@ConfigItem(
 		keyName = "ccKick",
-		name = "Screenshot Kicks from FC",
+		name = "Screenshot kicks from FC",
 		description = "Take a screenshot when you kick a user from a friends chat.",
 		position = 17,
 		section = whatSection
@@ -304,10 +304,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "screenshotLeagueTasks",
+		name = "Screenshot league tasks",
+		description = "Take a screenshot when completing a league task.",
+		position = 21,
+		section = whatSection
+	)
+	default boolean screenshotLeagueTasks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "wildernessLootChest",
 		name = "Screenshot wilderness loot chest",
 		description = "Take a screenshot when opening wilderness loot chest.",
-		position = 21,
+		position = 22,
 		section = whatSection
 	)
 	default boolean screenshotWildernessLootChest()

@@ -3,7 +3,7 @@
 
 RuneLite is a free, open source OldSchool RuneScape client.
 
-If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://discord.gg/ArdAhnN) server.
+If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://runelite.net/discord) server.
 
 ## Project Layout
 

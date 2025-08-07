@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.ui.FontManager;
@@ -44,9 +44,9 @@ class SlayerOverlay extends WidgetItemOverlay
 	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.copyOf(ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8));
 
 	private final static Set<Integer> ALL_SLAYER_ITEMS = Stream.of(
-		ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
+		ItemVariationMapping.getVariations(ItemID.SLAYER_HELM).stream(),
 		ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8).stream(),
-		Stream.of(ItemID.ENCHANTED_GEM, ItemID.ETERNAL_GEM))
+		Stream.of(ItemID.SLAYER_GEM, ItemID.SLAYER_ETERNAL_GEM))
 		.reduce(Stream::concat)
 		.orElseGet(Stream::empty)
 		.collect(Collectors.toSet());

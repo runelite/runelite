@@ -37,26 +37,26 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.item.ItemStats;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -164,12 +164,12 @@ public class PrayerPlugin extends Plugin
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final int id = event.getContainerId();
-		if (id == InventoryID.INVENTORY.getId())
+		if (id == InventoryID.INV)
 		{
 			updatePotionBonus(event.getItemContainer(),
-				client.getItemContainer(InventoryID.EQUIPMENT));
+				client.getItemContainer(InventoryID.WORN));
 		}
-		else if (id == InventoryID.EQUIPMENT.getId())
+		else if (id == InventoryID.WORN)
 		{
 			prayerBonus = totalPrayerBonus(event.getItemContainer().getItems());
 		}
@@ -207,10 +207,9 @@ public class PrayerPlugin extends Plugin
 
 		for (PrayerType prayerType : PrayerType.values())
 		{
-			Prayer prayer = prayerType.getPrayer();
 			int ord = prayerType.ordinal();
 
-			if (client.isPrayerActive(prayer))
+			if (prayerType.isActive(client))
 			{
 				if (prayerType.isOverhead() && !config.prayerIndicatorOverheads())
 				{
@@ -238,7 +237,7 @@ public class PrayerPlugin extends Plugin
 		int total = 0;
 		for (Item item : items)
 		{
-			ItemStats is = itemManager.getItemStats(item.getId(), false);
+			ItemStats is = itemManager.getItemStats(item.getId());
 			if (is != null && is.getEquipment() != null)
 			{
 				total += is.getEquipment().getPrayer();
@@ -347,7 +346,7 @@ public class PrayerPlugin extends Plugin
 
 	private void setPrayerOrbText(String text)
 	{
-		Widget prayerOrbText = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB_TEXT);
+		Widget prayerOrbText = client.getWidget(InterfaceID.Orbs.PRAYER_TEXT);
 		if (prayerOrbText != null)
 		{
 			prayerOrbText.setText(text);
@@ -360,7 +359,7 @@ public class PrayerPlugin extends Plugin
 
 		for (PrayerType prayerType : PrayerType.values())
 		{
-			if (client.isPrayerActive(prayerType.getPrayer()))
+			if (prayerType.isActive(client))
 			{
 				drainEffect += prayerType.getDrainEffect();
 			}

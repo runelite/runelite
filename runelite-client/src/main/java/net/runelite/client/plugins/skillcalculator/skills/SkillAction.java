@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.Collections;
+import java.util.Set;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 
@@ -62,7 +64,7 @@ public interface SkillAction
 	 * value {@code 0} or greater.
 	 *
 	 * @return The item icon ID of this skill action, or {@code -1} if its icon should be represented using a sprite.
-	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 * @see #getSprite()
 	 */
 	default int getIcon()
@@ -77,7 +79,7 @@ public interface SkillAction
 	 * value {@code 0} or greater.
 	 *
 	 * @return The sprite ID of this skill action, or {@code -1} if its icon should be represented using an item icon.
-	 * @see net.runelite.api.SpriteID
+	 * @see net.runelite.api.gameval.SpriteID
 	 * @see #getIcon()
 	 */
 	default int getSprite()
@@ -92,8 +94,13 @@ public interface SkillAction
 	 */
 	default boolean isBonusApplicable(SkillBonus bonus)
 	{
-		return true;
+		return !getExcludedSkillBonuses().contains(bonus);
 	}
 
 	boolean isMembers(final ItemManager itemManager);
+
+	default Set<? extends SkillBonus> getExcludedSkillBonuses()
+	{
+		return Collections.emptySet();
+	}
 }

@@ -44,7 +44,6 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.plugins.xptracker.XpActionType;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -311,8 +310,6 @@ public class XpGlobesOverlay extends Overlay
 
 		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
-			XpActionType xpActionType = xpTrackerService.getActionType(mouseOverSkill.getSkill());
-
 			if (config.showActionsLeft())
 			{
 				int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
@@ -320,7 +317,7 @@ public class XpGlobesOverlay extends Overlay
 				{
 					String actionsLeftString = decimalFormat.format(actionsLeft);
 					xpTooltip.getChildren().add(LineComponent.builder()
-							.left(xpActionType.getLabel() + " left:")
+							.left("Actions left:")
 							.leftColor(Color.ORANGE)
 							.right(actionsLeftString)
 							.build());

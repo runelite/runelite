@@ -32,12 +32,11 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.COOKING_FIRE;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -108,8 +107,8 @@ class CookingOverlay extends OverlayPanel
 	{
 		switch (client.getLocalPlayer().getAnimation())
 		{
-			case COOKING_FIRE:
-			case COOKING_RANGE:
+			case AnimationID.HUMAN_FIRECOOKING:
+			case AnimationID.HUMAN_COOKING:
 				return true;
 			default:
 				return false;

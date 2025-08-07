@@ -27,7 +27,7 @@ package net.runelite.client.plugins.achievementdiary;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.gameval.VarPlayerID;
 
 @RequiredArgsConstructor
 @Getter
@@ -44,6 +44,6 @@ public class QuestPointRequirement implements Requirement
 	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
-		return client.getVarpValue(VarPlayer.QUEST_POINTS) >= qp;
+		return client.getVarpValue(VarPlayerID.QP) >= qp;
 	}
 }

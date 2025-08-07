@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
@@ -36,29 +37,25 @@ import net.runelite.cache.script.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScriptWriter extends rs2asmBaseListener
+@RequiredArgsConstructor
+class ScriptWriter extends rs2asmBaseListener
 {
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWriter.class);
 
 	private final Instructions instructions;
 	private final LabelVisitor labelVisitor;
+	private final Map<String, Object> symbols;
 
 	private int id;
 	private int pos;
-	private int intStackCount;
-	private int stringStackCount;
+	private int intArgCount;
+	private int objArgCount;
 	private int localIntCount;
-	private int localStringCount;
+	private int localObjCount;
 	private List<Integer> opcodes = new ArrayList<>();
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
 	private List<LookupSwitch> switches = new ArrayList<>();
-
-	public ScriptWriter(Instructions instructions, LabelVisitor labelVisitor)
-	{
-		this.instructions = instructions;
-		this.labelVisitor = labelVisitor;
-	}
 
 	@Override
 	public void enterId_value(rs2asmParser.Id_valueContext ctx)
@@ -68,31 +65,17 @@ public class ScriptWriter extends rs2asmBaseListener
 	}
 
 	@Override
-	public void enterInt_stack_value(rs2asmParser.Int_stack_valueContext ctx)
+	public void enterInt_arg_value(rs2asmParser.Int_arg_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
-		intStackCount = value;
+		intArgCount = value;
 	}
 
 	@Override
-	public void enterString_stack_value(rs2asmParser.String_stack_valueContext ctx)
+	public void enterObj_arg_value(rs2asmParser.Obj_arg_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
-		stringStackCount = value;
-	}
-
-	@Override
-	public void enterInt_var_value(rs2asmParser.Int_var_valueContext ctx)
-	{
-		int value = Integer.parseInt(ctx.getText());
-		localIntCount = value;
-	}
-
-	@Override
-	public void enterString_var_value(rs2asmParser.String_var_valueContext ctx)
-	{
-		int value = Integer.parseInt(ctx.getText());
-		localStringCount = value;
+		objArgCount = value;
 	}
 
 	@Override
@@ -134,7 +117,15 @@ public class ScriptWriter extends rs2asmBaseListener
 		opcodes.add(opcode);
 		iops.add(null);
 		sops.add(null);
-		switches.add(null);
+
+		if (opcode == Opcodes.SWITCH)
+		{
+			switches.add(new LookupSwitch());
+		}
+		else
+		{
+			switches.add(null);
+		}
 	}
 
 	@Override
@@ -149,7 +140,9 @@ public class ScriptWriter extends rs2asmBaseListener
 	public void enterOperand_qstring(rs2asmParser.Operand_qstringContext ctx)
 	{
 		String text = ctx.getText();
-		text = text.substring(1, text.length() - 1);
+		text = text.substring(1, text.length() - 1)
+			.replace("\\\\", "\\")
+			.replace("\\\"", "\"");
 		sops.set(pos, text);
 	}
 
@@ -168,15 +161,21 @@ public class ScriptWriter extends rs2asmBaseListener
 	}
 
 	@Override
-	public void enterSwitch_lookup(rs2asmParser.Switch_lookupContext ctx)
+	public void enterOperand_symbol(rs2asmParser.Operand_symbolContext ctx)
 	{
-		if (switches.get(pos - 1) != null)
+		String symbolName = ctx.getText().substring(1);
+		Object symbol = symbols.get(symbolName);
+		if (symbol == null)
 		{
-			return;
+			throw new RuntimeException("unknown symbol " + symbolName);
 		}
 
-		LookupSwitch ls = new LookupSwitch();
-		switches.set(pos - 1, ls);
+		if (!(symbol instanceof Integer))
+		{
+			throw new RuntimeException("non-integer symbols not supported");
+		}
+
+		iops.set(pos, (int) symbol);
 	}
 
 	@Override
@@ -218,13 +217,14 @@ public class ScriptWriter extends rs2asmBaseListener
 	public ScriptDefinition buildScript()
 	{
 		setSwitchOperands();
+		computeLocalSizes();
 
 		ScriptDefinition script = new ScriptDefinition();
 		script.setId(id);
-		script.setIntStackCount(intStackCount);
-		script.setStringStackCount(stringStackCount);
+		script.setIntArgCount(intArgCount);
+		script.setObjArgCount(objArgCount);
 		script.setLocalIntCount(localIntCount);
-		script.setLocalStringCount(localStringCount);
+		script.setLocalObjCount(localObjCount);
 		script.setInstructions(opcodes.stream().mapToInt(Integer::valueOf).toArray());
 		script.setIntOperands(iops.stream()
 			.map(i -> i == null ? 0 : i)
@@ -233,6 +233,29 @@ public class ScriptWriter extends rs2asmBaseListener
 		script.setStringOperands(sops.toArray(new String[0]));
 		script.setSwitches(buildSwitches());
 		return script;
+	}
+
+	private void computeLocalSizes()
+	{
+		int maxIntVars = intArgCount;
+		int maxObjVars = objArgCount;
+		for (int i = 0; i < opcodes.size(); ++i)
+		{
+			int opcode = opcodes.get(i);
+			if (opcode == Opcodes.ILOAD || opcode == Opcodes.ISTORE)
+			{
+				int op = iops.get(i);
+				maxIntVars = Math.max(maxIntVars, op + 1);
+			}
+			else if (opcode == Opcodes.OLOAD || opcode == Opcodes.OSTORE)
+			{
+				int op = iops.get(i);
+				maxObjVars = Math.max(maxObjVars, op + 1);
+			}
+		}
+
+		localIntCount = maxIntVars;
+		localObjCount = maxObjVars;
 	}
 
 	private void setSwitchOperands()

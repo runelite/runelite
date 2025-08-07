@@ -24,8 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
@@ -33,6 +35,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -49,6 +52,34 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	private static final String CECILIA = "Cecilia";
 	private static final Pattern SONG_PATTERN = Pattern.compile("<col=ffffff>([A-Za-z !&',.]+)</col>");
 
+	static final List<MusicClue> CLUES = ImmutableList.of(
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC001, "Vision"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC002, "The Forlorn Homestead"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC003, "Tiptoe"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC004, "Rugged Terrain"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC005, "On the Shore"),
+		new MusicClue(ItemID.TRAIL_CLUE_EASY_MUSIC006, "Alone"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC001, "Karamja Jam"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC002, "Faerie"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC003, "Forgotten"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC004, "Catch Me If You Can"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC005, "Cave of Beasts"),
+		new MusicClue(ItemID.TRAIL_CLUE_MEDIUM_MUSIC006, "Devils May Care"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC001, "Scorpia Dances"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC002, "Complication"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC003, "Subterranea"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC004, "Little Cave of Horrors"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC005, "Roc and Roll"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC006, "La Mort"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC007, "Fossilised"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC008, "Hells Bells"),
+		new MusicClue(ItemID.TRAIL_CLUE_HARD_MUSIC009, "Regal Pomp"),
+		new MusicClue(ItemID.TRAIL_HARD_MUSIC_VM01, "The Moons of Ruin"),
+		new MusicClue(ItemID.TRAIL_CLUE_ELITE_MUSIC001, "Lament for the Hallowed"),
+		new MusicClue(ItemID.TRAIL_CLUE_ELITE_MUSIC002, "The Pharaoh")
+		);
+
+	private final int itemId;
 	private final String song;
 
 	@Override
@@ -88,6 +119,32 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 		}
 	}
 
+	public static MusicClue forItemId(int itemId)
+	{
+		for (MusicClue clue : CLUES)
+		{
+			if (clue.itemId == itemId)
+			{
+				return clue;
+			}
+		}
+
+		return null;
+	}
+
+	public static MusicClue forSong(String song)
+	{
+		for (MusicClue clue : CLUES)
+		{
+			if (clue.song.equals(song))
+			{
+				return clue;
+			}
+		}
+
+		return null;
+	}
+
 	@Override
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
@@ -100,7 +157,17 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 		if (m.find())
 		{
 			final String song = m.group(1);
-			return new MusicClue(song);
+
+			// Check for existing MusicClue, otherwise create new
+			MusicClue clue = forSong(song);
+			if (clue != null)
+			{
+				return clue;
+			}
+			else
+			{
+				return new MusicClue(-1, song);
+			}
 		}
 		return null;
 	}

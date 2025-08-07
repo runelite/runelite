@@ -223,6 +223,17 @@ public enum Quest
 	AT_FIRST_LIGHT(3513, "At First Light"),
 	PERILOUS_MOONS(3514, "Perilous Moons"),
 	THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(3515, "The Ribbiting Tale of a Lily Pad Labour Dispute"),
+	THE_HEART_OF_DARKNESS(3710, "The Heart of Darkness"),
+	DEATH_ON_THE_ISLE(3711, "Death on the Isle"),
+	MEAT_AND_GREET(3712, "Meat and Greet"),
+	ETHICALLY_ACQUIRED_ANTIQUITIES(3713, "Ethically Acquired Antiquities"),
+	THE_CURSE_OF_ARRAV(3937, "The Curse of Arrav"),
+	THE_FINAL_DAWN(5189, "The Final Dawn"),
+	SHADOWS_OF_CUSTODIA(5190, "Shadows of Custodia"),
+	SCRAMBLED(5191, "Scrambled!"),
+	AN_EXISTENTIAL_CRISIS(5192, "An Existential Crisis"),
+	IMPENDING_CHAOS(5193, "Impending Chaos"),
+	VALE_TOTEMS(5194, "Vale Totems"),
 	;
 
 	@Getter

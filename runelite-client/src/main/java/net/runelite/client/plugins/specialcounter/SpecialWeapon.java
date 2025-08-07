@@ -24,24 +24,55 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 
 @AllArgsConstructor
 @Getter
 public enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::dragonWarhammerThreshold),
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.BH_DRAGON_WARHAMMER_CORRUPTED}, false, SpecialCounterConfig::dragonWarhammerThreshold)
+		{
+			@Override
+			public float computeDrainPercent(int hit, @Nullable NPC target)
+			{
+				if (hit > 0)
+				{
+					return 0.7f;
+				}
+				else if (target != null && TEKTON_VARIANTS.contains(target.getId()))
+				{
+					return 0.95f;
+				}
+				return 0;
+			}
+		},
 	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
 	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
-	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold),
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
+	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BGS, ItemID.BGSG}, true, SpecialCounterConfig::bandosGodswordThreshold)
+		{
+			@Override
+			public int computeHit(int hit, @Nullable NPC target)
+			{
+				if (hit == 0 && target != null && TEKTON_VARIANTS.contains(target.getId()))
+				{
+					return 10;
+				}
+				return super.computeHit(hit, target);
+			}
+		},
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BRAIN_ANCHOR}, true, (c) -> 0),
+	BONE_DAGGER("Bone Dagger", new int[]{ItemID.DTTD_BONE_DAGGER, ItemID.DTTD_BONE_DAGGER_P, ItemID.DTTD_BONE_DAGGER_P_, ItemID.DTTD_BONE_DAGGER_P__}, true, (c) -> 0),
 	DORGESHUUN_CROSSBOW(
 		"Dorgeshuun Crossbow",
-		new int[]{ItemID.DORGESHUUN_CROSSBOW},
+		new int[]{ItemID.DTTD_BONE_CROSSBOW},
 		true,
 		(distance) -> 60 + distance * 3,
 		(c) -> 0
@@ -49,12 +80,49 @@ public enum SpecialWeapon
 	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold),
 	ACCURSED_SCEPTRE(
 		"Accursed Sceptre",
-		new int[]{ItemID.ACCURSED_SCEPTRE, ItemID.ACCURSED_SCEPTRE_A},
+		new int[]{ItemID.WILD_CAVE_ACCURSED_CHARGED, ItemID.WILD_CAVE_ACCURSED_CHARGED_RECOL},
 		false,
 		(distance) -> 46 + distance * 10,
 		(c) -> 0
 	),
-	;
+	TONALZTICS_OF_RALOS(
+		"Tonalztics of Ralos",
+		new int[]{ItemID.TONALZTICS_OF_RALOS_CHARGED},
+		true, // Not really, but we convert the number of hits into a single hit
+		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
+		(c) -> 0
+	),
+	ELDER_MAUL("Elder Maul",
+		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_ORNAMENT},
+		false,
+		(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
+		SpecialCounterConfig::elderMaulThreshold)
+		{
+			@Override
+			public float computeDrainPercent(int hit, @Nullable NPC target)
+			{
+				if (hit > 0)
+				{
+					return 0.65f;
+				}
+				else if (target != null && TEKTON_VARIANTS.contains(target.getId()))
+				{
+					return 0.95f;
+				}
+				return 0;
+			}
+		},
+	SEERCULL("Seercull", new int[]{ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW}, true, (d) -> 46 + (d * 5), (c) -> 0),
+	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold);
+
+	private static final Set<Integer> TEKTON_VARIANTS = ImmutableSet.of(
+		NpcID.RAIDS_TEKTON_WAITING,
+		NpcID.RAIDS_TEKTON_WALKING_STANDARD,
+		NpcID.RAIDS_TEKTON_FIGHTING_STANDARD,
+		NpcID.RAIDS_TEKTON_HAMMERING,
+		NpcID.RAIDS_TEKTON_WALKING_ENRAGED,
+		NpcID.RAIDS_TEKTON_FIGHTING_ENRAGED
+	);
 
 	private final String name;
 	private final int[] itemID;
@@ -95,5 +163,15 @@ public enum SpecialWeapon
 
 		// All attacks have one server cycle of additional delay beyond any projectile travel time for the weapon.
 		return serverCyclesDelay + 1;
+	}
+
+	public float computeDrainPercent(int hit, @Nullable NPC target)
+	{
+		return 0f;
+	}
+
+	public int computeHit(int hit, @Nullable NPC target)
+	{
+		return hit;
 	}
 }

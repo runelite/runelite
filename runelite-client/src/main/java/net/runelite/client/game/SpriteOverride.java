@@ -24,7 +24,7 @@
  */
 package net.runelite.client.game;
 
-import net.runelite.api.SpriteID;
+import net.runelite.api.gameval.SpriteID;
 
 public interface SpriteOverride
 {

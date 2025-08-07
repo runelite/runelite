@@ -33,7 +33,7 @@ public interface BankTagsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "useTabs",
-		name = "Use Tag Tabs",
+		name = "Use tag tabs",
 		description = "Enable the ability to add tabs to your bank which allow fast access to tags.",
 		position = 1
 	)
@@ -44,8 +44,8 @@ public interface BankTagsConfig extends Config
 
 	@ConfigItem(
 		keyName = "rememberTab",
-		name = "Remember last Tag Tab",
-		description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
+		name = "Remember last tag tab",
+		description = "Enable the ability to remember last tag tab when closing/opening the bank.",
 		position = 2
 	)
 	default boolean rememberTab()
@@ -56,7 +56,7 @@ public interface BankTagsConfig extends Config
 	@ConfigItem(
 		keyName = "removeTabSeparators",
 		name = "Remove tab separators",
-		description = "Remove the tab separators normally present in tag tabs",
+		description = "Remove the tab separators normally present in tag tabs.",
 		position = 3
 	)
 	default boolean removeSeparators()
@@ -67,7 +67,7 @@ public interface BankTagsConfig extends Config
 	@ConfigItem(
 		keyName = "preventTagTabDrags",
 		name = "Prevent tag tab item dragging",
-		description = "Ignore dragged items to prevent unwanted bank item reordering",
+		description = "Ignore dragged items to prevent unwanted bank item reordering.",
 		position = 4
 	)
 	default boolean preventTagTabDrags()

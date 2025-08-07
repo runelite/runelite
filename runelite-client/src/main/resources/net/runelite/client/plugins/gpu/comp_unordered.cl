@@ -26,9 +26,10 @@
 
 #include "cl_types.cl"
 
-__kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__global const struct modelinfo *ol, __global const int4 *vb,
-                                                                              __global const int4 *tempvb, __global const float4 *texb,
-                                                                              __global const float4 *temptexb, __global int4 *vout, __global float4 *uvout) {
+__kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__global const struct modelinfo *ol, __global const struct vert *vb,
+                                                                              __global const struct vert *tempvb, __global const float4 *texb,
+                                                                              __global const float4 *temptexb, __global struct vert *vout,
+                                                                              __global float4 *uvout) {
   size_t groupId = get_group_id(0);
   size_t localId = get_local_id(0);
   struct modelinfo minfo = ol[groupId];
@@ -44,7 +45,7 @@ __kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__
   }
 
   uint ssboOffset = localId;
-  int4 thisA, thisB, thisC;
+  struct vert thisA, thisB, thisC;
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
@@ -58,13 +59,17 @@ __kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__
   }
 
   uint myOffset = localId;
-  int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-  float4 texPos = convert_float4(pos.wxyz);
+  float3 pos = convert_float3((int3)(minfo.x, minfo.y, minfo.z));
+  float4 texPos = (float4)(0, minfo.x, minfo.y, minfo.z);
+
+  float3 vertA = (float3)(thisA.x, thisA.y, thisA.z) + pos;
+  float3 vertB = (float3)(thisB.x, thisB.y, thisB.z) + pos;
+  float3 vertC = (float3)(thisC.x, thisC.y, thisC.z) + pos;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3] = pos + thisA;
-  vout[outOffset + myOffset * 3 + 1] = pos + thisB;
-  vout[outOffset + myOffset * 3 + 2] = pos + thisC;
+  vout[outOffset + myOffset * 3] = (struct vert){vertA.x, vertA.y, vertA.z, thisA.ahsl};
+  vout[outOffset + myOffset * 3 + 1] = (struct vert){vertB.x, vertB.y, vertB.z, thisB.ahsl};
+  vout[outOffset + myOffset * 3 + 2] = (struct vert){vertC.x, vertC.y, vertC.z, thisC.ahsl};
 
   if (toffset < 0) {
     uvout[outOffset + myOffset * 3] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
