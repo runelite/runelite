@@ -254,6 +254,11 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
             return me;
         }
 
+        if (me.getButton() == MouseEvent.BUTTON1 || me.getButton() == MouseEvent.BUTTON3)
+        {
+            return me;
+        }
+
         if (me.getButton() > 3)
         {
             me.consume();
@@ -384,6 +389,11 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
     public MouseEvent mouseReleased(MouseEvent me)
     {
         final int mouseButton = me.getButton();
+
+        if (mouseButton == MouseEvent.BUTTON1 || mouseButton == MouseEvent.BUTTON3)
+        {
+            return me;
+        }
 
         final Integer mappedKeyCode = modified.remove(mouseButton);
 

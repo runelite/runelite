@@ -60,13 +60,13 @@ public class Unifiedbind
             .reduce((a, b) -> a | b).get();
 
     // Static modifier variants for key binds
-    public static final Unifiedbind NOT_SET = new Unifiedbind(KeyEvent.VK_UNDEFINED, 0);
+    public static final Unifiedbind NOT_SET = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, 0);
 
-    public static final Unifiedbind CTRL = new Unifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
-    public static final Unifiedbind ALT = new Unifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
-    public static final Unifiedbind SHIFT = new Unifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
+    public static final Unifiedbind CTRL = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+    public static final Unifiedbind ALT = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
+    public static final Unifiedbind SHIFT = new Unifiedbind(Type.KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
 
-    // Static modifier variants for key binds
+    // Static modifier variants for mouse binds
     public static final Unifiedbind NOT_SET_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, 0);
 
     public static final Unifiedbind CTRL_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK);
@@ -111,15 +111,7 @@ public class Unifiedbind
     }
 
     /**
-     * Legacy constructor for Unifiedbinds without a type declaration
-     */
-    public Unifiedbind(int keyCode, int modifiers)
-    {
-        this(Type.KEYBOARD, keyCode, modifiers, false);
-    }
-
-    /**
-     * Constructor for binds with type declaration (for mouse binds)
+     * Constructor for binds with type declaration
      */
     public Unifiedbind(Type type, int code, int modifiers)
     {
@@ -129,11 +121,11 @@ public class Unifiedbind
     /**
      * Constructs a Unifiedbind that matches the passed KeyEvent
      */
-    public Unifiedbind(KeyEvent e)
+    public Unifiedbind(KeyEvent ke)
     {
-        this(Type.KEYBOARD, e.getExtendedKeyCode(), e.getModifiersEx(), false);
+        this(Type.KEYBOARD, ke.getExtendedKeyCode(), ke.getModifiersEx(), false);
 
-        assert matches(e);
+        assert matches(ke);
     }
 
     /**
@@ -152,20 +144,20 @@ public class Unifiedbind
      * KeyReleased event this returns if the event is this hotkey being
      * released
      */
-    public boolean matches(KeyEvent e)
+    public boolean matches(KeyEvent ke)
     {
-        return matches(e, false);
+        return matches(ke, false);
     }
 
-    protected boolean matches(KeyEvent e, boolean ignoreModifiers)
+    protected boolean matches(KeyEvent ke, boolean ignoreModifiers)
     {
         if (NOT_SET.equals(this))
         {
             return false;
         }
 
-        int keyCode = e.getExtendedKeyCode();
-        int modifiers = e.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
+        int keyCode = ke.getExtendedKeyCode();
+        int modifiers = ke.getModifiersEx() & KEYBOARD_MODIFIER_MASK;
 
         Integer mf = getModifierForKeyCode(keyCode);
         if (mf != null)
@@ -174,7 +166,7 @@ public class Unifiedbind
             keyCode = KeyEvent.VK_UNDEFINED;
         }
 
-        if (e.getID() == KeyEvent.KEY_RELEASED)
+        if (ke.getID() == KeyEvent.KEY_RELEASED)
         {
             if (keyCode != KeyEvent.VK_UNDEFINED)
             {
