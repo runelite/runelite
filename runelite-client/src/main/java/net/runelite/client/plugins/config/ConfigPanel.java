@@ -804,6 +804,11 @@ class ConfigPanel extends PluginPanel
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
 		}
+        else if (component instanceof UnifiedbindButton)
+        {
+            UnifiedbindButton unifiedbindButton = (UnifiedbindButton) component;
+            configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), unifiedbindButton.getValue());
+        }
 		else if (component instanceof JList)
 		{
 			JList<?> list = (JList<?>) component;

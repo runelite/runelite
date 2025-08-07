@@ -31,7 +31,7 @@ import java.awt.event.MouseEvent;
 public class ModifierlessUnifiedbind extends Unifiedbind
 {
     /**
-     * Legacy constructor for key binds without a type declaration
+     * Constructs a modifierless bind based on type, code, and modifiers for completeness
      */
     public ModifierlessUnifiedbind(Type type, int code, int modifiers)
     {
@@ -39,7 +39,7 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     }
 
     /**
-     * Constructs a modifierless bind based on type and code
+     * Constructs a modifierless bind based on type and code to simplify usage
      */
     public ModifierlessUnifiedbind(Type type, int code)
     {
@@ -49,11 +49,11 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     /**
      * Constructs a Unifiedbind with that matches the passed KeyEvent
      */
-    public ModifierlessUnifiedbind(KeyEvent e)
+    public ModifierlessUnifiedbind(KeyEvent ke)
     {
-        this(Type.KEYBOARD, e.getExtendedKeyCode(), e.getModifiersEx());
+        this(Type.KEYBOARD, ke.getExtendedKeyCode(), ke.getModifiersEx());
 
-        assert matches(e);
+        assert matches(ke);
     }
 
     public ModifierlessUnifiedbind(MouseEvent me)
@@ -70,12 +70,9 @@ public class ModifierlessUnifiedbind extends Unifiedbind
      * released
      */
     @Override
-    public boolean matches(KeyEvent e)
+    public boolean matches(KeyEvent ke)
     {
-        boolean result = matches(e, true);
-        System.out.printf("[ModifierlessUnifiedbind] key press=%d, expected=%d → %b%n",
-                e.getExtendedKeyCode(), this.getCode(), result);
-        return result;
+        return matches(ke, true);
     }
 
     /**
@@ -86,9 +83,6 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     @Override
     public boolean matches(MouseEvent me)
     {
-        boolean result = matches(me, true);
-        System.out.printf("[ModifierlessUnifiedbind] mouse button=%d, expected=%d → %b%n",
-                me.getButton(), this.getCode(), result);
-        return result;
+        return matches(me, true);
     }
 }

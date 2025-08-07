@@ -131,7 +131,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f1()
 	{
-		return new ModifierlessUnifiedbind(MOUSE, 4);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_1);
 	}
 
 	@ConfigItem(

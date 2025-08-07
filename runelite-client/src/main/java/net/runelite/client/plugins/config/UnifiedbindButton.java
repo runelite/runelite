@@ -48,7 +48,7 @@ class UnifiedbindButton extends JButton
         addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mouseReleased(MouseEvent e)
+            public void mouseClicked(MouseEvent e)
             {
                 // Mouse buttons other than button1 don't give focus
                 if (e.getButton() == MouseEvent.BUTTON1)
