@@ -70,8 +70,8 @@ public class KeyRemappingPlugin extends Plugin
 	@Inject
 	private KeyRemappingListener inputListener;
 
-    @Inject
-    private MouseManager mouseManager;
+	@Inject
+	private MouseManager mouseManager;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -82,7 +82,7 @@ public class KeyRemappingPlugin extends Plugin
 	{
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
-        mouseManager.registerMouseListener(inputListener);
+		mouseManager.registerMouseListener(inputListener);
 
 		clientThread.invoke(() ->
 		{
@@ -107,7 +107,7 @@ public class KeyRemappingPlugin extends Plugin
 		});
 
 		keyManager.unregisterKeyListener(inputListener);
-        mouseManager.unregisterMouseListener(inputListener);
+		mouseManager.unregisterMouseListener(inputListener);
 	}
 
 	@Provides
