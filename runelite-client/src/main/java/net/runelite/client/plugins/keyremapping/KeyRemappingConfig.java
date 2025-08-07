@@ -115,7 +115,7 @@ public interface KeyRemappingConfig extends Config
 		position = 6,
 		keyName = "fkeyRemap",
 		name = "Remap F-keys",
-		description = "Configures whether f-keys use remapped keys.",
+		description = "Configures whether f-keys use remapped keys or mouse buttons.",
 		section = fKeySection
 	)
 	default boolean fkeyRemap()
