@@ -66,6 +66,13 @@ public class Unifiedbind
     public static final Unifiedbind ALT = new Unifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
     public static final Unifiedbind SHIFT = new Unifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.SHIFT_DOWN_MASK);
 
+    // Static modifier variants for key binds
+    public static final Unifiedbind NOT_SET_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, 0);
+
+    public static final Unifiedbind CTRL_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.CTRL_DOWN_MASK);
+    public static final Unifiedbind ALT_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.ALT_DOWN_MASK);
+    public static final Unifiedbind SHIFT_MOUSE = new Unifiedbind(Type.MOUSE, MouseEvent.NOBUTTON, InputEvent.SHIFT_DOWN_MASK);
+
     private final Type type;
     private final int code;
     private final int modifiers;
@@ -183,7 +190,6 @@ public class Unifiedbind
         {
             return this.code == keyCode;
         }
-
         return this.code == keyCode && this.modifiers == modifiers;
     }
 
@@ -212,7 +218,6 @@ public class Unifiedbind
         {
             return this.code == mouseButton;
         }
-
         return this.code == mouseButton && this.modifiers == modifiers;
     }
 

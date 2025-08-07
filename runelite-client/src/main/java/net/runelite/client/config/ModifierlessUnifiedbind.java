@@ -33,9 +33,9 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     /**
      * Legacy constructor for key binds without a type declaration
      */
-    public ModifierlessUnifiedbind(int keyCode, int modifiers)
+    public ModifierlessUnifiedbind(Type type, int code, int modifiers)
     {
-        super(Type.KEYBOARD, keyCode, modifiers, true);
+        super(type, code, modifiers, true);
     }
 
     /**
@@ -51,7 +51,7 @@ public class ModifierlessUnifiedbind extends Unifiedbind
      */
     public ModifierlessUnifiedbind(KeyEvent e)
     {
-        this(e.getExtendedKeyCode(), e.getModifiersEx());
+        this(Type.KEYBOARD, e.getExtendedKeyCode(), e.getModifiersEx());
 
         assert matches(e);
     }
@@ -72,7 +72,10 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     @Override
     public boolean matches(KeyEvent e)
     {
-        return matches(e, true);
+        boolean result = matches(e, true);
+        System.out.printf("[ModifierlessUnifiedbind] key press=%d, expected=%d → %b%n",
+                e.getExtendedKeyCode(), this.getCode(), result);
+        return result;
     }
 
     /**
@@ -83,6 +86,9 @@ public class ModifierlessUnifiedbind extends Unifiedbind
     @Override
     public boolean matches(MouseEvent me)
     {
-        return matches(me, true);
+        boolean result = matches(me, true);
+        System.out.printf("[ModifierlessUnifiedbind] mouse button=%d, expected=%d → %b%n",
+                me.getButton(), this.getCode(), result);
+        return result;
     }
 }

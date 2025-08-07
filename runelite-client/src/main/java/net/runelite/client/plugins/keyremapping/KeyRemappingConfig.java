@@ -71,7 +71,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind up()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_W, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_W);
 	}
 
 	@ConfigItem(
@@ -83,7 +83,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind down()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_S, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_S);
 	}
 
 	@ConfigItem(
@@ -95,7 +95,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind left()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_A, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_A);
 	}
 
 	@ConfigItem(
@@ -107,7 +107,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind right()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_D, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_D);
 	}
 
 	@ConfigItem(
@@ -131,7 +131,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f1()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_1, 0);
+		return new ModifierlessUnifiedbind(MOUSE, 4);
 	}
 
 	@ConfigItem(
@@ -143,7 +143,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f2()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_2, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_2);
 	}
 
 	@ConfigItem(
@@ -155,7 +155,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f3()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_3, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_3);
 	}
 
 	@ConfigItem(
@@ -167,7 +167,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f4()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_4, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_4);
 	}
 
 	@ConfigItem(
@@ -179,7 +179,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f5()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_5, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_5);
 	}
 
 	@ConfigItem(
@@ -191,7 +191,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f6()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_6, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_6);
 	}
 
 	@ConfigItem(
@@ -203,7 +203,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f7()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_7, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_7);
 	}
 
 	@ConfigItem(
@@ -215,7 +215,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f8()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_8, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_8);
 	}
 
 	@ConfigItem(
@@ -227,7 +227,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f9()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_9, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_9);
 	}
 
 	@ConfigItem(
@@ -239,7 +239,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f10()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_0, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_0);
 	}
 
 	@ConfigItem(
@@ -251,7 +251,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f11()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_MINUS, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_MINUS);
 	}
 
 	@ConfigItem(
@@ -263,7 +263,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind f12()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_EQUALS, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_EQUALS);
 	}
 
 	@ConfigItem(
@@ -275,7 +275,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind esc()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_ESCAPE, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_ESCAPE, 0);
 	}
 
 	@ConfigItem(
@@ -286,7 +286,7 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind space()
 	{
-		return new ModifierlessUnifiedbind( KeyEvent.VK_SPACE, 0);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_SPACE, 0);
 	}
 
 	@ConfigItem(
@@ -297,6 +297,6 @@ public interface KeyRemappingConfig extends Config
 	)
 	default ModifierlessUnifiedbind control()
 	{
-		return new ModifierlessUnifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+		return new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	}
 }

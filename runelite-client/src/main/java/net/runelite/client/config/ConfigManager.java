@@ -1224,25 +1224,9 @@ public class ConfigManager
         if (type == Unifiedbind.class || type == ModifierlessUnifiedbind.class)
         {
             String[] splitStr = str.split(":");
-            Unifiedbind.Type bindType;
-            int code;
-            int mods;
-            if (splitStr.length == 3)
-            {
-                bindType = Unifiedbind.Type.valueOf(splitStr[0]);
-                code = Integer.parseInt(splitStr[1]);
-                mods = Integer.parseInt(splitStr[2]);
-            }
-            else if (splitStr.length == 2)
-            {
-                bindType = Unifiedbind.Type.KEYBOARD;
-                code = Integer.parseInt(splitStr[0]);
-                mods = Integer.parseInt(splitStr[1]);
-            }
-            else
-            {
-                throw new IllegalArgumentException("Invalid keybind format: " + str);
-            }
+            Unifiedbind.Type bindType = Unifiedbind.Type.valueOf(splitStr[0]);
+            int code = Integer.parseInt(splitStr[1]);
+            int mods = Integer.parseInt(splitStr[2]);
             if (type == ModifierlessUnifiedbind.class)
             {
                 return new ModifierlessUnifiedbind(bindType, code);

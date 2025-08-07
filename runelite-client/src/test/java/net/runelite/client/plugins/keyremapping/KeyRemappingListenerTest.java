@@ -37,6 +37,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+
+import static net.runelite.client.config.Unifiedbind.Type.KEYBOARD;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -69,17 +71,17 @@ public class KeyRemappingListenerTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		when(keyRemappingConfig.control()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
+		when(keyRemappingConfig.control()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
 	}
 
 	@Test
 	public void testTypingStateChange()
 	{
 		when(keyRemappingConfig.cameraRemap()).thenReturn(true);
-		when(keyRemappingConfig.up()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_W, 0));
-		when(keyRemappingConfig.down()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_S, 0));
-		when(keyRemappingConfig.left()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_A, 0));
-		when(keyRemappingConfig.right()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_D, 0));
+		when(keyRemappingConfig.up()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_W));
+		when(keyRemappingConfig.down()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_S));
+		when(keyRemappingConfig.left()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_A));
+		when(keyRemappingConfig.right()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_D));
 
 		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
 
@@ -116,7 +118,7 @@ public class KeyRemappingListenerTest
 	@Test
 	public void testSpaceRemap()
 	{
-		when(keyRemappingConfig.space()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_NUMPAD1, 0));
+		when(keyRemappingConfig.space()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_NUMPAD1));
 
 		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
 		when(keyRemappingPlugin.isDialogOpen()).thenReturn(true);
@@ -134,7 +136,7 @@ public class KeyRemappingListenerTest
 	@Test
 	public void testControlRemap()
 	{
-		when(keyRemappingConfig.control()).thenReturn(new ModifierlessUnifiedbind(KeyEvent.VK_NUMPAD1, 0));
+		when(keyRemappingConfig.control()).thenReturn(new ModifierlessUnifiedbind(KEYBOARD, KeyEvent.VK_NUMPAD1));
 		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
 
 		KeyEvent event = mock(KeyEvent.class);

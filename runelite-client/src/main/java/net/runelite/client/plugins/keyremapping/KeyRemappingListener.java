@@ -105,6 +105,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			{
 				if (config.f1().matches(e))
 				{
+                    System.out.println("[Listener] Key code mapped on key press.");
 					mappedKeyCode = KeyEvent.VK_F1;
 				}
 				else if (config.f2().matches(e))
@@ -291,6 +292,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
                 if (config.f1().matches(me))
                 {
                     mappedKeyCode = KeyEvent.VK_F1;
+                    System.out.println("[Listener] Key code mapped on mouse press.");
                 }
                 else if (config.f2().matches(me))
                 {
