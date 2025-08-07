@@ -210,7 +210,7 @@ public class ChatFilterPlugin extends Plugin
 			case CLAN_CHAT:
 			case CLAN_GUEST_CHAT:
 			case CLAN_GIM_CHAT:
-				if (canFilterPlayer(Text.removeTags(name)))
+				if (canFilterPlayer(Text.sanitize(name)))
 				{
 					message = censorMessage(messageNode, name, message);
 					blockMessage = message == null;

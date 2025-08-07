@@ -1577,8 +1577,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.text("The doorman of the Warriors' Guild wishes to be impressed by how strong your equipment is.")
 			.location(new WorldPoint(2878, 3546, 0))
-			.npc("Ghommal")
-			.solution("Speak to the doorman of the Warriors' Guild with a total Melee Strength bonus of over 100.")
+			.npcProvider(CrypticClue::getWarriorsGuildDoorman)
+			.solutionProvider((plugin) -> "Speak to " +  getWarriorsGuildDoorman(plugin) + " with a total Melee Strength bonus of over 100.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
@@ -2309,5 +2309,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private static String getBurthorpeSlayerMaster(ClueScrollPlugin plugin)
 	{
 		return plugin.getClient().getVarbitValue(VarbitID.WGS_HERO_PART_1_VIS) == 0 ? "Turael" : "Aya";
+	}
+
+	private static String getWarriorsGuildDoorman(ClueScrollPlugin plugin)
+	{
+		return plugin.getClient().getVarbitValue(VarbitID.WGS_HERO_PART_1_VIS) == 0 ? "Ghommal" : "Laidee Gnonock";
 	}
 }
