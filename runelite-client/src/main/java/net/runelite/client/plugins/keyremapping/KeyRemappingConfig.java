@@ -115,7 +115,7 @@ public interface KeyRemappingConfig extends Config
 		position = 6,
 		keyName = "fkeyRemap",
 		name = "Remap F-keys",
-		description = "Configures whether f-keys use remapped keys." + "<br><font color ='red'>Note: To use mouse buttons, disable \"Block Extra Mouse Buttons\" in the RuneLite Config.</font>",
+		description = "Configures whether f-keys use remapped keys.",
 		section = fKeySection
 	)
 	default boolean fkeyRemap()

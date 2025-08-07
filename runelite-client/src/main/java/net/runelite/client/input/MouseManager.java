@@ -91,8 +91,6 @@ public class MouseManager
 		{
 			return mouseEvent;
 		}
-
-		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mousePressed(mouseEvent);
@@ -101,6 +99,7 @@ public class MouseManager
 				break;
 			}
 		}
+        checkExtraMouseButtons(mouseEvent);
 		return mouseEvent;
 	}
 
@@ -111,7 +110,6 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseReleased(mouseEvent);
@@ -120,6 +118,7 @@ public class MouseManager
 				break;
 			}
 		}
+        checkExtraMouseButtons(mouseEvent);
 		return mouseEvent;
 	}
 
@@ -130,7 +129,6 @@ public class MouseManager
 			return mouseEvent;
 		}
 
-		checkExtraMouseButtons(mouseEvent);
 		for (MouseListener mouseListener : mouseListeners)
 		{
 			mouseEvent = mouseListener.mouseClicked(mouseEvent);
@@ -139,6 +137,7 @@ public class MouseManager
 				break;
 			}
 		}
+        checkExtraMouseButtons(mouseEvent);
 		return mouseEvent;
 	}
 
