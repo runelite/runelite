@@ -66,12 +66,12 @@ public class FancyFlipPlugin extends Plugin
                 configManager.setConfiguration("fancyflip", "f2pOnly", panel.isF2pOnly()));
             panel.addBlocklistListener(() ->
                 configManager.setConfiguration("fancyflip", "blocklistCsv", panel.getBlocklistCsv()));
-            panel.addResetListener(() -> {
-                ledger.reset();
-                sessionStarted = true;      // user explicitly starts a session
-                wealth.refreshCommittedGp();
-                sampleWealthNow();
-            });
+                panel.addResetListener(() -> {
+                    ledger.reset();
+                    sessionStarted = true;
+                    wealth.refreshCommittedGp();
+                    sampleWealthNow();
+                });
 
             // load icon (fallback if missing)
             BufferedImage icon;
@@ -166,15 +166,14 @@ private void ensureSessionStarted()
 
     // Start session on first successful login
     @Subscribe
-    public void onGameStateChanged(GameStateChanged e)
-    {
-        if (e.getGameState() == GameState.LOGGED_IN && !sessionStarted)
+        public void onGameStateChanged(GameStateChanged e)
         {
-            ledger.reset();          // sets sessionStart = now
-            sessionStarted = true;
-            sampleWealthNow();       // seed avg wealth immediately
+            if (e.getGameState() == GameState.LOGGED_IN && !sessionStarted)
+            {
+                ensureSessionStarted();
+                sampleWealthNow();
+            }
         }
-    }
 
     @Subscribe
     public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged e)
