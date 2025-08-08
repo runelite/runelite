@@ -35,32 +35,24 @@ protected void startUp()
 {
     panel = new FancyFlipPanel();
 
-    BufferedImage icon = ImageUtil.loadImageResource(
-        FancyFlipPlugin.class, "pixel-diamond.png" // ← new asset
-    );
-
-        navButton = NavigationButton.builder()
-        .tooltip("FancyFlip")
-        .icon(icon)
-        .panel(panel)
-        .priority(5)
-        .build();
-
         clientToolbar.addNavigation(navButton);
 
         BufferedImage icon = null;
+        
         try {
                 icon = ImageUtil.loadImageResource(FancyFlipPlugin.class, "pixel-diamond.png");
-        } catch (Exception ex) {
+        } 
+        
+        catch (Exception ex) {
         log.warn("Icon load failed, continuing without icon", ex);
-}
+        }
 
-navButton = NavigationButton.builder()
-    .tooltip("FancyFlip")
-    .icon(icon) // null is fine; default icon is used
-    .panel(panel)
-    .build();
-
+        navButton = NavigationButton.builder()
+                .tooltip("FancyFlip")
+                .icon(icon) // null is fine; default icon is used
+                .panel(panel)
+                .priority(5)
+                .build();
 }
     @Override
     protected void shutDown()
