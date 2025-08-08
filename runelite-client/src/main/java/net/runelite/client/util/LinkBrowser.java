@@ -36,6 +36,9 @@ import javax.inject.Singleton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.ContainableFrame;
 
 /**
  * Utility class used for web and file browser navigation
@@ -197,7 +200,8 @@ public class LinkBrowser
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			final int result = JOptionPane.showConfirmDialog(null, message, "Message",
+			ContainableFrame parent = RuneLite.getInjector().getInstance(ClientUI.class).getFrame();
+			final int result = JOptionPane.showConfirmDialog(parent, message, "Message",
 				JOptionPane.OK_CANCEL_OPTION);
 
 			if (result == JOptionPane.OK_OPTION)
