@@ -31,26 +31,23 @@ public class FancyFlipPlugin extends Plugin
     private PluginPanel panel;
 
     @Override
-    protected void startUp()
-    {
-        panel = new FancyFlipPanel(); // simple placeholder panel
-        navButton = NavigationButton.builder()
-                .tooltip("FancyFlip")
-                .panel(panel)
-                .build();
-        clientToolbar.addNavigation(navButton);
-        log.info("FancyFlip started");
-        BufferedImage icon = ImageUtil.loadImageResource(FancyFlipPlugin.class, "pixel-diamond.png");
-        panel = new FancyFlipPanel();
-        navButton = NavigationButton.builder()
-            .tooltip("FancyFlip")
-            .icon(icon)                    // <= this puts your Trollface on the right rail
-            .panel(panel)
-            .build();
-        clientToolbar.addNavigation(navButton);
+protected void startUp()
+{
+    panel = new FancyFlipPanel();
 
-    }
+    BufferedImage icon = ImageUtil.loadImageResource(
+        FancyFlipPlugin.class, "pixel-diamond.png" // ← new asset
+    );
 
+    navButton = NavigationButton.builder()
+        .tooltip("FancyFlip")
+        .icon(icon)
+        .panel(panel)
+        .priority(5)
+        .build();
+
+    clientToolbar.addNavigation(navButton);
+}
     @Override
     protected void shutDown()
     {
