@@ -1,103 +1,110 @@
 package net.runelite.client.plugins.fancyflip.wealth;
 
-import com.google.inject.Inject;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.util.QuantityFormatter;
+import net.runelite.api.widgets.WidgetID;
 
-import static net.runelite.api.widgets.WidgetID.BANK_GROUP_ID;
-
-@Singleton
 public class WealthService
 {
+    private static final int COINS_ID = 995;
+
     private final Client client;
-    private final ItemManager itemManager;
 
-    @Getter
-    private long bankCoins = 0;
+    @Getter private long lastKnownBankCoins = 0L;
+    @Getter private long committedGp = 0L; // GP tied up in open BUY offers
 
-    @Getter
-    private long invCoins = 0;
-
-    @Getter
-    private long geCommittedCoins = 0;
-
-    @Getter
-    private long lastSampledTotalWealth = 0;
-
-    @Getter
-    private final Map<Instant, Long> wealthSamples = new HashMap<>();
-
-    @Inject
-    public WealthService(Client client, ItemManager itemManager)
+    public WealthService(Client client)
     {
         this.client = client;
-        this.itemManager = itemManager;
     }
 
-    public void refreshInventoryCoins()
+    /** Live count of coins in inventory. */
+    public long getInventoryCoins()
     {
         ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
-        if (inv != null)
+        if (inv == null) return 0L;
+
+        long coins = 0L;
+        for (Item it : inv.getItems())
         {
-            invCoins = inv.count(995); // coin item ID
+            if (it != null && it.getId() == COINS_ID)
+            {
+                coins += it.getQuantity();
+            }
         }
+        return coins;
     }
 
+    /** Snapshot coins in bank. Call when bank opens. */
     public void snapshotBankCoins()
     {
         ItemContainer bank = client.getItemContainer(InventoryID.BANK);
-        if (bank != null)
+        if (bank == null) return;
+
+        long coins = 0L;
+        for (Item it : bank.getItems())
         {
-            bankCoins = bank.count(995);
+            if (it != null && it.getId() == COINS_ID)
+            {
+                coins += it.getQuantity();
+            }
         }
+        lastKnownBankCoins = coins;
     }
 
+    /** Recalculate GP committed in open BUY offers. */
     public void refreshCommittedGp()
     {
-        geCommittedCoins = 0;
-        for (int slot = 0; slot < 8; slot++)
-        {
-            GrandExchangeOffer offer = client.getGrandExchangeOffers()[slot];
-            if (offer == null) continue;
+        committedGp = 0L;
 
-            switch (offer.getState())
+        GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
+        if (offers == null) return;
+
+        for (GrandExchangeOffer o : offers)
+        {
+            if (o == null) continue;
+
+            final GrandExchangeOfferState state = o.getState();
+            if (state == GrandExchangeOfferState.BUYING)
             {
-                case BUYING:
-                case BOUGHT:
-                    geCommittedCoins += offer.getTotalPrice() - offer.getSpent();
-                    break;
-                default:
-                    break;
+                long total = (long) o.getTotalQuantity();
+                long sold  = (long) o.getQuantitySold();
+                long remaining = Math.max(total - sold, 0L);
+
+                if (remaining > 0L)
+                {
+                    committedGp += remaining * (long) o.getPrice();
+                }
             }
         }
     }
 
+    /** Liquid = inventory coins - committed BUY GP (can’t spend twice). */
+    public long getLiquidGp()
+    {
+        long inv = getInventoryCoins();
+        long liquid = inv - committedGp;
+        return Math.max(liquid, 0L);
+    }
+
+    /** Total wealth helper used by plugin calls. */
+    public long getTotalWealth(boolean includeBank, long openPosValueGp)
+    {
+        long base = getLiquidGp() + openPosValueGp;
+        return includeBank ? base + lastKnownBankCoins : base;
+    }
+
+    /** Back-compat no-arg getter if needed elsewhere. */
     public long getTotalWealth()
     {
-        return invCoins + bankCoins + geCommittedCoins;
-    }
-
-    public void sampleWealth()
-    {
-        long total = getTotalWealth();
-        lastSampledTotalWealth = total;
-        wealthSamples.put(Instant.now(), total);
-    }
-
-    public String formatCoins(long coins)
-    {
-        return QuantityFormatter.formatNumber(coins);
+        return getTotalWealth(true, 0L);
     }
 
     // ---- Event helpers ----
@@ -109,14 +116,11 @@ public class WealthService
 
     public void onWidgetLoaded(WidgetLoaded e)
     {
-        int groupId = e.getGroupId();
-        if (groupId == BANK_GROUP_ID)
+        int gid = e.getGroupId();
+        if (gid == WidgetID.BANK_GROUP_ID)
         {
             snapshotBankCoins();
         }
-        else if (groupId == InventoryID.INVENTORY.getId())
-        {
-            refreshInventoryCoins();
-        }
+        // inventory open sampling is triggered by plugin; nothing else to do here
     }
 }
