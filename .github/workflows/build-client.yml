@@ -1,0 +1,27 @@
+name: Build FancyFlip Client
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Build (skip tests)
+        run: mvn -B -U -DskipTests package
+
+      - name: Upload client jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: fancyflip-client
+          path: runelite-client/target/runelite-client-*.jar
