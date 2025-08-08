@@ -74,7 +74,11 @@ public class WealthService
         {
             if (o == null) continue;
             // For BUY offers, remaining quantity * price per item = committed GP
+
             if (o.getState() == GrandExchangeOfferState.BUYING)
+
+            if (o.getState() != null && o.getState().isBuy())
+
             {
                 long remaining = (long)o.getTotalQuantity() - o.getQuantitySold();
                 committedGp += remaining * o.getPrice();
