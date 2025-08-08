@@ -86,4 +86,4 @@ public class WealthService
         }
     }
 
-    /** Liquid = inventory coins - com**
+    /** Liquid = inventory coins - com**/
