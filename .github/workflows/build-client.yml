@@ -24,4 +24,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: fancyflip-client
-          path: runelite-client/target/runelite-client-*.jar
+          path: runelite-client/target/client-*-shaded.jar
