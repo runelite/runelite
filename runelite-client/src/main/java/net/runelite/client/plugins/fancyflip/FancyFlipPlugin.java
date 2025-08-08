@@ -36,10 +36,8 @@ protected void startUp()
     log.info("FancyFlip starting...");
     try
     {
-        // Always create a panel
         panel = new FancyFlipPanel();
 
-        // Try to load icon; if missing, use a 1x1 transparent fallback
         BufferedImage icon;
         try
         {
@@ -57,12 +55,10 @@ protected void startUp()
             icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         }
 
-        // Give the button an explicit name (some RL builds expect this)
         navButton = NavigationButton.builder()
-            .name("FancyFlip")          // <-- add name
             .tooltip("FancyFlip")
-            .icon(icon)                 // <-- guaranteed non-null now
-            .panel(panel)               // <-- guaranteed non-null
+            .icon(icon)          // guaranteed non-null
+            .panel(panel)        // non-null
             .priority(5)
             .build();
 
@@ -72,9 +68,9 @@ protected void startUp()
     catch (Throwable t)
     {
         log.error("FancyFlip failed to start", t);
-        // Do not rethrow; keeps the toggle from flipping back off
     }
 }
+
 
 @Override
 protected void shutDown()
