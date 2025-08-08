@@ -1,27 +1,3 @@
-/*
- * Copyright (c) 2025, Codex <codex@openai.com>
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package net.runelite.client.plugins.fancyflip.ui;
 
 import java.awt.BorderLayout;
@@ -45,6 +21,8 @@ public class FancyFlipPanel extends PluginPanel
     private final JLabel sessionTime = new JLabel("Session time: 00:00:00");
     private final JLabel hourly = new JLabel("Hourly profit: 0 gp/hr");
 
+    private final JLabel currentWealth = new JLabel("Current wealth: 0 gp");
+
     private final JLabel avgWealth = new JLabel("Avg wealth: 0 gp");
 
     private final JCheckBox sellOnly = new JCheckBox("Sell only");
@@ -66,7 +44,7 @@ public class FancyFlipPanel extends PluginPanel
         top.add(tax);
         top.add(sessionTime);
         top.add(hourly);
-
+        top.add(currentWealth);
         top.add(avgWealth);
         top.add(sellOnly);
         top.add(f2pOnly);
@@ -85,7 +63,7 @@ public class FancyFlipPanel extends PluginPanel
     public void setTax(long gp)         { tax.setText("Tax paid: " + gp + " gp"); }
     public void setSessionTime(String t){ sessionTime.setText("Session time: " + t); }
     public void setHourly(long gpHr)    { hourly.setText("Hourly profit: " + gpHr + " gp/hr"); }
-
+    public void setCurrentWealth(long gp) { currentWealth.setText("Current wealth: " + gp + " gp"); }
     public void setAvgWealth(long gp)   { avgWealth.setText("Avg wealth: " + gp + " gp"); }
 
     // Toggle and blocklist accessors
