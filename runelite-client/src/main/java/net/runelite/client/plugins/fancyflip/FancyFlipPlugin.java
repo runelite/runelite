@@ -10,6 +10,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.plugins.fancyflip.ui.FancyFlipPanel;
+
 
 @Slf4j
 @PluginDescriptor(
@@ -29,7 +31,7 @@ public class FancyFlipPlugin extends Plugin
     @Override
     protected void startUp()
     {
-        panel = new ui.FancyFlipPanel(); // simple placeholder panel
+        panel = new FancyFlipPanel(); // simple placeholder panel
         navButton = NavigationButton.builder()
                 .tooltip("FancyFlip")
                 .panel(panel)
