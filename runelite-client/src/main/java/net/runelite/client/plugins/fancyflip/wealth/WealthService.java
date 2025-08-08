@@ -1,89 +1,122 @@
 package net.runelite.client.plugins.fancyflip.wealth;
 
+import com.google.inject.Inject;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.util.QuantityFormatter;
 
+import static net.runelite.api.widgets.WidgetID.BANK_GROUP_ID;
+
+@Singleton
 public class WealthService
 {
-    private static final int COINS_ID = 995;
-
     private final Client client;
+    private final ItemManager itemManager;
 
-    @Getter private long lastKnownBankCoins = 0L;
-    @Getter private long committedGp = 0L; // GP tied up in open GE BUY offers
+    @Getter
+    private long bankCoins = 0;
 
-    public WealthService(Client client)
+    @Getter
+    private long invCoins = 0;
+
+    @Getter
+    private long geCommittedCoins = 0;
+
+    @Getter
+    private long lastSampledTotalWealth = 0;
+
+    @Getter
+    private final Map<Instant, Long> wealthSamples = new HashMap<>();
+
+    @Inject
+    public WealthService(Client client, ItemManager itemManager)
     {
         this.client = client;
+        this.itemManager = itemManager;
     }
 
-    /** Live count of coins in inventory. */
-    public long getInventoryCoins()
+    public void refreshInventoryCoins()
     {
         ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
-        if (inv == null) return 0L;
-
-        long coins = 0L;
-        for (Item it : inv.getItems())
+        if (inv != null)
         {
-            if (it != null && it.getId() == COINS_ID)
-            {
-                coins += it.getQuantity();
-            }
+            invCoins = inv.count(995); // coin item ID
         }
-        return coins;
     }
 
-    /** Snapshot coins in bank. Call when bank is opened. */
     public void snapshotBankCoins()
     {
         ItemContainer bank = client.getItemContainer(InventoryID.BANK);
-        if (bank == null) return;
-
-        long coins = 0L;
-        for (Item it : bank.getItems())
+        if (bank != null)
         {
-            if (it != null && it.getId() == COINS_ID)
-            {
-                coins += it.getQuantity();
-            }
+            bankCoins = bank.count(995);
         }
-        lastKnownBankCoins = coins;
     }
 
-    /** Recalculate GP committed in open BUY offers. */
     public void refreshCommittedGp()
     {
-        committedGp = 0L;
-
-        GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
-        if (offers == null) return;
-
-        for (GrandExchangeOffer o : offers)
+        geCommittedCoins = 0;
+        for (int slot = 0; slot < 8; slot++)
         {
-            if (o == null) continue;
+            GrandExchangeOffer offer = client.getGrandExchangeOffers()[slot];
+            if (offer == null) continue;
 
-            GrandExchangeOfferState state = o.getState();
-            if (state == GrandExchangeOfferState.BUYING)
+            switch (offer.getState())
             {
-                long total = (long) o.getTotalQuantity();
-                long sold = (long) o.getQuantitySold();
-                long remaining = Math.max(total - sold, 0L);
-
-                if (remaining > 0L)
-                {
-                    committedGp += remaining * (long) o.getPrice();
-                }
+                case BUYING:
+                case BOUGHT:
+                    geCommittedCoins += offer.getTotalPrice() - offer.getSpent();
+                    break;
+                default:
+                    break;
             }
         }
     }
 
-    /** Liquid = inventory coins - com**/
+    public long getTotalWealth()
+    {
+        return invCoins + bankCoins + geCommittedCoins;
+    }
+
+    public void sampleWealth()
+    {
+        long total = getTotalWealth();
+        lastSampledTotalWealth = total;
+        wealthSamples.put(Instant.now(), total);
+    }
+
+    public String formatCoins(long coins)
+    {
+        return QuantityFormatter.formatNumber(coins);
+    }
+
+    // ---- Event helpers ----
+
+    public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged e)
+    {
+        refreshCommittedGp();
+    }
+
+    public void onWidgetLoaded(WidgetLoaded e)
+    {
+        int groupId = e.getGroupId();
+        if (groupId == BANK_GROUP_ID)
+        {
+            snapshotBankCoins();
+        }
+        else if (groupId == InventoryID.INVENTORY.getId())
+        {
+            refreshInventoryCoins();
+        }
+    }
+}
