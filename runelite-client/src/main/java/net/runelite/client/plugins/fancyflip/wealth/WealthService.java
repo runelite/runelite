@@ -30,6 +30,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -73,7 +74,11 @@ public class WealthService
         {
             if (o == null) continue;
             // For BUY offers, remaining quantity * price per item = committed GP
+
+            if (o.getState() == GrandExchangeOfferState.BUYING)
+
             if (o.getState() != null && o.getState().isBuy())
+
             {
                 long remaining = (long)o.getTotalQuantity() - o.getQuantitySold();
                 committedGp += remaining * o.getPrice();
