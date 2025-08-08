@@ -99,17 +99,19 @@ public class FancyFlipPlugin extends Plugin
             clientToolbar.addNavigation(navButton);
 
             // 1s UI tick
-            uiTick = new Timer(1000, e -> {
-                long totalWealth = wealth.getTotalWealth(config.includeBankCoins(), 0);
-                panel.setProfit(ledger.getProfitGp());
-                panel.setRoi(ledger.getSessionRoiPct());
-                panel.setFlips(ledger.getFlipsClosed());
-                panel.setTax(ledger.getTaxGp());
-                panel.setSessionTime(sessionStarted ? ledger.getSessionTimeHms() : "00:00:00");
-                panel.setHourly(ledger.getHourlyProfitGp());
-                panel.setCurrentWealth(totalWealth);
-                panel.setAvgWealth(sessionStarted ? ledger.getAvgWealthGp() : 0);
-            });
+                uiTick = new Timer(1000, e -> {
+                    long totalWealth = wealth.getTotalWealth(config.includeBankCoins(), 0);
+                    panel.setProfit(ledger.getProfitGp());
+                    panel.setRoi(ledger.getSessionRoiPct());
+                    panel.setFlips(ledger.getFlipsClosed());
+                    panel.setTax(ledger.getTaxGp());
+                    panel.setHourly(ledger.getHourlyProfitGp());
+                    panel.setCurrentWealth(totalWealth);
+
+                    // if we haven't started yet, show "--:--:--" instead of resetting to 00:00:00
+                    panel.setSessionTime(sessionStarted ? ledger.getSessionTimeHms() : "--:--:--");
+                    panel.setAvgWealth(sessionStarted ? ledger.getAvgWealthGp() : 0);
+                });
             uiTick.start();
 
             // 60s wealth sample
@@ -128,6 +130,17 @@ public class FancyFlipPlugin extends Plugin
             log.error("FancyFlip failed to start", t);
         }
     }
+
+private boolean sessionStarted = false;
+
+private void ensureSessionStarted()
+{
+    if (!sessionStarted)
+    {
+        ledger.reset();        // sets sessionStart = now
+        sessionStarted = true;
+    }
+}
 
     @Override
     protected void shutDown()
@@ -173,38 +186,33 @@ public class FancyFlipPlugin extends Plugin
         }
     }
 
-    @Subscribe
-    public void onWidgetLoaded(WidgetLoaded e)
+@Subscribe
+public void onWidgetLoaded(WidgetLoaded e)
+{
+    if (wealth == null) return;
+
+    wealth.onWidgetLoaded(e); // bank snapshot happens inside
+
+    int gid = e.getGroupId();
+    if (gid == WidgetID.BANK_GROUP_ID
+        || gid == WidgetID.INVENTORY_GROUP_ID
+        || gid == WidgetID.GRAND_EXCHANGE_GROUP_ID
+        || gid == WidgetID.GRAND_EXCHANGE_HISTORY_GROUP_ID)
     {
-        if (wealth == null) return;
-
-        // Let WealthService handle snapshots (bank)
-        wealth.onWidgetLoaded(e);
-
-        // Sample immediately on bank or inventory open/reload
-        int gid = e.getGroupId();
-        if (gid == WidgetID.BANK_GROUP_ID || gid == WidgetID.INVENTORY_GROUP_ID)
-        {
-            if (!sessionStarted)
-            {
-                // if player opens inv/bank before login event fired, start session here
-                ledger.reset();
-                sessionStarted = true;
-            }
-            sampleWealthNow();
-        }
+        sampleWealthNow();    // starts session if needed, updates labels
     }
+}
 
     // Helper: take an immediate sample and push key UI fields
     private void sampleWealthNow()
-    {
-        long total = wealth.getTotalWealth(config.includeBankCoins(), 0);
-        ledger.sampleWealth(total);
-        panel.setCurrentWealth(total);
-        panel.setAvgWealth(ledger.getAvgWealthGp());
-        panel.setSessionTime(ledger.getSessionTimeHms());
-    }
-
+        {
+            ensureSessionStarted();  // <-- start on first sample
+            long total = wealth.getTotalWealth(config.includeBankCoins(), 0);
+            ledger.sampleWealth(total);
+            panel.setCurrentWealth(total);
+            panel.setAvgWealth(ledger.getAvgWealthGp());
+            panel.setSessionTime(ledger.getSessionTimeHms());
+        }
     @Provides
     FancyFlipConfig provideConfig(ConfigManager cm)
     {
