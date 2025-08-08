@@ -30,37 +30,70 @@ public class FancyFlipPlugin extends Plugin
     private NavigationButton navButton;
     private PluginPanel panel;
 
-    @Override
+   @Override
 protected void startUp()
 {
-    panel = new FancyFlipPanel();
+    log.info("FancyFlip starting...");
+    try
+    {
+        // Always create a panel
+        panel = new FancyFlipPanel();
 
-        clientToolbar.addNavigation(navButton);
-
-        BufferedImage icon = null;
-        
-        try {
-                icon = ImageUtil.loadImageResource(FancyFlipPlugin.class, "pixel-diamond.png");
-        } 
-        
-        catch (Exception ex) {
-        log.warn("Icon load failed, continuing without icon", ex);
+        // Try to load icon; if missing, use a 1x1 transparent fallback
+        BufferedImage icon;
+        try
+        {
+            icon = ImageUtil.loadImageResource(
+                FancyFlipPlugin.class, "pixel-diamond.png"
+            );
+            if (icon == null)
+            {
+                icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            }
+        }
+        catch (Exception ex)
+        {
+            log.warn("Icon load failed, using fallback", ex);
+            icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         }
 
+        // Give the button an explicit name (some RL builds expect this)
         navButton = NavigationButton.builder()
-                .tooltip("FancyFlip")
-                .icon(icon) // null is fine; default icon is used
-                .panel(panel)
-                .priority(5)
-                .build();
-}
-    @Override
-    protected void shutDown()
+            .name("FancyFlip")          // <-- add name
+            .tooltip("FancyFlip")
+            .icon(icon)                 // <-- guaranteed non-null now
+            .panel(panel)               // <-- guaranteed non-null
+            .priority(5)
+            .build();
+
+        clientToolbar.addNavigation(navButton);
+        log.info("FancyFlip started.");
+    }
+    catch (Throwable t)
     {
-        if (navButton != null) clientToolbar.removeNavigation(navButton);
-        navButton = null; panel = null;
+        log.error("FancyFlip failed to start", t);
+        // Do not rethrow; keeps the toggle from flipping back off
+    }
+}
+
+@Override
+protected void shutDown()
+{
+    try
+    {
+        if (navButton != null)
+        {
+            clientToolbar.removeNavigation(navButton);
+        }
+    }
+    finally
+    {
+        navButton = null;
+        panel = null;
         log.info("FancyFlip stopped");
     }
+}
+
 
     @Provides
     FancyFlipConfig provideConfig(ConfigManager cm) { return cm.getConfig(FancyFlipConfig.class); }
