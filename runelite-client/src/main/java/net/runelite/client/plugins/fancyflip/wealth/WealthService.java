@@ -31,9 +31,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
-import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+
 
 public class WealthService
 {
@@ -66,30 +64,6 @@ public class WealthService
 
     /** Recalculate committed GP from current GE offers. */
     public void refreshCommittedGp()
-{
-    committedGp = 0;
-    GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
-    if (offers == null) return;
-
-    for (GrandExchangeOffer o : offers)
-    {
-        if (o == null) continue;
-
-        // Count only OPEN BUY offers
-        final GrandExchangeOfferState state = o.getState();
-        if (state == GrandExchangeOfferState.BUYING)
-        {
-            long total = (long) o.getTotalQuantity();
-            long sold  = (long) o.getQuantitySold();
-            long remaining = Math.max(total - sold, 0L);
-
-            if (remaining > 0)
-            {
-                committedGp += remaining * (long) o.getPrice();
-            }
-        }
-    }
-}
 
 
     public long getLiquidGp()
@@ -102,13 +76,6 @@ public class WealthService
 
     public long getTotalWealth(boolean includeBank, long openPosValueGp)
     {
-        long base = getLiquidGp() + openPosValueGp;
-        return includeBank ? base + lastKnownBankCoins : base;
-    }
 
-    // Helpers to hook events
-    public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged e) { refreshCommittedGp(); }
-    public void onWidgetLoaded(WidgetLoaded e) {
-        if (e.getGroupId() == WidgetID.BANK_GROUP_ID) snapshotBankCoins();
     }
 }

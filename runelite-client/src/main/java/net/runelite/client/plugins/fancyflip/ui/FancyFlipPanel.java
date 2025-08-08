@@ -44,6 +44,7 @@ public class FancyFlipPanel extends PluginPanel
     private final JLabel tax = new JLabel("Tax paid: 0 gp");
     private final JLabel sessionTime = new JLabel("Session time: 00:00:00");
     private final JLabel hourly = new JLabel("Hourly profit: 0 gp/hr");
+
     private final JLabel avgWealth = new JLabel("Avg wealth: 0 gp");
 
     private final JCheckBox sellOnly = new JCheckBox("Sell only");
@@ -65,6 +66,7 @@ public class FancyFlipPanel extends PluginPanel
         top.add(tax);
         top.add(sessionTime);
         top.add(hourly);
+
         top.add(avgWealth);
         top.add(sellOnly);
         top.add(f2pOnly);
@@ -83,6 +85,7 @@ public class FancyFlipPanel extends PluginPanel
     public void setTax(long gp)         { tax.setText("Tax paid: " + gp + " gp"); }
     public void setSessionTime(String t){ sessionTime.setText("Session time: " + t); }
     public void setHourly(long gpHr)    { hourly.setText("Hourly profit: " + gpHr + " gp/hr"); }
+
     public void setAvgWealth(long gp)   { avgWealth.setText("Avg wealth: " + gp + " gp"); }
 
     // Toggle and blocklist accessors

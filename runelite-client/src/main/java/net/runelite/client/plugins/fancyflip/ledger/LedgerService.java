@@ -26,8 +26,7 @@ package net.runelite.client.plugins.fancyflip.ledger;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Deque;
+
 
 public class LedgerService
 {
@@ -38,9 +37,7 @@ public class LedgerService
     private long capitalDeployedGp = 0;
     private int flipsClosed = 0;
 
-    // rolling wealth samples for simple average
-    private final Deque<Long> wealthSamples = new ArrayDeque<>();
-    private long wealthSampleSum = 0;
+
 
     public LedgerService(double taxRatePct) { this.taxRatePct = taxRatePct; }
 
@@ -49,8 +46,7 @@ public class LedgerService
         sessionStart = Instant.now();
         totalProfitGp = totalTaxGp = capitalDeployedGp = 0;
         flipsClosed = 0;
-        wealthSamples.clear();
-        wealthSampleSum = 0;
+
     }
 
     public void logBuy(long qty, long buyPriceEach)
@@ -70,11 +66,7 @@ public class LedgerService
 
     public void sampleWealth(long totalWealthGp)
     {
-        wealthSamples.addLast(totalWealthGp);
-        wealthSampleSum += totalWealthGp;
-        if (wealthSamples.size() > 300) { // ~5h at 60s cadence
-            wealthSampleSum -= wealthSamples.removeFirst();
-        }
+
     }
 
     public long getProfitGp() { return totalProfitGp; }
@@ -96,8 +88,7 @@ public class LedgerService
 
     public long getAvgWealthGp()
     {
-        if (wealthSamples.isEmpty()) return 0;
-        return wealthSampleSum / wealthSamples.size();
+
     }
 
     public String getSessionTimeHms()

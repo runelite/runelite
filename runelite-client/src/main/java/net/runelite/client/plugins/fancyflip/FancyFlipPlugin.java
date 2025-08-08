@@ -29,8 +29,6 @@ import javax.inject.Inject;
 import javax.swing.Timer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -63,82 +61,88 @@ public class FancyFlipPlugin extends Plugin
     private WealthService wealth;
     private Timer uiTick, wealthTick;
 
-   @Override
-protected void startUp()
-{
-    log.info("FancyFlip starting...");
-    try
+    @Override
+    protected void startUp()
     {
-        panel = new FancyFlipPanel();
-
-        ledger = new LedgerService(config.taxRatePct());
-        wealth = new WealthService(client);
-        wealth.refreshCommittedGp();
-
-        panel.setSellOnly(config.sellOnly());
-        panel.setF2pOnly(config.f2pOnly());
-        panel.setBlocklistCsv(config.blocklistCsv());
-
-        panel.addSellOnlyListener(e ->
-            configManager.setConfiguration("fancyflip", "sellOnly", panel.isSellOnly()));
-        panel.addF2pOnlyListener(e ->
-            configManager.setConfiguration("fancyflip", "f2pOnly", panel.isF2pOnly()));
-        panel.addBlocklistListener(() ->
-            configManager.setConfiguration("fancyflip", "blocklistCsv", panel.getBlocklistCsv()));
-        panel.addResetListener(() -> {
-            ledger.reset();
-            wealth.refreshCommittedGp();
-        });
-
-        BufferedImage icon;
         try
         {
-            icon = ImageUtil.loadImageResource(
-                FancyFlipPlugin.class, "pixel-diamond.png"
-            );
-            if (icon == null)
+            panel = new FancyFlipPanel();
+
+            ledger = new LedgerService(config.taxRatePct());
+            wealth = new WealthService(client);
+            wealth.refreshCommittedGp();
+
+            panel.setSellOnly(config.sellOnly());
+            panel.setF2pOnly(config.f2pOnly());
+            panel.setBlocklistCsv(config.blocklistCsv());
+
+            panel.addSellOnlyListener(e ->
+                configManager.setConfiguration("fancyflip", "sellOnly", panel.isSellOnly()));
+            panel.addF2pOnlyListener(e ->
+                configManager.setConfiguration("fancyflip", "f2pOnly", panel.isF2pOnly()));
+            panel.addBlocklistListener(() ->
+                configManager.setConfiguration("fancyflip", "blocklistCsv", panel.getBlocklistCsv()));
+            panel.addResetListener(() -> {
+                ledger.reset();
+                sessionStarted = true;
+                wealth.refreshCommittedGp();
+                sampleWealthNow();
+            });
+
+            BufferedImage icon;
+            try
             {
+                icon = ImageUtil.loadImageResource(
+                    FancyFlipPlugin.class, "pixel-diamond.png"
+                );
+                if (icon == null)
+                {
+                    icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.warn("Icon load failed, using fallback", ex);
                 icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             }
+
+            navButton = NavigationButton.builder()
+                .tooltip("FancyFlip")
+                .icon(icon)          // guaranteed non-null
+                .panel(panel)        // non-null
+                .priority(5)
+                .build();
+
+            clientToolbar.addNavigation(navButton);
+
+            uiTick = new Timer(1000, e -> {
+                long totalWealth = wealth.getTotalWealth(config.includeBankCoins(), 0);
+                panel.setProfit(ledger.getProfitGp());
+                panel.setRoi(ledger.getSessionRoiPct());
+                panel.setFlips(ledger.getFlipsClosed());
+                panel.setTax(ledger.getTaxGp());
+                panel.setSessionTime(sessionStarted ? ledger.getSessionTimeHms() : "00:00:00");
+                panel.setHourly(ledger.getHourlyProfitGp());
+                panel.setCurrentWealth(totalWealth);
+                panel.setAvgWealth(sessionStarted ? ledger.getAvgWealthGp() : 0);
+            });
+            uiTick.start();
+
+            wealthTick = new Timer(60_000, e -> {
+                if (sessionStarted)
+                {
+                    ledger.sampleWealth(wealth.getTotalWealth(config.includeBankCoins(), 0));
+                }
+            });
+            wealthTick.start();
+
+            log.info("FancyFlip started.");
         }
-        catch (Exception ex)
+        catch (Throwable t)
         {
-            log.warn("Icon load failed, using fallback", ex);
-            icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            log.error("FancyFlip failed to start", t);
         }
-
-        navButton = NavigationButton.builder()
-            .tooltip("FancyFlip")
-            .icon(icon)          // guaranteed non-null
-            .panel(panel)        // non-null
-            .priority(5)
-            .build();
-
-        clientToolbar.addNavigation(navButton);
-
-        uiTick = new Timer(1000, e -> {
-            panel.setProfit(ledger.getProfitGp());
-            panel.setRoi(ledger.getSessionRoiPct());
-            panel.setFlips(ledger.getFlipsClosed());
-            panel.setTax(ledger.getTaxGp());
-            panel.setSessionTime(ledger.getSessionTimeHms());
-            panel.setHourly(ledger.getHourlyProfitGp());
-            panel.setAvgWealth(ledger.getAvgWealthGp());
-        });
-        uiTick.start();
-
-        wealthTick = new Timer(60_000, e -> {
-            ledger.sampleWealth(wealth.getTotalWealth(config.includeBankCoins(), 0));
-        });
-        wealthTick.start();
-
-        log.info("FancyFlip started.");
     }
-    catch (Throwable t)
-    {
-        log.error("FancyFlip failed to start", t);
-    }
-}
 
 
 @Override
@@ -168,13 +172,12 @@ protected void shutDown()
     @Subscribe
     public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged e)
     {
-        if (wealth != null) wealth.onGrandExchangeOfferChanged(e);
     }
 
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded e)
     {
-        if (wealth != null) wealth.onWidgetLoaded(e);
+
     }
 
     @Provides
