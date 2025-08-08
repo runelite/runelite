@@ -66,25 +66,31 @@ public class WealthService
 
     /** Recalculate committed GP from current GE offers. */
     public void refreshCommittedGp()
+{
+    committedGp = 0;
+    GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
+    if (offers == null) return;
+
+    for (GrandExchangeOffer o : offers)
     {
-        committedGp = 0;
-        GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
-        if (offers == null) return;
-        for (GrandExchangeOffer o : offers)
+        if (o == null) continue;
+
+        // Count only OPEN BUY offers
+        final GrandExchangeOfferState state = o.getState();
+        if (state == GrandExchangeOfferState.BUYING)
         {
-            if (o == null) continue;
-            // For BUY offers, remaining quantity * price per item = committed GP
+            long total = (long) o.getTotalQuantity();
+            long sold  = (long) o.getQuantitySold();
+            long remaining = Math.max(total - sold, 0L);
 
-            if (o.getState() == GrandExchangeOfferState.BUYING)
-
-            if (o.getState() != null && o.getState().isBuy())
-
+            if (remaining > 0)
             {
-                long remaining = (long)o.getTotalQuantity() - o.getQuantitySold();
-                committedGp += remaining * o.getPrice();
+                committedGp += remaining * (long) o.getPrice();
             }
         }
     }
+}
+
 
     public long getLiquidGp()
     {
