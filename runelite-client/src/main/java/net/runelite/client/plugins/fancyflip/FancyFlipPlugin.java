@@ -191,13 +191,12 @@ public class FancyFlipPlugin extends Plugin
         wealth.onWidgetLoaded(e); // bank snapshot happens inside
 
         int gid = e.getGroupId();
-        if (gid == WidgetID.BANK_GROUP_ID
-            || gid == WidgetID.INVENTORY_GROUP_ID
-            || gid == WidgetID.GRAND_EXCHANGE_GROUP_ID
-            || gid == WidgetID.GRAND_EXCHANGE_HISTORY_GROUP_ID)
-        {
-            sampleWealthNow();    // starts session if needed, updates labels
-        }
+         if (gid == WidgetID.BANK_GROUP_ID
+                 || gid == WidgetID.INVENTORY_GROUP_ID
+                 || gid == WidgetID.GRAND_EXCHANGE_GROUP_ID)   // history is in this same group
+           {
+              sampleWealthNow();
+           }
     }
 
     // Helper: take an immediate sample and push key UI fields
