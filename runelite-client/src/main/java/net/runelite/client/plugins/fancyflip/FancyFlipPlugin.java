@@ -66,12 +66,12 @@ public class FancyFlipPlugin extends Plugin
                 configManager.setConfiguration("fancyflip", "f2pOnly", panel.isF2pOnly()));
             panel.addBlocklistListener(() ->
                 configManager.setConfiguration("fancyflip", "blocklistCsv", panel.getBlocklistCsv()));
-                panel.addResetListener(() -> {
-                    ledger.reset();
-                    sessionStarted = true;
-                    wealth.refreshCommittedGp();
-                    sampleWealthNow();
-                });
+            panel.addResetListener(() -> {
+                ledger.reset();
+                sessionStarted = true;
+                wealth.refreshCommittedGp();
+                sampleWealthNow();
+            });
 
             // load icon (fallback if missing)
             BufferedImage icon;
@@ -99,19 +99,19 @@ public class FancyFlipPlugin extends Plugin
             clientToolbar.addNavigation(navButton);
 
             // 1s UI tick
-                uiTick = new Timer(1000, e -> {
-                    long totalWealth = wealth.getTotalWealth(config.includeBankCoins(), 0);
-                    panel.setProfit(ledger.getProfitGp());
-                    panel.setRoi(ledger.getSessionRoiPct());
-                    panel.setFlips(ledger.getFlipsClosed());
-                    panel.setTax(ledger.getTaxGp());
-                    panel.setHourly(ledger.getHourlyProfitGp());
-                    panel.setCurrentWealth(totalWealth);
+            uiTick = new Timer(1000, e -> {
+                long totalWealth = wealth.getTotalWealth(config.includeBankCoins(), 0);
+                panel.setProfit(ledger.getProfitGp());
+                panel.setRoi(ledger.getSessionRoiPct());
+                panel.setFlips(ledger.getFlipsClosed());
+                panel.setTax(ledger.getTaxGp());
+                panel.setHourly(ledger.getHourlyProfitGp());
+                panel.setCurrentWealth(totalWealth);
 
-                    // if we haven't started yet, show "--:--:--" instead of resetting to 00:00:00
-                    panel.setSessionTime(sessionStarted ? ledger.getSessionTimeHms() : "--:--:--");
-                    panel.setAvgWealth(sessionStarted ? ledger.getAvgWealthGp() : 0);
-                });
+                // if we haven't started yet, show "--:--:--"
+                panel.setSessionTime(sessionStarted ? ledger.getSessionTimeHms() : "--:--:--");
+                panel.setAvgWealth(sessionStarted ? ledger.getAvgWealthGp() : 0);
+            });
             uiTick.start();
 
             // 60s wealth sample
@@ -131,16 +131,14 @@ public class FancyFlipPlugin extends Plugin
         }
     }
 
-private boolean sessionStarted = false;
-
-private void ensureSessionStarted()
-{
-    if (!sessionStarted)
+    private void ensureSessionStarted()
     {
-        ledger.reset();        // sets sessionStart = now
-        sessionStarted = true;
+        if (!sessionStarted)
+        {
+            ledger.reset();        // sets sessionStart = now
+            sessionStarted = true;
+        }
     }
-}
 
     @Override
     protected void shutDown()
@@ -166,14 +164,14 @@ private void ensureSessionStarted()
 
     // Start session on first successful login
     @Subscribe
-        public void onGameStateChanged(GameStateChanged e)
+    public void onGameStateChanged(GameStateChanged e)
+    {
+        if (e.getGameState() == GameState.LOGGED_IN && !sessionStarted)
         {
-            if (e.getGameState() == GameState.LOGGED_IN && !sessionStarted)
-            {
-                ensureSessionStarted();
-                sampleWealthNow();
-            }
+            ensureSessionStarted();
+            sampleWealthNow();
         }
+    }
 
     @Subscribe
     public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged e)
@@ -185,33 +183,34 @@ private void ensureSessionStarted()
         }
     }
 
-@Subscribe
-public void onWidgetLoaded(WidgetLoaded e)
-{
-    if (wealth == null) return;
-
-    wealth.onWidgetLoaded(e); // bank snapshot happens inside
-
-    int gid = e.getGroupId();
-    if (gid == WidgetID.BANK_GROUP_ID
-        || gid == WidgetID.INVENTORY_GROUP_ID
-        || gid == WidgetID.GRAND_EXCHANGE_GROUP_ID
-        || gid == WidgetID.GRAND_EXCHANGE_HISTORY_GROUP_ID)
+    @Subscribe
+    public void onWidgetLoaded(WidgetLoaded e)
     {
-        sampleWealthNow();    // starts session if needed, updates labels
+        if (wealth == null) return;
+
+        wealth.onWidgetLoaded(e); // bank snapshot happens inside
+
+        int gid = e.getGroupId();
+        if (gid == WidgetID.BANK_GROUP_ID
+            || gid == WidgetID.INVENTORY_GROUP_ID
+            || gid == WidgetID.GRAND_EXCHANGE_GROUP_ID
+            || gid == WidgetID.GRAND_EXCHANGE_HISTORY_GROUP_ID)
+        {
+            sampleWealthNow();    // starts session if needed, updates labels
+        }
     }
-}
 
     // Helper: take an immediate sample and push key UI fields
     private void sampleWealthNow()
-        {
-            ensureSessionStarted();  // <-- start on first sample
-            long total = wealth.getTotalWealth(config.includeBankCoins(), 0);
-            ledger.sampleWealth(total);
-            panel.setCurrentWealth(total);
-            panel.setAvgWealth(ledger.getAvgWealthGp());
-            panel.setSessionTime(ledger.getSessionTimeHms());
-        }
+    {
+        ensureSessionStarted();  // start on first sample
+        long total = wealth.getTotalWealth(config.includeBankCoins(), 0);
+        ledger.sampleWealth(total);
+        panel.setCurrentWealth(total);
+        panel.setAvgWealth(ledger.getAvgWealthGp());
+        panel.setSessionTime(ledger.getSessionTimeHms());
+    }
+
     @Provides
     FancyFlipConfig provideConfig(ConfigManager cm)
     {
