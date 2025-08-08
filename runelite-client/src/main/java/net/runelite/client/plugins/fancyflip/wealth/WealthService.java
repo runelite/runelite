@@ -32,6 +32,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 
+
 public class WealthService
 {
     private static final int COINS_ID = 995;
@@ -63,21 +64,7 @@ public class WealthService
 
     /** Recalculate committed GP from current GE offers. */
     public void refreshCommittedGp()
-    {
-        committedGp = 0;
-        GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
-        if (offers == null) return;
-        for (GrandExchangeOffer o : offers)
-        {
-            if (o == null) continue;
-            // For BUY offers, remaining quantity * price per item = committed GP
-            if (o.getState() == GrandExchangeOfferState.BUYING)
-            {
-                long remaining = (long)o.getTotalQuantity() - o.getQuantitySold();
-                committedGp += remaining * o.getPrice();
-            }
-        }
-    }
+
 
     public long getLiquidGp()
     {
@@ -89,11 +76,6 @@ public class WealthService
 
     public long getTotalWealth(boolean includeBank, long openPosValueGp)
     {
-        long total = getInventoryCoins() + committedGp + openPosValueGp;
-        if (includeBank)
-        {
-            total += lastKnownBankCoins;
-        }
-        return total;
+
     }
 }

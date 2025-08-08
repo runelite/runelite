@@ -29,11 +29,6 @@ import javax.inject.Inject;
 import javax.swing.Timer;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GrandExchangeOfferChanged;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -65,12 +60,10 @@ public class FancyFlipPlugin extends Plugin
     private LedgerService ledger;
     private WealthService wealth;
     private Timer uiTick, wealthTick;
-    private boolean sessionStarted = false;
 
     @Override
     protected void startUp()
     {
-        log.info("FancyFlip starting...");
         try
         {
             panel = new FancyFlipPanel();
@@ -179,61 +172,12 @@ protected void shutDown()
     @Subscribe
     public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged e)
     {
-        if (wealth == null) return;
-        wealth.refreshCommittedGp();
-        sampleWealthNow();
     }
 
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded e)
     {
-        int groupId = e.getGroupId();
-        if (wealth == null) return;
 
-        if (groupId == WidgetID.BANK_GROUP_ID)
-        {
-            wealth.snapshotBankCoins();
-            sampleWealthNow();
-        }
-
-        if (groupId == WidgetID.GRAND_EXCHANGE_GROUP_ID)
-        {
-            wealth.refreshCommittedGp();
-            sampleWealthNow();
-        }
-
-        if (groupId == WidgetID.INVENTORY_GROUP_ID)
-        {
-            sampleWealthNow();
-        }
-    }
-
-    @Subscribe
-    public void onGameStateChanged(GameStateChanged e)
-    {
-        if (e.getGameState() == GameState.LOGGED_IN && !sessionStarted)
-        {
-            long invCoins = wealth != null ? wealth.getInventoryCoins() : 0;
-            if (invCoins >= 0)
-            {
-                ledger.reset();
-                sessionStarted = true;
-                sampleWealthNow();
-            }
-        }
-    }
-
-    private void sampleWealthNow()
-    {
-        if (!sessionStarted)
-        {
-            return;
-        }
-        long total = wealth.getTotalWealth(config.includeBankCoins(), 0);
-        ledger.sampleWealth(total);
-        panel.setCurrentWealth(total);
-        panel.setSessionTime(ledger.getSessionTimeHms());
-        panel.setAvgWealth(ledger.getAvgWealthGp());
     }
 
     @Provides
