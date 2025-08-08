@@ -11,6 +11,8 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.plugins.fancyflip.ui.FancyFlipPanel;
+import java.awt.image.BufferedImage;
+import net.runelite.client.util.ImageUtil;
 
 
 @Slf4j
@@ -38,6 +40,15 @@ public class FancyFlipPlugin extends Plugin
                 .build();
         clientToolbar.addNavigation(navButton);
         log.info("FancyFlip started");
+        BufferedImage icon = ImageUtil.loadImageResource(FancyFlipPlugin.class, "pixel-diamond.png");
+        panel = new FancyFlipPanel();
+        navButton = NavigationButton.builder()
+            .tooltip("FancyFlip")
+            .icon(icon)                    // <= this puts your Trollface on the right rail
+            .panel(panel)
+            .build();
+        clientToolbar.addNavigation(navButton);
+
     }
 
     @Override
