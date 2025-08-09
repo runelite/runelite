@@ -2,83 +2,82 @@ package net.runelite.client.plugins.fancyflip.ledger;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
+/**
+ * Tracks realized performance stats for the current session.
+ * This class intentionally does NOT sample or average "wealth" anymore.
+ */
 public class LedgerService
 {
     private final double taxRatePct;
     private Instant sessionStart = Instant.now();
+
     private long totalProfitGp = 0;
     private long totalTaxGp = 0;
+    private long wealthSampleSum = 0;
+    private int wealthSampleCount = 0;
     private long capitalDeployedGp = 0;
     private int  flipsClosed = 0;
 
-    // rolling wealth samples for simple average
-    private final Deque<Long> wealthSamples = new ArrayDeque<>();
-    private long wealthSampleSum = 0;
+    public LedgerService(double taxRatePct)
+    {
+        this.taxRatePct = taxRatePct;
+    }
 
-    public LedgerService(double taxRatePct) { this.taxRatePct = taxRatePct; }
-
+    /** Reset all session counters and start time. */
     public void reset()
     {
         sessionStart = Instant.now();
-        totalProfitGp = 0;
-        totalTaxGp = 0;
-        capitalDeployedGp = 0;
+        totalProfitGp = 0L;
+        totalTaxGp = 0L;
+        capitalDeployedGp = 0L;
         flipsClosed = 0;
-        wealthSamples.clear();
-        wealthSampleSum = 0;
     }
 
-    public void logBuy(long qty, long buyPriceEach)
+    /**
+     * Record a realized flip.
+     * @param profitGp Net profit in gp (after tax).
+     * @param taxGp    Tax paid in gp for the trade.
+     * @param capitalUsedGp Capital deployed for the flip (e.g., buy cost).
+     */
+    public void recordFlip(long profitGp, long taxGp, long capitalUsedGp)
     {
-        capitalDeployedGp += qty * buyPriceEach;
-    }
-
-    public void logSale(long qty, long sellPriceEach)
-    {
-        long gross = qty * sellPriceEach;
-        long tax = Math.round(gross * (taxRatePct / 100.0));
-        long net = gross - tax;
-
-        totalTaxGp += tax;
-        totalProfitGp += net; // profit assumes buy cost tracked via deployed
+        totalProfitGp += profitGp;
+        totalTaxGp += Math.max(0L, taxGp);
+        capitalDeployedGp += Math.max(0L, capitalUsedGp);
         flipsClosed++;
     }
 
-    public void sampleWealth(long totalWealthGp)
-    {
-        wealthSamples.addLast(totalWealthGp);
-        wealthSampleSum += totalWealthGp;
-        // cap to ~5h at 60s cadence (300 samples)
-        if (wealthSamples.size() > 300)
-        {
-            wealthSampleSum -= wealthSamples.removeFirst();
-        }
-    }
+    public double getTaxRatePct() { return taxRatePct; }
+    public long getProfitGp()     { return totalProfitGp; }
+    public long getTaxGp()        { return totalTaxGp; }
+    public int  getFlipsClosed()  { return flipsClosed; }
 
-    public long getProfitGp() { return totalProfitGp; }
-    public long getTaxGp()    { return totalTaxGp; }
-    public int  getFlipsClosed() { return flipsClosed; }
-
+    /** ROI% based on realized profit and capital deployed during this session. */
     public double getSessionRoiPct()
     {
-        if (capitalDeployedGp <= 0) return 0.0;
-        return (totalProfitGp / (double) capitalDeployedGp) * 100.0;
+        if (capitalDeployedGp <= 0L) return 0.0;
+        return (totalProfitGp * 100.0) / capitalDeployedGp;
     }
 
-    public long getHourlyProfitGp()
+    /** Profit per hour using session elapsed time. */
+    public void sampleWealth(long assetTotalGp)
     {
-        Duration d = Duration.between(sessionStart, Instant.now());
-        double hours = Math.max(d.toMillis() / 3_600_000.0, 0.001);
-        return (long) Math.floor(totalProfitGp / hours);
+        wealthSampleSum += Math.max(0L, assetTotalGp);
+        wealthSampleCount++;
     }
 
     public long getAvgWealthGp()
     {
-        if (wealthSamples.isEmpty()) return 0L;
-        return wealthSampleSum / wealthSamples.size();
+        if (wealthSampleCount == 0) return 0L;
+        return wealthSampleSum / wealthSampleCount;
+    }
+
+    public long getHourlyProfitGp()
+    {
+        long seconds = Math.max(1L, Duration.between(sessionStart, Instant.now()).getSeconds());
+        double perHour = (double) totalProfitGp * 3600.0 / (double) seconds;
+        return Math.round(perHour);
     }
 
     public String getSessionTimeHms()
