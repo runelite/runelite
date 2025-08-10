@@ -73,10 +73,12 @@ public class Perspective
 	{
 		for (int i = 0; i < 2048; ++i)
 		{
-			SINF[i] = (float) Math.sin(i * UNIT);
-			COSF[i] = (float) Math.cos(i * UNIT);
-			SINE[i] = (int) (65536.0F * SINF[i]);
-			COSINE[i] = (int) (65536.0F * COSF[i]);
+			double s = Math.sin((double) i * UNIT);
+			double c = Math.cos((double) i * UNIT);
+			SINF[i] = (float) s;
+			COSF[i] = (float) c;
+			SINE[i] = (int) (65536.0 * s);
+			COSINE[i] = (int) (65536.0 * c);
 		}
 	}
 
