@@ -163,9 +163,16 @@ public class HiscorePlugin extends Plugin
 				.setIdentifier(event.getIdentifier())
 				.onClick(e ->
 				{
-					// Determine proper endpoint from player name.
-					// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
-					HiscoreEndpoint endpoint = findHiscoreEndpointFromPlayerName(e.getTarget());
+					final HiscoreEndpoint chatMessageEndpoint = findHiscoreEndpointFromPlayerName(e.getTarget());
+					HiscoreEndpoint endpoint = HiscoreEndpoint.fromWorldTypes(client.getWorldType());
+
+					if (chatMessageEndpoint != HiscoreEndpoint.NORMAL || endpoint == HiscoreEndpoint.LEAGUE)
+					{
+						// Determine proper endpoint from player name (eg. ironman or normal endpoint)
+						// Also assume normal hiscore endpoint for chat message w/o league icon received on league world
+						endpoint = chatMessageEndpoint;
+					}
+
 					String target = Text.removeTags(e.getTarget());
 					lookupPlayer(target, endpoint);
 				});
