@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -137,7 +138,7 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.HOPPING)
 		{
@@ -146,7 +147,7 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
 		Player local = client.getLocalPlayer();
 
@@ -180,7 +181,7 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		clearExpiredRespawns();
 
@@ -229,7 +230,7 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		final GameObject object = event.getGameObject();
 
@@ -250,7 +251,7 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject object = event.getGameObject();
 
@@ -265,7 +266,8 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
@@ -282,7 +284,7 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	private void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC)
 		{

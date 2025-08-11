@@ -145,7 +145,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP))
 		{
@@ -167,7 +167,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
@@ -182,7 +182,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (!isOverriding())
 		{

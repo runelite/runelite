@@ -98,7 +98,7 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGING_IN)
 		{
@@ -107,7 +107,7 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		long currentTime = System.currentTimeMillis();
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;

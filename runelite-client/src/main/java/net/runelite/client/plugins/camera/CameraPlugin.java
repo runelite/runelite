@@ -186,7 +186,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (client.getIndexScripts().isOverlayOutdated())
 		{
@@ -250,7 +250,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -259,7 +259,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged ev)
+	private void onConfigChanged(ConfigChanged ev)
 	{
 		if (ev.getGroup().equals("zoom"))
 		{
@@ -360,7 +360,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * tick and the MouseListener runs on the awt thread
 	 */
 	@Subscribe
-	public void onClientTick(ClientTick event)
+	private void onClientTick(ClientTick event)
 	{
 		menuHasEntries = hasMenuEntries(client.getMenuEntries());
 		sliderTooltip = null;
