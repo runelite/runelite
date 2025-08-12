@@ -284,10 +284,9 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	@VisibleForTesting
-	int getIntProfileConfig(String key)
+	private int getInitialAmountFromConfig()
 	{
-		Integer value = configManager.getRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, int.class);
+		Integer value = configManager.getRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.INIT_AMOUNT_KEY, int.class);
 		return value == null ? -1 : value;
 	}
 
@@ -397,7 +396,7 @@ public class SlayerPlugin extends Plugin
 				log.debug("Sync slayer task: {}x {} at {}", amount, taskName, taskLocation);
 
 				// initial amount is not in a var, so we initialize it from the stored amount
-				initialAmount = getIntProfileConfig(SlayerConfig.INIT_AMOUNT_KEY);
+				initialAmount = getInitialAmountFromConfig();
 				setTask(taskName, amount, initialAmount, taskLocation, false);
 
 				// initialize streak and points in the event the plugin was toggled on after login
@@ -659,7 +658,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format(taskTooltip, capsString(taskName), getIntProfileConfig(SlayerConfig.POINTS_KEY), getIntProfileConfig(SlayerConfig.STREAK_KEY)));
+		counter.setTooltip(String.format(taskTooltip, capsString(taskName), client.getVarbitValue(VarbitID.SLAYER_POINTS), client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED)));
 
 		infoBoxManager.addInfoBox(counter);
 	}
