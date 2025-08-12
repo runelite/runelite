@@ -34,18 +34,32 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.util.ColorUtil;
 
 public class OverlayUtil
 {
 	private static final int MINIMAP_DOT_RADIUS = 4;
+
+	private static Shape minimapClipFixed;
+	private static Shape minimapClipResizeable;
+	private static Rectangle minimapRectangle = new Rectangle();
+	private static BufferedImage minimapSpriteFixed;
+	private static BufferedImage minimapSpriteResizeable;
 
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
@@ -262,5 +276,117 @@ public class OverlayUtil
 		}
 
 		return result;
+	}
+
+	public static Shape getMinimapClipArea(Client client, SpriteManager spriteManager)
+	{
+		Widget minimapWidget = null;
+		if (client.isResized())
+		{
+			if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
+			{
+				minimapWidget = client.getWidget(InterfaceID.ToplevelPreEoc.MINIMAP);
+			}
+			else
+			{
+				minimapWidget = client.getWidget(InterfaceID.ToplevelOsrsStretch.MINIMAP);
+			}
+		}
+		else
+		{
+			minimapWidget = client.getWidget(InterfaceID.Toplevel.MINIMAP);
+		}
+
+		if (minimapWidget == null || minimapWidget.isHidden() || !minimapRectangle.equals(minimapRectangle = minimapWidget.getBounds()))
+		{
+			minimapClipFixed = null;
+			minimapClipResizeable = null;
+			minimapSpriteFixed = null;
+			minimapSpriteResizeable = null;
+		}
+
+		if (client.isResized())
+		{
+			if (minimapClipResizeable != null)
+			{
+				return minimapClipResizeable;
+			}
+			if (minimapSpriteResizeable == null)
+			{
+				minimapSpriteResizeable = spriteManager.getSprite(SpriteID.RESIZE_MAP_MASK, 0);
+			}
+			if (minimapSpriteResizeable != null)
+			{
+				return minimapClipResizeable = bufferedImageToPolygon(minimapSpriteResizeable);
+			}
+		}
+		else
+		{
+			if (minimapClipFixed != null)
+			{
+				return minimapClipFixed;
+			}
+			if (minimapSpriteFixed == null)
+			{
+				minimapSpriteFixed = spriteManager.getSprite(SpriteID.FIXED_MAP_MASK, 0);
+			}
+			if (minimapSpriteFixed != null)
+			{
+				return minimapClipFixed = bufferedImageToPolygon(minimapSpriteFixed);
+			}
+		}
+
+		if (minimapWidget == null || minimapWidget.isHidden())
+		{
+			return null;
+		}
+
+		Rectangle bounds = minimapWidget.getBounds();
+
+		return new Ellipse2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+	}
+
+	private static Polygon bufferedImageToPolygon(BufferedImage image)
+	{
+		int outsideColour = -1;
+		int previousColour;
+		final int width = image.getWidth();
+		final int height = image.getHeight();
+		List<java.awt.Point> points = new ArrayList<>();
+		for (int y = 0; y < height; y++)
+		{
+			previousColour = outsideColour;
+			for (int x = 0; x < width; x++)
+			{
+				int colour = image.getRGB(x, y);
+				if (x == 0 && y == 0)
+				{
+					outsideColour = colour;
+					previousColour = colour;
+				}
+				if (colour != outsideColour && previousColour == outsideColour)
+				{
+					points.add(new java.awt.Point(x, y));
+				}
+				if ((colour == outsideColour || x == (width - 1)) && previousColour != outsideColour)
+				{
+					points.add(0, new java.awt.Point(x, y));
+				}
+				previousColour = colour;
+			}
+		}
+		int offsetX = 0;
+		int offsetY = 0;
+		if (minimapRectangle != null)
+		{
+			offsetX = minimapRectangle.x;
+			offsetY = minimapRectangle.y;
+		}
+		Polygon polygon = new Polygon();
+		for (java.awt.Point point : points)
+		{
+			polygon.addPoint(point.x + offsetX, point.y + offsetY);
+		}
+		return polygon;
 	}
 }
