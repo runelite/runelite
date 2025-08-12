@@ -77,7 +77,7 @@ class NpcAggroAreaOverlay extends Overlay
 		}
 
 		GeneralPath lines = plugin.getLinesToDisplay()[client.getPlane()];
-		if (lines == null)
+		if (lines == null || !config.showAreaLines())
 		{
 			return null;
 		}

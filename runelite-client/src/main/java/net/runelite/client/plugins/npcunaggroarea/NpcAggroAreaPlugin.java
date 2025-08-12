@@ -209,7 +209,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void calculateLinesToDisplay()
 	{
-		if (!active || !config.showAreaLines())
+		if (!active || !config.showAreaLines() && !config.showMinimapAreaLines())
 		{
 			Arrays.fill(linesToDisplay, null);
 			return;
@@ -414,6 +414,7 @@ public class NpcAggroAreaPlugin extends Plugin
 				break;
 			case "npcUnaggroCollisionDetection":
 			case "npcUnaggroShowAreaLines":
+			case "npcUnaggroShowMinimapLines":
 				calculateLinesToDisplay();
 				break;
 			case "npcUnaggroNames":

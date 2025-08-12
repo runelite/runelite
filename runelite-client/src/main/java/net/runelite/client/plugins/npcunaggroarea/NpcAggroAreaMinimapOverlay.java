@@ -77,7 +77,7 @@ class NpcAggroAreaMinimapOverlay extends Overlay
 		}
 
 		GeneralPath lines = plugin.getLinesToDisplay()[client.getPlane()];
-		if (lines == null)
+		if (lines == null || !config.showMinimapAreaLines())
 		{
 			return null;
 		}
