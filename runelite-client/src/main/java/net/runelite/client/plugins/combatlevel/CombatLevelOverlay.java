@@ -118,11 +118,11 @@ class CombatLevelOverlay extends Overlay
 		StringBuilder sb = new StringBuilder();
 		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
 
-		if ((attackLevel + strengthLevel) <= Experience.MAX_REAL_LEVEL * 2)
+		if ((attackLevel + strengthLevel) + meleeNeed <= Experience.MAX_REAL_LEVEL * 2)
 		{
 			sb.append(meleeNeed).append(" Attack/Strength</br>");
 		}
-		if ((hitpointsLevel + defenceLevel) <= Experience.MAX_REAL_LEVEL * 2)
+		if ((hitpointsLevel + defenceLevel) + hpDefNeed <= Experience.MAX_REAL_LEVEL * 2)
 		{
 			sb.append(hpDefNeed).append(" Defence/Hitpoints</br>");
 		}
