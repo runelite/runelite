@@ -70,7 +70,7 @@ class GroundMarkerMinimapOverlay extends Overlay
 			return null;
 		}
 
-		graphics.clip(OverlayUtil.getMinimapClipArea(client, spriteManager));
+		graphics.setClip(OverlayUtil.getMinimapClipArea(client, spriteManager));
 
 		final Collection<ColorTileMarker> points = plugin.getPoints();
 		for (final ColorTileMarker point : points)
