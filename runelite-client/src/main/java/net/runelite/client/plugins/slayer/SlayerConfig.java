@@ -39,7 +39,12 @@ public interface SlayerConfig extends Config
 	String GROUP_NAME = "slayer";
 
 	// Key names for stored task values
+	String TASK_NAME_KEY = "taskName";
+	String AMOUNT_KEY = "amount";
 	String INIT_AMOUNT_KEY = "initialAmount";
+	String TASK_LOC_KEY = "taskLocation";
+	String STREAK_KEY = "streak";
+	String POINTS_KEY = "points";
 
 	@ConfigItem(
 		position = 1,
