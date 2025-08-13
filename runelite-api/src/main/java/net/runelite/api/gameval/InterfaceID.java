@@ -4801,8 +4801,8 @@ public final class InterfaceID
 		public static final int BRIGHTNESS_SLIDER_BOBBLE = 0x0074_0018;
 		public static final int BRIGHTNESS_HOLDER = 0x0074_0019;
 		public static final int ZOOM = 0x0074_001a;
-		public static final int CLIENT_TYPE = 0x0074_001b;
-		public static final int RENDERER = 0x0074_001c;
+		public static final int DISPLAY_DYNAMIC_SETTING_1 = 0x0074_001b;
+		public static final int DISPLAY_DYNAMIC_SETTING_2 = 0x0074_001c;
 		public static final int ACCEPTAID = 0x0074_001d;
 		public static final int RUNMODE = 0x0074_001e;
 		public static final int HOUSEOPTIONS = 0x0074_001f;
@@ -4814,8 +4814,8 @@ public final class InterfaceID
 		public static final int BACKGROUND = 0x0074_0025;
 		public static final int ATTACK_PRIORITY_PLAYER_BUTTONS = 0x0074_0026;
 		public static final int ATTACK_PRIORITY_NPC_BUTTONS = 0x0074_0027;
-		public static final int FPS_LIMIT_BUTTONS = 0x0074_0028;
-		public static final int CLIENT_TYPE_BUTTONS = 0x0074_0029;
+		public static final int DISPLAY_DYNAMIC_SETTING_1_BUTTONS = 0x0074_0028;
+		public static final int DISPLAY_DYNAMIC_SETTING_2_BUTTONS = 0x0074_0029;
 		public static final int DROPDOWN_SCROLLBAR = 0x0074_002a;
 		public static final int TOOLTIP = 0x0074_002b;
 		public static final int ZOOM_TOGGLE = 0x0074_002c;

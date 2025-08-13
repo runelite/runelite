@@ -44657,32 +44657,32 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_LEVER_OAK_4 = 13674;
 
 	/**
-	 * Trapdoor
+	 * Oak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_OAK_7 = 13675;
 
 	/**
-	 * Trapdoor
+	 * Teak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_TEAK_7 = 13676;
 
 	/**
-	 * Trapdoor
+	 * Mahogany trapdoor
 	 */
 	public static final int POH_TRAPDOOR_MAG_7 = 13677;
 
 	/**
-	 * Trapdoor
+	 * Oak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_OAK_OPEN_7 = 13678;
 
 	/**
-	 * Trapdoor
+	 * Teak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_TEAK_OPEN_7 = 13679;
 
 	/**
-	 * Trapdoor
+	 * Mahogany trapdoor
 	 */
 	public static final int POH_TRAPDOOR_MAG_OPEN_7 = 13680;
 

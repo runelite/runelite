@@ -8527,5 +8527,797 @@ public final class DBTableID
 			public static final int DOM_DELVE_LEVEL_7_ = 5483;
 		}
 	}
+
+	public static final class Furniture
+	{
+		public static final int ID = 110;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_MODEL_OBJ = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 1;
+
+		/**
+		 * (obj, integer)
+		 */
+		public static final int COL_MATERIAL_COST = 2;
+
+		/**
+		 * (stat, integer)
+		 */
+		public static final int COL_LEVEL_REQUIREMENT = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_HIDDEN_IN_BUILD_MENU = 5;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_UPGRADE_SOURCE_RELATIVE = 6;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_UPGRADE_SOURCE_ABSOLUTE = 7;
+
+		public static final class Row
+		{
+			public static final int POH_ARMCHAIR_1 = 5517;
+			public static final int POH_ARMCHAIR_2 = 5518;
+			public static final int POH_ARMCHAIR_3 = 5519;
+			public static final int POH_ARMCHAIR_4 = 5520;
+			public static final int POH_ARMCHAIR_5 = 5521;
+			public static final int POH_ARMCHAIR_6 = 5522;
+			public static final int POH_ARMCHAIR_7 = 5523;
+			public static final int POH_RUG_1 = 5524;
+			public static final int POH_RUG_2 = 5525;
+			public static final int POH_RUG_3 = 5526;
+			public static final int POH_RUG_DEADMAN = 5527;
+			public static final int POH_RUG_LEAGUE_5 = 5528;
+			public static final int POH_BOOKCASE_1 = 5529;
+			public static final int POH_BOOKCASE_2 = 5530;
+			public static final int POH_BOOKCASE_3 = 5531;
+			public static final int POH_FIREPLACE_1 = 5532;
+			public static final int POH_FIREPLACE_2 = 5533;
+			public static final int POH_FIREPLACE_3 = 5534;
+			public static final int POH_CURTAINS_1 = 5535;
+			public static final int POH_CURTAINS_2 = 5536;
+			public static final int POH_CURTAINS_3 = 5537;
+			public static final int POH_CURTAINS_LEAGUE5 = 5538;
+			public static final int POH_STOVE_1 = 5539;
+			public static final int POH_STOVE_2 = 5540;
+			public static final int POH_STOVE_3 = 5541;
+			public static final int POH_STOVE_4 = 5542;
+			public static final int POH_STOVE_5 = 5543;
+			public static final int POH_STOVE_6 = 5544;
+			public static final int POH_STOVE_7 = 5545;
+			public static final int POH_KITCHEN_SHELVES_1 = 5546;
+			public static final int POH_KITCHEN_SHELVES_2 = 5547;
+			public static final int POH_KITCHEN_SHELVES_3 = 5548;
+			public static final int POH_KITCHEN_SHELVES_4 = 5549;
+			public static final int POH_KITCHEN_SHELVES_5 = 5550;
+			public static final int POH_KITCHEN_SHELVES_6 = 5551;
+			public static final int POH_KITCHEN_SHELVES_7 = 5552;
+			public static final int POH_BARREL_1 = 5553;
+			public static final int POH_BARREL_2 = 5554;
+			public static final int POH_BARREL_3 = 5555;
+			public static final int POH_BARREL_4 = 5556;
+			public static final int POH_BARREL_5 = 5557;
+			public static final int POH_BARREL_6 = 5558;
+			public static final int POH_CAT_BASKET_1 = 5559;
+			public static final int POH_CAT_BASKET_2 = 5560;
+			public static final int POH_CAT_BASKET_3 = 5561;
+			public static final int POH_LARDER_1 = 5562;
+			public static final int POH_LARDER_2 = 5563;
+			public static final int POH_LARDER_3 = 5564;
+			public static final int POH_SINK_1 = 5565;
+			public static final int POH_SINK_2 = 5566;
+			public static final int POH_SINK_3 = 5567;
+			public static final int POH_SINK_4 = 5568;
+			public static final int POH_KITCHENTABLE_1 = 5569;
+			public static final int POH_KITCHENTABLE_2 = 5570;
+			public static final int POH_KITCHENTABLE_3 = 5571;
+			public static final int POH_KITCHEN_RACK_1 = 5572;
+			public static final int POH_DINING_TABLE_1 = 5573;
+			public static final int POH_DINING_TABLE_2 = 5574;
+			public static final int POH_DINING_TABLE_3 = 5575;
+			public static final int POH_DINING_TABLE_4 = 5576;
+			public static final int POH_DINING_TABLE_5 = 5577;
+			public static final int POH_DINING_TABLE_6 = 5578;
+			public static final int POH_DINING_TABLE_7 = 5579;
+			public static final int POH_DINING_CHAIRS_1 = 5580;
+			public static final int POH_DINING_CHAIRS_2 = 5581;
+			public static final int POH_DINING_CHAIRS_3 = 5582;
+			public static final int POH_DINING_CHAIRS_4 = 5583;
+			public static final int POH_DINING_CHAIRS_5 = 5584;
+			public static final int POH_DINING_CHAIRS_6 = 5585;
+			public static final int POH_DINING_CHAIRS_7 = 5586;
+			public static final int POH_WALL_CREST_1 = 5587;
+			public static final int POH_WALL_CREST_2 = 5588;
+			public static final int POH_WALL_CREST_3 = 5589;
+			public static final int POH_BELLPULL_1 = 5590;
+			public static final int POH_BELLPULL_2 = 5591;
+			public static final int POH_BELLPULL_3 = 5592;
+			public static final int POH_BED_1 = 5593;
+			public static final int POH_BED_2 = 5594;
+			public static final int POH_BED_3 = 5595;
+			public static final int POH_BED_4 = 5596;
+			public static final int POH_BED_5 = 5597;
+			public static final int POH_BED_6 = 5598;
+			public static final int POH_BED_7 = 5599;
+			public static final int POH_WARDROBE_1 = 5600;
+			public static final int POH_WARDROBE_2 = 5601;
+			public static final int POH_WARDROBE_3 = 5602;
+			public static final int POH_WARDROBE_4 = 5603;
+			public static final int POH_WARDROBE_5 = 5604;
+			public static final int POH_WARDROBE_6 = 5605;
+			public static final int POH_WARDROBE_7 = 5606;
+			public static final int POH_MIRROR_1 = 5607;
+			public static final int POH_MIRROR_2 = 5608;
+			public static final int POH_MIRROR_3 = 5609;
+			public static final int POH_MIRROR_4 = 5610;
+			public static final int POH_MIRROR_5 = 5611;
+			public static final int POH_MIRROR_6 = 5612;
+			public static final int POH_MIRROR_7 = 5613;
+			public static final int POH_CLOCK_1 = 5614;
+			public static final int POH_CLOCK_2 = 5615;
+			public static final int POH_CLOCK_3 = 5616;
+			public static final int POH_SERVANT_MONEYBAG = 5617;
+			public static final int POH_PARTY_GAME_1 = 5618;
+			public static final int POH_PARTY_GAME_2 = 5619;
+			public static final int POH_PARTY_GAME_3 = 5620;
+			public static final int POH_PRIZE_CHEST_1 = 5621;
+			public static final int POH_PRIZE_CHEST_2 = 5622;
+			public static final int POH_PRIZE_CHEST_3 = 5623;
+			public static final int POH_ATTACK_STONE_1 = 5624;
+			public static final int POH_ATTACK_STONE_2 = 5625;
+			public static final int POH_ATTACK_STONE_3 = 5626;
+			public static final int POH_ELEMENTAL_BALANCE_1 = 5627;
+			public static final int POH_ELEMENTAL_BALANCE_2 = 5628;
+			public static final int POH_ELEMENTAL_BALANCE_3 = 5629;
+			public static final int POH_RANGING_GAME_1 = 5630;
+			public static final int POH_RANGING_GAME_2 = 5631;
+			public static final int POH_RANGING_GAME_3 = 5632;
+			public static final int POH_COMBAT_RING_1 = 5633;
+			public static final int POH_COMBAT_RING_2 = 5634;
+			public static final int POH_COMBAT_RING_3 = 5635;
+			public static final int POH_COMBAT_RING_4 = 5636;
+			public static final int POH_COMBAT_RING_5 = 5637;
+			public static final int POH_WEAPON_RACK_1 = 5638;
+			public static final int POH_WEAPON_RACK_2 = 5639;
+			public static final int POH_WEAPON_RACK_3 = 5640;
+			public static final int POH_COMBAT_DUMMY = 5641;
+			public static final int POH_COMBAT_DUMMY_UNDEADSLAYER = 5642;
+			public static final int POH_COMBAT_DUMMY_UPGRADED_1_UNDEAD = 5643;
+			public static final int POH_STAIRS_OAK = 5644;
+			public static final int POH_STAIRS_OAK_UP = 5645;
+			public static final int POH_STAIRS_OAK_DOWN = 5646;
+			public static final int POH_STAIRS_TEAK = 5647;
+			public static final int POH_STAIRS_TEAK_UP = 5648;
+			public static final int POH_STAIRS_TEAK_DOWN = 5649;
+			public static final int POH_SPIRALSTAIRS_LIMESTONE = 5650;
+			public static final int POH_STAIRS_MARBLE = 5651;
+			public static final int POH_STAIRS_MARBLE_UP = 5652;
+			public static final int POH_STAIRS_MARBLE_DOWN = 5653;
+			public static final int POH_SPIRALSTAIRS_MARBLE = 5654;
+			public static final int POH_TROPHY_HEAD_BLANK_TEAK = 5655;
+			public static final int POH_TROPHY_HEAD_BLANK_MAHOGANY = 5656;
+			public static final int POH_TROPHY_HEAD_BLANK_UPGRADETOMAHOGANY = 5657;
+			public static final int POH_TROPHY_HEAD_BLANK_GILDED = 5658;
+			public static final int POH_TROPHY_HEAD_BLANK_UPGRADETOGILDED = 5659;
+			public static final int POH_TROPHY_CRAWLINGHAND = 5660;
+			public static final int POH_TROPHY_CRAWLINGHAND_MAHOGANY = 5661;
+			public static final int POH_TROPHY_CRAWLINGHAND_GILDED = 5662;
+			public static final int POH_TROPHY_COCKATRICE = 5663;
+			public static final int POH_TROPHY_COCKATRICE_MAHOGANY = 5664;
+			public static final int POH_TROPHY_COCKATRICE_GILDED = 5665;
+			public static final int POH_TROPHY_BASILISK = 5666;
+			public static final int POH_TROPHY_BASILISK_MAHOGANY = 5667;
+			public static final int POH_TROPHY_BASILISK_GILDED = 5668;
+			public static final int POH_TROPHY_KURASK = 5669;
+			public static final int POH_TROPHY_KURASK_GILDED = 5670;
+			public static final int POH_TROPHY_ABYSSAL = 5671;
+			public static final int POH_TROPHY_ABYSSAL_GILDED = 5672;
+			public static final int POH_TROPHY_KBD = 5673;
+			public static final int POH_TROPHY_KALPHITEQUEEN = 5674;
+			public static final int POH_TROPHY_VORKATH = 5675;
+			public static final int POH_TROPHY_ALCHEMICAL_HYDRA_HEAD = 5676;
+			public static final int POH_TROPHY_FISH_BLANK_OAK = 5677;
+			public static final int POH_TROPHY_FISH_BLANK_TEAK = 5678;
+			public static final int POH_TROPHY_FISH_BLANK_UPGRADETOTEAK = 5679;
+			public static final int POH_TROPHY_FISH_BLANK_MAHOGANY = 5680;
+			public static final int POH_TROPHY_FISH_BLANK_UPGRADETOMAHOGANY = 5681;
+			public static final int POH_TROPHY_BASS = 5682;
+			public static final int POH_TROPHY_BASS_TEAK = 5683;
+			public static final int POH_TROPHY_BASS_MAHOGANY = 5684;
+			public static final int POH_TROPHY_SWORDFISH = 5685;
+			public static final int POH_TROPHY_SWORDFISH_MAHOGANY = 5686;
+			public static final int POH_TROPHY_SHARK = 5687;
+			public static final int POH_TROPHY_HARPOONFISH = 5688;
+			public static final int POH_TROPHY_HARPOONFISH_MAHOGANY = 5689;
+			public static final int POH_TROPHY_ARMOUR_MITHRIL = 5690;
+			public static final int POH_TROPHY_ARMOUR_ADAMANT = 5691;
+			public static final int POH_TROPHY_ARMOUR_RUNE = 5692;
+			public static final int POH_TROPHY_CASTLEWARS_1 = 5693;
+			public static final int POH_TROPHY_CASTLEWARS_2 = 5694;
+			public static final int POH_TROPHY_CASTLEWARS_3 = 5695;
+			public static final int POH_TROPHY_RUNECRAFTING_1 = 5696;
+			public static final int POH_TROPHY_RUNECRAFTING_2 = 5697;
+			public static final int POH_TROPHY_RUNECRAFTING_3 = 5698;
+			public static final int POH_PORTRAIT_1 = 5699;
+			public static final int POH_PORTRAIT_2 = 5700;
+			public static final int POH_PORTRAIT_3 = 5701;
+			public static final int POH_PORTRAIT_4 = 5702;
+			public static final int POH_LANDSCAPE_1 = 5703;
+			public static final int POH_LANDSCAPE_2 = 5704;
+			public static final int POH_LANDSCAPE_3 = 5705;
+			public static final int POH_LANDSCAPE_4 = 5706;
+			public static final int POH_LANDSCAPE_5 = 5707;
+			public static final int POH_TROPHY_ANTIDRAGONBREATH = 5708;
+			public static final int POH_TROPHY_AMULETOFGLORY = 5709;
+			public static final int POH_TROPHY_LEGENDSCAPE = 5710;
+			public static final int POH_TROPHY_MYTHICAL_CAPE = 5711;
+			public static final int POH_TROPHY_SILVERLIGHT = 5712;
+			public static final int POH_TROPHY_EXCALIBUR = 5713;
+			public static final int POH_TROPHY_DARKLIGHT = 5714;
+			public static final int POH_MAP_1 = 5715;
+			public static final int POH_MAP_2 = 5716;
+			public static final int POH_MAP_3 = 5717;
+			public static final int POH_SYMBOL_SARADOMIN = 5718;
+			public static final int POH_SYMBOL_ZAMORAK = 5719;
+			public static final int POH_SYMBOL_GUTHIX = 5720;
+			public static final int POH_ICON_SARADOMIN = 5721;
+			public static final int POH_ICON_ZAMORAK = 5722;
+			public static final int POH_ICON_GUTHIX = 5723;
+			public static final int POH_ICON_BOB = 5724;
+			public static final int POH_ICON_GNOMECHILD = 5725;
+			public static final int POH_ALTAR_OAK = 5726;
+			public static final int POH_ALTAR_TEAK = 5727;
+			public static final int POH_ALTAR_TEAK_CLOTH = 5728;
+			public static final int POH_ALTAR_MAHOGANY = 5729;
+			public static final int POH_ALTAR_LIMESTONE = 5730;
+			public static final int POH_ALTAR_MARBLE = 5731;
+			public static final int POH_ALTAR_MARBLE_GILT = 5732;
+			public static final int POH_TORCHES_STEEL = 5733;
+			public static final int POH_TORCHES_WOODEN = 5734;
+			public static final int POH_CANDLESTICKS_STEEL = 5735;
+			public static final int POH_CANDLESTICKS_GILT = 5736;
+			public static final int POH_INCENSE_BURNER_OAK = 5737;
+			public static final int POH_INCENSE_BURNER_MAHOGANY = 5738;
+			public static final int POH_INCENSE_BURNER_MARBLE = 5739;
+			public static final int POH_CHAPEL_WINDOW_SHUTTERS = 5740;
+			public static final int POH_CHAPEL_WINDOW_DECORATIVE = 5741;
+			public static final int POH_CHAPEL_WINDOW_STAINEDGLASS = 5742;
+			public static final int POH_STATUE_SAINT = 5743;
+			public static final int POH_STATUE_ANGEL = 5744;
+			public static final int POH_STATUE_GOD = 5745;
+			public static final int POH_WINDCHIMES = 5746;
+			public static final int POH_BELLS = 5747;
+			public static final int POH_ORGAN = 5748;
+			public static final int POH_WORKBENCH_1 = 5749;
+			public static final int POH_WORKBENCH_2 = 5750;
+			public static final int POH_WORKBENCH_3 = 5751;
+			public static final int POH_WORKBENCH_4 = 5752;
+			public static final int POH_WORKBENCH_5 = 5753;
+			public static final int POH_CRAFTING_TABLE_1 = 5754;
+			public static final int POH_CRAFTING_TABLE_2 = 5755;
+			public static final int POH_CRAFTING_TABLE_3 = 5756;
+			public static final int POH_CRAFTING_TABLE_4 = 5757;
+			public static final int POH_TOOL_STORE_1 = 5758;
+			public static final int POH_TOOL_STORE_2 = 5759;
+			public static final int POH_TOOL_STORE_3 = 5760;
+			public static final int POH_TOOL_STORE_4 = 5761;
+			public static final int POH_TOOL_STORE_5 = 5762;
+			public static final int POH_REPAIR_BENCH_1 = 5763;
+			public static final int POH_REPAIR_BENCH_2 = 5764;
+			public static final int POH_REPAIR_BENCH_3 = 5765;
+			public static final int POH_HERALDRY_BENCH_1 = 5766;
+			public static final int POH_HERALDRY_BENCH_2 = 5767;
+			public static final int POH_HERALDRY_BENCH_3 = 5768;
+			public static final int POH_LECTERN_1 = 5769;
+			public static final int POH_LECTERN_2 = 5770;
+			public static final int POH_LECTERN_3 = 5771;
+			public static final int POH_LECTERN_4 = 5772;
+			public static final int POH_LECTERN_5 = 5773;
+			public static final int POH_LECTERN_6 = 5774;
+			public static final int POH_LECTERN_7 = 5775;
+			public static final int POH_LECTERN_8 = 5776;
+			public static final int POH_GLOBE_1 = 5777;
+			public static final int POH_GLOBE_2 = 5778;
+			public static final int POH_GLOBE_3 = 5779;
+			public static final int POH_GLOBE_4 = 5780;
+			public static final int POH_GLOBE_5 = 5781;
+			public static final int POH_GLOBE_6 = 5782;
+			public static final int POH_GLOBE_7 = 5783;
+			public static final int POH_CRYSTALBALL_1 = 5784;
+			public static final int POH_CRYSTALBALL_2 = 5785;
+			public static final int POH_CRYSTALBALL_3 = 5786;
+			public static final int POH_WALLCHART_1 = 5787;
+			public static final int POH_WALLCHART_2 = 5788;
+			public static final int POH_WALLCHART_3 = 5789;
+			public static final int POH_WALLCHART_4 = 5790;
+			public static final int POH_TELESCOPE_1 = 5791;
+			public static final int POH_TELESCOPE_2 = 5792;
+			public static final int POH_TELESCOPE_3 = 5793;
+			public static final int POH_PORTAL_FRAME_1 = 5794;
+			public static final int POH_PORTAL_FRAME_2 = 5795;
+			public static final int POH_PORTAL_FRAME_3 = 5796;
+			public static final int POH_PORTAL_FRAME_LEAGUE_5 = 5797;
+			public static final int POH_TELEPORT_CENTREPIECE_1 = 5798;
+			public static final int POH_TELEPORT_CENTREPIECE_2 = 5799;
+			public static final int POH_TELEPORT_CENTREPIECE_3 = 5800;
+			public static final int POH_TELEPORT_CENTREPIECE_LEAGUE5 = 5801;
+			public static final int POH_PORTAL_NEXUS_1 = 5802;
+			public static final int POH_PORTAL_NEXUS_2 = 5803;
+			public static final int POH_PORTAL_NEXUS_3 = 5804;
+			public static final int POH_PORTAL_NEXUS_LEAGUE_5 = 5805;
+			public static final int POH_AMULET_XERIC = 5806;
+			public static final int POH_AMULET_DIGSITE = 5807;
+			public static final int POH_THRONE_1 = 5808;
+			public static final int POH_THRONE_2 = 5809;
+			public static final int POH_THRONE_3 = 5810;
+			public static final int POH_THRONE_4 = 5811;
+			public static final int POH_THRONE_5 = 5812;
+			public static final int POH_THRONE_6 = 5813;
+			public static final int POH_THRONE_7 = 5814;
+			public static final int POH_THRONE_ROOM_CAGE_1 = 5815;
+			public static final int POH_THRONE_ROOM_CAGE_2 = 5816;
+			public static final int POH_THRONE_ROOM_CAGE_3 = 5817;
+			public static final int POH_THRONE_ROOM_CAGE_4 = 5818;
+			public static final int POH_THRONE_ROOM_CAGE_5 = 5819;
+			public static final int POH_WALL_CREST_4 = 5820;
+			public static final int POH_WALL_CREST_5 = 5821;
+			public static final int POH_WALL_CREST_6 = 5822;
+			public static final int POH_WALL_CREST_6_DUMMY = 5823;
+			public static final int POH_LEVER_OAK = 5824;
+			public static final int POH_LEVER_TEAK = 5825;
+			public static final int POH_LEVER_MAG = 5826;
+			public static final int POH_TRAPDOOR_OAK = 5827;
+			public static final int POH_TRAPDOOR_TEAK = 5828;
+			public static final int POH_TRAPDOOR_MAG = 5829;
+			public static final int POH_OUBLIETTE_SPIKES = 5830;
+			public static final int POH_OUBLIETTE_POOL = 5831;
+			public static final int POH_OUBLIETTE_FIRE = 5832;
+			public static final int POH_OUB_MONSTER1 = 5833;
+			public static final int POH_CAGE_DUNGEON_OAK = 5834;
+			public static final int POH_CAGE_DUNGEON_OAK_STEEL = 5835;
+			public static final int POH_CAGE_DUNGEON_STEEL = 5836;
+			public static final int POH_CAGE_DUNGEON_STEEL_SPIKES = 5837;
+			public static final int POH_CAGE_DUNGEON_BONES = 5838;
+			public static final int POH_SKELETON_GUARD = 5839;
+			public static final int POH_GUARD_DOG = 5840;
+			public static final int POH_HOBGOBLIN = 5841;
+			public static final int POH_DRAGON = 5842;
+			public static final int POH_SPIDER = 5843;
+			public static final int POH_TROLL = 5844;
+			public static final int POH_HELLHOUND = 5845;
+			public static final int POH_DUNGEON_CANDLE = 5846;
+			public static final int POH_DUNGEON_TORCH = 5847;
+			public static final int POH_DUNGEON_SKULLTORCH = 5848;
+			public static final int POH_DUNGEON_LADDER_OAK = 5849;
+			public static final int POH_DUNGEON_LADDER_TEAK = 5850;
+			public static final int POH_DUNGEON_LADDER_MAG = 5851;
+			public static final int POH_DUNGEON_BLOODSTAIN = 5852;
+			public static final int POH_DUNGEON_PIPE = 5853;
+			public static final int POH_DUNGEON_SKELETON_DECORATIVE = 5854;
+			public static final int POH_SPIKE_TRAP = 5855;
+			public static final int POH_MAN_TRAP = 5856;
+			public static final int POH_VINE_TRAP = 5857;
+			public static final int POH_MARBLE_TRAP = 5858;
+			public static final int POH_TELEPORT_TRAP = 5859;
+			public static final int POH_DUNGEON_DOOR_OAK = 5860;
+			public static final int POH_DUNGEON_DOOR_STEEL = 5861;
+			public static final int POH_DUNGEON_DOOR_MARBLE = 5862;
+			public static final int POH_TREASURE_WOOD = 5863;
+			public static final int POH_TREASURE_OAK = 5864;
+			public static final int POH_TREASURE_TEAK = 5865;
+			public static final int POH_TREASURE_MAHOGANY = 5866;
+			public static final int POH_TREASURE_MAGIC = 5867;
+			public static final int POH_DEMON = 5868;
+			public static final int POH_KALPHITE_SOLDIER = 5869;
+			public static final int POH_DAGANNOTH = 5870;
+			public static final int POH_TOK_XIL = 5871;
+			public static final int POH_STEEL_DRAGON = 5872;
+			public static final int POH_RUNE_DRAGON = 5873;
+			public static final int POH_GARDEN_CENTREPIECE_1 = 5874;
+			public static final int POH_GARDEN_CENTREPIECE_2 = 5875;
+			public static final int POH_GARDEN_CENTREPIECE_3 = 5876;
+			public static final int POH_GARDEN_CENTREPIECE_4 = 5877;
+			public static final int POH_GARDEN_CENTREPIECE_5 = 5878;
+			public static final int POH_GARDEN_CENTREPIECE_5_DUMMY = 5879;
+			public static final int POH_TREE_1 = 5880;
+			public static final int POH_TREE_2 = 5881;
+			public static final int POH_TREE_3 = 5882;
+			public static final int POH_TREE_4 = 5883;
+			public static final int POH_TREE_5 = 5884;
+			public static final int POH_TREE_6 = 5885;
+			public static final int POH_TREE_7 = 5886;
+			public static final int POH_PLANTBIG1A = 5887;
+			public static final int POH_PLANTBIG1B = 5888;
+			public static final int POH_PLANTBIG1C = 5889;
+			public static final int POH_PLANTBIG2A = 5890;
+			public static final int POH_PLANTBIG2B = 5891;
+			public static final int POH_PLANTBIG2C = 5892;
+			public static final int POH_PLANTSMALL1A = 5893;
+			public static final int POH_PLANTSMALL1B = 5894;
+			public static final int POH_PLANTSMALL1C = 5895;
+			public static final int POH_PLANTSMALL2A = 5896;
+			public static final int POH_PLANTSMALL2B = 5897;
+			public static final int POH_PLANTSMALL2C = 5898;
+			public static final int POH_TIPJAR = 5899;
+			public static final int POH_FORMAL_GARDEN_CENTREPIECE_2 = 5900;
+			public static final int POH_FORMAL_GARDEN_CENTREPIECE_3 = 5901;
+			public static final int POH_FORMAL_GARDEN_CENTREPIECE_4 = 5902;
+			public static final int POH_FORMAL_GARDEN_CENTREPIECE_5 = 5903;
+			public static final int POH_FENCING1 = 5904;
+			public static final int POH_FENCING2 = 5905;
+			public static final int POH_FENCING3 = 5906;
+			public static final int POH_FENCING4 = 5907;
+			public static final int POH_FENCING5 = 5908;
+			public static final int POH_FENCING6 = 5909;
+			public static final int POH_FENCING7 = 5910;
+			public static final int POH_HEDGE1 = 5911;
+			public static final int POH_HEDGE2 = 5912;
+			public static final int POH_HEDGE3 = 5913;
+			public static final int POH_HEDGE4 = 5914;
+			public static final int POH_HEDGE5 = 5915;
+			public static final int POH_HEDGE6 = 5916;
+			public static final int POH_HEDGE7 = 5917;
+			public static final int POH_FLOWERA1 = 5918;
+			public static final int POH_FLOWERA2 = 5919;
+			public static final int POH_FLOWERA3 = 5920;
+			public static final int POH_FLOWERB1 = 5921;
+			public static final int POH_FLOWERB2 = 5922;
+			public static final int POH_FLOWERB3 = 5923;
+			public static final int POH_COS_ROOM_CAPE_RACK_OAK = 5924;
+			public static final int POH_COS_ROOM_CAPE_RACK_TEAK = 5925;
+			public static final int POH_COS_ROOM_CAPE_RACK_MAHOGANY = 5926;
+			public static final int POH_COS_ROOM_CAPE_RACK_MAHOGANY_GILDED = 5927;
+			public static final int POH_COS_ROOM_CAPE_RACK_MARBLE = 5928;
+			public static final int POH_COS_ROOM_CAPE_RACK_MAGIC_STONE = 5929;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_OAK = 5930;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_CARVED_OAK = 5931;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_TEAK = 5932;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_TEAK_CARVED = 5933;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_MAHOGANY = 5934;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_MAHOGANY_GILDED = 5935;
+			public static final int POH_COS_ROOM_MAGIC_WARDROBE_MARBLE = 5936;
+			public static final int POH_COS_ROOM_TOY_BOX_OAK = 5937;
+			public static final int POH_COS_ROOM_TOY_BOX_TEAK = 5938;
+			public static final int POH_COS_ROOM_TOY_BOX_MAHOGANY = 5939;
+			public static final int POH_COS_ROOM_TREASURE_CHEST_OAK = 5940;
+			public static final int POH_COS_ROOM_TREASURE_CHEST_TEAK = 5941;
+			public static final int POH_COS_ROOM_TREASURE_CHEST_MAHOGANY = 5942;
+			public static final int POH_COS_ROOM_FANCY_DRESS_BOX_OAK = 5943;
+			public static final int POH_COS_ROOM_FANCY_DRESS_BOX_TEAK = 5944;
+			public static final int POH_COS_ROOM_FANCY_DRESS_BOX_MAHOGANY = 5945;
+			public static final int POH_COS_ROOM_ARMOUR_CASE_OAK = 5946;
+			public static final int POH_COS_ROOM_ARMOUR_CASE_TEAK = 5947;
+			public static final int POH_COS_ROOM_ARMOUR_CASE_MAHOGANY = 5948;
+			public static final int POH_MENAGERIE_PETHOUSE_1 = 5949;
+			public static final int POH_MENAGERIE_PETHOUSE_2 = 5950;
+			public static final int POH_MENAGERIE_PETHOUSE_3 = 5951;
+			public static final int POH_MENAGERIE_PETHOUSE_4 = 5952;
+			public static final int POH_MENAGERIE_PETHOUSE_5 = 5953;
+			public static final int POH_MENAGERIE_PETHOUSE_6 = 5954;
+			public static final int POH_MENAGERIE_SCRATCHINGPOST_1 = 5955;
+			public static final int POH_MENAGERIE_SCRATCHINGPOST_2 = 5956;
+			public static final int POH_MENAGERIE_SCRATCHINGPOST_3 = 5957;
+			public static final int POH_MENAGERIE_COMBATRING_1 = 5958;
+			public static final int POH_MENAGERIE_COMBATRING_2 = 5959;
+			public static final int POH_MENAGERIE_COMBATRING_3 = 5960;
+			public static final int POH_MENAGERIE_PETLIST_1 = 5961;
+			public static final int POH_MENAGERIE_PETFEEDER_1 = 5962;
+			public static final int POH_MENAGERIE_PETFEEDER_2 = 5963;
+			public static final int POH_MENAGERIE_PETFEEDER_3 = 5964;
+			public static final int POH_MENAGERIE_HABITAT_1 = 5965;
+			public static final int POH_MENAGERIE_HABITAT_2 = 5966;
+			public static final int POH_MENAGERIE_HABITAT_3 = 5967;
+			public static final int POH_MENAGERIE_HABITAT_4 = 5968;
+			public static final int POH_MENAGERIE_HABITAT_5 = 5969;
+			public static final int POH_SUPERIOR_GARDEN_TELEPORT_TREE = 5970;
+			public static final int POH_SUPERIOR_GARDEN_TELEPORT_RING = 5971;
+			public static final int POH_SUPERIOR_GARDEN_TELEPORT_TREERING = 5972;
+			public static final int POH_SUPERIOR_GARDEN_WILDERNESS_OBELISK = 5973;
+			public static final int LEAGUE_5_POH_SUPERIOR_GARDEN_TELEPORT_TREERING = 5974;
+			public static final int LEAGUE_5_POH_SUPERIOR_GARDEN_TELEPORT_TREE = 5975;
+			public static final int POH_SUPERIOR_GARDEN_TOPIARY = 5976;
+			public static final int POH_SUPERIOR_GARDEN_POOL_RESTORATION = 5977;
+			public static final int POH_SUPERIOR_GARDEN_POOL_REVITALISATION = 5978;
+			public static final int POH_SUPERIOR_GARDEN_POOL_REJUVENATION = 5979;
+			public static final int POH_SUPERIOR_GARDEN_POOL_RECOVERY = 5980;
+			public static final int POH_SUPERIOR_GARDEN_POOL_REGENERATION = 5981;
+			public static final int POH_SUPERIOR_GARDEN_THEME_ZEN = 5982;
+			public static final int POH_SUPERIOR_GARDEN_THEME_ZANARIS = 5983;
+			public static final int POH_SUPERIOR_GARDEN_THEME_TZHAAR = 5984;
+			public static final int POH_SUPERIOR_GARDEN_REDWOOD_FENCE = 5985;
+			public static final int POH_SUPERIOR_GARDEN_OBSIDIAN_FENCE = 5986;
+			public static final int POH_SUPERIOR_GARDEN_BENCH_TEAK = 5987;
+			public static final int POH_SUPERIOR_GARDEN_BENCH_MAHOGANY = 5988;
+			public static final int POH_SUPERIOR_GARDEN_BENCH_MARBLE = 5989;
+			public static final int POH_SUPERIOR_GARDEN_BENCH_OBSIDIAN = 5990;
+			public static final int POH_ACHIEVEMENTGALLERY_ALTAR_ANCIENT = 5991;
+			public static final int POH_ACHIEVEMENTGALLERY_ALTAR_LUNAR = 5992;
+			public static final int POH_ACHIEVEMENTGALLERY_ALTAR_ARCEUUS = 5993;
+			public static final int POH_ACHIEVEMENTGALLERY_ALTAR_ECUMENICAL_FROMANCIENT = 5994;
+			public static final int POH_ACHIEVEMENTGALLERY_ALTAR_ECUMENICAL_FROMLUNAR = 5995;
+			public static final int POH_ACHIEVEMENTGALLERY_ALTAR_ECUMENICAL_FROMARCEUUS = 5996;
+			public static final int POH_ACHIEVEMENTGALLERY_ADVENTURELOG_1 = 5997;
+			public static final int POH_ACHIEVEMENTGALLERY_ADVENTURELOG_2 = 5998;
+			public static final int POH_ACHIEVEMENTGALLERY_ADVENTURELOG_3 = 5999;
+			public static final int POH_ACHIEVEMENTGALLERY_JEWELLERYBOX_1 = 6000;
+			public static final int POH_ACHIEVEMENTGALLERY_JEWELLERYBOX_2 = 6001;
+			public static final int POH_ACHIEVEMENTGALLERY_JEWELLERYBOX_3 = 6002;
+			public static final int POH_ACHIEVEMENTGALLERY_BOSSLAIR_BLANK = 6003;
+			public static final int POH_ACHIEVEMENTGALLERY_MOUNTEDDISPLAY_EMBLEM = 6004;
+			public static final int POH_ACHIEVEMENTGALLERY_MOUNTEDDISPLAY_COINS = 6005;
+			public static final int POH_ACHIEVEMENTGALLERY_MOUNTEDDISPLAY_CAPESTAND = 6006;
+			public static final int POH_ACHIEVEMENTGALLERY_QUESTLIST = 6007;
+			public static final int POH_LEAGUEHALL_TROPHY_PEDESTAL_SIMPLE = 6008;
+			public static final int POH_LEAGUEHALL_TROPHY_PEDESTAL_DECORATIVE = 6009;
+			public static final int POH_LEAGUEHALL_RUG_SIMPLE = 6010;
+			public static final int POH_LEAGUEHALL_RUG_DECORATIVE = 6011;
+			public static final int POH_LEAGUEHALL_RUG_TRAILBLAZER = 6012;
+			public static final int POH_LEAGUEHALL_TROPHYCASE_OAK = 6013;
+			public static final int POH_LEAGUEHALL_TROPHYCASE_MAHOGANY = 6014;
+			public static final int POH_LEAGUEHALL_BANNERSTAND_SIMPLE = 6015;
+			public static final int POH_LEAGUEHALL_BANNERSTAND_DECORATIVE = 6016;
+			public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK = 6017;
+			public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY = 6018;
+			public static final int POH_LEAGUEHALL_STATUE_SIMPLE = 6019;
+			public static final int POH_LEAGUEHALL_STATUE_DECORATIVE = 6020;
+			public static final int POH_LEAGUEHALL_STATUE_TRAILBLAZER = 6021;
+			public static final int POH_LEAGUEHALL_ACCOMPLISHMENT_SCROLL = 6022;
+			public static final int HW20_POH_PUMPKIN_BUILD = 6023;
+			public static final int FORESTRY_POH_BEEHIVE01 = 6024;
+			public static final int FORESTRY_POH_BEEHIVE02 = 6025;
+			public static final int MY2ARM_COFFIN = 6026;
+			public static final int POH_GREENMAN_WALL_DECORATION = 6027;
+			public static final int POH_GREENMAN_STATUE = 6028;
+		}
+	}
+
+	public static final class PohRoom
+	{
+		public static final int ID = 111;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME_UPPERCASE = 1;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_COST = 2;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ROOM_TYPE = 3;
+
+		/**
+		 * (stat, integer)
+		 */
+		public static final int COL_LEVEL_REQUIREMENT = 4;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_SOURCE_OFFSET = 5;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_DOOR_LOCATIONS = 6;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_HOTSPOT = 7;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_FLOOR_RESTRICTION = 8;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_HAS_ROOF = 9;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_ROOM_OBJ = 10;
+
+		/**
+		 * component
+		 */
+		public static final int COL_BUTTON = 11;
+
+		public static final class Row
+		{
+			public static final int POH_DUMMY_NULL = 5487;
+			public static final int POH_DUMMY_PARLOUR = 5488;
+			public static final int POH_DUMMY_GARDEN = 5489;
+			public static final int POH_DUMMY_KITCHEN = 5490;
+			public static final int POH_DUMMY_DINING_ROOM = 5491;
+			public static final int POH_DUMMY_BEDROOM = 5492;
+			public static final int POH_DUMMY_GAMES_ROOM = 5493;
+			public static final int POH_DUMMY_HALL1 = 5494;
+			public static final int POH_DUMMY_HALL1A = 5495;
+			public static final int POH_DUMMY_HALL2 = 5496;
+			public static final int POH_DUMMY_HALL2A = 5497;
+			public static final int POH_DUMMY_CHAPEL = 5498;
+			public static final int POH_DUMMY_WORKSHOP = 5499;
+			public static final int POH_DUMMY_STUDY = 5500;
+			public static final int POH_DUMMY_PORTALROOM = 5501;
+			public static final int POH_DUMMY_THRONEROOM = 5502;
+			public static final int POH_DUMMY_OUBLIETTE = 5503;
+			public static final int POH_DUMMY_DUNGEON_CORRIDOR = 5504;
+			public static final int POH_DUMMY_DUNGEON_CROSS = 5505;
+			public static final int POH_DUMMY_DUNGEON_STAIRS = 5506;
+			public static final int POH_DUMMY_DUNGEON_TREASURE = 5507;
+			public static final int POH_DUMMY_FORMAL_GARDEN = 5508;
+			public static final int POH_DUMMY_COMBAT_ROOM = 5509;
+			public static final int POH_DUMMY_COSTUME_ROOM = 5510;
+			public static final int POH_DUMMY_MENAGERIE_INDOORS = 5511;
+			public static final int POH_DUMMY_MENAGERIE_OUTDOORS = 5512;
+			public static final int POH_DUMMY_SUPERIOR_GARDEN = 5513;
+			public static final int POH_DUMMY_ACHIEVEMENT_GALLERY = 5514;
+			public static final int POH_DUMMY_PORTALNEXUS = 5515;
+			public static final int POH_DUMMY_LEAGUEHALL = 5516;
+		}
+	}
+
+	public static final class PohHotspot
+	{
+		public static final int ID = 112;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_BUILDDATA = 0;
+
+		public static final class Row
+		{
+			public static final int NULL_HOTSPOT = 6029;
+			public static final int ARMCHAIR_HOTSPOT = 6030;
+			public static final int RUG_HOTSPOT = 6031;
+			public static final int BOOKCASE_HOTSPOT = 6032;
+			public static final int FIREPLACE_HOTSPOT = 6033;
+			public static final int CURTAINS_HOTSPOT = 6034;
+			public static final int STOVE_HOTSPOT = 6035;
+			public static final int KITCHEN_SHELF_HOTSPOT = 6036;
+			public static final int BARREL_HOTSPOT = 6037;
+			public static final int CAT_BASKET_HOTSPOT = 6038;
+			public static final int LARDER_HOTSPOT = 6039;
+			public static final int SINK_HOTSPOT = 6040;
+			public static final int KITCHEN_TABLE_HOTSPOT = 6041;
+			public static final int SPICE_RACK_HOTSPOT = 6042;
+			public static final int DINING_TABLE_HOTSPOT = 6043;
+			public static final int DINING_CHAIRS_HOTSPOT = 6044;
+			public static final int THRONEROOM_CHAIRS_HOTSPOT = 6045;
+			public static final int SIMPLE_WALL_CREST_HOTSPOT = 6046;
+			public static final int FANCY_WALL_CREST_HOTSPOT = 6047;
+			public static final int ALL_WALL_CREST_HOTSPOT = 6048;
+			public static final int BELLPULL_HOTSPOT = 6049;
+			public static final int BED_HOTSPOT = 6050;
+			public static final int WARDROBE_HOTSPOT = 6051;
+			public static final int MIRROR_HOTSPOT = 6052;
+			public static final int CLOCK_HOTSPOT = 6053;
+			public static final int PARTY_GAME_HOTSPOT = 6054;
+			public static final int PRIZE_CHEST_HOTSPOT = 6055;
+			public static final int ATTACK_STONE_HOTSPOT = 6056;
+			public static final int ELEMENTAL_BALANCE_HOTSPOT = 6057;
+			public static final int RANGING_GAME_HOTSPOT = 6058;
+			public static final int COMBAT_RING_HOTSPOT = 6059;
+			public static final int WEAPON_RACK_HOTSPOT = 6060;
+			public static final int COMBAT_DUMMY_HOTSPOT = 6061;
+			public static final int STAIR_HOTSPOT = 6062;
+			public static final int MONSTER_TROPHY_HOTSPOT = 6063;
+			public static final int FISH_TROPHY_HOTSPOT = 6064;
+			public static final int ARMOUR_TROPHY_HOTSPOT = 6065;
+			public static final int CASTLEWARS_TROPHY_HOTSPOT = 6066;
+			public static final int RUNECRAFTING_TROPHY_HOTSPOT = 6067;
+			public static final int PORTRAIT_HOTSPOT = 6068;
+			public static final int LANDSCAPE_HOTSPOT = 6069;
+			public static final int QUEST_TROPHY_HOTSPOT = 6070;
+			public static final int SWORD_TROPHY_HOTSPOT = 6071;
+			public static final int MAP_TROPHY_HOTSPOT = 6072;
+			public static final int ICON_HOTSPOT = 6073;
+			public static final int ALTAR_HOTSPOT = 6074;
+			public static final int INCENSE_BURNER_HOTSPOT = 6075;
+			public static final int CHAPEL_WINDOW_HOTSPOT = 6076;
+			public static final int STATUE_HOTSPOT = 6077;
+			public static final int CHAPEL_INSTRUMENT_HOTSPOT = 6078;
+			public static final int WORKBENCH_HOTSPOT = 6079;
+			public static final int CRAFTING_TABLE_HOTSPOT = 6080;
+			public static final int TOOL_STORE_HOTSPOT = 6081;
+			public static final int REPAIR_BENCH_HOTSPOT = 6082;
+			public static final int HERALDRY_BENCH_HOTSPOT = 6083;
+			public static final int LECTERN_HOTSPOT = 6084;
+			public static final int GLOBE_HOTSPOT = 6085;
+			public static final int CRYSTALBALL_HOTSPOT = 6086;
+			public static final int WALLCHART_HOTSPOT = 6087;
+			public static final int TELESCOPE_HOTSPOT = 6088;
+			public static final int PORTAL_HOTSPOT = 6089;
+			public static final int PORTAL_FOCUS_HOTSPOT = 6090;
+			public static final int PORTAL_NEXUS_HOTSPOT = 6091;
+			public static final int AMULET_HOTSPOT = 6092;
+			public static final int THRONE_HOTSPOT = 6093;
+			public static final int THRONEROOM_CAGE_HOTSPOT = 6094;
+			public static final int LEVER_HOTSPOT = 6095;
+			public static final int TRAPDOOR_HOTSPOT = 6096;
+			public static final int OUBLIETTE_TRAP_HOTSPOT = 6097;
+			public static final int DUNGEON_CAGE_HOTSPOT = 6098;
+			public static final int GUARD_HOTSPOT = 6099;
+			public static final int ELITE_GUARD_HOTSPOT = 6100;
+			public static final int DUNGEON_LIGHTING_HOTSPOT = 6101;
+			public static final int DUNGEON_LADDER_HOTSPOT = 6102;
+			public static final int DUNGEON_DECOR_HOTSPOT = 6103;
+			public static final int DUNGEON_TRAP_HOTSPOT = 6104;
+			public static final int DUNGEON_DOOR_HOTSPOT = 6105;
+			public static final int TREASURE_HOTSPOT = 6106;
+			public static final int GARDEN_CENTERPIECE_HOTSPOT = 6107;
+			public static final int FORMAL_GARDEN_CENTERPIECE_HOTSPOT = 6108;
+			public static final int TREE_HOTSPOT = 6109;
+			public static final int PLANT_BIG_1_HOTSPOT = 6110;
+			public static final int PLANT_BIG_2_HOTSPOT = 6111;
+			public static final int PLANT_SMALL_1_HOTSPOT = 6112;
+			public static final int PLANT_SMALL_2_HOTSPOT = 6113;
+			public static final int TIPJAR_HOTSPOT = 6114;
+			public static final int FENCING_1_HOTSPOT = 6115;
+			public static final int HEDGE_HOTSPOT = 6116;
+			public static final int FLOWER_1_HOTSPOT = 6117;
+			public static final int FLOWER_2_HOTSPOT = 6118;
+			public static final int FLOWER_1_NOEXTRAS_HOTSPOT = 6119;
+			public static final int FLOWER_2_NOEXTRAS_HOTSPOT = 6120;
+			public static final int CAPE_RACK_HOTSPOT = 6121;
+			public static final int MAGIC_WARDROBE_HOTSPOT = 6122;
+			public static final int TOY_BOX_HOTSPOT = 6123;
+			public static final int TREASURE_CHEST_HOTSPOT = 6124;
+			public static final int FANCY_DRESS_BOX_HOTSPOT = 6125;
+			public static final int ARMOUR_CASE_BOX_HOTSPOT = 6126;
+			public static final int PETHOUSE_HOTSPOT = 6127;
+			public static final int SCRATCHINGPOST_HOTSPOT = 6128;
+			public static final int PET_COMBATRING_HOTSPOT = 6129;
+			public static final int PETLIST_HOTSPOT = 6130;
+			public static final int PETFEEDER_HOTSPOT = 6131;
+			public static final int HABITAT_HOTSPOT = 6132;
+			public static final int GARDEN_TELEPORT_HOTSPOT = 6133;
+			public static final int TOPIARY_HOTSPOT = 6134;
+			public static final int RESTORATION_POOL_HOTSPOT = 6135;
+			public static final int THEME_HOTSPOT = 6136;
+			public static final int FENCING_2_HOTSPOT = 6137;
+			public static final int GARDEN_BENCH_HOTSPOT = 6138;
+			public static final int SPELL_ALTAR_HOTSPOT = 6139;
+			public static final int ADVENTURELOG_HOTSPOT = 6140;
+			public static final int JEWLLERYBOX_HOTSPOT = 6141;
+			public static final int BOSSLAIR_HOTSPOT = 6142;
+			public static final int ACHIEVEMENT_DISPLAY_HOTSPOT = 6143;
+			public static final int QUESTLIST_HOTSPOT = 6144;
+			public static final int LEAGUE_TROPHY_PEDESTAL_HOTSPOT = 6145;
+			public static final int LEAGUE_RUG_HOTSPOT = 6146;
+			public static final int LEAGUE_TROPHY_HOTSPOT = 6147;
+			public static final int BANNERSTAND_HOTSPOT = 6148;
+			public static final int OUTFITSTAND_HOTSPOT = 6149;
+			public static final int LEAGUE_STATUE_HOTSPOT = 6150;
+			public static final int LEAGUE_ACCOMPLISHMENT_HOTSPOT = 6151;
+		}
+	}
 /* This file is automatically generated. Do not edit. */
 }
