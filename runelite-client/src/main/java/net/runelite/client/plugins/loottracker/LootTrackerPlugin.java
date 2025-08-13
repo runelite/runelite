@@ -221,6 +221,32 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SHADECHEST_GOLD_PURPLE, "Gold key purple").
 		build();
 
+	// Wilderness agility dispenser loot handling
+	private static final String WILDY_AGILITY_DISPENSER_EVENT = "Agility dispenser";
+	private static final Pattern WILDY_AGILITY_DISPENSER_PATTERN = Pattern.compile("You have been awarded.* (?<qty1>\\d+) x (?<noted1>.+) and (?<qty2>\\d+) x (?<noted2>.+?)(?:, and an extra (?<unnoted>.+))? from the Agility dispenser\\.");
+	private static final Map<String, Integer> WILDY_AGILITY_ITEMS_UNNOTED = new ImmutableMap.Builder<String, Integer>().
+		put("Blighted anglerfish", ItemID.BLIGHTED_ANGLERFISH).
+		put("Blighted manta ray", ItemID.BLIGHTED_MANTARAY).
+		put("Blighted karambwan", ItemID.BLIGHTED_KARAMBWAN).
+		put("Blighted super restore(4)", ItemID.BLIGHTED_4DOSE2RESTORE).
+		build();
+	private static final Map<String, Integer> WILDY_AGILITY_ITEMS_NOTED = new ImmutableMap.Builder<String, Integer>().
+		put("Blighted anglerfish", ItemID.BLIGHTED_ANGLERFISH + 1).
+		put("Blighted manta ray", ItemID.BLIGHTED_MANTARAY + 1).
+		put("Blighted karambwan", ItemID.BLIGHTED_KARAMBWAN + 1).
+		put("Blighted super restore(4)", ItemID.BLIGHTED_4DOSE2RESTORE + 1).
+		put("Steel platebody", ItemID.STEEL_PLATEBODY + 1).
+		put("Mithril chainbody", ItemID.MITHRIL_CHAINBODY + 1).
+		put("Mithril platelegs", ItemID.MITHRIL_PLATELEGS + 1).
+		put("Mithril plateskirt", ItemID.MITHRIL_PLATESKIRT + 1).
+		put("Adamant full helm", ItemID.ADAMANT_FULL_HELM + 1).
+		put("Adamant platelegs", ItemID.ADAMANT_PLATELEGS + 1).
+		put("Adamant platebody", ItemID.ADAMANT_PLATEBODY + 1).
+		put("Rune med helm", ItemID.RUNE_MED_HELM + 1).
+		put("Rune chainbody", ItemID.RUNE_CHAINBODY + 1).
+		put("Rune kiteshield", ItemID.RUNE_KITESHIELD + 1).
+		build();
+
 	private static final String HALLOWED_SACK_EVENT = "Hallowed Sack";
 
 	// Last man standing map regions
@@ -1038,6 +1064,38 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER)));
+			return;
+		}
+
+		// Wilderness agility course
+		final Matcher wildyAgilityMatcher = WILDY_AGILITY_DISPENSER_PATTERN.matcher(Text.removeTags(message));
+		if (wildyAgilityMatcher.matches())
+		{
+			List<ItemStack> loot = new ArrayList<>();
+
+			final String noted1 = wildyAgilityMatcher.group("noted1");
+			final String noted2 = wildyAgilityMatcher.group("noted2");
+			final String unnoted = wildyAgilityMatcher.group("unnoted");
+			final int qty1 = Integer.parseInt(wildyAgilityMatcher.group("qty1"));
+			final int qty2 = Integer.parseInt(wildyAgilityMatcher.group("qty2"));
+
+			final int notedId1 = WILDY_AGILITY_ITEMS_NOTED.get(noted1);
+			final int notedId2 = WILDY_AGILITY_ITEMS_NOTED.get(noted2);
+
+			loot.add(new ItemStack(ItemID.WILDY_AGILITY_TOKEN, 1));
+			loot.add(new ItemStack(notedId1, qty1));
+			loot.add(new ItemStack(notedId2, qty2));
+
+			if (unnoted != null)
+			{
+				loot.add(new ItemStack(WILDY_AGILITY_ITEMS_UNNOTED.get(unnoted), 1));
+			}
+			if (message.contains("clue"))
+			{
+				loot.add(new ItemStack(ItemID.LEAGUE_CLUE_BOX_MEDIUM, 1));
+			}
+
+			addLoot(WILDY_AGILITY_DISPENSER_EVENT, -1, LootRecordType.EVENT, null, loot);
 			return;
 		}
 
