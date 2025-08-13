@@ -223,7 +223,7 @@ public class LootTrackerPlugin extends Plugin
 
 	// Wilderness agility dispenser loot handling
 	private static final String WILDY_AGILITY_DISPENSER_EVENT = "Agility dispenser";
-	private static final Pattern WILDY_AGILITY_DISPENSER_PATTERN = Pattern.compile("You have been awarded.* (?<qty1>\\d+) x (?<noted1>.+) and (?<qty2>\\d+) x (?<noted2>.+?)(?:, and an extra (?<unnoted>.+))? from the Agility dispenser\\.");
+	private static final Pattern WILDY_AGILITY_DISPENSER_PATTERN = Pattern.compile("You have been awarded(?<clue> a clue scroll,)? (?<qty1>\\d+) x (?<noted1>.+) and (?<qty2>\\d+) x (?<noted2>.+?)(?:, and an extra (?<unnoted>.+))? from the Agi.*");
 	private static final Map<String, Integer> WILDY_AGILITY_ITEMS_UNNOTED = new ImmutableMap.Builder<String, Integer>().
 		put("Blighted anglerfish", ItemID.BLIGHTED_ANGLERFISH).
 		put("Blighted manta ray", ItemID.BLIGHTED_MANTARAY).
@@ -1073,24 +1073,28 @@ public class LootTrackerPlugin extends Plugin
 		{
 			List<ItemStack> loot = new ArrayList<>();
 
+			// guaranteed loot
 			final String noted1 = wildyAgilityMatcher.group("noted1");
 			final String noted2 = wildyAgilityMatcher.group("noted2");
-			final String unnoted = wildyAgilityMatcher.group("unnoted");
-			final int qty1 = Integer.parseInt(wildyAgilityMatcher.group("qty1"));
-			final int qty2 = Integer.parseInt(wildyAgilityMatcher.group("qty2"));
-
 			final int notedId1 = WILDY_AGILITY_ITEMS_NOTED.get(noted1);
 			final int notedId2 = WILDY_AGILITY_ITEMS_NOTED.get(noted2);
+
+			final int qty1 = Integer.parseInt(wildyAgilityMatcher.group("qty1"));
+			final int qty2 = Integer.parseInt(wildyAgilityMatcher.group("qty2"));
 
 			loot.add(new ItemStack(ItemID.WILDY_AGILITY_TOKEN, 1));
 			loot.add(new ItemStack(notedId1, qty1));
 			loot.add(new ItemStack(notedId2, qty2));
 
+			// conditional loot
+			final String unnoted = wildyAgilityMatcher.group("unnoted");
+			final String clue = wildyAgilityMatcher.group("clue");
+
 			if (unnoted != null)
 			{
 				loot.add(new ItemStack(WILDY_AGILITY_ITEMS_UNNOTED.get(unnoted), 1));
 			}
-			if (message.contains("clue"))
+			if (clue != null)
 			{
 				loot.add(new ItemStack(ItemID.LEAGUE_CLUE_BOX_MEDIUM, 1));
 			}
