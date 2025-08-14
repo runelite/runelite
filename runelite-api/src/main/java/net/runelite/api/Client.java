@@ -2401,4 +2401,20 @@ public interface Client extends OAuthApi, GameEngine
 	 * animates transparency, otherwise it will share a reference. All other fields share a reference.
 	 */
 	Model applyTransformations(Model model, @Nullable Animation animA, int frameA, @Nullable Animation animB, int frameB);
+
+	/**
+	 * Creates a SceneTilePaint instance, which can be attached to a Tile to control its appearance.
+	 *
+	 * @see Tile#setSceneTilePaint(SceneTilePaint)
+	 *
+	 * @param swColor the color of the south-west corner of the tile
+	 * @param seColor the color of the south-east corner of the tile
+	 * @param neColor the color of the north-east corner of the tile
+	 * @param nwColor the color of the north-west corner of the tile
+	 * @param texture the texture to render for the tile, or -1 to use the colors
+	 * @param minimapRgb the color to use when rendering the minimap
+	 * @param flatShade whether the tile is flat
+	 * @return the newly created SceneTilePaint
+	 */
+	SceneTilePaint createSceneTilePaint(int swColor, int seColor, int neColor, int nwColor, int texture, int minimapRgb, boolean flatShade);
 }
