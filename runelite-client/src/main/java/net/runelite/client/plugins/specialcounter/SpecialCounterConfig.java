@@ -183,7 +183,8 @@ public interface SpecialCounterConfig extends Config
 			name = "Eye of Ayak",
 			description = "Threshold for Eye of Ayak (0 to disable)."
 	)
-	default int ayakThreshold() {
+	default int ayakThreshold()
+	{
 		return 0;
 	}
 }
