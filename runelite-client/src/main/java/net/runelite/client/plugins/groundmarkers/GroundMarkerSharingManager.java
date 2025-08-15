@@ -34,11 +34,13 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -69,7 +71,7 @@ class GroundMarkerSharingManager
 
 	@Inject
 	private GroundMarkerSharingManager(GroundMarkerPlugin plugin, Client client, MenuManager menuManager,
-		ChatMessageManager chatMessageManager, ChatboxPanelManager chatboxPanelManager, Gson gson)
+			ChatMessageManager chatMessageManager, ChatboxPanelManager chatboxPanelManager, Gson gson)
 	{
 		this.plugin = plugin;
 		this.client = client;
@@ -110,20 +112,25 @@ class GroundMarkerSharingManager
 			.flatMap(Function.identity())
 			.collect(Collectors.toList());
 
-		if (activePoints.isEmpty())
+		exportGroundMarkers(activePoints);
+	}
+
+	void exportGroundMarkers(Collection<GroundMarkerPoint> points)
+	{
+		if (points.isEmpty())
 		{
 			sendChatMessage("You have no ground markers to export.");
 			return;
 		}
 
-		final String exportDump = gson.toJson(activePoints);
+		final String exportDump = gson.toJson(points);
 
 		log.debug("Exported ground markers: {}", exportDump);
 
 		Toolkit.getDefaultToolkit()
 			.getSystemClipboard()
 			.setContents(new StringSelection(exportDump), null);
-		sendChatMessage(activePoints.size() + " ground markers were copied to your clipboard.");
+		sendChatMessage(points.size() + " ground markers were copied to your clipboard.");
 	}
 
 	private void promptForImport(MenuEntry menuEntry)
@@ -154,7 +161,9 @@ class GroundMarkerSharingManager
 		try
 		{
 			// CHECKSTYLE:OFF
-			importPoints = gson.fromJson(clipboardText, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+			importPoints = gson.fromJson(clipboardText, new TypeToken<List<GroundMarkerPoint>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException e)
@@ -188,29 +197,43 @@ class GroundMarkerSharingManager
 		regionGroupedPoints.forEach((regionId, groupedPoints) ->
 		{
 			// combine imported points with existing region points
-			log.debug("Importing {} points to region {}", groupedPoints.size(), regionId);
-			Collection<GroundMarkerPoint> regionPoints = plugin.getPoints(regionId);
-
-			List<GroundMarkerPoint> mergedList = new ArrayList<>(regionPoints.size() + groupedPoints.size());
-			// add existing points
-			mergedList.addAll(regionPoints);
-
-			// add new points
-			for (GroundMarkerPoint point : groupedPoints)
-			{
-				// filter out duplicates
-				if (!mergedList.contains(point))
+			groupedPoints.stream()
+				.collect(Collectors.groupingBy(point -> Optional.ofNullable(point.getGroup())))
+				.forEach((groupNameOptional, points) ->
 				{
-					mergedList.add(point);
-				}
-			}
+					if (groupNameOptional.isEmpty())
+					{
+						log.debug("Importing {} points to region {}", points.size(), regionId);
+						Collection<GroundMarkerPoint> regionPoints = new HashSet<>(plugin.getPoints(regionId));
+						regionPoints.addAll(points);
+						plugin.savePoints(regionId, regionPoints);
+					}
+					else
+					{
+						String groupName = groupNameOptional.get();
+						Collection<GroundMarkerPoint> groupPoints = new HashSet<>(plugin.getPoints(regionId, groupName));
+						groupPoints.addAll(points);
+						log.debug("Importing points for group {}", groupName);
 
-			plugin.savePoints(regionId, mergedList);
+						plugin.savePoints(regionId, groupName, groupPoints);
+					}
+				});
+
 		});
+
+		Set<GroundMarkerGroup> importedGroups = importPoints.stream()
+			.filter(p -> p.getGroup() != null)
+			.map(point -> new GroundMarkerGroup(point.getGroup(), true))
+			.collect(Collectors.toSet());
+
+		HashSet<GroundMarkerGroup> mergedGroups = new HashSet<>(plugin.getGroups());
+		mergedGroups.addAll(importedGroups);
+		plugin.saveGroups(mergedGroups);
 
 		// reload points from config
 		log.debug("Reloading points after import");
 		plugin.loadPoints();
+		plugin.rebuildPanel();
 		sendChatMessage(importPoints.size() + " ground markers were imported from the clipboard.");
 	}
 
@@ -223,7 +246,14 @@ class GroundMarkerSharingManager
 		}
 
 		long numActivePoints = Arrays.stream(regions)
-			.mapToLong(regionId -> plugin.getPoints(regionId).size())
+			.mapToLong(regionId ->
+			{
+				long numRegionPoints = plugin.getPoints(regionId).size();
+				long numGroupPoints = plugin.getVisibleGroups().stream()
+					.mapToLong(group -> plugin.getPoints(regionId, group).size())
+					.sum();
+				return numRegionPoints + numGroupPoints;
+			})
 			.sum();
 
 		if (numActivePoints == 0)
@@ -237,6 +267,7 @@ class GroundMarkerSharingManager
 			{
 				for (int regionId : regions)
 				{
+					plugin.getVisibleGroups().forEach(group -> plugin.savePoints(regionId, group, null));
 					plugin.savePoints(regionId, null);
 				}
 
