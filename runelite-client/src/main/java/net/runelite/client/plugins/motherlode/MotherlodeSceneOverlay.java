@@ -140,6 +140,16 @@ class MotherlodeSceneOverlay extends Overlay
 		if (canvasLoc != null)
 		{
 			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
+
+			// Show red highlight around veins when sack is full and option is enabled
+			if (config.preventMiningWhenSackFull() && plugin.isSackFull())
+			{
+				Polygon poly = Perspective.getCanvasTilePoly(client, vein.getLocalLocation());
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+				}
+			}
 		}
 	}
 
