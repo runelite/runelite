@@ -136,6 +136,7 @@ public class AgilityPlugin extends Plugin
 
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
+	private boolean waitForLoginTick;
 
 	@Getter
 	private int agilityLevel;
@@ -181,6 +182,7 @@ public class AgilityPlugin extends Plugin
 				lastArenaTicketPosition = null;
 				removeAgilityArenaTimer();
 				npcs.clear();
+				waitForLoginTick = true;
 				break;
 			case LOADING:
 				marksOfGrace.clear();
@@ -222,7 +224,7 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
-		if (statChanged.getSkill() != AGILITY)
+		if (waitForLoginTick || statChanged.getSkill() != AGILITY)
 		{
 			return;
 		}
@@ -308,6 +310,7 @@ public class AgilityPlugin extends Plugin
 				}
 			}
 		}
+		waitForLoginTick = false;
 	}
 
 	private void trackSession(Courses course)
