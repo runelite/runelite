@@ -65,7 +65,7 @@ public class CrowdsourcingCooking
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
 		{
@@ -107,7 +107,7 @@ public class CrowdsourcingCooking
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		MenuAction action = menuOptionClicked.getMenuAction();
 		if (action == MenuAction.GAME_OBJECT_FIRST_OPTION

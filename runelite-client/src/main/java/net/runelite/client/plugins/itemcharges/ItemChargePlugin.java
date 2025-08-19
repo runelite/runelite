@@ -211,7 +211,7 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
+	private void onGameStateChanged(GameStateChanged e)
 	{
 		// No VarbitChanged event fires on login if the explorer's ring is full (varbit value 0).
 		// So, set the value to 0 when LOGGED_IN. This is before the VarbitChanged event would fire,
@@ -231,7 +231,7 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(ItemChargeConfig.GROUP))
 		{
@@ -242,7 +242,7 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -459,7 +459,7 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getContainerId() != InventoryID.WORN)
 		{
@@ -483,7 +483,7 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	private void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == InterfaceID.OBJECTBOX)
 		{

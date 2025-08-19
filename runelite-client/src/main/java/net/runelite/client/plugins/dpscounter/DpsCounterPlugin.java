@@ -171,13 +171,13 @@ public class DpsCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPartyChanged(PartyChanged partyChanged)
+	private void onPartyChanged(PartyChanged partyChanged)
 	{
 		members.clear();
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	private void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
 		Player player = client.getLocalPlayer();
 		Actor actor = hitsplatApplied.getActor();
@@ -234,7 +234,7 @@ public class DpsCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDpsUpdate(DpsUpdate dpsUpdate)
+	private void onDpsUpdate(DpsUpdate dpsUpdate)
 	{
 		if (partyService.getLocalMember().getMemberId() == dpsUpdate.getMemberId())
 		{
@@ -260,7 +260,7 @@ public class DpsCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
 

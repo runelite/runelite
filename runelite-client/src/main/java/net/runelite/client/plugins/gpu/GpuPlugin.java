@@ -511,7 +511,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(GpuPluginConfig.GROUP))
 		{
@@ -1510,7 +1510,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
