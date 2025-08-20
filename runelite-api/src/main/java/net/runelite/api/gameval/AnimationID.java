@@ -2761,6 +2761,7 @@ public final class AnimationID
 	public static final int STARJUMP = 2754;
 	public static final int VFX_DOOM_HOLE_IDLE_UNIQUE = 2755;
 	public static final int PUSHUPS = 2756;
+	public static final int HUMAN_LEDGE_WALK_LEFT_LOOPED = 2757;
 	public static final int SITUPS_GETDOWN = 2758;
 	public static final int SITUPS = 2759;
 	public static final int SITUPS_GETUP = 2760;
@@ -7145,6 +7146,9 @@ public final class AnimationID
 	public static final int HUMAN_MINING_DRAGON_PICKAXE = 7139;
 	public static final int HUMAN_MINING_DRAGON_PICKAXE_NOREACHFORWARD = 7140;
 	public static final int SUROK_RUNE_COMBINE_LOOP = 7141;
+	public static final int HUMAN_LEDGE_WALK_RIGHT_LOOPED = 7142;
+	public static final int KASTORI_HARVESTER_WALK_F = 7143;
+	public static final int KASTORI_HARVESTER_READY = 7144;
 	public static final int LORE_POLAR_BEAR_ARC_BLAST_SPOT = 7147;
 	public static final int LORE_POLAR_BEAR_ARC_BLAST_PROJ = 7148;
 	public static final int LORE_POLAR_BEAR_ARC_BLAST_IMPACT = 7149;

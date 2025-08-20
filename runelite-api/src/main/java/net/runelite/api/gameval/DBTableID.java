@@ -2787,7 +2787,6 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_COORD_0_39_60_41_41 = 500;
 			public static final int CLUEHELPER_TARGET_COORD_0_44_50_12_34 = 501;
 			public static final int CLUEHELPER_TARGET_COORD_0_19_58_31_14 = 502;
-			public static final int CLUEHELPER_TARGET_COORD_0_58_60_58_58 = 503;
 			public static final int CLUEHELPER_TARGET_COORD_0_34_49_33_25 = 504;
 			public static final int CLUEHELPER_TARGET_COORD_0_34_50_5_6 = 505;
 			public static final int CLUEHELPER_TARGET_COORD_0_48_50_9_9 = 506;
@@ -2829,7 +2828,6 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_COORD_0_47_60_5_6 = 542;
 			public static final int CLUEHELPER_TARGET_COORD_0_47_60_50_44 = 543;
 			public static final int CLUEHELPER_TARGET_COORD_0_51_60_26_49 = 544;
-			public static final int CLUEHELPER_TARGET_COORD_0_58_60_58_57 = 545;
 			public static final int CLUEHELPER_TARGET_COORD_0_39_60_9_59 = 546;
 			public static final int CLUEHELPER_TARGET_COORD_0_51_61_21_38 = 547;
 			public static final int CLUEHELPER_TARGET_COORD_0_49_61_23_55 = 548;
@@ -2994,6 +2992,8 @@ public final class DBTableID
 			public static final int CLUEHELPER_TARGET_COORD_1_25_83_40_54 = 3936;
 			public static final int CLUEHELPER_TARGET_COORD_VARLAMORE_RAINFOREST_CENTRE = 5172;
 			public static final int CLUEHELPER_TARGET_COORD_0_20_51_41_59 = 5173;
+			public static final int CLUEHELPER_TARGET_COORD_0_58_60_52_60 = 6152;
+			public static final int CLUEHELPER_TARGET_COORD_0_58_60_53_59 = 6153;
 		}
 	}
 

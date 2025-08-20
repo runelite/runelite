@@ -9818,4 +9818,10 @@ public final class SpriteID
 		public static final int _0 = 6406;
 		public static final int _1 = 6407;
 	}
+
+	public static final class GeModify
+	{
+		public static final int _0 = 6409;
+		public static final int _1 = 6410;
+	}
 }

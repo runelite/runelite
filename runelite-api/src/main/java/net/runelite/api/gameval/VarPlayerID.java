@@ -148,6 +148,7 @@ public final class VarPlayerID
 	public static final int TROLL_QUEST = 317;
 	public static final int TROLL_VARBIT = 318;
 	public static final int TBWT_MAIN = 320;
+	public static final int TBWT_TIADECHE = 321;
 	public static final int REGICIDE_QUEST = 328;
 	public static final int REGICIDE_BITS = 329;
 	public static final int REGICIDE_STILL_TOTAL = 330;
@@ -515,6 +516,7 @@ public final class VarPlayerID
 	public static final int II_PLAYER = 1018;
 	public static final int TOPLEVEL_TEMP = 1021;
 	public static final int BANK_CLOSING = 1022;
+	public static final int BRUT_BASE_1 = 1023;
 	public static final int PATTERN_VARP = 1037;
 	public static final int TRADEREMOVED = 1042;
 	public static final int TRADEREMOVED_OTHER = 1043;
