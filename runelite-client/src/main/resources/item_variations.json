@@ -4833,8 +4833,7 @@
   ],
   "agility jump": [
     6514,
-    6518,
-    11793
+    6518
   ],
   "agility balance": [
     6515,
@@ -11657,7 +11656,8 @@
   ],
   "venator bow": [
     27610,
-    27612
+    27612,
+    31133
   ],
   "ancient sceptre": [
     27624,
@@ -11953,6 +11953,10 @@
   "beehive": [
     28676,
     28677
+  ],
+  "dinhs blazing bulwark": [
+    28682,
+    31132
   ],
   "blazing blowpipe": [
     28687,
@@ -12678,5 +12682,9 @@
   "eye of ayak": [
     31113,
     31115
+  ],
+  "agility swing": [
+    31134,
+    31135
   ]
 }
