@@ -268,7 +268,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_EXP15)
-			.location(new WorldPoint(3770, 3898, 0))
+			.location(new WorldPoint(3764, 3900, 0))
 			.directions("On the small island north-east of Fossil Island's mushroom forest.")
 			.build(),
 		CoordinateClue.builder()
@@ -524,7 +524,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_HARD_SEXTANT_EXP11)
-			.location(new WorldPoint(3770, 3897, 0))
+			.location(new WorldPoint(3765, 3899, 0))
 			.directions("Small Island north of Fossil Island.")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
