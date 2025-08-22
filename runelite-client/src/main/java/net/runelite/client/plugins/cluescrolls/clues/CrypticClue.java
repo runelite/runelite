@@ -146,7 +146,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_RIDDLE025)
 			.text("Citric cellar.")
-			.location(new WorldPoint(2490, 3488, 0))
+			.location(new WorldPoint(2490, 3488, 1))
 			.npc("Heckel Funch")
 			.solution("Speak to Heckel Funch on the first floor in the Grand Tree.")
 			.build(),
