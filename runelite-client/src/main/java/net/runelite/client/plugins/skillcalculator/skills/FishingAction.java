@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
@@ -72,4 +75,10 @@ public enum FishingAction implements ItemSkillAction
 	private final int itemId;
 	private final int level;
 	private final float xp;
+
+	@Override
+	public Set<FishingBonus> getExcludedSkillBonuses()
+	{
+		return this == RAW_ANGLERFISH ? Collections.emptySet() : EnumSet.of(FishingBonus.DIABOLIC_WORMS);
+	}
 }
