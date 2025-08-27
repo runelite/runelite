@@ -89,7 +89,7 @@ enum TransportationPointLocation
 	ROW_BOAT_CRABCLAW("Rowboat to Hosidius", new WorldPoint(1780, 3417, 0), new WorldPoint(1779, 3457, 0)),
 	ROW_BOAT_CUSTODIA_SOUTH("Rowboat to North Custodia Pass", new WorldPoint(1281, 3386, 0)),
 	ROW_BOAT_CUSTODIA_WEST("Rowboat to South Custodia Pass", new WorldPoint(1256, 3395, 0)),
-	ROW_BOAT_DIVING_ISLAND("Rowboat to Barge/Camp/North of Island", new WorldPoint(3764, 3901, 0)),
+	ROW_BOAT_DIVING_ISLAND("Rowboat to Barge/Camp/North of Island", new WorldPoint(3759, 3902, 0)),
 	ROW_BOAT_FISHING_GUILD("Rowboat to Hemenster", new WorldPoint(2598, 3426, 0), new WorldPoint(2613, 3439, 0)),
 	ROW_BOAT_GNOME_STRONGHOLD("Rowboat to Fishing Colony", new WorldPoint(2368, 3487, 0), new WorldPoint(2356, 3641, 0)),
 	ROW_BOAT_FISHING_COLONY("Rowboat to Gnome Stronghold", new WorldPoint(2356, 3641, 0), new WorldPoint(2368, 3487, 0)),
