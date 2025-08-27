@@ -49,6 +49,7 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.ITEM_EXAMINE;
 import static net.runelite.api.ChatMessageType.MODCHAT;
 import static net.runelite.api.ChatMessageType.NPC_EXAMINE;
+import static net.runelite.api.ChatMessageType.NPC_SAY;
 import static net.runelite.api.ChatMessageType.OBJECT_EXAMINE;
 import static net.runelite.api.ChatMessageType.PUBLICCHAT;
 import static net.runelite.api.ChatMessageType.SPAM;
@@ -92,10 +93,11 @@ public class ChatFilterPlugin extends Plugin
 		OBJECT_EXAMINE,
 		SPAM,
 		PUBLICCHAT,
-		MODCHAT
+		MODCHAT,
+		NPC_SAY
 	);
 
-	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
+	private static final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private List<Pattern> filteredPatterns = Collections.emptyList();
 	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 
@@ -183,12 +185,12 @@ public class ChatFilterPlugin extends Plugin
 
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
 		final int messageType = intStack[intStackSize - 2];
 		final int messageId = intStack[intStackSize - 1];
-		String message = stringStack[stringStackSize - 1];
+		String message = (String) objectStack[objectStackSize - 1];
 
 		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
 		final MessageNode messageNode = client.getMessages().get(messageId);
@@ -208,7 +210,7 @@ public class ChatFilterPlugin extends Plugin
 			case CLAN_CHAT:
 			case CLAN_GUEST_CHAT:
 			case CLAN_GIM_CHAT:
-				if (canFilterPlayer(Text.removeTags(name)))
+				if (canFilterPlayer(Text.sanitize(name)))
 				{
 					message = censorMessage(messageNode, name, message);
 					blockMessage = message == null;
@@ -216,6 +218,7 @@ public class ChatFilterPlugin extends Plugin
 				break;
 			case GAMEMESSAGE:
 			case ENGINE:
+			case FRIENDSCHATNOTIFICATION:
 			case ITEM_EXAMINE:
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:
@@ -223,6 +226,7 @@ public class ChatFilterPlugin extends Plugin
 			case CLAN_MESSAGE:
 			case CLAN_GUEST_MESSAGE:
 			case CLAN_GIM_MESSAGE:
+			case NPC_SAY:
 				if (config.filterGameChat())
 				{
 					message = censorMessage(messageNode, null, message);
@@ -262,14 +266,14 @@ public class ChatFilterPlugin extends Plugin
 				message += " (" + duplicateCount + ")";
 			}
 
-			stringStack[stringStackSize - 1] = message;
+			objectStack[objectStackSize - 1] = message;
 		}
 	}
 
 	@Subscribe
 	public void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName())) // NOPMD: SimplifyConditional
+		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName()))
 		{
 			return;
 		}
@@ -340,8 +344,8 @@ public class ChatFilterPlugin extends Plugin
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
 			.replace('\u00A0', ' ')
-			.replaceAll("<lt>", "<")
-			.replaceAll("<gt>", ">");
+			.replace("<lt>", "<")
+			.replace("<gt>", ">");
 		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
 

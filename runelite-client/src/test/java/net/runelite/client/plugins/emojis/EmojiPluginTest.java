@@ -28,18 +28,22 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.awt.image.BufferedImage;
+import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.game.ChatIconManager;
+import okhttp3.HttpUrl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
@@ -52,11 +56,27 @@ public class EmojiPluginTest
 {
 	@Mock
 	@Bind
+	private Client client;
+
+	@Mock
+	@Bind
+	private ClientThread clientThread;
+
+	@Mock
+	@Bind
 	private ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind
 	private ChatIconManager chatIconManager;
+
+	@Mock
+	@Bind
+	private ScheduledExecutorService scheduledExecutorService;
+
+	@Bind
+	@Named("runelite.static.base")
+	private HttpUrl staticBase = HttpUrl.get("http://localhost");
 
 	@Inject
 	private EmojiPlugin emojiPlugin;
@@ -68,10 +88,14 @@ public class EmojiPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(chatIconManager.registerChatIcon(any(BufferedImage.class))).thenAnswer(a -> iconId++);
+		when(chatIconManager.reserveChatIcon()).thenAnswer(a -> iconId++);
 		when(chatIconManager.chatIconIndex(anyInt())).thenAnswer(a -> a.getArgument(0));
 
+		EmojiPlugin.Index index = new EmojiPlugin.Index();
+		index.names = Map.of("test", "1");
+
 		emojiPlugin.startUp();
+		emojiPlugin.index = index;
 	}
 
 	@Test
@@ -102,19 +126,25 @@ public class EmojiPluginTest
 
 		emojiPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("<img=10>");
+		verify(messageNode).setValue("<img=0>");
 	}
 
 	@Test
 	public void testEmojiUpdateMessage()
 	{
-		String PARTY_POPPER = "<img=" + Emoji.getEmoji("@@@").ordinal() + '>';
-		String OPEN_MOUTH = "<img=" + Emoji.getEmoji(":O").ordinal() + '>';
+		String PARTY_POPPER = "<img=0>";
+		String OPEN_MOUTH = "<img=1>";
 		assertNull(emojiPlugin.updateMessage("@@@@@"));
 		assertEquals(PARTY_POPPER, emojiPlugin.updateMessage("@@@"));
 		assertEquals(PARTY_POPPER + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@ @@@"));
-		assertEquals(PARTY_POPPER + ' ' + OPEN_MOUTH, emojiPlugin.updateMessage("@@@\u00A0:O"));
-		assertEquals(PARTY_POPPER + ' ' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0:O @@@"));
-		assertEquals(PARTY_POPPER + " Hello World " + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0Hello World\u00A0@@@"));
+		assertEquals(PARTY_POPPER + '\u00A0' + OPEN_MOUTH, emojiPlugin.updateMessage("@@@\u00A0:O"));
+		assertEquals(PARTY_POPPER + '\u00A0' + OPEN_MOUTH + ' ' + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0:O @@@"));
+		assertEquals(PARTY_POPPER + "\u00A0Hello World\u00A0" + PARTY_POPPER, emojiPlugin.updateMessage("@@@\u00A0Hello World\u00A0@@@"));
+	}
+
+	@Test
+	public void testNamed()
+	{
+		assertEquals("test <img=0>", emojiPlugin.updateMessage("test :test:"));
 	}
 }

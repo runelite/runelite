@@ -1,8 +1,6 @@
-.id                 681
-.int_stack_count    0
-.string_stack_count 0
-.int_var_count      2
-.string_var_count   1
+.id                       681
+.int_arg_count            0
+.obj_arg_count            0
    get_varc_int           5
    iconst                 14
    if_icmpeq              LABEL7
@@ -18,7 +16,7 @@ LABEL10:
    iconst                 -1
    istore                 0
    sconst                 ""
-   sstore                 0
+   ostore                 0
    get_varc_string        359
    string_length         
    istore                 1
@@ -296,13 +294,13 @@ LABEL222:
    iconst                 0
    iconst                 9
    substring             
-   sstore                 0
+   ostore                 0
    jump                   LABEL230
 LABEL228:
    get_varc_string        359
-   sstore                 0
+   ostore                 0
 LABEL230:
-   sload                  0
+   oload                  0
    lowercase             
    chat_setmessagefilter 
    invoke                 553
@@ -330,7 +328,7 @@ LABEL247:
    iconst                 552
    iconst                 -2147483645
    iconst                 1
-   sconst                 "I1"
+   sconst                 "ii"
    iconst                 10616843
    if_setontimer         
    jump                   LABEL267

@@ -45,14 +45,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.ToIntFunction;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
@@ -70,8 +68,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -80,8 +76,9 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.Notifier;
@@ -95,6 +92,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -108,10 +106,8 @@ import net.runelite.client.util.OSType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeTrade;
-import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.apache.commons.text.similarity.FuzzyScore;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
@@ -134,7 +130,6 @@ public class GrandExchangePlugin extends Plugin
 
 	private static final int MAX_RESULT_COUNT = 250;
 
-	private static final FuzzyScore FUZZY = new FuzzyScore(Locale.ENGLISH);
 	private static final Color FUZZY_HIGHLIGHT_COLOR = new Color(0x800000);
 
 	private static final int MAX_TRADE_HISTORY = 1024;
@@ -192,6 +187,9 @@ public class GrandExchangePlugin extends Plugin
 	private ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
+	private FuzzySearchScorer fuzzySearchScorer;
+
+	@Inject
 	private GrandExchangeClient grandExchangeClient;
 	private int lastLoginTick;
 
@@ -200,49 +198,6 @@ public class GrandExchangePlugin extends Plugin
 	private String machineUuid;
 	private long lastAccount;
 	private int tradeSeq;
-
-	/**
-	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
-	 */
-	@VisibleForTesting
-	static List<Integer> findFuzzyIndices(String term, String query)
-	{
-		List<Integer> indices = new ArrayList<>();
-
-		// fuzzy logic is case insensitive. We normalize the Strings to lower
-		// case right from the start. Turning characters to lower case
-		// via Character.toLowerCase(char) is unfortunately insufficient
-		// as it does not accept a locale.
-		final String termLowerCase = term.toLowerCase();
-		final String queryLowerCase = query.toLowerCase();
-
-		// the position in the term which will be scanned next for potential
-		// query character matches
-		int termIndex = 0;
-
-		for (int queryIndex = 0; queryIndex < queryLowerCase.length(); queryIndex++)
-		{
-			final char queryChar = queryLowerCase.charAt(queryIndex);
-
-			boolean termCharacterMatchFound = false;
-			for (; termIndex < termLowerCase.length()
-					&& !termCharacterMatchFound; termIndex++)
-			{
-				final char termChar = termLowerCase.charAt(termIndex);
-
-				if (queryChar == termChar)
-				{
-					indices.add(termIndex);
-
-					// we can leave the nested loop. Every character in the
-					// query can match at most one character in the term.
-					termCharacterMatchFound = true;
-				}
-			}
-		}
-
-		return indices;
-	}
 
 	private SavedOffer getOffer(int slot)
 	{
@@ -433,6 +388,11 @@ public class GrandExchangePlugin extends Plugin
 	@VisibleForTesting
 	void submitTrade(int slot, GrandExchangeOffer offer)
 	{
+		if (client.getEnvironment() != 0)
+		{
+			return;
+		}
+
 		GrandExchangeOfferState state = offer.getState();
 
 		if (state != GrandExchangeOfferState.CANCELLED_BUY && state != GrandExchangeOfferState.CANCELLED_SELL && state != GrandExchangeOfferState.BUYING && state != GrandExchangeOfferState.SELLING)
@@ -559,6 +519,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return WorldType.FRESH_START_WORLD;
 		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.BETA_WORLD))
+		{
+			return WorldType.BETA_WORLD;
+		}
 		else
 		{
 			return null;
@@ -602,13 +566,13 @@ public class GrandExchangePlugin extends Plugin
 
 		String message = Text.removeTags(event.getMessage());
 
-		if (message.startsWith("Grand Exchange:") && config.enableNotifications())
+		if (message.startsWith("Grand Exchange: Finished"))
 		{
-			notifier.notify(message);
+			notifier.notify(config.notifyOnOfferComplete(), message);
 		}
-		else if (message.startsWith("Grand Exchange: Finished") && config.notifyOnOfferComplete())
+		else if (message.startsWith("Grand Exchange:"))
 		{
-			notifier.notify(message);
+			notifier.notify(config.enableNotifications(), message);
 		}
 	}
 
@@ -649,16 +613,16 @@ public class GrandExchangePlugin extends Plugin
 
 		switch (groupId)
 		{
-			case InterfaceID.BANK:
+			case InterfaceID.BANKMAIN:
 				// Don't show for view tabs and such
-				if (widgetId != ComponentID.BANK_ITEM_CONTAINER)
+				if (widgetId != InterfaceID.Bankmain.ITEMS)
 				{
 					break;
 				}
 			case InterfaceID.INVENTORY:
-			case InterfaceID.BANK_INVENTORY:
-			case InterfaceID.GRAND_EXCHANGE_INVENTORY:
-			case InterfaceID.SHOP_INVENTORY:
+			case InterfaceID.BANKSIDE:
+			case InterfaceID.GE_OFFERS_SIDE:
+			case InterfaceID.SHOPSIDE:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setType(MenuAction.RUNELITE);
 		}
@@ -688,44 +652,34 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT).toLowerCase();
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
-		Widget results = client.getWidget(ComponentID.CHATBOX_GE_SEARCH_RESULTS);
+		Widget results = client.getWidget(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS);
 		Widget[] children = results.getDynamicChildren();
 		int resultCount = children.length / 3;
 
 		for (int i = 0; i < resultCount; i++)
 		{
 			Widget itemNameWidget = children[i * 3 + 1];
-			String itemName = itemNameWidget.getText();
+			String itemName = itemNameWidget.getText(); // preserve case in underlined string
+			String itemNameLower = itemName.toLowerCase(); // but match case-insensitive
 
-			List<Integer> indices;
-			String otherName = itemName.replace('-', ' ');
-			if (!itemName.contains("-") || FUZZY.fuzzyScore(itemName, input) >= FUZZY.fuzzyScore(otherName, input))
+			int sharedPrefixLen = 0;
+			int maxLen = Math.min(input.length(), itemName.length());
+			while (sharedPrefixLen < maxLen && input.charAt(sharedPrefixLen) == itemNameLower.charAt(sharedPrefixLen))
 			{
-				indices = findFuzzyIndices(itemName, input);
-			}
-			else
-			{
-				indices = findFuzzyIndices(otherName, input);
-			}
-			Collections.reverse(indices);
-
-			StringBuilder newItemName = new StringBuilder(itemName);
-			for (int index : indices)
-			{
-				if (itemName.charAt(index) == ' ' || itemName.charAt(index) == '-')
-				{
-					continue;
-				}
-
-				newItemName.insert(index + 1, "</u>");
-				newItemName.insert(index, underlineTag);
+				sharedPrefixLen++;
 			}
 
-			itemNameWidget.setText(newItemName.toString());
+			if (sharedPrefixLen > 0)
+			{
+				StringBuilder newItemName = new StringBuilder(itemName);
+				newItemName.insert(sharedPrefixLen, "</u>");
+				newItemName.insert(0, underlineTag);
+				itemNameWidget.setText(newItemName.toString());
+			}
 		}
 	}
 
@@ -740,7 +694,7 @@ public class GrandExchangePlugin extends Plugin
 		wasFuzzySearch = false;
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
-		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
@@ -776,23 +730,12 @@ public class GrandExchangePlugin extends Plugin
 
 		if (resultCount == 0)
 		{
-			// We do this so that for example the items "Anti-venom ..." are still at the top
-			// when searching "anti venom"
-			ToIntFunction<ItemComposition> getScore = item ->
-			{
-				int score = FUZZY.fuzzyScore(item.getName(), input);
-				if (item.getName().contains("-"))
-				{
-					return Math.max(FUZZY.fuzzyScore(item.getName().replace('-', ' '), input), score);
-				}
-				return score;
-			};
-
+			ToDoubleFunction<ItemComposition> comparator = fuzzySearchScorer.comparator(input);
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
 					.mapToObj(itemManager::getItemComposition)
 					.filter(item -> item.isTradeable() && item.getNote() == -1)
-					.filter(item -> getScore.applyAsInt(item) > 0)
-					.sorted(Comparator.comparingInt(getScore).reversed()
+					.filter(item -> comparator.applyAsDouble(item) > 0)
+					.sorted(Comparator.comparingDouble(comparator).reversed()
 						.thenComparing(ItemComposition::getName))
 					.limit(MAX_RESULT_COUNT)
 					.map(ItemComposition::getId)
@@ -817,10 +760,10 @@ public class GrandExchangePlugin extends Plugin
 			case "geSellExamineText":
 			{
 				boolean buy = "geBuyExamineText".equals(event.getEventName());
-				String[] stack = client.getStringStack();
-				int sz = client.getStringStackSize();
-				String fee = stack[sz - 2];
-				String examine = stack[sz - 3];
+				Object[] stack = client.getObjectStack();
+				int sz = client.getObjectStackSize();
+				String fee = (String) stack[sz - 2];
+				String examine = (String) stack[sz - 3];
 				String text = setExamineText(examine, fee, buy);
 				if (text != null)
 				{
@@ -867,10 +810,10 @@ public class GrandExchangePlugin extends Plugin
 		titleBuilder.append(')');
 
 		// Append to title
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
-		stringStack[stringStackSize - 1] += titleBuilder.toString();
+		objectStack[objectStackSize - 1] += titleBuilder.toString();
 	}
 
 	private void setLimitResetTime(int itemId)
@@ -914,12 +857,12 @@ public class GrandExchangePlugin extends Plugin
 
 	private String setExamineText(String examine, String fee, boolean buy)
 	{
-		final int itemId = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
+		final int itemId = client.getVarpValue(VarPlayerID.TRADINGPOST_SEARCH);
 		StringBuilder sb = new StringBuilder();
 
 		if (buy && config.enableGELimits())
 		{
-			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
+			final ItemStats itemStats = itemManager.getItemStats(itemId);
 
 			// If we have item buy limit, append it
 			if (itemStats != null && itemStats.getGeLimit() > 0)
@@ -991,7 +934,7 @@ public class GrandExchangePlugin extends Plugin
 		final String url = runeLiteConfig.useWikiItemPrices() ?
 			"https://prices.runescape.wiki/" + (client.getWorldType().contains(net.runelite.api.WorldType.FRESH_START_WORLD) ? "fsw" : "osrs") + "/item/" + itemId :
 			"https://services.runescape.com/m=itemdb_oldschool/"
-				+ name.replaceAll(" ", "+")
+				+ name.replace(" ", "+")
 				+ "/viewitem?obj="
 				+ itemId;
 		LinkBrowser.browse(url);

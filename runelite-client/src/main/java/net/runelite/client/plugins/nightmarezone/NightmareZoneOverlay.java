@@ -28,11 +28,11 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -80,7 +80,7 @@ class NightmareZoneOverlay extends OverlayPanel
 			{
 				removeAbsorptionCounter();
 				// Restore original widget
-				Widget nmzWidget = client.getWidget(ComponentID.NMZ_CONTAINER);
+				Widget nmzWidget = client.getWidget(InterfaceID.NzoneGame.UNIVERSE);
 				if (nmzWidget != null)
 				{
 					nmzWidget.setHidden(false);
@@ -91,8 +91,8 @@ class NightmareZoneOverlay extends OverlayPanel
 
 		renderAbsorptionCounter();
 
-		final int currentPoints = client.getVarbitValue(Varbits.NMZ_POINTS);
-		final int totalPoints = currentPoints + client.getVarpValue(VarPlayer.NMZ_REWARD_POINTS);
+		final int currentPoints = client.getVarbitValue(VarbitID.NZONE_CURRENTPOINTS);
+		final int totalPoints = currentPoints + client.getVarpValue(VarPlayerID.NZONE_REWARDPOINTS);
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points: ")
@@ -112,7 +112,7 @@ class NightmareZoneOverlay extends OverlayPanel
 
 	private void renderAbsorptionCounter()
 	{
-		int absorptionPoints = client.getVarbitValue(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVarbitValue(VarbitID.NZONE_ABSORB_POTION_EFFECTS);
 		if (absorptionPoints == 0)
 		{
 			if (absorptionCounter != null)
@@ -136,7 +136,7 @@ class NightmareZoneOverlay extends OverlayPanel
 
 	private void addAbsorptionCounter(int startValue)
 	{
-		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.ABSORPTION_4), plugin, startValue, config.absorptionThreshold());
+		absorptionCounter = new AbsorptionCounter(itemManager.getImage(ItemID.NZONE4DOSEABSORPTIONPOTION), plugin, startValue, config.absorptionThreshold());
 		absorptionCounter.setAboveThresholdColor(config.absorptionColorAboveThreshold());
 		absorptionCounter.setBelowThresholdColor(config.absorptionColorBelowThreshold());
 		infoBoxManager.addInfoBox(absorptionCounter);

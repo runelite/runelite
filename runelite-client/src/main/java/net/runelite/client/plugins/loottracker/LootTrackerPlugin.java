@@ -49,7 +49,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -66,31 +65,31 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.ObjectID;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
-import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PostClientTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -104,9 +103,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ConfigSync;
-import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.RuneScapeProfileChanged;
+import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
@@ -135,11 +134,13 @@ public class LootTrackerPlugin extends Plugin
 {
 	private static final int MAX_DROPS = 1024;
 	private static final Duration MAX_AGE = Duration.ofDays(365L);
+	private static final int INVCHANGE_TIMEOUT = 10; // server ticks
 
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
+	private static final int BA_LOBBY_REGION = 10039;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -150,27 +151,23 @@ public class LootTrackerPlugin extends Plugin
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
 
-	// Hespori loot handling
-	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
-	private static final String HESPORI_EVENT = "Hespori";
-	private static final int HESPORI_REGION = 5021;
-
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern ROGUES_CHEST_PATTERN = Pattern.compile("You find (a|some)([a-z\\s]*) inside.");
 	private static final Pattern LARRAN_LOOTED_PATTERN = Pattern.compile("You have opened Larran's (big|small) chest .*");
+	private static final String ALCHEMIST_SIGNET_CHEST_MESSAGE = "You take some loot from inside.";
 	// Used by Stone Chest, Isle of Souls chest, Dark Chest
 	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
-	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
+	private static final Pattern GRUBBY_CHEST_LOOTED_MESSAGE = Pattern.compile("You find treasure(?: and supplies|, supplies, and a weirdly coloured egg sac) within the chest.");
 	private static final String ANCIENT_CHEST_LOOTED_MESSAGE = "You open the chest and find";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
 	private static final int HAM_STOREROOM_REGION = 10321;
+	private static final int LAVA_MAZE_NORTH_EAST_REGION = 12348;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
 		put(11573, "Crystal Chest").
 		put(12093, "Larran's big chest").
-		put(12127, "The Gauntlet").
 		put(13113, "Larran's small chest").
 		put(13151, "Elven Crystal Chest").
 		put(5277, "Stone chest").
@@ -181,6 +178,10 @@ public class LootTrackerPlugin extends Plugin
 		put(7827, "Dark Chest").
 		put(13117, "Rogues' Chest").
 		put(13156, "Chest (Ancient Vault)").
+		put(LAVA_MAZE_NORTH_EAST_REGION, "Muddy Chest").
+		put(5422, "Chest (Aldarin Villas)").
+		put(6550, "Chest (Moon key)").
+		put(5521, "Chest (Alchemist's signet)").
 		build();
 
 	// Chests opened with keys from slayer tasks
@@ -193,37 +194,32 @@ public class LootTrackerPlugin extends Plugin
 	// Shade chest loot handling
 	private static final Pattern SHADE_CHEST_NO_KEY_PATTERN = Pattern.compile("You need a [a-z]+ key with a [a-z]+ trim to open this chest .*");
 	private static final Map<Integer, String> SHADE_CHEST_OBJECTS = new ImmutableMap.Builder<Integer, String>().
-		put(ObjectID.BRONZE_CHEST, "Bronze key red").
-		put(ObjectID.BRONZE_CHEST_4112, "Bronze key brown").
-		put(ObjectID.BRONZE_CHEST_4113, "Bronze key crimson").
-		put(ObjectID.BRONZE_CHEST_4114, "Bronze key black").
-		put(ObjectID.BRONZE_CHEST_4115, "Bronze key purple").
-		put(ObjectID.STEEL_CHEST, "Steel key red").
-		put(ObjectID.STEEL_CHEST_4117, "Steel key brown").
-		put(ObjectID.STEEL_CHEST_4118, "Steel key crimson").
-		put(ObjectID.STEEL_CHEST_4119, "Steel key black").
-		put(ObjectID.STEEL_CHEST_4120, "Steel key purple").
-		put(ObjectID.BLACK_CHEST, "Black key red").
-		put(ObjectID.BLACK_CHEST_4122, "Black key brown").
-		put(ObjectID.BLACK_CHEST_4123, "Black key crimson").
-		put(ObjectID.BLACK_CHEST_4124, "Black key black").
-		put(ObjectID.BLACK_CHEST_4125, "Black key purple").
-		put(ObjectID.SILVER_CHEST, "Silver key red").
-		put(ObjectID.SILVER_CHEST_4127, "Silver key brown").
-		put(ObjectID.SILVER_CHEST_4128, "Silver key crimson").
-		put(ObjectID.SILVER_CHEST_4129, "Silver key black").
-		put(ObjectID.SILVER_CHEST_4130, "Silver key purple").
-		put(ObjectID.GOLD_CHEST, "Gold key red").
-		put(ObjectID.GOLD_CHEST_41213, "Gold key brown").
-		put(ObjectID.GOLD_CHEST_41214, "Gold key crimson").
-		put(ObjectID.GOLD_CHEST_41215, "Gold key black").
-		put(ObjectID.GOLD_CHEST_41216, "Gold key purple").
+		put(ObjectID.SHADECHEST_BRONZE_BLOODRED, "Bronze key red").
+		put(ObjectID.SHADECHEST_BRONZE_BROWN, "Bronze key brown").
+		put(ObjectID.SHADECHEST_BRONZE_CRIMSON, "Bronze key crimson").
+		put(ObjectID.SHADECHEST_BRONZE_BLACK, "Bronze key black").
+		put(ObjectID.SHADECHEST_BRONZE_PURPLE, "Bronze key purple").
+		put(ObjectID.SHADECHEST_STEEL_BLOODRED, "Steel key red").
+		put(ObjectID.SHADECHEST_STEEL_BROWN, "Steel key brown").
+		put(ObjectID.SHADECHEST_STEEL_CRIMSON, "Steel key crimson").
+		put(ObjectID.SHADECHEST_STEEL_BLACK, "Steel key black").
+		put(ObjectID.SHADECHEST_STEEL_PURPLE, "Steel key purple").
+		put(ObjectID.SHADECHEST_BLACK_BLOODRED, "Black key red").
+		put(ObjectID.SHADECHEST_BLACK_BROWN, "Black key brown").
+		put(ObjectID.SHADECHEST_BLACK_CRIMSON, "Black key crimson").
+		put(ObjectID.SHADECHEST_BLACK_BLACK, "Black key black").
+		put(ObjectID.SHADECHEST_BLACK_PURPLE, "Black key purple").
+		put(ObjectID.SHADECHEST_SILVER_BLOODRED, "Silver key red").
+		put(ObjectID.SHADECHEST_SILVER_BROWN, "Silver key brown").
+		put(ObjectID.SHADECHEST_SILVER_CRIMSON, "Silver key crimson").
+		put(ObjectID.SHADECHEST_SILVER_BLACK, "Silver key black").
+		put(ObjectID.SHADECHEST_SILVER_PURPLE, "Silver key purple").
+		put(ObjectID.SHADECHEST_GOLD_BLOODRED, "Gold key red").
+		put(ObjectID.SHADECHEST_GOLD_BROWN, "Gold key brown").
+		put(ObjectID.SHADECHEST_GOLD_CRIMSON, "Gold key crimson").
+		put(ObjectID.SHADECHEST_GOLD_BLACK, "Gold key black").
+		put(ObjectID.SHADECHEST_GOLD_PURPLE, "Gold key purple").
 		build();
-
-	// Hallow Sepulchre Coffin handling
-	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
-	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
-	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
 	private static final String HALLOWED_SACK_EVENT = "Hallowed Sack";
 
@@ -233,7 +229,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
 	private static final String BIRDNEST_EVENT = "Bird nest";
-	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST, ItemID.BIRD_NEST_5071, ItemID.BIRD_NEST_5072, ItemID.BIRD_NEST_5073, ItemID.BIRD_NEST_5074, ItemID.BIRD_NEST_7413, ItemID.BIRD_NEST_13653, ItemID.BIRD_NEST_22798, ItemID.BIRD_NEST_22800);
+	private static final Set<Integer> BIRDNEST_IDS = ImmutableSet.of(ItemID.BIRD_NEST_EGG_RED, ItemID.BIRD_NEST_EGG_GREEN, ItemID.BIRD_NEST_EGG_BLUE, ItemID.BIRD_NEST_SEEDS, ItemID.BIRD_NEST_RING, ItemID.BIRD_NEST_CHEAPSEEDS, ItemID.BIRD_NEST_DECENTSEEDS, ItemID.BIRD_NEST_SEEDS_JAN2019, ItemID.BIRD_NEST_DECENTSEEDS_JAN2019);
 
 	// Birdhouses
 	private static final Pattern BIRDHOUSE_PATTERN = Pattern.compile("You dismantle and discard the trap, retrieving (?:(?:a|\\d{1,2}) nests?, )?10 dead birds, \\d{1,3} feathers and (\\d,?\\d{1,3}) Hunter XP\\.");
@@ -264,6 +260,13 @@ public class LootTrackerPlugin extends Plugin
 	private static final String ORE_PACK_VM_EVENT = "Ore Pack (Volcanic Mine)";
 
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
+	private static final String WINTERTODT_REWARD_CART_EVENT = "Reward cart (Wintertodt)";
+	private static final String WINTERTODT_LOOT_STRING = "You found some loot: ";
+	private static final int WINTERTODT_REGION = 6461;
+
+	private static final String BAG_FULL_OF_GEMS_PERCY_EVENT = "Bag full of gems (Percy)";
+	private static final String BAG_FULL_OF_GEMS_BELONA_EVENT = "Bag full of gems (Belona)";
+	private static final String BAG_FULL_OF_GEMS_DUSURI_EVENT = "Bag full of gems (Dusuri)";
 
 	// Soul Wars
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
@@ -283,23 +286,6 @@ public class LootTrackerPlugin extends Plugin
 	// Mahogany Homes
 	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
 
-	// Implings
-	private static final Set<Integer> IMPLING_JARS = ImmutableSet.of(
-		ItemID.BABY_IMPLING_JAR,
-		ItemID.YOUNG_IMPLING_JAR,
-		ItemID.GOURMET_IMPLING_JAR,
-		ItemID.EARTH_IMPLING_JAR,
-		ItemID.ESSENCE_IMPLING_JAR,
-		ItemID.ECLECTIC_IMPLING_JAR,
-		ItemID.NATURE_IMPLING_JAR,
-		ItemID.MAGPIE_IMPLING_JAR,
-		ItemID.NINJA_IMPLING_JAR,
-		ItemID.CRYSTAL_IMPLING_JAR,
-		ItemID.DRAGON_IMPLING_JAR,
-		ItemID.LUCKY_IMPLING_JAR
-	);
-	private static final String IMPLING_CATCH_MESSAGE = "You manage to catch the impling and acquire some loot.";
-
 	// Raids
 	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
@@ -307,6 +293,10 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final int FONT_OF_CONSUMPTION_REGION = 12106;
 	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
+
+	private static final String BA_HIGH_GAMBLE = "Barbarian Assault high gamble";
+
+	private static final String DOM = "Doom of Mokhaiotl";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -359,19 +349,15 @@ public class LootTrackerPlugin extends Plugin
 	private boolean chestLooted;
 	private boolean lastLoadingIntoInstance;
 	private String lastPickpocketTarget;
+	private int ignorePickpocketLoot;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
 
-	private InventoryID inventoryId;
+	private int inventoryId = -1;
 	private Multiset<Integer> inventorySnapshot;
 	private InvChangeCallback inventorySnapshotCb;
-
-	private String groundSnapshotName;
-	private int groundSnapshotCombatLevel;
-	private int groundSnapshotCycleDelay;
-	private Multiset<Integer> groundSnapshot;
-	private int groundSnapshotRegion;
+	private int inventoryTimeout;
 
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
@@ -394,7 +380,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 			if (quantity > 0)
 			{
-				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity, item.getLocation()));
+				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity));
 			}
 			else
 			{
@@ -558,6 +544,10 @@ public class LootTrackerPlugin extends Plugin
 				ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
 				SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 			}
+			else if ("priceType".equals(event.getKey()) || "showPriceType".equals(event.getKey()))
+			{
+				SwingUtilities.invokeLater(panel::updatePriceTypeDisplay);
+			}
 		}
 	}
 
@@ -568,7 +558,7 @@ public class LootTrackerPlugin extends Plugin
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
 		ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
 		panel = new LootTrackerPanel(this, itemManager, config);
-		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
+		spriteManager.getSpriteAsync(SpriteID.SideIcons.INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
@@ -634,7 +624,7 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
-		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
+		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId(), amount, null);
 		synchronized (queuedLoots)
 		{
 			queuedLoots.add(lootRecord);
@@ -647,126 +637,50 @@ public class LootTrackerPlugin extends Plugin
 	{
 		// For the wiki to determine drop rates based on dmm brackets / identify leagues drops
 		var worldType = client.getWorldType();
-		return worldType.contains(WorldType.SEASONAL) || worldType.contains(WorldType.TOURNAMENT_WORLD) ? client.getWorld() : null;
-	}
-
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
-	{
-		var npc = npcDespawned.getNpc();
-		if (npc.getId() == NpcID.THE_WHISPERER || npc.getId() == NpcID.THE_WHISPERER_12206)
-		{
-			// Whisperer death:
-			//   loot spawn at z=0, which you can't see since you are in the shadow realm on z=3
-			//   npc despawn on z=3
-			//   player teleport from z=3 to z=0
-			//   server sends zone clear packet
-			//   server spawns in the loot, along with any other items already on the ground
-			//
-			// We take advantage of that the items left on z=0 when you move into the shadow realm are not
-			// cleared until the zoneclear packet. So if you record them at the time the whisperer despawns,
-			// you can subtract it from the spawned items at the end of the tick.
-
-			// collect all items on z=0
-			Multiset<Integer> ground = HashMultiset.create();
-			var scene = client.getScene();
-			Tile[][] p0 = scene.getTiles()[0];
-			Arrays.stream(p0)
-				.flatMap(Arrays::stream)
-				.filter(Objects::nonNull)
-				.map(Tile::getGroundItems)
-				.filter(Objects::nonNull)
-				.flatMap(Collection::stream)
-				.forEach(item -> ground.add(item.getId(), item.getQuantity()));
-
-			groundSnapshotName = npc.getName();
-			groundSnapshotCombatLevel = npc.getCombatLevel();
-			// the entire arena is in an instance, which appears to be never region aligned,
-			// however the template is, so use the region id from it.
-			// the player location can't be used because on death the player might have already been teleported.
-			groundSnapshotRegion = WorldPoint.fromLocalInstance(client, npc.getLocalLocation()).getRegionID();
-			groundSnapshot = ground;
-			// the loot spawns next tick, which is typically in 30 cycles, but
-			// network latency can cause it to happen a little later instead.
-			// use 59 to be safe.
-			groundSnapshotCycleDelay = 59;
-
-			log.debug("Ground snapshot: Recorded ground items {} on cycle {} region {}", ground, client.getGameCycle(), groundSnapshotRegion);
-		}
+		return worldType.contains(WorldType.SEASONAL)
+			|| worldType.contains(WorldType.TOURNAMENT_WORLD)
+			|| worldType.contains(WorldType.BETA_WORLD) ? client.getWorld() : null;
 	}
 
 	@Subscribe
 	public void onPostClientTick(PostClientTick postClientTick)
 	{
-		if (groundSnapshotCycleDelay > 0)
+		if (inventoryTimeout > 0)
 		{
-			groundSnapshotCycleDelay--;
-
-			if (groundSnapshotCycleDelay == 0)
+			if (--inventoryTimeout == 0)
 			{
-				log.debug("Ground snapshot: Loot timeout");
-				groundSnapshotName = null;
-				groundSnapshotCombatLevel = 0;
-				groundSnapshot = null;
-				return;
+				log.debug("Inventory snapshot: Loot timeout");
+				resetEvent();
 			}
-
-			var region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-			if (region != groundSnapshotRegion)
-			{
-				log.debug("Ground snapshot: In wrong region {} != {}", region, groundSnapshotRegion);
-				return;
-			}
-
-			Multiset<Integer> ground = HashMultiset.create();
-			var scene = client.getScene();
-			Tile[][] p0 = scene.getTiles()[0];
-			Arrays.stream(p0)
-				.flatMap(Arrays::stream)
-				.filter(Objects::nonNull)
-				.map(Tile::getGroundItems)
-				.filter(Objects::nonNull)
-				.flatMap(Collection::stream)
-				.forEach(item -> ground.add(item.getId(), item.getQuantity()));
-
-			var diff = Multisets.difference(ground, groundSnapshot);
-			if (diff.isEmpty())
-			{
-				// loot is not spawned yet
-				log.debug("Ground snapshot: No loot yet");
-				return;
-			}
-
-			log.debug("Ground snapshot: Loot received {} on cycle {}", diff, client.getGameCycle());
-
-			// convert to item stack
-			var items = diff.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation())) // made up location
-				.collect(Collectors.toList());
-			addLoot(groundSnapshotName, groundSnapshotCombatLevel, LootRecordType.NPC, null, items);
-
-			groundSnapshotName = null;
-			groundSnapshotCombatLevel = 0;
-			groundSnapshot = null;
-			groundSnapshotCycleDelay = 0;
 		}
 	}
 
-	private Object buildNpcMetadata(NPC npc)
+	private Object buildNpcMetadata(NPCComposition npc)
 	{
 		if (client.getWorldType().contains(WorldType.SEASONAL))
 		{
 			var md = new NpcMetadata();
 			md.setId(npc.getId());
-			md.setR1(client.getVarbitValue(Varbits.LEAGUE_RELIC_1));
-			md.setR2(client.getVarbitValue(Varbits.LEAGUE_RELIC_2));
-			md.setR3(client.getVarbitValue(Varbits.LEAGUE_RELIC_3));
-			md.setR4(client.getVarbitValue(Varbits.LEAGUE_RELIC_4));
-			md.setR5(client.getVarbitValue(Varbits.LEAGUE_RELIC_5));
-			md.setR6(client.getVarbitValue(Varbits.LEAGUE_RELIC_6));
-			md.setR7(client.getVarbitValue(Varbits.LEAGUE_RELIC_7));
-			md.setR8(client.getVarbitValue(Varbits.LEAGUE_RELIC_8));
+			md.setR1(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_0));
+			md.setR2(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_1));
+			md.setR3(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_2));
+			md.setR4(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_3));
+			md.setR5(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_4));
+			md.setR6(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_5));
+			md.setR7(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_6));
+			md.setR8(client.getVarbitValue(VarbitID.LEAGUE_RELIC_SELECTION_7));
 			return md;
+		}
+		else if (npc.getName() != null && npc.getName().equals("Cave horror"))
+		{
+			WorldPoint location = client.getLocalPlayer().getWorldLocation();
+			return Map.of(
+				"id", npc.getId(),
+				"x", location.getX(),
+				"y", location.getY(),
+				"plane", location.getPlane(),
+				"world", client.getWorld()
+			);
 		}
 		else
 		{
@@ -775,12 +689,18 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	public void onServerNpcLoot(final ServerNpcLoot event)
 	{
-		final NPC npc = npcLootReceived.getNpc();
-		final Collection<ItemStack> items = npcLootReceived.getItems();
+		final NPCComposition npc = event.getComposition();
+		final Collection<ItemStack> items = event.getItems();
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
+
+		if (ignorePickpocketLoot == client.getTickCount())
+		{
+			// server sends npc loot for pickpockets, ignore it
+			return;
+		}
 
 		addLoot(name, combat, LootRecordType.NPC, buildNpcMetadata(npc), items);
 
@@ -792,6 +712,13 @@ public class LootTrackerPlugin extends Plugin
 
 			lootReceivedChatMessage(items, prefix + ' ' + name);
 		}
+	}
+
+	@Subscribe
+	public void onPluginLootReceived(PluginLootReceived event)
+	{
+		log.debug("Plugin loot received from {}: {}", event.getSource().getName(), event.getItems());
+		addLoot(event.getName(), event.getCombatLevel(), event.getType(), event.getItems(), event.getItems());
 	}
 
 	@Subscribe
@@ -827,69 +754,82 @@ public class LootTrackerPlugin extends Plugin
 		{
 			case InterfaceID.BARROWS_REWARD:
 				event = "Barrows";
-				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
+				container = client.getItemContainer(InventoryID.TRAIL_REWARDINV);
 				break;
-			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
+			case InterfaceID.RAIDS_REWARDS:
 				if (chestLooted)
 				{
 					return;
 				}
 				event = CHAMBERS_OF_XERIC;
-				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+				container = client.getItemContainer(InventoryID.RAIDS_REWARDS);
 				chestLooted = true;
 				break;
-			case InterfaceID.TOB_REWARD:
+			case InterfaceID.TOB_CHESTS:
 				if (chestLooted || !inTobChestRegion())
 				{
 					return;
 				}
 				event = THEATRE_OF_BLOOD;
-				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				container = client.getItemContainer(InventoryID.TOB_CHESTS);
 				chestLooted = true;
 				break;
-			case InterfaceID.TOA_REWARD:
+			case InterfaceID.TOA_CHESTS:
 				if (chestLooted)
 				{
 					return;
 				}
 
-				int raidLevel = client.getVarbitValue(Varbits.TOA_RAID_LEVEL);
+				int raidLevel = client.getVarbitValue(VarbitID.TOA_CLIENT_RAID_LEVEL);
 				int teamSize =
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
-				int raidDamage = client.getVarbitValue(Varbits.TOA_RAID_DAMAGE);
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P0), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P1), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P2), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P3), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P4), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P5), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P6), 1) +
+					Math.min(client.getVarbitValue(VarbitID.TOA_CLIENT_P7), 1);
+				int raidDamage = client.getVarbitValue(VarbitID.TOA_DAMAGE_DONE);
 				event = TOMBS_OF_AMASCUT;
-				container = client.getItemContainer(InventoryID.TOA_REWARD_CHEST);
+				container = client.getItemContainer(InventoryID.TOA_CHESTS);
 				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
-			case InterfaceID.KINGDOM:
+			case InterfaceID.MISC_COLLECTION:
 				event = "Kingdom of Miscellania";
-				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
+				container = client.getItemContainer(InventoryID.MISC_RESOURCES_COLLECTED);
 				break;
 			case InterfaceID.TRAWLER_REWARD:
 				event = "Fishing Trawler";
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
-				container = client.getItemContainer(InventoryID.FISHING_TRAWLER_REWARD);
+				container = client.getItemContainer(InventoryID.TRAWLER_REWARDINV);
 				break;
-			case InterfaceID.DRIFT_NET_FISHING_REWARD:
+			case InterfaceID.FOSSIL_DRIFTNET:
 				event = "Drift Net";
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
-				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
+				container = client.getItemContainer(InventoryID.MACRO_CERTER);
 				break;
-			case InterfaceID.WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDY_LOOT_CHEST:
 				if (chestLooted)
 				{
 					return;
 				}
 				event = "Loot Chest";
-				container = client.getItemContainer(InventoryID.WILDERNESS_LOOT_CHEST);
+				container = client.getItemContainer(InventoryID.LOOT_INV_ACCESS);
+				chestLooted = true;
+				break;
+			case InterfaceID.PMOON_REWARD:
+				event = "Lunar Chest";
+				container = client.getItemContainer(InventoryID.PMOON_REWARDINV);
+				break;
+			case InterfaceID.COLOSSEUM_REWARD_CHEST_2:
+				if (chestLooted)
+				{
+					return;
+				}
+				event = "Fortis Colosseum";
+				container = client.getItemContainer(InventoryID.COLOSSEUM_REWARDS);
 				chestLooted = true;
 				break;
 			default:
@@ -903,8 +843,8 @@ public class LootTrackerPlugin extends Plugin
 
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
-			.filter(item -> item.getId() > 0)
-			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
+			.filter(item -> item.getId() > -1)
+			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
 			.collect(Collectors.toList());
 
 		if (config.showRaidsLootValue() && (event.equals(THEATRE_OF_BLOOD) || event.equals(CHAMBERS_OF_XERIC) || event.equals(TOMBS_OF_AMASCUT)))
@@ -941,6 +881,26 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.DOM_LOOT_CLAIM)
+		{
+			// this is called after the loot has been claimed
+			ItemContainer inv = client.getItemContainer(InventoryID.DOM_LOOTPILE);
+
+			final Collection<ItemStack> items = Arrays.stream(inv.getItems())
+				.filter(item -> item.getId() > -1)
+				.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+				.collect(Collectors.toList());
+
+			String title = client.getWidget(InterfaceID.DomEndLevelUi.FRAME).getChild(1).getText(); // Level 2 Complete!
+			int level = Integer.parseInt(title.split(" ")[1]);
+
+			addLoot(DOM, -1, LootRecordType.EVENT, level, items);
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		var chatType = event.getType();
@@ -953,8 +913,8 @@ public class LootTrackerPlugin extends Plugin
 		final String message = event.getMessage();
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
-			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
-			|| message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
+			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.equals(ALCHEMIST_SIGNET_CHEST_MESSAGE)
+			|| GRUBBY_CHEST_LOOTED_MESSAGE.matcher(message).matches() || message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
@@ -962,6 +922,13 @@ public class LootTrackerPlugin extends Plugin
 			log.debug("Chest loot matched '{}' region {}", message, regionID);
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
 			{
+				return;
+			}
+
+			if (regionID == LAVA_MAZE_NORTH_EAST_REGION) // Muddy Chest crowdsourcing needs F2P/P2P world
+			{
+				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, CHEST_EVENT_TYPES.get(regionID),
+					client.getWorld()));
 				return;
 			}
 
@@ -973,13 +940,6 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, CHEST_EVENT_TYPES.get(regionID)));
-			return;
-		}
-
-		if (message.equals(COFFIN_LOOTED_MESSAGE) &&
-			isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
-		{
-			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HALLOWED_SEPULCHRE_COFFIN_EVENT));
 			return;
 		}
 
@@ -995,11 +955,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-		if (HESPORI_REGION == regionID && message.equals(HESPORI_LOOTED_MESSAGE))
-		{
-			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HESPORI_EVENT));
-			return;
-		}
 
 		final Matcher hamStoreroomMatcher = HAM_CHEST_LOOTED_PATTERN.matcher(message);
 		if (hamStoreroomMatcher.matches() && regionID == HAM_STOREROOM_REGION)
@@ -1021,6 +976,7 @@ public class LootTrackerPlugin extends Plugin
 				pickpocketTarget = lastPickpocketTarget;
 			}
 
+			ignorePickpocketLoot = client.getTickCount();
 			onInvChange(collectInvAndGroundItems(LootRecordType.PICKPOCKET, pickpocketTarget));
 			return;
 		}
@@ -1057,7 +1013,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			// Clue Scrolls use same InventoryID as Barrows
-			onInvChange(InventoryID.BARROWS_REWARD, collectInvItems(LootRecordType.EVENT, eventType));
+			onInvChange(InventoryID.TRAIL_REWARDINV, collectInvItems(LootRecordType.EVENT, eventType));
 
 			return;
 		}
@@ -1097,9 +1053,9 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (message.equals(IMPLING_CATCH_MESSAGE))
+		if (regionID == WINTERTODT_REGION && message.contains(WINTERTODT_LOOT_STRING))
 		{
-			onInvChange(collectInvItems(LootRecordType.EVENT, client.getLocalPlayer().getInteracting().getName()));
+			onInvChange(collectInvItems(LootRecordType.EVENT, WINTERTODT_REWARD_CART_EVENT, client.getBoostedSkillLevel(Skill.FIREMAKING)));
 			return;
 		}
 
@@ -1107,20 +1063,53 @@ public class LootTrackerPlugin extends Plugin
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, "Unsired"));
 		}
+
+		if (regionID == BA_LOBBY_REGION && chatType == ChatMessageType.MESBOX)
+		{
+			if (message.contains("High level gamble count:"))
+			{
+				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BA_HIGH_GAMBLE));
+			}
+		}
+
+		if (message.startsWith("You rummage through the offerings"))
+		{
+			countChangedItems(ItemID.ENT_TOTEMS_LOOT, client.getBoostedSkillLevel(Skill.FLETCHING));
+		}
+		else if (message.equals("You clean a batch of arrowtips."))
+		{
+			countChangedItems(ItemID.DIRTY_ARROWTIPS, client.getBoostedSkillLevel(Skill.FLETCHING));
+		}
+	}
+
+	private void countChangedItems(int itemId, Object metadata)
+	{
+		onInvChange((((invItems, groundItems, removedItems) ->
+		{
+			int cnt = removedItems.count(itemId);
+			if (cnt > 0)
+			{
+				String name = itemManager.getItemComposition(itemId).getMembersName();
+				List<ItemStack> combined = new ArrayList<>();
+				combined.addAll(invItems);
+				combined.addAll(groundItems);
+				addLoot(name, -1, LootRecordType.EVENT, metadata, combined, cnt);
+			}
+		})));
 	}
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		// when the wilderness chest empties, clear chest loot flag for the next key
-		if (event.getContainerId() == InventoryID.WILDERNESS_LOOT_CHEST.getId()
+		if (event.getContainerId() == InventoryID.LOOT_INV_ACCESS
 			&& Arrays.stream(event.getItemContainer().getItems()).noneMatch(i -> i.getId() > -1))
 		{
 			log.debug("Resetting chest loot flag");
 			chestLooted = false;
 		}
 
-		if (inventoryId == null || event.getContainerId() != inventoryId.getId())
+		if (inventoryId == -1 || event.getContainerId() != inventoryId)
 		{
 			return;
 		}
@@ -1137,7 +1126,7 @@ public class LootTrackerPlugin extends Plugin
 		final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
 
 		final List<ItemStack> items = diff.entrySet().stream()
-			.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+			.map(e -> new ItemStack(e.getElement(), e.getCount()))
 			.collect(Collectors.toList());
 
 		log.debug("Inv change: {} Ground items: {}", items, groundItems);
@@ -1147,19 +1136,20 @@ public class LootTrackerPlugin extends Plugin
 			inventorySnapshotCb.accept(items, groundItems, diffr);
 		}
 
-		inventoryId = null;
-		inventorySnapshot = null;
-		inventorySnapshotCb = null;
+		resetEvent();
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
-		// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
-		if (isNPCOp(event.getMenuAction()) && event.getMenuOption().equals("Pickpocket"))
+		if (isNPCOp(event.getMenuAction()))
 		{
-			lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+			// There are some pickpocket targets who show up in the chat box with a different name (e.g. H.A.M. members -> man/woman)
+			// We use the value selected from the right-click menu as a fallback for the event lookup in those cases.
+			if (event.getMenuOption().equals("Pickpocket"))
+			{
+				lastPickpocketTarget = Text.removeTags(event.getMenuTarget());
+			}
 		}
 		else if (isObjectOp(event.getMenuAction()) && event.getMenuOption().equals("Open") && SHADE_CHEST_OBJECTS.containsKey(event.getId()))
 		{
@@ -1167,7 +1157,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 		else if (event.isItemOp())
 		{
-			if (event.getItemId() == ItemID.SEED_PACK && (event.getMenuOption().equals("Take") || event.getMenuOption().equals("Take-all")))
+			if (event.getItemId() == ItemID.SEEDBOX && (event.getMenuOption().equals("Take") || event.getMenuOption().equals("Take-all")))
 			{
 				onInvChange(collectInvItems(LootRecordType.EVENT, SEEDPACK_EVENT));
 			}
@@ -1182,56 +1172,81 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.CASKET:
 						onInvChange(collectInvItems(LootRecordType.EVENT, CASKET_EVENT));
 						break;
-					case ItemID.SUPPLY_CRATE:
-					case ItemID.EXTRA_SUPPLY_CRATE:
+					case ItemID.REWARD_GEM_BAG:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_PERCY_EVENT));
+						break;
+					case ItemID.REWARD_GEM_BAG_GUILD:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_BELONA_EVENT));
+						break;
+					case ItemID.STAR_REWARD_GEM_BAG:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_DUSURI_EVENT));
+						break;
+					case ItemID.WINT_REWARD_BOX:
+					case ItemID.WINT_REROLL_BOX:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, WINTERTODT_SUPPLY_CRATE_EVENT));
 						break;
-					case ItemID.SPOILS_OF_WAR:
+					case ItemID.SOUL_WARS_SPOILS:
 						onInvChange(collectInvItems(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT));
 						break;
-					case ItemID.CASKET_25590:
+					case ItemID.TEMPOROSS_REWARD_CASKET:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT));
 						break;
-					case ItemID.SIMPLE_LOCKBOX_25647:
-					case ItemID.ELABORATE_LOCKBOX_25649:
-					case ItemID.ORNATE_LOCKBOX_25651:
-					case ItemID.CACHE_OF_RUNES:
-					case ItemID.INTRICATE_POUCH:
+					case ItemID.CAMDOZAAL_VAULT_CHEST_LOW:
+					case ItemID.CAMDOZAAL_VAULT_CHEST_MID:
+					case ItemID.CAMDOZAAL_VAULT_CHEST_HIGH:
+					case ItemID.TOA_RUNE_CACHE:
+					case ItemID.GOTR_INTRICATE_POUCH:
 					case ItemID.FROZEN_CACHE:
-					case ItemID.BOUNTY_CRATE_TIER_1:
-					case ItemID.BOUNTY_CRATE_TIER_2:
-					case ItemID.BOUNTY_CRATE_TIER_3:
-					case ItemID.BOUNTY_CRATE_TIER_4:
-					case ItemID.BOUNTY_CRATE_TIER_5:
-					case ItemID.BOUNTY_CRATE_TIER_6:
-					case ItemID.BOUNTY_CRATE_TIER_7:
-					case ItemID.BOUNTY_CRATE_TIER_8:
-					case ItemID.BOUNTY_CRATE_TIER_9:
+					case ItemID.BH_EP_CRATE_2:
+					case ItemID.BH_EP_CRATE_3:
+					case ItemID.BH_EP_CRATE_4:
+					case ItemID.BH_EP_CRATE_5:
+					case ItemID.BH_EP_CRATE_6:
+					case ItemID.BH_EP_CRATE_7:
+					case ItemID.BH_EP_CRATE_8:
+					case ItemID.BH_EP_CRATE_9:
+					case ItemID.BH_EP_CRATE_10:
+					case ItemID.MM_POTION_PACK_LOW:
+					case ItemID.MM_POTION_PACK_MED:
+					case ItemID.MM_POTION_PACK_HIGH:
+					case ItemID.CASTLEWARS_CRATE:
+					case ItemID.FORGOTTEN_LOCKBOX:
+					case ItemID.YAMA_DOSSIER:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
-					case ItemID.SUPPLY_CRATE_24884:
+					case ItemID.CONSTRUCTION_SUPPLY_CRATE:
 						onInvChange(collectInvItems(LootRecordType.EVENT, MAHOGANY_CRATE_EVENT, client.getBoostedSkillLevel(Skill.CONSTRUCTION)));
 						break;
 					case ItemID.HALLOWED_SACK:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HALLOWED_SACK_EVENT));
 						break;
-					case ItemID.ORE_PACK_27693:
+					case ItemID.WBR_VM_OREPACK:
 						onInvChange(collectInvItems(LootRecordType.EVENT, ORE_PACK_VM_EVENT));
 						break;
+					//Hunters loot sacks are stackable and multiple can be opened in one tick.
+					//This provides an accurate count of how many were opened for each event
+					case ItemID.HG_LOOTSACK_DROPTRACKING:
+					case ItemID.HG_LOOTSACK_T0:
+					case ItemID.HG_LOOTSACK_T1:
+					case ItemID.HG_LOOTSACK_T2:
+					case ItemID.HG_LOOTSACK_T3:
+						final int itemId = event.getItemId();
+						final Map<String, Integer> levels = new ImmutableMap.Builder<String, Integer>().
+							put("WOODCUTTING", client.getBoostedSkillLevel(Skill.WOODCUTTING)).
+							put("HERBLORE", client.getBoostedSkillLevel(Skill.HERBLORE)).
+							put("HUNTER", client.getBoostedSkillLevel(Skill.HUNTER)).
+							build();
+						onInvChange((((invItems, groundItems, removedItems) ->
+						{
+							int cnt = removedItems.count(itemId);
+							if (cnt > 0)
+							{
+								String name = itemManager.getItemComposition(itemId).getMembersName();
+								addLoot(name, -1, LootRecordType.EVENT, levels, invItems, cnt);
+							}
+						})));
+						break;
 				}
-			}
-			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getItemId()))
-			{
-				final int itemId = event.getItemId();
-				onInvChange(((invItems, groundItems, removedItems) ->
-				{
-					int cnt = removedItems.count(itemId);
-					if (cnt > 0)
-					{
-						String name = itemManager.getItemComposition(itemId).getMembersName();
-						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
-					}
-				}));
 			}
 		}
 	}
@@ -1266,6 +1281,11 @@ public class LootTrackerPlugin extends Plugin
 
 		saveLoot(copy);
 
+		if (client.getEnvironment() != 0)
+		{
+			return null;
+		}
+
 		log.debug("Submitting {} loot records", copy.size());
 
 		return lootTrackerClient.submit(copy);
@@ -1278,7 +1298,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ConfigLoot key = new ConfigLoot(record.getType(), record.getEventId());
 			ConfigLoot loot = map.computeIfAbsent(key, k -> key);
-			loot.kills++;
+			loot.kills += record.getAmount();
 			for (GameItem item : record.getDrops())
 			{
 				loot.add(item.getId(), item.getQty());
@@ -1313,9 +1333,10 @@ public class LootTrackerPlugin extends Plugin
 
 	private void resetEvent()
 	{
-		inventoryId = null;
+		inventoryId = -1;
 		inventorySnapshot = null;
 		inventorySnapshotCb = null;
+		inventoryTimeout = 0;
 	}
 
 	@FunctionalInterface
@@ -1353,14 +1374,20 @@ public class LootTrackerPlugin extends Plugin
 
 	private void onInvChange(InvChangeCallback cb)
 	{
-		onInvChange(InventoryID.INVENTORY, cb);
+		onInvChange(InventoryID.INV, cb);
 	}
 
-	private void onInvChange(InventoryID inv, InvChangeCallback cb)
+	private void onInvChange(int inv, InvChangeCallback cb)
+	{
+		onInvChange(inv, cb, INVCHANGE_TIMEOUT);
+	}
+
+	private void onInvChange(int inv, InvChangeCallback cb, int timeout)
 	{
 		inventoryId = inv;
 		inventorySnapshot = HashMultiset.create();
 		inventorySnapshotCb = cb;
+		inventoryTimeout = timeout * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
 
 		final ItemContainer itemContainer = client.getItemContainer(inv);
 		if (itemContainer != null)
@@ -1385,7 +1412,7 @@ public class LootTrackerPlugin extends Plugin
 			Matcher matcher = HERBIBOAR_HERB_SACK_PATTERN.matcher(messageNode.getValue());
 			if (matcher.matches())
 			{
-				herbs.add(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), 1, client.getLocalPlayer().getLocalLocation()));
+				herbs.add(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), 1));
 			}
 		}
 

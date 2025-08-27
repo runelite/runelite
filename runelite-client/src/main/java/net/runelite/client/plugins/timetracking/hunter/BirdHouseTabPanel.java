@@ -30,7 +30,7 @@ import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;

@@ -30,7 +30,10 @@ package net.runelite.api;
  * VarCInts are stored entirely in memory, or locally on a user's
  * machine in the preferences2.dat file depending on how Jagex
  * configured the variable
+ *
+ * @deprecated Use {@link net.runelite.api.gameval.VarClientID}
  */
+@Deprecated
 public final class VarClientInt
 {
 	public static final int TOOLTIP_TIMEOUT = 1;
@@ -46,6 +49,8 @@ public final class VarClientInt
 	 * @see net.runelite.api.vars.InputType
 	 */
 	public static final int INPUT_TYPE = 5;
+
+	public static final int BANK_SCROLL = 51;
 
 	/**
 	 * The game sets this to the same value as {@link #CAMERA_ZOOM_RESIZABLE_VIEWPORT}

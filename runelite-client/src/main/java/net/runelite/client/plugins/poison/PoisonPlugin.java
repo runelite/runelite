@@ -37,8 +37,8 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
@@ -144,7 +144,7 @@ public class PoisonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.POISON)
+		if (event.getVarpId() == VarPlayerID.POISON)
 		{
 			final int poisonValue = event.getValue();
 			nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
@@ -173,7 +173,7 @@ public class PoisonPlugin extends Plugin
 
 				if (damage > 0)
 				{
-					final BufferedImage image = getSplat(envenomed ? SpriteID.HITSPLAT_DARK_GREEN_VENOM : SpriteID.HITSPLAT_GREEN_POISON, damage);
+					final BufferedImage image = getSplat(envenomed ? SpriteID.Hitmark.HITSPLAT_DARK_GREEN_VENOM : SpriteID.Hitmark.HITSPLAT_GREEN_POISON, damage);
 
 					if (image != null)
 					{
@@ -185,7 +185,7 @@ public class PoisonPlugin extends Plugin
 
 			checkHealthIcon();
 		}
-		else if (event.getVarpId() == VarPlayer.DISEASE_VALUE)
+		else if (event.getVarpId() == VarPlayerID.DISEASE)
 		{
 			checkHealthIcon();
 		}
@@ -297,7 +297,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		final BufferedImage newHeart;
-		final int poison = client.getVarpValue(VarPlayer.POISON);
+		final int poison = client.getVarpValue(VarPlayerID.POISON);
 
 		if (poison >= VENOM_THRESHOLD)
 		{
@@ -307,7 +307,7 @@ public class PoisonPlugin extends Plugin
 		{
 			newHeart = HEART_POISON;
 		}
-		else if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+		else if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
 		{
 			newHeart = HEART_DISEASE;
 		}
@@ -322,7 +322,7 @@ public class PoisonPlugin extends Plugin
 		{
 			heart = newHeart;
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
+			client.getSpriteOverrides().put(SpriteID.OrbIcon.HITPOINTS, ImageUtil.getImageSpritePixels(heart, client));
 		}
 	}
 
@@ -334,7 +334,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		client.getWidgetSpriteCache().reset();
-		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
+		client.getSpriteOverrides().remove(SpriteID.OrbIcon.HITPOINTS);
 		heart = null;
 	}
 }

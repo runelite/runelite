@@ -32,6 +32,7 @@ import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -84,8 +85,8 @@ public class ScriptInspector extends DevToolsFrame
 	private int lastTick;
 	private Set<Integer> blacklist;
 	private Set<Integer> highlights;
-	private final JList jList;
-	private final DefaultListModel listModel;
+	private final JList<Integer> jList;
+	private final DefaultListModel<Integer> listModel;
 	private ListState state = ListState.BLACKLIST;
 
 	private enum ListState
@@ -95,11 +96,12 @@ public class ScriptInspector extends DevToolsFrame
 	}
 
 	@Data
-	private class ScriptTreeNode extends DefaultMutableTreeNode
+	private static class ScriptTreeNode extends DefaultMutableTreeNode
 	{
 		private final int scriptId;
 		private Widget source;
 		private int duplicateNumber = 1;
+		private Object[] args;
 
 		@Override
 		public String toString()
@@ -126,6 +128,11 @@ public class ScriptInspector extends DevToolsFrame
 				{
 					output += " " + name;
 				}
+			}
+
+			if (args != null)
+			{
+				output += " args: " + Arrays.toString(args);
 			}
 
 			return output;
@@ -225,9 +232,9 @@ public class ScriptInspector extends DevToolsFrame
 		final JPanel rightSide = new JPanel();
 		rightSide.setLayout(new BorderLayout());
 
-		listModel = new DefaultListModel();
+		listModel = new DefaultListModel<>();
 		changeState(ListState.BLACKLIST);
-		jList = new JList(listModel);
+		jList = new JList<>(listModel);
 		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(jList);
 
@@ -276,6 +283,7 @@ public class ScriptInspector extends DevToolsFrame
 		if (event.getScriptEvent() != null)
 		{
 			newNode.setSource(event.getScriptEvent().getSource());
+			newNode.setArgs(event.getScriptEvent().getArguments());
 		}
 
 		if (currentNode == null)
@@ -416,7 +424,7 @@ public class ScriptInspector extends DevToolsFrame
 			return;
 		}
 
-		int script = (Integer) listModel.get(index);
+		int script = listModel.get(index);
 		getSet().remove(script);
 		refreshList();
 	}

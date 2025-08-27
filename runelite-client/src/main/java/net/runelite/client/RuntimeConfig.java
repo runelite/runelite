@@ -25,6 +25,8 @@
 package net.runelite.client;
 
 import com.google.common.base.Strings;
+import com.google.gson.JsonArray;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -38,15 +40,18 @@ public class RuntimeConfig
 {
 	private Map<String, ?> props = Collections.emptyMap();
 	private Map<String, String> sysProps = Collections.emptyMap();
+	private JsonArray compilerControl;
 
 	private String outageMessage;
 	private Map<String, String> outageLinks;
+	private Instant outageStart;
+	private Instant outageEnd;
 
-	private Set<Integer> ignoreDeadNpcs;
-	private Set<Integer> forceDeadNpcs;
-	private Set<Integer> resetDeadOnChangeNpcs;
-	private Set<Integer> forceDeadAnimations;
-	private Set<Integer> nonAttackNpcs;
+	private Set<Integer> ignoreDeadNpcs; // npc is never dead
+	private Set<Integer> forceDeadNpcs; // npc is always dead
+	private Set<Integer> resetDeadOnChangeNpcs; // npc dead flag is reset on type change
+	private Set<Integer> forceDeadAnimations; // npc dead flag is reset on anim change
+	private Set<Integer> healthCheckDeadNpcs; // npc is only dead if healthratio == 0
 
 	private Set<String> outdatedClientVersions;
 	private String[] updateLauncherWinVers;
@@ -54,7 +59,9 @@ public class RuntimeConfig
 
 	public boolean showOutageMessage()
 	{
-		if (Strings.isNullOrEmpty(getOutageMessage()))
+		if (Strings.isNullOrEmpty(getOutageMessage())
+			|| (outageStart != null && Instant.now().isBefore(outageStart))
+			|| (outageEnd != null && Instant.now().isAfter(outageEnd)))
 		{
 			return false;
 		}
@@ -84,7 +91,7 @@ public class RuntimeConfig
 		forceDeadNpcs = config.forceDeadNpcs;
 		resetDeadOnChangeNpcs = config.resetDeadOnChangeNpcs;
 		forceDeadAnimations = config.forceDeadAnimations;
-		nonAttackNpcs = config.nonAttackNpcs;
+		healthCheckDeadNpcs = config.healthCheckDeadNpcs;
 
 		outdatedClientVersions = config.outdatedClientVersions;
 	}

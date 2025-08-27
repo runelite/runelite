@@ -36,7 +36,7 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "hideButton",
 		name = "Hide when outside of the library",
-		description = "Don't show the button in the sidebar when you're not in the library"
+		description = "Don't show the button in the sidebar when you're not in the library."
 	)
 	default boolean hideButton()
 	{
@@ -46,7 +46,7 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "hideDuplicateBook",
 		name = "Hide duplicate book",
-		description = "Don't show the duplicate book locations in the library"
+		description = "Don't show the duplicate book locations in the library."
 	)
 	default boolean hideDuplicateBook()
 	{
@@ -55,8 +55,8 @@ public interface KourendLibraryConfig extends Config
 
 	@ConfigItem(
 		keyName = "alwaysShowVarlamoreEnvoy",
-		name = "Show Varlamore Envoy",
-		description = "Varlamore Envoy is only needed during the Depths of Despair, and is never asked for"
+		name = "Show Varlamore envoy",
+		description = "Varlamore envoy is only needed during the depths of despair, and is never asked for."
 	)
 	default boolean alwaysShowVarlamoreEnvoy()
 	{
@@ -66,7 +66,7 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "showTutorialOverlay",
 		name = "Show tutorial overlay",
-		description = "Whether to show an overlay to help understand how to use the plugin"
+		description = "Whether to show an overlay to help understand how to use the plugin."
 	)
 	default boolean showTutorialOverlay()
 	{
@@ -76,7 +76,7 @@ public interface KourendLibraryConfig extends Config
 	@ConfigItem(
 		keyName = "showTargetHintArrow",
 		name = "Show target book arrow",
-		description = "Show a hint arrow pointing to the target bookcase"
+		description = "Show a hint arrow pointing to the target bookcase."
 	)
 	default boolean showTargetHintArrow()
 	{

@@ -29,12 +29,16 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.24-SNAPSHOT</version>
+		<version>1.11.16-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-maven-plugin</artifactId>
 	<name>RuneLite Maven Plugin</name>
 	<packaging>maven-plugin</packaging>
+
+	<properties>
+		<pmd.skip>true</pmd.skip>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -73,6 +77,26 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<failOnViolation>true</failOnViolation>
+					<printFailingErrors>true</printFailingErrors>
+					<rulesets>
+						<ruleset>${project.basedir}/pmd-ruleset.xml</ruleset>
+					</rulesets>
+					<linkXRef>false</linkXRef>
+					<analysisCache>true</analysisCache>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>

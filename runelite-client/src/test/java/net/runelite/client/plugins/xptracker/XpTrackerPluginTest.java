@@ -30,12 +30,11 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
-import net.runelite.client.game.NPCManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -76,18 +75,16 @@ public class XpTrackerPluginTest
 
 	@Mock
 	@Bind
-	private NPCManager npcManager;
+	private OverlayManager overlayManager;
 
 	@Mock
 	@Bind
-	private OverlayManager overlayManager;
+	private ConfigManager configManager;
 
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-
-		when(client.getLocalPlayer()).thenReturn(mock(Player.class));
 
 		xpTrackerPlugin.setXpPanel(mock(XpPanel.class));
 	}
@@ -95,13 +92,15 @@ public class XpTrackerPluginTest
 	@Test
 	public void testOfflineXp()
 	{
+		// Flag initialization of tracker
 		GameStateChanged gameStateChanged = new GameStateChanged();
 		gameStateChanged.setGameState(GameState.LOGGING_IN);
-
-		// Flag initialization of tracker
 		xpTrackerPlugin.onGameStateChanged(gameStateChanged);
+
 		when(client.getSkillExperience(Skill.ATTACK)).thenReturn(42);
+
 		// Initialize tracker
+		xpTrackerPlugin.onGameTick(new GameTick());
 		xpTrackerPlugin.onGameTick(new GameTick());
 
 		// Gain attack xp
@@ -118,6 +117,7 @@ public class XpTrackerPluginTest
 		// Flag initialization of tracker
 		xpTrackerPlugin.onGameStateChanged(gameStateChanged);
 		// Initialize tracker
+		xpTrackerPlugin.onGameTick(new GameTick());
 		xpTrackerPlugin.onGameTick(new GameTick());
 
 		// Start at 42 xp, gain of 58 xp, offline gain of 41900 xp - offset start XP: 42 + 41900

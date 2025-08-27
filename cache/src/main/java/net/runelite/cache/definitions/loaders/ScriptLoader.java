@@ -28,9 +28,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
+import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
-import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.POP_OBJECT;
 import static net.runelite.cache.script.Opcodes.RETURN;
 
 public class ScriptLoader
@@ -49,9 +50,9 @@ public class ScriptLoader
 		in.setOffset(endIdx);
 		int numOpcodes = in.readInt();
 		int localIntCount = in.readUnsignedShort();
-		int localStringCount = in.readUnsignedShort();
-		int intStackCount = in.readUnsignedShort();
-		int stringStackCount = in.readUnsignedShort();
+		int localObjCount = in.readUnsignedShort();
+		int intArgCount = in.readUnsignedShort();
+		int objArgCount = in.readUnsignedShort();
 
 		int numSwitches = in.readUnsignedByte();
 		if (numSwitches > 0)
@@ -75,9 +76,9 @@ public class ScriptLoader
 		}
 
 		def.setLocalIntCount(localIntCount);
-		def.setLocalStringCount(localStringCount);
-		def.setIntStackCount(intStackCount);
-		def.setStringStackCount(stringStackCount);
+		def.setLocalObjCount(localObjCount);
+		def.setIntArgCount(intArgCount);
+		def.setObjArgCount(objArgCount);
 
 		in.setOffset(0);
 		in.readStringOrNull();
@@ -90,21 +91,31 @@ public class ScriptLoader
 		def.setIntOperands(intOperands);
 		def.setStringOperands(stringOperands);
 
-		int opcode;
-		for (int i = 0; in.getOffset() < endIdx; instructions[i++] = opcode)
+		for (int i = 0; in.getOffset() < endIdx; ++i)
 		{
-			opcode = in.readUnsignedShort();
-			if (opcode == SCONST)
+			int opcode = in.readUnsignedShort();
+			instructions[i] = opcode;
+			switch (opcode)
 			{
-				stringOperands[i] = in.readString();
-			}
-			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
-			{
-				intOperands[i] = in.readInt();
-			}
-			else
-			{
-				intOperands[i] = in.readUnsignedByte();
+				case SCONST:
+					stringOperands[i] = in.readString();
+					break;
+				case RETURN:
+				case POP_INT:
+				case POP_OBJECT:
+				case PUSH_NULL:
+					intOperands[i] = in.readUnsignedByte();
+					break;
+				default:
+					if (opcode < 100)
+					{
+						intOperands[i] = in.readInt();
+					}
+					else
+					{
+						intOperands[i] = in.readUnsignedByte();
+					}
+					break;
 			}
 		}
 

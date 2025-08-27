@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.10.24-SNAPSHOT</version>
+	<version>1.11.16-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -46,8 +46,6 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
-
-		<rs.version>220</rs.version>
 	</properties>
 
 	<licenses>
@@ -197,7 +195,7 @@
 				<version>2.22.2</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
-					<argLine>-Xmx512m</argLine>
+					<argLine>-Xmx512m -Duser.language=en -Duser.region=US</argLine>
 					<systemProperties>
 						<glslang.path>${glslang.path}</glslang.path>
 					</systemProperties>
@@ -239,6 +237,8 @@
 				<configuration>
 					<!-- Javadoc the delombok sources -->
 					<sourcepath>${project.build.directory}/delombok</sourcepath>
+					<!-- default bottom uses outputTimestamp for the year and generates 2014-1970 otherwise -->
+					<bottom>Copyright &#169; {inceptionYear}</bottom>
 				</configuration>
 				<!-- maven-release-plugin runs maven-javadoc-plugin:jar as one of its
 				     release steps, so we will run it as well for the CI. Note this
@@ -308,6 +308,23 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
 					<version>3.6.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>3.22.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-core</artifactId>
+							<version>7.2.0</version>
+						</dependency>
+						<dependency>
+							<groupId>net.sourceforge.pmd</groupId>
+							<artifactId>pmd-java</artifactId>
+							<version>7.2.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>

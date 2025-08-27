@@ -32,12 +32,6 @@ package net.runelite.api;
 public final class EnumID
 {
 	/**
-	 * key: int
-	 * val: string creature name
-	 */
-	public static final int SLAYER_TASK_CREATURE = 693;
-
-	/**
 	 * key: int 1-n+1
 	 * val: namedobj
 	 */
@@ -50,7 +44,12 @@ public final class EnumID
 	 * val: namedobj
 	 */
 	public static final int PETS = 2158;
+
 	public static final int POH_COSTUME_MEMBERS = 3077;
+	public static final int POH_COSTUME_WARDROBE = 3289;
+	public static final int POH_COSTUME_ARMOUR_CASE = 3290;
+	public static final int POH_CAPE_RACK = 3292;
+	public static final int POH_TOY_BOX = 3299;
 	public static final int POH_COSTUME_CLUE_BEGINNER = 3293;
 	public static final int POH_COSTUME_CLUE_EASY = 3294;
 	public static final int POH_COSTUME_CLUE_MEDIUM = 3295;
@@ -59,23 +58,36 @@ public final class EnumID
 	public static final int POH_COSTUME_CLUE_MASTER = 3298;
 	public static final int POH_COSTUME_ALTERNATE = 3303;
 	public static final int POH_COSTUME_ALTERNATES = 3304;
+
 	public static final int CLAN_RANK_NAME = 3797;
 	public static final int CLAN_RANK_GRAPHIC = 3798;
 
-	/**
-	 * key: int
-	 * val: string location name
-	 */
-	public static final int SLAYER_TASK_LOCATION = 4064;
-
 	public static final int PRAYERS_NORMAL = 4956;
 	public static final int PRAYERS_RUINOUS = 4959;
+	public static final int PRAYERS_NORMAL_DEADEYE = 3341;
+	public static final int PRAYERS_NORMAL_MYSTIC_VIGOUR = 3342;
+	public static final int PRAYERS_NORMAL_DEADEYE_MYSTIC_VIGOUR = 3343;
 
 	public static final int WORLD_LOCATIONS = 4992;
 
 	/**
-	 * key: int
-	 * val: struct slayer task
+	 * key: weapon type
+	 * val: enum
 	 */
-	public static final int SLAYER_TASK = 5008;
+	public static final int WEAPON_STYLES = 3908;
+
+	public static final int SPELLBOOKS = 1981;
+	public static final int SPELLBOOKS_SUB = 5280;
+
+	/**
+	 * key: int id
+	 * val: enum potion
+	 */
+	public static final int POTIONSTORE_POTIONS = 4826;
+
+	/**
+	 * key: int id
+	 * val: enum potion
+	 */
+	public static final int POTIONSTORE_UNFINISHED_POTIONS = 4829;
 }

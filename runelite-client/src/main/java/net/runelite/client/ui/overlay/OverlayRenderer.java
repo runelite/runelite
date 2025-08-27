@@ -49,11 +49,11 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatMessageManager;
@@ -687,7 +687,7 @@ public class OverlayRenderer extends MouseAdapter
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage("You've repositioned one of the in-game interfaces. Hold " + runeLiteConfig.dragHotkey() +
-					" and drag to reposition the interface again, or " + runeLiteConfig.dragHotkey() + " and right click to reset.")
+					" and drag to reposition the interface again, or " + runeLiteConfig.dragHotkey() + " and right-click to reset.")
 				.build());
 		}
 
@@ -841,16 +841,16 @@ public class OverlayRenderer extends MouseAdapter
 	{
 		if (client.isResized())
 		{
-			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
 			{
-				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_RESIZABLE_VIEWPORT_BOTTOM_LINE);
+				return client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
 			}
 			else
 			{
-				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX);
+				return client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
 			}
 		}
-		return client.getWidget(ComponentID.FIXED_VIEWPORT_FIXED_VIEWPORT);
+		return client.getWidget(InterfaceID.Toplevel.OVERLAY_HUD);
 	}
 
 	private OverlayBounds buildSnapCorners()

@@ -34,7 +34,7 @@ import java.util.stream.StreamSupport;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
-public class PluginSearch
+class PluginSearch
 {
 	private static final Splitter SPLITTER = Splitter.on(" ").trimResults().omitEmptyStrings();
 
@@ -50,42 +50,24 @@ public class PluginSearch
 	{
 		if (StringUtils.isBlank(query))
 		{
-			return Comparator.nullsLast(Comparator.comparing(SearchablePlugin::isPinned, Comparator.nullsLast(Comparator.reverseOrder())))
-				.thenComparing(SearchablePlugin::getSearchableName, Comparator.nullsLast(Comparator.naturalOrder()));
+			return Comparator.comparing(SearchablePlugin::isPinned, Comparator.reverseOrder())
+				.thenComparing(SearchablePlugin::getSearchableName);
 		}
+
 		Iterable<String> queryPieces = SPLITTER.split(query.toLowerCase());
-		return Comparator.nullsLast(Comparator.comparing((SearchablePlugin sp) -> query.equalsIgnoreCase(sp.getSearchableName()), Comparator.reverseOrder()))
-			.thenComparing(sp ->
-			{
-				if (sp.getSearchableName() == null)
-				{
-					return 0L;
-				}
-				return stream(SPLITTER.split(sp.getSearchableName()))
-					.filter(piece -> stream(queryPieces).anyMatch(qp -> containsOrIsContainedBy(piece.toLowerCase(), qp)))
-					.count();
-			}, Comparator.reverseOrder())
-			.thenComparing(sp ->
-			{
-				if (sp.getKeywords() == null)
-				{
-					return 0L;
-				}
-				return stream(sp.getKeywords())
-					.filter(piece -> stream(queryPieces).anyMatch(qp -> containsOrIsContainedBy(piece.toLowerCase(), qp)))
-					.count();
-			}, Comparator.reverseOrder())
-			.thenComparing(SearchablePlugin::isPinned, Comparator.nullsLast(Comparator.reverseOrder()))
-			.thenComparing(SearchablePlugin::getSearchableName, Comparator.nullsLast(Comparator.naturalOrder()));
+		return Comparator.comparing(SearchablePlugin::isPinned)
+			.thenComparing(sp -> query.equalsIgnoreCase(sp.getSearchableName()))
+			// any piece of the search string starting with any part of the plugin name
+			.thenComparing(sp -> stream(queryPieces).anyMatch(queryPiece -> stream(SPLITTER.split(sp.getSearchableName().toLowerCase())).anyMatch(namePiece -> namePiece.startsWith(queryPiece))))
+			// each piece of the search string in one part of the plugin name
+			.thenComparing(sp -> stream(queryPieces).allMatch(queryPiece -> stream(SPLITTER.split(sp.getSearchableName().toLowerCase())).anyMatch(namePiece -> namePiece.contains(queryPiece))))
+			.thenComparingInt(SearchablePlugin::installs)
+			.reversed()
+			.thenComparing(SearchablePlugin::getSearchableName);
 	}
 
 	private static Stream<String> stream(Iterable<String> iterable)
 	{
 		return StreamSupport.stream(iterable.spliterator(), false);
-	}
-
-	private static boolean containsOrIsContainedBy(String a, String b)
-	{
-		return a.contains(b) || b.contains(a);
 	}
 }

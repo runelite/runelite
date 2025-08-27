@@ -73,6 +73,10 @@ public class WorldUtil
 				return WorldType.LAST_MAN_STANDING;
 			case BETA_WORLD:
 				return WorldType.BETA_WORLD;
+			case LEGACY_ONLY:
+				return WorldType.LEGACY_ONLY;
+			case EOC_ONLY:
+				return WorldType.EOC_ONLY;
 			case NOSAVE_MODE:
 				return WorldType.NOSAVE_MODE;
 			case TOURNAMENT:

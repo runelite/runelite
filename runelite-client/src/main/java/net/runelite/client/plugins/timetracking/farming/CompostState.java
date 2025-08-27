@@ -26,16 +26,16 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @RequiredArgsConstructor
 @Getter
 public enum CompostState
 {
 
-	COMPOST(ItemID.COMPOST),
-	SUPERCOMPOST(ItemID.SUPERCOMPOST),
-	ULTRACOMPOST(ItemID.ULTRACOMPOST),
+	COMPOST(ItemID.BUCKET_COMPOST),
+	SUPERCOMPOST(ItemID.BUCKET_SUPERCOMPOST),
+	ULTRACOMPOST(ItemID.BUCKET_ULTRACOMPOST),
 	;
 
 	private final int itemId;

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
@@ -48,7 +49,7 @@ public interface TimeTrackingConfig extends Config
 	@ConfigItem(
 		keyName = "timeFormatMode",
 		name = "Time format",
-		description = "What format to display times in",
+		description = "What format to display times in.",
 		position = 1
 	)
 	default TimeFormatMode timeFormatMode()
@@ -59,18 +60,18 @@ public interface TimeTrackingConfig extends Config
 	@ConfigItem(
 		keyName = "timerNotification",
 		name = "Timer notification",
-		description = "Notify you whenever a timer has finished counting down",
+		description = "Notify you whenever a timer has finished counting down.",
 		position = 2
 	)
-	default boolean timerNotification()
+	default Notification timerNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		keyName = "farmingContractInfoBox",
 		name = "Show farming contract infobox",
-		description = "Show an infobox of your current farming contract when inside the farming guild",
+		description = "Show an infobox of your current farming contract when inside the farming guild.",
 		position = 4
 	)
 	default boolean farmingContractInfoBox()
@@ -80,8 +81,8 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "defaultTimerMinutes",
-		name = "Default Time",
-		description = "The default time for the timer in minutes",
+		name = "Default time",
+		description = "The default time for the timer in minutes.",
 		position = 5
 	)
 	@Units(Units.MINUTES)
@@ -92,8 +93,8 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "sortOrder",
-		name = "Sort Order",
-		description = "The order in which to sort the timers",
+		name = "Sort order",
+		description = "The order in which to sort the timers.",
 		position = 6
 	)
 	default SortOrder sortOrder()
@@ -103,8 +104,8 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "timerWarningThreshold",
-		name = "Warning Threshold",
-		description = "The time at which to change the timer color to the warning color",
+		name = "Warning threshold",
+		description = "The time at which to change the timer color to the warning color.",
 		position = 6
 	)
 	@Units(Units.SECONDS)
@@ -126,8 +127,8 @@ public interface TimeTrackingConfig extends Config
 
 	@ConfigItem(
 		keyName = "activeTab",
-		name = "Active Tab",
-		description = "The currently selected tab",
+		name = "Active tab",
+		description = "The currently selected tab.",
 		hidden = true
 	)
 	default Tab activeTab()

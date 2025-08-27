@@ -37,7 +37,7 @@ public interface InterfaceStylesConfig extends Config
 	@ConfigItem(
 		keyName = "gameframe",
 		name = "Gameframe",
-		description = "The gameframe to use for the interface"
+		description = "The gameframe to use for the interface."
 	)
 	default Skin skin()
 	{
@@ -46,8 +46,8 @@ public interface InterfaceStylesConfig extends Config
 
 	@ConfigItem(
 		keyName = "hdHealthBars",
-		name = "High Detail health bars",
-		description = "Replaces health bars with the RuneScape High Detail mode design"
+		name = "High detail health bars",
+		description = "Replaces health bars with the RuneScape high detail mode design."
 	)
 	default boolean hdHealthBars()
 	{
@@ -56,8 +56,8 @@ public interface InterfaceStylesConfig extends Config
 
 	@ConfigItem(
 		keyName = "hdMenu",
-		name = "High Detail menu",
-		description = "Replaces game menu with the RuneScape High Detail mode design"
+		name = "High detail menu",
+		description = "Replaces game menu with the RuneScape high detail mode design."
 	)
 	default boolean hdMenu()
 	{
@@ -67,7 +67,7 @@ public interface InterfaceStylesConfig extends Config
 	@ConfigItem(
 		keyName = "rsCrossSprites",
 		name = "RuneScape cross sprites",
-		description = "Replaces left-click cross sprites with the ones in RuneScape"
+		description = "Replaces left-click cross sprites with the ones in RuneScape."
 	)
 	default boolean rsCrossSprites()
 	{
@@ -77,7 +77,7 @@ public interface InterfaceStylesConfig extends Config
 	@ConfigItem(
 		keyName = "alwaysStack",
 		name = "Always stack bottom bar",
-		description = "Always stack the bottom bar in resizable"
+		description = "Always stack the bottom bar in resizable."
 	)
 	default boolean alwaysStack()
 	{
@@ -90,7 +90,7 @@ public interface InterfaceStylesConfig extends Config
 	@ConfigItem(
 		keyName = "menuAlpha",
 		name = "Menu alpha",
-		description = "Configures the transparency of the right-click menu"
+		description = "Configures the transparency of the right-click menu."
 	)
 	default int menuAlpha()
 	{
@@ -100,7 +100,7 @@ public interface InterfaceStylesConfig extends Config
 	@ConfigItem(
 		keyName = "condensePlayerOptions",
 		name = "Condense player options",
-		description = "Move player options like Follow and Trade with to submenus"
+		description = "Move player options like Follow and Trade with to submenus."
 	)
 	default boolean condensePlayerOptions()
 	{

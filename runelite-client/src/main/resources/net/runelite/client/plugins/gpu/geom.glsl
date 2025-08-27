@@ -25,6 +25,8 @@
 
 #version 330
 
+#include texture_config
+
 //#define ZBUF
 
 // smallest unit of the texture which can be moved per tick. textures are all
@@ -43,16 +45,15 @@ layout(std140) uniform uniforms {
   float cameraX;
   float cameraY;
   float cameraZ;
-  ivec2 sinCosTable[2048];
 };
 
 #include "uv.glsl"
 
-uniform vec2 textureAnimations[128];
+uniform vec2 textureAnimations[TEXTURE_COUNT];
 uniform int tick;
 uniform mat4 projectionMatrix;
 
-in ivec3 gVertex[3];
+in vec3 gVertex[3];
 in vec4 gColor[3];
 in float gHsl[3];
 in int gTextureId[3];
@@ -76,7 +77,7 @@ void main() {
     vec3 cameraPos = vec3(cameraX, cameraY, cameraZ);
     compute_uv(cameraPos, gVertex[0], gVertex[1], gVertex[2], gTexPos[0], gTexPos[1], gTexPos[2], uv[0], uv[1], uv[2]);
 
-    vec2 textureAnim = textureAnimations[textureId - 1];
+    vec2 textureAnim = textureAnimations[min(textureId - 1, TEXTURE_COUNT - 1)];
     for (int i = 0; i < 3; ++i) {
       uv[i] += tick * textureAnim * TEXTURE_ANIM_UNIT;
     }

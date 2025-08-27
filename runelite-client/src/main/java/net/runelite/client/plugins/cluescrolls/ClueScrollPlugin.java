@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -37,16 +38,17 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
-import joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -55,21 +57,19 @@ import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.Point;
 import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -90,8 +90,10 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -146,11 +148,15 @@ public class ClueScrollPlugin extends Plugin
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 	private static final String CLUE_TAG_NAME = "clue";
 	private static final String TREASURE_CHEST_TAG_NAME = "treasure chest";
+	private static final String MAGIC_WARDROBE_TAG_NAME = "magic wardrobe";
+	private static final String ARMOUR_CASE_TAG_NAME = "armour case";
+	private static final String CAPE_RACK_TAG_NAME = "cape rack";
+	private static final String TOY_BOX_TAG_NAME = "toy box";
 	private static final int[] RUNEPOUCH_AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
+		VarbitID.RUNE_POUCH_QUANTITY_1, VarbitID.RUNE_POUCH_QUANTITY_2, VarbitID.RUNE_POUCH_QUANTITY_3, VarbitID.RUNE_POUCH_QUANTITY_4
 	};
 	private static final int[] RUNEPOUCH_RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
+		VarbitID.RUNE_POUCH_TYPE_1, VarbitID.RUNE_POUCH_TYPE_2, VarbitID.RUNE_POUCH_TYPE_3, VarbitID.RUNE_POUCH_TYPE_4
 	};
 	private static final String CLUE_NOTE_KEY_PREFIX = "note_";
 
@@ -254,13 +260,21 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.add(clueScrollMusicOverlay);
 		tagManager.registerTag(CLUE_TAG_NAME, this::testClueTag);
 		tagManager.registerTag(TREASURE_CHEST_TAG_NAME, this::testTreasureChestTag);
+		tagManager.registerTag(MAGIC_WARDROBE_TAG_NAME, this::testMagicWardrobe);
+		tagManager.registerTag(ARMOUR_CASE_TAG_NAME, this::testArmourCase);
+		tagManager.registerTag(CAPE_RACK_TAG_NAME, this::testCapeRack);
+		tagManager.registerTag(TOY_BOX_TAG_NAME, this::testToyBox);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		tagManager.unregisterTag(TREASURE_CHEST_TAG_NAME);
 		tagManager.unregisterTag(CLUE_TAG_NAME);
+		tagManager.unregisterTag(TREASURE_CHEST_TAG_NAME);
+		tagManager.unregisterTag(MAGIC_WARDROBE_TAG_NAME);
+		tagManager.unregisterTag(ARMOUR_CASE_TAG_NAME);
+		tagManager.unregisterTag(CAPE_RACK_TAG_NAME);
+		tagManager.unregisterTag(TOY_BOX_TAG_NAME);
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
@@ -326,7 +340,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.MYSTERIOUS_ORB_23069;
+		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.CLUEQUEST_CLUE3;
 		if (isXMarksTheSpotOrb || event.getMenuOption().equals("Read"))
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(event.getItemId());
@@ -337,7 +351,7 @@ public class ClueScrollPlugin extends Plugin
 				|| itemComposition.getName().startsWith("Treasure scroll"))
 			{
 				clueItemId = itemComposition.getId();
-				updateClue(MapClue.forItemId(clueItemId));
+				updateClue(findClueScroll(clueItemId));
 			}
 		}
 		else if (event.getMenuOption().equals("Search")	&& clue instanceof EmoteClue)
@@ -354,22 +368,23 @@ public class ClueScrollPlugin extends Plugin
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final ItemContainer itemContainer = event.getItemContainer();
-		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
+		if (event.getContainerId() == InventoryID.WORN)
 		{
 			equippedItems = itemContainer.getItems();
 			return;
 		}
 
-		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		if (event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
 
+		final Item[] previousInventory = inventoryItems;
 		inventoryItems = itemContainer.getItems();
 
 		// Add runes from rune pouch to inventoryItems
-		if (itemContainer.contains(ItemID.RUNE_POUCH) || itemContainer.contains(ItemID.RUNE_POUCH_L)
-			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH) || itemContainer.contains(ItemID.DIVINE_RUNE_POUCH_L))
+		if (itemContainer.contains(ItemID.BH_RUNE_POUCH) || itemContainer.contains(ItemID.BH_RUNE_POUCH_TROUVER)
+			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH) || itemContainer.contains(ItemID.DIVINE_RUNE_POUCH_TROUVER))
 		{
 			List<Item> runePouchContents = getRunepouchContents();
 
@@ -416,8 +431,53 @@ public class ClueScrollPlugin extends Plugin
 					client.clearHintArrow();
 				}
 
-				checkClueNPCs(clue, client.getCachedNPCs());
+				checkClueNPCs(clue, client.getTopLevelWorldView().npcs());
 			}
+		}
+
+		// Auto-identify clues in inventory, respecting already set clue
+		final Set<Item> newInventoryClues = new HashSet<>();
+		Collections.addAll(newInventoryClues, inventoryItems);
+		if (previousInventory != null)
+		{
+			for (final Item item : previousInventory)
+			{
+				newInventoryClues.remove(item);
+			}
+		}
+		newInventoryClues.removeIf((item) ->
+		{
+			// If paramID 623 returns a dbrow, the item is a valid clue scroll
+			ItemComposition itemComposition = client.getItemDefinition(item.getId());
+			return itemComposition == null || itemComposition.getIntValue(ParamID.CLUE_SCROLL) == -1;
+		});
+
+		if (!newInventoryClues.isEmpty())
+		{
+			final int newClueId = newInventoryClues.iterator().next().getId();
+			final ClueScrollConfig.IdentificationMode identificationMode = config.identify();
+
+			if (identificationMode == ClueScrollConfig.IdentificationMode.ON_PICKUP
+				|| (identificationMode == ClueScrollConfig.IdentificationMode.IF_INACTIVE && clue == null && clueItemId == null))
+			{
+				setActiveClue(newClueId);
+			}
+		}
+	}
+
+	private void setActiveClue(int itemId)
+	{
+		ClueScroll clueScroll = findClueScroll(itemId);
+
+		if (clueScroll != null)
+		{
+			clueItemId = itemId;
+			updateClue(clueScroll);
+		}
+		else if (itemId != ItemID.TRAIL_CLUE_BEGINNER && itemId != ItemID.TRAIL_CLUE_MASTER)
+		{
+			// Item is a valid clue which should be identifiable by ID, but is not yet associated with any ClueScroll
+			log.info("Unknown clue scroll id: {}", itemId);
 		}
 	}
 
@@ -450,7 +510,7 @@ public class ClueScrollPlugin extends Plugin
 	public void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
-		checkClueNPCs(clue, npc);
+		checkClueNPCs(clue, Collections.singletonList(npc));
 	}
 
 	@Subscribe
@@ -639,9 +699,9 @@ public class ClueScrollPlugin extends Plugin
 
 		// Reset clue when receiving a new beginner or master clue
 		// These clues use a single item ID, so we cannot detect step changes based on the item ID changing
-		final Widget chatDialogClueItem = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
+		final Widget chatDialogClueItem = client.getWidget(InterfaceID.Objectbox.ITEM);
 		if (chatDialogClueItem != null
-			&& (chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_BEGINNER || chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_MASTER))
+			&& (chatDialogClueItem.getItemId() == ItemID.TRAIL_CLUE_BEGINNER || chatDialogClueItem.getItemId() == ItemID.TRAIL_CLUE_MASTER))
 		{
 			resetClue(false);
 		}
@@ -650,16 +710,16 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() >= InterfaceID.CLUE_BEGINNER_MAP_CHAMPIONS_GUILD
-			&& event.getGroupId() <= InterfaceID.CLUE_BEGINNER_MAP_WIZARDS_TOWER)
+		if (event.getGroupId() >= InterfaceID.TRAIL_MAP01
+			&& event.getGroupId() <= InterfaceID.TRAIL_MAP11)
 		{
 			updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
 		}
-		else if (event.getGroupId() == InterfaceID.CLUESCROLL)
+		else if (event.getGroupId() == InterfaceID.TRAIL_CLUETEXT)
 		{
 			clientThread.invokeLater(() ->
 			{
-				final Widget clueScrollText = client.getWidget(ComponentID.CLUESCROLL_TEXT);
+				final Widget clueScrollText = client.getWidget(InterfaceID.TrailCluetext.TEXT);
 				if (clueScrollText != null)
 				{
 					ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
@@ -669,7 +729,7 @@ public class ClueScrollPlugin extends Plugin
 					}
 					else
 					{
-						log.info("Unknown clue text: {}", clueScrollText.getText());
+						log.info("Unknown clue scroll (id {}) for text '{}'", clueItemId, clueScrollText.getText());
 						resetClue(true);
 					}
 				}
@@ -680,9 +740,9 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("clue"))
+		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("clue"))
 		{
-			String text = Strings.join(commandExecuted.getArguments(), " ");
+			var text = String.join(" ", commandExecuted.getArguments());
 
 			if (text.isEmpty())
 			{
@@ -699,7 +759,7 @@ public class ClueScrollPlugin extends Plugin
 
 	public BufferedImage getClueScrollImage()
 	{
-		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
+		return itemManager.getImage(ItemID.TRAIL_CLUE_MASTER);
 	}
 
 	public BufferedImage getEmoteImage()
@@ -772,7 +832,7 @@ public class ClueScrollPlugin extends Plugin
 			return coordinatesToWorldPoint(text);
 		}
 
-		final AnagramClue anagramClue = AnagramClue.forText(text);
+		final AnagramClue anagramClue = AnagramClue.forText(this, text);
 		if (anagramClue != null)
 		{
 			return anagramClue;
@@ -837,6 +897,67 @@ public class ClueScrollPlugin extends Plugin
 		return null;
 	}
 
+	private static ClueScroll findClueScroll(int itemId)
+	{
+		if (itemId == ItemID.TRAIL_CLUE_BEGINNER || itemId == ItemID.TRAIL_CLUE_MASTER)
+		{
+			return null;
+		}
+
+		final MapClue mapClue = MapClue.forItemId(itemId);
+		if (mapClue != null)
+		{
+			return mapClue;
+		}
+
+		final MusicClue musicClue = MusicClue.forItemId(itemId);
+		if (musicClue != null)
+		{
+			return musicClue;
+		}
+
+		final CoordinateClue coordinateClue = CoordinateClue.forItemId(itemId);
+		if (coordinateClue != null)
+		{
+			return coordinateClue;
+		}
+
+		final AnagramClue anagramClue = AnagramClue.forItemId(itemId);
+		if (anagramClue != null)
+		{
+			return anagramClue;
+		}
+
+		final CipherClue cipherClue = CipherClue.forItemId(itemId);
+		if (cipherClue != null)
+		{
+			return cipherClue;
+		}
+
+		final CrypticClue crypticClue = CrypticClue.forItemId(itemId);
+
+		if (crypticClue != null)
+		{
+			return crypticClue;
+		}
+
+		final EmoteClue emoteClue = EmoteClue.forItemId(itemId);
+
+		if (emoteClue != null)
+		{
+			return emoteClue;
+		}
+
+		final FairyRingClue fairyRingClue = FairyRingClue.forItemId(itemId);
+
+		if (fairyRingClue != null)
+		{
+			return fairyRingClue;
+		}
+
+		return null;
+	}
+
 	/**
 	 * Example input: "00 degrees 00 minutes north 07 degrees 13 minutes west"
 	 * Note: some clues use "1 degree" instead of "01 degrees"
@@ -876,10 +997,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		WorldPoint coordinate = coordinatesToWorldPoint(degX, minX, degY, minY);
-		// Convert from overworld to real
-		WorldPoint mirrorPoint = WorldPoint.getMirrorPoint(coordinate, false);
-		// Use mirror point as mirrorLocation if there is one
-		return new CoordinateClue(text, coordinate, coordinate == mirrorPoint ? null : mirrorPoint);
+		return CoordinateClue.forLocation(coordinate);
 	}
 
 	/**
@@ -927,34 +1045,31 @@ public class ClueScrollPlugin extends Plugin
 		final Tile[][][] tiles = scene.getTiles();
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
-		for (GameObject object : tile.getGameObjects())
-		{
-			if (object == null)
+		Stream.concat(Stream.of(tile.getGameObjects()), Stream.of(tile.getDecorativeObject()))
+			.filter(Objects::nonNull)
+			.forEach((object) ->
 			{
-				continue;
-			}
-
-			for (int id : objectIds)
-			{
-				if (object.getId() == id)
+				for (int id : objectIds)
 				{
-					objectsToMark.add(object);
-					continue;
-				}
+					if (object.getId() == id)
+					{
+						objectsToMark.add(object);
+						continue;
+					}
 
-				// Check impostors
-				final ObjectComposition comp = client.getObjectDefinition(object.getId());
-				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+					// Check impostors
+					final ObjectComposition comp = client.getObjectDefinition(object.getId());
+					final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
-				if (impostor != null && impostor.getId() == id)
-				{
-					objectsToMark.add(object);
+					if (impostor != null && impostor.getId() == id)
+					{
+						objectsToMark.add(object);
+					}
 				}
-			}
-		}
+			});
 	}
 
-	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
+	private void checkClueNPCs(ClueScroll clue, Iterable<? extends NPC> npcs)
 	{
 		if (!(clue instanceof NpcClueScroll))
 		{
@@ -1083,7 +1198,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		resetClue(false);
-		checkClueNPCs(clue, client.getCachedNPCs());
+		checkClueNPCs(clue, client.getTopLevelWorldView().npcs());
 		checkClueNamedObjects(clue);
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.
@@ -1217,19 +1332,43 @@ public class ClueScrollPlugin extends Plugin
 	// from [proc,poh_costumes_countmembers] and [proc,poh_costumes_countalternates]
 	private boolean testTreasureChestTag(int itemId)
 	{
+		return testPohCostume(itemId,
+			EnumID.POH_COSTUME_CLUE_BEGINNER,
+			EnumID.POH_COSTUME_CLUE_EASY,
+			EnumID.POH_COSTUME_CLUE_MEDIUM,
+			EnumID.POH_COSTUME_CLUE_HARD,
+			EnumID.POH_COSTUME_CLUE_ELITE,
+			EnumID.POH_COSTUME_CLUE_MASTER);
+	}
+
+	private boolean testMagicWardrobe(int itemId)
+	{
+		return testPohCostume(itemId, EnumID.POH_COSTUME_WARDROBE);
+	}
+
+	private boolean testArmourCase(int itemId)
+	{
+		return testPohCostume(itemId, EnumID.POH_COSTUME_ARMOUR_CASE);
+	}
+
+	private boolean testCapeRack(int itemId)
+	{
+		return testPohCostume(itemId, EnumID.POH_CAPE_RACK);
+	}
+
+	private boolean testToyBox(int itemId)
+	{
+		return testPohCostume(itemId, EnumID.POH_TOY_BOX);
+	}
+
+	private boolean testPohCostume(int itemId, int... enums)
+	{
 		EnumComposition members = client.getEnum(EnumID.POH_COSTUME_MEMBERS);
-		EnumComposition[] enums = {
-			client.getEnum(EnumID.POH_COSTUME_CLUE_BEGINNER),
-			client.getEnum(EnumID.POH_COSTUME_CLUE_EASY),
-			client.getEnum(EnumID.POH_COSTUME_CLUE_MEDIUM),
-			client.getEnum(EnumID.POH_COSTUME_CLUE_HARD),
-			client.getEnum(EnumID.POH_COSTUME_CLUE_ELITE),
-			client.getEnum(EnumID.POH_COSTUME_CLUE_MASTER)
-		};
 		EnumComposition alt = client.getEnum(EnumID.POH_COSTUME_ALTERNATE);
 		EnumComposition alts = client.getEnum(EnumID.POH_COSTUME_ALTERNATES);
-		for (var tierEnum : enums)
+		for (var tierEnumId : enums)
 		{
+			var tierEnum = client.getEnum(tierEnumId);
 			for (int baseItem : tierEnum.getIntVals())
 			{
 				if (baseItem == itemId)
