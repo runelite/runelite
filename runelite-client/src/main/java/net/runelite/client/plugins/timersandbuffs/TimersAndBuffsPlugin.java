@@ -1021,7 +1021,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, Duration.of(getMagicLevelMoD(magicLevel), RSTimeUnit.GAME_TICKS));
+				createGameTimer(MARK_OF_DARKNESS, getMarkOfDarknessDuration());
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
@@ -1110,18 +1110,20 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 	}
 
-	private int getMagicLevelMoD(int magicLevel)
+	private Duration getMarkOfDarknessDuration()
 	{
+		final Duration markOfDarknessDuration = Duration.of(300, RSTimeUnit.GAME_TICKS);
+
 		final ItemContainer container = client.getItemContainer(InventoryID.WORN);
 		if (container != null)
 		{
 			final Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
 			if (weapon != null && weapon.getId() == ItemID.PURGING_STAFF)
 			{
-				return magicLevel * 5;
+				return markOfDarknessDuration.multipliedBy(5);
 			}
 		}
-		return magicLevel;
+		return markOfDarknessDuration;
 	}
 
 	private boolean isInFightCaves()
