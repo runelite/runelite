@@ -50,14 +50,11 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
-import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.ParamID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
@@ -66,6 +63,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
@@ -91,7 +89,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Slayer",
@@ -231,8 +228,10 @@ public class SlayerPlugin extends Plugin
 			}
 
 			// !task requires off-thread access to slayer task locations
-			EnumComposition e = client.getEnum(EnumID.SLAYER_TASK_LOCATION);
-			taskLocations = e.getStringVals().clone();
+			taskLocations = client.getDBTableRows(DBTableID.SlayerArea.ID)
+				.stream()
+				.map(row -> (String) client.getDBTableField(row, DBTableID.SlayerArea.COL_AREA_NAME_IN_HELPER, 0)[0])
+				.toArray(String[]::new);
 			return true;
 		});
 	}
@@ -362,26 +361,45 @@ public class SlayerPlugin extends Plugin
 		if (amount > 0)
 		{
 			int taskId = client.getVarpValue(VarPlayerID.SLAYER_TARGET);
-			String taskName;
+
+			int taskDBRow;
 			if (taskId == 98 /* Bosses, from [proc,helper_slayer_current_assignment] */)
 			{
-				int structId = client.getEnum(EnumID.SLAYER_TASK)
-					.getIntValue(client.getVarbitValue(VarbitID.SLAYER_TARGET_BOSSID));
-				taskName = client.getStructComposition(structId)
-					.getStringValue(ParamID.SLAYER_TASK_NAME);
+				var bossRows = client.getDBRowsByValue(
+					DBTableID.SlayerTaskSublist.ID,
+					DBTableID.SlayerTaskSublist.COL_SUBTABLE_ID,
+					0,
+					taskId);
+
+				if (bossRows.isEmpty())
+				{
+					return;
+				}
+				taskDBRow = (Integer) client.getDBTableField(bossRows.get(0), DBTableID.SlayerTaskSublist.COL_TASK, 0)[0];
 			}
 			else
 			{
-				taskName = client.getEnum(EnumID.SLAYER_TASK_CREATURE)
-					.getStringValue(taskId);
+				var taskRows = client.getDBRowsByValue(DBTableID.SlayerTask.ID, DBTableID.SlayerTask.COL_ID, 0, taskId);
+				if (taskRows.isEmpty())
+				{
+					return;
+				}
+				taskDBRow = taskRows.get(0);
 			}
+
+			var taskName = (String) client.getDBTableField(taskDBRow, DBTableID.SlayerTask.COL_NAME_UPPERCASE, 0)[0];
 
 			int areaId = client.getVarpValue(VarPlayerID.SLAYER_AREA);
 			String taskLocation = null;
 			if (areaId > 0)
 			{
-				taskLocation = StringUtils.capitalize(client.getEnum(EnumID.SLAYER_TASK_LOCATION)
-					.getStringValue(areaId));
+				var areaRows = client.getDBRowsByValue(DBTableID.SlayerArea.ID, DBTableID.SlayerArea.COL_AREA_ID, 0, areaId);
+				if (areaRows.isEmpty())
+				{
+					return;
+				}
+
+				taskLocation = (String) client.getDBTableField(areaRows.get(0), DBTableID.SlayerArea.COL_AREA_NAME_IN_HELPER, 0)[0];
 			}
 
 			int initialAmount = client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL);
