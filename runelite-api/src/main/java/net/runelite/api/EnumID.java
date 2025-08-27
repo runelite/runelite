@@ -35,8 +35,6 @@ public final class EnumID
 	 * key: int
 	 * val: string creature name
 	 */
-	public static final int SLAYER_TASK_CREATURE = 693;
-
 	/**
 	 * key: int 1-n+1
 	 * val: namedobj
@@ -72,8 +70,6 @@ public final class EnumID
 	 * key: int
 	 * val: string location name
 	 */
-	public static final int SLAYER_TASK_LOCATION = 4064;
-
 	public static final int PRAYERS_NORMAL = 4956;
 	public static final int PRAYERS_RUINOUS = 4959;
 	public static final int PRAYERS_NORMAL_DEADEYE = 3341;
@@ -86,8 +82,6 @@ public final class EnumID
 	 * key: int
 	 * val: struct slayer task
 	 */
-	public static final int SLAYER_TASK = 5008;
-
 	/**
 	 * key: weapon type
 	 * val: enum
