@@ -317,11 +317,7 @@ public enum AgilityShortcut
 	ELVEN_ADVANCED_CLIFF_SCRAMBLE(85, "Rocks", new WorldPoint(2337, 3253, 0), ObjectID.ELVES_OVERPASS_SC_ROCKS_TOP, ObjectID.ELVES_OVERPASS_SC_ROCKS_BOTTOM),
 	ELVEN_ADVANCED_CLIFF_SCRAMBLE_PRIFDDINAS(85, "Rocks", new WorldPoint(3361, 6005, 0), ObjectID.ELVES_OVERPASS_SC_ROCKS_TOP, ObjectID.ELVES_OVERPASS_SC_ROCKS_BOTTOM),
 	WATERBIRTH_ISLAND_ROCKS(85, "Rocks", new WorldPoint(2546, 3750, 0), ObjectID.DAGANNOTH_WATERBIRTH_ROCK_CLIMB_AGILITY_SHORTCUT_BOTTOM, ObjectID.DAGANNOTH_WATERBIRTH_ROCK_CLIMB_AGILITY_SHORTCUT_TOP),
-<<<<<<< HEAD
 	DARKMEYER_WALL_ROCKS(86, "Rocks", new WorldPoint(3563, 3380, 0), ObjectID.HH_MASTER005, ObjectID.DARKM_WALL_ROCK_SHORTCUT)
-=======
-	DARKMEYER_WALL_ROCKS(86, "Rocks", new WorldPoint(3563, 3380, 0), ObjectID.DARKM_WALL_ROCK_SHORTCUT)
->>>>>>> ac561d57e (Update darmeyer wall rocks to 86 agility per 27 Aug update. Remove highlight of stash despite being an obstacle)
 	{
 		@Override
 		public boolean matches(Client client, TileObject object)
