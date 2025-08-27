@@ -6789,181 +6789,6 @@ public final class DBTableID
 		}
 	}
 
-	public static final class LeagueSlayerTaskData
-	{
-		public static final int ID = 84;
-
-		/**
-		 * integer
-		 */
-		public static final int COL_MIN_COMLEVEL = 1;
-
-		/**
-		 * (integer, stat)
-		 */
-		public static final int COL_MIN_STAT_REQUIREMENT_ALL = 2;
-
-		/**
-		 * (integer, stat)
-		 */
-		public static final int COL_MIN_STAT_REQUIREMENT_ANY = 3;
-
-		/**
-		 * integer
-		 */
-		public static final int COL_LEAGUES_MIN_COMLEVEL = 4;
-
-		/**
-		 * integer
-		 */
-		public static final int COL_LEAGUES_MAX_COMLEVEL = 5;
-
-		/**
-		 * integer
-		 */
-		public static final int COL_REGIONS = 8;
-
-		/**
-		 * string
-		 */
-		public static final int COL_NAME_LOWERCASE = 9;
-
-		/**
-		 * string
-		 */
-		public static final int COL_NAME_UPPERCASE = 10;
-
-		/**
-		 * (npc, integer, integer, integer)
-		 */
-		public static final int COL_MASTER_WEIGHT_MINAMOUNT_MAXAMOUNT = 12;
-
-		public static final class Row
-		{
-			public static final int LEAGUE_SLAYER_TASK_MONKEYS = 4097;
-			public static final int LEAGUE_SLAYER_TASK_GOBLINS = 4098;
-			public static final int LEAGUE_SLAYER_TASK_RATS = 4099;
-			public static final int LEAGUE_SLAYER_TASK_SPIDERS = 4100;
-			public static final int LEAGUE_SLAYER_TASK_BIRDS = 4101;
-			public static final int LEAGUE_SLAYER_TASK_COWS = 4102;
-			public static final int LEAGUE_SLAYER_TASK_SCORPIONS = 4103;
-			public static final int LEAGUE_SLAYER_TASK_BATS = 4104;
-			public static final int LEAGUE_SLAYER_TASK_WOLVES = 4105;
-			public static final int LEAGUE_SLAYER_TASK_ZOMBIES = 4106;
-			public static final int LEAGUE_SLAYER_TASK_SKELETONS = 4107;
-			public static final int LEAGUE_SLAYER_TASK_GHOSTS = 4108;
-			public static final int LEAGUE_SLAYER_TASK_BEARS = 4109;
-			public static final int LEAGUE_SLAYER_TASK_HILLGIANTS = 4110;
-			public static final int LEAGUE_SLAYER_TASK_ICEGIANTS = 4111;
-			public static final int LEAGUE_SLAYER_TASK_FIREGIANTS = 4112;
-			public static final int LEAGUE_SLAYER_TASK_MOSSGIANTS = 4113;
-			public static final int LEAGUE_SLAYER_TASK_TROLLS = 4114;
-			public static final int LEAGUE_SLAYER_TASK_ICEWARRIORS = 4115;
-			public static final int LEAGUE_SLAYER_TASK_OGRES = 4116;
-			public static final int LEAGUE_SLAYER_TASK_HOBGOBLINS = 4117;
-			public static final int LEAGUE_SLAYER_TASK_DOGS = 4118;
-			public static final int LEAGUE_SLAYER_TASK_GHOULS = 4119;
-			public static final int LEAGUE_SLAYER_TASK_GREENDRAGONS = 4120;
-			public static final int LEAGUE_SLAYER_TASK_BLUEDRAGONS = 4121;
-			public static final int LEAGUE_SLAYER_TASK_REDDRAGONS = 4122;
-			public static final int LEAGUE_SLAYER_TASK_BLACKDRAGONS = 4123;
-			public static final int LEAGUE_SLAYER_TASK_LESSERDEMONS = 4124;
-			public static final int LEAGUE_SLAYER_TASK_GREATERDEMONS = 4125;
-			public static final int LEAGUE_SLAYER_TASK_BLACKDEMONS = 4126;
-			public static final int LEAGUE_SLAYER_TASK_HELLHOUNDS = 4127;
-			public static final int LEAGUE_SLAYER_TASK_SHADOWWARRIORS = 4128;
-			public static final int LEAGUE_SLAYER_TASK_WEREWOLVES = 4129;
-			public static final int LEAGUE_SLAYER_TASK_VAMPYRES = 4130;
-			public static final int LEAGUE_SLAYER_TASK_DAGANNOTH = 4131;
-			public static final int LEAGUE_SLAYER_TASK_TUROTH = 4132;
-			public static final int LEAGUE_SLAYER_TASK_CAVECRAWLERS = 4133;
-			public static final int LEAGUE_SLAYER_TASK_BANSHEES = 4134;
-			public static final int LEAGUE_SLAYER_TASK_CRAWLINGHANDS = 4135;
-			public static final int LEAGUE_SLAYER_TASK_INFERNALMAGES = 4136;
-			public static final int LEAGUE_SLAYER_TASK_ABERRANTSPECTRES = 4137;
-			public static final int LEAGUE_SLAYER_TASK_ABYSSALDEMONS = 4138;
-			public static final int LEAGUE_SLAYER_TASK_BASILISKS = 4139;
-			public static final int LEAGUE_SLAYER_TASK_COCKATRICE = 4140;
-			public static final int LEAGUE_SLAYER_TASK_KURASK = 4141;
-			public static final int LEAGUE_SLAYER_TASK_GARGOYLES = 4142;
-			public static final int LEAGUE_SLAYER_TASK_PYREFIENDS = 4143;
-			public static final int LEAGUE_SLAYER_TASK_BLOODVELD = 4144;
-			public static final int LEAGUE_SLAYER_TASK_DUSTDEVILS = 4145;
-			public static final int LEAGUE_SLAYER_TASK_JELLIES = 4146;
-			public static final int LEAGUE_SLAYER_TASK_ROCKSLUGS = 4147;
-			public static final int LEAGUE_SLAYER_TASK_NECHRYAEL = 4148;
-			public static final int LEAGUE_SLAYER_TASK_KALPHITE = 4149;
-			public static final int LEAGUE_SLAYER_TASK_EARTHWARRIORS = 4150;
-			public static final int LEAGUE_SLAYER_TASK_OTHERWORLDLYBEINGS = 4151;
-			public static final int LEAGUE_SLAYER_TASK_ELVES = 4152;
-			public static final int LEAGUE_SLAYER_TASK_DWARVES = 4153;
-			public static final int LEAGUE_SLAYER_TASK_BRONZEDRAGONS = 4154;
-			public static final int LEAGUE_SLAYER_TASK_IRONDRAGONS = 4155;
-			public static final int LEAGUE_SLAYER_TASK_STEELDRAGONS = 4156;
-			public static final int LEAGUE_SLAYER_TASK_WALLBEASTS = 4157;
-			public static final int LEAGUE_SLAYER_TASK_CAVESLIMES = 4158;
-			public static final int LEAGUE_SLAYER_TASK_CAVEBUGS = 4159;
-			public static final int LEAGUE_SLAYER_TASK_SHADES = 4160;
-			public static final int LEAGUE_SLAYER_TASK_CROCODILES = 4161;
-			public static final int LEAGUE_SLAYER_TASK_DARKBEASTS = 4162;
-			public static final int LEAGUE_SLAYER_TASK_MOGRES = 4163;
-			public static final int LEAGUE_SLAYER_TASK_LIZARDS = 4164;
-			public static final int LEAGUE_SLAYER_TASK_FEVERSPIDERS = 4165;
-			public static final int LEAGUE_SLAYER_TASK_HARPIEBUGSWARMS = 4166;
-			public static final int LEAGUE_SLAYER_TASK_SEASNAKES = 4167;
-			public static final int LEAGUE_SLAYER_TASK_SKELETALWYVERNS = 4168;
-			public static final int LEAGUE_SLAYER_TASK_KILLERWATTS = 4169;
-			public static final int LEAGUE_SLAYER_TASK_MUTATEDZYGOMITES = 4170;
-			public static final int LEAGUE_SLAYER_TASK_ICEFIENDS = 4171;
-			public static final int LEAGUE_SLAYER_TASK_MINOTAURS = 4172;
-			public static final int LEAGUE_SLAYER_TASK_FLESHCRAWLERS = 4173;
-			public static final int LEAGUE_SLAYER_TASK_CATABLEPON = 4174;
-			public static final int LEAGUE_SLAYER_TASK_ANKOU = 4175;
-			public static final int LEAGUE_SLAYER_TASK_CAVEHORRORS = 4176;
-			public static final int LEAGUE_SLAYER_TASK_JUNGLEHORRORS = 4177;
-			public static final int LEAGUE_SLAYER_TASK_SUQAHS = 4178;
-			public static final int LEAGUE_SLAYER_TASK_BRINERATS = 4179;
-			public static final int LEAGUE_SLAYER_TASK_SCABARITES = 4180;
-			public static final int LEAGUE_SLAYER_TASK_TERRORDOGS = 4181;
-			public static final int LEAGUE_SLAYER_TASK_MOLANISKS = 4182;
-			public static final int LEAGUE_SLAYER_TASK_WATERFIENDS = 4183;
-			public static final int LEAGUE_SLAYER_TASK_SPIRITUALGWD = 4184;
-			public static final int LEAGUE_SLAYER_TASK_LIZARDMEN = 4185;
-			public static final int LEAGUE_SLAYER_TASK_MAGICAXES = 4186;
-			public static final int LEAGUE_SLAYER_TASK_CAVEKRAKEN = 4187;
-			public static final int LEAGUE_SLAYER_TASK_MITHRILDRAGONS = 4188;
-			public static final int LEAGUE_SLAYER_TASK_AVIANSIES = 4189;
-			public static final int LEAGUE_SLAYER_TASK_SMOKEDEVIL = 4190;
-			public static final int LEAGUE_SLAYER_TASK_TZHAAR = 4191;
-			public static final int LEAGUE_SLAYER_TASK_BOSS = 4192;
-			public static final int LEAGUE_SLAYER_TASK_MAMMOTHS = 4193;
-			public static final int LEAGUE_SLAYER_TASK_ROGUES = 4194;
-			public static final int LEAGUE_SLAYER_TASK_ENTS = 4195;
-			public static final int LEAGUE_SLAYER_TASK_BANDITS = 4196;
-			public static final int LEAGUE_SLAYER_TASK_DARKWARRIORS = 4197;
-			public static final int LEAGUE_SLAYER_TASK_LAVADRAGONS = 4198;
-			public static final int LEAGUE_SLAYER_TASK_FOSSILWYVERNS = 4199;
-			public static final int LEAGUE_SLAYER_TASK_REVENANTS = 4200;
-			public static final int LEAGUE_SLAYER_TASK_ADAMANTDRAGONS = 4201;
-			public static final int LEAGUE_SLAYER_TASK_RUNEDRAGONS = 4202;
-			public static final int LEAGUE_SLAYER_TASK_CHAOSDRUIDS = 4203;
-			public static final int LEAGUE_SLAYER_TASK_WYRMS = 4204;
-			public static final int LEAGUE_SLAYER_TASK_DRAKES = 4205;
-			public static final int LEAGUE_SLAYER_TASK_HYDRAS = 4206;
-			public static final int LEAGUE_SLAYER_TASK_TEMPLESPIDERS = 4207;
-			public static final int LEAGUE_SLAYER_TASK_UNDEADDRUIDS = 4208;
-			public static final int LEAGUE_SLAYER_TASK_SULPHURLIZARDS = 4209;
-			public static final int LEAGUE_SLAYER_TASK_BRUTALBLACKDRAGONS = 4210;
-			public static final int LEAGUE_SLAYER_TASK_SANDCRABS = 4211;
-			public static final int LEAGUE_SLAYER_TASK_BLACKKNIGHT = 4212;
-			public static final int LEAGUE_SLAYER_TASK_PIRATES = 4213;
-			public static final int LEAGUE_SLAYER_TASK_SOURHOGS = 4214;
-			public static final int LEAGUE_SLAYER_TASK_WARPEDCREATURES = 4215;
-			public static final int LEAGUE_SLAYER_TASK_LESSER_NAGUA = 4216;
-			public static final int LEAGUE_SLAYER_TASK_ARAXYTES = 4217;
-		}
-	}
-
 	public static final class LeaguesEchoBosses
 	{
 		public static final int ID = 85;
@@ -9317,6 +9142,821 @@ public final class DBTableID
 			public static final int OUTFITSTAND_HOTSPOT = 6149;
 			public static final int LEAGUE_STATUE_HOTSPOT = 6150;
 			public static final int LEAGUE_ACCOMPLISHMENT_HOTSPOT = 6151;
+		}
+	}
+
+	public static final class SlayerTask
+	{
+		public static final int ID = 113;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ID = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_MIN_COMLEVEL = 1;
+
+		/**
+		 * (integer, stat)
+		 */
+		public static final int COL_MIN_STAT_REQUIREMENT_ALL = 2;
+
+		/**
+		 * (integer, stat)
+		 */
+		public static final int COL_MIN_STAT_REQUIREMENT_ANY = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_LEAGUES_MIN_COMLEVEL = 4;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_LEAGUES_MAX_COMLEVEL = 5;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_REGIONS = 8;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME_LOWERCASE = 9;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME_UPPERCASE = 10;
+
+		/**
+		 * (dbrow, integer, integer)
+		 */
+		public static final int COL_EXTENSION_MIN_MAX = 15;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_BLOCK_UNLOCK = 16;
+
+		public static final class Row
+		{
+			public static final int SLAYER_TASK_KREEARRA = 545;
+			public static final int SLAYER_TASK_ZILYANA = 6155;
+			public static final int SLAYER_TASK_GRAARDOR = 6157;
+			public static final int SLAYER_TASK_KRILTSUTSAROTH = 6159;
+			public static final int SLAYER_TASK_DAGANNOTHKINGS = 6161;
+			public static final int SLAYER_TASK_MOLE = 6163;
+			public static final int SLAYER_TASK_KQ = 6165;
+			public static final int SLAYER_TASK_KBD = 6167;
+			public static final int SLAYER_TASK_CALLISTO = 6169;
+			public static final int SLAYER_TASK_VENENATIS = 6171;
+			public static final int SLAYER_TASK_VETION = 6173;
+			public static final int SLAYER_TASK_CHAOSELEMENTAL = 6175;
+			public static final int SLAYER_TASK_CHAOSFANATIC = 6177;
+			public static final int SLAYER_TASK_CRAZYARCHAEOLOGIST = 6179;
+			public static final int SLAYER_TASK_SCORPIA = 6181;
+			public static final int SLAYER_TASK_ZULRAH = 6183;
+			public static final int SLAYER_TASK_BARROWSBROTHERS = 6185;
+			public static final int SLAYER_TASK_CAVEKRAKENBOSS = 6187;
+			public static final int SLAYER_TASK_SMOKEDEVILBOSS = 6189;
+			public static final int SLAYER_TASK_CERBERUS = 6191;
+			public static final int SLAYER_TASK_ABYSSALSIRE = 6193;
+			public static final int SLAYER_TASK_GROTESQUEGUARDIANS = 6195;
+			public static final int SLAYER_TASK_VORKATH = 6197;
+			public static final int SLAYER_TASK_HYDRABOSS = 6199;
+			public static final int SLAYER_TASK_SARACHNIS = 6201;
+			public static final int SLAYER_TASK_MUSPAH = 6203;
+			public static final int SLAYER_TASK_VARDORVIS = 6205;
+			public static final int SLAYER_TASK_DUKESUCELLUS = 6207;
+			public static final int SLAYER_TASK_WHISPERER = 6209;
+			public static final int SLAYER_TASK_LEVIATHAN = 6211;
+			public static final int SLAYER_TASK_ARAXXOR = 6213;
+			public static final int SLAYER_TARGET_MONKEYS = 6214;
+			public static final int SLAYER_TARGET_GOBLINS = 6215;
+			public static final int SLAYER_TARGET_RATS = 6216;
+			public static final int SLAYER_TARGET_SPIDERS = 6217;
+			public static final int SLAYER_TARGET_BIRDS = 6218;
+			public static final int SLAYER_TARGET_COWS = 6219;
+			public static final int SLAYER_TARGET_SCORPIONS = 6220;
+			public static final int SLAYER_TARGET_BATS = 6221;
+			public static final int SLAYER_TARGET_WOLVES = 6222;
+			public static final int SLAYER_TARGET_ZOMBIES = 6223;
+			public static final int SLAYER_TARGET_SKELETONS = 6224;
+			public static final int SLAYER_TARGET_GHOSTS = 6225;
+			public static final int SLAYER_TARGET_BEARS = 6226;
+			public static final int SLAYER_TARGET_HILLGIANTS = 6227;
+			public static final int SLAYER_TARGET_ICEGIANTS = 6228;
+			public static final int SLAYER_TARGET_FIREGIANTS = 6229;
+			public static final int SLAYER_TARGET_MOSSGIANTS = 6230;
+			public static final int SLAYER_TARGET_TROLLS = 6231;
+			public static final int SLAYER_TARGET_ICEWARRIORS = 6232;
+			public static final int SLAYER_TARGET_OGRES = 6233;
+			public static final int SLAYER_TARGET_HOBGOBLINS = 6234;
+			public static final int SLAYER_TARGET_DOGS = 6235;
+			public static final int SLAYER_TARGET_GHOULS = 6236;
+			public static final int SLAYER_TARGET_GREENDRAGONS = 6237;
+			public static final int SLAYER_TARGET_BLUEDRAGONS = 6238;
+			public static final int SLAYER_TARGET_REDDRAGONS = 6239;
+			public static final int SLAYER_TARGET_BLACKDRAGONS = 6240;
+			public static final int SLAYER_TARGET_LESSERDEMONS = 6241;
+			public static final int SLAYER_TARGET_GREATERDEMONS = 6242;
+			public static final int SLAYER_TARGET_BLACKDEMONS = 6243;
+			public static final int SLAYER_TARGET_HELLHOUNDS = 6244;
+			public static final int SLAYER_TARGET_SHADOWWARRIORS = 6245;
+			public static final int SLAYER_TARGET_WEREWOLVES = 6246;
+			public static final int SLAYER_TARGET_VAMPYRES = 6247;
+			public static final int SLAYER_TARGET_DAGANNOTH = 6248;
+			public static final int SLAYER_TARGET_TUROTH = 6249;
+			public static final int SLAYER_TARGET_CAVECRAWLERS = 6250;
+			public static final int SLAYER_TARGET_BANSHEES = 6251;
+			public static final int SLAYER_TARGET_CRAWLINGHANDS = 6252;
+			public static final int SLAYER_TARGET_INFERNALMAGES = 6253;
+			public static final int SLAYER_TARGET_ABERRANTSPECTRES = 6254;
+			public static final int SLAYER_TARGET_ABYSSALDEMONS = 6255;
+			public static final int SLAYER_TARGET_BASILISKS = 6256;
+			public static final int SLAYER_TARGET_COCKATRICE = 6257;
+			public static final int SLAYER_TARGET_KURASK = 6258;
+			public static final int SLAYER_TARGET_GARGOYLES = 6259;
+			public static final int SLAYER_TARGET_PYREFIENDS = 6260;
+			public static final int SLAYER_TARGET_BLOODVELD = 6261;
+			public static final int SLAYER_TARGET_DUSTDEVILS = 6262;
+			public static final int SLAYER_TARGET_JELLIES = 6263;
+			public static final int SLAYER_TARGET_ROCKSLUGS = 6264;
+			public static final int SLAYER_TARGET_NECHRYAEL = 6265;
+			public static final int SLAYER_TARGET_KALPHITE = 6266;
+			public static final int SLAYER_TARGET_EARTHWARRIORS = 6267;
+			public static final int SLAYER_TARGET_OTHERWORLDLYBEINGS = 6268;
+			public static final int SLAYER_TARGET_ELVES = 6269;
+			public static final int SLAYER_TARGET_DWARVES = 6270;
+			public static final int SLAYER_TARGET_BRONZEDRAGONS = 6271;
+			public static final int SLAYER_TARGET_IRONDRAGONS = 6272;
+			public static final int SLAYER_TARGET_STEELDRAGONS = 6273;
+			public static final int SLAYER_TARGET_WALLBEASTS = 6274;
+			public static final int SLAYER_TARGET_CAVESLIMES = 6275;
+			public static final int SLAYER_TARGET_CAVEBUGS = 6276;
+			public static final int SLAYER_TARGET_SHADES = 6277;
+			public static final int SLAYER_TARGET_CROCODILES = 6278;
+			public static final int SLAYER_TARGET_DARKBEASTS = 6279;
+			public static final int SLAYER_TARGET_MOGRES = 6280;
+			public static final int SLAYER_TARGET_LIZARDS = 6281;
+			public static final int SLAYER_TARGET_FEVERSPIDERS = 6282;
+			public static final int SLAYER_TARGET_HARPIEBUGSWARMS = 6283;
+			public static final int SLAYER_TARGET_SEASNAKES = 6284;
+			public static final int SLAYER_TARGET_SKELETALWYVERNS = 6285;
+			public static final int SLAYER_TARGET_KILLERWATTS = 6286;
+			public static final int SLAYER_TARGET_MUTATEDZYGOMITES = 6287;
+			public static final int SLAYER_TARGET_ICEFIENDS = 6288;
+			public static final int SLAYER_TARGET_MINOTAURS = 6289;
+			public static final int SLAYER_TARGET_FLESHCRAWLERS = 6290;
+			public static final int SLAYER_TARGET_CATABLEPON = 6291;
+			public static final int SLAYER_TARGET_ANKOU = 6292;
+			public static final int SLAYER_TARGET_CAVEHORRORS = 6293;
+			public static final int SLAYER_TARGET_JUNGLEHORRORS = 6294;
+			public static final int SLAYER_TARGET_SUQAHS = 6295;
+			public static final int SLAYER_TARGET_BRINERATS = 6296;
+			public static final int SLAYER_TARGET_SCABARITES = 6297;
+			public static final int SLAYER_TARGET_TERRORDOGS = 6298;
+			public static final int SLAYER_TARGET_MOLANISKS = 6299;
+			public static final int SLAYER_TARGET_WATERFIENDS = 6300;
+			public static final int SLAYER_TARGET_SPIRITUALGWD = 6301;
+			public static final int SLAYER_TARGET_LIZARDMEN = 6302;
+			public static final int SLAYER_TARGET_MAGICAXES = 6303;
+			public static final int SLAYER_TARGET_CAVEKRAKEN = 6304;
+			public static final int SLAYER_TARGET_MITHRILDRAGONS = 6305;
+			public static final int SLAYER_TARGET_AVIANSIES = 6306;
+			public static final int SLAYER_TARGET_SMOKEDEVIL = 6307;
+			public static final int SLAYER_TARGET_TZHAAR = 6308;
+			public static final int SLAYER_TARGET_ZUK = 6309;
+			public static final int SLAYER_TARGET_JAD = 6310;
+			public static final int SLAYER_TARGET_BOSS = 6311;
+			public static final int SLAYER_TARGET_MAMMOTHS = 6312;
+			public static final int SLAYER_TARGET_ROGUES = 6313;
+			public static final int SLAYER_TARGET_ENTS = 6314;
+			public static final int SLAYER_TARGET_BANDITS = 6315;
+			public static final int SLAYER_TARGET_DARKWARRIORS = 6316;
+			public static final int SLAYER_TARGET_LAVADRAGONS = 6317;
+			public static final int SLAYER_TARGET_FOSSILWYVERNS = 6318;
+			public static final int SLAYER_TARGET_REVENANTS = 6319;
+			public static final int SLAYER_TARGET_ADAMANTDRAGONS = 6320;
+			public static final int SLAYER_TARGET_RUNEDRAGONS = 6321;
+			public static final int SLAYER_TARGET_METALDRAGONS = 6322;
+			public static final int SLAYER_TARGET_CHAOSDRUIDS = 6323;
+			public static final int SLAYER_TARGET_WYRMS = 6324;
+			public static final int SLAYER_TARGET_DRAKES = 6325;
+			public static final int SLAYER_TARGET_HYDRAS = 6326;
+			public static final int SLAYER_TARGET_TEMPLESPIDERS = 6327;
+			public static final int SLAYER_TARGET_UNDEADDRUIDS = 6328;
+			public static final int SLAYER_TARGET_SULPHURLIZARDS = 6329;
+			public static final int SLAYER_TARGET_BRUTALBLACKDRAGONS = 6330;
+			public static final int SLAYER_TARGET_BRUTALDRAGONS = 6331;
+			public static final int SLAYER_TARGET_SANDCRABS = 6332;
+			public static final int SLAYER_TARGET_CRABS = 6333;
+			public static final int SLAYER_TARGET_BLACKKNIGHT = 6334;
+			public static final int SLAYER_TARGET_PIRATES = 6335;
+			public static final int SLAYER_TARGET_SOURHOGS = 6336;
+			public static final int SLAYER_TARGET_WARPEDCREATURES = 6337;
+			public static final int SLAYER_TARGET_LESSER_NAGUA = 6338;
+			public static final int SLAYER_TARGET_ARAXYTES = 6339;
+			public static final int SLAYER_TARGET_CUSTODIANS = 6340;
+		}
+	}
+
+	public static final class SlayerMasterTask
+	{
+		public static final int ID = 114;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_MASTER_ID = 0;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_TASK = 1;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_WEIGHT = 2;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_MIN_AMOUNT = 3;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_MAX_AMOUNT = 4;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_AREAS = 5;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_TASK_UNLOCK = 6;
+
+		public static final class Row
+		{
+			public static final int CHAELDAR_CUSTODIANS = 4097;
+			public static final int NIEVE_CUSTODIANS = 4098;
+			public static final int KONAR_LESSER_NAGUA = 6450;
+			public static final int KONAR_WARPEDCREATURES = 6451;
+			public static final int KONAR_VAMPYRES = 6452;
+			public static final int KONAR_BASILISKS = 6453;
+			public static final int KONAR_MUTATEDZYGOMITES = 6454;
+			public static final int KONAR_BRINERATS = 6455;
+			public static final int KONAR_WATERFIENDS = 6456;
+			public static final int KONAR_TUROTH = 6457;
+			public static final int KONAR_KURASK = 6458;
+			public static final int KONAR_BLUEDRAGONS = 6459;
+			public static final int KONAR_SKELETALWYVERNS = 6460;
+			public static final int KONAR_FOSSILWYVERNS = 6461;
+			public static final int KONAR_ANKOU = 6462;
+			public static final int KONAR_REDDRAGONS = 6463;
+			public static final int KONAR_DARKBEASTS = 6464;
+			public static final int KONAR_BLACKDRAGONS = 6465;
+			public static final int KONAR_JELLIES = 6466;
+			public static final int KONAR_TROLLS = 6467;
+			public static final int KONAR_ABERRANTSPECTRES = 6468;
+			public static final int KONAR_DUSTDEVILS = 6469;
+			public static final int KONAR_GARGOYLES = 6470;
+			public static final int KONAR_AVIANSIES = 6471;
+			public static final int KONAR_GREATERDEMONS = 6472;
+			public static final int KONAR_SMOKEDEVIL = 6473;
+			public static final int KONAR_NECHRYAEL = 6474;
+			public static final int KONAR_LIZARDMEN = 6475;
+			public static final int KONAR_HELLHOUNDS = 6476;
+			public static final int KONAR_DAGANNOTH = 6477;
+			public static final int KONAR_BOSS = 6478;
+			public static final int KONAR_WYRMS = 6479;
+			public static final int KONAR_DRAKES = 6480;
+			public static final int KONAR_HYDRAS = 6481;
+			public static final int KONAR_CAVEKRAKEN = 6482;
+			public static final int KONAR_FIREGIANTS = 6483;
+			public static final int KONAR_KALPHITE = 6484;
+			public static final int KONAR_BLOODVELD = 6485;
+			public static final int KONAR_BLACKDEMONS = 6486;
+			public static final int KONAR_ABYSSALDEMONS = 6487;
+			public static final int KONAR_METALDRAGONS = 6488;
+			public static final int DURADEL_ARAXYTES = 6489;
+			public static final int DURADEL_WARPEDCREATURES = 6490;
+			public static final int DURADEL_VAMPYRES = 6491;
+			public static final int DURADEL_BASILISKS = 6492;
+			public static final int DURADEL_DRAKES = 6493;
+			public static final int DURADEL_WYRMS = 6494;
+			public static final int DURADEL_REDDRAGONS = 6495;
+			public static final int DURADEL_LIZARDMEN = 6496;
+			public static final int DURADEL_ELVES = 6497;
+			public static final int DURADEL_BLUEDRAGONS = 6498;
+			public static final int DURADEL_WATERFIENDS = 6499;
+			public static final int DURADEL_CAVEHORRORS = 6500;
+			public static final int DURADEL_TROLLS = 6501;
+			public static final int DURADEL_DUSTDEVILS = 6502;
+			public static final int DURADEL_KURASK = 6503;
+			public static final int DURADEL_ANKOU = 6504;
+			public static final int DURADEL_MUTATEDZYGOMITES = 6505;
+			public static final int DURADEL_HELLHOUNDS = 6506;
+			public static final int DURADEL_DAGANNOTH = 6507;
+			public static final int DURADEL_FIREGIANTS = 6508;
+			public static final int DURADEL_SUQAHS = 6509;
+			public static final int DURADEL_SKELETALWYVERNS = 6510;
+			public static final int DURADEL_FOSSILWYVERNS = 6511;
+			public static final int DURADEL_GREATERDEMONS = 6512;
+			public static final int DURADEL_BLACKDRAGONS = 6513;
+			public static final int DURADEL_AVIANSIES = 6514;
+			public static final int DURADEL_SPIRITUALGWD = 6515;
+			public static final int DURADEL_BLOODVELD = 6516;
+			public static final int DURADEL_BLACKDEMONS = 6517;
+			public static final int DURADEL_GARGOYLES = 6518;
+			public static final int DURADEL_ABERRANTSPECTRES = 6519;
+			public static final int DURADEL_CAVEKRAKEN = 6520;
+			public static final int DURADEL_SMOKEDEVIL = 6521;
+			public static final int DURADEL_NECHRYAEL = 6522;
+			public static final int DURADEL_KALPHITE = 6523;
+			public static final int DURADEL_ABYSSALDEMONS = 6524;
+			public static final int DURADEL_DARKBEASTS = 6525;
+			public static final int DURADEL_BOSS = 6526;
+			public static final int DURADEL_TZHAAR = 6527;
+			public static final int DURADEL_METALDRAGONS = 6528;
+			public static final int VANNAKA_CRABS = 6529;
+			public static final int VANNAKA_SPIRITUALGWD = 6530;
+			public static final int VANNAKA_ABYSSALDEMONS = 6531;
+			public static final int VANNAKA_NECHRYAEL = 6532;
+			public static final int VANNAKA_GARGOYLES = 6533;
+			public static final int VANNAKA_HOBGOBLINS = 6534;
+			public static final int VANNAKA_HILLGIANTS = 6535;
+			public static final int VANNAKA_GHOULS = 6536;
+			public static final int VANNAKA_ICEWARRIORS = 6537;
+			public static final int VANNAKA_OTHERWORLDLYBEINGS = 6538;
+			public static final int VANNAKA_COCKATRICE = 6539;
+			public static final int VANNAKA_SHADES = 6540;
+			public static final int VANNAKA_PYREFIENDS = 6541;
+			public static final int VANNAKA_MOGRES = 6542;
+			public static final int VANNAKA_MOLANISKS = 6543;
+			public static final int VANNAKA_VAMPYRES = 6544;
+			public static final int VANNAKA_BASILISKS = 6545;
+			public static final int VANNAKA_FEVERSPIDERS = 6546;
+			public static final int VANNAKA_BRINERATS = 6547;
+			public static final int VANNAKA_INFERNALMAGES = 6548;
+			public static final int VANNAKA_JELLIES = 6549;
+			public static final int VANNAKA_ICEGIANTS = 6550;
+			public static final int VANNAKA_ANKOU = 6551;
+			public static final int VANNAKA_TUROTH = 6552;
+			public static final int VANNAKA_JUNGLEHORRORS = 6553;
+			public static final int VANNAKA_LESSERDEMONS = 6554;
+			public static final int VANNAKA_TERRORDOGS = 6555;
+			public static final int VANNAKA_ABERRANTSPECTRES = 6556;
+			public static final int VANNAKA_BLUEDRAGONS = 6557;
+			public static final int VANNAKA_DUSTDEVILS = 6558;
+			public static final int VANNAKA_HELLHOUNDS = 6559;
+			public static final int VANNAKA_TROLLS = 6560;
+			public static final int VANNAKA_MOSSGIANTS = 6561;
+			public static final int VANNAKA_SEASNAKES = 6562;
+			public static final int VANNAKA_OGRES = 6563;
+			public static final int VANNAKA_CROCODILES = 6564;
+			public static final int VANNAKA_FIREGIANTS = 6565;
+			public static final int VANNAKA_KALPHITE = 6566;
+			public static final int VANNAKA_KURASK = 6567;
+			public static final int VANNAKA_BLOODVELD = 6568;
+			public static final int VANNAKA_WEREWOLVES = 6569;
+			public static final int VANNAKA_SHADOWWARRIORS = 6570;
+			public static final int VANNAKA_ELVES = 6571;
+			public static final int VANNAKA_DAGANNOTH = 6572;
+			public static final int VANNAKA_HARPIEBUGSWARMS = 6573;
+			public static final int KRYSTILLIA_ABYSSALDEMONS = 6574;
+			public static final int KRYSTILLIA_DUSTDEVILS = 6575;
+			public static final int KRYSTILLIA_NECHRYAEL = 6576;
+			public static final int KRYSTILLIA_JELLIES = 6577;
+			public static final int KRYSTILLIA_PIRATES = 6578;
+			public static final int KRYSTILLIA_BLACKKNIGHT = 6579;
+			public static final int KRYSTILLIA_ZOMBIES = 6580;
+			public static final int KRYSTILLIA_MOSSGIANTS = 6581;
+			public static final int KRYSTILLIA_HILLGIANTS = 6582;
+			public static final int KRYSTILLIA_BLOODVELD = 6583;
+			public static final int KRYSTILLIA_CHAOSDRUIDS = 6584;
+			public static final int KRYSTILLIA_LESSERDEMONS = 6585;
+			public static final int KRYSTILLIA_REVENANTS = 6586;
+			public static final int KRYSTILLIA_LAVADRAGONS = 6587;
+			public static final int KRYSTILLIA_GREENDRAGONS = 6588;
+			public static final int KRYSTILLIA_DARKWARRIORS = 6589;
+			public static final int KRYSTILLIA_BLACKDRAGONS = 6590;
+			public static final int KRYSTILLIA_BANDITS = 6591;
+			public static final int KRYSTILLIA_ENTS = 6592;
+			public static final int KRYSTILLIA_SKELETONS = 6593;
+			public static final int KRYSTILLIA_ROGUES = 6594;
+			public static final int KRYSTILLIA_MAMMOTHS = 6595;
+			public static final int KRYSTILLIA_SPIDERS = 6596;
+			public static final int KRYSTILLIA_SCORPIONS = 6597;
+			public static final int KRYSTILLIA_BEARS = 6598;
+			public static final int KRYSTILLIA_EARTHWARRIORS = 6599;
+			public static final int KRYSTILLIA_ANKOU = 6600;
+			public static final int KRYSTILLIA_ICEGIANTS = 6601;
+			public static final int KRYSTILLIA_SPIRITUALGWD = 6602;
+			public static final int KRYSTILLIA_MAGICAXES = 6603;
+			public static final int KRYSTILLIA_HELLHOUNDS = 6604;
+			public static final int KRYSTILLIA_BLACKDEMONS = 6605;
+			public static final int KRYSTILLIA_AVIANSIES = 6606;
+			public static final int KRYSTILLIA_ICEWARRIORS = 6607;
+			public static final int KRYSTILLIA_FIREGIANTS = 6608;
+			public static final int KRYSTILLIA_BOSS = 6609;
+			public static final int KRYSTILLIA_GREATERDEMONS = 6610;
+			public static final int MAZCHNA_CRABS = 6611;
+			public static final int MAZCHNA_SCORPIONS = 6612;
+			public static final int MAZCHNA_BATS = 6613;
+			public static final int MAZCHNA_CAVEBUGS = 6614;
+			public static final int MAZCHNA_ICEWARRIORS = 6615;
+			public static final int MAZCHNA_ZOMBIES = 6616;
+			public static final int MAZCHNA_BEARS = 6617;
+			public static final int MAZCHNA_GHOSTS = 6618;
+			public static final int MAZCHNA_CAVECRAWLERS = 6619;
+			public static final int MAZCHNA_KALPHITE = 6620;
+			public static final int MAZCHNA_WALLBEASTS = 6621;
+			public static final int MAZCHNA_CATABLEPON = 6622;
+			public static final int MAZCHNA_FLESHCRAWLERS = 6623;
+			public static final int MAZCHNA_DOGS = 6624;
+			public static final int MAZCHNA_WOLVES = 6625;
+			public static final int MAZCHNA_HOBGOBLINS = 6626;
+			public static final int MAZCHNA_CAVESLIMES = 6627;
+			public static final int MAZCHNA_LIZARDS = 6628;
+			public static final int MAZCHNA_ROCKSLUGS = 6629;
+			public static final int MAZCHNA_HILLGIANTS = 6630;
+			public static final int MAZCHNA_COCKATRICE = 6631;
+			public static final int MAZCHNA_SHADES = 6632;
+			public static final int MAZCHNA_KILLERWATTS = 6633;
+			public static final int MAZCHNA_PYREFIENDS = 6634;
+			public static final int MAZCHNA_MOGRES = 6635;
+			public static final int MAZCHNA_SKELETONS = 6636;
+			public static final int MAZCHNA_CRAWLINGHANDS = 6637;
+			public static final int MAZCHNA_BANSHEES = 6638;
+			public static final int MAZCHNA_GHOULS = 6639;
+			public static final int MAZCHNA_VAMPYRES = 6640;
+			public static final int CHAELDAR_CRABS = 6641;
+			public static final int CHAELDAR_LESSER_NAGUA = 6642;
+			public static final int CHAELDAR_WARPEDCREATURES = 6643;
+			public static final int CHAELDAR_VAMPYRES = 6644;
+			public static final int CHAELDAR_WYRMS = 6645;
+			public static final int CHAELDAR_TZHAAR = 6646;
+			public static final int CHAELDAR_LIZARDMEN = 6647;
+			public static final int CHAELDAR_BASILISKS = 6648;
+			public static final int CHAELDAR_FEVERSPIDERS = 6649;
+			public static final int CHAELDAR_BRINERATS = 6650;
+			public static final int CHAELDAR_MUTATEDZYGOMITES = 6651;
+			public static final int CHAELDAR_SKELETALWYVERNS = 6652;
+			public static final int CHAELDAR_FOSSILWYVERNS = 6653;
+			public static final int CHAELDAR_BLOODVELD = 6654;
+			public static final int CHAELDAR_SHADOWWARRIORS = 6655;
+			public static final int CHAELDAR_ABERRANTSPECTRES = 6656;
+			public static final int CHAELDAR_ELVES = 6657;
+			public static final int CHAELDAR_BLUEDRAGONS = 6658;
+			public static final int CHAELDAR_DUSTDEVILS = 6659;
+			public static final int CHAELDAR_HELLHOUNDS = 6660;
+			public static final int CHAELDAR_GREATERDEMONS = 6661;
+			public static final int CHAELDAR_LESSERDEMONS = 6662;
+			public static final int CHAELDAR_JELLIES = 6663;
+			public static final int CHAELDAR_CAVEHORRORS = 6664;
+			public static final int CHAELDAR_TUROTH = 6665;
+			public static final int CHAELDAR_BLACKDEMONS = 6666;
+			public static final int CHAELDAR_JUNGLEHORRORS = 6667;
+			public static final int CHAELDAR_TROLLS = 6668;
+			public static final int CHAELDAR_AVIANSIES = 6669;
+			public static final int CHAELDAR_SPIRITUALGWD = 6670;
+			public static final int CHAELDAR_DAGANNOTH = 6671;
+			public static final int CHAELDAR_KALPHITE = 6672;
+			public static final int CHAELDAR_GARGOYLES = 6673;
+			public static final int CHAELDAR_FIREGIANTS = 6674;
+			public static final int CHAELDAR_KURASK = 6675;
+			public static final int CHAELDAR_CAVEKRAKEN = 6676;
+			public static final int CHAELDAR_NECHRYAEL = 6677;
+			public static final int CHAELDAR_ABYSSALDEMONS = 6678;
+			public static final int NIEVE_ARAXYTES = 6679;
+			public static final int NIEVE_WARPEDCREATURES = 6680;
+			public static final int NIEVE_VAMPYRES = 6681;
+			public static final int NIEVE_BASILISKS = 6682;
+			public static final int NIEVE_DRAKES = 6683;
+			public static final int NIEVE_WYRMS = 6684;
+			public static final int NIEVE_REDDRAGONS = 6685;
+			public static final int NIEVE_LIZARDMEN = 6686;
+			public static final int NIEVE_MUTATEDZYGOMITES = 6687;
+			public static final int NIEVE_BRINERATS = 6688;
+			public static final int NIEVE_BLACKDRAGONS = 6689;
+			public static final int NIEVE_SKELETALWYVERNS = 6690;
+			public static final int NIEVE_FOSSILWYVERNS = 6691;
+			public static final int NIEVE_CAVEHORRORS = 6692;
+			public static final int NIEVE_TUROTH = 6693;
+			public static final int NIEVE_KURASK = 6694;
+			public static final int NIEVE_SCABARITES = 6695;
+			public static final int NIEVE_SUQAHS = 6696;
+			public static final int NIEVE_FIREGIANTS = 6697;
+			public static final int NIEVE_TROLLS = 6698;
+			public static final int NIEVE_ANKOU = 6699;
+			public static final int NIEVE_ABERRANTSPECTRES = 6700;
+			public static final int NIEVE_BLUEDRAGONS = 6701;
+			public static final int NIEVE_DARKBEASTS = 6702;
+			public static final int NIEVE_GREATERDEMONS = 6703;
+			public static final int NIEVE_DUSTDEVILS = 6704;
+			public static final int NIEVE_ELVES = 6705;
+			public static final int NIEVE_KALPHITE = 6706;
+			public static final int NIEVE_SMOKEDEVIL = 6707;
+			public static final int NIEVE_CAVEKRAKEN = 6708;
+			public static final int NIEVE_BLOODVELD = 6709;
+			public static final int NIEVE_GARGOYLES = 6710;
+			public static final int NIEVE_HELLHOUNDS = 6711;
+			public static final int NIEVE_AVIANSIES = 6712;
+			public static final int NIEVE_SPIRITUALGWD = 6713;
+			public static final int NIEVE_DAGANNOTH = 6714;
+			public static final int NIEVE_BLACKDEMONS = 6715;
+			public static final int NIEVE_NECHRYAEL = 6716;
+			public static final int NIEVE_ABYSSALDEMONS = 6717;
+			public static final int NIEVE_BOSS = 6718;
+			public static final int NIEVE_TZHAAR = 6719;
+			public static final int NIEVE_METALDRAGONS = 6720;
+			public static final int TURAEL_RATS = 6721;
+			public static final int TURAEL_MONKEYS = 6722;
+			public static final int TURAEL_COWS = 6723;
+			public static final int TURAEL_BIRDS = 6724;
+			public static final int TURAEL_SPIDERS = 6725;
+			public static final int TURAEL_DWARVES = 6726;
+			public static final int TURAEL_LIZARDS = 6727;
+			public static final int TURAEL_CAVEBUGS = 6728;
+			public static final int TURAEL_SCORPIONS = 6729;
+			public static final int TURAEL_ZOMBIES = 6730;
+			public static final int TURAEL_BATS = 6731;
+			public static final int TURAEL_BEARS = 6732;
+			public static final int TURAEL_GHOSTS = 6733;
+			public static final int TURAEL_CAVECRAWLERS = 6734;
+			public static final int TURAEL_MINOTAURS = 6735;
+			public static final int TURAEL_ICEFIENDS = 6736;
+			public static final int TURAEL_KALPHITE = 6737;
+			public static final int TURAEL_CAVESLIMES = 6738;
+			public static final int TURAEL_DOGS = 6739;
+			public static final int TURAEL_GOBLINS = 6740;
+			public static final int TURAEL_WOLVES = 6741;
+			public static final int TURAEL_SKELETONS = 6742;
+			public static final int TURAEL_CRAWLINGHANDS = 6743;
+			public static final int TURAEL_BANSHEES = 6744;
+			public static final int SPRIA_SOURHOGS = 6745;
+			public static final int SPRIA_RATS = 6746;
+			public static final int SPRIA_MONKEYS = 6747;
+			public static final int SPRIA_COWS = 6748;
+			public static final int SPRIA_BIRDS = 6749;
+			public static final int SPRIA_SPIDERS = 6750;
+			public static final int SPRIA_DWARVES = 6751;
+			public static final int SPRIA_LIZARDS = 6752;
+			public static final int SPRIA_CAVEBUGS = 6753;
+			public static final int SPRIA_SCORPIONS = 6754;
+			public static final int SPRIA_ZOMBIES = 6755;
+			public static final int SPRIA_BATS = 6756;
+			public static final int SPRIA_BEARS = 6757;
+			public static final int SPRIA_GHOSTS = 6758;
+			public static final int SPRIA_CAVECRAWLERS = 6759;
+			public static final int SPRIA_MINOTAURS = 6760;
+			public static final int SPRIA_ICEFIENDS = 6761;
+			public static final int SPRIA_KALPHITE = 6762;
+			public static final int SPRIA_CAVESLIMES = 6763;
+			public static final int SPRIA_DOGS = 6764;
+			public static final int SPRIA_GOBLINS = 6765;
+			public static final int SPRIA_WOLVES = 6766;
+			public static final int SPRIA_SKELETONS = 6767;
+			public static final int SPRIA_CRAWLINGHANDS = 6768;
+			public static final int SPRIA_BANSHEES = 6769;
+		}
+	}
+
+	public static final class SlayerArea
+	{
+		public static final int ID = 115;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_AREA_ID = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_AREA_NAME_IN_HELPER = 3;
+
+		public static final class Row
+		{
+			public static final int SLAYERAREA_ZEAHCATACOMBS = 6341;
+			public static final int SLAYERAREA_SMOKEDUNGEON = 6342;
+			public static final int SLAYERAREA_SMOKEDEVILDUNGEON = 6343;
+			public static final int SLAYERAREA_BRIMSTONEDUNGEON = 6344;
+			public static final int SLAYERAREA_STRONGHOLDDUNGEON = 6345;
+			public static final int SLAYERAREA_WATERFALLDUNGEON = 6346;
+			public static final int SLAYERAREA_BRIMHAVENDUNGEON = 6347;
+			public static final int SLAYERAREA_ISLEOFSOULS = 6348;
+			public static final int SLAYERAREA_GIANTSDEN = 6349;
+			public static final int SLAYERAREA_CHASMOFFIRE = 6350;
+			public static final int SLAYERAREA_TAVERLEYDUNGEON = 6351;
+			public static final int SLAYERAREA_WITCHHAVENDUNGEON = 6352;
+			public static final int SLAYERAREA_SLAYERTOWER = 6353;
+			public static final int SLAYERAREA_GODWARS = 6354;
+			public static final int SLAYERAREA_KALPHITELAIR = 6355;
+			public static final int SLAYERAREA_KALPHITECAVE = 6356;
+			public static final int SLAYERAREA_KRAKENCOVE = 6357;
+			public static final int SLAYERAREA_LIGHTHOUSE = 6358;
+			public static final int SLAYERAREA_WATERBIRTHISLAND = 6359;
+			public static final int SLAYERAREA_LIZARDMANCANYON = 6360;
+			public static final int SLAYERAREA_MOLCH = 6361;
+			public static final int SLAYERAREA_LIZARDMANSETTLEMENT = 6362;
+			public static final int SLAYERAREA_DEATHPLATEAU = 6363;
+			public static final int SLAYERAREA_TROLLSTRONGHOLD = 6364;
+			public static final int SLAYERAREA_KELDAGRIM = 6365;
+			public static final int SLAYERAREA_SOUTHQUIDAMORTEM = 6366;
+			public static final int SLAYERAREA_JATNEIT = 6367;
+			public static final int SLAYERAREA_FREMDUNGEON = 6368;
+			public static final int SLAYERAREA_MYTHSGUILD = 6369;
+			public static final int SLAYERAREA_MOURNERTUNNELS = 6370;
+			public static final int SLAYERAREA_LITHKRENVAULT = 6371;
+			public static final int SLAYERAREA_ANCIENTCAVERN = 6372;
+			public static final int SLAYERAREA_SECURITYSTRONGHOLD = 6373;
+			public static final int SLAYERAREA_FOSSILISLAND = 6374;
+			public static final int SLAYERAREA_OGREENCLAVE = 6375;
+			public static final int SLAYERAREA_BRINERATCAVERN = 6376;
+			public static final int SLAYERAREA_ZANARIS = 6377;
+			public static final int SLAYERAREA_EVILCHICKENLAIR = 6378;
+			public static final int SLAYERAREA_ABYSS = 6379;
+			public static final int SLAYERAREA_KEBOSSWAMP = 6380;
+			public static final int SLAYERAREA_KEBOSBATTLEFRONT = 6381;
+			public static final int SLAYERAREA_HOSIDIUSDUNGEON = 6382;
+			public static final int SLAYERAREA_IORWERTHDUNGEON = 6383;
+			public static final int SLAYERAREA_JORMUNGANDPRISON = 6384;
+			public static final int SLAYERAREA_DARKMEYER = 6385;
+			public static final int SLAYERAREA_SLEPE = 6386;
+			public static final int SLAYERAREA_MEIYERDITCHLABS = 6387;
+			public static final int SLAYERAREA_POISONWASTEDUNGEON = 6388;
+			public static final int SLAYERAREA_PERILOUSMOONSDUNGEON = 6389;
+			public static final int SLAYERAREA_TAPOYAUIK = 6390;
+			public static final int SLAYERAREA_ICEDUNGEON = 6391;
+		}
+	}
+
+	public static final class SlayerTaskSublist
+	{
+		public static final int ID = 116;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_SUBTABLE_ID = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TASK_SUBTABLE_ID = 1;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_TASK = 4;
+
+		public static final class Row
+		{
+			public static final int SLAYER_BOSS_TASK_KREEARRA = 503;
+			public static final int SLAYER_BOSS_TASK_ZILYANA = 6154;
+			public static final int SLAYER_BOSS_TASK_GRAARDOR = 6156;
+			public static final int SLAYER_BOSS_TASK_KRILTSUTSAROTH = 6158;
+			public static final int SLAYER_BOSS_TASK_DAGANNOTHKINGS = 6160;
+			public static final int SLAYER_BOSS_TASK_MOLE = 6162;
+			public static final int SLAYER_BOSS_TASK_KQ = 6164;
+			public static final int SLAYER_BOSS_TASK_KBD = 6166;
+			public static final int SLAYER_BOSS_TASK_CALLISTO = 6168;
+			public static final int SLAYER_BOSS_TASK_VENENATIS = 6170;
+			public static final int SLAYER_BOSS_TASK_VETION = 6172;
+			public static final int SLAYER_BOSS_TASK_CHAOSELEMENTAL = 6174;
+			public static final int SLAYER_BOSS_TASK_CHAOSFANATIC = 6176;
+			public static final int SLAYER_BOSS_TASK_CRAZYARCHAEOLOGIST = 6178;
+			public static final int SLAYER_BOSS_TASK_SCORPIA = 6180;
+			public static final int SLAYER_BOSS_TASK_ZULRAH = 6182;
+			public static final int SLAYER_BOSS_TASK_BARROWSBROTHERS = 6184;
+			public static final int SLAYER_BOSS_TASK_CAVEKRAKENBOSS = 6186;
+			public static final int SLAYER_BOSS_TASK_SMOKEDEVILBOSS = 6188;
+			public static final int SLAYER_BOSS_TASK_CERBERUS = 6190;
+			public static final int SLAYER_BOSS_TASK_ABYSSALSIRE = 6192;
+			public static final int SLAYER_BOSS_TASK_GROTESQUEGUARDIANS = 6194;
+			public static final int SLAYER_BOSS_TASK_VORKATH = 6196;
+			public static final int SLAYER_BOSS_TASK_HYDRABOSS = 6198;
+			public static final int SLAYER_BOSS_TASK_SARACHNIS = 6200;
+			public static final int SLAYER_BOSS_TASK_MUSPAH = 6202;
+			public static final int SLAYER_BOSS_TASK_VARDORVIS = 6204;
+			public static final int SLAYER_BOSS_TASK_DUKESUCELLUS = 6206;
+			public static final int SLAYER_BOSS_TASK_WHISPERER = 6208;
+			public static final int SLAYER_BOSS_TASK_LEVIATHAN = 6210;
+			public static final int SLAYER_BOSS_TASK_ARAXXOR = 6212;
+		}
+	}
+
+	public static final class SlayerUnlock
+	{
+		public static final int ID = 117;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_BIT = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_COST = 1;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_ICON = 2;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 3;
+
+		/**
+		 * string
+		 */
+		public static final int COL_DESCRIPTION = 4;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_REFUNDABLE = 5;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_LIST_POSITION = 6;
+
+		public static final class Row
+		{
+			public static final int SLAYER_REWARDS_AUTOKILL_GARGOYLES = 6392;
+			public static final int SLAYER_REWARDS_AUTOKILL_ROCKSLUGS = 6393;
+			public static final int SLAYER_REWARDS_AUTOKILL_DESERTLIZARDS = 6394;
+			public static final int SLAYER_REWARDS_AUTOKILL_ZYGOMITES = 6395;
+			public static final int SLAYER_HELM_UNLOCKED = 6396;
+			public static final int SLAYER_RING_UNLOCKED = 6397;
+			public static final int SLAYER_AMMO_UNLOCKED = 6398;
+			public static final int SLAYER_REWARDS_LONGER_DARKBEASTS = 6399;
+			public static final int SLAYER_REWARDS_LONGER_ANKOU = 6400;
+			public static final int SLAYER_REWARDS_LONGER_SUQAH = 6401;
+			public static final int SLAYER_REWARDS_LONGER_BLACKDRAGONS = 6402;
+			public static final int SLAYER_REWARDS_LONGER_METALDRAGONS = 6403;
+			public static final int SLAYER_REWARDS_LONGER_SPIRITUALGWD = 6404;
+			public static final int SLAYER_REWARDS_LONGER_ABYSSALDEMONS = 6405;
+			public static final int SLAYER_REWARDS_LONGER_BLACKDEMONS = 6406;
+			public static final int SLAYER_REWARDS_LONGER_GREATERDEMONS = 6407;
+			public static final int SLAYER_REWARDS_UNLOCK_REDDRAGONS = 6408;
+			public static final int SLAYER_REWARDS_UNLOCK_MITHRILDRAGONS = 6409;
+			public static final int SLAYER_REWARDS_UNLOCK_AVIANSIES = 6410;
+			public static final int SLAYER_REWARDS_UNLOCK_TZHAAR = 6411;
+			public static final int SLAYER_REWARDS_UNLOCK_BOSSES = 6412;
+			public static final int SLAYER_REWARDS_LONGER_BLOODVELD = 6413;
+			public static final int SLAYER_REWARDS_LONGER_ABERRANTSPECTRES = 6414;
+			public static final int SLAYER_REWARDS_LONGER_AVIANSIES = 6415;
+			public static final int SLAYER_REWARDS_LONGER_MITHRILDRAGONS = 6416;
+			public static final int SLAYER_REWARDS_LONGER_CAVEHORRORS = 6417;
+			public static final int SLAYER_REWARDS_LONGER_DUSTDEVILS = 6418;
+			public static final int SLAYER_REWARDS_LONGER_SKELETALWYVERNS = 6419;
+			public static final int SLAYER_REWARDS_LONGER_GARGOYLES = 6420;
+			public static final int SLAYER_REWARDS_LONGER_NECHRYAEL = 6421;
+			public static final int SLAYER_REWARDS_LONGER_CAVEKRAKEN = 6422;
+			public static final int SLAYER_REWARDS_UNLOCK_LIZARDMEN = 6423;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_BLACK = 6424;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_GREEN = 6425;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_RED = 6426;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_PURPLE = 6427;
+			public static final int SLAYER_REWARDS_UNLOCK_SUPERIORMOBS = 6428;
+			public static final int SLAYER_REWARDS_LONGER_SCABARITES = 6429;
+			public static final int SLAYER_REWARDS_UNLOCK_NOTEDMITHRILBARS = 6430;
+			public static final int SLAYER_REWARDS_LONGER_FOSSILWYVERNS = 6431;
+			public static final int SLAYER_REWARDS_LONGER_ADAMANTDRAGONS = 6432;
+			public static final int SLAYER_REWARDS_LONGER_RUNEDRAGONS = 6433;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_TURQUOISE = 6434;
+			public static final int SLAYER_REWARDS_UNLOCK_FOSSILWYVERNBLOCK = 6435;
+			public static final int SLAYER_REWARDS_UNLOCK_GROTESQUEKILLS = 6436;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_HYDRA = 6437;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_ARAXYTE = 6438;
+			public static final int SLAYER_REWARDS_LONGER_BASILISK = 6439;
+			public static final int SLAYER_REWARDS_UNLOCK_BASILISK = 6440;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_TWISTED = 6441;
+			public static final int SLAYER_REWARDS_LONGER_VAMPYRES = 6442;
+			public static final int SLAYER_REWARDS_UNLOCK_VAMPYRES = 6443;
+			public static final int SLAYER_REWARDS_UNLOCK_STORAGE = 6444;
+			public static final int SLAYER_REWARDS_UNLOCK_WILDERNESS_NEWTASKS = 6445;
+			public static final int SLAYER_REWARDS_LONGER_REVENANTS = 6446;
+			public static final int SLAYER_REWARDS_UNLOCK_WARPED_CREATURES = 6447;
+			public static final int SLAYER_REWARDS_LONGER_ARAXYTES = 6448;
+			public static final int SLAYER_REWARDS_LONGER_CUSTODIANS = 6449;
 		}
 	}
 /* This file is automatically generated. Do not edit. */

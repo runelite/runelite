@@ -5798,6 +5798,9 @@ public final class SpriteID
 		public static final int _2 = 2849;
 		public static final int _3 = 2850;
 		public static final int _4 = 2851;
+		public static final int _5 = 6411;
+		public static final int _6 = 6412;
+		public static final int _7 = 6413;
 	}
 
 	public static final class SettingsSlider

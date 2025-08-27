@@ -928,6 +928,7 @@ public final class InterfaceID
 	public static final int MAGIC_HUNTER = 921;
 	public static final int JIGSAW = 922;
 	public static final int MESSAGEBOX_TITLED = 923;
+	public static final int SLAYER_REWARDS_TASK_LIST = 924;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -15985,50 +15986,52 @@ public final class InterfaceID
 		public static final int UNIVERSE = 0x01aa_0000;
 		public static final int BORDER = 0x01aa_0001;
 		public static final int CONFIRM = 0x01aa_0002;
-		public static final int CONFIRM_GRAPHIC0 = 0x01aa_0003;
-		public static final int CONFIRM_INFO = 0x01aa_0004;
-		public static final int BACK_BUTTON = 0x01aa_0005;
-		public static final int BACK_BUTTON_GRAPHIC0 = 0x01aa_0006;
-		public static final int BACK_TEXT = 0x01aa_0007;
-		public static final int CONFIRM_BUTTON = 0x01aa_0008;
-		public static final int CONFIRM_BUTTON_GRAPHIC0 = 0x01aa_0009;
-		public static final int CONFIRM_TEXT = 0x01aa_000a;
-		public static final int MAIN = 0x01aa_000b;
-		public static final int TABS = 0x01aa_000c;
-		public static final int CONTENTS = 0x01aa_000d;
-		public static final int UNLOCK = 0x01aa_000e;
-		public static final int UNLOCK_CONTENTS = 0x01aa_000f;
-		public static final int UNLOCK_SCROLLBAR = 0x01aa_0010;
-		public static final int EXTEND = 0x01aa_0011;
-		public static final int EXTEND_CONTENTS = 0x01aa_0012;
-		public static final int EXTEND_SCROLLBAR = 0x01aa_0013;
-		public static final int EXTEND_ETCETERA = 0x01aa_0014;
-		public static final int BUY = 0x01aa_0015;
-		public static final int BUY_CONTENTS = 0x01aa_0016;
-		public static final int BUY_ITEMS = 0x01aa_0017;
-		public static final int BUY_PRICES = 0x01aa_0018;
-		public static final int BUY_SCROLLBAR = 0x01aa_0019;
-		public static final int TASKS = 0x01aa_001a;
-		public static final int TASKS_STORED_CONTAINER = 0x01aa_001b;
-		public static final int TASKS_STORED_CONTAINER_RECT0 = 0x01aa_001c;
-		public static final int TASKS_INTRODUCTION = 0x01aa_001d;
-		public static final int TASKS_CURRENT_CONTAINER = 0x01aa_001e;
-		public static final int TASKS_CURRENT_CONTAINER_RECT0 = 0x01aa_001f;
-		public static final int TASKS_CURRENT_CONTAINER_RECT1 = 0x01aa_0020;
-		public static final int TASKS_CURRENT_CONTAINER_RECT2 = 0x01aa_0021;
-		public static final int TASKS_CURRENT_CONTAINER_TEXT3 = 0x01aa_0022;
-		public static final int TASKS_CURRENT = 0x01aa_0023;
-		public static final int TASKS_TEXT3 = 0x01aa_0024;
-		public static final int TASKS_SLOT_1 = 0x01aa_0025;
-		public static final int TASKS_SLOT_2 = 0x01aa_0026;
-		public static final int TASKS_SLOT_3 = 0x01aa_0027;
-		public static final int TASKS_SLOT_4 = 0x01aa_0028;
-		public static final int TASKS_SLOT_5 = 0x01aa_0029;
-		public static final int TASKS_SLOT_6 = 0x01aa_002a;
-		public static final int TASKS_SLOT_DIARY = 0x01aa_002b;
-		public static final int TASKS_STORED_CONTAINER_RECT1 = 0x01aa_002c;
-		public static final int TASKS_STORED_CONTAINER_RECT2 = 0x01aa_002d;
-		public static final int TASKS_STORED = 0x01aa_002e;
+		public static final int MAIN = 0x01aa_0003;
+		public static final int POPUP = 0x01aa_0004;
+		public static final int CONFIRM_GRAPHIC0 = 0x01aa_0005;
+		public static final int CONFIRM_INFO = 0x01aa_0006;
+		public static final int BACK_BUTTON = 0x01aa_0007;
+		public static final int BACK_BUTTON_GRAPHIC0 = 0x01aa_0008;
+		public static final int BACK_TEXT = 0x01aa_0009;
+		public static final int CONFIRM_BUTTON = 0x01aa_000a;
+		public static final int CONFIRM_BUTTON_GRAPHIC0 = 0x01aa_000b;
+		public static final int CONFIRM_TEXT = 0x01aa_000c;
+		public static final int TABS = 0x01aa_000d;
+		public static final int CONTENTS = 0x01aa_000e;
+		public static final int UNLOCK = 0x01aa_000f;
+		public static final int UNLOCK_CONTENTS = 0x01aa_0010;
+		public static final int UNLOCK_SCROLLBAR = 0x01aa_0011;
+		public static final int EXTEND = 0x01aa_0012;
+		public static final int EXTEND_CONTENTS = 0x01aa_0013;
+		public static final int EXTEND_SCROLLBAR = 0x01aa_0014;
+		public static final int EXTEND_ETCETERA = 0x01aa_0015;
+		public static final int BUY = 0x01aa_0016;
+		public static final int BUY_CONTENTS = 0x01aa_0017;
+		public static final int BUY_ITEMS = 0x01aa_0018;
+		public static final int BUY_PRICES = 0x01aa_0019;
+		public static final int BUY_SCROLLBAR = 0x01aa_001a;
+		public static final int TASKS = 0x01aa_001b;
+		public static final int VIEW_TASKS = 0x01aa_001c;
+		public static final int TASKS_STORED_CONTAINER = 0x01aa_001d;
+		public static final int TASKS_STORED_CONTAINER_RECT0 = 0x01aa_001e;
+		public static final int TASKS_INTRODUCTION = 0x01aa_001f;
+		public static final int TASKS_CURRENT_CONTAINER = 0x01aa_0020;
+		public static final int TASKS_CURRENT_CONTAINER_RECT0 = 0x01aa_0021;
+		public static final int TASKS_CURRENT_CONTAINER_RECT1 = 0x01aa_0022;
+		public static final int TASKS_CURRENT_CONTAINER_RECT2 = 0x01aa_0023;
+		public static final int TASKS_CURRENT_CONTAINER_TEXT3 = 0x01aa_0024;
+		public static final int TASKS_CURRENT = 0x01aa_0025;
+		public static final int TASKS_TEXT4 = 0x01aa_0026;
+		public static final int TASKS_SLOT_1 = 0x01aa_0027;
+		public static final int TASKS_SLOT_2 = 0x01aa_0028;
+		public static final int TASKS_SLOT_3 = 0x01aa_0029;
+		public static final int TASKS_SLOT_4 = 0x01aa_002a;
+		public static final int TASKS_SLOT_5 = 0x01aa_002b;
+		public static final int TASKS_SLOT_6 = 0x01aa_002c;
+		public static final int TASKS_SLOT_DIARY = 0x01aa_002d;
+		public static final int TASKS_STORED_CONTAINER_RECT1 = 0x01aa_002e;
+		public static final int TASKS_STORED_CONTAINER_RECT2 = 0x01aa_002f;
+		public static final int TASKS_STORED = 0x01aa_0030;
 	}
 
 	public static final class ScrollGodfather
@@ -30139,6 +30142,21 @@ public final class InterfaceID
 		public static final int TITLE = 0x039b_0003;
 		public static final int CONTINUE = 0x039b_0004;
 		public static final int TEXT = 0x039b_0005;
+	}
+
+	public static final class SlayerRewardsTaskList
+	{
+		public static final int UNIVERSE = 0x039c_0000;
+		public static final int CLAMP = 0x039c_0001;
+		public static final int FADER = 0x039c_0002;
+		public static final int WORLD = 0x039c_0003;
+		public static final int FRAME = 0x039c_0004;
+		public static final int CONTENT = 0x039c_0005;
+		public static final int BACKGROUND = 0x039c_0006;
+		public static final int FOREGROUND = 0x039c_0007;
+		public static final int DRAWABLE = 0x039c_0008;
+		public static final int CLICKABLE = 0x039c_0009;
+		public static final int SCROLLBAR = 0x039c_000a;
 	}
 /* This file is automatically generated. Do not edit. */
 }

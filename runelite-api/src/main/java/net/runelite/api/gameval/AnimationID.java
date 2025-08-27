@@ -12507,7 +12507,6 @@ public final class AnimationID
 	public static final int NPC_ENT_ATTACK_01 = 12506;
 	public static final int NPC_ENT_ATTACK_02 = 12507;
 	public static final int NPC_ENT_DEATH_01 = 12508;
-	public static final int NPC_ENT_DEATH_02 = 12509;
 	public static final int NPC_ENT_WORSHIP_01 = 12510;
 	public static final int NPC_ENT_WORSHIP_02 = 12511;
 	public static final int VFX_ENT_AUBURN_REWARD_SPAWN_01 = 12512;
