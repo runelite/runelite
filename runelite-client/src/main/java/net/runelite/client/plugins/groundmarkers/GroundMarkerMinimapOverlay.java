@@ -37,22 +37,26 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class GroundMarkerMinimapOverlay extends Overlay
 {
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
+	private final SpriteManager spriteManager;
 
 	@Inject
-	private GroundMarkerMinimapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin)
+	private GroundMarkerMinimapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin, SpriteManager spriteManager)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_LOW);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -65,6 +69,8 @@ class GroundMarkerMinimapOverlay extends Overlay
 		{
 			return null;
 		}
+
+		graphics.setClip(OverlayUtil.getMinimapClipArea(client, spriteManager));
 
 		final Collection<ColorTileMarker> points = plugin.getPoints();
 		for (final ColorTileMarker point : points)
