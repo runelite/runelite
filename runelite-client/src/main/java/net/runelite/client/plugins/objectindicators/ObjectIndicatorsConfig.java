@@ -141,4 +141,15 @@ public interface ObjectIndicatorsConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+			position = 8,
+			keyName = "objectsToHighlight",
+			name = "Objects to highlight",
+			description = "List of object names to highlight. Format: object1, object2, object3"
+	)
+	default String objectsToHighlight()
+	{
+		return "";
+	}
 }
