@@ -544,7 +544,7 @@ public class GroundItemsPlugin extends Plugin
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
 
-			if (groundItem.hidden && !groundItem.highlighted && config.deprioritizeHiddenItems())
+			if ((groundItem.hidden || !shouldDisplayItem(config.ownershipFilterMode(), groundItem.getOwnership(), client.getVarbitValue(VarbitID.IRONMAN))) && !groundItem.highlighted && config.deprioritizeHiddenItems())
 			{
 				lastEntry.setDeprioritized(true);
 			}
