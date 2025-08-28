@@ -49,6 +49,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
+	String KEY_BOW_STRING_SPOOL = "bowStringSpool";
 
 	@ConfigSection(
 		name = "Charge settings",
@@ -465,5 +466,17 @@ public interface ItemChargeConfig extends Config
 	default Notification amuletOfChemistryNotification()
 	{
 		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "showBowStringSpoolCharges",
+		name = "Bow string spool charges",
+		description = "Show bow string spool charges.",
+		position = 34,
+		section = chargesSection
+	)
+	default boolean showBowStringSpoolCharges()
+	{
+		return true;
 	}
 }
