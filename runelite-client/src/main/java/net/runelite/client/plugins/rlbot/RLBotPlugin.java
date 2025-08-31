@@ -2,6 +2,8 @@ package net.runelite.client.plugins.rlbot;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.inject.Provides;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -11,7 +13,6 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,6 +26,7 @@ import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ClientTick;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -34,7 +36,6 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -44,7 +45,7 @@ import net.runelite.client.plugins.rlbot.ui.RLBotOverlay;
 import net.runelite.client.plugins.rlbot.input.RLBotInputHandler;
 import net.runelite.client.plugins.rlbot.action.RLBotActionHandler;
 import net.runelite.client.plugins.rlbot.rest.RLBotRestHandler;
-import java.awt.Robot;
+ 
 import java.awt.MouseInfo;
 
 @PluginDescriptor(
@@ -91,9 +92,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     private ObjectMapper objectMapper;
 
     @Inject
-    private ItemManager itemManager;
-
-    @Inject
     private DrawManager drawManager;
 
     @Inject
@@ -115,7 +113,6 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     private NavigationButton stateViewerButton;
 
     private boolean isRunning = false;
-    private boolean shouldSaveScreenshots = false;
 
     @Inject
     private OverlayManager overlayManager;
@@ -126,27 +123,22 @@ public class RLBotPlugin extends Plugin implements KeyListener {
     @Inject
     private RLBotLogger logger;
 
+    @Inject
+    private RLBotCursorOverlay cursorOverlay;
+
     private RLBotInputHandler inputHandler;
     private RLBotActionHandler actionHandler;
+    @Inject
+    private RLBotAgent javaAgent;
 
-    private static final String ACTION_MOVE_AND_CLICK = "moveAndClick";
-    private static final String ACTION_CAMERA_ROTATE = "cameraRotate";
-    private static final String ACTION_CAMERA_ZOOM = "cameraZoom";
-    private static final String ACTION_PRESS_KEY = "pressKey";
     private static final String ACTION_GET_STATE = "getState";
-    private static final String ACTION_INTERFACE_ACTION = "interfaceAction";
-    private static final String ACTION_TOGGLE_SCREENSHOTS = "toggleScreenshots";
+
+    private Point lastMouseLocation;
 
     private static class AreaInfo {
-        int npcDensity;
-        int resourceDensity;
-        double averageNpcLevel;
         long lastAssessment;
 
         AreaInfo() {
-            this.npcDensity = 0;
-            this.resourceDensity = 0;
-            this.averageNpcLevel = 0;
             this.lastAssessment = System.currentTimeMillis();
         }
     }
@@ -190,25 +182,29 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
         // Add the overlay to the overlay manager
         overlayManager.add(overlay);
+        overlayManager.add(cursorOverlay);
 
-        restHandler = new RLBotRestHandler(
-            logger,
-            clientThread,
-            objectMapper,
-            () -> latestGameState,
-            this::validateAndProcessCommand,
-            this::updateGameState,
-            connected -> {
-                if (overlay != null) {
-                    overlay.setWebsocketConnected(connected);
-                }
-            },
-            actionHandler
-        );
-        int port = config.websocketPort() > 0 ? config.websocketPort() : 43595;
-        if (!restHandler.startServer(port)) {
-            logger.error("REST server failed to start properly");
-            return;
+        if (config.enableRestApi()) {
+            restHandler = new RLBotRestHandler(
+                logger,
+                clientThread,
+                objectMapper,
+                () -> latestGameState,
+                this::validateAndProcessCommand,
+                this::updateGameState,
+                connected -> {
+                    if (overlay != null) {
+                        overlay.setWebsocketConnected(connected);
+                    }
+                },
+                actionHandler
+            );
+            int port = config.websocketPort() > 0 ? config.websocketPort() : 43595;
+            if (!restHandler.startServer(port)) {
+                logger.error("REST server failed to start properly");
+            }
+        } else {
+            logger.info("REST API disabled by config");
         }
         keyManager.registerKeyListener(this);
         isRunning = true;
@@ -272,6 +268,7 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         }
         isRunning = false;
         overlayManager.remove(overlay);
+        overlayManager.remove(cursorOverlay);
         clientToolbar.removeNavigation(stateViewerButton);
         screenshotExecutor.shutdown();
         gameStateExecutor.shutdown();
@@ -298,6 +295,9 @@ public class RLBotPlugin extends Plugin implements KeyListener {
         long currentTime = System.currentTimeMillis();
         if (currentTime - config.updateInterval() >= 200 && !isGeneratingState) {
             updateGameState();
+        }
+        if (javaAgent != null) {
+            javaAgent.onTick();
         }
     }
 
@@ -391,33 +391,31 @@ public class RLBotPlugin extends Plugin implements KeyListener {
                 return false;
             }
 
-            JsonNode jsonNode = objectMapper.readTree(json);
-            if (jsonNode.has("type") && ACTION_GET_STATE.equals(jsonNode.get("type").asText())) {
+            JsonObject gsonObject = new JsonParser().parse(json).getAsJsonObject();
+
+            if (gsonObject.has("type") && ACTION_GET_STATE.equals(gsonObject.get("type").getAsString())) {
                 updateGameState();
                 return true;
             }
 
-            if (!jsonNode.has("action")) {
-                logger.error("No action specified in command: " + json);
+            if (!gsonObject.has("type")) {
+                logger.error("No 'type' specified in command: " + json);
                 return false;
             }
 
-            String action = jsonNode.get("action").asText();
-            logger.info("*** RLBOT ACTION: " + action + " ***");
-            if (action == null || action.isEmpty()) {
-                logger.error("Empty action specified");
+            String type = gsonObject.get("type").getAsString();
+            if (type == null || type.isEmpty()) {
+                logger.error("Empty type specified");
                 return false;
             }
 
-            updateCurrentAction("Action: " + action);
-            
-            // Process the action asynchronously
+            updateCurrentAction("Action: " + type);
+
             gameStateExecutor.submit(() -> {
                 try {
                     clientThread.invoke(() -> {
                         try {
-                            // Process additional actions...
-                            // (The action handler code remains unchanged)
+                            actionHandler.processAction(gsonObject);
                         } catch (Exception e) {
                             logger.error("Error processing action: " + e.getMessage());
                             e.printStackTrace();
@@ -482,5 +480,21 @@ public class RLBotPlugin extends Plugin implements KeyListener {
 
     public RLBotStateViewer getStateViewer() {
         return stateViewer;
+    }
+
+    public Point getLastMouseLocation()
+    {
+        return lastMouseLocation;
+    }
+
+    @Subscribe
+    public void onClientTick(ClientTick event)
+    {
+        net.runelite.api.Point mousePos = client.getMouseCanvasPosition();
+        if (mousePos != null && mousePos.getX() >= 0 && mousePos.getY() >= 0 && 
+            mousePos.getX() < client.getCanvasWidth() && mousePos.getY() < client.getCanvasHeight())
+        {
+            lastMouseLocation = new Point(mousePos.getX(), mousePos.getY());
+        }
     }
 }

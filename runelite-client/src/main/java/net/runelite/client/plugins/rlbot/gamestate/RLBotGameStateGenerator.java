@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.TileItem;
 import net.runelite.client.plugins.rlbot.RLBotLogger;
@@ -52,9 +51,7 @@ public class RLBotGameStateGenerator {
         gameState.addProperty("screenshot", encodedImage);
         // Add all game state components
         addPlayerInfo(gameState);
-        addSkillInfo(gameState);
         addNpcInfo(gameState);
-        addWorldInfo(gameState);
         addGameObjectInfo(gameState);
         addGroundItemInfo(gameState);
         addInterfaceInfo(gameState);
@@ -135,17 +132,7 @@ public class RLBotGameStateGenerator {
         logger.debug("Player info added to game state");
     }
 
-    private void addSkillInfo(JsonObject gameState) {
-        JsonObject skillInfo = new JsonObject();
-        for (Skill skill : Skill.values()) {
-            JsonObject skillObj = new JsonObject();
-            skillObj.addProperty("level", client.getBoostedSkillLevel(skill));
-            skillObj.addProperty("realLevel", client.getRealSkillLevel(skill));
-            skillObj.addProperty("experience", client.getSkillExperience(skill));
-            skillInfo.add(skill.getName(), skillObj);
-        }
-        gameState.add("skills", skillInfo);
-    }
+    // Removed: skills are included under player.skills per schema
 
     private void addNpcInfo(JsonObject gameState) {
         JsonArray npcs = new JsonArray();
@@ -354,11 +341,5 @@ public class RLBotGameStateGenerator {
         gameState.add("exploration", exploration);
     }
 
-    private void addWorldInfo(JsonObject gameState) {
-        JsonObject worldInfo = new JsonObject();
-        worldInfo.addProperty("worldId", client.getWorld());
-        worldInfo.addProperty("region", client.getLocalPlayer() != null ? client.getLocalPlayer().getWorldLocation().getRegionID() : 0);
-        worldInfo.addProperty("plane", client.getPlane());
-        gameState.add("world", worldInfo);
-    }
+    // Removed: world info is not in the schema
 }

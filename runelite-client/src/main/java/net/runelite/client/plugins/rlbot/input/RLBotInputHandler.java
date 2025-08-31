@@ -158,6 +158,40 @@ public class RLBotInputHandler {
         int clickCount = 0;
         boolean popupTrigger = false;
         
+        // Check if point is within canvas bounds
+        boolean isInBounds = point.x >= 0 && point.y >= 0 && 
+                           point.x < component.getWidth() && 
+                           point.y < component.getHeight();
+        
+        // If moving out of bounds, dispatch a mouse exit event
+        if (!isInBounds) {
+            MouseEvent exitEvent = new MouseEvent(
+                component,
+                MouseEvent.MOUSE_EXITED,
+                when,
+                modifiers,
+                point.x,
+                point.y,
+                clickCount,
+                popupTrigger
+            );
+            component.dispatchEvent(exitEvent);
+            return;
+        }
+        
+        // If we were previously out of bounds, dispatch a mouse enter event
+        MouseEvent enterEvent = new MouseEvent(
+            component,
+            MouseEvent.MOUSE_ENTERED,
+            when,
+            modifiers,
+            point.x,
+            point.y,
+            clickCount,
+            popupTrigger
+        );
+        component.dispatchEvent(enterEvent);
+        
         logger.info("[RLBOT_INPUT] Creating MouseEvent with params: id=MOUSE_MOVED, when=" + when + 
                     ", modifiers=" + modifiers + ", point=(" + point.x + "," + point.y + 
                     "), clickCount=" + clickCount + ", popupTrigger=" + popupTrigger);

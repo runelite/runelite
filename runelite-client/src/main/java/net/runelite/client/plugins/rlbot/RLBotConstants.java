@@ -11,7 +11,7 @@ public final class RLBotConstants {
     /**
      * Path to the log file for plugin logging.
      */
-    public static final String LOG_FILE = new File(new File(RuneLite.RUNELITE_DIR, "rlbot/logs"), "rlbot-plugin.log").getAbsolutePath();
+    public static final String LOG_FILE = new File("/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/logs", "rlbot-plugin.log").getAbsolutePath();
         
     /**
      * Date format for logging.
@@ -26,7 +26,7 @@ public final class RLBotConstants {
     /**
      * Directory for storing screenshots.
      */
-    public static final String SCREENSHOTS_DIR = new File(RuneLite.RUNELITE_DIR, "rlbot/screenshots").getAbsolutePath();
+    public static final String SCREENSHOTS_DIR = new File("/Users/danielgleason/Desktop/Code/my_code/runescape_bot_runelite/rlbot/screenshots").getAbsolutePath();
     
     /**
      * Default REST API port.

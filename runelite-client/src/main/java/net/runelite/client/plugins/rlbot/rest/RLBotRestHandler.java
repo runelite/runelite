@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.rlbot.RLBotLogger;
-import net.runelite.client.plugins.rlbot.RLBotConstants;
 import net.runelite.client.plugins.rlbot.action.RLBotActionHandler;
 import spark.Spark;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,7 +36,7 @@ public class RLBotRestHandler {
 
     // Request handling and rate limiting
     private final ExecutorService requestExecutor;
-    private final LinkedBlockingQueue<Runnable> requestQueue;
+    private final LinkedBlockingQueue<Runnable> requestQueue; // keep for future backpressure
     private final AtomicLong lastRequestTime;
     private static final long REQUEST_RATE_LIMIT = 100; // Minimum time between requests in ms
     private static final int MAX_QUEUE_SIZE = 100;
@@ -120,6 +119,14 @@ public class RLBotRestHandler {
                         return "{\"error\": \"Failed to serialize game state\"}";
                     }
                 });
+            });
+
+            // Simple health endpoint
+            Spark.get("/health", (request, response) -> {
+                response.type("application/json");
+                ObjectNode node = objectMapper.createObjectNode();
+                node.put("status", "ok");
+                return node.toString();
             });
 
             // POST endpoint for mouse movement

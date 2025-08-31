@@ -90,4 +90,46 @@ public interface RLBotConfig extends Config {
     default boolean showOverlay() {
         return true;
     }
+    
+    /**
+     * Whether to show the cursor overlay.
+     */
+    @ConfigItem(
+        keyName = "showCursorOverlay",
+        name = "Show Cursor Overlay",
+        description = "Shows a visual overlay of the cursor position",
+        position = 99
+    )
+    default boolean showCursorOverlay()
+    {
+        return true;
+    }
+
+    @ConfigItem(
+        keyName = "enableJavaAgent",
+        name = "Enable Java Agent",
+        description = "Run the built-in Java agent (disables Python need)"
+    )
+    default boolean enableJavaAgent() {
+        return false;
+    }
+
+    @ConfigItem(
+        keyName = "agentIntervalMs",
+        name = "Agent Interval (ms)",
+        description = "How often the Java agent decides and acts"
+    )
+    @Range(min = 50, max = 2000)
+    default int agentIntervalMs() {
+        return 250;
+    }
+
+    @ConfigItem(
+        keyName = "enableRestApi",
+        name = "Enable REST API",
+        description = "Expose REST endpoints (disable to run Java agent only)"
+    )
+    default boolean enableRestApi() {
+        return true;
+    }
 } 
