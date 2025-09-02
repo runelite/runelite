@@ -72,8 +72,6 @@ public interface NPCComposition extends ParamHolder
 	 */
 	boolean isMinimapVisible();
 
-	boolean isVisible();
-
 	/**
 	 * Gets the ID of the NPC.
 	 *
