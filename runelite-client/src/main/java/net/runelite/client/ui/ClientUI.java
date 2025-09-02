@@ -892,18 +892,18 @@ public class ClientUI
 			case Windows:
 				WinUtil.requestForeground(frame);
 				break;
-            case Linux:
-                String sessionType = System.getenv("XDG_SESSION_TYPE");
-                if ("wayland".equalsIgnoreCase(sessionType))
-                {
-                    log.debug("Skipping forceFocus: Wayland session detected");
-                    break;
-                }
-                frame.setAlwaysOnTop(true);
-                frame.toFront();
-                frame.setAlwaysOnTop(false);
-                break;
-            default:
+			case Linux:
+				String sessionType = System.getenv("XDG_SESSION_TYPE");
+				if ("wayland".equalsIgnoreCase(sessionType))
+				{
+					log.debug("Skipping forceFocus: Wayland session detected");
+					break;
+				}
+				frame.setAlwaysOnTop(true);
+				frame.toFront();
+				frame.setAlwaysOnTop(false);
+				break;
+			default:
 				frame.requestFocus();
 				break;
 		}
