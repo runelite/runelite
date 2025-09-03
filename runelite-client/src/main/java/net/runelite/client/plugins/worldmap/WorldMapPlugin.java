@@ -250,7 +250,8 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event) {
+	public void onVarbitChanged(VarbitChanged event)
+	{
 		if (event.getVarbitId() == VarbitID.WORLDMAP_TOGGLES)
 		{
 			mapTooltipsEnabled = (event.getValue() & 0x08) == 0;
