@@ -156,8 +156,8 @@ public class WorldMapPlugin extends Plugin
 	@Inject
 	private Client client;
 
-    @Inject
-    private ClientThread clientThread;
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private WorldMapConfig config;
@@ -167,7 +167,7 @@ public class WorldMapPlugin extends Plugin
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
-    private boolean mapTooltipsEnabled = true;
+	private boolean mapTooltipsEnabled = true;
 
 	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 
@@ -182,10 +182,11 @@ public class WorldMapPlugin extends Plugin
 	{
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
-        clientThread.invoke(() -> {
-            mapTooltipsEnabled = (client.getVarbitValue(VarbitID.WORLDMAP_TOGGLES) & 0x08) == 0;
-            log.debug("StartUp: Map tooltips enabled: {}", mapTooltipsEnabled);
-        });
+		clientThread.invoke(() ->
+		{
+			mapTooltipsEnabled = (client.getVarbitValue(VarbitID.WORLDMAP_TOGGLES) & 0x08) == 0;
+			log.debug("StartUp: Map tooltips enabled: {}", mapTooltipsEnabled);
+		});
 
 		updateShownIcons();
 	}
@@ -248,14 +249,15 @@ public class WorldMapPlugin extends Plugin
 		}
 	}
 
-    @Subscribe
-    public void onVarbitChanged(VarbitChanged event) {
-        if (event.getVarbitId() == VarbitID.WORLDMAP_TOGGLES) {
-            mapTooltipsEnabled = (event.getValue() & 0x08) == 0;
-            log.debug("VarbitChanged: Map tooltips enabled: {}", mapTooltipsEnabled);
-            updateShownIcons();
-        }
-    }
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event) {
+		if (event.getVarbitId() == VarbitID.WORLDMAP_TOGGLES)
+		{
+			mapTooltipsEnabled = (event.getValue() & 0x08) == 0;
+			log.debug("VarbitChanged: Map tooltips enabled: {}", mapTooltipsEnabled);
+			updateShownIcons();
+		}
+	}
 
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
