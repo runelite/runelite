@@ -159,4 +159,45 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "hideUnjoinableWorlds",
+			name = "Hide worlds you cannot join",
+			description = "Hides worlds you cannot join.",
+			position = 12
+			)
+	default boolean hideUnjoinableWorlds()
+	{
+		return false;
+	}
+	@ConfigItem(
+			keyName = "totalLevel",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int getTotalLevel()
+	{
+		return 10000;
+	}
+
+	@ConfigItem(
+			keyName = "totalLevel",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	void setTotalLevel(int totalLevel);
+
+	@ConfigItem(
+			keyName = "hiddenWorlds",
+			name = "Hidden Worlds",
+			description = "Comma separated IDs of worlds to hide.",
+			position = 13
+	)
+	default String hiddenWorlds()
+	{
+		return "";
+	}
+
 }

@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -214,6 +215,9 @@ public class WorldHopperPlugin extends Plugin
 		panel.setSubscriptionFilterMode(config.subscriptionFilter());
 		panel.setRegionFilterMode(config.regionFilter());
 		panel.setWorldTypeFilters(config.worldTypeFilter());
+		panel.setHideUnjoinableWorlds(config.hideUnjoinableWorlds());
+		panel.setHiddenWorlds(parseHiddenWorlds(config.hiddenWorlds()));
+
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -284,6 +288,14 @@ public class WorldHopperPlugin extends Plugin
 					break;
 				case "worldTypeFilter":
 					panel.setWorldTypeFilters(config.worldTypeFilter());
+					updateList();
+					break;
+				case "hideUnjoinableWorlds":
+					panel.setHideUnjoinableWorlds(config.hideUnjoinableWorlds());
+					updateList();
+					break;
+				case "hiddenWorlds":
+					panel.setHiddenWorlds(parseHiddenWorlds(config.hiddenWorlds()));
 					updateList();
 					break;
 			}
@@ -541,7 +553,6 @@ public class WorldHopperPlugin extends Plugin
 		List<World> worlds = worldResult.getWorlds();
 
 		int worldIdx = worlds.indexOf(currentWorld);
-		int totalLevel = client.getTotalLevel();
 
 		final Set<RegionFilterMode> regionFilter = config.regionFilter();
 
@@ -589,18 +600,9 @@ public class WorldHopperPlugin extends Plugin
 
 			if (types.contains(WorldType.SKILL_TOTAL))
 			{
-				try
+				if (isTotalLevelWorldJoinable(world.getActivity().substring(0, world.getActivity().indexOf(" "))))
 				{
-					int totalRequirement = Integer.parseInt(world.getActivity().substring(0, world.getActivity().indexOf(" ")));
-
-					if (totalLevel >= totalRequirement)
-					{
-						types.remove(WorldType.SKILL_TOTAL);
-					}
-				}
-				catch (NumberFormatException ex)
-				{
-					log.warn("Failed to parse total level requirement for target world", ex);
+					types.remove(WorldType.SKILL_TOTAL);
 				}
 			}
 
@@ -921,5 +923,52 @@ public class WorldHopperPlugin extends Plugin
 		int ping = Ping.ping(world);
 		storedPings.put(world.getId(), ping);
 		return ping;
+	}
+
+	private HashSet<Integer> parseHiddenWorlds(String hiddenWorlds)
+	{
+		HashSet<Integer> hiddenWorldsSet = new HashSet<>();
+		for (String numStr : hiddenWorlds.split(","))
+		{
+			try
+			{
+				int num = Integer.parseInt(numStr);
+				hiddenWorldsSet.add(num);
+			}
+			catch (NumberFormatException ex)
+			{
+				log.warn("Failed to parse ID for hidden world: {}", numStr);
+			}
+		}
+		return hiddenWorldsSet;
+	}
+
+	boolean isTotalLevelWorldJoinable(String worldTotalLevel)
+	{
+		int totalLevel = client.getTotalLevel();
+
+		if (totalLevel == 0 || client.getGameState() != GameState.LOGGED_IN)
+		{
+			totalLevel = config.getTotalLevel();
+		}
+		else
+		{
+			config.setTotalLevel(totalLevel);
+		}
+
+		try
+		{
+			int totalRequirement = Integer.parseInt(worldTotalLevel);
+
+			if (totalLevel < totalRequirement)
+			{
+				return false;
+			}
+		}
+		catch (NumberFormatException ex)
+		{
+			log.warn("Failed to parse total level requirement for target world", ex);
+		}
+		return true;
 	}
 }
