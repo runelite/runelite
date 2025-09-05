@@ -60,7 +60,7 @@ public class NpcDefinition
 	public int combatLevel = -1;
 	public int widthScale = 128;
 	public int heightScale = 128;
-	public boolean hasRenderPriority;
+	public int renderPriority = 0;
 	public int ambient;
 	public int contrast;
 	public int[] headIconArchiveIds;

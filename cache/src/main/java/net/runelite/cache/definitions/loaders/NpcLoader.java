@@ -40,6 +40,7 @@ public class NpcLoader
 
 	private int defaultHeadIconArchive = -1;
 	private boolean rev210HeadIcons = true;
+	private boolean rev233 = true;
 
 	public NpcLoader configureForRevision(int rev)
 	{
@@ -211,7 +212,7 @@ public class NpcLoader
 		}
 		else if (opcode == 99)
 		{
-			def.hasRenderPriority = true;
+			def.renderPriority = 1;
 		}
 		else if (opcode == 100)
 		{
@@ -296,11 +297,15 @@ public class NpcLoader
 		{
 			def.rotationFlag = false;
 		}
-		else if (opcode == 111)
+		else if (opcode == 111 && !rev233)
 		{
 			// removed in 220
 			def.isFollower = true;
 			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 111 && rev233)
+		{
+			def.renderPriority = 2;
 		}
 		else if (opcode == 114)
 		{
