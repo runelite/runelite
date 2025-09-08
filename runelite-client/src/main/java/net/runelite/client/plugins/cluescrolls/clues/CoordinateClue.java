@@ -292,7 +292,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_HARD_SEXTANT_EXP1)
 			.location(new WorldPoint(3081, 3209, 0))
-			.directions("Small Island (CLP).")
+			.directions("Small Island (BLP).")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
 		CoordinateClue.builder()
