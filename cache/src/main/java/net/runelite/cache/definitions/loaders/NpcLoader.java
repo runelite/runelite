@@ -40,6 +40,13 @@ public class NpcLoader
 
 	private int defaultHeadIconArchive = -1;
 	private boolean rev210HeadIcons = true;
+	private boolean rev233 = true;
+
+	public NpcLoader configureForRevision(int rev)
+	{
+		this.rev210HeadIcons = rev >= NpcLoader.REV_210_NPC_ARCHIVE_REV;
+		return this;
+	}
 
 	public NpcDefinition load(int id, byte[] b)
 	{
@@ -57,7 +64,17 @@ public class NpcLoader
 			this.decodeValues(opcode, def, is);
 		}
 
+		post(def);
+
 		return def;
+	}
+
+	private void post(NpcDefinition def)
+	{
+		if (def.footprintSize == -1)
+		{
+			def.footprintSize = (int) (0.4F * (float) (def.size * 128));
+		}
 	}
 
 	private void decodeValues(int opcode, NpcDefinition def, InputStream stream)
@@ -152,7 +169,30 @@ public class NpcLoader
 			{
 				def.chatheadModels[index] = stream.readUnsignedShort();
 			}
-
+		}
+		else if (opcode == 74)
+		{
+			def.stats[0] = stream.readUnsignedShort();
+		}
+		else if (opcode == 75)
+		{
+			def.stats[1] = stream.readUnsignedShort();
+		}
+		else if (opcode == 76)
+		{
+			def.stats[2] = stream.readUnsignedShort();
+		}
+		else if (opcode == 77)
+		{
+			def.stats[3] = stream.readUnsignedShort();
+		}
+		else if (opcode == 78)
+		{
+			def.stats[4] = stream.readUnsignedShort();
+		}
+		else if (opcode == 79)
+		{
+			def.stats[5] = stream.readUnsignedShort();
 		}
 		else if (opcode == 93)
 		{
@@ -172,7 +212,7 @@ public class NpcLoader
 		}
 		else if (opcode == 99)
 		{
-			def.hasRenderPriority = true;
+			def.renderPriority = 1;
 		}
 		else if (opcode == 100)
 		{
@@ -257,9 +297,15 @@ public class NpcLoader
 		{
 			def.rotationFlag = false;
 		}
-		else if (opcode == 111)
+		else if (opcode == 111 && !rev233)
 		{
-			def.isPet = true;
+			// removed in 220
+			def.isFollower = true;
+			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 111 && rev233)
+		{
+			def.renderPriority = 2;
 		}
 		else if (opcode == 114)
 		{
@@ -316,6 +362,22 @@ public class NpcLoader
 			}
 
 			def.configs[length + 1] = var;
+		}
+		else if (opcode == 122)
+		{
+			def.isFollower = true;
+		}
+		else if (opcode == 123)
+		{
+			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 124)
+		{
+			def.height = stream.readUnsignedShort();
+		}
+		else if (opcode == 126)
+		{
+			def.footprintSize = stream.readUnsignedShort();
 		}
 		else if (opcode == 249)
 		{

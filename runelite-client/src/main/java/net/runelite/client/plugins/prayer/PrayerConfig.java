@@ -30,9 +30,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("prayer")
+@ConfigGroup(PrayerConfig.GROUP)
 public interface PrayerConfig extends Config
 {
+	String GROUP = "prayer";
+
 	@ConfigItem(
 		position = 0,
 		keyName = "prayerFlickLocation",
@@ -49,7 +51,7 @@ public interface PrayerConfig extends Config
 		position = 1,
 		keyName = "prayerFlickColor",
 		name = "Pray flick color",
-		description = "Color of the flick helper on the prayer orb and prayer bar"
+		description = "Color of the flick helper on the prayer orb and prayer bar."
 	)
 	default Color prayerFlickColor()
 	{
@@ -105,7 +107,7 @@ public interface PrayerConfig extends Config
 		position = 6,
 		keyName = "prayerDoseOrbStartColor",
 		name = "Dose indicator color",
-		description = "Color of the flashing ring around the prayer orb when a potion should be drank"
+		description = "Color of the flashing ring around the prayer orb when a potion should be drank."
 	)
 	default Color prayerDoseOrbStartColor()
 	{

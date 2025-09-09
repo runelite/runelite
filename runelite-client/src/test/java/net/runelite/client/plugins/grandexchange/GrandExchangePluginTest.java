@@ -28,29 +28,31 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
-import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.findFuzzyIndices;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -118,6 +120,14 @@ public class GrandExchangePluginTest
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
 
+	@Mock
+	@Bind
+	private ScheduledExecutorService scheduledExecutorService;
+
+	@Mock
+	@Bind
+	private ClientToolbar clientToolbar;
+
 	@Inject
 	private Gson gson;
 
@@ -126,14 +136,6 @@ public class GrandExchangePluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
-	}
-
-	@Test
-	public void testFindFuzzyIndices()
-	{
-		List<Integer> fuzzyIndices = findFuzzyIndices("Ancestral robe bottom", "obby");
-		// r<u>ob</u>e <u>b</u>ottom
-		assertEquals(Arrays.asList(11, 12, 15), fuzzyIndices);
 	}
 
 	@Test
@@ -320,5 +322,33 @@ public class GrandExchangePluginTest
 		assertEquals(1000, trade.getOffer());
 		assertEquals(2, trade.getSlot());
 		assertTrue(trade.isLogin());
+	}
+
+	@Test
+	public void testNotifyPartial()
+	{
+		when(grandExchangeConfig.enableNotifications()).thenReturn(Notification.ON);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
+		chatMessage.setMessage("<col=006060>Grand Exchange: Bought 200 / 80,000 x Acorn.</col>");
+
+		grandExchangePlugin.onChatMessage(chatMessage);
+
+		verify(notifier).notify(any(Notification.class), anyString());
+	}
+
+	@Test
+	public void testNotifyComplete()
+	{
+		when(grandExchangeConfig.notifyOnOfferComplete()).thenReturn(Notification.ON);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
+		chatMessage.setMessage("<col=006000>Grand Exchange: Finished buying 1 x Acorn.</col>");
+
+		grandExchangePlugin.onChatMessage(chatMessage);
+
+		verify(notifier).notify(any(Notification.class), anyString());
 	}
 }

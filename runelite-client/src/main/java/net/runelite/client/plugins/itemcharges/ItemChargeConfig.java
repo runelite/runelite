@@ -31,6 +31,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup(ItemChargeConfig.GROUP)
 public interface ItemChargeConfig extends Config
@@ -50,23 +51,23 @@ public interface ItemChargeConfig extends Config
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
 
 	@ConfigSection(
-		name = "Charge Settings",
-		description = "Configuration for which charges should be displayed",
+		name = "Charge settings",
+		description = "Configuration for which charges should be displayed.",
 		position = 98
 	)
 	String chargesSection = "charges";
 
 	@ConfigSection(
-		name = "Notification Settings",
-		description = "Configuration for notifications",
+		name = "Notification settings",
+		description = "Configuration for notifications.",
 		position = 99
 	)
 	String notificationSection = "notifications";
 
 	@ConfigItem(
 		keyName = "veryLowWarningColor",
-		name = "Very Low Warning",
-		description = "The color of the overlay when charges are very low",
+		name = "Very low warning",
+		description = "The color of the overlay when charges are very low.",
 		position = 1
 	)
 	default Color veryLowWarningColor()
@@ -76,8 +77,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "lowWarningColor",
-		name = "Low Warning",
-		description = "The color of the overlay when charges are low",
+		name = "Low warning",
+		description = "The color of the overlay when charges are low.",
 		position = 2
 	)
 	default Color lowWarningolor()
@@ -87,8 +88,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "veryLowWarning",
-		name = "Very Low Warning",
-		description = "The charge count for the very low warning color",
+		name = "Very low warning",
+		description = "The charge count for the very low warning color.",
 		position = 3
 	)
 	default int veryLowWarning()
@@ -98,8 +99,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "lowWarning",
-		name = "Low Warning",
-		description = "The charge count for the low warning color",
+		name = "Low warning",
+		description = "The charge count for the low warning color.",
 		position = 4
 	)
 	default int lowWarning()
@@ -109,8 +110,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showTeleportCharges",
-		name = "Teleport Charges",
-		description = "Show teleport item charge counts",
+		name = "Teleport charges",
+		description = "Show teleport item charge counts.",
 		position = 5,
 		section = chargesSection
 	)
@@ -121,8 +122,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showDodgyCount",
-		name = "Dodgy Necklace Count",
-		description = "Show Dodgy necklace charges",
+		name = "Dodgy necklace count",
+		description = "Show dodgy necklace charges.",
 		position = 6,
 		section = chargesSection
 	)
@@ -133,20 +134,20 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "dodgyNotification",
-		name = "Dodgy Necklace Notification",
-		description = "Send a notification when a Dodgy necklace breaks",
+		name = "Dodgy necklace notification",
+		description = "Send a notification when a dodgy necklace breaks.",
 		position = 7,
 		section = notificationSection
 	)
-	default boolean dodgyNotification()
+	default Notification dodgyNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		keyName = "showImpCharges",
 		name = "Imp-in-a-box charges",
-		description = "Show Imp-in-a-box item charges",
+		description = "Show imp-in-a-box item charges.",
 		position = 8,
 		section = chargesSection
 	)
@@ -157,8 +158,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showFungicideCharges",
-		name = "Fungicide Charges",
-		description = "Show Fungicide item charges",
+		name = "Fungicide charges",
+		description = "Show fungicide item charges.",
 		position = 9,
 		section = chargesSection
 	)
@@ -169,8 +170,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWateringCanCharges",
-		name = "Watering Can Charges",
-		description = "Show Watering can item charges",
+		name = "Watering can charges",
+		description = "Show watering can item charges.",
 		position = 10,
 		section = chargesSection
 	)
@@ -181,8 +182,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWaterskinCharges",
-		name = "Waterskin Charges",
-		description = "Show Waterskin dose counts",
+		name = "Waterskin charges",
+		description = "Show waterskin dose counts.",
 		position = 11,
 		section = chargesSection
 	)
@@ -193,8 +194,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBellowCharges",
-		name = "Bellows Charges",
-		description = "Show Ogre bellows item charges",
+		name = "Bellows charges",
+		description = "Show ogre bellows item charges.",
 		position = 12,
 		section = chargesSection
 	)
@@ -205,8 +206,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBasketCharges",
-		name = "Basket Charges",
-		description = "Show Fruit basket item counts",
+		name = "Basket charges",
+		description = "Show fruit basket item counts.",
 		position = 13,
 		section = chargesSection
 	)
@@ -217,8 +218,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showSackCharges",
-		name = "Sack Charges",
-		description = "Show Sack item counts",
+		name = "Sack charges",
+		description = "Show sack item counts.",
 		position = 14,
 		section = chargesSection
 	)
@@ -229,8 +230,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAbyssalBraceletCharges",
-		name = "Abyssal Bracelet Charges",
-		description = "Show Abyssal bracelet item charges",
+		name = "Abyssal bracelet charges",
+		description = "Show abyssal bracelet item charges.",
 		position = 15,
 		section = chargesSection
 	)
@@ -241,8 +242,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAmuletOfChemistryCharges",
-		name = "Amulet of Chemistry Charges",
-		description = "Show Amulet of chemistry item charges",
+		name = "Amulet of chemistry charges",
+		description = "Show amulet of chemistry item charges.",
 		position = 16,
 		section = chargesSection
 	)
@@ -253,8 +254,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAmuletOfBountyCharges",
-		name = "Amulet of Bounty Charges",
-		description = "Show Amulet of bounty item charges",
+		name = "Amulet of bounty charges",
+		description = "Show amulet of bounty item charges.",
 		position = 17,
 		section = chargesSection
 	)
@@ -265,20 +266,20 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "recoilNotification",
-		name = "Ring of Recoil Notification",
-		description = "Send a notification when a Ring of recoil breaks",
+		name = "Ring of recoil notification",
+		description = "Send a notification when a ring of recoil breaks.",
 		position = 18,
 		section = notificationSection
 	)
-	default boolean recoilNotification()
+	default Notification recoilNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		keyName = "showBindingNecklaceCharges",
-		name = "Binding Necklace Charges",
-		description = "Show Binding necklace item charges",
+		name = "Binding necklace charges",
+		description = "Show binding necklace item charges.",
 		position = 19,
 		section = chargesSection
 	)
@@ -289,20 +290,20 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "bindingNotification",
-		name = "Binding Necklace Notification",
-		description = "Send a notification when a Binding necklace breaks",
+		name = "Binding necklace notification",
+		description = "Send a notification when a binding necklace breaks.",
 		position = 20,
 		section = notificationSection
 	)
-	default boolean bindingNotification()
+	default Notification bindingNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		keyName = "showExplorerRingCharges",
-		name = "Explorer's Ring Alch Charges",
-		description = "Show Explorer's ring alchemy charges",
+		name = "Explorer's ring alch charges",
+		description = "Show explorer's ring alchemy charges.",
 		position = 21,
 		section = chargesSection
 	)
@@ -313,8 +314,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showRingOfForgingCount",
-		name = "Ring of Forging Charges",
-		description = "Show Ring of forging item charges",
+		name = "Ring of forging charges",
+		description = "Show ring of forging item charges.",
 		position = 22,
 		section = chargesSection
 	)
@@ -325,20 +326,20 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "ringOfForgingNotification",
-		name = "Ring of Forging Notification",
-		description = "Send a notification when a Ring of forging breaks",
+		name = "Ring of forging notification",
+		description = "Send a notification when a ring of forging breaks.",
 		position = 23,
 		section = notificationSection
 	)
-	default boolean ringOfForgingNotification()
+	default Notification ringOfForgingNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Infoboxes",
-		description = "Show an infobox with remaining charges for equipped items",
+		description = "Show an infobox with remaining charges for equipped items.",
 		position = 24
 	)
 	default boolean showInfoboxes()
@@ -348,8 +349,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPotionDoseCount",
-		name = "Potion Doses",
-		description = "Show remaining potion doses",
+		name = "Potion doses",
+		description = "Show remaining potion doses.",
 		position = 25,
 		section = chargesSection
 	)
@@ -360,8 +361,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBraceletOfSlaughterCharges",
-		name = "Bracelet of Slaughter Charges",
-		description = "Show Bracelet of Slaughter item charges",
+		name = "Bracelet of slaughter charges",
+		description = "Show bracelet of slaughter item charges.",
 		position = 26,
 		section = chargesSection
 	)
@@ -372,20 +373,20 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "slaughterNotification",
-		name = "Bracelet of Slaughter Notification",
-		description = "Send a notification when a Bracelet of Slaughter breaks",
+		name = "Bracelet of slaughter notification",
+		description = "Send a notification when a bracelet of slaughter breaks.",
 		position = 27,
 		section = notificationSection
 	)
-	default boolean slaughterNotification()
+	default Notification slaughterNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		keyName = "showExpeditiousBraceletCharges",
-		name = "Expeditious Bracelet Charges",
-		description = "Show Expeditious Bracelet item charges",
+		name = "Expeditious bracelet charges",
+		description = "Show expeditious bracelet item charges.",
 		position = 28,
 		section = chargesSection
 	)
@@ -396,20 +397,20 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "expeditiousNotification",
-		name = "Expeditious Bracelet Notification",
-		description = "Send a notification when an Expeditious Bracelet breaks",
+		name = "Expeditious bracelet notification",
+		description = "Send a notification when an expeditious bracelet breaks.",
 		position = 29,
 		section = notificationSection
 	)
-	default boolean expeditiousNotification()
+	default Notification expeditiousNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		keyName = "showGuthixRestDoses",
-		name = "Guthix Rest Doses",
-		description = "Show Guthix Rest doses",
+		name = "Guthix rest doses",
+		description = "Show guthix rest doses.",
 		position = 29,
 		section = chargesSection
 	)
@@ -420,8 +421,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBloodEssenceCharges",
-		name = "Blood Essence Charges",
-		description = "Show Blood Essence charges",
+		name = "Blood essence charges",
+		description = "Show blood essence charges.",
 		position = 30,
 		section = chargesSection
 	)
@@ -432,8 +433,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBraceletOfClayCharges",
-		name = "Bracelet of Clay Charges",
-		description = "Show Bracelet of Clay item charges",
+		name = "Bracelet of clay charges",
+		description = "Show bracelet of clay item charges.",
 		position = 31,
 		section = chargesSection
 	)
@@ -444,13 +445,25 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "braceletOfClayNotification",
-		name = "Bracelet of Clay Notification",
-		description = "Send a notification when a Bracelet of Clay breaks",
+		name = "Bracelet of clay notification",
+		description = "Send a notification when a bracelet of clay breaks.",
 		position = 32,
 		section = notificationSection
 	)
-	default boolean braceletOfClayNotification()
+	default Notification braceletOfClayNotification()
 	{
-		return true;
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "amuletOfChemistryNotification",
+		name = "Amulet of chemistry notification",
+		description = "Send a notification when an amulet of chemistry breaks.",
+		position = 33,
+		section = notificationSection
+	)
+	default Notification amuletOfChemistryNotification()
+	{
+		return Notification.ON;
 	}
 }

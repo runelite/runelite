@@ -71,7 +71,7 @@ public class LinkBrowser
 				log.debug("Opened url through Desktop#browse to {}", url);
 				return;
 			}
-			
+
 			log.warn("LinkBrowser.browse() could not open {}", url);
 			showMessageBox("Unable to open link. Press 'OK' and the link will be copied to your clipboard.", url);
 		}).start();

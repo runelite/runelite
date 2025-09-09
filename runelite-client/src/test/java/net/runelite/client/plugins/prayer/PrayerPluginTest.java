@@ -30,25 +30,27 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.item.ItemEquipmentStats;
-import net.runelite.http.api.item.ItemStats;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -84,6 +86,14 @@ public class PrayerPluginTest
 	@Bind
 	private ItemManager itemManager;
 
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
+
 	@Before
 	public void before()
 	{
@@ -95,12 +105,12 @@ public class PrayerPluginTest
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
-		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
+		when(itemManager.getItemStats(anyInt())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("1:19:12", prayerPlugin.getEstimatedTimeRemaining(false));
 	}
@@ -114,7 +124,7 @@ public class PrayerPluginTest
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("29:42", prayerPlugin.getEstimatedTimeRemaining(false));
 	}
@@ -128,7 +138,7 @@ public class PrayerPluginTest
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("29m", prayerPlugin.getEstimatedTimeRemaining(true));
 	}
@@ -138,13 +148,58 @@ public class PrayerPluginTest
 	{
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(-1, 1)});
-		when(itemManager.getItemStats(anyInt(), anyBoolean())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
+		when(itemManager.getItemStats(anyInt())).thenReturn(HIGH_PRAYER_BONUS_WEAPON);
 
 		when(client.isPrayerActive(Prayer.PRESERVE)).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
 
-		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
+		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.WORN, itemContainer));
 
 		assertEquals("79m", prayerPlugin.getEstimatedTimeRemaining(true));
+	}
+
+	@Test
+	public void testTimeRemaining()
+	{
+		prayerPlugin.setPrayerBonus(42);
+
+		assertTime(PrayerType.THICK_SKIN, "2:22:33");
+		assertTime(PrayerType.BURST_OF_STRENGTH, "2:22:33");
+		assertTime(PrayerType.CLARITY_OF_THOUGHT, "2:22:33");
+		assertTime(PrayerType.SHARP_EYE, "2:22:33");
+		assertTime(PrayerType.MYSTIC_WILL, "2:22:33");
+		assertTime(PrayerType.ROCK_SKIN, "23:45");
+		assertTime(PrayerType.SUPERHUMAN_STRENGTH, "23:45");
+		assertTime(PrayerType.IMPROVED_REFLEXES, "23:45");
+		assertTime(PrayerType.RAPID_RESTORE, "2:22:33");
+		assertTime(PrayerType.RAPID_HEAL, "1:11:16");
+		assertTime(PrayerType.PROTECT_ITEM, "1:11:16");
+		assertTime(PrayerType.HAWK_EYE, "23:45");
+		assertTime(PrayerType.MYSTIC_LORE, "23:45");
+		assertTime(PrayerType.STEEL_SKIN, "11:52");
+		assertTime(PrayerType.ULTIMATE_STRENGTH, "11:52");
+		assertTime(PrayerType.INCREDIBLE_REFLEXES, "11:52");
+		assertTime(PrayerType.PROTECT_FROM_MAGIC, "11:52");
+		assertTime(PrayerType.PROTECT_FROM_MISSILES, "11:52");
+		assertTime(PrayerType.PROTECT_FROM_MELEE, "11:52");
+		assertTime(PrayerType.EAGLE_EYE, "11:52");
+		assertTime(PrayerType.MYSTIC_MIGHT, "11:52");
+		assertTime(PrayerType.RETRIBUTION, "47:31");
+		assertTime(PrayerType.REDEMPTION, "23:45");
+		assertTime(PrayerType.SMITE, "7:55");
+		assertTime(PrayerType.PRESERVE, "1:11:16");
+		assertTime(PrayerType.CHIVALRY, "5:56");
+		assertTime(PrayerType.PIETY, "5:56");
+		assertTime(PrayerType.RIGOUR, "5:56");
+		assertTime(PrayerType.AUGURY, "5:56");
+	}
+
+	private void assertTime(PrayerType prayer, String time)
+	{
+		reset(client);
+		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
+		when(client.isPrayerActive(prayer.getPrayer())).thenReturn(true);
+		var est = prayerPlugin.getEstimatedTimeRemaining(false);
+		assertEquals(time, est);
 	}
 }

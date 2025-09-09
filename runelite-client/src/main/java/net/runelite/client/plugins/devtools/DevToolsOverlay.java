@@ -31,6 +31,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -60,7 +61,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
@@ -90,7 +90,7 @@ class DevToolsOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(PRIORITY_HIGHEST);
 		this.client = client;
 		this.plugin = plugin;
 		this.toolTipManager = toolTipManager;
@@ -126,21 +126,20 @@ class DevToolsOverlay extends Overlay
 			renderGraphicsObjects(graphics);
 		}
 
-		if (plugin.getRoofs().isActive())
+		if (plugin.getTileFlags().isActive())
 		{
-			renderRoofs(graphics);
+			renderTileFlags(graphics);
 		}
 
 		return null;
 	}
 
-	private void renderRoofs(Graphics2D graphics)
+	private void renderTileFlags(Graphics2D graphics)
 	{
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
 		byte[][][] settings = client.getTileSettings();
 		int z = client.getPlane();
-		String text = "R";
 
 		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
@@ -153,19 +152,36 @@ class DevToolsOverlay extends Overlay
 					continue;
 				}
 
+				boolean isbridge = (settings[1][x][y] & Constants.TILE_FLAG_BRIDGE) != 0;
 				int flag = settings[z][x][y];
-				if ((flag & Constants.TILE_FLAG_UNDER_ROOF) == 0)
+				boolean isvisbelow = (flag & Constants.TILE_FLAG_VIS_BELOW) != 0;
+				boolean hasroof = (flag & Constants.TILE_FLAG_UNDER_ROOF) != 0;
+				if (!isbridge && !isvisbelow && !hasroof)
 				{
 					continue;
 				}
 
-				Point loc = Perspective.getCanvasTextLocation(client, graphics, tile.getLocalLocation(), text, z);
+				String s = "";
+				if (isbridge)
+				{
+					s += "B";
+				}
+				if (isvisbelow)
+				{
+					s += "V";
+				}
+				if (hasroof)
+				{
+					s += "R";
+				}
+
+				Point loc = Perspective.getCanvasTextLocation(client, graphics, tile.getLocalLocation(), s, z);
 				if (loc == null)
 				{
 					continue;
 				}
 
-				OverlayUtil.renderTextLocation(graphics, loc, text, Color.RED);
+				OverlayUtil.renderTextLocation(graphics, loc, s, Color.RED);
 			}
 		}
 	}
@@ -210,6 +226,26 @@ class DevToolsOverlay extends Overlay
 
 			String text = composition.getName() + " (ID:" + composition.getId() + ")" +
 				" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
+			if (npc.getModelOverrides() != null)
+			{
+				var mo = npc.getModelOverrides();
+				if (mo.getModelIds() != null)
+				{
+					text += " (M: " + Arrays.toString(mo.getModelIds()) + ")";
+				}
+				if (mo.getColorToReplaceWith() != null)
+				{
+					text += " (C: " + Arrays.toString(mo.getColorToReplaceWith()) + ")";
+				}
+				if (mo.getTextureToReplaceWith() != null)
+				{
+					text += " (T: " + Arrays.toString(mo.getTextureToReplaceWith()) + ")";
+				}
+				if (mo.useLocalPlayer())
+				{
+					text += " (LocalPlayer)";
+				}
+			}
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
 	}
@@ -282,11 +318,14 @@ class DevToolsOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, tileLocalLocation);
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			WorldPoint worldLocation = tile.getWorldLocation();
-			String tooltip = String.format("World location: %d, %d, %d</br>" +
-					"Region ID: %d location: %d, %d",
+			WorldPoint worldLocation = WorldPoint.fromLocalInstance(client, tileLocalLocation);
+			byte flags = client.getTileSettings()[tile.getRenderLevel()][tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
+			String tooltip = String.format("World location: %d, %d, %d<br>" +
+					"Region ID: %d location: %d, %d<br>" +
+					"Flags: %d",
 				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
-				(client.isInInstancedRegion() ? WorldPoint.fromLocalInstance(client, tileLocalLocation).getRegionID() : worldLocation.getRegionID()), worldLocation.getRegionX(), worldLocation.getRegionY());
+				worldLocation.getRegionID(), worldLocation.getRegionX(), worldLocation.getRegionY(),
+				flags);
 			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}
@@ -328,7 +367,7 @@ class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				Node current = itemLayer.getBottom();
+				Node current = itemLayer.getTop();
 				while (current instanceof TileItem)
 				{
 					TileItem item = (TileItem) current;

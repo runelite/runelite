@@ -24,57 +24,78 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.io.InputStream;
 
+@Accessors(chain = true)
+@Data
 public class TextureLoader
 {
+	private boolean rev233 = true;
+
 	public TextureDefinition load(int id, byte[] b)
 	{
-		TextureDefinition def = new TextureDefinition();
 		InputStream is = new InputStream(b);
 
-		def.field1777 = is.readUnsignedShort();
-		def.field1778 = is.readByte() != 0;
+		TextureDefinition def = new TextureDefinition();
 		def.setId(id);
 
-		int count = is.readUnsignedByte();
-		int[] files = new int[count];
-
-		for (int i = 0; i < count; ++i)
-			files[i] = is.readUnsignedShort();
-
-		def.setFileIds(files);
-
-		if (count > 1)
+		if (rev233)
 		{
-			def.field1780 = new int[count - 1];
+			def.setFileIds(new int[]{
+				is.readUnsignedShort()
+			});
 
-			for (int var3 = 0; var3 < count - 1; ++var3)
+			def.missingColor = is.readUnsignedShort();
+			def.field1778 = is.readUnsignedByte() == 1;
+			def.animationDirection = is.readUnsignedByte();
+			def.animationSpeed = is.readUnsignedByte();
+		}
+		else
+		{
+			def.missingColor = is.readUnsignedShort();
+			def.field1778 = is.readByte() != 0;
+
+			int count = is.readUnsignedByte();
+			int[] files = new int[count];
+
+			for (int i = 0; i < count; ++i)
+				files[i] = is.readUnsignedShort();
+
+			def.setFileIds(files);
+
+			if (count > 1)
 			{
-				def.field1780[var3] = is.readUnsignedByte();
+				def.field1780 = new int[count - 1];
+
+				for (int var3 = 0; var3 < count - 1; ++var3)
+				{
+					def.field1780[var3] = is.readUnsignedByte();
+				}
 			}
-		}
 
-		if (count > 1)
-		{
-			def.field1781 = new int[count - 1];
-
-			for (int var3 = 0; var3 < count - 1; ++var3)
+			if (count > 1)
 			{
-				def.field1781[var3] = is.readUnsignedByte();
+				def.field1781 = new int[count - 1];
+
+				for (int var3 = 0; var3 < count - 1; ++var3)
+				{
+					def.field1781[var3] = is.readUnsignedByte();
+				}
 			}
+
+			def.field1786 = new int[count];
+
+			for (int var3 = 0; var3 < count; ++var3)
+			{
+				def.field1786[var3] = is.readInt();
+			}
+
+			def.animationDirection = is.readUnsignedByte();
+			def.animationSpeed = is.readUnsignedByte();
 		}
-
-		def.field1786 = new int[count];
-
-		for (int var3 = 0; var3 < count; ++var3)
-		{
-			def.field1786[var3] = is.readInt();
-		}
-
-		def.animationDirection = is.readUnsignedByte();
-		def.animationSpeed = is.readUnsignedByte();
 
 		return def;
 	}

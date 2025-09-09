@@ -115,13 +115,13 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Collect 5 palm leaves.",
 			new SkillRequirement(Skill.WOODCUTTING, 15),
 			new QuestRequirement(Quest.LEGENDS_QUEST));
-		add("Be assigned a Slayer task by Duradel north of Shilo Village.",
+		add("Be assigned a Slayer task by the Slayer Master in Shilo Village.",
 			new CombatLevelRequirement(100),
 			new SkillRequirement(Skill.SLAYER, 50),
 			new QuestRequirement(Quest.SHILO_VILLAGE));
 
 		// ELITE
-		add("Craft 56 Nature runes at once from Essence.",
+		add("Craft 56 Nature runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 91));
 		add("Check the health of a palm tree in Brimhaven.",
 			new SkillRequirement(Skill.FARMING, 68));

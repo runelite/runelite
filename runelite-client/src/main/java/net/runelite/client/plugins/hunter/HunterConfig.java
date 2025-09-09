@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("hunterplugin")
 public interface HunterConfig extends Config
@@ -38,7 +39,7 @@ public interface HunterConfig extends Config
 		position = 1,
 		keyName = "hexColorOpenTrap",
 		name = "Open trap",
-		description = "Color of open trap timer"
+		description = "Color of open trap timer."
 	)
 	default Color getOpenTrapColor()
 	{
@@ -50,7 +51,7 @@ public interface HunterConfig extends Config
 		position = 2,
 		keyName = "hexColorFullTrap",
 		name = "Full trap",
-		description = "Color of full trap timer"
+		description = "Color of full trap timer."
 	)
 	default Color getFullTrapColor()
 	{
@@ -62,7 +63,7 @@ public interface HunterConfig extends Config
 		position = 3,
 		keyName = "hexColorEmptyTrap",
 		name = "Empty trap",
-		description = "Color of empty trap timer"
+		description = "Color of empty trap timer."
 	)
 	default Color getEmptyTrapColor()
 	{
@@ -74,7 +75,7 @@ public interface HunterConfig extends Config
 		position = 4,
 		keyName = "hexColorTransTrap",
 		name = "Transitioning trap",
-		description = "Color of transitioning trap timer"
+		description = "Color of transitioning trap timer."
 	)
 	default Color getTransTrapColor()
 	{
@@ -87,8 +88,8 @@ public interface HunterConfig extends Config
 		name = "Maniacal monkey notification",
 		description = "Send notification when maniacal monkey is caught or you fail to catch."
 	)
-	default boolean maniacalMonkeyNotify()
+	default Notification maniacalMonkeyNotify()
 	{
-		return false;
+		return Notification.OFF;
 	}
 }

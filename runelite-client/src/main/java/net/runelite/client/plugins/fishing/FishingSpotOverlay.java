@@ -35,13 +35,13 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.game.FishingSpot;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -107,7 +107,7 @@ class FishingSpotOverlay extends Overlay
 			}
 
 			Color color;
-			if (npc.getGraphic() == GraphicID.FLYING_FISH)
+			if (npc.getGraphic() == SpotanimID.MINNOW_FISHING_FLYINGFISH)
 			{
 				color = config.getMinnowsOverlayColor();
 			}
@@ -115,7 +115,7 @@ class FishingSpotOverlay extends Overlay
 			{
 				color = config.getAerialOverlayColor();
 			}
-			else if (spot == FishingSpot.HARPOONFISH && npc.getId() == NpcID.FISHING_SPOT_10569)
+			else if (spot == FishingSpot.HARPOONFISH && npc.getId() == NpcID.TEMPOROSS_HARPOONFISH_FISHINGSPOT_SPECIAL)
 			{
 				color = config.getHarpoonfishOverlayColor();
 			}

@@ -37,8 +37,6 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 	public LumbridgeDiaryRequirement()
 	{
 		// EASY
-		add("Complete a lap of the Draynor Village agility course.",
-			new SkillRequirement(Skill.AGILITY, 10));
 		add("Slay a Cave bug beneath Lumbridge Swamp.",
 			new SkillRequirement(Skill.SLAYER, 7));
 		add("Have Sedridor teleport you to the Essence Mine.",
@@ -92,7 +90,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Squeeze past the jutting wall on your way to the cosmic altar.",
 			new SkillRequirement(Skill.AGILITY, 46),
 			new QuestRequirement(Quest.LOST_CITY));
-		add("Craft 56 Cosmic runes simultaneously from Essence.",
+		add("Craft 56 Cosmic runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 59),
 			new QuestRequirement(Quest.LOST_CITY));
 		add("Travel from Lumbridge to Edgeville on a Waka Canoe.",
@@ -117,7 +115,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Steal from a Dorgesh-Kaan rich chest.",
 			new SkillRequirement(Skill.THIEVING, 78),
 			new QuestRequirement(Quest.DEATH_TO_THE_DORGESHUUN));
-		add("Pickpocket Movario on the Dorgesh-Kaan Agility course.",
+		add("Grapple across a pylon on the Dorgesh-Kaan Agility Course.",
 			new SkillRequirement(Skill.AGILITY, 70),
 			new SkillRequirement(Skill.RANGED, 70),
 			new SkillRequirement(Skill.STRENGTH, 70),
@@ -126,7 +124,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.WOODCUTTING, 75));
 		add("Smith an Adamant platebody down Draynor sewer.",
 			new SkillRequirement(Skill.SMITHING, 88));
-		add("Craft 140 or more Water runes at once from Essence.",
+		add("Craft 140 or more Water runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 76));
 	}
 }

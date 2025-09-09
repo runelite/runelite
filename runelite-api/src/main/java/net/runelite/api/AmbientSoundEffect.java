@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 
 /**
@@ -38,6 +39,14 @@ public interface AmbientSoundEffect
 	 * @return
 	 */
 	int getSoundEffectId();
+
+	/**
+	 * The background sound effect ids. One sound effect is picked from this at random.
+	 * @see SoundEffectID
+	 * @return
+	 */
+	@Nullable
+	int[] getBackgroundSoundEffectIds();
 
 	/**
 	 * The plane the sound effect is on

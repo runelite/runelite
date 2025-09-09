@@ -36,16 +36,13 @@ import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -53,12 +50,16 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
@@ -109,12 +110,15 @@ public class KourendLibraryPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
-	private EnumSet<Book> playerBooks = null;
+	private EnumSet<Book> playerBooks = EnumSet.noneOf(Book.class);
 	private QuestState depthsOfDespairState = QuestState.FINISHED;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -146,7 +150,13 @@ public class KourendLibraryPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(tutorialOverlay);
 
-		updatePlayerBooks();
+		clientThread.invoke(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				updatePlayerBooks();
+			}
+		});
 
 		if (!config.hideButton())
 		{
@@ -163,7 +173,7 @@ public class KourendLibraryPlugin extends Plugin
 		buttonAttached = false;
 		lastBookcaseClick = null;
 		lastBookcaseAnimatedOn = null;
-		playerBooks = null;
+		playerBooks = EnumSet.noneOf(Book.class);
 		npcsToMark.clear();
 	}
 
@@ -225,7 +235,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged anim)
 	{
-		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
+		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.HUMAN_PICKUPTABLE)
 		{
 			lastBookcaseAnimatedOn = lastBookcaseClick;
 		}
@@ -234,7 +244,12 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		if (lastBookcaseAnimatedOn != null)
 		{
 			if (event.getMessage().equals("You don't find anything useful here."))
 			{
@@ -242,6 +257,12 @@ public class KourendLibraryPlugin extends Plugin
 				updateBooksPanel();
 				lastBookcaseAnimatedOn = null;
 			}
+		}
+
+		// has a color tag at start
+		if (event.getMessage().endsWith("You hear the shifting of books due to a mysterious force...or are you just hearing things?"))
+		{
+			library.reset();
 		}
 	}
 
@@ -285,7 +306,7 @@ public class KourendLibraryPlugin extends Plugin
 
 		if (lastBookcaseAnimatedOn != null)
 		{
-			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+			Widget find = client.getWidget(InterfaceID.Objectbox.ITEM);
 			if (find != null)
 			{
 				Book book = Book.byId(find.getItemId());
@@ -298,12 +319,12 @@ public class KourendLibraryPlugin extends Plugin
 			}
 		}
 
-		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+		Widget npcHead = client.getWidget(InterfaceID.ChatLeft.HEAD);
 		if (npcHead != null)
 		{
 			if (isLibraryCustomer(npcHead.getModelId()))
 			{
-				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+				Widget textw = client.getWidget(InterfaceID.ChatLeft.TEXT);
 				String text = textw.getText();
 				Matcher m = BOOK_EXTRACTOR.matcher(text);
 				if (m.find())
@@ -356,7 +377,7 @@ public class KourendLibraryPlugin extends Plugin
 
 	private void updatePlayerBooks()
 	{
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INV);
 		EnumSet<Book> books = EnumSet.noneOf(Book.class);
 
 		if (itemContainer != null)
@@ -425,6 +446,6 @@ public class KourendLibraryPlugin extends Plugin
 
 	static boolean isLibraryCustomer(int npcId)
 	{
-		return npcId == NpcID.VILLIA || npcId == NpcID.PROFESSOR_GRACKLEBONE || npcId == NpcID.SAM_7049;
+		return npcId == NpcID.ARCEUUS_LIBRARY_CUSTOMER_2 || npcId == NpcID.ARCEUUS_LIBRARY_CUSTOMER_3 || npcId == NpcID.ARCEUUS_LIBRARY_CUSTOMER_4;
 	}
 }

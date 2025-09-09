@@ -24,28 +24,13 @@
  */
 package net.runelite.cache.index;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class FileData
 {
 	int id;
 	int nameHash;
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public int getNameHash()
-	{
-		return nameHash;
-	}
-
-	public void setNameHash(int nameHash)
-	{
-		this.nameHash = nameHash;
-	}
 }

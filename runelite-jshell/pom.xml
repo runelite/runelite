@@ -30,7 +30,7 @@
     <parent>
         <groupId>net.runelite</groupId>
         <artifactId>runelite-parent</artifactId>
-        <version>1.9.11-SNAPSHOT</version>
+        <version>1.11.17-SNAPSHOT</version>
     </parent>
 
     <artifactId>jshell</artifactId>
@@ -64,6 +64,12 @@
             <groupId>com.fifesoft</groupId>
             <artifactId>autocomplete</artifactId>
             <version>3.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.runelite</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>${flatlaf.version}</version>
         </dependency>
     </dependencies>
 

@@ -27,11 +27,12 @@ package net.runelite.client.plugins.mining;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -70,8 +71,14 @@ class MiningOverlay extends OverlayPanel
 			return null;
 		}
 
-		Pickaxe pickaxe = plugin.getPickaxe();
-		if (pickaxe != null && (pickaxe.matchesMiningAnimation(client.getLocalPlayer()) || client.getLocalPlayer().getAnimation() == AnimationID.DENSE_ESSENCE_CHIPPING))
+		int currentAnim = client.getLocalPlayer().getAnimation();
+		if (plugin.isMining() &&
+				(MiningAnimation.MINING_ANIMATIONS.contains(currentAnim)
+						|| currentAnim == AnimationID.ARCEUUS_CHISEL_ESSENCE
+						// when receiving ore from a wall the animation sets to -1 before starting up again
+						|| (MiningAnimation.WAll_ANIMATIONS.contains(plugin.getLastActionAnimationId())
+								&& plugin.getLastAnimationChange().isAfter(Instant.now().minusMillis(1800))))
+			)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Mining")

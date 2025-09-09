@@ -31,14 +31,13 @@ import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.FontManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 class BarrowsBrotherSlainOverlay extends OverlayPanel
@@ -52,7 +51,7 @@ class BarrowsBrotherSlainOverlay extends OverlayPanel
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		this.client = client;
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Barrows overlay");
 	}
@@ -61,7 +60,7 @@ class BarrowsBrotherSlainOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		// Only render the brothers slain overlay if the vanilla interface is loaded
-		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		final Widget barrowsBrothers = client.getWidget(InterfaceID.BarrowsOverlay.BROTHERS);
 		if (barrowsBrothers == null)
 		{
 			return null;
@@ -108,12 +107,12 @@ class BarrowsBrotherSlainOverlay extends OverlayPanel
 	private int rewardPotential()
 	{
 		// this is from [proc,barrows_overlay_reward]
-		int brothers = client.getVarbitValue(Varbits.BARROWS_KILLED_AHRIM)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_DHAROK)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_GUTHAN)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_KARIL)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_TORAG)
-			+ client.getVarbitValue(Varbits.BARROWS_KILLED_VERAC);
-		return client.getVarbitValue(Varbits.BARROWS_REWARD_POTENTIAL) + brothers * 2;
+		int brothers = client.getVarbitValue(VarbitID.BARROWS_KILLED_AHRIM)
+			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_DHAROK)
+			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_GUTHAN)
+			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_KARIL)
+			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_TORAG)
+			+ client.getVarbitValue(VarbitID.BARROWS_KILLED_VERAC);
+		return client.getVarbitValue(VarbitID.BARROWS_KILLED_MONSTER) + brothers * 2;
 	}
 }

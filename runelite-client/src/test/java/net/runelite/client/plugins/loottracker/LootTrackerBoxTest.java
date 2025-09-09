@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.loottracker;
 
 import java.util.Arrays;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
@@ -49,9 +49,9 @@ public class LootTrackerBoxTest
 			false);
 
 		LootTrackerItem[] items = new LootTrackerItem[]{
-			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 1, 0, 0, false),
-			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM_3602, "Clue scroll (medium)", 1, 0, 0, false),
-			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false),
+			new LootTrackerItem(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT001, "Clue scroll (medium)", 1, 0, 0, false),
+			new LootTrackerItem(ItemID.TRAIL_CLUE_MEDIUM_MAP007, "Clue scroll (medium)", 1, 0, 0, false),
+			new LootTrackerItem(ItemID.ZEAH_GRACEFUL_HOOD_ARCEUUS, "Graceful hood", 1, 0, 0, false),
 		};
 		LootTrackerRecord lootTrackerRecord = new LootTrackerRecord(
 			"Theatre of Blood",
@@ -64,8 +64,8 @@ public class LootTrackerBoxTest
 		lootTrackerBox.addKill(lootTrackerRecord);
 
 		assertEquals(Arrays.asList(
-			new LootTrackerItem(ItemID.CLUE_SCROLL_MEDIUM, "Clue scroll (medium)", 2, 0, 0, false),
-			new LootTrackerItem(ItemID.GRACEFUL_HOOD_13579, "Graceful hood", 1, 0, 0, false)
+			new LootTrackerItem(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT001, "Clue scroll (medium)", 2, 0, 0, false),
+			new LootTrackerItem(ItemID.ZEAH_GRACEFUL_HOOD_ARCEUUS, "Graceful hood", 1, 0, 0, false)
 		), lootTrackerBox.getItems());
 	}
 }

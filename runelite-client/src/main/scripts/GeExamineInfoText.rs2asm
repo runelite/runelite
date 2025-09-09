@@ -4,72 +4,72 @@
 ; component1 = parent of the info icon
 ; string0 = item examine
 ; string1 = Convenience fee text
-.id                 5730
-.int_stack_count    2
-.string_stack_count 2
-.int_var_count      5
-.string_var_count   3
+.id                       5730
+.int_arg_count            2
+.obj_arg_count            2
    sconst                 ""
-   sstore                 2
+   ostore                 2
    iconst                 0
    istore                 2
    iconst                 0
    istore                 3
    iconst                 0
    istore                 4
-   sload                  1
+   iconst                 5
+   istore                 5
+   oload                  1
    string_length         
    iconst                 0
-   if_icmpgt              LABEL13
-   jump                   LABEL146
-LABEL13:
+   if_icmpgt              LABEL15
+   jump                   LABEL149
+LABEL15:
    iload                  0
    if_getwidth           
    istore                 2
    invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL20
-   jump                   LABEL23
-LABEL20:
-   sload                  0
-   sstore                 2
-   jump                   LABEL42
-LABEL23:
-   sload                  0
+   if_icmpeq              LABEL22
+   jump                   LABEL25
+LABEL22:
+   oload                  0
+   ostore                 2
+   jump                   LABEL44
+LABEL25:
+   oload                  0
    iload                  2
    iconst                 494
    paraheight            
    iconst                 2
-   if_icmple              LABEL30
-   jump                   LABEL37
-LABEL30:
-   sload                  0
+   if_icmple              LABEL32
+   jump                   LABEL39
+LABEL32:
+   oload                  0
    sconst                 "<br>"
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            4
-   sstore                 2
-   jump                   LABEL42
-LABEL37:
-   sload                  0
+   ostore                 2
+   jump                   LABEL44
+LABEL39:
+   oload                  0
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            3
-   sstore                 2
-LABEL42:
+   ostore                 2
+LABEL44:
 
-   sload                  0 ; examine
-   sload                  1 ; Convenience fee
-   sload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
+   oload                  0 ; examine
+   oload                  1 ; Convenience fee
+   oload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
    sconst                 "geSellExamineText"
    runelite_callback     
-   sstore                 2 ; final text
-   pop_string               ; Convenience fee
-   pop_string               ; examine
+   ostore                 2 ; final text
+   pop_object               ; Convenience fee
+   pop_object               ; examine
 
    iload                  0
    if_getx               
-   sload                  1
+   oload                  1
    iload                  2
    iconst                 494
    parawidth             
@@ -78,7 +78,7 @@ LABEL42:
    add                   
    iload                  0
    if_gety               
-   sload                  2
+   oload                  2
    iload                  2
    iconst                 494
    paraheight            
@@ -92,7 +92,7 @@ LABEL42:
    iload                  3
    iload                  1
    if_getwidth           
-   iconst                 15
+   iload                  5
    sub                   
    iconst                 2
    div                   
@@ -115,14 +115,14 @@ LABEL42:
    if_setposition        
    invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL92
-   jump                   LABEL96
-LABEL92:
+   if_icmpeq              LABEL94
+   jump                   LABEL98
+LABEL94:
    iconst                 1
    iload                  1
    if_sethide            
-   jump                   LABEL145
-LABEL96:
+   jump                   LABEL148
+LABEL98:
    iconst                 0
    iload                  1
    if_sethide            
@@ -130,6 +130,7 @@ LABEL96:
    cc_deleteall          
    iload                  1
    iconst                 5
+   iconst                 0
    iconst                 0
    cc_create             
    iconst                 15
@@ -151,7 +152,7 @@ LABEL96:
    cc_getid              
    iconst                 0
    iconst                 -1
-   sconst                 "IiiI"
+   sconst                 "iiii"
    iload                  1
    if_setonmouserepeat   
    iconst                 244
@@ -159,7 +160,7 @@ LABEL96:
    cc_getid              
    iconst                 50
    iconst                 -1
-   sconst                 "IiiI"
+   sconst                 "iiii"
    iload                  1
    if_setonmouseleave    
    iconst                 489
@@ -172,20 +173,20 @@ LABEL96:
    sconst                 "Info"
    iload                  1
    if_setop              
-LABEL145:
-   jump                   LABEL167
-LABEL146:
-   sload                  0
-   sstore                 2
+LABEL148:
+   jump                   LABEL170
+LABEL149:
+   oload                  0
+   ostore                 2
 
-   sload                  0 ; examine
-   sload                  1 ; ""
-   sload                  2 ; examine
+   oload                  0 ; examine
+   oload                  1 ; ""
+   oload                  2 ; examine
    sconst                 "geBuyExamineText"
    runelite_callback     
-   sstore                 2 ; final text
-   pop_string               ; ""
-   pop_string               ; examine
+   ostore                 2 ; final text
+   pop_object               ; ""
+   pop_object               ; examine
 
    iconst                 1
    iload                  1
@@ -206,8 +207,8 @@ LABEL146:
    if_setonop            
    iload                  1
    if_clearops           
-LABEL167:
-   sload                  2
+LABEL170:
+   oload                  2
    iload                  0
    if_settext            
    return                

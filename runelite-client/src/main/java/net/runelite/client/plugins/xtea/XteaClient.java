@@ -85,16 +85,12 @@ public class XteaClient
 			@Override
 			public void onResponse(Call call, Response response)
 			{
-				try // NOPMD: UseTryWithResources
+				try (response)
 				{
 					if (!response.isSuccessful())
 					{
 						log.debug("unsuccessful xtea response");
 					}
-				}
-				finally
-				{
-					response.close();
 				}
 			}
 		});

@@ -32,15 +32,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import net.runelite.client.callback.ClientThread;
 
 public class AsyncBufferedImage extends BufferedImage
 {
+	private final ClientThread clientThread;
 	private final List<Runnable> listeners = new ArrayList<>();
 	private boolean loaded;
 
-	public AsyncBufferedImage(int width, int height, int imageType)
+	public AsyncBufferedImage(ClientThread clientThread, int width, int height, int imageType)
 	{
 		super(width, height, imageType);
+		this.clientThread = clientThread;
 	}
 
 	/**
@@ -58,14 +61,13 @@ public class AsyncBufferedImage extends BufferedImage
 
 	/**
 	 * Register a function to be ran when the image has been loaded.
-	 * If the image is already loaded, the function will not be ran.
+	 * If the image is already loaded the function will be invoked later on the client thread.
 	 */
 	public synchronized void onLoaded(Runnable r)
 	{
 		if (loaded)
 		{
-			// If the image has already been loaded, further listeners will not fire. Do not
-			// queue them to avoid leaking listeners.
+			clientThread.invokeLater(r);
 			return;
 		}
 

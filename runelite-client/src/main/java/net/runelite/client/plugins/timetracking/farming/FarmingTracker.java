@@ -29,6 +29,7 @@ import com.google.inject.Singleton;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -41,9 +42,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -107,19 +109,10 @@ public class FarmingTracker
 		}
 
 		{
-			String autoweed = Integer.toString(client.getVarbitValue(Varbits.AUTOWEED));
+			String autoweed = Integer.toString(client.getVarbitValue(VarbitID.FARMING_BLOCKWEEDS));
 			if (!autoweed.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED)))
 			{
 				configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.AUTOWEED, autoweed);
-				changed = true;
-			}
-		}
-
-		{
-			boolean botanist = client.getVarbitValue(Varbits.LEAGUE_RELIC_5) == 1;
-			if (!Boolean.valueOf(botanist).equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, Boolean.class)))
-			{
-				configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BOTANIST, botanist);
 				changed = true;
 			}
 		}
@@ -183,6 +176,12 @@ public class FarmingTracker
 
 							int patchTickRate = previousPatchState.getTickRate();
 
+							// Farming ticks on leagues worlds are 1 minute instead of 5
+							if (isLeaguesWorld())
+							{
+								patchTickRate = patchTickRate / 5;
+							}
+
 							if (isObservedGrowthTick(previousPatchState, currentPatchState))
 							{
 								Integer storedOffsetPrecision = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
@@ -219,7 +218,9 @@ public class FarmingTracker
 					}
 				}
 
-				if (currentPatchState.getCropState() == CropState.DEAD || currentPatchState.getCropState() == CropState.HARVESTABLE)
+				if (currentPatchState.getCropState() == CropState.DEAD ||
+					currentPatchState.getCropState() == CropState.HARVESTABLE ||
+					currentPatchState.getCropState() == CropState.EMPTY)
 				{
 					compostTracker.setCompostState(patch, null);
 					paymentTracker.setProtectedState(patch, false);
@@ -250,6 +251,12 @@ public class FarmingTracker
 		CropState previousCropState = previous.getCropState();
 		CropState currentCropState = current.getCropState();
 		Produce previousProduce = previous.getProduce();
+
+		// Farming ticks on leagues worlds are 1 minute instead of 5
+		if (isLeaguesWorld())
+		{
+			patchTickRate = patchTickRate / 5;
+		}
 
 		//Ignore weeds growing or being cleared.
 		if (previousProduce == Produce.WEEDS || current.getProduce() == Produce.WEEDS
@@ -298,9 +305,6 @@ public class FarmingTracker
 		boolean autoweed = Integer.toString(Autoweed.ON.ordinal())
 			.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.AUTOWEED));
 
-		boolean botanist = Boolean.TRUE
-			.equals(configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, TimeTrackingConfig.BOTANIST, Boolean.class));
-
 		String key = patch.configKey();
 		String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, profile, key);
 
@@ -342,16 +346,17 @@ public class FarmingTracker
 		int stages = state.getStages();
 		int tickrate = state.getTickRate();
 
+		// Farming ticks on leagues worlds are 1 minute instead of 5
+		if (isLeaguesWorld())
+		{
+			tickrate = tickrate / 5;
+		}
+
 		if (autoweed && state.getProduce() == Produce.WEEDS)
 		{
 			stage = 0;
 			stages = 1;
 			tickrate = 0;
-		}
-
-		if (botanist)
-		{
-			tickrate /= 5;
 		}
 
 		long doneEstimate = 0;
@@ -528,6 +533,12 @@ public class FarmingTracker
 
 					int tickRate = prediction.getProduce().getTickrate();
 
+					// Farming ticks on leagues worlds are 1 minute instead of 5
+					if (isLeaguesWorld())
+					{
+						tickRate = tickRate / 5;
+					}
+
 					if (offsetPrecisionMins == null || offsetTimeMins == null || (offsetPrecisionMins < tickRate && offsetPrecisionMins < 40) || prediction.getProduce() == Produce.WEEDS
 						|| unixNow <= prediction.getDoneEstimate() || patchNotified || prediction.getCropState() == CropState.FILLING || prediction.getCropState() == CropState.EMPTY)
 					{
@@ -544,6 +555,12 @@ public class FarmingTracker
 			}
 		}
 		firstNotifyCheck = false;
+	}
+
+	private boolean isLeaguesWorld()
+	{
+		final EnumSet<WorldType> worldTypes = client.getWorldType();
+		return (worldTypes.contains(WorldType.SEASONAL) && !worldTypes.contains(WorldType.DEADMAN));
 	}
 
 	@VisibleForTesting

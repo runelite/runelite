@@ -33,31 +33,40 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
-import net.runelite.api.worldmap.WorldMapRenderer;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.FakeXpDrop;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.worldmap.WorldMap;
+import net.runelite.api.worldmap.WorldMapRenderer;
 import net.runelite.client.Notifier;
+import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.RuntimeConfig;
 import net.runelite.client.TelemetryClient;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.EventBus;
@@ -71,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.RSTimeUnit;
 
 /**
@@ -102,13 +112,15 @@ public class Hooks implements Callbacks
 	private final ClientUI clientUi;
 	@Nullable
 	private final TelemetryClient telemetryClient;
+	@Nullable
+	private final RuntimeConfig runtimeConfig;
+	private final boolean developerMode;
 
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
 	private Graphics2D stretchedGraphics;
 
 	private long lastCheck;
-	private boolean ignoreNextNpcUpdate;
 	private boolean shouldProcessGameTick;
 
 	private static MainBufferProvider lastMainBufferProvider;
@@ -163,7 +175,9 @@ public class Hooks implements Callbacks
 		DrawManager drawManager,
 		Notifier notifier,
 		ClientUI clientUi,
-		@Nullable TelemetryClient telemetryClient
+		@Nullable TelemetryClient telemetryClient,
+		@Nullable RuntimeConfig runtimeConfig,
+		@Named("developerMode") final boolean developerMode
 	)
 	{
 		this.client = client;
@@ -180,6 +194,8 @@ public class Hooks implements Callbacks
 		this.notifier = notifier;
 		this.clientUi = clientUi;
 		this.telemetryClient = telemetryClient;
+		this.runtimeConfig = runtimeConfig;
+		this.developerMode = developerMode;
 		eventBus.register(this);
 	}
 
@@ -262,7 +278,7 @@ public class Hooks implements Callbacks
 	 */
 	private void checkWorldMap()
 	{
-		Widget widget = client.getWidget(WORLD_MAP_VIEW);
+		Widget widget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 
 		if (widget != null)
 		{
@@ -450,21 +466,21 @@ public class Hooks implements Callbacks
 
 		// finalImage is backed by the client buffer which will change soon. make a copy
 		// so that callbacks can safely use it later from threads.
-		drawManager.processDrawComplete(() -> copy(finalImage));
+		drawManager.processDrawComplete(() -> screenshot(finalImage));
 	}
 
-	/**
-	 * Copy an image
-	 * @param src
-	 * @return
-	 */
-	private static Image copy(Image src)
+	private Image screenshot(Image src)
 	{
-		final int width = src.getWidth(null);
-		final int height = src.getHeight(null);
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		Graphics graphics = image.getGraphics();
-		graphics.drawImage(src, 0, 0, width, height, null);
+		// scale source image to the size of the client ui
+		final AffineTransform transform = clientUi.getGraphicsConfiguration().getDefaultTransform();
+		int swidth = src.getWidth(null);
+		int sheight = src.getHeight(null);
+		int twidth = (int) (swidth * transform.getScaleX() + .5);
+		int theight = (int) (sheight * transform.getScaleY() + .5);
+		BufferedImage image = new BufferedImage(twidth, theight, BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		graphics.setTransform(transform);
+		graphics.drawImage(src, 0, 0, swidth, sheight, null);
 		graphics.dispose();
 		return image;
 	}
@@ -501,40 +517,10 @@ public class Hooks implements Callbacks
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		switch (gameStateChanged.getGameState())
-		{
-			case LOGGING_IN:
-			case HOPPING:
-				ignoreNextNpcUpdate = true;
-		}
-	}
-
 	@Override
-	public void updateNpcs()
+	public void serverTick()
 	{
-		if (ignoreNextNpcUpdate)
-		{
-			// After logging in an NPC update happens outside of the normal game tick, which
-			// is sent prior to skills and vars being bursted, so ignore it.
-			ignoreNextNpcUpdate = false;
-			log.debug("Skipping login updateNpc");
-		}
-		else
-		{
-			// The NPC update event seem to run every server tick,
-			// but having the game tick event after all packets
-			// have been processed is typically more useful.
-			shouldProcessGameTick = true;
-		}
-
-		// Replay deferred events, otherwise if two npc
-		// update packets get processed in one client tick, a
-		// despawn event could be published prior to the
-		// spawn event, which is deferred
-		deferredEventBus.replay();
+		shouldProcessGameTick = true;
 	}
 
 	@Override
@@ -632,9 +618,33 @@ public class Hooks implements Callbacks
 		long now = System.currentTimeMillis();
 		if (now > nextError)
 		{
+			var sw = new StringWriter();
+			sw.append(message);
+
+			if (reason != null)
+			{
+				sw.append(" - ").append(reason.toString()).append('\n');
+				try (var pw = new PrintWriter(sw))
+				{
+					reason.printStackTrace(pw);
+				}
+			}
+
+			String coord = "unk";
+			if (client.getClientThread() == Thread.currentThread())
+			{
+				Player player = client.getLocalPlayer();
+				if (player != null)
+				{
+					WorldPoint p = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+					coord = String.format("%d_%d_%d_%d_%d", p.getPlane(), p.getX() / 64, p.getY() / 64, p.getX() & 63, p.getY() & 63);
+				}
+			}
+
 			telemetryClient.submitError(
 				"client error",
-				message + " - " + reason);
+				sw.toString(),
+				Collections.singletonMap("coord", coord));
 
 			if (rateLimitedError)
 			{
@@ -652,5 +662,28 @@ public class Hooks implements Callbacks
 		{
 			rateLimitedError = true;
 		}
+	}
+
+	@Override
+	public void openUrl(String url)
+	{
+		LinkBrowser.browse(url);
+	}
+
+	@Override
+	public boolean isRuneLiteClientOutdated()
+	{
+		if (runtimeConfig == null || developerMode)
+		{
+			return false;
+		}
+
+		Set<String> outdatedClientVersions = runtimeConfig.getOutdatedClientVersions();
+		if (outdatedClientVersions == null)
+		{
+			return false;
+		}
+
+		return outdatedClientVersions.contains(RuneLiteProperties.getVersion());
 	}
 }

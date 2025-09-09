@@ -43,12 +43,12 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
 
 /**
  * This panel holds the search section of the Grand Exchange Plugin.
@@ -79,8 +79,6 @@ class GrandExchangeSearchPanel extends JPanel
 
 	/*  The error panel, this displays an error message */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
-
-	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
 	@Inject
 	private GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager,
@@ -195,7 +193,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private void processResult(List<ItemPrice> result, String lookup, boolean exactMatch)
 	{
-		itemsList.clear();
+		final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
 		cardLayout.show(centerPanel, RESULTS_PANEL);
 
@@ -204,16 +202,20 @@ class GrandExchangeSearchPanel extends JPanel
 
 		for (ItemPrice item : result)
 		{
+			int itemId = item.getId();
+			ItemComposition itemComp = itemManager.getItemComposition(itemId);
+			if (!itemComp.isTradeable())
+			{
+				continue;
+			}
+
 			if (count++ > MAX_SEARCH_ITEMS)
 			{
 				// Cap search
 				break;
 			}
 
-			int itemId = item.getId();
-
-			ItemComposition itemComp = itemManager.getItemComposition(itemId);
-			ItemStats itemStats = itemManager.getItemStats(itemId, false);
+			ItemStats itemStats = itemManager.getItemStats(itemId);
 
 			int itemPrice = useActivelyTradedPrice ? itemManager.getWikiPrice(item) : item.getPrice();
 			int itemLimit = itemStats != null ? itemStats.getGeLimit() : 0;

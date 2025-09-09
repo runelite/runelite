@@ -45,10 +45,10 @@ import net.runelite.api.ItemLayer;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Model;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Renderable;
+import net.runelite.api.RuneLiteObject;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
@@ -77,7 +77,7 @@ public class ModelOutlineRenderer
 	private static final int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
 
 	private final Client client;
-	
+
 	// Vertex positions projected on the screen.
 	private final int[] projectedVerticesX = new int[6500];
 	private final int[] projectedVerticesY = new int[6500];
@@ -982,23 +982,11 @@ public class ModelOutlineRenderer
 
 	public void drawOutline(NPC npc, int outlineWidth, Color color, int feather)
 	{
-		int size = 1;
-		NPCComposition composition = npc.getTransformedComposition();
-		if (composition != null)
-		{
-			size = composition.getSize();
-		}
-
 		LocalPoint lp = npc.getLocalLocation();
 		if (lp != null)
 		{
-			// NPCs z position are calculated based on the tile height of the northeastern tile
-			final int northEastX = lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
-			final int northEastY = lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2;
-			final LocalPoint northEastLp = new LocalPoint(northEastX, northEastY);
-
 			drawModelOutline(npc.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, northEastLp, client.getPlane()),
+				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), npc.getComposition().getFootprintSize()) - npc.getAnimationHeightOffset(),
 				npc.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
@@ -1009,7 +997,7 @@ public class ModelOutlineRenderer
 		if (lp != null)
 		{
 			drawModelOutline(player.getModel(), lp.getX(), lp.getY(),
-				Perspective.getTileHeight(client, lp, client.getPlane()),
+				Perspective.getFootprintTileHeight(client, lp, client.getPlane(), player.getFootprintSize()) - player.getAnimationHeightOffset(),
 				player.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
@@ -1166,6 +1154,20 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(), graphicsObject.getZ(),
 					0, outlineWidth, color, feather);
+			}
+		}
+	}
+
+	public void drawOutline(RuneLiteObject runeLiteObject, int outlineWidth, Color color, int feather)
+	{
+		LocalPoint lp = runeLiteObject.getLocation();
+		if (lp != null)
+		{
+			Model model = runeLiteObject.getModel();
+			if (model != null)
+			{
+				drawModelOutline(model, lp.getX(), lp.getY(), runeLiteObject.getZ(),
+					runeLiteObject.getOrientation(), outlineWidth, color, feather);
 			}
 		}
 	}

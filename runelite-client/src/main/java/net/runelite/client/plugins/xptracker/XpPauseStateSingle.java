@@ -28,13 +28,10 @@ import java.util.EnumSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Skill;
 
 @RequiredArgsConstructor
 class XpPauseStateSingle
 {
-	@Getter
-	private final Skill skill;
 	private final Set<XpPauseReason> pauseReasons = EnumSet.noneOf(XpPauseReason.class);
 	@Getter
 	private long lastChangeMillis;

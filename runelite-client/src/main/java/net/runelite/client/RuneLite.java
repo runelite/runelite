@@ -28,6 +28,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -36,31 +37,42 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 import joptsimple.ValueConversionException;
 import joptsimple.ValueConverter;
-import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -72,7 +84,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
-import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
@@ -80,6 +91,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.ReflectUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
@@ -95,11 +107,10 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File CACHE_DIR = new File(RUNELITE_DIR, "cache");
 	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
-	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
-	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
+	public static final File NOTIFICATIONS_DIR = new File(RuneLite.RUNELITE_DIR, "notifications");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
@@ -141,8 +152,7 @@ public class RuneLite
 	private Provider<WorldMapOverlay> worldMapOverlay;
 
 	@Inject
-	@Nullable
-	private Applet applet;
+	private Gson gson;
 
 	@Inject
 	@Nullable
@@ -155,6 +165,9 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private TelemetryClient telemetryClient;
+
+	@Inject
+	private ScheduledExecutorService scheduledExecutorService;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -169,30 +182,15 @@ public class RuneLite
 			.withRequiredArg()
 			.defaultsTo(RuneLiteProperties.getJavConfig());
 		parser.accepts("disable-telemetry", "Disable telemetry");
+		parser.accepts("profile", "Configuration profile to use").withRequiredArg();
+		parser.accepts("noupdate", "Skips the launcher update");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
 			.withValuesConvertedBy(new ConfigFileConverter())
 			.defaultsTo(DEFAULT_SESSION_FILE);
 
-		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
-			.withRequiredArg()
-			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_CONFIG_FILE);
-
-		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
-			.accepts("rs", "Select client type")
-			.withRequiredArg()
-			.ofType(ClientUpdateCheckMode.class)
-			.defaultsTo(ClientUpdateCheckMode.AUTO)
-			.withValuesConvertedBy(new EnumConverter<ClientUpdateCheckMode>(ClientUpdateCheckMode.class)
-			{
-				@Override
-				public ClientUpdateCheckMode convert(String v)
-				{
-					return super.convert(v.toUpperCase());
-				}
-			});
+		final OptionSpec<Void> insecureWriteCredentials = parser.accepts("insecure-write-credentials", "Dump authentication tokens from the Jagex Launcher to a text file to be used for development");
 
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
@@ -222,12 +220,12 @@ public class RuneLite
 		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
-		SplashScreen.stage(0, "Retrieving client", "");
+		SplashScreen.stage(0, "Preparing RuneScape", "");
 
 		try
 		{
 			final RuntimeConfigLoader runtimeConfigLoader = new RuntimeConfigLoader(okHttpClient);
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), runtimeConfigLoader, (String) options.valueOf("jav_config"));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, runtimeConfigLoader, (String) options.valueOf("jav_config"));
 
 			new Thread(() ->
 			{
@@ -252,8 +250,6 @@ public class RuneLite
 				}
 			}
 
-			PROFILES_DIR.mkdirs();
-
 			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
 				RuneLiteProperties.getVersion(), MoreObjects.firstNonNull(RuneLiteProperties.getLauncherVersion(), "unknown"),
 				args.length == 0 ? "none" : String.join(" ", args));
@@ -272,7 +268,10 @@ public class RuneLite
 				options.has("safe-mode"),
 				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
-				options.valueOf(configfile)));
+				(String) options.valueOf("profile"),
+				options.has(insecureWriteCredentials),
+				options.has("noupdate")
+			));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -296,50 +295,36 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
-		// Load RuneLite or Vanilla client
-		final boolean isOutdated = client == null;
-
-		if (!isOutdated)
-		{
-			// Inject members into client
-			injector.injectMembers(client);
-		}
+		// Inject members into client
+		injector.injectMembers(client);
 
 		setupSystemProps();
+		setupCompilerControl();
 
 		// Start the applet
-		if (applet != null)
-		{
-			copyJagexCache();
+		copyJagexCache();
 
-			// Client size must be set prior to init
-			applet.setSize(Constants.GAME_FIXED_SIZE);
+		// Client size must be set prior to init
+		var applet = (Applet) client;
+		applet.setSize(Constants.GAME_FIXED_SIZE);
 
-			System.setProperty("jagex.disableBouncyCastle", "true");
-			// Change user.home so the client places jagexcache in the .runelite directory
-			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
-			try
-			{
-				applet.init();
-			}
-			finally
-			{
-				System.setProperty("user.home", oldHome);
-			}
+		System.setProperty("jagex.disableBouncyCastle", "true");
+		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
-			applet.start();
-		}
+		applet.init();
+		applet.start();
 
 		SplashScreen.stage(.57, null, "Loading configuration");
+
+		// Load the session so that the session profiles can be loaded next
+		sessionManager.loadSession();
 
 		// Load user configuration
 		configManager.load();
 
-		// Load the session, including saved configuration
-		sessionManager.loadSession();
-
-		// Tell the plugin manager if client is outdated or not
-		pluginManager.setOutdated(isOutdated);
+		// Update check requires ConfigManager to be ready before it runs
+		Updater updater = injector.getInstance(Updater.class);
+		updater.update(); // will exit if an update is in progress
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -373,13 +358,10 @@ public class RuneLite
 		eventBus.register(configManager);
 		eventBus.register(discordService);
 
-		if (!isOutdated)
-		{
-			// Add core overlays
-			WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
-			overlayManager.add(worldMapOverlay.get());
-			overlayManager.add(tooltipOverlay.get());
-		}
+		// Add core overlays
+		WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
+		overlayManager.add(worldMapOverlay.get());
+		overlayManager.add(tooltipOverlay.get());
 
 		// Start plugins
 		pluginManager.startPlugins();
@@ -390,7 +372,11 @@ public class RuneLite
 
 		if (telemetryClient != null)
 		{
-			telemetryClient.submitTelemetry();
+			scheduledExecutorService.execute(() ->
+			{
+				telemetryClient.submitTelemetry();
+				telemetryClient.submitVmErrors(LOGS_DIR);
+			});
 		}
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
@@ -477,45 +463,23 @@ public class RuneLite
 				return res;
 			});
 
-		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
+		try
 		{
-			setupInsecureTrustManager(builder);
+			if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
+			{
+				setupInsecureTrustManager(builder);
+			}
+			else
+			{
+				setupTrustManager(builder);
+			}
+		}
+		catch (KeyStoreException | KeyManagementException | NoSuchAlgorithmException e)
+		{
+			log.warn("error setting up trust manager", e);
 		}
 
 		return builder.build();
-	}
-
-	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)
-	{
-		try
-		{
-			X509TrustManager trustManager = new X509TrustManager()
-			{
-				@Override
-				public void checkClientTrusted(X509Certificate[] chain, String authType)
-				{
-				}
-
-				@Override
-				public void checkServerTrusted(X509Certificate[] chain, String authType)
-				{
-				}
-
-				@Override
-				public X509Certificate[] getAcceptedIssuers()
-				{
-					return new X509Certificate[0];
-				}
-			};
-
-			SSLContext sc = SSLContext.getInstance("SSL");
-			sc.init(null, new TrustManager[]{trustManager}, new SecureRandom());
-			okHttpClientBuilder.sslSocketFactory(sc.getSocketFactory(), trustManager);
-		}
-		catch (NoSuchAlgorithmException | KeyManagementException ex)
-		{
-			log.warn("unable to setup insecure trust manager", ex);
-		}
 	}
 
 	private static void copyJagexCache()
@@ -564,4 +528,200 @@ public class RuneLite
 			System.setProperty(key, value);
 		}
 	}
+
+	private void setupCompilerControl()
+	{
+		try
+		{
+			var file = Files.createTempFile("rl_compilercontrol", "");
+			try
+			{
+				if (runtimeConfig != null && runtimeConfig.getCompilerControl() != null)
+				{
+					var json = gson.toJson(runtimeConfig.getCompilerControl());
+					Files.writeString(file, json, StandardCharsets.UTF_8);
+				}
+				else
+				{
+					try (var in = RuneLite.class.getResourceAsStream("/compilercontrol.json"))
+					{
+						Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
+					}
+				}
+
+				ManagementFactory.getPlatformMBeanServer().invoke(
+					new ObjectName("com.sun.management:type=DiagnosticCommand"),
+					"compilerDirectivesAdd",
+					new Object[]{new String[]{file.toFile().getAbsolutePath()}},
+					new String[]{String[].class.getName()});
+			}
+			finally
+			{
+				Files.delete(file);
+			}
+		}
+		catch (Exception e)
+		{
+			log.info("Failed to set compiler control", e);
+		}
+	}
+
+	// region trust manager
+	private static TrustManager[] loadTrustManagers(String trustStoreType) throws KeyStoreException, NoSuchAlgorithmException
+	{
+		// javax.net.ssl.trustStoreType controls which keystore implementation the TrustStoreManager uses
+		String old;
+		if (trustStoreType != null)
+		{
+			old = System.setProperty("javax.net.ssl.trustStoreType", trustStoreType);
+		}
+		else
+		{
+			old = System.clearProperty("javax.net.ssl.trustStoreType");
+		}
+
+		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		trustManagerFactory.init((KeyStore) null);
+
+		TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+
+		// restore old value
+		if (old == null)
+		{
+			System.clearProperty("javax.net.ssl.trustStoreType");
+		}
+		else
+		{
+			System.setProperty("javax.net.ssl.trustStoreType", old);
+		}
+
+		return trustManagers;
+	}
+
+	private static void setupTrustManager(OkHttpClient.Builder okHttpClientBuilder) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException
+	{
+		if (OSType.getOSType() != OSType.Windows)
+		{
+			return;
+		}
+
+		// Use the Windows Trusted Root Certificate Authorities in addition to the bundled cacerts.
+		// Corporations, schools, antivirus, and malware commonly install root certificates onto
+		// machines for security or other reasons that are not present in the JRE certificate store.
+		TrustManager[] jreTms = loadTrustManagers(null);
+		TrustManager[] windowsTms = loadTrustManagers("Windows-ROOT");
+
+		TrustManager[] trustManagers = new TrustManager[jreTms.length + windowsTms.length];
+		System.arraycopy(jreTms, 0, trustManagers, 0, jreTms.length);
+		System.arraycopy(windowsTms, 0, trustManagers, jreTms.length, windowsTms.length);
+
+		// Even though SSLContext.init() accepts TrustManager[], Sun's SSLContextImpl only picks the first
+		// X509TrustManager and uses that.
+		X509TrustManager combiningTrustManager = new X509TrustManager()
+		{
+			@Override
+			public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException
+			{
+				CertificateException exception = null;
+				for (TrustManager trustManager : trustManagers)
+				{
+					if (trustManager instanceof X509TrustManager)
+					{
+						try
+						{
+							((X509TrustManager) trustManager).checkClientTrusted(chain, authType);
+							// accept if any of the trust managers accept the certificate
+							return;
+						}
+						catch (CertificateException ex)
+						{
+							exception = ex;
+						}
+					}
+				}
+
+				if (exception != null)
+				{
+					throw exception;
+				}
+
+				throw new CertificateException("no X509TrustManagers present");
+			}
+
+			@Override
+			public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException
+			{
+				CertificateException exception = null;
+				for (TrustManager trustManager : trustManagers)
+				{
+					if (trustManager instanceof X509TrustManager)
+					{
+						try
+						{
+							((X509TrustManager) trustManager).checkServerTrusted(chain, authType);
+							// accept if any of the trust managers accept the certificate
+							return;
+						}
+						catch (CertificateException ex)
+						{
+							exception = ex;
+						}
+					}
+				}
+
+				if (exception != null)
+				{
+					throw exception;
+				}
+
+				throw new CertificateException("no X509TrustManagers present");
+			}
+
+			@Override
+			public X509Certificate[] getAcceptedIssuers()
+			{
+				List<X509Certificate> certificates = new ArrayList<>();
+				for (TrustManager trustManager : trustManagers)
+				{
+					if (trustManager instanceof X509TrustManager)
+					{
+						certificates.addAll(Arrays.asList(((X509TrustManager) trustManager).getAcceptedIssuers()));
+					}
+				}
+				return certificates.toArray(new X509Certificate[0]);
+			}
+		};
+
+		SSLContext sc = SSLContext.getInstance("TLS");
+		sc.init(null, new TrustManager[]{combiningTrustManager}, new SecureRandom());
+		okHttpClientBuilder.sslSocketFactory(sc.getSocketFactory(), combiningTrustManager);
+	}
+
+	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder) throws NoSuchAlgorithmException, KeyManagementException
+	{
+		// the insecure trust manager trusts everything
+		X509TrustManager trustManager = new X509TrustManager()
+		{
+			@Override
+			public void checkClientTrusted(X509Certificate[] chain, String authType)
+			{
+			}
+
+			@Override
+			public void checkServerTrusted(X509Certificate[] chain, String authType)
+			{
+			}
+
+			@Override
+			public X509Certificate[] getAcceptedIssuers()
+			{
+				return new X509Certificate[0];
+			}
+		};
+
+		SSLContext sc = SSLContext.getInstance("TLS");
+		sc.init(null, new TrustManager[]{trustManager}, new SecureRandom());
+		okHttpClientBuilder.sslSocketFactory(sc.getSocketFactory(), trustManager);
+	}
+	// endregion
 }

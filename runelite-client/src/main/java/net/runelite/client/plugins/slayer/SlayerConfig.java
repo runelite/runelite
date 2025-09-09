@@ -30,6 +30,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 
 @ConfigGroup(SlayerConfig.GROUP_NAME)
@@ -48,8 +49,8 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "infobox",
-		name = "Task InfoBox",
-		description = "Display task information in an InfoBox"
+		name = "Task infobox",
+		description = "Display task information in an infobox."
 	)
 	default boolean showInfobox()
 	{
@@ -59,8 +60,8 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "itemoverlay",
-		name = "Count on Items",
-		description = "Display task count remaining on slayer items"
+		name = "Count on items",
+		description = "Display task count remaining on slayer items."
 	)
 	default boolean showItemOverlay()
 	{
@@ -71,18 +72,18 @@ public interface SlayerConfig extends Config
 		position = 3,
 		keyName = "superiornotification",
 		name = "Superior foe notification",
-		description = "Toggles notifications on superior foe encounters"
+		description = "Toggles notifications on superior foe encounters."
 	)
-	default boolean showSuperiorNotification()
+	default Notification showSuperiorNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		position = 4,
 		keyName = "statTimeout",
-		name = "InfoBox Expiry",
-		description = "Set the time until the InfoBox expires"
+		name = "Infobox expiry",
+		description = "Set the time until the infobox expires."
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -94,7 +95,7 @@ public interface SlayerConfig extends Config
 		position = 5,
 		keyName = "highlightHull",
 		name = "Highlight hull",
-		description = "Configures whether the NPC hull should be highlighted"
+		description = "Configures whether the NPC hull should be highlighted."
 	)
 	default boolean highlightHull()
 	{
@@ -105,7 +106,7 @@ public interface SlayerConfig extends Config
 		position = 6,
 		keyName = "highlightTile",
 		name = "Highlight tile",
-		description = "Configures whether the NPC tile should be highlighted"
+		description = "Configures whether the NPC tile should be highlighted."
 	)
 	default boolean highlightTile()
 	{
@@ -116,7 +117,7 @@ public interface SlayerConfig extends Config
 		position = 7,
 		keyName = "highlightOutline",
 		name = "Highlight outline",
-		description = "Configures whether or not the NPC outline should be highlighted"
+		description = "Configures whether or not the NPC outline should be highlighted."
 	)
 	default boolean highlightOutline()
 	{
@@ -128,7 +129,7 @@ public interface SlayerConfig extends Config
 		position = 8,
 		keyName = "targetColor",
 		name = "Target color",
-		description = "Color of the highlighted targets"
+		description = "Color of the highlighted targets."
 	)
 	default Color getTargetColor()
 	{
@@ -138,8 +139,8 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 9,
 		keyName = "weaknessPrompt",
-		name = "Show Monster Weakness",
-		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
+		name = "Show monster weakness",
+		description = "Show an overlay on a monster when it is weak enough to finish off (only lizards, gargoyles, rockslugs & zygomites)."
 	)
 	default boolean weaknessPrompt()
 	{
@@ -149,8 +150,8 @@ public interface SlayerConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "taskCommand",
-		name = "Task Command",
-		description = "Configures whether the slayer task command is enabled<br> !task"
+		name = "Task command",
+		description = "Configures whether the slayer task command is enabled: !task"
 	)
 	default boolean taskCommand()
 	{

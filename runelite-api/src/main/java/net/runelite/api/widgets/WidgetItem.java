@@ -42,22 +42,13 @@ public class WidgetItem
 	/**
 	 * The ID of the item represented.
 	 *
-	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	private final int id;
 	/**
 	 * The quantity of the represented item.
 	 */
 	private final int quantity;
-	/**
-	 * The index position of this WidgetItem inside its parents
-	 * WidgetItem array.
-	 *
-	 * @see Widget#getWidgetItems()
-	 * @deprecated use getWidget().getIndex() instead for the if3 inventory
-	 */
-	@Deprecated
-	private final int index;
 	/**
 	 * The area where the widget is drawn on the canvas.
 	 */

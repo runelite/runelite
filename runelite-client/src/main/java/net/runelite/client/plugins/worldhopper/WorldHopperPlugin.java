@@ -48,13 +48,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
 import net.runelite.api.Client;
+import net.runelite.api.EnumID;
 import net.runelite.api.Friend;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NameableContainer;
-import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.events.ChatMessage;
@@ -64,7 +64,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -215,15 +217,14 @@ public class WorldHopperPlugin extends Plugin
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+		// populate initial world list
+		hopperExecutorService.execute(this::updateList);
 		// Run the first-run ping
 		hopperExecutorService.execute(this::pingInitialWorlds);
 
-		// Give some initial delay - this won't run until after pingInitialWorlds finishes from tick() anyway
+		// Give some initial delay - this won't run until after pingInitialWorlds finishes anyway
 		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
 		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
-
-		// populate initial world list
-		updateList();
 	}
 
 	@Override
@@ -292,7 +293,7 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if ("hop".equals(commandExecuted.getCommand()))
+		if ("hop".equalsIgnoreCase(commandExecuted.getCommand()))
 		{
 			int worldNumber;
 			try
@@ -367,11 +368,11 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVROITE_1
-			|| varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVROITE_2)
+		if (varbitChanged.getVarbitId() == VarbitID.WORLDSWITCHER_FAVOURITE_1
+			|| varbitChanged.getVarbitId() == VarbitID.WORLDSWITCHER_FAVOURITE_2)
 		{
-			favoriteWorld1 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVROITE_1);
-			favoriteWorld2 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVROITE_2);
+			favoriteWorld1 = client.getVarbitValue(VarbitID.WORLDSWITCHER_FAVOURITE_1);
+			favoriteWorld2 = client.getVarbitValue(VarbitID.WORLDSWITCHER_FAVOURITE_2);
 			SwingUtilities.invokeLater(panel::updateList);
 		}
 	}
@@ -385,11 +386,11 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		final int componentId = event.getActionParam1();
-		int groupId = WidgetInfo.TO_GROUP(componentId);
+		int groupId = WidgetUtil.componentToInterface(componentId);
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId()
-			|| componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId())
+		if (groupId == InterfaceID.FRIENDS || groupId == InterfaceID.CHATCHANNEL_CURRENT
+			|| componentId == InterfaceID.ClansSidepanel.PLAYERLIST || componentId == InterfaceID.ClansGuestSidepanel.PLAYERLIST)
 		{
 			boolean after;
 
@@ -502,7 +503,11 @@ public class WorldHopperPlugin extends Plugin
 		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult != null)
 		{
-			SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+			clientThread.invokeLater(() ->
+			{
+				var locationEnum = client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState() ? client.getEnum(EnumID.WORLD_LOCATIONS) : null;
+				SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds(), locationEnum));
+			});
 		}
 	}
 
@@ -705,7 +710,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
+		if (client.getWidget(InterfaceID.Worldswitcher.BUTTONS) == null)
 		{
 			client.openWorldHopper();
 
@@ -859,7 +864,11 @@ public class WorldHopperPlugin extends Plugin
 
 		int ping = ping(world);
 		log.trace("Ping for world {} is: {}", world.getId(), ping);
-		SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
+
+		if (panel.isActive())
+		{
+			SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
+		}
 	}
 
 	/**
@@ -877,14 +886,24 @@ public class WorldHopperPlugin extends Plugin
 		final World currentWorld = worldResult.findWorld(client.getWorld());
 		if (currentWorld == null)
 		{
-			log.debug("unable to find current world: {}", client.getWorld());
+			log.trace("unable to find current world: {}", client.getWorld());
 			return;
 		}
 
-		currentPing = ping(currentWorld);
+		int ping = ping(currentWorld);
 		log.trace("Ping for current world is: {}", currentPing);
 
-		SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
+		if (ping < 0)
+		{
+			return;
+		}
+
+		currentPing = ping;
+
+		if (panel.isActive())
+		{
+			SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
+		}
 	}
 
 	Integer getStoredPing(World world)

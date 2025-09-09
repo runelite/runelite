@@ -73,9 +73,11 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	@Value
 	private static class ItemIcon
 	{
-		private final int modelId;
-		private final short[] colorsToReplace;
-		private final short[] texturesToReplace;
+		int modelId;
+		int ambient;
+		int contrast;
+		short[] colorsToReplace;
+		short[] texturesToReplace;
 	}
 
 	@Inject
@@ -316,6 +318,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			{
 				// Check if the results already contain the same item image
 				ItemIcon itemIcon = new ItemIcon(itemComposition.getInventoryModel(),
+					itemComposition.getAmbient(), itemComposition.getContrast(),
 					itemComposition.getColorToReplaceWith(), itemComposition.getTextureToReplaceWith());
 				if (itemIcons.contains(itemIcon))
 				{

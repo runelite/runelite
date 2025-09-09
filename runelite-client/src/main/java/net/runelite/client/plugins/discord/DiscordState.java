@@ -36,12 +36,14 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 
 /**
  * This class contains data about currently active discord state.
  */
+@Slf4j
 class DiscordState
 {
 	@Data
@@ -58,19 +60,22 @@ class DiscordState
 	private final String runeliteTitle;
 	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
+	private final boolean safeMode;
 
 	@Inject
 	private DiscordState(
 		final DiscordService discordService,
 		final DiscordConfig config,
 		@Named("runelite.title") final String runeliteTitle,
-		@Named("runelite.version") final String runeliteVersion
+		@Named("runelite.version") final String runeliteVersion,
+		@Named("safeMode") boolean safeMode
 	)
 	{
 		this.discordService = discordService;
 		this.config = config;
 		this.runeliteTitle = runeliteTitle;
 		this.runeliteVersion = runeliteVersion;
+		this.safeMode = safeMode;
 	}
 
 	/**
@@ -121,6 +126,8 @@ class DiscordState
 			.compare(b.getUpdated(), a.getUpdated())
 			.result());
 
+		log.debug("Events: {}", events);
+
 		updatePresenceWithLatestEvent();
 	}
 
@@ -164,10 +171,16 @@ class DiscordState
 		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
 		final String versionShortHand = runeliteVersion.replace("-SNAPSHOT", "+");
 
+		StringBuilder largeImageTooltipText = new StringBuilder(runeliteTitle).append(" v").append(versionShortHand);
+		if (safeMode)
+		{
+			largeImageTooltipText.append(" (safe mode)");
+		}
+
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
-			.largeImageText(runeliteTitle + " v" + versionShortHand)
+			.largeImageText(largeImageTooltipText.toString())
 			.smallImageKey(imageKey);
 
 		final Instant startTime;
@@ -177,15 +190,12 @@ class DiscordState
 				startTime = null;
 				break;
 			case TOTAL:
-				// We are tracking total time spent instead of per activity time so try to find
-				// root event as this indicates start of tracking and find last updated one
-				// to determine correct state we are in
+				// Use the start time of the IN_GAME event, which will always be
+				// the lowest.
 				startTime = events.stream()
-					.filter(e -> e.getType().isRoot())
-					.sorted((a, b) -> b.getUpdated().compareTo(a.getUpdated()))
 					.map(EventWithTime::getStart)
-					.findFirst()
-					.orElse(event.getStart());
+					.min(Instant::compareTo)
+					.get();
 				break;
 			case ACTIVITY:
 			default:

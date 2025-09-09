@@ -48,7 +48,7 @@ public class ItemManagerTest
 	{
 		File dumpDir = folder.newFolder(),
 			javaDir = folder.newFolder();
-		
+
 		Store store = new Store(StoreLocation.LOCATION);
 		store.load();
 
