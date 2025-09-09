@@ -1,8 +1,6 @@
-.id                 3900
-.int_stack_count    5
-.string_stack_count 0
-.int_var_count      11
-.string_var_count   0
+.id                       3900
+.int_arg_count            5
+.obj_arg_count            0
    iconst                 896
    sconst                 "innerZoomLimit"
    runelite_callback     

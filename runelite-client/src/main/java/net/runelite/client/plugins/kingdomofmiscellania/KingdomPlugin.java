@@ -28,19 +28,20 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import static net.runelite.api.ItemID.TEAK_CHEST;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -110,10 +111,10 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.KINGDOM_COFFER || event.getVarbitId() == Varbits.KINGDOM_APPROVAL)
+		if (event.getVarbitId() == VarbitID.MISC_COFFERS || event.getVarbitId() == VarbitID.MISC_APPROVAL)
 		{
-			final int coffer = client.getVarbitValue(Varbits.KINGDOM_COFFER);
-			final int approval = client.getVarbitValue(Varbits.KINGDOM_APPROVAL);
+			final int coffer = client.getVarbitValue(VarbitID.MISC_COFFERS);
+			final int approval = client.getVarbitValue(VarbitID.MISC_APPROVAL);
 
 			if (isThroneOfMiscellaniaCompleted()
 				&& (isInKingdom() || coffer > 0 && approval > 0)
@@ -124,7 +125,7 @@ public class KingdomPlugin extends Plugin
 				setApproval(approval);
 			}
 		}
-		else if (event.getVarpId() == VarPlayer.THRONE_OF_MISCELLANIA.getId())
+		else if (event.getVarpId() == VarPlayerID.MISC_QUEST)
 		{
 			processInfobox();
 		}
@@ -196,7 +197,7 @@ public class KingdomPlugin extends Plugin
 	{
 		if (counter == null)
 		{
-			counter = new KingdomCounter(itemManager.getImage(TEAK_CHEST), this);
+			counter = new KingdomCounter(itemManager.getImage(ItemID.POH_TREASURE_TEAK), this);
 			infoBoxManager.addInfoBox(counter);
 			log.debug("Added Kingdom Infobox");
 		}
@@ -214,7 +215,7 @@ public class KingdomPlugin extends Plugin
 
 	private int estimateCoffer(Instant lastChanged, int lastCoffer)
 	{
-		int daysSince = (int) Duration.between(lastChanged, Instant.now()).toDays();
+		int daysSince = getNumbersOfDaysPassed(lastChanged);
 		int maxDailyWithdrawal = isRoyalTroubleCompleted() ? MAX_WITHDRAWAL_ROYAL_TROUBLE : MAX_WITHDRAWAL_BASE;
 		int maxDailyThreshold = maxDailyWithdrawal * 10;
 
@@ -227,11 +228,18 @@ public class KingdomPlugin extends Plugin
 
 	private int estimateApproval(Instant lastChanged, int lastApproval)
 	{
-		int daysSince = (int) Duration.between(lastChanged, Instant.now()).toDays();
+		int daysSince = getNumbersOfDaysPassed(lastChanged);
 		float dailyPercentage = isRoyalTroubleCompleted() ? APPROVAL_DECREMENT_ROYAL_TROUBLE : APPROVAL_DECREMENT_BASE;
 
 		lastApproval -= (int) (daysSince * dailyPercentage * MAX_APPROVAL);
 		return Math.max(lastApproval, 0);
+	}
+
+	private static int getNumbersOfDaysPassed(Instant lastChanged)
+	{
+		lastChanged = lastChanged.truncatedTo(ChronoUnit.DAYS);
+		var now = Instant.now().truncatedTo(ChronoUnit.DAYS);
+		return (int) Duration.between(lastChanged, now).toDays();
 	}
 
 	private boolean isInKingdom()
@@ -242,7 +250,7 @@ public class KingdomPlugin extends Plugin
 
 	private boolean isThroneOfMiscellaniaCompleted()
 	{
-		return client.getVarpValue(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
+		return client.getVarpValue(VarPlayerID.MISC_QUEST) > 0;
 	}
 
 	private boolean isRoyalTroubleCompleted()

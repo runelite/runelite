@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -51,14 +52,14 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -428,6 +429,10 @@ public class PartyPlugin extends Plugin
 		{
 			partyData.setVengeanceActive(event.getVengeanceActive());
 		}
+		if (event.getMemberColor() != null)
+		{
+			partyData.setColor(event.getMemberColor());
+		}
 
 		final PartyMember member = party.getMemberById(event.getMemberId());
 		if (event.getCharacterName() != null)
@@ -437,12 +442,10 @@ public class PartyPlugin extends Plugin
 			{
 				member.setDisplayName(name);
 				member.setLoggedIn(true);
-				partyData.setColor(ColorUtil.fromObject(name));
 			}
 			else
 			{
 				member.setLoggedIn(false);
-				partyData.setColor(Color.WHITE);
 			}
 		}
 
@@ -493,56 +496,69 @@ public class PartyPlugin extends Plugin
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
-		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
-		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
+		final int specEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY) / 10;
+		final boolean vengActive = client.getVarbitValue(VarbitID.VENGEANCE_REBOUND) == 1;
+		final Color memberColor = getLocalMemberColor();
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
 
-		boolean shouldSend = false;
+		boolean hasChange = false;
+		boolean canDelay = !forceSend;
 		final StatusUpdate update = new StatusUpdate();
 		if (forceSend || !characterName.equals(lastStatus.getCharacterName()))
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setCharacterName(characterName);
 		}
 		if (forceSend || healthCurrent != lastStatus.getHealthCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthCurrent(healthCurrent);
 		}
 		if (forceSend || healthMax != lastStatus.getHealthMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthMax(healthMax);
 		}
 		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerCurrent(prayerCurrent);
 		}
 		if (forceSend || prayerMax != lastStatus.getPrayerMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerMax(prayerMax);
 		}
 		if (forceSend || runEnergy != lastStatus.getRunEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setRunEnergy(runEnergy);
 		}
 		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
+			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() == 10; // delay regen
 			update.setSpecEnergy(specEnergy);
 		}
 		if (forceSend || vengActive != lastStatus.getVengeanceActive())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setVengeanceActive(vengActive);
 		}
+		if (forceSend || !Objects.equals(memberColor, lastStatus.getMemberColor()))
+		{
+			hasChange = true;
+			update.setMemberColor(memberColor);
+		}
 
-		if (shouldSend)
+		if (canDelay && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
+		{
+			return;
+		}
+
+		if (hasChange)
 		{
 			party.send(update);
 			// non-null values for next-tick comparison
@@ -554,7 +570,8 @@ public class PartyPlugin extends Plugin
 				prayerMax,
 				runEnergy,
 				specEnergy,
-				vengActive
+				vengActive,
+				memberColor
 			);
 		}
 	}
@@ -591,7 +608,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (!developerMode || !commandExecuted.getCommand().equals("partyinfo"))
+		if (!developerMode || !commandExecuted.getCommand().equalsIgnoreCase("partyinfo"))
 		{
 			return;
 		}
@@ -642,5 +659,31 @@ public class PartyPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;
 		});
+	}
+
+	private Color getLocalMemberColor()
+	{
+		Color memberColor = config.memberColor();
+		if (memberColor == null)
+		{
+			PartyMember local = party.getLocalMember();
+			if (local == null)
+			{
+				return null;
+			}
+
+			String localName = local.getDisplayName();
+			memberColor = ColorUtil.fromObject(localName);
+			log.debug("Computed member color {} for {}", memberColor, localName);
+			config.setMemberColor(memberColor);
+		}
+
+		return memberColor;
+	}
+
+	private static int messageFreq(int partySize)
+	{
+		// introduce a tick delay for each member >6
+		return Math.max(1, partySize - 6);
 	}
 }

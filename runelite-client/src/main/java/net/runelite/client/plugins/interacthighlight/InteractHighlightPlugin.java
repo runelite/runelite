@@ -31,6 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -46,8 +47,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -142,7 +143,6 @@ public class InteractHighlightPlugin extends Plugin
 	{
 		switch (menuOptionClicked.getMenuAction())
 		{
-			case ITEM_USE_ON_GAME_OBJECT:
 			case WIDGET_TARGET_ON_GAME_OBJECT:
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:
@@ -159,7 +159,6 @@ public class InteractHighlightPlugin extends Plugin
 				gameCycle = client.getGameCycle();
 				break;
 			}
-			case ITEM_USE_ON_NPC:
 			case WIDGET_TARGET_ON_NPC:
 			case NPC_FIRST_OPTION:
 			case NPC_SECOND_OPTION:
@@ -170,24 +169,18 @@ public class InteractHighlightPlugin extends Plugin
 				interactedObject = null;
 				interactedNpc = menuOptionClicked.getMenuEntry().getNpc();
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
-					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC && WidgetInfo.TO_GROUP(client.getSelectedWidget().getId()) == WidgetID.SPELLBOOK_GROUP_ID;
+					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC
+						&& client.getSelectedWidget() != null
+						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.MAGIC_SPELLBOOK;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;
 			}
 			// Any menu click which clears an interaction
 			case WALK:
-			case ITEM_USE:
 			case WIDGET_TARGET_ON_WIDGET:
-			case ITEM_USE_ON_GROUND_ITEM:
 			case WIDGET_TARGET_ON_GROUND_ITEM:
-			case ITEM_USE_ON_PLAYER:
 			case WIDGET_TARGET_ON_PLAYER:
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
 			case GROUND_ITEM_FIRST_OPTION:
 			case GROUND_ITEM_SECOND_OPTION:
 			case GROUND_ITEM_THIRD_OPTION:
@@ -207,8 +200,10 @@ public class InteractHighlightPlugin extends Plugin
 
 	TileObject findTileObject(int x, int y, int id)
 	{
+		x += (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
+		y += (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
+		Tile[][][] tiles = scene.getExtendedTiles();
 		Tile tile = tiles[client.getPlane()][x][y];
 		if (tile != null)
 		{

@@ -46,7 +46,7 @@ public class OkHttpTest
 {
 	@Rule
 	public TemporaryFolder cacheFolder = new TemporaryFolder();
-	
+
 	@Rule
 	public MockWebServer server = new MockWebServer();
 

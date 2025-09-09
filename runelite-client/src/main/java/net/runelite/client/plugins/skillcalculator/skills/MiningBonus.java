@@ -31,7 +31,7 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum MiningBonus implements SkillBonus
 {
-	PROSPECTOR_KIT("Prospector Kit (+2.5%)", 1.025f),
+	PROSPECTOR_KIT("Prospector Kit", 1.025f),
 	;
 
 	private final String name;

@@ -30,11 +30,11 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -44,6 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,6 +62,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_RING_OF_FORGING_ONE = "You can smelt one more piece of iron ore before a ring melts.";
 	private static final String USED_RING_OF_FORGING = "You retrieve a bar of iron.";
 	private static final String BREAK_RING_OF_FORGING = "<col=7f007f>Your Ring of Forging has melted.</col>";
+	private static final String USED_RING_OF_FORGING_VARROCK_PLATEBODY = "The Varrock platebody enabled you to smelt your next ore simultaneously.";
 
 	private static final String CHECK_AMULET_OF_CHEMISTRY = "Your amulet of chemistry has 5 charges left.";
 	private static final String CHECK_AMULET_OF_CHEMISTRY_1 = "Your amulet of chemistry has 1 charge left.";
@@ -87,6 +89,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_BRACELET_OF_SLAUGHTER_1 = "Your bracelet of slaughter has 1 charge left.";
 	private static final String ACTIVATE_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 16 charges left.";
 	private static final String BREAK_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. <col=ff0000>It then crumbles to dust.</col>";
+	private static final String REGENERATE_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. <col=047f06>It then regenerates itself to full charge!</col>";
 
 	private static final String CHECK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet has 6 charges left.";
 	private static final String CHECK_EXPEDITIOUS_BRACELET_1 = "Your expeditious bracelet has 1 charge left.";
@@ -98,6 +101,9 @@ public class ItemChargePluginTest
 	private static final String CHECK_BLOOD_ESSENCE = "Your blood essence has 56 charges remaining";
 	private static final String CHECK_BRACELET_OF_CLAY = "You can mine 13 more pieces of soft clay before your bracelet crumbles to dust.";
 	private static final String USED_BRACELET_OF_CLAY = "You manage to mine some clay.";
+
+	private static final String USED_BRACELET_OF_CLAY_TRAHAEARN = "You manage to mine some soft clay.";
+
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
 
 	@Mock
@@ -180,6 +186,25 @@ public class ItemChargePluginTest
 	}
 
 	@Test
+	public void testRofTwo()
+	{
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(140);
+
+		// varrock platebody proc
+		ChatMessage chatMessageEffect = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING_VARROCK_PLATEBODY, "", 0);
+		// ring of forging proc
+		ChatMessage chatMessageUse = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING, "", 0);
+
+		itemChargePlugin.onChatMessage(chatMessageEffect);
+		itemChargePlugin.onChatMessage(chatMessageUse);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 138);
+
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(138);
+		itemChargePlugin.onChatMessage(chatMessageUse);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 137);
+	}
+
+	@Test
 	public void testRofFull()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
@@ -191,22 +216,23 @@ public class ItemChargePluginTest
 	public void testRof()
 	{
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(90);
-		// Create equipment inventory with ring of forging
-		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
-		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
-		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
-		// Run message
+
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
+
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 89);
 	}
 
 	@Test
 	public void testRofBreak()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
-		itemChargePlugin.onChatMessage(chatMessage);
+		// Run message to break ring and then use ring, to simulate actual client behavior
+		ChatMessage breakMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
+		itemChargePlugin.onChatMessage(breakMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 141);
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(141);
+		ChatMessage useMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
+		itemChargePlugin.onChatMessage(useMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
 	}
 
@@ -396,6 +422,14 @@ public class ItemChargePluginTest
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 30);
 	}
 
+	@Test
+	public void testSlaughterRegenerate()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", REGENERATE_BRACELET_OF_SLAUGHTER, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 30);
+	}
+
 	// Expeditious Bracelet
 	@Test
 	public void testExpeditiousCheck()
@@ -468,8 +502,8 @@ public class ItemChargePluginTest
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, Integer.class)).thenReturn(25);
 		// Create equipment inventory with bracelet of clay
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
-		when(equipmentItemContainer.contains(ItemID.BRACELET_OF_CLAY)).thenReturn(true);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.JEWL_BRACELET_OF_CLAY)).thenReturn(true);
 		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
 		// Run message
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY, "", 0);
@@ -483,5 +517,53 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
+	}
+
+	@Test
+	public void testBraceletOfClayUseTrahaearn()
+	{
+		// Set bracelet of clay charges to 13
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, Integer.class))
+			.thenReturn(13);
+
+		// Equip bracelet of clay
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.WORN))
+			.thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.JEWL_BRACELET_OF_CLAY)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+
+		// Set inventory to 2 free slots
+		ItemContainer inventoryItemContainer = mock(ItemContainer.class);
+		when(inventoryItemContainer.count()).thenReturn(26);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventoryItemContainer);
+
+		// Verify bracelet of clay charges decreased
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 12);
+	}
+
+	@Test
+	public void testBraceletOfClayUseTrahaearn1FreeInvSlot()
+	{
+		// Equip bracelet of clay
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.WORN))
+			.thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.JEWL_BRACELET_OF_CLAY))
+			.thenReturn(true);
+
+		// Set inventory to 1 free slots
+		ItemContainer inventoryItemContainer = mock(ItemContainer.class);
+		when(inventoryItemContainer.count())
+			.thenReturn(27);
+		when(client.getItemContainer(InventoryID.INV))
+			.thenReturn(inventoryItemContainer);
+
+		// Verify bracelet of clay charges were not changed
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager, Mockito.times(0)).setRSProfileConfiguration(Mockito.anyString(), Mockito.anyString(), Mockito.anyInt());
 	}
 }

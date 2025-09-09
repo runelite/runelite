@@ -28,7 +28,6 @@ package net.runelite.client.plugins.motherlode;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
 
 @ConfigGroup("motherlode")
 public interface MotherlodeConfig extends Config
@@ -54,72 +53,21 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "Configures the time until statistics are reset"
-	)
-	@Units(Units.MINUTES)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-		keyName = "showSack",
-		name = "Show pay-dirt sack",
-		description = "Configures whether the pay-dirt sack is displayed or not."
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
-	)
-	default boolean showMiningStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showDepositsLeft",
-		name = "Show deposits left",
-		description = "Displays deposits left before sack is full"
-	)
-	default boolean showDepositsLeft()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
-	)
-	default boolean showMiningState()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showGemsFound",
-		name = "Show gems found",
-		description = "Shows gems found during current mining session"
+		name = "Track gems found",
+		description = "Tracks gems found from mining in the loot tracker."
 	)
-	default boolean showGemsFound()
+	default boolean trackGemsFound()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "showOresFound",
-		name = "Show ores found",
-		description = "Shows the ores found during current mining session"
+		name = "Track ores found",
+		description = "Tracks ores found from mining in the loot tracker."
 	)
-	default boolean showOresFound()
+	default boolean trackOresFound()
 	{
 		return true;
 	}
@@ -127,20 +75,10 @@ public interface MotherlodeConfig extends Config
 	@ConfigItem(
 		keyName = "showBrokenStruts",
 		name = "Show broken struts",
-		description = "Shows broken water wheel struts"
+		description = "Shows broken water wheel struts."
 	)
 	default boolean showBrokenStruts()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showLootIcons",
-		name = "Show ore icons",
-		description = "Display collected ores and gems as item images instead of text"
-	)
-	default boolean showLootIcons()
-	{
-		return false;
 	}
 }

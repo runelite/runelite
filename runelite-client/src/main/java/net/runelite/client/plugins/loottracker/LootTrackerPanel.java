@@ -377,7 +377,7 @@ class LootTrackerPanel extends PluginPanel
 		}
 		else
 		{
-			subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
+			subTitle = actorLevel > 0 ? "(lvl-" + actorLevel + ")" : "";
 		}
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, kills);
 		sessionRecords.add(record);
@@ -473,6 +473,14 @@ class LootTrackerPanel extends PluginPanel
 			}
 		}
 
+		rebuild();
+	}
+
+	/**
+	 * Rebuilds loot entries when one of the price type config options is changed
+	 */
+	void updatePriceTypeDisplay()
+	{
 		rebuild();
 	}
 

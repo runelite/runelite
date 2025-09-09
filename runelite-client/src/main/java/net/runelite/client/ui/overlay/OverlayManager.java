@@ -40,14 +40,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.ProfileChanged;
 
 /**
  * Manages state of all game overlays
@@ -81,8 +81,8 @@ public class OverlayManager
 		// draw *earlier* so that they are closer to their
 		// defined position.
 		return aPos == OverlayPosition.DYNAMIC || aPos == OverlayPosition.DETACHED
-			? a.getPriority().compareTo(b.getPriority())
-			: b.getPriority().compareTo(a.getPriority());
+			? Float.compare(a.getPriority(), b.getPriority())
+			: Float.compare(b.getPriority(), a.getPriority());
 	};
 
 	/**
@@ -125,9 +125,16 @@ public class OverlayManager
 	}
 
 	@Subscribe
-	public void onPluginChanged(final PluginChanged event)
+	public void onProfileChanged(ProfileChanged event)
 	{
-		overlays.forEach(this::loadOverlay);
+		synchronized (this)
+		{
+			overlays.forEach((o) ->
+			{
+				loadOverlay(o);
+				o.revalidate();
+			});
+		}
 		rebuildOverlayLayers();
 	}
 
@@ -290,9 +297,9 @@ public class OverlayManager
 					break;
 				case ABOVE_WIDGETS:
 					// draw after each of the top level interfaces
-					overlayMap.put(WidgetID.FIXED_VIEWPORT_GROUP_ID << 16 | 0xffff, overlay);
-					overlayMap.put(WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID << 16 | 0xffff, overlay);
-					overlayMap.put(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID << 16 | 0xffff, overlay);
+					overlayMap.put(InterfaceID.TOPLEVEL << 16 | 0xffff, overlay);
+					overlayMap.put(InterfaceID.TOPLEVEL_OSRS_STRETCH << 16 | 0xffff, overlay);
+					overlayMap.put(InterfaceID.TOPLEVEL_PRE_EOC << 16 | 0xffff, overlay);
 					break;
 			}
 

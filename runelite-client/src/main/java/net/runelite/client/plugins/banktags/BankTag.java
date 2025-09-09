@@ -25,7 +25,21 @@
  */
 package net.runelite.client.plugins.banktags;
 
+/**
+ * A bank tag. Plugins may implement this interface to define custom bank tags.
+ * You may register a BankTag with {@link TagManager#registerTag(String, BankTag)} to
+ * make it searchable in the bank UI and tab interface.
+ *
+ * @see TagManager#registerTag(String, BankTag)
+ * @see TagManager#unregisterTag(String)
+ * @see BankTagsService#openBankTag(String, int)
+ */
 public interface BankTag
 {
+	/**
+	 * Test if an item is in the tag
+	 * @param itemId
+	 * @return
+	 */
 	boolean contains(int itemId);
 }

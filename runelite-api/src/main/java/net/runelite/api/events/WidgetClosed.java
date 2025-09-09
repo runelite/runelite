@@ -25,6 +25,7 @@
 package net.runelite.api.events;
 
 import lombok.Value;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.widgets.WidgetModalMode;
 import org.intellij.lang.annotations.MagicConstant;
 
@@ -37,6 +38,7 @@ public class WidgetClosed
 	/**
 	 * The ID of the interface that is closed
 	 */
+	@Interface
 	private final int groupId;
 
 	/**

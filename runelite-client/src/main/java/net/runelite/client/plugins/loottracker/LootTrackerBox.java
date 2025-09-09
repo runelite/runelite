@@ -50,7 +50,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -210,7 +210,12 @@ class LootTrackerBox extends JPanel
 				LootTrackerItem i = items.get(idx);
 				if (mappedItemId == i.getId())
 				{
-					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getHaPrice(), i.isIgnored()));
+					int qty = i.getQuantity() + item.getQuantity();
+					if (qty < 0)
+					{
+						qty = Integer.MAX_VALUE;
+					}
+					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), qty, i.getGePrice(), i.getHaPrice(), i.isIgnored()));
 					continue outer;
 				}
 			}
@@ -334,13 +339,11 @@ class LootTrackerBox extends JPanel
 
 				if (item.isIgnored())
 				{
-					Runnable addTransparency = () ->
+					itemImage.onLoaded(() ->
 					{
 						BufferedImage transparentImage = ImageUtil.alphaOffset(itemImage, .3f);
 						imageLabel.setIcon(new ImageIcon(transparentImage));
-					};
-					itemImage.onLoaded(addTransparency);
-					addTransparency.run();
+					});
 				}
 				else
 				{
@@ -379,7 +382,7 @@ class LootTrackerBox extends JPanel
 		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
 		final StringBuilder sb = new StringBuilder("<html>");
 		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
-		if (item.getId() == ItemID.COINS_995)
+		if (item.getId() == ItemID.COINS)
 		{
 			sb.append("</html>");
 			return sb.toString();
@@ -391,7 +394,7 @@ class LootTrackerBox extends JPanel
 			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
 		}
 
-		if (item.getId() == ItemID.PLATINUM_TOKEN)
+		if (item.getId() == ItemID.PLATINUM)
 		{
 			sb.append("</html>");
 			return sb.toString();

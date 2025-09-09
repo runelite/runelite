@@ -62,7 +62,6 @@ import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
@@ -71,8 +70,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -99,9 +97,6 @@ public class PluginManager
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 
-	@Setter
-	boolean isOutdated;
-
 	@Inject
 	@VisibleForTesting
 	PluginManager(
@@ -121,13 +116,7 @@ public class PluginManager
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
-	{
-		refreshPlugins();
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		refreshPlugins();
 	}
@@ -155,7 +144,7 @@ public class PluginManager
 				}
 				catch (PluginInstantiationException e)
 				{
-					log.warn("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
+					log.error("Error during starting/stopping plugin {}", plugin.getClass().getSimpleName(), e);
 				}
 			}
 		});
@@ -182,7 +171,7 @@ public class PluginManager
 		}
 		catch (Throwable e)
 		{
-			log.warn("Unable to get plugin config", e);
+			log.error("Unable to get plugin config", e);
 		}
 		return null;
 	}
@@ -218,7 +207,7 @@ public class PluginManager
 	{
 		try
 		{
-			for (Object config : getPluginConfigProxies(plugins))
+			for (Config config : getPluginConfigProxies(plugins))
 			{
 				configManager.setDefaultConfiguration(config, false);
 			}
@@ -229,7 +218,7 @@ public class PluginManager
 		}
 		catch (Throwable ex)
 		{
-			log.warn("Unable to reset plugin configuration", ex);
+			log.error("Unable to reset plugin configuration", ex);
 		}
 	}
 
@@ -249,8 +238,7 @@ public class PluginManager
 					}
 					catch (PluginInstantiationException ex)
 					{
-						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
-						plugins.remove(plugin);
+						log.error("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
 					}
 				});
 			}
@@ -271,7 +259,7 @@ public class PluginManager
 
 	public void loadCorePlugins() throws IOException, PluginInstantiationException
 	{
-		SplashScreen.stage(.59, null, "Loading Plugins");
+		SplashScreen.stage(.59, null, "Loading plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
 		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
@@ -279,7 +267,7 @@ public class PluginManager
 			.collect(Collectors.toList());
 
 		loadPlugins(plugins, (loaded, total) ->
-			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
+			SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));
 	}
 
 	public void loadSideLoadPlugins()
@@ -335,19 +323,14 @@ public class PluginManager
 			{
 				if (clazz.getSuperclass() == Plugin.class)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+					log.error("Class {} is a plugin, but has no plugin descriptor", clazz);
 				}
 				continue;
 			}
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
-				continue;
-			}
-
-			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
-			{
+				log.error("Class {} has plugin descriptor, but is not a plugin", clazz);
 				continue;
 			}
 
@@ -402,7 +385,7 @@ public class PluginManager
 			}
 			catch (PluginInstantiationException ex)
 			{
-				log.warn("Error instantiating plugin!", ex);
+				log.error("Error instantiating plugin!", ex);
 			}
 
 			loaded++;
@@ -445,7 +428,7 @@ public class PluginManager
 			plugin.startUp();
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
-			if (!isOutdated && sceneTileManager != null)
+			if (sceneTileManager != null)
 			{
 				final GameEventManager gameEventManager = this.sceneTileManager.get();
 				if (gameEventManager != null)
@@ -464,6 +447,15 @@ public class PluginManager
 		}
 		catch (Throwable ex)
 		{
+			// stop the plugin and fire the change event to update the plugin list panel
+			try
+			{
+				stopPlugin(plugin);
+			}
+			catch (Throwable ex2)
+			{
+				log.error("unable to stop plugin", ex2);
+			}
 			throw new PluginInstantiationException(ex);
 		}
 
@@ -517,12 +509,27 @@ public class PluginManager
 		}
 	}
 
+	/**
+	 * Test if a plugin is enabled, which causes the client to attempt to start it on boot
+	 * @param plugin
+	 * @return
+	 */
 	public boolean isPluginEnabled(Plugin plugin)
 	{
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
 		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase());
 		return value != null ? Boolean.parseBoolean(value) : pluginDescriptor.enabledByDefault();
+	}
+
+	/**
+	 * Test if a plugin is on, eg. enabled and also was started successfully
+	 * @param plugin
+	 * @return
+	 */
+	public boolean isPluginActive(Plugin plugin)
+	{
+		return activePlugins.contains(plugin);
 	}
 
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException

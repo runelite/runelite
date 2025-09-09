@@ -31,7 +31,7 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.http.api.loottracker.LootRecordType;
 
 /**
- * Event published by the loottracker plugin when new loot is received
+ * Event published by the loot tracker when new loot is received
  */
 @Data
 @AllArgsConstructor

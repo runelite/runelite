@@ -26,17 +26,19 @@ package net.runelite.client.plugins.timetracking.hunter;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.annotations.Varp;
+import net.runelite.api.gameval.VarPlayerID;
 
 @AllArgsConstructor
 @Getter
 enum BirdHouseSpace
 {
-	MEADOW_NORTH("Mushroom Meadow (North)", VarPlayer.BIRD_HOUSE_MEADOW_NORTH),
-	MEADOW_SOUTH("Mushroom Meadow (South)", VarPlayer.BIRD_HOUSE_MEADOW_SOUTH),
-	VALLEY_NORTH("Verdant Valley (Northeast)", VarPlayer.BIRD_HOUSE_VALLEY_NORTH),
-	VALLEY_SOUTH("Verdant Valley (Southwest)", VarPlayer.BIRD_HOUSE_VALLEY_SOUTH);
+	MEADOW_NORTH("Mushroom Meadow (North)", VarPlayerID.BIRDHOUSE_TRANSMIT_A),
+	MEADOW_SOUTH("Mushroom Meadow (South)", VarPlayerID.BIRDHOUSE_TRANSMIT_B),
+	VALLEY_NORTH("Verdant Valley (Northeast)", VarPlayerID.BIRDHOUSE_TRANSMIT_C),
+	VALLEY_SOUTH("Verdant Valley (Southwest)", VarPlayerID.BIRDHOUSE_TRANSMIT_D);
 
 	private final String name;
-	private final VarPlayer varp;
+	@Varp
+	private final int varp;
 }

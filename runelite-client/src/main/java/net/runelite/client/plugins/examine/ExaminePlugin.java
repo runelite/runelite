@@ -32,16 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -89,34 +86,6 @@ public class ExaminePlugin extends Plugin
 		int id, quantity = -1;
 		switch (event.getMenuAction())
 		{
-			case EXAMINE_ITEM:
-			{
-				type = ChatMessageType.ITEM_EXAMINE;
-				id = event.getId();
-
-				int widgetId = event.getParam1();
-				int widgetGroup = TO_GROUP(widgetId);
-				int widgetChild = TO_CHILD(widgetId);
-				Widget widget = client.getWidget(widgetGroup, widgetChild);
-				WidgetItem widgetItem = widget.getWidgetItem(event.getParam0());
-				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
-
-				// Examine on inventory items with more than 100000 quantity is handled locally and shows the item stack
-				// count, instead of sending the examine packet, so that you can see how many items are in the stack.
-				// Replace that message with one that formats the quantity using the quantity formatter instead.
-				if (quantity >= 100_000)
-				{
-					int itemId = event.getId();
-					final ChatMessageBuilder message = new ChatMessageBuilder()
-						.append(QuantityFormatter.formatNumber(quantity)).append(" x ").append(itemManager.getItemComposition(itemId).getMembersName());
-					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.ITEM_EXAMINE)
-						.runeLiteFormattedMessage(message.build())
-						.build());
-					event.consume();
-				}
-				break;
-			}
 			case EXAMINE_ITEM_GROUND:
 				type = ChatMessageType.ITEM_EXAMINE;
 				id = event.getId();
@@ -166,7 +135,7 @@ public class ExaminePlugin extends Plugin
 		final int itemId = pendingExamine.getId();
 		final int itemQuantity = pendingExamine.getQuantity();
 
-		if (itemId == ItemID.COINS_995)
+		if (itemId == ItemID.COINS)
 		{
 			return;
 		}
@@ -177,14 +146,14 @@ public class ExaminePlugin extends Plugin
 
 	private int[] findItemFromWidget(int widgetId, int childIdx)
 	{
-		final int widgetGroup = TO_GROUP(widgetId);
+		final int widgetGroup = WidgetUtil.componentToInterface(widgetId);
 		final Widget widget = client.getWidget(widgetId);
 		if (widget == null)
 		{
 			return null;
 		}
 
-		if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+		if (InterfaceID.WORNITEMS == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -192,7 +161,7 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+		else if (InterfaceID.SMITHING == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(2);
 			if (widgetItem != null)
@@ -200,7 +169,7 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetID.SHOP_GROUP_ID == widgetGroup)
+		else if (InterfaceID.SHOPMAIN == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(childIdx);
 			if (widgetItem != null)

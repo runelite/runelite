@@ -36,7 +36,7 @@ public interface ItemContainer extends Node
 	 * Get the item container id
 	 *
 	 * @return
-	 * @see InventoryID
+	 * @see net.runelite.api.gameval.InventoryID
 	 */
 	int getId();
 
@@ -63,7 +63,7 @@ public interface ItemContainer extends Node
 	 *
 	 * @param itemId
 	 * @return
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	boolean contains(int itemId);
 
@@ -72,7 +72,7 @@ public interface ItemContainer extends Node
 	 *
 	 * @param itemId
 	 * @return
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	int count(int itemId);
 
@@ -89,4 +89,11 @@ public interface ItemContainer extends Node
 	 * @return
 	 */
 	int count();
+
+	/**
+	 * Find the first index of an item in the container
+	 * @param itemId the item
+	 * @return the item index, or -1 if not found
+	 */
+	int find(int itemId);
 }

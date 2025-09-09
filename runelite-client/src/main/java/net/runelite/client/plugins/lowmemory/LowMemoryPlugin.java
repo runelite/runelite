@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -64,9 +65,7 @@ public class LowMemoryPlugin extends Plugin
 			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
 			{
 				client.changeMemoryMode(config.lowDetail());
-				return true;
 			}
-			return false;
 		});
 	}
 
@@ -80,6 +79,19 @@ public class LowMemoryPlugin extends Plugin
 	LowMemoryConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(LowMemoryConfig.class);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.STARTING)
+		{
+			client.changeMemoryMode(false);
+		}
+		else if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			client.changeMemoryMode(config.lowDetail());
+		}
 	}
 
 	@Subscribe
@@ -100,9 +112,14 @@ public class LowMemoryPlugin extends Plugin
 	@Subscribe
 	public void onBeforeRender(BeforeRender beforeRender)
 	{
+		var wv = client.getTopLevelWorldView();
+		if (wv == null)
+		{
+			return;
+		}
 		// This needs to be set to the current plane, but there is no event for plane change, so
 		// just set it each render.
-		client.getScene().
-			setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
+		wv.getScene().
+			setMinLevel(config.hideLowerPlanes() ? wv.getPlane() : 0);
 	}
 }

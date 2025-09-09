@@ -29,12 +29,13 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.GameState;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 
 @Slf4j
 public class WidgetOverlay extends Overlay
@@ -43,86 +44,122 @@ public class WidgetOverlay extends Overlay
 	{
 		return Arrays.asList(
 			// classic resizable - these are in render order for managed overlay picking
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.ToplevelOsrsStretch.CHAT_CONTAINER, "RESIZABLE_VIEWPORT_CHATBOX_PARENT", OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToplevelOsrsStretch.SIDE_MENU, "RESIZABLE_VIEWPORT_INVENTORY_PARENT", OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToplevelOsrsStretch.MAP_CONTAINER, "RESIZABLE_MINIMAP_STONES_WIDGET", OverlayPosition.CANVAS_TOP_RIGHT),
 			// modern resizable
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToplevelPreEoc.CHAT_CONTAINER, "RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT", OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToplevelPreEoc.MAP_CONTAINER, "RESIZABLE_MINIMAP_WIDGET", OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.ToplevelPreEoc.SIDE_STATIC_LAYER, "RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1", OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToplevelPreEoc.SIDE_MOVABLE_LAYER, "RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2", OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToplevelPreEoc.SIDE_CONTAINER, "RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT", OverlayPosition.DYNAMIC),
 			// The client forces the oxygen bar below the xp tracker, so set its priority lower
-			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
-			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.RAIDS_POINTS_INFOBOX, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_INTERFACE, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_STATS, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.GWD_KC, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_KNIGHT_INFO_CONTAINER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_ACTIVITY_SHIELD_INFO_CONTAINER, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT),
-			new PvpKDRWidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER),
-			new WidgetOverlay(client, WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER),
-			new WidgetOverlay(client, WidgetInfo.LMS_INFO, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.LMS_KDA, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.HALLOWED_SEPULCHRE_TIMER_CONTAINER, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.FossilUnderwater.OXYGEN_LAYER, "FOSSIL_ISLAND_OXYGENBAR", OverlayPosition.TOP_CENTER),
+			new XpTrackerWidgetOverlay(overlayManager, client, InterfaceID.XpDrops.CONTAINER,  "EXPERIENCE_TRACKER_WIDGET", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.RaidsOverlay.DATA, "RAIDS_POINTS_INFOBOX", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.TobHud.NAMES_CONTAINER, "TOB_PARTY_INTERFACE", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.TobHud.STATUS_CONTAINER, "TOB_PARTY_STATS", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.GodwarsOverlay.KILLS_LAYER, "GWD_KC", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.HosidiusStripFarming.PANEL, "TITHE_FARM", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.PestLanderOverlay.INFO, "PEST_CONTROL_BOAT_INFO", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.PestStatusOverlay.CONTENT_LEFT, "PEST_CONTROL_KNIGHT_INFO_CONTAINER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.PestStatusOverlay.CONTENT_RIGHT, "PEST_CONTROL_ACTIVITY_SHIELD_INFO_CONTAINER", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.HosidiusServeryHud.CONTENT, "ZEAH_MESS_HALL_COOKING_DISPLAY", OverlayPosition.TOP_LEFT),
+			new PvpKDRWidgetOverlay(client, InterfaceID.PvpIcons.KD_CONTAINER, "PVP_KILLDEATH_COUNTER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.CataBoss.CATA_ALTARS, "SKOTIZO_CONTAINER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.NtkOverlay.CONTENT, "PYRAMID_PLUNDER_DATA", OverlayPosition.ABOVE_CHATBOX_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BrLobbyoverlay.CONTENT, "LMS_INFO", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BrOverlay.CONTENT, "LMS_KDA", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.GauntletOverlay.CONTENT, "GAUNTLET_TIMER_CONTAINER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.HallowedOverlay.CONTENT, "HALLOWED_SEPULCHRE_TIMER_CONTAINER", OverlayPosition.TOP_LEFT),
 			// The client forces the health overlay bar below the xp tracker, so set its priority lower
-			new WidgetOverlay(client, WidgetInfo.HEALTH_OVERLAY_BAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
-			new WidgetOverlay(client, WidgetInfo.TOB_HEALTH_BAR, OverlayPosition.TOP_CENTER),
-			new WidgetOverlay(client, WidgetInfo.NIGHTMARE_PILLAR_HEALTH, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_VENTS_INFOBOX_GROUP, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_STABILITY_INFOBOX_GROUP, OverlayPosition.BOTTOM_LEFT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
-			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.TOA_PARTY_LAYER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.TOA_RAID_LAYER, OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, InterfaceID.HpbarHud.HP, "HEALTH_OVERLAY_BAR", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, InterfaceID.TobHud.PROGRESS_CONTAINER, "TOB_HEALTH_BAR", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, InterfaceID.NightmareTotems.TOTEMS, "NIGHTMARE_PILLAR_HEALTH", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.FossilVolcanicMine.VENT_CHAMBERS_INFO, "VOLCANIC_MINE_VENTS_INFOBOX_GROUP", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.FossilVolcanicMine.MAIN_INFO, "VOLCANIC_MINE_STABILITY_INFOBOX_GROUP", OverlayPosition.BOTTOM_LEFT),
+			new WidgetOverlay(client, InterfaceID.Toplevel.MULTIWAY_ICON, "MULTICOMBAT_FIXED", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.ToplevelPreEoc.MULTIWAY_ICON, "MULTICOMBAT_RESIZABLE_MODERN", OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.ToplevelOsrsStretch.MULTIWAY_ICON, "MULTICOMBAT_RESIZABLE_CLASSIC", OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.TemporossHud.STATUS, "TEMPOROSS_STATUS_INDICATOR", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.TemporossLobbyHud.CONTENT, "TEMPOROSS_LOBBY", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.BarbassaultOverHeal.CONTENT_BOTTOM, "BA_HEAL_TEAMMATES", OverlayPosition.BOTTOM_LEFT),
+			new WidgetOverlay(client, InterfaceID.BarbassaultOverRecruitPlayerNames.CONTENT, "BA_TEAM", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.PvpIcons.ICONS, "PVP_WILDERNESS_SKULL_CONTAINER", OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, InterfaceID.ToaLobby.CONTENT, "TOA_PARTY_LAYER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.ToaHud.CONTENT, "TOA_RAID_LAYER", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.GotrHud.CONTENT, "GOTR_MAIN_DISPLAY", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.BrewOverlay.CONTENT_RIGHT, "TROUBLE_BREWING_SCORE", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BrewWaitingRoomOverlay.CONTENTS, "TROUBLE_BREWING_LOBBY", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.FlamtaerStatus.TEMPLE_LAYER, "MORTTON_TEMPLE_STATUS", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BoardgamesDraughtsOverlay.CONTENT, "BGR_RANK_DISPLAY_DRAUGHTS", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BoardgamesRunelinkOverlay.CONTENT, "BGR_RANK_DISPLAY_RUNELINK", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BoardgamesRunesquaresOverlay.CONTENT, "BGR_RANK_DISPLAY_RUNESQUARES", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.BoardgamesRuneversiOverlay.CONTENT, "BGR_RANK_DISPLAY_RUNEVERSI", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.AgilityarenaOverlay.CONTENT, "AGILITY_ARENA_LIGHT_INDICATOR", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.Gnomeball.CONTENTS, "GNOMEBALL_SCORE", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingAlchem.CONTENTS, "MTA_ALCHEMY_POINTS", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingEncha.CONTENT_TOP, "MTA_ENCHANT_POINTS", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingEncha.CONTENT_RIGHT, "MTA_ENCHANT_BONUS", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingTele.CONTENT_TOP, "MTA_TELEKINETIC_POINTS", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingTele.CONTENT_RIGHT, "MTA_TELEKINETIC_SOLVED", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingGrave.CONTENT_TOP, "MTA_GRAVEYARD_POINTS", OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MagictrainingGrave.CONTENT_RIGHT, "MTA_GRAVEYARD_VALUES", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.Dt2Infection.OVERLAY, "STRANGLER_INFECTION_OVERLAY", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.Sanity.OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.PmoonHud.CONTENT, "MOONS_OF_PERIL", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.MotherlodeHud.DATA, "MLM_LAYER", OverlayPosition.TOP_LEFT),
+			// Castle Wars Lobby
+			new WidgetOverlay(client, InterfaceID.CastlewarsWaitingroom.CONTENT, "CASTLEWARS_LOBBY_TIME_REMAINING", OverlayPosition.TOP_CENTER),
+			// Castle Wars Saradomin
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlaySaradomin.CASTLEWARS_SARADOMIN_EJECT, "CASTLEWARS_SARADOMIN_LEAVE_WAITING_ROOM", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlaySaradomin.TIMER, "CASTLEWARS_SARADOMIN_GAME_TIMER", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlaySaradomin.SIDEBOX, "CASTLEWARS_SARADOMIN_CASTLE_AND_ROCK_GROUP_STATUS", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlaySaradomin.SCORES, "CASTLEWARS_SARADOMIN_SCORE_BOX", OverlayPosition.TOP_CENTER),
+			// Castle Wars Zamorak
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlayZamorak.CASTLEWARS_ZAMORAK_EJECT, "CASTLEWARS_ZAMORAK_LEAVE_WAITING_ROOM", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlayZamorak.TIMER, "CASTLEWARS_ZAMORAK_GAME_TIMER", OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlayZamorak.SIDEBOX, "CASTLEWARS_ZAMORAK_CASTLE_AND_ROCK_GROUP_STATUS", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, InterfaceID.CastlewarsStatusOverlayZamorak.SCORES, "CASTLEWARS_ZAMORAK_SCORE_BOX", OverlayPosition.TOP_CENTER)
 		);
 	}
 
 	protected final Client client;
-	private final WidgetInfo widgetInfo;
+	@Component
+	protected final int componentId;
+	protected final String name;
 	private final Rectangle parentBounds = new Rectangle();
 	private boolean revalidate;
 
-	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
+	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition)
 	{
-		this(client, widgetInfo, overlayPosition, OverlayPriority.HIGHEST);
+		this(client, componentId, name, overlayPosition, Overlay.PRIORITY_HIGHEST);
 	}
 
-	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final OverlayPriority overlayPriority)
+	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition, final float overlayPriority)
 	{
 		this.client = client;
-		this.widgetInfo = widgetInfo;
+		this.componentId = componentId;
+		this.name = name;
 		setPriority(overlayPriority);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
 		setMovable(true);
 		setSnappable(true);
-		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
+		// It's almost possible to drawAfterInterface() here, but that fires
 		// *after* the native components are drawn, which is too late.
 	}
 
 	@Override
 	public String getName()
 	{
-		return Objects.toString(widgetInfo);
+		return name;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget widget = client.getWidget(widgetInfo);
+		final Widget widget = client.getWidget(componentId);
 		final Rectangle parent = getParentBounds(widget);
 
 		if (parent.isEmpty())
@@ -145,7 +182,7 @@ public class WidgetOverlay extends Overlay
 			if (revalidate)
 			{
 				revalidate = false;
-				log.debug("Revalidating {}", widgetInfo);
+				log.debug("Revalidating {}", name);
 				widget.setForcedPosition(-1, -1);
 				// Revalidate the widget to reposition it back to its normal location after an overlay reset
 				widget.revalidate();
@@ -195,7 +232,7 @@ public class WidgetOverlay extends Overlay
 			return parentBounds;
 		}
 
-		final Widget widget = client.getWidget(widgetInfo);
+		final Widget widget = client.getWidget(componentId);
 		return getParentBounds(widget);
 	}
 
@@ -210,9 +247,9 @@ public class WidgetOverlay extends Overlay
 	{
 		private final OverlayManager overlayManager;
 
-		private XpTrackerWidgetOverlay(OverlayManager overlayManager, Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		private XpTrackerWidgetOverlay(OverlayManager overlayManager, Client client, @Component int componentId, String name, OverlayPosition overlayPosition)
 		{
-			super(client, widgetInfo, overlayPosition);
+			super(client, componentId, name, overlayPosition);
 			this.overlayManager = overlayManager;
 		}
 
@@ -221,8 +258,8 @@ public class WidgetOverlay extends Overlay
 		{
 			// The xptracker component layer isn't hidden if the counter and process bar are both configured "Off",
 			// it just has its children hidden.
-			if (client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_COUNTER) == 30 // Off
-				&& client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_PROGRESS_BAR) == 0) // Off
+			if (client.getVarbitValue(VarbitID.XPDROPS_COUNTER_TYPE) == 30 // Off
+				&& client.getVarbitValue(VarbitID.XPDROPS_PROGRESS_TYPE) == 0) // Off
 			{
 				return null;
 			}
@@ -238,7 +275,7 @@ public class WidgetOverlay extends Overlay
 		@Override
 		public OverlayPosition getPosition()
 		{
-			if (!client.isClientThread())
+			if (!client.isClientThread() || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
 			{
 				// During overlay drag, getPosition() is called on the EDT, so we just
 				// cache and reuse the last known configured position.
@@ -246,7 +283,7 @@ public class WidgetOverlay extends Overlay
 			}
 
 			OverlayPosition position;
-			switch (client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_POSITION))
+			switch (client.getVarbitValue(VarbitID.XPDROPS_POSITION))
 			{
 				case 0:
 				default:
@@ -272,16 +309,16 @@ public class WidgetOverlay extends Overlay
 
 	private static class PvpKDRWidgetOverlay extends WidgetOverlay
 	{
-		private PvpKDRWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		private PvpKDRWidgetOverlay(Client client, @Component int componentId, String name, OverlayPosition overlayPosition)
 		{
-			super(client, widgetInfo, overlayPosition);
+			super(client, componentId, name, overlayPosition);
 		}
 
 		@Override
 		public Dimension render(Graphics2D graphics)
 		{
 			// Don't draw widget overlay if the PVP KDR stats text will be empty
-			if (client.getVarbitValue(Varbits.SHOW_PVP_KDR_STATS) == 1)
+			if (client.getVarbitValue(VarbitID.KD_TOGGLE) == 1)
 			{
 				return super.render(graphics);
 			}

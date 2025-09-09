@@ -86,12 +86,15 @@ public class ChatNotificationsPluginTest
 	{
 		when(config.highlightWordsString()).thenReturn("Deathbeam, Deathbeam OSRS , test");
 
+		var message = "Deathbeam, Deathbeam OSRS";
 		MessageNode messageNode = mock(MessageNode.class);
-		when(messageNode.getValue()).thenReturn("Deathbeam, Deathbeam OSRS");
+		when(messageNode.getValue()).thenReturn(message);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -104,12 +107,15 @@ public class ChatNotificationsPluginTest
 	{
 		when(config.highlightRegexString()).thenReturn("brandie+\ntest");
 
+		var message = "brandieeee testing";
 		MessageNode messageNode = mock(MessageNode.class);
-		when(messageNode.getValue()).thenReturn("brandieeee testing");
+		when(messageNode.getValue()).thenReturn(message);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp();
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -122,12 +128,15 @@ public class ChatNotificationsPluginTest
 	{
 		when(config.highlightRegexString()).thenReturn("brandie+\nwillNotMatch");
 
+		var message = "brandieeee testing";
 		MessageNode messageNode = mock(MessageNode.class);
-		when(messageNode.getValue()).thenReturn("brandieeee testing");
+		when(messageNode.getValue()).thenReturn(message);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp();
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -147,6 +156,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -166,6 +177,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -185,6 +198,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -204,6 +219,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -223,6 +240,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -242,6 +261,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setMessage(message);
+		chatMessage.setName("");
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);
@@ -261,6 +282,8 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
+		chatMessage.setName("");
+		chatMessage.setMessage(message);
 
 		chatNotificationsPlugin.startUp(); // load highlight config
 		chatNotificationsPlugin.onChatMessage(chatMessage);

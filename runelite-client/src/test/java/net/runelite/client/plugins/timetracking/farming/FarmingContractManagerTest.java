@@ -33,12 +33,13 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -93,6 +94,10 @@ public class FarmingContractManagerTest
 	@Bind
 	private ScheduledExecutorService executor;
 
+	@Mock
+	@Bind
+	private ClientToolbar clientToolbar;
+
 	@Before
 	public void before()
 	{
@@ -114,8 +119,8 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -137,8 +142,8 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -160,7 +165,7 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the two allotment patches
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4773);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
 
 		assertNotNull(patch);
 
@@ -180,8 +185,8 @@ public class FarmingContractManagerTest
 		final long expectedTime = unixNow + 60;
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -206,8 +211,8 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -230,8 +235,8 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -255,8 +260,8 @@ public class FarmingContractManagerTest
 		final long expected = unixNow + 60;
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -278,8 +283,8 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -303,8 +308,8 @@ public class FarmingContractManagerTest
 		final long expected2 = unixNow + 120;
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -330,8 +335,8 @@ public class FarmingContractManagerTest
 		final long expectedTime = unixNow + 60;
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -357,8 +362,8 @@ public class FarmingContractManagerTest
 		final long expectedTime = unixNow + 60;
 
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -381,8 +386,8 @@ public class FarmingContractManagerTest
 	public void cabbageContractCabbageDeadAndCabbageDiseased()
 	{
 		// Get the two allotment patches
-		final FarmingPatch patch1 = farmingGuildPatches.get(Varbits.FARMING_4773);
-		final FarmingPatch patch2 = farmingGuildPatches.get(Varbits.FARMING_4774);
+		final FarmingPatch patch1 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
+		final FarmingPatch patch2 = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_D);
 
 		assertNotNull(patch1);
 		assertNotNull(patch2);
@@ -405,7 +410,7 @@ public class FarmingContractManagerTest
 	{
 		final long unixNow = Instant.now().getEpochSecond();
 
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4773);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
 
 		assertNotNull(patch);
 
@@ -420,7 +425,7 @@ public class FarmingContractManagerTest
 	@Test
 	public void cabbageContractCabbageDiseasedAndEmptyPatch()
 	{
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4773);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
 
 		assertNotNull(patch);
 
@@ -436,7 +441,7 @@ public class FarmingContractManagerTest
 	@Test
 	public void cabbageContractCabbageDeadAndEmptyPatch()
 	{
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4773);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_C);
 
 		assertNotNull(patch);
 
@@ -455,7 +460,7 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4772);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_B);
 
 		assertNotNull(patch);
 
@@ -474,7 +479,7 @@ public class FarmingContractManagerTest
 		final long unixNow = Instant.now().getEpochSecond();
 
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4772);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_B);
 
 		assertNotNull(patch);
 
@@ -494,7 +499,7 @@ public class FarmingContractManagerTest
 		final long expectedCompletion = unixNow + 60;
 
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4772);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_B);
 
 		assertNotNull(patch);
 
@@ -513,7 +518,7 @@ public class FarmingContractManagerTest
 	public void redberriesContractRedberriesDiseased()
 	{
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4772);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_B);
 
 		assertNotNull(patch);
 
@@ -530,7 +535,7 @@ public class FarmingContractManagerTest
 	public void redberriesContractRedberriesDead()
 	{
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4772);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_B);
 
 		assertNotNull(patch);
 
@@ -547,7 +552,7 @@ public class FarmingContractManagerTest
 	public void redberriesContractCadavaDead()
 	{
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4772);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_B);
 
 		assertNotNull(patch);
 
@@ -562,7 +567,7 @@ public class FarmingContractManagerTest
 	public void guamContractGuamDead()
 	{
 		// Get the bush patch
-		final FarmingPatch patch = farmingGuildPatches.get(Varbits.FARMING_4775);
+		final FarmingPatch patch = farmingGuildPatches.get(VarbitID.FARMING_TRANSMIT_E);
 
 		assertNotNull(patch);
 

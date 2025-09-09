@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.xptracker;
 
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 
 enum XpWorldType
@@ -45,21 +44,11 @@ enum XpWorldType
 		@Override
 		int modifier(Client client)
 		{
-			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_6) != 0)
-			{
-				return 16;
-			}
-			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_4) != 0)
-			{
-				return 12;
-			}
-			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_2) != 0)
-			{
-				return 8;
-			}
 			return 5;
 		}
-	};
+	},
+	PVP_ARENA,
+	;
 
 	int modifier(Client client)
 	{
@@ -74,6 +63,10 @@ enum XpWorldType
 				return TOURNEY;
 			case DEADMAN:
 				return DMM;
+			case SEASONAL:
+				return LEAGUE;
+			case PVP_ARENA:
+				return PVP_ARENA;
 			default:
 				return NORMAL;
 		}

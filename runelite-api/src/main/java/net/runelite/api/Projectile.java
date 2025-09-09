@@ -26,6 +26,7 @@ package net.runelite.api;
 
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 
 /**
  * Represents a projectile entity. (ie. cannonball, arrow)
@@ -36,16 +37,63 @@ public interface Projectile extends Renderable
 	 * Gets the ID of the projectile.
 	 *
 	 * @return the projectile ID
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 */
 	int getId();
+
+	/**
+	 * Get the level the projectile starts on.
+	 *
+	 * @return
+	 */
+	int getSourceLevel();
+
+	/**
+	 * Get the point the projectile starts at.
+	 *
+	 * @return
+	 */
+	WorldPoint getSourcePoint();
+
+	/**
+	 * Get the actor the projectile starts at.
+	 *
+	 * @return
+	 */
+	@Nullable
+	Actor getSourceActor();
+
+	/**
+	 * Get the level the projectile ends on.
+	 * @return
+	 */
+	int getTargetLevel();
+
+	/**
+	 * Get the point the projectile ends at.
+	 *
+	 * @return
+	 */
+	WorldPoint getTargetPoint();
+
+	/**
+	 * Get the actor the projectile ends at.
+	 *
+	 * @return
+	 */
+	@Nullable
+	Actor getTargetActor();
 
 	/**
 	 * Gets the actor that is targeted by this projectile.
 	 *
 	 * @return the target actor, or null if this projectile is an AoE attack
 	 */
-	Actor getInteracting();
+	@Deprecated
+	default Actor getInteracting()
+	{
+		return getTargetActor();
+	}
 
 	/**
 	 * Get the target point of the projectile. For projectiles with an actor target,
@@ -53,6 +101,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return
 	 */
+	@Deprecated
 	LocalPoint getTarget();
 
 	/**
@@ -60,6 +109,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return the original coordinate
 	 */
+	@Deprecated
 	int getX1();
 
 	/**
@@ -67,6 +117,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return the original coordinate
 	 */
+	@Deprecated
 	int getY1();
 
 	/**
@@ -74,6 +125,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return the plane
 	 */
+	@Deprecated
 	int getFloor();
 
 	/**
@@ -81,6 +133,7 @@ public interface Projectile extends Renderable
 	 *
 	 * @return the height
 	 */
+	@Deprecated
 	int getHeight();
 
 	/**
@@ -132,6 +185,12 @@ public interface Projectile extends Renderable
 	int getSlope();
 
 	/**
+	 * Get the offset position from the start position where the projectile starts
+	 * @return
+	 */
+	int getStartPos();
+
+	/**
 	 * Gets the starting height of the projectile.
 	 *
 	 * @return the starting height
@@ -160,32 +219,11 @@ public interface Projectile extends Renderable
 	double getZ();
 
 	/**
-	 * Gets the scalar quantity (speed) at which the projectile is travelling.
+	 * Get the projectile orientation in JAU
 	 *
-	 * @return the scalar quantity
+	 * @return
 	 */
-	double getScalar();
-
-	/**
-	 * Gets the x-axis velocity of the projectile.
-	 *
-	 * @return the x-axis velocity
-	 */
-	double getVelocityX();
-
-	/**
-	 * Gets the y-axis velocity of the projectile.
-	 *
-	 * @return the y-axis velocity
-	 */
-	double getVelocityY();
-
-	/**
-	 * Gets the z-axis velocity of the projectile.
-	 *
-	 * @return the z-axis velocity
-	 */
-	double getVelocityZ();
+	int getOrientation();
 
 	/**
 	 * The animation of the projectile

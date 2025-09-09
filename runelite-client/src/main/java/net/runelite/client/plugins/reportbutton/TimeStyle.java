@@ -26,7 +26,6 @@ package net.runelite.client.plugins.reportbutton;
 
 public enum TimeStyle
 {
-	OFF("Off"),
 	DATE("Date"),
 	LOGIN_TIME("Login Timer"),
 	UTC("UTC Time"),

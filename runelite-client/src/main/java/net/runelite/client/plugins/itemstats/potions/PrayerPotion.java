@@ -26,10 +26,11 @@ package net.runelite.client.plugins.itemstats.potions;
 
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.itemstats.StatBoost;
 import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
 
@@ -59,35 +60,34 @@ public class PrayerPotion extends StatBoost
 	{
 		boolean hasHolyWrench = false;
 
-		ItemContainer equipContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipContainer != null)
 		{
 			Item cape = equipContainer.getItem(CAPE_SLOT);
 			Item ring = equipContainer.getItem(RING_SLOT);
 
-			hasHolyWrench = ring != null && ring.getId() == ItemID.RING_OF_THE_GODS_I;
+			hasHolyWrench = ring != null && ItemVariationMapping.getVariations(ItemID.ROTG)
+				.stream()
+				.filter(itemId -> itemId != ItemID.ROTG) // remove non-imbued rotg; it does not have the wrench effect
+				.anyMatch(itemId -> itemId == ring.getId());
 			if (cape != null)
 			{
 				int capeId = cape.getId();
-				hasHolyWrench |= capeId == ItemID.PRAYER_CAPE;
-				hasHolyWrench |= capeId == ItemID.PRAYER_CAPET;
-				hasHolyWrench |= capeId == ItemID.MAX_CAPE;
-				hasHolyWrench |= capeId == ItemID.MAX_CAPE_13342;
+				hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_PRAYER).contains(capeId);
+				hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_MAX).contains(capeId);
 			}
 		}
 		if (!hasHolyWrench)
 		{
-			ItemContainer invContainer = client.getItemContainer(InventoryID.INVENTORY);
+			ItemContainer invContainer = client.getItemContainer(InventoryID.INV);
 			if (invContainer != null)
 			{
 				for (Item itemStack : invContainer.getItems())
 				{
 					int item = itemStack.getId();
-					hasHolyWrench = item == ItemID.HOLY_WRENCH;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPE;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPET;
-					hasHolyWrench |= item == ItemID.MAX_CAPE;
-					hasHolyWrench |= item == ItemID.MAX_CAPE_13342;
+					hasHolyWrench = item == ItemID.DEAL_WRENCH_BLESSED;
+					hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_PRAYER).contains(item);
+					hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.SKILLCAPE_MAX).contains(item);
 
 					if (hasHolyWrench)
 					{

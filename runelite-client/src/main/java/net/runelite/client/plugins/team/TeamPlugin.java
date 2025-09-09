@@ -42,7 +42,6 @@ import net.runelite.api.Client;
 import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.SpriteID;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanID;
@@ -56,6 +55,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PlayerChanged;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -402,7 +402,7 @@ public class TeamPlugin extends Plugin
 			return;
 		}
 
-		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_FRIENDS_CHAT, 0);
+		final BufferedImage image = spriteManager.getSprite(SpriteID.SideIcons.FRIENDS_CHAT, 0);
 		friendsChatIndicator = new MembersIndicator(image, this)
 		{
 			@Override
@@ -433,7 +433,7 @@ public class TeamPlugin extends Plugin
 			return;
 		}
 
-		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_CLAN_CHAT, 0);
+		final BufferedImage image = spriteManager.getSprite(SpriteID.SideiconsInterface.CLAN, 0);
 		clanChatIndicator = new MembersIndicator(image, this)
 		{
 			@Override

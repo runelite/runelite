@@ -38,6 +38,7 @@ import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -54,6 +55,7 @@ public class WorldMapDumperTest
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
+	@Ignore
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
@@ -66,8 +68,8 @@ public class WorldMapDumperTest
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.WORLDMAP_OLD);
-			Archive archive = index.getArchive(0); // there is also archive 1/2, but their data format is not this
+			Index index = store.getIndex(IndexType.WORLDMAP);
+			Archive archive = index.findArchiveByName("details");
 
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);

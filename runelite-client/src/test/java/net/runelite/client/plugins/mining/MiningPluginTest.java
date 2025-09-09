@@ -72,69 +72,15 @@ public class MiningPluginTest
 	}
 
 	@Test
-	public void testClay()
+	public void testRock()
 	{
-		testMessage("You manage to mine some clay.");
+		testMessage("You swing your pick at the rock.");
 	}
 
 	@Test
-	public void testIron()
+	public void testStar()
 	{
-		testMessage("You manage to mine some iron.");
-	}
-
-	@Test
-	public void testSandstone()
-	{
-		testMessage("You manage to quarry some sandstone.");
-	}
-
-	@Test
-	public void testGranite()
-	{
-		testMessage("You manage to quarry some granite.");
-	}
-
-	@Test
-	public void testOpal()
-	{
-		testMessage("You just mined an Opal!");
-	}
-
-	@Test
-	public void testJade()
-	{
-		testMessage("You just mined a piece of Jade!");
-	}
-
-	@Test
-	public void testRedTopaz()
-	{
-		testMessage("You just mined a Red Topaz!");
-	}
-
-	@Test
-	public void testSapphire()
-	{
-		testMessage("You just mined a Sapphire!");
-	}
-
-	@Test
-	public void testEmerald()
-	{
-		testMessage("You just mined an Emerald!");
-	}
-
-	@Test
-	public void testRuby()
-	{
-		testMessage("You just mined a Ruby!");
-	}
-
-	@Test
-	public void testDiamond()
-	{
-		testMessage("You just mined a Diamond!");
+		testMessage("You swing your pick at the star.");
 	}
 
 	private void testMessage(String gameMessage)

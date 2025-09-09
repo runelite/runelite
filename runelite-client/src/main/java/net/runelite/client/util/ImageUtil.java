@@ -25,6 +25,7 @@
 package net.runelite.client.util;
 
 import com.google.common.primitives.Ints;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -91,6 +92,21 @@ public class ImageUtil
 	}
 
 	/**
+	 * Creates a new image with the same alpha channel, but a constant RGB channel
+	 */
+	public static BufferedImage recolorImage(Image image, Color rgb)
+	{
+		BufferedImage out = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = out.createGraphics();
+		g2d.drawImage(image, 0, 0, null);
+		g2d.setComposite(AlphaComposite.SrcAtop);
+		g2d.setColor(rgb);
+		g2d.fillRect(0, 0, out.getWidth(), out.getHeight());
+		g2d.dispose();
+		return out;
+	}
+
+	/**
 	 * Offsets an image's luminance by a given value.
 	 *
 	 * @param rawImg  The image to be darkened or brightened.
@@ -101,7 +117,6 @@ public class ImageUtil
 	public static BufferedImage luminanceOffset(final Image rawImg, final int offset)
 	{
 		BufferedImage image = toARGB(rawImg);
-		final float offsetFloat = (float) offset;
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
 		final float[] offsets = new float[numComponents];
@@ -109,7 +124,7 @@ public class ImageUtil
 		Arrays.fill(scales, 1f);
 		for (int i = 0; i < numComponents; i++)
 		{
-			offsets[i] = offsetFloat;
+			offsets[i] = offset;
 		}
 		// Set alpha to not offset
 		offsets[numComponents - 1] = 0f;
@@ -155,14 +170,13 @@ public class ImageUtil
 	public static BufferedImage alphaOffset(final Image rawImg, final int offset)
 	{
 		BufferedImage image = toARGB(rawImg);
-		final float offsetFloat = (float) offset;
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
 		final float[] offsets = new float[numComponents];
 
 		Arrays.fill(scales, 1f);
 		Arrays.fill(offsets, 0f);
-		offsets[numComponents - 1] = offsetFloat;
+		offsets[numComponents - 1] = offset;
 		return offset(image, scales, offsets);
 	}
 

@@ -33,9 +33,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -83,7 +83,7 @@ class MouseHighlightOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		// additionally allow tooltips above the full screen world map and welcome screen
-		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
+		drawAfterInterface(InterfaceID.TOPLEVEL_DISPLAY);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.config = config;
@@ -139,33 +139,33 @@ class MouseHighlightOverlay extends Overlay
 		if (WIDGET_MENU_ACTIONS.contains(type))
 		{
 			final int widgetId = menuEntry.getParam1();
-			final int groupId = WidgetInfo.TO_GROUP(widgetId);
+			final int groupId = WidgetUtil.componentToInterface(widgetId);
 
 			if (!config.uiTooltip())
 			{
 				return null;
 			}
 
-			if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+			if (!config.chatboxTooltip() && groupId == InterfaceID.CHATBOX)
 			{
 				return null;
 			}
 
-			if (config.disableSpellbooktooltip() && groupId == WidgetID.SPELLBOOK_GROUP_ID)
+			if (config.disableSpellbooktooltip() && groupId == InterfaceID.MAGIC_SPELLBOOK)
 			{
 				return null;
 			}
 		}
 
 		// If this varc is set, a tooltip will be displayed soon
-		int tooltipTimeout = client.getVarcIntValue(VarClientInt.TOOLTIP_TIMEOUT);
+		int tooltipTimeout = client.getVarcIntValue(VarClientID.TOOLTIP_TIME);
 		if (tooltipTimeout > client.getGameCycle())
 		{
 			return null;
 		}
 
 		// If this varc is set, a tooltip is already being displayed
-		int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
+		int tooltipDisplayed = client.getVarcIntValue(VarClientID.TOOLTIP_BUILT);
 		if (tooltipDisplayed == 1)
 		{
 			return null;

@@ -31,7 +31,7 @@ import net.runelite.cache.definitions.providers.SpriteProvider;
 @Data
 public class TextureDefinition
 {
-	public int field1777;
+	public int missingColor;
 	public boolean field1778;
 	private int id;
 	private int[] fileIds;
@@ -54,24 +54,29 @@ public class TextureDefinition
 			var7.normalize();
 			byte[] var8 = var7.pixelIdx;
 			int[] var9 = var7.palette;
-			int var10 = this.field1786[var6];
 
 			int var11;
 			int var12;
 			int var13;
 			int var14;
-			if ((var10 & -16777216) == 50331648)
-			{
-				var11 = var10 & 16711935;
-				var12 = var10 >> 8 & 255;
 
-				for (var13 = 0; var13 < var9.length; ++var13)
+			if (this.field1786 != null)
+			{
+				int var10 = this.field1786[var6];
+
+				if ((var10 & -16777216) == 50331648)
 				{
-					var14 = var9[var13];
-					if (var14 >> 8 == (var14 & 65535))
+					var11 = var10 & 16711935;
+					var12 = var10 >> 8 & 255;
+
+					for (var13 = 0; var13 < var9.length; ++var13)
 					{
-						var14 &= 255;
-						var9[var13] = var11 * var14 >> 8 & 16711935 | var12 * var14 & 65280;
+						var14 = var9[var13];
+						if (var14 >> 8 == (var14 & 65535))
+						{
+							var14 &= 255;
+							var9[var13] = var11 * var14 >> 8 & 16711935 | var12 * var14 & 65280;
+						}
 					}
 				}
 			}

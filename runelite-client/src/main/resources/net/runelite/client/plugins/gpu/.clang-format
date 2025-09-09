@@ -1,0 +1,6 @@
+BasedOnStyle: Google
+ReflowComments: false
+ColumnLimit: 160
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+SortIncludes: Never

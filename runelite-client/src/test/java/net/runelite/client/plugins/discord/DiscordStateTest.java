@@ -76,6 +76,10 @@ public class DiscordStateTest
 	@Named("runelite.version")
 	private String runeliteVersion = "version";
 
+	@Bind
+	@Named("safeMode")
+	private boolean safeMode = false;
+
 	@Before
 	public void before()
 	{

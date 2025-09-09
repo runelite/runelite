@@ -175,6 +175,7 @@ public final class ScriptID
 	 * because you need an op listener attached to it for it to work
 	 */
 	@ScriptArguments()
+	@Deprecated
 	public static final int NULL = 10003;
 
 	/**
@@ -274,6 +275,9 @@ public final class ScriptID
 	@ScriptArguments(integer = 17)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_DRAGSCROLL = 284;
+
 	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */
@@ -283,8 +287,8 @@ public final class ScriptID
 	/**
 	 * Called to build the combat interface
 	 */
-	@ScriptArguments()
-	public static final int COMBAT_INTERFACE_SETUP = 420;
+	@ScriptArguments(integer = 1)
+	public static final int COMBAT_INTERFACE_SETUP = 7593;
 
 	/**
 	 * Called to build the toplevel interface
@@ -300,6 +304,9 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 4, string = 1)
 	public static final int XPDROPS_SETDROPSIZE = 996;
+
+	@ScriptArguments(integer = 34)
+	public static final int BANKMAIN_INIT = 274;
 
 	/**
 	 * Main layout script for the bank
@@ -330,6 +337,9 @@ public final class ScriptID
 	@ScriptArguments(integer = 18)
 	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
 
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_SIZE_CHECK = 840;
+
 	/**
 	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
 	 *
@@ -344,7 +354,7 @@ public final class ScriptID
 	 * <li>int (WidgetID) drag parent</li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 8, string = 1)
+	@ScriptArguments(integer = 11, string = 1)
 	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
 
 	/**
@@ -365,8 +375,8 @@ public final class ScriptID
 	@ScriptArguments(integer = 6)
 	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
 
-	@ScriptArguments(integer = 6)
-	public static final int COLLECTION_DRAW_LIST = 2730;
+	@ScriptArguments(integer = 8)
+	public static final int COLLECTION_DRAW_LIST = 2731;
 
 	/**
 	 * Draws the active notification in increasing sizes (increasing horizontally first, then vertically) to show a
@@ -408,4 +418,77 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 7)
 	public static final int ORBS_UPDATE_RUNENERGY = 447;
+
+	@ScriptArguments(integer = 9)
+	public static final int WORLDMAP_LOADMAP = 1712;
+
+	@ScriptArguments(integer = 5)
+	public static final int PRAYER_UPDATEBUTTON = 463;
+
+	@ScriptArguments(integer = 9, string = 2)
+	public static final int PRAYER_REDRAW = 547;
+
+	@ScriptArguments(integer = 3)
+	public static final int QUICKPRAYER_INIT = 466;
+
+	/**
+	 * Called to add a loc overlay timer
+	 * <ul>
+	 * <li> loc coord </li>
+	 * <li> loc id </li>
+	 * <li> loc type </li>
+	 * <li> overlay type </li>
+	 * <li> overlay ticks </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int ADD_OVERLAYTIMER_LOC = 5474;
+
+	@ScriptArguments(integer = 7, string = 1)
+	public static final int ACCOUNT_SUMMARY_TEXT_FORMAT = 3948;
+
+	@ScriptArguments(integer = 10, string = 3)
+	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
+
+	@ScriptArguments(integer = 6, string = 2)
+	public static final int CHATBOX_KEYINPUT_MATCHED = 2153;
+
+	@ScriptArguments(integer = 6)
+	public static final int EQUIPMENT_SET_STAT_BONUS_SETUP = 3517;
+
+	@ScriptArguments(integer = 12, string = 2)
+	public static final int MAGIC_SPELLBOOK_INITIALISESPELLS = 2616;
+
+	@ScriptArguments(integer = 2)
+	public static final int MOTHERLODE_HUD_UPDATE = 1634;
+
+	@ScriptArguments(integer = 1)
+	public static final int POTIONSTORE_DOSES = 3750;
+
+	@ScriptArguments(integer = 1)
+	public static final int POTIONSTORE_WITHDRAW_DOSES = 4818;
+
+	@ScriptArguments()
+	public static final int POTIONSTORE_BUILD = 6080;
+
+	@ScriptArguments(integer = 3)
+	public static final int POTIONSTORE_DOSE_CHANGE = 6555;
+
+	@ScriptArguments(integer = 5)
+	public static final int FAIRYRINGS_SORT_UPDATE = 402;
+
+	@ScriptArguments(integer = 1, string = 1)
+	public static final int POPUP_OVERLAY_YESNO_INIT = 4212;
+
+	@ScriptArguments(integer = 12)
+	public static final int BANK_DEPOSITBOX_INIT = 144;
+
+	@ScriptArguments(integer = 7)
+	public static final int SEED_VAULT_BUILD = 2819;
+
+	@ScriptArguments(integer = 4)
+	public static final int LOOTTRACKER_ADD_LOOT = 7192;
+
+	@ScriptArguments(integer = 1)
+	public static final int DOM_LOOT_CLAIM = 7928;
 }

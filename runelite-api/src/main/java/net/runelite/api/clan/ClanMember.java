@@ -24,6 +24,8 @@
  */
 package net.runelite.api.clan;
 
+import java.time.LocalDate;
+
 /**
  * A member of a clan.
  */
@@ -38,4 +40,9 @@ public interface ClanMember
 	 * The clan member's rank
 	 */
 	ClanRank getRank();
+
+	/**
+	 * The clan member's join date
+	 */
+	LocalDate getJoinDate();
 }

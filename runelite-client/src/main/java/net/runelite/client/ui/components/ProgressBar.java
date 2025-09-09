@@ -145,7 +145,7 @@ public class ProgressBar extends DimmableJPanel
 
 	public int getPercentage()
 	{
-		if (value == 0)
+		if (maximumValue == 0)
 		{
 			return 0;
 		}

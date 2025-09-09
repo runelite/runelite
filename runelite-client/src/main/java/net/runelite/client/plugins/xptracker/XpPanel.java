@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -51,6 +50,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.HttpUrl;
 
@@ -87,7 +87,7 @@ class XpPanel extends PluginPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-			client.getWorldType(), client.getLocalPlayer(), Skill.OVERALL)));
+			client.getWorldType(), client.getLocalPlayer(), null)));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -134,7 +134,7 @@ class XpPanel extends PluginPanel
 		});
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
+		final JLabel overallIcon = new JLabel(new ImageIcon(ImageUtil.loadImageResource(getClass(), "/skill_icons/overall.png")));
 
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -150,17 +150,18 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		final JComponent infoBoxPanel = new DragAndDropReorderPane();
+		final DragAndDropReorderPane infoBoxPanel = new DragAndDropReorderPane();
+		infoBoxPanel.addDragListener(component ->
+		{
+			XpInfoBox c = (XpInfoBox) component;
+			xpTrackerPlugin.updateSkillOrderState(c.getSkill(), infoBoxPanel.getPosition(component));
+		});
 
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
 
 		for (Skill skill : Skill.values())
 		{
-			if (skill == Skill.OVERALL)
-			{
-				break;
-			}
 			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
 
@@ -177,12 +178,11 @@ class XpPanel extends PluginPanel
 
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host(worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net")
+			.host(worldTypes.contains(WorldType.SEASONAL) ? "league.wiseoldman.net" : "wiseoldman.net")
 			.addPathSegment("players")
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")
-			.addPathSegment("skilling")
-			.addQueryParameter("metric", skill.getName().toLowerCase())
+			.addQueryParameter("metric", skill == null ? "overall" : skill.getName().toLowerCase())
 			.addQueryParameter("period", "week")
 			.build()
 			.toString();
@@ -195,21 +195,14 @@ class XpPanel extends PluginPanel
 
 	void resetSkill(Skill skill)
 	{
-		XpInfoBox xpInfoBox = infoBoxes.get(skill);
-		if (xpInfoBox != null)
-		{
-			xpInfoBox.reset();
-		}
+		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
+		xpInfoBox.reset();
 	}
 
 	void updateSkillExperience(boolean updated, boolean paused, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
-
-		if (xpInfoBox != null)
-		{
-			xpInfoBox.update(updated, paused, xpSnapshotSingle);
-		}
+		xpInfoBox.update(updated, paused, xpSnapshotSingle);
 	}
 
 	void updateTotal(XpSnapshotSingle xpSnapshotTotal)
@@ -234,5 +227,4 @@ class XpPanel extends PluginPanel
 		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
 		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));
 	}
-
 }

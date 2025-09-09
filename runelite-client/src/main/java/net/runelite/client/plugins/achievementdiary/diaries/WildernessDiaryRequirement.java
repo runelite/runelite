@@ -88,7 +88,7 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		// ELITE
 		add("Teleport to Ghorrock.",
 			new SkillRequirement(Skill.MAGIC, 96),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Fish and Cook a Dark Crab in the Resource Area.",
 			new SkillRequirement(Skill.FISHING, 85),
 			new SkillRequirement(Skill.COOKING, 90));

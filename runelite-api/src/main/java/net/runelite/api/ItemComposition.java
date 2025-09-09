@@ -58,7 +58,7 @@ public interface ItemComposition extends ParamHolder
 	 * Gets the items ID.
 	 *
 	 * @return the items ID
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	int getId();
 
@@ -145,6 +145,12 @@ public interface ItemComposition extends ParamHolder
 	 * @return the inventory menu actions
 	 */
 	String[] getInventoryActions();
+
+	/**
+	 * The subops for each op, indexed by op id.
+	 * @return
+	 */
+	String[][] getSubops();
 
 	/**
 	 * Gets the menu action index of the shift-click action.
@@ -273,4 +279,16 @@ public interface ItemComposition extends ParamHolder
 	 * @see net.runelite.api.coords.Angle
 	 */
 	void setZan2d(int angle);
+
+	/**
+	 * Get the ambient light value
+	 * @return
+	 */
+	int getAmbient();
+
+	/**
+	 * Get the contrast light value
+	 * @return
+	 */
+	int getContrast();
 }

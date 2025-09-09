@@ -31,27 +31,28 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.NullItemID;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -73,8 +74,8 @@ public class WikiPlugin extends Plugin
 {
 	static final HttpUrl WIKI_BASE = HttpUrl.get("https://oldschool.runescape.wiki");
 	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
-	static final String UTM_SORUCE_KEY = "utm_source";
-	static final String UTM_SORUCE_VALUE = "runelite";
+	static final String UTM_SOURCE_KEY = "utm_source";
+	static final String UTM_SOURCE_VALUE = "runelite";
 
 	private static final String MENUOP_WIKI = "Wiki";
 
@@ -93,6 +94,9 @@ public class WikiPlugin extends Plugin
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
+	@Inject
+	private WikiDpsManager wikiDpsManager;
+
 	private Widget icon;
 
 	private boolean wikiSelected = false;
@@ -109,17 +113,19 @@ public class WikiPlugin extends Plugin
 	public void startUp()
 	{
 		clientThread.invokeLater(this::addWidgets);
+		wikiDpsManager.startUp();
 	}
 
 	@Override
 	public void shutDown()
 	{
 		clientThread.invokeLater(this::removeWidgets);
+		wikiDpsManager.shutDown();
 	}
 
 	private void removeWidgets()
 	{
-		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		Widget wikiBannerParent = client.getWidget(InterfaceID.Orbs.WIKI);
 		if (wikiBannerParent == null)
 		{
 			return;
@@ -131,8 +137,8 @@ public class WikiPlugin extends Plugin
 		}
 		children[0] = null;
 
-		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
-		if (vanilla != null && client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 0)
+		Widget vanilla = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
+		if (vanilla != null && client.getVarbitValue(VarbitID.WIKI_ICON_DISABLED) == 0)
 		{
 			vanilla.setHidden(false);
 		}
@@ -144,7 +150,7 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
-		if (l.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
+		if (l.getGroupId() == InterfaceID.ORBS)
 		{
 			addWidgets();
 		}
@@ -152,13 +158,13 @@ public class WikiPlugin extends Plugin
 
 	private void addWidgets()
 	{
-		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		Widget wikiBannerParent = client.getWidget(InterfaceID.Orbs.WIKI);
 		if (wikiBannerParent == null)
 		{
 			return;
 		}
 
-		if (client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 1) // disabled
+		if (client.getVarbitValue(VarbitID.WIKI_ICON_DISABLED) == 1) // disabled
 		{
 			// when the wiki entity lookup option is disabled the banner parent layer,
 			// which is used for var transmit events, is not positioned. This is copied
@@ -170,14 +176,19 @@ public class WikiPlugin extends Plugin
 			wikiBannerParent.revalidate();
 		}
 
-		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+		Widget vanilla = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
 		if (vanilla != null)
 		{
 			vanilla.setHidden(true);
 		}
 
+		if (!config.showWikiMinimapButton())
+		{
+			return;
+		}
+
 		icon = wikiBannerParent.createChild(0, WidgetType.GRAPHIC);
-		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
+		icon.setSpriteId(SpriteID.WikiIcon.DESELECTED);
 		icon.setOriginalX(0);
 		icon.setOriginalY(0);
 		icon.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
@@ -186,23 +197,29 @@ public class WikiPlugin extends Plugin
 		icon.setOriginalHeight(14);
 		icon.setTargetVerb("Lookup");
 		icon.setName("Wiki");
-		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC
+		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC
 			| WidgetConfig.USE_OBJECT | WidgetConfig.USE_WIDGET);
 		icon.setNoClickThrough(true);
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
 			wikiSelected = true;
-			icon.setSpriteId(SpriteID.WIKI_SELECTED);
+			icon.setSpriteId(SpriteID.WikiIcon.SELECTED);
 			client.setAllWidgetsAreOpTargetable(true);
 		});
 
 		final int searchIndex = config.leftClickSearch() ? 4 : 5;
 		icon.setAction(searchIndex, "Search");
+		icon.setAction(6, "DPS");
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			if (ev.getOp() == searchIndex + 1)
+			int op = ev.getOp() - 1;
+			if (op == searchIndex)
 			{
 				openSearchInput();
+			}
+			else if (op == 6)
+			{
+				wikiDpsManager.launch();
 			}
 		});
 
@@ -216,7 +233,7 @@ public class WikiPlugin extends Plugin
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.WIKI_ICON_UPDATE)
 		{
-			Widget w = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			Widget w = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
 			w.setHidden(true);
 		}
 	}
@@ -241,7 +258,7 @@ public class WikiPlugin extends Plugin
 		wikiSelected = false;
 		if (icon != null)
 		{
-			icon.setSpriteId(SpriteID.WIKI_DESELECTED);
+			icon.setSpriteId(SpriteID.WikiIcon.DESELECTED);
 		}
 	}
 
@@ -267,7 +284,6 @@ public class WikiPlugin extends Plugin
 					break optarget;
 				case CANCEL:
 					return;
-				case WIDGET_USE_ON_ITEM:
 				case WIDGET_TARGET_ON_GROUND_ITEM:
 				{
 					type = "item";
@@ -280,8 +296,15 @@ public class WikiPlugin extends Plugin
 				{
 					type = "npc";
 					NPC npc = ev.getMenuEntry().getNpc();
-					assert npc != null;
+					if (npc == null)
+					{
+						return;
+					}
 					NPCComposition nc = npc.getTransformedComposition();
+					if (nc == null)
+					{
+						return;
+					}
 					id = nc.getId();
 					name = nc.getName();
 					location = npc.getWorldLocation();
@@ -323,7 +346,7 @@ public class WikiPlugin extends Plugin
 				.addQueryParameter("type", type)
 				.addQueryParameter("id", "" + id)
 				.addQueryParameter("name", name)
-				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+				.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE);
 
 			if (location != null)
 			{
@@ -363,18 +386,27 @@ public class WikiPlugin extends Plugin
 
 		if (wikiSelected && event.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET.getId())
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
+			Menu menu = client.getMenu();
+			MenuEntry[] menuEntries = menu.getMenuEntries();
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1 && w.getItemId() != NullItemID.NULL_6512)
+			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1 && w.getItemId() != ItemID.BLANKOBJECT)
 			{
-				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
+				for (int ourEntry = menuEntries.length - 1; ourEntry >= 0; ourEntry--)
 				{
 					MenuEntry entry = menuEntries[ourEntry];
 					if (entry.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET)
 					{
 						int id = itemManager.canonicalize(w.getItemId());
 						String name = itemManager.getItemComposition(id).getMembersName();
-						entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
+						if ("null".equals(name))
+						{
+							// may be a dummy item for the UI without a name
+							menu.removeMenuEntry(entry);
+						}
+						else
+						{
+							entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
+						}
 						break;
 					}
 				}
@@ -396,10 +428,10 @@ public class WikiPlugin extends Plugin
 			}
 		}
 
-		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId())
+		if (event.getType() == MenuAction.CC_OP.getId() && WidgetUtil.componentToInterface(widgetID) == InterfaceID.STATS)
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getActions() == null || w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
+			if (w.getActions() == null || w.getParentId() != InterfaceID.Stats.UNIVERSE)
 			{
 				return;
 			}
@@ -419,7 +451,26 @@ public class WikiPlugin extends Plugin
 				.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
 					.addPathSegment("w")
 					.addPathSegment(Text.removeTags(ev.getTarget()))
-					.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
+					.build().toString()));
+		}
+
+		if (event.getType() == MenuAction.CC_OP.getId() && WidgetUtil.componentToInterface(widgetID) == InterfaceID.CA_TASKS)
+		{
+			Widget w = getWidget(widgetID, widgetIndex);
+			if (w.getActions() == null || w.getParentId() != InterfaceID.CaTasks.TASKS_BACKGROUND)
+			{
+				return;
+			}
+
+			client.getMenu().createMenuEntry(-1)
+				.setTarget(w.getName())
+				.setOption(MENUOP_WIKI)
+				.setType(MenuAction.RUNELITE)
+				.onClick(ev -> LinkBrowser.browse(WIKI_BASE.newBuilder()
+					.addPathSegment("w")
+					.addPathSegment(Text.removeTags(ev.getTarget()))
+					.addQueryParameter(UTM_SOURCE_KEY, UTM_SOURCE_VALUE)
 					.build().toString()));
 		}
 	}

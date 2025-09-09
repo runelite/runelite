@@ -35,8 +35,8 @@ public interface CorpConfig extends Config
 
 	@ConfigItem(
 		keyName = "leftClickCore",
-		name = "Left click walk on core",
-		description = "Prioritizes Walk here over Attack on the Dark energy core",
+		name = "Left-click walk on core",
+		description = "Prioritizes Walk here over Attack on the dark energy core.",
 		position = 1
 	)
 	default boolean leftClickCore()
@@ -47,7 +47,7 @@ public interface CorpConfig extends Config
 	@ConfigItem(
 		keyName = "showDamage",
 		name = "Show damage overlay",
-		description = "Show total damage overlay",
+		description = "Show total damage overlay.",
 		position = 0
 	)
 	default boolean showDamage()

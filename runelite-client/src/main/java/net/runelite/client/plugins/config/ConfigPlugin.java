@@ -44,7 +44,6 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Configuration",
-	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin
@@ -56,6 +55,9 @@ public class ConfigPlugin extends Plugin
 	private Provider<PluginListPanel> pluginListPanelProvider;
 
 	@Inject
+	private Provider<TopLevelConfigPanel> topLevelConfigPanelProvider;
+
+	@Inject
 	private ConfigManager configManager;
 
 	@Inject
@@ -64,14 +66,14 @@ public class ConfigPlugin extends Plugin
 	@Inject
 	private ChatColorConfig chatColorConfig;
 
-	private PluginListPanel pluginListPanel;
+	private TopLevelConfigPanel topLevelConfigPanel;
 
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		pluginListPanel = pluginListPanelProvider.get();
+		PluginListPanel pluginListPanel = pluginListPanelProvider.get();
 		pluginListPanel.addFakePlugin(new PluginConfigurationDescriptor(
 				"RuneLite", "RuneLite client settings",
 				new String[]{"client", "notification", "size", "position", "window", "chrome", "focus", "font", "overlay", "tooltip", "infobox"},
@@ -83,13 +85,15 @@ public class ConfigPlugin extends Plugin
 			));
 		pluginListPanel.rebuildPluginList();
 
+		topLevelConfigPanel = topLevelConfigPanelProvider.get();
+
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "config_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Configuration")
 			.icon(icon)
 			.priority(0)
-			.panel(pluginListPanel.getMuxer())
+			.panel(topLevelConfigPanel)
 			.build();
 
 		clientToolbar.addNavigation(navButton);
@@ -117,11 +121,8 @@ public class ConfigPlugin extends Plugin
 			// Expand config panel for plugin
 			SwingUtilities.invokeLater(() ->
 			{
-				if (!navButton.isSelected())
-				{
-					navButton.getOnSelect().run();
-				}
-				pluginListPanel.openConfigurationPanel(plugin.getName());
+				clientToolbar.openPanel(navButton);
+				topLevelConfigPanel.openConfigurationPanel(plugin.getName());
 			});
 		}
 	}

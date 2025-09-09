@@ -52,7 +52,7 @@ public class TimeablePanel<T> extends JPanel
 	private static final ImageIcon NOTIFY_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
 	private static final ImageIcon NOTIFY_SELECTED_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
 	private static final Rectangle OVERLAY_ICON_BOUNDS;
-	
+
 	static
 	{
 		int width = Constants.ITEM_SPRITE_WIDTH * 2 / 3;
@@ -122,8 +122,8 @@ public class TimeablePanel<T> extends JPanel
 
 		JLayeredPane layeredIconPane = new JLayeredPane();
 		layeredIconPane.setPreferredSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
-		layeredIconPane.add(icon, Integer.valueOf(0));
-		layeredIconPane.add(overlayIcon, Integer.valueOf(1));
+		layeredIconPane.add(icon, (Object) 0);
+		layeredIconPane.add(overlayIcon, (Object) 1);
 		icon.setBounds(0, 0, Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT);
 		overlayIcon.setBounds(OVERLAY_ICON_BOUNDS);
 
@@ -137,7 +137,7 @@ public class TimeablePanel<T> extends JPanel
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);
 	}
-	
+
 	public void setOverlayIconImage(BufferedImage overlayImg)
 	{
 		if (overlayImg == null)
@@ -145,7 +145,7 @@ public class TimeablePanel<T> extends JPanel
 			overlayIcon.setIcon(null);
 			return;
 		}
-		
+
 		if (OVERLAY_ICON_BOUNDS.width != overlayImg.getWidth() || OVERLAY_ICON_BOUNDS.height != overlayImg.getHeight())
 		{
 			overlayImg = ImageUtil.resizeImage(overlayImg, OVERLAY_ICON_BOUNDS.width, OVERLAY_ICON_BOUNDS.height);

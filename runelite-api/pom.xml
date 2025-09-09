@@ -29,11 +29,12 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.9.6-SNAPSHOT</version>
+		<version>1.11.17-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
 	<name>RuneLite API</name>
+	<url>https://static.runelite.net/runelite-api</url> <!-- for javadoc external urls -->
 
 	<dependencies>
 		<dependency>
@@ -93,8 +94,10 @@
 							<excludes>
 								<exclude>net/runelite/api/annotations/*.class</exclude>
 								<exclude>net/runelite/api/clan/ClanID.class</exclude>
+								<exclude>net/runelite/api/dbtable/DBTableID*.class</exclude>
+								<exclude>net/runelite/api/widgets/ComponentID.class</exclude>
+								<exclude>net/runelite/api/widgets/InterfaceID.class</exclude>
 								<exclude>net/runelite/api/widgets/ItemQuantityMode.class</exclude>
-								<exclude>net/runelite/api/widgets/WidgetConfig.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetID*.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetModalMode.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetModelType.class</exclude>
@@ -103,7 +106,7 @@
 								<exclude>net/runelite/api/widgets/WidgetTextAlignment.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetType.class</exclude>
 								<exclude>net/runelite/api/AnimationID.class</exclude>
-								<exclude>net/runelite/api/DBTableID*.class</exclude>
+								<exclude>net/runelite/api/CollisionDataFlag.class</exclude>
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
 								<exclude>net/runelite/api/GraphicID.class</exclude>
@@ -120,6 +123,7 @@
 								<exclude>net/runelite/api/ParamID.class</exclude>
 								<exclude>net/runelite/api/ScriptID.class</exclude>
 								<exclude>net/runelite/api/SettingID.class</exclude>
+								<exclude>net/runelite/api/SkullIcon.class</exclude>
 								<exclude>net/runelite/api/SoundEffectID.class</exclude>
 								<exclude>net/runelite/api/SoundEffectVolume.class</exclude>
 								<exclude>net/runelite/api/SpriteID.class</exclude>
@@ -127,7 +131,34 @@
 								<exclude>net/runelite/api/Varbits.class</exclude>
 								<exclude>net/runelite/api/VarClientInt.class</exclude>
 								<exclude>net/runelite/api/VarClientStr.class</exclude>
+								<exclude>net/runelite/api/VarPlayer.class</exclude>
+								<exclude>net/runelite/api/gameval/*.class</exclude>
 							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- include generated sources in javadoc -->
+					<sourcepath>${project.build.directory}/delombok;${project.build.directory}/generated-sources</sourcepath>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>net.runelite</groupId>
+				<artifactId>runelite-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>pack-components</id>
+						<goals>
+							<goal>pack-components</goal>
+						</goals>
+						<configuration>
+							<inputDirectory>src/main/interfaces</inputDirectory>
+							<outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

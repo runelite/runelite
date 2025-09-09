@@ -26,14 +26,17 @@
 package net.runelite.client.ui.components.colorpicker;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 
 @Singleton
@@ -45,6 +48,16 @@ public class ColorPickerManager
 	@Setter(AccessLevel.PACKAGE)
 	@Getter(AccessLevel.PACKAGE)
 	private RuneliteColorPicker currentPicker;
+
+	public RuneliteColorPicker create(Client client, Color previousColor, String title, boolean alphaHidden)
+	{
+		return create((Component) client, previousColor, title, alphaHidden);
+	}
+
+	public RuneliteColorPicker create(Component owner, Color previousColor, String title, boolean alphaHidden)
+	{
+		return create(SwingUtilities.windowForComponent(owner), previousColor, title, alphaHidden);
+	}
 
 	public RuneliteColorPicker create(Window owner, Color previousColor, String title, boolean alphaHidden)
 	{

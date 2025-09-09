@@ -31,22 +31,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.BANK_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DEPOSIT_BOX_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_OTHER_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.EQUIPMENT_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.EQUIPMENT_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.GUIDE_PRICES_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
 public abstract class WidgetItemOverlay extends Overlay
@@ -57,7 +43,7 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected WidgetItemOverlay()
 	{
 		super.setPosition(OverlayPosition.DYNAMIC);
-		super.setPriority(OverlayPriority.LOW);
+		super.setPriority(PRIORITY_LOW);
 		super.setLayer(OverlayLayer.MANUAL);
 	}
 
@@ -117,30 +103,28 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected void showOnInventory()
 	{
 		showOnInterfaces(
-			DEPOSIT_BOX_GROUP_ID,
-			BANK_INVENTORY_GROUP_ID,
-			SHOP_INVENTORY_GROUP_ID,
-			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
-			GUIDE_PRICES_INVENTORY_GROUP_ID,
-			EQUIPMENT_INVENTORY_GROUP_ID,
-			INVENTORY_GROUP_ID,
-			SEED_VAULT_INVENTORY_GROUP_ID,
-			DUEL_INVENTORY_GROUP_ID,
-			DUEL_INVENTORY_OTHER_GROUP_ID,
-			PLAYER_TRADE_SCREEN_GROUP_ID,
-			PLAYER_TRADE_INVENTORY_GROUP_ID,
-			POH_TREASURE_CHEST_INVENTORY_GROUP_ID);
+			InterfaceID.BANK_DEPOSITBOX,
+			InterfaceID.BANKSIDE,
+			InterfaceID.SHOPSIDE,
+			InterfaceID.GE_OFFERS_SIDE,
+			InterfaceID.GE_PRICECHECKER_SIDE,
+			InterfaceID.EQUIPMENT_SIDE,
+			InterfaceID.INVENTORY,
+			InterfaceID.SEED_VAULT_DEPOSIT,
+			InterfaceID.TRADEMAIN,
+			InterfaceID.TRADESIDE,
+			InterfaceID.POH_COSTUMES_SIDE);
 	}
 
 	protected void showOnBank()
 	{
-		drawAfterLayer(WidgetInfo.BANK_ITEM_CONTAINER);
-		drawAfterLayer(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER);
+		drawAfterLayer(InterfaceID.Bankmain.ITEMS);
+		drawAfterLayer(InterfaceID.SharedBank.ITEMS);
 	}
 
 	protected void showOnEquipment()
 	{
-		showOnInterfaces(EQUIPMENT_GROUP_ID);
+		showOnInterfaces(InterfaceID.WORNITEMS);
 	}
 
 	protected void showOnInterfaces(int... ids)
@@ -148,16 +132,10 @@ public abstract class WidgetItemOverlay extends Overlay
 		Arrays.stream(ids).forEach(this::drawAfterInterface);
 	}
 
-	// Don't allow setting position, priority, or layer
+	// Don't allow setting position or layer
 
 	@Override
 	public void setPosition(OverlayPosition position)
-	{
-		throw new IllegalStateException();
-	}
-
-	@Override
-	public void setPriority(OverlayPriority priority)
 	{
 		throw new IllegalStateException();
 	}

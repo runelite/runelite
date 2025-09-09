@@ -27,14 +27,15 @@ package net.runelite.api;
 /**
  * Server controlled "content-developer" integers.
  *
- * @see VarPlayer
+ * @see net.runelite.api.gameval.VarPlayerID
  * <p>
- * These differ from a {@link VarPlayer} in that VarBits can be
+ * These differ from a {@link net.runelite.api.gameval.VarPlayerID} in that VarBits can be
  * less than 32 bits. One or more VarBits can be assigned to a
  * backing VarPlayer, each with a static range of bits that it is
  * allowed to access. This allows a more compact representation
  * of small values, like booleans
  */
+@Deprecated
 public final class Varbits
 {
 	/*
@@ -55,6 +56,50 @@ public final class Varbits
 	public static final int STAMINA_EFFECT = 24;
 
 	/**
+	 * Antifire timer
+	 * Number of game ticks remaining on antifire in intervals of 30; for a value X there are 30 * X game ticks remaining.
+	 * The antifire expires once this reaches 0.
+	 */
+	public static final int ANTIFIRE = 3981;
+
+	/**
+	 * Super Antifire timer
+	 * Number of game ticks remaining on super antifire in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The super antifire expires once this reaches 0.
+	 */
+	public static final int SUPER_ANTIFIRE = 6101;
+
+	/**
+	 * Magic imbue timer
+	 * Number of game ticks remaining on magic imbue effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The magic imbue effect expires once this reaches 0.
+	 */
+	public static final int MAGIC_IMBUE = 5438;
+
+	/**
+	 * Divine effect timers
+	 * Number of game ticks remaining on a divine effect.
+	 * A potion that combines multiple effects will set the varbits for the individual effects as well as its own effect.
+	 */
+	public static final int DIVINE_SUPER_ATTACK = 8429;
+	public static final int DIVINE_SUPER_STRENGTH = 8430;
+	public static final int DIVINE_SUPER_DEFENCE = 8431;
+	public static final int DIVINE_RANGING = 8432;
+	public static final int DIVINE_MAGIC = 8433;
+	public static final int DIVINE_SUPER_COMBAT = 13663;
+	public static final int DIVINE_BASTION = 13664;
+	public static final int DIVINE_BATTLEMAGE = 13665;
+
+	/**
+	 * Moonlight potion timer.
+	 * When at least 70 herblore, the moonlight potion's defense effect will be removed when this timer runs out.
+	 * If the player drinks a dose of moonlight potion while already under its effects, desync between
+	 * Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick greater.
+	 * In case of desync, the moonlight defence effect will be removed once Varbits.DIVINE_SUPER_DEFENCE becomes 0.
+	 */
+	public static final int MOONLIGHT_POTION = 10029;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.
@@ -68,16 +113,34 @@ public final class Varbits
 	public static final int CHAT_SCROLLBAR_ON_LEFT = 6374;
 
 	/**
+	 * Essence pouches
+	 */
+	public static final int ESSENCE_POUCH_SMALL_AMOUNT = 603;
+	public static final int ESSENCE_POUCH_MEDIUM_AMOUNT = 604;
+	public static final int ESSENCE_POUCH_LARGE_AMOUNT = 605;
+	public static final int ESSENCE_POUCH_GIANT_AMOUNT = 606;
+	public static final int ESSENCE_POUCH_COLOSSAL_AMOUNT = 13682;
+
+	public static final int ESSENCE_POUCH_COLOSSAL_DEGRADE = 13683;
+
+	/**
 	 * Runepouch
 	 */
 	public static final int RUNE_POUCH_RUNE1 = 29;
 	public static final int RUNE_POUCH_RUNE2 = 1622;
 	public static final int RUNE_POUCH_RUNE3 = 1623;
 	public static final int RUNE_POUCH_RUNE4 = 14285;
+	public static final int RUNE_POUCH_RUNE5 = 15373;
+	public static final int RUNE_POUCH_RUNE6 = 15374;
 	public static final int RUNE_POUCH_AMOUNT1 = 1624;
 	public static final int RUNE_POUCH_AMOUNT2 = 1625;
 	public static final int RUNE_POUCH_AMOUNT3 = 1626;
 	public static final int RUNE_POUCH_AMOUNT4 = 14286;
+	public static final int RUNE_POUCH_AMOUNT5 = 15375;
+	public static final int RUNE_POUCH_AMOUNT6 = 15376;
+
+	public static final int PRAYER_DEADEYE_UNLOCKED = 16097;
+	public static final int PRAYER_MYSTIC_VIGOUR_UNLOCKED = 16098;
 
 	/**
 	 * Prayers
@@ -112,6 +175,36 @@ public final class Varbits
 	public static final int PRAYER_PRESERVE = 5466;
 	public static final int PRAYER_RIGOUR = 5464;
 	public static final int PRAYER_AUGURY = 5465;
+	public static final int PRAYER_DEADEYE = 16090;
+	public static final int PRAYER_MYSTIC_VIGOUR = 16091;
+
+	/**
+	 * Ruinous Powers
+	 */
+	public static final int PRAYER_RP_REJUVENATION = 14840;
+	public static final int PRAYER_RP_ANCIENT_STRENGTH = 14829;
+	public static final int PRAYER_RP_ANCIENT_SIGHT = 14830;
+	public static final int PRAYER_RP_ANCIENT_WILL = 14831;
+	public static final int PRAYER_RP_PROTECT_ITEM = 14966;
+	public static final int PRAYER_RP_RUINOUS_GRACE = 14841;
+	public static final int PRAYER_RP_DAMPEN_MAGIC = 14964;
+	public static final int PRAYER_RP_DAMPEN_RANGED = 14963;
+	public static final int PRAYER_RP_DAMPEN_MELEE = 14962;
+	public static final int PRAYER_RP_TRINITAS = 14832;
+	public static final int PRAYER_RP_BERSERKER = 14844;
+	public static final int PRAYER_RP_PURGE = 14839;
+	public static final int PRAYER_RP_METABOLISE = 14843;
+	public static final int PRAYER_RP_REBUKE = 14850;
+	public static final int PRAYER_RP_VINDICATION = 14851;
+	public static final int PRAYER_RP_DECIMATE = 14833;
+	public static final int PRAYER_RP_ANNIHILATE = 14834;
+	public static final int PRAYER_RP_VAPORISE = 14835;
+	public static final int PRAYER_RP_FUMUS_VOW = 14845;
+	public static final int PRAYER_RP_UMBRA_VOW = 14847;
+	public static final int PRAYER_RP_CRUORS_VOW = 14846;
+	public static final int PRAYER_RP_GLACIES_VOW = 14848;
+	public static final int PRAYER_RP_WRATH = 14842;
+	public static final int PRAYER_RP_INTENSIFY = 14965;
 
 	/**
 	 * Diary Entries
@@ -302,19 +395,17 @@ public final class Varbits
 	/**
 	 * Blast Mine
 	 */
-	public static final int BLAST_MINE_COAL = 4924;
-	public static final int BLAST_MINE_GOLD = 4925;
-	public static final int BLAST_MINE_MITHRIL = 4926;
-	public static final int BLAST_MINE_ADAMANTITE = 4921;
-	public static final int BLAST_MINE_RUNITE = 4922;
+	public static final int BLAST_MINE_COAL = 10698;
+	public static final int BLAST_MINE_GOLD = 10699;
+	public static final int BLAST_MINE_MITHRIL = 10700;
+	public static final int BLAST_MINE_ADAMANTITE = 10701;
+	public static final int BLAST_MINE_RUNITE = 10702;
 
 	/**
 	 * Raids
 	 */
 	public static final int IN_RAID = 5432;
 	public static final int TOTAL_POINTS = 5431;
-	public static final int PERSONAL_POINTS = 5422;
-	public static final int RAID_PARTY_SIZE = 5424;
 
 	// 0 = raid not started, >0 = raid started
 	public static final int RAID_STATE = 5425;
@@ -420,6 +511,11 @@ public final class Varbits
 	public static final int QUEST_THE_HAND_IN_THE_SAND = 1527;
 
 	/**
+	 * Dragon slayer 2 quest status
+	 */
+	public static final int QUEST_DS2 = 6104;
+
+	/**
 	 * Daily Tasks =Collection availability)
 	 */
 	public static final int DAILY_HERB_BOXES_COLLECTED = 3961;
@@ -485,7 +581,15 @@ public final class Varbits
 	public static final int AUTOWEED = 5557;
 
 	/**
-	 * The varbit that stores the players {@code AccountType}.
+	 * The player's account type.
+	 * <p>
+	 * 0 = normal
+	 * 1 = ironman
+	 * 2 = ultimate ironman
+	 * 3 = hardcore ironman
+	 * 4 = group ironman
+	 * 5 = hardcore group ironman
+	 * 6 = unranked group ironman
 	 */
 	public static final int ACCOUNT_TYPE = 1777;
 
@@ -535,20 +639,32 @@ public final class Varbits
 
 	public static final int BANK_REARRANGE_MODE = 3959;
 	public static final int CURRENT_BANK_TAB = 4150;
+	public static final int BANK_QUANTITY_TYPE = 6590;
+	public static final int BANK_REQUESTEDQUANTITY = 3960;
+	public static final int BANK_LEAVEPLACEHOLDERS = 3755;
+	public static final int BANK_ITEM_OPTIONS = 16125;
 
-	public static final int WORLDHOPPER_FAVROITE_1 = 4597;
-	public static final int WORLDHOPPER_FAVROITE_2 = 4598;
+	public static final int WORLDHOPPER_FAVORITE_1 = 4597;
+	public static final int WORLDHOPPER_FAVORITE_2 = 4598;
 
 	/**
-	 * Vengeance is active
+	 * Spell activeness
 	 */
 	public static final int VENGEANCE_ACTIVE = 2450;
+	public static final int DEATH_CHARGE = 12411;
+	public static final int RESURRECT_THRALL = 12413;
+	public static final int SHADOW_VEIL = 12414;
 
 	/**
 	 * Spell cooldowns
 	 */
+	public static final int HEAL_GROUP_COOLDOWN = 925;
 	public static final int VENGEANCE_COOLDOWN = 2451;
+	public static final int DEATH_CHARGE_COOLDOWN = 12138;
 	public static final int CORRUPTION_COOLDOWN = 12288;
+	public static final int RESURRECT_THRALL_COOLDOWN = 12290;
+	public static final int SHADOW_VEIL_COOLDOWN = 12291;
+	public static final int WARD_OF_ARCEUUS_COOLDOWN = 12293;
 
 	/**
 	 * Imbued Heart cooldown
@@ -556,6 +672,13 @@ public final class Varbits
 	 * The heart regains its power once this reaches 0.
 	 */
 	public static final int IMBUED_HEART_COOLDOWN = 5361;
+
+	/**
+	 * Dragonfire shield cooldown
+	 * <p>
+	 * Number of game ticks remaining on cooldown in intervals of 8; for a value X there are 8 * X game ticks remaining.
+	 */
+	public static final int DRAGONFIRE_SHIELD_COOLDOWN = 6539;
 
 	/**
 	 * Amount of items in each bank tab
@@ -601,13 +724,15 @@ public final class Varbits
 	public static final int LEAGUE_RELIC_4 = 10052;
 	public static final int LEAGUE_RELIC_5 = 10053;
 	public static final int LEAGUE_RELIC_6 = 11696;
+	public static final int LEAGUE_RELIC_7 = 17301;
+	public static final int LEAGUE_RELIC_8 = 17302;
 
 	/**
 	 * Muted volume restore values
 	 */
-	public static final int MUTED_MUSIC_VOLUME = 9666;
-	public static final int MUTED_SOUND_EFFECT_VOLUME = 9674;
-	public static final int MUTED_AREA_EFFECT_VOLUME = 9675;
+	public static final int MUTED_MUSIC_VOLUME = 12426;
+	public static final int MUTED_SOUND_EFFECT_VOLUME = 12427;
+	public static final int MUTED_AREA_EFFECT_VOLUME = 12428;
 
 	/**
 	 * Parasite infection status during nightmare of ashihama bossfight
@@ -626,12 +751,14 @@ public final class Varbits
 	public static final int WIKI_ENTITY_LOOKUP = 10113;
 
 	/**
-	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 * Whether the player is in a PvP area
 	 * <p>
-	 * 0 = Enabled (player is not in PvP)
-	 * 1 = Disabled (player is in PvP)
-	 *
-	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 * 0 = Player is not in PvP area
+	 * 1 = Player is in PvP area
+	 * <p>
+	 * Note: The name of this varbit comes from historical behavior where
+	 * the special attack orb would be disabled in PvP, but this was changed
+	 * on 2023-03-09 due to Poll 78. Yet, the varbit still updates as before.
 	 */
 	public static final int PVP_SPEC_ORB = 8121;
 
@@ -696,6 +823,27 @@ public final class Varbits
 	public static final int TELEBLOCK = 4163;
 
 	/**
+	 * Cooldown timer remaining before eligible to restore at a god wars dungeon altar.
+	 * Number of game ticks remaining is in intervals of 100; for a value X there are 100 * X game ticks remaining.
+	 * A player can pray at a god wars altar once this reaches 0.
+	 */
+	public static final int GOD_WARS_ALTAR_COOLDOWN = 4099;
+
+	/**
+	 * Cooldown timer remaining before being able to eat from the piles of food in Scurrius's lair.
+	 * Number of game ticks remaining is in intervals of 100; for a value X there are 100 * X game ticks remaining.
+	 * A player can eat from the food piles once this reaches 0.
+	 */
+	public static final int SCURRIUS_FOOD_PILE_COOLDOWN = 9581;
+
+	/**
+	 * Farmer's Affinity effect timer
+	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The Farmer's Affinity expires once this reaches 0.
+	 */
+	public static final int FARMERS_AFFINITY = 11765;
+
+	/**
 	 * If the player has Menaphite remedy effect active.
 	 * This will go down by 1 every 25 ticks (15 seconds) and the player's combat stats will be restored by 6 + 16%.
 	 * Set to 20 upon consuming potion.
@@ -732,4 +880,124 @@ public final class Varbits
 	public static final int TOA_MEMBER_5_HEALTH = 14351;
 	public static final int TOA_MEMBER_6_HEALTH = 14352;
 	public static final int TOA_MEMBER_7_HEALTH = 14353;
+
+	/**
+	 * How many NMZ overload refreshes the player has remaining.
+	 * <p>
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 20 upon drinking an overload.
+	 */
+	public static final int NMZ_OVERLOAD_REFRESHES_REMAINING = 3955;
+
+	/**
+	 * How many Chambers of Xeric overload refreshes the player has remaining.
+	 * <p>
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 20 upon drinking an overload.
+	 */
+	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
+
+	public static final int SLAYER_POINTS = 4068;
+	public static final int SLAYER_TASK_STREAK = 4069;
+
+	/**
+	 * The assigned boss for boss slayer.
+	 */
+	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Whether the level up interface is disabled
+	 */
+	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
+
+	public static final int PRAYERBOOK = 14826;
+
+	/**
+	 * During and after Curse of the Empty Lord, Viggora can be located in one of three locations,
+	 * which is uniquely and permanently set for each player.
+	 * This varbit determines which location he will appear in, which is useful for a master clue step.
+	 */
+	public static final int VIGGORA_LOCATION = 815;
+
+	/**
+	 * If the player has a spellbook swap active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int SPELLBOOK_SWAP = 3617;
+
+	public static final int SPELLBOOK = 4070;
+	public static final int SPELLBOOK_SUBMENU = 9730;
+
+	/**
+	 * The amount of Curse of the Moons stacks received when fighting the Blue Moon or Eclipse Moon.
+	 * The varbit value remains 0 when fighting the Blood Moon.
+	 * When fighting the Blue Moon, the player's joints will lock up at 18 stacks, which causes their next attack to be
+	 * canceled and 18 stacks to be removed.
+	 * When fighting the Eclipse Moon, the stacks increase the chance of a player's attack glancing off the shield of
+	 * the Eclipse Moon. Glancing attacks reduce the player's max hit by two times the flat armour of the Eclipse Moon.
+	 */
+	public static final int CURSE_OF_THE_MOONS = 9853;
+
+	/**
+	 * The amount of Doom stacks received in the Fortis Colosseum.
+	 */
+	public static final int COLOSSEUM_DOOM = 9801;
+
+	public static final int BUFF_GOADING_POTION = 11294;
+
+	public static final int BUFF_PRAYER_REGENERATION = 11361;
+
+	/**
+	 * The player's progress value for the colossal wyrm advanced basic course.
+	 * <p>
+	 * Max value = 6;
+	 * </p>
+	 */
+	public static final int COLOSSAL_WYRM_COURSE_BASIC = 11292;
+
+	/**
+	 * The player's progress value for the colossal wyrm advanced agility course.
+	 * <p>
+	 * Max value = 6;
+	 * </p>
+	 */
+	public static final int COLOSSAL_WYRM_COURSE_ADVANCED = 11293;
+
+	public static final int WINTERTODT_WARMTH = 11434;
+
+	public static final int COMBAT_TASK_EASY = 12885;
+	public static final int COMBAT_TASK_MEDIUM = 12886;
+	public static final int COMBAT_TASK_HARD = 12887;
+	public static final int COMBAT_TASK_ELITE = 12888;
+	public static final int COMBAT_TASK_MASTER = 12889;
+	public static final int COMBAT_TASK_GRANDMASTER = 12890;
+
+	public static final int LEPRECHAUNS_LUCK = 15344;
+
+	public static final int LEAGUES_MELEE_COMBAT_MASTERY_LEVEL = 11580;
+	public static final int LEAGUES_RANGED_COMBAT_MASTERY_LEVEL = 11581;
+	public static final int LEAGUES_MAGIC_COMBAT_MASTERY_LEVEL = 11582;
+
+	/**
+	 * The slayer master which is present at Burthorpe.
+	 * <p>
+	 * 0 = Turael
+	 * 1, 2 = Aya
+	 * 3 = Null
+	 */
+	public static final int BURTHORPE_SLAYER_MASTER = 10782;
+
+	/**
+	 * The state of Jarvis' gravestone.
+	 * <p>
+	 * 0, 2, 3 = Bush (eg. saved Jarvis, or did not partake in the 2017 Halloween event)
+	 * 1 = Gravestone
+	 *
+	 * @see <a href="https://oldschool.runescape.wiki/w/Gravestone_(Jarvis)">Gravestone (Jarvis) - OSRS Wiki</a>
+	 */
+	public static final int JARVIS_GRAVESTONE = 6008;
+
+	public static final int IN_LMS = 5314;
 }
