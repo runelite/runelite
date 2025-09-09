@@ -181,7 +181,7 @@ public class GroundItemsOverlay extends Overlay
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
 			if (groundPoint == null || Math.abs(localLocation.getX() - groundPoint.getX()) > localDrawDistance
-                || Math.abs(localLocation.getY() - groundPoint.getY()) > localDrawDistance
+				|| Math.abs(localLocation.getY() - groundPoint.getY()) > localDrawDistance
 				|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
 			{
 				continue;
