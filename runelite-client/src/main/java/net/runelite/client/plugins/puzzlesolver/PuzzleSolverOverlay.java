@@ -245,7 +245,7 @@ public class PuzzleSolverOverlay extends Overlay
 								}
 								moves = Math.min(4, moves); // Scale the dot sizing/color interpolation by at least 4
 
-								graphics.setColor(config.dotColour());
+								graphics.setColor(config.dotColor());
 								// Display the next movesToShow steps
 								for (int i = 1; i <= moves; i++)
 								{
@@ -265,9 +265,9 @@ public class PuzzleSolverOverlay extends Overlay
 
 									if (config.useDotGradient())
 									{
-										Color colour = HSBGradient.getHSBStep(
-											config.dotColour(), config.gradientColour(), i - 1, moves);
-										graphics.setColor(colour);
+										Color color = HSBGradient.getHSBStep(
+											config.dotColor(), config.gradientColor(), i - 1, moves);
+										graphics.setColor(color);
 									}
 
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;

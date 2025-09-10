@@ -83,12 +83,12 @@ public interface PuzzleSolverConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dotColour",
-		name = "Dot colour",
-		description = "Dot colour for the dots.",
+		keyName = "dotColor",
+		name = "Dot color",
+		description = "Dot color for the dots.",
 		position = 4
 	)
-	default Color dotColour()
+	default Color dotColor()
 	{
 		return Color.YELLOW;
 	}
@@ -96,7 +96,7 @@ public interface PuzzleSolverConfig extends Config
 	@ConfigItem(
 		keyName = "useDotGradient",
 		name = "Use dot gradient",
-		description = "Whether to have a colour gradient for the dots between Dot Colour and Secondary gradient Colour",
+		description = "Whether to have a color gradient for the dots between Dot Color and Secondary gradient Color",
 		position = 5
 	)
 	default boolean useDotGradient()
@@ -105,12 +105,12 @@ public interface PuzzleSolverConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "gradientColour",
-		name = "Secondary gradient colour",
-		description = "If gradient is enabled this will be the color that the dots blend to from the Dot Colour.",
+		keyName = "gradientColor",
+		name = "Secondary gradient color",
+		description = "If gradient is enabled this will be the color that the dots blend to from the Dot Color.",
 		position = 6
 	)
-	default Color gradientColour()
+	default Color gradientColor()
 	{
 		return Color.RED;
 	}

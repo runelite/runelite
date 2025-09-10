@@ -31,14 +31,14 @@ public class HSBGradient
 {
 
 	/**
-	 * Returns the rgb Color linearly interpolated between the start and end colours provided as a scale
-	 * from 0 inclusive to steps exclusive. An index of 0 would be the start colour and
-	 * an index of steps-1 would be the end colour. The interpolation converts to HSB colors for
+	 * Returns the rgb Color linearly interpolated between the start and end colors provided as a scale
+	 * from 0 inclusive to steps exclusive. An index of 0 would be the start color and
+	 * an index of steps-1 would be the end color. The interpolation converts to HSB colors for
 	 * more realistic color interpolation.
 	 * @param start The starting color at index 0
 	 * @param end The ending color at steps - 1
-	 * @param index The index along the interpolation for blending the start and end colours
-	 * @param steps The number of steps between the start and end colour
+	 * @param index The index along the interpolation for blending the start and end colors
+	 * @param steps The number of steps between the start and end color
 	 * @return The interpolated Color object for the given index
 	 */
 	public static Color getHSBStep(Color start, Color end, int index, int steps)
