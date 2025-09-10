@@ -292,7 +292,7 @@ public class PuzzleSolverOverlay extends Overlay
 								int lastBlankX = currentMove.getEmptyPiece() % DIMENSION;
 								int lastBlankY = currentMove.getEmptyPiece() / DIMENSION;
 
-								// Display the next movesToShow steps
+								// Display the next 3 steps
 								for (int i = 1; i < 4; i++)
 								{
 									int j = solver.getPosition() + i;
