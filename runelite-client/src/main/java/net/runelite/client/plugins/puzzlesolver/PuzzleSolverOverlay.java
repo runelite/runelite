@@ -219,8 +219,32 @@ public class PuzzleSolverOverlay extends Overlay
 							if (config.drawDots())
 							{
 								int moves = config.movesToShow();
-								// positions capacity chosen so set does not reallocate when added to
-								Set<Integer> positions = new HashSet<>(4 * moves / 3);
+								if (moves > 4)
+								{
+									// positions capacity chosen so set does not reallocate when added to
+									Set<Integer> positions = new HashSet<>(4 * moves / 3);
+									for (int i = 1; i <= moves; i++)
+									{
+										int j = solver.getPosition() + i;
+
+										if (j >= solver.getStepCount())
+										{
+											moves = i - 1;
+											break;
+										}
+
+										PuzzleState futureMove = solver.getStep(j);
+
+										if (futureMove == null || !config.drawOverlaps() && positions.contains(futureMove.getEmptyPiece()))
+										{
+											moves = i - 1;
+											break;
+										}
+										positions.add(futureMove.getEmptyPiece());
+									}
+								}
+								moves = Math.min(4, moves); // Scale the dot sizing/color interpolation by at least 4
+
 								graphics.setColor(config.dotColour());
 								// Display the next movesToShow steps
 								for (int i = 1; i <= moves; i++)
@@ -234,7 +258,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 									PuzzleState futureMove = solver.getStep(j);
 
-									if (futureMove == null || !config.drawOverlaps() && positions.contains(futureMove.getEmptyPiece()))
+									if (futureMove == null)
 									{
 										break;
 									}
@@ -258,7 +282,6 @@ public class PuzzleSolverOverlay extends Overlay
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
 									graphics.fillOval(x, y, markerSize, markerSize);
-									positions.add(futureMove.getEmptyPiece());
 								}
 							}
 							else
