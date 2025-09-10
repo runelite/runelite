@@ -75,7 +75,7 @@ public interface PuzzleSolverConfig extends Config
 	)
 	@Range(
 		min = 4,
-		max = 12
+		max = 8
 	)
 	default int movesToShow()
 	{
