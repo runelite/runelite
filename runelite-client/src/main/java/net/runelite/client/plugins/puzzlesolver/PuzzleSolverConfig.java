@@ -64,7 +64,7 @@ public interface PuzzleSolverConfig extends Config
 	)
 	default boolean drawDots()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
