@@ -34,6 +34,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -216,10 +218,12 @@ public class PuzzleSolverOverlay extends Overlay
 						{
 							if (config.drawDots())
 							{
-								graphics.setColor(Color.YELLOW);
-
-								// Display the next 4 steps
-								for (int i = 1; i < 5; i++)
+								int moves = config.movesToShow();
+								// positions capacity chosen so set does not reallocate when added to
+								Set<Integer> positions = new HashSet<>(4 * moves / 3);
+								graphics.setColor(config.dotColour());
+								// Display the next movesToShow steps
+								for (int i = 1; i <= moves; i++)
 								{
 									int j = solver.getPosition() + i;
 
@@ -230,15 +234,22 @@ public class PuzzleSolverOverlay extends Overlay
 
 									PuzzleState futureMove = solver.getStep(j);
 
-									if (futureMove == null)
+									if (futureMove == null || !config.drawOverlaps() && positions.contains(futureMove.getEmptyPiece()))
 									{
 										break;
+									}
+
+									if (config.useDotGradient())
+									{
+										Color colour = HSBGradient.getHSBStep(
+											config.dotColour(), config.gradientColour(), i - 1, moves);
+										graphics.setColor(colour);
 									}
 
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
 									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
-									int markerSize = DOT_MARKER_SIZE - i * 3;
+									int markerSize = DOT_MARKER_SIZE - i * 3 * 4 / moves;
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
@@ -247,6 +258,7 @@ public class PuzzleSolverOverlay extends Overlay
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
 									graphics.fillOval(x, y, markerSize, markerSize);
+									positions.add(futureMove.getEmptyPiece());
 								}
 							}
 							else
@@ -257,7 +269,7 @@ public class PuzzleSolverOverlay extends Overlay
 								int lastBlankX = currentMove.getEmptyPiece() % DIMENSION;
 								int lastBlankY = currentMove.getEmptyPiece() / DIMENSION;
 
-								// Display the next 3 steps
+								// Display the next movesToShow steps
 								for (int i = 1; i < 4; i++)
 								{
 									int j = solver.getPosition() + i;

@@ -25,9 +25,11 @@
  */
 package net.runelite.client.plugins.puzzlesolver;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("puzzlesolver")
 public interface PuzzleSolverConfig extends Config
@@ -35,7 +37,8 @@ public interface PuzzleSolverConfig extends Config
 	@ConfigItem(
 		keyName = "displaySolution",
 		name = "Display solution",
-		description = "Display a solution to the puzzle."
+		description = "Display a solution to the puzzle.",
+		position = 0
 	)
 	default boolean displaySolution()
 	{
@@ -45,7 +48,8 @@ public interface PuzzleSolverConfig extends Config
 	@ConfigItem(
 		keyName = "displayRemainingMoves",
 		name = "Display remaining moves",
-		description = "Add a text line above puzzle boxes displaying the amount of remaining moves."
+		description = "Add a text line above puzzle boxes displaying the amount of remaining moves.",
+		position = 1
 	)
 	default boolean displayRemainingMoves()
 	{
@@ -55,9 +59,69 @@ public interface PuzzleSolverConfig extends Config
 	@ConfigItem(
 		keyName = "drawDots",
 		name = "Draw dots instead of arrows",
-		description = "Draw dots increasing in size instead of arrows for the solution."
+		description = "Draw dots increasing in size instead of arrows for the solution.",
+		position = 2
 	)
 	default boolean drawDots()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "movesToShow",
+		name = "Number of dots to show",
+		description = "The number of moves as dots to show for the puzzle.",
+		position = 3
+	)
+	@Range(
+		min = 4,
+		max = 12
+	)
+	default int movesToShow()
+	{
+		return 4;
+	}
+
+	@ConfigItem(
+		keyName = "dotColour",
+		name = "Dot colour",
+		description = "Dot colour for the dots.",
+		position = 4
+	)
+	default Color dotColour()
+	{
+		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+		keyName = "useDotGradient",
+		name = "Use dot gradient",
+		description = "Whether to have a colour gradient for the dots between Dot Colour and Secondary gradient Colour",
+		position = 5
+	)
+	default boolean useDotGradient()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "gradientColour",
+		name = "Secondary gradient colour",
+		description = "If gradient is enabled this will be the color that the dots blend to from the Dot Colour.",
+		position = 6
+	)
+	default Color gradientColour()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "drawOverlaps",
+		name = "Draw overlapping moves",
+		description = "Whether to keep drawing solution moves when later moves overlap with earlier moves.",
+		position = 7
+	)
+	default boolean drawOverlaps()
 	{
 		return false;
 	}
