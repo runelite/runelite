@@ -61,6 +61,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 public class PuzzleSolverOverlay extends Overlay
@@ -265,8 +266,8 @@ public class PuzzleSolverOverlay extends Overlay
 
 									if (config.useDotGradient())
 									{
-										Color color = HSBGradient.getHSBStep(
-											config.dotColor(), config.gradientColor(), i - 1, moves);
+										Color color = ColorUtil.colorLerp(config.dotColor(), config.gradientColor(),
+											(double) (i - 1) / (movesToShow - 1));
 										graphics.setColor(color);
 									}
 
