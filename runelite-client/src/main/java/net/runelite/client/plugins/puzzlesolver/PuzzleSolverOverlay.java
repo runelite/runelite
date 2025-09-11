@@ -219,36 +219,12 @@ public class PuzzleSolverOverlay extends Overlay
 						{
 							if (config.drawDots())
 							{
-								int moves = config.movesToShow();
-								if (moves > 4)
-								{
-									// positions capacity chosen so set does not reallocate when added to
-									Set<Integer> positions = new HashSet<>(4 * moves / 3);
-									for (int i = 1; i <= moves; i++)
-									{
-										int j = solver.getPosition() + i;
-
-										if (j >= solver.getStepCount())
-										{
-											moves = i - 1;
-											break;
-										}
-
-										PuzzleState futureMove = solver.getStep(j);
-
-										if (futureMove == null || !config.drawOverlaps() && positions.contains(futureMove.getEmptyPiece()))
-										{
-											moves = i - 1;
-											break;
-										}
-										positions.add(futureMove.getEmptyPiece());
-									}
-								}
-								moves = Math.min(4, moves); // Scale the dot sizing/color interpolation by at least 4
-
+								int movesToShow = config.movesToShow();
+								// positions capacity chosen so set does not reallocate when added to
+								Set<Integer> positions = new HashSet<>(4 * movesToShow / 3);
 								graphics.setColor(config.dotColor());
 								// Display the next movesToShow steps
-								for (int i = 1; i <= moves; i++)
+								for (int i = 1; i <= movesToShow; i++)
 								{
 									int j = solver.getPosition() + i;
 
@@ -259,7 +235,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 									PuzzleState futureMove = solver.getStep(j);
 
-									if (futureMove == null)
+									if (futureMove == null || !config.drawOverlaps() && positions.contains(futureMove.getEmptyPiece()))
 									{
 										break;
 									}
@@ -274,7 +250,7 @@ public class PuzzleSolverOverlay extends Overlay
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
 									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
-									int markerSize = DOT_MARKER_SIZE - i * 3 * 4 / moves;
+									int markerSize = DOT_MARKER_SIZE - i * 3 * 4 / movesToShow;
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
@@ -283,6 +259,7 @@ public class PuzzleSolverOverlay extends Overlay
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
 									graphics.fillOval(x, y, markerSize, markerSize);
+									positions.add(futureMove.getEmptyPiece());
 								}
 							}
 							else
