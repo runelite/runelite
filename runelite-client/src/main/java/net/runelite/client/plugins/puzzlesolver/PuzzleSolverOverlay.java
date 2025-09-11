@@ -72,7 +72,8 @@ public class PuzzleSolverOverlay extends Overlay
 	private static final int INFO_BOX_BOTTOM_BORDER = 2;
 
 	private static final int PUZZLE_TILE_SIZE = 39;
-	private static final int DOT_MARKER_SIZE = 16;
+	private static final int DOT_MARKER_MAX_SIZE = 16;
+	private static final int DOT_MARKER_MIN_SIZE = 2;
 
 	private final Client client;
 	private final PuzzleSolverConfig config;
@@ -250,7 +251,8 @@ public class PuzzleSolverOverlay extends Overlay
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
 									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
-									int markerSize = DOT_MARKER_SIZE - i * 3 * 4 / movesToShow;
+									int numerator = (i - 1) * (DOT_MARKER_MAX_SIZE - DOT_MARKER_MIN_SIZE);
+									int markerSize = (int) Math.round(DOT_MARKER_MAX_SIZE - numerator / (double) movesToShow);
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
