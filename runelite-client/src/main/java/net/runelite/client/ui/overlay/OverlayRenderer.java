@@ -260,6 +260,11 @@ public class OverlayRenderer extends MouseAdapter
 			return;
 		}
 
+		if (client.getVarbitValue(VarbitID.CUTSCENE_STATUS) == 1 && runeLiteConfig.hideOverlaysDuringCutscenes())
+		{
+			return;
+		}
+
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
