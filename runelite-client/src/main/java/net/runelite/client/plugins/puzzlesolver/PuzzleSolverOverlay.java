@@ -72,8 +72,8 @@ public class PuzzleSolverOverlay extends Overlay
 	private static final int INFO_BOX_BOTTOM_BORDER = 2;
 
 	private static final int PUZZLE_TILE_SIZE = 39;
-	private static final int DOT_MARKER_MAX_SIZE = 16;
-	private static final int DOT_MARKER_MIN_SIZE = 2;
+	private static final int DOT_MARKER_MAX_SIZE = 24;
+	private static final int DOT_MARKER_MIN_SIZE = 4;
 
 	private final Client client;
 	private final PuzzleSolverConfig config;
