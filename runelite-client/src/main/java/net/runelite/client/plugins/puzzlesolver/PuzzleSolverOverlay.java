@@ -221,8 +221,7 @@ public class PuzzleSolverOverlay extends Overlay
 							if (config.drawDots())
 							{
 								int movesToShow = config.movesToShow();
-								// positions capacity chosen so set does not reallocate when added to
-								Set<Integer> positions = new HashSet<>(movesToShow * 4 / 3 + 1);
+								Set<Integer> positions = new HashSet<>();
 								graphics.setColor(config.dotColor());
 								// Display the next movesToShow steps
 								for (int i = 1; i <= movesToShow; i++)
