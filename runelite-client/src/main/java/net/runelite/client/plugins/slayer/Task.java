@@ -96,7 +96,7 @@ enum Task
 	GHOSTS("Ghosts", ItemID.AMULET_OF_GHOSTSPEAK, "Death wing", "Tortured soul", "Forgotten Soul", "Revenant"),
 	GHOULS("Ghouls", ItemID.TRICK_OR_TREAT_HEAD),
 	GIANT_MOLE("The Giant Mole", ItemID.MOLEPET),
-	GOBLINS("Goblins", ItemID.ARCEUUS_CORPSE_GOBLIN_INITIAL, "Sergeant Strongstack", "Sergeant Grimspike", "Sergeant Steelwill"),
+	GOBLINS("Goblin", ItemID.ARCEUUS_CORPSE_GOBLIN_INITIAL, "Sergeant Strongstack", "Sergeant Grimspike", "Sergeant Steelwill"),
 	GREATER_DEMONS("Greater demons", ItemID.GREATER_DEMON_MASK, "K'ril Tsutsaroth", "Tstanon Karlak", "Skotizo", "Tormented Demon"),
 	GREEN_DRAGONS("Green dragons", ItemID.DRAGONMASK_GREEN, "Elvarg"),
 	GROTESQUE_GUARDIANS("The Grotesque Guardians", ItemID.DUSKPET, 0, ItemID.SLAYER_ROCK_HAMMER, "Dusk", "Dawn"),
