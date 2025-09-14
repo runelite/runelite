@@ -222,7 +222,6 @@ public class PuzzleSolverOverlay extends Overlay
 							{
 								int movesToShow = config.movesToShow();
 								Set<Integer> positions = new HashSet<>();
-								graphics.setColor(config.dotColor());
 								// Display the next movesToShow steps
 								for (int i = 1; i <= movesToShow; i++)
 								{
@@ -240,13 +239,6 @@ public class PuzzleSolverOverlay extends Overlay
 										break;
 									}
 
-									if (config.useDotGradient())
-									{
-										Color color = ColorUtil.colorLerp(config.dotColor(), config.gradientColor(),
-											(double) (i - 1) / (movesToShow - 1));
-										graphics.setColor(color);
-									}
-
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
 									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
@@ -260,7 +252,23 @@ public class PuzzleSolverOverlay extends Overlay
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
+									Color color;
+									if (config.useDotGradient())
+									{
+										color = ColorUtil.colorLerp(config.dotColor(), config.gradientColor(),
+											(double) (i - 1) / (movesToShow - 1));
+										graphics.setColor(color);
+									}
+									else
+									{
+										color = config.dotColor();
+									}
+									graphics.setColor(color);
 									graphics.fillOval(x, y, markerSize, markerSize);
+
+									graphics.setColor(Color.BLACK);
+									graphics.drawOval(x - 1, y - 1, markerSize + 1, markerSize + 1);
+
 									positions.add(futureMove.getEmptyPiece());
 								}
 							}
