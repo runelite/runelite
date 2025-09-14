@@ -101,7 +101,7 @@ public interface PuzzleSolverConfig extends Config
 	)
 	default boolean useDotGradient()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
