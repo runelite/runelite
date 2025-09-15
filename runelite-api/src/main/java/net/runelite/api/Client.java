@@ -146,8 +146,7 @@ public interface Client extends OAuthApi, GameEngine
 	void setGameState(GameState gameState);
 
 	/**
-	 * Causes the client to shutdown. It is faster than
-	 * {@link java.applet.Applet#stop()} because it doesn't wait for 4000ms.
+	 * Causes the client to shutdown.
 	 * This will call {@link System#exit} when it is done
 	 */
 	void stopNow();

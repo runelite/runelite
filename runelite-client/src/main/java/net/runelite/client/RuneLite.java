@@ -32,7 +32,6 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -76,7 +75,6 @@ import joptsimple.ValueConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
@@ -155,7 +153,6 @@ public class RuneLite
 	private Gson gson;
 
 	@Inject
-	@Nullable
 	private Client client;
 
 	@Inject
@@ -304,15 +301,10 @@ public class RuneLite
 		// Start the applet
 		copyJagexCache();
 
-		// Client size must be set prior to init
-		var applet = (Applet) client;
-		applet.setSize(Constants.GAME_FIXED_SIZE);
-
 		System.setProperty("jagex.disableBouncyCastle", "true");
 		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
-		applet.init();
-		applet.start();
+		client.initialize();
 
 		SplashScreen.stage(.57, null, "Loading configuration");
 
