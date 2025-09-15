@@ -40,6 +40,7 @@ import java.util.function.Consumer;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -58,6 +59,9 @@ class ScreenshotOverlay extends Overlay
 	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
 
 	@Inject
+	private Notifier notifier;
+
+	@Inject
 	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
@@ -71,7 +75,7 @@ class ScreenshotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (consumers.isEmpty())
+		if (consumers.isEmpty() || notifier.isFlashing())
 		{
 			return null;
 		}
