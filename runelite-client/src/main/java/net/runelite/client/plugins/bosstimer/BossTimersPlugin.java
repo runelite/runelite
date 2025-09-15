@@ -27,7 +27,9 @@ package net.runelite.client.plugins.bosstimer;
 
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -36,6 +38,7 @@ import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Boss Timers",
@@ -68,7 +71,7 @@ public class BossTimersPlugin extends Plugin
 
 		if (boss != null && (boss.isIgnoreDead() || npcUtil.isDying(npc)))
 		{
-			createTimer(npc, boss);
+			createTimer(npc.getName(), boss);
 		}
 	}
 
@@ -79,18 +82,28 @@ public class BossTimersPlugin extends Plugin
 		Boss boss = Boss.find(npc.getId());
 		if (boss == Boss.HUEYCOATL)
 		{
-			createTimer(npc, boss);
+			createTimer(npc.getName(), boss);
 		}
 	}
 
-	private void createTimer(NPC npc, Boss boss)
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE
+			&& Text.removeTags(chatMessage.getMessage()).equals("The Royal Titans will reinvigorate themselves in 18 seconds."))
+		{
+			createTimer("Royal Titans", Boss.ROYAL_TITANS_FIRE);
+		}
+	}
+
+	private void createTimer(String bossName, Boss boss)
 	{
 		clearTimer(boss);
 
-		log.debug("Creating spawn timer for {} ({})", npc.getName(), boss.getSpawnTime());
+		log.debug("Creating spawn timer for {} ({})", bossName, boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
-		timer.setTooltip(npc.getName());
+		timer.setTooltip(bossName);
 		infoBoxManager.addInfoBox(timer);
 	}
 
