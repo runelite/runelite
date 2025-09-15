@@ -34,7 +34,7 @@ class MTAItemOverlay extends WidgetItemOverlay
 	private final MTAPlugin plugin;
 
 	@Inject
-	public MTAItemOverlay(MTAPlugin plugin)
+	private MTAItemOverlay(MTAPlugin plugin)
 	{
 		this.plugin = plugin;
 		showOnInventory();

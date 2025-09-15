@@ -102,7 +102,7 @@ class PluginListPanel extends PluginPanel
 	private List<PluginListItem> pluginList;
 
 	@Inject
-	public PluginListPanel(
+	private PluginListPanel(
 		ConfigManager configManager,
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
@@ -346,7 +346,7 @@ class PluginListPanel extends PluginPanel
 	}
 
 	@Subscribe
-	public void onPluginChanged(PluginChanged event)
+	private void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(this::refresh);
 	}

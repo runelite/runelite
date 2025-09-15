@@ -150,7 +150,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("twitch"))
 		{
@@ -210,7 +210,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		if (!"chatDefaultReturn".equals(scriptCallbackEvent.getEventName()))
 		{

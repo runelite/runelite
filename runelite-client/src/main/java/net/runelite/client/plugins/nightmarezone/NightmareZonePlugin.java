@@ -111,7 +111,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		overlay.updateConfig();
 	}
@@ -123,7 +123,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender beforeRender)
+	private void onBeforeRender(BeforeRender beforeRender)
 	{
 		if (!isInNightmareZone() || !config.moveOverlay())
 		{
@@ -138,7 +138,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!isInNightmareZone())
 		{
@@ -171,7 +171,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!isInNightmareZone()
 			|| (event.getType() != ChatMessageType.GAMEMESSAGE

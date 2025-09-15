@@ -90,7 +90,7 @@ public class CrowdsourcingThieving
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
 		{
@@ -114,7 +114,7 @@ public class CrowdsourcingThieving
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (event.getMenuOption().equals("Pickpocket") || event.getMenuOption().equals("Knock-Out"))
 		{

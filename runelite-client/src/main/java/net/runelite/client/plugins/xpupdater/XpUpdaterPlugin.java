@@ -91,7 +91,7 @@ public class XpUpdaterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -122,7 +122,7 @@ public class XpUpdaterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (fetchXp)
 		{

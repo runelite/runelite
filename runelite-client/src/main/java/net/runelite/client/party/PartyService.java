@@ -195,7 +195,7 @@ public class PartyService
 	}
 
 	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
-	public void onUserJoin(final UserJoin message)
+	private void onUserJoin(final UserJoin message)
 	{
 		if (partyId != message.getPartyId())
 		{
@@ -223,7 +223,7 @@ public class PartyService
 	}
 
 	@Subscribe(priority = 1) // run prior to plugins so that the member is removed by the time the plugins see it.
-	public void onUserPart(final UserPart message)
+	private void onUserPart(final UserPart message)
 	{
 		if (members.removeIf(member -> member.getMemberId() == message.getMemberId()))
 		{
@@ -232,7 +232,7 @@ public class PartyService
 	}
 
 	@Subscribe
-	public void onPartyChatMessage(final PartyChatMessage message)
+	private void onPartyChatMessage(final PartyChatMessage message)
 	{
 		final PartyMember member = getMemberById(message.getMemberId());
 		if (member == null || !member.isLoggedIn())

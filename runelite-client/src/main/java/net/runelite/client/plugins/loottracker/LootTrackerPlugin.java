@@ -398,7 +398,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen sessionOpen)
+	private void onSessionOpen(SessionOpen sessionOpen)
 	{
 		AccountSession accountSession = sessionManager.getAccountSession();
 		if (accountSession.getUuid() != null)
@@ -412,7 +412,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSessionClose(SessionClose sessionClose)
+	private void onSessionClose(SessionClose sessionClose)
 	{
 		// session close is fired after the config has been synced and the
 		// session has been invalidated, so it is too late to submit loot
@@ -421,13 +421,13 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigSync(ConfigSync configSync)
+	private void onConfigSync(ConfigSync configSync)
 	{
 		submitLoot();
 	}
 
 	@Subscribe
-	public void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged e)
 	{
 		final String profileKey = configManager.getRSProfileKey();
 		if (profileKey == null)
@@ -534,7 +534,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(LootTrackerConfig.GROUP))
 		{
@@ -594,7 +594,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientShutdown(ClientShutdown event)
+	private void onClientShutdown(ClientShutdown event)
 	{
 		Future<Void> future = submitLoot();
 		if (future != null)
@@ -604,7 +604,8 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	@VisibleForTesting
+	void onGameStateChanged(final GameStateChanged event)
 	{
 		final boolean inInstancedRegion = client.isInInstancedRegion();
 		if (event.getGameState() == GameState.LOADING && inInstancedRegion != lastLoadingIntoInstance)
@@ -643,7 +644,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPostClientTick(PostClientTick postClientTick)
+	private void onPostClientTick(PostClientTick postClientTick)
 	{
 		if (inventoryTimeout > 0)
 		{
@@ -689,7 +690,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onServerNpcLoot(final ServerNpcLoot event)
+	private void onServerNpcLoot(final ServerNpcLoot event)
 	{
 		final NPCComposition npc = event.getComposition();
 		final Collection<ItemStack> items = event.getItems();
@@ -715,14 +716,14 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPluginLootReceived(PluginLootReceived event)
+	private void onPluginLootReceived(PluginLootReceived event)
 	{
 		log.debug("Plugin loot received from {}: {}", event.getSource().getName(), event.getItems());
 		addLoot(event.getName(), event.getCombatLevel(), event.getType(), event.getItems(), event.getItems());
 	}
 
 	@Subscribe
-	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		// Ignore Last Man Standing and Soul Wars player loots
 		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS) || isPlayerWithinMapRegion(SOUL_WARS_REGIONS))
@@ -744,7 +745,8 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	@VisibleForTesting
+	void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		String event;
 		Object metadata = null;
@@ -881,7 +883,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
+	private void onScriptPreFired(ScriptPreFired event)
 	{
 		if (event.getScriptId() == ScriptID.DOM_LOOT_CLAIM)
 		{
@@ -901,7 +903,8 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		var chatType = event.getType();
 		if (chatType != ChatMessageType.GAMEMESSAGE && chatType != ChatMessageType.SPAM
@@ -1099,7 +1102,8 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	@VisibleForTesting
+	void onItemContainerChanged(ItemContainerChanged event)
 	{
 		// when the wilderness chest empties, clear chest loot flag for the next key
 		if (event.getContainerId() == InventoryID.LOOT_INV_ACCESS
@@ -1140,7 +1144,7 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (isNPCOp(event.getMenuAction()))
 		{

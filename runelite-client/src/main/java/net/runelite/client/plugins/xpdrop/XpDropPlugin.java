@@ -118,7 +118,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	private void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		if (scriptPreFired.getScriptId() == XPDROPS_SETDROPSIZE)
 		{
@@ -246,7 +246,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		xpdropColor = 0;
 
@@ -274,7 +274,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	private void onStatChanged(StatChanged statChanged)
 	{
 		final Skill skill = statChanged.getSkill();
 		final int xp = statChanged.getXp();

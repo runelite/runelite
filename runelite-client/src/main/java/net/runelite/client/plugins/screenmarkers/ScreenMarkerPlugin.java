@@ -163,7 +163,7 @@ public class ScreenMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		screenMarkers.clear();
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);

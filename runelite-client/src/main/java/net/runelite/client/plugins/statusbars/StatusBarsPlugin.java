@@ -94,13 +94,13 @@ public class StatusBarsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		checkStatusBars();
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (StatusBarsConfig.GROUP.equals(event.getGroup()) && event.getKey().equals("hideAfterCombatDelay"))
 		{

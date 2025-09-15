@@ -89,7 +89,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		var state = event.getGameState();
 		if (state == GameState.STARTING)
@@ -104,7 +104,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(MinimapConfig.GROUP))
 		{
@@ -127,7 +127,7 @@ public class MinimapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	private void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
 		{

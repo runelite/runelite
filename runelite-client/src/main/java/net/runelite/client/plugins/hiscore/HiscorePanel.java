@@ -147,7 +147,8 @@ public class HiscorePanel extends PluginPanel
 	private boolean loading = false;
 
 	@Inject
-	public HiscorePanel(Client client, HiscorePlugin plugin, HiscoreConfig config,
+	@VisibleForTesting
+	HiscorePanel(Client client, HiscorePlugin plugin, HiscoreConfig config,
 		NameAutocompleter nameAutocompleter, HiscoreClient hiscoreClient, SpriteManager spriteManager)
 	{
 		this.plugin = plugin;

@@ -78,7 +78,7 @@ public class TitheFarmPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("tithefarmplugin"))
 		{
@@ -87,13 +87,13 @@ public class TitheFarmPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
+	private void onGameTick(final GameTick event)
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 

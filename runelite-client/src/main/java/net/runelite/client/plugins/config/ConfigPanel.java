@@ -794,7 +794,7 @@ class ConfigPanel extends PluginPanel
 	}
 
 	@Subscribe
-	public void onPluginChanged(PluginChanged event)
+	private void onPluginChanged(PluginChanged event)
 	{
 		if (event.getPlugin() == this.pluginConfig.getPlugin())
 		{

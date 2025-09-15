@@ -79,7 +79,7 @@ public class ChatCommandManager
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		switch (chatMessage.getType())
 		{
@@ -117,7 +117,7 @@ public class ChatCommandManager
 	}
 
 	@Subscribe
-	public void onChatboxInput(ChatboxInput chatboxInput)
+	private void onChatboxInput(ChatboxInput chatboxInput)
 	{
 		final String message = chatboxInput.getValue();
 
@@ -141,7 +141,7 @@ public class ChatCommandManager
 	}
 
 	@Subscribe
-	public void onPrivateMessageInput(PrivateMessageInput privateMessageInput)
+	private void onPrivateMessageInput(PrivateMessageInput privateMessageInput)
 	{
 		final String message = privateMessageInput.getMessage();
 

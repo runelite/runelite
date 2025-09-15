@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.runenergy;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
@@ -171,7 +172,7 @@ public class RunEnergyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		localPlayerRunningToDestination =
 			prevLocalPlayerLocation != null &&
@@ -182,7 +183,7 @@ public class RunEnergyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	private void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.ORBS_UPDATE_RUNENERGY && energyConfig.replaceOrbText())
 		{
@@ -191,7 +192,7 @@ public class RunEnergyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(RunEnergyConfig.GROUP_NAME) && !energyConfig.replaceOrbText())
 		{
@@ -200,7 +201,8 @@ public class RunEnergyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
@@ -255,7 +257,8 @@ public class RunEnergyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	@VisibleForTesting
+	void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		// ROE uncharge uses the same script as destroy
 		if (!"destroyOnOpKey".equals(event.getEventName()))

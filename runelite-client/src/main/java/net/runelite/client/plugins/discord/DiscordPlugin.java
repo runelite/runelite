@@ -142,7 +142,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -166,7 +166,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
@@ -177,7 +177,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	private void onStatChanged(StatChanged statChanged)
 	{
 		final Skill skill = statChanged.getSkill();
 		final int exp = statChanged.getXp();
@@ -197,7 +197,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDiscordUserInfo(final DiscordUserInfo event)
+	private void onDiscordUserInfo(final DiscordUserInfo event)
 	{
 		final CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
 
@@ -259,7 +259,7 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onUserSync(final UserSync event)
+	private void onUserSync(final UserSync event)
 	{
 		final DiscordUser discordUser = discordService.getCurrentUser();
 		if (discordUser != null)

@@ -46,7 +46,7 @@ public class WidgetInspectorOverlay extends Overlay
 	private final WidgetInspector inspector;
 
 	@Inject
-	public WidgetInspectorOverlay(
+	private WidgetInspectorOverlay(
 		Client client,
 		WidgetInspector inspector
 	)

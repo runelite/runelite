@@ -156,7 +156,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	private void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.COMBAT_INTERFACE_SETUP)
 		{
@@ -177,7 +177,8 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	@VisibleForTesting
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayerID.COM_MODE
 			|| event.getVarbitId() == VarbitID.COMBAT_WEAPON_CATEGORY
@@ -205,7 +206,8 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@VisibleForTesting
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("attackIndicator"))
 		{
@@ -240,7 +242,8 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	@VisibleForTesting
+	void onGameTick(GameTick gameTick)
 	{
 		if (attackStyle != prevAttackStyle && warnedSkillSelected)
 		{

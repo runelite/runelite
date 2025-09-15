@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -143,7 +144,7 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (event.getItemContainer() != client.getItemContainer(InventoryID.INV))
 		{
@@ -197,7 +198,7 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("cannon"))
 		{
@@ -217,7 +218,7 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -235,7 +236,8 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	@VisibleForTesting
+	void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		if (varbitChanged.getVarpId() == VarPlayerID.ROCKTHROWER)
 		{
@@ -274,7 +276,8 @@ public class CannonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{

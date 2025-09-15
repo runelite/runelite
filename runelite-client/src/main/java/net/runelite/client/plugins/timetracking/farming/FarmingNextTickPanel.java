@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
-import com.google.inject.Inject;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.time.Instant;
@@ -45,7 +44,6 @@ public class FarmingNextTickPanel extends TabContentPanel
 	private final List<TimeablePanel<Void>> patchPanels;
 	private final JTextArea infoTextArea;
 
-	@Inject
 	public FarmingNextTickPanel(
 		FarmingTracker farmingTracker,
 		TimeTrackingConfig config,

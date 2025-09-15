@@ -75,7 +75,7 @@ public class DiaryRequirementsPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Subscribe
-	public void onWidgetLoaded(final WidgetLoaded event)
+	private void onWidgetLoaded(final WidgetLoaded event)
 	{
 		if (event.getGroupId() == InterfaceID.JOURNALSCROLL)
 		{

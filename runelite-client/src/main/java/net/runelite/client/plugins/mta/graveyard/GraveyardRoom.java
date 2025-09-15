@@ -27,13 +27,16 @@ package net.runelite.client.plugins.mta.graveyard;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import static net.runelite.api.ItemID.ANIMALS_BONES;
+import static net.runelite.api.ItemID.ANIMALS_BONES_6905;
+import static net.runelite.api.ItemID.ANIMALS_BONES_6906;
+import static net.runelite.api.ItemID.ANIMALS_BONES_6907;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.gameval.InventoryID;
-import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
@@ -75,7 +78,7 @@ public class GraveyardRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		if (!inside() || !config.graveyard())
 		{
@@ -88,7 +91,7 @@ public class GraveyardRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inside())
 		{
@@ -97,13 +100,13 @@ public class GraveyardRoom extends MTARoom
 
 		ItemContainer container = event.getItemContainer();
 
-		if (container == client.getItemContainer(InventoryID.INV))
+		if (container == client.getItemContainer(InventoryID.INVENTORY))
 		{
 			this.score = score(container.getItems());
 
 			if (counter == null)
 			{
-				BufferedImage image = itemManager.getImage(ItemID.MAGICTRAINING_BONES1);
+				BufferedImage image = itemManager.getImage(ANIMALS_BONES);
 				counter = new GraveyardCounter(image, plugin);
 				infoBoxManager.addInfoBox(counter);
 			}
@@ -132,13 +135,13 @@ public class GraveyardRoom extends MTARoom
 	{
 		switch (id)
 		{
-			case ItemID.MAGICTRAINING_BONES1:
+			case ANIMALS_BONES:
 				return 1;
-			case ItemID.MAGICTRAINING_BONES2:
+			case ANIMALS_BONES_6905:
 				return 2;
-			case ItemID.MAGICTRAINING_BONES3:
+			case ANIMALS_BONES_6906:
 				return 3;
-			case ItemID.MAGICTRAINING_BONES4:
+			case ANIMALS_BONES_6907:
 				return 4;
 			default:
 				return 0;

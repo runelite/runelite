@@ -161,7 +161,7 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		switch (gameStateChanged.getGameState())
 		{
@@ -176,7 +176,8 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	@VisibleForTesting
+	void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"chatFilterCheck".equals(event.getEventName()))
 		{
@@ -271,7 +272,7 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onOverheadTextChanged(OverheadTextChanged event)
+	private void onOverheadTextChanged(OverheadTextChanged event)
 	{
 		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName()))
 		{
@@ -289,7 +290,8 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Subscribe(priority = -2) // run after ChatMessageManager
-	public void onChatMessage(ChatMessage chatMessage)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (COLLAPSIBLE_MESSAGETYPES.contains(chatMessage.getType()))
 		{
@@ -461,7 +463,7 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!"chatfilter".equals(event.getGroup()))
 		{

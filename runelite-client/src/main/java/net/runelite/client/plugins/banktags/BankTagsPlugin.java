@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.banktags;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Binder;
@@ -293,7 +294,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	}
 
 	@Subscribe
-	public void onGrandExchangeSearched(GrandExchangeSearched event)
+	private void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
 		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		if (!input.startsWith(TAG_SEARCH))
@@ -320,7 +321,8 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	@VisibleForTesting
+	void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
 
@@ -401,7 +403,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (event.getActionParam1() == InterfaceID.Bankmain.ITEMS
 			&& (event.getOption().equals("Examine")
@@ -480,7 +482,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))
 		{
