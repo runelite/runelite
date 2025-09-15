@@ -138,4 +138,13 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+	@ConfigItem(
+		keyName = "suppressRemoveWarningSingular",
+		name = "Suppress warning on singular removal",
+		description = "Turn on/off the warning system for individual loot tracker group removal."
+	)
+	default boolean suppressRemoveWarningSingular()
+	{
+		return true;
+	}
 }
