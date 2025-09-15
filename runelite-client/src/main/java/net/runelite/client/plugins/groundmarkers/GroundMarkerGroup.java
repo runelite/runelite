@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Pine <https://github.com/tylerwgrass>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,26 +24,13 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
-import java.awt.Color;
-import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-/**
- * Used for serialization of ground marker points.
- */
 @Value
-@EqualsAndHashCode(exclude = { "color", "label", "group" })
-class GroundMarkerPoint
+@EqualsAndHashCode(of = "name")
+class GroundMarkerGroup
 {
-	private int regionId;
-	private int regionX;
-	private int regionY;
-	private int z;
-	@Nullable
-	private Color color;
-	@Nullable
-	private String label;
-	@Nullable
-	private String group;
+	String name;
+	boolean isVisible;
 }
