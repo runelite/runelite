@@ -135,7 +135,11 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void drawZone(Projection entityProjection, Scene scene, int pass, int zx, int zz)
+	default void drawZoneOpaque(Projection entityProjection, Scene scene, int zx, int zz)
+	{
+	}
+
+	default void drawZoneAlpha(Projection entityProjection, Scene scene, int level, int zx, int zz)
 	{
 	}
 
