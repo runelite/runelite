@@ -28,6 +28,7 @@
 #define SAMPLING_MITCHELL 1
 #define SAMPLING_CATROM 2
 #define SAMPLING_XBR 3
+#define SAMPLING_PIXEL 4
 
 uniform int samplingMode;
 uniform ivec2 sourceDimensions;
