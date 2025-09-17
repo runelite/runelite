@@ -451,10 +451,10 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int CR_MODULE_QUESTS = 3784;
-			public static final int CR_MODULE_SKILLS = 3785;
-			public static final int CR_MODULE_UTILITY = 3786;
-			public static final int CR_MODULE_MISC = 3787;
+			public static final int CR_MODULE_QUESTS = 4143;
+			public static final int CR_MODULE_SKILLS = 4144;
+			public static final int CR_MODULE_UTILITY = 4145;
+			public static final int CR_MODULE_MISC = 4146;
 		}
 	}
 
@@ -5931,6 +5931,9 @@ public final class DBTableID
 		public static final class Row
 		{
 			public static final int CLAN_SETTING_OPTIONS_COMBAT_ACHIEVEMENTS = 3468;
+			public static final int CLAN_SETTING_OPTIONS_COLLECTION_BROADCASTS_EVERY_X_LOGS = 4100;
+			public static final int CLAN_SETTING_OPTIONS_BROADCASTEVENTS_NOTIFICATION = 4101;
+			public static final int CLAN_SETTING_OPTIONS_BROADCASTMAINGAME_NOTIFICATION = 4102;
 		}
 	}
 
@@ -6303,8 +6306,8 @@ public final class DBTableID
 			public static final int PENDANT_OF_ATES_TWILIGHT_TEMPLE = 182;
 			public static final int PENDANT_OF_ATES_RALOS_RISE = 183;
 			public static final int PENDANT_OF_ATES_ALDARIN = 184;
-			public static final int PENDANT_OF_ATES_TLATI = 5485;
-			public static final int PENDANT_OF_ATES_AUBURN = 5486;
+			public static final int PENDANT_OF_ATES_TLATI = 3784;
+			public static final int PENDANT_OF_ATES_AUBURN = 3785;
 		}
 	}
 
@@ -6386,24 +6389,24 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int CHARTERING_DESTINATION_PORTSARIM = 3788;
-			public static final int CHARTERING_DESTINATION_BRIMHAVEN = 3789;
-			public static final int CHARTERING_DESTINATION_CATHERBY = 3790;
-			public static final int CHARTERING_DESTINATION_MOSLEHARMLESS = 3791;
-			public static final int CHARTERING_DESTINATION_MUSAPOINT = 3792;
-			public static final int CHARTERING_DESTINATION_PORTKHAZARD = 3793;
-			public static final int CHARTERING_DESTINATION_PORTPHASMATYS = 3794;
-			public static final int CHARTERING_DESTINATION_SHIPYARD = 3795;
-			public static final int CHARTERING_DESTINATION_PORTTYRAS = 3796;
-			public static final int CHARTERING_DESTINATION_CORSAIRCOVE = 3797;
-			public static final int CHARTERING_DESTINATION_PRIFDDINAS = 3798;
-			public static final int CHARTERING_DESTINATION_PISCARILIUS = 3799;
-			public static final int CHARTERING_DESTINATION_LANDSEND = 3800;
-			public static final int CHARTERING_DESTINATION_FORTIS = 3801;
-			public static final int CHARTERING_DESTINATION_ALDARIN = 3802;
-			public static final int CHARTERING_DESTINATION_SUNSETCOAST = 3803;
-			public static final int CHARTERING_DESTINATION_TEMPESTUS = 3804;
-			public static final int CHARTERING_DESTINATION_CRANDOR = 3805;
+			public static final int CHARTERING_DESTINATION_PORTSARIM = 4147;
+			public static final int CHARTERING_DESTINATION_BRIMHAVEN = 4148;
+			public static final int CHARTERING_DESTINATION_CATHERBY = 4149;
+			public static final int CHARTERING_DESTINATION_MOSLEHARMLESS = 4150;
+			public static final int CHARTERING_DESTINATION_MUSAPOINT = 4151;
+			public static final int CHARTERING_DESTINATION_PORTKHAZARD = 4152;
+			public static final int CHARTERING_DESTINATION_PORTPHASMATYS = 4153;
+			public static final int CHARTERING_DESTINATION_SHIPYARD = 4154;
+			public static final int CHARTERING_DESTINATION_PORTTYRAS = 4155;
+			public static final int CHARTERING_DESTINATION_CORSAIRCOVE = 4156;
+			public static final int CHARTERING_DESTINATION_PRIFDDINAS = 4157;
+			public static final int CHARTERING_DESTINATION_PISCARILIUS = 4158;
+			public static final int CHARTERING_DESTINATION_LANDSEND = 4159;
+			public static final int CHARTERING_DESTINATION_FORTIS = 4160;
+			public static final int CHARTERING_DESTINATION_ALDARIN = 4161;
+			public static final int CHARTERING_DESTINATION_SUNSETCOAST = 4162;
+			public static final int CHARTERING_DESTINATION_TEMPESTUS = 4163;
+			public static final int CHARTERING_DESTINATION_CRANDOR = 4164;
 		}
 	}
 
@@ -6438,10 +6441,10 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int PREPOT_DEVICE_LOADOUT_0_UI = 3806;
-			public static final int PREPOT_DEVICE_LOADOUT_1_UI = 3807;
-			public static final int PREPOT_DEVICE_LOADOUT_2_UI = 3808;
-			public static final int PREPOT_DEVICE_LOADOUT_3_UI = 3809;
+			public static final int PREPOT_DEVICE_LOADOUT_0_UI = 4195;
+			public static final int PREPOT_DEVICE_LOADOUT_1_UI = 4196;
+			public static final int PREPOT_DEVICE_LOADOUT_2_UI = 4197;
+			public static final int PREPOT_DEVICE_LOADOUT_3_UI = 4198;
 		}
 	}
 
@@ -7717,70 +7720,70 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int FAIRYRINGS_AIP = 4999;
-			public static final int FAIRYRINGS_AIS = 5000;
-			public static final int FAIRYRINGS_AIR = 5001;
-			public static final int FAIRYRINGS_AIQ = 5002;
-			public static final int FAIRYRINGS_ALP = 5003;
-			public static final int FAIRYRINGS_ALS = 5004;
-			public static final int FAIRYRINGS_ALR = 5005;
-			public static final int FAIRYRINGS_ALQ = 5006;
-			public static final int FAIRYRINGS_AKP = 5007;
-			public static final int FAIRYRINGS_AKS = 5008;
-			public static final int FAIRYRINGS_AKR = 5009;
-			public static final int FAIRYRINGS_AKQ = 5010;
-			public static final int FAIRYRINGS_AJP = 5011;
-			public static final int FAIRYRINGS_AJS = 5012;
-			public static final int FAIRYRINGS_AJR = 5013;
-			public static final int FAIRYRINGS_AJQ = 5014;
-			public static final int FAIRYRINGS_DIP = 5015;
-			public static final int FAIRYRINGS_DIS = 5016;
-			public static final int FAIRYRINGS_DIR = 5017;
-			public static final int FAIRYRINGS_DIQ = 5018;
-			public static final int FAIRYRINGS_DLP = 5019;
-			public static final int FAIRYRINGS_DLS = 5020;
-			public static final int FAIRYRINGS_DLR = 5021;
-			public static final int FAIRYRINGS_DLQ = 5022;
-			public static final int FAIRYRINGS_DKP = 5023;
-			public static final int FAIRYRINGS_DKS = 5024;
-			public static final int FAIRYRINGS_DKR = 5025;
-			public static final int FAIRYRINGS_DKQ = 5026;
-			public static final int FAIRYRINGS_DJP = 5027;
-			public static final int FAIRYRINGS_DJS = 5028;
-			public static final int FAIRYRINGS_DJR = 5029;
-			public static final int FAIRYRINGS_DJQ = 5030;
-			public static final int FAIRYRINGS_CIP = 5031;
-			public static final int FAIRYRINGS_CIS = 5032;
-			public static final int FAIRYRINGS_CIR = 5033;
-			public static final int FAIRYRINGS_CIQ = 5034;
-			public static final int FAIRYRINGS_CLP = 5035;
-			public static final int FAIRYRINGS_CLS = 5036;
-			public static final int FAIRYRINGS_CLR = 5037;
-			public static final int FAIRYRINGS_CLQ = 5038;
-			public static final int FAIRYRINGS_CKP = 5039;
-			public static final int FAIRYRINGS_CKS = 5040;
-			public static final int FAIRYRINGS_CKR = 5041;
-			public static final int FAIRYRINGS_CKQ = 5042;
-			public static final int FAIRYRINGS_CJP = 5043;
-			public static final int FAIRYRINGS_CJS = 5044;
-			public static final int FAIRYRINGS_CJR = 5045;
-			public static final int FAIRYRINGS_CJQ = 5046;
-			public static final int FAIRYRINGS_BIP = 5047;
-			public static final int FAIRYRINGS_BIS = 5048;
-			public static final int FAIRYRINGS_BIR = 5049;
-			public static final int FAIRYRINGS_BIQ = 5050;
-			public static final int FAIRYRINGS_BLP = 5051;
-			public static final int FAIRYRINGS_BLS = 5052;
-			public static final int FAIRYRINGS_BLR = 5053;
-			public static final int FAIRYRINGS_BLQ = 5054;
-			public static final int FAIRYRINGS_BKP = 5055;
-			public static final int FAIRYRINGS_BKS = 5056;
-			public static final int FAIRYRINGS_BKR = 5057;
-			public static final int FAIRYRINGS_BKQ = 5058;
-			public static final int FAIRYRINGS_BJP = 5059;
-			public static final int FAIRYRINGS_BJS = 5060;
-			public static final int FAIRYRINGS_BJR = 5061;
-			public static final int FAIRYRINGS_BJQ = 5062;
+			public static final int FAIRYRINGS_AIP = 3786;
+			public static final int FAIRYRINGS_AIS = 3787;
+			public static final int FAIRYRINGS_AIR = 3788;
+			public static final int FAIRYRINGS_AIQ = 3789;
+			public static final int FAIRYRINGS_ALP = 3790;
+			public static final int FAIRYRINGS_ALS = 3791;
+			public static final int FAIRYRINGS_ALR = 3792;
+			public static final int FAIRYRINGS_ALQ = 3793;
+			public static final int FAIRYRINGS_AKP = 3794;
+			public static final int FAIRYRINGS_AKS = 3795;
+			public static final int FAIRYRINGS_AKR = 3796;
+			public static final int FAIRYRINGS_AKQ = 3797;
+			public static final int FAIRYRINGS_AJP = 3798;
+			public static final int FAIRYRINGS_AJS = 3799;
+			public static final int FAIRYRINGS_AJR = 3800;
+			public static final int FAIRYRINGS_AJQ = 3801;
+			public static final int FAIRYRINGS_DIP = 3802;
+			public static final int FAIRYRINGS_DIS = 3803;
+			public static final int FAIRYRINGS_DIR = 3804;
+			public static final int FAIRYRINGS_DIQ = 3805;
+			public static final int FAIRYRINGS_DLP = 3806;
+			public static final int FAIRYRINGS_DLS = 3807;
+			public static final int FAIRYRINGS_DLR = 3808;
+			public static final int FAIRYRINGS_DLQ = 3809;
+			public static final int FAIRYRINGS_DKP = 4103;
+			public static final int FAIRYRINGS_DKS = 4104;
+			public static final int FAIRYRINGS_DKR = 4105;
+			public static final int FAIRYRINGS_DKQ = 4106;
+			public static final int FAIRYRINGS_DJP = 4107;
+			public static final int FAIRYRINGS_DJS = 4108;
+			public static final int FAIRYRINGS_DJR = 4109;
+			public static final int FAIRYRINGS_DJQ = 4110;
+			public static final int FAIRYRINGS_CIP = 4111;
+			public static final int FAIRYRINGS_CIS = 4112;
+			public static final int FAIRYRINGS_CIR = 4113;
+			public static final int FAIRYRINGS_CIQ = 4114;
+			public static final int FAIRYRINGS_CLP = 4115;
+			public static final int FAIRYRINGS_CLS = 4116;
+			public static final int FAIRYRINGS_CLR = 4117;
+			public static final int FAIRYRINGS_CLQ = 4118;
+			public static final int FAIRYRINGS_CKP = 4119;
+			public static final int FAIRYRINGS_CKS = 4120;
+			public static final int FAIRYRINGS_CKR = 4121;
+			public static final int FAIRYRINGS_CKQ = 4122;
+			public static final int FAIRYRINGS_CJP = 4123;
+			public static final int FAIRYRINGS_CJS = 4124;
+			public static final int FAIRYRINGS_CJR = 4125;
+			public static final int FAIRYRINGS_CJQ = 4126;
+			public static final int FAIRYRINGS_BIP = 4127;
+			public static final int FAIRYRINGS_BIS = 4128;
+			public static final int FAIRYRINGS_BIR = 4129;
+			public static final int FAIRYRINGS_BIQ = 4130;
+			public static final int FAIRYRINGS_BLP = 4131;
+			public static final int FAIRYRINGS_BLS = 4132;
+			public static final int FAIRYRINGS_BLR = 4133;
+			public static final int FAIRYRINGS_BLQ = 4134;
+			public static final int FAIRYRINGS_BKP = 4135;
+			public static final int FAIRYRINGS_BKS = 4136;
+			public static final int FAIRYRINGS_BKR = 4137;
+			public static final int FAIRYRINGS_BKQ = 4138;
+			public static final int FAIRYRINGS_BJP = 4139;
+			public static final int FAIRYRINGS_BJS = 4140;
+			public static final int FAIRYRINGS_BJR = 4141;
+			public static final int FAIRYRINGS_BJQ = 4142;
 		}
 	}
 
@@ -8975,36 +8978,36 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int POH_DUMMY_NULL = 5487;
-			public static final int POH_DUMMY_PARLOUR = 5488;
-			public static final int POH_DUMMY_GARDEN = 5489;
-			public static final int POH_DUMMY_KITCHEN = 5490;
-			public static final int POH_DUMMY_DINING_ROOM = 5491;
-			public static final int POH_DUMMY_BEDROOM = 5492;
-			public static final int POH_DUMMY_GAMES_ROOM = 5493;
-			public static final int POH_DUMMY_HALL1 = 5494;
-			public static final int POH_DUMMY_HALL1A = 5495;
-			public static final int POH_DUMMY_HALL2 = 5496;
-			public static final int POH_DUMMY_HALL2A = 5497;
-			public static final int POH_DUMMY_CHAPEL = 5498;
-			public static final int POH_DUMMY_WORKSHOP = 5499;
-			public static final int POH_DUMMY_STUDY = 5500;
-			public static final int POH_DUMMY_PORTALROOM = 5501;
-			public static final int POH_DUMMY_THRONEROOM = 5502;
-			public static final int POH_DUMMY_OUBLIETTE = 5503;
-			public static final int POH_DUMMY_DUNGEON_CORRIDOR = 5504;
-			public static final int POH_DUMMY_DUNGEON_CROSS = 5505;
-			public static final int POH_DUMMY_DUNGEON_STAIRS = 5506;
-			public static final int POH_DUMMY_DUNGEON_TREASURE = 5507;
-			public static final int POH_DUMMY_FORMAL_GARDEN = 5508;
-			public static final int POH_DUMMY_COMBAT_ROOM = 5509;
-			public static final int POH_DUMMY_COSTUME_ROOM = 5510;
-			public static final int POH_DUMMY_MENAGERIE_INDOORS = 5511;
-			public static final int POH_DUMMY_MENAGERIE_OUTDOORS = 5512;
-			public static final int POH_DUMMY_SUPERIOR_GARDEN = 5513;
-			public static final int POH_DUMMY_ACHIEVEMENT_GALLERY = 5514;
-			public static final int POH_DUMMY_PORTALNEXUS = 5515;
-			public static final int POH_DUMMY_LEAGUEHALL = 5516;
+			public static final int POH_DUMMY_NULL = 4165;
+			public static final int POH_DUMMY_PARLOUR = 4166;
+			public static final int POH_DUMMY_GARDEN = 4167;
+			public static final int POH_DUMMY_KITCHEN = 4168;
+			public static final int POH_DUMMY_DINING_ROOM = 4169;
+			public static final int POH_DUMMY_BEDROOM = 4170;
+			public static final int POH_DUMMY_GAMES_ROOM = 4171;
+			public static final int POH_DUMMY_HALL1 = 4172;
+			public static final int POH_DUMMY_HALL1A = 4173;
+			public static final int POH_DUMMY_HALL2 = 4174;
+			public static final int POH_DUMMY_HALL2A = 4175;
+			public static final int POH_DUMMY_CHAPEL = 4176;
+			public static final int POH_DUMMY_WORKSHOP = 4177;
+			public static final int POH_DUMMY_STUDY = 4178;
+			public static final int POH_DUMMY_PORTALROOM = 4179;
+			public static final int POH_DUMMY_THRONEROOM = 4180;
+			public static final int POH_DUMMY_OUBLIETTE = 4181;
+			public static final int POH_DUMMY_DUNGEON_CORRIDOR = 4182;
+			public static final int POH_DUMMY_DUNGEON_CROSS = 4183;
+			public static final int POH_DUMMY_DUNGEON_STAIRS = 4184;
+			public static final int POH_DUMMY_DUNGEON_TREASURE = 4185;
+			public static final int POH_DUMMY_FORMAL_GARDEN = 4186;
+			public static final int POH_DUMMY_COMBAT_ROOM = 4187;
+			public static final int POH_DUMMY_COSTUME_ROOM = 4188;
+			public static final int POH_DUMMY_MENAGERIE_INDOORS = 4189;
+			public static final int POH_DUMMY_MENAGERIE_OUTDOORS = 4190;
+			public static final int POH_DUMMY_SUPERIOR_GARDEN = 4191;
+			public static final int POH_DUMMY_ACHIEVEMENT_GALLERY = 4192;
+			public static final int POH_DUMMY_PORTALNEXUS = 4193;
+			public static final int POH_DUMMY_LEAGUEHALL = 4194;
 		}
 	}
 
@@ -9745,10 +9748,16 @@ public final class DBTableID
 		/**
 		 * string
 		 */
+		public static final int COL_AREA_TEXT = 2;
+
+		/**
+		 * string
+		 */
 		public static final int COL_AREA_NAME_IN_HELPER = 3;
 
 		public static final class Row
 		{
+			public static final int SLAYERAREA_CRYPTOFTONALI = 4099;
 			public static final int SLAYERAREA_ZEAHCATACOMBS = 6341;
 			public static final int SLAYERAREA_SMOKEDUNGEON = 6342;
 			public static final int SLAYERAREA_SMOKEDEVILDUNGEON = 6343;

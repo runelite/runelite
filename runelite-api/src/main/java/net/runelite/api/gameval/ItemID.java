@@ -38511,6 +38511,10 @@ public final class ItemID
 	 */
 	public static final int HUNTING_WIMPY_FEATHER = 11525;
 	public static final int PATTERN_LIME_DUMMY = 11526;
+
+	/**
+	 * Mausoleum bridge repair
+	 */
 	public static final int PATTERN_PINEAPPLE_CHUNKS_DUMMY = 11527;
 	public static final int PATTERN_BLACK_BATTLEAXE_DUMMY = 11528;
 	public static final int PATTERN_CHOCOLATE_CAKE_DUMMY = 11529;

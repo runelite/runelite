@@ -20897,7 +20897,7 @@ public final class NpcID
 	public static final int NASTY_TREE = 4418;
 
 	/**
-	 *  Sneaky undead fowl
+	 * Sneaky undead fowl
 	 */
 	public static final int ANMA_UNDEAD_CHICKEN_CUTSCENE = 4419;
 

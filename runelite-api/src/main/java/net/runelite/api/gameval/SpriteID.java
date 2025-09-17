@@ -492,6 +492,7 @@ public final class SpriteID
 	public static final int INVISIBLE_FONT = 6315;
 	public static final int HEADICONS_ET = 6405;
 	public static final int TEXTURE_THATCHED02 = 6408;
+	public static final int FARMING_UNDEAD_ICON = 6414;
 
 	public static final class _2XStandardSpellsOn
 	{

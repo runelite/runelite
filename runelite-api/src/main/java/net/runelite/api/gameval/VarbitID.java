@@ -2337,6 +2337,10 @@ public final class VarbitID
 	public static final int GUBLINCH_TREE_PLANTED = 3206;
 	public static final int SLAYER_RING_UNLOCKED = 3207;
 	public static final int SLAYER_AMMO_UNLOCKED = 3208;
+	public static final int CA_TOTAL_TASKS_COMPLETED_DOM = 3209;
+	public static final int PET_INSURANCE_CREDITS_PROCESSED = 3210;
+	public static final int TOA_KICKED_FROM_RAID = 3211;
+	public static final int SETTINGS_MOBILE_MINIMENU_ICON_ENABLED = 3212;
 	public static final int SMITHING_BAR_TYPE = 3216;
 	public static final int MINIGAME_PANEL = 3217;
 	public static final int PET_MENAGERIE_ABYSSALSIREPET = 3245;
@@ -3203,6 +3207,7 @@ public final class VarbitID
 	public static final int DEPOSITBOX_MODE = 4430;
 	public static final int GE_SELECTEDSLOT = 4439;
 	public static final int GE_PRICELIST_MODE = 4440;
+	public static final int FENK_BUILT_BRIDGE_NORTH = 4441;
 	public static final int GARGBOSS_HEALSPHERE1 = 4445;
 	public static final int POH_MENAGERIE_CHOMPYPET = 4446;
 	public static final int EYEGLO_CRYSTAL_SAW_CHARGES_EXTENDED = 4447;
@@ -3561,6 +3566,7 @@ public final class VarbitID
 	public static final int FREMENNIK_BASIC_TELEPORT = 5005;
 	public static final int LUNAR_CONTACT_LASTID = 5006;
 	public static final int PHARAOHS_SCEPTRE_MUMMY_MET = 5007;
+	public static final int FENK_BUILT_BRIDGE_SOUTH = 5023;
 	public static final int MM2_PROGRESS = 5027;
 	public static final int MM2_FOUND_NOTE = 5028;
 	public static final int MM2_MAZE_RETURN = 5029;
@@ -6341,6 +6347,7 @@ public final class VarbitID
 	public static final int OPTION_TRAIL_REMINDER_HARD = 10723;
 	public static final int OPTION_TRAIL_REMINDER_ELITE = 10724;
 	public static final int OPTION_TRAIL_REMINDER_MASTER = 10725;
+	public static final int FREMENNIK_BASIC_TELEPORT_DEPRICATED = 10726;
 	public static final int OPTION_BRIGHTNESS_REMEMBER = 10729;
 	public static final int TOG_MAX_TEARS_COLLECTED = 10730;
 	public static final int SETTINGS_HIT_SOUNDS = 10731;
@@ -6819,9 +6826,7 @@ public final class VarbitID
 	public static final int MM_LAB_ORDER_2_MODIFIER = 11318;
 	public static final int MM_LAB_ORDER_3_TYPE = 11319;
 	public static final int MM_LAB_ORDER_3_MODIFIER = 11320;
-	public static final int MM_LAB_CURRENT_MOX = 11321;
-	public static final int MM_LAB_CURRENT_AGA = 11322;
-	public static final int MM_LAB_CURRENT_LYE = 11323;
+	public static final int FENK_BRIDGE_SPAN = 11322;
 	public static final int MM_LAB_MIXER_SLOT_0 = 11324;
 	public static final int MM_LAB_MIXER_SLOT_1 = 11325;
 	public static final int MM_LAB_MIXER_SLOT_2 = 11326;
@@ -9550,7 +9555,6 @@ public final class VarbitID
 	public static final int XMAS22_GAME_2_BEST = 14685;
 	public static final int XMAS22_GAME_3_COMPLETIONS = 14686;
 	public static final int XMAS22_GAME_3_BEST = 14687;
-	public static final int POH_MENAGERIE_MULTIFORM_VETIONPET_DEPRECATED = 14688;
 	public static final int POH_MENAGERIE_MULTIFORM_CALLISTOPET = 14689;
 	public static final int POH_MENAGERIE_MULTIFORM_VENENATISPET = 14690;
 	public static final int BUFF_WBR_EXIT_CAVE = 14691;

@@ -10792,7 +10792,6 @@ public final class InterfaceID
 		public static final int ITEMS = 0x012c_0010;
 		public static final int NOTE_BUTTON = 0x012c_0011;
 		public static final int SCROLLBAR = 0x012c_0012;
-		public static final int DESKTOP_INSTRUCTIONS = 0x012c_0013;
 	}
 
 	public static final class Shopside
