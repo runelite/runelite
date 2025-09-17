@@ -32,6 +32,7 @@ import net.runelite.api.QuestState;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 
 @Getter
 public enum AgilityShortcut
@@ -242,6 +243,14 @@ public enum AgilityShortcut
 	WEISS_OBSTACLES(68, "Shortcut", null, ObjectID.MY2ARM_CLIFF_SHORTCUT_1, ObjectID.MY2ARM_CLIFF_SHORTCUT_2, ObjectID.MY2ARM_CLIFF_SHORTCUT_3, ObjectID.MY2ARM_CLIFF_SHORTCUT_3_ROPETRAIL_MULTI, ObjectID.MY2ARM_CLIFF_SHORTCUT_4, ObjectID.MY2ARM_CLIFF_SHORTCUT_5, ObjectID.MY2ARM_CLIFF_SHORTCUT_6),
 	WEISS_FARMING_PATCH_BOULDER(0, "Shortcut", null, ObjectID.MY2ARM_HERBPATCH_ACCESS),
 	ARCEUUS_ESSENSE_NORTH(69, "Rock Climb", new WorldPoint(1759, 3873, 0), ObjectID.ARCHEUUS_RUNESTONE_SHORTCUT_GREY_SHORTCUT_NORTH),
+	FENKENSTRAIN_MAUSOLEUM_BRIDGE(69, "Bridge Jump", new WorldPoint(3504, 3560, 0), ObjectID.FENK_BRIDGE_MULTI_NORTH, ObjectID.FENK_BRIDGE_MULTI_NORTH_MIRROR, ObjectID.FENK_BRIDGE_MULTI_SOUTH, ObjectID.FENK_BRIDGE_MULTI_SOUTH_MIRROR)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return client.getVarbitValue(VarbitID.FENK_BUILT_BRIDGE_NORTH) == 2 && client.getVarbitValue(VarbitID.FENK_BUILT_BRIDGE_SOUTH) == 2;
+		}
+	},
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), ObjectID.TAVERLY_DUNGEON_PIPE_SC),
 	TAVERLEY_DUNGEON_ROCKS_NORTH(70, "Rocks", new WorldPoint(2887, 9823, 0), ObjectID.TAVERLEY_DRAGON_JUMPUP, ObjectID.TAVERLEY_DRAGON_JUMPDOWN),
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ObjectID.TAVERLEY_DRAGON_JUMPUP, ObjectID.TAVERLEY_DRAGON_JUMPDOWN),
