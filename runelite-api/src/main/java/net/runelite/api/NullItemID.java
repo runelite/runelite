@@ -4330,7 +4330,6 @@ public final class NullItemID
 	public static final int NULL_11522 = 11522;
 	public static final int NULL_11524 = 11524;
 	public static final int NULL_11526 = 11526;
-	public static final int NULL_11527 = 11527;
 	public static final int NULL_11528 = 11528;
 	public static final int NULL_11529 = 11529;
 	public static final int NULL_11530 = 11530;

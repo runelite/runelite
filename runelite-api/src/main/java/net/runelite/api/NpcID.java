@@ -4118,7 +4118,7 @@ public final class NpcID
 	public static final int MALCOLM_4414 = 4414;
 	public static final int TREE_4416 = 4416;
 	public static final int UNDEAD_TREE = 4417;
-	public static final int _SNEAKY_UNDEAD_FOWL = 4419;
+	public static final int SNEAKY_UNDEAD_FOWL = 4419;
 	public static final int COW31337KILLER = 4420;
 	public static final int UNDEAD_COW_4421 = 4421;
 	public static final int ALICE_4422 = 4422;

@@ -7092,6 +7092,7 @@ public final class ItemID
 	public static final int ZAMORAK_MIX2 = 11521;
 	public static final int ZAMORAK_MIX1 = 11523;
 	public static final int FEATHER_11525 = 11525;
+	public static final int MAUSOLEUM_BRIDGE_REPAIR = 11527;
 	public static final int MOUNTED_HARPOONFISH = 11578;
 	public static final int OAK_MOUNTED_FISH_DISPLAY = 11599;
 	public static final int MAHOGANY_MOUNTED_FISH_DISPLAY = 11601;
