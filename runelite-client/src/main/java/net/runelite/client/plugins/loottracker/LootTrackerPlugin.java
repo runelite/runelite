@@ -141,6 +141,14 @@ public class LootTrackerPlugin extends Plugin
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
 	private static final int BA_LOBBY_REGION = 10039;
+	// Wilderness loot key interface reuses the Deadman loot containers, one per tab
+	private static final int[] WILDERNESS_LOOT_KEY_CONTAINERS = {
+		InventoryID.DEADMAN_LOOT_INV0,
+		InventoryID.DEADMAN_LOOT_INV1,
+		InventoryID.DEADMAN_LOOT_INV2,
+		InventoryID.DEADMAN_LOOT_INV3,
+		InventoryID.DEADMAN_LOOT_INV4
+	};
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -815,10 +823,13 @@ public class LootTrackerPlugin extends Plugin
 				{
 					return;
 				}
-				event = "Loot Chest";
-				container = client.getItemContainer(InventoryID.LOOT_INV_ACCESS);
-				chestLooted = true;
-				break;
+
+				if (handleWildernessLootKeys())
+				{
+					chestLooted = true;
+				}
+
+				return;
 			case InterfaceID.PMOON_REWARD:
 				event = "Lunar Chest";
 				container = client.getItemContainer(InventoryID.PMOON_REWARDINV);
@@ -841,11 +852,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		// Convert container items to array of ItemStack
-		final Collection<ItemStack> items = Arrays.stream(container.getItems())
-			.filter(item -> item.getId() > -1)
-			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
-			.collect(Collectors.toList());
+		final Collection<ItemStack> items = toItemStacks(container);
 
 		if (config.showRaidsLootValue() && (event.equals(THEATRE_OF_BLOOD) || event.equals(CHAMBERS_OF_XERIC) || event.equals(TOMBS_OF_AMASCUT)))
 		{
@@ -878,6 +885,69 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		addLoot(event, -1, LootRecordType.EVENT, metadata, items);
+	}
+
+	private boolean handleWildernessLootKeys()
+	{
+		boolean recordedLoot = false;
+
+		for (int containerId : WILDERNESS_LOOT_KEY_CONTAINERS)
+		{
+			final Collection<ItemStack> items = toItemStacks(client.getItemContainer(containerId));
+			if (items.isEmpty())
+			{
+				continue;
+			}
+
+			addLoot("Loot Chest", -1, LootRecordType.EVENT, null, items);
+			recordedLoot = true;
+		}
+
+		return recordedLoot;
+	}
+
+	private Collection<ItemStack> toItemStacks(@Nullable ItemContainer container)
+	{
+		if (container == null)
+		{
+			return Collections.emptyList();
+		}
+
+		return Arrays.stream(container.getItems())
+			.filter(item -> item.getId() > -1)
+			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+			.collect(Collectors.toList());
+	}
+
+	private boolean isWildernessLootChestContainer(int containerId)
+	{
+		for (int id : WILDERNESS_LOOT_KEY_CONTAINERS)
+		{
+			if (id == containerId)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean areWildernessLootKeyContainersEmpty()
+	{
+		for (int id : WILDERNESS_LOOT_KEY_CONTAINERS)
+		{
+			if (containerHasItems(client.getItemContainer(id)))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private boolean containerHasItems(@Nullable ItemContainer container)
+	{
+		return container != null && container.count() > 0;
 	}
 
 	@Subscribe
@@ -1102,8 +1172,8 @@ public class LootTrackerPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		// when the wilderness chest empties, clear chest loot flag for the next key
-		if (event.getContainerId() == InventoryID.LOOT_INV_ACCESS
-			&& Arrays.stream(event.getItemContainer().getItems()).noneMatch(i -> i.getId() > -1))
+		if (isWildernessLootChestContainer(event.getContainerId())
+			&& areWildernessLootKeyContainersEmpty())
 		{
 			log.debug("Resetting chest loot flag");
 			chestLooted = false;
