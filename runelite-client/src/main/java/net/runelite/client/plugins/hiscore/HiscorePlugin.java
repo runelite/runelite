@@ -166,7 +166,7 @@ public class HiscorePlugin extends Plugin
 					final HiscoreEndpoint chatMessageEndpoint = findHiscoreEndpointFromPlayerName(e.getTarget());
 					HiscoreEndpoint endpoint = HiscoreEndpoint.fromWorldTypes(client.getWorldType());
 
-					if (chatMessageEndpoint != HiscoreEndpoint.NORMAL || endpoint == HiscoreEndpoint.LEAGUE)
+					if (chatMessageEndpoint != HiscoreEndpoint.NORMAL || endpoint == HiscoreEndpoint.SEASONAL)
 					{
 						// Determine proper endpoint from player name (eg. ironman or normal endpoint)
 						// Also assume normal hiscore endpoint for chat message w/o league icon received on league world
@@ -269,7 +269,7 @@ public class HiscorePlugin extends Plugin
 		}
 		if (name.contains(IconID.LEAGUE.toString()))
 		{
-			return HiscoreEndpoint.LEAGUE;
+			return HiscoreEndpoint.SEASONAL;
 		}
 		return HiscoreEndpoint.NORMAL;
 	}
