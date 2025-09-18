@@ -196,4 +196,15 @@ public interface PartyConfig extends Config
 		hidden = true
 	)
 	void setPreviousPartyId(String id);
+
+	@ConfigItem(
+		keyName = "hidePanel",
+		name = "Hide Party Panel",
+		description = "Hide the party panel from the sidebar",
+		position = 6
+	)
+	default boolean hidePanel()
+	{
+		return false;
+	}
 }
