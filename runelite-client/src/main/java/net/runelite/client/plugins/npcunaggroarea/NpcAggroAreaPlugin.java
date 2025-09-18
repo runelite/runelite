@@ -106,6 +106,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	private NpcAggroAreaOverlay overlay;
 
 	@Inject
+	private NpcAggroAreaMinimapOverlay minimapOverlay;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -152,6 +155,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
 		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ARCEUUS_CORPSE_DEMON_INITIAL), this));
 		clientThread.invokeLater(this::scanNpcs);
@@ -162,6 +166,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		removeTimer();
 		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 		infoBoxManager.removeIf(UncalibratedInfobox.class::isInstance);
 		Arrays.fill(safeCenters, null);
 		lastPlayerLocation = null;
@@ -204,7 +209,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void calculateLinesToDisplay()
 	{
-		if (!active || !config.showAreaLines())
+		if (!active || !config.showAreaLines() && !config.showMinimapAreaLines())
 		{
 			Arrays.fill(linesToDisplay, null);
 			return;
@@ -409,6 +414,7 @@ public class NpcAggroAreaPlugin extends Plugin
 				break;
 			case "npcUnaggroCollisionDetection":
 			case "npcUnaggroShowAreaLines":
+			case "npcUnaggroShowMinimapLines":
 				calculateLinesToDisplay();
 				break;
 			case "npcUnaggroNames":
