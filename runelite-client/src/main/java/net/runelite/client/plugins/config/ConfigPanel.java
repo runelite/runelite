@@ -33,6 +33,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -333,6 +334,8 @@ class ConfigPanel extends PluginPanel
 			topLevelPanels.put(csd, section);
 		}
 
+		FontMetrics fm = this.getFontMetrics(getFont());
+
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -346,6 +349,7 @@ class ConfigPanel extends PluginPanel
 			String name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
+			int nameWidth = fm.stringWidth(name);
 			String description = cid.getItem().description();
 			if (!"".equals(description))
 			{
@@ -380,7 +384,9 @@ class ConfigPanel extends PluginPanel
 			}
 			else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
 			{
-				item.add(createComboBox(cd, cid), BorderLayout.EAST);
+				item.add(createComboBox(cd, cid),
+					(nameWidth > 0.7 * (PANEL_WIDTH + SCROLLBAR_WIDTH))
+					? BorderLayout.SOUTH : BorderLayout.EAST);
 			}
 			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
