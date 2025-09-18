@@ -177,6 +177,25 @@ public interface PartyConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigSection(
+		name = "Party frames overlay",
+		description = "Party overlay panel containing health and prayer.",
+		position = 200
+	)
+	String SECTION_PARTY_FRAMES_OVERLAY = "partyFramesOverlay";
+
+	@ConfigItem(
+		section = SECTION_PARTY_FRAMES_OVERLAY,
+		keyName = "showPartyFramesOverlay",
+		name = "Show party frames overlay",
+		description = "Show the health and prayer of other party members in an overlay.",
+		position = 201
+	)
+	default boolean showPartyFramesOverlay()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "previousPartyId",
