@@ -44,12 +44,15 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.DBTableID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.worldmap.MapElementConfig;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.api.worldmap.WorldMapIcon;
 import net.runelite.api.worldmap.WorldMapRegion;
 import net.runelite.api.worldmap.WorldMapRenderer;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -154,6 +157,9 @@ public class WorldMapPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private WorldMapConfig config;
 
 	@Inject
@@ -161,6 +167,7 @@ public class WorldMapPlugin extends Plugin
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
+	private boolean mapTooltipsEnabled = true;
 
 	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 
@@ -175,6 +182,12 @@ public class WorldMapPlugin extends Plugin
 	{
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
+		clientThread.invoke(() ->
+		{
+			mapTooltipsEnabled = (client.getVarbitValue(VarbitID.WORLDMAP_TOGGLES) & 0x08) == 0;
+			log.debug("StartUp: Map tooltips enabled: {}", mapTooltipsEnabled);
+		});
+
 		updateShownIcons();
 	}
 
@@ -233,6 +246,17 @@ public class WorldMapPlugin extends Plugin
 		{
 			// this is called whenever the map is opened or the map is changed
 			updateQuestStartPointIcons();
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarbitId() == VarbitID.WORLDMAP_TOGGLES)
+		{
+			mapTooltipsEnabled = (event.getValue() & 0x08) == 0;
+			log.debug("VarbitChanged: Map tooltips enabled: {}", mapTooltipsEnabled);
+			updateShownIcons();
 		}
 	}
 
@@ -313,7 +337,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.AGILITY_SHORTCUT)
 						.worldPoint(l.getWorldMapLocation())
 						.image(agilityLevel > 0 && config.agilityShortcutLevelIcon() && l.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON)
-						.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
+						.tooltip((config.agilityShortcutTooltips() && mapTooltipsEnabled) ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -333,7 +357,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.AGILITY_COURSE)
 						.worldPoint(l.getLocation())
 						.image(config.agilityCourseRooftop() && l.isRooftopCourse() ? ROOFTOP_COURSE_ICON : BLANK_ICON)
-						.tooltip(config.agilityCourseTooltip() ? l.getTooltip() : null)
+						.tooltip((config.agilityCourseTooltip() && mapTooltipsEnabled) ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -354,7 +378,7 @@ public class WorldMapPlugin extends Plugin
 							.worldPoint(point)
 							.image(woodcuttingLevel > 0 && config.rareTreeLevelIcon() &&
 								rareTree.getLevelReq() > woodcuttingLevel ? NOPE_ICON : BLANK_ICON)
-							.tooltip(config.rareTreeTooltips() ? rareTree.getTooltip() : null)
+							.tooltip((config.rareTreeTooltips() && mapTooltipsEnabled) ? rareTree.getTooltip() : null)
 							.build()
 					)
 					.forEach(worldMapPointManager::add));
@@ -377,7 +401,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.FAIRY_RING)
 						.worldPoint(l.getLocation())
 						.image(config.fairyRingIcon() ? FAIRY_TRAVEL_ICON : BLANK_ICON)
-						.tooltip(config.fairyRingTooltips() ? "Fairy Ring - " + l.getCode() : null)
+						.tooltip((config.fairyRingTooltips() && mapTooltipsEnabled) ? "Fairy Ring - " + l.getCode() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -392,7 +416,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.MINIGAME)
 						.worldPoint(l.getLocation())
 						.image(BLANK_ICON)
-						.tooltip(l.getTooltip())
+						.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -410,7 +434,7 @@ public class WorldMapPlugin extends Plugin
 						.target(l.getTarget())
 						.jumpOnClick(l.getTarget() != null)
 						.name(Text.titleCase(l))
-						.tooltip(l.getTooltip())
+						.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach((worldMapPointManager::add));
@@ -426,7 +450,7 @@ public class WorldMapPlugin extends Plugin
 							.type(MapPoint.Type.FARMING_PATCH)
 							.worldPoint(point)
 							.image(BLANK_ICON)
-							.tooltip(location.getTooltip())
+							.tooltip(mapTooltipsEnabled ? location.getTooltip() : null)
 							.build()
 					)
 					.forEach(worldMapPointManager::add)
@@ -462,7 +486,7 @@ public class WorldMapPlugin extends Plugin
 				MapPoint.builder()
 					.type(MapPoint.Type.TELEPORT)
 					.worldPoint(l.getLocation())
-					.tooltip(l.getTooltip())
+					.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 					.image(imageCache.computeIfAbsent(l.getIconPath(), p -> ImageUtil.loadImageResource(WorldMapPlugin.class, p)))
 					.build()
 			)
@@ -477,7 +501,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.RUNECRAFT_ALTAR)
 						.worldPoint(l.getLocation())
 						.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
-						.tooltip(l.getTooltip())
+						.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -492,7 +516,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.MINING_SITE)
 						.worldPoint(l.getLocation())
 						.image(l.isIconRequired() ? MINING_SITE_ICON : BLANK_ICON)
-						.tooltip(l.getTooltip())
+						.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -507,7 +531,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.DUNGEON)
 						.worldPoint(l.getLocation())
 						.image(BLANK_ICON)
-						.tooltip(l.getTooltip())
+						.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -522,7 +546,7 @@ public class WorldMapPlugin extends Plugin
 						.type(MapPoint.Type.HUNTER)
 						.worldPoint(l.getLocation())
 						.image(BLANK_ICON)
-						.tooltip(l.getTooltip())
+						.tooltip(mapTooltipsEnabled ? l.getTooltip() : null)
 						.build()
 				)
 				.forEach(worldMapPointManager::add);
@@ -538,7 +562,7 @@ public class WorldMapPlugin extends Plugin
 							.type(MapPoint.Type.FISHING)
 							.worldPoint(point)
 							.image(BLANK_ICON)
-							.tooltip(location.getTooltip())
+							.tooltip(mapTooltipsEnabled ? location.getTooltip() : null)
 							.build()
 					)
 					.forEach(worldMapPointManager::add)
