@@ -75,6 +75,13 @@ public class ItemStatOverlay extends Overlay
 	@Inject
 	private ItemStatConfig config;
 
+	private ItemStatsHotkeyListener hotkeyListener;
+
+	public void setHotkeyListener(ItemStatsHotkeyListener hotkeyListener)
+	{
+		this.hotkeyListener = hotkeyListener;
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -82,6 +89,12 @@ public class ItemStatOverlay extends Overlay
 		{
 			return null;
 		}
+
+	// Improved hotkey logic: only require hotkey if enabled
+	boolean hotkeyHeld = hotkeyListener != null && hotkeyListener.isHotkeyHeld();
+	boolean showStats = config.useStatsHotkey() ? hotkeyHeld : true;
+	boolean showEquipmentStats = config.equipmentStats() && showStats;
+	boolean showConsumableStats = config.consumableStats() && showStats;
 
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
@@ -125,7 +138,9 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-		if (config.consumableStats())
+	    boolean showConsumableStats = config.consumableStats() && hotkeyHeld;
+
+		if (showConsumableStats)
 		{
 			final Effect change = statChanges.get(itemId);
 			if (change != null)
@@ -185,7 +200,7 @@ public class ItemStatOverlay extends Overlay
 			}
 		}
 
-		if (config.equipmentStats())
+		if (showEquipmentStats)
 		{
 			final ItemStats stats = itemManager.getItemStats(itemId);
 
