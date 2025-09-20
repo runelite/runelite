@@ -31,4 +31,9 @@ public class ItemStatsHotkeyListener implements KeyListener {
 			hotkeyHeld = false;
 		}
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// Not used
+	}
 }

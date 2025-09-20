@@ -138,8 +138,6 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-	    boolean showConsumableStats = config.consumableStats() && hotkeyHeld;
-
 		if (showConsumableStats)
 		{
 			final Effect change = statChanges.get(itemId);
