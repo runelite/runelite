@@ -90,11 +90,15 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-	// Improved hotkey logic: only require hotkey if enabled
-	boolean hotkeyHeld = hotkeyListener != null && hotkeyListener.isHotkeyHeld();
-	boolean showStats = config.useStatsHotkey() ? hotkeyHeld : true;
-	boolean showEquipmentStats = config.equipmentStats() && showStats;
-	boolean showConsumableStats = config.consumableStats() && showStats;
+		// Determine if stats should be shown based on hotkey configuration
+		// If hotkey is required: only show when hotkey is held AND individual setting is enabled
+		// If hotkey is not required: show based on individual setting only
+		boolean hotkeyRequired = config.useStatsHotkey();
+		boolean hotkeyHeld = hotkeyListener != null && hotkeyListener.isHotkeyHeld();
+		boolean allowStatsDisplay = hotkeyRequired ? hotkeyHeld : true;
+		
+		boolean showEquipmentStats = config.equipmentStats() && allowStatsDisplay;
+		boolean showConsumableStats = config.consumableStats() && allowStatsDisplay;
 
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
