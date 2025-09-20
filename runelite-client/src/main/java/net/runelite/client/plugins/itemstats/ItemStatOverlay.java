@@ -93,9 +93,9 @@ public class ItemStatOverlay extends Overlay
 		}
 
 		// Determine if stats should be shown based on hotkey configuration
-		// If hotkey is required: only show when hotkey is held AND individual setting is enabled
-		// If hotkey is not required: show based on individual setting only
-		boolean hotkeyRequired = config.useStatsHotkey();
+		// If hotkey is set: only show when hotkey is held AND individual setting is enabled
+		// If hotkey is null: show based on individual setting only
+		boolean hotkeyRequired = config.statsHotkey() != null;
 		boolean hotkeyHeld = hotkeyListener != null && hotkeyListener.isHotkeyHeld();
 		boolean allowStatsDisplay = hotkeyRequired ? hotkeyHeld : true;
 

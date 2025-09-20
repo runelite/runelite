@@ -66,7 +66,6 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.plugins.itemstats.ItemStatsHotkeyListener;
 
 @PluginDescriptor(
 	name = "Item Stats",

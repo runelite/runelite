@@ -23,7 +23,7 @@ public class ItemStatsHotkeyListener implements KeyListener
 	public void keyPressed(KeyEvent e)
 	{
 		Keybind keybind = config.statsHotkey();
-		if (keybind.matches(e))
+		if (keybind != null && keybind.matches(e))
 		{
 			hotkeyHeld = true;
 		}
@@ -33,7 +33,7 @@ public class ItemStatsHotkeyListener implements KeyListener
 	public void keyReleased(KeyEvent e)
 	{
 		Keybind keybind = config.statsHotkey();
-		if (keybind.matches(e))
+		if (keybind != null && keybind.matches(e))
 		{
 			hotkeyHeld = false;
 		}

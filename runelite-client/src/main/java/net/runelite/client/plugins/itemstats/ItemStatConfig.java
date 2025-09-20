@@ -53,23 +53,13 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "useStatsHotkey",
-		name = "Require stats hotkey",
-		description = "When enabled, you must hold the stats hotkey to see item tooltips. When disabled, tooltips show automatically based on the settings above."
-	)
-	default boolean useStatsHotkey()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "statsHotkey",
 		name = "Stats hotkey",
-		description = "The key to hold for showing item stats when 'Require stats hotkey' is enabled."
+		description = "Hold this key to show item stats. Leave unset to always show stats (based on individual settings above)."
 	)
 	default net.runelite.client.config.Keybind statsHotkey()
 	{
-		return net.runelite.client.config.Keybind.SHIFT;
+		return null;
 	}
 
 	@ConfigItem(
