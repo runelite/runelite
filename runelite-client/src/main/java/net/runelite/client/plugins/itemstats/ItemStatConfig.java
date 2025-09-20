@@ -53,6 +53,28 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "useStatsHotkey",
+		name = "Require stats hotkey",
+		description = "Require holding the stats hotkey to show item stats. If disabled, stats always show.",
+		position = 16
+	)
+	default boolean useStatsHotkey()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "statsHotkey",
+		name = "Stats Hotkey",
+		description = "Hold this key to show item stats.",
+		position = 15
+	)
+	default net.runelite.client.config.Keybind statsHotkey()
+	{
+		return net.runelite.client.config.Keybind.SHIFT;
+	}
+
+	@ConfigItem(
 		keyName = "geStats",
 		name = "Enable GE item information",
 		description = "Shows an item information panel when buying items in the GE."
