@@ -34,8 +34,8 @@ public interface ItemStatConfig extends Config
 {
 	@ConfigItem(
 		keyName = "consumableStats",
-		name = "Enable consumable stats",
-		description = "Enables tooltips for consumable items (food, boosts)."
+		name = "Show consumable stats",
+		description = "Show tooltips for consumable items including food healing, potion effects, and stat boosts."
 	)
 	default boolean consumableStats()
 	{
@@ -44,8 +44,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "equipmentStats",
-		name = "Enable equipment stats",
-		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)."
+		name = "Show equipment stats",
+		description = "Show tooltips for equipment items including combat bonuses, weight, and prayer bonuses."
 	)
 	default boolean equipmentStats()
 	{
@@ -55,8 +55,7 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "useStatsHotkey",
 		name = "Require stats hotkey",
-		description = "Require holding the stats hotkey to show item stats. If disabled, stats always show.",
-		position = 16
+		description = "When enabled, you must hold the stats hotkey to see item tooltips. When disabled, tooltips show automatically based on the settings above."
 	)
 	default boolean useStatsHotkey()
 	{
@@ -65,9 +64,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "statsHotkey",
-		name = "Stats Hotkey",
-		description = "Hold this key to show item stats.",
-		position = 15
+		name = "Stats hotkey",
+		description = "The key to hold for showing item stats when 'Require stats hotkey' is enabled."
 	)
 	default net.runelite.client.config.Keybind statsHotkey()
 	{
@@ -76,8 +74,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "geStats",
-		name = "Enable GE item information",
-		description = "Shows an item information panel when buying items in the GE."
+		name = "Grand Exchange item information",
+		description = "Show an item information panel when buying items in the Grand Exchange."
 	)
 	default boolean geStats()
 	{

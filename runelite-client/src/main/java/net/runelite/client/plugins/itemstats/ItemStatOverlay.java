@@ -29,6 +29,8 @@ import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.time.Duration;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -96,7 +98,7 @@ public class ItemStatOverlay extends Overlay
 		boolean hotkeyRequired = config.useStatsHotkey();
 		boolean hotkeyHeld = hotkeyListener != null && hotkeyListener.isHotkeyHeld();
 		boolean allowStatsDisplay = hotkeyRequired ? hotkeyHeld : true;
-		
+
 		boolean showEquipmentStats = config.equipmentStats() && allowStatsDisplay;
 		boolean showConsumableStats = config.consumableStats() && allowStatsDisplay;
 
@@ -465,5 +467,23 @@ public class ItemStatOverlay extends Overlay
 		b.append("</br>");
 
 		return b.toString();
+	}
+
+	@Override
+	public void setPreferredSize(Dimension dimension)
+	{
+		// Not used for this overlay type
+	}
+
+	@Override
+	public void setPreferredLocation(Point position)
+	{
+		// Not used for this overlay type
+	}
+
+	@Override
+	public Rectangle getBounds()
+	{
+		return new Rectangle();
 	}
 }
