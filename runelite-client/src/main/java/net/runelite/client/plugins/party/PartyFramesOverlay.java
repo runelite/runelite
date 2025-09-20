@@ -73,10 +73,7 @@ class PartyFramesOverlay extends Overlay
     private final PartyService partyService;
 
     @Inject
-    PartyFramesOverlay(
-        final PartyConfig config,
-        final PartyPluginService partyPluginService,
-        final PartyService partyService)
+    PartyFramesOverlay(final PartyConfig config, final PartyPluginService partyPluginService, final PartyService partyService)
     {
         this.panelComponent = new PanelComponent();
         this.config = config;
@@ -104,18 +101,18 @@ class PartyFramesOverlay extends Overlay
         }
         if (!this.config.showPartyFramesOverlay())
         {
-          return null;
+            return null;
         }
     
         PartyMember localMember = this.partyService.getLocalMember();
         Iterator<PartyMember> otherPartyMembers = this.partyService
-          .getMembers()
-          .stream()
-          .filter(partyMember -> partyMember.getMemberId() != localMember.getMemberId())
-          .iterator();
+            .getMembers()
+            .stream()
+            .filter(partyMember -> partyMember.getMemberId() != localMember.getMemberId())
+            .iterator();
         if (!otherPartyMembers.hasNext())
         {
-          return null;
+            return null;
         }
 
         panelComponent.getChildren().clear();
@@ -164,8 +161,8 @@ class PartyFramesOverlay extends Overlay
             panelComponent.getChildren().add(prayerBar);
 
             if (otherPartyMembers.hasNext()) {
-              // Padding
-              panelComponent.getChildren().add(LineComponent.builder().left("").build());
+                // Padding
+                panelComponent.getChildren().add(LineComponent.builder().left("").build());
             }
         }
 
