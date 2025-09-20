@@ -118,6 +118,9 @@ public class PartyPlugin extends Plugin
 	private PartyStatusOverlay partyStatusOverlay;
 
 	@Inject
+	private PartyOverlayPanel partyOverlayPanel;
+
+	@Inject
 	private WSClient wsClient;
 
 	@Inject
@@ -198,6 +201,7 @@ public class PartyPlugin extends Plugin
 
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
+		overlayManager.add(partyOverlayPanel);
 		keyManager.registerKeyListener(hotkeyListener);
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
@@ -219,6 +223,7 @@ public class PartyPlugin extends Plugin
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 		overlayManager.remove(partyPingOverlay);
 		overlayManager.remove(partyStatusOverlay);
+		overlayManager.remove(partyOverlayPanel);
 		keyManager.unregisterKeyListener(hotkeyListener);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
