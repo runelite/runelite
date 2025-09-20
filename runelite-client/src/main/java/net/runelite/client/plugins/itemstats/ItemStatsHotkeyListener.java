@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
-public class ItemStatsHotkeyListener extends KeyListener {
+public class ItemStatsHotkeyListener implements KeyListener {
 	private boolean hotkeyHeld = false;
 	private final ItemStatConfig config;
 
