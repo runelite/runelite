@@ -35,7 +35,6 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.party.data.PartyData;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -51,121 +50,122 @@ import net.runelite.client.util.ImageUtil;
 
 /**
  * Party frames overlay of all party members excluding the local player.
- *
+ * <p>
  * Includes the avatar, display name, health bar and prayer bar.
  */
 class PartyFramesOverlay extends Overlay
 {
-    private static final Color HP_FG = new Color(0, 146, 54, 230);
-    private static final Color HP_BG = new Color(102, 15, 16, 230);
-    private static final Color PRAY_FG = new Color(0, 149, 151);
-    private static final Color PRAY_BG = Color.black;
-    private static final Color DEFAULT_AVATAR = new Color (30, 30, 30); 
-    private static final Color OVERLAY_BG = new Color(18, 18, 18, 180);
-    private static final int AVATAR_WIDTH = 32;
-    private static final int AVATAR_HEIGHT = 32;
-    private static final String PARTY_TITLE = "Party";
+	private static final Color HP_FG = new Color(0, 146, 54, 230);
+	private static final Color HP_BG = new Color(102, 15, 16, 230);
+	private static final Color PRAY_FG = new Color(0, 149, 151);
+	private static final Color PRAY_BG = Color.black;
+	private static final Color DEFAULT_AVATAR = new Color(30, 30, 30);
+	private static final Color OVERLAY_BG = new Color(18, 18, 18, 180);
+	private static final int AVATAR_WIDTH = 32;
+	private static final int AVATAR_HEIGHT = 32;
+	private static final String PARTY_TITLE = "Party";
 
-    private final BufferedImage defaultAvatar;
-    private final PanelComponent panelComponent;
-    private final PartyConfig config;
-    private final PartyPluginService partyPluginService;
-    private final PartyService partyService;
+	private final BufferedImage defaultAvatar;
+	private final PanelComponent panelComponent;
+	private final PartyConfig config;
+	private final PartyPluginService partyPluginService;
+	private final PartyService partyService;
 
-    @Inject
-    PartyFramesOverlay(final PartyConfig config, final PartyPluginService partyPluginService, final PartyService partyService)
-    {
-        this.panelComponent = new PanelComponent();
-        this.config = config;
-        this.partyPluginService = partyPluginService;
-        this.partyService = partyService;
+	@Inject
+	PartyFramesOverlay(final PartyConfig config, final PartyPluginService partyPluginService, final PartyService partyService)
+	{
+		this.panelComponent = new PanelComponent();
+		this.config = config;
+		this.partyPluginService = partyPluginService;
+		this.partyService = partyService;
 
-        panelComponent.setOrientation(ComponentOrientation.VERTICAL);
-        setPosition(OverlayPosition.TOP_LEFT);
-        setLayer(OverlayLayer.ABOVE_WIDGETS);
-        addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Party overlay");
+		panelComponent.setOrientation(ComponentOrientation.VERTICAL);
+		setPosition(OverlayPosition.TOP_LEFT);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Party overlay");
 
-        this.defaultAvatar = new BufferedImage(AVATAR_WIDTH, AVATAR_HEIGHT, BufferedImage.TYPE_INT_RGB);
-        Graphics2D defaultAvatarGraphics = this.defaultAvatar.createGraphics();
-        defaultAvatarGraphics.setColor(DEFAULT_AVATAR);
-        defaultAvatarGraphics.fillRect(0, 0, AVATAR_WIDTH, AVATAR_HEIGHT);
-        defaultAvatarGraphics.dispose();
-    }
+		this.defaultAvatar = new BufferedImage(AVATAR_WIDTH, AVATAR_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		Graphics2D defaultAvatarGraphics = this.defaultAvatar.createGraphics();
+		defaultAvatarGraphics.setColor(DEFAULT_AVATAR);
+		defaultAvatarGraphics.fillRect(0, 0, AVATAR_WIDTH, AVATAR_HEIGHT);
+		defaultAvatarGraphics.dispose();
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (!this.partyService.isInParty())
-        {
-            return null;
-        }
-        if (!this.config.showPartyFramesOverlay())
-        {
-            return null;
-        }
-    
-        PartyMember localMember = this.partyService.getLocalMember();
-        Iterator<PartyMember> otherPartyMembers = this.partyService
-            .getMembers()
-            .stream()
-            .filter(partyMember -> partyMember.getMemberId() != localMember.getMemberId())
-            .iterator();
-        if (!otherPartyMembers.hasNext())
-        {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!this.partyService.isInParty())
+		{
+			return null;
+		}
+		if (!this.config.showPartyFramesOverlay())
+		{
+			return null;
+		}
 
-        panelComponent.getChildren().clear();
-        panelComponent.setBackgroundColor(OVERLAY_BG);
-        panelComponent.getChildren().add(TitleComponent.builder()
-            .text(PARTY_TITLE)
-            .color(Color.GREEN)
-            .build());
+		PartyMember localMember = this.partyService.getLocalMember();
+		Iterator<PartyMember> otherPartyMembers = this.partyService
+				.getMembers()
+				.stream()
+				.filter(partyMember -> partyMember.getMemberId() != localMember.getMemberId())
+				.iterator();
+		if (!otherPartyMembers.hasNext())
+		{
+			return null;
+		}
 
-        while (otherPartyMembers.hasNext())
-        {
-            PartyMember partyMember = otherPartyMembers.next();
-            PartyData partyData = this.partyPluginService.getPartyData(partyMember.getMemberId());
-            if (partyData == null)
-            {
-                continue;
-            }
+		panelComponent.getChildren().clear();
+		panelComponent.setBackgroundColor(OVERLAY_BG);
+		panelComponent.getChildren().add(TitleComponent.builder()
+				.text(PARTY_TITLE)
+				.color(Color.GREEN)
+				.build());
 
-            SplitComponent memberTitle = SplitComponent.builder()
-                .first(new ImageComponent(partyMember.getAvatar() != null ? ImageUtil.resizeImage(partyMember.getAvatar(), AVATAR_WIDTH, AVATAR_HEIGHT) : this.defaultAvatar))
-                .second(
-                    LineComponent.builder()
-                        .left(partyMember.getDisplayName())
-                        .leftColor(partyMember.isLoggedIn() ? Color.WHITE : Color.GRAY)
-                        .build()
-                )
-                .orientation(ComponentOrientation.HORIZONTAL)
-                .gap(new Point(4, 0))
-                .build();
-            panelComponent.getChildren().add(memberTitle);
+		while (otherPartyMembers.hasNext())
+		{
+			PartyMember partyMember = otherPartyMembers.next();
+			PartyData partyData = this.partyPluginService.getPartyData(partyMember.getMemberId());
+			if (partyData == null)
+			{
+				continue;
+			}
 
-            ProgressBarComponent hpBar = new ProgressBarComponent();
-            hpBar.setBackgroundColor(HP_BG);
-            hpBar.setForegroundColor(HP_FG);
-            hpBar.setValue(partyData.getHitpoints());
-            hpBar.setMaximum(partyData.getMaxHitpoints());
-            hpBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
-            panelComponent.getChildren().add(hpBar);
+			SplitComponent memberTitle = SplitComponent.builder()
+					.first(new ImageComponent(partyMember.getAvatar() != null ? ImageUtil.resizeImage(partyMember.getAvatar(), AVATAR_WIDTH, AVATAR_HEIGHT) : this.defaultAvatar))
+					.second(
+							LineComponent.builder()
+									.left(partyMember.getDisplayName())
+									.leftColor(partyMember.isLoggedIn() ? Color.WHITE : Color.GRAY)
+									.build()
+					)
+					.orientation(ComponentOrientation.HORIZONTAL)
+					.gap(new Point(4, 0))
+					.build();
+			panelComponent.getChildren().add(memberTitle);
 
-            ProgressBarComponent prayerBar = new ProgressBarComponent();
-            prayerBar.setBackgroundColor(PRAY_BG);
-            prayerBar.setForegroundColor(PRAY_FG);
-            prayerBar.setValue(partyData.getPrayer());
-            prayerBar.setMaximum(partyData.getMaxPrayer());
-            prayerBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
-            panelComponent.getChildren().add(prayerBar);
+			ProgressBarComponent hpBar = new ProgressBarComponent();
+			hpBar.setBackgroundColor(HP_BG);
+			hpBar.setForegroundColor(HP_FG);
+			hpBar.setValue(partyData.getHitpoints());
+			hpBar.setMaximum(partyData.getMaxHitpoints());
+			hpBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+			panelComponent.getChildren().add(hpBar);
 
-            if (otherPartyMembers.hasNext()) {
-                // Padding
-                panelComponent.getChildren().add(LineComponent.builder().left("").build());
-            }
-        }
+			ProgressBarComponent prayerBar = new ProgressBarComponent();
+			prayerBar.setBackgroundColor(PRAY_BG);
+			prayerBar.setForegroundColor(PRAY_FG);
+			prayerBar.setValue(partyData.getPrayer());
+			prayerBar.setMaximum(partyData.getMaxPrayer());
+			prayerBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+			panelComponent.getChildren().add(prayerBar);
 
-        return panelComponent.render(graphics);
-    }
+			if (otherPartyMembers.hasNext())
+			{
+				// Padding
+				panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			}
+		}
+
+		return panelComponent.render(graphics);
+	}
 }
