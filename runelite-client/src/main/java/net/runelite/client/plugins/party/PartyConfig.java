@@ -177,7 +177,7 @@ public interface PartyConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigSection(
 		name = "Party frames overlay",
 		description = "Party overlay panel containing health and prayer.",
