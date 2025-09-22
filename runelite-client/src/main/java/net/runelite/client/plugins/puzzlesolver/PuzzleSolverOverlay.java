@@ -238,14 +238,14 @@ public class PuzzleSolverOverlay extends Overlay
 									{
 										break;
 									}
-									
+
 									if (!config.drawOverlaps())
 									{
 										if (positions.contains(futureMove.getEmptyPiece()))
 										{
 											break;
 										}
-										
+
 										positions.add(futureMove.getEmptyPiece());
 									}
 
