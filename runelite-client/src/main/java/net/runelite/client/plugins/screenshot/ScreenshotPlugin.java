@@ -62,6 +62,7 @@ import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -184,6 +185,9 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private ImageCapture imageCapture;
+
+	@Inject
+	private Notifier notifier;
 
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
@@ -929,6 +933,8 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		notifier.setTintAllowed(false);
+		log.debug("Notification tint disabled");
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
@@ -959,6 +965,8 @@ public class ScreenshotPlugin extends Plugin
 		}
 
 		imageCapture.saveScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.copyToClipboard());
+		notifier.setTintAllowed(true);
+		log.debug("Notification tint enabled");
 	}
 
 	private boolean isInsideGauntlet()
