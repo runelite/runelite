@@ -234,9 +234,19 @@ public class PuzzleSolverOverlay extends Overlay
 
 									PuzzleState futureMove = solver.getStep(j);
 
-									if (futureMove == null || !config.drawOverlaps() && positions.contains(futureMove.getEmptyPiece()))
+									if (futureMove == null)
 									{
 										break;
+									}
+									
+									if (!config.drawOverlaps())
+									{
+										if (positions.contains(futureMove.getEmptyPiece()))
+										{
+											break;
+										}
+										
+										positions.add(futureMove.getEmptyPiece());
 									}
 
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
