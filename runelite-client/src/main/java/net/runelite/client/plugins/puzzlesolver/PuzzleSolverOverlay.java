@@ -267,7 +267,6 @@ public class PuzzleSolverOverlay extends Overlay
 									{
 										color = ColorUtil.colorLerp(config.dotColor(), config.gradientColor(),
 											(double) (i - 1) / (movesToShow - 1));
-										graphics.setColor(color);
 									}
 									else
 									{
