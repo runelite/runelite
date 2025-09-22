@@ -69,7 +69,7 @@ enum Task
 	CHAOS_ELEMENTAL("The Chaos Elemental", ItemID.CHAOSELEPET),
 	CHAOS_FANATIC("The Chaos Fanatic", ItemID.STAFF_OF_ZAROS),
 	COCKATRICE("Cockatrice", ItemID.SLAYERGUIDE_COCKATRICE, "Cockathrice"),
-	COWS("Cows", ItemID.COW_MASK),
+	COWS("Cows", ItemID.COW_MASK, "Buffalo"),
 	CRABS("Crabs", ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET, "Ammonite Crab", "Frost Crab", "King Sand Crab", "Rock Crab", "Giant Rock Crab", "Sand Crab", "Swamp Crab"),
 	CRAWLING_HANDS("Crawling hands", ItemID.SLAYERGUIDE_CRAWLINGHAND, "Crushing hand"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA),
