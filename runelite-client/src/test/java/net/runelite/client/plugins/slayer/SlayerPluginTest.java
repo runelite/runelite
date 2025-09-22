@@ -279,6 +279,10 @@ public class SlayerPluginTest
 		assertTrue(matches("Loar shade", Task.SHADES));
 		assertTrue(matches("Loar shadow", Task.SHADES));
 		assertTrue(matches("Urium shadow", Task.SHADES));
+		assertTrue(matches("Juvenile custodian stalker", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Mature custodian stalker", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Elder custodian stalker", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Ancient Custodian", Task.CUSTODIAN_STALKERS));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));

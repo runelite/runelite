@@ -74,6 +74,7 @@ enum Task
 	CRAWLING_HANDS("Crawling hands", ItemID.SLAYERGUIDE_CRAWLINGHAND, "Crushing hand"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA),
 	CROCODILES("Crocodiles", ItemID.GREEN_SALAMANDER),
+	CUSTODIAN_STALKERS("Custodian Stalkers", ItemID.SLAYERGUIDE_CUSTODIAN_STALKER_MATURE, "Ancient Custodian"),
 	DAGANNOTH("Dagannoth", ItemID.POH_DAGGANOTH),
 	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PRIMEPET),
 	DARK_BEASTS("Dark beasts", ItemID.SLAYERGUIDE_DARK_BEAST, "Night beast"),
