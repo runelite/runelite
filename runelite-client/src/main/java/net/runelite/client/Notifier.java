@@ -46,6 +46,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -80,6 +81,9 @@ public class Notifier
 
 	private static final File NOTIFICATION_FILE = new File(RuneLite.RUNELITE_DIR, "notification.wav");
 	private static final File NOTIFICATIONS_DIR = RuneLite.NOTIFICATIONS_DIR;
+
+	@Setter
+	private boolean tintAllowed = true;
 
 	private final Client client;
 	private final RuneLiteConfig runeLiteConfig;
@@ -223,6 +227,7 @@ public class Notifier
 		{
 			flashNotification = notification.getFlash();
 			flashColor = notification.getFlashColor();
+			tintAllowed = true;
 			flashStart = Instant.now();
 			mouseLastPressedMillis = client.getMouseLastPressedMillis();
 		}
@@ -254,6 +259,11 @@ public class Notifier
 			flashStart = null;
 			flashNotification = null;
 			flashColor = null;
+			return;
+		}
+
+		if (!tintAllowed)
+		{
 			return;
 		}
 
