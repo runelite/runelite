@@ -69,7 +69,7 @@ public interface PuzzleSolverConfig extends Config
 
 	@ConfigItem(
 		keyName = "movesToShow",
-		name = "Number of dots to show",
+		name = "Number of dots",
 		description = "The number of moves as dots to show for the puzzle.",
 		position = 3
 	)
