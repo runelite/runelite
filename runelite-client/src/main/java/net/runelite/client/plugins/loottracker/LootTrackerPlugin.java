@@ -141,14 +141,14 @@ public class LootTrackerPlugin extends Plugin
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
 	private static final int BA_LOBBY_REGION = 10039;
-	// Wilderness loot key interface reuses the Deadman loot containers, one per tab
-	private static final int[] WILDERNESS_LOOT_KEY_CONTAINERS = {
+	// PvP loot keys (Wilderness/Deadman) reuse the Deadman loot containers, one per tab
+	private static final List<Integer> PVP_LOOT_KEY_CONTAINERS = List.of(
 		InventoryID.DEADMAN_LOOT_INV0,
 		InventoryID.DEADMAN_LOOT_INV1,
 		InventoryID.DEADMAN_LOOT_INV2,
 		InventoryID.DEADMAN_LOOT_INV3,
 		InventoryID.DEADMAN_LOOT_INV4
-	};
+	);
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -891,7 +891,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		boolean recordedLoot = false;
 
-		for (int containerId : WILDERNESS_LOOT_KEY_CONTAINERS)
+		for (int containerId : PVP_LOOT_KEY_CONTAINERS)
 		{
 			final Collection<ItemStack> items = toItemStacks(client.getItemContainer(containerId));
 			if (items.isEmpty())
@@ -919,22 +919,9 @@ public class LootTrackerPlugin extends Plugin
 			.collect(Collectors.toList());
 	}
 
-	private boolean isWildernessLootChestContainer(int containerId)
-	{
-		for (int id : WILDERNESS_LOOT_KEY_CONTAINERS)
-		{
-			if (id == containerId)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private boolean areWildernessLootKeyContainersEmpty()
 	{
-		for (int id : WILDERNESS_LOOT_KEY_CONTAINERS)
+		for (int id : PVP_LOOT_KEY_CONTAINERS)
 		{
 			if (containerHasItems(client.getItemContainer(id)))
 			{
@@ -1172,7 +1159,7 @@ public class LootTrackerPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		// when the wilderness chest empties, clear chest loot flag for the next key
-		if (isWildernessLootChestContainer(event.getContainerId())
+		if (PVP_LOOT_KEY_CONTAINERS.contains(event.getContainerId())
 			&& areWildernessLootKeyContainersEmpty())
 		{
 			log.debug("Resetting chest loot flag");
