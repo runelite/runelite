@@ -899,7 +899,7 @@ public class LootTrackerPlugin extends Plugin
 				continue;
 			}
 
-			addLoot("Loot key", -1, LootRecordType.EVENT, null, items);
+			addLoot("Loot Chest", -1, LootRecordType.EVENT, null, items);
 			recordedLoot = true;
 		}
 
