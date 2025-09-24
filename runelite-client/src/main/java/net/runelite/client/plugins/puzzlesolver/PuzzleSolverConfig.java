@@ -96,7 +96,7 @@ public interface PuzzleSolverConfig extends Config
 	@ConfigItem(
 		keyName = "gradientColor",
 		name = "Secondary gradient color",
-		description = "If gradient is enabled this will be the color that the dots blend to from the Dot Color.",
+		description = "The color that the dots blend to from the Dot Color.",
 		position = 6
 	)
 	default Color gradientColor()
