@@ -103,15 +103,4 @@ public interface PuzzleSolverConfig extends Config
 	{
 		return Color.RED;
 	}
-
-	@ConfigItem(
-		keyName = "drawOverlaps",
-		name = "Draw overlapping moves",
-		description = "Whether to keep drawing solution moves when later moves overlap with earlier moves.",
-		position = 7
-	)
-	default boolean drawOverlaps()
-	{
-		return false;
-	}
 }

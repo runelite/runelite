@@ -221,7 +221,6 @@ public class PuzzleSolverOverlay extends Overlay
 							if (config.drawDots())
 							{
 								int movesToShow = config.movesToShow();
-								Set<Integer> positions = new HashSet<>();
 								// Display the next movesToShow steps
 								for (int i = 1; i <= movesToShow; i++)
 								{
@@ -237,16 +236,6 @@ public class PuzzleSolverOverlay extends Overlay
 									if (futureMove == null)
 									{
 										break;
-									}
-
-									if (!config.drawOverlaps())
-									{
-										if (positions.contains(futureMove.getEmptyPiece()))
-										{
-											break;
-										}
-
-										positions.add(futureMove.getEmptyPiece());
 									}
 
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
@@ -269,8 +258,6 @@ public class PuzzleSolverOverlay extends Overlay
 
 									graphics.setColor(Color.BLACK);
 									graphics.drawOval(x - 1, y - 1, markerSize + 1, markerSize + 1);
-
-									positions.add(futureMove.getEmptyPiece());
 								}
 							}
 							else
