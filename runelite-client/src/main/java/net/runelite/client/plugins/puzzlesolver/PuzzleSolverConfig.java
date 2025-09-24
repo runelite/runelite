@@ -84,8 +84,8 @@ public interface PuzzleSolverConfig extends Config
 
 	@ConfigItem(
 		keyName = "dotColor",
-		name = "Dot color",
-		description = "Dot color for the dots.",
+		name = "Dot start color",
+		description = "Dot color for the first solution dot.",
 		position = 4
 	)
 	default Color dotColor()
@@ -94,12 +94,12 @@ public interface PuzzleSolverConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "gradientColor",
-		name = "Secondary gradient color",
-		description = "The color that the dots blend to from the Dot Color.",
-		position = 6
+		keyName = "dotEndColor",
+		name = "Dot end color",
+		description = "Dot color of the last solution dot that dots blend towards.",
+		position = 5
 	)
-	default Color gradientColor()
+	default Color dotEndColor()
 	{
 		return Color.RED;
 	}
