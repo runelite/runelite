@@ -262,16 +262,8 @@ public class PuzzleSolverOverlay extends Overlay
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
-									Color color;
-									if (config.useDotGradient())
-									{
-										color = ColorUtil.colorLerp(config.dotColor(), config.gradientColor(),
-											(double) (i - 1) / (movesToShow - 1));
-									}
-									else
-									{
-										color = config.dotColor();
-									}
+									Color color = ColorUtil.colorLerp(config.dotColor(), config.gradientColor(),
+										(double) (i - 1) / (movesToShow - 1));
 									graphics.setColor(color);
 									graphics.fillOval(x, y, markerSize, markerSize);
 

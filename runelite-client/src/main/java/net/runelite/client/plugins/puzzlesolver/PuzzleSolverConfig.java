@@ -94,17 +94,6 @@ public interface PuzzleSolverConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "useDotGradient",
-		name = "Use dot gradient",
-		description = "Whether to have a color gradient for the dots between Dot Color and Secondary gradient Color",
-		position = 5
-	)
-	default boolean useDotGradient()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "gradientColor",
 		name = "Secondary gradient color",
 		description = "If gradient is enabled this will be the color that the dots blend to from the Dot Color.",
