@@ -33,7 +33,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -47,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.BorderFactory;
@@ -117,6 +117,7 @@ class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 	private static final ImageIcon SECTION_EXPAND_ICON;
 	private static final ImageIcon SECTION_RETRACT_ICON;
+	private static final Pattern NEWLINE_OR_LINE_BREAK = Pattern.compile("\\n(<\\/html>)?$|<\\/?br ?\\/?>(<\\/html>)?$");
 	static final ImageIcon CONFIG_ICON;
 	static final ImageIcon BACK_ICON;
 
@@ -334,8 +335,6 @@ class ConfigPanel extends PluginPanel
 			topLevelPanels.put(csd, section);
 		}
 
-		FontMetrics fm = this.getFontMetrics(getFont());
-
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
 			if (cid.getItem().hidden())
@@ -349,7 +348,6 @@ class ConfigPanel extends PluginPanel
 			String name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
-			int nameWidth = fm.stringWidth(name);
 			String description = cid.getItem().description();
 			if (!"".equals(description))
 			{
@@ -385,7 +383,7 @@ class ConfigPanel extends PluginPanel
 			else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
 			{
 				item.add(createComboBox(cd, cid),
-					(nameWidth > 0.7 * (PANEL_WIDTH + SCROLLBAR_WIDTH))
+					NEWLINE_OR_LINE_BREAK.matcher(name).find()
 					? BorderLayout.SOUTH : BorderLayout.EAST);
 			}
 			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
