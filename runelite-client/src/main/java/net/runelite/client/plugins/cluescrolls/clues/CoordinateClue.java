@@ -967,7 +967,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.location(new WorldPoint(2090, 3863, 0))
 			.directions("South of Lunar Isle, west of Astral altar.")
-			.enemy(ANCIENT_WIZARDS)
+			.enemy(BRASSICAN_MAGE)
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
