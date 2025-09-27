@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
@@ -76,7 +75,6 @@ import net.runelite.client.util.Text;
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@Slf4j
 public class BankTagsPlugin extends Plugin implements BankTagsService
 {
 	// banktags:item_<id>=tag,tag,tag,...
