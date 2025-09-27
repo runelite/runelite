@@ -38,14 +38,24 @@ class LootTrackerRecord
 	private final LootTrackerItem[] items;
 	private final int kills;
 
+	boolean matches(final String id, LootRecordType type)
+	{
+		return matches(id, type, "");
+	}
+
 	/**
 	 * Checks if this record matches specified id
 	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */
-	boolean matches(final String id, LootRecordType type)
+	boolean matches(final String id, LootRecordType type, String searchFilter)
 	{
+		if (!title.toLowerCase().contains(searchFilter.toLowerCase().trim()))
+		{
+			return false;
+		}
+
 		if (id == null)
 		{
 			return true;
