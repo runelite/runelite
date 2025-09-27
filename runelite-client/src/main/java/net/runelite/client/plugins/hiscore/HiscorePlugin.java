@@ -185,14 +185,24 @@ public class HiscorePlugin extends Plugin
 		if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER && event.getMenuOption().equals(LOOKUP))
 		{
 			Player player = event.getMenuEntry().getPlayer();
-			if (player == null)
-			{
-				return;
-			}
+            String target;
+            if (player != null)
+            {
+                target = player.getName();
+            }
+            else
+            {
+                //Fallback: Player is out of render distance try to parse username from MenuOptionClicked
+                String playerUserNameWithLevel = Text.removeFormattingTags(event.getMenuTarget());
+                target = playerUserNameWithLevel.replaceAll(" *\\(.+?\\)", "");
+                if(target.isEmpty())
+                {
+                    // Could not extract username
+                    return;
+                }
+            }
 
-			String target = player.getName();
 			HiscoreEndpoint endpoint = getWorldEndpoint();
-
 			lookupPlayer(target, endpoint);
 		}
 	}
