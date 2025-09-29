@@ -31,6 +31,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -38,6 +40,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
@@ -55,10 +60,12 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
+import javax.swing.SwingUtilities;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -69,6 +76,7 @@ import net.runelite.http.api.loottracker.LootRecordType;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
+	private static final int SEARCH_DEBOUNCE_DELAY_MS = 200;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -114,6 +122,9 @@ class LootTrackerPanel extends PluginPanel
 	private final JRadioButton singleLootBtn = new JRadioButton();
 	private final JRadioButton groupedLootBtn = new JRadioButton();
 	private final JButton collapseBtn = new JButton();
+	private final IconTextField searchBar;
+
+	private Future<?> runningRequest = null;
 
 	// Aggregate of all kills
 	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
@@ -124,6 +135,7 @@ class LootTrackerPanel extends PluginPanel
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
 	private final LootTrackerConfig config;
+	private final ScheduledExecutorService scheduledExecutorService;
 
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
@@ -161,11 +173,12 @@ class LootTrackerPanel extends PluginPanel
 		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
-	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
+	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config, ScheduledExecutorService scheduledExecutorService)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.config = config;
+		this.scheduledExecutorService = scheduledExecutorService;
 		this.hideIgnoredItems = true;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -179,11 +192,13 @@ class LootTrackerPanel extends PluginPanel
 
 		actionsPanel = buildActionsPanel();
 		overallPanel = buildOverallPanel();
+		searchBar = buildSearchBar();
 
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(actionsPanel);
 		layoutPanel.add(overallPanel);
+		layoutPanel.add(searchBar);
 		layoutPanel.add(logsContainer);
 
 		// Add error pane
@@ -344,6 +359,40 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		return overallPanel;
+	}
+
+	private IconTextField buildSearchBar()
+	{
+		final IconTextField searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 35));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setMinimumSize(new Dimension(0, 35));
+		searchBar.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR));
+		searchBar.setVisible(false);
+		searchBar.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if (runningRequest != null)
+				{
+					runningRequest.cancel(false);
+				}
+
+				runningRequest = scheduledExecutorService.schedule(() ->
+				{
+					SwingUtilities.invokeLater(() -> rebuild());
+
+					runningRequest = null;
+				}, SEARCH_DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
+
+			}
+		});
+
+		searchBar.addClearListener(this::rebuild);
+		return searchBar;
 	}
 
 	void updateCollapseText()
@@ -524,7 +573,7 @@ class LootTrackerPanel extends PluginPanel
 	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
-		if (!record.matches(currentView, currentType))
+		if (!record.matches(currentView, currentType, searchBar.getText()))
 		{
 			return null;
 		}
@@ -554,6 +603,7 @@ class LootTrackerPanel extends PluginPanel
 		remove(errorPanel);
 		actionsPanel.setVisible(true);
 		overallPanel.setVisible(true);
+		searchBar.setVisible(true);
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
@@ -664,7 +714,7 @@ class LootTrackerPanel extends PluginPanel
 
 		for (LootTrackerRecord record : records)
 		{
-			if (!record.matches(currentView, currentType))
+			if (!record.matches(currentView, currentType, searchBar.getText()))
 			{
 				continue;
 			}

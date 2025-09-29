@@ -561,7 +561,7 @@ public class LootTrackerPlugin extends Plugin
 		profileKey = null;
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
 		ignoredEvents = Text.fromCSV(config.getIgnoredEvents());
-		panel = new LootTrackerPanel(this, itemManager, config);
+		panel = new LootTrackerPanel(this, itemManager, config, executor);
 		spriteManager.getSpriteAsync(SpriteID.SideIcons.INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
