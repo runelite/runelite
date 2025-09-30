@@ -342,10 +342,10 @@ teleport_button=26
 [fairy_ring_panel]
 id=381
 header=2
-list=7
-favorites=8
-separator=9
-scrollbar=152
+list=8
+favorites=9
+separator=10
+scrollbar=166
 
 [fixed_viewport]
 id=548
@@ -563,8 +563,8 @@ run_orb_text=28
 spec_orb=33
 worldmap_orb=48
 wiki_banner_parent=49
-wiki_banner=50
-worldmap_options=53
+wiki_banner=51
+worldmap_options=54
 
 [mlm]
 id=382
