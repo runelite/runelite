@@ -26,9 +26,13 @@
 
 package net.runelite.client.plugins.fairyring;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.Getter;
 
-public enum FairyRings
+public enum FairyRing
 {
 	// A
 	AIQ("Mudskipper Point"),
@@ -91,21 +95,29 @@ public enum FairyRings
 	DLR("(Island) Poison Waste south of Isafdar"),
 	DLS("Myreque hideout under The Hollows");
 
+	private static final Map<String, FairyRing> BY_CODE = Arrays.stream(FairyRing.values())
+		.collect(Collectors.toUnmodifiableMap(v -> v.name(), v -> v));
+
 	@Getter
 	private final String destination;
 
 	@Getter
 	private final String tags;
 
-	FairyRings(String destination)
+	FairyRing(String destination)
 	{
 		this(destination, "");
 	}
 
-	FairyRings(String destination, String tags)
+	FairyRing(String destination, String tags)
 	{
 		this.destination = destination;
 		this.tags = tags.toLowerCase() + " " + destination.toLowerCase();
 	}
 
+	@Nullable
+	public static FairyRing forCode(String code)
+	{
+		return BY_CODE.get(code);
+	}
 }
