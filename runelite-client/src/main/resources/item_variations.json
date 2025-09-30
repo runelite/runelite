@@ -9777,16 +9777,23 @@
   ],
   "sanguinesti staff": [
     22323,
-    22481
+    22481,
+    25731,
+    25733
   ],
   "ghrazi rapier": [
     22324,
-    23628
+    23628,
+    25734
   ],
   "scythe of vitur": [
     22325,
     22486,
-    22664
+    22664,
+    25736,
+    25738,
+    25739,
+    25741
   ],
   "starter sword": [
     22331,
@@ -10875,18 +10882,6 @@
     25727,
     25728,
     25729
-  ],
-  "holy sanguinesti staff": [
-    25731,
-    25733
-  ],
-  "holy scythe of vitur": [
-    25736,
-    25738
-  ],
-  "sanguine scythe of vitur": [
-    25739,
-    25741
   ],
   "antipoison potion": [
     25758,
