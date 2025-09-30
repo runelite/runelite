@@ -227,8 +227,9 @@ public class FairyRingPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRYRINGS_LOG &&
-			event.getOption().equals("Use code"))
+		if (WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRYRINGS_LOG
+			&& event.getOption().equals("Use code")
+			&& !event.getTarget().isEmpty())
 		{
 			client.getMenu().createMenuEntry(-1)
 				.setParam0(event.getActionParam0())
