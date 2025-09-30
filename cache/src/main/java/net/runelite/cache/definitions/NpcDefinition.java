@@ -78,4 +78,5 @@ public class NpcDefinition
 	public int height = -1;
 	public int[] stats = {1, 1, 1, 1, 1, 1};
 	public int footprintSize = -1;
+	public boolean unknown1 = false;
 }

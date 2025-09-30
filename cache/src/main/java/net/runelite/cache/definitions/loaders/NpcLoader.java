@@ -379,6 +379,10 @@ public class NpcLoader
 		{
 			def.footprintSize = stream.readUnsignedShort();
 		}
+		else if (opcode == 129)
+		{
+			def.unknown1 = true;
+		}
 		else if (opcode == 249)
 		{
 			length = stream.readUnsignedByte();

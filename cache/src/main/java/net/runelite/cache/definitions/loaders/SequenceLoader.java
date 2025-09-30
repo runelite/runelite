@@ -203,6 +203,10 @@ public class SequenceLoader
 		{
 			def.debugName = stream.readString();
 		}
+		else if (opcode == 19)
+		{
+			def.soundsCrossWorldView = true;
+		}
 		else
 		{
 			log.warn("Unrecognized opcode {}", opcode);

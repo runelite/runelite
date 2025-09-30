@@ -388,6 +388,10 @@ public class ObjectLoader
 			def.setSoundFadeOutCurve(is.readUnsignedByte());
 			def.setSoundFadeOutDuration(is.readUnsignedShort());
 		}
+		else if (opcode == 94)
+		{
+			def.setUnknown1(true);
+		}
 		else if (opcode == 249)
 		{
 			int length = is.readUnsignedByte();
