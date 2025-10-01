@@ -38,6 +38,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ScriptID;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -119,28 +120,39 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
-		clientThread.invokeLater(this::removeWidgets);
+		clientThread.invokeLater(() -> removeWidgets());
 		wikiDpsManager.shutDown();
 	}
 
-	private void removeWidgets()
+	private boolean removeWidgets(@Component int wiki, @Component int wikiIcon)
 	{
-		Widget wikiBannerParent = client.getWidget(InterfaceID.Orbs.WIKI);
+		Widget wikiBannerParent = client.getWidget(wiki);
 		if (wikiBannerParent == null)
 		{
-			return;
+			return true;
 		}
 		Widget[] children = wikiBannerParent.getChildren();
 		if (children == null || children.length < 1)
 		{
-			return;
+			return true;
 		}
 		children[0] = null;
 
-		Widget vanilla = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
+		Widget vanilla = client.getWidget(wikiIcon);
 		if (vanilla != null && client.getVarbitValue(VarbitID.WIKI_ICON_DISABLED) == 0)
 		{
 			vanilla.setHidden(false);
+		}
+
+		return false;
+	}
+
+	private void removeWidgets()
+	{
+		if (removeWidgets(InterfaceID.Orbs.WIKI, InterfaceID.Orbs.WIKI_ICON)
+			& removeWidgets(InterfaceID.OrbsNomap.WIKI, InterfaceID.OrbsNomap.WIKI_ICON))
+		{
+			return;
 		}
 
 		onDeselect();
@@ -150,7 +162,7 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
-		if (l.getGroupId() == InterfaceID.ORBS)
+		if (l.getGroupId() == InterfaceID.ORBS || l.getGroupId() == InterfaceID.ORBS_NOMAP)
 		{
 			addWidgets();
 		}
@@ -159,7 +171,11 @@ public class WikiPlugin extends Plugin
 	private void addWidgets()
 	{
 		Widget wikiBannerParent = client.getWidget(InterfaceID.Orbs.WIKI);
-		if (wikiBannerParent == null)
+		if (wikiBannerParent == null || wikiBannerParent.isHidden())
+		{
+			wikiBannerParent = client.getWidget(InterfaceID.OrbsNomap.WIKI);
+		}
+		if (wikiBannerParent == null || wikiBannerParent.isHidden())
 		{
 			return;
 		}
@@ -176,10 +192,17 @@ public class WikiPlugin extends Plugin
 			wikiBannerParent.revalidate();
 		}
 
-		Widget vanilla = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
-		if (vanilla != null)
 		{
-			vanilla.setHidden(true);
+			Widget vanilla = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
+			if (vanilla != null)
+			{
+				vanilla.setHidden(true);
+			}
+			vanilla = client.getWidget(InterfaceID.OrbsNomap.WIKI_ICON);
+			if (vanilla != null)
+			{
+				vanilla.setHidden(true);
+			}
 		}
 
 		if (!config.showWikiMinimapButton())
@@ -234,7 +257,15 @@ public class WikiPlugin extends Plugin
 		if (scriptPostFired.getScriptId() == ScriptID.WIKI_ICON_UPDATE)
 		{
 			Widget w = client.getWidget(InterfaceID.Orbs.WIKI_ICON);
-			w.setHidden(true);
+			if (w != null)
+			{
+				w.setHidden(true);
+			}
+			w = client.getWidget(InterfaceID.OrbsNomap.WIKI_ICON);
+			if (w != null)
+			{
+				w.setHidden(true);
+			}
 		}
 	}
 

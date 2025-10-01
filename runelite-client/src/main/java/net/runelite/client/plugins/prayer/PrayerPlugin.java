@@ -351,6 +351,11 @@ public class PrayerPlugin extends Plugin
 		{
 			prayerOrbText.setText(text);
 		}
+		prayerOrbText = client.getWidget(InterfaceID.OrbsNomap.PRAYER_TEXT);
+		if (prayerOrbText != null)
+		{
+			prayerOrbText.setText(text);
+		}
 	}
 
 	private static int getDrainEffect(Client client)

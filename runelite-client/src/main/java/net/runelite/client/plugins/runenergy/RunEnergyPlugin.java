@@ -273,7 +273,12 @@ public class RunEnergyPlugin extends Plugin
 	private void setRunOrbText(String text)
 	{
 		Widget runOrbText = client.getWidget(InterfaceID.Orbs.RUNENERGY_TEXT);
+		if (runOrbText != null)
+		{
+			runOrbText.setText(text);
+		}
 
+		runOrbText = client.getWidget(InterfaceID.OrbsNomap.RUNENERGY_TEXT);
 		if (runOrbText != null)
 		{
 			runOrbText.setText(text);
