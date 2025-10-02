@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -75,6 +76,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -86,10 +88,12 @@ import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
+import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
 	name = "Object Markers",
-	description = "Enable marking of objects using the Shift key",
+	description = "Enable marking of objects using the Shift key or provided list",
 	tags = {"overlay", "objects", "mark", "marker"},
 	enabledByDefault = false
 )
@@ -103,6 +107,11 @@ public class ObjectIndicatorsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileObject> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
+
+	/**
+	 * Object names to be Highlighted from the additional configuration
+	 */
+	private List<String> highlightsByName = new ArrayList<>();
 
 	@Inject
 	private Client client;
@@ -138,7 +147,11 @@ public class ObjectIndicatorsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		clientThread.invokeLater(this::reloadPoints);
+		clientThread.invokeLater(() ->
+		{
+			reloadPoints();
+			rebuild();
+		});
 	}
 
 	@Override
@@ -462,11 +475,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
-		if (objectPoints == null)
-		{
-			return;
-		}
-
 		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
 		if (objectComposition.getImpostorIds() == null)
 		{
@@ -479,26 +487,39 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		for (ObjectPoint objectPoint : objectPoints)
+		if (highlightByNameMatchesObjectName(objectComposition.getName()))
 		{
-			if (worldPoint.getRegionX() == objectPoint.getRegionX()
-					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ()
-					&& objectPoint.getId() == object.getId())
+			objects.add(new ColorTileObject(object,
+				objectComposition,
+				objectComposition.getName(),
+				config.markerColor(),
+				config.fillColor(),
+				(byte) 0));
+		}
+
+		if (objectPoints != null)
+		{
+			for (ObjectPoint objectPoint : objectPoints)
 			{
-				log.debug("Marking object {} due to matching {}", object, objectPoint);
-				var flags =
-					(objectPoint.getHull() == Boolean.TRUE ? HF_HULL : 0) |
-					(objectPoint.getOutline() == Boolean.TRUE ? HF_OUTLINE : 0) |
-					(objectPoint.getClickbox() == Boolean.TRUE ? HF_CLICKBOX : 0) |
-					(objectPoint.getTile() == Boolean.TRUE ? HF_TILE : 0);
-				objects.add(new ColorTileObject(object,
-					objectComposition,
-					objectPoint.getName(),
-					objectPoint.getBorderColor(),
-					objectPoint.getFillColor(),
-					(byte) flags));
-				break;
+				if (worldPoint.getRegionX() == objectPoint.getRegionX()
+						&& worldPoint.getRegionY() == objectPoint.getRegionY()
+						&& worldPoint.getPlane() == objectPoint.getZ()
+						&& objectPoint.getId() == object.getId())
+				{
+					log.debug("Marking object {} due to matching {}", object, objectPoint);
+					var flags =
+						(objectPoint.getHull() == Boolean.TRUE ? HF_HULL : 0) |
+						(objectPoint.getOutline() == Boolean.TRUE ? HF_OUTLINE : 0) |
+						(objectPoint.getClickbox() == Boolean.TRUE ? HF_CLICKBOX : 0) |
+						(objectPoint.getTile() == Boolean.TRUE ? HF_TILE : 0);
+					objects.add(new ColorTileObject(object,
+						objectComposition,
+						objectPoint.getName(),
+						objectPoint.getBorderColor(),
+						objectPoint.getFillColor(),
+						(byte) flags));
+					break;
+				}
 			}
 		}
 	}
@@ -699,5 +720,114 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 		return colors;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (!configChanged.getGroup().equals(CONFIG_GROUP))
+		{
+			return;
+		}
+
+		clientThread.invoke(this::rebuild);
+	}
+
+	private List<String> getHighlightsByName()
+	{
+		final String configObjects = config.objectsToHighlight();
+
+		if (configObjects.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+
+		return Text.fromCSV(configObjects);
+	}
+
+	private boolean highlightByNameMatchesObjectName(String objectName)
+	{
+		if (objectName == null)
+		{
+			return false;
+		}
+
+		for (String highlightByName : highlightsByName)
+		{
+			if (WildcardMatcher.matches(highlightByName, objectName))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	void rebuild()
+	{
+		highlightsByName = getHighlightsByName();
+		objects.clear();
+
+		if (client.getGameState() != GameState.LOGGED_IN &&
+			client.getGameState() != GameState.LOADING)
+		{
+			// Objects are still in the client after logging out,
+			// but we don't want to highlight those.
+			return;
+		}
+
+		int currentPlane = client.getPlane();
+
+		scanPlane(currentPlane);
+	}
+
+	private void scanPlane(int plane)
+	{
+		Tile[][][] tiles = client.getScene().getTiles();
+		if (tiles == null || plane >= tiles.length || tiles[plane] == null)
+		{
+			return;
+		}
+
+		Tile[][] planeTiles = tiles[plane];
+		for (Tile[] planeTile : planeTiles)
+		{
+			if (planeTile == null)
+			{
+				continue;
+			}
+
+			for (Tile tile : planeTile)
+			{
+				if (tile == null)
+				{
+					continue;
+				}
+
+				// Check all types of objects on this tile
+				if (tile.getWallObject() != null)
+				{
+					checkObjectPoints(tile.getWallObject());
+				}
+
+				if (tile.getDecorativeObject() != null)
+				{
+					checkObjectPoints(tile.getDecorativeObject());
+				}
+
+				if (tile.getGroundObject() != null)
+				{
+					checkObjectPoints(tile.getGroundObject());
+				}
+
+				for (GameObject gameObject : tile.getGameObjects())
+				{
+					if (gameObject != null)
+					{
+						checkObjectPoints(gameObject);
+					}
+				}
+			}
+		}
 	}
 }
