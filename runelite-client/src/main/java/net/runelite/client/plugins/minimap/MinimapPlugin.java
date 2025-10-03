@@ -91,6 +91,7 @@ public class MinimapPlugin extends Plugin
 		storeOriginalDots();
 		replaceMapDots();
 		client.setMinimapZoom(config.zoom());
+		refreshSceneGroundObjects();
 	}
 
 	@Override
@@ -99,6 +100,7 @@ public class MinimapPlugin extends Plugin
 		clientThread.invokeLater(() -> updateMinimapWidgetVisibility(false));
 		restoreOriginalDots();
 		client.setMinimapZoom(false);
+		refreshSceneGroundObjects();
 	}
 
 	@Subscribe
@@ -137,6 +139,7 @@ public class MinimapPlugin extends Plugin
 
 		restoreOriginalDots();
 		replaceMapDots();
+		refreshSceneGroundObjects();
 	}
 
 	@Subscribe
@@ -1035,13 +1038,12 @@ public class MinimapPlugin extends Plugin
 
 		if (tiles != null)
 		{
-			for (int plane = 0; plane < tiles.length; plane++)
+			for (Tile[][] tile : tiles)
 			{
-				for (int x = 0; x < tiles[plane].length; x++)
+				for (Tile[] value : tile)
 				{
-					for (int y = 0; y < tiles[plane][x].length; y++)
+					for (final Tile currentTile : value)
 					{
-						final Tile currentTile = tiles[plane][x][y];
 						if (currentTile != null)
 						{
 							checkObjects(currentTile.getGroundObject(), currentTile);
