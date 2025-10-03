@@ -241,7 +241,8 @@ public class MinimapPlugin extends Plugin
 			}
 			else if (config.questStartIcon() == MinimapConfig.questIconEnum.VIEW_INCOMPLETE)
 			{
-				clientThread.invoke(() -> {
+				clientThread.invoke(() ->
+				{
 					if (MinimapQuestObjectLookup.objectsToQuests.get(groundObjectID).getState(client) == QuestState.FINISHED)
 					{
 						tile.setGroundObject(null);
