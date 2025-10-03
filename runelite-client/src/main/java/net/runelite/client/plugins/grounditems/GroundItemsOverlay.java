@@ -62,7 +62,6 @@ import net.runelite.client.util.QuantityFormatter;
 
 public class GroundItemsOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2500;
 	// We must offset the text on the z-axis such that
 	// it doesn't obscure the ground items below it.
 	private static final int OFFSET_Z = 20;
@@ -175,12 +174,14 @@ public class GroundItemsOverlay extends Overlay
 		final boolean outline = config.textOutline();
 		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
 		final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
+		final int localDrawDistance = Math.min(client.getScene().getDrawDistance(), 50) * Perspective.LOCAL_TILE_SIZE;
 
 		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
-			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE
+			if (groundPoint == null || Math.abs(localLocation.getX() - groundPoint.getX()) > localDrawDistance
+				|| Math.abs(localLocation.getY() - groundPoint.getY()) > localDrawDistance
 				|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
 			{
 				continue;
