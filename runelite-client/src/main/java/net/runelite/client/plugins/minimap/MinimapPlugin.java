@@ -37,7 +37,6 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ScriptPostFired;
