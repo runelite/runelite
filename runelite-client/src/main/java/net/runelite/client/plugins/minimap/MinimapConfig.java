@@ -1441,18 +1441,6 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "groupIronmanTransportationIcon",
-		name = "Hide Transportation (Group Ironman) icon",
-		description = "Choose whether to view or hide the Transportation (Group Ironman) icon.",
-		position = 113,
-		section = minimapIconSection
-	)
-	default boolean groupIronmanTransportationIcon()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "tripHammerIcon",
 		name = "Hide Trip Hammer icon",
 		description = "Choose whether to view or hide the Trip Hammer icon.",

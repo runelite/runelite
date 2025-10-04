@@ -65,7 +65,6 @@ public class MinimapPlugin extends Plugin
 	private static final int DOT_TEAM = 4;
 	private static final int DOT_FRIENDSCHAT = 5;
 	private static final int DOT_CLAN = 6;
-	private static final WorldPoint GROUP_IRONMAN_TRANSPORT_WORLD_POINT = new WorldPoint(3217, 3235, 0);
 
 	@Inject
 	private Client client;
@@ -358,11 +357,7 @@ public class MinimapPlugin extends Plugin
 					}
 					break;
 				case ObjectID.TRANSPORTATION_ICON:
-					if (tile.getWorldLocation() == GROUP_IRONMAN_TRANSPORT_WORLD_POINT && config.groupIronmanTransportationIcon())
-					{
-						tile.setGroundObject(null);
-					}
-					else if (config.transportationIcon())
+					if (config.transportationIcon())
 					{
 						tile.setGroundObject(null);
 					}
