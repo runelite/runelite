@@ -49,14 +49,4 @@ public class OSXUtil
 			log.debug("Enabled fullscreen on macOS");
 		}
 	}
-
-	/**
-	 * Requests the foreground in a macOS friendly way.
-	 */
-	public static void requestForeground()
-	{
-		Application app = Application.getApplication();
-		app.requestForeground(true);
-		log.debug("Forced focus on macOS");
-	}
 }

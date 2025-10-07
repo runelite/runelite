@@ -886,7 +886,7 @@ public class ClientUI
 		switch (OSType.getOSType())
 		{
 			case MacOS:
-				OSXUtil.requestForeground();
+				Desktop.getDesktop().requestForeground(true);
 				frame.setState(Frame.NORMAL);
 				break;
 			case Windows:
@@ -1398,9 +1398,9 @@ public class ClientUI
 					// frame.setVisible(true) calls CPlatformWindow::nativePushNSWindowToFront.
 					// However, this native method is not called with activateIgnoringOtherApps:YES,
 					// so any other active window will prevent our window from being brought to the front.
-					// To work around this, we use our macOS-specific requestForeground().
+					// To work around this, use eawt requestForeground() via java.desktop.
 					frame.setVisible(false);
-					OSXUtil.requestForeground();
+					Desktop.getDesktop().requestForeground(true);
 				}
 				frame.setVisible(true);
 				frame.setState(Frame.NORMAL); // Restore
