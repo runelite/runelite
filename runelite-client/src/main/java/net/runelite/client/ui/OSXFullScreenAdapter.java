@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.ui;
 
 import com.apple.eawt.FullScreenAdapter;
 import com.apple.eawt.FullScreenUtilities;
@@ -51,7 +51,7 @@ class OSXFullScreenAdapter extends FullScreenAdapter
 		frame.setExtendedState(Frame.NORMAL);
 	}
 
-	public static void install(Frame frame)
+	static void install(Frame frame)
 	{
 		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
 	}

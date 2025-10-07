@@ -124,7 +124,6 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
-import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.WinUtil;
 
@@ -332,8 +331,10 @@ public class ClientUI
 			// Create main window
 			frame = new ContainableFrame();
 
-			// Try to enable fullscreen on OSX
-			OSXUtil.tryEnableFullscreen(frame);
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				OSXFullScreenAdapter.install(frame);
+			}
 
 			frame.setTitle(title);
 			frame.setIconImages(Arrays.asList(ICON_128, ICON_16));
