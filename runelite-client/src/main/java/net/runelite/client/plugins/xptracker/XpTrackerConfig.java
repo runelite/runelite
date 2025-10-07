@@ -232,4 +232,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 16,
+			keyName = "showCombatSkillsTilStat",
+			name = "Show Combat Skills \"To Goal\" Stat",
+			description = "Configures whether combat skills show kills to goal/next level"
+	)
+	default boolean showCombatSkillsTilStat()
+	{
+		return false;
+	}
 }
