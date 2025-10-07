@@ -867,9 +867,9 @@ public class ClientUI
 		switch (OSType.getOSType())
 		{
 			case MacOS:
-				// On OSX Component::requestFocus has no visible effect, so we use our OSX-specific
-				// requestUserAttention()
-				OSXUtil.requestUserAttention();
+				// On macOS Component::requestFocus doesn't cause the taskbar icon to bounce, so use
+				// Taskbar.requestUserAttention
+				Taskbar.getTaskbar().requestUserAttention(true, true);
 				break;
 			default:
 				frame.requestFocus();

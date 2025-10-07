@@ -51,16 +51,6 @@ public class OSXUtil
 	}
 
 	/**
-	 * Request user attention on macOS
-	 */
-	public static void requestUserAttention()
-	{
-		Application app = Application.getApplication();
-		app.requestUserAttention(true);
-		log.debug("Requested user attention on macOS");
-	}
-
-	/**
 	 * Requests the foreground in a macOS friendly way.
 	 */
 	public static void requestForeground()
