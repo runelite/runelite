@@ -24,13 +24,18 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.util.HashSet;
+import java.util.Set;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -53,10 +58,29 @@ public class CrypticClueTest
 	}
 
 	@Test
+	public void uniqueIds()
+	{
+		final Set<Integer> clueIds = new HashSet<>();
+		for (final CrypticClue clue : CrypticClue.CLUES)
+		{
+			final Set<Integer> clueItemIds = clue.getItemIds();
+			if (clueItemIds.size() == 1 && (clueItemIds.contains(ItemID.TRAIL_CLUE_MASTER) || clueItemIds.contains(ItemID.TRAIL_CLUE_BEGINNER)))
+			{
+				continue;
+			}
+
+			if (!clueIds.addAll(clue.getItemIds()))
+			{
+				fail("Duplicate item ID(s) in clue " + clue);
+			}
+		}
+	}
+
+	@Test
 	public void forViggoraLocations()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.VIGGORA_LOCATION)).thenReturn(0, 1, 2, 3, 4);
+		when(client.getVarbitValue(VarbitID.SECRET_GHOST_RANDOMISER)).thenReturn(0, 1, 2, 3, 4);
 
 		CrypticClue clue = CrypticClue.forText("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.");
 		assert clue != null;
@@ -72,9 +96,9 @@ public class CrypticClueTest
 	public void forResourceAreaCosts()
 	{
 		when(plugin.getClient()).thenReturn(client);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_ELITE_COMPLETE)).thenReturn(1, 0, 0, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_HARD_COMPLETE)).thenReturn(1, 0, 0, 0);
+		when(client.getVarbitValue(VarbitID.WILDERNESS_DIARY_MEDIUM_COMPLETE)).thenReturn(1, 0, 0);
 
 		CrypticClue clue = CrypticClue.forText("One of several rhyming brothers, in business attire with an obsession for paper work.");
 		assert clue != null;
@@ -84,5 +108,19 @@ public class CrypticClueTest
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 6,000 coins is required."));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
 		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
+	}
+
+	@Test
+	public void testBurthorpeSlayerMaster()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(VarbitID.WGS_HERO_PART_1_VIS)).thenReturn(0, 1, 2);
+
+		CrypticClue clue = CrypticClue.forText("Talk to the Slayer Master in Burthorpe.");
+		assert clue != null;
+
+		assertEquals("Turael", clue.getNpc(plugin));
+		assertEquals("Aya", clue.getNpc(plugin));
+		assertEquals("Aya", clue.getNpc(plugin));
 	}
 }

@@ -35,8 +35,8 @@ import net.runelite.client.config.Notification;
 public interface RandomEventConfig extends Config
 {
 	@ConfigSection(
-		name = "Notification Settings",
-		description = "Choose which random events will trigger notifications when spawned",
+		name = "Notification settings",
+		description = "Choose which random events will trigger notifications when spawned.",
 		position = 99
 	)
 	String notificationSection = "section";
@@ -66,7 +66,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyArnav",
-		name = "Notify on Capt' Arnav's Chest",
+		name = "Notify on Capt' Arnav's chest",
 		description = "",
 		section = notificationSection
 	)
@@ -99,7 +99,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyCerters",
-		name = "Notify on Certers",
+		name = "Notify on certers",
 		description = "",
 		section = notificationSection
 	)
@@ -121,7 +121,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyDunce",
-		name = "Notify on Surprise Exam",
+		name = "Notify on surprise exam",
 		description = "",
 		section = notificationSection
 	)
@@ -154,7 +154,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyFlippa",
-		name = "Notify on Pinball",
+		name = "Notify on pinball",
 		description = "",
 		section = notificationSection
 	)
@@ -165,7 +165,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyFrog",
-		name = "Notify on Kiss the Frog",
+		name = "Notify on kiss the frog",
 		description = "",
 		section = notificationSection
 	)
@@ -209,7 +209,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyMaze",
-		name = "Notify on Maze",
+		name = "Notify on maze",
 		description = "",
 		section = notificationSection
 	)
@@ -220,7 +220,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyMime",
-		name = "Notify on Mime",
+		name = "Notify on mime",
 		description = "",
 		section = notificationSection
 	)
@@ -242,7 +242,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyPillory",
-		name = "Notify on Pillory",
+		name = "Notify on pillory",
 		description = "",
 		section = notificationSection
 	)
@@ -297,7 +297,7 @@ public interface RandomEventConfig extends Config
 
 	@ConfigItem(
 		keyName = "notifyTwin",
-		name = "Notify on Evil twin",
+		name = "Notify on evil twin",
 		description = "",
 		section = notificationSection
 	)

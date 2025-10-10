@@ -36,8 +36,8 @@ public interface TearsOfGuthixConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showGreenTearsTimer",
-		name = "Enable Green Tears Timer",
-		description = "Configures whether to display a timer for green tears or not",
+		name = "Enable green tears timer",
+		description = "Configures whether to display a timer for green tears or not.",
 		position = 1
 	)
 	default boolean showGreenTearsTimer()
@@ -48,8 +48,8 @@ public interface TearsOfGuthixConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "blueTearsColor",
-		name = "Blue Tears Color",
-		description = "Color of Blue Tears timer",
+		name = "Blue tears color",
+		description = "Color of blue tears timer.",
 		position = 2
 	)
 	default Color getBlueTearsColor()
@@ -60,8 +60,8 @@ public interface TearsOfGuthixConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "greenTearsColor",
-		name = "Green Tears Color",
-		description = "Color of Green Tears timer",
+		name = "Green tears color",
+		description = "Color of green tears timer.",
 		position = 3
 	)
 	default Color getGreenTearsColor()

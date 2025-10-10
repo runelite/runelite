@@ -9,17 +9,17 @@ public class VertexNormal
 
 	public Vector3f normalize()
 	{
-		Vector3f v = new Vector3f();
-
-		int length = (int) Math.sqrt((double) (x * x + y * y + z * z));
+		int length = (int) Math.sqrt(x * x + y * y + z * z);
 		if (length == 0)
 		{
 			length = 1;
 		}
 
-		v.x = (float) x / length;
-		v.y = (float) y / length;
-		v.z = (float) z / length;
+		Vector3f v = new Vector3f(
+			(float) x / length,
+			(float) y / length,
+			(float) z / length
+		);
 
 		assert v.x >= -1f && v.x <= 1f;
 		assert v.y >= -1f && v.y <= 1f;

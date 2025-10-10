@@ -28,11 +28,11 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.TrayIcon;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.With;
-import net.runelite.client.Notifier;
 
 @ConfigSerializer(NotificationSerializer.class)
 @AllArgsConstructor
@@ -52,7 +52,10 @@ public class Notification
 	boolean tray;
 	transient TrayIcon.MessageType trayIconType = TrayIcon.MessageType.NONE;
 	RequestFocusType requestFocus;
-	Notifier.NativeCustomOff sound;
+	NotificationSound sound;
+	// if sound type CUSTOM, the sound file name
+	@Nullable
+	String soundName;
 	int volume;
 	int timeout;
 	boolean gameMessage;

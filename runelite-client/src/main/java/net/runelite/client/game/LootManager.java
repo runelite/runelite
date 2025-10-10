@@ -39,13 +39,12 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.NpcID;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptEvent;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
@@ -58,18 +57,24 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ServerNpcLoot;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.client.util.Text;
 
 @Singleton
 @Slf4j
 public class LootManager
 {
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = ImmutableMap.of(
-		NpcID.CAVE_KRAKEN, AnimationID.CAVE_KRAKEN_DEATH,
-		NpcID.THE_HUEYCOATL_14012, AnimationID.HUEYCOATL_DEATH
+		NpcID.SLAYER_KRAKEN, AnimationID.SWAN_QUEEN_DEATH,
+		NpcID.HUEY_HEAD_DEFEATED, AnimationID.HUEY_KNOCKOUT
 	);
 
 	private final EventBus eventBus;
@@ -83,6 +88,10 @@ public class LootManager
 	private NPC delayedLootNpc;
 	private int delayedLootTick;
 	private List<WorldArea> delayedLootAreas;
+
+	private NPCComposition scriptNpc;
+	private int scriptEventId;
+	private final List<ItemStack> scriptItems = new ArrayList<>(4);
 
 	@Inject
 	private LootManager(EventBus eventBus, Client client, NpcUtil npcUtil)
@@ -108,28 +117,28 @@ public class LootManager
 			int id = npc.getId();
 			switch (id)
 			{
-				case NpcID.GARGOYLE:
-				case NpcID.GARGOYLE_413:
-				case NpcID.GARGOYLE_1543:
-				case NpcID.MARBLE_GARGOYLE:
-				case NpcID.MARBLE_GARGOYLE_7408:
-				case NpcID.DUSK_7888:
-				case NpcID.DUSK_7889:
+				case NpcID.SLAYER_GARGOYLE_1:
+				case NpcID.SLAYER_GARGOYLE_DEAD:
+				case NpcID.SLAYER_CAVE_GARGOYLE:
+				case NpcID.SUPERIOR_GARGOYLE:
+				case NpcID.SUPERIOR_GARGOYLE_DEAD:
+				case NpcID.GARGBOSS_DUSK_PHASE4:
+				case NpcID.GARGBOSS_DUSK_DEATH:
 
-				case NpcID.ROCKSLUG:
-				case NpcID.ROCKSLUG_422:
-				case NpcID.GIANT_ROCKSLUG:
+				case NpcID.SLAYER_ROCKSLUG:
+				case NpcID.SLAYER_ROCKSLUG_BABY:
+				case NpcID.SUPERIOR_ROCKSLUG:
 
-				case NpcID.SMALL_LIZARD:
-				case NpcID.SMALL_LIZARD_463:
-				case NpcID.DESERT_LIZARD:
-				case NpcID.DESERT_LIZARD_460:
-				case NpcID.DESERT_LIZARD_461:
-				case NpcID.LIZARD:
+				case NpcID.SLAYER_LIZARD_SMALL1_GREEN:
+				case NpcID.SLAYER_LIZARD_SMALL2_SANDY:
+				case NpcID.SLAYER_LIZARD_LARGE1_GREEN:
+				case NpcID.SLAYER_LIZARD_LARGE2_SANDY:
+				case NpcID.SLAYER_LIZARD_LARGE3_SANDY:
+				case NpcID.SLAYER_LIZARD_MASSIVE:
 
-				case NpcID.ZYGOMITE:
-				case NpcID.ZYGOMITE_1024:
-				case NpcID.ANCIENT_ZYGOMITE:
+				case NpcID.SLAYER_MUTATED_ZYGOMITE_ADOLESCENT:
+				case NpcID.SLAYER_MUTATED_ZYGOMITE_ADULT:
+				case NpcID.FOSSIL_ZYGOMITE:
 
 					// these monsters die with >0 hp, so we just look for coincident
 					// item spawn with despawn
@@ -211,7 +220,7 @@ public class LootManager
 		// Current animation is death animation?
 		if (deathAnim != null && deathAnim == npc.getAnimation())
 		{
-			if (id == NpcID.CAVE_KRAKEN)
+			if (id == NpcID.SLAYER_KRAKEN)
 			{
 				// Big Kraken drops loot wherever player is standing when animation starts.
 				krakenPlayerLocation = client.getLocalPlayer().getWorldLocation();
@@ -228,20 +237,20 @@ public class LootManager
 	public void onNpcChanged(NpcChanged npcChanged)
 	{
 		final NPC npc = npcChanged.getNpc();
-		if (npc.getId() == NpcID.THE_NIGHTMARE_9433 || npc.getId() == NpcID.PHOSANIS_NIGHTMARE_9424)
+		if (npc.getId() == NpcID.NIGHTMARE_DYING || npc.getId() == NpcID.NIGHTMARE_CHALLENGE_DYING)
 		{
 			delayedLootNpc = npc;
 			delayedLootTick = 10;
 			// it is too early to call getAdjacentSquareLootTile() because the player might move before the
 			// loot location is calculated by the server.
 		}
-		else if (npc.getId() == NpcID.HOLE_IN_THE_WALL)
+		else if (npc.getId() == NpcID.SWAMP_WALLBEAST)
 		{
 			delayedLootNpc = npc;
 			delayedLootTick = 1;
 			delayedLootAreas = getDropLocations(npc);
 		}
-		else if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		else if (npc.getId() == NpcID.DUKE_SUCELLUS_DEAD || npc.getId() == NpcID.DUKE_SUCELLUS_DEAD_QUEST)
 		{
 			delayedLootNpc = npc;
 			delayedLootTick = 5;
@@ -262,6 +271,47 @@ public class LootManager
 
 		itemSpawns.clear();
 		killPoints.clear();
+
+		processScriptLoot();
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.LOOTTRACKER_ADD_LOOT)
+		{
+			ScriptEvent scriptEvent = event.getScriptEvent();
+			int npcId = (int) scriptEvent.getArguments()[1];
+			int eventId = (int) scriptEvent.getArguments()[2];
+			int itemId = (int) scriptEvent.getArguments()[3];
+			int qty = (int) scriptEvent.getArguments()[4];
+
+			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
+
+			if (scriptEventId != eventId)
+			{
+				processScriptLoot();
+			}
+
+			NPCComposition npcComposition = client.getNpcDefinition(npcId);
+			String name = Text.removeTags(npcComposition.getName());
+			if (!name.isEmpty() && !"null".equals(name))
+			{
+				scriptNpc = npcComposition;
+			}
+			scriptEventId = eventId;
+			scriptItems.add(new ItemStack(itemId, qty));
+		}
+	}
+
+	private void processScriptLoot()
+	{
+		if (scriptNpc != null && !scriptItems.isEmpty())
+		{
+			eventBus.post(new ServerNpcLoot(scriptNpc, scriptItems));
+		}
+		scriptNpc = null;
+		scriptItems.clear();
 	}
 
 	private void processDelayedLoot()
@@ -333,18 +383,18 @@ public class LootManager
 	{
 		switch (npc.getId())
 		{
-			case NpcID.KRAKEN:
-			case NpcID.KRAKEN_6640:
-			case NpcID.KRAKEN_6656:
+			case NpcID.SLAYER_KRAKEN_BOSS:
+			case NpcID.KRAKEN_PET:
+			case NpcID.POH_KRAKEN_PET:
 				return Collections.singletonList(playerLocationLastTick.toWorldArea());
-			case NpcID.CAVE_KRAKEN:
+			case NpcID.SLAYER_KRAKEN:
 				return Collections.singletonList(krakenPlayerLocation.toWorldArea());
-			case NpcID.ZULRAH:      // Green
-			case NpcID.ZULRAH_2043: // Red
-			case NpcID.ZULRAH_2044: // Blue
+			case NpcID.SNAKEBOSS_BOSS_RANGED:      // Green
+			case NpcID.SNAKEBOSS_BOSS_MELEE: // Red
+			case NpcID.SNAKEBOSS_BOSS_MAGIC: // Blue
 				for (Map.Entry<Integer, TileItem> entry : itemSpawns.entries())
 				{
-					if (entry.getValue().getId() == ItemID.ZULRAHS_SCALES)
+					if (entry.getValue().getId() == ItemID.SNAKEBOSS_SCALE)
 					{
 						int packed = entry.getKey();
 						int unpackedX = packed >> 8;
@@ -354,11 +404,11 @@ public class LootManager
 					}
 				}
 				break;
+			case NpcID.POH_MOUNTED_VORKATH:
+			case NpcID.VORKATH_SLEEPING_NOOP:
+			case NpcID.VORKATH_SLEEPING:
+			case NpcID.VORKATH_QUEST:
 			case NpcID.VORKATH:
-			case NpcID.VORKATH_8058:
-			case NpcID.VORKATH_8059:
-			case NpcID.VORKATH_8060:
-			case NpcID.VORKATH_8061:
 			{
 				final WorldPoint bossLocation = npc.getWorldLocation();
 				int x = bossLocation.getX() + 3;
@@ -382,10 +432,10 @@ public class LootManager
 				return Collections.singletonList(new WorldArea(x, y, 1, 1, bossLocation.getPlane()));
 			}
 			case NpcID.NEX:
-			case NpcID.NEX_11279:
-			case NpcID.NEX_11280:
-			case NpcID.NEX_11281:
-			case NpcID.NEX_11282:
+			case NpcID.NEX_SPAWNING:
+			case NpcID.NEX_SOULSPLIT:
+			case NpcID.NEX_DEFLECT:
+			case NpcID.NEX_DYING:
 			{
 				// Nex loot is under the player, or under nex
 				LocalPoint localPoint = LocalPoint.fromWorld(client, playerLocationLastTick);
@@ -401,18 +451,18 @@ public class LootManager
 				}
 				break;
 			}
-			case NpcID.VETION_6612:
+			case NpcID.VETION_2:
+			case NpcID.CLANCUP_CALLISTO:
 			case NpcID.CALLISTO:
-			case NpcID.CALLISTO_6609:
+			case NpcID.CLANCUP_VENENATIS:
 			case NpcID.VENENATIS:
-			case NpcID.VENENATIS_6610:
-			case NpcID.CALVARION_11994:
-			case NpcID.ARTIO:
-			case NpcID.SPINDEL:
+			case NpcID.VETION_2_SINGLE:
+			case NpcID.CALLISTO_SINGLES:
+			case NpcID.VENENATIS_SINGLES:
 				// Bones are dropped under the center of the boss and loot is dropped under the player
 				return ImmutableList.of(npc.getWorldArea(), playerLocationLastTick.toWorldArea());
-			case NpcID.DUKE_SUCELLUS_12192:
-			case NpcID.DUKE_SUCELLUS_12196:
+			case NpcID.DUKE_SUCELLUS_DEAD:
+			case NpcID.DUKE_SUCELLUS_DEAD_QUEST:
 			{
 				final WorldPoint bossLocation = npc.getWorldLocation();
 				final int x = bossLocation.getX() + npc.getComposition().getSize() / 2;
@@ -421,25 +471,25 @@ public class LootManager
 				return List.of(new WorldPoint(x, y, bossLocation.getPlane()).toWorldArea());
 			}
 			case NpcID.VARDORVIS:
-			case NpcID.VARDORVIS_12224:
+			case NpcID.VARDORVIS_QUEST:
 			{
 				final WorldArea bossArea = npc.getWorldArea();
 				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 2, bossArea.getWidth() + 4, bossArea.getHeight() + 4, bossArea.getPlane()));
 			}
-			case NpcID.THE_LEVIATHAN:
-			case NpcID.THE_LEVIATHAN_12215:
+			case NpcID.LEVIATHAN:
+			case NpcID.LEVIATHAN_QUEST:
 			{
 				final WorldArea bossArea = npc.getWorldArea();
 				final int expand = 8;
 				final WorldArea expandedArea = new WorldArea(bossArea.getX() - expand, bossArea.getY() - expand, bossArea.getWidth() + expand * 2, bossArea.getHeight() + expand * 2, bossArea.getPlane());
 				return List.of(expandedArea);
 			}
-			case NpcID.HOLE_IN_THE_WALL:
+			case NpcID.SWAMP_WALLBEAST:
 			{
 				final WorldArea bossArea = npc.getWorldArea();
 				return List.of(new WorldArea(bossArea.getX() - 1, bossArea.getY() - 1, 3, 3, bossArea.getPlane()));
 			}
-			case NpcID.THE_HUEYCOATL_14012:
+			case NpcID.HUEY_HEAD_DEFEATED:
 			{
 				final WorldArea bossArea = npc.getWorldArea();
 				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 10, 10, 10, bossArea.getPlane()));

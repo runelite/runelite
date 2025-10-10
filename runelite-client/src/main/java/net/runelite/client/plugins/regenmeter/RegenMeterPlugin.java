@@ -33,17 +33,17 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -118,7 +118,7 @@ public class RegenMeterPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.EQUIPMENT.getId())
+		if (event.getContainerId() != InventoryID.WORN)
 		{
 			return;
 		}
@@ -139,7 +139,7 @@ public class RegenMeterPlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged ev)
 	{
-		if (ev.getVarbitId() == Varbits.PRAYER_RAPID_HEAL)
+		if (ev.getVarbitId() == VarbitID.PRAYER_RAPIDHEAL)
 		{
 			ticksSinceHPRegen = 0;
 		}
@@ -150,7 +150,7 @@ public class RegenMeterPlugin extends Plugin
 	{
 		final int ticksPerSpecRegen = wearingLightbearer ? SPEC_REGEN_TICKS / 2 : SPEC_REGEN_TICKS;
 
-		if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
+		if (client.getVarpValue(VarPlayerID.SA_ENERGY) == 1000)
 		{
 			// The recharge doesn't tick when at 100%
 			ticksSinceSpecRegen = 0;

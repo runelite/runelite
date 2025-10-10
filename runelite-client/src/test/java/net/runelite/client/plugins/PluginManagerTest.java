@@ -35,12 +35,11 @@ import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import com.google.inject.util.Modules;
-import java.applet.Applet;
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +54,6 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -65,6 +63,7 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -77,13 +76,8 @@ public class PluginManagerTest
 	@Rule
 	public TemporaryFolder folder = new TemporaryFolder();
 
-	@Mock
 	@Bind
-	public Applet applet;
-
-	@Mock
-	@Bind
-	public Client client;
+	public Client client = (Client) mock(Component.class, Mockito.withSettings().extraInterfaces(Client.class));
 
 	@Mock
 	@Bind
@@ -95,9 +89,12 @@ public class PluginManagerTest
 	@Before
 	public void before() throws IOException
 	{
-		OkHttpClient okHttpClient = mock(OkHttpClient.class);
-		when(okHttpClient.newCall(any(Request.class)))
-			.thenThrow(new RuntimeException("in plugin manager test"));
+		OkHttpClient okHttpClient = new OkHttpClient.Builder()
+			.addInterceptor(chain ->
+			{
+				throw new RuntimeException("in plugin manager test");
+			})
+			.build();
 
 		when(configManager.getConfig(any(Class.class)))
 			.thenAnswer(a ->
@@ -142,26 +139,15 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null);
-		pluginManager.setOutdated(true);
+		var pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		Collection<Plugin> plugins = pluginManager.getPlugins();
-		long expected = pluginClasses.stream()
-			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
-			.filter(Objects::nonNull)
-			.filter(PluginDescriptor::loadWhenOutdated)
-			.count();
-		assertEquals(expected, plugins.size());
-
-		pluginManager = new PluginManager(false, false, null, null, null, null);
-		pluginManager.loadCorePlugins();
-		plugins = pluginManager.getPlugins();
+		var plugins = pluginManager.getPlugins();
 
 		// Check that the plugins register with the eventbus without errors
 		EventBus eventBus = new EventBus();
 		plugins.forEach(eventBus::register);
 
-		expected = pluginClasses.stream()
+		var expected = pluginClasses.stream()
 			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(pd -> !pd.developerPlugin())

@@ -32,10 +32,10 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -100,7 +100,7 @@ public class NightmareZonePlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlay.removeAbsorptionCounter();
 
-		Widget nmzWidget = client.getWidget(ComponentID.NMZ_CONTAINER);
+		Widget nmzWidget = client.getWidget(InterfaceID.NzoneGame.UNIVERSE);
 
 		if (nmzWidget != null)
 		{
@@ -130,7 +130,7 @@ public class NightmareZonePlugin extends Plugin
 			return;
 		}
 
-		Widget nmzWidget = client.getWidget(ComponentID.NMZ_CONTAINER);
+		Widget nmzWidget = client.getWidget(InterfaceID.NzoneGame.UNIVERSE);
 		if (nmzWidget != null)
 		{
 			nmzWidget.setHidden(true);
@@ -226,7 +226,7 @@ public class NightmareZonePlugin extends Plugin
 
 	private void checkAbsorption()
 	{
-		int absorptionPoints = client.getVarbitValue(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVarbitValue(VarbitID.NZONE_ABSORB_POTION_EFFECTS);
 
 		if (!absorptionNotificationSend)
 		{
@@ -248,7 +248,7 @@ public class NightmareZonePlugin extends Plugin
 	private int calculatePointsPerHour()
 	{
 		Instant now = Instant.now();
-		final int currentPoints = client.getVarbitValue(Varbits.NMZ_POINTS);
+		final int currentPoints = client.getVarbitValue(VarbitID.NZONE_CURRENTPOINTS);
 
 		if (nmzSessionStartTime == null)
 		{

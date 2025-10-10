@@ -110,8 +110,8 @@ public class ConfigManager
 
 	@Nullable
 	private final String configProfileName;
+	private final ScheduledExecutorService executor;
 	private final EventBus eventBus;
-	@Nullable
 	private final Client client;
 	private final Gson gson;
 	@Nonnull
@@ -138,7 +138,7 @@ public class ConfigManager
 		@Nullable @Named("profile") String profile,
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
-		@Nullable Client client,
+		Client client,
 		Gson gson,
 		@Nonnull ConfigClient configClient,
 		ProfileManager profileManager,
@@ -146,6 +146,7 @@ public class ConfigManager
 	)
 	{
 		this.configProfileName = profile;
+		this.executor = scheduledExecutorService;
 		this.eventBus = eventBus;
 		this.client = client;
 		this.gson = gson;
@@ -552,7 +553,7 @@ public class ConfigManager
 			this.rsProfile = rsProfile;
 			rsProfileConfigProfile = new ConfigData(ProfileManager.profileConfigFile(rsProfile));
 
-			final String launcherDisplayName = client != null ? client.getLauncherDisplayName() : null;
+			final String launcherDisplayName = client.getLauncherDisplayName();
 			// --profile
 			if (configProfileName != null)
 			{
@@ -957,10 +958,11 @@ public class ConfigManager
 			}
 
 			rsProfileKey = prof.getKey();
+			String previousProfile = this.rsProfileKey;
 			this.rsProfileKey = rsProfileKey;
 
 			log.debug("RS profile changed to {}", rsProfileKey);
-			eventBus.post(new RuneScapeProfileChanged());
+			eventBus.post(new RuneScapeProfileChanged(previousProfile, rsProfileKey));
 		}
 		setConfiguration(groupName, rsProfileKey, key, value);
 	}
@@ -1564,10 +1566,11 @@ public class ConfigManager
 		{
 			return;
 		}
+		String previousProfile = rsProfileKey;
 		rsProfileKey = key;
 
 		log.debug("RS profile changed to {}", key);
-		eventBus.post(new RuneScapeProfileChanged());
+		eventBus.post(new RuneScapeProfileChanged(previousProfile, key));
 	}
 
 	@Subscribe
@@ -1595,29 +1598,23 @@ public class ConfigManager
 	@Subscribe
 	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
 	{
-		ConfigProfile switchToProfile = null;
 		try (ProfileManager.Lock lock = profileManager.lock())
 		{
-			for (final ConfigProfile lockProfile : lock.getProfiles())
+			for (final ConfigProfile profile : lock.getProfiles())
 			{
-				final List<String> get = lockProfile.getDefaultForRsProfiles();
+				final List<String> get = profile.getDefaultForRsProfiles();
 				if (get != null && get.contains(rsProfileKey))
 				{
-					switchToProfile = lockProfile;
-
 					// change active profile
 					lock.getProfiles().forEach(p -> p.setActive(false));
-					switchToProfile.setActive(true);
+					profile.setActive(true);
 					lock.dirty();
+
+					log.debug("Switching to default profile {} for rsprofile {}", profile.getName(), rsProfileKey);
+					executor.submit(() -> switchProfile(profile));
 					break;
 				}
 			}
-		}
-
-		if (switchToProfile != null)
-		{
-			log.debug("Switching to default profile {} for rsprofile {}", switchToProfile.getName(), rsProfileKey);
-			switchProfile(switchToProfile);
 		}
 	}
 

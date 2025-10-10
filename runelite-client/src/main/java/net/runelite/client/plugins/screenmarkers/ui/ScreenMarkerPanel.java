@@ -42,7 +42,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -549,7 +548,7 @@ class ScreenMarkerPanel extends JPanel
 	{
 		final Color fillColor = marker.getMarker().getFill();
 		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
-			SwingUtilities.windowForComponent(this),
+			this,
 			fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
 			marker.getMarker().getName() + " Fill",
 			false);
@@ -566,7 +565,7 @@ class ScreenMarkerPanel extends JPanel
 	private void openBorderColorPicker()
 	{
 		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
-			SwingUtilities.windowForComponent(this),
+			this,
 			marker.getMarker().getColor(),
 			marker.getMarker().getName() + " Border",
 			false);

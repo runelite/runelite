@@ -32,7 +32,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.FALSE;
@@ -60,7 +59,6 @@ import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
@@ -70,7 +68,6 @@ import net.runelite.api.TileItem;
 import static net.runelite.api.TileItem.OWNERSHIP_GROUP;
 import static net.runelite.api.TileItem.OWNERSHIP_OTHER;
 import static net.runelite.api.TileItem.OWNERSHIP_SELF;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -79,6 +76,8 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -122,7 +121,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	// ItemID for coins
-	private static final int COINS = ItemID.COINS_995;
+	private static final int COINS = ItemID.COINS;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -287,7 +286,7 @@ public class GroundItemsPlugin extends Plugin
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
 		}
 
-		if (shouldDisplayItem(config.ownershipFilterMode(), groundItem.getOwnership(), client.getVarbitValue(Varbits.ACCOUNT_TYPE)))
+		if (shouldDisplayItem(config.ownershipFilterMode(), groundItem.getOwnership(), client.getVarbitValue(VarbitID.IRONMAN)))
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -574,7 +573,7 @@ public class GroundItemsPlugin extends Plugin
 				.onClick(e ->
 					SwingUtilities.invokeLater(() ->
 					{
-						RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+						RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 							color != null ? color : Color.decode("#FFFFFF"), "Item color", true);
 						colorPicker.setOnClose(c -> setItemColor(itemId, c));
 						colorPicker.setVisible(true);
@@ -765,7 +764,7 @@ public class GroundItemsPlugin extends Plugin
 		GroundItem highestItem = null;
 		Collection<GroundItem> groundItems = collectedGroundItems.row(worldPoint).values();
 		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
-		final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		final int accountType = client.getVarbitValue(VarbitID.IRONMAN);
 		for (GroundItem groundItem : groundItems)
 		{
 			if (!shouldDisplayItem(ownershipFilterMode, groundItem.getOwnership(), accountType))

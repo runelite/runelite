@@ -107,7 +107,7 @@ public interface DrawCallbacks
 
 	void swapScene(Scene scene);
 
-	default boolean tileInFrustum(Scene scene, int pitchSin, int pitchCos, int yawSin, int yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
+	default boolean tileInFrustum(Scene scene, float pitchSin, float pitchCos, float yawSin, float yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
 	{
 		return true;
 	}
@@ -120,10 +120,14 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void prepareSceneDraw(
+	default void preSceneDraw(
 		Scene scene,
 		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
 		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
+	{
+	}
+
+	default void postSceneDraw(Scene scene)
 	{
 	}
 
@@ -131,7 +135,11 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void drawZone(Projection entityProjection, Scene scene, int pass, int zx, int zz)
+	default void drawZoneOpaque(Projection entityProjection, Scene scene, int zx, int zz)
+	{
+	}
+
+	default void drawZoneAlpha(Projection entityProjection, Scene scene, int level, int zx, int zz)
 	{
 	}
 

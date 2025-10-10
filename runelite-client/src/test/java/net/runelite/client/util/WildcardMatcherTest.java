@@ -24,9 +24,9 @@
  */
 package net.runelite.client.util;
 
-import static junit.framework.TestCase.assertTrue;
 import static net.runelite.client.util.WildcardMatcher.matches;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class WildcardMatcherTest

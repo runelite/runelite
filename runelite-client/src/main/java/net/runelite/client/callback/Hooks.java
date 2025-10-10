@@ -39,6 +39,7 @@ import java.awt.image.VolatileImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -48,15 +49,17 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.hooks.Callbacks;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.worldmap.WorldMap;
@@ -275,7 +278,7 @@ public class Hooks implements Callbacks
 	 */
 	private void checkWorldMap()
 	{
-		Widget widget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		Widget widget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 
 		if (widget != null)
 		{
@@ -617,6 +620,7 @@ public class Hooks implements Callbacks
 		{
 			var sw = new StringWriter();
 			sw.append(message);
+
 			if (reason != null)
 			{
 				sw.append(" - ").append(reason.toString()).append('\n');
@@ -626,9 +630,21 @@ public class Hooks implements Callbacks
 				}
 			}
 
+			String coord = "unk";
+			if (client.getClientThread() == Thread.currentThread())
+			{
+				Player player = client.getLocalPlayer();
+				if (player != null)
+				{
+					WorldPoint p = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+					coord = String.format("%d_%d_%d_%d_%d", p.getPlane(), p.getX() / 64, p.getY() / 64, p.getX() & 63, p.getY() & 63);
+				}
+			}
+
 			telemetryClient.submitError(
 				"client error",
-				sw.toString());
+				sw.toString(),
+				Collections.singletonMap("coord", coord));
 
 			if (rateLimitedError)
 			{

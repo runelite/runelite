@@ -37,7 +37,7 @@ public interface InventoryTagsConfig extends Config
 
 	@ConfigSection(
 		name = "Tag display mode",
-		description = "How tags are displayed in the inventory",
+		description = "How tags are displayed in the inventory.",
 		position = 0
 	)
 	String tagStyleSection = "tagStyleSection";
@@ -46,7 +46,7 @@ public interface InventoryTagsConfig extends Config
 		position = 0,
 		keyName = "showTagOutline",
 		name = "Outline",
-		description = "Configures whether or not item tags show be outlined",
+		description = "Configures whether or not item tags show be outlined.",
 		section = tagStyleSection
 	)
 	default boolean showTagOutline()
@@ -58,7 +58,7 @@ public interface InventoryTagsConfig extends Config
 		position = 1,
 		keyName = "tagUnderline",
 		name = "Underline",
-		description = "Configures whether or not item tags should be underlined",
+		description = "Configures whether or not item tags should be underlined.",
 		section = tagStyleSection
 	)
 	default boolean showTagUnderline()
@@ -70,7 +70,7 @@ public interface InventoryTagsConfig extends Config
 		position = 2,
 		keyName = "tagFill",
 		name = "Fill",
-		description = "Configures whether or not item tags should be filled",
+		description = "Configures whether or not item tags should be filled.",
 		section = tagStyleSection
 	)
 	default boolean showTagFill()
@@ -85,7 +85,7 @@ public interface InventoryTagsConfig extends Config
 		position = 3,
 		keyName = "fillOpacity",
 		name = "Fill opacity",
-		description = "Configures the opacity of the tag \"Fill\"",
+		description = "Configures the opacity of the tag fill",
 		section = tagStyleSection
 	)
 	default int fillOpacity()

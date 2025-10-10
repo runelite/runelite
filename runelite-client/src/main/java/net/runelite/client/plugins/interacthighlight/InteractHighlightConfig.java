@@ -37,14 +37,14 @@ public interface InteractHighlightConfig extends Config
 {
 	@ConfigSection(
 		name = "NPCs",
-		description = "Settings for NPC highlight",
+		description = "Settings for NPC highlight.",
 		position = 0
 	)
 	String npcSection = "npcSection";
 
 	@ConfigSection(
 		name = "Objects",
-		description = "Settings for object highlight",
+		description = "Settings for object highlight.",
 		position = 1
 	)
 	String objectSection = "objectSection";
@@ -52,7 +52,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "npcShowHover",
 		name = "Show on hover",
-		description = "Outline NPCs when hovered",
+		description = "Outline NPCs when hovered.",
 		position = 1,
 		section = npcSection
 	)
@@ -64,7 +64,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "npcShowInteract",
 		name = "Show on interact",
-		description = "Outline NPCs when interacted",
+		description = "Outline NPCs when interacted.",
 		position = 2,
 		section = npcSection
 	)
@@ -77,7 +77,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "npcHoverHighlightColor",
 		name = "NPC hover",
-		description = "The color of the hover outline for NPCs",
+		description = "The color of the hover outline for NPCs.",
 		position = 3,
 		section = npcSection
 	)
@@ -90,7 +90,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "npcAttackHoverHighlightColor",
 		name = "NPC attack hover",
-		description = "The color of the attack hover outline for NPCs",
+		description = "The color of the attack hover outline for NPCs.",
 		position = 4,
 		section = npcSection
 	)
@@ -103,7 +103,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "npcInteractHighlightColor",
 		name = "NPC interact",
-		description = "The color of the target outline for NPCs",
+		description = "The color of the target outline for NPCs.",
 		position = 5,
 		section = npcSection
 	)
@@ -116,7 +116,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "npcAttackHighlightColor",
 		name = "NPC attack",
-		description = "The color of the outline on attacked NPCs",
+		description = "The color of the outline on attacked NPCs.",
 		position = 6,
 		section = npcSection
 	)
@@ -128,7 +128,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "objectShowHover",
 		name = "Show on hover",
-		description = "Outline objects when hovered",
+		description = "Outline objects when hovered.",
 		position = 1,
 		section = objectSection
 	)
@@ -140,7 +140,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "objectShowInteract",
 		name = "Show on interact",
-		description = "Outline objects when interacted",
+		description = "Outline objects when interacted.",
 		position = 2,
 		section = objectSection
 	)
@@ -153,7 +153,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "objectHoverHighlightColor",
 		name = "Object hover",
-		description = "The color of the hover outline for objects",
+		description = "The color of the hover outline for objects.",
 		position = 4,
 		section = objectSection
 	)
@@ -166,7 +166,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "objectInteractHighlightColor",
 		name = "Object interact",
-		description = "The color of the target outline for objects",
+		description = "The color of the target outline for objects.",
 		position = 6,
 		section = objectSection
 	)
@@ -177,8 +177,8 @@ public interface InteractHighlightConfig extends Config
 
 	@ConfigItem(
 		keyName = "borderWidth",
-		name = "Border Width",
-		description = "Width of the outlined border",
+		name = "Border width",
+		description = "Width of the outlined border.",
 		position = 7
 	)
 	default int borderWidth()
@@ -189,7 +189,7 @@ public interface InteractHighlightConfig extends Config
 	@ConfigItem(
 		keyName = "outlineFeather",
 		name = "Outline feather",
-		description = "Specify between 0-4 how much of the model outline should be faded",
+		description = "Specify between 0-4 how much of the model outline should be faded.",
 		position = 8
 	)
 	@Range(

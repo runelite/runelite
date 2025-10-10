@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -63,7 +64,14 @@ class AbyssMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showRifts())
+		final Player player = client.getLocalPlayer();
+		if (player == null)
+		{
+			return null;
+		}
+
+		final int region = player.getWorldLocation().getRegionID();
+		if (region != RunecraftPlugin.ABYSS_REGION || !config.showRifts())
 		{
 			return null;
 		}

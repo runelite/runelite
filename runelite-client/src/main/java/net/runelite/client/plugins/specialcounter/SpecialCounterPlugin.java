@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
@@ -43,16 +44,13 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -65,6 +63,10 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -90,11 +92,11 @@ import net.runelite.client.util.ImageUtil;
 public class SpecialCounterPlugin extends Plugin
 {
 	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
-		NpcID.DARK_ENERGY_CORE, // corp 
-		NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, // vorkath
-		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, // poh
-		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
-		NpcID.SPAWN, NpcID.SCION // abyssal sire
+		NpcID.DARK_CORE, // corp
+		NpcID.VORKATH_SPAWN_QUEST, NpcID.VORKATH_SPAWN, // vorkath
+		NpcID.POH_COMBAT_DUMMY_NPC, NpcID.POH_COMBAT_DUMMY_UNDEADSLAYER_NPC, // poh
+		NpcID.VETION_HELLHOUND_JNR, NpcID.VETION_HELLHOUND_SNR, // vetion
+		NpcID.ABYSSALSIRE_SPAWN, NpcID.ABYSSALSIRE_SCION // abyssal sire
 	);
 
 	private int currentWorld;
@@ -297,7 +299,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT)
+		if (event.getVarpId() != VarPlayerID.SA_ENERGY)
 		{
 			return;
 		}
@@ -425,7 +427,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		final NPC npc = npcChanged.getNpc();
 		// Duke does not despawn when dead
-		if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		if (npc.getId() == NpcID.DUKE_SUCELLUS_DEAD || npc.getId() == NpcID.DUKE_SUCELLUS_DEAD_QUEST)
 		{
 			log.debug("Duke died");
 			removeCounters();
@@ -449,7 +451,8 @@ public class SpecialCounterPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			NPC target = client.getCachedNPCs()[event.getNpcIndex()];
+			WorldView wv = client.getTopLevelWorldView();
+			@Nullable NPC target = wv.npcs().byIndex(event.getNpcIndex());
 			SpecialWeapon specialWeapon = event.getWeapon();
 			int counterHit = specialWeapon.isDamage() ? specialWeapon.computeHit(event.getHit(), target) : Math.min(event.getHit(), 1);
 			float defenceDrain = event.getWeapon().computeDrainPercent(event.getHit(), target);
@@ -488,7 +491,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private SpecialWeapon usedSpecialWeapon()
 	{
-		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
 		if (equipment == null)
 		{
 			return null;
@@ -590,7 +593,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		int cycle = client.getGameCycle();
 		BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(weapon.getItemID()[0]), 24, 24);
-		BufferedImage background = hit == 0 ? spriteManager.getSprite(SpriteID.HITSPLAT_BLUE_MISS, 0) : null;
+		BufferedImage background = hit == 0 ? spriteManager.getSprite(SpriteID.Hitmark.HITSPLAT_BLUE_MISS, 0) : null;
 
 		return PlayerInfoDrop.builder()
 			.startCycle(cycle)

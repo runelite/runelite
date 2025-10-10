@@ -32,14 +32,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.loottracker.PluginLootReceived;
@@ -103,14 +103,14 @@ public class MotherlodePluginTest
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
 		// Initial sack count
-		when(client.getVarbitValue(Varbits.SACK_NUMBER)).thenReturn(42);
+		when(client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT)).thenReturn(42);
 		motherlodePlugin.onVarbitChanged(new VarbitChanged());
 
 		// Create before inventory
 		ItemContainer inventory = mock(ItemContainer.class);
 		Item[] items = new Item[]{
 			item(ItemID.RUNITE_ORE, 1),
-			item(ItemID.GOLDEN_NUGGET, 4),
+			item(ItemID.MOTHERLODE_NUGGET, 4),
 			item(ItemID.COAL, 1),
 			item(ItemID.COAL, 1),
 			item(ItemID.COAL, 1),
@@ -119,10 +119,10 @@ public class MotherlodePluginTest
 		};
 		when(inventory.getItems())
 			.thenReturn(items);
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventory);
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(inventory);
 
 		// Withdraw 20
-		when(client.getVarbitValue(Varbits.SACK_NUMBER)).thenReturn(22);
+		when(client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT)).thenReturn(22);
 		motherlodePlugin.onVarbitChanged(new VarbitChanged());
 
 		inventory = mock(ItemContainer.class);
@@ -130,7 +130,7 @@ public class MotherlodePluginTest
 		items = new Item[]{
 			item(ItemID.RUNITE_ORE, 1),
 			item(ItemID.RUNITE_ORE, 1),
-			item(ItemID.GOLDEN_NUGGET, 8),
+			item(ItemID.MOTHERLODE_NUGGET, 8),
 			item(ItemID.COAL, 1),
 			item(ItemID.COAL, 1),
 			item(ItemID.COAL, 1),
@@ -145,7 +145,7 @@ public class MotherlodePluginTest
 
 		// Trigger comparison
 		when(motherlodeConfig.trackOresFound()).thenReturn(true);
-		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), inventory));
+		motherlodePlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, inventory));
 
 		ArgumentCaptor<PluginLootReceived> captor = ArgumentCaptor.forClass(PluginLootReceived.class);
 		verify(eventBus).post(captor.capture());
@@ -154,7 +154,7 @@ public class MotherlodePluginTest
 			new ItemStack(ItemID.ADAMANTITE_ORE, 1),
 			new ItemStack(ItemID.RUNITE_ORE, 1),
 			new ItemStack(ItemID.COAL, 2),
-			new ItemStack(ItemID.GOLDEN_NUGGET, 4)
+			new ItemStack(ItemID.MOTHERLODE_NUGGET, 4)
 		), event.getItems());
 	}
 

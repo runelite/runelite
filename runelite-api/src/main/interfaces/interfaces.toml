@@ -70,12 +70,12 @@ potion_store=48
 incinerator=49
 incinerator_confirm=50
 potionstore_content=52
-equipment_parent=77
-equipment_set_bonus=118
-settings_button=122
-equipment_button=123
-popup=125
-equipment_stat_bonus=131
+equipment_parent=80
+equipment_set_bonus=121
+settings_button=125
+equipment_button=126
+popup=128
+equipment_stat_bonus=134
 
 [bank_inventory]
 id=15
@@ -129,6 +129,24 @@ coffer=2
 id=598
 container=2
 
+[castlewars_lobby]
+id=131
+time_remaining=2
+
+[castlewars_saradomin]
+id=58
+castle_and_rock_group_status=3
+game_timer=18
+score_box=20
+leave_waiting_room=26
+
+[castlewars_zamorak]
+id=59
+castle_and_rock_group_status=3
+score_box=19
+leave_waiting_room=25
+game_timer=28
+
 [chambers_of_xeric_storage_unit_private]
 id=271
 item_container=6
@@ -159,16 +177,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=35
-container=37
-title=41
-full_input=42
-ge_search_results=50
-messages=53
-transparent_background_lines=54
-input=55
-message_lines=56
-first_message=57
+transparent_background=36
+container=38
+title=42
+full_input=43
+ge_search_results=51
+messages=54
+transparent_background_lines=55
+input=56
+message_lines=57
+first_message=58
 
 [clan]
 id=701
@@ -181,9 +199,6 @@ id=702
 layer=0
 header=1
 members=6
-
-[clanrank_popup]
-id=289
 
 [cluescroll]
 id=203
@@ -210,11 +225,11 @@ id=356
 
 [collection_log]
 id=621
-container=0
+container=87
 tabs=3
 entry=17
-entry_header=19
-entry_items=36
+entry_header=20
+entry_items=37
 
 [combat]
 id=593
@@ -245,7 +260,7 @@ id=13
 
 [deposit_box]
 id=192
-inventory_item_container=2
+inventory_item_container=23
 
 [destroy_item]
 id=584
@@ -280,8 +295,8 @@ text=2
 
 [diary]
 id=119
-title=4
-text=5
+title=5
+text=6
 
 [drift_net_fishing_reward]
 id=607
@@ -327,10 +342,10 @@ teleport_button=26
 [fairy_ring_panel]
 id=381
 header=2
-list=7
-favorites=8
-separator=9
-scrollbar=152
+list=8
+favorites=9
+separator=10
+scrollbar=166
 
 [fixed_viewport]
 id=548
@@ -420,8 +435,8 @@ display=2
 [grand_exchange]
 id=465
 window_container=0
-offer_container=25
-offer_description=26
+offer_container=26
+offer_description=27
 
 [grand_exchange_inventory]
 id=467
@@ -548,8 +563,8 @@ run_orb_text=28
 spec_orb=33
 worldmap_orb=48
 wiki_banner_parent=49
-wiki_banner=50
-worldmap_options=53
+wiki_banner=51
+worldmap_options=54
 
 [mlm]
 id=382
@@ -756,7 +771,6 @@ id=128
 
 [seed_vault]
 id=631
-inventory_item_container=1
 title_container=2
 item_container=15
 item_text=16
@@ -764,6 +778,7 @@ search_button=24
 
 [seed_vault_inventory]
 id=630
+item_container=1
 
 [settings]
 id=134
@@ -772,10 +787,10 @@ init=1
 [settings_side]
 id=116
 camera_zoom_slider_track=57
-music_slider=92
-music_slider_step_holder=104
-sound_effect_slider=106
-area_sound_slider=120
+music_slider=98
+music_slider_step_holder=110
+sound_effect_slider=112
+area_sound_slider=126
 
 [shop]
 id=300
@@ -798,7 +813,7 @@ container=2
 
 [slayer_rewards]
 id=426
-top_bar=12
+top_bar=13
 
 [smithing]
 id=312
@@ -856,7 +871,7 @@ id=336
 
 [trailblazer_areas]
 id=512
-teleport=66
+teleport=80
 
 [trawler]
 id=366

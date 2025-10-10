@@ -27,19 +27,19 @@ package net.runelite.client.plugins.statusbars;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Point;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 
 @Getter
 @AllArgsConstructor
 enum Viewport
 {
-	RESIZED_BOX(ComponentID.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
+	RESIZED_BOX(InterfaceID.ToplevelOsrsStretch.SIDE_CONTAINER,
 			new Point(20, -4), new Point(0, -4)),
-	RESIZED_BOTTOM(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
+	RESIZED_BOTTOM(InterfaceID.ToplevelPreEoc.SIDE_BACKGROUND,
 			new Point(61, -12), new Point(35, -12)),
-	FIXED(ComponentID.FIXED_VIEWPORT_INTERFACE_CONTAINER,
+	FIXED(InterfaceID.Toplevel.SIDE_PANELS,
 			new Point(20, -4), new Point(0, -4)),
-	FIXED_BANK(ComponentID.BANK_INVENTORY_ITEM_CONTAINER,
+	FIXED_BANK(InterfaceID.Bankside.ITEMS,
 			new Point(20, -4), new Point(0, -4));
 
 	private final int viewport;

@@ -30,6 +30,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,10 +41,10 @@ import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.worldmap.MapElementConfig;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.api.worldmap.WorldMapIcon;
@@ -271,10 +272,10 @@ public class WorldMapPlugin extends Plugin
 					MapElementConfig config = client.getMapElementConfig(icon.getType());
 					if (config.getCategory() == CATEGORY_QUEST)
 					{
-						var quests = client.getDBRowsByValue(DBTableID.Quest.TABLE, DBTableID.Quest.MAP_ELEMENT, 0, icon.getType());
+						var quests = client.getDBRowsByValue(DBTableID.Quest.ID, DBTableID.Quest.COL_MAPELEMENT, 0, icon.getType());
 						for (int questID : quests)
 						{
-							if (client.getDBTableField(questID, DBTableID.Quest.MAIN_QUEST, 0).length > 0)
+							if (client.getDBTableField(questID, DBTableID.Quest.COL_PARENT_QUEST, 0).length > 0)
 							{
 								// rfd subquests all have the same map element
 								continue;
@@ -433,6 +434,7 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		worldMapPointManager.removeIf(isType(MapPoint.Type.TELEPORT));
+		Map<String, BufferedImage> imageCache = new HashMap<>();
 		Arrays.stream(TeleportLocationData.values())
 			.filter(data ->
 			{
@@ -461,7 +463,7 @@ public class WorldMapPlugin extends Plugin
 					.type(MapPoint.Type.TELEPORT)
 					.worldPoint(l.getLocation())
 					.tooltip(l.getTooltip())
-					.image(ImageUtil.loadImageResource(WorldMapPlugin.class, l.getIconPath()))
+					.image(imageCache.computeIfAbsent(l.getIconPath(), p -> ImageUtil.loadImageResource(WorldMapPlugin.class, p)))
 					.build()
 			)
 			.forEach(worldMapPointManager::add);

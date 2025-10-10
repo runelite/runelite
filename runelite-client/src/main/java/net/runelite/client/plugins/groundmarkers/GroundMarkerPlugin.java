@@ -30,7 +30,6 @@ import com.google.common.util.concurrent.Runnables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -311,7 +310,7 @@ public class GroundMarkerPlugin extends Plugin
 						Color color = existing.getColor();
 						SwingUtilities.invokeLater(() ->
 						{
-							RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+							RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 								color, "Tile marker color", false);
 							colorPicker.setOnClose(c -> colorTile(existing, c));
 							colorPicker.setVisible(true);

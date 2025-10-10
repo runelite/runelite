@@ -39,8 +39,8 @@ public interface KingdomConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "sendNotifications",
-		name = "Send Notifications",
-		description = "Send chat notifications upon login showing current estimated coffer and approval"
+		name = "Send notifications",
+		description = "Send chat notifications upon login showing current estimated coffer and approval."
 	)
 	default boolean shouldSendNotifications()
 	{
@@ -53,8 +53,8 @@ public interface KingdomConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "cofferThreshold",
-		name = "Coffer Threshold",
-		description = "Send notifications if coffer is below this value"
+		name = "Coffer threshold",
+		description = "Send notifications if coffer is below this value."
 	)
 	default int getCofferThreshold()
 	{
@@ -67,8 +67,8 @@ public interface KingdomConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "approvalThreshold",
-		name = "Approval Threshold",
-		description = "Send notifications if approval percentage is below this value"
+		name = "Approval threshold",
+		description = "Send notifications if approval percentage is below this value."
 	)
 	default int getApprovalThreshold()
 	{

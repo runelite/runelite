@@ -35,7 +35,7 @@ import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -76,20 +76,24 @@ class RegenMeterOverlay extends Overlay
 
 		if (config.showHitpoints())
 		{
-			renderRegen(g, ComponentID.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_HEALTH, InterfaceID.OrbsNomap.ORB_HEALTH, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
 		}
 
 		if (config.showSpecial())
 		{
-			renderRegen(g, ComponentID.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_SPECENERGY, InterfaceID.OrbsNomap.ORB_SPECENERGY, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
 		return null;
 	}
 
-	private void renderRegen(Graphics2D g, @Component int componentId, double percent, Color color)
+	private void renderRegen(Graphics2D g, @Component int componentId, @Component int noOrbComponentId, double percent, Color color)
 	{
 		Widget widget = client.getWidget(componentId);
+		if (widget == null || widget.isHidden())
+		{
+			widget = client.getWidget(noOrbComponentId);
+		}
 		if (widget == null || widget.isHidden())
 		{
 			return;

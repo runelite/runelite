@@ -1,8 +1,6 @@
-.id                 125
-.int_stack_count    9
-.string_stack_count 0
-.int_var_count      18
-.string_var_count   2
+.id                       125
+.int_arg_count            9
+.obj_arg_count            0
 ; callback "friendsChatSetText"
 ;   Fired just before the client pops the name off the stack
 ;     Modified by the friendnotes plugin to show the icon
@@ -76,9 +74,9 @@
    iconst                 0
    istore                 10
    sconst                 ""
-   sstore                 0
+   ostore                 0
    sconst                 ""
-   sstore                 1
+   ostore                 1
    iconst                 0
    istore                 11
    iconst                 0
@@ -121,7 +119,7 @@ LABEL105:
    iconst                 1
    iload                  0
    if_sethide            
-   jump                   LABEL506
+   jump                   LABEL509
 LABEL109:
    iload                  17
    iconst                 -1
@@ -151,7 +149,7 @@ LABEL130:
    iconst                 1
    iload                  0
    if_sethide            
-   jump                   LABEL506
+   jump                   LABEL509
 LABEL134:
    iload                  17
    iconst                 0
@@ -169,7 +167,7 @@ LABEL138:
    iconst                 1
    iload                  0
    if_sethide            
-   jump                   LABEL506
+   jump                   LABEL509
 LABEL150:
    invoke                 1972
    istore                 14
@@ -289,21 +287,22 @@ LABEL234:
    iload                  9
    iload                  17
    if_icmplt              LABEL238
-   jump                   LABEL498
+   jump                   LABEL501
 LABEL238:
    iload                  9
    friend_getname        
-   sstore                 1
-   sstore                 0
+   ostore                 1
+   ostore                 0
    iload                  5
    iconst                 4
    iload                  10
+   iconst                 0
    cc_create             
    iload                  10
    iconst                 1
    add                   
    istore                 10
-   sload                  0
+   oload                  0
    sconst                 "friendsChatSetText"
    runelite_callback     
    cc_settext            
@@ -328,7 +327,7 @@ LABEL238:
    iconst                 1
    cc_settextshadow      
    sconst                 "<col=ff9040>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            3
    cc_setopbase          
@@ -337,9 +336,9 @@ LABEL238:
    istore                 11
    iload                  11
    iconst                 0
-   if_icmpne              LABEL284
-   jump                   LABEL306
-LABEL284:
+   if_icmpne              LABEL285
+   jump                   LABEL307
+LABEL285:
    iconst                 1
    sconst                 "Message"
    cc_setop              
@@ -348,38 +347,39 @@ LABEL284:
    cc_setop              
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL294
-   jump                   LABEL302
-LABEL294:
+   if_icmpeq              LABEL295
+   jump                   LABEL303
+LABEL295:
    iload                  16
    iload                  11
-   if_icmpne              LABEL298
-   jump                   LABEL302
-LABEL298:
+   if_icmpne              LABEL299
+   jump                   LABEL303
+LABEL299:
    iconst                 4
    sconst                 "Switch world"
    cc_setop              
-   jump                   LABEL305
-LABEL302:
+   jump                   LABEL306
+LABEL303:
    iconst                 4
    sconst                 ""
    cc_setop              
-LABEL305:
-   jump                   LABEL312
 LABEL306:
+   jump                   LABEL313
+LABEL307:
    iconst                 1
    sconst                 ""
    cc_setop              
    iconst                 2
    sconst                 "Message"
    cc_setop              
-LABEL312:
+LABEL313:
    iconst                 3
    sconst                 "Delete"
    cc_setop              
    iload                  5
    iconst                 5
    iload                  10
+   iconst                 0
    cc_create              1
    iload                  10
    iconst                 1
@@ -390,7 +390,7 @@ LABEL312:
    iconst                 0
    iconst                 0
    cc_setsize             1
-   sload                  0
+   oload                  0
    iconst                 190
    iconst                 495
    parawidth             
@@ -412,17 +412,17 @@ LABEL312:
    cc_setgraphic          1
    iconst                 3355443
    cc_setgraphicshadow    1
-   sload                  1
+   oload                  1
    string_length         
    iconst                 0
-   if_icmpgt              LABEL353
-   jump                   LABEL404
-LABEL353:
+   if_icmpgt              LABEL355
+   jump                   LABEL406
+LABEL355:
    iload                  14
    iconst                 1
-   if_icmpeq              LABEL357
-   jump                   LABEL372
-LABEL357:
+   if_icmpeq              LABEL359
+   jump                   LABEL374
+LABEL359:
    iconst                 10
    sconst                 "Reveal previous name"
    cc_setop              
@@ -432,30 +432,30 @@ LABEL357:
    iconst                 -2147483645
    cc_getid              
    cc_getid               1
-   sload                  1
-   sload                  0
+   oload                  1
+   oload                  0
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
-   jump                   LABEL401
-LABEL372:
+   jump                   LABEL403
+LABEL374:
    sconst                 "Previous name:"
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            3
-   sstore                 1
+   ostore                 1
    iconst                 526
    iconst                 -2147483645
    iconst                 -2147483643
    iload                  8
-   sload                  1
+   oload                  1
    iconst                 25
    iconst                 190
-   sconst                 "IiIsii"
+   sconst                 "iiisii"
    cc_setonmouserepeat   
    iconst                 40
    iload                  8
-   sconst                 "I"
+   sconst                 "i"
    cc_setonmouseleave    
    iconst                 126
    iconst                 -2147483644
@@ -466,16 +466,16 @@ LABEL372:
    sconst                 "null"
    sconst                 "null"
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
-LABEL401:
+LABEL403:
    iconst                 0
    cc_sethide             1
-   jump                   LABEL421
-LABEL404:
+   jump                   LABEL423
+LABEL406:
    iconst                 40
    iload                  8
-   sconst                 "I"
+   sconst                 "i"
    cc_setonmouseover     
    iconst                 1
    cc_sethide             1
@@ -488,12 +488,13 @@ LABEL404:
    sconst                 "null"
    sconst                 "null"
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
-LABEL421:
+LABEL423:
    iload                  5
    iconst                 4
    iload                  10
+   iconst                 0
    cc_create             
    iload                  10
    iconst                 1
@@ -519,20 +520,20 @@ LABEL421:
    cc_settextshadow      
    iload                  11
    iconst                 0
-   if_icmpeq              LABEL451
-   jump                   LABEL456
-LABEL451:
+   if_icmpeq              LABEL454
+   jump                   LABEL459
+LABEL454:
    sconst                 "Offline"
    cc_settext            
    iconst                 16711680
    cc_setcolour          
-   jump                   LABEL489
-LABEL456:
+   jump                   LABEL492
+LABEL459:
    iload                  11
    map_world             
-   if_icmpeq              LABEL460
-   jump                   LABEL468
-LABEL460:
+   if_icmpeq              LABEL463
+   jump                   LABEL471
+LABEL463:
    sconst                 "World "
    iload                  11
    tostring              
@@ -540,13 +541,13 @@ LABEL460:
    cc_settext            
    iconst                 901389
    cc_setcolour          
-   jump                   LABEL489
-LABEL468:
+   jump                   LABEL492
+LABEL471:
    iload                  11
    iconst                 5000
-   if_icmpgt              LABEL472
-   jump                   LABEL481
-LABEL472:
+   if_icmpgt              LABEL475
+   jump                   LABEL484
+LABEL475:
    sconst                 "<col=ffff00>"
    sconst                 "Classic "
    iload                  11
@@ -555,18 +556,18 @@ LABEL472:
    tostring              
    join_string            3
    cc_settext            
-   jump                   LABEL487
-LABEL481:
+   jump                   LABEL490
+LABEL484:
    sconst                 "<col=ffff00>"
    sconst                 "World "
    iload                  11
    tostring              
    join_string            3
    cc_settext            
-LABEL487:
+LABEL490:
    iconst                 16776960
    cc_setcolour          
-LABEL489:
+LABEL492:
    iload                  9
    iconst                 1
    add                   
@@ -576,23 +577,23 @@ LABEL489:
    istore                 12
    istore                 9
    jump                   LABEL234
-LABEL498:
+LABEL501:
    iload                  17
    iconst                 1
-   if_icmpge              LABEL502
-   jump                   LABEL506
-LABEL502:
+   if_icmpge              LABEL505
+   jump                   LABEL509
+LABEL505:
    iload                  12
    iconst                 5
    add                   
    istore                 12
-LABEL506:
+LABEL509:
    iload                  12
    iload                  5
    if_getheight          
-   if_icmpgt              LABEL511
-   jump                   LABEL520
-LABEL511:
+   if_icmpgt              LABEL514
+   jump                   LABEL523
+LABEL514:
    iconst                 0
    iload                  12
    iload                  5
@@ -601,8 +602,8 @@ LABEL511:
    iload                  5
    get_varc_int           9
    invoke                 72
-   jump                   LABEL528
-LABEL520:
+   jump                   LABEL531
+LABEL523:
    iconst                 0
    iconst                 0
    iload                  5
@@ -611,5 +612,5 @@ LABEL520:
    iload                  5
    iconst                 0
    invoke                 72
-LABEL528:
+LABEL531:
    return                

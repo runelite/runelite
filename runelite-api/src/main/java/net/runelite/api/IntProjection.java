@@ -30,9 +30,9 @@ public interface IntProjection extends Projection
 	int getCameraY();
 	int getCameraZ();
 
-	int getPitchSin();
-	int getPitchCos();
+	float getPitchSin();
+	float getPitchCos();
 
-	int getYawSin();
-	int getYawCos();
+	float getYawSin();
+	float getYawCos();
 }

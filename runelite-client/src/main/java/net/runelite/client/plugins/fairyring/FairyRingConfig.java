@@ -28,13 +28,16 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("fairyrings")
+@ConfigGroup(FairyRingConfig.CONFIG_GROUP)
 public interface FairyRingConfig extends Config
 {
+	String CONFIG_GROUP = "fairyrings";
+	String CONFIG_GROUP_TAGS = "fairyringtags";
+
 	@ConfigItem(
 		keyName = "autoOpen",
 		name = "Open search automatically",
-		description = "Open the search widget every time you enter a fairy ring"
+		description = "Open the search widget every time you enter a fairy ring."
 	)
 	default boolean autoOpen()
 	{

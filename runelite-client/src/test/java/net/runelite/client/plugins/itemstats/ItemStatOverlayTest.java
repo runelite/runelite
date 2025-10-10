@@ -31,8 +31,8 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.Color;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.game.ItemEquipmentStats;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStats;
@@ -132,7 +132,7 @@ public class ItemStatOverlayTest
 	{
 		// Empty equipment (fully unarmed)
 		final ItemContainer equipment = mock(ItemContainer.class);
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipment);
 
 		String tooltip;
 		String sanitizedTooltip;

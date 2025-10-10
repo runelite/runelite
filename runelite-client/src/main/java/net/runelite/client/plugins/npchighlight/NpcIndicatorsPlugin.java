@@ -28,7 +28,6 @@ package net.runelite.client.plugins.npchighlight;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -46,7 +45,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
@@ -54,6 +52,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -62,6 +61,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -212,6 +212,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			skipNextSpawnCheck = true;
 			rebuild();
 		});
+
+		migrate();
 	}
 
 	@Override
@@ -229,6 +231,17 @@ public class NpcIndicatorsPlugin extends Plugin
 			npcTags.clear();
 			highlightedNpcs.clear();
 		});
+	}
+
+	private void migrate()
+	{
+		Boolean b = configManager.getConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuNames", Boolean.class);
+		if (b != null)
+		{
+			log.debug("Migrated highlightMenuNames");
+			configManager.unsetConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuNames");
+			configManager.setConfiguration(NpcIndicatorsConfig.GROUP, "highlightMenuStyle", b ? NpcIndicatorsConfig.MenuHighlightStyle.BOTH : NpcIndicatorsConfig.MenuHighlightStyle.NONE);
+		}
 	}
 
 	@Subscribe
@@ -311,22 +324,75 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			Color color = null;
 			if (npcUtil.isDying(npc))
 			{
-				color = config.deadNpcMenuColor();
+				Color color = config.deadNpcMenuColor();
+				if (color != null)
+				{
+					final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+					menuEntry.setTarget(target);
+					return;
+				}
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			if (highlightedNpcs.containsKey(npc) && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
-				color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
-			}
-
-			if (color != null)
-			{
-				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				Color color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
+				final String target = recolorMenuTarget(event.getTarget(), config.highlightMenuStyle(), color);
 				menuEntry.setTarget(target);
+				return;
 			}
+		}
+	}
+
+	private static String recolorMenuTarget(String target, NpcIndicatorsConfig.MenuHighlightStyle style, Color color)
+	{
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NONE)
+		{
+			return target;
+		}
+
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.BOTH)
+		{
+			return ColorUtil.prependColorTag(Text.removeTags(target), color);
+		}
+
+		//<col=ffff00>Tool Leprechaun
+		//<col=ffff00>Ram<col=ff00>  (level-2)
+		String name, level;
+		if (target.contains("  (level-"))
+		{
+			int c = target.lastIndexOf('<');
+			name = target.substring(0, c);
+			level = target.substring(c);
+		}
+		else
+		{
+			name = target;
+			level = null;
+		}
+
+		if (style == NpcIndicatorsConfig.MenuHighlightStyle.NAME)
+		{
+			String t = ColorUtil.prependColorTag(Text.removeTags(name), color);
+			if (level != null)
+			{
+				t += level;
+			}
+			return t;
+		}
+		else if (style == NpcIndicatorsConfig.MenuHighlightStyle.LEVEL)
+		{
+			String t = name;
+			if (level != null)
+			{
+				t += ColorUtil.prependColorTag(Text.removeTags(level), color);
+			}
+			return t;
+		}
+		else
+		{
+			throw new IllegalArgumentException();
 		}
 	}
 
@@ -365,7 +431,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.setType(MenuAction.RUNELITE)
 			.onClick(e -> SwingUtilities.invokeLater(() ->
 			{
-				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+				RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 					Color.WHITE, "Tag Color", false);
 				colorPicker.setOnClose(c ->
 				{
@@ -432,8 +498,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	private void tag(MenuEntry entry)
 	{
 		final int id = entry.getIdentifier();
-		final NPC[] cachedNPCs = client.getCachedNPCs();
-		final NPC npc = cachedNPCs[id];
+		WorldView wv = client.getTopLevelWorldView();
+		final NPC npc = wv.npcs().byIndex(id);
 
 		if (npc == null || npc.getName() == null)
 		{
@@ -454,7 +520,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			}
 			else
 			{
-				if (!client.isInInstancedRegion())
+				if (!wv.isInstance())
 				{
 					memorizeNpc(npc);
 					npcTags.add(id);
@@ -547,7 +613,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		final GraphicsObject go = event.getGraphicsObject();
 
-		if (go.getId() == GraphicID.GREY_BUBBLE_TELEPORT)
+		if (go.getId() == SpotanimID.SMOKEPUFF)
 		{
 			teleportGraphicsObjectSpawnedThisTick.add(WorldPoint.fromLocal(client, go.getLocation()));
 		}

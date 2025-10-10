@@ -44,22 +44,22 @@ import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.NullItemID;
+import net.runelite.api.ParamID;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -176,7 +176,7 @@ public class LayoutManager
 	private void layout(Layout l)
 	{
 		ItemContainer bank = client.getItemContainer(InventoryID.BANK);
-		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget itemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 
 		// Hide all of the existing items first
 		Set<Integer> bankItems = new LinkedHashSet<>();
@@ -184,7 +184,7 @@ public class LayoutManager
 		{
 			Widget c = itemContainer.getChild(i);
 			// ~bankmain_drawitem uses 6512 for empty item slots
-			if (!c.isSelfHidden() && c.getItemId() > -1 && c.getItemId() != NullItemID.NULL_6512)
+			if (!c.isSelfHidden() && c.getItemId() > -1 && c.getItemId() != ItemID.BLANKOBJECT)
 			{
 				bankItems.add(c.getItemId());
 				if (log.isDebugEnabled())
@@ -269,7 +269,7 @@ public class LayoutManager
 			}
 
 			Widget c = itemContainer.getChild(pos);
-			drawItem(l, c, bankItemId, count(bank, bankItemId), pos);
+			drawItem(l, c, bank, bankItemId, pos);
 		}
 
 		int lastEmptySlot = -1;
@@ -289,7 +289,7 @@ public class LayoutManager
 				break;
 			}
 
-			drawItem(l, c, itemId, count(bank, itemId), lastEmptySlot);
+			drawItem(l, c, bank, itemId, lastEmptySlot);
 
 			if (log.isDebugEnabled())
 			{
@@ -319,7 +319,7 @@ public class LayoutManager
 				break;
 			}
 
-			drawItem(l, c, -1, 0, lastEmptySlot);
+			drawItem(l, c, bank, -1, lastEmptySlot);
 		}
 
 		if (modified)
@@ -328,22 +328,17 @@ public class LayoutManager
 		}
 	}
 
-	private int count(ItemContainer bank, int itemId)
-	{
-		int count = bank.count(itemId);
-		if (count > 0)
-		{
-			return count;
-		}
-		return potionStorage.count(itemId);
-	}
-
 	// mostly from ~bankmain_drawitem
-	private void drawItem(Layout l, Widget c, int item, int qty, int idx)
+	private void drawItem(Layout l, Widget c, ItemContainer bank, int item, int idx)
 	{
 		if (item > -1 && item != ItemID.BANK_FILLER)
 		{
 			ItemComposition def = client.getItemDefinition(item);
+
+			int bankCount = bank.count(item);
+			int qty = bankCount > 0 ? bankCount : potionStorage.count(item);
+
+			boolean isPotStorage = bankCount <= 0 && qty > 0;
 
 			c.setItemId(item);
 			c.setItemQuantity(qty);
@@ -376,9 +371,9 @@ public class LayoutManager
 			}
 			else
 			{
-				int quantityType = client.getVarbitValue(Varbits.BANK_QUANTITY_TYPE);
-				int requestQty = client.getVarbitValue(Varbits.BANK_REQUESTEDQUANTITY);
-				// ~script2759
+				int quantityType = client.getVarbitValue(VarbitID.BANK_QUANTITY_TYPE);
+				int requestQty = client.getVarbitValue(VarbitID.BANK_REQUESTEDQUANTITY);
+
 				String suffix;
 				switch (quantityType)
 				{
@@ -398,6 +393,8 @@ public class LayoutManager
 						suffix = "All";
 						break;
 				}
+
+				// ~script669
 				c.setAction(0, "Withdraw-" + suffix);
 				if (quantityType != 0)
 				{
@@ -412,16 +409,22 @@ public class LayoutManager
 				c.setAction(5, "Withdraw-X");
 				c.setAction(6, "Withdraw-All");
 				c.setAction(7, "Withdraw-All-but-1");
-				if (client.getVarbitValue(Varbits.BANK_LEAVEPLACEHOLDERS) == 0)
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_BANKOPS_TOGGLE_ON) == 1 && def.getIntValue(ParamID.BANK_AUTOCHARGE) != -1)
 				{
-					c.setAction(8, "Placeholder");
+					c.setAction(8, "Configure-Charges");
 				}
-				c.setAction(9, "Examine");
-
+				if (!isPotStorage && client.getVarbitValue(VarbitID.BANK_LEAVEPLACEHOLDERS) == 0)
+				{
+					c.setAction(9, "Placeholder");
+				}
+				if (!isPotStorage)
+				{
+					c.setAction(10, "Examine");
+				}
 				c.setOpacity(0);
 			}
 
-			c.setOnDragListener(ScriptID.BANKMAIN_DRAGSCROLL, ScriptEvent.WIDGET_ID, ScriptEvent.WIDGET_INDEX, ScriptEvent.MOUSE_X, ScriptEvent.MOUSE_Y, ComponentID.BANK_SCROLLBAR, 0);
+			c.setOnDragListener(ScriptID.BANKMAIN_DRAGSCROLL, ScriptEvent.WIDGET_ID, ScriptEvent.WIDGET_INDEX, ScriptEvent.MOUSE_X, ScriptEvent.MOUSE_Y, InterfaceID.Bankmain.SCROLLBAR, 0);
 			c.setOnDragCompleteListener((JavaScriptCallback) ev -> dragCompleteHandler(l, ev));
 		}
 		else
@@ -458,7 +461,7 @@ public class LayoutManager
 			return;
 		}
 
-		if (source.getId() != ComponentID.BANK_ITEM_CONTAINER || target.getId() != ComponentID.BANK_ITEM_CONTAINER)
+		if (source.getId() != InterfaceID.Bankmain.ITEMS || target.getId() != InterfaceID.Bankmain.ITEMS)
 		{
 			return;
 		}
@@ -466,7 +469,7 @@ public class LayoutManager
 		int sidx = source.getIndex();
 		int tidx = target.getIndex();
 
-		boolean swap = client.getVarbitValue(Varbits.BANK_REARRANGE_MODE) == 0;
+		boolean swap = client.getVarbitValue(VarbitID.BANK_INSERTMODE) == 0;
 
 		if (sidx >= l.size() || tidx >= l.size())
 		{
@@ -586,15 +589,15 @@ public class LayoutManager
 		{
 			resetWidgets();
 
+			// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
+			// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
+			// which is after this is run, but before the var/inv transmit listeners run, so that we will have
+			// them by the time the inv transmit listener runs.
+			potionStorage.cachePotions = true;
+
 			BankTag activeTag = plugin.getActiveBankTag();
 			if (activeTag != null)
 			{
-				// Since the script vm isn't reentrant, we can't call into POTIONSTORE_DOSES/POTIONSTORE_WITHDRAW_DOSES
-				// from bankmain_finishbuilding for the layout. Instead, we record all of the potions on client tick,
-				// which is after this is run, but before the var/inv transmit listeners run, so that we will have
-				// them by the time the inv transmit listener runs.
-				potionStorage.cachePotions = true;
-
 				Layout layout = plugin.getActiveLayout();
 				if (layout != null)
 				{
@@ -610,7 +613,7 @@ public class LayoutManager
 		// We adjust the bank item container children's sizes in layouts,
 		// however they are only initially set when the bank is opened,
 		// so we have to reset them each time the bank is built.
-		Widget w = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget w = client.getWidget(InterfaceID.Bankmain.ITEMS);
 
 		for (Widget c : w.getChildren())
 		{
@@ -630,7 +633,7 @@ public class LayoutManager
 
 	void onMenuEntryAdded(MenuEntryAdded event, TabInterface tabInterface)
 	{
-		if (event.getActionParam1() == ComponentID.BANK_CONTENT_CONTAINER && event.getOption().equals(TabInterface.DISABLE_LAYOUT))
+		if (event.getActionParam1() == InterfaceID.Bankmain.ITEMS_CONTAINER && event.getOption().equals(TabInterface.DISABLE_LAYOUT))
 		{
 			int idx = -1;
 			for (PluginAutoLayout autoLayout : autoLayouts)
@@ -670,7 +673,7 @@ public class LayoutManager
 	void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		// Update widget index of the menu so withdraws work in laid out tabs.
-		if (event.getParam1() == ComponentID.BANK_ITEM_CONTAINER && plugin.getActiveLayout() != null)
+		if (event.getParam1() == InterfaceID.Bankmain.ITEMS && plugin.getActiveLayout() != null)
 		{
 			MenuEntry menu = event.getMenuEntry();
 			Widget w = menu.getWidget();
@@ -684,12 +687,12 @@ public class LayoutManager
 					return;
 				}
 
-				idx = potionStorage.find(w.getItemId());
+				idx = potionStorage.getIdx(w.getItemId());
 				if (idx > -1)
 				{
 					potionStorage.prepareWidgets();
-					menu.setParam1(ComponentID.BANK_POTIONSTORE_CONTENT);
-					menu.setParam0(idx * PotionStorage.COMPONENTS_PER_POTION);
+					menu.setParam1(InterfaceID.Bankmain.POTIONSTORE_ITEMS);
+					menu.setParam0(idx);
 				}
 			}
 		}
@@ -707,7 +710,7 @@ public class LayoutManager
 		int rows = (pos + BANK_ITEMS_PER_ROW - 1) / BANK_ITEMS_PER_ROW;
 		int scrollY = rows * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
 
-		Widget w = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget w = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		if (scrollY < w.getScrollY())
 		{
 			int bankHeight = w.getHeight() / (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
@@ -720,7 +723,7 @@ public class LayoutManager
 
 			log.debug("Adjusting tab scroll to {} from {}", scrollY, w.getScrollY());
 			w.setScrollY(scrollY);
-			client.setVarcIntValue(VarClientInt.BANK_SCROLL, scrollY);
+			client.setVarcIntValue(VarClientID.BANK_SCROLLPOS, scrollY);
 		}
 	}
 
@@ -733,7 +736,7 @@ public class LayoutManager
 			List<Integer> removed = new ArrayList<>();
 
 			// Equipment
-			ItemContainer e = client.getItemContainer(InventoryID.EQUIPMENT);
+			ItemContainer e = client.getItemContainer(InventoryID.WORN);
 			if (e != null)
 			{
 				int[] format = {
@@ -774,7 +777,7 @@ public class LayoutManager
 			}
 
 			// Inventory
-			ItemContainer i = client.getItemContainer(InventoryID.INVENTORY);
+			ItemContainer i = client.getItemContainer(InventoryID.INV);
 			if (i != null)
 			{
 				for (int pos = 0, base = 4; pos < i.size(); ++pos)
@@ -807,7 +810,7 @@ public class LayoutManager
 			if (i != null && hasRunePouch(i))
 			{
 				final int[] RUNEPOUCH_RUNES = {
-					Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
+					VarbitID.RUNE_POUCH_TYPE_1, VarbitID.RUNE_POUCH_TYPE_2, VarbitID.RUNE_POUCH_TYPE_3, VarbitID.RUNE_POUCH_TYPE_4
 				};
 				final EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
 
@@ -861,7 +864,7 @@ public class LayoutManager
 
 		private boolean hasRunePouch(ItemContainer inv)
 		{
-			Collection<Integer> runePouchVariations = ItemVariationMapping.getVariations(ItemID.RUNE_POUCH);
+			Collection<Integer> runePouchVariations = ItemVariationMapping.getVariations(ItemID.BH_RUNE_POUCH);
 			Collection<Integer> divineRunePouchVariations = ItemVariationMapping.getVariations(ItemID.DIVINE_RUNE_POUCH);
 			return runePouchVariations.stream().anyMatch(inv::contains) || divineRunePouchVariations.stream().anyMatch(inv::contains);
 		}

@@ -26,7 +26,7 @@ package net.runelite.client.plugins.config;
 
 import java.util.List;
 
-public interface SearchablePlugin
+interface SearchablePlugin
 {
 	String getSearchableName();
 
@@ -35,5 +35,10 @@ public interface SearchablePlugin
 	default boolean isPinned()
 	{
 		return false;
+	}
+
+	default int installs()
+	{
+		return 0;
 	}
 }

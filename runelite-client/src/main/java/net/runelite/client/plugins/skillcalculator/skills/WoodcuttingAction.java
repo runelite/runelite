@@ -26,7 +26,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
@@ -39,13 +39,13 @@ public enum WoodcuttingAction implements ItemSkillAction
 	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 67.5f),
 	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 85),
 	JUNIPER_LOGS(ItemID.JUNIPER_LOGS, 42, 35),
-	BARK(ItemID.BARK, 45, 82.5f),
+	BARK(ItemID.HOLLOW_BARK, 45, 82.5f),
 	MAPLE_LOGS(ItemID.MAPLE_LOGS, 45, 100),
 	MAHOGANY_LOGS(ItemID.MAHOGANY_LOGS, 50, 125),
-	ARCTIC_PINE_LOGS(ItemID.ARCTIC_PINE_LOGS, 54, 40),
+	ARCTIC_PINE_LOGS(ItemID.ARCTIC_PINE_LOG, 54, 40),
 	YEW_LOGS(ItemID.YEW_LOGS, 60, 175),
 	BLISTERWOOD_LOGS(ItemID.BLISTERWOOD_LOGS, 62, 76),
-	SULLIUSCEPS(ItemID.SULLIUSCEP_CAP, 65, 127)
+	SULLIUSCEPS(ItemID.FOSSIL_SULLIUSCEP_CAP, 65, 127)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)

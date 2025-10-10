@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 public class WildcardMatcher
 {
-	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*)");
+	private static final Pattern WILDCARD_PATTERN = Pattern.compile("(?i)[^*]+|(\\*+)");
 
 	public static boolean matches(String pattern, String text)
 	{

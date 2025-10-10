@@ -78,7 +78,7 @@ enum TeleportLocationData
 	TEARS_OF_GUTHIX(TeleportType.JEWELLERY, "Games Necklace" , "Tears of Guthix", new WorldPoint(3245, 9500, 0), "games_necklace_teleport_icon.png"),
 	CORPOREAL_BEAST(TeleportType.JEWELLERY, "Games Necklace" , "Corporeal Beast", new WorldPoint(2967, 4384, 0), "games_necklace_teleport_icon.png"),
 	WINTERTODT_CAMP(TeleportType.JEWELLERY, "Games Necklace" , "Wintertodt Camp", new WorldPoint(1624, 3938, 0), "games_necklace_teleport_icon.png"),
-	PVP_ARENA(TeleportType.JEWELLERY, "Ring of Dueling" , "Al Kharid PvP Arena", new WorldPoint(3315, 3235, 0), "ring_of_dueling_teleport_icon.png"),
+	EMIRS_ARENA(TeleportType.JEWELLERY, "Ring of Dueling" , "Emir's Arena", new WorldPoint(3315, 3235, 0), "ring_of_dueling_teleport_icon.png"),
 	FEROX_ENCLAVE(TeleportType.JEWELLERY, "Ring of Dueling" , "Ferox Enclave", new WorldPoint(3151, 3636, 0), "ring_of_dueling_teleport_icon.png"),
 	CASTLE_WARS(TeleportType.JEWELLERY, "Ring of Dueling" , "Castle Wars", new WorldPoint(2441, 3091, 0), "ring_of_dueling_teleport_icon.png"),
 	FORTIS_COLOSSEUM(TeleportType.JEWELLERY, "Ring of Dueling" , "Fortis Colosseum", new WorldPoint(1793, 3107, 0), "ring_of_dueling_teleport_icon.png"),
@@ -119,6 +119,11 @@ enum TeleportLocationData
 	DARKFROST(TeleportType.JEWELLERY, "Pendant of Ates", "The Darkfrost", new WorldPoint(1490, 3284, 0), "pendant_of_ates_icon.png"),
 	RALOS_RISE(TeleportType.JEWELLERY, "Pendant of Ates", "Ralos' Rise", new WorldPoint(1459, 3137, 0), "pendant_of_ates_icon.png"),
 	TWILIGHT_TEMPLE(TeleportType.JEWELLERY, "Pendant of Ates", "Twilight Temple", new WorldPoint(1666, 3223, 0), "pendant_of_ates_icon.png"),
+	KASTORI(TeleportType.JEWELLERY, "Pendant of Ates", "Kastori", new WorldPoint(1366, 3086, 0), "pendant_of_ates_icon.png"),
+	NEMUS_RETREAT(TeleportType.JEWELLERY, "Pendant of Ates", "Nemus Retreat", new WorldPoint(1364, 3277, 0), "pendant_of_ates_icon.png"),
+	BRYOPHYTA_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Bryophyta's Lair", new WorldPoint(3174, 9898, 0), "giantsoul_amulet_teleport_icon.png"),
+	OBOR_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Obor's Lair", new WorldPoint(3096, 9833, 0), "giantsoul_amulet_teleport_icon.png"),
+	BRANDA_AND_ELDRIC_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Branda and Eldric's Lair", new WorldPoint(2952, 9574, 0), "giantsoul_amulet_teleport_icon.png"),
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
@@ -206,6 +211,7 @@ enum TeleportLocationData
 	WATSON_SCROLL(TeleportType.SCROLL, "Watson Teleport", new WorldPoint(1645, 3579, 0), "scroll_teleport_icon.png"),
 	SPIDER_CAVE_SCROLL(TeleportType.SCROLL, "Spider cave teleport", new WorldPoint(3658, 3403, 0), "scroll_teleport_icon.png"),
 	COLOSSAL_WYRM_SCROLL(TeleportType.SCROLL, "Colossal Wyrm Teleport", new WorldPoint(1641, 2921, 0), "scroll_teleport_icon.png"),
+	CHASM_TELEPORT_SCROLL(TeleportType.SCROLL, "Chasm of Fire teleport", new WorldPoint(1311, 9882, 0), "scroll_teleport_icon.png"),
 
 	// Skillcapes
 	ACHIEVEMENT_CAPE_TWO_PINTS(TeleportType.OTHER, "Achievement Cape", "Two-pints", new WorldPoint(2574, 3324, 0), "achievement_cape_icon.png"),

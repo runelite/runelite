@@ -286,14 +286,14 @@ public interface Widget
 	/**
 	 * Gets the sequence ID used to animate the model in the widget
 	 *
-	 * @see net.runelite.api.AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getAnimationId();
 
 	/**
 	 * Sets the sequence ID used to animate the model in the widget
 	 *
-	 * @see net.runelite.api.AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	Widget setAnimationId(int animationId);
 
@@ -364,7 +364,7 @@ public interface Widget
 	 * Gets the sprite ID displayed in the widget.
 	 *
 	 * @return the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * @see net.runelite.api.gameval.SpriteID
 	 */
 	int getSpriteId();
 
@@ -382,7 +382,7 @@ public interface Widget
 	 * Sets the sprite ID displayed in the widget.
 	 *
 	 * @param spriteId the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * @see net.runelite.api.gameval.SpriteID
 	 */
 	Widget setSpriteId(int spriteId);
 
@@ -964,14 +964,25 @@ public interface Widget
 	Widget setFilled(boolean filled);
 
 	/**
-	 * Verb for spell targets
+	 * Verb for op targets
 	 */
 	String getTargetVerb();
 
 	/**
-	 * Verb for spell targets
+	 * Verb for op targets
 	 */
 	void setTargetVerb(String targetVerb);
+
+	/**
+	 * Get the priority that the target verb op is at
+	 */
+	int getTargetPriority();
+
+	/**
+	 * Set the priority that the target verb op is at
+	 * @param priority priority, default 4
+	 */
+	void setTargetPriority(int priority);
 
 	/**
 	 * Can widgets under this widgets be clicked in this widgets bounding box
@@ -994,12 +1005,12 @@ public interface Widget
 	void setNoScrollThrough(boolean noScrollThrough);
 
 	/**
-	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 * {@link net.runelite.api.gameval.VarPlayerID}s that triggers this widgets varTransmitListener
 	 */
 	int[] getVarTransmitTrigger();
 
 	/**
-	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 * {@link net.runelite.api.gameval.VarPlayerID}s that triggers this widgets varTransmitListener
 	 */
 	void setVarTransmitTrigger(int ...trigger);
 

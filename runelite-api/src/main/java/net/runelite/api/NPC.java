@@ -35,7 +35,7 @@ public interface NPC extends Actor
 	 * Gets the ID of the NPC.
 	 *
 	 * @return the ID of the NPC
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 
@@ -50,7 +50,6 @@ public interface NPC extends Actor
 	 * NPC array.
 	 *
 	 * @return the NPC index
-	 * @see Client#getCachedNPCs()
 	 */
 	int getIndex();
 
@@ -74,4 +73,26 @@ public interface NPC extends Actor
 
 	@Nullable
 	NpcOverrides getChatheadOverrides();
+
+	/**
+	 * Get the array of overhead icon archive ids.
+	 * Used in conjunction with {@link #getOverheadSpriteIds()}
+	 * to determine which icons are being rendered overhead.
+	 *
+	 * @return A sparse array of archive ids. Values of -1 are not used.
+	 * @see #getOverheadSpriteIds()
+	 */
+	@Nullable
+	int[] getOverheadArchiveIds();
+
+	/**
+	 * Get the array of overhead icon sprite indexes.
+	 * Used in conjunction with {@link #getOverheadArchiveIds()}
+	 * to determine which icons are being rendered overhead.
+	 *
+	 * @return A sparse array of archive ids. Values of -1 are not used.
+	 * @see #getOverheadArchiveIds()
+	 */
+	@Nullable
+	short[] getOverheadSpriteIds();
 }

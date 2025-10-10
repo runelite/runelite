@@ -30,7 +30,6 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -297,7 +296,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			.setType(MenuAction.RUNELITE)
 			.onClick(e -> SwingUtilities.invokeLater(() ->
 			{
-				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+				RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 					MoreObjects.firstNonNull(colorTileObject.getBorderColor(), config.markerColor()), "Mark Border Color", false);
 				colorPicker.setOnClose(c ->
 					clientThread.invokeLater(() ->
@@ -343,7 +342,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 				// default fill color depends on the highlight type. just use a=50 from hull fill.
 				var previousColor = MoreObjects.firstNonNull(colorTileObject.getFillColor(), new Color(0, 0, 0, 50));
 
-				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+				RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 					previousColor, "Mark Fill Color", false);
 				colorPicker.setOnClose(c ->
 					clientThread.invokeLater(() ->

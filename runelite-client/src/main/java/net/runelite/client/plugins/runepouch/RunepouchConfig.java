@@ -45,8 +45,8 @@ public interface RunepouchConfig extends Config
 
 	@ConfigItem(
 		keyName = "fontcolor",
-		name = "Font Color",
-		description = "Color of the font for the number of runes in pouch",
+		name = "Font color",
+		description = "Color of the font for the number of runes in pouch.",
 		position = 1
 	)
 	default Color fontColor()
@@ -57,7 +57,7 @@ public interface RunepouchConfig extends Config
 	@ConfigItem(
 		keyName = "runePouchOverlayMode",
 		name = "Display mode",
-		description = "Configures where rune pouch overlay is displayed",
+		description = "Configures where rune pouch overlay is displayed.",
 		position = 3
 	)
 	default RunepouchOverlayMode runePouchOverlayMode()

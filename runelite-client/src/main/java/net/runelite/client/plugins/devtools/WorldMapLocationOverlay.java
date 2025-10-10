@@ -33,8 +33,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.overlay.Overlay;
@@ -57,7 +56,7 @@ public class WorldMapLocationOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGHEST);
 		setLayer(OverlayLayer.MANUAL);
-		drawAfterInterface(InterfaceID.WORLD_MAP);
+		drawAfterInterface(InterfaceID.WORLDMAP);
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class WorldMapLocationOverlay extends Overlay
 		}
 
 		WorldMap worldMap = client.getWorldMap();
-		Widget worldMapWidget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		Widget worldMapWidget = client.getWidget(InterfaceID.Worldmap.MAP_CONTAINER);
 
 		if (worldMap == null || worldMapWidget == null)
 		{

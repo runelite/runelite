@@ -34,10 +34,6 @@ public final class HintArrowType
 	 */
 	public static final int NONE = 0;
 	/**
-	 * Hint arrow is pointing to a player.
-	 */
-	public static final int PLAYER = 10;
-	/**
 	 * Hint arrow is pointing to an NPC.
 	 */
 	public static final int NPC = 1;
@@ -45,4 +41,12 @@ public final class HintArrowType
 	 * Hint arrow is pointing at a position in the world.
 	 */
 	public static final int COORDINATE = 2;
+	/**
+	 * Hint arrow is pointing to a player.
+	 */
+	public static final int PLAYER = 3;
+	/**
+	 * Hint arrow is pointing at a WorldEntity
+	 */
+	public static final int WORLDENTITY = 4;
 }
