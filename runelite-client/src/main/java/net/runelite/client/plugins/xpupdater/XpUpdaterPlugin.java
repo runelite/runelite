@@ -146,7 +146,8 @@ public class XpUpdaterPlugin extends Plugin
 			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
 			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
-			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
@@ -171,7 +172,8 @@ public class XpUpdaterPlugin extends Plugin
 		if (config.templeosrs()
 			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl.Builder url = new HttpUrl.Builder()
 				.scheme("https")
@@ -199,7 +201,8 @@ public class XpUpdaterPlugin extends Plugin
 	{
 		if (config.wiseoldman()
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
