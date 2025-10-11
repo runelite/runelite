@@ -508,10 +508,11 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		if (entry.getOption().equals(TAG) || entry.getOption().equals(UNTAG))
 		{
-			final boolean removed = npcTags.remove(id);
+			final boolean exists = highlightedNpcs.containsKey(npc);
 
-			if (removed)
+			if (exists)
 			{
+				npcTags.remove(id);
 				if (!highlightMatchesNPCName(npc.getName()))
 				{
 					highlightedNpcs.remove(npc);
