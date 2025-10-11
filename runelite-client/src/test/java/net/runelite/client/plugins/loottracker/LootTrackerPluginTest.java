@@ -162,8 +162,8 @@ public class LootTrackerPluginTest
 
 		wv = mock(WorldView.class);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
-
 		when(client.getWorldView(anyInt())).thenReturn(wv);
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(wv);
 
 		lootTrackerPlugin = spy(lootTrackerPlugin);
 		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));

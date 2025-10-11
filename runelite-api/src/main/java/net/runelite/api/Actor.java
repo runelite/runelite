@@ -37,7 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Represents a RuneScape actor/entity.
  */
-public interface Actor extends Renderable
+public interface Actor extends Renderable, CameraFocusableEntity
 {
 	/**
 	 * Get the {@link WorldView} this actor belongs to

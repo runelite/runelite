@@ -42,6 +42,7 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -72,19 +73,18 @@ public class GameEventManager
 	 *
 	 * @param consumer consumer accepting tile as parameter
 	 */
-	private void forEachTile(Consumer<Tile> consumer)
+	private void forEachTile(WorldView wv, Consumer<Tile> consumer)
 	{
-		final Scene scene = client.getScene();
+		final Scene scene = wv.getScene();
 		final Tile[][][] tiles = scene.getTiles();
 
 		for (int z = 0; z < Constants.MAX_Z; ++z)
 		{
-			for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+			for (int x = 0; x < wv.getSizeX(); ++x)
 			{
-				for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+				for (int y = 0; y < wv.getSizeY(); ++y)
 				{
 					Tile tile = tiles[z][x][y];
-
 					if (tile == null)
 					{
 						continue;
@@ -122,84 +122,94 @@ public class GameEventManager
 				eventBus.post(new ItemContainerChanged(itemContainer.getId(), itemContainer));
 			}
 
-			for (NPC npc : client.getTopLevelWorldView().npcs())
-			{
-				if (npc != null)
-				{
-					final NpcSpawned npcSpawned = new NpcSpawned(npc);
-					eventBus.post(npcSpawned);
-				}
-			}
-
-			for (Player player : client.getTopLevelWorldView().players())
-			{
-				if (player != null)
-				{
-					final PlayerSpawned playerSpawned = new PlayerSpawned(player);
-					eventBus.post(playerSpawned);
-				}
-			}
-
-			forEachTile((tile) ->
-			{
-				WallObject wallObject = tile.getWallObject();
-				if (wallObject != null)
-				{
-					final WallObjectSpawned objectSpawned = new WallObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setWallObject(wallObject);
-					eventBus.post(objectSpawned);
-				}
-
-				DecorativeObject decorativeObject = tile.getDecorativeObject();
-				if (decorativeObject != null)
-				{
-					final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setDecorativeObject(decorativeObject);
-					eventBus.post(objectSpawned);
-				}
-
-				GroundObject groundObject = tile.getGroundObject();
-				if (groundObject != null)
-				{
-					final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
-					objectSpawned.setTile(tile);
-					objectSpawned.setGroundObject(groundObject);
-					eventBus.post(objectSpawned);
-				}
-
-				for (GameObject object : tile.getGameObjects())
-				{
-					if (object != null)
-					{
-						if (object.getSceneMinLocation().equals(tile.getSceneLocation()))
-						{
-							final GameObjectSpawned objectSpawned = new GameObjectSpawned();
-							objectSpawned.setTile(tile);
-							objectSpawned.setGameObject(object);
-							eventBus.post(objectSpawned);
-						}
-					}
-				}
-
-				ItemLayer itemLayer = tile.getItemLayer();
-				if (itemLayer != null)
-				{
-					Node current = itemLayer.getTop();
-					while (current instanceof TileItem)
-					{
-						final TileItem item = (TileItem) current;
-
-						current = current.getNext();
-
-						final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
-						eventBus.post(itemSpawned);
-					}
-				}
-			});
+			simulateGameEvents(client.getTopLevelWorldView());
 
 			eventBus.unregister(subscriber);
 		});
+	}
+
+	private void simulateGameEvents(WorldView wv)
+	{
+		for (NPC npc : wv.npcs())
+		{
+			if (npc != null)
+			{
+				final NpcSpawned npcSpawned = new NpcSpawned(npc);
+				eventBus.post(npcSpawned);
+			}
+		}
+
+		for (Player player : wv.players())
+		{
+			if (player != null)
+			{
+				final PlayerSpawned playerSpawned = new PlayerSpawned(player);
+				eventBus.post(playerSpawned);
+			}
+		}
+
+		forEachTile(wv, (tile) ->
+		{
+			WallObject wallObject = tile.getWallObject();
+			if (wallObject != null)
+			{
+				final WallObjectSpawned objectSpawned = new WallObjectSpawned();
+				objectSpawned.setTile(tile);
+				objectSpawned.setWallObject(wallObject);
+				eventBus.post(objectSpawned);
+			}
+
+			DecorativeObject decorativeObject = tile.getDecorativeObject();
+			if (decorativeObject != null)
+			{
+				final DecorativeObjectSpawned objectSpawned = new DecorativeObjectSpawned();
+				objectSpawned.setTile(tile);
+				objectSpawned.setDecorativeObject(decorativeObject);
+				eventBus.post(objectSpawned);
+			}
+
+			GroundObject groundObject = tile.getGroundObject();
+			if (groundObject != null)
+			{
+				final GroundObjectSpawned objectSpawned = new GroundObjectSpawned();
+				objectSpawned.setTile(tile);
+				objectSpawned.setGroundObject(groundObject);
+				eventBus.post(objectSpawned);
+			}
+
+			for (GameObject object : tile.getGameObjects())
+			{
+				if (object != null)
+				{
+					if (object.getSceneMinLocation().equals(tile.getSceneLocation()))
+					{
+						final GameObjectSpawned objectSpawned = new GameObjectSpawned();
+						objectSpawned.setTile(tile);
+						objectSpawned.setGameObject(object);
+						eventBus.post(objectSpawned);
+					}
+				}
+			}
+
+			ItemLayer itemLayer = tile.getItemLayer();
+			if (itemLayer != null)
+			{
+				Node current = itemLayer.getTop();
+				while (current instanceof TileItem)
+				{
+					final TileItem item = (TileItem) current;
+
+					current = current.getNext();
+
+					final ItemSpawned itemSpawned = new ItemSpawned(tile, item);
+					eventBus.post(itemSpawned);
+				}
+			}
+		});
+
+		for (WorldView sub : wv.worldViews())
+		{
+			simulateGameEvents(sub);
+		}
 	}
 }

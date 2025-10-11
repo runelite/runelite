@@ -34,13 +34,13 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.Stroke;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
 import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_CLICKBOX;
 import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_HULL;
 import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_OUTLINE;
@@ -54,16 +54,14 @@ import net.runelite.client.util.ColorUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
-	private final Client client;
 	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
 	private final ModelOutlineRenderer modelOutlineRenderer;
 
 	@Inject
-	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin,
+	private ObjectIndicatorsOverlay(ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin,
 		ModelOutlineRenderer modelOutlineRenderer)
 	{
-		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 		this.modelOutlineRenderer = modelOutlineRenderer;
@@ -90,8 +88,9 @@ class ObjectIndicatorsOverlay extends Overlay
 		for (ColorTileObject obj : objects)
 		{
 			TileObject object = obj.getTileObject();
+			WorldView wv = object.getWorldView();
 
-			if (object.getPlane() != client.getPlane())
+			if (wv == null || object.getPlane() != wv.getPlane())
 			{
 				continue;
 			}

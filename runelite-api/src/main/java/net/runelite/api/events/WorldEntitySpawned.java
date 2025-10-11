@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-import net.runelite.api.coords.LocalPoint;
+import lombok.Value;
+import net.runelite.api.WorldEntity;
 
-public interface WorldEntity extends CameraFocusableEntity
+/**
+ * Called when a world entity spawns
+ *
+ * This is called when the world entity spawns, but before the WorldView has been loaded.
+ * @see WorldViewLoaded
+ */
+@Value
+public class WorldEntitySpawned
 {
-	WorldView getWorldView();
-
-	/**
-	 * Get the location of this world entity in the top level world.
-	 * @return
-	 */
-	LocalPoint getLocalLocation();
-
-	/**
-	 * Transform a point within the world entity to the overworld
-	 * @param point
-	 * @return
-	 */
-	LocalPoint transformToMainWorld(LocalPoint point);
+	WorldEntity worldEntity;
 }

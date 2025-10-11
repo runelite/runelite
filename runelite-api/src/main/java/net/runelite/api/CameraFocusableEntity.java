@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,20 +26,9 @@ package net.runelite.api;
 
 import net.runelite.api.coords.LocalPoint;
 
-public interface WorldEntity extends CameraFocusableEntity
+public interface CameraFocusableEntity
 {
 	WorldView getWorldView();
 
-	/**
-	 * Get the location of this world entity in the top level world.
-	 * @return
-	 */
-	LocalPoint getLocalLocation();
-
-	/**
-	 * Transform a point within the world entity to the overworld
-	 * @param point
-	 * @return
-	 */
-	LocalPoint transformToMainWorld(LocalPoint point);
+	LocalPoint getCameraFocus();
 }
