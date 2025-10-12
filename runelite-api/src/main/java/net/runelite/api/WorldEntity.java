@@ -42,4 +42,10 @@ public interface WorldEntity extends CameraFocusableEntity
 	 * @return
 	 */
 	LocalPoint transformToMainWorld(LocalPoint point);
+
+	/**
+	 * Return true if this worldentity is overlapped
+	 * @return
+	 */
+	boolean isHiddenForOverlap();
 }
