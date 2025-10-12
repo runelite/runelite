@@ -458,7 +458,37 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		markObject(objectDefinition, name, object);
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final int regionId = worldPoint.getRegionID();
+		final Color borderColor = config.markerColor();
+		final Color fillColor = config.fillColor();
+		final ObjectPoint point = new ObjectPoint(
+			object.getId(),
+			name,
+			regionId,
+			worldPoint.getRegionX(),
+			worldPoint.getRegionY(),
+			worldPoint.getPlane(),
+			borderColor,
+			fillColor,
+			// use the default config values
+			null, null, null, null);
+
+		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
+
+		if (objectPoints.removeIf(findObjectPredicate(objectDefinition, object, worldPoint)))
+		{
+			unmarkObjects(client.getTopLevelWorldView(), worldPoint, objectDefinition);
+			log.debug("Unmarking object: {}", point);
+		}
+		else
+		{
+			objectPoints.add(point);
+			markObjects(client.getTopLevelWorldView(), worldPoint, objectDefinition);
+			log.debug("Marking object: {}", point);
+		}
+
+		savePoints(regionId, objectPoints);
 	}
 
 	private void updateObjectConfig(TileObject object, Consumer<ObjectPoint> c)
@@ -483,9 +513,13 @@ public class ObjectIndicatorsPlugin extends Plugin
 		savePoints(regionId, objectPoints);
 
 		// rebuild the ColorTileObject from the new config
-		if (objects.removeIf(o -> o.getTileObject() == object))
+		for (ColorTileObject o : new ArrayList<>(objects))
 		{
-			checkObjectPoints(object);
+			if (o.getTileObject().getId() == object.getId())
+			{
+				objects.remove(o);
+				checkObjectPoints(o.getTileObject());
+			}
 		}
 	}
 
@@ -613,54 +647,48 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-	/** mark or unmark an object
-	 *
-	 * @param objectComposition transformed composition of object based on vars
-	 * @param name name of objectComposition
-	 * @param object tile object, for multilocs object.getId() is the base id
-	 */
-	private void markObject(ObjectComposition objectComposition, String name, final TileObject object)
+	private void markObjects(WorldView wv, WorldPoint p, ObjectComposition objectConfig)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
-		final int regionId = worldPoint.getRegionID();
-		final Color borderColor = config.markerColor();
-		final Color fillColor = config.fillColor();
-		final ObjectPoint point = new ObjectPoint(
-			object.getId(),
-			name,
-			regionId,
-			worldPoint.getRegionX(),
-			worldPoint.getRegionY(),
-			worldPoint.getPlane(),
-			borderColor,
-			fillColor,
-			// use the default config values
-			null, null, null, null);
-
-		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
-
-		if (objects.removeIf(o -> o.getTileObject() == object))
+		for (WorldPoint sp : WorldPoint.toLocalInstance(wv, p))
 		{
-			if (!objectPoints.removeIf(findObjectPredicate(objectComposition, object, worldPoint)))
+			int x = sp.getX() - wv.getBaseX(), y = sp.getY() - wv.getBaseY();
+			TileObject object = findTileObject(wv, x, y, objectConfig.getId());
+			if (object != null)
 			{
-				log.warn("unable to find object point for unmarked object {}", object.getId());
+				objects.add(new ColorTileObject(object,
+					client.getObjectDefinition(object.getId()),
+					objectConfig.getName(),
+					config.markerColor(),
+					config.fillColor(),
+					(byte) 0));
 			}
-
-			log.debug("Unmarking object: {}", point);
 		}
-		else
+
+		for (WorldView sub : wv.worldViews())
 		{
-			objectPoints.add(point);
-			objects.add(new ColorTileObject(object,
-				client.getObjectDefinition(object.getId()),
-				name,
-				borderColor,
-				fillColor,
-				(byte) 0));
-			log.debug("Marking object: {}", point);
+			markObjects(sub, p, objectConfig);
+		}
+	}
+
+	private void unmarkObjects(WorldView wv, WorldPoint p, ObjectComposition objectConfig)
+	{
+		for (WorldPoint sp : WorldPoint.toLocalInstance(wv, p))
+		{
+			int x = sp.getX() - wv.getBaseX(), y = sp.getY() - wv.getBaseY();
+			TileObject object = findTileObject(wv, x, y, objectConfig.getId());
+			if (object != null)
+			{
+				if (!objects.removeIf(o -> o.getTileObject() == object))
+				{
+					log.warn("unable to find object point for unmarked object {}", object.getId());
+				}
+			}
 		}
 
-		savePoints(regionId, objectPoints);
+		for (WorldView sub : wv.worldViews())
+		{
+			unmarkObjects(sub, p, objectConfig);
+		}
 	}
 
 	private static Predicate<ObjectPoint> findObjectPredicate(ObjectComposition objectComposition, TileObject object, WorldPoint worldPoint)
