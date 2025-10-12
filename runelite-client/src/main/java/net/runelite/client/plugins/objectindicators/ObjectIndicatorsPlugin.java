@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -248,6 +249,11 @@ public class ObjectIndicatorsPlugin extends Plugin
 	{
 		var wv = event.getWorldView();
 		objects.removeIf(c -> c.getTileObject().getWorldView() == wv);
+		// TODO remove points when the last boat using it despawns?
+		if (wv.isTopLevel())
+		{
+			Arrays.stream(wv.getMapRegions()).forEach(points::remove);
+		}
 	}
 
 	@Subscribe
