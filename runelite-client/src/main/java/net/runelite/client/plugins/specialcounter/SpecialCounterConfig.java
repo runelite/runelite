@@ -93,7 +93,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Hide tooltip",
 		description = "Hide tooltip when infobox is hovered"
 	)
-	default boolean hideTooltip() {
+	default boolean hideTooltip()
+	{
 		return false;
 	}
 
@@ -229,7 +230,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Barrelchest Anchor",
 		description = "Threshold for Barrelchest Anchor (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int anchorThreshold() {
+	default int anchorThreshold()
+	{
 		return 0;
 	}
 
@@ -242,7 +244,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Bone Dagger",
 		description = "Threshold for Bone Dagger (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int boneDaggerThreshold() {
+	default int boneDaggerThreshold()
+	{
 		return 0;
 	}
 
@@ -255,7 +258,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Dorgeshuun Crossbow",
 		description = "Threshold for Dorgeshuun Crossbow(0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int boneCrossbowThreshold() {
+	default int boneCrossbowThreshold()
+	{
 		return 0;
 	}
 
@@ -268,7 +272,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Accursed Sceptre",
 		description = "Threshold for Accursed Sceptre (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int accursedSceptreThreshold() {
+	default int accursedSceptreThreshold()
+	{
 		return 0;
 	}
 
@@ -281,7 +286,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Tonalztics of Ralos",
 		description = "Threshold for Tonalztics of Ralos (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int ralosThreshold() {
+	default int ralosThreshold()
+	{
 		return 0;
 	}
 
@@ -294,7 +300,8 @@ public interface SpecialCounterConfig extends Config
 		name = "Seercull",
 		description = "Threshold for Seercull (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int seercullThreshold() {
+	default int seercullThreshold()
+	{
 		return 0;
 	}
 }
