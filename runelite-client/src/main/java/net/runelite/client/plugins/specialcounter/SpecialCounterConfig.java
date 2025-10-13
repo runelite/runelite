@@ -93,7 +93,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Hide tooltip",
 		description = "Hide tooltip when infobox is hovered"
 	)
-	default boolean hideTooltip() { return false; }
+	default boolean hideTooltip() {
+		return false;
+	}
 
 	@ConfigItem(
 		position = 3,
@@ -227,7 +229,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Barrelchest Anchor",
 		description = "Threshold for Barrelchest Anchor (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int anchorThreshold() { return 0; }
+	default int anchorThreshold() {
+		return 0;
+	}
 
 	@Range(
 		min = -1
@@ -238,7 +242,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Bone Dagger",
 		description = "Threshold for Bone Dagger (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int boneDaggerThreshold() { return 0; }
+	default int boneDaggerThreshold() {
+		return 0;
+	}
 
 	@Range(
 		min = -1
@@ -249,7 +255,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Dorgeshuun Crossbow",
 		description = "Threshold for Dorgeshuun Crossbow(0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int boneCrossbowThreshold() { return 0; }
+	default int boneCrossbowThreshold() {
+		return 0;
+	}
 
 	@Range(
 		min = -1
@@ -260,7 +268,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Accursed Sceptre",
 		description = "Threshold for Accursed Sceptre (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int accursedSceptreThreshold() { return 0; }
+	default int accursedSceptreThreshold() {
+		return 0;
+	}
 
 	@Range(
 		min = -1
@@ -271,7 +281,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Tonalztics of Ralos",
 		description = "Threshold for Tonalztics of Ralos (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int ralosThreshold() { return 0; }
+	default int ralosThreshold() {
+		return 0;
+	}
 
 	@Range(
 		min = -1
@@ -282,5 +294,7 @@ public interface SpecialCounterConfig extends Config
 		name = "Seercull",
 		description = "Threshold for Seercull (0 to disable notifications, -1 to fully disable tracking)."
 	)
-	default int seercullThreshold() { return 0; }
+	default int seercullThreshold() {
+		return 0;
+	}
 }
