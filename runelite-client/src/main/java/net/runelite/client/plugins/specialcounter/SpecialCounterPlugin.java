@@ -81,20 +81,20 @@ import net.runelite.client.util.ImageUtil;
 import static net.runelite.client.plugins.specialcounter.SpecialWeapon.*;
 
 @PluginDescriptor(
-		name = "Special Attack Counter",
-		description = "Track special attacks used on NPCs",
-		tags = {"combat", "npcs", "overlay"},
-		enabledByDefault = false
+	name = "Special Attack Counter",
+	description = "Track special attacks used on NPCs",
+	tags = {"combat", "npcs", "overlay"},
+	enabledByDefault = false
 )
 @Slf4j
 public class SpecialCounterPlugin extends Plugin
 {
 	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
-			NpcID.DARK_CORE, // corp
-			NpcID.VORKATH_SPAWN_QUEST, NpcID.VORKATH_SPAWN, // vorkath
-			NpcID.POH_COMBAT_DUMMY_NPC, NpcID.POH_COMBAT_DUMMY_UNDEADSLAYER_NPC, // poh
-			NpcID.VETION_HELLHOUND_JNR, NpcID.VETION_HELLHOUND_SNR, // vetion
-			NpcID.ABYSSALSIRE_SPAWN, NpcID.ABYSSALSIRE_SCION // abyssal sire
+		NpcID.DARK_CORE, // corp
+		NpcID.VORKATH_SPAWN_QUEST, NpcID.VORKATH_SPAWN, // vorkath
+		NpcID.POH_COMBAT_DUMMY_NPC, NpcID.POH_COMBAT_DUMMY_UNDEADSLAYER_NPC, // poh
+		NpcID.VETION_HELLHOUND_JNR, NpcID.VETION_HELLHOUND_SNR, // vetion
+		NpcID.ABYSSALSIRE_SPAWN, NpcID.ABYSSALSIRE_SCION // abyssal sire
 	);
 
 	private int currentWorld;
@@ -394,7 +394,7 @@ public class SpecialCounterPlugin extends Plugin
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
 
 			log.debug("Special attack used - cycle: {} percent: {} weapon: {} server cycle {} hitsplat cycle {} hp change: {}",
-					client.getGameCycle(), specialPercentage, specialWeapon, serverTicks, hitsplatTick, lastSpecHpChange);
+				client.getGameCycle(), specialPercentage, specialWeapon, serverTicks, hitsplatTick, lastSpecHpChange);
 
 			// Check if the counters should be reset
 			if (lastSpecTarget != null)
@@ -500,7 +500,7 @@ public class SpecialCounterPlugin extends Plugin
 	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
 		if (party.getLocalMember().getMemberId() == event.getMemberId()
-				|| event.getWorld() != client.getWorld())
+			|| event.getWorld() != client.getWorld())
 		{
 			return;
 		}
@@ -596,7 +596,7 @@ public class SpecialCounterPlugin extends Plugin
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
-					hit, specialWeapon);
+				hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
 		}
@@ -658,16 +658,16 @@ public class SpecialCounterPlugin extends Plugin
 		BufferedImage background = hit == 0 ? spriteManager.getSprite(SpriteID.Hitmark.HITSPLAT_BLUE_MISS, 0) : null;
 
 		return PlayerInfoDrop.builder()
-				.startCycle(cycle)
-				.endCycle(cycle + 100)
-				.playerIdx(playerId)
-				.text(Integer.toString(hit))
-				.textBackground(background)
-				.color(config.specDropColor())
-				.startHeightOffset(100)
-				.endHeightOffset(400)
-				.image(image)
-				.build();
+			.startCycle(cycle)
+			.endCycle(cycle + 100)
+			.playerIdx(playerId)
+			.text(Integer.toString(hit))
+			.textBackground(background)
+			.color(config.specDropColor())
+			.startHeightOffset(100)
+			.endHeightOffset(400)
+			.image(image)
+			.build();
 	}
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
