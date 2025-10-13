@@ -151,6 +151,7 @@ public class InterfaceStylesPlugin extends Plugin
 		MenuEntry[] newMenus = new MenuEntry[menuEntries.length];
 		int newIdx = 0;
 
+		MenuEntry walkHere = null;
 		Menu submenu = null;
 		Player prev = null;
 		boolean changed = false;
@@ -164,6 +165,15 @@ public class InterfaceStylesPlugin extends Plugin
 			{
 				String option = menuEntry.getOption();
 				boolean deprioritized = menuEntry.isDeprioritized();
+
+				if (option.contains("Walk here"))
+				{
+					if (walkHere == null)
+					{
+						walkHere = menuEntry.setTarget("");
+					}
+					continue;
+				}
 
 				if (prev != player)
 				{
@@ -199,6 +209,11 @@ public class InterfaceStylesPlugin extends Plugin
 
 		if (changed)
 		{
+			if (walkHere != null)
+			{
+				// Add walk here as first entry (end of array)
+				newMenus[newIdx++] = walkHere;
+			}
 			client.setMenuEntries(Arrays.copyOf(newMenus, newIdx));
 		}
 	}
