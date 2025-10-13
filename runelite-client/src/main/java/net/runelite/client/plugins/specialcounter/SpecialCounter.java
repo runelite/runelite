@@ -68,8 +68,8 @@ class SpecialCounter extends Counter
 		for (Map.Entry<String, Integer> entry : partySpecs.entrySet())
 		{
 			stringBuilder.append("</br>")
-				.append(entry.getKey() == null ? "You" : entry.getKey()).append(": ")
-				.append(buildTooltip(entry.getValue()));
+					.append(entry.getKey() == null ? "You" : entry.getKey()).append(": ")
+					.append(buildTooltip(entry.getValue()));
 		}
 
 		return stringBuilder.toString();
@@ -77,6 +77,11 @@ class SpecialCounter extends Counter
 
 	private String buildTooltip(int hitValue)
 	{
+		if (config.hideTooltip())
+		{
+			return null;
+		}
+
 		if (!weapon.isDamage())
 		{
 			if (hitValue == 1)
