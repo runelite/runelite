@@ -166,7 +166,7 @@ public class InterfaceStylesPlugin extends Plugin
 				String option = menuEntry.getOption();
 				boolean deprioritized = menuEntry.isDeprioritized();
 
-				if (option.contains("Walk here"))
+				if (type == MenuAction.WALK)
 				{
 					if (walkHere == null)
 					{
