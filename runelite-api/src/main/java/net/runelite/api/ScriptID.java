@@ -296,6 +296,9 @@ public final class ScriptID
 	@ScriptArguments(integer = 2)
 	public static final int TOPLEVEL_REDRAW = 907;
 
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_RESIZE_CUSTOMISE = 920;
+
 	/**
 	 * Called to set position of an xpdrop text and sprite(s)
 	 * <ul>

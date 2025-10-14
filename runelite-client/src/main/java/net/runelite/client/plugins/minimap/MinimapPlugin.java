@@ -134,7 +134,7 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
+		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW || scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_RESIZE_CUSTOMISE)
 		{
 			updateMinimapWidgetVisibility(config.hideMinimap());
 		}
