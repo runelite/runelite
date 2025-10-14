@@ -189,7 +189,7 @@ public class InterfaceStylesPlugin extends Plugin
 					.setDeprioritized(deprioritized);
 				changed = true;
 			}
-			else if (walkHere != null && type == MenuAction.WALK)
+			else if (walkHere == null && type == MenuAction.WALK)
 			{
 				walkHere = menuEntry;
 			}
