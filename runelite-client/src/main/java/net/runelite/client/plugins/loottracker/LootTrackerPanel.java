@@ -395,6 +395,18 @@ class LootTrackerPanel extends PluginPanel
 		}
 	}
 
+	boolean hasRecord(LootRecordType type, String name)
+	{
+		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
+		{
+			if (type.equals(record.getType()) && name.equals(record.getTitle()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Clear all records in the panel
 	 */
@@ -477,17 +489,9 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
-	 * Rebuilds loot entries when one of the price type config options is changed
-	 */
-	void updatePriceTypeDisplay()
-	{
-		rebuild();
-	}
-
-	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
-	private void rebuild()
+	void rebuild()
 	{
 		SwingUtil.fastRemoveAll(logsContainer);
 		boxes.clear();

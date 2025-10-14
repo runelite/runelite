@@ -566,7 +566,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 			else if ("priceType".equals(event.getKey()) || "showPriceType".equals(event.getKey()))
 			{
-				SwingUtilities.invokeLater(panel::updatePriceTypeDisplay);
+				SwingUtilities.invokeLater(panel::rebuild);
 			}
 		}
 	}
@@ -634,6 +634,26 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	// if there is unloaded loot for a type+name, load it in
+	private void initLoot(LootRecordType type, String name)
+	{
+		if (panel.hasRecord(type, name))
+		{
+			return;
+		}
+
+		ConfigLoot loot = getLootConfig(type, name);
+		if (loot == null)
+		{
+			return;
+		}
+
+		log.debug("Loaded {} records for {} {}", loot.numDrops(), type, name);
+
+		LootTrackerRecord record = convertToLootTrackerRecord(loot);
+		SwingUtilities.invokeLater(() -> panel.addRecords(Collections.singleton(record)));
+	}
+
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items)
 	{
 		addLoot(name, combatLevel, type, metadata, items, 1);
@@ -641,6 +661,8 @@ public class LootTrackerPlugin extends Plugin
 
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items, int amount)
 	{
+		initLoot(type, name);
+
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
