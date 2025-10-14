@@ -166,15 +166,6 @@ public class InterfaceStylesPlugin extends Plugin
 				String option = menuEntry.getOption();
 				boolean deprioritized = menuEntry.isDeprioritized();
 
-				if (type == MenuAction.WALK)
-				{
-					if (walkHere == null)
-					{
-						walkHere = menuEntry.setTarget("");
-					}
-					continue;
-				}
-
 				if (prev != player)
 				{
 					// Change this menu to be the submenu parent
@@ -198,6 +189,10 @@ public class InterfaceStylesPlugin extends Plugin
 					.setWorldViewId(menuEntry.getWorldViewId())
 					.setDeprioritized(deprioritized);
 				changed = true;
+			}
+			else if (walkHere != null && type == MenuAction.WALK)
+			{
+				walkHere = menuEntry;
 			}
 			else
 			{
