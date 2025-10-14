@@ -160,7 +160,7 @@ public class InterfaceStylesPlugin extends Plugin
 			MenuAction type = menuEntry.getType();
 
 			Player player = menuEntry.getPlayer();
-			if (player != null && type != MenuAction.ITEM_USE_ON_PLAYER && type != MenuAction.WIDGET_TARGET_ON_PLAYER)
+			if (player != null && type != MenuAction.ITEM_USE_ON_PLAYER && type != MenuAction.WIDGET_TARGET_ON_PLAYER && type != MenuAction.WALK)
 			{
 				String option = menuEntry.getOption();
 				boolean deprioritized = menuEntry.isDeprioritized();
