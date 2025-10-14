@@ -151,10 +151,10 @@ public class InterfaceStylesPlugin extends Plugin
 		MenuEntry[] newMenus = new MenuEntry[menuEntries.length];
 		int newIdx = 0;
 
-		MenuEntry walkHere = null;
 		Menu submenu = null;
 		Player prev = null;
 		boolean changed = false;
+		boolean walkFound = false;
 
 		for (MenuEntry menuEntry : menuEntries)
 		{
@@ -190,9 +190,10 @@ public class InterfaceStylesPlugin extends Plugin
 					.setDeprioritized(deprioritized);
 				changed = true;
 			}
-			else if (walkHere == null && type == MenuAction.WALK)
+			else if (!walkFound && type == MenuAction.WALK)
 			{
-				walkHere = menuEntry;
+				newMenus[newIdx++] = menuEntry.setTarget("");
+				walkFound = true;
 			}
 			else
 			{
@@ -204,11 +205,6 @@ public class InterfaceStylesPlugin extends Plugin
 
 		if (changed)
 		{
-			if (walkHere != null)
-			{
-				// Add walk here as first entry (end of array)
-				newMenus[newIdx++] = walkHere;
-			}
 			client.setMenuEntries(Arrays.copyOf(newMenus, newIdx));
 		}
 	}
