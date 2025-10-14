@@ -185,6 +185,7 @@ public class InterfaceStylesPlugin extends Plugin
 					.setType(type)
 					.setParam0(menuEntry.getParam0())
 					.setParam1(menuEntry.getParam1())
+					.setWorldViewId(menuEntry.getWorldViewId())
 					.setDeprioritized(deprioritized);
 				changed = true;
 			}
