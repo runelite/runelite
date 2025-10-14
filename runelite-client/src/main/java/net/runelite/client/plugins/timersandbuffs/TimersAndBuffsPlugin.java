@@ -1021,7 +1021,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, getMarkOfDarknessDuration());
+				createGameTimer(MARK_OF_DARKNESS, getMarkOfDarknessDuration(magicLevel));
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
@@ -1110,9 +1110,9 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 	}
 
-	private Duration getMarkOfDarknessDuration()
+	private Duration getMarkOfDarknessDuration(int magicLevel)
 	{
-		final Duration markOfDarknessDuration = Duration.of(300, RSTimeUnit.GAME_TICKS);
+		final Duration markOfDarknessDuration = Duration.of((long)magicLevel * 3, RSTimeUnit.GAME_TICKS);
 
 		final ItemContainer container = client.getItemContainer(InventoryID.WORN);
 		if (container != null)
