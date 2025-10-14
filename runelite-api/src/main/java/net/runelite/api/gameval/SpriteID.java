@@ -493,6 +493,194 @@ public final class SpriteID
 	public static final int HEADICONS_ET = 6405;
 	public static final int TEXTURE_THATCHED02 = 6408;
 	public static final int FARMING_UNDEAD_ICON = 6414;
+	public static final int TRADEBACKING_GREEN = 6415;
+	public static final int TRADEBACKING_DARK_GREEN = 6416;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_TOP_LEFT = 6449;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_TOP_RIGHT = 6450;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_BOTTOM_LEFT = 6451;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_BOTTOM_RIGHT = 6452;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_LEFT = 6453;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_TOP = 6454;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_RIGHT = 6455;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_BOTTOM = 6456;
+	public static final int CLASSIC01_BUTTON_BLUE_DEFAULT_CENTRE = 6457;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_TOP_LEFT = 6458;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_TOP_RIGHT = 6459;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_BOTTOM_LEFT = 6460;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_BOTTOM_RIGHT = 6461;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_LEFT = 6462;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_TOP = 6463;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_RIGHT = 6464;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_BOTTOM = 6465;
+	public static final int CLASSIC01_BUTTON_BLUE_MOUSEOVER_CENTRE = 6466;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_TOP_LEFT = 6467;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_TOP_RIGHT = 6468;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_BOTTOM_LEFT = 6469;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_BOTTOM_RIGHT = 6470;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_LEFT = 6471;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_TOP = 6472;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_RIGHT = 6473;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_BOTTOM = 6474;
+	public static final int CLASSIC01_BUTTON_BLUE_PRESSED_CENTRE = 6475;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_TOP_LEFT = 6476;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_TOP_RIGHT = 6477;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_BOTTOM_LEFT = 6478;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_BOTTOM_RIGHT = 6479;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_LEFT = 6480;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_TOP = 6481;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_RIGHT = 6482;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_BOTTOM = 6483;
+	public static final int CLASSIC01_BUTTON_GREEN_DEFAULT_CENTRE = 6484;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_TOP_LEFT = 6485;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_TOP_RIGHT = 6486;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_BOTTOM_LEFT = 6487;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_BOTTOM_RIGHT = 6488;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_LEFT = 6489;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_TOP = 6490;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_RIGHT = 6491;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_BOTTOM = 6492;
+	public static final int CLASSIC01_BUTTON_GREEN_MOUSEOVER_CENTRE = 6493;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_TOP_LEFT = 6494;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_TOP_RIGHT = 6495;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_BOTTOM_LEFT = 6496;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_BOTTOM_RIGHT = 6497;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_LEFT = 6498;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_TOP = 6499;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_RIGHT = 6500;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_BOTTOM = 6501;
+	public static final int CLASSIC01_BUTTON_GREEN_PRESSED_CENTRE = 6502;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_TOP_LEFT = 6503;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_TOP_RIGHT = 6504;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_BOTTOM_LEFT = 6505;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_BOTTOM_RIGHT = 6506;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_LEFT = 6507;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_TOP = 6508;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_RIGHT = 6509;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_BOTTOM = 6510;
+	public static final int CLASSIC01_BUTTON_YELLOW_DEFAULT_CENTRE = 6511;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_TOP_LEFT = 6512;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_TOP_RIGHT = 6513;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_BOTTOM_LEFT = 6514;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_BOTTOM_RIGHT = 6515;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_LEFT = 6516;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_TOP = 6517;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_RIGHT = 6518;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_BOTTOM = 6519;
+	public static final int CLASSIC01_BUTTON_YELLOW_MOUSEOVER_CENTRE = 6520;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_TOP_LEFT = 6521;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_TOP_RIGHT = 6522;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_BOTTOM_LEFT = 6523;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_BOTTOM_RIGHT = 6524;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_LEFT = 6525;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_TOP = 6526;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_RIGHT = 6527;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_BOTTOM = 6528;
+	public static final int CLASSIC01_BUTTON_YELLOW_PRESSED_CENTRE = 6529;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_TOP_LEFT = 6530;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_TOP_RIGHT = 6531;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_BOTTOM_LEFT = 6532;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_BOTTOM_RIGHT = 6533;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_LEFT = 6534;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_TOP = 6535;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_RIGHT = 6536;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_BOTTOM = 6537;
+	public static final int CLASSIC01_BUTTON_RED_DEFAULT_CENTRE = 6538;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_TOP_LEFT = 6539;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_TOP_RIGHT = 6540;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_BOTTOM_LEFT = 6541;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_BOTTOM_RIGHT = 6542;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_LEFT = 6543;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_TOP = 6544;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_RIGHT = 6545;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_BOTTOM = 6546;
+	public static final int CLASSIC01_BUTTON_RED_MOUSEOVER_CENTRE = 6547;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_TOP_LEFT = 6548;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_TOP_RIGHT = 6549;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_BOTTOM_LEFT = 6550;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_BOTTOM_RIGHT = 6551;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_LEFT = 6552;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_TOP = 6553;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_RIGHT = 6554;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_BOTTOM = 6555;
+	public static final int CLASSIC01_BUTTON_RED_PRESSED_CENTRE = 6556;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_TOP_LEFT = 6557;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_TOP_RIGHT = 6558;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_BOTTOM_LEFT = 6559;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_BOTTOM_RIGHT = 6560;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_LEFT = 6561;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_TOP = 6562;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_RIGHT = 6563;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_BOTTOM = 6564;
+	public static final int CLASSIC02_BUTTON_BLUE_DEFAULT_CENTRE = 6565;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_TOP_LEFT = 6566;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_TOP_RIGHT = 6567;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_BOTTOM_LEFT = 6568;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_BOTTOM_RIGHT = 6569;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_LEFT = 6570;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_TOP = 6571;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_RIGHT = 6572;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_BOTTOM = 6573;
+	public static final int CLASSIC02_BUTTON_BLUE_MOUSEOVER_CENTRE = 6574;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_TOP_LEFT = 6575;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_TOP_RIGHT = 6576;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_BOTTOM_LEFT = 6577;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_BOTTOM_RIGHT = 6578;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_LEFT = 6579;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_TOP = 6580;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_RIGHT = 6581;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_BOTTOM = 6582;
+	public static final int CLASSIC02_BUTTON_BLUE_PRESSED_CENTRE = 6583;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_TOP_LEFT = 6584;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_TOP_RIGHT = 6585;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_BOTTOM_LEFT = 6586;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_BOTTOM_RIGHT = 6587;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_LEFT = 6588;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_TOP = 6589;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_RIGHT = 6590;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_BOTTOM = 6591;
+	public static final int CLASSIC02_BUTTON_GREEN_DEFAULT_CENTRE = 6592;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_TOP_LEFT = 6593;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_TOP_RIGHT = 6594;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_BOTTOM_LEFT = 6595;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_BOTTOM_RIGHT = 6596;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_LEFT = 6597;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_TOP = 6598;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_RIGHT = 6599;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_BOTTOM = 6600;
+	public static final int CLASSIC02_BUTTON_GREEN_MOUSEOVER_CENTRE = 6601;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_TOP_LEFT = 6602;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_TOP_RIGHT = 6603;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_BOTTOM_LEFT = 6604;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_BOTTOM_RIGHT = 6605;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_LEFT = 6606;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_TOP = 6607;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_RIGHT = 6608;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_BOTTOM = 6609;
+	public static final int CLASSIC02_BUTTON_GREEN_PRESSED_CENTRE = 6610;
+	public static final int MASTERY_BINGO01_28X28 = 6751;
+	public static final int MASTERY_BINGO01_56X56 = 6752;
+	public static final int SIMPLE_BUTTON_DEFAULT_TOP_LEFT = 6765;
+	public static final int SIMPLE_BUTTON_DEFAULT_TOP_RIGHT = 6766;
+	public static final int SIMPLE_BUTTON_DEFAULT_BOTTOM_LEFT = 6767;
+	public static final int SIMPLE_BUTTON_DEFAULT_BOTTOM_RIGHT = 6768;
+	public static final int SIMPLE_BUTTON_DEFAULT_LEFT = 6769;
+	public static final int SIMPLE_BUTTON_DEFAULT_TOP = 6770;
+	public static final int SIMPLE_BUTTON_DEFAULT_RIGHT = 6771;
+	public static final int SIMPLE_BUTTON_DEFAULT_BOTTOM = 6772;
+	public static final int SIMPLE_BUTTON_DEFAULT_CENTRE = 6773;
+	public static final int SIMPLE_BUTTON_MOUSEOVER_CENTRE = 6774;
+	public static final int SIMPLE_BUTTON_TOGGLED_TOP_LEFT = 6775;
+	public static final int SIMPLE_BUTTON_TOGGLED_TOP_RIGHT = 6776;
+	public static final int SIMPLE_BUTTON_TOGGLED_BOTTOM_LEFT = 6777;
+	public static final int SIMPLE_BUTTON_TOGGLED_BOTTOM_RIGHT = 6778;
+	public static final int SIMPLE_BUTTON_TOGGLED_LEFT = 6779;
+	public static final int SIMPLE_BUTTON_TOGGLED_TOP = 6780;
+	public static final int SIMPLE_BUTTON_TOGGLED_RIGHT = 6781;
+	public static final int SIMPLE_BUTTON_TOGGLED_BOTTOM = 6782;
+	public static final int SIMPLE_BUTTON_TOGGLED_CENTRE = 6783;
+	public static final int SIMPLE_BUTTON_TOGGLED_MOUSEOVER_CENTRE = 6784;
+	public static final int SIMPLE_BUTTON_PRESSED_CENTRE = 6785;
+	public static final int LOGO_UGC_WORLD = 6786;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -9827,5 +10015,241 @@ public final class SpriteID
 	{
 		public static final int _0 = 6409;
 		public static final int _1 = 6410;
+	}
+
+	public static final class V2StoneButtonGreen
+	{
+		public static final int _0 = 6417;
+		public static final int _1 = 6418;
+		public static final int _2 = 6419;
+		public static final int _3 = 6420;
+		public static final int _4 = 6421;
+		public static final int _5 = 6422;
+		public static final int _6 = 6423;
+		public static final int _7 = 6424;
+	}
+
+	public static final class V2StoneButtonInGreen
+	{
+		public static final int _0 = 6425;
+		public static final int _1 = 6426;
+		public static final int _2 = 6427;
+		public static final int _3 = 6428;
+		public static final int _4 = 6429;
+		public static final int _5 = 6430;
+		public static final int _6 = 6431;
+		public static final int _7 = 6432;
+		public static final int _8 = 6433;
+		public static final int _9 = 6434;
+		public static final int _10 = 6435;
+		public static final int _11 = 6436;
+		public static final int _12 = 6437;
+		public static final int _13 = 6438;
+		public static final int _14 = 6439;
+		public static final int _15 = 6440;
+		public static final int _16 = 6441;
+		public static final int _17 = 6442;
+		public static final int _18 = 6443;
+		public static final int _19 = 6444;
+		public static final int _20 = 6445;
+		public static final int _21 = 6446;
+		public static final int _22 = 6447;
+		public static final int _23 = 6448;
+	}
+
+	public static final class RelicBingo01_30x30_01
+	{
+		public static final int _0 = 6611;
+		public static final int _1 = 6612;
+		public static final int _2 = 6613;
+		public static final int _3 = 6614;
+		public static final int _4 = 6615;
+		public static final int _5 = 6616;
+		public static final int _6 = 6617;
+		public static final int _7 = 6618;
+		public static final int _8 = 6619;
+		public static final int _9 = 6620;
+		public static final int _10 = 6621;
+		public static final int _11 = 6622;
+		public static final int _12 = 6623;
+		public static final int _13 = 6624;
+		public static final int _14 = 6625;
+		public static final int _15 = 6626;
+		public static final int _16 = 6627;
+		public static final int _17 = 6628;
+		public static final int _18 = 6629;
+		public static final int _19 = 6630;
+		public static final int _20 = 6631;
+		public static final int _21 = 6632;
+		public static final int _22 = 6633;
+		public static final int _23 = 6634;
+		public static final int _24 = 6635;
+		public static final int _25 = 6636;
+		public static final int _26 = 6637;
+	}
+
+	public static final class RelicBingo01_30x30_02
+	{
+		public static final int _0 = 6638;
+		public static final int _1 = 6639;
+		public static final int _2 = 6640;
+		public static final int _3 = 6641;
+		public static final int _4 = 6642;
+		public static final int _5 = 6643;
+		public static final int _6 = 6644;
+		public static final int _7 = 6645;
+		public static final int _8 = 6646;
+		public static final int _9 = 6647;
+		public static final int _10 = 6648;
+		public static final int _11 = 6649;
+		public static final int _12 = 6650;
+		public static final int _13 = 6651;
+		public static final int _14 = 6652;
+		public static final int _15 = 6653;
+		public static final int _16 = 6654;
+		public static final int _17 = 6655;
+		public static final int _18 = 6656;
+		public static final int _19 = 6657;
+		public static final int _20 = 6658;
+		public static final int _21 = 6659;
+		public static final int _22 = 6660;
+		public static final int _23 = 6661;
+		public static final int _24 = 6662;
+		public static final int _25 = 6663;
+		public static final int _26 = 6664;
+	}
+
+	public static final class RelicBingo01_60x60_01
+	{
+		public static final int _0 = 6665;
+		public static final int _1 = 6666;
+		public static final int _2 = 6667;
+		public static final int _3 = 6668;
+		public static final int _4 = 6669;
+		public static final int _5 = 6670;
+		public static final int _6 = 6671;
+		public static final int _7 = 6672;
+		public static final int _8 = 6673;
+		public static final int _9 = 6674;
+		public static final int _10 = 6675;
+		public static final int _11 = 6676;
+		public static final int _12 = 6677;
+		public static final int _13 = 6678;
+		public static final int _14 = 6679;
+		public static final int _15 = 6680;
+		public static final int _16 = 6681;
+		public static final int _17 = 6682;
+		public static final int _18 = 6683;
+		public static final int _19 = 6684;
+		public static final int _20 = 6685;
+		public static final int _21 = 6686;
+		public static final int _22 = 6687;
+		public static final int _23 = 6688;
+		public static final int _24 = 6689;
+		public static final int _25 = 6690;
+		public static final int _26 = 6691;
+	}
+
+	public static final class RelicBingo01_60x60_02
+	{
+		public static final int _0 = 6692;
+		public static final int _1 = 6693;
+		public static final int _2 = 6694;
+		public static final int _3 = 6695;
+		public static final int _4 = 6696;
+		public static final int _5 = 6697;
+		public static final int _6 = 6698;
+		public static final int _7 = 6699;
+		public static final int _8 = 6700;
+		public static final int _9 = 6701;
+		public static final int _10 = 6702;
+		public static final int _11 = 6703;
+		public static final int _12 = 6704;
+		public static final int _13 = 6705;
+		public static final int _14 = 6706;
+		public static final int _15 = 6707;
+		public static final int _16 = 6708;
+		public static final int _17 = 6709;
+		public static final int _18 = 6710;
+		public static final int _19 = 6711;
+		public static final int _20 = 6712;
+		public static final int _21 = 6713;
+		public static final int _22 = 6714;
+		public static final int _23 = 6715;
+		public static final int _24 = 6716;
+		public static final int _25 = 6717;
+		public static final int _26 = 6718;
+	}
+
+	public static final class ShieldBingo01_29x29
+	{
+		public static final int _0 = 6719;
+		public static final int _1 = 6720;
+		public static final int _2 = 6721;
+		public static final int _3 = 6722;
+		public static final int _4 = 6723;
+		public static final int _5 = 6724;
+		public static final int _6 = 6725;
+		public static final int _7 = 6726;
+		public static final int _8 = 6727;
+		public static final int _9 = 6728;
+	}
+
+	public static final class ShieldBingo01_58x58
+	{
+		public static final int _0 = 6729;
+		public static final int _1 = 6730;
+		public static final int _2 = 6731;
+		public static final int _3 = 6732;
+		public static final int _4 = 6733;
+		public static final int _5 = 6734;
+		public static final int _6 = 6735;
+		public static final int _7 = 6736;
+		public static final int _8 = 6737;
+		public static final int _9 = 6738;
+	}
+
+	public static final class XpBingo01_29x29
+	{
+		public static final int _0 = 6739;
+		public static final int _1 = 6740;
+		public static final int _2 = 6741;
+		public static final int _3 = 6742;
+		public static final int _4 = 6743;
+		public static final int _5 = 6744;
+	}
+
+	public static final class XpBingo01_58x58
+	{
+		public static final int _0 = 6745;
+		public static final int _1 = 6746;
+		public static final int _2 = 6747;
+		public static final int _3 = 6748;
+		public static final int _4 = 6749;
+		public static final int _5 = 6750;
+	}
+
+	public static final class IconMob25x25
+	{
+		public static final int _0 = 6753;
+		public static final int _1 = 6754;
+		public static final int _2 = 6755;
+		public static final int _3 = 6756;
+	}
+
+	public static final class IconMob50x50
+	{
+		public static final int _0 = 6757;
+		public static final int _1 = 6758;
+		public static final int _2 = 6759;
+		public static final int _3 = 6760;
+	}
+
+	public static final class IconCompassRose50x50
+	{
+		public static final int _0 = 6761;
+		public static final int _1 = 6762;
+		public static final int _2 = 6763;
+		public static final int _3 = 6764;
 	}
 }

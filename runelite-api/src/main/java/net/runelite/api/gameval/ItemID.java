@@ -80099,6 +80099,143 @@ public final class ItemID
 	 */
 	public static final int SET_HUEY_ARMOUR = 31169;
 
+	/**
+	 * Battlehat
+	 */
+	public static final int EVENT_BATTLEHAT = 31172;
+
+	/**
+	 * Corrupted shark
+	 */
+	public static final int EVENT_CORRUPTED_SHARK = 31174;
+	public static final int EVENT_MUSHTREE_DUMMY = 31176;
+	public static final int EVENT_BARROWS_CHEST_DUMMY = 31177;
+	public static final int EVENT_QUETZAL_LANDING_SITE_DUMMY = 31178;
+	public static final int EVENT_FOSSIL_RANGE_DUMMY = 31179;
+	public static final int EVENT_MOONLIGHT_MOTH_DUMMY = 31180;
+
+	/**
+	 * Grid master tabard
+	 */
+	public static final int BINGO_TABARD = 31181;
+
+	/**
+	 * Grid master tabard (b)
+	 */
+	public static final int BINGO_TABARD_BLACK = 31184;
+
+	/**
+	 * Grid master tabard (p)
+	 */
+	public static final int BINGO_TABARD_PINK = 31187;
+
+	/**
+	 * Grid master tabard (g)
+	 */
+	public static final int BINGO_TABARD_GREEN = 31190;
+
+	/**
+	 * Swords and emblem
+	 */
+	public static final int BINGO_SWORDS = 31193;
+
+	/**
+	 * Swords and emblem (b)
+	 */
+	public static final int BINGO_SWORDS_BLACK = 31196;
+
+	/**
+	 * Swords and emblem (p)
+	 */
+	public static final int BINGO_SWORDS_PINK = 31199;
+
+	/**
+	 * Swords and emblem (g)
+	 */
+	public static final int BINGO_SWORDS_GREEN = 31202;
+
+	/**
+	 * Grid master altar icon scroll
+	 */
+	public static final int BINGO_ALTAR_ICON_SCROLL = 31205;
+
+	/**
+	 * Grid master torch scroll
+	 */
+	public static final int BINGO_TORCH_SCROLL = 31208;
+
+	/**
+	 * Event lamp
+	 */
+	public static final int EVENT_GENILAMP = 31211;
+
+	/**
+	 * Combatant scroll
+	 */
+	public static final int REWARD_COMBATANT = 31212;
+
+	/**
+	 * Craftsman scroll
+	 */
+	public static final int REWARD_CRAFTSMAN = 31214;
+
+	/**
+	 * Gatherer scroll
+	 */
+	public static final int REWARD_GATHERER = 31216;
+
+	/**
+	 * Cabbage
+	 */
+	public static final int GRIDMASTER_POINTS = 31218;
+	public static final int BOUGHT_GRIDMASTER_POINTS = 31219;
+
+	/**
+	 * Cabbage
+	 */
+	public static final int GRIDMASTER_POINTS_NEGATIVE = 31220;
+	public static final int BOUGHT_GRIDMASTER_POINTS_NEGATIVE = 31221;
+
+	/**
+	 * Spooky picture
+	 */
+	public static final int HW25_SPOOKY_PAINTING = 31222;
+
+	/**
+	 * Spooky wall lamp
+	 */
+	public static final int HW25_SPOOKY_WALL_LAMP = 31223;
+
+	/**
+	 * Spooky scarecrow
+	 */
+	public static final int HW25_SPOOKY_SCARECROW = 31224;
+
+	/**
+	 * Spooky chair
+	 */
+	public static final int HW25_CHAIR_OBJ_REWARD = 31225;
+
+	/**
+	 * Spooky pumpkin lantern
+	 */
+	public static final int HW25_PUMPKIN_LANTERN_REWARD = 31227;
+
+	/**
+	 * Grim reaper top
+	 */
+	public static final int HW25_GRIM_REAPER_TOP = 31229;
+
+	/**
+	 * Grim reaper bottoms
+	 */
+	public static final int HW25_GRIM_REAPER_BOTTOMS = 31231;
+
+	/**
+	 * Grim reaper gloves
+	 */
+	public static final int HW25_GRIM_REAPER_GLOVES = 31233;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -84563,6 +84700,16 @@ public final class ItemID
 		public static final int SET_BLOODBARK_ARMOUR = 31164;
 		public static final int SET_MIXED_HIDE_ARMOUR = 31167;
 		public static final int SET_HUEY_ARMOUR = 31170;
+		public static final int BINGO_TABARD = 31182;
+		public static final int BINGO_TABARD_BLACK = 31185;
+		public static final int BINGO_TABARD_PINK = 31188;
+		public static final int BINGO_TABARD_GREEN = 31191;
+		public static final int BINGO_SWORDS = 31194;
+		public static final int BINGO_SWORDS_BLACK = 31197;
+		public static final int BINGO_SWORDS_PINK = 31200;
+		public static final int BINGO_SWORDS_GREEN = 31203;
+		public static final int BINGO_ALTAR_ICON_SCROLL = 31206;
+		public static final int BINGO_TORCH_SCROLL = 31209;
 	}
 
 	public static final class Placeholder
@@ -93655,6 +93802,26 @@ public final class ItemID
 		public static final int SET_BLOODBARK_ARMOUR = 31165;
 		public static final int SET_MIXED_HIDE_ARMOUR = 31168;
 		public static final int SET_HUEY_ARMOUR = 31171;
+		public static final int EVENT_BATTLEHAT = 31173;
+		public static final int EVENT_CORRUPTED_SHARK = 31175;
+		public static final int BINGO_TABARD = 31183;
+		public static final int BINGO_TABARD_BLACK = 31186;
+		public static final int BINGO_TABARD_PINK = 31189;
+		public static final int BINGO_TABARD_GREEN = 31192;
+		public static final int BINGO_SWORDS = 31195;
+		public static final int BINGO_SWORDS_BLACK = 31198;
+		public static final int BINGO_SWORDS_PINK = 31201;
+		public static final int BINGO_SWORDS_GREEN = 31204;
+		public static final int BINGO_ALTAR_ICON_SCROLL = 31207;
+		public static final int BINGO_TORCH_SCROLL = 31210;
+		public static final int REWARD_COMBATANT = 31213;
+		public static final int REWARD_CRAFTSMAN = 31215;
+		public static final int REWARD_GATHERER = 31217;
+		public static final int HW25_CHAIR_OBJ_REWARD = 31226;
+		public static final int HW25_PUMPKIN_LANTERN_REWARD = 31228;
+		public static final int HW25_GRIM_REAPER_TOP = 31230;
+		public static final int HW25_GRIM_REAPER_BOTTOMS = 31232;
+		public static final int HW25_GRIM_REAPER_GLOVES = 31234;
 	}
 /* This file is automatically generated. Do not edit. */
 }
