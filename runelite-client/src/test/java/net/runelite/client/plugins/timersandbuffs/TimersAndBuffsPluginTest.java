@@ -38,6 +38,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.events.ConfigChanged;
@@ -513,7 +514,7 @@ public class TimersAndBuffsPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.MARK_OF_DARKNESS, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(3), infoBox.getDuration());
+		assertEquals(Duration.of(183, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
