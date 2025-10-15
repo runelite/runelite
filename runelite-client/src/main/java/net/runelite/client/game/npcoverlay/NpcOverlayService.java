@@ -134,6 +134,11 @@ public class NpcOverlayService
 
 	private void rebuild(WorldView wv)
 	{
+		if (wv == null)
+		{
+			return;
+		}
+
 		outer:
 		for (NPC npc : wv.npcs())
 		{
