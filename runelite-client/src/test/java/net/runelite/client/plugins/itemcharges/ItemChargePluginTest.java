@@ -190,6 +190,12 @@ public class ItemChargePluginTest
 	{
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(140);
 
+		// Create equipment inventory with ring of forging
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+
 		// varrock platebody proc
 		ChatMessage chatMessageEffect = new ChatMessage(null, ChatMessageType.SPAM, "", USED_RING_OF_FORGING_VARROCK_PLATEBODY, "", 0);
 		// ring of forging proc
@@ -217,6 +223,12 @@ public class ItemChargePluginTest
 	{
 		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(90);
 
+		// Create equipment inventory with ring of forging
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 
@@ -226,6 +238,12 @@ public class ItemChargePluginTest
 	@Test
 	public void testRofBreak()
 	{
+		// Create equipment inventory with ring of forging
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.WORN)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+
 		// Run message to break ring and then use ring, to simulate actual client behavior
 		ChatMessage breakMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(breakMessage);
