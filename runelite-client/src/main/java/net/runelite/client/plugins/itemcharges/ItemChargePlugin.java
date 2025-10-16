@@ -337,9 +337,14 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(RING_OF_FORGING_USED_TEXT))
 			{
-				final int chargesUsed = varrockPlatebodySmeltTwo ? 2 : 1;
-				int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - chargesUsed, 0, MAX_RING_OF_FORGING_CHARGES);
-				updateRingOfForgingCharges(charges);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+
+				if (equipment != null && equipment.contains(ItemID.RING_OF_FORGING))
+				{
+					final int chargesUsed = varrockPlatebodySmeltTwo ? 2 : 1;
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - chargesUsed, 0, MAX_RING_OF_FORGING_CHARGES);
+					updateRingOfForgingCharges(charges);
+				}
 			}
 			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
 			{
