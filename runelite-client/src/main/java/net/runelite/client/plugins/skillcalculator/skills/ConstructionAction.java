@@ -144,6 +144,7 @@ public enum ConstructionAction implements NamedSkillAction
 	EAGLE_LECTERN("Eagle Lectern", 47, 120, ItemID.POH_LECTERN_2),
 	SINK("Sink", 47, 300, ItemID.POH_SINK_3),
 	MOUNTED_MYTHICAL_CAPE("Mounted Mythical Cape", 47, 370, ItemID.POH_TROPHY_MYTHICAL_CAPE),
+	GOLD_SINK("Gold Sink", 47, 11144, ItemID.POH_SINK_4),
 	CHEFS_DELIGHT("Chef's Delight", 48, 224, ItemID.CHEFS_DELIGHT),
 	TELEPORT_FOCUS("Teleport Focus", 50, 40, ItemID.POH_TELEPORT_CENTREPIECE_1),
 	ORNAMENTAL_GLOBE("Ornamental Globe", 50, 270, ItemID.POH_GLOBE_2),
@@ -203,6 +204,8 @@ public enum ConstructionAction implements NamedSkillAction
 	SMALL_ORRERY("Small Orrery", 86, 1320, ItemID.POH_GLOBE_6),
 	GILDED_WARDROBE("Gilded Wardrobe", 87, 720, ItemID.POH_WARDROBE_7),
 	LARGE_ORRERY("Large Orrery", 95, 1420, ItemID.POH_GLOBE_7),
+	CRYSTAL_THRONE("Crystal Throne", 95, 15000, ItemID.POH_THRONE_6),
+	DEMONIC_THRONE("Demonic Throne", 99, 25000, ItemID.POH_THRONE_7),
 	;
 
 	private final String name;
