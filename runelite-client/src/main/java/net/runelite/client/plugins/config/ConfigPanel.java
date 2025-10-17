@@ -141,6 +141,7 @@ class ConfigPanel extends PluginPanel
 	private final ExternalPluginManager externalPluginManager;
 	private final ColorPickerManager colorPickerManager;
 	private final Provider<NotificationPanel> notificationPanelProvider;
+	private final Provider<ConfigPanel> configPanelProvider;
 
 	private final TitleCaseListCellRenderer listCellRenderer = new TitleCaseListCellRenderer();
 
@@ -150,6 +151,8 @@ class ConfigPanel extends PluginPanel
 
 	private PluginConfigurationDescriptor pluginConfig = null;
 
+	private ConfigDescriptor subConfigDescriptor;
+
 	@Inject
 	private ConfigPanel(
 		PluginListPanel pluginList,
@@ -157,7 +160,8 @@ class ConfigPanel extends PluginPanel
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
 		ColorPickerManager colorPickerManager,
-		Provider<NotificationPanel> notificationPanelProvider
+		Provider<NotificationPanel> notificationPanelProvider,
+		Provider<ConfigPanel> configPanelProvider
 	)
 	{
 		super(false);
@@ -168,6 +172,7 @@ class ConfigPanel extends PluginPanel
 		this.externalPluginManager = externalPluginManager;
 		this.colorPickerManager = colorPickerManager;
 		this.notificationPanelProvider = notificationPanelProvider;
+		this.configPanelProvider = configPanelProvider;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -264,7 +269,7 @@ class ConfigPanel extends PluginPanel
 	{
 		mainPanel.removeAll();
 
-		ConfigDescriptor cd = pluginConfig.getConfigDescriptor();
+		ConfigDescriptor cd = subConfigDescriptor != null ? subConfigDescriptor : pluginConfig.getConfigDescriptor();
 
 		final Map<String, JPanel> sectionWidgets = new HashMap<>();
 		final Map<ConfigObject, JPanel> topLevelPanels = new TreeMap<>((a, b) ->
@@ -356,35 +361,35 @@ class ConfigPanel extends PluginPanel
 
 			if (cid.getType() == boolean.class)
 			{
-				item.add(createCheckbox(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createCheckbox(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() == int.class)
 			{
-				item.add(createIntSpinner(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createIntSpinner(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() == double.class)
 			{
-				item.add(createDoubleSpinner(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createDoubleSpinner(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() == String.class)
 			{
-				item.add(createTextField(cd, cid), BorderLayout.SOUTH);
+				item.add(createConfig(cid, createTextField(cd, cid)), BorderLayout.SOUTH);
 			}
 			else if (cid.getType() == Color.class)
 			{
-				item.add(createColorPicker(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createColorPicker(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() == Dimension.class)
 			{
-				item.add(createDimension(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createDimension(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
 			{
-				item.add(createComboBox(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createComboBox(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
-				item.add(createKeybind(cd, cid), BorderLayout.EAST);
+				item.add(createConfig(cid, createKeybind(cd, cid)), BorderLayout.EAST);
 			}
 			else if (cid.getType() == Notification.class)
 			{
@@ -395,7 +400,7 @@ class ConfigPanel extends PluginPanel
 				ParameterizedType parameterizedType = (ParameterizedType) cid.getType();
 				if (parameterizedType.getRawType() == Set.class)
 				{
-					item.add(createList(cd, cid), BorderLayout.EAST);
+					item.add(createConfig(cid, createList(cd, cid)), BorderLayout.EAST);
 				}
 			}
 
@@ -433,11 +438,14 @@ class ConfigPanel extends PluginPanel
 				rebuild();
 			}
 		});
-		mainPanel.add(resetButton);
 
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(e -> pluginList.getMuxer().popState());
-		mainPanel.add(backButton);
+		if (subConfigDescriptor == null)
+		{
+			mainPanel.add(resetButton);
+			mainPanel.add(backButton);
+		}
 
 		revalidate();
 	}
@@ -703,6 +711,37 @@ class ConfigPanel extends PluginPanel
 		return panel;
 	}
 
+	private JButton createSubConfigButton(ConfigItemDescriptor cid)
+	{
+		JButton button = new JButton(ConfigPanel.CONFIG_ICON);
+		SwingUtil.removeButtonDecorations(button);
+		button.setPreferredSize(new Dimension(25, 0));
+		button.addActionListener(l ->
+		{
+			var muxer = pluginList.getMuxer();
+			var nestedPanel = configPanelProvider.get();
+			var sci = cid.getSubConfigItem();
+			var nestedProxy = configManager.getConfig(sci.value());
+			var nestedDesc = configManager.getConfigDescriptor(nestedProxy);
+			nestedPanel.initializeSubConfig(cid, nestedDesc);
+			muxer.pushState(nestedPanel);
+		});
+		return button;
+	}
+
+
+	private Component createConfig(ConfigItemDescriptor cid, Component rightComponent)
+	{
+		if (cid.getSubConfigItem() == null)
+		{
+			return rightComponent;
+		}
+		JPanel wrap = new JPanel(new BorderLayout());
+		wrap.add(createSubConfigButton(cid), BorderLayout.WEST);
+		wrap.add(rightComponent, BorderLayout.EAST);
+		return wrap;
+	}
+
 	private JList<Enum<?>> createList(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		ParameterizedType parameterizedType = (ParameterizedType) cid.getType();
@@ -729,6 +768,14 @@ class ConfigPanel extends PluginPanel
 		});
 
 		return list;
+	}
+
+	void initializeSubConfig(ConfigItemDescriptor parentItem, ConfigDescriptor nested)
+	{
+		this.subConfigDescriptor = nested;
+		title.setText(parentItem.name());
+		pluginToggle.setVisible(false);
+		rebuild();
 	}
 
 	private void changeConfiguration(Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
