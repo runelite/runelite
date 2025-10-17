@@ -193,6 +193,7 @@ public enum ConstructionAction implements NamedSkillAction
 	MAHOGANY_WARDROBE("Mahogany Wardrobe", 75, 420, ItemID.POH_WARDROBE_6),
 	GNOME_BENCH("Gnome Bench", 77, 840, ItemID.POH_SUPERIOR_GARDEN_BENCH_MAHOGANY),
 	ARMILLARY_GLOBE("Armillary Globe", 77, 960, ItemID.POH_GLOBE_1),
+	MARBLE_WALL("Marble Wall", 79, 4000, ItemID.POH_FENCING7),
 	MARBLE_PORTAL("Marble Portal", 80, 1500, ItemID.POH_PORTAL_FRAME_3),
 	SCRYING_POOL("Scrying Pool", 80, 2000, ItemID.POH_TELEPORT_CENTREPIECE_3),
 	BALANCE_BEAM("Balance Beam", 81, 1000, ItemID.POH_COMBAT_RING_5),
