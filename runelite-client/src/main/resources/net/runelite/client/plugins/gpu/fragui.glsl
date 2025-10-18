@@ -27,6 +27,7 @@
 #define SAMPLING_MITCHELL 1
 #define SAMPLING_CATROM 2
 #define SAMPLING_XBR 3
+#define SAMPLING_PIXEL 4
 
 uniform sampler2D tex;
 
@@ -38,6 +39,7 @@ uniform vec4 alphaOverlay;
 
 #include "scale/bicubic.glsl"
 #include "scale/xbr_lv2_frag.glsl"
+#include "scale/pixel.glsl"
 #include "colorblind.glsl"
 
 in vec2 TexCoord;
@@ -56,6 +58,8 @@ void main() {
     c = textureCubic(tex, TexCoord, samplingMode);
   } else if (samplingMode == SAMPLING_XBR) {
     c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+  } else if (samplingMode == SAMPLING_PIXEL) {
+    c = texturePixel(tex, TexCoord);
   } else {  // NEAREST or LINEAR, which uses GL_TEXTURE_MIN_FILTER/GL_TEXTURE_MAG_FILTER to affect sampling
     c = texture(tex, TexCoord);
   }
