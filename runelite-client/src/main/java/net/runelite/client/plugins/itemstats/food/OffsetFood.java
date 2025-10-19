@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025 Mitchell <https://github.com/Mitchell-Kovacs>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,67 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemstats;
+package net.runelite.client.plugins.itemstats.food;
 
+import net.runelite.api.Client;
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.itemstats.StatBoost;
 import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
-import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
-import net.runelite.client.plugins.itemstats.food.OffsetFood;
-import net.runelite.client.plugins.itemstats.stats.Stat;
+import net.runelite.client.plugins.itemstats.stats.OffsetSkillStat;
 
-public class Builders
+public class OffsetFood extends StatBoost
 {
-	public static Food food(int diff)
+	private final DeltaCalculator p;
+
+	public OffsetFood(DeltaCalculator p, int offset)
 	{
-		return food((max) -> diff);
+		super(new OffsetSkillStat(Skill.HITPOINTS, offset), false);
+		this.p = p;
 	}
 
-	public static OffsetFood offsetFood(int offset, int diff)
+	@Override
+	public int heals(Client client)
 	{
-		return new OffsetFood((max) -> diff, offset);
-	}
-
-	public static Food food(DeltaCalculator p)
-	{
-		return new Food(p);
-	}
-
-	public static Effect combo(SingleEffect... effect)
-	{
-		return new Combo(effect);
-	}
-
-	public static SimpleStatBoost boost(Stat stat, int boost)
-	{
-		return boost(stat, (max) -> boost);
-	}
-
-	public static SimpleStatBoost boost(Stat stat, DeltaCalculator p)
-	{
-		return new SimpleStatBoost(stat, true, p);
-	}
-
-	public static SimpleStatBoost heal(Stat stat, int boost)
-	{
-		return heal(stat, (max) -> boost);
-	}
-
-	public static SimpleStatBoost heal(Stat stat, DeltaCalculator p)
-	{
-		return new SimpleStatBoost(stat, false, p);
-	}
-
-	public static SimpleStatBoost dec(Stat stat, int boost)
-	{
-		return heal(stat, -boost);
-	}
-
-	public static DeltaPercentage perc(double perc, int delta)
-	{
-		return new DeltaPercentage(perc, delta);
-	}
-
-	public static RangeStatBoost range(StatBoost a, StatBoost b)
-	{
-		return new RangeStatBoost(a, b);
+		return p.calculateDelta(getStat().getMaximum(client));
 	}
 }
