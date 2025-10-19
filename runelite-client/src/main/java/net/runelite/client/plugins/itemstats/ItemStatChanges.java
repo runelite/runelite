@@ -130,8 +130,8 @@ public class ItemStatChanges
 		// Hunter meats
 		add(combo(food(4), offsetFood(4, 4)), ItemID.WILDKEBBIT_COOKED);
 		add(combo(food(6), offsetFood(6, 5)), ItemID.LARUPIA_COOKED);
-		add(combo(food(6), offsetFood(6, 5)), ItemID.BARBKEBBIT_COOKED);
-		add(combo(food(8), offsetFood(6, 8)), ItemID.GRAAHK_COOKED);
+		add(combo(food(7), offsetFood(7, 5)), ItemID.BARBKEBBIT_COOKED);
+		add(combo(food(8), offsetFood(8, 6)), ItemID.GRAAHK_COOKED);
 		add(combo(food(9), offsetFood(9, 8)), ItemID.KYATT_COOKED);
 		add(combo(food(11), offsetFood(11, 8)), ItemID.FENNECFOX_COOKED);
 		add(combo(food(12), offsetFood(12, 9)), ItemID.ANTELOPESUN_COOKED);
