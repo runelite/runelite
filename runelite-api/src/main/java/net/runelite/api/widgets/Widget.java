@@ -799,6 +799,30 @@ public interface Widget
 	void setBorderType(int thickness);
 
 	/**
+	 * Get if this graphic flipped vertically
+	 * @return
+	 */
+	boolean isFlippedVertically();
+
+	/**
+	 * Set if this graphic is flipped vertically
+	 * @param flip
+	 */
+	void setFlippedVertically(boolean flip);
+
+	/**
+	 * Get if this graphic flipped horizontally
+	 * @return
+	 */
+	boolean isFlippedHorizontally();
+
+	/**
+	 * Set if this graphic is flipped horizontally
+	 * @param flip
+	 */
+	void setFlippedHorizontally(boolean flip);
+
+	/**
 	 * Returns if text is shadowed
 	 */
 	boolean getTextShadowed();
