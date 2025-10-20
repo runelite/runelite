@@ -39,7 +39,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ITEM_KEY_PREFIX;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_HIDDEN_CONFIG;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_HIDDEN_PREFIX;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_TABS_CONFIG;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -139,6 +141,7 @@ public class TagManager
 		});
 
 		setHidden(tag, false);
+		setTagTabHidden(tag, false);
 	}
 
 	public void removeTag(int itemId, String tag)
@@ -184,6 +187,23 @@ public class TagManager
 		else
 		{
 			configManager.unsetConfiguration(CONFIG_GROUP, TAG_HIDDEN_PREFIX + Text.standardize(tag));
+		}
+	}
+
+	public boolean isTagTabHidden(String tag)
+	{
+		return Boolean.TRUE.equals(configManager.getConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG + "." + TAG_HIDDEN_CONFIG + "_" + tag, Boolean.class));
+	}
+
+	public void setTagTabHidden(String tag, boolean hidden)
+	{
+		if (hidden)
+		{
+			configManager.setConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG + "." + TAG_HIDDEN_CONFIG + "_" + tag, true);
+		}
+		else
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG + "." + TAG_HIDDEN_CONFIG + "_" + tag);
 		}
 	}
 

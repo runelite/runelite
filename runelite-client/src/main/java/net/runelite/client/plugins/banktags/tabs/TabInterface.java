@@ -42,9 +42,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -108,6 +110,10 @@ public class TabInterface
 	private static final String IMPORT_TAB = "Import tag tab";
 	private static final String VIEW_TAB = "View tag tab";
 	private static final String RENAME_TAB = "Rename tag tab";
+	private static final String SHOW_HIDDEN_TAB = "Show Hidden tag tabs";
+	private static final String HIDE_HIDDEN_TAB = "Hide Hidden tag tabs";
+	private static final String HIDE_TAB = "Hide tag tab";
+	private static final String SHOW_TAB = "Show tag tab";
 	private static final String CHANGE_ICON = "Change icon";
 	private static final String REMOVE_TAG = "Remove-tag";
 	private static final String TAG_GEAR = "Tag-equipment";
@@ -138,10 +144,13 @@ public class TabInterface
 	private static final int TAB_OP_LAYOUT = 3;
 	private static final int TAB_OP_EXPORT_TAB = 4;
 	private static final int TAB_OP_RENAME_TAB = 5;
-	private static final int TAB_OP_DELETE_TAB = 6;
+	private static final int TAB_OP_HIDE_SHOW_TAB = 6;
+	private static final int TAB_OP_DELETE_TAB = 7;
 	private static final int NEWTAB_OP_NEW_TAB = 1;
 	private static final int NEWTAB_OP_IMPORT_TAB = 2;
 	private static final int NEWTAB_OP_OPEN_TAB_MENU = 3;
+	private static final int NEWTAB_OP_SHOWHIDDEN_TAB_MENU = 4;
+
 	private static final int TAGTAB_CHILD_OFFSET = 4;
 
 	private final Client client;
@@ -164,6 +173,7 @@ public class TabInterface
 	private int activeOptions;
 	@Getter
 	private boolean tagTabActive;
+	private boolean hiddenVisible;
 	private int tagTabFirstChildIdx = -1;
 	private int tabScrollOffset;
 	private Instant startScroll = Instant.now();
@@ -300,6 +310,7 @@ public class TabInterface
 			activeOptions = 0;
 			plugin.openTag(null, null);
 			tagTabActive = false;
+			hiddenVisible = false;
 			tagTabFirstChildIdx = -1;
 		}
 	}
@@ -308,7 +319,6 @@ public class TabInterface
 	{
 		assert parent == null; // avoid double init
 		parent = client.getWidget(InterfaceID.Bankmain.ITEMS_CONTAINER);
-
 		scrollComponent = parent.createChild(-1, WidgetType.TEXT); // not really text, but just to capture scroll
 		scrollComponent.setHasListener(true);
 		scrollComponent.setNoScrollThrough(true);
@@ -335,6 +345,7 @@ public class TabInterface
 		newTab.setAction(NEWTAB_OP_NEW_TAB, NEW_TAB);
 		newTab.setAction(NEWTAB_OP_IMPORT_TAB, IMPORT_TAB);
 		newTab.setAction(NEWTAB_OP_OPEN_TAB_MENU, OPEN_TAB_MENU);
+		newTab.setAction(NEWTAB_OP_SHOWHIDDEN_TAB_MENU, hiddenVisible ? HIDE_HIDDEN_TAB : SHOW_HIDDEN_TAB);
 		newTab.setOnOpListener((JavaScriptCallback) this::handleNewTab);
 
 		tabManager.clear();
@@ -517,6 +528,19 @@ public class TabInterface
 			case NEWTAB_OP_OPEN_TAB_MENU:
 				client.setVarbit(VarbitID.BANK_CURRENTTAB, 0);
 				plugin.openTag(TAGTABS, null, 0);
+				break;
+			case NEWTAB_OP_SHOWHIDDEN_TAB_MENU:
+				hiddenVisible = !hiddenVisible;
+				OptionalInt firstIndex = IntStream.range(0, Objects.requireNonNull(newTab.getActions()).length)
+					.filter(i -> newTab.getActions()[i] != null  && (newTab.getActions()[i].equals(HIDE_HIDDEN_TAB) || newTab.getActions()[i].equals(SHOW_HIDDEN_TAB)))
+				.findFirst();
+				if (firstIndex.isPresent())
+				{
+					newTab.setAction(firstIndex.getAsInt(), hiddenVisible ? HIDE_HIDDEN_TAB : SHOW_HIDDEN_TAB);
+				}
+				rebuildTabs();
+				rebuildTagTabTab();
+				repositionButtons();
 				break;
 		}
 	}
@@ -758,6 +782,10 @@ public class TabInterface
 				final StringSelection stringSelection = new StringSelection(Text.toCSV(data));
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 				sendChatMessage("Tag tab '" + tagTab.getTag() + "' has been copied to your clipboard!");
+				break;
+			case TAB_OP_HIDE_SHOW_TAB:
+				String hideShowTarget = Text.standardize(event.getOpbase());
+				showOrHideTab(hideShowTarget);
 				break;
 			case TAB_OP_RENAME_TAB:
 				String renameTarget = Text.standardize(event.getOpbase());
@@ -1024,6 +1052,7 @@ public class TabInterface
 		}
 		w.setAction(TAB_OP_EXPORT_TAB, EXPORT_TAB);
 		w.setAction(TAB_OP_RENAME_TAB, RENAME_TAB);
+		w.setAction(TAB_OP_HIDE_SHOW_TAB, tagManager.isTagTabHidden(tab.getTag()) ? SHOW_TAB : HIDE_TAB);
 		w.setAction(TAB_OP_DELETE_TAB, REMOVE_TAB);
 		w.setHasListener(true);
 		w.setOnOpListener((JavaScriptCallback) this::opTagTab);
@@ -1063,6 +1092,22 @@ public class TabInterface
 		rebuildTabs();
 		rebuildTagTabTab();
 		scrollTab(0);
+	}
+
+	private void showOrHideTab(String tag)
+	{
+		if (tabManager.find(tag) != null)
+		{
+			tagManager.setTagTabHidden(tag, !tagManager.isTagTabHidden(tag));
+			if (tag.equals(activeTag) && tagManager.isTagTabHidden(tag))
+			{
+				closeTag(true);
+			}
+		}
+		repositionButtons();
+		rebuildTabs();
+		rebuildTagTabTab();
+		tabManager.save();
 	}
 
 	private void renameTab(String oldTag)
@@ -1260,15 +1305,17 @@ public class TabInterface
 	{
 		// remove the tag tabs but keep the buttons and scroll component
 		parent.setChildren(Arrays.copyOf(parent.getChildren(), TAGTAB_CHILD_OFFSET));
-
 		var tabs = tabManager.getTabs();
 		for (TagTab tab : tabs)
 		{
+			if (tagManager.isTagTabHidden(tab.getTag()) && !hiddenVisible)
+			{
+				continue;
+			}
 			Widget background = createGraphic(parent, ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
 				(tab.getTag().equals(activeTag) ? TabSprites.TAB_BACKGROUND_ACTIVE : TabSprites.TAB_BACKGROUND).getSpriteId(),
 				-1, TAB_WIDTH, TAB_HEIGHT, MARGIN, -1);
 			addTabActions(tab, background);
-
 			Widget icon = createGraphic(
 				parent,
 				ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
@@ -1277,6 +1324,10 @@ public class TabInterface
 				Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT,
 				MARGIN + 3, -1);
 			addTabOptions(icon);
+			if (tagManager.isTagTabHidden(tab.getTag()))
+			{
+				icon.setOpacity(120);
+			}
 		}
 
 		layoutTabs();
@@ -1348,6 +1399,10 @@ public class TabInterface
 		idx = tagTabFirstChildIdx;
 		for (TagTab tagTab : tabManager.getTabs())
 		{
+			if (tagManager.isTagTabHidden(tagTab.getTag()) && !hiddenVisible)
+			{
+				continue;
+			}
 			Widget menu = parent.getChild(idx++);
 			if (menu == null)
 			{
@@ -1361,6 +1416,7 @@ public class TabInterface
 			menu.setName(ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR));
 			menu.setItemId(tagTab.getIconItemId());
 			menu.setItemQuantity(-1);
+			menu.setOpacity(tagManager.isTagTabHidden(tagTab.getTag()) ? 120 : 0);
 			menu.setBorderType(1);
 			addTabActions(tagTab, menu);
 			addTabOptions(menu);
