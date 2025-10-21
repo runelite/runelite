@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum FairyRingLocation
+public enum FairyRingLocation
 {
 	AIQ("AIQ", new WorldPoint(2995, 3112, 0)),
 	AIR("AIR", new WorldPoint(2699, 3249, 0)),
