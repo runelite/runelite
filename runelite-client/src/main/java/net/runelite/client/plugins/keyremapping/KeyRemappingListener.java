@@ -76,7 +76,7 @@ class KeyRemappingListener implements KeyListener
 		{
 			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
 
-			if (config.cameraRemap())
+			if (config.cameraRemap() && !plugin.isPollWindowOpen())
 			{
 				if (config.up().matches(e))
 				{
@@ -99,7 +99,7 @@ class KeyRemappingListener implements KeyListener
 			// In addition to the above checks, the F-key remapping shouldn't
 			// activate when dialogs are open which listen for number keys
 			// to select options
-			if (config.fkeyRemap() && !plugin.isDialogOpen())
+			if (config.fkeyRemap() && !plugin.isDialogOpen() && !plugin.isPollWindowOpen())
 			{
 				if (config.f1().matches(e))
 				{

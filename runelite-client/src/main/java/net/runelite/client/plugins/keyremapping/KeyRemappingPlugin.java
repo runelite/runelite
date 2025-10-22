@@ -162,6 +162,11 @@ public class KeyRemappingPlugin extends Plugin
 		return client.getWidget(InterfaceID.Chatmenu.OPTIONS) != null;
 	}
 
+	boolean isPollWindowOpen()
+	{
+		return client.getWidget(InterfaceID.Ballot.CONTENT) != null;
+	}
+
 	private boolean isHidden(int component)
 	{
 		Widget w = client.getWidget(component);
