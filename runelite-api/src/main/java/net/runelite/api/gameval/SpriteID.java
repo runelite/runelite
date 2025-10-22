@@ -10252,4 +10252,25 @@ public final class SpriteID
 		public static final int _2 = 6763;
 		public static final int _3 = 6764;
 	}
+
+	public static final class PipProgress12x12
+	{
+		public static final int _0 = 6787;
+		public static final int _1 = 6788;
+	}
+
+	public static final class PollStatus
+	{
+		public static final int _0 = 6789;
+		public static final int _1 = 6790;
+		public static final int _2 = 6791;
+		public static final int _3 = 6792;
+	}
+
+	public static final class PollCategory
+	{
+		public static final int _0 = 6793;
+		public static final int _1 = 6794;
+		public static final int _2 = 6795;
+	}
 }

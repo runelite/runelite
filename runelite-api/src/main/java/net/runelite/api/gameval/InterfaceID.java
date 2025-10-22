@@ -314,7 +314,6 @@ public final class InterfaceID
 	public static final int FOSSIL_DRIFTNET_SIDESTORE = 307;
 	public static final int CATA_BOSS = 308;
 	public static final int FOSSIL_DRIFTNET_STORE = 309;
-	public static final int POLL_HISTORY = 310;
 	public static final int LEAGUE_COMBAT_MASTERY = 311;
 	public static final int SMITHING = 312;
 	public static final int SMOKEOVERLAY = 313;
@@ -349,7 +348,6 @@ public final class InterfaceID
 	public static final int TRAIL_CLUE_MEDIUM_MAP010 = 342;
 	public static final int TRAIL_CLUE_MEDIUM_MAP011 = 343;
 	public static final int TRAIL_CLUE_MEDIUM_MAP012 = 344;
-	public static final int POLL_RESULTS = 345;
 	public static final int TRAIL_MAP01 = 346;
 	public static final int TRAIL_MAP02 = 347;
 	public static final int TRAIL_MAP03 = 348;
@@ -404,7 +402,6 @@ public final class InterfaceID
 	public static final int POH_FURNITURE_CREATION_MENU = 397;
 	public static final int FAIRYRINGS = 398;
 	public static final int QUESTLIST = 399;
-	public static final int POLL_VOTING = 400;
 	public static final int POH_RANGING = 401;
 	public static final int GE_COLLECT = 402;
 	public static final int TELETABS_CRAFT_IF = 403;
@@ -932,6 +929,8 @@ public final class InterfaceID
 	public static final int BINGO_WELCOME = 925;
 	public static final int BINGO_OVERLAY = 926;
 	public static final int EVENT_REWARDS = 927;
+	public static final int BALLOT = 928;
+	public static final int TUTORIAL_PLAYER_EXPERIENCE = 929;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -3790,7 +3789,8 @@ public final class InterfaceID
 		public static final int NOTIFICATIONS = 0x0050_002a;
 		public static final int EHC_LISTENER = 0x0050_002b;
 		public static final int MOUSEOVER = 0x0050_002c;
-		public static final int POPOUT = 0x0050_002d;
+		public static final int UI_HIGHLIGHTS = 0x0050_002d;
+		public static final int POPOUT = 0x0050_002e;
 	}
 
 	public static final class WildernessLootingbag
@@ -6681,6 +6681,7 @@ public final class InterfaceID
 		public static final int MAP_CONTAINER = 0x00a1_005f;
 		public static final int CHAT_CONTAINER = 0x00a1_0060;
 		public static final int SIDE_MENU = 0x00a1_0061;
+		public static final int UI_HIGHLIGHTS = 0x00a1_0062;
 	}
 
 	public static final class Chatbox
@@ -7363,6 +7364,7 @@ public final class InterfaceID
 		public static final int SIDE_STATIC_LAYER = 0x00a4_005e;
 		public static final int SIDE_MOVABLE_LAYER = 0x00a4_005f;
 		public static final int SIDE_CONTAINER = 0x00a4_0060;
+		public static final int UI_HIGHLIGHTS = 0x00a4_0061;
 	}
 
 	public static final class ToplevelDisplay
@@ -7404,11 +7406,12 @@ public final class InterfaceID
 		public static final int ORBS = 0x00a5_0022;
 		public static final int EHC_LISTENER = 0x00a5_0023;
 		public static final int MOUSEOVER = 0x00a5_0024;
-		public static final int CONTROL = 0x00a5_0025;
-		public static final int BLACKOUT = 0x00a5_0026;
-		public static final int DISPLAYMODAL = 0x00a5_0027;
-		public static final int FLOATER = 0x00a5_0028;
-		public static final int POPOUT = 0x00a5_0029;
+		public static final int UI_HIGHLIGHTS = 0x00a5_0025;
+		public static final int CONTROL = 0x00a5_0026;
+		public static final int BLACKOUT = 0x00a5_0027;
+		public static final int DISPLAYMODAL = 0x00a5_0028;
+		public static final int FLOATER = 0x00a5_0029;
+		public static final int POPOUT = 0x00a5_002a;
 	}
 
 	public static final class DesertTreasureMirror
@@ -10944,16 +10947,6 @@ public final class InterfaceID
 		public static final int STORE = 0x0135_0005;
 	}
 
-	public static final class PollHistory
-	{
-		public static final int INFINITE = 0x0136_0000;
-		public static final int UNIVERSE = 0x0136_0001;
-		public static final int FRAME = 0x0136_0002;
-		public static final int UNIVERSE_TEXT1 = 0x0136_0003;
-		public static final int HISTORY = 0x0136_0004;
-		public static final int SCROLLBAR = 0x0136_0005;
-	}
-
 	public static final class LeagueCombatMastery
 	{
 		public static final int INFINITY = 0x0137_0000;
@@ -12561,23 +12554,6 @@ public final class InterfaceID
 		public static final int ROOT_MODEL105 = 0x0158_0069;
 		public static final int ROOT_MODEL106 = 0x0158_006a;
 		public static final int TRAIL_CLUE_MEDIUM_012_CLOSE = 0x0158_006b;
-	}
-
-	public static final class PollResults
-	{
-		public static final int INFINITE = 0x0159_0000;
-		public static final int UNIVERSE = 0x0159_0001;
-		public static final int FRAME = 0x0159_0002;
-		public static final int STATUS = 0x0159_0003;
-		public static final int VOTE_CONTAINER = 0x0159_0004;
-		public static final int VOTE = 0x0159_0005;
-		public static final int REFRESH_CONTAINER = 0x0159_0006;
-		public static final int REFRESH = 0x0159_0007;
-		public static final int BACK_CONTAINER = 0x0159_0008;
-		public static final int BACK = 0x0159_0009;
-		public static final int PLACEHOLDER = 0x0159_000a;
-		public static final int RESULTS = 0x0159_000b;
-		public static final int SCROLLBAR = 0x0159_000c;
 	}
 
 	public static final class TrailMap01
@@ -15290,24 +15266,6 @@ public final class InterfaceID
 		public static final int COMPLETED = 0x018f_0009;
 		public static final int QUESTPOINTS = 0x018f_000a;
 		public static final int SETTINGS_BUTTON = 0x018f_000b;
-	}
-
-	public static final class PollVoting
-	{
-		public static final int INFINITE = 0x0190_0000;
-		public static final int UNIVERSE = 0x0190_0001;
-		public static final int ANSWERS = 0x0190_0002;
-		public static final int FRAME = 0x0190_0003;
-		public static final int STATUS = 0x0190_0004;
-		public static final int CLEAR_CONTAINER = 0x0190_0005;
-		public static final int CLEAR = 0x0190_0006;
-		public static final int QUIT_CONTAINER = 0x0190_0007;
-		public static final int QUIT = 0x0190_0008;
-		public static final int PLACEHOLDER = 0x0190_0009;
-		public static final int QUESTIONS = 0x0190_000a;
-		public static final int SUBMIT_CONTAINER = 0x0190_000b;
-		public static final int SUBMIT = 0x0190_000c;
-		public static final int SCROLLBAR = 0x0190_000d;
 	}
 
 	public static final class PohRanging
@@ -19791,95 +19749,96 @@ public final class InterfaceID
 		public static final int POPOUT = 0x0224_0003;
 		public static final int EHC_LISTENER = 0x0224_0004;
 		public static final int MOUSEOVER = 0x0224_0005;
-		public static final int GAMEFRAME_GRAPHIC0 = 0x0224_0006;
-		public static final int GAMEFRAME_GRAPHIC1 = 0x0224_0007;
-		public static final int MAPCONTAINER = 0x0224_0008;
-		public static final int MAIN = 0x0224_0009;
-		public static final int CHAT_CONTAINER = 0x0224_000a;
-		public static final int GAMEFRAME_GRAPHIC5 = 0x0224_000b;
-		public static final int GAMEFRAME_GRAPHIC6 = 0x0224_000c;
-		public static final int GAMEFRAME_GRAPHIC7 = 0x0224_000d;
-		public static final int SIDE_BOTTOM_CONTAINER = 0x0224_000e;
-		public static final int SIDE_TOP_CONTAINER = 0x0224_000f;
-		public static final int SIDE = 0x0224_0010;
-		public static final int MAPCONTAINER_GRAPHIC0 = 0x0224_0011;
-		public static final int MAPCONTAINER_GRAPHIC1 = 0x0224_0012;
-		public static final int MAPCONTAINER_GRAPHIC2 = 0x0224_0013;
-		public static final int MAPCONTAINER_GRAPHIC3 = 0x0224_0014;
-		public static final int MINIMAP = 0x0224_0015;
-		public static final int MAPCONTAINER_GRAPHIC5 = 0x0224_0016;
-		public static final int COMPASSCLICK = 0x0224_0017;
-		public static final int ORBS = 0x0224_0018;
-		public static final int VIEWPORT = 0x0224_0019;
-		public static final int OVERLAY_ATMOSPHERE = 0x0224_001a;
-		public static final int HPBAR_HUD = 0x0224_001b;
-		public static final int PVP_ICONS = 0x0224_001c;
-		public static final int HELPER = 0x0224_001d;
-		public static final int STAT_BOOSTS_HUD = 0x0224_001e;
-		public static final int BUFF_BAR = 0x0224_001f;
-		public static final int OVERLAY_HUD = 0x0224_0020;
-		public static final int XP_DROPS = 0x0224_0021;
-		public static final int ZEAH = 0x0224_0022;
-		public static final int PM_CONTAINER = 0x0224_0023;
-		public static final int MULTIWAY_ICON = 0x0224_0024;
-		public static final int HELPER_DODGER = 0x0224_0025;
-		public static final int HELPER_CONTENT = 0x0224_0026;
-		public static final int GRAVESTONE = 0x0224_0027;
-		public static final int MAINMODAL = 0x0224_0028;
-		public static final int MAINCRM = 0x0224_0029;
-		public static final int FLOATER = 0x0224_002a;
-		public static final int NOTIFICATIONS = 0x0224_002b;
-		public static final int DEBUG = 0x0224_002c;
-		public static final int SIDE_BOTTOM_CONTAINER_GRAPHIC0 = 0x0224_002d;
-		public static final int SIDE_BOTTOM = 0x0224_002e;
-		public static final int STONE7 = 0x0224_002f;
-		public static final int STONE8 = 0x0224_0030;
-		public static final int STONE9 = 0x0224_0031;
-		public static final int STONE10 = 0x0224_0032;
-		public static final int STONE11 = 0x0224_0033;
-		public static final int STONE12 = 0x0224_0034;
-		public static final int STONE13 = 0x0224_0035;
-		public static final int ICON7 = 0x0224_0036;
-		public static final int ICON8 = 0x0224_0037;
-		public static final int ICON9 = 0x0224_0038;
-		public static final int ICON10 = 0x0224_0039;
-		public static final int ICON11 = 0x0224_003a;
-		public static final int ICON12 = 0x0224_003b;
-		public static final int ICON13 = 0x0224_003c;
-		public static final int SIDE_TOP_CONTAINER_GRAPHIC0 = 0x0224_003d;
-		public static final int SIDE_TOP = 0x0224_003e;
-		public static final int STONE0 = 0x0224_003f;
-		public static final int STONE1 = 0x0224_0040;
-		public static final int STONE2 = 0x0224_0041;
-		public static final int STONE3 = 0x0224_0042;
-		public static final int STONE4 = 0x0224_0043;
-		public static final int STONE5 = 0x0224_0044;
-		public static final int STONE6 = 0x0224_0045;
-		public static final int ICON0 = 0x0224_0046;
-		public static final int ICON1 = 0x0224_0047;
-		public static final int ICON2 = 0x0224_0048;
-		public static final int ICON3 = 0x0224_0049;
-		public static final int ICON4 = 0x0224_004a;
-		public static final int ICON5 = 0x0224_004b;
-		public static final int ICON6 = 0x0224_004c;
-		public static final int SIDE_GRAPHIC0 = 0x0224_004d;
-		public static final int SIDEMODAL = 0x0224_004e;
-		public static final int SIDE_PANELS = 0x0224_004f;
-		public static final int SIDE0 = 0x0224_0050;
-		public static final int SIDE1 = 0x0224_0051;
-		public static final int SIDE2 = 0x0224_0052;
-		public static final int SIDE3 = 0x0224_0053;
-		public static final int SIDE4 = 0x0224_0054;
-		public static final int SIDE5 = 0x0224_0055;
-		public static final int SIDE6 = 0x0224_0056;
-		public static final int SIDE7 = 0x0224_0057;
-		public static final int SIDE8 = 0x0224_0058;
-		public static final int SIDE9 = 0x0224_0059;
-		public static final int SIDE10 = 0x0224_005a;
-		public static final int SIDE11 = 0x0224_005b;
-		public static final int SIDE12 = 0x0224_005c;
-		public static final int SIDE13 = 0x0224_005d;
-		public static final int SIDECRM = 0x0224_005e;
+		public static final int UI_HIGHLIGHTS = 0x0224_0006;
+		public static final int GAMEFRAME_GRAPHIC0 = 0x0224_0007;
+		public static final int GAMEFRAME_GRAPHIC1 = 0x0224_0008;
+		public static final int MAPCONTAINER = 0x0224_0009;
+		public static final int MAIN = 0x0224_000a;
+		public static final int CHAT_CONTAINER = 0x0224_000b;
+		public static final int GAMEFRAME_GRAPHIC5 = 0x0224_000c;
+		public static final int GAMEFRAME_GRAPHIC6 = 0x0224_000d;
+		public static final int GAMEFRAME_GRAPHIC7 = 0x0224_000e;
+		public static final int SIDE_BOTTOM_CONTAINER = 0x0224_000f;
+		public static final int SIDE_TOP_CONTAINER = 0x0224_0010;
+		public static final int SIDE = 0x0224_0011;
+		public static final int MAPCONTAINER_GRAPHIC0 = 0x0224_0012;
+		public static final int MAPCONTAINER_GRAPHIC1 = 0x0224_0013;
+		public static final int MAPCONTAINER_GRAPHIC2 = 0x0224_0014;
+		public static final int MAPCONTAINER_GRAPHIC3 = 0x0224_0015;
+		public static final int MINIMAP = 0x0224_0016;
+		public static final int MAPCONTAINER_GRAPHIC5 = 0x0224_0017;
+		public static final int COMPASSCLICK = 0x0224_0018;
+		public static final int ORBS = 0x0224_0019;
+		public static final int VIEWPORT = 0x0224_001a;
+		public static final int OVERLAY_ATMOSPHERE = 0x0224_001b;
+		public static final int HPBAR_HUD = 0x0224_001c;
+		public static final int PVP_ICONS = 0x0224_001d;
+		public static final int HELPER = 0x0224_001e;
+		public static final int STAT_BOOSTS_HUD = 0x0224_001f;
+		public static final int BUFF_BAR = 0x0224_0020;
+		public static final int OVERLAY_HUD = 0x0224_0021;
+		public static final int XP_DROPS = 0x0224_0022;
+		public static final int ZEAH = 0x0224_0023;
+		public static final int PM_CONTAINER = 0x0224_0024;
+		public static final int MULTIWAY_ICON = 0x0224_0025;
+		public static final int HELPER_DODGER = 0x0224_0026;
+		public static final int HELPER_CONTENT = 0x0224_0027;
+		public static final int GRAVESTONE = 0x0224_0028;
+		public static final int MAINMODAL = 0x0224_0029;
+		public static final int MAINCRM = 0x0224_002a;
+		public static final int FLOATER = 0x0224_002b;
+		public static final int NOTIFICATIONS = 0x0224_002c;
+		public static final int DEBUG = 0x0224_002d;
+		public static final int SIDE_BOTTOM_CONTAINER_GRAPHIC0 = 0x0224_002e;
+		public static final int SIDE_BOTTOM = 0x0224_002f;
+		public static final int STONE7 = 0x0224_0030;
+		public static final int STONE8 = 0x0224_0031;
+		public static final int STONE9 = 0x0224_0032;
+		public static final int STONE10 = 0x0224_0033;
+		public static final int STONE11 = 0x0224_0034;
+		public static final int STONE12 = 0x0224_0035;
+		public static final int STONE13 = 0x0224_0036;
+		public static final int ICON7 = 0x0224_0037;
+		public static final int ICON8 = 0x0224_0038;
+		public static final int ICON9 = 0x0224_0039;
+		public static final int ICON10 = 0x0224_003a;
+		public static final int ICON11 = 0x0224_003b;
+		public static final int ICON12 = 0x0224_003c;
+		public static final int ICON13 = 0x0224_003d;
+		public static final int SIDE_TOP_CONTAINER_GRAPHIC0 = 0x0224_003e;
+		public static final int SIDE_TOP = 0x0224_003f;
+		public static final int STONE0 = 0x0224_0040;
+		public static final int STONE1 = 0x0224_0041;
+		public static final int STONE2 = 0x0224_0042;
+		public static final int STONE3 = 0x0224_0043;
+		public static final int STONE4 = 0x0224_0044;
+		public static final int STONE5 = 0x0224_0045;
+		public static final int STONE6 = 0x0224_0046;
+		public static final int ICON0 = 0x0224_0047;
+		public static final int ICON1 = 0x0224_0048;
+		public static final int ICON2 = 0x0224_0049;
+		public static final int ICON3 = 0x0224_004a;
+		public static final int ICON4 = 0x0224_004b;
+		public static final int ICON5 = 0x0224_004c;
+		public static final int ICON6 = 0x0224_004d;
+		public static final int SIDE_GRAPHIC0 = 0x0224_004e;
+		public static final int SIDEMODAL = 0x0224_004f;
+		public static final int SIDE_PANELS = 0x0224_0050;
+		public static final int SIDE0 = 0x0224_0051;
+		public static final int SIDE1 = 0x0224_0052;
+		public static final int SIDE2 = 0x0224_0053;
+		public static final int SIDE3 = 0x0224_0054;
+		public static final int SIDE4 = 0x0224_0055;
+		public static final int SIDE5 = 0x0224_0056;
+		public static final int SIDE6 = 0x0224_0057;
+		public static final int SIDE7 = 0x0224_0058;
+		public static final int SIDE8 = 0x0224_0059;
+		public static final int SIDE9 = 0x0224_005a;
+		public static final int SIDE10 = 0x0224_005b;
+		public static final int SIDE11 = 0x0224_005c;
+		public static final int SIDE12 = 0x0224_005d;
+		public static final int SIDE13 = 0x0224_005e;
+		public static final int SIDECRM = 0x0224_005f;
 	}
 
 	public static final class KillLog
@@ -21467,6 +21426,7 @@ public final class InterfaceID
 		public static final int POPOUT = 0x0259_0083;
 		public static final int MOUSEOVER = 0x0259_0084;
 		public static final int EHC_LISTENER = 0x0259_0085;
+		public static final int UI_HIGHLIGHTS = 0x0259_0086;
 	}
 
 	public static final class GravestoneRetrieval
@@ -30317,6 +30277,57 @@ public final class InterfaceID
 		public static final int CONFIRM_CANCEL = 0x039f_0017;
 		public static final int CONFIRM_LOADING = 0x039f_0018;
 		public static final int CONFIRM_LOADING_RECT0 = 0x039f_0019;
+	}
+
+	public static final class Ballot
+	{
+		public static final int UNIVERSE = 0x03a0_0000;
+		public static final int CONTENT = 0x03a0_0001;
+		public static final int FRAME = 0x03a0_0002;
+		public static final int CLOSE = 0x03a0_0003;
+		public static final int ROOT_LIST = 0x03a0_0004;
+		public static final int LIST_FILTERS = 0x03a0_0005;
+		public static final int LIST_YEARS_CONTAINER = 0x03a0_0006;
+		public static final int LIST_YEARS_SCROLLBAR = 0x03a0_0007;
+		public static final int LIST_YEARS_CONTENT = 0x03a0_0008;
+		public static final int LIST_BOX = 0x03a0_0009;
+		public static final int LIST = 0x03a0_000a;
+		public static final int LIST_SCROLLBAR = 0x03a0_000b;
+		public static final int ROOT_OVERVIEW = 0x03a0_000c;
+		public static final int OVERVIEW_SCROLLING = 0x03a0_000d;
+		public static final int OVERVIEW_BACKGROUNDS = 0x03a0_000e;
+		public static final int OVERVIEW_CONTENTS = 0x03a0_000f;
+		public static final int OVERVIEW_SCROLLBAR = 0x03a0_0010;
+		public static final int EXIT_OVERVIEW = 0x03a0_0011;
+		public static final int ROOT_VOTING = 0x03a0_0012;
+		public static final int VOTING = 0x03a0_0013;
+		public static final int VOTING_SCROLLBAR = 0x03a0_0014;
+		public static final int SINGLE_CHOICE = 0x03a0_0015;
+		public static final int MULTIPLE_CHOICE = 0x03a0_0016;
+		public static final int TEXT = 0x03a0_0017;
+		public static final int MATRIX = 0x03a0_0018;
+		public static final int RANKED = 0x03a0_0019;
+		public static final int EXIT_VOTING = 0x03a0_001a;
+		public static final int LOADING_CONTAINER = 0x03a0_001b;
+		public static final int LOADING_ICON = 0x03a0_001c;
+		public static final int POPUP_CONTAINER = 0x03a0_001d;
+		public static final int POPUP_CONTAINER_RECT0 = 0x03a0_001e;
+		public static final int POPUP_WINDOW = 0x03a0_001f;
+		public static final int POPUP_FRAME = 0x03a0_0020;
+		public static final int POPUP_DISMISS = 0x03a0_0021;
+		public static final int POPUP_OTHER = 0x03a0_0022;
+	}
+
+	public static final class TutorialPlayerExperience
+	{
+		public static final int UNIVERSE = 0x03a1_0000;
+		public static final int NOCLICK = 0x03a1_0001;
+		public static final int MAIN = 0x03a1_0002;
+		public static final int FRAME = 0x03a1_0003;
+		public static final int CONTENT = 0x03a1_0004;
+		public static final int BUTTON_NEW = 0x03a1_0005;
+		public static final int BUTTON_RETURNING = 0x03a1_0006;
+		public static final int BUTTON_EXPERIENCED = 0x03a1_0007;
 	}
 /* This file is automatically generated. Do not edit. */
 }
