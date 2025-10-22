@@ -789,8 +789,8 @@ public class OverlayRenderer extends MouseAdapter
 
 	private boolean shouldInvalidateBounds()
 	{
-		final Widget chatbox = client.getWidget(ComponentID.CHATBOX_FRAME);
-		final Widget chatboxParent = client.getWidget(ComponentID.CHATBOX_PARENT);
+		final Widget chatbox = client.getWidget(InterfaceID.Chatbox.CHATAREA);
+		final Widget chatboxParent = client.getWidget(InterfaceID.Chatbox.UNIVERSE);
 		final boolean resizeableChanged = isResizeable != client.isResized();
 		boolean changed = false;
 
