@@ -175,24 +175,29 @@ public final class DBTableID
 		public static final int COL_PREREQUISITE_INDIRECT = 34;
 
 		/**
+		 * integer
+		 */
+		public static final int COL_FTUE_STARTER = 35;
+
+		/**
 		 * boolean
 		 */
-		public static final int COL_CR_CAN_RECOMMEND = 35;
+		public static final int COL_CR_CAN_RECOMMEND = 36;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_CR_EXPERIENCE_PROFILE = 36;
+		public static final int COL_CR_EXPERIENCE_PROFILE = 37;
 
 		/**
 		 * string
 		 */
-		public static final int COL_CR_RECOMMENDATION_REASON = 37;
+		public static final int COL_CR_RECOMMENDATION_REASON = 38;
 
 		/**
 		 * boolean
 		 */
-		public static final int COL_CR_RECOMMENDATION_REASON_IS_PRIMARY = 38;
+		public static final int COL_CR_RECOMMENDATION_REASON_IS_PRIMARY = 39;
 
 		public static final class Row
 		{
@@ -400,6 +405,7 @@ public final class DBTableID
 			public static final int QUEST_EXISTENTIALCRISIS = 5192;
 			public static final int QUEST_IMPENDINGCHAOS = 5193;
 			public static final int MINIQUEST_VALETOTEMS = 5194;
+			public static final int MINIQUEST_TUTORIALISLAND = 7033;
 		}
 	}
 
@@ -422,6 +428,7 @@ public final class DBTableID
 			public static final int XMAS_2024 = 4228;
 			public static final int BIRTHDAY_2025 = 4318;
 			public static final int EASTER_2025 = 5107;
+			public static final int HALLOWEEN_2025 = 6989;
 		}
 	}
 
@@ -451,10 +458,10 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int CR_MODULE_QUESTS = 3784;
-			public static final int CR_MODULE_SKILLS = 3785;
-			public static final int CR_MODULE_UTILITY = 3786;
-			public static final int CR_MODULE_MISC = 3787;
+			public static final int CR_MODULE_QUESTS = 4143;
+			public static final int CR_MODULE_SKILLS = 4144;
+			public static final int CR_MODULE_UTILITY = 4145;
+			public static final int CR_MODULE_MISC = 4146;
 		}
 	}
 
@@ -5931,6 +5938,9 @@ public final class DBTableID
 		public static final class Row
 		{
 			public static final int CLAN_SETTING_OPTIONS_COMBAT_ACHIEVEMENTS = 3468;
+			public static final int CLAN_SETTING_OPTIONS_COLLECTION_BROADCASTS_EVERY_X_LOGS = 4100;
+			public static final int CLAN_SETTING_OPTIONS_BROADCASTEVENTS_NOTIFICATION = 4101;
+			public static final int CLAN_SETTING_OPTIONS_BROADCASTMAINGAME_NOTIFICATION = 4102;
 		}
 	}
 
@@ -6303,8 +6313,8 @@ public final class DBTableID
 			public static final int PENDANT_OF_ATES_TWILIGHT_TEMPLE = 182;
 			public static final int PENDANT_OF_ATES_RALOS_RISE = 183;
 			public static final int PENDANT_OF_ATES_ALDARIN = 184;
-			public static final int PENDANT_OF_ATES_TLATI = 5485;
-			public static final int PENDANT_OF_ATES_AUBURN = 5486;
+			public static final int PENDANT_OF_ATES_TLATI = 3784;
+			public static final int PENDANT_OF_ATES_AUBURN = 3785;
 		}
 	}
 
@@ -6386,24 +6396,24 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int CHARTERING_DESTINATION_PORTSARIM = 3788;
-			public static final int CHARTERING_DESTINATION_BRIMHAVEN = 3789;
-			public static final int CHARTERING_DESTINATION_CATHERBY = 3790;
-			public static final int CHARTERING_DESTINATION_MOSLEHARMLESS = 3791;
-			public static final int CHARTERING_DESTINATION_MUSAPOINT = 3792;
-			public static final int CHARTERING_DESTINATION_PORTKHAZARD = 3793;
-			public static final int CHARTERING_DESTINATION_PORTPHASMATYS = 3794;
-			public static final int CHARTERING_DESTINATION_SHIPYARD = 3795;
-			public static final int CHARTERING_DESTINATION_PORTTYRAS = 3796;
-			public static final int CHARTERING_DESTINATION_CORSAIRCOVE = 3797;
-			public static final int CHARTERING_DESTINATION_PRIFDDINAS = 3798;
-			public static final int CHARTERING_DESTINATION_PISCARILIUS = 3799;
-			public static final int CHARTERING_DESTINATION_LANDSEND = 3800;
-			public static final int CHARTERING_DESTINATION_FORTIS = 3801;
-			public static final int CHARTERING_DESTINATION_ALDARIN = 3802;
-			public static final int CHARTERING_DESTINATION_SUNSETCOAST = 3803;
-			public static final int CHARTERING_DESTINATION_TEMPESTUS = 3804;
-			public static final int CHARTERING_DESTINATION_CRANDOR = 3805;
+			public static final int CHARTERING_DESTINATION_PORTSARIM = 4147;
+			public static final int CHARTERING_DESTINATION_BRIMHAVEN = 4148;
+			public static final int CHARTERING_DESTINATION_CATHERBY = 4149;
+			public static final int CHARTERING_DESTINATION_MOSLEHARMLESS = 4150;
+			public static final int CHARTERING_DESTINATION_MUSAPOINT = 4151;
+			public static final int CHARTERING_DESTINATION_PORTKHAZARD = 4152;
+			public static final int CHARTERING_DESTINATION_PORTPHASMATYS = 4153;
+			public static final int CHARTERING_DESTINATION_SHIPYARD = 4154;
+			public static final int CHARTERING_DESTINATION_PORTTYRAS = 4155;
+			public static final int CHARTERING_DESTINATION_CORSAIRCOVE = 4156;
+			public static final int CHARTERING_DESTINATION_PRIFDDINAS = 4157;
+			public static final int CHARTERING_DESTINATION_PISCARILIUS = 4158;
+			public static final int CHARTERING_DESTINATION_LANDSEND = 4159;
+			public static final int CHARTERING_DESTINATION_FORTIS = 4160;
+			public static final int CHARTERING_DESTINATION_ALDARIN = 4161;
+			public static final int CHARTERING_DESTINATION_SUNSETCOAST = 4162;
+			public static final int CHARTERING_DESTINATION_TEMPESTUS = 4163;
+			public static final int CHARTERING_DESTINATION_CRANDOR = 4164;
 		}
 	}
 
@@ -6438,10 +6448,10 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int PREPOT_DEVICE_LOADOUT_0_UI = 3806;
-			public static final int PREPOT_DEVICE_LOADOUT_1_UI = 3807;
-			public static final int PREPOT_DEVICE_LOADOUT_2_UI = 3808;
-			public static final int PREPOT_DEVICE_LOADOUT_3_UI = 3809;
+			public static final int PREPOT_DEVICE_LOADOUT_0_UI = 4195;
+			public static final int PREPOT_DEVICE_LOADOUT_1_UI = 4196;
+			public static final int PREPOT_DEVICE_LOADOUT_2_UI = 4197;
+			public static final int PREPOT_DEVICE_LOADOUT_3_UI = 4198;
 		}
 	}
 
@@ -7717,70 +7727,70 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int FAIRYRINGS_AIP = 4999;
-			public static final int FAIRYRINGS_AIS = 5000;
-			public static final int FAIRYRINGS_AIR = 5001;
-			public static final int FAIRYRINGS_AIQ = 5002;
-			public static final int FAIRYRINGS_ALP = 5003;
-			public static final int FAIRYRINGS_ALS = 5004;
-			public static final int FAIRYRINGS_ALR = 5005;
-			public static final int FAIRYRINGS_ALQ = 5006;
-			public static final int FAIRYRINGS_AKP = 5007;
-			public static final int FAIRYRINGS_AKS = 5008;
-			public static final int FAIRYRINGS_AKR = 5009;
-			public static final int FAIRYRINGS_AKQ = 5010;
-			public static final int FAIRYRINGS_AJP = 5011;
-			public static final int FAIRYRINGS_AJS = 5012;
-			public static final int FAIRYRINGS_AJR = 5013;
-			public static final int FAIRYRINGS_AJQ = 5014;
-			public static final int FAIRYRINGS_DIP = 5015;
-			public static final int FAIRYRINGS_DIS = 5016;
-			public static final int FAIRYRINGS_DIR = 5017;
-			public static final int FAIRYRINGS_DIQ = 5018;
-			public static final int FAIRYRINGS_DLP = 5019;
-			public static final int FAIRYRINGS_DLS = 5020;
-			public static final int FAIRYRINGS_DLR = 5021;
-			public static final int FAIRYRINGS_DLQ = 5022;
-			public static final int FAIRYRINGS_DKP = 5023;
-			public static final int FAIRYRINGS_DKS = 5024;
-			public static final int FAIRYRINGS_DKR = 5025;
-			public static final int FAIRYRINGS_DKQ = 5026;
-			public static final int FAIRYRINGS_DJP = 5027;
-			public static final int FAIRYRINGS_DJS = 5028;
-			public static final int FAIRYRINGS_DJR = 5029;
-			public static final int FAIRYRINGS_DJQ = 5030;
-			public static final int FAIRYRINGS_CIP = 5031;
-			public static final int FAIRYRINGS_CIS = 5032;
-			public static final int FAIRYRINGS_CIR = 5033;
-			public static final int FAIRYRINGS_CIQ = 5034;
-			public static final int FAIRYRINGS_CLP = 5035;
-			public static final int FAIRYRINGS_CLS = 5036;
-			public static final int FAIRYRINGS_CLR = 5037;
-			public static final int FAIRYRINGS_CLQ = 5038;
-			public static final int FAIRYRINGS_CKP = 5039;
-			public static final int FAIRYRINGS_CKS = 5040;
-			public static final int FAIRYRINGS_CKR = 5041;
-			public static final int FAIRYRINGS_CKQ = 5042;
-			public static final int FAIRYRINGS_CJP = 5043;
-			public static final int FAIRYRINGS_CJS = 5044;
-			public static final int FAIRYRINGS_CJR = 5045;
-			public static final int FAIRYRINGS_CJQ = 5046;
-			public static final int FAIRYRINGS_BIP = 5047;
-			public static final int FAIRYRINGS_BIS = 5048;
-			public static final int FAIRYRINGS_BIR = 5049;
-			public static final int FAIRYRINGS_BIQ = 5050;
-			public static final int FAIRYRINGS_BLP = 5051;
-			public static final int FAIRYRINGS_BLS = 5052;
-			public static final int FAIRYRINGS_BLR = 5053;
-			public static final int FAIRYRINGS_BLQ = 5054;
-			public static final int FAIRYRINGS_BKP = 5055;
-			public static final int FAIRYRINGS_BKS = 5056;
-			public static final int FAIRYRINGS_BKR = 5057;
-			public static final int FAIRYRINGS_BKQ = 5058;
-			public static final int FAIRYRINGS_BJP = 5059;
-			public static final int FAIRYRINGS_BJS = 5060;
-			public static final int FAIRYRINGS_BJR = 5061;
-			public static final int FAIRYRINGS_BJQ = 5062;
+			public static final int FAIRYRINGS_AIP = 3786;
+			public static final int FAIRYRINGS_AIS = 3787;
+			public static final int FAIRYRINGS_AIR = 3788;
+			public static final int FAIRYRINGS_AIQ = 3789;
+			public static final int FAIRYRINGS_ALP = 3790;
+			public static final int FAIRYRINGS_ALS = 3791;
+			public static final int FAIRYRINGS_ALR = 3792;
+			public static final int FAIRYRINGS_ALQ = 3793;
+			public static final int FAIRYRINGS_AKP = 3794;
+			public static final int FAIRYRINGS_AKS = 3795;
+			public static final int FAIRYRINGS_AKR = 3796;
+			public static final int FAIRYRINGS_AKQ = 3797;
+			public static final int FAIRYRINGS_AJP = 3798;
+			public static final int FAIRYRINGS_AJS = 3799;
+			public static final int FAIRYRINGS_AJR = 3800;
+			public static final int FAIRYRINGS_AJQ = 3801;
+			public static final int FAIRYRINGS_DIP = 3802;
+			public static final int FAIRYRINGS_DIS = 3803;
+			public static final int FAIRYRINGS_DIR = 3804;
+			public static final int FAIRYRINGS_DIQ = 3805;
+			public static final int FAIRYRINGS_DLP = 3806;
+			public static final int FAIRYRINGS_DLS = 3807;
+			public static final int FAIRYRINGS_DLR = 3808;
+			public static final int FAIRYRINGS_DLQ = 3809;
+			public static final int FAIRYRINGS_DKP = 4103;
+			public static final int FAIRYRINGS_DKS = 4104;
+			public static final int FAIRYRINGS_DKR = 4105;
+			public static final int FAIRYRINGS_DKQ = 4106;
+			public static final int FAIRYRINGS_DJP = 4107;
+			public static final int FAIRYRINGS_DJS = 4108;
+			public static final int FAIRYRINGS_DJR = 4109;
+			public static final int FAIRYRINGS_DJQ = 4110;
+			public static final int FAIRYRINGS_CIP = 4111;
+			public static final int FAIRYRINGS_CIS = 4112;
+			public static final int FAIRYRINGS_CIR = 4113;
+			public static final int FAIRYRINGS_CIQ = 4114;
+			public static final int FAIRYRINGS_CLP = 4115;
+			public static final int FAIRYRINGS_CLS = 4116;
+			public static final int FAIRYRINGS_CLR = 4117;
+			public static final int FAIRYRINGS_CLQ = 4118;
+			public static final int FAIRYRINGS_CKP = 4119;
+			public static final int FAIRYRINGS_CKS = 4120;
+			public static final int FAIRYRINGS_CKR = 4121;
+			public static final int FAIRYRINGS_CKQ = 4122;
+			public static final int FAIRYRINGS_CJP = 4123;
+			public static final int FAIRYRINGS_CJS = 4124;
+			public static final int FAIRYRINGS_CJR = 4125;
+			public static final int FAIRYRINGS_CJQ = 4126;
+			public static final int FAIRYRINGS_BIP = 4127;
+			public static final int FAIRYRINGS_BIS = 4128;
+			public static final int FAIRYRINGS_BIR = 4129;
+			public static final int FAIRYRINGS_BIQ = 4130;
+			public static final int FAIRYRINGS_BLP = 4131;
+			public static final int FAIRYRINGS_BLS = 4132;
+			public static final int FAIRYRINGS_BLR = 4133;
+			public static final int FAIRYRINGS_BLQ = 4134;
+			public static final int FAIRYRINGS_BKP = 4135;
+			public static final int FAIRYRINGS_BKS = 4136;
+			public static final int FAIRYRINGS_BKR = 4137;
+			public static final int FAIRYRINGS_BKQ = 4138;
+			public static final int FAIRYRINGS_BJP = 4139;
+			public static final int FAIRYRINGS_BJS = 4140;
+			public static final int FAIRYRINGS_BJR = 4141;
+			public static final int FAIRYRINGS_BJQ = 4142;
 		}
 	}
 
@@ -8906,6 +8916,8 @@ public final class DBTableID
 			public static final int MY2ARM_COFFIN = 6026;
 			public static final int POH_GREENMAN_WALL_DECORATION = 6027;
 			public static final int POH_GREENMAN_STATUE = 6028;
+			public static final int POH_ICON_BINGO = 7024;
+			public static final int POH_INCENSE_BURNER_BINGO = 7025;
 		}
 	}
 
@@ -8975,36 +8987,36 @@ public final class DBTableID
 
 		public static final class Row
 		{
-			public static final int POH_DUMMY_NULL = 5487;
-			public static final int POH_DUMMY_PARLOUR = 5488;
-			public static final int POH_DUMMY_GARDEN = 5489;
-			public static final int POH_DUMMY_KITCHEN = 5490;
-			public static final int POH_DUMMY_DINING_ROOM = 5491;
-			public static final int POH_DUMMY_BEDROOM = 5492;
-			public static final int POH_DUMMY_GAMES_ROOM = 5493;
-			public static final int POH_DUMMY_HALL1 = 5494;
-			public static final int POH_DUMMY_HALL1A = 5495;
-			public static final int POH_DUMMY_HALL2 = 5496;
-			public static final int POH_DUMMY_HALL2A = 5497;
-			public static final int POH_DUMMY_CHAPEL = 5498;
-			public static final int POH_DUMMY_WORKSHOP = 5499;
-			public static final int POH_DUMMY_STUDY = 5500;
-			public static final int POH_DUMMY_PORTALROOM = 5501;
-			public static final int POH_DUMMY_THRONEROOM = 5502;
-			public static final int POH_DUMMY_OUBLIETTE = 5503;
-			public static final int POH_DUMMY_DUNGEON_CORRIDOR = 5504;
-			public static final int POH_DUMMY_DUNGEON_CROSS = 5505;
-			public static final int POH_DUMMY_DUNGEON_STAIRS = 5506;
-			public static final int POH_DUMMY_DUNGEON_TREASURE = 5507;
-			public static final int POH_DUMMY_FORMAL_GARDEN = 5508;
-			public static final int POH_DUMMY_COMBAT_ROOM = 5509;
-			public static final int POH_DUMMY_COSTUME_ROOM = 5510;
-			public static final int POH_DUMMY_MENAGERIE_INDOORS = 5511;
-			public static final int POH_DUMMY_MENAGERIE_OUTDOORS = 5512;
-			public static final int POH_DUMMY_SUPERIOR_GARDEN = 5513;
-			public static final int POH_DUMMY_ACHIEVEMENT_GALLERY = 5514;
-			public static final int POH_DUMMY_PORTALNEXUS = 5515;
-			public static final int POH_DUMMY_LEAGUEHALL = 5516;
+			public static final int POH_DUMMY_NULL = 4165;
+			public static final int POH_DUMMY_PARLOUR = 4166;
+			public static final int POH_DUMMY_GARDEN = 4167;
+			public static final int POH_DUMMY_KITCHEN = 4168;
+			public static final int POH_DUMMY_DINING_ROOM = 4169;
+			public static final int POH_DUMMY_BEDROOM = 4170;
+			public static final int POH_DUMMY_GAMES_ROOM = 4171;
+			public static final int POH_DUMMY_HALL1 = 4172;
+			public static final int POH_DUMMY_HALL1A = 4173;
+			public static final int POH_DUMMY_HALL2 = 4174;
+			public static final int POH_DUMMY_HALL2A = 4175;
+			public static final int POH_DUMMY_CHAPEL = 4176;
+			public static final int POH_DUMMY_WORKSHOP = 4177;
+			public static final int POH_DUMMY_STUDY = 4178;
+			public static final int POH_DUMMY_PORTALROOM = 4179;
+			public static final int POH_DUMMY_THRONEROOM = 4180;
+			public static final int POH_DUMMY_OUBLIETTE = 4181;
+			public static final int POH_DUMMY_DUNGEON_CORRIDOR = 4182;
+			public static final int POH_DUMMY_DUNGEON_CROSS = 4183;
+			public static final int POH_DUMMY_DUNGEON_STAIRS = 4184;
+			public static final int POH_DUMMY_DUNGEON_TREASURE = 4185;
+			public static final int POH_DUMMY_FORMAL_GARDEN = 4186;
+			public static final int POH_DUMMY_COMBAT_ROOM = 4187;
+			public static final int POH_DUMMY_COSTUME_ROOM = 4188;
+			public static final int POH_DUMMY_MENAGERIE_INDOORS = 4189;
+			public static final int POH_DUMMY_MENAGERIE_OUTDOORS = 4190;
+			public static final int POH_DUMMY_SUPERIOR_GARDEN = 4191;
+			public static final int POH_DUMMY_ACHIEVEMENT_GALLERY = 4192;
+			public static final int POH_DUMMY_PORTALNEXUS = 4193;
+			public static final int POH_DUMMY_LEAGUEHALL = 4194;
 		}
 	}
 
@@ -9745,10 +9757,16 @@ public final class DBTableID
 		/**
 		 * string
 		 */
+		public static final int COL_AREA_TEXT = 2;
+
+		/**
+		 * string
+		 */
 		public static final int COL_AREA_NAME_IN_HELPER = 3;
 
 		public static final class Row
 		{
+			public static final int SLAYERAREA_CRYPTOFTONALI = 4099;
 			public static final int SLAYERAREA_ZEAHCATACOMBS = 6341;
 			public static final int SLAYERAREA_SMOKEDUNGEON = 6342;
 			public static final int SLAYERAREA_SMOKEDEVILDUNGEON = 6343;
@@ -9957,6 +9975,686 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_UNLOCK_WARPED_CREATURES = 6447;
 			public static final int SLAYER_REWARDS_LONGER_ARAXYTES = 6448;
 			public static final int SLAYER_REWARDS_LONGER_CUSTODIANS = 6449;
+		}
+	}
+
+	public static final class Action
+	{
+		public static final int ID = 118;
+
+		/**
+		 * string
+		 */
+		public static final int COL_ACTION_NAME = 0;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_ACTION_DISPLAY_GRAPHIC = 1;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_ACTION_DISPLAY_OBJECT = 2;
+
+		/**
+		 * (string, string)
+		 */
+		public static final int COL_ACTION_DISPLAY_DESC = 3;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_ACTION_DISPLAY_SHOW_DERIVED_DESC = 4;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_CUSTOM_TRACKING = 7;
+
+		/**
+		 * npc
+		 */
+		public static final int COL_BOSS_KILL = 8;
+
+		/**
+		 * category
+		 */
+		public static final int COL_BOSS_KILL_CATEGORY = 9;
+
+		/**
+		 * (boolean, boolean)
+		 */
+		public static final int COL_BOSS_KILL_EXTRAS = 10;
+
+		/**
+		 * npc
+		 */
+		public static final int COL_NPC_KILL = 11;
+
+		/**
+		 * category
+		 */
+		public static final int COL_NPC_KILL_CATEGORY = 12;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_NPC_KILL_SLAYER_CATEGORY = 13;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_EQUIP_ITEM = 14;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TOTAL_LEVEL = 15;
+
+		/**
+		 * (stat, integer)
+		 */
+		public static final int COL_LEVEL = 16;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_COLLECTION_GENERIC = 17;
+
+		/**
+		 * struct
+		 */
+		public static final int COL_COLLECTION_SPECIFIC = 18;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_LOOT_DROP = 19;
+
+		/**
+		 * npc
+		 */
+		public static final int COL_LOOT_DROP_SPECIFIC_NPC = 20;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_QUEST = 21;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_MINE_ORE = 22;
+
+		/**
+		 * (obj, boolean)
+		 */
+		public static final int COL_HUNTER = 23;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_POH_BUILD = 24;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_POH_SET_PORTAL = 25;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_CREATE_ITEM = 26;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_CHOP_LOGS = 27;
+
+		/**
+		 * struct
+		 */
+		public static final int COL_LEAGUES_TASK = 28;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_CHILD_ACTION = 29;
+
+		public static final class Row
+		{
+			public static final int ACTION_KALPHITE_QUEEN_UNIQUE = 6770;
+			public static final int ACTION_YAMA_UNIQUE = 6771;
+			public static final int ACTION_HUEY_UNIQUE = 6772;
+			public static final int ACTION_LOOT_BARROWS_UNIQUE_WHILE_WEARING_BARROWS_ITEM = 6773;
+			public static final int ACTION_COX_UNIQUE = 6774;
+			public static final int ACTION_GET_TOA_UNIQUE = 6775;
+			public static final int ACTION_GET_TOB_UNIQUE = 6776;
+			public static final int ACTION_VORKATH_UNIQUE = 6777;
+			public static final int ACTION_DROP_WARRIOR_RING = 6778;
+			public static final int ACTION_DROP_RANGER_RING = 6779;
+			public static final int ACTION_DROP_SEER_RING = 6780;
+			public static final int ACTION_DROP_BERZERKER_RING = 6781;
+			public static final int ACTION_OBTAIN_KINGS_RINGS_ONE_TRIP = 6782;
+			public static final int ACTION_MINE_GOLD_ORE = 6783;
+			public static final int ACTION_POH_BUILD_MARBLE_PORTAL_NEXUS = 6784;
+			public static final int ACTION_TOTAL_LEVEL_500 = 6785;
+			public static final int ACTION_TOTAL_LEVEL_1500 = 6786;
+			public static final int ACTION_TOTAL_LEVEL_2000 = 6787;
+			public static final int ACTION_CREATE_ZAMORAK_BREW_AT_ALTAR_WITH_ROBES = 6788;
+			public static final int ACTION_CREATE_SHARK_WITH_CHEFS_HAT = 6789;
+			public static final int ACTION_CREATE_YEW_SHORTBOW = 6790;
+			public static final int ACTION_CHOP_MAPLE_LOGS = 6791;
+			public static final int ACTION_STEAL_FROM_FRUIT_STALL = 6792;
+			public static final int ACTION_COMPLETE_VAMPYRE_SLAYER = 6793;
+			public static final int ACTION_CLEAN_GRIMY_HERB = 6794;
+			public static final int ACTION_HUNTER_MOTH_BAREHANDED = 6795;
+			public static final int ACTION_POH_SET_PORTAL_CATHERBY = 6796;
+			public static final int ACTION_FULLY_UNLOCK_THE_MYCELIUM_TRANSPORTATION_SYSTEM = 6797;
+			public static final int ACTION_COMPLETE_A_TASK_FOR_THE_WISE_OLD_MAN = 6798;
+			public static final int ACTION_BUILD_A_QUETZAL_LANDING_SITE = 6799;
+			public static final int ACTION_SUBDUE_THE_MOONS_OF_PERIL = 6800;
+			public static final int ACTION_SCORE_A_GOAL_IN_GNOMEBALL = 6801;
+			public static final int ACTION_KILL_OGRESS = 6802;
+			public static final int ACTION_KILL_LESSER_DEMON_IN_WIZARDS_TOWER = 6803;
+			public static final int ACTION_CASTLE_WARS_TICKET = 6804;
+			public static final int ACTION_KILL_JALZEK = 6805;
+			public static final int ACTION_MINE_FROM_GEMSTONE_CRAB = 6806;
+			public static final int ACTION_WITNESS_GEMSTONE_CRAB_BURROW = 6807;
+			public static final int ACTION_COMPLETE_DOM_DELVE_8 = 6808;
+			public static final int ACTION_FINISH_MAGIC_ENT_TOTEM_DECORATION = 6809;
+			public static final int ACTION_BINGO_TUTORIAL = 6810;
+			public static final int ACTION_KILL_LIZARD_SHAMAN_IN_TEMPLE = 6811;
+			public static final int ACTION_ARAXXOR_UNIQUE = 6812;
+			public static final int ACTION_BLESS_DRAGON_BONE = 6813;
+			public static final int ACTION_OBTAIN_ANY_INSURABLE_PET = 6814;
+			public static final int ACTION_BUILD_DEMONIC_THRONE = 6815;
+			public static final int ACTION_HALLOWED_SEPULCHRE_FLOOR_5 = 6816;
+			public static final int ACTION_VARLAMORE_THIEVING_HOUSE_VALUABLE = 6817;
+			public static final int ACTION_KILL_DRAGON = 6818;
+			public static final int ACTION_KILL_GIANT = 6819;
+			public static final int ACTION_BOSS_KILL_KALPHITE_QUEEN = 6820;
+			public static final int ACTION_BOSS_KILL_KREEARRA = 6821;
+			public static final int ACTION_BOSS_KILL_GENERAL_GRAARDOR = 6822;
+			public static final int ACTION_BOSS_KILL_COMMANDER_ZILYANA = 6823;
+			public static final int ACTION_BOSS_KILL_KRIL_TSUTSAROTH = 6824;
+			public static final int ACTION_BOSS_KILL_SIMPLE_GWD_BOSSES_WITHOUT_BANKING = 6825;
+			public static final int ACTION_BOSS_KILL_SOL_HEREDIT = 6826;
+			public static final int ACTION_BOSS_KILL_YAMA_SOLO = 6827;
+			public static final int ACTION_BOSS_KILL_ZULRAH_WITH_BLOWPIPE = 6828;
+			public static final int ACTION_BOSS_KILL_ALL_AWAKENED = 6829;
+			public static final int ACTION_BOSS_KILL_DUKE_SUCELLUS_AWAKENED = 6830;
+			public static final int ACTION_BOSS_KILL_LEVIATHAN_AWAKENED = 6831;
+			public static final int ACTION_BOSS_KILL_VARDORVIS_AWAKENED = 6832;
+			public static final int ACTION_BOSS_KILL_WHISPERER_AWAKENED = 6833;
+			public static final int ACTION_BOSS_KILL_SCURRIUS = 6834;
+			public static final int ACTION_BOSS_KILL_VORKATH = 6835;
+			public static final int ACTION_BOSS_KILL_BRYOPHYTA = 6836;
+			public static final int ACTION_BOSS_KILL_HUEYCOATL = 6837;
+			public static final int ACTION_BOSS_KILL_TEMPOROSS = 6838;
+			public static final int ACTION_BOSS_KILL_JAD = 6839;
+			public static final int ACTION_BOSS_KILL_GAUNTLET_HARDMODE = 6840;
+			public static final int ACTION_INFERNO_IN_30 = 6841;
+			public static final int ACTION_COMPLETE_RAID = 6842;
+			public static final int ACTION_COMPLETE_COX = 6843;
+			public static final int ACTION_COMPLETE_TOB = 6844;
+			public static final int ACTION_COMPLETE_TOA = 6845;
+			public static final int ACTION_EQUIP_INFERNAL_CAPE = 6846;
+			public static final int ACTION_EQUIP_SOS_BOOTS = 6847;
+			public static final int ACTION_EQUIP_ENCHANTED_ONYX_AMULET = 6848;
+			public static final int ACTION_EQUIP_SOS_SKULL_SCEPTRE = 6849;
+			public static final int ACTION_EQUIP_GODWARS_UNIQUE = 6850;
+			public static final int ACTION_EQUIP_MAX_CAPE = 6851;
+			public static final int ACTION_EQUIP_INFINITE_MONEYBAG = 6852;
+			public static final int ACTION_POH_SET_PORTAL_ANY = 6853;
+			public static final int ACTION_ALCHEMY_30K = 6854;
+			public static final int ACTION_THROW_GNOMEBALL = 6855;
+			public static final int ACTION_CHRONICLE_TELEPORT = 6856;
+			public static final int ACTION_CHECK_A_GROWN_FRUIT_TREE = 6857;
+			public static final int ACTION_ENTER_INFERNO = 6858;
+			public static final int ACTION_BUILD_ALL_FOSSIL_CAMP_BUILDINGS = 6859;
+			public static final int ACTION_POH_SKILLCAPE_DEPOSIT = 6860;
+			public static final int ACTION_DRINK_STEAMFORGE_BREW_INSIDE_SYO_INN = 6861;
+			public static final int ACTION_EAT_CABBAGE_INFRONT_OF_BRASSICAN_MAGE = 6862;
+		}
+	}
+
+	public static final class BingoEvents
+	{
+		public static final int ID = 119;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_GRID = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_EVENT_NAME = 1;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_EVENT_END = 2;
+
+		/**
+		 * enum
+		 */
+		public static final int COL_REWARD_LEAGUE_RELICS = 3;
+
+		/**
+		 * (namedobj, integer, integer)
+		 */
+		public static final int COL_EVENT_MAINGAME_REWARD = 7;
+
+		public static final class Row
+		{
+			public static final int JAGEX_BINGO_EVENT1 = 6926;
+		}
+	}
+
+	public static final class BingoGrids
+	{
+		public static final int ID = 120;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_GRID_LAYOUT = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_BINGO_POINTS_TO_PROGRESS = 1;
+
+		/**
+		 * (dbrow, integer, integer, integer)
+		 */
+		public static final int COL_CHALLENGE = 2;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_REWARD_SELECTION = 3;
+
+		public static final class Row
+		{
+			public static final int EVENT1_GRID1 = 6927;
+		}
+	}
+
+	public static final class RewardSelection
+	{
+		public static final int ID = 121;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_REWARD = 0;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_DISPLAY_GRAPHIC = 1;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_DISPLAY_OBJECT = 2;
+
+		public static final class Row
+		{
+			public static final int BINGO_RS_7X7_ROW_0 = 6863;
+			public static final int BINGO_RS_7X7_ROW_1 = 6864;
+			public static final int BINGO_RS_7X7_ROW_2 = 6865;
+			public static final int BINGO_RS_7X7_ROW_3 = 6866;
+			public static final int BINGO_RS_7X7_ROW_4 = 6867;
+			public static final int BINGO_RS_7X7_ROW_5 = 6868;
+			public static final int BINGO_RS_7X7_ROW_6 = 6869;
+			public static final int BINGO_RS_7X7_COL_0 = 6870;
+			public static final int BINGO_RS_7X7_COL_1 = 6871;
+			public static final int BINGO_RS_7X7_COL_2 = 6872;
+			public static final int BINGO_RS_7X7_COL_3 = 6873;
+			public static final int BINGO_RS_7X7_COL_4 = 6874;
+			public static final int BINGO_RS_7X7_COL_5 = 6875;
+			public static final int BINGO_RS_7X7_COL_6 = 6876;
+			public static final int BINGO_RS_7X7_ROW_0_COL_0 = 6877;
+			public static final int BINGO_RS_7X7_ROW_0_COL_1 = 6878;
+			public static final int BINGO_RS_7X7_ROW_0_COL_2 = 6879;
+			public static final int BINGO_RS_7X7_ROW_0_COL_3 = 6880;
+			public static final int BINGO_RS_7X7_ROW_0_COL_4 = 6881;
+			public static final int BINGO_RS_7X7_ROW_0_COL_5 = 6882;
+			public static final int BINGO_RS_7X7_ROW_0_COL_6 = 6883;
+			public static final int BINGO_RS_7X7_ROW_1_COL_0 = 6884;
+			public static final int BINGO_RS_7X7_ROW_1_COL_1 = 6885;
+			public static final int BINGO_RS_7X7_ROW_1_COL_2 = 6886;
+			public static final int BINGO_RS_7X7_ROW_1_COL_3 = 6887;
+			public static final int BINGO_RS_7X7_ROW_1_COL_4 = 6888;
+			public static final int BINGO_RS_7X7_ROW_1_COL_5 = 6889;
+			public static final int BINGO_RS_7X7_ROW_1_COL_6 = 6890;
+			public static final int BINGO_RS_7X7_ROW_2_COL_0 = 6891;
+			public static final int BINGO_RS_7X7_ROW_2_COL_1 = 6892;
+			public static final int BINGO_RS_7X7_ROW_2_COL_2 = 6893;
+			public static final int BINGO_RS_7X7_ROW_2_COL_3 = 6894;
+			public static final int BINGO_RS_7X7_ROW_2_COL_4 = 6895;
+			public static final int BINGO_RS_7X7_ROW_2_COL_5 = 6896;
+			public static final int BINGO_RS_7X7_ROW_2_COL_6 = 6897;
+			public static final int BINGO_RS_7X7_ROW_3_COL_0 = 6898;
+			public static final int BINGO_RS_7X7_ROW_3_COL_1 = 6899;
+			public static final int BINGO_RS_7X7_ROW_3_COL_2 = 6900;
+			public static final int BINGO_RS_7X7_ROW_3_COL_3 = 6901;
+			public static final int BINGO_RS_7X7_ROW_3_COL_4 = 6902;
+			public static final int BINGO_RS_7X7_ROW_3_COL_5 = 6903;
+			public static final int BINGO_RS_7X7_ROW_3_COL_6 = 6904;
+			public static final int BINGO_RS_7X7_ROW_4_COL_0 = 6905;
+			public static final int BINGO_RS_7X7_ROW_4_COL_1 = 6906;
+			public static final int BINGO_RS_7X7_ROW_4_COL_2 = 6907;
+			public static final int BINGO_RS_7X7_ROW_4_COL_3 = 6908;
+			public static final int BINGO_RS_7X7_ROW_4_COL_4 = 6909;
+			public static final int BINGO_RS_7X7_ROW_4_COL_5 = 6910;
+			public static final int BINGO_RS_7X7_ROW_4_COL_6 = 6911;
+			public static final int BINGO_RS_7X7_ROW_5_COL_0 = 6912;
+			public static final int BINGO_RS_7X7_ROW_5_COL_1 = 6913;
+			public static final int BINGO_RS_7X7_ROW_5_COL_2 = 6914;
+			public static final int BINGO_RS_7X7_ROW_5_COL_3 = 6915;
+			public static final int BINGO_RS_7X7_ROW_5_COL_4 = 6916;
+			public static final int BINGO_RS_7X7_ROW_5_COL_5 = 6917;
+			public static final int BINGO_RS_7X7_ROW_5_COL_6 = 6918;
+			public static final int BINGO_RS_7X7_ROW_6_COL_0 = 6919;
+			public static final int BINGO_RS_7X7_ROW_6_COL_1 = 6920;
+			public static final int BINGO_RS_7X7_ROW_6_COL_2 = 6921;
+			public static final int BINGO_RS_7X7_ROW_6_COL_3 = 6922;
+			public static final int BINGO_RS_7X7_ROW_6_COL_4 = 6923;
+			public static final int BINGO_RS_7X7_ROW_6_COL_5 = 6924;
+			public static final int BINGO_RS_7X7_ROW_6_COL_6 = 6925;
+			public static final int EMPTY_REWARD_SELECTION = 6928;
+		}
+	}
+
+	public static final class Reward
+	{
+		public static final int ID = 122;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		/**
+		 * string
+		 */
+		public static final int COL_DESC = 1;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_SHOW_DERIVED_DESC = 2;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_DISPLAY_GRAPHIC = 3;
+
+		/**
+		 * obj
+		 */
+		public static final int COL_DISPLAY_OBJECT = 4;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_XP_BOOST_PERCENTAGE_ALL_STAT = 5;
+
+		/**
+		 * (stat, integer)
+		 */
+		public static final int COL_XP_BOOST_PERCENTAGE = 6;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_QUEST_UNLOCK = 7;
+
+		/**
+		 * (namedobj, integer)
+		 */
+		public static final int COL_OBJECT = 8;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ACHIEVEMENT_DIARY_UNLOCK = 10;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_COMBAT_ACHIEVEMENT_UNLOCK = 11;
+
+		/**
+		 * struct
+		 */
+		public static final int COL_LEAGUE_RELIC = 12;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_COMBAT_MASTERY_TIER = 13;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_RECLAIMABLE = 14;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_ONCE_PER_EVENT = 15;
+
+		public static final class Row
+		{
+			public static final int REWARD_NYI = 6929;
+			public static final int REWARD_SCYTHE_OF_VITUR = 6930;
+			public static final int REWARD_TWISTED_BOW = 6931;
+			public static final int REWARD_TUMEKENS_SHADOW = 6932;
+			public static final int REWARD_DIVINE_RUNE_POUCH = 6933;
+			public static final int REWARD_DAMNED_GLOVES = 6934;
+			public static final int REWARD_XP_LAMP_25K = 6935;
+			public static final int REWARD_XP_LAMP_100K = 6936;
+			public static final int REWARD_AVERNIC_TREADS_MAX = 6937;
+			public static final int REWARD_AMULET_OF_THE_MONARCHS = 6938;
+			public static final int REWARD_SUNLIGHT_SPEAR_AND_SUNLIT_BRACERS = 6939;
+			public static final int REWARD_EMPEROR_RING = 6940;
+			public static final int REWARD_THE_DOGSWORD = 6941;
+			public static final int REWARD_DRYGORE_BLOWPIPE = 6942;
+			public static final int REWARD_THOUSAND_DRAGON_WARD = 6943;
+			public static final int REWARD_THUNDER_KHOPESH = 6944;
+			public static final int REWARD_DEVILS_ELEMENT = 6945;
+			public static final int REWARD_XP_BOOST_ALL_200 = 6946;
+			public static final int REWARD_POWER_MINER = 6947;
+			public static final int REWARD_LUMBERJACK = 6948;
+			public static final int REWARD_ANIMAL_WRANGLER = 6949;
+			public static final int REWARD_GOLDEN_GOD = 6950;
+			public static final int REWARD_DODGY_DEALS = 6951;
+			public static final int REWARD_CLUE_COMPASS = 6952;
+			public static final int REWARD_FAIRY_FLIGHT = 6953;
+			public static final int REWARD_BANKERS_NOTE = 6954;
+			public static final int REWARD_PRODUCTION_PRODIGY = 6955;
+			public static final int REWARD_LAST_RECALL = 6956;
+			public static final int REWARD_FRIENDLY_FORAGER = 6957;
+			public static final int REWARD_CORNER_CUTTER = 6958;
+			public static final int REWARD_UNNATURAL_SELECTION = 6959;
+			public static final int REWARD_LAST_STAND = 6960;
+			public static final int REWARD_SLAYER_MASTER = 6961;
+			public static final int REWARD_GRIMOIRE = 6962;
+			public static final int REWARD_SPECIALIST = 6963;
+			public static final int REWARD_BANK_HEIST = 6964;
+			public static final int REWARD_GUARDIAN = 6965;
+			public static final int REWARD_BOTTOMLESS_BREW = 6966;
+			public static final int REWARD_SPELLS_DO_NOT_CONSUME_RUNES = 6967;
+			public static final int REWARD_MINIMUM_POTENTIAL = 6968;
+			public static final int REWARD_SPIKY_AURA = 6969;
+			public static final int REWARD_GATHERER = 6970;
+			public static final int REWARD_CRAFTSMAN = 6971;
+			public static final int REWARD_COMBATANT = 6972;
+			public static final int REWARD_BATTLEHAT = 6973;
+			public static final int REWARD_CORRUPTED_SHARK = 6974;
+			public static final int REWARD_FARMERS_FORTUNE = 6975;
+			public static final int REWARD_CRIT_ALL_STYLES = 6976;
+			public static final int REWARD_INCREASE_ALL_COMBAT_MASTERIES = 6977;
+			public static final int REWARD_AUTO_COMPLETE_ALL_ACHIEVEMENT_DIARIES = 6978;
+			public static final int REWARD_AUTO_COMPLETE_ALL_COMBAT_ACHIEVEMENTS = 6979;
+			public static final int REWARD_QUEST_DESERTTREASURE2 = 6980;
+			public static final int REWARD_QUEST_DRAGONSLAYER2 = 6981;
+			public static final int REWARD_QUEST_MONKEYMADNESS = 6982;
+			public static final int REWARD_QUEST_SONGOFTHEELVES = 6983;
+			public static final int REWARD_QUEST_SINSOFTHEFATHER = 6984;
+			public static final int REWARD_QUEST_KINGDOMDIVIDED = 6985;
+			public static final int REWARD_QUEST_PERILOUSMOONS = 6986;
+			public static final int REWARD_QUEST_FINALDAWN = 6987;
+			public static final int REWARD_QUEST_WHILEGUTHIXSLEEPS = 6988;
+		}
+	}
+
+	public static final class TeleportGeneric
+	{
+		public static final int ID = 123;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		public static final class Row
+		{
+			public static final int LUMBRIDGE_TELEPORT = 6990;
+			public static final int VARROCK_TELEPORT = 6991;
+			public static final int FALADOR_TELEPORT = 6992;
+			public static final int ARDOUGNE_TELEPORT = 6993;
+			public static final int SENNTISTEN_TELEPORT = 6994;
+			public static final int WATERBIRTH_TELEPORT = 6995;
+			public static final int ARCEUUS_LIBRARY_TELEPORT = 6996;
+			public static final int DRAYNOR_MANOR_TELEPORT = 6997;
+			public static final int MIND_ALTAR_TELEPORT = 6998;
+			public static final int FISHING_GUILD_TELEPORT = 6999;
+			public static final int VARROCK_GE_TELEPORT = 7000;
+			public static final int CAMELOT_TELEPORT = 7001;
+			public static final int SEERS_VILLAGE_TELEPORT = 7002;
+			public static final int WATCHTOWER_TELEPORT = 7003;
+			public static final int YANILLE_TELEPORT = 7004;
+			public static final int KHARYLL_TELEPORT = 7005;
+			public static final int LUNAR_ISLE_TELEPORT = 7006;
+			public static final int ANNAKARL_TELEPORT = 7007;
+			public static final int MARIM_TELEPORT = 7008;
+			public static final int KOUREND_CENTRAL_TELEPORT = 7009;
+			public static final int FORTIS_TELEPORT = 7010;
+			public static final int TROLL_STRONGHOLD_TELEPORT = 7011;
+			public static final int WEISS_TELEPORT = 7012;
+			public static final int BATTLEFRONT_TELEPORT = 7013;
+			public static final int SALVE_GRAVEYARD_TELEPORT = 7014;
+			public static final int FENKENSTRAINS_CASTLE_TELEPORT = 7015;
+			public static final int WEST_ARDOUGNE_TELEPORT = 7016;
+			public static final int HARMONY_ISLAND_TELEPORT = 7017;
+			public static final int FORGOTTEN_CEMETERY_TELEPORT = 7018;
+			public static final int BARROWS_TELEPORT = 7019;
+			public static final int APE_ATOLL_DUNGEON_TELEPORT = 7020;
+			public static final int CATHERBY_TELEPORT = 7021;
+			public static final int GHORROCK_TELEPORT = 7022;
+			public static final int CARRALLANGAR_TELEPORT = 7023;
+		}
+	}
+
+	public static final class PollFilters
+	{
+		public static final int ID = 124;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_CATEGORY = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ID = 1;
+
+		/**
+		 * string
+		 */
+		public static final int COL_OPBASE = 2;
+
+		/**
+		 * graphic
+		 */
+		public static final int COL_ICON = 3;
+
+		/**
+		 * string
+		 */
+		public static final int COL_DESC = 4;
+
+		public static final class Row
+		{
+			public static final int POLL_CATEGORY_LOCKIN = 7026;
+			public static final int POLL_CATEGORY_GREENLIGHT = 7027;
+			public static final int POLL_CATEGORY_OPINION = 7028;
+			public static final int POLL_STATUS_NOTOPEN = 7029;
+			public static final int POLL_STATUS_HASVOTED = 7030;
+			public static final int POLL_STATUS_INELIGIBLE = 7031;
+			public static final int POLL_STATUS_CANVOTE = 7032;
+		}
+	}
+
+	public static final class UiHighlightingFxPulse
+	{
+		public static final int ID = 125;
+
+		/**
+		 * (integer, integer)
+		 */
+		public static final int COL_TRANSPARENCY_RANGE = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_STEP_DURATION = 1;
+
+		public static final class Row
+		{
+			public static final int UI_HIGHLIGHTING_FX_PULSE_TUTORIAL_CTA = 7035;
+			public static final int UI_HIGHLIGHTING_FX_PULSE_TUTORIAL_ALERT = 7037;
+		}
+	}
+
+	public static final class UiHighlightingStyleBorder
+	{
+		public static final int ID = 126;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_WIDTH = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_COLOUR = 1;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_PADDING = 2;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_FX = 3;
+
+		public static final class Row
+		{
+			public static final int UI_HIGHLIGHTING_STYLE_TUTORIAL_CTA = 7034;
+			public static final int UI_HIGHLIGHTING_STYLE_TUTORIAL_ALERT = 7036;
 		}
 	}
 /* This file is automatically generated. Do not edit. */

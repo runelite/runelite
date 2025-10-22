@@ -76,20 +76,24 @@ class RegenMeterOverlay extends Overlay
 
 		if (config.showHitpoints())
 		{
-			renderRegen(g, InterfaceID.Orbs.ORB_HEALTH, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_HEALTH, InterfaceID.OrbsNomap.ORB_HEALTH, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
 		}
 
 		if (config.showSpecial())
 		{
-			renderRegen(g, InterfaceID.Orbs.ORB_SPECENERGY, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			renderRegen(g, InterfaceID.Orbs.ORB_SPECENERGY, InterfaceID.OrbsNomap.ORB_SPECENERGY, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
 		return null;
 	}
 
-	private void renderRegen(Graphics2D g, @Component int componentId, double percent, Color color)
+	private void renderRegen(Graphics2D g, @Component int componentId, @Component int noOrbComponentId, double percent, Color color)
 	{
 		Widget widget = client.getWidget(componentId);
+		if (widget == null || widget.isHidden())
+		{
+			widget = client.getWidget(noOrbComponentId);
+		}
 		if (widget == null || widget.isHidden())
 		{
 			return;

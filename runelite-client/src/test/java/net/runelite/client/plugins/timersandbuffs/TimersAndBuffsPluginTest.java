@@ -513,7 +513,7 @@ public class TimersAndBuffsPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.MARK_OF_DARKNESS, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(3), infoBox.getDuration());
+		assertEquals(Duration.of(183, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test

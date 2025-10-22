@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Abex
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.api.events;
 
-import com.apple.eawt.FullScreenAdapter;
-import com.apple.eawt.FullScreenUtilities;
-import com.apple.eawt.event.FullScreenEvent;
-import java.awt.Frame;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Value;
+import net.runelite.api.WorldView;
 
-@Slf4j
-@RequiredArgsConstructor
-class OSXFullScreenAdapter extends FullScreenAdapter
+/**
+ * Called when a worldview has been loaded
+ */
+@Value
+public class WorldViewLoaded
 {
-	private final Frame frame;
-
-	@Override
-	public void windowEnteredFullScreen(FullScreenEvent e)
-	{
-		log.debug("Window entered fullscreen mode--setting extended state to {}", Frame.MAXIMIZED_BOTH);
-		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-	}
-
-	@Override
-	public void windowExitedFullScreen(FullScreenEvent e)
-	{
-		log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
-		frame.setExtendedState(Frame.NORMAL);
-	}
-
-	public static void install(Frame frame)
-	{
-		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
-	}
+	WorldView worldView;
 }

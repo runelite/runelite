@@ -93,10 +93,11 @@ class InteractHighlightOverlay extends Overlay
 			case GAME_OBJECT_FIFTH_OPTION:
 			case EXAMINE_OBJECT:
 			{
+				int worldId = entry.getWorldViewId();
 				int x = entry.getParam0();
 				int y = entry.getParam1();
 				int id = entry.getIdentifier();
-				TileObject tileObject = plugin.findTileObject(x, y, id);
+				TileObject tileObject = plugin.findTileObject(worldId, x, y, id);
 				if (tileObject != null && config.objectShowHover() && (tileObject != plugin.getInteractedObject() || !config.objectShowInteract()))
 				{
 					modelOutlineRenderer.drawOutline(tileObject, config.borderWidth(), config.objectHoverHighlightColor(), config.outlineFeather());

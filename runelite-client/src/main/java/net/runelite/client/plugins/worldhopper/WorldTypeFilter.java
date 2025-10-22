@@ -54,7 +54,7 @@ enum WorldTypeFilter
 			@Override
 			boolean matches(Set<WorldType> types)
 			{
-				return types.contains(WorldType.SEASONAL);
+				return types.contains(WorldType.SEASONAL) || types.contains(WorldType.TOURNAMENT);
 			}
 		},
 	QUEST_SPEEDRUNNING

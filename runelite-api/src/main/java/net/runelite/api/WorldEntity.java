@@ -24,7 +24,28 @@
  */
 package net.runelite.api;
 
-public interface WorldEntity
+import net.runelite.api.coords.LocalPoint;
+
+public interface WorldEntity extends CameraFocusableEntity
 {
 	WorldView getWorldView();
+
+	/**
+	 * Get the location of this world entity in the top level world.
+	 * @return
+	 */
+	LocalPoint getLocalLocation();
+
+	/**
+	 * Transform a point within the world entity to the overworld
+	 * @param point
+	 * @return
+	 */
+	LocalPoint transformToMainWorld(LocalPoint point);
+
+	/**
+	 * Return true if this worldentity is overlapped
+	 * @return
+	 */
+	boolean isHiddenForOverlap();
 }

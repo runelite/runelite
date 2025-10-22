@@ -367,9 +367,9 @@ public class SlayerPlugin extends Plugin
 			{
 				var bossRows = client.getDBRowsByValue(
 					DBTableID.SlayerTaskSublist.ID,
-					DBTableID.SlayerTaskSublist.COL_SUBTABLE_ID,
+					DBTableID.SlayerTaskSublist.COL_TASK_SUBTABLE_ID,
 					0,
-					taskId);
+					client.getVarbitValue(VarbitID.SLAYER_TARGET_BOSSID));
 
 				if (bossRows.isEmpty())
 				{

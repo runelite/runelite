@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Abex
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.config;
+package net.runelite.client.ui;
 
-import java.util.function.Predicate;
-import lombok.Getter;
+import com.apple.eawt.FullScreenAdapter;
+import com.apple.eawt.FullScreenUtilities;
+import com.apple.eawt.event.FullScreenEvent;
+import java.awt.Frame;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import net.runelite.api.WorldType;
+import lombok.extern.slf4j.Slf4j;
 
-@Getter
+@Slf4j
 @RequiredArgsConstructor
-public enum RuneScapeProfileType
+class OSXFullScreenAdapter extends FullScreenAdapter
 {
-	// This enum should be ordinal-stable; new entries should only be added to the
-	// end and entries should never be removed
-	STANDARD(client -> true),
-	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE) || client.getWorldType().contains(WorldType.BETA_WORLD)),
-	QUEST_SPEEDRUNNING(client -> client.getWorldType().contains(WorldType.QUEST_SPEEDRUNNING)),
-	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
-	PVP_ARENA(client -> client.getWorldType().contains(WorldType.PVP_ARENA)),
-	TRAILBLAZER_LEAGUE,
-	DEADMAN_REBORN,
-	SHATTERED_RELICS_LEAGUE,
-	TRAILBLAZER_RELOADED_LEAGUE,
-	RAGING_ECHOES_LEAGUE,
-	GRID_MASTER(client -> client.getWorldType().contains(WorldType.TOURNAMENT_WORLD)),
-	;
+	private final Frame frame;
 
-	private final Predicate<Client> test;
-
-	RuneScapeProfileType()
+	@Override
+	public void windowEnteredFullScreen(FullScreenEvent e)
 	{
-		this(client -> false);
+		log.debug("Window entered fullscreen mode--setting extended state to {}", Frame.MAXIMIZED_BOTH);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
-	public static RuneScapeProfileType getCurrent(Client client)
+	@Override
+	public void windowExitedFullScreen(FullScreenEvent e)
 	{
-		RuneScapeProfileType[] types = values();
-		for (int i = types.length - 1; i >= 0; i--)
-		{
-			RuneScapeProfileType type = types[i];
-			if (types[i].test.test(client))
-			{
-				return type;
-			}
-		}
+		log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
+		frame.setExtendedState(Frame.NORMAL);
+	}
 
-		return STANDARD;
+	static void install(Frame frame)
+	{
+		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
 	}
 }

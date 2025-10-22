@@ -53,6 +53,7 @@ public class SequenceDefinition
 	public int animMayaStart;
 	public int animMayaEnd;
 	public boolean[] animMayaMasks;
+	public boolean soundsCrossWorldView;
 
 	@Value
 	public static class Sound

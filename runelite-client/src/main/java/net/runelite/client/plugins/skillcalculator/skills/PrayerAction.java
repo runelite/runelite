@@ -32,6 +32,7 @@ import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.BLESSED_SUNFIRE_WINE;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.DEMONIC_OFFERING;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.MORYTANIA_DIARY_3_SHADES;
+import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.SACRED_BONE_BURNER;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.ZEALOT_ROBES;
 
 @AllArgsConstructor
@@ -116,7 +117,7 @@ public enum PrayerAction implements ItemSkillAction
 		DEMONIC_OFFERING,
 		BLESSED_SUNFIRE_WINE
 	);
-	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
+	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING, SACRED_BONE_BURNER));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_REMAINS = EnumSet.complementOf(EnumSet.of(MORYTANIA_DIARY_3_SHADES));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_BLESSED_SUNFIRE_WINE = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES, BLESSED_SUNFIRE_WINE));
 	private static final Set<PrayerBonus> EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES));

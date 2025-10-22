@@ -84,5 +84,6 @@ public class ObjectDefinition
 	private boolean blocksProjectile = true;
 	private boolean randomizeAnimStart;
 	private boolean deferAnimChange;
+	private boolean unknown1 = false;
 	private Map<Integer, Object> params = null;
 }

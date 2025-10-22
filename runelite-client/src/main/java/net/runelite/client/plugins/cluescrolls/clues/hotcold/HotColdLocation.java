@@ -187,7 +187,6 @@ public enum HotColdLocation
 	ZEAH_HOUSECHURCH(MASTER, new WorldPoint(1681, 3794, 0), ZEAH, "By the entrance to the Arceuus church.", ANCIENT_WIZARDS),
 	ZEAH_DARK_ALTAR(MASTER, new WorldPoint(1698, 3880, 0), ZEAH, "West of the Dark Altar.", BRASSICAN_MAGE),
 	ZEAH_ARCEUUS_HOUSE(MASTER, new WorldPoint(1710, 3700, 0), ZEAH, "By the south-eastern entrance to Arceuus.", BRASSICAN_MAGE),
-	ZEAH_ESSENCE_MINE(MASTER, new WorldPoint(1762, 3852, 0), ZEAH, "By the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_ESSENCE_MINE_NE(MASTER, new WorldPoint(1773, 3867, 0), ZEAH, "North-east of the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_PISCARILUS_MINE(MASTER, new WorldPoint(1768, 3705, 0), ZEAH, "South of the Piscarilius mine.", ANCIENT_WIZARDS),
 	ZEAH_GOLDEN_FIELD_TAVERN(MASTER, new WorldPoint(1718, 3643, 0), ZEAH, "South of the gravestone in Kingstown.", BRASSICAN_MAGE),

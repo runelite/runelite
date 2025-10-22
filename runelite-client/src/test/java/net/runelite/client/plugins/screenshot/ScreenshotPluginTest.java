@@ -44,12 +44,9 @@ import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageCapture;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -96,10 +93,6 @@ public class ScreenshotPluginTest
 
 	@Mock
 	@Bind
-	Notifier notifier;
-
-	@Mock
-	@Bind
 	ClientUI clientUi;
 
 	@Mock
@@ -113,14 +106,6 @@ public class ScreenshotPluginTest
 	@Mock
 	@Bind
 	ScheduledExecutorService service;
-
-	@Mock
-	@Bind
-	private OverlayManager overlayManager;
-
-	@Mock
-	@Bind
-	private InfoBoxManager infoBoxManager;
 
 	@Mock
 	@Bind
