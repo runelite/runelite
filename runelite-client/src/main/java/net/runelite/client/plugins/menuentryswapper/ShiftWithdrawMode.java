@@ -40,7 +40,7 @@ public enum ShiftWithdrawMode
 	// chambers of xeric storage units do not have an "all-but-1" option or a "placeholder" option, so these options will choose "Withdraw-all"
 	// choose "Withdraw-all" instead when using the storage unit.
 	WITHDRAW_ALL_BUT_1("Withdraw-All-But-1", MenuAction.CC_OP_LOW_PRIORITY, 8, 4),
-	WITHDRAW_PLACEHOLDER("Placeholder", MenuAction.CC_OP_LOW_PRIORITY, 9, 4),
+	WITHDRAW_PLACEHOLDER("Placeholder", MenuAction.CC_OP_LOW_PRIORITY, 10, 4),
 	OFF("Off", MenuAction.UNKNOWN, 0, 0);
 
 	private final String name;

@@ -33,10 +33,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -86,7 +85,7 @@ public class KeyRemappingPlugin extends Plugin
 			{
 				lockChat();
 				// Clear any typed text
-				client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
+				client.setVarcStrValue(VarClientID.CHATINPUT, "");
 			}
 		});
 	}
@@ -125,7 +124,7 @@ public class KeyRemappingPlugin extends Plugin
 
 		// If the search box on the world map is open and focused, ~keypress_permit blocks the keypress
 		Widget worldMapSearch = client.getWidget(InterfaceID.Worldmap.MAPLIST_DISPLAY);
-		if (worldMapSearch != null && client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) == 1)
+		if (worldMapSearch != null && client.getVarcIntValue(VarClientID.WORLDMAP_SEARCHING) == 1)
 		{
 			return false;
 		}
@@ -210,7 +209,7 @@ public class KeyRemappingPlugin extends Plugin
 			{
 				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1;
 				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientID.CHATINPUT) + "*", textColor));
 			}
 		}
 	}

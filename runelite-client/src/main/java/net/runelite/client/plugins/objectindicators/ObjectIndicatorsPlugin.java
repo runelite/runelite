@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +51,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
@@ -61,17 +61,20 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldEntity;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WorldViewLoaded;
+import net.runelite.api.events.WorldViewUnloaded;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -138,7 +141,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		clientThread.invokeLater(this::reloadPoints);
+		clientThread.invokeLater(() -> loadPoints());
 	}
 
 	@Override
@@ -152,7 +155,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onProfileChanged(ProfileChanged e)
 	{
-		clientThread.invokeLater(this::reloadPoints);
+		clientThread.invokeLater(() -> loadPoints());
 	}
 
 	@Subscribe
@@ -203,32 +206,53 @@ public class ObjectIndicatorsPlugin extends Plugin
 		objects.removeIf(o -> o.getTileObject() == event.getGroundObject());
 	}
 
-	private void reloadPoints()
+	private void loadPoints()
 	{
 		points.clear();
-		if (client.getMapRegions() != null)
+
+		WorldView wv = client.getTopLevelWorldView();
+		loadPoints(wv);
+
+		for (WorldEntity we : wv.worldEntities())
 		{
-			for (int regionId : client.getMapRegions())
+			loadPoints(we.getWorldView());
+		}
+	}
+
+	private void loadPoints(WorldView wv)
+	{
+		int[] regions = wv.getMapRegions();
+		if (regions == null)
+		{
+			return;
+		}
+
+		for (int regionId : regions)
+		{
+			// load points for region
+			final Set<ObjectPoint> regionPoints = loadPoints(regionId);
+			if (regionPoints != null)
 			{
-				// load points for region
-				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
-				if (regionPoints != null)
-				{
-					points.put(regionId, regionPoints);
-				}
+				points.put(regionId, regionPoints);
 			}
 		}
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onWorldViewLoaded(WorldViewLoaded event)
 	{
-		GameState gameState = gameStateChanged.getGameState();
-		if (gameState == GameState.LOADING)
+		loadPoints(event.getWorldView());
+	}
+
+	@Subscribe
+	public void onWorldViewUnloaded(WorldViewUnloaded event)
+	{
+		var wv = event.getWorldView();
+		objects.removeIf(c -> c.getTileObject().getWorldView() == wv);
+		// TODO remove points when the last boat using it despawns?
+		if (wv.isTopLevel())
 		{
-			// Reload points with new map regions
-			objects.clear();
-			reloadPoints();
+			Arrays.stream(wv.getMapRegions()).forEach(points::remove);
 		}
 	}
 
@@ -240,7 +264,14 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		final TileObject tileObject = findTileObject(client.getPlane(), event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
+		int worldId = event.getMenuEntry().getWorldViewId();
+		WorldView wv = client.getWorldView(worldId);
+		if (wv == null)
+		{
+			return;
+		}
+
+		final TileObject tileObject = findTileObject(wv, event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
 		if (tileObject == null)
 		{
 			return;
@@ -251,6 +282,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		client.createMenuEntry(idx--)
 			.setOption(marked.isPresent() ? UNMARK : MARK)
 			.setTarget(event.getTarget())
+			.setWorldViewId(worldId)
 			.setParam0(event.getActionParam0())
 			.setParam1(event.getActionParam1())
 			.setIdentifier(event.getIdentifier())
@@ -403,7 +435,13 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void markObject(MenuEntry entry)
 	{
-		TileObject object = findTileObject(client.getPlane(), entry.getParam0(), entry.getParam1(), entry.getIdentifier());
+		WorldView wv = client.getWorldView(entry.getWorldViewId());
+		if (wv == null)
+		{
+			return;
+		}
+
+		TileObject object = findTileObject(wv, entry.getParam0(), entry.getParam1(), entry.getIdentifier());
 		if (object == null)
 		{
 			return;
@@ -420,7 +458,37 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		markObject(objectDefinition, name, object);
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final int regionId = worldPoint.getRegionID();
+		final Color borderColor = config.markerColor();
+		final Color fillColor = config.fillColor();
+		final ObjectPoint point = new ObjectPoint(
+			object.getId(),
+			name,
+			regionId,
+			worldPoint.getRegionX(),
+			worldPoint.getRegionY(),
+			worldPoint.getPlane(),
+			borderColor,
+			fillColor,
+			// use the default config values
+			null, null, null, null);
+
+		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
+
+		if (objectPoints.removeIf(findObjectPredicate(objectDefinition, object, worldPoint)))
+		{
+			unmarkObjects(client.getTopLevelWorldView(), worldPoint, objectDefinition);
+			log.debug("Unmarking object: {}", point);
+		}
+		else
+		{
+			objectPoints.add(point);
+			markObjects(client.getTopLevelWorldView(), worldPoint, objectDefinition);
+			log.debug("Marking object: {}", point);
+		}
+
+		savePoints(regionId, objectPoints);
 	}
 
 	private void updateObjectConfig(TileObject object, Consumer<ObjectPoint> c)
@@ -445,9 +513,13 @@ public class ObjectIndicatorsPlugin extends Plugin
 		savePoints(regionId, objectPoints);
 
 		// rebuild the ColorTileObject from the new config
-		if (objects.removeIf(o -> o.getTileObject() == object))
+		for (ColorTileObject o : new ArrayList<>(objects))
 		{
-			checkObjectPoints(object);
+			if (o.getTileObject().getId() == object.getId())
+			{
+				objects.remove(o);
+				checkObjectPoints(o.getTileObject());
+			}
 		}
 	}
 
@@ -503,11 +575,12 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 	}
 
-	private TileObject findTileObject(int z, int x, int y, int id)
+	private TileObject findTileObject(WorldView wv, int x, int y, int id)
 	{
-		Scene scene = client.getScene();
+		int level = wv.getPlane();
+		Scene scene = wv.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final Tile tile = tiles[z][x][y];
+		final Tile tile = tiles[level][x][y];
 		if (tile == null)
 		{
 			return null;
@@ -574,54 +647,48 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-	/** mark or unmark an object
-	 *
-	 * @param objectComposition transformed composition of object based on vars
-	 * @param name name of objectComposition
-	 * @param object tile object, for multilocs object.getId() is the base id
-	 */
-	private void markObject(ObjectComposition objectComposition, String name, final TileObject object)
+	private void markObjects(WorldView wv, WorldPoint p, ObjectComposition objectConfig)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
-		final int regionId = worldPoint.getRegionID();
-		final Color borderColor = config.markerColor();
-		final Color fillColor = config.fillColor();
-		final ObjectPoint point = new ObjectPoint(
-			object.getId(),
-			name,
-			regionId,
-			worldPoint.getRegionX(),
-			worldPoint.getRegionY(),
-			worldPoint.getPlane(),
-			borderColor,
-			fillColor,
-			// use the default config values
-			null, null, null, null);
-
-		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
-
-		if (objects.removeIf(o -> o.getTileObject() == object))
+		for (WorldPoint sp : WorldPoint.toLocalInstance(wv, p))
 		{
-			if (!objectPoints.removeIf(findObjectPredicate(objectComposition, object, worldPoint)))
+			int x = sp.getX() - wv.getBaseX(), y = sp.getY() - wv.getBaseY();
+			TileObject object = findTileObject(wv, x, y, objectConfig.getId());
+			if (object != null)
 			{
-				log.warn("unable to find object point for unmarked object {}", object.getId());
+				objects.add(new ColorTileObject(object,
+					client.getObjectDefinition(object.getId()),
+					objectConfig.getName(),
+					config.markerColor(),
+					config.fillColor(),
+					(byte) 0));
 			}
-
-			log.debug("Unmarking object: {}", point);
 		}
-		else
+
+		for (WorldView sub : wv.worldViews())
 		{
-			objectPoints.add(point);
-			objects.add(new ColorTileObject(object,
-				client.getObjectDefinition(object.getId()),
-				name,
-				borderColor,
-				fillColor,
-				(byte) 0));
-			log.debug("Marking object: {}", point);
+			markObjects(sub, p, objectConfig);
+		}
+	}
+
+	private void unmarkObjects(WorldView wv, WorldPoint p, ObjectComposition objectConfig)
+	{
+		for (WorldPoint sp : WorldPoint.toLocalInstance(wv, p))
+		{
+			int x = sp.getX() - wv.getBaseX(), y = sp.getY() - wv.getBaseY();
+			TileObject object = findTileObject(wv, x, y, objectConfig.getId());
+			if (object != null)
+			{
+				if (!objects.removeIf(o -> o.getTileObject() == object))
+				{
+					log.warn("unable to find object point for unmarked object {}", object.getId());
+				}
+			}
 		}
 
-		savePoints(regionId, objectPoints);
+		for (WorldView sub : wv.worldViews())
+		{
+			unmarkObjects(sub, p, objectConfig);
+		}
 	}
 
 	private static Predicate<ObjectPoint> findObjectPredicate(ObjectComposition objectComposition, TileObject object, WorldPoint worldPoint)

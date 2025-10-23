@@ -35,6 +35,7 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
+import net.runelite.api.WorldView;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -127,21 +128,35 @@ public class NpcOverlayService
 		clientThread.invoke(() ->
 		{
 			highlightedNpcs.clear();
+			rebuild(client.getTopLevelWorldView());
+		});
+	}
 
-			outer:
-			for (NPC npc : client.getNpcs())
+	private void rebuild(WorldView wv)
+	{
+		if (wv == null)
+		{
+			return;
+		}
+
+		outer:
+		for (NPC npc : wv.npcs())
+		{
+			for (Function<NPC, HighlightedNpc> f : highlightFunctions)
 			{
-				for (Function<NPC, HighlightedNpc> f : highlightFunctions)
+				HighlightedNpc highlightedNpc = f.apply(npc);
+				if (highlightedNpc != null)
 				{
-					HighlightedNpc highlightedNpc = f.apply(npc);
-					if (highlightedNpc != null)
-					{
-						highlightedNpcs.put(npc, highlightedNpc);
-						continue outer;
-					}
+					highlightedNpcs.put(npc, highlightedNpc);
+					continue outer;
 				}
 			}
-		});
+		}
+
+		for (WorldView sub : wv.worldViews())
+		{
+			rebuild(sub);
+		}
 	}
 
 	public void registerHighlighter(Function<NPC, HighlightedNpc> p)

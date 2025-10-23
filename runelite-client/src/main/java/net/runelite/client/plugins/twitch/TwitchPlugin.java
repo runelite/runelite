@@ -34,8 +34,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -220,7 +220,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		final int[] intStack = client.getIntStack();
 		int intStackCount = client.getIntStackSize();
 
-		String message = client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT);
+		String message = client.getVarcStrValue(VarClientID.CHATINPUT);
 
 		if (message.startsWith("/t "))
 		{

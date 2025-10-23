@@ -239,7 +239,6 @@ public class PluginManager
 					catch (PluginInstantiationException ex)
 					{
 						log.error("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
-						plugins.remove(plugin);
 					}
 				});
 			}
@@ -448,6 +447,15 @@ public class PluginManager
 		}
 		catch (Throwable ex)
 		{
+			// stop the plugin and fire the change event to update the plugin list panel
+			try
+			{
+				stopPlugin(plugin);
+			}
+			catch (Throwable ex2)
+			{
+				log.error("unable to stop plugin", ex2);
+			}
 			throw new PluginInstantiationException(ex);
 		}
 
@@ -501,12 +509,27 @@ public class PluginManager
 		}
 	}
 
+	/**
+	 * Test if a plugin is enabled, which causes the client to attempt to start it on boot
+	 * @param plugin
+	 * @return
+	 */
 	public boolean isPluginEnabled(Plugin plugin)
 	{
 		final PluginDescriptor pluginDescriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 		final String keyName = Strings.isNullOrEmpty(pluginDescriptor.configName()) ? plugin.getClass().getSimpleName() : pluginDescriptor.configName();
 		final String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, keyName.toLowerCase());
 		return value != null ? Boolean.parseBoolean(value) : pluginDescriptor.enabledByDefault();
+	}
+
+	/**
+	 * Test if a plugin is on, eg. enabled and also was started successfully
+	 * @param plugin
+	 * @return
+	 */
+	public boolean isPluginActive(Plugin plugin)
+	{
+		return activePlugins.contains(plugin);
 	}
 
 	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException

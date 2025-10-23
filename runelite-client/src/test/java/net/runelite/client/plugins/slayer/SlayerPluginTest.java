@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
@@ -35,8 +36,6 @@ import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
-import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -45,6 +44,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
@@ -66,6 +66,7 @@ import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
@@ -163,9 +164,8 @@ public class SlayerPluginTest
 			return b.getAsBoolean();
 		}).when(clientThread).invoke(any(BooleanSupplier.class));
 
-		EnumComposition e = mock(EnumComposition.class);
-		when(e.getStringVals()).thenReturn(new String[]{"The Abyss"});
-		when(client.getEnum(EnumID.SLAYER_TASK_LOCATION)).thenReturn(e);
+		when(client.getDBTableRows(DBTableID.SlayerArea.ID)).thenReturn(List.of(1234));
+		when(client.getDBTableField(1234, DBTableID.SlayerArea.COL_AREA_NAME_IN_HELPER, 0)).thenReturn(new String[]{"The Abyss"});
 
 		slayerPlugin.startUp();
 	}
@@ -248,13 +248,7 @@ public class SlayerPluginTest
 
 		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT)).thenReturn(42);
 		when(client.getVarpValue(VarPlayerID.SLAYER_TARGET)).thenReturn(1);
-		when(client.getEnum(EnumID.SLAYER_TASK_CREATURE))
-			.thenAnswer(a ->
-			{
-				EnumComposition e = mock(EnumComposition.class);
-				when(e.getStringValue(anyInt())).thenReturn("mocked npc");
-				return e;
-			});
+		mockDBTable(113, 0, 10, "mocked npc");
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarpId(VarPlayerID.SLAYER_COUNT);
@@ -285,6 +279,10 @@ public class SlayerPluginTest
 		assertTrue(matches("Loar shade", Task.SHADES));
 		assertTrue(matches("Loar shadow", Task.SHADES));
 		assertTrue(matches("Urium shadow", Task.SHADES));
+		assertTrue(matches("Juvenile custodian stalker", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Mature custodian stalker", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Elder custodian stalker", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Ancient Custodian", Task.CUSTODIAN_STALKERS));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
@@ -309,16 +307,7 @@ public class SlayerPluginTest
 	{
 		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT)).thenReturn(42);
 		when(client.getVarpValue(VarPlayerID.SLAYER_TARGET)).thenReturn(1);
-		when(client.getEnum(EnumID.SLAYER_TASK_CREATURE))
-			.thenAnswer(a ->
-			{
-				EnumComposition e = mock(EnumComposition.class);
-				when(e.getStringValue(anyInt())).thenReturn("mocked npc");
-				return e;
-			});
-
-		// initial amount is fetched from config at sync
-		when(configManager.getRSProfileConfiguration("slayer", "initialAmount", int.class)).thenReturn(99);
+		mockDBTable(113, 0, 10, "mocked npc");
 
 		slayerPlugin.setTaskName("mocked npc");
 		slayerPlugin.setAmount(42);
@@ -340,6 +329,7 @@ public class SlayerPluginTest
 
 		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT)).thenReturn(0);
 		when(client.getVarpValue(VarPlayerID.SLAYER_TARGET)).thenReturn(0);
+		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL)).thenReturn(0);
 
 		VarbitChanged taskSizeChanged = new VarbitChanged();
 		taskSizeChanged.setVarpId(VarPlayerID.SLAYER_COUNT);
@@ -349,14 +339,28 @@ public class SlayerPluginTest
 		taskCreatureChanged.setVarpId(VarPlayerID.SLAYER_TARGET);
 		slayerPlugin.onVarbitChanged(taskCreatureChanged);
 
+		VarbitChanged taskOriginalAmountChanged = new VarbitChanged();
+		taskOriginalAmountChanged.setVarpId(VarPlayerID.SLAYER_COUNT_ORIGINAL);
+		slayerPlugin.onVarbitChanged(taskOriginalAmountChanged);
+
 		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT)).thenReturn(42);
 		when(client.getVarpValue(VarPlayerID.SLAYER_TARGET)).thenReturn(1);
+		when(client.getVarpValue(VarPlayerID.SLAYER_COUNT_ORIGINAL)).thenReturn(99);
 
 		slayerPlugin.onVarbitChanged(taskSizeChanged);
 		slayerPlugin.onVarbitChanged(taskCreatureChanged);
+		slayerPlugin.onVarbitChanged(taskOriginalAmountChanged);
 
 		assertEquals("mocked npc", slayerPlugin.getTaskName());
 		assertEquals(42, slayerPlugin.getAmount());
 		assertEquals(99, slayerPlugin.getInitialAmount());
+	}
+
+	void mockDBTable(int table, int keycol, int valcol, String str)
+	{
+		int mockRow = (table << 8) | keycol;
+		when(client.getDBRowsByValue(eq(table), eq(keycol), eq(0), anyInt()))
+			.thenReturn(List.of(mockRow));
+		when(client.getDBTableField(mockRow, valcol, 0)).thenReturn(new String[]{str});
 	}
 }

@@ -237,7 +237,7 @@ enum DungeonLocation
 	UNDERGROUND_PASS_KANDARIN("Underground Pass", new WorldPoint(2312, 3215, 0)),
 	UNDERGROUND_PASS_TIRANNWN("Underground Pass", new WorldPoint(2433, 3315, 0)),
 	UNDERGROUND_PASS_TIRANNWN_PRIF("Underground Pass", new WorldPoint(3336, 5967, 0)),
-	UNDERWATER("Underwater", new WorldPoint(3765, 3898, 0)),
+	UNDERWATER("Underwater", new WorldPoint(3760, 3899, 0)),
 	UZER("Ruins of Uzer basement", new WorldPoint(3492, 3090, 0)),
 	VARLAMORE_WOLF_DEN("Wolf Den", new WorldPoint(1496, 3132, 0)),
 	VARROCK_SEWERS("Varrock Sewers", new WorldPoint(3236, 3458, 0)),

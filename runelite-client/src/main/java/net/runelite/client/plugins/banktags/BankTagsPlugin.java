@@ -40,17 +40,16 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -76,7 +75,6 @@ import net.runelite.client.util.Text;
 	description = "Enable tagging of bank items and searching of bank tags",
 	tags = {"searching", "tagging"}
 )
-@Slf4j
 public class BankTagsPlugin extends Plugin implements BankTagsService
 {
 	// banktags:item_<id>=tag,tag,tag,...
@@ -295,7 +293,7 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 	@Subscribe
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
-		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		if (!input.startsWith(TAG_SEARCH))
 		{
 			return;

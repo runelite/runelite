@@ -29,9 +29,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -109,8 +108,8 @@ public class BankSearch
 			}
 			else
 			{
-				client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
-				client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
+				client.setVarcIntValue(VarClientID.MESLAYERMODE, InputType.NONE.getType());
+				client.setVarcStrValue(VarClientID.MESLAYERINPUT, "");
 			}
 
 			layoutBank();

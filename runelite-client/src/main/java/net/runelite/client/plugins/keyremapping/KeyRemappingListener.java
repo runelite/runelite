@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.VarClientStr;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
@@ -205,7 +205,7 @@ class KeyRemappingListener implements KeyListener
 					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
-						client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
+						client.setVarcStrValue(VarClientID.CHATINPUT, "");
 						plugin.lockChat();
 					});
 					break;
@@ -215,7 +215,7 @@ class KeyRemappingListener implements KeyListener
 					break;
 				case KeyEvent.VK_BACK_SPACE:
 					// Only lock chat on backspace when the typed text is now empty
-					if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)))
+					if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientID.CHATINPUT)))
 					{
 						plugin.setTyping(false);
 						clientThread.invoke(plugin::lockChat);

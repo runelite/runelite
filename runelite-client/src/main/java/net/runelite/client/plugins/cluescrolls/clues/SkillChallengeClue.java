@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -174,18 +175,49 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 
 	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked pike.", item(ItemID.PIKE)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked trout.", item(ItemID.TROUT)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a leather body.", item(ItemID.LEATHER_ARMOUR)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie some leather chaps.", item(ItemID.LEATHER_CHAPS)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a raw herring.", item(ItemID.RAW_HERRING)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a raw trout.", item(ItemID.RAW_TROUT)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a piece of iron ore.", item(ItemID.IRON_ORE)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie one iron dagger.", item(ItemID.IRON_DAGGER)),
+		new SkillChallengeClue(ChallengeType.CHARLIE,
+			"i need to give charlie a cooked pike.",
+			"I really need a cooked pike.",
+			item(ItemID.PIKE)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a cooked trout.",
+			"I really need a cooked trout.",
+			item(ItemID.TROUT)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a leather body.",
+			"I really need a leather body.",
+			item(ItemID.LEATHER_ARMOUR)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie some leather chaps.",
+			"I really need some leather chaps.",
+			item(ItemID.LEATHER_CHAPS)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a raw herring.",
+			"I really need a raw herring.",
+			item(ItemID.RAW_HERRING)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a raw trout.",
+			"I really need a raw trout.",
+			item(ItemID.RAW_TROUT)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a piece of iron ore.",
+			"I really need a piece of iron ore.",
+			item(ItemID.IRON_ORE)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie one iron dagger.",
+			"I really need an iron dagger.",
+			item(ItemID.IRON_DAGGER)),
 		// Elite Sherlock Tasks
 		new SkillChallengeClue("Equip a Dragon Scimitar.", true, any("Any Dragon Scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_ORNAMENT))),
 		new SkillChallengeClue("Enchant some Dragonstone Jewellery.", "enchant a piece of dragonstone jewellery.",
-			xOfItem(ItemID.COSMICRUNE, 1),
+			any("Cosmic Rune x1", xOfItem(ItemID.COSMICRUNE, 1), xOfItem(ItemID.AETHERRUNE, 1)),
 			any("Water Rune x15", xOfItem(ItemID.WATERRUNE, 15), xOfItem(ItemID.MISTRUNE, 15), xOfItem(ItemID.MUDRUNE, 15), xOfItem(ItemID.STEAMRUNE, 15), item(ItemID.STAFF_OF_WATER), item(ItemID.WATER_BATTLESTAFF), item(ItemID.MYSTIC_WATER_STAFF), item(ItemID.MUD_BATTLESTAFF), item(ItemID.MYSTIC_MUD_STAFF), item(ItemID.MIST_BATTLESTAFF), item(ItemID.MYSTIC_MIST_BATTLESTAFF), item(ItemID.STEAM_BATTLESTAFF), item(ItemID.MYSTIC_STEAM_BATTLESTAFF), item(ItemID.STEAM_BATTLESTAFF_PRETTY), item(ItemID.MYSTIC_STEAM_BATTLESTAFF_PRETTY), item(ItemID.KODAI_WAND), item(ItemID.TOME_OF_WATER)),
 			any("Earth Rune x15", xOfItem(ItemID.EARTHRUNE, 15), xOfItem(ItemID.DUSTRUNE, 15), xOfItem(ItemID.MUDRUNE, 15), xOfItem(ItemID.LAVARUNE, 15), item(ItemID.STAFF_OF_EARTH), item(ItemID.EARTH_BATTLESTAFF), item(ItemID.MYSTIC_EARTH_STAFF), item(ItemID.MUD_BATTLESTAFF), item(ItemID.MYSTIC_MUD_STAFF), item(ItemID.DUST_BATTLESTAFF), item(ItemID.MYSTIC_DUST_BATTLESTAFF), item(ItemID.LAVA_BATTLESTAFF), item(ItemID.MYSTIC_LAVA_STAFF), item(ItemID.LAVA_BATTLESTAFF_PRETTY), item(ItemID.MYSTIC_LAVA_STAFF_PRETTY)),
 			any("Unenchanted Dragonstone Jewellery", item(ItemID.DRAGONSTONE_RING), item(ItemID.DRAGONSTONE_NECKLACE), item(ItemID.JEWL_DRAGONSTONE_BRACELET), item(ItemID.STRUNG_DRAGONSTONE_AMULET))),
@@ -223,7 +255,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_ICE), item(ItemID.ABYSSAL_WHIP_LAVA), item(ItemID.LEAGUE_3_WHIP), item(ItemID.ABYSSAL_TENTACLE), item(ItemID.LEAGUE_3_WHIP_TENTACLE))),
 		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),
 		new SkillChallengeClue("Teleport to a spirit tree you planted yourself."),
-		new SkillChallengeClue("Create a Barrows teleport tablet.", item(ItemID.ARCEUUS_ESSENCE_BLOCK_DARK), xOfItem(ItemID.BLOODRUNE, 1), xOfItem(ItemID.LAWRUNE, 2), xOfItem(ItemID.SOULRUNE, 2)),
+		new SkillChallengeClue("Create a Barrows teleport tablet.", item(ItemID.ARCEUUS_ESSENCE_BLOCK_DARK), xOfItem(ItemID.BLOODRUNE, 1), xOfItem(ItemID.LAWRUNE, 2), any("Soul Rune x2", xOfItem(ItemID.SOULRUNE, 2), xOfItem(ItemID.AETHERRUNE, 2))),
 		new SkillChallengeClue("Kill a Nechryael in the Slayer Tower.", "slay a nechryael in the slayer tower."),
 		new SkillChallengeClue("Kill a Spiritual Mage while wearing something from their god.", "kill the spiritual, magic and godly whilst representing their own god."),
 		new SkillChallengeClue("Create an unstrung dragonstone amulet at a furnace.", item(ItemID.GOLD_BAR), item(ItemID.DRAGONSTONE), item(ItemID.AMULET_MOULD)),
@@ -260,7 +292,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				any("", item(ItemID.RAMBLE_LUMBERJACK_LEGS), item(ItemID.FORESTRY_LUMBERJACK_LEGS)),
 				any("", item(ItemID.RAMBLE_LUMBERJACK_BOOTS), item(ItemID.FORESTRY_LUMBERJACK_BOOTS)))),
 		new SkillChallengeClue("Craft a light orb in the Dorgesh-Kaan bank.", item(ItemID.DORGESH_WIRE), item(ItemID.DORGESH_LIGHTBULB_NOFILAMENT)),
-		new SkillChallengeClue("Kill a reanimated Abyssal Demon.", "kill a reanimated abyssal.", xOfItem(ItemID.SOULRUNE, 4), xOfItem(ItemID.BLOODRUNE, 2), any("Nature Rune x4", xOfItem(ItemID.NATURERUNE, 4), item(ItemID.NATURE_STAFF_CHARGED)), range("Ensouled abyssal head", ItemID.ARCEUUS_CORPSE_ABYSSAL_INITIAL, ItemID.ARCEUUS_CORPSE_ABYSSAL)),
+		new SkillChallengeClue("Kill a reanimated Abyssal Demon.", "kill a reanimated abyssal.", any("Soul Rune x4", xOfItem(ItemID.SOULRUNE, 4), xOfItem(ItemID.AETHERRUNE, 4)), xOfItem(ItemID.BLOODRUNE, 2), any("Nature Rune x4", xOfItem(ItemID.NATURERUNE, 4), item(ItemID.NATURE_STAFF_CHARGED)), range("Ensouled abyssal head", ItemID.ARCEUUS_CORPSE_ABYSSAL_INITIAL, ItemID.ARCEUUS_CORPSE_ABYSSAL)),
 		new SkillChallengeClue("Kill a Fiyr shade inside Mort'tons shade catacombs.",
 			any("Any Gold or Silver Shade Key",
 				item(ItemID.SHADEKEY_GOLD_BLOODRED), item(ItemID.SHADEKEY_GOLD_BROWN), item(ItemID.SHADEKEY_GOLD_CRIMSON), item(ItemID.SHADEKEY_GOLD_BLACK), item(ItemID.SHADEKEY_GOLD_PURPLE),
@@ -270,6 +302,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 
 	private final ChallengeType type;
 	private final String challenge;
+	@Nullable
+	private final String chatboxChallenge;
 	private final String rawChallenge;
 	private final String returnText;
 	private final ItemRequirement[] itemRequirements;
@@ -281,13 +315,14 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	private boolean challengeCompleted;
 
 	// Charlie Tasks
-	private SkillChallengeClue(ChallengeType challengeType, String clueText, SingleItemRequirement returnItem)
+	private SkillChallengeClue(ChallengeType challengeType, String clueText, String chatboxChallenge, SingleItemRequirement returnItem)
 	{
 		Preconditions.checkArgument(challengeType == ChallengeType.CHARLIE);
 		this.type = challengeType;
 		this.challenge = "";
 		this.rawChallenge = clueText;
 		this.returnText = clueText;
+		this.chatboxChallenge = chatboxChallenge;
 		this.itemRequirements = new ItemRequirement[0];
 		this.returnItem = returnItem;
 		this.challengeCompleted = true;
@@ -331,6 +366,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	{
 		this.type = ChallengeType.SHERLOCK;
 		this.challenge = challenge;
+		this.chatboxChallenge = null;
 		this.rawChallenge = rawChallenge;
 		this.itemRequirements = itemRequirements;
 		this.challengeCompleted = false;
@@ -476,6 +512,28 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 			else if (text.equals(clue.rawChallenge))
 			{
 				clue.setChallengeCompleted(false);
+				return clue;
+			}
+		}
+		return null;
+	}
+
+	public static SkillChallengeClue forChatboxText(String sender, String dialogText)
+	{
+		if (!ChallengeType.CHARLIE.getName().equals(sender))
+		{
+			return null;
+		}
+
+		for (SkillChallengeClue clue : CLUES)
+		{
+			if (clue.getChatboxChallenge() == null)
+			{
+				continue;
+			}
+
+			if (clue.getChatboxChallenge().equalsIgnoreCase(dialogText))
+			{
 				return clue;
 			}
 		}

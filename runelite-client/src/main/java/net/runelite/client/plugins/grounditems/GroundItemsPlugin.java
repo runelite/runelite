@@ -57,8 +57,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemLayer;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
@@ -68,14 +68,15 @@ import net.runelite.api.TileItem;
 import static net.runelite.api.TileItem.OWNERSHIP_GROUP;
 import static net.runelite.api.TileItem.OWNERSHIP_OTHER;
 import static net.runelite.api.TileItem.OWNERSHIP_SELF;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.WorldViewUnloaded;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
@@ -258,13 +259,11 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	public void onWorldViewUnloaded(WorldViewUnloaded event)
 	{
-		if (event.getGameState() == GameState.LOADING)
-		{
-			collectedGroundItems.clear();
-			lootbeams.clear();
-		}
+		var wv = event.getWorldView();
+		collectedGroundItems.values().removeIf(g -> g.getItemLayer().getWorldView() == wv);
+		lootbeams.values().removeIf(l -> l.getWorldView() == wv.getId());
 	}
 
 	@Subscribe
@@ -272,8 +271,9 @@ public class GroundItemsPlugin extends Plugin
 	{
 		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
+		ItemLayer layer = tile.getItemLayer();
 
-		GroundItem groundItem = buildGroundItem(tile, item);
+		GroundItem groundItem = buildGroundItem(layer, item);
 		GroundItem existing = collectedGroundItems.get(tile.getWorldLocation(), item.getId());
 		if (existing != null)
 		{
@@ -406,7 +406,7 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
+	private GroundItem buildGroundItem(final ItemLayer layer, final TileItem item)
 	{
 		// Collect the data for the item
 		final int itemId = item.getId();
@@ -418,12 +418,11 @@ public class GroundItemsPlugin extends Plugin
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
-			.location(tile.getWorldLocation())
 			.itemId(realItemId)
 			.quantity(item.getQuantity())
+			.itemLayer(layer)
 			.name(itemComposition.getName())
 			.haPrice(alchPrice)
-			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
 			.ownership(item.getOwnership())
 			.isPrivate(item.isPrivate())
@@ -507,10 +506,10 @@ public class GroundItemsPlugin extends Plugin
 			final int sceneX = event.getActionParam0();
 			final int sceneY = event.getActionParam1();
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			MenuEntry lastEntry = event.getMenuEntry();
+			WorldView wv = client.getWorldView(lastEntry.getWorldViewId());
 
-			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
+			final WorldPoint worldPoint = WorldPoint.fromScene(wv, sceneX, sceneY, wv.getPlane());
 			GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
 
 			updateItemColor(groundItem);

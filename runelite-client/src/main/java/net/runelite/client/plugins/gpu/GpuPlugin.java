@@ -1626,7 +1626,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	@Override
-	public boolean tileInFrustum(Scene scene, int pitchSin, int pitchCos, int yawSin, int yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
+	public boolean tileInFrustum(Scene scene, float pitchSin, float pitchCos, float yawSin, float yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
 	{
 		int[][][] tileHeights = scene.getTileHeights();
 		int x = ((msx - SCENE_OFFSET) << Perspective.LOCAL_COORD_BITS) + 64 - cameraX;
@@ -1643,21 +1643,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int Rasterizer3D_clipNegativeMidX = client.getRasterizer3D_clipNegativeMidX();
 		int Rasterizer3D_clipNegativeMidY = client.getRasterizer3D_clipNegativeMidY();
 
-		int var11 = yawCos * z - yawSin * x >> 16;
-		int var12 = pitchSin * y + pitchCos * var11 >> 16;
-		int var13 = pitchCos * radius >> 16;
-		int depth = var12 + var13;
+		float var11 = yawCos * z - yawSin * x;
+		float var12 = pitchSin * y + pitchCos * var11;
+		float var13 = pitchCos * radius;
+		float depth = var12 + var13;
 		if (depth > 50)
 		{
-			int rx = z * yawSin + yawCos * x >> 16;
-			int var16 = (rx - radius) * zoom;
-			int var17 = (rx + radius) * zoom;
+			float rx = z * yawSin + yawCos * x;
+			float var16 = (rx - radius) * zoom;
+			float var17 = (rx + radius) * zoom;
 			// left && right
 			if (var16 < Rasterizer3D_clipMidX2 * depth && var17 > Rasterizer3D_clipNegativeMidX * depth)
 			{
-				int ry = pitchCos * y - var11 * pitchSin >> 16;
-				int ybottom = pitchSin * radius >> 16;
-				int var20 = (ry + ybottom) * zoom;
+				float ry = pitchCos * y - var11 * pitchSin;
+				float ybottom = pitchSin * radius;
+				float var20 = (ry + ybottom) * zoom;
 				// top
 				if (var20 > Rasterizer3D_clipNegativeMidY * depth)
 				{
@@ -1672,7 +1672,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	/**
 	 * Check is a model is visible and should be drawn.
 	 */
-	private boolean isVisible(Model model, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z)
+	private boolean isVisible(Model model, float pitchSin, float pitchCos, float yawSin, float yawCos, int x, int y, int z)
 	{
 		final int xzMag = model.getXYZMag();
 		final int bottomY = model.getBottomY();
@@ -1684,27 +1684,27 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int Rasterizer3D_clipNegativeMidY = client.getRasterizer3D_clipNegativeMidY(); // -height / 2
 		int Rasterizer3D_clipMidY2 = client.getRasterizer3D_clipMidY2(); // height / 2
 
-		int var11 = yawCos * z - yawSin * x >> 16;
-		int var12 = pitchSin * y + pitchCos * var11 >> 16;
-		int var13 = pitchCos * xzMag >> 16;
-		int depth = var12 + var13;
+		float var11 = yawCos * z - yawSin * x;
+		float var12 = pitchSin * y + pitchCos * var11;
+		float var13 = pitchCos * xzMag;
+		float depth = var12 + var13;
 		if (depth > 50)
 		{
-			int rx = z * yawSin + yawCos * x >> 16;
-			int var16 = (rx - xzMag) * zoom;
+			float rx = z * yawSin + yawCos * x;
+			float var16 = (rx - xzMag) * zoom;
 			if (var16 / depth < Rasterizer3D_clipMidX2)
 			{
-				int var17 = (rx + xzMag) * zoom;
+				float var17 = (rx + xzMag) * zoom;
 				if (var17 / depth > Rasterizer3D_clipNegativeMidX)
 				{
-					int ry = pitchCos * y - var11 * pitchSin >> 16;
-					int yheight = pitchSin * xzMag >> 16;
-					int ybottom = (pitchCos * bottomY >> 16) + yheight; // use bottom height instead of y pos for height
-					int var20 = (ry + ybottom) * zoom;
+					float ry = pitchCos * y - var11 * pitchSin;
+					float yheight = pitchSin * xzMag;
+					float ybottom = (pitchCos * bottomY) + yheight; // use bottom height instead of y pos for height
+					float var20 = (ry + ybottom) * zoom;
 					if (var20 / depth > Rasterizer3D_clipNegativeMidY)
 					{
-						int ytop = (pitchCos * modelHeight >> 16) + yheight;
-						int var22 = (ry - ytop) * zoom;
+						float ytop = (pitchCos * modelHeight) + yheight;
+						float var22 = (ry - ytop) * zoom;
 						return var22 / depth < Rasterizer3D_clipMidY2;
 					}
 				}

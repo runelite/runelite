@@ -26,18 +26,19 @@
 package net.runelite.client.plugins.groundmarkers;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Multimap;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Stroke;
-import java.util.Collection;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -67,44 +68,50 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Collection<ColorTileMarker> points = plugin.getPoints();
+		final Multimap<WorldView, ColorTileMarker> points = plugin.getPoints();
 		if (points.isEmpty())
 		{
 			return null;
 		}
 
 		Stroke stroke = new BasicStroke((float) config.borderWidth());
-		for (final ColorTileMarker point : points)
+		for (WorldView wv : points.keySet())
 		{
-			WorldPoint worldPoint = point.getWorldPoint();
-			if (worldPoint.getPlane() != client.getPlane())
+			for (final ColorTileMarker point : points.get(wv))
 			{
-				continue;
-			}
+				WorldPoint worldPoint = point.getWorldPoint();
+				if (worldPoint.getPlane() != wv.getPlane())
+				{
+					continue;
+				}
 
-			Color tileColor = point.getColor();
-			if (tileColor == null)
-			{
-				// If this is an old tile which has no color, use marker color
-				tileColor = config.markerColor();
-			}
+				Color tileColor = point.getColor();
+				if (tileColor == null)
+				{
+					// If this is an old tile which has no color, use marker color
+					tileColor = config.markerColor();
+				}
 
-			drawTile(graphics, worldPoint, tileColor, point.getLabel(), stroke);
+				drawTile(graphics, wv, worldPoint, tileColor, point.getLabel(), stroke);
+			}
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
+	private void drawTile(Graphics2D graphics, WorldView wv, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		if (wv.isTopLevel())
 		{
-			return;
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
+			if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+			{
+				return;
+			}
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
+		LocalPoint lp = LocalPoint.fromWorld(wv, point);
 		if (lp == null)
 		{
 			return;

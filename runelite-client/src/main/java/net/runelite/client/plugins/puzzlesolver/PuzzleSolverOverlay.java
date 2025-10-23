@@ -59,6 +59,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 public class PuzzleSolverOverlay extends Overlay
@@ -69,7 +70,8 @@ public class PuzzleSolverOverlay extends Overlay
 	private static final int INFO_BOX_BOTTOM_BORDER = 2;
 
 	private static final int PUZZLE_TILE_SIZE = 39;
-	private static final int DOT_MARKER_SIZE = 16;
+	private static final int DOT_MARKER_MAX_SIZE = 24;
+	private static final int DOT_MARKER_MIN_SIZE = 4;
 
 	private final Client client;
 	private final PuzzleSolverConfig config;
@@ -216,10 +218,9 @@ public class PuzzleSolverOverlay extends Overlay
 						{
 							if (config.drawDots())
 							{
-								graphics.setColor(Color.YELLOW);
-
-								// Display the next 4 steps
-								for (int i = 1; i < 5; i++)
+								int movesToShow = config.movesToShow();
+								// Display the next movesToShow steps
+								for (int i = 1; i <= movesToShow; i++)
 								{
 									int j = solver.getPosition() + i;
 
@@ -238,7 +239,9 @@ public class PuzzleSolverOverlay extends Overlay
 									int blankX = futureMove.getEmptyPiece() % DIMENSION;
 									int blankY = futureMove.getEmptyPiece() / DIMENSION;
 
-									int markerSize = DOT_MARKER_SIZE - i * 3;
+									int numerator = (i - 1) * (DOT_MARKER_MAX_SIZE - DOT_MARKER_MIN_SIZE);
+									double denominator = movesToShow - 1;
+									int markerSize = (int) Math.round(DOT_MARKER_MAX_SIZE - numerator / denominator);
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
@@ -246,7 +249,13 @@ public class PuzzleSolverOverlay extends Overlay
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
 											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
+									Color color = ColorUtil.colorLerp(config.dotColor(), config.dotEndColor(),
+										(double) (i - 1) / (movesToShow - 1));
+									graphics.setColor(color);
 									graphics.fillOval(x, y, markerSize, markerSize);
+
+									graphics.setColor(Color.BLACK);
+									graphics.drawOval(x - 1, y - 1, markerSize + 1, markerSize + 1);
 								}
 							}
 							else

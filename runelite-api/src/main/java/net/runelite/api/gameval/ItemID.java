@@ -33092,9 +33092,19 @@ public final class ItemID
 	public static final int HUNTING_OJIBWAY_BIRD_SNARE = 10006;
 
 	/**
+	 * Null
+	 */
+	public static final int CERT_HUNTING_OJIBWAY_BIRD_SNARE = 10007;
+
+	/**
 	 * Box trap
 	 */
 	public static final int HUNTING_BOX_TRAP = 10008;
+
+	/**
+	 * Null
+	 */
+	public static final int CERT_HUNTING_BOX_TRAP = 10009;
 
 	/**
 	 * Butterfly net
@@ -33143,6 +33153,11 @@ public final class ItemID
 	public static final int MAGIC_IMP_BOX = 10025;
 
 	/**
+	 * Null
+	 */
+	public static final int CERT_MAGIC_IMP_BOX = 10026;
+
+	/**
 	 * Imp-in-a-box(2)
 	 */
 	public static final int MAGIC_IMP_BOX_FULL = 10027;
@@ -33161,6 +33176,11 @@ public final class ItemID
 	 * Rabbit snare
 	 */
 	public static final int HUNTING_SNARE = 10031;
+
+	/**
+	 * Null
+	 */
+	public static final int CERT_HUNTING_SNARE = 10032;
 
 	/**
 	 * Chinchompa
@@ -38491,6 +38511,10 @@ public final class ItemID
 	 */
 	public static final int HUNTING_WIMPY_FEATHER = 11525;
 	public static final int PATTERN_LIME_DUMMY = 11526;
+
+	/**
+	 * Mausoleum bridge repair
+	 */
 	public static final int PATTERN_PINEAPPLE_CHUNKS_DUMMY = 11527;
 	public static final int PATTERN_BLACK_BATTLEAXE_DUMMY = 11528;
 	public static final int PATTERN_CHOCOLATE_CAKE_DUMMY = 11529;
@@ -39273,7 +39297,7 @@ public final class ItemID
 	public static final int SOTD = 11791;
 
 	/**
-	 * Agility jump
+	 * Agility strength
 	 */
 	public static final int AGILITY_STRENGTH = 11793;
 
@@ -79995,6 +80019,223 @@ public final class ItemID
 	 */
 	public static final int DOMPET = 31130;
 
+	/**
+	 * Dinh's blazing bulwark
+	 */
+	public static final int ROTTEN_DINHS_BULWARK = 31132;
+
+	/**
+	 * Venator bow
+	 */
+	public static final int ROTTEN_VENATOR_BOW = 31133;
+
+	/**
+	 * Agility swing
+	 */
+	public static final int AGILITY_SWING = 31134;
+
+	/**
+	 * Agility swing
+	 */
+	public static final int AGILITY_SWING_AREA = 31135;
+
+	/**
+	 * Blood moon armour set
+	 */
+	public static final int SET_BLOOD_MOON_ARMOUR = 31136;
+
+	/**
+	 * Blue moon armour set
+	 */
+	public static final int SET_BLUE_MOON_ARMOUR = 31139;
+
+	/**
+	 * Eclipse moon armour set
+	 */
+	public static final int SET_ECLIPSE_MOON_ARMOUR = 31142;
+
+	/**
+	 * Torva armour set
+	 */
+	public static final int SET_TORVA_ARMOUR = 31145;
+
+	/**
+	 * Virtus armour set
+	 */
+	public static final int SET_VIRTUS_ARMOUR = 31148;
+
+	/**
+	 * Rock-shell armour set
+	 */
+	public static final int SET_DAGGANOTH_MELEE_ARMOUR = 31151;
+
+	/**
+	 * Skeletal armour set
+	 */
+	public static final int SET_DAGGANOTH_MAGE_ARMOUR = 31154;
+
+	/**
+	 * Spined armour set
+	 */
+	public static final int SET_DAGGANOTH_RANGE_ARMOUR = 31157;
+
+	/**
+	 * Swampbark armour set
+	 */
+	public static final int SET_SWAMPBARK_ARMOUR = 31160;
+
+	/**
+	 * Bloodbark armour set
+	 */
+	public static final int SET_BLOODBARK_ARMOUR = 31163;
+
+	/**
+	 * Mixed hide armour set
+	 */
+	public static final int SET_MIXED_HIDE_ARMOUR = 31166;
+
+	/**
+	 * Hueycoatl hide armour set
+	 */
+	public static final int SET_HUEY_ARMOUR = 31169;
+
+	/**
+	 * Battlehat
+	 */
+	public static final int EVENT_BATTLEHAT = 31172;
+
+	/**
+	 * Corrupted shark
+	 */
+	public static final int EVENT_CORRUPTED_SHARK = 31174;
+	public static final int EVENT_MUSHTREE_DUMMY = 31176;
+	public static final int EVENT_BARROWS_CHEST_DUMMY = 31177;
+	public static final int EVENT_QUETZAL_LANDING_SITE_DUMMY = 31178;
+	public static final int EVENT_FOSSIL_RANGE_DUMMY = 31179;
+	public static final int EVENT_MOONLIGHT_MOTH_DUMMY = 31180;
+
+	/**
+	 * Grid master tabard
+	 */
+	public static final int BINGO_TABARD = 31181;
+
+	/**
+	 * Grid master tabard (b)
+	 */
+	public static final int BINGO_TABARD_BLACK = 31184;
+
+	/**
+	 * Grid master tabard (p)
+	 */
+	public static final int BINGO_TABARD_PINK = 31187;
+
+	/**
+	 * Grid master tabard (g)
+	 */
+	public static final int BINGO_TABARD_GREEN = 31190;
+
+	/**
+	 * Swords and emblem
+	 */
+	public static final int BINGO_SWORDS = 31193;
+
+	/**
+	 * Swords and emblem (b)
+	 */
+	public static final int BINGO_SWORDS_BLACK = 31196;
+
+	/**
+	 * Swords and emblem (p)
+	 */
+	public static final int BINGO_SWORDS_PINK = 31199;
+
+	/**
+	 * Swords and emblem (g)
+	 */
+	public static final int BINGO_SWORDS_GREEN = 31202;
+
+	/**
+	 * Grid master altar icon scroll
+	 */
+	public static final int BINGO_ALTAR_ICON_SCROLL = 31205;
+
+	/**
+	 * Grid master torch scroll
+	 */
+	public static final int BINGO_TORCH_SCROLL = 31208;
+
+	/**
+	 * Event lamp
+	 */
+	public static final int EVENT_GENILAMP = 31211;
+
+	/**
+	 * Combatant scroll
+	 */
+	public static final int REWARD_COMBATANT = 31212;
+
+	/**
+	 * Craftsman scroll
+	 */
+	public static final int REWARD_CRAFTSMAN = 31214;
+
+	/**
+	 * Gatherer scroll
+	 */
+	public static final int REWARD_GATHERER = 31216;
+
+	/**
+	 * Cabbage
+	 */
+	public static final int GRIDMASTER_POINTS = 31218;
+	public static final int BOUGHT_GRIDMASTER_POINTS = 31219;
+
+	/**
+	 * Cabbage
+	 */
+	public static final int GRIDMASTER_POINTS_NEGATIVE = 31220;
+	public static final int BOUGHT_GRIDMASTER_POINTS_NEGATIVE = 31221;
+
+	/**
+	 * Spooky picture
+	 */
+	public static final int HW25_SPOOKY_PAINTING = 31222;
+
+	/**
+	 * Spooky wall lamp
+	 */
+	public static final int HW25_SPOOKY_WALL_LAMP = 31223;
+
+	/**
+	 * Spooky scarecrow
+	 */
+	public static final int HW25_SPOOKY_SCARECROW = 31224;
+
+	/**
+	 * Spooky chair
+	 */
+	public static final int HW25_CHAIR_OBJ_REWARD = 31225;
+
+	/**
+	 * Spooky pumpkin lantern
+	 */
+	public static final int HW25_PUMPKIN_LANTERN_REWARD = 31227;
+
+	/**
+	 * Grim reaper top
+	 */
+	public static final int HW25_GRIM_REAPER_TOP = 31229;
+
+	/**
+	 * Grim reaper bottoms
+	 */
+	public static final int HW25_GRIM_REAPER_BOTTOMS = 31231;
+
+	/**
+	 * Grim reaper gloves
+	 */
+	public static final int HW25_GRIM_REAPER_GLOVES = 31233;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -82450,17 +82691,13 @@ public final class ItemID
 		public static final int _3DOSEHUNTING = 10001;
 		public static final int _2DOSEHUNTING = 10003;
 		public static final int _1DOSEHUNTING = 10005;
-		public static final int HUNTING_OJIBWAY_BIRD_SNARE = 10007;
-		public static final int HUNTING_BOX_TRAP = 10009;
 		public static final int HUNTING_BUTTERFLY_NET = 10011;
 		public static final int BUTTERFLY_JAR = 10013;
 		public static final int BUTTERFLY_JAR_WARLOCK = 10015;
 		public static final int BUTTERFLY_JAR_SNOWY = 10017;
 		public static final int BUTTERFLY_JAR_GLACIALIS = 10019;
 		public static final int BUTTERFLY_JAR_RUBY = 10021;
-		public static final int MAGIC_IMP_BOX = 10026;
 		public static final int HUNTING_TEASING_STICK = 10030;
-		public static final int HUNTING_SNARE = 10032;
 		public static final int HUNTING_TROUSERS_TIGER = 10036;
 		public static final int HUNTING_TORSO_TIGER = 10038;
 		public static final int HUNTING_HAT_TIGER = 10040;
@@ -84451,6 +84688,28 @@ public final class ItemID
 		public static final int AVERNIC_TREADS = 31089;
 		public static final int CONFLICTION_GAUNTLETS = 31107;
 		public static final int EYE_OF_AYAK_UNCHARGED = 31116;
+		public static final int SET_BLOOD_MOON_ARMOUR = 31137;
+		public static final int SET_BLUE_MOON_ARMOUR = 31140;
+		public static final int SET_ECLIPSE_MOON_ARMOUR = 31143;
+		public static final int SET_TORVA_ARMOUR = 31146;
+		public static final int SET_VIRTUS_ARMOUR = 31149;
+		public static final int SET_DAGGANOTH_MELEE_ARMOUR = 31152;
+		public static final int SET_DAGGANOTH_MAGE_ARMOUR = 31155;
+		public static final int SET_DAGGANOTH_RANGE_ARMOUR = 31158;
+		public static final int SET_SWAMPBARK_ARMOUR = 31161;
+		public static final int SET_BLOODBARK_ARMOUR = 31164;
+		public static final int SET_MIXED_HIDE_ARMOUR = 31167;
+		public static final int SET_HUEY_ARMOUR = 31170;
+		public static final int BINGO_TABARD = 31182;
+		public static final int BINGO_TABARD_BLACK = 31185;
+		public static final int BINGO_TABARD_PINK = 31188;
+		public static final int BINGO_TABARD_GREEN = 31191;
+		public static final int BINGO_SWORDS = 31194;
+		public static final int BINGO_SWORDS_BLACK = 31197;
+		public static final int BINGO_SWORDS_PINK = 31200;
+		public static final int BINGO_SWORDS_GREEN = 31203;
+		public static final int BINGO_ALTAR_ICON_SCROLL = 31206;
+		public static final int BINGO_TORCH_SCROLL = 31209;
 	}
 
 	public static final class Placeholder
@@ -93531,6 +93790,38 @@ public final class ItemID
 		public static final int TALTEKLAN_LETTER = 31122;
 		public static final int BLUEBERRY_MUFFIN = 31129;
 		public static final int DOMPET = 31131;
+		public static final int SET_BLOOD_MOON_ARMOUR = 31138;
+		public static final int SET_BLUE_MOON_ARMOUR = 31141;
+		public static final int SET_ECLIPSE_MOON_ARMOUR = 31144;
+		public static final int SET_TORVA_ARMOUR = 31147;
+		public static final int SET_VIRTUS_ARMOUR = 31150;
+		public static final int SET_DAGGANOTH_MELEE_ARMOUR = 31153;
+		public static final int SET_DAGGANOTH_MAGE_ARMOUR = 31156;
+		public static final int SET_DAGGANOTH_RANGE_ARMOUR = 31159;
+		public static final int SET_SWAMPBARK_ARMOUR = 31162;
+		public static final int SET_BLOODBARK_ARMOUR = 31165;
+		public static final int SET_MIXED_HIDE_ARMOUR = 31168;
+		public static final int SET_HUEY_ARMOUR = 31171;
+		public static final int EVENT_BATTLEHAT = 31173;
+		public static final int EVENT_CORRUPTED_SHARK = 31175;
+		public static final int BINGO_TABARD = 31183;
+		public static final int BINGO_TABARD_BLACK = 31186;
+		public static final int BINGO_TABARD_PINK = 31189;
+		public static final int BINGO_TABARD_GREEN = 31192;
+		public static final int BINGO_SWORDS = 31195;
+		public static final int BINGO_SWORDS_BLACK = 31198;
+		public static final int BINGO_SWORDS_PINK = 31201;
+		public static final int BINGO_SWORDS_GREEN = 31204;
+		public static final int BINGO_ALTAR_ICON_SCROLL = 31207;
+		public static final int BINGO_TORCH_SCROLL = 31210;
+		public static final int REWARD_COMBATANT = 31213;
+		public static final int REWARD_CRAFTSMAN = 31215;
+		public static final int REWARD_GATHERER = 31217;
+		public static final int HW25_CHAIR_OBJ_REWARD = 31226;
+		public static final int HW25_PUMPKIN_LANTERN_REWARD = 31228;
+		public static final int HW25_GRIM_REAPER_TOP = 31230;
+		public static final int HW25_GRIM_REAPER_BOTTOMS = 31232;
+		public static final int HW25_GRIM_REAPER_GLOVES = 31234;
 	}
 /* This file is automatically generated. Do not edit. */
 }

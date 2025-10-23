@@ -265,7 +265,7 @@ class WorldTableRow extends JPanel
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
-		else if (types.contains(WorldType.SEASONAL))
+		else if (types.contains(WorldType.SEASONAL) || types.contains(WorldType.TOURNAMENT))
 		{
 			activityField.setForeground(SEASONAL_WORLD);
 		}

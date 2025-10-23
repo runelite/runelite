@@ -797,7 +797,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the value of a given VarClientInt
 	 *
-	 * @param var the {@link VarClientInt}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @return the value
 	 */
 	int getVarcIntValue(@VarCInt int var);
@@ -805,7 +805,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the value of a given VarClientStr
 	 *
-	 * @param var the {@link VarClientStr}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @return the value
 	 */
 	String getVarcStrValue(@VarCStr int var);
@@ -813,7 +813,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets a VarClientString to the passed value
 	 *
-	 * @param var the {@link VarClientStr}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @param value the new value
 	 */
 	void setVarcStrValue(@VarCStr int var, String value);
@@ -821,7 +821,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets a VarClientInt to the passed value
 	 *
-	 * @param var the {@link VarClientInt}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @param value the new value
 	 */
 	void setVarcIntValue(@VarCInt int var, int value);
@@ -899,6 +899,14 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the widget flags table
 	 */
 	HashTable<WidgetConfigNode> getWidgetFlags();
+
+	/**
+	 * Get the widget config for a given widget
+	 * @param w
+	 * @return
+	 */
+	@Nullable
+	WidgetConfigNode getWidgetConfig(Widget w);
 
 	/**
 	 * Gets the widget node component table.
@@ -1001,6 +1009,11 @@ public interface Client extends OAuthApi, GameEngine
 	 * An index must exist for this column.
 	 */
 	List<Integer> getDBRowsByValue(int table, int column, int tupleIndex, Object value);
+
+	/**
+	 * Gets all rows in a DBTable
+	 */
+	List<Integer> getDBTableRows(int table);
 
 	/**
 	 * Get a map element config by id
@@ -2388,4 +2401,35 @@ public interface Client extends OAuthApi, GameEngine
 	 * animates transparency, otherwise it will share a reference. All other fields share a reference.
 	 */
 	Model applyTransformations(Model model, @Nullable Animation animA, int frameA, @Nullable Animation animB, int frameB);
+
+	/**
+	 * Creates a SceneTilePaint instance, which can be attached to a Tile to control its appearance.
+	 *
+	 * @see Tile#setSceneTilePaint(SceneTilePaint)
+	 *
+	 * @param swColor the color of the south-west corner of the tile
+	 * @param seColor the color of the south-east corner of the tile
+	 * @param neColor the color of the north-east corner of the tile
+	 * @param nwColor the color of the north-west corner of the tile
+	 * @param texture the texture to render for the tile, or -1 to use the colors
+	 * @param minimapRgb the color to use when rendering the minimap
+	 * @param flatShade whether the tile is flat
+	 * @return the newly created SceneTilePaint
+	 */
+	SceneTilePaint createSceneTilePaint(int swColor, int seColor, int neColor, int nwColor, int texture, int minimapRgb, boolean flatShade);
+
+	/**
+	 * Get the entity that the camera is focused on
+	 *
+	 * @return
+	 */
+	CameraFocusableEntity getCameraFocusEntity();
+
+	/**
+	 * Find the worldview a given worldpoint belongs in
+	 * @param point
+	 * @return
+	 */
+	@Nonnull
+	WorldView findWorldViewFromWorldPoint(WorldPoint point);
 }

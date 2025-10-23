@@ -234,6 +234,7 @@ public enum Quest
 	AN_EXISTENTIAL_CRISIS(5192, "An Existential Crisis"),
 	IMPENDING_CHAOS(5193, "Impending Chaos"),
 	VALE_TOTEMS(5194, "Vale Totems"),
+	TUTORIAL_ISLAND(7033, "Tutorial Island"),
 	;
 
 	@Getter

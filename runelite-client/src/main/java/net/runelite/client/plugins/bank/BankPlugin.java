@@ -48,8 +48,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -61,6 +59,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -294,7 +293,7 @@ public class BankPlugin extends Plugin
 
 					client.runScript(onOpListener);
 					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
-					client.setVarcIntValue(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
+					client.setVarcIntValue(VarClientID.KEYBOARD_TIMEOUT, client.getGameCycle() + 1);
 				});
 				break;
 			}
@@ -362,7 +361,7 @@ public class BankPlugin extends Plugin
 		{
 			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
 			// and the bank wasn't laid out this tick, lay it out early
-			final String inputText = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+			final String inputText = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 			if (searchString != inputText && client.getGameCycle() % 40 != 0)
 			{
 				clientThread.invokeLater(bankSearch::layoutBank);

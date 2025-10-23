@@ -44,6 +44,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
@@ -172,7 +173,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		if (config.showHomeMinigameTeleports())
+		if (config.showHomeMinigameTeleports() && client.getGameState() == GameState.LOGGED_IN)
 		{
 			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
 			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
@@ -686,7 +687,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeGameTimer(HOME_TELEPORT);
 			removeGameTimer(MINIGAME_TELEPORT);
 		}
-		else
+		else if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
 			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
@@ -1020,7 +1021,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, Duration.of(getMagicLevelMoD(magicLevel), RSTimeUnit.GAME_TICKS));
+				createGameTimer(MARK_OF_DARKNESS, getMarkOfDarknessDuration(magicLevel));
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
@@ -1109,18 +1110,20 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 	}
 
-	private int getMagicLevelMoD(int magicLevel)
+	private Duration getMarkOfDarknessDuration(int magicLevel)
 	{
+		final Duration markOfDarknessDuration = Duration.of((long)magicLevel * 3, RSTimeUnit.GAME_TICKS);
+
 		final ItemContainer container = client.getItemContainer(InventoryID.WORN);
 		if (container != null)
 		{
 			final Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
 			if (weapon != null && weapon.getId() == ItemID.PURGING_STAFF)
 			{
-				return magicLevel * 5;
+				return markOfDarknessDuration.multipliedBy(5);
 			}
 		}
-		return magicLevel;
+		return markOfDarknessDuration;
 	}
 
 	private boolean isInFightCaves()

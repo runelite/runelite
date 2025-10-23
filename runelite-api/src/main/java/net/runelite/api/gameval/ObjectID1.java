@@ -22589,7 +22589,7 @@ class ObjectID1
 	public static final int DADDYSHOME_CARPET_CORNER = 40306;
 
 	/**
-	 * Noticeboard
+	 * Notice board
 	 */
 	public static final int PORCINE_NOTICEBOARD = 40307;
 
@@ -50664,9 +50664,20 @@ class ObjectID1
 	public static final int TLATI_TREE_TOP01 = 50937;
 
 	/**
+	 * Chest
+	 */
+	public static final int DOM_CHEST_LOOT = 50938;
+
+	/**
 	 * Fern
 	 */
 	public static final int TLATI_PLANT_FERN01 = 50939;
+
+	/**
+	 * Burrow hole
+	 */
+	public static final int DOM_DESCEND_HOLE_UNIQUE = 50940;
+	public static final int AIDE_SHUTTERWINDOW_OFFSETZ1 = 50941;
 
 	/**
 	 * Mushroom
@@ -65595,7 +65606,7 @@ class ObjectID1
 	public static final int QUEST_START_ICON_IMPENDINGCHAOS = 56415;
 
 	/**
-	 * Noticeboard
+	 * Notice board
 	 */
 	public static final int SOC_MISSING_PERSONS = 56416;
 	public static final int SOC_LOG = 56417;
@@ -69179,5 +69190,335 @@ class ObjectID1
 	 */
 	public static final int DEBUG_WALL = 57656;
 	public static final int _1V1ARENA_DUNGEON_TILES_E_WATER = 57657;
+	public static final int AIDE_SHUTTERWINDOW_OFFSETZ2 = 57658;
+	public static final int AIDE_SHUTTERWINDOW_OFFSETX1 = 57659;
+	public static final int AIDE_SHUTTERWINDOW_OFFSETX2 = 57660;
+	public static final int CASTLEARROWSLIT_DIAG = 57661;
+	public static final int ELFWINDOW_LIGHT_2 = 57662;
+
+	/**
+	 * Dragon's head
+	 */
+	public static final int DRAGONMOUNTEDHEAD_RED3_OFFSET2 = 57663;
+
+	/**
+	 * Inconspicuous rocks (master)
+	 */
+	public static final int HIDEY_UNBUILT_ROCK_MASTER_SHORTCUT = 57664;
+
+	/**
+	 * STASH (master)
+	 */
+	public static final int HIDEY_ROCK_MASTER_SHORTCUT = 57665;
+
+	/**
+	 * Rocks
+	 */
+	public static final int DARKM_WALL_ROCK_SHORTCUT = 57666;
+
+	/**
+	 * Zip line
+	 */
+	public static final int FOSSIL_ZIPWIRE_START = 57667;
+
+	/**
+	 * Spike
+	 */
+	public static final int FOSSIL_ZIPWIRE_GROUND_SPIKE = 57668;
+	public static final int FOSSIL_ZIPWIRE_RIPPLE_LEFT = 57669;
+	public static final int FOSSIL_ZIPWIRE_RIPPLE_RIGHT = 57670;
+
+	/**
+	 * Zip line
+	 */
+	public static final int FOSSIL_SLIDE_CENTER_NONACTIVE = 57671;
+
+	/**
+	 * Zip line
+	 */
+	public static final int FOSSIL_SLIDE_SIDE_NONACTIVE = 57672;
+
+	/**
+	 * Zip line
+	 */
+	public static final int FOSSIL_SLIDE_SIDE_MIRROR_NONACTIVE = 57673;
+	public static final int SLAYERTOWER_WINDOW_BROKEN_BARS = 57674;
+	public static final int SLAYER_IVY01_LARGE01_DARK01 = 57675;
+	public static final int SLAYER_IVY01_MEDIUM01_DARK01 = 57676;
+
+	/**
+	 * Ivy
+	 */
+	public static final int SLAYERTOWER_SHORTCUT_UP = 57677;
+
+	/**
+	 * Broken window
+	 */
+	public static final int SLAYERTOWER_WINDOW_SHORTCUT_DOWN = 57678;
+
+	/**
+	 * Broken window
+	 */
+	public static final int SLAYERTOWER_WINDOW_SHORTCUT_THROUGH = 57679;
+
+	/**
+	 * Skeleton
+	 */
+	public static final int GOLEM_SKELETON_2_OFFSET = 57680;
+	public static final int CASTLE_WALL_ARROWSLIT = 57681;
+	public static final int WINDOW2 = 57682;
+	public static final int CURTAINEDWINDOW2 = 57683;
+	public static final int POSHWINDOW2 = 57684;
+	public static final int BIGWINDOW_OFFSET = 57685;
+	public static final int WHITECURTAINEDPOSHBIGWINDOW_OFFSET = 57686;
+	public static final int SHUTTERWINDOW_OFFSET = 57687;
+	public static final int SHUTTERWINDOW3_OFFSET = 57688;
+
+	/**
+	 * Mirror
+	 */
+	public static final int BATHMIRROR_SMALL = 57689;
+	public static final int TIMBERWALL_OFFSET = 57690;
+	public static final int FAI_VARROCK_FLOORBOARD_FOOTPRINT_SAND = 57691;
+	public static final int COOKINGSHELFEMPTY_OFFSET = 57692;
+
+	/**
+	 * Bookcase
+	 */
+	public static final int FAI_VARROCK_RUNE_BOOKCASE_THIN = 57693;
+	public static final int FAI_FALADOR_ROOFKIT_SLATE_SHORT1 = 57694;
+	public static final int FAI_FALADOR_ROOFKIT_SLATE_SHORT1_MIRROR = 57695;
+	public static final int FAI_FALADOR_ROOFKIT_SLATE_SHORT2 = 57696;
+	public static final int FAI_FALADOR_ROOFKIT_SLATE_SHORT3 = 57697;
+	public static final int FAI_FALADOR_ROOF_EDGE_R_SHORT1 = 57698;
+	public static final int FAI_FALADOR_ROOF_EDGE_SHORT1 = 57699;
+	public static final int FAI_FALADOR_ROOF_EDGE_SHORT1_MIRROR = 57700;
+	public static final int FAI_FALADOR_ROOF_CUT_L_SHORT2 = 57701;
+	public static final int FAI_FALADOR_ROOF_CUT_R_SHORT1 = 57702;
+	public static final int DIARY_WATERFALL_ROPE_ROCK = 57703;
+
+	/**
+	 * Rope
+	 */
+	public static final int DIARY_WATERFALL_ROPE_ROCK_NOOP = 57704;
+
+	/**
+	 * Rope
+	 */
+	public static final int DIARY_WATERFALL_ROPE_ROCK_OP = 57705;
+	public static final int DIARY_WATERFALL_ROPE_TREE = 57706;
+
+	/**
+	 * Rope
+	 */
+	public static final int DIARY_WATERFALL_ROPE_TREE_NOOP = 57707;
+
+	/**
+	 * Rope
+	 */
+	public static final int DIARY_WATERFALL_ROPE_TREE_OP = 57708;
+	public static final int FENK_BRIDGESPAN = 57709;
+
+	/**
+	 * Bridge
+	 */
+	public static final int FENK_BRIDGEBROKEN_MIRROR = 57710;
+
+	/**
+	 * Bridge
+	 */
+	public static final int FENK_BRIDGEBROKEN_BUILD = 57711;
+
+	/**
+	 * Bridge
+	 */
+	public static final int FENK_BRIDGEBROKEN_MIRROR_BUILD = 57712;
+
+	/**
+	 * Bridge
+	 */
+	public static final int FENK_BRIDGEBROKEN_REINFORCED01 = 57713;
+
+	/**
+	 * Bridge
+	 */
+	public static final int FENK_BRIDGEBROKEN_REINFORCED01_MIRROR = 57714;
+	public static final int FENK_BRIDGE_MULTI_NORTH = 57715;
+	public static final int FENK_BRIDGE_MULTI_NORTH_MIRROR = 57716;
+	public static final int FENK_BRIDGE_MULTI_SOUTH = 57717;
+	public static final int FENK_BRIDGE_MULTI_SOUTH_MIRROR = 57718;
+
+	/**
+	 * Bridge support
+	 */
+	public static final int FENK_BRIDGEBROKEN_SUPPORT01 = 57719;
+	public static final int FENK_BRIDGESUPPORT_MULTI_NORTH = 57720;
+	public static final int FENK_BRIDGESUPPORT_MULTI_SOUTH = 57721;
+	public static final int AHOY_TOWN_BARRIER_MULTI = 57722;
+
+	/**
+	 * Energy Barrier
+	 */
+	public static final int AHOY_TOWN_BARRIER_POST_QUEST = 57723;
+	public static final int CAVEKIT_ROCK01_WALLTOP02_NOFILL = 57724;
+	public static final int HW25_SCARECROW = 57725;
+
+	/**
+	 * Scarecrow
+	 */
+	public static final int HW25_SCARECROW_VIS = 57726;
+	public static final int HW25_SPOOKY_PAINTING = 57727;
+
+	/**
+	 * Spooky picture
+	 */
+	public static final int HW25_SPOOKY_PAINTING_VIS = 57728;
+	public static final int HW25_SPOOKY_LAMP = 57729;
+
+	/**
+	 * Spooky wall lamp
+	 */
+	public static final int HW25_SPOOKY_LAMP_VIS = 57730;
+	public static final int POG_CAVE_WALL_TOP5_BLACK = 57731;
+
+	/**
+	 * Notices
+	 */
+	public static final int FAI_VARROCK_GENERAL_STORE_NOTICEBOARD_OFFSET1 = 57732;
+
+	/**
+	 * Icon of the Flames of Lloigh-enn
+	 */
+	public static final int POH_ICON_9 = 57733;
+
+	/**
+	 * Incense burner
+	 */
+	public static final int POH_TORCH_8 = 57734;
+
+	/**
+	 * Incense burner
+	 */
+	public static final int POH_TORCH_8_LIT = 57735;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_BRIMHAVEN_WINDOW_BINGO_01 = 57736;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_BRIMHAVEN_WINDOW_BINGO_02 = 57737;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_CANIFIS_WINDOW_BINGO_01 = 57738;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_CANIFIS_WINDOW_BINGO_02 = 57739;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_CIVITAS_WINDOW_BINGO_01 = 57740;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_CIVITAS_WINDOW_BINGO_02 = 57741;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_HOSIDIUS_WINDOW_BINGO_01 = 57742;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_HOSIDIUS_WINDOW_BINGO_02 = 57743;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_LUMBRIDGE_WINDOW_BINGO_01 = 57744;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_LUMBRIDGE_WINDOW_BINGO_02 = 57745;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_POLLNIVNEACH_WINDOW_BINGO_01 = 57746;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_POLLNIVNEACH_WINDOW_BINGO_02 = 57747;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_RELLEKKA_WINDOW_BINGO_01 = 57748;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_RELLEKKA_WINDOW_BINGO_02 = 57749;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_RIMMINGTON_WINDOW_BINGO_01 = 57750;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_RIMMINGTON_WINDOW_BINGO_02 = 57751;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_TWISTED_WINDOW_BINGO_01 = 57752;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_TWISTED_WINDOW_BINGO_02 = 57753;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_XMAS2020_WINDOW_BINGO_01 = 57754;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_XMAS2020_WINDOW_BINGO_02 = 57755;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_YANILLE_WINDOW_BINGO_01 = 57756;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_YANILLE_WINDOW_BINGO_02 = 57757;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEATHLY_WINDOW_BINGO_01 = 57758;
+
+	/**
+	 * Stained-glass window
+	 */
+	public static final int POH_DEATHLY_WINDOW_BINGO_02 = 57759;
 /* This file is automatically generated. Do not edit. */
 }

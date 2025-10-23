@@ -334,9 +334,13 @@ public class WorldPoint
 		{
 			return toLocalInstance(wv.getInstanceTemplateChunks(), wv.getBaseX(), wv.getBaseY(), worldPoint);
 		}
-		else
+		else if (wv.contains(worldPoint))
 		{
 			return Collections.singleton(worldPoint);
+		}
+		else
+		{
+			return Collections.emptyList();
 		}
 	}
 
@@ -344,15 +348,20 @@ public class WorldPoint
 	 * Get occurrences of a tile on the scene, accounting for instances. There may be
 	 * more than one if the same template chunk occurs more than once on the scene.
 	 */
+	@Deprecated
 	public static Collection<WorldPoint> toLocalInstance(Scene scene, WorldPoint worldPoint)
 	{
 		if (scene.isInstance())
 		{
 			return toLocalInstance(scene.getInstanceTemplateChunks(), scene.getBaseX(), scene.getBaseY(), worldPoint);
 		}
-		else
+		else if (isInScene(scene, worldPoint.getX(), worldPoint.getY()))
 		{
 			return Collections.singleton(worldPoint);
+		}
+		else
+		{
+			return Collections.emptyList();
 		}
 	}
 

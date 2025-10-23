@@ -62,7 +62,11 @@ class PoisonOverlay extends Overlay
 			return null;
 		}
 
-		final Widget healthOrb = client.getWidget(InterfaceID.Orbs.ORB_HEALTH);
+		Widget healthOrb = client.getWidget(InterfaceID.Orbs.ORB_HEALTH);
+		if (healthOrb == null || healthOrb.isHidden())
+		{
+			healthOrb = client.getWidget(InterfaceID.OrbsNomap.ORB_HEALTH);
+		}
 
 		if (healthOrb == null || healthOrb.isHidden())
 		{
