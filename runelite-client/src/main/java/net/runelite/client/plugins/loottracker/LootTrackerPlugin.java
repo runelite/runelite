@@ -474,7 +474,7 @@ public class LootTrackerPlugin extends Plugin
 
 			log.debug("Switched to profile {}", profileKey);
 
-			if (!config.syncPanel())
+			if (!config.rememberLoot())
 			{
 				return;
 			}
@@ -637,7 +637,7 @@ public class LootTrackerPlugin extends Plugin
 	// if there is unloaded loot for a type+name, load it in
 	private void initLoot(LootRecordType type, String name)
 	{
-		if (panel.hasRecord(type, name))
+		if (panel.hasRecord(type, name) || !config.rememberLoot())
 		{
 			return;
 		}
