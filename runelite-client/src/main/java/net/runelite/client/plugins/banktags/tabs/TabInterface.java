@@ -101,6 +101,8 @@ public class TabInterface
 
 	private static final Color HILIGHT_COLOR = JagexColors.MENU_TARGET;
 	private static final String SCROLL_UP = "Scroll up";
+	private static final String SCROLL_TO_TOP = "Scroll to top";
+	private static final String SCROLL_TO_BOTTOM = "Scroll to bottom";
 	private static final String SCROLL_DOWN = "Scroll down";
 	private static final String NEW_TAB = "New tag tab";
 	private static final String REMOVE_TAB = "Delete tag tab";
@@ -862,6 +864,14 @@ public class TabInterface
 				createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTag, HILIGHT_COLOR));
 			}
 		}
+		else if (event.getOption().equals(SCROLL_UP))          
+		{                                                        
+			createMenuEntry(event, SCROLL_TO_TOP, event.getTarget());  
+		}                                                       
+		else if (event.getOption().equals(SCROLL_DOWN))         
+		{                                                       
+			createMenuEntry(event, SCROLL_TO_BOTTOM, event.getTarget()); 
+		}                                                        
 
 		layoutManager.onMenuEntryAdded(event, this);
 	}
@@ -890,7 +900,9 @@ public class TabInterface
 		if (chatboxPanelManager.getCurrentInput() != null
 			&& event.getWidget() != null
 			&& !event.getMenuOption().equals(SCROLL_UP)
-			&& !event.getMenuOption().equals(SCROLL_DOWN))
+			&& !event.getMenuOption().equals(SCROLL_DOWN)
+			&& !event.getMenuOption().equals(SCROLL_TO_TOP)  
+			&& !event.getMenuOption().equals(SCROLL_TO_BOTTOM))
 		{
 			int interfaceId = WidgetUtil.componentToInterface(event.getWidget().getId());
 			if (interfaceId == InterfaceID.BANKMAIN || interfaceId == InterfaceID.BANKSIDE)
@@ -908,6 +920,14 @@ public class TabInterface
 			|| (event.getParam1() == InterfaceID.Bankmain.DEPOSITWORN && event.getMenuOption().equals(TAG_GEAR))))
 		{
 			handleDeposit(event, event.getParam1() == InterfaceID.Bankmain.DEPOSITINV);
+		}
+		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_TOP)) 
+		{                                                                                                     
+			scrollToTop();                                                                                   
+		}                                                                                                         
+		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_BOTTOM)) 
+		{                                                                                                         
+			scrollToBottom();                                                                                 
 		}
 
 		layoutManager.onMenuOptionClicked(event);
@@ -1161,6 +1181,21 @@ public class TabInterface
 
 		config.position(tabScrollOffset);
 
+		layoutTabs();
+	}
+
+	private void scrollToTop()
+	{
+		tabScrollOffset = 0;
+		config.position(tabScrollOffset);
+		layoutTabs();
+	}
+
+	private void scrollToBottom()
+	{
+		int maxScroll = tabManager.size() - tabCount;
+		tabScrollOffset = Math.max(0, maxScroll);
+		config.position(tabScrollOffset);
 		layoutTabs();
 	}
 
