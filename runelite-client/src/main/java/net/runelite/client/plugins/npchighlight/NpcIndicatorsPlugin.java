@@ -719,8 +719,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		return names.stream().map(s -> s.replace("\u0000", ",")).collect(Collectors.toList());
 	}
 
-
-
 	void rebuild()
 	{
 		highlights = getHighlights();
