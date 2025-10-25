@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -711,7 +712,11 @@ public class NpcIndicatorsPlugin extends Plugin
 			return Collections.emptyList();
 		}
 
-		return unescapeCsvCommas(Text.fromCSV(configNpcs));
+		// replacing the \, with a placeholder that won't appear in names when reading the escaped names in config
+		String temp = configNpcs.replace("\\,", "\u0000");
+		List<String> names = Text.fromCSV(temp);
+		// Restore commas in each name
+		return names.stream().map(s -> s.replace("\u0000", ",")).collect(Collectors.toList());
 	}
 
 
@@ -989,12 +994,14 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private static String escapeCommas(String s)
 	{
-		return s.replace(",", "\\c");
+		// first escape backslashes, then escape commas
+		return s.replace("\\", "\\\\").replace(",", "\\,");
 	}
 
 	private static String unescapeCommas(String s)
 	{
-		return s.replace("\\c", ",");
+		// unescape in reverse order: backslashes first, then commas
+		return s.replace("\\\\", "\\").replace("\\,", ",");
 	}
 
 	private static List<String> escapeCsvCommas(List<String> names)
