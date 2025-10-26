@@ -105,7 +105,7 @@ public class TabInterface
 	private static final String SCROLL_TO_TOP = "Scroll to top";
 	private static final String SCROLL_TO_BOTTOM = "Scroll to bottom";
 	private static final String SCROLL_DOWN = "Scroll down";
-	private static final String SCROLL_TO_TAG = "Scroll to..."; 
+	private static final String SCROLL_TO_TAG = "Scroll to...";
 	private static final String NEW_TAB = "New tag tab";
 	private static final String REMOVE_TAB = "Delete tag tab";
 	private static final String EXPORT_TAB = "Export tag tab";
@@ -866,16 +866,16 @@ public class TabInterface
 				createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTag, HILIGHT_COLOR));
 			}
 		}
-		else if (event.getOption().equals(SCROLL_UP))          
-		{                                                        
+		else if (event.getOption().equals(SCROLL_UP))
+		{
 			createMenuEntry(event, SCROLL_TO_TOP, event.getTarget());
-			createScrollToTagSubMenu(event);  
-		}                                                       
-		else if (event.getOption().equals(SCROLL_DOWN))         
-		{                                                       
-			createMenuEntry(event, SCROLL_TO_BOTTOM, event.getTarget()); 
 			createScrollToTagSubMenu(event);
-		}                                                        
+		}
+		else if (event.getOption().equals(SCROLL_DOWN))
+		{
+			createMenuEntry(event, SCROLL_TO_BOTTOM, event.getTarget());
+			createScrollToTagSubMenu(event);
+		}
 
 		layoutManager.onMenuEntryAdded(event, this);
 	}
@@ -905,7 +905,7 @@ public class TabInterface
 			&& event.getWidget() != null
 			&& !event.getMenuOption().equals(SCROLL_UP)
 			&& !event.getMenuOption().equals(SCROLL_DOWN)
-			&& !event.getMenuOption().equals(SCROLL_TO_TOP)  
+			&& !event.getMenuOption().equals(SCROLL_TO_TOP)
 			&& !event.getMenuOption().equals(SCROLL_TO_BOTTOM))
 		{
 			int interfaceId = WidgetUtil.componentToInterface(event.getWidget().getId());
@@ -925,13 +925,13 @@ public class TabInterface
 		{
 			handleDeposit(event, event.getParam1() == InterfaceID.Bankmain.DEPOSITINV);
 		}
-		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_TOP)) 
-		{                                                                                                     
-			scrollToTop();                                                                                   
-		}                                                                                                         
-		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_BOTTOM)) 
-		{                                                                                                         
-			scrollToBottom();                                                                                 
+		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_TOP))
+		{
+			scrollToTop();
+		}
+		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_BOTTOM))
+		{
+			scrollToBottom();
 		}
 
 		layoutManager.onMenuOptionClicked(event);
@@ -1239,10 +1239,10 @@ public class TabInterface
 			// mark active tag with a star
 			boolean isActiveTag = tab.getTag().equals(activeTag);
 			String optionText = (isActiveTag ? "* " : "") + tab.getTag();
-			
+
 			final int targetIndex = i;
 			final String tagName = tab.getTag();
-			
+
 			// create a submenu entry
 			subMenu.createMenuEntry(-1)
 				.setOption(optionText)
@@ -1267,10 +1267,10 @@ public class TabInterface
 	{
 		// load tag layout
 		Layout layout = layoutManager.loadLayout(tagName);
-		
+
 		// open the tag
 		plugin.openTag(tagName, layout);
-		
+
 		// sound feedback -- maybe not needed?
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
