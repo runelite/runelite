@@ -55,7 +55,6 @@ import net.runelite.api.Constants;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
-import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
@@ -102,10 +101,7 @@ public class TabInterface
 
 	private static final Color HILIGHT_COLOR = JagexColors.MENU_TARGET;
 	private static final String SCROLL_UP = "Scroll up";
-	private static final String SCROLL_TO_TOP = "Scroll to top";
-	private static final String SCROLL_TO_BOTTOM = "Scroll to bottom";
 	private static final String SCROLL_DOWN = "Scroll down";
-	private static final String SCROLL_TO_TAG = "Scroll to..."; 
 	private static final String NEW_TAB = "New tag tab";
 	private static final String REMOVE_TAB = "Delete tag tab";
 	private static final String EXPORT_TAB = "Export tag tab";
@@ -866,16 +862,6 @@ public class TabInterface
 				createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTag, HILIGHT_COLOR));
 			}
 		}
-		else if (event.getOption().equals(SCROLL_UP))          
-		{                                                        
-			createMenuEntry(event, SCROLL_TO_TOP, event.getTarget());
-			createScrollToTagSubMenu(event);  
-		}                                                       
-		else if (event.getOption().equals(SCROLL_DOWN))         
-		{                                                       
-			createMenuEntry(event, SCROLL_TO_BOTTOM, event.getTarget()); 
-			createScrollToTagSubMenu(event);
-		}                                                        
 
 		layoutManager.onMenuEntryAdded(event, this);
 	}
@@ -904,9 +890,7 @@ public class TabInterface
 		if (chatboxPanelManager.getCurrentInput() != null
 			&& event.getWidget() != null
 			&& !event.getMenuOption().equals(SCROLL_UP)
-			&& !event.getMenuOption().equals(SCROLL_DOWN)
-			&& !event.getMenuOption().equals(SCROLL_TO_TOP)  
-			&& !event.getMenuOption().equals(SCROLL_TO_BOTTOM))
+			&& !event.getMenuOption().equals(SCROLL_DOWN))
 		{
 			int interfaceId = WidgetUtil.componentToInterface(event.getWidget().getId());
 			if (interfaceId == InterfaceID.BANKMAIN || interfaceId == InterfaceID.BANKSIDE)
@@ -924,14 +908,6 @@ public class TabInterface
 			|| (event.getParam1() == InterfaceID.Bankmain.DEPOSITWORN && event.getMenuOption().equals(TAG_GEAR))))
 		{
 			handleDeposit(event, event.getParam1() == InterfaceID.Bankmain.DEPOSITINV);
-		}
-		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_TOP)) 
-		{                                                                                                     
-			scrollToTop();                                                                                   
-		}                                                                                                         
-		else if (event.getMenuAction() == MenuAction.RUNELITE && event.getMenuOption().equals(SCROLL_TO_BOTTOM)) 
-		{                                                                                                         
-			scrollToBottom();                                                                                 
 		}
 
 		layoutManager.onMenuOptionClicked(event);
@@ -1186,93 +1162,6 @@ public class TabInterface
 		config.position(tabScrollOffset);
 
 		layoutTabs();
-	}
-
-	private void scrollToTop()
-	{
-		tabScrollOffset = 0;
-		config.position(tabScrollOffset);
-		layoutTabs();
-	}
-
-	private void scrollToBottom()
-	{
-		int maxScroll = tabManager.size() - tabCount;
-		tabScrollOffset = Math.max(0, maxScroll);
-		config.position(tabScrollOffset);
-		layoutTabs();
-	}
-
-	private void createScrollToTagSubMenu(MenuEntryAdded event)
-	{
-		List<TagTab> tabs = tabManager.getTabs();
-		if (tabs.isEmpty())
-		{
-			return;
-		}
-
-		// Check we already created "Scroll to..." for this menu
-		MenuEntry[] existingEntries = client.getMenuEntries();
-		for (MenuEntry entry : existingEntries)
-		{
-			if (SCROLL_TO_TAG.equals(entry.getOption()))
-			{
-				return;
-			}
-		}
-
-		// create parent "Scroll to..." entry
-		MenuEntry parentEntry = client.createMenuEntry(-1)
-			.setParam0(event.getActionParam0())
-			.setParam1(event.getActionParam1())
-			.setTarget(event.getTarget())
-			.setOption(SCROLL_TO_TAG)
-			.setType(MenuAction.RUNELITE)
-			.setIdentifier(event.getIdentifier());
-
-		Menu subMenu = parentEntry.createSubMenu();
-
-		// add tags to sub-menu in same order
-		for (int i = 0; i < tabs.size(); i++)
-		{
-			TagTab tab = tabs.get(i);
-			// mark active tag with a star
-			boolean isActiveTag = tab.getTag().equals(activeTag);
-			String optionText = (isActiveTag ? "* " : "") + tab.getTag();
-			
-			final int targetIndex = i;
-			final String tagName = tab.getTag();
-			
-			// create a submenu entry
-			subMenu.createMenuEntry(-1)
-				.setOption(optionText)
-				.setTarget("")
-				.setType(MenuAction.RUNELITE)
-				.onClick(e -> {
-					scrollToTag(targetIndex);
-					openTagFromMenu(tagName);
-				});
-		}
-	}
-
-	private void scrollToTag(int tagIndex)
-	{
-		int maxScroll = tabManager.size() - tabCount;
-		tabScrollOffset = Math.min(tagIndex, Math.max(0, maxScroll));
-		config.position(tabScrollOffset);
-		layoutTabs();
-	}
-
-	private void openTagFromMenu(String tagName)
-	{
-		// load tag layout
-		Layout layout = layoutManager.loadLayout(tagName);
-		
-		// open the tag
-		plugin.openTag(tagName, layout);
-		
-		// sound feedback -- maybe not needed?
-		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
 	public void openTag(String tag, Layout layout, int options, boolean relayout)
