@@ -658,6 +658,7 @@ public class TabInterface
 				{
 					Layout layout = layoutManager.loadLayout(tag);
 					plugin.openTag(tag, layout);
+					scrollToTag(tag);
 				}
 
 				client.playSoundEffect(SoundEffectID.UI_BOOP);
@@ -1199,12 +1200,20 @@ public class TabInterface
 		layoutTabs();
 	}
 
-	private void scrollToTag(int tagIndex)
+	private void scrollToTag(String tagName)
 	{
-		int maxScroll = tabManager.size() - tabCount;
-		tabScrollOffset = Math.min(tagIndex, Math.max(0, maxScroll));
-		config.position(tabScrollOffset);
-		layoutTabs();
+		List<TagTab> tabs = tabManager.getTabs();
+		for (int i = 0; i < tabs.size(); i++)
+		{
+			if (tabs.get(i).getTag().equals(tagName))
+			{
+				int maxScroll = tabManager.size() - tabCount;
+				tabScrollOffset = Math.min(i, Math.max(0, maxScroll));
+				config.position(tabScrollOffset);
+				layoutTabs();
+				return;
+			}
+		}
 	}
 
 	public void openTag(String tag, Layout layout, int options, boolean relayout)
