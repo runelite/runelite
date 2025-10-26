@@ -548,15 +548,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			final String name = npc.getName();
+			final List<String> highlightedNpcs = new ArrayList<>(highlights);
 
-			final List<String> current = new ArrayList<>(unescapeCsvCommas(highlights));
-
-			if (!current.removeIf(n -> n.equalsIgnoreCase(name)))
+			if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
 			{
-				current.add(name);
+				highlightedNpcs.add(name);
 			}
 
-			config.setNpcToHighlight(Text.toCSV(escapeCsvCommas(current)));
+			// this trips a config change which triggers the overlay rebuild
+			config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 		}
 	}
 
@@ -711,10 +711,8 @@ public class NpcIndicatorsPlugin extends Plugin
 			return Collections.emptyList();
 		}
 
-		return unescapeCsvCommas(Text.fromCSV(configNpcs));
+		return Text.fromCSV(configNpcs);
 	}
-
-
 
 	void rebuild()
 	{
@@ -986,35 +984,4 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		return colors;
 	}
-
-	private static String escapeCommas(String s)
-	{
-		return s.replace(",", "\\c");
-	}
-
-	private static String unescapeCommas(String s)
-	{
-		return s.replace("\\c", ",");
-	}
-
-	private static List<String> escapeCsvCommas(List<String> names)
-	{
-		List<String> escaped = new ArrayList<>();
-		for (String n : names)
-		{
-			escaped.add(escapeCommas(n));
-		}
-		return escaped;
-	}
-
-	private static List<String> unescapeCsvCommas(List<String> names)
-	{
-		List<String> unescaped = new ArrayList<>();
-		for (String n : names)
-		{
-			unescaped.add(unescapeCommas(n));
-		}
-		return unescaped;
-	}
-
 }
