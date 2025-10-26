@@ -548,7 +548,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			final String name = npc.getName();
-
             final List<String> highlightedNpcs = new ArrayList<>(highlights);
 
             if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
