@@ -142,7 +142,16 @@ public class MinimapPlugin extends Plugin
 
 	private void updateMinimapWidgetVisibility(boolean hide)
 	{
-		boolean vanillaHideMinimap = client.getVarbitValue(VarbitID.MINIMAP_TOGGLE) == 1;
+        // set to false and handle NPE exception
+        boolean vanillaHideMinimap = false;
+        try
+        {
+            vanillaHideMinimap = client.getVarbitValue(VarbitID.MINIMAP_TOGGLE) == 1;
+        }
+        catch (NullPointerException e)
+        {
+            // here we do nothing because there is nothing to do yet
+        }
 
 		setHidden(InterfaceID.ToplevelOsrsStretch.MAP_MINIMAP, hide || vanillaHideMinimap);
 		setHidden(InterfaceID.ToplevelOsrsStretch.ORBS, hide);
