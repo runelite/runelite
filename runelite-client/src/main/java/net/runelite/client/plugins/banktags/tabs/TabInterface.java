@@ -1248,7 +1248,7 @@ public class TabInterface
 				.setOption(optionText)
 				.setTarget("")
 				.setType(MenuAction.RUNELITE)
-				.onClick(e -> 
+				.onClick(e ->
 				{
 					scrollToTag(targetIndex);
 					openTagFromMenu(tagName);
