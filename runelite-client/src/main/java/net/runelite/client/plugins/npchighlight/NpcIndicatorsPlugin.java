@@ -556,6 +556,7 @@ public class NpcIndicatorsPlugin extends Plugin
                 highlightedNpcs.add(name);
 			}
 
+            // this trips a config change which triggers the overlay rebuild
             config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 		}
 	}
@@ -696,25 +697,23 @@ public class NpcIndicatorsPlugin extends Plugin
 		memorizedNpcs.putIfAbsent(npcIndex, new MemorizedNpc(npc));
 	}
 
-	private void removeOldHighlightedRespawns()
-	{
-		deadNpcsToDisplay.values().removeIf(x -> x.getDiedOnTick() + x.getRespawnTime() <= client.getTickCount() + 1);
-	}
+    private void removeOldHighlightedRespawns()
+    {
+        deadNpcsToDisplay.values().removeIf(x -> x.getDiedOnTick() + x.getRespawnTime() <= client.getTickCount() + 1);
+    }
 
-	@VisibleForTesting
-	List<String> getHighlights()
-	{
-		final String configNpcs = config.getNpcToHighlight();
+    @VisibleForTesting
+    List<String> getHighlights()
+    {
+        final String configNpcs = config.getNpcToHighlight();
 
-		if (configNpcs.isEmpty())
-		{
-			return Collections.emptyList();
-		}
+        if (configNpcs.isEmpty())
+        {
+            return Collections.emptyList();
+        }
 
         return Text.fromCSV(configNpcs);
-	}
-
-
+    }
 
 	void rebuild()
 	{
