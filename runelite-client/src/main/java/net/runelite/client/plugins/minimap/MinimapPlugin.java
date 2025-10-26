@@ -35,6 +35,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
@@ -59,6 +60,8 @@ public class MinimapPlugin extends Plugin
 	private static final int DOT_FRIENDSCHAT = 5;
 	private static final int DOT_CLAN = 6;
 
+    private boolean loggedIn;
+
 	@Inject
 	private Client client;
 
@@ -79,7 +82,12 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		clientThread.invokeLater(() -> updateMinimapWidgetVisibility(config.hideMinimap()));
+        if (client.getGameState() == GameState.LOGGED_IN)
+        {
+            loggedIn = true;
+            clientThread.invokeLater(() -> updateMinimapWidgetVisibility(config.hideMinimap()));
+        }
+
 		storeOriginalDots();
 		replaceMapDots();
 		client.setMinimapZoom(config.zoom());
@@ -97,15 +105,27 @@ public class MinimapPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		var state = event.getGameState();
-		if (state == GameState.STARTING)
-		{
-			originalDotSprites = null;
-		}
-		else if (state == GameState.LOGIN_SCREEN && originalDotSprites == null)
-		{
-			storeOriginalDots();
-			replaceMapDots();
-		}
+        switch (state)
+        {
+            case STARTING:
+                originalDotSprites = null;
+                loggedIn = false;
+                break;
+            case LOGIN_SCREEN:
+                if (originalDotSprites == null)
+                {
+                    storeOriginalDots();
+                    replaceMapDots();
+                    loggedIn = false;
+                }
+                break;
+            case LOGGED_IN:
+                loggedIn = true;
+                break;
+            default:
+                loggedIn = false;
+                break;
+        }
 	}
 
 	@Subscribe
@@ -140,15 +160,28 @@ public class MinimapPlugin extends Plugin
 		}
 	}
 
+    @Subscribe
+    public void onVarbitChanged(VarbitChanged varbitChanged)
+    {
+        int varbitId = varbitChanged.getVarbitId();
+        if (varbitId == VarbitID.MINIMAP_TOGGLE)
+        {
+            clientThread.invokeLater(() -> updateMinimapWidgetVisibility(config.hideMinimap()));
+        }
+    }
+
 	private void updateMinimapWidgetVisibility(boolean hide)
 	{
-		boolean vanillaHideMinimap = client.getVarbitValue(VarbitID.MINIMAP_TOGGLE) == 1;
+        if (loggedIn)
+        {
+            boolean vanillaHideMinimap = client.getVarbitValue(VarbitID.MINIMAP_TOGGLE) == 1;
 
-		setHidden(InterfaceID.ToplevelOsrsStretch.MAP_MINIMAP, hide || vanillaHideMinimap);
-		setHidden(InterfaceID.ToplevelOsrsStretch.ORBS, hide);
+            setHidden(InterfaceID.ToplevelOsrsStretch.MAP_MINIMAP, hide || vanillaHideMinimap);
+            setHidden(InterfaceID.ToplevelOsrsStretch.ORBS, hide);
 
-		setHidden(InterfaceID.ToplevelPreEoc.MAP_MINIMAP, hide || vanillaHideMinimap);
-		setHidden(InterfaceID.ToplevelPreEoc.ORBS, hide);
+            setHidden(InterfaceID.ToplevelPreEoc.MAP_MINIMAP, hide || vanillaHideMinimap);
+            setHidden(InterfaceID.ToplevelPreEoc.ORBS, hide);
+        }
 	}
 
 	private void setHidden(@Component int widget, boolean hide)
