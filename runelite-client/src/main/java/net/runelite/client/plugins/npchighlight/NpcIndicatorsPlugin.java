@@ -711,10 +711,9 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			return Collections.emptyList();
 		}
+
         return Text.fromCSV(configNpcs);
 	}
-
-
 
 	void rebuild()
 	{
@@ -986,5 +985,4 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		return colors;
 	}
-
 }
