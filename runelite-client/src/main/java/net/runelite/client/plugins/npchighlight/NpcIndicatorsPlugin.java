@@ -548,15 +548,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			final String name = npc.getName();
-            final List<String> highlightedNpcs = new ArrayList<>(highlights);
+	        final List<String> highlightedNpcs = new ArrayList<>(highlights);
 
-            if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
+	        if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
 			{
-                highlightedNpcs.add(name);
+	            highlightedNpcs.add(name);
 			}
 
-            // this trips a config change which triggers the overlay rebuild
-            config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
+	        // this trips a config change which triggers the overlay rebuild
+	        config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 		}
 	}
 
@@ -711,7 +711,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return Collections.emptyList();
 		}
 
-        return Text.fromCSV(configNpcs);
+	    return Text.fromCSV(configNpcs);
 	}
 
 	void rebuild()
