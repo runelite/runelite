@@ -710,6 +710,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			return Collections.emptyList();
 		}
+
         return Text.fromCSV(configNpcs);
 	}
 
