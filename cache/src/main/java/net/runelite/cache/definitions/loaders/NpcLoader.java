@@ -383,6 +383,14 @@ public class NpcLoader
 		{
 			def.unknown1 = true;
 		}
+		else if (opcode == 145)
+		{
+			def.canHideForOverlap = true;
+		}
+		else if (opcode == 146)
+		{
+			def.overlapTintHSL = stream.readUnsignedShort();
+		}
 		else if (opcode == 249)
 		{
 			length = stream.readUnsignedByte();

@@ -79,6 +79,7 @@ public class ObjectDefinition
 	private int soundFadeOutDuration = 300;
 	private int soundFadeInCurve;
 	private int soundFadeOutCurve;
+	private int soundVisibility = 2;
 	private int ambientSoundChangeTicksMin = 0;
 	private int ambientSoundChangeTicksMax = 0;
 	private boolean blocksProjectile = true;

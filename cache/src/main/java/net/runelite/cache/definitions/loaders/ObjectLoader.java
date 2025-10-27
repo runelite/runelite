@@ -392,6 +392,10 @@ public class ObjectLoader
 		{
 			def.setUnknown1(true);
 		}
+		else if (opcode == 95)
+		{
+			def.setSoundVisibility(is.readUnsignedByte());
+		}
 		else if (opcode == 249)
 		{
 			int length = is.readUnsignedByte();
