@@ -553,6 +553,21 @@ class OpenCLManager
 				computeEvents.flip();
 				CL10GL.clEnqueueReleaseGLObjects(commandQueue, glBuffers, computeEvents, null);
 			}
+
+			long ptr = acquireEvent.get(0);
+			if (ptr != 0L)
+			{
+				CL12.clReleaseEvent(ptr);
+			}
+
+			for (int i = 0; i < computeEvents.limit(); ++i)
+			{
+				ptr = computeEvents.get(i);
+				if (ptr != 0L)
+				{
+					CL12.clReleaseEvent(ptr);
+				}
+			}
 		}
 	}
 
