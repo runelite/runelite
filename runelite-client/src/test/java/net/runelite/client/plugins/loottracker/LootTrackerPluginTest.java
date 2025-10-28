@@ -420,8 +420,9 @@ public class LootTrackerPluginTest
 					new ItemStack(ItemID._2DOSEPOTIONOFSARADOMIN, 3),
 					new ItemStack(ItemID.BR_2DOSE2RESTORE, 1),
 					new ItemStack(ItemID.HOSDUN_ORANGE_EGG_SAC, 1)
-			))))
-			);
+				)))
+			)
+		);
 	}
 
 	@Test
