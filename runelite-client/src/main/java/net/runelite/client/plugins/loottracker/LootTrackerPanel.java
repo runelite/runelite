@@ -37,7 +37,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Predicate;
@@ -516,11 +515,8 @@ class LootTrackerPanel extends PluginPanel
 		}
 		else
 		{
-			// Loop in reverse insertion order so the most recent kill is first on the UI
-			Iterator<LootTrackerRecord> it = sessionRecords.descendingIterator();
-			while (it.hasNext())
+			for (LootTrackerRecord r : sessionRecords)
 			{
-				LootTrackerRecord r = it.next();
 				if (!hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
 				{
 					buildBox(r);
