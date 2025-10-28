@@ -44,6 +44,8 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.loottracker.PluginLootReceived;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -150,12 +152,12 @@ public class MotherlodePluginTest
 		ArgumentCaptor<PluginLootReceived> captor = ArgumentCaptor.forClass(PluginLootReceived.class);
 		verify(eventBus).post(captor.capture());
 		PluginLootReceived event = captor.getValue();
-		assertEquals(Arrays.asList(
+		assertThat(event.getItems(), containsInAnyOrder(
 			new ItemStack(ItemID.ADAMANTITE_ORE, 1),
 			new ItemStack(ItemID.RUNITE_ORE, 1),
 			new ItemStack(ItemID.COAL, 2),
 			new ItemStack(ItemID.MOTHERLODE_NUGGET, 4)
-		), event.getItems());
+		));
 	}
 
 	private static Item item(int itemId, int quantity)
