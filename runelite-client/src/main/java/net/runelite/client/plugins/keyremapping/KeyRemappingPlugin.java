@@ -137,6 +137,11 @@ public class KeyRemappingPlugin extends Plugin
 			return false;
 		}
 
+		if (client.getFocusedInputFieldWidget() != null)
+		{
+			return false;
+		}
+
 		return true;
 	}
 
