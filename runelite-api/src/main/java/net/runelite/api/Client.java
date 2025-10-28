@@ -1875,6 +1875,12 @@ public interface Client extends OAuthApi, GameEngine
 	Widget getSelectedWidget();
 
 	/**
+	 * Gets the current active {@link net.runelite.api.widgets.WidgetType#INPUT_FIELD} Widget
+	 */
+	@Nullable
+	Widget getFocusedInputFieldWidget();
+
+	/**
 	 * Returns client item composition cache
 	 */
 	NodeCache getItemCompositionCache();
