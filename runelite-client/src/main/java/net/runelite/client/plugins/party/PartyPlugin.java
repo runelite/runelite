@@ -257,24 +257,24 @@ public class PartyPlugin extends Plugin
 			SwingUtilities.invokeLater(panel::updateAll);
 		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (navButton != null)
-            {
-                clientToolbar.removeNavigation(navButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
-            navButton = NavigationButton.builder()
-                    .tooltip("Party")
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(panel)
-                    .build();
+			navButton = NavigationButton.builder()
+					.tooltip("Party")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
 
-            clientToolbar.addNavigation(navButton);
-        }
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Subscribe

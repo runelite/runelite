@@ -148,14 +148,14 @@ public interface GrandExchangeConfig extends Config
 		return GrandExchangeSearchMode.DEFAULT;
 	}
 
-    @ConfigItem(
-            keyName = "navButtonPriority",
-            name = "Navigation Button Priority",
-            description = "The priority of the plugin navigation button",
-            position = 10
-    )
-    default int navButtonPriority()
-    {
-        return 3;
-    }
+	@ConfigItem(
+			keyName = "navButtonPriority",
+			name = "Navigation Button Priority",
+			description = "The priority of the plugin navigation button",
+			position = 10
+	)
+	default int navButtonPriority()
+	{
+		return 3;
+	}
 }

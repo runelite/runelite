@@ -110,8 +110,8 @@ public class TimeTrackingPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
-    @Inject
-    private TimeTrackingConfig config;
+	@Inject
+	private TimeTrackingConfig config;
 
 	private ScheduledFuture panelUpdateFuture;
 
@@ -202,24 +202,24 @@ public class TimeTrackingPlugin extends Plugin
 			farmingTracker.loadCompletionTimes();
 		}
 
-        if (e.getKey().equals("navButtonPriority"))
-        {
-            if (navButton != null)
-            {
-                clientToolbar.removeNavigation(navButton);
-            }
+		if (e.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "watch.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "watch.png");
 
-            navButton = NavigationButton.builder()
-                    .tooltip("Time Tracking")
-                    .icon(icon)
-                    .panel(panel)
-                    .priority(config.navButtonPriority())
-                    .build();
+			navButton = NavigationButton.builder()
+					.tooltip("Time Tracking")
+					.icon(icon)
+					.panel(panel)
+					.priority(config.navButtonPriority())
+					.build();
 
-            clientToolbar.addNavigation(navButton);
-        }
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Subscribe

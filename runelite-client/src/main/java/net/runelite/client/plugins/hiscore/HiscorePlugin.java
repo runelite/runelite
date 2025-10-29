@@ -134,24 +134,24 @@ public class HiscorePlugin extends Plugin
 			}
 		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (navButton != null)
-            {
-                clientToolbar.removeNavigation(navButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
 
-            navButton = NavigationButton.builder()
-                    .tooltip("Hiscore")
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(hiscorePanel)
-                    .build();
+			navButton = NavigationButton.builder()
+					.tooltip("Hiscore")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(hiscorePanel)
+					.build();
 
-            clientToolbar.addNavigation(navButton);
-        }
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Subscribe

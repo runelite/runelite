@@ -91,31 +91,31 @@ public class NotesPlugin extends Plugin
 		panel.setNotes(data);
 	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (!event.getGroup().equals("notes"))
-        {
-            return;
-        }
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("notes"))
+		{
+			return;
+		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (navButton != null)
-            {
-                clientToolbar.removeNavigation(navButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "notes_icon.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "notes_icon.png");
 
-            navButton = NavigationButton.builder()
-                    .tooltip("Notes")
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(panel)
-                    .build();
+			navButton = NavigationButton.builder()
+					.tooltip("Notes")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
 
-            clientToolbar.addNavigation(navButton);
-        }
-    }
+			clientToolbar.addNavigation(navButton);
+		}
+	}
 }

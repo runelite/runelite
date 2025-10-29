@@ -570,24 +570,24 @@ public class LootTrackerPlugin extends Plugin
 			}
 		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (navButton != null)
-            {
-                clientToolbar.removeNavigation(navButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "panel_icon.png");
 
-            navButton = NavigationButton.builder()
-                    .tooltip("Loot Tracker")
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(panel)
-                    .build();
+			navButton = NavigationButton.builder()
+					.tooltip("Loot Tracker")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
 
-            clientToolbar.addNavigation(navButton);
-        }
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Override

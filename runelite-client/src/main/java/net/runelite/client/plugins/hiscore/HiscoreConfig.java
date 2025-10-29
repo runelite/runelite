@@ -86,14 +86,14 @@ public interface HiscoreConfig extends Config
 		return false;
 	}
 
-    @ConfigItem(
-            keyName = "navButtonPriority",
-            name = "Navigation Button Priority",
-            description = "The priority of the plugin navigation button",
-            position = 6
-    )
-    default int navButtonPriority()
-    {
-        return 5;
-    }
+	@ConfigItem(
+			keyName = "navButtonPriority",
+			name = "Navigation Button Priority",
+			description = "The priority of the plugin navigation button",
+			position = 6
+	)
+	default int navButtonPriority()
+	{
+		return 5;
+	}
 }

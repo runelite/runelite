@@ -99,16 +99,16 @@ public interface PartyConfig extends Config
 	)
 	void setMemberColor(Color newMemberColor);
 
-    @ConfigItem(
-            keyName = "navButtonPriority",
-            name = "Navigation Button Priority",
-            description = "The priority of the plugin navigation button",
-            position = 6
-    )
-    default int navButtonPriority()
-    {
-        return 9;
-    }
+	@ConfigItem(
+			keyName = "navButtonPriority",
+			name = "Navigation Button Priority",
+			description = "The priority of the plugin navigation button",
+			position = 6
+	)
+	default int navButtonPriority()
+	{
+		return 9;
+	}
 
 	@ConfigSection(
 		name = "Player status overlay",

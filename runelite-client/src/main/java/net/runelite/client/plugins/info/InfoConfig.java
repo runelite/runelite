@@ -32,14 +32,14 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("info")
 public interface InfoConfig extends Config
 {
-    @ConfigItem(
-            keyName = "navButtonPriority",
-            name = "Navigation Button Priority",
-            description = "The priority of the plugin navigation button",
-            position = 1
-    )
-    default int navButtonPriority()
-    {
-        return 10;
-    }
+	@ConfigItem(
+			keyName = "navButtonPriority",
+			name = "Navigation Button Priority",
+			description = "The priority of the plugin navigation button",
+			position = 1
+	)
+	default int navButtonPriority()
+	{
+		return 10;
+	}
 }

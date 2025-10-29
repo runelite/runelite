@@ -139,14 +139,14 @@ public interface LootTrackerConfig extends Config
 		return true;
 	}
 
-    @ConfigItem(
-            keyName = "navButtonPriority",
-            name = "Navigation Button Priority",
-            description = "The priority of the plugin navigation button",
-            position = 10
-    )
-    default int navButtonPriority()
-    {
-        return 5;
-    }
+	@ConfigItem(
+			keyName = "navButtonPriority",
+			name = "Navigation Button Priority",
+			description = "The priority of the plugin navigation button",
+			position = 10
+	)
+	default int navButtonPriority()
+	{
+		return 5;
+	}
 }
