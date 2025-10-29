@@ -102,8 +102,8 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerWidgetHighlightOverlay widgetHighlight;
 
-    @Inject
-    private ScreenMarkerConfig config;
+	@Inject
+	private ScreenMarkerConfig config;
 
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
@@ -124,11 +124,11 @@ public class ScreenMarkerPlugin extends Plugin
 	private Rectangle selectedWidgetBounds = null;
 	private Point startLocation = null;
 
-    @Provides
-    ScreenMarkerConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(ScreenMarkerConfig.class);
-    }
+	@Provides
+	ScreenMarkerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ScreenMarkerConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -301,32 +301,32 @@ public class ScreenMarkerPlugin extends Plugin
 		return screenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new);
 	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (!event.getGroup().equals("screenmarkers"))
-        {
-            return;
-        }
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("screenmarkers"))
+		{
+			return;
+		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (navigationButton != null)
-            {
-                clientToolbar.removeNavigation(navigationButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navigationButton != null)
+			{
+				clientToolbar.removeNavigation(navigationButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
-            navigationButton = NavigationButton.builder()
-                    .tooltip(PLUGIN_NAME)
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(pluginPanel)
-                    .build();
+			navigationButton = NavigationButton.builder()
+					.tooltip(PLUGIN_NAME)
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(pluginPanel)
+					.build();
 
-            clientToolbar.addNavigation(navigationButton);
-        }
-    }
+			clientToolbar.addNavigation(navigationButton);
+		}
+	}
 
 }

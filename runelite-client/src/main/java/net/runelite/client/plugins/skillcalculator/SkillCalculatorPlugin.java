@@ -56,19 +56,19 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private Provider<SkillCalculatorPanel> uiPanel;
 
-    @Inject
-    private SkillCalculatorConfig config;
+	@Inject
+	private SkillCalculatorConfig config;
 
 	private NavigationButton uiNavigationButton;
 	private boolean lastWorldWasMembers;
 
-    @Provides
-    SkillCalculatorConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(SkillCalculatorConfig.class);
-    }
+	@Provides
+	SkillCalculatorConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkillCalculatorConfig.class);
+	}
 
-    @Override
+	@Override
 	protected void startUp() throws Exception
 	{
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
@@ -101,32 +101,32 @@ public class SkillCalculatorPlugin extends Plugin
 		lastWorldWasMembers = currentWorldIsMembers;
 	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (!event.getGroup().equals("skillcalculator"))
-        {
-            return;
-        }
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("skillcalculator"))
+		{
+			return;
+		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (uiNavigationButton != null)
-            {
-                clientToolbar.removeNavigation(uiNavigationButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (uiNavigationButton != null)
+			{
+				clientToolbar.removeNavigation(uiNavigationButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
 
-            uiNavigationButton = NavigationButton.builder()
-                    .tooltip("Skill Calculator")
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(uiPanel.get())
-                    .build();
+			uiNavigationButton = NavigationButton.builder()
+					.tooltip("Skill Calculator")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(uiPanel.get())
+					.build();
 
-            clientToolbar.addNavigation(uiNavigationButton);
-        }
-    }
+			clientToolbar.addNavigation(uiNavigationButton);
+		}
+	}
 
 }

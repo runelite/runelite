@@ -46,17 +46,17 @@ public class InfoPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
-    @Inject
-    private InfoConfig config;
+	@Inject
+	private InfoConfig config;
 
 	private InfoPanel panel;
 	private NavigationButton navButton;
 
-    @Provides
-    InfoConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(InfoConfig.class);
-    }
+	@Provides
+	InfoConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InfoConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -85,31 +85,31 @@ public class InfoPlugin extends Plugin
 		navButton = null;
 	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (!event.getGroup().equals("info"))
-        {
-            return;
-        }
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("info"))
+		{
+			return;
+		}
 
-        if (event.getKey().equals("navButtonPriority"))
-        {
-            if (navButton != null)
-            {
-                clientToolbar.removeNavigation(navButton);
-            }
+		if (event.getKey().equals("navButtonPriority"))
+		{
+			if (navButton != null)
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
 
-            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "info_icon.png");
+			final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "info_icon.png");
 
-            navButton = NavigationButton.builder()
-                    .tooltip("Info")
-                    .icon(icon)
-                    .priority(config.navButtonPriority())
-                    .panel(panel)
-                    .build();
+			navButton = NavigationButton.builder()
+					.tooltip("Info")
+					.icon(icon)
+					.priority(config.navButtonPriority())
+					.panel(panel)
+					.build();
 
-            clientToolbar.addNavigation(navButton);
-        }
-    }
+			clientToolbar.addNavigation(navButton);
+		}
+	}
 }
