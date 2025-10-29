@@ -200,7 +200,7 @@ public class WorldHopperPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("World Switcher")
 			.icon(icon)
-			.priority(3)
+			.priority(config.navButtonPriority())
 			.panel(panel)
 			.build();
 
@@ -288,6 +288,25 @@ public class WorldHopperPlugin extends Plugin
 					break;
 			}
 		}
+
+        if (event.getKey().equals("navButtonPriority"))
+        {
+            if (navButton != null)
+            {
+                clientToolbar.removeNavigation(navButton);
+            }
+
+            final  BufferedImage icon = ImageUtil.loadImageResource(WorldHopperPlugin.class, "icon.png");
+
+            navButton = NavigationButton.builder()
+                    .tooltip("World Switcher")
+                    .icon(icon)
+                    .priority(config.navButtonPriority())
+                    .panel(panel)
+                    .build();
+
+            clientToolbar.addNavigation(navButton);
+        }
 	}
 
 	@Subscribe

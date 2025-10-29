@@ -143,4 +143,15 @@ public interface TimeTrackingConfig extends Config
 		hidden = true
 	)
 	void setActiveTab(Tab t);
+
+    @ConfigItem(
+            keyName = "navButtonPriority",
+            name = "Navigation Button Priority",
+            description = "The priority of the plugin navigation button",
+            position = 10
+    )
+    default int navButtonPriority()
+    {
+        return 4;
+    }
 }

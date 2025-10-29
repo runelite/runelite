@@ -55,6 +55,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
@@ -145,7 +146,7 @@ public class XpTrackerPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("XP Tracker")
 			.icon(icon)
-			.priority(2)
+			.priority(xpTrackerConfig.navButtonPriority())
 			.panel(xpPanel)
 			.build();
 
@@ -789,4 +790,32 @@ public class XpTrackerPlugin extends Plugin
 	{
 		return configManager.getConfiguration("xpTracker", profile, "state", XpSave.class);
 	}
+
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event)
+    {
+        if (!event.getGroup().equals("xpTracker"))
+        {
+            return;
+        }
+
+        if (event.getKey().equals("navButtonPriority"))
+        {
+            if (navButton != null)
+            {
+                clientToolbar.removeNavigation(navButton);
+            }
+
+            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "/skill_icons/overall.png");
+
+            navButton = NavigationButton.builder()
+                    .tooltip("XP Tracker")
+                    .icon(icon)
+                    .priority(xpTrackerConfig.navButtonPriority())
+                    .panel(xpPanel)
+                    .build();
+
+            clientToolbar.addNavigation(navButton);
+        }
+    }
 }

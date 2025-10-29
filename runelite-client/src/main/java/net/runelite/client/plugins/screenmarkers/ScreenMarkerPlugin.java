@@ -41,11 +41,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
+import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -99,6 +102,9 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerWidgetHighlightOverlay widgetHighlight;
 
+    @Inject
+    private ScreenMarkerConfig config;
+
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
 	private NavigationButton navigationButton;
@@ -118,6 +124,12 @@ public class ScreenMarkerPlugin extends Plugin
 	private Rectangle selectedWidgetBounds = null;
 	private Point startLocation = null;
 
+    @Provides
+    ScreenMarkerConfig provideConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(ScreenMarkerConfig.class);
+    }
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -134,7 +146,7 @@ public class ScreenMarkerPlugin extends Plugin
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
 			.icon(icon)
-			.priority(5)
+			.priority(config.navButtonPriority())
 			.panel(pluginPanel)
 			.build();
 
@@ -288,4 +300,32 @@ public class ScreenMarkerPlugin extends Plugin
 
 		return screenMarkerData.stream().filter(Objects::nonNull).map(ScreenMarkerOverlay::new);
 	}
+
+    @Subscribe
+    public void onConfigChanged(ConfigChanged event)
+    {
+        if (!event.getGroup().equals("screenmarkers"))
+        {
+            return;
+        }
+
+        if (event.getKey().equals("navButtonPriority"))
+        {
+            if (navigationButton != null)
+            {
+                clientToolbar.removeNavigation(navigationButton);
+            }
+
+            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
+
+            navigationButton = NavigationButton.builder()
+                    .tooltip(PLUGIN_NAME)
+                    .icon(icon)
+                    .priority(config.navButtonPriority())
+                    .panel(pluginPanel)
+                    .build();
+
+            clientToolbar.addNavigation(navigationButton);
+        }
+    }
 }

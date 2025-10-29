@@ -100,7 +100,7 @@ public class HiscorePlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("Hiscore")
 			.icon(icon)
-			.priority(5)
+			.priority(config.navButtonPriority())
 			.panel(hiscorePanel)
 			.build();
 
@@ -133,6 +133,25 @@ public class HiscorePlugin extends Plugin
 				menuManager.get().addPlayerMenuItem(LOOKUP);
 			}
 		}
+
+        if (event.getKey().equals("navButtonPriority"))
+        {
+            if (navButton != null)
+            {
+                clientToolbar.removeNavigation(navButton);
+            }
+
+            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "normal.png");
+
+            navButton = NavigationButton.builder()
+                    .tooltip("Hiscore")
+                    .icon(icon)
+                    .priority(config.navButtonPriority())
+                    .panel(hiscorePanel)
+                    .build();
+
+            clientToolbar.addNavigation(navButton);
+        }
 	}
 
 	@Subscribe

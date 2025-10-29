@@ -268,7 +268,7 @@ public class GrandExchangePlugin extends Plugin
 		button = NavigationButton.builder()
 			.tooltip("Grand Exchange")
 			.icon(icon)
-			.priority(3)
+			.priority(config.navButtonPriority())
 			.panel(panel)
 			.build();
 
@@ -358,6 +358,25 @@ public class GrandExchangePlugin extends Plugin
 				}
 			}
 		}
+
+        if (event.getKey().equals("navButtonPriority"))
+        {
+            if (button != null)
+            {
+                clientToolbar.removeNavigation(button);
+            }
+
+            final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "ge_icon.png");
+
+            button = NavigationButton.builder()
+                    .tooltip("Grand Exchange")
+                    .icon(icon)
+                    .priority(config.navButtonPriority())
+                    .panel(panel)
+                    .build();
+
+            clientToolbar.addNavigation(button);
+        }
 	}
 
 	@Subscribe
