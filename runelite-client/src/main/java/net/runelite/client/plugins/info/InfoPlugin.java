@@ -112,5 +112,4 @@ public class InfoPlugin extends Plugin
             clientToolbar.addNavigation(navButton);
         }
     }
-
 }

@@ -54,7 +54,6 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
-import net.runelite.client.plugins.screenmarkers.ScreenMarkerConfig;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
@@ -329,4 +328,5 @@ public class ScreenMarkerPlugin extends Plugin
             clientToolbar.addNavigation(navigationButton);
         }
     }
+
 }

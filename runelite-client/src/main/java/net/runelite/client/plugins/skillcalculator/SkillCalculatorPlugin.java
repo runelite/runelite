@@ -128,4 +128,5 @@ public class SkillCalculatorPlugin extends Plugin
             clientToolbar.addNavigation(uiNavigationButton);
         }
     }
+
 }
