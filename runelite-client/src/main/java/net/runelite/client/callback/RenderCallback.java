@@ -32,14 +32,16 @@ import net.runelite.api.TileObject;
 public interface RenderCallback
 {
 	/**
-	 * Tests if an entity should be rendered.
+	 * Tests if an entity should be added to the scene.
 	 * This is called multiple times per frame from the client thread.
 	 * Entities are temporary entities (players, npcs, projectiles, spotanims, etc).
+	 * Preventing an entity from being added removes their clickbox and also allows other entities
+	 * which would have been hidden to be added.
 	 * @param renderable the entity
 	 * @param ui true if this test is for drawing the ui (hitbars etc)
 	 * @return
 	 */
-	default boolean drawEntity(Renderable renderable, boolean ui)
+	default boolean addEntity(Renderable renderable, boolean ui)
 	{
 		return true;
 	}
@@ -57,9 +59,10 @@ public interface RenderCallback
 	}
 
 	/**
-	 * Test if a tileobject should be drawn.
+	 * Test if a {@link TileObject} should be drawn.
 	 * This is called on scene upload, by the maploader thread, as well as
-	 * each frame by the client thread for dynamic objects (animated objects)
+	 * each frame by the client thread for dynamic objects (animated objects),
+	 * as well as temporary entities (players, npcs, projectiles, spotanims, etc).
 	 * @param scene
 	 * @param object
 	 * @return

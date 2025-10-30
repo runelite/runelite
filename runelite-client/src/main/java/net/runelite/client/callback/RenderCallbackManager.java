@@ -47,7 +47,7 @@ public class RenderCallbackManager
 		callbacks.remove(cb);
 	}
 
-	public boolean drawEntity(Renderable renderable, boolean ui)
+	public boolean addEntity(Renderable renderable, boolean ui)
 	{
 		if (callbacks.isEmpty())
 		{
@@ -56,7 +56,7 @@ public class RenderCallbackManager
 
 		for (var cb : callbacks)
 		{
-			if (!cb.drawEntity(renderable, ui))
+			if (!cb.addEntity(renderable, ui))
 			{
 				return false;
 			}
