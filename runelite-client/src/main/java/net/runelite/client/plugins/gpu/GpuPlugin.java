@@ -79,7 +79,11 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.rlawt.AWTContext;
 import org.lwjgl.opengl.GL;
-import static org.lwjgl.opengl.GL43C.*;
+import static org.lwjgl.opengl.GL33C.*;
+import static org.lwjgl.opengl.GL43C.GL_DEBUG_SOURCE_API;
+import static org.lwjgl.opengl.GL43C.GL_DEBUG_TYPE_OTHER;
+import static org.lwjgl.opengl.GL43C.GL_DEBUG_TYPE_PERFORMANCE;
+import static org.lwjgl.opengl.GL43C.glDebugMessageControl;
 import static org.lwjgl.opengl.GL45C.GL_ZERO_TO_ONE;
 import static org.lwjgl.opengl.GL45C.glClipControl;
 import org.lwjgl.opengl.GLCapabilities;
@@ -305,9 +309,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				log.info("Using device: {}", glGetString(GL_RENDERER));
 				log.info("Using driver: {}", glGetString(GL_VERSION));
 
-				if (!glCapabilities.OpenGL31)
+				if (!glCapabilities.OpenGL33)
 				{
-					throw new RuntimeException("OpenGL 3.1 is required but not available");
+					throw new RuntimeException("OpenGL 3.3 is required but not available");
 				}
 
 				lwjglInitted = true;
@@ -877,7 +881,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Clear scene
 		int sky = client.getSkyboxColor();
 		glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
-		glClearDepthf(0f);
+		glClearDepth(0d);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Setup anisotropic filtering
@@ -1090,7 +1094,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			if (scene.getWorldViewId() == -1)
 			{
-				glProgramUniform3i(glProgram, uniBase, 0, 0, 0);
+				glUniform3i(uniBase, 0, 0, 0);
 
 				var vaos = vaoO.unmap();
 				for (VAO vao : vaos)
@@ -1366,7 +1370,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				// if texture upload is successful, compute and set texture animations
 				float[] texAnims = textureManager.computeTextureAnimations(textureProvider);
-				glProgramUniform2fv(glProgram, uniTextureAnimations, texAnims);
+				glUseProgram(glProgram);
+				glUniform2fv(uniTextureAnimations, texAnims);
+				glUseProgram(0);
 			}
 		}
 

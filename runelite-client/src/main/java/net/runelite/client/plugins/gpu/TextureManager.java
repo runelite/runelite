@@ -31,7 +31,8 @@ import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
-import static org.lwjgl.opengl.GL43C.*;
+import static org.lwjgl.opengl.GL33C.*;
+import static org.lwjgl.opengl.GL42C.glTexStorage3D;
 
 @Singleton
 @Slf4j
