@@ -486,7 +486,12 @@ class OpenCLManager
 			glBuffers.flip();
 
 			PointerBuffer acquireEvent = stack.mallocPointer(1);
-			CL10GL.clEnqueueAcquireGLObjects(commandQueue, glBuffers, null, acquireEvent);
+			int status = CL10GL.clEnqueueAcquireGLObjects(commandQueue, glBuffers, null, acquireEvent);
+			if (status != CL_SUCCESS)
+			{
+				log.error("clEnqueueAcquireGLObjects() error: {}", status);
+				return;
+			}
 
 			var computeEvents = stack.mallocPointer(3);
 			if (unorderedModels > 0)
@@ -500,10 +505,13 @@ class OpenCLManager
 				CL12.clSetKernelArg1p(kernelUnordered, 6, outUvBuffer.clBuffer);
 
 				// queue compute call after acquireGLBuffers
-				CL12.clEnqueueNDRangeKernel(commandQueue, kernelUnordered, 1, null,
+				status = CL12.clEnqueueNDRangeKernel(commandQueue, kernelUnordered, 1, null,
 					stack.pointers(unorderedModels * 6L), stack.pointers(6),
 					acquireEvent, computeEvents);
-				computeEvents.position(computeEvents.position() + 1);
+				if (status == CL_SUCCESS)
+				{
+					computeEvents.position(computeEvents.position() + 1);
+				}
 			}
 
 			if (smallModels > 0)
@@ -519,10 +527,13 @@ class OpenCLManager
 				CL12.clSetKernelArg1p(kernelSmall, 8, uniformBuffer.clBuffer);
 				CL12.clSetKernelArg1l(kernelSmall, 9, tileHeightImage);
 
-				CL12.clEnqueueNDRangeKernel(commandQueue, kernelSmall, 1, null,
+				status = CL12.clEnqueueNDRangeKernel(commandQueue, kernelSmall, 1, null,
 					stack.pointers(smallModels * (SMALL_SIZE / smallFaceCount)), stack.pointers(SMALL_SIZE / smallFaceCount),
 					acquireEvent, computeEvents);
-				computeEvents.position(computeEvents.position() + 1);
+				if (status == CL_SUCCESS)
+				{
+					computeEvents.position(computeEvents.position() + 1);
+				}
 			}
 
 			if (largeModels > 0)
@@ -538,19 +549,22 @@ class OpenCLManager
 				CL12.clSetKernelArg1p(kernelLarge, 8, uniformBuffer.clBuffer);
 				CL12.clSetKernelArg1l(kernelLarge, 9, tileHeightImage);
 
-				CL12.clEnqueueNDRangeKernel(commandQueue, kernelLarge, 1, null,
+				status = CL12.clEnqueueNDRangeKernel(commandQueue, kernelLarge, 1, null,
 					stack.pointers(largeModels * (LARGE_SIZE / largeFaceCount)), stack.pointers(LARGE_SIZE / largeFaceCount),
 					acquireEvent, computeEvents);
-				computeEvents.position(computeEvents.position() + 1);
+				if (status == CL_SUCCESS)
+				{
+					computeEvents.position(computeEvents.position() + 1);
+				}
 			}
 
-			if (computeEvents.position() == 0)
+			computeEvents.flip();
+			if (computeEvents.limit() == 0)
 			{
 				CL10GL.clEnqueueReleaseGLObjects(commandQueue, glBuffers, null, null);
 			}
 			else
 			{
-				computeEvents.flip();
 				CL10GL.clEnqueueReleaseGLObjects(commandQueue, glBuffers, computeEvents, null);
 			}
 
