@@ -27,12 +27,14 @@ package net.runelite.client.callback;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 
 @Singleton
+@Slf4j
 public class RenderCallbackManager
 {
 	private final List<RenderCallback> callbacks = new CopyOnWriteArrayList<>();
@@ -56,9 +58,16 @@ public class RenderCallbackManager
 
 		for (var cb : callbacks)
 		{
-			if (!cb.addEntity(renderable, ui))
+			try
 			{
-				return false;
+				if (!cb.addEntity(renderable, ui))
+				{
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				log.error("exception in render callback", ex);
 			}
 		}
 
@@ -74,9 +83,16 @@ public class RenderCallbackManager
 
 		for (var cb : callbacks)
 		{
-			if (!cb.drawTile(scene, tile))
+			try
 			{
-				return false;
+				if (!cb.drawTile(scene, tile))
+				{
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				log.error("exception in render callback", ex);
 			}
 		}
 
@@ -92,9 +108,16 @@ public class RenderCallbackManager
 
 		for (var cb : callbacks)
 		{
-			if (!cb.drawObject(scene, object))
+			try
 			{
-				return false;
+				if (!cb.drawObject(scene, object))
+				{
+					return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				log.error("exception in render callback", ex);
 			}
 		}
 
