@@ -156,7 +156,7 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m)
+	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m, int orient, int x, int y, int z)
 	{
 	}
 
