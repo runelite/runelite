@@ -285,14 +285,22 @@ class Zone
 
 		convertForDraw(VERT_SIZE);
 
-		glProgramUniform3i(glProgram, uniBase, zx << 10, 0, zz << 10);
-		glBindVertexArray(glVao);
-		glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
+		if (drawOff.limit() > 0)
+		{
+			glProgramUniform3i(glProgram, uniBase, zx << 10, 0, zz << 10);
+			glBindVertexArray(glVao);
+			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
+		}
 	}
 
 	private static void pushRange(int start, int end)
 	{
 		assert end >= start;
+
+		if (start == end)
+		{
+			return;
+		}
 
 		int idx = drawEnd.position();
 		if (idx > 0 && drawEnd.get(idx - 1) == start)
@@ -687,6 +695,7 @@ class Zone
 		if (lastDrawMode == TEMP)
 		{
 			convertForDraw(VAO.VERT_SIZE);
+			assert drawOff.limit() > 0;
 			glProgramUniform3i(glProgram, uniBase, 0, 0, 0);
 			glBindVertexArray(lastVao);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
@@ -707,6 +716,7 @@ class Zone
 		else if (lastDrawMode == STATIC_UNSORTED)
 		{
 			convertForDraw(VERT_SIZE);
+			assert drawOff.limit() > 0;
 			glProgramUniform3i(glProgram, uniBase, lastzx << 10, 0, lastzz << 10);
 			glBindVertexArray(lastVao);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
