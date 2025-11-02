@@ -32,15 +32,18 @@ public class BankWatcherService
     private ConfigManager configManager;
 
     private final OkHttpClient httpClient = new OkHttpClient();
+    private final Gson gson = new Gson();
+
     private final Map<Integer, Integer> previousTotals = new HashMap<>();
     private final Map<Integer, Integer> wikiPrices = new HashMap<>();
 
     private static final String CONFIG_GROUP = "bankwatcher";
-    private static final String PREVIOUS_TOTALS_KEY = "previousTotals";
-    private final Gson gson = new Gson();
+    private static final String SNAPSHOT_KEY = "bank_snapshot";
+
+    private boolean snapshotLoaded = false;
 
     /**
-     * Fetches the latest prices from the OSRS Wiki API in batches of up to 100 item IDs per request.
+     * Fetch the latest prices from the OSRS Wiki API (WeirdGloop).
      */
     private void fetchWikiPrices()
     {
@@ -85,8 +88,8 @@ public class BankWatcherService
 
                         for (String key : json.keySet())
                         {
-                            JSONObject item = json.getJSONObject(key);
-                            int price = item.optInt("price", -1);
+                            JSONObject itemJson = json.getJSONObject(key);
+                            int price = itemJson.optInt("price", -1);
                             if (price > 0)
                             {
                                 wikiPrices.put(Integer.parseInt(key), price);
@@ -113,59 +116,67 @@ public class BankWatcherService
     }
 
     /**
-     * Loads saved totals from RuneLite config (persistent between sessions).
+     * Loads the previously saved snapshot from RuneLite config (runs only once).
      */
-    private void loadPreviousTotals()
+    private void loadSnapshot()
     {
+        if (snapshotLoaded) return; // don’t reload every scan
+        snapshotLoaded = true;
+
         try
         {
-            String json = configManager.getConfiguration(CONFIG_GROUP, PREVIOUS_TOTALS_KEY);
+            String json = configManager.getConfiguration(CONFIG_GROUP, SNAPSHOT_KEY);
             if (json != null && !json.isEmpty())
             {
                 Type type = new TypeToken<Map<Integer, Integer>>(){}.getType();
                 Map<Integer, Integer> loaded = gson.fromJson(json, type);
                 if (loaded != null)
                 {
+                    previousTotals.clear();
                     previousTotals.putAll(loaded);
                     log.info("Loaded {} saved totals from config.", loaded.size());
                 }
             }
+            else
+            {
+                log.info("No saved snapshot found — starting fresh.");
+            }
         }
         catch (Exception e)
         {
-            log.warn("Failed to load previous totals from config.", e);
+            log.warn("Failed to load snapshot from config.", e);
         }
     }
 
     /**
-     * Saves current totals to RuneLite config (persists between sessions).
+     * Saves the latest snapshot of total values to RuneLite config.
      */
-    private void savePreviousTotals()
+    private void saveSnapshot()
     {
         try
         {
             String json = gson.toJson(previousTotals);
-            configManager.setConfiguration(CONFIG_GROUP, PREVIOUS_TOTALS_KEY, json);
+            configManager.setConfiguration(CONFIG_GROUP, SNAPSHOT_KEY, json);
             log.info("Saved {} totals to config.", previousTotals.size());
         }
         catch (Exception e)
         {
-            log.warn("Failed to save previous totals to config.", e);
+            log.warn("Failed to save snapshot to config.", e);
         }
     }
 
     /**
-     * Scans the player's bank and returns a list of tradeable items with live Wiki or GE prices.
+     * Scans the player's bank, calculates deltas, and persists totals.
      */
     public List<BankItem> scanBank()
     {
-        loadPreviousTotals(); // 🔹 Load saved totals first
-        ItemContainer bankItems = client.getItemContainer(InventoryID.BANK);
+        loadSnapshot(); // 🔹 Load once per session
 
+        ItemContainer bankItems = client.getItemContainer(InventoryID.BANK);
         if (bankItems == null)
         {
-            log.info("There are no bank items at this time.");
-            return new ArrayList<>();
+            log.info("No bank items found.");
+            return Collections.emptyList();
         }
 
         fetchWikiPrices();
@@ -174,7 +185,7 @@ public class BankWatcherService
 
         for (Item item : bankItems.getItems())
         {
-            if (item == null || item.getId() == -1)
+            if (item == null || item.getId() <= 0)
             {
                 continue;
             }
@@ -190,18 +201,35 @@ public class BankWatcherService
             int quantity = item.getQuantity();
             int totalPrice = gePrice * quantity;
 
-            int previousPrice = previousTotals.getOrDefault(itemId, totalPrice);
-            int delta = totalPrice - previousPrice;
+            int oldTotal = previousTotals.getOrDefault(itemId, totalPrice);
+            int delta = totalPrice - oldTotal;
 
+            // update saved totals for next session
             previousTotals.put(itemId, totalPrice);
-            String name = comp.getName();
 
-            trackedItems.add(new BankItem(name, gePrice, totalPrice, quantity, delta));
+            trackedItems.add(new BankItem(
+                    itemId,
+                    comp.getName(),
+                    gePrice,
+                    totalPrice,
+                    quantity,
+                    delta
+            ));
         }
 
-        savePreviousTotals(); // 🔹 Persist totals after scanning
+        saveSnapshot(); // 🔹 Persist snapshot after every scan
 
-        log.info("Tracked bank items: {}", trackedItems);
+        log.info("Tracked {} bank items.", trackedItems.size());
         return trackedItems;
+    }
+
+    /**
+     * Optional: Manually clear saved data (for testing or reset button)
+     */
+    public void resetSnapshot()
+    {
+        previousTotals.clear();
+        saveSnapshot();
+        log.info("BankWatcher snapshot reset.");
     }
 }

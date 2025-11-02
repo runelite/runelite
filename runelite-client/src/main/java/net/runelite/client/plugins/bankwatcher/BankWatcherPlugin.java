@@ -7,7 +7,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 
 import javax.inject.Inject;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 
 @Slf4j
@@ -31,8 +30,7 @@ public class BankWatcherPlugin extends Plugin
     {
         log.info("Bank Watcher plugin started");
 
-        // You can replace this with your own icon later
-        final BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        final BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB); // placeholder icon
 
         navButton = NavigationButton.builder()
                 .tooltip("Bank Watcher")
@@ -48,6 +46,6 @@ public class BankWatcherPlugin extends Plugin
     protected void shutDown() throws Exception
     {
         clientToolbar.removeNavigation(navButton);
-        log.info("Bank Watcher plugin has stopped");
+        log.info("Bank Watcher plugin stopped");
     }
 }
