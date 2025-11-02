@@ -46,6 +46,7 @@ import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11C.glDepthMask;
 import static org.lwjgl.opengl.GL14.glMultiDrawArrays;
 import static org.lwjgl.opengl.GL15C.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15C.GL_STREAM_DRAW;
@@ -698,7 +699,9 @@ class Zone
 			assert drawOff.limit() > 0;
 			glProgramUniform3i(glProgram, uniBase, 0, 0, 0);
 			glBindVertexArray(lastVao);
+			glDepthMask(false);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
+			glDepthMask(true);
 			drawOff.clear();
 			drawEnd.clear();
 		}
@@ -709,7 +712,9 @@ class Zone
 			glBindVertexArray(lastVao);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, alphaElements, GL_STREAM_DRAW);
+			glDepthMask(false);
 			glDrawElements(GL_TRIANGLES, alphaElements.limit(), GL_UNSIGNED_INT, 0L);
+			glDepthMask(true);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			alphaElements.clear();
 		}
@@ -719,7 +724,9 @@ class Zone
 			assert drawOff.limit() > 0;
 			glProgramUniform3i(glProgram, uniBase, lastzx << 10, 0, lastzz << 10);
 			glBindVertexArray(lastVao);
+			glDepthMask(false);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
+			glDepthMask(true);
 			drawOff.clear();
 			drawEnd.clear();
 		}
