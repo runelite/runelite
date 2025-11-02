@@ -40,30 +40,9 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Scene;
 import static net.runelite.client.plugins.gpu.FacePrioritySorter.distanceFaceCount;
 import static net.runelite.client.plugins.gpu.FacePrioritySorter.distanceToFaces;
-import static net.runelite.client.plugins.gpu.GpuPlugin.glProgram; // NOPMD: UnnecessaryImport
 import static net.runelite.client.plugins.gpu.GpuPlugin.uniBase;
 import org.lwjgl.BufferUtils;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL11C.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11C.glDepthMask;
-import static org.lwjgl.opengl.GL14.glMultiDrawArrays;
-import static org.lwjgl.opengl.GL15C.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15C.GL_STREAM_DRAW;
-import static org.lwjgl.opengl.GL15C.glBufferData;
-import static org.lwjgl.opengl.GL15C.glDeleteBuffers;
-import static org.lwjgl.opengl.GL15C.glGenBuffers;
-import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30C.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL30C.GL_INT;
-import static org.lwjgl.opengl.GL30C.GL_SHORT;
-import static org.lwjgl.opengl.GL30C.glBindBuffer;
-import static org.lwjgl.opengl.GL30C.glBindVertexArray;
-import static org.lwjgl.opengl.GL30C.glDeleteVertexArrays;
-import static org.lwjgl.opengl.GL30C.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
-import static org.lwjgl.opengl.GL30C.glVertexAttribIPointer;
-import static org.lwjgl.opengl.GL41C.glProgramUniform3i;
+import static org.lwjgl.opengl.GL33C.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -288,7 +267,7 @@ class Zone
 
 		if (drawOff.limit() > 0)
 		{
-			glProgramUniform3i(glProgram, uniBase, zx << 10, 0, zz << 10);
+			glUniform3i(uniBase, zx << 10, 0, zz << 10);
 			glBindVertexArray(glVao);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
 		}
@@ -697,7 +676,7 @@ class Zone
 		{
 			convertForDraw(VAO.VERT_SIZE);
 			assert drawOff.limit() > 0;
-			glProgramUniform3i(glProgram, uniBase, 0, 0, 0);
+			glUniform3i(uniBase, 0, 0, 0);
 			glBindVertexArray(lastVao);
 			glDepthMask(false);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
@@ -708,7 +687,7 @@ class Zone
 		else if (lastDrawMode == STATIC)
 		{
 			alphaElements.flip();
-			glProgramUniform3i(glProgram, uniBase, lastzx << 10, 0, lastzz << 10);
+			glUniform3i(uniBase, lastzx << 10, 0, lastzz << 10);
 			glBindVertexArray(lastVao);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferId);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, alphaElements, GL_STREAM_DRAW);
@@ -722,7 +701,7 @@ class Zone
 		{
 			convertForDraw(VERT_SIZE);
 			assert drawOff.limit() > 0;
-			glProgramUniform3i(glProgram, uniBase, lastzx << 10, 0, lastzz << 10);
+			glUniform3i(uniBase, lastzx << 10, 0, lastzz << 10);
 			glBindVertexArray(lastVao);
 			glDepthMask(false);
 			glMultiDrawArrays(GL_TRIANGLES, drawOff, drawEnd);
