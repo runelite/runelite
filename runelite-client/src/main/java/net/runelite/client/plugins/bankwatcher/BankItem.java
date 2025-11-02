@@ -6,12 +6,17 @@ public class BankItem {
     private final int gePrice;
     private final int quantity;
     private final int totalPrice;
+    private final int delta;
 
-    public BankItem(String name, int gePrice, int totalPrice, int quantity) {
+    public BankItem(String name, int gePrice, int totalPrice, int quantity, int delta) {
         this.name = name;
         this.quantity = quantity;
         this.gePrice = gePrice;
         this.totalPrice = totalPrice;
+        this.delta = delta;
+    }
+    public int getDelta(){
+        return delta;
     }
     public int getQuantity() {
         return quantity;
@@ -28,6 +33,6 @@ public class BankItem {
 
     @Override
     public String toString(){
-        return String.format("%s | Price: %,d | Total: %,d | Quantity: %,d" , name, gePrice, totalPrice, quantity);
+        return String.format("%s | Price: %,d | Total: %,d | Quantity: %,d, Delta: %,d" , name, gePrice, totalPrice, quantity, delta);
     }
 }
