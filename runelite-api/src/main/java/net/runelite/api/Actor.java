@@ -496,5 +496,6 @@ public interface Actor extends Renderable, CameraFocusableEntity
 	 * Get the height offset of the actor from their current animation
 	 * @return
 	 */
+	@Override
 	int getAnimationHeightOffset();
 }

@@ -1013,7 +1013,7 @@ public class ModelOutlineRenderer
 			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
 			if (model != null)
 			{
-				drawModelOutline(gameObject.getWorldView(), model, gameObject.getX(), gameObject.getY(), gameObject.getZ(),
+				drawModelOutline(gameObject.getWorldView(), model, gameObject.getX(), gameObject.getY(), gameObject.getZ() - renderable.getAnimationHeightOffset(),
 					gameObject.getModelOrientation(), outlineWidth, color, feather);
 			}
 		}
@@ -1027,7 +1027,7 @@ public class ModelOutlineRenderer
 			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
 			if (model != null)
 			{
-				drawModelOutline(groundObject.getWorldView(), model, groundObject.getX(), groundObject.getY(), groundObject.getZ(),
+				drawModelOutline(groundObject.getWorldView(), model, groundObject.getX(), groundObject.getY(), groundObject.getZ() - renderable.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}
@@ -1080,7 +1080,7 @@ public class ModelOutlineRenderer
 				drawModelOutline(decorativeObject.getWorldView(), model,
 					decorativeObject.getX() + decorativeObject.getXOffset(),
 					decorativeObject.getY() + decorativeObject.getYOffset(),
-					decorativeObject.getZ(),
+					decorativeObject.getZ() - renderable1.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}
@@ -1092,7 +1092,7 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				// Offset is not used for the second model
-				drawModelOutline(decorativeObject.getWorldView(), model, decorativeObject.getX(), decorativeObject.getY(), decorativeObject.getZ(),
+				drawModelOutline(decorativeObject.getWorldView(), model, decorativeObject.getX(), decorativeObject.getY(), decorativeObject.getZ() - renderable2.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}
@@ -1106,7 +1106,7 @@ public class ModelOutlineRenderer
 			Model model = renderable1 instanceof Model ? (Model) renderable1 : renderable1.getModel();
 			if (model != null)
 			{
-				drawModelOutline(wallObject.getWorldView(), model, wallObject.getX(), wallObject.getY(), wallObject.getZ(),
+				drawModelOutline(wallObject.getWorldView(), model, wallObject.getX(), wallObject.getY(), wallObject.getZ() - renderable1.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}
@@ -1117,7 +1117,7 @@ public class ModelOutlineRenderer
 			Model model = renderable2 instanceof Model ? (Model) renderable2 : renderable2.getModel();
 			if (model != null)
 			{
-				drawModelOutline(wallObject.getWorldView(), model, wallObject.getX(), wallObject.getY(), wallObject.getZ(),
+				drawModelOutline(wallObject.getWorldView(), model, wallObject.getX(), wallObject.getY(), wallObject.getZ() - renderable2.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}
@@ -1155,7 +1155,7 @@ public class ModelOutlineRenderer
 			Model model = graphicsObject.getModel();
 			if (model != null)
 			{
-				drawModelOutline(graphicsObject.getWorldView(), model, lp.getX(), lp.getY(), graphicsObject.getZ(),
+				drawModelOutline(graphicsObject.getWorldView(), model, lp.getX(), lp.getY(), graphicsObject.getZ() - graphicsObject.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}
