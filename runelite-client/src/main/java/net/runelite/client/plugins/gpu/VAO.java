@@ -32,21 +32,7 @@ import net.runelite.api.Projection;
 import net.runelite.api.Scene;
 import static net.runelite.client.plugins.gpu.GpuPlugin.uniEntityTint;
 import static net.runelite.client.plugins.gpu.GpuPlugin.updateEntityProjection;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11C.GL_FLOAT;
-import static org.lwjgl.opengl.GL11C.GL_INT;
-import static org.lwjgl.opengl.GL11C.GL_SHORT;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15C.glBindBuffer;
-import static org.lwjgl.opengl.GL20C.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20C.glUniform4i;
-import static org.lwjgl.opengl.GL20C.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30C.glBindVertexArray;
-import static org.lwjgl.opengl.GL30C.glDeleteVertexArrays;
-import static org.lwjgl.opengl.GL30C.glGenVertexArrays;
-import static org.lwjgl.opengl.GL30C.glVertexAttribIPointer;
+import static org.lwjgl.opengl.GL33C.*;
 
 class VAO
 {
