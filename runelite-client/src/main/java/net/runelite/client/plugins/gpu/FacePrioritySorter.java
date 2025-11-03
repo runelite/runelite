@@ -45,9 +45,9 @@ class FacePrioritySorter
 	private static final float[] modelCanvasX;
 	private static final float[] modelCanvasY;
 
-	private static final float[] modelLocalX;
-	private static final float[] modelLocalY;
-	private static final float[] modelLocalZ;
+	static final float[] modelLocalX;
+	static final float[] modelLocalY;
+	static final float[] modelLocalZ;
 
 	static final int[] numOfPriority;
 	private static final int[] eq10;
@@ -55,7 +55,7 @@ class FacePrioritySorter
 	private static final int[] lt10;
 	static final int[][] orderedFaces;
 
-	private static final int MAX_VERTEX_COUNT = SceneUploader.MAX_VERTEX_COUNT;
+	static final int MAX_VERTEX_COUNT = 6500;
 	private static final int MAX_DIAMETER = 6000;
 	private static final int ZSORT_GROUP_SIZE = 1024; // was 512
 	private static final int MAX_FACES_PER_PRIORITY = 4000; // was 2500
@@ -69,9 +69,9 @@ class FacePrioritySorter
 		modelCanvasX = new float[MAX_VERTEX_COUNT];
 		modelCanvasY = new float[MAX_VERTEX_COUNT];
 
-		modelLocalX = SceneUploader.modelLocalX;
-		modelLocalY = SceneUploader.modelLocalY;
-		modelLocalZ = SceneUploader.modelLocalZ;
+		modelLocalX = new float[MAX_VERTEX_COUNT];
+		modelLocalY = new float[MAX_VERTEX_COUNT];
+		modelLocalZ = new float[MAX_VERTEX_COUNT];
 
 		numOfPriority = new int[12];
 		eq10 = new int[MAX_FACES_PER_PRIORITY];
