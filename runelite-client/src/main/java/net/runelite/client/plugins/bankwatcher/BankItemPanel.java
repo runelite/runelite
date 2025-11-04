@@ -1,104 +1,146 @@
+/*
+ * Copyright (c) 2025, Khaled Ahmed
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package net.runelite.client.plugins.bankwatcher;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-public class BankItemPanel extends JPanel {
-    public BankItemPanel(BankItem item, BufferedImage icon) {
-        setLayout(new BorderLayout(8, 0));
-        setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(4, 4, 4, 4),
-                BorderFactory.createLineBorder(new Color(60, 60, 60), 1)
-        ));
-        setBackground(new Color(40, 40, 40));
-        setMaximumSize(new Dimension(Integer.MAX_VALUE, 75));
+public class BankItemPanel extends JPanel
+{
+	public BankItemPanel(BankItem item, BufferedImage icon)
+	{
+		setLayout(new BorderLayout(8, 0));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4), BorderFactory.createLineBorder(new Color(60, 60, 60), 1)));
+		setBackground(new Color(40, 40, 40));
+		setMaximumSize(new Dimension(Integer.MAX_VALUE, 75));
 
-        JLabel iconLabel = (icon != null)
-                ? new JLabel(new ImageIcon(icon))
-                : new JLabel("🪙", SwingConstants.CENTER);
+		JLabel iconLabel = (icon != null) ? new JLabel(new ImageIcon(icon)) : new JLabel("🪙", SwingConstants.CENTER);
 
-        iconLabel.setPreferredSize(new Dimension(45, 45));
-        add(iconLabel, BorderLayout.WEST);
+		iconLabel.setPreferredSize(new Dimension(45, 45));
+		add(iconLabel, BorderLayout.WEST);
 
-        // --- Text Panel ---
-        JPanel textPanel = new JPanel();
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-        textPanel.setOpaque(false);
+		// --- Text Panel ---
+		JPanel textPanel = new JPanel();
+		textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+		textPanel.setOpaque(false);
 
-        // Name at the top
-        JLabel nameLabel = new JLabel(item.getName());
-        nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD, 14f));
-        nameLabel.setForeground(Color.WHITE);
-        nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		// Name at the top
+		JLabel nameLabel = new JLabel(item.getName());
+		nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD, 14f));
+		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // --- Stats Panel (stacked vertically) ---
-        JPanel statsPanel = new JPanel();
-        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setOpaque(false);
-        statsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		// --- Stats Panel (stacked vertically) ---
+		JPanel statsPanel = new JPanel();
+		statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
+		statsPanel.setOpaque(false);
+		statsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Individual stat labels
-        JLabel geLabel = new JLabel(String.format("GE: %,d", item.getGePrice()));
-        JLabel qtyLabel = new JLabel(String.format("Qty: %,d", item.getQuantity()));
-        JLabel totalLabel = new JLabel(String.format("Total: %,d", item.getTotalPrice()));
+		// Individual stat labels
+		JLabel geLabel = new JLabel(String.format("GE: %,d", item.getGePrice()));
+		JLabel qtyLabel = new JLabel(String.format("Qty: %,d", item.getQuantity()));
+		JLabel totalLabel = new JLabel(String.format("Total: %,d", item.getTotalPrice()));
 
-        // --- Quantity Delta ---
-        int qtyDeltaValue = item.getQuantityDelta();
-        if (qtyDeltaValue != 0) {
-            String qtyPrefix = qtyDeltaValue > 0 ? "+" : "-";
-            Color qtyColor = qtyDeltaValue > 0 ? new Color(0, 200, 0) : new Color(230, 60, 60);
-            JLabel qtyDeltaLabel = new JLabel(String.format("(%s%,d)", qtyPrefix, Math.abs(qtyDeltaValue)));
-            qtyDeltaLabel.setFont(qtyLabel.getFont().deriveFont(13f));
-            qtyDeltaLabel.setForeground(qtyColor);
+		// --- Quantity Delta ---
+		int qtyDeltaValue = item.getQuantityDelta();
+		if (qtyDeltaValue != 0)
+		{
+			String qtyPrefix = qtyDeltaValue > 0 ? "+" : "-";
+			Color qtyColor = qtyDeltaValue > 0 ? new Color(0, 200, 0) : new Color(230, 60, 60);
+			JLabel qtyDeltaLabel = new JLabel(String.format("(%s%,d)", qtyPrefix, Math.abs(qtyDeltaValue)));
+			qtyDeltaLabel.setFont(qtyLabel.getFont().deriveFont(13f));
+			qtyDeltaLabel.setForeground(qtyColor);
 
-            JPanel qtyPanel = new JPanel();
-            qtyPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-            qtyPanel.setOpaque(false);
-            qtyPanel.add(qtyLabel);
-            qtyPanel.add(qtyDeltaLabel);
-            statsPanel.add(qtyPanel);
-        } else {
-            statsPanel.add(qtyLabel);
-        }
+			JPanel qtyPanel = new JPanel();
+			qtyPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+			qtyPanel.setOpaque(false);
+			qtyPanel.add(qtyLabel);
+			qtyPanel.add(qtyDeltaLabel);
+			statsPanel.add(qtyPanel);
+		}
+		else
+		{
+			statsPanel.add(qtyLabel);
+		}
 
-        // Apply consistent styling
-        for (JLabel label : new JLabel[]{geLabel, totalLabel}) {
-            label.setFont(label.getFont().deriveFont(14f));
-            label.setForeground(Color.LIGHT_GRAY);
-            label.setAlignmentX(Component.LEFT_ALIGNMENT);
-        }
+		// Apply consistent styling
+		for (JLabel label : new JLabel[]{geLabel, totalLabel})
+		{
+			label.setFont(label.getFont().deriveFont(14f));
+			label.setForeground(Color.LIGHT_GRAY);
+			label.setAlignmentX(Component.LEFT_ALIGNMENT);
+		}
 
-        // Compute delta
-        int deltaValue = item.getDelta();
-        String prefix;
-        Color deltaColor;
+		// Compute delta
+		int deltaValue = item.getDelta();
+		String prefix;
+		Color deltaColor;
 
-        if (deltaValue > 0) {
-            prefix = "+";
-            deltaColor = new Color(0, 200, 0);
-        } else if (deltaValue < 0) {
-            prefix = "-";
-            deltaColor = new Color(230, 60, 60);
-        } else {
-            prefix = "=";
-            deltaColor = Color.LIGHT_GRAY;
-        }
+		if (deltaValue > 0)
+		{
+			prefix = "+";
+			deltaColor = new Color(0, 200, 0);
+		}
+		else if (deltaValue < 0)
+		{
+			prefix = "-";
+			deltaColor = new Color(230, 60, 60);
+		}
+		else
+		{
+			prefix = "=";
+			deltaColor = Color.LIGHT_GRAY;
+		}
 
-        JLabel deltaLabel = new JLabel(String.format("Change: %s%,d", prefix, Math.abs(deltaValue)));
-        deltaLabel.setFont(deltaLabel.getFont().deriveFont(14f));
-        deltaLabel.setForeground(deltaColor);
-        deltaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        deltaLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
+		JLabel deltaLabel = new JLabel(String.format("Change: %s%,d", prefix, Math.abs(deltaValue)));
+		deltaLabel.setFont(deltaLabel.getFont().deriveFont(14f));
+		deltaLabel.setForeground(deltaColor);
+		deltaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		deltaLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
-        statsPanel.add(geLabel);
-        statsPanel.add(totalLabel);
-        statsPanel.add(deltaLabel);
+		statsPanel.add(geLabel);
+		statsPanel.add(totalLabel);
+		statsPanel.add(deltaLabel);
 
-        textPanel.add(nameLabel);
-        textPanel.add(Box.createVerticalStrut(3));
-        textPanel.add(statsPanel);
+		textPanel.add(nameLabel);
+		textPanel.add(Box.createVerticalStrut(3));
+		textPanel.add(statsPanel);
 
-        add(textPanel, BorderLayout.CENTER);
-    }
+		add(textPanel, BorderLayout.CENTER);
+	}
 }

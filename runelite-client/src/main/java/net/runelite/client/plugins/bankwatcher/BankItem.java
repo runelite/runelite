@@ -1,53 +1,66 @@
 package net.runelite.client.plugins.bankwatcher;
 
-public class BankItem {
+public class BankItem
+{
 
-    private int id;
-    private final String name;
-    private final int gePrice;
-    private final int quantity;
-    private final int totalPrice;
-    private final int delta;
-    private final int quantityDelta;
+	private final String name;
+	private final int gePrice;
+	private final int quantity;
+	private final int totalPrice;
+	private final int delta;
+	private final int quantityDelta;
+	private final int id;
 
-    public BankItem(int id, String name, int gePrice, int totalPrice, int quantity, int delta, int quantityDelta) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.gePrice = gePrice;
-        this.totalPrice = totalPrice;
-        this.delta = delta;
-        this.quantityDelta = quantityDelta;
+	public BankItem(int id, String name, int gePrice, int totalPrice, int quantity, int delta, int quantityDelta)
+	{
+		this.id = id;
+		this.name = name;
+		this.quantity = quantity;
+		this.gePrice = gePrice;
+		this.totalPrice = totalPrice;
+		this.delta = delta;
+		this.quantityDelta = quantityDelta;
 
-    }
+	}
 
-    public int getQuantityDelta() {
-        return quantityDelta;
-    }
-    public int getId() {
-        return id;
-    }
-    public int getDelta(){
-        return delta;
-    }
-    public int getQuantity() {
-        return quantity;
-    }
-    public String getName() {
-        return name;
-    }
-    public int getGePrice() {
-        return gePrice;
-    }
-    public int getTotalPrice() {
-        return totalPrice;
-    }
+	public int getQuantityDelta()
+	{
+		return quantityDelta;
+	}
 
-    @Override
-    public String toString(){
-        return String.format(
-                "%s | Price: %,d | Total: %,d | Quantity: %,d | Delta: %,d",
-                name, gePrice, totalPrice, quantity, delta
-        );
-    }
+	public int getId()
+	{
+		return id;
+	}
+
+	public int getDelta()
+	{
+		return delta;
+	}
+
+	public int getQuantity()
+	{
+		return quantity;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public int getGePrice()
+	{
+		return gePrice;
+	}
+
+	public int getTotalPrice()
+	{
+		return totalPrice;
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("%s | Price: %,d | Total: %,d | Quantity: %,d | Delta: %,d", name, gePrice, totalPrice, quantity, delta);
+	}
 }
