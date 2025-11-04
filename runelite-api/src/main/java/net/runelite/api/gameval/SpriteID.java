@@ -1538,6 +1538,7 @@ public final class SpriteID
 		public static final int TOTAL = _7;
 		public static final int UNKNOWN_EMPTY_VIAL = _8;
 		public static final int UNKNOWN_DRAGON_DAGGER_P = _9;
+		public static final int SAILING = _13;
 	}
 
 	public static final class Combaticons

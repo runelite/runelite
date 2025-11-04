@@ -352,15 +352,12 @@ LABEL280:
    istore                 30
    invoke                 514
    istore                 31
+   get_varc_string        359      ; Skip truncating of meslayerinput by not calling bankmain_filterstring
+   lowercase                       ; instead get the var directly and lowercase it
+   ostore                 0
+   jump                   LABEL325 ; 
    sconst                 ""
    ostore                 0
-   iconst                 0                  ;
-   sconst                 "bankBuildTab"     ;
-   runelite_callback                         ;
-   istore                 36                 ; whether to use the single tab building mode instead of the whole bank
-   iload                  36                 ;
-   iconst                 1                  ;
-   if_icmpeq              singletabbuildmode ;
    iload                  31
    iconst                 1
    if_icmpeq              LABEL323
@@ -369,6 +366,14 @@ LABEL323:
    invoke                 280
    ostore                 0
 LABEL325:
+   iconst                 0                  ;
+   sconst                 "bankBuildTab"     ;
+   runelite_callback                         ;
+   istore                 36                 ; whether to use the single tab building mode instead of the whole bank
+   iload                  36                 ;
+   iconst                 1                  ;
+   if_icmpeq              singletabbuildmode ;
+
    get_varbit             4150
    iconst                 0
    if_icmple              LABEL332
@@ -816,11 +821,7 @@ LABEL740:
    iconst                 1
    if_icmpeq              LABEL744
    jump                   LABEL783
-   jump                   GET_INPUT_TEXT ;  Skip truncating of varcstr 22 by not calling 280
 LABEL744:
-GET_INPUT_TEXT:                          ;
-   get_varc_string        359            ;
-   lowercase                             ; instead get the var directly and lowercase it
    oload                  0
    string_length         
    iconst                 0
@@ -844,7 +845,7 @@ LABEL760:
    tostring              
    sconst                 " found)"
    join_string            3
-   iload                  27                             ; load number of matches
+   iload                  26                             ; load number of matches
    sconst                 "setSearchBankInputTextFound"  ; load event name
    runelite_callback     ; invoke callback
    pop_int               ; pop number of matches
@@ -919,7 +920,7 @@ singletabbuildmode:
    add                          ;
    get_varbit             4179  ;
    add                          ;
-   istore                 31    ; store start to the first item in the "All items" tab
+   istore                 30    ; store start to the first item in the "All items" tab
 LABEL807:
   ; if (~bankmain_searching = 1) {
    iload                  31
@@ -953,16 +954,16 @@ LABEL827:
 LABEL831:
    ; item index = (loop index + offset) % bank size
    iload                  19   ; loop index
-   iload                  31   ; offset
+   iload                  30   ; offset
    add                         ;
-   iconst                 1220 ; bank size
+   iconst                 1410 ; bank size
    mod                         ;
-   istore                 30   ; store index
+   istore                 29   ; store index
    iload                  2
    jump                   LOAD_ITEM_INDEX
    iload                  19
 LOAD_ITEM_INDEX:
-   iload                  30   ; use item index instead of loop index
+   iload                  29   ; use item index instead of loop index
    cc_find               
    iconst                 1
    if_icmpeq              LABEL837
@@ -972,7 +973,7 @@ LABEL837:
    jump                   LOAD_ITEM_INDEX2
    iload                  19
 LOAD_ITEM_INDEX2:
-   iload                  30   ; use item index instead of loop index
+   iload                  29   ; use item index instead of loop index
    inv_getobj            
    istore                 24
    iload                  24
@@ -998,8 +999,10 @@ LABEL853:
    if_icmplt              LABEL857
    jump                   LABEL900
 filtertest:
-   iload                  25        ; obj
-   invoke                 279       ; ~bankmain_filtertest
+   iload                  24        ; obj
+   iload                  31        ; bankmain_searching
+   oload                  0         ; bankmain_filterstring
+   invoke                 279       ; ~bankmain_filteritem
    iconst                 1         ;
    if_icmpne              LABEL900  ;
 LABEL857:
@@ -1010,7 +1013,7 @@ LABEL857:
    jump                   LOAD_ITEM_INDEX3
    iload                  19
 LOAD_ITEM_INDEX3:
-   iload                  30   ; use item index instead of loop index
+   iload                  29   ; use item index instead of loop index
    inv_getnum            
    iload                  2
    iload                  3

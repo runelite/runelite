@@ -3,8 +3,7 @@
 .obj_arg_count            1
    iconst                 -1                 ; return value
    iload                  0                  ; load item id
-   get_varc_string        359
-   lowercase             
+   oload                  0                  ; load search string
    sconst                 "bankSearchFilter" ; push event name
    runelite_callback                         ; invoke callback
    pop_int                                   ; pop item id
@@ -29,8 +28,7 @@ LABEL6:
    if_icmpeq              LABEL10
    jump                   LABEL12
 LABEL10:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   iconst                 0; instead get the var directly and lowercase it
+   iconst                 0
    return                
 LABEL12:
    oload                  0
