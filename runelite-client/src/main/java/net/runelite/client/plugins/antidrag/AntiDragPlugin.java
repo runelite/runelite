@@ -219,6 +219,14 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				}
 			}
 		}
+		else if (ev.getScriptId() == ScriptID.INTERFACE_INV_DRAW_SLOT_BIG)
+		{
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == InterfaceID.EquipmentSide.ITEMS && isOverriding())
+			{
+				child.setDragDeadTime(config.dragDelay());
+			}
+		}
 		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
 		{
 			if (isOverriding())
@@ -271,7 +279,9 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	private void setInvDragDelay(int delay)
 	{
 		final Widget inventory = client.getWidget(InterfaceID.Inventory.ITEMS);
+		final Widget equipmentInventory = client.getWidget(InterfaceID.EquipmentSide.ITEMS);
 		applyDragDelay(inventory, delay);
+		applyDragDelay(equipmentInventory, delay);
 	}
 
 	private void setCoxDragDelay(int delay)

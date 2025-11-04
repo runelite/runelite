@@ -497,4 +497,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 4)
 	public static final int CAMERA_SET_ZOOM_LIMITS = 605;
+
+	@ScriptArguments(integer = 6, string = 9)
+	public static final int INTERFACE_INV_DRAW_SLOT_BIG = 154;
 }
