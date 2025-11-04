@@ -233,21 +233,21 @@ entry_items=37
 
 [combat]
 id=593
-weapon_name=2
-level=4
-style_one=5
-style_two=9
-style_three=13
-style_four=17
-spells=21
-defensive_spell_box=22
-defensive_spell_icon=24
-defensive_spell_shield=25
-defensive_spell_text=26
-spell_box=27
-spell_icon=29
-spell_text=30
-auto_retaliate=31
+weapon_name=3
+level=5
+style_one=6
+style_two=10
+style_three=14
+style_four=18
+spells=22
+defensive_spell_box=23
+defensive_spell_icon=25
+defensive_spell_shield=26
+defensive_spell_text=27
+spell_box=28
+spell_icon=30
+spell_text=31
+auto_retaliate=32
 
 [combat_achievements_tasks]
 id=715
@@ -825,10 +825,10 @@ parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
 lumbridge_home_teleport=7
-edgeville_home_teleport=103
-lunar_home_teleport=104
-arceuus_home_teleport=148
-fertile_soil=129
+edgeville_home_teleport=105
+lunar_home_teleport=106
+arceuus_home_teleport=150
+fertile_soil=131
 
 [tempoross]
 id=437
