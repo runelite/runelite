@@ -26,18 +26,18 @@ LABEL5:
    iload                  3
    invoke                 1046
    istore                 3
-   iconst                 896
+   get_varc_int           1341
    sconst                 "innerZoomLimit"
    runelite_callback     
-   iconst                 128
+   get_varc_int           1340
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
    istore                 9
-   iconst                 896
+   get_varc_int           1339
    sconst                 "innerZoomLimit"
    runelite_callback     
-   iconst                 128
+   get_varc_int           1338
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
@@ -47,7 +47,7 @@ LABEL5:
    multiply              
    iload                  8
    div                   
-   iconst                 128
+   get_varc_int           1340
    sconst                 "outerZoomLimit"
    runelite_callback     
    add                   
@@ -57,7 +57,7 @@ LABEL5:
    multiply              
    iload                  8
    div                   
-   iconst                 128
+   get_varc_int           1338
    sconst                 "outerZoomLimit"
    runelite_callback     
    add                   

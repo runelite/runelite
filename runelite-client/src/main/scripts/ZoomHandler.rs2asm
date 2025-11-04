@@ -8,25 +8,25 @@
 LABEL4:
    return                
 LABEL5:
-   iconst                 896
+   get_varc_int           1339
    sconst                 "innerZoomLimit"
    runelite_callback     
    iload                  0
    invoke                 1046
    istore                 0
-   iconst                 128
+   get_varc_int           1338
    sconst                 "outerZoomLimit"
    runelite_callback     
    iload                  0
    invoke                 1045
    istore                 0
-   iconst                 896
+   get_varc_int           1341
    sconst                 "innerZoomLimit"
    runelite_callback     
    iload                  1
    invoke                 1046
    istore                 1
-   iconst                 128
+   get_varc_int           1340
    sconst                 "outerZoomLimit"
    runelite_callback     
    iload                  1
