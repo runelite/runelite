@@ -196,7 +196,6 @@ public class TimersAndBuffsPluginTest
 		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
 		when(client.getVarbitValue(VarbitID.STAMINA_ACTIVE)).thenReturn(1);
 		when(client.getVarbitValue(VarbitID.STAMINA_DURATION)).thenReturn(20);
-		when(client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA)).thenReturn(0);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(VarbitID.STAMINA_ACTIVE); // just has to be one of the vars
@@ -221,31 +220,6 @@ public class TimersAndBuffsPluginTest
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.ABYSSAL_SIRE_STUN, infoBox.getTimer());
 		assertEquals(Duration.of(46, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
-	public void testEndurance()
-	{
-		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
-		when(client.getVarbitValue(VarbitID.STAMINA_ACTIVE)).thenReturn(1);
-		when(client.getVarbitValue(VarbitID.STAMINA_DURATION)).thenReturn(20);
-		when(client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA)).thenReturn(20);
-
-		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(VarbitID.STAMINA_ACTIVE); // just has to be one of the vars
-		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.STAMINA, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(4), infoBox.getDuration());
-
-		// unwield ring
-		when(client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA)).thenReturn(0);
-		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
-		int mins = (int) infoBox.getDuration().toMinutes();
-		assertEquals(2, mins);
 	}
 
 	@Test

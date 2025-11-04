@@ -226,7 +226,8 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_DIAMONDCUTTING:
 			case AnimationID.HUMAN_AMETHYSTCUTTING:
 			case AnimationID.HUMAN_GLASSBLOWING:
-			case AnimationID.HUMAN_SPINNINGWHEEL:
+			case AnimationID.HUMAN_SPINNINGWHEEL_60:
+			case AnimationID.HUMAN_SPINNINGWHEEL_90:
 			case AnimationID.FARMING_USELOOM:
 			case AnimationID.HUMAN_BATTLESTAFF_CRAFTING:
 			case AnimationID.HUMAN_LEATHER_CRAFTING:
