@@ -254,6 +254,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniFogDepth;
 	private int uniDrawDistance;
 	private int uniExpandedMapLoadingChunks;
+	private int uniSmoothBanding;
 	private int uniWorldProj;
 	private static int uniEntityProj;
 	static int uniEntityTint;
@@ -587,6 +588,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniWorldProj = glGetUniformLocation(glProgram, "worldProj");
 		uniEntityProj = glGetUniformLocation(glProgram, "entityProj");
 		uniEntityTint = glGetUniformLocation(glProgram, "entityTint");
+		uniSmoothBanding = glGetUniformLocation(glProgram, "smoothBanding");
 		uniBrightness = glGetUniformLocation(glProgram, "brightness");
 		uniUseFog = glGetUniformLocation(glProgram, "useFog");
 		uniFogColor = glGetUniformLocation(glProgram, "fogColor");
@@ -939,6 +941,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Brightness happens to also be stored in the texture provider, so we use that
 		TextureProvider textureProvider = client.getTextureProvider();
 		glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
+		glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 		glUniform1f(uniTextureLightMode, config.brightTextures() ? 1f : 0f);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
