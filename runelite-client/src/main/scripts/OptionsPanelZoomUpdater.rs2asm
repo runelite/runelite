@@ -6,19 +6,11 @@
 ; 1 fixedZoomRange
 ; 2 bar size
    get_varc_int           1341
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    get_varc_int           1340
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
    istore                 0
    get_varc_int           1339
-   sconst                 "innerZoomLimit"
-   runelite_callback     
    get_varc_int           1338
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
    istore                 1
    iload                  0
@@ -59,8 +51,6 @@ LABEL22:
 LABEL41:
    get_varc_int           74
    get_varc_int           1340
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
    iload                  0
    sconst                 "zoomExpToLin"
@@ -75,8 +65,6 @@ LABEL41:
 LABEL50:
    get_varc_int           73
    get_varc_int           1338
-   sconst                 "outerZoomLimit"
-   runelite_callback     
    sub                   
    iload                  0
    sconst                 "zoomExpToLin"
