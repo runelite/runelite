@@ -8,17 +8,22 @@ public class BankItem {
     private final int quantity;
     private final int totalPrice;
     private final int delta;
+    private final int quantityDelta;
 
-    public BankItem(int id, String name, int gePrice, int totalPrice, int quantity, int delta) {
+    public BankItem(int id, String name, int gePrice, int totalPrice, int quantity, int delta, int quantityDelta) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.gePrice = gePrice;
         this.totalPrice = totalPrice;
         this.delta = delta;
+        this.quantityDelta = quantityDelta;
 
     }
 
+    public int getQuantityDelta() {
+        return quantityDelta;
+    }
     public int getId() {
         return id;
     }

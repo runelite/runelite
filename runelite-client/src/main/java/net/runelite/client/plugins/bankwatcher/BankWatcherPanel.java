@@ -34,26 +34,24 @@ class BankWatcherPanel extends PluginPanel
         this.itemManager = itemManager;
         this.clientThread = clientThread;
 
-        // Let the RuneLite sidebar's OUTER JScrollPane handle scrolling (like World Hopper)
+
         setBorder(null);
         setLayout(new DynamicGridLayout(0, 1, 0, 6));
         setBackground(ColorScheme.DARK_GRAY_COLOR);
         setOpaque(true);
 
-        // --- HEADER ---
+
         JPanel topPanel = buildHeader();
         add(topPanel);
 
-        // --- LIST (no inner scrollpane) ---
+
         itemListPanel = new JPanel(new DynamicGridLayout(0, 1, 0, 6));
         itemListPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
         itemListPanel.setOpaque(true);
         add(itemListPanel);
     }
 
-    /**
-     * When this panel is attached to the sidebar, theme the OUTER scrollpane so it’s dark/minimal.
-     */
+
     @Override
     public void addNotify()
     {
@@ -62,11 +60,11 @@ class BankWatcherPanel extends PluginPanel
         JScrollPane outer = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, this);
         if (outer != null)
         {
-            // Ensure the outer scrollpane is the one visible/enabled
+
             outer.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
             outer.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-            // Dark backgrounds
+
             outer.setBorder(null);
             outer.setBackground(ColorScheme.DARK_GRAY_COLOR);
             JViewport vp = outer.getViewport();
@@ -76,12 +74,12 @@ class BankWatcherPanel extends PluginPanel
                 vp.setOpaque(true);
             }
 
-            // Dark corner (bottom-right) so no white square shows
+
             JPanel corner = new JPanel();
             corner.setBackground(ColorScheme.DARK_GRAY_COLOR);
             outer.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, corner);
 
-            // Minimal dark scrollbar UI
+
             JScrollBar vsb = outer.getVerticalScrollBar();
             if (vsb != null)
             {
@@ -94,7 +92,6 @@ class BankWatcherPanel extends PluginPanel
                     @Override
                     protected void configureScrollBarColors()
                     {
-                        // Ensure super doesn't reset things
                         super.configureScrollBarColors();
                         this.thumbColor = ColorScheme.DARKER_GRAY_COLOR;
                         this.trackColor = ColorScheme.DARK_GRAY_COLOR;
@@ -117,7 +114,7 @@ class BankWatcherPanel extends PluginPanel
                         Graphics2D g2 = (Graphics2D) g.create();
                         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                        // Slightly lighter than track
+
                         g2.setColor(ColorScheme.DARKER_GRAY_COLOR);
                         int arc = 8;
                         g2.fillRoundRect(thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, arc, arc);
@@ -151,7 +148,7 @@ class BankWatcherPanel extends PluginPanel
                     @Override
                     protected Dimension getMinimumThumbSize()
                     {
-                        // Slim, but still usable
+
                         return new Dimension(6, 24);
                     }
 
@@ -161,7 +158,7 @@ class BankWatcherPanel extends PluginPanel
                         return new Dimension(6, Integer.MAX_VALUE);
                     }
                 });
-                // Narrow width for minimalist look
+
                 vsb.setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
             }
         }
@@ -190,6 +187,32 @@ class BankWatcherPanel extends PluginPanel
         scanButton.setFocusPainted(false);
         scanButton.setBorder(BorderFactory.createLineBorder(ColorScheme.SCROLL_TRACK_COLOR));
 
+        updateScanButtonState();
+
+        scanButton.addActionListener(e -> {
+            if (!service.canScan())
+            {
+                JOptionPane.showMessageDialog(this,
+                        "You’ve reached the daily scan limit.\nResets at midnight.",
+                        "Daily Limit Reached",
+                        JOptionPane.INFORMATION_MESSAGE);
+                updateScanButtonState();
+                return;
+            }
+
+            scanButton.setText("Scanning...");
+            scanButton.setEnabled(false);
+
+            clientThread.invoke(() -> {
+                refreshItems();
+
+                SwingUtilities.invokeLater(() -> {
+                    scanButton.setText("Scan Bank");
+                    updateScanButtonState();
+                });
+            });
+        });
+
         headerLabel = new JLabel("Showing All Items", SwingConstants.CENTER);
         headerLabel.setFont(headerLabel.getFont().deriveFont(Font.BOLD, 13f));
         headerLabel.setForeground(Color.WHITE);
@@ -201,12 +224,33 @@ class BankWatcherPanel extends PluginPanel
         topPanel.add(controlPanel, BorderLayout.WEST);
         topPanel.add(headerLabel, BorderLayout.CENTER);
 
-        // Listeners
-        scanButton.addActionListener(e -> clientThread.invoke(this::refreshItems));
+
         filterDropdown.addActionListener(e -> applyFilter());
 
         return topPanel;
     }
+
+    private void updateScanButtonState()
+    {
+        String statusText = service.getScanStatusText();
+        scanButton.setToolTipText(statusText);
+
+        String text = statusText.toLowerCase();
+        boolean canScan = !text.contains("limit") && !text.contains("4/4");
+
+        scanButton.setEnabled(canScan);
+
+        if (!canScan)
+        {
+            scanButton.setToolTipText("Limit Reached");
+            scanButton.setEnabled(false);
+        }
+        else
+        {
+            scanButton.setText("Scan Bank");
+        }
+    }
+
 
     private void refreshItems()
     {

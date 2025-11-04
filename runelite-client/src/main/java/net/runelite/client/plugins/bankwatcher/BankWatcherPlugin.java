@@ -6,6 +6,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import java.awt.image.BufferedImage;
 
@@ -30,7 +31,7 @@ public class BankWatcherPlugin extends Plugin
     {
         log.info("Bank Watcher plugin started");
 
-        final BufferedImage icon = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB); // placeholder icon
+        BufferedImage icon = ImageIO.read(getClass().getResourceAsStream("/icons/Bankwatcher4.png")); // placeholder icon
 
         navButton = NavigationButton.builder()
                 .tooltip("Bank Watcher")
