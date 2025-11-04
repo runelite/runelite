@@ -494,4 +494,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 1)
 	public static final int DOM_LOOT_CLAIM = 7928;
+
+	@ScriptArguments(integer = 4)
+	public static final int CAMERA_SET_ZOOM_LIMITS = 605;
 }
