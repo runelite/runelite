@@ -1,18 +1,18 @@
 .id                       3900
 .int_arg_count            5
 .obj_arg_count            0
-   iconst                 896
+   get_varc_int           1341
    sconst                 "innerZoomLimit"
    runelite_callback     
-   iconst                 128
+   get_varc_int           1340
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
    istore                 5
-   iconst                 896
+   get_varc_int           1339
    sconst                 "innerZoomLimit"
    runelite_callback     
-   iconst                 128
+   get_varc_int           1338
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
@@ -36,7 +36,7 @@
    jump                   LABEL34
 LABEL25:
    get_varc_int           74
-   iconst                 128
+   get_varc_int           1340
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
@@ -48,7 +48,7 @@ LABEL25:
    jump                   LABEL42
 LABEL34:
    get_varc_int           73
-   iconst                 128
+   get_varc_int           1338
    sconst                 "outerZoomLimit"
    runelite_callback     
    sub                   
