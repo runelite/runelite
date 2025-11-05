@@ -140,4 +140,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "hideUnlessExpired",
+			name = "Hide unless expired",
+			description = "Hides area lines until aggression has expired.",
+			position = 10
+	)
+	default boolean hideUnlessExpired()
+	{
+		return false;
+	}
 }
