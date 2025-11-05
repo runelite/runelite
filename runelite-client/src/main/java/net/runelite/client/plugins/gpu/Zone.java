@@ -601,7 +601,7 @@ class Zone
 				if (packedFaces.length * 3 > alphaElements.capacity())
 				{
 					log.debug("Alpha model too large: {}", packedFaces.length);
-					return;
+					continue;
 				}
 
 				flush();
