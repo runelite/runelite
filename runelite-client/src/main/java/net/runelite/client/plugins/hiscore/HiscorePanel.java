@@ -89,7 +89,7 @@ public class HiscorePanel extends PluginPanel
 		PRAYER, CRAFTING, FIREMAKING,
 		MAGIC, FLETCHING, WOODCUTTING,
 		RUNECRAFT, SLAYER, FARMING,
-		CONSTRUCTION, HUNTER
+		CONSTRUCTION, HUNTER, SAILING
 	);
 
 	/**
@@ -605,10 +605,17 @@ public class HiscorePanel extends PluginPanel
 					}
 					else
 					{
-						Skill requestedSkill = result.getSkill(skill);
-						final long experience = requestedSkill.getExperience();
+						int rank = -1;
+						long experience = -1L;
 
-						String rank = (requestedSkill.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(requestedSkill.getRank());
+						Skill requestedSkill = result.getSkill(skill);
+						if (requestedSkill != null)
+						{
+							rank = requestedSkill.getRank();
+							experience = requestedSkill.getExperience();
+						}
+
+						String rankStr = (rank == -1) ? "Unranked" : QuantityFormatter.formatNumber(rank);
 						String exp = (experience == -1L) ? "Unranked" : QuantityFormatter.formatNumber(experience);
 						String remainingXp;
 						if (experience == -1L)
@@ -622,7 +629,7 @@ public class HiscorePanel extends PluginPanel
 						}
 
 						content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
-						content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+						content += "<p><span style = 'color:white'>Rank:</span> " + rankStr + "</p>";
 						content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 						content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
 					}
@@ -634,10 +641,10 @@ public class HiscorePanel extends PluginPanel
 		// Add a html progress bar to the hover information
 		if (skill != null && skill.getType() == HiscoreSkillType.SKILL)
 		{
-			long experience = result.getSkill(skill).getExperience();
-			if (experience >= 0)
+			Skill hiscoreSkill = result.getSkill(skill);
+			if (hiscoreSkill != null && hiscoreSkill.getExperience() >= 0)
 			{
-				int currentXp = (int) experience;
+				int currentXp = (int) hiscoreSkill.getExperience();
 				int currentLevel = Experience.getLevelForXp(currentXp);
 				int xpForCurrentLevel = Experience.getXpForLevel(currentLevel);
 				int xpForNextLevel = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;

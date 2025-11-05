@@ -59,6 +59,7 @@ public enum HiscoreSkill
 	RUNECRAFT("Runecraft", SKILL, SpriteID.Staticons2.RUNECRAFT),
 	HUNTER("Hunter", SKILL, SpriteID.Staticons2.HUNTER),
 	CONSTRUCTION("Construction", SKILL, SpriteID.Staticons2.CONSTRUCTION),
+	SAILING("Sailing", SKILL, SpriteID.Staticons2.SAILING),
 	LEAGUE_POINTS("League Points", ACTIVITY, SpriteID.IconActivities25x25.LEAGUE_POINTS),
 	BOUNTY_HUNTER_HUNTER("Bounty Hunter - Hunter", ACTIVITY, SpriteID.IconActivities25x25.BOUNTY_HUNTER_HUNTER),
 	BOUNTY_HUNTER_ROGUE("Bounty Hunter - Rogue", ACTIVITY, SpriteID.IconActivities25x25.BOUNTY_HUNTER_ROGUE),
