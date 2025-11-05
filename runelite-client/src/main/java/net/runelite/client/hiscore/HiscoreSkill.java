@@ -118,6 +118,7 @@ public enum HiscoreSkill
 	SARACHNIS("Sarachnis", BOSS, SpriteID.IconBoss25x25.SARACHNIS),
 	SCORPIA("Scorpia", BOSS, SpriteID.IconBoss25x25.SCORPIA),
 	SCURRIUS("Scurrius", BOSS, SpriteID.IconBoss25x25.SCURRIUS),
+	SHELLBANE_GRYPHON("Shellbane Gryphon", BOSS, SpriteID.IconBoss25x25.SHELLBANE_GRYPHON),
 	SKOTIZO("Skotizo", BOSS, SpriteID.IconBoss25x25.SKOTIZO),
 	SOL_HEREDIT("Sol Heredit", BOSS, SpriteID.IconBoss25x25.SOL_HEREDIT),
 	SPINDEL("Spindel", BOSS, SpriteID.IconBoss25x25.SPINDEL_VENENATIS),
