@@ -144,6 +144,16 @@
 				<configuration>
 					<!-- include generated sources in javadoc -->
 					<sourcepath>${project.build.directory}/delombok;${project.build.directory}/generated-sources</sourcepath>
+					<excludePackageNames>net.runelite.api.gameval</excludePackageNames>
+					<sourceFileExcludes>
+						<sourceFileExclude>net/runelite/api/AnimationID.java</sourceFileExclude>
+						<sourceFileExclude>net/runelite/api/ItemID.java</sourceFileExclude>
+						<sourceFileExclude>net/runelite/api/NullItemID.java</sourceFileExclude>
+						<sourceFileExclude>net/runelite/api/ObjectID.java</sourceFileExclude>
+						<sourceFileExclude>net/runelite/api/NullObjectID.java</sourceFileExclude>
+						<sourceFileExclude>net/runelite/api/NpcID.java</sourceFileExclude>
+						<sourceFileExclude>net/runelite/api/NullNpcID.java</sourceFileExclude>
+					</sourceFileExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
