@@ -735,7 +735,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final NPCComposition npc = event.getComposition();
 		final Collection<ItemStack> items = event.getItems();
-		final String name = npc.getName();
+		final String name = Text.removeTags(npc.getName());
 		final int combat = npc.getCombatLevel();
 
 		if (ignorePickpocketLoot == client.getTickCount())
