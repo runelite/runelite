@@ -20213,12 +20213,6 @@ public final class NpcID
 	public static final int BORDERGUARD2 = 4288;
 
 	/**
-	 * Captain Siad
-	 */
-	public static final int CAPT_SIAD_VIS = 4289;
-	public static final int SAILING_CREW_GENERIC_2 = 4290;
-
-	/**
 	 * Herman Caranos
 	 */
 	public static final int SWAN_HERMAN = 4291;
@@ -64231,10 +64225,6 @@ public final class NpcID
 	public static final int EVENTS_GUARDIAN_MAGE = 14804;
 	public static final int EVENTS_GUARDIAN_MELEE = 14805;
 	public static final int HW25_CHAIR_NPC_REWARD = 14806;
-	public static final int BOAT_HP_NPC_TINY = 14807;
-	public static final int BOAT_HP_NPC_SMALL = 14808;
-	public static final int BOAT_HP_NPC_MEDIUM = 14809;
-	public static final int BOAT_HP_NPC_COLOSSAL = 14810;
 
 	/**
 	 * Spooky chair
@@ -65251,894 +65241,903 @@ public final class NpcID
 	public static final int SAILING_ISLANDS_LAST_LIGHT_PARROT_GONE = 15048;
 
 	/**
+	 * Captain Siad
+	 */
+	public static final int CAPT_SIAD_VIS = 15049;
+
+	/**
 	 * Mayor of Catherby
 	 */
-	public static final int POH_FISHBOWL_MAYOR_OF_CATHERBY = 15049;
+	public static final int POH_FISHBOWL_MAYOR_OF_CATHERBY = 15050;
 
 	/**
 	 * Rock Golem
 	 */
-	public static final int POH_SKILLPET_MINING_LEAD = 15050;
+	public static final int POH_SKILLPET_MINING_LEAD = 15051;
 
 	/**
 	 * Rock Golem
 	 */
-	public static final int POH_SKILLPET_MINING_RUBIUM = 15051;
+	public static final int POH_SKILLPET_MINING_RUBIUM = 15052;
 
 	/**
 	 * Rock Golem
 	 */
-	public static final int POH_SKILLPET_MINING_NICKEL = 15052;
+	public static final int POH_SKILLPET_MINING_NICKEL = 15053;
 
 	/**
 	 * Beaver
 	 */
-	public static final int POH_SKILLPET_WC_CAMPHOR = 15053;
+	public static final int POH_SKILLPET_WC_CAMPHOR = 15054;
 
 	/**
 	 * Beaver
 	 */
-	public static final int POH_SKILLPET_WC_IRONWOOD = 15054;
+	public static final int POH_SKILLPET_WC_IRONWOOD = 15055;
 
 	/**
 	 * Beaver
 	 */
-	public static final int POH_SKILLPET_WC_JATOBA = 15055;
+	public static final int POH_SKILLPET_WC_JATOBA = 15056;
 
 	/**
 	 * Beaver
 	 */
-	public static final int POH_SKILLPET_WC_ROSEWOOD = 15056;
+	public static final int POH_SKILLPET_WC_ROSEWOOD = 15057;
 
 	/**
 	 * Soup
 	 */
-	public static final int POH_SKILLPET_SAILING = 15057;
+	public static final int POH_SKILLPET_SAILING = 15058;
 
 	/**
 	 * Gull
 	 */
-	public static final int POH_GRYPHONBOSS_PET = 15058;
+	public static final int POH_GRYPHONBOSS_PET = 15059;
 
 	/**
 	 * Gulliver
 	 */
-	public static final int POH_GRYPHONBOSS_PET_ADULT = 15059;
-	public static final int TORTUGAN_CORAL_FARMER = 15060;
+	public static final int POH_GRYPHONBOSS_PET_ADULT = 15060;
+	public static final int TORTUGAN_CORAL_FARMER = 15061;
 
 	/**
 	 * Chet
 	 */
-	public static final int TORTUGAN_CORAL_FARMER_LOCKED = 15061;
+	public static final int TORTUGAN_CORAL_FARMER_LOCKED = 15062;
 
 	/**
 	 * Chet
 	 */
-	public static final int TORTUGAN_CORAL_FARMER_UNLOCKED = 15062;
+	public static final int TORTUGAN_CORAL_FARMER_UNLOCKED = 15063;
 
 	/**
 	 * Guppa
 	 */
-	public static final int FARMING_GARDENER_CALQUAT_3 = 15063;
+	public static final int FARMING_GARDENER_CALQUAT_3 = 15064;
 
 	/**
 	 * Argo
 	 */
-	public static final int FARMING_GARDENER_HARDWOOD_TREE_5 = 15064;
+	public static final int FARMING_GARDENER_HARDWOOD_TREE_5 = 15065;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_47_46_SALTFISH = 15065;
+	public static final int _0_47_46_SALTFISH = 15066;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_47_41_MEMBERFISH = 15066;
+	public static final int _0_47_41_MEMBERFISH = 15067;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_49_37_MEMBERFISH = 15067;
+	public static final int _0_49_37_MEMBERFISH = 15068;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_50_38_MEMBERFISH = 15068;
+	public static final int _0_50_38_MEMBERFISH = 15069;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_51_37_RAREFISH = 15069;
+	public static final int _0_51_37_RAREFISH = 15070;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_49_39_RAREFISH = 15070;
+	public static final int _0_49_39_RAREFISH = 15071;
 
 	/**
 	 * Rod Fishing spot
 	 */
-	public static final int _0_50_37_FRESHFISH = 15071;
+	public static final int _0_50_37_FRESHFISH = 15072;
 
 	/**
 	 * Rod Fishing spot
 	 */
-	public static final int _0_49_38_FRESHFISH = 15072;
+	public static final int _0_49_38_FRESHFISH = 15073;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_46_35_LANTERNFISH = 15073;
+	public static final int _0_46_35_LANTERNFISH = 15074;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_29_46_RAREFISH = 15074;
+	public static final int _0_29_46_RAREFISH = 15075;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_38_42_RAREFISH = 15075;
+	public static final int _0_38_42_RAREFISH = 15076;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_38_42_MEMBERFISH = 15076;
+	public static final int _0_38_42_MEMBERFISH = 15077;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_32_40_LANTERNFISH = 15077;
+	public static final int _0_32_40_LANTERNFISH = 15078;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_24_43_RAREFISH = 15078;
+	public static final int _0_24_43_RAREFISH = 15079;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_24_43_MEMBERFISH = 15079;
+	public static final int _0_24_43_MEMBERFISH = 15080;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_18_42_LANTERNFISH = 15080;
+	public static final int _0_18_42_LANTERNFISH = 15081;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_18_43_MEMBERFISH = 15081;
+	public static final int _0_18_43_MEMBERFISH = 15082;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_29_53_MEMBERFISH = 15082;
+	public static final int _0_29_53_MEMBERFISH = 15083;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_32_49_RAREFISH = 15083;
+	public static final int _0_32_49_RAREFISH = 15084;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_32_57_LANTERNFISH = 15084;
+	public static final int _0_32_57_LANTERNFISH = 15085;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_33_55_RAREFISH = 15085;
+	public static final int _0_33_55_RAREFISH = 15086;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_33_55_MEMBERFISH = 15086;
-	public static final int HUNTING_CRAB_TRAP_NPC = 15087;
+	public static final int _0_33_55_MEMBERFISH = 15087;
+	public static final int HUNTING_CRAB_TRAP_NPC = 15088;
 
 	/**
 	 * Red crab
 	 */
-	public static final int RED_CRAB = 15088;
+	public static final int RED_CRAB = 15089;
 
 	/**
 	 * Blue crab
 	 */
-	public static final int BLUE_CRAB = 15089;
+	public static final int BLUE_CRAB = 15090;
 
 	/**
 	 * Rainbow crab
 	 */
-	public static final int RAINBOW_CRAB_A = 15090;
+	public static final int RAINBOW_CRAB_A = 15091;
 
 	/**
 	 * Rainbow crab
 	 */
-	public static final int RAINBOW_CRAB_B = 15091;
+	public static final int RAINBOW_CRAB_B = 15092;
 
 	/**
 	 * Rainbow crab
 	 */
-	public static final int RAINBOW_CRAB_C = 15092;
-	public static final int SAILING_BT_TRIAL_MASTER_1_PARENT = 15093;
+	public static final int RAINBOW_CRAB_C = 15093;
+	public static final int SAILING_BT_TRIAL_MASTER_1_PARENT = 15094;
 
 	/**
 	 * Rum-dashed Ralph
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_1_1OP = 15094;
+	public static final int SAILING_BT_TRIAL_MASTER_1_1OP = 15095;
 
 	/**
 	 * Rum-dashed Ralph
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_1_3OP = 15095;
+	public static final int SAILING_BT_TRIAL_MASTER_1_3OP = 15096;
 
 	/**
 	 * Rum-dashed Ralph
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_1_0OP = 15096;
-	public static final int SAILING_BT_TRIAL_MASTER_2_PARENT = 15097;
+	public static final int SAILING_BT_TRIAL_MASTER_1_0OP = 15097;
+	public static final int SAILING_BT_TRIAL_MASTER_2_PARENT = 15098;
 
 	/**
 	 * Gurtob
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_2_1OP = 15098;
+	public static final int SAILING_BT_TRIAL_MASTER_2_1OP = 15099;
 
 	/**
 	 * Gurtob
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_2_3OP = 15099;
+	public static final int SAILING_BT_TRIAL_MASTER_2_3OP = 15100;
 
 	/**
 	 * Gurtob
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_2_0OP = 15100;
-	public static final int SAILING_BT_TRIAL_MASTER_2_ASSISTANT_PARENT = 15101;
+	public static final int SAILING_BT_TRIAL_MASTER_2_0OP = 15101;
+	public static final int SAILING_BT_TRIAL_MASTER_2_ASSISTANT_PARENT = 15102;
 
 	/**
 	 * Ros
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_2_ASSISTANT_1OP = 15102;
+	public static final int SAILING_BT_TRIAL_MASTER_2_ASSISTANT_1OP = 15103;
 
 	/**
 	 * Ros
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_2_ASSISTANT_0OP = 15103;
-	public static final int SAILING_BT_TRIAL_MASTER_3_PARENT = 15104;
+	public static final int SAILING_BT_TRIAL_MASTER_2_ASSISTANT_0OP = 15104;
+	public static final int SAILING_BT_TRIAL_MASTER_3_PARENT = 15105;
 
 	/**
 	 * Gwyna
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_3_1OP = 15105;
+	public static final int SAILING_BT_TRIAL_MASTER_3_1OP = 15106;
 
 	/**
 	 * Gwyna
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_3_3OP = 15106;
+	public static final int SAILING_BT_TRIAL_MASTER_3_3OP = 15107;
 
 	/**
 	 * Gwyna
 	 */
-	public static final int SAILING_BT_TRIAL_MASTER_3_0OP = 15107;
+	public static final int SAILING_BT_TRIAL_MASTER_3_0OP = 15108;
 
 	/**
 	 * Rat
 	 */
-	public static final int SAILING_BT_RAT = 15108;
-	public static final int SAILING_BT_ROAMING_CAMERA_NPC = 15109;
-	public static final int CRYSTAL_EXTRACTOR_HEADBAR = 15110;
+	public static final int SAILING_BT_RAT = 15109;
+	public static final int SAILING_BT_ROAMING_CAMERA_NPC = 15110;
+	public static final int CRYSTAL_EXTRACTOR_HEADBAR = 15111;
 
 	/**
 	 * &#60;col=00ffff&#62;Resonance crystal&#60;/col&#62;
 	 */
-	public static final int SAILING_BT_GWENITH_GLIDE_RESONANCE_CRYSTAL = 15111;
+	public static final int SAILING_BT_GWENITH_GLIDE_RESONANCE_CRYSTAL = 15112;
 
 	/**
 	 * &#60;col=00ffff&#62;Crystallised helm&#60;/col&#62;
 	 */
-	public static final int SAILING_BT_GWENITH_GLIDE_CRYSTAL_STEERING_HEADBAR_NPC = 15112;
+	public static final int SAILING_BT_GWENITH_GLIDE_CRYSTAL_STEERING_HEADBAR_NPC = 15113;
 
 	/**
 	 * Jubbly bird
 	 */
-	public static final int SAILING_BT_JUBBLY_JIVE_BIRD = 15113;
+	public static final int SAILING_BT_JUBBLY_JIVE_BIRD = 15114;
 
 	/**
 	 * &#60;col=00ffff&#62;Mysterious glow&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_GLOW = 15114;
+	public static final int SAILING_CHANCE_ENCOUNTERS_GLOW = 15115;
 
 	/**
 	 * Ocean Man
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_OCEAN_MAN = 15115;
+	public static final int SAILING_CHANCE_ENCOUNTERS_OCEAN_MAN = 15116;
 
 	/**
 	 * &#60;col=00ffff&#62;Strong winds&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_WIND_LOW = 15116;
+	public static final int SAILING_CHANCE_ENCOUNTERS_WIND_LOW = 15117;
 
 	/**
 	 * &#60;col=00ffff&#62;Strong winds&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_WIND_MED = 15117;
+	public static final int SAILING_CHANCE_ENCOUNTERS_WIND_MED = 15118;
 
 	/**
 	 * &#60;col=00ffff&#62;Strong winds&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_WIND_HIGH = 15118;
+	public static final int SAILING_CHANCE_ENCOUNTERS_WIND_HIGH = 15119;
 
 	/**
 	 * Giant clam
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_OPEN = 15119;
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_OPEN = 15120;
 
 	/**
 	 * Giant clam
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_CLOSED = 15120;
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_CLOSED = 15121;
 
 	/**
 	 * Giant clam
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL = 15121;
-	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM = 15122;
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM_PEARL = 15122;
+	public static final int SAILING_CHANCE_ENCOUNTERS_CLAM = 15123;
 
 	/**
 	 * Clue turtle
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_CLUE_TURTLE = 15123;
+	public static final int SAILING_CHANCE_ENCOUNTER_CLUE_TURTLE = 15124;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost wooden crate&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_WOOD = 15124;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_WOOD = 15125;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost oak crate&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_OAK = 15125;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_OAK = 15126;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost teak crate&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_TEAK = 15126;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_TEAK = 15127;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost mahogany crate&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_MAHOGANY = 15127;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_MAHOGANY = 15128;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost camphor crate&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CAMPHOR = 15128;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CAMPHOR = 15129;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost ironwood crate&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_IRONWOOD = 15129;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_IRONWOOD = 15130;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost casket (beginner)&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_BEGINNER = 15130;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_BEGINNER = 15131;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost casket (easy)&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_EASY = 15131;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_EASY = 15132;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost casket (medium)&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_MEDIUM = 15132;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_MEDIUM = 15133;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost casket (hard)&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_HARD = 15133;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_HARD = 15134;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost casket (elite)&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_ELITE = 15134;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_ELITE = 15135;
 
 	/**
 	 * &#60;col=00ffff&#62;Lost casket (master)&#60;/col&#62;
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_MASTER = 15135;
+	public static final int SAILING_CHANCE_ENCOUNTER_LOST_GOODS_CASKET_MASTER = 15136;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN1_ADRIFT = 15136;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN1_ADRIFT = 15137;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN1_PASSENGER = 15137;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN1_PASSENGER = 15138;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN2_ADRIFT = 15138;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN2_ADRIFT = 15139;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN2_PASSENGER = 15139;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_MAN2_PASSENGER = 15140;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN1_ADRIFT = 15140;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN1_ADRIFT = 15141;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN1_PASSENGER = 15141;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN1_PASSENGER = 15142;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN2_ADRIFT = 15142;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN2_ADRIFT = 15143;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN2_PASSENGER = 15143;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN2_PASSENGER = 15144;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN3_ADRIFT = 15144;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN3_ADRIFT = 15145;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN3_PASSENGER = 15145;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WOMAN3_PASSENGER = 15146;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WILSON_ADRIFT = 15146;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WILSON_ADRIFT = 15147;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WILSON_PASSENGER = 15147;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_WILSON_PASSENGER = 15148;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_DOG1_ADRIFT = 15148;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_DOG1_ADRIFT = 15149;
 
 	/**
 	 * Castaway
 	 */
-	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_DOG1_PASSENGER = 15149;
+	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_DOG1_PASSENGER = 15150;
 
 	/**
 	 * Chartin' Charles McAtless
 	 */
-	public static final int SAILING_CHARTING_TUTOR = 15150;
+	public static final int SAILING_CHARTING_TUTOR = 15151;
 
 	/**
 	 * Current duck
 	 */
-	public static final int SAILING_CHARTING_CURRENT_DUCK_MOVING = 15151;
+	public static final int SAILING_CHARTING_CURRENT_DUCK_MOVING = 15152;
 
 	/**
 	 * Current duck
 	 */
-	public static final int SAILING_CHARTING_CURRENT_DUCK_STOPPED = 15152;
+	public static final int SAILING_CHARTING_CURRENT_DUCK_STOPPED = 15153;
 
 	/**
 	 * Meaty Aura Logist
 	 */
-	public static final int SAILING_CHARTING_WEATHER_TROLL = 15153;
+	public static final int SAILING_CHARTING_WEATHER_TROLL = 15154;
 
 	/**
 	 * Victoria Kebbit-Monkfish
 	 */
-	public static final int SAILING_CHARTING_MERMAID_GUIDE_1 = 15154;
+	public static final int SAILING_CHARTING_MERMAID_GUIDE_1 = 15155;
 
 	/**
 	 * Marina Kebbit-Monkfish
 	 */
-	public static final int SAILING_CHARTING_MERMAID_GUIDE_2 = 15155;
+	public static final int SAILING_CHARTING_MERMAID_GUIDE_2 = 15156;
 
 	/**
 	 * Selina Kebbit-Monkfish
 	 */
-	public static final int SAILING_CHARTING_MERMAID_GUIDE_3 = 15156;
+	public static final int SAILING_CHARTING_MERMAID_GUIDE_3 = 15157;
 
 	/**
 	 * Gloria Kebbit-Monkfish
 	 */
-	public static final int SAILING_CHARTING_MERMAID_GUIDE_4 = 15157;
+	public static final int SAILING_CHARTING_MERMAID_GUIDE_4 = 15158;
 
 	/**
 	 * Christina Kebbit-Monkfish
 	 */
-	public static final int SAILING_CHARTING_MERMAID_GUIDE_5 = 15158;
+	public static final int SAILING_CHARTING_MERMAID_GUIDE_5 = 15159;
 
 	/**
 	 * Banana
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_BANANA_DAIQUIRI_TRANSMOG = 15159;
+	public static final int SAILING_CHARTING_DRINK_CRATE_BANANA_DAIQUIRI_TRANSMOG = 15160;
 
 	/**
 	 * Mystery fruit
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_MYSTERY_FRUIT = 15160;
+	public static final int SAILING_CHARTING_DRINK_CRATE_MYSTERY_FRUIT = 15161;
 
 	/**
 	 * Drunken Dwarf
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_PLATINUM_RUM_EFFECT_DWARF = 15161;
+	public static final int SAILING_CHARTING_DRINK_CRATE_PLATINUM_RUM_EFFECT_DWARF = 15162;
 
 	/**
 	 * Snakeling
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_SNAKE_GRAVY_EFFECT_SNAKELING = 15162;
+	public static final int SAILING_CHARTING_DRINK_CRATE_SNAKE_GRAVY_EFFECT_SNAKELING = 15163;
 
 	/**
 	 * Drink troll
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL = 15163;
+	public static final int SAILING_CHARTING_DRINK_CRATE_PRYING_TIMES_EFFECT_TROLL = 15164;
 
 	/**
 	 * A corpse
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_CORPSE_REVIVER_EFFECT = 15164;
+	public static final int SAILING_CHARTING_DRINK_CRATE_CORPSE_REVIVER_EFFECT = 15165;
 
 	/**
 	 * Blue dagannoth
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_BLUE_LAGOON_EFFECT = 15165;
+	public static final int SAILING_CHARTING_DRINK_CRATE_BLUE_LAGOON_EFFECT = 15166;
 
 	/**
 	 * Daddy's special water
 	 */
-	public static final int SAILING_CHARTING_DRINK_TROLL_DAD = 15166;
+	public static final int SAILING_CHARTING_DRINK_TROLL_DAD = 15167;
 
 	/**
 	 * The rocks
 	 */
-	public static final int SAILING_CHARTING_DRINK_TROLL_ICE = 15167;
+	public static final int SAILING_CHARTING_DRINK_TROLL_ICE = 15168;
 
 	/**
 	 * Chuck up
 	 */
-	public static final int SAILING_CHARTING_DRINK_TROLL_THROWER = 15168;
+	public static final int SAILING_CHARTING_DRINK_TROLL_THROWER = 15169;
 
 	/**
 	 * Angry tortugan
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_POSSIBLE_ALBUMEN_EFFECT = 15169;
+	public static final int SAILING_CHARTING_DRINK_CRATE_POSSIBLE_ALBUMEN_EFFECT = 15170;
 
 	/**
 	 * Dinky the drink troll
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_FISH_STOUTIER_EFFECT = 15170;
+	public static final int SAILING_CHARTING_DRINK_CRATE_FISH_STOUTIER_EFFECT = 15171;
 
 	/**
 	 * Squirrel friend
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_EFFECT_SQUIRREL = 15171;
+	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_EFFECT_SQUIRREL = 15172;
 
 	/**
 	 * Racoon buddy
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_EFFECT_RACOON = 15172;
+	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_EFFECT_RACOON = 15173;
 
 	/**
 	 * Chinchompa chum
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_EFFECT_CHINCHOMPA = 15173;
+	public static final int SAILING_CHARTING_DRINK_CRATE_WILD_WHISKY_EFFECT_CHINCHOMPA = 15174;
 
 	/**
 	 * Drink troll queen
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_MONKFISH_STOUT_EFFECT = 15174;
+	public static final int SAILING_CHARTING_DRINK_CRATE_MONKFISH_STOUT_EFFECT = 15175;
 
 	/**
 	 * Drink troll queen
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_MONKFISH_STOUT_EFFECT_DEAD = 15175;
+	public static final int SAILING_CHARTING_DRINK_CRATE_MONKFISH_STOUT_EFFECT_DEAD = 15176;
 
 	/**
 	 * Sailing cat
 	 */
-	public static final int SAILING_CHARTING_DRINK_CRATE_SAILING_CAT_EFFECT = 15176;
+	public static final int SAILING_CHARTING_DRINK_CRATE_SAILING_CAT_EFFECT = 15177;
 
 	/**
 	 * Castaway Dog
 	 */
-	public static final int SAILING_CASTAWAY_DOG_TEST = 15177;
+	public static final int SAILING_CASTAWAY_DOG_TEST = 15178;
 
 	/**
 	 * Castaway Dog
 	 */
-	public static final int SAILING_CASTAWAY_DOG_WALK_TEST = 15178;
+	public static final int SAILING_CASTAWAY_DOG_WALK_TEST = 15179;
 
 	/**
 	 * Castaway Dog
 	 */
-	public static final int SAILING_CASTAWAY_DOG_IDLE_TEST = 15179;
+	public static final int SAILING_CASTAWAY_DOG_IDLE_TEST = 15180;
 
 	/**
 	 * wilson
 	 */
-	public static final int SAILING_WILSON_TEST = 15180;
+	public static final int SAILING_WILSON_TEST = 15181;
 
 	/**
 	 * log girl
 	 */
-	public static final int SAILING_LOG_WOMAN_TEST = 15181;
+	public static final int SAILING_LOG_WOMAN_TEST = 15182;
 
 	/**
 	 * barrel girl
 	 */
-	public static final int SAILING_BARREL_WOMAN_TEST = 15182;
+	public static final int SAILING_BARREL_WOMAN_TEST = 15183;
 
 	/**
 	 * barrel dude
 	 */
-	public static final int SAILING_BARRELBOAT_MAN_TEST = 15183;
+	public static final int SAILING_BARRELBOAT_MAN_TEST = 15184;
 
 	/**
 	 * debris dude
 	 */
-	public static final int SAILING_DEBRIS_MAN_TEST = 15184;
-	public static final int BOAT_HP_NPC_LARGE = 15187;
+	public static final int SAILING_DEBRIS_MAN_TEST = 15185;
+	public static final int BOAT_HP_NPC_TINY = 15186;
+	public static final int BOAT_HP_NPC_SMALL = 15187;
+	public static final int BOAT_HP_NPC_MEDIUM = 15188;
+	public static final int BOAT_HP_NPC_LARGE = 15189;
+	public static final int BOAT_HP_NPC_COLOSSAL = 15190;
 
 	/**
 	 * Punching bag
 	 */
-	public static final int TEST_COMBAT = 15188;
+	public static final int TEST_COMBAT = 15191;
 
 	/**
 	 * Punching bag
 	 */
-	public static final int TEST_COMBAT_MAXHIT = 15189;
+	public static final int TEST_COMBAT_MAXHIT = 15192;
 
 	/**
 	 * &#60;col=00ffff&#62;DPS CALC&#60;/col&#62;
 	 */
-	public static final int DPS_CALC_NPC_SEA = 15190;
+	public static final int DPS_CALC_NPC_SEA = 15193;
 
 	/**
 	 * Bull shark
 	 */
-	public static final int SAILING_BULL_SHARK = 15191;
+	public static final int SAILING_BULL_SHARK = 15194;
 
 	/**
 	 * Bull shark
 	 */
-	public static final int SAILING_BULL_SHARK_DEAD = 15192;
+	public static final int SAILING_BULL_SHARK_DEAD = 15195;
 
 	/**
 	 * Hammerhead shark
 	 */
-	public static final int SAILING_HAMMERHEAD_SHARK = 15193;
+	public static final int SAILING_HAMMERHEAD_SHARK = 15196;
 
 	/**
 	 * Hammerhead shark
 	 */
-	public static final int SAILING_HAMMERHEAD_SHARK_DEAD = 15194;
+	public static final int SAILING_HAMMERHEAD_SHARK_DEAD = 15197;
 
 	/**
 	 * Tiger shark
 	 */
-	public static final int SAILING_TIGER_SHARK = 15195;
+	public static final int SAILING_TIGER_SHARK = 15198;
 
 	/**
 	 * Tiger shark
 	 */
-	public static final int SAILING_TIGER_SHARK_DEAD = 15196;
+	public static final int SAILING_TIGER_SHARK_DEAD = 15199;
 
 	/**
 	 * Great white shark
 	 */
-	public static final int SAILING_GREAT_WHITE_SHARK = 15197;
+	public static final int SAILING_GREAT_WHITE_SHARK = 15200;
 
 	/**
 	 * Great white shark
 	 */
-	public static final int SAILING_GREAT_WHITE_SHARK_DEAD = 15198;
+	public static final int SAILING_GREAT_WHITE_SHARK_DEAD = 15201;
 
 	/**
 	 * Narwhal
 	 */
-	public static final int SAILING_NARWHAL = 15199;
+	public static final int SAILING_NARWHAL = 15202;
 
 	/**
 	 * Narwhal
 	 */
-	public static final int SAILING_NARWHAL_DEAD = 15200;
+	public static final int SAILING_NARWHAL_DEAD = 15203;
 
 	/**
 	 * Orca
 	 */
-	public static final int SAILING_ORCA = 15201;
+	public static final int SAILING_ORCA = 15204;
 
 	/**
 	 * Orca
 	 */
-	public static final int SAILING_ORCA_DEAD = 15202;
+	public static final int SAILING_ORCA_DEAD = 15205;
 
 	/**
 	 * Pygmy kraken
 	 */
-	public static final int SAILING_PYGMY_KRAKEN = 15203;
+	public static final int SAILING_PYGMY_KRAKEN = 15206;
 
 	/**
 	 * Pygmy kraken
 	 */
-	public static final int SAILING_PYGMY_KRAKEN_DEAD = 15204;
+	public static final int SAILING_PYGMY_KRAKEN_DEAD = 15207;
 
 	/**
 	 * Spined kraken
 	 */
-	public static final int SAILING_SPINED_KRAKEN = 15205;
+	public static final int SAILING_SPINED_KRAKEN = 15208;
 
 	/**
 	 * Spined kraken
 	 */
-	public static final int SAILING_SPINED_KRAKEN_DEAD = 15206;
+	public static final int SAILING_SPINED_KRAKEN_DEAD = 15209;
 
 	/**
 	 * Armoured kraken
 	 */
-	public static final int SAILING_ARMOURED_KRAKEN = 15207;
+	public static final int SAILING_ARMOURED_KRAKEN = 15210;
 
 	/**
 	 * Armoured kraken
 	 */
-	public static final int SAILING_ARMOURED_KRAKEN_DEAD = 15208;
+	public static final int SAILING_ARMOURED_KRAKEN_DEAD = 15211;
 
 	/**
 	 * Vampyre kraken
 	 */
-	public static final int SAILING_VAMPYRE_KRAKEN = 15209;
+	public static final int SAILING_VAMPYRE_KRAKEN = 15212;
 
 	/**
 	 * Vampyre kraken
 	 */
-	public static final int SAILING_VAMPYRE_KRAKEN_DEAD = 15210;
+	public static final int SAILING_VAMPYRE_KRAKEN_DEAD = 15213;
 
 	/**
 	 * Eagle ray
 	 */
-	public static final int SAILING_EAGLE_RAY = 15211;
+	public static final int SAILING_EAGLE_RAY = 15214;
 
 	/**
 	 * Eagle ray
 	 */
-	public static final int SAILING_EAGLE_RAY_DEAD = 15212;
+	public static final int SAILING_EAGLE_RAY_DEAD = 15215;
 
 	/**
 	 * Butterfly ray
 	 */
-	public static final int SAILING_BUTTERFLY_RAY = 15213;
+	public static final int SAILING_BUTTERFLY_RAY = 15216;
 
 	/**
 	 * Butterfly ray
 	 */
-	public static final int SAILING_BUTTERFLY_RAY_DEAD = 15214;
+	public static final int SAILING_BUTTERFLY_RAY_DEAD = 15217;
 
 	/**
 	 * Stingray
 	 */
-	public static final int SAILING_STINGRAY = 15215;
+	public static final int SAILING_STINGRAY = 15218;
 
 	/**
 	 * Stingray
 	 */
-	public static final int SAILING_STINGRAY_DEAD = 15216;
+	public static final int SAILING_STINGRAY_DEAD = 15219;
 
 	/**
 	 * Manta ray
 	 */
-	public static final int SAILING_MANTA_RAY = 15217;
+	public static final int SAILING_MANTA_RAY = 15220;
 
 	/**
 	 * Manta ray
 	 */
-	public static final int SAILING_MANTA_RAY_DEAD = 15218;
+	public static final int SAILING_MANTA_RAY_DEAD = 15221;
 
 	/**
 	 * Osprey
 	 */
-	public static final int SAILING_OSPREY = 15219;
+	public static final int SAILING_OSPREY = 15222;
 
 	/**
 	 * Osprey
 	 */
-	public static final int SAILING_OSPREY_DEAD = 15220;
+	public static final int SAILING_OSPREY_DEAD = 15223;
 
 	/**
 	 * Albatross
 	 */
-	public static final int SAILING_ALBATROSS = 15221;
+	public static final int SAILING_ALBATROSS = 15224;
 
 	/**
 	 * Albatross
 	 */
-	public static final int SAILING_ALBATROSS_DEAD = 15222;
+	public static final int SAILING_ALBATROSS_DEAD = 15225;
 
 	/**
 	 * Frigatebird
 	 */
-	public static final int SAILING_FRIGATEBIRD = 15223;
+	public static final int SAILING_FRIGATEBIRD = 15226;
 
 	/**
 	 * Frigatebird
 	 */
-	public static final int SAILING_FRIGATEBIRD_DEAD = 15224;
+	public static final int SAILING_FRIGATEBIRD_DEAD = 15227;
 
 	/**
 	 * Tern
 	 */
-	public static final int SAILING_TERN = 15225;
+	public static final int SAILING_TERN = 15228;
 
 	/**
 	 * Tern
 	 */
-	public static final int SAILING_TERN_DEAD = 15226;
+	public static final int SAILING_TERN_DEAD = 15229;
 
 	/**
 	 * Mogre
 	 */
-	public static final int SAILING_SEA_MOGRE = 15227;
+	public static final int SAILING_SEA_MOGRE = 15230;
 
 	/**
 	 * Mogre
 	 */
-	public static final int SAILING_SEA_MOGRE_DEAD = 15228;
+	public static final int SAILING_SEA_MOGRE_DEAD = 15231;
 
 	/**
 	 * Mogre
 	 */
-	public static final int SAILING_SEA_MOGRE_F = 15229;
+	public static final int SAILING_SEA_MOGRE_F = 15232;
 
 	/**
 	 * Mogre
 	 */
-	public static final int SAILING_SEA_MOGRE_DEAD_F = 15230;
+	public static final int SAILING_SEA_MOGRE_DEAD_F = 15233;
 
 	/**
 	 * Dolphin
 	 */
-	public static final int SAILING_DOLPHIN = 15231;
+	public static final int SAILING_DOLPHIN = 15234;
 
 	/**
 	 * Dolphin
 	 */
-	public static final int SAILING_DOLPHIN_DEAD = 15232;
+	public static final int SAILING_DOLPHIN_DEAD = 15235;
 
 	/**
 	 * Dolphin calf
 	 */
-	public static final int SAILING_DOLPHIN_BABY = 15233;
+	public static final int SAILING_DOLPHIN_BABY = 15236;
 
 	/**
 	 * Ocean Man
 	 */
-	public static final int SAILING_OCEAN_MAN_TEST = 15234;
+	public static final int SAILING_OCEAN_MAN_TEST = 15237;
 
 	/**
 	 * Junior Jim
 	 */
-	public static final int SAILING_ASSISTANT_LIMBO = 15235;
+	public static final int SAILING_ASSISTANT_LIMBO = 15238;
 
 	/**
 	 * Jumbo Jim
 	 */
-	public static final int JUMBO_JIM = 15236;
+	public static final int JUMBO_JIM = 15239;
 	public static final int SAILING_EMOTE_NPC = 15240;
 	public static final int SAILING_BOAT_SAIL01_SMALL01 = 15241;
 	public static final int SAILING_BOAT_SAIL01_MEDIUM01 = 15242;
@@ -66196,1294 +66195,1295 @@ public final class NpcID
 	 * Jobless Jim
 	 */
 	public static final int SAILING_CREW_GENERIC_1_CARGO_3 = 15260;
+	public static final int SAILING_CREW_GENERIC_2 = 15261;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_WORLD = 15263;
+	public static final int SAILING_CREW_GENERIC_2_WORLD = 15262;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_DOCK = 15264;
-	public static final int SAILING_CREW_GENERIC_2_SHIP = 15265;
+	public static final int SAILING_CREW_GENERIC_2_DOCK = 15263;
+	public static final int SAILING_CREW_GENERIC_2_SHIP = 15264;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_SHIP_OP = 15266;
+	public static final int SAILING_CREW_GENERIC_2_SHIP_OP = 15265;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_SHIP_NO_OP = 15267;
+	public static final int SAILING_CREW_GENERIC_2_SHIP_NO_OP = 15266;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_CARGO = 15268;
+	public static final int SAILING_CREW_GENERIC_2_CARGO = 15267;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_CARGO_2 = 15269;
+	public static final int SAILING_CREW_GENERIC_2_CARGO_2 = 15268;
 
 	/**
 	 * Adventurer Ada
 	 */
-	public static final int SAILING_CREW_GENERIC_2_CARGO_3 = 15270;
-	public static final int SAILING_CREW_GENERIC_3_UNRECRUITED = 15271;
-	public static final int SAILING_CREW_GENERIC_3_RECRUITED = 15272;
+	public static final int SAILING_CREW_GENERIC_2_CARGO_3 = 15269;
+	public static final int SAILING_CREW_GENERIC_3_UNRECRUITED = 15270;
+	public static final int SAILING_CREW_GENERIC_3_RECRUITED = 15271;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_WORLD = 15273;
+	public static final int SAILING_CREW_GENERIC_3_WORLD = 15272;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_DOCK = 15274;
-	public static final int SAILING_CREW_GENERIC_3_SHIP = 15275;
+	public static final int SAILING_CREW_GENERIC_3_DOCK = 15273;
+	public static final int SAILING_CREW_GENERIC_3_SHIP = 15274;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_SHIP_OP = 15276;
+	public static final int SAILING_CREW_GENERIC_3_SHIP_OP = 15275;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_SHIP_NO_OP = 15277;
+	public static final int SAILING_CREW_GENERIC_3_SHIP_NO_OP = 15276;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_CARGO = 15278;
+	public static final int SAILING_CREW_GENERIC_3_CARGO = 15277;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_CARGO_2 = 15279;
+	public static final int SAILING_CREW_GENERIC_3_CARGO_2 = 15278;
 
 	/**
 	 * Jittery Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_3_CARGO_3 = 15280;
-	public static final int SAILING_CREW_GENERIC_4_UNRECRUITED = 15281;
-	public static final int SAILING_CREW_GENERIC_4_RECRUITED = 15282;
+	public static final int SAILING_CREW_GENERIC_3_CARGO_3 = 15279;
+	public static final int SAILING_CREW_GENERIC_4_UNRECRUITED = 15280;
+	public static final int SAILING_CREW_GENERIC_4_RECRUITED = 15281;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_WORLD = 15283;
+	public static final int SAILING_CREW_GENERIC_4_WORLD = 15282;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_DOCK = 15284;
-	public static final int SAILING_CREW_GENERIC_4_SHIP = 15285;
+	public static final int SAILING_CREW_GENERIC_4_DOCK = 15283;
+	public static final int SAILING_CREW_GENERIC_4_SHIP = 15284;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_SHIP_OP = 15286;
+	public static final int SAILING_CREW_GENERIC_4_SHIP_OP = 15285;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_SHIP_NO_OP = 15287;
+	public static final int SAILING_CREW_GENERIC_4_SHIP_NO_OP = 15286;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_CARGO = 15288;
+	public static final int SAILING_CREW_GENERIC_4_CARGO = 15287;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_CARGO_2 = 15289;
+	public static final int SAILING_CREW_GENERIC_4_CARGO_2 = 15288;
 
 	/**
 	 * Jolly Jim
 	 */
-	public static final int SAILING_CREW_GENERIC_4_CARGO_3 = 15290;
-	public static final int SAILING_CREW_GENERIC_5_UNRECRUITED = 15291;
-	public static final int SAILING_CREW_GENERIC_5_RECRUITED = 15292;
+	public static final int SAILING_CREW_GENERIC_4_CARGO_3 = 15289;
+	public static final int SAILING_CREW_GENERIC_5_UNRECRUITED = 15290;
+	public static final int SAILING_CREW_GENERIC_5_RECRUITED = 15291;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_WORLD = 15293;
+	public static final int SAILING_CREW_GENERIC_5_WORLD = 15292;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_DOCK = 15294;
-	public static final int SAILING_CREW_GENERIC_5_SHIP = 15295;
+	public static final int SAILING_CREW_GENERIC_5_DOCK = 15293;
+	public static final int SAILING_CREW_GENERIC_5_SHIP = 15294;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_SHIP_OP = 15296;
+	public static final int SAILING_CREW_GENERIC_5_SHIP_OP = 15295;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_SHIP_NO_OP = 15297;
+	public static final int SAILING_CREW_GENERIC_5_SHIP_NO_OP = 15296;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_CARGO = 15298;
+	public static final int SAILING_CREW_GENERIC_5_CARGO = 15297;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_CARGO_2 = 15299;
+	public static final int SAILING_CREW_GENERIC_5_CARGO_2 = 15298;
 
 	/**
 	 * Sailor Jakob
 	 */
-	public static final int SAILING_CREW_GENERIC_5_CARGO_3 = 15300;
-	public static final int SAILING_CREW_WEREWOLF_UNRECRUITED = 15301;
-	public static final int SAILING_CREW_WEREWOLF_RECRUITED = 15302;
+	public static final int SAILING_CREW_GENERIC_5_CARGO_3 = 15299;
+	public static final int SAILING_CREW_WEREWOLF_UNRECRUITED = 15300;
+	public static final int SAILING_CREW_WEREWOLF_RECRUITED = 15301;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_WORLD = 15303;
+	public static final int SAILING_CREW_WEREWOLF_WORLD = 15302;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_DOCK = 15304;
-	public static final int SAILING_CREW_WEREWOLF_SHIP = 15305;
+	public static final int SAILING_CREW_WEREWOLF_DOCK = 15303;
+	public static final int SAILING_CREW_WEREWOLF_SHIP = 15304;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_SHIP_OP = 15306;
+	public static final int SAILING_CREW_WEREWOLF_SHIP_OP = 15305;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_SHIP_NO_OP = 15307;
+	public static final int SAILING_CREW_WEREWOLF_SHIP_NO_OP = 15306;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_CARGO = 15308;
+	public static final int SAILING_CREW_WEREWOLF_CARGO = 15307;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_CARGO_2 = 15309;
+	public static final int SAILING_CREW_WEREWOLF_CARGO_2 = 15308;
 
 	/**
 	 * Oarswoman Olga
 	 */
-	public static final int SAILING_CREW_WEREWOLF_CARGO_3 = 15310;
-	public static final int SAILING_CREW_FREMENNIK_UNRECRUITED = 15311;
-	public static final int SAILING_CREW_FREMENNIK_RECRUITED = 15312;
+	public static final int SAILING_CREW_WEREWOLF_CARGO_3 = 15309;
+	public static final int SAILING_CREW_FREMENNIK_UNRECRUITED = 15310;
+	public static final int SAILING_CREW_FREMENNIK_RECRUITED = 15311;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_WORLD = 15313;
+	public static final int SAILING_CREW_FREMENNIK_WORLD = 15312;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_DOCK = 15314;
-	public static final int SAILING_CREW_FREMENNIK_SHIP = 15315;
+	public static final int SAILING_CREW_FREMENNIK_DOCK = 15313;
+	public static final int SAILING_CREW_FREMENNIK_SHIP = 15314;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_SHIP_OP = 15316;
+	public static final int SAILING_CREW_FREMENNIK_SHIP_OP = 15315;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_SHIP_NO_OP = 15317;
+	public static final int SAILING_CREW_FREMENNIK_SHIP_NO_OP = 15316;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_CARGO = 15318;
+	public static final int SAILING_CREW_FREMENNIK_CARGO = 15317;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_CARGO_2 = 15319;
+	public static final int SAILING_CREW_FREMENNIK_CARGO_2 = 15318;
 
 	/**
 	 * Bosun Zarah
 	 */
-	public static final int SAILING_CREW_FREMENNIK_CARGO_3 = 15320;
-	public static final int SAILING_CREW_SPIRIT_ANGLER_UNRECRUITED = 15321;
-	public static final int SAILING_CREW_SPIRIT_ANGLER_RECRUITED = 15322;
+	public static final int SAILING_CREW_FREMENNIK_CARGO_3 = 15319;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_UNRECRUITED = 15320;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_RECRUITED = 15321;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_WORLD = 15323;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_WORLD = 15322;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_DOCK = 15324;
-	public static final int SAILING_CREW_SPIRIT_ANGLER_SHIP = 15325;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_DOCK = 15323;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_SHIP = 15324;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_SHIP_OP = 15326;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_SHIP_OP = 15325;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_SHIP_NO_OP = 15327;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_SHIP_NO_OP = 15326;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_CARGO = 15328;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_CARGO = 15327;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_CARGO_2 = 15329;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_CARGO_2 = 15328;
 
 	/**
 	 * Spotter Virginia
 	 */
-	public static final int SAILING_CREW_SPIRIT_ANGLER_CARGO_3 = 15330;
-	public static final int SAILING_CREW_CAPTAIN_SIAD_RECRUITED = 15331;
+	public static final int SAILING_CREW_SPIRIT_ANGLER_CARGO_3 = 15329;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_RECRUITED = 15330;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_WORLD = 15332;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_WORLD = 15331;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_DOCK = 15333;
-	public static final int SAILING_CREW_CAPTAIN_SIAD_SHIP = 15334;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_DOCK = 15332;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_SHIP = 15333;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_SHIP_OP = 15335;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_SHIP_OP = 15334;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_SHIP_NO_OP = 15336;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_SHIP_NO_OP = 15335;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_CARGO = 15337;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_CARGO = 15336;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_CARGO_2 = 15338;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_CARGO_2 = 15337;
 
 	/**
 	 * Ex-Captain Siad
 	 */
-	public static final int SAILING_CREW_CAPTAIN_SIAD_CARGO_3 = 15339;
-	public static final int SAILING_CREW_GHOST_JENKINS_UNRECRUITED = 15340;
-	public static final int SAILING_CREW_GHOST_JENKINS_RECRUITED = 15341;
+	public static final int SAILING_CREW_CAPTAIN_SIAD_CARGO_3 = 15338;
+	public static final int SAILING_CREW_GHOST_JENKINS_UNRECRUITED = 15339;
+	public static final int SAILING_CREW_GHOST_JENKINS_RECRUITED = 15340;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_WORLD = 15342;
+	public static final int SAILING_CREW_GHOST_JENKINS_WORLD = 15341;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_DOCK = 15343;
-	public static final int SAILING_CREW_GHOST_JENKINS_SHIP = 15344;
+	public static final int SAILING_CREW_GHOST_JENKINS_DOCK = 15342;
+	public static final int SAILING_CREW_GHOST_JENKINS_SHIP = 15343;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_SHIP_OP = 15345;
+	public static final int SAILING_CREW_GHOST_JENKINS_SHIP_OP = 15344;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_SHIP_NO_OP = 15346;
+	public static final int SAILING_CREW_GHOST_JENKINS_SHIP_NO_OP = 15345;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_CARGO = 15347;
+	public static final int SAILING_CREW_GHOST_JENKINS_CARGO = 15346;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_CARGO_2 = 15348;
+	public static final int SAILING_CREW_GHOST_JENKINS_CARGO_2 = 15347;
 
 	/**
 	 * Cabin Boy Jenkins
 	 */
-	public static final int SAILING_CREW_GHOST_JENKINS_CARGO_3 = 15349;
+	public static final int SAILING_CREW_GHOST_JENKINS_CARGO_3 = 15348;
 
 	/**
 	 * No Crewmember
 	 */
-	public static final int SAILING_CREW_NO_CREWMATE_DUMMY = 15350;
+	public static final int SAILING_CREW_NO_CREWMATE_DUMMY = 15349;
 
 	/**
 	 * Locked
 	 */
-	public static final int SAILING_CREW_LOCKED_DUMMY = 15351;
-	public static final int SAILING_SHIPYARD_MANAGER = 15352;
+	public static final int SAILING_CREW_LOCKED_DUMMY = 15350;
+	public static final int SAILING_SHIPYARD_MANAGER = 15351;
 
 	/**
 	 * Shipwright Seb
 	 */
-	public static final int SAILING_SHIPYARD_MANAGER_VIS = 15353;
+	public static final int SAILING_SHIPYARD_MANAGER_VIS = 15352;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_0 = 15354;
+	public static final int SAILING_SHIPYARD_WORKER_0 = 15353;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_1 = 15355;
+	public static final int SAILING_SHIPYARD_WORKER_1 = 15354;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_2 = 15356;
+	public static final int SAILING_SHIPYARD_WORKER_2 = 15355;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_3 = 15357;
+	public static final int SAILING_SHIPYARD_WORKER_3 = 15356;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_4 = 15358;
+	public static final int SAILING_SHIPYARD_WORKER_4 = 15357;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_5 = 15359;
+	public static final int SAILING_SHIPYARD_WORKER_5 = 15358;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_6 = 15360;
+	public static final int SAILING_SHIPYARD_WORKER_6 = 15359;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_7 = 15361;
+	public static final int SAILING_SHIPYARD_WORKER_7 = 15360;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_8 = 15362;
+	public static final int SAILING_SHIPYARD_WORKER_8 = 15361;
 
 	/**
 	 * Shipyard Worker
 	 */
-	public static final int SAILING_SHIPYARD_WORKER_9 = 15363;
+	public static final int SAILING_SHIPYARD_WORKER_9 = 15362;
 
 	/**
 	 * Shipwright Sam
 	 */
-	public static final int SAILING_SHIPWRIGHT_PORT_SARIM = 15364;
+	public static final int SAILING_SHIPWRIGHT_PORT_SARIM = 15363;
 
 	/**
 	 * Shipwright Sally
 	 */
-	public static final int SAILING_SHIPWRIGHT_MUSA_POINT = 15365;
+	public static final int SAILING_SHIPWRIGHT_MUSA_POINT = 15364;
 
 	/**
 	 * Shipwright Sophie
 	 */
-	public static final int SAILING_SHIPWRIGHT_CATHERBY = 15366;
+	public static final int SAILING_SHIPWRIGHT_CATHERBY = 15365;
 
 	/**
 	 * Shipwright Steve
 	 */
-	public static final int SAILING_SHIPWRIGHT_BRIMHAVEN = 15367;
+	public static final int SAILING_SHIPWRIGHT_BRIMHAVEN = 15366;
 
 	/**
 	 * Shipwright Sarah
 	 */
-	public static final int SAILING_SHIPWRIGHT_PORT_KHAZARD = 15368;
+	public static final int SAILING_SHIPWRIGHT_PORT_KHAZARD = 15367;
 
 	/**
 	 * Shipwright Sasha
 	 */
-	public static final int SAILING_SHIPWRIGHT_LANDS_END = 15369;
+	public static final int SAILING_SHIPWRIGHT_LANDS_END = 15368;
 
 	/**
 	 * Shipwright Spencer
 	 */
-	public static final int SAILING_SHIPWRIGHT_PORT_PISCARILIUS = 15370;
+	public static final int SAILING_SHIPWRIGHT_PORT_PISCARILIUS = 15369;
 
 	/**
 	 * Shipwright Sennia
 	 */
-	public static final int SAILING_SHIPWRIGHT_CIVITAS_ILLA_FORTIS = 15371;
+	public static final int SAILING_SHIPWRIGHT_CIVITAS_ILLA_FORTIS = 15370;
 
 	/**
 	 * Shipwright Sigrun
 	 */
-	public static final int SAILING_SHIPWRIGHT_RELLEKKA = 15372;
+	public static final int SAILING_SHIPWRIGHT_RELLEKKA = 15371;
 
 	/**
 	 * Shipwright Silas
 	 */
-	public static final int SAILING_SHIPWRIGHT_ALDARIN = 15373;
+	public static final int SAILING_SHIPWRIGHT_ALDARIN = 15372;
 
 	/**
 	 * Shipwright Soraya
 	 */
-	public static final int SAILING_SHIPWRIGHT_CORSAIR_COVE = 15374;
+	public static final int SAILING_SHIPWRIGHT_CORSAIR_COVE = 15373;
 
 	/**
 	 * Shipwright Scott
 	 */
-	public static final int SAILING_SHIPWRIGHT_PORT_ROBERTS = 15375;
+	public static final int SAILING_SHIPWRIGHT_PORT_ROBERTS = 15374;
 
 	/**
 	 * Shipwright Sylvia
 	 */
-	public static final int SAILING_SHIPWRIGHT_RED_ROCK = 15376;
+	public static final int SAILING_SHIPWRIGHT_RED_ROCK = 15375;
 
 	/**
 	 * Shipwright Sornik
 	 */
-	public static final int SAILING_SHIPWRIGHT_DEEPFIN_POINT = 15377;
+	public static final int SAILING_SHIPWRIGHT_DEEPFIN_POINT = 15376;
 
 	/**
 	 * Shipwright Silrien
 	 */
-	public static final int SAILING_SHIPWRIGHT_PRIFDDINAS = 15378;
+	public static final int SAILING_SHIPWRIGHT_PRIFDDINAS = 15377;
 
 	/**
 	 * Port Wizard Perrie
 	 */
-	public static final int SAILING_PORT_WIZARD_1 = 15379;
+	public static final int SAILING_PORT_WIZARD_1 = 15378;
 
 	/**
 	 * Port Wizard Peter
 	 */
-	public static final int SAILING_PORT_WIZARD_2 = 15380;
+	public static final int SAILING_PORT_WIZARD_2 = 15379;
 
 	/**
 	 * Port Wizard Petra
 	 */
-	public static final int SAILING_PORT_WIZARD_3 = 15381;
+	public static final int SAILING_PORT_WIZARD_3 = 15380;
 
 	/**
 	 * Port Wizard Paulie
 	 */
-	public static final int SAILING_PORT_WIZARD_4 = 15382;
-	public static final int SAILING_SHOAL_RIPPLES = 15383;
-	public static final int SAILING_SHOAL_WANDERING_FISH = 15384;
+	public static final int SAILING_PORT_WIZARD_4 = 15381;
+	public static final int SAILING_SHOAL_RIPPLES = 15382;
+	public static final int SAILING_SHOAL_WANDERING_FISH = 15383;
 
 	/**
 	 * Fishing spot
 	 */
-	public static final int _0_42_138_LAVAFISH = 15385;
+	public static final int _0_42_138_LAVAFISH = 15384;
 
 	/**
 	 * Kragin
 	 */
-	public static final int RUBIUM_MINER = 15386;
+	public static final int RUBIUM_MINER = 15385;
 
 	/**
 	 * Petrus
 	 */
-	public static final int MINOTAURS_REST_BEASTMASTER = 15387;
+	public static final int MINOTAURS_REST_BEASTMASTER = 15386;
 
 	/**
 	 * Minotaur
 	 */
-	public static final int MINOTAURS_REST_MINOTAUR_1 = 15388;
+	public static final int MINOTAURS_REST_MINOTAUR_1 = 15387;
 
 	/**
 	 * Minotaur
 	 */
-	public static final int MINOTAURS_REST_MINOTAUR_2 = 15389;
+	public static final int MINOTAURS_REST_MINOTAUR_2 = 15388;
 
 	/**
 	 * Minotaur
 	 */
-	public static final int MINOTAURS_REST_MINOTAUR_3 = 15390;
-	public static final int SLEVE_MCDICHAEL = 15391;
+	public static final int MINOTAURS_REST_MINOTAUR_3 = 15389;
+	public static final int SLEVE_MCDICHAEL = 15390;
 
 	/**
 	 * Sleve McDichael
 	 */
-	public static final int SLEVE_MCDICHAEL_1OP = 15392;
+	public static final int SLEVE_MCDICHAEL_1OP = 15391;
 
 	/**
 	 * Sleve McDichael
 	 */
-	public static final int SLEVE_MCDICHAEL_2OP = 15393;
+	public static final int SLEVE_MCDICHAEL_2OP = 15392;
 
 	/**
 	 * Biles
 	 */
-	public static final int BILES = 15394;
+	public static final int BILES = 15393;
 
 	/**
 	 * Thigo
 	 */
-	public static final int VATRACHOS_DWARF = 15395;
+	public static final int VATRACHOS_DWARF = 15394;
 
 	/**
 	 * Raccoon
 	 */
-	public static final int VATRACHOS_RACCOON = 15396;
+	public static final int VATRACHOS_RACCOON = 15395;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_M_1 = 15397;
+	public static final int DEEPFIN_DWARF_M_1 = 15396;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_M_2 = 15398;
+	public static final int DEEPFIN_DWARF_M_2 = 15397;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_M_3 = 15399;
+	public static final int DEEPFIN_DWARF_M_3 = 15398;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_M_4 = 15400;
+	public static final int DEEPFIN_DWARF_M_4 = 15399;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_F_1 = 15401;
+	public static final int DEEPFIN_DWARF_F_1 = 15400;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_F_2 = 15402;
+	public static final int DEEPFIN_DWARF_F_2 = 15401;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_F_3 = 15403;
+	public static final int DEEPFIN_DWARF_F_3 = 15402;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_F_4 = 15404;
+	public static final int DEEPFIN_DWARF_F_4 = 15403;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_DIVER_M_1 = 15405;
+	public static final int DEEPFIN_DWARF_DIVER_M_1 = 15404;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_DIVER_M_2 = 15406;
+	public static final int DEEPFIN_DWARF_DIVER_M_2 = 15405;
 
 	/**
 	 * Dwarf
 	 */
-	public static final int DEEPFIN_DWARF_DIVER_F = 15407;
+	public static final int DEEPFIN_DWARF_DIVER_F = 15406;
 
 	/**
 	 * Brikka
 	 */
-	public static final int DEEPFIN_DWARF_BRIKKA = 15408;
+	public static final int DEEPFIN_DWARF_BRIKKA = 15407;
 
 	/**
 	 * Korgan
 	 */
-	public static final int DEEPFIN_DWARF_KORGAN = 15409;
-	public static final int DEEPFIN_DWARF_DURRIK = 15410;
+	public static final int DEEPFIN_DWARF_KORGAN = 15408;
+	public static final int DEEPFIN_DWARF_DURRIK = 15409;
 
 	/**
 	 * Durrik
 	 */
-	public static final int DEEPFIN_DWARF_DURRIK_1OP = 15411;
+	public static final int DEEPFIN_DWARF_DURRIK_1OP = 15410;
 
 	/**
 	 * Durrik
 	 */
-	public static final int DEEPFIN_DWARF_DURRIK_2OP = 15412;
+	public static final int DEEPFIN_DWARF_DURRIK_2OP = 15411;
 
 	/**
 	 * Bronze eagle
 	 */
-	public static final int BRONZE_EAGLE = 15413;
+	public static final int BRONZE_EAGLE = 15412;
 
 	/**
 	 * Iguana
 	 */
-	public static final int IGUANA = 15414;
+	public static final int IGUANA = 15413;
 
 	/**
 	 * Iguana
 	 */
-	public static final int IGUANA_ORANGE = 15415;
+	public static final int IGUANA_ORANGE = 15414;
 
 	/**
 	 * Chameleon
 	 */
-	public static final int CHAMELEON_GREEN = 15416;
+	public static final int CHAMELEON_GREEN = 15415;
 
 	/**
 	 * Chameleon
 	 */
-	public static final int CHAMELEON_TEAL = 15417;
+	public static final int CHAMELEON_TEAL = 15416;
 
 	/**
 	 * Chameleon
 	 */
-	public static final int CHAMELEON_BROWN = 15418;
+	public static final int CHAMELEON_BROWN = 15417;
 
 	/**
 	 * Chameleon
 	 */
-	public static final int CHAMELEON_ORANGE = 15419;
+	public static final int CHAMELEON_ORANGE = 15418;
 
 	/**
 	 * Gecko
 	 */
-	public static final int GECKO_ORANGE_1 = 15420;
+	public static final int GECKO_ORANGE_1 = 15419;
 
 	/**
 	 * Gecko
 	 */
-	public static final int GECKO_ORANGE_2 = 15421;
+	public static final int GECKO_ORANGE_2 = 15420;
 
 	/**
 	 * Gecko
 	 */
-	public static final int GECKO_GREEN_1 = 15422;
+	public static final int GECKO_GREEN_1 = 15421;
 
 	/**
 	 * Gecko
 	 */
-	public static final int GECKO_GREEN_2 = 15423;
+	public static final int GECKO_GREEN_2 = 15422;
 
 	/**
 	 * Gecko
 	 */
-	public static final int GECKO_BLUE_1 = 15424;
+	public static final int GECKO_BLUE_1 = 15423;
 
 	/**
 	 * Gecko
 	 */
-	public static final int GECKO_BLUE_2 = 15425;
+	public static final int GECKO_BLUE_2 = 15424;
 
 	/**
 	 * Giant toad
 	 */
-	public static final int GIANT_TOAD = 15426;
+	public static final int GIANT_TOAD = 15425;
 
 	/**
 	 * Giant toad
 	 */
-	public static final int GIANT_TOAD_YELLOW = 15427;
+	public static final int GIANT_TOAD_YELLOW = 15426;
 
 	/**
 	 * Giant toad
 	 */
-	public static final int GIANT_TOAD_BROWN = 15428;
+	public static final int GIANT_TOAD_BROWN = 15427;
 
 	/**
 	 * Fruit bat
 	 */
-	public static final int FRUIT_BAT = 15429;
+	public static final int FRUIT_BAT = 15428;
 
 	/**
 	 * Tortoise
 	 */
-	public static final int TORTOISE = 15430;
+	public static final int TORTOISE = 15429;
 
 	/**
 	 * Praying mantis
 	 */
-	public static final int PRAYING_MANTIS = 15431;
+	public static final int PRAYING_MANTIS = 15430;
 
 	/**
 	 * Praying mantis
 	 */
-	public static final int PRAYING_MANTIS_BROWN = 15432;
+	public static final int PRAYING_MANTIS_BROWN = 15431;
 
 	/**
 	 * Praying mantis
 	 */
-	public static final int PRAYING_MANTIS_ORCHID = 15433;
+	public static final int PRAYING_MANTIS_ORCHID = 15432;
 
 	/**
 	 * Cockroach
 	 */
-	public static final int COCKROACH_1 = 15434;
+	public static final int COCKROACH_1 = 15433;
 
 	/**
 	 * Cockroach
 	 */
-	public static final int COCKROACH_2 = 15435;
+	public static final int COCKROACH_2 = 15434;
 
 	/**
 	 * Cockroach
 	 */
-	public static final int COCKROACH_3 = 15436;
+	public static final int COCKROACH_3 = 15435;
 
 	/**
 	 * Giant ant
 	 */
-	public static final int GIANT_ANT = 15437;
+	public static final int GIANT_ANT = 15436;
 
 	/**
 	 * Giant ant
 	 */
-	public static final int GIANT_ANT_SOLDIER = 15438;
+	public static final int GIANT_ANT_SOLDIER = 15437;
 
 	/**
 	 * Giant wasp
 	 */
-	public static final int GIANT_WASP = 15439;
+	public static final int GIANT_WASP = 15438;
 
 	/**
 	 * Giant wasp
 	 */
-	public static final int GIANT_WASP_RED = 15440;
+	public static final int GIANT_WASP_RED = 15439;
 
 	/**
 	 * Giant mosquito
 	 */
-	public static final int GIANT_MOSQUITO = 15441;
+	public static final int GIANT_MOSQUITO = 15440;
 
 	/**
 	 * Leech
 	 */
-	public static final int GIANT_LEECH = 15442;
+	public static final int GIANT_LEECH = 15441;
 
 	/**
 	 * Pirate
 	 */
-	public static final int SAILING_NPC_BOAT_PIRATE_1 = 15443;
+	public static final int SAILING_NPC_BOAT_PIRATE_1 = 15442;
 
 	/**
 	 * Pirate
 	 */
-	public static final int SAILING_NPC_BOAT_PIRATE_2 = 15444;
+	public static final int SAILING_NPC_BOAT_PIRATE_2 = 15443;
 
 	/**
 	 * Pirate
 	 */
-	public static final int SAILING_NPC_BOAT_PIRATE_3 = 15445;
+	public static final int SAILING_NPC_BOAT_PIRATE_3 = 15444;
 
 	/**
 	 * Pirate
 	 */
-	public static final int SAILING_NPC_BOAT_PIRATE_4 = 15446;
+	public static final int SAILING_NPC_BOAT_PIRATE_4 = 15445;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_NPC_BOAT_CHARTER_1 = 15447;
+	public static final int SAILING_NPC_BOAT_CHARTER_1 = 15446;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_NPC_BOAT_CHARTER_2 = 15448;
+	public static final int SAILING_NPC_BOAT_CHARTER_2 = 15447;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_NPC_BOAT_CHARTER_3 = 15449;
+	public static final int SAILING_NPC_BOAT_CHARTER_3 = 15448;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_NPC_BOAT_CHARTER_4 = 15450;
+	public static final int SAILING_NPC_BOAT_CHARTER_4 = 15449;
 
 	/**
 	 * Captain Reuben
 	 */
-	public static final int CAPTAIN_REUBEN = 15451;
+	public static final int CAPTAIN_REUBEN = 15450;
 
 	/**
 	 * Captain Cotus
 	 */
-	public static final int CAPTAIN_COTUS = 15452;
+	public static final int CAPTAIN_COTUS = 15451;
 
 	/**
 	 * Pirate
 	 */
-	public static final int VARLAMORE_PIRATE_MELEE = 15453;
+	public static final int VARLAMORE_PIRATE_MELEE = 15452;
 
 	/**
 	 * Pirate
 	 */
-	public static final int VARLAMORE_PIRATE_RANGED = 15454;
+	public static final int VARLAMORE_PIRATE_RANGED = 15453;
 
 	/**
 	 * Pirate
 	 */
-	public static final int VARLAMORE_PIRATE_MAGE = 15455;
+	public static final int VARLAMORE_PIRATE_MAGE = 15454;
 
 	/**
 	 * Pirate captain
 	 */
-	public static final int NPC_BOAT_PIRATE_CAPTAIN = 15456;
+	public static final int NPC_BOAT_PIRATE_CAPTAIN = 15455;
 
 	/**
 	 * Pirate
 	 */
-	public static final int NPC_BOAT_PIRATE_MELEE = 15457;
+	public static final int NPC_BOAT_PIRATE_MELEE = 15456;
 
 	/**
 	 * Captain Darvald
 	 */
-	public static final int CAPTAIN_DARVALD = 15458;
+	public static final int CAPTAIN_DARVALD = 15457;
 
 	/**
 	 * Fremennik warrior
 	 */
-	public static final int FREMENNIK_MELEE_CREW = 15459;
+	public static final int FREMENNIK_MELEE_CREW = 15458;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PORT_SARIM = 15460;
+	public static final int PORT_TASK_MASTER_PORT_SARIM = 15459;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_MUSA_POINT = 15461;
+	public static final int PORT_TASK_MASTER_MUSA_POINT = 15460;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PANDEMONIUM = 15462;
+	public static final int PORT_TASK_MASTER_PANDEMONIUM = 15461;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_CATHERBY = 15463;
+	public static final int PORT_TASK_MASTER_CATHERBY = 15462;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_ENTRANA = 15464;
+	public static final int PORT_TASK_MASTER_ENTRANA = 15463;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_ARDOUGNE = 15465;
+	public static final int PORT_TASK_MASTER_ARDOUGNE = 15464;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_BRIMHAVEN = 15466;
+	public static final int PORT_TASK_MASTER_BRIMHAVEN = 15465;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PORT_KHAZARD = 15467;
+	public static final int PORT_TASK_MASTER_PORT_KHAZARD = 15466;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_CORSAIR_COVE = 15468;
+	public static final int PORT_TASK_MASTER_CORSAIR_COVE = 15467;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_RUINS_OF_UNKAH = 15469;
+	public static final int PORT_TASK_MASTER_RUINS_OF_UNKAH = 15468;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PORT_PISCARILLIUS = 15470;
+	public static final int PORT_TASK_MASTER_PORT_PISCARILLIUS = 15469;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_CIVITAS_ILLA_FORTIS = 15471;
+	public static final int PORT_TASK_MASTER_CIVITAS_ILLA_FORTIS = 15470;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_RELLEKKA = 15472;
+	public static final int PORT_TASK_MASTER_RELLEKKA = 15471;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_LANDS_END = 15473;
+	public static final int PORT_TASK_MASTER_LANDS_END = 15472;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_HOSIDIUS = 15474;
+	public static final int PORT_TASK_MASTER_HOSIDIUS = 15473;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_CAIRN_ISLE = 15475;
+	public static final int PORT_TASK_MASTER_CAIRN_ISLE = 15474;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_SUNSET_COAST = 15476;
+	public static final int PORT_TASK_MASTER_SUNSET_COAST = 15475;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_THE_SUMMER_SHORE = 15477;
+	public static final int PORT_TASK_MASTER_THE_SUMMER_SHORE = 15476;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_ALDARIN = 15478;
+	public static final int PORT_TASK_MASTER_ALDARIN = 15477;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_VOID_KNIGHTS_OUTPOST = 15479;
+	public static final int PORT_TASK_MASTER_VOID_KNIGHTS_OUTPOST = 15478;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PORT_ROBERTS = 15480;
+	public static final int PORT_TASK_MASTER_PORT_ROBERTS = 15479;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_RED_ROCK = 15481;
+	public static final int PORT_TASK_MASTER_RED_ROCK = 15480;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_MOS_LEHARMLESS = 15482;
+	public static final int PORT_TASK_MASTER_MOS_LEHARMLESS = 15481;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_ETCETERIA = 15483;
+	public static final int PORT_TASK_MASTER_ETCETERIA = 15482;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PORT_TYRAS = 15484;
+	public static final int PORT_TASK_MASTER_PORT_TYRAS = 15483;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_DEEPFIN_POINT = 15485;
+	public static final int PORT_TASK_MASTER_DEEPFIN_POINT = 15484;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_JATIZSO = 15486;
+	public static final int PORT_TASK_MASTER_JATIZSO = 15485;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_NEITIZNOT = 15487;
+	public static final int PORT_TASK_MASTER_NEITIZNOT = 15486;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PRIFDDINAS = 15488;
+	public static final int PORT_TASK_MASTER_PRIFDDINAS = 15487;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_PISCATORIS = 15489;
+	public static final int PORT_TASK_MASTER_PISCATORIS = 15488;
 
 	/**
 	 * Port master
 	 */
-	public static final int PORT_TASK_MASTER_LUNAR_ISLE = 15490;
+	public static final int PORT_TASK_MASTER_LUNAR_ISLE = 15489;
 
 	/**
 	 * &#60;col=00ffff&#62;Lightning cloud&#60;/col&#62;
 	 */
-	public static final int SAILING_SEA_STORMY_CLOUD = 15491;
-	public static final int SAILING_SEA_STORMY_LIGHTNING_STRIKE = 15492;
-	public static final int SAILING_SEA_STORMY_LIGHTNING_STRIKE_BOAT = 15493;
-	public static final int SAILING_SEA_PROFANE_WATERS_NPC_CURSE = 15494;
-	public static final int SAILING_SEA_PROFANE_WATERS_NPC_ORB = 15495;
-	public static final int SAILING_SEA_PROFANE_WATERS_NPC_SPLASH = 15496;
+	public static final int SAILING_SEA_STORMY_CLOUD = 15490;
+	public static final int SAILING_SEA_STORMY_LIGHTNING_STRIKE = 15491;
+	public static final int SAILING_SEA_STORMY_LIGHTNING_STRIKE_BOAT = 15492;
+	public static final int SAILING_SEA_PROFANE_WATERS_NPC_CURSE = 15493;
+	public static final int SAILING_SEA_PROFANE_WATERS_NPC_ORB = 15494;
+	public static final int SAILING_SEA_PROFANE_WATERS_NPC_SPLASH = 15495;
 
 	/**
 	 * Banker
 	 */
-	public static final int SAILING_BANK_BOAT_BANKER = 15497;
+	public static final int SAILING_BANK_BOAT_BANKER = 15496;
 
 	/**
 	 * Aquanite
 	 */
-	public static final int SLAYER_AQUANITE = 15498;
+	public static final int SLAYER_AQUANITE = 15497;
 
 	/**
 	 * Aquanite
 	 */
-	public static final int SLAYER_AQUANITE_NOLURE = 15499;
+	public static final int SLAYER_AQUANITE_NOLURE = 15498;
 
 	/**
 	 * Reef snake
 	 */
-	public static final int SLAYER_REEF_SNAKE = 15500;
+	public static final int SLAYER_REEF_SNAKE = 15499;
 
 	/**
 	 * Lava Strykewyrm
 	 */
-	public static final int SLAYER_LAVA_STRYKEWYRM = 15501;
+	public static final int SLAYER_LAVA_STRYKEWYRM = 15500;
 
 	/**
 	 * Vitreous Chilled Jelly
 	 */
-	public static final int SUPERIOR_CHILLED_JELLY = 15502;
+	public static final int SUPERIOR_CHILLED_JELLY = 15501;
 
 	/**
 	 * Elder aquanite
 	 */
-	public static final int SUPERIOR_AQUANITE = 15503;
+	public static final int SUPERIOR_AQUANITE = 15502;
 
 	/**
 	 * Elder aquanite
 	 */
-	public static final int SUPERIOR_AQUANITE_NOLURE = 15504;
+	public static final int SUPERIOR_AQUANITE_NOLURE = 15503;
 
 	/**
 	 * Magma strykewyrm
 	 */
-	public static final int SUPERIOR_LAVA_STRYKEWYRM = 15505;
+	public static final int SUPERIOR_LAVA_STRYKEWYRM = 15504;
 
 	/**
 	 * Trader Stan
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_PANDEMONIUM = 15506;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_PANDEMONIUM = 15505;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_PANDEMONIUM = 15507;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_PANDEMONIUM = 15506;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_PANDEMONIUM = 15508;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_PANDEMONIUM = 15507;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_PANDEMONIUM = 15509;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_PANDEMONIUM = 15508;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_PANDEMONIUM = 15510;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_PANDEMONIUM = 15509;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_PANDEMONIUM = 15511;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_PANDEMONIUM = 15510;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_PANDEMONIUM = 15512;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_PANDEMONIUM = 15511;
 
 	/**
 	 * Trader Stan
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_SUMMER_SHORE = 15513;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_SUMMER_SHORE = 15512;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_SUMMER_SHORE = 15514;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_SUMMER_SHORE = 15513;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_SUMMER_SHORE = 15515;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_SUMMER_SHORE = 15514;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_SUMMER_SHORE = 15516;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_SUMMER_SHORE = 15515;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_SUMMER_SHORE = 15517;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_SUMMER_SHORE = 15516;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_SUMMER_SHORE = 15518;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_SUMMER_SHORE = 15517;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_SUMMER_SHORE = 15519;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_SUMMER_SHORE = 15518;
 
 	/**
 	 * Trader Stan
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_RED_ROCK = 15520;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_RED_ROCK = 15519;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_RED_ROCK = 15521;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_RED_ROCK = 15520;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_RED_ROCK = 15522;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_RED_ROCK = 15521;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_RED_ROCK = 15523;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_RED_ROCK = 15522;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_RED_ROCK = 15524;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_RED_ROCK = 15523;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_RED_ROCK = 15525;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_RED_ROCK = 15524;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_RED_ROCK = 15526;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_RED_ROCK = 15525;
 
 	/**
 	 * Trader Stan
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_BARRACUDA_HQ = 15527;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_BARRACUDA_HQ = 15526;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_BARRACUDA_HQ = 15528;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_BARRACUDA_HQ = 15527;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_BARRACUDA_HQ = 15529;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_BARRACUDA_HQ = 15528;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_BARRACUDA_HQ = 15530;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_BARRACUDA_HQ = 15529;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_BARRACUDA_HQ = 15531;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_BARRACUDA_HQ = 15530;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_BARRACUDA_HQ = 15532;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_BARRACUDA_HQ = 15531;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_BARRACUDA_HQ = 15533;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_BARRACUDA_HQ = 15532;
 
 	/**
 	 * Trader Stan
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_DEEPFIN_POINT = 15534;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_DEEPFIN_POINT = 15533;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_DEEPFIN_POINT = 15535;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_DEEPFIN_POINT = 15534;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_DEEPFIN_POINT = 15536;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_DEEPFIN_POINT = 15535;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_DEEPFIN_POINT = 15537;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_DEEPFIN_POINT = 15536;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_DEEPFIN_POINT = 15538;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_DEEPFIN_POINT = 15537;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_DEEPFIN_POINT = 15539;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_DEEPFIN_POINT = 15538;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_DEEPFIN_POINT = 15540;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_DEEPFIN_POINT = 15539;
 
 	/**
 	 * Trader Stan
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_PORT_ROBERTS = 15541;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_PORT_ROBERTS = 15540;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_PORT_ROBERTS = 15542;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN1_PORT_ROBERTS = 15541;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_PORT_ROBERTS = 15543;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN2_PORT_ROBERTS = 15542;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_PORT_ROBERTS = 15544;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_MAN3_PORT_ROBERTS = 15543;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_PORT_ROBERTS = 15545;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN1_PORT_ROBERTS = 15544;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_PORT_ROBERTS = 15546;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN2_PORT_ROBERTS = 15545;
 
 	/**
 	 * Trader Crewmember
 	 */
-	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_PORT_ROBERTS = 15547;
+	public static final int SAILING_TRANSPORT_TRADER_STAN_CREW_WOMAN3_PORT_ROBERTS = 15546;
 /* This file is automatically generated. Do not edit. */
 }

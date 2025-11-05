@@ -681,109 +681,109 @@ public final class SpriteID
 	public static final int SIMPLE_BUTTON_TOGGLED_MOUSEOVER_CENTRE = 6784;
 	public static final int SIMPLE_BUTTON_PRESSED_CENTRE = 6785;
 	public static final int LOGO_UGC_WORLD = 6786;
-	public static final int ICON_COINS = 6917;
-	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_1 = 6974;
-	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_2 = 6975;
-	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_3 = 6976;
-	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_4 = 6977;
-	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_1 = 6978;
-	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_2 = 6979;
-	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_3 = 6980;
-	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_4 = 6981;
-	public static final int SAILING_ALPHA_TUTORIAL_SLIDESHOW_1 = 6982;
-	public static final int SAILING_ALPHA_TUTORIAL_SLIDESHOW_2 = 6983;
-	public static final int SAILING_ALPHA_TUTORIAL_SLIDESHOW_3 = 6984;
-	public static final int SAILING_ALPHA_BARRACUDA_SLIDESHOW_1 = 6985;
-	public static final int SAILING_ALPHA_BARRACUDA_SLIDESHOW_2 = 6986;
-	public static final int SAILING_ALPHA_BARRACUDA_SLIDESHOW_3 = 6987;
-	public static final int SAILING_ALPHA_SHIPWRECK_SLIDESHOW_1 = 6988;
-	public static final int SAILING_ALPHA_SHIPWRECK_SLIDESHOW_2 = 6989;
-	public static final int SAILING_ALPHA_SHIPWRECK_SLIDESHOW_3 = 6990;
-	public static final int SAILING_ALPHA_ABOUT_SLIDESHOW_1 = 6991;
-	public static final int WATER_OPEN = 7200;
-	public static final int WATER_SHELF = 7201;
-	public static final int WATER_DROPOFF = 7202;
-	public static final int WATER_DEEP = 7203;
-	public static final int WATER_TRENCH = 7204;
-	public static final int WATER_STORMY = 7205;
-	public static final int WATER_STORMY_OPEN = 7206;
-	public static final int WATER_STORMY_SHELF = 7207;
-	public static final int WATER_STORMY_DROPOFF = 7208;
-	public static final int WATER_STORMY_DEEP = 7209;
-	public static final int WATER_SUNBAKED = 7210;
-	public static final int WATER_SUNBAKED_OPEN = 7211;
-	public static final int WATER_SUNBAKED_SHELF = 7212;
-	public static final int WATER_SUNBAKED_DROPOFF = 7213;
-	public static final int WATER_SUNBAKED_DEEP = 7214;
-	public static final int WATER_PROFANE = 7215;
-	public static final int WATER_PROFANE_OPEN = 7216;
-	public static final int WATER_PROFANE_SHELF = 7217;
-	public static final int WATER_PROFANE_DROPOFF = 7218;
-	public static final int WATER_PROFANE_DEEP = 7219;
-	public static final int WATER_CURSED = 7220;
-	public static final int WATER_CURSED_OPEN = 7221;
-	public static final int WATER_CURSED_SHELF = 7222;
-	public static final int WATER_CURSED_DROPOFF = 7223;
-	public static final int WATER_CURSED_DEEP = 7224;
-	public static final int WATER_SCALDING = 7225;
-	public static final int WATER_SCALDING_OPEN = 7226;
-	public static final int WATER_SCALDING_SHELF = 7227;
-	public static final int WATER_SCALDING_DROPOFF = 7228;
-	public static final int WATER_SCALDING_DEEP = 7229;
-	public static final int WATER_ICY = 7230;
-	public static final int WATER_ICY_OPEN = 7231;
-	public static final int WATER_ICY_SHELF = 7232;
-	public static final int WATER_ICY_DROPOFF = 7233;
-	public static final int WATER_ICY_DEEP = 7234;
-	public static final int WATER_ENDLESS = 7235;
-	public static final int WATER_ENDLESS_OPEN = 7236;
-	public static final int WATER_ENDLESS_SHELF = 7237;
-	public static final int WATER_ENDLESS_DROPOFF = 7238;
-	public static final int WATER_ENDLESS_DEEP = 7239;
-	public static final int WATER_CRYSTAL = 7240;
-	public static final int WATER_CRYSTAL_OPEN = 7241;
-	public static final int WATER_CRYSTAL_SHELF = 7242;
-	public static final int WATER_CRYSTAL_DROPOFF = 7243;
-	public static final int WATER_CRYSTAL_DEEP = 7244;
-	public static final int WATER_FETID = 7245;
-	public static final int WATER_FETID_OPEN = 7246;
-	public static final int WATER_FETID_SHELF = 7247;
-	public static final int WATER_FETID_DROPOFF = 7248;
-	public static final int WATER_FETID_DEEP = 7249;
-	public static final int WATER_TANGLED = 7250;
-	public static final int WATER_TANGLED_OPEN = 7251;
-	public static final int WATER_TANGLED_SHELF = 7252;
-	public static final int WATER_TANGLED_DROPOFF = 7253;
-	public static final int WATER_TANGLED_DEEP = 7254;
-	public static final int WATER_JAGGED = 7255;
-	public static final int WATER_JAGGED_OPEN = 7256;
-	public static final int WATER_JAGGED_SHELF = 7257;
-	public static final int WATER_JAGGED_DROPOFF = 7258;
-	public static final int WATER_JAGGED_DEEP = 7259;
-	public static final int WATER_OUT_OF_BOUNDS = 7260;
-	public static final int LEAFY_JATOBA = 7261;
-	public static final int LEAFY_JATOBA_TILED = 7262;
-	public static final int LEAFY_JATOBA_DISEASED = 7263;
-	public static final int LEAFY_JATOBA_DISEASED_TILED = 7264;
-	public static final int LEAFY_CAMPHOR = 7265;
-	public static final int LEAFY_CAMPHOR_TILED = 7266;
-	public static final int LEAFY_CAMPHOR_DISEASED = 7267;
-	public static final int LEAFY_CAMPHOR_DISEASED_TILED = 7268;
-	public static final int LEAFY_IRONWOOD = 7269;
-	public static final int LEAFY_IRONWOOD_TILED = 7270;
-	public static final int LEAFY_IRONWOOD_DISEASED = 7271;
-	public static final int LEAFY_IRONWOOD_DISEASED_TILED = 7272;
-	public static final int LEAFY_ROSEWOOD = 7273;
-	public static final int LEAFY_ROSEWOOD_TILED = 7274;
-	public static final int LEAFY_ROSEWOOD_DISEASED = 7275;
-	public static final int LEAFY_ROSEWOOD_DISEASED_TILED = 7276;
-	public static final int HD_WATER_NORMAL = 7277;
-	public static final int HD_WATER_CAUSTIC = 7278;
-	public static final int MINIMAP_BOAT_RAFT = 7286;
-	public static final int MINIMAP_BOAT_COLOSSAL = 7289;
-	public static final int MINIMAP_BOAT_CLASSIC_LARGE = 7290;
-	public static final int MINIMAP_BOAT_SKIFF = 7293;
-	public static final int MINIMAP_BOAT_SLOOP = 7294;
+	public static final int ICON_COINS = 6919;
+	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_1 = 6976;
+	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_2 = 6977;
+	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_3 = 6978;
+	public static final int SAILING_ALPHA_PORT_TASKS_SLIDESHOW_4 = 6979;
+	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_1 = 6980;
+	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_2 = 6981;
+	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_3 = 6982;
+	public static final int SAILING_ALPHA_CHARTING_SLIDESHOW_4 = 6983;
+	public static final int SAILING_ALPHA_TUTORIAL_SLIDESHOW_1 = 6984;
+	public static final int SAILING_ALPHA_TUTORIAL_SLIDESHOW_2 = 6985;
+	public static final int SAILING_ALPHA_TUTORIAL_SLIDESHOW_3 = 6986;
+	public static final int SAILING_ALPHA_BARRACUDA_SLIDESHOW_1 = 6987;
+	public static final int SAILING_ALPHA_BARRACUDA_SLIDESHOW_2 = 6988;
+	public static final int SAILING_ALPHA_BARRACUDA_SLIDESHOW_3 = 6989;
+	public static final int SAILING_ALPHA_SHIPWRECK_SLIDESHOW_1 = 6990;
+	public static final int SAILING_ALPHA_SHIPWRECK_SLIDESHOW_2 = 6991;
+	public static final int SAILING_ALPHA_SHIPWRECK_SLIDESHOW_3 = 6992;
+	public static final int SAILING_ALPHA_ABOUT_SLIDESHOW_1 = 6993;
+	public static final int WATER_OPEN = 7202;
+	public static final int WATER_SHELF = 7203;
+	public static final int WATER_DROPOFF = 7204;
+	public static final int WATER_DEEP = 7205;
+	public static final int WATER_TRENCH = 7206;
+	public static final int WATER_STORMY = 7207;
+	public static final int WATER_STORMY_OPEN = 7208;
+	public static final int WATER_STORMY_SHELF = 7209;
+	public static final int WATER_STORMY_DROPOFF = 7210;
+	public static final int WATER_STORMY_DEEP = 7211;
+	public static final int WATER_SUNBAKED = 7212;
+	public static final int WATER_SUNBAKED_OPEN = 7213;
+	public static final int WATER_SUNBAKED_SHELF = 7214;
+	public static final int WATER_SUNBAKED_DROPOFF = 7215;
+	public static final int WATER_SUNBAKED_DEEP = 7216;
+	public static final int WATER_PROFANE = 7217;
+	public static final int WATER_PROFANE_OPEN = 7218;
+	public static final int WATER_PROFANE_SHELF = 7219;
+	public static final int WATER_PROFANE_DROPOFF = 7220;
+	public static final int WATER_PROFANE_DEEP = 7221;
+	public static final int WATER_CURSED = 7222;
+	public static final int WATER_CURSED_OPEN = 7223;
+	public static final int WATER_CURSED_SHELF = 7224;
+	public static final int WATER_CURSED_DROPOFF = 7225;
+	public static final int WATER_CURSED_DEEP = 7226;
+	public static final int WATER_SCALDING = 7227;
+	public static final int WATER_SCALDING_OPEN = 7228;
+	public static final int WATER_SCALDING_SHELF = 7229;
+	public static final int WATER_SCALDING_DROPOFF = 7230;
+	public static final int WATER_SCALDING_DEEP = 7231;
+	public static final int WATER_ICY = 7232;
+	public static final int WATER_ICY_OPEN = 7233;
+	public static final int WATER_ICY_SHELF = 7234;
+	public static final int WATER_ICY_DROPOFF = 7235;
+	public static final int WATER_ICY_DEEP = 7236;
+	public static final int WATER_ENDLESS = 7237;
+	public static final int WATER_ENDLESS_OPEN = 7238;
+	public static final int WATER_ENDLESS_SHELF = 7239;
+	public static final int WATER_ENDLESS_DROPOFF = 7240;
+	public static final int WATER_ENDLESS_DEEP = 7241;
+	public static final int WATER_CRYSTAL = 7242;
+	public static final int WATER_CRYSTAL_OPEN = 7243;
+	public static final int WATER_CRYSTAL_SHELF = 7244;
+	public static final int WATER_CRYSTAL_DROPOFF = 7245;
+	public static final int WATER_CRYSTAL_DEEP = 7246;
+	public static final int WATER_FETID = 7247;
+	public static final int WATER_FETID_OPEN = 7248;
+	public static final int WATER_FETID_SHELF = 7249;
+	public static final int WATER_FETID_DROPOFF = 7250;
+	public static final int WATER_FETID_DEEP = 7251;
+	public static final int WATER_TANGLED = 7252;
+	public static final int WATER_TANGLED_OPEN = 7253;
+	public static final int WATER_TANGLED_SHELF = 7254;
+	public static final int WATER_TANGLED_DROPOFF = 7255;
+	public static final int WATER_TANGLED_DEEP = 7256;
+	public static final int WATER_JAGGED = 7257;
+	public static final int WATER_JAGGED_OPEN = 7258;
+	public static final int WATER_JAGGED_SHELF = 7259;
+	public static final int WATER_JAGGED_DROPOFF = 7260;
+	public static final int WATER_JAGGED_DEEP = 7261;
+	public static final int WATER_OUT_OF_BOUNDS = 7262;
+	public static final int LEAFY_JATOBA = 7263;
+	public static final int LEAFY_JATOBA_TILED = 7264;
+	public static final int LEAFY_JATOBA_DISEASED = 7265;
+	public static final int LEAFY_JATOBA_DISEASED_TILED = 7266;
+	public static final int LEAFY_CAMPHOR = 7267;
+	public static final int LEAFY_CAMPHOR_TILED = 7268;
+	public static final int LEAFY_CAMPHOR_DISEASED = 7269;
+	public static final int LEAFY_CAMPHOR_DISEASED_TILED = 7270;
+	public static final int LEAFY_IRONWOOD = 7271;
+	public static final int LEAFY_IRONWOOD_TILED = 7272;
+	public static final int LEAFY_IRONWOOD_DISEASED = 7273;
+	public static final int LEAFY_IRONWOOD_DISEASED_TILED = 7274;
+	public static final int LEAFY_ROSEWOOD = 7275;
+	public static final int LEAFY_ROSEWOOD_TILED = 7276;
+	public static final int LEAFY_ROSEWOOD_DISEASED = 7277;
+	public static final int LEAFY_ROSEWOOD_DISEASED_TILED = 7278;
+	public static final int HD_WATER_NORMAL = 7279;
+	public static final int HD_WATER_CAUSTIC = 7280;
+	public static final int MINIMAP_BOAT_RAFT = 7288;
+	public static final int MINIMAP_BOAT_SKIFF = 7289;
+	public static final int MINIMAP_BOAT_SLOOP = 7290;
+	public static final int MINIMAP_BOAT_COLOSSAL = 7291;
+	public static final int MINIMAP_BOAT_CLASSIC_LARGE = 7292;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -921,31 +921,31 @@ public final class SpriteID
 		public static final int _47 = 62;
 		public static final int _48 = 63;
 		public static final int _49 = 64;
-		public static final int _50 = 6920;
-		public static final int _51 = 6921;
-		public static final int _52 = 6922;
-		public static final int _53 = 6923;
-		public static final int _54 = 6924;
-		public static final int _55 = 6925;
-		public static final int _56 = 6926;
-		public static final int _57 = 6927;
-		public static final int _58 = 6928;
-		public static final int _59 = 6929;
-		public static final int _60 = 6930;
-		public static final int _61 = 6931;
-		public static final int _62 = 6932;
-		public static final int _63 = 6933;
-		public static final int _64 = 6934;
-		public static final int _65 = 6935;
-		public static final int _66 = 6936;
-		public static final int _67 = 6937;
-		public static final int _68 = 6938;
-		public static final int _69 = 6939;
-		public static final int _70 = 6940;
-		public static final int _71 = 6941;
-		public static final int _72 = 6942;
-		public static final int _73 = 6943;
-		public static final int _74 = 6944;
+		public static final int _50 = 6922;
+		public static final int _51 = 6923;
+		public static final int _52 = 6924;
+		public static final int _53 = 6925;
+		public static final int _54 = 6926;
+		public static final int _55 = 6927;
+		public static final int _56 = 6928;
+		public static final int _57 = 6929;
+		public static final int _58 = 6930;
+		public static final int _59 = 6931;
+		public static final int _60 = 6932;
+		public static final int _61 = 6933;
+		public static final int _62 = 6934;
+		public static final int _63 = 6935;
+		public static final int _64 = 6936;
+		public static final int _65 = 6937;
+		public static final int _66 = 6938;
+		public static final int _67 = 6939;
+		public static final int _68 = 6940;
+		public static final int _69 = 6941;
+		public static final int _70 = 6942;
+		public static final int _71 = 6943;
+		public static final int _72 = 6944;
+		public static final int _73 = 6945;
+		public static final int _74 = 6946;
 
 		public static final int WIND_STRIKE = _0;
 		public static final int CONFUSE = _1;
@@ -1051,31 +1051,31 @@ public final class SpriteID
 		public static final int _47 = 112;
 		public static final int _48 = 113;
 		public static final int _49 = 114;
-		public static final int _50 = 6945;
-		public static final int _51 = 6946;
-		public static final int _52 = 6947;
-		public static final int _53 = 6948;
-		public static final int _54 = 6949;
-		public static final int _55 = 6950;
-		public static final int _56 = 6951;
-		public static final int _57 = 6952;
-		public static final int _58 = 6953;
-		public static final int _59 = 6954;
-		public static final int _60 = 6955;
-		public static final int _61 = 6956;
-		public static final int _62 = 6957;
-		public static final int _63 = 6958;
-		public static final int _64 = 6959;
-		public static final int _65 = 6960;
-		public static final int _66 = 6961;
-		public static final int _67 = 6962;
-		public static final int _68 = 6963;
-		public static final int _69 = 6964;
-		public static final int _70 = 6965;
-		public static final int _71 = 6966;
-		public static final int _72 = 6967;
-		public static final int _73 = 6968;
-		public static final int _74 = 6969;
+		public static final int _50 = 6947;
+		public static final int _51 = 6948;
+		public static final int _52 = 6949;
+		public static final int _53 = 6950;
+		public static final int _54 = 6951;
+		public static final int _55 = 6952;
+		public static final int _56 = 6953;
+		public static final int _57 = 6954;
+		public static final int _58 = 6955;
+		public static final int _59 = 6956;
+		public static final int _60 = 6957;
+		public static final int _61 = 6958;
+		public static final int _62 = 6959;
+		public static final int _63 = 6960;
+		public static final int _64 = 6961;
+		public static final int _65 = 6962;
+		public static final int _66 = 6963;
+		public static final int _67 = 6964;
+		public static final int _68 = 6965;
+		public static final int _69 = 6966;
+		public static final int _70 = 6967;
+		public static final int _71 = 6968;
+		public static final int _72 = 6969;
+		public static final int _73 = 6970;
+		public static final int _74 = 6971;
 
 		public static final int WIND_STRIKE = _0;
 		public static final int CONFUSE = _1;
@@ -3980,15 +3980,15 @@ public final class SpriteID
 		public static final int _3 = 1218;
 		public static final int _4 = 1219;
 		public static final int _5 = 1220;
-		public static final int _6 = 6905;
-		public static final int _7 = 6906;
-		public static final int _8 = 6907;
-		public static final int _9 = 6908;
-		public static final int _10 = 6909;
-		public static final int _11 = 6910;
-		public static final int _12 = 6911;
-		public static final int _13 = 6912;
-		public static final int _14 = 6913;
+		public static final int _6 = 6907;
+		public static final int _7 = 6908;
+		public static final int _8 = 6909;
+		public static final int _9 = 6910;
+		public static final int _10 = 6911;
+		public static final int _11 = 6912;
+		public static final int _12 = 6913;
+		public static final int _13 = 6914;
+		public static final int _14 = 6915;
 
 		public static final int EMPTY = _0;
 		public static final int CROSSED = _1;
@@ -4445,13 +4445,13 @@ public final class SpriteID
 		public static final int _137 = 4945;
 		public static final int _138 = 4946;
 		public static final int _139 = 4947;
-		public static final int _140 = 7279;
-		public static final int _141 = 7280;
-		public static final int _142 = 7281;
-		public static final int _143 = 7282;
-		public static final int _144 = 7283;
-		public static final int _145 = 7284;
-		public static final int _146 = 7285;
+		public static final int _140 = 7281;
+		public static final int _141 = 7282;
+		public static final int _142 = 7283;
+		public static final int _143 = 7284;
+		public static final int _144 = 7285;
+		public static final int _145 = 7286;
+		public static final int _146 = 7287;
 
 		public static final int GENERAL_STORE = _0;
 		public static final int SWORD_SHOP = _1;
@@ -8450,7 +8450,7 @@ public final class SpriteID
 	{
 		public static final int _0 = 4892;
 		public static final int _1 = 4893;
-		public static final int _2 = 6904;
+		public static final int _2 = 6906;
 
 		public static final int ACTIVATED = _0;
 	}
@@ -10498,378 +10498,378 @@ public final class SpriteID
 
 	public static final class HealthbarBold4x4
 	{
-		public static final int _0 = 6838;
-		public static final int _1 = 6839;
-		public static final int _2 = 6840;
-		public static final int _3 = 6841;
-		public static final int _4 = 6842;
-		public static final int _5 = 6843;
-		public static final int _6 = 6844;
-		public static final int _7 = 6845;
-		public static final int _8 = 6846;
-		public static final int _9 = 6847;
-		public static final int _10 = 6848;
-		public static final int _11 = 6849;
-		public static final int _12 = 6850;
-		public static final int _13 = 6851;
-		public static final int _14 = 6852;
-		public static final int _15 = 6853;
-		public static final int _16 = 6854;
-		public static final int _17 = 6855;
+		public static final int _0 = 6840;
+		public static final int _1 = 6841;
+		public static final int _2 = 6842;
+		public static final int _3 = 6843;
+		public static final int _4 = 6844;
+		public static final int _5 = 6845;
+		public static final int _6 = 6846;
+		public static final int _7 = 6847;
+		public static final int _8 = 6848;
+		public static final int _9 = 6849;
+		public static final int _10 = 6850;
+		public static final int _11 = 6851;
+		public static final int _12 = 6852;
+		public static final int _13 = 6853;
+		public static final int _14 = 6854;
+		public static final int _15 = 6855;
+		public static final int _16 = 6856;
+		public static final int _17 = 6857;
 	}
 
 	public static final class IconChevron16x16
 	{
-		public static final int _0 = 6856;
-		public static final int _1 = 6857;
-		public static final int _2 = 6858;
-		public static final int _3 = 6859;
-		public static final int _4 = 6860;
-		public static final int _5 = 6861;
-		public static final int _6 = 6862;
-		public static final int _7 = 6863;
-		public static final int _8 = 6864;
-		public static final int _9 = 6865;
-		public static final int _10 = 6866;
-		public static final int _11 = 6867;
-		public static final int _12 = 6868;
-		public static final int _13 = 6869;
-		public static final int _14 = 6870;
-		public static final int _15 = 6871;
-		public static final int _16 = 6872;
-		public static final int _17 = 6873;
-		public static final int _18 = 6874;
-		public static final int _19 = 6875;
-		public static final int _20 = 6876;
-		public static final int _21 = 6877;
-		public static final int _22 = 6878;
-		public static final int _23 = 6879;
-		public static final int _24 = 6880;
-		public static final int _25 = 6881;
-		public static final int _26 = 6882;
-		public static final int _27 = 6883;
-		public static final int _28 = 6884;
-		public static final int _29 = 6885;
-		public static final int _30 = 6886;
-		public static final int _31 = 6887;
-		public static final int _32 = 6888;
-		public static final int _33 = 6889;
-		public static final int _34 = 6890;
-		public static final int _35 = 6891;
-		public static final int _36 = 6892;
-		public static final int _37 = 6893;
-		public static final int _38 = 6894;
-		public static final int _39 = 6895;
-		public static final int _40 = 6896;
-		public static final int _41 = 6897;
-		public static final int _42 = 6898;
-		public static final int _43 = 6899;
-		public static final int _44 = 6900;
-		public static final int _45 = 6901;
-		public static final int _46 = 6902;
-		public static final int _47 = 6903;
+		public static final int _0 = 6858;
+		public static final int _1 = 6859;
+		public static final int _2 = 6860;
+		public static final int _3 = 6861;
+		public static final int _4 = 6862;
+		public static final int _5 = 6863;
+		public static final int _6 = 6864;
+		public static final int _7 = 6865;
+		public static final int _8 = 6866;
+		public static final int _9 = 6867;
+		public static final int _10 = 6868;
+		public static final int _11 = 6869;
+		public static final int _12 = 6870;
+		public static final int _13 = 6871;
+		public static final int _14 = 6872;
+		public static final int _15 = 6873;
+		public static final int _16 = 6874;
+		public static final int _17 = 6875;
+		public static final int _18 = 6876;
+		public static final int _19 = 6877;
+		public static final int _20 = 6878;
+		public static final int _21 = 6879;
+		public static final int _22 = 6880;
+		public static final int _23 = 6881;
+		public static final int _24 = 6882;
+		public static final int _25 = 6883;
+		public static final int _26 = 6884;
+		public static final int _27 = 6885;
+		public static final int _28 = 6886;
+		public static final int _29 = 6887;
+		public static final int _30 = 6888;
+		public static final int _31 = 6889;
+		public static final int _32 = 6890;
+		public static final int _33 = 6891;
+		public static final int _34 = 6892;
+		public static final int _35 = 6893;
+		public static final int _36 = 6894;
+		public static final int _37 = 6895;
+		public static final int _38 = 6896;
+		public static final int _39 = 6897;
+		public static final int _40 = 6898;
+		public static final int _41 = 6899;
+		public static final int _42 = 6900;
+		public static final int _43 = 6901;
+		public static final int _44 = 6902;
+		public static final int _45 = 6903;
+		public static final int _46 = 6904;
+		public static final int _47 = 6905;
 	}
 
 	public static final class MapCross
 	{
-		public static final int _0 = 6914;
-		public static final int _1 = 6915;
-		public static final int _2 = 6916;
+		public static final int _0 = 6916;
+		public static final int _1 = 6917;
+		public static final int _2 = 6918;
 	}
 
 	public static final class StackIcons
 	{
-		public static final int _0 = 6918;
-		public static final int _1 = 6919;
+		public static final int _0 = 6920;
+		public static final int _1 = 6921;
 	}
 
 	public static final class OpenButtonsTiny11x11
 	{
-		public static final int _0 = 6970;
-		public static final int _1 = 6971;
-		public static final int _2 = 6972;
-		public static final int _3 = 6973;
+		public static final int _0 = 6972;
+		public static final int _1 = 6973;
+		public static final int _2 = 6974;
+		public static final int _3 = 6975;
 	}
 
 	public static final class IconBarracudaObjectives18x18
 	{
-		public static final int _0 = 6992;
-		public static final int _1 = 6993;
-		public static final int _2 = 6994;
-		public static final int _3 = 6995;
-		public static final int _4 = 6996;
-		public static final int _5 = 6997;
-		public static final int _6 = 6998;
-		public static final int _7 = 6999;
-		public static final int _8 = 7000;
-		public static final int _9 = 7001;
-		public static final int _10 = 7002;
-		public static final int _11 = 7003;
-		public static final int _12 = 7004;
-		public static final int _13 = 7005;
-		public static final int _14 = 7006;
-		public static final int _15 = 7007;
-		public static final int _16 = 7008;
-		public static final int _17 = 7009;
-		public static final int _18 = 7010;
-		public static final int _19 = 7011;
-		public static final int _20 = 7012;
-		public static final int _21 = 7013;
-		public static final int _22 = 7014;
-		public static final int _23 = 7015;
-		public static final int _24 = 7016;
-		public static final int _25 = 7017;
-		public static final int _26 = 7018;
-		public static final int _27 = 7019;
+		public static final int _0 = 6994;
+		public static final int _1 = 6995;
+		public static final int _2 = 6996;
+		public static final int _3 = 6997;
+		public static final int _4 = 6998;
+		public static final int _5 = 6999;
+		public static final int _6 = 7000;
+		public static final int _7 = 7001;
+		public static final int _8 = 7002;
+		public static final int _9 = 7003;
+		public static final int _10 = 7004;
+		public static final int _11 = 7005;
+		public static final int _12 = 7006;
+		public static final int _13 = 7007;
+		public static final int _14 = 7008;
+		public static final int _15 = 7009;
+		public static final int _16 = 7010;
+		public static final int _17 = 7011;
+		public static final int _18 = 7012;
+		public static final int _19 = 7013;
+		public static final int _20 = 7014;
+		public static final int _21 = 7015;
+		public static final int _22 = 7016;
+		public static final int _23 = 7017;
+		public static final int _24 = 7018;
+		public static final int _25 = 7019;
+		public static final int _26 = 7020;
+		public static final int _27 = 7021;
 	}
 
 	public static final class IconBarracudaObjectives32x32
 	{
-		public static final int _0 = 7020;
-		public static final int _1 = 7021;
-		public static final int _2 = 7022;
-		public static final int _3 = 7023;
+		public static final int _0 = 7022;
+		public static final int _1 = 7023;
+		public static final int _2 = 7024;
+		public static final int _3 = 7025;
 	}
 
 	public static final class IconBarracudaRank32x32
 	{
-		public static final int _0 = 7024;
-		public static final int _1 = 7025;
-		public static final int _2 = 7026;
-		public static final int _3 = 7027;
-		public static final int _4 = 7028;
-		public static final int _5 = 7029;
-		public static final int _6 = 7030;
-		public static final int _7 = 7031;
+		public static final int _0 = 7026;
+		public static final int _1 = 7027;
+		public static final int _2 = 7028;
+		public static final int _3 = 7029;
+		public static final int _4 = 7030;
+		public static final int _5 = 7031;
+		public static final int _6 = 7032;
+		public static final int _7 = 7033;
 	}
 
 	public static final class IconBarracudaRank64x64
 	{
-		public static final int _0 = 7032;
-		public static final int _1 = 7033;
-		public static final int _2 = 7034;
-		public static final int _3 = 7035;
+		public static final int _0 = 7034;
+		public static final int _1 = 7035;
+		public static final int _2 = 7036;
+		public static final int _3 = 7037;
 	}
 
 	public static final class IconBarracudaReset22x22
 	{
-		public static final int _0 = 7036;
-		public static final int _1 = 7037;
+		public static final int _0 = 7038;
+		public static final int _1 = 7039;
 	}
 
 	public static final class SailingFacilities
 	{
-		public static final int _0 = 7038;
-		public static final int _1 = 7039;
-		public static final int _2 = 7040;
-		public static final int _3 = 7041;
-		public static final int _4 = 7042;
-		public static final int _5 = 7043;
-		public static final int _6 = 7044;
-		public static final int _7 = 7045;
-		public static final int _8 = 7046;
-		public static final int _9 = 7047;
-		public static final int _10 = 7048;
-		public static final int _11 = 7049;
-		public static final int _12 = 7050;
+		public static final int _0 = 7040;
+		public static final int _1 = 7041;
+		public static final int _2 = 7042;
+		public static final int _3 = 7043;
+		public static final int _4 = 7044;
+		public static final int _5 = 7045;
+		public static final int _6 = 7046;
+		public static final int _7 = 7047;
+		public static final int _8 = 7048;
+		public static final int _9 = 7049;
+		public static final int _10 = 7050;
+		public static final int _11 = 7051;
+		public static final int _12 = 7052;
 	}
 
 	public static final class SailingIcons18x18
 	{
-		public static final int _0 = 7051;
-		public static final int _1 = 7052;
-		public static final int _2 = 7053;
-		public static final int _3 = 7054;
-		public static final int _4 = 7055;
-		public static final int _5 = 7056;
-		public static final int _6 = 7057;
-		public static final int _7 = 7058;
-		public static final int _8 = 7059;
-		public static final int _9 = 7060;
+		public static final int _0 = 7053;
+		public static final int _1 = 7054;
+		public static final int _2 = 7055;
+		public static final int _3 = 7056;
+		public static final int _4 = 7057;
+		public static final int _5 = 7058;
+		public static final int _6 = 7059;
+		public static final int _7 = 7060;
+		public static final int _8 = 7061;
+		public static final int _9 = 7062;
 	}
 
 	public static final class IconSailingTabs20x20
 	{
-		public static final int _0 = 7061;
-		public static final int _1 = 7062;
-		public static final int _2 = 7063;
-		public static final int _3 = 7064;
-		public static final int _4 = 7065;
+		public static final int _0 = 7063;
+		public static final int _1 = 7064;
+		public static final int _2 = 7065;
+		public static final int _3 = 7066;
+		public static final int _4 = 7067;
 	}
 
 	public static final class IconSailingFacilities24x24
 	{
-		public static final int _0 = 7066;
-		public static final int _1 = 7067;
-		public static final int _2 = 7068;
-		public static final int _3 = 7069;
-		public static final int _4 = 7070;
-		public static final int _5 = 7071;
-		public static final int _6 = 7072;
-		public static final int _7 = 7073;
-		public static final int _8 = 7074;
-		public static final int _9 = 7075;
-		public static final int _10 = 7076;
-		public static final int _11 = 7077;
-		public static final int _12 = 7078;
-		public static final int _13 = 7079;
-		public static final int _14 = 7080;
-		public static final int _15 = 7081;
-		public static final int _16 = 7082;
-		public static final int _17 = 7083;
-		public static final int _18 = 7084;
-		public static final int _19 = 7085;
-		public static final int _20 = 7086;
-		public static final int _21 = 7087;
-		public static final int _22 = 7088;
-		public static final int _23 = 7089;
+		public static final int _0 = 7068;
+		public static final int _1 = 7069;
+		public static final int _2 = 7070;
+		public static final int _3 = 7071;
+		public static final int _4 = 7072;
+		public static final int _5 = 7073;
+		public static final int _6 = 7074;
+		public static final int _7 = 7075;
+		public static final int _8 = 7076;
+		public static final int _9 = 7077;
+		public static final int _10 = 7078;
+		public static final int _11 = 7079;
+		public static final int _12 = 7080;
+		public static final int _13 = 7081;
+		public static final int _14 = 7082;
+		public static final int _15 = 7083;
+		public static final int _16 = 7084;
+		public static final int _17 = 7085;
+		public static final int _18 = 7086;
+		public static final int _19 = 7087;
+		public static final int _20 = 7088;
+		public static final int _21 = 7089;
+		public static final int _22 = 7090;
+		public static final int _23 = 7091;
 	}
 
 	public static final class IconSailingCrew18x18
 	{
-		public static final int _0 = 7090;
-		public static final int _1 = 7091;
-		public static final int _2 = 7092;
-		public static final int _3 = 7093;
-		public static final int _4 = 7094;
-		public static final int _5 = 7095;
-		public static final int _6 = 7096;
-		public static final int _7 = 7097;
-		public static final int _8 = 7098;
-		public static final int _9 = 7099;
+		public static final int _0 = 7092;
+		public static final int _1 = 7093;
+		public static final int _2 = 7094;
+		public static final int _3 = 7095;
+		public static final int _4 = 7096;
+		public static final int _5 = 7097;
+		public static final int _6 = 7098;
+		public static final int _7 = 7099;
+		public static final int _8 = 7100;
+		public static final int _9 = 7101;
 	}
 
 	public static final class IconSailingPlayer18x18
 	{
-		public static final int _0 = 7100;
-		public static final int _1 = 7101;
-		public static final int _2 = 7102;
-		public static final int _3 = 7103;
-		public static final int _4 = 7104;
+		public static final int _0 = 7102;
+		public static final int _1 = 7103;
+		public static final int _2 = 7104;
+		public static final int _3 = 7105;
+		public static final int _4 = 7106;
 	}
 
 	public static final class IconSailingWaxseal37x37
-	{
-		public static final int _0 = 7105;
-		public static final int _1 = 7106;
-	}
-
-	public static final class IconSailingWaxseal27x27
 	{
 		public static final int _0 = 7107;
 		public static final int _1 = 7108;
 	}
 
-	public static final class IconSailingBoats35x35
+	public static final class IconSailingWaxseal27x27
 	{
 		public static final int _0 = 7109;
 		public static final int _1 = 7110;
-		public static final int _2 = 7111;
-		public static final int _3 = 7112;
+	}
+
+	public static final class IconSailingBoats35x35
+	{
+		public static final int _0 = 7111;
+		public static final int _1 = 7112;
+		public static final int _2 = 7113;
+		public static final int _3 = 7114;
 	}
 
 	public static final class IconSailingDocks18x18
 	{
-		public static final int _0 = 7113;
-		public static final int _1 = 7114;
-		public static final int _2 = 7115;
-		public static final int _3 = 7116;
-		public static final int _4 = 7117;
-		public static final int _5 = 7118;
-		public static final int _6 = 7119;
-		public static final int _7 = 7120;
-		public static final int _8 = 7121;
-		public static final int _9 = 7122;
-		public static final int _10 = 7123;
-		public static final int _11 = 7124;
-		public static final int _12 = 7125;
-		public static final int _13 = 7126;
-		public static final int _14 = 7127;
-		public static final int _15 = 7128;
-		public static final int _16 = 7129;
-		public static final int _17 = 7130;
-		public static final int _18 = 7131;
-		public static final int _19 = 7132;
-		public static final int _20 = 7133;
-		public static final int _21 = 7134;
-		public static final int _22 = 7135;
-		public static final int _23 = 7136;
-		public static final int _24 = 7137;
-		public static final int _25 = 7138;
-		public static final int _26 = 7139;
-		public static final int _27 = 7140;
-		public static final int _28 = 7141;
-		public static final int _29 = 7142;
-		public static final int _30 = 7143;
-		public static final int _31 = 7144;
-		public static final int _32 = 7145;
-		public static final int _33 = 7146;
-		public static final int _34 = 7147;
-		public static final int _35 = 7148;
-		public static final int _36 = 7149;
-		public static final int _37 = 7150;
-		public static final int _38 = 7151;
-		public static final int _39 = 7152;
-		public static final int _40 = 7153;
-		public static final int _41 = 7154;
-		public static final int _42 = 7155;
-		public static final int _43 = 7156;
-		public static final int _44 = 7157;
-		public static final int _45 = 7158;
-		public static final int _46 = 7159;
-		public static final int _47 = 7160;
-		public static final int _48 = 7161;
-		public static final int _49 = 7162;
-		public static final int _50 = 7163;
-		public static final int _51 = 7164;
-		public static final int _52 = 7165;
-		public static final int _53 = 7166;
-		public static final int _54 = 7167;
-		public static final int _55 = 7168;
-		public static final int _56 = 7169;
-		public static final int _57 = 7170;
-		public static final int _58 = 7171;
-		public static final int _59 = 7172;
+		public static final int _0 = 7115;
+		public static final int _1 = 7116;
+		public static final int _2 = 7117;
+		public static final int _3 = 7118;
+		public static final int _4 = 7119;
+		public static final int _5 = 7120;
+		public static final int _6 = 7121;
+		public static final int _7 = 7122;
+		public static final int _8 = 7123;
+		public static final int _9 = 7124;
+		public static final int _10 = 7125;
+		public static final int _11 = 7126;
+		public static final int _12 = 7127;
+		public static final int _13 = 7128;
+		public static final int _14 = 7129;
+		public static final int _15 = 7130;
+		public static final int _16 = 7131;
+		public static final int _17 = 7132;
+		public static final int _18 = 7133;
+		public static final int _19 = 7134;
+		public static final int _20 = 7135;
+		public static final int _21 = 7136;
+		public static final int _22 = 7137;
+		public static final int _23 = 7138;
+		public static final int _24 = 7139;
+		public static final int _25 = 7140;
+		public static final int _26 = 7141;
+		public static final int _27 = 7142;
+		public static final int _28 = 7143;
+		public static final int _29 = 7144;
+		public static final int _30 = 7145;
+		public static final int _31 = 7146;
+		public static final int _32 = 7147;
+		public static final int _33 = 7148;
+		public static final int _34 = 7149;
+		public static final int _35 = 7150;
+		public static final int _36 = 7151;
+		public static final int _37 = 7152;
+		public static final int _38 = 7153;
+		public static final int _39 = 7154;
+		public static final int _40 = 7155;
+		public static final int _41 = 7156;
+		public static final int _42 = 7157;
+		public static final int _43 = 7158;
+		public static final int _44 = 7159;
+		public static final int _45 = 7160;
+		public static final int _46 = 7161;
+		public static final int _47 = 7162;
+		public static final int _48 = 7163;
+		public static final int _49 = 7164;
+		public static final int _50 = 7165;
+		public static final int _51 = 7166;
+		public static final int _52 = 7167;
+		public static final int _53 = 7168;
+		public static final int _54 = 7169;
+		public static final int _55 = 7170;
+		public static final int _56 = 7171;
+		public static final int _57 = 7172;
+		public static final int _58 = 7173;
+		public static final int _59 = 7174;
 	}
 
 	public static final class IconSailingStatus18x18
 	{
-		public static final int _0 = 7173;
-		public static final int _1 = 7174;
-		public static final int _2 = 7175;
+		public static final int _0 = 7175;
+		public static final int _1 = 7176;
+		public static final int _2 = 7177;
 	}
 
 	public static final class IconSailingFacilities16x16
 	{
-		public static final int _0 = 7176;
-		public static final int _1 = 7177;
-		public static final int _2 = 7178;
-		public static final int _3 = 7179;
-		public static final int _4 = 7180;
-		public static final int _5 = 7181;
-		public static final int _6 = 7182;
-		public static final int _7 = 7183;
-		public static final int _8 = 7184;
-		public static final int _9 = 7185;
-		public static final int _10 = 7186;
-		public static final int _11 = 7187;
-		public static final int _12 = 7188;
-		public static final int _13 = 7189;
-		public static final int _14 = 7190;
-		public static final int _15 = 7191;
-		public static final int _16 = 7192;
-		public static final int _17 = 7193;
-		public static final int _18 = 7194;
-		public static final int _19 = 7195;
-		public static final int _20 = 7196;
-		public static final int _21 = 7197;
-		public static final int _22 = 7198;
-		public static final int _23 = 7199;
+		public static final int _0 = 7178;
+		public static final int _1 = 7179;
+		public static final int _2 = 7180;
+		public static final int _3 = 7181;
+		public static final int _4 = 7182;
+		public static final int _5 = 7183;
+		public static final int _6 = 7184;
+		public static final int _7 = 7185;
+		public static final int _8 = 7186;
+		public static final int _9 = 7187;
+		public static final int _10 = 7188;
+		public static final int _11 = 7189;
+		public static final int _12 = 7190;
+		public static final int _13 = 7191;
+		public static final int _14 = 7192;
+		public static final int _15 = 7193;
+		public static final int _16 = 7194;
+		public static final int _17 = 7195;
+		public static final int _18 = 7196;
+		public static final int _19 = 7197;
+		public static final int _20 = 7198;
+		public static final int _21 = 7199;
+		public static final int _22 = 7200;
+		public static final int _23 = 7201;
 	}
 
 	public static final class HeadbarIce40
 	{
-		public static final int _0 = 7291;
-		public static final int _1 = 7292;
+		public static final int _0 = 6838;
+		public static final int _1 = 6839;
 	}
 }
