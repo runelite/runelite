@@ -470,7 +470,7 @@ class Zone
 	}
 
 	// this needs to be larger than the max model alpha face count * 3
-	private static final IntBuffer alphaElements = BufferUtils.createIntBuffer(16384);
+	private static final IntBuffer alphaElements = BufferUtils.createIntBuffer(FacePrioritySorter.MAX_VERTEX_COUNT * 3);
 
 	private static final int STATIC = 1;
 	private static final int TEMP = 2;
@@ -598,6 +598,12 @@ class Zone
 
 			if (packedFaces.length * 3 > alphaElements.remaining())
 			{
+				if (packedFaces.length * 3 > alphaElements.capacity())
+				{
+					log.debug("Alpha model too large: {}", packedFaces.length);
+					return;
+				}
+
 				flush();
 			}
 
