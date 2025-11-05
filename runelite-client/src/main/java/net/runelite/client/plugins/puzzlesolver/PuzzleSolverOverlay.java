@@ -69,7 +69,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private static final int INFO_BOX_TOP_BORDER = 2;
 	private static final int INFO_BOX_BOTTOM_BORDER = 2;
 
-	private static final int PUZZLE_TILE_SIZE = 39;
+	private static final int PUZZLE_TILE_SIZE = 50;
 	private static final int DOT_MARKER_MAX_SIZE = 24;
 	private static final int DOT_MARKER_MIN_SIZE = 4;
 
@@ -244,10 +244,10 @@ public class PuzzleSolverOverlay extends Overlay
 									int markerSize = (int) Math.round(DOT_MARKER_MAX_SIZE - numerator / denominator);
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2 - 1;
 
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2 - 1;
 
 									Color color = ColorUtil.colorLerp(config.dotColor(), config.dotEndColor(),
 										(double) (i - 1) / (movesToShow - 1));
@@ -313,10 +313,10 @@ public class PuzzleSolverOverlay extends Overlay
 									}
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
+											+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2 - 1;
 
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
+											+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2 - 1;
 
 									OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
 
