@@ -79,6 +79,17 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "smoothBanding",
+		name = "Remove color banding",
+		description = "Smooths out the color banding that is present in the CPU renderer.",
+		position = 2
+	)
+	default boolean smoothBanding()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "antiAliasingMode",
 		name = "Anti aliasing",
 		description = "Configures the anti-aliasing mode.",

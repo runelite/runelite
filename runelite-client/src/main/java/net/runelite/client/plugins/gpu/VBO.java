@@ -26,14 +26,7 @@ package net.runelite.client.plugins.gpu;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import static org.lwjgl.opengl.GL15.GL_WRITE_ONLY;
-import static org.lwjgl.opengl.GL15.glMapBuffer;
-import static org.lwjgl.opengl.GL15C.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15C.glBindBuffer;
-import static org.lwjgl.opengl.GL15C.glBufferData;
-import static org.lwjgl.opengl.GL15C.glDeleteBuffers;
-import static org.lwjgl.opengl.GL15C.glGenBuffers;
-import static org.lwjgl.opengl.GL15C.glUnmapBuffer;
+import static org.lwjgl.opengl.GL33C.*;
 
 class VBO
 {

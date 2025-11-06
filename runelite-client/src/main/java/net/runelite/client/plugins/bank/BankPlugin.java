@@ -702,7 +702,7 @@ public class BankPlugin extends Plugin
 
 			int itemId = wItem.getItemId();
 			// Doses: 1234 or Quantity: 1234
-			int doses = Integer.parseInt(wDoses.getText().split(": ")[1]);
+			int doses = Integer.parseInt(wDoses.getText().split(": ")[1].replace(",", ""));
 			var potionEnum = potionMap.get(itemId);
 			if (potionEnum == null)
 			{

@@ -31,6 +31,7 @@
 
 uniform sampler2DArray textures;
 uniform float brightness;
+uniform float smoothBanding;
 uniform vec4 fogColor;
 uniform float textureLightMode;
 
@@ -80,7 +81,10 @@ void main() {
     vec3 mul = (1.f - textureLightMode) * vec3(light) + textureLightMode * fColor.rgb;
     c = textureColor * vec4(mul, fColor.a);
   } else {
-    c = fColor;
+    // pick interpolated hsl or rgb depending on smooth banding setting
+    vec3 hsl = vec3(int(fHsl) >> 10 & 63, int(fHsl) >> 7 & 7, int(fHsl) & 127);
+    vec3 rgb = mix(fColor.rgb, hslToRgb(hsl), smoothBanding);
+    c = vec4(rgb, fColor.a);
   }
 
 #if COLORBLIND_MODE > 0

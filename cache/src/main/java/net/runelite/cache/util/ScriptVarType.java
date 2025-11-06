@@ -76,6 +76,7 @@ public enum ScriptVarType
 	HITMARK(62, '×', "hitmark"),
 	STRUCT(73, 'J', "struct"),
 	DBROW(74, 'Ð', "dbrow"),
+	DBTABLE(118, 'Ø', "dbtable"),
 	VARP(209, '7', "varp"),
 	;
 

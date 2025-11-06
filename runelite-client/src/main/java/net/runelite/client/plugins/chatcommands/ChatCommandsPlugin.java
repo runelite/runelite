@@ -2848,6 +2848,8 @@ public class ChatCommandsPlugin extends Plugin
 			case "CON":
 			case "CONSTRUCT":
 				return net.runelite.api.Skill.CONSTRUCTION.getName();
+			case "SAIL":
+				return net.runelite.api.Skill.SAILING.getName();
 			case "ALL":
 			case "TOTAL":
 				return "Overall";

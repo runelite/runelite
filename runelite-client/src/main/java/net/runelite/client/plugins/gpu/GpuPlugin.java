@@ -190,6 +190,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private VAOList vaoA;
 	private VAOList vaoPO;
 
+	private SceneUploader clientUploader, mapUploader;
+
 	static class SceneContext
 	{
 		final int sizeX, sizeZ;
@@ -252,6 +254,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniFogDepth;
 	private int uniDrawDistance;
 	private int uniExpandedMapLoadingChunks;
+	private int uniSmoothBanding;
 	private int uniWorldProj;
 	private static int uniEntityProj;
 	static int uniEntityTint;
@@ -274,6 +277,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		root = new SceneContext(NUM_ZONES, NUM_ZONES);
 		subs = new SceneContext[MAX_WORLDVIEWS];
+		clientUploader = new SceneUploader(renderCallbackManager);
+		mapUploader = new SceneUploader(renderCallbackManager);
 		clientThread.invoke(() ->
 		{
 			try
@@ -583,6 +588,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniWorldProj = glGetUniformLocation(glProgram, "worldProj");
 		uniEntityProj = glGetUniformLocation(glProgram, "entityProj");
 		uniEntityTint = glGetUniformLocation(glProgram, "entityTint");
+		uniSmoothBanding = glGetUniformLocation(glProgram, "smoothBanding");
 		uniBrightness = glGetUniformLocation(glProgram, "brightness");
 		uniUseFog = glGetUniformLocation(glProgram, "useFog");
 		uniFogColor = glGetUniformLocation(glProgram, "fogColor");
@@ -935,6 +941,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Brightness happens to also be stored in the texture provider, so we use that
 		TextureProvider textureProvider = client.getTextureProvider();
 		glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
+		glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 		glUniform1f(uniTextureLightMode, config.brightTextures() ? 1f : 0f);
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -1284,8 +1291,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				zone = ctx.zones[x][z] = new Zone();
 
 				Scene scene = wv.getScene();
-				SceneUploader sceneUploader = injector.getInstance(SceneUploader.class);
-				sceneUploader.zoneSize(scene, zone, x, z);
+				clientUploader.zoneSize(scene, zone, x, z);
 
 				VBO o = null, a = null;
 				int sz = zone.sizeO * Zone.VERT_SIZE * 3;
@@ -1306,7 +1312,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				zone.init(o, a);
 
-				sceneUploader.uploadZone(scene, zone, x, z);
+				clientUploader.uploadZone(scene, zone, x, z);
 
 				zone.unmap();
 				zone.initialized = true;
@@ -1663,7 +1669,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 
 		// size the zones which require upload
-		SceneUploader sceneUploader = injector.getInstance(SceneUploader.class);
 		Stopwatch sw = Stopwatch.createStarted();
 		int len = 0, lena = 0;
 		int reused = 0, newzones = 0;
@@ -1676,7 +1681,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				{
 					assert zone.glVao == 0;
 					assert zone.glVaoA == 0;
-					sceneUploader.zoneSize(scene, zone, x, z);
+					mapUploader.zoneSize(scene, zone, x, z);
 					len += zone.sizeO;
 					lena += zone.sizeA;
 					newzones++;
@@ -1749,7 +1754,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				if (!zone.initialized)
 				{
-					sceneUploader.uploadZone(scene, zone, x, z);
+					mapUploader.uploadZone(scene, zone, x, z);
 				}
 			}
 		}
@@ -1850,13 +1855,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final SceneContext ctx = new SceneContext(worldView.getSizeX() >> 3, worldView.getSizeY() >> 3);
 		subs[worldViewId] = ctx;
 
-		SceneUploader sceneUploader = injector.getInstance(SceneUploader.class);
 		for (int x = 0; x < ctx.sizeX; ++x)
 		{
 			for (int z = 0; z < ctx.sizeZ; ++z)
 			{
 				Zone zone = ctx.zones[x][z];
-				sceneUploader.zoneSize(scene, zone, x, z);
+				mapUploader.zoneSize(scene, zone, x, z);
 			}
 		}
 
@@ -1908,7 +1912,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				Zone zone = ctx.zones[x][z];
 
-				sceneUploader.uploadZone(scene, zone, x, z);
+				mapUploader.uploadZone(scene, zone, x, z);
 			}
 		}
 	}

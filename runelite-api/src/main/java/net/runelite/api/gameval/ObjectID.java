@@ -8171,11 +8171,6 @@ public final class ObjectID extends ObjectID1
 	/**
 	 * Ladder
 	 */
-	public static final int DRAGONSHIPLADDERTOP2 = 2591;
-
-	/**
-	 * Ladder
-	 */
 	public static final int DRAGONSHIPLADDER = 2592;
 
 	/**
@@ -9908,17 +9903,17 @@ public final class ObjectID extends ObjectID1
 	public static final int FAI_VARROCK_SACK_PILE = 3025;
 
 	/**
-	 * Shelf
+	 * Shelves
 	 */
 	public static final int FAI_VARROCK_SHELVES1 = 3026;
 
 	/**
-	 * Shelf
+	 * Shelves
 	 */
 	public static final int FAI_VARROCK_SHELVES2 = 3027;
 
 	/**
-	 * Shelf
+	 * Shelves
 	 */
 	public static final int FAI_VARROCK_SHELVES3 = 3028;
 
@@ -59445,7 +59440,7 @@ public final class ObjectID extends ObjectID1
 	public static final int SEASLUG_WOODEN_ROOF_WINDOW_TWO = 18398;
 
 	/**
-	 * Bone barrel
+	 * Barrel
 	 */
 	public static final int SEASLUG_BARREL_FISHBONES = 18399;
 
@@ -64459,7 +64454,7 @@ public final class ObjectID extends ObjectID1
 	public static final int BARBASSAULT_CRATE_STACKED = 20216;
 
 	/**
-	 * Barrel
+	 * Barrels
 	 */
 	public static final int BARBASSAULT_BARREL_STACKED = 20217;
 	public static final int BARBASSAULT_RECRUITMENT_DOOR_TOP = 20218;
@@ -78369,7 +78364,7 @@ public final class ObjectID extends ObjectID1
 	public static final int DRAGON_SLAYER_QIP_ROCKCOLUMN3 = 25082;
 
 	/**
-	 * Stalagmite
+	 * Stalactite
 	 */
 	public static final int DRAGON_SLAYER_QIP_STAGAMITE = 25083;
 
@@ -85389,7 +85384,7 @@ public final class ObjectID extends ObjectID1
 	public static final int PISCARILIUS_DRAWERS_LARGE = 27674;
 
 	/**
-	 * Drawers
+	 * Wardrobe
 	 */
 	public static final int PISCARILIUS_WARDROBE_01 = 27675;
 
@@ -95946,7 +95941,7 @@ public final class ObjectID extends ObjectID1
 	public static final int FOSSIL_U_ROCKS_FLOOR_SOFT_09 = 30795;
 
 	/**
-	 * Bank Chest-wreck
+	 * Bank Chest
 	 */
 	public static final int FOSSIL_WASHED_UP_CHEST = 30796;
 

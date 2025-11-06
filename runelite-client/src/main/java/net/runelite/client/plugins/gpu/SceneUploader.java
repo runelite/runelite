@@ -27,7 +27,6 @@ package net.runelite.client.plugins.gpu;
 import java.nio.IntBuffer;
 import java.util.HashSet;
 import java.util.Set;
-import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
@@ -48,13 +47,30 @@ import net.runelite.client.callback.RenderCallbackManager;
 @Slf4j
 class SceneUploader
 {
+	private static final float[] modelLocalX;
+	private static final float[] modelLocalY;
+	private static final float[] modelLocalZ;
+
+	private final int[] modelLocalXI;
+	private final int[] modelLocalYI;
+	private final int[] modelLocalZI;
+
+	static
+	{
+		modelLocalX = FacePrioritySorter.modelLocalX;
+		modelLocalY = FacePrioritySorter.modelLocalY;
+		modelLocalZ = FacePrioritySorter.modelLocalZ;
+	}
+
 	private final RenderCallbackManager renderCallbackManager;
 	private int basex, basez, rid, level;
 
-	@Inject
 	SceneUploader(RenderCallbackManager renderCallbackManager)
 	{
 		this.renderCallbackManager = renderCallbackManager;
+		modelLocalXI = new int[FacePrioritySorter.MAX_VERTEX_COUNT];
+		modelLocalYI = new int[FacePrioritySorter.MAX_VERTEX_COUNT];
+		modelLocalZI = new int[FacePrioritySorter.MAX_VERTEX_COUNT];
 	}
 
 	void zoneSize(Scene scene, Zone zone, int mzx, int mzz)
@@ -883,28 +899,6 @@ class SceneUploader
 		vb.put(Float.floatToIntBits(y));
 		vb.put(Float.floatToIntBits(z));
 		vb.put(w);
-	}
-
-	static float[] modelLocalX;
-	static float[] modelLocalY;
-	static float[] modelLocalZ;
-
-	// uploadStaticModel runs on the maploader thread, so requires its own buffers
-	private final static int[] modelLocalXI;
-	private final static int[] modelLocalYI;
-	private final static int[] modelLocalZI;
-
-	static final int MAX_VERTEX_COUNT = 6500;
-
-	static
-	{
-		modelLocalX = new float[MAX_VERTEX_COUNT];
-		modelLocalY = new float[MAX_VERTEX_COUNT];
-		modelLocalZ = new float[MAX_VERTEX_COUNT];
-
-		modelLocalXI = new int[MAX_VERTEX_COUNT];
-		modelLocalYI = new int[MAX_VERTEX_COUNT];
-		modelLocalZI = new int[MAX_VERTEX_COUNT];
 	}
 
 	static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)
