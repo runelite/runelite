@@ -1464,7 +1464,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else
 		{
 			glDpiAwareViewport(0, 0, canvasWidth, canvasHeight);
-			glUniform2i(uniTexTargetDimensions, canvasWidth, canvasHeight);
+			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+			final AffineTransform t = graphicsConfiguration.getDefaultTransform();
+			glUniform2i(uniTexTargetDimensions, getScaledValue(t.getScaleX(), canvasWidth), getScaledValue(t.getScaleY(), canvasHeight));
 		}
 
 		// Set the sampling function used when stretching the UI.
