@@ -38,21 +38,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
@@ -72,27 +72,27 @@ import okhttp3.Response;
 class WikiDpsManager
 {
 	private static final int[] SPRITE_IDS_INACTIVE = {
-		SpriteID.DIALOG_BACKGROUND_BRIGHTER,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_LEFT,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_RIGHT,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_LEFT,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_RIGHT,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_LEFT,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_TOP,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_RIGHT,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_BOTTOM,
+		SpriteID.TRADEBACKING_LIGHT,
+		SpriteID.V2StoneButtonOut.A_TOP_LEFT,
+		SpriteID.V2StoneButtonOut.A_TOP_RIGHT,
+		SpriteID.V2StoneButtonOut.A_BOTTOM_LEFT,
+		SpriteID.V2StoneButtonOut.A_BOTTOM_RIGHT,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_LEFT,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_TOP,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_RIGHT,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_BOTTOM,
 	};
 
 	private static final int[] SPRITE_IDS_ACTIVE = {
-		SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_LEFT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_RIGHT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_LEFT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_RIGHT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_LEFT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_TOP_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_RIGHT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_BOTTOM_HOVERED,
+		SpriteID.TRADEBACKING_DARK,
+		SpriteID.V2StoneButtonIn.A_TOP_LEFT,
+		SpriteID.V2StoneButtonIn.A_TOP_RIGHT,
+		SpriteID.V2StoneButtonIn.A_BOTTOM_LEFT,
+		SpriteID.V2StoneButtonIn.A_BOTTOM_RIGHT,
+		SpriteID.V2StoneButtonIn.A_LEFT,
+		SpriteID.V2StoneButtonIn.A_TOP,
+		SpriteID.V2StoneButtonIn.A_RIGHT,
+		SpriteID.V2StoneButtonIn.A_BOTTOM,
 	};
 
 	private static final int FONT_COLOUR_INACTIVE = 0xff981f;
@@ -145,11 +145,11 @@ class WikiDpsManager
 
 			if (!setBonus)
 			{
-				if (interfaceId == InterfaceID.BANK)
+				if (interfaceId == InterfaceID.BANKMAIN)
 				{
 					clientThread.invokeLater(() -> addButton(Screen.BANK_EQUIPMENT, this::launch));
 				}
-				else if (interfaceId == InterfaceID.EQUIPMENT_BONUSES)
+				else if (interfaceId == InterfaceID.EQUIPMENT)
 				{
 					addButton(Screen.EQUIPMENT_BONUSES, this::launch);
 				}
@@ -161,8 +161,8 @@ class WikiDpsManager
 	@RequiredArgsConstructor
 	enum Screen
 	{
-		EQUIPMENT_BONUSES(ComponentID.EQUIPMENT_BONUSES_PARENT, ComponentID.EQUIPMENT_BONUSES_SET_BONUS, ComponentID.EQUIPMENT_BONUSES_STAT_BONUS, 55),
-		BANK_EQUIPMENT(ComponentID.BANK_EQUIPMENT_PARENT, ComponentID.BANK_EQUIPMENT_SET_BONUS, ComponentID.BANK_EQUIPMENT_STAT_BONUS, 49),
+		EQUIPMENT_BONUSES(InterfaceID.Equipment.CONTENTS, InterfaceID.Equipment.NEXT_PAGE, InterfaceID.Equipment.PREVIOUS_PAGE, 55),
+		BANK_EQUIPMENT(InterfaceID.Bankmain.WORNITEMS_CONTAINER, InterfaceID.Bankmain.NEXT_PAGE, InterfaceID.Bankmain.PREVIOUS_PAGE, 49),
 		;
 
 		/**
@@ -217,14 +217,10 @@ class WikiDpsManager
 		// we must also use absolute for all the children below,
 		// which means it's necessary to offset the values by simulating corresponding pos/size modes.
 		int padding = 8;
-		int w = setBonus.getOriginalWidth();
-		int h = setBonus.getOriginalHeight();
-		int x = setBonus.getOriginalX() + (w / 2) + (padding / 2);
-		int y = setBonus.getOriginalY();
-		if (screen == Screen.BANK_EQUIPMENT) // uses ABSOLUTE_CENTER
-		{
-			y += parent.getHeight() / 2 - setBonus.getHeight() / 2;
-		}
+		final int w = setBonus.getOriginalWidth();
+		final int h = setBonus.getOriginalHeight();
+		final int x = setBonus.getOriginalX() + (w / 2) + (padding / 2);
+		final int y = setBonus.getOriginalY();
 
 		// now shift the Set Bonus and Stat Bonus buttons over a bit to make room
 		setBonus.setOriginalX(setBonus.getOriginalX() - (w / 2) - (padding / 2))
@@ -242,16 +238,31 @@ class WikiDpsManager
 		spriteWidgets[0] = parent.createChild(-1, WidgetType.GRAPHIC)
 			.setSpriteId(refComponents[0].getSpriteId())
 			.setPos(bgX, bgY)
-			.setSize(bgWidth, bgHeight);
+			.setSize(bgWidth, bgHeight)
+			.setYPositionMode(statBonus.getYPositionMode());
 		spriteWidgets[0].revalidate();
 
-		// borders and corners all use absolute positioning which is easy
+		// borders and corners
 		for (int i = 1; i < 9; i++)
 		{
-			spriteWidgets[i] = parent.createChild(-1, WidgetType.GRAPHIC)
+			Widget c = spriteWidgets[i] = parent.createChild(-1, WidgetType.GRAPHIC)
 				.setSpriteId(refComponents[i].getSpriteId())
-				.setPos(x + refComponents[i].getOriginalX(), y + refComponents[i].getOriginalY())
 				.setSize(refComponents[i].getOriginalWidth(), refComponents[i].getOriginalHeight());
+			if (statBonus.getYPositionMode() == WidgetPositionMode.ABSOLUTE_CENTER)
+			{
+				// Convert x/y from the reference component's, whose parent is the Set Bonus layer,
+				// to our components whose parent is the bank equipment parent.
+				// For y we have to reverse the ABSOLUTE_CENTER y calculation to convert
+				// the reference component original y into an offset from where the client will
+				// compute the ABSOLUTE_CENTER y to be.
+				c.setPos(x + refComponents[i].getOriginalX(), y - (setBonus.getHeight() - refComponents[i].getHeight() + 1) / 2 + refComponents[i].getOriginalY())
+					.setYPositionMode(statBonus.getYPositionMode());
+			}
+			else
+			{
+				c.setPos(x + refComponents[i].getOriginalX(), y + refComponents[i].getOriginalY());
+			}
+
 			spriteWidgets[i].revalidate();
 		}
 
@@ -265,7 +276,8 @@ class WikiDpsManager
 			.setXTextAlignment(refComponents[9].getXTextAlignment())
 			.setYTextAlignment(refComponents[9].getYTextAlignment())
 			.setPos(x, y)
-			.setSize(w, h);
+			.setSize(w, h)
+			.setYPositionMode(statBonus.getYPositionMode());
 		text.revalidate();
 
 		// we'll give the text layer the listeners since it covers the whole area
@@ -333,7 +345,7 @@ class WikiDpsManager
 		if (slot == EquipmentInventorySlot.BOOTS && itemContainer.count() == 1 && itemContainer.contains(ItemID.CHEFS_HAT))
 		{
 			JsonObject o = new JsonObject();
-			o.addProperty("id", ItemID.SNAIL_SHELL);
+			o.addProperty("id", ItemID.TEMPLETREK_SNAIL_SHELL);
 			return o;
 		}
 
@@ -353,7 +365,7 @@ class WikiDpsManager
 
 		// Build the player's loadout data
 		JsonArray loadouts = new JsonArray();
-		ItemContainer eqContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer eqContainer = client.getItemContainer(InventoryID.WORN);
 
 		JsonObject l = new JsonObject();
 		JsonObject eq = new JsonObject();
@@ -383,10 +395,10 @@ class WikiDpsManager
 		l.add("skills", skills);
 
 		JsonObject buffs = new JsonObject();
-		buffs.addProperty("inWilderness", client.getVarbitValue(Varbits.IN_WILDERNESS) == 1);
-		buffs.addProperty("kandarinDiary", client.getVarbitValue(Varbits.DIARY_KANDARIN_HARD) == 1);
-		buffs.addProperty("onSlayerTask", client.getVarpValue(VarPlayer.SLAYER_TASK_SIZE) > 0);
-		buffs.addProperty("chargeSpell", client.getVarpValue(VarPlayer.CHARGE_GOD_SPELL) > 0);
+		buffs.addProperty("inWilderness", client.getVarbitValue(VarbitID.INSIDE_WILDERNESS) == 1);
+		buffs.addProperty("kandarinDiary", client.getVarbitValue(VarbitID.KANDARIN_DIARY_HARD_COMPLETE) == 1);
+		buffs.addProperty("onSlayerTask", client.getVarpValue(VarPlayerID.SLAYER_COUNT) > 0);
+		buffs.addProperty("chargeSpell", client.getVarpValue(VarPlayerID.MAGEARENA_CHARGE) > 0);
 		l.add("buffs", buffs);
 
 		l.addProperty("name", client.getLocalPlayer().getName());

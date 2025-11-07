@@ -39,10 +39,10 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.AlternateSprites;
 import net.runelite.client.game.SkillIconManager;
@@ -50,7 +50,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.ItemStatChangesService;
 import net.runelite.client.plugins.itemstats.StatChange;
-import net.runelite.client.plugins.statusbars.config.BarMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -73,8 +72,6 @@ class StatusBarsOverlay extends Overlay
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
-	private static final int IMAGE_SIZE = 17;
-	private static final Dimension ICON_DIMENSIONS = new Dimension(26, 25);
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
@@ -84,16 +81,13 @@ class StatusBarsOverlay extends Overlay
 	private final StatusBarsPlugin plugin;
 	private final StatusBarsConfig config;
 	private final ItemStatChangesService itemStatService;
+	private final SkillIconManager skillIconManager;
 	private final SpriteManager spriteManager;
 
-	private final Image prayerIcon;
 	private final Image heartDisease;
 	private final Image heartPoison;
 	private final Image heartVenom;
-	private Image heartIcon;
-	private Image specialIcon;
-	private Image energyIcon;
-	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
+	private final Map<StatusBarsConfig.BarMode, BarRenderer> barRenderers = new EnumMap<>(StatusBarsConfig.BarMode.class);
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
@@ -104,26 +98,25 @@ class StatusBarsOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.itemStatService = itemstatservice;
+		this.skillIconManager = skillIconManager;
 		this.spriteManager = spriteManager;
 
-		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartDisease = ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART);
+		heartPoison = ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART);
+		heartVenom = ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART);
 
 		initRenderers();
 	}
 
 	private void initRenderers()
 	{
-		barRenderers.put(BarMode.DISABLED, null);
-		barRenderers.put(BarMode.HITPOINTS, new BarRenderer(
+		barRenderers.put(StatusBarsConfig.BarMode.HITPOINTS, new BarRenderer(
 			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
 			() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
 			() ->
 			{
-				final int poisonState = client.getVarpValue(VarPlayer.POISON);
+				final int poisonState = client.getVarpValue(VarPlayerID.POISON);
 
 				if (poisonState >= 1000000)
 				{
@@ -135,12 +128,12 @@ class StatusBarsOverlay extends Overlay
 					return POISONED_COLOR;
 				}
 
-				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+				if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
 				{
 					return DISEASE_COLOR;
 				}
 
-				if (client.getVarbitValue(Varbits.PARASITE) >= 1)
+				if (client.getVarbitValue(VarbitID.PARASITE) >= 1)
 				{
 					return PARASITE_COLOR;
 				}
@@ -150,7 +143,7 @@ class StatusBarsOverlay extends Overlay
 			() -> HEAL_COLOR,
 			() ->
 			{
-				final int poisonState = client.getVarpValue(VarPlayer.POISON);
+				final int poisonState = client.getVarpValue(VarPlayerID.POISON);
 
 				if (poisonState > 0 && poisonState < 50)
 				{
@@ -162,15 +155,15 @@ class StatusBarsOverlay extends Overlay
 					return heartVenom;
 				}
 
-				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
+				if (client.getVarpValue(VarPlayerID.DISEASE) > 0)
 				{
 					return heartDisease;
 				}
 
-				return heartIcon;
+				return loadSprite(SpriteID.OrbIcon.HITPOINTS);
 			}
 		));
-		barRenderers.put(BarMode.PRAYER, new BarRenderer(
+		barRenderers.put(StatusBarsConfig.BarMode.PRAYER, new BarRenderer(
 			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.PRAYER),
 			() -> client.getBoostedSkillLevel(Skill.PRAYER),
 			() -> getRestoreValue(Skill.PRAYER.getName()),
@@ -190,15 +183,15 @@ class StatusBarsOverlay extends Overlay
 				return prayerColor;
 			},
 			() -> PRAYER_HEAL_COLOR,
-			() -> prayerIcon
+			() -> skillIconManager.getSkillImage(Skill.PRAYER, true)
 		));
-		barRenderers.put(BarMode.RUN_ENERGY, new BarRenderer(
+		barRenderers.put(StatusBarsConfig.BarMode.RUN_ENERGY, new BarRenderer(
 			() -> MAX_RUN_ENERGY_VALUE,
 			() -> client.getEnergy() / 100,
 			() -> getRestoreValue("Run Energy"),
 			() ->
 			{
-				if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+				if (client.getVarbitValue(VarbitID.STAMINA_ACTIVE) != 0)
 				{
 					return RUN_STAMINA_COLOR;
 				}
@@ -208,15 +201,23 @@ class StatusBarsOverlay extends Overlay
 				}
 			},
 			() -> ENERGY_HEAL_COLOR,
-			() -> energyIcon
+			() -> loadSprite(SpriteID.OrbIcon.WALK)
 		));
-		barRenderers.put(BarMode.SPECIAL_ATTACK, new BarRenderer(
+		barRenderers.put(StatusBarsConfig.BarMode.SPECIAL_ATTACK, new BarRenderer(
 			() -> MAX_SPECIAL_ATTACK_VALUE,
-			() -> client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
+			() -> client.getVarpValue(VarPlayerID.SA_ENERGY) / 10,
 			() -> 0,
 			() -> SPECIAL_ATTACK_COLOR,
-			() -> SPECIAL_ATTACK_COLOR,
-			() -> specialIcon
+			() -> null,
+			() -> loadSprite(SpriteID.OrbIcon.SPECIAL)
+		));
+		barRenderers.put(StatusBarsConfig.BarMode.WARMTH, new BarRenderer(
+			() -> 100,
+			() -> client.getVarbitValue(VarbitID.WINT_WARMTH) / 10,
+			() -> 0,
+			() -> new Color(244, 97, 0),
+			() -> null,
+			() -> skillIconManager.getSkillImage(Skill.FIREMAKING, true)
 		));
 	}
 
@@ -272,8 +273,6 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-		buildIcons();
-
 		BarRenderer left = barRenderers.get(config.leftBarMode());
 		BarRenderer right = barRenderers.get(config.rightBarMode());
 
@@ -303,7 +302,7 @@ class StatusBarsOverlay extends Overlay
 		final Widget widget = entry.getWidget();
 		int restoreValue = 0;
 
-		if (widget != null && widget.getId() == ComponentID.INVENTORY_CONTAINER)
+		if (widget != null && widget.getId() == InterfaceID.Inventory.ITEMS)
 		{
 			final Effect change = itemStatService.getItemStatChanges(widget.getItemId());
 
@@ -324,35 +323,13 @@ class StatusBarsOverlay extends Overlay
 		return restoreValue;
 	}
 
-	private void buildIcons()
+	private BufferedImage loadSprite(int spriteId)
 	{
-		if (heartIcon == null)
-		{
-			heartIcon = loadAndResize(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
-		}
-		if (energyIcon == null)
-		{
-			energyIcon = loadAndResize(SpriteID.MINIMAP_ORB_WALK_ICON);
-		}
-		if (specialIcon == null)
-		{
-			specialIcon = loadAndResize(SpriteID.MINIMAP_ORB_SPECIAL_ICON);
-		}
-	}
-
-	private BufferedImage loadAndResize(int spriteId)
-	{
-		BufferedImage image = spriteManager.getSprite(spriteId, 0);
-		if (image == null)
-		{
-			return null;
-		}
-
-		return ImageUtil.resizeCanvas(image, ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		return spriteManager.getSprite(spriteId, 0);
 	}
 
 	private boolean inLms()
 	{
-		return client.getWidget(ComponentID.LMS_INGAME_INFO) != null;
+		return client.getWidget(InterfaceID.BrOverlay.CONTENT) != null;
 	}
 }

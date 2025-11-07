@@ -27,10 +27,17 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 
 /**
- * Information about a specific {@link NpcID}
+ * Information about a specific {@link net.runelite.api.gameval.NpcID}
  */
 public interface NPCComposition extends ParamHolder
 {
+	int STAT_ATTACK = 0;
+	int STAT_DEFENCE = 1;
+	int STAT_STRENGTH = 2;
+	int STAT_HITPOINTS = 3;
+	int STAT_RANGED = 4;
+	int STAT_MAGIC = 5;
+
 	/**
 	 * Gets the name of the NPC.
 	 */
@@ -40,6 +47,12 @@ public interface NPCComposition extends ParamHolder
 	 * Gets the model IDs that compose this NPC.
 	 */
 	int[] getModels();
+
+	/**
+	 * Gets the model IDs that compose this NPC's chathead.
+	 */
+	@Nullable
+	int[] getChatheadModels();
 
 	/**
 	 * The 5 menuops this NPC has when in world. Index 0 corresponds to
@@ -59,12 +72,10 @@ public interface NPCComposition extends ParamHolder
 	 */
 	boolean isMinimapVisible();
 
-	boolean isVisible();
-
 	/**
 	 * Gets the ID of the NPC.
 	 *
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	int getId();
 
@@ -74,8 +85,8 @@ public interface NPCComposition extends ParamHolder
 	int getCombatLevel();
 
 	/**
-	 * Get the {@link NpcID}s of NPCs this can transform into, depending
-	 * on a {@link Varbits} or {@link VarPlayer}
+	 * Get the {@link net.runelite.api.gameval.NpcID}s of NPCs this can transform into, depending
+	 * on a {@link net.runelite.api.gameval.VarbitID} or {@link net.runelite.api.gameval.VarPlayerID}
 	 */
 	int[] getConfigs();
 
@@ -126,4 +137,22 @@ public interface NPCComposition extends ParamHolder
 	 * @return
 	 */
 	int getHeightScale();
+
+	/**
+	 * Get the npc footprint size
+	 * @return
+	 */
+	int getFootprintSize();
+
+	/**
+	 * Get the npc's stats
+	 * @see #STAT_ATTACK
+	 * @see #STAT_DEFENCE
+	 * @see #STAT_STRENGTH
+	 * @see #STAT_HITPOINTS
+	 * @see #STAT_RANGED
+	 * @see #STAT_MAGIC
+	 * @return
+	 */
+	int[] getStats();
 }

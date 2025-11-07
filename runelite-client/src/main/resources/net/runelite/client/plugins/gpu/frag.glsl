@@ -25,13 +25,14 @@
 #version 330
 
 //#define FRAG_UVS
-//#define ZBUF
+//#define ZBUF_DEBUG
+
+#include colorblind_mode
 
 uniform sampler2DArray textures;
 uniform float brightness;
 uniform float smoothBanding;
 uniform vec4 fogColor;
-uniform int colorBlindMode;
 uniform float textureLightMode;
 
 in vec4 fColor;
@@ -39,16 +40,19 @@ noperspective centroid in float fHsl;
 flat in int fTextureId;
 in vec2 fUv;
 in float fFogAmount;
-#ifdef ZBUF
+#ifdef ZBUF_DEBUG
 in float fDepth;
 #endif
 
 out vec4 FragColor;
 
 #include "hsl_to_rgb.glsl"
-#include "colorblind.glsl"
 
-#ifdef ZBUF
+#if COLORBLIND_MODE > 0
+#include "colorblind.glsl"
+#endif
+
+#ifdef ZBUF_DEBUG
 float linear_depth(float depth) {
   // depth is computed as 100/z, solve for z
   float z = 100 / depth;
@@ -63,21 +67,29 @@ void main() {
     int textureIdx = fTextureId - 1;
 
     vec4 textureColor = texture(textures, vec3(fUv, float(textureIdx)));
-    vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
+    vec4 textureColor0 = textureLod(textures, vec3(fUv, float(textureIdx)), 0.f);
+
+    if (textureColor0.a < 1.f)
+      discard;
+
+    textureColor = vec4(textureColor.rgb, 1.f);
+
+    textureColor = pow(textureColor, vec4(brightness, brightness, brightness, 1.f));
 
     // textured triangles hsl is a 7 bit lightness 2-126
     float light = fHsl / 127.f;
     vec3 mul = (1.f - textureLightMode) * vec3(light) + textureLightMode * fColor.rgb;
-    c = textureColorBrightness * vec4(mul, 1.f);
+    c = textureColor * vec4(mul, fColor.a);
   } else {
     // pick interpolated hsl or rgb depending on smooth banding setting
-    vec3 rgb = hslToRgb(int(fHsl)) * smoothBanding + fColor.rgb * (1.f - smoothBanding);
+    vec3 hsl = vec3(int(fHsl) >> 10 & 63, int(fHsl) >> 7 & 7, int(fHsl) & 127);
+    vec3 rgb = mix(fColor.rgb, hslToRgb(hsl), smoothBanding);
     c = vec4(rgb, fColor.a);
   }
 
-  if (colorBlindMode > 0) {
-    c.rgb = colorblind(colorBlindMode, c.rgb);
-  }
+#if COLORBLIND_MODE > 0
+  c.rgb = colorblind(c.rgb);
+#endif
 
   vec3 mixedColor = mix(c.rgb, fogColor.rgb, fFogAmount);
   FragColor = vec4(mixedColor, c.a);
@@ -88,7 +100,7 @@ void main() {
   }
 #endif
 
-#ifdef ZBUF
+#ifdef ZBUF_DEBUG
   float dc = linear_depth(fDepth);
   if (dc > 1.0) {
     FragColor = vec4(1, 0, 0, 1);

@@ -38,7 +38,7 @@ import net.runelite.api.IndexedSprite;
 @Setter
 public class TooltipComponent implements LayoutableRenderableEntity
 {
-	private static final Pattern BR = Pattern.compile("</br>");
+	private static final Pattern BR = Pattern.compile("</?br>");
 	private static final int OFFSET = 4;
 	private static final int MOD_ICON_WIDTH = 13; // they are generally 13px wide
 

@@ -68,8 +68,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -78,8 +76,9 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.Notifier;
@@ -93,6 +92,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -106,7 +106,6 @@ import net.runelite.client.util.OSType;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeTrade;
-import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
@@ -389,6 +388,11 @@ public class GrandExchangePlugin extends Plugin
 	@VisibleForTesting
 	void submitTrade(int slot, GrandExchangeOffer offer)
 	{
+		if (client.getEnvironment() != 0)
+		{
+			return;
+		}
+
 		GrandExchangeOfferState state = offer.getState();
 
 		if (state != GrandExchangeOfferState.CANCELLED_BUY && state != GrandExchangeOfferState.CANCELLED_SELL && state != GrandExchangeOfferState.BUYING && state != GrandExchangeOfferState.SELLING)
@@ -609,16 +613,16 @@ public class GrandExchangePlugin extends Plugin
 
 		switch (groupId)
 		{
-			case InterfaceID.BANK:
+			case InterfaceID.BANKMAIN:
 				// Don't show for view tabs and such
-				if (widgetId != ComponentID.BANK_ITEM_CONTAINER)
+				if (widgetId != InterfaceID.Bankmain.ITEMS)
 				{
 					break;
 				}
 			case InterfaceID.INVENTORY:
-			case InterfaceID.BANK_INVENTORY:
-			case InterfaceID.GRAND_EXCHANGE_INVENTORY:
-			case InterfaceID.SHOP_INVENTORY:
+			case InterfaceID.BANKSIDE:
+			case InterfaceID.GE_OFFERS_SIDE:
+			case InterfaceID.SHOPSIDE:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setType(MenuAction.RUNELITE);
 		}
@@ -648,11 +652,11 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT).toLowerCase();
+		String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT).toLowerCase();
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
-		Widget results = client.getWidget(ComponentID.CHATBOX_GE_SEARCH_RESULTS);
+		Widget results = client.getWidget(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS);
 		Widget[] children = results.getDynamicChildren();
 		int resultCount = children.length / 3;
 
@@ -690,7 +694,7 @@ public class GrandExchangePlugin extends Plugin
 		wasFuzzySearch = false;
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
-		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
@@ -756,10 +760,10 @@ public class GrandExchangePlugin extends Plugin
 			case "geSellExamineText":
 			{
 				boolean buy = "geBuyExamineText".equals(event.getEventName());
-				String[] stack = client.getStringStack();
-				int sz = client.getStringStackSize();
-				String fee = stack[sz - 2];
-				String examine = stack[sz - 3];
+				Object[] stack = client.getObjectStack();
+				int sz = client.getObjectStackSize();
+				String fee = (String) stack[sz - 2];
+				String examine = (String) stack[sz - 3];
 				String text = setExamineText(examine, fee, buy);
 				if (text != null)
 				{
@@ -806,10 +810,10 @@ public class GrandExchangePlugin extends Plugin
 		titleBuilder.append(')');
 
 		// Append to title
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
-		stringStack[stringStackSize - 1] += titleBuilder.toString();
+		objectStack[objectStackSize - 1] += titleBuilder.toString();
 	}
 
 	private void setLimitResetTime(int itemId)
@@ -853,12 +857,12 @@ public class GrandExchangePlugin extends Plugin
 
 	private String setExamineText(String examine, String fee, boolean buy)
 	{
-		final int itemId = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
+		final int itemId = client.getVarpValue(VarPlayerID.TRADINGPOST_SEARCH);
 		StringBuilder sb = new StringBuilder();
 
 		if (buy && config.enableGELimits())
 		{
-			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
+			final ItemStats itemStats = itemManager.getItemStats(itemId);
 
 			// If we have item buy limit, append it
 			if (itemStats != null && itemStats.getGeLimit() > 0)
@@ -930,7 +934,7 @@ public class GrandExchangePlugin extends Plugin
 		final String url = runeLiteConfig.useWikiItemPrices() ?
 			"https://prices.runescape.wiki/" + (client.getWorldType().contains(net.runelite.api.WorldType.FRESH_START_WORLD) ? "fsw" : "osrs") + "/item/" + itemId :
 			"https://services.runescape.com/m=itemdb_oldschool/"
-				+ name.replaceAll(" ", "+")
+				+ name.replace(" ", "+")
 				+ "/viewitem?obj="
 				+ itemId;
 		LinkBrowser.browse(url);

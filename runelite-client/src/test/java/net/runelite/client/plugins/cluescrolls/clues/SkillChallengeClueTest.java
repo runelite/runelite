@@ -24,10 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import static net.runelite.api.ItemID.BLOOD_RUNE;
-import static net.runelite.api.ItemID.DARK_ESSENCE_BLOCK;
-import static net.runelite.api.ItemID.LAW_RUNE;
-import static net.runelite.api.ItemID.SOUL_RUNE;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -55,9 +52,9 @@ public class SkillChallengeClueTest
 		ItemRequirement lawRune = requirements[2];
 		ItemRequirement soulRune = requirements[3];
 
-		assertTrue("Dark Essence Block", darkEssenceBlock.fulfilledBy(DARK_ESSENCE_BLOCK));
-		assertTrue("Blood Rune x1", bloodRune.fulfilledBy(BLOOD_RUNE));
-		assertTrue("Law Rune x2", lawRune.fulfilledBy(LAW_RUNE));
-		assertTrue("Soul Rune x2", soulRune.fulfilledBy(SOUL_RUNE));
+		assertTrue("Dark Essence Block", darkEssenceBlock.fulfilledBy(ItemID.ARCEUUS_ESSENCE_BLOCK_DARK));
+		assertTrue("Blood Rune x1", bloodRune.fulfilledBy(ItemID.BLOODRUNE));
+		assertTrue("Law Rune x2", lawRune.fulfilledBy(ItemID.LAWRUNE));
+		assertTrue("Soul Rune x2", soulRune.fulfilledBy(ItemID.SOULRUNE));
 	}
 }

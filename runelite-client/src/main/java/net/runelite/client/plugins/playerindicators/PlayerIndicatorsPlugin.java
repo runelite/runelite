@@ -49,7 +49,7 @@ import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -205,23 +205,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				|| type == PLAYER_EIGHTH_OPTION
 				|| type == RUNELITE_PLAYER)
 			{
-				Player[] players = client.getCachedPlayers();
-				Player player = null;
-
-				int identifier = entry.getIdentifier();
-
-				// 'Walk here' identifiers are offset by 1 because the default
-				// identifier for this option is 0, which is also a player index.
-				if (type == WALK)
-				{
-					identifier--;
-				}
-
-				if (identifier >= 0 && identifier < players.length)
-				{
-					player = players[identifier];
-				}
-
+				Player player = entry.getPlayer();
 				if (player == null)
 				{
 					continue;
@@ -290,7 +274,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			clientThread.invokeLater(() ->
 			{
-				Widget tradeTitle = client.getWidget(ComponentID.TRADE_HEADER);
+				Widget tradeTitle = client.getWidget(InterfaceID.Trademain.TITLE);
 				String header = tradeTitle.getText();
 				String playerName = header.substring(TRADING_WITH_TEXT.length());
 

@@ -46,7 +46,9 @@ enum XpWorldType
 		{
 			return 5;
 		}
-	};
+	},
+	PVP_ARENA,
+	;
 
 	int modifier(Client client)
 	{
@@ -63,6 +65,8 @@ enum XpWorldType
 				return DMM;
 			case SEASONAL:
 				return LEAGUE;
+			case PVP_ARENA:
+				return PVP_ARENA;
 			default:
 				return NORMAL;
 		}

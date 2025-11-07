@@ -42,6 +42,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -49,11 +50,13 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -112,7 +115,6 @@ public class RuneliteColorPicker extends JDialog
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
-		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
@@ -324,6 +326,12 @@ public class RuneliteColorPicker extends JDialog
 				}
 			}
 		});
+
+		getRootPane().registerKeyboardAction(
+			_ev -> this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)),
+			KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+			JComponent.WHEN_IN_FOCUSED_WINDOW
+		);
 	}
 
 	private void updatePanels()

@@ -31,12 +31,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
@@ -44,6 +44,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
+import net.runelite.client.plugins.grounditems.config.OwnershipFilterMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -124,6 +125,7 @@ public class GroundItemsPluginTest
 		when(config.getHighlightItems()).thenReturn("abyssal whip");
 		when(config.notifyTier()).thenReturn(HighlightTier.OFF);
 		when(config.notifyHighlightedDrops()).thenReturn(true);
+		when(config.ownershipFilterMode()).thenReturn(OwnershipFilterMode.ALL);
 
 		when(itemManager.getItemComposition(ItemID.ABYSSAL_WHIP)).thenAnswer(a ->
 		{

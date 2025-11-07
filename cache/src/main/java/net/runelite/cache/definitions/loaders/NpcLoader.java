@@ -40,6 +40,7 @@ public class NpcLoader
 
 	private int defaultHeadIconArchive = -1;
 	private boolean rev210HeadIcons = true;
+	private boolean rev233 = true;
 
 	public NpcLoader configureForRevision(int rev)
 	{
@@ -63,7 +64,17 @@ public class NpcLoader
 			this.decodeValues(opcode, def, is);
 		}
 
+		post(def);
+
 		return def;
+	}
+
+	private void post(NpcDefinition def)
+	{
+		if (def.footprintSize == -1)
+		{
+			def.footprintSize = (int) (0.4F * (float) (def.size * 128));
+		}
 	}
 
 	private void decodeValues(int opcode, NpcDefinition def, InputStream stream)
@@ -201,7 +212,7 @@ public class NpcLoader
 		}
 		else if (opcode == 99)
 		{
-			def.hasRenderPriority = true;
+			def.renderPriority = 1;
 		}
 		else if (opcode == 100)
 		{
@@ -286,11 +297,15 @@ public class NpcLoader
 		{
 			def.rotationFlag = false;
 		}
-		else if (opcode == 111)
+		else if (opcode == 111 && !rev233)
 		{
 			// removed in 220
 			def.isFollower = true;
 			def.lowPriorityFollowerOps = true;
+		}
+		else if (opcode == 111 && rev233)
+		{
+			def.renderPriority = 2;
 		}
 		else if (opcode == 114)
 		{
@@ -359,6 +374,22 @@ public class NpcLoader
 		else if (opcode == 124)
 		{
 			def.height = stream.readUnsignedShort();
+		}
+		else if (opcode == 126)
+		{
+			def.footprintSize = stream.readUnsignedShort();
+		}
+		else if (opcode == 129)
+		{
+			def.unknown1 = true;
+		}
+		else if (opcode == 145)
+		{
+			def.canHideForOverlap = true;
+		}
+		else if (opcode == 146)
+		{
+			def.overlapTintHSL = stream.readUnsignedShort();
 		}
 		else if (opcode == 249)
 		{

@@ -28,7 +28,7 @@ package net.runelite.client.plugins.worldmap;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import net.runelite.client.plugins.fairyring.FairyRings;
+import net.runelite.client.plugins.fairyring.FairyRing;
 import static org.apache.commons.lang3.ArrayUtils.isSorted;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class FairyRingLocationTest
 	@Test
 	public void testFairyRingsInFairyRingPlugin()
 	{
-		Set<String> fairyRings = Stream.of(FairyRings.values()).map(FairyRings::name).collect(Collectors.toSet());
+		Set<String> fairyRings = Stream.of(FairyRing.values()).map(FairyRing::name).collect(Collectors.toSet());
 
 		for (FairyRingLocation r : FairyRingLocation.values())
 		{

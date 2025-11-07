@@ -37,7 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Represents a RuneScape actor/entity.
  */
-public interface Actor extends Renderable
+public interface Actor extends Renderable, CameraFocusableEntity
 {
 	/**
 	 * Get the {@link WorldView} this actor belongs to
@@ -137,7 +137,7 @@ public interface Actor extends Renderable
 	 * Gets the current animation the actor is performing.
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getAnimation();
 
@@ -145,14 +145,14 @@ public interface Actor extends Renderable
 	 * Gets the secondary animation the actor is performing. Usually an idle animation, or one of the walking ones.
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getPoseAnimation();
 
 	/**
 	 * Set the idle pose animation.
 	 * @param animation
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	void setPoseAnimation(int animation);
 
@@ -173,7 +173,7 @@ public interface Actor extends Renderable
 	 * for their pose animation.
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getIdlePoseAnimation();
 
@@ -184,7 +184,7 @@ public interface Actor extends Renderable
 	 * Animation used for rotating left if the actor is also not walking
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getIdleRotateLeft();
 
@@ -194,7 +194,7 @@ public interface Actor extends Renderable
 	 * Animation used for rotating right if the actor is also not walking
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getIdleRotateRight();
 
@@ -204,7 +204,7 @@ public interface Actor extends Renderable
 	 * Animation used for walking
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getWalkAnimation();
 
@@ -214,7 +214,7 @@ public interface Actor extends Renderable
 	 * Animation used for rotating left while walking
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getWalkRotateLeft();
 
@@ -224,7 +224,7 @@ public interface Actor extends Renderable
 	 * Animation used for rotating right while walking
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getWalkRotateRight();
 
@@ -234,7 +234,7 @@ public interface Actor extends Renderable
 	 * Animation used for an about-face while walking
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getWalkRotate180();
 
@@ -244,7 +244,7 @@ public interface Actor extends Renderable
 	 * Animation used for running
 	 *
 	 * @return the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getRunAnimation();
 
@@ -254,7 +254,7 @@ public interface Actor extends Renderable
 	 * Sets an animation for the actor to perform.
 	 *
 	 * @param animation the animation ID
-	 * @see AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	@VisibleForDevtools
 	void setAnimation(int animation);
@@ -296,7 +296,7 @@ public interface Actor extends Renderable
 	/**
 	 * Check if the actor has a spotanim
 	 * @param spotAnimId the spot anim id
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 * @return
 	 */
 	boolean hasSpotAnim(int spotAnimId);
@@ -304,7 +304,7 @@ public interface Actor extends Renderable
 	/**
 	 * Create an actor spotanim
 	 * @param id key for the {@link #getSpotAnims()} table
-	 * @param spotAnimId spotanim id {@link GraphicID}
+	 * @param spotAnimId spotanim id {@link net.runelite.api.gameval.SpotanimID}
 	 * @param height height offspot for spot anim
 	 * @param delay initial delay, in client ticks, before spotanim is active
 	 */
@@ -326,7 +326,7 @@ public interface Actor extends Renderable
 	 * Actors can have multiple spotanims, this gets only one of them. Use {@link #hasSpotAnim(int)} instead.
 	 *
 	 * @return the spotanim of the actor
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 * @deprecated see {@link #hasSpotAnim(int)}
 	 */
 	@Deprecated
@@ -336,7 +336,7 @@ public interface Actor extends Renderable
 	 * Set the graphic/spotanim that is currently on the actor.
 	 *
 	 * @param graphic The spotanim id
-	 * @see GraphicID
+	 * @see net.runelite.api.gameval.SpotanimID
 	 * @deprecated see {@link #createSpotAnim(int, int, int, int)}
 	 */
 	@Deprecated
@@ -389,21 +389,21 @@ public interface Actor extends Renderable
 	 *
 	 * @param graphics engine graphics
 	 * @param text the text to draw
-	 * @param zOffset the z-axis offset
+	 * @param heightOffset the height offset
 	 * @return the text drawing location
 	 */
 	@Nullable
-	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
+	Point getCanvasTextLocation(Graphics2D graphics, String text, int heightOffset);
 
 	/**
 	 * Gets the point at which an image should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
 	 * @param image the image to draw
-	 * @param zOffset the z-axis offset
+	 * @param heightOffset the height offset
 	 * @return the image drawing location
 	 */
-	Point getCanvasImageLocation(BufferedImage image, int zOffset);
+	Point getCanvasImageLocation(BufferedImage image, int heightOffset);
 
 
 	/**
@@ -411,10 +411,10 @@ public interface Actor extends Renderable
 	 * current location with the given z-axis offset.
 	 *
 	 * @param sprite the sprite to draw
-	 * @param zOffset the z-axis offset
+	 * @param heightOffset the height offset
 	 * @return the sprite drawing location
 	 */
-	Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset);
+	Point getCanvasSpriteLocation(SpritePixels sprite, int heightOffset);
 
 	/**
 	 * Gets a point on the canvas of where this actors mini-map indicator
@@ -491,4 +491,11 @@ public interface Actor extends Renderable
 	 * @see #isDead()
 	 */
 	void setDead(boolean dead);
+
+	/**
+	 * Get the height offset of the actor from their current animation
+	 * @return
+	 */
+	@Override
+	int getAnimationHeightOffset();
 }

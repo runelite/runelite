@@ -34,8 +34,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -190,9 +189,10 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (widgetLoaded.getGroupId() == InterfaceID.BANK ||
-			widgetLoaded.getGroupId() == InterfaceID.BANK_INVENTORY ||
-			widgetLoaded.getGroupId() == InterfaceID.DEPOSIT_BOX)
+		if (widgetLoaded.getGroupId() == InterfaceID.BANKMAIN
+			|| widgetLoaded.getGroupId() == InterfaceID.BANKSIDE
+			|| widgetLoaded.getGroupId() == InterfaceID.SHARED_BANK
+			|| widgetLoaded.getGroupId() == InterfaceID.SHARED_BANK_SIDE)
 		{
 			setBankDragDelay(config.dragDelay());
 		}
@@ -207,11 +207,12 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		if (ev.getScriptId() == ScriptID.INVENTORY_DRAWITEM)
 		{
-			Widget inv = client.getWidget(ComponentID.INVENTORY_CONTAINER);
-			final int delay = config.dragDelay();
-			boolean overriding = isOverriding();
-			for (Widget child : inv.getDynamicChildren())
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == InterfaceID.Bankmain.ITEMS
+				|| child.getParentId() == InterfaceID.Inventory.ITEMS)
 			{
+				final int delay = config.dragDelay();
+				boolean overriding = isOverriding();
 				// disable [clientscript,inventory_antidrag_update] listener
 				child.setOnMouseRepeatListener((Object[]) null);
 				if (overriding)
@@ -220,9 +221,34 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				}
 			}
 		}
+		else if (ev.getScriptId() == ScriptID.INTERFACE_INV_DRAW_SLOT_BIG)
+		{
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == InterfaceID.EquipmentSide.ITEMS && isOverriding())
+			{
+				child.setDragDeadTime(config.dragDelay());
+			}
+		}
 		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
 		{
-			setCoxDragDelay(config.dragDelay());
+			if (isOverriding())
+			{
+				setCoxDragDelay(config.dragDelay());
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.BANK_DEPOSITBOX_INIT)
+		{
+			if (isOverriding())
+			{
+				setBankDragDelay(config.dragDelay());
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.SEED_VAULT_BUILD)
+		{
+			if (isOverriding())
+			{
+				setSeedVaultDragDelay(config.dragDelay());
+			}
 		}
 	}
 
@@ -239,27 +265,43 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 
 	private void setBankDragDelay(int delay)
 	{
-		final Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
-		final Widget bankInventoryItemsContainer = client.getWidget(ComponentID.BANK_INVENTORY_ITEM_CONTAINER);
-		final Widget bankDepositContainer = client.getWidget(ComponentID.DEPOSIT_BOX_INVENTORY_ITEM_CONTAINER);
-		final Widget coxPrivateChest = client.getWidget(ComponentID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_ITEM_CONTAINER);
+		final Widget bankItemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
+		final Widget bankInventoryItemsContainer = client.getWidget(InterfaceID.Bankside.ITEMS);
+		final Widget groupStorageItems = client.getWidget(InterfaceID.SharedBank.ITEMS);
+		final Widget groupStorageInventoryItems = client.getWidget(InterfaceID.SharedBankSide.ITEMS);
+		final Widget bankInventoryEquipmentItemsContainer = client.getWidget(InterfaceID.Bankside.WORNOPS);
+		final Widget bankDepositContainer = client.getWidget(InterfaceID.BankDepositbox.INVENTORY);
+		final Widget coxPrivateChest = client.getWidget(InterfaceID.RaidsStoragePrivate.ITEMS);
 
 		applyDragDelay(bankItemContainer, delay);
 		applyDragDelay(bankInventoryItemsContainer, delay);
+		applyDragDelay(groupStorageItems, delay);
+		applyDragDelay(groupStorageInventoryItems, delay);
+		applyDragDelay(bankInventoryEquipmentItemsContainer, delay);
 		applyDragDelay(bankDepositContainer, delay);
 		applyDragDelay(coxPrivateChest, delay);
 	}
 
 	private void setInvDragDelay(int delay)
 	{
-		final Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
+		final Widget inventory = client.getWidget(InterfaceID.Inventory.ITEMS);
+		final Widget equipmentInventory = client.getWidget(InterfaceID.EquipmentSide.ITEMS);
 		applyDragDelay(inventory, delay);
+		applyDragDelay(equipmentInventory, delay);
 	}
 
 	private void setCoxDragDelay(int delay)
 	{
-		final Widget coxChest = client.getWidget(ComponentID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_ITEM_CONTAINER);
+		final Widget coxChest = client.getWidget(InterfaceID.RaidsStoragePrivate.ITEMS);
 		applyDragDelay(coxChest, delay);
+	}
+
+	private void setSeedVaultDragDelay(int delay)
+	{
+		final Widget seedVaultItems = client.getWidget(InterfaceID.SeedVault.OBJ_LIST);
+		final Widget seedVaultText = client.getWidget(InterfaceID.SeedVault.TEXT_LIST);
+		applyDragDelay(seedVaultItems, delay);
+		applyDragDelay(seedVaultText, delay);
 	}
 
 	private void setDragDelay()
@@ -270,6 +312,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		setInvDragDelay(delay);
 		setBankDragDelay(delay);
 		setCoxDragDelay(delay);
+		setSeedVaultDragDelay(delay);
 	}
 
 	private void resetDragDelay()
@@ -279,6 +322,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		setInvDragDelay(DEFAULT_DELAY);
 		setBankDragDelay(DEFAULT_DELAY);
 		setCoxDragDelay(DEFAULT_DELAY);
+		setSeedVaultDragDelay(DEFAULT_DELAY);
 	}
 
 }

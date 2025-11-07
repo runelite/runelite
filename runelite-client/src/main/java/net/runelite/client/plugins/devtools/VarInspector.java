@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.devtools;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
@@ -33,7 +32,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,17 +45,15 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.IndexDataBase;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.VarbitComposition;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -65,7 +61,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 
-@Slf4j
 class VarInspector extends DevToolsFrame
 {
 	@Getter
@@ -88,50 +83,9 @@ class VarInspector extends DevToolsFrame
 
 	private final static int MAX_LOG_ENTRIES = 10_000;
 	private static final int VARBITS_ARCHIVE_ID = 14;
-	private static final Map<Integer, String> VARBIT_NAMES;
-	private static final Map<Integer, String> VARCINT_NAMES;
-	private static final Map<Integer, String> VARCSTR_NAMES;
-	private static final Map<Integer, String> VARP_NAMES;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, String> varbits = new ImmutableMap.Builder<>();
-		ImmutableMap.Builder<Integer, String> varcint = new ImmutableMap.Builder<>();
-		ImmutableMap.Builder<Integer, String> varcstr = new ImmutableMap.Builder<>();
-		ImmutableMap.Builder<Integer, String> varp = new ImmutableMap.Builder<>();
-
-		try
-		{
-			for (Field f : Varbits.class.getDeclaredFields())
-			{
-				varbits.put(f.getInt(null), f.getName());
-			}
-
-			for (Field f : VarClientInt.class.getDeclaredFields())
-			{
-				varcint.put(f.getInt(null), f.getName());
-			}
-
-			for (Field f : VarClientStr.class.getDeclaredFields())
-			{
-				varcstr.put(f.getInt(null), f.getName());
-			}
-
-			for (Field f : VarPlayer.class.getDeclaredFields())
-			{
-				varp.put(f.getInt(null), f.getName());
-			}
-		}
-		catch (IllegalAccessException ex)
-		{
-			log.error("error setting up var names", ex);
-		}
-
-		VARBIT_NAMES = varbits.build();
-		VARCINT_NAMES = varcint.build();
-		VARCSTR_NAMES = varcstr.build();
-		VARP_NAMES = varp.build();
-	}
+	private static final Map<Integer, String> VARBIT_NAMES = DevToolsPlugin.loadFieldNames(VarbitID.class);
+	private static final Map<Integer, String> VARC_NAMES = DevToolsPlugin.loadFieldNames(VarClientID.class);
+	private static final Map<Integer, String> VARP_NAMES = DevToolsPlugin.loadFieldNames(VarPlayerID.class);
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -302,7 +256,7 @@ class VarInspector extends DevToolsFrame
 
 		if (old != neew)
 		{
-			final String name = VARCINT_NAMES.getOrDefault(idx, Integer.toString(idx));
+			final String name = VARC_NAMES.getOrDefault(idx, Integer.toString(idx));
 			addVarLog(VarType.VARCINT, name, old, neew);
 		}
 	}
@@ -317,7 +271,7 @@ class VarInspector extends DevToolsFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			final String name = VARCSTR_NAMES.getOrDefault(idx, Integer.toString(idx));
+			final String name = VARC_NAMES.getOrDefault(idx, Integer.toString(idx));
 			if (old != null)
 			{
 				old = "\"" + old + "\"";

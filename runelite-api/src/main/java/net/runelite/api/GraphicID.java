@@ -24,6 +24,10 @@
  */
 package net.runelite.api;
 
+/**
+ * @see net.runelite.api.gameval.SpotanimID
+ */
+@Deprecated
 public final class GraphicID
 {
 	public static final int WINE_MAKE = 47;

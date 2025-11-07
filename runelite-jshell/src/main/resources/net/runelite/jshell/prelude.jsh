@@ -34,6 +34,14 @@ import net.runelite.api.*;
 import net.runelite.api.coords.*;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.*;
+import net.runelite.api.gameval.*;
+// these non-* imports are required to disambiguate with name clashes in other packages (usually net.runelite.api)
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.events.*;
 import net.runelite.client.game.*;
 

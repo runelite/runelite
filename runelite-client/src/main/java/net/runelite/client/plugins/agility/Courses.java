@@ -26,8 +26,11 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Function;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.VarbitID;
 
 enum Courses
 {
@@ -43,18 +46,20 @@ enum Courses
 	APE_ATOLL(580.0, 11050, new WorldPoint(2770, 2747, 0)),
 	SHAYZIEN_ADVANCED(507.5, 5944, new WorldPoint(1522, 3625, 0)),
 	FALADOR(586, 12084, new WorldPoint(3029, 3332, 0), new WorldPoint(3029, 3333, 0), new WorldPoint(3029, 3334, 0), new WorldPoint(3029, 3335, 0)),
-	WILDERNESS(571.4, 11837, new WorldPoint(2994, 3933, 0)),
+	COLOSSAL_WYRM_BASIC(504),
+	WILDERNESS(571.4, 11837, new WorldPoint(2993, 3933, 0), new WorldPoint(2994, 3933, 0), new WorldPoint(2995, 3933, 0)),
 	WEREWOLF(730.0, 14234, new WorldPoint(3528, 9873, 0)),
 	SEERS(570.0, 10806, new WorldPoint(2704, 3464, 0)),
-	POLLNIVNEACH(1016.0, 13358, new WorldPoint(3363, 2998, 0)),
-	RELLEKA(920.0, 10553, new WorldPoint(2653, 3676, 0)),
+	COLOSSAL_WYRM_ADVANCED(685),
+	POLLNIVNEACH((client) -> client.getVarbitValue(VarbitID.DESERT_DIARY_HARD_COMPLETE) == 1 ? 1016.0 : 890.0, 13358, new WorldPoint(3363, 2998, 0)),
+	RELLEKA((client) -> client.getVarbitValue(VarbitID.FREMENNIK_DIARY_HARD_COMPLETE) == 1 ? 920.0 : 780.0, 10553, new WorldPoint(2653, 3676, 0)),
 	PRIFDDINAS(1337.0, 12895, new WorldPoint(3240, 6109, 0)),
 	ARDOUGNE(889.0, 10547, new WorldPoint(2668, 3297, 0));
 
 	private final static Map<Integer, Courses> coursesByRegion;
 
 	@Getter
-	private final double totalXp;
+	private final Function<Client, Double> totalXpProvider;
 
 	@Getter
 	private final int regionId;
@@ -68,15 +73,29 @@ enum Courses
 
 		for (Courses course : values())
 		{
+			if (course.regionId == -1)
+			{
+				continue;
+			}
 			builder.put(course.regionId, course);
 		}
 
 		coursesByRegion = builder.build();
 	}
 
+	Courses(double totalXp)
+	{
+		this(totalXp, -1, null);
+	}
+
 	Courses(double totalXp, int regionId, WorldPoint... courseEndWorldPoints)
 	{
-		this.totalXp = totalXp;
+		this((client) -> totalXp, regionId, courseEndWorldPoints);
+	}
+
+	Courses(Function<Client, Double> totalXpProvider, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		this.totalXpProvider = totalXpProvider;
 		this.regionId = regionId;
 		this.courseEndWorldPoints = courseEndWorldPoints;
 	}

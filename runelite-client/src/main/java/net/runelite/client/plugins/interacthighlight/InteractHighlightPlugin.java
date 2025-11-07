@@ -31,6 +31,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -41,12 +42,13 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -149,10 +151,11 @@ public class InteractHighlightPlugin extends Plugin
 			case GAME_OBJECT_FOURTH_OPTION:
 			case GAME_OBJECT_FIFTH_OPTION:
 			{
+				int worldId = menuOptionClicked.getMenuEntry().getWorldViewId();
 				int x = menuOptionClicked.getParam0();
 				int y = menuOptionClicked.getParam1();
 				int id = menuOptionClicked.getId();
-				interactedObject = findTileObject(x, y, id);
+				interactedObject = findTileObject(worldId, x, y, id);
 				interactedNpc = null;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
@@ -170,7 +173,7 @@ public class InteractHighlightPlugin extends Plugin
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
 					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC
 						&& client.getSelectedWidget() != null
-						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK;
+						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.MAGIC_SPELLBOOK;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;
@@ -197,11 +200,15 @@ public class InteractHighlightPlugin extends Plugin
 		}
 	}
 
-	TileObject findTileObject(int x, int y, int id)
+	TileObject findTileObject(int worldId, int x, int y, int id)
 	{
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
-		Tile tile = tiles[client.getPlane()][x][y];
+		WorldView wv = client.getWorldView(worldId);
+		int offset = worldId == WorldView.TOPLEVEL ? (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2 : 0;
+		x += offset;
+		y += offset;
+		Scene scene = wv.getScene();
+		Tile[][][] tiles = scene.getExtendedTiles();
+		Tile tile = tiles[wv.getPlane()][x][y];
 		if (tile != null)
 		{
 			for (GameObject gameObject : tile.getGameObjects())

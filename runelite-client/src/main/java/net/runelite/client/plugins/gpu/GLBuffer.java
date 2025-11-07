@@ -29,7 +29,6 @@ class GLBuffer
 	String name;
 	int glBufferId = -1;
 	int size = -1;
-	long clBuffer = -1;
 
 	GLBuffer(String name)
 	{

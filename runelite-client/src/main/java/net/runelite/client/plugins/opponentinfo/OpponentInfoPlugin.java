@@ -40,13 +40,13 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -194,14 +194,14 @@ public class OpponentInfoPlugin extends Plugin
 	 */
 	private void updateBossHealthBarText()
 	{
-		Widget widget = client.getWidget(ComponentID.HEALTH_HEALTHBAR_TEXT);
+		Widget widget = client.getWidget(InterfaceID.HpbarHud.HP_BAR_TEXT);
 		if (widget == null)
 		{
 			return;
 		}
 
-		final int currHp = client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT);
-		final int maxHp = client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM);
+		final int currHp = client.getVarbitValue(VarbitID.HPBAR_HUD_HP);
+		final int maxHp = client.getVarbitValue(VarbitID.HPBAR_HUD_BASEHP);
 		if (maxHp <= 0)
 		{
 			return;

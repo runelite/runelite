@@ -29,17 +29,20 @@ import java.util.function.BiPredicate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.SpriteID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
 
 @Getter(AccessLevel.PACKAGE)
 @AllArgsConstructor
 enum GameCounter
 {
-	COLOSSEUM_DOOM(SpriteID.COLOSSEUM_DOOM, GameTimerImageType.SPRITE, "Doom"),
-	CURSE_OF_THE_MOONS_BLUE(ItemID.BLUE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Blue Moon)", ColorBoundaryType.GREATER_THAN_EQUAL_TO, 18, Color.RED),
+	BURN_DAMAGE_ACCUMULATED(SpriteID.Hitmark.BURN_DAMAGE, GameTimerImageType.SPRITE, "Burn damage accumulated"),
+	BURN_DAMAGE_NEXT_HIT(ItemID.BONE_CLAW, GameTimerImageType.ITEM, "Burn damage next hit"),
+	COLOSSEUM_DOOM(SpriteID.Hitmark.COLOSSEUM_DOOM, GameTimerImageType.SPRITE, "Doom"),
+	CURSE_OF_THE_MOONS_BLUE(ItemID.FROST_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Blue Moon)", ColorBoundaryType.GREATER_THAN_EQUAL_TO, 18, Color.RED),
 	CURSE_OF_THE_MOONS_ECLIPSE(ItemID.ECLIPSE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Eclipse Moon)"),
-	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
+	STONE_OF_JAS_EMPOWERMENT(ItemID.WGS_STONE_OF_JAS_DUMMY_ITEM, GameTimerImageType.ITEM, "Stone of Jas empowerment", false),
+	VENGEANCE_ACTIVE(SpriteID.LunarMagicOn.VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
 	;
 
 	private final int imageId;

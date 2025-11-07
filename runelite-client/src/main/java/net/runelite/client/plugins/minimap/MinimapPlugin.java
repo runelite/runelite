@@ -32,10 +32,12 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -63,6 +65,9 @@ public class MinimapPlugin extends Plugin
 	@Inject
 	private MinimapConfig config;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private SpritePixels[] originalDotSprites;
 
 	@Provides
@@ -74,7 +79,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		updateMinimapWidgetVisibility(config.hideMinimap());
+		clientThread.invokeLater(() -> updateMinimapWidgetVisibility(config.hideMinimap()));
 		storeOriginalDots();
 		replaceMapDots();
 		client.setMinimapZoom(config.zoom());
@@ -83,7 +88,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		updateMinimapWidgetVisibility(false);
+		clientThread.invokeLater(() -> updateMinimapWidgetVisibility(false));
 		restoreOriginalDots();
 		client.setMinimapZoom(false);
 	}
@@ -113,7 +118,7 @@ public class MinimapPlugin extends Plugin
 
 		if (event.getKey().equals("hideMinimap"))
 		{
-			updateMinimapWidgetVisibility(config.hideMinimap());
+			clientThread.invokeLater(() -> updateMinimapWidgetVisibility(config.hideMinimap()));
 			return;
 		}
 		else if (event.getKey().equals("zoom"))
@@ -129,33 +134,35 @@ public class MinimapPlugin extends Plugin
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW)
+		if (scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_REDRAW || scriptPostFired.getScriptId() == ScriptID.TOPLEVEL_RESIZE_CUSTOMISE)
 		{
 			updateMinimapWidgetVisibility(config.hideMinimap());
 		}
 	}
 
-	private void updateMinimapWidgetVisibility(boolean enable)
+	private void updateMinimapWidgetVisibility(boolean hide)
 	{
-		final Widget resizableStonesWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP);
-
-		if (resizableStonesWidget != null)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
-			resizableStonesWidget.setHidden(enable);
+			return;
 		}
 
-		final Widget resizableNormalWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP);
+		boolean vanillaHideMinimap = client.getVarbitValue(VarbitID.MINIMAP_TOGGLE) == 1;
 
-		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
+		setHidden(InterfaceID.ToplevelOsrsStretch.MAP_MINIMAP, hide || vanillaHideMinimap);
+		setHidden(InterfaceID.ToplevelOsrsStretch.ORBS, hide);
+
+		setHidden(InterfaceID.ToplevelPreEoc.MAP_MINIMAP, hide || vanillaHideMinimap);
+		setHidden(InterfaceID.ToplevelPreEoc.ORBS, hide);
+	}
+
+	private void setHidden(@Component int widget, boolean hide)
+	{
+		var w = client.getWidget(widget);
+
+		if (w != null)
 		{
-			for (Widget widget : resizableNormalWidget.getStaticChildren())
-			{
-				if (widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY &&
-					widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON)
-				{
-					widget.setHidden(enable);
-				}
-			}
+			w.setHidden(hide);
 		}
 	}
 

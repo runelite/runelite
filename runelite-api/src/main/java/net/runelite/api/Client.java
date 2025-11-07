@@ -55,6 +55,7 @@ import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetConfigNode;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.api.worldmap.MapElementConfig;
@@ -80,6 +81,8 @@ public interface Client extends OAuthApi, GameEngine
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
 
 	String getBuildID();
+
+	int getEnvironment();
 
 	/**
 	 * Gets the current modified level of a skill.
@@ -113,7 +116,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param sender the sender/channel name
 	 * @return the message node for the message
 	 */
-	MessageNode addChatMessage(ChatMessageType type, String name, String message, String sender);
+	MessageNode addChatMessage(ChatMessageType type, @Nonnull String name, String message, String sender);
 
 	/**
 	 * Adds a new chat message to the chatbox.
@@ -125,7 +128,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param postEvent whether to post the chat message event
 	 * @return the message node for the message
 	 */
-	MessageNode addChatMessage(ChatMessageType type, String name, String message, String sender, boolean postEvent);
+	MessageNode addChatMessage(ChatMessageType type, @Nonnull String name, String message, String sender, boolean postEvent);
 
 	/**
 	 * Gets the current game state.
@@ -382,7 +385,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param id the item ID
 	 * @return the corresponding item composition
-	 * @see ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	@Nonnull
 	ItemComposition getItemDefinition(int id);
@@ -794,7 +797,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the value of a given VarClientInt
 	 *
-	 * @param var the {@link VarClientInt}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @return the value
 	 */
 	int getVarcIntValue(@VarCInt int var);
@@ -802,7 +805,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the value of a given VarClientStr
 	 *
-	 * @param var the {@link VarClientStr}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @return the value
 	 */
 	String getVarcStrValue(@VarCStr int var);
@@ -810,7 +813,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets a VarClientString to the passed value
 	 *
-	 * @param var the {@link VarClientStr}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @param value the new value
 	 */
 	void setVarcStrValue(@VarCStr int var, String value);
@@ -818,7 +821,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Sets a VarClientInt to the passed value
 	 *
-	 * @param var the {@link VarClientInt}
+	 * @param var the {@link net.runelite.api.gameval.VarClientID}
 	 * @param value the new value
 	 */
 	void setVarcIntValue(@VarCInt int var, int value);
@@ -847,7 +850,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param varps passed varbits
 	 * @param varbitId the variable ID
 	 * @return the value
-	 * @see Varbits
+	 * @see net.runelite.api.gameval.VarbitID
 	 */
 	@VisibleForDevtools
 	int getVarbitValue(int[] varps, @Varbit int varbitId);
@@ -858,7 +861,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param varps passed varbits
 	 * @param varbit the variable
 	 * @param value the value
-	 * @see Varbits
+	 * @see net.runelite.api.gameval.VarbitID
 	 */
 	@VisibleForDevtools
 	void setVarbitValue(int[] varps, @Varbit int varbit, int value);
@@ -895,7 +898,15 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the widget flags table
 	 */
-	HashTable<IntegerNode> getWidgetFlags();
+	HashTable<WidgetConfigNode> getWidgetFlags();
+
+	/**
+	 * Get the widget config for a given widget
+	 * @param w
+	 * @return
+	 */
+	@Nullable
+	WidgetConfigNode getWidgetConfig(Widget w);
 
 	/**
 	 * Gets the widget node component table.
@@ -917,7 +928,9 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param prayer the prayer
 	 * @return true if the prayer is active, false otherwise
+	 * @deprecated this method does not properly handle deadeye/eagle eye or mystic vigour/might
 	 */
+	@Deprecated
 	boolean isPrayerActive(Prayer prayer);
 
 	/**
@@ -959,7 +972,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param objectId the object ID
 	 * @return the corresponding object composition
-	 * @see ObjectID
+	 * @see net.runelite.api.gameval.ObjectID
 	 */
 	ObjectComposition getObjectDefinition(int objectId);
 
@@ -968,7 +981,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param npcId the npc ID
 	 * @return the corresponding NPC composition
-	 * @see NpcID
+	 * @see net.runelite.api.gameval.NpcID
 	 */
 	NPCComposition getNpcDefinition(int npcId);
 
@@ -996,6 +1009,11 @@ public interface Client extends OAuthApi, GameEngine
 	 * An index must exist for this column.
 	 */
 	List<Integer> getDBRowsByValue(int table, int column, int tupleIndex, Object value);
+
+	/**
+	 * Gets all rows in a DBTable
+	 */
+	List<Integer> getDBTableRows(int table);
 
 	/**
 	 * Get a map element config by id
@@ -1080,6 +1098,21 @@ public interface Client extends OAuthApi, GameEngine
 	RuneLiteObject createRuneLiteObject();
 
 	/**
+	 * Registers a new {@link RuneLiteObjectController} to its corresponding {@link WorldView}.
+	 */
+	void registerRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Removes a new {@link RuneLiteObjectController} from its corresponding {@link WorldView}.
+	 */
+	void removeRuneLiteObject(RuneLiteObjectController controller);
+
+	/**
+	 * Checks whether a {@link RuneLiteObjectController} is registered to any {@link WorldView}.
+	 */
+	boolean isRuneLiteObjectRegistered(RuneLiteObjectController controller);
+
+	/**
 	 * Loads an unlit model from the cache. The returned model shares
 	 * data such as faces, face colors, face transparencies, and vertex points with
 	 * other models. If you want to mutate these you MUST call the relevant {@code cloneX}
@@ -1095,6 +1128,9 @@ public interface Client extends OAuthApi, GameEngine
 
 	ModelData mergeModels(ModelData[] models, int length);
 	ModelData mergeModels(ModelData ...models);
+
+	Model mergeModels(Model[] models, int length);
+	Model mergeModels(Model... models);
 
 	/**
 	 * Loads and lights a model from the cache
@@ -1122,7 +1158,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Loads an animation from the cache
 	 *
 	 * @param id the ID of the animation. Any int is allowed, but implementations in the client
-	 * should be defined in {@link AnimationID}
+	 * should be defined in {@link net.runelite.api.gameval.AnimationID}
 	 */
 	Animation loadAnimation(int id);
 
@@ -1183,6 +1219,12 @@ public interface Client extends OAuthApi, GameEngine
 	void playSoundEffect(int id, int volume);
 
 	/**
+	 * Get the currently playing midi requests.
+	 * @return
+	 */
+	List<MidiRequest> getActiveMidiRequests();
+
+	/**
 	 * Gets the clients graphic buffer provider.
 	 *
 	 * @return the buffer provider
@@ -1224,7 +1266,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param inventory the inventory type
 	 * @return the item container
-	 * @see InventoryID
+	 * @see net.runelite.api.gameval.InventoryID
 	 */
 	@Nullable
 	ItemContainer getItemContainer(InventoryID inventory);
@@ -1234,7 +1276,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param id the inventory id
 	 * @return the item container
-	 * @see InventoryID
+	 * @see net.runelite.api.gameval.InventoryID
 	 */
 	@Nullable
 	ItemContainer getItemContainer(int id);
@@ -1261,19 +1303,19 @@ public interface Client extends OAuthApi, GameEngine
 	int[] getIntStack();
 
 	/**
-	 * Gets the length of the cs2 vm's string stack
+	 * Gets the length of the cs2 vm's object stack
 	 */
-	int getStringStackSize();
+	int getObjectStackSize();
 
 	/**
-	 * Sets the length of the cs2 vm's string stack
+	 * Sets the length of the cs2 vm's object stack
 	 */
-	void setStringStackSize(int stackSize);
+	void setObjectStackSize(int stackSize);
 
 	/**
-	 * Gets the cs2 vm's string stack
+	 * Gets the cs2 vm's object stack
 	 */
-	String[] getStringStack();
+	Object[] getObjectStack();
 
 	/**
 	 * Get the size of one of the cs2 vm's arrays.
@@ -1675,6 +1717,12 @@ public interface Client extends OAuthApi, GameEngine
 	void setInventoryDragDelay(int delay);
 
 	/**
+	 * Get the hostname of the current world
+	 * @return
+	 */
+	String getWorldHost();
+
+	/**
 	 * Gets a set of current world types that apply to the logged in world.
 	 *
 	 * @return the types for current world
@@ -1825,6 +1873,12 @@ public interface Client extends OAuthApi, GameEngine
 	 */
 	@Nullable
 	Widget getSelectedWidget();
+
+	/**
+	 * Gets the current active {@link net.runelite.api.widgets.WidgetType#INPUT_FIELD} Widget
+	 */
+	@Nullable
+	Widget getFocusedInputFieldWidget();
 
 	/**
 	 * Returns client item composition cache
@@ -1978,6 +2032,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets the ambient sound effects
 	 * @return
 	 */
+	@Deprecated
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
 
 	/**
@@ -2050,6 +2105,38 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param disabled
 	 */
 	void setCameraShakeDisabled(boolean disabled);
+
+	/**
+	 * Draw all 2D extras. This is the default.
+	 */
+	int DRAW_2D_ALL = ~0;
+	/**
+	 * Hide all 2D extras.
+	 */
+	int DRAW_2D_NONE = 0;
+	/**
+	 * Render overhead text.
+	 */
+	int DRAW_2D_OVERHEAD_TEXT = 1;
+	/**
+	 * Render elements not otherwise specified in this bitflag.
+	 */
+	int DRAW_2D_OTHERS = 1 << 30;
+
+	/**
+	 * Gets the current draw2D mask. 
+	 * @return the current mask
+	 * @see Client#setDraw2DMask(int)
+	 */
+	@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS})
+	int getDraw2DMask();
+
+	/**
+	 * Sets the current draw2D mask.
+	 * Use bit operations on the value returned by {@link Client#getDraw2DMask()} to modify specific features.
+	 * @param mask The new mask.
+	 */
+	void setDraw2DMask(@MagicConstant(intValues = {DRAW_2D_NONE, DRAW_2D_ALL, DRAW_2D_OVERHEAD_TEXT, DRAW_2D_OTHERS}) int mask);
 
 	/**
 	 * Contains a 3D array of template chunks for instanced areas.
@@ -2144,32 +2231,6 @@ public interface Client extends OAuthApi, GameEngine
 		return wv == null ? Collections.emptyList() : wv.npcs()
 			.stream()
 			.collect(Collectors.toCollection(ArrayList::new));
-	}
-
-	/**
-	 * Gets an array of all cached NPCs.
-	 *
-	 * @return cached NPCs
-	 * @see WorldView#npcs()
-	 */
-	@Deprecated
-	default NPC[] getCachedNPCs()
-	{
-		var wv = getTopLevelWorldView();
-		return wv == null ? new NPC[0] : wv.npcs().getSparse();
-	}
-
-	/**
-	 * Gets an array of all cached players.
-	 *
-	 * @return cached players
-	 * @see WorldView#players()
-	 */
-	@Deprecated
-	default Player[] getCachedPlayers()
-	{
-		var wv = getTopLevelWorldView();
-		return wv == null ? new Player[0] : wv.players().getSparse();
 	}
 
 	/**
@@ -2280,26 +2341,39 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param targetX target x - if an actor target is supplied should be the target x
 	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
-	 * @see WorldView#createProjectile(int, int, int, int, int, int, int, int, int, int, Actor, int, int)
 	 */
 	@Deprecated
-	default Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
-		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY)
-	{
-		return getTopLevelWorldView().createProjectile(id, plane, startX, startY, startZ, startCycle, endCycle, slope, startHeight, endHeight, target, targetX, targetY);
-	}
+	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
+		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
+
+
+	/**
+	 * Create a projectile.
+	 * @param spotanimId spotanim id
+	 * @param source source position
+	 * @param sourceHeightOffset source height offset
+	 * @param sourceActor source actor
+	 * @param target target position
+	 * @param targetHeightOffset target height offset
+	 * @param targetActor target actor
+	 * @param startCycle start time
+	 * @param endCycle end time
+	 * @param slope slope
+	 * @param startPos offset from the start where the projectile starts
+	 * @see net.runelite.api.gameval.SpotanimID
+	 * @return the new projectile
+	 */
+	Projectile createProjectile(int spotanimId,
+		WorldPoint source, int sourceHeightOffset, @Nullable Actor sourceActor,
+		WorldPoint target, int targetHeightOffset, @Nullable Actor targetActor,
+		int startCycle, int endCycle, int slope, int startPos);
 
 	/**
 	 * Gets a list of all projectiles currently spawned.
 	 *
 	 * @return all projectiles
-	 * @see WorldView#getProjectiles()
 	 */
-	@Deprecated
-	default Deque<Projectile> getProjectiles()
-	{
-		return getTopLevelWorldView().getProjectiles();
-	}
+	Deque<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.
@@ -2325,4 +2399,43 @@ public interface Client extends OAuthApi, GameEngine
 	{
 		return getTopLevelWorldView().getSelectedSceneTile();
 	}
+
+	/**
+	 * Applies an animation to a Model. The returned model is shared and shouldn't be used
+	 * after any other call to applyTransformations, including calls made by the client internally.
+	 * Vertices are cloned from the source model. Face transparencies are copied if either animation
+	 * animates transparency, otherwise it will share a reference. All other fields share a reference.
+	 */
+	Model applyTransformations(Model model, @Nullable Animation animA, int frameA, @Nullable Animation animB, int frameB);
+
+	/**
+	 * Creates a SceneTilePaint instance, which can be attached to a Tile to control its appearance.
+	 *
+	 * @see Tile#setSceneTilePaint(SceneTilePaint)
+	 *
+	 * @param swColor the color of the south-west corner of the tile
+	 * @param seColor the color of the south-east corner of the tile
+	 * @param neColor the color of the north-east corner of the tile
+	 * @param nwColor the color of the north-west corner of the tile
+	 * @param texture the texture to render for the tile, or -1 to use the colors
+	 * @param minimapRgb the color to use when rendering the minimap
+	 * @param flatShade whether the tile is flat
+	 * @return the newly created SceneTilePaint
+	 */
+	SceneTilePaint createSceneTilePaint(int swColor, int seColor, int neColor, int nwColor, int texture, int minimapRgb, boolean flatShade);
+
+	/**
+	 * Get the entity that the camera is focused on
+	 *
+	 * @return
+	 */
+	CameraFocusableEntity getCameraFocusEntity();
+
+	/**
+	 * Find the worldview a given worldpoint belongs in
+	 * @param point
+	 * @return
+	 */
+	@Nonnull
+	WorldView findWorldViewFromWorldPoint(WorldPoint point);
 }

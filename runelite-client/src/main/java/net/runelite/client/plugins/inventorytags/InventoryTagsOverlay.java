@@ -32,7 +32,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -57,10 +57,10 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 		showOnEquipment();
 		showOnInventory();
 		showOnInterfaces(
-			InterfaceID.CHAMBERS_OF_XERIC_INVENTORY,
-			InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE,
-			InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED,
-			InterfaceID.GRAVESTONE
+			InterfaceID.RAIDS_STORAGE_SIDE,
+			InterfaceID.RAIDS_STORAGE_PRIVATE,
+			InterfaceID.RAIDS_STORAGE_SHARED,
+			InterfaceID.GRAVESTONE_GENERIC
 		);
 		fillCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)

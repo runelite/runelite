@@ -24,14 +24,13 @@
  */
 
 void compute_uv(vec3 cameraPos, vec3 f1, vec3 f2, vec3 f3, vec3 t1, vec3 t2, vec3 t3, out vec2 uv1, out vec2 uv2, out vec2 uv3) {
-  vec3 v1 = t1;
-  vec3 v2 = t2 - v1;
-  vec3 v3 = t3 - v1;
+  vec3 tangent = t2 - t1;
+  vec3 bitangent = t3 - t1;
 
-  vec3 texNormal = cross(v2, v3);
+  vec3 texNormal = cross(tangent, bitangent);
   vec3 vertexToCamera;
 
-  // Set the tri vertex position to the intersection point on the tex tri plane of the tri vertex
+  // Set the tri vertex position to the intersection point on the tex tri plane
   // along the vector from the tri vertex to the camera.
   // Point of intersection p, from https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection#Algebraic_form:
   // d = ((p_0 - l_0) ⋅ n) / (l ⋅ n)
@@ -49,25 +48,25 @@ void compute_uv(vec3 cameraPos, vec3 f1, vec3 f2, vec3 f3, vec3 t1, vec3 t2, vec
   vertexToCamera = cameraPos - f3;
   f3 += vertexToCamera * dot(t3 - f3, texNormal) / dot(vertexToCamera, texNormal);
 
-  vec3 v4 = f1 - v1;
-  vec3 v5 = f2 - v1;
-  vec3 v6 = f3 - v1;
+  vec3 v4 = f1 - t1;
+  vec3 v5 = f2 - t1;
+  vec3 v6 = f3 - t1;
 
-  vec3 v8 = cross(v3, texNormal);
-  float d = 1.0f / dot(v8, v2);
+  vec3 v8 = cross(bitangent, texNormal);
+  float d = 1.0f / dot(v8, tangent);
 
-  float u0 = dot(v8, v4) * d;
-  float u1 = dot(v8, v5) * d;
-  float u2 = dot(v8, v6) * d;
+  float u1 = dot(v8, v4) * d;
+  float u2 = dot(v8, v5) * d;
+  float u3 = dot(v8, v6) * d;
 
-  v8 = cross(v2, texNormal);
-  d = 1.0f / dot(v8, v3);
+  v8 = cross(tangent, texNormal);
+  d = 1.0f / dot(v8, bitangent);
 
-  float v0_ = dot(v8, v4) * d;
-  float v1_ = dot(v8, v5) * d;
-  float v2_ = dot(v8, v6) * d;
+  float v1 = dot(v8, v4) * d;
+  float v2 = dot(v8, v5) * d;
+  float v3 = dot(v8, v6) * d;
 
-  uv1 = vec2(u0, v0_);
-  uv2 = vec2(u1, v1_);
-  uv3 = vec2(u2, v2_);
+  uv1 = vec2(u1, v1);
+  uv2 = vec2(u2, v2);
+  uv3 = vec2(u3, v3);
 }

@@ -37,8 +37,8 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -123,12 +123,12 @@ public class TimestampPlugin extends Plugin
 			timestamp = ColorUtil.wrapWithColorTag(timestamp, timestampColour);
 		}
 
-		client.getStringStack()[client.getStringStackSize() - 1] = timestamp;
+		client.getObjectStack()[client.getObjectStackSize() - 1] = timestamp;
 	}
 
 	private Color getTimestampColour()
 	{
-		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
+		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(VarbitID.CHATBOX_TRANSPARENCY) == 1;
 
 		return isChatboxTransparent ? config.transparentTimestamp() : config.opaqueTimestamp();
 	}

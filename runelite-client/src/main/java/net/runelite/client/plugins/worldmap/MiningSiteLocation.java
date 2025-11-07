@@ -36,9 +36,10 @@ enum MiningSiteLocation
 {
 	AGILITY_PYRAMID(new WorldPoint(3322, 2875, 0), new Rock(5, Ore.GOLD)),
 	// ABANDONED_MINE -- NOT AVAILABLE ON WORLDMAP
+	ALDARIN(new WorldPoint(1430, 2882, 0), new Rock(8, Ore.IRON), new Rock(5, Ore.SILVER), new Rock(6, Ore.COAL), new Rock(5, Ore.GOLD)),
 	AL_KHARID_MINE_NORTH(new WorldPoint(3298, 3312, 0),
 		new Rock(3, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(7, Ore.IRON), new Rock(5, Ore.SILVER),
-		new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
+		new Rock(3, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
 	AL_KHARID_MINE_SOUTH(new WorldPoint(3298, 3282, 0), new Rock(2, Ore.IRON), new Rock(2, Ore.GOLD)),
 	ANCIENT_CAVERN_NORTH(new WorldPoint(1847, 5414, 0), new Rock(4, Ore.MITHRIL)),
 	ANCIENT_CAVERN_SOUTH(new WorldPoint(1826, 5392, 0), new Rock(2, Ore.MITHRIL)),
@@ -73,6 +74,7 @@ enum MiningSiteLocation
 	CRANDOR_NORTH_WEST(new WorldPoint(2831, 3296, 0), new Rock(7, Ore.COAL), new Rock(1, Ore.MITHRIL)),
 	CRANDOR_SOUTH_EAST(new WorldPoint(2835, 3245, 0), new Rock(3, Ore.COAL), new Rock(3, Ore.ADAMANTITE)),
 	CRANDOR_SOUTH_WEST(new WorldPoint(2819, 3247, 0), new Rock(7, Ore.MITHRIL)),
+	CUSTODIA_LAKE(new WorldPoint(1281, 3412, 0), new Rock(8, Ore.IRON), new Rock(3, Ore.COAL), new Rock(6, Ore.MITHRIL)),
 	DAEYALT_ESSENCE_MINE(new WorldPoint(3631, 3340, 0), new Rock(3, Ore.DAEYALT_ESSENCE)),
 	DESERT_MINING_CAMP_SURFACE(new WorldPoint(3299, 3021, 0), true, new Rock(4, Ore.COPPER), new Rock(4, Ore.TIN), new Rock(3, Ore.IRON), new Rock(4, Ore.COAL)),
 	// DESERT_MINING_CAMP_UNDERGROUND -- NOT AVAILABLE ON WORLDMAP
@@ -198,6 +200,8 @@ enum MiningSiteLocation
 		new Rock(1, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(5, Ore.IRON), new Rock(2, Ore.SILVER), new Rock(1, Ore.COAL)),
 	SALT_MINE(new WorldPoint(2835, 10334, 0),
 		new Rock(7, Ore.BASALT), new Rock(15, Ore.TE_SALT), new Rock(12, Ore.EFH_SALT), new Rock(12, Ore.URT_SALT)),
+	SALVAGER_OVERLOOK_EAST(new WorldPoint(1671, 3284, 0), new Rock(5, Ore.IRON), new Rock(5, Ore.GOLD)),
+	SALVAGER_OVERLOOK_WEST(new WorldPoint(1631, 3277, 0), new Rock(7, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
 	SHAYZIEN(new WorldPoint(1601, 3645, 0),
 		new Rock(3, Ore.CLAY), new Rock(3, Ore.IRON), new Rock(4, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(2, Ore.ADAMANTITE)),
 	SHILO_VILLAGE_SURFACE(new WorldPoint(2822, 3001, 0), new Rock(7, Ore.GEM_ROCK)),
@@ -205,6 +209,9 @@ enum MiningSiteLocation
 	SLEPE_UNDERGROUND(new WorldPoint(3888, 9749, 0), new Rock(6, Ore.IRON), new Rock(14, Ore.COAL)),
 	STONECUTTER_OUTPOST(new WorldPoint(1747, 2955, 0), new Rock(5, Ore.CLAY), new Rock(6, Ore.IRON), new Rock(4, Ore.SILVER), new Rock(10, Ore.COAL), new Rock(3, Ore.GOLD), new Rock(4, Ore.MITHRIL)),
 	STRANGLEWOOD_MINE(new WorldPoint(1169, 3323, 0), new Rock(3, Ore.IRON), new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(3, Ore.ADAMANTITE), new Rock(1, Ore.RUNITE)),
+	TLATI_RAINFOREST_EAST(new WorldPoint(1352, 3112, 0), new Rock(7, Ore.IRON), new Rock(4, Ore.COAL), new Rock(5, Ore.GOLD), new Rock(4, Ore.MITHRIL), new Rock(4, Ore.ADAMANTITE), new Rock(1, Ore.GEMSTONE_CRAB)),
+	TLATI_RAINFOREST_NORTH(new WorldPoint(1272, 3173, 0), new Rock(9, Ore.SILVER), new Rock(8, Ore.CLAY), new Rock(1, Ore.GEMSTONE_CRAB)),
+	TLATI_RAINFOREST_SOUTH(new WorldPoint(1238, 3043, 0), new Rock(13, Ore.COPPER), new Rock(10, Ore.IRON), new Rock(7, Ore.COAL), new Rock(1, Ore.GEMSTONE_CRAB)),
 	TRAHEARN(new WorldPoint(3295, 12387, 0),
 		new Rock(26, Ore.IRON), new Rock(8, Ore.SILVER), new Rock(19, Ore.COAL), new Rock(14, Ore.GOLD),
 		new Rock(7, Ore.MITHRIL), new Rock(10, Ore.SOFT_CLAY), new Rock(7, Ore.ADAMANTITE), new Rock(4, Ore.RUNITE)),
@@ -276,6 +283,7 @@ enum MiningSiteLocation
 		URT_SALT("Urt salt"),
 		RUNITE("Runite"),
 		AMETHYST("Amethyst"),
+		GEMSTONE_CRAB("Gemstone Crab"),
 		;
 
 		private final String name;

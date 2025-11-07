@@ -25,9 +25,13 @@
 package net.runelite.api;
 
 import javax.annotation.Nullable;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 
 public interface WorldView
 {
+	int TOPLEVEL = -1;
+
 	/**
 	 * Get the world view id
 	 * @return the id, or -1 if this is the top level worldview
@@ -59,6 +63,12 @@ public interface WorldView
 	 * Gets all the WorldEntities in this view
 	 */
 	IndexedObjectSet<? extends WorldEntity> worldEntities();
+
+	/**
+	 * Get the worldviews of each worldentity in this worldview.
+	 * @return
+	 */
+	IndexedObjectSet<? extends WorldView> worldViews();
 
 	/**
 	 * Gets an array of tile collision data.
@@ -149,15 +159,9 @@ public interface WorldView
 	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 */
+	@Deprecated
 	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
 		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
-
-	/**
-	 * Gets a list of all projectiles currently spawned.
-	 *
-	 * @return all projectiles
-	 */
-	Deque<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.
@@ -202,4 +206,37 @@ public interface WorldView
 	 * @see InstanceTemplates
 	 */
 	int[][][] getInstanceTemplateChunks();
+
+	/**
+	 * Gets an array of map region IDs that are currently loaded.
+	 *
+	 * @return the map regions
+	 */
+	int[] getMapRegions();
+
+	/**
+	 * Test if this worldview contains the given point
+	 * @param point
+	 * @return
+	 */
+	boolean contains(WorldPoint point);
+
+	/**
+	 * Test if this worldview contains the given point
+	 * @param point
+	 * @return
+	 */
+	boolean contains(LocalPoint point);
+
+	/**
+	 * Returns a {@link Projection} to translate from this world view to the main world
+	 * @return
+	 */
+	Projection getMainWorldProjection();
+
+	/**
+	 * Returns a {@link Projection} to translate from this world view to the canvas
+	 * @return
+	 */
+	Projection getCanvasProjection();
 }

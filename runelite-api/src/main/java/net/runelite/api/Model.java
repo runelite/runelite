@@ -52,6 +52,8 @@ public interface Model extends Mesh<Model>, Renderable
 
 	byte[] getFaceRenderPriorities();
 
+	byte[] getFaceBias();
+
 	int getRadius();
 	int getDiameter();
 

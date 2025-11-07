@@ -69,10 +69,14 @@ public class ComponentMojo extends AbstractMojo
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
 		TypeSpec.Builder interfaceType = TypeSpec.classBuilder("InterfaceID")
-			.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+			.addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+			.addAnnotation(Deprecated.class)
+			.addJavadoc("@deprecated Use {@link net.runelite.api.gameval.InterfaceID} instead");
 
 		TypeSpec.Builder componentType = TypeSpec.classBuilder("ComponentID")
-			.addModifiers(Modifier.PUBLIC, Modifier.FINAL);
+			.addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+			.addAnnotation(Deprecated.class)
+			.addJavadoc("@deprecated Use nested classes of {@link net.runelite.api.gameval.InterfaceID} instead");
 
 		for (File file : inputDirectory.listFiles((dir, name) -> name.endsWith(".toml")))
 		{

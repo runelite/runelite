@@ -26,7 +26,6 @@ package net.runelite.client.plugins.inventorytags;
 
 import com.google.gson.Gson;
 import com.google.inject.Provides;
-import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -36,9 +35,6 @@ import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import static net.runelite.api.InventoryID.EQUIPMENT;
-import static net.runelite.api.InventoryID.INVENTORY;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
@@ -46,7 +42,8 @@ import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
@@ -190,8 +187,8 @@ public class InventoryTagsPlugin extends Plugin
 				final Menu submenu = parent.createSubMenu();
 
 				Set<Color> invEquipmentColors = new HashSet<>();
-				invEquipmentColors.addAll(getColorsFromItemContainer(INVENTORY));
-				invEquipmentColors.addAll(getColorsFromItemContainer(EQUIPMENT));
+				invEquipmentColors.addAll(getColorsFromItemContainer(InventoryID.INV));
+				invEquipmentColors.addAll(getColorsFromItemContainer(InventoryID.WORN));
 				for (Color color : invEquipmentColors)
 				{
 					if (tag == null || !tag.color.equals(color))
@@ -216,7 +213,7 @@ public class InventoryTagsPlugin extends Plugin
 						Color color = tag == null ? Color.WHITE : tag.color;
 						SwingUtilities.invokeLater(() ->
 						{
-							RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+							RuneliteColorPicker colorPicker = colorPickerManager.create(client,
 								color, "Inventory Tag", true);
 							colorPicker.setOnClose(c ->
 							{
@@ -239,7 +236,7 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
-	private List<Color> getColorsFromItemContainer(InventoryID inventoryID)
+	private List<Color> getColorsFromItemContainer(int inventoryID)
 	{
 		List<Color> colors = new ArrayList<>();
 		ItemContainer container = client.getItemContainer(inventoryID);

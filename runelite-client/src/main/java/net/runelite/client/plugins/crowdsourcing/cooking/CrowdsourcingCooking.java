@@ -28,16 +28,16 @@ package net.runelite.client.plugins.crowdsourcing.cooking;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -55,13 +55,13 @@ public class CrowdsourcingCooking
 
 	private boolean hasCookingGauntlets()
 	{
-		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.WORN);
 		if (equipmentContainer == null)
 		{
 			return false;
 		}
 
-		return equipmentContainer.contains(ItemID.COOKING_GAUNTLETS);
+		return equipmentContainer.contains(ItemID.GAUNTLETS_OF_COOKING);
 	}
 
 	@Subscribe
@@ -100,7 +100,7 @@ public class CrowdsourcingCooking
 
 			int cookingLevel = client.getBoostedSkillLevel(Skill.COOKING);
 			boolean hasCookingGauntlets = hasCookingGauntlets();
-			boolean kourendElite = client.getVarbitValue(Varbits.DIARY_KOUREND_ELITE) == 1;
+			boolean kourendElite = client.getVarbitValue(VarbitID.KOUREND_DIARY_ELITE_COMPLETE) == 1;
 			CookingData data = new CookingData(message, hasCookingGauntlets, inHosidiusKitchen, kourendElite, lastGameObjectClicked, cookingLevel);
 			manager.storeEvent(data);
 		}
@@ -117,7 +117,7 @@ public class CrowdsourcingCooking
 			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION
 			|| (action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
 				&& client.getSelectedWidget() != null
-				&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER))
+				&& client.getSelectedWidget().getId() == InterfaceID.Inventory.ITEMS))
 		{
 			lastGameObjectClicked = menuOptionClicked.getId();
 		}

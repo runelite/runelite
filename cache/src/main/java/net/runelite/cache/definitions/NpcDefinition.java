@@ -60,7 +60,7 @@ public class NpcDefinition
 	public int combatLevel = -1;
 	public int widthScale = 128;
 	public int heightScale = 128;
-	public boolean hasRenderPriority;
+	public int renderPriority = 0;
 	public int ambient;
 	public int contrast;
 	public int[] headIconArchiveIds;
@@ -77,4 +77,8 @@ public class NpcDefinition
 	public int category;
 	public int height = -1;
 	public int[] stats = {1, 1, 1, 1, 1, 1};
+	public int footprintSize = -1;
+	public boolean canHideForOverlap;
+	public int overlapTintHSL = 39188;
+	public boolean unknown1 = false;
 }

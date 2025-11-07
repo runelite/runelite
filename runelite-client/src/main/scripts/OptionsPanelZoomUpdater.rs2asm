@@ -1,28 +1,34 @@
-.id                 1049
-.int_stack_count    0
-.string_stack_count 0
-.int_var_count      6
-.string_var_count   0
+.id                       1049
+.int_arg_count            0
+.obj_arg_count            0
 ; locals
 ; 0 resizableZoomRange
 ; 1 fixedZoomRange
 ; 2 bar size
-   iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1341
+   get_varc_int           1340
    sub                   
    istore                 0
-   iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1339
+   get_varc_int           1338
    sub                   
    istore                 1
+   iload                  0
+   iconst                 0
+   if_icmpeq              LABEL15
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL15
+   jump                   LABEL22
+LABEL15:
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 7602234
+   if_setposition        
+   return                
+LABEL22:
    iconst                 7602233
    if_getwidth           
    iconst                 7602234
@@ -40,13 +46,11 @@
    istore                 5
    iload                  3
    iconst                 334
-   if_icmpgt              LABEL27
-   jump                   LABEL36
-LABEL27:
+   if_icmpgt              LABEL41
+   jump                   LABEL50
+LABEL41:
    get_varc_int           74
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1340
    sub                   
    iload                  0
    sconst                 "zoomExpToLin"
@@ -57,12 +61,10 @@ LABEL27:
    iload                  0
    div                   
    istore                 5
-   jump                   LABEL44
-LABEL36:
+   jump                   LABEL58
+LABEL50:
    get_varc_int           73
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1338
    sub                   
    iload                  0
    sconst                 "zoomExpToLin"
@@ -73,7 +75,7 @@ LABEL36:
    iload                  1
    div                   
    istore                 5
-LABEL44:
+LABEL58:
    iload                  5
    iconst                 0
    iconst                 0

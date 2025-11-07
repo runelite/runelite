@@ -36,15 +36,13 @@ public interface CameraConfig extends Config
 	int OUTER_LIMIT_MIN = -400;
 	int OUTER_LIMIT_MAX = 400;
 	/**
-	 * The largest (most zoomed in) value that can be used without the client crashing.
-	 *
-	 * Larger values trigger an overflow in the engine's fov to scale code.
+	 * The largest (most zoomed in) value that can be used.
 	 */
-	int INNER_ZOOM_LIMIT = 1004;
+	int INNER_ZOOM_LIMIT = 1400;
 
 	@ConfigSection(
-		name = "Mouse Settings",
-		description = "Mouse settings",
+		name = "Mouse settings",
+		description = "Mouse settings.",
 		position = 10
 	)
 	String mouseSettingsSection = "mouseSettings";
@@ -52,7 +50,7 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "inner",
 		name = "Expand inner zoom limit",
-		description = "Configures whether or not the inner zoom limit is reduced",
+		description = "Configures whether or not the inner zoom limit is reduced.",
 		position = 1
 	)
 	default boolean innerLimit()
@@ -67,7 +65,7 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "outerLimit",
 		name = "Expand outer zoom limit",
-		description = "Configures how much the outer zoom limit is adjusted",
+		description = "Configures how much the outer zoom limit is adjusted.",
 		position = 2
 	)
 	default int outerLimit()
@@ -88,8 +86,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "controlFunction",
-		name = "Control Function",
-		description = "Configures the zoom function when control is pressed",
+		name = "Control function",
+		description = "Configures the zoom function when control is pressed.",
 		position = 4
 	)
 	default ControlFunction controlFunction()
@@ -100,7 +98,7 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "ctrlZoomValue",
 		name = "Reset zoom position",
-		description = "Position of zoom when it is reset",
+		description = "Position of zoom when it is reset.",
 		position = 5
 	)
 	@Range(
@@ -114,8 +112,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "zoomIncrement",
-		name = "Zoom Speed",
-		description = "Speed of zoom",
+		name = "Zoom speed",
+		description = "Speed of zoom.",
 		position = 6
 	)
 	default int zoomIncrement()
@@ -125,8 +123,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "cameraSpeed",
-		name = "Camera Speed",
-		description = "Speed which the camera moves from input",
+		name = "Camera speed",
+		description = "Speed which the camera moves from input.",
 		position = 7
 	)
 	default double cameraSpeed()
@@ -136,8 +134,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "disableCameraShake",
-		name = "Disable Camera Shake",
-		description = "Disables camera shake",
+		name = "Disable camera shake",
+		description = "Disables camera shake.",
 		position = 8
 	)
 	default boolean disableCameraShake()
@@ -148,8 +146,8 @@ public interface CameraConfig extends Config
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",
-		name = "Right click moves camera",
-		description = "Remaps right click to middle mouse click",
+		name = "Right-click moves camera",
+		description = "Remaps right-click to middle mouse click.",
 		position = 7,
 		section = mouseSettingsSection
 	)
@@ -160,8 +158,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightClickObjects",
-		name = "Right click objects",
-		description = "Right clicking objects opens the menu when 'Right click moves camera' is on",
+		name = "Right-click objects",
+		description = "Right-clicking objects opens the menu when 'Right-click moves camera' is on.",
 		position = 8,
 		section = mouseSettingsSection
 	)
@@ -172,8 +170,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightClickExamine",
-		name = "Right click examine",
-		description = "Right clicking examinable objects opens the menu when 'Right click moves camera' is on",
+		name = "Right-click examine",
+		description = "Right-clicking examinable objects opens the menu when 'Right-click moves camera' is on.",
 		position = 9,
 		section = mouseSettingsSection
 	)
@@ -184,9 +182,9 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightClickMenuBlocksCamera",
-		name = "Right click menu blocks camera",
-		description = "Prevents camera movement when 'Right click moves camera' is on and the right click menu<br>" +
-			"is opened due to either 'Right click objects' or 'Right click examine' being on.",
+		name = "Right-click menu blocks camera",
+		description = "Prevents camera movement when 'Right-click moves camera' is on and the right-click menu<br>" +
+			"is opened due to either 'Right-click objects' or 'Right-click examine' being on.",
 		position = 10,
 		section = mouseSettingsSection
 	)
@@ -198,7 +196,7 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "middleClickMenu",
 		name = "Middle-button opens menu",
-		description = "Remaps middle mouse click to right click",
+		description = "Remaps middle mouse click to right-click.",
 		position = 11,
 		section = mouseSettingsSection
 	)
@@ -209,8 +207,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "invertYaw",
-		name = "Invert Yaw",
-		description = "Makes moving the camera horizontally with the mouse backwards",
+		name = "Invert yaw",
+		description = "Makes moving the camera horizontally with the mouse backwards.",
 		position = 12,
 		section = mouseSettingsSection
 	)
@@ -221,8 +219,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "invertPitch",
-		name = "Invert Pitch",
-		description = "Makes moving the camera vertically with the mouse backwards",
+		name = "Invert pitch",
+		description = "Makes moving the camera vertically with the mouse backwards.",
 		position = 13,
 		section = mouseSettingsSection
 	)

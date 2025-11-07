@@ -33,8 +33,8 @@ public interface WikiConfig extends Config
 {
 	@ConfigItem(
 		keyName = "leftClickSearch",
-		name = "Left Click Search",
-		description = "Swap left-click on the Wiki button to Search",
+		name = "Left-click search",
+		description = "Swap left-click on the wiki button to Search.",
 		position = 1
 	)
 	default boolean leftClickSearch()

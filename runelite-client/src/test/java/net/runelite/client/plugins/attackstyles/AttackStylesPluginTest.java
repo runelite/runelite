@@ -35,13 +35,16 @@ import net.runelite.api.EnumID;
 import net.runelite.api.ParamID;
 import net.runelite.api.Skill;
 import net.runelite.api.StructComposition;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
@@ -50,10 +53,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -79,6 +84,10 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	Notifier notifier;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;
@@ -119,6 +128,8 @@ public class AttackStylesPluginTest
 
 			when(client.getStructComposition(styleStructId)).thenReturn(s);
 		}
+
+		when(attackConfig.warningNotification()).thenReturn(Notification.OFF);
 	}
 
 	/*
@@ -139,18 +150,21 @@ public class AttackStylesPluginTest
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 
 		// Setup attack in style that gives attack xp
-		when(client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(4);
-		when(client.getVarpValue(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
+		when(client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY)).thenReturn(4);
+		when(client.getVarpValue(VarPlayerID.COM_MODE)).thenReturn(AttackStyle.ACCURATE.ordinal());
 
 		// verify that earning xp in a warned skill will display red text on the widget
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.ATTACK_STYLE);
+		varbitChanged.setVarpId(VarPlayerID.COM_MODE);
 		attackPlugin.onVarbitChanged(varbitChanged);
 
 		assertTrue(attackPlugin.isWarnedSkillSelected());
 
+		attackPlugin.onGameTick(new GameTick());
+		verify(notifier).notify(any(Notification.class), eq("Attack style changed to Accurate!"));
+
 		// Switch to attack style that doesn't give attack xp
-		when(client.getVarpValue(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
+		when(client.getVarpValue(VarPlayerID.COM_MODE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
 
 		// Verify the widget will now display white text
 		attackPlugin.onVarbitChanged(varbitChanged);
@@ -175,16 +189,16 @@ public class AttackStylesPluginTest
 		// Set up mock widgets for atk and str attack styles
 		Widget atkWidget = mock(Widget.class);
 		Widget strWidget = mock(Widget.class);
-		when(client.getWidget(ComponentID.COMBAT_STYLE_ONE)).thenReturn(atkWidget);
-		when(client.getWidget(ComponentID.COMBAT_STYLE_TWO)).thenReturn(strWidget);
+		when(client.getWidget(InterfaceID.CombatInterface._0)).thenReturn(atkWidget);
+		when(client.getWidget(InterfaceID.CombatInterface._1)).thenReturn(strWidget);
 		// Set widgets to return their hidden value in widgetsToHide when isHidden() is called
 		when(atkWidget.isHidden()).thenAnswer(x -> isAtkHidden());
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
 
 		// equip type_4 weapon type on player
-		when(client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(4);
+		when(client.getVarbitValue(VarbitID.COMBAT_WEAPON_CATEGORY)).thenReturn(4);
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.EQUIPPED_WEAPON_TYPE);
+		varbitChanged.setVarbitId(VarbitID.COMBAT_WEAPON_CATEGORY);
 		attackPlugin.onVarbitChanged(varbitChanged);
 
 		// Verify there is a warned skill
@@ -222,9 +236,9 @@ public class AttackStylesPluginTest
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
 		assertFalse(attackPlugin.getHiddenWidgets().get(4,
-			ComponentID.COMBAT_STYLE_ONE));
+			InterfaceID.CombatInterface._0));
 		assertFalse(attackPlugin.getHiddenWidgets().get(4,
-			ComponentID.COMBAT_STYLE_THREE));
+			InterfaceID.CombatInterface._2));
 	}
 
 	private boolean isAtkHidden()
@@ -233,7 +247,7 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(4, ComponentID.COMBAT_STYLE_ONE);
+		return attackPlugin.getHiddenWidgets().get(4, InterfaceID.CombatInterface._0);
 	}
 
 	private boolean isStrHidden()
@@ -242,6 +256,6 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(4, ComponentID.COMBAT_STYLE_TWO);
+		return attackPlugin.getHiddenWidgets().get(4, InterfaceID.CombatInterface._1);
 	}
 }

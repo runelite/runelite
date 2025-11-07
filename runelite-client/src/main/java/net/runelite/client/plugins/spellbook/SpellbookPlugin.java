@@ -37,16 +37,17 @@ import net.runelite.api.EnumID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ParamID;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetConfig.DRAG;
 import static net.runelite.api.widgets.WidgetConfig.DRAG_ON;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
@@ -73,22 +74,22 @@ public class SpellbookPlugin extends Plugin
 	private static final int HIDE_UNHIDE_OP = 6;
 
 	private static final WidgetMenuOption FIXED_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", ComponentID.FIXED_VIEWPORT_MAGIC_TAB);
+		"", InterfaceID.Toplevel.STONE6);
 
 	private static final WidgetMenuOption FIXED_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", ComponentID.FIXED_VIEWPORT_MAGIC_TAB);
+		"", InterfaceID.Toplevel.STONE6);
 
 	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_MAGIC_TAB);
+		"", InterfaceID.ToplevelOsrsStretch.STONE6);
 
 	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_MAGIC_TAB);
+		"", InterfaceID.ToplevelOsrsStretch.STONE6);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+		"", InterfaceID.ToplevelPreEoc.STONE6);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+		"", InterfaceID.ToplevelPreEoc.STONE6);
 
 	@Inject
 	private Client client;
@@ -221,14 +222,14 @@ public class SpellbookPlugin extends Plugin
 
 			int draggedGroupId = WidgetUtil.componentToInterface(draggedWidget.getId());
 			int draggedOnGroupId = WidgetUtil.componentToInterface(draggedOnWidget.getId());
-			if (draggedGroupId != InterfaceID.SPELLBOOK || draggedOnGroupId != InterfaceID.SPELLBOOK)
+			if (draggedGroupId != InterfaceID.MAGIC_SPELLBOOK || draggedOnGroupId != InterfaceID.MAGIC_SPELLBOOK)
 			{
 				return;
 			}
 
 			// from ~magic_spellbook_redraw
-			int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(Varbits.SPELLBOOK));
-			int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(Varbits.SPELLBOOK_SUBMENU));
+			int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK));
+			int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK_SUBLIST));
 
 			EnumComposition spellbook = client.getEnum(spellbookId);
 			int[] order = calculateSpellbookOrder(spellbookId, spellbook); // in enum indices
@@ -288,6 +289,8 @@ public class SpellbookPlugin extends Plugin
 		{
 			return;
 		}
+
+		createWarning(reordering);
 
 		// this is called after ~magic_spellbook_redraw has built and sorted the array of visible spells
 		// based on the vanilla filtering
@@ -361,6 +364,23 @@ public class SpellbookPlugin extends Plugin
 		stack[size - 1] = numSpells = numNewSpells;
 	}
 
+	private void createWarning(boolean unlocked)
+	{
+		Widget w = client.getWidget(InterfaceID.MagicSpellbook.UNIVERSE);
+		w.deleteAllChildren();
+
+		if (unlocked)
+		{
+			Widget c = w.createChild(WidgetType.RECTANGLE);
+			c.setHeightMode(WidgetSizeMode.MINUS);
+			c.setWidthMode(WidgetSizeMode.MINUS);
+			c.setTextColor(0xff0000);
+			c.setFilled(true);
+			c.setOpacity(220);
+			c.revalidate();
+		}
+	}
+
 	private void initializeSpells(int spellbookEnum)
 	{
 		EnumComposition spellbook = client.getEnum(spellbookEnum);
@@ -382,8 +402,8 @@ public class SpellbookPlugin extends Plugin
 
 					// Spells can be shared between spellbooks, so we can't assume spellbookEnum is the current spellbook.
 					// from ~magic_spellbook_redraw
-					int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(Varbits.SPELLBOOK));
-					int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(Varbits.SPELLBOOK_SUBMENU));
+					int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK));
+					int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(VarbitID.SPELLBOOK_SUBLIST));
 
 					boolean hidden = isHidden(spellbookId, spellObjId);
 					hidden = !hidden;
@@ -406,7 +426,7 @@ public class SpellbookPlugin extends Plugin
 
 	private void reinitializeSpellbook()
 	{
-		Widget w = client.getWidget(ComponentID.SPELLBOOK_PARENT);
+		Widget w = client.getWidget(InterfaceID.MagicSpellbook.UNIVERSE);
 		if (w != null && w.getOnLoadListener() != null)
 		{
 			client.createScriptEvent(w.getOnLoadListener())
@@ -417,7 +437,7 @@ public class SpellbookPlugin extends Plugin
 
 	private void redrawSpellbook()
 	{
-		Widget w = client.getWidget(ComponentID.SPELLBOOK_PARENT);
+		Widget w = client.getWidget(InterfaceID.MagicSpellbook.UNIVERSE);
 		if (w != null && w.getOnInvTransmitListener() != null)
 		{
 			client.createScriptEvent(w.getOnInvTransmitListener())

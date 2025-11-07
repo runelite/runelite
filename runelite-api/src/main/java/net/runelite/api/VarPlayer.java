@@ -32,6 +32,7 @@ package net.runelite.api;
  * if it thinks they will change the next tick as a lag-hiding measure.
  * The client CANNOT directly make the server change a varp.
  */
+@Deprecated
 public final class VarPlayer
 {
 	public static final int CANNON_STATE = 2;
@@ -177,9 +178,12 @@ public final class VarPlayer
 	public static final int MOUSE_BUTTONS = 170;
 
 	/**
-	 * {@link NpcID} for the HP HUD
+	 * {@link net.runelite.api.gameval.NpcID} for the HP HUD
 	 */
 	public static final int HP_HUD_NPC_ID = 1683;
+
+	public static final int CLOG_LOGGED = 2943;
+	public static final int CLOG_TOTAL = 2944;
 
 	/**
 	 * Colors for chat messages
@@ -234,12 +238,11 @@ public final class VarPlayer
 
 	/**
 	 * Currently assigned slayer task if SLAYER_TASK_SIZE is greater than 0.
-	 * Mapping of value to name can be found in {@link EnumID#SLAYER_TASK_CREATURE}.
 	 */
 	public static final int SLAYER_TASK_CREATURE = 395;
 
 	/**
-	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
+	 * Assigned slayer task location.
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
 
@@ -264,4 +267,13 @@ public final class VarPlayer
 	 * @see #DIZANAS_QUIVER_ITEM_COUNT
 	 */
 	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;
+
+	/**
+	 * Runecraft Essence Pouch degrade states
+	 */
+	public static final int ESSENCE_POUCH_MEDIUM_DEGRADE = 488;
+	public static final int ESSENCE_POUCH_LARGE_DEGRADE = 489;
+	public static final int ESSENCE_POUCH_GIANT_DEGRADE = 490;
+
+	public static final int RAIDS_PERSONAL_POINTS = 4609;
 }

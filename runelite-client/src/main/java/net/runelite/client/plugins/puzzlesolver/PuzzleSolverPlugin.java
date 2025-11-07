@@ -34,8 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
@@ -96,12 +95,12 @@ public class PuzzleSolverPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widget)
 	{
-		if (widget.getGroupId() != InterfaceID.VARROCK_MUSEUM)
+		if (widget.getGroupId() != InterfaceID.VM_NATURAL_HISTORY)
 		{
 			return;
 		}
 
-		final Widget questionWidget = client.getWidget(ComponentID.VARROCK_MUSEUM_QUESTION);
+		final Widget questionWidget = client.getWidget(InterfaceID.VmNaturalHistory.VM_NATHIS_QUESTION);
 
 		if (questionWidget == null)
 		{
@@ -111,9 +110,9 @@ public class PuzzleSolverPlugin extends Plugin
 		final Widget answerWidget = VarrockMuseumAnswer.findCorrect(
 			client,
 			questionWidget.getText(),
-			ComponentID.VARROCK_MUSEUM_FIRST_ANSWER,
-			ComponentID.VARROCK_MUSEUM_SECOND_ANSWER,
-			ComponentID.VARROCK_MUSEUM_THIRD_ANSWER);
+			InterfaceID.VmNaturalHistory.VM_NATHIS_ANSWER_01,
+			InterfaceID.VmNaturalHistory.VM_NATHIS_ANSWER_02,
+			InterfaceID.VmNaturalHistory.VM_NATHIS_ANSWER_03);
 
 		if (answerWidget == null)
 		{
@@ -131,41 +130,41 @@ public class PuzzleSolverPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		int widgetId = menuOptionClicked.getParam1();
-		if (WidgetUtil.componentToInterface(widgetId) != InterfaceID.LIGHT_BOX)
+		if (WidgetUtil.componentToInterface(widgetId) != InterfaceID.LIGHT_PUZZLE)
 		{
 			return;
 		}
 
 		Combination combination;
-		if (widgetId == ComponentID.LIGHT_BOX_BUTTON_A)
+		if (widgetId == InterfaceID.LightPuzzle.BUTTON1)
 		{
 			combination = Combination.A;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_B)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON2)
 		{
 			combination = Combination.B;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_C)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON3)
 		{
 			combination = Combination.C;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_D)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON4)
 		{
 			combination = Combination.D;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_E)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON5)
 		{
 			combination = Combination.E;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_F)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON6)
 		{
 			combination = Combination.F;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_G)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON7)
 		{
 			combination = Combination.G;
 		}
-		else if (widgetId == ComponentID.LIGHT_BOX_BUTTON_H)
+		else if (widgetId == InterfaceID.LightPuzzle.BUTTON8)
 		{
 			combination = Combination.H;
 		}
@@ -187,7 +186,7 @@ public class PuzzleSolverPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget lightboxWidget = client.getWidget(ComponentID.LIGHT_BOX_LIGHT_BULB_CONTAINER);
+		Widget lightboxWidget = client.getWidget(InterfaceID.LightPuzzle.LIGHTS);
 		if (lightboxWidget == null)
 		{
 			if (lightbox != null)
@@ -254,7 +253,7 @@ public class PuzzleSolverPlugin extends Plugin
 		}
 
 		// Set solution to title
-		Widget lightbox = client.getWidget(ComponentID.LIGHT_BOX_LIGHT_BOX);
+		Widget lightbox = client.getWidget(InterfaceID.LightPuzzle.STEEL_BORDER);
 		if (lightbox != null)
 		{
 			Widget title = lightbox.getChild(1);

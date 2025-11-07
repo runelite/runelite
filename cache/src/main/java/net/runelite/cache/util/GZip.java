@@ -32,25 +32,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GZip
 {
-	private static final Logger logger = LoggerFactory.getLogger(GZip.class);
-
 	public static byte[] compress(byte[] bytes) throws IOException
 	{
-		InputStream is = new ByteArrayInputStream(bytes);
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 
-		try (OutputStream os = new GZIPOutputStream(bout))
+		try (InputStream is = new ByteArrayInputStream(bytes);
+			OutputStream os = new GZIPOutputStream(bout))
 		{
-			IOUtils.copy(is, os);
+			is.transferTo(os);
 		}
 
-		return bout.toByteArray();
+		byte[] out = bout.toByteArray();
+		out[9] = 0; // JDK-8244706: set OS to 0
+		return out;
 	}
 
 	public static byte[] decompress(byte[] bytes, int len) throws IOException
@@ -59,7 +56,7 @@ public class GZip
 
 		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes, 0, len)))
 		{
-			IOUtils.copy(is, os);
+			is.transferTo(os);
 		}
 
 		return os.toByteArray();

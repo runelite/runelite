@@ -53,12 +53,8 @@ import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.SoundEffectID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.StructComposition;
 import net.runelite.api.StructID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.annotations.Varp;
@@ -73,8 +69,11 @@ import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.ComponentID;
-import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
@@ -125,7 +124,9 @@ public class MusicPlugin extends Plugin
 		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MISSILES,
 		SoundEffectID.PRAYER_ACTIVATE_PROTECT_FROM_MELEE,
 		SoundEffectID.PRAYER_ACTIVATE_EAGLE_EYE,
+		SoundEffectID.PRAYER_ACTIVATE_DEADEYE,
 		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_MIGHT,
+		SoundEffectID.PRAYER_ACTIVATE_MYSTIC_VIGOUR,
 		SoundEffectID.PRAYER_ACTIVATE_RETRIBUTION,
 		SoundEffectID.PRAYER_ACTIVATE_REDEMPTION,
 		SoundEffectID.PRAYER_ACTIVATE_SMITE,
@@ -175,20 +176,20 @@ public class MusicPlugin extends Plugin
 
 			Preferences preferences = client.getPreferences();
 			musicChannel = new Channel("Music",
-				VarPlayer.MUSIC_VOLUME, Varbits.MUTED_MUSIC_VOLUME,
+				VarPlayerID.OPTION_MUSIC, VarbitID.OPTION_MUSIC_SAVED,
 				musicConfig::getMusicVolume, musicConfig::setMusicVolume,
 				client::setMusicVolume, 255,
-				ComponentID.SETTINGS_SIDE_MUSIC_SLIDER);
+				InterfaceID.SettingsSide.MUSIC_HOLDER);
 			effectChannel = new Channel("Sound Effects",
-				VarPlayer.SOUND_EFFECT_VOLUME, Varbits.MUTED_SOUND_EFFECT_VOLUME,
+				VarPlayerID.OPTION_SOUNDS, VarbitID.OPTION_SOUNDS_SAVED,
 				musicConfig::getSoundEffectVolume, musicConfig::setSoundEffectVolume,
 				preferences::setSoundEffectVolume, 127,
-				ComponentID.SETTINGS_SIDE_SOUND_EFFECT_SLIDER);
+				InterfaceID.SettingsSide.SOUND_HOLDER);
 			areaChannel = new Channel("Area Sounds",
-				VarPlayer.AREA_EFFECT_VOLUME, Varbits.MUTED_AREA_EFFECT_VOLUME,
+				VarPlayerID.OPTION_AREASOUNDS, VarbitID.OPTION_AREASOUNDS_SAVED,
 				musicConfig::getAreaSoundEffectVolume, musicConfig::setAreaSoundEffectVolume,
 				preferences::setAreaSoundEffectVolume, 127,
-				ComponentID.SETTINGS_SIDE_AREA_SOUND_SLIDER);
+				InterfaceID.SettingsSide.AREASOUNDS_HOLDER);
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
 			addMusicButtons();
@@ -212,7 +213,7 @@ public class MusicPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		Widget header = client.getWidget(ComponentID.MUSIC_CONTAINER);
+		Widget header = client.getWidget(InterfaceID.Music.UNIVERSE);
 		if (header != null)
 		{
 			header.deleteAllChildren();
@@ -282,7 +283,7 @@ public class MusicPlugin extends Plugin
 
 	private void addMusicButtons()
 	{
-		Widget header = client.getWidget(ComponentID.MUSIC_CONTAINER);
+		Widget header = client.getWidget(InterfaceID.Music.UNIVERSE);
 
 		if (header == null)
 		{
@@ -293,7 +294,7 @@ public class MusicPlugin extends Plugin
 
 		//Creation of the search and toggle status buttons
 		musicSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
-		musicSearchButton.setSpriteId(SpriteID.GE_SEARCH);
+		musicSearchButton.setSpriteId(SpriteID.GeSmallicons.SEARCH);
 		musicSearchButton.setOriginalWidth(18);
 		musicSearchButton.setOriginalHeight(17);
 		musicSearchButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
@@ -306,7 +307,7 @@ public class MusicPlugin extends Plugin
 		musicSearchButton.revalidate();
 
 		musicFilterButton = header.createChild(-1, WidgetType.GRAPHIC);
-		musicFilterButton.setSpriteId(SpriteID.MINIMAP_ORB_PRAYER);
+		musicFilterButton.setSpriteId(SpriteID.OrbFiller.PRAYER);
 		musicFilterButton.setOriginalWidth(15);
 		musicFilterButton.setOriginalHeight(15);
 		musicFilterButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
@@ -374,7 +375,7 @@ public class MusicPlugin extends Plugin
 
 	private boolean isOnMusicTab()
 	{
-		return client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 13;
+		return client.getVarcIntValue(VarClientID.TOPLEVEL_PANEL) == 13;
 	}
 
 	private boolean isChatboxOpen()
@@ -424,9 +425,9 @@ public class MusicPlugin extends Plugin
 
 	private void updateFilter(String input)
 	{
-		final Widget container = client.getWidget(ComponentID.MUSIC_CONTAINER);
-		final Widget musicList = client.getWidget(ComponentID.MUSIC_LIST);
-		final Widget scrollContainer = client.getWidget(ComponentID.MUSIC_SCROLL_CONTAINER);
+		final Widget container = client.getWidget(InterfaceID.Music.UNIVERSE);
+		final Widget musicList = client.getWidget(InterfaceID.Music.JUKEBOX);
+		final Widget scrollContainer = client.getWidget(InterfaceID.Music.SCROLLABLE);
 
 		if (container == null || musicList == null)
 		{
@@ -479,8 +480,8 @@ public class MusicPlugin extends Plugin
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			ComponentID.MUSIC_SCROLLBAR,
-			ComponentID.MUSIC_SCROLL_CONTAINER,
+			InterfaceID.Music.SCROLLBAR,
+			InterfaceID.Music.SCROLLABLE,
 			newHeight
 		);
 	}
@@ -489,9 +490,9 @@ public class MusicPlugin extends Plugin
 	@Getter
 	private enum MusicState
 	{
-		NOT_FOUND(0xff0000, "Locked", SpriteID.MINIMAP_ORB_HITPOINTS),
-		FOUND(0xdc10d, "Unlocked", SpriteID.MINIMAP_ORB_HITPOINTS_POISON),
-		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER);
+		NOT_FOUND(0xff0000, "Locked", SpriteID.OrbFiller.HITPOINTS),
+		FOUND(0xdc10d, "Unlocked", SpriteID.OrbFiller.HITPOINTS_POISON),
+		ALL(0, "All", SpriteID.OrbFiller.PRAYER);
 
 		private final int color;
 		private final String name;
@@ -616,7 +617,7 @@ public class MusicPlugin extends Plugin
 
 			handle.setOnVarTransmitListener((Object[]) null);
 			handle.setDragParent(track);
-			handle.setSpriteId(SpriteID.SETTINGS_SLIDER_HANDLE_GREEN);
+			handle.setSpriteId(SpriteID.SettingsSlider.HANDLE_GREEN);
 			super.update();
 
 			int val = channel.getValue();
@@ -645,7 +646,7 @@ public class MusicPlugin extends Plugin
 
 			if (this.handle != null)
 			{
-				handle.setSpriteId(SpriteID.SETTINGS_SLIDER_HANDLE_BLUE);
+				handle.setSpriteId(SpriteID.SettingsSlider.HANDLE_BLUE);
 			}
 
 			if (this.icon != null)
@@ -949,7 +950,7 @@ public class MusicPlugin extends Plugin
 	{
 		client.getStructCompositionCache().reset();
 
-		Widget init = client.getWidget(ComponentID.SETTINGS_INIT);
+		Widget init = client.getWidget(InterfaceID.Settings.UNIVERSE);
 		if (init != null)
 		{
 			// [clientscript, settings_init]

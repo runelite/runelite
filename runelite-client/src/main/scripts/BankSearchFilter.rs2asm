@@ -1,66 +1,66 @@
-.id                 279 ; [proc,bankmain_filteritem]
-.int_stack_count    1
-.string_stack_count 0
-.int_var_count      2 ; +1 for storage of search filter result
-.string_var_count   2
+.id                       279 ; [proc,bankmain_filteritem]
+.int_arg_count            2
+.obj_arg_count            1
    iconst                 -1                 ; return value
    iload                  0                  ; load item id
-   get_varc_string        359
-   lowercase
+   oload                  0                  ; load search string
    sconst                 "bankSearchFilter" ; push event name
    runelite_callback                         ; invoke callback
    pop_int                                   ; pop item id
-   pop_string                                ; pop search string
-   istore                 1                  ; store return value
-   iload                  1                  ; continue if it is still -1
+   pop_object                                ; pop search string
+   istore                 2                  ; store return value
+   iload                  2                  ; continue if it is still -1
    iconst                 -1
    if_icmpeq              CONTINUE
-   iload                  1
+   iload                  2
    return                                    ; return rv
 
 CONTINUE:
    sconst                 ""
-   sstore                 0
-   sconst                 ""
-   sstore                 1
-   invoke                 514
+   ostore                 1
+   iload                  1
    iconst                 1
-   if_icmpeq              LABEL8
-   jump                   LABEL34
-LABEL8:
-   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
-   lowercase             ; instead get the var directly and lowercase it
-   sstore                 1
-   sload                  1
-   string_length         
-   iconst                 0
-   if_icmpgt              LABEL15
-   jump                   LABEL34
-LABEL15:
+   if_icmpeq              LABEL6
+   jump                   LABEL36
+LABEL6:
    iload                  0
    iconst                 -1
-   if_icmpne              LABEL19
-   jump                   LABEL23
-LABEL19:
+   if_icmpeq              LABEL10
+   jump                   LABEL12
+LABEL10:
+   iconst                 0
+   return                
+LABEL12:
+   oload                  0
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL17
+   jump                   LABEL36
+LABEL17:
+   iload                  0
+   iconst                 -1
+   if_icmpne              LABEL21
+   jump                   LABEL25
+LABEL21:
    iload                  0
    oc_name               
    lowercase             
-   sstore                 0
-LABEL23:
-   sload                  0
-   sload                  1
+   ostore                 1
+LABEL25:
+   oload                  1
+   oload                  0
    iconst                 0
    string_indexof_string 
    iconst                 -1
-   if_icmpne              LABEL30
-   jump                   LABEL32
-LABEL30:
+   if_icmpne              LABEL32
+   jump                   LABEL34
+LABEL32:
    iconst                 1
    return                
-LABEL32:
+LABEL34:
    iconst                 0
    return                
-LABEL34:
+LABEL36:
    iconst                 1
    return                
    iconst                 -1

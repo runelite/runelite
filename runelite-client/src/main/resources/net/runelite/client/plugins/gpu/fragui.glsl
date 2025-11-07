@@ -24,24 +24,36 @@
  */
 #version 330
 
-#define SAMPLING_MITCHELL 1
-#define SAMPLING_CATROM 2
-#define SAMPLING_XBR 3
+#include sampling_mode
+#include colorblind_mode
+
+#define SAMPLING_NEAREST 0
+#define SAMPLING_LINEAR 1
+#define SAMPLING_MITCHELL 2
+#define SAMPLING_CATROM 3
+#define SAMPLING_XBR 4
+#define SAMPLING_HYBRID 5
 
 uniform sampler2D tex;
 
-uniform int samplingMode;
 uniform ivec2 sourceDimensions;
 uniform ivec2 targetDimensions;
-uniform int colorBlindMode;
 uniform vec4 alphaOverlay;
 
-#include "scale/bicubic.glsl"
-#include "scale/xbr_lv2_frag.glsl"
+#if COLORBLIND_MODE > 0
 #include "colorblind.glsl"
+#endif
 
 in vec2 TexCoord;
+#if SAMPLING_MODE == SAMPLING_MITCHELL || SAMPLING_MODE == SAMPLING_CATROM
+#include "scale/bicubic.glsl"
+#elif SAMPLING_MODE == SAMPLING_XBR
+#include "scale/xbr_lv2_frag.glsl"
+
 in XBRTable xbrTable;
+#elif SAMPLING_MODE == SAMPLING_HYBRID
+#include "scale/hybrid.glsl"
+#endif
 
 out vec4 FragColor;
 
@@ -52,16 +64,21 @@ vec4 alphaBlend(vec4 src, vec4 dst) {
 void main() {
   vec4 c;
 
-  if (samplingMode == SAMPLING_CATROM || samplingMode == SAMPLING_MITCHELL) {
-    c = textureCubic(tex, TexCoord, samplingMode);
-  } else if (samplingMode == SAMPLING_XBR) {
-    c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
-  } else {  // NEAREST or LINEAR, which uses GL_TEXTURE_MIN_FILTER/GL_TEXTURE_MAG_FILTER to affect sampling
-    c = texture(tex, TexCoord);
-  }
+#if SAMPLING_MODE == SAMPLING_MITCHELL || SAMPLING_MODE == SAMPLING_CATROM
+  c = textureCubic(tex, TexCoord);
+#elif SAMPLING_MODE == SAMPLING_XBR
+  c = textureXBR(tex, TexCoord, xbrTable, ceil(1.0 * targetDimensions.x / sourceDimensions.x));
+#elif SAMPLING_MODE == SAMPLING_HYBRID
+  c = textureHybrid(tex, TexCoord);
+#else
+  // NEAREST or LINEAR, which uses GL_TEXTURE_MIN_FILTER/GL_TEXTURE_MAG_FILTER to affect sampling
+  c = texture(tex, TexCoord);
+#endif
 
   c = alphaBlend(c, alphaOverlay);
-  c.rgb = colorblind(colorBlindMode, c.rgb);
+#if COLORBLIND_MODE > 0
+  c.rgb = colorblind(c.rgb);
+#endif
 
   FragColor = c;
 }

@@ -29,7 +29,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
-import net.runelite.client.plugins.statusbars.config.BarMode;
 
 @ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
@@ -39,7 +38,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "enableCounter",
 		name = "Show counters",
-		description = "Shows current value of the status on the bar"
+		description = "Shows current value of the status on the bar."
 	)
 	default boolean enableCounter()
 	{
@@ -66,10 +65,20 @@ public interface StatusBarsConfig extends Config
 		return true;
 	}
 
+	enum BarMode
+	{
+		DISABLED,
+		HITPOINTS,
+		PRAYER,
+		RUN_ENERGY,
+		SPECIAL_ATTACK,
+		WARMTH,
+	}
+
 	@ConfigItem(
 		keyName = "leftBarMode",
-		name = "Left Bar",
-		description = "Configures the left status bar"
+		name = "Left bar",
+		description = "Configures the left status bar."
 	)
 	default BarMode leftBarMode()
 	{
@@ -78,8 +87,8 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "rightBarMode",
-		name = "Right Bar",
-		description = "Configures the right status bar"
+		name = "Right bar",
+		description = "Configures the right status bar."
 	)
 	default BarMode rightBarMode()
 	{
@@ -103,7 +112,7 @@ public interface StatusBarsConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "barWidth",
-		name = "Bar Width",
+		name = "Bar width",
 		description = "The width of the status bars in the modern resizeable layout."
 	)
 	default int barWidth()

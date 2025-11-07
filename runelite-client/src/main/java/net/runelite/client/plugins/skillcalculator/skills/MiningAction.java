@@ -26,8 +26,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.NullItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
@@ -35,11 +34,11 @@ import net.runelite.client.game.ItemManager;
 public enum MiningAction implements ItemSkillAction
 {
 	CLAY(ItemID.CLAY, 1, 5),
-	RUNE_ESSENCE(ItemID.RUNE_ESSENCE, 1, 5),
+	RUNE_ESSENCE(ItemID.BLANKRUNE, 1, 5),
 	COPPER_ORE(ItemID.COPPER_ORE, 1, 17.5f),
 	TIN_ORE(ItemID.TIN_ORE, 1, 17.5f),
 	LIMESTONE(ItemID.LIMESTONE, 10, 26.5f),
-	BARRONITE_SHARDS(NullItemID.NULL_25683, 14, 16)
+	BARRONITE_SHARDS(ItemID.CAMDOZAAL_BARRONITE_SHARD_7, 14, 16)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)
@@ -47,10 +46,10 @@ public enum MiningAction implements ItemSkillAction
 			return "Barronite shards";
 		}
 	},
-	BARRONITE_DEPOSIT(ItemID.BARRONITE_DEPOSIT, 14, 32),
+	BARRONITE_DEPOSIT(ItemID.CAMDOZAAL_BARRONITE_DEPOSIT, 14, 32),
 	IRON_ORE(ItemID.IRON_ORE, 15, 35),
 	SILVER_ORE(ItemID.SILVER_ORE, 20, 40),
-	PURE_ESSENCE(ItemID.PURE_ESSENCE, 30, 5)
+	PURE_ESSENCE(ItemID.BLANKRUNE_HIGH, 30, 5)
 	{
 		@Override
 		public boolean isMembers(final ItemManager itemManager)
@@ -59,11 +58,11 @@ public enum MiningAction implements ItemSkillAction
 		}
 	},
 	COAL(ItemID.COAL, 30, 50),
-	SANDSTONE_1KG(ItemID.SANDSTONE_1KG, 35, 30),
-	SANDSTONE_2KG(ItemID.SANDSTONE_2KG, 35, 40),
-	SANDSTONE_5KG(ItemID.SANDSTONE_5KG, 35, 50),
-	SANDSTONE_10KG(ItemID.SANDSTONE_10KG, 35, 60),
-	DENSE_ESSENCE_BLOCK(ItemID.DENSE_ESSENCE_BLOCK, 38, 12),
+	SANDSTONE_1KG(ItemID.ENAKH_SANDSTONE_TINY, 35, 30),
+	SANDSTONE_2KG(ItemID.ENAKH_SANDSTONE_SMALL, 35, 40),
+	SANDSTONE_5KG(ItemID.ENAKH_SANDSTONE_MEDIUM, 35, 50),
+	SANDSTONE_10KG(ItemID.ENAKH_SANDSTONE_LARGE, 35, 60),
+	DENSE_ESSENCE_BLOCK(ItemID.ARCEUUS_ESSENCE_BLOCK, 38, 12),
 	GEM_ROCKS(ItemID.UNCUT_RED_TOPAZ, 40, 65)
 		{
 			@Override
@@ -73,7 +72,7 @@ public enum MiningAction implements ItemSkillAction
 			}
 		},
 	GOLD_ORE(ItemID.GOLD_ORE, 40, 65),
-	CALCIFIED_ROCKS(ItemID.BLESSED_BONE_SHARDS, 41, 33)
+	CALCIFIED_ROCKS(ItemID.BLESSED_BONE_SHARD, 41, 33)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)
@@ -81,11 +80,11 @@ public enum MiningAction implements ItemSkillAction
 			return "Calcified Rocks";
 		}
 	},
-	GRANITE_500G(ItemID.GRANITE_500G, 45, 50),
-	GRANITE_2KG(ItemID.GRANITE_2KG, 45, 60),
-	GRANITE_5KG(ItemID.GRANITE_5KG, 45, 75),
+	GRANITE_500G(ItemID.ENAKH_GRANITE_TINY, 45, 50),
+	GRANITE_2KG(ItemID.ENAKH_GRANITE_SMALL, 45, 60),
+	GRANITE_5KG(ItemID.ENAKH_GRANITE_MEDIUM, 45, 75),
 	MITHRIL_ORE(ItemID.MITHRIL_ORE, 55, 80),
-	SOFT_CLAY(ItemID.SOFT_CLAY, 70, 5)
+	SOFT_CLAY(ItemID.SOFTCLAY, 70, 5)
 	{
 		@Override
 		public boolean isMembers(final ItemManager itemManager)
