@@ -152,6 +152,12 @@
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
+			<classifier>natives-linux-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
 			<classifier>natives-macos</classifier>
 			<scope>runtime</scope>
 		</dependency>
@@ -189,6 +195,12 @@
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-opengl</artifactId>
 			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-linux-arm64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
