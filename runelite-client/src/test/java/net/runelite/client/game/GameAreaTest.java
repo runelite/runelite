@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, PandahRS <https://github.com/PandahRS>
+ * Copyright (c) 2025, Jordan Atwood <nightfirecat@nightfirec.at>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.discord;
+package net.runelite.client.game;
 
-enum DiscordAreaType
+import java.util.Arrays;
+import net.runelite.api.coords.WorldPoint;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import org.junit.Test;
+
+public class GameAreaTest
 {
-	BOSSES,
-	CITIES,
-	DUNGEONS,
-	MINIGAMES,
-	RAIDS,
-	REGIONS
+	@Test
+	public void ensureNoOverlappingAreas()
+	{
+		for (final GameArea gameArea : GameArea.values())
+		{
+			for (final GameArea otherGameArea : Arrays.copyOfRange(GameArea.values(), gameArea.ordinal(), GameArea.values().length))
+			{
+				for (final RegionArea regionArea : gameArea.getRegionAreas())
+				{
+					for (final RegionArea otherRegionArea : otherGameArea.getRegionAreas())
+					{
+						if (regionArea == otherRegionArea)
+						{
+							continue;
+						}
+
+						if (regionArea.subRegionIntersects(otherRegionArea))
+						{
+							fail("Game area " + gameArea + " has region area " + regionArea
+								+ " which overlaps area of " + otherGameArea + ": " + otherRegionArea);
+						}
+					}
+				}
+			}
+		}
+	}
 }
