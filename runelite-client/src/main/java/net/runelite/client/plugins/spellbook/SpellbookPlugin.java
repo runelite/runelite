@@ -390,10 +390,10 @@ public class SpellbookPlugin extends Plugin
 			ItemComposition spellObj = client.getItemDefinition(spellObjId);
 			int spellComponent = spellObj.getIntValue(ParamID.SPELL_BUTTON);
 			Widget w = client.getWidget(spellComponent);
-            if (w == null)
-            {
-                continue;
-            }
+			if (w == null)
+			{
+				continue;
+			}
 
 			// spells with no target mask have an existing op listener, capture it to
 			// call it later
