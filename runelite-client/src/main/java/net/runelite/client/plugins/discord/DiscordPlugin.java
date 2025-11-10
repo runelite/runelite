@@ -42,10 +42,12 @@ import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
@@ -161,7 +163,6 @@ public class DiscordPlugin extends Plugin
 					resetState();
 					checkForGameStateUpdate();
 				}
-				checkForAreaUpdate();
 				break;
 		}
 	}
@@ -175,6 +176,12 @@ public class DiscordPlugin extends Plugin
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
 		}
+	}
+
+	@Subscribe
+	private void onGameTick(GameTick e)
+	{
+		checkForAreaUpdate();
 	}
 
 	@Subscribe
@@ -303,14 +310,14 @@ public class DiscordPlugin extends Plugin
 
 	private void checkForAreaUpdate()
 	{
-		if (client.getLocalPlayer() == null)
+		final Player player = client.getLocalPlayer();
+		if (player == null)
 		{
 			return;
 		}
 
-		final int playerRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-
-		if (playerRegionID == 0)
+		final WorldPoint instancePoint = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		if (instancePoint.getRegionID() == 0)
 		{
 			return;
 		}
@@ -328,16 +335,8 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		GameArea gameArea = DiscordGameEventType.fromRegion(playerRegionID);
-
-		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
-		// Since KBD requires going through the wilderness there is no EventType for it
-		if (GameArea.NIGHTMARE_ZONE == gameArea
-			&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
-		{
-			gameArea = null;
-		}
-
+		final WorldPoint playerWorldPoint = new WorldPoint(instancePoint.getX(), instancePoint.getY(), player.getWorldView().getPlane());
+		final GameArea gameArea = GameArea.fromPoint(playerWorldPoint);
 		if (!showArea(gameArea))
 		{
 			return;

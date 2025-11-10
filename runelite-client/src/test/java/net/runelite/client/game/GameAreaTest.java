@@ -59,4 +59,21 @@ public class GameAreaTest
 			}
 		}
 	}
+
+	@Test
+	public void testFromPoint()
+	{
+		assertEquals(GameArea.VARROCK, GameArea.fromPoint(new WorldPoint(3213, 3427, 0)));
+		assertEquals(GameArea.BARBARIAN_OUTPOST, GameArea.fromPoint(new WorldPoint(2535, 3571, 0)));
+		assertEquals(GameArea.RELLEKKA, GameArea.fromPoint(new WorldPoint(2657, 3676, 0)));
+		assertEquals(GameArea.FREMENNIK_PROVINCE, GameArea.fromPoint(new WorldPoint(2663, 3609, 0)));
+		assertEquals(GameArea.TOWER_OF_LIFE_DUNGEON, GameArea.fromPoint(new WorldPoint(3040, 4382, 0)));
+		assertEquals(GameArea.DAGANNOTH_KINGS, GameArea.fromPoint(new WorldPoint(2913, 4383, 0)));
+		assertEquals(GameArea.DAGANNOTH_KINGS, GameArea.fromPoint(new WorldPoint(2911, 4451, 0)));
+		assertEquals(GameArea.NIGHTMARE_ZONE, GameArea.fromPoint(new WorldPoint(2277, 4695, 1)));
+		assertNull(null, GameArea.fromPoint(new WorldPoint(2277, 4695, 0))); // King Black Dragon on plane 0
+		assertEquals(GameArea.MTA_ENCHANTING_CHAMBER, GameArea.fromPoint(new WorldPoint(3365, 9636, 0)));
+		assertEquals(GameArea.MTA_CREATURE_GRAVEYARD, GameArea.fromPoint(new WorldPoint(3365, 9636, 1)));
+		assertEquals(GameArea.MTA_ALCHEMISTS_PLAYGROUND, GameArea.fromPoint(new WorldPoint(3365, 9636, 2)));
+	}
 }
