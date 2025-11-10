@@ -64,7 +64,7 @@ import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 @Singleton
 public class PartyService
 {
-    private final BufferedImage DEFAULT_USER_ICON = ImageUtil.loadImageResource(PartyPlugin.class, "user_icon.png");
+	private final BufferedImage DEFAULT_USER_ICON = ImageUtil.loadImageResource(PartyPlugin.class, "user_icon.png");
 	private static final int MAX_MESSAGE_LEN = 150;
 	private static final String ALPHABET = "bcdfghjklmnpqrstvwxyz";
 
@@ -211,7 +211,7 @@ public class PartyService
 		if (partyMember == null)
 		{
 			partyMember = new PartyMember(message.getMemberId());
-            partyMember.setAvatar(DEFAULT_USER_ICON);
+			partyMember.setAvatar(DEFAULT_USER_ICON);
 			members.add(partyMember);
 			log.debug("User {} joins party, {} members", partyMember, members.size());
 		}
