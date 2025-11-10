@@ -27,10 +27,20 @@
  */
 package net.runelite.client.game;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Range;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.WorldView;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 
 @Getter
 public enum GameArea
@@ -39,19 +49,22 @@ public enum GameArea
 	ABYSSAL_SIRE("Abyssal Sire", GameAreaType.BOSSES, 11851, 11850, 12363, 12362),
 	ALCHEMICAL_HYDRA("Alchemical Hydra", GameAreaType.BOSSES, 5536),
 	ARAXXOR("Araxxor", GameAreaType.BOSSES, 14489),
+	BLOOD_MOON("Blood Moon", GameAreaType.BOSSES, 5526),
+	BLUE_MOON("Blue Moon", GameAreaType.BOSSES, 5783),
 	CERBERUS("Cerberus", GameAreaType.BOSSES, 4883, 5140, 5395),
-	COMMANDER_ZILYANA("Commander Zilyana", GameAreaType.BOSSES, 11602),
+	COMMANDER_ZILYANA("Commander Zilyana", GameAreaType.BOSSES, new RegionArea(11602, new WorldPoint(2889, 5258, 0), new WorldPoint(2908, 5275, 0))),
 	CORPOREAL_BEAST("Corporeal Beast", GameAreaType.BOSSES, 11842, 11844),
 	DAGANNOTH_KINGS("Dagannoth Kings", GameAreaType.BOSSES, 11588, 11589),
 	DUKE_SUCELLUS("Duke Sucellus", GameAreaType.BOSSES, 12132),
-	GENERAL_GRAARDOR("General Graardor", GameAreaType.BOSSES, 11347),
+	ECLIPSE_MOON("Eclipse Moon", GameAreaType.BOSSES, 6038),
+	GENERAL_GRAARDOR("General Graardor", GameAreaType.BOSSES, new RegionArea(11347, new WorldPoint(2863, 5351, 2), new WorldPoint(2876, 5369, 2))),
 	GIANT_MOLE("Giant Mole", GameAreaType.BOSSES, 6993, 6992),
 	GROTESQUE_GUARDIANS("Grotesque Guardians", GameAreaType.BOSSES, 6727),
 	HESPORI("Hespori", GameAreaType.BOSSES, 5021),
 	KALPHITE_QUEEN("Kalphite Queen", GameAreaType.BOSSES, 13972),
 	KRAKEN("Kraken", GameAreaType.BOSSES, 9116),
-	KREEARRA("Kree'arra", GameAreaType.BOSSES, 11346),
-	KRIL_TSUTSAROTH("K'ril Tsutsaroth", GameAreaType.BOSSES, 11603),
+	KREEARRA("Kree'arra", GameAreaType.BOSSES, new RegionArea(11346, new WorldPoint(2824, 5295, 2), new WorldPoint(2842, 5308, 2))),
+	KRIL_TSUTSAROTH("K'ril Tsutsaroth", GameAreaType.BOSSES, new RegionArea(11603, new WorldPoint(2918, 5318, 2), new WorldPoint(2936, 5332, 2))),
 	NEX("Nex", GameAreaType.BOSSES, 11601),
 	NIGHTMARE("Nightmare of Ashihama", GameAreaType.BOSSES, 15515),
 	PHANTOM_MUSPAH("Phantom Muspah", GameAreaType.BOSSES, 11330),
@@ -71,8 +84,8 @@ public enum GameArea
 
 	// Cities
 	AL_KHARID("Al Kharid" , GameAreaType.CITIES, 13105, 13106),
-	ARCEUUS("Arceuus" , GameAreaType.CITIES, 6458, 6459, 6460, 6714, 6715),
-	ARDOUGNE("Ardougne" , GameAreaType.CITIES, 9779, 9780, 10035, 10036, 10291, 10292, 10547, 10548),
+	ARCEUUS("Arceuus" , GameAreaType.CITIES, 6458, 6460, 6714, 6715),
+	ARDOUGNE("Ardougne" , GameAreaType.CITIES, 9779, 9780, 10035, 10036, 10135, 10291, 10292, 10547, 10548),
 	BANDIT_CAMP("Bandit Camp" , GameAreaType.CITIES, 12590),
 	BARBARIAN_OUTPOST("Barbarian Outpost", GameAreaType.CITIES, 10039),
 	BARBARIAN_VILLAGE("Barbarian Village" , GameAreaType.CITIES, 12341),
@@ -80,7 +93,11 @@ public enum GameArea
 	BRIMHAVEN("Brimhaven" , GameAreaType.CITIES, 11057, 11058),
 	BURGH_DE_ROTT("Burgh de Rott" , GameAreaType.CITIES, 13874, 13873, 14130, 14129),
 	BURTHORPE("Burthorpe" , GameAreaType.CITIES, 11319, 11575),
-	CAM_TORUM("Cam Torum" , GameAreaType.CITIES, 5525, 5780, 5781, 6037),
+	CAM_TORUM("Cam Torum" , GameAreaType.CITIES,
+		regionAreas(5780, 5781),
+		new RegionArea(5525, Range.atLeast(1)),
+		new RegionArea(6037, new WorldPoint(1472, 9536, 0), new WorldPoint(1495, 9565, 0), Range.singleton(0)),
+		new RegionArea(6037, Range.atLeast(1))),
 	CANIFIS("Canifis" , GameAreaType.CITIES, 13878),
 	CATHERBY("Catherby" , GameAreaType.CITIES, 11317, 11318, 11061),
 	CIVITAS_ILLA_FORTIS("Civitas Illa Fortis" , GameAreaType.CITIES, 6448, 6449, 6549, 6704, 6705, 6804, 6805, 6960, 6961),
@@ -131,7 +148,9 @@ public enum GameArea
 	SOPHANEM("Sophanem" , GameAreaType.CITIES, 13099),
 	TAI_BWO_WANNAI("Tai Bwo Wannai" , GameAreaType.CITIES, 11056, 11055),
 	TAVERLEY("Taverley" , GameAreaType.CITIES, 11574, 11573),
-	TREE_GNOME_STRONGHOLD("Tree Gnome Stronghold" , GameAreaType.CITIES, 9525, 9526, 9782, 9781),
+	TREE_GNOME_STRONGHOLD("Tree Gnome Stronghold" , GameAreaType.CITIES,
+		regionAreas(9525, 9526, 9782, 9781),
+		new RegionArea(9527, new WorldArea(new WorldPoint(2380, 3520, 0), 52, 13))),
 	TREE_GNOME_VILLAGE("Tree Gnome Village" , GameAreaType.CITIES, 10033),
 	TROLL_STRONGHOLD("Troll Stronghold" , GameAreaType.CITIES, 11321, 11421),
 	UZER("Uzer" , GameAreaType.CITIES, 13872),
@@ -140,7 +159,7 @@ public enum GameArea
 	VER_SINHAZA("Ver Sinhaza", GameAreaType.CITIES, 14642),
 	VOID_OUTPOST("Void Knights' Outpost", GameAreaType.CITIES, 10537),
 	WEISS("Weiss", GameAreaType.CITIES, 11325, 11581),
-	WITCHHAVEN("Witchaven" , GameAreaType.CITIES, 10803),
+	WITCHHAVEN("Witchaven" , GameAreaType.CITIES, 9295, 10803),
 	YANILLE("Yanille" , GameAreaType.CITIES, 10288, 10032),
 	ZANARIS("Zanaris" , GameAreaType.CITIES, 9285, 9541, 9540, 9797),
 	ZULANDRA("Zul-Andra" , GameAreaType.CITIES, 8495, 8751),
@@ -165,13 +184,12 @@ public enum GameArea
 	CRABCLAW_CAVES("Crabclaw Caves", GameAreaType.DUNGEONS, 6553, 6809),
 	CRANDOR_DUNGEON("Crandor Dungeon", GameAreaType.DUNGEONS, 11414),
 	CRASH_SITE_CAVERN("Crash Site Cavern", GameAreaType.DUNGEONS, 8280, 8536),
-	CRUMBLING_TOWER("Crumbling Tower", GameAreaType.DUNGEONS, 7827),
 	DAEYALT_ESSENCE_MINE("Daeyalt Essence Mine", GameAreaType.DUNGEONS, 14744),
 	DIGSITE_DUNGEON("Digsite Dungeon", GameAreaType.DUNGEONS, 13464, 13465),
 	DORGESH_KAAN_SOUTH_DUNGEON("Dorgesh-Kaan South Dungeon", GameAreaType.DUNGEONS, 10833),
 	DORGESHUUN_MINES("Dorgeshuun Mines", GameAreaType.DUNGEONS, 12950, 13206),
 	DRAYNOR_SEWERS("Draynor Sewers", GameAreaType.DUNGEONS, 12439, 12438),
-	DWARVEN_MINES("Dwarven Mines", GameAreaType.DUNGEONS, 12185, 12184, 12183),
+	DWARVEN_MINES("Dwarven Mines", GameAreaType.DUNGEONS, 11929, 12185, 12184),
 	EAGLES_PEAK_DUNGEON("Eagles' Peak Dungeon", GameAreaType.DUNGEONS, 8013),
 	ECTOFUNTUS_DUNGEON("Ectofuntus Dungeon", GameAreaType.DUNGEONS, 14746),
 	EDGEVILLE_DUNGEON("Edgeville Dungeon", GameAreaType.DUNGEONS, 12441, 12442, 12443, 12698),
@@ -185,12 +203,15 @@ public enum GameArea
 	FREMENNIK_SLAYER_DUNGEON("Fremennik Slayer Dungeon", GameAreaType.DUNGEONS, 10907, 10908, 11164),
 	GLARIALS_TOMB("Glarial's Tomb", GameAreaType.DUNGEONS, 10137),
 	GOBLIN_CAVE("Goblin Cave", GameAreaType.DUNGEONS, 10393),
-	GOD_WARS_DUNGEON("God Wars Dungeon", GameAreaType.DUNGEONS, 11578),
+	GOD_WARS_DUNGEON("God Wars Dungeon", GameAreaType.DUNGEONS, 11346, 11347, 11578, 11602, 11603),
 	GRAND_TREE_TUNNELS("Grand Tree Tunnels", GameAreaType.DUNGEONS, 9882),
 	HAM_HIDEOUT("H.A.M. Hideout", GameAreaType.DUNGEONS, 12694),
 	HAM_STORE_ROOM("H.A.M. Store room", GameAreaType.DUNGEONS, 10321),
 	HEROES_GUILD_MINE("Heroes' Guild Mine", GameAreaType.DUNGEONS, 11674),
-	ICE_QUEENS_LAIR("Ice Queen's Lair", GameAreaType.DUNGEONS, 11418, 11419),
+	ICE_QUEENS_LAIR("Ice Queen's Lair", GameAreaType.DUNGEONS,
+		new RegionArea(11418, new WorldArea(new WorldPoint(2816, 9897, 0), 64, 23)),
+		new RegionArea(11419),
+		new RegionArea(11675, new WorldArea(new WorldPoint(2880, 9920, 0), 17, 64))),
 	IORWERTH_DUNGEON("Iorwerth Dungeon", GameAreaType.DUNGEONS, 12737, 12738, 12993, 12994),
 	ISLE_OF_SOULS_DUNGEON("Isle of Souls Dungeon", GameAreaType.DUNGEONS, 8593),
 	JATIZSO_MINES("Jatizso Mines", GameAreaType.DUNGEONS, 9631),
@@ -217,13 +238,15 @@ public enum GameArea
 	MEIYERDITCH_LABORATORIES("Meiyerditch Laboratories", GameAreaType.DUNGEONS, 14232, 14233, 14487, 14488),
 	MYREQUE_HIDEOUT("Myreque Hideout", GameAreaType.DUNGEONS, 13721, 13974, 13977, 13978),
 	MYTHS_GUILD_DUNGEON("Myths' Guild Dungeon", GameAreaType.DUNGEONS, 7564, 7820, 7821),
+	NEYPOTZLI("Neypotzli", GameAreaType.DUNGEONS, regionAreas(5525, 5527, 5528, 5782, 6037, 6039)),
 	OBSERVATORY_DUNGEON("Observatory Dungeon", GameAreaType.DUNGEONS, 9362),
 	OGRE_ENCLAVE("Ogre Enclave", GameAreaType.DUNGEONS, 10387),
 	OURANIA_CAVE("Ourania Cave", GameAreaType.DUNGEONS, 12119),
 	PATERDOMUS("Paterdomus", GameAreaType.DUNGEONS, 13722),
 	QUIDAMORTEM_CAVE("Quidamortem Cave", GameAreaType.DUNGEONS, 4763),
 	RASHILIYIAS_TOMB("Rashiliyia's Tomb", GameAreaType.DUNGEONS, 11668),
-	RED_CHINCHOMPA_HUNTING_GROUND("Red Chinchompa Hunting Ground", GameAreaType.DUNGEONS, 10129),
+	RED_CHINCHOMPA_HUNTING_GROUND("Red Chinchompa Hunting Ground", GameAreaType.DUNGEONS,
+		new RegionArea(10129, new WorldArea(new WorldPoint(2510, 9286, 0), 25, 23))),
 	RUINS_OF_CAMDOZAAL("Ruins of Camdozaal", GameAreaType.DUNGEONS, 11609, 11610, 11611, 11865, 11866, 11867, 12121, 12122, 12123),
 	SALT_MINE("Salt Mine", GameAreaType.DUNGEONS, 11425),
 	SHADE_CATACOMBS("Shade Catacombs", GameAreaType.DUNGEONS, 13975),
@@ -236,14 +259,14 @@ public enum GameArea
 	STRONGHOLD_SECURITY("Stronghold of Security", GameAreaType.DUNGEONS, 7505, 8017, 8530, 9297),
 	STRONGHOLD_SLAYER_CAVE("Stronghold Slayer Cave", GameAreaType.DUNGEONS, 9624, 9625, 9880, 9881),
 	TARNS_LAIR("Tarn's Lair", GameAreaType.DUNGEONS, 12616, 12615),
-	TAVERLEY_DUNGEON("Taverley Dungeon", GameAreaType.DUNGEONS, 11416, 11417, 11671, 11672, 11673, 11928, 11929),
+	TAVERLEY_DUNGEON("Taverley Dungeon", GameAreaType.DUNGEONS, 11416, 11417, 11671, 11672, 11673, 11928),
 	TEMPLE_OF_IKOV("Temple of Ikov", GameAreaType.DUNGEONS, 10649, 10905, 10650),
 	TEMPLE_OF_LIGHT("Temple of Light", GameAreaType.DUNGEONS, 7496),
 	TEMPLE_OF_MARIMBO("Temple of Marimbo", GameAreaType.DUNGEONS, 11151),
 	THE_BURROW("The Burrow", GameAreaType.DUNGEONS, 6291),
 	THE_WARRENS("The Warrens", GameAreaType.DUNGEONS, 7070, 7326),
 	TOMB_OF_BERVIRIUS("Tomb of Bervirius", GameAreaType.DUNGEONS, 11154),
-	TOLNAS_RIFT("Tolna's Rift", GameAreaType.DUNGEONS, 13209),
+	TOLNAS_RIFT("Tolna's Rift", GameAreaType.DUNGEONS, 11857, 12113, 12369, 12370),
 	TOWER_OF_LIFE_DUNGEON("Tower of Life Dungeon", GameAreaType.DUNGEONS, 12100),
 	TRAHAEARN_MINE("Trahaearn Mine", GameAreaType.DUNGEONS, 13250),
 	TUNNEL_OF_CHAOS("Tunnel of Chaos", GameAreaType.DUNGEONS, 12625),
@@ -255,7 +278,7 @@ public enum GameArea
 	WATERBIRTH_DUNGEON("Waterbirth Dungeon", GameAreaType.DUNGEONS, 9886, 10142, 7492, 7748),
 	WATERFALL_DUNGEON("Waterfall Dungeon", GameAreaType.DUNGEONS, 10394),
 	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", GameAreaType.DUNGEONS, 14234),
-	WEST_ARDOUGNE_BASEMENT("West Ardougne Basement", GameAreaType.DUNGEONS, 10135),
+	WHITE_WOLF_TUNNEL("White Wolf Tunnel", GameAreaType.DUNGEONS, 11418),
 	WITCHAVEN_DUNGEON("Witchhaven Dungeon", GameAreaType.DUNGEONS, 10903),
 	WOODCUTTING_GUILD_DUNGEON("Woodcutting Guild Dungeon", GameAreaType.DUNGEONS, 6298),
 	WYVERN_CAVE("Wyvern Cave", GameAreaType.DUNGEONS, 14495, 14496),
@@ -270,7 +293,22 @@ public enum GameArea
 	BURTHORPE_GAMES_ROOM("Burthorpe Games Room", GameAreaType.MINIGAMES, 8781),
 	CASTLE_WARS("Castle Wars", GameAreaType.MINIGAMES, 9520, 9620),
 	CLAN_WARS("Clan Wars", GameAreaType.MINIGAMES, 12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13643, 13644, 13645, 13646, 13647, 13899, 13900, 14155, 14156),
-	EMIRS_ARENA("Emir's Arena", GameAreaType.MINIGAMES, 13362, 13363),
+	EMIRS_ARENA("Emir's Arena", GameAreaType.MINIGAMES,
+		regionAreas(13362, 13363),
+		new RegionArea(13618, new WorldPoint(3392, 3200, 0), new WorldPoint(3405, 3263, 0)),
+		new RegionArea(13107, new WorldArea(new WorldPoint(3324, 3264, 0), 4, 2)),
+		new RegionArea(13107, new WorldArea(new WorldPoint(3325, 3266, 0), 3, 1)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3325, 3200, 0), 3, 64)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3324, 3200, 0), 1, 3)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3324, 3209, 0), 1, 55)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3323, 3215, 0), 1, 2)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3323, 3248, 0), 1, 3)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3322, 3248, 0), 1, 1)),
+		new RegionArea(13106, new WorldArea(new WorldPoint(3322, 3223, 0), 2, 1)),
+		new RegionArea(13106, new WorldPoint(3312, 3224, 0), new WorldPoint(3323, 3247, 0)),
+		new RegionArea(13105, new WorldArea(new WorldPoint(3326, 3197, 0), 2, 3)),
+		new RegionArea(13105, new WorldArea(new WorldPoint(3325, 3199, 0), 1, 1)),
+		new RegionArea(13361, new WorldArea(new WorldPoint(3328, 3197, 0), 4, 3))),
 	FISHING_TRAWLER("Fishing Trawler", GameAreaType.MINIGAMES, 7499),
 	FORTIS_COLOSSEUM("Fortis Colosseum", GameAreaType.MINIGAMES, 7216),
 	FORTIS_COLOSSEUM_LOBBY("Fortis Colosseum Lobby", GameAreaType.MINIGAMES, 7316),
@@ -282,8 +320,13 @@ public enum GameArea
 	KELDAGRIM_RAT_PITS("Keldagrim Rat Pits", GameAreaType.MINIGAMES, 7753),
 	LAST_MAN_STANDING_DESERTED_ISLAND("LMS - Deserted Island", GameAreaType.MINIGAMES, 13658, 13659, 13660, 13914, 13915, 13916),
 	LAST_MAN_STANDING_WILD_VARROCK("LMS - Wild Varrock", GameAreaType.MINIGAMES, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432),
-	MAGE_TRAINING_ARENA("Mage Training Arena", GameAreaType.MINIGAMES, 13462, 13463),
-	NIGHTMARE_ZONE("Nightmare Zone", GameAreaType.MINIGAMES, 9033),
+	MAGE_TRAINING_ARENA("Mage Training Arena", GameAreaType.MINIGAMES,
+		new RegionArea(13363, new WorldPoint(3353, 3295, 0), new WorldPoint(3374, 3325, 0))),
+	MTA_ALCHEMISTS_PLAYGROUND("Alchemist's Playground", GameAreaType.MINIGAMES, new RegionArea(13462, Range.singleton(2))),
+	MTA_CREATURE_GRAVEYARD("Creature Graveyard", GameAreaType.MINIGAMES, new RegionArea(13462, Range.singleton(1))),
+	MTA_ENCHANTING_CHAMBER("Enchanting Chamber", GameAreaType.MINIGAMES, new RegionArea(13462, Range.singleton(0))),
+	MTA_TELEKINETIC_THEATRE("Telekinetic Theatre", GameAreaType.MINIGAMES, 13463),
+	NIGHTMARE_ZONE("Nightmare Zone", GameAreaType.MINIGAMES, new RegionArea(9033, Range.atLeast(1))),
 	PEST_CONTROL("Pest Control", GameAreaType.MINIGAMES, 10536),
 	PORT_SARIM_RAT_PITS("Port Sarim Rat Pits", GameAreaType.MINIGAMES, 11926),
 	PYRAMID_PLUNDER("Pyramid Plunder", GameAreaType.MINIGAMES, 7749),
@@ -315,11 +358,13 @@ public enum GameArea
 	ANCIENT_VAULT("Ancient Vault", GameAreaType.REGIONS, 12644, 13156),
 	APE_ATOLL("Ape Atoll" , GameAreaType.REGIONS, 10794, 10795, 10974, 11050),
 	ARANDAR("Arandar", GameAreaType.REGIONS, 9266, 9267, 9523),
+	ARCEUUS_LIBRARY("Arceuus Library", GameAreaType.REGIONS, 6459),
 	ASGARNIA("Asgarnia", GameAreaType.REGIONS, 11825, 11829, 11830, 12085, 12086),
 	AVIUM_SAVANNAH("Avium Savannah", GameAreaType.REGIONS, 5935, 5936, 5937, 6189, 6445, 6446, 6447, 6701, 6702, 6703, 6957, 6958, 6959, 7215),
 	BANDIT_CAMP_QUARRY("Bandit Camp Quarry", GameAreaType.REGIONS, 12589),
 	BATTLEFIELD("Battlefield", GameAreaType.REGIONS, 10034),
 	BATTLEFRONT("Battlefront", GameAreaType.REGIONS, 5433, 5434),
+	BEEKEEPER_RANDOM_EVENT("Beekeeper", GameAreaType.REGIONS, new RegionArea(7758, new WorldArea(new WorldPoint(1920, 5024, 0), 32, 32))),
 	BLAST_MINE("Blast Mine", GameAreaType.REGIONS, 5948),
 	BODY_ALTAR("Body Altar", GameAreaType.REGIONS, 10059),
 	CHAOS_ALTAR("Chaos Altar", GameAreaType.REGIONS, 9035),
@@ -329,14 +374,26 @@ public enum GameArea
 	CRAFTING_GUILD("Crafting Guild", GameAreaType.REGIONS, 11571),
 	CRANDOR("Crandor", GameAreaType.REGIONS, 11314, 11315),
 	CRASH_ISLAND("Crash Island", GameAreaType.REGIONS, 11562),
+	CRUMBLING_TOWER("Crumbling Tower", GameAreaType.REGIONS,
+		new RegionArea(8494, new WorldArea(new WorldPoint(2123, 2987, 0), 29, 20)),
+		new RegionArea(7827)),
 	DARK_ALTAR("Dark Altar", GameAreaType.REGIONS, 6716),
 	DEATH_ALTAR("Death Altar", GameAreaType.REGIONS, 8779),
 	DEATH_PLATEAU("Death Plateau", GameAreaType.REGIONS, 11320),
 	DENSE_ESSENCE("Dense Essence Mine", GameAreaType.REGIONS, 6972),
-	DESERT_PLATEAU("Desert Plateau", GameAreaType.REGIONS, 13361, 13617),
-	DIGSITE("Digsite", GameAreaType.REGIONS, 13365),
+	DESERT_EAGLE_CAVE("Desert Eagle Cave", GameAreaType.REGIONS, 13717),
+	DESERT_PLATEAU("Desert Plateau", GameAreaType.REGIONS,
+		regionAreas(13361, 13617),
+		new RegionArea(13362, new WorldArea(new WorldPoint(3360, 3200, 0), 2, 1))),
+	DIGSITE("Digsite", GameAreaType.REGIONS,
+		regionAreas(13365),
+		new RegionArea(13620, new WorldArea(new WorldPoint(3392, 3386, 0), 3, 6)),
+		new RegionArea(13621, new WorldArea(new WorldPoint(3392, 3392, 0), 10, 59))),
 	DRAGONTOOTH_ISLAND("Dragontooth Island", GameAreaType.REGIONS, 15159),
 	DRAYNOR_MANOR("Draynor Manor", GameAreaType.REGIONS, 12340),
+	DRIFT_NET_COVES("Drift Net Coves", GameAreaType.REGIONS,
+		new RegionArea(15008, new WorldPoint(3729, 10296, 1), new WorldPoint(3750, 10302, 1)),
+		new RegionArea(15008, new WorldPoint(3737, 10288, 1), new WorldPoint(3743, 10295, 1))),
 	EAGLES_PEAK("Eagles' Peak", GameAreaType.REGIONS, 9270),
 	EARTH_ALTAR("Earth Altar", GameAreaType.REGIONS, 10571),
 	ENCHANTED_VALLEY("Enchanted Valley", GameAreaType.REGIONS, 12102),
@@ -360,9 +417,14 @@ public enum GameArea
 	GHORROCK_DUNGEON("Ghorrock Dungeon", GameAreaType.REGIONS, 11681),
 	GORAKS_PLANE("Gorak's Plane", GameAreaType.REGIONS, 12115),
 	GRAND_EXCHANGE("Grand Exchange", GameAreaType.REGIONS, 12598),
+	GRAVEDIGGER_RANDOM_EVENT("Gravedigger", GameAreaType.REGIONS, new RegionArea(7758, new WorldArea(new WorldPoint(1920, 4992, 0), 32, 32))),
 	GREAT_KOUREND("Great Kourend", GameAreaType.REGIONS, 6201, 6457, 6713),
 	HARMONY_ISLAND("Harmony Island", GameAreaType.REGIONS, 15148),
 	HAZELMERES_ISLAND("Hazelmere's Island", GameAreaType.REGIONS, 10544),
+	HOSIDIUS_KITCHEN("Hosidius Kitchen", GameAreaType.REGIONS,
+		new RegionArea(6712, new WorldPoint(1675, 3615, 0), new WorldPoint(1683, 3617, 0)),
+		new RegionArea(6712, new WorldPoint(1676, 3618, 0), new WorldPoint(1682, 3619, 0)),
+		new RegionArea(6712, new WorldPoint(1675, 3620, 0), new WorldPoint(1683, 3622, 0))),
 	HUNTER_GUILD("Hunter Guild", GameAreaType.REGIONS, 6191),
 	ICE_PATH("Ice Path", GameAreaType.REGIONS, 11322, 11323),
 	ICEBERG("Iceberg", GameAreaType.REGIONS, 10558, 10559),
@@ -371,8 +433,12 @@ public enum GameArea
 	ISLAND_OF_STONE("Island of Stone", GameAreaType.REGIONS, 9790),
 	ISLE_OF_SOULS("Isle of Souls", GameAreaType.REGIONS, 8236, 8237, 8238, 8491, 8492, 8494, 8747, 8750, 9003, 9004, 9006, 9260, 9261, 9262),
 	JIGGIG("Jiggig" , GameAreaType.REGIONS, 9775),
+	JUNGLE_EAGLE_CAVE("Jungle Eagle Cave", GameAreaType.REGIONS,
+		new RegionArea(10129, new WorldArea(new WorldPoint(2508, 9313, 0), 21, 18))),
 	KANDARIN("Kandarin", GameAreaType.REGIONS, 9268, 9269, 9014, 9263, 9264, 9519, 9524, 9527, 9776, 9783, 10037, 10290, 10294, 10546, 10551, 10805, 11062),
-	KARAMJA("Karamja" , GameAreaType.REGIONS, 10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
+	KARAMJA("Karamja" , GameAreaType.REGIONS,
+		regionAreas(10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
+		new RegionArea(11825, new WorldArea(new WorldPoint(2944, 3138, 0), 27, 27))),
 	KEBOS_LOWLANDS("Kebos Lowlands", GameAreaType.REGIONS, 4665, 4666, 4667, 4921, 5178),
 	KEBOS_SWAMP("Kebos Swamp", GameAreaType.REGIONS, 4664, 4920, 5174, 5175, 5176, 5430, 5431),
 	KHARAZI_JUNGLE("Kharazi Jungle", GameAreaType.REGIONS, 11053, 11309, 11565, 11821),
@@ -384,10 +450,13 @@ public enum GameArea
 	LIGHTHOUSE("Lighthouse", GameAreaType.REGIONS, 10040),
 	LITHKREN("Lithkren", GameAreaType.REGIONS, 14142, 14398),
 	LUMBRIDGE_SWAMP("Lumbridge Swamp", GameAreaType.REGIONS, 12593, 12849),
-	MAX_ISLAND("Max Island", GameAreaType.REGIONS, 11063),
+	MAX_ISLAND("Max Island", GameAreaType.REGIONS, new RegionArea(11063, new WorldPoint(2786, 3535, 0), new WorldPoint(2796, 3543, 0))),
 	MCGRUBORS_WOOD("McGrubor's Wood", GameAreaType.REGIONS, 10550),
 	MIME_STAGE("Mime's Stage", GameAreaType.REGIONS, 8010),
 	MIND_ALTAR("Mind Altar", GameAreaType.REGIONS, 11083),
+	MINING_GUILD("Mining Guild", GameAreaType.REGIONS,
+		regionAreas(11927, 12183),
+		new RegionArea(12184, new WorldArea(new WorldPoint(3008, 9728, 0), 64, 29))),
 	MISTHALIN("Misthalin", GameAreaType.REGIONS, 12594, 12595, 12851),
 	MOLCH("Molch", GameAreaType.REGIONS, 5177),
 	MOLCH_ISLAND("Molch Island", GameAreaType.REGIONS, 5432),
@@ -405,10 +474,16 @@ public enum GameArea
 	ORTUS_FARM("Ortus Farm", GameAreaType.REGIONS, 6192, 6193),
 	OTTOS_GROTTO("Otto's Grotto", GameAreaType.REGIONS, 10038),
 	OURANIA_HUNTER_AREA("Ourania Hunter Area", GameAreaType.REGIONS, 9778),
+	PILLORY_CAGES("Pillory Cages", GameAreaType.REGIONS,
+		new RegionArea(12853, new WorldArea(new WorldPoint(3226, 3407, 0), 5, 1)),
+		new RegionArea(10550, new WorldArea(new WorldPoint(2681, 3489, 0), 5, 1)),
+		new RegionArea(10288, new WorldArea(new WorldPoint(2604, 3105, 0), 5, 1))),
+	PINBALL_RANDOM_EVENT("Pinball", GameAreaType.REGIONS, new RegionArea(7758, new WorldArea(new WorldPoint(1952, 5024, 0), 32, 32))),
 	PIRATES_COVE("Pirates' Cove", GameAreaType.REGIONS, 8763),
 	PISCATORIS_HUNTER_AREA("Piscatoris Hunter Area", GameAreaType.REGIONS, 9015, 9016, 9271, 9272, 9528),
 	PLAYER_OWNED_HOUSE("Player Owned House", GameAreaType.REGIONS, 7513, 7514, 7769, 7770),
 	POISON_WASTE("Poison Waste", GameAreaType.REGIONS, 8752, 9008),
+	POLAR_EAGLE_CAVE("Polar Eagle Cave", GameAreaType.REGIONS, 10911),
 	PORT_TYRAS("Port Tyras", GameAreaType.REGIONS, 8496),
 	PURO_PURO("Puro-Puro", GameAreaType.REGIONS, 10307),
 	RALOS_RISE("Ralos' Rise", GameAreaType.REGIONS, 5424, 5425, 5679, 5680, 5681, 5682),
@@ -417,9 +492,8 @@ public enum GameArea
 	RUINS_OF_UNKAH("Ruins of Unkah", GameAreaType.REGIONS, 12588),
 	RUINS_OF_ULLEK("Ruins of Ullek", GameAreaType.REGIONS, 13355, 13611, 13612),
 	RUNE_ESSENCE_MINE("Rune Essence Mine", GameAreaType.REGIONS, 11595),
-	// The Beekeper, Pinball, and Gravedigger randoms share a region (7758), and although they are not technically ScapeRune, that name is most commonly
-	// associated with random events, so those three have been denoted ScapeRune to avoid leaving multiple random event regions without an assigned name.
-	SCAPERUNE("ScapeRune", GameAreaType.REGIONS, 10058, 7758, 8261),
+	SCAPERUNE_ISLAND("ScapeRune Island", GameAreaType.REGIONS, 10058),
+	SCAPERUNE_PRISON("ScapeRune Prison", GameAreaType.REGIONS, 8261),
 	SEA_SPIRIT_DOCK("Sea Spirit Dock", GameAreaType.REGIONS, 12332),
 	SERGEANT_DAMIENS_TRAINING_CAMP("Sergeant Damien's Training Camp", GameAreaType.REGIONS, 12619),
 	SHIP_YARD("Ship Yard", GameAreaType.REGIONS, 11823),
@@ -437,8 +511,23 @@ public enum GameArea
 	TROLLWEISS_MOUNTAIN("Trollweiss Mountain", GameAreaType.REGIONS, 11066, 11067, 11068),
 	TUTORIAL_ISLAND("Tutorial Island", GameAreaType.REGIONS, 12079, 12080, 12335, 12336, 12436, 12592),
 	UNDERWATER("Underwater", GameAreaType.REGIONS, 15008, 15264),
+	WARRIORS_GUILD("Warriors' Guild", GameAreaType.REGIONS,
+		new RegionArea(11319, new WorldArea(new WorldPoint(2832, 3537, 0), 44, 19), Range.singleton(0)),
+		new RegionArea(11319, new WorldArea(new WorldPoint(2876, 3545, 0), 1, 3), Range.singleton(0)),
+		new RegionArea(11319, new WorldArea(new WorldPoint(2837, 3533, 1), 41, 25), Range.atLeast(1))),
 	WATER_ALTAR("Water Altar", GameAreaType.REGIONS, 10827),
 	WATERBIRTH_ISLAND("Waterbirth Island", GameAreaType.REGIONS, 10042),
+	WHITE_WOLF_MOUNTAIN("White Wolf Mountain", GameAreaType.REGIONS,
+		new RegionArea(11062, new WorldPoint(2790, 3493, 0), new WorldPoint(2815, 3519, 0)),
+		new RegionArea(11063, new WorldPoint(2795, 3520, 0), new WorldPoint(2815, 3530, 0)),
+		new RegionArea(11317, new WorldArea(new WorldPoint(2841, 3447, 0), 9, 9)),
+		new RegionArea(11317, new WorldPoint(2850, 3443, 0), new WorldPoint(2877, 3455, 0)),
+		new RegionArea(11318, new WorldPoint(2816, 3495, 0), new WorldPoint(2879, 3519, 0)),
+		new RegionArea(11318, new WorldArea(new WorldPoint(2827, 3493, 0), 3, 2)),
+		new RegionArea(11318, new WorldPoint(2830, 3474, 0), new WorldPoint(2872, 3494, 0)),
+		new RegionArea(11318, new WorldPoint(2834, 3462, 0), new WorldPoint(2874, 3473, 0)),
+		new RegionArea(11318, new WorldPoint(2843, 3456, 0), new WorldPoint(2879, 3461, 0)),
+		new RegionArea(11319, new WorldPoint(2816, 3520, 0), new WorldPoint(2873, 3529, 0))),
 	WINTERTODT_CAMP("Wintertodt Camp", GameAreaType.REGIONS, 6461),
 	WIZARDS_TOWER("Wizards' Tower", GameAreaType.REGIONS, 12337, 12437),
 	WOODCUTTING_GUILD("Woodcutting Guild", GameAreaType.REGIONS, 6198, 6454),
@@ -449,11 +538,28 @@ public enum GameArea
 	private final GameAreaType gameAreaType;
 	private final List<RegionArea> regionAreas;
 
+	@Getter(AccessLevel.NONE)
+	private Set<Integer> fullRegions;
+
 	GameArea(String areaName, GameAreaType areaType, int... regionIds)
 	{
+		this(areaName, areaType, regionAreas(regionIds));
+	}
+
+	GameArea(String areaName, GameAreaType areaType, RegionArea... regionAreas)
+	{
+		this(areaName, areaType, List.of(regionAreas));
+	}
+
+	GameArea(String areaName, GameAreaType areaType, List<RegionArea> regionAreaList, RegionArea... regionAreas)
+	{
+		final ImmutableList.Builder<RegionArea> allAreas = ImmutableList.builder();
+		allAreas.addAll(regionAreaList);
+		allAreas.add(regionAreas);
+
 		this.state = areaName;
 		this.gameAreaType = areaType;
-		this.regionAreas = regionAreas(regionIds);
+		this.regionAreas = allAreas.build();
 	}
 
 	private static List<RegionArea> regionAreas(final int... regionIds)
@@ -461,5 +567,117 @@ public enum GameArea
 		return Arrays.stream(regionIds)
 			.mapToObj(RegionArea::new)
 			.collect(Collectors.toList());
+	}
+
+	/**
+	 * Get a set of complete regions the area contains. (This excludes any sub-regions this area spans to)
+	 *
+	 * @return A set of full regions which correspond to the area.
+	 */
+	public Set<Integer> getFullRegions()
+	{
+		if (fullRegions != null)
+		{
+			return fullRegions;
+		}
+
+		fullRegions = getRegionAreas().stream()
+			.filter(regionArea -> regionArea.getArea() == null && regionArea.getPlanes() == null)
+			.mapToInt(RegionArea::getRegion)
+			.boxed()
+			.collect(Collectors.toUnmodifiableSet());
+		return fullRegions;
+	}
+
+	/**
+	 * Check if the area contains the given point.
+	 * <p>
+	 * Note: Sub-region definitions assume that {@link WorldPoint WorldPoints} will be translated from instances, such
+	 *       as via {@link WorldPoint#fromLocalInstance(Client, LocalPoint)}, and have the player's current plane, such
+	 *       as from {@link WorldView#getPlane()}. Points from instances will not return the
+	 *       correct value otherwise.
+	 * <br>
+	 * Furthermore, a return value of {@code true} does not mean that {@link #fromPoint(WorldPoint)} would return this
+	 * area, because both a full-region area and sub-region area overlaid on it could return {@code true}, but only the
+	 * sub-region area would be returned by {@link #fromPoint(WorldPoint)}.
+	 *
+	 * @param worldPoint The point to check whether is contained in the area.
+	 * @return {@code true} if a region or sub-region of the area contains {@code worldPoint}, {@code false} otherwise.
+	 */
+	public boolean contains(final WorldPoint worldPoint)
+	{
+		for (final RegionArea regionArea : getRegionAreas())
+		{
+			if (regionArea.contains(worldPoint))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the area fully covers the given region. This does not guarantee that every possible {@link WorldPoint}
+	 * in this region would match {@link #contains(WorldPoint)} as sub-region areas of other {@link GameArea GameAreas}
+	 * may override this one.
+	 *
+	 * @param regionId ID of the region to check whether is contained in the area.
+	 * @return {@code true} if the region is fully covered by the area, {@code false} otherwise.
+	 */
+	public boolean containsRegion(final int regionId)
+	{
+		return getFullRegions().contains(regionId);
+	}
+
+	/**
+	 * Check if the given region is fully covered by any of the given game areas.
+	 *
+	 * @param regionId  ID of the region to check whether is fully contained in any of the given areas.
+	 * @param gameAreas Areas to check whether they contain the given region.
+	 * @return {@code true} if the region is fully covered by any of the given areas, {@code false} otherwise.
+	 */
+	public static boolean anyContainsRegion(final int regionId, final GameArea... gameAreas)
+	{
+		for (final GameArea gameArea : gameAreas)
+		{
+			if (gameArea.containsRegion(regionId))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Gets the {@link GameArea} best matching the given {@link WorldPoint}. That is, if a full-region and sub-region
+	 * area both match a given point, the more specific sub-region area would be returned instead of the base
+	 * full-region area.
+	 *
+	 * @param worldPoint The given {@link WorldPoint} to find a {@link GameArea} which contains it
+	 * @return The most specific {@link GameArea} containing the given {@link WorldPoint}, or {@code null} if no
+	 *         matching area is mapped.
+	 */
+	@Nullable
+	public static GameArea fromPoint(final WorldPoint worldPoint)
+	{
+		final int pointRegion = worldPoint.getRegionID();
+		GameArea fullRegionArea = null;
+		for (GameArea gameArea : values())
+		{
+			if (gameArea.getFullRegions().contains(pointRegion))
+			{
+				fullRegionArea = gameArea;
+				continue;
+			}
+
+			for (final RegionArea regionArea : gameArea.getRegionAreas())
+			{
+				if (regionArea.contains(worldPoint))
+				{
+					return gameArea;
+				}
+			}
+		}
+		return fullRegionArea;
 	}
 }

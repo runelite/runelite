@@ -26,14 +26,10 @@
  */
 package net.runelite.client.plugins.discord;
 
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Skill;
-import net.runelite.client.game.GameArea;
-import net.runelite.client.game.RegionArea;
 
 @AllArgsConstructor
 @Getter
@@ -68,21 +64,6 @@ enum DiscordGameEventType
 	TRAINING_CONSTRUCTION(Skill.CONSTRUCTION),
 	TRAINING_SAILING(Skill.SAILING),
 	;
-
-	private static final Map<Integer, GameArea> FROM_REGION;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, GameArea> regionMapBuilder = new ImmutableMap.Builder<>();
-		for (final GameArea gameArea : GameArea.values())
-		{
-			for (final RegionArea regionArea : gameArea.getRegionAreas())
-			{
-				regionMapBuilder.put(regionArea.getRegion(), gameArea);
-			}
-		}
-		FROM_REGION = regionMapBuilder.build();
-	}
 
 	@Nullable
 	private String imageKey;
@@ -191,10 +172,5 @@ enum DiscordGameEventType
 			case CONSTRUCTION: return TRAINING_CONSTRUCTION;
 			default: return null;
 		}
-	}
-
-	public static GameArea fromRegion(final int regionId)
-	{
-		return FROM_REGION.get(regionId);
 	}
 }
