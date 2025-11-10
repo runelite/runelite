@@ -44,6 +44,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldView;
@@ -158,6 +159,7 @@ public class LootTrackerPluginTest
 
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		wv = mock(WorldView.class);
@@ -363,6 +365,7 @@ public class LootTrackerPluginTest
 
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(7323 >> 2, (7323 & 0xff) << 6, 0));
+		when(player.getLocalLocation()).thenReturn(new LocalPoint((7323 >> 2) << Perspective.LOCAL_COORD_BITS, ((7323 & 0xff) << 6) << Perspective.LOCAL_COORD_BITS, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
@@ -417,7 +420,8 @@ public class LootTrackerPluginTest
 	{
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
-		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(3153 << Perspective.LOCAL_COORD_BITS, 2833 << Perspective.LOCAL_COORD_BITS, 0));
 		when(client.getBoostedSkillLevel(Skill.FISHING)).thenReturn(69);
 
 		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
@@ -562,6 +566,8 @@ public class LootTrackerPluginTest
 	{
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(2534, 3572, 0));
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(2534 << Perspective.LOCAL_COORD_BITS, 3572 << Perspective.LOCAL_COORD_BITS, 0));
+		doReturn(true).when(lootTrackerPlugin).inBaLobby();
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", "Shark (x 114)! High level gamble count: <col=7f0000>3</col>.", "", 0);
@@ -580,6 +586,7 @@ public class LootTrackerPluginTest
 	{
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(1636, 3944, 0));
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(1636 << Perspective.LOCAL_COORD_BITS, 3944 << Perspective.LOCAL_COORD_BITS, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(client.getBoostedSkillLevel(Skill.FIREMAKING)).thenReturn(99);
 

@@ -44,6 +44,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -79,8 +80,7 @@ class KourendLibraryOverlay extends Overlay
 		}
 
 		WorldPoint playerLoc = player.getWorldLocation();
-
-		if (playerLoc.getRegionID() != KourendLibraryPlugin.REGION)
+		if (!GameArea.ARCEUUS_LIBRARY.containsRegion(playerLoc.getRegionID()))
 		{
 			return null;
 		}
