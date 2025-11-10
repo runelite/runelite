@@ -30,7 +30,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
@@ -40,14 +39,13 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
 
 @Slf4j
 public class EnchantmentRoom extends MTARoom
 {
-	private static final int MTA_ENCHANT_REGION = 13462;
-
 	private final Client client;
 	private final List<WorldPoint> dragonstones = new ArrayList<>();
 	private boolean hintSet;
@@ -142,8 +140,6 @@ public class EnchantmentRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		Player player = client.getLocalPlayer();
-		return player != null && player.getWorldLocation().getRegionID() == MTA_ENCHANT_REGION
-			&& player.getWorldLocation().getPlane() == 0;
+		return GameArea.MTA_ENCHANTING_CHAMBER.contains(client.getLocalPlayer().getWorldLocation());
 	}
 }
