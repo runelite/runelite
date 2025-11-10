@@ -193,7 +193,7 @@ public class FairyRingPlugin extends Plugin
 				tags = ring.getTags();
 			}
 
-			var filter = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
+			var filter = client.getVarcStrValue(VarClientID.MESLAYERINPUT).toLowerCase();
 
 			if (code.toLowerCase().contains(filter)
 				|| tags != null && tags.contains(filter)
