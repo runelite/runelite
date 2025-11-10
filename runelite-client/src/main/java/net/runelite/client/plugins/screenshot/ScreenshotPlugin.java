@@ -35,7 +35,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -70,6 +69,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -94,9 +94,6 @@ public class ScreenshotPlugin extends Plugin
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 	private static final String COLLECTION_LOG_TEXT = "New item added to your collection log: ";
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
-	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
-	private static final int GAUNTLET_REGION = 7512;
-	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([,0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
@@ -475,10 +472,9 @@ public class ScreenshotPlugin extends Plugin
 		if (chatMessage.equals(CHEST_LOOTED_MESSAGE) && config.screenshotRewards())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-			String eventName = CHEST_LOOT_EVENTS.get(regionID);
-			if (eventName != null)
+			if (GameArea.THE_GAUNTLET_LOBBY.containsRegion(regionID))
 			{
-				takeScreenshot(eventName, SD_CHEST_LOOT);
+				takeScreenshot("The Gauntlet", SD_CHEST_LOOT);
 			}
 		}
 
@@ -1004,8 +1000,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		return this.client.isInInstancedRegion()
 			&& this.client.getMapRegions().length > 0
-			&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
-			|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
+			&& GameArea.anyContainsRegion(client.getMapRegions()[0], GameArea.THE_GAUNTLET, GameArea.CORRUPTED_GAUNTLET);
 	}
 
 	@VisibleForTesting

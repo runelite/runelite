@@ -56,6 +56,7 @@ import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -77,8 +78,6 @@ public class MiningPlugin extends Plugin
 		"You swing your pick at the " +
 			"(?:rock|star)" +
 			"(?:\\.|!)");
-
-	private static final int DAEYALT_ESSENCE_MINE_REGION = 14744;
 
 	@Inject
 	private Client client;
@@ -255,7 +254,7 @@ public class MiningPlugin extends Plugin
 		GameObject object = event.getGameObject();
 
 		// Inverse timer to track daeyalt essence active duration
-		if (object.getId() == ObjectID.DAEYALT_STONE_TOP_ACTIVE && client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_ESSENCE_MINE_REGION)
+		if (object.getId() == ObjectID.DAEYALT_STONE_TOP_ACTIVE && GameArea.DAEYALT_ESSENCE_MINE.containsRegion(client.getLocalPlayer().getWorldLocation().getRegionID()))
 		{
 			RockRespawn rockRespawn = new RockRespawn(Rock.DAEYALT_ESSENCE, object.getWorldLocation(), Instant.now(),
 				(int) Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, RSTimeUnit.GAME_TICKS).toMillis(), Rock.DAEYALT_ESSENCE.getZOffset());
