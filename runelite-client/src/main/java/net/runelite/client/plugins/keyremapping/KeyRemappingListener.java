@@ -56,11 +56,12 @@ class KeyRemappingListener implements KeyListener
 	private final Set<Character> blockedChars = new HashSet<>();
 	private int heldModifier = KeyEvent.VK_UNDEFINED;
 
-	private void updateModifier(KeyEvent e, int modifier) {
+	private void updateModifier(KeyEvent e, int modifier)
+	{
 		// KeyEvent.setModifiers is deprecated, so we must synthesize the modifier
 		e.getComponent().dispatchEvent(
 			new KeyEvent(e.getComponent(), e.getID(), e.getWhen(), modifier, KeyEvent.VK_UNDEFINED, KeyEvent.CHAR_UNDEFINED)
-		);	
+		);
 		heldModifier = modifier;
 	}
 
@@ -182,7 +183,7 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_M;
 				updateModifier(e, InputEvent.CTRL_DOWN_MASK);
 			}
-			
+
 			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && (mappedKeyCode != e.getKeyCode() || heldModifier != KeyEvent.VK_UNDEFINED))
 			{
 				final char keyChar = e.getKeyChar();

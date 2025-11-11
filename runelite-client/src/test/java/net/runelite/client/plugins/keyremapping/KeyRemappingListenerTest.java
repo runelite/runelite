@@ -152,9 +152,9 @@ public class KeyRemappingListenerTest
 		KeyEvent event = mock(KeyEvent.class);
 		Component component = mock(Component.class);
 		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
-		when(event.getComponent()).thenReturn(component); 
-		when(event.getID()).thenReturn(KeyEvent.KEY_PRESSED); 
-		when(event.getWhen()).thenReturn(System.currentTimeMillis()); 
+		when(event.getComponent()).thenReturn(component);
+		when(event.getID()).thenReturn(KeyEvent.KEY_PRESSED);
+		when(event.getWhen()).thenReturn(System.currentTimeMillis());
 
 		// Test mapped key press
 		keyRemappingListener.keyPressed(event);
@@ -162,21 +162,21 @@ public class KeyRemappingListenerTest
 		// Check that the key code and ctrl modifier were set correctly
 		verify(event).setKeyCode(KeyEvent.VK_M);
 		verify(component).dispatchEvent(new KeyEvent(
-			event.getComponent(), 
-			event.getID(), 
-			event.getWhen(), 
+			event.getComponent(),
+			event.getID(),
+			event.getWhen(),
 			InputEvent.CTRL_DOWN_MASK,  // heldModifier value
-			KeyEvent.VK_UNDEFINED, 
+			KeyEvent.VK_UNDEFINED,
 			KeyEvent.CHAR_UNDEFINED
 		));
 
 		KeyEvent releaseEvent = mock(KeyEvent.class);
 		Component releaseComponent = mock(Component.class);
 		when(releaseEvent.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1);
-		when(releaseEvent.getComponent()).thenReturn(releaseComponent); 
-		when(releaseEvent.getID()).thenReturn(KeyEvent.KEY_RELEASED); 
-		when(releaseEvent.getWhen()).thenReturn(System.currentTimeMillis()); 
-		
+		when(releaseEvent.getComponent()).thenReturn(releaseComponent);
+		when(releaseEvent.getID()).thenReturn(KeyEvent.KEY_RELEASED);
+		when(releaseEvent.getWhen()).thenReturn(System.currentTimeMillis());
+
 		// Test mapped key release
 		keyRemappingListener.keyReleased(releaseEvent);
 
@@ -184,11 +184,11 @@ public class KeyRemappingListenerTest
 		verify(releaseEvent).setKeyCode(KeyEvent.VK_M);
 		verify(releaseEvent).setKeyChar(KeyEvent.CHAR_UNDEFINED);
 		verify(releaseComponent).dispatchEvent(new KeyEvent(
-			releaseEvent.getComponent(), 
-			releaseEvent.getID(), 
-			releaseEvent.getWhen(), 
+			releaseEvent.getComponent(),
+			releaseEvent.getID(),
+			releaseEvent.getWhen(),
 			KeyEvent.VK_UNDEFINED,  // heldModifier value
-			KeyEvent.VK_UNDEFINED, 
+			KeyEvent.VK_UNDEFINED,
 			KeyEvent.CHAR_UNDEFINED
 		));
 	}
