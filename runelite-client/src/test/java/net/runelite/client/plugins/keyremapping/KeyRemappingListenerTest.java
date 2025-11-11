@@ -172,7 +172,6 @@ public class KeyRemappingListenerTest
 
 		KeyEvent releaseEvent = mock(KeyEvent.class);
 		Component releaseComponent = mock(Component.class);
-		when(releaseEvent.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1);
 		when(releaseEvent.getComponent()).thenReturn(releaseComponent);
 		when(releaseEvent.getID()).thenReturn(KeyEvent.KEY_RELEASED);
 		when(releaseEvent.getWhen()).thenReturn(System.currentTimeMillis());
