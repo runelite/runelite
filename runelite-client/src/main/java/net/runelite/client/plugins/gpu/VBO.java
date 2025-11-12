@@ -70,7 +70,7 @@ class VBO
 	{
 		assert !mapped;
 		glBindBuffer(GL_ARRAY_BUFFER, bufId);
-		buffer = glMapBufferRange(GL_ARRAY_BUFFER, 0, size, GL_MAP_WRITE_BIT | (usage == GL_STATIC_DRAW ? 0 : GL_MAP_INVALIDATE_BUFFER_BIT), buffer);
+		buffer = glMapBufferRange(GL_ARRAY_BUFFER, 0, size, GL_MAP_WRITE_BIT | (usage == GL_STATIC_DRAW ? 0 : (GL_MAP_INVALIDATE_BUFFER_BIT | GL_MAP_FLUSH_EXPLICIT_BIT)), buffer);
 		if (buffer == null)
 		{
 			throw new RuntimeException("unable to map GL buffer " + bufId + " size " + size);
@@ -87,6 +87,10 @@ class VBO
 		vb = null;
 
 		glBindBuffer(GL_ARRAY_BUFFER, bufId);
+		if (usage != GL_STATIC_DRAW)
+		{
+			glFlushMappedBufferRange(GL_ARRAY_BUFFER, 0, (long) len * Integer.BYTES);
+		}
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		mapped = false;
