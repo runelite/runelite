@@ -42,15 +42,18 @@ import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.party.messages.UserSync;
@@ -160,7 +163,6 @@ public class DiscordPlugin extends Plugin
 					resetState();
 					checkForGameStateUpdate();
 				}
-				checkForAreaUpdate();
 				break;
 		}
 	}
@@ -174,6 +176,12 @@ public class DiscordPlugin extends Plugin
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
 		}
+	}
+
+	@Subscribe
+	private void onGameTick(GameTick e)
+	{
+		checkForAreaUpdate();
 	}
 
 	@Subscribe
@@ -302,14 +310,14 @@ public class DiscordPlugin extends Plugin
 
 	private void checkForAreaUpdate()
 	{
-		if (client.getLocalPlayer() == null)
+		final Player player = client.getLocalPlayer();
+		if (player == null)
 		{
 			return;
 		}
 
-		final int playerRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-
-		if (playerRegionID == 0)
+		final WorldPoint instancePoint = WorldPoint.fromLocalInstance(client, player.getLocalLocation());
+		if (instancePoint.getRegionID() == 0)
 		{
 			return;
 		}
@@ -327,39 +335,24 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		DiscordGameEventType discordGameEventType = DiscordGameEventType.fromRegion(playerRegionID);
-
-		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
-		// Since KBD requires going through the wilderness there is no EventType for it
-		if (DiscordGameEventType.MG_NIGHTMARE_ZONE == discordGameEventType
-			&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
-		{
-			discordGameEventType = null;
-		}
-
-		if (discordGameEventType == null)
-		{
-			// Unknown region, reset to default in-game
-			discordState.triggerEvent(DiscordGameEventType.IN_GAME);
-			return;
-		}
-
-		if (!showArea(discordGameEventType))
+		final WorldPoint playerWorldPoint = new WorldPoint(instancePoint.getX(), instancePoint.getY(), player.getWorldView().getPlane());
+		final GameArea gameArea = GameArea.fromPoint(playerWorldPoint);
+		if (!showArea(gameArea))
 		{
 			return;
 		}
 
-		discordState.triggerEvent(discordGameEventType);
+		discordState.updateArea(gameArea);
 	}
 
-	private boolean showArea(final DiscordGameEventType event)
+	private boolean showArea(final GameArea area)
 	{
-		if (event == null)
+		if (area == null)
 		{
 			return false;
 		}
 
-		switch (event.getDiscordAreaType())
+		switch (area.getGameAreaType())
 		{
 			case BOSSES: return config.showBossActivity();
 			case CITIES: return config.showCityActivity();
