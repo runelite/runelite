@@ -48,8 +48,6 @@ import static org.lwjgl.opengl.GL33C.*;
 @RequiredArgsConstructor
 class Zone
 {
-	private static final boolean USE_STATIC_UNSORTED = false;
-
 	// Zone vertex format
 	// index 0: short vec3(x, y, z)
 	// index 1: int abhsl
@@ -511,7 +509,7 @@ class Zone
 		);
 	}
 
-	void renderAlpha(int zx, int zz, int cyaw, int cpitch, int minLevel, int currentLevel, int maxLevel, int level, Set<Integer> hiddenRoofIds)
+	void renderAlpha(int zx, int zz, int cyaw, int cpitch, int minLevel, int currentLevel, int maxLevel, int level, Set<Integer> hiddenRoofIds, boolean useStaticUnsorted)
 	{
 		drawOff.clear();
 		drawEnd.clear();
@@ -561,7 +559,7 @@ class Zone
 				continue;
 			}
 
-			if (USE_STATIC_UNSORTED)
+			if (useStaticUnsorted)
 			{
 				lastDrawMode = STATIC_UNSORTED;
 				pushRange(m.startpos, m.endpos);
