@@ -396,10 +396,6 @@ class FacePrioritySorter
 		final byte overrideLum = model.getOverrideLuminance();
 
 		final short[] faceTextures = model.getFaceTextures();
-		final byte[] textureFaces = model.getTextureFaces();
-		final int[] texIndices1 = model.getTexIndices1();
-		final int[] texIndices2 = model.getTexIndices2();
-		final int[] texIndices3 = model.getTexIndices3();
 
 		final byte[] transparencies = model.getFaceTransparencies();
 		final byte[] bias = model.getFaceBias();
@@ -442,21 +438,16 @@ class FacePrioritySorter
 		float vy3 = modelLocalY[triangleC];
 		float vz3 = modelLocalZ[triangleC];
 
-		int texA, texB, texC;
+		SceneUploader.computeFaceUvs(model, face);
 
-		if (textureFaces != null && textureFaces[face] != -1)
-		{
-			int tface = textureFaces[face] & 0xff;
-			texA = texIndices1[tface];
-			texB = texIndices2[tface];
-			texC = texIndices3[tface];
-		}
-		else
-		{
-			texA = triangleA;
-			texB = triangleB;
-			texC = triangleC;
-		}
+		int su0 = (int) (SceneUploader.u0 * 256f);
+		int sv0 = (int) (SceneUploader.v0 * 256f);
+
+		int su1 = (int) (SceneUploader.u1 * 256f);
+		int sv1 = (int) (SceneUploader.v1 * 256f);
+
+		int su2 = (int) (SceneUploader.u2 * 256f);
+		int sv2 = (int) (SceneUploader.v2 * 256f);
 
 		int alphaBias = 0;
 		alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
@@ -466,13 +457,13 @@ class FacePrioritySorter
 		var vb = alpha ? alphaBuffer : opaqueBuffer;
 
 		SceneUploader.putfff4(vb, vx1, vy1, vz1, alphaBias | color1);
-		SceneUploader.put2222(vb, texture, (int) modelLocalX[texA] - (int) vx1, (int) modelLocalY[texA] - (int) vy1, (int) modelLocalZ[texA] - (int) vz1);
+		SceneUploader.put2222(vb, texture, su0, sv0, 0);
 
 		SceneUploader.putfff4(vb, vx2, vy2, vz2, alphaBias | color2);
-		SceneUploader.put2222(vb, texture, (int) modelLocalX[texB] - (int) vx2, (int) modelLocalY[texB] - (int) vy2, (int) modelLocalZ[texB] - (int) vz2);
+		SceneUploader.put2222(vb, texture, su1, sv1, 0);
 
 		SceneUploader.putfff4(vb, vx3, vy3, vz3, alphaBias | color3);
-		SceneUploader.put2222(vb, texture, (int) modelLocalX[texC] - (int) vx3, (int) modelLocalY[texC] - (int) vy3, (int) modelLocalZ[texC] - (int) vz3);
+		SceneUploader.put2222(vb, texture, su2, sv2, 0);
 
 		return 3;
 	}

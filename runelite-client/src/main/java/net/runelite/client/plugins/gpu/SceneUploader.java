@@ -301,7 +301,8 @@ class SceneUploader
 		SceneTileModel model = t.getSceneTileModel();
 		if (model != null && drawTile)
 		{
-			len += upload(model, basex, basez, vertexBuffer);
+			Point tilePoint = t.getSceneLocation();
+			len += upload(model, tilePoint.getX() << 7, tilePoint.getY() << 7, vertexBuffer);
 		}
 
 		WallObject wallObject = t.getWallObject();
@@ -494,44 +495,22 @@ class SceneUploader
 		int tex = tile.getTexture() + 1;
 
 		vertexBuffer.put22224(lx2, ly2, lz2, hsl2);
-		if (tile.isFlat())
-		{
-			vertexBuffer.put2222(tex, lx0 - lx2, ly0 - ly2, lz0 - lz2);
-		}
-		else
-		{
-			vertexBuffer.put2222(tex, lx2 - lx2, ly2 - ly2, lz2 - lz2);
-		}
+		vertexBuffer.put2222(tex, 256, 256, 0);
 
 		vertexBuffer.put22224(lx3, ly3, lz3, hsl3);
-		if (tile.isFlat())
-		{
-			vertexBuffer.put2222(tex, lx1 - lx3, ly1 - ly3, lz1 - lz3);
-		}
-		else
-		{
-			vertexBuffer.put2222(tex, lx3 - lx3, ly3 - ly3, lz3 - lz3);
-		}
-
+		vertexBuffer.put2222(tex, 0, 256, 0);
 
 		vertexBuffer.put22224(lx1, ly1, lz1, hsl1);
-		if (tile.isFlat())
-		{
-			vertexBuffer.put2222(tex, lx3 - lx1, ly3 - ly1, lz3 - lz1);
-		}
-		else
-		{
-			vertexBuffer.put2222(tex, lx1 - lx1, ly1 - ly1, lz1 - lz1);
-		}
+		vertexBuffer.put2222(tex, 256, 0, 0);
 
 		vertexBuffer.put22224(lx0, ly0, lz0, hsl0);
-		vertexBuffer.put2222(tex, lx0 - lx0, ly0 - ly0, lz0 - lz0);
+		vertexBuffer.put2222(tex, 0, 0, 0);
 
 		vertexBuffer.put22224(lx1, ly1, lz1, hsl1);
-		vertexBuffer.put2222(tex, lx1 - lx1, ly1 - ly1, lz1 - lz1);
+		vertexBuffer.put2222(tex, 256, 0, 0);
 
 		vertexBuffer.put22224(lx3, ly3, lz3, hsl3);
-		vertexBuffer.put2222(tex, lx3 - lx3, ly3 - ly3, lz3 - lz3);
+		vertexBuffer.put2222(tex, 0, 256, 0);
 
 		return 6;
 	}
@@ -573,48 +552,27 @@ class SceneUploader
 			cnt += 3;
 
 			// vertexes are stored in scene local, convert to tile local
-			int lx0 = vertexX[vertex0] - lx;
+			int lx0 = vertexX[vertex0] - basex;
 			int ly0 = vertexY[vertex0];
-			int lz0 = vertexZ[vertex0] - lz;
+			int lz0 = vertexZ[vertex0] - basez;
 
-			int lx1 = vertexX[vertex1] - lx;
+			int lx1 = vertexX[vertex1] - basex;
 			int ly1 = vertexY[vertex1];
-			int lz1 = vertexZ[vertex1] - lz;
+			int lz1 = vertexZ[vertex1] - basez;
 
-			int lx2 = vertexX[vertex2] - lx;
+			int lx2 = vertexX[vertex2] - basex;
 			int ly2 = vertexY[vertex2];
-			int lz2 = vertexZ[vertex2] - lz;
+			int lz2 = vertexZ[vertex2] - basez;
 
 			int tex = triangleTextures != null ? triangleTextures[i] + 1 : 0;
 			vertexBuffer.put22224(lx0, ly0, lz0, hsl0);
-			if (sceneTileModel.isFlat())
-			{
-				vertexBuffer.put2222(tex, vertexX[0] - lx - lx0, vertexY[0] - ly0, vertexZ[0] - lz - lz0);
-			}
-			else
-			{
-				vertexBuffer.put2222(tex, vertexX[vertex0] - lx - lx0, vertexY[vertex0] - ly0, vertexZ[vertex0] - lz - lz0);
-			}
+			vertexBuffer.put2222(tex, (int) ((vertexX[vertex0] - lx) * 2f), (int) ((vertexZ[vertex0] - lz) * 2f), 0);
 
 			vertexBuffer.put22224(lx1, ly1, lz1, hsl1);
-			if (sceneTileModel.isFlat())
-			{
-				vertexBuffer.put2222(tex, vertexX[1] - lx - lx1, vertexY[1] - ly1, vertexZ[1] - lz - lz1);
-			}
-			else
-			{
-				vertexBuffer.put2222(tex, vertexX[vertex1] - lx - lx1, vertexY[vertex1] - ly1, vertexZ[vertex1] - lz - lz1);
-			}
+			vertexBuffer.put2222(tex, (int) ((vertexX[vertex1] - lx) * 2f), (int) ((vertexZ[vertex1] - lz) * 2f), 0);
 
 			vertexBuffer.put22224(lx2, ly2, lz2, hsl2);
-			if (sceneTileModel.isFlat())
-			{
-				vertexBuffer.put2222(tex, vertexX[3] - lx - lx2, vertexY[3] - ly2, vertexZ[3] - lz - lz2);
-			}
-			else
-			{
-				vertexBuffer.put2222(tex, vertexX[vertex2] - lx - lx2, vertexY[vertex2] - ly2, vertexZ[vertex2] - lz - lz2);
-			}
+			vertexBuffer.put2222(tex, (int) ((vertexX[vertex2] - lx) * 2f), (int) ((vertexZ[vertex2] - lz) * 2f), 0);
 		}
 
 		return cnt;
@@ -639,10 +597,6 @@ class SceneUploader
 		final int[] color3s = model.getFaceColors3();
 
 		final short[] faceTextures = model.getFaceTextures();
-		final byte[] textureFaces = model.getTextureFaces();
-		final int[] texIndices1 = model.getTexIndices1();
-		final int[] texIndices2 = model.getTexIndices2();
-		final int[] texIndices3 = model.getTexIndices3();
 
 		final byte[] transparencies = model.getFaceTransparencies();
 		final byte[] bias = model.getFaceBias();
@@ -711,21 +665,16 @@ class SceneUploader
 			int vy3 = modelLocalYI[triangleC];
 			int vz3 = modelLocalZI[triangleC];
 
-			int texA, texB, texC;
+			computeFaceUvs(model, face);
 
-			if (textureFaces != null && textureFaces[face] != -1)
-			{
-				int tface = textureFaces[face] & 0xff;
-				texA = texIndices1[tface];
-				texB = texIndices2[tface];
-				texC = texIndices3[tface];
-			}
-			else
-			{
-				texA = triangleA;
-				texB = triangleB;
-				texC = triangleC;
-			}
+			int su0 = (int) (u0 * 256f);
+			int sv0 = (int) (v0 * 256f);
+
+			int su1 = (int) (u1 * 256f);
+			int sv1 = (int) (v1 * 256f);
+
+			int su2 = (int) (u2 * 256f);
+			int sv2 = (int) (v2 * 256f);
 
 			int alphaBias = 0;
 			alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
@@ -734,13 +683,13 @@ class SceneUploader
 			GpuIntBuffer buf = alpha ? ab : vb;
 
 			buf.put22224(vx1, vy1, vz1, alphaBias | color1);
-			buf.put2222(texture, modelLocalXI[texA] - vx1, modelLocalYI[texA] - vy1, modelLocalZI[texA] - vz1);
+			buf.put2222(texture, su0, sv0, 0);
 
 			buf.put22224(vx2, vy2, vz2, alphaBias | color2);
-			buf.put2222(texture, modelLocalXI[texB] - vx2, modelLocalYI[texB] - vy2, modelLocalZI[texB] - vz2);
+			buf.put2222(texture, su1, sv1, 0);
 
 			buf.put22224(vx3, vy3, vz3, alphaBias | color3);
-			buf.put2222(texture, modelLocalXI[texC] - vx3, modelLocalYI[texC] - vy3, modelLocalZI[texC] - vz3);
+			buf.put2222(texture, su2, sv2, 0);
 
 			len += 3;
 		}
@@ -767,10 +716,6 @@ class SceneUploader
 		final int[] color3s = model.getFaceColors3();
 
 		final short[] faceTextures = model.getFaceTextures();
-		final byte[] textureFaces = model.getTextureFaces();
-		final int[] texIndices1 = model.getTexIndices1();
-		final int[] texIndices2 = model.getTexIndices2();
-		final int[] texIndices3 = model.getTexIndices3();
 
 		final byte[] bias = model.getFaceBias();
 
@@ -852,34 +797,29 @@ class SceneUploader
 			float vy3 = modelLocalY[triangleC];
 			float vz3 = modelLocalZ[triangleC];
 
-			int texA, texB, texC;
+			computeFaceUvs(model, face);
 
-			if (textureFaces != null && textureFaces[face] != -1)
-			{
-				int tface = textureFaces[face] & 0xff;
-				texA = texIndices1[tface];
-				texB = texIndices2[tface];
-				texC = texIndices3[tface];
-			}
-			else
-			{
-				texA = triangleA;
-				texB = triangleB;
-				texC = triangleC;
-			}
+			int su0 = (int) (u0 * 256f);
+			int sv0 = (int) (v0 * 256f);
+
+			int su1 = (int) (u1 * 256f);
+			int sv1 = (int) (v1 * 256f);
+
+			int su2 = (int) (u2 * 256f);
+			int sv2 = (int) (v2 * 256f);
 
 			int alphaBias = 0;
 			alphaBias |= bias != null ? (bias[face] & 0xff) << 16 : 0;
 			int texture = faceTextures != null ? faceTextures[face] + 1 : 0;
 
 			putfff4(opaqueBuffer, vx1, vy1, vz1, alphaBias | color1);
-			put2222(opaqueBuffer, texture, (int) modelLocalX[texA] - (int) vx1, (int) modelLocalY[texA] - (int) vy1, (int) modelLocalZ[texA] - (int) vz1);
+			put2222(opaqueBuffer, texture, su0, sv0, 0);
 
 			putfff4(opaqueBuffer, vx2, vy2, vz2, alphaBias | color2);
-			put2222(opaqueBuffer, texture, (int) modelLocalX[texB] - (int) vx2, (int) modelLocalY[texB] - (int) vy2, (int) modelLocalZ[texB] - (int) vz2);
+			put2222(opaqueBuffer, texture, su1, sv1, 0);
 
 			putfff4(opaqueBuffer, vx3, vy3, vz3, alphaBias | color3);
-			put2222(opaqueBuffer, texture, (int) modelLocalX[texC] - (int) vx3, (int) modelLocalY[texC] - (int) vy3, (int) modelLocalZ[texC] - (int) vz3);
+			put2222(opaqueBuffer, texture, su2, sv2, 0);
 
 			len += 3;
 		}
@@ -923,5 +863,130 @@ class SceneUploader
 		}
 
 		return (hue << 10 | sat << 7 | lum) & 65535;
+	}
+
+	static float u0, u1, u2, v0, v1, v2;
+
+	static void computeFaceUvs(Model model, int face)
+	{
+		final float[] vertexX = model.getVerticesX();
+		final float[] vertexY = model.getVerticesY();
+		final float[] vertexZ = model.getVerticesZ();
+
+		final int[] indices1 = model.getFaceIndices1();
+		final int[] indices2 = model.getFaceIndices2();
+		final int[] indices3 = model.getFaceIndices3();
+
+		final byte[] textureFaces = model.getTextureFaces();
+		final int[] texIndices1 = model.getTexIndices1();
+		final int[] texIndices2 = model.getTexIndices2();
+		final int[] texIndices3 = model.getTexIndices3();
+
+		if (textureFaces != null && textureFaces[face] != -1)
+		{
+			final int triangleA = indices1[face];
+			final int triangleB = indices2[face];
+			final int triangleC = indices3[face];
+
+			int tfaceIdx = textureFaces[face] & 0xff;
+			int texA = texIndices1[tfaceIdx];
+			int texB = texIndices2[tfaceIdx];
+			int texC = texIndices3[tfaceIdx];
+
+			// v1 = vertex[texA]
+			float v1x = vertexX[texA];
+			float v1y = vertexY[texA];
+			float v1z = vertexZ[texA];
+			// v2 = vertex[texB] - v1
+			float v2x = vertexX[texB] - v1x;
+			float v2y = vertexY[texB] - v1y;
+			float v2z = vertexZ[texB] - v1z;
+			// v3 = vertex[texC] - v1
+			float v3x = vertexX[texC] - v1x;
+			float v3y = vertexY[texC] - v1y;
+			float v3z = vertexZ[texC] - v1z;
+
+			// v4 = vertex[triangleA] - v1
+			float v4x = vertexX[triangleA] - v1x;
+			float v4y = vertexY[triangleA] - v1y;
+			float v4z = vertexZ[triangleA] - v1z;
+			// v5 = vertex[triangleB] - v1
+			float v5x = vertexX[triangleB] - v1x;
+			float v5y = vertexY[triangleB] - v1y;
+			float v5z = vertexZ[triangleB] - v1z;
+			// v6 = vertex[triangleC] - v1
+			float v6x = vertexX[triangleC] - v1x;
+			float v6y = vertexY[triangleC] - v1y;
+			float v6z = vertexZ[triangleC] - v1z;
+
+			// v7 = v2 x v3
+			float v7x = v2y * v3z - v2z * v3y;
+			float v7y = v2z * v3x - v2x * v3z;
+			float v7z = v2x * v3y - v2y * v3x;
+
+			// v8 = v3 x v7
+			float v8x = v3y * v7z - v3z * v7y;
+			float v8y = v3z * v7x - v3x * v7z;
+			float v8z = v3x * v7y - v3y * v7x;
+
+			// f = 1 / (v8 ⋅ v2)
+			float f = 1.0F / (v8x * v2x + v8y * v2y + v8z * v2z);
+
+			// u0 = (v8 ⋅ v4) * f
+			u0 = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
+			// u1 = (v8 ⋅ v5) * f
+			u1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
+			// u2 = (v8 ⋅ v6) * f
+			u2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
+
+			// v8 = v2 x v7
+			v8x = v2y * v7z - v2z * v7y;
+			v8y = v2z * v7x - v2x * v7z;
+			v8z = v2x * v7y - v2y * v7x;
+
+			// f = 1 / (v8 ⋅ v3)
+			f = 1.0F / (v8x * v3x + v8y * v3y + v8z * v3z);
+
+			// v0 = (v8 ⋅ v4) * f
+			v0 = (v8x * v4x + v8y * v4y + v8z * v4z) * f;
+			// v1 = (v8 ⋅ v5) * f
+			v1 = (v8x * v5x + v8y * v5y + v8z * v5z) * f;
+			// v2 = (v8 ⋅ v6) * f
+			v2 = (v8x * v6x + v8y * v6y + v8z * v6z) * f;
+		}
+		else
+		{
+			// Without a texture face, the client assigns tex = triangle, but the resulting
+			// calculations can be reduced:
+			//
+			// v1 = vertex[texA]
+			// v2 = vertex[texB] - v1
+			// v3 = vertex[texC] - v1
+			//
+			// v4 = 0
+			// v5 = v2
+			// v6 = v3
+			//
+			// v7 = v2 x v3
+			//
+			// v8 = v3 x v7
+			// u0 = (v8 . v4) / (v8 . v2) // 0 because v4 is 0
+			// u1 = (v8 . v5) / (v8 . v2) // 1 because v5=v2
+			// u2 = (v8 . v6) / (v8 . v2) // 0 because v8 is perpendicular to v3/v6
+			//
+			// v8 = v2 x v7
+			// v0 = (v8 . v4) / (v8 ⋅ v3) // 0 because v4 is 0
+			// v1 = (v8 . v5) / (v8 ⋅ v3) // 0 because v8 is perpendicular to v5/v2
+			// v2 = (v8 . v6) / (v8 ⋅ v3) // 1 because v6=v3
+
+			u0 = 0f;
+			v0 = 0f;
+
+			u1 = 1f;
+			v1 = 0f;
+
+			u2 = 0f;
+			v2 = 1f;
+		}
 	}
 }
