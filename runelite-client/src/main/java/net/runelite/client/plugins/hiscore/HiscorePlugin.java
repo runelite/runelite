@@ -26,6 +26,8 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -36,9 +38,11 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
@@ -65,6 +69,10 @@ public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("You have been assigned a new target: <col=[0-9a-f]+>(.*)</col>");
+
+	// A short-lived cache of player indexes to names to allow lookup of players who have despawned prior to a lookup
+	// being executed via a "Lookup" menu option click.
+	private final Map<Integer, String> playerIndexName = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -117,6 +125,7 @@ public class HiscorePlugin extends Plugin
 	{
 		hiscorePanel.shutdown();
 		clientToolbar.removeNavigation(navButton);
+		playerIndexName.clear();
 
 		menuManager.get().removePlayerMenuItem(LOOKUP);
 	}
@@ -132,6 +141,33 @@ public class HiscorePlugin extends Plugin
 			{
 				menuManager.get().addPlayerMenuItem(LOOKUP);
 			}
+		}
+	}
+
+	@Subscribe
+	private void onMenuOpened(MenuOpened event)
+	{
+		playerIndexName.clear();
+		for (MenuEntry entry : event.getMenuEntries())
+		{
+			int type = entry.getType().getId();
+			if (type > MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET)
+			{
+				type -= MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
+			}
+
+			if (type != MenuAction.RUNELITE_PLAYER.getId() || !entry.getOption().equals(LOOKUP))
+			{
+				continue;
+			}
+
+			final Player player = client.getTopLevelWorldView().players().byIndex(entry.getIdentifier());
+			if (player == null)
+			{
+				continue;
+			}
+
+			playerIndexName.put(entry.getIdentifier(), player.getName());
 		}
 	}
 
@@ -185,15 +221,18 @@ public class HiscorePlugin extends Plugin
 		if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER && event.getMenuOption().equals(LOOKUP))
 		{
 			Player player = event.getMenuEntry().getPlayer();
-			if (player == null)
+			String target;
+			if (player != null)
 			{
-				return;
+				target = player.getName();
 			}
+			else
+			{
+				target = playerIndexName.get(event.getId());
+			}
+			playerIndexName.clear();
 
-			String target = player.getName();
-			HiscoreEndpoint endpoint = getWorldEndpoint();
-
-			lookupPlayer(target, endpoint);
+			lookupPlayer(target, getWorldEndpoint());
 		}
 	}
 
