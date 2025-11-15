@@ -24,6 +24,9 @@
  */
 package net.runelite.client.ui.overlay;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum OverlayPosition
 {
 	/**
@@ -51,7 +54,7 @@ public enum OverlayPosition
 	/**
 	 * Place overlay in the bottom left viewport area
 	 */
-	BOTTOM_LEFT,
+	BOTTOM_LEFT(Arrays.asList("RESIZABLE_VIEWPORT_CHATBOX_PARENT", "RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT")),
 	/**
 	 * Place overlay in the bottom right viewport area
 	 */
@@ -59,7 +62,7 @@ public enum OverlayPosition
 	/**
 	 * Place overlay directly above right side of chatbox
 	 */
-	ABOVE_CHATBOX_RIGHT,
+	ABOVE_CHATBOX_RIGHT(Arrays.asList("RESIZABLE_VIEWPORT_CHATBOX_PARENT", "RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT")),
 	/**
 	 * Place overlay in the top right most area possible
 	 */
@@ -67,5 +70,26 @@ public enum OverlayPosition
 	/**
 	 * Tooltip overlay
 	 */
-	TOOLTIP
+	TOOLTIP;
+
+	/**
+	 * A list of overlays that must not be snapped to the OverlayPosition, used when an OverlayPosition is tied to the
+	 * location of an Overlay (chatbox, for example)
+	 */
+	private final List<String> componentNameBlacklist;
+
+	OverlayPosition()
+	{
+		this.componentNameBlacklist = null;
+	}
+
+	OverlayPosition(List<String> componentNameBlacklist)
+	{
+		this.componentNameBlacklist = componentNameBlacklist;
+	}
+
+	boolean isOverlayBlacklisted(String overlayName)
+	{
+		return componentNameBlacklist != null && componentNameBlacklist.contains(overlayName);
+	}
 }
