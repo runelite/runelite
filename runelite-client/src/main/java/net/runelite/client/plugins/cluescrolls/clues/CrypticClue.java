@@ -1985,7 +1985,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_VM01)
 			.text("With drinks and dwarves I make my way, upon my head a glass will stay.")
-			.location(new WorldPoint(1432, 9584, 0))
+			.location(new WorldPoint(1432, 9584, 1))
 			.npc("Funbo")
 			.solution("Speak to Funbo inside Cam Torum's pub.")
 			.build(),
