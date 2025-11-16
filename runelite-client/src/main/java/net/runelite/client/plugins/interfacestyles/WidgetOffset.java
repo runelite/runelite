@@ -104,7 +104,7 @@ enum WidgetOffset
 	FIXED_2010_MUSIC_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON13, 209, 2, null, null),
 
 	RESIZABLE_2005_QUESTS_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON2, 71, -1, null, null),
-	RESIZABLE_2005_FRIENDS_CHAT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON7, null, 2, null, null),
+	RESIZABLE_2005_FRIENDS_CHAT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON7, null, 1, null, null),
 	RESIZABLE_2005_LOGOUT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON10, null, null, null, null),
 	RESIZABLE_2005_OPTIONS_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON11, 137, null, null, null),
 	RESIZABLE_2005_EMOTE_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON12, 171, 2, null, null),
@@ -118,8 +118,7 @@ enum WidgetOffset
 	RESIZABLE_BOTTOM_2005_INVENTORY_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON3, 98, 1, null, null),
 	RESIZABLE_BOTTOM_2005_QUESTS_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON2, 66, -1, null, null),
 	RESIZABLE_BOTTOM_2005_EQUIPMENT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON4, 131, 3, null, null),
-	RESIZABLE_BOTTOM_2005_FRIENDS_CHAT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON7, null, 2, null, null),
-	RESIZABLE_BOTTOM_2005_FRIENDS_ICON(Skin.AROUND_2005, InterfaceID.ToplevelOsrsStretch.ICON9, 38, null, null, null),
+	RESIZABLE_BOTTOM_2005_FRIENDS_CHAT_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON7, null, 1, null, null),
 	RESIZABLE_BOTTOM_2005_MUSIC_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON13, null, 3, null, null),
 	RESIZABLE_BOTTOM_2005_EMOTE_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON12, 133, 1, null, null),
 	RESIZABLE_BOTTOM_2005_STATS_ICON(Skin.AROUND_2005, InterfaceID.ToplevelPreEoc.ICON1, 32, null, null, null),
