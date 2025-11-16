@@ -900,6 +900,13 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Tal Teklan")
 			.question("If a death rune costs 220 coins, an air rune costs 3 coins, and a water rune costs 4 coins, how many coins do I need to cast Water Blast 17 times?")
 			.answer("4097")
+			.build(),
+		AnagramClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_ANAGRAM_SAIL)
+			.text("NOT RAG")
+			.npc("Elder Torgan")
+			.location(new WorldPoint(3143, 2423, 0))
+			.area("The Summer Shore")
 			.build()
 	);
 

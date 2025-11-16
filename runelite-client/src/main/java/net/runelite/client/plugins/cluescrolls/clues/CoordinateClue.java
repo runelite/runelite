@@ -276,6 +276,11 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.location(new WorldPoint(1659, 3111, 0))
 			.directions("Dig west of the Bazaar in Civitas illa Fortis.")
 			.build(),
+		CoordinateClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_SAIL)
+			.location(new WorldPoint(3183, 2453, 0))
+			.directions("Center of the Great Conch.")
+			.build(),
 		// Hard
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_SEXTANT031)
@@ -593,6 +598,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.directions("South of Shayziens' Wall.")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
+		CoordinateClue.builder()
+			.itemId(ItemID.TRAIL_HARD_SEXTANT_SAIL)
+			.location(new WorldPoint(1193, 2774, 0))
+			.directions("On Laguna Aurorae.")
+			.enemy(SARADOMIN_WIZARD)
+			.build(),
 		// Elite
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_SEXTANT_EXP5)
@@ -840,6 +851,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.location(new WorldPoint(1321, 3323, 0))
 			.directions("South of Custodia Pass")
 			.enemy(SARADOMIN_WIZARD)
+			.build(),
+		CoordinateClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_SEXTANT_SAIL)
+			.location(new WorldPoint(2081, 3184, 0))
+			.directions("On Lledrith Island")
+			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
 			.build(),
 		// Master
 		CoordinateClue.builder()

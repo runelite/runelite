@@ -2026,6 +2026,19 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(1388, 3216, 0))
 			.objectId(ObjectID.TLATI_CRATE_01_DARK_CLUE)
 			.solution("Search the crate south of the Auburn Forest.")
+			.build(),
+		CrypticClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_RIDDLE_SAIL)
+			.text("Their bane awaits, but don't be going in there without permission.")
+			.location(new WorldPoint(3120, 2424, 0))
+			.npc("Shellbane gryphon")
+			.solution("Kill the shellbane gryphon.")
+			.build(),
+		CrypticClue.builder()
+			.itemId(ItemID.TRAIL_HARD_RIDDLE_SAIL)
+			.text("I sit on the beach and cry for those that have passed on.")
+			.location(new WorldPoint(2324, 2772, 0))
+			.solution("Dig on the beach of the Tear of the Soul")
 			.build()
 	);
 

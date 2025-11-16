@@ -2607,6 +2607,8 @@ public final class SpriteID
 		public static final int SMOOTH_DANCE = _45;
 		public static final int CRAZY_DANCE = _46;
 		public static final int PREMIER_SHIELD = _47;
+		public static final int FORTIS_SALUTE = _57;
+		public static final int CRAB_DANCE = _56;
 	}
 
 	public static final class EmotesLocked

@@ -147,6 +147,8 @@ public enum STASHUnit
 	TWILIGHT_TEMPLE_MINE(ObjectID.HH_MEDIUM_EXP11, new WorldPoint(1668, 3287, 0)),
 	ORTUS_MEETS_PROUDSPIRE(ObjectID.HH_MEDIUM_EXP12, new WorldPoint(1629, 3239, 0)),
 	OUTSIDE_TWILIGHT_TEMPLE(ObjectID.HH_HARD_EXP7, new WorldPoint(1693, 3243, 0)),
+	PANDEMONIUM_BAR(ObjectID.HH_EASY_SAIL, new WorldPoint(3045, 2963, 0)),
+	WINTUMBER_ISLAND(ObjectID.HH_ELITE_SAIL, new WorldPoint(2072, 2608, 0)),
 	;
 
 	private final int objectId;
