@@ -1662,7 +1662,7 @@ public enum PatchImplementation
                 if (value >= 122 && value <= 125)
                 {
                     // Diseased Cotton[Cure,Inspect,Guide] 58873, 58874, 58875, 58876
-                    return new PatchState(Produce.COTTON, CropState.DISEASED, value - 122);
+                    return new PatchState(Produce.COTTON, CropState.DISEASED, value - 121);
                 }
 				if (value >= 126 && value <= 131)
 				{
