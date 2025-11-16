@@ -476,7 +476,7 @@ public class HiscorePanel extends PluginPanel
 					level = s.getLevel();
 				}
 
-				if (level != -1)
+				if (level > 0)
 				{
 					label.setText(pad(formatLevel(level), skill.getType()));
 				}
