@@ -154,7 +154,6 @@ public class InterfaceStylesPlugin extends Plugin
 		Menu submenu = null;
 		Player prev = null;
 		boolean changed = false;
-		boolean walkFound = false;
 
 		for (MenuEntry menuEntry : menuEntries)
 		{
@@ -190,10 +189,9 @@ public class InterfaceStylesPlugin extends Plugin
 					.setDeprioritized(deprioritized);
 				changed = true;
 			}
-			else if (!walkFound && type == MenuAction.WALK)
+			else if (type == MenuAction.WALK)
 			{
 				newMenus[newIdx++] = menuEntry.setTarget("");
-				walkFound = true;
 			}
 			else
 			{
