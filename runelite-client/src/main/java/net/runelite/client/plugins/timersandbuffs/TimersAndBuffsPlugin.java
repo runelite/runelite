@@ -669,6 +669,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			updateVarTimer(SURGE_POTION, event.getValue(), i -> i * 10);
 		}
+
+		if (event.getVarbitId() == VarbitID.DOM_MISSED_ORBS && config.showDemonicCharge())
+		{
+			updateVarCounter(DEMONIC_CHARGE, event.getValue());
+		}
 	}
 
 	@Subscribe
@@ -917,6 +922,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showSurge())
 		{
 			removeVarTimer(SURGE_POTION);
+		}
+
+		if (!config.showDemonicCharge())
+		{
+			removeVarCounter(DEMONIC_CHARGE);
 		}
 	}
 
