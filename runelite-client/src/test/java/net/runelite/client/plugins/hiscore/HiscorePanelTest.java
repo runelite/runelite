@@ -26,11 +26,15 @@ package net.runelite.client.plugins.hiscore;
 
 import net.runelite.api.Client;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.hiscore.HiscoreClient;
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import static org.junit.Assert.assertEquals;
+
+import net.runelite.client.hiscore.HiscoreManager;
 import org.junit.Test;
+
+import java.util.concurrent.ScheduledExecutorService;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +46,7 @@ public class HiscorePanelTest
 		HiscorePlugin plugin = mock(HiscorePlugin.class);
 		when(plugin.getWorldEndpoint()).thenReturn(HiscoreEndpoint.NORMAL);
 		new HiscorePanel(mock(Client.class), plugin, mock(HiscoreConfig.class),
-			mock(NameAutocompleter.class), mock(HiscoreClient.class), mock(SpriteManager.class));
+			mock(NameAutocompleter.class), mock(HiscoreManager.class), mock(SpriteManager.class), mock(ScheduledExecutorService.class));
 	}
 
 	@Test
