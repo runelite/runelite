@@ -245,7 +245,8 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 		new EmoteClue(ItemID.TRAIL_CLUE_BEGINNER, "Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN),
 		new EmoteClue(ItemID.TRAIL_ELITE_EMOTE_EXP17, "Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.", "Charcoal Burners", CHARCOAL_BURNERS, new WorldPoint(1714, 3467, 0), SALUTE, any("Farmer's strawhat", item(ItemID.TITHE_REWARD_HAT_MALE), item(ItemID.TITHE_REWARD_HAT_FEMALE)), item(ItemID.SHAYZIEN_BODY_5), item(ItemID.PYROMANCER_BOTTOM)),
 		new EmoteClue(ItemID.TRAIL_EASY_EMOTE_SAIL, "Dance a jig behind the bar on the Pandemonium. Equip a right eye patch and a bronze scimitar.", "Pandemonium", PANDEMONIUM_BAR, new WorldPoint(3049, 2966, 0), JIG, item(ItemID.EYE_PATCH), item(ItemID.BRONZE_SCIMITAR)),
-		new EmoteClue(ItemID.TRAIL_ELITE_EMOTE_SAIL, "Do the crab dance by the monument on Wintumber Island. Equip a crab helmet and a crab claw.", "Wintumber Island", WINTUMBER_ISLAND, new WorldPoint(2069, 2608, 0), CRAB_DANCE, item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_HELM), item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET)));
+		new EmoteClue(ItemID.TRAIL_ELITE_EMOTE_SAIL, "Do the crab dance by the monument on Wintumber Island. Equip a crab helmet and a crab claw.", "Wintumber Island", WINTUMBER_ISLAND, new WorldPoint(2069, 2608, 0), CRAB_DANCE, item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_HELM), item(ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET)),
+		new EmoteClue(ItemID.TRAIL_CLUE_MASTER, "Bow in front of the cave on Brittle Isle. Beware of double agents! Equip a Medallion of the Deep and a rosewood blowpipe.", "Brittle Isle", BRITTLE_ISLE, new WorldPoint(1946, 4074, 0), DOUBLE_AGENT_141, BOW, item(ItemID.MEDALLION_OF_THE_DEEP), item(ItemID.ROSEWOOD_BLOWPIPE)));
 
 	private static final String UNICODE_CHECK_MARK = "\u2713";
 	private static final String UNICODE_BALLOT_X = "\u2717";
