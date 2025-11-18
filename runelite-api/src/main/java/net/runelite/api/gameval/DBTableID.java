@@ -11908,19 +11908,29 @@ public final class DBTableID
 		public static final int COL_SAILING_SEA = 2;
 
 		/**
+		 * dbrow
+		 */
+		public static final int COL_SAILING_SEA_SECONDARY = 3;
+
+		/**
 		 * boolean
 		 */
-		public static final int COL_GIVE_REPEAT_XP = 3;
+		public static final int COL_GIVE_REPEAT_XP = 4;
 
 		/**
 		 * dbtable
 		 */
-		public static final int COL_CHARTING_TYPE = 4;
+		public static final int COL_CHARTING_TYPE = 5;
 
 		/**
 		 * dbrow
 		 */
-		public static final int COL_HAZARD = 5;
+		public static final int COL_HAZARD = 6;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_REQUIRED_DOCK = 7;
 
 		public static final class Row
 		{
@@ -12895,6 +12905,11 @@ public final class DBTableID
 		 * integer
 		 */
 		public static final int COL_BOAT_MAX_WIND_MOTES = 33;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_BOAT_ADDITIONAL_RECOVERY_COST_PERCENTAGE = 34;
 
 		public static final class Row
 		{
@@ -14636,6 +14651,11 @@ public final class DBTableID
 		 * string
 		 */
 		public static final int COL_INLINE_NAME = 2;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_LEVEL_REQUIRED = 4;
 
 		/**
 		 * graphic

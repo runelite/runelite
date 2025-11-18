@@ -71723,7 +71723,6 @@ class ObjectID1
 	 */
 	public static final int TOA_ZEBAK_BUBBLES_BLUE = 58525;
 	public static final int BGSOUND_SAILING_OCEAN_WATER_LOOP_01 = 58526;
-	public static final int BGSOUND_SAILING_OCEAN_WATER_LOOP_02 = 58527;
 	public static final int BGSOUND_SAILING_COOKING_LOOP_2 = 58528;
 	public static final int BGSOUND_SAILING_NORTHERN_OCEAN_WIND_LOOP = 58529;
 	public static final int BGSOUND_SAILING_CLOCK = 58530;
@@ -73137,11 +73136,6 @@ class ObjectID1
 	 * Rocks
 	 */
 	public static final int NICKELROCK1_EMPTY = 58924;
-
-	/**
-	 * Barracuda trial exit
-	 */
-	public static final int SAILING_BT_EXIT = 58925;
 
 	/**
 	 * Scoreboard
@@ -74604,11 +74598,6 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_BOAT_SAILS_COLOSSAL_REGULAR = 59551;
-
-	/**
-	 * Sails
-	 */
-	public static final int DEBUG_TEST_SAILING_COLOSSAL_SAILS_DOWN = 59552;
 
 	/**
 	 * Sails
@@ -77718,5 +77707,175 @@ class ObjectID1
 	 * Gangplank
 	 */
 	public static final int SAILING_GENERIC_SHIPPLANK_OFF = 60525;
+
+	/**
+	 * Tin bath
+	 */
+	public static final int BATH_ALDARIN01_TIN01_SMALL1 = 60526;
+
+	/**
+	 * Table
+	 */
+	public static final int CIVITAS_TABLE_RICH_1_SMALL1 = 60527;
+
+	/**
+	 * Red Coral
+	 */
+	public static final int RED_CORAL01_1X1 = 60528;
+
+	/**
+	 * Red Coral
+	 */
+	public static final int RED_CORAL01_2X2 = 60529;
+
+	/**
+	 * Red Coral
+	 */
+	public static final int RED_CORAL01_3X2 = 60530;
+	public static final int BGSOUND_SAILING_STOMRY_SEAS_WATER_WIND_LOOP_01 = 60531;
+	public static final int BGSOUND_SAILING_UNQUIET_OCEAN_WATER_WIND_LOOP = 60532;
+	public static final int BGSOUND_SAILING_PROFANE_WATERS_WATER_WIND_LOOP = 60533;
+	public static final int BGSOUND_SAILING_FETID_WATERS_WATER_WIND_LOOP = 60534;
+	public static final int BGSOUND_SAILING_FETID_SWAMP_GAS = 60535;
+	public static final int BGSOUND_SAILING_TANGLED_KELP_WATER_WIND_LOOP = 60536;
+	public static final int BGSOUND_SAILING_SUNSET_OCEAN_WATER_WIND_LOOP = 60537;
+	public static final int BGSOUND_SAILING_SUNBAKED_SEAS_WATER_WIND_LOOP = 60538;
+	public static final int BGSOUND_SAILING_NORTHERN_OCEAN_ICY_SEAS_WIND = 60539;
+	public static final int BGSOUND_SAILING_FLECKED_WATERS_ICY_WIND = 60540;
+
+	/**
+	 * Shelves
+	 */
+	public static final int FAI_VARROCK_SHELVES4 = 60541;
+
+	/**
+	 * Shelves
+	 */
+	public static final int FAI_VARROCK_SHELVES4_MIRROR = 60542;
+	public static final int RANDOMSOUND_UNQUIET_OCEAN_AMB_DISTANT_CREATURE_MOANS = 60543;
+	public static final int RANDOMSOUND_UNQUIET_OCEAN_AMB_WATER_DROPS = 60544;
+	public static final int RANDOMSOUND_SUNSET_OCEAN_AMB_WAVES = 60545;
+	public static final int RANDOMSOUND_TANGLED_KELP_SEAWEED = 60546;
+	public static final int RANDOMSOUND_FLECKED_WATERS_CRYSTAL_SPARKS = 60547;
+	public static final int RANDOMSOUND_FLECKED_WATERS_CRYSTAL_SPARKS_02 = 60548;
+	public static final int RANDOMSOUND_NORTHERN_OCEAN_CREATURE_GROANS = 60549;
+	public static final int TORCH_DIAG = 60550;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_WOOD_UI = 60551;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_OAK_UI = 60552;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_TEAK_UI = 60553;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_MAHOGANY_UI = 60554;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_CAMPHOR_UI = 60555;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_IRONWOOD_UI = 60556;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_1X3_ROSEWOOD_UI = 60557;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_WOOD_UI = 60558;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_OAK_UI = 60559;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_TEAK_UI = 60560;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_MAHOGANY_UI = 60561;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_CAMPHOR_UI = 60562;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_IRONWOOD_UI = 60563;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_2X5_ROSEWOOD_UI = 60564;
+	public static final int PAINTING_SCRONGLY01 = 60565;
+
+	/**
+	 * &#60;col=ffff00&#62;Cat&#60;/col&#62;
+	 */
+	public static final int SHIPYARD_PILLOW_CAT = 60566;
+
+	/**
+	 * Workbench
+	 */
+	public static final int SHIPYARD_WORKBENCH = 60567;
+
+	/**
+	 * Bookcase
+	 */
+	public static final int SHIPYARD_BOOKCASE = 60568;
+	public static final int SHIPYARD_HEND_WAS_HERE = 60569;
+
+	/**
+	 * Cursed remains
+	 */
+	public static final int CURSED_REMAINS = 60570;
+
+	/**
+	 * A singular circle
+	 */
+	public static final int SUSPICIOUS_CIRCLE = 60571;
+
+	/**
+	 * Katana
+	 */
+	public static final int SAILING_KATANA = 60572;
+
+	/**
+	 * Shrimp
+	 */
+	public static final int SAILING_SHRIMP_RARE = 60573;
+
+	/**
+	 * &#60;col=ffff00&#62;Harold&#60;/col&#62;
+	 */
+	public static final int SAILING_CLUE_TURTLE = 60574;
+
+	/**
+	 * Tentacle
+	 */
+	public static final int HAZARDOUS_WATER_PROFANE_GHOST = 60575;
 /* This file is automatically generated. Do not edit. */
 }

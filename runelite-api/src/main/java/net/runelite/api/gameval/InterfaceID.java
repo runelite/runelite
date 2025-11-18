@@ -9109,9 +9109,9 @@ public final class InterfaceID
 		public static final int WOODCUTTING = 0x00e9_0033;
 		public static final int COMBAT = 0x00e9_0034;
 		public static final int SAILING = 0x00e9_0035;
-		public static final int WOODCUTTING_MODEL0 = 0x00e9_0036;
-		public static final int COMBAT_MODEL0 = 0x00e9_0037;
-		public static final int SAILING_GRAPHIC0 = 0x00e9_0038;
+		public static final int SAILING_MODEL0 = 0x00e9_0036;
+		public static final int WOODCUTTING_MODEL0 = 0x00e9_0037;
+		public static final int COMBAT_MODEL0 = 0x00e9_0038;
 	}
 
 	public static final class Deadmanloot
@@ -30564,22 +30564,22 @@ public final class InterfaceID
 		public static final int FILTER_TITLE_1 = 0x03a7_001e;
 		public static final int COMPLETION_DROPDOWN = 0x03a7_001f;
 		public static final int FILTER_TITLE_2 = 0x03a7_0020;
-		public static final int OCEAN_DROPDOWN = 0x03a7_0021;
+		public static final int SEA_DROPDOWN = 0x03a7_0021;
 		public static final int FILTER_TITLE_3 = 0x03a7_0022;
-		public static final int SEA_DROPDOWN = 0x03a7_0023;
-		public static final int COMPLETION = 0x03a7_0024;
-		public static final int COMPLETION_RECT0 = 0x03a7_0025;
-		public static final int COMPLETION_INNER = 0x03a7_0026;
-		public static final int LIST_CONTAINER = 0x03a7_0027;
-		public static final int INFO = 0x03a7_0028;
-		public static final int INFO_RECT0 = 0x03a7_0029;
-		public static final int INFO_INNER = 0x03a7_002a;
-		public static final int DROPDOWN = 0x03a7_002b;
-		public static final int DROPDOWN_CONTENT = 0x03a7_002c;
-		public static final int DROPDOWN_SCROLLER = 0x03a7_002d;
-		public static final int LIST_CONTAINER_RECT0 = 0x03a7_002e;
-		public static final int LIST = 0x03a7_002f;
-		public static final int LIST_SCROLLBAR = 0x03a7_0030;
+		public static final int COMPLETION = 0x03a7_0023;
+		public static final int COMPLETION_RECT0 = 0x03a7_0024;
+		public static final int COMPLETION_INNER = 0x03a7_0025;
+		public static final int LIST_CONTAINER = 0x03a7_0026;
+		public static final int INFO = 0x03a7_0027;
+		public static final int INFO_RECT0 = 0x03a7_0028;
+		public static final int INFO_INNER = 0x03a7_0029;
+		public static final int DROPDOWN = 0x03a7_002a;
+		public static final int DROPDOWN_CONTENT = 0x03a7_002b;
+		public static final int DROPDOWN_SCROLLER = 0x03a7_002c;
+		public static final int LIST_CONTAINER_RECT0 = 0x03a7_002d;
+		public static final int LIST = 0x03a7_002e;
+		public static final int LIST_SCROLLBAR = 0x03a7_002f;
+		public static final int OCEAN_DROPDOWN = 0x03a7_0030;
 		public static final int FILTER_TITLE_4 = 0x03a7_0031;
 		public static final int LEVEL_DROPDOWN = 0x03a7_0032;
 	}
@@ -30679,26 +30679,29 @@ public final class InterfaceID
 		public static final int FACILITY_CONTENT_RECT2 = 0x03ab_0010;
 		public static final int FACILITY_CLICK_LAYER = 0x03ab_0011;
 		public static final int FACILITY_CONTENT_RECT4 = 0x03ab_0012;
-		public static final int FACILITY_DEBUG_CLICK_LAYER = 0x03ab_0013;
-		public static final int FACILITY_HIGHLIGHT = 0x03ab_0014;
-		public static final int FACILITY_HIGHLIGHT_RECT0 = 0x03ab_0015;
-		public static final int FACILITY_SCROLLBAR = 0x03ab_0016;
-		public static final int FACILITY_SCROLLBAR_RECT0 = 0x03ab_0017;
-		public static final int LOADING = 0x03ab_0018;
-		public static final int LOADING_RECT0 = 0x03ab_0019;
-		public static final int POPUPS = 0x03ab_001a;
-		public static final int POPUPS_BACKGROUND = 0x03ab_001b;
-		public static final int POPUPS_CONTAINER = 0x03ab_001c;
-		public static final int POPUPS_CONTENT_BORDER = 0x03ab_001d;
-		public static final int POPUPS_CONTENT_BORDER_RECT0 = 0x03ab_001e;
-		public static final int POPUPS_CONTENT = 0x03ab_001f;
-		public static final int POPUPS_CONTENT_RECT0 = 0x03ab_0020;
-		public static final int POPUPS_BUTTON = 0x03ab_0021;
-		public static final int POPUPS_BUTTON_RECT0 = 0x03ab_0022;
-		public static final int POPUPS_BACKGROUND_RECT0 = 0x03ab_0023;
-		public static final int TOOLTIP = 0x03ab_0024;
-		public static final int FACILITY_CONTENT_MAIN_RECT0 = 0x03ab_0025;
-		public static final int FACILITY_CONTENT_BACKGROUND_RECT0 = 0x03ab_0026;
+		public static final int FACILITY_HIGHLIGHT = 0x03ab_0013;
+		public static final int FACILITY_HIGHLIGHT_RECT0 = 0x03ab_0014;
+		public static final int FACILITY_SCROLLBAR = 0x03ab_0015;
+		public static final int FACILITY_SCROLLBAR_RECT0 = 0x03ab_0016;
+		public static final int LOADING = 0x03ab_0017;
+		public static final int LOADING_RECT0 = 0x03ab_0018;
+		public static final int POPUPS = 0x03ab_0019;
+		public static final int POPUPS_BACKGROUND = 0x03ab_001a;
+		public static final int POPUPS_CONTAINER = 0x03ab_001b;
+		public static final int POPUPS_BORDER = 0x03ab_001c;
+		public static final int POPUPS_BORDER_RECT0 = 0x03ab_001d;
+		public static final int POPUPS_CONTENT_BORDER = 0x03ab_001e;
+		public static final int POPUPS_CONTENT_BORDER_RECT0 = 0x03ab_001f;
+		public static final int POPUPS_TEXT = 0x03ab_0020;
+		public static final int POPUPS_SCROLLBAR = 0x03ab_0021;
+		public static final int POPUPS_BUTTON = 0x03ab_0022;
+		public static final int POPUPS_BUTTON_RECT0 = 0x03ab_0023;
+		public static final int POPUPS_BACKGROUND_RECT0 = 0x03ab_0024;
+		public static final int TOOLTIP = 0x03ab_0025;
+		public static final int FACILITY_CONTENT_MAIN_RECT0 = 0x03ab_0026;
+		public static final int FACILITY_CONTENT_BACKGROUND_RECT0 = 0x03ab_0027;
+		public static final int POPUPS_TEXT_RECT0 = 0x03ab_0028;
+		public static final int POPUPS_SCROLLBAR_RECT0 = 0x03ab_0029;
 	}
 
 	public static final class Underwater
