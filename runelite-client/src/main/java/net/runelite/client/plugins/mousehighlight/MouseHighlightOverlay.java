@@ -127,6 +127,7 @@ class MouseHighlightOverlay extends Overlay
 			case "Walk here":
 			case "Cancel":
 			case "Continue":
+			case "Set heading":
 				return null;
 			case "Move":
 				// Hide overlay on sliding puzzle boxes
