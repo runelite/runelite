@@ -157,6 +157,17 @@ public interface EntityHiderConfig extends Config
 
 	@ConfigItem(
 		position = 12,
+		keyName = "hideWorldEntities",
+		name = "Hide boats",
+		description = "Configures whether boats are hidden."
+	)
+	default boolean hideWorldEntities()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 20,
 		keyName = "hidePets",
 		name = "Hide other players' pets",
 		description = "Configures whether or not other player pets are hidden."
@@ -167,7 +178,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 21,
 		keyName = "hideAttackers",
 		name = "Hide attackers",
 		description = "Configures whether or not NPCs/players attacking you are hidden."
@@ -178,7 +189,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 22,
 		keyName = "hideProjectiles",
 		name = "Hide projectiles",
 		description = "Configures whether or not projectiles are hidden."
@@ -189,7 +200,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 23,
 		keyName = "hideDeadNpcs",
 		name = "Hide dead NPCs",
 		description = "Hides NPCs when their health reaches 0."
@@ -200,7 +211,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 24,
 		keyName = "hideThralls",
 		name = "Hide thralls",
 		description = "Configures whether or not thralls are hidden."
@@ -211,7 +222,7 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 25,
 		keyName = "hideRandomEvents",
 		name = "Hide random events",
 		description = "Configures whether or not random events are hidden."
