@@ -180,6 +180,8 @@ enum MiningSiteLocation
 	NECROPOLIS(new WorldPoint(3319, 2708, 0), new Rock(5, Ore.SANDSTONE), new Rock(5, Ore.GRANITE)),
 	OGRESS_SETTLEMENT(new WorldPoint(1977, 9041, 0),
 		new Rock(5, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(1, Ore.ADAMANTITE)),
+	PANDEMONIUM(new WorldPoint(3055,9367,0), new Rock(3, Ore.COPPER), new Rock(3, Ore.TIN), new Rock(5, Ore.IRON),
+		new Rock(3, Ore.COAL), new Rock(8, Ore.LEAD)),
 	PIRATES_HIDEOUT(new WorldPoint(3056, 3945, 0),
 		new Rock(1, Ore.IRON), new Rock(4, Ore.COAL), new Rock(4, Ore.MITHRIL), new Rock(1, Ore.ADAMANTITE)),
 	PISCARILLIUS(new WorldPoint(1759, 3718, 0),
@@ -284,6 +286,7 @@ enum MiningSiteLocation
 		RUNITE("Runite"),
 		AMETHYST("Amethyst"),
 		GEMSTONE_CRAB("Gemstone Crab"),
+		LEAD("Lead"),
 		;
 
 		private final String name;
