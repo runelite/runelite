@@ -244,6 +244,8 @@ public enum MenuAction
 	 */
 	WIDGET_TARGET_ON_WIDGET(58),
 
+	SET_HEADING(60),
+
 	/**
 	 * RuneLite menu that is a widge.
 	 * @see MenuEntry#getWidget()
