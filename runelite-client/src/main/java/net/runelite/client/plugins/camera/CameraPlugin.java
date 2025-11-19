@@ -328,6 +328,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			{
 				case CANCEL:
 				case WALK:
+					// Treat Walk here and Set Heading as ignored entries so right-click camera works when only these are present
 					break;
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
@@ -368,6 +369,11 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 					}
 					break;
 				default:
+					// If the option text is Set Heading, ignore it similar to Walk here, no enum value exists yet
+					if ("Set Heading".equalsIgnoreCase(menuEntry.getOption()))
+					{
+						break;
+					}
 					return true;
 			}
 		}
