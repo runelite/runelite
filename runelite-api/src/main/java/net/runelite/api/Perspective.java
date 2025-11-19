@@ -31,6 +31,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -127,6 +128,11 @@ public class Perspective
 
 			WorldView subWv = we.getWorldView();
 			Projection projection = subWv.getCanvasProjection();
+			if (projection == null)
+			{
+				return null;
+			}
+
 			float[] p = projection.project(point.getX(), height, point.getY());
 			float x0 = p[0], y0 = p[1], z0 = p[2];
 			final int scale = client.getScale();
@@ -171,6 +177,11 @@ public class Perspective
 
 			WorldView subWv = we.getWorldView();
 			Projection projection = subWv.getCanvasProjection();
+			if (projection == null)
+			{
+				return null;
+			}
+
 			float[] p = projection.project(x, z, y);
 			float x0 = p[0], y0 = p[1], z0 = p[2];
 			final int scale = client.getScale();
@@ -302,6 +313,13 @@ public class Perspective
 			zoom3d = client.getScale();
 
 		Projection proj = wv.getCanvasProjection();
+		if (proj == null)
+		{
+			Arrays.fill(x2d, Integer.MIN_VALUE);
+			Arrays.fill(y2d, Integer.MIN_VALUE);
+			return;
+		}
+
 		for (int i = 0; i < end; ++i)
 		{
 			float x = x3d[i];

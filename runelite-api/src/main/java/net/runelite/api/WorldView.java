@@ -232,11 +232,13 @@ public interface WorldView
 	 * Returns a {@link Projection} to translate from this world view to the main world
 	 * @return
 	 */
+	@Nullable
 	Projection getMainWorldProjection();
 
 	/**
 	 * Returns a {@link Projection} to translate from this world view to the canvas
 	 * @return
 	 */
+	@Nullable
 	Projection getCanvasProjection();
 }
