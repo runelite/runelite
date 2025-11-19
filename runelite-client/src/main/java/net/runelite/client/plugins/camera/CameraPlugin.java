@@ -328,6 +328,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			{
 				case CANCEL:
 				case WALK:
+				case SET_HEADING:
 					break;
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
