@@ -1182,7 +1182,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			m.calculateBoundsCylinder();
 			VAO o = vaoO.get(size), a = vaoA.get(size);
 			int start = a.vbo.vb.position();
-			facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb);
+			try
+			{
+				facePrioritySorter.uploadSortedModel(worldProjection, m, orient, x, y, z, o.vbo.vb, a.vbo.vb);
+			}
+			catch (Exception ex)
+			{
+				log.debug("error drawing entity", ex);
+			}
 			int end = a.vbo.vb.position();
 
 			if (end > start)
