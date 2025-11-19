@@ -76,6 +76,16 @@ enum MiningSiteLocation
 	CRANDOR_SOUTH_WEST(new WorldPoint(2819, 3247, 0), new Rock(7, Ore.MITHRIL)),
 	CUSTODIA_LAKE(new WorldPoint(1281, 3412, 0), new Rock(8, Ore.IRON), new Rock(3, Ore.COAL), new Rock(6, Ore.MITHRIL)),
 	DAEYALT_ESSENCE_MINE(new WorldPoint(3631, 3340, 0), new Rock(3, Ore.DAEYALT_ESSENCE)),
+	DEEPFIN_POINT_NORTH(new WorldPoint(1945, 2805, 0), new Rock(3, Ore.TIN), new Rock(4, Ore.COPPER), new Rock(6,
+		Ore.IRON), new Rock(5, Ore.MITHRIL)),
+	DEEPFIN_POINT_WEST(new WorldPoint(1932, 2790, 0), new Rock(5, Ore.SILVER), new Rock(7, Ore.LEAD), new Rock(6,
+		Ore.GOLD), new Rock(7, Ore.NICKEL)),
+	DEEPFIN_MINE_NORTH(new WorldPoint(1996, 9205, 0), new Rock(7, Ore.IRON), new Rock(7, Ore.LEAD)),
+	DEEPFIN_MINE_NORTH_WEST(new WorldPoint(1944, 9204, 0), new Rock(23, Ore.COAL), new Rock(4, Ore.ADAMANTITE)),
+	DEEPFIN_MINE_WEST(new WorldPoint(1932, 9186, 0), new Rock(6, Ore.IRON), new Rock(3, Ore.MITHRIL)),
+	DEEPFIN_MINE_NORTH_EAST(new WorldPoint(2067, 9208, 0), new Rock(12, Ore.NICKEL)),
+	DEEPFIN_MINE_EAST(new WorldPoint(2090, 9201, 0), new Rock(21, Ore.COAL), new Rock(6, Ore.ADAMANTITE), new Rock(4,
+		Ore.RUNITE)),
 	DESERT_MINING_CAMP_SURFACE(new WorldPoint(3299, 3021, 0), true, new Rock(4, Ore.COPPER), new Rock(4, Ore.TIN), new Rock(3, Ore.IRON), new Rock(4, Ore.COAL)),
 	// DESERT_MINING_CAMP_UNDERGROUND -- NOT AVAILABLE ON WORLDMAP
 	DORGESH_KAAN_NORTH(new WorldPoint(3309, 9645, 0), new Rock(1, Ore.IRON), new Rock(9, Ore.SILVER)),
@@ -113,6 +123,10 @@ enum MiningSiteLocation
 	GRAND_TREE(new WorldPoint(2489, 9916, 0),
 		new Rock(9, Ore.CLAY), new Rock(8, Ore.IRON), new Rock(4, Ore.SILVER), new Rock(11, Ore.COAL),
 		new Rock(4, Ore.GOLD), new Rock(4, Ore.MITHRIL), new Rock(3, Ore.ADAMANTITE)),
+	GRIMSTONE_NORTH_EAST(new WorldPoint(2911, 4084, 0), new Rock(3, Ore.COAL), new Rock(3, Ore.ADAMANTITE),
+		new Rock(4, Ore.NICKEL)),
+	GRIMSTONE_NORTH_WEST(new WorldPoint(2901, 4084, 0), new Rock(2, Ore.COAL), new Rock(3, Ore.RUNITE)),
+	GRIMSTONE_SOUTH(new WorldPoint(2909, 4062, 0), new Rock(2, Ore.COAL), new Rock(4, Ore.NICKEL)),
 	GWENITH(new WorldPoint(2163, 3415, 0), new Rock(10, Ore.GOLD)),
 	GWENITH_PRIFDDINAS_MAP(new WorldPoint(3187, 6167, 0), new Rock(10, Ore.GOLD)),
 	HEROES_GUILD_EAST_BOTTOM(new WorldPoint(2939, 9898, 0), new Rock(3, Ore.COAL), new Rock(2, Ore.RUNITE)),
@@ -123,8 +137,8 @@ enum MiningSiteLocation
 		new Rock(10, Ore.CLAY), new Rock(11, Ore.COPPER), new Rock(4, Ore.TIN), new Rock(9, Ore.IRON),
 		new Rock(2, Ore.SILVER)),
 	ISAFDAR(new WorldPoint(2277, 3159, 0), new Rock(4, Ore.ADAMANTITE), new Rock(2, Ore.RUNITE)),
-	ISLE_OF_SOULS_DUNGEON_EAST(new WorldPoint(1831, 9109, 0), new Rock(1, Ore.RUNITE)),
-	ISLE_OF_SOULS_DUNGEON_WEST(new WorldPoint(1814, 9116, 0), new Rock(2, Ore.ADAMANTITE)),
+	ISLE_OF_SOULS_DUNGEON_EAST(new WorldPoint(2279, 9237, 0), new Rock(1, Ore.RUNITE)),
+	ISLE_OF_SOULS_DUNGEON_WEST(new WorldPoint(2262, 9244, 0), new Rock(2, Ore.ADAMANTITE)),
 	ISLE_OF_SOULS_SOUTH(new WorldPoint(2195, 2793, 0),
 		new Rock(3, Ore.CLAY), new Rock(3, Ore.TIN), new Rock(3, Ore.COPPER), new Rock(10, Ore.IRON),
 		new Rock(3, Ore.SILVER), new Rock(6, Ore.COAL), new Rock(4, Ore.GOLD), new Rock(2, Ore.MITHRIL)),
@@ -180,6 +194,11 @@ enum MiningSiteLocation
 	NECROPOLIS(new WorldPoint(3319, 2708, 0), new Rock(5, Ore.SANDSTONE), new Rock(5, Ore.GRANITE)),
 	OGRESS_SETTLEMENT(new WorldPoint(1977, 9041, 0),
 		new Rock(5, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(1, Ore.ADAMANTITE)),
+	ONYX_CREST(new WorldPoint(2978, 2254, 0), new Rock(8, Ore.IRON), new Rock(3, Ore.SILVER), new Rock(6, Ore.LEAD),
+		new Rock(4, Ore.GEM_ROCK), new Rock(4, Ore.GOLD)),
+	PANDEMONIUM(new WorldPoint(3055, 9367, 0),
+		new Rock(3, Ore.COPPER), new Rock(3, Ore.TIN), new Rock(5, Ore.IRON),
+		new Rock(3, Ore.COAL), new Rock(8, Ore.LEAD)),
 	PIRATES_HIDEOUT(new WorldPoint(3056, 3945, 0),
 		new Rock(1, Ore.IRON), new Rock(4, Ore.COAL), new Rock(4, Ore.MITHRIL), new Rock(1, Ore.ADAMANTITE)),
 	PISCARILLIUS(new WorldPoint(1759, 3718, 0),
@@ -209,6 +228,8 @@ enum MiningSiteLocation
 	SLEPE_UNDERGROUND(new WorldPoint(3888, 9749, 0), new Rock(6, Ore.IRON), new Rock(14, Ore.COAL)),
 	STONECUTTER_OUTPOST(new WorldPoint(1747, 2955, 0), new Rock(5, Ore.CLAY), new Rock(6, Ore.IRON), new Rock(4, Ore.SILVER), new Rock(10, Ore.COAL), new Rock(3, Ore.GOLD), new Rock(4, Ore.MITHRIL)),
 	STRANGLEWOOD_MINE(new WorldPoint(1169, 3323, 0), new Rock(3, Ore.IRON), new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(3, Ore.ADAMANTITE), new Rock(1, Ore.RUNITE)),
+	SUNBLEAK_CAVE_NORTH(new WorldPoint(2221, 9003, 0), new Rock(4, Ore.COAL), new Rock(5, Ore.MITHRIL)),
+	SUNBLEAK_CAVE_SOUTH(new WorldPoint(2224, 8977, 0), new Rock(3, Ore.COAL), new Rock(4, Ore.ADAMANTITE)),
 	TLATI_RAINFOREST_EAST(new WorldPoint(1352, 3112, 0), new Rock(7, Ore.IRON), new Rock(4, Ore.COAL), new Rock(5, Ore.GOLD), new Rock(4, Ore.MITHRIL), new Rock(4, Ore.ADAMANTITE), new Rock(1, Ore.GEMSTONE_CRAB)),
 	TLATI_RAINFOREST_NORTH(new WorldPoint(1272, 3173, 0), new Rock(9, Ore.SILVER), new Rock(8, Ore.CLAY), new Rock(1, Ore.GEMSTONE_CRAB)),
 	TLATI_RAINFOREST_SOUTH(new WorldPoint(1238, 3043, 0), new Rock(13, Ore.COPPER), new Rock(10, Ore.IRON), new Rock(7, Ore.COAL), new Rock(1, Ore.GEMSTONE_CRAB)),
@@ -226,6 +247,9 @@ enum MiningSiteLocation
 		new Rock(6, Ore.IRON), new Rock(11, Ore.COAL), new Rock(4, Ore.GOLD), new Rock(1, Ore.MITHRIL), new Rock(6, Ore.ADAMANTITE)),
 	WILDERNESS_SOUTH(new WorldPoint(3104, 3569, 0), new Rock(2, Ore.IRON), new Rock(3, Ore.COAL)),
 	WILDERNESS_SOUTH_WEST(new WorldPoint(3013, 3589, 0), new Rock(34, Ore.COAL)),
+	YNYSDAIL(new WorldPoint(2224, 3476, 0), new Rock(4, Ore.IRON), new Rock(3, Ore.NICKEL)),
+	YNYSDAIL_CAVERN_NORTH(new WorldPoint(2267, 9892, 0), new Rock(5, Ore.MITHRIL), new Rock(8, Ore.ADAMANTITE)),
+	YNYSDAIL_CAVERN_WEST(new WorldPoint(2249, 9878, 0), new Rock(2, Ore.MITHRIL), new Rock(2, Ore.RUNITE))
 	;
 
 	private final WorldPoint location;
@@ -284,6 +308,8 @@ enum MiningSiteLocation
 		RUNITE("Runite"),
 		AMETHYST("Amethyst"),
 		GEMSTONE_CRAB("Gemstone Crab"),
+		LEAD("Lead"),
+		NICKEL("Nickel")
 		;
 
 		private final String name;
