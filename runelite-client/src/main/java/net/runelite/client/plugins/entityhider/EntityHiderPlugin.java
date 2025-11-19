@@ -36,6 +36,8 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
+import net.runelite.api.Scene;
+import net.runelite.api.WorldView;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.callback.Hooks;
@@ -112,6 +114,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideLocalPlayer2D;
 	private boolean hideNPCs;
 	private boolean hideNPCs2D;
+	private boolean hideBoats;
 	private boolean hideDeadNpcs;
 	private boolean hidePets;
 	private boolean hideThralls;
@@ -167,6 +170,8 @@ public class EntityHiderPlugin extends Plugin
 		hideNPCs = config.hideNPCs();
 		hideNPCs2D = config.hideNPCs2D();
 		hideDeadNpcs = config.hideDeadNpcs();
+
+		hideBoats = config.hideWorldEntities();
 
 		hidePets = config.hidePets();
 
@@ -289,6 +294,24 @@ public class EntityHiderPlugin extends Plugin
 				default:
 					return true;
 			}
+		}
+		else if (renderable instanceof Scene)
+		{
+			if (!hideBoats)
+			{
+				return true;
+			}
+
+			Scene scene = (Scene) renderable;
+			Player local = client.getLocalPlayer();
+			WorldView wv = local.getWorldView();
+
+			if (scene.getWorldViewId() == wv.getId())
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 		return true;
