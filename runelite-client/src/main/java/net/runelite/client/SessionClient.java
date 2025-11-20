@@ -54,29 +54,6 @@ class SessionClient
 		this.gson = gson;
 	}
 
-	UUID open() throws IOException
-	{
-		HttpUrl url = sessionUrl.newBuilder()
-			.build();
-
-		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			ResponseBody body = response.body();
-
-			InputStream in = body.byteStream();
-			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
-		}
-		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
-		{
-			throw new IOException(ex);
-		}
-	}
-
 	void ping(UUID uuid, boolean loggedIn) throws IOException
 	{
 		HttpUrl url = sessionUrl.newBuilder()
@@ -97,19 +74,5 @@ class SessionClient
 				throw new IOException("Unsuccessful ping");
 			}
 		}
-	}
-
-	void delete(UUID uuid) throws IOException
-	{
-		HttpUrl url = sessionUrl.newBuilder()
-			.addQueryParameter("session", uuid.toString())
-			.build();
-
-		Request request = new Request.Builder()
-			.delete()
-			.url(url)
-			.build();
-
-		client.newCall(request).execute().close();
 	}
 }
