@@ -27,4 +27,6 @@ package net.runelite.api;
 public interface WorldEntityConfig
 {
 	int getId();
+
+	int getCategory();
 }
