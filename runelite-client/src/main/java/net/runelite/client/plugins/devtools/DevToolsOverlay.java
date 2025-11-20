@@ -81,8 +81,6 @@ class DevToolsOverlay extends Overlay
 	private static final Color PURPLE = new Color(170, 0, 255);
 	private static final Color GRAY = new Color(158, 158, 158);
 
-	private static final int MAX_DISTANCE = 2400;
-
 	private final Client client;
 	private final DevToolsPlugin plugin;
 	private final TooltipManager toolTipManager;
@@ -288,7 +286,7 @@ class DevToolsOverlay extends Overlay
 
 				if (plugin.getGroundObjects().isActive())
 				{
-					renderTileObject(graphics, tile.getGroundObject(), player, PURPLE);
+					renderTileObject(graphics, tile.getGroundObject(), PURPLE);
 				}
 
 				if (plugin.getGameObjects().isActive())
@@ -298,12 +296,12 @@ class DevToolsOverlay extends Overlay
 
 				if (plugin.getWalls().isActive())
 				{
-					renderTileObject(graphics, tile.getWallObject(), player, GRAY);
+					renderTileObject(graphics, tile.getWallObject(), GRAY);
 				}
 
 				if (plugin.getDecorations().isActive())
 				{
-					renderDecorObject(graphics, tile, player);
+					renderDecorObject(graphics, tile);
 				}
 
 				if (plugin.getTileLocation().isActive())
@@ -372,15 +370,12 @@ class DevToolsOverlay extends Overlay
 		ItemLayer itemLayer = tile.getItemLayer();
 		if (itemLayer != null)
 		{
-			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
+			Node current = itemLayer.getTop();
+			while (current instanceof TileItem)
 			{
-				Node current = itemLayer.getTop();
-				while (current instanceof TileItem)
-				{
-					TileItem item = (TileItem) current;
-					OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
-					current = current.getNext();
-				}
+				TileItem item = (TileItem) current;
+				OverlayUtil.renderTileOverlay(graphics, itemLayer, "ID: " + item.getId() + " Qty:" + item.getQuantity(), RED);
+				current = current.getNext();
 			}
 		}
 	}
@@ -394,46 +389,37 @@ class DevToolsOverlay extends Overlay
 			{
 				if (gameObject != null && gameObject.getSceneMinLocation().equals(tile.getSceneLocation()))
 				{
-					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
+					StringBuilder stringBuilder = new StringBuilder();
+					stringBuilder.append("ID: ").append(gameObject.getId());
+					if (gameObject.getRenderable() instanceof DynamicObject)
 					{
-						StringBuilder stringBuilder = new StringBuilder();
-						stringBuilder.append("ID: ").append(gameObject.getId());
-						if (gameObject.getRenderable() instanceof DynamicObject)
+						Animation animation = ((DynamicObject) gameObject.getRenderable()).getAnimation();
+						if (animation != null)
 						{
-							Animation animation = ((DynamicObject) gameObject.getRenderable()).getAnimation();
-							if (animation != null)
-							{
-								stringBuilder.append(" A: ").append(animation.getId());
-							}
+							stringBuilder.append(" A: ").append(animation.getId());
 						}
-
-						OverlayUtil.renderTileOverlay(graphics, gameObject, stringBuilder.toString(), GREEN);
 					}
+
+					OverlayUtil.renderTileOverlay(graphics, gameObject, stringBuilder.toString(), GREEN);
 				}
 			}
 		}
 	}
 
-	private void renderTileObject(Graphics2D graphics, TileObject tileObject, Player player, Color color)
+	private void renderTileObject(Graphics2D graphics, TileObject tileObject, Color color)
 	{
 		if (tileObject != null)
 		{
-			if (player.getLocalLocation().distanceTo(tileObject.getLocalLocation()) <= MAX_DISTANCE)
-			{
-				OverlayUtil.renderTileOverlay(graphics, tileObject, "ID: " + tileObject.getId(), color);
-			}
+			OverlayUtil.renderTileOverlay(graphics, tileObject, "ID: " + tileObject.getId(), color);
 		}
 	}
 
-	private void renderDecorObject(Graphics2D graphics, Tile tile, Player player)
+	private void renderDecorObject(Graphics2D graphics, Tile tile)
 	{
 		DecorativeObject decorObject = tile.getDecorativeObject();
 		if (decorObject != null)
 		{
-			if (player.getLocalLocation().distanceTo(decorObject.getLocalLocation()) <= MAX_DISTANCE)
-			{
-				OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
-			}
+			OverlayUtil.renderTileOverlay(graphics, decorObject, "ID: " + decorObject.getId(), DEEP_PURPLE);
 
 			Shape p = decorObject.getConvexHull();
 			if (p != null)
