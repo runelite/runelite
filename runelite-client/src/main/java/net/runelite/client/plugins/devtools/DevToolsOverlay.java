@@ -32,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -99,36 +98,60 @@ class DevToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		WorldView tlwv = client.getTopLevelWorldView();
+		WorldView playerWv = client.getLocalPlayer().getWorldView();
+
 		graphics.setFont(FONT);
 
 		if (plugin.getPlayers().isActive())
 		{
-			renderPlayers(graphics);
+			renderPlayers(tlwv, graphics);
+			if (playerWv != tlwv)
+			{
+				renderPlayers(playerWv, graphics);
+			}
 		}
 
 		if (plugin.getNpcs().isActive())
 		{
-			renderNpcs(graphics);
+			renderNpcs(tlwv, graphics);
+			if (playerWv != tlwv)
+			{
+				renderNpcs(playerWv, graphics);
+			}
 		}
 
 		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive() || plugin.getMovementFlags().isActive())
 		{
-			renderTileObjects(graphics);
+			renderTileObjects(tlwv, graphics);
+			if (playerWv != tlwv)
+			{
+				renderTileObjects(playerWv, graphics);
+			}
 		}
 
 		if (plugin.getProjectiles().isActive())
 		{
+			// projectiles are not partitioned by worldview
 			renderProjectiles(graphics);
 		}
 
 		if (plugin.getGraphicsObjects().isActive())
 		{
-			renderGraphicsObjects(graphics);
+			renderGraphicsObjects(tlwv, graphics);
+			if (playerWv != tlwv)
+			{
+				renderGraphicsObjects(playerWv, graphics);
+			}
 		}
 
 		if (plugin.getTileFlags().isActive())
 		{
-			renderTileFlags(graphics);
+			renderTileFlags(tlwv, graphics);
+			if (playerWv != tlwv)
+			{
+				renderTileFlags(playerWv, graphics);
+			}
 		}
 
 		if (plugin.getWorldEntities().isActive())
@@ -139,12 +162,12 @@ class DevToolsOverlay extends Overlay
 		return null;
 	}
 
-	private void renderTileFlags(Graphics2D graphics)
+	private void renderTileFlags(WorldView wv, Graphics2D graphics)
 	{
-		Scene scene = client.getScene();
+		Scene scene = wv.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		byte[][][] settings = client.getTileSettings();
-		int z = client.getPlane();
+		byte[][][] settings = wv.getTileSettings();
+		int z = wv.getPlane();
 
 		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
 		{
@@ -191,12 +214,11 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderPlayers(Graphics2D graphics)
+	private void renderPlayers(WorldView wv, Graphics2D graphics)
 	{
-		List<Player> players = client.getPlayers();
 		Player local = client.getLocalPlayer();
 
-		for (Player p : players)
+		for (Player p : wv.players())
 		{
 			if (p != local)
 			{
@@ -209,10 +231,9 @@ class DevToolsOverlay extends Overlay
 		OverlayUtil.renderActorOverlay(graphics, local, text, CYAN);
 	}
 
-	private void renderNpcs(Graphics2D graphics)
+	private void renderNpcs(WorldView wv, Graphics2D graphics)
 	{
-		List<NPC> npcs = client.getNpcs();
-		for (NPC npc : npcs)
+		for (NPC npc : wv.npcs())
 		{
 			NPCComposition composition = npc.getComposition();
 			Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
@@ -255,16 +276,16 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderTileObjects(Graphics2D graphics)
+	private void renderTileObjects(WorldView wv, Graphics2D graphics)
 	{
-		Scene scene = client.getScene();
+		Scene scene = wv.getScene();
 		Tile[][][] tiles = scene.getTiles();
 
-		int z = client.getPlane();
+		int z = wv.getPlane();
 
-		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		for (int x = 0; x < tiles[z].length; ++x)
 		{
-			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			for (int y = 0; y < tiles[z][x].length; ++y)
 			{
 				Tile tile = tiles[z][x][y];
 
@@ -273,15 +294,9 @@ class DevToolsOverlay extends Overlay
 					continue;
 				}
 
-				Player player = client.getLocalPlayer();
-				if (player == null)
-				{
-					continue;
-				}
-
 				if (plugin.getGroundItems().isActive())
 				{
-					renderGroundItems(graphics, tile, player);
+					renderGroundItems(graphics, tile);
 				}
 
 				if (plugin.getGroundObjects().isActive())
@@ -291,7 +306,7 @@ class DevToolsOverlay extends Overlay
 
 				if (plugin.getGameObjects().isActive())
 				{
-					renderGameObjects(graphics, tile, player);
+					renderGameObjects(graphics, tile);
 				}
 
 				if (plugin.getWalls().isActive())
@@ -365,7 +380,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderGroundItems(Graphics2D graphics, Tile tile, Player player)
+	private void renderGroundItems(Graphics2D graphics, Tile tile)
 	{
 		ItemLayer itemLayer = tile.getItemLayer();
 		if (itemLayer != null)
@@ -380,7 +395,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderGameObjects(Graphics2D graphics, Tile tile, Player player)
+	private void renderGameObjects(Graphics2D graphics, Tile tile)
 	{
 		GameObject[] gameObjects = tile.getGameObjects();
 		if (gameObjects != null)
@@ -452,9 +467,9 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderGraphicsObjects(Graphics2D graphics)
+	private void renderGraphicsObjects(WorldView wv, Graphics2D graphics)
 	{
-		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
+		for (GraphicsObject graphicsObject : wv.getGraphicsObjects())
 		{
 			LocalPoint lp = graphicsObject.getLocation();
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
