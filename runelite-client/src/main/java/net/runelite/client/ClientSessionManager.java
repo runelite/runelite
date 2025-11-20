@@ -61,7 +61,7 @@ public class ClientSessionManager
 
 	public void start()
 	{
-		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
+		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), (int) (5 * 60 * Math.random()), 10 * 60, TimeUnit.SECONDS);
 	}
 
 	@Subscribe
