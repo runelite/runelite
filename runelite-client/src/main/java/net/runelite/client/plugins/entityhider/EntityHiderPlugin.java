@@ -37,7 +37,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
-import net.runelite.api.WorldView;
+import net.runelite.api.WorldEntity;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.callback.Hooks;
@@ -87,6 +87,7 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.MACRO_DRILLDEMON_INVITATION,
 		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
 	);
+	private static final int SAILING_BOAT_PLAYER_CATEGORY = 2395;
 
 	@Inject
 	private Client client;
@@ -303,15 +304,14 @@ public class EntityHiderPlugin extends Plugin
 			}
 
 			Scene scene = (Scene) renderable;
-			Player local = client.getLocalPlayer();
-			WorldView wv = local.getWorldView();
-
-			if (scene.getWorldViewId() == wv.getId())
+			WorldEntity we = client.getTopLevelWorldView().worldEntities().byIndex(scene.getWorldViewId());
+			if (we != null && we.getConfig().getCategory() == SAILING_BOAT_PLAYER_CATEGORY
+				&& scene.getWorldViewId() != client.getLocalPlayer().getWorldView().getId())
 			{
-				return true;
+				return false;
 			}
 
-			return false;
+			return true;
 		}
 
 		return true;
