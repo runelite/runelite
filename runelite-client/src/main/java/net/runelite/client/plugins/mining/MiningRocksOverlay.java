@@ -28,7 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Instant;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -48,16 +51,27 @@ class MiningRocksOverlay extends Overlay
 	private static final Color DARK_GREEN = new Color(0, 100, 0);
 	private static final int MOTHERLODE_UPPER_FLOOR_HEIGHT = -500;
 
+	private final EnumMap<Rock, Supplier<Boolean>> rockRespawnConfigs;
+
 	private final Client client;
 	private final MiningPlugin plugin;
 
 	@Inject
-	private MiningRocksOverlay(Client client, MiningPlugin plugin)
+	private MiningRocksOverlay(Client client, MiningPlugin plugin, MiningConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
 		this.client = client;
+
+		// Construct a map of rock category to the config that controls it.
+		rockRespawnConfigs = new EnumMap<>(Map.of(
+			Rock.ROCK, 			config::showRockRespawns,
+			Rock.MLM_ORE_VEIN, 	config::showMotherlodeMineRespawns,
+			Rock.ORE_VEIN, 		config::showOreVeinRespawns,
+			Rock.AMETHYST, 		config::showAmethystRespawns,
+			Rock.BARRONITE, 	config::showBarroniteRespawns)
+		);
 	}
 
 	@Override
@@ -72,6 +86,12 @@ class MiningRocksOverlay extends Overlay
 		Instant now = Instant.now();
 		for (RockRespawn rockRespawn : respawns)
 		{
+			// Skip this rock respawn if the config controls it, and it is indicated to be hidden.
+			if (!rockRespawnConfigs.getOrDefault(rockRespawn.getRock(), () -> true).get())
+			{
+				continue;
+			}
+
 			LocalPoint loc = LocalPoint.fromWorld(client, rockRespawn.getWorldPoint());
 			if (loc == null)
 			{
