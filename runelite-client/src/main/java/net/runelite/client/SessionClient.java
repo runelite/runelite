@@ -25,11 +25,7 @@
 package net.runelite.client;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,7 +34,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 class SessionClient
 {
