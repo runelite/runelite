@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import net.runelite.api.coords.LocalPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 public interface WorldEntity extends CameraFocusableEntity
 {
@@ -50,4 +51,11 @@ public interface WorldEntity extends CameraFocusableEntity
 	boolean isHiddenForOverlap();
 
 	WorldEntityConfig getConfig();
+
+	@MagicConstant(intValues = {OWNER_TYPE_NOT_PLAYER, OWNER_TYPE_OTHER_PLAYER, OWNER_TYPE_SELF_PLAYER})
+	int getOwnerType();
+
+	int OWNER_TYPE_NOT_PLAYER = 0;
+	int OWNER_TYPE_OTHER_PLAYER = 1;
+	int OWNER_TYPE_SELF_PLAYER = 2;
 }

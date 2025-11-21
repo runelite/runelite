@@ -87,7 +87,6 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.MACRO_DRILLDEMON_INVITATION,
 		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
 	);
-	private static final int SAILING_BOAT_PLAYER_CATEGORY = 2395;
 
 	@Inject
 	private Client client;
@@ -305,8 +304,7 @@ public class EntityHiderPlugin extends Plugin
 
 			Scene scene = (Scene) renderable;
 			WorldEntity we = client.getTopLevelWorldView().worldEntities().byIndex(scene.getWorldViewId());
-			if (we != null && we.getConfig().getCategory() == SAILING_BOAT_PLAYER_CATEGORY
-				&& scene.getWorldViewId() != client.getLocalPlayer().getWorldView().getId())
+			if (we.getOwnerType() == WorldEntity.OWNER_TYPE_OTHER_PLAYER)
 			{
 				return false;
 			}
