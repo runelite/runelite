@@ -24,7 +24,6 @@
  */
 package net.runelite.client;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -39,14 +38,12 @@ class SessionClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl sessionUrl;
-	private final Gson gson;
 
 	@Inject
-	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl, Gson gson)
+	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl)
 	{
 		this.client = client;
 		this.sessionUrl = sessionUrl;
-		this.gson = gson;
 	}
 
 	void ping(UUID uuid, boolean loggedIn) throws IOException
