@@ -129,7 +129,7 @@ public class InfoBoxOverlay extends OverlayPanel
 		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
 		panelComponent.setOrientation(orientation);
 
-		final Font font = config.infoboxFontType().getFont();
+		final Font font = config.infoboxFont().getFont();
 		final boolean infoBoxTextOutline = config.infoBoxTextOutline();
 		final Color overlayBackgroundColor = config.overlayBackgroundColor();
 		final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
