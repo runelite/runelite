@@ -101,7 +101,7 @@ public class GroundMarkerOverlay extends Overlay
 
 	private void drawTile(Graphics2D graphics, WorldView wv, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
 	{
-		if (wv.isTopLevel())
+		if (client.getLocalPlayer().getWorldView().isTopLevel())
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
