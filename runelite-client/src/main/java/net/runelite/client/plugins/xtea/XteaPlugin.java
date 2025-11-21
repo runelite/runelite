@@ -44,7 +44,9 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.WorldView;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WorldViewLoaded;
 import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -124,16 +126,13 @@ public class XteaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	public void onWorldViewLoaded(WorldViewLoaded event)
 	{
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
+		WorldView wv = event.getWorldView();
 
 		int revision = client.getRevision();
-		int[] regions = client.getMapRegions();
-		int[][] xteaKeys = client.getXteaKeys();
+		int[] regions = wv.getMapRegions();
+		int[][] xteaKeys = wv.getXteaKeys();
 
 		XteaRequest xteaRequest = new XteaRequest();
 		xteaRequest.setRevision(revision);
@@ -151,7 +150,7 @@ public class XteaPlugin extends Plugin
 
 			xteas.put(region, keys);
 
-			log.debug("Region {} keys {}, {}, {}, {}", region, keys[0], keys[1], keys[2], keys[3]);
+			log.debug("World {} region {} keys {}, {}, {}, {}", wv.getId(), region, keys[0], keys[1], keys[2], keys[3]);
 
 			XteaKey xteaKey = new XteaKey();
 			xteaKey.setRegion(region);
