@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.WorldEntity;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -102,42 +101,11 @@ public class GroundMarkerOverlay extends Overlay
 
 	private void drawTile(Graphics2D graphics, WorldView wv, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
 	{
-
-		WorldView playerWv = client.getLocalPlayer().getWorldView();
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (playerWv == null || playerLocation == null)
+		if (client.getLocalPlayer().getWorldView().isTopLevel())
 		{
-			return;
-		}
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-		WorldPoint localBoatLocation = null;
-
-		if (!playerWv.isTopLevel() && playerWv.getId() != -1)
-		{
-			WorldEntity playerWe = client.getTopLevelWorldView().worldEntities().byIndex(playerWv.getId());
-
-			if (playerWe != null)
-			{
-				localBoatLocation = WorldPoint.fromLocalInstance(client, playerWe.getLocalLocation());
-			}
-		}
-
-		if (playerWv.isTopLevel())
-		{
 			if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
-			{
-				return;
-			}
-		}
-		else
-		{
-			if (localBoatLocation == null)
-			{
-				return;
-			}
-
-			if (localBoatLocation.distanceTo(point) >= MAX_DRAW_DISTANCE)
 			{
 				return;
 			}
