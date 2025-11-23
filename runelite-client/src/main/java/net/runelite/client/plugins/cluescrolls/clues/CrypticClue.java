@@ -241,7 +241,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_EASY_VAGUE020)
-			.text("Search the crate near a cart in Port Khazard.")
+			.text("Search the crate near the southern general store in Port Khazard.")
 			.location(new WorldPoint(2660, 3149, 0))
 			.objectId(ObjectID.CRATE)
 			.solution("Search by the southern Khazard General Store in Port Khazard.")
