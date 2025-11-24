@@ -127,9 +127,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private RegionManager regionManager;
 
 	@Inject
-	private FacePrioritySorter facePrioritySorter;
-
-	@Inject
 	private DrawManager drawManager;
 
 	@Inject
@@ -190,6 +187,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private VAOList vaoPO;
 
 	private SceneUploader clientUploader, mapUploader;
+	private FacePrioritySorter facePrioritySorter;
 
 	static class SceneContext
 	{
@@ -278,6 +276,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		subs = new SceneContext[MAX_WORLDVIEWS];
 		clientUploader = new SceneUploader(renderCallbackManager);
 		mapUploader = new SceneUploader(renderCallbackManager);
+		facePrioritySorter = new FacePrioritySorter(client, clientUploader);
 		clientThread.invoke(() ->
 		{
 			try
@@ -1175,7 +1174,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (m.getFaceTransparencies() == null)
 		{
 			VAO o = vaoO.get(size);
-			SceneUploader.uploadTempModel(m, orient, x, y, z, o.vbo.vb);
+			clientUploader.uploadTempModel(m, orient, x, y, z, o.vbo.vb);
 		}
 		else
 		{
@@ -1256,7 +1255,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else
 		{
 			VAO o = vaoO.get(size);
-			SceneUploader.uploadTempModel(m, orient, x, y, z, o.vbo.vb);
+			clientUploader.uploadTempModel(m, orient, x, y, z, o.vbo.vb);
 		}
 	}
 

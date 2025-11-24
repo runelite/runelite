@@ -26,16 +26,11 @@ package net.runelite.client.plugins.gpu;
 
 import java.nio.IntBuffer;
 import java.util.Arrays;
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Projection;
 
-@Singleton
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 class FacePrioritySorter
 {
 	static final int[] distances;
@@ -81,6 +76,13 @@ class FacePrioritySorter
 	}
 
 	private final Client client;
+	private final SceneUploader sceneUploader;
+
+	FacePrioritySorter(Client client, SceneUploader sceneUploader)
+	{
+		this.client = client;
+		this.sceneUploader = sceneUploader;
+	}
 
 	int uploadSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer, IntBuffer alphaBuffer)
 	{
@@ -438,16 +440,16 @@ class FacePrioritySorter
 		float vy3 = modelLocalY[triangleC];
 		float vz3 = modelLocalZ[triangleC];
 
-		SceneUploader.computeFaceUvs(model, face);
+		sceneUploader.computeFaceUvs(model, face);
 
-		int su0 = (int) (SceneUploader.u0 * 256f);
-		int sv0 = (int) (SceneUploader.v0 * 256f);
+		int su0 = (int) (sceneUploader.u0 * 256f);
+		int sv0 = (int) (sceneUploader.v0 * 256f);
 
-		int su1 = (int) (SceneUploader.u1 * 256f);
-		int sv1 = (int) (SceneUploader.v1 * 256f);
+		int su1 = (int) (sceneUploader.u1 * 256f);
+		int sv1 = (int) (sceneUploader.v1 * 256f);
 
-		int su2 = (int) (SceneUploader.u2 * 256f);
-		int sv2 = (int) (SceneUploader.v2 * 256f);
+		int su2 = (int) (sceneUploader.u2 * 256f);
+		int sv2 = (int) (sceneUploader.v2 * 256f);
 
 		int alphaBias = 0;
 		alphaBias |= transparencies != null ? (transparencies[face] & 0xff) << 24 : 0;
