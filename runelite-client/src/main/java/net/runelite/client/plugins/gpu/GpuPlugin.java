@@ -1621,7 +1621,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		Zone[][] newZones = new Zone[SCENE_ZONES][SCENE_ZONES];
 		final GameState gameState = client.getGameState();
 		if (prev.isInstance() == scene.isInstance()
-			&& prev.getRoofRemovalMode() == scene.getRoofRemovalMode()
 			&& gameState == GameState.LOGGED_IN)
 		{
 			int[][][] prevTemplates = prev.getInstanceTemplateChunks();
