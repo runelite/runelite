@@ -246,6 +246,12 @@ public enum MenuAction
 
 	SET_HEADING(60),
 
+	WORLD_ENTITY_FIRST_OPTION(63),
+	WORLD_ENTITY_SECOND_OPTION(64),
+	WORLD_ENTITY_THIRD_OPTION(65),
+	WORLD_ENTITY_FOURTH_OPTION(66),
+	WORLD_ENTITY_FIFTH_OPTION(67),
+
 	/**
 	 * RuneLite menu that is a widge.
 	 * @see MenuEntry#getWidget()
@@ -282,6 +288,8 @@ public enum MenuAction
 	 * Menu action for low priority child component actions.
 	 */
 	CC_OP_LOW_PRIORITY(1007),
+
+	EXAMINE_WORLD_ENTITY(1013),
 
 	/**
 	 * Menu action injected by runelite for its menu items.
