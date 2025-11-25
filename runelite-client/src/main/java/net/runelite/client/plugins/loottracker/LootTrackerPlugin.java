@@ -167,6 +167,9 @@ public class LootTrackerPlugin extends Plugin
 	static final String ZOMBIE_PIRATE_LOCKER_EVENT = "Zombie Pirate's Locker";
 	private static final Pattern ZOMBIE_PIRATE_LOCKER_PATTERN = Pattern.compile("You loot the locker and receive <col=[\\da-f]{6}>(?<qty>[\\d,]+) x (?<item>.+)</col>\\.");
 
+	// Shipwreck salvaging
+	private static final Pattern SALVAGE_PATTERN = Pattern.compile("You sort through the\\s+(?<tier>\\S+)\\s+salvage.*");
+
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
 
@@ -1015,6 +1018,18 @@ public class LootTrackerPlugin extends Plugin
 		if (zombiePirateLockerMatcher.matches())
 		{
 			processZombiePirateLockerLoot(zombiePirateLockerMatcher);
+		}
+
+		final Matcher shipwreckSalvagingMatcher = SALVAGE_PATTERN.matcher(message);
+		if (shipwreckSalvagingMatcher.matches())
+		{
+			String tier = shipwreckSalvagingMatcher.group("tier");
+			String eventName = WordUtils.capitalizeFully(tier) + " salvage";
+			onInvChange((invItems, groundItems, removedItems) ->
+			{
+				addLoot(eventName, -1, LootRecordType.EVENT, null, invItems);
+			});
+			return;
 		}
 
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
