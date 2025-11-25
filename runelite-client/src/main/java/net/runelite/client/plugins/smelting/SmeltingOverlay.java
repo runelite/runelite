@@ -87,31 +87,18 @@ class SmeltingOverlay extends OverlayPanel
 					.build());
 		}
 
-		int actions = xpTrackerService.getActions(Skill.SMITHING);
-		if (actions > 0)
-		{
-			if (plugin.getSession().getBarsSmelted() > 0)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Bars:")
-						.right(Integer.toString(session.getBarsSmelted()))
-						.build());
-			}
-			if (plugin.getSession().getCannonBallsSmelted() > 0)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Cannonballs:")
-						.right(Integer.toString(session.getCannonBallsSmelted()))
-						.build());
-			}
-			if (actions > 2)
-			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Actions/hr:")
-						.right(Integer.toString(xpTrackerService.getActionsHr(Skill.SMITHING)))
-						.build());
-			}
-		}
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Bars:")
+				.right(Integer.toString(session.getBarsSmelted()))
+				.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Cannonballs:")
+				.right(Integer.toString(session.getCannonBallsSmelted()))
+				.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Actions/hr:")
+				.right(Integer.toString(xpTrackerService.getActionsHr(Skill.SMITHING)))
+				.build());
 
 		return super.render(graphics);
 
