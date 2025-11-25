@@ -31,7 +31,7 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum ConstructionBonus implements SkillBonus
 {
-	CARPENTERS_OUTFIT("Carpenter's Outfit (+2.5%)", 1.025f),
+	CARPENTERS_OUTFIT("Carpenter's Outfit", 1.025f),
 	;
 
 	private final String name;

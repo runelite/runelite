@@ -40,7 +40,8 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "pings",
 		name = "Pings",
-		description = "Enables party pings",
+		description = "Enables party pings.<br>"
+			+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
 		position = 1
 	)
 	default boolean pings()
@@ -51,7 +52,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "sounds",
 		name = "Sound on ping",
-		description = "Enables sound notification on party ping",
+		description = "Enables sound notification on party ping.",
 		position = 2
 	)
 	default boolean sounds()
@@ -62,7 +63,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "recolorNames",
 		name = "Recolor names",
-		description = "Recolor party members names based on unique color hash",
+		description = "Recolor party members names based on unique color hash.",
 		position = 3
 	)
 	default boolean recolorNames()
@@ -73,7 +74,8 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "pingHotkey",
 		name = "Ping hotkey",
-		description = "Key to hold to send a tile ping",
+		description = "Key to hold to send a tile ping.<br>"
+			+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
 		position = 4
 	)
 	default Keybind pingHotkey()
@@ -83,7 +85,7 @@ public interface PartyConfig extends Config
 
 	@ConfigItem(
 		keyName = "memberColor",
-		name = "Self-Color",
+		name = "Self-color",
 		description = "Which color you will appear as in the party panel and tile pings.",
 		position = 5
 	)
@@ -98,7 +100,7 @@ public interface PartyConfig extends Config
 	void setMemberColor(Color newMemberColor);
 
 	@ConfigSection(
-		name = "Player Status Overlay",
+		name = "Player status overlay",
 		description = "Player status such as health, prayer, and special attack energy drawn on player models.",
 		position = 100
 	)
@@ -107,7 +109,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		section = SECTION_STATUS_OVERLAY,
 		keyName = "statusOverlayHealth",
-		name = "Show Health",
+		name = "Show health",
 		description = "Show health of party members on the player model.",
 		position = 101
 	)
@@ -119,7 +121,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		section = SECTION_STATUS_OVERLAY,
 		keyName = "statusOverlayPrayer",
-		name = "Show Prayer",
+		name = "Show prayer",
 		description = "Show prayer of party members on the player model.",
 		position = 102
 	)
@@ -131,7 +133,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		section = SECTION_STATUS_OVERLAY,
 		keyName = "statusOverlayStamina",
-		name = "Show Run Energy",
+		name = "Show run energy",
 		description = "Show run energy (stamina) of party members on the player model.",
 		position = 103
 	)
@@ -143,7 +145,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		section = SECTION_STATUS_OVERLAY,
 		keyName = "statusOverlaySpec",
-		name = "Show Spec Energy",
+		name = "Show spec energy",
 		description = "Show special attack energy of party members on the player model.",
 		position = 104
 	)
@@ -155,7 +157,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		section = SECTION_STATUS_OVERLAY,
 		keyName = "statusOverlayVeng",
-		name = "Show Vengeance",
+		name = "Show vengeance",
 		description = "Show vengeance status (active/inactive) of party members on the player model.",
 		position = 105
 	)
@@ -167,7 +169,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		section = SECTION_STATUS_OVERLAY,
 		keyName = "statusOverlayRenderSelf",
-		name = "Show On Self",
+		name = "Show on self",
 		description = "Show above activated status overlays on your local player.",
 		position = 106
 	)

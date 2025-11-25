@@ -40,20 +40,24 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ParamID;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetConfig.DRAG;
 import static net.runelite.api.widgets.WidgetConfig.DRAG_ON;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import org.apache.commons.lang3.ArrayUtils;
@@ -72,22 +76,22 @@ class PrayerReorder
 	private static final String UNLOCK = "Enable prayer reordering";
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
+		"", InterfaceID.Toplevel.STONE5);
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
+		"", InterfaceID.Toplevel.STONE5);
 
 	private static final WidgetMenuOption RESIZABLE_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
+		"", InterfaceID.ToplevelOsrsStretch.STONE5);
 
 	private static final WidgetMenuOption RESIZABLE_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
+		"", InterfaceID.ToplevelOsrsStretch.STONE5);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-		"", WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
+		"", InterfaceID.ToplevelPreEoc.STONE5);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-		"", WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
+		"", InterfaceID.ToplevelPreEoc.STONE5);
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -116,6 +120,7 @@ class PrayerReorder
 	{
 		reordering = false;
 		clearPrayerTabMenus();
+		clientThread.invokeLater(() -> rebuildPrayers(false));
 		clientThread.invokeLater(this::redrawPrayers);
 	}
 
@@ -189,14 +194,14 @@ class PrayerReorder
 			Widget draggedOnWidget = client.getDraggedOnWidget();
 			if (draggedWidget != null && draggedOnWidget != null)
 			{
-				int draggedGroupId = WidgetInfo.TO_GROUP(draggedWidget.getId());
-				int draggedOnGroupId = WidgetInfo.TO_GROUP(draggedOnWidget.getId());
-				if (draggedGroupId != WidgetID.PRAYER_GROUP_ID || draggedOnGroupId != WidgetID.PRAYER_GROUP_ID)
+				int draggedGroupId = WidgetUtil.componentToInterface(draggedWidget.getId());
+				int draggedOnGroupId = WidgetUtil.componentToInterface(draggedOnWidget.getId());
+				if (draggedGroupId != InterfaceID.PRAYERBOOK || draggedOnGroupId != InterfaceID.PRAYERBOOK)
 				{
 					return;
 				}
 
-				int prayerbook = client.getVarbitValue(Varbits.PRAYERBOOK);
+				int prayerbook = client.getVarbitValue(VarbitID.PRAYERBOOK);
 				int fromId = findPrayerIdFromComponent(prayerbook, draggedWidget);
 				int toId = findPrayerIdFromComponent(prayerbook, draggedOnWidget);
 				if (fromId == -1 || toId == -1)
@@ -245,10 +250,33 @@ class PrayerReorder
 		}
 	}
 
+	// from script7823
 	private EnumComposition getPrayerBookEnum(int prayerbook)
 	{
-		var enumId = prayerbook == 1 ? EnumID.PRAYERS_RUINOUS : EnumID.PRAYERS_NORMAL;
-		return client.getEnum(enumId);
+		if (prayerbook == 1)
+		{
+			return client.getEnum(EnumID.PRAYERS_RUINOUS);
+		}
+
+		boolean deadeye = client.getVarbitValue(VarbitID.PRAYER_DEADEYE_UNLOCKED) != 0;
+		boolean vigour = client.getVarbitValue(VarbitID.PRAYER_MYSTIC_VIGOUR_UNLOCKED) != 0;
+
+		if (deadeye && vigour)
+		{
+			return client.getEnum(EnumID.PRAYERS_NORMAL_DEADEYE_MYSTIC_VIGOUR);
+		}
+		else if (deadeye)
+		{
+			return client.getEnum(EnumID.PRAYERS_NORMAL_DEADEYE);
+		}
+		else if (vigour)
+		{
+			return client.getEnum(EnumID.PRAYERS_NORMAL_MYSTIC_VIGOUR);
+		}
+		else
+		{
+			return client.getEnum(EnumID.PRAYERS_NORMAL);
+		}
 	}
 
 	private int[] defaultPrayerOrder(EnumComposition prayerEnum)
@@ -328,7 +356,7 @@ class PrayerReorder
 
 	private void redrawPrayers()
 	{
-		Widget w = client.getWidget(WidgetID.PRAYER_GROUP_ID, 0);
+		Widget w = client.getWidget(InterfaceID.PRAYERBOOK, 0);
 		if (w != null)
 		{
 			client.runScript(w.getOnVarTransmitListener());
@@ -337,11 +365,11 @@ class PrayerReorder
 
 	private void rebuildPrayers(boolean unlocked)
 	{
-		var prayerbook = client.getVarbitValue(Varbits.PRAYERBOOK);
+		var prayerbook = client.getVarbitValue(VarbitID.PRAYERBOOK);
 		var prayerBookEnum = getPrayerBookEnum(prayerbook);
 		var prayerIds = MoreObjects.firstNonNull(getPrayerOrder(prayerbook), defaultPrayerOrder(prayerBookEnum));
 
-		if (isInterfaceOpen(WidgetID.PRAYER_GROUP_ID))
+		if (isInterfaceOpen(InterfaceID.PRAYERBOOK))
 		{
 			int index = 0;
 			for (int prayerId : prayerIds)
@@ -352,6 +380,19 @@ class PrayerReorder
 
 				assert prayerWidget != null;
 
+				int widgetConfig = prayerWidget.getClickMask();
+				if (unlocked)
+				{
+					// allow dragging of this widget & to be dragged on
+					widgetConfig |= DRAG | DRAG_ON;
+				}
+				else
+				{
+					// remove drag flag & drag on flags
+					widgetConfig &= ~(DRAG | DRAG_ON);
+				}
+				prayerWidget.setClickMask(widgetConfig);
+
 				boolean hidden = isHidden(prayerbook, prayerId);
 				// in unlocked mode we show the prayers, but they have opacity set
 				if (hidden && !unlocked)
@@ -360,23 +401,6 @@ class PrayerReorder
 					++index;
 					continue;
 				}
-
-				int widgetConfig = prayerWidget.getClickMask();
-				if (unlocked)
-				{
-					// allow dragging of this widget
-					widgetConfig |= DRAG;
-					// allow this widget to be dragged on
-					widgetConfig |= DRAG_ON;
-				}
-				else
-				{
-					// remove drag flag
-					widgetConfig &= ~DRAG;
-					// remove drag on flag
-					widgetConfig &= ~DRAG_ON;
-				}
-				prayerWidget.setClickMask(widgetConfig);
 
 				if (unlocked)
 				{
@@ -407,11 +431,13 @@ class PrayerReorder
 
 				++index;
 			}
+
+			createWarning(unlocked);
 		}
 
-		if (isInterfaceOpen(WidgetID.QUICK_PRAYERS_GROUP_ID))
+		if (isInterfaceOpen(InterfaceID.QUICKPRAYER))
 		{
-			Widget prayersContainer = client.getWidget(WidgetInfo.QUICK_PRAYER_PRAYERS);
+			Widget prayersContainer = client.getWidget(InterfaceID.Quickprayer.BUTTONS);
 			if (prayersContainer == null)
 			{
 				return;
@@ -455,7 +481,24 @@ class PrayerReorder
 		}
 	}
 
-	private boolean isInterfaceOpen(int interfaceId)
+	private void createWarning(boolean unlocked)
+	{
+		Widget w = client.getWidget(InterfaceID.Prayerbook.UNIVERSE);
+		w.deleteAllChildren();
+
+		if (unlocked)
+		{
+			Widget c = w.createChild(WidgetType.RECTANGLE);
+			c.setHeightMode(WidgetSizeMode.MINUS);
+			c.setWidthMode(WidgetSizeMode.MINUS);
+			c.setTextColor(0xff0000);
+			c.setFilled(true);
+			c.setOpacity(220);
+			c.revalidate();
+		}
+	}
+
+	private boolean isInterfaceOpen(@Interface int interfaceId)
 	{
 		return client.getWidget(interfaceId, 0) != null;
 	}
@@ -469,7 +512,7 @@ class PrayerReorder
 			&& ("Hide".equals(menuOptionClicked.getMenuOption()) || "Unhide".equals(menuOptionClicked.getMenuOption())))
 		{
 			var widget = menuOptionClicked.getWidget();
-			var prayerbook = client.getVarbitValue(Varbits.PRAYERBOOK);
+			var prayerbook = client.getVarbitValue(VarbitID.PRAYERBOOK);
 			var prayerId = findPrayerIdFromComponent(prayerbook, widget);
 			if (prayerId != -1)
 			{
@@ -491,5 +534,11 @@ class PrayerReorder
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged e)
+	{
+		clientThread.invokeLater(this::redrawPrayers);
 	}
 }

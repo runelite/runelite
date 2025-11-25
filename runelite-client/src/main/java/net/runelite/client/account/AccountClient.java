@@ -99,7 +99,7 @@ public class AccountClient
 			.url(url)
 			.build();
 
-		try (Response response = client.newCall(request).execute())
+		try (Response ignored = client.newCall(request).execute())
 		{
 			log.debug("Sent logout request");
 		}

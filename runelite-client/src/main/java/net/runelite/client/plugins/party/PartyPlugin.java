@@ -52,14 +52,14 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -491,72 +491,74 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		if (!forceSend && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
-		{
-			return;
-		}
-
 		final int healthCurrent = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
-		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
-		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
+		final int specEnergy = client.getVarpValue(VarPlayerID.SA_ENERGY) / 10;
+		final boolean vengActive = client.getVarbitValue(VarbitID.VENGEANCE_REBOUND) == 1;
 		final Color memberColor = getLocalMemberColor();
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
 
-		boolean shouldSend = false;
+		boolean hasChange = false;
+		boolean canDelay = !forceSend;
 		final StatusUpdate update = new StatusUpdate();
 		if (forceSend || !characterName.equals(lastStatus.getCharacterName()))
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setCharacterName(characterName);
 		}
 		if (forceSend || healthCurrent != lastStatus.getHealthCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthCurrent(healthCurrent);
 		}
 		if (forceSend || healthMax != lastStatus.getHealthMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthMax(healthMax);
 		}
 		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerCurrent(prayerCurrent);
 		}
 		if (forceSend || prayerMax != lastStatus.getPrayerMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerMax(prayerMax);
 		}
 		if (forceSend || runEnergy != lastStatus.getRunEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setRunEnergy(runEnergy);
 		}
 		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
+			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() == 10; // delay regen
 			update.setSpecEnergy(specEnergy);
 		}
 		if (forceSend || vengActive != lastStatus.getVengeanceActive())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setVengeanceActive(vengActive);
 		}
 		if (forceSend || !Objects.equals(memberColor, lastStatus.getMemberColor()))
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setMemberColor(memberColor);
 		}
 
-		if (shouldSend)
+		if (canDelay && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
+		{
+			return;
+		}
+
+		if (hasChange)
 		{
 			party.send(update);
 			// non-null values for next-tick comparison
@@ -606,7 +608,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (!developerMode || !commandExecuted.getCommand().equals("partyinfo"))
+		if (!developerMode || !commandExecuted.getCommand().equalsIgnoreCase("partyinfo"))
 		{
 			return;
 		}

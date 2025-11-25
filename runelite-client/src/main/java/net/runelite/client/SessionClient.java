@@ -24,12 +24,7 @@
  */
 package net.runelite.client;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,43 +33,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 class SessionClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl sessionUrl;
-	private final Gson gson;
 
 	@Inject
-	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl, Gson gson)
+	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl)
 	{
 		this.client = client;
 		this.sessionUrl = sessionUrl;
-		this.gson = gson;
-	}
-
-	UUID open() throws IOException
-	{
-		HttpUrl url = sessionUrl.newBuilder()
-			.build();
-
-		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			ResponseBody body = response.body();
-
-			InputStream in = body.byteStream();
-			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
-		}
-		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
-		{
-			throw new IOException(ex);
-		}
 	}
 
 	void ping(UUID uuid, boolean loggedIn) throws IOException
@@ -97,19 +66,5 @@ class SessionClient
 				throw new IOException("Unsuccessful ping");
 			}
 		}
-	}
-
-	void delete(UUID uuid) throws IOException
-	{
-		HttpUrl url = sessionUrl.newBuilder()
-			.addQueryParameter("session", uuid.toString())
-			.build();
-
-		Request request = new Request.Builder()
-			.delete()
-			.url(url)
-			.build();
-
-		client.newCall(request).execute().close();
 	}
 }

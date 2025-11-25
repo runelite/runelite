@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.ITEM_EXAMINE;
 import static net.runelite.api.ChatMessageType.MODCHAT;
 import static net.runelite.api.ChatMessageType.NPC_EXAMINE;
+import static net.runelite.api.ChatMessageType.NPC_SAY;
 import static net.runelite.api.ChatMessageType.OBJECT_EXAMINE;
 import static net.runelite.api.ChatMessageType.PUBLICCHAT;
 import static net.runelite.api.ChatMessageType.SPAM;
@@ -91,10 +93,11 @@ public class ChatFilterPlugin extends Plugin
 		OBJECT_EXAMINE,
 		SPAM,
 		PUBLICCHAT,
-		MODCHAT
+		MODCHAT,
+		NPC_SAY
 	);
 
-	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
+	private static final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private List<Pattern> filteredPatterns = Collections.emptyList();
 	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 
@@ -104,7 +107,7 @@ public class ChatFilterPlugin extends Plugin
 		int count;
 	}
 
-	private final LinkedHashMap<String, Duplicate> duplicateChatCache = new LinkedHashMap<String, Duplicate>()
+	private final LinkedHashMap<String, Duplicate> duplicateChatCache = new LinkedHashMap<>()
 	{
 		private static final int MAX_ENTRIES = 100;
 
@@ -114,6 +117,19 @@ public class ChatFilterPlugin extends Plugin
 			return size() > MAX_ENTRIES;
 		}
 	};
+
+	private static class FilterCacheMap extends LinkedHashMap<Integer, String>
+	{
+		private static final int MAX_ENTRIES = 100;
+
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<Integer, String> eldest)
+		{
+			return size() > MAX_ENTRIES;
+		}
+	}
+
+	private final Map<ChatMessageType, FilterCacheMap> filterCache = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -139,6 +155,8 @@ public class ChatFilterPlugin extends Plugin
 	{
 		filteredPatterns = Collections.emptyList();
 		filteredNamePatterns = Collections.emptyList();
+		duplicateChatCache.clear();
+		filterCache.clear();
 		client.refreshChat();
 	}
 
@@ -149,9 +167,11 @@ public class ChatFilterPlugin extends Plugin
 		{
 			// Login drops references to all messages and also resets the global message id counter.
 			// Invalidate the message id so it doesn't collide later when rebuilding the chatfilter.
+			case CONNECTION_LOST:
 			case HOPPING:
 			case LOGGING_IN:
 				duplicateChatCache.values().forEach(d -> d.messageId = -1);
+				filterCache.clear();
 		}
 	}
 
@@ -165,12 +185,12 @@ public class ChatFilterPlugin extends Plugin
 
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
 		final int messageType = intStack[intStackSize - 2];
 		final int messageId = intStack[intStackSize - 1];
-		String message = stringStack[stringStackSize - 1];
+		String message = (String) objectStack[objectStackSize - 1];
 
 		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
 		final MessageNode messageNode = client.getMessages().get(messageId);
@@ -190,14 +210,15 @@ public class ChatFilterPlugin extends Plugin
 			case CLAN_CHAT:
 			case CLAN_GUEST_CHAT:
 			case CLAN_GIM_CHAT:
-				if (shouldFilterPlayerMessage(Text.removeTags(name)))
+				if (canFilterPlayer(Text.sanitize(name)))
 				{
-					message = censorMessage(name, message);
+					message = censorMessage(messageNode, name, message);
 					blockMessage = message == null;
 				}
 				break;
 			case GAMEMESSAGE:
 			case ENGINE:
+			case FRIENDSCHATNOTIFICATION:
 			case ITEM_EXAMINE:
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:
@@ -205,9 +226,10 @@ public class ChatFilterPlugin extends Plugin
 			case CLAN_MESSAGE:
 			case CLAN_GUEST_MESSAGE:
 			case CLAN_GIM_MESSAGE:
+			case NPC_SAY:
 				if (config.filterGameChat())
 				{
-					message = censorMessage(null, message);
+					message = censorMessage(messageNode, null, message);
 					blockMessage = message == null;
 				}
 				break;
@@ -244,14 +266,14 @@ public class ChatFilterPlugin extends Plugin
 				message += " (" + duplicateCount + ")";
 			}
 
-			stringStack[stringStackSize - 1] = message;
+			objectStack[objectStackSize - 1] = message;
 		}
 	}
 
 	@Subscribe
 	public void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player) || !shouldFilterPlayerMessage(event.getActor().getName()))
+		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName()))
 		{
 			return;
 		}
@@ -286,7 +308,7 @@ public class ChatFilterPlugin extends Plugin
 		}
 	}
 
-	boolean shouldFilterPlayerMessage(String playerName)
+	boolean canFilterPlayer(String playerName)
 	{
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
@@ -322,12 +344,12 @@ public class ChatFilterPlugin extends Plugin
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
 			.replace('\u00A0', ' ')
-			.replaceAll("<lt>", "<")
-			.replaceAll("<gt>", ">");
+			.replace("<lt>", "<")
+			.replace("<gt>", ">");
 		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
 
-		if (username != null && shouldFilterByName(username))
+		if (username != null && isNameFiltered(username))
 		{
 			switch (config.filterType())
 			{
@@ -374,6 +396,25 @@ public class ChatFilterPlugin extends Plugin
 		return filtered ? strippedMessage : message;
 	}
 
+	private String censorMessage(MessageNode messageNode, String username, String message)
+	{
+		FilterCacheMap map = this.filterCache.get(messageNode.getType());
+		if (map == null)
+		{
+			map = new FilterCacheMap();
+			this.filterCache.put(messageNode.getType(), map);
+		}
+
+		if (map.containsKey(messageNode.getId()))
+		{
+			return map.get(messageNode.getId());
+		}
+
+		String censoredMessage = censorMessage(username, message);
+		map.put(messageNode.getId(), censoredMessage);
+		return censoredMessage;
+	}
+
 	void updateFilteredPatterns()
 	{
 		List<Pattern> patterns = new ArrayList<>();
@@ -398,6 +439,8 @@ public class ChatFilterPlugin extends Plugin
 
 		filteredPatterns = patterns;
 		filteredNamePatterns = namePatterns;
+
+		filterCache.clear();
 	}
 
 	private String stripAccents(String input)
@@ -432,7 +475,7 @@ public class ChatFilterPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	boolean shouldFilterByName(final String playerName)
+	boolean isNameFiltered(final String playerName)
 	{
 		String sanitizedName = Text.standardize(playerName);
 		for (Pattern pattern : filteredNamePatterns)

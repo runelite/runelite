@@ -53,7 +53,7 @@ import okhttp3.Response;
 @PluginDescriptor(
 	name = "XP Updater",
 	description = "Automatically updates your stats on external xptrackers when you log out",
-	tags = {"cml", "crystalmathlabs", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
+	tags = {"cml", "crystalmathlabs", "runetracker", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -102,7 +102,7 @@ public class XpUpdaterPlugin extends Plugin
 				fetchXp = true;
 			}
 		}
-		else if (state == GameState.LOGIN_SCREEN)
+		else if (state == GameState.LOGIN_SCREEN || state == GameState.HOPPING)
 		{
 			Player local = client.getLocalPlayer();
 			if (local == null)
@@ -146,7 +146,8 @@ public class XpUpdaterPlugin extends Plugin
 			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
 			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
-			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
@@ -171,7 +172,8 @@ public class XpUpdaterPlugin extends Plugin
 		if (config.templeosrs()
 			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl.Builder url = new HttpUrl.Builder()
 				.scheme("https")
@@ -199,14 +201,13 @@ public class XpUpdaterPlugin extends Plugin
 	{
 		if (config.wiseoldman()
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host(
-					worldTypes.contains(WorldType.SEASONAL) ? "seasonal.api.wiseoldman.net" :
-						"api.wiseoldman.net")
-				.addPathSegment("v2")
+				.host("api.wiseoldman.net")
+				.addPathSegment(worldTypes.contains(WorldType.SEASONAL) ? "league" : "v2")
 				.addPathSegment("players")
 				.addPathSegment(username)
 				.build();

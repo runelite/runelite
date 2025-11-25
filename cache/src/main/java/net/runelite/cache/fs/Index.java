@@ -25,25 +25,39 @@
 package net.runelite.cache.fs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.cache.index.ArchiveData;
 import net.runelite.cache.index.FileData;
 import net.runelite.cache.index.IndexData;
 import net.runelite.cache.util.Djb2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@EqualsAndHashCode(of = {"id", "revision", "archives"})
 public class Index
 {
-	private static final Logger logger = LoggerFactory.getLogger(Index.class);
-
+	@Getter
 	private final int id;
 
+	@Setter
+	@Getter
 	private int protocol = 6;
+	@Setter
+	@Getter
 	private boolean named = true;
+	@Setter
+	@Getter
+	private boolean sized = false;
+	@Setter
+	@Getter
 	private int revision;
+	@Setter
+	@Getter
 	private int crc;
+	@Setter
+	@Getter
 	private int compression; // compression method of this index's data in 255
 
 	private final List<Archive> archives = new ArrayList<>();
@@ -53,120 +67,62 @@ public class Index
 		this.id = id;
 	}
 
-	@Override
-	public int hashCode()
-	{
-		int hash = 3;
-		hash = 97 * hash + this.id;
-		hash = 97 * hash + this.revision;
-		hash = 97 * hash + Objects.hashCode(this.archives);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Index other = (Index) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.revision != other.revision)
-		{
-			return false;
-		}
-		if (!Objects.equals(this.archives, other.archives))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public int getProtocol()
-	{
-		return protocol;
-	}
-
-	public void setProtocol(int protocol)
-	{
-		this.protocol = protocol;
-	}
-
-	public boolean isNamed()
-	{
-		return named;
-	}
-
-	public void setNamed(boolean named)
-	{
-		this.named = named;
-	}
-
-	public int getRevision()
-	{
-		return revision;
-	}
-
-	public void setRevision(int revision)
-	{
-		this.revision = revision;
-	}
-
-	public int getCrc()
-	{
-		return crc;
-	}
-
-	public void setCrc(int crc)
-	{
-		this.crc = crc;
-	}
-
-	public int getCompression()
-	{
-		return compression;
-	}
-
-	public void setCompression(int compression)
-	{
-		this.compression = compression;
-	}
-
 	public List<Archive> getArchives()
 	{
-		return archives;
+		return Collections.unmodifiableList(archives);
 	}
 
 	public Archive addArchive(int id)
 	{
+		int idx = findArchiveIndex(id);
+		if (idx >= 0)
+		{
+			throw new IllegalArgumentException("archive " + id + " already exists");
+		}
+
+		idx = -idx - 1;
 		Archive archive = new Archive(this, id);
-		this.archives.add(archive);
+		this.archives.add(idx, archive);
 		return archive;
 	}
 
 	public Archive getArchive(int id)
 	{
-		for (Archive a : archives)
+		int idx = findArchiveIndex(id);
+		if (idx < 0)
 		{
-			if (a.getArchiveId() == id)
+			return null;
+		}
+
+		return archives.get(idx);
+	}
+
+	private int findArchiveIndex(int id)
+	{
+		int low = 0;
+		int high = archives.size() - 1;
+
+		while (low <= high)
+		{
+			int mid = (low + high) >>> 1;
+
+			Archive a = archives.get(mid);
+			int cmp = Integer.compare(a.getArchiveId(), id);
+			if (cmp < 0)
 			{
-				return a;
+				low = mid + 1;
+			}
+			else if (cmp > 0)
+			{
+				high = mid - 1;
+			}
+			else
+			{
+				return mid;
 			}
 		}
-		return null;
+
+		return -(low + 1);
 	}
 
 	public boolean removeArchive(Archive archive)
@@ -193,6 +149,7 @@ public class Index
 		data.setProtocol(protocol);
 		data.setRevision(revision);
 		data.setNamed(named);
+		data.setSized(sized);
 
 		ArchiveData[] archiveDatas = new ArchiveData[archives.size()];
 		data.setArchives(archiveDatas);
@@ -205,6 +162,8 @@ public class Index
 			ad.setNameHash(archive.getNameHash());
 			ad.setCrc(archive.getCrc());
 			ad.setRevision(archive.getRevision());
+			ad.setCompressedSize(archive.getCompressedSize());
+			ad.setDecompressedSize(archive.getDecompressedSize());
 
 			FileData[] files = archive.getFileData();
 			ad.setFiles(files);

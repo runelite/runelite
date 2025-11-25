@@ -42,7 +42,7 @@ public class WidgetItem
 	/**
 	 * The ID of the item represented.
 	 *
-	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.gameval.ItemID
 	 */
 	private final int id;
 	/**

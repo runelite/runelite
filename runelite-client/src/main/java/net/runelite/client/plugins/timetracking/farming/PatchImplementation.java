@@ -33,44 +33,6 @@ import net.runelite.client.plugins.timetracking.Tab;
 @Getter
 public enum PatchImplementation
 {
-	BELLADONNA(Tab.SPECIAL, "", false)
-		{
-			@Override
-			PatchState forVarbitValue(int value)
-			{
-				if (value >= 0 && value <= 3)
-				{
-					// Belladonna patch[Rake,Inspect,Guide] 7560,7559,7558,7557
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
-				}
-				if (value >= 4 && value <= 7)
-				{
-					// Belladonna[Inspect,Guide] 7561,7562,7563,7564
-					return new PatchState(Produce.BELLADONNA, CropState.GROWING, value - 4);
-				}
-				if (value == 8)
-				{
-					// Belladonna[Pick,Inspect,Guide] 7565
-					return new PatchState(Produce.BELLADONNA, CropState.HARVESTABLE, 0);
-				}
-				if (value >= 9 && value <= 11)
-				{
-					// Diseased Belladonna[Cure,Inspect,Guide] 7566,7567,7568
-					return new PatchState(Produce.BELLADONNA, CropState.DISEASED, value - 8);
-				}
-				if (value >= 12 && value <= 14)
-				{
-					// Dead Belladonna[Clear,Inspect,Guide] 7569,7570,7571
-					return new PatchState(Produce.BELLADONNA, CropState.DEAD, value - 11);
-				}
-				if (value >= 15 && value <= 255)
-				{
-					// Belladonna patch[Rake,Inspect,Guide] 7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				return null;
-			}
-		},
 	MUSHROOM(Tab.SPECIAL, "", false)
 		{
 			@Override
@@ -482,147 +444,157 @@ public enum PatchImplementation
 				}
 				if (value >= 4 && value <= 7)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 14209,26825,26826,26827
 					return new PatchState(Produce.GUAM, CropState.GROWING, value - 4);
 				}
 				if (value >= 8 && value <= 10)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 26828,26828,26828
 					return new PatchState(Produce.GUAM, CropState.HARVESTABLE, 10 - value);
 				}
 				if (value >= 11 && value <= 14)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 26829,39748,39749,39750
 					return new PatchState(Produce.MARRENTILL, CropState.GROWING, value - 11);
 				}
 				if (value >= 15 && value <= 17)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39751,39751,39751
 					return new PatchState(Produce.MARRENTILL, CropState.HARVESTABLE, 17 - value);
 				}
 				if (value >= 18 && value <= 21)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39752,39753,39754,39755
 					return new PatchState(Produce.TARROMIN, CropState.GROWING, value - 18);
 				}
 				if (value >= 22 && value <= 24)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39756,39756,39756
 					return new PatchState(Produce.TARROMIN, CropState.HARVESTABLE, 24 - value);
 				}
 				if (value >= 25 && value <= 28)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39757,39758,39759,39760
 					return new PatchState(Produce.HARRALANDER, CropState.GROWING, value - 25);
 				}
 				if (value >= 29 && value <= 31)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39761,39761,39761
 					return new PatchState(Produce.HARRALANDER, CropState.HARVESTABLE, 31 - value);
 				}
 				if (value >= 32 && value <= 35)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39762,39763,39764,39765
 					return new PatchState(Produce.RANARR, CropState.GROWING, value - 32);
 				}
 				if (value >= 36 && value <= 38)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39766,39766,39766
 					return new PatchState(Produce.RANARR, CropState.HARVESTABLE, 38 - value);
 				}
 				if (value >= 39 && value <= 42)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39777,39778,39779,39780
 					return new PatchState(Produce.TOADFLAX, CropState.GROWING, value - 39);
 				}
 				if (value >= 43 && value <= 45)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39781,39781,39781
 					return new PatchState(Produce.TOADFLAX, CropState.HARVESTABLE, 45 - value);
 				}
 				if (value >= 46 && value <= 49)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39767,39768,39769,39770
 					return new PatchState(Produce.IRIT, CropState.GROWING, value - 46);
 				}
 				if (value >= 50 && value <= 52)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39771,39771,39771
 					return new PatchState(Produce.IRIT, CropState.HARVESTABLE, 52 - value);
 				}
 				if (value >= 53 && value <= 56)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39772,39773,39774,39775
 					return new PatchState(Produce.AVANTOE, CropState.GROWING, value - 53);
 				}
 				if (value >= 57 && value <= 59)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39776,39776,39776
 					return new PatchState(Produce.AVANTOE, CropState.HARVESTABLE, 59 - value);
 				}
-				if (value >= 60 && value <= 67)
+				if (value >= 60 && value <= 63)
 				{
-					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135
+					// Herbs[Inspect,Guide] 55347,55348,55349,55350
+					return new PatchState(Produce.HUASCA, CropState.GROWING, value - 60);
+				}
+				if (value >= 64 && value <= 66)
+				{
+					// Herbs[Pick,Inspect,Guide] 55351,55351,55351
+					return new PatchState(Produce.HUASCA, CropState.HARVESTABLE, 66 - value);
+				}
+				if (value == 67)
+				{
+					// Herb patch[Rake,Inspect,Guide] 8135
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				if (value >= 68 && value <= 71)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39782,39783,39784,39785
 					return new PatchState(Produce.KWUARM, CropState.GROWING, value - 68);
 				}
 				if (value >= 72 && value <= 74)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39786,39786,39786
 					return new PatchState(Produce.KWUARM, CropState.HARVESTABLE, 74 - value);
 				}
 				if (value >= 75 && value <= 78)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39807,39808,39809,39810
 					return new PatchState(Produce.SNAPDRAGON, CropState.GROWING, value - 75);
 				}
 				if (value >= 79 && value <= 81)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39811,39811,39811
 					return new PatchState(Produce.SNAPDRAGON, CropState.HARVESTABLE, 81 - value);
 				}
 				if (value >= 82 && value <= 85)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39787,39788,39789,39790
 					return new PatchState(Produce.CADANTINE, CropState.GROWING, value - 82);
 				}
 				if (value >= 86 && value <= 88)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39791,39791,39791
 					return new PatchState(Produce.CADANTINE, CropState.HARVESTABLE, 88 - value);
 				}
 				if (value >= 89 && value <= 92)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39792,39793,39794,39795
 					return new PatchState(Produce.LANTADYME, CropState.GROWING, value - 89);
 				}
 				if (value >= 93 && value <= 95)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39796,39796,39796
 					return new PatchState(Produce.LANTADYME, CropState.HARVESTABLE, 95 - value);
 				}
 				if (value >= 96 && value <= 99)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39797,39798,39799,39800
 					return new PatchState(Produce.DWARF_WEED, CropState.GROWING, value - 96);
 				}
 				if (value >= 100 && value <= 102)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39801,39801,39801
 					return new PatchState(Produce.DWARF_WEED, CropState.HARVESTABLE, 102 - value);
 				}
 				if (value >= 103 && value <= 106)
 				{
-					// Herbs[Inspect,Guide] 8139,8140,8141,8142
+					// Herbs[Inspect,Guide] 39802,39803,39804,39805
 					return new PatchState(Produce.TORSTOL, CropState.GROWING, value - 103);
 				}
 				if (value >= 107 && value <= 109)
 				{
-					// Herbs[Pick,Inspect,Guide] 8143,8143,8143
+					// Herbs[Pick,Inspect,Guide] 39806,39806,39806
 					return new PatchState(Produce.TORSTOL, CropState.HARVESTABLE, 109 - value);
 				}
 				if (value >= 128 && value <= 130)
@@ -700,9 +672,14 @@ public enum PatchImplementation
 					// Dead herbs[Clear,Inspect,Guide] 8147,8148,8149
 					return new PatchState(Produce.ANYHERB, CropState.DEAD, value - 169);
 				}
-				if (value >= 173 && value <= 191)
+				if (value >= 173 && value <= 175)
 				{
-					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
+					// Diseased herbs[Cure,Inspect,Guide] 8144,8145,8146
+					return new PatchState(Produce.HUASCA, CropState.DISEASED, value - 172);
+				}
+				if (value >= 176 && value <= 191)
+				{
+					// Herb patch[Rake,Inspect,Guide] 8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135,8135
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				if (value >= 192 && value <= 195)
@@ -1545,286 +1522,311 @@ public enum PatchImplementation
 				if (value >= 8 && value <= 10)
 				{
 					// Hammerstone Hops[Harvest,Inspect,Guide] 8181,8181,8181
-					return new PatchState(Produce.HAMMERSTONE, CropState.HARVESTABLE, value - 8);
+					return new PatchState(Produce.HAMMERSTONE, CropState.HARVESTABLE, 10 - value);
 				}
-				if (value >= 11 && value <= 15)
+				if (value >= 11 && value <= 13)
+				{
+					// Diseased Hammerstone Hops[Cure,Inspect,Guide] 8186,8187,8188
+					return new PatchState(Produce.HAMMERSTONE, CropState.DISEASED, value - 10);
+				}
+				if (value >= 14 && value <= 18)
 				{
 					// Asgarnian Hops[Inspect,Guide] 8154,8155,8156,8157,8158
-					return new PatchState(Produce.ASGARNIAN, CropState.GROWING, value - 11);
+					return new PatchState(Produce.ASGARNIAN, CropState.GROWING, value - 14);
 				}
-				if (value >= 16 && value <= 18)
+				if (value >= 19 && value <= 21)
 				{
 					// Asgarnian Hops[Harvest,Inspect,Guide] 8159,8159,8159
-					return new PatchState(Produce.ASGARNIAN, CropState.HARVESTABLE, value - 16);
+					return new PatchState(Produce.ASGARNIAN, CropState.HARVESTABLE, 21 - value);
 				}
-				if (value >= 19 && value <= 24)
+				if (value >= 22 && value <= 25)
+				{
+					// Diseased Asgarnian Hops[Cure,Inspect,Guide] 8165,8166,8167,8168
+					return new PatchState(Produce.ASGARNIAN, CropState.DISEASED, value - 21);
+				}
+				if (value >= 26 && value <= 31)
 				{
 					// Yanillian Hops[Inspect,Guide] 8288,8289,8290,8291,8292,8293
-					return new PatchState(Produce.YANILLIAN, CropState.GROWING, value - 19);
+					return new PatchState(Produce.YANILLIAN, CropState.GROWING, value - 26);
 				}
-				if (value >= 25 && value <= 27)
+				if (value >= 32 && value <= 34)
 				{
 					// Yanillian Hops[Harvest,Inspect,Guide] 8294,8294,8294
-					return new PatchState(Produce.YANILLIAN, CropState.HARVESTABLE, value - 25);
+					return new PatchState(Produce.YANILLIAN, CropState.HARVESTABLE, 34 - value);
 				}
-				if (value >= 28 && value <= 34)
+				if (value >= 35 && value <= 39)
+				{
+					// Diseased Yanillian Hops[Cure,Inspect,Guide] 8301,8302,8303,8304,8305
+					return new PatchState(Produce.YANILLIAN, CropState.DISEASED, value - 34);
+				}
+				if (value >= 40 && value <= 46)
 				{
 					// Krandorian Hops[Inspect,Guide] 8211,8212,8213,8214,8215,8216,8217
-					return new PatchState(Produce.KRANDORIAN, CropState.GROWING, value - 28);
+					return new PatchState(Produce.KRANDORIAN, CropState.GROWING, value - 40);
 				}
-				if (value >= 35 && value <= 37)
+				if (value >= 47 && value <= 49)
 				{
 					// Krandorian Hops[Harvest,Inspect,Guide] 8218,8218,8218
-					return new PatchState(Produce.KRANDORIAN, CropState.HARVESTABLE, value - 35);
+					return new PatchState(Produce.KRANDORIAN, CropState.HARVESTABLE, 49 - value);
 				}
-				if (value >= 38 && value <= 45)
+				if (value >= 50 && value <= 55)
+				{
+					// Diseased Krandorian Hops[Cure,Inspect,Guide] 8226,8227,8228,8229,8230,8231
+					return new PatchState(Produce.KRANDORIAN, CropState.DISEASED, value - 49);
+				}
+				if (value >= 56 && value <= 63)
 				{
 					// Wildblood Hops[Inspect,Guide] 8257,8258,8259,8260,8261,8262,8263,8264
-					return new PatchState(Produce.WILDBLOOD, CropState.GROWING, value - 38);
+					return new PatchState(Produce.WILDBLOOD, CropState.GROWING, value - 56);
 				}
-				if (value >= 46 && value <= 48)
+				if (value >= 64 && value <= 66)
 				{
 					// Wildblood Hops[Harvest,Inspect,Guide] 8265,8265,8265
-					return new PatchState(Produce.WILDBLOOD, CropState.HARVESTABLE, value - 46);
+					return new PatchState(Produce.WILDBLOOD, CropState.HARVESTABLE, 66 - value);
 				}
-				if (value >= 49 && value <= 52)
+				if (value >= 67 && value <= 73)
+				{
+					// Diseased Wildblood Hops[Cure,Inspect,Guide] 8274,8275,8276,8277,8278,8279,8280
+					return new PatchState(Produce.WILDBLOOD, CropState.DISEASED, value - 66);
+				}
+				if (value >= 74 && value <= 77)
 				{
 					// Barley[Inspect,Guide] 8192,8193,8194,8195
-					return new PatchState(Produce.BARLEY, CropState.GROWING, value - 49);
+					return new PatchState(Produce.BARLEY, CropState.GROWING, value - 74);
 				}
-				if (value >= 53 && value <= 55)
+				if (value >= 78 && value <= 80)
 				{
 					// Barley[Harvest,Inspect,Guide] 8196,8196,8196
-					return new PatchState(Produce.BARLEY, CropState.HARVESTABLE, value - 53);
+					return new PatchState(Produce.BARLEY, CropState.HARVESTABLE, 80 - value);
 				}
-				if (value >= 56 && value <= 60)
+				if (value >= 81 && value <= 83)
+				{
+					// Diseased Barley[Cure,Inspect,Guide] 8201,8202,8203
+					return new PatchState(Produce.BARLEY, CropState.DISEASED, value - 80);
+				}
+				if (value >= 84 && value <= 88)
 				{
 					// Jute[Inspect,Guide] 8238,8239,8240,8241,8242
-					return new PatchState(Produce.JUTE, CropState.GROWING, value - 56);
-				}
-				if (value >= 61 && value <= 63)
-				{
-					// Jute[Harvest,Inspect,Guide] 8243,8243,8243
-					return new PatchState(Produce.JUTE, CropState.HARVESTABLE, value - 61);
-				}
-				if (value >= 64 && value <= 67)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 68 && value <= 71)
-				{
-					// Hammerstone Hops[Inspect,Guide] 8182,8183,8184,8185
-					return new PatchState(Produce.HAMMERSTONE, CropState.GROWING, value - 68);
-				}
-				if (value >= 72 && value <= 74)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 75 && value <= 79)
-				{
-					// Asgarnian Hops[Inspect,Guide] 8160,8161,8162,8163,8164
-					return new PatchState(Produce.ASGARNIAN, CropState.GROWING, value - 75);
-				}
-				if (value >= 80 && value <= 82)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 83 && value <= 88)
-				{
-					// Yanillian Hops[Inspect,Guide] 8295,8296,8297,8298,8299,8300
-					return new PatchState(Produce.YANILLIAN, CropState.GROWING, value - 83);
+					return new PatchState(Produce.JUTE, CropState.GROWING, value - 84);
 				}
 				if (value >= 89 && value <= 91)
 				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+					// Jute[Harvest,Inspect,Guide] 8243,8243,8243
+					return new PatchState(Produce.JUTE, CropState.HARVESTABLE, 91 - value);
 				}
-				if (value >= 92 && value <= 98)
+				if (value >= 92 && value <= 95)
 				{
-					// Krandorian Hops[Inspect,Guide] 8219,8220,8221,8222,8223,8224,8225
-					return new PatchState(Produce.KRANDORIAN, CropState.GROWING, value - 92);
+					// Diseased Jute[Cure,Inspect,Guide] 8249,8250,8251,8252
+					return new PatchState(Produce.JUTE, CropState.DISEASED, value - 91);
+				}
+				if (value >= 96 && value <= 98)
+				{
+					// Flax[Inspect,Guide] 58836,58837,58838
+					return new PatchState(Produce.FLAX, CropState.GROWING, value - 96);
 				}
 				if (value >= 99 && value <= 101)
 				{
+					// Flax[Harvest,Inspect,Guide] 58839,58839,58839
+					return new PatchState(Produce.FLAX, CropState.HARVESTABLE, 101 - value);
+				}
+				if (value >= 102 && value <= 103)
+				{
+					// Diseased Flax[Cure,Inspect,Guide] 58843,58844
+					return new PatchState(Produce.FLAX, CropState.DISEASED, value - 101);
+				}
+				if (value >= 104 && value <= 107)
+				{
+					// Hemp[Inspect,Guide] 58847,58848,58849,58850
+					return new PatchState(Produce.HEMP, CropState.GROWING, value - 104);
+				}
+				if (value >= 108 && value <= 110)
+				{
+					// Hemp[Harvest,Inspect,Guide] 58851,58851,58851
+					return new PatchState(Produce.HEMP, CropState.HARVESTABLE, 110 - value);
+				}
+				if (value >= 111 && value <= 113)
+				{
+					// Diseased Hemp[Cure,Inspect,Guide] 58856,58857,58858
+					return new PatchState(Produce.HEMP, CropState.DISEASED, value - 110);
+				}
+				if (value >= 114 && value <= 118)
+				{
+					// Cotton[Inspect,Guide] 58862,58863,58864,58865,58866
+					return new PatchState(Produce.COTTON, CropState.GROWING, value - 114);
+				}
+				if (value >= 119 && value <= 121)
+				{
+					// Cotton[Harvest,Inspect,Guide] 58867,58867,58867
+					return new PatchState(Produce.COTTON, CropState.HARVESTABLE, 121 - value);
+				}
+				if (value >= 122 && value <= 125)
+				{
+					// Diseased Cotton[Cure,Inspect,Guide] 58873,58874,58875,58876
+					return new PatchState(Produce.COTTON, CropState.DISEASED, value - 121);
+				}
+				if (value >= 126 && value <= 131)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 132 && value <= 135)
+				{
+					// Hammerstone Hops[Inspect,Guide] 8182,8183,8184,8185
+					return new PatchState(Produce.HAMMERSTONE, CropState.GROWING, value - 132);
+				}
+				if (value >= 136 && value <= 138)
+				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
-				if (value >= 102 && value <= 109)
-				{
-					// Wildblood Hops[Inspect,Guide] 8266,8267,8268,8269,8270,8271,8272,8273
-					return new PatchState(Produce.WILDBLOOD, CropState.GROWING, value - 102);
-				}
-				if (value >= 110 && value <= 112)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 113 && value <= 116)
-				{
-					// Barley[Inspect,Guide] 8197,8198,8199,8200
-					return new PatchState(Produce.BARLEY, CropState.GROWING, value - 113);
-				}
-				if (value >= 117 && value <= 119)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 120 && value <= 124)
-				{
-					// Jute[Inspect,Guide] 8244,8245,8246,8247,8248
-					return new PatchState(Produce.JUTE, CropState.GROWING, value - 120);
-				}
-				if (value >= 125 && value <= 132)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210,8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 133 && value <= 135)
-				{
-					// Diseased Hammerstone Hops[Cure,Inspect,Guide] 8186,8187,8188
-					return new PatchState(Produce.HAMMERSTONE, CropState.DISEASED, value - 132);
-				}
-				if (value >= 136 && value <= 139)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 140 && value <= 143)
-				{
-					// Diseased Asgarnian Hops[Cure,Inspect,Guide] 8165,8166,8167,8168
-					return new PatchState(Produce.ASGARNIAN, CropState.DISEASED, value - 139);
-				}
-				if (value >= 144 && value <= 147)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 148 && value <= 152)
-				{
-					// Diseased Yanillian Hops[Cure,Inspect,Guide] 8301,8302,8303,8304,8305
-					return new PatchState(Produce.YANILLIAN, CropState.DISEASED, value - 147);
-				}
-				if (value >= 153 && value <= 156)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 157 && value <= 162)
-				{
-					// Diseased Krandorian Hops[Cure,Inspect,Guide] 8226,8227,8228,8229,8230,8231
-					return new PatchState(Produce.KRANDORIAN, CropState.DISEASED, value - 156);
-				}
-				if (value >= 163 && value <= 166)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 167 && value <= 173)
-				{
-					// Diseased Wildblood Hops[Cure,Inspect,Guide] 8274,8275,8276,8277,8278,8279,8280
-					return new PatchState(Produce.WILDBLOOD, CropState.DISEASED, value - 166);
-				}
-				if (value >= 174 && value <= 177)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 178 && value <= 180)
-				{
-					// Diseased Barley[Cure,Inspect,Guide] 8201,8202,8203
-					return new PatchState(Produce.BARLEY, CropState.DISEASED, value - 177);
-				}
-				if (value == 181)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 183 && value <= 184)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 185 && value <= 188)
-				{
-					// Diseased Jute[Cure,Inspect,Guide] 8249,8250,8251,8252
-					return new PatchState(Produce.JUTE, CropState.DISEASED, value - 184);
-				}
-				if (value >= 189 && value <= 196)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210,8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 197 && value <= 199)
+				if (value >= 139 && value <= 141)
 				{
 					// Dead Hammerstone Hops[Clear,Inspect,Guide] 8189,8190,8191
-					return new PatchState(Produce.HAMMERSTONE, CropState.DEAD, value - 196);
+					return new PatchState(Produce.HAMMERSTONE, CropState.DEAD, value - 138);
 				}
-				if (value >= 200 && value <= 203)
+				if (value >= 142 && value <= 146)
 				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
+					// Asgarnian Hops[Inspect,Guide] 8160,8161,8162,8163,8164
+					return new PatchState(Produce.ASGARNIAN, CropState.GROWING, value - 142);
+				}
+				if (value >= 147 && value <= 149)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
-				if (value >= 204 && value <= 207)
+				if (value >= 150 && value <= 153)
 				{
 					// Dead Asgarnian Hops[Clear,Inspect,Guide] 8169,8170,8171,8172
-					return new PatchState(Produce.ASGARNIAN, CropState.DEAD, value - 203);
+					return new PatchState(Produce.ASGARNIAN, CropState.DEAD, value - 149);
 				}
-				if (value >= 208 && value <= 211)
+				if (value >= 154 && value <= 159)
 				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
+					// Yanillian Hops[Inspect,Guide] 8295,8296,8297,8298,8299,8300
+					return new PatchState(Produce.YANILLIAN, CropState.GROWING, value - 154);
+				}
+				if (value >= 160 && value <= 162)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 163 && value <= 167)
+				{
+					// Dead Yanillian Hops[Clear,Inspect,Guide] 8306,8307,8308,8309,8310
+					return new PatchState(Produce.YANILLIAN, CropState.DEAD, value - 162);
+				}
+				if (value >= 168 && value <= 174)
+				{
+					// Krandorian Hops[Inspect,Guide] 8219,8220,8221,8222,8223,8224,8225
+					return new PatchState(Produce.KRANDORIAN, CropState.GROWING, value - 168);
+				}
+				if (value >= 175 && value <= 177)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 178 && value <= 183)
+				{
+					// Dead Krandorian Hops[Clear,Inspect,Guide] 8232,8233,8234,8235,8236,8237
+					return new PatchState(Produce.KRANDORIAN, CropState.DEAD, value - 177);
+				}
+				if (value >= 184 && value <= 191)
+				{
+					// Wildblood Hops[Inspect,Guide] 8266,8267,8268,8269,8270,8271,8272,8273
+					return new PatchState(Produce.WILDBLOOD, CropState.GROWING, value - 184);
+				}
+				if (value >= 192 && value <= 194)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 195 && value <= 201)
+				{
+					// Dead Wildblood Hops[Clear,Inspect,Guide] 8281,8282,8283,8284,8285,8286,8287
+					return new PatchState(Produce.WILDBLOOD, CropState.DEAD, value - 194);
+				}
+				if (value >= 202 && value <= 205)
+				{
+					// Barley[Inspect,Guide] 8197,8198,8199,8200
+					return new PatchState(Produce.BARLEY, CropState.GROWING, value - 202);
+				}
+				if (value >= 206 && value <= 208)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 209 && value <= 211)
+				{
+					// Dead Barley[Clear,Inspect,Guide] 8204,8205,8206
+					return new PatchState(Produce.BARLEY, CropState.DEAD, value - 208);
 				}
 				if (value >= 212 && value <= 216)
 				{
-					// Dead Yanillian Hops[Clear,Inspect,Guide] 8306,8307,8308,8309,8310
-					return new PatchState(Produce.YANILLIAN, CropState.DEAD, value - 211);
+					// Jute[Inspect,Guide] 8244,8245,8246,8247,8248
+					return new PatchState(Produce.JUTE, CropState.GROWING, value - 212);
 				}
-				if (value >= 217 && value <= 220)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 221 && value <= 226)
-				{
-					// Dead Krandorian Hops[Clear,Inspect,Guide] 8232,8233,8234,8235,8236,8237
-					return new PatchState(Produce.KRANDORIAN, CropState.DEAD, value - 220);
-				}
-				if (value >= 227 && value <= 230)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 231 && value <= 237)
-				{
-					// Dead Wildblood Hops[Clear,Inspect,Guide] 8281,8282,8283,8284,8285,8286,8287
-					return new PatchState(Produce.WILDBLOOD, CropState.DEAD, value - 230);
-				}
-				if (value >= 238 && value <= 241)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 242 && value <= 244)
-				{
-					// Dead Barley[Clear,Inspect,Guide] 8204,8205,8206
-					return new PatchState(Produce.BARLEY, CropState.DEAD, value - 241);
-				}
-				if (value >= 245 && value <= 248)
-				{
-					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210,8210
-					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
-				}
-				if (value >= 249 && value <= 252)
-				{
-					// Dead Jute[Clear,Inspect,Guide] 8253,8254,8255,8256
-					return new PatchState(Produce.JUTE, CropState.DEAD, value - 248);
-				}
-				if (value >= 253 && value <= 255)
+				if (value >= 217 && value <= 219)
 				{
 					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 220 && value <= 223)
+				{
+					// Dead Jute[Clear,Inspect,Guide] 8253,8254,8255,8256
+					return new PatchState(Produce.JUTE, CropState.DEAD, value - 219);
+				}
+				if (value >= 224 && value <= 226)
+				{
+					// Flax[Inspect,Guide] 58840,58841,58842
+					return new PatchState(Produce.FLAX, CropState.GROWING, value - 224);
+				}
+				if (value >= 227 && value <= 229)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 230 && value <= 231)
+				{
+					// Dead Flax[Clear,Inspect,Guide] 58845,58846
+					return new PatchState(Produce.FLAX, CropState.DEAD, value - 229);
+				}
+				if (value >= 232 && value <= 235)
+				{
+					// Hemp[Inspect,Guide] 58852,58853,58854,58855
+					return new PatchState(Produce.HEMP, CropState.GROWING, value - 232);
+				}
+				if (value >= 236 && value <= 238)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 239 && value <= 240)
+				{
+					// Dead Hemp[Clear,Inspect,Guide] 58859,58860
+					return new PatchState(Produce.HEMP, CropState.DEAD, value - 238);
+				}
+				if (value == 241)
+				{
+					// Dead Hemp[Inspect,Guide] 58861
+					return new PatchState(Produce.HEMP, CropState.DEAD, 3);
+				}
+				if (value >= 242 && value <= 246)
+				{
+					// Cotton[Inspect,Guide] 58868,58869,58870,58871,58872
+					return new PatchState(Produce.COTTON, CropState.GROWING, value - 242);
+				}
+				if (value >= 247 && value <= 249)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210,8210
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 250 && value <= 253)
+				{
+					// Dead Cotton[Clear,Inspect,Guide] 58877,58878,58879,58880
+					return new PatchState(Produce.COTTON, CropState.DEAD, value - 249);
+				}
+				if (value >= 254 && value <= 255)
+				{
+					// Hops Patch[Rake,Inspect,Guide] 8210,8210
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				return null;
@@ -2188,9 +2190,99 @@ public enum PatchImplementation
 					// Dead Mahogany[Clear,Inspect,Guide] 30428,30429,30430,30431,30432,30433,30434
 					return new PatchState(Produce.MAHOGANY, CropState.DEAD, value - 47);
 				}
-				if (value >= 55 && value <= 255)
+				if (value >= 55 && value <= 62)
 				{
-					// Tree patch[Rake,Inspect,Guide] 30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479
+					// Camphor sapling,Camphor tree[Inspect,Guide] 58712,58713,58714,58715,58716,58717,58718,58719
+					return new PatchState(Produce.CAMPHOR, CropState.GROWING, value - 55);
+				}
+				if (value == 63)
+				{
+					// Camphor tree[Check-health,Inspect,Guide] 58722
+					return new PatchState(Produce.CAMPHOR, CropState.GROWING, Produce.CAMPHOR.getStages() - 1);
+				}
+				if (value == 64)
+				{
+					// Camphor tree[Chop down,Inspect,Guide] 58723
+					return new PatchState(Produce.CAMPHOR, CropState.HARVESTABLE, 0);
+				}
+				if (value == 65)
+				{
+					// Camphor tree stump[Clear,Inspect,Guide] 58724
+					return new PatchState(Produce.CAMPHOR, CropState.HARVESTABLE, 0);
+				}
+				if (value >= 66 && value <= 72)
+				{
+					// Diseased Camphor[Prune,Inspect,Guide] 58725,58726,58727,58728,58729,58730,58731
+					return new PatchState(Produce.CAMPHOR, CropState.DISEASED, value - 65);
+				}
+				if (value >= 73 && value <= 79)
+				{
+					// Dead Camphor[Clear,Inspect,Guide] 58734,58735,58736,58737,58738,58739,58740
+					return new PatchState(Produce.CAMPHOR, CropState.DEAD, value - 72);
+				}
+				if (value >= 80 && value <= 87)
+				{
+					// Ironwood sapling,Ironwood tree[Inspect,Guide] 58743,58744,58745,58746,58747,58748,58749,58750
+					return new PatchState(Produce.IRONWOOD, CropState.GROWING, value - 80);
+				}
+				if (value == 88)
+				{
+					// Ironwood tree[Check-health,Inspect,Guide] 58753
+					return new PatchState(Produce.IRONWOOD, CropState.GROWING, Produce.IRONWOOD.getStages() - 1);
+				}
+				if (value == 89)
+				{
+					// Ironwood tree[Chop down,Inspect,Guide] 58754
+					return new PatchState(Produce.IRONWOOD, CropState.HARVESTABLE, 0);
+				}
+				if (value == 90)
+				{
+					// Ironwood tree stump[Clear,Inspect,Guide] 58755
+					return new PatchState(Produce.IRONWOOD, CropState.HARVESTABLE, 0);
+				}
+				if (value >= 91 && value <= 97)
+				{
+					// Diseased Ironwood[Prune,Inspect,Guide] 58756,58757,58758,58759,58760,58761,58762
+					return new PatchState(Produce.IRONWOOD, CropState.DISEASED, value - 90);
+				}
+				if (value >= 98 && value <= 104)
+				{
+					// Dead Ironwood[Clear,Inspect,Guide] 58765,58766,58767,58768,58769,58770,58771
+					return new PatchState(Produce.IRONWOOD, CropState.DEAD, value - 97);
+				}
+				if (value >= 105 && value <= 113)
+				{
+					// Rosewood sapling,Rosewood tree[Inspect,Guide] 58774,58775,58776,58777,58778,58779,58780,58781,58782
+					return new PatchState(Produce.ROSEWOOD, CropState.GROWING, value - 105);
+				}
+				if (value == 114)
+				{
+					// Rosewood tree[Check-health,Inspect,Guide] 58784
+					return new PatchState(Produce.ROSEWOOD, CropState.GROWING, Produce.ROSEWOOD.getStages() - 1);
+				}
+				if (value == 115)
+				{
+					// Rosewood tree[Chop down,Inspect,Guide] 58785
+					return new PatchState(Produce.ROSEWOOD, CropState.HARVESTABLE, 0);
+				}
+				if (value == 116)
+				{
+					// Rosewood tree stump[Clear,Inspect,Guide] 58786
+					return new PatchState(Produce.ROSEWOOD, CropState.HARVESTABLE, 0);
+				}
+				if (value >= 117 && value <= 124)
+				{
+					// Diseased Rosewood[Prune,Inspect,Guide] 58787,58788,58789,58790,58791,58792,58793,58794
+					return new PatchState(Produce.ROSEWOOD, CropState.DISEASED, value - 116);
+				}
+				if (value >= 125 && value <= 132)
+				{
+					// Dead Rosewood[Clear,Inspect,Guide] 58796,58797,58798,58799,58800,58801,58802,58803
+					return new PatchState(Produce.ROSEWOOD, CropState.DEAD, value - 124);
+				}
+				if (value >= 133 && value <= 255)
+				{
+					// Tree patch[Rake,Inspect,Guide] 30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479,30479
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
 				}
 				return null;
@@ -2339,6 +2431,44 @@ public enum PatchImplementation
 				return null;
 			}
 		},
+	BELLADONNA(Tab.SPECIAL, "Belladonna", false)
+		{
+			@Override
+			PatchState forVarbitValue(int value)
+			{
+				if (value >= 0 && value <= 3)
+				{
+					// Belladonna patch[Rake,Inspect,Guide] 7560,7559,7558,7557
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3 - value);
+				}
+				if (value >= 4 && value <= 7)
+				{
+					// Belladonna[Inspect,Guide] 7561,7562,7563,7564
+					return new PatchState(Produce.BELLADONNA, CropState.GROWING, value - 4);
+				}
+				if (value == 8)
+				{
+					// Belladonna[Pick,Inspect,Guide] 7565
+					return new PatchState(Produce.BELLADONNA, CropState.HARVESTABLE, 0);
+				}
+				if (value >= 9 && value <= 11)
+				{
+					// Diseased Belladonna[Cure,Inspect,Guide] 7566,7567,7568
+					return new PatchState(Produce.BELLADONNA, CropState.DISEASED, value - 8);
+				}
+				if (value >= 12 && value <= 14)
+				{
+					// Dead Belladonna[Clear,Inspect,Guide] 7569,7570,7571
+					return new PatchState(Produce.BELLADONNA, CropState.DEAD, value - 11);
+				}
+				if (value >= 15 && value <= 255)
+				{
+					// Belladonna patch[Rake,Inspect,Guide] 7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560,7560
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				return null;
+			}
+		},
 	CACTUS(Tab.SPECIAL, "Cactus", true)
 		{
 			@Override
@@ -2408,6 +2538,84 @@ public enum PatchImplementation
 				{
 					// Cactus patch[Rake,Inspect,Guide] 7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746,7746
 					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				return null;
+			}
+		},
+	CORAL(Tab.SPECIAL, "Coral", false)
+		{
+			@Override
+			PatchState forVarbitValue(int value)
+			{
+				if (value >= 0 && value <= 3)
+				{
+					// Coral nursery[Inspect,Guide] 58676,58676,58676,58676
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+				}
+				if (value >= 4 && value <= 7)
+				{
+					// Elkhorn coral[Inspect,Guide] 58677,58678,58679,58680
+					return new PatchState(Produce.ELKHORN_CORAL, CropState.GROWING, value - 4);
+				}
+				if (value == 8)
+				{
+					// Elkhorn coral[Collect,Inspect,Guide] 58681
+					return new PatchState(Produce.ELKHORN_CORAL, CropState.GROWING, 4);
+				}
+				if (value >= 9 && value <= 11)
+				{
+					// Diseased elkhorn coral[Prune,Inspect,Guide] 58692,58693,58694
+					return new PatchState(Produce.ELKHORN_CORAL, CropState.DISEASED, value - 8);
+				}
+				if (value >= 12 && value <= 14)
+				{
+					// Dead coral[Clear,Inspect,Guide] 58701,58702,58703
+					return new PatchState(Produce.ELKHORN_CORAL, CropState.DEAD, value - 11);
+				}
+				if (value >= 15 && value <= 18)
+				{
+					// Pillar coral[Inspect,Guide] 58682,58683,58684,58685
+					return new PatchState(Produce.PILLAR_CORAL, CropState.GROWING, value - 15);
+				}
+				if (value == 19)
+				{
+					// Pillar coral[Collect,Inspect,Guide] 58686
+					return new PatchState(Produce.PILLAR_CORAL, CropState.GROWING, 4);
+				}
+				if (value >= 20 && value <= 22)
+				{
+					// Diseased pillar coral[Prune,Inspect,Guide] 58695,58696,58697
+					return new PatchState(Produce.PILLAR_CORAL, CropState.DISEASED, value - 19);
+				}
+				if (value >= 23 && value <= 25)
+				{
+					// Dead coral[Clear,Inspect,Guide] 58704,58705,58706
+					return new PatchState(Produce.PILLAR_CORAL, CropState.DEAD, value - 22);
+				}
+				if (value >= 26 && value <= 29)
+				{
+					// Umbral coral[Inspect,Guide] 58687,58688,58689,58690
+					return new PatchState(Produce.UMBRAL_CORAL, CropState.GROWING, value - 26);
+				}
+				if (value == 30)
+				{
+					// Umbral coral[Collect,Inspect,Guide] 58691
+					return new PatchState(Produce.UMBRAL_CORAL, CropState.GROWING, 4);
+				}
+				if (value >= 31 && value <= 33)
+				{
+					// Diseased umbral coral[Prune,Inspect,Guide] 58698,58699,58700
+					return new PatchState(Produce.UMBRAL_CORAL, CropState.DISEASED, value - 30);
+				}
+				if (value >= 34 && value <= 36)
+				{
+					// Dead coral[Clear,Inspect,Guide] 58707,58708,58709
+					return new PatchState(Produce.UMBRAL_CORAL, CropState.DEAD, value - 33);
+				}
+				if (value >= 37 && value <= 255)
+				{
+					// Coral nursery[Inspect,Guide] 58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676,58676
+					return new PatchState(Produce.WEEDS, CropState.GROWING, 0);
 				}
 				return null;
 			}
@@ -2677,7 +2885,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GIANT_COMPOST(Tab.SPECIAL, "Giant Compost Bin", true)
+	BIG_COMPOST(Tab.SPECIAL, "Big Compost Bin", true)
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2685,97 +2893,97 @@ public enum PatchImplementation
 				if (value == 0)
 				{
 					// Big compost bin[Examine] 33762
-					return new PatchState(Produce.EMPTY_GIANT_COMPOST_BIN, CropState.EMPTY, 0);
+					return new PatchState(Produce.EMPTY_BIG_COMPOST_BIN, CropState.EMPTY, 0);
 				}
 				if (value >= 1 && value <= 15)
 				{
 					// Big compost bin[Examine,Dump] 33763..33777
-					return new PatchState(Produce.GIANT_COMPOST, CropState.FILLING, value - 1);
+					return new PatchState(Produce.BIG_COMPOST, CropState.FILLING, value - 1);
 				}
 				if (value >= 16 && value <= 30)
 				{
 					// Big compost bin[Take,Examine,Dump] 33795..33809
-					return new PatchState(Produce.GIANT_COMPOST, CropState.HARVESTABLE, value - 16);
+					return new PatchState(Produce.BIG_COMPOST, CropState.HARVESTABLE, value - 16);
 				}
 				if (value >= 33 && value <= 47)
 				{
 					// Big compost bin[Examine,Dump] 33825..33839
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.FILLING, value - 33);
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.FILLING, value - 33);
 				}
 				if (value >= 48 && value <= 62)
 				{
 					// Big compost bin[Take,Examine,Dump] 33857..33871
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.HARVESTABLE, value - 48);
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.HARVESTABLE, value - 48);
 				}
 				if (value >= 63 && value <= 77)
 				{
 					// Big compost bin[Examine,Dump] 33778..33792
-					return new PatchState(Produce.GIANT_COMPOST, CropState.FILLING, 15 + value - 63);
+					return new PatchState(Produce.BIG_COMPOST, CropState.FILLING, 15 + value - 63);
 				}
 				if (value >= 78 && value <= 92)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33810..33824
-					return new PatchState(Produce.GIANT_COMPOST, CropState.HARVESTABLE, 15 + value - 78);
+					return new PatchState(Produce.BIG_COMPOST, CropState.HARVESTABLE, 15 + value - 78);
 				}
 				if (value == 93)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33794
-					return new PatchState(Produce.GIANT_COMPOST, CropState.GROWING, Produce.GIANT_COMPOST.getStages() - 1);
+					return new PatchState(Produce.BIG_COMPOST, CropState.GROWING, Produce.BIG_COMPOST.getStages() - 1);
 				}
 				if (value >= 97 && value <= 99)
 				{
 					// Giant compost bin[Open,Examin,Dump] 33855,33855
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.GROWING, value - 97); // Once closed, starts rotting (super compost)
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.GROWING, value - 97); // Once closed, starts rotting (super compost)
 				}
 				if (value >= 100 && value <= 114)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33872..33886
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.HARVESTABLE, 15 + value - 100);
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.HARVESTABLE, 15 + value - 100);
 				}
 				if (value >= 127 && value <= 128)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33793,33793
-					return new PatchState(Produce.GIANT_COMPOST, CropState.GROWING, value - 127);
+					return new PatchState(Produce.BIG_COMPOST, CropState.GROWING, value - 127);
 				}
 				if (value >= 129 && value <= 143)
 				{
 					// Giant compost bin[Close,Examine,Dump] 33887..33901
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.FILLING, value - 129);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.FILLING, value - 129);
 				}
 				if (value >= 144 && value <= 158)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33919..33933
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.HARVESTABLE, value - 144);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.HARVESTABLE, value - 144);
 				}
 				if (value >= 159 && value <= 160)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33917,33917
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.GROWING, value - 159);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.GROWING, value - 159);
 				}
 				if (value >= 161 && value <= 175)
 				{
 					// Giant compost bin[Examine,Dump] 33840..33854
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.FILLING, 15 + value - 161); // 161 means there are 16 items
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.FILLING, 15 + value - 161); // 161 means there are 16 items
 				}
 				if (value >= 176 && value <= 205)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33957..33986
-					return new PatchState(Produce.GIANT_ULTRACOMPOST, CropState.HARVESTABLE, value - 176);
+					return new PatchState(Produce.BIG_ULTRACOMPOST, CropState.HARVESTABLE, value - 176);
 				}
 				if (value >= 207 && value <= 221)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33934..33948
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.HARVESTABLE, 15 + value - 207);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.HARVESTABLE, 15 + value - 207);
 				}
 				if (value == 222)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33918
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.GROWING, Produce.GIANT_ROTTEN_TOMATO.getStages() - 1);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.GROWING, Produce.BIG_ROTTEN_TOMATO.getStages() - 1);
 				}
 				if (value >= 223 && value <= 237)
 				{
 					// Giant compost bin[Close,Examine,Dump] 33902..33916
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.FILLING, 15 + value  - 223);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.FILLING, 15 + value  - 223);
 				}
 				return null;
 			}

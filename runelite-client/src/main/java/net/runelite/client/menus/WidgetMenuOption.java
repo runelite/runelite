@@ -26,10 +26,11 @@ package net.runelite.client.menus;
 
 import java.awt.Color;
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
@@ -55,17 +56,11 @@ public final class WidgetMenuOption
 	private Color color = JagexColors.MENU_TARGET;
 
 	/**
-	 * The widgetinfo to add the option to, if available
-	 */
-	@Nullable
-	@Getter
-	private final WidgetInfo widget;
-
-	/**
 	 * The widget to add the option to
 	 */
-	@Getter
-	private final int widgetId;
+	@Getter(AccessLevel.PACKAGE)
+	@Component
+	private final int[] widgetIds;
 
 	Consumer<MenuEntry> callback;
 
@@ -76,12 +71,10 @@ public final class WidgetMenuOption
 	 * @param menuTarget Target text of this right click option
 	 * @param widget     The widget to attach this option to
 	 */
+	@Deprecated
 	public WidgetMenuOption(String menuOption, String menuTarget, WidgetInfo widget)
 	{
-		this.menuOption = menuOption;
-		setMenuTarget(menuTarget);
-		this.widget = widget;
-		this.widgetId = widget.getId();
+		this(menuOption, menuTarget, widget.getId());
 	}
 
 	/**
@@ -89,14 +82,13 @@ public final class WidgetMenuOption
 	 *
 	 * @param menuOption Option text of this right click option
 	 * @param menuTarget Target text of this right click option
-	 * @param widgetId   The widget to attach this option to
+	 * @param widgetIds   The widgets to attach this option to
 	 */
-	public WidgetMenuOption(String menuOption, String menuTarget, int widgetId)
+	public WidgetMenuOption(String menuOption, String menuTarget, int... widgetIds)
 	{
 		this.menuOption = menuOption;
 		setMenuTarget(menuTarget);
-		this.widget = null;
-		this.widgetId = widgetId;
+		this.widgetIds = widgetIds;
 	}
 
 	/**

@@ -244,6 +244,14 @@ public enum MenuAction
 	 */
 	WIDGET_TARGET_ON_WIDGET(58),
 
+	SET_HEADING(60),
+
+	/**
+	 * RuneLite menu that is a widge.
+	 * @see MenuEntry#getWidget()
+	 */
+	RUNELITE_WIDGET(998),
+
 	/**
 	 * Menu action for high priority runelite options
 	 */
@@ -297,9 +305,9 @@ public enum MenuAction
 	 */
 	RUNELITE_INFOBOX(1504),
 	/**
-	 * Parent menu of submenus
+	 * Like {@link #RUNELITE}, except clicking always forces the menu open.
 	 */
-	RUNELITE_SUBMENU(1505),
+	RUNELITE_LOW_PRIORITY(1506),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.

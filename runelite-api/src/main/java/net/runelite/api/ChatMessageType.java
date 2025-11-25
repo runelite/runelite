@@ -190,6 +190,14 @@ public enum ChatMessageType
 	 */
 	MESBOX(115),
 	/**
+	 * Chat type for some npcs overhead text
+	 */
+	NPC_SAY(116),
+	/**
+	 * Did you know?-es
+	 */
+	DIDYOUKNOW(117),
+	/**
 	 * An unknown message type.
 	 */
 	UNKNOWN(-1);

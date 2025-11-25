@@ -53,18 +53,17 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
 import net.runelite.api.MessageNode;
-import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
-import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatColorType;
@@ -113,9 +112,6 @@ public class RaidsPlugin extends Plugin
 	private static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String LAYOUT_COMMAND = "!layout";
 	private static final int MAX_LAYOUT_LEN = 300;
-	// (x=3360, y=5152, plane=2) is the temp location the game puts the player on login into while it decides whether
-	// to put the player into a raid or not.
-	private static final WorldPoint TEMP_LOCATION = new WorldPoint(3360, 5152, 2);
 
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
@@ -194,8 +190,6 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private int raidPartyID;
 	private RaidsTimer timer;
-	boolean checkInRaid;
-	private boolean loggedIn;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -214,7 +208,7 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		updateLists();
-		clientThread.invokeLater(() -> checkRaidPresence());
+		clientThread.invokeLater(this::scoutRaid);
 		chatCommandManager.registerCommandAsync(LAYOUT_COMMAND, this::lookupRaid, this::submitRaid);
 		keyManager.registerKeyListener(screenshotHotkeyListener);
 	}
@@ -252,30 +246,42 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		// if the player's party state has changed
-		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY)
+		if (event.getVarpId() == VarPlayerID.RAIDS_PARTY_GROUPHOLDER)
 		{
-			boolean tempInRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
-			// if the player is outside of a raid when the party state changed
-			if (loggedIn
-				&& !tempInRaid)
-			{
-				reset();
-			}
-
+			boolean inRaid = inRaidChambers;
+			int prevRaidID = raidPartyID;
 			raidPartyID = event.getValue();
+
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				// Party dissolution
+				if (!inRaid || (prevRaidID != -1 && raidPartyID != -1 && prevRaidID != raidPartyID))
+				{
+					log.debug("Raid party has been dissolved");
+					reset();
+				}
+			}
 		}
 
 		// if the player's raid state has changed
-		if (event.getVarbitId() == Varbits.IN_RAID)
+		if (event.getVarbitId() == VarbitID.RAIDS_CLIENT_INDUNGEON)
 		{
-			boolean tempInRaid = event.getValue() == 1;
-			// if the player is inside of a raid then check the raid
-			if (tempInRaid && loggedIn)
-			{
-				checkRaidPresence();
-			}
+			boolean inRaid = event.getValue() == 1;
+			inRaidChambers = inRaid;
 
-			inRaidChambers = tempInRaid;
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				// if the player is inside of a raid then check the raid
+				if (inRaid)
+				{
+					scoutRaid();
+				}
+				else if (raidPartyID == -1)
+				{
+					log.debug("Raid has ended");
+					reset();
+				}
+			}
 		}
 	}
 
@@ -289,7 +295,7 @@ public class RaidsPlugin extends Plugin
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
 				timer = new RaidsTimer(this, Instant.now(), config);
-				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
+				spriteManager.getSpriteAsync(SpriteID.SideiconsInterface.RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -308,8 +314,8 @@ public class RaidsPlugin extends Plugin
 
 				if (config.pointsMessage())
 				{
-					int totalPoints = client.getVarbitValue(Varbits.TOTAL_POINTS);
-					int personalPoints = client.getVarbitValue(Varbits.PERSONAL_POINTS);
+					int totalPoints = client.getVarbitValue(VarbitID.RAIDS_CLIENT_PARTYSCORE);
+					int personalPoints = client.getVarpValue(VarPlayerID.RAIDS_PLAYERSCORE);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
@@ -344,63 +350,25 @@ public class RaidsPlugin extends Plugin
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			// skip event while the game decides if the player belongs in a raid or not
-			if (client.getLocalPlayer() == null
-				|| client.getLocalPlayer().getWorldLocation().equals(TEMP_LOCATION))
-			{
-				return;
-			}
-
-			checkInRaid = true;
-		}
-		else if (client.getGameState() == GameState.LOGIN_SCREEN
-			|| client.getGameState() == GameState.CONNECTION_LOST)
-		{
-			loggedIn = false;
-		}
-		else if (client.getGameState() == GameState.HOPPING)
-		{
-			reset();
+			// solve additional unknown rooms
+			scoutRaid();
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (checkInRaid)
-		{
-			loggedIn = true;
-			checkInRaid = false;
-
-			if (inRaidChambers)
-			{
-				checkRaidPresence();
-			}
-			else
-			{
-				if (raidPartyID == -1)
-				{
-					reset();
-				}
-			}
-		}
-	}
-
-	private void checkRaidPresence()
+	private void scoutRaid()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		inRaidChambers = client.getVarbitValue(Varbits.IN_RAID) == 1;
+		inRaidChambers = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1;
 
 		if (!inRaidChambers)
 		{
 			return;
 		}
 
-		updateInfoBoxState();
 		boolean firstSolve = (raid == null);
 		raid = buildRaid(raid);
 
@@ -521,7 +489,7 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == ObjectID.BLACK_WALL)
 				{
 					return tiles[x][y].getSceneLocation();
 				}
@@ -848,7 +816,7 @@ public class RaidsPlugin extends Plugin
 		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
 		overlay.render(graphic);
 
-		imageCapture.takeScreenshot(overlayImage, "CoX_scout-", false, config.uploadScreenshot());
+		imageCapture.saveScreenshot(overlayImage, "CoX_scout", null, false, config.copyToClipboard());
 		graphic.dispose();
 	}
 

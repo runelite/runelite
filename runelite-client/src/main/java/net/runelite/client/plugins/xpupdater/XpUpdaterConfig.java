@@ -35,7 +35,7 @@ public interface XpUpdaterConfig extends Config
 		position = 1,
 		keyName = "cml",
 		name = "Crystal Math Labs",
-		description = "Automatically updates your stats on crystalmathlabs.com when you log out"
+		description = "Automatically updates your stats on crystalmathlabs.com when you log out."
 	)
 	default boolean cml()
 	{
@@ -43,10 +43,10 @@ public interface XpUpdaterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "templeosrs",
 		name = "TempleOSRS",
-		description = "Automatically updates your stats on templeosrs.com when you log out"
+		description = "Automatically updates your stats on templeosrs.com when you log out."
 	)
 	default boolean templeosrs()
 	{
@@ -54,10 +54,10 @@ public interface XpUpdaterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "wiseoldman",
 		name = "Wise Old Man",
-		description = "Automatically updates your stats on wiseoldman.net when you log out"
+		description = "Automatically updates your stats on wiseoldman.net when you log out."
 	)
 	default boolean wiseoldman()
 	{

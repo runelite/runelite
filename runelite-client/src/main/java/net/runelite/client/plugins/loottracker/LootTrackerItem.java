@@ -36,7 +36,7 @@ class LootTrackerItem
 {
 	private final int id;
 	private final String name;
-	private int quantity;
+	private final int quantity;
 	private final int gePrice;
 	private final int haPrice;
 	@Setter

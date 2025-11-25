@@ -75,11 +75,6 @@ public class TitheFarmPlantOverlay extends Overlay
 		final Color colorWatered = ColorUtil.colorWithAlpha(colorWateredBorder, (int) (colorWateredBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.WATERED, colorWateredBorder);
 		fills.put(TitheFarmPlantState.WATERED, colorWatered);
-
-		final Color colorGrownBorder = config.getColorGrown();
-		final Color colorGrown = ColorUtil.colorWithAlpha(colorGrownBorder, (int) (colorGrownBorder.getAlpha() / 2.5));
-		borders.put(TitheFarmPlantState.GROWN, colorGrownBorder);
-		fills.put(TitheFarmPlantState.GROWN, colorGrown);
 	}
 
 	@Override
@@ -87,7 +82,7 @@ public class TitheFarmPlantOverlay extends Overlay
 	{
 		for (TitheFarmPlant plant : plugin.getPlants())
 		{
-			if (plant.getState() == TitheFarmPlantState.DEAD)
+			if (plant.getState() == TitheFarmPlantState.DEAD || plant.getState() == TitheFarmPlantState.GROWN)
 			{
 				continue;
 			}

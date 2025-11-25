@@ -25,79 +25,25 @@
 
 package net.runelite.cache.fs;
 
-import java.util.Arrays;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+@EqualsAndHashCode(of = {"fileId", "nameHash", "contents"})
 public class FSFile
 {
+	@Getter
 	private final int fileId;
+	@Getter
+	@Setter
 	private int nameHash;
+	@Getter
+	@Setter
 	private byte[] contents;
 
 	public FSFile(int fileId)
 	{
 		this.fileId = fileId;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 97 * hash + this.fileId;
-		hash = 97 * hash + this.nameHash;
-		hash = 97 * hash + Arrays.hashCode(this.contents);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final FSFile other = (FSFile) obj;
-		if (this.fileId != other.fileId)
-		{
-			return false;
-		}
-		if (this.nameHash != other.nameHash)
-		{
-			return false;
-		}
-		if (!Arrays.equals(this.contents, other.contents))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getFileId()
-	{
-		return fileId;
-	}
-
-	public int getNameHash()
-	{
-		return nameHash;
-	}
-
-	public void setNameHash(int nameHash)
-	{
-		this.nameHash = nameHash;
-	}
-
-	public byte[] getContents()
-	{
-		return contents;
-	}
-
-	public void setContents(byte[] contents)
-	{
-		this.contents = contents;
 	}
 
 	public int getSize()

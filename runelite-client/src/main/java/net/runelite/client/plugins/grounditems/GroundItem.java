@@ -24,12 +24,18 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.awt.Color;
+import java.time.Duration;
 import java.time.Instant;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.Data;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.ItemLayer;
+import static net.runelite.api.TileItem.OWNERSHIP_GROUP;
+import static net.runelite.api.TileItem.OWNERSHIP_NONE;
+import static net.runelite.api.TileItem.OWNERSHIP_OTHER;
+import static net.runelite.api.TileItem.OWNERSHIP_SELF;
+import org.intellij.lang.annotations.MagicConstant;
 
 @Data
 @Builder
@@ -39,17 +45,24 @@ class GroundItem
 	private int itemId;
 	private String name;
 	private int quantity;
-	private WorldPoint location;
-	private int height;
+	private ItemLayer itemLayer;
 	private int haPrice;
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
-	@Nonnull
-	private LootType lootType;
+	@MagicConstant(intValues = {OWNERSHIP_NONE, OWNERSHIP_SELF, OWNERSHIP_OTHER, OWNERSHIP_GROUP})
+	private int ownership;
+	private boolean isPrivate;
 	@Nullable
 	private Instant spawnTime;
 	private boolean stackable;
+	private Duration despawnTime;
+	private Duration visibleTime;
+
+	// cached values derived from config
+	boolean highlighted;
+	boolean hidden;
+	Color color;
 
 	int getHaPrice()
 	{
@@ -61,8 +74,9 @@ class GroundItem
 		return gePrice * quantity;
 	}
 
-	boolean isMine()
+	void reset()
 	{
-		return lootType != LootType.UNKNOWN;
+		highlighted = hidden = false;
+		color = null;
 	}
 }

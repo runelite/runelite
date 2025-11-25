@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -151,7 +150,12 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		final JComponent infoBoxPanel = new DragAndDropReorderPane();
+		final DragAndDropReorderPane infoBoxPanel = new DragAndDropReorderPane();
+		infoBoxPanel.addDragListener(component ->
+		{
+			XpInfoBox c = (XpInfoBox) component;
+			xpTrackerPlugin.updateSkillOrderState(c.getSkill(), infoBoxPanel.getPosition(component));
+		});
 
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
@@ -174,11 +178,10 @@ class XpPanel extends PluginPanel
 
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host(worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net")
+			.host(worldTypes.contains(WorldType.SEASONAL) ? "league.wiseoldman.net" : "wiseoldman.net")
 			.addPathSegment("players")
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")
-			.addPathSegment("skilling")
 			.addQueryParameter("metric", skill == null ? "overall" : skill.getName().toLowerCase())
 			.addQueryParameter("period", "week")
 			.build()
@@ -192,21 +195,14 @@ class XpPanel extends PluginPanel
 
 	void resetSkill(Skill skill)
 	{
-		XpInfoBox xpInfoBox = infoBoxes.get(skill);
-		if (xpInfoBox != null)
-		{
-			xpInfoBox.reset();
-		}
+		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
+		xpInfoBox.reset();
 	}
 
 	void updateSkillExperience(boolean updated, boolean paused, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
-
-		if (xpInfoBox != null)
-		{
-			xpInfoBox.update(updated, paused, xpSnapshotSingle);
-		}
+		xpInfoBox.update(updated, paused, xpSnapshotSingle);
 	}
 
 	void updateTotal(XpSnapshotSingle xpSnapshotTotal)
@@ -231,5 +227,4 @@ class XpPanel extends PluginPanel
 		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
 		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));
 	}
-
 }

@@ -120,7 +120,6 @@ public class DiscordPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "discord.png");
 
 		discordButton = NavigationButton.builder()
-			.tab(false)
 			.tooltip("Join Discord")
 			.icon(icon)
 			.onClick(() -> LinkBrowser.browse(discordInvite))
@@ -239,7 +238,7 @@ public class DiscordPlugin extends Plugin
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try // NOPMD: UseTryWithResources
+				try (response)
 				{
 					if (!response.isSuccessful())
 					{
@@ -254,10 +253,6 @@ public class DiscordPlugin extends Plugin
 					}
 
 					partyService.setPartyMemberAvatar(event.getMemberId(), image);
-				}
-				finally
-				{
-					response.close();
 				}
 			}
 		});

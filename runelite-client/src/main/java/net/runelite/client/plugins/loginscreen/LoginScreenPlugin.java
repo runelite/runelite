@@ -26,6 +26,8 @@ package net.runelite.client.plugins.loginscreen;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import com.google.common.hash.Hashing;
+import com.google.common.io.Files;
 import com.google.inject.Provides;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -36,8 +38,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.function.Consumer;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -56,6 +60,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Login Screen",
@@ -67,6 +77,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	private static final int MAX_USERNAME_LENGTH = 254;
 	private static final int MAX_PIN_LENGTH = 6;
 	private static final File CUSTOM_LOGIN_SCREEN_FILE = new File(RuneLite.RUNELITE_DIR, "login.png");
+	private static final File LOGINSCREENS = new File(RuneLite.CACHE_DIR, "loginscreens");
 
 	@Inject
 	private Client client;
@@ -79,6 +90,13 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 
 	@Inject
 	private KeyManager keyManager;
+
+	@Inject
+	private OkHttpClient okHttpClient;
+
+	@Inject
+	@Named("runelite.static.base")
+	private HttpUrl staticBase;
 
 	private String usernameCache;
 
@@ -200,9 +218,8 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!config.pasteEnabled() || (
-			client.getGameState() != GameState.LOGIN_SCREEN &&
-			client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
+		if (!config.pasteEnabled() ||
+			(client.getGameState() != GameState.LOGIN_SCREEN && client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
 		{
 			return;
 		}
@@ -257,14 +274,14 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		client.setShouldRenderLoginScreenFire(config.showLoginFire());
 
-		if (config.loginScreen() == LoginScreenOverride.OFF)
+		LoginScreenOverride loginScreen = config.loginScreen();
+		if (loginScreen == LoginScreenOverride.OFF)
 		{
 			restoreLoginScreen();
 			return;
 		}
 
-		SpritePixels pixels = null;
-		if (config.loginScreen() == LoginScreenOverride.CUSTOM)
+		if (loginScreen == LoginScreenOverride.CUSTOM)
 		{
 			if (CUSTOM_LOGIN_SCREEN_FILE.exists())
 			{
@@ -281,32 +298,31 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 						final double scalar = Constants.GAME_FIXED_HEIGHT / (double) image.getHeight();
 						image = ImageUtil.resizeImage(image, (int) (image.getWidth() * scalar), Constants.GAME_FIXED_HEIGHT);
 					}
-					pixels = ImageUtil.getImageSpritePixels(image, client);
+					SpritePixels pixels = ImageUtil.getImageSpritePixels(image, client);
+					client.setLoginScreen(pixels);
 				}
 				catch (IOException e)
 				{
 					log.error("error loading custom login screen", e);
 					restoreLoginScreen();
-					return;
 				}
 			}
 		}
-		else if (config.loginScreen() == LoginScreenOverride.RANDOM)
-		{
-			LoginScreenOverride[] filtered = Arrays.stream(LoginScreenOverride.values())
-				.filter(screen -> screen.getFileName() != null)
-				.toArray(LoginScreenOverride[]::new);
-			LoginScreenOverride randomScreen = filtered[new Random().nextInt(filtered.length)];
-			pixels = getFileSpritePixels(randomScreen.getFileName());
-		}
 		else
 		{
-			pixels = getFileSpritePixels(config.loginScreen().getFileName());
-		}
+			if (loginScreen == LoginScreenOverride.RANDOM)
+			{
+				LoginScreenOverride[] filtered = Arrays.stream(LoginScreenOverride.values())
+					.filter(screen -> screen.getFileName() != null)
+					.toArray(LoginScreenOverride[]::new);
+				loginScreen = filtered[new Random().nextInt(filtered.length)];
+			}
 
-		if (pixels != null)
-		{
-			client.setLoginScreen(pixels);
+			fetchLoginScreenImage(loginScreen, image -> clientThread.invoke(() ->
+			{
+				SpritePixels pixels = ImageUtil.getImageSpritePixels(image, client);
+				client.setLoginScreen(pixels);
+			}));
 		}
 	}
 
@@ -315,19 +331,76 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		client.setLoginScreen(null);
 	}
 
-	private SpritePixels getFileSpritePixels(String file)
+	private void fetchLoginScreenImage(LoginScreenOverride ls, Consumer<BufferedImage> imageConsumer)
 	{
+		File imagePath = new File(LOGINSCREENS, ls.getFileName());
+
 		try
 		{
-			log.debug("Loading: {}", file);
-			BufferedImage image = ImageUtil.loadImageResource(this.getClass(), file);
-			return ImageUtil.getImageSpritePixels(image, client);
+			if (imagePath.exists())
+			{
+				String hash = Files.asByteSource(imagePath).hash(Hashing.sha256()).toString();
+				if (hash.equals(ls.getHash()))
+				{
+					BufferedImage image;
+					try (var in = Files.asByteSource(imagePath).openStream())
+					{
+						synchronized (ImageIO.class)
+						{
+							image = ImageIO.read(in);
+						}
+					}
+
+					log.debug("Using cached login screen {}", ls.getFileName());
+
+					imageConsumer.accept(image);
+					return;
+				}
+			}
 		}
-		catch (RuntimeException ex)
+		catch (IOException ex)
 		{
-			log.debug("Unable to load image: ", ex);
+			log.debug(null, ex);
 		}
 
-		return null;
+		log.info("Downloading login screen {}", ls.getFileName());
+
+		HttpUrl url = staticBase.newBuilder()
+			.addPathSegments("loginscreens/" + ls.getFileName())
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		okHttpClient.newCall(request).enqueue(new Callback()
+		{
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				LOGINSCREENS.mkdirs();
+
+				try (response; var in = response.body().byteStream())
+				{
+					Files.asByteSink(imagePath).writeFrom(in);
+				}
+
+				BufferedImage image;
+				try (var in = Files.asByteSource(imagePath).openStream())
+				{
+					synchronized (ImageIO.class)
+					{
+						image = ImageIO.read(in);
+					}
+				}
+				imageConsumer.accept(image);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				log.error("unable to download login screen {}", ls, e);
+			}
+		});
 	}
 }

@@ -30,16 +30,24 @@ import java.nio.IntBuffer;
 
 class GpuIntBuffer
 {
-	private IntBuffer buffer = allocateDirect(65536);
+	private final IntBuffer buffer;
 
-	void put(int x, int y, int z)
+	GpuIntBuffer(IntBuffer ib)
 	{
-		buffer.put(x).put(y).put(z);
+		buffer = ib;
 	}
 
-	void put(int x, int y, int z, int c)
+	void put22224(int x, int y, int z, int w)
 	{
-		buffer.put(x).put(y).put(z).put(c);
+		buffer.put(((y & 0xffff) << 16) | (x & 0xffff));
+		buffer.put(z & 0xffff);
+		buffer.put(w);
+	}
+
+	void put2222(int x, int y, int z, int w)
+	{
+		buffer.put(((y & 0xffff) << 16) | (x & 0xffff));
+		buffer.put(((w & 0xffff) << 16) | (z & 0xffff));
 	}
 
 	void flip()
@@ -50,25 +58,6 @@ class GpuIntBuffer
 	void clear()
 	{
 		buffer.clear();
-	}
-
-	void ensureCapacity(int size)
-	{
-		int capacity = buffer.capacity();
-		final int position = buffer.position();
-		if ((capacity - position) < size)
-		{
-			do
-			{
-				capacity *= 2;
-			}
-			while ((capacity - position) < size);
-
-			IntBuffer newB = allocateDirect(capacity);
-			buffer.flip();
-			newB.put(buffer);
-			buffer = newB;
-		}
 	}
 
 	IntBuffer getBuffer()

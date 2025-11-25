@@ -34,15 +34,16 @@ import com.google.inject.name.Names;
 import com.google.inject.util.Providers;
 import java.applet.Applet;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.hooks.Callbacks;
@@ -66,9 +67,9 @@ import okhttp3.OkHttpClient;
 @AllArgsConstructor
 public class RuneLiteModule extends AbstractModule
 {
-	private final OkHttpClient okHttpClient;
-	private final Supplier<Applet> clientLoader;
-	private final Supplier<RuntimeConfig> configSupplier;
+	private final OkHttpClient bootupHttpClient;
+	private final Supplier<Client> clientLoader;
+	private final RuntimeConfigLoader configLoader;
 	private final boolean developerMode;
 	private final boolean safeMode;
 	private final boolean disableTelemetry;
@@ -83,7 +84,7 @@ public class RuneLiteModule extends AbstractModule
 		Properties properties = RuneLiteProperties.getProperties();
 		Map<Object, Object> props = new HashMap<>(properties);
 
-		RuntimeConfig runtimeConfig = configSupplier.get();
+		RuntimeConfig runtimeConfig = configLoader.get();
 		if (runtimeConfig != null && runtimeConfig.getProps() != null)
 		{
 			props.putAll(runtimeConfig.getProps());
@@ -126,7 +127,8 @@ public class RuneLiteModule extends AbstractModule
 		bindConstant().annotatedWith(Names.named("noupdate")).to(noupdate);
 		bind(File.class).annotatedWith(Names.named("runeLiteDir")).toInstance(RuneLite.RUNELITE_DIR);
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
-		bind(OkHttpClient.class).toInstance(okHttpClient);
+		bind(RuntimeConfigLoader.class).toInstance(configLoader);
+		bind(RuntimeConfigRefresher.class).asEagerSingleton();
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
@@ -148,23 +150,23 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
-	Applet provideApplet()
+	Applet provideApplet(Client client)
+	{
+		return (Applet) client;
+	}
+
+	@Provides
+	@Singleton
+	Client provideClient()
 	{
 		return clientLoader.get();
 	}
 
 	@Provides
 	@Singleton
-	Client provideClient(@Nullable Applet applet)
-	{
-		return applet instanceof Client ? (Client) applet : null;
-	}
-
-	@Provides
-	@Singleton
 	RuntimeConfig provideRuntimeConfig()
 	{
-		return configSupplier.get();
+		return configLoader.get();
 	}
 
 	@Provides
@@ -179,6 +181,37 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
+	}
+
+	@Provides
+	@Singleton
+	OkHttpClient provideHttpClient(Client client)
+	{
+		return bootupHttpClient.newBuilder()
+			.addInterceptor(chain ->
+			{
+				if (client.isClientThread())
+				{
+					throw new IOException("Blocking network calls are not allowed on the client thread");
+				}
+				if (SwingUtilities.isEventDispatchThread())
+				{
+					throw new IOException("Blocking network calls are not allowed on the event dispatch thread");
+				}
+				if (client.getEnvironment() != 0)
+				{
+					HttpUrl url = chain.request().url();
+					for (String domain : RuneLiteProperties.getJagexBlockedDomains())
+					{
+						if (url.host().endsWith(domain))
+						{
+							throw new IOException("Network call to " + url + " blocked outside of LIVE environment");
+						}
+					}
+				}
+				return chain.proceed(chain.request());
+			})
+			.build();
 	}
 
 	@Provides

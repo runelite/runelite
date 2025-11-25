@@ -27,12 +27,12 @@ package net.runelite.client.plugins.hiscore;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.hiscore.HiscoreEndpoint;
+import net.runelite.client.ui.ClientToolbar;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,9 +51,13 @@ public class HiscorePluginTest
 	@Inject
 	private HiscorePlugin hiscorePlugin;
 
+	@Mock
 	@Bind
-	@Nullable
 	private Client client;
+
+	@Mock
+	@Bind
+	private ClientToolbar clientToolbar;
 
 	@Mock
 	@Bind

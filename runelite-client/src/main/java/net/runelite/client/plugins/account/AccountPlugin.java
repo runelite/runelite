@@ -44,8 +44,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Account",
 	description = "Sync RuneLite config settings with your Google account",
-	tags = {"external", "google", "integration"},
-	loadWhenOutdated = true
+	tags = {"external", "google", "integration"}
 )
 @Slf4j
 public class AccountPlugin extends Plugin
@@ -77,14 +76,12 @@ public class AccountPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		loginButton = NavigationButton.builder()
-			.tab(false)
 			.icon(LOGIN_IMAGE)
 			.tooltip("Sign in to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
-			.tab(false)
 			.icon(LOGOUT_IMAGE)
 			.tooltip("Sign out of RuneLite")
 			.onClick(this::logoutClick)

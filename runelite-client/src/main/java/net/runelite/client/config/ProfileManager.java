@@ -41,6 +41,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -109,7 +110,7 @@ public class ProfileManager
 
 				File tempFile = File.createTempFile("runelite_profiles", null, PROFILES_DIR);
 				try (FileOutputStream out = new FileOutputStream(tempFile);
-					FileChannel channel = lockOut.getChannel();
+					FileChannel channel = out.getChannel();
 					OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
 				{
 					Profiles profilesData = new Profiles();
@@ -141,10 +142,16 @@ public class ProfileManager
 
 		public ConfigProfile createProfile(String name, long id)
 		{
+			if (findProfile(id) != null)
+			{
+				throw new IllegalArgumentException("profile " + id + " already exists");
+			}
+
 			ConfigProfile profile = new ConfigProfile(id);
 			profile.setName(name);
 			profile.setSync(false);
 			profile.setRev(-1);
+			profile.setDefaultForRsProfiles(new ArrayList<>());
 			profiles.add(profile);
 			modified = true;
 			log.debug("Created profile {}", profile);
@@ -158,21 +165,19 @@ public class ProfileManager
 
 		public ConfigProfile findProfile(String name)
 		{
-			for (ConfigProfile configProfile : profiles)
-			{
-				if (configProfile.getName().equals(name))
-				{
-					return configProfile;
-				}
-			}
-			return null;
+			return findProfile((profile) -> profile.getName().equals(name));
 		}
 
 		public ConfigProfile findProfile(long id)
 		{
-			for (ConfigProfile configProfile : profiles)
+			return findProfile((profile) -> profile.getId() == id);
+		}
+
+		public ConfigProfile findProfile(Predicate<ConfigProfile> condition)
+		{
+			for (ConfigProfile configProfile: profiles)
 			{
-				if (configProfile.getId() == id)
+				if (condition.test(configProfile))
 				{
 					return configProfile;
 				}
@@ -197,6 +202,7 @@ public class ProfileManager
 			if (!oldFile.exists())
 			{
 				// no config file is valid if the profile hasn't been used yet.
+				log.info("Old profile file {} does not exist", oldFile.getName());
 				return;
 			}
 
@@ -207,6 +213,7 @@ public class ProfileManager
 					newFile.toPath(),
 					StandardCopyOption.REPLACE_EXISTING
 				);
+				log.info("Renamed profile file {} to {}", oldFile.getName(), newFile.getName());
 			}
 			catch (IOException e)
 			{

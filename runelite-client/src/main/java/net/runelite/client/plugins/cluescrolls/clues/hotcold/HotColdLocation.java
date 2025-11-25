@@ -43,6 +43,8 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.KARAMJA;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MISTHALIN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MORYTANIA;
+import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.OCEAN;
+import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.VARLAMORE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WESTERN_PROVINCE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WILDERNESS;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.ZEAH;
@@ -110,7 +112,7 @@ public enum HotColdLocation
 	KANDARIN_MCGRUBORS_WOOD(MASTER, new WorldPoint(2653, 3485, 0), KANDARIN, "McGrubor's Wood", BRASSICAN_MAGE),
 	KANDARIN_FISHING_BUILD(MASTER, new WorldPoint(2590, 3369, 0), KANDARIN, "South of Fishing Guild", BRASSICAN_MAGE),
 	KANDARIN_WITCHHAVEN(MASTER, new WorldPoint(2707, 3306, 0), KANDARIN, "Outside Witchaven, west of Jeb, Holgart, and Caroline.", BRASSICAN_MAGE),
-	KANDARIN_NECRO_TOWER(MASTER, new WorldPoint(2667, 3241, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code djp.", ANCIENT_WIZARDS),
+	KANDARIN_NECRO_TOWER(MASTER, new WorldPoint(2667, 3241, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code DJP.", ANCIENT_WIZARDS),
 	KANDARIN_FIGHT_ARENA(MASTER, new WorldPoint(2587, 3135, 0), KANDARIN, "South of the Fight Arena, north-west of the Nightmare Zone.", BRASSICAN_MAGE),
 	KANDARIN_TREE_GNOME_VILLAGE(MASTER, new WorldPoint(2530, 3164, 0), KANDARIN, "Tree Gnome Village, near the general store icon.", BRASSICAN_MAGE),
 	KANDARIN_GRAVE_OF_SCORPIUS(MASTER, new WorldPoint(2467, 3227, 0), KANDARIN, "Grave of Scorpius", BRASSICAN_MAGE),
@@ -125,7 +127,7 @@ public enum HotColdLocation
 	KARAMJA_WEST_BRIMHAVEN(MASTER, new WorldPoint(2718, 3167, 0), KARAMJA, "West of Brimhaven.", BRASSICAN_MAGE),
 	KARAMJA_GLIDER(MASTER, new WorldPoint(2966, 2976, 0), KARAMJA, "West of the gnome glider.", BRASSICAN_MAGE),
 	KARAMJA_KHARAZI_NE(MASTER, new WorldPoint(2904, 2925, 0), KARAMJA, "North-eastern part of Kharazi Jungle.", BRASSICAN_MAGE),
-	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", BRASSICAN_MAGE),
+	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", ANCIENT_WIZARDS),
 	KARAMJA_CRASH_ISLAND(MASTER, new WorldPoint(2909, 2737, 0), KARAMJA, "Northern part of Crash Island.", BRASSICAN_MAGE),
 	LUMBRIDGE_COW_FIELD(BEGINNER,  new WorldPoint(3174, 3336, 0), MISTHALIN, "Cow field north of Lumbridge"),
 	MISTHALIN_VARROCK_STONE_CIRCLE(MASTER, new WorldPoint(3225, 3356, 0), MISTHALIN, "South of the stone circle near Varrock's entrance.", BRASSICAN_MAGE),
@@ -136,7 +138,7 @@ public enum HotColdLocation
 	MISTHALIN_LUMBER_YARD(MASTER, new WorldPoint(3301, 3484, 0), MISTHALIN, "South of Lumber Yard, east of Assistant Serf.", BRASSICAN_MAGE),
 	MORYTANIA_BURGH_DE_ROTT(MASTER, new WorldPoint(3546, 3252, 0), MORYTANIA, "In the north-east area of Burgh de Rott, by the reverse-L-shaped ruins.", BRASSICAN_MAGE),
 	MORYTANIA_DARKMEYER(MASTER, new WorldPoint(3604, 3326, 0), MORYTANIA, "Southwestern part of Darkmeyer.", BRASSICAN_MAGE),
-	MORYTANIA_PORT_PHASMATYS(MASTER, new WorldPoint(3611, 3485, 0), MORYTANIA, "West of Port Phasmatys, south-east of fairy ring.", BRASSICAN_MAGE),
+	MORYTANIA_PORT_PHASMATYS(MASTER, new WorldPoint(3611, 3485, 0), MORYTANIA, "West of Port Phasmatys, south-east of fairy ring ALQ.", BRASSICAN_MAGE),
 	MORYTANIA_HOLLOWS(MASTER, new WorldPoint(3499, 3421, 0), MORYTANIA, "Inside The Hollows, south of the bridge which was repaired in a quest.", BRASSICAN_MAGE),
 	MORYTANIA_SWAMP(MASTER, new WorldPoint(3418, 3372, 0), MORYTANIA, "Inside the Mort Myre Swamp, north-west of the Nature Grotto.", BRASSICAN_MAGE),
 	MORYTANIA_HAUNTED_MINE(MASTER, new WorldPoint(3444, 3255, 0), MORYTANIA, "At Haunted Mine quest start.", BRASSICAN_MAGE),
@@ -147,6 +149,14 @@ public enum HotColdLocation
 	MORYTANIA_DRAGONTOOTH_SOUTH(MASTER, new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_SLEPE_TENTS(MASTER, new WorldPoint(3769, 3383, 0), MORYTANIA, "North-east of Slepe, near the tents.", BRASSICAN_MAGE),
 	NORTHEAST_OF_AL_KHARID_MINE(BEGINNER, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
+	SAIL_GREAT_CONCH(MASTER, new WorldPoint(3249, 2349, 0), OCEAN, "In the south-eastern mine of the Great Conch", BRASSICAN_MAGE),
+	SAIL_ISLE_OF_SERPENTS(MASTER, new WorldPoint(1856, 2415, 0), OCEAN, "On the Isle of Serpents", BRASSICAN_MAGE),
+	SAIL_DRUMSTICK_ISLE(MASTER, new WorldPoint(2139, 3562, 0), OCEAN, "On Drumstick Isle", BRASSICAN_MAGE),
+	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
+	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
+	VARLAMORE_RAINFOREST_CENTRE(MASTER, new WorldPoint(1312, 3108, 0), VARLAMORE, "In the centre of the Tlati Rainforest.", BRASSICAN_MAGE),
+	VARLAMORE_SUNSET_COAST(MASTER, new WorldPoint(1534, 2997, 0), VARLAMORE, "North-east corner of Sunset Coast.", ANCIENT_WIZARDS),
+	VARLAMORE_VILLA_LUCENS(MASTER, new WorldPoint(1469, 2933, 0), VARLAMORE, "On the Villa Lucens theatre stage in Aldarin. Completion of Death on the Isle is required.", BRASSICAN_MAGE),
 	WESTERN_PROVINCE_EAGLES_PEAK(MASTER, new WorldPoint(2297, 3529, 0), WESTERN_PROVINCE, "North-west of Eagles' Peak.", BRASSICAN_MAGE),
 	WESTERN_PROVINCE_PISCATORIS(MASTER, new WorldPoint(2334, 3685, 0), WESTERN_PROVINCE, "Piscatoris Fishing Colony", ANCIENT_WIZARDS),
 	WESTERN_PROVINCE_PISCATORIS_HUNTER_AREA(MASTER, new WorldPoint(2359, 3564, 0), WESTERN_PROVINCE, "Eastern part of Piscatoris Hunter area, south-west of the Falconry.", BRASSICAN_MAGE),
@@ -174,14 +184,13 @@ public enum HotColdLocation
 	ZEAH_SULPHR_MINE(MASTER, new WorldPoint(1428, 3869, 0), ZEAH, "Western entrance in the Lovakengj sulphur mine. Facemask or Slayer Helmet recommended.", BRASSICAN_MAGE),
 	ZEAH_SHAYZIEN_BANK(MASTER, new WorldPoint(1498, 3627, 0), ZEAH, "South-east of the bank in Shayzien Encampment.", BRASSICAN_MAGE),
 	ZEAH_OVERPASS(MASTER, new WorldPoint(1467, 3714, 0), ZEAH, "Overpass between Lovakengj and Shayzien.", BRASSICAN_MAGE),
-	ZEAH_LIZARDMAN(MASTER, new WorldPoint(1490, 3698, 0), ZEAH, "Within Lizardman Canyon, east of the ladder. Requires 5% favour with Shayzien.", ANCIENT_WIZARDS),
+	ZEAH_LIZARDMAN(MASTER, new WorldPoint(1490, 3698, 0), ZEAH, "Within Lizardman Canyon, east of the ladder.", ANCIENT_WIZARDS),
 	ZEAH_COMBAT_RING(MASTER, new WorldPoint(1557, 3624, 0), ZEAH, "Shayzien Encampment, south-east of the Combat Ring.", BRASSICAN_MAGE),
 	ZEAH_SHAYZIEN_BANK_2(MASTER, new WorldPoint(1490, 3602, 0), ZEAH, "North of the bank in Shayzien.", BRASSICAN_MAGE),
 	ZEAH_LIBRARY(MASTER, new WorldPoint(1603, 3843, 0), ZEAH, "North-west of the Arceuus Library.", BRASSICAN_MAGE),
-	ZEAH_HOUSECHURCH(MASTER, new WorldPoint(1682, 3792, 0), ZEAH, "By the entrance to the Arceuus church.", ANCIENT_WIZARDS),
+	ZEAH_HOUSECHURCH(MASTER, new WorldPoint(1681, 3794, 0), ZEAH, "By the entrance to the Arceuus church.", ANCIENT_WIZARDS),
 	ZEAH_DARK_ALTAR(MASTER, new WorldPoint(1698, 3880, 0), ZEAH, "West of the Dark Altar.", BRASSICAN_MAGE),
 	ZEAH_ARCEUUS_HOUSE(MASTER, new WorldPoint(1710, 3700, 0), ZEAH, "By the south-eastern entrance to Arceuus.", BRASSICAN_MAGE),
-	ZEAH_ESSENCE_MINE(MASTER, new WorldPoint(1762, 3852, 0), ZEAH, "By the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_ESSENCE_MINE_NE(MASTER, new WorldPoint(1773, 3867, 0), ZEAH, "North-east of the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_PISCARILUS_MINE(MASTER, new WorldPoint(1768, 3705, 0), ZEAH, "South of the Piscarilius mine.", ANCIENT_WIZARDS),
 	ZEAH_GOLDEN_FIELD_TAVERN(MASTER, new WorldPoint(1718, 3643, 0), ZEAH, "South of the gravestone in Kingstown.", BRASSICAN_MAGE),

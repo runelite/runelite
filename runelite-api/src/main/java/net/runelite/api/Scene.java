@@ -25,19 +25,35 @@
 package net.runelite.api;
 
 /**
- * Represents the entire 3D scene
+ * Represents a 3D scene
  */
-public interface Scene
+public interface Scene extends Renderable
 {
 	/**
 	 * Gets the tiles in the scene
 	 *
-	 * @return the tiles in [plane][x][y]
+	 * @return a 4x104x104 array of tiles in [plane][x][y]
 	 */
 	Tile[][][] getTiles();
 
+	/**
+	 * Get the extended scene. This is larger than 104x104, and its size is {@link Constants#EXTENDED_SCENE_SIZE}.
+	 */
+	Tile[][][] getExtendedTiles();
+
+	/**
+	 * Get the extended tile settings. This is larger than 104x104, and its size is {@link Constants#EXTENDED_SCENE_SIZE}.
+	 */
+	byte[][][] getExtendedTileSettings();
+
 	int getDrawDistance();
 	void setDrawDistance(int drawDistance);
+
+	/**
+	 * Get the world view id of this scene
+	 * @return the world view id, or -1 if this is the top level scene
+	 */
+	int getWorldViewId();
 
 	/**
 	 * Get the minimum scene level which will be rendered
@@ -54,14 +70,24 @@ public interface Scene
 	void setMinLevel(int minLevel);
 
 	/**
+	 * Remove a tile from the scene
+	 * @param tile
+	 */
+	void removeTile(Tile tile);
+
+	/**
 	 * Remove a game object from the scene
 	 * @param gameObject
 	 */
 	void removeGameObject(GameObject gameObject);
 
-	void generateHouses();
+	void buildRoofs();
+
+	int[][][] getRoofs();
 
 	void setRoofRemovalMode(int flags);
+
+	int getRoofRemovalMode();
 
 	/**
 	 * Get the underlay ids for the scene. The value stored is id + 1, with 0 for no underlay.
@@ -135,4 +161,16 @@ public interface Scene
 	 * @see InstanceTemplates
 	 */
 	int[][][] getInstanceTemplateChunks();
+
+	/**
+	 * Gets an array of map region IDs that are currently loaded.
+	 *
+	 * @return the map regions
+	 */
+	int[] getMapRegions();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
 }

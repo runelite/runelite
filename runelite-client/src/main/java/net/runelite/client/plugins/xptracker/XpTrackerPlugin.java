@@ -27,39 +27,35 @@ package net.runelite.client.plugins.xptracker;
 
 import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.MoreObjects.firstNonNull;
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
-import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
-import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.widgets.WidgetID;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.NPCManager;
+import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -87,14 +83,6 @@ public class XpTrackerPlugin extends Plugin
 	private static final String MENUOP_ADD_CANVAS_TRACKER = "Add to canvas";
 	private static final String MENUOP_REMOVE_CANVAS_TRACKER = "Remove from canvas";
 
-	static final List<Skill> COMBAT = ImmutableList.of(
-		Skill.ATTACK,
-		Skill.STRENGTH,
-		Skill.DEFENCE,
-		Skill.RANGED,
-		Skill.HITPOINTS,
-		Skill.MAGIC);
-
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -111,9 +99,6 @@ public class XpTrackerPlugin extends Plugin
 	private XpTrackerConfig xpTrackerConfig;
 
 	@Inject
-	private NPCManager npcManager;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -121,6 +106,9 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private XpState xpState;
+
+	@Inject
+	private ConfigManager configManager;
 
 	private NavigationButton navButton;
 	@Setter(AccessLevel.PACKAGE)
@@ -131,7 +119,7 @@ public class XpTrackerPlugin extends Plugin
 	private long lastTickMillis = 0;
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
-	private boolean initializeTracker;
+	private int initializeTracker;
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -165,7 +153,7 @@ public class XpTrackerPlugin extends Plugin
 
 		// Initialize the tracker & last xp if already logged in
 		fetchXp = true;
-		initializeTracker = true;
+		initializeTracker = 2;
 		lastAccount = -1L;
 		clientThread.invokeLater(() ->
 		{
@@ -209,12 +197,12 @@ public class XpTrackerPlugin extends Plugin
 				lastWorldType = type;
 				resetState();
 				// Must be set from hitting the LOGGING_IN or HOPPING case below
-				assert initializeTracker;
+				assert initializeTracker > 0;
 			}
 		}
 		else if (state == GameState.LOGGING_IN || state == GameState.HOPPING)
 		{
-			initializeTracker = true;
+			initializeTracker = 2;
 		}
 		else if (state == GameState.LOGIN_SCREEN)
 		{
@@ -237,6 +225,26 @@ public class XpTrackerPlugin extends Plugin
 				xpClient.update(username);
 				lastXp = totalXp;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onRuneScapeProfileChanged(RuneScapeProfileChanged event)
+	{
+		XpSave save = xpState.save();
+		if (save != null)
+		{
+			saveSaveState(event.getPreviousProfile(), save);
+		}
+	}
+
+	@Subscribe
+	public void onClientShutdown(ClientShutdown event)
+	{
+		XpSave save = xpState.save();
+		if (save != null)
+		{
+			saveSaveState(configManager.getRSProfileKey(), save);
 		}
 	}
 
@@ -293,6 +301,7 @@ public class XpTrackerPlugin extends Plugin
 	 */
 	void resetAndInitState()
 	{
+		clearSaveState(configManager.getRSProfileKey());
 		resetState();
 
 		for (Skill skill : Skill.values())
@@ -371,6 +380,28 @@ public class XpTrackerPlugin extends Plugin
 		xpState.resetOverallPerHour();
 	}
 
+	/**
+	 * Update the stored order of a skill, following a drag-and-drop operation that has moved it in the UI.
+	 *
+	 * @param skill       Skill that has been moved
+	 * @param newPosition New 0-indexed position of this skill
+	 */
+	void updateSkillOrderState(Skill skill, int newPosition)
+	{
+		xpState.setOrder(skill, newPosition);
+	}
+
+	/**
+	 * Update the stored 'compact view' state of a skill, following it being toggled via the UI.
+	 *
+	 * @param skill       Skill that has been toggled
+	 * @param compactView New 'compact view' flag
+	 */
+	void setSkillCompactViewState(Skill skill, boolean compactView)
+	{
+		xpState.setCompactView(skill, compactView);
+	}
+
 	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
@@ -382,7 +413,7 @@ public class XpTrackerPlugin extends Plugin
 		final int startGoalXp = client.getVarpValue(startGoal);
 		final int endGoalXp = client.getVarpValue(endGoal);
 
-		if (initializeTracker)
+		if (initializeTracker > 0)
 		{
 			// This is the XP sync on login, wait until after login to begin counting
 			return;
@@ -395,17 +426,6 @@ public class XpTrackerPlugin extends Plugin
 			return;
 		}
 
-		final XpStateSingle state = xpState.getSkill(skill);
-		state.setActionType(XpActionType.EXPERIENCE);
-
-		final Actor interacting = client.getLocalPlayer().getInteracting();
-		if (interacting instanceof NPC && COMBAT.contains(skill))
-		{
-			final int xpModifier = worldSetToType(client.getWorldType()).modifier(client);
-			final NPC npc = (NPC) interacting;
-			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getId()), xpModifier);
-		}
-
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		xpPanel.updateSkillExperience(updateResult == XpUpdateResult.UPDATED, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 
@@ -415,31 +435,37 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
-	{
-		final NPC npc = event.getNpc();
-
-		if (!npc.isDead())
-		{
-			return;
-		}
-
-		for (Skill skill : COMBAT)
-		{
-			final XpUpdateResult updateResult = xpState.updateNpcKills(skill, npc, npcManager.getHealth(npc.getId()));
-			final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
-		}
-
-		xpPanel.updateTotal(xpState.getTotalSnapshot());
-	}
-
-	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (initializeTracker)
+		if (initializeTracker > 0 && --initializeTracker == 0)
 		{
-			initializeTracker = false;
+			XpSave save;
+			// Restore from saved state
+			if (!xpState.isOverallInitialized() && xpTrackerConfig.saveState() && (save = loadSaveState(configManager.getRSProfileKey())) != null)
+			{
+				log.debug("Loading xp state from save");
+				xpState.restore(save);
+
+				// xpsave doesn't save or restore xp goals, fetch them from the client
+				// and apply them to the xpstate
+				for (Skill skill : save.skills.keySet())
+				{
+					@Varp final int startGoal = startGoalVarpForSkill(skill);
+					@Varp final int endGoal = endGoalVarpForSkill(skill);
+					final int startGoalXp = client.getVarpValue(startGoal);
+					final int endGoalXp = client.getVarpValue(endGoal);
+
+					XpStateSingle x = xpState.getSkill(skill);
+					x.updateGoals(x.getCurrentXp(), startGoalXp, endGoalXp);
+				}
+
+				// apply state to the panel
+				for (Skill skill : save.skills.keySet())
+				{
+					xpPanel.updateSkillExperience(true, false, skill, xpState.getSkillSnapshot(skill));
+				}
+				xpPanel.updateTotal(xpState.getTotalSnapshot());
+			}
 
 			// Check for xp gained while logged out
 			for (Skill skill : Skill.values())
@@ -457,6 +483,7 @@ public class XpTrackerPlugin extends Plugin
 					{
 						log.debug("Xp is going backwards! {} {} -> {}", skill, skillState.getCurrentXp(), currentXp);
 						resetState();
+						clearSaveState(configManager.getRSProfileKey());
 						break;
 					}
 
@@ -500,7 +527,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		int widgetID = event.getActionParam1();
 
-		if (TO_GROUP(widgetID) != WidgetID.SKILLS_GROUP_ID
+		if (WidgetUtil.componentToInterface(widgetID) != InterfaceID.STATS
 			|| !event.getOption().startsWith("View")
 			|| !xpTrackerConfig.skillTabOverlayMenuOptions())
 		{
@@ -509,7 +536,15 @@ public class XpTrackerPlugin extends Plugin
 
 		// Get skill from menu option, eg. "View <col=ff981f>Attack</col> guide"
 		final String skillText = event.getOption().split(" ")[1];
-		final Skill skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+		final Skill skill;
+		try
+		{
+			skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+		}
+		catch (IllegalArgumentException ignored)
+		{
+			return;
+		}
 
 		client.createMenuEntry(-1)
 			.setTarget(skillText)
@@ -543,51 +578,53 @@ public class XpTrackerPlugin extends Plugin
 		switch (skill)
 		{
 			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_START;
+				return VarPlayerID.XPDROPS_ATTACK_START;
 			case MINING:
-				return VarPlayer.MINING_GOAL_START;
+				return VarPlayerID.XPDROPS_MINING_START;
 			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_START;
+				return VarPlayerID.XPDROPS_WOODCUTTING_START;
 			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_START;
+				return VarPlayerID.XPDROPS_DEFENCE_START;
 			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_START;
+				return VarPlayerID.XPDROPS_MAGIC_START;
 			case RANGED:
-				return VarPlayer.RANGED_GOAL_START;
+				return VarPlayerID.XPDROPS_RANGED_START;
 			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_START;
+				return VarPlayerID.XPDROPS_HITPOINTS_START;
 			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_START;
+				return VarPlayerID.XPDROPS_AGILITY_START;
 			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_START;
+				return VarPlayerID.XPDROPS_STRENGTH_START;
 			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_START;
+				return VarPlayerID.XPDROPS_PRAYER_START;
 			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_START;
+				return VarPlayerID.XPDROPS_SLAYER_START;
 			case FISHING:
-				return VarPlayer.FISHING_GOAL_START;
+				return VarPlayerID.XPDROPS_FISHING_START;
 			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_START;
+				return VarPlayerID.XPDROPS_RUNECRAFT_START;
 			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_START;
+				return VarPlayerID.XPDROPS_HERBLORE_START;
 			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_START;
+				return VarPlayerID.XPDROPS_FIREMAKING_START;
 			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_START;
+				return VarPlayerID.XPDROPS_CONSTRUCTION_START;
 			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_START;
+				return VarPlayerID.XPDROPS_HUNTER_START;
 			case COOKING:
-				return VarPlayer.COOKING_GOAL_START;
+				return VarPlayerID.XPDROPS_COOKING_START;
 			case FARMING:
-				return VarPlayer.FARMING_GOAL_START;
+				return VarPlayerID.XPDROPS_FARMING_START;
 			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_START;
+				return VarPlayerID.XPDROPS_CRAFTING_START;
 			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_START;
+				return VarPlayerID.XPDROPS_SMITHING_START;
 			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_START;
+				return VarPlayerID.XPDROPS_THIEVING_START;
 			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_START;
+				return VarPlayerID.XPDROPS_FLETCHING_START;
+			case SAILING:
+				return VarPlayerID.XPDROPS_SAILING_START;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -598,51 +635,53 @@ public class XpTrackerPlugin extends Plugin
 		switch (skill)
 		{
 			case ATTACK:
-				return VarPlayer.ATTACK_GOAL_END;
+				return VarPlayerID.XPDROPS_ATTACK_END;
 			case MINING:
-				return VarPlayer.MINING_GOAL_END;
+				return VarPlayerID.XPDROPS_MINING_END;
 			case WOODCUTTING:
-				return VarPlayer.WOODCUTTING_GOAL_END;
+				return VarPlayerID.XPDROPS_WOODCUTTING_END;
 			case DEFENCE:
-				return VarPlayer.DEFENCE_GOAL_END;
+				return VarPlayerID.XPDROPS_DEFENCE_END;
 			case MAGIC:
-				return VarPlayer.MAGIC_GOAL_END;
+				return VarPlayerID.XPDROPS_MAGIC_END;
 			case RANGED:
-				return VarPlayer.RANGED_GOAL_END;
+				return VarPlayerID.XPDROPS_RANGED_END;
 			case HITPOINTS:
-				return VarPlayer.HITPOINTS_GOAL_END;
+				return VarPlayerID.XPDROPS_HITPOINTS_END;
 			case AGILITY:
-				return VarPlayer.AGILITY_GOAL_END;
+				return VarPlayerID.XPDROPS_AGILITY_END;
 			case STRENGTH:
-				return VarPlayer.STRENGTH_GOAL_END;
+				return VarPlayerID.XPDROPS_STRENGTH_END;
 			case PRAYER:
-				return VarPlayer.PRAYER_GOAL_END;
+				return VarPlayerID.XPDROPS_PRAYER_END;
 			case SLAYER:
-				return VarPlayer.SLAYER_GOAL_END;
+				return VarPlayerID.XPDROPS_SLAYER_END;
 			case FISHING:
-				return VarPlayer.FISHING_GOAL_END;
+				return VarPlayerID.XPDROPS_FISHING_END;
 			case RUNECRAFT:
-				return VarPlayer.RUNECRAFT_GOAL_END;
+				return VarPlayerID.XPDROPS_RUNECRAFT_END;
 			case HERBLORE:
-				return VarPlayer.HERBLORE_GOAL_END;
+				return VarPlayerID.XPDROPS_HERBLORE_END;
 			case FIREMAKING:
-				return VarPlayer.FIREMAKING_GOAL_END;
+				return VarPlayerID.XPDROPS_FIREMAKING_END;
 			case CONSTRUCTION:
-				return VarPlayer.CONSTRUCTION_GOAL_END;
+				return VarPlayerID.XPDROPS_CONSTRUCTION_END;
 			case HUNTER:
-				return VarPlayer.HUNTER_GOAL_END;
+				return VarPlayerID.XPDROPS_HUNTER_END;
 			case COOKING:
-				return VarPlayer.COOKING_GOAL_END;
+				return VarPlayerID.XPDROPS_COOKING_END;
 			case FARMING:
-				return VarPlayer.FARMING_GOAL_END;
+				return VarPlayerID.XPDROPS_FARMING_END;
 			case CRAFTING:
-				return VarPlayer.CRAFTING_GOAL_END;
+				return VarPlayerID.XPDROPS_CRAFTING_END;
 			case SMITHING:
-				return VarPlayer.SMITHING_GOAL_END;
+				return VarPlayerID.XPDROPS_SMITHING_END;
 			case THIEVING:
-				return VarPlayer.THIEVING_GOAL_END;
+				return VarPlayerID.XPDROPS_THIEVING_END;
 			case FLETCHING:
-				return VarPlayer.FLETCHING_GOAL_END;
+				return VarPlayerID.XPDROPS_FLETCHING_END;
+			case SAILING:
+				return VarPlayerID.XPDROPS_SAILING_END;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -691,6 +730,20 @@ public class XpTrackerPlugin extends Plugin
 		rebuildSkills();
 	}
 
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.MINUTES,
+		asynchronous = true
+	)
+	public void tickStateSave()
+	{
+		XpSave save = xpState.save();
+		if (save != null)
+		{
+			saveSaveState(configManager.getRSProfileKey(), save);
+		}
+	}
+
 	private void rebuildSkills()
 	{
 		// Rebuild calculated values like xp/hr in panel
@@ -724,5 +777,20 @@ public class XpTrackerPlugin extends Plugin
 		{
 			xpPauseState.unpauseOverall();
 		}
+	}
+
+	private void saveSaveState(String profile, XpSave state)
+	{
+		configManager.setConfiguration("xpTracker", profile, "state", state);
+	}
+
+	private void clearSaveState(String profile)
+	{
+		configManager.unsetConfiguration("xpTracker", profile, "state");
+	}
+
+	private XpSave loadSaveState(String profile)
+	{
+		return configManager.getConfiguration("xpTracker", profile, "state", XpSave.class);
 	}
 }

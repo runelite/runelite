@@ -40,12 +40,13 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.PendingLogin;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
@@ -103,7 +104,7 @@ public class FriendListPlugin extends Plugin
 		if (event.getScriptId() == ScriptID.FRIENDS_UPDATE)
 		{
 			final int world = client.getWorld();
-			final boolean isMember = client.getVarpValue(VarPlayer.MEMBERSHIP_DAYS) > 0;
+			final boolean isMember = client.getVarpValue(VarPlayerID.ACCOUNT_CREDIT) > 0;
 			final NameableContainer<Friend> friendContainer = client.getFriendContainer();
 			final int friendCount = friendContainer.getCount();
 			if (friendCount >= 0)
@@ -124,7 +125,7 @@ public class FriendListPlugin extends Plugin
 		else if (event.getScriptId() == ScriptID.IGNORE_UPDATE)
 		{
 			final int world = client.getWorld();
-			final boolean isMember = client.getVarpValue(VarPlayer.MEMBERSHIP_DAYS) > 0;
+			final boolean isMember = client.getVarpValue(VarPlayerID.ACCOUNT_CREDIT) > 0;
 			final NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
 			final int ignoreCount = ignoreContainer.getCount();
 			if (ignoreCount >= 0)
@@ -166,10 +167,10 @@ public class FriendListPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		final int groupId = WidgetUtil.componentToInterface(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
+		if (groupId == InterfaceID.FRIENDS && event.getOption().equals("Message"))
 		{
 			String friend = Text.toJagexName(Text.removeTags(event.getTarget()));
 
@@ -205,7 +206,7 @@ public class FriendListPlugin extends Plugin
 
 	private void setFriendsListTitle(final String title)
 	{
-		Widget friendListTitleWidget = client.getWidget(WidgetInfo.FRIEND_CHAT_TITLE);
+		Widget friendListTitleWidget = client.getWidget(InterfaceID.Friends.HEADER);
 		if (friendListTitleWidget != null)
 		{
 			friendListTitleWidget.setText(title);
@@ -214,7 +215,7 @@ public class FriendListPlugin extends Plugin
 
 	private void setIgnoreListTitle(final String title)
 	{
-		Widget ignoreTitleWidget = client.getWidget(WidgetInfo.IGNORE_TITLE);
+		Widget ignoreTitleWidget = client.getWidget(InterfaceID.Ignore.HEADER);
 		if (ignoreTitleWidget != null)
 		{
 			ignoreTitleWidget.setText(title);

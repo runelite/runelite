@@ -30,9 +30,9 @@ import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
-import net.runelite.api.Varbits;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -61,7 +61,11 @@ class RunEnergyOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget runOrb = client.getWidget(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+		Widget runOrb = client.getWidget(InterfaceID.Orbs.RUNBUTTON);
+		if (runOrb == null || runOrb.isHidden())
+		{
+			runOrb = client.getWidget(InterfaceID.OrbsNomap.RUNBUTTON);
+		}
 
 		if (runOrb == null || runOrb.isHidden())
 		{
@@ -91,7 +95,7 @@ class RunEnergyOverlay extends Overlay
 				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
 			}
 
-			if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) == 0
+			if (client.getVarbitValue(VarbitID.STAMINA_ACTIVE) == 0
 				&& plugin.isRingOfEnduranceEquipped()
 				&& plugin.getRingOfEnduranceCharges() == null)
 			{

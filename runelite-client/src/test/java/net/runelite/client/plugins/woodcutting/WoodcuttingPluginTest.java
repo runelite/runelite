@@ -32,17 +32,20 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.ObjectComposition;
-import net.runelite.api.ObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.Notification;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
@@ -52,7 +55,6 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -82,11 +84,19 @@ public class WoodcuttingPluginTest
 
 	@Mock
 	@Bind
-	WoodcuttingTreesOverlay woodcuttingTreesOverlay;
+	WoodcuttingSceneOverlay woodcuttingSceneOverlay;
 
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private InfoBoxManager infoBoxManager;
+
+	@Mock
+	@Bind
+	private ItemManager itemManager;
 
 	@Before
 	public void before()
@@ -131,13 +141,9 @@ public class WoodcuttingPluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		when(woodcuttingConfig.showNestNotification()).thenReturn(Notification.ON);
 		woodcuttingPlugin.onChatMessage(chatMessage);
-		verify(notifier).notify("A bird nest has spawned!");
-
-		when(woodcuttingConfig.showNestNotification()).thenReturn(false);
-		woodcuttingPlugin.onChatMessage(chatMessage);
-		verifyNoMoreInteractions(notifier);
+		verify(notifier).notify(Notification.ON, "A bird nest has spawned!");
 	}
 
 	@Test
@@ -146,15 +152,15 @@ public class WoodcuttingPluginTest
 		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 		Tile tile = mock(Tile.class);
 		TileItem beginnerTileItem = mock(TileItem.class);
-		when(beginnerTileItem.getId()).thenReturn(ItemID.CLUE_NEST_BEGINNER);
+		when(beginnerTileItem.getId()).thenReturn(ItemID.WC_CLUE_NEST_BEGINNER);
 		ItemSpawned beginnerClueSpawned = new ItemSpawned(tile, beginnerTileItem);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		when(woodcuttingConfig.showNestNotification()).thenReturn(Notification.ON);
 		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
-		verify(notifier).notify("A bird nest has spawned!");
+		verify(notifier).notify(Notification.ON, "A bird nest has spawned!");
 	}
 
 	@Test
@@ -163,15 +169,15 @@ public class WoodcuttingPluginTest
 		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 		Tile tile = mock(Tile.class);
 		TileItem eliteTileItem = mock(TileItem.class);
-		when(eliteTileItem.getId()).thenReturn(ItemID.CLUE_NEST_ELITE);
+		when(eliteTileItem.getId()).thenReturn(ItemID.WC_CLUE_NEST_ELITE);
 		ItemSpawned eliteClueSpawned = new ItemSpawned(tile, eliteTileItem);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		when(woodcuttingConfig.showNestNotification()).thenReturn(Notification.ON);
 		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
-		verify(notifier).notify("A bird nest has spawned!");
+		verify(notifier).notify(Notification.ON, "A bird nest has spawned!");
 	}
 
 	@Test
@@ -180,10 +186,9 @@ public class WoodcuttingPluginTest
 		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 		Tile tile = mock(Tile.class);
 		TileItem eliteTileItem = mock(TileItem.class);
-		when(eliteTileItem.getId()).thenReturn(ItemID.CLUE_NEST_ELITE);
+		when(eliteTileItem.getId()).thenReturn(ItemID.WC_CLUE_NEST_ELITE);
 		ItemSpawned eliteClueSpawned = new ItemSpawned(tile, eliteTileItem);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
 		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.DISABLED);
 		woodcuttingPlugin.onItemSpawned(eliteClueSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
@@ -197,10 +202,9 @@ public class WoodcuttingPluginTest
 		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 		Tile tile = mock(Tile.class);
 		TileItem beginnerTileItem = mock(TileItem.class);
-		when(beginnerTileItem.getId()).thenReturn(ItemID.CLUE_NEST_BEGINNER);
+		when(beginnerTileItem.getId()).thenReturn(ItemID.WC_CLUE_NEST_BEGINNER);
 		ItemSpawned beginnerClueSpawned = new ItemSpawned(tile, beginnerTileItem);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
 		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.HARD);
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
@@ -214,13 +218,13 @@ public class WoodcuttingPluginTest
 		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 		Tile tile = mock(Tile.class);
 		TileItem beginnerTileItem = mock(TileItem.class);
-		when(beginnerTileItem.getId()).thenReturn(ItemID.CLUE_NEST_BEGINNER);
+		when(beginnerTileItem.getId()).thenReturn(ItemID.WC_CLUE_NEST_BEGINNER);
 		ItemSpawned beginnerClueSpawned = new ItemSpawned(tile, beginnerTileItem);
 		TileItem nestTileItem = mock(TileItem.class);
-		when(nestTileItem.getId()).thenReturn(ItemID.BIRD_NEST_22798);
+		when(nestTileItem.getId()).thenReturn(ItemID.BIRD_NEST_SEEDS_JAN2019);
 		ItemSpawned regularNestSpawned = new ItemSpawned(tile, nestTileItem);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		when(woodcuttingConfig.showNestNotification()).thenReturn(Notification.ON);
 
 		// Player drops clue nest
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
@@ -230,7 +234,7 @@ public class WoodcuttingPluginTest
 		woodcuttingPlugin.onItemSpawned(regularNestSpawned);
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
-		verify(notifier).notify("A bird nest has spawned!");
+		verify(notifier).notify(Notification.ON, "A bird nest has spawned!");
 	}
 
 	@Test
@@ -239,12 +243,12 @@ public class WoodcuttingPluginTest
 		ChatMessage nestChatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BIRDS_NEST_MESSAGE, "", 0);
 		Tile tile = mock(Tile.class);
 		TileItem beginnerTileItem = mock(TileItem.class);
-		when(beginnerTileItem.getId()).thenReturn(ItemID.CLUE_NEST_BEGINNER);
+		when(beginnerTileItem.getId()).thenReturn(ItemID.WC_CLUE_NEST_BEGINNER);
 		ItemSpawned beginnerClueSpawned = new ItemSpawned(tile, beginnerTileItem);
 		TileItem anotherItemTileItem = mock(TileItem.class);
 		ItemSpawned anotherItemSpawned = new ItemSpawned(tile, anotherItemTileItem);
 
-		when(woodcuttingConfig.showNestNotification()).thenReturn(true);
+		when(woodcuttingConfig.showNestNotification()).thenReturn(Notification.ON);
 		when(woodcuttingConfig.clueNestNotifyTier()).thenReturn(ClueNestTier.BEGINNER);
 
 		woodcuttingPlugin.onItemSpawned(beginnerClueSpawned);
@@ -252,17 +256,17 @@ public class WoodcuttingPluginTest
 
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
-		verify(notifier).notify("A bird nest has spawned!");
+		verify(notifier).notify(Notification.ON, "A bird nest has spawned!");
 	}
 
 	@Test
 	public void testForestrySaplingRottingLeaves()
 	{
-		var rottingLeaves = makeObject(ObjectID.ROTTING_LEAVES, "Rotting leaves");
-		when(client.getObjectDefinition(ObjectID.ROTTING_LEAVES)).thenReturn(rottingLeaves);
+		var rottingLeaves = makeObject(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_1, "Rotting leaves");
+		when(client.getObjectDefinition(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_1)).thenReturn(rottingLeaves);
 
 		var gameObject = mock(GameObject.class);
-		when(gameObject.getId()).thenReturn(ObjectID.ROTTING_LEAVES);
+		when(gameObject.getId()).thenReturn(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_1);
 
 		var gameObjectSpawned = new GameObjectSpawned();
 		gameObjectSpawned.setGameObject(gameObject);
@@ -277,11 +281,11 @@ public class WoodcuttingPluginTest
 	@Test
 	public void testForestrySaplingGreenLeaves()
 	{
-		var rottingLeaves = makeObject(ObjectID.GREEN_LEAVES, "Green leaves");
-		when(client.getObjectDefinition(ObjectID.GREEN_LEAVES)).thenReturn(rottingLeaves);
+		var rottingLeaves = makeObject(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_2, "Green leaves");
+		when(client.getObjectDefinition(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_2)).thenReturn(rottingLeaves);
 
 		var gameObject = mock(GameObject.class);
-		when(gameObject.getId()).thenReturn(ObjectID.GREEN_LEAVES);
+		when(gameObject.getId()).thenReturn(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_2);
 
 		var gameObjectSpawned = new GameObjectSpawned();
 		gameObjectSpawned.setGameObject(gameObject);
@@ -296,11 +300,11 @@ public class WoodcuttingPluginTest
 	@Test
 	public void testForestrySaplingSplinteredBark()
 	{
-		var rottingLeaves = makeObject(ObjectID.SPLINTERED_BARK, "Splintered bark");
-		when(client.getObjectDefinition(ObjectID.SPLINTERED_BARK)).thenReturn(rottingLeaves);
+		var rottingLeaves = makeObject(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_5, "Splintered bark");
+		when(client.getObjectDefinition(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_5)).thenReturn(rottingLeaves);
 
 		var gameObject = mock(GameObject.class);
-		when(gameObject.getId()).thenReturn(ObjectID.SPLINTERED_BARK);
+		when(gameObject.getId()).thenReturn(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_5);
 
 		var gameObjectSpawned = new GameObjectSpawned();
 		gameObjectSpawned.setGameObject(gameObject);
@@ -315,11 +319,11 @@ public class WoodcuttingPluginTest
 	@Test
 	public void testForestrySaplingDroppings()
 	{
-		var rottingLeaves = makeObject(ObjectID.DROPPINGS, "Droppings");
-		when(client.getObjectDefinition(ObjectID.DROPPINGS)).thenReturn(rottingLeaves);
+		var rottingLeaves = makeObject(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_3, "Droppings");
+		when(client.getObjectDefinition(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_3)).thenReturn(rottingLeaves);
 
 		var gameObject = mock(GameObject.class);
-		when(gameObject.getId()).thenReturn(ObjectID.DROPPINGS);
+		when(gameObject.getId()).thenReturn(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_3);
 
 		var gameObjectSpawned = new GameObjectSpawned();
 		gameObjectSpawned.setGameObject(gameObject);
@@ -334,11 +338,11 @@ public class WoodcuttingPluginTest
 	@Test
 	public void testForestrySaplingWildMushrooms()
 	{
-		var rottingLeaves = makeObject(ObjectID.WILD_MUSHROOMS, "Wild mushrooms");
-		when(client.getObjectDefinition(ObjectID.WILD_MUSHROOMS)).thenReturn(rottingLeaves);
+		var rottingLeaves = makeObject(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4A, "Wild mushrooms");
+		when(client.getObjectDefinition(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4A)).thenReturn(rottingLeaves);
 
 		var gameObject = mock(GameObject.class);
-		when(gameObject.getId()).thenReturn(ObjectID.WILD_MUSHROOMS);
+		when(gameObject.getId()).thenReturn(ObjectID.GATHERING_EVENT_SAPLING_INGREDIENT_4A);
 
 		var gameObjectSpawned = new GameObjectSpawned();
 		gameObjectSpawned.setGameObject(gameObject);

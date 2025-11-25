@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import net.runelite.api.annotations.Component;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.Range;
 
@@ -53,6 +54,7 @@ public interface Widget
 	 *
 	 * @see WidgetID
 	 */
+	@Component
 	int getId();
 
 	/**
@@ -110,9 +112,8 @@ public interface Widget
 
 	/**
 	 * Gets a dynamic child by index
-	 *
-	 * @throws IndexOutOfBoundsException if the index is outside of the child array
 	 */
+	@Nullable
 	Widget getChild(int index);
 
 	/**
@@ -285,14 +286,14 @@ public interface Widget
 	/**
 	 * Gets the sequence ID used to animate the model in the widget
 	 *
-	 * @see net.runelite.api.AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	int getAnimationId();
 
 	/**
 	 * Sets the sequence ID used to animate the model in the widget
 	 *
-	 * @see net.runelite.api.AnimationID
+	 * @see net.runelite.api.gameval.AnimationID
 	 */
 	Widget setAnimationId(int animationId);
 
@@ -363,7 +364,7 @@ public interface Widget
 	 * Gets the sprite ID displayed in the widget.
 	 *
 	 * @return the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * @see net.runelite.api.gameval.SpriteID
 	 */
 	int getSpriteId();
 
@@ -381,7 +382,7 @@ public interface Widget
 	 * Sets the sprite ID displayed in the widget.
 	 *
 	 * @param spriteId the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * @see net.runelite.api.gameval.SpriteID
 	 */
 	Widget setSpriteId(int spriteId);
 
@@ -649,6 +650,11 @@ public interface Widget
 	void setAction(int index, String action);
 
 	/**
+	 * Clear the menu options on a widget.
+	 */
+	void clearActions();
+
+	/**
 	 * Sets a script to be ran when the a menu action is clicked.
 	 * hasListener must be true for this to take effect
 	 *
@@ -791,6 +797,30 @@ public interface Widget
 	 * @see #getBorderType
 	 */
 	void setBorderType(int thickness);
+
+	/**
+	 * Get if this graphic flipped vertically
+	 * @return
+	 */
+	boolean isFlippedVertically();
+
+	/**
+	 * Set if this graphic is flipped vertically
+	 * @param flip
+	 */
+	void setFlippedVertically(boolean flip);
+
+	/**
+	 * Get if this graphic flipped horizontally
+	 * @return
+	 */
+	boolean isFlippedHorizontally();
+
+	/**
+	 * Set if this graphic is flipped horizontally
+	 * @param flip
+	 */
+	void setFlippedHorizontally(boolean flip);
 
 	/**
 	 * Returns if text is shadowed
@@ -958,14 +988,25 @@ public interface Widget
 	Widget setFilled(boolean filled);
 
 	/**
-	 * Verb for spell targets
+	 * Verb for op targets
 	 */
 	String getTargetVerb();
 
 	/**
-	 * Verb for spell targets
+	 * Verb for op targets
 	 */
 	void setTargetVerb(String targetVerb);
+
+	/**
+	 * Get the priority that the target verb op is at
+	 */
+	int getTargetPriority();
+
+	/**
+	 * Set the priority that the target verb op is at
+	 * @param priority priority, default 4
+	 */
+	void setTargetPriority(int priority);
 
 	/**
 	 * Can widgets under this widgets be clicked in this widgets bounding box
@@ -988,7 +1029,12 @@ public interface Widget
 	void setNoScrollThrough(boolean noScrollThrough);
 
 	/**
-	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 * {@link net.runelite.api.gameval.VarPlayerID}s that triggers this widgets varTransmitListener
+	 */
+	int[] getVarTransmitTrigger();
+
+	/**
+	 * {@link net.runelite.api.gameval.VarPlayerID}s that triggers this widgets varTransmitListener
 	 */
 	void setVarTransmitTrigger(int ...trigger);
 
@@ -1027,6 +1073,13 @@ public interface Widget
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnDragListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran when the mouse is scrolled when on the widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnScrollWheelListener(Object ...args);
 
 	/**
 	 * Container this can be dragged in

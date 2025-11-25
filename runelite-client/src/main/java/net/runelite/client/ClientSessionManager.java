@@ -29,7 +29,6 @@ import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -46,13 +45,13 @@ public class ClientSessionManager
 	private final ScheduledExecutorService executorService;
 	private final Client client;
 	private final SessionClient sessionClient;
+	private static final UUID sessionId = UUID.randomUUID();
 
 	private ScheduledFuture<?> scheduledFuture;
-	private UUID sessionId;
 
 	@Inject
 	ClientSessionManager(ScheduledExecutorService executorService,
-		@Nullable Client client,
+		Client client,
 		SessionClient sessionClient)
 	{
 		this.executorService = executorService;
@@ -62,68 +61,24 @@ public class ClientSessionManager
 
 	public void start()
 	{
-		executorService.execute(() ->
-		{
-			try
-			{
-				sessionId = sessionClient.open();
-				log.debug("Opened session {}", sessionId);
-			}
-			catch (IOException ex)
-			{
-				log.warn("error opening session", ex);
-			}
-		});
-
-		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
+		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), (int) (5 * 60 * Math.random()), 10 * 60, TimeUnit.SECONDS);
 	}
 
 	@Subscribe
 	private void onClientShutdown(ClientShutdown e)
 	{
 		scheduledFuture.cancel(true);
-
-		e.waitFor(executorService.submit(() ->
-		{
-			try
-			{
-				UUID localUuid = sessionId;
-				if (localUuid != null)
-				{
-					sessionClient.delete(localUuid);
-				}
-			}
-			catch (IOException ex)
-			{
-				log.warn(null, ex);
-			}
-			sessionId = null;
-		}));
 	}
 
 	private void ping()
 	{
-		try
+		if (!isWorldHostValid())
 		{
-			if (sessionId == null)
-			{
-				sessionId = sessionClient.open();
-				log.debug("Opened session {}", sessionId);
-				return;
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to open session", ex);
 			return;
 		}
 
-		boolean loggedIn = false;
-		if (client != null)
-		{
-			GameState gameState = client.getGameState();
-			loggedIn = gameState.getState() >= GameState.LOADING.getState();
-		}
+		GameState gameState = client.getGameState();
+		boolean loggedIn = gameState.getState() >= GameState.LOADING.getState();
 
 		try
 		{
@@ -131,9 +86,13 @@ public class ClientSessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn("Resetting session", ex);
-			sessionId = null;
+			log.warn("Unable to ping session service", ex);
 		}
+	}
 
+	private boolean isWorldHostValid()
+	{
+		String host = client.getWorldHost();
+		return host != null && host.endsWith(".runescape.com");
 	}
 }

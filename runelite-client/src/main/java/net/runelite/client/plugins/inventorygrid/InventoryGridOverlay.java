@@ -33,8 +33,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -79,8 +79,9 @@ class InventoryGridOverlay extends Overlay
 		assert draggingWidget.isIf3();
 
 		// grid is only supported on bank inventory and inventory
-		if (draggingWidget.getId() != WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()
-			&& draggingWidget.getId() != WidgetInfo.INVENTORY.getId())
+		if (draggingWidget.getId() != InterfaceID.Bankside.ITEMS
+			&& draggingWidget.getId() != InterfaceID.Bankside.WORNOPS
+			&& draggingWidget.getId() != InterfaceID.Inventory.ITEMS)
 		{
 			return null;
 		}

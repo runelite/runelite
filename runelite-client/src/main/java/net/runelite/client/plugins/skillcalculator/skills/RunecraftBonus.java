@@ -31,7 +31,7 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum RunecraftBonus implements SkillBonus
 {
-	DAEYALT_ESSENCE("Daeyalt essence (+50%)", 1.5f),
+	DAEYALT_ESSENCE("Daeyalt essence", 1.5f),
 	;
 
 	private final String name;

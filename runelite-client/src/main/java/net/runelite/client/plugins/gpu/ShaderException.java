@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.gpu;
 
-class ShaderException extends Exception
+class ShaderException extends RuntimeException
 {
 	ShaderException(String message)
 	{

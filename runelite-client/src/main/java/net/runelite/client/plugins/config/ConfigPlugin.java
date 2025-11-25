@@ -44,7 +44,6 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Configuration",
-	loadWhenOutdated = true,
 	hidden = true // prevent users from disabling
 )
 public class ConfigPlugin extends Plugin
@@ -122,10 +121,7 @@ public class ConfigPlugin extends Plugin
 			// Expand config panel for plugin
 			SwingUtilities.invokeLater(() ->
 			{
-				if (!navButton.isSelected())
-				{
-					navButton.getOnSelect().run();
-				}
+				clientToolbar.openPanel(navButton);
 				topLevelConfigPanel.openConfigurationPanel(plugin.getName());
 			});
 		}

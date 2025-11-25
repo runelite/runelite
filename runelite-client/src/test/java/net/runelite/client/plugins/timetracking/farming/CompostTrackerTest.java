@@ -33,17 +33,18 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -120,9 +121,12 @@ public class CompostTrackerTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		compostTracker.pendingCompostActions.clear();
 
-		when(client.getBaseX()).thenReturn(0);
-		when(client.getBaseY()).thenReturn(0);
-		when(client.getPlane()).thenReturn(0);
+		WorldView wv = mock(WorldView.class);
+		when(wv.getSizeX()).thenReturn(104);
+		when(wv.getSizeY()).thenReturn(104);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(wv);
+
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getWorldLocation()).thenReturn(worldPoint);
 		when(client.getScene()).thenReturn(scene);
@@ -234,7 +238,7 @@ public class CompostTrackerTest
 	{
 		Widget widget = mock(Widget.class);
 		when(client.getSelectedWidget()).thenReturn(widget);
-		when(widget.getItemId()).thenReturn(ItemID.ULTRACOMPOST);
+		when(widget.getItemId()).thenReturn(ItemID.BUCKET_ULTRACOMPOST);
 
 		MenuOptionClicked inspectPatchAction = mock(MenuOptionClicked.class);
 		when(inspectPatchAction.getMenuAction()).thenReturn(MenuAction.WIDGET_TARGET_ON_GAME_OBJECT);
@@ -254,7 +258,7 @@ public class CompostTrackerTest
 	{
 		Widget widget = mock(Widget.class);
 		when(client.getSelectedWidget()).thenReturn(widget);
-		when(widget.getId()).thenReturn(WidgetInfo.SPELL_LUNAR_FERTILE_SOIL.getPackedId());
+		when(widget.getId()).thenReturn(InterfaceID.MagicSpellbook.FERTILE_SOIL);
 
 		MenuOptionClicked inspectPatchAction = mock(MenuOptionClicked.class);
 		when(inspectPatchAction.getMenuAction()).thenReturn(MenuAction.WIDGET_TARGET_ON_GAME_OBJECT);

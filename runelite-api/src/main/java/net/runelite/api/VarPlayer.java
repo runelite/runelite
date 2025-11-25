@@ -32,9 +32,12 @@ package net.runelite.api;
  * if it thinks they will change the next tick as a lag-hiding measure.
  * The client CANNOT directly make the server change a varp.
  */
+@Deprecated
 public final class VarPlayer
 {
+	public static final int CANNON_STATE = 2;
 	public static final int CANNON_AMMO = 3;
+	public static final int CANNON_COORD = 4;
 	public static final int ATTACK_STYLE = 43;
 	public static final int QUEST_POINTS = 101;
 	/**
@@ -175,9 +178,12 @@ public final class VarPlayer
 	public static final int MOUSE_BUTTONS = 170;
 
 	/**
-	 * {@link NpcID} for the HP HUD
+	 * {@link net.runelite.api.gameval.NpcID} for the HP HUD
 	 */
 	public static final int HP_HUD_NPC_ID = 1683;
+
+	public static final int CLOG_LOGGED = 2943;
+	public static final int CLOG_TOTAL = 2944;
 
 	/**
 	 * Colors for chat messages
@@ -232,13 +238,42 @@ public final class VarPlayer
 
 	/**
 	 * Currently assigned slayer task if SLAYER_TASK_SIZE is greater than 0.
-	 * Mapping of value to name can be found in {@link EnumID#SLAYER_TASK_CREATURE}. If value is 98 "Bosses",
-	 * use enum {@link EnumID#SLAYER_TASK_BOSS} for boss name.
 	 */
 	public static final int SLAYER_TASK_CREATURE = 395;
 
 	/**
-	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
+	 * Assigned slayer task location.
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
+
+	/**
+	 * Determines whether the woodcutting group bonus should be displayed on the buff bar or not.
+	 * 96 = displayed (including the woodcutting guild).
+	 * 0 = not displayed (after login until cutting a tree except normal trees or trees grown through farming).
+	 * -1 = not displayed (including normal trees or trees grown through farming).
+	 */
+	public static final int BUFF_BAR_WC_GROUP_BONUS = 4007;
+
+	/**
+	 * The amount of ammo in Dizana's quiver's inventory slot.
+	 * 0 means the quiver is empty.
+	 * @see #DIZANAS_QUIVER_ITEM_ID
+	 */
+	public static final int DIZANAS_QUIVER_ITEM_COUNT = 4141;
+
+	/**
+	 * The item ID of the ammo in Dizana's quiver inventory slot.
+	 * -1 means the quiver is empty.
+	 * @see #DIZANAS_QUIVER_ITEM_COUNT
+	 */
+	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;
+
+	/**
+	 * Runecraft Essence Pouch degrade states
+	 */
+	public static final int ESSENCE_POUCH_MEDIUM_DEGRADE = 488;
+	public static final int ESSENCE_POUCH_LARGE_DEGRADE = 489;
+	public static final int ESSENCE_POUCH_GIANT_DEGRADE = 490;
+
+	public static final int RAIDS_PERSONAL_POINTS = 4609;
 }
