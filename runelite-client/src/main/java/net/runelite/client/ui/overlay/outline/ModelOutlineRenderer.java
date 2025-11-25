@@ -47,6 +47,7 @@ import net.runelite.api.Model;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
+import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.TileObject;
@@ -978,6 +979,30 @@ public class ModelOutlineRenderer
 		finally
 		{
 			freeAllBlockMemory();
+		}
+	}
+
+	public void drawOutline(Projectile projectile, int outlineWidth, Color color, int feather)
+	{
+		if (projectile != null)
+		{
+			LocalPoint destination = projectile.getTarget();
+			if (destination != null)
+			{
+				double y = destination.getY() - projectile.getY();
+				double x = destination.getX() - projectile.getX();
+				double angle = Math.atan2(y, x);
+
+				// At this point, on a compass, the angle would be 0 when oriented east.
+				// The client expects the angle/orientation to be 0 when oriented south.
+				// Orientation increases going anti-clockwise, west is 512, north 1024 and so on.
+				double rotated = 0.75D - (angle / (2 * Math.PI));
+				double fractionalPart = rotated - (int) rotated;
+
+				drawModelOutline(projectile.getModel(),
+					(int) projectile.getX(), (int) projectile.getY(), (int) projectile.getZ(),
+					(int) (fractionalPart * 2048), outlineWidth, color, feather);
+			}
 		}
 	}
 
