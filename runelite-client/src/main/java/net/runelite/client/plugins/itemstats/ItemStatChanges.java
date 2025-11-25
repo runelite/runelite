@@ -390,6 +390,15 @@ public class ItemStatChanges
 		add(boost(STRENGTH, perc(.15, 4)), ItemID.BUTTERFLY_JAR_WARLOCK, ItemID.HUNTER_MIX_WARLOCK_1DOSE, ItemID.HUNTER_MIX_WARLOCK_2DOSE);
 		add(boost(DEFENCE, perc(.15, 4)), ItemID.BUTTERFLY_JAR_GLACIALIS, ItemID.HUNTER_MIX_GLACIALIS_1DOSE, ItemID.HUNTER_MIX_GLACIALIS_2DOSE);
 
+        // Ship health
+        add(heal(BOAT_HEALTH, 5), ItemID.BOAT_REPAIR_KIT);
+        add(heal(BOAT_HEALTH, 10), ItemID.BOAT_REPAIR_KIT_OAK);
+        add(heal(BOAT_HEALTH, 20), ItemID.BOAT_REPAIR_KIT_TEAK);
+        add(heal(BOAT_HEALTH, 30), ItemID.BOAT_REPAIR_KIT_MAHOGANY);
+        add(heal(BOAT_HEALTH, 40), ItemID.BOAT_REPAIR_KIT_CAMPHOR);
+        add(heal(BOAT_HEALTH, 45), ItemID.BOAT_REPAIR_KIT_IRONWOOD);
+        add(heal(BOAT_HEALTH, 50), ItemID.BOAT_REPAIR_KIT_ROSEWOOD);
+
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
 

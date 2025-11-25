@@ -65,6 +65,16 @@ public interface StatusBarsConfig extends Config
 		return true;
 	}
 
+    @ConfigItem(
+            keyName = "contextualBoatHealth",
+            name = "Contextual boat health",
+            description = "Will swap player hitpoints bars with boat health when on a boat."
+    )
+    default boolean contextualBoatHealth()
+    {
+        return true;
+    }
+
 	enum BarMode
 	{
 		DISABLED,
@@ -73,6 +83,7 @@ public interface StatusBarsConfig extends Config
 		RUN_ENERGY,
 		SPECIAL_ATTACK,
 		WARMTH,
+        BOAT_HEALTH
 	}
 
 	@ConfigItem(
