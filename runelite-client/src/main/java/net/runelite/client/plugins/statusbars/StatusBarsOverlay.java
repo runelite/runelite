@@ -74,10 +74,10 @@ class StatusBarsOverlay extends Overlay
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
-    private static final Color WARMTH_COLOR = new Color(244, 97, 0, 181);
-    private static final Color BOAT_HEALTH_COLOR = new Color(114, 69, 0, 181);
-    private static final Color BOAT_HEAL_COLOR = new Color(211, 167, 98, 181);
-    private static final int BOAT_HEALTH_ICON = SpriteID.IconSailingFacilities16x16._20;
+	private static final Color WARMTH_COLOR = new Color(244, 97, 0, 181);
+	private static final Color BOAT_HEALTH_COLOR = new Color(114, 69, 0, 181);
+	private static final Color BOAT_HEAL_COLOR = new Color(211, 167, 98, 181);
+	private static final int BOAT_HEALTH_ICON = SpriteID.IconSailingFacilities16x16._20;
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
@@ -227,14 +227,14 @@ class StatusBarsOverlay extends Overlay
 			() -> null,
 			() -> skillIconManager.getSkillImage(Skill.FIREMAKING, true)
 		));
-        barRenderers.put(StatusBarsConfig.BarMode.BOAT_HEALTH, new BarRenderer(
-                () -> BOAT_HEALTH.getMaximum(client),
-                () -> BOAT_HEALTH.getValue(client),
-                () -> getRestoreValue(BOAT_HEALTH.getName()),
-                () -> BOAT_HEALTH_COLOR,
-                () -> BOAT_HEAL_COLOR,
-                () -> loadSprite(BOAT_HEALTH_ICON)
-        ));
+		barRenderers.put(StatusBarsConfig.BarMode.BOAT_HEALTH, new BarRenderer(
+				() -> BOAT_HEALTH.getMaximum(client),
+				() -> BOAT_HEALTH.getValue(client),
+				() -> getRestoreValue(BOAT_HEALTH.getName()),
+				() -> BOAT_HEALTH_COLOR,
+				() -> BOAT_HEAL_COLOR,
+				() -> loadSprite(BOAT_HEALTH_ICON)
+		));
 	}
 
 	@Override
@@ -289,8 +289,8 @@ class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-        StatusBarsConfig.BarMode leftBarMode = config.leftBarMode();
-        StatusBarsConfig.BarMode rightBarMode = config.rightBarMode();
+		StatusBarsConfig.BarMode leftBarMode = config.leftBarMode();
+		StatusBarsConfig.BarMode rightBarMode = config.rightBarMode();
 
 		BarRenderer left = getBarRenderer(leftBarMode, rightBarMode);
 		BarRenderer right = getBarRenderer(rightBarMode, leftBarMode);
@@ -352,28 +352,28 @@ class StatusBarsOverlay extends Overlay
 		return client.getWidget(InterfaceID.BrOverlay.CONTENT) != null;
 	}
 
-    public boolean isSailing()
-    {
-        return client.getVarbitValue(VarbitID.SAILING_PLAYER_IS_ON_PLAYER_BOAT) > 0;
-    }
+	public boolean isSailing()
+	{
+		return client.getVarbitValue(VarbitID.SAILING_PLAYER_IS_ON_PLAYER_BOAT) > 0;
+	}
 
-    private boolean validForContextSwapBoatHealth(StatusBarsConfig.BarMode barMode)
-    {
-        return barMode == StatusBarsConfig.BarMode.HITPOINTS && config.contextualBoatHealth() && isSailing();
-    }
+	private boolean validForContextSwapBoatHealth(StatusBarsConfig.BarMode barMode)
+	{
+		return barMode == StatusBarsConfig.BarMode.HITPOINTS && config.contextualBoatHealth() && isSailing();
+	}
 
-    private BarRenderer getBarRenderer(StatusBarsConfig.BarMode barMode, StatusBarsConfig.BarMode otherBarMode)
-    {
-        if (validForContextSwapBoatHealth(barMode) && otherBarMode != StatusBarsConfig.BarMode.BOAT_HEALTH)
-        {
-            return barRenderers.get(StatusBarsConfig.BarMode.BOAT_HEALTH);
-        }
+	private BarRenderer getBarRenderer(StatusBarsConfig.BarMode barMode, StatusBarsConfig.BarMode otherBarMode)
+	{
+		if (validForContextSwapBoatHealth(barMode) && otherBarMode != StatusBarsConfig.BarMode.BOAT_HEALTH)
+		{
+			return barRenderers.get(StatusBarsConfig.BarMode.BOAT_HEALTH);
+		}
 
-        if (barMode == StatusBarsConfig.BarMode.BOAT_HEALTH && BOAT_HEALTH.getMaximum(client) < 1)
-        {
-            return barRenderers.get(StatusBarsConfig.BarMode.DISABLED);
-        }
+		if (barMode == StatusBarsConfig.BarMode.BOAT_HEALTH && BOAT_HEALTH.getMaximum(client) < 1)
+		{
+			return barRenderers.get(StatusBarsConfig.BarMode.DISABLED);
+		}
 
-        return barRenderers.get(barMode);
-    }
+		return barRenderers.get(barMode);
+	}
 }

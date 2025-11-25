@@ -29,20 +29,20 @@ import net.runelite.api.gameval.VarbitID;
 
 public class BoatHealthStat extends Stat
 {
-    BoatHealthStat()
-    {
-        super("Boat Health");
-    }
+	BoatHealthStat()
+	{
+		super("Boat Health");
+	}
 
-    @Override
-    public int getValue(Client client)
-    {
-        return client.getVarbitValue(VarbitID.SAILING_SIDEPANEL_BOAT_HP);
-    }
+	@Override
+	public int getValue(Client client)
+	{
+		return client.getVarbitValue(VarbitID.SAILING_SIDEPANEL_BOAT_HP);
+	}
 
-    @Override
-    public int getMaximum(Client client)
-    {
-        return client.getVarbitValue(VarbitID.SAILING_SIDEPANEL_BOAT_HP_MAX);
-    }
+	@Override
+	public int getMaximum(Client client)
+	{
+		return client.getVarbitValue(VarbitID.SAILING_SIDEPANEL_BOAT_HP_MAX);
+	}
 }
