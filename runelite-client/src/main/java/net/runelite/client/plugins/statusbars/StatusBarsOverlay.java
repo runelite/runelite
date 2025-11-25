@@ -119,15 +119,7 @@ class StatusBarsOverlay extends Overlay
 	private void initRenderers()
 	{
 		barRenderers.put(StatusBarsConfig.BarMode.HITPOINTS, new BarRenderer(
-			() ->
-            {
-                if (inLms())
-                {
-                    return Experience.MAX_REAL_LEVEL;
-                }
-
-                return client.getRealSkillLevel(Skill.HITPOINTS);
-            },
+			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
 			() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
 			() ->
