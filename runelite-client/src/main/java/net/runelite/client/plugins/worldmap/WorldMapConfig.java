@@ -313,7 +313,7 @@ public interface WorldMapConfig extends Config
 		description = "Indicate mooring points you do not have the level to use on the icon.",
 		position = 26
 	)
-	default boolean mooringPointShortcutLevelIcon()
+	default boolean mooringPointLevelIcon()
 	{
 		return true;
 	}

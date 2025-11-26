@@ -381,15 +381,14 @@ public class WorldMapPlugin extends Plugin
 	{
 		worldMapPointManager.removeIf(isType(MapPoint.Type.MOORING_POINT));
 
-		if (config.mooringLocationTooltips() || config.mooringPointShortcutLevelIcon())
+		if (config.mooringLocationTooltips() || config.mooringPointLevelIcon())
 		{
 			Arrays.stream(MooringLocation.values())
-				.filter(value -> value.getLocation() != null)
 				.map(l ->
 					MapPoint.builder()
 						.type(MapPoint.Type.MOORING_POINT)
 						.worldPoint(l.getLocation())
-						.image(sailingLevel > 0 && config.mooringPointShortcutLevelIcon() && l.getLevelReq() > sailingLevel ? NOPE_ICON : BLANK_ICON)
+						.image(sailingLevel > 0 && config.mooringPointLevelIcon() && l.getLevelReq() > sailingLevel ? NOPE_ICON : BLANK_ICON)
 						.tooltip(config.mooringLocationTooltips() ? l.getTooltip() : null)
 						.build()
 				)
