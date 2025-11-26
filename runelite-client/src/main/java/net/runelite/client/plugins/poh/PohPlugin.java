@@ -75,8 +75,8 @@ import net.runelite.client.hiscore.Skill;
 @Slf4j
 public class PohPlugin extends Plugin
 {
-	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.POH_TORCH_5, ObjectID.POH_TORCH_6, ObjectID.POH_TORCH_7);
-	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.POH_TORCH_5_LIT, ObjectID.POH_TORCH_6_LIT, ObjectID.POH_TORCH_7_LIT);
+	static final Set<Integer> BURNER_UNLIT = Sets.newHashSet(ObjectID.POH_TORCH_5, ObjectID.POH_TORCH_6, ObjectID.POH_TORCH_7, ObjectID.POH_TORCH_8);
+	static final Set<Integer> BURNER_LIT = Sets.newHashSet(ObjectID.POH_TORCH_5_LIT, ObjectID.POH_TORCH_6_LIT, ObjectID.POH_TORCH_7_LIT, ObjectID.POH_TORCH_8_LIT);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<TileObject, Tile> pohObjects = new HashMap<>();
