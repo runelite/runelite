@@ -48,8 +48,8 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "hidePlayers2D",
-		name = "Hide others 2D",
-		description = "Configures whether or not other players 2D elements are hidden."
+		name = "Hide others' 2D",
+		description = "Configures whether or not other players' 2D elements are hidden."
 	)
 	default boolean hideOthers2D()
 	{
@@ -169,8 +169,8 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 20,
 		keyName = "hidePets",
-		name = "Hide other players' pets",
-		description = "Configures whether or not other player pets are hidden."
+		name = "Hide others' pets",
+		description = "Configures whether or not other players' pets are hidden."
 	)
 	default boolean hidePets()
 	{
