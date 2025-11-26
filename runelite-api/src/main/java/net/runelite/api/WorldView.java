@@ -27,6 +27,7 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 public interface WorldView
 {
@@ -255,4 +256,12 @@ public interface WorldView
 	 */
 	@Nullable
 	Projection getCanvasProjection();
+
+	/**
+	 * Returns how clicking on tiles should behave for this WorldView.
+	 *
+	 * @return one of {@link Constants#CLICK_ACTION_NONE}, {@link Constants#CLICK_ACTION_WALK}, {@link Constants#CLICK_ACTION_SET_HEADING}
+	 */
+	@MagicConstant(intValues = {Constants.CLICK_ACTION_NONE, Constants.CLICK_ACTION_WALK, Constants.CLICK_ACTION_SET_HEADING})
+	int getYellowClickAction();
 }
