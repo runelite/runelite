@@ -1025,10 +1025,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			String tier = shipwreckSalvagingMatcher.group("tier");
 			String eventName = WordUtils.capitalizeFully(tier) + " salvage";
-			onInvChange((invItems, groundItems, removedItems) ->
-			{
-				addLoot(eventName, -1, LootRecordType.EVENT, null, invItems);
-			});
+			onInvChange(collectInvItems(LootRecordType.EVENT, eventName));
 			return;
 		}
 
