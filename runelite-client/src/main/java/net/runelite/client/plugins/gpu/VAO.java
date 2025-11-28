@@ -177,7 +177,7 @@ class VAOList
 	int unmap()
 	{
 		int sz = 0;
-		for (int i = 0; i < vaos.size(); ++i)
+		for (int i = 0; i < vaos.size(); ++i) // NOPMD: ForLoopCanBeForeach
 		{
 			VAO vao = vaos.get(i);
 			if (vao.vbo.mapped)
