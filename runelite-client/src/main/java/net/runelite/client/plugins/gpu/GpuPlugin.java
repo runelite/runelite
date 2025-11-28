@@ -94,7 +94,6 @@ import org.lwjgl.system.Configuration;
 @PluginDescriptor(
 	name = "GPU",
 	description = "Offloads rendering to GPU",
-	enabledByDefault = false,
 	tags = {"fog", "draw distance"},
 	loadInSafeMode = false
 )
