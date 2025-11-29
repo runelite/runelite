@@ -179,7 +179,7 @@ enum Task
 	WATERFIENDS("Waterfiends", ItemID.WATER_ORB),
 	WEREWOLVES("Werewolves", ItemID.DAGGER_WOLFBANE, "Werewolf"),
 	WOLVES("Wolves", ItemID.GREY_WOLF_FUR, "Wolf"),
-	WYRMS("Wyrms", ItemID.SLAYERGUIDE_WYRM, "Wyrmling"),
+	WYRMS("Wyrms", ItemID.SLAYERGUIDE_WYRM, "Wyrmling", "Strykewyrm"),
 	ZILYANA("Commander Zilyana", ItemID.SARADOMINPET),
 	ZOMBIES("Zombies", ItemID.TRICK_OR_TREAT_HEAD, "Undead", "Vorkath", "Zogre"),
 	ZUK("TzKal-Zuk", ItemID.INFERNOPET_ZUK),
