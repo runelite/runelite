@@ -283,6 +283,10 @@ public class SlayerPluginTest
 		assertTrue(matches("Mature custodian stalker", Task.CUSTODIAN_STALKERS));
 		assertTrue(matches("Elder custodian stalker", Task.CUSTODIAN_STALKERS));
 		assertTrue(matches("Ancient Custodian", Task.CUSTODIAN_STALKERS));
+		assertTrue(matches("Gryphon", Task.GRYPHONS));
+		assertTrue(matches("Dire gryphon", Task.GRYPHONS));
+		assertTrue(matches("Shellbane Gryphon", Task.GRYPHONS));
+		assertTrue(matches("Shellbane Gryphon", Task.SHELLBANE_GRYPHON));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
