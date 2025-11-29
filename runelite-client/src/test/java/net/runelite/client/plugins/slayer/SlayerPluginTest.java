@@ -289,6 +289,8 @@ public class SlayerPluginTest
 		assertTrue(matches("Shellbane Gryphon", Task.SHELLBANE_GRYPHON));
 		assertTrue(matches("Lava Strykewyrm", Task.WYRMS));
 		assertTrue(matches("Magma strykewyrm", Task.WYRMS));
+		assertTrue(matches("Aquanite", Task.AQUANITES));
+		assertTrue(matches("Elder Aquanite", Task.AQUANITES));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
