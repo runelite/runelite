@@ -67,6 +67,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -82,7 +83,6 @@ import net.runelite.http.api.loottracker.LootRecordType;
 )
 public class MotherlodePlugin extends Plugin
 {
-	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ObjectID.MOTHERLODE_ORE_SINGLE, ObjectID.MOTHERLODE_ORE_LEFT, ObjectID.MOTHERLODE_ORE_MIDDLE, ObjectID.MOTHERLODE_ORE_RIGHT);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
 		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.MOTHERLODE_NUGGET);
@@ -393,10 +393,10 @@ public class MotherlodePlugin extends Plugin
 
 		int[] currentMapRegions = client.getMapRegions();
 
-		// Verify that all regions exist in MOTHERLODE_MAP_REGIONS
+		// Verify that all loaded regions are in motherload mine
 		for (int region : currentMapRegions)
 		{
-			if (!MOTHERLODE_MAP_REGIONS.contains(region))
+			if (!GameArea.MOTHERLODE_MINE.containsRegion(region))
 			{
 				return false;
 			}
