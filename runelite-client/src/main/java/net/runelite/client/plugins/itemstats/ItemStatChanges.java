@@ -126,12 +126,17 @@ public class ItemStatChanges
 		add(range(food(5), food(8)), ItemID.SNAIL_CORPSE_COOKED2);
 		add(range(food(7), food(9)), ItemID.SNAIL_CORPSE_COOKED3);
 		add(range(food(7), food(10)), ItemID.TBW_SPIDER_ON_STICK_COOKED, ItemID.TBW_SPIDER_ON_SHAFT_COOKED);
-		add(combo(food(8), food(6)), ItemID.GRAAHK_COOKED);
-		add(combo(food(9), food(8)), ItemID.KYATT_COOKED);
-		add(combo(food(11), food(8)), ItemID.FENNECFOX_COOKED);
-		add(combo(food(13), food(10), heal(RUN_ENERGY, 10)), ItemID.DASHINGKEBBIT_COOKED);
-		add(combo(food(12), food(9)), ItemID.ANTELOPESUN_COOKED);
-		add(combo(food(14), food(12)), ItemID.ANTELOPEMOON_COOKED);
+
+		// Hunter meats
+		add(combo(food(4), offsetFood(4, 4)), ItemID.WILDKEBBIT_COOKED);
+		add(combo(food(6), offsetFood(6, 5)), ItemID.LARUPIA_COOKED);
+		add(combo(food(7), offsetFood(7, 5)), ItemID.BARBKEBBIT_COOKED);
+		add(combo(food(8), offsetFood(8, 6)), ItemID.GRAAHK_COOKED);
+		add(combo(food(9), offsetFood(9, 8)), ItemID.KYATT_COOKED);
+		add(combo(food(11), offsetFood(11, 8)), ItemID.FENNECFOX_COOKED);
+		add(combo(food(12), offsetFood(12, 9)), ItemID.ANTELOPESUN_COOKED);
+		add(combo(food(13), offsetFood(13, 10), heal(RUN_ENERGY, 10)), ItemID.DASHINGKEBBIT_COOKED);
+		add(combo(food(14), offsetFood(14, 12)), ItemID.ANTELOPEMOON_COOKED);
 
 		// Dorgeshuun Cuisine
 		add(food(2), ItemID.DORGESH_BAT_SHISH, ItemID.DORGESH_CRISPY_FROGLEGS, ItemID.DORGESH_CAVE_CRAWLER_FILLETS, ItemID.DORGESH_WALL_BEAST_FINGERS, ItemID.DORGESH_FROG_BURGER, ItemID.DORGESH_FROG_SPAWN_GUMBO, ItemID.DORGESH_GREEN_GLOOP_SOUP,
