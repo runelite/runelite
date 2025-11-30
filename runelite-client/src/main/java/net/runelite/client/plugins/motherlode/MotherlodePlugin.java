@@ -157,7 +157,7 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (inMlm)
+		if (inMlm && event.getVarbitId() == VarbitID.MOTHERLODE_SACK_TRANSMIT)
 		{
 			int lastSackValue = curSackSize;
 			refreshSackValues();
