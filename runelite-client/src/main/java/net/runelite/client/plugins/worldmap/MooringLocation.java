@@ -50,7 +50,7 @@ public enum MooringLocation
 	CAIRN_ISLE("Cairn Isle", 42, new WorldPoint(2749, 2951, 0)),
 	CHINCHOMPA_ISLAND("Chinchompa Island", 42, new WorldPoint(1892, 3429, 0)),
 	SUNSET_COAST("Sunset Coast", 44, new WorldPoint(1511, 2975, 0)),
-	REMOTE_ISLAND("Remote Island", 45, new WorldPoint(2791, 2603, 0)),
+	REMOTE_ISLAND("Remote Island", 45, new WorldPoint(2971, 2603, 0)),
 	THE_SUMMER_SHORE("The Summer Shore", 45, new WorldPoint(3174, 2367, 0)),
 	THE_LITTLE_PEARL("The Little Pearl", 45, new WorldPoint(3354, 2216, 0)),
 	ALDARIN("Aldarin", 46, new WorldPoint(1452, 2970, 0)),
