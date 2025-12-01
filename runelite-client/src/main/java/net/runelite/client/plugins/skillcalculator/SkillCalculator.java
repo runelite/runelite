@@ -608,6 +608,8 @@ class SkillCalculator extends JPanel
 				return VarPlayerID.XPDROPS_CRAFTING_END;
 			case SMITHING:
 				return VarPlayerID.XPDROPS_SMITHING_END;
+            case SAILING:
+                return VarPlayerID.XPDROPS_SAILING_END;
 			case THIEVING:
 				return VarPlayerID.XPDROPS_THIEVING_END;
 			case FLETCHING:

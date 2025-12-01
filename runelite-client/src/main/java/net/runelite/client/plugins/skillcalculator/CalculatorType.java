@@ -50,7 +50,8 @@ enum CalculatorType
 	RUNECRAFT(Skill.RUNECRAFT, RunecraftBonus.values(), RunecraftAction.values()),
 	FARMING(Skill.FARMING, FarmingBonus.values(), FarmingAction.values()),
 	CONSTRUCTION(Skill.CONSTRUCTION, ConstructionBonus.values(), ConstructionAction.values()),
-	HUNTER(Skill.HUNTER, null, HunterAction.values());
+	HUNTER(Skill.HUNTER, null, HunterAction.values()),
+    SAILING(Skill.SAILING, SailingBonus.values(), SailingAction.values());
 
 	private final Skill skill;
 	@Nullable
