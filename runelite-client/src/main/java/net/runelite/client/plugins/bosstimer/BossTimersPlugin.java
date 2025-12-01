@@ -36,6 +36,7 @@ import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.api.events.WorldViewUnloaded;
 
 @PluginDescriptor(
 	name = "Boss Timers",
@@ -81,6 +82,12 @@ public class BossTimersPlugin extends Plugin
 		{
 			createTimer(npc, boss);
 		}
+	}
+
+	@Subscribe
+	public void onWorldViewUnloaded(WorldViewUnloaded event)
+	{
+		clearTimer(Boss.SHELLBANE_GRYPHON);
 	}
 
 	private void createTimer(NPC npc, Boss boss)
