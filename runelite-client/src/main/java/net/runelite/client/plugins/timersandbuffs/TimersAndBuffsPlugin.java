@@ -175,8 +175,12 @@ public class TimersAndBuffsPlugin extends Plugin
 	{
 		if (config.showHomeMinigameTeleports() && client.getGameState() == GameState.LOGGED_IN)
 		{
-			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
-			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
+			checkEpochTimer(VarPlayerID.AIDE_TELE_TIMER);
+			checkEpochTimer(VarPlayerID.SLUG2_REGIONUID);
+		}
+		if (config.showForinthrySurge())
+		{
+			checkEpochTimer(VarPlayerID.REVENANT_REWARD_TIMED_BUFF_END);
 		}
 	}
 
@@ -402,12 +406,17 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarpId() == VarPlayerID.AIDE_TELE_TIMER && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
+			checkEpochTimer(VarPlayerID.AIDE_TELE_TIMER);
 		}
 
 		if (event.getVarpId() == VarPlayerID.SLUG2_REGIONUID && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
+			checkEpochTimer(VarPlayerID.SLUG2_REGIONUID);
+		}
+
+		if (event.getVarpId() == VarPlayerID.REVENANT_REWARD_TIMED_BUFF_END && config.showForinthrySurge())
+		{
+			checkEpochTimer(VarPlayerID.REVENANT_REWARD_TIMED_BUFF_END);
 		}
 
 		if (event.getVarbitId() == VarbitID.STAMINA_ACTIVE
@@ -686,8 +695,17 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 		else if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
-			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
+			checkEpochTimer(VarPlayerID.AIDE_TELE_TIMER);
+			checkEpochTimer(VarPlayerID.SLUG2_REGIONUID);
+		}
+
+		if (!config.showForinthrySurge())
+		{
+			removeGameTimer(FORINTHRY_SURGE);
+		}
+		else
+		{
+			checkEpochTimer(VarPlayerID.REVENANT_REWARD_TIMED_BUFF_END);
 		}
 
 		if (!config.showAntiFire())
@@ -1156,34 +1174,38 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 	}
 
-	private void checkTeleport(@Varp int varPlayer)
+	private void checkEpochTimer(@Varp int varPlayer)
 	{
-		final GameTimer teleport;
+		final GameTimer timer;
 		switch (varPlayer)
 		{
 			case VarPlayerID.AIDE_TELE_TIMER:
-				teleport = HOME_TELEPORT;
+				timer = HOME_TELEPORT;
 				break;
 			case VarPlayerID.SLUG2_REGIONUID:
-				teleport = MINIGAME_TELEPORT;
+				timer = MINIGAME_TELEPORT;
+				break;
+			case VarPlayerID.REVENANT_REWARD_TIMED_BUFF_END:
+				timer = FORINTHRY_SURGE;
 				break;
 			default:
-				// Other var changes are not handled as teleports
+				// Other var changes are not handled as epoch timers
 				return;
 		}
 
-		int lastTeleport = client.getVarpValue(varPlayer);
-		long lastTeleportSeconds = (long) lastTeleport * 60;
-		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration());
-		Duration remainingTime = Duration.between(Instant.now(), teleportExpireInstant);
+		int varpValue = client.getVarpValue(varPlayer);
+		long epoch = (long) varpValue * 60;
+		Duration effectDuration = timer.getDuration() != null ? timer.getDuration() : Duration.ZERO;
+		Instant timerExpireInstant = Instant.ofEpochSecond(epoch).plus(effectDuration);
+		Duration remainingTime = Duration.between(Instant.now(), timerExpireInstant);
 
 		if (remainingTime.getSeconds() > 0)
 		{
-			createGameTimer(teleport, remainingTime);
+			createGameTimer(timer, remainingTime);
 		}
 		else
 		{
-			removeGameTimer(teleport);
+			removeGameTimer(timer);
 		}
 	}
 
