@@ -563,6 +563,12 @@ public class WoodcuttingPlugin extends Plugin
 				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_4:
 				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_6:
 				case ObjectID.FARMING_REDWOOD_TREE_PATCH_1_8:
+
+				// sailing trees
+				case ObjectID.JATOBA_TREE_STUMP:
+				case ObjectID.CAMPHOR_TREE_UPDATE_STUMP:
+				case ObjectID.IRONWOOD_TREE_UPDATE_STUMP:
+				case ObjectID.ROSEWOOD_TREE_UPDATE_STUMP:
 				{
 					WorldPoint worldPoint = WorldPoint.fromCoord(locCoord);
 					GameObject gameObject = findObject(worldPoint);
