@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -50,6 +51,11 @@ public class TextComponent implements RenderableEntity
 	 */
 	@Nullable
 	private Font font;
+
+	public void setPosition(Point position)
+	{
+		setPosition(position.x, position.y);
+	}
 
 	public void setPosition(int x, int y)
 	{
