@@ -375,6 +375,11 @@ public class AttackStylesPlugin extends Plugin
 
 	private void updateWidgetsToHide(boolean enabled)
 	{
+		if (equippedWeaponTypeVarbit == -1)
+		{
+			return;
+		}
+
 		AttackStyle[] attackStyles = getWeaponTypeStyles(equippedWeaponTypeVarbit);
 
 		// Iterate over attack styles
