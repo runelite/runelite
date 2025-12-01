@@ -99,7 +99,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			textComponent.setColor(color);
 			textComponent.setOutline(outline);
 			textComponent.setText(text);
-			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
+			textComponent.setPosition(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR);
 			textComponent.render(graphics);
 		}
 

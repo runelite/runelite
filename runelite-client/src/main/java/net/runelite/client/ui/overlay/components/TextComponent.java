@@ -51,6 +51,11 @@ public class TextComponent implements RenderableEntity
 	@Nullable
 	private Font font;
 
+	public void setPosition(int x, int y)
+	{
+		this.position.setLocation(x, y);
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
