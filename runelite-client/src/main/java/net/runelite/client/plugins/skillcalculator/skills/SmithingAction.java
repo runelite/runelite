@@ -269,6 +269,14 @@ public enum SmithingAction implements ItemSkillAction
 	RUNE_FULL_HELM(ItemID.RUNE_FULL_HELM, 92, 150),
 	RUNE_SQ_SHIELD(ItemID.RUNE_SQ_SHIELD, 93, 150),
 	RUNE_WARHAMMER(ItemID.RUNE_WARHAMMER, 94, 225),
+	DRAGON_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_DRAGON, 94, 700)
+		{
+			@Override
+			public String getName(final ItemManager itemManager)
+			{
+				return "Dragon keel parts";
+			}
+		},
 	RUNE_BATTLEAXE(ItemID.RUNE_BATTLEAXE, 95, 225),
 	RUNE_CHAINBODY(ItemID.RUNE_CHAINBODY, 96, 225),
 	RUNE_KITESHIELD(ItemID.RUNE_KITESHIELD, 97, 225),
