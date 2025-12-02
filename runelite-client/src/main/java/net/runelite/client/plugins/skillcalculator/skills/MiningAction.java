@@ -78,7 +78,7 @@ public enum MiningAction implements ItemSkillAction
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
-			return "Calcified Rocks";
+			return "Calcified rocks";
 		}
 	},
 	GRANITE_500G(ItemID.ENAKH_GRANITE_TINY, 45, 50),
