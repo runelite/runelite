@@ -275,7 +275,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		subs = new SceneContext[MAX_WORLDVIEWS];
 		clientUploader = new SceneUploader(renderCallbackManager);
 		mapUploader = new SceneUploader(renderCallbackManager);
-		facePrioritySorter = new FacePrioritySorter(clientUploader);
+		facePrioritySorter = new FacePrioritySorter(client, clientUploader);
 		clientThread.invoke(() ->
 		{
 			try

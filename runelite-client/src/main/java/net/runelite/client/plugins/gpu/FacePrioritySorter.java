@@ -26,6 +26,7 @@ package net.runelite.client.plugins.gpu;
 
 import java.nio.IntBuffer;
 import java.util.Arrays;
+import net.runelite.api.Client;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Projection;
@@ -36,8 +37,8 @@ class FacePrioritySorter
 	static final char[] distanceFaceCount;
 	static final char[][] distanceToFaces;
 
-	private static final float[] modelProjectedX;
-	private static final float[] modelProjectedY;
+	private static final float[] modelCanvasX;
+	private static final float[] modelCanvasY;
 
 	static final float[] modelLocalX;
 	static final float[] modelLocalY;
@@ -60,8 +61,8 @@ class FacePrioritySorter
 		distanceFaceCount = new char[MAX_DIAMETER];
 		distanceToFaces = new char[MAX_DIAMETER][ZSORT_GROUP_SIZE];
 
-		modelProjectedX = new float[MAX_VERTEX_COUNT];
-		modelProjectedY = new float[MAX_VERTEX_COUNT];
+		modelCanvasX = new float[MAX_VERTEX_COUNT];
+		modelCanvasY = new float[MAX_VERTEX_COUNT];
 
 		modelLocalX = new float[MAX_VERTEX_COUNT];
 		modelLocalY = new float[MAX_VERTEX_COUNT];
@@ -74,10 +75,12 @@ class FacePrioritySorter
 		orderedFaces = new int[12][MAX_FACES_PER_PRIORITY];
 	}
 
+	private final Client client;
 	private final SceneUploader sceneUploader;
 
-	FacePrioritySorter(SceneUploader sceneUploader)
+	FacePrioritySorter(Client client, SceneUploader sceneUploader)
 	{
+		this.client = client;
 		this.sceneUploader = sceneUploader;
 	}
 
@@ -95,6 +98,10 @@ class FacePrioritySorter
 
 		final int[] faceColors3 = model.getFaceColors3();
 		final byte[] faceRenderPriorities = model.getFaceRenderPriorities();
+
+		final int centerX = client.getCenterX();
+		final int centerY = client.getCenterY();
+		final int zoom = client.get3dZoom();
 
 		float orientSine = 0;
 		float orientCosine = 0;
@@ -135,8 +142,8 @@ class FacePrioritySorter
 				return 0;
 			}
 
-			modelProjectedX[v] = p[0];
-			modelProjectedY[v] = p[1];
+			modelCanvasX[v] = centerX + p[0] * zoom / p[2];
+			modelCanvasY[v] = centerY + p[1] * zoom / p[2];
 			distances[v] = (int) p[2] - zero;
 		}
 
@@ -158,12 +165,12 @@ class FacePrioritySorter
 				final int v3 = indices3[i];
 
 				final float
-					aX = modelProjectedX[v1],
-					aY = modelProjectedY[v1],
-					bX = modelProjectedX[v2],
-					bY = modelProjectedY[v2],
-					cX = modelProjectedX[v3],
-					cY = modelProjectedY[v3];
+					aX = modelCanvasX[v1],
+					aY = modelCanvasY[v1],
+					bX = modelCanvasX[v2],
+					bY = modelCanvasY[v2],
+					cX = modelCanvasX[v3],
+					cY = modelCanvasY[v3];
 
 				if ((aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
 				{
