@@ -28508,6 +28508,7 @@ public final class ObjectID
 	public static final int ROCKS_58922 = 58922;
 	public static final int NICKEL_ROCKS = 58923;
 	public static final int ROCKS_58924 = 58924;
+	public static final int CABINET_58925 = 58925;
 	public static final int SCOREBOARD_58926 = 58926;
 	public static final int SCOREBOARD_58927 = 58927;
 	public static final int SCOREBOARD_58928 = 58928;
@@ -28717,6 +28718,7 @@ public final class ObjectID
 	public static final int SAILS_59549 = 59549;
 	public static final int SAILS_59550 = 59550;
 	public static final int SAILS_59551 = 59551;
+	public static final int CREVICE_59552 = 59552;
 	public static final int SAILS_59553 = 59553;
 	public static final int HELM = 59555;
 	public static final int HELM_59556 = 59556;
