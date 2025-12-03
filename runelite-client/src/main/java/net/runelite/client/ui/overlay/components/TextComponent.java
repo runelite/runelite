@@ -42,7 +42,8 @@ public class TextComponent implements RenderableEntity
 	private static final Pattern COL_TAG_PATTERN = Pattern.compile("<col=([0-9a-fA-F]{2,6})>");
 
 	private String text;
-	private Point position = new Point();
+	private int positionX;
+	private int positionY;
 	private Color color = Color.WHITE;
 	private boolean outline;
 	/**
@@ -50,6 +51,17 @@ public class TextComponent implements RenderableEntity
 	 */
 	@Nullable
 	private Font font;
+
+	public void setPosition(Point position)
+	{
+		setPosition(position.x, position.y);
+	}
+
+	public void setPosition(int x, int y)
+	{
+		this.positionX = x;
+		this.positionY = y;
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -73,7 +85,7 @@ public class TextComponent implements RenderableEntity
 			String s = text.substring(idx, matcher.start());
 			idx = matcher.end();
 
-			renderText(graphics, textColor, position.x + width, position.y, s);
+			renderText(graphics, textColor, positionX + width, positionY, s);
 			width += fontMetrics.stringWidth(s);
 
 			textColor = Color.decode("#" + color);
@@ -81,7 +93,7 @@ public class TextComponent implements RenderableEntity
 
 		{
 			String s = text.substring(idx);
-			renderText(graphics, textColor, position.x + width, position.y, s);
+			renderText(graphics, textColor, positionX + width, positionY, s);
 			width += fontMetrics.stringWidth(s);
 		}
 

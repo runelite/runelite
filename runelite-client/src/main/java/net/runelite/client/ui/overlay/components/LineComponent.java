@@ -105,7 +105,7 @@ public class LineComponent implements LayoutableRenderableEntity
 				if (i < leftSplitLines.length)
 				{
 					final String leftText = leftSplitLines[i];
-					textComponent.setPosition(new Point(x, y));
+					textComponent.setPosition(x, y);
 					textComponent.setText(leftText);
 					textComponent.setColor(leftColor);
 					textComponent.setFont(leftFont);
@@ -115,7 +115,7 @@ public class LineComponent implements LayoutableRenderableEntity
 				if (i < rightSplitLines.length)
 				{
 					final String rightText = rightSplitLines[i];
-					textComponent.setPosition(new Point(x + preferredSize.width - getLineWidth(rightText, rfm), y));
+					textComponent.setPosition(x + preferredSize.width - getLineWidth(rightText, rfm), y);
 					textComponent.setText(rightText);
 					textComponent.setColor(rightColor);
 					textComponent.setFont(rightFont);
@@ -133,7 +133,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 		if (!left.isEmpty())
 		{
-			textComponent.setPosition(new Point(x, y));
+			textComponent.setPosition(x, y);
 			textComponent.setText(left);
 			textComponent.setColor(leftColor);
 			textComponent.setFont(leftFont);
@@ -142,7 +142,7 @@ public class LineComponent implements LayoutableRenderableEntity
 
 		if (!right.isEmpty())
 		{
-			textComponent.setPosition(new Point(x + preferredSize.width - rightFullWidth, y));
+			textComponent.setPosition(x + preferredSize.width - rightFullWidth, y);
 			textComponent.setText(right);
 			textComponent.setColor(rightColor);
 			textComponent.setFont(rightFont);
