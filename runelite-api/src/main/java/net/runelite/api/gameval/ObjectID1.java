@@ -71723,6 +71723,7 @@ class ObjectID1
 	 */
 	public static final int TOA_ZEBAK_BUBBLES_BLUE = 58525;
 	public static final int BGSOUND_SAILING_OCEAN_WATER_LOOP_01 = 58526;
+	public static final int CASTLEARROWSLIT_OFFSET = 58527;
 	public static final int BGSOUND_SAILING_COOKING_LOOP_2 = 58528;
 	public static final int BGSOUND_SAILING_NORTHERN_OCEAN_WIND_LOOP = 58529;
 	public static final int BGSOUND_SAILING_CLOCK = 58530;
@@ -73138,6 +73139,11 @@ class ObjectID1
 	public static final int NICKELROCK1_EMPTY = 58924;
 
 	/**
+	 * Cabinet
+	 */
+	public static final int CABINET_OFFSET1 = 58925;
+
+	/**
 	 * Scoreboard
 	 */
 	public static final int SAILING_BT_SCOREBOARD_TEMPOR_TANTRUM = 58926;
@@ -73881,7 +73887,7 @@ class ObjectID1
 	public static final int SAILING_CHARTING_GENERIC_GLIDER_KHARAZI_STRAIT = 59308;
 
 	/**
-	 * Tiny briny shrimp
+	 * &#60;col=ffff00&#62;Tiny briny shrimp&#60;/col&#62;
 	 */
 	public static final int SAILING_CHARTING_GENERIC_SEA_MONKEYS = 59309;
 
@@ -74056,7 +74062,7 @@ class ObjectID1
 	public static final int SAILING_CHARTING_GENERIC_SAND_PIT = 59343;
 
 	/**
-	 * Suspicious eyes
+	 * &#60;col=ffff00&#62;Suspicious eyes&#60;/col&#62;
 	 */
 	public static final int SAILING_CHARTING_GENERIC_CRAB_EYES = 59344;
 
@@ -74151,12 +74157,12 @@ class ObjectID1
 	public static final int SAILING_CHARTING_GENERIC_ATOLL_DICTIONARY = 59362;
 
 	/**
-	 * Lurking Shadow
+	 * &#60;col=ffff00&#62;Lurking Shadow&#60;/col&#62;
 	 */
 	public static final int SAILING_CHARTING_GENERIC_SCARY_SHADOW = 59363;
 
 	/**
-	 * Horde of tiny sea creatures
+	 * &#60;col=ffff00&#62;Horde of tiny sea creatures&#60;/col&#62;
 	 */
 	public static final int SAILING_CHARTING_GENERIC_SEA_SAPPHIRES = 59364;
 
@@ -74598,6 +74604,11 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_BOAT_SAILS_COLOSSAL_REGULAR = 59551;
+
+	/**
+	 * Crevice
+	 */
+	public static final int GRIMSTONE_CAVE_WALL_UPPER_CREVICE = 59552;
 
 	/**
 	 * Sails
