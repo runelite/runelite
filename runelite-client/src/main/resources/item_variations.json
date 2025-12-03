@@ -1620,6 +1620,10 @@
     1536,
     1537
   ],
+  "steel nails": [
+    1539,
+    32923
+  ],
   "antidragon shield": [
     1540,
     8282,
@@ -12989,7 +12993,8 @@
     32167,
     32168
   ],
-  "mahogany mast and linen sails": [
+  "mahogany mast and canvas sails": [
+    32169,
     32170,
     32171
   ],
@@ -13195,7 +13200,8 @@
     32519,
     32613,
     32693,
-    32764
+    32764,
+    32924
   ],
   "crate of bananas": [
     32449,
@@ -13565,6 +13571,10 @@
   "crate of shields": [
     32705,
     32793
+  ],
+  "crate of clothes": [
+    32711,
+    32925
   ],
   "crate of battleaxes": [
     32722,
