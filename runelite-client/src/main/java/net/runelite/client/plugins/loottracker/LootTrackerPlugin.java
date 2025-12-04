@@ -249,6 +249,10 @@ public class LootTrackerPlugin extends Plugin
 		put(ObjectID.SHADECHEST_GOLD_PURPLE, "Gold key purple").
 		build();
 
+	// Wilderness agility dispenser loot handling
+	private static final String WILDY_AGILITY_DISPENSER_EVENT = "Agility dispenser";
+	private static final Pattern WILDY_AGILITY_DISPENSER_PATTERN = Pattern.compile("You have been awarded(?<clue> a clue scroll,)? (?<qty1>\\d+) x (?<noted1>.+) and (?<qty2>\\d+) x (?<noted2>.+?)(?:, and an extra (?<unnoted>.+))? from the Agi.*");
+
 	private static final String HALLOWED_SACK_EVENT = "Hallowed Sack";
 
 	// Last man standing map regions
@@ -1130,6 +1134,42 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER)));
+			return;
+		}
+
+		// Wilderness agility course
+		final Matcher wildyAgilityMatcher = WILDY_AGILITY_DISPENSER_PATTERN.matcher(Text.removeTags(message));
+		if (wildyAgilityMatcher.matches())
+		{
+			List<ItemStack> loot = new ArrayList<>();
+
+			// guaranteed loot
+			final String noted1 = wildyAgilityMatcher.group("noted1");
+			final String noted2 = wildyAgilityMatcher.group("noted2");
+			final int notedId1 = itemManager.search(noted1).get(0).getId() + 1;
+			final int notedId2 = itemManager.search(noted2).get(0).getId() + 1;
+
+			final int qty1 = Integer.parseInt(wildyAgilityMatcher.group("qty1"));
+			final int qty2 = Integer.parseInt(wildyAgilityMatcher.group("qty2"));
+
+			loot.add(new ItemStack(ItemID.WILDY_AGILITY_TOKEN, 1));
+			loot.add(new ItemStack(notedId1, qty1));
+			loot.add(new ItemStack(notedId2, qty2));
+
+			// conditional loot
+			final String unnoted = wildyAgilityMatcher.group("unnoted");
+			final String clue = wildyAgilityMatcher.group("clue");
+
+			if (unnoted != null)
+			{
+				loot.add(new ItemStack(itemManager.search(unnoted).get(0).getId(), 1));
+			}
+			if (clue != null)
+			{
+				loot.add(new ItemStack(ItemID.LEAGUE_CLUE_BOX_MEDIUM, 1));
+			}
+
+			addLoot(WILDY_AGILITY_DISPENSER_EVENT, -1, LootRecordType.EVENT, null, loot);
 			return;
 		}
 
