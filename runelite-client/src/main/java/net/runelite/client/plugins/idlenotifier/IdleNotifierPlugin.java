@@ -216,6 +216,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_FIRECOOKING:
 			case AnimationID.HUMAN_COOKING:
 			case AnimationID.HUMAN_MAKE_WINE:
+			case AnimationID.HUMAN_CUT_FOOD:
 			/* Crafting(Gem Cutting, Glassblowing, Spinning, Weaving, Battlestaves, Pottery) */
 			case AnimationID.HUMAN_OPALCUTTING:
 			case AnimationID.HUMAN_JADECUTTING:
