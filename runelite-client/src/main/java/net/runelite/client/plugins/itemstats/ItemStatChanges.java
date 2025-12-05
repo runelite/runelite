@@ -195,6 +195,14 @@ public class ItemStatChanges
 		add(combo(food(16), boost(PRAYER, 1), dec(ATTACK, 5), dec(THIEVING, 1)), ItemID.TONAMEYO_WHITE);
 		add(combo(food(16), boost(HERBLORE, 1), dec(ATTACK, 5), dec(FARMING, 1)), ItemID.CHICHILIHUI_ROSE);
 		add(combo(food(16), boost(SLAYER, 1), dec(ATTACK, 5), dec(AGILITY, 1)), ItemID.IMPERIAL_ROSE);
+		add(combo(boost(SAILING, 1), boost(MAGIC, 2), dec(ATTACK, 2)), ItemID.KRAKEN_INK_STOUT);
+		add(combo(boost(SAILING, 1), boost(RANGED, 2), boost(STRENGTH, 2), dec(MAGIC, 2)), ItemID.PERILDANCE_BITTER);
+		add(combo(boost(SAILING, 2), boost(FISHING, 2), dec(ATTACK, 2)), ItemID.TRAWLERS_TRUST);
+		add(combo(boost(SAILING, 3), boost(COOKING, 2), dec(AGILITY, 2)), ItemID.WHIRLPOOL_SURPRISE);
+		add(combo(boost(SAILING, 4), dec(THIEVING, 2)), ItemID.HORIZONS_LURE);
+		add(combo(boost(SLAYER, 1), dec(SAILING, 3), dec(ATTACK, 3), dec(STRENGTH, 3), dec(DEFENCE, 3)), ItemID.KRAKEN_COLADA);
+		add(combo(boost(FISHING, 1), dec(SAILING, 3), dec(ATTACK, 3), dec(STRENGTH, 3), dec(DEFENCE, 3)), ItemID.BARNACLE_BLASTER);
+		add(combo(boost(HUNTER, 1), dec(SAILING, 3), dec(ATTACK, 3), dec(STRENGTH, 3), dec(DEFENCE, 3)), ItemID.SAILORS_MIRAGE);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), ItemID.OSMAN_SQUIRK_J_WINTER);
