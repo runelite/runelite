@@ -248,6 +248,8 @@ public class ItemStatChanges
 		add(ancientBrew, ItemID._1DOSEANCIENTBREW, ItemID._2DOSEANCIENTBREW, ItemID._3DOSEANCIENTBREW, ItemID._4DOSEANCIENTBREW);
 		add(new AncientBrew(.08, 3), ItemID._1DOSEFORGOTTENBREW, ItemID._2DOSEFORGOTTENBREW, ItemID._3DOSEFORGOTTENBREW, ItemID._4DOSEFORGOTTENBREW);
 		add(new MoonlightPotion(), ItemID._1DOSEMOONLIGHTPOTION, ItemID._2DOSEMOONLIGHTPOTION, ItemID._3DOSEMOONLIGHTPOTION, ItemID._4DOSEMOONLIGHTPOTION);
+		add(combo(boost(HITPOINTS, perc(.10, 2)), boost(RANGED, perc(.10, 4)), boost(ATTACK, perc(-.10, 2)), boost(STRENGTH, perc(-.10, 2)), boost(DEFENCE, perc(-.10, 2)), boost(MAGIC, perc(-.10, 2))),
+			ItemID._1DOSEARMADYLBREW, ItemID._2DOSEARMADYLBREW, ItemID._3DOSEARMADYLBREW, ItemID._4DOSEARMADYLBREW);
 
 		// Mixed combat potions
 		add(new MixedPotion(3, ATTACK_POT), ItemID.BRUTAL_1DOSE1ATTACK, ItemID.BRUTAL_2DOSE1ATTACK);
@@ -278,7 +280,9 @@ public class ItemStatChanges
 		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);
-		final SingleEffect staminaPot = new StaminaPotion();
+		final Effect extremeEnergyPot = heal(RUN_ENERGY, 40);
+		final SingleEffect staminaPot = new StaminaPotion(20);
+		final SingleEffect extendedStaminaPot = new StaminaPotion(40);
 		final DeltaPercentage remedyHeal = perc(0.16, 6);
 		add(restorePot, ItemID._1DOSESTATRESTORE, ItemID._2DOSESTATRESTORE, ItemID._3DOSESTATRESTORE, ItemID._4DOSESTATRESTORE);
 		add(energyPot, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY);
@@ -291,6 +295,8 @@ public class ItemStatChanges
 			ItemID.BR_SANFEW_SALVE_4_DOSE, ItemID.BR_SANFEW_SALVE_3_DOSE, ItemID.BR_SANFEW_SALVE_2_DOSE, ItemID.BR_SANFEW_SALVE_1_DOSE /* LMS */);
 		add(combo(heal(ATTACK, remedyHeal), heal(STRENGTH, remedyHeal), heal(DEFENCE, remedyHeal), heal(RANGED, remedyHeal), heal(MAGIC, remedyHeal)), ItemID._1DOSESTATRENEWAL, ItemID._2DOSESTATRENEWAL, ItemID._3DOSESTATRENEWAL, ItemID._4DOSESTATRENEWAL);
 		add(staminaPot, ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA);
+		add(extendedStaminaPot, ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA);
+		add(extremeEnergyPot, ItemID._1DOSE3ENERGY, ItemID._2DOSE3ENERGY, ItemID._3DOSE3ENERGY, ItemID._4DOSE3ENERGY);
 
 		// Mixed recovery potions
 		add(new MixedPotion(3, restorePot), ItemID.BRUTAL_1DOSESTATRESTORE, ItemID.BRUTAL_2DOSESTATRESTORE);
@@ -338,10 +344,14 @@ public class ItemStatChanges
 		// Skill potions
 		final Effect agilityPot = boost(AGILITY, 3);
 		final Effect fishingPot = boost(FISHING, 3);
+		final Effect superFishingPot = boost(FISHING, 6);
 		final Effect hunterPot = boost(HUNTER, 3);
+		final Effect superHunterPot = boost(HUNTER, 6);
 		add(agilityPot, ItemID._1DOSE1AGILITY, ItemID._2DOSE1AGILITY, ItemID._3DOSE1AGILITY, ItemID._4DOSE1AGILITY);
 		add(fishingPot, ItemID._1DOSEFISHERSPOTION, ItemID._2DOSEFISHERSPOTION, ItemID._3DOSEFISHERSPOTION, ItemID._4DOSEFISHERSPOTION);
+		add(superFishingPot, ItemID._1DOSE2FISHERSPOTION, ItemID._2DOSE2FISHERSPOTION, ItemID._3DOSE2FISHERSPOTION, ItemID._4DOSE2FISHERSPOTION);
 		add(hunterPot, ItemID._1DOSEHUNTING, ItemID._2DOSEHUNTING, ItemID._3DOSEHUNTING, ItemID._4DOSEHUNTING);
+		add(superHunterPot, ItemID._1DOSE2HUNTING, ItemID._2DOSE2HUNTING, ItemID._3DOSE2HUNTING, ItemID._4DOSE2HUNTING);
 		add(combo(boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), ItemID.CUP_GUTHIX_REST_1, ItemID.CUP_GUTHIX_REST_2, ItemID.CUP_GUTHIX_REST_3, ItemID.CUP_GUTHIX_REST_4);
 
 		// Mixed skill potions
