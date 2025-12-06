@@ -176,10 +176,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private GpuFloatBuffer uniformBuffer;
 
-	private int cameraX, cameraY, cameraZ;
 	private int cameraYaw, cameraPitch;
-	private int minLevel, level, maxLevel;
-	private Set<Integer> hideRoofIds;
 
 	private VAOList vaoO;
 	private VAOList vaoA;
@@ -192,6 +189,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		final int sizeX, sizeZ;
 		Zone[][] zones;
+
+		private int cameraX, cameraY, cameraZ;
+		private int minLevel, level, maxLevel;
+		private Set<Integer> hideRoofIds;
 
 		SceneContext(int sizeX, int sizeZ)
 		{
@@ -803,18 +804,22 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		float cameraX, float cameraY, float cameraZ, float cameraPitch, float cameraYaw,
 		int minLevel, int level, int maxLevel, Set<Integer> hideRoofIds)
 	{
-		this.cameraX = (int) cameraX;
-		this.cameraY = (int) cameraY;
-		this.cameraZ = (int) cameraZ;
-		this.cameraYaw = client.getCameraYaw();
-		this.cameraPitch = client.getCameraPitch();
-		this.minLevel = minLevel;
-		this.level = level;
-		this.maxLevel = maxLevel;
-		this.hideRoofIds = hideRoofIds;
+		SceneContext ctx = context(scene);
+		if (ctx != null)
+		{
+			ctx.cameraX = (int) cameraX;
+			ctx.cameraY = (int) cameraY;
+			ctx.cameraZ = (int) cameraZ;
+			ctx.minLevel = minLevel;
+			ctx.level = level;
+			ctx.maxLevel = maxLevel;
+			ctx.hideRoofIds = hideRoofIds;
+		}
 
 		if (scene.getWorldViewId() == WorldView.TOPLEVEL)
 		{
+			this.cameraYaw = client.getCameraYaw();
+			this.cameraPitch = client.getCameraPitch();
 			preSceneDrawToplevel(scene, cameraX, cameraY, cameraZ, cameraPitch, cameraYaw);
 		}
 		else
@@ -1050,7 +1055,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 
 		int offset = scene.getWorldViewId() == -1 ? (SCENE_OFFSET >> 3) : 0;
-		z.renderOpaque(zx - offset, zz - offset, minLevel, level, maxLevel, hideRoofIds);
+		z.renderOpaque(zx - offset, zz - offset, ctx.minLevel, ctx.level, ctx.maxLevel, ctx.hideRoofIds);
 
 		checkGLErrors();
 	}
@@ -1078,17 +1083,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 
 		int offset = scene.getWorldViewId() == -1 ? (SCENE_OFFSET >> 3) : 0;
-		int dx = cameraX - ((zx - offset) << 10);
-		int dz = cameraZ - ((zz - offset) << 10);
+		int dx = ctx.cameraX - ((zx - offset) << 10);
+		int dz = ctx.cameraZ - ((zz - offset) << 10);
 		boolean close = dx * dx + dz * dz < ALPHA_ZSORT_CLOSE * ALPHA_ZSORT_CLOSE;
 
 		if (level == 0)
 		{
-			z.alphaSort(zx - offset, zz - offset, cameraX, cameraY, cameraZ);
-			z.multizoneLocs(scene, zx - offset, zz - offset, cameraX, cameraZ, ctx.zones);
+			z.alphaSort(zx - offset, zz - offset, ctx.cameraX, ctx.cameraY, ctx.cameraZ);
+			z.multizoneLocs(scene, zx - offset, zz - offset, ctx.cameraX, ctx.cameraZ, ctx.zones);
 		}
 
-		z.renderAlpha(zx - offset, zz - offset, cameraYaw, cameraPitch, minLevel, this.level, maxLevel, level, hideRoofIds, !close);
+		z.renderAlpha(zx - offset, zz - offset, cameraYaw, cameraPitch, ctx.minLevel, ctx.level, ctx.maxLevel, level, ctx.hideRoofIds, !close);
 
 		checkGLErrors();
 	}
@@ -1202,7 +1207,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				// level is checked prior to this callback being run, in order to cull clickboxes, but
 				// tileObject.getPlane()>maxLevel if visbelow is set - lower the object to the max level
-				int plane = Math.min(maxLevel, tileObject.getPlane());
+				int plane = Math.min(ctx.maxLevel, tileObject.getPlane());
 				// renderable modelheight is typically not set here because DynamicObject doesn't compute it on the returned model
 				zone.addTempAlphaModel(a.vao, start, end, plane, x & 1023, y, z & 1023);
 			}
