@@ -29,7 +29,6 @@ package net.runelite.client.plugins.interfacestyles;
 import lombok.Getter;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.widgets.ComponentID;
 
 @Getter
 enum WidgetOffset
