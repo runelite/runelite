@@ -362,7 +362,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 
 		if ((event.getVarbitId() == VarbitID.NZONE_OVERLOAD_POTION_EFFECTS
-			|| event.getVarbitId() == VarbitID.RAIDS_OVERLOAD_TIMER) && config.showOverload())
+			|| event.getVarbitId() == VarbitID.RAIDS_OVERLOAD_TIMER
+			|| event.getVarbitId() == VarbitID.DEADMAN_OVERLOAD_POTION_EFFECTS) && config.showOverload())
 		{
 			final int overloadVarb = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -376,7 +377,16 @@ public class TimersAndBuffsPlugin extends Plugin
 				nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
 			}
 
-			GameTimer overloadTimer = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1 ? OVERLOAD_RAID : OVERLOAD;
+			GameTimer overloadTimer;
+			if (event.getVarbitId() == VarbitID.DEADMAN_OVERLOAD_POTION_EFFECTS)
+			{
+				overloadTimer = BLIGHTED_OVERLOAD;
+			}
+			else
+			{
+				overloadTimer = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1 ? OVERLOAD_RAID : OVERLOAD;
+			}
+
 			updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
 		}
 
@@ -705,6 +715,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(BLIGHTED_OVERLOAD);
 			removeGameTimer(SMELLING_SALTS);
 		}
 
