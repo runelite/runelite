@@ -1,25 +1,25 @@
-![](https://runelite.net/img/logo.png)
-# runelite [![CI](https://github.com/runelite/runelite/workflows/CI/badge.svg)](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/ArdAhnN)
+Here is the updated `README.md` incorporating the **RuneLite XR** context while keeping it concise.
 
-RuneLite is a free, open source OldSchool RuneScape client.
+-----
 
-If you have any questions, please join our IRC channel on [irc.rizon.net #runelite](http://qchat.rizon.net/?channels=runelite&uio=d4) or alternatively our [Discord](https://runelite.net/discord) server.
+# RuneLite XR [](https://github.com/runelite/runelite/actions?query=workflow%3ACI+branch%3Amaster) [](https://discord.gg/ArdAhnN)
+
+RuneLite is a free, open source OldSchool RuneScape client. **RuneLite XR** extends this foundation to create a hybrid "Tabletop VR" experience, allowing users to play OSRS in a 3D mixed-reality environment.
+
+## RuneLite XR Features
+
+* **Hybrid Interface:** Renders the standard 2D client alongside a "table top" 3D  representation of the game world.
+* **Desktop Mirror:** Includes a dedicated debug window to view/record the headset perspective.
+* **Powered by:** Java, LWJGL, and OpenXR.
 
 ## Project Layout
 
-- [cache](cache/src/main/java/net/runelite/cache) - Libraries used for reading/writing cache files, as well as the data in it
-- [runelite-api](runelite-api/src/main/java/net/runelite/api) - RuneLite API, interfaces for accessing the client
-- [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
+- [cache](https://www.google.com/search?q=cache/src/main/java/net/runelite/cache) - Libraries for reading/writing cache files.
+- [runelite-api](https://www.google.com/search?q=runelite-api/src/main/java/net/runelite/api) - RuneLite API interfaces.
+- [runelite-client](https://www.google.com/search?q=runelite-client/src/main/java/net/runelite/client) - Game client, plugins, and **XR rendering logic** (`net.runelite.client.xr`).
 
 ## Usage
 
-Open the project in your IDE as a Maven project, build the root module and then run the RuneLite class in runelite-client.  
-For more information visit the [RuneLite Wiki](https://github.com/runelite/runelite/wiki).
-
-### License
-
-RuneLite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
-
-## Contribute and Develop
-
-We've set up a separate document for our [contribution guidelines](https://github.com/runelite/runelite/blob/master/.github/CONTRIBUTING.md).
+1.  **Prerequisites:** Ensure **SteamVR** (or a compatible OpenXR runtime) is installed and set as default.
+2.  **Build & Run:** Open as a Maven project, build the root module, and run the `RuneLite` class in `runelite-client`.
+3.  **Launch VR:** Once the client loads, open the **XR Panel** on the sidebar and click **Initialize VR**.
