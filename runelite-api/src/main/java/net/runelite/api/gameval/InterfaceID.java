@@ -14590,7 +14590,7 @@ public final class InterfaceID
 		public static final int SORT_1 = 0x017d_0004;
 		public static final int SORT_2 = 0x017d_0005;
 		public static final int TITLEBOX_TEXT1 = 0x017d_0006;
-		public static final int TITLEBOX_GRAPHIC2 = 0x017d_0007;
+		public static final int SEARCH = 0x017d_0007;
 		public static final int CONTENTS = 0x017d_0008;
 		public static final int FAVES = 0x017d_0009;
 		public static final int DIVIDER = 0x017d_000a;

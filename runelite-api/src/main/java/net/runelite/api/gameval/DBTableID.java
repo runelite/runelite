@@ -438,6 +438,7 @@ public final class DBTableID
 			public static final int HALLOWEEN_2024 = 3935;
 			public static final int XMAS_2024 = 4228;
 			public static final int BIRTHDAY_2025 = 4318;
+			public static final int XMAS_2025 = 4968;
 			public static final int EASTER_2025 = 5107;
 			public static final int HALLOWEEN_2025 = 6989;
 		}
@@ -5724,6 +5725,7 @@ public final class DBTableID
 			public static final int MUSIC_THE_HEIST = 3971;
 			public static final int MUSIC_HEAVY_SECURITY = 3972;
 			public static final int MUSIC_THE_PLUNDERED_TOMB = 3973;
+			public static final int MUSIC_CHRISTMAS_2025 = 4969;
 			public static final int MUSIC_YAMA_COMBAT = 5154;
 			public static final int MUSIC_TLATI_RAINFOREST = 5377;
 			public static final int MUSIC_AUBURN_VALLEY_1 = 5378;
