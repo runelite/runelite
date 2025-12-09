@@ -10518,6 +10518,24 @@ public final class SpriteID
 		public static final int _15 = 6855;
 		public static final int _16 = 6856;
 		public static final int _17 = 6857;
+		public static final int _18 = 7293;
+		public static final int _19 = 7294;
+		public static final int _20 = 7295;
+		public static final int _21 = 7296;
+		public static final int _22 = 7297;
+		public static final int _23 = 7298;
+		public static final int _24 = 7299;
+		public static final int _25 = 7300;
+		public static final int _26 = 7301;
+		public static final int _27 = 7302;
+		public static final int _28 = 7303;
+		public static final int _29 = 7304;
+		public static final int _30 = 7305;
+		public static final int _31 = 7306;
+		public static final int _32 = 7307;
+		public static final int _33 = 7308;
+		public static final int _34 = 7309;
+		public static final int _35 = 7310;
 	}
 
 	public static final class IconChevron16x16

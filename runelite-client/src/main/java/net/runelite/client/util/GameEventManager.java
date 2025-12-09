@@ -42,6 +42,7 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldEntity;
 import net.runelite.api.WorldView;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -51,6 +52,7 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WorldEntitySpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 
@@ -207,9 +209,10 @@ public class GameEventManager
 			}
 		});
 
-		for (WorldView sub : wv.worldViews())
+		for (WorldEntity we : wv.worldEntities())
 		{
-			simulateGameEvents(sub);
+			eventBus.post(new WorldEntitySpawned(we));
+			simulateGameEvents(we.getWorldView());
 		}
 	}
 }

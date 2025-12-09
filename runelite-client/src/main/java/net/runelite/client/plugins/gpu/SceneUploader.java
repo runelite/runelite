@@ -698,7 +698,7 @@ class SceneUploader
 	}
 
 	// temp draw
-	static int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer)
+	int uploadTempModel(Model model, int orientation, int x, int y, int z, IntBuffer opaqueBuffer)
 	{
 		final int triangleCount = model.getFaceCount();
 		final int vertexCount = model.getVerticesCount();
@@ -865,9 +865,9 @@ class SceneUploader
 		return (hue << 10 | sat << 7 | lum) & 65535;
 	}
 
-	static float u0, u1, u2, v0, v1, v2;
+	float u0, u1, u2, v0, v1, v2;
 
-	static void computeFaceUvs(Model model, int face)
+	void computeFaceUvs(Model model, int face)
 	{
 		final float[] vertexX = model.getVerticesX();
 		final float[] vertexY = model.getVerticesY();

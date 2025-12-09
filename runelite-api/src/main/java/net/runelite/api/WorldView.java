@@ -27,6 +27,7 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 public interface WorldView
 {
@@ -215,6 +216,20 @@ public interface WorldView
 	int[] getMapRegions();
 
 	/**
+	 * Returns a 2D array containing XTEA encryption keys used to decrypt
+	 * map region files.
+	 * <p>
+	 * The array maps the region keys at index {@code n} to the region
+	 * ID held in {@link #getMapRegions()} at {@code n}.
+	 * <p>
+	 * The array of keys for the region make up a 128-bit encryption key
+	 * spread across 4 integers.
+	 *
+	 * @return the XTEA encryption keys
+	 */
+	int[][] getXteaKeys();
+
+	/**
 	 * Test if this worldview contains the given point
 	 * @param point
 	 * @return
@@ -232,11 +247,21 @@ public interface WorldView
 	 * Returns a {@link Projection} to translate from this world view to the main world
 	 * @return
 	 */
+	@Nullable
 	Projection getMainWorldProjection();
 
 	/**
 	 * Returns a {@link Projection} to translate from this world view to the canvas
 	 * @return
 	 */
+	@Nullable
 	Projection getCanvasProjection();
+
+	/**
+	 * Returns how clicking on tiles should behave for this WorldView.
+	 *
+	 * @return one of {@link Constants#CLICK_ACTION_NONE}, {@link Constants#CLICK_ACTION_WALK}, {@link Constants#CLICK_ACTION_SET_HEADING}
+	 */
+	@MagicConstant(intValues = {Constants.CLICK_ACTION_NONE, Constants.CLICK_ACTION_WALK, Constants.CLICK_ACTION_SET_HEADING})
+	int getYellowClickAction();
 }

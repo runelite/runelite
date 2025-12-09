@@ -143,7 +143,7 @@ class VAOList
 	private static final int VAO_SIZE = 4 * 1024 * 1024;
 
 	private int curIdx;
-	private final List<VAO> vaos = new ArrayList<>();
+	final List<VAO> vaos = new ArrayList<>();
 
 	VAO get(int size)
 	{
@@ -174,11 +174,12 @@ class VAOList
 		return vao;
 	}
 
-	List<VAO> unmap()
+	int unmap()
 	{
 		int sz = 0;
-		for (VAO vao : vaos)
+		for (int i = 0; i < vaos.size(); ++i) // NOPMD: ForLoopCanBeForeach
 		{
+			VAO vao = vaos.get(i);
 			if (vao.vbo.mapped)
 			{
 				++sz;
@@ -186,7 +187,7 @@ class VAOList
 			}
 		}
 		curIdx = 0;
-		return vaos.subList(0, sz);
+		return sz;
 	}
 
 	void free()

@@ -444,28 +444,11 @@ LABEL382:
    join_string            3
    ostore                 3
 LABEL393:
-   iload                  0
-   iconst                 23
-   if_icmpeq              LABEL397
-   jump                   LABEL408
-LABEL397:
-   sconst                 "<col=ff0000>"
-   oload                  0
-   sconst                 ":"
-   sconst                 "</col>"
-   join_string            4
-   ostore                 2
-   sconst                 "<col=ff0000>"
-   sconst                 "Releasing 19th November"
-   sconst                 "</col>"
-   join_string            3
-   ostore                 3
-LABEL408:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL412
-   jump                   LABEL439
-LABEL412:
+   if_icmpeq              LABEL397
+   jump                   LABEL424
+LABEL397:
    iconst                 2367
    iconst                 -2147483644
    iconst                 -2147483645
@@ -479,14 +462,14 @@ LABEL412:
    if_setonop            
    get_varc_int           218
    iload                  1
-   if_icmpeq              LABEL427
-   jump                   LABEL438
-LABEL427:
+   if_icmpeq              LABEL412
+   jump                   LABEL423
+LABEL412:
    get_varc_int           217
    iconst                 -1
-   if_icmpeq              LABEL431
-   jump                   LABEL438
-LABEL431:
+   if_icmpeq              LABEL416
+   jump                   LABEL423
+LABEL416:
    iload                  1
    iconst                 -1
    iload                  2
@@ -494,9 +477,9 @@ LABEL431:
    oload                  3
    iconst                 495
    invoke                 2344
-LABEL438:
-   jump                   LABEL454
-LABEL439:
+LABEL423:
+   jump                   LABEL439
+LABEL424:
    iconst                 992
    iconst                 -2147483645
    iconst                 -1
@@ -512,5 +495,5 @@ LABEL439:
    if_setonmouserepeat   
    iconst                 0
    set_varc_int           2
-LABEL454:
+LABEL439:
    return                
