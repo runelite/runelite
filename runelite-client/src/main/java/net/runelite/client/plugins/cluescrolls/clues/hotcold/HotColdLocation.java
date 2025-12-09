@@ -152,6 +152,7 @@ public enum HotColdLocation
 	SAIL_GREAT_CONCH(MASTER, new WorldPoint(3249, 2349, 0), OCEAN, "In the south-eastern mine of the Great Conch", BRASSICAN_MAGE),
 	SAIL_ISLE_OF_SERPENTS(MASTER, new WorldPoint(1856, 2415, 0), OCEAN, "On the Isle of Serpents", BRASSICAN_MAGE),
 	SAIL_DRUMSTICK_ISLE(MASTER, new WorldPoint(2139, 3562, 0), OCEAN, "On Drumstick Isle", BRASSICAN_MAGE),
+	SAIL_BUCCANEERS_HAVEN(MASTER, new WorldPoint(2078, 3665, 0), OCEAN, "On Buccaneers' Haven", BRASSICAN_MAGE),
 	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
 	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
 	VARLAMORE_RAINFOREST_CENTRE(MASTER, new WorldPoint(1312, 3108, 0), VARLAMORE, "In the centre of the Tlati Rainforest.", BRASSICAN_MAGE),
