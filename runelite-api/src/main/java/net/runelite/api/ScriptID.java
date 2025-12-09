@@ -477,7 +477,7 @@ public final class ScriptID
 	@ScriptArguments(integer = 3)
 	public static final int POTIONSTORE_DOSE_CHANGE = 6555;
 
-	@ScriptArguments(integer = 5)
+	@ScriptArguments(integer = 6)
 	public static final int FAIRYRINGS_SORT_UPDATE = 402;
 
 	@ScriptArguments(integer = 1, string = 1)
