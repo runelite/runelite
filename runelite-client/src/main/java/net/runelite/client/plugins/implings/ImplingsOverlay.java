@@ -41,6 +41,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class ImplingsOverlay extends Overlay
 {
+	private static final int PURO_PURO = (40 << 8) | 67;
+
 	private final Client client;
 	private final ImplingsConfig config;
 	private final ImplingsPlugin plugin;
@@ -58,6 +60,11 @@ class ImplingsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() != PURO_PURO)
+		{
+			return null;
+		}
+
 		if (config.showSpawn())
 		{
 			for (ImplingSpawn spawn : ImplingSpawn.values())

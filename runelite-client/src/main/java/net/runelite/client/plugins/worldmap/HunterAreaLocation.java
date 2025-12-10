@@ -35,7 +35,7 @@ enum HunterAreaLocation
 {
 	ALDARIN_NORTH(new WorldPoint(1357, 2977, 0), HunterCreature.COPPER_LONGTAIL),
 	ALDARIN_WEST(new WorldPoint(1342, 2934, 0), HunterCreature.RUBY_HARVEST),
-	AUBURNVALE_NORTH(new WorldPoint(1387, 3392, 0), HunterCreature.COMMON_KEBBIT),
+	AUBURNVALE_NORTH(new WorldPoint(1387, 3392, 0), HunterCreature.WILD_KEBBIT, HunterCreature.RUBY_HARVEST),
 	AUBURNVALE_WEST(new WorldPoint(1349, 3346, 0), HunterCreature.COPPER_LONGTAIL),
 	AVIUM_SAVANNAH(new WorldPoint(1616, 2999, 0), HunterCreature.PYRE_FOX),
 	AVIUM_SAVANNAH_EAST(new WorldPoint(1745, 3008, 0), HunterCreature.SUNLIGHT_ANTELOPE),

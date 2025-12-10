@@ -64,6 +64,10 @@ public interface DrawCallbacks
 	 * Enable the {@link #zoneInFrustum(int, int, int, int)} callback
 	 */
 	int ZBUF_ZONE_FRUSTUM_CHECK = 0x20;
+	/**
+	 * Enable the {@link Model#getUnlitFaceColors()} method
+	 */
+	int UNLIT_FACE_COLORS = 0x40;
 
 	int PASS_OPAQUE = 0;
 	int PASS_ALPHA = 1;

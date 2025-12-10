@@ -72,6 +72,7 @@ public enum FairyRing
 	CIQ("North-west of Yanille"),
 	CIR("North-east of the Farming Guild", "mount karuulm konar"),
 	CIS("North of the Arceuus Library"),
+	CJQ("The Great Conch"),
 	CJR("Sinclair Mansion", "falo bard"),
 	CKP("Cosmic entity's plane"),
 	CKQ("Aldarin"),
@@ -91,6 +92,7 @@ public enum FairyRing
 	DKP("South of Musa Point"),
 	DKR("Edgeville, Grand Exchange"),
 	DKS("Polar Hunter area"),
+	DLP("Grimstone Dungeon"),
 	DLQ("North of Nardah"),
 	DLR("(Island) Poison Waste south of Isafdar"),
 	DLS("Myreque hideout under The Hollows");

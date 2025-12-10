@@ -51,6 +51,11 @@ public final class NpcID
 	public static final int SLAYER_NECHRYAEL = 8;
 
 	/**
+	 * Skylark
+	 */
+	public static final int SAILING_SKYLARK = 9;
+
+	/**
 	 * Death spawn
 	 */
 	public static final int SLAYER_NECHRYAEL_SPAWN = 10;
@@ -1385,6 +1390,21 @@ public final class NpcID
 	 * Gull
 	 */
 	public static final int GULL2 = 285;
+
+	/**
+	 * Eagle
+	 */
+	public static final int CONCH_EAGLE_WINGED_LAND = 286;
+
+	/**
+	 * Mercenary
+	 */
+	public static final int PORT_ROBERTS_BAR_PATRON = 287;
+
+	/**
+	 * Chartin' Charles McAtless
+	 */
+	public static final int SAILING_CHARTING_TUTOR_1OP = 288;
 
 	/**
 	 * Ghoul
@@ -3967,12 +3987,12 @@ public final class NpcID
 	public static final int DRAGONSLAYER_NED_CUTSCENE = 824;
 
 	/**
-	 * Cabin boy Jenkins
+	 * Cabin Boy Jenkins
 	 */
 	public static final int DRAGONSLAYER_JENKINS_THERE = 825;
 
 	/**
-	 * Cabin boy Jenkins
+	 * Cabin Boy Jenkins
 	 */
 	public static final int DRAGONSLAYER_JENKINS_CUTSCENE = 826;
 
@@ -7318,6 +7338,16 @@ public final class NpcID
 	 * Crab
 	 */
 	public static final int CRAB_1 = 1553;
+
+	/**
+	 * Chartin' Charles McAtless
+	 */
+	public static final int SAILING_CHARTING_TUTOR_2OP = 1554;
+
+	/**
+	 * Luke
+	 */
+	public static final int SAILING_SHIPYARD_WORKER_10 = 1555;
 
 	/**
 	 * Fire wizard
@@ -18452,6 +18482,26 @@ public final class NpcID
 	public static final int VIKING_BUNNY_2 = 3903;
 
 	/**
+	 * Shipyard Worker
+	 */
+	public static final int SAILING_SHIPYARD_WORKER_11 = 3904;
+
+	/**
+	 * Shipyard Worker
+	 */
+	public static final int SAILING_SHIPYARD_WORKER_12 = 3905;
+
+	/**
+	 * Shipyard Engineer
+	 */
+	public static final int SAILING_SHIPYARD_WORKER_13 = 3906;
+
+	/**
+	 * Joe
+	 */
+	public static final int SHIPYARD_DOG_NOBALL = 3907;
+
+	/**
 	 * Bear Cub
 	 */
 	public static final int BROWNBEAR_CUB_1 = 3908;
@@ -20211,6 +20261,16 @@ public final class NpcID
 	 * Border Guard
 	 */
 	public static final int BORDERGUARD2 = 4288;
+
+	/**
+	 * Joe
+	 */
+	public static final int SHIPYARD_DOG_BALL = 4289;
+
+	/**
+	 * Cat
+	 */
+	public static final int SHIPYARD_SAILING_CAT = 4290;
 
 	/**
 	 * Herman Caranos
@@ -22246,6 +22306,16 @@ public final class NpcID
 	 * Thurgo
 	 */
 	public static final int THURGO = 4733;
+
+	/**
+	 * Joint-Chief Mouser to the Shipyard Office
+	 */
+	public static final int SHIPYARD_CHIEF_MOUSER01 = 4734;
+
+	/**
+	 * Joint-Chief Mouser to the Shipyard Office
+	 */
+	public static final int SHIPYARD_CHIEF_MOUSER02 = 4735;
 
 	/**
 	 * Sir Vyvin
@@ -64227,6 +64297,41 @@ public final class NpcID
 	public static final int HW25_CHAIR_NPC_REWARD = 14806;
 
 	/**
+	 * Spotted Rae
+	 */
+	public static final int SHIPYARD_SPOTTED_RAE = 14807;
+
+	/**
+	 * Duck
+	 */
+	public static final int CURRENT_DUCK_ON_LAND = 14808;
+
+	/**
+	 * Gecko
+	 */
+	public static final int BUCCANEERS_HAVEN_GECKO_BASEMENT = 14809;
+
+	/**
+	 * Grub
+	 */
+	public static final int HAIRY_GRUB = 14810;
+
+	/**
+	 * Rusty chest
+	 */
+	public static final int RUSTY_PIRATE_THIEVING_CHEST_GLE = 14811;
+
+	/**
+	 * Tarnished chest
+	 */
+	public static final int TARNISHED_PIRATE_THIEVING_CHEST_GLE = 14812;
+
+	/**
+	 * Rusty chest
+	 */
+	public static final int REINFORCED_PIRATE_THIEVING_CHEST_GLE = 14813;
+
+	/**
 	 * Spooky chair
 	 */
 	public static final int POH_HW_CHAIR = 14815;
@@ -64442,16 +64547,6 @@ public final class NpcID
 	 * Elder Nama
 	 */
 	public static final int SLAYER_GRYPHON_BOSS_GUARDIAN_VIS = 14863;
-
-	/**
-	 * Gull
-	 */
-	public static final int GRYPHON_PET_TEST = 14864;
-
-	/**
-	 * Gull
-	 */
-	public static final int GRYPHON_PET_DEAD_TEST = 14865;
 
 	/**
 	 * Henderson
@@ -65713,10 +65808,6 @@ public final class NpcID
 	 * Castaway
 	 */
 	public static final int SAILING_CHANCE_ENCOUNTERS_RESCUE_DOG1_PASSENGER = 15150;
-
-	/**
-	 * Chartin' Charles McAtless
-	 */
 	public static final int SAILING_CHARTING_TUTOR = 15151;
 
 	/**
@@ -65848,46 +65939,6 @@ public final class NpcID
 	 * Sailing cat
 	 */
 	public static final int SAILING_CHARTING_DRINK_CRATE_SAILING_CAT_EFFECT = 15177;
-
-	/**
-	 * Castaway Dog
-	 */
-	public static final int SAILING_CASTAWAY_DOG_TEST = 15178;
-
-	/**
-	 * Castaway Dog
-	 */
-	public static final int SAILING_CASTAWAY_DOG_WALK_TEST = 15179;
-
-	/**
-	 * Castaway Dog
-	 */
-	public static final int SAILING_CASTAWAY_DOG_IDLE_TEST = 15180;
-
-	/**
-	 * wilson
-	 */
-	public static final int SAILING_WILSON_TEST = 15181;
-
-	/**
-	 * log girl
-	 */
-	public static final int SAILING_LOG_WOMAN_TEST = 15182;
-
-	/**
-	 * barrel girl
-	 */
-	public static final int SAILING_BARREL_WOMAN_TEST = 15183;
-
-	/**
-	 * barrel dude
-	 */
-	public static final int SAILING_BARRELBOAT_MAN_TEST = 15184;
-
-	/**
-	 * debris dude
-	 */
-	public static final int SAILING_DEBRIS_MAN_TEST = 15185;
 	public static final int BOAT_HP_NPC_TINY = 15186;
 	public static final int BOAT_HP_NPC_SMALL = 15187;
 	public static final int BOAT_HP_NPC_MEDIUM = 15188;
@@ -66123,11 +66174,6 @@ public final class NpcID
 	 * Dolphin calf
 	 */
 	public static final int SAILING_DOLPHIN_BABY = 15236;
-
-	/**
-	 * Ocean Man
-	 */
-	public static final int SAILING_OCEAN_MAN_TEST = 15237;
 
 	/**
 	 * Junior Jim

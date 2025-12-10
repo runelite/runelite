@@ -8169,6 +8169,11 @@ public final class ObjectID extends ObjectID1
 	public static final int DRAGONSHIPLADDERTOP = 2590;
 
 	/**
+	 * Bunk bed
+	 */
+	public static final int AKD_SHAYZIEN_BUNKBED_SMALL = 2591;
+
+	/**
 	 * Ladder
 	 */
 	public static final int DRAGONSHIPLADDER = 2592;

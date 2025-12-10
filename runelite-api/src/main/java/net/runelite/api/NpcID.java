@@ -17,6 +17,7 @@ public final class NpcID
 	public static final int ABERRANT_SPECTRE_6 = 6;
 	public static final int ABERRANT_SPECTRE_7 = 7;
 	public static final int NECHRYAEL = 8;
+	public static final int SKYLARK = 9;
 	public static final int DEATH_SPAWN = 10;
 	public static final int NECHRYAEL_11 = 11;
 	public static final int HUDO = 12;
@@ -282,6 +283,9 @@ public final class NpcID
 	public static final int PELICAN = 283;
 	public static final int GULL_284 = 284;
 	public static final int GULL_285 = 285;
+	public static final int EAGLE = 286;
+	public static final int MERCENARY = 287;
+	public static final int CHARTIN_CHARLES_MCATLESS = 288;
 	public static final int GHOUL = 289;
 	public static final int DWARF = 290;
 	public static final int CHAOS_DWARF = 291;
@@ -1381,7 +1385,7 @@ public final class NpcID
 	public static final int DESERT_EAGLE = 1487;
 	public static final int JUNGLE_EAGLE = 1488;
 	public static final int POLAR_EAGLE = 1489;
-	public static final int EAGLE = 1490;
+	public static final int EAGLE_1490 = 1490;
 	public static final int KEBBIT = 1494;
 	public static final int CHARLIE_1495 = 1495;
 	public static final int BOULDER = 1496;
@@ -1442,6 +1446,8 @@ public final class NpcID
 	public static final int GUARD_1551 = 1551;
 	public static final int GUARD_1552 = 1552;
 	public static final int CRAB_1553 = 1553;
+	public static final int CHARTIN_CHARLES_MCATLESS_1554 = 1554;
+	public static final int LUKE = 1555;
 	public static final int FIRE_WIZARD = 1556;
 	public static final int WATER_WIZARD = 1557;
 	public static final int EARTH_WIZARD = 1558;
@@ -3637,6 +3643,10 @@ public final class NpcID
 	public static final int FOX = 3901;
 	public static final int BUNNY = 3902;
 	public static final int BUNNY_3903 = 3903;
+	public static final int SHIPYARD_WORKER_3904 = 3904;
+	public static final int SHIPYARD_WORKER_3905 = 3905;
+	public static final int SHIPYARD_ENGINEER = 3906;
+	public static final int JOE_3907 = 3907;
 	public static final int BEAR_CUB = 3908;
 	public static final int BEAR_CUB_3909 = 3909;
 	public static final int UNICORN_FOAL = 3910;
@@ -3982,6 +3992,8 @@ public final class NpcID
 	public static final int OSMAN_4286 = 4286;
 	public static final int BORDER_GUARD = 4287;
 	public static final int BORDER_GUARD_4288 = 4288;
+	public static final int JOE_4289 = 4289;
+	public static final int CAT_4290 = 4290;
 	public static final int HERMAN_CARANOS = 4291;
 	public static final int FRANKLIN_CARANOS = 4292;
 	public static final int ARNOLD_LYDSPOR = 4293;
@@ -4307,7 +4319,7 @@ public final class NpcID
 	public static final int MINE_CART_DRIVER = 4653;
 	public static final int ROWDY_GUARD = 4654;
 	public static final int BEDABIN_NOMAD_FIGHTER = 4655;
-	public static final int MERCENARY = 4656;
+	public static final int MERCENARY_4656 = 4656;
 	public static final int MERCENARY_4657 = 4657;
 	public static final int MERCENARY_4658 = 4658;
 	public static final int MERCENARY_4659 = 4659;
@@ -4380,6 +4392,8 @@ public final class NpcID
 	public static final int MOE = 4726;
 	public static final int LARRY_4727 = 4727;
 	public static final int THURGO = 4733;
+	public static final int JOINTCHIEF_MOUSER_TO_THE_SHIPYARD_OFFICE = 4734;
+	public static final int JOINTCHIEF_MOUSER_TO_THE_SHIPYARD_OFFICE_4735 = 4735;
 	public static final int SIR_VYVIN = 4736;
 	public static final int SQUIRE_4737 = 4737;
 	public static final int GENIE_4738 = 4738;
@@ -12339,6 +12353,13 @@ public final class NpcID
 	public static final int THE_SAGE_14799 = 14799;
 	public static final int NEVET = 14801;
 	public static final int NEVET_14802 = 14802;
+	public static final int SPOTTED_RAE = 14807;
+	public static final int DUCK_14808 = 14808;
+	public static final int GECKO = 14809;
+	public static final int GRUB = 14810;
+	public static final int RUSTY_CHEST = 14811;
+	public static final int TARNISHED_CHEST = 14812;
+	public static final int RUSTY_CHEST_14813 = 14813;
 	public static final int SPOOKY_CHAIR = 14815;
 	public static final int MAKO = 14816;
 	public static final int MORA = 14817;
@@ -12381,8 +12402,6 @@ public final class NpcID
 	public static final int SHELLBANE_GRYPHON = 14860;
 	public static final int ELDER_KELMO = 14861;
 	public static final int ELDER_NAMA = 14863;
-	public static final int GULL_14864 = 14864;
-	public static final int GULL_14865 = 14865;
 	public static final int HENDERSON = 14866;
 	public static final int ONE_EYED_ROSALEE = 14867;
 	public static final int CAPTAIN_DAWSON = 14868;
@@ -12627,7 +12646,6 @@ public final class NpcID
 	public static final int CASTAWAY_15148 = 15148;
 	public static final int CASTAWAY_15149 = 15149;
 	public static final int CASTAWAY_15150 = 15150;
-	public static final int CHARTIN_CHARLES_MCATLESS = 15151;
 	public static final int CURRENT_DUCK = 15152;
 	public static final int CURRENT_DUCK_15153 = 15153;
 	public static final int MEATY_AURA_LOGIST = 15154;
@@ -12654,14 +12672,6 @@ public final class NpcID
 	public static final int DRINK_TROLL_QUEEN = 15175;
 	public static final int DRINK_TROLL_QUEEN_15176 = 15176;
 	public static final int SAILING_CAT = 15177;
-	public static final int CASTAWAY_DOG = 15178;
-	public static final int CASTAWAY_DOG_15179 = 15179;
-	public static final int CASTAWAY_DOG_15180 = 15180;
-	public static final int WILSON_15181 = 15181;
-	public static final int LOG_GIRL = 15182;
-	public static final int BARREL_GIRL = 15183;
-	public static final int BARREL_DUDE = 15184;
-	public static final int DEBRIS_DUDE = 15185;
 	public static final int PUNCHING_BAG = 15191;
 	public static final int PUNCHING_BAG_15192 = 15192;
 	public static final int DPS_CALC = 15193;
@@ -12708,7 +12718,6 @@ public final class NpcID
 	public static final int DOLPHIN = 15234;
 	public static final int DOLPHIN_15235 = 15235;
 	public static final int DOLPHIN_CALF = 15236;
-	public static final int OCEAN_MAN_15237 = 15237;
 	public static final int JUNIOR_JIM_15238 = 15238;
 	public static final int JUMBO_JIM = 15239;
 	public static final int CREW_REGISTRAR = 15245;
@@ -12848,7 +12857,7 @@ public final class NpcID
 	public static final int CHAMELEON_15416 = 15416;
 	public static final int CHAMELEON_15417 = 15417;
 	public static final int CHAMELEON_15418 = 15418;
-	public static final int GECKO = 15419;
+	public static final int GECKO_15419 = 15419;
 	public static final int GECKO_15420 = 15420;
 	public static final int GECKO_15421 = 15421;
 	public static final int GECKO_15422 = 15422;

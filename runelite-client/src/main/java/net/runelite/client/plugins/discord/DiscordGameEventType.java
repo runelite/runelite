@@ -430,7 +430,7 @@ enum DiscordGameEventType
 	REGION_MOUNT_QUIDAMORTEM("Mount Quidamortem", DiscordAreaType.REGIONS, 4662, 4663, 4918, 4919),
 	REGION_MR_MORDAUTS_CLASSROOM("Mr. Mordaut's Classroom", DiscordAreaType.REGIONS, 7502),
 	REGION_MUDSKIPPER("Mudskipper Point", DiscordAreaType.REGIONS, 11824),
-	REGION_MYSTERIOUS_OLD_MAN_MAZE("Mysterious Old Man's Maze", DiscordAreaType.REGIONS, 11590, 11591, 11846, 11847),
+	REGION_MYSTERIOUS_OLD_MAN_MAZE("Mysterious Old Man's Maze", DiscordAreaType.REGIONS, 11591),
 	REGION_MYTHS_GUILD("Myths' Guild", DiscordAreaType.REGIONS, 9772),
 	REGION_NATURE_ALTAR("Nature Altar", DiscordAreaType.REGIONS, 9547),
 	REGION_NECROPOLIS("Necropolis", DiscordAreaType.REGIONS, 13098, 13353, 13354, 13609, 13610),

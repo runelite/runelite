@@ -103,8 +103,10 @@ public class MotherlodePluginTest
 		motherlodePlugin.onGameStateChanged(gameStateChanged);
 
 		// Initial sack count
+		VarbitChanged sackVarbit = new VarbitChanged();
+		sackVarbit.setVarbitId(VarbitID.MOTHERLODE_SACK_TRANSMIT);
 		when(client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT)).thenReturn(42);
-		motherlodePlugin.onVarbitChanged(new VarbitChanged());
+		motherlodePlugin.onVarbitChanged(sackVarbit);
 
 		// Create before inventory
 		ItemContainer inventory = mock(ItemContainer.class);
@@ -123,7 +125,7 @@ public class MotherlodePluginTest
 
 		// Withdraw 20
 		when(client.getVarbitValue(VarbitID.MOTHERLODE_SACK_TRANSMIT)).thenReturn(22);
-		motherlodePlugin.onVarbitChanged(new VarbitChanged());
+		motherlodePlugin.onVarbitChanged(sackVarbit);
 
 		inventory = mock(ItemContainer.class);
 		// +1 rune, +4 nugget, +2 coal, +1 addy

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues.hotcold;
+package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@AllArgsConstructor
-@Getter
-public enum HotColdArea
+public interface WorldEntityConfig
 {
-	ASGARNIA("Asgarnia"),
-	DESERT("Desert"),
-	FELDIP_HILLS("Feldip Hills"),
-	FREMENNIK_PROVINCE("Fremennik Province"),
-	KANDARIN("Kandarin"),
-	KARAMJA("Karamja"),
-	MISTHALIN("Misthalin"),
-	MORYTANIA("Morytania"),
-	OCEAN("Ocean"),
-	VARLAMORE("Varlamore"),
-	WESTERN_PROVINCE("Western Province"),
-	WILDERNESS("Wilderness"),
-	ZEAH("Zeah");
+	int getId();
 
-	private final String name;
+	int getCategory();
+
+	int getBoundsX();
+
+	int getBoundsY();
+
+	int getBoundsWidth();
+
+	int getBoundsHeight();
 }

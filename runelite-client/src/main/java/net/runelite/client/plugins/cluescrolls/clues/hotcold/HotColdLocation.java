@@ -43,6 +43,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.KARAMJA;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MISTHALIN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MORYTANIA;
+import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.OCEAN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.VARLAMORE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WESTERN_PROVINCE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WILDERNESS;
@@ -148,6 +149,9 @@ public enum HotColdLocation
 	MORYTANIA_DRAGONTOOTH_SOUTH(MASTER, new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_SLEPE_TENTS(MASTER, new WorldPoint(3769, 3383, 0), MORYTANIA, "North-east of Slepe, near the tents.", BRASSICAN_MAGE),
 	NORTHEAST_OF_AL_KHARID_MINE(BEGINNER, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
+	SAIL_GREAT_CONCH(MASTER, new WorldPoint(3249, 2349, 0), OCEAN, "In the south-eastern mine of the Great Conch", BRASSICAN_MAGE),
+	SAIL_ISLE_OF_SERPENTS(MASTER, new WorldPoint(1856, 2415, 0), OCEAN, "On the Isle of Serpents", BRASSICAN_MAGE),
+	SAIL_DRUMSTICK_ISLE(MASTER, new WorldPoint(2139, 3562, 0), OCEAN, "On Drumstick Isle", BRASSICAN_MAGE),
 	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
 	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
 	VARLAMORE_RAINFOREST_CENTRE(MASTER, new WorldPoint(1312, 3108, 0), VARLAMORE, "In the centre of the Tlati Rainforest.", BRASSICAN_MAGE),

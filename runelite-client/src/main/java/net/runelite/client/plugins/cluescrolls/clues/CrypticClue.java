@@ -241,7 +241,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_EASY_VAGUE020)
-			.text("Search the crate near a cart in Port Khazard.")
+			.text("Search the crate near the southern general store in Port Khazard.")
 			.location(new WorldPoint(2660, 3149, 0))
 			.objectId(ObjectID.CRATE)
 			.solution("Search by the southern Khazard General Store in Port Khazard.")
@@ -1985,7 +1985,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_ELITE_RIDDLE_VM01)
 			.text("With drinks and dwarves I make my way, upon my head a glass will stay.")
-			.location(new WorldPoint(1432, 9584, 0))
+			.location(new WorldPoint(1432, 9584, 1))
 			.npc("Funbo")
 			.solution("Speak to Funbo inside Cam Torum's pub.")
 			.build(),
@@ -2026,6 +2026,19 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(1388, 3216, 0))
 			.objectId(ObjectID.TLATI_CRATE_01_DARK_CLUE)
 			.solution("Search the crate south of the Auburn Forest.")
+			.build(),
+		CrypticClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_RIDDLE_SAIL)
+			.text("Their bane awaits, but don't be going in there without permission.")
+			.location(new WorldPoint(3120, 2424, 0))
+			.npc("Shellbane gryphon")
+			.solution("Kill the shellbane gryphon.")
+			.build(),
+		CrypticClue.builder()
+			.itemId(ItemID.TRAIL_HARD_RIDDLE_SAIL)
+			.text("I sit on the beach and cry for those that have passed on.")
+			.location(new WorldPoint(2324, 2772, 0))
+			.solution("Dig on the beach of the Tear of the Soul")
 			.build()
 	);
 

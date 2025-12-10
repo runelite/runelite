@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import net.runelite.api.coords.LocalPoint;
+import org.intellij.lang.annotations.MagicConstant;
 
 public interface WorldEntity extends CameraFocusableEntity
 {
@@ -32,12 +33,39 @@ public interface WorldEntity extends CameraFocusableEntity
 
 	/**
 	 * Get the location of this world entity in the top level world.
+	 *
 	 * @return
 	 */
 	LocalPoint getLocalLocation();
 
 	/**
+	 * Get the orientation of this world entity in the top level world.
+	 *
+	 * @return
+	 */
+	int getOrientation();
+
+	/**
+	 * Get the destination that the WorldEntity is moving toward.
+	 * After receiving a destination from the server, the client will
+	 * interpolate movement along this route until the next game tick
+	 * (with some added buffer for lag compensation).
+	 *
+	 * @return The target {@link LocalPoint} in the top-level {@link WorldView}.
+	 */
+	LocalPoint getTargetLocation();
+
+	/**
+	 * Get the target orientation of this world entity in the top level world.
+	 *
+	 * @return
+	 * @see #getTargetLocation()
+	 */
+	int getTargetOrientation();
+
+	/**
 	 * Transform a point within the world entity to the overworld
+	 *
 	 * @param point
 	 * @return
 	 */
@@ -45,7 +73,17 @@ public interface WorldEntity extends CameraFocusableEntity
 
 	/**
 	 * Return true if this worldentity is overlapped
+	 *
 	 * @return
 	 */
 	boolean isHiddenForOverlap();
+
+	WorldEntityConfig getConfig();
+
+	@MagicConstant(intValues = {OWNER_TYPE_NOT_PLAYER, OWNER_TYPE_OTHER_PLAYER, OWNER_TYPE_SELF_PLAYER})
+	int getOwnerType();
+
+	int OWNER_TYPE_NOT_PLAYER = 0;
+	int OWNER_TYPE_OTHER_PLAYER = 1;
+	int OWNER_TYPE_SELF_PLAYER = 2;
 }

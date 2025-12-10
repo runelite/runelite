@@ -53,12 +53,13 @@ enum TransportationPointLocation
 	ISLAND_OF_STONE_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2470, 3994, 0), new WorldPoint(2621, 3692, 0)),
 	ISLAND_TO_APE_ATOLL("Ship to Ape Atoll", new WorldPoint(2891, 2726, 0), new WorldPoint(2802, 2706, 0)),
 	JATIZSO_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2420, 3780, 0), new WorldPoint(2639, 3710, 0)),
-	KARAMJA_TO_PORT_SARIM("Ship to Port Sarim", new WorldPoint(2955, 3145, 0), new WorldPoint(3029, 3218, 0)),
+	KARAMJA_TO_PORTSARIM_PANDEMONIUM("Ship to Port Sarim/The Pandemonium", new WorldPoint(2954, 3145, 0)),
 	KARAMJA_TO_PORT_KHAZARD("Ship to Port Khazard", new WorldPoint(2763, 2957, 0), new WorldPoint(2653, 3166, 0)),
 	LANDSEND_TO_PORTSARIM_PORTPISCARILIUS("Ship to Port Sarim/Port Piscarilius", new WorldPoint(1503, 3398, 0)),
 	LUNAR_ISLE_TO_PIRATES_COVE("Ship to Pirates' Cove", new WorldPoint(2137, 3899, 0), new WorldPoint(2223, 3796, 0)),
 	MISCELLANIA_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2579, 3846, 0), new WorldPoint(2627, 3692, 0)),
 	NEITIZNOT_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2310, 3779, 0), new WorldPoint(2639, 3710, 0)),
+	PANDEMONIUM_TO_PORTSARIM_MUSA("Ship to Port Sarim/Musa Point", new WorldPoint(3065, 3003, 0)),
 	PESTCONTROL_TO_PORTSARIM("Ship to Port Sarim", new WorldPoint(2659, 2675, 0), new WorldPoint(3039, 3201, 0)),
 	PIRATES_COVE_TO_LUNAR_ISLE("Ship to Lunar Isle", new WorldPoint(2223, 3796, 0), new WorldPoint(2137, 3899, 0)),
 	PIRATES_COVE_TO_RELLEKKA("Ship to Rellekka", new WorldPoint(2212, 3794, 0), new WorldPoint(2620, 3695, 0)),
@@ -67,7 +68,7 @@ enum TransportationPointLocation
 	PORT_PISCARILIUS_TO_PORTSARIM_LANDSEND("Ship to Port Sarim/Land's End", new WorldPoint(1823, 3692, 0)),
 	PORTSARIM_TO_GREAT_KOUREND("Ship to Great Kourend", new WorldPoint(3054, 3244, 0), new WorldPoint(1823, 3692, 0)),
 	PORTSARIM_TO_ENTRANA("Ship to Entrana", new WorldPoint(3046, 3233, 0), new WorldPoint(2833, 3334, 0)),
-	PORTSARIM_TO_KARAMJA("Ship to Karamja", new WorldPoint(3029, 3218, 0), new WorldPoint(2955, 3144, 0)),
+	PORTSARIM_TO_MUSAPOINT_PANDEMONIUM("Ship to Musa Point/The Pandemonium", new WorldPoint(3029, 3218, 0)),
 	PORTSARIM_TO_CRANDOR("Ship to Crandor", new WorldPoint(3045, 3205, 0), new WorldPoint(2839, 3261, 0)),
 	PORTSARIM_TO_PEST_CONTROL("Ship to Pest Control", new WorldPoint(3039, 3201, 0), new WorldPoint(2659, 2675, 0)),
 	RELLEKKA_TO_JATIZSO_NEITIZNOT("Ship to Jatizso/Neitiznot", new WorldPoint(2639, 3710, 0)),
@@ -115,6 +116,15 @@ enum TransportationPointLocation
 	SMALL_BOAT_KASTORI("Rowboat to Tal Teklan/Gloomthorn Trail", new WorldPoint(1389, 3074, 0)),
 	OGRE_BOAT_FELDIP("Ogre Boat to Karamja", new WorldPoint(2653, 2964, 0), new WorldPoint(2757, 3085, 0)),
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
+	ROW_BOAT_CONCH_NORTH("Rowboat to The Summer Short/Eastern Coast", new WorldPoint(3196, 2532, 0), new WorldPoint(3264, 2462, 0)),
+	ROW_BOAT_CONCH_EAST("Rowboat to The Summer Shore/Northern Coast", new WorldPoint(3264, 2462, 0), new WorldPoint(3190, 2371, 0)),
+	ROW_BOAT_CONCH_SUMMER_SHORE("Rowboat to The Northern Coast/Eastern Coast", new WorldPoint(3190, 2371, 0), new WorldPoint(3196, 2532, 0)),
+	ROW_BOAT_TEAR_OF_THE_SOUL("Rowboat to Isle of Souls", new WorldPoint(2320, 2780, 0), new WorldPoint(2291, 2796, 0)),
+	ROW_BOAT_ISLE_OF_SOULS("Rowboat to Tear of the Soul", new WorldPoint(2291, 2796, 0), new WorldPoint(2320, 2780, 0)),
+	ROW_BOAT_ANGLERS_RETREAT("Rowboat to Corsair Cove", new WorldPoint(2469, 2725, 0), new WorldPoint(2542, 2843, 0)),
+	ROW_BOAT_CORSAIR_COVE("Rowboat to Anglers' Retreat", new WorldPoint(2542, 2843, 0), new WorldPoint(2469, 2725, 0)),
+	ROW_BOAT_VATRACHOS_ISLAND("Rowboat to Stonecutter Outpost", new WorldPoint(1876, 2974, 0), new WorldPoint(1772, 2962, 0)),
+	ROW_BOAT_STONECUTTER_OUTPOST("Rowboat to Vatrachos Island", new WorldPoint(1772, 2962, 0), new WorldPoint(1876, 2974, 0)),
 
 	//Charter ships
 	CHARTER_ALDARIN("Charter Ship", new WorldPoint(1455, 2968, 0)),
@@ -122,6 +132,7 @@ enum TransportationPointLocation
 	CHARTER_CATHERBY("Charter Ship", new WorldPoint(2791, 3415, 0)),
 	CHARTER_CIVITAS_ILLA_FORTIS("Charter Ship", new WorldPoint(1743, 3136, 0)),
 	CHARTER_CORSAIR_("Charter Ship", new WorldPoint(2589, 2851, 0)),
+	CHARTER_DEEPFIN_POINT("Charter Ship", new WorldPoint(1943, 2753, 0)),
 	CHARTER_KARAMJA_NORTH("Charter Ship", new WorldPoint(2954, 3158, 0)),
 	CHARTER_KARAMJA_EAST("Charter Ship", new WorldPoint(2999, 3032, 0)),
 	CHARTER_KHAZARD("Charter Ship", new WorldPoint(2673, 3143, 0)),
@@ -129,8 +140,10 @@ enum TransportationPointLocation
 	CHARTER_PORT_PHASMATYS("Charter Ship", new WorldPoint(3702, 3503, 0)),
 	CHARTER_PORTSARIM("Charter Ship", new WorldPoint(3037, 3191, 0)),
 	CHARTER_TYRAS("Charter Ship", new WorldPoint(2141, 3123, 0)),
+	CHARTER_PANDEMONIUM("Charter Ship", new WorldPoint(3061, 2999, 0)),
 	CHARTER_PRIFDDINAS("Charter Ship", new WorldPoint(2156, 3331, 0)),
 	CHARTER_PRIFDDINAS_INSTANCE("Charter Ship", new WorldPoint(3180, 6083, 0)),
+	CHARTER_SUMMER_SHORE("Charter Ship", new WorldPoint(3186, 2367, 0)),
 	CHARTER_SUNSET_COAST("Charter Ship", new WorldPoint(1513, 2970, 0)),
 
 	//Ferries
@@ -185,6 +198,7 @@ enum TransportationPointLocation
 	SPIRITTREE_GNOMESTRONGHOLD("Spirit Tree", new WorldPoint(2459, 3446, 0)),
 	SPIRITTREE_GNOMEVILLAGE("Spirit Tree", new WorldPoint(2538, 3166, 0)),
 	SPIRITTREE_GRANDEXCHANGE("Spirit Tree", new WorldPoint(3184, 3510, 0)),
+	SPIRITTREE_LAGUNA_AURORAE("Spirit Tree", new WorldPoint(1202, 2787, 0)),
 	SPIRITTREE_PRIFDDINAS("Spirit Tree", new WorldPoint(3274, 6124, 0)),
 
 	//Carpets
@@ -232,6 +246,7 @@ enum TransportationPointLocation
 	WILDERNESS_LEVER_ARDOUGNE("Wilderness Lever to Deserted Keep", new WorldPoint(2559, 3309, 0), new WorldPoint(3154, 3924, 0)),
 	WILDERNESS_LEVER_EDGEVILLE("Wilderness Lever to Deserted Keep", new WorldPoint(3088, 3474, 0), new WorldPoint(3154, 3924, 0)),
 	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever to Ardougne/Edgeville", new WorldPoint(3154, 3924, 0)),
+	SHIPYARD_RETURN("Return Portal", new WorldPoint(2083, 2732, 0)),
 
 	//Queztals
 	QUETZAL_ALDARIN("Quetzal", new WorldPoint(1388, 2899, 0)),
