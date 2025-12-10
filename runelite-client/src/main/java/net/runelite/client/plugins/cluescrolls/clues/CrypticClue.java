@@ -1206,7 +1206,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Robin wishes to see your finest ranged equipment.")
 			.location(new WorldPoint(3673, 3492, 0))
 			.npc("Robin")
-			.solution("Robin at the inn in Port Phasmatys. Speak to him with +181 in ranged attack bonus. Bonus granted by the toxic blowpipe is ignored.")
+			.solution("Robin at the inn in Port Phasmatys. Speak to him with +180 in ranged attack bonus. Bonus granted by the toxic blowpipe is ignored.")
 			.build(),
 		CrypticClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_HARD_RIDDLE001)
