@@ -290,7 +290,7 @@ enum ItemIdentification
 	GOLD_BAR(Type.BAR, "Gold", "GOL", ItemID.GOLD_BAR),
 	MITHRIL_BAR(Type.BAR, "Mithril", "MIT", ItemID.MITHRIL_BAR),
 	ADAMANTITE_BAR(Type.BAR, "Adaman", "ADA", ItemID.ADAMANTITE_BAR),
-	CUPRONICKEL_BAR(Type.BAR, "Cupro.", "CUP", ItemID.CUPRONICKEL_BAR),
+	CUPRONICKEL_BAR(Type.BAR, "Cupro", "CUP", ItemID.CUPRONICKEL_BAR),
 	RUNITE_BAR(Type.BAR, "Runite", "RUN", ItemID.RUNITE_BAR),
 
 	BLURITE_BAR(Type.BAR, "Blurite", "BLU", ItemID.BLURITE_BAR),
