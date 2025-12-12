@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>rlawt</artifactId>
-			<version>1.5</version>
+			<version>1.6</version>
 		</dependency>
 
 		<!-- lwjgl core -->
@@ -147,6 +147,12 @@
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
 			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-linux-arm64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -189,6 +195,12 @@
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-opengl</artifactId>
 			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-linux-arm64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
