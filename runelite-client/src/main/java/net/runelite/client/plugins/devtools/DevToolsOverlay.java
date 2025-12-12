@@ -173,13 +173,6 @@ class DevToolsOverlay extends Overlay
 		{
 			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
 			{
-				Tile tile = tiles[z][x][y];
-
-				if (tile == null)
-				{
-					continue;
-				}
-
 				boolean isbridge = (settings[1][x][y] & Constants.TILE_FLAG_BRIDGE) != 0;
 				int flag = settings[z][x][y];
 				boolean isvisbelow = (flag & Constants.TILE_FLAG_VIS_BELOW) != 0;
@@ -203,7 +196,8 @@ class DevToolsOverlay extends Overlay
 					s += "R";
 				}
 
-				Point loc = Perspective.getCanvasTextLocation(client, graphics, tile.getLocalLocation(), s, z);
+				LocalPoint lp = new LocalPoint(x << Perspective.LOCAL_COORD_BITS, y << Perspective.LOCAL_COORD_BITS, wv);
+				Point loc = Perspective.getCanvasTextLocation(client, graphics, lp, s, z);
 				if (loc == null)
 				{
 					continue;
