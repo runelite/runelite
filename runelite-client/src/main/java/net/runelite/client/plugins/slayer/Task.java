@@ -101,6 +101,7 @@ enum Task
 	GREATER_DEMONS("Greater demons", ItemID.GREATER_DEMON_MASK, "K'ril Tsutsaroth", "Tstanon Karlak", "Skotizo", "Tormented Demon"),
 	GREEN_DRAGONS("Green dragons", ItemID.DRAGONMASK_GREEN, "Elvarg"),
 	GROTESQUE_GUARDIANS("The Grotesque Guardians", ItemID.DUSKPET, 0, ItemID.SLAYER_ROCK_HAMMER, "Dusk", "Dawn"),
+	GRYPHONS("Gryphons", ItemID.GRYPHON_FEATHER, "Gryphon", "Shellbane gryphon"),
 	HARPIE_BUG_SWARMS("Harpie bug swarms", ItemID.SLAYERGUIDE_SWARM),
 	HELLHOUNDS("Hellhounds", ItemID.POH_HELLHOUND, "Cerberus"),
 	HILL_GIANTS("Hill giants", ItemID.ARCEUUS_CORPSE_GIANT_INITIAL, "Cyclops", "Reanimated giant", "Obor"),
