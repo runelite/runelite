@@ -28,9 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("mta")
+@ConfigGroup(MTAConfig.GROUP)
 public interface MTAConfig extends Config
 {
+	String GROUP = "mta";
+
 	@ConfigItem(
 		keyName = "alchemy",
 		name = "Enable alchemy room",
@@ -73,5 +75,16 @@ public interface MTAConfig extends Config
 	default boolean enchantment()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "disableFlashingArrows",
+		name = "Disable flashing arrows",
+		description = "Stops hint arrow flashing for players sensitive to it (anti-epilepsy mode).",
+		position = 4
+	)
+	default boolean disableFlashingArrows()
+	{
+		return false;
 	}
 }

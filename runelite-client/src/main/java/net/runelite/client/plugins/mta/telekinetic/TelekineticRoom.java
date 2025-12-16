@@ -249,7 +249,10 @@ public class TelekineticRoom extends MTARoom
 
 				if (optimal != null)
 				{
-					client.setHintArrow(optimal);
+					if (!config.disableFlashingArrows())
+					{
+						client.setHintArrow(optimal);
+					}
 					renderWorldPoint(graphics2D, optimal);
 				}
 			}
