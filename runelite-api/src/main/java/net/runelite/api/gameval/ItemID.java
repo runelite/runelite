@@ -29608,22 +29608,22 @@ public final class ItemID
 	public static final int WITCHWOOD_ICON = 8923;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (white)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH = 8924;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (red)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH_RED = 8925;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (blue)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH_BLUE = 8926;
 
 	/**
-	 * Bandana eyepatch
+	 * Bandana eyepatch (brown)
 	 */
 	public static final int PIRATE_BANDANA_EYEPATCH_BROWN = 8927;
 
@@ -83698,7 +83698,7 @@ public final class ItemID
 	public static final int LOST_SCHEMATIC_KEY_BUCCANEERS = 32413;
 
 	/**
-	 * Small key (ynsdail)
+	 * Small key (ynysdail)
 	 */
 	public static final int LOST_SCHEMATIC_KEY_LLEDRITH = 32414;
 
@@ -86090,6 +86090,336 @@ public final class ItemID
 	 * Christmas dinner
 	 */
 	public static final int XMAS25_CHRISTMAS_DINNER = 32934;
+
+	/**
+	 * Crate of furs
+	 */
+	public static final int CARGO_CRATE_FURS_ALDARIN_1 = 32936;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_ARDOUGNE_1 = 32937;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_ARDOUGNE_2 = 32938;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_ARDOUGNE_3 = 32939;
+
+	/**
+	 * Crate of sand
+	 */
+	public static final int CARGO_CRATE_SAND_ARDOUGNE_1 = 32940;
+
+	/**
+	 * Crate of red coral
+	 */
+	public static final int CARGO_CRATE_RED_CORAL_ARDOUGNE_1 = 32941;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_BRIMHAVEN_1 = 32942;
+
+	/**
+	 * Crate of spices
+	 */
+	public static final int CARGO_CRATE_SPICES_BRIMHAVEN_1 = 32943;
+
+	/**
+	 * Crate of jewellery
+	 */
+	public static final int CARGO_CRATE_JEWELLERY_BRIMHAVEN_1 = 32944;
+
+	/**
+	 * Crate of bait
+	 */
+	public static final int CARGO_CRATE_BAIT_CATHERBY_1 = 32945;
+
+	/**
+	 * Crate of coconuts
+	 */
+	public static final int CARGO_CRATE_COCONUTS_CATHERBY_1 = 32946;
+
+	/**
+	 * Crate of arrowtips
+	 */
+	public static final int CARGO_CRATE_ARROWTIPS_CATHERBY_1 = 32947;
+
+	/**
+	 * Crate of pineapples
+	 */
+	public static final int CARGO_CRATE_PINEAPPLES_CIVITAS_ILLA_FORTIS_1 = 32948;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_DEEPFIN_POINT_1 = 32949;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_1 = 32950;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_DEEPFIN_POINT_2 = 32951;
+
+	/**
+	 * Crate of alpaca wool
+	 */
+	public static final int CARGO_CRATE_ALPACA_WOOL_DEEPFIN_POINT_1 = 32952;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_2 = 32953;
+
+	/**
+	 * Crate of fabrics
+	 */
+	public static final int CARGO_CRATE_FABRICS_DEEPFIN_POINT_1 = 32954;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_3 = 32955;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_DEEPFIN_POINT_3 = 32956;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_DEEPFIN_POINT_4 = 32957;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LANDS_END_1 = 32958;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LANDS_END_2 = 32959;
+
+	/**
+	 * Crate of gems
+	 */
+	public static final int CARGO_CRATE_GEMS_LANDS_END_1 = 32960;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LUNAR_ISLE_1 = 32961;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_LUNAR_ISLE_2 = 32962;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_LUNAR_ISLE_1 = 32963;
+
+	/**
+	 * Crate of furs
+	 */
+	public static final int CARGO_CRATE_FURS_PISCATORIS_1 = 32964;
+
+	/**
+	 * Crate of swamp paste
+	 */
+	public static final int CARGO_CRATE_SWAMP_PASTE_PORT_KHAZARD_1 = 32965;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_PORT_PISCARILIUS_1 = 32966;
+
+	/**
+	 * Crate of books
+	 */
+	public static final int CARGO_CRATE_BOOKS_PORT_PISCARILIUS_1 = 32967;
+
+	/**
+	 * Crate of books
+	 */
+	public static final int CARGO_CRATE_BOOKS_PORT_PISCARILIUS_2 = 32968;
+
+	/**
+	 * Crate of jewellery
+	 */
+	public static final int CARGO_CRATE_JEWELLERY_PORT_PISCARILIUS_1 = 32969;
+
+	/**
+	 * Crate of jewellery
+	 */
+	public static final int CARGO_CRATE_JEWELLERY_PORT_PISCARILIUS_2 = 32970;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_PORT_PISCARILIUS_2 = 32971;
+
+	/**
+	 * Crate of furs
+	 */
+	public static final int CARGO_CRATE_FURS_PORT_PISCARILIUS_1 = 32972;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_ROBERTS_1 = 32973;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_ROBERTS_2 = 32974;
+
+	/**
+	 * Crate of silk
+	 */
+	public static final int CARGO_CRATE_SILK_PORT_ROBERTS_1 = 32975;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_ROBERTS_3 = 32976;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_PORT_SARIM_1 = 32977;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_SWORDS_PORT_SARIM_1 = 32978;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_SARIM_1 = 32979;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_PORT_SARIM_2 = 32980;
+
+	/**
+	 * Crate of seeds
+	 */
+	public static final int CARGO_CRATE_SEEDS_PORT_SARIM_1 = 32981;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_SWORDS_PORT_TYRAS_1 = 32982;
+
+	/**
+	 * Crate of platebodies
+	 */
+	public static final int CARGO_CRATE_PLATEBODIES_PORT_TYRAS_1 = 32983;
+
+	/**
+	 * Crate of swords
+	 */
+	public static final int CARGO_CRATE_SWORDS_PORT_TYRAS_2 = 32984;
+
+	/**
+	 * Crate of ores
+	 */
+	public static final int CARGO_CRATE_ORES_PORT_TYRAS_1 = 32985;
+
+	/**
+	 * Crate of logs
+	 */
+	public static final int CARGO_CRATE_LOGS_PRIFDDINAS_1 = 32986;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_PRIFDDINAS_1 = 32987;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_RED_ROCK_1 = 32988;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_RED_ROCK_2 = 32989;
+
+	/**
+	 * Crate of runes
+	 */
+	public static final int CARGO_CRATE_RUNES_RED_ROCK_1 = 32990;
+
+	/**
+	 * Crate of fish
+	 */
+	public static final int CARGO_CRATE_FISH_RED_ROCK_3 = 32991;
+
+	/**
+	 * Crate of planks
+	 */
+	public static final int CARGO_CRATE_PLANKS_RELLEKKA_1 = 32992;
+
+	/**
+	 * Crate of teak logs
+	 */
+	public static final int CARGO_CRATE_TEAK_LOGS_RELLEKKA_1 = 32993;
+
+	/**
+	 * Crate of runes
+	 */
+	public static final int CARGO_CRATE_RUNES_RUINS_OF_UNKAH_1 = 32994;
+
+	/**
+	 * Crate of cocktails
+	 */
+	public static final int CARGO_CRATE_COCKTAILS_RUINS_OF_UNKAH_1 = 32995;
+
+	/**
+	 * Crate of ship parts
+	 */
+	public static final int CARGO_CRATE_SHIP_PARTS_RUINS_OF_UNKAH_1 = 32996;
+
+	/**
+	 * Crate of rum
+	 */
+	public static final int CARGO_CRATE_RUM_THE_PANDEMONIUM_1 = 32997;
+
+	/**
+	 * Crate of javelins
+	 */
+	public static final int CARGO_CRATE_JAVELINS_THE_SUMMER_SHORE_1 = 32998;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_VOID_KNIGHTS_OUTPOST_1 = 32999;
+
+	/**
+	 * Crate of ores
+	 */
+	public static final int CARGO_CRATE_ORES_VOID_KNIGHTS_OUTPOST_1 = 33000;
+
+	/**
+	 * Crate of potions
+	 */
+	public static final int CARGO_CRATE_POTIONS_VOID_KNIGHTS_OUTPOST_2 = 33001;
 
 	public static final class Cert
 	{

@@ -4454,6 +4454,13 @@ public final class SpriteID
 		public static final int _144 = 7285;
 		public static final int _145 = 7286;
 		public static final int _146 = 7287;
+		public static final int _147 = 7311;
+		public static final int _148 = 7312;
+		public static final int _149 = 7313;
+		public static final int _150 = 7314;
+		public static final int _151 = 7315;
+		public static final int _152 = 7316;
+		public static final int _153 = 7317;
 
 		public static final int GENERAL_STORE = _0;
 		public static final int SWORD_SHOP = _1;

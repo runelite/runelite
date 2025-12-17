@@ -423,7 +423,6 @@ public final class InterfaceID
 	public static final int CANOEING = 416;
 	public static final int BREW_TOOLS = 417;
 	public static final int BREW_WAITING_ROOM_OVERLAY = 418;
-	public static final int PATCHY_INTERFACE = 419;
 	public static final int BEEHIVE = 420;
 	public static final int PVP_ARENA_STAGINGAREA_SHARELOADOUT = 421;
 	public static final int POH_VIEWER = 422;
@@ -950,6 +949,8 @@ public final class InterfaceID
 	public static final int SAILING_BOAT_CARGOHOLD = 943;
 	public static final int SAILING_BOAT_CARGOHOLD_SIDE = 944;
 	public static final int REUSABLE_FLOATER = 945;
+	public static final int PATCHY = 946;
+	public static final int MENU_NEW = 947;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -1429,77 +1430,76 @@ public final class InterfaceID
 		public static final int RUNEPOUCH_FRAME_GRAPHIC0 = 0x000f_0018;
 		public static final int RUNEPOUCH_CONTENTS = 0x000f_0019;
 		public static final int RUNEPOUCH_TOP = 0x000f_001a;
-		public static final int RUNEPOUCH_CONTENTS_TEXT1 = 0x000f_001b;
-		public static final int RUNEPOUCH_LOAD_A = 0x000f_001c;
-		public static final int RUNEPOUCH_LOAD_B = 0x000f_001d;
-		public static final int RUNEPOUCH_LOAD_C = 0x000f_001e;
-		public static final int RUNEPOUCH_LOAD_D = 0x000f_001f;
-		public static final int RUNEPOUCH_LOADOUT_SCROLLBAR = 0x000f_0020;
-		public static final int RUNEPOUCH_LOADOUT_CONTAINER = 0x000f_0021;
-		public static final int RUNEPOUCH_LOADOUT_A = 0x000f_0022;
-		public static final int RUNEPOUCH_NAME_A = 0x000f_0023;
-		public static final int RUNEPOUCH_SELECT_CONTAINER = 0x000f_0024;
-		public static final int RUNEPOUCH_NAME_SELECT_CONTAINER = 0x000f_0025;
-		public static final int RUNEPOUCH_LOADOUT_B = 0x000f_0026;
-		public static final int RUNEPOUCH_NAME_B = 0x000f_0027;
-		public static final int RUNEPOUCH_SELECT_CONTAINER_GRAPHIC0 = 0x000f_0028;
-		public static final int RUNEPOUCH_LOADOUT_C = 0x000f_0029;
-		public static final int RUNEPOUCH_NAME_C = 0x000f_002a;
-		public static final int RUNEPOUCH_SELECT_LIST = 0x000f_002b;
-		public static final int RUNEPOUCH_LOADOUT_D = 0x000f_002c;
-		public static final int RUNEPOUCH_NAME_D = 0x000f_002d;
-		public static final int RUNEPOUCH_LOADOUT_E = 0x000f_002e;
-		public static final int RUNEPOUCH_NAME_E = 0x000f_002f;
-		public static final int RUNEPOUCH_LOADOUT_F = 0x000f_0030;
-		public static final int RUNEPOUCH_NAME_F = 0x000f_0031;
-		public static final int RUNEPOUCH_LOADOUT_G = 0x000f_0032;
-		public static final int RUNEPOUCH_NAME_G = 0x000f_0033;
-		public static final int RUNEPOUCH_LOADOUT_H = 0x000f_0034;
-		public static final int RUNEPOUCH_NAME_H = 0x000f_0035;
-		public static final int RUNEPOUCH_LOADOUT_I = 0x000f_0036;
-		public static final int RUNEPOUCH_NAME_I = 0x000f_0037;
-		public static final int RUNEPOUCH_LOADOUT_J = 0x000f_0038;
-		public static final int RUNEPOUCH_NAME_J = 0x000f_0039;
-		public static final int RUNEPOUCH_SELECT_SCROLLBAR = 0x000f_003a;
-		public static final int BANKSIDE_HIGHLIGHT = 0x000f_003b;
-		public static final int PREPOT_DEVICE_CONTAINER = 0x000f_003c;
-		public static final int PREPOT_DEVICE_BANKALL = 0x000f_003d;
-		public static final int PREPOT_DEVICE_FILL = 0x000f_003e;
-		public static final int PREPOT_DEVICE_CONTAINER_TEXT2 = 0x000f_003f;
-		public static final int PREPOT_DEVICE_DISMISS = 0x000f_0040;
-		public static final int PREPOT_DEVICE_FRAME = 0x000f_0041;
-		public static final int PREPOT_DEVICE_FRAME_GRAPHIC0 = 0x000f_0042;
-		public static final int PREPOT_DEVICE_CONTENTS_CONTAINER = 0x000f_0043;
-		public static final int PREPOT_DEVICE_CONTENTS_BG = 0x000f_0044;
-		public static final int PREPOT_DEVICE_CONTENTS = 0x000f_0045;
-		public static final int PREPOT_DEVICE_CONTENTS_CONTAINER_TEXT2 = 0x000f_0046;
-		public static final int PREPOT_DEVICE_LOADOUTS_SCROLLBAR = 0x000f_0047;
-		public static final int PREPOT_DEVICE_LOADOUTS = 0x000f_0048;
-		public static final int PREPOT_DEVICE_LOADOUT_0 = 0x000f_0049;
-		public static final int PREPOT_DEVICE_LOADOUT_1 = 0x000f_004a;
-		public static final int PREPOT_DEVICE_LOADOUT_2 = 0x000f_004b;
-		public static final int PREPOT_DEVICE_LOADOUT_3 = 0x000f_004c;
-		public static final int PREPOT_DEVICE_LOADOUT_1_LOAD = 0x000f_004d;
-		public static final int PREPOT_DEVICE_LOADOUT_1_SAVE = 0x000f_004e;
-		public static final int PREPOT_DEVICE_LOADOUT_1_CONTENTS = 0x000f_004f;
-		public static final int PREPOT_DEVICE_LOADOUT_2_LOAD = 0x000f_0050;
-		public static final int PREPOT_DEVICE_LOADOUT_2_SAVE = 0x000f_0051;
-		public static final int PREPOT_DEVICE_LOADOUT_2_CONTENTS = 0x000f_0052;
-		public static final int PREPOT_DEVICE_LOADOUT_3_LOAD = 0x000f_0053;
-		public static final int PREPOT_DEVICE_LOADOUT_3_SAVE = 0x000f_0054;
-		public static final int PREPOT_DEVICE_LOADOUT_3_CONTENTS = 0x000f_0055;
-		public static final int PREPOT_DEVICE_LOADOUT_0_LOAD = 0x000f_0056;
-		public static final int PREPOT_DEVICE_LOADOUT_0_SAVE = 0x000f_0057;
-		public static final int PREPOT_DEVICE_LOADOUT_0_CONTENTS = 0x000f_0058;
-		public static final int RUNEPOUCH_LOAD_E = 0x000f_0059;
-		public static final int RUNEPOUCH_LOAD_F = 0x000f_005a;
-		public static final int RUNEPOUCH_LOAD_G = 0x000f_005b;
-		public static final int RUNEPOUCH_LOAD_H = 0x000f_005c;
-		public static final int RUNEPOUCH_LOAD_I = 0x000f_005d;
-		public static final int RUNEPOUCH_LOAD_J = 0x000f_005e;
-		public static final int RUNEPOUCH_NAME_SELECT_CONTAINER_GRAPHIC0 = 0x000f_005f;
-		public static final int RUNEPOUCH_NAME_SELECT_LIST = 0x000f_0060;
-		public static final int RUNEPOUCH_NAME_SELECT_SCROLLBAR = 0x000f_0061;
+		public static final int RUNEPOUCH_LOAD_A = 0x000f_001b;
+		public static final int RUNEPOUCH_LOAD_B = 0x000f_001c;
+		public static final int RUNEPOUCH_LOAD_C = 0x000f_001d;
+		public static final int RUNEPOUCH_LOAD_D = 0x000f_001e;
+		public static final int RUNEPOUCH_LOADOUT_SCROLLBAR = 0x000f_001f;
+		public static final int RUNEPOUCH_LOADOUT_CONTAINER = 0x000f_0020;
+		public static final int RUNEPOUCH_LOADOUT_A = 0x000f_0021;
+		public static final int RUNEPOUCH_NAME_A = 0x000f_0022;
+		public static final int RUNEPOUCH_SELECT_CONTAINER = 0x000f_0023;
+		public static final int RUNEPOUCH_NAME_SELECT_CONTAINER = 0x000f_0024;
+		public static final int RUNEPOUCH_LOADOUT_B = 0x000f_0025;
+		public static final int RUNEPOUCH_NAME_B = 0x000f_0026;
+		public static final int RUNEPOUCH_SELECT_CONTAINER_GRAPHIC0 = 0x000f_0027;
+		public static final int RUNEPOUCH_LOADOUT_C = 0x000f_0028;
+		public static final int RUNEPOUCH_NAME_C = 0x000f_0029;
+		public static final int RUNEPOUCH_SELECT_LIST = 0x000f_002a;
+		public static final int RUNEPOUCH_LOADOUT_D = 0x000f_002b;
+		public static final int RUNEPOUCH_NAME_D = 0x000f_002c;
+		public static final int RUNEPOUCH_LOADOUT_E = 0x000f_002d;
+		public static final int RUNEPOUCH_NAME_E = 0x000f_002e;
+		public static final int RUNEPOUCH_LOADOUT_F = 0x000f_002f;
+		public static final int RUNEPOUCH_NAME_F = 0x000f_0030;
+		public static final int RUNEPOUCH_LOADOUT_G = 0x000f_0031;
+		public static final int RUNEPOUCH_NAME_G = 0x000f_0032;
+		public static final int RUNEPOUCH_LOADOUT_H = 0x000f_0033;
+		public static final int RUNEPOUCH_NAME_H = 0x000f_0034;
+		public static final int RUNEPOUCH_LOADOUT_I = 0x000f_0035;
+		public static final int RUNEPOUCH_NAME_I = 0x000f_0036;
+		public static final int RUNEPOUCH_LOADOUT_J = 0x000f_0037;
+		public static final int RUNEPOUCH_NAME_J = 0x000f_0038;
+		public static final int RUNEPOUCH_SELECT_SCROLLBAR = 0x000f_0039;
+		public static final int BANKSIDE_HIGHLIGHT = 0x000f_003a;
+		public static final int PREPOT_DEVICE_CONTAINER = 0x000f_003b;
+		public static final int PREPOT_DEVICE_BANKALL = 0x000f_003c;
+		public static final int PREPOT_DEVICE_FILL = 0x000f_003d;
+		public static final int PREPOT_DEVICE_CONTAINER_TEXT2 = 0x000f_003e;
+		public static final int PREPOT_DEVICE_DISMISS = 0x000f_003f;
+		public static final int PREPOT_DEVICE_FRAME = 0x000f_0040;
+		public static final int PREPOT_DEVICE_FRAME_GRAPHIC0 = 0x000f_0041;
+		public static final int PREPOT_DEVICE_CONTENTS_CONTAINER = 0x000f_0042;
+		public static final int PREPOT_DEVICE_CONTENTS_BG = 0x000f_0043;
+		public static final int PREPOT_DEVICE_CONTENTS = 0x000f_0044;
+		public static final int PREPOT_DEVICE_CONTENTS_CONTAINER_TEXT2 = 0x000f_0045;
+		public static final int PREPOT_DEVICE_LOADOUTS_SCROLLBAR = 0x000f_0046;
+		public static final int PREPOT_DEVICE_LOADOUTS = 0x000f_0047;
+		public static final int PREPOT_DEVICE_LOADOUT_0 = 0x000f_0048;
+		public static final int PREPOT_DEVICE_LOADOUT_1 = 0x000f_0049;
+		public static final int PREPOT_DEVICE_LOADOUT_2 = 0x000f_004a;
+		public static final int PREPOT_DEVICE_LOADOUT_3 = 0x000f_004b;
+		public static final int PREPOT_DEVICE_LOADOUT_1_LOAD = 0x000f_004c;
+		public static final int PREPOT_DEVICE_LOADOUT_1_SAVE = 0x000f_004d;
+		public static final int PREPOT_DEVICE_LOADOUT_1_CONTENTS = 0x000f_004e;
+		public static final int PREPOT_DEVICE_LOADOUT_2_LOAD = 0x000f_004f;
+		public static final int PREPOT_DEVICE_LOADOUT_2_SAVE = 0x000f_0050;
+		public static final int PREPOT_DEVICE_LOADOUT_2_CONTENTS = 0x000f_0051;
+		public static final int PREPOT_DEVICE_LOADOUT_3_LOAD = 0x000f_0052;
+		public static final int PREPOT_DEVICE_LOADOUT_3_SAVE = 0x000f_0053;
+		public static final int PREPOT_DEVICE_LOADOUT_3_CONTENTS = 0x000f_0054;
+		public static final int PREPOT_DEVICE_LOADOUT_0_LOAD = 0x000f_0055;
+		public static final int PREPOT_DEVICE_LOADOUT_0_SAVE = 0x000f_0056;
+		public static final int PREPOT_DEVICE_LOADOUT_0_CONTENTS = 0x000f_0057;
+		public static final int RUNEPOUCH_LOAD_E = 0x000f_0058;
+		public static final int RUNEPOUCH_LOAD_F = 0x000f_0059;
+		public static final int RUNEPOUCH_LOAD_G = 0x000f_005a;
+		public static final int RUNEPOUCH_LOAD_H = 0x000f_005b;
+		public static final int RUNEPOUCH_LOAD_I = 0x000f_005c;
+		public static final int RUNEPOUCH_LOAD_J = 0x000f_005d;
+		public static final int RUNEPOUCH_NAME_SELECT_CONTAINER_GRAPHIC0 = 0x000f_005e;
+		public static final int RUNEPOUCH_NAME_SELECT_LIST = 0x000f_005f;
+		public static final int RUNEPOUCH_NAME_SELECT_SCROLLBAR = 0x000f_0060;
 	}
 
 	public static final class Oculus
@@ -15816,64 +15816,6 @@ public final class InterfaceID
 		public static final int BLUE_COUNT = 0x01a2_0005;
 		public static final int TIME_TEXT = 0x01a2_0006;
 		public static final int CONTENTS_TEXT4 = 0x01a2_0007;
-	}
-
-	public static final class PatchyInterface
-	{
-		public static final int PATCHY_SCROLL = 0x01a3_0000;
-		public static final int UNIVERSE_PAGE_1 = 0x01a3_0001;
-		public static final int PATCHY_FIRST_PAGE = 0x01a3_0002;
-		public static final int UNIVERSE_PAGE_2 = 0x01a3_0003;
-		public static final int PATCHY_PUNCHLINE_1 = 0x01a3_0004;
-		public static final int PARTYHAT_LAYER = 0x01a3_0005;
-		public static final int WOM_HEAD = 0x01a3_0006;
-		public static final int PHAT_BUTTON = 0x01a3_0007;
-		public static final int TOPHAT_LAYER = 0x01a3_0008;
-		public static final int TOPHAT_MONACLE = 0x01a3_0009;
-		public static final int TOPHAT_BUTTON = 0x01a3_000a;
-		public static final int PIRATEHAT_LAYER = 0x01a3_000b;
-		public static final int PIRATEHAT_PATCH = 0x01a3_000c;
-		public static final int PIRATEHAT_PATCH_1 = 0x01a3_000d;
-		public static final int PIRATEHAT_BUTTON = 0x01a3_000e;
-		public static final int DOUBLE_EYEPATCH_LAYER = 0x01a3_000f;
-		public static final int DARK_FLIPPERS_LAYER = 0x01a3_0010;
-		public static final int DARK_FLIPPERS = 0x01a3_0011;
-		public static final int DARK_FLIPPERS_BUTTON = 0x01a3_0012;
-		public static final int DOUBLE_EYE_PATCH = 0x01a3_0013;
-		public static final int DOUBLE_EYEPATCH_BUTTON = 0x01a3_0014;
-		public static final int PATCHY_PUNCHLINE = 0x01a3_0015;
-		public static final int BANDANA_LAYER = 0x01a3_0016;
-		public static final int BANDANA_RED_LAYER = 0x01a3_0017;
-		public static final int BANDANA_BLUE_LAYER = 0x01a3_0018;
-		public static final int BANDANA_BROWN_LAYER = 0x01a3_0019;
-		public static final int HAT_LAYER = 0x01a3_001a;
-		public static final int CLAW_LAYER = 0x01a3_001b;
-		public static final int CAVALIER_LAYER = 0x01a3_001c;
-		public static final int BARRET_LAYER = 0x01a3_001d;
-		public static final int PATCHY_BANDANA_RED = 0x01a3_001e;
-		public static final int PATCHY_BANDANA_WHITE = 0x01a3_001f;
-		public static final int PATCHY_BANDANA_BLUE = 0x01a3_0020;
-		public static final int PATCHY_BANDANA_BROWN = 0x01a3_0021;
-		public static final int PATCHY_HAT = 0x01a3_0022;
-		public static final int PATCHY_HOOK_CLAW = 0x01a3_0023;
-		public static final int PATCHY_CAVALIER_BLACK = 0x01a3_0024;
-		public static final int PATCHY_BARRET_BLACK = 0x01a3_0025;
-		public static final int BANDANA_BLUE_BUTTON = 0x01a3_0026;
-		public static final int BANDANA_BROWN_BUTTON = 0x01a3_0027;
-		public static final int HAT_BUTTON = 0x01a3_0028;
-		public static final int CLAW_BUTTON = 0x01a3_0029;
-		public static final int BANDANA_RED_BUTTON = 0x01a3_002a;
-		public static final int BANDANA_BUTTON = 0x01a3_002b;
-		public static final int CAVALIER_BUTTON = 0x01a3_002c;
-		public static final int BARRET_BUTTON = 0x01a3_002d;
-		public static final int BANDANA_RECT_WHITE = 0x01a3_002e;
-		public static final int BANDANA_RECT_RED = 0x01a3_002f;
-		public static final int BANDANA_RECT_BLUE = 0x01a3_0030;
-		public static final int BANDANA_RECT_BROWN = 0x01a3_0031;
-		public static final int HAT_RECT = 0x01a3_0032;
-		public static final int HOOK_RECT = 0x01a3_0033;
-		public static final int PATCHY_CLOSE = 0x01a3_0034;
-		public static final int PATCHY_NEXT_PAGE = 0x01a3_0035;
 	}
 
 	public static final class Beehive
@@ -30783,6 +30725,36 @@ public final class InterfaceID
 	public static final class ReusableFloater
 	{
 		public static final int UNIVERSE = 0x03b1_0000;
+	}
+
+	public static final class Patchy
+	{
+		public static final int UNIVERSE = 0x03b2_0000;
+		public static final int UNIVERSE_MODEL0 = 0x03b2_0001;
+		public static final int UNIVERSE_GRAPHIC1 = 0x03b2_0002;
+		public static final int CONTENTS = 0x03b2_0003;
+		public static final int LIST = 0x03b2_0004;
+		public static final int INFO_CONTAINER = 0x03b2_0005;
+		public static final int INFO_CONTAINER_GRAPHIC0 = 0x03b2_0006;
+		public static final int INFO_CONTENTS = 0x03b2_0007;
+		public static final int CONFIRM = 0x03b2_0008;
+		public static final int CONFIRM_GRAPHIC0 = 0x03b2_0009;
+		public static final int SCROLLBAR = 0x03b2_000a;
+	}
+
+	public static final class MenuNew
+	{
+		public static final int INFINITE = 0x03b3_0000;
+		public static final int UNIVERSE = 0x03b3_0001;
+		public static final int FRAME = 0x03b3_0002;
+		public static final int TITLE = 0x03b3_0003;
+		public static final int CONTENT_FRAME = 0x03b3_0004;
+		public static final int CONTENT = 0x03b3_0005;
+		public static final int KEYLISTENERS = 0x03b3_0006;
+		public static final int CONTENT_SCROLL = 0x03b3_0007;
+		public static final int GRAPHICS = 0x03b3_0008;
+		public static final int TEXT = 0x03b3_0009;
+		public static final int SCROLLBAR = 0x03b3_000a;
 	}
 /* This file is automatically generated. Do not edit. */
 }
