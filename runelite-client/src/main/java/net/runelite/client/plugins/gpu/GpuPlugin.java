@@ -1359,13 +1359,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void prepareInterfaceTexture(int canvasWidth, int canvasHeight)
 	{
+		long bufferSize = canvasWidth * canvasHeight * 4L;
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
 		{
 			lastCanvasWidth = canvasWidth;
 			lastCanvasHeight = canvasHeight;
 
 			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, interfacePbo);
-			glBufferData(GL_PIXEL_UNPACK_BUFFER, canvasWidth * canvasHeight * 4L, GL_STREAM_DRAW);
+			glBufferData(GL_PIXEL_UNPACK_BUFFER, bufferSize, GL_STREAM_DRAW);
 			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
 			glBindTexture(GL_TEXTURE_2D, interfaceTexture);
@@ -1379,7 +1380,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int height = bufferProvider.getHeight();
 
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, interfacePbo);
-		ByteBuffer interfaceBuf = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+		ByteBuffer interfaceBuf = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, bufferSize, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
 		if (interfaceBuf != null)
 		{
 			interfaceBuf
