@@ -762,22 +762,42 @@ public class ClientUI
 		}
 	}
 
+	/**
+	 * Gets display the client overlaps with the most
+	 * Shifts the client on screen if title bar OOB
+	 *
+	 */
 	private GraphicsConfiguration findDisplayFromBounds(final Rectangle bounds)
 	{
 		GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-
+		float bestOverlap = 0f;
+		GraphicsConfiguration bestGc = null;
 		for (GraphicsDevice gd : gds)
 		{
 			GraphicsConfiguration gc = gd.getDefaultConfiguration();
-
 			final Rectangle displayBounds = gc.getBounds();
+			//entirely within display
 			if (displayBounds.contains(bounds))
 			{
 				return gc;
 			}
-		}
 
-		return null;
+			Rectangle intersection = displayBounds.intersection(bounds);
+			//no overlap
+			if (intersection.isEmpty())
+			{
+				continue;
+			}
+
+			float gcOverlap = intersection.width * intersection.height;
+			//update highest overlap display
+			if (gcOverlap > bestOverlap)
+			{
+				bestOverlap = gcOverlap;
+				bestGc = gc;
+			}
+		}
+		return bestGc;
 	}
 
 	private boolean showWarningOnExit()
