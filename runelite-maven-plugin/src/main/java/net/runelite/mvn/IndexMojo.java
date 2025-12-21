@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, LlemonDuck <napkinorton@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.gradle.index;
+package net.runelite.mvn;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import static java.lang.Integer.parseInt;
-import org.gradle.api.DefaultTask;
-import org.gradle.api.file.DirectoryProperty;
-import org.gradle.api.file.RegularFileProperty;
-import org.gradle.api.tasks.CacheableTask;
-import org.gradle.api.tasks.InputDirectory;
-import org.gradle.api.tasks.OutputFile;
-import org.gradle.api.tasks.PathSensitive;
-import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.api.tasks.TaskAction;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
-@CacheableTask
-public abstract class IndexTask extends DefaultTask
+@Mojo(
+	name = "build-index",
+	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
+)
+public class IndexMojo extends AbstractMojo
 {
+	@Parameter(required = true)
+	private File archiveOverlayDirectory;
 
-	@InputDirectory
-	@PathSensitive(PathSensitivity.RELATIVE)
-	public abstract DirectoryProperty getArchiveOverlayDirectory();
+	@Parameter(required = true)
+	private File indexFile;
 
-	@OutputFile
-	public abstract RegularFileProperty getIndexFile();
-
-	@TaskAction
-	public void buildRs2Index() throws IOException
+	@Override
+	public void execute() throws MojoExecutionException, MojoFailureException
 	{
-		File archiveOverlayDirectory = getArchiveOverlayDirectory().getAsFile().get();
-		File indexFile = getIndexFile().getAsFile().get();
-
 		try (DataOutputStream fout = new DataOutputStream(new FileOutputStream(indexFile)))
 		{
 			for (File indexFolder : archiveOverlayDirectory.listFiles())
@@ -81,6 +76,10 @@ public abstract class IndexTask extends DefaultTask
 			}
 
 			fout.writeInt(-1);
+		}
+		catch (IOException ex)
+		{
+			throw new MojoExecutionException("error build index file", ex);
 		}
 	}
 

@@ -15,5 +15,4 @@ if [ ! -f "${GLSLANG_ARCHIVE}" ] || [ ! -d "${GLSLANG_DIR}" ] || ! echo "${GLSLA
   unzip -o -q "${GLSLANG_ARCHIVE}" -d "${GLSLANG_DIR}"
 fi
 
-export ORG_GRADLE_PROJECT_glslangPath="$GLSLANG_DIR/bin/glslangValidator"
-./gradlew ':buildAll'
+mvn verify --settings ci/settings.xml -Dglslang.path="${GLSLANG_DIR}/bin/glslangValidator"
