@@ -154,6 +154,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int interfaceTexture;
 	private int interfacePbo;
+	private int interfaceBackPbo;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -707,6 +708,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void initInterfaceTexture()
 	{
 		interfacePbo = glGenBuffers();
+		interfaceBackPbo = glGenBuffers();
 
 		interfaceTexture = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, interfaceTexture);
@@ -720,6 +722,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void shutdownInterfaceTexture()
 	{
 		glDeleteBuffers(interfacePbo);
+		glDeleteBuffers(interfaceBackPbo);
 		glDeleteTextures(interfaceTexture);
 		interfaceTexture = -1;
 	}
@@ -1367,6 +1370,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, interfacePbo);
 			glBufferData(GL_PIXEL_UNPACK_BUFFER, bufferSize, GL_STREAM_DRAW);
+			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, interfaceBackPbo);
+			glBufferData(GL_PIXEL_UNPACK_BUFFER, bufferSize, GL_STREAM_DRAW);
 			glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 
 			glBindTexture(GL_TEXTURE_2D, interfaceTexture);
@@ -1392,6 +1397,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, 0);
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
+		int tmp = interfacePbo;
+		interfacePbo = interfaceBackPbo;
+		interfaceBackPbo = tmp;
 	}
 
 	@Override
