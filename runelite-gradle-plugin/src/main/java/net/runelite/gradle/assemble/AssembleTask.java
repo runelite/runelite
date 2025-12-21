@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, LlemonDuck <napkinorton@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mvn;
+
+package net.runelite.gradle.assemble;
 
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -36,38 +38,45 @@ import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.savers.ScriptSaver;
 import net.runelite.cache.script.RuneLiteInstructions;
 import net.runelite.cache.script.assembler.Assembler;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.RegularFileProperty;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.tasks.CacheableTask;
+import org.gradle.api.tasks.InputDirectory;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.api.tasks.TaskAction;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseError;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
-@Mojo(
-	name = "assemble",
-	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
-)
-public class AssembleMojo extends AbstractMojo
+@CacheableTask
+public abstract class AssembleTask extends DefaultTask
 {
-	@Parameter(required = true)
-	private File scriptDirectory;
+	@InputDirectory
+	@PathSensitive(PathSensitivity.RELATIVE)
+	public abstract DirectoryProperty getScriptDirectory();
 
-	@Parameter(required = true)
-	private File outputDirectory;
+	@OutputDirectory
+	public abstract DirectoryProperty getOutputDirectory();
 
-	@Parameter(required = true)
-	private File componentsFile;
+	@InputFile
+	@PathSensitive(PathSensitivity.RELATIVE)
+	public abstract RegularFileProperty getComponentsFile();
 
-	private final Log log = getLog();
+	private final Logger log = getLogger();
 
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException
+	@TaskAction
+	public void assembleRs2Asm() throws IOException
 	{
+		File scriptDirectory = getScriptDirectory().getAsFile().get();
+		File outputDirectory = getOutputDirectory().getAsFile().get();
+		File componentsFile = getComponentsFile().getAsFile().get();
+
 		RuneLiteInstructions instructions = new RuneLiteInstructions();
 		instructions.init();
 
@@ -80,7 +89,7 @@ public class AssembleMojo extends AbstractMojo
 
 		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))
 		{
-			log.debug("Assembling " + scriptFile);
+			log.debug("Assembling {}", scriptFile);
 
 			try (FileInputStream fin = new FileInputStream(scriptFile))
 			{
@@ -99,21 +108,17 @@ public class AssembleMojo extends AbstractMojo
 				}
 				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
 				{
-					throw new MojoExecutionException("Unable to find hash file for " + scriptFile);
+					throw new FileNotFoundException("Unable to find hash file for " + scriptFile);
 				}
 
 				++count;
 			}
-			catch (IOException ex)
-			{
-				throw new MojoFailureException("unable to open file", ex);
-			}
 		}
 
-		log.info("Assembled " + count + " scripts");
+		log.lifecycle("Assembled {} scripts", count);
 	}
 
-	private Map<String, Object> buildComponentSymbols(File file) throws MojoExecutionException
+	private Map<String, Object> buildComponentSymbols(File file)
 	{
 		TomlParseResult result;
 		try
@@ -122,7 +127,7 @@ public class AssembleMojo extends AbstractMojo
 		}
 		catch (IOException e)
 		{
-			throw new MojoExecutionException("unable to read component file " + file.getName(), e);
+			throw new RuntimeException("unable to read component file " + file.getName(), e);
 		}
 
 		if (result.hasErrors())
@@ -131,7 +136,7 @@ public class AssembleMojo extends AbstractMojo
 			{
 				log.error(err.toString());
 			}
-			throw new MojoExecutionException("unable to parse component file " + file.getName());
+			throw new RuntimeException("unable to parse component file " + file.getName());
 		}
 
 		Map<String, Object> symbols = new HashMap<>();
@@ -142,13 +147,13 @@ public class AssembleMojo extends AbstractMojo
 
 			if (!tbl.contains("id"))
 			{
-				throw new MojoExecutionException("interface " + interfaceName + " has no id");
+				throw new RuntimeException("interface " + interfaceName + " has no id");
 			}
 
 			int interfaceId = (int) (long) tbl.getLong("id");
 			if (interfaceId < 0 || interfaceId > 0xffff)
 			{
-				throw new MojoExecutionException("interface id out of range for " + interfaceName);
+				throw new RuntimeException("interface id out of range for " + interfaceName);
 			}
 
 			for (var entry2 : tbl.entrySet())
@@ -162,7 +167,7 @@ public class AssembleMojo extends AbstractMojo
 				int id = (int) (long) entry2.getValue();
 				if (id < 0 || id > 0xffff)
 				{
-					throw new MojoExecutionException("component id out of range for " + componentName);
+					throw new RuntimeException("component id out of range for " + componentName);
 				}
 
 				var fullName = interfaceName.toLowerCase(Locale.ENGLISH) + ":" + componentName.toLowerCase(Locale.ENGLISH);
