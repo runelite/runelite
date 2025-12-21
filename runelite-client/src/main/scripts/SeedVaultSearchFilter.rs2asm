@@ -1,0 +1,71 @@
+.id                       2863
+.int_arg_count            1
+.obj_arg_count            0
+   sconst                 ""
+   ostore                 0
+   sconst                 ""
+   ostore                 1
+   invoke                 2862
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL34
+
+LABEL8:
+   invoke                 2864
+   ostore                 1
+
+   iconst                 -1                 ; return value
+   iload                  0                  ; item id (arg0)
+   oload                  1                  ; search string
+   sconst                 "seedVaultSearchFilter"
+   runelite_callback
+   pop_int
+   pop_object
+   istore                 1                  ; int local 1 = rv
+   iload                  1
+   iconst                 -1
+   if_icmpeq              AFTER_CB
+   iload                  1
+   return
+
+AFTER_CB:
+   oload                  1
+   string_length
+   iconst                 0
+   if_icmpgt              LABEL15
+   jump                   LABEL34
+
+LABEL15:
+   iload                  0
+   iconst                 -1
+   if_icmpne              LABEL19
+   jump                   LABEL23
+
+LABEL19:
+   iload                  0
+   oc_name
+   lowercase
+   ostore                 0
+
+LABEL23:
+   oload                  0
+   oload                  1
+   iconst                 0
+   string_indexof_string
+   iconst                 -1
+   if_icmpne              LABEL30
+   jump                   LABEL32
+
+LABEL30:
+   iconst                 1
+   return
+
+LABEL32:
+   iconst                 0
+   return
+
+LABEL34:
+   iconst                 1
+   return
+   iconst                 -1
+   return
