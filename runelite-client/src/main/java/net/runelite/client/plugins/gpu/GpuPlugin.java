@@ -155,6 +155,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int interfaceTexture;
 	private int interfacePbo;
 	private int interfaceBackPbo;
+	private long interfaceFence = 0;
+	private long interfaceBackFence = 0;
 
 	private int vaoUiHandle;
 	private int vboUiHandle;
@@ -1385,6 +1387,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int height = bufferProvider.getHeight();
 
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, interfacePbo);
+		if(interfaceFence != 0) {
+			glClientWaitSync(interfaceFence, GL_SYNC_FLUSH_COMMANDS_BIT, -1);
+		}
 		ByteBuffer interfaceBuf = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, bufferSize, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
 		if (interfaceBuf != null)
 		{
@@ -1395,11 +1400,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		glBindTexture(GL_TEXTURE_2D, interfaceTexture);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, 0);
+		interfaceFence = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		int tmp = interfacePbo;
 		interfacePbo = interfaceBackPbo;
 		interfaceBackPbo = tmp;
+		long fencetmp = interfaceFence;
+		interfaceFence = interfaceBackFence;
+		interfaceBackFence = fencetmp;
 	}
 
 	@Override
