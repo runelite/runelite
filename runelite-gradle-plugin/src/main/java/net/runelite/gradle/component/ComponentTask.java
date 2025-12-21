@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, LlemonDuck <napkinorton@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mvn;
+package net.runelite.gradle.component;
 
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -33,74 +33,61 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import javax.lang.model.element.Modifier;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.RegularFileProperty;
+import org.gradle.api.logging.Logger;
+import org.gradle.api.tasks.CacheableTask;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.api.tasks.TaskAction;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseError;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 
-@Mojo(
-	name = "pack-components",
-	defaultPhase = LifecyclePhase.GENERATE_SOURCES
-)
-public class ComponentMojo extends AbstractMojo
+@CacheableTask
+public abstract class ComponentTask extends DefaultTask
 {
-	@Parameter(defaultValue = "${project}")
-	private MavenProject project;
 
-	@Parameter(required = true)
-	private File inputDirectory;
+	@InputFile
+	@PathSensitive(PathSensitivity.RELATIVE)
+	public abstract RegularFileProperty getInputFile();
 
-	@Parameter(required = true)
-	private File outputDirectory;
+	@OutputDirectory
+	public abstract DirectoryProperty getOutputDirectory();
 
-	private final Log log = getLog();
+	private final Logger log = getLogger();
 	private final Set<Integer> seenInterfaces = new HashSet<>();
 	private final Set<Integer> seenComponents = new HashSet<>();
 
-	@Override
-	public void execute() throws MojoExecutionException, MojoFailureException
+	@TaskAction
+	public void packComponents() throws IOException
 	{
+		File inputFile = getInputFile().getAsFile().get();
+		File outputDirectory = getOutputDirectory().getAsFile().get();
+
 		TypeSpec.Builder interfaceType = TypeSpec.classBuilder("InterfaceID")
 			.addModifiers(Modifier.PUBLIC, Modifier.FINAL)
 			.addAnnotation(Deprecated.class)
-			.addJavadoc("@deprecated Use {@link net.runelite.api.gameval.InterfaceID} instead");
+			.addJavadoc("@deprecated Use {@link net.runelite.api.gameval.InterfaceID} instead");;
 
 		TypeSpec.Builder componentType = TypeSpec.classBuilder("ComponentID")
 			.addModifiers(Modifier.PUBLIC, Modifier.FINAL)
 			.addAnnotation(Deprecated.class)
 			.addJavadoc("@deprecated Use nested classes of {@link net.runelite.api.gameval.InterfaceID} instead");
 
-		for (File file : inputDirectory.listFiles((dir, name) -> name.endsWith(".toml")))
-		{
-			executeOne(file, interfaceType, componentType);
-		}
+		executeOne(inputFile, interfaceType, componentType);
 
-		writeClass("net.runelite.api.widgets", interfaceType.build());
-		writeClass("net.runelite.api.widgets", componentType.build());
-
-		// https://stackoverflow.com/a/30760908
-		project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
+		writeClass(outputDirectory, "net.runelite.api.widgets", interfaceType.build());
+		writeClass(outputDirectory, "net.runelite.api.widgets", componentType.build());
 	}
 
-	private void executeOne(File file, TypeSpec.Builder interfaceType, TypeSpec.Builder componentType) throws MojoExecutionException
+	private void executeOne(File file, TypeSpec.Builder interfaceType, TypeSpec.Builder componentType) throws IOException
 	{
-		TomlParseResult result;
-		try
-		{
-			result = Toml.parse(file.toPath());
-		}
-		catch (IOException e)
-		{
-			throw new MojoExecutionException("unable to read component file " + file.getName(), e);
-		}
+		TomlParseResult result = Toml.parse(file.toPath());
 
 		if (result.hasErrors())
 		{
@@ -108,7 +95,7 @@ public class ComponentMojo extends AbstractMojo
 			{
 				log.error(err.toString());
 			}
-			throw new MojoExecutionException("unable to parse component file " + file.getName());
+			throw new RuntimeException("unable to parse component file " + file.getName());
 		}
 
 		for (var entry : result.entrySet())
@@ -118,18 +105,18 @@ public class ComponentMojo extends AbstractMojo
 
 			if (!tbl.contains("id"))
 			{
-				throw new MojoExecutionException("interface " + interfaceName + " has no id");
+				throw new RuntimeException("interface " + interfaceName + " has no id");
 			}
 
 			int interfaceId = (int) (long) tbl.getLong("id");
 			if (interfaceId < 0 || interfaceId > 0xffff)
 			{
-				throw new MojoExecutionException("interface id out of range for " + interfaceName);
+				throw new RuntimeException("interface id out of range for " + interfaceName);
 			}
 
 			if (seenInterfaces.contains(interfaceId))
 			{
-				throw new MojoExecutionException("duplicate interface id " + interfaceId);
+				throw new RuntimeException("duplicate interface id " + interfaceId);
 			}
 			seenInterfaces.add(interfaceId);
 
@@ -146,7 +133,7 @@ public class ComponentMojo extends AbstractMojo
 				int id = (int) (long) entry2.getValue();
 				if (id < 0 || id > 0xffff)
 				{
-					throw new MojoExecutionException("component id out of range for " + componentName);
+					throw new RuntimeException("component id out of range for " + componentName);
 				}
 
 				var fullName = interfaceName.toUpperCase(Locale.ENGLISH) + "_" + componentName.toUpperCase(Locale.ENGLISH);
@@ -155,7 +142,7 @@ public class ComponentMojo extends AbstractMojo
 
 				if (seenComponents.contains(componentId))
 				{
-					throw new MojoExecutionException("duplicate component id " + comment);
+					throw new RuntimeException("duplicate component id " + comment);
 				}
 				seenComponents.add(componentId);
 
@@ -176,18 +163,10 @@ public class ComponentMojo extends AbstractMojo
 		type.addField(field.build());
 	}
 
-	private void writeClass(String pkg, TypeSpec type) throws MojoExecutionException
+	private void writeClass(File outputDirectory, String pkg, TypeSpec type) throws IOException
 	{
-		JavaFile javaFile = JavaFile.builder(pkg, type)
-			.build();
-
-		try
-		{
-			javaFile.writeTo(outputDirectory);
-		}
-		catch (IOException e)
-		{
-			throw new MojoExecutionException("unable to write java class", e);
-		}
+		JavaFile.builder(pkg, type)
+			.build()
+			.writeToFile(outputDirectory);
 	}
 }
