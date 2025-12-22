@@ -46,35 +46,37 @@ java {
 
 dependencies {
     api("net.runelite:runelite-api:${project.version}")
-    implementation("net.runelite:jshell:${project.version}")
+    api("net.runelite:jshell:${project.version}")
     runtimeOnly("net.runelite:injected-client:${project.version}")
 
     api(libs.rl.http.api)
-    implementation(libs.rl.discord)
-    implementation(libs.rl.awt)
+    api(libs.rl.discord)
+    api(libs.rl.awt)
     compileOnly(libs.rl.orange)
 
     api(libs.slf4j.api)
-    implementation(libs.logback.classic) {
+    api(libs.logback.classic) {
         exclude("org.slf4j", "slf4j-api")
     }
-    implementation(libs.jopt)
+    api(libs.jopt)
     api(libs.guava) {
         exclude("com.google.code.findbugs", "jsr305")
         exclude("com.google.errorprone", "error_prone_annotations")
         exclude("com.google.j2objc", "j2objc-annotations")
         exclude("org.codehaus.mojo", "animal-sniffer-annotations")
     }
-    api(variantOf(libs.guice.core) { classifier("no_aop") })
+    api(variantOf(libs.guice.core) { classifier("no_aop") }) {
+        exclude("com.google.guava", "guava")
+    }
     api(libs.gson)
-    implementation(libs.flatlaf.core)
-    implementation(libs.flatlaf.extras)
-    implementation(libs.commons.text)
-    implementation(libs.jna.core)
-    implementation(libs.jna.platform)
-    implementation(libs.findbugs)
+    api(libs.flatlaf.core)
+    api(libs.flatlaf.extras)
+    api(libs.commons.text)
+    api(libs.jna.core)
+    api(libs.jna.platform)
+    api(libs.findbugs)
     compileOnly(libs.jetbrains.annotations)
-    implementation(libs.protobuf)
+    api(libs.protobuf)
     api(libs.lwjgl.core)
     api(libs.lwjgl.opengl)
     api(libs.lwjgl.opencl)

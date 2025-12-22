@@ -38,8 +38,15 @@ java {
 
 dependencies {
     implementation(libs.slf4j.api)
-    implementation(libs.guava)
-    implementation(variantOf(libs.guice.core) { classifier("no_aop") })
+    implementation(libs.guava) {
+        exclude("com.google.code.findbugs", "jsr305")
+        exclude("com.google.errorprone", "error_prone_annotations")
+        exclude("com.google.j2objc", "j2objc-annotations")
+        exclude("org.codehaus.mojo", "animal-sniffer-annotations")
+    }
+    implementation(variantOf(libs.guice.core) { classifier("no_aop") }) {
+        exclude("com.google.guava", "guava")
+    }
     implementation(libs.findbugs)
     implementation(libs.fife.rsyntaxtextarea)
     implementation(libs.fife.autocomplete)
