@@ -46,7 +46,7 @@ java {
 
 dependencies {
     api("net.runelite:runelite-api:${project.version}")
-    api("net.runelite:jshell:${project.version}")
+    implementation("net.runelite:jshell:${project.version}")
     runtimeOnly("net.runelite:injected-client:${project.version}")
 
     api(libs.rl.http.api)
@@ -70,7 +70,7 @@ dependencies {
     }
     api(libs.gson)
     api(libs.flatlaf.core)
-    api(libs.flatlaf.extras)
+    implementation(libs.flatlaf.extras)
     api(libs.commons.text)
     api(libs.jna.core)
     api(libs.jna.platform)
