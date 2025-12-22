@@ -29,7 +29,7 @@
 		 xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
 	<description>
-		RuneLite Maven Plugin PMD ruleset
+		RuneLite PMD ruleset
 	</description>
 
 	<!-- error prone -->
