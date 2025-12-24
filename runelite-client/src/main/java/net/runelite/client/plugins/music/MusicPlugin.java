@@ -254,6 +254,10 @@ public class MusicPlugin extends Plugin
 		}
 		else if (gameState == GameState.LOGGED_IN)
 		{
+			if (musicConfig.granularSliders())
+			{
+				updateMusicOptions();
+			}
 			if (musicConfig.muteAmbientSounds())
 			{
 				client.getAmbientSoundEffects()
@@ -334,7 +338,7 @@ public class MusicPlugin extends Plugin
 	{
 		if (musicConfig.granularSliders())
 		{
-			updateMusicOptions();
+			updateMusicSliders();
 		}
 	}
 
@@ -899,6 +903,11 @@ public class MusicPlugin extends Plugin
 		public void update()
 		{
 			volumeChanger.accept(getValue());
+			updateSliders();
+		}
+
+		public void updateSliders()
+		{
 			sideSlider.update();
 			if (windowSlider != null)
 			{
@@ -930,6 +939,14 @@ public class MusicPlugin extends Plugin
 		for (Channel channel : channels)
 		{
 			channel.update();
+		}
+	}
+
+	private void updateMusicSliders()
+	{
+		for (Channel channel : channels)
+		{
+			channel.updateSliders();
 		}
 	}
 
