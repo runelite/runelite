@@ -120,7 +120,12 @@ public class TooltipComponent implements LayoutableRenderableEntity
 					if (subLine.startsWith("col="))
 					{
 						String argument = subLine.substring(4);
-						nextColor = Color.decode("#" + argument);
+
+						try {
+							nextColor = Color.decode("#" + argument);
+						} catch (NumberFormatException e) {
+							nextColor = Color.WHITE;
+						}
 					}
 					else if (subLine.equals("/col"))
 					{
