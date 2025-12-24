@@ -343,8 +343,9 @@ public class PluginManager
 			{
 				log.debug("Disabling {} due to safe mode", clazz);
 				// also disable the plugin from autostarting later
-				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME,
-					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
+				configManager.setConfiguration(RuneLiteConfig.GROUP_NAME,
+					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase(),
+					false);
 				continue;
 			}
 
