@@ -75,7 +75,7 @@ public enum MooringLocation
 	LLEDRITH_ISLAND("Lledrith Island", 66, new WorldPoint(2097, 3188, 0)),
 	DEEPFIN_POINT("Deepfin Point", 67, new WorldPoint(1923, 2758, 0)),
 	JATIZSO("Jatizso", 68, new WorldPoint(2412, 3780, 0)),
-	NETIZNOT("Netiznot", 68, new WorldPoint(2308, 3783, 0)),
+	NEITIZNOT("Neitiznot", 68, new WorldPoint(2308, 3783, 0)),
 	RAINBOWS_END("Rainbow's End", 69, new WorldPoint(2344, 2270, 0)),
 	PRIFDDINAS("Prifddinas", 70, new WorldPoint(2158, 3324, 0)),
 	SUNBLEAK_ISLAND("Sunbleak Island", 72, new WorldPoint(2189, 2327, 0)),
