@@ -116,7 +116,7 @@ enum TransportationPointLocation
 	SMALL_BOAT_KASTORI("Rowboat to Tal Teklan/Gloomthorn Trail", new WorldPoint(1389, 3074, 0)),
 	OGRE_BOAT_FELDIP("Ogre Boat to Karamja", new WorldPoint(2653, 2964, 0), new WorldPoint(2757, 3085, 0)),
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
-	ROW_BOAT_CONCH_NORTH("Rowboat to The Summer Short/Eastern Coast", new WorldPoint(3196, 2532, 0), new WorldPoint(3264, 2462, 0)),
+	ROW_BOAT_CONCH_NORTH("Rowboat to The Summer Shore/Eastern Coast", new WorldPoint(3196, 2532, 0), new WorldPoint(3264, 2462, 0)),
 	ROW_BOAT_CONCH_EAST("Rowboat to The Summer Shore/Northern Coast", new WorldPoint(3264, 2462, 0), new WorldPoint(3190, 2371, 0)),
 	ROW_BOAT_CONCH_SUMMER_SHORE("Rowboat to The Northern Coast/Eastern Coast", new WorldPoint(3190, 2371, 0), new WorldPoint(3196, 2532, 0)),
 	ROW_BOAT_TEAR_OF_THE_SOUL("Rowboat to Isle of Souls", new WorldPoint(2320, 2780, 0), new WorldPoint(2291, 2796, 0)),
