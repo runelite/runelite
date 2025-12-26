@@ -24,9 +24,12 @@
  */
 package net.runelite.client.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
@@ -41,6 +44,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.VarbitComposition;
 import net.runelite.api.WallObject;
 import net.runelite.api.WorldEntity;
 import net.runelite.api.WorldView;
@@ -51,11 +55,15 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WorldEntitySpawned;
+import net.runelite.api.gameval.VarPlayerID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 
+@Slf4j
 @Singleton
 public class GameEventManager
 {
@@ -130,6 +138,7 @@ public class GameEventManager
 		});
 	}
 
+	@SuppressWarnings("MagicConstant")
 	private void simulateGameEvents(WorldView wv)
 	{
 		for (NPC npc : wv.npcs())
@@ -213,6 +222,49 @@ public class GameEventManager
 		{
 			eventBus.post(new WorldEntitySpawned(we));
 			simulateGameEvents(we.getWorldView());
+		}
+
+		for (Field varplayerIDField : VarPlayerID.class.getDeclaredFields())
+		{
+			try
+			{
+				// Should be unnecessary to check modifiers since AFAIK VarPlayerID is automatically generated from Jagex and should always contain only public static final ints
+				if (varplayerIDField.getType() == int.class && Modifier.isPublic(varplayerIDField.getModifiers()) && Modifier.isStatic(varplayerIDField.getModifiers()) && Modifier.isFinal(varplayerIDField.getModifiers()))
+				{
+					int varplayerID = varplayerIDField.getInt(null);
+					final VarbitChanged varbitChanged = new VarbitChanged();
+					varbitChanged.setVarpId(varplayerID);
+					varbitChanged.setValue(client.getVarpValue(varplayerID));
+					eventBus.post(varbitChanged);
+				}
+			}
+			catch (IllegalAccessException e)
+			{
+				log.error("Failed to get int value of VarPlayerID.{}", varplayerIDField.getName(), e);
+			}
+		}
+
+		for (Field varbitIDField : VarbitID.class.getDeclaredFields())
+		{
+			try
+			{
+				// Should be unnecessary to check modifiers since AFAIK VarbitID is automatically generated from Jagex and should always contain only public static final ints
+				if (varbitIDField.getType() == int.class && Modifier.isPublic(varbitIDField.getModifiers()) && Modifier.isStatic(varbitIDField.getModifiers()) && Modifier.isFinal(varbitIDField.getModifiers()))
+				{
+					int varbitID = varbitIDField.getInt(null);
+					VarbitComposition varbitComposition = client.getVarbit(varbitID);
+					int varplayerID = varbitComposition != null ? varbitComposition.getIndex() : -1;
+					final VarbitChanged varbitChanged = new VarbitChanged();
+					varbitChanged.setVarpId(varplayerID);
+					varbitChanged.setVarbitId(varbitID);
+					varbitChanged.setValue(client.getVarbitValue(varbitID));
+					eventBus.post(varbitChanged);
+				}
+			}
+			catch (IllegalAccessException e)
+			{
+				log.error("Failed to get int value of VarbitID.{}", varbitIDField.getName(), e);
+			}
 		}
 	}
 }
