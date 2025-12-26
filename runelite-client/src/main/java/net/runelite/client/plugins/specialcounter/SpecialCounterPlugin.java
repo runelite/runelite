@@ -27,12 +27,7 @@ package net.runelite.client.plugins.specialcounter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -71,16 +66,19 @@ import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.specialcounter.SpecialWeapon.TONALZTICS_OF_RALOS;
+
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
+
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.*;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -213,6 +211,69 @@ public class SpecialCounterPlugin extends Plugin
 				lastHpChangeCycle = client.getGameCycle();
 			}
 			lastHitPointsExperience = event.getXp();
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("specialcounter") && Objects.equals(event.getNewValue(), "-1"))
+		{
+			SpecialWeapon weapon;
+			switch (event.getKey())
+			{
+				case "dragonWarhammerThreshold":
+					weapon = DRAGON_WARHAMMER;
+					break;
+				case "elderMaulThreshold":
+					weapon = ELDER_MAUL;
+					break;
+				case "arclightThreshold":
+					weapon = ARCLIGHT;
+					break;
+				case "darklightThreshold":
+					weapon = DARKLIGHT;
+					break;
+				case "emberlightThreshold":
+					weapon = EMBERLIGHT;
+					break;
+				case "bandosGodswordThreshold":
+					weapon = BANDOS_GODSWORD;
+					break;
+				case "bulwarkThreshold":
+					weapon = BULWARK;
+					break;
+				case "ayakThreshold":
+					weapon = EYE_OF_AYAK;
+					break;
+				case "anchorThreshold":
+					weapon = BARRELCHEST_ANCHOR;
+					break;
+				case "boneDaggerThreshold":
+					weapon = BONE_DAGGER;
+					break;
+				case "boneCrossbowThreshold":
+					weapon = DORGESHUUN_CROSSBOW;
+					break;
+				case "accursedSceptreThreshold":
+					weapon = ACCURSED_SCEPTRE;
+					break;
+				case "ralosThreshold":
+					weapon = TONALZTICS_OF_RALOS;
+					break;
+				case "seercullThreshold":
+					weapon = SEERCULL;
+					break;
+				default:
+					return;
+			}
+
+			SpecialCounter counter = specialCounter[weapon.ordinal()];
+			if (counter != null)
+			{
+				infoBoxManager.removeInfoBox(counter);
+				specialCounter[weapon.ordinal()] = null;
+			}
 		}
 	}
 
@@ -384,11 +445,12 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		int localPlayerId = client.getLocalPlayer().getId();
 		int counterHit = specialWeapon.isDamage() ? specialWeapon.computeHit(hit, target) : Math.min(hit, 1);
+		int threshold = specialWeapon.getThreshold().apply(config);
 		float defenceDrain = specialWeapon.computeDrainPercent(hit, target);
 
 		log.debug("Special attack hit {} hitsplat {}", specialWeapon, hit);
 
-		if (config.infobox())
+		if (config.infobox() && threshold > -1)
 		{
 			updateCounter(specialWeapon, null, counterHit, defenceDrain);
 		}
