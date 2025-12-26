@@ -43,6 +43,9 @@ enum RareTreeLocation
 		new WorldPoint(3510, 3073, 0),
 		new WorldPoint(3440, 2789, 0),
 
+		// Great Conch
+		new WorldPoint(3129, 2446, 0),
+
 		// Mos Le'Harmless
 		new WorldPoint(3832, 3067, 0),
 
@@ -55,6 +58,9 @@ enum RareTreeLocation
 
 		// Prifddinas
 		new WorldPoint(3309, 6123, 0),
+
+		// Shimmering Atoll
+		new WorldPoint(1540, 2802, 0),
 
 		// Varlamore
 		new WorldPoint(1694, 2989, 0),
@@ -123,6 +129,9 @@ enum RareTreeLocation
 
 		// Prifddinas
 		new WorldPoint(3301, 6129, 0),
+
+		// Shimmering Atoll
+		new WorldPoint(1586, 2786, 0),
 
 		// Tlati Rainforest
 		new WorldPoint(1249, 3077, 0),
@@ -226,10 +235,33 @@ enum RareTreeLocation
 		new WorldPoint(2147, 2972, 0),
 		new WorldPoint(2165, 2863, 0),
 
+		// Tear of the Soul
+		new WorldPoint(2340, 2762, 0),
+
+		// Shipyard
+		new WorldPoint(2077, 2707, 0),
+
+		// Deepfin Point
+		new WorldPoint(1950, 2786, 0),
+
+		// Laguna Aurorae
+		new WorldPoint(1224, 2781, 0),
+
+		// Great Conch
+		new WorldPoint(3276, 2339, 0),
+
 		// Zanaris
 		new WorldPoint(2412, 4464, 0),
 		new WorldPoint(2465, 4427, 0),
 		new WorldPoint(2491, 4426, 0)),
+
+	YEW_JATOBA("Yew/Jatoba trees", 60,
+		// Great Conch
+		new WorldPoint(3144, 2520, 0)),
+
+	WILLOW_YEW("Willow/Yew trees", 60,
+		// Anglers' Retreat
+		new WorldPoint(2476, 2707, 0)),
 
 	MAPLE_YEW("Maple/Yew trees", 60,
 		// Feldip Hills
@@ -237,6 +269,11 @@ enum RareTreeLocation
 
 		// Aldarin
 		new WorldPoint(1379, 2876, 0),
+
+		// Shipyard
+		new WorldPoint(2086, 2737, 0),
+		new WorldPoint(2074, 2723, 0),
+		new WorldPoint(2061, 2720, 0),
 
 		// Auburnvale
 		new WorldPoint(1358, 3302, 0)),
@@ -253,6 +290,19 @@ enum RareTreeLocation
 		new WorldPoint(3677, 3733, 0),
 		new WorldPoint(3682, 3775, 0),
 		new WorldPoint(3682, 3758, 0)),
+
+	CAMPHOR("Camphor tree", 66,
+		// Great Conch
+		new WorldPoint(3192, 2487, 0),
+		new WorldPoint(3204, 2481, 0)),
+
+	CAMPHOR_MAHOGANY("Camphor/Mahogany trees", 66,
+		// Great Conch
+		new WorldPoint(3245, 2397, 0)),
+
+	CAMPHOR_JATOBA("Camphor/Jatoba trees", 66,
+		// Great Conch
+		new WorldPoint(3109, 2413, 0)),
 
 	MAGIC("Magic tree", 75,
 		// Zeah
@@ -299,13 +349,32 @@ enum RareTreeLocation
 		// Feldip Hills
 		new WorldPoint(2443, 2845, 0),
 
+		// Dognose Island
+		new WorldPoint(3043, 2640, 0),
+
+		// Lledrith Island
+		new WorldPoint(2090, 3178, 0),
+
 		// Wilderness
 		new WorldPoint(3175, 3931, 0)),
+
+	IRONWOOD("Ironwood tree", 80,
+		// Sunbleak Island
+		new WorldPoint(2223, 2341, 0),
+		new WorldPoint(2221, 2322, 0),
+		new WorldPoint(2205, 2321, 0)),
 
 	REDWOOD("Redwood tree", 90,
 		// Zeah
 		new WorldPoint(1569, 3493, 0),
-		new WorldPoint(1569, 3483, 0));
+		new WorldPoint(1569, 3483, 0)),
+
+	ROSEWOOD("Rosewood tree", 92,
+		// Drumstick Isle
+		new WorldPoint(2152, 3540, 0),
+		new WorldPoint(2136, 3546, 0),
+		new WorldPoint(2149, 3557, 0)),
+	;
 
 	private final String tooltip;
 	private final WorldPoint[] locations;
