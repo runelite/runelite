@@ -24,9 +24,15 @@
  */
 
 rootProject.name = "runelite"
+
+// these two have artifact ids that don't match their project directory names
+// and so they are done without includeBuild so that intellij can resolve them properly
+include("jshell")
+project(":jshell").projectDir = file("./runelite-jshell")
+include("client")
+project(":client").projectDir = file("./runelite-client")
+apply(from = "./common.settings.gradle.kts")
+
 includeBuild("cache")
 includeBuild("runelite-api")
-include("runelite-client")
 includeBuild("runelite-gradle-plugin")
-include("runelite-jshell")
-apply(from = "./common.settings.gradle.kts")

@@ -46,7 +46,7 @@ java {
 
 dependencies {
     api("net.runelite:runelite-api:${project.version}")
-    implementation(project(":runelite-jshell"))
+    implementation(project(":jshell"))
     runtimeOnly("net.runelite:injected-client:${project.version}")
 
     api(libs.rl.http.api)
