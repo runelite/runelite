@@ -25,19 +25,23 @@
 
 tasks.register("cleanAll") {
     gradle.includedBuilds.forEach { build -> this@register.dependsOn(build.task(":clean")) }
+    subprojects.forEach { proj -> this@register.dependsOn(proj.tasks["clean"]) }
 }
 tasks.register("buildAll") {
     gradle.includedBuilds.forEach { build -> this@register.dependsOn(build.task(":build")) }
+    subprojects.forEach { proj -> this@register.dependsOn(proj.tasks["build"]) }
 }
 tasks.register("assembleAll") {
     gradle.includedBuilds.forEach { build -> this@register.dependsOn(build.task(":assemble")) }
+    subprojects.forEach { proj -> this@register.dependsOn(proj.tasks["assemble"]) }
 }
 tasks.register("testAll") {
     gradle.includedBuilds.forEach { build -> this@register.dependsOn(build.task(":test")) }
+    subprojects.forEach { proj -> this@register.dependsOn(proj.tasks["test"]) }
 }
 tasks.register("publishAll") {
     this@register.dependsOn(gradle.includedBuild("cache").task(":publish"))
     this@register.dependsOn(gradle.includedBuild("runelite-api").task(":publish"))
-    this@register.dependsOn(gradle.includedBuild("runelite-client").task(":publish"))
-    this@register.dependsOn(gradle.includedBuild("runelite-jshell").task(":publish"))
+    this@register.dependsOn(project(":runelite-client").tasks["publish"])
+    this@register.dependsOn(project(":runelite-jshell").tasks["publish"])
 }
