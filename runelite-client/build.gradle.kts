@@ -46,7 +46,7 @@ java {
 
 dependencies {
     api("net.runelite:runelite-api:${project.version}")
-    implementation("net.runelite:jshell:${project.version}")
+    implementation(project(":runelite-jshell"))
     runtimeOnly("net.runelite:injected-client:${project.version}")
 
     api(libs.rl.http.api)
@@ -111,7 +111,7 @@ val shadowJar = tasks.register<Jar>("shadowJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from(sourceSets.main.get().output)
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    from(configurations.runtimeClasspath.map { it.map { if (it.isDirectory) it else zipTree(it) } })
 
     exclude(
         "META-INF/INDEX.LIST",

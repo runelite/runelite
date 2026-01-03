@@ -26,6 +26,7 @@
 rootProject.name = "runelite"
 includeBuild("cache")
 includeBuild("runelite-api")
-includeBuild("runelite-client")
+include("runelite-client")
 includeBuild("runelite-gradle-plugin")
-includeBuild("runelite-jshell")
+include("runelite-jshell")
+apply(from = "./common.settings.gradle.kts")
