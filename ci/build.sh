@@ -16,4 +16,4 @@ if [ ! -f "${GLSLANG_ARCHIVE}" ] || [ ! -d "${GLSLANG_DIR}" ] || ! echo "${GLSLA
 fi
 
 export ORG_GRADLE_PROJECT_glslangPath="$GLSLANG_DIR/bin/glslangValidator"
-./gradlew ':buildAll'
+./gradlew --build-cache ':buildAll'
