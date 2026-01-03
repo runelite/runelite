@@ -162,6 +162,7 @@ class FacePrioritySorter
 
 		Arrays.fill(distanceFaceCount, 0, diameter, (char) 0);
 
+		int minFz = diameter, maxFz = 0;
 		for (char faceIdx = 0; faceIdx < faceCount; ++faceIdx)
 		{
 			if (faceColors3[faceIdx] != -2)
@@ -183,6 +184,9 @@ class FacePrioritySorter
 					int distance = radius + (distances[v1] + distances[v2] + distances[v3]) / 3;
 					assert distance >= 0 && distance < diameter;
 					distanceToFaces[distance][distanceFaceCount[distance]++] = faceIdx;
+
+					minFz = Math.min(minFz, distance);
+					maxFz = Math.max(maxFz, distance);
 
 					sceneUploader.computeFaceUvs(model, faceIdx);
 
@@ -248,7 +252,7 @@ class FacePrioritySorter
 		int len = 0;
 		if (faceRenderPriorities == null)
 		{
-			for (int i = diameter - 1; i >= 0; --i)
+			for (int i = maxFz; i >= minFz; --i)
 			{
 				final int cnt = distanceFaceCount[i];
 				if (cnt > 0)
@@ -269,7 +273,7 @@ class FacePrioritySorter
 			Arrays.fill(numOfPriority, 0);
 			Arrays.fill(lt10, 0);
 
-			for (int i = diameter - 1; i >= 0; --i)
+			for (int i = maxFz; i >= minFz; --i)
 			{
 				final int cnt = distanceFaceCount[i];
 				if (cnt > 0)
