@@ -165,11 +165,11 @@ public interface DrawCallbacks
 
 	default void drawDynamic(Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
 	{
-		drawDynamic(-1, worldProjection, scene, tileObject, r, m, orient, x, y, z);
 	}
 
 	default void drawDynamic(int renderThreadId, Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
 	{
+		drawDynamic(worldProjection, scene, tileObject, r, m, orient, x, y, z);
 	}
 
 	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m, int orient, int x, int y, int z)
