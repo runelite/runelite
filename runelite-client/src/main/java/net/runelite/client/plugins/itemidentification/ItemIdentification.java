@@ -70,7 +70,6 @@ enum ItemIdentification
 	PILLAR_FRAG(Type.SEED_SPECIAL, "Pillar", "PIL", ItemID.CORAL_PILLAR_FRAG),
 	UMBRAL_FRAG(Type.SEED_SPECIAL, "Umbral", "UMB", ItemID.CORAL_UMBRAL_FRAG),
 
-
 	ACORN(Type.SEED_TREE, "Oak", "OAK", ItemID.ACORN),
 	WILLOW_SEED(Type.SEED_TREE, "Willow", "WIL", ItemID.WILLOW_SEED),
 	MAPLE_SEED(Type.SEED_TREE, "Maple", "MAP", ItemID.MAPLE_SEED),
