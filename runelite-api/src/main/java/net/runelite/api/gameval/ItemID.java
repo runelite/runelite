@@ -86067,7 +86067,7 @@ public final class ItemID
 	public static final int CARGO_CRATE_CLOTHES_VOID_KNIGHTS_OUTPOST = 32925;
 
 	/**
-	 * Serving platter
+	 * Null
 	 */
 	public static final int XMAS25_SERVING_PLATTER = 32926;
 
@@ -100500,7 +100500,6 @@ public final class ItemID
 		public static final int IRONWOOD_LOGS = 32909;
 		public static final int ROSEWOOD_LOGS = 32912;
 		public static final int JAR_OF_FEATHERS = 32922;
-		public static final int XMAS25_SERVING_PLATTER = 32927;
 		public static final int XMAS25_BIB = 32929;
 		public static final int XMAS25_BEER_BELLY_SWEATER = 32931;
 		public static final int XMAS25_CONTEST_JUMPER = 32933;

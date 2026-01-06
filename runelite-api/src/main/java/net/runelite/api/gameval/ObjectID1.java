@@ -77897,11 +77897,6 @@ class ObjectID1
 	/**
 	 * Table
 	 */
-	public static final int XMAS25_TABLE01_EMPTY01_OP1 = 60577;
-
-	/**
-	 * Table
-	 */
 	public static final int XMAS25_TABLE01_DRINK01 = 60578;
 
 	/**
@@ -77913,10 +77908,6 @@ class ObjectID1
 	 * Table
 	 */
 	public static final int XMAS25_TABLE01_VEGETABLE01 = 60580;
-	public static final int XMAS25_TABLE_1 = 60581;
-	public static final int XMAS25_TABLE_2 = 60582;
-	public static final int XMAS25_TABLE_3 = 60583;
-	public static final int XMAS25_TABLE_4 = 60584;
 
 	/**
 	 * Bar
@@ -77926,17 +77917,7 @@ class ObjectID1
 	/**
 	 * Bar
 	 */
-	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE_INTERACT = 60586;
-
-	/**
-	 * Bar
-	 */
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE2 = 60587;
-
-	/**
-	 * Bar
-	 */
-	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE2_INTERACT = 60588;
 
 	/**
 	 * Bar
@@ -77946,17 +77927,7 @@ class ObjectID1
 	/**
 	 * Bar
 	 */
-	public static final int XMAS25_BLUE_INN_DRINKS_BAR_LEFT_INTERACT = 60590;
-
-	/**
-	 * Bar
-	 */
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_RIGHT = 60591;
-
-	/**
-	 * Bar
-	 */
-	public static final int XMAS25_BLUE_INN_DRINKS_BAR_RIGHT_INTERACT = 60592;
 
 	/**
 	 * Bar
@@ -77966,27 +77937,12 @@ class ObjectID1
 	/**
 	 * Bar
 	 */
-	public static final int XMAS25_BLUE_INN_BAR_MIDDLE_INTERACT = 60594;
-
-	/**
-	 * Bar
-	 */
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE2 = 60595;
 
 	/**
 	 * Bar
 	 */
-	public static final int XMAS25_BLUE_INN_BAR_MIDDLE2_INTERACT = 60596;
-
-	/**
-	 * Bar
-	 */
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE3 = 60597;
-
-	/**
-	 * Bar
-	 */
-	public static final int XMAS25_BLUE_INN_BAR_MIDDLE3_INTERACT = 60598;
 
 	/**
 	 * Bar
@@ -77997,13 +77953,6 @@ class ObjectID1
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_RIGHT = 60600;
-	public static final int XMAS25_BAR_DRINKS_MIDDLE = 60601;
-	public static final int XMAS25_BAR_DRINKS_MIDDLE2 = 60602;
-	public static final int XMAS25_BAR_DRINKS_LEFT = 60603;
-	public static final int XMAS25_BAR_DRINKS_RIGHT = 60604;
-	public static final int XMAS25_BAR_MIDDLE = 60605;
-	public static final int XMAS25_BAR_MIDDLE2 = 60606;
-	public static final int XMAS25_BAR_MIDDLE3 = 60607;
 
 	/**
 	 * Crate
