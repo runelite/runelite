@@ -128,7 +128,7 @@ public class ExaminePlugin extends Plugin
 			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getResponseType(), event.getType());
 			return;
 		}
-		pending.poll();
+		pending.pop();
 
 		log.debug("Got examine type {} {}: {}", pendingExamine.getResponseType(), pendingExamine.getId(), event.getMessage());
 
