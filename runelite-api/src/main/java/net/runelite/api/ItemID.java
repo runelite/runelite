@@ -16021,7 +16021,6 @@ public final class ItemID
 	public static final int STEEL_NAILS_32923 = 32923;
 	public static final int CRATE_OF_ARROWTIPS_32924 = 32924;
 	public static final int CRATE_OF_CLOTHES_32925 = 32925;
-	public static final int SERVING_PLATTER = 32926;
 	public static final int LOVLEY_JUBBLY_BIB = 32928;
 	public static final int BEER_BELLY_SWEATER = 32930;
 	public static final int JAD_JUMPER = 32932;
