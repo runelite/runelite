@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
@@ -139,7 +140,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 					.run();
 			}
 
-			limitsChanged();
+			if (client.getGameState().getState() >= GameState.LOGGED_IN.getState())
+			{
+				limitsChanged();
+			}
 		});
 	}
 
