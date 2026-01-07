@@ -747,8 +747,14 @@ public class OverlayRenderer extends MouseAdapter
 			return;
 		}
 
-		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
-		overlay.getBounds().setSize(dimension);
+		if (overlayDimension != null)
+		{
+			overlay.getBounds().setSize(overlayDimension);
+		}
+		else
+		{
+			overlay.getBounds().setSize(0, 0);
+		}
 	}
 
 	private OverlayPosition getCorrectedOverlayPosition(final Overlay overlay)
