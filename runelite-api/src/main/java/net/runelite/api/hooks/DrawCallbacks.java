@@ -68,9 +68,16 @@ public interface DrawCallbacks
 	 * Enable the {@link Model#getUnlitFaceColors()} method
 	 */
 	int UNLIT_FACE_COLORS = 0x40;
+	int RENDER_THREADS_MASK = 15;
+	int RENDER_THREADS_SHIFT = 7;
 
 	int PASS_OPAQUE = 0;
 	int PASS_ALPHA = 1;
+
+	static int RENDER_THREADS(int num)
+	{
+		return (num & RENDER_THREADS_MASK) << RENDER_THREADS_SHIFT;
+	}
 
 	default void draw(Projection projection, Scene scene, Renderable renderable, int orientation, int x, int y, int z, long hash)
 	{
@@ -158,6 +165,11 @@ public interface DrawCallbacks
 
 	default void drawDynamic(Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
 	{
+	}
+
+	default void drawDynamic(int renderThreadId, Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
+	{
+		drawDynamic(worldProjection, scene, tileObject, r, m, orient, x, y, z);
 	}
 
 	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m, int orient, int x, int y, int z)
