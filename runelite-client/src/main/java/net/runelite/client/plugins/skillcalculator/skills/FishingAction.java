@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
-import java.util.EnumSet;
+import java.util.Collections;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.ANGLERS_OUTFIT;
 
 @AllArgsConstructor
 @Getter
@@ -86,14 +87,18 @@ public enum FishingAction implements ItemSkillAction
 	@Override
 	public Set<FishingBonus> getExcludedSkillBonuses()
 	{
-		final EnumSet<FishingBonus> others = EnumSet.allOf(FishingBonus.class);
-
-		if (this != RAW_GIANT_KRILL && this != RAW_HADDOCK && this != RAW_YELLOWFIN && this != RAW_HALIBUT && this != RAW_BLUEFIN && this != RAW_MARLIN)
+		switch (this)
 		{
-			others.remove(FishingBonus.ANGLERS_OUTFIT);
+			case RAW_GIANT_KRILL:
+			case RAW_HADDOCK:
+			case RAW_YELLOWFIN:
+			case RAW_HALIBUT:
+			case RAW_BLUEFIN:
+			case RAW_MARLIN:
+				return Set.of(ANGLERS_OUTFIT);
+			default:
+				return Collections.emptySet();
 		}
-
-		return others;
 	}
 
 }

@@ -29,7 +29,6 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
-import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -58,14 +57,7 @@ public enum SmithingAction implements ItemSkillAction
 	BRONZE_SQ_SHIELD(ItemID.BRONZE_SQ_SHIELD, 8, 25),
 	BRONZE_WARHAMMER(ItemID.BRONZE_WARHAMMER, 9, 37.5f),
 	BRONZE_BATTLEAXE(ItemID.BRONZE_BATTLEAXE, 10, 37.5f),
-	BRONZE_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_BRONZE, 10, 62.5f)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Bronze keel parts";
-			}
-		},
+	BRONZE_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_BRONZE, 10, 62.5f),
 	BRONZE_CHAINBODY(ItemID.BRONZE_CHAINBODY, 11, 37.5f),
 	BRONZE_KITESHIELD(ItemID.BRONZE_KITESHIELD, 12, 37.5f),
 	BRONZE_CLAWS(ItemID.BRONZE_CLAWS, 13, 25),
@@ -94,14 +86,7 @@ public enum SmithingAction implements ItemSkillAction
 	IRON_LONGSWORD(ItemID.IRON_LONGSWORD, 21, 50),
 	IRON_KNIFE(ItemID.IRON_KNIFE, 22, 25),
 	IRON_FULL_HELM(ItemID.IRON_FULL_HELM, 22, 50),
-	IRON_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_IRON, 22, 125f)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Iron keel parts";
-			}
-		},
+	IRON_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_IRON, 22, 125f),
 	IRON_LIMBS(ItemID.XBOWS_CROSSBOW_LIMBS_IRON, 23, 25),
 	IRON_SQ_SHIELD(ItemID.IRON_SQ_SHIELD, 23, 50),
 	IRON_WARHAMMER(ItemID.IRON_WARHAMMER, 24, 75),
@@ -124,14 +109,7 @@ public enum SmithingAction implements ItemSkillAction
 	STEEL_DART_TIP(ItemID.STEEL_DART_TIP, 34, 37.5f),
 	STEEL_NAILS(ItemID.NAILS, 34, 37.5f),
 	STEEL_SWORD(ItemID.STEEL_SWORD, 34, 37.5f),
-	STEEL_CANNONBALL(ItemID.MCANNONBALL, 35, 25.6f)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Steel cannonball";
-			}
-		},
+	STEEL_CANNONBALL(ItemID.MCANNONBALL, 35, 25.6f),
 	STEEL_ARROWTIPS(ItemID.STEEL_ARROWHEADS, 35, 37.5f),
 	STEEL_HASTA(ItemID.BRUT_STEEL_SPEAR, 35, 75),
 	STEEL_SCIMITAR(ItemID.STEEL_SCIMITAR, 35, 75),
@@ -143,14 +121,7 @@ public enum SmithingAction implements ItemSkillAction
 	STEEL_KNIFE(ItemID.STEEL_KNIFE, 37, 37.5f),
 	STEEL_FULL_HELM(ItemID.STEEL_FULL_HELM, 37, 75),
 	STEEL_SQ_SHIELD(ItemID.STEEL_SQ_SHIELD, 38, 75),
-	STEEL_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_STEEL, 38, 187.5f)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Steel keel parts";
-			}
-		},
+	STEEL_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_STEEL, 38, 187.5f),
 	STEEL_WARHAMMER(ItemID.STEEL_WARHAMMER, 39, 112.5f),
 	GOLD_BAR(ItemID.GOLD_BAR, 40, 22.5f),
 	STEEL_BATTLEAXE(ItemID.STEEL_BATTLEAXE, 40, 112.5f),
@@ -179,14 +150,7 @@ public enum SmithingAction implements ItemSkillAction
 	MITHRIL_JAVELIN_HEADS(ItemID.MITHRIL_JAVELIN_HEAD, 56, 50),
 	MITHRIL_LIMBS(ItemID.XBOWS_CROSSBOW_LIMBS_MITHRIL, 56, 50),
 	MITHRIL_LONGSWORD(ItemID.MITHRIL_LONGSWORD, 56, 100),
-	MITHRIL_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_MITHRIL, 56, 250)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Mithril keel parts";
-			}
-		},
+	MITHRIL_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_MITHRIL, 56, 250),
 	MITHRIL_KNIFE(ItemID.MITHRIL_KNIFE, 57, 50),
 	MITHRIL_FULL_HELM(ItemID.MITHRIL_FULL_HELM, 57, 100),
 	MITHRIL_SQ_SHIELD(ItemID.MITHRIL_SQ_SHIELD, 58, 100),
@@ -211,14 +175,7 @@ public enum SmithingAction implements ItemSkillAction
 	ADAMANTITE_NAILS(ItemID.NAILS_ADAMANT, 74, 62.5f),
 	ADAMANT_DART_TIP(ItemID.ADAMANT_DART_TIP, 74, 62.5f),
 	ADAMANT_SWORD(ItemID.ADAMANT_SWORD, 74, 62.5f),
-	ADAMANT_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_ADAMANT, 74, 312.5f)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Adamant keel parts";
-			}
-		},
+	ADAMANT_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_ADAMANT, 74, 312.5f),
 	ADAMANT_CANNONBALL(ItemID.ADAMANT_CANNONBALL, 75, 42.5f),
 	ADAMANT_ARROWTIPS(ItemID.ADAMANT_ARROWHEADS, 75, 62.5f),
 	ADAMANT_HASTA(ItemID.BRUT_ADAMANT_SPEAR, 75, 125),
@@ -241,14 +198,7 @@ public enum SmithingAction implements ItemSkillAction
 	RUNE_AXE(ItemID.RUNE_AXE, 86, 75),
 	ADAMANT_PLATELEGS(ItemID.ADAMANT_PLATELEGS, 86, 187.5f),
 	ADAMANT_PLATESKIRT(ItemID.ADAMANT_PLATESKIRT, 86, 187.5f),
-	RUNE_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_RUNE, 86, 375)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Rune keel parts";
-			}
-		},
+	RUNE_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_RUNE, 86, 375),
 	RUNE_MACE(ItemID.RUNE_MACE, 87, 75),
 	RUNE_MED_HELM(ItemID.RUNE_MED_HELM, 88, 75),
 	RUNITE_BOLTS_UNF(ItemID.XBOWS_CROSSBOW_BOLTS_RUNITE_UNFEATHERED, 88, 75),
@@ -269,14 +219,7 @@ public enum SmithingAction implements ItemSkillAction
 	RUNE_FULL_HELM(ItemID.RUNE_FULL_HELM, 92, 150),
 	RUNE_SQ_SHIELD(ItemID.RUNE_SQ_SHIELD, 93, 150),
 	RUNE_WARHAMMER(ItemID.RUNE_WARHAMMER, 94, 225),
-	DRAGON_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_DRAGON, 94, 700)
-		{
-			@Override
-			public String getName(final ItemManager itemManager)
-			{
-				return "Dragon keel parts";
-			}
-		},
+	DRAGON_KEEL_PARTS(ItemID.SAILING_BOAT_KEEL_PART_DRAGON, 94, 700),
 	RUNE_BATTLEAXE(ItemID.RUNE_BATTLEAXE, 95, 225),
 	RUNE_CHAINBODY(ItemID.RUNE_CHAINBODY, 96, 225),
 	RUNE_KITESHIELD(ItemID.RUNE_KITESHIELD, 97, 225),
