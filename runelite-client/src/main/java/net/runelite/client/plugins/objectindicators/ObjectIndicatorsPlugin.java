@@ -211,6 +211,11 @@ public class ObjectIndicatorsPlugin extends Plugin
 		points.clear();
 
 		WorldView wv = client.getTopLevelWorldView();
+		if (wv == null)
+		{
+			return;
+		}
+
 		loadPoints(wv);
 
 		for (WorldEntity we : wv.worldEntities())
