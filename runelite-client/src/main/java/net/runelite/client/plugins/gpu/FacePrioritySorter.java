@@ -52,7 +52,7 @@ class FacePrioritySorter
 	private static final int[] vertexBuffer;
 
 	static final int MAX_VERTEX_COUNT = 6500;
-	static final int MAX_FACE_COUNT = 6500;
+	static final int MAX_FACE_COUNT = 8192; // was 6500
 	private static final int MAX_DIAMETER = 6000;
 	private static final int ZSORT_GROUP_SIZE = 1024; // was 512
 	private static final int MAX_FACES_PER_PRIORITY = 4000; // was 2500
@@ -94,7 +94,7 @@ class FacePrioritySorter
 		final float[] verticesY = model.getVerticesY();
 		final float[] verticesZ = model.getVerticesZ();
 
-		final int faceCount = model.getFaceCount();
+		final int faceCount = Math.min(model.getFaceCount(), MAX_FACE_COUNT);
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
 		final int[] indices3 = model.getFaceIndices3();
