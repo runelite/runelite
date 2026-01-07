@@ -494,19 +494,38 @@ class Zone
 		elementBufferId = 0;
 	}
 
+	static class AlphaModelComparator implements Comparator<AlphaModel>
+	{
+		int zx, zz;
+		int cx, cy, cz;
+
+		@Override
+		public int compare(AlphaModel o1, AlphaModel o2)
+		{
+			return Integer.compare(z(o2), z(o1));
+		}
+
+		private int z(AlphaModel m)
+		{
+			final int mx = (m.x + ((zx - m.zofx) << 10));
+			final int mz = (m.z + ((zz - m.zofz) << 10));
+			return (mx - cx) * (mx - cx) +
+				(m.y - cy) * (m.y - cy) +
+				(mz - cz) * (mz - cz);
+		}
+	}
+
+	private static final AlphaModelComparator alphaModelComparator = new AlphaModelComparator();
+
 	void alphaSort(int zx, int zz, int cx, int cy, int cz)
 	{
-		alphaModels.sort(Comparator.comparingInt((AlphaModel m) ->
-					{
-						final int mx = (m.x + ((zx - m.zofx) << 10));
-						final int mz = (m.z + ((zz - m.zofz) << 10));
-						return (mx - cx) * (mx - cx) +
-							(m.y - cy) * (m.y - cy) +
-							(mz - cz) * (mz - cz);
-					}
-				)
-				.reversed()
-		);
+		alphaModelComparator.zx = zx;
+		alphaModelComparator.zz = zz;
+		alphaModelComparator.cx = cx;
+		alphaModelComparator.cy = cy;
+		alphaModelComparator.cz = cz;
+
+		alphaModels.sort(alphaModelComparator);
 	}
 
 	void renderAlpha(int zx, int zz, int cyaw, int cpitch, int minLevel, int currentLevel, int maxLevel, int level, Set<Integer> hiddenRoofIds, boolean useStaticUnsorted)
