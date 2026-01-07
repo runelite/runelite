@@ -94,7 +94,7 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
 	);
 
-	private static final Duration WAIT = Duration.ofSeconds(5);
+	private static final Duration WAIT = Duration.ofMillis(9600);
 
 	@Inject
 	private Client client;
