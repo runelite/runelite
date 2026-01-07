@@ -906,20 +906,30 @@ public class OverlayRenderer extends MouseAdapter
 	 */
 	private Point clampOverlayLocation(int overlayX, int overlayY, int overlayWidth, int overlayHeight, Overlay overlay)
 	{
+		int px, py, pw, ph;
 		Rectangle parentBounds = overlay.getParentBounds();
 		if (parentBounds == null || parentBounds.isEmpty())
 		{
 			// If no bounds are set, use the full client bounds
 			Dimension dim = client.getRealDimensions();
-			parentBounds = new Rectangle(0, 0, dim.width, dim.height);
+			px = py = 0;
+			pw = dim.width;
+			ph = dim.height;
+		}
+		else
+		{
+			px = parentBounds.x;
+			py = parentBounds.y;
+			pw = parentBounds.width;
+			ph = parentBounds.height;
 		}
 
 		// Constrain overlay position to be within the parent bounds
 		return new Point(
-			Ints.constrainToRange(overlayX, parentBounds.x,
-				Math.max(parentBounds.x, parentBounds.x + parentBounds.width - overlayWidth)),
-			Ints.constrainToRange(overlayY, parentBounds.y,
-				Math.max(parentBounds.y, parentBounds.y + parentBounds.height - overlayHeight))
+			Ints.constrainToRange(overlayX, px,
+				Math.max(px, px + pw - overlayWidth)),
+			Ints.constrainToRange(overlayY, py,
+				Math.max(py, py + ph - overlayHeight))
 		);
 	}
 }
