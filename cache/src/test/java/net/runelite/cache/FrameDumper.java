@@ -72,8 +72,8 @@ public class FrameDumper
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index frameIndex = store.getIndex(IndexType.FRAMES);
-			Index framemapIndex = store.getIndex(IndexType.FRAMEMAPS);
+			Index frameIndex = store.getIndex(IndexType.ANIMATIONS);
+			Index framemapIndex = store.getIndex(IndexType.SKELETONS);
 
 			for (Archive archive : frameIndex.getArchives())
 			{

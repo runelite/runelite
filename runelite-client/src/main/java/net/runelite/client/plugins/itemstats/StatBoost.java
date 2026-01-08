@@ -26,6 +26,11 @@ package net.runelite.client.plugins.itemstats;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.Skill;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.api.Client;
 
@@ -55,6 +60,37 @@ public abstract class StatBoost extends SingleEffect
 		boolean hitCap = false;
 
 		int calcedDelta = heals(client);
+		if (calcedDelta > 0)
+		{
+			final String statName = stat.getName();
+			final int meleeMastery = client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MELEE_PROGRESS);
+			final int rangedMastery = client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_RANGED_PROGRESS);
+			final int magicMastery = client.getVarbitValue(VarbitID.LEAGUE_COMBAT_MASTERY_MAGIC_PROGRESS);
+
+			if (statName.equals(Skill.HITPOINTS.getName()))
+			{
+				float multiplier = 1;
+
+				if (meleeMastery >= 2 || rangedMastery >= 2 || magicMastery >= 2)
+				{
+					multiplier += 0.2;
+				}
+
+				final ItemContainer equipment = client.getItemContainer(InventoryID.WORN);
+				if (equipment != null && equipment.contains(ItemID.SUNLIGHT_CUFFS))
+				{
+					multiplier += 1;
+				}
+
+				calcedDelta *= multiplier;
+			}
+			else if ((meleeMastery >= 5 || rangedMastery >= 5 || magicMastery >= 5)
+				&& statName.equals(Skill.PRAYER.getName()))
+			{
+				calcedDelta *= 1.25;
+			}
+		}
+
 		if (boost && calcedDelta > 0)
 		{
 			max += calcedDelta;

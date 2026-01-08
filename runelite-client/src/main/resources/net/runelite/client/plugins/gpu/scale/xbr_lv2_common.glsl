@@ -24,14 +24,13 @@
    Incorporates some of the ideas from SABR shader. Thanks to Joshua Street.
 */
 
-struct XBRTable
-{
-    vec2 texCoord;
-    vec4 t1;
-    vec4 t2;
-    vec4 t3;
-    vec4 t4;
-    vec4 t5;
-    vec4 t6;
-    vec4 t7;
+struct XBRTable {
+  vec2 texCoord;
+  vec4 t1;
+  vec4 t2;
+  vec4 t3;
+  vec4 t4;
+  vec4 t5;
+  vec4 t6;
+  vec4 t7;
 };

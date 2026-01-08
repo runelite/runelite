@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.clocks;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Comparators;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import joptsimple.internal.Strings;
 import lombok.Getter;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -53,6 +53,9 @@ public class ClockManager
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private Gson gson;
+
 	@Getter
 	private final List<Timer> timers = new CopyOnWriteArrayList<>();
 
@@ -60,7 +63,7 @@ public class ClockManager
 	private final List<Stopwatch> stopwatches = new ArrayList<>();
 
 	@Getter
-	private ClockTabPanel clockTabPanel = new ClockTabPanel(this);
+	private final ClockTabPanel clockTabPanel = new ClockTabPanel(this);
 
 	void addTimer()
 	{
@@ -118,10 +121,7 @@ public class ClockManager
 				timer.pause();
 				changed = true;
 
-				if (config.timerNotification())
-				{
-					notifier.notify("[" + timer.getName() + "] has finished counting down.");
-				}
+				notifier.notify(config.timerNotification(), "[" + timer.getName() + "] has finished counting down.");
 
 				if (timer.isLoop())
 				{
@@ -183,7 +183,6 @@ public class ClockManager
 
 		if (!Strings.isNullOrEmpty(timersJson))
 		{
-			final Gson gson = new Gson();
 			final List<Timer> timers = gson.fromJson(timersJson, new TypeToken<ArrayList<Timer>>()
 			{
 			}.getType());
@@ -200,7 +199,6 @@ public class ClockManager
 
 		if (!Strings.isNullOrEmpty(stopwatchesJson))
 		{
-			final Gson gson = new Gson();
 			final List<Stopwatch> stopwatches = gson.fromJson(stopwatchesJson, new TypeToken<ArrayList<Stopwatch>>()
 			{
 			}.getType());
@@ -227,14 +225,12 @@ public class ClockManager
 
 	void saveTimers()
 	{
-		final Gson gson = new Gson();
 		final String json = gson.toJson(timers);
 		configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.TIMERS, json);
 	}
 
 	void saveStopwatches()
 	{
-		final Gson gson = new Gson();
 		final String json = gson.toJson(stopwatches);
 		configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.STOPWATCHES, json);
 	}

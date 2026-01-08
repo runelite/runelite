@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class CannonCounter extends InfoBox
+class CannonCounter extends InfoBox
 {
 	private final CannonPlugin plugin;
 

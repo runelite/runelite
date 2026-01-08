@@ -24,10 +24,14 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
+import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	name = "Inventory Viewer",
@@ -38,20 +42,43 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class InventoryViewerPlugin extends Plugin
 {
 	@Inject
+	private InventoryViewerConfig config;
+
+	@Inject
 	private InventoryViewerOverlay overlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private KeyManager keyManager;
+
+	@Provides
+	InventoryViewerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InventoryViewerConfig.class);
+	}
+
 	@Override
 	public void startUp()
 	{
 		overlayManager.add(overlay);
+		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		overlayManager.remove(overlay);
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.toggleKeybind())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			overlay.toggle();
+		}
+	};
 }

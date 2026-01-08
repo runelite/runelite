@@ -67,8 +67,8 @@ public class TrackDumperTest
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.TRACK1);
-			Index index2 = store.getIndex(IndexType.TRACK2);
+			Index index = store.getIndex(IndexType.MUSIC_TRACKS);
+			Index index2 = store.getIndex(IndexType.MUSIC_JINGLES);
 
 			for (Archive archive : index.getArchives())
 			{

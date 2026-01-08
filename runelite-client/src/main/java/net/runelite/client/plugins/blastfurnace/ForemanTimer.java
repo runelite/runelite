@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.blastfurnace;
 
 import java.time.temporal.ChronoUnit;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
@@ -35,7 +35,7 @@ class ForemanTimer extends Timer
 
 	ForemanTimer(BlastFurnacePlugin plugin, ItemManager itemManager)
 	{
-		super(10, ChronoUnit.MINUTES, itemManager.getImage(ItemID.COAL_BAG), plugin);
+		super(10, ChronoUnit.MINUTES, itemManager.getImage(ItemID.CERT_ARRAVSHIELD1), plugin);
 
 		setTooltip(TOOLTIP_TEXT);
 	}

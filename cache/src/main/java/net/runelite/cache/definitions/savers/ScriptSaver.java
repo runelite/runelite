@@ -28,9 +28,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.OutputStream;
+import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
-import static net.runelite.cache.script.Opcodes.POP_STRING;
+import static net.runelite.cache.script.Opcodes.POP_OBJECT;
 import static net.runelite.cache.script.Opcodes.RETURN;
 
 public class ScriptSaver
@@ -48,24 +49,34 @@ public class ScriptSaver
 		{
 			int opcode = instructions[i];
 			out.writeShort(opcode);
-			if (opcode == SCONST)
+			switch (opcode)
 			{
-				out.writeString(stringOperands[i]);
-			}
-			else if (opcode < 100 && opcode != RETURN && opcode != POP_INT && opcode != POP_STRING)
-			{
-				out.writeInt(intOperands[i]);
-			}
-			else
-			{
-				out.writeByte(intOperands[i]);
+				case SCONST:
+					out.writeString(stringOperands[i]);
+					break;
+				case RETURN:
+				case POP_INT:
+				case POP_OBJECT:
+				case PUSH_NULL:
+					out.writeByte(intOperands[i]);
+					break;
+				default:
+					if (opcode < 100)
+					{
+						out.writeInt(intOperands[i]);
+					}
+					else
+					{
+						out.writeByte(intOperands[i]);
+					}
+					break;
 			}
 		}
 		out.writeInt(instructions.length);
 		out.writeShort(script.getLocalIntCount());
-		out.writeShort(script.getLocalStringCount());
-		out.writeShort(script.getIntStackCount());
-		out.writeShort(script.getStringStackCount());
+		out.writeShort(script.getLocalObjCount());
+		out.writeShort(script.getIntArgCount());
+		out.writeShort(script.getObjArgCount());
 		int switchStart = out.getOffset();
 		if (switches == null)
 		{

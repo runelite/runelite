@@ -24,11 +24,30 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.io.InputStream;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class SequenceLoader
 {
+	public static final int REV_220_SEQ_ARCHIVE_REV = 1141;
+	public static final int REV_226_SEQ_ARCHIVE_REV = 1268;
+
+	private boolean rev220FrameSounds = true;
+	private boolean rev226 = true;
+
+	public SequenceLoader configureForRevision(int rev)
+	{
+		this.rev220FrameSounds = rev > REV_220_SEQ_ARCHIVE_REV;
+		this.rev226 = rev > REV_226_SEQ_ARCHIVE_REV;
+		return this;
+	}
+
 	public SequenceDefinition load(int id, byte[] b)
 	{
 		SequenceDefinition def = new SequenceDefinition(id);
@@ -55,11 +74,11 @@ public class SequenceLoader
 		if (opcode == 1)
 		{
 			var3 = stream.readUnsignedShort();
-			def.frameLenghts = new int[var3];
+			def.frameLengths = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameLenghts[var4] = stream.readUnsignedShort();
+				def.frameLengths[var4] = stream.readUnsignedShort();
 			}
 
 			def.frameIDs = new int[var3];
@@ -137,16 +156,97 @@ public class SequenceLoader
 				def.chatFrameIds[var4] += stream.readUnsignedShort() << 16;
 			}
 		}
-		else if (opcode == 13)
+		else if (opcode == 13 && !rev226)
 		{
 			var3 = stream.readUnsignedByte();
-			def.frameSounds = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameSounds[var4] = stream.read24BitInt();
+				def.frameSounds.put(var4, this.readFrameSound(stream));
 			}
 		}
+		else if (opcode == (rev226 ? 13 : 14))
+		{
+			def.animMayaID = stream.readInt();
+		}
+		else if (opcode == (rev226 ? 14 : 15))
+		{
+			var3 = stream.readUnsignedShort();
 
+			for (var4 = 0; var4 < var3; ++var4)
+			{
+				int frame = stream.readUnsignedShort();
+				def.frameSounds.put(frame, this.readFrameSound(stream));
+			}
+		}
+		else if (opcode == (rev226 ? 15 : 16))
+		{
+			def.animMayaStart = stream.readUnsignedShort();
+			def.animMayaEnd = stream.readUnsignedShort();
+		}
+		else if (opcode == 16)
+		{
+			def.verticalOffset = stream.readByte();
+		}
+		else if (opcode == 17)
+		{
+			def.animMayaMasks = new boolean[256];
+
+			var3 = stream.readUnsignedByte();
+
+			for (var4 = 0; var4 < var3; ++var4)
+			{
+				def.animMayaMasks[stream.readUnsignedByte()] = true;
+			}
+		}
+		else if (opcode == 18)
+		{
+			def.debugName = stream.readString();
+		}
+		else if (opcode == 19)
+		{
+			def.soundsCrossWorldView = true;
+		}
+		else
+		{
+			log.warn("Unrecognized opcode {}", opcode);
+		}
+	}
+
+	private SequenceDefinition.Sound readFrameSound(InputStream stream)
+	{
+		int id;
+		int loops;
+		int location;
+		int retain;
+		int weight = -1;
+		if (!rev220FrameSounds)
+		{
+			int bits = stream.read24BitInt();
+			location = bits & 15;
+			id = bits >> 8;
+			loops = bits >> 4 & 7;
+			retain = 0;
+		}
+		else
+		{
+			id = stream.readUnsignedShort();
+			if (rev226)
+			{
+				weight = stream.readUnsignedByte();
+			}
+			loops = stream.readUnsignedByte();
+			location = stream.readUnsignedByte();
+			retain = stream.readUnsignedByte();
+		}
+
+		if (id >= 1 && loops >= 1 && location >= 0 && retain >= 0)
+		{
+			return new SequenceDefinition.Sound(id, loops, location, retain, weight);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }

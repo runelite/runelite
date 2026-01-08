@@ -27,16 +27,13 @@ package net.runelite.client.plugins.mta.graveyard;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.ANIMALS_BONES;
-import static net.runelite.api.ItemID.ANIMALS_BONES_6905;
-import static net.runelite.api.ItemID.ANIMALS_BONES_6906;
-import static net.runelite.api.ItemID.ANIMALS_BONES_6907;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.mta.MTAConfig;
@@ -100,13 +97,13 @@ public class GraveyardRoom extends MTARoom
 
 		ItemContainer container = event.getItemContainer();
 
-		if (container == client.getItemContainer(InventoryID.INVENTORY))
+		if (container == client.getItemContainer(InventoryID.INV))
 		{
 			this.score = score(container.getItems());
 
 			if (counter == null)
 			{
-				BufferedImage image = itemManager.getImage(ANIMALS_BONES);
+				BufferedImage image = itemManager.getImage(ItemID.MAGICTRAINING_BONES1);
 				counter = new GraveyardCounter(image, plugin);
 				infoBoxManager.addInfoBox(counter);
 			}
@@ -135,13 +132,13 @@ public class GraveyardRoom extends MTARoom
 	{
 		switch (id)
 		{
-			case ANIMALS_BONES:
+			case ItemID.MAGICTRAINING_BONES1:
 				return 1;
-			case ANIMALS_BONES_6905:
+			case ItemID.MAGICTRAINING_BONES2:
 				return 2;
-			case ANIMALS_BONES_6906:
+			case ItemID.MAGICTRAINING_BONES3:
 				return 3;
-			case ANIMALS_BONES_6907:
+			case ItemID.MAGICTRAINING_BONES4:
 				return 4;
 			default:
 				return 0;

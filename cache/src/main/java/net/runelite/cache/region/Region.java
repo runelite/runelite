@@ -43,10 +43,10 @@ public class Region
 
 	private final int[][][] tileHeights = new int[Z][X][Y];
 	private final byte[][][] tileSettings = new byte[Z][X][Y];
-	private final byte[][][] overlayIds = new byte[Z][X][Y];
+	private final short[][][] overlayIds = new short[Z][X][Y];
 	private final byte[][][] overlayPaths = new byte[Z][X][Y];
 	private final byte[][][] overlayRotations = new byte[Z][X][Y];
-	private final byte[][][] underlayIds = new byte[Z][X][Y];
+	private final short[][][] underlayIds = new short[Z][X][Y];
 
 	private final List<Location> locations = new ArrayList<>();
 
@@ -154,7 +154,7 @@ public class Region
 
 	public int getOverlayId(int z, int x, int y)
 	{
-		return overlayIds[z][x][y] & 0xFF;
+		return overlayIds[z][x][y] & 0x7FFF;
 	}
 
 	public byte getOverlayPath(int z, int x, int y)
@@ -169,7 +169,7 @@ public class Region
 
 	public int getUnderlayId(int z, int x, int y)
 	{
-		return underlayIds[z][x][y] & 0xFF;
+		return underlayIds[z][x][y] & 0x7FFF;
 	}
 
 	public List<Location> getLocations()

@@ -26,17 +26,17 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @AllArgsConstructor
 enum LootTrackerMapping
 {
-	CLUE_SCROLL_BEGINNER("Clue scroll (beginner)", ItemID.CLUE_SCROLL_BEGINNER),
-	CLUE_SCROLL_EASY("Clue scroll (easy)", ItemID.CLUE_SCROLL_EASY),
-	CLUE_SCROLL_MEDIUM("Clue scroll (medium)", ItemID.CLUE_SCROLL_MEDIUM),
-	CLUE_SCROLL_HARD("Clue scroll (hard)", ItemID.CLUE_SCROLL_HARD),
-	CLUE_SCROLL_ELITE("Clue scroll (elite)", ItemID.CLUE_SCROLL_ELITE),
-	CLUE_SCROLL_MASTER("Clue scroll (master)", ItemID.CLUE_SCROLL_MASTER);
+	CLUE_SCROLL_BEGINNER("Clue scroll (beginner)", ItemID.TRAIL_CLUE_BEGINNER),
+	CLUE_SCROLL_EASY("Clue scroll (easy)", ItemID.TRAIL_CLUE_EASY_SIMPLE001),
+	CLUE_SCROLL_MEDIUM("Clue scroll (medium)", ItemID.TRAIL_CLUE_MEDIUM_SEXTANT001),
+	CLUE_SCROLL_HARD("Clue scroll (hard)", ItemID.TRAIL_CLUE_HARD_MAP001),
+	CLUE_SCROLL_ELITE("Clue scroll (elite)", ItemID.TRAIL_ELITE_EMOTE_EXP1),
+	CLUE_SCROLL_MASTER("Clue scroll (master)", ItemID.TRAIL_CLUE_MASTER);
 
 	private final String name;
 	private final int baseId;

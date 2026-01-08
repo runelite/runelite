@@ -47,16 +47,13 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
-class PluginListItem extends JPanel
+class PluginListItem extends JPanel implements SearchablePlugin
 {
-	private static final ImageIcon CONFIG_ICON;
-	private static final ImageIcon CONFIG_ICON_HOVER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
 
@@ -69,15 +66,12 @@ class PluginListItem extends JPanel
 	private final List<String> keywords = new ArrayList<>();
 
 	private final JToggleButton pinButton;
-	private final JToggleButton onOffToggle;
+	private final PluginToggleButton onOffToggle;
 
 	static
 	{
-		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
-		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
-		CONFIG_ICON = new ImageIcon(configIcon);
+		BufferedImage onStar = ImageUtil.loadImageResource(ConfigPanel.class, "star_on.png");
 		ON_STAR = new ImageIcon(onStar);
-		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(configIcon, -100));
 
 		BufferedImage offStar = ImageUtil.luminanceScale(
 			ImageUtil.grayscaleImage(onStar),
@@ -94,13 +88,16 @@ class PluginListItem extends JPanel
 		Collections.addAll(keywords, pluginConfig.getName().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getDescription().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getTags());
-		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
-		if (mf != null)
+		String internalName = pluginConfig.getInternalPluginHubName();
+		if (internalName != null)
 		{
-			keywords.add(mf.getInternalName());
+			keywords.add("pluginhub");
+			keywords.add(internalName);
 		}
-
-		final List<JMenuItem> popupMenuItems = new ArrayList<>();
+		else
+		{
+			keywords.add("plugin"); // we don't want searching plugin to only show hub plugins
+		}
 
 		setLayout(new BorderLayout(3, 0));
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
@@ -131,10 +128,9 @@ class PluginListItem extends JPanel
 		add(buttonPanel, BorderLayout.LINE_END);
 
 		JMenuItem configMenuItem = null;
-		if (pluginConfig.hasConfigurables())
+		if (pluginConfig.getConfigDescriptor() != null)
 		{
-			JButton configButton = new JButton(CONFIG_ICON);
-			configButton.setRolloverIcon(CONFIG_ICON_HOVER);
+			JButton configButton = new JButton(ConfigPanel.CONFIG_ICON);
 			SwingUtil.removeButtonDecorations(configButton);
 			configButton.setPreferredSize(new Dimension(25, 0));
 			configButton.setVisible(false);
@@ -142,7 +138,7 @@ class PluginListItem extends JPanel
 
 			configButton.addActionListener(e ->
 			{
-				configButton.setIcon(CONFIG_ICON);
+				configButton.setIcon(ConfigPanel.CONFIG_ICON);
 				openGroupConfigPanel();
 			});
 
@@ -154,20 +150,21 @@ class PluginListItem extends JPanel
 		}
 
 		JMenuItem uninstallItem = null;
-		if (mf != null)
+		if (internalName != null)
 		{
 			uninstallItem = new JMenuItem("Uninstall");
-			uninstallItem.addActionListener(ev -> pluginListPanel.getExternalPluginManager().remove(mf.getInternalName()));
+			uninstallItem.addActionListener(ev -> pluginListPanel.getExternalPluginManager().remove(internalName));
 		}
 
 		addLabelPopupMenu(nameLabel, configMenuItem, pluginConfig.createSupportMenuItem(), uninstallItem);
 		add(nameLabel, BorderLayout.CENTER);
 
 		onOffToggle = new PluginToggleButton();
+		onOffToggle.setConflicts(pluginConfig.getConflicts());
 		buttonPanel.add(onOffToggle);
 		if (pluginConfig.getPlugin() != null)
 		{
-			onOffToggle.addItemListener(i ->
+			onOffToggle.addActionListener(i ->
 			{
 				if (onOffToggle.isSelected())
 				{
@@ -185,7 +182,14 @@ class PluginListItem extends JPanel
 		}
 	}
 
-	boolean isPinned()
+	@Override
+	public String getSearchableName()
+	{
+		return pluginConfig.getName();
+	}
+
+	@Override
+	public boolean isPinned()
 	{
 		return pinButton.isSelected();
 	}

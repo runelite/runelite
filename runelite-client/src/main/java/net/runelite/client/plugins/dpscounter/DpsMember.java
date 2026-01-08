@@ -62,7 +62,7 @@ class DpsMember
 			return 0;
 		}
 
-		return (float) damage / (float) diff;
+		return damage / (float) diff;
 	}
 
 	void pause()

@@ -34,10 +34,9 @@ import net.runelite.api.coords.WorldPoint;
 @Getter
 class TreeRespawn
 {
-	private final Tree tree;
+	private final WorldPoint worldLocation;
 	private final int lenX;
 	private final int lenY;
-	private final WorldPoint worldLocation;
 	private final Instant startTime;
 	private final int respawnTime;
 

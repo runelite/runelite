@@ -1,0 +1,85 @@
+#
+# Copyright (c) 2024, LlemonDuck <napkinorton@gmail.com>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+[versions]
+rs = "235"
+cache = "165"
+
+flatlaf = "3.2.5-rl4"
+guice = "4.1.0"
+lombok = "1.18.30"
+logback = "1.2.9"
+lwjgl = "3.3.2"
+slf4j = "1.7.25"
+antlr = "4.13.1"
+
+
+[libraries]
+rs-vanilla = { module = "net.runelite.rs:vanilla", version.ref = "rs" }
+rs-cache = { module = "net.runelite.rs:cache", version.ref = "cache" }
+
+flatlaf-core = { module = "net.runelite:flatlaf", version.ref = "flatlaf" }
+flatlaf-extras = { module = "net.runelite:flatlaf-extras", version.ref = "flatlaf" }
+rl-http-api = "net.runelite.arn:http-api:1.2.21"
+rl-awt = "net.runelite:rlawt:1.7"
+rl-discord = "net.runelite:discord:1.4"
+rl-orange = "net.runelite:orange-extensions:1.1"
+
+antlr-core = { module = "org.antlr:antlr4", version.ref="antlr" }
+antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref="antlr" }
+commons-compress = "org.apache.commons:commons-compress:1.10"
+commons-text = "org.apache.commons:commons-text:1.2"
+commons-cli = "commons-cli:commons-cli:1.3.1"
+fife-rsyntaxtextarea = "com.fifesoft:rsyntaxtextarea:3.1.2"
+fife-autocomplete = "com.fifesoft:autocomplete:3.1.1"
+findbugs = "com.google.code.findbugs:jsr305:3.0.2"
+gson = "com.google.code.gson:gson:2.8.5"
+guava = "com.google.guava:guava:23.2-jre"
+guice-core = { module = "com.google.inject:guice", version.ref = "guice" }
+guice-testlib = { module = "com.google.inject.extensions:guice-testlib", version.ref = "guice" }
+guice-grapher = { module = "com.google.inject.extensions:guice-grapher", version.ref = "guice" }
+hamcrest = "org.hamcrest:hamcrest-library:1.3"
+javapoet = "com.squareup:javapoet:1.13.0"
+javax-inject = "javax.inject:javax.inject:1"
+jetbrains-annotations = "org.jetbrains:annotations:23.0.0"
+jna-core = "net.java.dev.jna:jna:5.9.0"
+jna-platform = "net.java.dev.jna:jna-platform:5.9.0"
+jopt = "net.sf.jopt-simple:jopt-simple:5.0.1"
+junit = "junit:junit:4.12"
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
+lwjgl-core = { module = "org.lwjgl:lwjgl", version.ref = "lwjgl" }
+lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl", version.ref = "lwjgl" }
+lwjgl-opencl = { module = "org.lwjgl:lwjgl-opencl", version.ref = "lwjgl" }
+mockito = "org.mockito:mockito-core:3.1.0"
+okhttp-mockserver = "com.squareup.okhttp3:mockwebserver:3.14.9"
+protobuf = "com.google.protobuf:protobuf-javalite:3.21.12"
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+tomlj = "org.tomlj:tomlj:1.1.0"
+
+
+
+[plugins]
+lombok = { id = "io.freefair.lombok", version = "8.10.2" }

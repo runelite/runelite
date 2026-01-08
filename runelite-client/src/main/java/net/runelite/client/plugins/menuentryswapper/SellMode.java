@@ -24,18 +24,11 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum SellMode
 {
-	OFF(null),
-	SELL_1("sell 1"),
-	SELL_5("sell 5"),
-	SELL_10("sell 10"),
-	SELL_50("sell 50");
-
-	private final String option;
+	OFF,
+	SELL_1,
+	SELL_5,
+	SELL_10,
+	SELL_50;
 }

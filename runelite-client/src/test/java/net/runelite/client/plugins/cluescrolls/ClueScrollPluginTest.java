@@ -30,26 +30,53 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
+import net.runelite.api.IndexedObjectSet;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
+import net.runelite.api.Scene;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.plugins.banktags.BankTagsService;
+import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,6 +88,14 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	Scene scene;
+
+	@Mock
+	@Bind
+	ClientThread clientThread;
 
 	@Inject
 	ClueScrollPlugin plugin;
@@ -81,40 +116,26 @@ public class ClueScrollPluginTest
 	@Bind
 	ItemManager itemManager;
 
+	@Mock
+	@Bind
+	TagManager tagManager;
+
+	@Mock
+	@Bind
+	ConfigManager configManager;
+
+	@Mock
+	@Bind
+	ChatboxPanelManager chatboxPanelManager;
+
+	@Mock
+	@Bind
+	BankTagsService bankTagsService;
+
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-	}
-
-	@Test
-	public void getGetMirrorPoint()
-	{
-		WorldPoint point, converted;
-
-		// Zalcano's entrance portal
-		point = new WorldPoint(3282, 6058, 0);
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertNotEquals(point, converted);
-
-		// Elven Crystal Chest, which is upstairs
-		point = new WorldPoint(3273, 6082, 2);
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertNotEquals(point, converted);
-
-		// Around the area of the Elite coordinate clue
-		point = new WorldPoint(2185, 3280, 0);
-		// To overworld
-		converted = ClueScrollPlugin.getMirrorPoint(point, true);
-		assertEquals(point, converted);
-		// To real
-		converted = ClueScrollPlugin.getMirrorPoint(point, false);
-		assertNotEquals(point, converted);
-
-		// Brugsen Bursen, Grand Exchange
-		point = new WorldPoint(3165, 3477, 0);
-		converted = ClueScrollPlugin.getMirrorPoint(point, false);
-		assertEquals(point, converted);
 	}
 
 	@Test
@@ -126,10 +147,14 @@ public class ClueScrollPluginTest
 		hotColdMessage.setType(ChatMessageType.GAMEMESSAGE);
 		final Player localPlayer = mock(Player.class);
 
-		when(client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT)).thenReturn(clueWidget);
+		when(client.getWidget(InterfaceID.TrailCluetext.TEXT)).thenReturn(clueWidget);
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 		when(client.getPlane()).thenReturn(0);
-		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
+		WorldView wv = mock(WorldView.class);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
+		IndexedObjectSet npcs = mock(IndexedObjectSet.class);
+		when(npcs.iterator()).thenReturn(Collections.emptyIterator());
+		when(wv.npcs()).thenReturn(npcs);
 		when(config.displayHintArrows()).thenReturn(true);
 
 		// The hint arrow should be reset each game tick from when the clue is read onward
@@ -137,7 +162,15 @@ public class ClueScrollPluginTest
 		int clueSetupHintArrowClears = 0;
 
 		// Initialize a beginner hot-cold clue (which will have an end point of LUMBRIDGE_COW_FIELD)
-		plugin.onGameTick(new GameTick());
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(InterfaceID.TRAIL_CLUETEXT);
+		plugin.onWidgetLoaded(widgetLoaded);
+
+		// clientthread callback
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		captor.getValue().run();
+
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 
 		// Perform the first hot-cold check in Lumbridge near sheep pen (get 2 possible points: LUMBRIDGE_COW_FIELD and DRAYNOR_WHEAT_FIELD)
@@ -147,8 +180,10 @@ public class ClueScrollPluginTest
 
 		// Move to SW of DRAYNOR_WHEAT_FIELD (hint arrow should be visible here)
 		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(3105, 3265, 0));
-		when(client.getBaseX()).thenReturn(3056);
-		when(client.getBaseY()).thenReturn(3216);
+		when(wv.getBaseX()).thenReturn(3056);
+		when(wv.getBaseY()).thenReturn(3216);
+		when(wv.getSizeX()).thenReturn(104);
+		when(wv.getSizeY()).thenReturn(104);
 		plugin.onGameTick(new GameTick());
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client).setHintArrow(HotColdLocation.DRAYNOR_WHEAT_FIELD.getWorldPoint());
@@ -162,5 +197,112 @@ public class ClueScrollPluginTest
 		// scene
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client, times(1)).setHintArrow(any(WorldPoint.class));
+	}
+
+	@Test
+	public void testSTASHMarkerPersistence()
+	{
+		WorldView wv = mock(WorldView.class);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
+		IndexedObjectSet npcs = mock(IndexedObjectSet.class);
+		when(npcs.iterator()).thenReturn(Collections.emptyIterator());
+		when(wv.npcs()).thenReturn(npcs);
+
+		// Set up emote clue
+		final Widget clueWidget = mock(Widget.class);
+		when(clueWidget.getText()).thenReturn("Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.");
+		when(client.getWidget(InterfaceID.TrailCluetext.TEXT)).thenReturn(clueWidget);
+
+		// open clue
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(InterfaceID.TRAIL_CLUETEXT);
+		plugin.onWidgetLoaded(widgetLoaded);
+
+		// clientthread callback
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		captor.getValue().run();
+
+		// Simulate clicking on the STASH
+		MenuOptionClicked menuOptionClicked = mock(MenuOptionClicked.class);
+		when(menuOptionClicked.getMenuOption()).thenReturn("Search");
+		lenient().when(menuOptionClicked.getMenuTarget()).thenReturn("<col=ffff>STASH unit (easy)");
+		when(menuOptionClicked.getId()).thenReturn(ObjectID.HH_EASY_EXP1);
+		plugin.onMenuOptionClicked(menuOptionClicked);
+
+		// Check that the STASH is stored after withdrawing
+		ChatMessage withdrawMessage = new ChatMessage();
+		withdrawMessage.setType(ChatMessageType.GAMEMESSAGE);
+		withdrawMessage.setMessage("You withdraw your items from the STASH unit.");
+		plugin.onChatMessage(withdrawMessage);
+		assertNotNull(plugin.getActiveSTASHClue());
+
+		// Complete the step and get a new step, check that the clue is stored for rendering
+		when(clueWidget.getText()).thenReturn("Talk to the bartender of the Rusty Anchor in Port Sarim.");
+
+		// open clue
+		reset(clientThread);
+		widgetLoaded.setGroupId(InterfaceID.TRAIL_CLUETEXT);
+		plugin.onWidgetLoaded(widgetLoaded);
+
+		// clientthread callback
+		captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		captor.getValue().run();
+
+		assertNotNull(plugin.getActiveSTASHClue());
+
+		// Simulate depositing the emote items, make sure it's cleared the stored clue
+		ChatMessage depositMessage = new ChatMessage();
+		depositMessage.setType(ChatMessageType.GAMEMESSAGE);
+		depositMessage.setMessage("You deposit your items into the STASH unit.");
+		plugin.onChatMessage(depositMessage);
+		assertNull(plugin.getActiveSTASHClue());
+
+		// Make sure that the STASH won't get re-marked if it's not part of the active clue.
+		plugin.onMenuOptionClicked(menuOptionClicked);
+		plugin.onChatMessage(withdrawMessage);
+		assertNull(plugin.getActiveSTASHClue());
+	}
+
+	@Test
+	public void testThatRunepouchIsAddedToInventory()
+	{
+		ItemContainer container = mock(ItemContainer.class);
+		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INV, container);
+
+		final Item[] inventory = {
+			new Item(ItemID.COINS, 100),
+			new Item(ItemID.MITHRIL_BAR, 1),
+			new Item(ItemID.MITHRIL_BAR, 1),
+			new Item(ItemID.MITHRIL_BAR, 1),
+			new Item(ItemID.SOULRUNE, 30),
+			new Item(ItemID.COSMICRUNE, 100),
+			new Item(ItemID.BH_RUNE_POUCH, 1),
+			new Item(ItemID.SPADE, 1),
+			new Item(ItemID.TRAIL_CLUE_MASTER, 1)
+		};
+
+		when(container.getItems()).thenReturn(inventory);
+		when(container.contains(ItemID.BH_RUNE_POUCH)).thenReturn(true);
+
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_1)).thenReturn(9); // Cosmic Rune
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_1)).thenReturn(20);
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_TYPE_3)).thenReturn(4); // Fire Rune
+		when(client.getVarbitValue(VarbitID.RUNE_POUCH_QUANTITY_3)).thenReturn(4000);
+
+		EnumComposition enumComposition = mock(EnumComposition.class);
+		when(enumComposition.getIntValue(9)).thenReturn(ItemID.COSMICRUNE);
+		when(enumComposition.getIntValue(4)).thenReturn(ItemID.FIRERUNE);
+		when(client.getEnum(EnumID.RUNEPOUCH_RUNE)).thenReturn(enumComposition);
+
+		plugin.onItemContainerChanged(event);
+
+		assertFalse(Arrays.equals(inventory, plugin.getInventoryItems()));
+
+		List<Item> inventoryList = Arrays.asList(plugin.getInventoryItems());
+
+		assertThat(inventoryList, hasItem(new Item(ItemID.COSMICRUNE, 120)));
+		assertThat(inventoryList, hasItem(new Item(ItemID.FIRERUNE, 4000)));
 	}
 }

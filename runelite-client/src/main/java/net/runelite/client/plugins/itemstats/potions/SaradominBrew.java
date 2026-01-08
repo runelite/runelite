@@ -40,8 +40,7 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 @RequiredArgsConstructor
 public class SaradominBrew implements Effect
 {
-	private static final Stat[] saradominBrewStats = new Stat[]
-	{
+	private static final Stat[] saradominBrewStats = {
 		ATTACK, STRENGTH, RANGED, MAGIC
 	};
 
@@ -58,9 +57,8 @@ public class SaradominBrew implements Effect
 		SimpleStatBoost hitpoints = new SimpleStatBoost(HITPOINTS, true, perc(percH, deltaB));
 		SimpleStatBoost defence = new SimpleStatBoost(DEFENCE, true, perc(percD, deltaB));
 		BoostedStatBoost calc = new BoostedStatBoost(null, false, perc(percSD, -deltaR));
-		changes.setStatChanges(Stream.concat(
+		changes.setStatChanges(Stream.of(
 			Stream.of(hitpoints.effect(client)),
-			Stream.concat(
 			Stream.of(defence.effect(client)),
 			Stream.of(saradominBrewStats)
 				.filter(stat -> 1 < stat.getValue(client))
@@ -68,12 +66,13 @@ public class SaradominBrew implements Effect
 				{
 					calc.setStat(stat);
 					return calc.effect(client);
-				})
-			)
-		).toArray(StatChange[]::new));
+				}))
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.toArray(StatChange[]::new));
 		changes.setPositivity(Stream.of(changes.getStatChanges())
-			.map(sc -> sc.getPositivity())
-			.max(Comparator.comparing(Enum::ordinal)).get());
+			.map(StatChange::getPositivity)
+			.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 }

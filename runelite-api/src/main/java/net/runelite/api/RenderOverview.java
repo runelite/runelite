@@ -24,52 +24,13 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.worldmap.WorldMap;
 
 /**
- * Represents an overview of the currently rendered world map.
+ * @see WorldMap
  */
-public interface RenderOverview
+@Deprecated
+public interface RenderOverview extends WorldMap
 {
-	/**
-	 * Gets the current position of the local player on the world map.
-	 *
-	 * @return the world map position
-	 */
-	Point getWorldMapPosition();
-
-	/**
-	 * Gets the current zoom level of the world map.
-	 *
-	 * @return the world map zoon
-	 */
-	float getWorldMapZoom();
-
-	/**
-	 * Sets the target position of the world map.
-	 *
-	 * @param worldPoint the new target position
-	 */
-	void setWorldMapPositionTarget(WorldPoint worldPoint);
-
-	/**
-	 * Gets the world map manager.
-	 *
-	 * @return the world map manager
-	 */
-	WorldMapManager getWorldMapManager();
-
-	/**
-	 * Initializes the world map with the provided data.
-	 *
-	 * @param var1 the new map data
-	 */
-	void initializeWorldMap(WorldMapData var1);
-
-	/**
-	 * The data represented by the render.
-	 *
-	 * @return the map data
-	 */
 	WorldMapData getWorldMapData();
 }

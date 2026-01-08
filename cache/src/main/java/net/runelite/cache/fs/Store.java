@@ -26,20 +26,16 @@ package net.runelite.cache.fs;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.fs.jagex.DiskStorage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@EqualsAndHashCode(of = "indexes")
 public final class Store implements Closeable
 {
-	private static final Logger logger = LoggerFactory.getLogger(Store.class);
-
 	private final Storage storage;
 	private final List<Index> indexes = new ArrayList<>();
 
@@ -67,34 +63,7 @@ public final class Store implements Closeable
 		storage.close();
 	}
 
-	@Override
-	public int hashCode()
-	{
-		int hash = 5;
-		hash = 79 * hash + Objects.hashCode(this.indexes);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Store other = (Store) obj;
-		if (!Objects.equals(this.indexes, other.indexes))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public final Index addIndex(int id) throws FileNotFoundException
+	public Index addIndex(int id)
 	{
 		for (Index i : indexes)
 		{

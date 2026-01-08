@@ -24,16 +24,13 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.runelite.http.api.worlds.WorldRegion;
 
-@NoArgsConstructor
-@AllArgsConstructor
-public enum RegionFilterMode
+@RequiredArgsConstructor
+enum RegionFilterMode
 {
-	NONE,
 	AUSTRALIA(WorldRegion.AUSTRALIA),
 	GERMANY(WorldRegion.GERMANY),
 	UNITED_KINGDOM(WorldRegion.UNITED_KINGDOM)
@@ -54,5 +51,22 @@ public enum RegionFilterMode
 		};
 
 	@Getter
-	private WorldRegion region;
+	private final WorldRegion region;
+
+	static RegionFilterMode of(WorldRegion region)
+	{
+		switch (region)
+		{
+			case UNITED_STATES_OF_AMERICA:
+				return UNITED_STATES;
+			case UNITED_KINGDOM:
+				return UNITED_KINGDOM;
+			case AUSTRALIA:
+				return AUSTRALIA;
+			case GERMANY:
+				return GERMANY;
+			default:
+				throw new IllegalStateException();
+		}
+	}
 }

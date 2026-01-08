@@ -30,11 +30,17 @@ import java.nio.FloatBuffer;
 
 class GpuFloatBuffer
 {
-	private FloatBuffer buffer = allocateDirect(65536);
+	private final FloatBuffer buffer;
 
-	void put(float texture, float u, float v, float pad)
+	GpuFloatBuffer(int size)
 	{
-		buffer.put(texture).put(u).put(v).put(pad);
+		buffer = allocateDirect(size);
+	}
+
+	GpuFloatBuffer put(float f)
+	{
+		buffer.put(f);
+		return this;
 	}
 
 	void flip()
@@ -45,17 +51,6 @@ class GpuFloatBuffer
 	void clear()
 	{
 		buffer.clear();
-	}
-
-	void ensureCapacity(int size)
-	{
-		while (buffer.remaining() < size)
-		{
-			FloatBuffer newB = allocateDirect(buffer.capacity() * 2);
-			buffer.flip();
-			newB.put(buffer);
-			buffer = newB;
-		}
 	}
 
 	FloatBuffer getBuffer()

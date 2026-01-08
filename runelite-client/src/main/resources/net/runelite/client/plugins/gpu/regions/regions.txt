@@ -1,0 +1,375 @@
+// Copyright (c) 2023, Adam <Adam@sigterm.info>
+//
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+// Regions format
+//
+// Comments are c-style; Starts with // and ends with the next newline
+//
+//      n
+// Starts a new area. The proceeding r/R/c/C commands then assign chunks to
+// this area.
+//
+// 		m <region X> <region Y>
+// Moves the cursor to the specified region. This does not change any chunks
+//
+// The following operations commit chunks to the map:
+//
+// 		r <region X> <region Y>
+// Sets all the chunks in a region to the current area
+//
+// 		R <region X 1> <region Y 1> <region X 2> <region Y 2>
+// Sets all the chunks in [x1,x2] [y1,y2] to the current area.
+//
+// 		c <chunk X> <chunk Y>
+// Sets the chunk relative to the last region/region1 to the current area
+//
+// 		C <chunk X 1> <chunk Y 1> <chunk X 2> <chunk Y 2>
+// Sets the chunks relative to the last region/region1 to the current area
+
+// dks
+n
+r 45 68
+
+n
+r 45 69
+
+// agility pyramid
+n
+r 47 73
+
+// trawler
+n
+r 31 75
+
+n
+r 30 75
+
+n
+r 29 75
+
+n
+r 28 75
+
+n
+r 28 74
+
+n
+r 31 76
+
+// cosmic entity plane
+n
+r 32 75
+
+// cosmic altar
+n
+r 33 75
+
+// death altar
+n
+r 34 75
+
+// chaos altar
+n
+r 35 75
+
+n
+r 36 75
+
+// nature altar
+n
+r 37 75
+
+// law altar
+n
+r 38 75
+
+// body altar
+n
+m 39 75
+C 0 1 6 7
+
+// fire altar
+n
+m 39 75
+C 7 1 7 7
+r 40 75
+
+// earth altar
+n
+r 41 75
+
+// water altar
+n
+r 42 75
+
+// mind altar
+n
+r 43 75
+
+// air altar
+n
+m 44 75
+C 0 0 6 7
+
+// essence mine
+n
+r 45 75
+
+// drill demon random
+n
+r 49 75
+
+// blood altar
+n
+r 50 75
+
+// regicide cutscene
+n
+r 36 71
+
+// zanaris
+n
+R 36 68 38 69
+
+// watchtower
+n
+r 45 73
+
+// underground pass
+n
+R 33 71 33 73
+
+// underground pass Iban's temple
+n
+r 31 73
+
+// mime random
+n
+r 31 74
+
+// keldagrim rat pits
+n
+r 30 73
+
+// phesant random
+n
+r 40 74
+
+// crash site
+n
+R 30 86 31 87
+
+// demonic gorillas
+n
+R 32 88 33 88
+
+// sourhog lair
+n
+r 49 151
+
+// draynor manor basement
+n
+r 48 152
+
+// ham hideout
+n
+r 49 150
+
+// draynor sewer
+n
+R 48 150 48 151
+
+// mage bank
+n
+r 39 73
+
+// bob fishing random
+n
+r 39 74
+
+// frog random
+n
+r 38 74
+
+// grand tree basement
+n
+r 38 154
+
+// lighthouse basement
+n
+r 39 156
+
+// haunted mine
+n
+R 42 69 43 71
+
+// mm hangar
+n
+r 41 70
+
+// tree gnome village underground
+n
+r 40 69
+
+// maze random
+n
+r 45 71
+
+// pyramid plunder
+n
+r 30 69
+
+// waterbirth dungeon
+n
+R 28 68 30 68
+
+// blast furnace
+n
+r 30 77
+
+// paterdomus
+n
+r 53 154
+
+// keldagrim
+n
+R 44 158 45 159
+
+// abyss and abyssal nexus
+n
+R 46 74 48 75
+
+// abyssal area
+n
+r 47 76
+
+// temple of ikov
+n
+R 41 153 41 154
+m 41 152
+C 6 6 7 7
+m 42 153
+C 0 1 1 7
+C 2 5 7 7
+C 6 3 7 4
+
+// rogue's den
+n
+R 46 78 47 79
+r 47 77
+
+// castle wars underground
+n
+r 37 148
+
+// viyeldi caves
+n
+r 37 73
+
+// baba yaga's hut
+n
+m 38 72
+C 2 4 2 5
+
+// vyre mines
+n
+m 37 72
+C 1 1 3 3
+
+// jiggig
+n
+R 38 146 38 147
+
+// smoke devil dungeon
+n
+R 36 147 37 147
+
+// observatory dungeon
+n
+r 36 146
+
+// ham storeroom
+n
+r 40 81
+
+// mor ul rek
+n
+r 37 80
+R 38 79 39 80
+
+// barbarian assault lobby
+n
+r 40 82
+
+// mage training arena
+n
+r 52 150
+
+// mta telekinetic theatre
+n
+r 52 151
+
+// water ravine (spirits of the elid)
+n
+r 52 149
+m 52 148
+c 2 7
+
+// kalphite cave
+n
+r 51 148
+m 51 149
+C 0 0 7 1
+m 52 148
+C 0 0 2 6
+
+// kalphite lair
+n
+r 54 148
+
+// lumbridge underground
+n
+R 50 148 50 151
+r 49 149
+r 51 150
+
+// desert mining camp (the tourist trap)
+n
+r 51 147
+
+// ah za rhoon (shilo village)
+n
+R 45 145 45 146
+
+// tomb of bervirius (shilo village)
+n
+r 43 146
+
+// tunnel of chaos (what lies below)
+n
+r 49 81
+
+// king black dragon lair
+n
+r 35 73

@@ -36,12 +36,11 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.util.ImageUtil;
 
 @Singleton
@@ -49,11 +48,10 @@ class PrayerBarOverlay extends Overlay
 {
 	private static final Color BAR_FILL_COLOR = new Color(0, 149, 151);
 	private static final Color BAR_BG_COLOR = Color.black;
-	private static final Color FLICK_HELP_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 	private static final int HD_PRAYER_BAR_PADDING = 1;
-	private static final BufferedImage HD_FRONT_BAR = ImageUtil.getResourceStreamFromClass(PrayerPlugin.class, "front.png");
-	private static final BufferedImage HD_BACK_BAR = ImageUtil.getResourceStreamFromClass(PrayerPlugin.class, "back.png");
+	private static final BufferedImage HD_FRONT_BAR = ImageUtil.loadImageResource(PrayerPlugin.class, "front.png");
+	private static final BufferedImage HD_BACK_BAR = ImageUtil.loadImageResource(PrayerPlugin.class, "back.png");
 
 	private final Client client;
 	private final PrayerConfig config;
@@ -69,7 +67,7 @@ class PrayerBarOverlay extends Overlay
 		this.plugin = plugin;
 
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
@@ -88,7 +86,7 @@ class PrayerBarOverlay extends Overlay
 		final float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / client.getRealSkillLevel(Skill.PRAYER);
 
 		// Draw HD bar
-		if (client.getSpriteOverrides().containsKey(SpriteID.HEALTHBAR_DEFAULT_FRONT_30PX))
+		if (client.getSpriteOverrides().containsKey(SpriteID.StandardHealth30.FRONT))
 		{
 			final int barWidth = HD_FRONT_BAR.getWidth();
 			final int barHeight = HD_FRONT_BAR.getHeight();
@@ -111,12 +109,12 @@ class PrayerBarOverlay extends Overlay
 
 				final int xOffset = (int) (-Math.cos(t) * halfBarWidth) + halfBarWidth;
 
-				graphics.setColor(FLICK_HELP_COLOR);
+				graphics.setColor(config.prayerFlickColor());
 				// Padding is accounted for in the offset calculation
 				graphics.fillRect(barX + xOffset, barY + HD_PRAYER_BAR_PADDING, 1, barHeight - HD_PRAYER_BAR_PADDING * 2);
 			}
 
-			return new Dimension(barWidth, barHeight);
+			return null;
 		}
 
 		// Draw bar
@@ -141,11 +139,11 @@ class PrayerBarOverlay extends Overlay
 
 			final int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
-			graphics.setColor(FLICK_HELP_COLOR);
+			graphics.setColor(config.prayerFlickColor());
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
 
-		return new Dimension(barWidth, barHeight);
+		return null;
 	}
 
 	void onTick()

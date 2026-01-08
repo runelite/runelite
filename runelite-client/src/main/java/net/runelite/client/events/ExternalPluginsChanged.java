@@ -24,9 +24,7 @@
  */
 package net.runelite.client.events;
 
-import java.util.List;
 import lombok.Value;
-import net.runelite.client.externalplugins.ExternalPluginManifest;
 
 /**
  * Posted when an external plugin has been added, removed, or updated
@@ -34,5 +32,4 @@ import net.runelite.client.externalplugins.ExternalPluginManifest;
 @Value
 public class ExternalPluginsChanged
 {
-	private final List<ExternalPluginManifest> loadedManifest;
 }

@@ -32,21 +32,26 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -56,6 +61,7 @@ import net.runelite.client.util.ImageUtil;
 	tags = {"combat", "notifications", "skilling", "overlay"}
 )
 @Singleton
+@Slf4j
 public class BoostsPlugin extends Plugin
 {
 	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
@@ -68,7 +74,7 @@ public class BoostsPlugin extends Plugin
 	private static final Set<Skill> BOOSTABLE_NON_COMBAT_SKILLS = ImmutableSet.of(
 		Skill.MINING, Skill.AGILITY, Skill.SMITHING, Skill.HERBLORE, Skill.FISHING, Skill.THIEVING,
 		Skill.COOKING, Skill.CRAFTING, Skill.FIREMAKING, Skill.FLETCHING, Skill.WOODCUTTING, Skill.RUNECRAFT,
-		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER);
+		Skill.SLAYER, Skill.FARMING, Skill.CONSTRUCTION, Skill.HUNTER, Skill.SAILING);
 
 	@Inject
 	private Notifier notifier;
@@ -86,7 +92,13 @@ public class BoostsPlugin extends Plugin
 	private BoostsOverlay boostsOverlay;
 
 	@Inject
+	private CompactBoostsOverlay compactBoostsOverlay;
+
+	@Inject
 	private BoostsConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private SkillIconManager skillIconManager;
@@ -98,7 +110,7 @@ public class BoostsPlugin extends Plugin
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
-	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
+	private final int[] lastSkillLevels = new int[Skill.values().length];
 	private int lastChangeDown = -1;
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
@@ -113,28 +125,35 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		convertConfig();
+		OverlayMenuEntry menuEntry = new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
+
+		boostsOverlay.getMenuEntries().add(menuEntry);
+		compactBoostsOverlay.getMenuEntries().add(menuEntry);;
+
 		overlayManager.add(boostsOverlay);
+		overlayManager.add(compactBoostsOverlay);
 
 		updateShownSkills();
 		Arrays.fill(lastSkillLevels, -1);
 
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.getResourceStreamFromClass(getClass(), "debuffed.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.getResourceStreamFromClass(getClass(), "buffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.loadImageResource(getClass(), "buffed.png"), this, config));
 
 		for (final Skill skill : Skill.values())
 		{
-			if (skill != Skill.OVERALL)
-			{
-				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
-			}
+			infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
 		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		boostsOverlay.getMenuEntries().clear();
+		compactBoostsOverlay.getMenuEntries().clear();
 		overlayManager.remove(boostsOverlay);
+		overlayManager.remove(compactBoostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 		preserveBeenActive = false;
 		lastChangeDown = -1;
@@ -155,6 +174,24 @@ public class BoostsPlugin extends Plugin
 				lastChangeDown = -1;
 				lastChangeUp = -1;
 		}
+	}
+
+	private void convertConfig()
+	{
+		String migrated = configManager.getConfiguration("boosts", "migrated");
+		if (migrated != null)
+		{
+			return;
+		}
+
+		int boostThreshold = config.boostThreshold();
+		if (boostThreshold == 0)
+		{
+			configManager.setConfiguration("boosts", "notifyOnBoost", Notification.OFF);
+			log.debug("Disabled boosts notification due to config migration");
+		}
+
+		configManager.setConfiguration("boosts", "migrated", "1");
 	}
 
 	@Subscribe
@@ -209,15 +246,12 @@ public class BoostsPlugin extends Plugin
 
 		int boostThreshold = config.boostThreshold();
 
-		if (boostThreshold != 0 && config.notifyOnBoost())
+		int real = client.getRealSkillLevel(skill);
+		int lastBoost = last - real;
+		int boost = cur - real;
+		if (boost <= boostThreshold && boostThreshold < lastBoost)
 		{
-			int real = client.getRealSkillLevel(skill);
-			int lastBoost = last - real;
-			int boost = cur - real;
-			if (boost <= boostThreshold && boostThreshold < lastBoost)
-			{
-				notifier.notify(skill.getName() + " level is getting low!");
-			}
+			notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
 		}
 	}
 
@@ -319,11 +353,6 @@ public class BoostsPlugin extends Plugin
 				skillsToDisplay.add(skill);
 			}
 		}
-	}
-
-	boolean canShowBoosts()
-	{
-		return isChangedDown || isChangedUp;
 	}
 
 	/**

@@ -27,8 +27,9 @@ package net.runelite.client.plugins.herbiboars;
 
 import com.google.common.collect.ImmutableSet;
 import java.util.Set;
+import lombok.Getter;
 import lombok.Value;
-import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 
 /**
  * A representation of a trail of footsteps which appears when hunting for the Herbiboar.
@@ -42,9 +43,10 @@ class TrailToSpot
 	 * equal to that of {@link TrailToSpot#getValue()}. Once the next object along the trail has been searched, this
 	 * Varbit's value will be greater than that of {@link TrailToSpot#getValue()}.
 	 */
-	private final Varbits varbit;
+	@Getter(onMethod_ = {@Varbit})
+	private final int varbitId;
 	/**
-	 * The cutoff reference value to compare against the value of {@link TrailToSpot#getVarbit()} to determine its state
+	 * The cutoff reference value to compare against the value of {@link TrailToSpot#getVarbitId()} ()} to determine its state
 	 * along the current trail.
 	 */
 	private final int value;

@@ -49,13 +49,16 @@ class PreviewPanel extends JPanel
 	{
 		super.paint(g);
 
-		for (int x = 0; x < getWidth(); x += CHECKER_SIZE)
+		if (this.color.getAlpha() != 255)
 		{
-			for (int y = 0; y < getHeight(); y += CHECKER_SIZE)
+			for (int x = 0; x < getWidth(); x += CHECKER_SIZE)
 			{
-				int val = (x / CHECKER_SIZE + y / CHECKER_SIZE) % 2;
-				g.setColor(val == 0 ? Color.LIGHT_GRAY : Color.WHITE);
-				g.fillRect(x, y, CHECKER_SIZE, CHECKER_SIZE);
+				for (int y = 0; y < getHeight(); y += CHECKER_SIZE)
+				{
+					int val = (x / CHECKER_SIZE + y / CHECKER_SIZE) % 2;
+					g.setColor(val == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+					g.fillRect(x, y, CHECKER_SIZE, CHECKER_SIZE);
+				}
 			}
 		}
 

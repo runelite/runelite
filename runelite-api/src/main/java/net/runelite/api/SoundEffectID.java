@@ -83,7 +83,9 @@ public final class SoundEffectID
 	public final static int PRAYER_ACTIVATE_PROTECT_FROM_MISSILES = 2677;
 	public final static int PRAYER_ACTIVATE_PROTECT_FROM_MELEE = 2676;
 	public final static int PRAYER_ACTIVATE_EAGLE_EYE = 2665;
+	public final static int PRAYER_ACTIVATE_DEADEYE = 10194;
 	public final static int PRAYER_ACTIVATE_MYSTIC_MIGHT = 2669;
+	public final static int PRAYER_ACTIVATE_MYSTIC_VIGOUR = 10100;
 	public final static int PRAYER_ACTIVATE_RETRIBUTION = 2682;
 	public final static int PRAYER_ACTIVATE_REDEMPTION = 2680;
 	public final static int PRAYER_ACTIVATE_SMITE = 2686;

@@ -35,8 +35,8 @@ public interface FriendNotesConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showIcons",
-		name = "Show Icons",
-		description = "Show icons on friend or ignore list",
+		name = "Show icons",
+		description = "Show icons on friend or ignore list.",
 		position = 1
 	)
 	default boolean showIcons()

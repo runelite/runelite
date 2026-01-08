@@ -31,13 +31,11 @@ import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 class HealerOverlay extends Overlay
@@ -46,12 +44,13 @@ class HealerOverlay extends Overlay
 	@AllArgsConstructor
 	private enum HealerTeam
 	{
-		TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, 28, 2, 115),
-		TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, 26, 2, 115),
-		TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, 26, 2, 115),
-		TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, 25, 2, 115);
+		TEAMMATE1(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER1_HP, 28, 2, 115),
+		TEAMMATE2(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER2_HP, 26, 2, 115),
+		TEAMMATE3(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER3_HP, 26, 2, 115),
+		TEAMMATE4(InterfaceID.BarbassaultOverHeal.BARBASSAULT_HEALER_PLAYER4_HP, 25, 2, 115);
 
-		private WidgetInfo teammate;
+		@Component
+		private int teammate;
 		private int offsetX;
 		private int offsetY;
 		private int width;
@@ -74,7 +73,6 @@ class HealerOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "B.A. overlay"));
 	}
 
 	@Override
@@ -87,11 +85,6 @@ class HealerOverlay extends Overlay
 		}
 
 		Role role = round.getRoundRole();
-		if (role == null)
-		{
-			return null;
-		}
-
 		if (config.showHealerBars() && role == Role.HEALER)
 		{
 			for (HealerTeam teammate : HealerTeam.values())

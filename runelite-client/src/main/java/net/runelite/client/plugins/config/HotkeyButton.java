@@ -32,6 +32,7 @@ import javax.swing.JButton;
 import lombok.Getter;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.ui.FontManager;
 
 class HotkeyButton extends JButton
 {
@@ -40,14 +41,21 @@ class HotkeyButton extends JButton
 
 	public HotkeyButton(Keybind value, boolean modifierless)
 	{
+		// Disable focus traversal keys such as tab to allow tab key to be bound
+		setFocusTraversalKeysEnabled(false);
+		setFont(FontManager.getDefaultFont().deriveFont(12.f));
 		setValue(value);
 		addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
-				setValue(Keybind.NOT_SET);
+				// Mouse buttons other than button1 don't give focus
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
+					setValue(Keybind.NOT_SET);
+				}
 			}
 		});
 

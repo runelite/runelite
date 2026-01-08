@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2019, Aleios <https://github.com/aleios>
+ * Copyright (c) 2020, Unmoon <https://github.com/unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -51,69 +50,18 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	}
 
 	@Override
-	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		if (!displayOverlay())
-		{
-			return;
-		}
-
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
 		int charges;
-		if (itemId == ItemID.DODGY_NECKLACE)
+		ItemWithConfig itemWithConfig = ItemWithConfig.findItem(itemId);
+		if (itemWithConfig != null)
 		{
-			if (!config.showDodgyCount())
+			if (!itemWithConfig.getType().getEnabled().test(config))
 			{
 				return;
 			}
 
-			charges = config.dodgyNecklace();
-		}
-		else if (itemId == ItemID.BINDING_NECKLACE)
-		{
-			if (!config.showBindingNecklaceCharges())
-			{
-				return;
-			}
-
-			charges = config.bindingNecklace();
-		}
-		else if (itemId >= ItemID.EXPLORERS_RING_1 && itemId <= ItemID.EXPLORERS_RING_4)
-		{
-			if (!config.showExplorerRingCharges())
-			{
-				return;
-			}
-
-			charges = config.explorerRing();
-		}
-		else if (itemId == ItemID.RING_OF_FORGING)
-		{
-			if (!config.showRingOfForgingCount())
-			{
-				return;
-			}
-
-			charges = config.ringOfForging();
-		}
-		else if (itemId == ItemID.AMULET_OF_CHEMISTRY)
-		{
-			if (!config.showAmuletOfChemistryCharges())
-			{
-				return;
-			}
-
-			charges = config.amuletOfChemistry();
-		}
-		else if (itemId == ItemID.AMULET_OF_BOUNTY)
-		{
-			if (!config.showAmuletOfBountyCharges())
-			{
-				return;
-			}
-
-			charges = config.amuletOfBounty();
+			charges = itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey());
 		}
 		else
 		{
@@ -124,18 +72,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 
 			ItemChargeType type = chargeItem.getType();
-			if ((type == TELEPORT && !config.showTeleportCharges())
-				|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
-				|| (type == IMPBOX && !config.showImpCharges())
-				|| (type == WATERCAN && !config.showWateringCanCharges())
-				|| (type == WATERSKIN && !config.showWaterskinCharges())
-				|| (type == BELLOWS && !config.showBellowCharges())
-				|| (type == FRUIT_BASKET && !config.showBasketCharges())
-				|| (type == SACK && !config.showSackCharges())
-				|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges())
-				|| (type == AMULET_OF_CHEMISTRY && !config.showAmuletOfChemistryCharges())
-				|| (type == AMULET_OF_BOUNTY && !config.showAmuletOfBountyCharges())
-				|| (type == POTION && !config.showPotionDoseCount()))
+			if (!type.getEnabled().test(config))
 			{
 				return;
 			}
@@ -143,21 +80,13 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			charges = chargeItem.getCharges();
 		}
 
-		final Rectangle bounds = itemWidget.getCanvasBounds();
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+
+		final Rectangle bounds = widgetItem.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
 		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
 		textComponent.setColor(itemChargePlugin.getColor(charges));
 		textComponent.render(graphics);
-	}
-
-	private boolean displayOverlay()
-	{
-		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
-			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showBasketCharges() || config.showSackCharges()
-			|| config.showAbyssalBraceletCharges() || config.showExplorerRingCharges() || config.showRingOfForgingCount()
-			|| config.showAmuletOfChemistryCharges() || config.showAmuletOfBountyCharges() || config.showPotionDoseCount();
-
 	}
 }

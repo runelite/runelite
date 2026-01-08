@@ -26,79 +26,58 @@ package net.runelite.client.plugins.runecraft;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.NpcID;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.AIR_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.BLOOD_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.BODY_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.CHAOS_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.COSMIC_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.DEATH_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.EARTH_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.FIRE_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.LAW_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.MIND_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.NATURE_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.SOUL_RIFT;
-import static net.runelite.client.plugins.runecraft.AbyssRifts.WATER_RIFT;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Runecraft",
 	description = "Show minimap icons and clickboxes for abyssal rifts",
-	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting"}
+	tags = {"abyssal", "minimap", "overlay", "rifts", "rc", "runecrafting", "essence", "pouch"}
 )
 public class RunecraftPlugin extends Plugin
 {
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
-		ItemID.MEDIUM_POUCH_5511,
-		ItemID.LARGE_POUCH_5513,
-		ItemID.GIANT_POUCH_5515
+		ItemID.RCU_POUCH_MEDIUM_DEGRADE,
+		ItemID.RCU_POUCH_LARGE_DEGRADE,
+		ItemID.RCU_POUCH_GIANT_DEGRADE,
+		ItemID.RCU_POUCH_COLOSSAL_DEGRADE
 	);
+	static final int ABYSS_REGION = 12107;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<AbyssRifts> rifts = new HashSet<>();
-
-	@Getter(AccessLevel.PACKAGE)
 	private boolean degradedPouchInInventory;
-
-	@Getter(AccessLevel.PACKAGE)
-	private NPC darkMage;
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -110,10 +89,18 @@ public class RunecraftPlugin extends Plugin
 	private AbyssMinimapOverlay abyssMinimapOverlay;
 
 	@Inject
+	private EssencePouchOverlay essencePouchOverlay;
+
+	@Inject
 	private RunecraftConfig config;
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
+	private final Function<NPC, HighlightedNpc> highlightDarkMage = this::highlightDarkMage;
 
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
@@ -124,28 +111,21 @@ public class RunecraftPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		npcOverlayService.registerHighlighter(highlightDarkMage);
 		overlayManager.add(abyssOverlay);
 		overlayManager.add(abyssMinimapOverlay);
-		updateRifts();
+		overlayManager.add(essencePouchOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		npcOverlayService.unregisterHighlighter(highlightDarkMage);
 		overlayManager.remove(abyssOverlay);
 		overlayManager.remove(abyssMinimapOverlay);
+		overlayManager.remove(essencePouchOverlay);
 		abyssObjects.clear();
-		darkMage = null;
 		degradedPouchInInventory = false;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("runecraft"))
-		{
-			updateRifts();
-		}
 	}
 
 	@Subscribe
@@ -156,12 +136,9 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
-		if (config.degradingNotification())
+		if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
 		{
-			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
-			{
-				notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
-			}
+			notifier.notify(config.degradingNotification(), POUCH_DECAYED_NOTIFICATION_MESSAGE);
 		}
 	}
 
@@ -186,23 +163,16 @@ public class RunecraftPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
-		switch (gameState)
+		if (gameState == GameState.LOADING)
 		{
-			case LOADING:
-				abyssObjects.clear();
-				break;
-			case CONNECTION_LOST:
-			case HOPPING:
-			case LOGIN_SCREEN:
-				darkMage = null;
-				break;
+			abyssObjects.clear();
 		}
 	}
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.INVENTORY.getId())
+		if (event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
@@ -211,80 +181,17 @@ public class RunecraftPlugin extends Plugin
 		degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
 	}
 
-	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private HighlightedNpc highlightDarkMage(NPC npc)
 	{
-		final NPC npc = event.getNpc();
-		if (npc.getId() == NpcID.DARK_MAGE)
+		if (npc.getId() == NpcID.RCU_ZAMMY_MAGE2)
 		{
-			darkMage = npc;
+			return HighlightedNpc.builder()
+				.npc(npc)
+				.tile(true)
+				.highlightColor(Color.GREEN)
+				.render(n -> config.hightlightDarkMage() && degradedPouchInInventory)
+				.build();
 		}
-	}
-
-	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
-	{
-		final NPC npc = event.getNpc();
-		if (npc == darkMage)
-		{
-			darkMage = null;
-		}
-	}
-
-	private void updateRifts()
-	{
-		rifts.clear();
-		if (config.showAir())
-		{
-			rifts.add(AIR_RIFT);
-		}
-		if (config.showBlood())
-		{
-			rifts.add(BLOOD_RIFT);
-		}
-		if (config.showBody())
-		{
-			rifts.add(BODY_RIFT);
-		}
-		if (config.showChaos())
-		{
-			rifts.add(CHAOS_RIFT);
-		}
-		if (config.showCosmic())
-		{
-			rifts.add(COSMIC_RIFT);
-		}
-		if (config.showDeath())
-		{
-			rifts.add(DEATH_RIFT);
-		}
-		if (config.showEarth())
-		{
-			rifts.add(EARTH_RIFT);
-		}
-		if (config.showFire())
-		{
-			rifts.add(FIRE_RIFT);
-		}
-		if (config.showLaw())
-		{
-			rifts.add(LAW_RIFT);
-		}
-		if (config.showMind())
-		{
-			rifts.add(MIND_RIFT);
-		}
-		if (config.showNature())
-		{
-			rifts.add(NATURE_RIFT);
-		}
-		if (config.showSoul())
-		{
-			rifts.add(SOUL_RIFT);
-		}
-		if (config.showWater())
-		{
-			rifts.add(WATER_RIFT);
-		}
+		return null;
 	}
 }

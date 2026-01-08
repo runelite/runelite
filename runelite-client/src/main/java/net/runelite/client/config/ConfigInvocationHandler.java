@@ -40,7 +40,7 @@ class ConfigInvocationHandler implements InvocationHandler
 
 	private final ConfigManager manager;
 	private final Cache<Method, Object> cache = CacheBuilder.newBuilder()
-		.maximumSize(128)
+		.maximumSize(256)
 		.build();
 
 	ConfigInvocationHandler(ConfigManager manager)
@@ -62,6 +62,21 @@ class ConfigInvocationHandler implements InvocationHandler
 		}
 
 		Class<?> iface = proxy.getClass().getInterfaces()[0];
+
+		if ("toString".equals(method.getName()) && args == null)
+		{
+			return iface.getSimpleName();
+		}
+
+		if ("hashCode".equals(method.getName()) && args == null)
+		{
+			return System.identityHashCode(proxy);
+		}
+
+		if ("equals".equals(method.getName()) && args != null && args.length == 1)
+		{
+			return proxy == args[0];
+		}
 
 		ConfigGroup group = iface.getAnnotation(ConfigGroup.class);
 		ConfigItem item = method.getAnnotation(ConfigItem.class);
@@ -99,11 +114,9 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 
 			// Convert value to return type
-			Class<?> returnType = method.getReturnType();
-			
 			try
 			{
-				Object objectValue = ConfigManager.stringToObject(value, returnType);
+				Object objectValue = manager.stringToObject(value, method.getGenericReturnType());
 				cache.put(method, objectValue == null ? NULL : objectValue);
 				return objectValue;
 			}
@@ -155,7 +168,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 			else
 			{
-				String newValueStr = ConfigManager.objectToString(newValue);
+				String newValueStr = manager.objectToString(newValue);
 				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
 			return null;

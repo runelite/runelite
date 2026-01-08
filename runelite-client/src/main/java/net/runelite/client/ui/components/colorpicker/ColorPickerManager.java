@@ -26,16 +26,21 @@
 package net.runelite.client.ui.components.colorpicker;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ColorPickerManager
 {
 	private final ConfigManager configManager;
@@ -44,10 +49,14 @@ public class ColorPickerManager
 	@Getter(AccessLevel.PACKAGE)
 	private RuneliteColorPicker currentPicker;
 
-	@Inject
-	private ColorPickerManager(final ConfigManager configManager)
+	public RuneliteColorPicker create(Client client, Color previousColor, String title, boolean alphaHidden)
 	{
-		this.configManager = configManager;
+		return create((Component) client, previousColor, title, alphaHidden);
+	}
+
+	public RuneliteColorPicker create(Component owner, Color previousColor, String title, boolean alphaHidden)
+	{
+		return create(SwingUtilities.windowForComponent(owner), previousColor, title, alphaHidden);
 	}
 
 	public RuneliteColorPicker create(Window owner, Color previousColor, String title, boolean alphaHidden)
@@ -58,6 +67,11 @@ public class ColorPickerManager
 		}
 
 		currentPicker = new RuneliteColorPicker(owner, previousColor, title, alphaHidden, configManager, this);
+		if (currentPicker.isAlwaysOnTopSupported() && owner != null)
+		{
+			currentPicker.setAlwaysOnTop(owner.isAlwaysOnTop());
+		}
+
 		return currentPicker;
 	}
 }

@@ -34,8 +34,8 @@ public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showBrotherLoc",
-		name = "Show Brothers location",
-		description = "Configures whether or not the brothers location is displayed",
+		name = "Show brothers location",
+		description = "Configures whether or not the brothers location is displayed.",
 		position = 1
 	)
 	default boolean showBrotherLoc()
@@ -45,8 +45,8 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "showChestValue",
-		name = "Show Value of Chests",
-		description = "Configure whether to show total exchange value of chest when opened",
+		name = "Show value of chests",
+		description = "Configure whether to show total exchange value of chest when opened.",
 		position = 2
 	)
 	default boolean showChestValue()
@@ -57,7 +57,7 @@ public interface BarrowsConfig extends Config
 	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
-		description = "Change the color of the name displayed on the minimap",
+		description = "Change the color of the name displayed on the minimap.",
 		position = 3
 	)
 	default Color brotherLocColor()
@@ -67,8 +67,8 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "deadBrotherLocColor",
-		name = "Dead Brother loc. color",
-		description = "Change the color of the name displayed on the minimap for a dead brother",
+		name = "Dead brother loc. color",
+		description = "Change the color of the name displayed on the minimap for a dead brother.",
 		position = 4
 	)
 	default Color deadBrotherLocColor()
@@ -78,7 +78,7 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPuzzleAnswer",
-		name = "Show Puzzle Answer",
+		name = "Show puzzle answer",
 		description = "Configures if the puzzle answer should be shown.",
 		position = 5
 	)
@@ -89,8 +89,8 @@ public interface BarrowsConfig extends Config
 
 	@ConfigItem(
 		keyName = "showPrayerDrainTimer",
-		name = "Show Prayer Drain Timer",
-		description = "Configure whether or not a countdown until the next prayer drain is displayed",
+		name = "Show prayer drain timer",
+		description = "Configure whether or not a countdown until the next prayer drain is displayed.",
 		position = 6
 	)
 	default boolean showPrayerDrainTimer()

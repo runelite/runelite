@@ -70,7 +70,7 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		// HARD
 		add("Cast one of the 3 God spells against another player in the Wilderness.",
 			new SkillRequirement(Skill.MAGIC, 60),
-			new QuestRequirement(Quest.THE_MAGE_ARENA));
+			new QuestRequirement(Quest.MAGE_ARENA_I));
 		add("Charge an Air Orb.",
 			new SkillRequirement(Skill.MAGIC, 66));
 		add("Catch a Black Salamander in the Wilderness.",
@@ -88,7 +88,7 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		// ELITE
 		add("Teleport to Ghorrock.",
 			new SkillRequirement(Skill.MAGIC, 96),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Fish and Cook a Dark Crab in the Resource Area.",
 			new SkillRequirement(Skill.FISHING, 85),
 			new SkillRequirement(Skill.COOKING, 90));

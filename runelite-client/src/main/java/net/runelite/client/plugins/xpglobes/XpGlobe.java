@@ -24,19 +24,28 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
+import java.awt.image.BufferedImage;
 import java.time.Instant;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Skill;
 
 @Getter
 @Setter
-@AllArgsConstructor
 class XpGlobe
 {
 	private Skill skill;
 	private int currentXp;
 	private int currentLevel;
 	private Instant time;
+	private int size;
+	private BufferedImage skillIcon;
+
+	XpGlobe(Skill skill, int currentXp, int currentLevel, Instant time)
+	{
+		this.skill = skill;
+		this.currentXp = currentXp;
+		this.currentLevel = currentLevel;
+		this.time = time;
+	}
 }

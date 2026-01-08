@@ -24,59 +24,39 @@
  */
 package net.runelite.client.plugins.blastfurnace;
 
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
-import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarbitID;
 
-public enum BarsOres
+@AllArgsConstructor
+@Getter
+enum BarsOres
 {
-	COPPER_ORE(Varbits.BLAST_FURNACE_COPPER_ORE, ItemID.COPPER_ORE),
-	TIN_ORE(Varbits.BLAST_FURNACE_TIN_ORE, ItemID.TIN_ORE),
-	IRON_ORE(Varbits.BLAST_FURNACE_IRON_ORE, ItemID.IRON_ORE),
-	COAL(Varbits.BLAST_FURNACE_COAL, ItemID.COAL),
-	MITHRIL_ORE(Varbits.BLAST_FURNACE_MITHRIL_ORE, ItemID.MITHRIL_ORE),
-	ADAMANTITE_ORE(Varbits.BLAST_FURNACE_ADAMANTITE_ORE, ItemID.ADAMANTITE_ORE),
-	RUNITE_ORE(Varbits.BLAST_FURNACE_RUNITE_ORE, ItemID.RUNITE_ORE),
-	SILVER_ORE(Varbits.BLAST_FURNACE_SILVER_ORE, ItemID.SILVER_ORE),
-	GOLD_ORE(Varbits.BLAST_FURNACE_GOLD_ORE, ItemID.GOLD_ORE),
-	BRONZE_BAR(Varbits.BLAST_FURNACE_BRONZE_BAR, ItemID.BRONZE_BAR),
-	IRON_BAR(Varbits.BLAST_FURNACE_IRON_BAR, ItemID.IRON_BAR),
-	STEEL_BAR(Varbits.BLAST_FURNACE_STEEL_BAR, ItemID.STEEL_BAR),
-	MITHRIL_BAR(Varbits.BLAST_FURNACE_MITHRIL_BAR, ItemID.MITHRIL_BAR),
-	ADAMANTITE_BAR(Varbits.BLAST_FURNACE_ADAMANTITE_BAR, ItemID.ADAMANTITE_BAR),
-	RUNITE_BAR(Varbits.BLAST_FURNACE_RUNITE_BAR, ItemID.RUNITE_BAR),
-	SILVER_BAR(Varbits.BLAST_FURNACE_SILVER_BAR, ItemID.SILVER_BAR),
-	GOLD_BAR(Varbits.BLAST_FURNACE_GOLD_BAR, ItemID.GOLD_BAR);
+	COPPER_ORE(VarbitID.BLAST_FURNACE_COPPER_ORE, ItemID.COPPER_ORE),
+	TIN_ORE(VarbitID.BLAST_FURNACE_TIN_ORE, ItemID.TIN_ORE),
+	IRON_ORE(VarbitID.BLAST_FURNACE_IRON_ORE, ItemID.IRON_ORE),
+	COAL(VarbitID.BLAST_FURNACE_COAL, ItemID.COAL),
+	MITHRIL_ORE(VarbitID.BLAST_FURNACE_MITHRIL_ORE, ItemID.MITHRIL_ORE),
+	ADAMANTITE_ORE(VarbitID.BLAST_FURNACE_ADAMANTITE_ORE, ItemID.ADAMANTITE_ORE),
+	RUNITE_ORE(VarbitID.BLAST_FURNACE_RUNITE_ORE, ItemID.RUNITE_ORE),
+	SILVER_ORE(VarbitID.BLAST_FURNACE_SILVER_ORE, ItemID.SILVER_ORE),
+	GOLD_ORE(VarbitID.BLAST_FURNACE_GOLD_ORE, ItemID.GOLD_ORE),
+	LEAD_ORE(VarbitID.BLAST_FURNACE_LEAD_ORE, ItemID.LEAD_ORE),
+	NICKEL_ORE(VarbitID.BLAST_FURNACE_NICKEL_ORE, ItemID.NICKEL_ORE),
+	BRONZE_BAR(VarbitID.BLAST_FURNACE_BRONZE_BARS, ItemID.BRONZE_BAR),
+	IRON_BAR(VarbitID.BLAST_FURNACE_IRON_BARS, ItemID.IRON_BAR),
+	STEEL_BAR(VarbitID.BLAST_FURNACE_STEEL_BARS, ItemID.STEEL_BAR),
+	MITHRIL_BAR(VarbitID.BLAST_FURNACE_MITHRIL_BARS, ItemID.MITHRIL_BAR),
+	ADAMANTITE_BAR(VarbitID.BLAST_FURNACE_ADAMANTITE_BARS, ItemID.ADAMANTITE_BAR),
+	RUNITE_BAR(VarbitID.BLAST_FURNACE_RUNITE_BARS, ItemID.RUNITE_BAR),
+	SILVER_BAR(VarbitID.BLAST_FURNACE_SILVER_BARS, ItemID.SILVER_BAR),
+	GOLD_BAR(VarbitID.BLAST_FURNACE_GOLD_BARS, ItemID.GOLD_BAR),
+	LEAD_BAR(VarbitID.BLAST_FURNACE_LEAD_BARS, ItemID.LEAD_BAR),
+	CUPRONICKEL_BAR(VarbitID.BLAST_FURNACE_CUPRONICKEL_BARS, ItemID.CUPRONICKEL_BAR);
 
-	private static final Map<Varbits, BarsOres> VARBIT;
-
-	static
-	{
-		ImmutableMap.Builder<Varbits, BarsOres> builder = new ImmutableMap.Builder<>();
-
-		for (BarsOres s : values())
-		{
-			builder.put(s.getVarbit(), s);
-		}
-
-		VARBIT = builder.build();
-	}
-
-	@Getter
-	private final Varbits varbit;
-	@Getter
+	@Getter(onMethod_ = {@Varbit})
+	private final int varbit;
 	private final int itemID;
-
-	BarsOres(Varbits varbit, int itemID)
-	{
-		this.varbit = varbit;
-		this.itemID = itemID;
-	}
-
-	public static BarsOres getVarbit(Varbits varbit)
-	{
-		return VARBIT.get(varbit);
-	}
 }

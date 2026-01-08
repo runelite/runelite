@@ -1,0 +1,5 @@
+.id                       1002
+.int_arg_count            1
+.obj_arg_count            0
+   iconst                 :symtest
+   return                

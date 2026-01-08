@@ -28,5 +28,6 @@ public enum RequestFocusType
 {
 	OFF,
 	REQUEST,
+	TASKBAR,
 	FORCE;
 }

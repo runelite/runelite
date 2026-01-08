@@ -38,7 +38,7 @@ import net.runelite.api.Actor;
  *     <li>A player starts or stops dancing</li>
  * </ul>
  *
- * @see net.runelite.api.AnimationID
+ * @see net.runelite.api.gameval.AnimationID
  */
 @Data
 public class AnimationChanged

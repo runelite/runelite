@@ -25,6 +25,7 @@
 
 package net.runelite.client.util;
 
+@Deprecated
 public enum ImageUploadStyle
 {
 	NEITHER,

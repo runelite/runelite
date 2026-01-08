@@ -34,13 +34,13 @@ import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.geometry.Geometry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 class NpcAggroAreaOverlay extends Overlay
 {
@@ -58,7 +58,7 @@ class NpcAggroAreaOverlay extends Overlay
 		this.plugin = plugin;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
@@ -70,21 +70,22 @@ class NpcAggroAreaOverlay extends Overlay
 			return null;
 		}
 
+		final Player localPlayer = client.getLocalPlayer();
+		if (localPlayer.getHealthScale() == -1 && config.hideIfOutOfCombat())
+		{
+			return null;
+		}
+
 		GeneralPath lines = plugin.getLinesToDisplay()[client.getPlane()];
 		if (lines == null)
 		{
 			return null;
 		}
 
-		Color outlineColor = config.aggroAreaColor();
-		AggressionTimer timer = plugin.getCurrentTimer();
-		if (timer == null || Instant.now().compareTo(timer.getEndTime()) < 0)
+		Color outlineColor = config.unaggroAreaColor();
+		if (outlineColor == null || (plugin.getEndTime() != null && Instant.now().isBefore(plugin.getEndTime())))
 		{
-			outlineColor = new Color(
-				outlineColor.getRed(),
-				outlineColor.getGreen(),
-				outlineColor.getBlue(),
-				100);
+			outlineColor = config.aggroAreaColor();
 		}
 
 		renderPath(graphics, lines, outlineColor);

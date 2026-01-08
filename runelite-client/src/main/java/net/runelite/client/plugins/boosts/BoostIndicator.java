@@ -32,7 +32,7 @@ import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
-public class BoostIndicator extends InfoBox
+class BoostIndicator extends InfoBox
 {
 	private final BoostsPlugin plugin;
 	private final BoostsConfig config;
@@ -87,6 +87,12 @@ public class BoostIndicator extends InfoBox
 	@Override
 	public boolean render()
 	{
-		return config.displayInfoboxes() && plugin.canShowBoosts() && plugin.getSkillsToDisplay().contains(getSkill());
+		return plugin.getSkillsToDisplay().contains(getSkill()) && config.displayInfoboxes();
+	}
+
+	@Override
+	public String getName()
+	{
+		return "Boost " + skill.getName();
 	}
 }

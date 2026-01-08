@@ -29,8 +29,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.vars.InputType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
@@ -58,13 +57,16 @@ public class ChatKeyboardListener implements KeyListener
 	{
 		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
-			int inputTye = client.getVar(VarClientInt.INPUT_TYPE);
+			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
 			String input = inputTye == InputType.NONE.getType()
-				? client.getVar(VarClientStr.CHATBOX_TYPED_TEXT)
-				: client.getVar(VarClientStr.INPUT_TEXT);
+				? client.getVarcStrValue(VarClientID.CHATINPUT)
+				: client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 
 			if (input != null)
 			{
+				// prevent the keypress from also modifying the chatbox as we alter the text
+				e.consume();
+
 				// remove trailing space
 				while (input.endsWith(" "))
 				{
@@ -80,7 +82,8 @@ public class ChatKeyboardListener implements KeyListener
 		}
 		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
-			int inputTye = client.getVar(VarClientInt.INPUT_TYPE);
+			e.consume();
+			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
 			clientThread.invoke(() -> applyText(inputTye, ""));
 		}
 	}
@@ -89,12 +92,12 @@ public class ChatKeyboardListener implements KeyListener
 	{
 		if (inputType == InputType.NONE.getType())
 		{
-			client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+			client.setVarcStrValue(VarClientID.CHATINPUT, replacement);
 			client.runScript(ScriptID.CHAT_PROMPT_INIT);
 		}
 		else if (inputType == InputType.PRIVATE_MESSAGE.getType())
 		{
-			client.setVar(VarClientStr.INPUT_TEXT, replacement);
+			client.setVarcStrValue(VarClientID.MESLAYERINPUT, replacement);
 			client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 		}
 	}

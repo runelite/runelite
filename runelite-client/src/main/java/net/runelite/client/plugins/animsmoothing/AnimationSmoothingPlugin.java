@@ -24,12 +24,9 @@
  */
 package net.runelite.client.plugins.animsmoothing;
 
-import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -41,19 +38,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class AnimationSmoothingPlugin extends Plugin
 {
-	static final String CONFIG_GROUP = "animationSmoothing";
-
 	@Inject
 	private Client client;
-
-	@Inject
-	private AnimationSmoothingConfig config;
-
-	@Provides
-	AnimationSmoothingConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AnimationSmoothingConfig.class);
-	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -64,24 +50,59 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		client.setInterpolatePlayerAnimations(false);
-		client.setInterpolateNpcAnimations(false);
-		client.setInterpolateObjectAnimations(false);
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(CONFIG_GROUP))
-		{
-			update();
-		}
+		client.setAnimationInterpolationFilter(null);
 	}
 
 	private void update()
 	{
-		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
-		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
-		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
+		client.setAnimationInterpolationFilter(AnimationSmoothingPlugin::isAnimationInterpolatable);
+	}
+
+	private static boolean isAnimationInterpolatable(int animId)
+	{
+		switch (animId)
+		{
+			case AnimationID.DOG_UPDATE_JACKAL_DEFEND:
+
+			case AnimationID.WYRM_WALK:
+			case AnimationID.WYRM_READY:
+			case AnimationID.WYRM_ATTACK_MELEE:
+			case AnimationID.WYRM_ATTACK_MAGIC:
+
+			case AnimationID.GIANT_UPDATE_BASIC_ATTACK:
+
+			case AnimationID.GHOST_UPDATE_NORMAL_READY:
+			case AnimationID.GHOST_UPDATE_NORMAL_WALK:
+
+			case AnimationID.ZOMBIE_UPDATE_SIGN_WALK:
+
+			case AnimationID.DUCK_REWORK_UNDERWATER_READY_AND_EXTRA:
+
+			case AnimationID.WILD_CAVE_CHAINMACE_READY:
+
+			case AnimationID.ELEMENTAL_WHEEL_SPIN:
+			case AnimationID.BRAIN_MILL_SAIL_ROTATE:
+			case AnimationID.FAI_VARROCK_MILLSAIL:
+			case AnimationID.DS2_LITHKREN_GENERATOR_WHEEL:
+			case AnimationID.WATERWHEEL_CHUTE:
+
+			case AnimationID.HUMAN_SPELLCAST_DEMONBANE:
+
+			case AnimationID.POH_NEXUS:
+
+			case AnimationID.BURGH_BUCKET_DRIP:
+
+			case AnimationID.KEYKEEPER:
+
+			case AnimationID.TOA_SOT_CAST_B:
+
+			case AnimationID.BASILISK_KNIGHT_MELEE:
+
+			case AnimationID.WGS_HEROIC_CLIMB_SUCCESS_TWO:
+				return false;
+
+			default:
+				return true;
+		}
 	}
 }

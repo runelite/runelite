@@ -25,13 +25,19 @@
 package net.runelite.client.util;
 
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIOptions;
 import java.awt.Frame;
+import java.awt.Window;
 
 public class WinUtil
 {
+	private static boolean isWindowArrangedSupported = OSType.getOSType() == OSType.Windows;
+
 	/**
 	 * Forcibly set focus to the given component
 	 *
@@ -55,5 +61,32 @@ public class WinUtil
 		// Now we may set the foreground window
 		WinDef.HWND hwnd = new WinDef.HWND(Native.getComponentPointer(frame));
 		user32.SetForegroundWindow(hwnd);
+	}
+
+	interface RLUser32 extends StdCallLibrary
+	{
+		RLUser32 INSTANCE = Native.load("user32", RLUser32.class, W32APIOptions.DEFAULT_OPTIONS);
+
+		boolean IsWindowArranged(Pointer hwnd);
+	}
+
+	public static boolean isWindowArranged(Window window)
+	{
+		if (!isWindowArrangedSupported || !window.isDisplayable())
+		{
+			return false;
+		}
+
+		try
+		{
+			Pointer hwnd = Native.getComponentPointer(window);
+			return RLUser32.INSTANCE.IsWindowArranged(hwnd);
+		}
+		catch (LinkageError ignored)
+		{
+			// IsWindowArranged is only since Win 10 1903
+			isWindowArrangedSupported = false;
+			return false;
+		}
 	}
 }

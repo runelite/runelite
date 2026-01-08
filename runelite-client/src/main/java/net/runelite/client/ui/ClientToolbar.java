@@ -24,13 +24,9 @@
  */
 package net.runelite.client.ui;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.events.NavigationButtonAdded;
-import net.runelite.client.events.NavigationButtonRemoved;
+import javax.swing.SwingUtilities;
 
 /**
  * Plugin toolbar buttons holder.
@@ -38,43 +34,27 @@ import net.runelite.client.events.NavigationButtonRemoved;
 @Singleton
 public class ClientToolbar
 {
-	private final EventBus eventBus;
-	private final Set<NavigationButton> buttons = new HashSet<>();
+	private final ClientUI clientUI;
 
 	@Inject
-	private ClientToolbar(final EventBus eventBus)
+	private ClientToolbar(final ClientUI clientUI)
 	{
-		this.eventBus = eventBus;
+		this.clientUI = clientUI;
 	}
 
-	/**
-	 * Add navigation.
-	 *
-	 * @param button the button
-	 */
-	public void addNavigation(final NavigationButton button)
+	public void addNavigation(NavigationButton button)
 	{
-		if (buttons.contains(button))
-		{
-			return;
-		}
-
-		if (buttons.add(button))
-		{
-			eventBus.post(new NavigationButtonAdded(button));
-		}
+		SwingUtilities.invokeLater(() -> clientUI.addNavigation(button));
 	}
 
-	/**
-	 * Remove navigation.
-	 *
-	 * @param button the button
-	 */
 	public void removeNavigation(final NavigationButton button)
 	{
-		if (buttons.remove(button))
-		{
-			eventBus.post(new NavigationButtonRemoved(button));
-		}
+		SwingUtilities.invokeLater(() -> clientUI.removeNavigation(button));
+	}
+
+	public void openPanel(NavigationButton button)
+	{
+		assert SwingUtilities.isEventDispatchThread() : "must be on EDT";
+		clientUI.openPanel(button, true);
 	}
 }

@@ -24,14 +24,27 @@
  */
 package net.runelite.client.plugins.party.messages;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.ToString;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.client.party.messages.PartyMemberMessage;
 
-@Value
-@EqualsAndHashCode(callSuper = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class LocationUpdate extends PartyMemberMessage
 {
-	private final WorldPoint worldPoint;
+	private final int c;
+
+	public LocationUpdate(WorldPoint worldPoint)
+	{
+		c = (worldPoint.getPlane() << 28) | (worldPoint.getX() << 14) | (worldPoint.getY());
+	}
+
+	@ToString.Include
+	public WorldPoint getWorldPoint()
+	{
+		return new WorldPoint(
+			(c >> 14) & 0x3fff,
+			c & 0x3fff,
+			(c >> 28) & 3
+		);
+	}
 }

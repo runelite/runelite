@@ -33,12 +33,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 class ScreenMarkerWidgetHighlightOverlay extends Overlay
 {
@@ -50,9 +47,10 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 	{
 		this.plugin = plugin;
 		this.client = client;
-		setPosition(OverlayPosition.DETACHED);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
+		setMovable(true);
 	}
 
 	@Override
@@ -63,58 +61,53 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 			return null;
 		}
 
-		if (client.isMenuOpen())
-		{
-			plugin.setSelectedWidgetBounds(null);
-			return null;
-		}
-
 		final MenuEntry[] menuEntries = client.getMenuEntries();
-
-		final int last = menuEntries.length - 1;
-		if (last < 0)
+		if (client.isMenuOpen() || menuEntries.length == 0)
 		{
 			plugin.setSelectedWidgetBounds(null);
 			return null;
 		}
 
-		final MenuEntry menuEntry = menuEntries[last];
+		final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+		final int childIdx = menuEntry.getParam0();
 		final int widgetId = menuEntry.getParam1();
-		final int groupId = WidgetInfo.TO_GROUP(widgetId);
-		final int childId = WidgetInfo.TO_CHILD(widgetId);
 
-		final Widget widget = client.getWidget(groupId, childId);
+		final Widget widget = client.getWidget(widgetId);
 		if (widget == null)
 		{
 			plugin.setSelectedWidgetBounds(null);
 			return null;
 		}
 
-		final int param0 = menuEntry.getParam0();
-		if (param0 > -1)
+		Rectangle bounds = null;
+		if (childIdx > -1)
 		{
-			final WidgetItem widgetItem = widget.getWidgetItem(param0);
-			if (widgetItem != null)
+			final Widget child = widget.getChild(childIdx);
+			if (child != null)
 			{
-				drawHighlight(widgetItem.getCanvasBounds(), graphics);
-			}
-			else
-			{
-				drawHighlight(widget.getChild(param0).getBounds(), graphics);
+				bounds = child.getBounds();
 			}
 		}
 		else
 		{
-			drawHighlight(widget.getBounds(), graphics);
+			bounds = widget.getBounds();
 		}
+
+		if (bounds == null)
+		{
+			plugin.setSelectedWidgetBounds(null);
+			return null;
+		}
+
+		drawHighlight(graphics, bounds);
+		plugin.setSelectedWidgetBounds(bounds);
 
 		return null;
 	}
 
-	private void drawHighlight(Rectangle bounds, Graphics2D graphics)
+	private static void drawHighlight(Graphics2D graphics, Rectangle bounds)
 	{
 		graphics.setColor(Color.GREEN);
 		graphics.draw(bounds);
-		plugin.setSelectedWidgetBounds(bounds);
 	}
 }

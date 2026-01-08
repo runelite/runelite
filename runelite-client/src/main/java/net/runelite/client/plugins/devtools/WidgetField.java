@@ -64,6 +64,10 @@ public class WidgetField<T>
 		{
 			return value;
 		}
+		if (value instanceof Widget)
+		{
+			return WidgetInspector.getWidgetIdentifier((Widget) value);
+		}
 		return MessageFormatter.format("{}", value).getMessage();
 	}
 

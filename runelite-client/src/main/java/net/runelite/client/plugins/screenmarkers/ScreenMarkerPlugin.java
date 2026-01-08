@@ -40,12 +40,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -88,6 +89,9 @@ public class ScreenMarkerPlugin extends Plugin
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
 
+	@Inject
+	private Gson gson;
+
 	@Getter
 	@Inject
 	private ColorPickerManager colorPickerManager;
@@ -125,7 +129,7 @@ public class ScreenMarkerPlugin extends Plugin
 		pluginPanel = new ScreenMarkerPluginPanel(this);
 		pluginPanel.rebuild();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), ICON_FILE);
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
@@ -159,14 +163,13 @@ public class ScreenMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
-		if (screenMarkers.isEmpty() && event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_KEY))
-		{
-			loadConfig(event.getNewValue()).forEach(screenMarkers::add);
-			overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
-			screenMarkers.forEach(overlayManager::add);
-		}
+		screenMarkers.clear();
+		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
+		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
+		screenMarkers.forEach(overlayManager::add);
+		SwingUtilities.invokeLater(pluginPanel::rebuild);
 	}
 
 	public void setMouseListenerEnabled(boolean enabled)
@@ -197,10 +200,11 @@ public class ScreenMarkerPlugin extends Plugin
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
 			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
-			pluginPanel.getSelectedBorderThickness(),
-			pluginPanel.getSelectedColor(),
-			pluginPanel.getSelectedFillColor(),
-			true
+			ScreenMarkerPluginPanel.SELECTED_BORDER_THICKNESS,
+			ScreenMarkerPluginPanel.SELECTED_COLOR,
+			ScreenMarkerPluginPanel.SELECTED_FILL_COLOR,
+			true,
+			false
 		);
 
 		// Set overlay creator bounds to current position and default size
@@ -266,7 +270,6 @@ public class ScreenMarkerPlugin extends Plugin
 			return;
 		}
 
-		final Gson gson = new Gson();
 		final String json = gson
 			.toJson(screenMarkers.stream().map(ScreenMarkerOverlay::getMarker).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
@@ -279,7 +282,6 @@ public class ScreenMarkerPlugin extends Plugin
 			return Stream.empty();
 		}
 
-		final Gson gson = new Gson();
 		final List<ScreenMarker> screenMarkerData = gson.fromJson(json, new TypeToken<ArrayList<ScreenMarker>>()
 		{
 		}.getType());

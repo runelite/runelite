@@ -32,18 +32,28 @@ import java.awt.Shape;
 public interface WallObject extends TileObject
 {
 	/**
-	 * A bitfield with the orientation of a wall
-	 * 1 = East
+	 * A bitfield with the orientation of the first wall
+	 * 1 = West
 	 * 2 = North
-	 * 4 = West
+	 * 4 = East
 	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationA();
 
 	/**
-	 * A bitfield containing the orientation of the second wall on this tile,
-	 * or 0 if there is no second wall.
-	 * @see #getOrientationA
+	 * A bitfield with the orientation of the second wall
+	 * 1 = West
+	 * 2 = North
+	 * 4 = East
+	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationB();
 

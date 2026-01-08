@@ -24,34 +24,20 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents the model of an object.
  */
-public interface Model extends Renderable
+public interface Model extends Mesh<Model>, Renderable
 {
-	int getVerticesCount();
-
-	int[] getVerticesX();
-
-	int[] getVerticesY();
-
-	int[] getVerticesZ();
-
-	int getTrianglesCount();
-
-	int[] getTrianglesX();
-
-	int[] getTrianglesY();
-
-	int[] getTrianglesZ();
-
 	int[] getFaceColors1();
 
 	int[] getFaceColors2();
 
 	int[] getFaceColors3();
 
-	byte[] getTriangleTransparencies();
+	short[] getUnlitFaceColors();
 
 	int getSceneId();
 	void setSceneId(int sceneId);
@@ -62,28 +48,46 @@ public interface Model extends Renderable
 	int getUvBufferOffset();
 	void setUvBufferOffset(int bufferOffset);
 
-	int getModelHeight();
+	int getBottomY();
 
 	void calculateBoundsCylinder();
 
 	byte[] getFaceRenderPriorities();
 
+	byte[] getFaceBias();
+
 	int getRadius();
+	int getDiameter();
 
-	short[] getFaceTextures();
-
-	float[][] getFaceTextureUCoordinates();
-	float[][] getFaceTextureVCoordinates();
-
+	/**
+	 * @see #getAABB(int)
+	 */
+	@Deprecated
 	void calculateExtreme(int orientation);
 
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
+	@Nonnull
+	AABB getAABB(int orientation);
 
 	int getXYZMag();
-	boolean isClickable();
+	boolean useBoundingBox();
+
+	int[] getVertexNormalsX();
+	int[] getVertexNormalsY();
+	int[] getVertexNormalsZ();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
+
+	byte[] getTextureFaces();
+
+	int[] getTexIndices1();
+	int[] getTexIndices2();
+	int[] getTexIndices3();
+
+	Model getUnskewedModel();
+
+	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
+	void drawOrtho(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera, int zoom);
 }

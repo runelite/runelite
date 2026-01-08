@@ -27,15 +27,15 @@ package net.runelite.client.plugins.antidrag;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -51,6 +51,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"antidrag", "delay", "inventory", "items"},
 	enabledByDefault = false
 )
+@Slf4j
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	static final String CONFIG_GROUP = "antiDrag";
@@ -69,8 +70,8 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
-	private boolean inPvp;
-	private boolean held;
+	private boolean shiftHeld;
+	private boolean ctrlHeld;
 
 	@Provides
 	AntiDragConfig getConfig(ConfigManager configManager)
@@ -85,8 +86,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			clientThread.invokeLater(() ->
 			{
-				inPvp = client.getVar(Varbits.PVP_SPEC_ORB) == 1;
-				if (!config.onShiftOnly() && !inPvp)
+				if (!config.onShiftOnly())
 				{
 					setDragDelay();
 				}
@@ -112,21 +112,36 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !config.onShiftOnly())
+		{
+			resetDragDelay();
+			ctrlHeld = true;
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			setDragDelay();
-			held = true;
+			shiftHeld = true;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL && config.disableOnCtrl() && !config.onShiftOnly())
+		{
+			setDragDelay();
+			ctrlHeld = false;
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_SHIFT && config.onShiftOnly())
 		{
 			resetDragDelay();
-			held = false;
+			shiftHeld = false;
 		}
+	}
+
+	private boolean isOverriding()
+	{
+		return (!config.onShiftOnly() || shiftHeld) && !ctrlHeld;
 	}
 
 	@Subscribe
@@ -134,9 +149,14 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		if (event.getGroup().equals(CONFIG_GROUP))
 		{
-			if (config.onShiftOnly() || inPvp)
+			if (!config.disableOnCtrl())
 			{
-				held = false;
+				ctrlHeld = false;
+			}
+
+			if (config.onShiftOnly())
+			{
+				shiftHeld = false;
 				clientThread.invoke(this::resetDragDelay);
 			}
 			else
@@ -147,35 +167,15 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
-	{
-		boolean currentStatus = client.getVar(Varbits.PVP_SPEC_ORB) == 1;
-
-		if (currentStatus != inPvp)
-		{
-			inPvp = currentStatus;
-
-			if (!inPvp && !config.onShiftOnly())
-			{
-				setDragDelay();
-			}
-			else
-			{
-				resetDragDelay();
-			}
-		}
-
-	}
-
-	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
-			held = false;
+			shiftHeld = false;
+			ctrlHeld = false;
 			clientThread.invoke(this::resetDragDelay);
 		}
-		else if (!inPvp && !config.onShiftOnly())
+		else if (!config.onShiftOnly())
 		{
 			clientThread.invoke(this::setDragDelay);
 		}
@@ -184,35 +184,145 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID && (!config.onShiftOnly() || held))
+		if (!isOverriding())
+		{
+			return;
+		}
+
+		if (widgetLoaded.getGroupId() == InterfaceID.BANKMAIN
+			|| widgetLoaded.getGroupId() == InterfaceID.BANKSIDE
+			|| widgetLoaded.getGroupId() == InterfaceID.SHARED_BANK
+			|| widgetLoaded.getGroupId() == InterfaceID.SHARED_BANK_SIDE)
 		{
 			setBankDragDelay(config.dragDelay());
 		}
+		else if (widgetLoaded.getGroupId() == InterfaceID.INVENTORY)
+		{
+			setInvDragDelay(config.dragDelay());
+		}
 	}
 
-	private void setBankDragDelay(int delay)
+	@Subscribe
+	private void onScriptPostFired(ScriptPostFired ev)
 	{
-		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		if (bankItemContainer != null)
+		if (ev.getScriptId() == ScriptID.INVENTORY_DRAWITEM)
 		{
-			Widget[] items = bankItemContainer.getDynamicChildren();
-			for (Widget item : items)
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == InterfaceID.Bankmain.ITEMS
+				|| child.getParentId() == InterfaceID.Inventory.ITEMS)
+			{
+				final int delay = config.dragDelay();
+				boolean overriding = isOverriding();
+				// disable [clientscript,inventory_antidrag_update] listener
+				child.setOnMouseRepeatListener((Object[]) null);
+				if (overriding)
+				{
+					child.setDragDeadTime(delay);
+				}
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.INTERFACE_INV_DRAW_SLOT_BIG)
+		{
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == InterfaceID.EquipmentSide.ITEMS && isOverriding())
+			{
+				child.setDragDeadTime(config.dragDelay());
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
+		{
+			if (isOverriding())
+			{
+				setCoxDragDelay(config.dragDelay());
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.BANK_DEPOSITBOX_INIT)
+		{
+			if (isOverriding())
+			{
+				setBankDragDelay(config.dragDelay());
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.SEED_VAULT_BUILD)
+		{
+			if (isOverriding())
+			{
+				setSeedVaultDragDelay(config.dragDelay());
+			}
+		}
+	}
+
+	private static void applyDragDelay(Widget widget, int delay)
+	{
+		if (widget != null)
+		{
+			for (Widget item : widget.getDynamicChildren())
 			{
 				item.setDragDeadTime(delay);
 			}
 		}
 	}
 
+	private void setBankDragDelay(int delay)
+	{
+		final Widget bankItemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
+		final Widget bankInventoryItemsContainer = client.getWidget(InterfaceID.Bankside.ITEMS);
+		final Widget groupStorageItems = client.getWidget(InterfaceID.SharedBank.ITEMS);
+		final Widget groupStorageInventoryItems = client.getWidget(InterfaceID.SharedBankSide.ITEMS);
+		final Widget bankInventoryEquipmentItemsContainer = client.getWidget(InterfaceID.Bankside.WORNOPS);
+		final Widget bankDepositContainer = client.getWidget(InterfaceID.BankDepositbox.INVENTORY);
+		final Widget coxPrivateChest = client.getWidget(InterfaceID.RaidsStoragePrivate.ITEMS);
+
+		applyDragDelay(bankItemContainer, delay);
+		applyDragDelay(bankInventoryItemsContainer, delay);
+		applyDragDelay(groupStorageItems, delay);
+		applyDragDelay(groupStorageInventoryItems, delay);
+		applyDragDelay(bankInventoryEquipmentItemsContainer, delay);
+		applyDragDelay(bankDepositContainer, delay);
+		applyDragDelay(coxPrivateChest, delay);
+	}
+
+	private void setInvDragDelay(int delay)
+	{
+		final Widget inventory = client.getWidget(InterfaceID.Inventory.ITEMS);
+		final Widget equipmentInventory = client.getWidget(InterfaceID.EquipmentSide.ITEMS);
+		applyDragDelay(inventory, delay);
+		applyDragDelay(equipmentInventory, delay);
+	}
+
+	private void setCoxDragDelay(int delay)
+	{
+		final Widget coxChest = client.getWidget(InterfaceID.RaidsStoragePrivate.ITEMS);
+		applyDragDelay(coxChest, delay);
+	}
+
+	private void setSeedVaultDragDelay(int delay)
+	{
+		final Widget seedVaultItems = client.getWidget(InterfaceID.SeedVault.OBJ_LIST);
+		final Widget seedVaultText = client.getWidget(InterfaceID.SeedVault.TEXT_LIST);
+		applyDragDelay(seedVaultItems, delay);
+		applyDragDelay(seedVaultText, delay);
+	}
+
 	private void setDragDelay()
 	{
-		client.setInventoryDragDelay(config.dragDelay());
-		setBankDragDelay(config.dragDelay());
+		final int delay = config.dragDelay();
+		log.debug("Set delay to {}", delay);
+		client.setInventoryDragDelay(delay);
+		setInvDragDelay(delay);
+		setBankDragDelay(delay);
+		setCoxDragDelay(delay);
+		setSeedVaultDragDelay(delay);
 	}
 
 	private void resetDragDelay()
 	{
+		log.debug("Reset delay to {}", DEFAULT_DELAY);
 		client.setInventoryDragDelay(DEFAULT_DELAY);
+		setInvDragDelay(DEFAULT_DELAY);
 		setBankDragDelay(DEFAULT_DELAY);
+		setCoxDragDelay(DEFAULT_DELAY);
+		setSeedVaultDragDelay(DEFAULT_DELAY);
 	}
 
 }

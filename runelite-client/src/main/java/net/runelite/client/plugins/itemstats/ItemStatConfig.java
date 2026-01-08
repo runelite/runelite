@@ -37,7 +37,7 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "consumableStats",
 		name = "Enable consumable stats",
-		description = "Enables tooltips for consumable items (food, boosts)"
+		description = "Enables tooltips for consumable items (food, boosts)."
 	)
 	default boolean consumableStats()
 	{
@@ -47,7 +47,7 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "equipmentStats",
 		name = "Enable equipment stats",
-		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)"
+		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)."
 	)
 	default boolean equipmentStats()
 	{
@@ -57,7 +57,7 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "geStats",
 		name = "Enable GE item information",
-		description = "Shows an item information panel when buying items in the GE"
+		description = "Shows an item information panel when buying items in the GE."
 	)
 	default boolean geStats()
 	{
@@ -66,8 +66,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "relative",
-		name = "Show Relative",
-		description = "Show relative stat change in tooltip"
+		name = "Show relative",
+		description = "Show relative stat change in tooltip."
 	)
 	default boolean relative()
 	{
@@ -76,8 +76,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "absolute",
-		name = "Show Absolute",
-		description = "Show absolute stat change in tooltip"
+		name = "Show absolute",
+		description = "Show absolute stat change in tooltip."
 	)
 	default boolean absolute()
 	{
@@ -86,8 +86,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "theoretical",
-		name = "Show Theoretical",
-		description = "Show theoretical stat change in tooltip"
+		name = "Show theoretical",
+		description = "Show theoretical stat change in tooltip."
 	)
 	default boolean theoretical()
 	{
@@ -96,8 +96,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "showWeight",
-		name = "Show Weight",
-		description = "Show weight in tooltip"
+		name = "Show weight",
+		description = "Show weight in tooltip."
 	)
 	default boolean showWeight()
 	{
@@ -106,8 +106,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "showStatsInBank",
-		name = "Show Stats In Bank",
-		description = "Show item stats on bank items tooltip"
+		name = "Show stats in bank",
+		description = "Show item stats on bank items tooltip."
 	)
 	default boolean showStatsInBank()
 	{
@@ -116,8 +116,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "alwaysShowBaseStats",
-		name = "Always Show Base Stats",
-		description = "Always include the base items stats in the tooltip"
+		name = "Always show base stats",
+		description = "Always include the base items stats in the tooltip."
 	)
 	default boolean alwaysShowBaseStats()
 	{
@@ -146,8 +146,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "colorBetterUncapped",
-		name = "Better (Uncapped)",
-		description = "Color to show when the stat change is fully consumed",
+		name = "Better (uncapped)",
+		description = "Color to show when the stat change is fully consumed.",
 		position = 10
 	)
 	default Color colorBetterUncapped()
@@ -157,8 +157,8 @@ public interface ItemStatConfig extends Config
 
 	@ConfigItem(
 		keyName = "colorBetterSomecapped",
-		name = "Better (Some capped)",
-		description = "Color to show when some stat changes are capped, but some ar not",
+		name = "Better (some capped)",
+		description = "Color to show when some stat changes are capped, but some are not.",
 		position = 11
 	)
 	default Color colorBetterSomeCapped()
@@ -166,21 +166,21 @@ public interface ItemStatConfig extends Config
 		return new Color(0x9CEE33);
 	}
 
-
 	@ConfigItem(
 		keyName = "colorBetterCapped",
-		name = "Better (Capped)",
-		description = "Color to show when the stat change is positive, but not fully consumed",
+		name = "Better (capped)",
+		description = "Color to show when the stat change is positive, but not fully consumed.",
 		position = 12
 	)
 	default Color colorBetterCapped()
 	{
 		return new Color(0xEEEE33);
 	}
+
 	@ConfigItem(
 		keyName = "colorNoChange",
 		name = "No change",
-		description = "Color to show when there is no change",
+		description = "Color to show when there is no change.",
 		position = 13
 	)
 	default Color colorNoChange()
@@ -191,7 +191,7 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "colorWorse",
 		name = "Worse",
-		description = "Color to show when the stat goes down",
+		description = "Color to show when the stat goes down.",
 		position = 14
 	)
 	default Color colorWorse()

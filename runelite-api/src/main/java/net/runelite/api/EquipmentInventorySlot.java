@@ -31,8 +31,8 @@ package net.runelite.api;
  * {@link ItemContainer} corresponding. For obtaining information about equipment
  * in the {@link PlayerComposition}, use {@link net.runelite.api.kit.KitType}.
  *
- * @see Client#getItemContainer(InventoryID)
- * @see InventoryID#EQUIPMENT
+ * @see Client#getItemContainer(int)
+ * @see net.runelite.api.gameval.InventoryID#WORN
  */
 public enum EquipmentInventorySlot
 {
@@ -42,9 +42,12 @@ public enum EquipmentInventorySlot
 	WEAPON(3),
 	BODY(4),
 	SHIELD(5),
+	ARMS(6),
 	LEGS(7),
+	HAIR(8),
 	GLOVES(9),
 	BOOTS(10),
+	JAW(11),
 	RING(12),
 	AMMO(13);
 

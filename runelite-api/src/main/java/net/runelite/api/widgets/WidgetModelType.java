@@ -24,7 +24,7 @@
  */
 package net.runelite.api.widgets;
 
-public class WidgetModelType
+public final class WidgetModelType
 {
 	public static final int NULL = 0;
 	public static final int MODEL = 1;
@@ -32,4 +32,5 @@ public class WidgetModelType
 	public static final int LOCAL_PLAYER_CHATHEAD = 3;
 	public static final int ITEM = 4;
 	public static final int PLAYER = 5;
+	public static final int NPC_INDEX_CHATHEAD = 6;
 }

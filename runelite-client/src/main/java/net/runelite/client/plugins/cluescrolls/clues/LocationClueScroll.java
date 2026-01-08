@@ -25,14 +25,15 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 
 public interface LocationClueScroll
 {
-	WorldPoint getLocation();
+	WorldPoint getLocation(ClueScrollPlugin plugin);
 
-	default WorldPoint[] getLocations()
+	default WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
-		WorldPoint location = getLocation();
+		WorldPoint location = getLocation(plugin);
 		return location == null ? new WorldPoint[0] : new WorldPoint[]{location};
 	}
 }

@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.party;
 
-import java.util.UUID;
 import javax.annotation.Nullable;
 import net.runelite.client.plugins.party.data.PartyData;
 
@@ -36,5 +35,5 @@ public interface PartyPluginService
 	 * @return party data for member
 	 */
 	@Nullable
-	PartyData getPartyData(UUID memberId);
+	PartyData getPartyData(long memberId);
 }

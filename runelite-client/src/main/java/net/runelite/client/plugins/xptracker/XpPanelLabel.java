@@ -47,25 +47,10 @@ public enum XpPanelLabel
 	private final String key;
 	private final Function<XpSnapshotSingle, String> valueFunc;
 
-	/**
-	 * Get the action key label based on if the Action type is an xp drop or kill
-	 *
-	 * @param snapshot
-	 * @return
-	 */
-	public String getActionKey(XpSnapshotSingle snapshot)
-	{
-		String actionKey = key;
-		if (snapshot.getActionType() == XpActionType.ACTOR_HEALTH)
-		{
-			return actionKey.replace("Action", "Kill");
-		}
-
-		return actionKey;
-	}
-
 	private static String format(int val)
 	{
-		return QuantityFormatter.quantityToRSDecimalStack(val, true);
+		// actions remaining uses Integer.MAX_VALUE if the action history isn't initialized, which can happen
+		// from restoring a save.
+		return val == Integer.MAX_VALUE ? "N/A" : QuantityFormatter.quantityToRSDecimalStack(val, true);
 	}
 }

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.grandexchange;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.input.KeyListener;
@@ -58,7 +57,7 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 			{
 				if (menuEntry.getOption().equals(SEARCH_GRAND_EXCHANGE))
 				{
-					search(Text.removeTags(menuEntry.getTarget()));
+					plugin.search(Text.removeTags(menuEntry.getTarget()));
 					e.consume();
 					break;
 				}
@@ -66,21 +65,6 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 		}
 
 		return super.mouseClicked(e);
-	}
-
-	private void search(final String itemName)
-	{
-		SwingUtilities.invokeLater(() ->
-		{
-			plugin.getPanel().showSearch();
-
-			if (!plugin.getButton().isSelected())
-			{
-				plugin.getButton().getOnSelect().run();
-			}
-
-			plugin.getPanel().getSearchPanel().priceLookup(itemName);
-		});
 	}
 
 	@Override

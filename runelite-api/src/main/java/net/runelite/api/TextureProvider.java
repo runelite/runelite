@@ -45,4 +45,9 @@ public interface TextureProvider
 	 * Get the pixels for a texture
 	 */
 	int[] load(int textureId);
+
+	/**
+	 * Get the HSL color used when the texture isn't loaded yet
+	 */
+	int getDefaultColor(int textureID);
 }

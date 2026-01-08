@@ -27,21 +27,21 @@ package net.runelite.client.plugins.timetracking.hunter;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
+import net.runelite.api.gameval.ItemID;
 
 @AllArgsConstructor
 @Getter
 enum BirdHouse
 {
-	NORMAL("Bird House", ItemID.BIRD_HOUSE),
-	OAK("Oak Bird House", ItemID.OAK_BIRD_HOUSE),
-	WILLOW("Willow Bird House", ItemID.WILLOW_BIRD_HOUSE),
-	TEAK("Teak Bird House", ItemID.TEAK_BIRD_HOUSE),
-	MAPLE("Maple Bird House", ItemID.MAPLE_BIRD_HOUSE),
-	MAHOGANY("Mahogany Bird House", ItemID.MAHOGANY_BIRD_HOUSE),
-	YEW("Yew Bird House", ItemID.YEW_BIRD_HOUSE),
-	MAGIC("Magic Bird House", ItemID.MAGIC_BIRD_HOUSE),
-	REDWOOD("Redwood Bird House", ItemID.REDWOOD_BIRD_HOUSE);
+	NORMAL("Bird House", ItemID.BIRDHOUSE_NORMAL),
+	OAK("Oak Bird House", ItemID.BIRDHOUSE_OAK),
+	WILLOW("Willow Bird House", ItemID.BIRDHOUSE_WILLOW),
+	TEAK("Teak Bird House", ItemID.BIRDHOUSE_TEAK),
+	MAPLE("Maple Bird House", ItemID.BIRDHOUSE_MAPLE),
+	MAHOGANY("Mahogany Bird House", ItemID.BIRDHOUSE_MAHOGANY),
+	YEW("Yew Bird House", ItemID.BIRDHOUSE_YEW),
+	MAGIC("Magic Bird House", ItemID.BIRDHOUSE_MAGIC),
+	REDWOOD("Redwood Bird House", ItemID.BIRDHOUSE_REDWOOD);
 
 	private final String name;
 	private final int itemID;

@@ -26,19 +26,15 @@ grammar rs2asm;
 
 prog: NEWLINE* (header NEWLINE+)* (line NEWLINE+)+ ;
 
-header: id | int_stack_count | string_stack_count | int_var_count | string_var_count ;
+header: id | int_arg_count | obj_arg_count ;
 
 id: '.id ' id_value ;
-int_stack_count: '.int_stack_count ' int_stack_value ;
-string_stack_count: '.string_stack_count ' string_stack_value ;
-int_var_count: '.int_var_count ' int_var_value ;
-string_var_count: '.string_var_count ' string_var_value ;
+int_arg_count: '.int_arg_count ' int_arg_value ;
+obj_arg_count: '.obj_arg_count ' obj_arg_value ;
 
 id_value: INT ;
-int_stack_value: INT ;
-string_stack_value: INT ;
-int_var_value: INT ;
-string_var_value: INT ;
+int_arg_value: INT ;
+obj_arg_value: INT ;
 
 line: instruction | label | switch_lookup ;
 instruction: instruction_name instruction_operand ;
@@ -48,10 +44,11 @@ instruction_name: name_string | name_opcode ;
 name_string: IDENTIFIER ;
 name_opcode: INT ;
 
-instruction_operand: operand_int | operand_qstring | operand_label | ;
+instruction_operand: operand_int | operand_qstring | operand_label | operand_symbol | ;
 operand_int: INT ;
 operand_qstring: QSTRING ;
 operand_label: IDENTIFIER ;
+operand_symbol: SYMBOL ;
 
 switch_lookup: switch_key ':' switch_value ;
 switch_key: INT ;
@@ -61,6 +58,7 @@ NEWLINE: ( '\r' | '\n' )+ ;
 INT: '-'? [0-9]+ ;
 QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
 IDENTIFIER: [a-zA-Z0-9_]+ ;
+SYMBOL: ':' [a-zA-Z0-9_:]+ ;
 COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
 
 WS: (' ' | '\t')+ -> channel(HIDDEN) ;

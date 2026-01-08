@@ -31,7 +31,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.Room;
 
-class Raid
+public class Raid
 {
 	@Getter
 	private final RaidRoom[] rooms = new RaidRoom[16];
@@ -41,11 +41,11 @@ class Raid
 
 	// The south west tile of the lobby room
 	@Getter
-	private WorldPoint gridBase;
+	private final WorldPoint gridBase;
 
 	// The index of the lobby room in the rooms array
 	@Getter
-	private int lobbyIndex;
+	private final int lobbyIndex;
 
 	public Raid(WorldPoint gridBase, int lobbyIndex)
 	{
@@ -144,7 +144,7 @@ class Raid
 			}
 			else
 			{
-				builder.append(" ");
+				builder.append(' ');
 			}
 		}
 

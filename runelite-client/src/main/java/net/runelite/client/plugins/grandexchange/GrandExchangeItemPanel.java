@@ -39,9 +39,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.QuantityFormatter;
 
 /**
@@ -52,8 +51,8 @@ class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
 
-	GrandExchangeItemPanel(AsyncBufferedImage icon, String name, int itemID, int gePrice, Double
-		haPrice, int geItemLimit)
+	GrandExchangeItemPanel(GrandExchangePlugin grandExchangePlugin, AsyncBufferedImage icon, String name, int itemID,
+		int gePrice, int haPrice, int geItemLimit)
 	{
 		BorderLayout layout = new BorderLayout();
 		layout.setHgap(5);
@@ -90,7 +89,7 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				geLink(name, itemID);
+				grandExchangePlugin.openGeLink(name, itemID);
 			}
 		};
 
@@ -139,7 +138,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
-		haPriceLabel.setText(QuantityFormatter.formatNumber(haPrice.intValue()) + " alch");
+		haPriceLabel.setText(QuantityFormatter.formatNumber(haPrice) + " alch");
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
 		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
 
@@ -163,15 +162,5 @@ class GrandExchangeItemPanel extends JPanel
 		{
 			c.setBackground(color);
 		}
-	}
-
-	private static void geLink(String name, int itemID)
-	{
-		final String url = "http://services.runescape.com/m=itemdb_oldschool/"
-			+ name.replaceAll(" ", "_")
-			+ "/viewitem?obj="
-			+ itemID;
-
-		LinkBrowser.browse(url);
 	}
 }

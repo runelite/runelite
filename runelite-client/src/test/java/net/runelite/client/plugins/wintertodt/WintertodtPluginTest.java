@@ -30,15 +30,18 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.Notifier;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,10 +67,6 @@ public class WintertodtPluginTest
 
 	@Mock
 	@Bind
-	ChatMessageManager chatMessageManager;
-
-	@Mock
-	@Bind
 	Notifier notifier;
 
 	@Mock
@@ -78,6 +77,12 @@ public class WintertodtPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		Player local = mock(Player.class);
+		when(local.getWorldLocation()).thenReturn(new WorldPoint(1600, 3968, 0));
+		when(client.getLocalPlayer()).thenReturn(local);
+
+		wintertodtPlugin.onGameTick(new GameTick());
 	}
 
 	@Test
@@ -85,11 +90,14 @@ public class WintertodtPluginTest
 	{
 		when(config.roundNotification()).thenReturn(15);
 
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(35);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
+
+		varbitChanged.setValue(35);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 		//(15 * 50) / 30 = ~25
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		varbitChanged.setValue(25);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
 		verify(notifier, times(1)).notify("Wintertodt round is about to start");
 	}
@@ -99,11 +107,14 @@ public class WintertodtPluginTest
 	{
 		when(config.roundNotification()).thenReturn(10);
 
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(20);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
+
+		varbitChanged.setValue(20);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 		//(10 * 50) / 30 = ~16
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(16);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		varbitChanged.setValue(16);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
 		verify(notifier, times(1)).notify("Wintertodt round is about to start");
 	}
@@ -113,11 +124,14 @@ public class WintertodtPluginTest
 	{
 		when(config.roundNotification()).thenReturn(5);
 
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(10);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
+
+		varbitChanged.setValue(10);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 		//(5 * 50) / 30 = ~8
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(8);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		varbitChanged.setValue(8);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
 		verify(notifier, times(1)).notify("Wintertodt round is about to start");
 	}
@@ -127,18 +141,21 @@ public class WintertodtPluginTest
 	{
 		when(config.roundNotification()).thenReturn(5);
 
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(0);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(10);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(8);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(6);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(5);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(4);
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
+
+		varbitChanged.setValue(0);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
+		varbitChanged.setValue(10);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
+		varbitChanged.setValue(8);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
+		varbitChanged.setValue(6);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
+		varbitChanged.setValue(5);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
+		varbitChanged.setValue(4);
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 
 		verify(notifier, times(1)).notify("Wintertodt round is about to start");
 	}
@@ -147,9 +164,11 @@ public class WintertodtPluginTest
 	public void matchStartingNotification_shouldNotNotify_whenNoneOptionSelected()
 	{
 		when(config.roundNotification()).thenReturn(5);
-		when(client.getVar(Varbits.WINTERTODT_TIMER)).thenReturn(25);
 
-		wintertodtPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(VarbitID.WINT_TRANSMIT_RESPAWNDELAY);
+
+		wintertodtPlugin.onVarbitChanged(varbitChanged);
 		verify(notifier, times(0)).notify("Wintertodt round is about to start");
 	}
 }

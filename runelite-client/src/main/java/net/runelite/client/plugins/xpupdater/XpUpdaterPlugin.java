@@ -26,33 +26,34 @@
  */
 package net.runelite.client.plugins.xpupdater;
 
-import java.io.IOException;
-import java.util.Objects;
-import javax.inject.Inject;
 import com.google.inject.Provides;
+import java.io.IOException;
+import java.util.EnumSet;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.FormBody;
 import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "XP Updater",
 	description = "Automatically updates your stats on external xptrackers when you log out",
-	tags = {"cml", "crystalmathlabs", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
+	tags = {"cml", "crystalmathlabs", "runetracker", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -66,12 +67,15 @@ public class XpUpdaterPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	private String lastUsername;
-	private boolean fetchXp;
-	private long lastXp;
-
 	@Inject
 	private XpUpdaterConfig config;
+
+	@Inject
+	private OkHttpClient okHttpClient;
+
+	private long lastAccount;
+	private boolean fetchXp;
+	private long lastXp;
 
 	@Provides
 	XpUpdaterConfig getConfig(ConfigManager configManager)
@@ -83,6 +87,7 @@ public class XpUpdaterPlugin extends Plugin
 	protected void startUp()
 	{
 		fetchXp = true;
+		lastAccount = -1L;
 	}
 
 	@Subscribe
@@ -91,13 +96,13 @@ public class XpUpdaterPlugin extends Plugin
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
 		{
-			if (!Objects.equals(client.getUsername(), lastUsername))
+			if (lastAccount != client.getAccountHash())
 			{
-				lastUsername = client.getUsername();
+				lastAccount = client.getAccountHash();
 				fetchXp = true;
 			}
 		}
-		else if (state == GameState.LOGIN_SCREEN)
+		else if (state == GameState.LOGIN_SCREEN || state == GameState.HOPPING)
 		{
 			Player local = client.getLocalPlayer();
 			if (local == null)
@@ -109,8 +114,8 @@ public class XpUpdaterPlugin extends Plugin
 			// Don't submit update unless xp threshold is reached
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
-				log.debug("Submitting update for {}", local.getName());
-				update(local.getName());
+				log.debug("Submitting update for {} accountHash {}", local.getName(), lastAccount);
+				update(lastAccount, local.getName());
 				lastXp = totalXp;
 			}
 		}
@@ -126,59 +131,89 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private void update(String username)
+	private void update(long accountHash, String username)
 	{
-		String reformedUsername = username.replace(" ", "_");
+		EnumSet<WorldType> worldTypes = client.getWorldType();
+		username = username.replace(" ", "_");
+		updateCml(username, worldTypes);
+		updateTempleosrs(accountHash, username, worldTypes);
+		updateWom(accountHash, username, worldTypes);
+	}
 
-		if (config.cml())
-		{
-			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("crystalmathlabs.com")
-					.addPathSegment("tracker")
-					.addPathSegment("api.php")
-					.addQueryParameter("type", "update")
-					.addQueryParameter("player", reformedUsername)
-					.build();
-
-			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
-
-			sendRequest("CrystalMathLabs", request);
-		}
-
-		if (config.templeosrs())
-		{
-			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("templeosrs.com")
-					.addPathSegment("php")
-					.addPathSegment("add_datapoint.php")
-					.addQueryParameter("player", reformedUsername)
-					.build();
-
-			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
-
-			sendRequest("TempleOSRS", request);
-		}
-
-		if (config.wiseoldman())
+	private void updateCml(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.cml()
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host("wiseoldman.net")
-				.addPathSegment("api")
+				.host("crystalmathlabs.com")
+				.addPathSegment("tracker")
+				.addPathSegment("api.php")
+				.addQueryParameter("type", "update")
+				.addQueryParameter("player", username)
+				.build();
+
+			Request request = new Request.Builder()
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
+
+			sendRequest("CrystalMathLabs", request);
+		}
+	}
+
+	private void updateTempleosrs(long accountHash, String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.templeosrs()
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
+		{
+			HttpUrl.Builder url = new HttpUrl.Builder()
+				.scheme("https")
+				.host("templeosrs.com")
+				.addPathSegment("php")
+				.addPathSegment("add_datapoint.php")
+				.addQueryParameter("player", username)
+				.addQueryParameter("accountHash", Long.toString(accountHash));
+
+			if (worldTypes.contains(WorldType.FRESH_START_WORLD))
+			{
+				url.addQueryParameter("worldType", "fsw");
+			}
+
+			Request request = new Request.Builder()
+				.header("User-Agent", "RuneLite")
+				.url(url.build())
+				.build();
+
+			sendRequest("TempleOSRS", request);
+		}
+	}
+
+	private void updateWom(long accountHash, String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.wiseoldman()
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.TOURNAMENT_WORLD))
+		{
+			HttpUrl url = new HttpUrl.Builder()
+				.scheme("https")
+				.host("api.wiseoldman.net")
+				.addPathSegment(worldTypes.contains(WorldType.SEASONAL) ? "league" : "v2")
 				.addPathSegment("players")
-				.addPathSegment("track")
+				.addPathSegment(username)
 				.build();
 
 			RequestBody formBody = new FormBody.Builder()
-				.add("username", username)
+				.add("accountHash", Long.toString(accountHash))
 				.build();
 
 			Request request = new Request.Builder()
@@ -191,9 +226,9 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private static void sendRequest(String platform, Request request)
+	private void sendRequest(String platform, Request request)
 	{
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		okHttpClient.newCall(request).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)

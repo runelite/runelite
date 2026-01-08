@@ -34,28 +34,28 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Info Panel",
-	description = "Enable the Info panel",
-	loadWhenOutdated = true
+	description = "Enable the Info panel"
 )
 public class InfoPlugin extends Plugin
 {
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	private InfoPanel panel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		final InfoPanel panel = injector.getInstance(InfoPanel.class);
+		panel = injector.getInstance(InfoPanel.class);
 		panel.init();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "info_icon.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "info_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Info")
 			.icon(icon)
-			.priority(9)
+			.priority(10)
 			.panel(panel)
 			.build();
 
@@ -65,6 +65,9 @@ public class InfoPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		panel.deinit();
 		clientToolbar.removeNavigation(navButton);
+		panel = null;
+		navButton = null;
 	}
 }

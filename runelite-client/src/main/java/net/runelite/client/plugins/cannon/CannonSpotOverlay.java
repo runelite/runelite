@@ -29,24 +29,24 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
-import static net.runelite.api.ItemID.CANNONBALL;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import static net.runelite.client.plugins.cannon.CannonPlugin.MAX_OVERLAY_DISTANCE;
 
-public class CannonSpotOverlay extends Overlay
+class CannonSpotOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
-
 	private final Client client;
 	private final CannonPlugin plugin;
 	private final CannonConfig config;
@@ -69,12 +69,14 @@ public class CannonSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (hidden || !config.showCannonSpots() || plugin.isCannonPlaced())
+		List<WorldPoint> spotPoints = plugin.getSpotPoints();
+
+		if (hidden || spotPoints.isEmpty() || !config.showCannonSpots() || plugin.isCannonPlaced())
 		{
 			return null;
 		}
 
-		for (WorldPoint spot : plugin.getSpotPoints())
+		for (WorldPoint spot : spotPoints)
 		{
 			if (spot.getPlane() != client.getPlane())
 			{
@@ -84,9 +86,9 @@ public class CannonSpotOverlay extends Overlay
 			LocalPoint spotPoint = LocalPoint.fromWorld(client, spot);
 			LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
-			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_DISTANCE)
+			if (spotPoint != null && localLocation.distanceTo(spotPoint) <= MAX_OVERLAY_DISTANCE)
 			{
-				renderCannonSpot(graphics, client, spotPoint, itemManager.getImage(CANNONBALL), Color.RED);
+				renderCannonSpot(graphics, client, spotPoint, itemManager.getImage(ItemID.MCANNONBALL), Color.RED);
 			}
 		}
 

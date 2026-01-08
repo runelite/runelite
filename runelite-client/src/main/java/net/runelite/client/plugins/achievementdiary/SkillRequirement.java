@@ -26,6 +26,7 @@ package net.runelite.client.plugins.achievementdiary;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
 @RequiredArgsConstructor
@@ -39,5 +40,11 @@ public class SkillRequirement implements Requirement
 	public String toString()
 	{
 		return level + " " + skill.getName();
+	}
+
+	@Override
+	public boolean satisfiesRequirement(Client client)
+	{
+		return client.getRealSkillLevel(skill) >= level;
 	}
 }

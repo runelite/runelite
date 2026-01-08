@@ -30,8 +30,8 @@ import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -62,7 +62,11 @@ class PoisonOverlay extends Overlay
 			return null;
 		}
 
-		final Widget healthOrb = client.getWidget(WidgetInfo.MINIMAP_HEALTH_ORB);
+		Widget healthOrb = client.getWidget(InterfaceID.Orbs.ORB_HEALTH);
+		if (healthOrb == null || healthOrb.isHidden())
+		{
+			healthOrb = client.getWidget(InterfaceID.OrbsNomap.ORB_HEALTH);
+		}
 
 		if (healthOrb == null || healthOrb.isHidden())
 		{

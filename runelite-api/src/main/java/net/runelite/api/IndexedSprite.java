@@ -54,7 +54,7 @@ public interface IndexedSprite
 
 	int getHeight();
 	void setHeight(int height);
-	
+
 	int getOriginalWidth();
 	void setOriginalWidth(int originalWidth);
 

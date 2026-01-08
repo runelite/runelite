@@ -30,13 +30,9 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.ColorUtil;
 
@@ -54,20 +50,19 @@ class BoostsOverlay extends OverlayPanel
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.MED);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay"));
+		setPriority(PRIORITY_MED);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayInfoboxes())
+		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
+		if (!config.displayPanel())
 		{
 			return null;
 		}
 
 		int nextChange = plugin.getChangeDownTicks();
-
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -77,7 +72,6 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		nextChange = plugin.getChangeUpTicks();
-
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -86,43 +80,33 @@ class BoostsOverlay extends OverlayPanel
 				.build());
 		}
 
-		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
-
-		if (boostedSkills.isEmpty())
+		for (Skill skill : boostedSkills)
 		{
-			return super.render(graphics);
-		}
+			final int boosted = client.getBoostedSkillLevel(skill);
+			final int base = client.getRealSkillLevel(skill);
+			final int boost = boosted - base;
+			final Color strColor = getTextColor(boost);
+			String str;
 
-		if (plugin.canShowBoosts())
-		{
-			for (Skill skill : boostedSkills)
+			if (config.useRelativeBoost())
 			{
-				final int boosted = client.getBoostedSkillLevel(skill);
-				final int base = client.getRealSkillLevel(skill);
-				final int boost = boosted - base;
-				final Color strColor = getTextColor(boost);
-				String str;
-
-				if (config.useRelativeBoost())
+				str = String.valueOf(boost);
+				if (boost > 0)
 				{
-					str = String.valueOf(boost);
-					if (boost > 0)
-					{
-						str = "+" + str;
-					}
+					str = "+" + str;
 				}
-				else
-				{
-					str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
-						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
-				}
-
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(skill.getName())
-					.right(str)
-					.rightColor(strColor)
-					.build());
 			}
+			else
+			{
+				str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
+					+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
+			}
+
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(skill.getName())
+				.right(str)
+				.rightColor(strColor)
+				.build());
 		}
 
 		return super.render(graphics);
@@ -136,6 +120,5 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
-
 	}
 }

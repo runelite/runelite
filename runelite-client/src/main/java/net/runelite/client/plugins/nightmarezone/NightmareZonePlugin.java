@@ -32,12 +32,13 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Varbits;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -55,6 +56,7 @@ public class NightmareZonePlugin extends Plugin
 {
 	private static final int[] NMZ_MAP_REGION = {9033};
 	private static final Duration HOUR = Duration.ofHours(1);
+	private static final Duration OVERLOAD_DURATION = Duration.ofMinutes(5);
 
 	@Inject
 	private Notifier notifier;
@@ -73,18 +75,23 @@ public class NightmareZonePlugin extends Plugin
 
 	@Getter
 	private int pointsPerHour;
-	
+
 	private Instant nmzSessionStartTime;
 
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+	private boolean overloadNotificationSend = false;
+	private Instant lastOverload;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 		overlay.removeAbsorptionCounter();
+
+		absorptionNotificationSend = true;
+		overloadNotificationSend = false;
 	}
 
 	@Override
@@ -93,7 +100,7 @@ public class NightmareZonePlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlay.removeAbsorptionCounter();
 
-		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+		Widget nmzWidget = client.getWidget(InterfaceID.NzoneGame.UNIVERSE);
 
 		if (nmzWidget != null)
 		{
@@ -116,6 +123,21 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onBeforeRender(BeforeRender beforeRender)
+	{
+		if (!isInNightmareZone() || !config.moveOverlay())
+		{
+			return;
+		}
+
+		Widget nmzWidget = client.getWidget(InterfaceID.NzoneGame.UNIVERSE);
+		if (nmzWidget != null)
+		{
+			nmzWidget.setHidden(true);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (!isInNightmareZone())
@@ -130,12 +152,16 @@ public class NightmareZonePlugin extends Plugin
 				resetPointsPerHour();
 			}
 
+			overloadNotificationSend = false;
+
 			return;
 		}
 
-		if (config.absorptionNotification())
+		checkAbsorption();
+
+		if (overloadNotificationSend && config.overloadEarlyWarningSeconds() > 0)
 		{
-			checkAbsorption();
+			checkOverload();
 		}
 
 		if (config.moveOverlay())
@@ -147,8 +173,9 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE
-				|| !isInNightmareZone())
+		if (!isInNightmareZone()
+			|| (event.getType() != ChatMessageType.GAMEMESSAGE
+			&& event.getType() != ChatMessageType.SPAM))
 		{
 			return;
 		}
@@ -156,53 +183,56 @@ public class NightmareZonePlugin extends Plugin
 		String msg = Text.removeTags(event.getMessage()); //remove color
 		if (msg.contains("The effects of overload have worn off, and you feel normal again."))
 		{
-			if (config.overloadNotification())
-			{
-				notifier.notify("Your overload has worn off");
-			}
+			// Prevents notification from being sent after overload expiry, if the user disables and re-enables warnings
+			overloadNotificationSend = false;
+
+			notifier.notify(config.overloadNotification(), "Your overload has worn off");
 		}
 		else if (msg.contains("A power-up has spawned:"))
 		{
 			if (msg.contains("Power surge"))
 			{
-				if (config.powerSurgeNotification())
-				{
-					notifier.notify(msg);
-				}
+				notifier.notify(config.powerSurgeNotification(), msg);
 			}
 			else if (msg.contains("Recurrent damage"))
 			{
-				if (config.recurrentDamageNotification())
-				{
-					notifier.notify(msg);
-				}
+				notifier.notify(config.recurrentDamageNotification(), msg);
 			}
 			else if (msg.contains("Zapper"))
 			{
-				if (config.zapperNotification())
-				{
-					notifier.notify(msg);
-				}
+				notifier.notify(config.zapperNotification(), msg);
 			}
 			else if (msg.contains("Ultimate force"))
 			{
-				if (config.ultimateForceNotification())
-				{
-					notifier.notify(msg);
-				}
+				notifier.notify(config.ultimateForceNotification(), msg);
 			}
+		}
+		else if (msg.contains("You drink some of your overload potion."))
+		{
+			lastOverload = Instant.now();  // Save time of last overload
+			overloadNotificationSend = true;  // Queue up a overload notification once time threshold is reached
+		}
+	}
+
+	private void checkOverload()
+	{
+		if (Instant.now().isAfter(lastOverload.plus(OVERLOAD_DURATION).
+			minus(Duration.ofSeconds(config.overloadEarlyWarningSeconds()))))
+		{
+			notifier.notify(config.overloadNotification(), "Your overload potion is about to expire!");
+			overloadNotificationSend = false;
 		}
 	}
 
 	private void checkAbsorption()
 	{
-		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVarbitValue(VarbitID.NZONE_ABSORB_POTION_EFFECTS);
 
 		if (!absorptionNotificationSend)
 		{
 			if (absorptionPoints < config.absorptionThreshold())
 			{
-				notifier.notify("Absorption points below: " + config.absorptionThreshold());
+				notifier.notify(config.absorptionNotification(), "Absorption points below: " + config.absorptionThreshold());
 				absorptionNotificationSend = true;
 			}
 		}
@@ -218,7 +248,7 @@ public class NightmareZonePlugin extends Plugin
 	private int calculatePointsPerHour()
 	{
 		Instant now = Instant.now();
-		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
+		final int currentPoints = client.getVarbitValue(VarbitID.NZONE_CURRENTPOINTS);
 
 		if (nmzSessionStartTime == null)
 		{
@@ -229,7 +259,7 @@ public class NightmareZonePlugin extends Plugin
 
 		if (!timeSinceStart.isZero())
 		{
-			return (int) ((double) currentPoints * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+			return (int) ((double) currentPoints * HOUR.toMillis() / timeSinceStart.toMillis());
 		}
 
 		return 0;

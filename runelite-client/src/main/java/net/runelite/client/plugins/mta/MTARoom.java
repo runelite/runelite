@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.widgets.WidgetItem;
 
 public abstract class MTARoom
 {
@@ -46,7 +47,7 @@ public abstract class MTARoom
 	{
 	}
 
-	public void over(Graphics2D graphics2D)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 	}
 }

@@ -26,10 +26,12 @@ package net.runelite.client.events;
 
 import java.awt.TrayIcon;
 import lombok.Value;
+import net.runelite.client.config.Notification;
 
 @Value
 public class NotificationFired
 {
+	final Notification notification;
 	final String message;
 	final TrayIcon.MessageType type;
 }

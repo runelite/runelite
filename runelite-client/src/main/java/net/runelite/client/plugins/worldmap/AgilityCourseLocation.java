@@ -38,6 +38,7 @@ enum AgilityCourseLocation
 	BARBARIAN_OUTPOST_AGILITY_COURSE("Barbarian Outpost Agility Course", new WorldPoint(2544, 3569, 0)),
 	BRIMHAVEN_AGILITY_ARENA("Brimhaven Agility Arena", new WorldPoint(2806, 3193, 0)),
 	CANIFIS_ROOFTOP_COURSE("Canifis Rooftop Course", new WorldPoint(3506, 3490, 0)),
+	COLOSSAL_WYRM_COURSE("Colossal Wyrm Course", new WorldPoint(1649, 2930, 0)),
 	DRAYNOR_VILLAGE_ROOFTOP_COURSE("Draynor Village Rooftop Course", new WorldPoint(3103, 3279, 0)),
 	FALADOR_ROOFTOP_COURSE("Falador Rooftop Course", new WorldPoint(3035, 3342, 0)),
 	GNOME_STRONGHOLD_AGILITY_COURSE("Gnome Stronghold Agility Course", new WorldPoint(2474, 3436, 0)),
@@ -46,6 +47,7 @@ enum AgilityCourseLocation
 	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", new WorldPoint(3253, 6109, 0)),
 	RELLEKKA_ROOFTOP_COURSE("Rellekka Rooftop Course", new WorldPoint(2624, 3677, 0)),
 	SEERS_VILLAGE_ROOFTOP_COURSE("Seers' Village Rooftop Course", new WorldPoint(2728, 3488, 0)),
+	SHAYZIEN_COURSE("Shayzien Agility Course", new WorldPoint(1551, 3632, 0)),
 	VARROCK_ROOFTOP_COURSE("Varrock Rooftop Course", new WorldPoint(3219, 3414, 0)),
 	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", new WorldPoint(3542, 3463, 0)),
 	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", new WorldPoint(2997, 3916, 0));
