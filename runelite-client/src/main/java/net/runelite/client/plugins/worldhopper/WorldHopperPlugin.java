@@ -505,8 +505,14 @@ public class WorldHopperPlugin extends Plugin
 		{
 			clientThread.invokeLater(() ->
 			{
-				var locationEnum = client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState() ? client.getEnum(EnumID.WORLD_LOCATIONS) : null;
+				if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+				{
+					return false;
+				}
+
+				var locationEnum = client.getEnum(EnumID.WORLD_LOCATIONS);
 				SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds(), locationEnum));
+				return true;
 			});
 		}
 	}
