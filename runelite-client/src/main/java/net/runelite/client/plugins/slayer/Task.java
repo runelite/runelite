@@ -93,6 +93,7 @@ enum Task
 	FIRE_GIANTS("Fire giants", ItemID.RTBRANDAPET, "Branda the Fire Queen"),
 	FLESH_CRAWLERS("Fleshcrawlers", ItemID.ARCEUUS_CORPSE_SCORPION_INITIAL, "Flesh crawler"),
 	FOSSIL_ISLAND_WYVERNS("Fossil island wyverns", ItemID.SLAYERGUIDE_FOSSILWYVERN, "Ancient wyvern", "Long-tailed wyvern", "Spitting wyvern", "Taloned wyvern"),
+	FROST_DRAGONS("Frost dragons", ItemID.FROST_DRAGON_BONES),
 	GARGOYLES("Gargoyles", ItemID.SLAYERGUIDE_GARGOYLE, 9, ItemID.SLAYER_ROCK_HAMMER, "Dusk", "Dawn"),
 	GENERAL_GRAARDOR("General Graardor", ItemID.BANDOSPET),
 	GHOSTS("Ghosts", ItemID.AMULET_OF_GHOSTSPEAK, "Death wing", "Tortured soul", "Forgotten Soul", "Revenant"),
