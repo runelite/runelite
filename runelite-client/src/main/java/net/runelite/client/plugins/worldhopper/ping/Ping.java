@@ -73,25 +73,30 @@ public class Ping
 			switch (OSType.getOSType())
 			{
 				case Windows:
-					int windowsPingRtt = windowsPing(inetAddress); // returns -1 when blocked (AWS) or fails
-					if (windowsPingRtt != -1)
+					int windowsRtt = windowsPing(inetAddress); // -1 when blocked/fails
+					if (windowsRtt >= 0)
 					{
-						return windowsPingRtt;
+						return windowsRtt;
 					}
 
-					log.debug("ICMP ping failed (possibly blocked); falling back to TCP");
+					log.debug("ICMP ping failed; falling back to TCP");
 					return tcpPing(inetAddress);
 				case MacOS:
 				case Linux:
 					try
 					{
-						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
+						int rtt = icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS); // -1 when blocked/fails
+						if (rtt >= 0)
+						{
+							return rtt;
+						}
+						log.debug("ICMP ping failed; falling back to TCP");
 					}
 					catch (Exception ex)
 					{
 						log.debug("error during icmp ping", ex);
-						return tcpPing(inetAddress);
 					}
+					return tcpPing(inetAddress);
 				default:
 					return tcpPing(inetAddress);
 			}
