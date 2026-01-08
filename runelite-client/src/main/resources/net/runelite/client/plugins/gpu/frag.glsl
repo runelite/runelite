@@ -24,41 +24,92 @@
  */
 #version 330
 
+//#define FRAG_UVS
+//#define ZBUF_DEBUG
+
+#include colorblind_mode
+
 uniform sampler2DArray textures;
-uniform vec2 textureOffsets[64];
 uniform float brightness;
 uniform float smoothBanding;
 uniform vec4 fogColor;
+uniform float textureLightMode;
 
-in vec4 Color;
-centroid in float fHsl;
-in vec4 fUv;
-in float fogAmount;
+in vec4 fColor;
+noperspective centroid in float fHsl;
+flat in int fTextureId;
+in vec2 fUv;
+in float fFogAmount;
+#ifdef ZBUF_DEBUG
+in float fDepth;
+#endif
 
 out vec4 FragColor;
 
-#include hsl_to_rgb.glsl
+#include "hsl_to_rgb.glsl"
+
+#if COLORBLIND_MODE > 0
+#include "colorblind.glsl"
+#endif
+
+#ifdef ZBUF_DEBUG
+float linear_depth(float depth) {
+  // depth is computed as 100/z, solve for z
+  float z = 100 / depth;
+  return 1 - z / 10000;  // we don't have a far plane, but the client uses 10000
+}
+#endif
 
 void main() {
-  float n = fUv.x;
+  vec4 c;
 
-  int hsl = int(fHsl);
-  vec3 rgb = hslToRgb(hsl) * smoothBanding + Color.rgb * (1.f - smoothBanding);
-  vec4 smoothColor = vec4(rgb, Color.a);
+  if (fTextureId > 0) {
+    int textureIdx = fTextureId - 1;
 
-  if (n > 0.0) {
-    n -= 1.0;
-    int textureIdx = int(n);
+    vec4 textureColor = texture(textures, vec3(fUv, float(textureIdx)));
+    vec4 textureColor0 = textureLod(textures, vec3(fUv, float(textureIdx)), 0.f);
 
-    vec2 uv = fUv.yz;
-    vec2 animatedUv = uv + textureOffsets[textureIdx];
+    if (textureColor0.a < 1.f)
+      discard;
 
-    vec4 textureColor = texture(textures, vec3(animatedUv, n));
-    vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
+    textureColor = vec4(textureColor.rgb, 1.f);
 
-    smoothColor = textureColorBrightness * smoothColor;
+    textureColor = pow(textureColor, vec4(brightness, brightness, brightness, 1.f));
+
+    // textured triangles hsl is a 7 bit lightness 2-126
+    float light = fHsl / 127.f;
+    vec3 mul = (1.f - textureLightMode) * vec3(light) + textureLightMode * fColor.rgb;
+    c = textureColor * vec4(mul, fColor.a);
+  } else {
+    // pick interpolated hsl or rgb depending on smooth banding setting
+    vec3 hsl = vec3(int(fHsl) >> 10 & 63, int(fHsl) >> 7 & 7, int(fHsl) & 127);
+    vec3 rgb = mix(fColor.rgb, hslToRgb(hsl), smoothBanding);
+    c = vec4(rgb, fColor.a);
   }
 
-  vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
-  FragColor = vec4(mixedColor, smoothColor.a);
+#if COLORBLIND_MODE > 0
+  c.rgb = colorblind(c.rgb);
+#endif
+
+  vec3 mixedColor = mix(c.rgb, fogColor.rgb, fFogAmount);
+  FragColor = vec4(mixedColor, c.a);
+
+#ifdef FRAG_UVS
+  if (fTextureId > 0) {
+    FragColor = vec4(fUv.x, 0, fUv.y, 1);
+  }
+#endif
+
+#ifdef ZBUF_DEBUG
+  float dc = linear_depth(fDepth);
+  if (dc > 1.0) {
+    FragColor = vec4(1, 0, 0, 1);
+  } else if (dc < -1.0) {
+    FragColor = vec4(0, 0, 1, 1);
+  } else if (dc < 0.0) {
+    FragColor = vec4(0, 1, 0, 1);
+  } else {
+    FragColor = vec4(dc, dc, dc, 1);
+  }
+#endif
 }

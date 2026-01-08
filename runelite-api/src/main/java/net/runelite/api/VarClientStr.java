@@ -24,24 +24,22 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Client side only, content-developer strings
  *
  * VarCInts are stored entirely in memory, or locally on a user's
  * machine in the preferences2.dat file depending on how Jagex
  * configured the variable
+ *
+ * @deprecated Use {@link net.runelite.api.gameval.VarClientID}
  */
-@AllArgsConstructor
-@Getter
-public enum VarClientStr
+@Deprecated
+public final class VarClientStr
 {
-	CHATBOX_TYPED_TEXT(335),
-	INPUT_TEXT(359),
-	PRIVATE_MESSAGE_TARGET(360),
-	RECENT_CLAN_CHAT(362);
-
-	private final int index;
+	public static final int CHATBOX_TYPED_TEXT = 335;
+	public static final int INPUT_TEXT = 359;
+	public static final int PRIVATE_MESSAGE_TARGET = 360;
+	public static final int RECENT_FRIENDS_CHAT = 362;
+	public static final int NOTIFICATION_TOP_TEXT = 387;
+	public static final int NOTIFICATION_BOTTOM_TEXT = 388;
 }

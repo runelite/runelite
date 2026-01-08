@@ -34,19 +34,21 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStats;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.item.ItemStats;
 
 /**
  * This panel holds the search section of the Grand Exchange Plugin.
@@ -64,6 +66,8 @@ class GrandExchangeSearchPanel extends JPanel
 	private final ClientThread clientThread;
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
+	private final RuneLiteConfig runeLiteConfig;
+	private final GrandExchangePlugin grandExchangePlugin;
 
 	private final IconTextField searchBar = new IconTextField();
 
@@ -76,13 +80,15 @@ class GrandExchangeSearchPanel extends JPanel
 	/*  The error panel, this displays an error message */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
-
-	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	@Inject
+	private GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager,
+		ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig, GrandExchangePlugin grandExchangePlugin)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
+		this.runeLiteConfig = runeLiteConfig;
+		this.grandExchangePlugin = grandExchangePlugin;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -98,7 +104,7 @@ class GrandExchangeSearchPanel extends JPanel
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addActionListener(e -> executor.execute(() -> priceLookup(false)));
-		searchBar.addClearListener(e -> updateSearch());
+		searchBar.addClearListener(this::updateSearch);
 
 		searchItemsPanel.setLayout(new GridBagLayout());
 		searchItemsPanel.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -187,30 +193,36 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private void processResult(List<ItemPrice> result, String lookup, boolean exactMatch)
 	{
-		itemsList.clear();
+		final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
 		cardLayout.show(centerPanel, RESULTS_PANEL);
 
 		int count = 0;
+		boolean useActivelyTradedPrice = runeLiteConfig.useWikiItemPrices();
 
 		for (ItemPrice item : result)
 		{
+			int itemId = item.getId();
+			ItemComposition itemComp = itemManager.getItemComposition(itemId);
+			if (!itemComp.isTradeable())
+			{
+				continue;
+			}
+
 			if (count++ > MAX_SEARCH_ITEMS)
 			{
 				// Cap search
 				break;
 			}
 
-			int itemId = item.getId();
+			ItemStats itemStats = itemManager.getItemStats(itemId);
 
-			ItemComposition itemComp = itemManager.getItemComposition(itemId);
-			ItemStats itemStats = itemManager.getItemStats(itemId, false);
-
-			int itemPrice = item.getPrice();
+			int itemPrice = useActivelyTradedPrice ? itemManager.getWikiPrice(item) : item.getPrice();
 			int itemLimit = itemStats != null ? itemStats.getGeLimit() : 0;
+			final int haPrice = itemComp.getHaPrice();
 			AsyncBufferedImage itemImage = itemManager.getImage(itemId);
 
-			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, itemComp.getPrice() * 0.6, itemLimit));
+			itemsList.add(new GrandExchangeItems(itemImage, item.getName(), itemId, itemPrice, haPrice, itemLimit));
 
 			// If using hotkey to lookup item, stop after finding match.
 			if (exactMatch && item.getName().equalsIgnoreCase(lookup))
@@ -224,7 +236,7 @@ class GrandExchangeSearchPanel extends JPanel
 			int index = 0;
 			for (GrandExchangeItems item : itemsList)
 			{
-				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
+				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(grandExchangePlugin, item.getIcon(), item.getName(),
 					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
 
 				/*

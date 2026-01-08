@@ -41,10 +41,14 @@ enum FarmingPatchLocation
 		new WorldPoint(3598, 3524, 0),
 		new WorldPoint(3052, 3309, 0),
 		new WorldPoint(2810, 3462, 0),
-		new WorldPoint(2663, 3375, 0)
+		new WorldPoint(2663, 3375, 0),
+		new WorldPoint(1587, 3101, 0)
 	),
 	ANIMA_HERB("Anima/Herb", new WorldPoint(1235, 3724, 0)),
-	BELLADONNA("Belladonna", new WorldPoint(3084, 3356, 0)),
+	BELLADONNA("Belladonna",
+		new WorldPoint(3084, 3356, 0),
+		new WorldPoint(1449, 3354, 0)
+	),
 	BUSH("Bush",
 		new WorldPoint(2938, 3223, 0),
 		new WorldPoint(2589, 3862, 0),
@@ -56,23 +60,34 @@ enum FarmingPatchLocation
 		new WorldPoint(3313, 3201, 0),
 		new WorldPoint(1264, 3745, 0)
 	),
-	CALQUAT("Calquat", new WorldPoint(2793, 3099, 0)),
+	CALQUAT("Calquat",
+		new WorldPoint(2793, 3099, 0),
+		new WorldPoint(1365, 3035, 0),
+		new WorldPoint(3125, 2403, 0)
+	),
 	CELASTRUS_FRUIT_TREE("Celastrus/Fruit Tree",
 		new WorldPoint(1242, 3755, 0)
+	),
+	CORAL("Coral",
+		new WorldPoint(3296, 8861, 0)
 	),
 	CRYSTAL_TREE("Crystal Tree",
 		new WorldPoint(3292, 6120, 0)
 	),
+	FLOWER("Flower", new WorldPoint(1352, 3025, 0)),
 	FRUIT_TREE("Fruit Tree",
 		new WorldPoint(2487, 3181, 0),
 		new WorldPoint(2343, 3160, 0),
 		new WorldPoint(2472, 3445, 0),
 		new WorldPoint(2858, 3432, 0),
-		new WorldPoint(2765, 3211, 0)
+		new WorldPoint(2765, 3211, 0),
+		new WorldPoint(1347, 3058, 0)
 	),
 	GRAPES("Grapes", new WorldPoint(1807, 3555, 0)),
 	HARDWOOD("Hardwood",
-		new WorldPoint(3707, 3838, 0)
+		new WorldPoint(3707, 3838, 0),
+		new WorldPoint(1683, 2971, 0),
+		new WorldPoint(2472, 2705, 0)
 	),
 	HERB("Herb",
 		new WorldPoint(3789, 2840, 0),
@@ -84,7 +99,8 @@ enum FarmingPatchLocation
 		new WorldPoint(2572, 3102, 0),
 		new WorldPoint(2661, 3523, 0),
 		new WorldPoint(3224, 3313, 0),
-		new WorldPoint(3812, 3334, 0)
+		new WorldPoint(2812, 3334, 0),
+		new WorldPoint(1367, 2938, 0)
 	),
 	MUSHROOM("Mushroom", new WorldPoint(3449, 3471, 0)),
 	REDWOOD("Redwood", new WorldPoint(1233, 3754, 0)),
@@ -102,7 +118,8 @@ enum FarmingPatchLocation
 		new WorldPoint(3189, 3233, 0),
 		new WorldPoint(2434, 3418, 0),
 		new WorldPoint(3005, 3375, 0),
-		new WorldPoint(1234, 3736, 0)
+		new WorldPoint(1234, 3736, 0),
+		new WorldPoint(1366, 3318, 0)
 	);
 
 	private final String tooltip;

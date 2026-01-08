@@ -1,8 +1,6 @@
-.id                 1048
-.int_stack_count    3
-.string_stack_count 0
-.int_var_count      8
-.string_var_count   0
+.id                       1048
+.int_arg_count            3
+.obj_arg_count            0
 ; locals
 ; 2 bar size
    get_varbit             4606
@@ -34,22 +32,14 @@ LABEL5:
    iload                  2
    invoke                 1046
    istore                 2
-   iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1341
+   get_varc_int           1340
    sub                   
-   istore                 6 ; resizable delta
-   iconst                 896
-   sconst                 "innerZoomLimit"
-   runelite_callback     
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   istore                 6
+   get_varc_int           1339
+   get_varc_int           1338
    sub                   
-   istore                 7 ; fixed delta
+   istore                 7
    iload                  2
    iload                  6
    multiply              
@@ -59,9 +49,7 @@ LABEL5:
    sconst                 "zoomLinToExp"
    runelite_callback     
    pop_int               
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1340
    add                   
    istore                 3
    iload                  2
@@ -73,9 +61,7 @@ LABEL5:
    sconst                 "zoomLinToExp"
    runelite_callback     
    pop_int               
-   iconst                 128
-   sconst                 "outerZoomLimit"
-   runelite_callback     
+   get_varc_int           1338
    add                   
    istore                 4
    iload                  4

@@ -53,10 +53,11 @@ public enum Skill
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
 	CONSTRUCTION("Construction"),
-	/**
-	 * The level of all skills added together.
-	 */
-	OVERALL("Overall");
+	SAILING("Sailing"),
+	;
+
+	@Deprecated
+	public static final Skill OVERALL = null;
 
 	private final String name;
 

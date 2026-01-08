@@ -42,7 +42,7 @@ public class RunnableExceptionLogger implements Runnable
 		}
 		catch (Throwable ex)
 		{
-			log.warn("Uncaught exception in runnable {}", runnable, ex);
+			log.error("Uncaught exception in runnable {}", runnable, ex);
 			throw ex;
 		}
 	}

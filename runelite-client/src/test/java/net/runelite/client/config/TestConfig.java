@@ -43,4 +43,21 @@ public interface TestConfig extends Config
 		description = "value"
 	)
 	void key(String key);
+
+	@ConfigItem(
+			keyName = "nullDefaultKey",
+			name = "Key Name",
+			description = "value"
+	)
+	void nullDefaultKey(String key);
+
+	@ConfigItem(
+			keyName = "nullDefaultKey",
+			name = "Key Name",
+			description = "value"
+	)
+	default String nullDefaultKey()
+	{
+		return null;
+	}
 }

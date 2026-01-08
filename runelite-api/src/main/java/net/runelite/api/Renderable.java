@@ -41,5 +41,5 @@ public interface Renderable extends Node
 
 	void setModelHeight(int modelHeight);
 
-	void draw(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+	int getAnimationHeightOffset();
 }

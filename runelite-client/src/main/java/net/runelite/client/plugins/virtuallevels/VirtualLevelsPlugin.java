@@ -47,7 +47,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class VirtualLevelsPlugin extends Plugin
 {
-	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";
+	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level: ";
 
 	@Inject
 	private VirtualLevelsConfig config;
@@ -98,8 +98,8 @@ public class VirtualLevelsPlugin extends Plugin
 
 		final int[] intStack = client.getIntStack();
 		final int intStackSize = client.getIntStackSize();
-		final String[] stringStack = client.getStringStack();
-		final int stringStackSize = client.getStringStackSize();
+		final Object[] objectStack = client.getObjectStack();;
+		final int objectStackSize = client.getObjectStackSize();
 
 		switch (eventName)
 		{
@@ -124,15 +124,10 @@ public class VirtualLevelsPlugin extends Plugin
 
 				for (Skill s : Skill.values())
 				{
-					if (s == Skill.OVERALL)
-					{
-						continue;
-					}
-
 					level += Experience.getLevelForXp(client.getSkillExperience(s));
 				}
 
-				stringStack[stringStackSize - 1] = TOTAL_LEVEL_TEXT_PREFIX + level;
+				objectStack[objectStackSize - 1] = TOTAL_LEVEL_TEXT_PREFIX + level;
 				break;
 		}
 	}
@@ -142,10 +137,7 @@ public class VirtualLevelsPlugin extends Plugin
 		// this fires widgets listening for all skill changes
 		for (Skill skill : Skill.values())
 		{
-			if (skill != Skill.OVERALL)
-			{
-				client.queueChangedSkill(skill);
-			}
+			client.queueChangedSkill(skill);
 		}
 	}
 }

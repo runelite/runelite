@@ -24,46 +24,31 @@
  */
 package net.runelite.client;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.UUID;
-import net.runelite.http.api.RuneLiteAPI;
+import javax.inject.Inject;
+import javax.inject.Named;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 class SessionClient
 {
-	UUID open() throws IOException
+	private final OkHttpClient client;
+	private final HttpUrl sessionUrl;
+
+	@Inject
+	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl)
 	{
-		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
-			.build();
-
-		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			ResponseBody body = response.body();
-			
-			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
-		}
-		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
-		{
-			throw new IOException(ex);
-		}
+		this.client = client;
+		this.sessionUrl = sessionUrl;
 	}
 
 	void ping(UUID uuid, boolean loggedIn) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
+		HttpUrl url = sessionUrl.newBuilder()
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
 			.addQueryParameter("logged-in", String.valueOf(loggedIn))
@@ -74,26 +59,12 @@ class SessionClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = client.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
 				throw new IOException("Unsuccessful ping");
 			}
 		}
-	}
-
-	void delete(UUID uuid) throws IOException
-	{
-		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
-			.addQueryParameter("session", uuid.toString())
-			.build();
-
-		Request request = new Request.Builder()
-			.delete()
-			.url(url)
-			.build();
-
-		RuneLiteAPI.CLIENT.newCall(request).execute().close();
 	}
 }

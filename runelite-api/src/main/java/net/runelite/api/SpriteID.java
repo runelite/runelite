@@ -25,8 +25,7 @@
  */
 package net.runelite.api;
 
-// Note: This class won't always be complete: these sprites were manually gathered
-// through the cache and widget inspector. Please add new sprites as you happen to use them.
+@Deprecated
 public final class SpriteID
 {
 	public static final int RS2_CHATBOX_BUTTONS = 0;
@@ -89,7 +88,7 @@ public final class SpriteID
 	public static final int SPELL_ENFEEBLE = 57;
 	public static final int SPELL_STUN = 58;
 	public static final int SPELL_FLAMES_OF_ZAMORAK = 59;
-	public static final int SPELL_CLAWS_OF_GUTHIC = 60;
+	public static final int SPELL_CLAWS_OF_GUTHIX = 60;
 	public static final int SPELL_SARADOMIN_STRIKE = 61;
 	public static final int UNUSED_SPELL_CALL_ANIMAL = 62;
 	public static final int UNUSED_SPELL_RAISE_SKELETON = 63;
@@ -139,7 +138,7 @@ public final class SpriteID
 	public static final int SPELL_ENFEEBLE_DISABLED = 107;
 	public static final int SPELL_STUN_DISABLED = 108;
 	public static final int SPELL_FLAMES_OF_ZAMORAK_DISABLED = 109;
-	public static final int SPELL_CLAWS_OF_GUTHIC_DISABLED = 110;
+	public static final int SPELL_CLAWS_OF_GUTHIX_DISABLED = 110;
 	public static final int SPELL_SARADOMIN_STRIKE_DISABLED = 111;
 	public static final int UNUSED_SPELL_CALL_ANIMAL_DISABLED = 112;
 	public static final int UNUSED_SPELL_RAISE_SKELETON_DISABLED = 113;
@@ -184,7 +183,6 @@ public final class SpriteID
 	public static final int PRAYER_SMITE_DISABLED = 152;
 	public static final int PRAYER_SHARP_EYE_DISABLED = 153;
 	public static final int PRAYER_MYSTIC_WILL_DISABLED = 154;
-	public static final int ACTIVATED_PRAYER_BACKGROUND = 155;
 	public static final int EQUIPMENT_SLOT_HEAD = 156;
 	public static final int EQUIPMENT_SLOT_CAPE = 157;
 	public static final int EQUIPMENT_SLOT_NECK = 158;
@@ -313,7 +311,7 @@ public final class SpriteID
 	public static final int COMBAT_STYLE_BUTTON_THIN = 295;
 	public static final int COMBAT_STYLE_BUTTON_THIN_SELECTED = 296;
 	public static final int DIALOG_BACKGROUND = 297;
-	public static final int RS2_HITSPLAT_BLUE_NO_DAMAGE = 298;
+	/* Unmapped: 298 */
 	public static final int RS2_YELLOW_CLICK_ANIMATION_1 = 299;
 	public static final int RS2_MINIMAP_MARKER_RED_ITEM = 300;
 	public static final int RS2_SWORD_POINTED_LEFT = 301;
@@ -381,7 +379,9 @@ public final class SpriteID
 	public static final int SPELL_WATER_SURGE = 363;
 	public static final int SPELL_EARTH_SURGE = 364;
 	public static final int SPELL_FIRE_SURGE = 365;
-	/* Unmapped: 366, 367, 368 */
+	/* Unmapped: 366 */
+	public static final int SPELL_CIVITAS_ILLA_FORTIS_TELEPORT = 367;
+	/* Unmapped: 368 */
 	public static final int SPELL_BIND_DISABLED = 369;
 	public static final int SPELL_SNARE_DISABLED = 370;
 	public static final int SPELL_ENTANGLE_DISABLED = 371;
@@ -431,7 +431,7 @@ public final class SpriteID
 	public static final int SPELL_FIRE_SURGE_DISABLED = 415;
 	/* Unmapped: 416, 417, 418 */
 	public static final int UNKNOWN_STANCE_ICON_1 = 419;
-	public static final int UNKNOWN_STANCE_ICON_2 = 320;
+	public static final int UNKNOWN_STANCE_ICON_2 = 420;
 	public static final int UNKNOWN_STANCE_ICON_3 = 421;
 	public static final int MINIMAP_DESTINATION_FLAG = 422;
 	public static final int CHATBOX_BADGE_CROWN_PLAYER_MODERATOR = 423;
@@ -535,8 +535,6 @@ public final class SpriteID
 	public static final int FIGHT_PITS_WINNER_SKULL_RED = 524;
 	public static final int BOUNTY_HUNTER_TARGET_WEALTH_5_VERY_HIGH = 525;
 	public static final int BOUNTY_HUNTER_TARGET_WEALTH_4_HIGH = 526;
-	public static final int BOUNTY_HUNTER_TARGET_WEALTH_3_MEDIUM = 527;
-	public static final int BOUNTY_HUNTER_TARGET_WEALTH_2_LOW = 528;
 	public static final int HOUSE_LOADING_SCREEN = 529;
 	public static final int TEXTURE_ROUGH_STONE = 530;
 	public static final int TEXTURE_WATER_531 = 531;
@@ -774,9 +772,9 @@ public final class SpriteID
 	public static final int TAB_QUESTS = 776;
 	public static final int RS2_TAB_INVENTORY = 777;
 	public static final int RS2_TAB_EQUIPMENT = 778;
-	public static final int RS2_TAB_PRAYER = 779;
+	public static final int TAB_PRAYER = 779;
 	public static final int TAB_MAGIC = 780;
-	public static final int RS2_TAB_CLAN_CHAT = 781;
+	public static final int RS2_TAB_FRIENDS_CHAT = 781;
 	public static final int TAB_FRIENDS = 782;
 	public static final int TAB_IGNORES = 783;
 	public static final int RS2_TAB_LOGOUT = 784;
@@ -886,9 +884,8 @@ public final class SpriteID
 	public static final int UNUSED_TAB_QUESTS_899 = 899;
 	public static final int TAB_INVENTORY = 900;
 	public static final int TAB_EQUIPMENT = 901;
-	public static final int TAB_PRAYER = 902;
 	public static final int UNUSED_TAB_MAGIC_903 = 903;
-	public static final int TAB_CLAN_CHAT = 904;
+	public static final int TAB_FRIENDS_CHAT = 904;
 	public static final int TAB_LOGOUT = 907;
 	public static final int TAB_OPTIONS = 908;
 	public static final int TAB_EMOTES = 909;
@@ -977,28 +974,19 @@ public final class SpriteID
 	public static final int STASH_UNITS_SLANTED_TAB_EDGE_LEFT_HOVERED = 1001;
 	public static final int STASH_UNITS_SLANTED_TAB_MIDDLE_HOVERED = 1002;
 	public static final int STASH_UNITS_SLANTED_TAB_EDGE_RIGHT_HOVERED = 1003;
-	public static final int CLAN_CHAT_RANK_SMILEY_FRIEND = 1004;
-	public static final int CLAN_CHAT_RANK_CROWN_JAGEX_MODERATOR = 1005;
-	public static final int CLAN_CHAT_RANK_KEY_CHANNEL_OWNER = 1006;
-	public static final int CLAN_CHAT_RANK_GOLD_STAR_GENERAL = 1007;
-	public static final int CLAN_CHAT_RANK_SILVER_STAR_CAPTAIN = 1008;
-	public static final int CLAN_CHAT_RANK_BRONZE_STAR_LIEUTENANT = 1009;
-	public static final int CLAN_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT = 1010;
-	public static final int CLAN_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL = 1011;
-	public static final int CLAN_CHAT_RANK_SINGLE_CHEVRON_RECRUIT = 1012;
 	public static final int UNKNOWN_BUTTON_METAL_CORNERS = 1013;
 	public static final int UNKNOWN_BUTTON_METAL_CORNERS_HOVERED = 1014;
 	public static final int UNKNOWN_SLANTED_TAB_LONG = 1015;
 	public static final int UNKNOWN_SLANTED_TAB_LONG_HOVERED = 1016;
 	public static final int CHATBOX = 1017;
 	public static final int CHATBOX_BUTTONS_BACKGROUND_STONES = 1018;
-	public static final int CHATBOX_BUTTON = 1019;
-	public static final int CHATBOX_BUTTON_HOVERED = 1020;
-	public static final int CHATBOX_BUTTON_NEW_MESSAGES = 1021;
-	public static final int CHATBOX_BUTTON_SELECTED = 1022;
-	public static final int CHATBOX_BUTTON_SELECTED_HOVERED = 1023;
-	public static final int CHATBOX_REPORT_BUTTON = 1024;
-	public static final int CHATBOX_REPORT_BUTTON_HOVERED = 1025;
+	public static final int CHATBOX_BUTTON = 3051;
+	public static final int CHATBOX_BUTTON_HOVERED = 3052;
+	public static final int CHATBOX_BUTTON_NEW_MESSAGES = 3055;
+	public static final int CHATBOX_BUTTON_SELECTED = 3053;
+	public static final int CHATBOX_BUTTON_SELECTED_HOVERED = 3054;
+	public static final int CHATBOX_REPORT_BUTTON = 3057;
+	public static final int CHATBOX_REPORT_BUTTON_HOVERED = 3058;
 	public static final int TAB_STONE_TOP_LEFT_SELECTED = 1026;
 	public static final int TAB_STONE_TOP_RIGHT_SELECTED = 1027;
 	public static final int TAB_STONE_BOTTOM_LEFT_SELECTED = 1028;
@@ -1017,7 +1005,7 @@ public final class SpriteID
 	public static final int BANK_DEPOSIT_INVENTORY = 1041;
 	public static final int BANK_DEPOSIT_EQUIPMENT = 1042;
 	public static final int BANK_SEARCH = 1043;
-	public static final int MINIMAP_MARKER_PURPLE_PLAYER_CLAN_CHAT = 1044;
+	public static final int MINIMAP_MARKER_PURPLE_PLAYER_FRIENDS_CHAT = 1044;
 	public static final int OPTIONS_PROFANITY_FILTER = 1045;
 	public static final int PLAYER_KILLER_SKULL_1046 = 1046;
 	public static final int PLAYER_KILLING_DISABLED_OVERLAY = 1047;
@@ -1042,8 +1030,8 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_PRAYER_ACTIVATED = 1066;
 	public static final int MINIMAP_ORB_HITPOINTS_ICON = 1067;
 	public static final int MINIMAP_ORB_PRAYER_ICON = 1068;
+	public static final int MINIMAP_ORB_WALK_ICON = 1069;
 	public static final int MINIMAP_ORB_RUN_ICON = 1070;
-	public static final int MINIMAP_ORB_RUN_ICON_ACTIVATED = 1070;
 	public static final int MINIMAP_ORB_FRAME = 1071;
 	public static final int MINIMAP_ORB_FRAME_HOVERED = 1072;
 	public static final int OPTIONS_CAMERA = 1073;
@@ -1068,13 +1056,11 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_RUN_ICON_SLOWED_DEPLETION = 1092;
 	public static final int FRIENDS_PREVIOUS_USERNAME = 1093;
 	public static final int UNKNOWN_MAP_ICON_INFORMATION_I = 1094;
-	public static final int BOUNTY_HUNTER_TARGET_NONE = 1095;
 	public static final int BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW = 1096;
 	public static final int DEADMAN_BANK_KEYS_5 = 1097;
 	public static final int ABLEGAMERS_PROMO_BANNER = 1098;
 	public static final int YOUNGMINDS_PROMO_BANNER = 1099;
 	public static final int DONATEGAMES_PROMO_BANNER = 1100;
-	public static final int UNKNOWN_GREEN_FRIEND_ICON = 1101;
 	public static final int MINIMAP_ORB_HITPOINTS_VENOM = 1102;
 	public static final int PAYPAL_DONATE_BUTTON = 1103;
 	public static final int GAMEBLAST15_PROMO_BANNER = 1104;
@@ -1219,81 +1205,63 @@ public final class SpriteID
 	public static final int KOUREND_FAVOUR_LOVAKENGJ_ICON = 1244;
 	public static final int KOUREND_FAVOUR_PISCARILIUS_ICON = 1245;
 	public static final int KOUREND_FAVOUR_SHAYZIEN_ICON = 1246;
-	public static final int SPELL_REANIMATE_GOBLIN = 1247;
-	public static final int SPELL_REANIMATE_DEMON = 1248;
-	public static final int SPELL_REANIMATE_DRAGON = 1249;
-	public static final int SPELL_REANIMATE_ELF = 1250;
-	public static final int SPELL_REANIMATE_CHAOS_DRUID = 1251;
-	public static final int SPELL_REANIMATE_TROLL = 1252;
-	public static final int SPELL_REANIMATE_DAGANNOTH = 1253;
-	public static final int SPELL_REANIMATE_OGRE = 1254;
-	public static final int SPELL_REANIMATE_GIANT = 1255;
-	public static final int SPELL_REANIMATE_BEAR = 1256;
-	public static final int SPELL_REANIMATE_SCORPION = 1257;
-	public static final int SPELL_REANIMATE_IMP = 1258;
-	public static final int SPELL_REANIMATE_MINOTAUR = 1259;
-	public static final int SPELL_REANIMATE_UNICORN = 1260;
-	public static final int SPELL_REANIMATE_KALPHITE = 1261;
-	public static final int SPELL_REANIMATE_TZHAAR = 1262;
-	public static final int SPELL_REANIMATE_AVIANSIE = 1263;
-	public static final int SPELL_REANIMATE_MONKEY = 1264;
-	public static final int SPELL_REANIMATE_ABYSSAL_CREATURE = 1265;
-	public static final int SPELL_REANIMATE_HORROR = 1266;
-	public static final int SPELL_REANIMATE_BLOODVELD = 1267;
-	public static final int SPELL_REANIMATE_DOG = 1268;
-	public static final int SPELL_LUMBRIDGE_GRAVEYARD_TELEPORT = 1269;
-	public static final int SPELL_DRAYNOR_MANOR_TELEPORT = 1270;
-	public static final int SPELL_MIND_ALTAR_TELEPORT = 1271;
-	public static final int SPELL_REANIMATE_GOBLIN_DISABLED = 1272;
-	public static final int SPELL_REANIMATE_DEMON_DISABLED = 1273;
-	public static final int SPELL_REANIMATE_DRAGON_DISABLED = 1274;
-	public static final int SPELL_REANIMATE_ELF_DISABLED = 1275;
-	public static final int SPELL_REANIMATE_CHAOS_DRUID_DISABLED = 1276;
-	public static final int SPELL_REANIMATE_TROLL_DISABLED = 1277;
-	public static final int SPELL_REANIMATE_DAGANNOTH_DISABLED = 1278;
-	public static final int SPELL_REANIMATE_OGRE_DISABLED = 1279;
-	public static final int SPELL_REANIMATE_GIANT_DISABLED = 1280;
-	public static final int SPELL_REANIMATE_BEAR_DISABLED = 1281;
-	public static final int SPELL_REANIMATE_SCORPION_DISABLED = 1282;
-	public static final int SPELL_REANIMATE_IMP_DISABLED = 1283;
-	public static final int SPELL_REANIMATE_MINOTAUR_DISABLED = 1284;
-	public static final int SPELL_REANIMATE_UNICORN_DISABLED = 1285;
-	public static final int SPELL_REANIMATE_KALPHITE_DISABLED = 1286;
-	public static final int SPELL_REANIMATE_TZHAAR_DISABLED = 1287;
-	public static final int SPELL_REANIMATE_AVIANSIE_DISABLED = 1288;
-	public static final int SPELL_REANIMATE_MONKEY_DISABLED = 1289;
-	public static final int SPELL_REANIMATE_ABYSSAL_CREATURE_DISABLED = 1290;
-	public static final int SPELL_REANIMATE_HORROR_DISABLED = 1291;
-	public static final int SPELL_REANIMATE_BLOODVELD_DISABLED = 1292;
-	public static final int SPELL_REANIMATE_DOG_DISABLED = 1293;
-	public static final int SPELL_LUMBRIDGE_GRAVEYARD_TELEPORT_DISABLED = 1294;
-	public static final int SPELL_DRAYNOR_MANOR_TELEPORT_DISABLED = 1295;
-	public static final int SPELL_MIND_ALTAR_TELEPORT_DISABLED = 1296;
+	public static final int SPELL_BASIC_REANIMATION = 1247;
+	public static final int SPELL_ADEPT_REANIMATION = 1248;
+	public static final int SPELL_EXPERT_REANIMATION = 1249;
+	public static final int SPELL_MASTER_REANIMATION = 1250;
+	/* Unmapped: 1251 */
+	public static final int SPELL_ARCEUUS_LIBRARY_TELEPORT = 1252;
+	public static final int SPELL_DRAYNOR_MANOR_TELEPORT = 1253;
+	public static final int SPELL_SALVE_GRAVEYARD_TELEPORT = 1254;
+	/* Unmapped: 1255 */
+	public static final int SPELL_MIND_ALTAR_TELEPORT = 1256;
+	public static final int SPELL_RESPAWN_TELEPORT = 1257;
+	/* Unmapped 1258 */
+	public static final int SPELL_FENKENSTRAINS_CASTLE_TELEPORT = 1259;
+	public static final int SPELL_WEST_ARDOUGNE_TELEPORT = 1260;
+	public static final int SPELL_HARMONY_ISLAND_TELEPORT = 1261;
+	public static final int SPELL_BARROWS_TELEPORT = 1262;
+	public static final int SPELL_APE_ATOLL_TELEPORT = 1263;
+	public static final int SPELL_CEMETERY_TELEPORT = 1264;
+	/* Unmapped: 1265 */
+	public static final int SPELL_RESURRECT_CROPS = 1266;
+	public static final int SPELL_GHOSTLY_GRASP = 1267;
+	public static final int SPELL_SKELETAL_GRASP = 1268;
+	public static final int SPELL_UNDEAD_GRASP = 1269;
+	public static final int SPELL_RESURRECT_LESSER_GHOST = 1270;
+	/* Unmapped: 1271~1296 */
 	public static final int QUESTS_PAGE_ICON_PURPLE_KOUREND = 1297;
 	public static final int UNUSED_TAB_QUESTS_GREEN_ACHIEVEMENT_DIARIES = 1298;
 	public static final int TAB_QUESTS_GREEN_ACHIEVEMENT_DIARIES = 1299;
-	public static final int SPELL_RESPAWN_TELEPORT = 1300;
-	public static final int SPELL_SALVE_GRAVEYARD_TELEPORT = 1301;
-	public static final int SPELL_FENKENSTRAINS_CASTLE_TELEPORT = 1302;
-	public static final int SPELL_WEST_ARDOUGNE_TELEPORT = 1303;
-	public static final int SPELL_HARMONY_ISLAND_TELEPORT = 1304;
-	public static final int SPELL_CEMETARY_TELEPORT = 1305;
-	public static final int SPELL_BARROWS_TELEPORT = 1306;
-	public static final int SPELL_APE_ATOLL_TELEPORT = 1307;
-	public static final int SPELL_REANIMATE_CROPS = 1308;
-	/* Unmapped: 1309~1318 */
-	public static final int SPELL_RESPAWN_TELEPORT_DISABLED = 1319;
-	public static final int SPELL_SALVE_GRAVEYARD_TELEPORT_DISABLED = 1320;
-	public static final int SPELL_FENKENSTRAINS_CASTLE_TELEPORT_DISABLED = 1321;
-	public static final int SPELL_WEST_ARDOUGNE_TELEPORT_DISABLED = 1322;
-	public static final int SPELL_HARMONY_ISLAND_TELEPORT_DISABLED = 1323;
-	public static final int SPELL_CEMETARY_TELEPORT_DISABLED = 1324;
-	public static final int SPELL_BARROWS_TELEPORT_DISABLED = 1325;
-	public static final int SPELL_APE_ATOLL_TELEPORT_DISABLED = 1326;
-	public static final int SPELL_REANIMATE_CROPS_DISABLED = 1327;
-	/* Unmapped: 1328~1337 */
+	/* Unmapped: 1300~1301 */
+	public static final int SPELL_INFERIOR_DEMONBANE = 1302;
+	public static final int SPELL_SUPERIOR_DEMONBANE = 1303;
+	public static final int SPELL_DARK_DEMONBANE = 1304;
+	public static final int SPELL_MARK_OF_DARKNESS = 1305;
+	public static final int SPELL_WARD_OF_ARCEUUS = 1306;
+	public static final int SPELL_LESSER_CORRUPTION = 1307;
+	public static final int SPELL_GREATER_CORRUPTION = 1308;
+	/* Unmapped: 1309 */
+	public static final int SPELL_DEATH_CHARGE = 1310;
+	public static final int SPELL_DEMONIC_OFFERING = 1311;
+	public static final int SPELL_SINISTER_OFFERING = 1312;
+	/* Unmapped: 1313~1314 */
+	public static final int SPELL_SHADOW_VEIL = 1315;
+	public static final int SPELL_DARK_LURE = 1316;
+	public static final int SPELL_VILE_VIGOUR = 1317;
+	public static final int SPELL_DEGRIME = 1318;
+	/* Unmapped: 1319~1323 */
+	public static final int SPELL_MARK_OF_DARKNESS_DISABLED = 1324;
+	public static final int SPELL_WARD_OF_ARCEUUS_DISABLED = 1325;
+	/* Unmapped: 1326 */
+	public static final int SPELL_GREATER_CORRUPTION_DISABLED = 1327;
+	/* Unmapped: 1328 */
+	public static final int SPELL_DEATH_CHARGE_DISABLED = 1329;
+	/* Unmapped: 1330~1333 */
+	public static final int SPELL_SHADOW_VEIL_DISABLED = 1334;
+	/* Unmapped: 1335~1337 */
 	public static final int WORLD_SWITCHER_WORLD_STAR_BLUE = 1338;
-	public static final int HITSPLAT_DARK_GREEN_VENOM = 1339;
+	/* Unmapped: 1339 */
 	public static final int FAIRY_RING_REMOVE_FAVOURITE = 1340;
 	public static final int FAIRY_RING_ADD_FAVOURITE = 1341;
 	public static final int BANK_PLACEHOLDERS_LOCK = 1342;
@@ -1312,12 +1280,10 @@ public final class SpriteID
 	public static final int EMOTE_SMOOTH_DANCE_LOCKED = 1355;
 	public static final int EMOTE_CRAZY_DANCE_LOCKED = 1356;
 	public static final int EMOTE_PREMIER_SHIELD_LOCKED = 1357;
-	public static final int HITSPLAT_BLUE_NO_DAMAGE = 1358;
-	public static final int HITSPLAT_RED_DAMAGE = 1359;
+	public static final int HITSPLAT_BLUE_MISS = 1358;
+	/* Unmapped: 1359 */
 	public static final int HITSPLAT_GREEN_POISON = 1360;
-	public static final int HITSPLAT_ORANGE = 1361;
-	public static final int HITSPLAT_ORANGE_DISEASE = 1362;
-	public static final int HITSPLAT_GREY = 1363;
+	/* Unmapped: 1361~1363 */
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET_HOVERED = 1365;
 	public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = 1366;
@@ -1367,17 +1333,19 @@ public final class SpriteID
 	public static final int UNKNOWN_WHITE_REFRESH_ARROWS = 1412;
 	public static final int TAB_QUESTS_PURPLE_KOUREND_UNUSED = 1413;
 	public static final int TAB_QUESTS_PURPLE_KOUREND = 1414;
-	public static final int UNKNOWN_GREEN_BAR = 1415;
-	public static final int UNKNOWN_BLUE_BAR = 1416;
-	public static final int UNKNOWN_YELLOW_BAR = 1417;
-	public static final int UNKNOWN_RED_BAR = 1418;
-	public static final int HITSPLAT_MAGENTA_ENEMY_HEALING = 1419;
+	public static final int HEALTHBAR_COX_GREEN = 1415;
+	public static final int HEALTHBAR_COX_BLUE = 1416;
+	public static final int HEALTHBAR_COX_YELLOW = 1417;
+	public static final int HEALTHBAR_COX_RED = 1418;
+	/* Unmapped: 1419 */
 	public static final int PRAYER_RIGOUR = 1420;
 	public static final int PRAYER_AUGURY = 1421;
-	/* Unmapped: 1422, 1423 */
+	public static final int PRAYER_DEADEYE = 1422;
+	public static final int PRAYER_MYSTIC_VIGOUR = 1423;
 	public static final int PRAYER_RIGOUR_DISABLED = 1424;
 	public static final int PRAYER_AUGURY_DISABLED = 1425;
-	/* Unmapped: 1426, 1427 */
+	public static final int PRAYER_DEADEYE_DISABLED = 1426;
+	public static final int PRAYER_MYSTIC_VIGOUR_DISABLED = 1427;
 	public static final int UNKNOWN_BLACK_ANTICLOCKWISE_ARROW_SHADOWED = 1428;
 	public static final int UNKNOWN_BLACK_ANTICLOCKWISE_ARROW = 1429;
 	public static final int YELLOW_CLICK_ANIMATION_1_1430 = 1430;
@@ -1564,6 +1532,9 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
+	/* Unmapped: 1627~1631 */
+	public static final int HITSPLAT_DARK_GREEN_VENOM = 1632;
+	/* Unmapped: 1633~1652 */
 	public static final int MOBILE_FINGER_ON_INTERFACE = 1653;
 	/* Unmapped: 1627~1701 */
 	public static final int BUTTON_FRIENDS = 1702;
@@ -1572,7 +1543,9 @@ public final class SpriteID
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
 	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
-	/* Unmapped: 1712~2175 */
+	/* Unmapped: 1712 */
+	public static final int TAB_QUESTS_ORANGE_ADVENTURE_PATHS = 1713;
+	/* Unmapped: 1714~2175 */
 	public static final int HEALTHBAR_DEFAULT_FRONT_30PX = 2176;
 	public static final int HEALTHBAR_DEFAULT_BACK_30PX = 2177;
 	public static final int HEALTHBAR_DEFAULT_FRONT_50PX = 2178;
@@ -1589,6 +1562,282 @@ public final class SpriteID
 	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
 	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
 	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
+	/* Unmapped: 2192~2218 */
+	public static final int QUESTS_PAGE_ICON_ORANGE_ADVENTURE_PATHS = 2219;
+	/* Unmapped: 2220~2275 */
+	public static final int QUESTS_PAGE_ICON_BROWN_CHARACTER_SUMMARY = 2276;
+	/* Unmapped: 2277~2306 */
+	public static final int TAB_CLAN_CHAT = 2307;
+	/* Unmapped: 2308 */
+	public static final int TAB_QUESTS_BROWN_CHARACTER_SUMMARY = 2309;
+	/* Unmapped: 2308~2419 */
 	public static final int WIKI_DESELECTED = 2420;
 	public static final int WIKI_SELECTED = 2421;
+	/* Unmapped: 2422~2430 */
+	public static final int HEALTHBAR_DEFAULT_FRONT_40PX = 2431;
+	public static final int HEALTHBAR_DEFAULT_BACK_40PX = 2432;
+	public static final int HEALTHBAR_CYAN_FRONT_30PX = 2433;
+	public static final int HEALTHBAR_CYAN_BACK_30PX = 2434;
+	public static final int HEALTHBAR_CYAN_FRONT_40PX = 2435;
+	public static final int HEALTHBAR_CYAN_BACK_40PX = 2436;
+	public static final int HEALTHBAR_CYAN_FRONT_50PX = 2437;
+	public static final int HEALTHBAR_CYAN_BACK_50PX = 2438;
+	public static final int HEALTHBAR_CYAN_FRONT_60PX = 2439;
+	public static final int HEALTHBAR_CYAN_BACK_60PX = 2440;
+	public static final int HEALTHBAR_CYAN_FRONT_80PX = 2441;
+	public static final int HEALTHBAR_CYAN_BACK_80PX = 2442;
+	public static final int HEALTHBAR_CYAN_FRONT_100PX = 2443;
+	public static final int HEALTHBAR_CYAN_BACK_100PX = 2444;
+	public static final int HEALTHBAR_CYAN_FRONT_120PX = 2445;
+	public static final int HEALTHBAR_CYAN_BACK_120PX = 2446;
+	public static final int HEALTHBAR_CYAN_FRONT_140PX = 2447;
+	public static final int HEALTHBAR_CYAN_BACK_140PX = 2448;
+	public static final int HEALTHBAR_CYAN_FRONT_160PX = 2449;
+	public static final int HEALTHBAR_CYAN_BACK_160PX = 2450;
+	public static final int HEALTHBAR_ORANGE_FRONT_30PX = 2451;
+	public static final int HEALTHBAR_ORANGE_BACK_30PX = 2452;
+	public static final int HEALTHBAR_ORANGE_FRONT_40PX = 2453;
+	public static final int HEALTHBAR_ORANGE_BACK_40PX = 2454;
+	public static final int HEALTHBAR_ORANGE_FRONT_50PX = 2455;
+	public static final int HEALTHBAR_ORANGE_BACK_50PX = 2456;
+	public static final int HEALTHBAR_ORANGE_FRONT_60PX = 2457;
+	public static final int HEALTHBAR_ORANGE_BACK_60PX = 2458;
+	public static final int HEALTHBAR_ORANGE_FRONT_80PX = 2459;
+	public static final int HEALTHBAR_ORANGE_BACK_80PX = 2460;
+	public static final int HEALTHBAR_ORANGE_FRONT_100PX = 2461;
+	public static final int HEALTHBAR_ORANGE_BACK_100PX = 2462;
+	public static final int HEALTHBAR_ORANGE_FRONT_120PX = 2463;
+	public static final int HEALTHBAR_ORANGE_BACK_120PX = 2464;
+	public static final int HEALTHBAR_ORANGE_FRONT_140PX = 2465;
+	public static final int HEALTHBAR_ORANGE_BACK_140PX = 2466;
+	public static final int HEALTHBAR_ORANGE_FRONT_160PX = 2467;
+	public static final int HEALTHBAR_ORANGE_BACK_160PX = 2468;
+	public static final int HEALTHBAR_YELLOW_FRONT_30PX = 2469;
+	public static final int HEALTHBAR_YELLOW_BACK_30PX = 2470;
+	public static final int HEALTHBAR_YELLOW_FRONT_40PX = 2471;
+	public static final int HEALTHBAR_YELLOW_BACK_40PX = 2472;
+	public static final int HEALTHBAR_YELLOW_FRONT_50PX = 2473;
+	public static final int HEALTHBAR_YELLOW_BACK_50PX = 2474;
+	public static final int HEALTHBAR_YELLOW_FRONT_60PX = 2475;
+	public static final int HEALTHBAR_YELLOW_BACK_60PX = 2476;
+	public static final int HEALTHBAR_YELLOW_FRONT_80PX = 2477;
+	public static final int HEALTHBAR_YELLOW_BACK_80PX = 2478;
+	public static final int HEALTHBAR_YELLOW_FRONT_100PX = 2479;
+	public static final int HEALTHBAR_YELLOW_BACK_100PX = 2480;
+	public static final int HEALTHBAR_YELLOW_FRONT_120PX = 2481;
+	public static final int HEALTHBAR_YELLOW_BACK_120PX = 2482;
+	public static final int HEALTHBAR_YELLOW_FRONT_140PX = 2483;
+	public static final int HEALTHBAR_YELLOW_BACK_140PX = 2484;
+	public static final int HEALTHBAR_YELLOW_FRONT_160PX = 2485;
+	public static final int HEALTHBAR_YELLOW_BACK_160PX = 2486;
+	/* Unmapped: 2487~2824 */
+	public static final int FRIENDS_CHAT_RANK_SMILEY_FRIEND = 2825;
+	public static final int FRIENDS_CHAT_RANK_CROWN_JAGEX_MODERATOR = 2826;
+	public static final int FRIENDS_CHAT_RANK_KEY_CHANNEL_OWNER = 2827;
+	public static final int FRIENDS_CHAT_RANK_GOLD_STAR_GENERAL = 2828;
+	public static final int FRIENDS_CHAT_RANK_SILVER_STAR_CAPTAIN = 2829;
+	public static final int FRIENDS_CHAT_RANK_BRONZE_STAR_LIEUTENANT = 2830;
+	public static final int FRIENDS_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT = 2831;
+	public static final int FRIENDS_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL = 2832;
+	public static final int FRIENDS_CHAT_RANK_SINGLE_CHEVRON_RECRUIT = 2833;
+	/* Unmapped: 2834~2857 */
+	public static final int SETTINGS_SLIDER_HANDLE_BLUE = 2858;
+	public static final int SETTINGS_SLIDER_HANDLE_RED = 2859;
+	public static final int SETTINGS_SLIDER_HANDLE_GREEN = 2860;
+	/* Unmapped: 2861~2966 */
+	public static final int HEALTHBAR_BLUE_FRONT_50PX = 2967;
+	public static final int HEALTHBAR_BLUE_BACK_50PX = 2968;
+	/* Unmapped: 2968~2970 */
+	public static final int HEALTHBAR_DEFAULT_FRONT_70PX = 2971;
+	public static final int HEALTHBAR_DEFAULT_BACK_70PX = 2972;
+	public static final int HEALTHBAR_CYAN_FRONT_70PX = 2973;
+	public static final int HEALTHBAR_CYAN_BACK_70PX = 2974;
+	public static final int HEALTHBAR_ORANGE_FRONT_70PX = 2975;
+	public static final int HEALTHBAR_ORANGE_BACK_70PX = 2976;
+	public static final int HEALTHBAR_YELLOW_FRONT_70PX = 2977;
+	public static final int HEALTHBAR_YELLOW_BACK_70PX = 2978;
+	/* Unmapped: 2979, 2980 */
+	public static final int SPELL_RESURRECT_SUPERIOR_SKELETON = 2981;
+	/* Unmapped: 2982~2983 */
+	public static final int SPELL_RESURRECT_GREATER_ZOMBIE = 2984;
+	/* Unmapped: 2985~2986 */
+	public static final int SPELL_RESURRECT_SUPERIOR_SKELETON_DISABLED = 2987;
+	/* Unmapped: 2988~4259 */
+	public static final int HISCORE_MIMIC = 4260;
+	public static final int HISCORE_OBOR = 4261;
+	public static final int HISCORE_BRYOPHYTA = 4262;
+	public static final int HISCORE_GIANT_MOLE = 4263;
+	public static final int HISCORE_GROTESQUE_GUARDIANS = 4264;
+	public static final int HISCORE_TEMPOROSS = 4265;
+	public static final int HISCORE_WINTERTODT = 4266;
+	public static final int HISCORE_BARROWS_CHESTS = 4267;
+	public static final int HISCORE_SARACHNIS = 4269;
+	public static final int HISCORE_KALPHITE_QUEEN = 4270;
+	public static final int HISCORE_HESPORI = 4271;
+	public static final int HISCORE_SKOTIZO = 4272;
+	public static final int HISCORE_ZALCANO = 4273;
+	public static final int HISCORE_KING_BLACK_DRAGON = 4274;
+	public static final int HISCORE_KRAKEN = 4275;
+	public static final int HISCORE_ABYSSAL_SIRE = 4276;
+	public static final int HISCORE_THERMONUCLEAR_SMOKE_DEVIL = 4277;
+	public static final int HISCORE_THE_GAUNTLET = 4278;
+	public static final int HISCORE_ZULRAH = 4279;
+	public static final int HISCORE_CERBERUS = 4280;
+	public static final int HISCORE_VORKATH = 4281;
+	public static final int HISCORE_GENERAL_GRAARDOR = 4282;
+	public static final int HISCORE_KRIL_TSUTSAROTH = 4283;
+	public static final int HISCORE_COMMANDER_ZILYANA = 4284;
+	public static final int HISCORE_KREEARRA = 4285;
+	public static final int HISCORE_NIGHTMARE = 4286;
+	public static final int HISCORE_CORPOREAL_BEAST = 4287;
+	public static final int HISCORE_CHAMBERS_OF_XERIC = 4288;
+	public static final int HISCORE_ALCHEMICAL_HYDRA = 4289;
+	public static final int HISCORE_THEATRE_OF_BLOOD = 4290;
+	public static final int HISCORE_NEX = 4291;
+	public static final int HISCORE_DAGANNOTH_SUPREME = 4292;
+	public static final int HISCORE_DAGANNOTH_REX = 4293;
+	public static final int HISCORE_DAGANNOTH_PRIME = 4294;
+	public static final int HISCORE_THE_CORRUPTED_GAUNTLET = 4295;
+	public static final int HISCORE_CHAMBERS_OF_XERIC_CHALLENGE_MODE = 4296;
+	public static final int HISCORE_TOMBS_OF_AMASCUT = 4297;
+	public static final int HISCORE_TOMBS_OF_AMASCUT_EXPERT = 4298;
+	public static final int HISCORE_PHANTOM_MUSPAH = 4299;
+	/* Unmapped: 4300~4707 */
+	public static final int HEALTHBAR_PURPLE_FRONT_30PX = 4708;
+	public static final int HEALTHBAR_PURPLE_BACK_30PX = 4709;
+	public static final int HEALTHBAR_PURPLE_FRONT_40PX = 4710;
+	public static final int HEALTHBAR_PURPLE_BACK_40PX = 4711;
+	public static final int HEALTHBAR_PURPLE_FRONT_50PX = 4712;
+	public static final int HEALTHBAR_PURPLE_BACK_50PX = 4713;
+	public static final int HEALTHBAR_PURPLE_FRONT_60PX = 4714;
+	public static final int HEALTHBAR_PURPLE_BACK_60PX = 4715;
+	public static final int HEALTHBAR_PURPLE_FRONT_70PX = 4716;
+	public static final int HEALTHBAR_PURPLE_BACK_70PX = 4717;
+	public static final int HEALTHBAR_PURPLE_FRONT_80PX = 4718;
+	public static final int HEALTHBAR_PURPLE_BACK_80PX = 4719;
+	public static final int HEALTHBAR_PURPLE_FRONT_100PX = 4720;
+	public static final int HEALTHBAR_PURPLE_BACK_100PX = 4721;
+	public static final int HEALTHBAR_PURPLE_FRONT_120PX = 4722;
+	public static final int HEALTHBAR_PURPLE_BACK_120PX = 4723;
+	public static final int HEALTHBAR_PURPLE_FRONT_140PX = 4724;
+	public static final int HEALTHBAR_PURPLE_BACK_140PX = 4725;
+	public static final int HEALTHBAR_PURPLE_FRONT_160PX = 4726;
+	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
+	/* Unmapped: 4728~4765 */
+	public static final int COLOSSEUM_DOOM = 4766;
+	public static final int BURN_DAMAGE = 4767;
+	/* Unmapped: 4768~4770 */
+	public static final int HEALTHBAR_GREEN_FRONT_30PX = 4771;
+	public static final int HEALTHBAR_GREEN_BACK_30PX = 4772;
+	public static final int HEALTHBAR_GREEN_FRONT_40PX = 4773;
+	public static final int HEALTHBAR_GREEN_BACK_40PX = 4774;
+	public static final int HEALTHBAR_GREEN_FRONT_50PX = 4775;
+	public static final int HEALTHBAR_GREEN_BACK_50PX = 4776;
+	public static final int HEALTHBAR_GREEN_FRONT_60PX = 4777;
+	public static final int HEALTHBAR_GREEN_BACK_60PX = 4778;
+	public static final int HEALTHBAR_GREEN_FRONT_70PX = 4779;
+	public static final int HEALTHBAR_GREEN_BACK_70PX = 4780;
+	public static final int HEALTHBAR_GREEN_FRONT_80PX = 4781;
+	public static final int HEALTHBAR_GREEN_BACK_80PX = 4782;
+	public static final int HEALTHBAR_GREEN_FRONT_100PX = 4783;
+	public static final int HEALTHBAR_GREEN_BACK_100PX = 4784;
+	public static final int HEALTHBAR_GREEN_FRONT_120PX = 4785;
+	public static final int HEALTHBAR_GREEN_BACK_120PX = 4786;
+	public static final int HEALTHBAR_GREEN_FRONT_140PX = 4787;
+	public static final int HEALTHBAR_GREEN_BACK_140PX = 4788;
+	public static final int HEALTHBAR_GREEN_FRONT_160PX = 4789;
+	public static final int HEALTHBAR_GREEN_BACK_160PX = 4790;
+	/* Unmapped: 4791~4842 */
+	public static final int PRAYER_RP_ANCIENT_STRENGTH = 4843;
+	public static final int PRAYER_RP_ANCIENT_SIGHT = 4844;
+	public static final int PRAYER_RP_ANCIENT_WILL = 4845;
+	public static final int PRAYER_RP_TRINITAS = 4850;
+	public static final int PRAYER_RP_DECIMATE = 4854;
+	public static final int PRAYER_RP_ANNIHILATE = 4855;
+	public static final int PRAYER_RP_VAPORISE = 4856;
+	public static final int PRAYER_RP_DAMPEN_MELEE = 4849;
+	public static final int PRAYER_RP_DAMPEN_RANGED = 4848;
+	public static final int PRAYER_RP_DAMPEN_MAGIC = 4847;
+	public static final int PRAYER_RP_PURGE = 4852;
+	public static final int PRAYER_RP_REJUVENATION = 4842;
+	public static final int PRAYER_RP_RUINOUS_GRACE = 4846;
+	public static final int PRAYER_RP_WRATH = 4862;
+	public static final int PRAYER_RP_METABOLISE = 4853;
+	public static final int PRAYER_RP_BERSERKER = 4851;
+	public static final int PRAYER_RP_FUMUS_VOW = 4858;
+	public static final int PRAYER_RP_CRUORS_VOW = 4860;
+	public static final int PRAYER_RP_UMBRAS_VOW = 4859;
+	public static final int PRAYER_RP_GLACIES_VOW = 4861;
+	public static final int PRAYER_RP_INTENSIFY = 4864;
+	public static final int PRAYER_RP_REBUKE = 4857;
+	public static final int PRAYER_RP_VINDICATION = 4863;
+	public static final int PRAYER_RP_PROTECT_ITEM = 4865;
+	public static final int ACTIVATED_PRAYER_BACKGROUND = 4892;
+	/* Unmapped: 4893~5250 */
+	public static final int EMOTE_FORTIS_SALUTE = 5251;
+	/* Unmapped: 5252~5578 */
+	public static final int HEALTHBAR_BLOOD_MOON_FRONT_120PX = 5579;
+	public static final int HEALTHBAR_BLOOD_MOON_BACK_120PX = 5580;
+	public static final int HEALTHBAR_BLUE_MOON_FRONT_120PX = 5581;
+	public static final int HEALTHBAR_BLUE_MOON_BACK_120PX = 5582;
+	public static final int HEALTHBAR_ECLIPSE_MOON_FRONT_120PX = 5583;
+	public static final int HEALTHBAR_ECLIPSE_MOON_BACK_120PX = 5584;
+	/* Unmapped: 5585~5608 */
+	public static final int HEALTHBAR_DEFAULT_FRONT_90PX = 5609;
+	public static final int HEALTHBAR_DEFAULT_BACK_90PX = 5610;
+	public static final int HEALTHBAR_CYAN_FRONT_90PX = 5611;
+	public static final int HEALTHBAR_CYAN_BACK_90PX = 5612;
+	public static final int HEALTHBAR_ORANGE_FRONT_90PX = 5613;
+	public static final int HEALTHBAR_ORANGE_BACK_90PX = 5614;
+	public static final int HEALTHBAR_YELLOW_FRONT_90PX = 5615;
+	public static final int HEALTHBAR_YELLOW_BACK_90PX = 5616;
+	public static final int HEALTHBAR_PURPLE_FRONT_90PX = 5617;
+	public static final int HEALTHBAR_PURPLE_BACK_90PX = 5618;
+	public static final int HEALTHBAR_GREEN_FRONT_90PX = 5619;
+	public static final int HEALTHBAR_GREEN_BACK_90PX = 5620;
+	public static final int HISCORE_CHAOS_ELEMENTAL = 5621;
+	public static final int HISCORE_ARTIO_CALLISTO = 5622;
+	public static final int HISCORE_CALVARION_VETION = 5623;
+	public static final int HISCORE_SPINDEL_VENENATIS = 5624;
+	public static final int HISCORE_CHAOS_FANATIC = 5625;
+	public static final int HISCORE_CRAZY_ARCHAEOLOGIST = 5626;
+	public static final int HISCORE_DERANGED_ARCHAEOLOGIST = 5627;
+	public static final int HISCORE_SCORPIA = 5628;
+	public static final int HISCORE_TZTOK_JAD = 5629;
+	public static final int HISCORE_TZKAL_ZUK = 5630;
+	public static final int HISCORE_THE_WHISPERER = 5631;
+	public static final int HISCORE_DUKE_SUCELLUS = 5632;
+	public static final int HISCORE_THE_LEVIATHAN = 5633;
+	public static final int HISCORE_VARDORVIS = 5634;
+	public static final int HISCORE_SCURRIUS = 5635;
+	public static final int HISCORE_SOL_HEREDIT = 5636;
+	public static final int HISCORE_LUNAR_CHESTS = 5637;
+	public static final int HISCORE_ARAXXOR = 5638;
+	public static final int HISCORE_AMOXLIATL = 5639;
+	public static final int HISCORE_THE_HUEYCOATL = 5640;
+	/* Unmapped: 5641~5643 */
+	public static final int HEALTHBAR_BLOOD_MOON_FRONT_90PX = 5644;
+	public static final int HEALTHBAR_BLOOD_MOON_BACK_90PX = 5645;
+	public static final int HEALTHBAR_BLUE_MOON_FRONT_90PX = 5646;
+	public static final int HEALTHBAR_BLUE_MOON_BACK_90PX = 5647;
+	public static final int HEALTHBAR_ECLIPSE_MOON_FRONT_90PX = 5648;
+	public static final int HEALTHBAR_ECLIPSE_MOON_BACK_90PX = 5649;
+	/* Unmapped: 5650~5852 */
+	public static final int HISCORE_CLUE_SCROLL_ALL = 5853;
+	public static final int HISCORE_BOUNTY_HUNTER_HUNTER = 5854;
+	public static final int HISCORE_BOUNTY_HUNTER_ROGUE = 5855;
+	public static final int HISCORE_LAST_MAN_STANDING = 5856;
+	public static final int HISCORE_LEAGUE_POINTS = 5857;
+	public static final int HISCORE_SOUL_WARS_ZEAL = 5858;
+	public static final int HISCORE_PVP_ARENA_RANK = 5859;
+	public static final int HISCORE_RIFTS_CLOSED = 5860;
+	public static final int HISCORE_DEADMAN_POINTS = 5861;
+	public static final int HISCORE_COLOSSEUM_GLORY = 5862;
+	public static final int HEALTHBAR_LAST_STAND_FRONT = 5863;
+	public static final int HEALTHBAR_LAST_STAND_BACK = 5864;
+	/* Unmapped: 5865~6344 */
+	public static final int HISCORE_ROYAL_TITANS = 6345;
+	public static final int HISCORE_YAMA = 6346;
+	/* Unmapped: 6347~6389 */
+	public static final int HISCORE_COLLECTIONS_LOGGED = 6390;
 }

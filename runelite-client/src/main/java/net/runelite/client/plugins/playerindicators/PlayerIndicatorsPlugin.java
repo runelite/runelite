@@ -24,20 +24,38 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
-import java.awt.Color;
 import javax.inject.Inject;
-import lombok.Value;
-import net.runelite.api.ClanMemberRank;
-import static net.runelite.api.ClanMemberRank.UNRANKED;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.*;
+import net.runelite.api.FriendsChatRank;
+import static net.runelite.api.FriendsChatRank.UNRANKED;
+import net.runelite.api.MenuAction;
+import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
+import static net.runelite.api.MenuAction.PLAYER_EIGHTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
+import static net.runelite.api.MenuAction.RUNELITE_PLAYER;
+import static net.runelite.api.MenuAction.WALK;
+import static net.runelite.api.MenuAction.WIDGET_TARGET_ON_PLAYER;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ClanManager;
+import net.runelite.client.events.ProfileChanged;
+import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -48,8 +66,11 @@ import net.runelite.client.util.ColorUtil;
 	description = "Highlight players on-screen and/or on the minimap",
 	tags = {"highlight", "minimap", "overlay", "players"}
 )
+@Slf4j
 public class PlayerIndicatorsPlugin extends Plugin
 {
+	private static final String TRADING_WITH_TEXT = "Trading with: ";
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -66,10 +87,19 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
 
 	@Inject
+	private PlayerIndicatorsService playerIndicatorsService;
+
+	@Inject
 	private Client client;
 
 	@Inject
-	private ClanManager clanManager;
+	private ChatIconManager chatIconManager;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -83,6 +113,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
+		migrate();
 	}
 
 	@Override
@@ -94,6 +125,60 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onProfileChanged(ProfileChanged profileChanged)
+	{
+		migrate();
+	}
+
+	private void migrate()
+	{
+		String[] keys = {
+			"drawOwnName", "highlightSelf",
+			"drawPartyMembers", "highlightPartyMembers",
+			"drawFriendNames", "highlightFriends",
+			"drawClanMemberNames", "highlightFriendsChat",
+			"drawTeamMemberNames", "highlightTeamMembers",
+			"drawClanChatMemberNames", "highlightClanMembers",
+			"drawNonClanMemberNames", "highlightOthers"
+		};
+
+		Boolean disableOutsidePvP = configManager.getConfiguration(PlayerIndicatorsConfig.GROUP, "disableOutsidePvP", Boolean.class);
+		if (disableOutsidePvP != null)
+		{
+			configManager.unsetConfiguration(PlayerIndicatorsConfig.GROUP, "disableOutsidePvP");
+
+			for (int i = 0; i < keys.length; i += 2)
+			{
+				String old = keys[i];
+				String new_ = keys[i + 1];
+
+				Boolean value = configManager.getConfiguration(PlayerIndicatorsConfig.GROUP, old, Boolean.class);
+				if (value != null)
+				{
+					PlayerIndicatorsConfig.HighlightSetting newSetting;
+					if (disableOutsidePvP && value)
+					{
+						newSetting = PlayerIndicatorsConfig.HighlightSetting.PVP;
+					}
+					else if (value)
+					{
+						newSetting = PlayerIndicatorsConfig.HighlightSetting.ENABLED;
+					}
+					else
+					{
+						newSetting = PlayerIndicatorsConfig.HighlightSetting.DISABLED;
+					}
+
+					configManager.setConfiguration(PlayerIndicatorsConfig.GROUP, new_, newSetting);
+					configManager.unsetConfiguration(PlayerIndicatorsConfig.GROUP, old);
+				}
+			}
+
+			log.debug("Migrated player indicators config");
+		}
+	}
+
+	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
 		if (client.isMenuOpen())
@@ -102,54 +187,31 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 
 		MenuEntry[] menuEntries = client.getMenuEntries();
-		boolean modified = false;
 
 		for (MenuEntry entry : menuEntries)
 		{
-			int type = entry.getType();
+			MenuAction type = entry.getType();
 
-			if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
+			if (type == WALK
+				|| type == WIDGET_TARGET_ON_PLAYER
+				|| type == ITEM_USE_ON_PLAYER
+				|| type == PLAYER_FIRST_OPTION
+				|| type == PLAYER_SECOND_OPTION
+				|| type == PLAYER_THIRD_OPTION
+				|| type == PLAYER_FOURTH_OPTION
+				|| type == PLAYER_FIFTH_OPTION
+				|| type == PLAYER_SIXTH_OPTION
+				|| type == PLAYER_SEVENTH_OPTION
+				|| type == PLAYER_EIGHTH_OPTION
+				|| type == RUNELITE_PLAYER)
 			{
-				type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
-			}
-
-			if (type == WALK.getId()
-				|| type == SPELL_CAST_ON_PLAYER.getId()
-				|| type == ITEM_USE_ON_PLAYER.getId()
-				|| type == PLAYER_FIRST_OPTION.getId()
-				|| type == PLAYER_SECOND_OPTION.getId()
-				|| type == PLAYER_THIRD_OPTION.getId()
-				|| type == PLAYER_FOURTH_OPTION.getId()
-				|| type == PLAYER_FIFTH_OPTION.getId()
-				|| type == PLAYER_SIXTH_OPTION.getId()
-				|| type == PLAYER_SEVENTH_OPTION.getId()
-				|| type == PLAYER_EIGTH_OPTION.getId()
-				|| type == RUNELITE.getId())
-			{
-				Player[] players = client.getCachedPlayers();
-				Player player = null;
-
-				int identifier = entry.getIdentifier();
-
-				// 'Walk here' identifiers are offset by 1 because the default
-				// identifier for this option is 0, which is also a player index.
-				if (type == WALK.getId())
-				{
-					identifier--;
-				}
-
-				if (identifier >= 0 && identifier < players.length)
-				{
-					player = players[identifier];
-				}
-
+				Player player = entry.getPlayer();
 				if (player == null)
 				{
 					continue;
 				}
 
-				Decorations decorations = getDecorations(player);
-
+				PlayerIndicatorsService.Decorations decorations = playerIndicatorsService.getDecorations(player);
 				if (decorations == null)
 				{
 					continue;
@@ -159,81 +221,87 @@ public class PlayerIndicatorsPlugin extends Plugin
 				String newTarget = decorateTarget(oldTarget, decorations);
 
 				entry.setTarget(newTarget);
-				modified = true;
 			}
-		}
-
-		if (modified)
-		{
-			client.setMenuEntries(menuEntries);
 		}
 	}
 
-	private Decorations getDecorations(Player player)
-	{
-		int image = -1;
-		Color color = null;
-
-		if (config.highlightFriends() && player.isFriend())
-		{
-			color = config.getFriendColor();
-		}
-		else if (config.drawClanMemberNames() && player.isClanMember())
-		{
-			color = config.getClanMemberColor();
-
-			ClanMemberRank rank = clanManager.getRank(player.getName());
-			if (rank != UNRANKED)
-			{
-				image = clanManager.getIconNumber(rank);
-			}
-		}
-		else if (config.highlightTeamMembers()
-			&& player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam())
-		{
-			color = config.getTeamMemberColor();
-		}
-		else if (config.highlightNonClanMembers() && !player.isClanMember())
-		{
-			color = config.getNonClanMemberColor();
-		}
-
-		if (image == -1 && color == null)
-		{
-			return null;
-		}
-
-		return new Decorations(image, color);
-	}
-
-	private String decorateTarget(String oldTarget, Decorations decorations)
+	@VisibleForTesting
+	String decorateTarget(String oldTarget, PlayerIndicatorsService.Decorations decorations)
 	{
 		String newTarget = oldTarget;
 
 		if (decorations.getColor() != null && config.colorPlayerMenu())
 		{
-			// strip out existing <col...
-			int idx = oldTarget.indexOf('>');
+			String prefix = "";
+			int idx = oldTarget.indexOf("->");
 			if (idx != -1)
 			{
-				newTarget = oldTarget.substring(idx + 1);
+				prefix = oldTarget.substring(0, idx + 3); // <col=ff9040>Earth rune</col><col=ff> ->
+				oldTarget = oldTarget.substring(idx + 3);
 			}
 
-			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
+			// <col=ff0000>title0RuneLitetitle1<col=ff>  (level-126)title2
+			idx = oldTarget.indexOf('>');
+			// remove leading <col>
+			oldTarget = oldTarget.substring(idx + 1);
+
+			newTarget = prefix + ColorUtil.prependColorTag(oldTarget, decorations.getColor());
 		}
 
-		if (decorations.getImage() != -1 && config.showClanRanks())
+		FriendsChatRank rank = decorations.getFriendsChatRank();
+		int image = -1;
+		if (rank != null && rank != UNRANKED && config.showFriendsChatRanks())
 		{
-			newTarget = "<img=" + decorations.getImage() + ">" + newTarget;
+			image = chatIconManager.getIconNumber(rank);
+		}
+		else if (decorations.getClanTitle() != null && config.showClanChatRanks())
+		{
+			image = chatIconManager.getIconNumber(decorations.getClanTitle());
+		}
+
+		if (image != -1)
+		{
+			newTarget = "<img=" + image + ">" + newTarget;
 		}
 
 		return newTarget;
 	}
 
-	@Value
-	private static class Decorations
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
 	{
-		private final int image;
-		private final Color color;
+		if (event.getScriptId() == ScriptID.TRADE_MAIN_INIT)
+		{
+			clientThread.invokeLater(() ->
+			{
+				Widget tradeTitle = client.getWidget(InterfaceID.Trademain.TITLE);
+				String header = tradeTitle.getText();
+				String playerName = header.substring(TRADING_WITH_TEXT.length());
+
+				Player targetPlayer = findPlayer(playerName);
+				if (targetPlayer == null)
+				{
+					return;
+				}
+
+				PlayerIndicatorsService.Decorations decorations = playerIndicatorsService.getDecorations(targetPlayer);
+				if (decorations != null && decorations.getColor() != null)
+				{
+					tradeTitle.setText(TRADING_WITH_TEXT + ColorUtil.wrapWithColorTag(playerName, decorations.getColor()));
+				}
+			});
+		}
+	}
+
+	private Player findPlayer(String name)
+	{
+		for (Player player : client.getPlayers())
+		{
+			if (player.getName().equals(name))
+			{
+				return player;
+			}
+		}
+		return null;
 	}
 }

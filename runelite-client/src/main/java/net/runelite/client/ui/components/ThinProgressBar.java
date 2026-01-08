@@ -61,7 +61,7 @@ public class ThinProgressBar extends JPanel
 	public void setForeground(Color color)
 	{
 		super.setForeground(color);
-		setBackground(color.darker());
+		setBackground(color.darker().darker());
 	}
 
 	public void setMaximumValue(int maximumValue)

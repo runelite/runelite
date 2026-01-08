@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -43,14 +44,16 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Account",
 	description = "Sync RuneLite config settings with your Google account",
-	tags = {"external", "google", "integration"},
-	loadWhenOutdated = true
+	tags = {"external", "google", "integration"}
 )
 @Slf4j
 public class AccountPlugin extends Plugin
 {
 	@Inject
 	private SessionManager sessionManager;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -65,24 +68,22 @@ public class AccountPlugin extends Plugin
 
 	static
 	{
-		LOGIN_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "login_icon.png");
-		LOGOUT_IMAGE = ImageUtil.getResourceStreamFromClass(AccountPlugin.class, "logout_icon.png");
+		LOGIN_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "login_icon.png");
+		LOGOUT_IMAGE = ImageUtil.loadImageResource(AccountPlugin.class, "logout_icon.png");
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		loginButton = NavigationButton.builder()
-			.tab(false)
 			.icon(LOGIN_IMAGE)
-			.tooltip("Log in to RuneLite")
+			.tooltip("Sign in to RuneLite")
 			.onClick(this::loginClick)
 			.build();
 
 		logoutButton = NavigationButton.builder()
-			.tab(false)
 			.icon(LOGOUT_IMAGE)
-			.tooltip("Log out of RuneLite")
+			.tooltip("Sign out of RuneLite")
 			.onClick(this::logoutClick)
 			.build();
 
@@ -113,10 +114,15 @@ public class AccountPlugin extends Plugin
 	private void logoutClick()
 	{
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(null,
-			"Are you sure you want to log out from RuneLite?", "Logout Confirmation",
+			"Are you sure you want to sign out of RuneLite?", "Sign Out Confirmation",
 			JOptionPane.YES_NO_OPTION))
 		{
-			executor.execute(sessionManager::logout);
+			executor.execute(() ->
+			{
+				// Flush pending config changes immediately before logout
+				configManager.sendConfig();
+				sessionManager.logout();
+			});
 		}
 	}
 

@@ -41,7 +41,7 @@ public abstract class OverlayPanel extends Overlay
 	protected final PanelComponent panelComponent = new PanelComponent();
 
 	/**
-	 * Enables/disables automatic clearing of {@link this#getPanelComponent()} children after rendering (enabled by default)
+	 * Enables/disables automatic clearing of {@link OverlayPanel#getPanelComponent()} children after rendering (enabled by default)
 	 */
 	private boolean clearChildren = true;
 
@@ -96,11 +96,17 @@ public abstract class OverlayPanel extends Overlay
 			panelComponent.setBackgroundColor(getPreferredColor());
 		}
 
-		final Dimension dimension = panelComponent.render(graphics);
-
-		if (clearChildren)
+		final Dimension dimension;
+		try
 		{
-			panelComponent.getChildren().clear();
+			dimension = panelComponent.render(graphics);
+		}
+		finally
+		{
+			if (clearChildren)
+			{
+				panelComponent.getChildren().clear();
+			}
 		}
 
 		panelComponent.setPreferredSize(oldSize);

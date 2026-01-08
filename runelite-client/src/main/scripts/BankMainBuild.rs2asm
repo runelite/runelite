@@ -1,0 +1,1140 @@
+.id                       277
+.int_arg_count            17
+.obj_arg_count            0
+   get_varbit             5102
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   LABEL8
+LABEL4:
+   iconst                 0
+   iload                  9
+   if_sethide            
+   jump                   LABEL13
+LABEL8:
+   iconst                 1
+   iload                  9
+   if_sethide            
+   iload                  11
+   invoke                 41
+LABEL13:
+   get_varbit             5364
+   iconst                 1
+   if_icmpeq              LABEL17
+   jump                   LABEL24
+LABEL17:
+   iconst                 1
+   iload                  14
+   if_sethide            
+   iconst                 1
+   iload                  15
+   if_sethide            
+   jump                   LABEL30
+LABEL24:
+   iconst                 0
+   iload                  14
+   if_sethide            
+   iconst                 0
+   iload                  15
+   if_sethide            
+LABEL30:
+   get_varbit             8352
+   iconst                 1
+   if_icmpeq              LABEL34
+   jump                   LABEL41
+LABEL34:
+   iconst                 1
+   iload                  12
+   if_sethide            
+   iconst                 1
+   iload                  13
+   if_sethide            
+   jump                   LABEL47
+LABEL41:
+   iconst                 0
+   iload                  12
+   if_sethide            
+   iconst                 0
+   iload                  13
+   if_sethide            
+LABEL47:
+   iconst                 3368
+   iload                  16
+   iconst                 1141
+   iconst                 1
+   sconst                 "iY"
+   iload                  16
+   if_setonvartransmit   
+   iconst                 441
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iload                  14
+   if_setposition        
+   iconst                 444
+   iconst                 7
+   iconst                 0
+   iconst                 0
+   iload                  15
+   if_setposition        
+   get_varbit             8352
+   iconst                 1
+   if_icmpeq              LABEL70
+   jump                   LABEL97
+LABEL70:
+   get_varbit             5364
+   iconst                 0
+   if_icmpeq              LABEL74
+   jump                   LABEL97
+LABEL74:
+   iload                  12
+   if_getx               
+   iload                  12
+   if_gety               
+   iconst                 0
+   iconst                 0
+   iload                  14
+   if_setposition        
+   iload                  13
+   if_getx               
+   iload                  13
+   if_gety               
+   iconst                 0
+   iconst                 0
+   iload                  15
+   if_setposition        
+   iconst                 37
+   iconst                 37
+   iconst                 1
+   iconst                 0
+   iload                  4
+   if_setsize            
+   jump                   LABEL133
+LABEL97:
+   get_varbit             8352
+   iconst                 0
+   if_icmpeq              LABEL101
+   jump                   LABEL112
+LABEL101:
+   get_varbit             5364
+   iconst                 1
+   if_icmpeq              LABEL105
+   jump                   LABEL112
+LABEL105:
+   iconst                 37
+   iconst                 37
+   iconst                 1
+   iconst                 0
+   iload                  4
+   if_setsize            
+   jump                   LABEL133
+LABEL112:
+   get_varbit             8352
+   iconst                 1
+   if_icmpeq              LABEL116
+   jump                   LABEL127
+LABEL116:
+   get_varbit             5364
+   iconst                 1
+   if_icmpeq              LABEL120
+   jump                   LABEL127
+LABEL120:
+   iconst                 74
+   iconst                 37
+   iconst                 1
+   iconst                 0
+   iload                  4
+   if_setsize            
+   jump                   LABEL133
+LABEL127:
+   iconst                 0
+   iconst                 37
+   iconst                 1
+   iconst                 0
+   iload                  4
+   if_setsize            
+LABEL133:
+   iconst                 1
+   iload                  10
+   if_sethide            
+   iload                  10
+   cc_deleteall          
+   iconst                 0
+   istore                 17
+   get_varbit             4170
+   iconst                 3
+   if_icmpeq              LABEL144
+   jump                   LABEL177
+LABEL144:
+   get_varbit             4171
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4172
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4173
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4174
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4175
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4176
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4177
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4178
+   iconst                 0
+   if_icmpgt              LABEL172
+   get_varbit             4179
+   iconst                 0
+   if_icmpgt              LABEL172
+   jump                   LABEL175
+LABEL172:
+   iconst                 0
+   istore                 17
+   jump                   LABEL177
+LABEL175:
+   iconst                 1
+   istore                 17
+LABEL177:
+   iconst                 0
+   istore                 18
+   iload                  17
+   iconst                 1
+   if_icmpeq              LABEL183
+   jump                   LABEL213
+LABEL183:
+   iconst                 1
+   iload                  8
+   if_sethide            
+   iconst                 2
+   istore                 18
+   iconst                 460
+   iconst                 39
+   iconst                 0
+   iconst                 1
+   iload                  2
+   if_setsize            
+   iconst                 16
+   iconst                 39
+   iconst                 0
+   iconst                 1
+   iload                  3
+   if_setsize            
+   iconst                 53
+   iconst                 39
+   iconst                 1
+   iconst                 1
+   iconst                 786447
+   if_setsize            
+   iconst                 28
+   iconst                 42
+   iconst                 2
+   iconst                 0
+   iload                  1
+   if_setposition        
+   jump                   LABEL240
+LABEL213:
+   iconst                 0
+   iload                  8
+   if_sethide            
+   iconst                 460
+   iconst                 81
+   iconst                 0
+   iconst                 1
+   iload                  2
+   if_setsize            
+   iconst                 16
+   iconst                 81
+   iconst                 0
+   iconst                 1
+   iload                  3
+   if_setsize            
+   iconst                 53
+   iconst                 81
+   iconst                 1
+   iconst                 1
+   iconst                 786447
+   if_setsize            
+   iconst                 12
+   iconst                 42
+   iconst                 2
+   iconst                 0
+   iload                  1
+   if_setposition        
+LABEL240:
+   get_varbit             4150
+   iconst                 15
+   if_icmpeq              LABEL244
+   jump                   LABEL249
+LABEL244:
+   iconst                 0
+   iconst                 786447
+   if_sethide            
+   invoke                 6080
+   jump                   LABEL252
+LABEL249:
+   iconst                 1
+   iconst                 786447
+   if_sethide            
+LABEL252:
+   iload                  3
+   iload                  2
+   invoke                 231
+   iconst                 1410
+   istore                 19
+   iconst                 1410
+   iconst                 9
+   iconst                 3
+   multiply              
+   add                   
+   istore                 20
+LABEL263:
+   iload                  19
+   iload                  20
+   if_icmple              LABEL267
+   jump                   LABEL280
+LABEL267:
+   iload                  2
+   iload                  19
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL273
+   jump                   LABEL275
+LABEL273:
+   iconst                 1
+   cc_sethide            
+LABEL275:
+   iload                  19
+   iconst                 1
+   add                   
+   istore                 19
+   jump                   LABEL263
+LABEL280:
+   iconst                 0
+   istore                 19
+   iconst                 8
+   iconst                 1
+   sub                   
+   istore                 21
+   iload                  2
+   if_getwidth           
+   iconst                 51
+   sub                   
+   iconst                 35
+   sub                   
+   istore                 22
+   iload                  22
+   iconst                 8
+   iconst                 36
+   multiply              
+   sub                   
+   iload                  21
+   div                   
+   istore                 23
+   iconst                 -1
+   istore                 24
+   iconst                 0
+   istore                 25
+   iconst                 0
+   istore                 26
+   iconst                 0
+   istore                 27
+   iconst                 0
+   istore                 28
+   iconst                 -1
+   istore                 29
+   iconst                 0
+   istore                 30
+   invoke                 514
+   istore                 31
+   get_varc_string        359      ; Skip truncating of meslayerinput by not calling bankmain_filterstring
+   lowercase                       ; instead get the var directly and lowercase it
+   ostore                 0
+   jump                   LABEL325 ; 
+   sconst                 ""
+   ostore                 0
+   iload                  31
+   iconst                 1
+   if_icmpeq              LABEL323
+   jump                   LABEL325
+LABEL323:
+   invoke                 280
+   ostore                 0
+LABEL325:
+   iconst                 0                  ;
+   sconst                 "bankBuildTab"     ;
+   runelite_callback                         ;
+   istore                 36                 ; whether to use the single tab building mode instead of the whole bank
+   iload                  36                 ;
+   iconst                 1                  ;
+   if_icmpeq              singletabbuildmode ;
+
+   get_varbit             4150
+   iconst                 0
+   if_icmple              LABEL332
+   get_varbit             4150
+   iconst                 9
+   if_icmpgt              LABEL332
+   jump                   LABEL807
+LABEL332:
+   get_varbit             4150
+   iconst                 15
+   if_icmpne              LABEL336
+   jump                   LABEL807
+LABEL336:
+   iload                  19
+   iconst                 1410
+   if_icmplt              LABEL340
+   jump                   LABEL365
+LABEL340:
+   iload                  2
+   iload                  19
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL346
+   jump                   LABEL348
+LABEL346:
+   iconst                 1
+   cc_sethide            
+LABEL348:
+   iconst                 95
+   iload                  19
+   inv_getobj            
+   iconst                 -1
+   if_icmpne              LABEL354
+   jump                   LABEL360
+LABEL354:
+   iload                  28
+   iconst                 1
+   add                   
+   iload                  19
+   istore                 29
+   istore                 28
+LABEL360:
+   iload                  19
+   iconst                 1
+   add                   
+   istore                 19
+   jump                   LABEL336
+LABEL365:
+   get_varbit             4171
+   get_varbit             4172
+   add                   
+   get_varbit             4173
+   add                   
+   get_varbit             4174
+   add                   
+   get_varbit             4175
+   add                   
+   get_varbit             4176
+   add                   
+   get_varbit             4177
+   add                   
+   get_varbit             4178
+   add                   
+   get_varbit             4179
+   add                   
+   istore                 30
+   iload                  30
+   iconst                 0
+   if_icmple              LABEL387
+   jump                   LABEL391
+LABEL387:
+   iconst                 1410
+   iconst                 1
+   sub                   
+   istore                 29
+LABEL391:
+   iload                  30
+   iload                  29
+   iconst                 1
+   add                   
+   iconst                 0
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iconst                 0
+   istore                 19
+   get_varbit             4171
+   iconst                 0
+   if_icmpgt              LABEL420
+   jump                   LABEL452
+LABEL420:
+   iconst                 1
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4171
+   add                   
+   iconst                 1
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4171
+   add                   
+   istore                 19
+LABEL452:
+   get_varbit             4172
+   iconst                 0
+   if_icmpgt              LABEL456
+   jump                   LABEL488
+LABEL456:
+   iconst                 2
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4172
+   add                   
+   iconst                 2
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4172
+   add                   
+   istore                 19
+LABEL488:
+   get_varbit             4173
+   iconst                 0
+   if_icmpgt              LABEL492
+   jump                   LABEL524
+LABEL492:
+   iconst                 3
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4173
+   add                   
+   iconst                 3
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4173
+   add                   
+   istore                 19
+LABEL524:
+   get_varbit             4174
+   iconst                 0
+   if_icmpgt              LABEL528
+   jump                   LABEL560
+LABEL528:
+   iconst                 4
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4174
+   add                   
+   iconst                 4
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4174
+   add                   
+   istore                 19
+LABEL560:
+   get_varbit             4175
+   iconst                 0
+   if_icmpgt              LABEL564
+   jump                   LABEL596
+LABEL564:
+   iconst                 5
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4175
+   add                   
+   iconst                 5
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4175
+   add                   
+   istore                 19
+LABEL596:
+   get_varbit             4176
+   iconst                 0
+   if_icmpgt              LABEL600
+   jump                   LABEL632
+LABEL600:
+   iconst                 6
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4176
+   add                   
+   iconst                 6
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4176
+   add                   
+   istore                 19
+LABEL632:
+   get_varbit             4177
+   iconst                 0
+   if_icmpgt              LABEL636
+   jump                   LABEL668
+LABEL636:
+   iconst                 7
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4177
+   add                   
+   iconst                 7
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4177
+   add                   
+   istore                 19
+LABEL668:
+   get_varbit             4178
+   iconst                 0
+   if_icmpgt              LABEL672
+   jump                   LABEL704
+LABEL672:
+   iconst                 8
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4178
+   add                   
+   iconst                 8
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4178
+   add                   
+   istore                 19
+LABEL704:
+   get_varbit             4179
+   iconst                 0
+   if_icmpgt              LABEL708
+   jump                   LABEL740
+LABEL708:
+   iconst                 9
+   iload                  2
+   iload                  27
+   invoke                 510
+   istore                 18
+   iload                  19
+   iload                  19
+   get_varbit             4179
+   add                   
+   iconst                 9
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  18
+   iload                  23
+   iload                  21
+   iload                  17
+   iload                  31
+   oload                  0
+   invoke                 509
+   istore                 25
+   istore                 27
+   iload                  26
+   iload                  25
+   add                   
+   istore                 26
+   iload                  19
+   get_varbit             4179
+   add                   
+   istore                 19
+LABEL740:
+   iload                  31
+   iconst                 1
+   if_icmpeq              LABEL744
+   jump                   LABEL783
+LABEL744:
+   oload                  0
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL749
+   jump                   LABEL768
+LABEL749:
+   sconst                 "Showing items: "
+   sconst                 "<col=ff0000>"
+   oload                  0
+   sconst                 "</col>"
+   join_string            4
+   iload                  5
+   if_settext            
+   get_varc_int           5
+   iconst                 11
+   if_icmpeq              LABEL760
+   jump                   LABEL767
+LABEL760:
+   sconst                 "Show items whose names contain the following text: ("
+   iload                  26
+   tostring              
+   sconst                 " found)"
+   join_string            3
+   iload                  26                             ; load number of matches
+   sconst                 "setSearchBankInputTextFound"  ; load event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop number of matches
+   iconst                 10616874
+   if_settext            
+LABEL767:
+   jump                   LABEL782
+LABEL768:
+   sconst                 "Showing items: "
+   sconst                 "<col=ff0000>"
+   sconst                 "*"
+   sconst                 "</col>"
+   join_string            4
+   iload                  5
+   if_settext            
+   get_varc_int           5
+   iconst                 11
+   if_icmpeq              LABEL779
+   jump                   LABEL782
+LABEL779:
+   sconst                 "Show items whose names contain the following text:"
+   sconst                 "setSearchBankInputText"  ; load event name
+   runelite_callback     ; invoke callback
+   iconst                 10616874
+   if_settext            
+LABEL782:
+   jump                   LABEL786
+LABEL783:
+   sconst                 "The Bank of Gielinor"
+   iload                  5
+   if_settext            
+LABEL786:
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  27
+   iload                  28
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   invoke                 505 ; [proc,bankmain_finishbuilding]
+   return                
+singletabbuildmode:
+  ; single tab mode loops items from 0-1220, which usually works due to only viewing a single tab range,
+  ; but since items that are not in a tab are stored at the *end* of the bank it causes them to appear
+  ; out of order. So iterate from the end of the tab ranges and loop back around
+   get_varbit             4171  ;
+   get_varbit             4172  ;
+   add                          ;
+   get_varbit             4173  ;
+   add                          ;
+   get_varbit             4174  ;
+   add                          ;
+   get_varbit             4175  ;
+   add                          ;
+   get_varbit             4176  ;
+   add                          ;
+   get_varbit             4177  ;
+   add                          ;
+   get_varbit             4178  ;
+   add                          ;
+   get_varbit             4179  ;
+   add                          ;
+   istore                 30    ; store start to the first item in the "All items" tab
+LABEL807:
+  ; if (~bankmain_searching = 1) {
+   iload                  31
+   iconst                 1
+   if_icmpeq              LABEL811
+   jump                   LABEL815
+LABEL811:
+   iconst                 1
+   iconst                 1
+   iconst                 1
+   invoke                 299
+LABEL815:
+  ; after ~meslayer close
+   iconst                 -1
+   istore                 32
+   iconst                 -1
+   istore                 33
+   get_varbit             4150
+   invoke                 513
+   istore                 33
+   istore                 32
+   iconst                 0
+   istore                 34
+   iconst                 0
+   istore                 35
+LABEL827:
+   iload                  19
+   iconst                 1410
+   if_icmplt              LABEL831
+   jump                   LABEL907
+LABEL831:
+   ; item index = (loop index + offset) % bank size
+   iload                  19   ; loop index
+   iload                  30   ; offset
+   add                         ;
+   iconst                 1410 ; bank size
+   mod                         ;
+   istore                 29   ; store index
+   iload                  2
+   jump                   LOAD_ITEM_INDEX
+   iload                  19
+LOAD_ITEM_INDEX:
+   iload                  29   ; use item index instead of loop index
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL837
+   jump                   LABEL902
+LABEL837:
+   iconst                 95
+   jump                   LOAD_ITEM_INDEX2
+   iload                  19
+LOAD_ITEM_INDEX2:
+   iload                  29   ; use item index instead of loop index
+   inv_getobj            
+   istore                 24
+   iload                  24
+   iconst                 -1
+   if_icmpne              LABEL845
+   jump                   LABEL849
+LABEL845:
+   iload                  28
+   iconst                 1
+   add                   
+   istore                 28
+LABEL849:
+   iload                  36         ; overriding single tab building mode?
+   iconst                 1          ;
+   if_icmpeq              filtertest ;
+   iload                  19
+   iload                  32
+   if_icmpge              LABEL853
+   jump                   LABEL900
+LABEL853:
+   iload                  19
+   iload                  33
+   if_icmplt              LABEL857
+   jump                   LABEL900
+filtertest:
+   iload                  24        ; obj
+   iload                  31        ; bankmain_searching
+   oload                  0         ; bankmain_filterstring
+   invoke                 279       ; ~bankmain_filteritem
+   iconst                 1         ;
+   if_icmpne              LABEL900  ;
+LABEL857:
+   iconst                 0
+   cc_sethide            
+   iload                  24
+   iconst                 95
+   jump                   LOAD_ITEM_INDEX3
+   iload                  19
+LOAD_ITEM_INDEX3:
+   iload                  29   ; use item index instead of loop index
+   inv_getnum            
+   iload                  2
+   iload                  3
+   iload                  9
+   iload                  10
+   iload                  11
+   invoke                 278
+   iconst                 51
+   iload                  34
+   iconst                 36
+   iload                  23
+   add                   
+   multiply              
+   add                   
+   iload                  27
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iload                  34
+   iload                  21
+   if_icmplt              LABEL884
+   jump                   LABEL889
+LABEL884:
+   iload                  34
+   iconst                 1
+   add                   
+   istore                 34
+   jump                   LABEL899
+LABEL889:
+   iconst                 0
+   iload                  35
+   iconst                 1
+   add                   
+   istore                 35
+   istore                 34
+   iload                  35
+   iconst                 36
+   multiply              
+   istore                 27
+LABEL899:
+   jump                   LABEL902
+LABEL900:
+   iconst                 1
+   cc_sethide            
+LABEL902:
+   iload                  19
+   iconst                 1
+   add                   
+   istore                 19
+   jump                   LABEL827
+LABEL907:
+   iload                  27
+   iconst                 32
+   add                   
+   istore                 27
+   iconst                 1
+   iconst                 786447
+   if_sethide            
+   get_varbit             4150
+   iconst                 15
+   if_icmpeq              LABEL918
+   jump                   LABEL925
+LABEL918:
+   sconst                 "Potion store"
+   iload                  5
+   if_settext            
+   iconst                 0
+   iconst                 786447
+   if_sethide            
+   jump                   LABEL945
+LABEL925:
+   iload                  36                     ; overriding single tab building mode?
+   iconst                 1                      ;
+   if_icmpne              tabtitle               ; set normal "Tab" title
+   sconst                 "The Bank of Gielinor" ; bank title
+   iload                  5                      ; bank title component
+   if_settext                                    ;
+   jump                   FinishBuilding         ;
+tabtitle:                                        ;
+   get_varbit             4170
+   iconst                 2
+   if_icmpeq              LABEL929
+   jump                   LABEL939
+LABEL929:
+   sconst                 "Tab "
+   iconst                 105
+   iconst                 115
+   iconst                 207
+   get_varbit             4150
+   enum                  
+   join_string            2
+   iload                  5
+   if_settext            
+   jump                   LABEL945
+LABEL939:
+   sconst                 "Tab "
+   get_varbit             4150
+   tostring              
+   join_string            2
+   iload                  5
+   if_settext            
+FinishBuilding:
+LABEL945:
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  27
+   iload                  28
+   iload                  12
+   iload                  13
+   iload                  14
+   iload                  15
+   iload                  16
+   invoke                 505
+   return                

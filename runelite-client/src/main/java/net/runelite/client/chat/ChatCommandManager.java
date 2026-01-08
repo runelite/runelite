@@ -31,8 +31,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -41,20 +39,18 @@ import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 
 @Singleton
-public class ChatCommandManager implements ChatboxInputListener
+public class ChatCommandManager
 {
 	private final Map<String, ChatCommand> commands = new ConcurrentHashMap<>();
 
-	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
-	private ChatCommandManager(EventBus eventBus, CommandManager commandManager, Client client, ScheduledExecutorService scheduledExecutorService)
+	private ChatCommandManager(EventBus eventBus, ChatInputManager chatInputManager, ScheduledExecutorService scheduledExecutorService)
 	{
-		this.client = client;
+		// unused chatInputManager parameter must exist to cause it to be instantiated by guice
 		this.scheduledExecutorService = scheduledExecutorService;
 		eventBus.register(this);
-		commandManager.register(this);
 	}
 
 	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute)
@@ -85,11 +81,6 @@ public class ChatCommandManager implements ChatboxInputListener
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
 		switch (chatMessage.getType())
 		{
 			case PUBLICCHAT:
@@ -98,6 +89,9 @@ public class ChatCommandManager implements ChatboxInputListener
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case PRIVATECHATOUT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
 				break;
 			default:
 				return;
@@ -106,11 +100,6 @@ public class ChatCommandManager implements ChatboxInputListener
 		String message = chatMessage.getMessage();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
@@ -127,60 +116,52 @@ public class ChatCommandManager implements ChatboxInputListener
 		}
 	}
 
-	@Override
-	public boolean onChatboxInput(ChatboxInput chatboxInput)
+	@Subscribe
+	public void onChatboxInput(ChatboxInput chatboxInput)
 	{
-		String message = chatboxInput.getValue();
-		if (message.startsWith("/"))
-		{
-			message = message.substring(1); // clan chat input
-		}
+		final String message = chatboxInput.getValue();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return false;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
-			return false;
+			return;
 		}
 
 		BiPredicate<ChatInput, String> input = chatCommand.getInput();
 		if (input == null)
 		{
-			return false;
+			return;
 		}
 
-		return input.test(chatboxInput, message);
+		if (input.test(chatboxInput, message))
+		{
+			chatboxInput.consume();
+		}
 	}
 
-	@Override
-	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
+	@Subscribe
+	public void onPrivateMessageInput(PrivateMessageInput privateMessageInput)
 	{
 		final String message = privateMessageInput.getMessage();
 
 		String command = extractCommand(message);
-		if (command == null)
-		{
-			return false;
-		}
-
 		ChatCommand chatCommand = commands.get(command.toLowerCase());
 		if (chatCommand == null)
 		{
-			return false;
+			return;
 		}
 
 		BiPredicate<ChatInput, String> input = chatCommand.getInput();
 		if (input == null)
 		{
-			return false;
+			return;
 		}
 
-		return input.test(privateMessageInput, message);
+		if (input.test(privateMessageInput, message))
+		{
+			privateMessageInput.consume();
+		}
 	}
 
 	private static String extractCommand(String message)

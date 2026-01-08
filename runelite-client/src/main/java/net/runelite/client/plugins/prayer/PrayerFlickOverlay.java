@@ -24,14 +24,13 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -63,7 +62,11 @@ class PrayerFlickOverlay extends Overlay
 			return null;
 		}
 
-		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
+		Widget xpOrb = client.getWidget(InterfaceID.Orbs.PRAYERBUTTON);
+		if (xpOrb == null || xpOrb.isHidden())
+		{
+			xpOrb = client.getWidget(InterfaceID.OrbsNomap.PRAYERBUTTON);
+		}
 		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;
@@ -89,9 +92,8 @@ class PrayerFlickOverlay extends Overlay
 
 		int yOffset = (orbInnerHeight / 2) - (indicatorHeight / 2);
 
-		graphics.setColor(Color.cyan);
+		graphics.setColor(config.prayerFlickColor());
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
-
-		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
+		return null;
 	}
 }

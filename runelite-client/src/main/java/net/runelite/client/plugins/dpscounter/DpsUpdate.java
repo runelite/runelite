@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,11 +27,12 @@ package net.runelite.client.plugins.dpscounter;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class DpsUpdate extends PartyMemberMessage
 {
 	private int hit;
+	private boolean isBoss;
 }

@@ -33,32 +33,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JLabel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 import net.runelite.client.plugins.timetracking.TimeablePanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.util.AsyncBufferedImage;
 
 public class FarmingTabPanel extends TabContentPanel
 {
 	private final FarmingTracker farmingTracker;
+	private final CompostTracker compostTracker;
+	private final PaymentTracker paymentTracker;
 	private final ItemManager itemManager;
+	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final List<TimeablePanel<FarmingPatch>> patchPanels;
+	private final FarmingContractManager farmingContractManager;
 
 	FarmingTabPanel(
 		FarmingTracker farmingTracker,
+		CompostTracker compostTracker,
+		PaymentTracker paymentTracker,
 		ItemManager itemManager,
+		ConfigManager configManager,
 		TimeTrackingConfig config,
-		Set<FarmingPatch> patches
+		Set<FarmingPatch> patches,
+		FarmingContractManager farmingContractManager
 	)
 	{
 		this.farmingTracker = farmingTracker;
+		this.compostTracker = compostTracker;
+		this.paymentTracker = paymentTracker;
 		this.itemManager = itemManager;
+		this.configManager = configManager;
 		this.config = config;
 		this.patchPanels = new ArrayList<>();
+		this.farmingContractManager = farmingContractManager;
 
 		setLayout(new GridBagLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -99,6 +115,18 @@ public class FarmingTabPanel extends TabContentPanel
 				lastImpl = patch.getImplementation();
 			}
 
+			// Set toggle state of notification menu on icon click;
+			JToggleButton toggleNotify = p.getNotifyButton();
+			String configKey = patch.notifyConfigKey();
+
+			toggleNotify.addActionListener(e ->
+			{
+				if (configManager.getRSProfileKey() != null)
+				{
+					configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, toggleNotify.isSelected());
+				}
+			});
+
 			patchPanels.add(p);
 			add(p, c);
 			c.gridy++;
@@ -110,7 +138,6 @@ public class FarmingTabPanel extends TabContentPanel
 				p.setBorder(null);
 			}
 		}
-
 	}
 
 	@Override
@@ -129,10 +156,24 @@ public class FarmingTabPanel extends TabContentPanel
 			FarmingPatch patch = panel.getTimeable();
 			PatchPrediction prediction = farmingTracker.predictPatch(patch);
 
+			final boolean protected_ = paymentTracker.getProtectedState(patch);
+			final CompostState compostState = compostTracker.getCompostState(patch);
+			final AsyncBufferedImage img = getPatchImage(compostState, protected_);
+			final String tooltip = getPatchTooltip(compostState, protected_);
+
+			if (img != null)
+			{
+				img.onLoaded(() -> panel.setOverlayIconImage(img));
+			}
+			else
+			{
+				panel.setOverlayIconImage(null);
+			}
+
 			if (prediction == null)
 			{
 				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(panel.getIcon());
-				panel.getIcon().setToolTipText("Unknown state");
+				panel.getIcon().setToolTipText("Unknown state" + tooltip);
 				panel.getProgress().setMaximumValue(0);
 				panel.getProgress().setValue(0);
 				panel.getProgress().setVisible(false);
@@ -144,12 +185,12 @@ public class FarmingTabPanel extends TabContentPanel
 				if (prediction.getProduce().getItemID() < 0)
 				{
 					panel.getIcon().setIcon(null);
-					panel.getIcon().setToolTipText("Unknown state");
+					panel.getIcon().setToolTipText("Unknown state" + tooltip);
 				}
 				else
 				{
 					itemManager.getImage(prediction.getProduce().getItemID()).addTo(panel.getIcon());
-					panel.getIcon().setToolTipText(prediction.getProduce().getName());
+					panel.getIcon().setToolTipText(prediction.getProduce().getName() + tooltip);
 				}
 
 				switch (prediction.getCropState())
@@ -164,7 +205,7 @@ public class FarmingTabPanel extends TabContentPanel
 						}
 						else
 						{
-							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative()));
+							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.timeFormatMode()));
 						}
 						break;
 					case DISEASED:
@@ -172,6 +213,12 @@ public class FarmingTabPanel extends TabContentPanel
 						break;
 					case DEAD:
 						panel.getEstimate().setText("Dead");
+						break;
+					case EMPTY:
+						panel.getEstimate().setText("Empty");
+						break;
+					case FILLING:
+						panel.getEstimate().setText("Filling");
 						break;
 				}
 
@@ -188,6 +235,49 @@ public class FarmingTabPanel extends TabContentPanel
 					panel.getProgress().setVisible(false);
 				}
 			}
+
+			JLabel farmingContractIcon = panel.getFarmingContractIcon();
+			if (farmingContractManager.shouldHighlightFarmingTabPanel(patch))
+			{
+				itemManager.getImage(ItemID.SEEDBOX).addTo(farmingContractIcon);
+				farmingContractIcon.setToolTipText(farmingContractManager.getContract().getName());
+			}
+			else
+			{
+				farmingContractIcon.setIcon(null);
+				farmingContractIcon.setToolTipText("");
+			}
+
+			String configKey = patch.notifyConfigKey();
+			JToggleButton toggleNotify = panel.getNotifyButton();
+			boolean notifyEnabled = Boolean.TRUE
+				.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, configKey, Boolean.class));
+
+			toggleNotify.setSelected(notifyEnabled);
 		}
+	}
+
+	private AsyncBufferedImage getPatchImage(CompostState compostState, boolean protected_)
+	{
+		return protected_ ? itemManager.getImage(ItemID.BASKET_APPLE_5) :
+			(compostState != null ? itemManager.getImage(compostState.getItemId()) : null);
+	}
+
+	private String getPatchTooltip(CompostState compostState, boolean protected_)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		if (protected_)
+		{
+			stringBuilder.append(" protected");
+			if (compostState != null)
+			{
+				stringBuilder.append(" and ").append(compostState.name().toLowerCase()).append("ed");
+			}
+		}
+		else if (compostState != null)
+		{
+			stringBuilder.append(" with ").append(compostState.name().toLowerCase());
+		}
+		return stringBuilder.toString();
 	}
 }

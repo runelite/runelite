@@ -24,45 +24,61 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.inject.Provides;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
-import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
-import static net.runelite.api.ObjectID.EMPTY_WALL;
-import static net.runelite.api.ObjectID.ORE_VEIN_26661;
-import static net.runelite.api.ObjectID.ORE_VEIN_26662;
-import static net.runelite.api.ObjectID.ORE_VEIN_26663;
-import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-import net.runelite.api.WallObject;
+import net.runelite.api.HintArrowType;
+import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.gameval.AnimationID;
+import net.runelite.api.gameval.ObjectID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.RSTimeUnit;
 
 @PluginDescriptor(
 	name = "Mining",
-	description = "Show ore respawn timers",
+	description = "Show mining statistics and ore respawn timers",
 	tags = {"overlay", "skilling", "timers"},
 	enabledByDefault = false
 )
+@PluginDependency(XpTrackerPlugin.class)
+@Slf4j
 public class MiningPlugin extends Plugin
 {
-	private static final int ROCK_DISTANCE = 14;
+	private static final Pattern MINING_PATTERN = Pattern.compile(
+		"You swing your pick at the " +
+			"(?:rock|star)" +
+			"(?:\\.|!)");
+
+	private static final int DAEYALT_ESSENCE_MINE_REGION = 14744;
 
 	@Inject
 	private Client client;
@@ -73,124 +89,260 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningOverlay overlay;
 
+	@Inject
+	private MiningRocksOverlay rocksOverlay;
+
+	@Inject
+	private MiningConfig config;
+
+	@Getter
+	@Nullable
+	@Setter(AccessLevel.PACKAGE)
+	private MiningSession session;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
-	private boolean recentlyLoggedIn;
+
+	@Getter
+	private boolean isMining;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastAnimationChange;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int lastActionAnimationId;
+
+	@Provides
+	MiningConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MiningConfig.class);
+	}
 
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(rocksOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		session = null;
+		isMining = false;
 		overlayManager.remove(overlay);
+		overlayManager.remove(rocksOverlay);
+		respawns.forEach(respawn -> clearHintArrowAt(respawn.getWorldPoint()));
 		respawns.clear();
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		switch (event.getGameState())
+		if (event.getGameState() == GameState.HOPPING)
 		{
-			case HOPPING:
-				respawns.clear();
-				break;
-			case LOGGED_IN:
-				// After login rocks that are depleted will be changed,
-				// so wait for the next game tick before watching for
-				// rocks to deplete
-				recentlyLoggedIn = true;
-				break;
+			respawns.clear();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(final AnimationChanged event)
+	{
+		Player local = client.getLocalPlayer();
+
+		if (event.getActor() != local)
+		{
+			return;
+		}
+		lastAnimationChange = Instant.now();
+
+		int animId = local.getAnimation();
+		if (animId != -1)
+		{
+			lastActionAnimationId = animId;
+		}
+
+		if (animId == AnimationID.ARCEUUS_CHISEL_ESSENCE)
+		{
+			// Can't use chat messages to start mining session on Dense Essence as they don't have a chat message when mined,
+			// so we track the session here instead.
+			if (session == null)
+			{
+				session = new MiningSession();
+			}
+
+			session.setLastMined();
+		}
+		else
+		{
+			isMining |= MiningAnimation.MINING_ANIMATIONS.contains(animId);
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		respawns.removeIf(RockRespawn::isExpired);
-		recentlyLoggedIn = false;
+		clearExpiredRespawns();
+
+		if (session == null || session.getLastMined() == null)
+		{
+			return;
+		}
+
+		if (isMining && MiningAnimation.MINING_ANIMATIONS.contains(client.getLocalPlayer().getAnimation()))
+		{
+			session.setLastMined();
+			return;
+		}
+
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceMined = Duration.between(session.getLastMined(), Instant.now());
+
+		if (sinceMined.compareTo(statTimeout) >= 0)
+		{
+			resetSession();
+		}
+	}
+
+	/**
+	 * Clears expired respawns and removes the hint arrow from expired Daeyalt essence rocks.
+	 */
+	private void clearExpiredRespawns()
+	{
+		respawns.removeIf(rockRespawn ->
+		{
+			final boolean expired = rockRespawn.isExpired();
+
+			if (expired && rockRespawn.getRock() == Rock.DAEYALT_ESSENCE)
+			{
+				clearHintArrowAt(rockRespawn.getWorldPoint());
+			}
+
+			return expired;
+		});
+	}
+
+	public void resetSession()
+	{
+		session = null;
+		isMining = false;
 	}
 
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || recentlyLoggedIn)
-		{
-			return;
-		}
-
 		final GameObject object = event.getGameObject();
-		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-		Rock rock = Rock.getRock(object.getId());
-		if (rock != null)
+		if (object.getId() == ObjectID.DAEYALT_STONE_TOP_ACTIVE)
 		{
-			RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-			respawns.add(rockRespawn);
+			final WorldPoint point = object.getWorldLocation();
+			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+			clearHintArrowAt(point);
+		}
+	}
+
+	private void clearHintArrowAt(WorldPoint worldPoint)
+	{
+		if (client.getHintArrowType() == HintArrowType.COORDINATE && client.getHintArrowPoint().equals(worldPoint))
+		{
+			client.clearHintArrow();
 		}
 	}
 
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
 		GameObject object = event.getGameObject();
 
-		// If the Lovakite ore respawns before the timer is up, remove it
-		if (Rock.getRock(object.getId()) == Rock.LOVAKITE)
+		// Inverse timer to track daeyalt essence active duration
+		if (object.getId() == ObjectID.DAEYALT_STONE_TOP_ACTIVE && client.getLocalPlayer().getWorldLocation().getRegionID() == DAEYALT_ESSENCE_MINE_REGION)
 		{
-			final WorldPoint point = object.getWorldLocation();
-			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+			RockRespawn rockRespawn = new RockRespawn(Rock.DAEYALT_ESSENCE, object.getWorldLocation(), Instant.now(),
+				(int) Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, RSTimeUnit.GAME_TICKS).toMillis(), Rock.DAEYALT_ESSENCE.getZOffset());
+			respawns.add(rockRespawn);
+			client.setHintArrow(object.getWorldLocation());
 		}
 	}
 
 	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	public void onChatMessage(ChatMessage event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			return;
-		}
+			if (MINING_PATTERN.matcher(event.getMessage()).matches())
+			{
+				if (session == null)
+				{
+					session = new MiningSession();
+				}
 
-		final WallObject object = event.getWallObject();
-		final int region = client.getLocalPlayer().getWorldLocation().getRegionID();
-
-		switch (object.getId())
-		{
-			case EMPTY_WALL:
-			{
-				Rock rock = Rock.AMETHYST;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-				respawns.add(rockRespawn);
-				break;
-			}
-			case DEPLETED_VEIN_26665: // Depleted motherlode vein
-			case DEPLETED_VEIN_26666: // Depleted motherlode vein
-			case DEPLETED_VEIN_26667: // Depleted motherlode vein
-			case DEPLETED_VEIN_26668: // Depleted motherlode vein
-			{
-				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-				respawns.add(rockRespawn);
-				break;
-			}
-			case ORE_VEIN_26661: // Motherlode vein
-			case ORE_VEIN_26662: // Motherlode vein
-			case ORE_VEIN_26663: // Motherlode vein
-			case ORE_VEIN_26664: // Motherlode vein
-			{
-				// If the vein respawns before the timer is up, remove it
-				final WorldPoint point = object.getWorldLocation();
-				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
-				break;
+				session.setLastMined();
 			}
 		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC)
+		{
+			var args = scriptPreFired.getScriptEvent().getArguments();
+			int locCoord = (int) args[1];
+			int locId = (int) args[2];
+			int ticks = (int) args[5];
+
+			switch (locId)
+			{
+				case ObjectID.MOTHERLODE_DEPLETED_SINGLE: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_LEFT: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_MIDDLE: // Depleted motherlode vein
+				case ObjectID.MOTHERLODE_DEPLETED_RIGHT: // Depleted motherlode vein
+				{
+					addRockRespawn(Rock.MLM_ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
+					break;
+				}
+				case ObjectID.DWARF_GOLD_DEPLETED: // Gold vein
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY02: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY03: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY04: // Calcified rock
+				{
+					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
+					break;
+				}
+				case ObjectID.ROCKS1:
+				case ObjectID.ROCKS2:
+				case ObjectID.ROCKS3:
+				case ObjectID.LEADROCK1_EMPTY:
+				case ObjectID.NICKELROCK1_EMPTY:
+				case ObjectID.MY2ARM_SALTROCK_EMPTY: // Basalt etc
+				case ObjectID.PRIF_MINE_ROCKS1_EMPTY: // Trahaearn mine
+				case ObjectID.FOSSIL_ASHPILE_EMPTY:
+				{
+					addRockRespawn(Rock.ROCK, WorldPoint.fromCoord(locCoord), ticks);
+					break;
+				}
+				// Amethyst
+				case ObjectID.AMETHYSTROCK_EMPTY:
+				{
+					addRockRespawn(Rock.AMETHYST, WorldPoint.fromCoord(locCoord), ticks);
+					break;
+				}
+				// Barronite
+				case ObjectID.CAMDOZAALROCK1_EMPTY:
+				case ObjectID.CAMDOZAALROCK2_EMPTY:
+				{
+					addRockRespawn(Rock.BARRONITE, WorldPoint.fromCoord(locCoord), ticks);
+					break;
+				}
+			}
+		}
+	}
+
+	private void addRockRespawn(Rock rock, WorldPoint point, int ticks)
+	{
+		RockRespawn rockRespawn = new RockRespawn(rock, point, Instant.now(), ticks * Constants.GAME_TICK_LENGTH, rock.getZOffset());
+		respawns.add(rockRespawn);
+		log.debug("Adding respawn for rock: {} coord: {} ticks: {}", rock, point, ticks);
 	}
 }

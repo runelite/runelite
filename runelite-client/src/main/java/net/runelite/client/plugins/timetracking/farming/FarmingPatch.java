@@ -26,19 +26,53 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.runelite.api.Varbits;
+import lombok.ToString;
+import net.runelite.api.annotations.Varbit;
+import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
-@RequiredArgsConstructor(
-	access = AccessLevel.PACKAGE
-)
 @Getter
+@ToString(onlyExplicitlyIncluded = true)
 class FarmingPatch
 {
 	@Setter(AccessLevel.PACKAGE)
+	@ToString.Include
 	private FarmingRegion region;
+	@ToString.Include
 	private final String name;
-	private final Varbits varbit;
+	@Getter(onMethod_ = {@Varbit})
+	private final int varbit;
+	@ToString.Include
 	private final PatchImplementation implementation;
+	private final int farmer;
+	private final int patchNumber;
+
+	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation)
+	{
+		this(name, varbit, implementation, -1);
+	}
+
+	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer)
+	{
+		this(name, varbit, implementation, farmer, -1);
+	}
+
+	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer, int patchNumber)
+	{
+		this.name = name;
+		this.varbit = varbit;
+		this.implementation = implementation;
+		this.farmer = farmer;
+		this.patchNumber = patchNumber;
+	}
+
+	String configKey()
+	{
+		return region.getRegionID() + "." + varbit;
+	}
+
+	String notifyConfigKey()
+	{
+		return TimeTrackingConfig.NOTIFY + "." + region.getRegionID() + "." + varbit;
+	}
 }

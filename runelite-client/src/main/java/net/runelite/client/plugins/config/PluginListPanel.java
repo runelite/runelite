@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -31,13 +32,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -56,6 +55,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -74,10 +74,19 @@ class PluginListPanel extends PluginPanel
 {
 	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
+	private static final ImmutableList<String> CATEGORY_TAGS = ImmutableList.of(
+		"Combat",
+		"Chat",
+		"Item",
+		"Minigame",
+		"Notification",
+		"Plugin Hub",
+		"Skilling",
+		"XP"
+	);
 
 	private final ConfigManager configManager;
 	private final PluginManager pluginManager;
-	private final ScheduledExecutorService executorService;
 	private final Provider<ConfigPanel> configPanelProvider;
 	private final List<PluginConfigurationDescriptor> fakePlugins = new ArrayList<>();
 
@@ -97,17 +106,14 @@ class PluginListPanel extends PluginPanel
 		ConfigManager configManager,
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
-		ScheduledExecutorService executorService,
 		EventBus eventBus,
-		Provider<ConfigPanel> configPanelProvider,
-		Provider<PluginHubPanel> pluginHubPanelProvider)
+		Provider<ConfigPanel> configPanelProvider)
 	{
 		super(false);
 
 		this.configManager = configManager;
 		this.pluginManager = pluginManager;
 		this.externalPluginManager = externalPluginManager;
-		this.executorService = executorService;
 		this.configPanelProvider = configPanelProvider;
 
 		muxer = new MultiplexingPluginPanel(this)
@@ -150,6 +156,7 @@ class PluginListPanel extends PluginPanel
 				onSearchBarChanged();
 			}
 		});
+		CATEGORY_TAGS.forEach(searchBar.getSuggestionListModel()::addElement);
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -165,15 +172,9 @@ class PluginListPanel extends PluginPanel
 		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		JButton externalPluginButton = new JButton("Plugin Hub");
-		externalPluginButton.setBorder(new EmptyBorder(5, 5, 5, 5));
-		externalPluginButton.setLayout(new BorderLayout(0, BORDER_OFFSET));
-		externalPluginButton.addActionListener(l -> muxer.pushState(pluginHubPanelProvider.get()));
-
 		JPanel northPanel = new FixedWidthPanel();
 		northPanel.setLayout(new BorderLayout());
 		northPanel.add(mainPanel, BorderLayout.NORTH);
-		northPanel.add(externalPluginButton, BorderLayout.SOUTH);
 
 		scrollPane = new JScrollPane(northPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -194,6 +195,9 @@ class PluginListPanel extends PluginPanel
 					PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 					Config config = pluginManager.getPluginConfigProxy(plugin);
 					ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+					List<String> conflicts = pluginManager.conflictsForPlugin(plugin).stream()
+						.map(Plugin::getName)
+						.collect(Collectors.toList());
 
 					return new PluginConfigurationDescriptor(
 						descriptor.name(),
@@ -201,16 +205,19 @@ class PluginListPanel extends PluginPanel
 						descriptor.tags(),
 						plugin,
 						config,
-						configDescriptor);
+						configDescriptor,
+						conflicts);
 				})
-		).map(desc ->
-		{
-			PluginListItem listItem = new PluginListItem(this, desc);
-			listItem.setPinned(pinnedPlugins.contains(desc.getName()));
-			return listItem;
-		}).collect(Collectors.toList());
+		)
+			.map(desc ->
+			{
+				PluginListItem listItem = new PluginListItem(this, desc);
+				listItem.setPinned(pinnedPlugins.contains(desc.getName()));
+				return listItem;
+			})
+			.sorted(Comparator.comparing(p -> p.getPluginConfig().getName()))
+			.collect(Collectors.toList());
 
-		pluginList.sort(Comparator.comparing(p -> p.getPluginConfig().getName()));
 		mainPanel.removeAll();
 		refresh();
 	}
@@ -228,7 +235,7 @@ class PluginListPanel extends PluginPanel
 			final Plugin plugin = listItem.getPluginConfig().getPlugin();
 			if (plugin != null)
 			{
-				listItem.setPluginEnabled(pluginManager.isPluginEnabled(plugin));
+				listItem.setPluginEnabled(pluginManager.isPluginActive(plugin));
 			}
 		});
 
@@ -251,31 +258,9 @@ class PluginListPanel extends PluginPanel
 	private void onSearchBarChanged()
 	{
 		final String text = searchBar.getText();
-
 		pluginList.forEach(mainPanel::remove);
-
-		showMatchingPlugins(true, text);
-		showMatchingPlugins(false, text);
-
+		PluginSearch.search(pluginList, text).forEach(mainPanel::add);
 		revalidate();
-	}
-
-	private void showMatchingPlugins(boolean pinned, String text)
-	{
-		if (text.isEmpty())
-		{
-			pluginList.stream().filter(item -> pinned == item.isPinned()).forEach(mainPanel::add);
-			return;
-		}
-
-		final String[] searchTerms = text.toLowerCase().split(" ");
-		pluginList.forEach(listItem ->
-		{
-			if (pinned == listItem.isPinned() && Text.matchesSearchTerms(searchTerms, listItem.getKeywords()))
-			{
-				mainPanel.add(listItem);
-			}
-		});
 	}
 
 	void openConfigurationPanel(String configGroup)
@@ -306,6 +291,7 @@ class PluginListPanel extends PluginPanel
 	{
 		ConfigPanel panel = configPanelProvider.get();
 		panel.init(plugin);
+		muxer.pushState(this);
 		muxer.pushState(panel);
 	}
 
@@ -384,6 +370,12 @@ class PluginListPanel extends PluginPanel
 
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
+	{
+		SwingUtilities.invokeLater(this::rebuildPluginList);
+	}
+
+	@Subscribe
+	private void onProfileChanged(ProfileChanged ev)
 	{
 		SwingUtilities.invokeLater(this::rebuildPluginList);
 	}

@@ -41,7 +41,7 @@ class AgilitySession
 	private Instant lastLapCompleted;
 	private int totalLaps;
 	private int lapsTillGoal;
-	private final EvictingQueue<Duration> lastLapTimes = EvictingQueue.create(10);
+	private final EvictingQueue<Duration> lastLapTimes = EvictingQueue.create(30);
 	private int lapsPerHour;
 
 	AgilitySession(Courses course)
@@ -58,7 +58,7 @@ class AgilitySession
 		final int currentExp = client.getSkillExperience(Skill.AGILITY);
 		final int goalXp = xpTrackerService.getEndGoalXp(Skill.AGILITY);
 		final int goalRemainingXp = goalXp - currentExp;
-		double courseTotalExp = course.getTotalXp();
+		double courseTotalExp = course.getTotalXpProvider().apply(client);
 		if (course == Courses.PYRAMID)
 		{
 			// agility pyramid has a bonus exp drop on the last obstacle that scales with player level and caps at 1000
@@ -93,13 +93,5 @@ class AgilitySession
 		}
 
 		lastLapCompleted = now;
-	}
-
-	void resetLapCount()
-	{
-		totalLaps = 0;
-		lapsTillGoal = 0;
-		lastLapTimes.clear();
-		lapsPerHour = 0;
 	}
 }

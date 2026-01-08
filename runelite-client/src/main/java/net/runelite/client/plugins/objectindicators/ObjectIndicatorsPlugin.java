@@ -25,12 +25,12 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,17 +38,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
+import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ObjectComposition;
@@ -56,27 +61,34 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldEntity;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WorldViewLoaded;
+import net.runelite.api.events.WorldViewUnloaded;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_CLICKBOX;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_HULL;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_OUTLINE;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_TILE;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Object Markers",
@@ -85,17 +97,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	enabledByDefault = false
 )
 @Slf4j
-public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
+public class ObjectIndicatorsPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "objectindicators";
 	private static final String MARK = "Mark object";
 	private static final String UNMARK = "Unmark object";
 
-	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileObject> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
-	private boolean hotKeyPressed;
 
 	@Inject
 	private Client client;
@@ -110,10 +120,16 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	private ObjectIndicatorsOverlay overlay;
 
 	@Inject
-	private KeyManager keyManager;
+	private ObjectIndicatorsConfig config;
 
 	@Inject
-	private ObjectIndicatorsConfig config;
+	private Gson gson;
+
+	@Inject
+	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -125,66 +141,27 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		keyManager.registerKeyListener(this);
+		clientThread.invokeLater(() -> loadPoints());
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		keyManager.unregisterKeyListener(this);
 		points.clear();
 		objects.clear();
-		hotKeyPressed = false;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			hotKeyPressed = true;
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			hotKeyPressed = false;
-		}
 	}
 
 	@Subscribe
-	public void onFocusChanged(final FocusChanged event)
+	public void onProfileChanged(ProfileChanged e)
 	{
-		if (!event.isFocused())
-		{
-			hotKeyPressed = false;
-		}
+		clientThread.invokeLater(() -> loadPoints());
 	}
 
 	@Subscribe
 	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		checkObjectPoints(event.getWallObject());
-	}
-
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
-
-		objects.removeIf(o -> o.getTileObject() == previous);
-		checkObjectPoints(wallObject);
 	}
 
 	@Subscribe
@@ -229,77 +206,242 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		objects.removeIf(o -> o.getTileObject() == event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void loadPoints()
 	{
-		GameState gameState = gameStateChanged.getGameState();
-		if (gameState == GameState.LOADING)
-		{
-			// Reload points with new map regions
+		points.clear();
 
-			points.clear();
-			for (int regionId : client.getMapRegions())
-			{
-				// load points for region
-				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
-				if (regionPoints != null)
-				{
-					points.put(regionId, regionPoints);
-				}
-			}
+		WorldView wv = client.getTopLevelWorldView();
+		loadPoints(wv);
+
+		for (WorldEntity we : wv.worldEntities())
+		{
+			loadPoints(we.getWorldView());
+		}
+	}
+
+	private void loadPoints(WorldView wv)
+	{
+		int[] regions = wv.getMapRegions();
+		if (regions == null)
+		{
+			return;
 		}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		for (int regionId : regions)
 		{
-			objects.clear();
+			// load points for region
+			final Set<ObjectPoint> regionPoints = loadPoints(regionId);
+			if (regionPoints != null)
+			{
+				points.put(regionId, regionPoints);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWorldViewLoaded(WorldViewLoaded event)
+	{
+		loadPoints(event.getWorldView());
+	}
+
+	@Subscribe
+	public void onWorldViewUnloaded(WorldViewUnloaded event)
+	{
+		var wv = event.getWorldView();
+		objects.removeIf(c -> c.getTileObject().getWorldView() == wv);
+		// TODO remove points when the last boat using it despawns?
+		if (wv.isTopLevel())
+		{
+			Arrays.stream(wv.getMapRegions()).forEach(points::remove);
 		}
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_OBJECT.getId())
+		if (event.getType() != MenuAction.EXAMINE_OBJECT.getId() || !client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			return;
 		}
 
-		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-		final TileObject tileObject = findTileObject(tile, event.getIdentifier());
+		int worldId = event.getMenuEntry().getWorldViewId();
+		WorldView wv = client.getWorldView(worldId);
+		if (wv == null)
+		{
+			return;
+		}
 
+		final TileObject tileObject = findTileObject(wv, event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
 		if (tileObject == null)
 		{
 			return;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK);
-		menuEntry.setTarget(event.getTarget());
-		menuEntry.setParam0(event.getActionParam0());
-		menuEntry.setParam1(event.getActionParam1());
-		menuEntry.setIdentifier(event.getIdentifier());
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-		client.setMenuEntries(menuEntries);
+		int idx = -1;
+		final var marked = objects.stream().filter(o -> o.getTileObject() == tileObject).findFirst();
+		client.createMenuEntry(idx--)
+			.setOption(marked.isPresent() ? UNMARK : MARK)
+			.setTarget(event.getTarget())
+			.setWorldViewId(worldId)
+			.setParam0(event.getActionParam0())
+			.setParam1(event.getActionParam1())
+			.setIdentifier(event.getIdentifier())
+			.setType(MenuAction.RUNELITE)
+			.onClick(this::markObject);
+
+		if (marked.isPresent())
+		{
+			idx = createTagBorderColorMenu(idx, event.getTarget(), tileObject, marked.get());
+			idx = createTagFillColorMenu(idx, event.getTarget(), tileObject, marked.get());
+			idx = createTagStyleMenu(idx, event.getTarget(), tileObject);
+		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private int createTagBorderColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE
-			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
+		List<Color> colors = getUsedColors(ObjectPoint::getBorderColor);
+		// add a few default colors
+		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
+		{
+			if (colors.size() < 5 && !colors.contains(default_))
+			{
+				colors.add(default_);
+			}
+		}
+
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark border color")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE);
+		Menu submenu = parent.createSubMenu();
+
+		for (final Color c : colors)
+		{
+			submenu.createMenuEntry(0)
+				.setOption(ColorUtil.prependColorTag("Set color", c))
+				.setType(MenuAction.RUNELITE)
+				.onClick(e -> updateObjectConfig(object, p -> p.setBorderColor(c)));
+		}
+
+		submenu.createMenuEntry(0)
+			.setOption("Pick color")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> SwingUtilities.invokeLater(() ->
+			{
+				RuneliteColorPicker colorPicker = colorPickerManager.create(client,
+					MoreObjects.firstNonNull(colorTileObject.getBorderColor(), config.markerColor()), "Mark Border Color", false);
+				colorPicker.setOnClose(c ->
+					clientThread.invokeLater(() ->
+						updateObjectConfig(object, p -> p.setBorderColor(c))));
+				colorPicker.setVisible(true);
+			}));
+
+		return idx;
+	}
+
+	private int createTagFillColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
+	{
+		List<Color> colors = getUsedColors(ObjectPoint::getFillColor);
+		// add a few default colors
+		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
+		{
+			default_ = ColorUtil.colorWithAlpha(default_, default_.getAlpha() / 12);
+			if (colors.size() < 5 && !colors.contains(default_))
+			{
+				colors.add(default_);
+			}
+		}
+
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark fill color")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE);
+		Menu submenu = parent.createSubMenu();
+
+		for (final Color c : colors)
+		{
+			submenu.createMenuEntry(0)
+				.setOption(ColorUtil.prependColorTag("Set color", c))
+				.setType(MenuAction.RUNELITE)
+				.onClick(e -> updateObjectConfig(object, p -> p.setFillColor(c)));
+		}
+
+		submenu.createMenuEntry(0)
+			.setOption("Pick color")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> SwingUtilities.invokeLater(() ->
+			{
+				// default fill color depends on the highlight type. just use a=50 from hull fill.
+				var previousColor = MoreObjects.firstNonNull(colorTileObject.getFillColor(), new Color(0, 0, 0, 50));
+
+				RuneliteColorPicker colorPicker = colorPickerManager.create(client,
+					previousColor, "Mark Fill Color", false);
+				colorPicker.setOnClose(c ->
+					clientThread.invokeLater(() ->
+						updateObjectConfig(object, p -> p.setFillColor(c))));
+				colorPicker.setVisible(true);
+			}));
+
+		submenu.createMenuEntry(0)
+			.setOption("Reset")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> updateObjectConfig(object, p -> p.setFillColor(null)));
+
+		return idx;
+	}
+
+	private int createTagStyleMenu(int idx, String target, TileObject object)
+	{
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark style")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE);
+		Menu submenu = parent.createSubMenu();
+
+		submenu.createMenuEntry(0)
+			.setOption("Hull")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> updateObjectConfig(object, c -> c.setHull(c.getHull() != Boolean.TRUE)));
+
+		submenu.createMenuEntry(0)
+			.setOption("Outline")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> updateObjectConfig(object, c -> c.setOutline(c.getOutline() != Boolean.TRUE)));
+
+		submenu.createMenuEntry(0)
+			.setOption("Clickbox")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> updateObjectConfig(object, c -> c.setClickbox(c.getClickbox() != Boolean.TRUE)));
+
+		submenu.createMenuEntry(0)
+			.setOption("Tile")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e -> updateObjectConfig(object, c -> c.setTile(c.getTile() != Boolean.TRUE)));
+
+		submenu.createMenuEntry(0)
+			.setOption("Reset")
+			.setType(MenuAction.RUNELITE)
+			.onClick(e ->
+				updateObjectConfig(object, c ->
+				{
+					c.setHull(null);
+					c.setOutline(null);
+					c.setClickbox(null);
+					c.setTile(null);
+				}));
+
+		return idx;
+	}
+
+	private void markObject(MenuEntry entry)
+	{
+		WorldView wv = client.getWorldView(entry.getWorldViewId());
+		if (wv == null)
 		{
 			return;
 		}
 
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam();
-		final int y = event.getWidgetId();
-		final int z = client.getPlane();
-		final Tile tile = tiles[z][x][y];
-
-		TileObject object = findTileObject(tile, event.getId());
+		TileObject object = findTileObject(wv, entry.getParam0(), entry.getParam1(), entry.getIdentifier());
 		if (object == null)
 		{
 			return;
@@ -316,12 +458,80 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		markObject(objectDefinition, name, object);
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final int regionId = worldPoint.getRegionID();
+		final Color borderColor = config.markerColor();
+		final Color fillColor = config.fillColor();
+		final ObjectPoint point = new ObjectPoint(
+			object.getId(),
+			name,
+			regionId,
+			worldPoint.getRegionX(),
+			worldPoint.getRegionY(),
+			worldPoint.getPlane(),
+			borderColor,
+			fillColor,
+			// use the default config values
+			null, null, null, null);
+
+		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
+
+		if (objectPoints.removeIf(findObjectPredicate(objectDefinition, object, worldPoint)))
+		{
+			unmarkObjects(client.getTopLevelWorldView(), worldPoint, objectDefinition);
+			log.debug("Unmarking object: {}", point);
+		}
+		else
+		{
+			objectPoints.add(point);
+			markObjects(client.getTopLevelWorldView(), worldPoint, objectDefinition);
+			log.debug("Marking object: {}", point);
+		}
+
+		savePoints(regionId, objectPoints);
+	}
+
+	private void updateObjectConfig(TileObject object, Consumer<ObjectPoint> c)
+	{
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final int regionId = worldPoint.getRegionID();
+		Set<ObjectPoint> objectPoints = points.get(regionId);
+		if (objectPoints.isEmpty())
+		{
+			return;
+		}
+
+		final ObjectComposition objectComposition = getObjectComposition(object.getId());
+		ObjectPoint objectPoint = objectPoints.stream().filter(findObjectPredicate(objectComposition, object, worldPoint)).findFirst().orElse(null);
+		if (objectPoint == null)
+		{
+			return;
+		}
+
+		c.accept(objectPoint);
+
+		savePoints(regionId, objectPoints);
+
+		// rebuild the ColorTileObject from the new config
+		for (ColorTileObject o : new ArrayList<>(objects))
+		{
+			if (o.getTileObject().getId() == object.getId())
+			{
+				objects.remove(o);
+				checkObjectPoints(o.getTileObject());
+			}
+		}
 	}
 
 	private void checkObjectPoints(TileObject object)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		if (object.getPlane() < 0)
+		{
+			// object is under a bridge, which can't be marked anyway
+			return;
+		}
+
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)
@@ -329,26 +539,48 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
+		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
+		if (objectComposition.getImpostorIds() == null)
+		{
+			// Multiloc names are instead checked in the overlay
+			String name = objectComposition.getName();
+			if (Strings.isNullOrEmpty(name) || name.equals("null"))
+			{
+				// was marked, but name has changed
+				return;
+			}
+		}
+
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
 					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ())
+					&& worldPoint.getPlane() == objectPoint.getZ()
+					&& objectPoint.getId() == object.getId())
 			{
-				// Transform object to get the name which matches against what we've stored
-				ObjectComposition composition = getObjectComposition(object.getId());
-				if (composition != null && objectPoint.getName().equals(composition.getName()))
-				{
-					log.debug("Marking object {} due to matching {}", object, objectPoint);
-					objects.add(new ColorTileObject(object, objectPoint.getColor()));
-					break;
-				}
+				log.debug("Marking object {} due to matching {}", object, objectPoint);
+				var flags =
+					(objectPoint.getHull() == Boolean.TRUE ? HF_HULL : 0) |
+					(objectPoint.getOutline() == Boolean.TRUE ? HF_OUTLINE : 0) |
+					(objectPoint.getClickbox() == Boolean.TRUE ? HF_CLICKBOX : 0) |
+					(objectPoint.getTile() == Boolean.TRUE ? HF_TILE : 0);
+				objects.add(new ColorTileObject(object,
+					objectComposition,
+					objectPoint.getName(),
+					objectPoint.getBorderColor(),
+					objectPoint.getFillColor(),
+					(byte) flags));
+				break;
 			}
 		}
 	}
 
-	private TileObject findTileObject(Tile tile, int id)
+	private TileObject findTileObject(WorldView wv, int x, int y, int id)
 	{
+		int level = wv.getPlane();
+		Scene scene = wv.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		final Tile tile = tiles[level][x][y];
 		if (tile == null)
 		{
 			return null;
@@ -415,52 +647,60 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return false;
 	}
 
-	/** mark or unmark an object
-	 *
-	 * @param objectComposition transformed composition of object based on vars
-	 * @param name name of objectComposition
-	 * @param object tile object, for multilocs object.getId() is the base id
-	 */
-	private void markObject(ObjectComposition objectComposition, String name, final TileObject object)
+	private void markObjects(WorldView wv, WorldPoint p, ObjectComposition objectConfig)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
-		final int regionId = worldPoint.getRegionID();
-		final Color color = config.markerColor();
-		final ObjectPoint point = new ObjectPoint(
-			object.getId(),
-			name,
-			regionId,
-			worldPoint.getRegionX(),
-			worldPoint.getRegionY(),
-			worldPoint.getPlane(),
-			color);
-
-		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
-
-		if (objects.removeIf(o -> o.getTileObject() == object))
+		for (WorldPoint sp : WorldPoint.toLocalInstance(wv, p))
 		{
-			// Find the object point that caused this object to be marked, there are two cases:
-			// 1) object is a multiloc, the name may have changed since marking - match from base id
-			// 2) not a multiloc, but an object has spawned with an identical name and a different
-			//    id as what was originally marked
-			if (!objectPoints.removeIf(op -> ((op.getId() == -1 || op.getId() == object.getId()) || op.getName().equals(objectComposition.getName()))
-				&& op.getRegionX() == worldPoint.getRegionX()
-				&& op.getRegionY() == worldPoint.getRegionY()
-				&& op.getZ() == worldPoint.getPlane()))
+			int x = sp.getX() - wv.getBaseX(), y = sp.getY() - wv.getBaseY();
+			TileObject object = findTileObject(wv, x, y, objectConfig.getId());
+			if (object != null)
 			{
-				log.warn("unable to find object point for unmarked object {}", object.getId());
+				objects.add(new ColorTileObject(object,
+					client.getObjectDefinition(object.getId()),
+					objectConfig.getName(),
+					config.markerColor(),
+					config.fillColor(),
+					(byte) 0));
 			}
-
-			log.debug("Unmarking object: {}", point);
 		}
-		else
+
+		for (WorldView sub : wv.worldViews())
 		{
-			objectPoints.add(point);
-			objects.add(new ColorTileObject(object, color));
-			log.debug("Marking object: {}", point);
+			markObjects(sub, p, objectConfig);
+		}
+	}
+
+	private void unmarkObjects(WorldView wv, WorldPoint p, ObjectComposition objectConfig)
+	{
+		for (WorldPoint sp : WorldPoint.toLocalInstance(wv, p))
+		{
+			int x = sp.getX() - wv.getBaseX(), y = sp.getY() - wv.getBaseY();
+			TileObject object = findTileObject(wv, x, y, objectConfig.getId());
+			if (object != null)
+			{
+				if (!objects.removeIf(o -> o.getTileObject() == object))
+				{
+					log.warn("unable to find object point for unmarked object {}", object.getId());
+				}
+			}
 		}
 
-		savePoints(regionId, objectPoints);
+		for (WorldView sub : wv.worldViews())
+		{
+			unmarkObjects(sub, p, objectConfig);
+		}
+	}
+
+	private static Predicate<ObjectPoint> findObjectPredicate(ObjectComposition objectComposition, TileObject object, WorldPoint worldPoint)
+	{
+		// Find the ObjectPoint for the given composition, object, and world point. There are two cases:
+		// 1) object is a multiloc, the name may have changed since marking - match from base id
+		// 2) not a multiloc, but an object has spawned with an identical name and a different
+		//    id as what was originally marked
+		return op -> ((op.getId() == -1 || op.getId() == object.getId()) || op.getName().equals(objectComposition.getName()))
+			&& op.getRegionX() == worldPoint.getRegionX()
+			&& op.getRegionY() == worldPoint.getRegionY()
+			&& op.getZ() == worldPoint.getPlane();
 	}
 
 	private void savePoints(final int id, final Set<ObjectPoint> points)
@@ -471,7 +711,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 		else
 		{
-			final String json = GSON.toJson(points);
+			final String json = gson.toJson(points);
 			configManager.setConfiguration(CONFIG_GROUP, "region_" + id, json);
 		}
 	}
@@ -485,7 +725,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return null;
 		}
 
-		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
+		Set<ObjectPoint> points = gson.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks
@@ -501,5 +741,30 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	{
 		ObjectComposition objectComposition = client.getObjectDefinition(id);
 		return objectComposition.getImpostorIds() == null ? objectComposition : objectComposition.getImpostor();
+	}
+
+	private List<Color> getUsedColors(Function<ObjectPoint, Color> getColor)
+	{
+		List<Color> colors = new ArrayList<>();
+		for (int region : client.getMapRegions())
+		{
+			var points = this.points.get(region);
+			if (points != null)
+			{
+				for (var p : points)
+				{
+					Color c = getColor.apply(p);
+					if (c != null & !colors.contains(c))
+					{
+						colors.add(c);
+						if (colors.size() >= 5)
+						{
+							return colors;
+						}
+					}
+				}
+			}
+		}
+		return colors;
 	}
 }

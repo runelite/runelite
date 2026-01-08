@@ -46,7 +46,7 @@ public class ColorPanel extends JPanel
 
 	private final int size;
 
-	private BufferedImage image;
+	private final BufferedImage image;
 	private Point targetPosition;
 	private int selectedY;
 	private boolean forceRedraw;

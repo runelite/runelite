@@ -34,8 +34,8 @@ public interface AntiDragConfig extends Config
 {
 	@ConfigItem(
 		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
+		name = "Drag delay",
+		description = "Configures the inventory drag delay in client ticks (20ms).",
 		position = 1
 	)
 	default int dragDelay()
@@ -45,12 +45,23 @@ public interface AntiDragConfig extends Config
 
 	@ConfigItem(
 		keyName = "onShiftOnly",
-		name = "On Shift Only",
-		description = "Configures whether to only adjust the delay while holding shift. Required for anti drag in PvP scenarios.",
+		name = "On shift only",
+		description = "Configures whether to only adjust the delay while holding shift.",
 		position = 2
 	)
 	default boolean onShiftOnly()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "disableOnCtrl",
+		name = "Disable on control pressed",
+		description = "Configures whether to ignore the delay while holding control.",
+		position = 3
+	)
+	default boolean disableOnCtrl()
+	{
+		return false;
 	}
 }

@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -41,14 +42,15 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.WorldsFetch;
 import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
 public class WorldService
 {
-	private static final int WORLD_FETCH_TIMER = 10; // minutes
+	private static final int WORLD_FETCH_TIMER = 10 * 60;
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -59,15 +61,16 @@ public class WorldService
 	private WorldResult worlds;
 
 	@Inject
-	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, WorldClient worldClient,
-		EventBus eventBus)
+	private WorldService(Client client, ScheduledExecutorService scheduledExecutorService, OkHttpClient okHttpClient,
+		@Named("runelite.api.base") HttpUrl apiBase, EventBus eventBus)
 	{
 		this.client = client;
 		this.scheduledExecutorService = scheduledExecutorService;
-		this.worldClient = worldClient;
+		this.worldClient = new WorldClient(okHttpClient, apiBase);
 		this.eventBus = eventBus;
 
-		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+		scheduledExecutorService.execute(this::tick);
+		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), WORLD_FETCH_TIMER / 2 + (int) (WORLD_FETCH_TIMER * Math.random()), WORLD_FETCH_TIMER, TimeUnit.SECONDS);
 	}
 
 	private void tick()

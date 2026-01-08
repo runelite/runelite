@@ -24,45 +24,48 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Client side only, content-developer integers
  *
  * VarCInts are stored entirely in memory, or locally on a user's
  * machine in the preferences2.dat file depending on how Jagex
  * configured the variable
+ *
+ * @deprecated Use {@link net.runelite.api.gameval.VarClientID}
  */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@Deprecated
+public final class VarClientInt
 {
-	TOOLTIP_TIMEOUT(1),
+	public static final int TOOLTIP_TIMEOUT = 1;
 
 	/**
 	 * 0 = no tooltip displayed
 	 * 1 = tooltip displaying
 	 */
-	TOOLTIP_VISIBLE(2),
+	public static final int TOOLTIP_VISIBLE = 2;
 
 	/**
 	 * Current message layer mode
 	 * @see net.runelite.api.vars.InputType
 	 */
-	INPUT_TYPE(5),
+	public static final int INPUT_TYPE = 5;
+
+	public static final int BANK_SCROLL = 51;
 
 	/**
 	 * The game sets this to the same value as {@link #CAMERA_ZOOM_RESIZABLE_VIEWPORT}
 	 */
-	CAMERA_ZOOM_FIXED_VIEWPORT(73),
-	CAMERA_ZOOM_RESIZABLE_VIEWPORT(74),
+	public static final int CAMERA_ZOOM_FIXED_VIEWPORT = 73;
+	public static final int CAMERA_ZOOM_RESIZABLE_VIEWPORT = 74;
 
-	MEMBERSHIP_STATUS(103),
+	public static final int MEMBERSHIP_STATUS = 103;
 
-	INVENTORY_TAB(171),
+	public static final int INVENTORY_TAB = 171;
 
-	WORLD_MAP_SEARCH_FOCUSED(190);
+	/**
+	 * time to block keypresses til
+	 */
+	public static final int BLOCK_KEYPRESS = 187;
 
-	private final int index;
+	public static final int WORLD_MAP_SEARCH_FOCUSED = 190;
 }

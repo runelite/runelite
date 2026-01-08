@@ -31,7 +31,6 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class CameraOverlay extends OverlayPanel
 {
@@ -54,23 +53,15 @@ public class CameraOverlay extends OverlayPanel
 			return null;
 		}
 
-		panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Camera")
-				.build());
+		panelComponent.setPreferredSize(new Dimension(175, 0));
+
+		int camX = client.getCameraX();
+		int camY = client.getCameraZ();
+		int camZ = client.getCameraY();
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("X")
-				.right("" + client.getCameraX())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Y")
-				.right("" + client.getCameraY())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Z")
-				.right("" + client.getCameraZ())
+				.left("Camera")
+				.right(camX + ", " + camY + ", " + camZ)
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()

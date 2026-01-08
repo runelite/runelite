@@ -69,13 +69,16 @@ public class RSTextureProvider
 		TextureDefinition var2 = this.textures[var1];
 		if (var2 != null)
 		{
-			if (var2.pixels != null)
+			synchronized (var2)
 			{
+				if (var2.pixels != null)
+				{
+					return var2.pixels;
+				}
+
+				var2.method2680(this.brightness, this.width, spriteProvider);
 				return var2.pixels;
 			}
-
-			boolean var3 = var2.method2680(this.brightness, this.width, spriteProvider);
-			return var2.pixels;
 		}
 
 		return null;
@@ -84,7 +87,7 @@ public class RSTextureProvider
 
 	public int getAverageTextureRGB(int var1)
 	{
-		return this.textures[var1] != null ? this.textures[var1].field1777 : 0;
+		return this.textures[var1] != null ? this.textures[var1].missingColor : 0;
 	}
 
 

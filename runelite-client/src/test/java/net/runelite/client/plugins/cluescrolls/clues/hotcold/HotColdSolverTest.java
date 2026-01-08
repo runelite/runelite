@@ -25,16 +25,11 @@
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
 import com.google.common.collect.Sets;
-import java.awt.Rectangle;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static junit.framework.TestCase.assertTrue;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdSolver.isFirstPointCloser;
-import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdSolver.isFirstPointCloserRect;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
@@ -183,32 +178,31 @@ public class HotColdSolverTest
 	}
 
 	@Test
-	public void testIsFirstPointCloserRect()
+	public void testBeginnerCowFieldNarrowing()
 	{
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0), new Rectangle(0, 0, 1, 1)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(1, 0, 0), new WorldPoint(5, 0, 0), new Rectangle(2, 1, 5, 5)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new Rectangle(2, 0, 1, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 1), new Rectangle(2, 2, 2, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(4, 4, 4), new Rectangle(1, 1, 2, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(3, 2, 0), new WorldPoint(1, 5, 0), new Rectangle(0, 0, 4, 4)));
+		// Start with Cow field north of Lumbridge and Northeast of Al Kharid mine locations remaining
+		final Set<HotColdLocation> startingLocations = EnumSet.of(
+			HotColdLocation.LUMBRIDGE_COW_FIELD,
+			HotColdLocation.NORTHEAST_OF_AL_KHARID_MINE
+		);
+		HotColdSolver solver = new HotColdSolver(startingLocations);
 
-		assertTrue(isFirstPointCloserRect(new WorldPoint(1, 1, 0), new WorldPoint(0, 1, 0), new Rectangle(2, 0, 3, 2)));
-		assertTrue(isFirstPointCloserRect(new WorldPoint(4, 4, 0), new WorldPoint(1, 1, 0), new Rectangle(3, 3, 2, 2)));
-		assertTrue(isFirstPointCloserRect(new WorldPoint(3, 2, 0), new WorldPoint(7, 0, 0), new Rectangle(1, 3, 4, 2)));
-
+		assertEquals(startingLocations, solver.signal(new WorldPoint(3313, 3208, 0), HotColdTemperature.WARM, null));
+		assertEquals(Sets.immutableEnumSet(HotColdLocation.LUMBRIDGE_COW_FIELD), solver.signal(new WorldPoint(3312, 3208, 0), HotColdTemperature.WARM, HotColdTemperatureChange.WARMER));
 	}
 
 	@Test
-	public void testIsFirstPointCloser()
+	public void testBeginnerDraynorWheatFieldNarrowing()
 	{
-		assertFalse(isFirstPointCloser(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 1), new WorldPoint(0, 0, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(2, 2, 0), new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0)));
+		// Start with Wheat field next to Draynor Village and Atop Ice Mountain locations remaining
+		final Set<HotColdLocation> startingLocations = EnumSet.of(
+			HotColdLocation.DRAYNOR_WHEAT_FIELD,
+			HotColdLocation.ICE_MOUNTAIN
+		);
+		HotColdSolver solver = new HotColdSolver(startingLocations);
 
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(2, 0, 0)));
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 1, 0), new WorldPoint(1, 0, 0), new WorldPoint(2, 2, 0)));
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 1, 1), new WorldPoint(0, 1, 0), new WorldPoint(1, 1, 0)));
+		assertEquals(startingLocations, solver.signal(new WorldPoint(3148, 3415, 0), HotColdTemperature.WARM, null));
+		assertEquals(Sets.immutableEnumSet(HotColdLocation.DRAYNOR_WHEAT_FIELD), solver.signal(new WorldPoint(3148, 3416, 0), HotColdTemperature.WARM, HotColdTemperatureChange.COLDER));
 	}
 
 	/**
