@@ -7,6 +7,7 @@
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
  *    list of conditions and the following disclaimer.
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
@@ -24,8 +25,10 @@
  */
 package net.runelite.client.plugins.driftnet;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Shape;
 import javax.inject.Inject;
 import net.runelite.api.GameObject;
@@ -81,7 +84,14 @@ class DriftNetOverlay extends Overlay
 		{
 			if (!plugin.getTaggedFish().containsKey(fish))
 			{
-				OverlayUtil.renderActorOverlay(graphics, fish, "", config.untaggedFishColor());
+				Polygon tilePoly = fish.getCanvasTilePoly();
+				if (tilePoly != null)
+				{
+					graphics.setColor(config.untaggedFishFillColor());
+					graphics.fill(tilePoly);
+					graphics.setColor(config.untaggedFishColor());
+					graphics.draw(tilePoly);
+				}
 			}
 		}
 	}
@@ -90,11 +100,27 @@ class DriftNetOverlay extends Overlay
 	{
 		for (DriftNet net : plugin.getNETS())
 		{
-			final Shape polygon = net.getNet().getConvexHull();
+			final Shape polygon;
+			if (config.useNetClickbox())
+			{
+				polygon = net.getNet().getClickbox();
+			}
+			else
+			{
+				polygon = net.getNet().getConvexHull();
+			}
 
 			if (polygon != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon, net.getStatus().getColor());
+				Color statusColor = net.getStatus().getColor();
+				if (config.netFillOpacity() > 0)
+				{
+					Color fillColor = new Color(statusColor.getRed(), statusColor.getGreen(), statusColor.getBlue(), config.netFillOpacity());
+					graphics.setColor(fillColor);
+					graphics.fill(polygon);
+				}
+				graphics.setColor(statusColor);
+				graphics.draw(polygon);
 			}
 
 			String text = net.getFormattedCountText();

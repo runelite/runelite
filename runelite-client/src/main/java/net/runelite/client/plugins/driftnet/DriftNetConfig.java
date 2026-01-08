@@ -48,7 +48,33 @@ public interface DriftNetConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+			position = 2,
+			keyName = "netHighlightStyle",
+			name = "Use clickbox for nets",
+			description = "Use clickbox instead of hull to highlight drift nets."
+	)
+	default boolean useNetClickbox()
+	{
+		return false;
+	}
+
+	@Range(
+			min = 0,
+			max = 255
+	)
+	@ConfigItem(
+			position = 3,
+			keyName = "netFillOpacity",
+			name = "Net fill opacity",
+			description = "Opacity of drift net fill color (0 = transparent, 255 = solid)."
+	)
+	default int netFillOpacity()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "countColor",
 		name = "Fish count color",
 		description = "Color of the fish count text."
@@ -59,7 +85,7 @@ public interface DriftNetConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "highlightUntaggedFish",
 		name = "Highlight untagged fish",
 		description = "Highlight the untagged fish."
@@ -70,7 +96,7 @@ public interface DriftNetConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "timeoutDelay",
 		name = "Tagged timeout",
 		description = "Time required for a tag to expire."
@@ -90,18 +116,30 @@ public interface DriftNetConfig extends Config
 		keyName = "untaggedFishColor",
 		name = "Untagged fish color",
 		description = "Color of untagged fish.",
-		position = 5
+		position = 7
 	)
 	default Color untaggedFishColor()
 	{
 		return Color.CYAN;
 	}
 
+	@Alpha
+	@ConfigItem(
+			keyName = "untaggedFishFillColor",
+			name = "Untagged fish fill color",
+			description = "Fill color of untagged fish tile.",
+			position = 8
+	)
+	default Color untaggedFishFillColor()
+	{
+		return new Color(0, 255, 255, 50);
+	}
+
 	@ConfigItem(
 		keyName = "tagAnnette",
 		name = "Tag Annette",
 		description = "Tag Annette when no nets in inventory.",
-		position = 6
+		position = 9
 	)
 	default boolean tagAnnetteWhenNoNets()
 	{
@@ -113,7 +151,7 @@ public interface DriftNetConfig extends Config
 		keyName = "annetteTagColor",
 		name = "Annette tag color",
 		description = "Color of Annette tag.",
-		position = 7
+		position = 10
 	)
 	default Color annetteTagColor()
 	{
