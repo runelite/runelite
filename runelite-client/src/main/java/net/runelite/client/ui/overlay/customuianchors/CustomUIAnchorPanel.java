@@ -151,6 +151,7 @@ public class CustomUIAnchorPanel extends PluginPanel
 		nameField.addActionListener(e -> saveChanges());
 		nameField.addFocusListener(new java.awt.event.FocusAdapter()
 		{
+			@Override
 			public void focusLost(java.awt.event.FocusEvent evt)
 			{
 				saveChanges();
@@ -355,7 +356,7 @@ public class CustomUIAnchorPanel extends PluginPanel
 		}
 
 		// Get canvas center from manager
-		java.awt.Dimension canvasSize = customUIAnchorManager.getCanvasSize();
+		Dimension canvasSize = customUIAnchorManager.getCanvasSize();
 		if (canvasSize == null)
 		{
 			return;
