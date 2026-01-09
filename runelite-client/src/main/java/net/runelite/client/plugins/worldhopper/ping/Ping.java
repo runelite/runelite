@@ -35,6 +35,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.OSType;
 import net.runelite.http.api.worlds.World;
@@ -49,9 +52,13 @@ public class Ping
 
 	private static short seq;
 
+	private static final long TCP_FALLBACK_COOLDOWN = 5_000_000_000L; //5s in ns
+	private static final Map<Integer, Long> tcpAllowedAfterNsByWorld = new HashMap<>();
+
 	public static int ping(World world)
 	{
 		InetAddress inetAddress;
+		int worldId = world.getId();
 		try
 		{
 			inetAddress = InetAddress.getByName(world.getAddress());
@@ -78,28 +85,28 @@ public class Ping
 					{
 						return windowsRtt;
 					}
-
-					log.debug("ICMP ping failed; falling back to TCP");
-					return tcpPing(inetAddress);
+					break;
 				case MacOS:
 				case Linux:
 					try
 					{
-						int rtt = icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS); // -1 when blocked/fails
-						if (rtt >= 0)
+						int icmpRtt = icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS); // -1 when blocked/fails
+						if (icmpRtt >= 0)
 						{
-							return rtt;
+							return icmpRtt;
 						}
-						log.debug("ICMP ping failed; falling back to TCP");
 					}
 					catch (Exception ex)
 					{
 						log.debug("error during icmp ping", ex);
 					}
-					return tcpPing(inetAddress);
+					break;
 				default:
-					return tcpPing(inetAddress);
+					break;
 			}
+			// ICMP failed/unavailable -> TCP fallback (gated)
+			// returns -1 when on cooldown
+			return tcpPing(worldId, inetAddress);
 		}
 		catch (IOException ex)
 		{
@@ -270,15 +277,28 @@ public class Ping
 		return (short) (~a & 0xffff);
 	}
 
-	private static int tcpPing(InetAddress inetAddress) throws IOException
+	private static int tcpPing(int worldId, InetAddress inetAddress) throws IOException
 	{
+		long now = System.nanoTime();
+		Long allowedAfter = tcpAllowedAfterNsByWorld.get(worldId);
+
+		if (allowedAfter != null && allowedAfter - now > 0)
+		{
+			// TCP suppressed; no packet is sent
+			log.trace("TCP Ping Unsuccessful: World {} is on cooldown", worldId);
+			return -1;
+		}
 		try (Socket socket = new Socket())
 		{
 			socket.setSoTimeout(TIMEOUT);
 			long start = System.nanoTime();
 			socket.connect(new InetSocketAddress(inetAddress, PORT));
 			long end = System.nanoTime();
-			return (int) ((end - start) / 1000000L);
+
+			// tcp ping attempted -> place world on cooldown
+			tcpAllowedAfterNsByWorld.put(worldId, end + TCP_FALLBACK_COOLDOWN);
+			log.trace("TCP Fallback Ping Successful: World {} put on cooldown for {}s", worldId, (double)((end + TCP_FALLBACK_COOLDOWN) - start) / 1_000_000_000L);
+			return (int) ((end - start) / 1_000_000L);
 		}
 	}
 }
