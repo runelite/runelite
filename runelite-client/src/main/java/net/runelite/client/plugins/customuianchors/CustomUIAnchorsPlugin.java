@@ -26,18 +26,13 @@ package net.runelite.client.plugins.customuianchors;
 
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.OverlayAnchorManager;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.customuianchors.CustomUIAnchorInputListener;
-import net.runelite.client.ui.overlay.customuianchors.CustomUIAnchorManager;
-import net.runelite.client.ui.overlay.customuianchors.CustomUIAnchorOverlay;
-import net.runelite.client.ui.overlay.customuianchors.CustomUIAnchorPanel;
 import net.runelite.client.util.ImageUtil;
 
 @Slf4j
@@ -49,39 +44,23 @@ import net.runelite.client.util.ImageUtil;
 public class CustomUIAnchorsPlugin extends Plugin
 {
 	@Inject
-	private CustomUIAnchorManager customUIAnchorManager;
-
-	@Inject
-	private CustomUIAnchorOverlay customUIAnchorOverlay;
-
-	@Inject
-	private CustomUIAnchorInputListener inputListener;
+	private OverlayAnchorManager overlayAnchorManager;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MouseManager mouseManager;
-
-	@Inject
 	private ClientToolbar clientToolbar;
 
-	private CustomUIAnchorPanel panel;
+	private CustomUIAnchorsPanel panel;
 	private NavigationButton navButton;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		customUIAnchorManager.startUp();
+		overlayAnchorManager.startUp();
 
-		panel = new CustomUIAnchorPanel(customUIAnchorManager);
-
-		// Set panel reference so manager/overlay can check if panel is visible
-		customUIAnchorManager.setPanel(panel);
-		customUIAnchorOverlay.setPanel(panel);
-
-		inputListener.setSelectionCallback(anchor ->
-			SwingUtilities.invokeLater(() -> panel.setSelectedAnchor(anchor)));
+		panel = new CustomUIAnchorsPanel(overlayAnchorManager);
 
 		BufferedImage icon = null;
 		try
@@ -106,8 +85,6 @@ public class CustomUIAnchorsPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
-		overlayManager.add(customUIAnchorOverlay);
-		mouseManager.registerMouseListener(inputListener);
 
 		log.info("Custom UI Anchors plugin started");
 	}
@@ -115,10 +92,8 @@ public class CustomUIAnchorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(customUIAnchorOverlay);
-		mouseManager.unregisterMouseListener(inputListener);
 		clientToolbar.removeNavigation(navButton);
-		customUIAnchorManager.shutDown();
+		overlayAnchorManager.shutDown();
 
 		log.info("Custom UI Anchors plugin stopped");
 	}

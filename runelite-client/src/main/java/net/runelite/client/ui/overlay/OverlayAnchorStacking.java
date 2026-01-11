@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Car_role
+ * Copyright (c) 2025, Car_role
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.customuianchors;
+package net.runelite.client.ui.overlay;
 
 /**
  * Defines how overlays are stacked within an anchor.
  */
-public enum AnchorStacking
+public enum OverlayAnchorStacking
 {
 	VERTICAL,
 	HORIZONTAL,

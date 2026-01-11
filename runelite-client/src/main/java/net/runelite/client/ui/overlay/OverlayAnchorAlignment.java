@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Car_role
+ * Copyright (c) 2025, Car_role
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.customuianchors;
-
-import java.awt.Rectangle;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package net.runelite.client.ui.overlay;
 
 /**
- * Represents a custom UI anchor on the game canvas.
- * Overlays can be assigned to custom UI anchors for custom positioning and layout.
+ * Defines how overlays are aligned within an anchor.
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CustomUIAnchor
+public enum OverlayAnchorAlignment
 {
-	private int id;
-	private String name;
-	private int x;
-	private int y;
-	private int width;
-	private int height;
-	private AnchorConstraint constraint = AnchorConstraint.TOP_LEFT;
-	private AnchorAlignment alignment = AnchorAlignment.CENTER;
-	private AnchorStacking stacking = AnchorStacking.VERTICAL;
-
-	public CustomUIAnchor(int id, String name, int x, int y, int width, int height)
-	{
-		this.id = id;
-		this.name = name;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.constraint = AnchorConstraint.TOP_LEFT;
-		this.alignment = AnchorAlignment.CENTER;
-		this.stacking = AnchorStacking.VERTICAL;
-	}
-
-	/**
-	 * Get the bounds of this custom UI anchor as an AWT Rectangle.
-	 * @return the bounds rectangle
-	 */
-	public Rectangle getBounds()
-	{
-		return new Rectangle(x, y, width, height);
-	}
+	TOP_LEFT,
+	TOP_CENTER,
+	TOP_RIGHT,
+	CENTER_LEFT,
+	CENTER,
+	CENTER_RIGHT,
+	BOTTOM_LEFT,
+	BOTTOM_CENTER,
+	BOTTOM_RIGHT
 }
