@@ -189,7 +189,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MEDIUM_SEXTANT006)
 			.location(new WorldPoint(2512, 3467, 0))
-			.directions("Baxtorian Falls (Bring rope).")
+			.directionsProvider((plugin) -> "Baxtorian Falls" + getBaxtorianFallsDirections(plugin))
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_EXP7)
@@ -1183,5 +1183,14 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		}
 
 		return " An entry fee of 100 trading sticks is required.";
+	}
+
+	private static String getBaxtorianFallsDirections(ClueScrollPlugin plugin)
+	{
+		if (plugin.getClient().getVarbitValue(VarbitID.KANDARIN_DIARY_MEDIUM_COMPLETE) == 1)
+		{
+			return "";
+		}
+		return " (Bring rope)";
 	}
 }
