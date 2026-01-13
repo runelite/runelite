@@ -31,9 +31,9 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -86,7 +86,7 @@ class ChatInputManager
 
 	private void runCommand()
 	{
-		String typedText = client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
+		String typedText = client.getVarcStrValue(VarClientID.CHATINPUT).substring(2); // strip ::
 
 		log.debug("Command: {}", typedText);
 

@@ -13,10 +13,10 @@
    iload                  1
    switch                
       1131: LABEL9
-      1130: LABEL107
-      1129: LABEL149
-      1745: LABEL169
-   jump                   LABEL178
+      1130: LABEL103
+      1129: LABEL141
+      1745: LABEL161
+   jump                   LABEL170
 LABEL9:
    iconst                 10747998
    if_getwidth           
@@ -120,23 +120,17 @@ LABEL89:
 LABEL96:
    clientclock           
    set_varc_int           384
-   invoke                 1445
-   iconst                 1
-   if_icmpeq              LABEL102
-   jump                   LABEL106
-LABEL102:
    get_varbit             12986
    invoke                 633
    iconst                 10747926
    if_sethide            
-LABEL106:
-   jump                   LABEL178
-LABEL107:
+   jump                   LABEL170
+LABEL103:
    get_varbit             4084
    iconst                 1
-   if_icmpeq              LABEL111
-   jump                   LABEL119
-LABEL111:
+   if_icmpeq              LABEL107
+   jump                   LABEL115
+LABEL107:
    iconst                 1178
    iconst                 73
    iconst                 73
@@ -144,13 +138,13 @@ LABEL111:
    iconst                 10551326
    enum                  
    2122                  
-   jump                   LABEL138
-LABEL119:
+   jump                   LABEL134
+LABEL115:
    get_varbit             13037
    iconst                 1
-   if_icmpeq              LABEL123
-   jump                   LABEL131
-LABEL123:
+   if_icmpeq              LABEL119
+   jump                   LABEL127
+LABEL119:
    iconst                 3513
    iconst                 73
    iconst                 73
@@ -158,8 +152,8 @@ LABEL123:
    iconst                 10551326
    enum                  
    2122                  
-   jump                   LABEL138
-LABEL131:
+   jump                   LABEL134
+LABEL127:
    iconst                 2154
    iconst                 73
    iconst                 73
@@ -167,26 +161,20 @@ LABEL131:
    iconst                 10551326
    enum                  
    2122                  
-LABEL138:
+LABEL134:
    clientclock           
    set_varc_int           384
-   invoke                 1445
-   iconst                 1
-   if_icmpeq              LABEL144
-   jump                   LABEL148
-LABEL144:
    get_varbit             12986
    invoke                 633
    iconst                 10551318
    if_sethide            
-LABEL148:
-   jump                   LABEL178
-LABEL149:
+   jump                   LABEL170
+LABEL141:
    invoke                 3297
    iconst                 1
-   if_icmpeq              LABEL153
-   jump                   LABEL161
-LABEL153:
+   if_icmpeq              LABEL145
+   jump                   LABEL153
+LABEL145:
    iconst                 2422
    iconst                 73
    iconst                 73
@@ -194,8 +182,8 @@ LABEL153:
    iconst                 10551326
    enum                  
    2122                  
-   jump                   LABEL168
-LABEL161:
+   jump                   LABEL160
+LABEL153:
    iconst                 1200
    iconst                 73
    iconst                 73
@@ -203,9 +191,9 @@ LABEL161:
    iconst                 10551326
    enum                  
    2122                  
-LABEL168:
-   jump                   LABEL178
-LABEL169:
+LABEL160:
+   jump                   LABEL170
+LABEL161:
    invoke                 2581
    get_varbit             6254
    invoke                 633
@@ -215,5 +203,5 @@ LABEL169:
    pop_int               
    clientclock           
    set_varc_int           384
-LABEL178:
+LABEL170:
    return                

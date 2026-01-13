@@ -229,7 +229,7 @@ class ConfigPanel extends PluginPanel
 		if (pluginConfig.getPlugin() != null)
 		{
 			pluginToggle.setConflicts(pluginConfig.getConflicts());
-			pluginToggle.setSelected(pluginManager.isPluginEnabled(pluginConfig.getPlugin()));
+			pluginToggle.setSelected(pluginManager.isPluginActive(pluginConfig.getPlugin()));
 			pluginToggle.addItemListener(i ->
 			{
 				if (pluginToggle.isSelected())

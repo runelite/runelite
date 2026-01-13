@@ -37,6 +37,7 @@ public enum ScriptVarType
 	BOOLEAN(1, '1', "boolean"),
 	SEQ(6, 'A', "seq"),
 	COLOUR(7, 'C', "colour"),
+	LOC_SHAPE(8, 'H', "locshape"),
 	/**
 	 * Also known as {@code Widget}.
 	 */
@@ -68,12 +69,14 @@ public enum ScriptVarType
 	SPOTANIM(37, 't', "spotanim"),
 	INV(39, 'v', "inv"),
 	TEXTURE(40, 'x', "texture"),
+	CATEGORY(41, 'y', "category"),
 	CHAR(42, 'z', "char"),
 	MAPSCENEICON(55, '£', "mapsceneicon"),
 	MAPELEMENT(59, 'µ', "mapelement"),
 	HITMARK(62, '×', "hitmark"),
 	STRUCT(73, 'J', "struct"),
 	DBROW(74, 'Ð', "dbrow"),
+	DBTABLE(118, 'Ø', "dbtable"),
 	VARP(209, '7', "varp"),
 	;
 

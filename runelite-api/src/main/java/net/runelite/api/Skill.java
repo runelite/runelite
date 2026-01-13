@@ -52,7 +52,9 @@ public enum Skill
 	FARMING("Farming"),
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
-	CONSTRUCTION("Construction");
+	CONSTRUCTION("Construction"),
+	SAILING("Sailing"),
+	;
 
 	@Deprecated
 	public static final Skill OVERALL = null;

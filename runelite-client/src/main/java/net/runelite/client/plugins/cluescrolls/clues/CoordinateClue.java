@@ -268,13 +268,18 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_EXP15)
-			.location(new WorldPoint(3770, 3898, 0))
+			.location(new WorldPoint(3764, 3900, 0))
 			.directions("On the small island north-east of Fossil Island's mushroom forest.")
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_VM01)
 			.location(new WorldPoint(1659, 3111, 0))
 			.directions("Dig west of the Bazaar in Civitas illa Fortis.")
+			.build(),
+		CoordinateClue.builder()
+			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_SAIL)
+			.location(new WorldPoint(3183, 2453, 0))
+			.directions("Center of the Great Conch.")
 			.build(),
 		// Hard
 		CoordinateClue.builder()
@@ -524,7 +529,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_HARD_SEXTANT_EXP11)
-			.location(new WorldPoint(3770, 3897, 0))
+			.location(new WorldPoint(3765, 3899, 0))
 			.directions("Small Island north of Fossil Island.")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
@@ -591,6 +596,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.itemId(ItemID.TRAIL_HARD_SEXTANT_EXP15)
 			.location(new WorldPoint(1409, 3483, 0))
 			.directions("South of Shayziens' Wall.")
+			.enemy(SARADOMIN_WIZARD)
+			.build(),
+		CoordinateClue.builder()
+			.itemId(ItemID.TRAIL_HARD_SEXTANT_SAIL)
+			.location(new WorldPoint(1193, 2774, 0))
+			.directions("On Laguna Aurorae.")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
 		// Elite
@@ -841,6 +852,12 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.directions("South of Custodia Pass")
 			.enemy(SARADOMIN_WIZARD)
 			.build(),
+		CoordinateClue.builder()
+			.itemId(ItemID.TRAIL_ELITE_SEXTANT_SAIL)
+			.location(new WorldPoint(2081, 3184, 0))
+			.directions("On Lledrith Island")
+			.enemy(ARMADYLEAN_OR_BANDOSIAN_GUARD)
+			.build(),
 		// Master
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
@@ -967,7 +984,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 			.itemId(ItemID.TRAIL_CLUE_MASTER)
 			.location(new WorldPoint(2090, 3863, 0))
 			.directions("South of Lunar Isle, west of Astral altar.")
-			.enemy(ANCIENT_WIZARDS)
+			.enemy(BRASSICAN_MAGE)
 			.build(),
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_CLUE_MASTER)

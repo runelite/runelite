@@ -506,6 +506,16 @@ public class ItemStatEffectTest
 		assertEquals(35, skillChange(Skill.HITPOINTS, 99, 99, saradominBrew));
 	}
 
+	@Test
+	public void testHaddock()
+	{
+		final Effect haddock = itemStats.get(ItemID.HADDOCK);
+
+		assertEquals(10, skillChange(Skill.HITPOINTS, 99, 99, haddock));
+		assertEquals(11, skillChange(Skill.HITPOINTS, 99, 98, haddock));
+		assertEquals(18, skillChange(Skill.HITPOINTS, 99, 1, haddock));
+	}
+
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
 	{
 		if (effect == null)

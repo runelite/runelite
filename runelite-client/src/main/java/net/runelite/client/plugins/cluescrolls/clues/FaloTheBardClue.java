@@ -28,6 +28,8 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Item;
@@ -50,6 +52,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 {
+	private static final Pattern CLUE_TEXT_PREFIX = Pattern.compile("^(?:Okay, )?here goes\\.\\.\\. ", Pattern.CASE_INSENSITIVE);
 	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
 		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_ORNAMENT))),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any completed god book", item(ItemID.SARADOMINBOOK_COMPLETE), item(ItemID.GUTHIXBOOK_COMPLETE), item(ItemID.ZAMORAKBOOK_COMPLETE), item(ItemID.ARMADYLBOOK_COMPLETE), item(ItemID.BANDOSBOOK_COMPLETE), item(ItemID.ZAROSBOOK_COMPLETE), item(ItemID.LEAGUE_3_BOOK_SARADOMIN), item(ItemID.LEAGUE_3_BOOK_GUTHIX), item(ItemID.LEAGUE_3_BOOK_ZAMORAK), item(ItemID.LEAGUE_3_BOOK_ARMADYL), item(ItemID.LEAGUE_3_BOOK_BANDOS), item(ItemID.LEAGUE_3_BOOK_ZAROS))),
@@ -69,7 +72,8 @@ public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 		new FaloTheBardClue("These gloves of white won't help you fight, but aid in cooking, they just might.", item(ItemID.GAUNTLETS_OF_COOKING)),
 		new FaloTheBardClue("They come from some time ago, from a land unto the east. Fossilised they have become, this small and gentle beast.", item(ItemID.FOSSIL_NUMULITE)),
 		new FaloTheBardClue("To slay a dragon you must first do, before this chest piece can be put on you.", item(ItemID.RUNE_PLATEBODY)),
-		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ItemID.BURGH_ROD_COMMAND_FINAL_10, ItemID.BURGH_ROD_COMMAND_FINAL_1), item(ItemID.IVANDIS_FLAIL), item(ItemID.BLISTERWOOD_FLAIL)))
+		new FaloTheBardClue("Vampyres are agile opponents, damaged best with a weapon of many components.", any("Rod of Ivandis or Ivandis/Blisterwood flail", range(ItemID.BURGH_ROD_COMMAND_FINAL_10, ItemID.BURGH_ROD_COMMAND_FINAL_1), item(ItemID.IVANDIS_FLAIL), item(ItemID.BLISTERWOOD_FLAIL))),
+		new FaloTheBardClue("You won't bring me to heel, unless you have a bright red keel.", item(ItemID.SAILING_BOAT_KEEL_PART_DRAGON))
 	);
 
 	private static final WorldPoint LOCATION = new WorldPoint(2689, 3550, 0);
@@ -179,5 +183,21 @@ public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 		}
 
 		return null;
+	}
+
+	public static FaloTheBardClue forChatboxText(String sender, String dialogText)
+	{
+		if (!FALO_THE_BARD.equals(sender))
+		{
+			return null;
+		}
+
+		final Matcher matcher = CLUE_TEXT_PREFIX.matcher(dialogText);
+		if (!matcher.find())
+		{
+			return null;
+		}
+
+		return forText(dialogText.substring(matcher.end()));
 	}
 }

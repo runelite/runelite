@@ -58,7 +58,8 @@ public enum Emote
 	STAMP("Stamp", SpriteID.Emotes.STAMP),
 	FLAP("Flap", SpriteID.Emotes.FLAP),
 	PUSH_UP("Push up", SpriteID.Emotes.PUSH_UP),
-	FORTIS_SALUTE("Fortis Salute", SpriteID.EmotesLocked.FORTIS_SALUTE);
+	CRAB_DANCE("Crab Dance", SpriteID.Emotes.CRAB_DANCE),
+	;
 
 	private final String name;
 	private final int spriteId;

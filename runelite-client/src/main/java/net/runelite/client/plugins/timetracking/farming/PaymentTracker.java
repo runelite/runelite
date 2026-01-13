@@ -56,7 +56,8 @@ public class PaymentTracker
 		"That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.",
 		"That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.",
 		"That'll do nicely. Leave it with me - I'll make sure that<br>patch grows for you.",
-		"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you."
+		"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you.",
+		"Alright, leave it with me. I'll look after that nursery for<br>you."
 	);
 
 	private final Client client;

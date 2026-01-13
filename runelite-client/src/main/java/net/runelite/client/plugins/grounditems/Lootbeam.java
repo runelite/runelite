@@ -102,6 +102,11 @@ class Lootbeam
 		runeLiteObject.setActive(true);
 	}
 
+	int getWorldView()
+	{
+		return runeLiteObject.getWorldView();
+	}
+
 	public void setColor(Color color)
 	{
 		if (this.color != null && this.color.equals(color))

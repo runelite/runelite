@@ -153,7 +153,7 @@ public class SpriteLoader
 					}
 				}
 			}
-			else
+
 			{
 				// everything non-zero is opaque
 				for (int j = 0; j < dimension; ++j)

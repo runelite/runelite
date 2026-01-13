@@ -73,7 +73,7 @@ public interface GpuPluginConfig extends Config
 		description = "Extra map area to load, in 8 tile chunks.",
 		position = 1
 	)
-	default int expandedMapLoadingChunks()
+	default int expandedMapLoadingZones()
 	{
 		return 3;
 	}
@@ -108,7 +108,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default UIScalingMode uiScalingMode()
 	{
-		return UIScalingMode.LINEAR;
+		return UIScalingMode.HYBRID;
 	}
 
 	@Range(
@@ -123,18 +123,6 @@ public interface GpuPluginConfig extends Config
 	default int fogDepth()
 	{
 		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "useComputeShaders",
-		name = "Compute shaders",
-		description = "Offloads face sorting to GPU. Requires plugin restart.",
-		warning = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect.",
-		position = 6
-	)
-	default boolean useComputeShaders()
-	{
-		return true;
 	}
 
 	@Range(

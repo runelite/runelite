@@ -398,6 +398,16 @@ public class ModelLoader
 			var2.readInt();
 		}
 
+		boolean hasOffsets = var2.readUnsignedByte() == 1;
+		if (hasOffsets)
+		{
+			def.faceZOffsets = new byte[var10];
+
+			for (int i = 0; i < var10; ++i)
+			{
+				def.faceZOffsets[i] = var2.readByte();
+			}
+		}
 	}
 
 	void decodeType2(ModelDefinition def, byte[] var1)
@@ -464,7 +474,8 @@ public class ModelLoader
 		var24 += var18;
 		int var35 = var24;
 		var24 += var19;
-		int var10000 = var24 + var20;
+		int var36 = var24;
+		var24 += var20;
 		def.vertexCount = var9;
 		def.faceCount = var10;
 		def.numTextureFaces = var11;
@@ -523,7 +534,7 @@ public class ModelLoader
 		var4.setOffset(var23);
 		var5.setOffset(var34);
 		var6.setOffset(var35);
-		var7.setOffset(var24);
+		var7.setOffset(var36);
 		var8.setOffset(var29);
 		int var37 = 0;
 		int var38 = 0;
@@ -702,6 +713,18 @@ public class ModelLoader
 			def.texIndices1[var44] = (short) var4.readUnsignedShort();
 			def.texIndices2[var44] = (short) var4.readUnsignedShort();
 			def.texIndices3[var44] = (short) var4.readUnsignedShort();
+		}
+
+		var4.setOffset(var24);
+		boolean hasOffsets = var4.readUnsignedByte() == 1;
+		if (hasOffsets)
+		{
+			def.faceZOffsets = new byte[var10];
+
+			for (var45 = 0; var45 < var10; ++var45)
+			{
+				def.faceZOffsets[var45] = var4.readByte();
+			}
 		}
 
 		if (def.textureCoords != null)

@@ -60,9 +60,24 @@ public interface DrawCallbacks
 	 * Enable zbuf renderer.
 	 */
 	int ZBUF = 0x10;
+	/**
+	 * Enable the {@link #zoneInFrustum(int, int, int, int)} callback
+	 */
+	int ZBUF_ZONE_FRUSTUM_CHECK = 0x20;
+	/**
+	 * Enable the {@link Model#getUnlitFaceColors()} method
+	 */
+	int UNLIT_FACE_COLORS = 0x40;
+	int RENDER_THREADS_MASK = 15;
+	int RENDER_THREADS_SHIFT = 7;
 
 	int PASS_OPAQUE = 0;
 	int PASS_ALPHA = 1;
+
+	static int RENDER_THREADS(int num)
+	{
+		return (num & RENDER_THREADS_MASK) << RENDER_THREADS_SHIFT;
+	}
 
 	default void draw(Projection projection, Scene scene, Renderable renderable, int orientation, int x, int y, int z, long hash)
 	{
@@ -107,9 +122,14 @@ public interface DrawCallbacks
 
 	void swapScene(Scene scene);
 
-	default boolean tileInFrustum(Scene scene, int pitchSin, int pitchCos, int yawSin, int yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
+	default boolean tileInFrustum(Scene scene, float pitchSin, float pitchCos, float yawSin, float yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
 	{
 		return true;
+	}
+
+	default boolean zoneInFrustum(int zoneX, int zoneZ, int maxY, int minY)
+	{
+		return false;
 	}
 
 	default void loadScene(WorldView worldView, Scene scene)
@@ -135,7 +155,11 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void drawZone(Projection entityProjection, Scene scene, int pass, int zx, int zz)
+	default void drawZoneOpaque(Projection entityProjection, Scene scene, int zx, int zz)
+	{
+	}
+
+	default void drawZoneAlpha(Projection entityProjection, Scene scene, int level, int zx, int zz)
 	{
 	}
 
@@ -143,7 +167,12 @@ public interface DrawCallbacks
 	{
 	}
 
-	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m)
+	default void drawDynamic(int renderThreadId, Projection worldProjection, Scene scene, TileObject tileObject, Renderable r, Model m, int orient, int x, int y, int z)
+	{
+		drawDynamic(worldProjection, scene, tileObject, r, m, orient, x, y, z);
+	}
+
+	default void drawTemp(Projection worldProjection, Scene scene, GameObject gameObject, Model m, int orient, int x, int y, int z)
 	{
 	}
 

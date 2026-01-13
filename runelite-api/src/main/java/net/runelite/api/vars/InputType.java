@@ -26,10 +26,10 @@ package net.runelite.api.vars;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.VarClientInt;
+import net.runelite.api.gameval.VarClientID;
 
 /**
- * An enumeration of input types for {@link VarClientInt#INPUT_TYPE}.
+ * An enumeration of input types for {@link VarClientID#MESLAYERMODE}.
  */
 @Getter
 @RequiredArgsConstructor

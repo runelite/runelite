@@ -36,9 +36,12 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 
 public class StaminaPotion extends StatBoost
 {
-	public StaminaPotion()
+	private final int baseRestore;
+
+	public StaminaPotion(int baseRestore)
 	{
 		super(RUN_ENERGY, false);
+		this.baseRestore = baseRestore;
 	}
 
 	@Override
@@ -50,9 +53,9 @@ public class StaminaPotion extends StatBoost
 			Item ring = equipContainer.getItem(EquipmentInventorySlot.RING.getSlotIdx());
 			if (ring != null && ring.getId() == ItemID.RING_OF_ENDURANCE)
 			{
-				return 40;
+				return baseRestore * 2;
 			}
 		}
-		return 20;
+		return baseRestore;
 	}
 }

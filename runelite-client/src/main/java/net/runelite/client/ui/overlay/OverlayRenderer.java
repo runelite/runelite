@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
@@ -95,6 +96,8 @@ public class OverlayRenderer extends MouseAdapter
 	private final ClientUI clientUI;
 	private final EventBus eventBus;
 	private final ChatMessageManager chatMessageManager;
+
+	private Font font, tooltipFont, interfaceFont;
 
 	// Overlay movement variables
 	private final Point overlayOffset = new Point();
@@ -287,6 +290,11 @@ public class OverlayRenderer extends MouseAdapter
 		final Paint paint = graphics.getPaint();
 		final RenderingHints renderingHints = graphics.getRenderingHints();
 		final Color background = graphics.getBackground();
+
+		// Cache overlay fonts
+		this.font = runeLiteConfig.fontType().getFont();
+		this.tooltipFont = runeLiteConfig.tooltipFontType().getFont();
+		this.interfaceFont = runeLiteConfig.interfaceFontType().getFont();
 
 		final Rectangle clip = clipBounds(layer);
 		graphics.setClip(clip);
@@ -714,15 +722,15 @@ public class OverlayRenderer extends MouseAdapter
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			graphics.setFont(runeLiteConfig.fontType().getFont());
+			graphics.setFont(font);
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			graphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			graphics.setFont(tooltipFont);
 		}
 		else
 		{
-			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			graphics.setFont(interfaceFont);
 		}
 
 		graphics.translate(point.x, point.y);
@@ -739,8 +747,14 @@ public class OverlayRenderer extends MouseAdapter
 			return;
 		}
 
-		final Dimension dimension = MoreObjects.firstNonNull(overlayDimension, new Dimension());
-		overlay.getBounds().setSize(dimension);
+		if (overlayDimension != null)
+		{
+			overlay.getBounds().setSize(overlayDimension);
+		}
+		else
+		{
+			overlay.getBounds().setSize(0, 0);
+		}
 	}
 
 	private OverlayPosition getCorrectedOverlayPosition(final Overlay overlay)
@@ -898,20 +912,30 @@ public class OverlayRenderer extends MouseAdapter
 	 */
 	private Point clampOverlayLocation(int overlayX, int overlayY, int overlayWidth, int overlayHeight, Overlay overlay)
 	{
+		int px, py, pw, ph;
 		Rectangle parentBounds = overlay.getParentBounds();
 		if (parentBounds == null || parentBounds.isEmpty())
 		{
 			// If no bounds are set, use the full client bounds
 			Dimension dim = client.getRealDimensions();
-			parentBounds = new Rectangle(0, 0, dim.width, dim.height);
+			px = py = 0;
+			pw = dim.width;
+			ph = dim.height;
+		}
+		else
+		{
+			px = parentBounds.x;
+			py = parentBounds.y;
+			pw = parentBounds.width;
+			ph = parentBounds.height;
 		}
 
 		// Constrain overlay position to be within the parent bounds
 		return new Point(
-			Ints.constrainToRange(overlayX, parentBounds.x,
-				Math.max(parentBounds.x, parentBounds.x + parentBounds.width - overlayWidth)),
-			Ints.constrainToRange(overlayY, parentBounds.y,
-				Math.max(parentBounds.y, parentBounds.y + parentBounds.height - overlayHeight))
+			Ints.constrainToRange(overlayX, px,
+				Math.max(px, px + pw - overlayWidth)),
+			Ints.constrainToRange(overlayY, py,
+				Math.max(py, py + ph - overlayHeight))
 		);
 	}
 }

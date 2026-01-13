@@ -398,7 +398,13 @@ class WidgetInspector extends DevToolsFrame
 
 		int x = 10, y = 2;
 		Widget parent = client.getWidget(InterfaceID.Orbs.UNIVERSE);
-		if (parent == null)
+		if (parent == null || parent.isHidden())
+		{
+			parent = client.getWidget(InterfaceID.OrbsNomap.UNIVERSE);
+			x = 32;
+			y = 0;
+		}
+		if (parent == null || parent.isHidden())
 		{
 			Widget[] roots = client.getWidgetRoots();
 

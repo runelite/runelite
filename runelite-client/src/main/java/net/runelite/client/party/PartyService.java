@@ -175,8 +175,8 @@ public class PartyService
 			wsClient.changeSession(UUID.randomUUID());
 		}
 
-		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 		wsClient.join(partyId, memberId);
+		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 	}
 
 	public <T extends PartyMessage> void send(T message)

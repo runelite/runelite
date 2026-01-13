@@ -1831,9 +1831,9 @@ public class ChatCommandsPlugin extends Plugin
 			final Skill hiscoreSkill;
 			final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
 
-			// League points only exist on the league hiscores
+			// League points only exist on the seasonal hiscores
 			final HiscoreEndpoint endPoint = minigame == HiscoreSkill.LEAGUE_POINTS ?
-				HiscoreEndpoint.LEAGUE :
+				HiscoreEndpoint.SEASONAL :
 				lookup.getEndpoint();
 
 			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), endPoint);
@@ -2088,7 +2088,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else if (name.contains(IconID.LEAGUE.toString()))
 		{
-			return HiscoreEndpoint.LEAGUE;
+			return HiscoreEndpoint.SEASONAL;
 		}
 		else
 		{
@@ -2745,6 +2745,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "fortis colosseum":
 				return "Sol Heredit";
 
+			// colosseum glory
+			case "glory":
+			case "colo glory":
+				return "Colosseum Glory";
+
 			case "bird egg":
 			case "bird eggs":
 			case "bird's egg":
@@ -2848,6 +2853,8 @@ public class ChatCommandsPlugin extends Plugin
 			case "CON":
 			case "CONSTRUCT":
 				return net.runelite.api.Skill.CONSTRUCTION.getName();
+			case "SAIL":
+				return net.runelite.api.Skill.SAILING.getName();
 			case "ALL":
 			case "TOTAL":
 				return "Overall";

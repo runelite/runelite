@@ -53,4 +53,9 @@ public interface GameEngine
 	boolean isClientThread();
 
 	void resizeCanvas();
+
+	/**
+	 * Releases the startup block if "runelite.delaystart" is set true
+	 */
+	public void unblockStartup();
 }

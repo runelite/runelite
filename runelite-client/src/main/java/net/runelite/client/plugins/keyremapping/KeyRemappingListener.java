@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.VarClientStr;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
@@ -75,7 +75,6 @@ class KeyRemappingListener implements KeyListener
 		if (!plugin.isTyping())
 		{
 			int mappedKeyCode = KeyEvent.VK_UNDEFINED;
-			int mappedModifiers = 0;
 
 			if (config.cameraRemap())
 			{
@@ -168,22 +167,11 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}
 
-			if (!plugin.isDialogOpen() && config.worldmap().matches(e))
-			{
-				// World map uses ctrl+m as hotkey
-				mappedKeyCode = KeyEvent.VK_M;
-				mappedModifiers = KeyEvent.CTRL_DOWN_MASK;
-			}
-
-			if (mappedKeyCode != KeyEvent.VK_UNDEFINED)
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
 			{
 				final char keyChar = e.getKeyChar();
 				modified.put(e.getKeyCode(), mappedKeyCode);
 				e.setKeyCode(mappedKeyCode);
-				if (mappedModifiers != 0)
-				{
-					e.setModifiers(mappedModifiers);
-				}
 				// arrow keys and fkeys do not have a character
 				e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 				if (keyChar != KeyEvent.CHAR_UNDEFINED)
@@ -217,7 +205,7 @@ class KeyRemappingListener implements KeyListener
 					plugin.setTyping(false);
 					clientThread.invoke(() ->
 					{
-						client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
+						client.setVarcStrValue(VarClientID.CHATINPUT, "");
 						plugin.lockChat();
 					});
 					break;
@@ -227,7 +215,7 @@ class KeyRemappingListener implements KeyListener
 					break;
 				case KeyEvent.VK_BACK_SPACE:
 					// Only lock chat on backspace when the typed text is now empty
-					if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT)))
+					if (Strings.isNullOrEmpty(client.getVarcStrValue(VarClientID.CHATINPUT)))
 					{
 						plugin.setTyping(false);
 						clientThread.invoke(plugin::lockChat);

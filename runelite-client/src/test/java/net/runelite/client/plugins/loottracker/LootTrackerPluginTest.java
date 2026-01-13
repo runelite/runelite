@@ -63,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
+import static net.runelite.client.plugins.loottracker.LootTrackerPlugin.ZOMBIE_PIRATE_LOCKER_EVENT;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -163,8 +164,8 @@ public class LootTrackerPluginTest
 
 		wv = mock(WorldView.class);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
-
 		when(client.getWorldView(anyInt())).thenReturn(wv);
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(wv);
 
 		lootTrackerPlugin = spy(lootTrackerPlugin);
 		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
@@ -700,5 +701,67 @@ public class LootTrackerPluginTest
 
 		assertEquals("Filtered GE total should only include goblin loot", goblinTotalGe, expectedFilteredGeTotal);
 		assertEquals("Filtered HA total should only include goblin loot", goblinTotalHa, expectedFilteredHaTotal);
+	}
+
+	@Test
+	public void testZombiePirateLockerLoot()
+	{
+		Map.of(
+			ItemID.BLIGHTED_4DOSE2RESTORE, "Blighted super restore(4)",
+			ItemID.BLIGHTED_SACK_ICEBARRAGE, "Blighted ancient ice sack",
+			ItemID.COINS, "Coins",
+			ItemID.RUNE_SWORD, "Rune sword"
+		).forEach((itemId, itemName) ->
+		{
+			final ItemPrice itemPrice = new ItemPrice();
+			itemPrice.setId(itemId);
+			itemPrice.setName(itemName);
+			when(itemManager.search(itemName)).thenReturn(List.of(itemPrice));
+		});
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>6 x Blighted super restore(4)</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.BLIGHTED_4DOSE2RESTORE, 6)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>32 x Blighted ancient ice sack</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.BLIGHTED_SACK_ICEBARRAGE, 32)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>6,604 x Coins</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.COINS, 6604)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>2 x Rune sword</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.RUNE_SWORD, 2)
+		));
+	}
+
+	@Test
+	public void testLargeSalvage()
+	{
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.SAILING_LARGE_SHIPWRECK_SALVAGE, 1)});
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You sort through the large salvage and find: 4 x Steel nails.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.NAILS, 4)});
+
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
+
+		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
 	}
 }

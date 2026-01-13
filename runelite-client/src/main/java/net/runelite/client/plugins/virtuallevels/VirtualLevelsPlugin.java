@@ -47,7 +47,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class VirtualLevelsPlugin extends Plugin
 {
-	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";
+	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level: ";
 
 	@Inject
 	private VirtualLevelsConfig config;

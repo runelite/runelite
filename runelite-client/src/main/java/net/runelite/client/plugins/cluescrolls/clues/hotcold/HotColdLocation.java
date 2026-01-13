@@ -43,6 +43,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.KARAMJA;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MISTHALIN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MORYTANIA;
+import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.OCEAN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.VARLAMORE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WESTERN_PROVINCE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WILDERNESS;
@@ -148,6 +149,10 @@ public enum HotColdLocation
 	MORYTANIA_DRAGONTOOTH_SOUTH(MASTER, new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_SLEPE_TENTS(MASTER, new WorldPoint(3769, 3383, 0), MORYTANIA, "North-east of Slepe, near the tents.", BRASSICAN_MAGE),
 	NORTHEAST_OF_AL_KHARID_MINE(BEGINNER, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
+	SAIL_GREAT_CONCH(MASTER, new WorldPoint(3249, 2349, 0), OCEAN, "In the south-eastern mine of the Great Conch", BRASSICAN_MAGE),
+	SAIL_ISLE_OF_SERPENTS(MASTER, new WorldPoint(1856, 2415, 0), OCEAN, "On the Isle of Serpents", BRASSICAN_MAGE),
+	SAIL_DRUMSTICK_ISLE(MASTER, new WorldPoint(2139, 3562, 0), OCEAN, "On Drumstick Isle", BRASSICAN_MAGE),
+	SAIL_BUCCANEERS_HAVEN(MASTER, new WorldPoint(2078, 3665, 0), OCEAN, "On Buccaneers' Haven", BRASSICAN_MAGE),
 	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
 	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
 	VARLAMORE_RAINFOREST_CENTRE(MASTER, new WorldPoint(1312, 3108, 0), VARLAMORE, "In the centre of the Tlati Rainforest.", BRASSICAN_MAGE),
@@ -187,7 +192,6 @@ public enum HotColdLocation
 	ZEAH_HOUSECHURCH(MASTER, new WorldPoint(1681, 3794, 0), ZEAH, "By the entrance to the Arceuus church.", ANCIENT_WIZARDS),
 	ZEAH_DARK_ALTAR(MASTER, new WorldPoint(1698, 3880, 0), ZEAH, "West of the Dark Altar.", BRASSICAN_MAGE),
 	ZEAH_ARCEUUS_HOUSE(MASTER, new WorldPoint(1710, 3700, 0), ZEAH, "By the south-eastern entrance to Arceuus.", BRASSICAN_MAGE),
-	ZEAH_ESSENCE_MINE(MASTER, new WorldPoint(1762, 3852, 0), ZEAH, "By the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_ESSENCE_MINE_NE(MASTER, new WorldPoint(1773, 3867, 0), ZEAH, "North-east of the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_PISCARILUS_MINE(MASTER, new WorldPoint(1768, 3705, 0), ZEAH, "South of the Piscarilius mine.", ANCIENT_WIZARDS),
 	ZEAH_GOLDEN_FIELD_TAVERN(MASTER, new WorldPoint(1718, 3643, 0), ZEAH, "South of the gravestone in Kingstown.", BRASSICAN_MAGE),

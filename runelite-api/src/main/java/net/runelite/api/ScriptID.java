@@ -287,7 +287,7 @@ public final class ScriptID
 	/**
 	 * Called to build the combat interface
 	 */
-	@ScriptArguments()
+	@ScriptArguments(integer = 1)
 	public static final int COMBAT_INTERFACE_SETUP = 7593;
 
 	/**
@@ -295,6 +295,9 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 2)
 	public static final int TOPLEVEL_REDRAW = 907;
+
+	@ScriptArguments(integer = 2)
+	public static final int TOPLEVEL_RESIZE_CUSTOMISE = 920;
 
 	/**
 	 * Called to set position of an xpdrop text and sprite(s)
@@ -474,7 +477,7 @@ public final class ScriptID
 	@ScriptArguments(integer = 3)
 	public static final int POTIONSTORE_DOSE_CHANGE = 6555;
 
-	@ScriptArguments(integer = 5)
+	@ScriptArguments(integer = 6)
 	public static final int FAIRYRINGS_SORT_UPDATE = 402;
 
 	@ScriptArguments(integer = 1, string = 1)
@@ -491,4 +494,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 1)
 	public static final int DOM_LOOT_CLAIM = 7928;
+
+	@ScriptArguments(integer = 4)
+	public static final int CAMERA_SET_ZOOM_LIMITS = 605;
+
+	@ScriptArguments(integer = 6, string = 9)
+	public static final int INTERFACE_INV_DRAW_SLOT_BIG = 154;
 }

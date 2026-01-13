@@ -91,7 +91,7 @@ public class ItemStatChanges
 		add(food(7), ItemID.ELID_CHOC_ICE, ItemID.TROUT, ItemID.COD, ItemID.PLAIN_PIZZA, ItemID.HALF_PLAIN_PIZZA, ItemID.APPLE_PIE, ItemID.HALF_AN_APPLE_PIE, ItemID.SPIT_ROASTED_RABBIT_MEAT,
 			ItemID.PREMADE_CHOCCHIP_CRUNCHIES, ItemID.CHOCCHIP_CRUNCHIES, ItemID.PREMADE_SPICY_CRUNCHIES, ItemID.SPICY_CRUNCHIES);
 		add(food(8), ItemID.PIKE, ItemID.SPIT_ROASTED_BEAST_MEAT, ItemID.MEAT_PIZZA, ItemID.HALF_MEAT_PIZZA, ItemID.PREMADE_WORM_CRUNCHIES, ItemID.WORM_CRUNCHIES, ItemID.PREMADE_TOAD_CRUNCHIES,
-			ItemID.TOAD_CRUNCHIES, ItemID.BOWL_EGG_TOMATO, ItemID.RAIDS_BAT1_COOKED, ItemID.PEACH, ItemID.RAIDS_FISH1_COOKED);
+			ItemID.TOAD_CRUNCHIES, ItemID.BOWL_EGG_TOMATO, ItemID.RAIDS_BAT1_COOKED, ItemID.PEACH, ItemID.RAIDS_FISH1_COOKED, ItemID.RED_CRAB_MEAT);
 		add(food(9), ItemID.PREMADE_PINEAPPLE_PUNCH, ItemID.PINEAPPLE_PUNCH, ItemID.PREMADE_FRUIT_BLAST, ItemID.FRUIT_BLAST, ItemID.SALMON, ItemID.ANCHOVIE_PIZZA,
 			ItemID.HALF_ANCHOVIE_PIZZA);
 		add(food(10), ItemID.TUNA, ItemID.HUNDRED_PIRATE_GIANT_CRAB_MEAT_5, ItemID.BOWL_TUNA, ItemID.COOKED_CHOMPY, ItemID.PEST_FIELD_RATION, ItemID.DRAGONFRUIT,
@@ -102,16 +102,17 @@ public class ItemStatChanges
 		add(food(12), ItemID.LOBSTER, ItemID.PREMADE_WORM_HOLE, ItemID.WORM_HOLE, ItemID.PREMADE_VEG_BALL, ItemID.VEG_BALL);
 		add(food(13), ItemID.BASS, ItemID.BOWL_TUNA_SWEETCORN);
 		add(food(14), ItemID.POTATO_BUTTER, ItemID.POTATO_CHILLI_CARNE, ItemID.SWORDFISH, ItemID.RAIDS_BAT3_COOKED, ItemID.PUMPKIN, ItemID.EASTER_EGG, ItemID.RAIDS_FISH3_COOKED,
-			ItemID.COOKED_OOMLIE);
-		add(food(15), ItemID.PREMADE_TANGLED_TOADS_LEGS, ItemID.TANGLED_TOADS_LEGS, ItemID.PREMADE_CHOCOLATE_BOMB, ItemID.CHOCOLATE_BOMB, ItemID._100_JUBBLY_MEAT_COOKED);
+			ItemID.COOKED_OOMLIE, ItemID.BLUE_CRAB_MEAT);
+		add(food(15), ItemID.PREMADE_TANGLED_TOADS_LEGS, ItemID.TANGLED_TOADS_LEGS, ItemID.PREMADE_CHOCOLATE_BOMB, ItemID.CHOCOLATE_BOMB, ItemID._100_JUBBLY_MEAT_COOKED, ItemID.SWORDTIP_SQUID);
 		add(food(16), ItemID.MONKFISH, ItemID.POTATO_CHEESE, ItemID.POTATO_EGG_TOMATO, ItemID.GAUNTLET_COMBO_FOOD, ItemID.GAUNTLET_COMBO_FOOD_HM);
-		add(food(17), ItemID.RAIDS_FISH4_COOKED, ItemID.RAIDS_BAT4_COOKED);
+		add(food(17), ItemID.RAIDS_FISH4_COOKED, ItemID.RAIDS_BAT4_COOKED, ItemID.GIANT_KRILL, ItemID.JUMBO_SQUID);
 		add(food(18), ItemID.TBWT_COOKED_KARAMBWAN, ItemID.BLIGHTED_KARAMBWAN, ItemID.BR_TBWT_COOKED_KARAMBWAN /* LMS */);
-		add(food(19), ItemID.CURRY, ItemID.UGTHANKI_KEBAB_BAD, ItemID.UGTHANKI_KEBAB);
-		add(food(20), ItemID.POTATO_MUSHROOM_ONION, ItemID.SHARK, ItemID.RAIDS_FISH5_COOKED, ItemID.RAIDS_BAT5_COOKED, ItemID.HUNDRED_ILM_COOKED_STUFFED_SNAKE, ItemID.BR_SHARK /* LMS */, ItemID.GAUNTLET_FOOD);
+		add(food(19), ItemID.CURRY, ItemID.UGTHANKI_KEBAB_BAD, ItemID.UGTHANKI_KEBAB, ItemID.RAINBOW_CRAB_MEAT);
+		add(food(20), ItemID.POTATO_MUSHROOM_ONION, ItemID.SHARK, ItemID.RAIDS_FISH5_COOKED, ItemID.RAIDS_BAT5_COOKED, ItemID.HUNDRED_ILM_COOKED_STUFFED_SNAKE, ItemID.BR_SHARK /* LMS */, ItemID.GAUNTLET_FOOD, ItemID.EVENT_CORRUPTED_SHARK, ItemID.HALIBUT);
 		add(food(21), ItemID.SEATURTLE);
 		add(food(22), ItemID.MANTARAY, ItemID.BLIGHTED_MANTARAY, ItemID.DARK_CRAB, ItemID.POTATO_TUNA_SWEETCORN);
 		add(food(23), ItemID.RAIDS_FISH6_COOKED, ItemID.RAIDS_BAT6_COOKED);
+		add(food(24), ItemID.MARLIN);
 		add(new Anglerfish(), ItemID.ANGLERFISH, ItemID.BLIGHTED_ANGLERFISH);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .06)), ItemID.STRAWBERRY);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .05)), ItemID.WATERMELON_SLICE);
@@ -132,6 +133,9 @@ public class ItemStatChanges
 		add(combo(food(13), food(10), heal(RUN_ENERGY, 10)), ItemID.DASHINGKEBBIT_COOKED);
 		add(combo(food(12), food(9)), ItemID.ANTELOPESUN_COOKED);
 		add(combo(food(14), food(12)), ItemID.ANTELOPEMOON_COOKED);
+		add(new CappedStatBoost(HITPOINTS, max -> 18, max -> Math.min((int) (max * 0.2), 10)), ItemID.HADDOCK);
+		add(combo(food(19), heal(RUN_ENERGY, 20)), ItemID.YELLOWFIN);
+		add(combo(food(22), heal(PRAYER, 5)), ItemID.BLUEFIN);
 
 		// Dorgeshuun Cuisine
 		add(food(2), ItemID.DORGESH_BAT_SHISH, ItemID.DORGESH_CRISPY_FROGLEGS, ItemID.DORGESH_CAVE_CRAWLER_FILLETS, ItemID.DORGESH_WALL_BEAST_FINGERS, ItemID.DORGESH_FROG_BURGER, ItemID.DORGESH_FROG_SPAWN_GUMBO, ItemID.DORGESH_GREEN_GLOOP_SOUP,
@@ -195,6 +199,14 @@ public class ItemStatChanges
 		add(combo(food(16), boost(PRAYER, 1), dec(ATTACK, 5), dec(THIEVING, 1)), ItemID.TONAMEYO_WHITE);
 		add(combo(food(16), boost(HERBLORE, 1), dec(ATTACK, 5), dec(FARMING, 1)), ItemID.CHICHILIHUI_ROSE);
 		add(combo(food(16), boost(SLAYER, 1), dec(ATTACK, 5), dec(AGILITY, 1)), ItemID.IMPERIAL_ROSE);
+		add(combo(boost(SAILING, 1), boost(MAGIC, 2), dec(ATTACK, 2)), ItemID.KRAKEN_INK_STOUT);
+		add(combo(boost(SAILING, 1), boost(RANGED, 2), boost(STRENGTH, 2), dec(MAGIC, 2)), ItemID.PERILDANCE_BITTER);
+		add(combo(boost(SAILING, 2), boost(FISHING, 2), dec(ATTACK, 2)), ItemID.TRAWLERS_TRUST);
+		add(combo(boost(SAILING, 3), boost(COOKING, 2), dec(AGILITY, 2)), ItemID.WHIRLPOOL_SURPRISE);
+		add(combo(boost(SAILING, 4), dec(THIEVING, 2)), ItemID.HORIZONS_LURE);
+		add(combo(boost(SLAYER, 1), new BoostedStatBoost(SAILING, false, perc(.02, -2)), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2)), new BoostedStatBoost(DEFENCE, false, perc(.02, -2))), ItemID.KRAKEN_COLADA);
+		add(combo(boost(FISHING, 1), new BoostedStatBoost(SAILING, false, perc(.02, -2)), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2)), new BoostedStatBoost(DEFENCE, false, perc(.02, -2))), ItemID.BARNACLE_BLASTER);
+		add(combo(boost(HUNTER, 1), new BoostedStatBoost(SAILING, false, perc(.02, -2)), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2)), new BoostedStatBoost(DEFENCE, false, perc(.02, -2))), ItemID.SAILORS_MIRAGE);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), ItemID.OSMAN_SQUIRK_J_WINTER);
@@ -248,6 +260,8 @@ public class ItemStatChanges
 		add(ancientBrew, ItemID._1DOSEANCIENTBREW, ItemID._2DOSEANCIENTBREW, ItemID._3DOSEANCIENTBREW, ItemID._4DOSEANCIENTBREW);
 		add(new AncientBrew(.08, 3), ItemID._1DOSEFORGOTTENBREW, ItemID._2DOSEFORGOTTENBREW, ItemID._3DOSEFORGOTTENBREW, ItemID._4DOSEFORGOTTENBREW);
 		add(new MoonlightPotion(), ItemID._1DOSEMOONLIGHTPOTION, ItemID._2DOSEMOONLIGHTPOTION, ItemID._3DOSEMOONLIGHTPOTION, ItemID._4DOSEMOONLIGHTPOTION);
+		add(combo(boost(HITPOINTS, perc(.10, 2)), boost(RANGED, perc(.10, 4)), new BoostedStatBoost(ATTACK, false, perc(.10, -2)), new BoostedStatBoost(STRENGTH, false, perc(.10, -2)), new BoostedStatBoost(DEFENCE, false, perc(.10, -2)), new BoostedStatBoost(MAGIC, false, perc(.10, -2))),
+			ItemID._1DOSEARMADYLBREW, ItemID._2DOSEARMADYLBREW, ItemID._3DOSEARMADYLBREW, ItemID._4DOSEARMADYLBREW);
 
 		// Mixed combat potions
 		add(new MixedPotion(3, ATTACK_POT), ItemID.BRUTAL_1DOSE1ATTACK, ItemID.BRUTAL_2DOSE1ATTACK);
@@ -278,7 +292,7 @@ public class ItemStatChanges
 		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);
-		final SingleEffect staminaPot = new StaminaPotion();
+		final SingleEffect staminaPot = new StaminaPotion(20);
 		final DeltaPercentage remedyHeal = perc(0.16, 6);
 		add(restorePot, ItemID._1DOSESTATRESTORE, ItemID._2DOSESTATRESTORE, ItemID._3DOSESTATRESTORE, ItemID._4DOSESTATRESTORE);
 		add(energyPot, ItemID._1DOSE1ENERGY, ItemID._2DOSE1ENERGY, ItemID._3DOSE1ENERGY, ItemID._4DOSE1ENERGY);
@@ -291,6 +305,8 @@ public class ItemStatChanges
 			ItemID.BR_SANFEW_SALVE_4_DOSE, ItemID.BR_SANFEW_SALVE_3_DOSE, ItemID.BR_SANFEW_SALVE_2_DOSE, ItemID.BR_SANFEW_SALVE_1_DOSE /* LMS */);
 		add(combo(heal(ATTACK, remedyHeal), heal(STRENGTH, remedyHeal), heal(DEFENCE, remedyHeal), heal(RANGED, remedyHeal), heal(MAGIC, remedyHeal)), ItemID._1DOSESTATRENEWAL, ItemID._2DOSESTATRENEWAL, ItemID._3DOSESTATRENEWAL, ItemID._4DOSESTATRENEWAL);
 		add(staminaPot, ItemID._1DOSESTAMINA, ItemID._2DOSESTAMINA, ItemID._3DOSESTAMINA, ItemID._4DOSESTAMINA);
+		add(new StaminaPotion(40), ItemID._1DOSE2STAMINA, ItemID._2DOSE2STAMINA, ItemID._3DOSE2STAMINA, ItemID._4DOSE2STAMINA);
+		add(heal(RUN_ENERGY, 40), ItemID._1DOSE3ENERGY, ItemID._2DOSE3ENERGY, ItemID._3DOSE3ENERGY, ItemID._4DOSE3ENERGY);
 
 		// Mixed recovery potions
 		add(new MixedPotion(3, restorePot), ItemID.BRUTAL_1DOSESTATRESTORE, ItemID.BRUTAL_2DOSESTATRESTORE);
@@ -341,7 +357,9 @@ public class ItemStatChanges
 		final Effect hunterPot = boost(HUNTER, 3);
 		add(agilityPot, ItemID._1DOSE1AGILITY, ItemID._2DOSE1AGILITY, ItemID._3DOSE1AGILITY, ItemID._4DOSE1AGILITY);
 		add(fishingPot, ItemID._1DOSEFISHERSPOTION, ItemID._2DOSEFISHERSPOTION, ItemID._3DOSEFISHERSPOTION, ItemID._4DOSEFISHERSPOTION);
+		add(boost(FISHING, 6), ItemID._1DOSE2FISHERSPOTION, ItemID._2DOSE2FISHERSPOTION, ItemID._3DOSE2FISHERSPOTION, ItemID._4DOSE2FISHERSPOTION);
 		add(hunterPot, ItemID._1DOSEHUNTING, ItemID._2DOSEHUNTING, ItemID._3DOSEHUNTING, ItemID._4DOSEHUNTING);
+		add(boost(HUNTER, 6), ItemID._1DOSE2HUNTING, ItemID._2DOSE2HUNTING, ItemID._3DOSE2HUNTING, ItemID._4DOSE2HUNTING);
 		add(combo(boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), ItemID.CUP_GUTHIX_REST_1, ItemID.CUP_GUTHIX_REST_2, ItemID.CUP_GUTHIX_REST_3, ItemID.CUP_GUTHIX_REST_4);
 
 		// Mixed skill potions

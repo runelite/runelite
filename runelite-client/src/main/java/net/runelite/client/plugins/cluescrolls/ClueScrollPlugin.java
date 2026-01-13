@@ -51,7 +51,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
@@ -291,44 +290,58 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		switch (event.getType())
 		{
-			return;
-		}
-
-		String message = event.getMessage();
-
-		if (clue instanceof HotColdClue)
-		{
-			if (((HotColdClue) clue).update(message, this))
+			case GAMEMESSAGE:
+			case SPAM:
 			{
-				worldMapPointsSet = false;
-			}
-		}
+				String message = event.getMessage();
 
-		if (clue instanceof SkillChallengeClue)
-		{
-			String text = Text.removeTags(message);
-			if (text.equals("Skill challenge completed.") ||
-				text.equals("You have completed your master level challenge!") ||
-				text.startsWith("You have completed Charlie's task,") ||
-				text.equals("You have completed this challenge scroll."))
-			{
-				((SkillChallengeClue) clue).setChallengeCompleted(true);
-			}
-		}
+				if (clue instanceof HotColdClue)
+				{
+					if (((HotColdClue) clue).update(message, this))
+					{
+						worldMapPointsSet = false;
+					}
+				}
 
-		if (message.endsWith(" the STASH unit."))
-		{
-			if (clue instanceof EmoteClue && clickedSTASHClue != null && message.equals("You withdraw your items from the STASH unit."))
-			{
-				activeSTASHClue = clickedSTASHClue;
+				if (clue instanceof SkillChallengeClue)
+				{
+					String text = Text.removeTags(message);
+					if (text.equals("Skill challenge completed.") ||
+						text.equals("You have completed your master level challenge!") ||
+						text.startsWith("You have completed Charlie's task,") ||
+						text.equals("You have completed this challenge scroll."))
+					{
+						((SkillChallengeClue) clue).setChallengeCompleted(true);
+					}
+				}
+
+				if (message.endsWith(" the STASH unit."))
+				{
+					if (clue instanceof EmoteClue && clickedSTASHClue != null && message.equals("You withdraw your items from the STASH unit."))
+					{
+						activeSTASHClue = clickedSTASHClue;
+					}
+					else if (message.equals("You deposit your items into the STASH unit."))
+					{
+						activeSTASHClue = null;
+					}
+					clickedSTASHClue = null;
+				}
+				break;
 			}
-			else if (message.equals("You deposit your items into the STASH unit."))
+			case DIALOG:
 			{
-				activeSTASHClue = null;
+				String[] senderAndMessage = event.getMessage().split("\\|", 2);
+				final ClueScroll npcChatClue = findNpcChatClueScroll(senderAndMessage[0], senderAndMessage[1]);
+
+				if (npcChatClue != null)
+				{
+					updateClue(npcChatClue);
+				}
+				break;
 			}
-			clickedSTASHClue = null;
 		}
 	}
 
@@ -953,6 +966,25 @@ public class ClueScrollPlugin extends Plugin
 		if (fairyRingClue != null)
 		{
 			return fairyRingClue;
+		}
+
+		return null;
+	}
+
+	private static ClueScroll findNpcChatClueScroll(String sender, String rawText)
+	{
+		final String text = Text.sanitizeMultilineText(rawText).toLowerCase();
+
+		final SkillChallengeClue skillChallengeClue = SkillChallengeClue.forChatboxText(sender, text);
+		if (skillChallengeClue != null)
+		{
+			return skillChallengeClue;
+		}
+
+		final FaloTheBardClue faloTheBardClue = FaloTheBardClue.forChatboxText(sender, text);
+		if (faloTheBardClue != null)
+		{
+			return faloTheBardClue;
 		}
 
 		return null;

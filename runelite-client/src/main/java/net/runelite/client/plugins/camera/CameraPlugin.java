@@ -34,18 +34,20 @@ import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -71,13 +73,17 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 {
 	private static final int DEFAULT_ZOOM_INCREMENT = 25;
-	private static final int DEFAULT_OUTER_ZOOM_LIMIT = 128;
-	static final int DEFAULT_INNER_ZOOM_LIMIT = 896;
 
 	private boolean controlDown;
 	// flags used to store the mousedown states
 	private boolean rightClick;
 	private boolean middleClick;
+
+	private int defaultZoomSmallMin;
+	private int defaultZoomSmallMax;
+	private int defaultZoomBigMin;
+	private int defaultZoomBigMax;
+
 	/**
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
@@ -133,6 +139,11 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 					.setSource(settingsInit)
 					.run();
 			}
+
+			if (client.getGameState().getState() >= GameState.LOGGED_IN.getState())
+			{
+				limitsChanged();
+			}
 		});
 	}
 
@@ -164,6 +175,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 					.setSource(settingsInit)
 					.run();
 			}
+
+			applyConfigs(false, 0);
 		});
 	}
 
@@ -185,67 +198,76 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		client.setCameraShakeDisabled(config.disableCameraShake());
 	}
 
+	void limitsChanged()
+	{
+		defaultZoomSmallMin = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MIN);
+		defaultZoomSmallMax = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MAX);
+		defaultZoomBigMin = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MIN);
+		defaultZoomBigMax = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MAX);
+
+		applyConfigs(config.innerLimit(), config.outerLimit());
+	}
+
+	void applyConfigs(boolean innerLimit, int outerLimitAdj)
+	{
+		client.setVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MAX, innerLimit ? CameraConfig.INNER_ZOOM_LIMIT : defaultZoomSmallMax);
+		client.setVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MAX, innerLimit ? CameraConfig.INNER_ZOOM_LIMIT : defaultZoomBigMax);
+
+		outerLimitAdj = Ints.constrainToRange(outerLimitAdj, CameraConfig.OUTER_LIMIT_MIN, CameraConfig.OUTER_LIMIT_MAX);
+
+		client.setVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MIN, defaultZoomSmallMin - outerLimitAdj);
+		client.setVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MIN, defaultZoomBigMin - outerLimitAdj);
+	}
+
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (client.getIndexScripts().isOverlayOutdated())
-		{
-			// if any cache overlay fails to load then assume at least one of the zoom scripts is outdated
-			// and prevent zoom extending entirely.
-			return;
-		}
-
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if (!controlDown && "scrollWheelZoom".equals(event.getEventName()) && config.controlFunction() == ControlFunction.CONTROL_TO_ZOOM)
+		// This lets the options panel's slider have an exponential rate
+		final double exponent = 2.d;
+		switch (event.getEventName())
 		{
-			intStack[intStackSize - 1] = 1;
-		}
-
-		if ("innerZoomLimit".equals(event.getEventName()) && config.innerLimit())
-		{
-			intStack[intStackSize - 1] = CameraConfig.INNER_ZOOM_LIMIT;
-			return;
-		}
-
-		if ("outerZoomLimit".equals(event.getEventName()))
-		{
-			int outerLimit = Ints.constrainToRange(config.outerLimit(), CameraConfig.OUTER_LIMIT_MIN, CameraConfig.OUTER_LIMIT_MAX);
-			int outerZoomLimit = DEFAULT_OUTER_ZOOM_LIMIT - outerLimit;
-			intStack[intStackSize - 1] = outerZoomLimit;
-			return;
-		}
-
-		if ("scrollWheelZoomIncrement".equals(event.getEventName()) && config.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
-		{
-			intStack[intStackSize - 1] = config.zoomIncrement();
-			return;
-		}
-
-		if (config.innerLimit())
-		{
-			// This lets the options panel's slider have an exponential rate
-			final double exponent = 2.d;
-			switch (event.getEventName())
-			{
-				case "zoomLinToExp":
+			case "scrollWheelZoom":
+				if (!controlDown && config.controlFunction() == ControlFunction.CONTROL_TO_ZOOM)
+				{
+					intStack[intStackSize - 1] = 1;
+				}
+				break;
+			case "scrollWheelZoomIncrement":
+				if (config.zoomIncrement() != DEFAULT_ZOOM_INCREMENT)
+				{
+					intStack[intStackSize - 1] = config.zoomIncrement();
+				}
+				break;
+			case "zoomLinToExp":
+				if (config.innerLimit() && !client.getIndexScripts().isOverlayOutdated())
 				{
 					double range = intStack[intStackSize - 1];
 					double value = intStack[intStackSize - 2];
 					value = Math.pow(value / range, exponent) * range;
 					intStack[intStackSize - 2] = (int) value;
-					break;
 				}
-				case "zoomExpToLin":
+				break;
+			case "zoomExpToLin":
+				if (config.innerLimit() && !client.getIndexScripts().isOverlayOutdated())
 				{
 					double range = intStack[intStackSize - 1];
 					double value = intStack[intStackSize - 2];
 					value = Math.pow(value / range, 1.d / exponent) * range;
 					intStack[intStackSize - 2] = (int) value;
-					break;
 				}
-			}
+				break;
+		}
+	}
+
+	@Subscribe
+	private void onScriptPostFired(ScriptPostFired ev)
+	{
+		if (ev.getScriptId() == ScriptID.CAMERA_SET_ZOOM_LIMITS)
+		{
+			limitsChanged();
 		}
 	}
 
@@ -264,6 +286,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		if (ev.getGroup().equals("zoom"))
 		{
 			copyConfigs();
+			clientThread.invoke(() -> applyConfigs(config.innerLimit(), config.outerLimit()));
 		}
 	}
 
@@ -309,6 +332,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			{
 				case CANCEL:
 				case WALK:
+				case SET_HEADING:
 					break;
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
@@ -405,8 +429,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 	private Tooltip makeSliderTooltip()
 	{
-		int value = client.getVarcIntValue(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
-		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+		int value = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG);
+		int max = config.innerLimit() ? CameraConfig.INNER_ZOOM_LIMIT : defaultZoomBigMax;
 		return new Tooltip("Camera Zoom: " + value + " / " + max);
 	}
 
