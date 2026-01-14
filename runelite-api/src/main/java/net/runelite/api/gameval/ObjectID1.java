@@ -76853,216 +76853,27 @@ class ObjectID1
 	 * Sails
 	 */
 	public static final int SAILING_NPC_BOAT_BASIC_MEDIUM_SAIL = 60244;
-
-	/**
-	 * Basic cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT = 60245;
-
-	/**
-	 * Basic cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_OPEN = 60246;
-
-	/**
-	 * Oak cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT = 60247;
-
-	/**
-	 * Oak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT_OPEN = 60248;
-
-	/**
-	 * Teak cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT = 60249;
-
-	/**
-	 * Teak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT_OPEN = 60250;
-
-	/**
-	 * Mahogany cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT = 60251;
-
-	/**
-	 * Mahogany cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT_OPEN = 60252;
-
-	/**
-	 * Camphor cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT = 60253;
-
-	/**
-	 * Camphor cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT_OPEN = 60254;
-
-	/**
-	 * Ironwood cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT = 60255;
-
-	/**
-	 * Ironwood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT_OPEN = 60256;
-
-	/**
-	 * Rosewood cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT = 60257;
-
-	/**
-	 * Rosewood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT_OPEN = 60258;
-
-	/**
-	 * Basic cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5 = 60259;
-
-	/**
-	 * Basic cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5_OPEN = 60260;
-
-	/**
-	 * Oak cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5 = 60261;
-
-	/**
-	 * Oak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5_OPEN = 60262;
-
-	/**
-	 * Teak cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5 = 60263;
-
-	/**
-	 * Teak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5_OPEN = 60264;
-
-	/**
-	 * Mahogany cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5 = 60265;
-
-	/**
-	 * Mahogany cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5_OPEN = 60266;
-
-	/**
-	 * Camphor cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5 = 60267;
-
-	/**
-	 * Camphor cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5_OPEN = 60268;
-
-	/**
-	 * Ironwood cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5 = 60269;
-
-	/**
-	 * Ironwood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5_OPEN = 60270;
-
-	/**
-	 * Rosewood cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5 = 60271;
-
-	/**
-	 * Rosewood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5_OPEN = 60272;
-
-	/**
-	 * Basic cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE = 60273;
-
-	/**
-	 * Basic cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE_OPEN = 60274;
-
-	/**
-	 * Oak cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE = 60275;
-
-	/**
-	 * Oak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE_OPEN = 60276;
-
-	/**
-	 * Teak cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE = 60277;
-
-	/**
-	 * Teak cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE_OPEN = 60278;
-
-	/**
-	 * Mahogany cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE = 60279;
-
-	/**
-	 * Mahogany cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE_OPEN = 60280;
-
-	/**
-	 * Camphor cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE = 60281;
-
-	/**
-	 * Camphor cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE_OPEN = 60282;
-
-	/**
-	 * Ironwood cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE = 60283;
-
-	/**
-	 * Ironwood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE_OPEN = 60284;
-
-	/**
-	 * Rosewood cargo hold
-	 */
 	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE = 60285;
-
-	/**
-	 * Rosewood cargo hold
-	 */
-	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_OPEN = 60286;
 
 	/**
 	 * Notice board
@@ -77895,6 +77706,11 @@ class ObjectID1
 	public static final int XMAS25_TABLE01_EMPTY01 = 60576;
 
 	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_NO_CARGO = 60577;
+
+	/**
 	 * Table
 	 */
 	public static final int XMAS25_TABLE01_DRINK01 = 60578;
@@ -77910,9 +77726,34 @@ class ObjectID1
 	public static final int XMAS25_TABLE01_VEGETABLE01 = 60580;
 
 	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_RAFT_CARGO = 60581;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT_NO_CARGO = 60582;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_RAFT_CARGO = 60583;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT_NO_CARGO = 60584;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE = 60585;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_RAFT_CARGO = 60586;
 
 	/**
 	 * Bar
@@ -77920,9 +77761,19 @@ class ObjectID1
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_MIDDLE2 = 60587;
 
 	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT_NO_CARGO = 60588;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_LEFT = 60589;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_RAFT_CARGO = 60590;
 
 	/**
 	 * Bar
@@ -77930,9 +77781,19 @@ class ObjectID1
 	public static final int XMAS25_BLUE_INN_DRINKS_BAR_RIGHT = 60591;
 
 	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT_NO_CARGO = 60592;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE = 60593;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_RAFT_CARGO = 60594;
 
 	/**
 	 * Bar
@@ -77940,9 +77801,19 @@ class ObjectID1
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE2 = 60595;
 
 	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT_NO_CARGO = 60596;
+
+	/**
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_MIDDLE3 = 60597;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_RAFT_CARGO = 60598;
 
 	/**
 	 * Bar
@@ -77953,6 +77824,41 @@ class ObjectID1
 	 * Bar
 	 */
 	public static final int XMAS25_BLUE_INN_BAR_RIGHT = 60600;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT_NO_CARGO = 60601;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_RAFT_CARGO = 60602;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5_NO_CARGO = 60603;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_2X5_CARGO = 60604;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5_NO_CARGO = 60605;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_2X5_CARGO = 60606;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5_NO_CARGO = 60607;
 
 	/**
 	 * Crate
@@ -78001,5 +77907,120 @@ class ObjectID1
 	 * Shellbane Gryphon display
 	 */
 	public static final int POH_DISPLAY_GRYPHON = 60619;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_2X5_CARGO = 60620;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5_NO_CARGO = 60621;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_2X5_CARGO = 60622;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5_NO_CARGO = 60623;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_2X5_CARGO = 60624;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5_NO_CARGO = 60625;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_2X5_CARGO = 60626;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5_NO_CARGO = 60627;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_2X5_CARGO = 60628;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE_NO_CARGO = 60629;
+
+	/**
+	 * Basic cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_REGULAR_LARGE_CARGO = 60630;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE_NO_CARGO = 60631;
+
+	/**
+	 * Oak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_OAK_LARGE_CARGO = 60632;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE_NO_CARGO = 60633;
+
+	/**
+	 * Teak cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_TEAK_LARGE_CARGO = 60634;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE_NO_CARGO = 60635;
+
+	/**
+	 * Mahogany cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_MAHOGANY_LARGE_CARGO = 60636;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE_NO_CARGO = 60637;
+
+	/**
+	 * Camphor cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_CAMPHOR_LARGE_CARGO = 60638;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE_NO_CARGO = 60639;
+
+	/**
+	 * Ironwood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_IRONWOOD_LARGE_CARGO = 60640;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_NO_CARGO = 60641;
+
+	/**
+	 * Rosewood cargo hold
+	 */
+	public static final int SAILING_BOAT_CARGO_HOLD_ROSEWOOD_LARGE_CARGO = 60642;
 /* This file is automatically generated. Do not edit. */
 }

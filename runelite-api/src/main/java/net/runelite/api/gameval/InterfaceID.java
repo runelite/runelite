@@ -28611,9 +28611,21 @@ public final class InterfaceID
 		public static final int CONTENT = 0x035c_0005;
 		public static final int TAB_CONTENT = 0x035c_0006;
 		public static final int TABS = 0x035c_0007;
-		public static final int LIST = 0x035c_0008;
-		public static final int LIST_BORDER = 0x035c_0009;
-		public static final int LIST_SCROLLER = 0x035c_000a;
+		public static final int OVERVIEW = 0x035c_0008;
+		public static final int OVERVIEW_BORDER = 0x035c_0009;
+		public static final int OVERVIEW_TABS = 0x035c_000a;
+		public static final int OVERVIEW_CONTENT = 0x035c_000b;
+		public static final int OVERVIEW_CONTENT_RIGHT_BORDER_OUTER = 0x035c_000c;
+		public static final int OVERVIEW_CONTENT_RIGHT_BORDER_INNER = 0x035c_000d;
+		public static final int OVERVIEW_CONTENT_1 = 0x035c_000e;
+		public static final int OVERVIEW_CONTENT_2 = 0x035c_000f;
+		public static final int OVERVIEW_SCROLLBAR = 0x035c_0010;
+		public static final int QUEST_JOURNAL_BUTTON_TRIGGER = 0x035c_0011;
+		public static final int SKILL_GUIDE_BUTTON_TRIGGER = 0x035c_0012;
+		public static final int GUIDE_DATA = 0x035c_0013;
+		public static final int LIST_BORDER = 0x035c_0014;
+		public static final int LIST = 0x035c_0015;
+		public static final int LIST_SCROLLER = 0x035c_0016;
 	}
 
 	public static final class BondMain
@@ -30281,40 +30293,41 @@ public final class InterfaceID
 	public static final class Ballot
 	{
 		public static final int UNIVERSE = 0x03a0_0000;
-		public static final int CONTENT = 0x03a0_0001;
-		public static final int FRAME = 0x03a0_0002;
-		public static final int CLOSE = 0x03a0_0003;
-		public static final int ROOT_LIST = 0x03a0_0004;
-		public static final int LIST_FILTERS = 0x03a0_0005;
-		public static final int LIST_YEARS_CONTAINER = 0x03a0_0006;
-		public static final int LIST_YEARS_SCROLLBAR = 0x03a0_0007;
-		public static final int LIST_YEARS_CONTENT = 0x03a0_0008;
-		public static final int LIST_BOX = 0x03a0_0009;
-		public static final int LIST = 0x03a0_000a;
-		public static final int LIST_SCROLLBAR = 0x03a0_000b;
-		public static final int ROOT_OVERVIEW = 0x03a0_000c;
-		public static final int OVERVIEW_SCROLLING = 0x03a0_000d;
-		public static final int OVERVIEW_BACKGROUNDS = 0x03a0_000e;
-		public static final int OVERVIEW_CONTENTS = 0x03a0_000f;
-		public static final int OVERVIEW_SCROLLBAR = 0x03a0_0010;
-		public static final int EXIT_OVERVIEW = 0x03a0_0011;
-		public static final int ROOT_VOTING = 0x03a0_0012;
-		public static final int VOTING = 0x03a0_0013;
-		public static final int VOTING_SCROLLBAR = 0x03a0_0014;
-		public static final int SINGLE_CHOICE = 0x03a0_0015;
-		public static final int MULTIPLE_CHOICE = 0x03a0_0016;
-		public static final int TEXT = 0x03a0_0017;
-		public static final int MATRIX = 0x03a0_0018;
-		public static final int RANKED = 0x03a0_0019;
-		public static final int EXIT_VOTING = 0x03a0_001a;
-		public static final int LOADING_CONTAINER = 0x03a0_001b;
-		public static final int LOADING_ICON = 0x03a0_001c;
-		public static final int POPUP_CONTAINER = 0x03a0_001d;
-		public static final int POPUP_CONTAINER_RECT0 = 0x03a0_001e;
-		public static final int POPUP_WINDOW = 0x03a0_001f;
-		public static final int POPUP_FRAME = 0x03a0_0020;
-		public static final int POPUP_DISMISS = 0x03a0_0021;
-		public static final int POPUP_OTHER = 0x03a0_0022;
+		public static final int DODGER = 0x03a0_0001;
+		public static final int CONTENT = 0x03a0_0002;
+		public static final int FRAME = 0x03a0_0003;
+		public static final int CLOSE = 0x03a0_0004;
+		public static final int ROOT_LIST = 0x03a0_0005;
+		public static final int LIST_FILTERS = 0x03a0_0006;
+		public static final int LIST_YEARS_CONTAINER = 0x03a0_0007;
+		public static final int LIST_YEARS_SCROLLBAR = 0x03a0_0008;
+		public static final int LIST_YEARS_CONTENT = 0x03a0_0009;
+		public static final int LIST_BOX = 0x03a0_000a;
+		public static final int LIST = 0x03a0_000b;
+		public static final int LIST_SCROLLBAR = 0x03a0_000c;
+		public static final int ROOT_OVERVIEW = 0x03a0_000d;
+		public static final int OVERVIEW_SCROLLING = 0x03a0_000e;
+		public static final int OVERVIEW_BACKGROUNDS = 0x03a0_000f;
+		public static final int OVERVIEW_CONTENTS = 0x03a0_0010;
+		public static final int OVERVIEW_SCROLLBAR = 0x03a0_0011;
+		public static final int EXIT_OVERVIEW = 0x03a0_0012;
+		public static final int ROOT_VOTING = 0x03a0_0013;
+		public static final int VOTING = 0x03a0_0014;
+		public static final int VOTING_SCROLLBAR = 0x03a0_0015;
+		public static final int SINGLE_CHOICE = 0x03a0_0016;
+		public static final int MULTIPLE_CHOICE = 0x03a0_0017;
+		public static final int TEXT = 0x03a0_0018;
+		public static final int MATRIX = 0x03a0_0019;
+		public static final int RANKED = 0x03a0_001a;
+		public static final int EXIT_VOTING = 0x03a0_001b;
+		public static final int LOADING_CONTAINER = 0x03a0_001c;
+		public static final int LOADING_ICON = 0x03a0_001d;
+		public static final int POPUP_CONTAINER = 0x03a0_001e;
+		public static final int POPUP_CONTAINER_RECT0 = 0x03a0_001f;
+		public static final int POPUP_WINDOW = 0x03a0_0020;
+		public static final int POPUP_FRAME = 0x03a0_0021;
+		public static final int POPUP_DISMISS = 0x03a0_0022;
+		public static final int POPUP_OTHER = 0x03a0_0023;
 	}
 
 	public static final class TutorialPlayerExperience

@@ -6702,6 +6702,7 @@ public final class SpriteID
 		public static final int _2 = 3388;
 		public static final int _3 = 3389;
 		public static final int _4 = 3390;
+		public static final int _5 = 7318;
 	}
 
 	public static final class CaProgressBar
@@ -10898,5 +10899,12 @@ public final class SpriteID
 	{
 		public static final int _0 = 6838;
 		public static final int _1 = 6839;
+	}
+
+	public static final class Sideicons18x18
+	{
+		public static final int _0 = 7319;
+		public static final int _1 = 7320;
+		public static final int _2 = 7321;
 	}
 }
