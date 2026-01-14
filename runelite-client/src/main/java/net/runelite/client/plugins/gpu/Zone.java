@@ -38,8 +38,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Scene;
-import static net.runelite.client.plugins.gpu.FacePrioritySorter.distanceFaceCount;
-import static net.runelite.client.plugins.gpu.FacePrioritySorter.distanceToFaces;
+import static net.runelite.client.plugins.gpu.FacePrioritySorter.MAX_DIAMETER;
+import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortHead;
+import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortNext;
+import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortTail;
 import static net.runelite.client.plugins.gpu.GpuPlugin.uniBase;
 import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL33C.*;
@@ -594,14 +596,15 @@ class Zone
 			final int radius = m.radius;
 			int diameter = 1 + radius * 2;
 			final int[] packedFaces = m.packedFaces;
-			if (diameter >= 6000)
+			if (diameter >= MAX_DIAMETER)
 			{
 				continue;
 			}
 
-			Arrays.fill(distanceFaceCount, 0, diameter, (char) 0);
+			Arrays.fill(zsortHead, 0, diameter, (char) -1);
+			Arrays.fill(zsortTail, 0, diameter, (char) -1);
 
-			for (int i = 0; i < packedFaces.length; ++i)
+			for (char i = 0; i < packedFaces.length; ++i)
 			{
 				int pack = packedFaces[i];
 
@@ -614,7 +617,19 @@ class Zone
 				fz += radius;
 
 				assert fz >= 0 && fz < diameter : fz;
-				distanceToFaces[fz][distanceFaceCount[fz]++] = (char) i;
+
+				if (zsortTail[fz] == (char) -1)
+				{
+					zsortHead[fz] = zsortTail[fz] = i;
+					zsortNext[i] = (char) -1;
+				}
+				else
+				{
+					char lastFace = zsortTail[fz];
+					zsortNext[lastFace] = i;
+					zsortNext[i] = (char) -1;
+					zsortTail[fz] = i;
+				}
 			}
 
 			if (packedFaces.length * 3 > alphaElements.remaining())
@@ -634,20 +649,13 @@ class Zone
 			{
 				for (int i = diameter - 1; i >= 0; --i)
 				{
-					final int cnt = distanceFaceCount[i];
-					if (cnt > 0)
+					for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
 					{
-						final char[] faces = distanceToFaces[i];
-
-						for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
-						{
-							int face = faces[faceIdx];
-							face *= 3;
-							face += start;
-							alphaElements.put(face++);
-							alphaElements.put(face++);
-							alphaElements.put(face++);
-						}
+						int faceIdx = face * 3;
+						faceIdx += start;
+						alphaElements.put(faceIdx++);
+						alphaElements.put(faceIdx++);
+						alphaElements.put(faceIdx++);
 					}
 				}
 			}
@@ -661,19 +669,12 @@ class Zone
 
 				for (int i = diameter - 1; i >= 0; --i)
 				{
-					final int cnt = distanceFaceCount[i];
-					if (cnt > 0)
+					for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
 					{
-						final char[] faces = distanceToFaces[i];
+						final byte pri = faceRenderPriorities[face];
+						final int distIdx = numOfPriority[pri]++;
 
-						for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
-						{
-							final int face = faces[faceIdx];
-							final byte pri = faceRenderPriorities[face];
-							final int distIdx = numOfPriority[pri]++;
-
-							orderedFaces[pri][distIdx] = face;
-						}
+						orderedFaces[pri][distIdx] = face;
 					}
 				}
 

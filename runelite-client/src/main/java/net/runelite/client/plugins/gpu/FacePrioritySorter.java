@@ -33,8 +33,7 @@ import net.runelite.api.Projection;
 class FacePrioritySorter
 {
 	static final int[] distances;
-	static final char[] distanceFaceCount;
-	static final char[][] distanceToFaces;
+	static final char[] zsortHead, zsortTail, zsortNext;
 
 	private static final float[] modelProjectedX;
 	private static final float[] modelProjectedY;
@@ -53,16 +52,16 @@ class FacePrioritySorter
 
 	static final int MAX_VERTEX_COUNT = 6500;
 	static final int MAX_FACE_COUNT = 8192; // was 6500
-	private static final int MAX_DIAMETER = 6000;
-	private static final int ZSORT_GROUP_SIZE = 1024; // was 512
+	static final int MAX_DIAMETER = 6000;
 	private static final int MAX_FACES_PER_PRIORITY = 4000; // was 2500
 	private static final int FACE_SIZE = (VAO.VERT_SIZE >> 2) * 3;
 
 	static
 	{
 		distances = new int[MAX_VERTEX_COUNT];
-		distanceFaceCount = new char[MAX_DIAMETER];
-		distanceToFaces = new char[MAX_DIAMETER][ZSORT_GROUP_SIZE];
+		zsortHead = new char[MAX_DIAMETER];
+		zsortTail = new char[MAX_DIAMETER];
+		zsortNext = new char[MAX_FACE_COUNT];
 
 		modelProjectedX = new float[MAX_VERTEX_COUNT];
 		modelProjectedY = new float[MAX_VERTEX_COUNT];
@@ -155,12 +154,13 @@ class FacePrioritySorter
 
 		final int diameter = model.getDiameter();
 		final int radius = model.getRadius();
-		if (diameter >= 6000)
+		if (diameter >= MAX_DIAMETER)
 		{
 			return 0;
 		}
 
-		Arrays.fill(distanceFaceCount, 0, diameter, (char) 0);
+		Arrays.fill(zsortHead, 0, diameter, (char) -1);
+		Arrays.fill(zsortTail, 0, diameter, (char) -1);
 
 		int minFz = diameter, maxFz = 0;
 		for (char faceIdx = 0; faceIdx < faceCount; ++faceIdx)
@@ -183,7 +183,19 @@ class FacePrioritySorter
 				{
 					int distance = radius + (distances[v1] + distances[v2] + distances[v3]) / 3;
 					assert distance >= 0 && distance < diameter;
-					distanceToFaces[distance][distanceFaceCount[distance]++] = faceIdx;
+
+					if (zsortTail[distance] == (char) -1)
+					{
+						zsortHead[distance] = zsortTail[distance] = faceIdx;
+						zsortNext[faceIdx] = (char) -1;
+					}
+					else
+					{
+						char lastFace = zsortTail[distance];
+						zsortNext[lastFace] = faceIdx;
+						zsortNext[faceIdx] = (char) -1;
+						zsortTail[distance] = faceIdx;
+					}
 
 					minFz = Math.min(minFz, distance);
 					maxFz = Math.max(maxFz, distance);
@@ -254,17 +266,10 @@ class FacePrioritySorter
 		{
 			for (int i = maxFz; i >= minFz; --i)
 			{
-				final int cnt = distanceFaceCount[i];
-				if (cnt > 0)
+				for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
 				{
-					final char[] faces = distanceToFaces[i];
-
-					for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
-					{
-						final int face = faces[faceIdx];
-						var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
-						b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
-					}
+					var b = transparencies != null && transparencies[face] != 0 ? alphaBuffer : opaqueBuffer;
+					b.put(vertexBuffer, face * FACE_SIZE, FACE_SIZE);
 				}
 			}
 		}
@@ -275,30 +280,23 @@ class FacePrioritySorter
 
 			for (int i = maxFz; i >= minFz; --i)
 			{
-				final int cnt = distanceFaceCount[i];
-				if (cnt > 0)
+				for (char face = zsortHead[i]; face != (char) -1; face = zsortNext[face])
 				{
-					final char[] faces = distanceToFaces[i];
+					final byte pri = faceRenderPriorities[face];
+					final int distIdx = numOfPriority[pri]++;
 
-					for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
+					orderedFaces[pri][distIdx] = face;
+					if (pri < 10)
 					{
-						final int face = faces[faceIdx];
-						final byte pri = faceRenderPriorities[face];
-						final int distIdx = numOfPriority[pri]++;
-
-						orderedFaces[pri][distIdx] = face;
-						if (pri < 10)
-						{
-							lt10[pri] += i;
-						}
-						else if (pri == 10)
-						{
-							eq10[distIdx] = i;
-						}
-						else
-						{
-							eq11[distIdx] = i;
-						}
+						lt10[pri] += i;
+					}
+					else if (pri == 10)
+					{
+						eq10[distIdx] = i;
+					}
+					else
+					{
+						eq11[distIdx] = i;
 					}
 				}
 			}
