@@ -125,14 +125,16 @@ public class PaymentTracker
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event) {
+	public void onChatMessage(ChatMessage event)
+	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(FALADOR_DIARY_TEXT)) return;
 		FarmingPatch p = null;
 		for (FarmingRegion region : farmingWorld.getRegionsForLocation(client.getLocalPlayer().getWorldLocation()))
 		{
 			for (FarmingPatch patch : region.getPatches())
 			{
-				if (patch.getName().equals("Falador") && patch.getImplementation() == PatchImplementation.TREE) {
+				if (patch.getName().equals("Falador") && patch.getImplementation() == PatchImplementation.TREE)
+				{
 					p = patch;
 				}
 			}
