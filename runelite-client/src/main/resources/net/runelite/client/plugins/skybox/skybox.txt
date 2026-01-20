@@ -976,6 +976,22 @@ c 4 1
 
 m31 89
 
+// 31 89 p1 Christmas-themed POH
+p 1
+#B6CBD8
+C 0 0 7 15
+// dungeon
+p 1
+#251B09
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+
+m31 89
+
 // 31 89 p0 Hosidius
 p 0
 #B9D6FF
