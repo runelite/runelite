@@ -10907,4 +10907,112 @@ public final class SpriteID
 		public static final int _1 = 7320;
 		public static final int _2 = 7321;
 	}
+
+	public static final class DeadmanSigilCombatIconsLargeInactive
+	{
+		public static final int _0 = 7322;
+		public static final int _1 = 7323;
+		public static final int _2 = 7324;
+		public static final int _3 = 7325;
+		public static final int _4 = 7326;
+		public static final int _5 = 7327;
+		public static final int _6 = 7328;
+		public static final int _7 = 7329;
+		public static final int _8 = 7330;
+		public static final int _9 = 7331;
+		public static final int _10 = 7332;
+		public static final int _11 = 7333;
+		public static final int _12 = 7334;
+		public static final int _13 = 7335;
+		public static final int _14 = 7336;
+		public static final int _15 = 7337;
+		public static final int _16 = 7338;
+		public static final int _17 = 7339;
+		public static final int _18 = 7340;
+		public static final int _19 = 7341;
+		public static final int _20 = 7342;
+		public static final int _21 = 7343;
+		public static final int _22 = 7344;
+		public static final int _23 = 7345;
+		public static final int _24 = 7346;
+		public static final int _25 = 7347;
+		public static final int _26 = 7348;
+		public static final int _27 = 7349;
+		public static final int _28 = 7350;
+		public static final int _29 = 7351;
+		public static final int _30 = 7352;
+		public static final int _31 = 7353;
+	}
+
+	public static final class DeadmanSigilSkillingIconsLargeInactive
+	{
+		public static final int _0 = 7354;
+		public static final int _1 = 7355;
+		public static final int _2 = 7356;
+		public static final int _3 = 7357;
+		public static final int _4 = 7358;
+		public static final int _5 = 7359;
+		public static final int _6 = 7360;
+		public static final int _7 = 7361;
+		public static final int _8 = 7362;
+		public static final int _9 = 7363;
+		public static final int _10 = 7364;
+		public static final int _11 = 7365;
+		public static final int _12 = 7366;
+		public static final int _13 = 7367;
+		public static final int _14 = 7368;
+		public static final int _15 = 7369;
+		public static final int _16 = 7370;
+		public static final int _17 = 7371;
+		public static final int _18 = 7372;
+		public static final int _19 = 7373;
+		public static final int _20 = 7374;
+		public static final int _21 = 7375;
+		public static final int _22 = 7376;
+		public static final int _23 = 7377;
+		public static final int _24 = 7378;
+		public static final int _25 = 7379;
+		public static final int _26 = 7380;
+		public static final int _27 = 7381;
+		public static final int _28 = 7382;
+		public static final int _29 = 7383;
+		public static final int _30 = 7384;
+		public static final int _31 = 7385;
+	}
+
+	public static final class DeadmanSigilUtilityIconsLargeInactive
+	{
+		public static final int _0 = 7386;
+		public static final int _1 = 7387;
+		public static final int _2 = 7388;
+		public static final int _3 = 7389;
+		public static final int _4 = 7390;
+		public static final int _5 = 7391;
+		public static final int _6 = 7392;
+		public static final int _7 = 7393;
+		public static final int _8 = 7394;
+		public static final int _9 = 7395;
+		public static final int _10 = 7396;
+		public static final int _11 = 7397;
+		public static final int _12 = 7398;
+		public static final int _13 = 7399;
+		public static final int _14 = 7400;
+		public static final int _15 = 7401;
+		public static final int _16 = 7402;
+		public static final int _17 = 7403;
+		public static final int _18 = 7404;
+		public static final int _19 = 7405;
+		public static final int _20 = 7406;
+		public static final int _21 = 7407;
+		public static final int _22 = 7408;
+		public static final int _23 = 7409;
+		public static final int _24 = 7410;
+		public static final int _25 = 7411;
+		public static final int _26 = 7412;
+		public static final int _27 = 7413;
+		public static final int _28 = 7414;
+		public static final int _29 = 7415;
+		public static final int _30 = 7416;
+		public static final int _31 = 7417;
+	}
 }

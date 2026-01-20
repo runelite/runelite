@@ -4428,6 +4428,7 @@ public final class DBTableID
 			public static final int ENT_TOTEMS_SHOP = 5458;
 			public static final int ENT_TOTEMS_SHOP_IRONMAN = 5459;
 			public static final int SAILING_BOAT_SHOP = 8548;
+			public static final int DEADMAN_SKULL_SHOP = 9575;
 		}
 	}
 
@@ -4534,6 +4535,16 @@ public final class DBTableID
 		 * dbrow
 		 */
 		public static final int COL_OMNISHOP_STOCK_DESCRIPTION_DYNAMIC = 22;
+
+		/**
+		 * boolean
+		 */
+		public static final int COL_OMNISHOP_STOCK_USE_SHORTNAME = 23;
+
+		/**
+		 * string
+		 */
+		public static final int COL_OMNISHOP_STOCK_SHORTNAME = 24;
 
 		public static final class Row
 		{
@@ -4745,6 +4756,70 @@ public final class DBTableID
 			public static final int SAILING_SHIP_STOCK_RAFT = 8549;
 			public static final int SAILING_SHIP_STOCK_SKIFF = 8550;
 			public static final int SAILING_SHIP_STOCK_SLOOP = 8551;
+			public static final int DEADMAN_SHOP_2026_WEAPON_ORNAMENT_SCROLL = 9572;
+			public static final int DEADMAN_SHOP_2026_POH_ORNAMENT_SCROLL = 9573;
+			public static final int DEADMAN_SHOP_2026_HOME_TELEPORT_SCROLL = 9574;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_AGILE_FORTUNE = 9577;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_HOARDING = 9578;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_DECEPTION = 9579;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_LITHE = 9580;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_FOOD_MASTER = 9581;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_WELL_FED = 9582;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_POTION_MASTER = 9583;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_TREASURE_HUNTER = 9584;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_HUNTER = 9585;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_INFERNAL_CHEF = 9586;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_NATURE = 9587;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_DEVOTION = 9588;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_FAITH = 9589;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_ALCHEMANIAC = 9590;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RESISTANCE = 9591;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_DEFT_STRIKES = 9592;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_AUGMENTED_THRALL = 9593;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ONSLAUGHT = 9594;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RESTORATION = 9595;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_TITANIUM = 9596;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_METICULOUSNESS = 9597;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ENHANCED_HARVEST = 9598;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_SLAUGHTER = 9599;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_WOODCRAFT = 9600;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_REMOTE_STORAGE = 9601;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_CONSISTENCY = 9602;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_RIGOROUS_RANGER = 9603;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_METICULOUS_MAGE = 9604;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_LIGHTBEARER = 9605;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_SPECIALISED_STRIKES = 9606;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_PORCUPINE = 9607;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_FORTIFICATION = 9608;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_RUTHLESS_RANGER = 9609;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_FORMIDABLE_FIGHTER = 9610;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_MENACING_MAGE = 9611;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_SWASHBUCKLER = 9612;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_GUNSLINGER = 9613;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ARCANE_SWIFTNESS = 9614;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ADROIT = 9615;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_BARROWS = 9616;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_FINALITY = 9617;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_PIOUS_PROTECTION = 9618;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_AGGRESSION = 9619;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RAMPAGE = 9620;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_THE_GODS = 9621;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_REVOKED_LIMITATION = 9622;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_CONCLUSION = 9623;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_AUTOMATION = 9624;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_ETERNAL_BELIEF = 9625;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_EFFICIENCY = 9626;
+			public static final int DEADMAN_SKULL_SHOP_SIGIL_OF_RUINOUS_PRAYER_BOOK = 9627;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_RECIPE_FOR_DISASTER = 9628;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_CAMELOT_STORYLINE = 9629;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_FREMENNIK_STORYLINE = 9630;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_ELF_STORYLINE = 9631;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_GNOME_STORYLINE = 9632;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_KHARIDIAN_STORYLINE = 9633;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_MYREQUE_STORYLINE = 9634;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_DRAGONKIN_STORYLINE = 9635;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_MAHJARRAT_STORYLINE_1 = 9636;
+			public static final int DEADMAN_SKULL_SHOP_QUEST_LAMP_MAHJARRAT_STORYLINE_2 = 9637;
 		}
 	}
 
@@ -4817,6 +4892,7 @@ public final class DBTableID
 			public static final int OMNISHOP_CURRENCY_CW_TICKETS = 5104;
 			public static final int OMNISHOP_CURRENCY_CW_PLAUDITS = 5105;
 			public static final int OMNISHOP_CURRENCY_ENT_TOTEMS_RESEARCH_POINTS = 5460;
+			public static final int OMNISHOP_CURRENCY_DEADMAN_SKULL_POINTS = 9576;
 		}
 	}
 
@@ -10185,6 +10261,7 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_LONGER_AQUANITES = 9418;
 			public static final int SLAYER_REWARDS_LONGER_WYRMS = 9419;
 			public static final int SLAYER_REWARDS_UNLOCK_GRYPHONS = 9420;
+			public static final int SLAYER_REWARDS_UNLOCK_HELM_HOODED = 9641;
 		}
 	}
 
@@ -16073,6 +16150,43 @@ public final class DBTableID
 			public static final int SKILL_GUIDE_V2_ICON_QUEST = 9569;
 			public static final int SKILL_GUIDE_V2_ICON_SAILING_OPTIONS = 9570;
 			public static final int SKILL_GUIDE_V2_ICON_CAPTAINS_LOG = 9571;
+		}
+	}
+
+	public static final class DeadmanskullInterfaceTab
+	{
+		public static final int ID = 210;
+
+		/**
+		 * string
+		 */
+		public static final int COL_NAME = 0;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_TAB_NUMBER = 1;
+
+		/**
+		 * (struct, dbrow)
+		 */
+		public static final int COL_COMBAT_SIGIL = 2;
+
+		/**
+		 * (struct, dbrow)
+		 */
+		public static final int COL_SKILLING_SIGIL = 3;
+
+		/**
+		 * (struct, dbrow)
+		 */
+		public static final int COL_UTILITY_SIGIL = 4;
+
+		public static final class Row
+		{
+			public static final int DEADMANSKULL_INTERFACE_TAB_PERMANENT = 9638;
+			public static final int DEADMANSKULL_INTERFACE_TAB_TOGGLE = 9639;
+			public static final int DEADMANSKULL_INTERFACE_TAB_ATTUNE = 9640;
 		}
 	}
 /* This file is automatically generated. Do not edit. */
