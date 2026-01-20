@@ -204,6 +204,7 @@ public class ChatFilterPlugin extends Plugin
 			case PUBLICCHAT:
 			case MODCHAT:
 			case AUTOTYPER:
+			case MODAUTOTYPER:
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
