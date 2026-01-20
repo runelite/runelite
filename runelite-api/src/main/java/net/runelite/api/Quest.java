@@ -231,8 +231,6 @@ public enum Quest
 	THE_FINAL_DAWN(5189, "The Final Dawn"),
 	SHADOWS_OF_CUSTODIA(5190, "Shadows of Custodia"),
 	SCRAMBLED(5191, "Scrambled!"),
-	AN_EXISTENTIAL_CRISIS(5192, "An Existential Crisis"),
-	IMPENDING_CHAOS(5193, "Impending Chaos"),
 	VALE_TOTEMS(5194, "Vale Totems"),
 	TUTORIAL_ISLAND(7033, "Tutorial Island"),
 	PANDEMONIUM(7103, "Pandemonium"),
@@ -240,7 +238,6 @@ public enum Quest
 	CURRENT_AFFAIRS(7105, "Current Affairs"),
 	TROUBLED_TORTUGANS(7106, "Troubled Tortugans"),
 	THE_RED_REEF(7107, "The Red Reef"),
-	BURIAL_AT_SEA(7108, "Burial at Sea"),
 	;
 
 	@Getter
