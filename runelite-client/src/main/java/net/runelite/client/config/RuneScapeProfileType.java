@@ -46,7 +46,7 @@ public enum RuneScapeProfileType
 	SHATTERED_RELICS_LEAGUE,
 	TRAILBLAZER_RELOADED_LEAGUE,
 	RAGING_ECHOES_LEAGUE,
-	GRID_MASTER(client -> client.getWorldType().contains(WorldType.TOURNAMENT_WORLD)),
+	GRID_MASTER,
 	;
 
 	private final Predicate<Client> test;
