@@ -7975,7 +7975,11 @@
     29816,
     29818,
     29820,
-    29822
+    29822,
+    33066,
+    33068,
+    33070,
+    33072
   ],
   "slayer ring": [
     11866,
@@ -8458,7 +8462,9 @@
   ],
   "toxic staff": [
     12902,
-    12904
+    12904,
+    33035,
+    33036
   ],
   "antivenom": [
     12905,
@@ -10305,7 +10311,9 @@
     27765,
     27767,
     27777,
-    27779
+    27779,
+    33031,
+    33033
   ],
   "crystal body": [
     23889,
@@ -10327,7 +10335,9 @@
     27757,
     27759,
     27769,
-    27771
+    27771,
+    33023,
+    33025
   ],
   "crystal legs": [
     23892,
@@ -10349,7 +10359,9 @@
     27761,
     27763,
     27773,
-    27775
+    27775,
+    33027,
+    33029
   ],
   "crystal staff": [
     23898,
@@ -10990,7 +11002,8 @@
     25892,
     25894,
     25896,
-    27187
+    27187,
+    33021
   ],
   "ghommals hilt": [
     25926,
@@ -11947,7 +11960,7 @@
     28495,
     28496
   ],
-  "sigil of the wellfed": [
+  "sigil of the well fed": [
     28498,
     28499
   ],
@@ -11999,11 +12012,9 @@
     28547,
     28549
   ],
-  "quest lamp": [
-    28551,
-    28552,
-    28553,
-    28554
+  "mahjarrat quest lamp": [
+    28554,
+    33007
   ],
   "warped sceptre": [
     28583,
@@ -12053,6 +12064,10 @@
     28721,
     28733,
     28745
+  ],
+  "ruinous powers": [
+    28775,
+    33010
   ],
   "trailblazer reloaded relic hunter armour set": [
     28777,
@@ -12307,7 +12322,7 @@
     29651,
     29652
   ],
-  "sigil of rampart": [
+  "sigil of the rampart": [
     29654,
     29655
   ],
@@ -12315,11 +12330,11 @@
     29657,
     29658
   ],
-  "sigil of lithe": [
+  "sigil of litheness": [
     29660,
     29661
   ],
-  "sigil of adroit": [
+  "sigil of the adroit": [
     29663,
     29664
   ],
@@ -12331,11 +12346,11 @@
     29669,
     29670
   ],
-  "sigil of swashbuckler": [
+  "sigil of the swashbuckler": [
     29672,
     29673
   ],
-  "sigil of gunslinger": [
+  "sigil of the gunslinger": [
     29675,
     29676
   ],
@@ -12591,9 +12606,17 @@
     30334,
     30337
   ],
+  "the dogsword": [
+    30367,
+    33038
+  ],
   "drygore blowpipe": [
     30373,
     30374
+  ],
+  "thunder khopesh": [
+    30388,
+    33041
   ],
   "natures reprisal": [
     30390,
@@ -13655,5 +13678,29 @@
   "crate of maces": [
     32761,
     32799
+  ],
+  "trinket of fortuity": [
+    33047,
+    33050
+  ],
+  "sigil of the gods": [
+    33053,
+    33054
+  ],
+  "sigil of conclusion": [
+    33055,
+    33056
+  ],
+  "sigil of automation": [
+    33057,
+    33058
+  ],
+  "sigil of eternal belief": [
+    33059,
+    33060
+  ],
+  "sigil of efficiency": [
+    33061,
+    33062
   ]
 }
