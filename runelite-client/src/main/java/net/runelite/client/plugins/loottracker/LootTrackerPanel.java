@@ -29,7 +29,10 @@ import static com.google.common.collect.Iterables.concat;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -64,6 +67,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.TransferableBufferedImage;
 import net.runelite.http.api.loottracker.LootRecordType;
 
 class LootTrackerPanel extends PluginPanel
@@ -648,6 +652,20 @@ class LootTrackerPanel extends PluginPanel
 		});
 
 		popupMenu.add(details);
+
+		// Create copy menu
+		final JMenuItem copyToClipboard = new JMenuItem("Copy to clipboard");
+		copyToClipboard.addActionListener(e ->
+		{
+			final BufferedImage panelImage = new BufferedImage(box.getWidth(), box.getHeight(), BufferedImage.TYPE_INT_RGB);
+			final Graphics panelGraphics = panelImage.createGraphics();
+			box.paint(panelGraphics);
+			panelGraphics.dispose();
+			final Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			systemClipboard.setContents(new TransferableBufferedImage(panelImage), null);
+		});
+
+		popupMenu.add(copyToClipboard);
 
 		// Add box to panel
 		boxes.add(box);
