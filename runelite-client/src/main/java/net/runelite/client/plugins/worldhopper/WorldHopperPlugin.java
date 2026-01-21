@@ -30,6 +30,7 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.io.FileDescriptor;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -81,6 +82,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.worldhopper.ping.Ping;
+import net.runelite.client.plugins.worldhopper.ping.RetransmitCalculator;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -162,6 +164,8 @@ public class WorldHopperPlugin extends Plugin
 	private int currentPing;
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
+
+	final RetransmitCalculator retransmitCalculator = new RetransmitCalculator();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
@@ -909,6 +913,12 @@ public class WorldHopperPlugin extends Plugin
 		if (panel.isActive())
 		{
 			SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
+		}
+
+		FileDescriptor fd = client.getSocketFD();
+		if (fd != null)
+		{
+			retransmitCalculator.record(fd);
 		}
 	}
 
