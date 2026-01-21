@@ -269,6 +269,13 @@ public class NpcAggroAreaPlugin extends Plugin
 			return false;
 		}
 
+		// Case if NPC is Flesh Crawler (always aggressive)
+		if (npc.getId() == NpcID.FLESH_CRAWLER || npc.getId() == NpcID.FLESH_CRAWLER_2499
+			|| npc.getId() == NpcID.FLESH_CRAWLER_2500)
+		{
+			return true;
+		}
+
 		// Most NPCs stop aggroing when the player has more than double
 		// its combat level.
 		int playerLvl = client.getLocalPlayer().getCombatLevel();
