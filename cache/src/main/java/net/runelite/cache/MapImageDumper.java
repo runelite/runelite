@@ -160,6 +160,8 @@ public class MapImageDumper
 		options.addOption(Option.builder().longOpt("cachedir").hasArg().required().build());
 		options.addOption(Option.builder().longOpt("xteapath").hasArg().required().build());
 		options.addOption(Option.builder().longOpt("outputdir").hasArg().required().build());
+		options.addOption(Option.builder().longOpt("skip-objects").optionalArg(true).build());
+		options.addOption(Option.builder().longOpt("skip-icons").optionalArg(true).build());
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
@@ -177,6 +179,8 @@ public class MapImageDumper
 		final String cacheDirectory = cmd.getOptionValue("cachedir");
 		final String xteaJSONPath = cmd.getOptionValue("xteapath");
 		final String outputDirectory = cmd.getOptionValue("outputdir");
+		final boolean skipObjects = cmd.hasOption("skip-objects");
+		final boolean skipIcons = cmd.hasOption("skip-icons");
 
 		XteaKeyManager xteaKeyManager = new XteaKeyManager();
 		try (FileInputStream fin = new FileInputStream(xteaJSONPath))
@@ -193,6 +197,8 @@ public class MapImageDumper
 			store.load();
 
 			MapImageDumper dumper = new MapImageDumper(store, xteaKeyManager);
+			dumper.setRenderObjects(!skipObjects);
+			dumper.setRenderIcons(!skipIcons);
 			dumper.load();
 
 			for (int i = 0; i < Region.Z; ++i)
