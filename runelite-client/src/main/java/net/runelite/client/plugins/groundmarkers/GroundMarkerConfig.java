@@ -91,4 +91,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return 50;
 	}
+
+	@ConfigItem(
+		keyName = "fillOpacityWithTileColor",
+		name = "Fill Opacity with Tile Color",
+		description = "Use the color of the tile as the color for its opacity"
+	)
+	default boolean fillOpacityWithTileColor()
+	{
+		return false;
+	}
 }
