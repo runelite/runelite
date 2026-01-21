@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class WorldHopperPingOverlay extends Overlay
 {
-	private static final int Y_OFFSET = 11;
+	private static final int Y_OFFSET = 15;
 	private static final int X_OFFSET = 1;
 
 	private final Client client;
