@@ -31,7 +31,7 @@ import net.runelite.api.coords.WorldPoint;
 
 @AllArgsConstructor
 @Value
-class MinnowSpot
+class TrackedFishingSpot
 {
 	private final WorldPoint loc;
 	private final Instant time;
