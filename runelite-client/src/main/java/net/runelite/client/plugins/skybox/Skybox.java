@@ -120,7 +120,7 @@ class Skybox
 					end = m.end();
 
 					String expr = m.group("expr");
-					if (expr == null || expr.length() <= 0 || expr.startsWith("//"))
+					if (expr == null || expr.isEmpty() || expr.startsWith("//"))
 					{
 						continue;
 					}
@@ -368,9 +368,11 @@ class Skybox
 	 * Calculates the RGB color for a specific world coordinate. Arguments are floats for sub-tile accuracy.
 	 *
 	 * @param x           Sample X coordinate in tiles
-	 * @param y           Samlpe Y coordinate in tiles
-	 * @param x           Player X coordinate in tiles
-	 * @param y           Player Y coordinate in tiles
+	 * @param y           Sample Y coordinate in tiles
+	 * @param px          Player X coordinate in tiles
+	 * @param py          Player Y coordinate in tiles
+	 * @param plane       Player plane number
+	 * @param brightness  exponent value to increase brightness by
 	 * @param chunkMapper maps chunks to their instance templates, or null if not in an instance
 	 */
 	public int getColorForPoint(double x, double y, int px, int py, int plane, double brightness, ChunkMapper chunkMapper)
