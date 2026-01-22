@@ -29,9 +29,14 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+
+import static java.util.Collections.reverseOrder;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
 import net.runelite.client.party.PartyService;
@@ -89,14 +94,15 @@ class DpsOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Map<String, DpsMember> dpsMembers = dpsCounterPlugin.getMembers();
-		if (dpsMembers.isEmpty())
+		Map<String, DpsMember> nameToDpsMember = dpsCounterPlugin.getMembers();
+		if (nameToDpsMember.isEmpty())
 		{
 			return null;
 		}
 
 		boolean inParty = partyService.isInParty();
 		boolean showDamage = dpsConfig.showDamage();
+		boolean sortOutput = dpsConfig.sortOutput();
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();
 
@@ -109,7 +115,19 @@ class DpsOverlay extends OverlayPanel
 		int maxWidth = ComponentConstants.STANDARD_WIDTH;
 		FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		for (DpsMember dpsMember : dpsMembers.values())
+		Collection<DpsMember> dpsMembers;
+		if (sortOutput)
+		{
+			dpsMembers = nameToDpsMember.values().stream()
+				.sorted(reverseOrder(showDamage ? comparing(DpsMember::getDamage) : comparing(DpsMember::getDps)))
+				.collect(toList());
+		}
+		else
+		{
+			dpsMembers = nameToDpsMember.values();
+		}
+
+		for (DpsMember dpsMember : dpsMembers)
 		{
 			String left = dpsMember.getName();
 			String right = showDamage ? QuantityFormatter.formatNumber(dpsMember.getDamage()) : DPS_FORMAT.format(dpsMember.getDps());
@@ -128,7 +146,7 @@ class DpsOverlay extends OverlayPanel
 			Player player = client.getLocalPlayer();
 			if (player.getName() != null)
 			{
-				DpsMember self = dpsMembers.get(player.getName());
+				DpsMember self = nameToDpsMember.get(player.getName());
 
 				if (self != null && total.getDamage() > self.getDamage())
 				{
