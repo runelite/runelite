@@ -214,6 +214,7 @@ public class WorldHopperPlugin extends Plugin
 		panel.setSubscriptionFilterMode(config.subscriptionFilter());
 		panel.setRegionFilterMode(config.regionFilter());
 		panel.setWorldTypeFilters(config.worldTypeFilter());
+		panel.setPingFilterValue(config.pingFilter());
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -284,6 +285,10 @@ public class WorldHopperPlugin extends Plugin
 					break;
 				case "worldTypeFilter":
 					panel.setWorldTypeFilters(config.worldTypeFilter());
+					updateList();
+					break;
+				case "pingFilter":
+					panel.setPingFilterValue(config.pingFilter());
 					updateList();
 					break;
 			}
