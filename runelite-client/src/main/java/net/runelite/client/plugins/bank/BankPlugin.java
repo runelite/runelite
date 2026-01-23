@@ -84,7 +84,7 @@ public class BankPlugin extends Plugin
 {
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
-	private static final String DEPOSIT_LOOT = "Deposit loot";
+	private static final String EMPTY_CONTAINERS = "Empty containers";
 	private static final String TOGGLE_PLACEHOLDERS = "Always set placeholders";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 	private static final int POTION_STORE_TAB = 15;
@@ -225,7 +225,7 @@ public class BankPlugin extends Plugin
 
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+				|| (entry.getOption().equals(EMPTY_CONTAINERS) && config.rightClickBankLoot())
 				|| (entry.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders())
 			)
 			{
@@ -240,7 +240,7 @@ public class BankPlugin extends Plugin
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+			|| (event.getOption().equals(EMPTY_CONTAINERS) && config.rightClickBankLoot())
 			|| (event.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders()))
 		{
 			forceRightClickFlag = true;

@@ -500,4 +500,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 6, string = 9)
 	public static final int INTERFACE_INV_DRAW_SLOT_BIG = 154;
+
+	@ScriptArguments(integer = 4)
+	public static final int BANKMAIN_POPUP_TAB_DRAW = 9221;
 }
