@@ -410,6 +410,15 @@ public class ItemStatChanges
 		add(boost(STRENGTH, perc(.15, 4)), ItemID.BUTTERFLY_JAR_WARLOCK, ItemID.HUNTER_MIX_WARLOCK_1DOSE, ItemID.HUNTER_MIX_WARLOCK_2DOSE);
 		add(boost(DEFENCE, perc(.15, 4)), ItemID.BUTTERFLY_JAR_GLACIALIS, ItemID.HUNTER_MIX_GLACIALIS_1DOSE, ItemID.HUNTER_MIX_GLACIALIS_2DOSE);
 
+
+		// Hunter's Mix
+		add(boost(ATTACK, perc(0.15, 4)), RUBY_HARVEST_MIX_1, RUBY_HARVEST_MIX_2);
+		add(boost(DEFENCE, perc(0.15, 4)), SAPPHIRE_GLACIALIS_MIX_1, SAPPHIRE_GLACIALIS_MIX_2);
+		add(food(8), SNOWY_KNIGHT_MIX_1, SNOWY_KNIGHT_MIX_2);
+		add(boost(STRENGTH, perc(0.15, 4)), BLACK_WARLOCK_MIX_1, BLACK_WARLOCK_MIX_2);
+		add(new StatRestoringEffect(0.20, 6, food(8)), SUNLIGHT_MOTH_MIX_1, SUNLIGHT_MOTH_MIX_2);
+		add(heal(PRAYER, 22), MOONLIGHT_MOTH_MIX_1, MOONLIGHT_MOTH_MIX_2);
+
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
 
