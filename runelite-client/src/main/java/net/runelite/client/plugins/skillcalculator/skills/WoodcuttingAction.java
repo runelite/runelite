@@ -38,6 +38,7 @@ public enum WoodcuttingAction implements ItemSkillAction
 	OAK_LOGS(ItemID.OAK_LOGS, 15, 37.5f),
 	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 67.5f),
 	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 85),
+	JATOBA_lOGS(ItemID.JATOBA_LOGS, 40, 92),
 	JUNIPER_LOGS(ItemID.JUNIPER_LOGS, 42, 35),
 	BARK(ItemID.HOLLOW_BARK, 45, 82.5f),
 	MAPLE_LOGS(ItemID.MAPLE_LOGS, 45, 100),
@@ -53,8 +54,11 @@ public enum WoodcuttingAction implements ItemSkillAction
 			return "Sulliusceps";
 		}
 	},
+	CAMPHOR_LOGS(ItemID.CAMPHOR_LOGS, 66, 143.5f),
 	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 250),
+	IRONWOOD_LOGS(ItemID.IRONWOOD_LOGS, 80, 175),
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 380),
+	ROSEWOOD_LOGS(ItemID.ROSEWOOD_LOGS, 92, 212.5f),
 	;
 
 	private final int itemId;

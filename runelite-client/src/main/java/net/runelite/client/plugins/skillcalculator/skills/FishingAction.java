@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.Collections;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
+import static net.runelite.client.plugins.skillcalculator.skills.FishingBonus.ANGLERS_OUTFIT;
 
 @AllArgsConstructor
 @Getter
@@ -55,21 +58,47 @@ public enum FishingAction implements ItemSkillAction
 	RAW_BASS(ItemID.RAW_BASS, 46, 100),
 	LEAPING_TROUT(ItemID.BRUT_SPAWNING_TROUT, 48, 50),
 	RAW_SWORDFISH(ItemID.RAW_SWORDFISH, 50, 100),
+	RAW_SWORDTIP_SQUID(ItemID.RAW_SWORDTIP_SQUID, 52, 55),
 	LEAPING_SALMON(ItemID.BRUT_SPAWNING_SALMON, 58, 70),
 	RAW_MONKFISH(ItemID.RAW_MONKFISH, 62, 120),
 	RAW_KARAMBWAN(ItemID.TBWT_RAW_KARAMBWAN, 65, 50),
+	RAW_JUMBO_SQUID(ItemID.RAW_JUMBO_SQUID, 69, 75),
+	RAW_GIANT_KRILL(ItemID.RAW_GIANT_KRILL, 69, 112.5f),
 	LEAPING_STURGEON(ItemID.BRUT_STURGEON, 70, 80),
+	RAW_HADDOCK(ItemID.RAW_HADDOCK, 73, 128.5f),
 	RAW_SHARK(ItemID.RAW_SHARK, 76, 110),
 	RAW_SEA_TURTLE(ItemID.RAW_SEATURTLE, 79, 38),
+	RAW_YELLOWFIN(ItemID.RAW_YELLOWFIN, 79, 155.5f),
 	INFERNAL_EEL(ItemID.INFERNAL_EEL, 80, 95),
 	RAW_MANTA_RAY(ItemID.RAW_MANTARAY, 81, 46),
 	MINNOW(ItemID.MINNOW, 82, 26.5f),
 	RAW_ANGLERFISH(ItemID.RAW_ANGLERFISH, 82, 120),
+	RAW_HALIBUT(ItemID.RAW_HALIBUT, 83, 195.5f),
 	RAW_DARK_CRAB(ItemID.RAW_DARK_CRAB, 85, 130),
 	SACRED_EEL(ItemID.SNAKEBOSS_EEL, 87, 105),
+	RAW_BLUEFIN(ItemID.RAW_BLUEFIN, 87, 220.5f),
+	RAW_MARLIN(ItemID.RAW_MARLIN, 91, 265.5f),
 	;
 
 	private final int itemId;
 	private final int level;
 	private final float xp;
+
+	@Override
+	public Set<FishingBonus> getExcludedSkillBonuses()
+	{
+		switch (this)
+		{
+			case RAW_GIANT_KRILL:
+			case RAW_HADDOCK:
+			case RAW_YELLOWFIN:
+			case RAW_HALIBUT:
+			case RAW_BLUEFIN:
+			case RAW_MARLIN:
+				return Set.of(ANGLERS_OUTFIT);
+			default:
+				return Collections.emptySet();
+		}
+	}
+
 }
