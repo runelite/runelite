@@ -11015,4 +11015,16 @@ public final class SpriteID
 		public static final int _30 = 7416;
 		public static final int _31 = 7417;
 	}
+
+	public static final class BankStorage
+	{
+		public static final int _0 = 7418;
+		public static final int _1 = 7419;
+		public static final int _2 = 7420;
+		public static final int _3 = 7421;
+		public static final int _4 = 7422;
+		public static final int _5 = 7423;
+		public static final int _6 = 7424;
+		public static final int _7 = 7425;
+	}
 }
