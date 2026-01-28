@@ -1602,7 +1602,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
-				final Integer op = getUiSwapConfig(shiftModifier(), componentId, itemId);
+				final Integer op = getMigratedUiSwapConfig(shiftModifier(), componentId, itemId);
 				if (op != null && op == menuEntry.getIdentifier())
 				{
 					swap(menu, menuEntries, index, menuEntries.length - 1);
@@ -1980,6 +1980,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		return -1; // use
+	}
+
+	private Integer getMigratedUiSwapConfig(boolean shift, int componentId, int itemId)
+	{
+		Integer swap = getUiSwapConfig(shift, componentId, itemId);
+		if (componentId == InterfaceID.Bankmain.ITEMS)
+		{
+			// remap 12.13 -> 12.12 for 1/28/2026 game update
+			if (swap == null)
+			{
+				swap = getUiSwapConfig(shift, InterfaceID.Bankmain.SCROLLBAR, itemId);
+				if (swap != null)
+				{
+					unsetUiSwapConfig(shift, InterfaceID.Bankmain.SCROLLBAR, itemId);
+					setUiSwapConfig(shift, InterfaceID.Bankmain.ITEMS, itemId, swap);
+					log.debug("Migrated swap {} for {} from scrollbar to items", swap, itemId);
+				}
+			}
+			else
+			{
+				unsetUiSwapConfig(shift, InterfaceID.Bankmain.SCROLLBAR, itemId);
+			}
+		}
+		return swap;
 	}
 
 	private Integer getUiSwapConfig(boolean shift, int componentId, int itemId)
