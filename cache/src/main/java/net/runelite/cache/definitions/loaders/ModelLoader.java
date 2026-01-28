@@ -1169,7 +1169,7 @@ public class ModelLoader
 
 		int offsetOfFaceIndexData = dataOffset;
 		dataOffset += faceIndexDataByteCount;
-		int offsetOfFaceColorsOrFaceTextures = dataOffset;
+		int faceColorsOffset = dataOffset;
 		dataOffset += faceCount * 2;
 		int offsetOfTextureIndices = dataOffset;
 		dataOffset += textureCount * 6;
@@ -1269,7 +1269,7 @@ public class ModelLoader
 			}
 		}
 
-		stream1.setOffset(offsetOfFaceColorsOrFaceTextures);
+		stream1.setOffset(faceColorsOffset);
 		stream2.setOffset(offsetOfFaceTextureFlags);
 		stream3.setOffset(offsetOfFaceRenderPriorities);
 		stream4.setOffset(offsetOfFaceTransparencies);

@@ -98,6 +98,43 @@ public class MapImageDumper
 	private RSTextureProvider rsTextureProvider;
 	private final ObjectManager objectManager;
 
+	private int lowestX;
+	private int lowestY;
+	private int highestX;
+	private int highestY;
+
+	public int getLowestX() {
+		return lowestX;
+	}
+
+	public void setLowestX(int lowestX) {
+		this.lowestX = lowestX;
+	}
+
+	public int getLowestY() {
+		return lowestY;
+	}
+
+	public void setLowestY(int lowestY) {
+		this.lowestY = lowestY;
+	}
+
+	public int getHighestX() {
+		return highestX;
+	}
+
+	public void setHighestX(int highestX) {
+		this.highestX = highestX;
+	}
+
+	public int getHighestY() {
+		return highestY;
+	}
+
+	public void setHighestY(int highestY) {
+		this.highestY = highestY;
+	}
+
 	@Getter
 	@Setter
 	private boolean labelRegions;
@@ -233,13 +270,12 @@ public class MapImageDumper
 		return this;
 	}
 
-	public BufferedImage drawMap(int z)
-	{
-		int minX = regionLoader.getLowestX().getBaseX();
-		int minY = regionLoader.getLowestY().getBaseY();
+	public BufferedImage drawMap(int z) {
+		int minX = getLowestX();
+		int minY = getLowestY();
 
-		int maxX = regionLoader.getHighestX().getBaseX() + Region.X;
-		int maxY = regionLoader.getHighestY().getBaseY() + Region.Y;
+		int maxX = getHighestX() + Region.X;
+		int maxY = getHighestY() + Region.Y;
 
 		int dimX = maxX - minX;
 		int dimY = maxY - minY;
@@ -248,16 +284,13 @@ public class MapImageDumper
 		int pixelsY = dimY * MAP_SCALE;
 
 		log.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB). Max memory: {}mb", pixelsX, pixelsY,
-			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
-			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
+				MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
+				Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
 		BufferedImage image;
-		if (lowMemory)
-		{
+		if (lowMemory) {
 			image = BigBufferedImage.create(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
-		}
-		else
-		{
+		} else {
 			image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
 		}
 
