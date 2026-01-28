@@ -280,10 +280,10 @@ public class TabInterface
 			if (tagTabActive)
 			{
 				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
-				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
+				// argument int13 (9 from the end) which is the height passed to if_setscrollsize
 				final int[] intStack = client.getIntStack();
 				final int intStackSize = client.getIntStackSize();
-				intStack[intStackSize - 7] = tagTabHeight;
+				intStack[intStackSize - 9] = tagTabHeight;
 			}
 		}
 	}
