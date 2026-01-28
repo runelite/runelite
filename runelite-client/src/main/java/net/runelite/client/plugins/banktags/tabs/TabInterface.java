@@ -611,7 +611,7 @@ public class TabInterface
 			{
 				if (client.getVarbitValue(VarbitID.BANK_CURRENTTAB) == PotionStorage.BANKTAB_POTIONSTORE)
 				{
-					// Opening a tag tab with the potion store open would leave the store open in the bankground,
+					// Opening a tag tab with the potion store open would leave the store open in the background,
 					// making deposits not work. Force close the potion store.
 					log.debug("Closing potion store");
 					client.menuAction(-1, InterfaceID.Bankmain.POTIONSTORE_BUTTON, MenuAction.CC_OP, 1, -1, "Potion store", "");
@@ -873,7 +873,9 @@ public class TabInterface
 			}
 		}
 
-		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items") || event.getMenuOption().equals("Potion store"))
+		MenuEntry menuEntry = event.getMenuEntry();
+		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items")
+			|| (menuEntry.getType() == MenuAction.CC_OP && menuEntry.getParam1() == InterfaceID.Bankmain.POTIONSTORE_BUTTON))
 		{
 			closeTag(false);
 		}
