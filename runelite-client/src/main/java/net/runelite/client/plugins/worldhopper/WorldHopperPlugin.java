@@ -449,13 +449,17 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		// If the player has disabled the side bar plugin panel, do not update the UI
-		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
 			if (lastWorld != client.getWorld())
 			{
 				int newWorld = client.getWorld();
-				panel.switchCurrentHighlight(newWorld, lastWorld);
+				// If the player has disabled the side bar plugin panel, do not update the UI
+				if (config.showSidebar())
+				{
+					panel.switchCurrentHighlight(newWorld, lastWorld);
+				}
+				currentPing = -1;
 				lastWorld = newWorld;
 			}
 		}
