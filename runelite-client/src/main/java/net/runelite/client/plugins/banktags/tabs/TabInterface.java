@@ -540,14 +540,7 @@ public class TabInterface
 			while (dataIter.hasNext())
 			{
 				final int idx = Integer.parseInt(dataIter.next());
-				int itemId = Integer.parseInt(dataIter.next());
-
-				if (itemManager.getItemComposition(itemId).getPlaceholderTemplateId() == 14401)
-				{
-					int normalId = itemManager.getItemComposition(itemId).getPlaceholderId();
-					log.debug("Item {} is a place holder item, converting to normal id {}", itemId, normalId);
-					itemId = normalId;
-				}
+				final int itemId = itemManager.canonicalize(Integer.parseInt(dataIter.next()));
 
 				l.setItemAtPos(itemId, idx);
 				tagManager.addTag(itemId, name, false);
