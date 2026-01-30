@@ -102,6 +102,12 @@ gradle.afterProject {
         isReproducibleFileOrder = true
     }
 
+    tasks.withType<Test> {
+        testLogging {
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
+    }
+
     extensions.findByType<org.gradle.plugins.ide.idea.model.IdeaModel>()?.run {
         module {
             isDownloadSources = true

@@ -13693,6 +13693,11 @@ public final class DBTableID
 		 */
 		public static final int COL_FACILITY_CUSTOMISATION_ORDER = 25;
 
+		/**
+		 * integer
+		 */
+		public static final int COL_FACILITY_BOTTLE_ID = 26;
+
 		public static final class Row
 		{
 			public static final int SAILING_BOAT_FACILITY_BRONZE_CANNON = 8427;

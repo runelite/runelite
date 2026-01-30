@@ -63,6 +63,7 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.gameval.InterfaceID;
@@ -72,7 +73,6 @@ import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
@@ -280,11 +280,21 @@ public class TabInterface
 			if (tagTabActive)
 			{
 				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
-				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
+				// argument int13 (9 from the end) which is the height passed to if_setscrollsize
 				final int[] intStack = client.getIntStack();
 				final int intStackSize = client.getIntStackSize();
-				intStack[intStackSize - 7] = tagTabHeight;
+				intStack[intStackSize - 9] = tagTabHeight;
 			}
+		}
+	}
+
+	@Subscribe
+	private void onScriptPostFired(ScriptPostFired ev)
+	{
+		if (ev.getScriptId() == ScriptID.BANKMAIN_POPUP_TAB_DRAW)
+		{
+			repositionButtons();
+			layoutTabs();
 		}
 	}
 
@@ -350,42 +360,6 @@ public class TabInterface
 			var tab = config.tab();
 			var layout = layoutManager.loadLayout(tab);
 			plugin.openTag(tab, layout);
-		}
-
-		// Move equipment button to the titlebar
-		Widget equipmentButton = client.getWidget(InterfaceID.Bankmain.WORNITEMS_BUTTON);
-		Widget titleBar = client.getWidget(InterfaceID.Bankmain.TITLE);
-		Widget bankItemCountTop = client.getWidget(InterfaceID.Bankmain.OCCUPIEDSLOTS);
-		if (equipmentButton != null && titleBar != null && bankItemCountTop != null)
-		{
-			equipmentButton.setOriginalX(6);
-			equipmentButton.setOriginalY(4);
-			equipmentButton.revalidate();
-
-			int equipmentButtonTotalWidth = equipmentButton.getWidth() + equipmentButton.getOriginalX() - bankItemCountTop.getOriginalX();
-			// the bank item count is 3 widgets
-			for (int c = InterfaceID.Bankmain.OCCUPIEDSLOTS; c <= InterfaceID.Bankmain.CAPACITY_LAYER; c++)
-			{
-				Widget widget = client.getWidget(c);
-				if (widget == null)
-				{
-					continue;
-				}
-
-				widget.setOriginalX(widget.getOriginalX() + equipmentButtonTotalWidth);
-				widget.revalidate();
-			}
-
-			titleBar.setOriginalX(equipmentButton.getWidth() / 2);
-			titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
-			titleBar.revalidate();
-
-			Widget groupStorageButton = client.getWidget(InterfaceID.Bankmain.GIM_STORAGE);
-			if (groupStorageButton != null)
-			{
-				groupStorageButton.setOriginalX(groupStorageButton.getOriginalX() + equipmentButtonTotalWidth);
-				groupStorageButton.revalidate();
-			}
 		}
 	}
 
@@ -637,7 +611,7 @@ public class TabInterface
 			{
 				if (client.getVarbitValue(VarbitID.BANK_CURRENTTAB) == PotionStorage.BANKTAB_POTIONSTORE)
 				{
-					// Opening a tag tab with the potion store open would leave the store open in the bankground,
+					// Opening a tag tab with the potion store open would leave the store open in the background,
 					// making deposits not work. Force close the potion store.
 					log.debug("Closing potion store");
 					client.menuAction(-1, InterfaceID.Bankmain.POTIONSTORE_BUTTON, MenuAction.CC_OP, 1, -1, "Potion store", "");
@@ -899,7 +873,9 @@ public class TabInterface
 			}
 		}
 
-		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items") || event.getMenuOption().equals("Potion store"))
+		MenuEntry menuEntry = event.getMenuEntry();
+		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items")
+			|| (menuEntry.getType() == MenuAction.CC_OP && menuEntry.getParam1() == InterfaceID.Bankmain.POTIONSTORE_BUTTON))
 		{
 			closeTag(false);
 		}
@@ -1203,47 +1179,43 @@ public class TabInterface
 
 	private void repositionButtons()
 	{
-		Widget incinerator = client.getWidget(InterfaceID.Bankmain.INCINERATOR_TARGET);
-		int offset = BANK_BOTTOM_OFFSET;
-		if (incinerator != null && !incinerator.isHidden())
+		int height = parent.getHeight() - BANK_BOTTOM_OFFSET;
+
+		Widget widget = client.getWidget(InterfaceID.Bankmain.INCINERATOR_TARGET);
+		if (widget != null && !widget.isHidden())
 		{
-			incinerator.setOriginalHeight(INCINERATOR_HEIGHT);
-			incinerator.setOriginalWidth(INCINERATOR_WIDTH);
-
-			// ~bankmain_build is run three times when the bank is opened, the first is from ~bankmain_viewbuttons
-			// which is prior to the incinerator being setup.
-			Widget child = incinerator.getChild(0);
-			if (child != null)
-			{
-				child.setOriginalHeight(INCINERATOR_HEIGHT);
-				child.setOriginalWidth(INCINERATOR_WIDTH);
-				child.setWidthMode(WidgetSizeMode.ABSOLUTE);
-				child.setHeightMode(WidgetSizeMode.ABSOLUTE);
-			}
-
-			incinerator.revalidate();
-
-			offset = incinerator.getHeight() + incinerator.getOriginalY();
+			height = Math.min(height, widget.getRelativeY());
 		}
 
-		Widget potionStore = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_BUTTON);
-		if (potionStore != null && !potionStore.isSelfHidden())
+		widget = client.getWidget(InterfaceID.Bankmain.POPUP_BUTTON_OUT);
+		if (widget != null && !widget.isHidden())
 		{
-			potionStore.setOriginalY(offset);
-			potionStore.setOriginalHeight(43); // remove some unused vertical space to make it slightly smaller
-			potionStore.revalidate();
+			height = Math.min(height, widget.getRelativeY());
+		}
 
-			offset = potionStore.getHeight() + potionStore.getOriginalY();
+		Widget popupTab = client.getWidget(InterfaceID.Bankmain.STORAGE_POPUP_TAB);
+		if (popupTab != null && !popupTab.isHidden())
+		{
+			widget = client.getWidget(InterfaceID.Bankmain.GIM_STORAGE);
+			if (widget != null && !widget.isHidden())
+			{
+				height = Math.min(height, popupTab.getRelativeY() + widget.getRelativeY());
+			}
+
+			widget = client.getWidget(InterfaceID.Bankmain.POTIONSTORE_BUTTON);
+			if (widget != null && !widget.isHidden())
+			{
+				height = Math.min(height, popupTab.getRelativeY() + widget.getRelativeY());
+			}
 		}
 
 		scrollComponent.setOriginalY(41 + BUTTON_HEIGHT);
 		scrollComponent.setOriginalWidth(TAB_WIDTH + MARGIN * 2);
 
 		// Keep the tab layer height a multiple of the tab heights
-		int tabLayerHeight = parent.getHeight()
-				- scrollComponent.getOriginalY()
-				- BUTTON_HEIGHT // the bottom button
-				- offset; // incinerator etc.
+		int tabLayerHeight = height
+			- scrollComponent.getOriginalY()
+			- BUTTON_HEIGHT; // the bottom button
 		tabCount = tabLayerHeight / (TAB_HEIGHT + MARGIN);
 		scrollComponent.setOriginalHeight(tabCount * (TAB_HEIGHT + MARGIN));
 
