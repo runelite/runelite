@@ -297,4 +297,53 @@ public class SpecialCounterPluginTest
 
 		verify(notifier, never()).notify(any());
 	}
+
+	@Test
+	public void testThrallHitsplatIgnored()
+	{
+		Player player = mock(Player.class);
+		NPC target = mock(NPC.class);
+
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(player.getInteracting()).thenReturn(target);
+
+		when(client.getTickCount()).thenReturn(0);
+
+		// spec npc with special attack
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayerID.SA_ENERGY);
+		varbitChanged.setValue(50);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
+
+		when(client.getTickCount()).thenReturn(1);
+
+		// clientthread callback
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		captor.getValue().run();
+
+		// Simulate thrall hitting on the same tick - this should be ignored
+		Hitsplat thrallHitsplat = new Hitsplat(HitsplatID.DAMAGE_OTHER, 3, 42);
+		HitsplatApplied thrallHitsplatApplied = new HitsplatApplied();
+		thrallHitsplatApplied.setActor(target);
+		thrallHitsplatApplied.setHitsplat(thrallHitsplat);
+		specialCounterPlugin.onHitsplatApplied(thrallHitsplatApplied);
+
+		// Now the actual weapon hitsplat hits (damage of 10)
+		Hitsplat weaponHitsplat = new Hitsplat(HitsplatID.DAMAGE_ME, 10, 42);
+		HitsplatApplied weaponHitsplatApplied = new HitsplatApplied();
+		weaponHitsplatApplied.setActor(target);
+		weaponHitsplatApplied.setHitsplat(weaponHitsplat);
+		specialCounterPlugin.onHitsplatApplied(weaponHitsplatApplied);
+
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Verify that only the weapon damage (10) is counted, not the thrall damage (3)
+		ArgumentCaptor<SpecialCounter> counterCaptor = ArgumentCaptor.forClass(SpecialCounter.class);
+		verify(infoBoxManager).addInfoBox(counterCaptor.capture());
+
+		// The counter should show 10 damage from the weapon, not 3 from thrall
+		SpecialCounter counter = counterCaptor.getValue();
+		assert counter.getCount() == 10 : "Expected counter to be 10 (weapon damage), but was " + counter.getCount();
+	}
 }

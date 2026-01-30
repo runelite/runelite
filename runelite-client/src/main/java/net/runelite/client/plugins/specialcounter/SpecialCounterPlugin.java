@@ -261,7 +261,7 @@ public class SpecialCounterPlugin extends Plugin
 				}
 
 				// The weapon hitsplat is always last, after other hitsplats which occur on the same tick such as from
-				// venge or thralls.
+				// venge. Thrall hitsplats are filtered out in onHitsplatApplied.
 				Hitsplat hitsplat = hitsplats.get(hitsplats.size() - 1);
 				specialAttackHit(specialWeapon, hitsplat.getAmount(), lastSpecTarget);
 			}
@@ -362,8 +362,8 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-		// Ignore all hitsplats other than mine
-		if (!hitsplat.isMine() || target == client.getLocalPlayer())
+		// Ignore all hitsplats other than mine, or hitsplats from other sources (e.g. thralls)
+		if (!hitsplat.isMine() || hitsplat.isOthers() || target == client.getLocalPlayer())
 		{
 			return;
 		}
