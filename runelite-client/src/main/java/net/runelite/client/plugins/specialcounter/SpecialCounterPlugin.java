@@ -362,8 +362,8 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-		// Ignore all hitsplats other than mine
-		if (!hitsplat.isMine() || target == client.getLocalPlayer())
+		// Ignore all hitsplats other than mine or hitsplats from other sources (thralls, vengeance etc)
+		if (!hitsplat.isMine() || hitsplat.isOthers() || target == client.getLocalPlayer())
 		{
 			return;
 		}
