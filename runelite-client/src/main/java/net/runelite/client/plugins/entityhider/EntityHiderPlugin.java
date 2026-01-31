@@ -28,8 +28,13 @@ package net.runelite.client.plugins.entityhider;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Set;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
@@ -38,6 +43,7 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.WorldEntity;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
 import net.runelite.client.callback.Hooks;
@@ -88,6 +94,8 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.MACRO_COUNTCHECK_SURFACE, NpcID.MACRO_COUNTCHECK_UNDERWATER
 	);
 
+	private static final Duration WAIT = Duration.ofMillis(9600);
+
 	@Inject
 	private Client client;
 
@@ -102,6 +110,13 @@ public class EntityHiderPlugin extends Plugin
 
 	@Inject
 	private PartyService partyService;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Actor lastOpponent;
+
+	@Getter(AccessLevel.PACKAGE)
+	@VisibleForTesting
+	private Instant lastTime;
 
 	private boolean hideOthers;
 	private boolean hideOthers2D;
@@ -150,6 +165,20 @@ public class EntityHiderPlugin extends Plugin
 		if (e.getGroup().equals(EntityHiderConfig.GROUP))
 		{
 			updateConfig();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (lastOpponent != null
+				&& lastTime != null
+				&& client.getLocalPlayer().getInteracting() == null)
+		{
+			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
+			{
+				lastOpponent = null;
+			}
 		}
 	}
 
@@ -204,8 +233,13 @@ public class EntityHiderPlugin extends Plugin
 				return !(drawingUI ? hideLocalPlayer2D : hideLocalPlayer);
 			}
 
-			if (hideAttackers && player.getInteracting() == local)
+			if ((hideAttackers && player.getInteracting() == local) || player == lastOpponent)
 			{
+				if (player.getInteracting() == local)
+				{
+					lastOpponent = player;
+					lastTime = Instant.now();
+				}
 				return false; // hide
 			}
 
