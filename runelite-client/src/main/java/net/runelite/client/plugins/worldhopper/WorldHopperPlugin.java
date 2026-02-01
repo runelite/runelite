@@ -836,7 +836,7 @@ public class WorldHopperPlugin extends Plugin
 
 		for (World world : worldResult.getWorlds())
 		{
-			int ping = ping(world);
+			int ping = ping(world, false);
 			SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
 		}
 
@@ -877,7 +877,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		int ping = ping(world);
+		int ping = ping(world, false);
 		log.trace("Ping for world {} is: {}", world.getId(), ping);
 
 		if (panel.isActive())
@@ -905,7 +905,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		int ping = ping(currentWorld);
+		int ping = ping(currentWorld, true);
 		log.trace("Ping for current world is: {}", ping);
 
 		FileDescriptor fd = client.getSocketFD();
@@ -923,6 +923,7 @@ public class WorldHopperPlugin extends Plugin
 		if (ping < 0)
 		{
 			ping = rtt; // use rtt for ping if icmp is blocked
+			storedPings.put(currentWorld.getId(), rtt);
 		}
 
 		if (ping < 0)
@@ -948,9 +949,9 @@ public class WorldHopperPlugin extends Plugin
 		return storedPings.get(world.getId());
 	}
 
-	private int ping(World world)
+	private int ping(World world, boolean isCurrentWorld)
 	{
-		int ping = Ping.ping(world);
+		int ping = Ping.ping(world, !isCurrentWorld);
 		storedPings.put(world.getId(), ping);
 		return ping;
 	}

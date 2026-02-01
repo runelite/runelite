@@ -53,7 +53,13 @@ public class Ping
 
 	private static short seq;
 
+	@Deprecated
 	public static int ping(World world)
+	{
+		return ping(world, false);
+	}
+
+	public static int ping(World world, boolean useTcpPing)
 	{
 		InetAddress inetAddress;
 		try
@@ -77,20 +83,29 @@ public class Ping
 			switch (OSType.getOSType())
 			{
 				case Windows:
-					return windowsPing(inetAddress);
+					int p = windowsPing(inetAddress);
+					if (p == -1 && useTcpPing)
+					{
+						p = tcpPing(inetAddress);
+					}
+					return p;
 				case MacOS:
 				case Linux:
 					try
 					{
 						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
 					}
-					catch (Exception ex)
+					catch (IOException ex)
 					{
 						log.debug("error during icmp ping", ex);
+					}
+					// FALLTHROUGH
+				default:
+					if (useTcpPing)
+					{
 						return tcpPing(inetAddress);
 					}
-				default:
-					return tcpPing(inetAddress);
+					return -1;
 			}
 		}
 		catch (IOException ex)
