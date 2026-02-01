@@ -51,6 +51,7 @@ public class NpcDefinition
 	public int crawlRotate180Animation = -1;
 	public int crawlRotateLeftAnimation = -1;
 	public int crawlRotateRightAnimation = -1;
+	public boolean idleAnimRestart;
 	public short[] recolorToFind;
 	public short[] recolorToReplace;
 	public short[] retextureToFind;
@@ -81,4 +82,5 @@ public class NpcDefinition
 	public boolean canHideForOverlap;
 	public int overlapTintHSL = 39188;
 	public boolean unknown1 = false;
+	public boolean zbuf = true;
 }
