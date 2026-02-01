@@ -40,7 +40,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -228,6 +231,24 @@ public class ImageCapture
 		{
 			log.error("error writing screenshot", ex);
 			return;
+		}
+
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			final File colorProfile = new File("/System/Library/ColorSync/Profiles/Display P3.icc");
+
+			final List<String> embedCommand = new ArrayList<>();
+			Collections.addAll(embedCommand, "sips", "-E", colorProfile.getAbsolutePath(), screenshotFile.getAbsolutePath());
+			try
+			{
+				new ProcessBuilder(embedCommand)
+					.redirectErrorStream(true)
+					.start();
+			}
+			catch (IOException ex)
+			{
+				log.warn("error applying screenshot color profile", ex);
+			}
 		}
 
 		if (saveToClipboard)
