@@ -521,9 +521,9 @@ public class ItemStatEffectTest
 	{
 		final Effect blightedOverload = new ItemStatChanges().get(ItemID.DEADMAN4DOSEOVERLOAD);
 
-		assertEquals(-5, skillChange(Skill.HITPOINTS, 49, 44, blightedOverload));
-		assertEquals(-5, skillChange(Skill.HITPOINTS, 64, 64, blightedOverload));
-		assertEquals(-5, skillChange(Skill.HITPOINTS, 99, 77, blightedOverload));
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 49, 44, blightedOverload));
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 64, 64, blightedOverload));
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 99, 77, blightedOverload));
 
 		assertEquals(13, skillChange(Skill.STRENGTH, 36, 36, blightedOverload));
 		assertEquals(17, skillChange(Skill.STRENGTH, 66, 66, blightedOverload));
