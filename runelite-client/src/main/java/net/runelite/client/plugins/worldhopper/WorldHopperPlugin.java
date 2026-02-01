@@ -83,6 +83,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.plugins.worldhopper.ping.RetransmitCalculator;
+import net.runelite.client.plugins.worldhopper.ping.TCP_INFO_v0;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -905,7 +906,24 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		int ping = ping(currentWorld);
-		log.trace("Ping for current world is: {}", currentPing);
+		log.trace("Ping for current world is: {}", ping);
+
+		FileDescriptor fd = client.getSocketFD();
+		int rtt = -1;
+		if (fd != null)
+		{
+			TCP_INFO_v0 tcpInfo = Ping.getTcpInfo(fd);
+			if (tcpInfo != null)
+			{
+				rtt = (int) (tcpInfo.RttUs.longValue() / 1000L);
+				retransmitCalculator.record(tcpInfo);
+			}
+		}
+
+		if (ping < 0)
+		{
+			ping = rtt; // use rtt for ping if icmp is blocked
+		}
 
 		if (ping < 0)
 		{
@@ -917,12 +935,6 @@ public class WorldHopperPlugin extends Plugin
 		if (panel.isActive())
 		{
 			SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
-		}
-
-		FileDescriptor fd = client.getSocketFD();
-		if (fd != null)
-		{
-			retransmitCalculator.record(fd);
 		}
 	}
 
