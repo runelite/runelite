@@ -122,8 +122,8 @@ public class Perspective
 			}
 
 			LocalPoint entityLocation = we.getLocalLocation();
-			int height = wv.getTileHeight(plane, point.getX(), point.getY()); // height in wv
-			height += wv.getTileHeight(wv.getPlane(), entityLocation.getX(), entityLocation.getY()); // height of we
+			int height = we.getWorldView().getTileHeight(point.getX(), point.getY(), plane); // height in wv
+			height += wv.getTileHeight(entityLocation.getX(), entityLocation.getY(), wv.getPlane()); // height of we
 			height -= heightOffset;
 
 			WorldView subWv = we.getWorldView();
