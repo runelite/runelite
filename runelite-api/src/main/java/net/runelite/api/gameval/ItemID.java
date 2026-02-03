@@ -91217,6 +91217,8 @@ public final class ItemID
 		public static final int MAGIC_ROCK_OF_FORTUITY_INACTIVE = 33048;
 		public static final int MAGIC_ROCK_OF_FORTUITY_ACTIVE = 33051;
 		public static final int SAILING_FACILITY_BOTTLE_EMPTY = 33075;
+		public static final int BREW_RED_RUM = 33078;
+		public static final int BREW_BLUE_RUM = 33079;
 	}
 
 	public static final class Placeholder

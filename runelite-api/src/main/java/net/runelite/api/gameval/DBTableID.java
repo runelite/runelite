@@ -9464,14 +9464,19 @@ public final class DBTableID
 		public static final int COL_EXTENSION_MIN_MAX = 15;
 
 		/**
+		 * (dbrow, integer, integer)
+		 */
+		public static final int COL_EXTENSION_ADDITIVE = 16;
+
+		/**
 		 * dbrow
 		 */
-		public static final int COL_BLOCK_UNLOCK = 16;
+		public static final int COL_BLOCK_UNLOCK = 17;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_RELATED_CONTENT = 17;
+		public static final int COL_RELATED_CONTENT = 18;
 
 		public static final class Row
 		{
@@ -10034,6 +10039,11 @@ public final class DBTableID
 		public static final int COL_AREA_NAME_IN_HELPER = 3;
 
 		/**
+		 * string
+		 */
+		public static final int COL_AREA_HINT = 4;
+
+		/**
 		 * integer
 		 */
 		public static final int COL_RELATED_CONTENT = 8;
@@ -10262,6 +10272,7 @@ public final class DBTableID
 			public static final int SLAYER_REWARDS_LONGER_WYRMS = 9419;
 			public static final int SLAYER_REWARDS_UNLOCK_GRYPHONS = 9420;
 			public static final int SLAYER_REWARDS_UNLOCK_HELM_HOODED = 9641;
+			public static final int SLAYER_REWARDS_LONGER_GRYPHONS = 9642;
 		}
 	}
 
@@ -14765,6 +14776,11 @@ public final class DBTableID
 		 * integer
 		 */
 		public static final int COL_LEVEL_REQUIRED = 4;
+
+		/**
+		 * dbrow
+		 */
+		public static final int COL_QUEST_REQUIRED = 5;
 
 		/**
 		 * graphic

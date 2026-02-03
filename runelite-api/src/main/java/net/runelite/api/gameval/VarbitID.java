@@ -13897,6 +13897,7 @@ public final class VarbitID
 	public static final int DEADMAN_2026_INITIAL_SETUP_DONE = 19678;
 	public static final int DEADMAN_2026_TUTORIAL_END = 19679;
 	public static final int DEADMAN_2026_TUTORIAL_TELEPORT_DEST = 19680;
+	public static final int SETTINGS_QUETZALWHISTLE_DEFAULT_TP = 19681;
 	public static final int DEADMAN_SKULL_TAB = 19682;
 	public static final int SIGIL_OF_AGILE_FORTUNE_STATE = 19683;
 	public static final int SIGIL_OF_HOARDING_STATE = 19684;
