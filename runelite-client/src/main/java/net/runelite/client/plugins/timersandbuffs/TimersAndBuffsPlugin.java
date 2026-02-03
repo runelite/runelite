@@ -33,7 +33,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
@@ -64,6 +63,7 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -139,8 +139,6 @@ public class TimersAndBuffsPlugin extends Plugin
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 	private boolean prayedLastNexAttack = false;
-	private static final int NEX_CAST_ANIMATION1 = 9188;
-	private static final int NEX_CAST_ANIMATION2 = 9189;
 
 	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
@@ -942,8 +940,13 @@ public class TimersAndBuffsPlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
+		if (!(actor instanceof NPC))
+		{
+			return;
+		}
+		final NPC npc = (NPC) actor;
 		final int anim = actor.getAnimation();
-		if (Objects.equals(actor.getName(), "Nex") && (anim == NEX_CAST_ANIMATION1 || anim == NEX_CAST_ANIMATION2))
+		if (npc.getId() == NpcID.NEX && (anim == AnimationID.NEX_CAST_ATTACK || anim == AnimationID.NEX_ALTERNATE_CAST_ATTACK))
 		{
 			prayedLastNexAttack = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) == 1;
 		}
