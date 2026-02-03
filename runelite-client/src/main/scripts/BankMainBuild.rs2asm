@@ -310,7 +310,7 @@ LABEL276:
    get_varbit             4150
    iconst                 15
    if_icmpeq              LABEL280
-   jump                   LABEL292
+   jump                   LABEL300
 LABEL280:
    iconst                 0
    iconst                 786446
@@ -324,16 +324,36 @@ LABEL287:
    iload                  2
    if_sethide            
 LABEL290:
-   invoke                 6080
+   iconst                 786551
+   iconst                 0
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL296
    jump                   LABEL298
-LABEL292:
+LABEL296:
+   iconst                 179
+   cc_setgraphic         
+LABEL298:
+   invoke                 6080
+   jump                   LABEL314
+LABEL300:
    iconst                 1
    iconst                 786446
    if_sethide            
+   iconst                 786551
+   iconst                 0
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL309
+   jump                   LABEL311
+LABEL309:
+   iconst                 170
+   cc_setgraphic         
+LABEL311:
    iconst                 0
    iload                  2
    if_sethide            
-LABEL298:
+LABEL314:
    iload                  4
    iload                  3
    invoke                 231
@@ -345,28 +365,28 @@ LABEL298:
    multiply              
    add                   
    istore                 26
-LABEL309:
+LABEL325:
    iload                  25
    iload                  26
-   if_icmple              LABEL313
-   jump                   LABEL326
-LABEL313:
+   if_icmple              LABEL329
+   jump                   LABEL342
+LABEL329:
    iload                  3
    iload                  25
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL319
-   jump                   LABEL321
-LABEL319:
+   if_icmpeq              LABEL335
+   jump                   LABEL337
+LABEL335:
    iconst                 1
    cc_sethide            
-LABEL321:
+LABEL337:
    iload                  25
    iconst                 1
    add                   
    istore                 25
-   jump                   LABEL309
-LABEL326:
+   jump                   LABEL325
+LABEL342:
    iconst                 0
    istore                 25
    iconst                 8
@@ -407,17 +427,17 @@ LABEL326:
    get_varc_string        359      ; Skip truncating of meslayerinput by not calling bankmain_filterstring
    lowercase                       ; instead get the var directly and lowercase it
    ostore                 2
-   jump                   LABEL371 ; 
+   jump                   LABEL387 ; 
    sconst                 ""
    ostore                 2
    iload                  37
    iconst                 1
-   if_icmpeq              LABEL369
-   jump                   LABEL371
-LABEL369:
+   if_icmpeq              LABEL385
+   jump                   LABEL387
+LABEL385:
    invoke                 280
    ostore                 2
-LABEL371:
+LABEL387:
    iconst                 0                  ;
    sconst                 "bankBuildTab"     ;
    runelite_callback                         ;
@@ -428,52 +448,52 @@ LABEL371:
 
    get_varbit             4150
    iconst                 0
-   if_icmple              LABEL378
+   if_icmple              LABEL394
    get_varbit             4150
    iconst                 9
-   if_icmpgt              LABEL378
-   jump                   LABEL856
-LABEL378:
+   if_icmpgt              LABEL394
+   jump                   LABEL872
+LABEL394:
    get_varbit             4150
    iconst                 15
-   if_icmpne              LABEL382
-   jump                   LABEL856
-LABEL382:
+   if_icmpne              LABEL398
+   jump                   LABEL872
+LABEL398:
    iload                  25
    iconst                 1410
-   if_icmplt              LABEL386
-   jump                   LABEL411
-LABEL386:
+   if_icmplt              LABEL402
+   jump                   LABEL427
+LABEL402:
    iload                  3
    iload                  25
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL392
-   jump                   LABEL394
-LABEL392:
+   if_icmpeq              LABEL408
+   jump                   LABEL410
+LABEL408:
    iconst                 1
    cc_sethide            
-LABEL394:
+LABEL410:
    iconst                 95
    iload                  25
    inv_getobj            
    iconst                 -1
-   if_icmpne              LABEL400
-   jump                   LABEL406
-LABEL400:
+   if_icmpne              LABEL416
+   jump                   LABEL422
+LABEL416:
    iload                  34
    iconst                 1
    add                   
    iload                  25
    istore                 35
    istore                 34
-LABEL406:
+LABEL422:
    iload                  25
    iconst                 1
    add                   
    istore                 25
-   jump                   LABEL382
-LABEL411:
+   jump                   LABEL398
+LABEL427:
    get_varbit             4171
    get_varbit             4172
    add                   
@@ -494,14 +514,14 @@ LABEL411:
    istore                 36
    iload                  36
    iconst                 0
-   if_icmple              LABEL433
-   jump                   LABEL437
-LABEL433:
+   if_icmple              LABEL449
+   jump                   LABEL453
+LABEL449:
    iconst                 1410
    iconst                 1
    sub                   
    istore                 35
-LABEL437:
+LABEL453:
    iload                  36
    iload                  35
    iconst                 1
@@ -529,9 +549,9 @@ LABEL437:
    istore                 25
    get_varbit             4171
    iconst                 0
-   if_icmpgt              LABEL466
-   jump                   LABEL498
-LABEL466:
+   if_icmpgt              LABEL482
+   jump                   LABEL514
+LABEL482:
    iconst                 1
    iload                  3
    iload                  33
@@ -564,12 +584,12 @@ LABEL466:
    get_varbit             4171
    add                   
    istore                 25
-LABEL498:
+LABEL514:
    get_varbit             4172
    iconst                 0
-   if_icmpgt              LABEL502
-   jump                   LABEL534
-LABEL502:
+   if_icmpgt              LABEL518
+   jump                   LABEL550
+LABEL518:
    iconst                 2
    iload                  3
    iload                  33
@@ -602,12 +622,12 @@ LABEL502:
    get_varbit             4172
    add                   
    istore                 25
-LABEL534:
+LABEL550:
    get_varbit             4173
    iconst                 0
-   if_icmpgt              LABEL538
-   jump                   LABEL570
-LABEL538:
+   if_icmpgt              LABEL554
+   jump                   LABEL586
+LABEL554:
    iconst                 3
    iload                  3
    iload                  33
@@ -640,12 +660,12 @@ LABEL538:
    get_varbit             4173
    add                   
    istore                 25
-LABEL570:
+LABEL586:
    get_varbit             4174
    iconst                 0
-   if_icmpgt              LABEL574
-   jump                   LABEL606
-LABEL574:
+   if_icmpgt              LABEL590
+   jump                   LABEL622
+LABEL590:
    iconst                 4
    iload                  3
    iload                  33
@@ -678,12 +698,12 @@ LABEL574:
    get_varbit             4174
    add                   
    istore                 25
-LABEL606:
+LABEL622:
    get_varbit             4175
    iconst                 0
-   if_icmpgt              LABEL610
-   jump                   LABEL642
-LABEL610:
+   if_icmpgt              LABEL626
+   jump                   LABEL658
+LABEL626:
    iconst                 5
    iload                  3
    iload                  33
@@ -716,12 +736,12 @@ LABEL610:
    get_varbit             4175
    add                   
    istore                 25
-LABEL642:
+LABEL658:
    get_varbit             4176
    iconst                 0
-   if_icmpgt              LABEL646
-   jump                   LABEL678
-LABEL646:
+   if_icmpgt              LABEL662
+   jump                   LABEL694
+LABEL662:
    iconst                 6
    iload                  3
    iload                  33
@@ -754,12 +774,12 @@ LABEL646:
    get_varbit             4176
    add                   
    istore                 25
-LABEL678:
+LABEL694:
    get_varbit             4177
    iconst                 0
-   if_icmpgt              LABEL682
-   jump                   LABEL714
-LABEL682:
+   if_icmpgt              LABEL698
+   jump                   LABEL730
+LABEL698:
    iconst                 7
    iload                  3
    iload                  33
@@ -792,12 +812,12 @@ LABEL682:
    get_varbit             4177
    add                   
    istore                 25
-LABEL714:
+LABEL730:
    get_varbit             4178
    iconst                 0
-   if_icmpgt              LABEL718
-   jump                   LABEL750
-LABEL718:
+   if_icmpgt              LABEL734
+   jump                   LABEL766
+LABEL734:
    iconst                 8
    iload                  3
    iload                  33
@@ -830,12 +850,12 @@ LABEL718:
    get_varbit             4178
    add                   
    istore                 25
-LABEL750:
+LABEL766:
    get_varbit             4179
    iconst                 0
-   if_icmpgt              LABEL754
-   jump                   LABEL786
-LABEL754:
+   if_icmpgt              LABEL770
+   jump                   LABEL802
+LABEL770:
    iconst                 9
    iload                  3
    iload                  33
@@ -868,18 +888,18 @@ LABEL754:
    get_varbit             4179
    add                   
    istore                 25
-LABEL786:
+LABEL802:
    iload                  37
    iconst                 1
-   if_icmpeq              LABEL790
-   jump                   LABEL829
-LABEL790:
+   if_icmpeq              LABEL806
+   jump                   LABEL845
+LABEL806:
    oload                  2
    string_length         
    iconst                 0
-   if_icmpgt              LABEL795
-   jump                   LABEL814
-LABEL795:
+   if_icmpgt              LABEL811
+   jump                   LABEL830
+LABEL811:
    sconst                 "Showing items: "
    sconst                 "<col=ff0000>"
    oload                  2
@@ -889,9 +909,9 @@ LABEL795:
    if_settext            
    get_varc_int           5
    iconst                 11
-   if_icmpeq              LABEL806
-   jump                   LABEL813
-LABEL806:
+   if_icmpeq              LABEL822
+   jump                   LABEL829
+LABEL822:
    sconst                 "Show items whose names contain the following text: ("
    iload                  32
    tostring              
@@ -903,9 +923,9 @@ LABEL806:
    pop_int               ; pop number of matches
    iconst                 10616874
    if_settext            
-LABEL813:
-   jump                   LABEL828
-LABEL814:
+LABEL829:
+   jump                   LABEL844
+LABEL830:
    sconst                 "Showing items: "
    sconst                 "<col=ff0000>"
    sconst                 "*"
@@ -915,21 +935,21 @@ LABEL814:
    if_settext            
    get_varc_int           5
    iconst                 11
-   if_icmpeq              LABEL825
-   jump                   LABEL828
-LABEL825:
+   if_icmpeq              LABEL841
+   jump                   LABEL844
+LABEL841:
    sconst                 "Show items whose names contain the following text:"
    sconst                 "setSearchBankInputText"  ; load event name
    runelite_callback     ; invoke callback
    iconst                 10616874
    if_settext            
-LABEL828:
-   jump                   LABEL832
-LABEL829:
+LABEL844:
+   jump                   LABEL848
+LABEL845:
    sconst                 "The Bank of Gielinor"
    iload                  6
    if_settext            
-LABEL832:
+LABEL848:
    iload                  0
    iload                  1
    iload                  2
@@ -976,18 +996,18 @@ singletabbuildmode:
    get_varbit             4179  ;
    add                          ;
    istore                 36    ; store start to the first item in the "All items" tab
-LABEL856:
+LABEL872:
   ; if (~bankmain_searching = 1) {
    iload                  37
    iconst                 1
-   if_icmpeq              LABEL860
-   jump                   LABEL864
-LABEL860:
+   if_icmpeq              LABEL876
+   jump                   LABEL880
+LABEL876:
    iconst                 1
    iconst                 1
    iconst                 1
    invoke                 299
-LABEL864:
+LABEL880:
   ; after ~meslayer close
    iconst                 -1
    istore                 38
@@ -1001,12 +1021,12 @@ LABEL864:
    istore                 40
    iconst                 0
    istore                 41
-LABEL876:
+LABEL892:
    iload                  25
    iconst                 1410
-   if_icmplt              LABEL880
-   jump                   LABEL956
-LABEL880:
+   if_icmplt              LABEL896
+   jump                   LABEL972
+LABEL896:
    ; item index = (loop index + offset) % bank size
    iload                  25   ; loop index
    iload                  36   ; offset
@@ -1021,9 +1041,9 @@ LOAD_ITEM_INDEX:
    iload                  35   ; use item index instead of loop index
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL886
-   jump                   LABEL951
-LABEL886:
+   if_icmpeq              LABEL902
+   jump                   LABEL967
+LABEL902:
    iconst                 95
    jump                   LOAD_ITEM_INDEX2
    iload                  25
@@ -1033,34 +1053,34 @@ LOAD_ITEM_INDEX2:
    istore                 30
    iload                  30
    iconst                 -1
-   if_icmpne              LABEL894
-   jump                   LABEL898
-LABEL894:
+   if_icmpne              LABEL910
+   jump                   LABEL914
+LABEL910:
    iload                  34
    iconst                 1
    add                   
    istore                 34
-LABEL898:
+LABEL914:
    iload                  42         ; overriding single tab building mode?
    iconst                 1          ;
    if_icmpeq              filtertest ;
    iload                  25
    iload                  38
-   if_icmpge              LABEL902
-   jump                   LABEL949
-LABEL902:
+   if_icmpge              LABEL918
+   jump                   LABEL965
+LABEL918:
    iload                  25
    iload                  39
-   if_icmplt              LABEL906
-   jump                   LABEL949
+   if_icmplt              LABEL922
+   jump                   LABEL965
 filtertest:
    iload                  30        ; obj
    iload                  37        ; bankmain_searching
    oload                  2         ; bankmain_filterstring
    invoke                 279       ; ~bankmain_filteritem
    iconst                 1         ;
-   if_icmpne              LABEL949  ;
-LABEL906:
+   if_icmpne              LABEL965  ;
+LABEL922:
    iconst                 0
    cc_sethide            
    iload                  30
@@ -1089,15 +1109,15 @@ LOAD_ITEM_INDEX3:
    cc_setposition        
    iload                  40
    iload                  27
-   if_icmplt              LABEL933
-   jump                   LABEL938
-LABEL933:
+   if_icmplt              LABEL949
+   jump                   LABEL954
+LABEL949:
    iload                  40
    iconst                 1
    add                   
    istore                 40
-   jump                   LABEL948
-LABEL938:
+   jump                   LABEL964
+LABEL954:
    iconst                 0
    iload                  41
    iconst                 1
@@ -1108,38 +1128,32 @@ LABEL938:
    iconst                 36
    multiply              
    istore                 33
-LABEL948:
-   jump                   LABEL951
-LABEL949:
+LABEL964:
+   jump                   LABEL967
+LABEL965:
    iconst                 1
    cc_sethide            
-LABEL951:
+LABEL967:
    iload                  25
    iconst                 1
    add                   
    istore                 25
-   jump                   LABEL876
-LABEL956:
+   jump                   LABEL892
+LABEL972:
    iload                  33
    iconst                 32
    add                   
    istore                 33
-   iconst                 1
-   iconst                 786446
-   if_sethide            
    get_varbit             4150
    iconst                 15
-   if_icmpeq              LABEL967
-   jump                   LABEL974
-LABEL967:
+   if_icmpeq              LABEL980
+   jump                   LABEL984
+LABEL980:
    sconst                 "Potion storage"
    iload                  6
    if_settext            
-   iconst                 0
-   iconst                 786446
-   if_sethide            
-   jump                   LABEL994
-LABEL974:
+   jump                   LABEL1004
+LABEL984:
    iload                  42                     ; overriding single tab building mode?
    iconst                 1                      ;
    if_icmpne              tabtitle               ; set normal "Tab" title
@@ -1150,9 +1164,9 @@ LABEL974:
 tabtitle:                                        ;
    get_varbit             4170
    iconst                 2
-   if_icmpeq              LABEL978
-   jump                   LABEL988
-LABEL978:
+   if_icmpeq              LABEL988
+   jump                   LABEL998
+LABEL988:
    sconst                 "Tab "
    iconst                 105
    iconst                 115
@@ -1162,8 +1176,8 @@ LABEL978:
    join_string            2
    iload                  6
    if_settext            
-   jump                   LABEL994
-LABEL988:
+   jump                   LABEL1004
+LABEL998:
    sconst                 "Tab "
    get_varbit             4150
    tostring              
@@ -1171,7 +1185,7 @@ LABEL988:
    iload                  6
    if_settext            
 FinishBuilding:
-LABEL994:
+LABEL1004:
    iload                  0
    iload                  1
    iload                  2
