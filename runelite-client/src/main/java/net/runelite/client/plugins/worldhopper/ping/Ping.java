@@ -98,14 +98,10 @@ public class Ping
 					catch (IOException ex)
 					{
 						log.debug("error during icmp ping", ex);
-					}
-					// FALLTHROUGH
-				default:
-					if (useTcpPing)
-					{
 						return tcpPing(inetAddress);
 					}
-					return -1;
+				default:
+					return tcpPing(inetAddress);
 			}
 		}
 		catch (IOException ex)
