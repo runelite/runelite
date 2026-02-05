@@ -233,19 +233,19 @@ public class MouseManagerTest
 	}
 
 	@Test
-	public void testDeprecatedMouseListenerInsertAfter()
+	public void testDeprecatedMouseListenerInsertBefore()
 	{
 		MouseListener first = createMouseListener("first");
 		MouseListener second = createMouseListener("second");
 
 		// Both use deprecated overload with position 0 (same priority).
-		// INSERT_AFTER: second goes after first among same-priority.
+		// INSERT_BEFORE: second goes before first among same-priority.
 		mouseManager.registerMouseListener(0, first);
 		mouseManager.registerMouseListener(0, second);
 
 		mouseManager.processMousePressed(createMouseEvent());
 
-		assertEquals(List.of("first", "second"), order);
+		assertEquals(List.of("second", "first"), order);
 	}
 
 	@Test
