@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Prioritized<T>
 {
-    final T object;
-    final int priority;
+	final T object;
+	final int priority;
 }
