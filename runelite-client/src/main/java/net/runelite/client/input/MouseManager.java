@@ -31,7 +31,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.AllArgsConstructor;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.util.Prioritized;
 
@@ -40,7 +39,7 @@ public class MouseManager
 {
 	// Button numbers greater than BUTTON3 have no constant identifier
 	private static final int MOUSE_BUTTON_4 = 4;
-	
+
 	private final List<Prioritized<MouseListener>> mouseListeners = new CopyOnWriteArrayList<>();
 	private final List<Prioritized<MouseWheelListener>> mouseWheelListeners = new CopyOnWriteArrayList<>();
 
