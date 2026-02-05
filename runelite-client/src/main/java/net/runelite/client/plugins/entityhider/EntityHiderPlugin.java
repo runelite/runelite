@@ -204,9 +204,9 @@ public class EntityHiderPlugin extends Plugin
 				return !(drawingUI ? hideLocalPlayer2D : hideLocalPlayer);
 			}
 
-			if (hideAttackers && player.getInteracting() == local)
+			if (local != null && player.getInteracting() == local)
 			{
-				return false; // hide
+				return !hideAttackers;
 			}
 
 			if (partyService.isInParty() && partyService.getMemberByDisplayName(player.getName()) != null)
