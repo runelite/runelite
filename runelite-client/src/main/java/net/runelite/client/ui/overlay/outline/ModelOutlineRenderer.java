@@ -1092,7 +1092,10 @@ public class ModelOutlineRenderer
 			if (model != null)
 			{
 				// Offset is not used for the second model
-				drawModelOutline(decorativeObject.getWorldView(), model, decorativeObject.getX(), decorativeObject.getY(), decorativeObject.getZ() - renderable2.getAnimationHeightOffset(),
+				drawModelOutline(decorativeObject.getWorldView(), model,
+					decorativeObject.getX() + decorativeObject.getXOffset2(),
+					decorativeObject.getY() + decorativeObject.getYOffset2(),
+					decorativeObject.getZ() - renderable2.getAnimationHeightOffset(),
 					0, outlineWidth, color, feather);
 			}
 		}

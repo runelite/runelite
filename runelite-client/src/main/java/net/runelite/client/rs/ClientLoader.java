@@ -27,7 +27,6 @@
 package net.runelite.client.rs;
 
 import com.google.common.base.Strings;
-import java.applet.Applet;
 import java.io.IOException;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -193,7 +192,7 @@ public class ClientLoader implements Supplier<Client>
 			.loadClass(initialClass);
 
 		Client rs = (Client) clientClass.newInstance();
-		((Applet) rs).setStub(new RSAppletStub(config, runtimeConfigLoader));
+		rs.setConfiguration(new RSAppletStub(config, runtimeConfigLoader));
 
 		log.info("injected-client {}", rs.getBuildID());
 

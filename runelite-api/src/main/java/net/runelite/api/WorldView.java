@@ -264,4 +264,10 @@ public interface WorldView
 	 */
 	@MagicConstant(intValues = {Constants.CLICK_ACTION_NONE, Constants.CLICK_ACTION_WALK, Constants.CLICK_ACTION_SET_HEADING})
 	int getYellowClickAction();
+
+	/**
+	 * Gets the tile height at the given coordinates, interpolating the height from adjacent tiles.
+	 * @return
+	 */
+	int getTileHeight(int x, int y, int maplevel);
 }

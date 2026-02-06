@@ -29,7 +29,11 @@ import com.google.common.primitives.Bytes;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.ptr.IntByReference;
+import java.io.FileDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -49,7 +53,13 @@ public class Ping
 
 	private static short seq;
 
+	@Deprecated
 	public static int ping(World world)
+	{
+		return ping(world, false);
+	}
+
+	public static int ping(World world, boolean useTcpPing)
 	{
 		InetAddress inetAddress;
 		try
@@ -73,14 +83,19 @@ public class Ping
 			switch (OSType.getOSType())
 			{
 				case Windows:
-					return windowsPing(inetAddress);
+					int p = windowsPing(inetAddress);
+					if (p == -1 && useTcpPing)
+					{
+						p = tcpPing(inetAddress);
+					}
+					return p;
 				case MacOS:
 				case Linux:
 					try
 					{
 						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
 					}
-					catch (Exception ex)
+					catch (IOException ex)
 					{
 						log.debug("error during icmp ping", ex);
 						return tcpPing(inetAddress);
@@ -268,5 +283,59 @@ public class Ping
 			long end = System.nanoTime();
 			return (int) ((end - start) / 1000000L);
 		}
+	}
+
+	public static TCP_INFO_v0 getTcpInfo(FileDescriptor fd)
+	{
+		if (OSType.getOSType() != OSType.Windows)
+		{
+			return null;
+		}
+
+		int handle;
+		try
+		{
+			Field f = FileDescriptor.class.getDeclaredField("fd");
+			f.setAccessible(true);
+			handle = f.getInt(fd);
+		}
+		catch (NoSuchFieldException | IllegalAccessException ex)
+		{
+			log.debug(null, ex);
+			return null;
+		}
+
+		IntByReference tcpInfoVersion = new IntByReference(0); // Version 0 of TCP_INFO
+		TCP_INFO_v0 info = new TCP_INFO_v0();
+		IntByReference bytesReturned = new IntByReference();
+
+		Ws2_32 winsock = Ws2_32.INSTANCE;
+		int rc;
+		try
+		{
+			rc = winsock.WSAIoctl(
+				new WinNT.HANDLE(Pointer.createConstant(handle)),
+				Ws2_32.SIO_TCP_INFO,
+				tcpInfoVersion.getPointer(), Integer.BYTES,
+				info.getPointer(), info.size(),
+				bytesReturned,
+				Pointer.NULL,
+				Pointer.NULL
+			);
+		}
+		catch (UnsatisfiedLinkError ex)
+		{
+			// probably Windows 7
+			log.debug("WSAIoctl()", ex);
+			return null;
+		}
+		if (rc != 0)
+		{
+			log.debug("WSAIoctl(SIO_TCP_INFO) error"); // WSAGetLastError() seems to always be 0?
+			return null;
+		}
+
+		info.read();
+		return info;
 	}
 }
