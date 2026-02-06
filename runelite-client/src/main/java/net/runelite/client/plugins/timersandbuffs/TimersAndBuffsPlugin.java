@@ -940,13 +940,10 @@ public class TimersAndBuffsPlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
-		if (!(actor instanceof NPC))
-		{
-			return;
-		}
-		final NPC npc = (NPC) actor;
 		final int anim = actor.getAnimation();
-		if (npc.getId() == NpcID.NEX && (anim == AnimationID.NEX_CAST_ATTACK || anim == AnimationID.NEX_ALTERNATE_CAST_ATTACK))
+		// Check animation and whether player is within Nex's attack range
+		if ((anim == AnimationID.NEX_CAST_ATTACK || anim == AnimationID.NEX_ALTERNATE_CAST_ATTACK)
+				&& actor.getWorldArea().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 10)
 		{
 			prayedLastNexAttack = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) == 1;
 		}
