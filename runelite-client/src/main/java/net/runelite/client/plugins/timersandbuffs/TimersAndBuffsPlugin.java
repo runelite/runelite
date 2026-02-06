@@ -53,6 +53,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -62,6 +63,7 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
@@ -100,6 +102,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
+	private static final String NEX_FROZEN_MESSAGE = "<col=ff3045>You have been frozen!</col>";
+	private static final String NEX_ICE_PRISON_TRAPPED_MESSAGE = "<col=ff289d>You've been trapped in an ice prison!</col>";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
@@ -134,6 +138,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
+	private boolean prayedLastNexAttack = false;
 
 	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
@@ -932,6 +937,19 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onAnimationChanged(AnimationChanged event)
+	{
+		Actor actor = event.getActor();
+		final int anim = actor.getAnimation();
+		// Check animation and whether player is within Nex's attack range
+		if ((anim == AnimationID.NEX_CAST_ATTACK || anim == AnimationID.NEX_ALTERNATE_CAST_ATTACK)
+				&& actor.getWorldArea().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 10)
+		{
+			prayedLastNexAttack = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) == 1;
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		final String message = event.getMessage();
@@ -1014,6 +1032,28 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
+		}
+
+		if (message.equals(NEX_FROZEN_MESSAGE) && config.showFreezes())
+		{
+			// Spriritual Mage's & Glacies's freeze length
+			int freezeDuration = 6;
+			// differentiate whether freeze is coming from Nex or Glacies/Spiritual Mage
+			// Nex can only freeze if at the time of her attack player didn't have 'Protect from Magic' activated
+			// there could be a small edge-case where player wasn't praying and Glacies froze them
+			if (client.getVarbitValue(VarbitID.NEX_BARRIER) == 3 && !prayedLastNexAttack)
+			{
+				// Nex's freeze length
+				freezeDuration = 15;
+			}
+			freezeTimer = createGameTimer(ICEBARRAGE, Duration.of(freezeDuration, RSTimeUnit.GAME_TICKS));
+			freezeTime = client.getTickCount();
+		}
+
+		// being put in an ice prison puts player out of combat, which, among other things, clears freeze status
+		if (message.equals(NEX_ICE_PRISON_TRAPPED_MESSAGE) && config.showFreezes())
+		{
+			removeGameTimer(ICEBARRAGE);
 		}
 
 		if (config.showArceuus())
