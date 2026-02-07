@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,31 +24,82 @@
  */
 package net.runelite.client.plugins.worldhopper.ping;
 
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.unix.LibC;
-import net.runelite.client.util.OSType;
+import com.sun.jna.Structure;
+import java.util.List;
 
-interface RLLibC extends LibC
+public class MacOSTCPConnectionInfo extends Structure implements TCPInfo
 {
-	RLLibC INSTANCE = Native.loadLibrary(NAME, RLLibC.class);
+	public byte state;
+	public byte snd_wscale;
+	public byte rcv_wscale;
+	public byte pad1;
+	public int options;
+	public int flags;
+	public int rto;
+	public int maxseg;
+	public int snd_ssthresh;
+	public int snd_cwnd;
+	public int snd_wnd;
+	public int snd_sbbytes;
+	public int rcv_wnd;
+	public int rttcur;
+	public int srtt;
+	public int rttvar;
+	public int tfo;
+	public long txpackets;
+	public long txbytes;
+	public long txretransmitbytes;
+	public long rxpackets;
+	public long rxbytes;
+	public long rxoutoforderbytes;
+	public long txretransmitpackets;
 
-	int AF_INET = 2;
-	int SOCK_DGRAM = 2;
-	int SOL_SOCKET = OSType.getOSType() == OSType.MacOS ? 0xffff : 1;
-	int IPPROTO_ICMP = 1;
-	int IPPROTO_TCP = 6;
-	int SO_SNDTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1005 : 21;
-	int SO_RCVTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1006 : 20;
-	int TCP_INFO = OSType.getOSType() == OSType.MacOS ? 0x106 : 11;
+	@Override
+	protected List<String> getFieldOrder()
+	{
+		return List.of(
+			"state",
+			"snd_wscale",
+			"rcv_wscale",
+			"pad1",
+			"options",
+			"flags",
+			"rto",
+			"maxseg",
+			"snd_ssthresh",
+			"snd_cwnd",
+			"snd_wnd",
+			"snd_sbbytes",
+			"rcv_wnd",
+			"rttcur",
+			"srtt",
+			"rttvar",
+			"tfo",
+			"txpackets",
+			"txbytes",
+			"txretransmitbytes",
+			"rxpackets",
+			"rxbytes",
+			"rxoutoforderbytes",
+			"txretransmitpackets"
+		);
+	}
 
-	int socket(int domain, int type, int protocol);
+	@Override
+	public long getRTT()
+	{
+		return srtt * 1000L;
+	}
 
-	int sendto(int sockfd, byte[] buf, int len, int flags, byte[] dest_addr, int addrlen);
+	@Override
+	public long getRetransmitted()
+	{
+		return txretransmitpackets;
+	}
 
-	int recvfrom(int sockfd, Pointer buf, int len, int flags, Pointer src_addr, Pointer addrlen);
-
-	int setsockopt(int sockfd, int level, int optname, Pointer optval, int optlen);
-
-	int getsockopt(int socket, int level, int option_name, Pointer option_value, Pointer option_len);
+	@Override
+	public long getTransmitted()
+	{
+		return txpackets;
+	}
 }

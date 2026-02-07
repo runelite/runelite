@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,31 +24,13 @@
  */
 package net.runelite.client.plugins.worldhopper.ping;
 
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.unix.LibC;
-import net.runelite.client.util.OSType;
-
-interface RLLibC extends LibC
+public interface TCPInfo
 {
-	RLLibC INSTANCE = Native.loadLibrary(NAME, RLLibC.class);
+	/**
+	 * Round trip time in µs
+	 */
+	long getRTT();
 
-	int AF_INET = 2;
-	int SOCK_DGRAM = 2;
-	int SOL_SOCKET = OSType.getOSType() == OSType.MacOS ? 0xffff : 1;
-	int IPPROTO_ICMP = 1;
-	int IPPROTO_TCP = 6;
-	int SO_SNDTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1005 : 21;
-	int SO_RCVTIMEO = OSType.getOSType() == OSType.MacOS ? 0x1006 : 20;
-	int TCP_INFO = OSType.getOSType() == OSType.MacOS ? 0x106 : 11;
-
-	int socket(int domain, int type, int protocol);
-
-	int sendto(int sockfd, byte[] buf, int len, int flags, byte[] dest_addr, int addrlen);
-
-	int recvfrom(int sockfd, Pointer buf, int len, int flags, Pointer src_addr, Pointer addrlen);
-
-	int setsockopt(int sockfd, int level, int optname, Pointer optval, int optlen);
-
-	int getsockopt(int socket, int level, int option_name, Pointer option_value, Pointer option_len);
+	long getTransmitted();
+	long getRetransmitted();
 }

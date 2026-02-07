@@ -28,7 +28,7 @@ import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinDef;
 import java.util.List;
 
-public class TCP_INFO_v0 extends Structure
+public class TCP_INFO_v0 extends Structure implements TCPInfo
 {
 	public WinDef.ULONG State;
 	public WinDef.ULONG Mss;
@@ -74,5 +74,23 @@ public class TCP_INFO_v0 extends Structure
 			"TimeoutEpisodes",
 			"SynRetrans"
 		);
+	}
+
+	@Override
+	public long getRTT()
+	{
+		return RttUs.longValue();
+	}
+
+	@Override
+	public long getRetransmitted()
+	{
+		return BytesOut.longValue();
+	}
+
+	@Override
+	public long getTransmitted()
+	{
+		return BytesRetrans.longValue();
 	}
 }

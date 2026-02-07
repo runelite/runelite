@@ -83,7 +83,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.plugins.worldhopper.ping.RetransmitCalculator;
-import net.runelite.client.plugins.worldhopper.ping.TCP_INFO_v0;
+import net.runelite.client.plugins.worldhopper.ping.TCPInfo;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -912,10 +912,10 @@ public class WorldHopperPlugin extends Plugin
 		int rtt = -1;
 		if (fd != null)
 		{
-			TCP_INFO_v0 tcpInfo = Ping.getTcpInfo(fd);
+			TCPInfo tcpInfo = Ping.getTCPInfo(fd);
 			if (tcpInfo != null)
 			{
-				rtt = (int) (tcpInfo.RttUs.longValue() / 1000L);
+				rtt = (int) (tcpInfo.getRTT() / 1000L);
 				retransmitCalculator.record(tcpInfo);
 			}
 		}

@@ -29,6 +29,7 @@ import com.google.common.primitives.Bytes;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.ptr.IntByReference;
 import java.io.FileDescriptor;
@@ -39,6 +40,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.OSType;
 import net.runelite.http.api.worlds.World;
@@ -285,13 +287,23 @@ public class Ping
 		}
 	}
 
-	public static TCP_INFO_v0 getTcpInfo(FileDescriptor fd)
+	@Nullable
+	public static TCPInfo getTCPInfo(FileDescriptor fd)
 	{
-		if (OSType.getOSType() != OSType.Windows)
+		switch (OSType.getOSType())
 		{
-			return null;
+			case Windows:
+				return getTCPInfoWindows(fd);
+			case MacOS:
+			case Linux:
+				return getTCPInfoNix(fd);
+			default:
+				return null;
 		}
+	}
 
+	private static TCP_INFO_v0 getTCPInfoWindows(FileDescriptor fd)
+	{
 		int handle;
 		try
 		{
@@ -337,5 +349,36 @@ public class Ping
 
 		info.read();
 		return info;
+	}
+
+	private static TCPInfo getTCPInfoNix(FileDescriptor fdObj)
+	{
+		int fd;
+		try
+		{
+			Field f = FileDescriptor.class.getDeclaredField("fd");
+			f.setAccessible(true);
+			fd = f.getInt(fdObj);
+		}
+		catch (NoSuchFieldException | IllegalAccessException ex)
+		{
+			log.debug(null, ex);
+			return null;
+		}
+
+		Structure out = OSType.getOSType() == OSType.MacOS
+			? new MacOSTCPConnectionInfo()
+			: new LinuxTCPInfo();
+		var size = new IntByReference(out.size());
+		int err = RLLibC.INSTANCE.getsockopt(fd, RLLibC.IPPROTO_TCP, RLLibC.TCP_INFO, out.getPointer(), size.getPointer());
+		out.read();
+
+		if (err != 0)
+		{
+			log.debug("getsockopt(TCP_INFO): {}", Native.getLastError());
+			return null;
+		}
+
+		return (TCPInfo) out;
 	}
 }
