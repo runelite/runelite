@@ -68,6 +68,7 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -394,6 +395,9 @@ class PluginHubPanel extends PluginPanel
 			addrm.setBorder(new LineBorder(addrm.getBackground().darker()));
 			addrm.setFocusPainted(false);
 
+            pluginName.setHorizontalAlignment(SwingConstants.LEFT);
+            author.setHorizontalAlignment(SwingConstants.RIGHT);
+
 			layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
 					.addComponent(badge, GroupLayout.Alignment.TRAILING)
@@ -401,9 +405,9 @@ class PluginHubPanel extends PluginPanel
 				.addGap(5)
 				.addGroup(layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
-						.addComponent(pluginName, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+						.addComponent(pluginName, 85, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-						.addComponent(author, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+						.addComponent(author, 60, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
 					.addComponent(description, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 					.addGroup(layout.createSequentialGroup()
 						.addComponent(version, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
