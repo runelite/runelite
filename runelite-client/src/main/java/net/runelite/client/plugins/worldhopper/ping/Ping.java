@@ -93,15 +93,20 @@ public class Ping
 					return p;
 				case MacOS:
 				case Linux:
+					p = -1;
 					try
 					{
-						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
+						p = icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
 					}
 					catch (IOException ex)
 					{
 						log.debug("error during icmp ping", ex);
+					}
+					if (p == -1 && useTcpPing)
+					{
 						return tcpPing(inetAddress);
 					}
+					return p;
 				default:
 					return tcpPing(inetAddress);
 			}
