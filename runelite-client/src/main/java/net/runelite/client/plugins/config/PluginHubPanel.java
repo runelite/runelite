@@ -394,7 +394,6 @@ class PluginHubPanel extends PluginPanel
 			}
 			addrm.setBorder(new LineBorder(addrm.getBackground().darker()));
 			addrm.setFocusPainted(false);
-
             pluginName.setHorizontalAlignment(SwingConstants.LEFT);
             author.setHorizontalAlignment(SwingConstants.RIGHT);
 
