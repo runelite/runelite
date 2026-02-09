@@ -257,6 +257,7 @@ class PluginHubPanel extends PluginPanel
 			JLabel author = new JLabel(manifest.getAuthor());
 			author.setFont(FontManager.getRunescapeSmallFont());
 			author.setToolTipText(manifest.getAuthor());
+			author.setHorizontalAlignment(SwingConstants.RIGHT);
 
 			JLabel version = new JLabel(manifest.getVersion());
 			version.setFont(FontManager.getRunescapeSmallFont());
@@ -394,8 +395,6 @@ class PluginHubPanel extends PluginPanel
 			}
 			addrm.setBorder(new LineBorder(addrm.getBackground().darker()));
 			addrm.setFocusPainted(false);
-			pluginName.setHorizontalAlignment(SwingConstants.LEFT);
-			author.setHorizontalAlignment(SwingConstants.RIGHT);
 
 			layout.setHorizontalGroup(layout.createSequentialGroup()
 				.addGroup(layout.createParallelGroup()
@@ -406,7 +405,8 @@ class PluginHubPanel extends PluginPanel
 					.addGroup(layout.createSequentialGroup()
 						.addComponent(pluginName, 85, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-						.addComponent(author, 60, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+						.addComponent(author, 60, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+						.addGap(5))
 					.addComponent(description, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
 					.addGroup(layout.createSequentialGroup()
 						.addComponent(version, 0, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
