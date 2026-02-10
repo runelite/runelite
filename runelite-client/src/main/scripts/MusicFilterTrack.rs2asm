@@ -1,0 +1,81 @@
+.id                       9291
+.int_arg_count            5
+.obj_arg_count            0
+   iconst                 -1 ; push return value
+   iload                  0  ; push id
+   iload                  4  ; push unlocked state
+   sconst                 "musicTrackFilter"
+   runelite_callback
+   pop_int                   ; pop unlocked state
+   pop_int                   ; pop id
+   switch                    ; default value falls through
+      0: HIDE
+      1: SKIP_HIDE
+
+   iload                  4
+   iconst                 0
+   if_icmpeq              LABEL4
+   jump                   LABEL10
+LABEL4:
+   get_varbit             19733
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL10
+LABEL8:
+HIDE:
+   iconst                 0
+   return                
+LABEL10:
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL14
+   jump                   LABEL20
+LABEL14:
+   get_varbit             19733
+   iconst                 2
+   if_icmpeq              LABEL18
+   jump                   LABEL20
+LABEL18:
+   iconst                 0
+   return                
+LABEL20:
+SKIP_HIDE:
+   get_varbit             19731
+   switch                
+      1: LABEL23
+      2: LABEL30
+      3: LABEL37
+   jump                   LABEL43
+LABEL23:
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL27
+   jump                   LABEL29
+LABEL27:
+   iconst                 0
+   return                
+LABEL29:
+   jump                   LABEL43
+LABEL30:
+   iload                  2
+   iconst                 0
+   if_icmpeq              LABEL34
+   jump                   LABEL36
+LABEL34:
+   iconst                 0
+   return                
+LABEL36:
+   jump                   LABEL43
+LABEL37:
+   iload                  3
+   iconst                 0
+   if_icmpeq              LABEL41
+   jump                   LABEL43
+LABEL41:
+   iconst                 0
+   return                
+LABEL43:
+   iconst                 1
+   return                
+   iconst                 -1
+   return                
