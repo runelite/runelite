@@ -244,8 +244,7 @@ public class HiscorePanel extends PluginPanel
 			tabGroup.addTab(tab);
 		}
 
-		// Default selected tab is normal hiscores
-		resetEndpoints();
+		tabGroup.select(tabGroup.getTab(0));
 
 		add(tabGroup, c);
 		c.gridy++;
@@ -694,14 +693,6 @@ public class HiscorePanel extends PluginPanel
 	private static String sanitize(String lookup)
 	{
 		return lookup.replace('\u00A0', ' ');
-	}
-
-	private void resetEndpoints()
-	{
-		// Select the correct tab based on the world type.
-		HiscoreEndpoint endpoint = plugin.getWorldEndpoint();
-		int idx = ArrayUtils.indexOf(ENDPOINTS, endpoint);
-		tabGroup.select(tabGroup.getTab(idx));
 	}
 
 	@VisibleForTesting

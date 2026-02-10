@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.worldhopper.ping;
 
-import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,28 +32,19 @@ public class RetransmitCalculator
 	private static final int SAMPLES = 16;
 
 	private int index;
-	private long connectionTime;
 	private final long[] bytesOut = new long[SAMPLES];
 	private final long[] bytesRetrans = new long[SAMPLES];
 	private int loss;
 
-	public void record(TCP_INFO_v0 info)
+	public void record(TCPInfo info)
 	{
 		int nextIndex = index++ & (SAMPLES - 1);
 
-		long connectionTime = info.ConnectionTimeMs.longValue();
-		long out = info.BytesOut.longValue();
-		long rt = info.BytesRetrans.longValue();
+		long out = info.getTransmitted();
+		long rt = info.getRetransmitted();
 
-		log.trace("rtt: {}us bytes out: {} retrans: {}", info.RttUs.longValue(), out, rt);
+		log.trace("rtt: {}us out: {} retrans: {}", info.getRTT(), out, rt);
 
-		if (connectionTime < this.connectionTime)
-		{
-			Arrays.fill(bytesOut, 0L);
-			Arrays.fill(bytesRetrans, 0L);
-		}
-
-		this.connectionTime = connectionTime;
 		bytesOut[nextIndex] = out;
 		bytesRetrans[nextIndex] = rt;
 
