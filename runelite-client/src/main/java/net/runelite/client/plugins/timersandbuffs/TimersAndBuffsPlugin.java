@@ -63,10 +63,10 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.gameval.NpcID;
+import net.runelite.api.gameval.SpotanimID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
@@ -138,7 +138,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
-	private boolean prayedLastNexAttack = false;
+	private boolean caughtOffPrayByNex = false;
 
 	private final Map<GameTimer, TimerTimer> varTimers = new EnumMap<>(GameTimer.class);
 
@@ -939,13 +939,15 @@ public class TimersAndBuffsPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		Actor actor = event.getActor();
-		final int anim = actor.getAnimation();
-		// Check animation and whether player is within Nex's attack range
-		if ((anim == AnimationID.NEX_CAST_ATTACK || anim == AnimationID.NEX_ALTERNATE_CAST_ATTACK)
-				&& actor.getWorldArea().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 10)
+		if (client.getVarbitValue(VarbitID.NEX_BARRIER) != 3 || !(event.getActor() instanceof NPC))
 		{
-			prayedLastNexAttack = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) == 1;
+			return;
+		}
+
+		NPC npc = (NPC) event.getActor();
+		if (npc.getId() == NpcID.NEX && client.getLocalPlayer().hasSpotAnim(SpotanimID.NEX_ICE_ATTACK_IMPACT))
+		{
+			caughtOffPrayByNex = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) != 1;
 		}
 	}
 
@@ -1039,9 +1041,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			// Spriritual Mage's & Glacies's freeze length
 			int freezeDuration = 6;
 			// differentiate whether freeze is coming from Nex or Glacies/Spiritual Mage
-			// Nex can only freeze if at the time of her attack player didn't have 'Protect from Magic' activated
-			// there could be a small edge-case where player wasn't praying and Glacies froze them
-			if (client.getVarbitValue(VarbitID.NEX_BARRIER) == 3 && !prayedLastNexAttack)
+			// Nex can only freeze if at the time of her ice attack player didn't have 'Protect from Magic' activated
+			if (client.getVarbitValue(VarbitID.NEX_BARRIER) == 3 && caughtOffPrayByNex)
 			{
 				// Nex's freeze length
 				freezeDuration = 15;
