@@ -25,13 +25,13 @@ LABEL15:
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 7602234
+   iconst                 7602233
    if_setposition        
    return                
 LABEL22:
-   iconst                 7602233
+   iconst                 7602232
    if_getwidth           
-   iconst                 7602234
+   iconst                 7602233
    if_getwidth           
    sub                   
    istore                 2
@@ -80,6 +80,6 @@ LABEL58:
    iconst                 0
    iconst                 0
    iconst                 0
-   iconst                 7602234
+   iconst                 7602233
    if_setposition        
    return                
