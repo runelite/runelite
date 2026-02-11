@@ -40,6 +40,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -166,6 +168,10 @@ public class SlayerPluginTest
 
 		when(client.getDBTableRows(DBTableID.SlayerArea.ID)).thenReturn(List.of(1234));
 		when(client.getDBTableField(1234, DBTableID.SlayerArea.COL_AREA_NAME_IN_HELPER, 0)).thenReturn(new String[]{"The Abyss"});
+
+		Player local = mock(Player.class);
+		when(local.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
+		when(client.getLocalPlayer()).thenReturn(local);
 
 		slayerPlugin.startUp();
 	}

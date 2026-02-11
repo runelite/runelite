@@ -124,9 +124,20 @@ public interface SlayerConfig extends Config
 		return false;
 	}
 
-	@Alpha
 	@ConfigItem(
 		position = 8,
+		keyName = "showRespawnTimer",
+		name = "Show respawn timer",
+		description = "Configures whether the NPC respawn timer should be shown."
+	)
+	default boolean showRespawnTimer()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 9,
 		keyName = "targetColor",
 		name = "Target color",
 		description = "Color of the highlighted targets."
@@ -137,7 +148,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "weaknessPrompt",
 		name = "Show monster weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (only lizards, gargoyles, rockslugs & zygomites)."
@@ -148,7 +159,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "taskCommand",
 		name = "Task command",
 		description = "Configures whether the slayer task command is enabled: !task"
@@ -157,4 +168,5 @@ public interface SlayerConfig extends Config
 	{
 		return true;
 	}
+
 }
