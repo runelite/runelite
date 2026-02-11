@@ -252,7 +252,7 @@ public class SlayerPlugin extends Plugin
 
 	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
 	{
-		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
+		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline() || config.highlightTrueTile() || config.highlightSwTile() || config.highlightSwTrueTile()) && targets.contains(n))
 		{
 			Color color = config.getTargetColor();
 			return HighlightedNpc.builder()
@@ -261,6 +261,9 @@ public class SlayerPlugin extends Plugin
 				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
 				.hull(config.highlightHull())
 				.tile(config.highlightTile())
+				.trueTile(config.highlightTrueTile())
+				.swTile(config.highlightSwTile())
+				.swTrueTile(config.highlightSwTrueTile())
 				.outline(config.highlightOutline())
 				.build();
 
