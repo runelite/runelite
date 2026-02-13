@@ -357,7 +357,7 @@ public final class ScriptID
 	 * <li>int (WidgetID) drag parent</li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 11, string = 1)
+	@ScriptArguments(integer = 12, string = 1)
 	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
 
 	/**

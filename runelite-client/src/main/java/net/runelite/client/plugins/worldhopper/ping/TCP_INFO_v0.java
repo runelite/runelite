@@ -85,12 +85,12 @@ public class TCP_INFO_v0 extends Structure implements TCPInfo
 	@Override
 	public long getRetransmitted()
 	{
-		return BytesOut.longValue();
+		return BytesRetrans.longValue();
 	}
 
 	@Override
 	public long getTransmitted()
 	{
-		return BytesRetrans.longValue();
+		return BytesOut.longValue();
 	}
 }

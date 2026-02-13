@@ -784,6 +784,7 @@ public final class SpriteID
 	public static final int MINIMAP_BOAT_SLOOP = 7290;
 	public static final int MINIMAP_BOAT_COLOSSAL = 7291;
 	public static final int MINIMAP_BOAT_CLASSIC_LARGE = 7292;
+	public static final int STOP_OUTLINED = 7426;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -11026,5 +11027,13 @@ public final class SpriteID
 		public static final int _5 = 7423;
 		public static final int _6 = 7424;
 		public static final int _7 = 7425;
+	}
+
+	public static final class MusicIcons
+	{
+		public static final int _0 = 7427;
+		public static final int _1 = 7428;
+		public static final int _2 = 7429;
+		public static final int _3 = 7430;
 	}
 }

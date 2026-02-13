@@ -601,9 +601,9 @@ solved=8
 [music]
 id=239
 container=0
-scroll_container=4
-list=6
-scrollbar=7
+scroll_container=8
+list=10
+scrollbar=11
 
 [nightmare_pillar_health]
 id=413
@@ -785,11 +785,11 @@ init=1
 
 [settings_side]
 id=116
-camera_zoom_slider_track=57
-music_slider=98
-music_slider_step_holder=110
-sound_effect_slider=112
-area_sound_slider=126
+camera_zoom_slider_track=56
+music_slider=96
+music_slider_step_holder=108
+sound_effect_slider=110
+area_sound_slider=124
 
 [shop]
 id=300

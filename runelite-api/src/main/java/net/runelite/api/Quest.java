@@ -232,12 +232,12 @@ public enum Quest
 	SHADOWS_OF_CUSTODIA(5190, "Shadows of Custodia"),
 	SCRAMBLED(5191, "Scrambled!"),
 	VALE_TOTEMS(5194, "Vale Totems"),
-	TUTORIAL_ISLAND(7033, "Tutorial Island"),
 	PANDEMONIUM(7103, "Pandemonium"),
 	PRYING_TIMES(7104, "Prying Times"),
 	CURRENT_AFFAIRS(7105, "Current Affairs"),
 	TROUBLED_TORTUGANS(7106, "Troubled Tortugans"),
 	THE_RED_REEF(7107, "The Red Reef"),
+	LEARNING_THE_ROPES(9643, "Learning the Ropes"),
 	;
 
 	@Getter
