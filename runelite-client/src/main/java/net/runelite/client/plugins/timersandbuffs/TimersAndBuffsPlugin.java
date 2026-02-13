@@ -1026,7 +1026,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			int freezeDuration = 6;
 			// differentiate whether freeze is coming from Nex or Glacies/Spiritual Mage
 			// Nex can only freeze if at the time of her ice attack player didn't have 'Protect from Magic' activated
-			if (client.getVarbitValue(VarbitID.NEX_BARRIER) == 3 && caughtOffPrayByNex)
+			if (caughtOffPrayByNex && client.getVarbitValue(VarbitID.NEX_BARRIER) == 3)
 			{
 				// Nex's freeze length
 				freezeDuration = 15;
