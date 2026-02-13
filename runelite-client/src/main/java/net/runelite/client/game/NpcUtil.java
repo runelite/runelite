@@ -182,6 +182,9 @@ public class NpcUtil
 			// Amoxliatl has a nonstandard health bar which isDead() doesn't work with.
 			case NpcID.AMOXLIATL:
 				return npc.getHealthRatio() == 0;
+			// Shellbane Gryphon returns false for isDead(), so check it another way.
+			case NpcID.GRYPHON_BOSS:
+				return npc.getHealthRatio() == 0;
 			default:
 				final NPCComposition npcComposition = npc.getTransformedComposition();
 				if (npcComposition == null)
