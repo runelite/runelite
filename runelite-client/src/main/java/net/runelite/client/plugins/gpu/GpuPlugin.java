@@ -264,6 +264,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockMain;
 	private int uniTextureLightMode;
 	private int uniTick;
+	private int uniColorblindIntensity;
+	private int uniUiColorblindIntensity;
 	static int uniBase;
 
 	private static Projection lastProjection;
@@ -598,11 +600,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniTextures = glGetUniformLocation(glProgram, "textures");
 		uniTextureAnimations = glGetUniformLocation(glProgram, "textureAnimations");
 		uniBase = glGetUniformLocation(glProgram, "base");
+		uniColorblindIntensity = glGetUniformLocation(glProgram, "colorblindIntensity");
 
 		uniTex = glGetUniformLocation(glUiProgram, "tex");
 		uniTexTargetDimensions = glGetUniformLocation(glUiProgram, "targetDimensions");
 		uniTexSourceDimensions = glGetUniformLocation(glUiProgram, "sourceDimensions");
 		uniUiAlphaOverlay = glGetUniformLocation(glUiProgram, "alphaOverlay");
+		uniUiColorblindIntensity = glGetUniformLocation(glUiProgram, "colorblindIntensity");
 	}
 
 	private void shutdownProgram()
@@ -938,6 +942,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDpiAwareViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
 
 		glUseProgram(glProgram);
+
+		if (uniColorblindIntensity != -1)
+		{
+			glUniform1f(uniColorblindIntensity, config.colorBlindIntensity() / 100f);
+		}
 
 		// Setup uniforms
 		final int drawDistance = getDrawDistance();
@@ -1481,6 +1490,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final UIScalingMode uiScalingMode = config.uiScalingMode();
 		glUseProgram(glUiProgram);
 		glUniform1i(uniTex, 0);
+		if (uniUiColorblindIntensity != -1)
+		{
+			glUniform1f(uniUiColorblindIntensity, config.colorBlindIntensity() / 100f);
+		}
 		glUniform2i(uniTexSourceDimensions, canvasWidth, canvasHeight);
 		glUniform4f(uniUiAlphaOverlay,
 			(overlayColor >> 16 & 0xFF) / 255f,
