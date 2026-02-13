@@ -53,7 +53,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -937,21 +936,6 @@ public class TimersAndBuffsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
-	{
-		if (client.getVarbitValue(VarbitID.NEX_BARRIER) != 3 || !(event.getActor() instanceof NPC))
-		{
-			return;
-		}
-
-		NPC npc = (NPC) event.getActor();
-		if (npc.getId() == NpcID.NEX && client.getLocalPlayer().hasSpotAnim(SpotanimID.NEX_ICE_ATTACK_IMPACT))
-		{
-			caughtOffPrayByNex = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) != 1;
-		}
-	}
-
-	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		final String message = event.getMessage();
@@ -1338,6 +1322,11 @@ public class TimersAndBuffsPlugin extends Plugin
 				removeGameTimer(ICEBARRAGE);
 				freezeTimer = createGameTimer(ICEBLITZ);
 			}
+		}
+
+		if (actor.hasSpotAnim(SpotanimID.NEX_ICE_ATTACK_IMPACT))
+		{
+			caughtOffPrayByNex = client.getVarbitValue(VarbitID.PRAYER_PROTECTFROMMAGIC) != 1;
 		}
 	}
 
