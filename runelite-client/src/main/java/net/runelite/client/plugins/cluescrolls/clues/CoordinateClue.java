@@ -279,7 +279,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		CoordinateClue.builder()
 			.itemId(ItemID.TRAIL_MEDIUM_SEXTANT_SAIL)
 			.location(new WorldPoint(3183, 2453, 0))
-			.directions("Center of the Great Conch.")
+			.directions("Center of the Great Conch (CJQ).")
 			.build(),
 		// Hard
 		CoordinateClue.builder()
