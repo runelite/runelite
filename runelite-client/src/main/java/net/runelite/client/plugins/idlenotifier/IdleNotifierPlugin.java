@@ -266,6 +266,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_ADAMANT:
 			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_RUNE:
 			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_DRAGON:
+			case AnimationID.HUMAN_FLETCHING_HUNTINGBOLTS:
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case AnimationID.HUMAN_SMITHING:
 			case AnimationID.HUMAN_SMITHING_IMCANDO_HAMMER:
