@@ -64,15 +64,11 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -160,8 +156,7 @@ public class ClientUI
 	private BufferedImage sidebarCloseIcon;
 
 	private JTabbedPane sidebar;
-	// private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
-	private final ArrayList<NavigationButton> sidebarEntries = new ArrayList<>();
+	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
 	private SidebarOrderManager sidebarOrderManager;
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
@@ -245,22 +240,16 @@ public class ClientUI
 			return;
 		}
 
-		// if (!sidebarEntries.add(navBtn))
-		// {
-		// 	return;
-		// }
-		if (!sidebarEntries.contains(navBtn))
+		if (!sidebarEntries.add(navBtn))
 		{
-			sidebarEntries.add(navBtn);
+			return;
 		}
 
-		loadOrder(sidebarEntries);
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-		//	sidebarEntries.headSet(navBtn).size());
-			sidebarEntries.indexOf(navBtn));
+			sidebarEntries.headSet(navBtn).size());
 
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
@@ -269,15 +258,6 @@ public class ClientUI
 		}
 	}
 
-	private void loadOrder(List<NavigationButton> sidebarEntries)
-	{
-		List<NavigationButton> orderedEntries = sidebarOrderManager.loadOrder(sidebarEntries);
-		if (orderedEntries != null)
-		{
-			sidebarEntries.clear();
-			sidebarEntries.addAll(orderedEntries);
-		}
-	}
 
 	void removeNavigation(NavigationButton navBtn)
 	{
@@ -429,12 +409,17 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
-			sidebar.setTransferHandler(new TabReorderHandler(sidebarEntries));
-			sidebar.addMouseMotionListener(new java.awt.event.MouseAdapter() {
+			TabReorderHandler tabReorderHandler = new TabReorderHandler(sidebarEntries);
+			sidebar.setTransferHandler(tabReorderHandler);
+			tabReorderHandler.installDropIndicator(sidebar);
+			sidebar.addMouseMotionListener(new java.awt.event.MouseAdapter()
+			{
 				@Override
-				public void mouseDragged(MouseEvent e) {
+				public void mouseDragged(MouseEvent e)
+				{
 					int index = sidebar.indexAtLocation(e.getX(), e.getY());
-					if (index != -1) {
+					if (index != -1)
+					{
 						sidebar.setSelectedIndex(index);
 						TransferHandler handler = sidebar.getTransferHandler();
 						handler.exportAsDrag(sidebar, e, TransferHandler.MOVE);
@@ -965,6 +950,7 @@ public class ClientUI
 
 	/**
 	 * Returns current cursor set on game container
+	 *
 	 * @return awt cursor
 	 */
 	public Cursor getCurrentCursor()
@@ -974,6 +960,7 @@ public class ClientUI
 
 	/**
 	 * Returns current custom cursor or default system cursor if cursor is not set
+	 *
 	 * @return awt cursor
 	 */
 	public Cursor getDefaultCursor()
@@ -984,6 +971,7 @@ public class ClientUI
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
+	 *
 	 * @param image cursor image
 	 * @param name  cursor name
 	 */
@@ -1002,6 +990,7 @@ public class ClientUI
 
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
+	 *
 	 * @param cursor awt cursor
 	 */
 	public void setCursor(final Cursor cursor)
@@ -1011,6 +1000,7 @@ public class ClientUI
 
 	/**
 	 * Resets client window cursor to default one.
+	 *
 	 * @see ClientUI#setCursor(BufferedImage, String)
 	 */
 	public void resetCursor()
@@ -1047,6 +1037,7 @@ public class ClientUI
 
 	/**
 	 * Paint UI related overlays to target graphics
+	 *
 	 * @param graphics target graphics
 	 */
 	public void paintOverlays(final Graphics2D graphics)
@@ -1090,11 +1081,10 @@ public class ClientUI
 	{
 		if (navBtn != null && !sidebarEntries.contains(navBtn))
 		{
-			return; // Early exit if the navBtn is not in the list
+			return;
 		}
 
-		// int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
-		int index = (navBtn == null) ? -1 : sidebarEntries.indexOf(navBtn);
+		int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
 		sidebar.setSelectedIndex(index);
 
 		toggleSidebar(showSidebar, false);
@@ -1174,13 +1164,10 @@ public class ClientUI
 				}
 			}
 
-			// If no last opened button found, use the first button in the sidebarEntries list
-			// if (open == null)
-			// {
-			// 	open = sidebarEntries.first();
-			// }
-			if (open == null && !sidebarEntries.isEmpty()) {
-				open = sidebarEntries.get(0); // Get the first element
+			// If no last opened button found, use the first button in the sidebarEntries
+			if (open == null && !sidebarEntries.isEmpty())
+			{
+				open = sidebarEntries.first();
 			}
 
 			openPanel(open, true);
