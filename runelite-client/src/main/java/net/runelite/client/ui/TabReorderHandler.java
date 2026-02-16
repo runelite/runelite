@@ -40,9 +40,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NavigableSet;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -57,13 +55,15 @@ class TabReorderHandler extends TransferHandler
 	private static final int INDICATOR_THICKNESS = 3;
 
 	private int sourceIndex;
-	private final NavigableSet<NavigationButton> sidebarEntries;
+	private final List<NavigationButton> sidebarTabOrder;
+	private final SidebarOrderManager sidebarOrderManager;
 	private DropIndicatorGlassPane glassPane;
 	private JTabbedPane tabbedPane;
 
-	public TabReorderHandler(NavigableSet<NavigationButton> sidebarEntries)
+	public TabReorderHandler(List<NavigationButton> sidebarTabOrder, SidebarOrderManager sidebarOrderManager)
 	{
-		this.sidebarEntries = sidebarEntries;
+		this.sidebarTabOrder = sidebarTabOrder;
+		this.sidebarOrderManager = sidebarOrderManager;
 	}
 
 	/**
@@ -194,15 +194,13 @@ class TabReorderHandler extends TransferHandler
 		pane.remove(sourceIndex);
 		pane.insertTab(title, icon, tab, toolTip, targetIndex);
 
-		// Convert NavigableSet to List for index-based reordering
-		List<NavigationButton> orderedList = new ArrayList<>(sidebarEntries);
-		NavigationButton navBtn = orderedList.get(sourceIndex);
-		orderedList.remove(sourceIndex);
-		orderedList.add(targetIndex, navBtn);
+		// Update the sidebarTabOrder list
+		NavigationButton navBtn = sidebarTabOrder.get(sourceIndex);
+		sidebarTabOrder.remove(sourceIndex);
+		sidebarTabOrder.add(targetIndex, navBtn);
 
-		// Save the new order
-		SidebarOrderManager orderManager = new SidebarOrderManager();
-		orderManager.saveOrder(orderedList);
+		// Save the new custom order
+		sidebarOrderManager.saveCustomOrder(sidebarTabOrder);
 
 		pane.setSelectedIndex(targetIndex);
 		return true;

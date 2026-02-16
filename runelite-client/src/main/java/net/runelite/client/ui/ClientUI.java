@@ -28,7 +28,6 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
 import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import java.awt.AWTException;
 import java.awt.Canvas;
@@ -64,6 +63,7 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
@@ -157,7 +157,8 @@ public class ClientUI
 
 	private JTabbedPane sidebar;
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
-	private SidebarOrderManager sidebarOrderManager;
+	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
+	private final SidebarOrderManager sidebarOrderManager;
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
 
@@ -201,11 +202,12 @@ public class ClientUI
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
+		SidebarOrderManager sidebarOrderManager,
 		@Named("safeMode") boolean safeMode,
 		@Named("runelite.title") String title
 	)
 	{
-		this.sidebarOrderManager = new SidebarOrderManager();
+		this.sidebarOrderManager = sidebarOrderManager;
 		this.config = config;
 		this.mouseManager = mouseManager;
 		this.client = (Component) client;
@@ -245,11 +247,34 @@ public class ClientUI
 			return;
 		}
 
+		// Register original priority for this button
+		sidebarOrderManager.registerOriginalPriority(navBtn);
+
+		// Determine insertion index based on saved order or default priority
+		int insertIndex = sidebarOrderManager.getInsertionIndex(navBtn, sidebarTabOrder);
+		if (insertIndex < 0 || insertIndex > sidebarTabOrder.size())
+		{
+			// Use default TreeSet ordering position
+			insertIndex = 0;
+			for (NavigationButton btn : sidebarTabOrder)
+			{
+				if (NavigationButton.COMPARATOR.compare(navBtn, btn) > 0)
+				{
+					insertIndex++;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		sidebarTabOrder.add(insertIndex, navBtn);
+
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
-		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			sidebarEntries.headSet(navBtn).size());
+		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), insertIndex);
 
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
@@ -270,6 +295,8 @@ public class ClientUI
 			boolean closingOpenTab = !selectedTabHistory.isEmpty() && selectedTabHistory.getLast().navBtn == navBtn;
 			selectedTabHistory.removeIf(it -> it.navBtn == navBtn);
 			sidebar.remove(navBtn.getPanel().getWrappedPanel());
+			sidebarTabOrder.remove(navBtn);
+			sidebarOrderManager.removeButton(navBtn);
 			if (closingOpenTab)
 			{
 				HistoryEntry entry = selectedTabHistory.isEmpty()
@@ -409,7 +436,7 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
-			TabReorderHandler tabReorderHandler = new TabReorderHandler(sidebarEntries);
+			TabReorderHandler tabReorderHandler = new TabReorderHandler(sidebarTabOrder, sidebarOrderManager);
 			sidebar.setTransferHandler(tabReorderHandler);
 			tabReorderHandler.installDropIndicator(sidebar);
 			sidebar.addMouseMotionListener(new java.awt.event.MouseAdapter()
@@ -433,14 +460,13 @@ public class ClientUI
 				NavigationButton newSelectedTab;
 
 				int index = sidebar.getSelectedIndex();
-				if (index < 0)
+				if (index < 0 || index >= sidebarTabOrder.size())
 				{
 					newSelectedTab = null;
 				}
 				else
 				{
-					// maybe just include a map component -> navbtn?
-					newSelectedTab = Iterables.get(sidebarEntries, index);
+					newSelectedTab = sidebarTabOrder.get(index);
 				}
 
 				if (oldSelectedTab == newSelectedTab)
@@ -477,7 +503,7 @@ public class ClientUI
 					if (e.getButton() == MouseEvent.BUTTON3)
 					{
 						int index = 0;
-						for (var navBtn : sidebarEntries)
+						for (var navBtn : sidebarTabOrder)
 						{
 							Rectangle bounds = sidebar.getBoundsAt(index++);
 							if (bounds != null && bounds.contains(e.getX(), e.getY()))
@@ -821,8 +847,7 @@ public class ClientUI
 	private void shutdownClient()
 	{
 		saveClientBoundsConfig();
-		SidebarOrderManager orderManager = new SidebarOrderManager();
-		orderManager.saveOrder(sidebarEntries); // Save the order of the sidebar entries
+		sidebarOrderManager.saveCustomOrder(sidebarTabOrder);
 		ClientShutdown csev = new ClientShutdown();
 		eventBus.post(csev);
 		new Thread(() ->
@@ -1084,7 +1109,7 @@ public class ClientUI
 			return;
 		}
 
-		int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
+		int index = navBtn == null ? -1 : sidebarTabOrder.indexOf(navBtn);
 		sidebar.setSelectedIndex(index);
 
 		toggleSidebar(showSidebar, false);
@@ -1164,10 +1189,10 @@ public class ClientUI
 				}
 			}
 
-			// If no last opened button found, use the first button in the sidebarEntries
-			if (open == null && !sidebarEntries.isEmpty())
+			// If no last opened button found, use the first button in the sidebar
+			if (open == null && !sidebarTabOrder.isEmpty())
 			{
-				open = sidebarEntries.first();
+				open = sidebarTabOrder.get(0);
 			}
 
 			openPanel(open, true);
