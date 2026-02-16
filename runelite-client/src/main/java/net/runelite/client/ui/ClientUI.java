@@ -64,11 +64,15 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -91,6 +95,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
+import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -155,7 +160,9 @@ public class ClientUI
 	private BufferedImage sidebarCloseIcon;
 
 	private JTabbedPane sidebar;
-	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
+	// private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
+	private final ArrayList<NavigationButton> sidebarEntries = new ArrayList<>();
+	private SidebarOrderManager sidebarOrderManager;
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
 
@@ -203,6 +210,7 @@ public class ClientUI
 		@Named("runelite.title") String title
 	)
 	{
+		this.sidebarOrderManager = new SidebarOrderManager();
 		this.config = config;
 		this.mouseManager = mouseManager;
 		this.client = (Component) client;
@@ -237,20 +245,37 @@ public class ClientUI
 			return;
 		}
 
-		if (!sidebarEntries.add(navBtn))
+		// if (!sidebarEntries.add(navBtn))
+		// {
+		// 	return;
+		// }
+		if (!sidebarEntries.contains(navBtn))
 		{
-			return;
+			sidebarEntries.add(navBtn);
 		}
 
+		loadOrder(sidebarEntries);
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			sidebarEntries.headSet(navBtn).size());
+		//	sidebarEntries.headSet(navBtn).size());
+			sidebarEntries.indexOf(navBtn));
+
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
 		{
 			sidebar.setSelectedIndex(-1);
+		}
+	}
+
+	private void loadOrder(List<NavigationButton> sidebarEntries)
+	{
+		List<NavigationButton> orderedEntries = sidebarOrderManager.loadOrder(sidebarEntries);
+		if (orderedEntries != null)
+		{
+			sidebarEntries.clear();
+			sidebarEntries.addAll(orderedEntries);
 		}
 	}
 
@@ -404,6 +429,19 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
+			sidebar.setTransferHandler(new TabReorderHandler(sidebarEntries));
+			sidebar.addMouseMotionListener(new java.awt.event.MouseAdapter() {
+				@Override
+				public void mouseDragged(MouseEvent e) {
+					int index = sidebar.indexAtLocation(e.getX(), e.getY());
+					if (index != -1) {
+						sidebar.setSelectedIndex(index);
+						TransferHandler handler = sidebar.getTransferHandler();
+						handler.exportAsDrag(sidebar, e, TransferHandler.MOVE);
+					}
+				}
+			});
+
 			sidebar.addChangeListener(ev ->
 			{
 				NavigationButton oldSelectedTab = selectedTab;
@@ -798,6 +836,8 @@ public class ClientUI
 	private void shutdownClient()
 	{
 		saveClientBoundsConfig();
+		SidebarOrderManager orderManager = new SidebarOrderManager();
+		orderManager.saveOrder(sidebarEntries); // Save the order of the sidebar entries
 		ClientShutdown csev = new ClientShutdown();
 		eventBus.post(csev);
 		new Thread(() ->
@@ -1050,10 +1090,11 @@ public class ClientUI
 	{
 		if (navBtn != null && !sidebarEntries.contains(navBtn))
 		{
-			return;
+			return; // Early exit if the navBtn is not in the list
 		}
 
-		int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
+		// int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
+		int index = (navBtn == null) ? -1 : sidebarEntries.indexOf(navBtn);
 		sidebar.setSelectedIndex(index);
 
 		toggleSidebar(showSidebar, false);
@@ -1121,26 +1162,32 @@ public class ClientUI
 			toggleSidebar(true, false);
 
 			NavigationButton open = null;
+
+			// Traverse the history stack to find the last opened NavigationButton
 			while (!selectedTabHistory.isEmpty())
 			{
 				HistoryEntry historyEntry = selectedTabHistory.removeLast();
 				if (historyEntry.navBtn != null)
 				{
 					open = historyEntry.navBtn;
-					break;
+					break; // Found the last opened button
 				}
 			}
 
-			if (open == null)
-			{
-				open = sidebarEntries.first();
+			// If no last opened button found, use the first button in the sidebarEntries list
+			// if (open == null)
+			// {
+			// 	open = sidebarEntries.first();
+			// }
+			if (open == null && !sidebarEntries.isEmpty()) {
+				open = sidebarEntries.get(0); // Get the first element
 			}
 
 			openPanel(open, true);
 		}
 		else
 		{
-			sidebar.setSelectedIndex(-1);
+			sidebar.setSelectedIndex(-1); // Deselect if sidebar is visible
 		}
 	}
 
