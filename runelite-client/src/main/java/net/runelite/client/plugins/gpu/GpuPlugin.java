@@ -264,6 +264,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockMain;
 	private int uniTextureLightMode;
 	private int uniTick;
+	private int uniColorblindIntensity;
+	private int uniUiColorblindIntensity;
 	static int uniBase;
 
 	private static Projection lastProjection;
@@ -598,11 +600,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniTextures = glGetUniformLocation(glProgram, "textures");
 		uniTextureAnimations = glGetUniformLocation(glProgram, "textureAnimations");
 		uniBase = glGetUniformLocation(glProgram, "base");
+		uniColorblindIntensity = glGetUniformLocation(glProgram, "colorblindIntensity");
 
 		uniTex = glGetUniformLocation(glUiProgram, "tex");
 		uniTexTargetDimensions = glGetUniformLocation(glUiProgram, "targetDimensions");
 		uniTexSourceDimensions = glGetUniformLocation(glUiProgram, "sourceDimensions");
 		uniUiAlphaOverlay = glGetUniformLocation(glUiProgram, "alphaOverlay");
+		uniUiColorblindIntensity = glGetUniformLocation(glUiProgram, "colorblindIntensity");
 	}
 
 	private void shutdownProgram()
@@ -947,6 +951,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glUniform1i(uniFogDepth, fogDepth);
 		glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 		glUniform1i(uniExpandedMapLoadingChunks, client.getExpandedMapLoading());
+		glUniform1f(uniColorblindIntensity, config.colorBlindIntensity());
 
 		// Brightness happens to also be stored in the texture provider, so we use that
 		TextureProvider textureProvider = client.getTextureProvider();
@@ -1488,6 +1493,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			(overlayColor & 0xFF) / 255f,
 			(overlayColor >>> 24) / 255f
 		);
+		glUniform1f(uniUiColorblindIntensity, config.colorBlindIntensity());
 
 		if (client.isStretchedEnabled())
 		{
