@@ -65,6 +65,7 @@ import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
 import java.util.TreeSet;
@@ -118,6 +119,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig;
 import net.runelite.client.ui.laf.RuneLiteLAF;
 import net.runelite.client.ui.laf.RuneLiteRootPaneUI;
 import net.runelite.client.util.HotkeyListener;
@@ -149,6 +151,7 @@ public class ClientUI
 	private final EventBus eventBus;
 	private final boolean safeMode;
 	private final String title;
+	private final ReorderSidebarConfig reorderSidebarConfig;
 
 	private final Rectangle sidebarButtonPosition = new Rectangle();
 	private BufferedImage sidebarOpenIcon;
@@ -156,6 +159,7 @@ public class ClientUI
 
 	@Getter
 	private JTabbedPane sidebar;
+	@Getter
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
 	@Getter
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
@@ -203,7 +207,8 @@ public class ClientUI
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
 		@Named("safeMode") boolean safeMode,
-		@Named("runelite.title") String title
+		@Named("runelite.title") String title,
+		ReorderSidebarConfig reorderSidebarConfig
 	)
 	{
 		this.config = config;
@@ -213,6 +218,7 @@ public class ClientUI
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
+		this.reorderSidebarConfig = reorderSidebarConfig;
 		this.title = title + (safeMode ? " (safe mode)" : "");
 
 		normalBoundsTimer = new Timer(250, _ev -> setLastNormalBounds());
@@ -232,11 +238,17 @@ public class ClientUI
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
+	/**
+	 * Insert a nav button into sidebar, maintaining order based on NavigationButton priority, storing the
+	 * order in sidebarTabOrder.
+	 * @param navBtn the nav button to insert
+	 */
 	private void insertNavButton(NavigationButton navBtn)
 	{
 		int insertIndex = 0;
 		for (NavigationButton btn : sidebarTabOrder)
 		{
+			// find proper insertion index for navBtn
 			if (NavigationButton.COMPARATOR.compare(navBtn, btn) > 0)
 			{
 				insertIndex++;
@@ -247,11 +259,11 @@ public class ClientUI
 			}
 		}
 
-		sidebarTabOrder.add(insertIndex, navBtn);
-
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
+		// keep track of nav button order
+		sidebarTabOrder.add(insertIndex, navBtn);
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), insertIndex);
 
 		// insertTab changes the selected index when the first tab is inserted, avoid this
@@ -431,7 +443,6 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
-			// Drag-and-drop reordering is handled by ReorderIconsPlugin
 
 			sidebar.addChangeListener(ev ->
 			{
@@ -1081,10 +1092,11 @@ public class ClientUI
 	}
 
 	/**
-	 * Rebuild the sidebar with the current sidebarEntries in default priority order.
-	 * Called when resetting icon order.
+	 * Rebuild the sidebar with the given entries.
+	 * If useCustomOrder is enabled, entries are added in the order provided.
+	 * Otherwise, entries are sorted by priority.
 	 */
-	public void rebuildSidebar()
+	public void rebuildSidebar(Collection<NavigationButton> entries)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -1095,10 +1107,21 @@ public class ClientUI
 			sidebar.removeAll();
 			sidebarTabOrder.clear();
 
-			// Re-add all entries in priority order
-			for (NavigationButton navBtn : sidebarEntries)
+			if (reorderSidebarConfig.useCustomOrder())
 			{
-				insertNavButton(navBtn);
+				// Add entries in the exact order provided (custom order)
+				for (NavigationButton navBtn : entries)
+				{
+					addNavButtonTab(navBtn);
+				}
+			}
+			else
+			{
+				// Add entries using priority-based sorting
+				for (NavigationButton navBtn : entries)
+				{
+					insertNavButton(navBtn);
+				}
 			}
 
 			// Restore selection if possible
@@ -1112,6 +1135,18 @@ public class ClientUI
 				sidebar.setSelectedIndex(-1);
 			}
 		});
+	}
+
+	/**
+	 * Add a navigation button tab without sorting (appends to end).
+	 * Used when custom order is enabled.
+	 */
+	private void addNavButtonTab(NavigationButton navBtn)
+	{
+		final int TAB_SIZE = 16;
+		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
+		sidebarTabOrder.add(navBtn);
+		sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
 	}
 
 	void openPanel(NavigationButton navBtn, boolean showSidebar)

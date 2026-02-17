@@ -177,6 +177,13 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
+	net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig provideReorderSidebarConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig.class);
+	}
+
+	@Provides
+	@Singleton
 	OkHttpClient provideHttpClient(Client client)
 	{
 		return bootupHttpClient.newBuilder()

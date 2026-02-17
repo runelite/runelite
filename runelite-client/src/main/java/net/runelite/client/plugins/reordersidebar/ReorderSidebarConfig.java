@@ -27,23 +27,19 @@ package net.runelite.client.plugins.reordersidebar;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup(ReorderSidebarPlugin.CONFIG_GROUP)
+/**
+ * Configuration interface for the Reorder Sidebar plugin.
+ */
+@ConfigGroup(ReorderSidebarConfig.CONFIG_GROUP)
 public interface ReorderSidebarConfig extends Config
 {
-	@ConfigSection(
-		name = "Drag Settings",
-		description = "Settings for dragging sidebar icons",
-		position = 0
-	)
-	String dragSection = "dragSettings";
+	String CONFIG_GROUP = "reorderSidebar";
 
 	@ConfigItem(
 		keyName = "dragOnShiftOnly",
 		name = "Drag on shift only",
 		description = "Only allow dragging sidebar icons while holding the Shift key.",
-		section = dragSection,
 		position = 0
 	)
 	default boolean dragOnShiftOnly()
@@ -52,15 +48,13 @@ public interface ReorderSidebarConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "resetIconOrder",
-		name = "Reset icon order",
-		description = "Toggle this to reset the sidebar icon order to the default priority-based order.",
+		keyName = "useCustomOrder",
+		name = "Use custom order",
+		description = "Toggle this to use the custom sidebar icon order instead of the default priority-based order.",
 		position = 1
 	)
-	default boolean resetIconOrder()
+	default boolean useCustomOrder()
 	{
-		return false;
+		return true;
 	}
 }
-
-
