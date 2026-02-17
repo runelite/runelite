@@ -83,6 +83,7 @@ class ReorderSidebar
 	private List<NavigationButton> sidebarTabOrder;
 	private DropIndicatorGlassPane glassPane;
 	private MouseAdapter dragMouseListener;
+	private int pendingDragSourceIndex = -1;
 
 	void startUp()
 	{
@@ -110,6 +111,7 @@ class ReorderSidebar
 			sidebar.setTransferHandler(null);
 			if (dragMouseListener != null)
 			{
+				sidebar.removeMouseListener(dragMouseListener);
 				sidebar.removeMouseMotionListener(dragMouseListener);
 				dragMouseListener = null;
 			}
@@ -258,6 +260,24 @@ class ReorderSidebar
 
 		dragMouseListener = new MouseAdapter()
 		{
+			private boolean dragInitiated = false;
+			private int dragStartIndex = -1;
+
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				// Capture the index at the moment of mouse press (before any dragging)
+				dragStartIndex = sidebar.indexAtLocation(e.getX(), e.getY());
+				dragInitiated = false;
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				dragStartIndex = -1;
+				dragInitiated = false;
+			}
+
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
@@ -266,14 +286,16 @@ class ReorderSidebar
 					return;
 				}
 
-				int index = sidebar.indexAtLocation(e.getX(), e.getY());
-				if (index != -1)
+				// Use the index captured at mouse press, not current location
+				if (dragStartIndex != -1 && !dragInitiated)
 				{
-					sidebar.setSelectedIndex(index);
+					dragInitiated = true;
+					pendingDragSourceIndex = dragStartIndex;
 					sidebar.getTransferHandler().exportAsDrag(sidebar, e, TransferHandler.MOVE);
 				}
 			}
 		};
+		sidebar.addMouseListener(dragMouseListener);
 		sidebar.addMouseMotionListener(dragMouseListener);
 	}
 
@@ -309,7 +331,14 @@ class ReorderSidebar
 		protected Transferable createTransferable(JComponent c)
 		{
 			JTabbedPane pane = (JTabbedPane) c;
-			sourceIndex = pane.getSelectedIndex();
+			// Use the index captured at mouse press, not getSelectedIndex()
+			sourceIndex = pendingDragSourceIndex != -1 ? pendingDragSourceIndex : pane.getSelectedIndex();
+			pendingDragSourceIndex = -1;
+
+			if (sourceIndex < 0 || sourceIndex >= pane.getTabCount())
+			{
+				return null;
+			}
 
 			Icon icon = pane.getIconAt(sourceIndex);
 			if (icon != null)
