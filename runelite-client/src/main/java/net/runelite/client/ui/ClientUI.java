@@ -91,7 +91,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
-import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -155,10 +154,11 @@ public class ClientUI
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarCloseIcon;
 
+	@Getter
 	private JTabbedPane sidebar;
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
+	@Getter
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
-	private final SidebarOrderManager sidebarOrderManager;
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
 
@@ -202,12 +202,10 @@ public class ClientUI
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
-		SidebarOrderManager sidebarOrderManager,
 		@Named("safeMode") boolean safeMode,
 		@Named("runelite.title") String title
 	)
 	{
-		this.sidebarOrderManager = sidebarOrderManager;
 		this.config = config;
 		this.mouseManager = mouseManager;
 		this.client = (Component) client;
@@ -234,38 +232,18 @@ public class ClientUI
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
-	void addNavigation(NavigationButton navBtn)
+	private void insertNavButton(NavigationButton navBtn)
 	{
-		if (navBtn.getPanel() == null)
+		int insertIndex = 0;
+		for (NavigationButton btn : sidebarTabOrder)
 		{
-			toolbarPanel.add(navBtn, true);
-			return;
-		}
-
-		if (!sidebarEntries.add(navBtn))
-		{
-			return;
-		}
-
-		// Register original priority for this button
-		sidebarOrderManager.registerOriginalPriority(navBtn);
-
-		// Determine insertion index based on saved order or default priority
-		int insertIndex = sidebarOrderManager.getInsertionIndex(navBtn, sidebarTabOrder);
-		if (insertIndex < 0 || insertIndex > sidebarTabOrder.size())
-		{
-			// Use default TreeSet ordering position
-			insertIndex = 0;
-			for (NavigationButton btn : sidebarTabOrder)
+			if (NavigationButton.COMPARATOR.compare(navBtn, btn) > 0)
 			{
-				if (NavigationButton.COMPARATOR.compare(navBtn, btn) > 0)
-				{
-					insertIndex++;
-				}
-				else
-				{
-					break;
-				}
+				insertIndex++;
+			}
+			else
+			{
+				break;
 			}
 		}
 
@@ -284,6 +262,24 @@ public class ClientUI
 	}
 
 
+	void addNavigation(NavigationButton navBtn)
+	{
+		if (navBtn.getPanel() == null)
+		{
+			toolbarPanel.add(navBtn, true);
+			return;
+		}
+
+		if (!sidebarEntries.add(navBtn))
+		{
+			return;
+		}
+
+		// Determine insertion index based on priority ordering
+		insertNavButton(navBtn);
+	}
+
+
 	void removeNavigation(NavigationButton navBtn)
 	{
 		if (navBtn.getPanel() == null)
@@ -296,7 +292,6 @@ public class ClientUI
 			selectedTabHistory.removeIf(it -> it.navBtn == navBtn);
 			sidebar.remove(navBtn.getPanel().getWrappedPanel());
 			sidebarTabOrder.remove(navBtn);
-			sidebarOrderManager.removeButton(navBtn);
 			if (closingOpenTab)
 			{
 				HistoryEntry entry = selectedTabHistory.isEmpty()
@@ -436,23 +431,7 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
-			TabReorderHandler tabReorderHandler = new TabReorderHandler(sidebarTabOrder, sidebarOrderManager);
-			sidebar.setTransferHandler(tabReorderHandler);
-			tabReorderHandler.installDropIndicator(sidebar);
-			sidebar.addMouseMotionListener(new java.awt.event.MouseAdapter()
-			{
-				@Override
-				public void mouseDragged(MouseEvent e)
-				{
-					int index = sidebar.indexAtLocation(e.getX(), e.getY());
-					if (index != -1)
-					{
-						sidebar.setSelectedIndex(index);
-						TransferHandler handler = sidebar.getTransferHandler();
-						handler.exportAsDrag(sidebar, e, TransferHandler.MOVE);
-					}
-				}
-			});
+			// Drag-and-drop reordering is handled by ReorderIconsPlugin
 
 			sidebar.addChangeListener(ev ->
 			{
@@ -847,7 +826,6 @@ public class ClientUI
 	private void shutdownClient()
 	{
 		saveClientBoundsConfig();
-		sidebarOrderManager.saveCustomOrder(sidebarTabOrder);
 		ClientShutdown csev = new ClientShutdown();
 		eventBus.post(csev);
 		new Thread(() ->
@@ -1100,6 +1078,40 @@ public class ClientUI
 	public GraphicsConfiguration getGraphicsConfiguration()
 	{
 		return frame.getGraphicsConfiguration();
+	}
+
+	/**
+	 * Rebuild the sidebar with the current sidebarEntries in default priority order.
+	 * Called when resetting icon order.
+	 */
+	public void rebuildSidebar()
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			// Remember the currently selected tab
+			NavigationButton selected = selectedTab;
+
+			// Clear the sidebar
+			sidebar.removeAll();
+			sidebarTabOrder.clear();
+
+			// Re-add all entries in priority order
+			for (NavigationButton navBtn : sidebarEntries)
+			{
+				insertNavButton(navBtn);
+			}
+
+			// Restore selection if possible
+			if (selected != null && sidebarTabOrder.contains(selected))
+			{
+				int index = sidebarTabOrder.indexOf(selected);
+				sidebar.setSelectedIndex(index);
+			}
+			else
+			{
+				sidebar.setSelectedIndex(-1);
+			}
+		});
 	}
 
 	void openPanel(NavigationButton navBtn, boolean showSidebar)
