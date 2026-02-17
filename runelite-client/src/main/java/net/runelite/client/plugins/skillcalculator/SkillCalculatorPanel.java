@@ -49,6 +49,7 @@ class SkillCalculatorPanel extends PluginPanel
 
 	private MaterialTab currentTab;
 	private boolean shouldForceReload;
+	public boolean shouldUpdateXP;
 
 	@Inject
 	SkillCalculatorPanel(SkillCalculator skillCalculator, SkillIconManager iconManager, UICalculatorInputArea uiInput)
@@ -94,9 +95,10 @@ class SkillCalculatorPanel extends PluginPanel
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
 			tab.setOnSelectEvent(() ->
 			{
-				uiCalculator.openCalculator(calculatorType, shouldForceReload);
+				uiCalculator.openCalculator(calculatorType, shouldForceReload, (tab.isSelected() || shouldUpdateXP));
 				currentTab = tab;
 				shouldForceReload = false;
+				shouldUpdateXP = false;
 				return true;
 			});
 
@@ -109,7 +111,7 @@ class SkillCalculatorPanel extends PluginPanel
 		if (currentTab != null)
 		{
 			shouldForceReload = true;
-			SwingUtilities.invokeLater(() -> tabGroup.select(currentTab));
+			SwingUtilities.invokeLater(() -> tabGroup.select(currentTab, true));
 		}
 	}
 }
