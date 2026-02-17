@@ -48,12 +48,12 @@ public interface ReorderSidebarConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "useCustomOrder",
+		keyName = "useCustomTabOrder",
 		name = "Use custom order",
 		description = "Toggle this to use the custom sidebar icon order instead of the default priority-based order.",
 		position = 1
 	)
-	default boolean useCustomOrder()
+	default boolean useCustomTabOrder()
 	{
 		return true;
 	}

@@ -97,7 +97,7 @@ class ReorderSidebar
 		installDragHandler();
 
 		// Apply saved custom order on startup if enabled
-		if (config.useCustomOrder())
+		if (config.useCustomTabOrder())
 		{
 			applyCustomOrder();
 		}
@@ -127,27 +127,18 @@ class ReorderSidebar
 	{
 		log.info("Config changed: {}.{} = {}", event.getGroup(), event.getKey(), event.getNewValue());
 		if (!event.getGroup().equals(ReorderSidebarConfig.CONFIG_GROUP) ||
-			!event.getKey().equals("useCustomOrder"))
+			!event.getKey().equals("useCustomTabOrder"))
 		{
 			return;
 		}
 
-		boolean useCustom = Boolean.TRUE.toString().equals(event.getNewValue());
-		if (useCustom)
+		if (config.useCustomTabOrder())
 		{
-			var custom_order = getCustomOrder();
-			log.info("\"useCustomOrder\" enabled, applying custom order to sidebar");
-			log.info("Current custom order has {} entries: {}", custom_order.size(),
-				custom_order.stream().map(NavigationButton::getTooltip).collect(java.util.stream.Collectors.toList()));
 			applyCustomOrder();
 		}
 		else
 		{
-			log.info("\"useCustomOrder\" disabled, resetting sidebar to default order");
 			clientUI.rebuildSidebar(clientUI.getSidebarEntries());
-			var custom_order = getCustomOrder();
-			log.info("Current custom order has {} entries: {}", custom_order.size(),
-				custom_order.stream().map(NavigationButton::getTooltip).collect(java.util.stream.Collectors.toList()));
 		}
 	}
 
@@ -156,7 +147,7 @@ class ReorderSidebar
 	 */
 	private void applyCustomOrder()
 	{
-		List<NavigationButton> orderedButtons = getCustomOrder();
+		List<NavigationButton> orderedButtons = getCustomOrderTabs();
 		log.info("Applying custom sidebar order with {} entries: {}", orderedButtons.size(),
 			orderedButtons.stream().map(NavigationButton::getTooltip).collect(java.util.stream.Collectors.toList()));
 
@@ -169,7 +160,7 @@ class ReorderSidebar
 	/**
 	 * Save the current sidebar order as the custom order.
 	 */
-	private void setCustomOrder(List<NavigationButton> entries)
+	private void setCustomOrderTabs(List<NavigationButton> entries)
 	{
 		if (entries == null || entries.isEmpty())
 		{
@@ -192,7 +183,7 @@ class ReorderSidebar
 	 * Get the saved custom order as NavigationButtons.
 	 * Returns buttons in saved order, with any new plugins appended.
 	 */
-	private List<NavigationButton> getCustomOrder()
+	private List<NavigationButton> getCustomOrderTabs()
 	{
 		String json = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 		log.info("Loading custom sidebar order from config: {}", json);
@@ -393,7 +384,7 @@ class ReorderSidebar
 			sidebarTabOrder.add(targetIndex, navBtn);
 
 			// Save and select
-			setCustomOrder(sidebarTabOrder);
+			setCustomOrderTabs(sidebarTabOrder);
 			pane.setSelectedIndex(targetIndex);
 			return true;
 		}

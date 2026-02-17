@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.reordersidebar;
 
+import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -42,6 +44,11 @@ public class ReorderSidebarPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
+	@Provides
+	ReorderSidebarConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ReorderSidebarConfig.class);
+	}
 
 	@Override
 	protected void startUp()

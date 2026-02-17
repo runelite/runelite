@@ -175,12 +175,6 @@ public class RuneLiteModule extends AbstractModule
 		return configManager.getConfig(ChatColorConfig.class);
 	}
 
-	@Provides
-	@Singleton
-	net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig provideReorderSidebarConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig.class);
-	}
 
 	@Provides
 	@Singleton
