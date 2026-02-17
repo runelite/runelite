@@ -281,6 +281,12 @@ class ReorderSidebar
 			@Override
 			public void mouseDragged(MouseEvent e)
 			{
+				// Don't allow dragging if custom order is disabled
+				if (!config.useCustomTabOrder())
+				{
+					return;
+				}
+
 				if (config.dragOnShiftOnly() && !e.isShiftDown())
 				{
 					return;
@@ -364,6 +370,13 @@ class ReorderSidebar
 		{
 			if (!canImport(support))
 			{
+				return false;
+			}
+
+			// Secondary safeguard: don't allow drop if custom order is disabled
+			if (!config.useCustomTabOrder())
+			{
+				hideDropIndicator();
 				return false;
 			}
 
