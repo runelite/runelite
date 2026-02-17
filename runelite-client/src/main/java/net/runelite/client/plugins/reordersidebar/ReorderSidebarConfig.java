@@ -27,6 +27,7 @@ package net.runelite.client.plugins.reordersidebar;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 /**
  * Configuration interface for the Reorder Sidebar plugin.
@@ -37,21 +38,32 @@ public interface ReorderSidebarConfig extends Config
 	String CONFIG_GROUP = "reorderSidebar";
 
 	@ConfigItem(
-		keyName = "dragOnShiftOnly",
-		name = "Drag on shift only",
-		description = "Only allow dragging sidebar icons while holding the Shift key.",
+		keyName = "dragRequiresHotkey",
+		name = "Drag requires hotkey",
+		description = "Only allow dragging sidebar icons while holding the configured hotkey.",
 		position = 0
 	)
-	default boolean dragOnShiftOnly()
+	default boolean dragRequiresHotkey()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "dragHotkey",
+		name = "Drag hotkey",
+		description = "Hotkey to hold when dragging is restricted. Only used when 'Drag requires hotkey' is enabled.",
+		position = 1
+	)
+	default Keybind dragHotkey()
+	{
+		return Keybind.SHIFT;
 	}
 
 	@ConfigItem(
 		keyName = "useCustomTabOrder",
 		name = "Use custom order",
 		description = "Toggle this to use the custom sidebar icon order instead of the default priority-based order.",
-		position = 1
+		position = 100
 	)
 	default boolean useCustomTabOrder()
 	{

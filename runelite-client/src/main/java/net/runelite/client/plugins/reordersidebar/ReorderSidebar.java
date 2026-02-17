@@ -58,6 +58,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.ClientUI;
@@ -84,6 +85,39 @@ class ReorderSidebar
 	private DropIndicatorGlassPane glassPane;
 	private MouseAdapter dragMouseListener;
 	private int pendingDragSourceIndex = -1;
+
+	/**
+	 * Check if the configured drag hotkey is currently pressed.
+	 * Uses the MouseEvent modifiers since Swing components don't use the game's KeyManager.
+	 */
+	private boolean isHotkeyPressed(MouseEvent e)
+	{
+		Keybind hotkey = config.dragHotkey();
+		if (hotkey == null || hotkey.equals(Keybind.NOT_SET))
+		{
+			return true; // No hotkey configured, allow drag
+		}
+
+		int modifiers = e.getModifiersEx();
+
+		// Check modifier keys
+		if (hotkey.equals(Keybind.SHIFT) && (modifiers & MouseEvent.SHIFT_DOWN_MASK) != 0)
+		{
+			return true;
+		}
+		if (hotkey.equals(Keybind.CTRL) && (modifiers & MouseEvent.CTRL_DOWN_MASK) != 0)
+		{
+			return true;
+		}
+		if (hotkey.equals(Keybind.ALT) && (modifiers & MouseEvent.ALT_DOWN_MASK) != 0)
+		{
+			return true;
+		}
+
+		// For other keys, check the hotkey's modifiers against the event
+		int requiredModifiers = hotkey.getModifiers();
+		return requiredModifiers != 0 && (modifiers & requiredModifiers) == requiredModifiers;
+	}
 
 	void startUp()
 	{
@@ -266,6 +300,20 @@ class ReorderSidebar
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
+				// Only prepare for drag if custom order is enabled
+				if (!config.useCustomTabOrder())
+				{
+					dragStartIndex = -1;
+					return;
+				}
+
+				// Only prepare for drag if hotkey requirement is met
+				if (config.dragRequiresHotkey() && !isHotkeyPressed(e))
+				{
+					dragStartIndex = -1;
+					return;
+				}
+
 				// Capture the index at the moment of mouse press (before any dragging)
 				dragStartIndex = sidebar.indexAtLocation(e.getX(), e.getY());
 				dragInitiated = false;
@@ -287,7 +335,8 @@ class ReorderSidebar
 					return;
 				}
 
-				if (config.dragOnShiftOnly() && !e.isShiftDown())
+				// Don't allow dragging if hotkey is required but not pressed
+				if (config.dragRequiresHotkey() && !isHotkeyPressed(e))
 				{
 					return;
 				}
