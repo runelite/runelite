@@ -277,6 +277,8 @@ class ReorderSidebar
 		sidebar.addMouseMotionListener(dragMouseListener);
 	}
 
+	// TODO: Refactor this class to separate the drag-and-drop logic from the config management and sidebar
+	//  rebuilding logic for better maintainability and testability.
 	// ==================== Tab Reorder Handler ====================
 
 	private class TabReorderHandler extends TransferHandler
@@ -493,6 +495,7 @@ class ReorderSidebar
 		}
 	}
 
+	// TODO: refactor this class to a separate file for better maintainability and testability.
 	// ==================== Drop Indicator Glass Pane ====================
 
 	private static class DropIndicatorGlassPane extends JPanel
