@@ -24,14 +24,14 @@
  */
 package net.runelite.client.plugins.reordersidebar;
 
-import java.awt.Color;
+import java.awt.geom.Area;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import net.runelite.client.ui.ColorScheme;
 
 /**
  * A glass pane that displays a drop indicator arrow for sidebar tab reordering.
@@ -40,10 +40,6 @@ import javax.swing.JTabbedPane;
  */
 class DropIndicatorGlassPane extends JPanel
 {
-	// Indicator color: golden/orange with transparency
-	private static final Color DROP_INDICATOR_COLOR = new Color(255, 200, 0);
-
-	// Arrow dimensions
 	private static final int ARROW_HEAD_WIDTH = 4;
 	private static final int ARROW_HEAD_HEIGHT = 5;
 	private static final int LINE_THICKNESS = 1;
@@ -51,7 +47,6 @@ class DropIndicatorGlassPane extends JPanel
 
 	private Rectangle tabBounds;
 	private boolean showAbove;
-	private int tabPlacement;
 
 	DropIndicatorGlassPane()
 	{
@@ -59,11 +54,10 @@ class DropIndicatorGlassPane extends JPanel
 		setVisible(false);
 	}
 
-	void showIndicator(Rectangle bounds, boolean above, int placement)
+	void showIndicator(Rectangle bounds, boolean above)
 	{
 		this.tabBounds = bounds;
 		this.showAbove = above;
-		this.tabPlacement = placement;
 		setVisible(true);
 		repaint();
 	}
@@ -86,66 +80,31 @@ class DropIndicatorGlassPane extends JPanel
 
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setColor(DROP_INDICATOR_COLOR);
+		g2d.setColor(ColorScheme.BRAND_ORANGE_TRANSPARENT);
 
-		boolean isHorizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
-
-		if (isHorizontal)
-		{
-			drawVerticalIndicator(g2d);
-		}
-		else
-		{
-			drawHorizontalIndicator(g2d);
-		}
-
+		drawHorizontalIndicator(g2d);
 		g2d.dispose();
 	}
 
-	/**
-	 * Draws a vertical indicator (arrow pointing down with vertical line) for horizontal tab layouts.
-	 * Used when tabs are at TOP or BOTTOM.
-	 */
-	private void drawVerticalIndicator(Graphics2D g2d)
-	{
-		int x = showAbove ? tabBounds.x : tabBounds.x + tabBounds.width;
-		int y = tabBounds.y;
-		int lineHeight = tabBounds.height - (LINE_PADDING * 2);
-
-		// Draw arrow head (triangle pointing down)
-		Polygon arrowHead = new Polygon();
-		arrowHead.addPoint(x - ARROW_HEAD_WIDTH, y);                    // Top-left
-		arrowHead.addPoint(x, y + ARROW_HEAD_HEIGHT);                   // Bottom-center (point)
-		arrowHead.addPoint(x + ARROW_HEAD_WIDTH, y);                    // Top-right
-		g2d.fillPolygon(arrowHead);
-
-		// Draw vertical line below arrow
-		int lineTop = y + LINE_PADDING;
-		int lineBottom = y + LINE_PADDING + lineHeight;
-		g2d.fillRect(x - LINE_THICKNESS, lineTop, LINE_THICKNESS * 2, lineBottom - lineTop);
-	}
-
-	/**
-	 * Draws a horizontal indicator (arrow pointing right with horizontal line) for vertical tab layouts.
-	 * Used when tabs are at LEFT or RIGHT.
-	 */
 	private void drawHorizontalIndicator(Graphics2D g2d)
 	{
 		int x = tabBounds.x;
 		int y = showAbove ? tabBounds.y : tabBounds.y + tabBounds.height;
 		int lineWidth = tabBounds.width - (LINE_PADDING * 2);
 
-		// Draw arrow head (triangle pointing right)
+		// triangle, pointing right
 		Polygon arrowHead = new Polygon();
-		arrowHead.addPoint(x, y - ARROW_HEAD_WIDTH);                    // Top-left
-		arrowHead.addPoint(x + ARROW_HEAD_HEIGHT, y);                   // Middle-right (point)
-		arrowHead.addPoint(x, y + ARROW_HEAD_WIDTH);                    // Bottom-left
-		g2d.fillPolygon(arrowHead);
+		arrowHead.addPoint(x, y - ARROW_HEAD_WIDTH);   // top-left
+		arrowHead.addPoint(x + ARROW_HEAD_HEIGHT, y);  // point
+		arrowHead.addPoint(x, y + ARROW_HEAD_WIDTH);   // bottom-left
 
-		// Draw horizontal line to the right of arrow
-		int lineLeft = x + LINE_PADDING;
-		int lineRight = x + LINE_PADDING + lineWidth;
-		g2d.fillRect(lineLeft, y - LINE_THICKNESS, lineRight - lineLeft, LINE_THICKNESS * 2);
+		// horizontal line to the right of arrow
+		Rectangle rect = new Rectangle(x + LINE_PADDING, y - LINE_THICKNESS, lineWidth, LINE_THICKNESS * 2);
+
+		Area arrowArea = new Area(arrowHead);
+		Area rectArea = new Area(rect);
+		arrowArea.add(rectArea);
+		g2d.fill(arrowArea);
 	}
 }
 

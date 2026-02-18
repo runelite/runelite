@@ -223,7 +223,7 @@ class TabReorderHandler extends TransferHandler
 			SwingUtilities.convertPointFromScreen(tabLocation, glassPane);
 			glassPane.showIndicator(
 				new Rectangle(tabLocation.x, tabLocation.y, bounds.width, bounds.height),
-				above, sidebar.getTabPlacement());
+				above);
 		}
 	}
 
