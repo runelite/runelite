@@ -29,9 +29,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 
-/**
- * Configuration interface for the Reorder Sidebar plugin.
- */
 @ConfigGroup(ReorderSidebarConfig.CONFIG_GROUP)
 public interface ReorderSidebarConfig extends Config
 {
@@ -39,8 +36,8 @@ public interface ReorderSidebarConfig extends Config
 
 	@ConfigItem(
 		keyName = "dragRequiresHotkey",
-		name = "Drag requires hotkey",
-		description = "Only allow dragging sidebar icons while holding the configured hotkey.",
+		name = "Require hotkey to drag",
+		description = "Only allow dragging while holding the configured hotkey",
 		position = 0
 	)
 	default boolean dragRequiresHotkey()
@@ -51,7 +48,7 @@ public interface ReorderSidebarConfig extends Config
 	@ConfigItem(
 		keyName = "dragHotkey",
 		name = "Drag hotkey",
-		description = "Hotkey to hold when dragging is restricted. Only used when 'Drag requires hotkey' is enabled.",
+		description = "Hotkey to hold for dragging (when enabled)",
 		position = 1
 	)
 	default Keybind dragHotkey()
@@ -62,8 +59,8 @@ public interface ReorderSidebarConfig extends Config
 	@ConfigItem(
 		keyName = "useCustomTabOrder",
 		name = "Use custom order",
-		description = "Toggle this to use the custom sidebar icon order instead of the default priority-based order.",
-		position = 100
+		description = "Use custom sidebar order instead of default",
+		position = 2
 	)
 	default boolean useCustomTabOrder()
 	{

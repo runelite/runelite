@@ -26,12 +26,15 @@ package net.runelite.client.plugins.reordersidebar;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
@@ -46,24 +49,10 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 
-/**
- * Handles sidebar icon reordering via drag and drop.
- */
 @Slf4j
 class ReorderSidebar
 {
-	// TODO: find way to restore default order when plugin is disabled
 	private static final String CONFIG_KEY_CUSTOM_ORDER = "customOrder";
-
-	/**
-	 * Maps Keybind modifier keys to their corresponding MouseEvent modifier masks.
-	 * TODO: enable any key to be the drag hot key.
-	 */
-	private static final Map<Keybind, Integer> MODIFIER_MASKS = Map.of(
-		Keybind.SHIFT, MouseEvent.SHIFT_DOWN_MASK,
-		Keybind.CTRL, MouseEvent.CTRL_DOWN_MASK,
-		Keybind.ALT, MouseEvent.ALT_DOWN_MASK
-	);
 
 	private final ConfigManager configManager;
 	private final Gson gson;
@@ -75,6 +64,8 @@ class ReorderSidebar
 	private List<NavigationButton> sidebarTabOrder;
 	private DropIndicatorGlassPane glassPane;
 	private MouseAdapter dragMouseListener;
+	private KeyEventDispatcher keyDispatcher;
+	private volatile boolean hotkeyDown;
 	@Getter
 	private int pendingDragSourceIndex = -1;
 
@@ -87,38 +78,19 @@ class ReorderSidebar
 		this.clientUI = clientUI;
 	}
 
-	/**
-	 * Clear the pending drag source index after it has been used.
-	 */
 	void clearPendingDragSourceIndex()
 	{
 		pendingDragSourceIndex = -1;
 	}
 
-	/**
-	 * Check if the configured drag hotkey is currently pressed.
-	 * Uses the MouseEvent modifiers since Swing components don't use the game's KeyManager.
-	 */
-	private boolean isHotkeyPressed(MouseEvent e)
+	private boolean matchesHotkey(KeyEvent e)
 	{
 		Keybind hotkey = config.dragHotkey();
 		if (hotkey == null || hotkey.equals(Keybind.NOT_SET))
 		{
-			return true;
+			return false;
 		}
-
-		int modifiers = e.getModifiersEx();
-
-		// Check if the hotkey is a known modifier key
-		Integer mask = MODIFIER_MASKS.get(hotkey);
-		if (mask != null)
-		{
-			return (modifiers & mask) != 0;
-		}
-
-		// For other keys, check the hotkey's modifiers against the event
-		int requiredModifiers = hotkey.getModifiers();
-		return requiredModifiers != 0 && (modifiers & requiredModifiers) == requiredModifiers;
+		return hotkey.matches(e);
 	}
 
 	void startUp()
@@ -131,9 +103,9 @@ class ReorderSidebar
 			return;
 		}
 
+		installKeyDispatcher();
 		installDragHandler();
 
-		// Apply saved custom order on startup if enabled
 		if (config.useCustomTabOrder())
 		{
 			applyCustomOrder();
@@ -142,6 +114,8 @@ class ReorderSidebar
 
 	void shutDown()
 	{
+		removeKeyDispatcher();
+
 		if (sidebar != null)
 		{
 			sidebar.setTransferHandler(null);
@@ -154,8 +128,33 @@ class ReorderSidebar
 		}
 	}
 
+	private void installKeyDispatcher()
+	{
+		keyDispatcher = e ->
+		{
+			if (matchesHotkey(e))
+			{
+				hotkeyDown = e.getID() == KeyEvent.KEY_PRESSED;
+			}
+			return false;
+		};
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyDispatcher);
+	}
+
+	private void removeKeyDispatcher()
+	{
+		if (keyDispatcher != null)
+		{
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(keyDispatcher);
+			keyDispatcher = null;
+		}
+		hotkeyDown = false;
+	}
+
 	void reset()
 	{
+		// TODO: when resetting the plugin, we encounter an IllegalComponentStateException("component must be showing
+		//  on the screen to determine its location") at Component.java:2101
 		configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
 	}
@@ -179,18 +178,6 @@ class ReorderSidebar
 		}
 	}
 
-	/**
-	 * Apply the saved custom order to the sidebar, or use default if none saved.
-	 */
-	private void applyCustomOrder()
-	{
-		List<NavigationButton> orderedButtons = getCustomOrderTabs();
-		if (!orderedButtons.isEmpty())
-		{
-			clientUI.rebuildSidebar(orderedButtons);
-		}
-	}
-
 	void setCustomOrderTabs(List<NavigationButton> entries)
 	{
 		if (entries == null || entries.isEmpty())
@@ -198,21 +185,13 @@ class ReorderSidebar
 			return;
 		}
 
-		List<String> tabList = new ArrayList<>();
-		for (NavigationButton btn : entries)
-		{
-			tabList.add(btn.getTooltip());
-		}
+		List<String> tabList = entries.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(java.util.stream.Collectors.toList());
 
-		String json = gson.toJson(tabList);
-		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, json);
-		log.debug("set custom order: {} entries", tabList.size());
+		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
 	}
 
-	/**
-	 * Get the saved custom order as list of NavigationButtons.
-	 * Returns buttons in saved order, with any new plugins appended.
-	 */
 	private List<NavigationButton> getCustomOrderTabs()
 	{
 		String tabListJson = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
@@ -222,6 +201,7 @@ class ReorderSidebar
 			return new ArrayList<>();
 		}
 
+		// Don't blame me, I followed the pattern from ChatCommandsPlugin.java for this deserialization
 		List<String> tabList;
 		try
 		{
@@ -242,31 +222,30 @@ class ReorderSidebar
 		}
 
 		Collection<NavigationButton> allButtons = clientUI.getSidebarEntries();
-		List<NavigationButton> result = new ArrayList<>();
 
-		// Add buttons in saved order
-		for (String tab : tabList)
-		{
-			for (NavigationButton btn : allButtons)
-			{
-				if (btn.getTooltip().equals(tab))
-				{
-					result.add(btn);
-					break;
-				}
-			}
-		}
+		// Build result: saved order first, then append any new buttons
+		List<NavigationButton> result = tabList.stream()
+			.map(tab -> allButtons.stream()
+				.filter(btn -> btn.getTooltip().equals(tab))
+				.findFirst()
+				.orElse(null))
+			.filter(Objects::nonNull)
+			.collect(java.util.stream.Collectors.toList());
 
-		// Append any new buttons not in saved order
-		for (NavigationButton btn : allButtons)
-		{
-			if (!result.contains(btn))
-			{
-				result.add(btn);
-			}
-		}
+		allButtons.stream()
+			.filter(btn -> !result.contains(btn))
+			.forEach(result::add);
 
 		return result;
+	}
+
+	private void applyCustomOrder()
+	{
+		List<NavigationButton> orderedButtons = getCustomOrderTabs();
+		if (!orderedButtons.isEmpty())
+		{
+			clientUI.rebuildSidebar(orderedButtons);
+		}
 	}
 
 	private void ensureGlassPane()
@@ -294,65 +273,58 @@ class ReorderSidebar
 		sidebar.setTransferHandler(transferHandler);
 		transferHandler.installDropIndicator();
 
-		dragMouseListener = new MouseAdapter()
-		{
-			private boolean dragInitiated = false;
-			private int dragStartIndex = -1;
-
-			@Override
-			public void mousePressed(MouseEvent e)
-			{
-				// Only prepare for drag if custom order is enabled
-				if (!config.useCustomTabOrder())
-				{
-					dragStartIndex = -1;
-					return;
-				}
-
-				// Only prepare for drag if hotkey requirement is met
-				if (config.dragRequiresHotkey() && !isHotkeyPressed(e))
-				{
-					dragStartIndex = -1;
-					return;
-				}
-
-				// Capture the index at the moment of mouse press (before any dragging)
-				dragStartIndex = sidebar.indexAtLocation(e.getX(), e.getY());
-				dragInitiated = false;
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e)
-			{
-				dragStartIndex = -1;
-				dragInitiated = false;
-			}
-
-			@Override
-			public void mouseDragged(MouseEvent e)
-			{
-				// Don't allow dragging if custom order is disabled
-				if (!config.useCustomTabOrder())
-				{
-					return;
-				}
-
-				// Don't allow dragging if hotkey is required but not pressed
-				if (config.dragRequiresHotkey() && !isHotkeyPressed(e))
-				{
-					return;
-				}
-
-				// Use the index captured at mouse press, not current location
-				if (dragStartIndex != -1 && !dragInitiated)
-				{
-					dragInitiated = true;
-					pendingDragSourceIndex = dragStartIndex;
-					sidebar.getTransferHandler().exportAsDrag(sidebar, e, TransferHandler.MOVE);
-				}
-			}
-		};
+		dragMouseListener = new DragMouseListener();
 		sidebar.addMouseListener(dragMouseListener);
 		sidebar.addMouseMotionListener(dragMouseListener);
+	}
+
+	private class DragMouseListener extends MouseAdapter
+	{
+		private boolean dragInitiated;
+		private int dragStartIndex = -1;
+
+		@Override
+		public void mousePressed(MouseEvent e)
+		{
+			dragStartIndex = -1;
+			dragInitiated = false;
+
+			if (!config.useCustomTabOrder() || isDragBlocked())
+			{
+				return;
+			}
+
+			dragStartIndex = sidebar.indexAtLocation(e.getX(), e.getY());
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e)
+		{
+			dragStartIndex = -1;
+			dragInitiated = false;
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e)
+		{
+			if (!config.useCustomTabOrder() || isDragBlocked())
+			{
+				return;
+			}
+
+			if (dragStartIndex != -1 && !dragInitiated)
+			{
+				dragInitiated = true;
+				pendingDragSourceIndex = dragStartIndex;
+				sidebar.getTransferHandler().exportAsDrag(sidebar, e, TransferHandler.MOVE);
+			}
+		}
+
+		private boolean isDragBlocked()
+		{
+			Keybind hotkey = config.dragHotkey();
+			boolean hotkeyRequired = config.dragRequiresHotkey() && hotkey != null && !hotkey.equals(Keybind.NOT_SET);
+			return hotkeyRequired && !hotkeyDown;
+		}
 	}
 }
