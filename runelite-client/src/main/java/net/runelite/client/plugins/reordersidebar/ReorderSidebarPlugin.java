@@ -38,6 +38,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class ReorderSidebarPlugin extends Plugin
 {
+	// TODO: find a way to switch back to default sorting when the plugin is disabled without resetting the configuration
 	@Inject
 	private ReorderSidebar reorderSidebar;
 
