@@ -25,37 +25,19 @@
 package net.runelite.client.plugins.reordersidebar;
 
 import com.google.common.reflect.TypeToken;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
+import com.google.gson.Gson;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -68,14 +50,21 @@ import net.runelite.client.ui.NavigationButton;
  * Handles sidebar icon reordering via drag and drop.
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Inject))
 class ReorderSidebar
 {
 	private static final String CONFIG_KEY_CUSTOM_ORDER = "customOrder";
-	private static final Color DROP_INDICATOR_COLOR = new Color(255, 200, 0, 200);
-	private static final int INDICATOR_THICKNESS = 3;
+
+	/**
+	 * Maps Keybind modifier keys to their corresponding MouseEvent modifier masks.
+	 */
+	private static final Map<Keybind, Integer> MODIFIER_MASKS = Map.of(
+		Keybind.SHIFT, MouseEvent.SHIFT_DOWN_MASK,
+		Keybind.CTRL, MouseEvent.CTRL_DOWN_MASK,
+		Keybind.ALT, MouseEvent.ALT_DOWN_MASK
+	);
 
 	private final ConfigManager configManager;
+	private final Gson gson;
 	@Getter
 	private final ReorderSidebarConfig config;
 	private final ClientUI clientUI;
@@ -84,7 +73,25 @@ class ReorderSidebar
 	private List<NavigationButton> sidebarTabOrder;
 	private DropIndicatorGlassPane glassPane;
 	private MouseAdapter dragMouseListener;
+	@Getter
 	private int pendingDragSourceIndex = -1;
+
+	@Inject
+	ReorderSidebar(ConfigManager configManager, Gson gson, ReorderSidebarConfig config, ClientUI clientUI)
+	{
+		this.configManager = configManager;
+		this.gson = gson;
+		this.config = config;
+		this.clientUI = clientUI;
+	}
+
+	/**
+	 * Clear the pending drag source index after it has been used.
+	 */
+	void clearPendingDragSourceIndex()
+	{
+		pendingDragSourceIndex = -1;
+	}
 
 	/**
 	 * Check if the configured drag hotkey is currently pressed.
@@ -95,23 +102,16 @@ class ReorderSidebar
 		Keybind hotkey = config.dragHotkey();
 		if (hotkey == null || hotkey.equals(Keybind.NOT_SET))
 		{
-			return true; // No hotkey configured, allow drag
+			return true;
 		}
 
 		int modifiers = e.getModifiersEx();
 
-		// Check modifier keys
-		if (hotkey.equals(Keybind.SHIFT) && (modifiers & MouseEvent.SHIFT_DOWN_MASK) != 0)
+		// Check if the hotkey is a known modifier key
+		Integer mask = MODIFIER_MASKS.get(hotkey);
+		if (mask != null)
 		{
-			return true;
-		}
-		if (hotkey.equals(Keybind.CTRL) && (modifiers & MouseEvent.CTRL_DOWN_MASK) != 0)
-		{
-			return true;
-		}
-		if (hotkey.equals(Keybind.ALT) && (modifiers & MouseEvent.ALT_DOWN_MASK) != 0)
-		{
-			return true;
+			return (modifiers & mask) != 0;
 		}
 
 		// For other keys, check the hotkey's modifiers against the event
@@ -161,7 +161,6 @@ class ReorderSidebar
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		log.info("Config changed: {}.{} = {}", event.getGroup(), event.getKey(), event.getNewValue());
 		if (!event.getGroup().equals(ReorderSidebarConfig.CONFIG_GROUP) ||
 			!event.getKey().equals("useCustomTabOrder"))
 		{
@@ -184,9 +183,6 @@ class ReorderSidebar
 	private void applyCustomOrder()
 	{
 		List<NavigationButton> orderedButtons = getCustomOrderTabs();
-		log.info("Applying custom sidebar order with {} entries: {}", orderedButtons.size(),
-			orderedButtons.stream().map(NavigationButton::getTooltip).collect(java.util.stream.Collectors.toList()));
-
 		if (!orderedButtons.isEmpty())
 		{
 			clientUI.rebuildSidebar(orderedButtons);
@@ -194,23 +190,22 @@ class ReorderSidebar
 	}
 
 	/**
-	 * Save the current sidebar order as the custom order.
+	 * Save the given order as the custom order.
 	 */
-	private void setCustomOrderTabs(List<NavigationButton> entries)
+	void saveCustomOrder(List<NavigationButton> entries)
 	{
 		if (entries == null || entries.isEmpty())
 		{
 			return;
 		}
 
-		// Extract tooltip strings from NavigationButtons
 		List<String> tooltips = new ArrayList<>();
 		for (NavigationButton btn : entries)
 		{
 			tooltips.add(btn.getTooltip());
 		}
 
-		String json = new com.google.gson.Gson().toJson(tooltips);
+		String json = gson.toJson(tooltips);
 		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, json);
 		log.debug("Saved custom order: {} entries", tooltips.size());
 	}
@@ -222,11 +217,9 @@ class ReorderSidebar
 	private List<NavigationButton> getCustomOrderTabs()
 	{
 		String json = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
-		log.info("Loading custom sidebar order from config: {}", json);
 
 		if (json == null || json.isEmpty())
 		{
-			log.info("No custom order saved, using default sidebar order");
 			return new ArrayList<>();
 		}
 
@@ -234,7 +227,7 @@ class ReorderSidebar
 		try
 		{
 			// CHECKSTYLE:OFF
-			tooltips = new com.google.gson.Gson().fromJson(json, new TypeToken<List<String>>(){}.getType());
+			tooltips = gson.fromJson(json, new TypeToken<List<String>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (Exception e)
@@ -249,7 +242,6 @@ class ReorderSidebar
 			return new ArrayList<>();
 		}
 
-
 		Collection<NavigationButton> allButtons = clientUI.getSidebarEntries();
 		List<NavigationButton> result = new ArrayList<>();
 
@@ -261,7 +253,6 @@ class ReorderSidebar
 				if (btn.getTooltip().equals(tooltip))
 				{
 					result.add(btn);
-					log.info("Added button to custom order: {}", tooltip);
 					break;
 				}
 			}
@@ -276,9 +267,20 @@ class ReorderSidebar
 			}
 		}
 
-		log.info("Final custom order has {} entries: {}", result.size(),
-			result.stream().map(NavigationButton::getTooltip).collect(java.util.stream.Collectors.toList()));
 		return result;
+	}
+
+	private void ensureGlassPane()
+	{
+		if (glassPane == null && sidebar != null)
+		{
+			JRootPane rootPane = SwingUtilities.getRootPane(sidebar);
+			if (rootPane != null)
+			{
+				glassPane = new DropIndicatorGlassPane();
+				rootPane.setGlassPane(glassPane);
+			}
+		}
 	}
 
 	private void installDragHandler()
@@ -288,7 +290,8 @@ class ReorderSidebar
 			sidebar.removeMouseMotionListener(dragMouseListener);
 		}
 
-		TabReorderHandler transferHandler = new TabReorderHandler();
+		ensureGlassPane();
+		TabReorderHandler transferHandler = new TabReorderHandler(this, sidebar, sidebarTabOrder, glassPane);
 		sidebar.setTransferHandler(transferHandler);
 		transferHandler.installDropIndicator();
 
@@ -352,309 +355,5 @@ class ReorderSidebar
 		};
 		sidebar.addMouseListener(dragMouseListener);
 		sidebar.addMouseMotionListener(dragMouseListener);
-	}
-
-	// TODO: Refactor this class to separate the drag-and-drop logic from the config management and sidebar
-	//  rebuilding logic for better maintainability and testability.
-	// ==================== Tab Reorder Handler ====================
-
-	private class TabReorderHandler extends TransferHandler
-	{
-		private int sourceIndex;
-
-		void installDropIndicator()
-		{
-			DropTarget existingDropTarget = sidebar.getDropTarget();
-			sidebar.setDropTarget(new DropTarget(sidebar, DnDConstants.ACTION_MOVE,
-				new IndicatorDropTargetListener(existingDropTarget), true));
-		}
-
-		private void ensureGlassPane()
-		{
-			if (glassPane == null && sidebar != null)
-			{
-				JRootPane rootPane = SwingUtilities.getRootPane(sidebar);
-				if (rootPane != null)
-				{
-					glassPane = new DropIndicatorGlassPane();
-					rootPane.setGlassPane(glassPane);
-				}
-			}
-		}
-
-		@Override
-		protected Transferable createTransferable(JComponent c)
-		{
-			JTabbedPane pane = (JTabbedPane) c;
-			// Use the index captured at mouse press, not getSelectedIndex()
-			sourceIndex = pendingDragSourceIndex != -1 ? pendingDragSourceIndex : pane.getSelectedIndex();
-			pendingDragSourceIndex = -1;
-
-			if (sourceIndex < 0 || sourceIndex >= pane.getTabCount())
-			{
-				return null;
-			}
-
-			Icon icon = pane.getIconAt(sourceIndex);
-			if (icon != null)
-			{
-				BufferedImage img = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-				Graphics2D g = img.createGraphics();
-				icon.paintIcon(pane, g, 0, 0);
-				g.dispose();
-				setDragImage(img);
-			}
-
-			return new StringSelection(Integer.toString(sourceIndex));
-		}
-
-		@Override
-		public boolean canImport(TransferSupport support)
-		{
-			return support.isDrop();
-		}
-
-		@Override
-		public boolean importData(TransferSupport support)
-		{
-			if (!canImport(support))
-			{
-				return false;
-			}
-
-			// Secondary safeguard: don't allow drop if custom order is disabled
-			if (!config.useCustomTabOrder())
-			{
-				hideDropIndicator();
-				return false;
-			}
-
-			JTabbedPane pane = (JTabbedPane) support.getComponent();
-			Icon icon = pane.getIconAt(sourceIndex);
-			Point dropPoint = support.getDropLocation().getDropPoint();
-			int hoveredIndex = pane.indexAtLocation((int) dropPoint.getX(), (int) dropPoint.getY());
-
-			hideDropIndicator();
-
-			if (hoveredIndex == -1 || sourceIndex == -1)
-			{
-				return false;
-			}
-
-			Rectangle tabBounds = pane.getBoundsAt(hoveredIndex);
-			if (tabBounds == null)
-			{
-				return false;
-			}
-
-			// Determine target index based on drop position
-			int tabPlacement = pane.getTabPlacement();
-			boolean dropInUpperHalf = (tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM)
-				? dropPoint.getX() < tabBounds.x + tabBounds.width / 2.0
-				: dropPoint.getY() < tabBounds.y + tabBounds.height / 2.0;
-
-			int targetIndex = dropInUpperHalf ? hoveredIndex : hoveredIndex + 1;
-			if (sourceIndex < targetIndex)
-			{
-				targetIndex--;
-			}
-
-			if (sourceIndex == targetIndex)
-			{
-				return false;
-			}
-
-			// Move the tab
-			Component tab = pane.getComponentAt(sourceIndex);
-			String title = pane.getTitleAt(sourceIndex);
-			String toolTip = pane.getToolTipTextAt(sourceIndex);
-
-			pane.remove(sourceIndex);
-			pane.insertTab(title, icon, tab, toolTip, targetIndex);
-
-			// Update internal order
-			NavigationButton navBtn = sidebarTabOrder.remove(sourceIndex);
-			sidebarTabOrder.add(targetIndex, navBtn);
-
-			// Save and select
-			setCustomOrderTabs(sidebarTabOrder);
-			pane.setSelectedIndex(targetIndex);
-			return true;
-		}
-
-		@Override
-		public int getSourceActions(JComponent c)
-		{
-			return TransferHandler.MOVE;
-		}
-
-		@Override
-		protected void exportDone(JComponent source, Transferable data, int action)
-		{
-			super.exportDone(source, data, action);
-			hideDropIndicator();
-		}
-
-		private void hideDropIndicator()
-		{
-			if (glassPane != null)
-			{
-				glassPane.hideIndicator();
-			}
-		}
-
-		private void showDropIndicator(Rectangle bounds, boolean above)
-		{
-			ensureGlassPane();
-			if (glassPane != null && sidebar != null)
-			{
-				Point tabLocation = new Point(bounds.x, bounds.y);
-				SwingUtilities.convertPointToScreen(tabLocation, sidebar);
-				SwingUtilities.convertPointFromScreen(tabLocation, glassPane);
-				glassPane.showIndicator(
-					new Rectangle(tabLocation.x, tabLocation.y, bounds.width, bounds.height),
-					above, sidebar.getTabPlacement());
-			}
-		}
-
-		private class IndicatorDropTargetListener implements DropTargetListener
-		{
-			private final DropTarget originalDropTarget;
-
-			IndicatorDropTargetListener(DropTarget originalDropTarget)
-			{
-				this.originalDropTarget = originalDropTarget;
-			}
-
-			@Override
-			public void dragEnter(DropTargetDragEvent dtde)
-			{
-				updateDropIndicator(dtde.getLocation());
-				if (originalDropTarget != null) originalDropTarget.dragEnter(dtde);
-			}
-
-			@Override
-			public void dragOver(DropTargetDragEvent dtde)
-			{
-				updateDropIndicator(dtde.getLocation());
-				if (originalDropTarget != null) originalDropTarget.dragOver(dtde);
-			}
-
-			@Override
-			public void dropActionChanged(DropTargetDragEvent dtde)
-			{
-				if (originalDropTarget != null) originalDropTarget.dropActionChanged(dtde);
-			}
-
-			@Override
-			public void dragExit(DropTargetEvent dte)
-			{
-				hideDropIndicator();
-				if (originalDropTarget != null) originalDropTarget.dragExit(dte);
-			}
-
-			@Override
-			public void drop(DropTargetDropEvent dtde)
-			{
-				hideDropIndicator();
-				if (originalDropTarget != null) originalDropTarget.drop(dtde);
-			}
-
-			private void updateDropIndicator(Point location)
-			{
-				int targetIndex = sidebar.indexAtLocation(location.x, location.y);
-				if (targetIndex == -1)
-				{
-					hideDropIndicator();
-					return;
-				}
-
-				Rectangle tabBounds = sidebar.getBoundsAt(targetIndex);
-				if (tabBounds == null)
-				{
-					hideDropIndicator();
-					return;
-				}
-
-				int tabPlacement = sidebar.getTabPlacement();
-				boolean above = (tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM)
-					? location.x < tabBounds.x + tabBounds.width / 2.0
-					: location.y < tabBounds.y + tabBounds.height / 2.0;
-
-				showDropIndicator(tabBounds, above);
-			}
-		}
-	}
-
-	// TODO: refactor this class to a separate file for better maintainability and testability.
-	// ==================== Drop Indicator Glass Pane ====================
-
-	private static class DropIndicatorGlassPane extends JPanel
-	{
-		private Rectangle tabBounds;
-		private boolean showAbove;
-		private int tabPlacement;
-
-		DropIndicatorGlassPane()
-		{
-			setOpaque(false);
-			setVisible(false);
-		}
-
-		void showIndicator(Rectangle bounds, boolean above, int placement)
-		{
-			this.tabBounds = bounds;
-			this.showAbove = above;
-			this.tabPlacement = placement;
-			setVisible(true);
-			repaint();
-		}
-
-		void hideIndicator()
-		{
-			this.tabBounds = null;
-			setVisible(false);
-			repaint();
-		}
-
-		@Override
-		protected void paintComponent(Graphics g)
-		{
-			super.paintComponent(g);
-			if (tabBounds == null)
-			{
-				return;
-			}
-
-			Graphics2D g2d = (Graphics2D) g.create();
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.setColor(DROP_INDICATOR_COLOR);
-
-			int[] xPoints, yPoints;
-
-			if (tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM)
-			{
-				int x = showAbove ? tabBounds.x : tabBounds.x + tabBounds.width;
-				int y = tabBounds.y;
-				int height = tabBounds.height;
-
-				xPoints = new int[]{x - 6, x, x + 6, x + 6, x + INDICATOR_THICKNESS, x + INDICATOR_THICKNESS,
-					x - INDICATOR_THICKNESS, x - INDICATOR_THICKNESS, x - 6};
-				yPoints = new int[]{y, y + 8, y, y + 4, y + 4, height - 4 + y, height - 4 + y, y + 4, y + 4};
-			}
-			else
-			{
-				int x = tabBounds.x;
-				int y = showAbove ? tabBounds.y : tabBounds.y + tabBounds.height;
-				int width = tabBounds.width;
-
-				xPoints = new int[]{x, x + 8, x, x + 4, x + 4, width - 4 + x, width - 4 + x, x + 4, x + 4};
-				yPoints = new int[]{y - 6, y, y + 6, y + 6, y + INDICATOR_THICKNESS, y + INDICATOR_THICKNESS,
-					y - INDICATOR_THICKNESS, y - INDICATOR_THICKNESS, y - 6};
-			}
-
-			g2d.fillPolygon(xPoints, yPoints, 9);
-			g2d.dispose();
-		}
 	}
 }
