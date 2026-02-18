@@ -52,10 +52,12 @@ import net.runelite.client.ui.NavigationButton;
 @Slf4j
 class ReorderSidebar
 {
+	// TODO: find way to restore default order when plugin is disabled
 	private static final String CONFIG_KEY_CUSTOM_ORDER = "customOrder";
 
 	/**
 	 * Maps Keybind modifier keys to their corresponding MouseEvent modifier masks.
+	 * TODO: enable any key to be the drag hot key.
 	 */
 	private static final Map<Keybind, Integer> MODIFIER_MASKS = Map.of(
 		Keybind.SHIFT, MouseEvent.SHIFT_DOWN_MASK,
@@ -189,45 +191,42 @@ class ReorderSidebar
 		}
 	}
 
-	/**
-	 * Save the given order as the custom order.
-	 */
-	void saveCustomOrder(List<NavigationButton> entries)
+	void setCustomOrderTabs(List<NavigationButton> entries)
 	{
 		if (entries == null || entries.isEmpty())
 		{
 			return;
 		}
 
-		List<String> tooltips = new ArrayList<>();
+		List<String> tabList = new ArrayList<>();
 		for (NavigationButton btn : entries)
 		{
-			tooltips.add(btn.getTooltip());
+			tabList.add(btn.getTooltip());
 		}
 
-		String json = gson.toJson(tooltips);
+		String json = gson.toJson(tabList);
 		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, json);
-		log.debug("Saved custom order: {} entries", tooltips.size());
+		log.debug("set custom order: {} entries", tabList.size());
 	}
 
 	/**
-	 * Get the saved custom order as NavigationButtons.
+	 * Get the saved custom order as list of NavigationButtons.
 	 * Returns buttons in saved order, with any new plugins appended.
 	 */
 	private List<NavigationButton> getCustomOrderTabs()
 	{
-		String json = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+		String tabListJson = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 
-		if (json == null || json.isEmpty())
+		if (tabListJson == null || tabListJson.isEmpty())
 		{
 			return new ArrayList<>();
 		}
 
-		List<String> tooltips;
+		List<String> tabList;
 		try
 		{
 			// CHECKSTYLE:OFF
-			tooltips = gson.fromJson(json, new TypeToken<List<String>>(){}.getType());
+			tabList = gson.fromJson(tabListJson, new TypeToken<List<String>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (Exception e)
@@ -237,7 +236,7 @@ class ReorderSidebar
 			return new ArrayList<>();
 		}
 
-		if (tooltips == null || tooltips.isEmpty())
+		if (tabList == null || tabList.isEmpty())
 		{
 			return new ArrayList<>();
 		}
@@ -246,11 +245,11 @@ class ReorderSidebar
 		List<NavigationButton> result = new ArrayList<>();
 
 		// Add buttons in saved order
-		for (String tooltip : tooltips)
+		for (String tab : tabList)
 		{
 			for (NavigationButton btn : allButtons)
 			{
-				if (btn.getTooltip().equals(tooltip))
+				if (btn.getTooltip().equals(tab))
 				{
 					result.add(btn);
 					break;

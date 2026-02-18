@@ -177,8 +177,8 @@ class TabReorderHandler extends TransferHandler
 		NavigationButton navBtn = sidebarTabOrder.remove(sourceIndex);
 		sidebarTabOrder.add(targetIndex, navBtn);
 
-		// Save and select
-		reorderSidebar.saveCustomOrder(sidebarTabOrder);
+		// Save the new order
+		reorderSidebar.setCustomOrderTabs(sidebarTabOrder);
 		pane.setSelectedIndex(targetIndex);
 		return true;
 	}
