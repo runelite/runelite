@@ -43,7 +43,9 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ColorUtil;
 
 /**
  * Handles the drag-and-drop reordering of sidebar tabs.
@@ -66,9 +68,6 @@ class TabReorderHandler extends TransferHandler
 		this.glassPane = glassPane;
 	}
 
-	/**
-	 * Determines if the drop point is in the upper half (or left half for vertical tabs) of the tab bounds.
-	 */
 	private boolean isDropInUpperHalf(Point dropPoint, Rectangle tabBounds, int tabPlacement)
 	{
 		boolean isHorizontal = tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
@@ -77,6 +76,10 @@ class TabReorderHandler extends TransferHandler
 			: dropPoint.getY() < tabBounds.y + tabBounds.height / 2.0;
 	}
 
+	/**
+	 * Installs a custom DropTarget on the sidebar to show the drop indicator during drag operations.
+	 * This is necessary because the default DropTarget does not provide the necessary hooks for custom indicators.
+	 */
 	void installDropIndicator()
 	{
 		DropTarget existingDropTarget = sidebar.getDropTarget();
@@ -88,7 +91,9 @@ class TabReorderHandler extends TransferHandler
 	protected Transferable createTransferable(JComponent c)
 	{
 		JTabbedPane pane = (JTabbedPane) c;
+
 		// Use the index captured at mouse press, not getSelectedIndex()
+		// prevents moving wrong tab when user moves mouse quickly
 		int pendingIndex = reorderSidebar.getPendingDragSourceIndex();
 		sourceIndex = pendingIndex != -1 ? pendingIndex : pane.getSelectedIndex();
 		reorderSidebar.clearPendingDragSourceIndex();
@@ -101,9 +106,14 @@ class TabReorderHandler extends TransferHandler
 		Icon icon = pane.getIconAt(sourceIndex);
 		if (icon != null)
 		{
-			BufferedImage img = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+			int pad = 4;
+			int w = icon.getIconWidth() + pad * 2;
+			int h = icon.getIconHeight() + pad * 2;
+			BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = img.createGraphics();
-			icon.paintIcon(pane, g, 0, 0);
+			g.setColor(ColorUtil.colorWithAlpha(ColorScheme.LIGHT_GRAY_COLOR, 128));
+			g.fillRoundRect(0, 0, w, h, 6, 6);
+			icon.paintIcon(pane, g, pad, pad);
 			g.dispose();
 			setDragImage(img);
 		}
