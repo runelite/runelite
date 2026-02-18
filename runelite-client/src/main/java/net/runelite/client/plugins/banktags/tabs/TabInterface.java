@@ -996,7 +996,8 @@ public class TabInterface
 		w.setAction(TAB_OP_CHANGE_ICON, CHANGE_ICON);
 		if (!TAGTABS.equals(tab.getTag()))
 		{
-			w.setAction(TAB_OP_LAYOUT, activeLayout != null ? DISABLE_LAYOUT : ENABLE_LAYOUT);
+			Layout layout = layoutManager.loadLayout(tab.getTag());
+			w.setAction(TAB_OP_LAYOUT, layout != null ? DISABLE_LAYOUT : ENABLE_LAYOUT);
 		}
 		w.setAction(TAB_OP_EXPORT_TAB, EXPORT_TAB);
 		w.setAction(TAB_OP_RENAME_TAB, RENAME_TAB);
