@@ -156,7 +156,7 @@ enum Task
 	SEA_SNAKES("Sea snakes", ItemID.HUNDRED_ILM_SNAKE_CORPSE),
 	SHADES("Shades", ItemID.BLACKROBETOP, "Loar", "Phrin", "Riyl", "Asyn", "Fiyr", "Urium"),
 	SHADOW_WARRIORS("Shadow warriors", ItemID.BLACK_FULL_HELM),
-	SHELLBANE_GRYPHON("Shellbane Gryphon", ItemID.GRYPHONBOSSPET_ADULT),
+	SHELLBANE_GRYPHON("The Shellbane Gryphon", ItemID.GRYPHONBOSSPET_ADULT),
 	SKELETAL_WYVERNS("Skeletal wyverns", ItemID.SLAYERGUIDE_SKELETALWYVERN),
 	SKELETONS("Skeletons", ItemID.POH_SKELETON_GUARD, "Vet'ion", "Calvar'ion", "Skeletal Mystic"),
 	SMOKE_DEVILS("Smoke devils", ItemID.CERT_GUIDE_ICON_DUMMY),
