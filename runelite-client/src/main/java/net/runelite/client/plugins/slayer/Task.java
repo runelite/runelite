@@ -28,8 +28,10 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import net.runelite.api.NPC;
 import net.runelite.api.gameval.ItemID;
 
 @Getter
@@ -87,7 +89,12 @@ enum Task
 	DUST_DEVILS("Dust devils", ItemID.SLAYERGUIDE_DUSTDEVIL, "Choke devil"),
 	DWARVES("Dwarves", ItemID.GRIM_WEAR_HELMET, "Dwarf", "Black Guard"),
 	EARTH_WARRIORS("Earth warriors", ItemID.BRONZE_FULL_HELM_TRIM),
-	ELVES("Elves", ItemID.PICKPOCKET_GUIDE_WOODELF, "Elf", "Iorwerth Warrior", "Iorwerth Archer"),
+	ELVES(
+		"Elves",
+		ItemID.PICKPOCKET_GUIDE_WOODELF,
+		NpcPredicates.byName("Iorwerth Archer", "Elf Archer", "Iorwerth Warrior", "Elf Warrior", "Mourner", "Reanimated Elf")
+			.or(NpcPredicates.byName("Guard").and(NpcPredicates.byCombatLevel(108)))
+	),
 	ENTS("Ents", ItemID.POH_TREE_2),
 	FEVER_SPIDERS("Fever spiders", ItemID.SLAYERGUIDE_FEVER_SPIDER),
 	FIRE_GIANTS("Fire giants", ItemID.RTBRANDAPET, "Branda the Fire Queen"),
@@ -192,9 +199,9 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
-	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
+	private final Predicate<NPC> npcPredicate;
 
 	static
 	{
@@ -208,24 +215,37 @@ enum Task
 		tasks = builder.build();
 	}
 
-	Task(String name, int itemSpriteId, String... targetNames)
-	{
-		Preconditions.checkArgument(itemSpriteId >= 0);
-		this.name = name;
-		this.itemSpriteId = itemSpriteId;
-		this.weaknessThreshold = -1;
-		this.weaknessItem = -1;
-		this.targetNames = targetNames;
-	}
-
-	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, Predicate<NPC> npcPredicate)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
-		this.targetNames = targetNames;
+		this.npcPredicate = npcPredicate;
+	}
+
+	Task(String name, int itemSpriteId, Predicate<NPC> npcPredicate)
+	{
+		this(name, itemSpriteId, -1, -1, npcPredicate);
+	}
+
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	{
+		this(name,
+			itemSpriteId,
+			weaknessThreshold,
+			weaknessItem,
+			NpcPredicates.byNameContaining(name.replaceAll("s$", ""))
+				.or(NpcPredicates.byNameContaining(targetNames)));
+	}
+
+	Task(String name, int itemSpriteId, String... targetNames)
+	{
+		this(name,
+			itemSpriteId,
+			NpcPredicates.byNameContaining(name.replaceAll("s$", ""))
+				.or(NpcPredicates.byNameContaining(targetNames)));
 	}
 
 	@Nullable
