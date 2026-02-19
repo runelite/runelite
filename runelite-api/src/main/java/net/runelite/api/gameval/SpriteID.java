@@ -1400,6 +1400,9 @@ public final class SpriteID
 		public static final int SPELLBOOK_ANCIENT_MAGICKS = _19;
 		public static final int SPELLBOOK_LUNAR = _20;
 		public static final int SPELLBOOK_ARCEUUS = _21;
+		public static final int GROUP_IRONMAN = _32;
+		public static final int GROUP_HARDCORE_IRONMAN = _33;
+		public static final int GROUP_UNRANKED_IRONMAN = _36;
 	}
 
 	public static final class Miscgraphics
@@ -2813,6 +2816,8 @@ public final class SpriteID
 		public static final int MAGIC = _6;
 		public static final int CHAT_CHANNEL = _7;
 		public static final int FRIENDS = _8;
+		public static final int CLAN_CHANNEL = _28;
+		public static final int GUEST_CLAN_CHANNEL = _29;
 		public static final int IGNORES = _9;
 		public static final int LOGOUT = _10;
 		public static final int OPTIONS = _11;
@@ -2828,6 +2833,8 @@ public final class SpriteID
 		public static final int ADVENTURE_PATHS = _23;
 		public static final int CLAN = _28;
 		public static final int CHARACTER_SUMMARY = _30;
+		public static final int GROUPING = _34;
+		public static final int SAILING = _67;
 	}
 
 	public static final class ScrollbarDraggerV2
@@ -6704,6 +6711,9 @@ public final class SpriteID
 		public static final int _3 = 3389;
 		public static final int _4 = 3390;
 		public static final int _5 = 7318;
+
+		public static final int QUESTS_PAGE_ICON_COMBAT_LEVEL = _0;
+		public static final int QUESTS_PAGE_ICON_TOTAL_LEVEL = _1;
 	}
 
 	public static final class CaProgressBar
@@ -10724,6 +10734,9 @@ public final class SpriteID
 		public static final int _2 = 7065;
 		public static final int _3 = 7066;
 		public static final int _4 = 7067;
+
+		public static final int SAILING_TAB_STATS = _1;
+		public static final int SAILING_COMBAT_OPTIONS = _3;
 	}
 
 	public static final class IconSailingFacilities24x24
@@ -11027,6 +11040,8 @@ public final class SpriteID
 		public static final int _5 = 7423;
 		public static final int _6 = 7424;
 		public static final int _7 = 7425;
+
+		public static final int WORN_ITEMS = _1;
 	}
 
 	public static final class MusicIcons
