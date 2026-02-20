@@ -83,7 +83,9 @@ public class ScriptInspector extends DevToolsFrame
 	private final JPanel tracker = new JPanel();
 	private ScriptTreeNode currentNode;
 	private int lastTick;
+	@SuppressWarnings({"PMD.ImmutableField"})
 	private Set<Integer> blacklist;
+	@SuppressWarnings({"PMD.ImmutableField"})
 	private Set<Integer> highlights;
 	private final JList<Integer> jList;
 	private final DefaultListModel<Integer> listModel;
