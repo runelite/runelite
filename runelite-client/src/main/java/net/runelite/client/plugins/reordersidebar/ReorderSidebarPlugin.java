@@ -26,6 +26,7 @@ package net.runelite.client.plugins.reordersidebar;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
@@ -34,11 +35,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Reorder Sidebar",
 	description = "Allows reordering of sidebar icons via drag and drop",
-	tags = {"sidebar", "icons", "reorder", "drag", "drop"}
+	tags = {"sidebar", "icons", "reorder", "drag", "drop"},
+	configName = "reorderSidebarPlugin",
+	enabledByDefault = false
 )
+@Slf4j
 public class ReorderSidebarPlugin extends Plugin
 {
-	// TODO: find a way to switch back to default sorting when the plugin is disabled without resetting the configuration
 	@Inject
 	private ReorderSidebar reorderSidebar;
 
@@ -56,6 +59,7 @@ public class ReorderSidebarPlugin extends Plugin
 	{
 		reorderSidebar.startUp();
 		eventBus.register(reorderSidebar);
+		log.info("Reorder Sidebar started!");
 	}
 
 	@Override

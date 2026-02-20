@@ -58,9 +58,12 @@ class ReorderSidebar
 	private final Gson gson;
 	@Getter
 	private final ReorderSidebarConfig config;
+	// TODO: check that this clientUI is synced with the real clientUI and isn't a separate duplicated clientUI
 	private final ClientUI clientUI;
 
+	// TODO: remove and use singleton clientUI.sidebar or synchronize with clientUI.getSidebar()
 	private JTabbedPane sidebar;
+	// TODO: remove and use singleton clientUI.sidebarTabOrder or synchronize with clientUI.getSidebarTabOrder()
 	private List<NavigationButton> sidebarTabOrder;
 	private DropIndicatorGlassPane glassPane;
 	private MouseAdapter dragMouseListener;
@@ -78,25 +81,11 @@ class ReorderSidebar
 		this.clientUI = clientUI;
 	}
 
-	void clearPendingDragSourceIndex()
-	{
-		pendingDragSourceIndex = -1;
-	}
-
-	private boolean matchesHotkey(KeyEvent e)
-	{
-		Keybind hotkey = config.dragHotkey();
-		if (hotkey == null || hotkey.equals(Keybind.NOT_SET))
-		{
-			return false;
-		}
-		return hotkey.matches(e);
-	}
-
 	void startUp()
 	{
+
 		sidebar = clientUI.getSidebar();
-		sidebarTabOrder = clientUI.getSidebarTabOrder();
+		this.sidebarTabOrder = clientUI.getSidebarTabOrder();
 
 		if (sidebar == null || sidebarTabOrder == null)
 		{
@@ -108,6 +97,7 @@ class ReorderSidebar
 
 		if (config.useCustomTabOrder())
 		{
+			log.info("Reorder Sidebar applying custom order on startup.");
 			applyCustomOrder();
 		}
 	}
@@ -119,6 +109,7 @@ class ReorderSidebar
 		if (sidebar != null)
 		{
 			sidebar.setTransferHandler(null);
+			applyDefaultOrder();
 			if (dragMouseListener != null)
 			{
 				sidebar.removeMouseListener(dragMouseListener);
@@ -126,6 +117,17 @@ class ReorderSidebar
 				dragMouseListener = null;
 			}
 		}
+	}
+
+	void reset()
+	{
+		// TODO: when disabling the plugin, sometimes we encounter an IllegalComponentStateException("component must
+		//  be showing on the screen to determine its location") from java/awt/Component.java:2101
+		configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+
+		// TODO: fix this as this doesn't include newly installed plugin tabs when installed. It only checks for the
+		//  current sidebar entries, which do not include any newly installed plugins.
+		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
 	}
 
 	private void installKeyDispatcher()
@@ -151,12 +153,19 @@ class ReorderSidebar
 		hotkeyDown = false;
 	}
 
-	void reset()
+	void clearPendingDragSourceIndex()
 	{
-		// TODO: when resetting the plugin, we encounter an IllegalComponentStateException("component must be showing
-		//  on the screen to determine its location") at Component.java:2101
-		configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
-		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
+		pendingDragSourceIndex = -1;
+	}
+
+	private boolean matchesHotkey(KeyEvent e)
+	{
+		Keybind hotkey = config.dragHotkey();
+		if (hotkey == null || hotkey.equals(Keybind.NOT_SET))
+		{
+			return false;
+		}
+		return hotkey.matches(e);
 	}
 
 	@Subscribe
@@ -246,6 +255,11 @@ class ReorderSidebar
 		{
 			clientUI.rebuildSidebar(orderedButtons);
 		}
+	}
+
+	private void applyDefaultOrder()
+	{
+		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
 	}
 
 	private void ensureGlassPane()

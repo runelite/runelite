@@ -66,4 +66,15 @@ public interface ReorderSidebarConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "reorderSidebarPositionEnabled",
+		name = "",
+		description = "Used to tell ClientUI when this plugin is enabled. Prevents checks for useCustomTabOrder() returning true when the plugin is disabled.",
+		hidden = true
+	)
+	default boolean reorderSidebarPositionEnabled()
+	{
+		return false;
+	}
 }

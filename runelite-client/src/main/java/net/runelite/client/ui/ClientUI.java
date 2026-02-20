@@ -70,6 +70,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Named;
@@ -119,6 +120,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig;
 import net.runelite.client.ui.laf.RuneLiteLAF;
 import net.runelite.client.ui.laf.RuneLiteRootPaneUI;
 import net.runelite.client.util.HotkeyListener;
@@ -160,6 +162,7 @@ public class ClientUI
 	@Getter
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
 	@Getter
+	// always reflects current order of plugin tabs, regardless of whether custom ordering is enabled or not.
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
@@ -186,6 +189,11 @@ public class ClientUI
 	@Named("recommendedMemoryLimit")
 	@SuppressWarnings("PMD.ImmutableField")
 	private int recommendedMemoryLimit = 512;
+
+	@Inject(optional = true)
+	private final ReorderSidebarConfig sidebarConfig;
+
+	private static final String REORDER_SIDEBAR_PLUGIN_KEY = "reorderSidebarPlugin";
 
 	private List<KeyListener> keyListeners;
 
@@ -216,9 +224,22 @@ public class ClientUI
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
 		this.title = title + (safeMode ? " (safe mode)" : "");
+		// TODO: test this actually works
+		this.sidebarConfig = configManager.getConfig(ReorderSidebarConfig.class);
 
 		normalBoundsTimer = new Timer(250, _ev -> setLastNormalBounds());
 		normalBoundsTimer.setRepeats(false);
+	}
+
+	/**
+	 * Check if the ReorderSidebar plugin is enabled in config.
+	 * The plugin has enabledByDefault = false.
+	 */
+	private boolean isReorderSidebarPluginEnabled()
+	{
+		String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, REORDER_SIDEBAR_PLUGIN_KEY);
+		// ReorderSidebarPlugin has enabledByDefault = false
+		return Boolean.parseBoolean(value);
 	}
 
 	@Subscribe
@@ -333,8 +354,28 @@ public class ClientUI
 			return;
 		}
 
+		log.info("isReorderSidebarPluginEnabled: {}, useCustomTabOrder: {}", isReorderSidebarPluginEnabled(), sidebarConfig.useCustomTabOrder());
 		// Determine insertion index based on priority ordering
-		insertNavButton(navBtn);
+		if (sidebarConfig.useCustomTabOrder())
+		{
+			log.info("Inserting nav button {} using custom ordering", navBtn.getTooltip());
+			insertNavButtonCustom(navBtn);
+		}
+		else
+		{
+			log.info("Inserting nav button {} using default ordering", navBtn.getTooltip());
+			insertNavButtonDefault(navBtn);
+		}
+		// insertNavButton(navBtn);
+
+		log.info("Current sidebarEntries order: {}",
+			sidebarEntries.stream()
+				.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
+				.collect(Collectors.toList()));
+		log.info("Current sidebarTabOrder order: {}",
+			sidebarTabOrder.stream()
+				.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
+				.collect(Collectors.toList()));
 	}
 
 
