@@ -27,10 +27,12 @@ package net.runelite.client.plugins.keyremapping;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +67,7 @@ public class KeyRemappingListenerTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(keyRemappingConfig.control()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK));
+		when(keyRemappingConfig.ctrlM()).thenReturn(new Keybind(KeyEvent.VK_M, KeyEvent.VK_CONTROL));
 	}
 
 	@Test
@@ -138,5 +141,54 @@ public class KeyRemappingListenerTest
 		keyRemappingListener.keyPressed(event);
 
 		verify(event).setKeyCode(KeyEvent.VK_CONTROL);
+	}
+
+	@Test
+	public void testCtrlMRemap()
+	{
+		when(keyRemappingConfig.ctrlM()).thenReturn(new ModifierlessKeybind(KeyEvent.VK_NUMPAD1, 0));
+		when(keyRemappingPlugin.chatboxFocused()).thenReturn(true);
+
+		KeyEvent event = mock(KeyEvent.class);
+		Component component = mock(Component.class);
+		when(event.getExtendedKeyCode()).thenReturn(KeyEvent.VK_NUMPAD1); // for keybind matches()
+		when(event.getComponent()).thenReturn(component);
+		when(event.getID()).thenReturn(KeyEvent.KEY_PRESSED);
+		when(event.getWhen()).thenReturn(System.currentTimeMillis());
+
+		// Test mapped key press
+		keyRemappingListener.keyPressed(event);
+
+		// Check that the key code and ctrl modifier were set correctly
+		verify(event).setKeyCode(KeyEvent.VK_M);
+		verify(component).dispatchEvent(new KeyEvent(
+			event.getComponent(),
+			event.getID(),
+			event.getWhen(),
+			InputEvent.CTRL_DOWN_MASK,  // heldModifier value
+			KeyEvent.VK_UNDEFINED,
+			KeyEvent.CHAR_UNDEFINED
+		));
+
+		KeyEvent releaseEvent = mock(KeyEvent.class);
+		Component releaseComponent = mock(Component.class);
+		when(releaseEvent.getComponent()).thenReturn(releaseComponent);
+		when(releaseEvent.getID()).thenReturn(KeyEvent.KEY_RELEASED);
+		when(releaseEvent.getWhen()).thenReturn(System.currentTimeMillis());
+
+		// Test mapped key release
+		keyRemappingListener.keyReleased(releaseEvent);
+
+		// Check that the M key was released and the Ctrl modifier cleared
+		verify(releaseEvent).setKeyCode(KeyEvent.VK_M);
+		verify(releaseEvent).setKeyChar(KeyEvent.CHAR_UNDEFINED);
+		verify(releaseComponent).dispatchEvent(new KeyEvent(
+			releaseEvent.getComponent(),
+			releaseEvent.getID(),
+			releaseEvent.getWhen(),
+			KeyEvent.VK_UNDEFINED,  // heldModifier value
+			KeyEvent.VK_UNDEFINED,
+			KeyEvent.CHAR_UNDEFINED
+		));
 	}
 }
