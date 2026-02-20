@@ -226,7 +226,7 @@ public class ScriptInspector extends DevToolsFrame
 		}
 		catch (NumberFormatException e)
 		{
-			blacklist = new HashSet<>();
+			highlights = new HashSet<>();
 		}
 
 		final JPanel rightSide = new JPanel();
