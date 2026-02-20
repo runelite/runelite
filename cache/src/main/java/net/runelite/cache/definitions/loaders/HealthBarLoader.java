@@ -49,51 +49,45 @@ public class HealthBarLoader
 		return def;
 	}
 
-	private void decodeValues(int opcode, HealthBarDefinition def, InputStream stream)
-	{
-		if (opcode == 1)
-		{
-			stream.readUnsignedShort();
-		}
-		else if (opcode == 2)
-		{
-			def.field3277 = stream.readUnsignedByte();
-		}
-		else if (opcode == 3)
-		{
-			def.field3278 = stream.readUnsignedByte();
-		}
-		else if (opcode == 4)
-		{
-			def.field3283 = 0;
-		}
-		else if (opcode == 5)
-		{
-			def.field3275 = stream.readUnsignedShort();
-		}
-		else if (opcode == 6)
-		{
-			stream.readUnsignedByte();
-		}
-		else if (opcode == 7)
-		{
-			def.healthBarFrontSpriteId = stream.readBigSmart2();
-		}
-		else if (opcode == 8)
-		{
-			def.healthBarBackSpriteId = stream.readBigSmart2();
-		}
-		else if (opcode == 11)
-		{
-			def.field3283 = stream.readUnsignedShort();
-		}
-		else if (opcode == 14)
-		{
-			def.healthScale = stream.readUnsignedByte();
-		}
-		else if (opcode == 15)
-		{
-			def.healthBarPadding = stream.readUnsignedByte();
+	private void decodeValues(int opcode, HealthBarDefinition def, InputStream stream) {
+		switch (opcode) {
+			case 1:
+				stream.readUnsignedShort();
+				break;
+			case 2:
+				def.field3277 = stream.readUnsignedByte();
+				break;
+			case 3:
+				def.field3278 = stream.readUnsignedByte();
+				break;
+			case 4:
+				def.field3283 = 0;
+				break;
+			case 5:
+				def.field3275 = stream.readUnsignedShort();
+				break;
+			case 6:
+				stream.readUnsignedByte();
+				break;
+			case 7:
+				def.healthBarFrontSpriteId = stream.readBigSmart2();
+				break;
+			case 8:
+				def.healthBarBackSpriteId = stream.readBigSmart2();
+				break;
+			case 11:
+				def.field3283 = stream.readUnsignedShort();
+				break;
+			case 14:
+				def.healthScale = stream.readUnsignedByte();
+				break;
+			case 15:
+				def.healthBarPadding = stream.readUnsignedByte();
+				break;
+			// Add any other cases as needed
+			default:
+				// Handle unsupported opcode or any other required behavior
+				break;
 		}
 	}
 }

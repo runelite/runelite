@@ -125,6 +125,7 @@ class Graphics3D extends Rasterizer2D
 		colorPalette = JagexColor.createPalette(brightness);
 	}
 
+	
 	final void rasterGouraud(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8)
 	{
 		int var9 = var4 - var3;
