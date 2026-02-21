@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Smoke (Smoked today) <https://github.com/Varietyz>
+ * Copyright (c) 2026, Swirle13 <https://github.com/swirle13>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,28 +54,5 @@ public interface ReorderSidebarConfig extends Config
 	default Keybind dragHotkey()
 	{
 		return Keybind.SHIFT;
-	}
-
-	@ConfigItem(
-		keyName = "useCustomTabOrder",
-		name = "Use custom order",
-		description = "Use custom sidebar order instead of default",
-		hidden = true,
-		position = 2
-	)
-	default boolean useCustomTabOrder()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "reorderSidebarPositionEnabled",
-		name = "",
-		description = "Used to tell ClientUI when this plugin is enabled. Prevents checks for useCustomTabOrder() returning true when the plugin is disabled.",
-		hidden = true
-	)
-	default boolean reorderSidebarPositionEnabled()
-	{
-		return false;
 	}
 }

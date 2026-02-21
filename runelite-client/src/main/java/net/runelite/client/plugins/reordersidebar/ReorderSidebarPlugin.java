@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024, Smoke (Smoked today) <https://github.com/Varietyz>
+ * Copyright (c) 2026, Swirle13 <https://github.com/swirle13>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,29 +24,53 @@
  */
 package net.runelite.client.plugins.reordersidebar;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.DragAndDropTabbedPane;
 
 @PluginDescriptor(
 	name = "Reorder Sidebar",
 	description = "Allows reordering of sidebar icons via drag and drop",
 	tags = {"sidebar", "icons", "reorder", "drag", "drop"},
-	configName = "reorderSidebarPlugin",
 	enabledByDefault = false
 )
 @Slf4j
 public class ReorderSidebarPlugin extends Plugin
 {
-	@Inject
-	private ReorderSidebar reorderSidebar;
+	private static final String CONFIG_KEY_CUSTOM_ORDER = "customOrder";
 
 	@Inject
-	private EventBus eventBus;
+	private ConfigManager configManager;
+
+	@Inject
+	private Gson gson;
+
+	@Inject
+	private ReorderSidebarConfig config;
+
+	@Inject
+	private ClientUI clientUI;
+
+	private DragAndDropTabbedPane sidebar;
+	private List<NavigationButton> sidebarTabOrder;
+	private SidebarDragManager dragManager;
+	private boolean reorderPending;
 
 	@Provides
 	ReorderSidebarConfig provideConfig(ConfigManager configManager)
@@ -54,24 +78,157 @@ public class ReorderSidebarPlugin extends Plugin
 		return configManager.getConfig(ReorderSidebarConfig.class);
 	}
 
+	@Subscribe
+	public void onPluginChanged(PluginChanged event)
+	{
+		if (!event.isLoaded())
+		{
+			return;
+		}
+
+		// Coalesce multiple PluginChanged events into a single reorder.
+		// During startup, startPlugins() fires PluginChanged for each plugin via
+		// invokeAndWait, so an invokeLater posted here will run after the entire
+		// batch of synchronous plugin starts completes.
+		if (!reorderPending)
+		{
+			reorderPending = true;
+			SwingUtilities.invokeLater(() ->
+			{
+				reorderPending = false;
+				applyCustomOrder();
+			});
+		}
+	}
+
 	@Override
 	protected void startUp()
 	{
-		reorderSidebar.startUp();
-		eventBus.register(reorderSidebar);
-		log.info("Reorder Sidebar started!");
+		sidebar = clientUI.getSidebar();
+		sidebarTabOrder = clientUI.getSidebarTabOrder();
+
+		if (sidebar == null || sidebarTabOrder == null)
+		{
+			return;
+		}
+
+		dragManager = new SidebarDragManager(
+			config,
+			sidebar,
+			sidebarTabOrder,
+			(from, to) -> saveCustomOrder(sidebarTabOrder)
+		);
+		dragManager.install();
+
+		// Enable custom ordering for future tab insertions
+		clientUI.setCustomOrderingActiveSupplier(() -> true);
+
+		// Apply custom order via invokeLater to run after current event processing
+		SwingUtilities.invokeLater(this::applyCustomOrder);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		reorderSidebar.shutDown();
-		eventBus.unregister(reorderSidebar);
+		clientUI.setCustomOrderingActiveSupplier(null);
+
+		if (dragManager != null)
+		{
+			dragManager.uninstall();
+			dragManager = null;
+		}
+
+		if (sidebar != null)
+		{
+			applyDefaultOrder();
+		}
 	}
 
 	@Override
 	public void resetConfiguration()
 	{
-		reorderSidebar.reset();
+		configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+		applyDefaultOrder();
+	}
+
+	private void saveCustomOrder(List<NavigationButton> entries)
+	{
+		if (entries == null || entries.isEmpty())
+		{
+			return;
+		}
+
+		List<String> tabList = entries.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(Collectors.toList());
+
+		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
+	}
+
+	private List<NavigationButton> loadCustomOrder()
+	{
+		String customTabOrderListJson = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+
+		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
+		{
+			return new ArrayList<>();
+		}
+
+		List<String> customTabOrderList;
+		try
+		{
+			// CHECKSTYLE:OFF
+			customTabOrderList = gson.fromJson(customTabOrderListJson, new TypeToken<List<String>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (Exception e)
+		{
+			log.warn("Corrupted custom order config, clearing: {}", e.getMessage());
+			configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+			return new ArrayList<>();
+		}
+
+		if (customTabOrderList == null || customTabOrderList.isEmpty())
+		{
+			return new ArrayList<>();
+		}
+
+		Collection<NavigationButton> currentSidebarTabs = clientUI.getSidebarEntries();
+
+		// Reconstruct order: saved tabs first, then any new tabs appended
+		List<NavigationButton> assembledTabList = customTabOrderList.stream()
+			.map(tooltip -> currentSidebarTabs.stream()
+				.filter(btn -> btn.getTooltip().equals(tooltip))
+				.findFirst()
+				.orElse(null))
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
+
+		// Append any tabs not in saved order
+		currentSidebarTabs.stream()
+			.filter(btn -> !assembledTabList.contains(btn))
+			.forEach(assembledTabList::add);
+
+		List<String> resultTooltips = assembledTabList.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(Collectors.toList());
+		log.info("Order comparison between customTabOrderList and assembledTabList: {}",
+			customTabOrderList.equals(resultTooltips));
+
+		return assembledTabList;
+	}
+
+	private void applyCustomOrder()
+	{
+		List<NavigationButton> orderedButtons = loadCustomOrder();
+		if (!orderedButtons.isEmpty())
+		{
+			clientUI.rebuildSidebar(orderedButtons);
+		}
+	}
+
+	private void applyDefaultOrder()
+	{
+		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
 	}
 }

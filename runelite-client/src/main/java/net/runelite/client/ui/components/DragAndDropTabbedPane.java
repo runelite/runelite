@@ -42,7 +42,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 
@@ -53,7 +52,6 @@ import net.runelite.client.util.ColorUtil;
  * and a highlight marks the drop target. The actual tab move only happens
  * once on drop, avoiding expensive intermediate layout passes.
  */
-@Slf4j
 public class DragAndDropTabbedPane extends JTabbedPane
 {
 	private Point dragStartPoint;
@@ -101,10 +99,6 @@ public class DragAndDropTabbedPane extends JTabbedPane
 
 	private final List<TabDragListener> dragListeners = new ArrayList<>();
 
-	public DragAndDropTabbedPane()
-	{
-		this(TOP);
-	}
 
 	public DragAndDropTabbedPane(int tabPlacement)
 	{
@@ -203,7 +197,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 			dragImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = dragImage.createGraphics();
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setColor(ColorUtil.colorWithAlpha(ColorScheme.DARKER_GRAY_COLOR, 200));
+			g.setColor(ColorUtil.colorWithAlpha(ColorScheme.MEDIUM_GRAY_COLOR, 128));
 			g.fillRoundRect(0, 0, w, h, 6, 6);
 			icon.paintIcon(this, g, pad, pad);
 			g.dispose();

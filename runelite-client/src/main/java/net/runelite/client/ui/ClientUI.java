@@ -70,6 +70,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -99,6 +100,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -121,7 +123,6 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.plugins.reordersidebar.ReorderSidebarConfig;
 import net.runelite.client.ui.laf.RuneLiteLAF;
 import net.runelite.client.ui.laf.RuneLiteRootPaneUI;
 import net.runelite.client.util.HotkeyListener;
@@ -191,12 +192,15 @@ public class ClientUI
 	@SuppressWarnings("PMD.ImmutableField")
 	private int recommendedMemoryLimit = 512;
 
-	@Inject(optional = true)
-	private final ReorderSidebarConfig sidebarConfig;
-
-	private static final String REORDER_SIDEBAR_PLUGIN_KEY = "reorderSidebarPlugin";
-
 	private List<KeyListener> keyListeners;
+
+	/**
+	 * When set and returns true, new tabs are appended to the end of
+	 * sidebarTabOrder instead of being inserted by priority. Set by
+	 * ReorderSidebar plugin when custom ordering is active.
+	 */
+	@Setter
+	private Supplier<Boolean> customOrderingActiveSupplier;
 
 	@RequiredArgsConstructor
 	private static class HistoryEntry
@@ -225,8 +229,6 @@ public class ClientUI
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
 		this.title = title + (safeMode ? " (safe mode)" : "");
-		// TODO: test this actually works
-		this.sidebarConfig = configManager.getConfig(ReorderSidebarConfig.class);
 
 		normalBoundsTimer = new Timer(250, _ev -> setLastNormalBounds());
 		normalBoundsTimer.setRepeats(false);
@@ -245,92 +247,6 @@ public class ClientUI
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
-	/**
-	 * Insert a nav button into sidebar, maintaining order based on NavigationButton priority, storing the
-	 * order in sidebarTabOrder.
-	 * @param navBtn the nav button to insert
-	 */
-	private void insertNavButton(NavigationButton navBtn)
-	{
-		int insertIndex = 0;
-		for (NavigationButton btn : sidebarTabOrder)
-		{
-			// find proper insertion index for navBtn
-			if (NavigationButton.COMPARATOR.compare(navBtn, btn) > 0)
-			{
-				insertIndex++;
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		final int TAB_SIZE = 16;
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
-
-		// keep track of nav button order
-		sidebarTabOrder.add(insertIndex, navBtn);
-		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), insertIndex);
-
-		// insertTab changes the selected index when the first tab is inserted, avoid this
-		if (sidebar.getTabCount() == 1)
-		{
-			sidebar.setSelectedIndex(-1);
-		}
-	}
-
-
-	/**
-	 * Insert nav button, regardless of custom ordering, following default priority ordering.
-	 * @param navBtn
-	 */
-	private void insertNavButtonDefault(NavigationButton navBtn)
-	{
-		int insertIndex = 0;
-		for (NavigationButton btn : sidebarTabOrder)
-		{
-			if (NavigationButton.COMPARATOR.compare(navBtn, btn) > 0)
-			{
-				insertIndex++;
-			}
-			else
-			{
-				break;
-			}
-		}
-
-		sidebarTabOrder.add(insertIndex, navBtn);
-
-		final int TAB_SIZE = 16;
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
-
-		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), insertIndex);
-
-		// insertTab changes the selected index when the first tab is inserted, avoid this
-		if (sidebar.getTabCount() == 1)
-		{
-			sidebar.setSelectedIndex(-1);
-		}
-	}
-
-	private void insertNavButtonCustom(NavigationButton navBtn)
-	{
-		sidebarTabOrder.add(navBtn);
-
-		final int TAB_SIZE = 16;
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
-
-		sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
-
-		// insertTab changes the selected index when the first tab is inserted, avoid this
-		if (sidebar.getTabCount() == 1)
-		{
-			sidebar.setSelectedIndex(-1);
-		}
-	}
-
-
 	void addNavigation(NavigationButton navBtn)
 	{
 		if (navBtn.getPanel() == null)
@@ -344,19 +260,28 @@ public class ClientUI
 			return;
 		}
 
-		// log.info("isReorderSidebarPluginEnabled: {}, useCustomTabOrder: {}", isReorderSidebarPluginEnabled(), sidebarConfig.useCustomTabOrder());
-		// // Determine insertion index based on priority ordering
-		// if (sidebarConfig.useCustomTabOrder())
-		// {
-		// 	log.info("Inserting nav button {} using custom ordering", navBtn.getTooltip());
-		// 	insertNavButtonCustom(navBtn);
-		// }
-		// else
-		// {
-		// 	log.info("Inserting nav button {} using default ordering", navBtn.getTooltip());
-		// 	insertNavButtonDefault(navBtn);
-		// }
-		insertNavButton(navBtn);
+		// When custom ordering is active, append to end since new tabs
+		// aren't in the saved order yet. Otherwise, use priority ordering
+		// derived from sidebarEntries TreeSet.
+		boolean customOrderingActive = customOrderingActiveSupplier != null && customOrderingActiveSupplier.get();
+		log.info("customOrderingActiveSupplier is {}, returns {}",
+			customOrderingActiveSupplier != null ? "set" : "null",
+			customOrderingActive);
+		int insertIndex = customOrderingActive
+			? sidebarTabOrder.size()
+			: sidebarEntries.headSet(navBtn).size();
+
+		final int TAB_SIZE = 16;
+		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
+
+		sidebarTabOrder.add(insertIndex, navBtn);
+		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(), insertIndex);
+
+		// insertTab changes the selected index when the first tab is inserted, avoid this
+		if (sidebar.getTabCount() == 1)
+		{
+			sidebar.setSelectedIndex(-1);
+		}
 
 		log.info("Current sidebarEntries order: {}",
 			sidebarEntries.stream()
@@ -367,7 +292,6 @@ public class ClientUI
 				.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
 				.collect(Collectors.toList()));
 	}
-
 
 	void removeNavigation(NavigationButton navBtn)
 	{
