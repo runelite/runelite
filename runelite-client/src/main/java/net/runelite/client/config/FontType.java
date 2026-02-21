@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Tanner <https://github.com/Reasel>
+ * Copyright (c) 2025, Hamish <https://github.com/DustyRealm>
+ * Copyright (c) 2025, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +25,89 @@
  */
 package net.runelite.client.config;
 
-import lombok.RequiredArgsConstructor;
+import com.google.gson.Gson;
+import com.google.inject.Inject;
+import java.awt.Font;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.With;
 import net.runelite.client.ui.FontManager;
 
-import java.awt.Font;
-
+@ConfigSerializer(FontTypeSerializer.class)
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Getter
-@RequiredArgsConstructor
-public enum FontType
+@With
+public class FontType
 {
-	REGULAR("Regular", FontManager.getRunescapeFont()),
-	BOLD("Bold", FontManager.getRunescapeBoldFont()),
-	SMALL("Small", FontManager.getRunescapeSmallFont());
+	public static final FontType REGULAR = new FontType()
+		.withFamily(FontManager.getRunescapeFont().getFamily())
+		.withSize(16);
+	public static final FontType BOLD = new FontType()
+		.withFamily(FontManager.getRunescapeBoldFont().getFamily())
+		.withSize(16)
+		.withBold(true);
+	public static final FontType SMALL = new FontType()
+		.withFamily(FontManager.getRunescapeSmallFont().getFamily())
+		.withSize(16);
 
-	private final String name;
-	private final Font font;
+	String family;
+	int size;
+
+	boolean bold = false;
+	boolean italic = false;
+
+	private transient Font font;
+
+	private int getStyle()
+	{
+		return (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN);
+	}
+
+	public Font getFont()
+	{
+		if (font != null)
+		{
+			return font;
+		}
+		return font = FontManager.getFallbackFont(family, getStyle(), size);
+	}
+}
+
+class FontTypeSerializer implements Serializer<FontType>
+{
+	private final Gson gson;
+
+	@Inject
+	private FontTypeSerializer(Gson gson)
+	{
+		this.gson = gson;
+	}
 
 	@Override
-	public String toString()
+	public String serialize(FontType value)
 	{
-		return name;
+		return gson.toJson(value);
+	}
+
+	@Override
+	public FontType deserialize(String s)
+	{
+		// Handle legacy config values
+		if ("REGULAR".equals(s))
+		{
+			return FontType.REGULAR;
+		}
+		else if ("BOLD".equals(s))
+		{
+			return FontType.BOLD;
+		}
+		else if ("SMALL".equals(s))
+		{
+			return FontType.SMALL;
+		}
+
+		return gson.fromJson(s, FontType.class);
 	}
 }
