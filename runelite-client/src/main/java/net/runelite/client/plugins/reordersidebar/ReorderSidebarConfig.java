@@ -60,6 +60,7 @@ public interface ReorderSidebarConfig extends Config
 		keyName = "useCustomTabOrder",
 		name = "Use custom order",
 		description = "Use custom sidebar order instead of default",
+		hidden = true,
 		position = 2
 	)
 	default boolean useCustomTabOrder()

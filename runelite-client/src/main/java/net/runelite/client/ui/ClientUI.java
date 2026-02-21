@@ -232,17 +232,6 @@ public class ClientUI
 		normalBoundsTimer.setRepeats(false);
 	}
 
-	/**
-	 * Check if the ReorderSidebar plugin is enabled in config.
-	 * The plugin has enabledByDefault = false.
-	 */
-	private boolean isReorderSidebarPluginEnabled()
-	{
-		String value = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, REORDER_SIDEBAR_PLUGIN_KEY);
-		// ReorderSidebarPlugin has enabledByDefault = false
-		return Boolean.parseBoolean(value);
-	}
-
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{

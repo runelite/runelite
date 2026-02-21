@@ -25,8 +25,11 @@
 package net.runelite.client.ui.components;
 
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,6 +42,7 @@ import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.ColorScheme;
 
 /**
  * A JTabbedPane that supports drag-and-drop reordering of tabs.
@@ -60,6 +64,13 @@ public class DragAndDropTabbedPane extends JTabbedPane
 
 	@Getter
 	private boolean dragging;
+
+	/**
+	 * True between mousePressed on a draggable tab and either the drag
+	 * starting or mouseReleased. Used to suppress tab selection changes
+	 * that would toggle the plugin panel during a potential drag.
+	 */
+	private boolean potentialDrag;
 
 	@Setter
 	private boolean dragEnabled = true;
@@ -84,6 +95,44 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		TabDragMouseAdapter mouseAdapter = new TabDragMouseAdapter();
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
+	}
+
+	/**
+	 * Suppress tab selection changes while a drag is in progress or
+	 * potentially starting. Without this, the UI delegate's mousePressed
+	 * toggles the selected tab (opening/closing the plugin panel) before
+	 * mouseDragged has a chance to initiate the drag.
+	 */
+	@Override
+	public void setSelectedIndex(int index)
+	{
+		if (potentialDrag || dragging)
+		{
+			return;
+		}
+		super.setSelectedIndex(index);
+	}
+
+	/**
+	 * Intercept MOUSE_PRESSED to set potentialDrag before the event reaches
+	 * the UI delegate's mouse listener. The UI delegate fires first in the
+	 * listener chain (registered before our adapter), so we must act here.
+	 */
+	@Override
+	protected void processMouseEvent(MouseEvent e)
+	{
+		if (e.getID() == MouseEvent.MOUSE_PRESSED
+			&& SwingUtilities.isLeftMouseButton(e)
+			&& getTabCount() > 1
+			&& isDragAllowed())
+		{
+			int tabIndex = indexAtLocation(e.getX(), e.getY());
+			if (tabIndex >= 0)
+			{
+				potentialDrag = true;
+			}
+		}
+		super.processMouseEvent(e);
 	}
 
 	/**
@@ -125,6 +174,9 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		}
 
 		dragging = true;
+
+
+		repaint();
 	}
 
 	/**
@@ -162,12 +214,14 @@ public class DragAndDropTabbedPane extends JTabbedPane
 			{
 				moveTab(dragIndex, i);
 				dragIndex = i;
+				repaint();
 				return;
 			}
 			else if (!dragUp && mousePos > mid)
 			{
 				moveTab(dragIndex, i);
 				dragIndex = i;
+				repaint();
 				return;
 			}
 		}
@@ -196,6 +250,42 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		pressedTabIndex = -1;
 		dragIndex = -1;
 		dragging = false;
+		potentialDrag = false;
+		repaint();
+	}
+
+	@Override
+	public void paint(Graphics g)
+	{
+		super.paint(g);
+
+		if (!dragging || dragIndex < 0 || dragIndex >= getTabCount())
+		{
+			return;
+		}
+
+		Rectangle bounds = getBoundsAt(dragIndex);
+		if (bounds == null)
+		{
+			return;
+		}
+
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setColor(ColorScheme.DARKEST_GRAY_COLOR);
+		// g2d.fillRoundRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2, 4, 4);
+		g2d.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+		// Repaint the tab icon on top of the highlight
+		Icon icon = getIconAt(dragIndex);
+		if (icon != null)
+		{
+			int iconX = bounds.x + (bounds.width - icon.getIconWidth()) / 2;
+			int iconY = bounds.y + (bounds.height - icon.getIconHeight()) / 2;
+			icon.paintIcon(this, g2d, iconX, iconY);
+		}
+
+		g2d.dispose();
 	}
 
 	/**
@@ -215,24 +305,25 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		String tooltip = getToolTipTextAt(fromIndex);
 		boolean enabled = isEnabledAt(fromIndex);
 
-		int selectedIndex = getSelectedIndex();
+		int selectedIndex = super.getSelectedIndex();
 		boolean wasSelected = (selectedIndex == fromIndex);
 
 		removeTabAt(fromIndex);
 		insertTab(title, icon, comp, tooltip, toIndex);
 		setEnabledAt(toIndex, enabled);
 
+		// Use super to bypass our drag suppression override
 		if (wasSelected)
 		{
-			setSelectedIndex(toIndex);
+			super.setSelectedIndex(toIndex);
 		}
 		else if (selectedIndex > fromIndex && selectedIndex <= toIndex)
 		{
-			setSelectedIndex(selectedIndex - 1);
+			super.setSelectedIndex(selectedIndex - 1);
 		}
 		else if (selectedIndex < fromIndex && selectedIndex >= toIndex)
 		{
-			setSelectedIndex(selectedIndex + 1);
+			super.setSelectedIndex(selectedIndex + 1);
 		}
 	}
 
@@ -264,7 +355,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 			}
 
 			pressedTabIndex = -1;
-			selectedIndexOnPress = getSelectedIndex();
+			selectedIndexOnPress = DragAndDropTabbedPane.super.getSelectedIndex();
 
 			if (getTabCount() > 1 && isDragAllowed())
 			{
@@ -300,9 +391,9 @@ public class DragAndDropTabbedPane extends JTabbedPane
 			{
 				// Restore the selection state from before the press so
 				// the tab deselect from clicking doesn't interfere
-				if (getSelectedIndex() != selectedIndexOnPress)
+				if (DragAndDropTabbedPane.super.getSelectedIndex() != selectedIndexOnPress)
 				{
-					setSelectedIndex(selectedIndexOnPress);
+					DragAndDropTabbedPane.super.setSelectedIndex(selectedIndexOnPress);
 				}
 				startDragging();
 			}
@@ -317,11 +408,22 @@ public class DragAndDropTabbedPane extends JTabbedPane
 				{
 					finishDragging();
 				}
-				else
+				else if (potentialDrag)
 				{
-					dragStartPoint = null;
-					pressedTabIndex = -1;
+					// Was a click, not a drag — perform the deferred
+					// tab selection that we suppressed in mousePressed
+					potentialDrag = false;
+					int tabIndex = indexAtLocation(e.getX(), e.getY());
+					if (tabIndex >= 0)
+					{
+						int current = DragAndDropTabbedPane.super.getSelectedIndex();
+						DragAndDropTabbedPane.super.setSelectedIndex(
+							current == tabIndex ? -1 : tabIndex);
+					}
 				}
+
+				dragStartPoint = null;
+				pressedTabIndex = -1;
 			}
 		}
 	}
