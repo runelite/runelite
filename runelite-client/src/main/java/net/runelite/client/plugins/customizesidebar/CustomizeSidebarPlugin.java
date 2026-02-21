@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.reordersidebar;
+package net.runelite.client.plugins.customizesidebar;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -45,13 +45,13 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.DragAndDropTabbedPane;
 
 @PluginDescriptor(
-	name = "Reorder Sidebar",
-	description = "Allows reordering of sidebar icons via drag and drop",
-	tags = {"sidebar", "icons", "reorder", "drag", "drop"},
+	name = "Customize Sidebar",
+	description = "Allows customizing sidebar icons via drag and drop",
+	tags = {"sidebar", "icons", "customize", "reorder", "drag", "drop"},
 	enabledByDefault = false
 )
 @Slf4j
-public class ReorderSidebarPlugin extends Plugin
+public class CustomizeSidebarPlugin extends Plugin
 {
 	private static final String CONFIG_KEY_CUSTOM_ORDER = "customOrder";
 
@@ -62,7 +62,7 @@ public class ReorderSidebarPlugin extends Plugin
 	private Gson gson;
 
 	@Inject
-	private ReorderSidebarConfig config;
+	private CustomizeSidebarConfig config;
 
 	@Inject
 	private ClientUI clientUI;
@@ -73,9 +73,9 @@ public class ReorderSidebarPlugin extends Plugin
 	private boolean reorderPending;
 
 	@Provides
-	ReorderSidebarConfig provideConfig(ConfigManager configManager)
+	CustomizeSidebarConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ReorderSidebarConfig.class);
+		return configManager.getConfig(CustomizeSidebarConfig.class);
 	}
 
 	@Subscribe
@@ -147,7 +147,7 @@ public class ReorderSidebarPlugin extends Plugin
 	@Override
 	public void resetConfiguration()
 	{
-		configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+		configManager.unsetConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 		applyDefaultOrder();
 	}
 
@@ -162,12 +162,12 @@ public class ReorderSidebarPlugin extends Plugin
 			.map(NavigationButton::getTooltip)
 			.collect(Collectors.toList());
 
-		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
+		configManager.setConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
 	}
 
 	private List<NavigationButton> loadCustomOrder()
 	{
-		String customTabOrderListJson = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+		String customTabOrderListJson = configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 
 		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
 		{
@@ -184,7 +184,7 @@ public class ReorderSidebarPlugin extends Plugin
 		catch (Exception e)
 		{
 			log.warn("Corrupted custom order config, clearing: {}", e.getMessage());
-			configManager.unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+			configManager.unsetConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 			return new ArrayList<>();
 		}
 
@@ -232,3 +232,4 @@ public class ReorderSidebarPlugin extends Plugin
 		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
 	}
 }
+

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.reordersidebar;
+package net.runelite.client.plugins.customizesidebar;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class SidebarDragManagerTest
 {
 	@Mock
-	private ReorderSidebarConfig config;
+	private CustomizeSidebarConfig config;
 
 	@Mock
 	private DragAndDropTabbedPane sidebar;
@@ -452,3 +452,4 @@ public class SidebarDragManagerTest
 		assertTrue("Callback should be invoked for second drag", callbackInvoked.get());
 	}
 }
+

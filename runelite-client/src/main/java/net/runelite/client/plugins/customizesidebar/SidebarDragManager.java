@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.reordersidebar;
+package net.runelite.client.plugins.customizesidebar;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -34,12 +34,12 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.DragAndDropTabbedPane;
 
 /**
- * Manages drag-and-drop functionality for sidebar tab reordering.
+ * Manages drag-and-drop functionality for sidebar tab customization.
  * Handles hotkey detection and drag event listening.
  */
 class SidebarDragManager
 {
-	private final ReorderSidebarConfig config;
+	private final CustomizeSidebarConfig config;
 	private final DragAndDropTabbedPane sidebar;
 	private final List<NavigationButton> sidebarTabOrder;
 	private final BiConsumer<Integer, Integer> onTabDragged;
@@ -49,7 +49,7 @@ class SidebarDragManager
 	private DragAndDropTabbedPane.TabDragListener tabDragListener;
 
 	SidebarDragManager(
-		ReorderSidebarConfig config,
+		CustomizeSidebarConfig config,
 		DragAndDropTabbedPane sidebar,
 		List<NavigationButton> sidebarTabOrder,
 		BiConsumer<Integer, Integer> onTabDragged)

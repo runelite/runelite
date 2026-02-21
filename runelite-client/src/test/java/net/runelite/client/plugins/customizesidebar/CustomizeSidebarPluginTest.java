@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.reordersidebar;
+package net.runelite.client.plugins.customizesidebar;
 
 import com.google.gson.Gson;
 import com.google.inject.Guice;
@@ -58,14 +58,14 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ReorderSidebarPluginTest
+public class CustomizeSidebarPluginTest
 {
 	private static final Comparator<NavigationButton> NAV_BUTTON_COMPARATOR =
 		Comparator.comparing(NavigationButton::getPriority)
 			.thenComparing(NavigationButton::getTooltip);
 
 	@Inject
-	private ReorderSidebarPlugin plugin;
+	private CustomizeSidebarPlugin plugin;
 
 	@Mock
 	@Bind
@@ -73,7 +73,7 @@ public class ReorderSidebarPluginTest
 
 	@Mock
 	@Bind
-	private ReorderSidebarConfig config;
+	private CustomizeSidebarConfig config;
 
 	@Bind
 	private final Gson gson = new Gson();
@@ -158,7 +158,7 @@ public class ReorderSidebarPluginTest
 		addButton(hiscore);
 
 		String savedOrder = "[\"XP Tracker\",\"Configuration\",\"Hiscore\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -188,7 +188,7 @@ public class ReorderSidebarPluginTest
 		addButton(newPlugin);
 
 		String savedOrder = "[\"XP Tracker\",\"Configuration\",\"Hiscore\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -215,7 +215,7 @@ public class ReorderSidebarPluginTest
 		addButton(xpTracker);
 
 		String savedOrder = "[\"Removed Plugin\",\"XP Tracker\",\"Configuration\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -238,14 +238,14 @@ public class ReorderSidebarPluginTest
 		addButton(configBtn);
 
 		// This is valid JSON but wrong type (object instead of array) which will fail TypeToken parsing
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn("{\"key\": \"value\"}");
 
 		plugin.startUp();
 
 		waitForSwingEvents();
 
-		verify(configManager).unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder");
+		verify(configManager).unsetConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder");
 	}
 
 	@Test
@@ -254,7 +254,7 @@ public class ReorderSidebarPluginTest
 		NavigationButton configBtn = createNavButton("Configuration", 0);
 		addButton(configBtn);
 
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(null);
 
 		plugin.startUp();
@@ -273,7 +273,7 @@ public class ReorderSidebarPluginTest
 		plugin.startUp();
 		plugin.resetConfiguration();
 
-		verify(configManager).unsetConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder");
+		verify(configManager).unsetConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder");
 		verify(clientUI).rebuildSidebar(sidebarEntries);
 	}
 
@@ -297,7 +297,7 @@ public class ReorderSidebarPluginTest
 		addButton(configBtn);
 
 		String savedOrder = "[\"Configuration\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -327,7 +327,7 @@ public class ReorderSidebarPluginTest
 		// Note: Current implementation will find the same button twice since findFirst()
 		// always returns the first match from the TreeSet
 		String savedOrder = "[\"Configuration\",\"Configuration\",\"XP Tracker\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -356,7 +356,7 @@ public class ReorderSidebarPluginTest
 
 		// Saved order contains empty string
 		String savedOrder = "[\"\",\"Configuration\",\"XP Tracker\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -378,7 +378,7 @@ public class ReorderSidebarPluginTest
 		addButton(configBtn);
 
 		// Empty array is valid JSON
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn("[]");
 
 		plugin.startUp();
@@ -402,7 +402,7 @@ public class ReorderSidebarPluginTest
 		addButton(btn4);
 
 		String savedOrder = "[\"First\",\"Second\",\"Third\",\"Fourth\"]";
-		when(configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, "customOrder"))
+		when(configManager.getConfiguration(CustomizeSidebarConfig.CONFIG_GROUP, "customOrder"))
 			.thenReturn(savedOrder);
 
 		plugin.startUp();
@@ -445,7 +445,8 @@ public class ReorderSidebarPluginTest
 		{
 			// Use invokeAndWait to ensure all pending Swing events are processed
 			SwingUtilities.invokeAndWait(() ->
-			{ });
+			{
+			});
 		}
 		catch (InterruptedException e)
 		{

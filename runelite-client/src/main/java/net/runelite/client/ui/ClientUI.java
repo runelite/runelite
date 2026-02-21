@@ -197,7 +197,7 @@ public class ClientUI
 	/**
 	 * When set and returns true, new tabs are appended to the end of
 	 * sidebarTabOrder instead of being inserted by priority. Set by
-	 * ReorderSidebar plugin when custom ordering is active.
+	 * CustomizeSidebar plugin when custom ordering is active.
 	 */
 	@Setter
 	private Supplier<Boolean> customOrderingActiveSupplier;
@@ -445,7 +445,7 @@ public class ClientUI
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
 
-			// Disable drag by default - ReorderSidebar plugin will enable it when active
+			// Disable drag by default - CustomizeSidebar plugin will enable it when active
 			sidebar.setDragEnabled(false);
 
 			sidebar.addChangeListener(ev ->
