@@ -175,7 +175,6 @@ public class RuneLiteModule extends AbstractModule
 		return configManager.getConfig(ChatColorConfig.class);
 	}
 
-
 	@Provides
 	@Singleton
 	OkHttpClient provideHttpClient(Client client)

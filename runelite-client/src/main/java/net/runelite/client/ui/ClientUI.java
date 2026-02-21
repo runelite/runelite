@@ -282,15 +282,6 @@ public class ClientUI
 		{
 			sidebar.setSelectedIndex(-1);
 		}
-
-		log.info("Current sidebarEntries order: {}",
-			sidebarEntries.stream()
-				.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
-				.collect(Collectors.toList()));
-		log.info("Current sidebarTabOrder order: {}",
-			sidebarTabOrder.stream()
-				.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
-				.collect(Collectors.toList()));
 	}
 
 	void removeNavigation(NavigationButton navBtn)
@@ -444,8 +435,6 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
-
-			// Disable drag by default - CustomizeSidebar plugin will enable it when active
 			sidebar.setDragEnabled(false);
 
 			sidebar.addChangeListener(ev ->
@@ -968,7 +957,6 @@ public class ClientUI
 
 	/**
 	 * Returns current cursor set on game container
-	 *
 	 * @return awt cursor
 	 */
 	public Cursor getCurrentCursor()
@@ -978,7 +966,6 @@ public class ClientUI
 
 	/**
 	 * Returns current custom cursor or default system cursor if cursor is not set
-	 *
 	 * @return awt cursor
 	 */
 	public Cursor getDefaultCursor()
@@ -989,7 +976,6 @@ public class ClientUI
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
-	 *
 	 * @param image cursor image
 	 * @param name  cursor name
 	 */
@@ -1008,7 +994,6 @@ public class ClientUI
 
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
-	 *
 	 * @param cursor awt cursor
 	 */
 	public void setCursor(final Cursor cursor)
@@ -1018,7 +1003,6 @@ public class ClientUI
 
 	/**
 	 * Resets client window cursor to default one.
-	 *
 	 * @see ClientUI#setCursor(BufferedImage, String)
 	 */
 	public void resetCursor()
@@ -1034,7 +1018,6 @@ public class ClientUI
 
 	/**
 	 * Get offset of game canvas in game window
-	 *
 	 * @return game canvas offset
 	 */
 	public Point getCanvasOffset()
@@ -1055,7 +1038,6 @@ public class ClientUI
 
 	/**
 	 * Paint UI related overlays to target graphics
-	 *
 	 * @param graphics target graphics
 	 */
 	public void paintOverlays(final Graphics2D graphics)
@@ -1112,7 +1094,10 @@ public class ClientUI
 			// Add entries in the exact order provided
 			for (NavigationButton navBtn : entries)
 			{
-				addNavButtonTab(navBtn);
+				final int TAB_SIZE = 16;
+				Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
+				sidebarTabOrder.add(navBtn);
+				sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
 			}
 
 			// Restore selection if possible
@@ -1126,18 +1111,6 @@ public class ClientUI
 				sidebar.setSelectedIndex(-1);
 			}
 		});
-	}
-
-	/**
-	 * Add a navigation button tab without sorting (appends to end).
-	 * Used when custom order is enabled.
-	 */
-	private void addNavButtonTab(NavigationButton navBtn)
-	{
-		final int TAB_SIZE = 16;
-		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
-		sidebarTabOrder.add(navBtn);
-		sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
 	}
 
 	void openPanel(NavigationButton navBtn, boolean showSidebar)
@@ -1215,15 +1188,13 @@ public class ClientUI
 			toggleSidebar(true, false);
 
 			NavigationButton open = null;
-
-			// Traverse the history stack to find the last opened NavigationButton
 			while (!selectedTabHistory.isEmpty())
 			{
 				HistoryEntry historyEntry = selectedTabHistory.removeLast();
 				if (historyEntry.navBtn != null)
 				{
 					open = historyEntry.navBtn;
-					break; // Found the last opened button
+					break;
 				}
 			}
 
@@ -1237,7 +1208,7 @@ public class ClientUI
 		}
 		else
 		{
-			sidebar.setSelectedIndex(-1); // Deselect if sidebar is visible
+			sidebar.setSelectedIndex(-1);
 		}
 	}
 
