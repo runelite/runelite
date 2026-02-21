@@ -29,25 +29,23 @@ import com.google.gson.Gson;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
-import javax.swing.JRootPane;
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.PluginChanged;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.components.DragAndDropTabbedPane;
 
 @Slf4j
 class ReorderSidebar
@@ -58,19 +56,14 @@ class ReorderSidebar
 	private final Gson gson;
 	@Getter
 	private final ReorderSidebarConfig config;
-	// TODO: check that this clientUI is synced with the real clientUI and isn't a separate duplicated clientUI
 	private final ClientUI clientUI;
 
-	// TODO: remove and use singleton clientUI.sidebar or synchronize with clientUI.getSidebar()
-	private JTabbedPane sidebar;
-	// TODO: remove and use singleton clientUI.sidebarTabOrder or synchronize with clientUI.getSidebarTabOrder()
+	private DragAndDropTabbedPane sidebar;
 	private List<NavigationButton> sidebarTabOrder;
-	private DropIndicatorGlassPane glassPane;
-	private MouseAdapter dragMouseListener;
 	private KeyEventDispatcher keyDispatcher;
 	private volatile boolean hotkeyDown;
-	@Getter
-	private int pendingDragSourceIndex = -1;
+	private DragAndDropTabbedPane.TabDragListener tabDragListener;
+	private boolean reorderPending;
 
 	@Inject
 	ReorderSidebar(ConfigManager configManager, Gson gson, ReorderSidebarConfig config, ClientUI clientUI)
@@ -83,9 +76,8 @@ class ReorderSidebar
 
 	void startUp()
 	{
-
 		sidebar = clientUI.getSidebar();
-		this.sidebarTabOrder = clientUI.getSidebarTabOrder();
+		sidebarTabOrder = clientUI.getSidebarTabOrder();
 
 		if (sidebar == null || sidebarTabOrder == null)
 		{
@@ -97,7 +89,6 @@ class ReorderSidebar
 
 		if (config.useCustomTabOrder())
 		{
-			log.info("Reorder Sidebar applying custom order on startup.");
 			applyCustomOrder();
 		}
 	}
@@ -108,14 +99,14 @@ class ReorderSidebar
 
 		if (sidebar != null)
 		{
-			sidebar.setTransferHandler(null);
-			applyDefaultOrder();
-			if (dragMouseListener != null)
+			sidebar.setDragEnabled(false);
+			sidebar.setDragAllowedSupplier(null);
+			if (tabDragListener != null)
 			{
-				sidebar.removeMouseListener(dragMouseListener);
-				sidebar.removeMouseMotionListener(dragMouseListener);
-				dragMouseListener = null;
+				sidebar.removeTabDragListener(tabDragListener);
+				tabDragListener = null;
 			}
+			applyDefaultOrder();
 		}
 	}
 
@@ -153,10 +144,6 @@ class ReorderSidebar
 		hotkeyDown = false;
 	}
 
-	void clearPendingDragSourceIndex()
-	{
-		pendingDragSourceIndex = -1;
-	}
 
 	private boolean matchesHotkey(KeyEvent e)
 	{
@@ -187,6 +174,34 @@ class ReorderSidebar
 		}
 	}
 
+	@Subscribe
+	public void onPluginChanged(PluginChanged event)
+	{
+		if (!event.isLoaded() || !config.useCustomTabOrder())
+		{
+			return;
+		}
+
+		// Coalesce multiple PluginChanged events into a single reorder.
+		// During startup, startPlugins() fires PluginChanged for each plugin via
+		// invokeAndWait, so an invokeLater posted here will run after the entire
+		// batch of synchronous plugin starts completes.
+		if (!reorderPending)
+		{
+			reorderPending = true;
+			SwingUtilities.invokeLater(() ->
+			{
+				reorderPending = false;
+				// Don't rebuild the sidebar while a drag is in progress
+				if (sidebar != null && sidebar.isDragging())
+				{
+					return;
+				}
+				applyCustomOrder();
+			});
+		}
+	}
+
 	void setCustomOrderTabs(List<NavigationButton> entries)
 	{
 		if (entries == null || entries.isEmpty())
@@ -196,26 +211,28 @@ class ReorderSidebar
 
 		List<String> tabList = entries.stream()
 			.map(NavigationButton::getTooltip)
-			.collect(java.util.stream.Collectors.toList());
+			.collect(Collectors.toList());
 
 		configManager.setConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
 	}
 
 	private List<NavigationButton> getCustomOrderTabs()
 	{
-		String tabListJson = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+		String customTabOrderListJson = configManager.getConfiguration(ReorderSidebarConfig.CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 
-		if (tabListJson == null || tabListJson.isEmpty())
+		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
 		{
 			return new ArrayList<>();
 		}
 
-		// Don't blame me, I followed the pattern from ChatCommandsPlugin.java for this deserialization
-		List<String> tabList;
+		// Don't blame me, I followed the pattern from ChatCommandsPlugin.java for list deserialization
+		List<String> customTabOrderList;
 		try
 		{
 			// CHECKSTYLE:OFF
-			tabList = gson.fromJson(tabListJson, new TypeToken<List<String>>(){}.getType());
+			customTabOrderList = gson.fromJson(customTabOrderListJson, new TypeToken<List<String>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (Exception e)
@@ -225,27 +242,33 @@ class ReorderSidebar
 			return new ArrayList<>();
 		}
 
-		if (tabList == null || tabList.isEmpty())
+		if (customTabOrderList == null || customTabOrderList.isEmpty())
 		{
 			return new ArrayList<>();
 		}
+		log.info("Retrieved stored custom tab order: {}", customTabOrderList);
 
-		Collection<NavigationButton> allButtons = clientUI.getSidebarEntries();
+		Collection<NavigationButton> currentSidebarTabs = clientUI.getSidebarEntries();
 
-		// Build result: saved order first, then append any new buttons
-		List<NavigationButton> result = tabList.stream()
-			.map(tab -> allButtons.stream()
+		// Build assembledTabList: saved order first, then append any new buttons
+		List<NavigationButton> assembledTabList = customTabOrderList.stream()
+			.map(tab -> currentSidebarTabs.stream()
 				.filter(btn -> btn.getTooltip().equals(tab))
 				.findFirst()
 				.orElse(null))
 			.filter(Objects::nonNull)
-			.collect(java.util.stream.Collectors.toList());
+			.collect(Collectors.toList());
 
-		allButtons.stream()
-			.filter(btn -> !result.contains(btn))
-			.forEach(result::add);
+		currentSidebarTabs.stream()
+			.filter(btn -> !assembledTabList.contains(btn))
+			.forEach(assembledTabList::add);
 
-		return result;
+		List<String> resultTooltips = assembledTabList.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(Collectors.toList());
+		log.info("Order comparison between customTabOrderList and assembledTabList: {}",
+			customTabOrderList.equals(resultTooltips));
+		return assembledTabList;
 	}
 
 	private void applyCustomOrder()
@@ -262,83 +285,38 @@ class ReorderSidebar
 		clientUI.rebuildSidebar(clientUI.getSidebarEntries());
 	}
 
-	private void ensureGlassPane()
-	{
-		if (glassPane == null && sidebar != null)
-		{
-			JRootPane rootPane = SwingUtilities.getRootPane(sidebar);
-			if (rootPane != null)
-			{
-				glassPane = new DropIndicatorGlassPane();
-				rootPane.setGlassPane(glassPane);
-			}
-		}
-	}
-
 	private void installDragHandler()
 	{
-		if (dragMouseListener != null)
+		// Enable drag on the sidebar
+		sidebar.setDragEnabled(true);
+
+		// Set up drag allowed supplier to check hotkey requirement
+		sidebar.setDragAllowedSupplier(this::isDragAllowed);
+
+		// Listen for tab drag events to save the new order
+		tabDragListener = (fromIndex, toIndex) ->
 		{
-			sidebar.removeMouseMotionListener(dragMouseListener);
-		}
-
-		ensureGlassPane();
-		TabReorderHandler transferHandler = new TabReorderHandler(this, sidebar, sidebarTabOrder, glassPane);
-		sidebar.setTransferHandler(transferHandler);
-		transferHandler.installDropIndicator();
-
-		dragMouseListener = new DragMouseListener();
-		sidebar.addMouseListener(dragMouseListener);
-		sidebar.addMouseMotionListener(dragMouseListener);
+			// Update the sidebarTabOrder to match the new visual order
+			if (fromIndex >= 0 && fromIndex < sidebarTabOrder.size() &&
+				toIndex >= 0 && toIndex < sidebarTabOrder.size())
+			{
+				NavigationButton moved = sidebarTabOrder.remove(fromIndex);
+				sidebarTabOrder.add(toIndex, moved);
+				setCustomOrderTabs(sidebarTabOrder);
+			}
+		};
+		sidebar.addTabDragListener(tabDragListener);
 	}
 
-	private class DragMouseListener extends MouseAdapter
+	private boolean isDragAllowed()
 	{
-		private boolean dragInitiated;
-		private int dragStartIndex = -1;
-
-		@Override
-		public void mousePressed(MouseEvent e)
+		if (!config.useCustomTabOrder())
 		{
-			dragStartIndex = -1;
-			dragInitiated = false;
-
-			if (!config.useCustomTabOrder() || isDragBlocked())
-			{
-				return;
-			}
-
-			dragStartIndex = sidebar.indexAtLocation(e.getX(), e.getY());
+			return false;
 		}
 
-		@Override
-		public void mouseReleased(MouseEvent e)
-		{
-			dragStartIndex = -1;
-			dragInitiated = false;
-		}
-
-		@Override
-		public void mouseDragged(MouseEvent e)
-		{
-			if (!config.useCustomTabOrder() || isDragBlocked())
-			{
-				return;
-			}
-
-			if (dragStartIndex != -1 && !dragInitiated)
-			{
-				dragInitiated = true;
-				pendingDragSourceIndex = dragStartIndex;
-				sidebar.getTransferHandler().exportAsDrag(sidebar, e, TransferHandler.MOVE);
-			}
-		}
-
-		private boolean isDragBlocked()
-		{
-			Keybind hotkey = config.dragHotkey();
-			boolean hotkeyRequired = config.dragRequiresHotkey() && hotkey != null && !hotkey.equals(Keybind.NOT_SET);
-			return hotkeyRequired && !hotkeyDown;
-		}
+		Keybind hotkey = config.dragHotkey();
+		boolean hotkeyRequired = config.dragRequiresHotkey() && hotkey != null && !hotkey.equals(Keybind.NOT_SET);
+		return !hotkeyRequired || hotkeyDown;
 	}
 }

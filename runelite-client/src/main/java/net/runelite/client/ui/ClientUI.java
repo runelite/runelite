@@ -93,6 +93,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
+import net.runelite.client.ui.components.DragAndDropTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -158,7 +159,7 @@ public class ClientUI
 	private BufferedImage sidebarCloseIcon;
 
 	@Getter
-	private JTabbedPane sidebar;
+	private DragAndDropTabbedPane sidebar;
 	@Getter
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
 	@Getter
@@ -354,19 +355,19 @@ public class ClientUI
 			return;
 		}
 
-		log.info("isReorderSidebarPluginEnabled: {}, useCustomTabOrder: {}", isReorderSidebarPluginEnabled(), sidebarConfig.useCustomTabOrder());
-		// Determine insertion index based on priority ordering
-		if (sidebarConfig.useCustomTabOrder())
-		{
-			log.info("Inserting nav button {} using custom ordering", navBtn.getTooltip());
-			insertNavButtonCustom(navBtn);
-		}
-		else
-		{
-			log.info("Inserting nav button {} using default ordering", navBtn.getTooltip());
-			insertNavButtonDefault(navBtn);
-		}
-		// insertNavButton(navBtn);
+		// log.info("isReorderSidebarPluginEnabled: {}, useCustomTabOrder: {}", isReorderSidebarPluginEnabled(), sidebarConfig.useCustomTabOrder());
+		// // Determine insertion index based on priority ordering
+		// if (sidebarConfig.useCustomTabOrder())
+		// {
+		// 	log.info("Inserting nav button {} using custom ordering", navBtn.getTooltip());
+		// 	insertNavButtonCustom(navBtn);
+		// }
+		// else
+		// {
+		// 	log.info("Inserting nav button {} using default ordering", navBtn.getTooltip());
+		// 	insertNavButtonDefault(navBtn);
+		// }
+		insertNavButton(navBtn);
 
 		log.info("Current sidebarEntries order: {}",
 			sidebarEntries.stream()
@@ -525,11 +526,14 @@ public class ClientUI
 			clientPanel = new ClientPanel(client);
 			content.add(clientPanel);
 
-			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
+			sidebar = new DragAndDropTabbedPane(JTabbedPane.RIGHT);
 			sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
+
+			// Disable drag by default - ReorderSidebar plugin will enable it when active
+			sidebar.setDragEnabled(false);
 
 			sidebar.addChangeListener(ev ->
 			{
