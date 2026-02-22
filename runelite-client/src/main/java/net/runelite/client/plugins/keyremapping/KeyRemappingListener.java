@@ -26,12 +26,17 @@
 package net.runelite.client.plugins.keyremapping;
 
 import com.google.common.base.Strings;
+import java.awt.Canvas;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
@@ -53,6 +58,7 @@ class KeyRemappingListener implements KeyListener
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
 	private final Set<Character> blockedChars = new HashSet<>();
+	private boolean cameraRotateKeyPressed = false;
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -67,6 +73,17 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		if (config.cameraRotateRemap() && config.cameraRotateKey().matches(e))
+		{
+			if (!cameraRotateKeyPressed)
+			{
+				cameraRotateKeyPressed = true;
+				injectMouseButton(MouseEvent.MOUSE_PRESSED, MouseEvent.BUTTON2);
+			}
+			e.consume();
+			return;
+		}
+
 		if (!plugin.chatboxFocused())
 		{
 			return;
@@ -228,6 +245,14 @@ class KeyRemappingListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
+		if (config.cameraRotateRemap() && cameraRotateKeyPressed && config.cameraRotateKey().matches(e))
+		{
+			cameraRotateKeyPressed = false;
+			injectMouseButton(MouseEvent.MOUSE_RELEASED, MouseEvent.BUTTON2);
+			e.consume();
+			return;
+		}
+
 		final int keyCode = e.getKeyCode();
 		final char keyChar = e.getKeyChar();
 
@@ -242,5 +267,28 @@ class KeyRemappingListener implements KeyListener
 			e.setKeyCode(mappedKeyCode);
 			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
 		}
+	}
+
+	private void injectMouseButton(int eventType, int button)
+	{
+		Canvas canvas = client.getCanvas();
+		if (canvas == null)
+		{
+			return;
+		}
+		Point p = MouseInfo.getPointerInfo().getLocation();
+		SwingUtilities.convertPointFromScreen(p, canvas);
+		MouseEvent mouseEvent = new MouseEvent(
+			canvas,
+			eventType,
+			System.currentTimeMillis(),
+			0,
+			p.x,
+			p.y,
+			1,
+			false,
+			button
+		);
+		canvas.dispatchEvent(mouseEvent);
 	}
 }

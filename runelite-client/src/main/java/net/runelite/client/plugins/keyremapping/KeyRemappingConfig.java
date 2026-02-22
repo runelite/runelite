@@ -111,6 +111,30 @@ public interface KeyRemappingConfig extends Config
 
 	@ConfigItem(
 		position = 6,
+		keyName = "cameraRotateRemap",
+		name = "Remap camera free-look key",
+		description = "When enabled, holding the configured key simulates the middle mouse button to freely rotate the camera.",
+		section = cameraSection
+	)
+	default boolean cameraRotateRemap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "cameraRotateKey",
+		name = "Camera free-look key",
+		description = "Hold this key while moving the mouse to freely rotate the camera (simulates middle mouse button).",
+		section = cameraSection
+	)
+	default ModifierlessKeybind cameraRotateKey()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, 0);
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "fkeyRemap",
 		name = "Remap F-keys",
 		description = "Configures whether f-keys use remapped keys.",
@@ -122,7 +146,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "f1",
 		name = "F1",
 		description = "The key which will replace F1.",
@@ -134,7 +158,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 10,
 		keyName = "f2",
 		name = "F2",
 		description = "The key which will replace F2.",
@@ -146,7 +170,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "f3",
 		name = "F3",
 		description = "The key which will replace F3.",
@@ -158,7 +182,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 12,
 		keyName = "f4",
 		name = "F4",
 		description = "The key which will replace F4.",
@@ -170,7 +194,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 13,
 		keyName = "f5",
 		name = "F5",
 		description = "The key which will replace F5.",
@@ -182,7 +206,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 14,
 		keyName = "f6",
 		name = "F6",
 		description = "The key which will replace F6.",
@@ -194,7 +218,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 15,
 		keyName = "f7",
 		name = "F7",
 		description = "The key which will replace F7.",
@@ -206,7 +230,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 16,
 		keyName = "f8",
 		name = "F8",
 		description = "The key which will replace F8.",
@@ -218,7 +242,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 17,
 		keyName = "f9",
 		name = "F9",
 		description = "The key which will replace F9.",
@@ -230,7 +254,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 18,
 		keyName = "f10",
 		name = "F10",
 		description = "The key which will replace F10.",
@@ -242,7 +266,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 19,
 		keyName = "f11",
 		name = "F11",
 		description = "The key which will replace F11.",
@@ -254,7 +278,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 20,
 		keyName = "f12",
 		name = "F12",
 		description = "The key which will replace F12.",
@@ -266,7 +290,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 21,
 		keyName = "esc",
 		name = "ESC",
 		description = "The key which will replace ESC.",
@@ -278,7 +302,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 20,
+		position = 22,
 		keyName = "space",
 		name = "Space",
 		description = "The key which will replace space when dialogs are open."
@@ -289,7 +313,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 23,
 		keyName = "control",
 		name = "Control",
 		description = "The key which will replace control."
