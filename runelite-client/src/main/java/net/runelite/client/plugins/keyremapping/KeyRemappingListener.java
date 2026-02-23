@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.keyremapping;
 
 import com.google.common.base.Strings;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +54,16 @@ class KeyRemappingListener implements KeyListener
 
 	private final Map<Integer, Integer> modified = new HashMap<>();
 	private final Set<Character> blockedChars = new HashSet<>();
+	private int heldModifier = KeyEvent.VK_UNDEFINED;
+
+	private void updateModifier(KeyEvent e, int modifier)
+	{
+		// KeyEvent.setModifiers is deprecated, so we must synthesize the modifier
+		e.getComponent().dispatchEvent(
+			new KeyEvent(e.getComponent(), e.getID(), e.getWhen(), modifier, KeyEvent.VK_UNDEFINED, KeyEvent.CHAR_UNDEFINED)
+		);
+		heldModifier = modifier;
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -167,7 +178,13 @@ class KeyRemappingListener implements KeyListener
 				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}
 
-			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())
+			if (!plugin.isOptionsDialogOpen() && config.ctrlM().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_M;
+				updateModifier(e, InputEvent.CTRL_DOWN_MASK);
+			}
+
+			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && (mappedKeyCode != e.getKeyCode() || heldModifier != KeyEvent.VK_UNDEFINED))
 			{
 				final char keyChar = e.getKeyChar();
 				modified.put(e.getKeyCode(), mappedKeyCode);
@@ -241,6 +258,12 @@ class KeyRemappingListener implements KeyListener
 		{
 			e.setKeyCode(mappedKeyCode);
 			e.setKeyChar(KeyEvent.CHAR_UNDEFINED);
+
+			if (heldModifier != KeyEvent.VK_UNDEFINED)
+			{
+				// Release modifier if held
+				updateModifier(e, KeyEvent.VK_UNDEFINED);
+			}
 		}
 	}
 }
