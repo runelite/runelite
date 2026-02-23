@@ -229,6 +229,29 @@ public final class ScriptID
 	public static final int GE_ITEM_SEARCH = 752;
 
 	/**
+	 * Opens the grand exchange item search widget
+	 * <ul>
+	 * <li> string Search title </li>
+	 * <li> int (boolean) False searches deadman restricted items </li>
+	 * <li> int (EnumID) Item enum to search </li>
+	 * <li> int (boolean) Display last searched text </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 3, string = 1)
+	public static final int GE_OPEN_ITEM_SEARCH = 750;
+
+	/**
+	 * Selects the item from the grand exchange item search
+	 *
+	 * <ul>
+	 * <li> int (ItemID) Item selected </li>
+	 * <li> int must be 84 or the script returns </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int GE_ITEM_SEARCH_SELECTED = 754;
+
+	/**
 	 * On load listener for building the quest list interface
 	 */
 	@ScriptArguments(integer = 8)

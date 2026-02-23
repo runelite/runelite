@@ -104,6 +104,11 @@ public class ChatboxPanelManager
 
 	private void unsafeOpenInput(ChatboxInput input)
 	{
+		if (currentInput != null)
+		{
+			killCurrentPanel();
+		}
+
 		client.runScript(ScriptID.MESSAGE_LAYER_OPEN, 0);
 
 		eventBus.register(input);
@@ -120,12 +125,6 @@ public class ChatboxPanelManager
 			mouseManager.registerMouseWheelListener((MouseWheelListener) input);
 		}
 
-		if (currentInput != null)
-		{
-			killCurrentPanel();
-		}
-
-		currentInput = input;
 		client.setVarcIntValue(VarClientID.MESLAYERMODE, InputType.RUNELITE_CHATBOX_PANEL.getType());
 		client.getWidget(InterfaceID.Chatbox.MES_TEXT).setHidden(true);
 		client.getWidget(InterfaceID.Chatbox.MES_TEXT2).setHidden(true);
@@ -134,6 +133,8 @@ public class ChatboxPanelManager
 		c.deleteAllChildren();
 		c.setOnDialogAbortListener((JavaScriptCallback) ev -> this.unsafeCloseInput());
 		input.open();
+
+		currentInput = input;
 	}
 
 	public void openInput(ChatboxInput input)
