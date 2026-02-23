@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.BorderFactory;
@@ -116,6 +117,7 @@ class ConfigPanel extends PluginPanel
 	private static final int SPINNER_FIELD_WIDTH = 6;
 	private static final ImageIcon SECTION_EXPAND_ICON;
 	private static final ImageIcon SECTION_RETRACT_ICON;
+	private static final Pattern NEWLINE_OR_LINE_BREAK = Pattern.compile("\\n(<\\/html>)?$|<\\/?br ?\\/?>(<\\/html>)?$");
 	static final ImageIcon CONFIG_ICON;
 	static final ImageIcon BACK_ICON;
 
@@ -380,7 +382,9 @@ class ConfigPanel extends PluginPanel
 			}
 			else if (cid.getType() instanceof Class && ((Class<?>) cid.getType()).isEnum())
 			{
-				item.add(createComboBox(cd, cid), BorderLayout.EAST);
+				item.add(createComboBox(cd, cid),
+					NEWLINE_OR_LINE_BREAK.matcher(name).find()
+					? BorderLayout.SOUTH : BorderLayout.EAST);
 			}
 			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
