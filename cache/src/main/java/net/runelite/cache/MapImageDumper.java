@@ -1504,10 +1504,8 @@ public class MapImageDumper
 							ObjectDefinition object = findObject(location.getId());
 
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
-							//What is offsetY?
-							int objSizeOffset = Math.max(2, object.getOffsetY());
-							int drawY = (drawBaseY + (Region.Y - objSizeOffset - localY)) * MAP_SCALE;
-
+							int objSizeOffset = Math.max(object.getSizeX(), object.getSizeY()) / 2;
+							int drawY = (drawBaseY + (Region.Y - objSizeOffset - localY - 1)) * MAP_SCALE;
 							if (object.getMapSceneID() != -1)
 							{
 								blitMapDecoration(image, drawX, drawY, object);
@@ -1837,7 +1835,7 @@ public class MapImageDumper
 	{
 		SpriteDefinition sprite = mapDecorations[object.getMapSceneID()];
 		float scale = MAP_SCALE / (float) 4;
-		blitIcon(dst, x, y + MAP_SCALE, sprite, scale);
+		blitIcon(dst, x, y, sprite, scale);
 	}
 
 	private void blitIcon(BufferedImage dst, int x, int y, SpriteDefinition sprite, float scale)
@@ -1850,23 +1848,21 @@ public class MapImageDumper
 		float stepSizeHeight = 1 + 1 - scale;
 		float stepSizeWidth = 1 + 1 - scale;
 
-		int ymin = Math.max(0, -y);
-		int ymax = Math.min(displayHeight, dst.getHeight() - y);
-
-		int xmin = Math.max(0, -x);
-		int xmax = Math.min(displayWidth, dst.getWidth() - x);
 
 		float indexX = 0;
 		float indexY = 0;
-		for (int yo = ymin; yo < ymax; yo++)
+		for (int yo = 0; yo < displayHeight; yo++)
 		{
-			for (int xo = xmin; xo < xmax; xo++)
+			for (int xo = 0; xo < displayWidth; xo++)
 			{
-				int index = (int) (indexX) + ((int) (indexY) * (sprite.getWidth()));
-				byte color = sprite.pixelIdx[index];
-				if (color != 0)
+				if (x + xo >= 0 && x + xo < dst.getWidth() && y + yo >= 0 && y + yo < dst.getHeight())
 				{
-					dst.setRGB(x + xo, y + yo, sprite.palette[color & 255] | 0xFF000000);
+					int index = (int) (indexX) + ((int) (indexY) * (sprite.getWidth()));
+					byte color = sprite.pixelIdx[index];
+					if (color != 0)
+					{
+						dst.setRGB(x + xo, y + yo, sprite.palette[color & 255] | 0xFF000000);
+					}
 				}
 				indexX += stepSizeWidth;
 			}
