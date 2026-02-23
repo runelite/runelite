@@ -318,7 +318,8 @@ public class ItemStatPlugin extends Plugin
 			"Strength", equipmentStats.getStr(),
 			"Ranged Strength", equipmentStats.getRstr(),
 			"Magic Damage", equipmentStats.getMdmg(),
-			"Prayer Bonus", equipmentStats.getPrayer()
+			"Prayer Bonus", equipmentStats.getPrayer(),
+			"Attack Range", equipmentStats.getAttackRange()
 		);
 
 		for (final Map.Entry<String, Object> miscStat : miscStats.entrySet())
