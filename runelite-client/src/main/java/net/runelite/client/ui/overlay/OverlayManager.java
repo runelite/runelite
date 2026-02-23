@@ -426,6 +426,13 @@ public class OverlayManager
 	private OverlayPosition loadOverlayPosition(final Overlay overlay)
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
+		OverlayPosition position = configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
+
+		if (position != null && position.isOverlayBlacklisted(overlay.getName()))
+		{
+			return null;
+		}
+
+		return position;
 	}
 }
