@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2025, Mark_
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.config;
 
-import java.lang.reflect.Type;
-import lombok.Value;
+import java.lang.annotation.*;
 
-@Value
-public class ConfigItemDescriptor implements ConfigObject
+/**
+ * Used to declare a sub-configuration reference.
+ */
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface SubConfigItem
 {
-	private final ConfigItem item;
-	private final Type type;
-	private final Range range;
-	private final Alpha alpha;
-	private final Units units;
-	private final SubConfigItem subConfigItem;
-
-	@Override
-	public String key()
-	{
-		return item.keyName();
-	}
-
-	@Override
-	public String name()
-	{
-		return item.name();
-	}
-
-	@Override
-	public int position()
-	{
-		return item.position();
-	}
+	Class<? extends Config> value();
 }
