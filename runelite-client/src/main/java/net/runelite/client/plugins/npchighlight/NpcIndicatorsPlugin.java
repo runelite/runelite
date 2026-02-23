@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
@@ -548,15 +549,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			final String name = npc.getName();
-			final List<String> highlightedNpcs = new ArrayList<>(highlights);
 
-			if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
+			final List<String> current = new ArrayList<>(unescapeCsvCommas(highlights));
+
+			if (!current.removeIf(n -> n.equalsIgnoreCase(name)))
 			{
-				highlightedNpcs.add(name);
+				current.add(name);
 			}
 
-			// this trips a config change which triggers the overlay rebuild
-			config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
+			config.setNpcToHighlight(Text.toCSV(escapeCsvCommas(current)));
 		}
 	}
 
@@ -711,7 +712,11 @@ public class NpcIndicatorsPlugin extends Plugin
 			return Collections.emptyList();
 		}
 
-		return Text.fromCSV(configNpcs);
+		// replacing the \, with a placeholder that won't appear in names when reading the escaped names in config
+		String temp = configNpcs.replace("\\,", "\u0000");
+		List<String> names = Text.fromCSV(temp);
+		// Restore commas in each name
+		return names.stream().map(s -> s.replace("\u0000", ",")).collect(Collectors.toList());
 	}
 
 	void rebuild()
@@ -984,4 +989,37 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		return colors;
 	}
+
+	private static String escapeCommas(String s)
+	{
+		// first escape backslashes, then escape commas
+		return s.replace("\\", "\\\\").replace(",", "\\,");
+	}
+
+	private static String unescapeCommas(String s)
+	{
+		// unescape in reverse order: backslashes first, then commas
+		return s.replace("\\\\", "\\").replace("\\,", ",");
+	}
+
+	private static List<String> escapeCsvCommas(List<String> names)
+	{
+		List<String> escaped = new ArrayList<>();
+		for (String n : names)
+		{
+			escaped.add(escapeCommas(n));
+		}
+		return escaped;
+	}
+
+	private static List<String> unescapeCsvCommas(List<String> names)
+	{
+		List<String> unescaped = new ArrayList<>();
+		for (String n : names)
+		{
+			unescaped.add(unescapeCommas(n));
+		}
+		return unescaped;
+	}
+
 }
