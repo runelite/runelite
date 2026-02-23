@@ -597,6 +597,11 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateUsernames(), false),
 				ChatMessageType.LOGINLOGOUTNOTIFICATION);
 		}
+		if (chatColorConfig.opaqueDidYouKnow() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueDidYouKnow(), false),
+				ChatMessageType.DIDYOUKNOW);
+		}
 
 		//Transparent Chat Colours
 		if (chatColorConfig.transparentPublicChat() != null)
@@ -786,6 +791,11 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateUsernames(), true),
 				ChatMessageType.LOGINLOGOUTNOTIFICATION);
+		}
+		if (chatColorConfig.transparentDidYouKnow() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentDidYouKnow(), true),
+				ChatMessageType.DIDYOUKNOW);
 		}
 	}
 
