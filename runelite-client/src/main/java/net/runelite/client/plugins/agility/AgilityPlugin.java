@@ -291,11 +291,15 @@ public class AgilityPlugin extends Plugin
 		{
 			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
+			if (newTicketPosition == null)
+			{
+				return;
+			}
 			WorldPoint oldTickPosition = lastArenaTicketPosition;
 
 			lastArenaTicketPosition = newTicketPosition;
 
-			if (oldTickPosition != null && newTicketPosition != null
+			if (oldTickPosition != null
 				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
