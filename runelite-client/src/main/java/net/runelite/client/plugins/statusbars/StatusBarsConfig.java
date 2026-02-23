@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -118,5 +120,49 @@ public interface StatusBarsConfig extends Config
 	default int barWidth()
 	{
 		return BarRenderer.DEFAULT_WIDTH;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "poisonedColor",
+		name = "Poisoned color",
+		description = "Changes the color of the hitpoints bar when poisoned."
+	)
+	default Color poisonedColor()
+	{
+		return new Color(0, 145, 0, 150);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "venomedColor",
+		name = "Venomed color",
+		description = "Changes the color of the hitpoints bar when venomed."
+	)
+	default Color venomedColor()
+	{
+		return new Color(0, 65, 0, 150);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "diseaseColor",
+		name = "Disease color",
+		description = "Changes the color of the hitpoints bar when diseased."
+	)
+	default Color diseaseColor()
+	{
+		return new Color(255, 193, 75, 181);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "parasiteColor",
+		name = "Parasite color",
+		description = "Changes the color of the hitpoints bar when infected with parasites."
+	)
+	default Color parasiteColor()
+	{
+		return new Color(196, 62, 109, 181);
 	}
 }
