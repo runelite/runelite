@@ -38,9 +38,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -62,7 +64,7 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.client.hiscore.HiscoreClient;
+import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
@@ -129,8 +131,10 @@ public class HiscorePanel extends PluginPanel
 	private final HiscorePlugin plugin;
 	private final HiscoreConfig config;
 	private final NameAutocompleter nameAutocompleter;
-	private final HiscoreClient hiscoreClient;
+	private final HiscoreManager hiscoreManager;
 	private final SpriteManager spriteManager;
+
+	private final ScheduledExecutorService executor;
 
 	private final IconTextField searchBar;
 
@@ -148,13 +152,14 @@ public class HiscorePanel extends PluginPanel
 
 	@Inject
 	public HiscorePanel(Client client, HiscorePlugin plugin, HiscoreConfig config,
-		NameAutocompleter nameAutocompleter, HiscoreClient hiscoreClient, SpriteManager spriteManager)
+						NameAutocompleter nameAutocompleter, HiscoreManager hiscoreManager, SpriteManager spriteManager, ScheduledExecutorService executor)
 	{
 		this.plugin = plugin;
 		this.config = config;
 		this.nameAutocompleter = nameAutocompleter;
-		this.hiscoreClient = hiscoreClient;
+		this.hiscoreManager = hiscoreManager;
 		this.spriteManager = spriteManager;
+		this.executor = executor;
 
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -362,44 +367,60 @@ public class HiscorePanel extends PluginPanel
 
 	private void lookup()
 	{
-		final String lookup = sanitize(searchBar.getText());
-
-		if (Strings.isNullOrEmpty(lookup))
+		executor.execute(() ->
 		{
-			return;
-		}
+			final String lookup = sanitize(searchBar.getText());
 
-		/* RuneScape usernames can't be longer than 12 characters long */
-		if (lookup.length() > MAX_USERNAME_LENGTH)
-		{
-			searchBar.setIcon(IconTextField.Icon.ERROR);
-			loading = false;
-			return;
-		}
+			if (Strings.isNullOrEmpty(lookup))
+			{
+				return;
+			}
 
-		repaint();
+			/* RuneScape usernames can't be longer than 12 characters long */
+			if (lookup.length() > MAX_USERNAME_LENGTH)
+			{
+				searchBar.setIcon(IconTextField.Icon.ERROR);
+				loading = false;
+				return;
+			}
+			SwingUtilities.invokeLater(() ->
+			{
+				repaint();
 
-		searchBar.setEditable(false);
-		searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
-		loading = true;
+				searchBar.setEditable(false);
+				searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
+				loading = true;
 
-		for (Map.Entry<HiscoreSkill, JLabel> entry : skillLabels.entrySet())
-		{
-			HiscoreSkill skill = entry.getKey();
-			JLabel label = entry.getValue();
-			HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
+				for (Map.Entry<HiscoreSkill, JLabel> entry : skillLabels.entrySet())
+				{
+					HiscoreSkill skill = entry.getKey();
+					JLabel label = entry.getValue();
+					HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
-			label.setText(pad("--", skillType));
-			label.setToolTipText(skill == null ? "Combat" : skill.getName());
-		}
+					label.setText(pad("--", skillType));
+					label.setToolTipText(skill == null ? "Combat" : skill.getName());
+				}
+			});
 
-		// if for some reason no endpoint was selected, default to normal
-		if (selectedEndPoint == null)
-		{
-			selectedEndPoint = HiscoreEndpoint.NORMAL;
-		}
 
-		hiscoreClient.lookupAsync(lookup, selectedEndPoint).whenCompleteAsync((result, ex) ->
+			// if for some reason no endpoint was selected, default to normal
+			if (selectedEndPoint == null)
+			{
+				selectedEndPoint = HiscoreEndpoint.NORMAL;
+			}
+
+			HiscoreResult result = null;
+			try
+			{
+				result = hiscoreManager.lookup(lookup, selectedEndPoint);
+			}
+			catch (IOException e)
+			{
+				log.warn("Error fetching Hiscore data " + e.getMessage());
+			}
+
+			HiscoreResult finalResult = result;
+
 			SwingUtilities.invokeLater(() ->
 			{
 				if (!sanitize(searchBar.getText()).equals(lookup))
@@ -408,13 +429,8 @@ public class HiscorePanel extends PluginPanel
 					return;
 				}
 
-				if (result == null || ex != null)
+				if (finalResult == null)
 				{
-					if (ex != null)
-					{
-						log.warn("Error fetching Hiscore data " + ex.getMessage());
-					}
-
 					searchBar.setIcon(IconTextField.Icon.ERROR);
 					searchBar.setEditable(true);
 					loading = false;
@@ -426,8 +442,9 @@ public class HiscorePanel extends PluginPanel
 				searchBar.setEditable(true);
 				loading = false;
 
-				applyHiscoreResult(result);
-			}));
+				applyHiscoreResult(finalResult);
+			});
+		});
 	}
 
 	private void applyHiscoreResult(HiscoreResult result)
