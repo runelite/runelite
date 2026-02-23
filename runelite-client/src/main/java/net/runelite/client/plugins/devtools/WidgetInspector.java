@@ -414,9 +414,14 @@ class WidgetInspector extends DevToolsFrame
 					.reversed()
 					.thenComparingInt(Widget::getId)
 					.reversed())
-				.findFirst().get();
+				.findFirst().orElse(null);
 			x = 4;
 			y = 4;
+		}
+
+		if (parent == null)
+		{
+			return;
 		}
 
 		picker = parent.createChild(-1, WidgetType.GRAPHIC);
