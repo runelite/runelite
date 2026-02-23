@@ -605,16 +605,16 @@ public class GroundItemsPlugin extends Plugin
 
 		if (hiddenList)
 		{
-			highlightedItemSet.removeIf(item::equalsIgnoreCase);
+			highlightedItemSet.removeIf(entry -> ItemThreshold.matchesEntry(entry, item));
 		}
 		else
 		{
-			hiddenItemSet.removeIf(item::equalsIgnoreCase);
+			hiddenItemSet.removeIf(entry -> ItemThreshold.matchesEntry(entry, item));
 		}
 
 		final List<String> items = hiddenList ? hiddenItemSet : highlightedItemSet;
 
-		if (!items.removeIf(item::equalsIgnoreCase))
+		if (!items.removeIf(entry -> ItemThreshold.matchesEntry(entry, item)))
 		{
 			items.add(item);
 		}
