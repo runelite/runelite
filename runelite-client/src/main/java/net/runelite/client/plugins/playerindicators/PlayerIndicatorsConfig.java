@@ -182,7 +182,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 13,
 		keyName = "clanChatMemberColor",
 		name = "Clan member",
 		description = "Color of clan members.",
@@ -194,7 +194,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 14,
 		keyName = "highlightOthers",
 		name = "Highlight others",
 		description = "Configures whether other players should be highlighted.",
@@ -206,7 +206,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 15,
 		keyName = "nonClanMemberColor",
 		name = "Others",
 		description = "Color of other players names.",
@@ -227,9 +227,20 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return false;
 	}
-
 	@ConfigItem(
 		position = 11,
+		keyName = "trueTile",
+		name = "Use true tile",
+		description = "Configures whether tiles should be drawn as true tiles or not"
+	)
+	default boolean trueTile()
+	{
+		return false;
+	}
+
+
+	@ConfigItem(
+		position = 12,
 		keyName = "playerNamePosition",
 		name = "Name position",
 		description = "Configures the position of drawn player names, or if they should be disabled."
