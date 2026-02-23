@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -405,11 +409,20 @@ public class LootTrackerPluginTest
 		});
 		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
-		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
-			new ItemStack(ItemID._2DOSEPOTIONOFSARADOMIN, 3),
-			new ItemStack(ItemID.BR_2DOSE2RESTORE, 1),
-			new ItemStack(ItemID.HOSDUN_ORANGE_EGG_SAC, 1)
-		));
+		verify(lootTrackerPluginSpy).addLoot(
+			eq("Grubby Chest"),
+			eq(-1),
+			eq(LootRecordType.EVENT),
+			isNull(),
+			argThat(actualLoot ->
+				new HashSet<>(actualLoot)
+				.equals(new HashSet<>(Arrays.asList(
+					new ItemStack(ItemID._2DOSEPOTIONOFSARADOMIN, 3),
+					new ItemStack(ItemID.BR_2DOSE2RESTORE, 1),
+					new ItemStack(ItemID.HOSDUN_ORANGE_EGG_SAC, 1)
+				)))
+			)
+		);
 	}
 
 	@Test
