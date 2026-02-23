@@ -85,6 +85,10 @@ class NpcAggroAreaOverlay extends Overlay
 		Color outlineColor = config.unaggroAreaColor();
 		if (outlineColor == null || (plugin.getEndTime() != null && Instant.now().isBefore(plugin.getEndTime())))
 		{
+			if (config.hideUnlessExpired())
+			{
+				return null;
+			}
 			outlineColor = config.aggroAreaColor();
 		}
 
