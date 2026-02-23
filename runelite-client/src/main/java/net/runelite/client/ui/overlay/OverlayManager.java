@@ -48,6 +48,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
+import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 
 /**
  * Manages state of all game overlays
@@ -350,7 +351,12 @@ public class OverlayManager
 
 	private void updateOverlayConfig(final Overlay overlay)
 	{
-		if (overlay instanceof OverlayPanel)
+		if (overlay instanceof InfoBoxOverlay)
+		{
+			// Update preferred color for infobox overlay panels based on configuration
+			((InfoBoxOverlay) overlay).setPreferredColor(runeLiteConfig.infoBoxOverlayBackgroundColor());
+		}
+		else if (overlay instanceof OverlayPanel)
 		{
 			// Update preferred color for overlay panels based on configuration
 			((OverlayPanel) overlay).setPreferredColor(runeLiteConfig.overlayBackgroundColor());
