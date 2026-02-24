@@ -5983,6 +5983,10 @@
     8157,
     8158
   ],
+  "exit portal": [
+    8168,
+    33132
+  ],
   "dungeon entrance": [
     8172,
     30992
@@ -12024,7 +12028,8 @@
     28587,
     28588,
     28589,
-    28590
+    28590,
+    33117
   ],
   "spider hat": [
     28603,
@@ -12218,6 +12223,10 @@
     29248,
     29250,
     30644
+  ],
+  "perfected quetzal whistle": [
+    29275,
+    33120
   ],
   "small meat pouch": [
     29295,
@@ -13706,5 +13715,27 @@
   "facility bottle": [
     33074,
     33077
+  ],
+  "bottomless milk bucket": [
+    33089,
+    33091
+  ],
+  "cow slippers": [
+    33093,
+    33096,
+    33097,
+    33098
+  ],
+  "cowbell amulet": [
+    33103,
+    33104
+  ],
+  "milk sample": [
+    33128,
+    33130
+  ],
+  "silklined herb sack": [
+    33135,
+    33137
   ]
 }
