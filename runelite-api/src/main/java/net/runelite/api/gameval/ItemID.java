@@ -86636,6 +86636,161 @@ public final class ItemID
 	 */
 	public static final int SAILING_FACILITY_BOTTLE_FULL = 33077;
 
+	/**
+	 * 25th anniversary helmet
+	 */
+	public static final int _25TH_ANNIVERSARY_HELMET = 33080;
+
+	/**
+	 * 25th anniversary warrior tabard
+	 */
+	public static final int _25TH_ANNIVERSARY_TABARD_1 = 33082;
+
+	/**
+	 * 25th anniversary skeleton tabard
+	 */
+	public static final int _25TH_ANNIVERSARY_TABARD_2 = 33084;
+
+	/**
+	 * 25th anniversary 5x5 hat
+	 */
+	public static final int _25TH_ANNIVERSARY_HAT = 33086;
+
+	/**
+	 * Gary
+	 */
+	public static final int _25TH_HOST_FOLLOWER = 33088;
+
+	/**
+	 * Bottomless milk bucket
+	 */
+	public static final int BOTTOMLESS_MILK_BUCKET_FILLED = 33089;
+
+	/**
+	 * Bottomless milk bucket (empty)
+	 */
+	public static final int BOTTOMLESS_MILK_BUCKET = 33091;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS = 33093;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_1 = 33096;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_2 = 33097;
+
+	/**
+	 * Cow slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_3 = 33098;
+
+	/**
+	 * Brutus slippers
+	 */
+	public static final int COW_SLIPPERS_RECOL_4 = 33099;
+
+	/**
+	 * Mooleta
+	 */
+	public static final int MOOLETA = 33101;
+
+	/**
+	 * Cowbell amulet
+	 */
+	public static final int COWBELL_AMULET_EMPTY = 33103;
+
+	/**
+	 * Cowbell amulet
+	 */
+	public static final int COWBELL_AMULET = 33104;
+
+	/**
+	 * Raw t-bone steak
+	 */
+	public static final int RAW_TBONE_STEAK = 33106;
+
+	/**
+	 * Cooked t-bone steak
+	 */
+	public static final int TBONE_STEAK = 33109;
+
+	/**
+	 * Burnt t-bone steak
+	 */
+	public static final int TBONE_STEAK_BURNED = 33112;
+
+	/**
+	 * Bull bones
+	 */
+	public static final int BULL_BONES = 33115;
+
+	/**
+	 * Magic lamp
+	 */
+	public static final int COWBOSS_REWARD_LAMP = 33117;
+
+	/**
+	 * Abyssal potato
+	 */
+	public static final int DEMONIC_POTATO = 33118;
+
+	/**
+	 * Perfected quetzal whistle(i)
+	 */
+	public static final int HG_QUETZALWHISTLE_PERFECTED_INFINITE = 33120;
+
+	/**
+	 * Annihilation exit portal blueprints
+	 */
+	public static final int POH_EXIT_PORTAL_WILDERNESS_THEME = 33122;
+
+	/**
+	 * Beef
+	 */
+	public static final int COWBOSSPET = 33124;
+
+	/**
+	 * The groats principles
+	 */
+	public static final int COWQUEST_HUSBANDRY_BOOK = 33126;
+
+	/**
+	 * Milk sample
+	 */
+	public static final int COWQUEST_MILK_SAMPLE_1 = 33128;
+
+	/**
+	 * Milk sample
+	 */
+	public static final int COWQUEST_MILK_SAMPLE_2 = 33130;
+
+	/**
+	 * Exit portal
+	 */
+	public static final int POH_GARDEN_CENTREPIECE_6 = 33132;
+
+	/**
+	 * Pristine spider silk
+	 */
+	public static final int SLAYER_SPIDER_SILK = 33133;
+
+	/**
+	 * Silklined herb sack
+	 */
+	public static final int SLAYER_HERB_SACK_SILK = 33135;
+
+	/**
+	 * Open silklined herb sack
+	 */
+	public static final int SLAYER_HERB_SACK_SILK_OPEN = 33137;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -91219,6 +91374,10 @@ public final class ItemID
 		public static final int SAILING_FACILITY_BOTTLE_EMPTY = 33075;
 		public static final int BREW_RED_RUM = 33078;
 		public static final int BREW_BLUE_RUM = 33079;
+		public static final int COW_SLIPPERS = 33094;
+		public static final int RAW_TBONE_STEAK = 33107;
+		public static final int TBONE_STEAK = 33110;
+		public static final int TBONE_STEAK_BURNED = 33113;
 	}
 
 	public static final class Placeholder
@@ -100672,6 +100831,29 @@ public final class ItemID
 		public static final int SW_SLAYER_HELM_I_HOODED = 33071;
 		public static final int PVPA_SLAYER_HELM_I_HOODED = 33073;
 		public static final int SAILING_FACILITY_BOTTLE_EMPTY = 33076;
+		public static final int _25TH_ANNIVERSARY_HELMET = 33081;
+		public static final int _25TH_ANNIVERSARY_TABARD_1 = 33083;
+		public static final int _25TH_ANNIVERSARY_TABARD_2 = 33085;
+		public static final int _25TH_ANNIVERSARY_HAT = 33087;
+		public static final int BOTTOMLESS_MILK_BUCKET_FILLED = 33090;
+		public static final int BOTTOMLESS_MILK_BUCKET = 33092;
+		public static final int COW_SLIPPERS = 33095;
+		public static final int COW_SLIPPERS_RECOL_4 = 33100;
+		public static final int MOOLETA = 33102;
+		public static final int COWBELL_AMULET = 33105;
+		public static final int RAW_TBONE_STEAK = 33108;
+		public static final int TBONE_STEAK = 33111;
+		public static final int TBONE_STEAK_BURNED = 33114;
+		public static final int BULL_BONES = 33116;
+		public static final int DEMONIC_POTATO = 33119;
+		public static final int HG_QUETZALWHISTLE_PERFECTED_INFINITE = 33121;
+		public static final int POH_EXIT_PORTAL_WILDERNESS_THEME = 33123;
+		public static final int COWBOSSPET = 33125;
+		public static final int COWQUEST_HUSBANDRY_BOOK = 33127;
+		public static final int COWQUEST_MILK_SAMPLE_1 = 33129;
+		public static final int COWQUEST_MILK_SAMPLE_2 = 33131;
+		public static final int SLAYER_SPIDER_SILK = 33134;
+		public static final int SLAYER_HERB_SACK_SILK = 33136;
 	}
 /* This file is automatically generated. Do not edit. */
 }

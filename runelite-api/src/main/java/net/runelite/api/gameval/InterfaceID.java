@@ -954,6 +954,7 @@ public final class InterfaceID
 	public static final int MENU_NEW = 947;
 	public static final int DEADMANSKULL_INTERFACE = 948;
 	public static final int QUETZALWHISTLE_MENU = 949;
+	public static final int COWBOSS_SCOREBOARD = 950;
 
 	public static final class _100GuideEggsOverlay
 	{
@@ -8107,44 +8108,47 @@ public final class InterfaceID
 	{
 		public static final int UNIVERSE = 0x00c0_0000;
 		public static final int FRAME = 0x00c0_0001;
-		public static final int CONTENTS = 0x00c0_0002;
-		public static final int WORN = 0x00c0_0003;
-		public static final int WORN_GRAPHIC0 = 0x00c0_0004;
-		public static final int WORN_GRAPHIC1 = 0x00c0_0005;
-		public static final int WORN_GRAPHIC2 = 0x00c0_0006;
-		public static final int WORN_GRAPHIC3 = 0x00c0_0007;
-		public static final int WORN_GRAPHIC4 = 0x00c0_0008;
-		public static final int SLOT0 = 0x00c0_0009;
-		public static final int SLOT1 = 0x00c0_000a;
-		public static final int SLOT2 = 0x00c0_000b;
-		public static final int SLOT3 = 0x00c0_000c;
-		public static final int SLOT4 = 0x00c0_000d;
-		public static final int SLOT5 = 0x00c0_000e;
-		public static final int SLOT7 = 0x00c0_000f;
-		public static final int SLOT9 = 0x00c0_0010;
-		public static final int SLOT10 = 0x00c0_0011;
-		public static final int SLOT12 = 0x00c0_0012;
-		public static final int SLOT13 = 0x00c0_0013;
-		public static final int EXTRA_QUIVER_SLOT = 0x00c0_0014;
-		public static final int EXTRA_QUIVER_AMMO_GRAPHIC = 0x00c0_0015;
-		public static final int EXTRA_QUIVER_AMMO = 0x00c0_0016;
-		public static final int INVENTORY = 0x00c0_0017;
-		public static final int INVENTORY_GRAPHIC0 = 0x00c0_0018;
-		public static final int ITEM_BACKGROUND = 0x00c0_0019;
-		public static final int INVENTORY_RECT2 = 0x00c0_001a;
-		public static final int INVENTORY_RECT3 = 0x00c0_001b;
-		public static final int DEPOSIT_ALL_BUTTONS = 0x00c0_001c;
-		public static final int DEPOSIT_WORN = 0x00c0_001d;
-		public static final int DEPOSIT_INV = 0x00c0_001e;
-		public static final int DEPOSIT_LOOTINGBAG = 0x00c0_001f;
-		public static final int QUANTITY_BUTTONS = 0x00c0_0020;
-		public static final int MENU = 0x00c0_0021;
-		public static final int _1 = 0x00c0_0022;
-		public static final int _5 = 0x00c0_0023;
-		public static final int _10 = 0x00c0_0024;
-		public static final int X = 0x00c0_0025;
-		public static final int ALL = 0x00c0_0026;
-		public static final int POPUP = 0x00c0_0027;
+		public static final int MENU_BUTTON = 0x00c0_0002;
+		public static final int CONTENTS = 0x00c0_0003;
+		public static final int WORN = 0x00c0_0004;
+		public static final int WORN_GRAPHIC0 = 0x00c0_0005;
+		public static final int WORN_GRAPHIC1 = 0x00c0_0006;
+		public static final int WORN_GRAPHIC2 = 0x00c0_0007;
+		public static final int WORN_GRAPHIC3 = 0x00c0_0008;
+		public static final int WORN_GRAPHIC4 = 0x00c0_0009;
+		public static final int SLOT0 = 0x00c0_000a;
+		public static final int SLOT1 = 0x00c0_000b;
+		public static final int SLOT2 = 0x00c0_000c;
+		public static final int SLOT3 = 0x00c0_000d;
+		public static final int SLOT4 = 0x00c0_000e;
+		public static final int SLOT5 = 0x00c0_000f;
+		public static final int SLOT7 = 0x00c0_0010;
+		public static final int SLOT9 = 0x00c0_0011;
+		public static final int SLOT10 = 0x00c0_0012;
+		public static final int SLOT12 = 0x00c0_0013;
+		public static final int SLOT13 = 0x00c0_0014;
+		public static final int EXTRA_QUIVER_SLOT = 0x00c0_0015;
+		public static final int EXTRA_QUIVER_AMMO_GRAPHIC = 0x00c0_0016;
+		public static final int EXTRA_QUIVER_AMMO = 0x00c0_0017;
+		public static final int INVENTORY = 0x00c0_0018;
+		public static final int INVENTORY_GRAPHIC0 = 0x00c0_0019;
+		public static final int ITEM_BACKGROUND = 0x00c0_001a;
+		public static final int INVENTORY_RECT2 = 0x00c0_001b;
+		public static final int INVENTORY_RECT3 = 0x00c0_001c;
+		public static final int DEPOSIT_ALL_BUTTONS = 0x00c0_001d;
+		public static final int DEPOSIT_WORN = 0x00c0_001e;
+		public static final int DEPOSIT_INV = 0x00c0_001f;
+		public static final int DEPOSIT_LOOTINGBAG = 0x00c0_0020;
+		public static final int QUANTITY_BUTTONS = 0x00c0_0021;
+		public static final int LOCK_MENU = 0x00c0_0022;
+		public static final int _1 = 0x00c0_0023;
+		public static final int _5 = 0x00c0_0024;
+		public static final int _10 = 0x00c0_0025;
+		public static final int X = 0x00c0_0026;
+		public static final int ALL = 0x00c0_0027;
+		public static final int POPUP = 0x00c0_0028;
+		public static final int MENU_CONTAINER = 0x00c0_0029;
+		public static final int DEPOSITWORN_TOGGLE = 0x00c0_002a;
 	}
 
 	public static final class Objectbox
@@ -30869,6 +30873,29 @@ public final class InterfaceID
 		public static final int SELECTED_LOCKED = 0x03b5_0010;
 		public static final int SELECTED_CURRENT = 0x03b5_0011;
 		public static final int CLOSE = 0x03b5_0012;
+	}
+
+	public static final class CowbossScoreboard
+	{
+		public static final int UNIVERSE = 0x03b6_0000;
+		public static final int BACKGROUND = 0x03b6_0001;
+		public static final int CLOSE = 0x03b6_0002;
+		public static final int CLOSE_ICON = 0x03b6_0003;
+		public static final int CONTENT = 0x03b6_0004;
+		public static final int TITLE = 0x03b6_0005;
+		public static final int STATS = 0x03b6_0006;
+		public static final int PKC = 0x03b6_0007;
+		public static final int PKC_CONTENT = 0x03b6_0008;
+		public static final int PD = 0x03b6_0009;
+		public static final int PD_CONTENT = 0x03b6_000a;
+		public static final int PBT = 0x03b6_000b;
+		public static final int PBT_CONTENT = 0x03b6_000c;
+		public static final int GKC = 0x03b6_000d;
+		public static final int GKC_CONTENT = 0x03b6_000e;
+		public static final int GD = 0x03b6_000f;
+		public static final int GD_CONTENT = 0x03b6_0010;
+		public static final int GBT = 0x03b6_0011;
+		public static final int GBT_CONTENT = 0x03b6_0012;
 	}
 /* This file is automatically generated. Do not edit. */
 }
