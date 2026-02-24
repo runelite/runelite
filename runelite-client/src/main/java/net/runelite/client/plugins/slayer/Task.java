@@ -41,7 +41,7 @@ enum Task
 	ABYSSAL_SIRE("The Abyssal Sire", ItemID.ABYSSALSIRE_PET),
 	ALCHEMICAL_HYDRA("The Alchemical Hydra", ItemID.HYDRAPET),
 	ANKOU("Ankou", ItemID.ANKOU_HEAD),
-	AQUANITES("Aquanite", ItemID.SLAYERGUIDE_AQUANITE),
+	AQUANITES("Aquanites", ItemID.SLAYERGUIDE_AQUANITE),
 	ARAXXOR("Araxxor", ItemID.ARAXXORPET),
 	ARAXYTES("Araxytes", ItemID.POH_ARAXYTE_HEAD, "Araxxor"),
 	AVIANSIES("Aviansies", ItemID.ARCEUUS_CORPSE_AVIANSIE_INITIAL, "Kree'arra", "Flight Kilisa", "Flockleader Geerin", "Wingman Skree"),
