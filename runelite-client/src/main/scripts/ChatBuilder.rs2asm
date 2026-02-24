@@ -1579,7 +1579,7 @@ LABEL1428:
    if_icmpgt              LABEL1434
    jump                   LABEL1449
 LABEL1434:
-   sconst                 "jk :P"
+   sconst                 ""
    iload                  8
    iload                  9
    iconst                 10616889
