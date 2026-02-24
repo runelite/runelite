@@ -238,6 +238,7 @@ public enum Quest
 	TROUBLED_TORTUGANS(7106, "Troubled Tortugans"),
 	THE_RED_REEF(7107, "The Red Reef"),
 	LEARNING_THE_ROPES(9643, "Learning the Ropes"),
+	THE_IDES_OF_MILK(9645, "The Ides of Milk"),
 	;
 
 	@Getter
