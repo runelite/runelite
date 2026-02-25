@@ -56,42 +56,12 @@ public class DragAndDropTabbedPaneTest
 	@Test
 	public void testDragEnabledByDefault()
 	{
-		// dragEnabled is true by default
-		// dragAllowedSupplier is null, so drag is allowed
+		// Drag support is installed in constructor, but drag state starts as false
 		DragAndDropTabbedPane pane = new DragAndDropTabbedPane(JTabbedPane.LEFT);
 		pane.addTab("Test", new JPanel());
-		// No exception means drag infrastructure is set up
+		assertFalse(pane.isDragging());
 	}
 
-	@Test
-	public void testSetDragEnabled()
-	{
-		tabbedPane.setDragEnabled(false);
-		// Should not throw, just disables drag
-		tabbedPane.setDragEnabled(true);
-	}
-
-	@Test
-	public void testDragAllowedSupplierReturnsFalse()
-	{
-		tabbedPane.setDragAllowedSupplier(() -> false);
-		// Drag should be blocked when supplier returns false
-		// This is tested indirectly since we can't easily simulate mouse events
-	}
-
-	@Test
-	public void testDragAllowedSupplierReturnsTrue()
-	{
-		tabbedPane.setDragAllowedSupplier(() -> true);
-		// Drag should be allowed when supplier returns true
-	}
-
-	@Test
-	public void testDragAllowedSupplierNull()
-	{
-		tabbedPane.setDragAllowedSupplier(null);
-		// When null, drag is allowed
-	}
 
 	@Test
 	public void testTabDragListenerRegistration()
@@ -100,14 +70,14 @@ public class DragAndDropTabbedPaneTest
 		AtomicInteger fromIdx = new AtomicInteger(-1);
 		AtomicInteger toIdx = new AtomicInteger(-1);
 
-		DragAndDropTabbedPane.TabDragListener listener = (from, to) ->
+		DragAndDropTabbedPane.DragListener listener = (from, to) ->
 		{
 			called.set(true);
 			fromIdx.set(from);
 			toIdx.set(to);
 		};
 
-		tabbedPane.addTabDragListener(listener);
+		tabbedPane.addDragListener(listener);
 		// Listener is registered, no exception
 		tabbedPane.removeTabDragListener(listener);
 	}

@@ -36,12 +36,10 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 
@@ -55,64 +53,31 @@ import net.runelite.client.util.ColorUtil;
 public class DragAndDropTabbedPane extends JTabbedPane
 {
 	private Point dragStartPoint;
-	private int pressedTabIndex = -1;
-
-	/**
-	 * The index of the tab being dragged (fixed at drag start).
-	 */
 	private int dragIndex = -1;
-
-	/**
-	 * The index where the tab would be inserted if dropped now.
-	 */
 	private int dropTargetIndex = -1;
-
-	/**
-	 * Floating image of the dragged tab's icon.
-	 */
 	private BufferedImage dragImage;
-
-	/**
-	 * Current mouse position during drag.
-	 */
 	private Point currentDragPoint;
-
 	@Getter
 	private boolean dragging;
-
-	/**
-	 * True between mousePressed on a draggable tab and either the drag
-	 * starting or mouseReleased. Used to suppress tab selection changes
-	 * that would toggle the plugin panel during a potential drag.
-	 */
 	private boolean potentialDrag;
-
-	@Setter
-	private boolean dragEnabled = true;
-
-	/**
-	 * Optional supplier that determines if dragging is currently allowed.
-	 * If set, dragging is only allowed when this returns true.
-	 */
-	@Setter
-	private Supplier<Boolean> dragAllowedSupplier;
-
-	private final List<TabDragListener> dragListeners = new ArrayList<>();
-
+	private final List<DragListener> dragListeners = new ArrayList<>(0);
+	// private MouseAdapter dragMouseAdapter;
 
 	public DragAndDropTabbedPane(int tabPlacement)
 	{
 		super(tabPlacement);
-		TabDragMouseAdapter mouseAdapter = new TabDragMouseAdapter();
+		MouseAdapter mouseAdapter = new DragAndDropTabMouseAdapter();
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
+		// addMouseListener((ev) ->
+		// {
+		// 	getUI();
+		// });
 	}
 
 	/**
 	 * Suppress tab selection changes while a drag is in progress or
-	 * potentially starting. Without this, the UI delegate's mousePressed
-	 * toggles the selected tab (opening/closing the plugin panel) before
-	 * mouseDragged has a chance to initiate the drag.
+	 * potentially starting.
 	 */
 	@Override
 	public void setSelectedIndex(int index)
@@ -126,16 +91,16 @@ public class DragAndDropTabbedPane extends JTabbedPane
 
 	/**
 	 * Intercept MOUSE_PRESSED to set potentialDrag before the event reaches
-	 * the UI delegate's mouse listener. The UI delegate fires first in the
-	 * listener chain (registered before our adapter), so we must act here.
+	 * the UI delegate's mouse listener.
 	 */
 	@Override
 	protected void processMouseEvent(MouseEvent e)
 	{
-		if (e.getID() == MouseEvent.MOUSE_PRESSED
-			&& SwingUtilities.isLeftMouseButton(e)
-			&& getTabCount() > 1
-			&& isDragAllowed())
+		if (
+			// dragMouseAdapter != null &&
+			e.getID() == MouseEvent.MOUSE_PRESSED &&
+				SwingUtilities.isLeftMouseButton(e) &&
+				getTabCount() > 1)
 		{
 			int tabIndex = indexAtLocation(e.getX(), e.getY());
 			if (tabIndex >= 0)
@@ -146,39 +111,25 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		super.processMouseEvent(e);
 	}
 
-	/**
-	 * Add a listener to be notified when a tab has been dragged to a new position.
-	 */
-	public void addTabDragListener(TabDragListener listener)
+	public void addDragListener(DragListener listener)
 	{
 		dragListeners.add(listener);
 	}
 
-	/**
-	 * Remove a tab drag listener.
-	 */
-	public void removeTabDragListener(TabDragListener listener)
+	public void removeTabDragListener(DragListener listener)
 	{
 		dragListeners.remove(listener);
 	}
 
-	private boolean isDragAllowed()
+	public void clearTabDragListeners()
 	{
-		if (!dragEnabled)
-		{
-			return false;
-		}
-		if (dragAllowedSupplier != null)
-		{
-			return dragAllowedSupplier.get();
-		}
-		return true;
+		dragListeners.clear();
 	}
 
-	private void startDragging()
+	private void startDragging(Point point)
 	{
-		dragIndex = pressedTabIndex;
-		if (dragIndex < 0 || dragIndex >= getTabCount())
+		dragIndex = indexAtLocation(dragStartPoint.x, dragStartPoint.y);
+		if (dragIndex < 0)
 		{
 			dragStartPoint = null;
 			return;
@@ -186,8 +137,8 @@ public class DragAndDropTabbedPane extends JTabbedPane
 
 		dragging = true;
 		dropTargetIndex = dragIndex;
+		currentDragPoint = point;
 
-		// Create a floating image of the tab icon
 		Icon icon = getIconAt(dragIndex);
 		if (icon != null)
 		{
@@ -206,86 +157,75 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		repaint();
 	}
 
-	/**
-	 * Update the drop target index based on the current mouse position.
-	 * No tabs are physically moved — only the visual indicator changes.
-	 */
 	private void drag(Point point)
 	{
 		currentDragPoint = point;
+		int newDropTarget = calculateDropTargetIndex(point);
+		if (newDropTarget != dropTargetIndex)
+		{
+			dropTargetIndex = newDropTarget;
+		}
+		repaint();
+	}
 
-		int tabPlacement = getTabPlacement();
-		boolean vertical = (tabPlacement == LEFT || tabPlacement == RIGHT);
+	private void finishDragging()
+	{
+		potentialDrag = false;
+		if (!dragging)
+		{
+			return;
+		}
 
-		int newTarget = dragIndex;
-		for (int i = 0; i < getTabCount(); i++)
+		int fromIndex = dragIndex;
+		int toIndex = dropTargetIndex;
+
+		resetDragState();
+
+		if (fromIndex != toIndex && fromIndex >= 0 && toIndex >= 0)
+		{
+			moveTab(fromIndex, toIndex);
+			for (DragListener listener : dragListeners)
+			{
+				listener.onDrag(fromIndex, toIndex);
+			}
+		}
+
+		repaint();
+	}
+
+	private void resetDragState()
+	{
+		dragging = false;
+		potentialDrag = false;
+		dragStartPoint = null;
+		dragIndex = -1;
+		dropTargetIndex = -1;
+		dragImage = null;
+		currentDragPoint = null;
+	}
+
+	private int calculateDropTargetIndex(Point point)
+	{
+		int tabCount = getTabCount();
+		if (tabCount == 0)
+		{
+			return 0;
+		}
+
+		for (int i = 0; i < tabCount; i++)
 		{
 			Rectangle bounds = getBoundsAt(i);
 			if (bounds == null)
 			{
 				continue;
 			}
-
-			int mid = vertical
-				? bounds.y + bounds.height / 2
-				: bounds.x + bounds.width / 2;
-			int mousePos = vertical ? point.y : point.x;
-
-			if (mousePos < mid)
+			int midY = bounds.y + bounds.height / 2;
+			if (point.y < midY)
 			{
-				newTarget = i;
-				break;
-			}
-			newTarget = i + 1;
-		}
-
-		if (newTarget != dropTargetIndex)
-		{
-			dropTargetIndex = newTarget;
-		}
-
-		repaint();
-	}
-
-	private void finishDragging()
-	{
-		if (dragIndex >= 0 && dropTargetIndex >= 0)
-		{
-			// Adjust target: if dropping after the dragged tab's original
-			// position, account for the removal shifting indices down
-			int targetIndex = dropTargetIndex > dragIndex
-				? dropTargetIndex - 1
-				: dropTargetIndex;
-
-			if (targetIndex != dragIndex)
-			{
-				moveTab(dragIndex, targetIndex);
-
-				final int fromIndex = dragIndex;
-				final int toIndex = targetIndex;
-				dragListeners.forEach(l -> l.onTabDragged(fromIndex, toIndex));
+				return i;
 			}
 		}
-
-		resetDragState();
-	}
-
-	private void cancelDragging()
-	{
-		resetDragState();
-	}
-
-	private void resetDragState()
-	{
-		dragStartPoint = null;
-		pressedTabIndex = -1;
-		dragIndex = -1;
-		dropTargetIndex = -1;
-		dragImage = null;
-		currentDragPoint = null;
-		dragging = false;
-		potentialDrag = false;
-		repaint();
+		return tabCount - 1;
 	}
 
 	@Override
@@ -374,33 +314,30 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		}
 	}
 
-	/**
-	 * Move a tab from one index to another, preserving all tab properties.
-	 */
-	public void moveTab(int fromIndex, int toIndex)
+	private void moveTab(int fromIndex, int toIndex)
 	{
-		if (fromIndex == toIndex || fromIndex < 0 || toIndex < 0 ||
-			fromIndex >= getTabCount() || toIndex >= getTabCount())
+		if (fromIndex == toIndex)
 		{
 			return;
 		}
 
-		Component comp = getComponentAt(fromIndex);
 		String title = getTitleAt(fromIndex);
 		Icon icon = getIconAt(fromIndex);
+		Component component = getComponentAt(fromIndex);
 		String tooltip = getToolTipTextAt(fromIndex);
 		boolean enabled = isEnabledAt(fromIndex);
 
 		int selectedIndex = super.getSelectedIndex();
-		boolean wasSelected = (selectedIndex == fromIndex);
 
 		removeTabAt(fromIndex);
-		insertTab(title, icon, comp, tooltip, toIndex);
-		setEnabledAt(toIndex, enabled);
 
-		if (wasSelected)
+		int insertIndex = fromIndex < toIndex ? toIndex - 1 : toIndex;
+		insertTab(title, icon, component, tooltip, insertIndex);
+		setEnabledAt(insertIndex, enabled);
+
+		if (selectedIndex == fromIndex)
 		{
-			super.setSelectedIndex(toIndex);
+			super.setSelectedIndex(insertIndex);
 		}
 		else if (selectedIndex > fromIndex && selectedIndex <= toIndex)
 		{
@@ -412,75 +349,37 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		}
 	}
 
-	/**
-	 * Listener interface for tab drag events.
-	 */
 	@FunctionalInterface
-	public interface TabDragListener
+	public interface DragListener
 	{
-		/**
-		 * Called after a tab has been dragged to a new position.
-		 *
-		 * @param fromIndex the original index of the tab (at drag start)
-		 * @param toIndex   the final index of the tab (at drop)
-		 */
-		void onTabDragged(int fromIndex, int toIndex);
+		void onDrag(int fromIndex, int toIndex);
 	}
 
-	private class TabDragMouseAdapter extends MouseAdapter
+	private class DragAndDropTabMouseAdapter extends MouseAdapter
 	{
-		private int selectedIndexOnPress = -1;
-
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
-			if (!SwingUtilities.isLeftMouseButton(e))
+			if (SwingUtilities.isLeftMouseButton(e) && getTabCount() > 1)
 			{
-				return;
-			}
-
-			pressedTabIndex = -1;
-			selectedIndexOnPress = DragAndDropTabbedPane.super.getSelectedIndex();
-
-			if (getTabCount() > 1 && isDragAllowed())
-			{
-				int tabIndex = indexAtLocation(e.getX(), e.getY());
-				if (tabIndex >= 0)
-				{
-					pressedTabIndex = tabIndex;
-					dragStartPoint = e.getPoint();
-				}
+				dragStartPoint = e.getPoint();
 			}
 		}
 
 		@Override
 		public void mouseDragged(MouseEvent e)
 		{
-			if (!SwingUtilities.isLeftMouseButton(e) || dragStartPoint == null)
+			if (SwingUtilities.isLeftMouseButton(e) && dragStartPoint != null)
 			{
-				return;
-			}
-
-			if (!isDragAllowed())
-			{
-				cancelDragging();
-				return;
-			}
-
-			Point point = e.getPoint();
-			if (dragging)
-			{
-				drag(point);
-			}
-			else if (point.distance(dragStartPoint) > DragSource.getDragThreshold())
-			{
-				// Restore the selection state from before the press so
-				// the tab deselect from clicking doesn't interfere
-				if (DragAndDropTabbedPane.super.getSelectedIndex() != selectedIndexOnPress)
+				Point point = e.getPoint();
+				if (dragging)
 				{
-					DragAndDropTabbedPane.super.setSelectedIndex(selectedIndexOnPress);
+					drag(point);
 				}
-				startDragging();
+				else if (point.distance(dragStartPoint) > DragSource.getDragThreshold())
+				{
+					startDragging(point);
+				}
 			}
 		}
 
@@ -495,8 +394,6 @@ public class DragAndDropTabbedPane extends JTabbedPane
 				}
 				else if (potentialDrag)
 				{
-					// Was a click, not a drag — perform the deferred
-					// tab selection that we suppressed in mousePressed
 					potentialDrag = false;
 					int tabIndex = indexAtLocation(e.getX(), e.getY());
 					if (tabIndex >= 0)
@@ -506,9 +403,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 							current == tabIndex ? -1 : tabIndex);
 					}
 				}
-
 				dragStartPoint = null;
-				pressedTabIndex = -1;
 			}
 		}
 	}
