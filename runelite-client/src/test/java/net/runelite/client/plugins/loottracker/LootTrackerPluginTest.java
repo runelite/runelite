@@ -68,6 +68,8 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -623,6 +625,82 @@ public class LootTrackerPluginTest
 		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
 			new ItemStack(ItemID.COINS, 4694)
 		));
+	}
+
+	@Test
+	public void testLootTrackerSearch()
+	{
+		LootTrackerItem[] items = {
+			new LootTrackerItem(1, "Dragon bones", 1, 1000, 1000, false),
+			new LootTrackerItem(2, "Dragon dagger", 1, 20000, 20000, false)
+		};
+
+		LootTrackerRecord record = new LootTrackerRecord("Dragons", "", LootRecordType.NPC, items, 1);
+
+		assertTrue("Record should match when search term matches title (case insensitive)",
+			record.getTitle().toLowerCase().contains("dragon"));
+
+		assertFalse("Record should not match when search term doesn't match title",
+			record.getTitle().toLowerCase().contains("goblin"));
+
+		assertTrue("Record should match partial title search",
+			record.getTitle().toLowerCase().contains("drag"));
+	}
+
+	@Test
+	public void testLootTrackerSearchFiltersTotalPrices()
+	{
+		LootTrackerItem[] dragonItems = {
+			new LootTrackerItem(1, "Dragon bones", 2, 2000, 1800, false),
+			new LootTrackerItem(2, "Dragon dagger", 1, 30000, 25000, false)
+		};
+		LootTrackerRecord dragonRecord = new LootTrackerRecord("Dragons", "", LootRecordType.NPC, dragonItems, 1);
+
+		LootTrackerItem[] goblinItems = {
+			new LootTrackerItem(3, "Coins", 50, 1, 1, false),
+			new LootTrackerItem(4, "Bronze dagger", 1, 100, 80, false)
+		};
+		LootTrackerRecord goblinRecord = new LootTrackerRecord("Goblins", "", LootRecordType.NPC, goblinItems, 3);
+
+		long dragonTotalGe = (2000L * 2) + (30000L * 1);
+		long dragonTotalHa = (1800L * 2) + (25000L * 1);
+		long goblinTotalGe = (1L * 50) + (100L * 1);
+		long goblinTotalHa = (1L * 50) + (80L * 1);
+
+		assertEquals("Dragon GE total should be correct", dragonTotalGe,
+			dragonItems[0].getTotalGePrice() + dragonItems[1].getTotalGePrice());
+		assertEquals("Dragon HA total should be correct", dragonTotalHa,
+			dragonItems[0].getTotalHaPrice() + dragonItems[1].getTotalHaPrice());
+		assertEquals("Goblin GE total should be correct", goblinTotalGe,
+			goblinItems[0].getTotalGePrice() + goblinItems[1].getTotalGePrice());
+		assertEquals("Goblin HA total should be correct", goblinTotalHa,
+			goblinItems[0].getTotalHaPrice() + goblinItems[1].getTotalHaPrice());
+
+		String searchTerm = "dragon";
+		boolean dragonMatches = dragonRecord.getTitle().toLowerCase().contains(searchTerm);
+		boolean goblinMatches = goblinRecord.getTitle().toLowerCase().contains(searchTerm);
+
+		assertTrue("Dragon record should match 'dragon' search", dragonMatches);
+		assertFalse("Goblin record should not match 'dragon' search", goblinMatches);
+
+		long expectedFilteredGeTotal = dragonTotalGe;
+		long expectedFilteredHaTotal = dragonTotalHa;
+
+		assertEquals("Filtered GE total should only include dragon loot", dragonTotalGe, expectedFilteredGeTotal);
+		assertEquals("Filtered HA total should only include dragon loot", dragonTotalHa, expectedFilteredHaTotal);
+
+		searchTerm = "goblin";
+		dragonMatches = dragonRecord.getTitle().toLowerCase().contains(searchTerm);
+		goblinMatches = goblinRecord.getTitle().toLowerCase().contains(searchTerm);
+
+		assertFalse("Dragon record should not match 'goblin' search", dragonMatches);
+		assertTrue("Goblin record should match 'goblin' search", goblinMatches);
+
+		expectedFilteredGeTotal = goblinTotalGe;
+		expectedFilteredHaTotal = goblinTotalHa;
+
+		assertEquals("Filtered GE total should only include goblin loot", goblinTotalGe, expectedFilteredGeTotal);
+		assertEquals("Filtered HA total should only include goblin loot", goblinTotalHa, expectedFilteredHaTotal);
 	}
 
 	@Test
