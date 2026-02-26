@@ -36,10 +36,13 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 
@@ -50,6 +53,7 @@ import net.runelite.client.util.ColorUtil;
  * and a highlight marks the drop target. The actual tab move only happens
  * once on drop, avoiding expensive intermediate layout passes.
  */
+@Slf4j
 public class DragAndDropTabbedPane extends JTabbedPane
 {
 	private Point dragStartPoint;
@@ -61,7 +65,8 @@ public class DragAndDropTabbedPane extends JTabbedPane
 	private boolean dragging;
 	private boolean potentialDrag;
 	private final List<DragListener> dragListeners = new ArrayList<>(0);
-	// private MouseAdapter dragMouseAdapter;
+	@Setter
+	private Supplier<Boolean> dragAllowedSupplier;
 
 	public DragAndDropTabbedPane(int tabPlacement)
 	{
@@ -69,10 +74,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		MouseAdapter mouseAdapter = new DragAndDropTabMouseAdapter();
 		addMouseListener(mouseAdapter);
 		addMouseMotionListener(mouseAdapter);
-		// addMouseListener((ev) ->
-		// {
-		// 	getUI();
-		// });
+		this.dragAllowedSupplier = (() -> false);
 	}
 
 	/**
@@ -128,6 +130,14 @@ public class DragAndDropTabbedPane extends JTabbedPane
 
 	private void startDragging(Point point)
 	{
+		if (!dragAllowedSupplier.get())
+		{
+			log.debug("startDragging blocked - drag not allowed");
+			dragStartPoint = null;
+			potentialDrag = false;
+			return;
+		}
+
 		dragIndex = indexAtLocation(dragStartPoint.x, dragStartPoint.y);
 		if (dragIndex < 0)
 		{
@@ -135,6 +145,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 			return;
 		}
 
+		log.debug("startDragging: dragIndex={}", dragIndex);
 		dragging = true;
 		dropTargetIndex = dragIndex;
 		currentDragPoint = point;
@@ -163,6 +174,8 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		int newDropTarget = calculateDropTargetIndex(point);
 		if (newDropTarget != dropTargetIndex)
 		{
+			log.debug("drag: dropTargetIndex changed from {} to {}, dragIndex={}, tabCount={}",
+				dropTargetIndex, newDropTarget, dragIndex, getTabCount());
 			dropTargetIndex = newDropTarget;
 		}
 		repaint();
@@ -179,8 +192,6 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		int fromIndex = dragIndex;
 		int toIndex = dropTargetIndex;
 
-		resetDragState();
-
 		if (fromIndex != toIndex && fromIndex >= 0 && toIndex >= 0)
 		{
 			moveTab(fromIndex, toIndex);
@@ -189,6 +200,11 @@ public class DragAndDropTabbedPane extends JTabbedPane
 				listener.onDrag(fromIndex, toIndex);
 			}
 		}
+
+		// Reset drag state AFTER moveTab completes so that isDragging() returns true
+		// during the tab move operations, preventing ChangeListener from updating selectedTab
+		// This caused the displayed tab to change to the new plugin at the same index after reset
+		resetDragState();
 
 		repaint();
 	}
@@ -225,7 +241,8 @@ public class DragAndDropTabbedPane extends JTabbedPane
 				return i;
 			}
 		}
-		return tabCount - 1;
+
+		return tabCount;
 	}
 
 	@Override
@@ -261,7 +278,10 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		}
 
 		// Draw drop indicator line
-		if (dropTargetIndex >= 0 && dropTargetIndex != dragIndex && dropTargetIndex != dragIndex + 1)
+		boolean showIndicator = dropTargetIndex >= 0 && dropTargetIndex != dragIndex && dropTargetIndex != dragIndex + 1;
+		log.debug("paint: dropTargetIndex={}, dragIndex={}, showIndicator={}", dropTargetIndex, dragIndex, showIndicator);
+		// if (dropTargetIndex >= 0 && dropTargetIndex != dragIndex && dropTargetIndex != dragIndex + 1)
+		if (showIndicator)
 		{
 			drawDropIndicator(g2d);
 		}

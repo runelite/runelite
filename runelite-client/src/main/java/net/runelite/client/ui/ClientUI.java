@@ -174,6 +174,7 @@ public class ClientUI
 	private NavigationButton selectedTab;
 	private boolean reorderPending;
 	private boolean startupComplete;
+	private boolean inDraggingMode = false;
 
 	private ClientToolbarPanel toolbarPanel;
 	private boolean withTitleBar;
@@ -199,8 +200,6 @@ public class ClientUI
 	private int recommendedMemoryLimit = 512;
 
 	private List<KeyListener> keyListeners;
-
-	private boolean inDraggingMode;
 
 	@RequiredArgsConstructor
 	private static class HistoryEntry
@@ -500,14 +499,26 @@ public class ClientUI
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
+			sidebar.setDragAllowedSupplier(() -> inDraggingMode);
 			sidebar.addDragListener(this::handleDrag);
 
 			sidebar.addChangeListener(ev ->
 			{
+				// Skip processing during drag operations - the drag may change the index
+				// but we want to preserve the originally selected tab
+				if (sidebar.isDragging())
+				{
+					log.info("changeListener(): skipping - drag in progress");
+					return;
+				}
+
+				log.info("changeListener(): event: '{}'", ev);
 				NavigationButton oldSelectedTab = selectedTab;
 				NavigationButton newSelectedTab;
+				log.info("changeListener(): oldSelectedTab: '{}'", oldSelectedTab != null ? oldSelectedTab.getTooltip() : "null");
 
 				int index = sidebar.getSelectedIndex();
+				log.info("changeListener(): sidebar.getSelectedIndex(): '{}'", index);
 				if (index < 0 || index >= sidebarTabOrder.size())
 				{
 					newSelectedTab = null;
@@ -522,6 +533,7 @@ public class ClientUI
 					return;
 				}
 
+				log.info("changeListener(): newSelectedTab: '{}'", newSelectedTab != null ? newSelectedTab.getTooltip() : "null");
 				selectedTab = newSelectedTab;
 
 				if (sidebar.isVisible())
@@ -550,6 +562,7 @@ public class ClientUI
 				{
 					if (e.getButton() == MouseEvent.BUTTON3)
 					{
+						log.info("sidebar.mouseListener().mouseClicked(): Right click occurred.");
 						int index = 0;
 						for (var navBtn : sidebarTabOrder)
 						{
@@ -645,6 +658,7 @@ public class ClientUI
 				@Override
 				public MouseEvent mousePressed(MouseEvent mouseEvent)
 				{
+					// TODO: update to `mouseEvent.getButton() == MouseEvent.BUTTON1`
 					if (SwingUtilities.isLeftMouseButton(mouseEvent) && sidebarButtonPosition.contains(mouseEvent.getPoint()))
 					{
 						SwingUtilities.invokeLater(ClientUI.this::toggleSidebar);
@@ -1177,15 +1191,14 @@ public class ClientUI
 		return frame.getGraphicsConfiguration();
 	}
 
-	/**
-	 * Rebuild the sidebar with the given entries in the order provided.
-	 */
 	public void rebuildSidebar(Collection<NavigationButton> entries)
 	{
+		log.info("rebuildSidebar(): begin");
 		SwingUtilities.invokeLater(() ->
 		{
 			// Remember the currently selected tab
 			NavigationButton selected = selectedTab;
+			log.info("rebuildSidebar(): Currently selected tab: {}", selected != null ? selected.getTooltip() : "null");
 
 			// Clear the sidebar
 			sidebar.removeAll();
@@ -1201,13 +1214,16 @@ public class ClientUI
 			}
 
 			// Restore selection if possible
+			log.info("rebuildSidebar(): Restoring selected tab: '{}'", selected != null ? selected.getTooltip() : "null");
 			if (selected != null && sidebarTabOrder.contains(selected))
 			{
 				int index = sidebarTabOrder.indexOf(selected);
+				log.info("rebuildSidebar(): sidebarTabOrder contains tab, index: {}", index);
 				sidebar.setSelectedIndex(index);
 			}
 			else
 			{
+				log.info("rebuildSidebar(): sidebarTabOrder does not contain tab, setting selected index to -1");
 				sidebar.setSelectedIndex(-1);
 			}
 		});
@@ -1786,7 +1802,7 @@ public class ClientUI
 	private void applyCustomOrder()
 	{
 		List<NavigationButton> orderedButtons = loadCustomOrder();
-		log.info("Applying custom sidebar order: {}", orderedButtons.stream()
+		log.info("applyCustomOrder(): Applying custom sidebar order: {}", orderedButtons.stream()
 			.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
 			.collect(Collectors.toList()));
 
@@ -1821,7 +1837,7 @@ public class ClientUI
 
 	private List<NavigationButton> loadCustomOrder()
 	{
-		log.info("Loading custom sidebar order from config");
+		log.info("loadCustomOrder(): Loading custom sidebar order from config");
 		String customTabOrderListJson = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 
 		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
@@ -1868,7 +1884,7 @@ public class ClientUI
 		List<String> resultTooltips = assembledTabList.stream()
 			.map(NavigationButton::getTooltip)
 			.collect(Collectors.toList());
-		log.info("Order comparison between customTabOrderList and assembledTabList: {}",
+		log.info("loadCustomOrder(): Order comparison between customTabOrderList and assembledTabList: {}",
 			customTabOrderList.equals(resultTooltips));
 
 		return assembledTabList;
