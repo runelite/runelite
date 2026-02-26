@@ -124,6 +124,7 @@ enum TeleportLocationData
 	BRYOPHYTA_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Bryophyta's Lair", new WorldPoint(3174, 9898, 0), "giantsoul_amulet_teleport_icon.png"),
 	OBOR_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Obor's Lair", new WorldPoint(3096, 9833, 0), "giantsoul_amulet_teleport_icon.png"),
 	BRANDA_AND_ELDRIC_LAIR(TeleportType.JEWELLERY, "Giantsoul Amulet", "Branda and Eldric's Lair", new WorldPoint(2952, 9574, 0), "giantsoul_amulet_teleport_icon.png"),
+	COWBELL_AMULET(TeleportType.JEWELLERY, "Cowbell Amulet", "Cow field", new WorldPoint(3259, 3276, 0), "cowbell_amulet_teleport_icon.png"),
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
