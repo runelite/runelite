@@ -194,21 +194,7 @@ public class RuneLiteTabbedPaneUI extends FlatTabbedPaneUI
 				if (!deselectable)
 				{
 					delegate.mousePressed(e);
-					return;
 				}
-
-				if (!tabPane.isEnabled() || e.getButton() != MouseEvent.BUTTON1)
-				{
-					return;
-				}
-
-				int tabIndex = tabForCoordinate(tabPane, e.getX(), e.getY());
-				if (tabIndex < 0 || !tabPane.isEnabledAt(tabIndex))
-				{
-					return;
-				}
-
-				tabPane.setSelectedIndex(tabPane.getSelectedIndex() == tabIndex ? -1 : tabIndex);
 			}
 
 			@Override
