@@ -90,12 +90,15 @@ class WorldHopperPingOverlay extends Overlay
 			xOffset += textWidth + fm.stringWidth(" ");
 		}
 
-		int percRetransmit = worldHopperPlugin.retransmitCalculator.getRetransmitPercent();
-		if (percRetransmit > 0)
+		if(worldHopperConfig.displayPingLossPct())
 		{
-			String text = percRetransmit + "% loss";
-			Point point = new Point(width - fm.stringWidth(text) - xOffset, textHeight + Y_OFFSET);
-			OverlayUtil.renderTextLocation(graphics, point, text, Color.RED);
+			int percRetransmit = worldHopperPlugin.retransmitCalculator.getRetransmitPercent();
+			if (percRetransmit > 0)
+			{
+				String text = percRetransmit + "% loss";
+				Point point = new Point(width - fm.stringWidth(text) - xOffset, textHeight + Y_OFFSET);
+				OverlayUtil.renderTextLocation(graphics, point, text, Color.RED);
+			}
 		}
 
 		return null;

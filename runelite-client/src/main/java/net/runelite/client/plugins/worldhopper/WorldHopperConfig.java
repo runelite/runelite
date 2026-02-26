@@ -159,4 +159,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "displayPingLossPct",
+		name = "Display ping loss percentage",
+		description = "Displays percent packet loss when pinging game world.",
+		position = 12
+	)
+	default boolean displayPingLossPct()
+	{
+		return false;
+	}
 }
