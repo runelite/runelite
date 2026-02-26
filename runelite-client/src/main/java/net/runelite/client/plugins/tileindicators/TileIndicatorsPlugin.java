@@ -26,7 +26,10 @@ package net.runelite.client.plugins.tileindicators;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -60,6 +63,18 @@ public class TileIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		// Null this value so that the true tile does not pop up when turning the plugin on, if using fading true tile.
+		overlay.setLastPlayerPosition(null);
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged e)
+	{
+		if (e.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			// When true tile fadeout is enabled, this prevents the true tile from showing up right after logging in.
+			overlay.setLastPlayerPosition(null);
+		}
 	}
 }
