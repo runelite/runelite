@@ -25,9 +25,12 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
+import java.time.Duration;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -36,6 +39,7 @@ import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.RSTimeUnit;
 
 @PluginDescriptor(
 	name = "Boss Timers",
@@ -45,6 +49,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Slf4j
 public class BossTimersPlugin extends Plugin
 {
+	private static final String BRUTUS_BELL = "You ring the bell... and hear something approaching.";
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
@@ -97,5 +103,20 @@ public class BossTimersPlugin extends Plugin
 	private void clearTimer(Boss boss)
 	{
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
+	}
+
+	@Subscribe
+	private void onChatMessage(ChatMessage ev)
+	{
+		if (ev.getType() == ChatMessageType.MESBOX && BRUTUS_BELL.equals(ev.getMessage()))
+		{
+			for (var ib : infoBoxManager.getInfoBoxes())
+			{
+				if (ib instanceof RespawnTimer && ((RespawnTimer) ib).getBoss() == Boss.BRUTUS)
+				{
+					((RespawnTimer) ib).updateDuration(Duration.of(12, RSTimeUnit.GAME_TICKS));
+				}
+			}
+		}
 	}
 }
