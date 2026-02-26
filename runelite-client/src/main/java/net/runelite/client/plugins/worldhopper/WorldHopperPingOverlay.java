@@ -90,7 +90,7 @@ class WorldHopperPingOverlay extends Overlay
 			xOffset += textWidth + fm.stringWidth(" ");
 		}
 
-		if(worldHopperConfig.displayPingLossPct())
+		if (worldHopperConfig.displayPingLossPct())
 		{
 			int percRetransmit = worldHopperPlugin.retransmitCalculator.getRetransmitPercent();
 			if (percRetransmit > 0)
