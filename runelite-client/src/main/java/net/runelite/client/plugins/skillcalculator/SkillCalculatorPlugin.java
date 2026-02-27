@@ -38,9 +38,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Skill Calculator",
-	description = "Enable the Skill Calculator panel",
-	tags = {"panel", "skilling"}
+		name = "Skill Calculator",
+		description = "Enable the Skill Calculator panel",
+		tags = {"panel", "skilling"}
 )
 public class SkillCalculatorPlugin extends Plugin
 {
@@ -62,11 +62,11 @@ public class SkillCalculatorPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
 
 		uiNavigationButton = NavigationButton.builder()
-			.tooltip("Skill Calculator")
-			.icon(icon)
-			.priority(6)
-			.panel(uiPanel.get())
-			.build();
+				.tooltip("Skill Calculator")
+				.icon(icon)
+				.priority(6)
+				.panel(uiPanel.get())
+				.build();
 
 		clientToolbar.addNavigation(uiNavigationButton);
 	}
@@ -85,7 +85,7 @@ public class SkillCalculatorPlugin extends Plugin
 		if (currentWorldIsMembers != lastWorldWasMembers)
 		{
 			uiPanel.get().reloadCurrentCalculator();
+			lastWorldWasMembers = currentWorldIsMembers;
 		}
-		lastWorldWasMembers = currentWorldIsMembers;
 	}
 }
