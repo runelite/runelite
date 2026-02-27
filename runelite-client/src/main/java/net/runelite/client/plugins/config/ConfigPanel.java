@@ -85,6 +85,8 @@ import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ConfigSectionDescriptor;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.Unifiedbind;
+import net.runelite.client.config.ModifierlessUnifiedbind;
 import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
@@ -376,6 +378,10 @@ class ConfigPanel extends PluginPanel
 			else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
 				item.add(createKeybind(cd, cid), BorderLayout.EAST);
+			}
+			else if (cid.getType() == Unifiedbind.class || cid.getType() == ModifierlessUnifiedbind.class)
+			{
+				item.add(createUnifiedbind(cd, cid), BorderLayout.EAST);
 			}
 			else if (cid.getType() == Notification.class)
 			{
@@ -670,6 +676,26 @@ class ConfigPanel extends PluginPanel
 		return button;
 	}
 
+	private UnifiedbindButton createUnifiedbind(ConfigDescriptor cd, ConfigItemDescriptor cid)
+	{
+		Unifiedbind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+				cid.getItem().keyName(),
+				(Class<? extends Unifiedbind>) cid.getType());
+
+		UnifiedbindButton button = new UnifiedbindButton(startingValue, cid.getType() == ModifierlessUnifiedbind.class);
+
+		button.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				changeConfiguration(button, cd, cid);
+			}
+		});
+
+		return button;
+	}
+
 	private JPanel createNotification(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		JPanel panel = new JPanel();
@@ -781,6 +807,11 @@ class ConfigPanel extends PluginPanel
 		{
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
+		}
+		else if (component instanceof UnifiedbindButton)
+		{
+			UnifiedbindButton unifiedbindButton = (UnifiedbindButton) component;
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), unifiedbindButton.getValue());
 		}
 		else if (component instanceof JList)
 		{
