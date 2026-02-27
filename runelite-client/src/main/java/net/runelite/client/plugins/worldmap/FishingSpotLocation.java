@@ -179,6 +179,7 @@ enum FishingSpotLocation
 		new WorldPoint(2725, 3524, 0), new WorldPoint(2714, 3531, 0)),
 	SHIPWRECK_COVE_NORTH(FishingSpot.SHRIMP, new WorldPoint(1565, 3326, 0)),
 	SHIPWRECK_COVE_SOUTH(FishingSpot.SHARK, new WorldPoint(1586, 3299, 0)),
+	STRANGLEWOOD(FishingSpot.STRANGLEWOOD_PIKE, true, new WorldPoint(1093, 3368, 0)),
 	SHILO_VILLAGE(FishingSpot.SALMON,
 		new WorldPoint(2854, 2977, 0), new WorldPoint(2858, 2973, 0)),
 	TAL_TEKLAN_WEST(FishingSpot.SHARK, new WorldPoint(1218, 3146, 0)),
@@ -204,18 +205,26 @@ enum FishingSpotLocation
 		new WorldPoint(2183, 3068, 0), new WorldPoint(2195, 3067, 0)),
 	;
 
-	private final WorldPoint[] locations;
 	private final String tooltip;
+	private final WorldPoint[] locations;
+	private final boolean iconRequired;
 
 	FishingSpotLocation(FishingSpot fishingSpot, WorldPoint... locations)
 	{
+		this(fishingSpot, false, locations);
+	}
+
+	FishingSpotLocation(FishingSpot fishingSpot, boolean iconRequired, WorldPoint... locations)
+	{
 		this.tooltip = fishingSpot.getWorldMapTooltip();
 		this.locations = locations;
+		this.iconRequired = iconRequired;
 	}
 
 	FishingSpotLocation(FishingSpot[] fishingSpot, WorldPoint... locations)
 	{
 		this.tooltip = Arrays.stream(fishingSpot).map(FishingSpot::getWorldMapTooltip).collect(Collectors.joining(" / "));
 		this.locations = locations;
+		this.iconRequired = false;
 	}
 }

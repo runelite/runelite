@@ -148,6 +148,9 @@ public enum FishingSpot
 		NpcID._0_46_35_LANTERNFISH, NpcID._0_32_40_LANTERNFISH, NpcID._0_18_42_LANTERNFISH,
 		NpcID._0_32_57_LANTERNFISH
 	),
+	STRANGLEWOOD_PIKE("Pike", ItemID.RAW_PIKE,
+		FISHING_SPOT_12267
+	),
 	;
 
 	private static final Map<Integer, FishingSpot> SPOTS;
