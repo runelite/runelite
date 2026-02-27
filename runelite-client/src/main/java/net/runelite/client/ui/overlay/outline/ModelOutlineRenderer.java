@@ -36,6 +36,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
@@ -44,9 +45,7 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Model;
-import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Renderable;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.TileObject;
@@ -981,27 +980,15 @@ public class ModelOutlineRenderer
 		}
 	}
 
-	public void drawOutline(NPC npc, int outlineWidth, Color color, int feather)
+	public void drawOutline(Actor actor, int outlineWidth, Color color, int feather)
 	{
-		LocalPoint lp = npc.getLocalLocation();
+		LocalPoint lp = actor.getLocalLocation();
 		if (lp != null)
 		{
-			WorldView wv = npc.getWorldView();
-			drawModelOutline(wv, npc.getModel(), lp.getX(), lp.getY(),
-				Perspective.getFootprintTileHeight(client, lp, wv.getPlane(), npc.getComposition().getFootprintSize()) - npc.getAnimationHeightOffset(),
-				npc.getCurrentOrientation(), outlineWidth, color, feather);
-		}
-	}
-
-	public void drawOutline(Player player, int outlineWidth, Color color, int feather)
-	{
-		LocalPoint lp = player.getLocalLocation();
-		if (lp != null)
-		{
-			WorldView wv = player.getWorldView();
-			drawModelOutline(wv, player.getModel(), lp.getX(), lp.getY(),
-				Perspective.getFootprintTileHeight(client, lp, wv.getPlane(), player.getFootprintSize()) - player.getAnimationHeightOffset(),
-				player.getCurrentOrientation(), outlineWidth, color, feather);
+			WorldView wv = actor.getWorldView();
+			drawModelOutline(wv, actor.getModel(), lp.getX(), lp.getY(),
+				Perspective.getFootprintTileHeight(client, lp, wv.getPlane(), actor.getFootprintSize()) - actor.getAnimationHeightOffset(),
+				actor.getCurrentOrientation(), outlineWidth, color, feather);
 		}
 	}
 

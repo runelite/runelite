@@ -142,7 +142,7 @@ class InteractHighlightOverlay extends Overlay
 			Color endColor = plugin.isAttacked() ? config.npcAttackHighlightColor() : config.npcInteractHighlightColor();
 			Color clickColor = getClickColor(startColor, endColor,
 				client.getGameCycle() - plugin.getGameCycle());
-			modelOutlineRenderer.drawOutline((NPC) target, config.borderWidth(), clickColor, config.outlineFeather());
+			modelOutlineRenderer.drawOutline(target, config.borderWidth(), clickColor, config.outlineFeather());
 		}
 	}
 
