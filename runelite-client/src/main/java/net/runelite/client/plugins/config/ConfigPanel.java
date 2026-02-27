@@ -177,7 +177,7 @@ class ConfigPanel extends PluginPanel
 		add(topPanel, BorderLayout.NORTH);
 
 		mainPanel = new FixedWidthPanel();
-		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
+		mainPanel.setBorder(new EmptyBorder(3, 10, 10, 10));
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -280,7 +280,8 @@ class ConfigPanel extends PluginPanel
 			sectionHeader.setLayout(new BorderLayout());
 			sectionHeader.setBorder(new CompoundBorder(
 				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
-				new EmptyBorder(3, 0, 3, 0)));
+				new EmptyBorder(5, 0, 3, 0)
+			));
 
 			final JButton sectionToggle = new JButton(isOpen ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
 			sectionToggle.setPreferredSize(new Dimension(18, 0));
@@ -303,7 +304,8 @@ class ConfigPanel extends PluginPanel
 			sectionContents.setLayout(new BoxLayout(sectionContents, BoxLayout.Y_AXIS));
 			sectionContents.setBorder(new CompoundBorder(
 				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
-				new EmptyBorder(BORDER_OFFSET, 0, BORDER_OFFSET, 0)));
+				new EmptyBorder(0, 0, BORDER_OFFSET, 0)
+			));
 			sectionContents.setVisible(isOpen);
 			section.add(sectionContents);
 
@@ -390,7 +392,7 @@ class ConfigPanel extends PluginPanel
 				}
 			}
 
-			item.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+			item.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 			item.setMaximumSize(new Dimension(Integer.MAX_VALUE, item.getPreferredSize().height));
 
 			JPanel section = sectionWidgets.get(cid.getItem().section());
