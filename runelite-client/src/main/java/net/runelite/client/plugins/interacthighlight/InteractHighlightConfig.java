@@ -56,6 +56,13 @@ public interface InteractHighlightConfig extends Config
 	)
 	String objectSection = "objectSection";
 
+	@ConfigSection(
+		name = "Items",
+		description = "Settings for item highlight.",
+		position = 3
+	)
+	String itemSection = "itemSection";
+
 	@ConfigItem(
 		keyName = "npcShowHover",
 		name = "Show on hover",
@@ -228,6 +235,56 @@ public interface InteractHighlightConfig extends Config
 		section = objectSection
 	)
 	default Color objectInteractHighlightColor()
+	{
+		return new Color(0x90FF0000, true);
+	}
+
+	@ConfigItem(
+		keyName = "itemShowHover",
+		name = "Show on hover",
+		description = "Outline items when hovered.",
+		position = 1,
+		section = itemSection
+	)
+	default boolean itemShowHover()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "itemShowInteract",
+		name = "Show on interact",
+		description = "Outline items when interacted.",
+		position = 2,
+		section = itemSection
+	)
+	default boolean itemShowInteract()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "itemHoverHighlightColor",
+		name = "Item hover",
+		description = "The color of the hover outline for items.",
+		position = 4,
+		section = itemSection
+	)
+	default Color itemHoverHighlightColor()
+	{
+		return new Color(0x9000FFFF, true);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "itemInteractHighlightColor",
+		name = "Item interact",
+		description = "The color of the target outline for items.",
+		position = 6,
+		section = itemSection
+	)
+	default Color itemInteractHighlightColor()
 	{
 		return new Color(0x90FF0000, true);
 	}

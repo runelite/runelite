@@ -48,6 +48,7 @@ import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Renderable;
 import net.runelite.api.RuneLiteObject;
+import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
 import net.runelite.api.WorldView;
@@ -1134,6 +1135,16 @@ public class ModelOutlineRenderer
 		else if (tileObject instanceof WallObject)
 		{
 			drawOutline((WallObject) tileObject, outlineWidth, color, feather);
+		}
+	}
+
+	public void drawOutline(ItemLayer layer, TileItem item, int outlineWidth, Color color, int feather)
+	{
+		Model model = item.getModel();
+		if (model != null)
+		{
+			drawModelOutline(layer.getWorldView(), model, layer.getX(), layer.getY(), layer.getZ() - layer.getHeight(),
+				0, outlineWidth, color, feather);
 		}
 	}
 
