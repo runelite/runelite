@@ -762,22 +762,74 @@ public class ClientUI
 		}
 	}
 
+	/**
+	 * Gets display the client overlaps with the most
+	 * Shifts the client on screen if title bar OOB
+	 *
+	 */
 	private GraphicsConfiguration findDisplayFromBounds(final Rectangle bounds)
 	{
 		GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-
+		float bestOverlap = 0f;
+		GraphicsConfiguration bestGc = null;
 		for (GraphicsDevice gd : gds)
 		{
 			GraphicsConfiguration gc = gd.getDefaultConfiguration();
-
 			final Rectangle displayBounds = gc.getBounds();
+			//entirely within display
 			if (displayBounds.contains(bounds))
 			{
 				return gc;
 			}
-		}
 
-		return null;
+			Rectangle intersection = displayBounds.intersection(bounds);
+			//no overlap
+			if (intersection.isEmpty())
+			{
+				continue;
+			}
+
+			float gcOverlap = intersection.width * intersection.height;
+			//update highest overlap display
+			if (gcOverlap > bestOverlap)
+			{
+				bestOverlap = gcOverlap;
+				bestGc = gc;
+			}
+		}
+		//overlap is partial, account for the situation where title bar is OOB and not contained within another display
+		if (bestGc != null)
+		{
+			Rectangle bestGcBounds = bestGc.getBounds();
+			Rectangle titleBounds = new Rectangle(bounds.x, bounds.y, bounds.width, content.getBounds().y);
+			for (GraphicsDevice gd : gds)
+			{
+				GraphicsConfiguration gc = gd.getDefaultConfiguration();
+				if (gc == bestGc)
+				{
+					continue;
+				}
+
+				final Rectangle displayBounds = gc.getBounds();
+				if (displayBounds.y > bestGcBounds.y)
+				{
+					continue;
+				}
+
+				Rectangle intersection = displayBounds.intersection(titleBounds);
+				//title bar not within display
+				if (intersection.isEmpty())
+				{
+					continue;
+				}
+
+				//title bar within a valid display no shift needed
+				return bestGc;
+			}
+			//no valid display found for title bar, cannot be interacted with and needs to be shifted to bestGcs top/y
+			frame.setLocation(frame.getX(), bestGcBounds.y);
+		}
+		return bestGc;
 	}
 
 	private boolean showWarningOnExit()
