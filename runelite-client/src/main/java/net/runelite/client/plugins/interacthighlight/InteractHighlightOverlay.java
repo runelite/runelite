@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.gameval.InterfaceID;
@@ -122,6 +123,23 @@ class InteractHighlightOverlay extends Overlay
 				}
 				break;
 			}
+			case WIDGET_TARGET_ON_PLAYER:
+			case PLAYER_FIRST_OPTION:
+			case PLAYER_SECOND_OPTION:
+			case PLAYER_THIRD_OPTION:
+			case PLAYER_FOURTH_OPTION:
+			case PLAYER_FIFTH_OPTION:
+			case PLAYER_SIXTH_OPTION:
+			case PLAYER_SEVENTH_OPTION:
+			case PLAYER_EIGHTH_OPTION:
+			{
+				Player player = entry.getPlayer();
+				if (player != null && config.playerShowHover() && (player != plugin.getInteractedTarget() || !config.npcShowInteract()))
+				{
+					modelOutlineRenderer.drawOutline(player, config.borderWidth(), config.playerHoverHighlightColor(), config.outlineFeather());
+				}
+				break;
+			}
 		}
 	}
 
@@ -141,6 +159,12 @@ class InteractHighlightOverlay extends Overlay
 			Color startColor = plugin.isAttacked() ? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
 			Color endColor = plugin.isAttacked() ? config.npcAttackHighlightColor() : config.npcInteractHighlightColor();
 			Color clickColor = getClickColor(startColor, endColor,
+				client.getGameCycle() - plugin.getGameCycle());
+			modelOutlineRenderer.drawOutline(target, config.borderWidth(), clickColor, config.outlineFeather());
+		}
+		else if (target instanceof Player && config.playerShowInteract())
+		{
+			Color clickColor = getClickColor(config.playerHoverHighlightColor(), config.playerInteractHighlightColor(),
 				client.getGameCycle() - plugin.getGameCycle());
 			modelOutlineRenderer.drawOutline(target, config.borderWidth(), clickColor, config.outlineFeather());
 		}

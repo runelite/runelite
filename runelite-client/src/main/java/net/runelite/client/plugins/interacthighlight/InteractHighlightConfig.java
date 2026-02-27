@@ -43,9 +43,16 @@ public interface InteractHighlightConfig extends Config
 	String npcSection = "npcSection";
 
 	@ConfigSection(
+		name = "Players",
+		description = "Settings for player highlight.",
+		position = 1
+	)
+	String playerSection = "playerSection";
+
+	@ConfigSection(
 		name = "Objects",
 		description = "Settings for object highlight.",
-		position = 1
+		position = 2
 	)
 	String objectSection = "objectSection";
 
@@ -121,6 +128,56 @@ public interface InteractHighlightConfig extends Config
 		section = npcSection
 	)
 	default Color npcAttackHighlightColor()
+	{
+		return new Color(0x90FF0000, true);
+	}
+
+	@ConfigItem(
+		keyName = "playerShowHover",
+		name = "Show on hover",
+		description = "Outline players when hovered.",
+		position = 1,
+		section = playerSection
+	)
+	default boolean playerShowHover()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "playerShowInteract",
+		name = "Show on interact",
+		description = "Outline players when interacted.",
+		position = 2,
+		section = playerSection
+	)
+	default boolean playerShowInteract()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "playerHoverHighlightColor",
+		name = "Player hover",
+		description = "The color of the hover outline for players.",
+		position = 4,
+		section = playerSection
+	)
+	default Color playerHoverHighlightColor()
+	{
+		return new Color(0x9000FFFF, true);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "playerInteractHighlightColor",
+		name = "Player interact",
+		description = "The color of the target outline for players.",
+		position = 6,
+		section = playerSection
+	)
+	default Color playerInteractHighlightColor()
 	{
 		return new Color(0x90FF0000, true);
 	}
