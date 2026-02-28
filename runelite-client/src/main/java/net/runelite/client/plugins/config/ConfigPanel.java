@@ -96,6 +96,7 @@ import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.UnitFormatterFactory;
@@ -178,10 +179,14 @@ class ConfigPanel extends PluginPanel
 
 		mainPanel = new FixedWidthPanel();
 		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		JScrollPane scrollPane = new JScrollPane(mainPanel);
+		JPanel northPanel = new FixedWidthPanel();
+		northPanel.setLayout(new BorderLayout());
+		northPanel.add(mainPanel, BorderLayout.NORTH);
+
+		JScrollPane scrollPane = new JScrollPane(northPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(scrollPane, BorderLayout.CENTER);
 
@@ -275,12 +280,17 @@ class ConfigPanel extends PluginPanel
 
 			final JPanel section = new JPanel();
 			section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
+			section.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 
 			final JPanel sectionHeader = new JPanel();
 			sectionHeader.setLayout(new BorderLayout());
+			sectionHeader.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+			// For whatever reason, the header extends out by a single pixel when closed. Adding a single pixel of
+			// border on the right only affects the width when closed, fixing the issue.
 			sectionHeader.setBorder(new CompoundBorder(
 				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
-				new EmptyBorder(3, 0, 3, 0)));
+				new EmptyBorder(0, 0, 3, 1)));
+			section.add(sectionHeader, BorderLayout.NORTH);
 
 			final JButton sectionToggle = new JButton(isOpen ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
 			sectionToggle.setPreferredSize(new Dimension(18, 0));
@@ -296,16 +306,14 @@ class ConfigPanel extends PluginPanel
 			sectionName.setToolTipText("<html>" + name + ":<br>" + cs.description() + "</html>");
 			sectionHeader.add(sectionName, BorderLayout.CENTER);
 
-			sectionHeader.setMaximumSize(new Dimension(Integer.MAX_VALUE, sectionHeader.getPreferredSize().height));
-			section.add(sectionHeader);
-
 			final JPanel sectionContents = new JPanel();
-			sectionContents.setLayout(new BoxLayout(sectionContents, BoxLayout.Y_AXIS));
+			sectionContents.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+			sectionContents.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 			sectionContents.setBorder(new CompoundBorder(
 				new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
 				new EmptyBorder(BORDER_OFFSET, 0, BORDER_OFFSET, 0)));
 			sectionContents.setVisible(isOpen);
-			section.add(sectionContents);
+			section.add(sectionContents, BorderLayout.SOUTH);
 
 			// Add listeners to each part of the header so that it's easier to toggle them
 			final MouseAdapter adapter = new MouseAdapter()
@@ -334,6 +342,7 @@ class ConfigPanel extends PluginPanel
 
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
+			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 			String name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
@@ -390,9 +399,6 @@ class ConfigPanel extends PluginPanel
 				}
 			}
 
-			item.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-			item.setMaximumSize(new Dimension(Integer.MAX_VALUE, item.getPreferredSize().height));
-
 			JPanel section = sectionWidgets.get(cid.getItem().section());
 			if (section == null)
 			{
@@ -427,21 +433,11 @@ class ConfigPanel extends PluginPanel
 				rebuild();
 			}
 		});
-		JPanel resetButtonPanel = new JPanel();
-		resetButtonPanel.setLayout(new BorderLayout());
-		resetButtonPanel.add(resetButton, BorderLayout.CENTER);
-		resetButtonPanel.setBorder(BorderFactory.createEmptyBorder(BORDER_OFFSET, 0, 5, 0));
-		resetButtonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, resetButtonPanel.getPreferredSize().height));
-		mainPanel.add(resetButtonPanel);
+		mainPanel.add(resetButton);
 
 		JButton backButton = new JButton("Back");
 		backButton.addActionListener(e -> pluginList.getMuxer().popState());
-		JPanel backButtonPanel = new JPanel();
-		backButtonPanel.setLayout(new BorderLayout());
-		backButtonPanel.add(backButton, BorderLayout.CENTER);
-		backButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-		backButtonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, backButtonPanel.getPreferredSize().height));
-		mainPanel.add(backButtonPanel);
+		mainPanel.add(backButton);
 
 		revalidate();
 	}
