@@ -42,8 +42,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -69,6 +67,7 @@ import net.runelite.client.config.NotificationSound;
 import net.runelite.client.config.RequestFocusType;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.UnitFormatterFactory;
 import net.runelite.client.ui.components.ColorJButton;
@@ -115,9 +114,14 @@ class NotificationPanel extends PluginPanel
 
 		mainPanel = new FixedWidthPanel();
 		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
-		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		JScrollPane scrollPane = new JScrollPane(mainPanel);
+		JPanel contentsPanel = new FixedWidthPanel();
+		contentsPanel.setLayout(new BorderLayout());
+		contentsPanel.add(mainPanel, BorderLayout.NORTH);
+
+		JScrollPane scrollPane = new JScrollPane(contentsPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(scrollPane, BorderLayout.CENTER);
 
@@ -160,6 +164,7 @@ class NotificationPanel extends PluginPanel
 	{
 		JPanel item = new JPanel();
 		item.setLayout(new BorderLayout());
+		item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 		JLabel configEntryName = new JLabel(name);
 		configEntryName.setForeground(Color.WHITE);
 		if (!"".equals(description))
@@ -168,8 +173,6 @@ class NotificationPanel extends PluginPanel
 		}
 		item.add(configEntryName, BorderLayout.CENTER);
 		item.add(component, BorderLayout.EAST);
-		item.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
-		item.setMaximumSize(new Dimension(Integer.MAX_VALUE, item.getPreferredSize().height));
 		mainPanel.add(item);
 	}
 
@@ -408,13 +411,7 @@ class NotificationPanel extends PluginPanel
 					rebuild(n);
 				}
 			});
-
-			JPanel resetButtonPanel = new JPanel();
-			resetButtonPanel.setLayout(new BorderLayout());
-			resetButtonPanel.add(resetButton, BorderLayout.CENTER);
-			resetButtonPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, resetButtonPanel.getPreferredSize().height));
-
-			mainPanel.add(resetButtonPanel);
+			mainPanel.add(resetButton);
 		}
 		else
 		{
@@ -423,10 +420,7 @@ class NotificationPanel extends PluginPanel
 			mainPanel.add(infoPanel);
 
 			infoPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
-			infoPanel.add(
-				new JLabel("<html>Notification settings can be customized for each type of notification. Notifications without custom settings use the default settings found in the 'RuneLite' configuration under 'Notification Settings'.</html>"),
-				BorderLayout.NORTH
-			);
+			infoPanel.add(new JLabel("<html>Notification settings can be customized for each type of notification. Notifications without custom settings use the default settings found in the 'RuneLite' configuration under 'Notification Settings'.</html>"));
 		}
 	}
 
