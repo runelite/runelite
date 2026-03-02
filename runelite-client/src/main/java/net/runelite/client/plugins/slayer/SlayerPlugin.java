@@ -62,6 +62,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.ItemID;
@@ -316,6 +317,20 @@ public class SlayerPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 		targets.remove(npc);
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		NPC npc = npcChanged.getNpc();
+		if (isTarget(npc))
+		{
+			targets.add(npc);
+		}
+		else
+		{
+			targets.remove(npc);
+		}
 	}
 
 	@Subscribe
