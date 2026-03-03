@@ -327,7 +327,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testCraftingLevel96NoInterface()
 	{
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CRAFTING_LEVEL_96_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -335,7 +335,7 @@ public class ScreenshotPluginTest
 		verify(screenshotPlugin).takeScreenshot("Crafting(96)", "Levels");
 		reset(screenshotPlugin);
 
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(0);
 
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
@@ -344,7 +344,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testStrengthLevel99NoInterface()
 	{
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", STRENGTH_LEVEL_99_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -352,7 +352,7 @@ public class ScreenshotPluginTest
 		verify(screenshotPlugin).takeScreenshot("Strength(99)", "Levels");
 		reset(screenshotPlugin);
 
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(0);
 
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
