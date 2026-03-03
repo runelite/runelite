@@ -176,16 +176,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=36
-container=38
-title=42
-full_input=43
-ge_search_results=51
-messages=54
-transparent_background_lines=55
-input=56
-message_lines=57
-first_message=58
+transparent_background=37
+container=39
+title=43
+full_input=44
+ge_search_results=52
+messages=55
+transparent_background_lines=56
+input=57
+message_lines=58
+first_message=59
 
 [clan]
 id=701
