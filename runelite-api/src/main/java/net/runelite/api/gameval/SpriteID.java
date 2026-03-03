@@ -11037,4 +11037,32 @@ public final class SpriteID
 		public static final int _2 = 7429;
 		public static final int _3 = 7430;
 	}
+
+	public static final class StatSilhouette
+	{
+		public static final int _0 = 7431;
+		public static final int _1 = 7432;
+		public static final int _2 = 7433;
+		public static final int _3 = 7434;
+		public static final int _4 = 7435;
+		public static final int _5 = 7436;
+		public static final int _6 = 7437;
+		public static final int _7 = 7438;
+		public static final int _8 = 7439;
+		public static final int _9 = 7440;
+		public static final int _10 = 7441;
+		public static final int _11 = 7442;
+		public static final int _12 = 7443;
+		public static final int _13 = 7444;
+		public static final int _14 = 7445;
+		public static final int _15 = 7446;
+		public static final int _16 = 7447;
+		public static final int _17 = 7448;
+		public static final int _18 = 7449;
+		public static final int _19 = 7450;
+		public static final int _20 = 7451;
+		public static final int _21 = 7452;
+		public static final int _22 = 7453;
+		public static final int _23 = 7454;
+	}
 }

@@ -24140,6 +24140,10 @@ public final class ItemID
 	public static final int _100_JOURNAL_HEAD_GUIDE = 7502;
 	public static final int _100_JOURNAL_HEAD_MONKEY = 7503;
 	public static final int _100_JOURNAL_HEAD_OSMAN = 7504;
+
+	/**
+	 * Red crab
+	 */
 	public static final int _100_JOURNAL_HEAD_PIRATE = 7505;
 	public static final int _100_JOURNAL_HEAD_SIR = 7506;
 	public static final int _100_JOURNAL_HEAD_SKRACH = 7507;
@@ -86657,7 +86661,7 @@ public final class ItemID
 	public static final int _25TH_ANNIVERSARY_HAT = 33086;
 
 	/**
-	 * Gary
+	 * Null
 	 */
 	public static final int _25TH_HOST_FOLLOWER = 33088;
 

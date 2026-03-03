@@ -3579,16 +3579,6 @@ public final class SpotanimID
 	public static final int DEADMAN_2026_SOTD_SPECIAL_START = 3572;
 	public static final int DEADMAN_2026_SOTD_SPECIAL_EXTRA = 3573;
 	public static final int SARADOMIN_LIGHTNING_DEADMAN = 3574;
-	public static final int DRAGON_FIREBREATH_OLD = 3575;
-	public static final int DRAGON_RANGED_FIRE_ATTACK_OLD = 3576;
-	public static final int DRAGON_ICEBREATH_OLD = 3577;
-	public static final int DRAGON_ACIDBREATH_OLD = 3578;
-	public static final int DRAGON_TRIPLE_FIREBREATH_ATTACK_OLD = 3579;
-	public static final int KALPHITE_GLOW_OLD = 3580;
-	public static final int KALPHITE_QUEEN_GLOW_OLD = 3581;
-	public static final int KALPHITE_GLOW_TRAVEL_OLD = 3582;
-	public static final int KALPHITE_GLOW_IMPACT_OLD = 3583;
-	public static final int _25TH_PORTAL_TELEPORT = 3584;
 	public static final int VFX_WHITE_PARTICLES = 3585;
 	public static final int VFX_WHITE_PARTICLES_REVERSE = 3586;
 	public static final int VFX_BEEF_TORNADO = 3587;

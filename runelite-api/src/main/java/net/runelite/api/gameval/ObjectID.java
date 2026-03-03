@@ -81319,9 +81319,6 @@ public final class ObjectID extends ObjectID1
 	 * Lever
 	 */
 	public static final int FAI_FALADOR_PARTY_ROOM_LEVER = 26194;
-	public static final int BIRTHDAYBANNERL = 26195;
-	public static final int BIRTHDAYBANNERR = 26196;
-	public static final int BIRTHDAYBANNERM = 26197;
 
 	/**
 	 * Birthday cake

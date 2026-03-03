@@ -40173,11 +40173,6 @@ class ObjectID1
 	 * Warmhandz' Fire
 	 */
 	public static final int OSB10_WARMFIRE = 47180;
-	public static final int OSB10_BUNTING01_POST01_VARIANT01 = 47181;
-	public static final int OSB10_BUNTING01_POST01_VARIANT02 = 47182;
-	public static final int OSB10_BUNTING01_POST01_VARIANT03 = 47183;
-	public static final int OSB10_BUNTING01_POST01_VARIANT04 = 47184;
-	public static final int OSB10_BUNTING01_MIDDLE01_VARIANT01 = 47185;
 	public static final int OSB10_BANNER01_YEAR10 = 47186;
 	public static final int OSB10_BANNER01_YEAR10_RAISED01 = 47187;
 
@@ -40220,20 +40215,6 @@ class ObjectID1
 	 * Birthday plushies
 	 */
 	public static final int OSB10_TOYS01_GNOMECHILD10_SOLO01 = 47195;
-	public static final int OSB10_CONFETTI01_DEFAULT01 = 47196;
-	public static final int OSB10_CONFETTI01_SPARSE01 = 47197;
-	public static final int OSB10_CONFETTI01_CORNER01 = 47198;
-	public static final int OSB10_CONFETTI01_SPARSE02 = 47199;
-
-	/**
-	 * Birthday cake
-	 */
-	public static final int OSB10_CAKE_UNLIT = 47200;
-
-	/**
-	 * Birthday cake
-	 */
-	public static final int OSB10_CAKE_LIT = 47201;
 	public static final int OSB10_PARTYROOM_DOORL_NOOP = 47202;
 	public static final int OSB10_PARTYROOM_DOORR_NOOP = 47203;
 
@@ -40551,7 +40532,6 @@ class ObjectID1
 	 */
 	public static final int BANNER_BIRTHDAY01_DEFAULT02 = 47321;
 	public static final int PILLAR_MUSEUM01_TALL01 = 47322;
-	public static final int OSB10_CAKE_MULTI = 47323;
 
 	/**
 	 * Ice chunks
@@ -71687,21 +71667,6 @@ class ObjectID1
 	 * Tile
 	 */
 	public static final int _25TH_GRID_BLANK = 58502;
-
-	/**
-	 * RuneScape memento
-	 */
-	public static final int _25TH_GRID_RUNESCAPE_MODEL = 58503;
-
-	/**
-	 * Attack memento
-	 */
-	public static final int _25TH_GRID_ATTACK_MODEL = 58504;
-
-	/**
-	 * Strength memento
-	 */
-	public static final int _25TH_GRID_STRENGTH_MODEL = 58505;
 	public static final int TRR_PIER_SUPPORT_PILLAR01A = 58506;
 	public static final int TRR_PIER_SUPPORT_STRAIGHT01A = 58507;
 	public static final int TRR_PIER_SUPPORT_CORNER_OUTSIDE01A = 58508;
@@ -78216,151 +78181,6 @@ class ObjectID1
 	public static final int FOUNTAIN_2X3 = 60681;
 
 	/**
-	 * Ranged memento
-	 */
-	public static final int _25TH_GRID_RANGED_MODEL = 60682;
-
-	/**
-	 * Magic memento
-	 */
-	public static final int _25TH_GRID_MAGIC_MODEL = 60683;
-
-	/**
-	 * Defence memento
-	 */
-	public static final int _25TH_GRID_DEFENCE_MODEL = 60684;
-
-	/**
-	 * Hitpoints memento
-	 */
-	public static final int _25TH_GRID_HITPOINTS_MODEL = 60685;
-
-	/**
-	 * Prayer memento
-	 */
-	public static final int _25TH_GRID_PRAYER_MODEL = 60686;
-
-	/**
-	 * Agility memento
-	 */
-	public static final int _25TH_GRID_AGILITY_MODEL = 60687;
-
-	/**
-	 * Herblore memento
-	 */
-	public static final int _25TH_GRID_HERBLORE_MODEL = 60688;
-
-	/**
-	 * Thieving memento
-	 */
-	public static final int _25TH_GRID_THIEVING_MODEL = 60689;
-
-	/**
-	 * Crafting memento
-	 */
-	public static final int _25TH_GRID_CRAFTING_MODEL = 60690;
-
-	/**
-	 * Runecraft memento
-	 */
-	public static final int _25TH_GRID_RUNECRAFT_MODEL = 60691;
-
-	/**
-	 * Mining memento
-	 */
-	public static final int _25TH_GRID_MINING_MODEL = 60692;
-
-	/**
-	 * Smithing memento
-	 */
-	public static final int _25TH_GRID_SMITHING_MODEL = 60693;
-
-	/**
-	 * Fishing memento
-	 */
-	public static final int _25TH_GRID_FISHING_MODEL = 60694;
-
-	/**
-	 * Cooking memento
-	 */
-	public static final int _25TH_GRID_COOKING_MODEL = 60695;
-
-	/**
-	 * Firemaking memento
-	 */
-	public static final int _25TH_GRID_FIREMAKING_MODEL = 60696;
-
-	/**
-	 * Woodcutting memento
-	 */
-	public static final int _25TH_GRID_WOODCUTTING_MODEL = 60697;
-
-	/**
-	 * Fletching memento
-	 */
-	public static final int _25TH_GRID_FLETCHING_MODEL = 60698;
-
-	/**
-	 * Slayer memento
-	 */
-	public static final int _25TH_GRID_SLAYER_MODEL = 60699;
-
-	/**
-	 * Farming memento
-	 */
-	public static final int _25TH_GRID_FARMING_MODEL = 60700;
-
-	/**
-	 * Construction memento
-	 */
-	public static final int _25TH_GRID_CONSTRUCTION_MODEL = 60701;
-
-	/**
-	 * Hunter memento
-	 */
-	public static final int _25TH_GRID_HUNTER_MODEL = 60702;
-
-	/**
-	 * Sailing memento
-	 */
-	public static final int _25TH_GRID_SAILING_MODEL = 60703;
-	public static final int _25TH_GRID_RUNESCAPE_MULTI = 60704;
-	public static final int _25TH_GRID_ATTACK_MULTI = 60705;
-	public static final int _25TH_GRID_STRENGTH_MULTI = 60706;
-	public static final int _25TH_GRID_RANGED_MULTI = 60707;
-	public static final int _25TH_GRID_MAGIC_MULTI = 60708;
-	public static final int _25TH_GRID_DEFENCE_MULTI = 60709;
-	public static final int _25TH_GRID_HITPOINTS_MULTI = 60710;
-	public static final int _25TH_GRID_PRAYER_MULTI = 60711;
-	public static final int _25TH_GRID_AGILITY_MULTI = 60712;
-	public static final int _25TH_GRID_HERBLORE_MULTI = 60713;
-	public static final int _25TH_GRID_THIEVING_MULTI = 60714;
-	public static final int _25TH_GRID_CRAFTING_MULTI = 60715;
-	public static final int _25TH_GRID_RUNECRAFT_MULTI = 60716;
-	public static final int _25TH_GRID_MINING_MULTI = 60717;
-	public static final int _25TH_GRID_SMITHING_MULTI = 60718;
-	public static final int _25TH_GRID_FISHING_MULTI = 60719;
-	public static final int _25TH_GRID_COOKING_MULTI = 60720;
-	public static final int _25TH_GRID_FIREMAKING_MULTI = 60721;
-	public static final int _25TH_GRID_WOODCUTTING_MULTI = 60722;
-	public static final int _25TH_GRID_FLETCHING_MULTI = 60723;
-	public static final int _25TH_GRID_SLAYER_MULTI = 60724;
-	public static final int _25TH_GRID_FARMING_MULTI = 60725;
-	public static final int _25TH_GRID_CONSTRUCTION_MULTI = 60726;
-	public static final int _25TH_GRID_HUNTER_MULTI = 60727;
-	public static final int _25TH_GRID_SAILING_MULTI = 60728;
-
-	/**
-	 * Table
-	 */
-	public static final int _25TH_TABLE01_FOOD01 = 60729;
-
-	/**
-	 * Table
-	 */
-	public static final int _25TH_TABLE02_PRESENTS01 = 60730;
-
-	/**
 	 * Ladder
 	 */
 	public static final int _25TH_LADDER_BOTTOM = 60731;
@@ -78369,62 +78189,6 @@ class ObjectID1
 	 * Ladder
 	 */
 	public static final int _25TH_LADDER_TOP = 60732;
-	public static final int _25TH_STONE = 60733;
-
-	/**
-	 * Portal
-	 */
-	public static final int _25TH_PORTAL_EXIT = 60734;
-
-	/**
-	 * Barrier
-	 */
-	public static final int _25TH_ARENA_FENCE = 60735;
-
-	/**
-	 * Sleeping bag
-	 */
-	public static final int _25TH_ARENA_SLEEPINGBAG = 60736;
-
-	/**
-	 * Statue
-	 */
-	public static final int _25TH_ARENA_STATUE = 60737;
-
-	/**
-	 * Archway
-	 */
-	public static final int _25TH_ARENA_WALL_ARCH_MID = 60738;
-
-	/**
-	 * Light
-	 */
-	public static final int _25TH_SPOTLIGHT_1 = 60739;
-
-	/**
-	 * Light
-	 */
-	public static final int _25TH_SPOTLIGHT_2 = 60740;
-
-	/**
-	 * Light
-	 */
-	public static final int _25TH_SPOTLIGHT_3 = 60741;
-
-	/**
-	 * Light
-	 */
-	public static final int _25TH_SPOTLIGHT_4 = 60742;
-
-	/**
-	 * Light
-	 */
-	public static final int _25TH_SPOTLIGHT_5 = 60743;
-
-	/**
-	 * Light
-	 */
-	public static final int _25TH_SPOTLIGHT_6 = 60744;
 
 	/**
 	 * Birthday Banner
