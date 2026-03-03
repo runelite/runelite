@@ -323,13 +323,9 @@ public class SlayerPlugin extends Plugin
 	public void onNpcChanged(NpcChanged npcChanged)
 	{
 		NPC npc = npcChanged.getNpc();
-		if (isTarget(npc))
+		if (isTarget(npc) && !targets.contains(npc))
 		{
 			targets.add(npc);
-		}
-		else
-		{
-			targets.remove(npc);
 		}
 	}
 
