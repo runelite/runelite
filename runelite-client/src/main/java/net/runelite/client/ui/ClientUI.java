@@ -163,12 +163,12 @@ public class ClientUI
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarCloseIcon;
 
+	// sidebar vars
 	@Getter
 	private DragAndDropTabbedPane sidebar;
 	@Getter
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
 	@Getter
-	// Current order of plugin tabs, may differ from sidebarEntries when custom ordering is enabled.
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
@@ -235,53 +235,6 @@ public class ClientUI
 		normalBoundsTimer.setRepeats(false);
 	}
 
-	// TODO: remove before PR. THis is just for debugging.
-	private List<String> getCustomConfigValue(String value)
-	{
-		if (Strings.isNullOrEmpty(value))
-		{
-			return List.of();
-		}
-
-		try
-		{
-			return gson.fromJson(value, new TypeToken<List<String>>()
-			{
-			}.getType());
-		}
-		catch (Exception ex)
-		{
-			log.warn("Unable to parse custom config value: {}", value, ex);
-			return List.of();
-		}
-	}
-
-	public List<String> compareListsOrder(List<String> oldList, List<String> newList)
-	{
-		if (oldList.size() != newList.size())
-		{
-			var itemsRemoved = oldList.stream().filter(item -> !newList.contains(item)).collect(Collectors.toList());
-			var itemsAdded = newList.stream().filter(item -> !oldList.contains(item)).collect(Collectors.toList());
-			log.info("List size changed. Old size: {}, New size: {}", oldList.size(), newList.size());
-			log.info("Items removed: {}", itemsRemoved);
-			log.info("Items added: {}", itemsAdded);
-			return List.of(
-				"List size changed. Old size: " + oldList.size() + ", New size: " + newList.size(),
-				"Items removed: " + itemsRemoved,
-				"Items added: " + itemsAdded
-			);
-		}
-
-		List<String> differences = new ArrayList<>();
-		for (int i = 0; i < oldList.size(); i++)
-		{
-			if (!Objects.equals(oldList.get(i), newList.get(i)))
-			{
-				differences.add(String.format("Index %d: [%s] -> [%s]", i, oldList.get(i), newList.get(i)));
-			}
-		}
-		return differences;
-	}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
@@ -558,11 +511,11 @@ public class ClientUI
 			sidebar.addMouseListener(new java.awt.event.MouseAdapter()
 			{
 				@Override
-				public void mouseClicked(MouseEvent e)
+				public void mousePressed(MouseEvent e)
 				{
 					if (e.getButton() == MouseEvent.BUTTON3)
 					{
-						log.info("sidebar.mouseListener().mouseClicked(): Right click occurred.");
+						log.info("sidebar.mouseListener().mousePressed(): Right click occurred.");
 						int index = 0;
 						for (var navBtn : sidebarTabOrder)
 						{
@@ -583,14 +536,14 @@ public class ClientUI
 								else
 								{
 									// show when right clicking on tab icons
-									showSidebarContextMenu(e.getX(), e.getY());
+									showSidebarContextMenu(e);
 								}
 								return;
 							}
 						}
 
 						// also show when right clicking in empty area
-						showSidebarContextMenu(e.getX(), e.getY());
+						showSidebarContextMenu(e);
 					}
 				}
 			});
@@ -1812,14 +1765,6 @@ public class ClientUI
 		}
 	}
 
-	// applies current loaded entries TreeSet. Does not clear custom order.
-	private void applyDefaultOrder()
-	{
-		// TODO: check that this doesn't exclude new entries
-		log.info("Applying default sidebar order");
-		rebuildSidebar(getSidebarEntries());
-	}
-
 	private void saveCustomOrder()
 	{
 		if (sidebarTabOrder.isEmpty())
@@ -1906,19 +1851,28 @@ public class ClientUI
 		}
 	}
 
-	private void showSidebarContextMenu(int x, int y)
+	private void showSidebarContextMenu(MouseEvent event)
 	{
 		JPopupMenu menu = new JPopupMenu();
+		menu.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		// Reset menu item - resets custom order to current default order
 		JMenuItem resetItem = new JMenuItem("Reset order");
 		resetItem.addActionListener(e ->
 		{
-			resetCustomOrder();
-			applyCustomOrder();
+			final int result = JOptionPane.showOptionDialog(resetItem,
+				"Are you sure you want to reset the sidebar order?",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result == JOptionPane.YES_OPTION)
+			{
+				resetCustomOrder();
+				applyCustomOrder();
+			}
 		});
 		menu.add(resetItem);
 
-		menu.show(sidebar, x, y);
+		menu.show(sidebar, event.getX(), event.getY());
 	}
 }

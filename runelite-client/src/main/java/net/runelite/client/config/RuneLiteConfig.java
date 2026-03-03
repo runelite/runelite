@@ -479,6 +479,4 @@ public interface RuneLiteConfig extends Config
 	{
 		return Keybind.ALT;
 	}
-
-
 }
