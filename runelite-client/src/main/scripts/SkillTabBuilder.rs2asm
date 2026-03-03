@@ -366,7 +366,7 @@ LABEL304:
    ostore                 3
 LABEL326:
    iload                  1
-   iconst                 5
+   iconst                 6
    cc_find                1
    iconst                 1
    if_icmpeq              LABEL332
@@ -388,7 +388,7 @@ LABEL341:
 LABEL342:
    iload                  1
    iconst                 5
-   iconst                 5
+   iconst                 6
    iconst                 0
    cc_create              1
    iconst                 6

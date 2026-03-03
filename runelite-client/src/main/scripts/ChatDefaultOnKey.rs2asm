@@ -1,11 +1,11 @@
 .id                       73
 .int_arg_count            2
 .obj_arg_count            0
-   iconst                 10616886
+   iconst                 10616887
    if_gethide            
    iconst                 1
    if_icmpeq              LABEL9
-   iconst                 10616887
+   iconst                 10616888
    if_gethide            
    iconst                 1
    if_icmpeq              LABEL9
