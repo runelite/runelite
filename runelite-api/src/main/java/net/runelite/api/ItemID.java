@@ -4555,6 +4555,7 @@ public final class ItemID
 	public static final int EMPTY_SPICE_SHAKER = 7496;
 	public static final int DIRTY_BLAST = 7497;
 	public static final int ANTIQUE_LAMP_7498 = 7498;
+	public static final int RED_CRAB = 7505;
 	public static final int ASGOLDIAN_ALE = 7508;
 	public static final int DWARVEN_ROCK_CAKE = 7509;
 	public static final int DWARVEN_ROCK_CAKE_7510 = 7510;
@@ -15084,7 +15085,7 @@ public final class ItemID
 	public static final int ELKHORN_POTION_UNF = 31662;
 	public static final int PILLAR_POTION_UNF = 31665;
 	public static final int UMBRAL_POTION_UNF = 31668;
-	public static final int RED_CRAB = 31671;
+	public static final int RED_CRAB_31671 = 31671;
 	public static final int BLUE_CRAB = 31674;
 	public static final int RAINBOW_CRAB = 31677;
 	public static final int RAINBOW_CRAB_31680 = 31680;
@@ -16138,7 +16139,6 @@ public final class ItemID
 	public static final int _25TH_ANNIVERSARY_WARRIOR_TABARD = 33082;
 	public static final int _25TH_ANNIVERSARY_SKELETON_TABARD = 33084;
 	public static final int _25TH_ANNIVERSARY_5X5_HAT = 33086;
-	public static final int GARY = 33088;
 	public static final int BOTTOMLESS_MILK_BUCKET = 33089;
 	public static final int BOTTOMLESS_MILK_BUCKET_EMPTY = 33091;
 	public static final int COW_SLIPPERS = 33093;
