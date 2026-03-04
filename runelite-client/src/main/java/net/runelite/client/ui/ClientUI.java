@@ -28,7 +28,8 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
 import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.awt.AWTException;
 import java.awt.Canvas;
@@ -64,10 +65,14 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,6 +96,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
+import net.runelite.client.events.PluginChanged;
+import net.runelite.client.ui.components.DragAndDropTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
@@ -135,6 +142,7 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
+	private static final String CONFIG_KEY_CUSTOM_ORDER = "customOrder";
 	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
 	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
 
@@ -149,15 +157,24 @@ public class ClientUI
 	private final EventBus eventBus;
 	private final boolean safeMode;
 	private final String title;
+	private final Gson gson;
 
 	private final Rectangle sidebarButtonPosition = new Rectangle();
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarCloseIcon;
 
-	private JTabbedPane sidebar;
+	// sidebar vars
+	@Getter
+	private DragAndDropTabbedPane sidebar;
+	@Getter
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
+	@Getter
+	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
+	private boolean reorderPending;
+	private boolean startupComplete;
+	private boolean inDraggingMode = false;
 
 	private ClientToolbarPanel toolbarPanel;
 	private boolean withTitleBar;
@@ -199,6 +216,7 @@ public class ClientUI
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
+		Gson gson,
 		@Named("safeMode") boolean safeMode,
 		@Named("runelite.title") String title
 	)
@@ -209,12 +227,14 @@ public class ClientUI
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
+		this.gson = gson;
 		this.safeMode = safeMode;
 		this.title = title + (safeMode ? " (safe mode)" : "");
 
 		normalBoundsTimer = new Timer(250, _ev -> setLastNormalBounds());
 		normalBoundsTimer.setRepeats(false);
 	}
+
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
@@ -227,6 +247,29 @@ public class ClientUI
 		}
 
 		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+	}
+
+	@Subscribe
+	public void onPluginChanged(PluginChanged event)
+	{
+		if (!event.isLoaded() || !startupComplete)
+		{
+			return;
+		}
+
+		// Ensure added/removed plugins are added to sidebar when using custom ordering.
+		// Current issue is new icons don't load in when using custom ordering
+		log.info("onPluginChanged() plugin {} changed, loaded={}", event.getPlugin().getName(), event.isLoaded());
+		if (!reorderPending)
+		{
+			reorderPending = true;
+			SwingUtilities.invokeLater(() ->
+			{
+				reorderPending = false;
+				log.info("onPluginChanged() applying custom order");
+				applyCustomOrder();
+			});
+		}
 	}
 
 	void addNavigation(NavigationButton navBtn)
@@ -242,11 +285,15 @@ public class ClientUI
 			return;
 		}
 
+
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
+		int insertIndex = sidebarEntries.headSet(navBtn).size();
+		sidebarTabOrder.add(insertIndex, navBtn);
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			sidebarEntries.headSet(navBtn).size());
+			insertIndex);
+
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
 		{
@@ -265,6 +312,7 @@ public class ClientUI
 			boolean closingOpenTab = !selectedTabHistory.isEmpty() && selectedTabHistory.getLast().navBtn == navBtn;
 			selectedTabHistory.removeIf(it -> it.navBtn == navBtn);
 			sidebar.remove(navBtn.getPanel().getWrappedPanel());
+			sidebarTabOrder.remove(navBtn);
 			if (closingOpenTab)
 			{
 				HistoryEntry entry = selectedTabHistory.isEmpty()
@@ -399,25 +447,38 @@ public class ClientUI
 			clientPanel = new ClientPanel(client);
 			content.add(clientPanel);
 
-			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
+			sidebar = new DragAndDropTabbedPane(JTabbedPane.RIGHT);
 			sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			sidebar.setOpaque(true);
 			sidebar.putClientProperty(FlatClientProperties.STYLE, "tabInsets: 2,5,2,5; variableSize: true; deselectable: true; tabHeight: 26");
 			sidebar.setSelectedIndex(-1);
+			sidebar.setDragAllowedSupplier(() -> inDraggingMode);
+			sidebar.addDragListener(this::handleDrag);
+
 			sidebar.addChangeListener(ev ->
 			{
+				// Skip processing during drag operations - the drag may change the index
+				// but we want to preserve the originally selected tab
+				if (sidebar.isDragging())
+				{
+					log.info("changeListener(): skipping - drag in progress");
+					return;
+				}
+
+				log.info("changeListener(): event: '{}'", ev);
 				NavigationButton oldSelectedTab = selectedTab;
 				NavigationButton newSelectedTab;
+				log.info("changeListener(): oldSelectedTab: '{}'", oldSelectedTab != null ? oldSelectedTab.getTooltip() : "null");
 
 				int index = sidebar.getSelectedIndex();
-				if (index < 0)
+				log.info("changeListener(): sidebar.getSelectedIndex(): '{}'", index);
+				if (index < 0 || index >= sidebarTabOrder.size())
 				{
 					newSelectedTab = null;
 				}
 				else
 				{
-					// maybe just include a map component -> navbtn?
-					newSelectedTab = Iterables.get(sidebarEntries, index);
+					newSelectedTab = sidebarTabOrder.get(index);
 				}
 
 				if (oldSelectedTab == newSelectedTab)
@@ -425,6 +486,7 @@ public class ClientUI
 					return;
 				}
 
+				log.info("changeListener(): newSelectedTab: '{}'", newSelectedTab != null ? newSelectedTab.getTooltip() : "null");
 				selectedTab = newSelectedTab;
 
 				if (sidebar.isVisible())
@@ -449,12 +511,13 @@ public class ClientUI
 			sidebar.addMouseListener(new java.awt.event.MouseAdapter()
 			{
 				@Override
-				public void mouseClicked(MouseEvent e)
+				public void mousePressed(MouseEvent e)
 				{
 					if (e.getButton() == MouseEvent.BUTTON3)
 					{
+						log.info("sidebar.mouseListener().mousePressed(): Right click occurred.");
 						int index = 0;
-						for (var navBtn : sidebarEntries)
+						for (var navBtn : sidebarTabOrder)
 						{
 							Rectangle bounds = sidebar.getBoundsAt(index++);
 							if (bounds != null && bounds.contains(e.getX(), e.getY()))
@@ -470,9 +533,17 @@ public class ClientUI
 									});
 									menu.show(sidebar, e.getX(), e.getY());
 								}
+								else
+								{
+									// show when right clicking on tab icons
+									showSidebarContextMenu(e);
+								}
 								return;
 							}
 						}
+
+						// also show when right clicking in empty area
+						showSidebarContextMenu(e);
 					}
 				}
 			});
@@ -497,6 +568,22 @@ public class ClientUI
 					public void hotkeyPressed()
 					{
 						togglePluginPanel();
+					}
+				},
+				new HotkeyListener(config::dragHotkey)
+				{
+					@Override
+					public void hotkeyPressed()
+					{
+						log.info("Hotkey {} pressed", config.dragHotkey().toString());
+						inDraggingMode = true;
+					}
+
+					@Override
+					public void hotkeyReleased()
+					{
+						log.info("Hotkey {} released", config.dragHotkey().toString());
+						inDraggingMode = false;
 					}
 				});
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
@@ -524,6 +611,7 @@ public class ClientUI
 				@Override
 				public MouseEvent mousePressed(MouseEvent mouseEvent)
 				{
+					// TODO: update to `mouseEvent.getButton() == MouseEvent.BUTTON1`
 					if (SwingUtilities.isLeftMouseButton(mouseEvent) && sidebarButtonPosition.contains(mouseEvent.getPoint()))
 					{
 						SwingUtilities.invokeLater(ClientUI.this::toggleSidebar);
@@ -719,6 +807,10 @@ public class ClientUI
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
 			});
 		}
+
+		// wait until after all plugins are loaded to apply custom order
+		startupComplete = true;
+		applyCustomOrder();
 	}
 
 	private boolean dispatchWindowKeyEvent(KeyEvent ev)
@@ -925,6 +1017,7 @@ public class ClientUI
 
 	/**
 	 * Returns current cursor set on game container
+	 *
 	 * @return awt cursor
 	 */
 	public Cursor getCurrentCursor()
@@ -934,6 +1027,7 @@ public class ClientUI
 
 	/**
 	 * Returns current custom cursor or default system cursor if cursor is not set
+	 *
 	 * @return awt cursor
 	 */
 	public Cursor getDefaultCursor()
@@ -944,6 +1038,7 @@ public class ClientUI
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
+	 *
 	 * @param image cursor image
 	 * @param name  cursor name
 	 */
@@ -962,6 +1057,7 @@ public class ClientUI
 
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#init()} to be called first.
+	 *
 	 * @param cursor awt cursor
 	 */
 	public void setCursor(final Cursor cursor)
@@ -971,6 +1067,7 @@ public class ClientUI
 
 	/**
 	 * Resets client window cursor to default one.
+	 *
 	 * @see ClientUI#setCursor(BufferedImage, String)
 	 */
 	public void resetCursor()
@@ -1007,6 +1104,7 @@ public class ClientUI
 
 	/**
 	 * Paint UI related overlays to target graphics
+	 *
 	 * @param graphics target graphics
 	 */
 	public void paintOverlays(final Graphics2D graphics)
@@ -1046,6 +1144,44 @@ public class ClientUI
 		return frame.getGraphicsConfiguration();
 	}
 
+	public void rebuildSidebar(Collection<NavigationButton> entries)
+	{
+		log.info("rebuildSidebar(): begin");
+		SwingUtilities.invokeLater(() ->
+		{
+			// Remember the currently selected tab
+			NavigationButton selected = selectedTab;
+			log.info("rebuildSidebar(): Currently selected tab: {}", selected != null ? selected.getTooltip() : "null");
+
+			// Clear the sidebar
+			sidebar.removeAll();
+			sidebarTabOrder.clear();
+
+			// Add entries in the exact order provided
+			for (NavigationButton navBtn : entries)
+			{
+				final int TAB_SIZE = 16;
+				Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
+				sidebarTabOrder.add(navBtn);
+				sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
+			}
+
+			// Restore selection if possible
+			log.info("rebuildSidebar(): Restoring selected tab: '{}'", selected != null ? selected.getTooltip() : "null");
+			if (selected != null && sidebarTabOrder.contains(selected))
+			{
+				int index = sidebarTabOrder.indexOf(selected);
+				log.info("rebuildSidebar(): sidebarTabOrder contains tab, index: {}", index);
+				sidebar.setSelectedIndex(index);
+			}
+			else
+			{
+				log.info("rebuildSidebar(): sidebarTabOrder does not contain tab, setting selected index to -1");
+				sidebar.setSelectedIndex(-1);
+			}
+		});
+	}
+
 	void openPanel(NavigationButton navBtn, boolean showSidebar)
 	{
 		if (navBtn != null && !sidebarEntries.contains(navBtn))
@@ -1053,7 +1189,7 @@ public class ClientUI
 			return;
 		}
 
-		int index = navBtn == null ? -1 : sidebarEntries.headSet(navBtn).size();
+		int index = navBtn == null ? -1 : sidebarTabOrder.indexOf(navBtn);
 		sidebar.setSelectedIndex(index);
 
 		toggleSidebar(showSidebar, false);
@@ -1131,9 +1267,10 @@ public class ClientUI
 				}
 			}
 
-			if (open == null)
+			// If no last opened button found, use the first button in the sidebar
+			if (open == null && !sidebarTabOrder.isEmpty())
 			{
-				open = sidebarEntries.first();
+				open = sidebarTabOrder.get(0);
 			}
 
 			openPanel(open, true);
@@ -1604,5 +1741,138 @@ public class ClientUI
 		public void invalidateLayout(Container target)
 		{
 		}
+	}
+
+	private void resetCustomOrder()
+	{
+		List<String> defaultOrder = sidebarEntries.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(Collectors.toList());
+		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(defaultOrder));
+	}
+
+	// loads custom order stored config
+	private void applyCustomOrder()
+	{
+		List<NavigationButton> orderedButtons = loadCustomOrder();
+		log.info("applyCustomOrder(): Applying custom sidebar order: {}", orderedButtons.stream()
+			.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
+			.collect(Collectors.toList()));
+
+		if (!orderedButtons.isEmpty())
+		{
+			rebuildSidebar(orderedButtons);
+		}
+	}
+
+	private void saveCustomOrder()
+	{
+		if (sidebarTabOrder.isEmpty())
+		{
+			return;
+		}
+
+		List<String> tabList = sidebarTabOrder.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(Collectors.toList());
+
+		log.info("Saving custom sidebar order: {}", tabList);
+		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
+	}
+
+	private List<NavigationButton> loadCustomOrder()
+	{
+		log.info("loadCustomOrder(): Loading custom sidebar order from config");
+		String customTabOrderListJson = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+
+		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
+		{
+			return new ArrayList<>();
+		}
+
+		List<String> customTabOrderList;
+		try
+		{
+			// CHECKSTYLE:OFF
+			customTabOrderList = gson.fromJson(customTabOrderListJson, new TypeToken<List<String>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (Exception e)
+		{
+			log.warn("Corrupted custom order config, clearing: {}", e.getMessage());
+			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+			return new ArrayList<>();
+		}
+
+		if (customTabOrderList == null || customTabOrderList.isEmpty())
+		{
+			return new ArrayList<>();
+		}
+
+		// use sidebarEntries as source of truth for all currently enabled tabs
+		Collection<NavigationButton> currentSidebarTabs = getSidebarEntries();
+
+		// Reconstruct order: saved custom-ordered tabs first, then any new tabs appended
+		List<NavigationButton> assembledTabList = customTabOrderList.stream()
+			.map(tooltip -> currentSidebarTabs.stream()
+				.filter(btn -> btn.getTooltip().equals(tooltip))
+				.findFirst()
+				.orElse(null))
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
+
+		// Append any tabs not in saved order
+		currentSidebarTabs.stream()
+			.filter(btn -> !assembledTabList.contains(btn))
+			.forEach(assembledTabList::add);
+
+		List<String> resultTooltips = assembledTabList.stream()
+			.map(NavigationButton::getTooltip)
+			.collect(Collectors.toList());
+		log.info("loadCustomOrder(): Order comparison between customTabOrderList and assembledTabList: {}",
+			customTabOrderList.equals(resultTooltips));
+
+		return assembledTabList;
+	}
+
+	private void handleDrag(int fromIndex, int toIndex)
+	{
+		log.info("handleDrag():inDraggingMode: {}. fromIndex: {} toIndex: {}", inDraggingMode, fromIndex, toIndex);
+		// Only allow dragging when the drag hotkey is held
+		if (inDraggingMode)
+		{
+			if (fromIndex >= 0 && fromIndex < sidebarTabOrder.size() &&
+				toIndex >= 0 && toIndex < sidebarTabOrder.size())
+			{
+				NavigationButton moved = sidebarTabOrder.remove(fromIndex);
+				sidebarTabOrder.add(toIndex, moved);
+				saveCustomOrder();
+			}
+		}
+	}
+
+	private void showSidebarContextMenu(MouseEvent event)
+	{
+		JPopupMenu menu = new JPopupMenu();
+		menu.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		// Reset menu item - resets custom order to current default order
+		JMenuItem resetItem = new JMenuItem("Reset order");
+		resetItem.addActionListener(e ->
+		{
+			final int result = JOptionPane.showOptionDialog(resetItem,
+				"Are you sure you want to reset the sidebar order?",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
+
+			if (result == JOptionPane.YES_OPTION)
+			{
+				resetCustomOrder();
+				applyCustomOrder();
+			}
+		});
+		menu.add(resetItem);
+
+		menu.show(sidebar, event.getX(), event.getY());
 	}
 }
