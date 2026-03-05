@@ -28,6 +28,7 @@ package net.runelite.client.plugins.mining;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("mining")
@@ -50,6 +51,74 @@ public interface MiningConfig extends Config
 		description = "Configures whether to display mining session stats."
 	)
 	default boolean showMiningStats()
+	{
+		return true;
+	}
+
+	@ConfigSection(
+		name = "Respawn timers",
+		description = "Configures whether to display respawn timers for the given category.",
+		position = 0,
+		closedByDefault = true
+	)
+	String respawnTimersSection = "respawnTimersSection";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "rock",
+		name = "Rocks",
+		description = "General rocks that aren't within a specific category",
+		section = respawnTimersSection
+	)
+	default boolean showRockRespawns()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "motherlodeMine",
+		name = "Motherlode Mine",
+		description = "Ore veins within Motherlode Mine",
+		section = respawnTimersSection
+	)
+	default boolean showMotherlodeMineRespawns()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "oreVeins",
+		name = "Ore veins",
+		description = "Ore veins such as gold veins or calcified rocks",
+		section = respawnTimersSection
+	)
+	default boolean showOreVeinRespawns()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "amethyst",
+		name = "Amethyst",
+		description = "Amethyst crystals",
+		section = respawnTimersSection
+	)
+	default boolean showAmethystRespawns()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "barronite",
+		name = "Barronite",
+		description = "Barronite rocks",
+		section = respawnTimersSection
+	)
+	default boolean showBarroniteRespawns()
 	{
 		return true;
 	}
