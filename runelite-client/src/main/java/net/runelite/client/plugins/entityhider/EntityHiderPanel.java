@@ -90,7 +90,8 @@ public class EntityHiderPanel extends PluginPanel
 		unhideAllBtn.setToolTipText("Unhide all NPCs everywhere (clears entire hidden list)");
 		unhideAllBtn.setAlignmentX(0.5f);
 		unhideAllBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, unhideAllBtn.getPreferredSize().height));
-		unhideAllBtn.addActionListener(e -> {
+		unhideAllBtn.addActionListener(e ->
+		{
 			int result = JOptionPane.showConfirmDialog(
 				this,
 				"Unhide all NPCs everywhere?",
