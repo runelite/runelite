@@ -193,7 +193,7 @@ public class EntityHiderPlugin extends Plugin
 		{
 			updateConfig();
 
-			if (e.getKey().equals("hideDynamicPanel"))
+			if ("hideDynamicPanel".equals(e.getKey()))
 			{
 				if (config.hideDynamicPanel())
 				{
