@@ -414,7 +414,7 @@ public class NpcAggroAreaPlugin extends Plugin
 				break;
 			case "npcUnaggroCollisionDetection":
 			case "npcUnaggroShowAreaLines":
-			case "npcUnaggroShowMinimapLines":
+			case "npcUnaggroShowMinimapAreaLines":
 				calculateLinesToDisplay();
 				break;
 			case "npcUnaggroNames":
