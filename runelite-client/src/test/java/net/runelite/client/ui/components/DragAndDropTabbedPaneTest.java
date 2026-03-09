@@ -24,8 +24,6 @@
  */
 package net.runelite.client.ui.components;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import static org.junit.Assert.assertEquals;
@@ -66,20 +64,12 @@ public class DragAndDropTabbedPaneTest
 	@Test
 	public void testTabDragListenerRegistration()
 	{
-		AtomicBoolean called = new AtomicBoolean(false);
-		AtomicInteger fromIdx = new AtomicInteger(-1);
-		AtomicInteger toIdx = new AtomicInteger(-1);
-
 		DragAndDropTabbedPane.DragListener listener = (from, to) ->
 		{
-			called.set(true);
-			fromIdx.set(from);
-			toIdx.set(to);
 		};
 
-		tabbedPane.addDragListener(listener);
 		// Listener is registered, no exception
-		tabbedPane.removeTabDragListener(listener);
+		tabbedPane.addDragListener(listener);
 	}
 
 	@Test

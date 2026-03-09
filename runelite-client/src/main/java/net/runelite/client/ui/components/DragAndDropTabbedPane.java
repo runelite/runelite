@@ -45,6 +45,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
+import org.intellij.lang.annotations.MagicConstant;
 
 /**
  * A JTabbedPane that supports drag-and-drop reordering of tabs.
@@ -52,6 +53,11 @@ import net.runelite.client.util.ColorUtil;
  * During a drag, a floating image of the dragged tab follows the cursor
  * and a highlight marks the drop target. The actual tab move only happens
  * once on drop, avoiding expensive intermediate layout passes.
+ * <p>
+ * This implementation also suppresses tab selection changes while dragging to
+ * prevent the displayed tab from changing during the drag operation. This is
+ * done by intercepting mouse events and overriding setSelectedIndex to ignore
+ * changes while a drag is in progress or potentially starting.
  */
 @Slf4j
 public class DragAndDropTabbedPane extends JTabbedPane
@@ -68,7 +74,10 @@ public class DragAndDropTabbedPane extends JTabbedPane
 	@Setter
 	private Supplier<Boolean> dragAllowedSupplier;
 
-	public DragAndDropTabbedPane(int tabPlacement)
+	/**
+	 * Restrict arg vals to allowed values in {@link JTabbedPane}
+	 */
+	public DragAndDropTabbedPane(@MagicConstant(intValues = {TOP, BOTTOM, LEFT, RIGHT}) int tabPlacement)
 	{
 		super(tabPlacement);
 		MouseAdapter mouseAdapter = new DragAndDropTabMouseAdapter();
@@ -77,32 +86,23 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		this.dragAllowedSupplier = (() -> false);
 	}
 
-	/**
-	 * Suppress tab selection changes while a drag is in progress or
-	 * potentially starting.
-	 */
+	// Suppress changing tab while dragging or potentially dragging.
 	@Override
 	public void setSelectedIndex(int index)
 	{
-		if (potentialDrag || dragging)
+		if (!potentialDrag && !dragging)
 		{
-			return;
+			super.setSelectedIndex(index);
 		}
-		super.setSelectedIndex(index);
 	}
 
-	/**
-	 * Intercept MOUSE_PRESSED to set potentialDrag before the event reaches
-	 * the UI delegate's mouse listener.
-	 */
+	// If drag is allowed, set potentialDrag on MOUSE_PRESSED events before the event reaches the UI delegate's mouse listener.
+	// This allows suppressing undesired tab selection behavior only when dragging is possible, e.g. when hotkey is held.
 	@Override
 	protected void processMouseEvent(MouseEvent e)
 	{
-		if (
-			// dragMouseAdapter != null &&
-			e.getID() == MouseEvent.MOUSE_PRESSED &&
-				SwingUtilities.isLeftMouseButton(e) &&
-				getTabCount() > 1)
+		if (dragAllowedSupplier.get() && e.getID() == MouseEvent.MOUSE_PRESSED &&
+			SwingUtilities.isLeftMouseButton(e) && getTabCount() > 1)
 		{
 			int tabIndex = indexAtLocation(e.getX(), e.getY());
 			if (tabIndex >= 0)
@@ -118,54 +118,38 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		dragListeners.add(listener);
 	}
 
-	public void removeTabDragListener(DragListener listener)
+	public void removeDragListener(DragListener listener)
 	{
 		dragListeners.remove(listener);
 	}
 
-	public void clearTabDragListeners()
-	{
-		dragListeners.clear();
-	}
-
 	private void startDragging(Point point)
 	{
-		if (!dragAllowedSupplier.get())
-		{
-			log.debug("startDragging blocked - drag not allowed");
-			dragStartPoint = null;
-			potentialDrag = false;
-			return;
-		}
-
 		dragIndex = indexAtLocation(dragStartPoint.x, dragStartPoint.y);
-		if (dragIndex < 0)
+		if (dragIndex >= 0)
 		{
-			dragStartPoint = null;
-			return;
+			log.debug("startDragging: dragIndex={}", dragIndex);
+			dragging = true;
+			dropTargetIndex = dragIndex;
+			currentDragPoint = point;
+
+			Icon icon = getIconAt(dragIndex);
+			if (icon != null)
+			{
+				int pad = 4;
+				int w = icon.getIconWidth() + pad * 2;
+				int h = icon.getIconHeight() + pad * 2;
+				dragImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+				Graphics2D g = dragImage.createGraphics();
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setColor(ColorUtil.colorWithAlpha(ColorScheme.MEDIUM_GRAY_COLOR, 128));
+				g.fillRoundRect(0, 0, w, h, 6, 6);
+				icon.paintIcon(this, g, pad, pad);
+				g.dispose();
+			}
+
+			repaint();
 		}
-
-		log.debug("startDragging: dragIndex={}", dragIndex);
-		dragging = true;
-		dropTargetIndex = dragIndex;
-		currentDragPoint = point;
-
-		Icon icon = getIconAt(dragIndex);
-		if (icon != null)
-		{
-			int pad = 4;
-			int w = icon.getIconWidth() + pad * 2;
-			int h = icon.getIconHeight() + pad * 2;
-			dragImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = dragImage.createGraphics();
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setColor(ColorUtil.colorWithAlpha(ColorScheme.MEDIUM_GRAY_COLOR, 128));
-			g.fillRoundRect(0, 0, w, h, 6, 6);
-			icon.paintIcon(this, g, pad, pad);
-			g.dispose();
-		}
-
-		repaint();
 	}
 
 	private void drag(Point point)
@@ -184,66 +168,71 @@ public class DragAndDropTabbedPane extends JTabbedPane
 	private void finishDragging()
 	{
 		potentialDrag = false;
-		if (!dragging)
+		if (dragging)
 		{
-			return;
-		}
+			int fromIndex = dragIndex;
+			int toIndex = dropTargetIndex;
 
-		int fromIndex = dragIndex;
-		int toIndex = dropTargetIndex;
-
-		if (fromIndex != toIndex && fromIndex >= 0 && toIndex >= 0)
-		{
-			moveTab(fromIndex, toIndex);
-			for (DragListener listener : dragListeners)
+			if (fromIndex != toIndex && fromIndex >= 0 && toIndex >= 0)
 			{
-				listener.onDrag(fromIndex, toIndex);
+				moveTab(fromIndex, toIndex);
+				dragListeners.forEach(listener -> listener.onDrag(fromIndex, toIndex));
 			}
+
+			dragging = false;
+			dragImage = null;
+			repaint();
 		}
-
-		// Reset drag state AFTER moveTab completes so that isDragging() returns true
-		// during the tab move operations, preventing ChangeListener from updating selectedTab
-		// This caused the displayed tab to change to the new plugin at the same index after reset
-		resetDragState();
-
-		repaint();
-	}
-
-	private void resetDragState()
-	{
-		dragging = false;
-		potentialDrag = false;
-		dragStartPoint = null;
-		dragIndex = -1;
-		dropTargetIndex = -1;
-		dragImage = null;
-		currentDragPoint = null;
 	}
 
 	private int calculateDropTargetIndex(Point point)
 	{
 		int tabCount = getTabCount();
-		if (tabCount == 0)
-		{
-			return 0;
-		}
-
 		for (int i = 0; i < tabCount; i++)
 		{
 			Rectangle bounds = getBoundsAt(i);
-			if (bounds == null)
+			if (bounds != null)
 			{
-				continue;
-			}
-			int midY = bounds.y + bounds.height / 2;
-			if (point.y < midY)
-			{
-				return i;
+				int midY = bounds.y + bounds.height / 2;
+				if (point.y < midY)
+				{
+					return i;
+				}
 			}
 		}
-
 		return tabCount;
 	}
+
+	private void moveTab(int fromIndex, int toIndex)
+	{
+		String title = getTitleAt(fromIndex);
+		Icon icon = getIconAt(fromIndex);
+		Component component = getComponentAt(fromIndex);
+		String tooltip = getToolTipTextAt(fromIndex);
+		boolean enabled = isEnabledAt(fromIndex);
+		int selectedIndex = super.getSelectedIndex();
+
+		removeTabAt(fromIndex);
+
+		int insertIndex = fromIndex < toIndex ? toIndex - 1 : toIndex;
+		insertTab(title, icon, component, tooltip, insertIndex);
+		setEnabledAt(insertIndex, enabled);
+
+		if (selectedIndex == fromIndex)
+		{
+			super.setSelectedIndex(insertIndex);
+		}
+		else if (selectedIndex > fromIndex && selectedIndex <= toIndex)
+		{
+			super.setSelectedIndex(selectedIndex - 1);
+		}
+		else if (selectedIndex < fromIndex && selectedIndex >= toIndex)
+		{
+			super.setSelectedIndex(selectedIndex + 1);
+		}
+	}
+
+	// Begin graphical functions
 
 	@Override
 	public void paint(Graphics g)
@@ -280,13 +269,13 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		// Draw drop indicator line
 		boolean showIndicator = dropTargetIndex >= 0 && dropTargetIndex != dragIndex && dropTargetIndex != dragIndex + 1;
 		log.debug("paint: dropTargetIndex={}, dragIndex={}, showIndicator={}", dropTargetIndex, dragIndex, showIndicator);
-		// if (dropTargetIndex >= 0 && dropTargetIndex != dragIndex && dropTargetIndex != dragIndex + 1)
+
 		if (showIndicator)
 		{
 			drawDropIndicator(g2d);
 		}
 
-		// Draw floating drag image
+		// Draw floating dragged icon
 		if (dragImage != null && currentDragPoint != null)
 		{
 			int x = currentDragPoint.x - dragImage.getWidth() / 2;
@@ -299,73 +288,29 @@ public class DragAndDropTabbedPane extends JTabbedPane
 
 	private void drawDropIndicator(Graphics2D g)
 	{
+		final int IND_THICKNESS = 2; // ensure even, otherwise, indicator won't  be centered
+		final int OFFSET = IND_THICKNESS / 2; // used to center indicator between tabs
 		int tabPlacement = getTabPlacement();
-		boolean vertical = (tabPlacement == LEFT || tabPlacement == RIGHT);
+		int tabCount = getTabCount();
+		boolean verticalTabs = (tabPlacement == LEFT || tabPlacement == RIGHT);
+		boolean beyondEnd = dropTargetIndex >= tabCount;
 
-		Rectangle ref;
-		int pos;
-		if (dropTargetIndex >= getTabCount())
+		Rectangle tab = getBoundsAt(beyondEnd ? tabCount - 1 : dropTargetIndex);
+		if (tab != null)
 		{
-			ref = getBoundsAt(getTabCount() - 1);
-			if (ref == null)
+			int indicatorPosition = beyondEnd
+				? (verticalTabs ? tab.y + tab.height : tab.x + tab.width) - OFFSET // get coord at end of last tab
+				: (verticalTabs ? tab.y : tab.x) - OFFSET;
+
+			g.setColor(ColorScheme.BRAND_ORANGE);
+			if (verticalTabs)
 			{
-				return;
+				g.fillRect(tab.x, indicatorPosition, tab.width, IND_THICKNESS);
 			}
-			pos = vertical ? ref.y + ref.height : ref.x + ref.width;
-		}
-		else
-		{
-			ref = getBoundsAt(dropTargetIndex);
-			if (ref == null)
+			else
 			{
-				return;
+				g.fillRect(indicatorPosition, tab.y, IND_THICKNESS, tab.height);
 			}
-			pos = vertical ? ref.y : ref.x;
-		}
-
-		g.setColor(ColorScheme.BRAND_ORANGE);
-		if (vertical)
-		{
-			g.fillRect(ref.x + 2, pos - 1, ref.width - 4, 3);
-		}
-		else
-		{
-			g.fillRect(pos - 1, ref.y + 2, 3, ref.height - 4);
-		}
-	}
-
-	private void moveTab(int fromIndex, int toIndex)
-	{
-		if (fromIndex == toIndex)
-		{
-			return;
-		}
-
-		String title = getTitleAt(fromIndex);
-		Icon icon = getIconAt(fromIndex);
-		Component component = getComponentAt(fromIndex);
-		String tooltip = getToolTipTextAt(fromIndex);
-		boolean enabled = isEnabledAt(fromIndex);
-
-		int selectedIndex = super.getSelectedIndex();
-
-		removeTabAt(fromIndex);
-
-		int insertIndex = fromIndex < toIndex ? toIndex - 1 : toIndex;
-		insertTab(title, icon, component, tooltip, insertIndex);
-		setEnabledAt(insertIndex, enabled);
-
-		if (selectedIndex == fromIndex)
-		{
-			super.setSelectedIndex(insertIndex);
-		}
-		else if (selectedIndex > fromIndex && selectedIndex <= toIndex)
-		{
-			super.setSelectedIndex(selectedIndex - 1);
-		}
-		else if (selectedIndex < fromIndex && selectedIndex >= toIndex)
-		{
-			super.setSelectedIndex(selectedIndex + 1);
 		}
 	}
 
@@ -380,7 +325,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		@Override
 		public void mousePressed(MouseEvent e)
 		{
-			if (SwingUtilities.isLeftMouseButton(e) && getTabCount() > 1)
+			if (dragAllowedSupplier.get() && SwingUtilities.isLeftMouseButton(e) && getTabCount() > 1)
 			{
 				dragStartPoint = e.getPoint();
 			}
@@ -389,7 +334,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		@Override
 		public void mouseDragged(MouseEvent e)
 		{
-			if (SwingUtilities.isLeftMouseButton(e) && dragStartPoint != null)
+			if (dragAllowedSupplier.get() && SwingUtilities.isLeftMouseButton(e) && dragStartPoint != null)
 			{
 				Point point = e.getPoint();
 				if (dragging)
@@ -406,7 +351,7 @@ public class DragAndDropTabbedPane extends JTabbedPane
 		@Override
 		public void mouseReleased(MouseEvent e)
 		{
-			if (SwingUtilities.isLeftMouseButton(e))
+			if (dragAllowedSupplier.get() && SwingUtilities.isLeftMouseButton(e))
 			{
 				if (dragging)
 				{

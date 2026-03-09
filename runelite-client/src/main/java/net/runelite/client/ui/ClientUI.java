@@ -172,7 +172,6 @@ public class ClientUI
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
-	private boolean reorderPending;
 	private boolean startupComplete;
 	private boolean inDraggingMode = false;
 
@@ -252,23 +251,11 @@ public class ClientUI
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
-		if (!event.isLoaded() || !startupComplete)
+		// save custom order any time plugin is (un)installed/(en/dis)abled to prevent loading/order issues
+		if (startupComplete)
 		{
-			return;
-		}
-
-		// Ensure added/removed plugins are added to sidebar when using custom ordering.
-		// Current issue is new icons don't load in when using custom ordering
-		log.info("onPluginChanged() plugin {} changed, loaded={}", event.getPlugin().getName(), event.isLoaded());
-		if (!reorderPending)
-		{
-			reorderPending = true;
-			SwingUtilities.invokeLater(() ->
-			{
-				reorderPending = false;
-				log.info("onPluginChanged() applying custom order");
-				applyCustomOrder();
-			});
+			log.debug("onPluginChanged() plugin {} changed, loaded={}", event.getPlugin().getName(), event.isLoaded());
+			SwingUtilities.invokeLater(this::saveCustomOrder);
 		}
 	}
 
@@ -285,14 +272,12 @@ public class ClientUI
 			return;
 		}
 
-
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
-		int insertIndex = sidebarEntries.headSet(navBtn).size();
-		sidebarTabOrder.add(insertIndex, navBtn);
+		sidebarTabOrder.add(sidebarEntries.headSet(navBtn).size(), navBtn);
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			insertIndex);
+			sidebarEntries.headSet(navBtn).size());
 
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
@@ -457,21 +442,17 @@ public class ClientUI
 
 			sidebar.addChangeListener(ev ->
 			{
-				// Skip processing during drag operations - the drag may change the index
+				// skip processing during drag operations as the drag may change the index,
 				// but we want to preserve the originally selected tab
 				if (sidebar.isDragging())
 				{
-					log.info("changeListener(): skipping - drag in progress");
 					return;
 				}
 
-				log.info("changeListener(): event: '{}'", ev);
 				NavigationButton oldSelectedTab = selectedTab;
 				NavigationButton newSelectedTab;
-				log.info("changeListener(): oldSelectedTab: '{}'", oldSelectedTab != null ? oldSelectedTab.getTooltip() : "null");
 
 				int index = sidebar.getSelectedIndex();
-				log.info("changeListener(): sidebar.getSelectedIndex(): '{}'", index);
 				if (index < 0 || index >= sidebarTabOrder.size())
 				{
 					newSelectedTab = null;
@@ -486,7 +467,6 @@ public class ClientUI
 					return;
 				}
 
-				log.info("changeListener(): newSelectedTab: '{}'", newSelectedTab != null ? newSelectedTab.getTooltip() : "null");
 				selectedTab = newSelectedTab;
 
 				if (sidebar.isVisible())
@@ -515,34 +495,29 @@ public class ClientUI
 				{
 					if (e.getButton() == MouseEvent.BUTTON3)
 					{
-						log.info("sidebar.mouseListener().mousePressed(): Right click occurred.");
-						int index = 0;
-						for (var navBtn : sidebarTabOrder)
+						int tabIndex = sidebar.indexAtLocation(e.getX(), e.getY());
+						if (tabIndex >= 0 && tabIndex < sidebarTabOrder.size())
 						{
-							Rectangle bounds = sidebar.getBoundsAt(index++);
-							if (bounds != null && bounds.contains(e.getX(), e.getY()))
+							NavigationButton navBtn = sidebarTabOrder.get(tabIndex);
+							if (navBtn.getPopup() != null)
 							{
-								if (navBtn.getPopup() != null)
+								var menu = new JPopupMenu();
+								navBtn.getPopup().forEach((name, cb) ->
 								{
-									var menu = new JPopupMenu();
-									navBtn.getPopup().forEach((name, cb) ->
-									{
-										var menuItem = new JMenuItem(name);
-										menuItem.addActionListener(ev -> cb.run());
-										menu.add(menuItem);
-									});
-									menu.show(sidebar, e.getX(), e.getY());
-								}
-								else
-								{
-									// show when right clicking on tab icons
-									showSidebarContextMenu(e);
-								}
-								return;
+									var menuItem = new JMenuItem(name);
+									menuItem.addActionListener(ev -> cb.run());
+									menu.add(menuItem);
+								});
+								menu.show(sidebar, e.getX(), e.getY());
 							}
+							else
+							{
+								// show when right-clicking on tab icons, if no popup menu for tab exists
+								showSidebarContextMenu(e);
+							}
+							return;
 						}
-
-						// also show when right clicking in empty area
+						// show when right-clicking in empty area too
 						showSidebarContextMenu(e);
 					}
 				}
@@ -611,7 +586,6 @@ public class ClientUI
 				@Override
 				public MouseEvent mousePressed(MouseEvent mouseEvent)
 				{
-					// TODO: update to `mouseEvent.getButton() == MouseEvent.BUTTON1`
 					if (SwingUtilities.isLeftMouseButton(mouseEvent) && sidebarButtonPosition.contains(mouseEvent.getPoint()))
 					{
 						SwingUtilities.invokeLater(ClientUI.this::toggleSidebar);
@@ -1146,18 +1120,13 @@ public class ClientUI
 
 	public void rebuildSidebar(Collection<NavigationButton> entries)
 	{
-		log.info("rebuildSidebar(): begin");
 		SwingUtilities.invokeLater(() ->
 		{
-			// Remember the currently selected tab
 			NavigationButton selected = selectedTab;
-			log.info("rebuildSidebar(): Currently selected tab: {}", selected != null ? selected.getTooltip() : "null");
 
-			// Clear the sidebar
 			sidebar.removeAll();
 			sidebarTabOrder.clear();
 
-			// Add entries in the exact order provided
 			for (NavigationButton navBtn : entries)
 			{
 				final int TAB_SIZE = 16;
@@ -1166,19 +1135,10 @@ public class ClientUI
 				sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
 			}
 
-			// Restore selection if possible
-			log.info("rebuildSidebar(): Restoring selected tab: '{}'", selected != null ? selected.getTooltip() : "null");
-			if (selected != null && sidebarTabOrder.contains(selected))
-			{
-				int index = sidebarTabOrder.indexOf(selected);
-				log.info("rebuildSidebar(): sidebarTabOrder contains tab, index: {}", index);
-				sidebar.setSelectedIndex(index);
-			}
-			else
-			{
-				log.info("rebuildSidebar(): sidebarTabOrder does not contain tab, setting selected index to -1");
-				sidebar.setSelectedIndex(-1);
-			}
+			int index = selected != null && sidebarTabOrder.contains(selected)
+				? sidebarTabOrder.indexOf(selected)
+				: -1;
+			sidebar.setSelectedIndex(index);
 		});
 	}
 
@@ -1751,7 +1711,6 @@ public class ClientUI
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(defaultOrder));
 	}
 
-	// loads custom order stored config
 	private void applyCustomOrder()
 	{
 		List<NavigationButton> orderedButtons = loadCustomOrder();
@@ -1776,13 +1735,12 @@ public class ClientUI
 			.map(NavigationButton::getTooltip)
 			.collect(Collectors.toList());
 
-		log.info("Saving custom sidebar order: {}", tabList);
+		log.debug("Saving custom sidebar order: {}", tabList);
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
 	}
 
 	private List<NavigationButton> loadCustomOrder()
 	{
-		log.info("loadCustomOrder(): Loading custom sidebar order from config");
 		String customTabOrderListJson = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 
 		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
@@ -1812,7 +1770,7 @@ public class ClientUI
 		// use sidebarEntries as source of truth for all currently enabled tabs
 		Collection<NavigationButton> currentSidebarTabs = getSidebarEntries();
 
-		// Reconstruct order: saved custom-ordered tabs first, then any new tabs appended
+		// saved custom-ordered tabs first, then any new tabs
 		List<NavigationButton> assembledTabList = customTabOrderList.stream()
 			.map(tooltip -> currentSidebarTabs.stream()
 				.filter(btn -> btn.getTooltip().equals(tooltip))
@@ -1821,7 +1779,7 @@ public class ClientUI
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
 
-		// Append any tabs not in saved order
+		// append any tabs not in saved custom order; prevents new tabs from not appearing when added`
 		currentSidebarTabs.stream()
 			.filter(btn -> !assembledTabList.contains(btn))
 			.forEach(assembledTabList::add);
@@ -1829,7 +1787,7 @@ public class ClientUI
 		List<String> resultTooltips = assembledTabList.stream()
 			.map(NavigationButton::getTooltip)
 			.collect(Collectors.toList());
-		log.info("loadCustomOrder(): Order comparison between customTabOrderList and assembledTabList: {}",
+		log.debug("loadCustomOrder(): Order comparison between customTabOrderList and assembledTabList: {}",
 			customTabOrderList.equals(resultTooltips));
 
 		return assembledTabList;
@@ -1837,8 +1795,6 @@ public class ClientUI
 
 	private void handleDrag(int fromIndex, int toIndex)
 	{
-		log.info("handleDrag():inDraggingMode: {}. fromIndex: {} toIndex: {}", inDraggingMode, fromIndex, toIndex);
-		// Only allow dragging when the drag hotkey is held
 		if (inDraggingMode)
 		{
 			if (fromIndex >= 0 && fromIndex < sidebarTabOrder.size() &&
@@ -1856,7 +1812,6 @@ public class ClientUI
 		JPopupMenu menu = new JPopupMenu();
 		menu.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		// Reset menu item - resets custom order to current default order
 		JMenuItem resetItem = new JMenuItem("Reset order");
 		resetItem.addActionListener(e ->
 		{
@@ -1872,7 +1827,6 @@ public class ClientUI
 			}
 		});
 		menu.add(resetItem);
-
 		menu.show(sidebar, event.getX(), event.getY());
 	}
 }
