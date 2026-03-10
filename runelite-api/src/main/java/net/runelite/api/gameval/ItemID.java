@@ -86794,6 +86794,7 @@ public final class ItemID
 	 * Open silklined herb sack
 	 */
 	public static final int SLAYER_HERB_SACK_SILK_OPEN = 33137;
+	public static final int MINIGAME_TELEPORT = 33138;
 
 	public static final class Cert
 	{

@@ -1826,6 +1826,31 @@ public final class SpriteID
 		public static final int _47 = 366;
 		public static final int _48 = 367;
 		public static final int _49 = 368;
+		public static final int _50 = 7479;
+		public static final int _51 = 7480;
+		public static final int _52 = 7481;
+		public static final int _53 = 7482;
+		public static final int _54 = 7483;
+		public static final int _55 = 7484;
+		public static final int _56 = 7485;
+		public static final int _57 = 7486;
+		public static final int _58 = 7487;
+		public static final int _59 = 7488;
+		public static final int _60 = 7489;
+		public static final int _61 = 7490;
+		public static final int _62 = 7491;
+		public static final int _63 = 7492;
+		public static final int _64 = 7493;
+		public static final int _65 = 7494;
+		public static final int _66 = 7495;
+		public static final int _67 = 7496;
+		public static final int _68 = 7497;
+		public static final int _69 = 7498;
+		public static final int _70 = 7499;
+		public static final int _71 = 7500;
+		public static final int _72 = 7501;
+		public static final int _73 = 7502;
+		public static final int _74 = 7503;
 
 		public static final int BIND = _0;
 		public static final int SNARE = _1;
@@ -1929,6 +1954,31 @@ public final class SpriteID
 		public static final int _47 = 416;
 		public static final int _48 = 417;
 		public static final int _49 = 418;
+		public static final int _50 = 7504;
+		public static final int _51 = 7505;
+		public static final int _52 = 7506;
+		public static final int _53 = 7507;
+		public static final int _54 = 7508;
+		public static final int _55 = 7509;
+		public static final int _56 = 7510;
+		public static final int _57 = 7511;
+		public static final int _58 = 7512;
+		public static final int _59 = 7513;
+		public static final int _60 = 7514;
+		public static final int _61 = 7515;
+		public static final int _62 = 7516;
+		public static final int _63 = 7517;
+		public static final int _64 = 7518;
+		public static final int _65 = 7519;
+		public static final int _66 = 7520;
+		public static final int _67 = 7521;
+		public static final int _68 = 7522;
+		public static final int _69 = 7523;
+		public static final int _70 = 7524;
+		public static final int _71 = 7525;
+		public static final int _72 = 7526;
+		public static final int _73 = 7527;
+		public static final int _74 = 7528;
 
 		public static final int BIND = _0;
 		public static final int SNARE = _1;
@@ -11064,5 +11114,33 @@ public final class SpriteID
 		public static final int _21 = 7452;
 		public static final int _22 = 7453;
 		public static final int _23 = 7454;
+	}
+
+	public static final class IconMinigames64x64
+	{
+		public static final int _0 = 7455;
+		public static final int _1 = 7456;
+		public static final int _2 = 7457;
+		public static final int _3 = 7458;
+		public static final int _4 = 7459;
+		public static final int _5 = 7460;
+		public static final int _6 = 7461;
+		public static final int _7 = 7462;
+		public static final int _8 = 7463;
+		public static final int _9 = 7464;
+		public static final int _10 = 7465;
+		public static final int _11 = 7466;
+		public static final int _12 = 7467;
+		public static final int _13 = 7468;
+		public static final int _14 = 7469;
+		public static final int _15 = 7470;
+		public static final int _16 = 7471;
+		public static final int _17 = 7472;
+		public static final int _18 = 7473;
+		public static final int _19 = 7474;
+		public static final int _20 = 7475;
+		public static final int _21 = 7476;
+		public static final int _22 = 7477;
+		public static final int _23 = 7478;
 	}
 }

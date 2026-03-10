@@ -1126,6 +1126,11 @@ public final class VarbitID
 	public static final int WIN05_DECO_COUNT_PINK = 1482;
 	public static final int WIN05_DECO_SHAPE = 1483;
 	public static final int DEADMAN_TOURNAMENT_FINALAREA = 1497;
+	public static final int MAGICTRAINING_TELE_POINTS_OLD = 1498;
+	public static final int MAGICTRAINING_ENTRA_NOOB = 1499;
+	public static final int MAGICTRAINING_GRAVE_BONE1COUNT = 1500;
+	public static final int MAGICTRAINING_GRAVE_BONE2COUNT = 1501;
+	public static final int MAGICTRAINING_GRAVE_BONE3COUNT = 1502;
 	public static final int MAGICTRAINING_ENCHAN_ORBTOTAL = 1503;
 	public static final int MAGICTRAINING_ALCHEM_COINREWARD = 1504;
 	public static final int MAGICTRAINING_BONESPEACHES = 1505;
@@ -3186,6 +3191,7 @@ public final class VarbitID
 	public static final int POH_MENAGERIE_SMOKEPET = 4366;
 	public static final int POH_MENAGERIE_KRAKENPET = 4367;
 	public static final int DAN_RAGS_THE_RAGGERS_OH_DAN = 4370;
+	public static final int OPTION_LEVEL_UP_POPUP_LIST = 4371;
 	public static final int TRADE_THIS_PLAYER_REMOVED = 4374;
 	public static final int TRADE_OTHER_PLAYER_REMOVED = 4375;
 	public static final int TRADINGPOST_TOGGLES = 4378;
@@ -3514,6 +3520,17 @@ public final class VarbitID
 	public static final int PISCARILIUS_BURGLARY_TARGET = 4903;
 	public static final int SHAYZIEN_ARMOUR_CHALLENGE = 4904;
 	public static final int PISCARILIUS_BURGLARY_COMPLETED = 4905;
+	public static final int MONASTERY_ENTER = 4907;
+	public static final int ZEAH_WATERINGCAN_CHARGES = 4908;
+	public static final int ZEAH_TITHE_MINIGAME_UNLOCKED = 4909;
+	public static final int ZEAH_BLOOD_ALTAR_UNLOCKED = 4910;
+	public static final int ZEAH_SOUL_ALTAR_UNLOCKED = 4911;
+	public static final int ZEAH_LIBRARY_FETCHBOOK = 4912;
+	public static final int ZEAH_LIBRARY_BOOKHUNTER = 4913;
+	public static final int ZEAH_LIBRARY_SHUFFLEMANUSCRIPT = 4914;
+	public static final int ZEAH_LIBRARY_METMANUSCRIPTSEEKER = 4915;
+	public static final int ZEAH_TELEPORT_UNLOCKED = 4916;
+	public static final int ZEAH_SHAYZIEN_METCRIMEFIGHTER = 4917;
 	public static final int RC_NO_TALLY_REQUIRED_SOUL_UNUSED = 4918;
 	public static final int RC_NO_TALLY_REQUIRED_BLOOD_UNUSED = 4919;
 	public static final int MILL_FLOUR = 4920;

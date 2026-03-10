@@ -99,6 +99,7 @@ public final class VarPlayerID
 	public static final int SHEEP = 179;
 	public static final int FLUFFS = 180;
 	public static final int HEROQUEST = 188;
+	public static final int PRAYGUILD = 190;
 	public static final int MURDERQUEST = 192;
 	public static final int MURDERSUS = 195;
 	public static final int DESERTRESCUE = 197;
@@ -299,6 +300,7 @@ public final class VarPlayerID
 	public static final int CHAMPIONS_DEFEATED = 617;
 	public static final int DEVIOUS_BASE = 622;
 	public static final int WIN05_VAR = 623;
+	public static final int MAGICTRAINING5 = 628;
 	public static final int MAGICTRAINING6 = 629;
 	public static final int HANDSAND = 635;
 	public static final int HANDSAND_TRANSMIT = 636;
