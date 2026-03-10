@@ -824,10 +824,10 @@ parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
 lumbridge_home_teleport=7
-edgeville_home_teleport=105
-lunar_home_teleport=106
-arceuus_home_teleport=150
-fertile_soil=131
+edgeville_home_teleport=106
+lunar_home_teleport=107
+arceuus_home_teleport=151
+fertile_soil=132
 
 [tempoross]
 id=437
