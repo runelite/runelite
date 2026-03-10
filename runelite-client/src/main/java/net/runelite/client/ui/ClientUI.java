@@ -28,7 +28,6 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
 import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.awt.AWTException;
@@ -166,7 +165,6 @@ public class ClientUI
 	// sidebar vars
 	@Getter
 	private DragAndDropTabbedPane sidebar;
-	@Getter
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
 	@Getter
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
@@ -234,7 +232,6 @@ public class ClientUI
 		normalBoundsTimer.setRepeats(false);
 	}
 
-
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
@@ -252,10 +249,9 @@ public class ClientUI
 	public void onPluginChanged(PluginChanged event)
 	{
 		// save custom order any time plugin is (un)installed/(en/dis)abled to prevent loading/order issues
-		if (startupComplete)
+		if (startupComplete && event.isLoaded())
 		{
-			log.debug("onPluginChanged() plugin {} changed, loaded={}", event.getPlugin().getName(), event.isLoaded());
-			SwingUtilities.invokeLater(this::saveCustomOrder);
+			SwingUtilities.invokeLater(this::applyCustomOrder);
 		}
 	}
 
@@ -275,9 +271,16 @@ public class ClientUI
 		final int TAB_SIZE = 16;
 		Icon icon = new ImageIcon(ImageUtil.resizeImage(navBtn.getIcon(), TAB_SIZE, TAB_SIZE));
 
-		sidebarTabOrder.add(sidebarEntries.headSet(navBtn).size(), navBtn);
+		// Get index of inserted button if it exists in custom order, otherwise use the default order based on priority
+		// this prevents a visual bug when installing/enabling a plugin jumping from priority location -> custom order
+		List<NavigationButton> orderedButtons = getCustomOrder();
+		final int insertIndex = orderedButtons.contains(navBtn)
+			? orderedButtons.indexOf(navBtn)
+			: sidebarEntries.headSet(navBtn).size();
+
+		sidebarTabOrder.add(insertIndex, navBtn);
 		sidebar.insertTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip(),
-			sidebarEntries.headSet(navBtn).size());
+			insertIndex);
 
 		// insertTab changes the selected index when the first tab is inserted, avoid this
 		if (sidebar.getTabCount() == 1)
@@ -550,14 +553,12 @@ public class ClientUI
 					@Override
 					public void hotkeyPressed()
 					{
-						log.info("Hotkey {} pressed", config.dragHotkey().toString());
 						inDraggingMode = true;
 					}
 
 					@Override
 					public void hotkeyReleased()
 					{
-						log.info("Hotkey {} released", config.dragHotkey().toString());
 						inDraggingMode = false;
 					}
 				});
@@ -1135,9 +1136,7 @@ public class ClientUI
 				sidebar.addTab(null, icon, navBtn.getPanel().getWrappedPanel(), navBtn.getTooltip());
 			}
 
-			int index = selected != null && sidebarTabOrder.contains(selected)
-				? sidebarTabOrder.indexOf(selected)
-				: -1;
+			int index = sidebarTabOrder.indexOf(selected); // -1 if not found
 			sidebar.setSelectedIndex(index);
 		});
 	}
@@ -1713,8 +1712,8 @@ public class ClientUI
 
 	private void applyCustomOrder()
 	{
-		List<NavigationButton> orderedButtons = loadCustomOrder();
-		log.info("applyCustomOrder(): Applying custom sidebar order: {}", orderedButtons.stream()
+		List<NavigationButton> orderedButtons = getCustomOrder();
+		log.debug("applyCustomOrder(): Applying custom sidebar order: {}", orderedButtons.stream()
 			.map(btn -> btn.getTooltip() + ":" + btn.getPriority())
 			.collect(Collectors.toList()));
 
@@ -1726,49 +1725,31 @@ public class ClientUI
 
 	private void saveCustomOrder()
 	{
-		if (sidebarTabOrder.isEmpty())
+		if (!sidebarTabOrder.isEmpty())
 		{
-			return;
+			List<String> tabList = sidebarTabOrder.stream()
+				.map(NavigationButton::getTooltip)
+				.collect(Collectors.toList());
+
+			log.debug("Saving custom sidebar order: {}", tabList);
+			configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, String.join(",", tabList));
 		}
-
-		List<String> tabList = sidebarTabOrder.stream()
-			.map(NavigationButton::getTooltip)
-			.collect(Collectors.toList());
-
-		log.debug("Saving custom sidebar order: {}", tabList);
-		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(tabList));
 	}
 
-	private List<NavigationButton> loadCustomOrder()
+	private List<NavigationButton> getCustomOrder()
 	{
-		String customTabOrderListJson = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
-
-		if (customTabOrderListJson == null || customTabOrderListJson.isEmpty())
+		String serializedCustomTabOrderList = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
+		sidebarTabOrder.clear();
+		if (serializedCustomTabOrderList == null)
 		{
-			return new ArrayList<>();
+			log.info("No custom sidebar order found in configManager, using default order");
+			return new ArrayList<>(sidebarEntries);
 		}
 
-		List<String> customTabOrderList;
-		try
-		{
-			// CHECKSTYLE:OFF
-			customTabOrderList = gson.fromJson(customTabOrderListJson, new TypeToken<List<String>>(){}.getType());
-			// CHECKSTYLE:ON
-		}
-		catch (Exception e)
-		{
-			log.warn("Corrupted custom order config, clearing: {}", e.getMessage());
-			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
-			return new ArrayList<>();
-		}
-
-		if (customTabOrderList == null || customTabOrderList.isEmpty())
-		{
-			return new ArrayList<>();
-		}
+		List<String> customTabOrderList = List.of(serializedCustomTabOrderList.split(","));
 
 		// use sidebarEntries as source of truth for all currently enabled tabs
-		Collection<NavigationButton> currentSidebarTabs = getSidebarEntries();
+		Collection<NavigationButton> currentSidebarTabs = sidebarEntries;
 
 		// saved custom-ordered tabs first, then any new tabs
 		List<NavigationButton> assembledTabList = customTabOrderList.stream()
@@ -1779,16 +1760,12 @@ public class ClientUI
 			.filter(Objects::nonNull)
 			.collect(Collectors.toList());
 
-		// append any tabs not in saved custom order; prevents new tabs from not appearing when added`
+		// append any tabs not in saved custom order; prevents new tabs from not appearing when added
 		currentSidebarTabs.stream()
 			.filter(btn -> !assembledTabList.contains(btn))
 			.forEach(assembledTabList::add);
 
-		List<String> resultTooltips = assembledTabList.stream()
-			.map(NavigationButton::getTooltip)
-			.collect(Collectors.toList());
-		log.debug("loadCustomOrder(): Order comparison between customTabOrderList and assembledTabList: {}",
-			customTabOrderList.equals(resultTooltips));
+		sidebarTabOrder.addAll(currentSidebarTabs);
 
 		return assembledTabList;
 	}
