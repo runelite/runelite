@@ -28,7 +28,6 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
 import com.formdev.flatlaf.util.SystemInfo;
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.awt.AWTException;
 import java.awt.Canvas;
@@ -96,6 +95,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.ui.components.DragAndDropTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -156,17 +156,14 @@ public class ClientUI
 	private final EventBus eventBus;
 	private final boolean safeMode;
 	private final String title;
-	private final Gson gson;
 
 	private final Rectangle sidebarButtonPosition = new Rectangle();
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarCloseIcon;
 
 	// sidebar vars
-	@Getter
 	private DragAndDropTabbedPane sidebar;
 	private final TreeSet<NavigationButton> sidebarEntries = new TreeSet<>(NavigationButton.COMPARATOR);
-	@Getter
 	private final List<NavigationButton> sidebarTabOrder = new ArrayList<>();
 	private final Deque<HistoryEntry> selectedTabHistory = new ArrayDeque<>();
 	private NavigationButton selectedTab;
@@ -213,7 +210,6 @@ public class ClientUI
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider,
 		EventBus eventBus,
-		Gson gson,
 		@Named("safeMode") boolean safeMode,
 		@Named("runelite.title") String title
 	)
@@ -224,12 +220,22 @@ public class ClientUI
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
-		this.gson = gson;
 		this.safeMode = safeMode;
 		this.title = title + (safeMode ? " (safe mode)" : "");
 
 		normalBoundsTimer = new Timer(250, _ev -> setLastNormalBounds());
 		normalBoundsTimer.setRepeats(false);
+	}
+
+	@Subscribe
+	private void onProfileChanged(ProfileChanged event)
+	{
+		startupComplete = false;
+		SwingUtilities.invokeLater(() ->
+		{
+			applyCustomOrder();
+			startupComplete = true;
+		});
 	}
 
 	@Subscribe
@@ -248,7 +254,7 @@ public class ClientUI
 	@Subscribe
 	public void onPluginChanged(PluginChanged event)
 	{
-		// save custom order any time plugin is (un)installed/(en/dis)abled to prevent loading/order issues
+		// wait for startup or runelite profile swap to finish to prevent loading/order issues
 		if (startupComplete && event.isLoaded())
 		{
 			SwingUtilities.invokeLater(this::applyCustomOrder);
@@ -291,6 +297,11 @@ public class ClientUI
 
 	void removeNavigation(NavigationButton navBtn)
 	{
+		if (navBtn == null)
+		{
+			return;
+		}
+
 		if (navBtn.getPanel() == null)
 		{
 			toolbarPanel.remove(navBtn);
@@ -1707,7 +1718,7 @@ public class ClientUI
 		List<String> defaultOrder = sidebarEntries.stream()
 			.map(NavigationButton::getTooltip)
 			.collect(Collectors.toList());
-		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, gson.toJson(defaultOrder));
+		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER, String.join(",", defaultOrder));
 	}
 
 	private void applyCustomOrder()
@@ -1740,6 +1751,8 @@ public class ClientUI
 	{
 		String serializedCustomTabOrderList = configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY_CUSTOM_ORDER);
 		sidebarTabOrder.clear();
+
+		log.debug("getCustomOrder(): Retrieved custom sidebar order from config: {}", serializedCustomTabOrderList);
 		if (serializedCustomTabOrderList == null)
 		{
 			log.info("No custom sidebar order found in configManager, using default order");
@@ -1764,8 +1777,7 @@ public class ClientUI
 		currentSidebarTabs.stream()
 			.filter(btn -> !assembledTabList.contains(btn))
 			.forEach(assembledTabList::add);
-
-		sidebarTabOrder.addAll(currentSidebarTabs);
+		sidebarTabOrder.addAll(assembledTabList);
 
 		return assembledTabList;
 	}
@@ -1775,10 +1787,13 @@ public class ClientUI
 		if (inDraggingMode)
 		{
 			if (fromIndex >= 0 && fromIndex < sidebarTabOrder.size() &&
-				toIndex >= 0 && toIndex < sidebarTabOrder.size())
+				toIndex >= 0 && toIndex <= sidebarTabOrder.size())
 			{
 				NavigationButton moved = sidebarTabOrder.remove(fromIndex);
-				sidebarTabOrder.add(toIndex, moved);
+				// Adjust toIndex if dragging forward, since remove shifts elements down
+				int insertIndex = (toIndex > fromIndex) ? toIndex - 1 : toIndex;
+				sidebarTabOrder.add(insertIndex, moved);
+				log.debug("handleDrag(): Moved '{}' from index {} to index {}", moved.getTooltip(), fromIndex, insertIndex);
 				saveCustomOrder();
 			}
 		}
