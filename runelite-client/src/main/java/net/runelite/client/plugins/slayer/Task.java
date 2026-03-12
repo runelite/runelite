@@ -63,15 +63,18 @@ enum Task
 	CAVE_BUGS("Cave bugs", ItemID.SWAMP_CAVE_BUG),
 	CAVE_CRAWLERS("Cave crawlers", ItemID.SLAYERGUIDE_CAVECRAWLER, "Chasm crawler"),
 	CAVE_HORRORS("Cave horrors", ItemID.SLAYERGUIDE_HARMLESS_CAVE_HORROR, "Cave abomination"),
-	CAVE_KRAKEN("Cave kraken", ItemID.CERT_EADGAR_FADE_TO_BLACK_INV, "Kraken"),
+	CAVE_KRAKEN("Cave kraken", ItemID.CERT_EADGAR_FADE_TO_BLACK_INV,
+		new String[]{"Armoured kraken", "Pygmy kraken", "Spined kraken", "Vampyre kraken"},
+		"Kraken"),
 	CAVE_SLIMES("Cave slimes", ItemID.SWAMP_CAVE_SLIME),
 	CERBERUS("Cerberus", ItemID.HELL_PET),
 	CHAOS_DRUIDS("Chaos druids", ItemID.ELDERCHAOS_HOOD),
 	CHAOS_ELEMENTAL("The Chaos Elemental", ItemID.CHAOSELEPET),
 	CHAOS_FANATIC("The Chaos Fanatic", ItemID.STAFF_OF_ZAROS),
 	COCKATRICE("Cockatrice", ItemID.SLAYERGUIDE_COCKATRICE, "Cockathrice"),
-	COWS("Cows", ItemID.COW_MASK, "Buffalo", "Brutus"),
-	CRABS("Crabs", ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET, "Ammonite Crab", "Frost Crab", "King Sand Crab", "Rock Crab", "Giant Rock Crab", "Sand Crab", "Swamp Crab"),
+	COWS("Cows", ItemID.COW_MASK, new String[]{"Demonic Brutus"}, "Buffalo", "Brutus"),
+	CRABS("Crabs", ItemID.HUNDRED_PIRATE_CRAB_SHELL_GAUNTLET, new String[]{"Hermit crab"},
+		"Ammonite Crab", "Frost Crab", "King Sand Crab", "Rock Crab", "Giant Rock Crab", "Sand Crab", "Swamp Crab"),
 	CRAWLING_HANDS("Crawling hands", ItemID.SLAYERGUIDE_CRAWLINGHAND, "Crushing hand"),
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA),
 	CROCODILES("Crocodiles", ItemID.GREEN_SALAMANDER),
@@ -120,7 +123,9 @@ enum Task
 	KALPHITE_QUEEN("The Kalphite Queen", ItemID.KQPET_WALKING),
 	KILLERWATTS("Killerwatts", ItemID.SLAYERGUIDE_KILLERWATT),
 	KING_BLACK_DRAGON("The King Black Dragon", ItemID.KBDPET),
-	KRAKEN("The Cave Kraken Boss", ItemID.KRAKENPET, "Kraken"),
+	KRAKEN("The Cave Kraken Boss", ItemID.KRAKENPET,
+		new String[]{"Armoured kraken", "Pygmy kraken", "Spined kraken", "Vampyre kraken"},
+		"Kraken"),
 	KREEARRA("Kree'arra", ItemID.ARMADYLPET),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.ZAMORAKPET),
 	KURASK("Kurask", ItemID.SLAYERGUIDE_KURASK),
@@ -171,7 +176,7 @@ enum Task
 	TROLLS("Trolls", ItemID.POH_TROLL, "Dad", "Arrg", "Stick", "Kraka", "Pee Hat", "Rock", "Twig", "Berry"),
 	TUROTH("Turoth", ItemID.SLAYERGUIDE_TUROTH),
 	TZHAAR("Tzhaar", ItemID.ARCEUUS_CORPSE_TZHAAR_INITIAL, "TzTok-Jad", "TzKal-Zuk"),
-	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch"),
+	VAMPYRES("Vampyres", ItemID.STAKE, new String[]{"Vampyre kraken"}, "Vyrewatch"),
 	VARDORVIS("Vardorvis", ItemID.VARDORVISPET),
 	VENENATIS("Venenatis", ItemID.VENENATIS_PET),
 	VETION("Vet'ion", ItemID.VETION_PET),
@@ -192,6 +197,7 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
+	private final String[] excludedTargetNames;
 	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
@@ -213,6 +219,18 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.excludedTargetNames = new String[0];
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
+		this.targetNames = targetNames;
+	}
+
+	Task(String name, int itemSpriteId, String[] excludedTargetNames, String... targetNames)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.excludedTargetNames = excludedTargetNames;
 		this.weaknessThreshold = -1;
 		this.weaknessItem = -1;
 		this.targetNames = targetNames;
@@ -223,6 +241,18 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.excludedTargetNames = new String[0];
+		this.weaknessThreshold = weaknessThreshold;
+		this.weaknessItem = weaknessItem;
+		this.targetNames = targetNames;
+	}
+
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String[] excludedTargetNames, String... targetNames)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.excludedTargetNames = excludedTargetNames;
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
 		this.targetNames = targetNames;

@@ -178,6 +178,7 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private final List<Pattern> targetNames = new ArrayList<>();
+	private final List<Pattern> excludedTargetNames = new ArrayList<>();
 
 	private String[] taskLocations;
 
@@ -560,13 +561,24 @@ public class SlayerPlugin extends Plugin
 			.replace('\u00A0', ' ')
 			.toLowerCase();
 
+		if (!ArrayUtils.contains(composition.getActions(), "Attack")
+			// Pick action is for zygomite-fungi
+			&& !ArrayUtils.contains(composition.getActions(), "Pick"))
+		{
+			return false;
+		}
+
+		for (Pattern excludedTarget : excludedTargetNames)
+		{
+			if (excludedTarget.matcher(name).find())
+			{
+				return false;
+			}
+		}
+
 		for (Pattern target : targetNames)
 		{
-			final Matcher targetMatcher = target.matcher(name);
-			if (targetMatcher.find()
-				&& (ArrayUtils.contains(composition.getActions(), "Attack")
-					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick")))
+			if (target.matcher(name).find())
 			{
 				return true;
 			}
@@ -577,9 +589,14 @@ public class SlayerPlugin extends Plugin
 	private void rebuildTargetNames(Task task)
 	{
 		targetNames.clear();
+		excludedTargetNames.clear();
 
 		if (task != null)
 		{
+			Arrays.stream(task.getExcludedTargetNames())
+				.map(SlayerPlugin::targetNamePattern)
+				.forEach(excludedTargetNames::add);
+
 			Arrays.stream(task.getTargetNames())
 				.map(SlayerPlugin::targetNamePattern)
 				.forEach(targetNames::add);
