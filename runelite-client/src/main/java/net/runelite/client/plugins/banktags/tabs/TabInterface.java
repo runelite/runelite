@@ -60,12 +60,12 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
-import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetClosed;
+import net.runelite.api.events.WidgetDrag;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.VarbitID;
@@ -890,7 +890,7 @@ public class TabInterface
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	public void onWidgetDrag(WidgetDrag event)
 	{
 		if (!enabled)
 		{
@@ -909,9 +909,8 @@ public class TabInterface
 			client.setDraggedOnWidget(null);
 		}
 
-		final boolean isDragging = event.isDraggingWidget();
 		final boolean shiftDown = client.isKeyPressed(KeyCode.KC_SHIFT);
-		if (!isDragging || draggedOn == null)
+		if (draggedOn == null)
 		{
 			return;
 		}

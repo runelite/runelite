@@ -540,22 +540,6 @@ public interface Client extends OAuthApi, GameEngine
 	Widget getWidget(@Component int componentId);
 
 	/**
-	 * Gets an array containing the x-axis canvas positions
-	 * of all widgets.
-	 *
-	 * @return array of x-axis widget coordinates
-	 */
-	int[] getWidgetPositionsX();
-
-	/**
-	 * Gets an array containing the y-axis canvas positions
-	 * of all widgets.
-	 *
-	 * @return array of y-axis widget coordinates
-	 */
-	int[] getWidgetPositionsY();
-
-	/**
 	 * Gets the current run energy of the logged in player.
 	 *
 	 * @return the run energy in units of 1/100th of an percentage
@@ -1575,12 +1559,12 @@ public interface Client extends OAuthApi, GameEngine
 	void runScript(Object... args);
 
 	/**
-	 * Creates a blank ScriptEvent for executing a ClientScript2 script
+	 * Creates a blank ScriptEventBuilder for building a ScriptEvent to execute a ClientScript2 script
 	 *
 	 * @param args the script id, then any additional arguments to execute the script with
 	 * @see ScriptID
 	 */
-	ScriptEvent createScriptEvent(Object ...args);
+	ScriptEventBuilder createScriptEventBuilder(Object ...args);
 
 	/**
 	 * Checks whether or not there is any active hint arrow.

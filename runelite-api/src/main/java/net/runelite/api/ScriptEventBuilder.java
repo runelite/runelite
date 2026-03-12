@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,24 +27,33 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 import net.runelite.api.widgets.Widget;
 
-public interface ScriptEvent
+public interface ScriptEventBuilder
 {
-	int MOUSE_X = -2147483647;
-	int MOUSE_Y = -2147483646;
-	int MENU_OP = -2147483644;
-	int WIDGET_ID = -2147483645;
-	int WIDGET_INDEX = -2147483643;
-	int WIDGET_TARGET_ID = -2147483642;
-	int WIDGET_TARGET_INDEX = -2147483641;
-	int KEY_CODE = -2147483640;
-	int KEY_CHAR = -2147483639;
-	String NAME = "event_opbase";
+	/**
+	 * Arguments passed to the script. Index 0 is the script being run and is not an argument.
+	 * @return
+	 */
+	Object[] getArguments();
 
 	/**
-	 * Gets the widget the {@link #WIDGET_ID} and {@link #WIDGET_INDEX} args
+	 * Arguments passed to the script. Index 0 is the script being run and is not an argument.
+	 * @return
+	 */
+	ScriptEventBuilder setArguments(Object[] arguments);
+
+	/**
+	 * Gets the widget the {@link ScriptEvent#WIDGET_ID} and {@link ScriptEvent#WIDGET_INDEX} args
 	 * are substituted with
 	 */
 	Widget getSource();
+
+	/**
+	 * Sets the widget the {@link ScriptEvent#WIDGET_ID} and {@link ScriptEvent#WIDGET_INDEX} args
+	 * are substituted with. This is useful for running widget listeners
+	 *
+	 * @see Widget#getOnLoadListener()
+	 */
+	ScriptEventBuilder setSource(Widget widget);
 
 	/**
 	 * Gets the {@link Widget} target. This is only used for the drag complete listener
@@ -55,10 +64,12 @@ public interface ScriptEvent
 	Widget getTarget();
 
 	/**
-	 * Arguments passed to the script. Index 0 is the script being run and is not an argument.
+	 * Sets the {@link Widget} target. This is only used for the drag complete listener.
+	 * @param target
+	 * @see Widget#setOnDragCompleteListener(Object...)
 	 * @return
 	 */
-	Object[] getArguments();
+	ScriptEventBuilder setTarget(Widget target);
 
 	/**
 	 * Gets the menu op of the event
@@ -68,41 +79,14 @@ public interface ScriptEvent
 	int getOp();
 
 	/**
-	 * Gets the target of the menu option
+	 * Set the menu op of the event
 	 *
-	 * @return the target
-	 * @see net.runelite.api.events.MenuOptionClicked
+	 * @param op
 	 */
-	String getOpbase();
+	ScriptEventBuilder setOp(int op);
 
 	/**
-	 * Parent relative x coordinate for mouse related events
+	 * Build the {@link ScriptEvent}
 	 */
-	int getMouseX();
-
-	/**
-	 * Parent relative y coordinate for mouse related events
-	 */
-	int getMouseY();
-
-	/**
-	 * Jagex typed keycode
-	 *
-	 * @return
-	 */
-	int getTypedKeyCode();
-
-	/**
-	 * Get the typed character, ascii.
-	 *
-	 * @return
-	 */
-	int getTypedKeyChar();
-
-	/**
-	 * Executes a cs2 script specified by this event
-	 *
-	 * This method must be ran on the client thread and is not reentrant
-	 */
-	void run();
+	ScriptEvent build();
 }

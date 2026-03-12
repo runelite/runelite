@@ -157,8 +157,9 @@ public class BankPlugin extends Plugin
 							return;
 						}
 
-						client.createScriptEvent(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
+						client.createScriptEventBuilder(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
 							.setOp(1)
+							.build()
 							.run();
 					});
 					e.consume();

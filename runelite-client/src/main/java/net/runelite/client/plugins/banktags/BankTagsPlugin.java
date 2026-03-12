@@ -231,8 +231,9 @@ public class BankTagsPlugin extends Plugin implements BankTagsService
 		Widget w = client.getWidget(InterfaceID.Bankmain.UNIVERSE);
 		if (w != null)
 		{
-			client.createScriptEvent(w.getOnLoadListener())
+			client.createScriptEventBuilder(w.getOnLoadListener())
 				.setSource(w)
+				.build()
 				.run();
 		}
 	}

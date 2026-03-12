@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,17 +24,9 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
-
 /**
- * Called every game cycle the client is dragging a widget on
- * the cursor.
+ * Called each game cycle when a widget is being dragged.
  */
-@Data
-public class DraggingWidgetChanged
+public class WidgetDrag
 {
-	/**
-	 * Whether a widget is currently being dragged.
-	 */
-	private boolean draggingWidget;
 }
