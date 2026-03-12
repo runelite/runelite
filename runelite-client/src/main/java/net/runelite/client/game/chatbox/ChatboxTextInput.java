@@ -772,7 +772,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				return;
 			case KeyEvent.VK_LEFT:
 				ev.consume();
-				if (cursorStart != cursorEnd)
+				if (!ev.isShiftDown() && cursorStart != cursorEnd)
 				{
 					newPos = cursorStart;
 				}
@@ -783,7 +783,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_RIGHT:
 				ev.consume();
-				if (cursorStart != cursorEnd)
+				if (!ev.isShiftDown() && cursorStart != cursorEnd)
 				{
 					newPos = cursorEnd;
 				}
