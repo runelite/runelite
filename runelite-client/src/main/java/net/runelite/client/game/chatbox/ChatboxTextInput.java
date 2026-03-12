@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
+import java.util.function.ToIntBiFunction;
 import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
@@ -119,7 +120,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	// These are lambdas for atomic updates
 	private Predicate<MouseEvent> isInBounds = null;
-	private ToIntFunction<Integer> getLineOffset = null;
+	private ToIntBiFunction<Integer, Integer> getLineOffset = null;
 	private ToIntFunction<Point> getPointCharOffset = null;
 
 	@Inject
@@ -521,35 +522,48 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			return line.start + charIndex;
 		};
 
-		getLineOffset = code ->
+		getLineOffset = (code, fromPos) ->
 		{
 			if (editLines.size() < 2)
 			{
-				return cursorStart;
+				return fromPos;
 			}
 
 			int currentLine = -1;
 			for (int i = 0; i < editLines.size(); i++)
 			{
 				Line l = editLines.get(i);
-				if (cursorOnLine(cursorStart, l.start, l.end)
-					|| (cursorOnLine(cursorStart, l.start, l.end + 1) && i == editLines.size() - 1))
+				if (cursorOnLine(fromPos, l.start, l.end)
+					|| (cursorOnLine(fromPos, l.start, l.end + 1) && i == editLines.size() - 1))
 				{
 					currentLine = i;
 					break;
 				}
 			}
 
-			if (currentLine == -1
-				|| (code == KeyEvent.VK_UP && currentLine == 0)
-				|| (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1))
+			if (currentLine == -1)
 			{
-				return cursorStart;
+				return fromPos;
+			}
+			if (code == KeyEvent.VK_UP && currentLine == 0)
+			{
+				return 0;
+			}
+			if (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1)
+			{
+				return value.length();
 			}
 
+			// Compute the canvas X position for fromPos on its line, matching the centering
+			// logic used by getPointCharOffset so the projected point lands correctly.
 			final Line line = editLines.get(currentLine);
+			final int charOffsetInLine = Ints.constrainToRange(fromPos - line.start, 0, line.text.length());
+			final int fullLineWidth = font.getTextWidth(line.text);
+			final int lineTextX = ox + (w > 0 ? (w - fullLineWidth) / 2 : 0);
+			final int charPixelX = lineTextX + font.getTextWidth(Text.escapeJagex(line.text.substring(0, charOffsetInLine)));
+
 			final int direction = code == KeyEvent.VK_UP ? -1 : 1;
-			final Point dest = new Point(cursor.getCanvasLocation().getX(), cursor.getCanvasLocation().getY() + (direction * oh));
+			final Point dest = new Point(ccl.getX() + charPixelX, ccl.getY() + oy + (currentLine + direction) * oh);
 			final int charOffset = getPointCharOffset.applyAsInt(dest);
 
 			// Place cursor on right line if whitespace keep it on the same line or skip a line
@@ -780,11 +794,11 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_UP:
 				ev.consume();
-				newPos = getLineOffset.applyAsInt(code);
+				newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorStart);
 				break;
 			case KeyEvent.VK_DOWN:
 				ev.consume();
-				newPos = getLineOffset.applyAsInt(code);
+				newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorEnd);
 				break;
 			case KeyEvent.VK_HOME:
 				ev.consume();
