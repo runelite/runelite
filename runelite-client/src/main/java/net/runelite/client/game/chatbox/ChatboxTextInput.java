@@ -36,7 +36,9 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
@@ -83,6 +85,14 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		private final String text;
 	}
 
+	@AllArgsConstructor
+	private static class HistoryEntry
+	{
+		private final String text;
+		private final int cursorStart;
+		private final int cursorEnd;
+	}
+
 	@Getter
 	private String prompt;
 
@@ -99,6 +109,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	private int selectionStart = -1;
 	private int selectionEnd = -1;
+
+	private static final int MAX_UNDO_HISTORY = 100;
+	private final Deque<HistoryEntry> undoHistory = new ArrayDeque<>();
+	private final Deque<HistoryEntry> redoHistory = new ArrayDeque<>();
+	private boolean lastActionWasTyping = false;
+	private boolean lastActionWasDeleting = false;
 
 	@Getter
 	private IntPredicate charValidator = getDefaultCharValidator();
@@ -265,6 +281,16 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	{
 		this.fontID = fontID;
 		return this;
+	}
+
+	private void pushUndoSnapshot()
+	{
+		undoHistory.push(new HistoryEntry(value.toString(), cursorStart, cursorEnd));
+		while (undoHistory.size() > MAX_UNDO_HISTORY)
+		{
+			undoHistory.removeLast();
+		}
+		redoHistory.clear();
 	}
 
 	protected void update()
@@ -631,6 +657,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
+			if (!lastActionWasTyping)
+			{
+				pushUndoSnapshot();
+			}
+			lastActionWasTyping = true;
+			lastActionWasDeleting = false;
 			if (cursorStart != cursorEnd)
 			{
 				value.delete(cursorStart, cursorEnd);
@@ -664,6 +696,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 						String s = value.substring(cursorStart, cursorEnd);
 						if (code == KeyEvent.VK_X)
 						{
+							pushUndoSnapshot();
+							lastActionWasTyping = false;
+							lastActionWasDeleting = false;
 							value.delete(cursorStart, cursorEnd);
 							cursorAt(cursorStart);
 						}
@@ -673,6 +708,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 					}
 					return;
 				case KeyEvent.VK_V:
+					pushUndoSnapshot();
+					lastActionWasTyping = false;
+					lastActionWasDeleting = false;
 					try
 					{
 						String s = Toolkit.getDefaultToolkit()
@@ -703,6 +741,40 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 						log.warn("Unable to get clipboard", ex);
 					}
 					return;
+				case KeyEvent.VK_Z:
+					if (!undoHistory.isEmpty())
+					{
+						redoHistory.push(new HistoryEntry(value.toString(), cursorStart, cursorEnd));
+						HistoryEntry entry = undoHistory.pop();
+						value = new StringBuffer(entry.text);
+						selectionStart = -1;
+						selectionEnd = -1;
+						lastActionWasTyping = false;
+						lastActionWasDeleting = false;
+						cursorAt(entry.cursorStart, entry.cursorEnd);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
+				case KeyEvent.VK_Y:
+					if (!redoHistory.isEmpty())
+					{
+						undoHistory.push(new HistoryEntry(value.toString(), cursorStart, cursorEnd));
+						HistoryEntry entry = redoHistory.pop();
+						value = new StringBuffer(entry.text);
+						selectionStart = -1;
+						selectionEnd = -1;
+						lastActionWasTyping = false;
+						lastActionWasDeleting = false;
+						cursorAt(entry.cursorStart, entry.cursorEnd);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
 				case KeyEvent.VK_A:
 					selectionStart = 0;
 					selectionEnd = value.length();
@@ -731,6 +803,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			case KeyEvent.VK_DELETE:
 				if (cursorStart != cursorEnd)
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.delete(cursorStart, cursorEnd);
 					cursorAt(cursorStart);
 					if (onChanged != null)
@@ -741,6 +819,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				}
 				if (cursorStart < value.length())
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.deleteCharAt(cursorStart);
 					cursorAt(cursorStart);
 					if (onChanged != null)
@@ -752,6 +836,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			case KeyEvent.VK_BACK_SPACE:
 				if (cursorStart != cursorEnd)
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.delete(cursorStart, cursorEnd);
 					cursorAt(cursorStart);
 					if (onChanged != null)
@@ -762,6 +852,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				}
 				if (cursorStart > 0)
 				{
+					if (!lastActionWasDeleting)
+					{
+						pushUndoSnapshot();
+					}
+					lastActionWasTyping = false;
+					lastActionWasDeleting = true;
 					value.deleteCharAt(cursorStart - 1);
 					cursorAt(cursorStart - 1);
 					if (onChanged != null)
