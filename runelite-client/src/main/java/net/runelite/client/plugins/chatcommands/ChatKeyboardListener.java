@@ -57,14 +57,14 @@ public class ChatKeyboardListener implements KeyListener
 	}
 
 	@Override
+	public boolean isEnabledDuringTextInput()
+	{
+		return false;
+	}
+
+	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		// prevent keypress from consuming inputs into the currently open ChatboxInput
-		if (chatboxPanelManager.getCurrentInput() != null)
-		{
-			return;
-		}
-
 		if (chatCommandsConfig.clearSingleWord().matches(e))
 		{
 			int inputTye = client.getVarcIntValue(VarClientID.MESLAYERMODE);
