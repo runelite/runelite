@@ -552,7 +552,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		{
 			if (editLines.size() < 2)
 			{
-				return fromPos;
+				return code == KeyEvent.VK_UP ? 0 : value.length();
 			}
 
 			int currentLine = -1;
