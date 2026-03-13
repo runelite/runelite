@@ -540,7 +540,8 @@ public class TabInterface
 			while (dataIter.hasNext())
 			{
 				final int idx = Integer.parseInt(dataIter.next());
-				final int itemId = Integer.parseInt(dataIter.next());
+				final int itemId = itemManager.canonicalize(Integer.parseInt(dataIter.next()));
+
 				l.setItemAtPos(itemId, idx);
 				tagManager.addTag(itemId, name, false);
 			}
