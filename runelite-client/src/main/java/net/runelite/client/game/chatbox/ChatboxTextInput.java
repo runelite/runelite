@@ -996,11 +996,25 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			case KeyEvent.VK_UP:
 				ev.consume();
-				newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorStart);
+				if (getLineOffset == null)
+				{
+					newPos = 0;
+				}
+				else
+				{
+					newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorStart);
+				}
 				break;
 			case KeyEvent.VK_DOWN:
 				ev.consume();
-				newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorEnd);
+				if (getLineOffset == null)
+				{
+					newPos = value.length();
+				}
+				else
+				{
+					newPos = getLineOffset.applyAsInt(code, ev.isShiftDown() ? newPos : cursorEnd);
+				}
 				break;
 			case KeyEvent.VK_HOME:
 				ev.consume();
