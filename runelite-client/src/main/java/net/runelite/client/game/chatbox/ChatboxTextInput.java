@@ -609,6 +609,58 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		return (cursor >= start) && (cursor <= end);
 	}
 
+	private static boolean isWordChar(char c)
+	{
+		return Character.isLetterOrDigit(c) || c == '_';
+	}
+
+	private int findWordBoundaryLeft(int pos)
+	{
+		if (pos == 0)
+		{
+			return 0;
+		}
+		if (!isWordChar(value.charAt(pos - 1)))
+		{
+			while (pos > 0 && !isWordChar(value.charAt(pos - 1)))
+			{
+				pos--;
+			}
+		}
+		while (pos > 0 && isWordChar(value.charAt(pos - 1)))
+		{
+			pos--;
+		}
+		return pos;
+	}
+
+	private int findWordBoundaryRight(int pos)
+	{
+		if (pos >= value.length())
+		{
+			return value.length();
+		}
+		if (!isWordChar(value.charAt(pos)))
+		{
+			while (pos < value.length() && !isWordChar(value.charAt(pos)))
+			{
+				pos++;
+			}
+		}
+		else
+		{
+			while (pos < value.length() && isWordChar(value.charAt(pos)))
+			{
+				pos++;
+			}
+			while (pos < value.length() && !isWordChar(value.charAt(pos)))
+			{
+				pos++;
+			}
+		}
+		return pos;
+	}
+
 	private int getCharOffset(MouseEvent ev)
 	{
 		if (getPointCharOffset == null)
@@ -780,8 +832,54 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 					selectionEnd = value.length();
 					cursorAt(0, selectionEnd);
 					return;
+				case KeyEvent.VK_BACK_SPACE:
+				{
+					int deleteStart = cursorStart != cursorEnd ? cursorStart : findWordBoundaryLeft(cursorStart);
+					int deleteEnd = cursorEnd;
+					if (deleteStart < deleteEnd)
+					{
+						if (!lastActionWasDeleting)
+						{
+							pushUndoSnapshot();
+						}
+						lastActionWasTyping = false;
+						lastActionWasDeleting = true;
+						value.delete(deleteStart, deleteEnd);
+						cursorAt(deleteStart);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
+				}
+				case KeyEvent.VK_DELETE:
+				{
+					int deleteStart = cursorStart;
+					int deleteEnd = cursorStart != cursorEnd ? cursorEnd : findWordBoundaryRight(cursorStart);
+					if (deleteStart < deleteEnd)
+					{
+						if (!lastActionWasDeleting)
+						{
+							pushUndoSnapshot();
+						}
+						lastActionWasTyping = false;
+						lastActionWasDeleting = true;
+						value.delete(deleteStart, deleteEnd);
+						cursorAt(deleteStart);
+						if (onChanged != null)
+						{
+							onChanged.accept(getValue());
+						}
+					}
+					return;
+				}
+				case KeyEvent.VK_LEFT:
+				case KeyEvent.VK_RIGHT:
+					break;
+				default:
+					return;
 			}
-			return;
 		}
 		int newPos = cursorStart;
 		if (ev.isShiftDown())
@@ -872,6 +970,10 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				{
 					newPos = cursorStart;
 				}
+				else if (ev.isControlDown())
+				{
+					newPos = findWordBoundaryLeft(newPos);
+				}
 				else
 				{
 					newPos--;
@@ -882,6 +984,10 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				if (!ev.isShiftDown() && cursorStart != cursorEnd)
 				{
 					newPos = cursorEnd;
+				}
+				else if (ev.isControlDown())
+				{
+					newPos = findWordBoundaryRight(newPos);
 				}
 				else
 				{
