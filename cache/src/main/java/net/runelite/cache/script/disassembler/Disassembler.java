@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.cache.definitions.ScriptDefinition;
-import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.Opcodes;
 import org.slf4j.Logger;
@@ -148,26 +147,17 @@ public class Disassembler
 			int iop = iops[i];
 			String sop = sops[i];
 
-			Instruction ins = this.instructions.find(opcode);
-			if (ins == null)
+			String name = this.instructions.findNameFromOpcode(opcode);
+			if (name == null)
 			{
 				logger.debug("Unknown instruction {} in script {}", opcode, script.getId());
+				name = String.format("%03d", opcode);
 			}
 
 			if (jumps[i])
 			{
 				// something jumps here
 				writer.append("LABEL").append(i).append(":\n");
-			}
-
-			String name;
-			if (ins != null && ins.getName() != null)
-			{
-				name = ins.getName();
-			}
-			else
-			{
-				name = String.format("%03d", opcode);
 			}
 
 			writer.append(String.format("   %-22s", name));

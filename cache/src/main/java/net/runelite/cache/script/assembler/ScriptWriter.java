@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import net.runelite.cache.definitions.ScriptDefinition;
-import net.runelite.cache.script.Instruction;
 import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.Opcodes;
 import org.slf4j.Logger;
@@ -40,8 +39,6 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 class ScriptWriter extends rs2asmBaseListener
 {
-	private static final Logger logger = LoggerFactory.getLogger(ScriptWriter.class);
-
 	private final Instructions instructions;
 	private final LabelVisitor labelVisitor;
 	private final Map<String, Object> symbols;
@@ -88,14 +85,12 @@ class ScriptWriter extends rs2asmBaseListener
 	public void enterName_string(rs2asmParser.Name_stringContext ctx)
 	{
 		String text = ctx.getText();
-		Instruction i = instructions.find(text);
-		if (i == null)
+		Integer opcode = instructions.findOpcodeFromName(text);
+		if (opcode == null)
 		{
-			logger.warn("Unknown instruction {}", text);
 			throw new RuntimeException("Unknown instruction " + text);
 		}
 
-		int opcode = i.getOpcode();
 		addOpcode(opcode);
 	}
 
