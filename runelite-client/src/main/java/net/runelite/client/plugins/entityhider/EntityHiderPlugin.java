@@ -28,9 +28,17 @@ package net.runelite.client.plugins.entityhider;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -38,8 +46,10 @@ import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.WorldEntity;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.gameval.NpcID;
 import net.runelite.api.gameval.SpotanimID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -48,12 +58,14 @@ import net.runelite.client.game.NpcUtil;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Entity Hider",
-	description = "Hide players, NPCs, and/or projectiles",
-	tags = {"npcs", "players", "projectiles"},
-	enabledByDefault = false
+	description = "Hide players, NPCs, and/or projectiles with per-NPC control",
+	tags = {"npcs", "players", "projectiles", "hide"}
 )
 public class EntityHiderPlugin extends Plugin
 {
@@ -62,6 +74,7 @@ public class EntityHiderPlugin extends Plugin
 		NpcID.ARCEUUS_THRALL_GHOST_SUPERIOR, NpcID.ARCEUUS_THRALL_SKELETON_SUPERIOR, NpcID.ARCEUUS_THRALL_ZOMBIE_SUPERIOR,  // Superior Thrall (ghost, skeleton, zombie)
 		NpcID.ARCEUUS_THRALL_GHOST_GREATER, NpcID.ARCEUUS_THRALL_SKELETON_GREATER, NpcID.ARCEUUS_THRALL_ZOMBIE_GREATER   // Greater Thrall (ghost, skeleton, zombie)
 	);
+
 	private static final Set<Integer> RANDOM_EVENT_NPC_IDS = ImmutableSet.of(
 		NpcID.MACRO_BEEKEEPER_INVITATION,
 		NpcID.MACRO_COMBILOCK_PIRATE,
@@ -95,6 +108,9 @@ public class EntityHiderPlugin extends Plugin
 	private EntityHiderConfig config;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private Hooks hooks;
 
 	@Inject
@@ -102,6 +118,12 @@ public class EntityHiderPlugin extends Plugin
 
 	@Inject
 	private PartyService partyService;
+
+	@Inject
+	private ClientToolbar clientToolbar;
+
+	private EntityHiderPanel panel;
+	private NavigationButton navButton;
 
 	private boolean hideOthers;
 	private boolean hideOthers2D;
@@ -122,6 +144,8 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
 
+	private final Set<Integer> manuallyHiddenNpcIds = ConcurrentHashMap.newKeySet();
+
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
 	@Provides
@@ -134,14 +158,32 @@ public class EntityHiderPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
-
 		hooks.registerRenderableDrawListener(drawListener);
+
+		panel = new EntityHiderPanel(this);
+
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "icon.png");
+
+		navButton = NavigationButton.builder()
+			.tooltip("Entity Hider")
+			.icon(icon)
+			.priority(5)
+			.panel(panel)
+			.build();
+
+		if (!config.hideDynamicPanel())
+		{
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		hooks.unregisterRenderableDrawListener(drawListener);
+		clientToolbar.removeNavigation(navButton);
+		panel = null;
+		navButton = null;
 	}
 
 	@Subscribe
@@ -150,6 +192,54 @@ public class EntityHiderPlugin extends Plugin
 		if (e.getGroup().equals(EntityHiderConfig.GROUP))
 		{
 			updateConfig();
+
+			if ("hideDynamicPanel".equals(e.getKey()))
+			{
+				if (config.hideDynamicPanel())
+				{
+					clientToolbar.removeNavigation(navButton);
+				}
+				else
+				{
+					clientToolbar.addNavigation(navButton);
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN || panel == null || config.hideDynamicPanel())
+		{
+			return;
+		}
+
+		List<NpcData> npcDataList = new ArrayList<>();
+		for (NPC npc : client.getNpcs())
+		{
+			if (npc != null && npc.getName() != null && !npc.getName().isEmpty()
+				&& !(npc.getComposition() != null && npc.getComposition().isFollower()))
+			{
+				boolean isHidden = manuallyHiddenNpcIds.contains(npc.getId());
+				npcDataList.add(new NpcData(npc.getName(), npc.getId(), isHidden));
+			}
+		}
+
+		SwingUtilities.invokeLater(() -> panel.update(npcDataList));
+	}
+
+	public static class NpcData
+	{
+		public final String name;
+		public final int id;
+		public final boolean hidden;
+
+		public NpcData(String name, int id, boolean hidden)
+		{
+			this.name = name;
+			this.id = id;
+			this.hidden = hidden;
 		}
 	}
 
@@ -181,6 +271,84 @@ public class EntityHiderPlugin extends Plugin
 		hideAttackers = config.hideAttackers();
 
 		hideProjectiles = config.hideProjectiles();
+
+		loadManuallyHiddenNpcIds();
+	}
+
+	private void loadManuallyHiddenNpcIds()
+	{
+		manuallyHiddenNpcIds.clear();
+		String ids = config.manuallyHiddenNpcIds();
+		if (ids != null && !ids.isEmpty())
+		{
+			Arrays.stream(ids.split(","))
+				.map(String::trim)
+				.filter(s -> !s.isEmpty())
+				.map(Integer::parseInt)
+				.forEach(manuallyHiddenNpcIds::add);
+		}
+	}
+
+	private void saveManuallyHiddenNpcIds()
+	{
+		String ids = manuallyHiddenNpcIds.stream()
+			.map(String::valueOf)
+			.collect(Collectors.joining(","));
+		config.setManuallyHiddenNpcIds(ids);
+	}
+
+	public boolean toggleNpcHidden(int npcId)
+	{
+		boolean nowHidden;
+		if (manuallyHiddenNpcIds.contains(npcId))
+		{
+			manuallyHiddenNpcIds.remove(npcId);
+			nowHidden = false;
+		}
+		else
+		{
+			manuallyHiddenNpcIds.add(npcId);
+			nowHidden = true;
+		}
+		saveManuallyHiddenNpcIds();
+		return nowHidden;
+	}
+
+	public void hideVicinityNpcs()
+	{
+		clientThread.invokeLater(() ->
+		{
+			for (NPC npc : client.getNpcs())
+			{
+				if (npc != null && npc.getName() != null && !npc.getName().isEmpty()
+					&& !(npc.getComposition() != null && npc.getComposition().isFollower()))
+				{
+					manuallyHiddenNpcIds.add(npc.getId());
+				}
+			}
+			saveManuallyHiddenNpcIds();
+		});
+	}
+
+	public void unhideVicinityNpcs()
+	{
+		clientThread.invokeLater(() ->
+		{
+			for (NPC npc : client.getNpcs())
+			{
+				if (npc != null)
+				{
+					manuallyHiddenNpcIds.remove(npc.getId());
+				}
+			}
+			saveManuallyHiddenNpcIds();
+		});
+	}
+
+	public void unhideAllNpcs()
+	{
+		manuallyHiddenNpcIds.clear();
+		saveManuallyHiddenNpcIds();
 	}
 
 	@VisibleForTesting
@@ -235,6 +403,11 @@ public class EntityHiderPlugin extends Plugin
 		else if (renderable instanceof NPC)
 		{
 			NPC npc = (NPC) renderable;
+
+			if (manuallyHiddenNpcIds.contains(npc.getId()))
+			{
+				return false;
+			}
 
 			if (npc.getComposition().isFollower() && npc != client.getFollower())
 			{
