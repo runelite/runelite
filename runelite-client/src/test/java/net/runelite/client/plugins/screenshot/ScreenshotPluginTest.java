@@ -37,6 +37,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.AnimationID;
@@ -49,6 +50,7 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.ImageCapture;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -150,6 +152,28 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getKillCountNumber());
+	}
+
+	@Test
+	public void testDelveLootClaimed()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		Widget widget = mock(Widget.class);
+		when(client.getWidget(InterfaceID.DomEndLevelUi.BTN_BANK_ALL)).thenReturn(widget);
+
+		ScriptPostFired scriptPostFiredEvent = new ScriptPostFired(7931);
+
+		when(widget.isHidden()).thenReturn(true);
+		screenshotPlugin.onScriptPostFired(scriptPostFiredEvent);
+
+		assertEquals(ScreenshotPlugin.KillType.DELVE, screenshotPlugin.getKillType());
+
+		when(widget.isHidden()).thenReturn(false);
+		screenshotPlugin.onScriptPostFired(scriptPostFiredEvent);
+
+		assertNull(screenshotPlugin.getKillType());
+		verify(screenshotPlugin).takeScreenshot("Doom of Mokhaiotl", "Chest Loot");
 	}
 
 	@Test

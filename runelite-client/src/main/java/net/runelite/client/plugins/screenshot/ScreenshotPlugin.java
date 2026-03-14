@@ -58,6 +58,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.AnimationID;
@@ -97,6 +98,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
+	private static final int DELVE_LOOT_SCRIPT = 7931;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([,0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
@@ -142,6 +144,7 @@ public class ScreenshotPlugin extends Plugin
 		BARROWS,
 		COX,
 		COX_CM,
+		DELVE,
 		MOONS_OF_PERIL,
 		TOB,
 		TOB_SM,
@@ -793,6 +796,37 @@ public class ScreenshotPlugin extends Plugin
 				}
 				notificationStarted = false;
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired e)
+	{
+		if (e.getScriptId() == DELVE_LOOT_SCRIPT)
+		{
+			if (!config.screenshotRewards())
+			{
+				return;
+			}
+
+			Widget w = client.getWidget(InterfaceID.DomEndLevelUi.BTN_BANK_ALL);
+			if (w == null)
+			{
+				return;
+			}
+
+			if (w.isHidden())
+			{
+				// loot has not been claimed yet
+				killType = KillType.DELVE;
+				return;
+			}
+
+			if (killType == KillType.DELVE)
+			{
+				killType = null;
+				takeScreenshot("Doom of Mokhaiotl", SD_CHEST_LOOT);
+			}
 		}
 	}
 
