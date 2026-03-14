@@ -47,6 +47,7 @@ public enum RuneScapeProfileType
 	TRAILBLAZER_RELOADED_LEAGUE,
 	RAGING_ECHOES_LEAGUE,
 	GRID_MASTER,
+	DEMONIC_PACTS_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),
 	;
 
 	private final Predicate<Client> test;
