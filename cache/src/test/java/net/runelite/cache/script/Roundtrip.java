@@ -55,7 +55,7 @@ public class Roundtrip
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CLIENTSCRIPT);
-			ScriptLoader loader = new ScriptLoader();
+			ScriptLoader loader = new ScriptLoader(false);
 
 			Disassembler disassembler = new Disassembler();
 

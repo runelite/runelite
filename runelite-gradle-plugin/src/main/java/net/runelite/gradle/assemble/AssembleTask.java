@@ -81,7 +81,7 @@ public abstract class AssembleTask extends DefaultTask
 		instructions.init();
 
 		Assembler assembler = new Assembler(instructions, buildComponentSymbols(componentsFile));
-		ScriptSaver saver = new ScriptSaver();
+		ScriptSaver saver = new ScriptSaver(false);
 
 		int count = 0;
 		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));

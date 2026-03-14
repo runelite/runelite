@@ -82,7 +82,7 @@ public class WorldMapManager
 		byte[] data = storage.loadArchive(intermapLinkScript);
 		FSFile file = intermapLinkScript.getFiles(data).findFile(0);
 
-		ScriptLoader scriptLoader = new ScriptLoader();
+		ScriptLoader scriptLoader = new ScriptLoader(true);
 		ScriptDefinition scriptDefinition = scriptLoader.load(intermapLinkScriptId, file.getContents());
 
 		List<Position> linkEnds = new ArrayList<>();

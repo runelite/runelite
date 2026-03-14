@@ -26,16 +26,21 @@ package net.runelite.cache.definitions.loaders;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
-import static net.runelite.cache.script.Opcodes.PUSH_NULL;
-import static net.runelite.cache.script.Opcodes.SCONST;
+import static net.runelite.cache.script.Opcodes.LCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
 import static net.runelite.cache.script.Opcodes.POP_OBJECT;
+import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.RETURN;
+import static net.runelite.cache.script.Opcodes.SCONST;
 
+@RequiredArgsConstructor
 public class ScriptLoader
 {
+	private final boolean longSupport;
+
 	public ScriptDefinition load(int id, byte[] b)
 	{
 		ScriptDefinition def = new ScriptDefinition();
@@ -45,14 +50,24 @@ public class ScriptLoader
 		in.setOffset(in.getLength() - 2);
 		int switchLength = in.readUnsignedShort();
 
-		// 2 for switchLength + the switch data + 12 for the param/vars/stack data
-		int endIdx = in.getLength() - 2 - switchLength - 12;
+		// 2 for switchLength + the switch data + 12 or 16 for the param/vars/stack data
+		int endIdx = in.getLength() - 2 - switchLength - (longSupport ? 16 : 12);
 		in.setOffset(endIdx);
 		int numOpcodes = in.readInt();
 		int localIntCount = in.readUnsignedShort();
 		int localObjCount = in.readUnsignedShort();
+		int localLongCount = 0;
+		if (longSupport)
+		{
+			localLongCount = in.readUnsignedShort();
+		}
 		int intArgCount = in.readUnsignedShort();
 		int objArgCount = in.readUnsignedShort();
+		int longArgCount = 0;
+		if (longSupport)
+		{
+			longArgCount = in.readUnsignedShort();
+		}
 
 		int numSwitches = in.readUnsignedByte();
 		if (numSwitches > 0)
@@ -76,8 +91,10 @@ public class ScriptLoader
 		}
 
 		def.setLocalIntCount(localIntCount);
+		def.setLocalLongCount(localLongCount);
 		def.setLocalObjCount(localObjCount);
 		def.setIntArgCount(intArgCount);
+		def.setLongArgCount(longArgCount);
 		def.setObjArgCount(objArgCount);
 
 		in.setOffset(0);
@@ -85,10 +102,12 @@ public class ScriptLoader
 
 		int[] instructions = new int[numOpcodes];
 		int[] intOperands = new int[numOpcodes];
+		long[] longOperands = new long[numOpcodes];
 		String[] stringOperands = new String[numOpcodes];
 
 		def.setInstructions(instructions);
 		def.setIntOperands(intOperands);
+		def.setLongOperands(longOperands);
 		def.setStringOperands(stringOperands);
 
 		for (int i = 0; in.getOffset() < endIdx; ++i)
@@ -105,6 +124,9 @@ public class ScriptLoader
 				case POP_OBJECT:
 				case PUSH_NULL:
 					intOperands[i] = in.readUnsignedByte();
+					break;
+				case LCONST:
+					longOperands[i] = in.readLong();
 					break;
 				default:
 					if (opcode < 100)

@@ -61,7 +61,7 @@ public class DisassemblerTest
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CLIENTSCRIPT);
-			ScriptLoader loader = new ScriptLoader();
+			ScriptLoader loader = new ScriptLoader(false);
 
 			for (Archive archive : index.getArchives())
 			{
