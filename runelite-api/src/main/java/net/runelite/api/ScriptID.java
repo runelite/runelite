@@ -367,16 +367,16 @@ public final class ScriptID
 	public static final int WIKI_ICON_UPDATE = 3306;
 
 	/**
-	 * Drag callback for the camera zoom slider in the options side panel.
+	 * Drag callback for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
 	 */
 	@ScriptArguments(integer = 3)
-	public static final int ZOOM_SLIDER_ONDRAG = 833;
+	public static final int SLIDER_ONDRAG = 833;
 
 	/**
-	 * Drag callback for the camera zoom slider in the settings.
+	 * Drag callback for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
 	 */
 	@ScriptArguments(integer = 6)
-	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
+	public static final int SETTINGS_SLIDER_ONDRAG = 3896;
 
 	@ScriptArguments(integer = 8)
 	public static final int COLLECTION_DRAW_LIST = 2731;
