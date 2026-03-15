@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2026 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,52 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.cache.definitions.loaders;
 
-import java.util.Map;
-import lombok.Data;
+import net.runelite.cache.EntityOpsDefinition;
+import net.runelite.cache.io.InputStream;
 
-@Data
-public class InventoryDefinition
+public class EntityOpsLoader
 {
-	public int id;
-	public int size;
+	public void decodeOp(EntityOpsDefinition ops, InputStream is, int index)
+	{
+		var text = is.readString();
+		if (!text.equalsIgnoreCase("Hidden"))
+		{
+			ops.setOp(index, text);
+		}
+	}
 
-	public Map<Integer, Object> params = null;
+	public void decodeSubOp(EntityOpsDefinition ops, InputStream is)
+	{
+		int index = is.readUnsignedByte();
+		int subID = is.readUnsignedByte();
+		String text = is.readString();
+		ops.setSubOp(index, subID, text);
+	}
+
+	public void decodeConditionalOp(EntityOpsDefinition ops, InputStream is)
+	{
+		int index = is.readUnsignedByte();
+		int varp = is.readUnsignedShort();
+		int varb = is.readUnsignedShort();
+		int min = is.readInt();
+		int max = is.readInt();
+		String text = is.readString();
+
+		ops.setConditionalOp(index, text, varp, varb, min, max);
+	}
+
+	public void decodeConditionalSubOp(EntityOpsDefinition ops, InputStream is)
+	{
+		int index = is.readUnsignedByte();
+		int subID = is.readUnsignedShort();
+		int varp = is.readUnsignedShort();
+		int varb = is.readUnsignedShort();
+		int min = is.readInt();
+		int max = is.readInt();
+		String text = is.readString();
+
+		ops.setConditionalSubOp(index, subID, text, varp, varb, min, max);
+	}
 }

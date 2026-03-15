@@ -24,8 +24,6 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +38,7 @@ public class ObjectLoader
 	public static final int REV_220_OBJ_ARCHIVE_REV = 1673;
 
 	private boolean rev220SoundData = true;
+	private EntityOpsLoader entityOpsLoader = new EntityOpsLoader();
 
 	public ObjectLoader configureForRevision(int rev)
 	{
@@ -110,6 +109,40 @@ public class ObjectLoader
 				def.setObjectModels(objectModels);
 			}
 		}
+		else if (opcode == 6)
+		{
+			int length = is.readUnsignedByte();
+			if (length > 0)
+			{
+				int[] objectTypes = new int[length];
+				int[] objectModels = new int[length];
+
+				for (int index = 0; index < length; ++index)
+				{
+					objectModels[index] = is.readInt();
+					objectTypes[index] = is.readUnsignedByte();
+				}
+
+				def.setObjectTypes(objectTypes);
+				def.setObjectModels(objectModels);
+			}
+		}
+		else if (opcode == 7)
+		{
+			int length = is.readUnsignedByte();
+			if (length > 0)
+			{
+				def.setObjectTypes(null);
+				int[] objectModels = new int[length];
+
+				for (int index = 0; index < length; ++index)
+				{
+					objectModels[index] = is.readInt();
+				}
+
+				def.setObjectModels(objectModels);
+			}
+		}
 		else if (opcode == 14)
 		{
 			def.setSizeX(is.readUnsignedByte());
@@ -169,12 +202,7 @@ public class ObjectLoader
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			String[] actions = def.getActions();
-			actions[opcode - 30] = is.readString();
-			if (actions[opcode - 30].equalsIgnoreCase("Hidden"))
-			{
-				actions[opcode - 30] = null;
-			}
+			entityOpsLoader.decodeOp(def.getOps(), is, opcode - 30);
 		}
 		else if (opcode == 40)
 		{
@@ -400,31 +428,21 @@ public class ObjectLoader
 		{
 			def.setRaise(is.readUnsignedByte());
 		}
+		else if (opcode == 100)
+		{
+			entityOpsLoader.decodeSubOp(def.getOps(), is);
+		}
+		else if (opcode == 101)
+		{
+			entityOpsLoader.decodeConditionalOp(def.getOps(), is);
+		}
+		else if (opcode == 102)
+		{
+			entityOpsLoader.decodeConditionalSubOp(def.getOps(), is);
+		}
 		else if (opcode == 249)
 		{
-			int length = is.readUnsignedByte();
-
-			Map<Integer, Object> params = new HashMap<>(length);
-			for (int i = 0; i < length; i++)
-			{
-				boolean isString = is.readUnsignedByte() == 1;
-				int key = is.read24BitInt();
-				Object value;
-
-				if (isString)
-				{
-					value = is.readString();
-				}
-
-				else
-				{
-					value = is.readInt();
-				}
-
-				params.put(key, value);
-			}
-
-			def.setParams(params);
+			def.setParams(is.readParams());
 		}
 		else
 		{
@@ -443,12 +461,9 @@ public class ObjectLoader
 				def.setWallOrDoor(1);
 			}
 
-			for (int var1 = 0; var1 < 5; ++var1)
+			if (def.getOps().ops.stream().anyMatch(op -> op != null && op.text != null))
 			{
-				if (def.getActions()[var1] != null)
-				{
-					def.setWallOrDoor(1);
-				}
+				def.setWallOrDoor(1);
 			}
 		}
 

@@ -26,6 +26,8 @@ package net.runelite.cache.io;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InputStream extends java.io.InputStream
 {
@@ -261,6 +263,35 @@ public class InputStream extends java.io.InputStream
 			bits += 7;
 		} while (read > 127);
 		return value;
+	}
+
+	public Map<Integer, Object> readParams()
+	{
+		var out = new HashMap<Integer, Object>();
+		int size = this.readUnsignedByte();
+
+		for (int i = 0; i < size; ++i)
+		{
+			int var4 = this.readUnsignedByte();
+			int paramID = this.read24BitInt();
+			Object value;
+			if (var4 == 1)
+			{
+				value = this.readString();
+			}
+			else if (var4 == 2)
+			{
+				value = this.readLong();
+			}
+			else
+			{
+				value = this.readInt();
+			}
+
+			out.put(paramID, value);
+		}
+
+		return out;
 	}
 
 	public byte[] getRemaining()

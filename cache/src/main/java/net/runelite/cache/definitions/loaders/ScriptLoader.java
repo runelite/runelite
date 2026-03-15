@@ -26,7 +26,8 @@ package net.runelite.cache.definitions.loaders;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
 import static net.runelite.cache.script.Opcodes.LCONST;
@@ -36,10 +37,17 @@ import static net.runelite.cache.script.Opcodes.PUSH_NULL;
 import static net.runelite.cache.script.Opcodes.RETURN;
 import static net.runelite.cache.script.Opcodes.SCONST;
 
-@RequiredArgsConstructor
+@Accessors(chain = true)
+@Data
 public class ScriptLoader
 {
-	private final boolean longSupport;
+	private boolean rev237 = true;
+
+	public ScriptLoader configureForRevision(int rev)
+	{
+		this.rev237 = rev > 1773753883;
+		return this;
+	}
 
 	public ScriptDefinition load(int id, byte[] b)
 	{
@@ -51,20 +59,20 @@ public class ScriptLoader
 		int switchLength = in.readUnsignedShort();
 
 		// 2 for switchLength + the switch data + 12 or 16 for the param/vars/stack data
-		int endIdx = in.getLength() - 2 - switchLength - (longSupport ? 16 : 12);
+		int endIdx = in.getLength() - 2 - switchLength - (rev237 ? 16 : 12);
 		in.setOffset(endIdx);
 		int numOpcodes = in.readInt();
 		int localIntCount = in.readUnsignedShort();
 		int localObjCount = in.readUnsignedShort();
 		int localLongCount = 0;
-		if (longSupport)
+		if (rev237)
 		{
 			localLongCount = in.readUnsignedShort();
 		}
 		int intArgCount = in.readUnsignedShort();
 		int objArgCount = in.readUnsignedShort();
 		int longArgCount = 0;
-		if (longSupport)
+		if (rev237)
 		{
 			longArgCount = in.readUnsignedShort();
 		}

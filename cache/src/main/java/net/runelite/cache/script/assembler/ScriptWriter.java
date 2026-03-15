@@ -33,8 +33,6 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.Opcodes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
 class ScriptWriter extends rs2asmBaseListener

@@ -24,7 +24,6 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +40,8 @@ public class NpcLoader
 	private int defaultHeadIconArchive = -1;
 	private boolean rev210HeadIcons = true;
 	private boolean rev233 = true;
+
+	private EntityOpsLoader entityOpsLoader = new EntityOpsLoader();
 
 	public NpcLoader configureForRevision(int rev)
 	{
@@ -128,11 +129,7 @@ public class NpcLoader
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			def.actions[opcode - 30] = stream.readString();
-			if (def.actions[opcode - 30].equalsIgnoreCase("Hidden"))
-			{
-				def.actions[opcode - 30] = null;
-			}
+			entityOpsLoader.decodeOp(def.ops, stream, opcode - 30);
 		}
 		else if (opcode == 40)
 		{
@@ -168,6 +165,26 @@ public class NpcLoader
 			for (index = 0; index < length; ++index)
 			{
 				def.chatheadModels[index] = stream.readUnsignedShort();
+			}
+		}
+		else if (opcode == 61)
+		{
+			length = stream.readUnsignedByte();
+			def.models = new int[length];
+
+			for (index = 0; index < length; ++index)
+			{
+				def.models[index] = stream.readInt();
+			}
+		}
+		else if (opcode == 62)
+		{
+			length = stream.readUnsignedByte();
+			def.chatheadModels = new int[length];
+
+			for (index = 0; index < length; ++index)
+			{
+				def.chatheadModels[index] = stream.readInt();
 			}
 		}
 		else if (opcode == 74)
@@ -401,28 +418,19 @@ public class NpcLoader
 		}
 		else if (opcode == 249)
 		{
-			length = stream.readUnsignedByte();
-
-			def.params = new HashMap<>(length);
-
-			for (int i = 0; i < length; i++)
-			{
-				boolean isString = stream.readUnsignedByte() == 1;
-				int key = stream.read24BitInt();
-				Object value;
-
-				if (isString)
-				{
-					value = stream.readString();
-				}
-
-				else
-				{
-					value = stream.readInt();
-				}
-
-				def.params.put(key, value);
-			}
+			def.params = stream.readParams();
+		}
+		else if (opcode == 251)
+		{
+			entityOpsLoader.decodeSubOp(def.ops, stream);
+		}
+		else if (opcode == 252)
+		{
+			entityOpsLoader.decodeConditionalOp(def.ops, stream);
+		}
+		else if (opcode == 253)
+		{
+			entityOpsLoader.decodeConditionalSubOp(def.ops, stream);
 		}
 		else
 		{

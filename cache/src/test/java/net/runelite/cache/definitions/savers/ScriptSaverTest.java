@@ -49,7 +49,7 @@ public class ScriptSaverTest
 		instructions.init();
 		ScriptDefinition script = new Assembler(instructions).assemble(getClass().getResourceAsStream(SCRIPT_RESOURCE));
 		byte[] saved = new ScriptSaver(LONG_SUPPORT).save(script);
-		ScriptDefinition loadedScripot = new ScriptLoader(LONG_SUPPORT).load(91, saved);
+		ScriptDefinition loadedScripot = new ScriptLoader().setRev237(LONG_SUPPORT).load(91, saved);
 		assertEquals(script, loadedScripot);
 	}
 
@@ -60,7 +60,7 @@ public class ScriptSaverTest
 		instructions.init();
 		ScriptDefinition script = new Assembler(instructions).assemble(getClass().getResourceAsStream(SCRIPT_RESOURCE_UNICODE));
 		byte[] saved = new ScriptSaver(LONG_SUPPORT).save(script);
-		ScriptDefinition loadedScripot = new ScriptLoader(LONG_SUPPORT).load(1001, saved);
+		ScriptDefinition loadedScripot = new ScriptLoader().setRev237(LONG_SUPPORT).load(1001, saved);
 		assertEquals(script, loadedScripot);
 	}
 
