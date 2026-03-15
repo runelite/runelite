@@ -58,6 +58,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.AnimationID;
@@ -793,6 +794,18 @@ public class ScreenshotPlugin extends Plugin
 				}
 				notificationStarted = false;
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired e)
+	{
+		if (e.getScriptId() == ScriptID.DOM_LOOT_CLAIM)
+		{
+			if (config.screenshotRewards())
+			{
+				takeScreenshot("Doom of Mokhaiotl", SD_CHEST_LOOT);
+			}
 		}
 	}
 
