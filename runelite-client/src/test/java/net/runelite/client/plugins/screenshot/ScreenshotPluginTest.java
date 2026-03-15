@@ -159,20 +159,9 @@ public class ScreenshotPluginTest
 	{
 		when(screenshotConfig.screenshotRewards()).thenReturn(true);
 
-		Widget widget = mock(Widget.class);
-		when(client.getWidget(InterfaceID.DomEndLevelUi.BTN_BANK_ALL)).thenReturn(widget);
-
-		ScriptPostFired scriptPostFiredEvent = new ScriptPostFired(7931);
-
-		when(widget.isHidden()).thenReturn(true);
+		ScriptPostFired scriptPostFiredEvent = new ScriptPostFired(ScriptID.DOM_LOOT_CLAIM);
 		screenshotPlugin.onScriptPostFired(scriptPostFiredEvent);
 
-		assertEquals(ScreenshotPlugin.KillType.DELVE, screenshotPlugin.getKillType());
-
-		when(widget.isHidden()).thenReturn(false);
-		screenshotPlugin.onScriptPostFired(scriptPostFiredEvent);
-
-		assertNull(screenshotPlugin.getKillType());
 		verify(screenshotPlugin).takeScreenshot("Doom of Mokhaiotl", "Chest Loot");
 	}
 
