@@ -585,7 +585,7 @@ public class LootTrackerPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(client.getBoostedSkillLevel(Skill.FIREMAKING)).thenReturn(99);
 
-		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), anyCollection());
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
