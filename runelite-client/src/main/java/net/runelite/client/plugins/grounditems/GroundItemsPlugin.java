@@ -626,16 +626,14 @@ public class GroundItemsPlugin extends Plugin
 	private Color getHighlighted(GroundItem groundItem)
 	{
 		Color itemColor = getItemColor(groundItem.getItemId());
-		var item = new NamedQuantity(groundItem);
-		if (TRUE.equals(highlightedItems.getUnchecked(item)))
-		{
-			return itemColor != null ? itemColor : config.highlightedColor();
-		}
-
-		// Explicit hide takes priority over implicit highlight
-		if (TRUE.equals(hiddenItems.getUnchecked(item)))
+		if (isExplicitlyHidden(groundItem))
 		{
 			return null;
+		}
+
+		if (isExplicitlyHighlighted(groundItem))
+		{
+			return itemColor != null ? itemColor : config.highlightedColor();
 		}
 
 		// item highlight colors takes priority over price thresholds
@@ -658,9 +656,8 @@ public class GroundItemsPlugin extends Plugin
 
 	private Color getHidden(GroundItem groundItem)
 	{
-		var item = new NamedQuantity(groundItem);
-		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
-		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
+		final boolean isExplicitHidden = isExplicitlyHidden(groundItem);
+		final boolean isExplicitHighlight = isExplicitlyHighlighted(groundItem);
 		final boolean canBeHidden = groundItem.getGePrice() > 0 || groundItem.isTradeable() || !config.dontHideUntradeables();
 		final boolean underGe = groundItem.getGePrice() < config.getHideUnderValue();
 		final boolean underHa = groundItem.getHaPrice() < config.getHideUnderValue();
@@ -698,11 +695,12 @@ public class GroundItemsPlugin extends Plugin
 	private void notifyHighlightedItem(GroundItem item)
 	{
 		final boolean shouldNotifyHighlighted = config.notifyHighlightedDrops() &&
-			TRUE.equals(highlightedItems.getUnchecked(new NamedQuantity(item)));
+			isExplicitlyHighlighted(item) &&
+			!isExplicitlyHidden(item);
 
 		final boolean shouldNotifyTier = config.notifyTier() != HighlightTier.OFF &&
 			getValueByMode(item.getGePrice(), item.getHaPrice()) > config.notifyTier().getValueFromTier(config) &&
-			FALSE.equals(hiddenItems.getUnchecked(new NamedQuantity(item)));
+			!isExplicitlyHidden(item);
 
 		final String dropType;
 		if (shouldNotifyHighlighted)
@@ -772,20 +770,19 @@ public class GroundItemsPlugin extends Plugin
 			}
 
 			/*
-			 * highlighted items have the highest priority so if an item is highlighted at this location
-			 * we can early return
+			 * highlighted items have the highest priority, unless explicitly hidden,
+			 * so if an item is highlighted at this location we can early return
 			 */
-			NamedQuantity item = new NamedQuantity(groundItem);
 			if (config.showLootbeamForHighlighted()
-				&& TRUE.equals(highlightedItems.getUnchecked(item)))
+				&& isExplicitlyHighlighted(groundItem)
+				&& !isExplicitlyHidden(groundItem))
 			{
 				addLootbeam(worldPoint,
 					MoreObjects.firstNonNull(getItemColor(groundItem.getItemId()), config.highlightedColor()));
 				return;
 			}
 
-			// Explicit hide takes priority over implicit highlight
-			if (TRUE.equals(hiddenItems.getUnchecked(item)))
+			if (isExplicitlyHidden(groundItem))
 			{
 				continue;
 			}
@@ -889,4 +886,24 @@ public class GroundItemsPlugin extends Plugin
 				return true;
 		}
 	}
+	private boolean isExplicitlyHighlighted(GroundItem groundItem)
+	{
+		return isExplicitlyHighlighted(new NamedQuantity(groundItem));
+	}
+
+	private boolean isExplicitlyHighlighted(NamedQuantity item)
+	{
+		return TRUE.equals(highlightedItems.getUnchecked(item));
+	}
+
+	private boolean isExplicitlyHidden(GroundItem groundItem)
+	{
+		return isExplicitlyHidden(new NamedQuantity(groundItem));
+	}
+
+	private boolean isExplicitlyHidden(NamedQuantity item)
+	{
+		return TRUE.equals(hiddenItems.getUnchecked(item));
+	}
+
 }
