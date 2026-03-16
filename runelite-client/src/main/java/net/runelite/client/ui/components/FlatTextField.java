@@ -28,15 +28,20 @@ package net.runelite.client.ui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.Document;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.util.OSType;
 
 /**
  * This component is a JTextField with a flat design look.
@@ -68,6 +73,7 @@ public class FlatTextField extends JPanel
 		this.textField.setOpaque(false);
 		this.textField.setSelectedTextColor(Color.WHITE);
 		this.textField.setSelectionColor(ColorScheme.BRAND_ORANGE_TRANSPARENT);
+		setupNativeKeybindings();
 
 		add(textField, BorderLayout.CENTER);
 
@@ -91,6 +97,31 @@ public class FlatTextField extends JPanel
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				setBackground(backgroundColor);
+			}
+		});
+	}
+
+	/**
+	 * Adds platform-native text editing shortcuts so RuneLite fields behave like
+	 * standard desktop text inputs.
+	 */
+	private void setupNativeKeybindings()
+	{
+		if (OSType.getOSType() != OSType.MacOS)
+		{
+			return;
+		}
+
+		final String clearAllAction = "runelite.clearAllText";
+		textField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_DOWN_MASK),
+				clearAllAction);
+		textField.getActionMap().put(clearAllAction, new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e)
+			{
+				textField.setText("");
+				textField.setCaretPosition(0);
 			}
 		});
 	}
