@@ -39,6 +39,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
@@ -229,6 +230,8 @@ public class AgilityPlugin extends Plugin
 
 		agilityLevel = statChanged.getBoostedLevel();
 
+		// Store previous agility level for possible goal laps recalculation
+		final int previousLevel = Experience.getLevelForXp(lastAgilityXp);
 		// Determine how much EXP was actually gained
 		int agilityXp = statChanged.getXp();
 		int skillGained = agilityXp - lastAgilityXp;
@@ -238,10 +241,16 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| !config.showLapCount()
-			|| Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
+		if (course == null || !config.showLapCount())
 		{
+			return;
+		}
+		else if (Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
+		{
+			if (session != null && previousLevel != statChanged.getLevel())
+			{
+				session.recalculateLapsTillGoal(client, xpTrackerService);
+			}
 			return;
 		}
 
