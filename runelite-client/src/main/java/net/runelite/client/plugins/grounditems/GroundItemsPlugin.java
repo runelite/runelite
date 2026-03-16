@@ -34,7 +34,6 @@ import com.google.common.collect.Table;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import java.time.Duration;
 import java.time.Instant;
