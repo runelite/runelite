@@ -150,18 +150,12 @@ public class HiscorePlugin extends Plugin
 		playerIndexName.clear();
 		for (MenuEntry entry : event.getMenuEntries())
 		{
-			int type = entry.getType().getId();
-			if (type > MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET)
-			{
-				type -= MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
-			}
-
-			if (type != MenuAction.RUNELITE_PLAYER.getId() || !entry.getOption().equals(LOOKUP))
+			if (entry.getType() != MenuAction.RUNELITE_PLAYER || !entry.getOption().equals(LOOKUP))
 			{
 				continue;
 			}
 
-			final Player player = client.getWorldView(entry.getWorldViewId()).players().byIndex(entry.getIdentifier());
+			final Player player = entry.getPlayer();
 			if (player == null)
 			{
 				continue;
