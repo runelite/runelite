@@ -1221,29 +1221,12 @@ public class LootTrackerPlugin extends Plugin
 
 		log.debug("Inv change: {} Ground items: {}", items, groundItems);
 
-		final Set<Integer> removedItemIDs = diffr.entrySet().stream().map(Multiset.Entry::getElement).collect(Collectors.toSet());
-		final Set<Integer> currentInventoryItemIDs = currentInventory.entrySet().stream().map(Multiset.Entry::getElement).collect(Collectors.toSet());
-		// Determines whether to ignore #resetEvent or not due to the game possibly continuing to modify the players inventory without any interaction
-		// An example of this would be searching bird nests, as after searching one nest, the game will continue to search the rest of the nests in the inventory until interrupted
-		boolean ignoreReset = false;
-		if (removedItemIDs.stream().anyMatch(BIRDNEST_IDS::contains))
-		{
-			onInvChange(collectInvItems(LootRecordType.EVENT, BIRDNEST_EVENT));
-			if (currentInventoryItemIDs.stream().anyMatch(BIRDNEST_IDS::contains))
-			{
-				ignoreReset = true;
-			}
-		}
-
 		if (inventorySnapshotCb != null)
 		{
 			inventorySnapshotCb.accept(items, groundItems, diffr);
 		}
 
-		if (!ignoreReset)
-		{
-			resetEvent();
-		}
+		resetEvent();
 	}
 
 	@Subscribe
