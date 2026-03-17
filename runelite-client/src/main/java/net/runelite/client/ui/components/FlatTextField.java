@@ -27,6 +27,7 @@ package net.runelite.client.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -114,13 +115,13 @@ public class FlatTextField extends JPanel
 			return;
 		}
 
-		final String clearAllAction = "runelite.clearAllText";
+		final String clearAllAction = "clear all text macOS";
 		textField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_DOWN_MASK),
 				clearAllAction);
 		textField.getActionMap().put(clearAllAction, new AbstractAction()
 		{
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
 				textField.setText("");
 				textField.setCaretPosition(0);
