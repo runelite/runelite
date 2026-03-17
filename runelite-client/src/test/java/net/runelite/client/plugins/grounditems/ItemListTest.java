@@ -25,42 +25,51 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.util.Arrays;
+import java.util.List;
 import joptsimple.internal.Strings;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
-public class WildcardMatchLoaderTest
+public class ItemListTest
 {
+	private static GroundItem item(String name, int qty)
+	{
+		return GroundItem.builder()
+			.name(name)
+			.quantity(qty)
+			.build();
+	}
+
 	@Test
 	public void testLoadItems()
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load(new NamedQuantity("rune pouch", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune pouch", 1)));
-		assertFalse(loader.load(new NamedQuantity("Adamant dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Runeite Ore", 1)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 1)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
+		ItemList loader = new ItemList(Arrays.asList("rune*", "Abyssal whip"));
+		assertNotEquals(ItemList.NONE, loader.matches(item("rune pouch", 1)));
+		assertNotEquals(ItemList.NONE, loader.matches(item("Rune pouch", 1)));
+		assertEquals(ItemList.NONE, loader.matches(item("Adamant dagger", 1)));
+		assertNotEquals(ItemList.NONE, loader.matches(item("Runeite Ore", 1)));
+		assertNotEquals(ItemList.NONE, loader.matches(item("Abyssal whip", 1)));
+		assertEquals(ItemList.NONE, loader.matches(item("Abyssal dagger", 1)));
 	}
 
 	@Test
 	public void testLoadQuantities()
 	{
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune* < 3", "*whip>3", "nature*<5", "*rune > 30"));
-		assertTrue(loader.load(new NamedQuantity("Nature Rune", 50)));
-		assertFalse(loader.load(new NamedQuantity("Nature Impling", 5)));
-		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 4)));
-		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
-		assertTrue(loader.load(new NamedQuantity("Rune Longsword", 2)));
+		ItemList loader = new ItemList(Arrays.asList("rune* < 3", "*whip>3", "nature*<5", "*rune > 30"));
+		assertNotEquals(ItemList.NONE, loader.matches(item("Nature Rune", 50)));
+		assertEquals(ItemList.NONE, loader.matches(item("Nature Impling", 5)));
+		assertNotEquals(ItemList.NONE, loader.matches(item("Abyssal whip", 4)));
+		assertEquals(ItemList.NONE, loader.matches(item("Abyssal dagger", 1)));
+		assertNotEquals(ItemList.NONE, loader.matches(item("Rune Longsword", 2)));
 	}
 
 	@Test(timeout = 1000)
 	public void testExplosive()
 	{
 		String name = "archer" + Strings.repeat('e', 50000) + "s ring";
-		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList(name + "* < 100"));
-		assertTrue(loader.load(new NamedQuantity(name, 50)));
-		assertFalse(loader.load(new NamedQuantity(name, 150)));
+		ItemList loader = new ItemList(List.of(name + "* < 100"));
+		assertNotEquals(ItemList.NONE, loader.matches(item(name, 50)));
+		assertEquals(ItemList.NONE, loader.matches(item(name, 150)));
 	}
 }
