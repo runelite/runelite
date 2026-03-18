@@ -13016,6 +13016,8 @@ public final class NpcID
 	public static final int KETZEK_15573 = 15573;
 	public static final int TZTOKJAD_15574 = 15574;
 	public static final int TIGER_SHARK_15575 = 15575;
+	public static final int VEILED_KRAKEN = 15576;
+	public static final int VEILED_KRAKEN_15577 = 15577;
 	public static final int SOOKIE = 15589;
 	public static final int BULL = 15625;
 	public static final int BRUTUS = 15626;

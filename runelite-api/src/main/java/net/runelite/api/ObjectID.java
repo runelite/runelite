@@ -29333,6 +29333,9 @@ public final class ObjectID
 	public static final int CORAL_60672 = 60672;
 	public static final int CORAL_60673 = 60673;
 	public static final int FOUNTAIN_60681 = 60681;
+	public static final int FACILITY_HOTSPOT_60720 = 60720;
+	public static final int FACILITY_HOTSPOT_60721 = 60721;
+	public static final int BALLISTIC_ATTRACTOR = 60722;
 	public static final int LADDER_60731 = 60731;
 	public static final int LADDER_60732 = 60732;
 	public static final int BIRTHDAY_BANNER = 60745;
