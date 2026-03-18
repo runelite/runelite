@@ -406,8 +406,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				}
 				break;
 			}
-			case ScriptID.ZOOM_SLIDER_ONDRAG:
-			case ScriptID.SETTINGS_ZOOM_SLIDER_ONDRAG:
+			case ScriptID.SLIDER_ONDRAG:
+			case ScriptID.SETTINGS_SLIDER_ONDRAG:
 				sliderTooltip = makeSliderTooltip();
 				break;
 		}

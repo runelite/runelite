@@ -34,4 +34,5 @@ public final class SettingID
 	public static final int MUSIC_VOLUME = 30;
 	public static final int EFFECT_VOLUME = 31;
 	public static final int AREA_VOLUME = 32;
+	public static final int MASTER_VOLUME = 319;
 }
