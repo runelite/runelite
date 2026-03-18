@@ -546,6 +546,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapGEModify",
+		name = "GE modify",
+		description = "Swap View offer with Modify offer on Grand Exchange offers.",
+		section = uiSection
+	)
+	default boolean swapGEModify()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "bankWithdrawShiftClick",
 		name = "Bank withdraw shift-click",
 		description = "Swaps the behavior of shift-click when withdrawing from bank.",
