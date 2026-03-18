@@ -1172,6 +1172,11 @@ public class LootTrackerPlugin extends Plugin
 		{
 			countChangedItems(ItemID.DIRTY_ARROWTIPS, client.getBoostedSkillLevel(Skill.FLETCHING));
 		}
+
+		if (message.endsWith("out of the bird's nest."))
+		{
+			onInvChange(collectInvItems(LootRecordType.EVENT, BIRDNEST_EVENT));
+		}
 	}
 
 	private void countChangedItems(int itemId, Object metadata)

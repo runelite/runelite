@@ -43,6 +43,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.IterableHashTable;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -52,6 +53,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
@@ -683,6 +685,66 @@ public class LootTrackerPluginTest
 		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.NAILS, 4)});
 
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
+
+		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
+	}
+
+	@Test
+	public void testBirdNests()
+	{
+		List<ItemStack> initialItems = Collections.singletonList(
+			new ItemStack(ItemID.BIRD_NEST_SEEDS_JAN2019, 2)
+		);
+		sendInvChange(InventoryID.INV, initialItems);
+
+		MenuOptionClicked searchBirdNest = mock(MenuOptionClicked.class);
+		when(searchBirdNest.getMenuAction()).thenReturn(MenuAction.CC_OP);
+		when(searchBirdNest.isItemOp()).thenReturn(true);
+		when(searchBirdNest.getMenuOption()).thenReturn("Search");
+		when(searchBirdNest.getItemId()).thenReturn(ItemID.BIRD_NEST_SEEDS_JAN2019);
+		lootTrackerPlugin.onMenuOptionClicked(searchBirdNest);
+
+		List<ItemStack> itemsAfterOneSearch = Arrays.asList(
+			new ItemStack(ItemID.BIRD_NEST_EMPTY, 1),
+			new ItemStack(ItemID.BIRD_NEST_SEEDS_JAN2019, 1),
+			new ItemStack(ItemID.ACORN, 1)
+		);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You take an acorn out of the bird's nest.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+		sendInvChange(InventoryID.INV, itemsAfterOneSearch);
+		verify(lootTrackerPlugin).addLoot("Bird nest", -1, LootRecordType.EVENT, null, Arrays.asList(
+			new ItemStack(ItemID.ACORN, 1),
+			new ItemStack(ItemID.BIRD_NEST_EMPTY, 1)
+		));
+
+		lootTrackerPlugin.onMenuOptionClicked(searchBirdNest);
+
+		List<ItemStack> itemsAfterTwoSearches = Arrays.asList(
+			new ItemStack(ItemID.BIRD_NEST_EMPTY, 2),
+			new ItemStack(ItemID.ACORN, 1),
+			new ItemStack(ItemID.CELASTRUS_TREE_SEED, 1)
+		);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You take a celastrus tree seed out of the bird's nest.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+		sendInvChange(InventoryID.INV, itemsAfterTwoSearches);
+		verify(lootTrackerPlugin).addLoot("Bird nest", -1, LootRecordType.EVENT, null, Arrays.asList(
+			new ItemStack(ItemID.BIRD_NEST_EMPTY, 1),
+			new ItemStack(ItemID.CELASTRUS_TREE_SEED, 1)
+		));
+
+		// Additional test to make sure ignoring reset didn't break anything
+		List<ItemStack> itemsPostBirdNestTest = Arrays.asList(
+			new ItemStack(ItemID.SAILING_LARGE_SHIPWRECK_SALVAGE, 1)
+		);
+
+		sendInvChange(InventoryID.INV, itemsPostBirdNestTest);
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You sort through the large salvage and find: 4 x Steel nails.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		sendInvChange(InventoryID.INV, Collections.singletonList(
+			new ItemStack(ItemID.NAILS, 4)
+		));
 
 		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
 	}
