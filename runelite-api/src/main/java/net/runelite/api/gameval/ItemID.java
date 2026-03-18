@@ -86795,6 +86795,29 @@ public final class ItemID
 	 */
 	public static final int SLAYER_HERB_SACK_SILK_OPEN = 33137;
 	public static final int MINIGAME_TELEPORT = 33138;
+	public static final int ANCIENT_MINIGAME_TELEPORT = 33139;
+	public static final int ARCEUUS_MINIGAME_TELEPORT = 33140;
+	public static final int LUNAR_MINIGAME_TELEPORT = 33141;
+
+	/**
+	 * Ballistic attractor
+	 */
+	public static final int SAILING_SKILLGUIDE_BALLISTIC_ATTRACTOR = 33142;
+
+	/**
+	 * Ballistic attractor schematic
+	 */
+	public static final int LOST_SCHEMATIC_BALLISTIC_ATTRACTOR = 33143;
+
+	/**
+	 * Veiled kraken tentacle
+	 */
+	public static final int SAILING_VEILED_KRAKEN_TENTACLE = 33144;
+
+	/**
+	 * Veiled kraken ink sac
+	 */
+	public static final int SAILING_VEILED_KRAKEN_INK_SAC = 33145;
 
 	public static final class Cert
 	{

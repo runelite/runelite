@@ -67718,6 +67718,16 @@ public final class NpcID
 	public static final int SAILING_TIGER_SHARK_NOOP = 15575;
 
 	/**
+	 * Veiled kraken
+	 */
+	public static final int SAILING_VEILED_KRAKEN = 15576;
+
+	/**
+	 * Veiled kraken
+	 */
+	public static final int SAILING_VEILED_KRAKEN_DEAD = 15577;
+
+	/**
 	 * Sookie
 	 */
 	public static final int _25TH_CAT = 15589;

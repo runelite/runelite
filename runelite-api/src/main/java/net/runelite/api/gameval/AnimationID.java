@@ -1180,7 +1180,12 @@ public final class AnimationID
 	public static final int KALPHITE_GLOW = 1173;
 	public static final int KALPHITE_EGG_OPEN = 1174;
 	public static final int KALPHITE_EGG_CLOSE = 1175;
+	public static final int SAILING_BALLISTIC_ATTRACTOR_IDLE_OFF = 1176;
+	public static final int SAILING_BALLISTIC_ATTRACTOR_IDLE_ON = 1177;
 	public static final int KALPHITE_QUEEN_ATTACK_CLAWS = 1178;
+	public static final int SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_1X3_DROP01_CREW = 1179;
+	public static final int SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_2X5_DROP01_CREW = 1180;
+	public static final int SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_3X8_DROP01_CREW = 1181;
 	public static final int KALPHITE_READY = 1183;
 	public static final int KALPHITE_ATTACK_MANDIBLES = 1184;
 	public static final int KALPHITE_ATTACK_CLAWS = 1185;

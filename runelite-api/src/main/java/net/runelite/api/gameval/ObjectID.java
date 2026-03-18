@@ -81319,6 +81319,9 @@ public final class ObjectID extends ObjectID1
 	 * Lever
 	 */
 	public static final int FAI_FALADOR_PARTY_ROOM_LEVER = 26194;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_WOOD = 26195;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_WOOD = 26196;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_WOOD = 26197;
 
 	/**
 	 * Birthday cake
