@@ -29,7 +29,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -77,8 +77,7 @@ class KourendLibraryTutorialOverlay extends OverlayPanel
 			return null;
 		}
 
-		WorldPoint playerLoc = player.getWorldLocation();
-		if (playerLoc.getRegionID() != KourendLibraryPlugin.REGION)
+		if (!GameArea.ARCEUUS_LIBRARY.containsRegion(player.getWorldLocation().getRegionID()))
 		{
 			return null;
 		}
