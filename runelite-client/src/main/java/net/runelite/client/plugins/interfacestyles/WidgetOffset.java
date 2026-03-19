@@ -34,7 +34,7 @@ import net.runelite.api.gameval.InterfaceID;
 enum WidgetOffset
 {
 	RESIZABLE_2010_COMBAT_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE0, -4, 1, null, null),
-	RESIZABLE_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON0, 5, null, null, null),
+	RESIZABLE_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON0, 1, null, null, null),
 	RESIZABLE_2010_STATS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE1, 35, 1, null, null),
 	RESIZABLE_2010_STATS_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON1, 35, null, null, null),
 	RESIZABLE_2010_QUESTS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE2, 69, 1, 33, null),
@@ -62,7 +62,7 @@ enum WidgetOffset
 	RESIZABLE_2010_MUSIC_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.STONE13, 205, 1, null, null),
 	RESIZABLE_2010_MUSIC_ICON(Skin.AROUND_2010, InterfaceID.ToplevelOsrsStretch.ICON13, 204, 3, null, null),
 
-	RESIZABLE_BOTTOM_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON0, 2, null, null, null),
+	RESIZABLE_BOTTOM_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON0, null, null, null, null),
 	RESIZABLE_BOTTOM_2010_STATS_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON1, 32, null, null, null),
 	RESIZABLE_BOTTOM_2010_QUESTS_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON2, null, 1, null, null),
 	RESIZABLE_BOTTOM_2010_EQUIPMENT_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON4, 132, 3, null, null),
@@ -76,7 +76,7 @@ enum WidgetOffset
 	RESIZABLE_BOTTOM_2010_MUSIC_ICON(Skin.AROUND_2010, InterfaceID.ToplevelPreEoc.ICON13, null, 3, null, null),
 
 	FIXED_2010_COMBAT_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE0, 2, 1, null, null),
-	FIXED_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON0, 11, null, null, null),
+	FIXED_2010_COMBAT_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON0, 7, null, null, null),
 	FIXED_2010_STATS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE1, 41, 1, null, null),
 	FIXED_2010_STATS_ICON(Skin.AROUND_2010, InterfaceID.Toplevel.ICON1, 41, null, null, null),
 	FIXED_2010_QUESTS_HIGHLIGHT(Skin.AROUND_2010, InterfaceID.Toplevel.STONE2, 75, 1, 33, null),
