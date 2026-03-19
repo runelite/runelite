@@ -1,0 +1,8 @@
+.id                       2475
+.int_arg_count            0
+.long_arg_count           0
+.obj_arg_count            0
+   iconst                 7
+   get_varp               168
+   3213                  
+   return                
