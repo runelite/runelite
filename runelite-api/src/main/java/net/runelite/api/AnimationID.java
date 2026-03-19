@@ -45,6 +45,7 @@ public final class AnimationID
 	public static final int WOODCUTTING_GILDED = 8303;
 	public static final int WOODCUTTING_DRAGON = 2846;
 	public static final int WOODCUTTING_DRAGON_OR = 24;
+	public static final int WOODCUTTING_DRAGON_OR_TRAILBLAZER_RELOADED = 11940;
 	public static final int WOODCUTTING_INFERNAL = 2117;
 	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int WOODCUTTING_CRYSTAL = 8324;
@@ -239,6 +240,7 @@ public final class AnimationID
 	public final static int MINING_CRASHEDSTAR_DRAGON_UPGRADED = 643;
 	public final static int MINING_CRASHEDSTAR_DRAGON_OR = 8349;
 	public final static int MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER = 8888;
+	public final static int MINING_CRASHEDSTAR_DRAGON_OR_TRAILBLAZER_RELOADED = 11839;
 	public final static int MINING_CRASHEDSTAR_INFERNAL = 4483;
 	public final static int MINING_CRASHEDSTAR_3A = 7284;
 	public final static int MINING_CRASHEDSTAR_CRYSTAL = 8350;
