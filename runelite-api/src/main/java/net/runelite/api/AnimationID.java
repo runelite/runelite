@@ -222,6 +222,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON_UPGRADED = 335;
 	public static final int MINING_MOTHERLODE_DRAGON_OR = 8344;
 	public static final int MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER = 8886;
+	public static final int MINING_MOTHERLODE_DRAGON_OR_TRAILBLAZER_RELOADED = 11827;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int MINING_MOTHERLODE_CRYSTAL = 8345;
