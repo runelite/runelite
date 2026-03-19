@@ -28,46 +28,50 @@ import java.awt.Color;
 
 /**
  * This class serves to hold commonly used UI colors.
+ * CyberWorld - Midnight Neon Galaxy / Cyberpunk / OSINT / SOC Theme
  */
 public class ColorScheme
 {
-	/* The orange color used for the branding's accents */
-	public static final Color BRAND_ORANGE = new Color(220, 138, 0);
+	/* The neon cyan color used for CyberWorld branding accents */
+	public static final Color BRAND_ORANGE = new Color(0, 220, 255);
 
-	/* The orange color used for the branding's accents, with lowered opacity */
-	public static final Color BRAND_ORANGE_TRANSPARENT = new Color(220, 138, 0, 120);
+	/* The neon cyan color used for CyberWorld branding accents, with lowered opacity */
+	public static final Color BRAND_ORANGE_TRANSPARENT = new Color(0, 220, 255, 120);
 
-	public static final Color DARKER_GRAY_COLOR = new Color(30, 30, 30);
-	public static final Color DARK_GRAY_COLOR = new Color(40, 40, 40);
-	public static final Color MEDIUM_GRAY_COLOR = new Color(77, 77, 77);
-	public static final Color LIGHT_GRAY_COLOR = new Color(165, 165, 165);
+	/* Midnight dark backgrounds */
+	public static final Color DARKER_GRAY_COLOR = new Color(6, 6, 18);
+	public static final Color DARK_GRAY_COLOR = new Color(10, 10, 28);
+	public static final Color MEDIUM_GRAY_COLOR = new Color(30, 42, 74);
+	public static final Color LIGHT_GRAY_COLOR = new Color(140, 180, 220);
 
-	public static final Color TEXT_COLOR = new Color(198, 198, 198);
-	public static final Color CONTROL_COLOR = new Color(30, 30, 30);
-	public static final Color BORDER_COLOR = new Color(23, 23, 23);
+	/* Neon-tinted text and UI controls */
+	public static final Color TEXT_COLOR = new Color(180, 220, 255);
+	public static final Color CONTROL_COLOR = new Color(10, 10, 28);
+	public static final Color BORDER_COLOR = new Color(0, 80, 140);
 
-	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60, 60, 60);
-	public static final Color DARK_GRAY_HOVER_COLOR = new Color(35, 35, 35);
+	/* Hover states with neon glow effect */
+	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(0, 40, 80);
+	public static final Color DARK_GRAY_HOVER_COLOR = new Color(10, 20, 50);
 
-	/* The color for the green progress bar (used in ge offers, farming tracker, etc)*/
-	public static final Color PROGRESS_COMPLETE_COLOR = new Color(55, 240, 70);
+	/* Neon green for complete/success state */
+	public static final Color PROGRESS_COMPLETE_COLOR = new Color(0, 255, 136);
 
-	/* The color for the red progress bar (used in ge offers, farming tracker, etc)*/
-	public static final Color PROGRESS_ERROR_COLOR = new Color(230, 30, 30);
+	/* Hot pink/red for error state */
+	public static final Color PROGRESS_ERROR_COLOR = new Color(255, 30, 80);
 
-	/* The color for the orange progress bar (used in ge offers, farming tracker, etc)*/
-	public static final Color PROGRESS_INPROGRESS_COLOR = new Color(230, 150, 30);
+	/* Electric purple for in-progress state */
+	public static final Color PROGRESS_INPROGRESS_COLOR = new Color(155, 0, 255);
 
-	/* The color for the price indicator in the ge search results */
-	public static final Color GRAND_EXCHANGE_PRICE = new Color(110, 225, 110);
+	/* Neon green for price indicators */
+	public static final Color GRAND_EXCHANGE_PRICE = new Color(0, 255, 136);
 
-	/* The color for the high alch indicator in the ge search results */
-	public static final Color GRAND_EXCHANGE_ALCH = new Color(240, 207, 123);
+	/* Gold-yellow for alch indicators */
+	public static final Color GRAND_EXCHANGE_ALCH = new Color(255, 215, 0);
 
-	/* The color for the limit indicator in the ge search results */
-	public static final Color GRAND_EXCHANGE_LIMIT = new Color(50, 160, 250);
+	/* Electric blue for limit indicators */
+	public static final Color GRAND_EXCHANGE_LIMIT = new Color(0, 160, 255);
 
 	/* The background color of the scrollbar's track */
-	public static final Color SCROLL_TRACK_COLOR = new Color(25, 25, 25);
+	public static final Color SCROLL_TRACK_COLOR = new Color(4, 4, 14);
 
 }
