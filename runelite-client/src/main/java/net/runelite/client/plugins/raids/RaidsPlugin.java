@@ -55,13 +55,13 @@ import net.runelite.api.InstanceTemplates;
 import net.runelite.api.MessageNode;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
-import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.ObjectID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.callback.ClientThread;
@@ -295,7 +295,7 @@ public class RaidsPlugin extends Plugin
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
 				timer = new RaidsTimer(this, Instant.now(), config);
-				spriteManager.getSpriteAsync(TAB_QUESTS_BROWN_RAIDING_PARTY, 0, timer);
+				spriteManager.getSpriteAsync(SpriteID.SideiconsInterface.RAIDING_PARTY, 0, timer);
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -811,7 +811,7 @@ public class RaidsPlugin extends Plugin
 		Rectangle overlayDimensions = overlay.getBounds();
 		BufferedImage overlayImage = new BufferedImage(overlayDimensions.width, overlayDimensions.height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphic = overlayImage.createGraphics();
-		graphic.setFont(runeLiteConfig.interfaceFontType().getFont());
+		graphic.setFont(runeLiteConfig.interfaceFont().getFont());
 		graphic.setColor(Color.BLACK);
 		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
 		overlay.render(graphic);

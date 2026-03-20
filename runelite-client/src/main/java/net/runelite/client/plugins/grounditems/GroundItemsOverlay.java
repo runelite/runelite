@@ -42,6 +42,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.gameval.ItemID;
@@ -113,7 +114,6 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		offsetMap.clear();
-		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
 		Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
@@ -128,7 +128,7 @@ public class GroundItemsOverlay extends Overlay
 
 			for (GroundItem item : groundItemList)
 			{
-				item.setOffset(offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0));
+				item.setOffset(offsetMap.compute(item.getItemLayer().getWorldLocation(), (k, v) -> v != null ? v + 1 : 0));
 
 				if (groundItem != null)
 				{
@@ -171,6 +171,7 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
+		final LocalPoint localLocation = player.getLocalLocation();
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
 		final OwnershipFilterMode ownershipFilterMode = config.ownershipFilterMode();
@@ -178,9 +179,11 @@ public class GroundItemsOverlay extends Overlay
 
 		for (GroundItem item : groundItemList)
 		{
-			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
+			final WorldView wv = item.getItemLayer().getWorldView();
+			final LocalPoint groundPoint = LocalPoint.fromWorld(wv, item.getItemLayer().getWorldLocation());
 
-			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE
+			if (groundPoint == null
+				|| (groundPoint.getWorldView() == WorldView.TOPLEVEL && localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
 				|| !plugin.shouldDisplayItem(ownershipFilterMode, item.getOwnership(), accountType))
 			{
 				continue;
@@ -207,7 +210,7 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.highlightTiles())
 			{
-				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint, item.getHeight());
+				final Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint, item.getItemLayer().getHeight());
 
 				if (poly != null)
 				{
@@ -271,7 +274,7 @@ public class GroundItemsOverlay extends Overlay
 				graphics,
 				groundPoint,
 				itemString,
-				item.getHeight() + OFFSET_Z);
+				item.getItemLayer().getHeight() + OFFSET_Z);
 
 			if (textPoint == null)
 			{
@@ -280,7 +283,7 @@ public class GroundItemsOverlay extends Overlay
 
 			final int offset = plugin.isHotKeyPressed()
 				? item.getOffset()
-				: offsetMap.compute(item.getLocation(), (k, v) -> v != null ? v + 1 : 0);
+				: offsetMap.compute(item.getItemLayer().getWorldLocation(), (k, v) -> v != null ? v + 1 : 0);
 
 			final int textX = textPoint.getX();
 			final int textY = textPoint.getY() - (STRING_GAP * offset);

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -60,7 +59,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show information about cannon placement and/or amount of cannonballs",
 	tags = {"combat", "notifications", "ranged", "overlay"}
 )
-@Slf4j
 public class CannonPlugin extends Plugin
 {
 	static final int MAX_OVERLAY_DISTANCE = 4100;
@@ -121,7 +119,10 @@ public class CannonPlugin extends Plugin
 	{
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
-		clientThread.invoke(() -> cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER));
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			cballsLeft = client.getVarpValue(VarPlayerID.ROCKTHROWER);
+		}
 	}
 
 	@Override

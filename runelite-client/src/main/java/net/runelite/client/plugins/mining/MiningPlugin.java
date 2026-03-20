@@ -104,8 +104,7 @@ public class MiningPlugin extends Plugin
 	private final List<RockRespawn> respawns = new ArrayList<>();
 
 	@Getter
-	@Nullable
-	private Pickaxe pickaxe;
+	private boolean isMining;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Instant lastAnimationChange;
@@ -130,7 +129,7 @@ public class MiningPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		session = null;
-		pickaxe = null;
+		isMining = false;
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		respawns.forEach(respawn -> clearHintArrowAt(respawn.getWorldPoint()));
@@ -176,11 +175,7 @@ public class MiningPlugin extends Plugin
 		}
 		else
 		{
-			Pickaxe pickaxe = Pickaxe.fromAnimation(animId);
-			if (pickaxe != null)
-			{
-				this.pickaxe = pickaxe;
-			}
+			isMining |= MiningAnimation.MINING_ANIMATIONS.contains(animId);
 		}
 	}
 
@@ -194,7 +189,7 @@ public class MiningPlugin extends Plugin
 			return;
 		}
 
-		if (pickaxe != null && pickaxe.matchesMiningAnimation(client.getLocalPlayer()))
+		if (isMining && MiningAnimation.MINING_ANIMATIONS.contains(client.getLocalPlayer().getAnimation()))
 		{
 			session.setLastMined();
 			return;
@@ -230,7 +225,7 @@ public class MiningPlugin extends Plugin
 	public void resetSession()
 	{
 		session = null;
-		pickaxe = null;
+		isMining = false;
 	}
 
 	@Subscribe
@@ -309,6 +304,8 @@ public class MiningPlugin extends Plugin
 				case ObjectID.DWARF_GOLD_DEPLETED: // Gold vein
 				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY: // Calcified rock
 				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY02: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY03: // Calcified rock
+				case ObjectID.VARLAMORE_MINING_ROCK_EMPTY04: // Calcified rock
 				{
 					addRockRespawn(Rock.ORE_VEIN, WorldPoint.fromCoord(locCoord), ticks);
 					break;
@@ -316,6 +313,8 @@ public class MiningPlugin extends Plugin
 				case ObjectID.ROCKS1:
 				case ObjectID.ROCKS2:
 				case ObjectID.ROCKS3:
+				case ObjectID.LEADROCK1_EMPTY:
+				case ObjectID.NICKELROCK1_EMPTY:
 				case ObjectID.MY2ARM_SALTROCK_EMPTY: // Basalt etc
 				case ObjectID.PRIF_MINE_ROCKS1_EMPTY: // Trahaearn mine
 				case ObjectID.FOSSIL_ASHPILE_EMPTY:

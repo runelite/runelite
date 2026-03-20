@@ -63,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
+import static net.runelite.client.plugins.loottracker.LootTrackerPlugin.ZOMBIE_PIRATE_LOCKER_EVENT;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -161,8 +162,8 @@ public class LootTrackerPluginTest
 
 		wv = mock(WorldView.class);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
-
 		when(client.getWorldView(anyInt())).thenReturn(wv);
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(wv);
 
 		lootTrackerPlugin = spy(lootTrackerPlugin);
 		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
@@ -355,6 +356,11 @@ public class LootTrackerPluginTest
 	@Test
 	public void testGrubbyChest()
 	{
+		// The order of events is as follows:
+		// 1. The key is removed from the players inventory
+		// 2. The MESBOX chat message prompt is delivered
+		// 3. The loot is added to the inventory/ground
+
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(7323 >> 2, (7323 & 0xff) << 6, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
@@ -365,29 +371,44 @@ public class LootTrackerPluginTest
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.HOSDUN_GRUBBY_KEY, 1)
+			new Item(ItemID.HOSDUN_GRUBBY_KEY, 2)
 		});
 		when(client.getItemContainer(InventoryID.INV)).thenReturn(itemContainer);
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You unlock the chest with your key.", "", 0);
-		lootTrackerPluginSpy.onChatMessage(chatMessage);
-
-		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.TWISTED_BOW, 1)
-		});
 		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
-		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have opened the Grubby Chest 2 times.", "", 0);
+		// Default loot message
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", "You find treasure and supplies within the chest.", "", 0);
 		lootTrackerPluginSpy.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.HOSDUN_GRUBBY_KEY, 1),
 			new Item(ItemID.SHARK, 42)
 		});
 		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
 
 		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
 			new ItemStack(ItemID.SHARK, 42)
+		));
+
+		// Unique loot message
+		chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", "You find treasure, supplies, and a weirdly coloured egg sac within the chest.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.SHARK, 42),
+			new Item(ItemID._2DOSEPOTIONOFSARADOMIN, 3),
+			new Item(ItemID.BR_2DOSE2RESTORE, 1),
+			new Item(ItemID.HOSDUN_ORANGE_EGG_SAC, 1),
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
+			new ItemStack(ItemID._2DOSEPOTIONOFSARADOMIN, 3),
+			new ItemStack(ItemID.BR_2DOSE2RESTORE, 1),
+			new ItemStack(ItemID.HOSDUN_ORANGE_EGG_SAC, 1)
 		));
 	}
 
@@ -602,5 +623,67 @@ public class LootTrackerPluginTest
 		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
 			new ItemStack(ItemID.COINS, 4694)
 		));
+	}
+
+	@Test
+	public void testZombiePirateLockerLoot()
+	{
+		Map.of(
+			ItemID.BLIGHTED_4DOSE2RESTORE, "Blighted super restore(4)",
+			ItemID.BLIGHTED_SACK_ICEBARRAGE, "Blighted ancient ice sack",
+			ItemID.COINS, "Coins",
+			ItemID.RUNE_SWORD, "Rune sword"
+		).forEach((itemId, itemName) ->
+		{
+			final ItemPrice itemPrice = new ItemPrice();
+			itemPrice.setId(itemId);
+			itemPrice.setName(itemName);
+			when(itemManager.search(itemName)).thenReturn(List.of(itemPrice));
+		});
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>6 x Blighted super restore(4)</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.BLIGHTED_4DOSE2RESTORE, 6)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>32 x Blighted ancient ice sack</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.BLIGHTED_SACK_ICEBARRAGE, 32)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>6,604 x Coins</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.COINS, 6604)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>2 x Rune sword</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.RUNE_SWORD, 2)
+		));
+	}
+
+	@Test
+	public void testLargeSalvage()
+	{
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.SAILING_LARGE_SHIPWRECK_SALVAGE, 1)});
+		when(client.getItemContainer(InventoryID.INV)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You sort through the large salvage and find: 4 x Steel nails.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{new Item(ItemID.NAILS, 4)});
+
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INV, itemContainer));
+
+		verify(lootTrackerPlugin).addLoot("Large salvage", -1, LootRecordType.EVENT, null, Collections.singletonList(new ItemStack(ItemID.NAILS, 4)));
 	}
 }

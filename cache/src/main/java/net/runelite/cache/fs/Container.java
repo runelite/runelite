@@ -105,7 +105,6 @@ public class Container
 		crc32.update(b, 0, 5); // compression + length
 
 		byte[] data;
-		int revision = -1;
 		switch (compression)
 		{
 			case CompressionType.NONE:
@@ -115,12 +114,6 @@ public class Container
 
 				crc32.update(encryptedData, 0, compressedLength);
 				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
-
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
 
 				data = decryptedData;
 
@@ -134,16 +127,10 @@ public class Container
 				crc32.update(encryptedData, 0, encryptedData.length);
 				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
 
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
+				InputStream decryptedStream = new InputStream(decryptedData);
 
-				stream = new InputStream(decryptedData);
-
-				int decompressedLength = stream.readInt();
-				data = BZip2.decompress(stream.getRemaining(), compressedLength);
+				int decompressedLength = decryptedStream.readInt();
+				data = BZip2.decompress(decryptedStream.getRemaining(), compressedLength);
 				assert data.length == decompressedLength;
 
 				break;
@@ -156,22 +143,26 @@ public class Container
 				crc32.update(encryptedData, 0, encryptedData.length);
 				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
 
-				if (stream.remaining() >= 2)
-				{
-					revision = stream.readUnsignedShort();
-					assert revision != -1;
-				}
+				InputStream decryptedStream = new InputStream(decryptedData);
 
-				stream = new InputStream(decryptedData);
-
-				int decompressedLength = stream.readInt();
-				data = GZip.decompress(stream.getRemaining(), compressedLength);
+				int decompressedLength = decryptedStream.readInt();
+				data = GZip.decompress(decryptedStream.getRemaining(), compressedLength);
 				assert data.length == decompressedLength;
 
 				break;
 			}
 			default:
-				throw new RuntimeException("Unknown decompression type");
+				throw new RuntimeException("Unknown compression type");
+		}
+
+		int revision = -1;
+		if (stream.remaining() >= 4)
+		{
+			revision = stream.readInt();
+		}
+		else if (stream.remaining() >= 2)
+		{
+			revision = stream.readUnsignedShort();
 		}
 
 		Container container = new Container(compression, revision);

@@ -216,6 +216,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_FIRECOOKING:
 			case AnimationID.HUMAN_COOKING:
 			case AnimationID.HUMAN_MAKE_WINE:
+			case AnimationID.HUMAN_CUT_FOOD:
 			/* Crafting(Gem Cutting, Glassblowing, Spinning, Weaving, Battlestaves, Pottery) */
 			case AnimationID.HUMAN_OPALCUTTING:
 			case AnimationID.HUMAN_JADECUTTING:
@@ -226,7 +227,8 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_DIAMONDCUTTING:
 			case AnimationID.HUMAN_AMETHYSTCUTTING:
 			case AnimationID.HUMAN_GLASSBLOWING:
-			case AnimationID.HUMAN_SPINNINGWHEEL:
+			case AnimationID.HUMAN_SPINNINGWHEEL_60:
+			case AnimationID.HUMAN_SPINNINGWHEEL_90:
 			case AnimationID.FARMING_USELOOM:
 			case AnimationID.HUMAN_BATTLESTAFF_CRAFTING:
 			case AnimationID.HUMAN_LEATHER_CRAFTING:
@@ -264,6 +266,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_ADAMANT:
 			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_RUNE:
 			case AnimationID.HUMAN_FLETCHING_ADD_BOLT_TIPS_DRAGON:
+			case AnimationID.HUMAN_FLETCHING_HUNTINGBOLTS:
 			/* Smithing(Anvil, Furnace, Cannonballs */
 			case AnimationID.HUMAN_SMITHING:
 			case AnimationID.HUMAN_SMITHING_IMCANDO_HAMMER:
@@ -298,6 +301,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_FISH_ONSPOT_PEARL_BRUT:
 			case AnimationID.HUMAN_FISHING_CASTING_PEARL_OILY:
 			case AnimationID.HUMAN_FISHING_ONSPOT_BRUT:
+			case AnimationID.BRUT_HUMAN_KNIFEUSE:
 			/* Mining(Normal) */
 			case AnimationID.HUMAN_MINING_BRONZE_PICKAXE:
 			case AnimationID.HUMAN_MINING_IRON_PICKAXE:
@@ -322,6 +326,24 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_MINING_TRAILBLAZER_RELOADED_PICKAXE_NO_INFERNAL:
 			case AnimationID.ARCEUUS_CHISEL_ESSENCE:
 			case AnimationID.ARCEUUS_CHISEL_ESSENCEBLOCK:
+			case AnimationID.PICKAXE_POWER_SWING:
+			case AnimationID.PICKAXE_POWER_SWING_BRONZE:
+			case AnimationID.PICKAXE_POWER_SWING_IRON:
+			case AnimationID.PICKAXE_POWER_SWING_STEEL:
+			case AnimationID.PICKAXE_POWER_SWING_BLACK:
+			case AnimationID.PICKAXE_POWER_SWING_MITHRIL:
+			case AnimationID.PICKAXE_POWER_SWING_ADAMANT:
+			case AnimationID.PICKAXE_POWER_SWING_RUNE:
+			case AnimationID.PICKAXE_POWER_SWING_GILDED:
+			case AnimationID.PICKAXE_POWER_SWING_DRAGON:
+			case AnimationID.PICKAXE_POWER_SWING_PRETTY:
+			case AnimationID.PICKAXE_POWER_SWING_ZALCANO:
+			case AnimationID.PICKAXE_POWER_SWING_INFERNAL:
+			case AnimationID.PICKAXE_POWER_SWING_3A:
+			case AnimationID.PICKAXE_POWER_SWING_CRYSTAL:
+			case AnimationID.PICKAXE_POWER_SWING_TRAILBLAZER:
+			case AnimationID.PICKAXE_POWER_SWING_LEAGUE_TRAILBLAZER:
+			case AnimationID.PICKAXE_POWER_SWING_TRAILBLAZER_NO_INFERNAL:
 			/* Mining(Motherlode) */
 			case AnimationID.HUMAN_MINING_BRONZE_PICKAXE_WALL:
 			case AnimationID.HUMAN_MINING_IRON_PICKAXE_WALL:
@@ -369,6 +391,7 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.HUMAN_MACHINERY_ALCHEMY01_ALEMBIC01_INTERACT01:
 			case AnimationID.HUMAN_MACHINERY_ALCHEMY01_AGITATOR01_INTERACT01:
 			case AnimationID.HUMAN_ALCHEMY01_MILL01_INTERACT01:
+			case AnimationID.HUMAN_HERBING_VIAL_RESTART:
 			/* Magic */
 			case AnimationID.HUMAN_CASTCHARGEORB:
 			case AnimationID.DREAM_PLAYER_MAKE_PLANK_SPELL:
@@ -392,6 +415,14 @@ public class IdleNotifierPlugin extends Plugin
 			case AnimationID.PICKING_HIGH:
 			case AnimationID.FARMING_PICK_MUSHROOM:
 			case AnimationID.HUMAN_DIG:
+			/* Sailing */
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_1X3_IDLE01:
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_2X5_IDLE01:
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_3X8_IDLE01:
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_1X3_INTERACT01: // Sort-salvage
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_1X3_RESET01:
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_2X5_RESET01:
+			case AnimationID.SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_3X8_RESET01:
 			/* Misc */
 			case AnimationID.PISC_REPAIR_HAMMER:
 			case AnimationID.POH_CREATE_MAGIC_TABLET:

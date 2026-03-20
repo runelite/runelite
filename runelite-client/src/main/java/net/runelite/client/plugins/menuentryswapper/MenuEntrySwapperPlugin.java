@@ -61,9 +61,9 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.gameval.InterfaceID;
-import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
+import net.runelite.api.widgets.WidgetConfigNode;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -1220,13 +1220,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 					final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
-					final int identifier = getMungedId(entry);
+					final int identifier = entry.getIdentifier();
 					final Integer leftClick = getUiSwapConfig(false, componentId, itemId);
 					final Integer shiftClick = getUiSwapConfig(true, componentId, itemId);
 
 					// find lowest op from the widget actions, to prevent setting a swap to the default left click
 					// action regardless of what is swapped.
-					final int lowestOp = getMungedId(findLowestOp(w), w.getId(), w.getIndex());
+					final int lowestOp = findLowestOp(w);
 
 					// find highest op from the current menu, post any existing swaps, for inserting Reset
 					int highestOp = 10;
@@ -1238,7 +1238,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							continue;
 						}
 
-						highestOp = getMungedId(opEntry);
+						highestOp = opEntry.getIdentifier();
 					}
 
 					if (!initialized)
@@ -1348,15 +1348,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private boolean testOpMask(Widget w, int op)
 	{
-		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
-		int mask = n != null ? n.getValue() : w.getClickMask();
+		WidgetConfigNode n = client.getWidgetConfig(w);
+		int mask = n != null ? n.getClickMask() : w.getClickMask();
 		return (mask >> op + 1 & 1) != 0;
 	}
 
 	private boolean isOpTarget(Widget w)
 	{
-		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
-		int mask = n != null ? n.getValue() : w.getClickMask();
+		WidgetConfigNode n = client.getWidgetConfig(w);
+		int mask = n != null ? n.getClickMask() : w.getClickMask();
 		return (mask & (WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT | WidgetConfig.USE_PLAYER | WidgetConfig.USE_ITEM | WidgetConfig.USE_WIDGET)) != 0;
 	}
 
@@ -1390,13 +1390,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final boolean isDepositBoxPlayerInventory = widgetGroupId == InterfaceID.BANK_DEPOSITBOX;
 		final boolean isChambersOfXericStorageUnitPlayerInventory = widgetGroupId == InterfaceID.RAIDS_STORAGE_SIDE;
 		final boolean isGroupStoragePlayerInventory = widgetGroupId == InterfaceID.SHARED_BANK_SIDE;
-		int ident = getMungedId(menuEntry);
 		// Swap to shift-click deposit behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x for deposit box interface and chambers of xeric storage unit.
 		// Deposit- op 2 is the current withdraw amount 1/5/10/x for bank interface
 		if (shiftModifier() && config.bankDepositShiftClick() != ShiftDepositMode.OFF
 			&& type == MenuAction.CC_OP
-			&& ident == (isDepositBoxPlayerInventory || isGroupStoragePlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
+			&& menuEntry.getIdentifier() == (isGroupStoragePlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
 			&& (menuEntry.getOption().startsWith("Deposit-") || menuEntry.getOption().startsWith("Store") || menuEntry.getOption().startsWith("Donate")))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
@@ -1412,7 +1411,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// Swap to shift-click withdraw behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x
 		if (shiftModifier() && config.bankWithdrawShiftClick() != ShiftWithdrawMode.OFF
-			&& type == MenuAction.CC_OP && ident == 1
+			&& type == MenuAction.CC_OP && menuEntry.getIdentifier() == 1
 			&& menuEntry.getOption().startsWith("Withdraw"))
 		{
 			ShiftWithdrawMode shiftWithdrawMode = config.bankWithdrawShiftClick();
@@ -1443,7 +1442,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			MenuEntry entry = menuEntries[i];
 
-			if (entry.getType() == entryType && getMungedId(entry) == entryIdentifier)
+			if (entry.getType() == entryType && entry.getIdentifier() == entryIdentifier)
 			{
 				// Raise the priority of the op so it doesn't get sorted later
 				entry.setType(MenuAction.CC_OP);
@@ -1603,8 +1602,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
-				final Integer op = getUiSwapConfig(shiftModifier(), componentId, itemId);
-				if (op != null && op == getMungedId(menuEntry))
+				final Integer op = getMigratedUiSwapConfig(shiftModifier(), componentId, itemId);
+				if (op != null && op == menuEntry.getIdentifier())
 				{
 					swap(menu, menuEntries, index, menuEntries.length - 1);
 					return;
@@ -1815,7 +1814,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private List<Integer> findOptionIndex(Menu menu, String option)
 	{
-		if (cacheOptionMenu == null || cacheOptionIndexes.isEmpty())
+		if (cacheOptionMenu != menu || cacheOptionIndexes.isEmpty())
 		{
 			int idx = 0;
 			cacheOptionMenu = menu;
@@ -1983,6 +1982,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return -1; // use
 	}
 
+	private Integer getMigratedUiSwapConfig(boolean shift, int componentId, int itemId)
+	{
+		Integer swap = getUiSwapConfig(shift, componentId, itemId);
+		if (componentId == InterfaceID.Bankmain.ITEMS)
+		{
+			// remap 12.13 -> 12.12 for 1/28/2026 game update
+			if (swap == null)
+			{
+				swap = getUiSwapConfig(shift, InterfaceID.Bankmain.SCROLLBAR, itemId);
+				if (swap != null)
+				{
+					unsetUiSwapConfig(shift, InterfaceID.Bankmain.SCROLLBAR, itemId);
+					setUiSwapConfig(shift, InterfaceID.Bankmain.ITEMS, itemId, swap);
+					log.debug("Migrated swap {} for {} from scrollbar to items", swap, itemId);
+				}
+			}
+			else
+			{
+				unsetUiSwapConfig(shift, InterfaceID.Bankmain.SCROLLBAR, itemId);
+			}
+		}
+		return swap;
+	}
+
 	private Integer getUiSwapConfig(boolean shift, int componentId, int itemId)
 	{
 		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP,
@@ -2006,80 +2029,5 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""));
-	}
-
-	private int getMungedId(MenuEntry entry)
-	{
-		if ((entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY))
-		{
-			return getMungedId(entry.getIdentifier(), entry.getParam1(), entry.getParam0());
-		}
-
-		return entry.getIdentifier();
-	}
-
-	private int getMungedId(int ident, int widgetId, int childIdx)
-	{
-		if (widgetId == InterfaceID.Bankmain.ITEMS
-			&& childIdx >= 0)
-		{
-			int delta = ident;
-			int exclude = client.getVarbitValue(VarbitID.BANK_QUANTITY_TYPE);
-			if (delta == 1)
-			{
-				return 1;
-			}
-			if (exclude != 0)
-			{
-				// Withdraw-1
-				if (--delta == 1)
-				{
-					return 2;
-				}
-			}
-			if (exclude != 1)
-			{
-				// Withdraw-5
-				if (--delta == 1)
-				{
-					return 3;
-				}
-			}
-			if (exclude != 2)
-			{
-				// Withdraw-10
-				if (--delta == 1)
-				{
-					return 4;
-				}
-			}
-			if (exclude != 3 && client.getVarbitValue(VarbitID.BANK_REQUESTEDQUANTITY) > 0)
-			{
-				// Withdraw-<>
-				if (--delta == 1)
-				{
-					return 5;
-				}
-			}
-			// Withdraw-X
-			if (--delta == 1)
-			{
-				return 6;
-			}
-			if (exclude != 4)
-			{
-				// Withdraw-All
-				if (--delta == 1)
-				{
-					return 7;
-				}
-			}
-			// Withdraw-All-but-1
-			if (--delta == 1)
-			{
-				return 8;
-			}
-		}
-		return ident;
 	}
 }

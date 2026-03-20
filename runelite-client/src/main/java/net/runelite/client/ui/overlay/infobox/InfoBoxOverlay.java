@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
@@ -53,11 +54,16 @@ import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
+@Slf4j
 public class InfoBoxOverlay extends OverlayPanel
 {
 	private static final int GAP = 1;
 	private static final int DEFAULT_WRAP_COUNT = 4;
+
+	private static final Marker DEDUPLICATE = MarkerFactory.getMarker("DEDUPLICATE");
 
 	private final InfoBoxManager infoboxManager;
 	private final TooltipManager tooltipManager;
@@ -123,14 +129,22 @@ public class InfoBoxOverlay extends OverlayPanel
 		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
 		panelComponent.setOrientation(orientation);
 
-		final Font font = config.infoboxFontType().getFont();
+		final Font font = config.infoboxFont().getFont();
 		final boolean infoBoxTextOutline = config.infoBoxTextOutline();
 		final Color overlayBackgroundColor = config.overlayBackgroundColor();
 		final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
 		for (InfoBox box : infoBoxes)
 		{
-			if (!box.render())
+			try
 			{
+				if (!box.render())
+				{
+					continue;
+				}
+			}
+			catch (Exception ex)
+			{
+				log.warn(DEDUPLICATE, "Error during infobox rendering", ex);
 				continue;
 			}
 

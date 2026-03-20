@@ -36,11 +36,13 @@ import net.runelite.api.FriendsChatMember;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.Player;
+import net.runelite.api.WorldView;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.util.Text;
@@ -62,9 +64,20 @@ class PlayerIndicatorsService
 
 	void forEachPlayer(final BiConsumer<Player, Decorations> consumer)
 	{
-		for (Player player : client.getPlayers())
+		WorldView wv = client.getTopLevelWorldView();
+		forEachPlayer(consumer, wv);
+		for (WorldView sub : wv.worldViews())
 		{
-			if (player == null || player.getName() == null)
+			forEachPlayer(consumer, sub);
+		}
+	}
+
+	private void forEachPlayer(BiConsumer<Player, Decorations> consumer, WorldView wv)
+	{
+		for (Player player : wv.players())
+		{
+			LocalPoint lp = player.getLocalLocation();
+			if (!wv.contains(lp))
 			{
 				continue;
 			}

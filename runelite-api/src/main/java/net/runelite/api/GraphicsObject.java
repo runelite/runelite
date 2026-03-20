@@ -33,6 +33,12 @@ import net.runelite.api.coords.LocalPoint;
 public interface GraphicsObject extends Renderable
 {
 	/**
+	 * Get the {@link WorldEntity} this spotanim is on.
+	 * @return
+	 */
+	WorldView getWorldView();
+
+	/**
 	 * The graphics object ID.
 	 *
 	 * @return the ID

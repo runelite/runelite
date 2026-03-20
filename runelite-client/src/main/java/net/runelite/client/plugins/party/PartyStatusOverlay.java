@@ -36,7 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
@@ -140,7 +140,7 @@ class PartyStatusOverlay extends Overlay
 			}
 			if (renderVeng && partyData.isVengeanceActive())
 			{
-				BufferedImage vengIcon = spriteManager.getSprite(SpriteID.SPELL_VENGEANCE_OTHER, 0);
+				BufferedImage vengIcon = spriteManager.getSprite(SpriteID.LunarMagicOn.VENGEANCE_OTHER, 0);
 				if (vengIcon != null)
 				{
 					renderPlayerOverlay(graphics, player, vengIcon);

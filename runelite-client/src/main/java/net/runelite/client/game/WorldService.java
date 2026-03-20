@@ -50,7 +50,7 @@ import okhttp3.OkHttpClient;
 @Slf4j
 public class WorldService
 {
-	private static final int WORLD_FETCH_TIMER = 10; // minutes
+	private static final int WORLD_FETCH_TIMER = 10 * 60;
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -69,7 +69,8 @@ public class WorldService
 		this.worldClient = new WorldClient(okHttpClient, apiBase);
 		this.eventBus = eventBus;
 
-		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+		scheduledExecutorService.execute(this::tick);
+		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::tick), WORLD_FETCH_TIMER / 2 + (int) (WORLD_FETCH_TIMER * Math.random()), WORLD_FETCH_TIMER, TimeUnit.SECONDS);
 	}
 
 	private void tick()

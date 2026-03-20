@@ -308,14 +308,14 @@ public class FriendNotesPlugin extends Plugin
 		switch (event.getEventName())
 		{
 			case "friendsChatSetText":
-				String[] stringStack = client.getStringStack();
-				int stringStackSize = client.getStringStackSize();
-				final String rsn = stringStack[stringStackSize - 1];
+				Object[] objectStack = client.getObjectStack();
+				int objectStackSize = client.getObjectStackSize();
+				final String rsn = (String) objectStack[objectStackSize - 1];
 				final String sanitized = Text.toJagexName(Text.removeTags(rsn));
 				currentlyLayouting = sanitized;
 				if (getFriendNote(sanitized) != null)
 				{
-					stringStack[stringStackSize - 1] = rsn + " <img=" + chatIconManager.chatIconIndex(iconId) + ">";
+					objectStack[objectStackSize - 1] = rsn + " <img=" + chatIconManager.chatIconIndex(iconId) + ">";
 				}
 				break;
 			case "friendsChatSetPosition":

@@ -110,7 +110,7 @@ public class ProfileManager
 
 				File tempFile = File.createTempFile("runelite_profiles", null, PROFILES_DIR);
 				try (FileOutputStream out = new FileOutputStream(tempFile);
-					FileChannel channel = lockOut.getChannel();
+					FileChannel channel = out.getChannel();
 					OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
 				{
 					Profiles profilesData = new Profiles();

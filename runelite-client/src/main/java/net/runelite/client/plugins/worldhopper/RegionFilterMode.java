@@ -48,7 +48,9 @@ enum RegionFilterMode
 			{
 				return "USA";
 			}
-		};
+		},
+	BRAZIL(WorldRegion.BRAZIL),
+	;
 
 	@Getter
 	private final WorldRegion region;
@@ -65,6 +67,8 @@ enum RegionFilterMode
 				return AUSTRALIA;
 			case GERMANY:
 				return GERMANY;
+			case BRAZIL:
+				return BRAZIL;
 			default:
 				throw new IllegalStateException();
 		}

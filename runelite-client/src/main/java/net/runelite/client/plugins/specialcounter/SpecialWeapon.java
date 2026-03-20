@@ -113,7 +113,8 @@ public enum SpecialWeapon
 			}
 		},
 	SEERCULL("Seercull", new int[]{ItemID.DAGANOTH_CAVE_MAGIC_SHORTBOW}, true, (d) -> 46 + (d * 5), (c) -> 0),
-	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold);
+	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold),
+	EYE_OF_AYAK("Eye of Ayak", new int[]{ItemID.EYE_OF_AYAK}, true, (d) ->  120, SpecialCounterConfig::ayakThreshold);
 
 	private static final Set<Integer> TEKTON_VARIANTS = ImmutableSet.of(
 		NpcID.RAIDS_TEKTON_WAITING,

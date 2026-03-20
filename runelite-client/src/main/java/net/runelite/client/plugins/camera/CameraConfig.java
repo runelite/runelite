@@ -36,11 +36,9 @@ public interface CameraConfig extends Config
 	int OUTER_LIMIT_MIN = -400;
 	int OUTER_LIMIT_MAX = 400;
 	/**
-	 * The largest (most zoomed in) value that can be used without the client crashing.
-	 *
-	 * Larger values trigger an overflow in the engine's fov to scale code.
+	 * The largest (most zoomed in) value that can be used.
 	 */
-	int INNER_ZOOM_LIMIT = 1004;
+	int INNER_ZOOM_LIMIT = 1400;
 
 	@ConfigSection(
 		name = "Mouse settings",

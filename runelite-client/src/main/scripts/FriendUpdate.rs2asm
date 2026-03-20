@@ -1,8 +1,6 @@
-.id                 125
-.int_stack_count    9
-.string_stack_count 0
-.int_var_count      18
-.string_var_count   2
+.id                       125
+.int_arg_count            9
+.obj_arg_count            0
 ; callback "friendsChatSetText"
 ;   Fired just before the client pops the name off the stack
 ;     Modified by the friendnotes plugin to show the icon
@@ -76,9 +74,9 @@
    iconst                 0
    istore                 10
    sconst                 ""
-   sstore                 0
+   ostore                 0
    sconst                 ""
-   sstore                 1
+   ostore                 1
    iconst                 0
    istore                 11
    iconst                 0
@@ -293,8 +291,8 @@ LABEL234:
 LABEL238:
    iload                  9
    friend_getname        
-   sstore                 1
-   sstore                 0
+   ostore                 1
+   ostore                 0
    iload                  5
    iconst                 4
    iload                  10
@@ -304,7 +302,7 @@ LABEL238:
    iconst                 1
    add                   
    istore                 10
-   sload                  0
+   oload                  0
    sconst                 "friendsChatSetText"
    runelite_callback     
    cc_settext            
@@ -329,7 +327,7 @@ LABEL238:
    iconst                 1
    cc_settextshadow      
    sconst                 "<col=ff9040>"
-   sload                  0
+   oload                  0
    sconst                 "</col>"
    join_string            3
    cc_setopbase          
@@ -392,7 +390,7 @@ LABEL313:
    iconst                 0
    iconst                 0
    cc_setsize             1
-   sload                  0
+   oload                  0
    iconst                 190
    iconst                 495
    parawidth             
@@ -414,7 +412,7 @@ LABEL313:
    cc_setgraphic          1
    iconst                 3355443
    cc_setgraphicshadow    1
-   sload                  1
+   oload                  1
    string_length         
    iconst                 0
    if_icmpgt              LABEL355
@@ -434,30 +432,30 @@ LABEL359:
    iconst                 -2147483645
    cc_getid              
    cc_getid               1
-   sload                  1
-   sload                  0
+   oload                  1
+   oload                  0
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
    jump                   LABEL403
 LABEL374:
    sconst                 "Previous name:"
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            3
-   sstore                 1
+   ostore                 1
    iconst                 526
    iconst                 -2147483645
    iconst                 -2147483643
    iload                  8
-   sload                  1
+   oload                  1
    iconst                 25
    iconst                 190
-   sconst                 "IiIsii"
+   sconst                 "iiisii"
    cc_setonmouserepeat   
    iconst                 40
    iload                  8
-   sconst                 "I"
+   sconst                 "i"
    cc_setonmouseleave    
    iconst                 126
    iconst                 -2147483644
@@ -468,7 +466,7 @@ LABEL374:
    sconst                 "null"
    sconst                 "null"
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
 LABEL403:
    iconst                 0
@@ -477,7 +475,7 @@ LABEL403:
 LABEL406:
    iconst                 40
    iload                  8
-   sconst                 "I"
+   sconst                 "i"
    cc_setonmouseover     
    iconst                 1
    cc_sethide             1
@@ -490,7 +488,7 @@ LABEL406:
    sconst                 "null"
    sconst                 "null"
    iload                  11
-   sconst                 "isIiissi"
+   sconst                 "isiiissi"
    cc_setonop            
 LABEL423:
    iload                  5

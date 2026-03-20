@@ -32,7 +32,6 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -55,6 +54,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -75,7 +75,6 @@ import joptsimple.ValueConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
@@ -110,6 +109,7 @@ public class RuneLite
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
 	public static final File NOTIFICATIONS_DIR = new File(RuneLite.RUNELITE_DIR, "notifications");
+	public static final File FONTS_DIR = new File(RuneLite.RUNELITE_DIR, "fonts");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
@@ -154,7 +154,6 @@ public class RuneLite
 	private Gson gson;
 
 	@Inject
-	@Nullable
 	private Client client;
 
 	@Inject
@@ -164,6 +163,9 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private TelemetryClient telemetryClient;
+
+	@Inject
+	private ScheduledExecutorService scheduledExecutorService;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -208,7 +210,7 @@ public class RuneLite
 			log.error("Uncaught exception:", throwable);
 			if (throwable instanceof AbstractMethodError)
 			{
-				log.error("Classes are out of date; Build with maven again.");
+				log.error("Classes are out of date; Build with Gradle again.");
 			}
 		});
 
@@ -300,15 +302,10 @@ public class RuneLite
 		// Start the applet
 		copyJagexCache();
 
-		// Client size must be set prior to init
-		var applet = (Applet) client;
-		applet.setSize(Constants.GAME_FIXED_SIZE);
-
 		System.setProperty("jagex.disableBouncyCastle", "true");
 		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
-		applet.init();
-		applet.start();
+		client.initialize();
 
 		SplashScreen.stage(.57, null, "Loading configuration");
 
@@ -366,10 +363,15 @@ public class RuneLite
 
 		clientUI.show();
 
+		client.unblockStartup();
+
 		if (telemetryClient != null)
 		{
-			telemetryClient.submitTelemetry();
-			telemetryClient.submitVmErrors(LOGS_DIR);
+			scheduledExecutorService.execute(() ->
+			{
+				telemetryClient.submitTelemetry();
+				telemetryClient.submitVmErrors(LOGS_DIR);
+			});
 		}
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);

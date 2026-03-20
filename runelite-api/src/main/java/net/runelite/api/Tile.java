@@ -83,11 +83,27 @@ public interface Tile
 	SceneTilePaint getSceneTilePaint();
 
 	/**
+	 * Sets the scene paint of the tile.
+	 * Must only be mutated during map load.
+	 *
+	 * @param paint the paint
+	 */
+	void setSceneTilePaint(SceneTilePaint paint);
+
+	/**
 	 * Gets the model of the tile in the scene.
 	 *
 	 * @return the tile model
 	 */
 	SceneTileModel getSceneTileModel();
+
+	/**
+	 * Sets the model of the tile in the scene.
+	 * Must only be mutated during map load.
+	 *
+	 * @param model the tile model
+	 */
+	void setSceneTileModel(SceneTileModel model);
 
 	/**
 	 * Gets the location coordinate of the tile in the world.

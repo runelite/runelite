@@ -44,6 +44,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
@@ -143,6 +144,8 @@ public class TimersAndBuffsPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private ElapsedTimer tzhaarTimer;
 
+	private int lastDeathChargeVarb;
+
 	private final Map<GameCounter, BuffCounter> varCounters = new EnumMap<>(GameCounter.class);
 	private static final int ECLIPSE_MOON_REGION_ID = 6038;
 
@@ -170,7 +173,7 @@ public class TimersAndBuffsPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		if (config.showHomeMinigameTeleports())
+		if (config.showHomeMinigameTeleports() && client.getGameState() == GameState.LOGGED_IN)
 		{
 			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
 			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
@@ -186,6 +189,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		nextOverloadRefreshTick = 0;
 		nextAntifireTick = 0;
 		nextSuperAntifireTick = 0;
+		lastDeathChargeVarb = 0;
 		removeTzhaarTimer();
 		varTimers.clear();
 		infoBoxManager.removeIf(buffCounter -> buffCounter instanceof BuffCounter);
@@ -304,14 +308,25 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == VarbitID.ARCEUUS_DEATH_CHARGE_ACTIVE && config.showArceuus())
 		{
-			if (event.getValue() == 1)
+			final int deathChargeVarb = event.getValue();
+
+			switch (deathChargeVarb)
 			{
-				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+				case 2:
+					createGameTimer(DEATH_CHARGE);
+					break;
+				case 1:
+					if (lastDeathChargeVarb == 0)
+					{
+						createGameTimer(DEATH_CHARGE);
+					}
+					break;
+				case 0:
+					removeGameTimer(DEATH_CHARGE);
+					break;
 			}
-			else
-			{
-				removeGameTimer(DEATH_CHARGE);
-			}
+
+			lastDeathChargeVarb = deathChargeVarb;
 		}
 
 		if (event.getVarbitId() == VarbitID.ARCEUUS_RESURRECTION_ACTIVE && event.getValue() == 0 && config.showArceuus())
@@ -347,7 +362,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 
 		if ((event.getVarbitId() == VarbitID.NZONE_OVERLOAD_POTION_EFFECTS
-			|| event.getVarbitId() == VarbitID.RAIDS_OVERLOAD_TIMER) && config.showOverload())
+			|| event.getVarbitId() == VarbitID.RAIDS_OVERLOAD_TIMER
+			|| event.getVarbitId() == VarbitID.DEADMAN_OVERLOAD_POTION_EFFECTS) && config.showOverload())
 		{
 			final int overloadVarb = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -361,7 +377,16 @@ public class TimersAndBuffsPlugin extends Plugin
 				nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
 			}
 
-			GameTimer overloadTimer = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1 ? OVERLOAD_RAID : OVERLOAD;
+			GameTimer overloadTimer;
+			if (event.getVarbitId() == VarbitID.DEADMAN_OVERLOAD_POTION_EFFECTS)
+			{
+				overloadTimer = BLIGHTED_OVERLOAD;
+			}
+			else
+			{
+				overloadTimer = client.getVarbitValue(VarbitID.RAIDS_CLIENT_INDUNGEON) == 1 ? OVERLOAD_RAID : OVERLOAD;
+			}
+
 			updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
 		}
 
@@ -396,15 +421,12 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 
 		if (event.getVarbitId() == VarbitID.STAMINA_ACTIVE
-			|| event.getVarbitId() == VarbitID.STAMINA_DURATION
-			|| event.getVarbitId() == VarbitID.STAMINA_DURATION_EXTRA)
+			|| event.getVarbitId() == VarbitID.STAMINA_DURATION)
 		{
 			// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
 			int staminaEffectActive = client.getVarbitValue(VarbitID.STAMINA_ACTIVE);
-			int staminaPotionEffectVarb = client.getVarbitValue(VarbitID.STAMINA_DURATION);
-			int enduranceRingEffectVarb = client.getVarbitValue(VarbitID.STAMINA_DURATION_EXTRA);
+			int totalStaminaEffect = client.getVarbitValue(VarbitID.STAMINA_DURATION);
 
-			final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 			if (staminaEffectActive == 1 && config.showStamina())
 			{
 				updateVarTimer(STAMINA, totalStaminaEffect, i -> i * 10);
@@ -652,6 +674,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
 		}
+
+		if (event.getVarbitId() == VarbitID.SURGE_POTION_TIMER && config.showSurge())
+		{
+			updateVarTimer(SURGE_POTION, event.getValue(), i -> i * 10);
+		}
 	}
 
 	@Subscribe
@@ -667,7 +694,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeGameTimer(HOME_TELEPORT);
 			removeGameTimer(MINIGAME_TELEPORT);
 		}
-		else
+		else if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			checkTeleport(VarPlayerID.AIDE_TELE_TIMER);
 			checkTeleport(VarPlayerID.SLUG2_REGIONUID);
@@ -688,6 +715,7 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(BLIGHTED_OVERLOAD);
 			removeGameTimer(SMELLING_SALTS);
 		}
 
@@ -896,6 +924,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeVarTimer(SCURRIUS_FOOD_PILE);
 		}
+
+		if (!config.showSurge())
+		{
+			removeVarTimer(SURGE_POTION);
+		}
 	}
 
 	@Subscribe
@@ -996,20 +1029,16 @@ public class TimersAndBuffsPlugin extends Plugin
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, Duration.of(getMagicLevelMoD(magicLevel), RSTimeUnit.GAME_TICKS));
+				createGameTimer(MARK_OF_DARKNESS, getMarkOfDarknessDuration(magicLevel));
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
 				// by default the thrall lasts 1 tick per magic level
 				int t = client.getBoostedSkillLevel(Skill.MAGIC);
 				// ca tiers being completed boosts this
-				if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_GRANDMASTER) == 2)
+				if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_MASTER) == 2)
 				{
 					t += t; // 100% boost
-				}
-				else if (client.getVarbitValue(VarbitID.CA_TIER_STATUS_MASTER) == 2)
-				{
-					t += t / 2; // 50% boost
 				}
 				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
 			}
@@ -1017,8 +1046,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (message.endsWith(MARK_OF_DARKNESS_MESSAGE) && config.showArceuusCooldown())
 		{
-			final int magicLevelMoD = getMagicLevelMoD(client.getRealSkillLevel(Skill.MAGIC));
-			createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevelMoD - 10, RSTimeUnit.GAME_TICKS));
+			createGameTimer(MARK_OF_DARKNESS_COOLDOWN);
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
@@ -1090,18 +1118,20 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 	}
 
-	private int getMagicLevelMoD(int magicLevel)
+	private Duration getMarkOfDarknessDuration(int magicLevel)
 	{
+		final Duration markOfDarknessDuration = Duration.of((long)magicLevel * 3, RSTimeUnit.GAME_TICKS);
+
 		final ItemContainer container = client.getItemContainer(InventoryID.WORN);
 		if (container != null)
 		{
 			final Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
 			if (weapon != null && weapon.getId() == ItemID.PURGING_STAFF)
 			{
-				return magicLevel * 5;
+				return markOfDarknessDuration.multipliedBy(5);
 			}
 		}
-		return magicLevel;
+		return markOfDarknessDuration;
 	}
 
 	private boolean isInFightCaves()

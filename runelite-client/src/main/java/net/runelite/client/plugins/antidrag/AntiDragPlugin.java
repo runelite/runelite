@@ -189,8 +189,10 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (widgetLoaded.getGroupId() == InterfaceID.BANKMAIN ||
-			widgetLoaded.getGroupId() == InterfaceID.BANKSIDE)
+		if (widgetLoaded.getGroupId() == InterfaceID.BANKMAIN
+			|| widgetLoaded.getGroupId() == InterfaceID.BANKSIDE
+			|| widgetLoaded.getGroupId() == InterfaceID.SHARED_BANK
+			|| widgetLoaded.getGroupId() == InterfaceID.SHARED_BANK_SIDE)
 		{
 			setBankDragDelay(config.dragDelay());
 		}
@@ -217,6 +219,14 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				{
 					child.setDragDeadTime(delay);
 				}
+			}
+		}
+		else if (ev.getScriptId() == ScriptID.INTERFACE_INV_DRAW_SLOT_BIG)
+		{
+			Widget child = client.getScriptActiveWidget();
+			if (child.getParentId() == InterfaceID.EquipmentSide.ITEMS && isOverriding())
+			{
+				child.setDragDeadTime(config.dragDelay());
 			}
 		}
 		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
@@ -257,12 +267,16 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		final Widget bankItemContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
 		final Widget bankInventoryItemsContainer = client.getWidget(InterfaceID.Bankside.ITEMS);
+		final Widget groupStorageItems = client.getWidget(InterfaceID.SharedBank.ITEMS);
+		final Widget groupStorageInventoryItems = client.getWidget(InterfaceID.SharedBankSide.ITEMS);
 		final Widget bankInventoryEquipmentItemsContainer = client.getWidget(InterfaceID.Bankside.WORNOPS);
 		final Widget bankDepositContainer = client.getWidget(InterfaceID.BankDepositbox.INVENTORY);
 		final Widget coxPrivateChest = client.getWidget(InterfaceID.RaidsStoragePrivate.ITEMS);
 
 		applyDragDelay(bankItemContainer, delay);
 		applyDragDelay(bankInventoryItemsContainer, delay);
+		applyDragDelay(groupStorageItems, delay);
+		applyDragDelay(groupStorageInventoryItems, delay);
 		applyDragDelay(bankInventoryEquipmentItemsContainer, delay);
 		applyDragDelay(bankDepositContainer, delay);
 		applyDragDelay(coxPrivateChest, delay);
@@ -271,7 +285,9 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	private void setInvDragDelay(int delay)
 	{
 		final Widget inventory = client.getWidget(InterfaceID.Inventory.ITEMS);
+		final Widget equipmentInventory = client.getWidget(InterfaceID.EquipmentSide.ITEMS);
 		applyDragDelay(inventory, delay);
+		applyDragDelay(equipmentInventory, delay);
 	}
 
 	private void setCoxDragDelay(int delay)

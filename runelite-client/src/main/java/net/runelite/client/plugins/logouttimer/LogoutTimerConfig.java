@@ -41,7 +41,7 @@ public interface LogoutTimerConfig extends Config
 		description = "Amount of time before you are logged out for being idle."
 	)
 	@Units(Units.MINUTES)
-	@Range(min = 5, max = 25)
+	@Range(min = 5, max = 30)
 	default int getIdleTimeout()
 	{
 		return 5;

@@ -1,8 +1,6 @@
-.id                 276
-.int_stack_count    17
-.string_stack_count 0
-.int_var_count      17
-.string_var_count   0
+.id                       276
+.int_arg_count            20
+.obj_arg_count            0
 
 ; Check if we should allow server to relayout bank
    iconst                 1                      ; true
@@ -42,5 +40,8 @@ RELAYOUT:
    iload                  14
    iload                  15
    iload                  16
+   iload                  17
+   iload                  18
+   iload                  19
    invoke                 277
    return                

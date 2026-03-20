@@ -31,6 +31,13 @@ import javax.annotation.Nullable;
  */
 public interface NPCComposition extends ParamHolder
 {
+	int STAT_ATTACK = 0;
+	int STAT_DEFENCE = 1;
+	int STAT_STRENGTH = 2;
+	int STAT_HITPOINTS = 3;
+	int STAT_RANGED = 4;
+	int STAT_MAGIC = 5;
+
 	/**
 	 * Gets the name of the NPC.
 	 */
@@ -40,6 +47,12 @@ public interface NPCComposition extends ParamHolder
 	 * Gets the model IDs that compose this NPC.
 	 */
 	int[] getModels();
+
+	/**
+	 * Gets the model IDs that compose this NPC's chathead.
+	 */
+	@Nullable
+	int[] getChatheadModels();
 
 	/**
 	 * The 5 menuops this NPC has when in world. Index 0 corresponds to
@@ -58,8 +71,6 @@ public interface NPCComposition extends ParamHolder
 	 * Gets whether the NPC is visible on the mini-map.
 	 */
 	boolean isMinimapVisible();
-
-	boolean isVisible();
 
 	/**
 	 * Gets the ID of the NPC.
@@ -126,4 +137,22 @@ public interface NPCComposition extends ParamHolder
 	 * @return
 	 */
 	int getHeightScale();
+
+	/**
+	 * Get the npc footprint size
+	 * @return
+	 */
+	int getFootprintSize();
+
+	/**
+	 * Get the npc's stats
+	 * @see #STAT_ATTACK
+	 * @see #STAT_DEFENCE
+	 * @see #STAT_STRENGTH
+	 * @see #STAT_HITPOINTS
+	 * @see #STAT_RANGED
+	 * @see #STAT_MAGIC
+	 * @return
+	 */
+	int[] getStats();
 }

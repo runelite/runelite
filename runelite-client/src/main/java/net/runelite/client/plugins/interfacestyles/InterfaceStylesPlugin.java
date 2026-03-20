@@ -38,7 +38,6 @@ import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
-import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.GameStateChanged;
@@ -46,6 +45,7 @@ import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.PostHealthBarConfig;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -160,7 +160,7 @@ public class InterfaceStylesPlugin extends Plugin
 			MenuAction type = menuEntry.getType();
 
 			Player player = menuEntry.getPlayer();
-			if (player != null && type != MenuAction.ITEM_USE_ON_PLAYER && type != MenuAction.WIDGET_TARGET_ON_PLAYER)
+			if (player != null && type != MenuAction.ITEM_USE_ON_PLAYER && type != MenuAction.WIDGET_TARGET_ON_PLAYER && type != MenuAction.WALK)
 			{
 				String option = menuEntry.getOption();
 				boolean deprioritized = menuEntry.isDeprioritized();
@@ -185,6 +185,7 @@ public class InterfaceStylesPlugin extends Plugin
 					.setType(type)
 					.setParam0(menuEntry.getParam0())
 					.setParam1(menuEntry.getParam1())
+					.setWorldViewId(menuEntry.getWorldViewId())
 					.setDeprioritized(deprioritized);
 				changed = true;
 			}
@@ -284,7 +285,7 @@ public class InterfaceStylesPlugin extends Plugin
 					String file = configSkin + "/" + spriteOverride.getSpriteID() + ".png";
 					SpritePixels spritePixels = getFileSpritePixels(file);
 
-					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
+					if (spriteOverride.getSpriteID() == SpriteID.COMPASS)
 					{
 						client.setCompass(spritePixels);
 					}
@@ -500,7 +501,7 @@ public class InterfaceStylesPlugin extends Plugin
 		restoreSprites();
 		restoreWidgetSprites();
 
-		BufferedImage compassImage = spriteManager.getSprite(SpriteID.COMPASS_TEXTURE, 0);
+		BufferedImage compassImage = spriteManager.getSprite(SpriteID.COMPASS, 0);
 
 		if (compassImage != null)
 		{

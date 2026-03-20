@@ -42,12 +42,12 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -72,27 +72,27 @@ import okhttp3.Response;
 class WikiDpsManager
 {
 	private static final int[] SPRITE_IDS_INACTIVE = {
-		SpriteID.DIALOG_BACKGROUND_BRIGHTER,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_LEFT,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_TOP_RIGHT,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_LEFT,
-		SpriteID.WORLD_MAP_BUTTON_METAL_CORNER_BOTTOM_RIGHT,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_LEFT,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_TOP,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_RIGHT,
-		SpriteID.WORLD_MAP_BUTTON_EDGE_BOTTOM,
+		SpriteID.TRADEBACKING_LIGHT,
+		SpriteID.V2StoneButtonOut.A_TOP_LEFT,
+		SpriteID.V2StoneButtonOut.A_TOP_RIGHT,
+		SpriteID.V2StoneButtonOut.A_BOTTOM_LEFT,
+		SpriteID.V2StoneButtonOut.A_BOTTOM_RIGHT,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_LEFT,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_TOP,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_RIGHT,
+		SpriteID.V2StoneButtonOut.A_MAP_EDGE_BOTTOM,
 	};
 
 	private static final int[] SPRITE_IDS_ACTIVE = {
-		SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_LEFT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_TOP_RIGHT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_LEFT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_METAL_CORNER_BOTTOM_RIGHT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_LEFT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_TOP_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_RIGHT_HOVERED,
-		SpriteID.EQUIPMENT_BUTTON_EDGE_BOTTOM_HOVERED,
+		SpriteID.TRADEBACKING_DARK,
+		SpriteID.V2StoneButtonIn.A_TOP_LEFT,
+		SpriteID.V2StoneButtonIn.A_TOP_RIGHT,
+		SpriteID.V2StoneButtonIn.A_BOTTOM_LEFT,
+		SpriteID.V2StoneButtonIn.A_BOTTOM_RIGHT,
+		SpriteID.V2StoneButtonIn.A_LEFT,
+		SpriteID.V2StoneButtonIn.A_TOP,
+		SpriteID.V2StoneButtonIn.A_RIGHT,
+		SpriteID.V2StoneButtonIn.A_BOTTOM,
 	};
 
 	private static final int FONT_COLOUR_INACTIVE = 0xff981f;

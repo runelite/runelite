@@ -32,6 +32,8 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -59,10 +61,12 @@ public class TileIndicatorsOverlay extends Overlay
 	{
 		if (config.highlightHoveredTile())
 		{
+			WorldView wv = client.getLocalPlayer().getWorldView();
+			Tile tile = wv.getSelectedSceneTile();
 			// If we have tile "selected" render it
-			if (client.getSelectedSceneTile() != null)
+			if (tile != null)
 			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor(), config.hoveredTileBorderWidth(), config.hoveredTileFillColor());
+				renderTile(graphics, tile.getLocalLocation(), config.highlightHoveredColor(), config.hoveredTileBorderWidth(), config.hoveredTileFillColor());
 			}
 		}
 

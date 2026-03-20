@@ -380,6 +380,28 @@ public class XpTrackerPlugin extends Plugin
 		xpState.resetOverallPerHour();
 	}
 
+	/**
+	 * Update the stored order of a skill, following a drag-and-drop operation that has moved it in the UI.
+	 *
+	 * @param skill       Skill that has been moved
+	 * @param newPosition New 0-indexed position of this skill
+	 */
+	void updateSkillOrderState(Skill skill, int newPosition)
+	{
+		xpState.setOrder(skill, newPosition);
+	}
+
+	/**
+	 * Update the stored 'compact view' state of a skill, following it being toggled via the UI.
+	 *
+	 * @param skill       Skill that has been toggled
+	 * @param compactView New 'compact view' flag
+	 */
+	void setSkillCompactViewState(Skill skill, boolean compactView)
+	{
+		xpState.setCompactView(skill, compactView);
+	}
+
 	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
@@ -601,6 +623,8 @@ public class XpTrackerPlugin extends Plugin
 				return VarPlayerID.XPDROPS_THIEVING_START;
 			case FLETCHING:
 				return VarPlayerID.XPDROPS_FLETCHING_START;
+			case SAILING:
+				return VarPlayerID.XPDROPS_SAILING_START;
 			default:
 				throw new IllegalArgumentException();
 		}
@@ -656,6 +680,8 @@ public class XpTrackerPlugin extends Plugin
 				return VarPlayerID.XPDROPS_THIEVING_END;
 			case FLETCHING:
 				return VarPlayerID.XPDROPS_FLETCHING_END;
+			case SAILING:
+				return VarPlayerID.XPDROPS_SAILING_END;
 			default:
 				throw new IllegalArgumentException();
 		}

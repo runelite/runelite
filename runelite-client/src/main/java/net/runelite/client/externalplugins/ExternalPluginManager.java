@@ -127,13 +127,10 @@ public class ExternalPluginManager
 		}
 	}
 
-	@Subscribe(
-		// run before PluginManager to avoid it starting plugins which we are about to uninstall
-		priority = 1
-	)
+	@Subscribe
 	public void onProfileChanged(ProfileChanged profileChanged)
 	{
-		refreshPlugins();
+		executor.submit(this::refreshPlugins);
 	}
 
 	private void refreshPlugins()

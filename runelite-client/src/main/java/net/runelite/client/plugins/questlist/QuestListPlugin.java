@@ -30,14 +30,14 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.SpriteID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -105,7 +105,7 @@ public class QuestListPlugin extends Plugin
 			header.deleteAllChildren();
 
 			questSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
-			questSearchButton.setSpriteId(SpriteID.GE_SEARCH);
+			questSearchButton.setSpriteId(SpriteID.GeSmallicons.SEARCH);
 			questSearchButton.setOriginalWidth(18);
 			questSearchButton.setOriginalHeight(17);
 			questSearchButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
@@ -131,7 +131,7 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
-		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB)
+		if (varClientIntChanged.getIndex() == VarClientID.TOPLEVEL_PANEL)
 		{
 			if (isChatboxOpen() && !isOnQuestTab())
 			{
@@ -165,7 +165,7 @@ public class QuestListPlugin extends Plugin
 
 	private boolean isOnQuestTab()
 	{
-		return client.getVarbitValue(VarbitID.SIDE_JOURNAL_TAB) == 1 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVarbitValue(VarbitID.SIDE_JOURNAL_TAB) == 1 && client.getVarcIntValue(VarClientID.TOPLEVEL_PANEL) == 2;
 	}
 
 	private boolean isChatboxOpen()

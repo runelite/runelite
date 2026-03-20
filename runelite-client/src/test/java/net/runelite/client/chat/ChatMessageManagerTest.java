@@ -88,8 +88,8 @@ public class ChatMessageManagerTest
 			0, // splitpmbox
 			1
 		};
-		when(client.getStringStack()).thenReturn(sstack);
-		when(client.getStringStackSize()).thenReturn(sstack.length);
+		when(client.getObjectStack()).thenReturn(sstack);
+		when(client.getObjectStackSize()).thenReturn(sstack.length);
 		when(client.getIntStack()).thenReturn(istack);
 		when(client.getIntStackSize()).thenReturn(istack.length);
 

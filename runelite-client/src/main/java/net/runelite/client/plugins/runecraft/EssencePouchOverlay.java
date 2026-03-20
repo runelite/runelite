@@ -252,7 +252,8 @@ class EssencePouchOverlay extends WidgetItemOverlay
 		if (pouch.getDegradation != null && config.pouchDegrade())
 		{
 			int breakpoint = pouch.nextDegradationBreakpoint(client);
-			int remEss = durabilityToEssence(breakpoint - pouch.getDegradation(client));
+			int remDura = breakpoint - pouch.getDegradation(client);
+			int remEss = (pouch == EssPouch.COLOSSAL) ? remDura : durabilityToEssence(remDura);
 			int limit = pouch.maxAmount(client);
 			int remFills = (remEss + limit - 1) / limit;
 			if (degraded)

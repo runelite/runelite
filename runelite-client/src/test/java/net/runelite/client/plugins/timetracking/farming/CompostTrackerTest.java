@@ -125,6 +125,7 @@ public class CompostTrackerTest
 		when(wv.getSizeX()).thenReturn(104);
 		when(wv.getSizeY()).thenReturn(104);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
+		when(client.findWorldViewFromWorldPoint(any(WorldPoint.class))).thenReturn(wv);
 
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getWorldLocation()).thenReturn(worldPoint);

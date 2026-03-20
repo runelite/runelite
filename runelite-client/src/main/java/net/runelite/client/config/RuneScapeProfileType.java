@@ -45,7 +45,9 @@ public enum RuneScapeProfileType
 	DEADMAN_REBORN,
 	SHATTERED_RELICS_LEAGUE,
 	TRAILBLAZER_RELOADED_LEAGUE,
-	RAGING_ECHOES_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),
+	RAGING_ECHOES_LEAGUE,
+	GRID_MASTER,
+	DEMONIC_PACTS_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),
 	;
 
 	private final Predicate<Client> test;

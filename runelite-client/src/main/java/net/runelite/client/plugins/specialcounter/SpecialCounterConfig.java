@@ -176,4 +176,15 @@ public interface SpecialCounterConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+			position = 60,
+			keyName = "ayakThreshold",
+			name = "Eye of Ayak",
+			description = "Threshold for Eye of Ayak (0 to disable)."
+	)
+	default int ayakThreshold()
+	{
+		return 0;
+	}
 }

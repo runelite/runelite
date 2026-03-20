@@ -43,7 +43,9 @@ public class GameValLoader
 	public static final int DBTABLES = 10;
 	public static final int JINGLES = 11;
 	public static final int SPRITES = 12;
-	public static final int INTERFACES = 13;
+	public static final int INTERFACES_LEGACY = 13;
+	public static final int INTERFACES = 14;
+	public static final int VARCS = 15;
 
 	public GameValDefinition load(int gameValId, int id, byte[] data)
 	{
@@ -77,10 +79,40 @@ public class GameValLoader
 			v.setName(is.readString());
 			v.setFiles(new HashMap<>());
 
+			int endIdx = data.length - 1;
+			while (data[endIdx] != -1)
+			{
+				--endIdx;
+			}
+
+			int msb = 0;
 			for (; ; )
 			{
 				int iid = is.readUnsignedByte();
+				if (iid == 0xFF && is.getOffset() == endIdx + 1)
+				{
+					break;
+				}
+
+				v.getFiles().put(msb | iid, is.readString());
+
 				if (iid == 0xFF)
+				{
+					msb += 0x100;
+				}
+			}
+		}
+		else if (gameValId == 14)
+		{
+			var is = new InputStream(data);
+
+			v.setName(is.readString());
+			v.setFiles(new HashMap<>());
+
+			for (; ; )
+			{
+				int iid = is.readUnsignedShort();
+				if (iid == 0xFFFF)
 				{
 					break;
 				}

@@ -39,6 +39,8 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.eventbus.Subscribe;
@@ -164,6 +166,16 @@ class PotionStorage
 
 	int matches(Set<Integer> bank, int itemId)
 	{
+		if (itemId == ItemID.VIAL_EMPTY)
+		{
+			if (hasVialsInPotionStorage())
+			{
+				return ItemID.VIAL_EMPTY;
+			}
+
+			return -1;
+		}
+
 		if (potions == null)
 		{
 			return -1;
@@ -200,6 +212,11 @@ class PotionStorage
 
 	int count(int itemId)
 	{
+		if (itemId == ItemID.VIAL_EMPTY)
+		{
+			return getVialsInPotionStorage();
+		}
+
 		if (potions == null)
 		{
 			return 0;
@@ -215,10 +232,20 @@ class PotionStorage
 		return 0;
 	}
 
-	int find(int itemId)
+	int getIdx(int itemId)
 	{
 		if (potions == null)
 		{
+			return -1;
+		}
+
+		if (itemId == ItemID.VIAL_EMPTY)
+		{
+			if (hasVialsInPotionStorage())
+			{
+				return potions.length * COMPONENTS_PER_POTION + 4;
+			}
+
 			return -1;
 		}
 
@@ -228,10 +255,20 @@ class PotionStorage
 			++potionIdx;
 			if (potion != null && potion.itemId == itemId)
 			{
-				return potionIdx - 1;
+				return (potionIdx - 1) * COMPONENTS_PER_POTION;
 			}
 		}
 		return -1;
+	}
+
+	boolean hasVialsInPotionStorage()
+	{
+		return getVialsInPotionStorage() > 0;
+	}
+
+	int getVialsInPotionStorage()
+	{
+		return client.getVarpValue(VarPlayerID.POTIONSTORE_VIALS);
 	}
 
 	void prepareWidgets()
@@ -249,6 +286,13 @@ class PotionStorage
 					potStoreContent.createChild(childIdx++, WidgetType.GRAPHIC);
 				}
 			}
+
+			// Add widgets so that we can also take out vials
+			potStoreContent.createChild(childIdx++, WidgetType.GRAPHIC);
+			potStoreContent.createChild(childIdx++, WidgetType.RECTANGLE);
+			potStoreContent.createChild(childIdx++, WidgetType.TEXT);
+			potStoreContent.createChild(childIdx++, WidgetType.RECTANGLE);
+			potStoreContent.createChild(childIdx++, WidgetType.TEXT);
 		}
 	}
 }

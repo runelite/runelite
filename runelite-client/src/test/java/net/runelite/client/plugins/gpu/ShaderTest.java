@@ -30,6 +30,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.client.plugins.gpu.config.ColorBlindMode;
+import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -54,20 +56,17 @@ public class ShaderTest
 				.addInclude(GpuPlugin.class)
 				.add(key ->
 			{
-				if ("version_header".equals(key))
-				{
-					return GpuPlugin.WINDOWS_VERSION_HEADER;
-				}
-				if ("thread_config".equals(key))
-				{
-					int threadCount = 512;
-					int facesPerThread = 1;
-					return "#define THREAD_COUNT " + threadCount + "\n" +
-						"#define FACES_PER_THREAD " + facesPerThread + "\n";
-				}
 				if ("texture_config".equals(key))
 				{
 					return "#define TEXTURE_COUNT " + TextureManager.TEXTURE_COUNT + "\n";
+				}
+				if ("sampling_mode".equals(key))
+				{
+					return "#define SAMPLING_MODE " + UIScalingMode.XBR.ordinal() + "\n";
+				}
+				if ("colorblind_mode".equals(key))
+				{
+					return "#define COLORBLIND_MODE " + ColorBlindMode.DEUTERANOPE.ordinal() + "\n";
 				}
 				return null;
 			}),
@@ -75,8 +74,6 @@ public class ShaderTest
 
 		Shader[] shaders = {
 			GpuPlugin.PROGRAM,
-			GpuPlugin.COMPUTE_PROGRAM,
-			GpuPlugin.UNORDERED_COMPUTE_PROGRAM,
 			GpuPlugin.UI_PROGRAM,
 		};
 

@@ -89,7 +89,11 @@ class PrayerDoseOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget xpOrb = client.getWidget(InterfaceID.Orbs.PRAYERBUTTON);
+		Widget xpOrb = client.getWidget(InterfaceID.Orbs.PRAYERBUTTON);
+		if (xpOrb == null || xpOrb.isHidden())
+		{
+			xpOrb = client.getWidget(InterfaceID.OrbsNomap.PRAYERBUTTON);
+		}
 		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;

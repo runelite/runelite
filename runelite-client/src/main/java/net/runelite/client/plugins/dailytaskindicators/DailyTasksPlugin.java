@@ -31,9 +31,9 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.chat.ChatColorType;
@@ -113,7 +113,7 @@ public class DailyTasksPlugin extends Plugin
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if ((dailyReset || loggingIn)
-			&& client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1)
+			&& client.getVarcIntValue(VarClientID.PLAYERMEMBER) == 1)
 		{
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;

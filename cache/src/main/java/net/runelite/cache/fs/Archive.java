@@ -82,15 +82,7 @@ public class Archive
 			return null;
 		}
 
-		byte[] encryptedData = data;
-
-		Container container = Container.decompress(encryptedData, keys);
-		if (container == null)
-		{
-			logger.warn("Unable to decrypt archive {}", this);
-			return null;
-		}
-
+		Container container = Container.decompress(data, keys);
 		byte[] decompressedData = container.data;
 
 		if (this.crc != container.crc)
@@ -99,20 +91,20 @@ public class Archive
 			throw new IOException("CRC mismatch for " + index.getId() + "/" + this.getArchiveId());
 		}
 
-		if (container.revision != -1 && this.getRevision() != container.revision)
+		if (container.revision != -1 && this.revision != container.revision)
 		{
 			// compressed data doesn't always include a revision, but check it if it does
 			logger.warn("revision mismatch for archive {}/{}, expected {} was {}",
 				index.getId(), this.getArchiveId(),
-				this.getRevision(), container.revision);
+				this.revision, container.revision);
 			// I've seen this happen with vanilla caches where the
 			// revision in the index data differs from the revision
 			// stored for the archive data on disk... I assume this
 			// is more correct
-			this.setRevision(container.revision);
+			this.revision = container.revision;
 		}
 
-		setCompression(container.compression);
+		this.compression = container.compression;
 		return decompressedData;
 	}
 

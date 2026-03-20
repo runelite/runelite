@@ -41,8 +41,6 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 25));
 		add("Enter your Player Owned House from Hosidius.",
 			new SkillRequirement(Skill.CONSTRUCTION, 25));
-		add("Do a lap of either tier of the Shayzien Agility Course.",
-			new SkillRequirement(Skill.AGILITY, 5));
 		add("Create a Strength potion in the Lovakengj Pub.",
 			new SkillRequirement(Skill.HERBLORE, 12));
 		add("Fish a Trout from the River Molch.",

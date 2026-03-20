@@ -24,12 +24,10 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Instant;
-import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -45,26 +43,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class MiningOverlay extends OverlayPanel
 {
 	private static final String MINING_RESET = "Reset";
-	private static final Set<Integer> WAll_ANIMATIONS = ImmutableSet.of(
-		AnimationID.HUMAN_MINING_3A_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_ADAMANT_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_BLACK_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_BRONZE_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_CRYSTAL_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_DRAGON_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_ZALCANO_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_TRAILBLAZER_PICKAXE_NO_INFERNAL_WALL,
-		AnimationID.HUMAN_MINING_DRAGON_PICKAXE_PRETTY_WALL,
-		AnimationID.HUMAN_MINING_GILDED_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_INFERNAL_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_TRAILBLAZER_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_TRAILBLAZER_RELOADED_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_IRON_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_MITHRIL_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_RUNE_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_STEEL_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_LEAGUE_TRAILBLAZER_PICKAXE_WALL,
-		AnimationID.HUMAN_MINING_TRAILBLAZER_RELOADED_PICKAXE_NO_INFERNAL_WALL);
 
 	private final Client client;
 	private final MiningPlugin plugin;
@@ -93,12 +71,12 @@ class MiningOverlay extends OverlayPanel
 			return null;
 		}
 
-		Pickaxe pickaxe = plugin.getPickaxe();
-		if (pickaxe != null &&
-				(pickaxe.matchesMiningAnimation(client.getLocalPlayer())
-						|| client.getLocalPlayer().getAnimation() == AnimationID.ARCEUUS_CHISEL_ESSENCE
+		int currentAnim = client.getLocalPlayer().getAnimation();
+		if (plugin.isMining() &&
+				(MiningAnimation.MINING_ANIMATIONS.contains(currentAnim)
+						|| currentAnim == AnimationID.ARCEUUS_CHISEL_ESSENCE
 						// when receiving ore from a wall the animation sets to -1 before starting up again
-						|| (WAll_ANIMATIONS.contains(plugin.getLastActionAnimationId())
+						|| (MiningAnimation.WAll_ANIMATIONS.contains(plugin.getLastActionAnimationId())
 								&& plugin.getLastAnimationChange().isAfter(Instant.now().minusMillis(1800))))
 			)
 		{

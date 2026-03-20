@@ -149,4 +149,16 @@ public interface TileObject
 	 */
 	@Nullable
 	Shape getClickbox();
+
+	/**
+	 * Get the text override for a certain action
+	 */
+	@Nullable
+	String getOpOverride(int index);
+
+	/**
+	 * Gets if an action is shown in the minimenu. If an action is {@code null} it
+	 * will not be shown even if this method returns {@code true}
+	 */
+	boolean isOpShown(int index);
 }

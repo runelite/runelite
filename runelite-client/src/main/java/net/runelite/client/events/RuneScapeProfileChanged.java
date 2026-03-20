@@ -24,7 +24,6 @@
  */
 package net.runelite.client.events;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Value;
 
@@ -38,6 +37,6 @@ public class RuneScapeProfileChanged
 {
 	@Nullable
 	String previousProfile;
-	@Nonnull
+	@Nullable
 	String newProfile;
 }

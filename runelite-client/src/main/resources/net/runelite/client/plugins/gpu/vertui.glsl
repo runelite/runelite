@@ -24,27 +24,33 @@
  */
 #version 330
 
-#define SAMPLING_DEFAULT 0
-#define SAMPLING_MITCHELL 1
-#define SAMPLING_CATROM 2
-#define SAMPLING_XBR 3
+#include sampling_mode
 
-uniform int samplingMode;
+#define SAMPLING_NEAREST 0
+#define SAMPLING_LINEAR 1
+#define SAMPLING_MITCHELL 2
+#define SAMPLING_CATROM 3
+#define SAMPLING_XBR 4
+#define SAMPLING_HYBRID 5
+
 uniform ivec2 sourceDimensions;
 uniform ivec2 targetDimensions;
-
-#include "scale/xbr_lv2_vert.glsl"
 
 layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec2 aTexCoord;
 
 out vec2 TexCoord;
+#if SAMPLING_MODE == SAMPLING_XBR
+#include "scale/xbr_lv2_vert.glsl"
+
 out XBRTable xbrTable;
+#endif
 
 void main() {
   gl_Position = vec4(aPos, 1.0);
   TexCoord = aTexCoord;
 
-  if (samplingMode == SAMPLING_XBR)
-    xbrTable = xbr_vert(TexCoord, sourceDimensions);
+#if SAMPLING_MODE == SAMPLING_XBR
+  xbrTable = xbr_vert(TexCoord, sourceDimensions);
+#endif
 }

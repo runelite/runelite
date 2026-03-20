@@ -57,6 +57,10 @@ class ConfigLoot
 			if (drops[i] == id)
 			{
 				drops[i + 1] += qty;
+				if (drops[i + 1] < 0)
+				{
+					drops[i + 1] = Integer.MAX_VALUE;
+				}
 				return;
 			}
 		}

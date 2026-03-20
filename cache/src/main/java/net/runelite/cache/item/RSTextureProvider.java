@@ -87,7 +87,7 @@ public class RSTextureProvider
 
 	public int getAverageTextureRGB(int var1)
 	{
-		return this.textures[var1] != null ? this.textures[var1].field1777 : 0;
+		return this.textures[var1] != null ? this.textures[var1].missingColor : 0;
 	}
 
 

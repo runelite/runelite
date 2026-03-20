@@ -25,8 +25,7 @@
  */
 package net.runelite.api;
 
-// Note: This class won't always be complete: these sprites were manually gathered
-// through the cache and widget inspector. Please add new sprites as you happen to use them.
+@Deprecated
 public final class SpriteID
 {
 	public static final int RS2_CHATBOX_BUTTONS = 0;
@@ -1838,6 +1837,7 @@ public final class SpriteID
 	public static final int HEALTHBAR_LAST_STAND_BACK = 5864;
 	/* Unmapped: 5865~6344 */
 	public static final int HISCORE_ROYAL_TITANS = 6345;
-	/* Unmapped: 6346~6389 */
+	public static final int HISCORE_YAMA = 6346;
+	/* Unmapped: 6347~6389 */
 	public static final int HISCORE_COLLECTIONS_LOGGED = 6390;
 }

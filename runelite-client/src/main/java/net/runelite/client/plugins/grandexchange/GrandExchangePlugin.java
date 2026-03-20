@@ -68,7 +68,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -78,6 +77,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
@@ -388,6 +388,11 @@ public class GrandExchangePlugin extends Plugin
 	@VisibleForTesting
 	void submitTrade(int slot, GrandExchangeOffer offer)
 	{
+		if (client.getEnvironment() != 0)
+		{
+			return;
+		}
+
 		GrandExchangeOfferState state = offer.getState();
 
 		if (state != GrandExchangeOfferState.CANCELLED_BUY && state != GrandExchangeOfferState.CANCELLED_SELL && state != GrandExchangeOfferState.BUYING && state != GrandExchangeOfferState.SELLING)
@@ -647,7 +652,7 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT).toLowerCase();
+		String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT).toLowerCase();
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
@@ -689,7 +694,7 @@ public class GrandExchangePlugin extends Plugin
 		wasFuzzySearch = false;
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
-		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
@@ -755,10 +760,10 @@ public class GrandExchangePlugin extends Plugin
 			case "geSellExamineText":
 			{
 				boolean buy = "geBuyExamineText".equals(event.getEventName());
-				String[] stack = client.getStringStack();
-				int sz = client.getStringStackSize();
-				String fee = stack[sz - 2];
-				String examine = stack[sz - 3];
+				Object[] stack = client.getObjectStack();
+				int sz = client.getObjectStackSize();
+				String fee = (String) stack[sz - 2];
+				String examine = (String) stack[sz - 3];
 				String text = setExamineText(examine, fee, buy);
 				if (text != null)
 				{
@@ -805,10 +810,10 @@ public class GrandExchangePlugin extends Plugin
 		titleBuilder.append(')');
 
 		// Append to title
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
+		Object[] objectStack = client.getObjectStack();
+		int objectStackSize = client.getObjectStackSize();
 
-		stringStack[stringStackSize - 1] += titleBuilder.toString();
+		objectStack[objectStackSize - 1] += titleBuilder.toString();
 	}
 
 	private void setLimitResetTime(int itemId)

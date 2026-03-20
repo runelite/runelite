@@ -31,16 +31,19 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -48,30 +51,32 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PlayerLootReceived;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
@@ -87,6 +92,7 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class ScreenshotPlugin extends Plugin
 {
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 	private static final String COLLECTION_LOG_TEXT = "New item added to your collection log: ";
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
@@ -95,7 +101,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([,0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
-	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: ?<col=[0-9a-f]{6}>([0-9,]+)</col>");
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) (?:kill|success) count is: ?<col=[0-9a-f]{6}>([0-9,]+)</col>");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
@@ -143,7 +149,8 @@ public class ScreenshotPlugin extends Plugin
 		TOB_HM,
 		TOA_ENTRY_MODE,
 		TOA,
-		TOA_EXPERT_MODE
+		TOA_EXPERT_MODE,
+		FORTIS_COLOSSEUM
 	}
 
 	private KillType killType;
@@ -154,12 +161,6 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private ScreenshotConfig config;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ScreenshotOverlay screenshotOverlay;
 
 	@Inject
 	private Client client;
@@ -177,17 +178,17 @@ public class ScreenshotPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private SpriteManager spriteManager;
-
-	@Inject
 	private ImageCapture imageCapture;
 
-	@Getter(AccessLevel.PACKAGE)
-	private BufferedImage reportButton;
+	@Inject
+	private ClientThread clientThread;
 
 	private NavigationButton titleBarButton;
 
 	private String kickPlayerName;
+
+	final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
+	private String reportButtonText;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
@@ -207,7 +208,6 @@ public class ScreenshotPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(screenshotOverlay);
 		SCREENSHOT_DIR.mkdirs();
 		keyManager.registerKeyListener(hotkeyListener);
 
@@ -227,14 +227,11 @@ public class ScreenshotPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);
-
-		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(screenshotOverlay);
 		clientToolbar.removeNavigation(titleBarButton);
 		keyManager.unregisterKeyListener(hotkeyListener);
 		kickPlayerName = null;
@@ -313,6 +310,18 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		Actor actor = animationChanged.getActor();
+		if (actor == client.getLocalPlayer()
+			&& actor.getAnimation() == AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01
+			&& config.screenshotPlayerDeath())
+		{
+			takeScreenshot("Doom Death", SD_DEATHS);
+		}
+	}
+
+	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (config.screenshotKills())
@@ -332,9 +341,9 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		final String[] stringStack = client.getStringStack();
-		final int stringSize = client.getStringStackSize();
-		kickPlayerName = stringStack[stringSize - 1];
+		final Object[] objectStack = client.getObjectStack();
+		final int objectStackSize = client.getObjectStackSize();
+		kickPlayerName = (String) objectStack[objectStackSize - 1];
 	}
 
 	@Subscribe
@@ -427,6 +436,12 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = Integer.valueOf(m.group().replace(",", ""));
 				return;
 			}
+		}
+
+		if (chatMessage.contains("Search the chest nearby to retrieve your earned rewards!"))
+		{
+			killType = KillType.FORTIS_COLOSSEUM;
+			return;
 		}
 
 		if (chatMessage.equals("Your request to kick/ban this user was successful.") && config.screenshotKick())
@@ -522,7 +537,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE) == 1 && config.screenshotLevels())
+		if (client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED) == 1 && config.screenshotLevels())
 		{
 			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -551,6 +566,8 @@ public class ScreenshotPlugin extends Plugin
 			case InterfaceID.TOA_CHESTS:
 			case InterfaceID.BARROWS_REWARD:
 			case InterfaceID.PMOON_REWARD:
+			case InterfaceID.COLOSSEUM_REWARD_CHEST_2:
+
 				if (!config.screenshotRewards())
 				{
 					return;
@@ -717,6 +734,18 @@ public class ScreenshotPlugin extends Plugin
 				screenshotSubDir = SD_WILDERNESS_LOOT_CHEST;
 				break;
 			}
+			case InterfaceID.COLOSSEUM_REWARD_CHEST_2:
+			{
+				if (killType != KillType.FORTIS_COLOSSEUM)
+				{
+					return;
+				}
+
+				fileName = "Fortis Colosseum Chest";
+				screenshotSubDir = SD_CHEST_LOOT;
+				killType = null;
+				break;
+			}
 			default:
 				return;
 		}
@@ -738,8 +767,8 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 
-				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
-				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+				String topText = client.getVarcStrValue(VarClientID.NOTIFICATION_TITLE);
+				String bottomText = client.getVarcStrValue(VarClientID.NOTIFICATION_MAIN);
 
 				log.debug("Notification: top: {} bottom: {}", topText, bottomText);
 
@@ -765,6 +794,42 @@ public class ScreenshotPlugin extends Plugin
 				}
 				notificationStarted = false;
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired e)
+	{
+		if (e.getScriptId() == ScriptID.DOM_LOOT_CLAIM)
+		{
+			if (config.screenshotRewards())
+			{
+				takeScreenshot("Doom of Mokhaiotl", SD_CHEST_LOOT);
+			}
+		}
+	}
+
+	@Subscribe
+	private void onPostClientTick(PostClientTick e)
+	{
+		if (!consumers.isEmpty())
+		{
+			final Widget reportButtonTextWidget = client.getWidget(InterfaceID.Chatbox.REPORTABUSE_TEXT1);
+			if (reportButtonTextWidget != null)
+			{
+				if (reportButtonText == null)
+				{
+					reportButtonText = reportButtonTextWidget.getText();
+				}
+
+				reportButtonTextWidget.setText(DATE_FORMAT.format(new Date()));
+			}
+
+			Consumer<Image> consumer;
+			while ((consumer = consumers.poll()) != null)
+			{
+				drawManager.requestNextFrameListener(consumer);
+			}
 		}
 	}
 
@@ -897,17 +962,39 @@ public class ScreenshotPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
-			executor.submit(() -> saveScreenshot(fileName, subDir, img));
+			executor.submit(() ->
+			{
+				saveScreenshot(fileName, subDir, img);
+
+				if (reportButtonText != null)
+				{
+					clientThread.invokeLater(() ->
+					{
+						final Widget reportButtonTextWidget = client.getWidget(InterfaceID.Chatbox.REPORTABUSE_TEXT1);
+						if (reportButtonTextWidget != null)
+						{
+							reportButtonTextWidget.setText(reportButtonText);
+						}
+
+						reportButtonText = null;
+					});
+				}
+			});
 		};
 
 		if (config.displayDate() && REPORT_BUTTON_TLIS.contains(client.getTopLevelInterfaceId()))
 		{
-			screenshotOverlay.queueForTimestamp(imageCallback);
+			queueForTimestamp(imageCallback);
 		}
 		else
 		{
 			drawManager.requestNextFrameListener(imageCallback);
 		}
+	}
+
+	void queueForTimestamp(Consumer<Image> screenshotConsumer)
+	{
+		consumers.add(screenshotConsumer);
 	}
 
 	private void saveScreenshot(String fileName, String subDir, Image image)

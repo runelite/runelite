@@ -53,7 +53,6 @@ import net.runelite.api.Ignore;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
@@ -70,6 +69,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetType;
@@ -493,9 +493,9 @@ public class ChatChannelPlugin extends Plugin
 	@Subscribe
 	public void onVarClientStrChanged(VarClientStrChanged strChanged)
 	{
-		if (strChanged.getIndex() == VarClientStr.RECENT_FRIENDS_CHAT && config.recentChats())
+		if (strChanged.getIndex() == VarClientID.LAST_FRIENDSCHATJOIN && config.recentChats())
 		{
-			updateRecentChat(client.getVarcStrValue(VarClientStr.RECENT_FRIENDS_CHAT));
+			updateRecentChat(client.getVarcStrValue(VarClientID.LAST_FRIENDSCHATJOIN));
 		}
 	}
 
@@ -539,9 +539,9 @@ public class ChatChannelPlugin extends Plugin
 				intStack[size - 1] = 1;
 
 				// Get name of player we are trying to kick
-				final String[] stringStack = client.getStringStack();
-				final int stringSize = client.getStringStackSize();
-				final String kickPlayerName = stringStack[stringSize - 1];
+				final Object[] objectStack = client.getObjectStack();
+				final int objectStackSize = client.getObjectStackSize();
+				final String kickPlayerName = (String) objectStack[objectStackSize - 1];
 
 				// Show a chatbox panel confirming the kick
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
@@ -580,9 +580,9 @@ public class ChatChannelPlugin extends Plugin
 						return;
 				}
 
-				final String[] stringStack = client.getStringStack();
-				final int stringSize = client.getStringStackSize();
-				final String name = stringStack[stringSize - 3];
+				final Object[] objectStack = client.getObjectStack();
+				final int objectStackSize = client.getObjectStackSize();
+				final String name = (String) objectStack[objectStackSize - 3];
 				final FriendsChatRank rank = getRank(Text.removeTags(name));
 				if (rank != null && rank != FriendsChatRank.UNRANKED)
 				{
@@ -590,7 +590,7 @@ public class ChatChannelPlugin extends Plugin
 					if (iconNumber > -1)
 					{
 						final String img = "<img=" + iconNumber + ">";
-						stringStack[stringSize - 3] = img + name;
+						objectStack[objectStackSize - 3] = img + name;
 					}
 				}
 			}

@@ -32,10 +32,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -126,7 +126,7 @@ public class ChatboxPanelManager
 		}
 
 		currentInput = input;
-		client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
+		client.setVarcIntValue(VarClientID.MESLAYERMODE, InputType.RUNELITE_CHATBOX_PANEL.getType());
 		client.getWidget(InterfaceID.Chatbox.MES_TEXT).setHidden(true);
 		client.getWidget(InterfaceID.Chatbox.MES_TEXT2).setHidden(true);
 
@@ -208,6 +208,6 @@ public class ChatboxPanelManager
 		// the search box on the world map can be focused, and chat input goes there, even
 		// though the chatbox still has its key listener.
 		Widget worldMapSearch = client.getWidget(InterfaceID.Worldmap.MAPLIST_DISPLAY);
-		return worldMapSearch == null || client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
+		return worldMapSearch == null || client.getVarcIntValue(VarClientID.WORLDMAP_SEARCHING) != 1;
 	}
 }

@@ -43,12 +43,11 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MessageNode;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetUtil;
@@ -338,7 +337,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (client.getVarcIntValue(VarClientInt.INPUT_TYPE) != InputType.PRIVATE_MESSAGE.getType())
+		if (client.getVarcIntValue(VarClientID.MESLAYERMODE) != InputType.PRIVATE_MESSAGE.getType())
 		{
 			return;
 		}
@@ -351,11 +350,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 				return;
 			}
 
-			final String currentMessage = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+			final String currentMessage = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 
 			client.runScript(ScriptID.OPEN_PRIVATE_MESSAGE_INTERFACE, target);
 
-			client.setVarcStrValue(VarClientStr.INPUT_TEXT, currentMessage);
+			client.setVarcStrValue(VarClientID.MESLAYERINPUT, currentMessage);
 			client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 		});
 	}
@@ -372,7 +371,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 	private String findPreviousFriend()
 	{
-		final String currentTarget = client.getVarcStrValue(VarClientStr.PRIVATE_MESSAGE_TARGET);
+		final String currentTarget = client.getVarcStrValue(VarClientID.FRIENDTOMESSAGE);
 		if (currentTarget == null || friends.isEmpty())
 		{
 			return null;

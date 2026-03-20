@@ -36,20 +36,35 @@ import javax.annotation.Nullable;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
 
-@Setter
 public class TextComponent implements RenderableEntity
 {
 	private static final Pattern COL_TAG_PATTERN = Pattern.compile("<col=([0-9a-fA-F]{2,6})>");
 
+	@Setter
 	private String text;
-	private Point position = new Point();
+	private int positionX;
+	private int positionY;
+	@Setter
 	private Color color = Color.WHITE;
+	@Setter
 	private boolean outline;
 	/**
 	 * The text font.
 	 */
+	@Setter
 	@Nullable
 	private Font font;
+
+	public void setPosition(Point position)
+	{
+		setPosition(position.x, position.y);
+	}
+
+	public void setPosition(int x, int y)
+	{
+		this.positionX = x;
+		this.positionY = y;
+	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -73,7 +88,7 @@ public class TextComponent implements RenderableEntity
 			String s = text.substring(idx, matcher.start());
 			idx = matcher.end();
 
-			renderText(graphics, textColor, position.x + width, position.y, s);
+			renderText(graphics, textColor, positionX + width, positionY, s);
 			width += fontMetrics.stringWidth(s);
 
 			textColor = Color.decode("#" + color);
@@ -81,7 +96,7 @@ public class TextComponent implements RenderableEntity
 
 		{
 			String s = text.substring(idx);
-			renderText(graphics, textColor, position.x + width, position.y, s);
+			renderText(graphics, textColor, positionX + width, positionY, s);
 			width += fontMetrics.stringWidth(s);
 		}
 

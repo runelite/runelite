@@ -33,6 +33,7 @@ import lombok.Value;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import static net.runelite.api.Constants.REGION_SIZE;
+import static net.runelite.api.Constants.SCENE_SIZE;
 import net.runelite.api.Perspective;
 import net.runelite.api.Scene;
 import net.runelite.api.WorldView;
@@ -298,8 +299,11 @@ public class WorldPoint
 		int chunkX = sceneX / CHUNK_SIZE;
 		int chunkY = sceneY / CHUNK_SIZE;
 
-		// get the template chunk for the chunk
-		int templateChunk = instanceTemplateChunks[plane][chunkX][chunkY];
+		int templateChunk = -1;
+		if (chunkX >= 0 && chunkX < (SCENE_SIZE / CHUNK_SIZE) && chunkY >= 0 && chunkY < (SCENE_SIZE / CHUNK_SIZE))
+		{
+			templateChunk = instanceTemplateChunks[plane][chunkX][chunkY];
+		}
 
 		int rotation = templateChunk >> 1 & 0x3;
 		int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
@@ -334,9 +338,13 @@ public class WorldPoint
 		{
 			return toLocalInstance(wv.getInstanceTemplateChunks(), wv.getBaseX(), wv.getBaseY(), worldPoint);
 		}
-		else
+		else if (wv.contains(worldPoint))
 		{
 			return Collections.singleton(worldPoint);
+		}
+		else
+		{
+			return Collections.emptyList();
 		}
 	}
 
@@ -344,15 +352,20 @@ public class WorldPoint
 	 * Get occurrences of a tile on the scene, accounting for instances. There may be
 	 * more than one if the same template chunk occurs more than once on the scene.
 	 */
+	@Deprecated
 	public static Collection<WorldPoint> toLocalInstance(Scene scene, WorldPoint worldPoint)
 	{
 		if (scene.isInstance())
 		{
 			return toLocalInstance(scene.getInstanceTemplateChunks(), scene.getBaseX(), scene.getBaseY(), worldPoint);
 		}
-		else
+		else if (isInScene(scene, worldPoint.getX(), worldPoint.getY()))
 		{
 			return Collections.singleton(worldPoint);
+		}
+		else
+		{
+			return Collections.emptyList();
 		}
 	}
 

@@ -52,7 +52,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -439,6 +438,12 @@ class PluginHubPanel extends PluginPanel
 		{
 			return manifest.getDisplayName();
 		}
+
+		@Override
+		public int installs()
+		{
+			return userCount;
+		}
 	}
 
 	private final TopLevelConfigPanel topLevelConfigPanel;
@@ -494,19 +499,19 @@ class PluginHubPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				filter();
+				executor.execute(PluginHubPanel.this::filter);
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e)
 			{
-				filter();
+				executor.execute(PluginHubPanel.this::filter);
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
-				filter();
+				executor.execute(PluginHubPanel.this::filter);
 			}
 		});
 
@@ -653,6 +658,12 @@ class PluginHubPanel extends PluginPanel
 
 		Set<String> installed = new HashSet<>(externalPluginManager.getInstalledExternalPlugins());
 
+		plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
+			.stream()
+			.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
+				pluginCounts.getOrDefault(id, -1), installed.contains(id)))
+			.collect(Collectors.toList());
+
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!refreshing.isVisible())
@@ -660,14 +671,8 @@ class PluginHubPanel extends PluginPanel
 				return;
 			}
 
-			plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
-				.stream()
-				.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
-					pluginCounts.getOrDefault(id, -1), installed.contains(id)))
-				.collect(Collectors.toList());
-
 			refreshing.setVisible(false);
-			filter();
+			executor.execute(PluginHubPanel.this::filter);
 		});
 	}
 
@@ -678,29 +683,31 @@ class PluginHubPanel extends PluginPanel
 			return;
 		}
 
-		mainPanel.removeAll();
-
-		Stream<PluginItem> stream = plugins.stream();
-
 		String query = searchBar.getText();
 		boolean isSearching = query != null && !query.trim().isEmpty();
+		List<PluginItem> pluginItems;
 		if (isSearching)
 		{
-			PluginSearch.search(plugins, query).forEach(mainPanel::add);
+			pluginItems = PluginSearch.search(plugins, query);
 		}
 		else
 		{
-			stream.filter(p -> p.isInstalled() || p.getJarData() != null)
+			pluginItems = plugins.stream().filter(p -> p.isInstalled() || p.getJarData() != null)
 				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
 					.thenComparing(PluginItem::isInstalled)
 					.thenComparingInt(PluginItem::getUserCount)
 					.reversed()
 					.thenComparing(p -> p.manifest.getDisplayName())
 				)
-				.forEach(mainPanel::add);
+				.collect(Collectors.toList());
 		}
 
-		mainPanel.revalidate();
+		SwingUtilities.invokeLater(() ->
+		{
+			mainPanel.removeAll();
+			pluginItems.forEach(mainPanel::add);
+			mainPanel.revalidate();
+		});
 	}
 
 	@Override
@@ -732,17 +739,13 @@ class PluginHubPanel extends PluginPanel
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
 	{
-		Map<String, Integer> pluginCounts = Collections.emptyMap();
-		if (plugins != null)
-		{
-			pluginCounts = plugins.stream()
-				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
-		}
-
 		if (!refreshing.isVisible() && lastManifest != null)
 		{
 			refreshing.setVisible(true);
-			reloadPluginList(lastManifest, pluginCounts);
+
+			Map<String, Integer> pluginCounts = plugins == null ? Collections.emptyMap()
+				: plugins.stream().collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
+			executor.submit(() -> reloadPluginList(lastManifest, pluginCounts));
 		}
 	}
 }

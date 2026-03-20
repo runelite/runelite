@@ -48,8 +48,6 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -61,6 +59,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
+import net.runelite.api.gameval.VarClientID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -85,7 +84,7 @@ public class BankPlugin extends Plugin
 {
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
-	private static final String DEPOSIT_LOOT = "Deposit loot";
+	private static final String EMPTY_CONTAINERS = "Empty containers";
 	private static final String TOGGLE_PLACEHOLDERS = "Always set placeholders";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 	private static final int POTION_STORE_TAB = 15;
@@ -226,7 +225,7 @@ public class BankPlugin extends Plugin
 
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+				|| (entry.getOption().equals(EMPTY_CONTAINERS) && config.rightClickBankLoot())
 				|| (entry.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders())
 			)
 			{
@@ -241,7 +240,7 @@ public class BankPlugin extends Plugin
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+			|| (event.getOption().equals(EMPTY_CONTAINERS) && config.rightClickBankLoot())
 			|| (event.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders()))
 		{
 			forceRightClickFlag = true;
@@ -252,15 +251,15 @@ public class BankPlugin extends Plugin
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		int[] intStack = client.getIntStack();
-		String[] stringStack = client.getStringStack();
+		Object[] objectStack = client.getObjectStack();
 		int intStackSize = client.getIntStackSize();
-		int stringStackSize = client.getStringStackSize();
+		int objectStackSize = client.getObjectStackSize();
 
 		switch (event.getEventName())
 		{
 			case "bankSearchFilter":
 				int itemId = intStack[intStackSize - 1];
-				String search = stringStack[stringStackSize - 1];
+				String search = (String) objectStack[objectStackSize - 1];
 
 				if (valueSearch(itemId, search))
 				{
@@ -294,7 +293,7 @@ public class BankPlugin extends Plugin
 
 					client.runScript(onOpListener);
 					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
-					client.setVarcIntValue(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
+					client.setVarcIntValue(VarClientID.KEYBOARD_TIMEOUT, client.getGameCycle() + 1);
 				});
 				break;
 			}
@@ -362,7 +361,7 @@ public class BankPlugin extends Plugin
 		{
 			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
 			// and the bank wasn't laid out this tick, lay it out early
-			final String inputText = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+			final String inputText = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 			if (searchString != inputText && client.getGameCycle() % 40 != 0)
 			{
 				clientThread.invokeLater(bankSearch::layoutBank);
@@ -703,7 +702,7 @@ public class BankPlugin extends Plugin
 
 			int itemId = wItem.getItemId();
 			// Doses: 1234 or Quantity: 1234
-			int doses = Integer.parseInt(wDoses.getText().split(": ")[1]);
+			int doses = Integer.parseInt(wDoses.getText().split(": ")[1].replace(",", ""));
 			var potionEnum = potionMap.get(itemId);
 			if (potionEnum == null)
 			{

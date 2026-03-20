@@ -61,7 +61,11 @@ class RunEnergyOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget runOrb = client.getWidget(InterfaceID.Orbs.RUNBUTTON);
+		Widget runOrb = client.getWidget(InterfaceID.Orbs.RUNBUTTON);
+		if (runOrb == null || runOrb.isHidden())
+		{
+			runOrb = client.getWidget(InterfaceID.OrbsNomap.RUNBUTTON);
+		}
 
 		if (runOrb == null || runOrb.isHidden())
 		{

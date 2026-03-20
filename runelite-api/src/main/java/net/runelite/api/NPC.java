@@ -73,4 +73,26 @@ public interface NPC extends Actor
 
 	@Nullable
 	NpcOverrides getChatheadOverrides();
+
+	/**
+	 * Get the array of overhead icon archive ids.
+	 * Used in conjunction with {@link #getOverheadSpriteIds()}
+	 * to determine which icons are being rendered overhead.
+	 *
+	 * @return A sparse array of archive ids. Values of -1 are not used.
+	 * @see #getOverheadSpriteIds()
+	 */
+	@Nullable
+	int[] getOverheadArchiveIds();
+
+	/**
+	 * Get the array of overhead icon sprite indexes.
+	 * Used in conjunction with {@link #getOverheadArchiveIds()}
+	 * to determine which icons are being rendered overhead.
+	 *
+	 * @return A sparse array of archive ids. Values of -1 are not used.
+	 * @see #getOverheadArchiveIds()
+	 */
+	@Nullable
+	short[] getOverheadSpriteIds();
 }

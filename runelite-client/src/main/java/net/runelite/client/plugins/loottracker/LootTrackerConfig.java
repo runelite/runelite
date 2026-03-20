@@ -86,7 +86,7 @@ public interface LootTrackerConfig extends Config
 		name = "Remember loot",
 		description = "Saves loot between client sessions."
 	)
-	default boolean syncPanel()
+	default boolean rememberLoot()
 	{
 		return true;
 	}

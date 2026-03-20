@@ -217,6 +217,21 @@ class XpState
 		return overall.snapshot();
 	}
 
+	void setCompactView(Skill skill, boolean compactView)
+	{
+		xpSkills.get(skill).setCompactView(compactView);
+	}
+
+	void setOrder(Skill skill, int newPosition)
+	{
+		int oldPosition = order.indexOf(skill);
+		if (oldPosition != newPosition)
+		{
+			order.remove(oldPosition);
+			order.add(newPosition, skill);
+		}
+	}
+
 	private void updateOrder(Skill skill)
 	{
 		if (xpTrackerConfig.prioritizeRecentXpSkills())
@@ -252,6 +267,10 @@ class XpState
 			{
 				save.skills.put(skill, state.save());
 			}
+			if (state.isCompactView())
+			{
+				save.compactViewSkills.add(skill);
+			}
 		}
 		save.overall = overall.save();
 		return save;
@@ -269,6 +288,14 @@ class XpState
 			state.restore(s);
 			xpSkills.put(skill, state);
 			order.add(skill);
+		}
+		for (Skill skill : save.compactViewSkills)
+		{
+			XpStateSingle state = xpSkills.get(skill);
+			if (state != null)
+			{
+				state.setCompactView(true);
+			}
 		}
 		overall.restore(save.overall);
 	}

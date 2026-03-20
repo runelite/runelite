@@ -54,7 +54,6 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -90,9 +89,12 @@ public class PluginManagerTest
 	@Before
 	public void before() throws IOException
 	{
-		OkHttpClient okHttpClient = mock(OkHttpClient.class);
-		when(okHttpClient.newCall(any(Request.class)))
-			.thenThrow(new RuntimeException("in plugin manager test"));
+		OkHttpClient okHttpClient = new OkHttpClient.Builder()
+			.addInterceptor(chain ->
+			{
+				throw new RuntimeException("in plugin manager test");
+			})
+			.build();
 
 		when(configManager.getConfig(any(Class.class)))
 			.thenAnswer(a ->

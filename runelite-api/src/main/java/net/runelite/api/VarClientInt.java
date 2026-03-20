@@ -30,7 +30,10 @@ package net.runelite.api;
  * VarCInts are stored entirely in memory, or locally on a user's
  * machine in the preferences2.dat file depending on how Jagex
  * configured the variable
+ *
+ * @deprecated Use {@link net.runelite.api.gameval.VarClientID}
  */
+@Deprecated
 public final class VarClientInt
 {
 	public static final int TOOLTIP_TIMEOUT = 1;

@@ -151,7 +151,7 @@ public class Disassembler
 			Instruction ins = this.instructions.find(opcode);
 			if (ins == null)
 			{
-				logger.warn("Unknown instruction {} in script {}", opcode, script.getId());
+				logger.debug("Unknown instruction {} in script {}", opcode, script.getId());
 			}
 
 			if (jumps[i])
@@ -231,9 +231,9 @@ public class Disassembler
 		{
 			case Opcodes.ICONST:
 			case Opcodes.ILOAD:
-			case Opcodes.SLOAD:
+			case Opcodes.OLOAD:
 			case Opcodes.ISTORE:
-			case Opcodes.SSTORE:
+			case Opcodes.OSTORE:
 				return true;
 		}
 
@@ -244,15 +244,11 @@ public class Disassembler
 	private void writerHeader(StringBuilder writer, ScriptDefinition script)
 	{
 		int id = script.getId();
-		int intStackCount = script.getIntStackCount();
-		int stringStackCount = script.getStringStackCount();
-		int localIntCount = script.getLocalIntCount();
-		int localStringCount = script.getLocalStringCount();
+		int intStackCount = script.getIntArgCount();
+		int stringStackCount = script.getObjArgCount();
 
-		writer.append(".id                 ").append(id).append('\n');
-		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
-		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
-		writer.append(".int_var_count      ").append(localIntCount).append('\n');
-		writer.append(".string_var_count   ").append(localStringCount).append('\n');
+		writer.append(".id                       ").append(id).append('\n');
+		writer.append(".int_arg_count            ").append(intStackCount).append('\n');
+		writer.append(".obj_arg_count            ").append(stringStackCount).append('\n');
 	}
 }

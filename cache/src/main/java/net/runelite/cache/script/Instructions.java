@@ -52,11 +52,11 @@ public class Instructions implements Opcodes
 		add(IF_ICMPGE, "if_icmpge");
 		add(ILOAD, "iload");
 		add(ISTORE, "istore");
-		add(SLOAD, "sload");
-		add(SSTORE, "sstore");
+		add(OLOAD, "oload");
+		add(OSTORE, "ostore");
 		add(JOIN_STRING, "join_string");
 		add(POP_INT, "pop_int");
-		add(POP_STRING, "pop_string");
+		add(POP_OBJECT, "pop_object");
 		add(INVOKE, "invoke");
 		add(GET_VARC_INT, "get_varc_int");
 		add(SET_VARC_INT, "set_varc_int");
@@ -68,6 +68,7 @@ public class Instructions implements Opcodes
 		add(GET_VARC_STRING, "get_varc_string");
 		add(SET_VARC_STRING, "set_varc_string");
 		add(SWITCH, "switch");
+		add(PUSH_NULL, "push_null");
 		add(GET_VARCLANSETTING, "get_varclansetting");
 		add(GET_VARCLAN, "get_varclan");
 		add(CC_CREATE, "cc_create");

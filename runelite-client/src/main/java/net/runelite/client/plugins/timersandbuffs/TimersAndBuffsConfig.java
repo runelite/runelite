@@ -521,4 +521,15 @@ public interface TimersAndBuffsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showSurgePotion",
+		name = "Surge potion timer",
+		description = "Configures whether surge potion timer is displayed.",
+		section = consumablesSection
+	)
+	default boolean showSurge()
+	{
+		return true;
+	}
 }

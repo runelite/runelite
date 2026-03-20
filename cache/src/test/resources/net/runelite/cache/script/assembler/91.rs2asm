@@ -1,8 +1,6 @@
-.id                 91
-.int_stack_count    2
-.string_stack_count 1
-.int_var_count      2
-.string_var_count   1
+.id                       91
+.int_arg_count            2
+.obj_arg_count            1
    iload                  0
    switch                
       3: LABEL20
@@ -19,7 +17,7 @@ LABEL7:
    iconst                 0
    return                
 LABEL9:
-   sload                  0
+   oload                  0
    removetags            
    ignore_test           
    iconst                 1
@@ -41,7 +39,7 @@ LABEL24:
    iconst                 0
    return                
 LABEL26:
-   sload                  0
+   oload                  0
    removetags            
    ignore_test           
    iconst                 1
@@ -64,7 +62,7 @@ LABEL40:
    if_icmpeq              LABEL44
    jump                   LABEL51
 LABEL44:
-   sload                  0
+   oload                  0
    friend_test           
    iconst                 1
    if_icmpeq              LABEL49
@@ -119,4 +117,6 @@ LABEL84:
    iconst                 0
    return                
    iconst                 -1
+   push_null             
+   pop_object            
    return                

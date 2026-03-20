@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.loottracker;
 
 import static com.google.common.collect.Iterables.concat;
-import com.google.common.collect.Lists;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,9 +36,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -69,6 +69,7 @@ import net.runelite.http.api.loottracker.LootRecordType;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
+	private static final int MAX_SESSION_RECORDS = 1024;
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -116,9 +117,9 @@ class LootTrackerPanel extends PluginPanel
 	private final JButton collapseBtn = new JButton();
 
 	// Aggregate of all kills
-	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
+	private final LinkedHashMap<LootTrackerRecord, LootTrackerRecord> aggregateRecords = new LinkedHashMap<>(16, 0.75f, true);
 	// Individual records for the individual kills this session
-	private final List<LootTrackerRecord> sessionRecords = new ArrayList<>();
+	private final Deque<LootTrackerRecord> sessionRecords = new ArrayDeque<>();
 	private final List<LootTrackerBox> boxes = new ArrayList<>();
 
 	private final ItemManager itemManager;
@@ -319,7 +320,7 @@ class LootTrackerPanel extends PluginPanel
 
 			// If not in detailed view, remove all, otherwise only remove for the currently detailed title
 			sessionRecords.removeIf(r -> r.matches(currentView, currentType));
-			aggregateRecords.removeIf(r -> r.matches(currentView, currentType));
+			aggregateRecords.values().removeIf(r -> r.matches(currentView, currentType));
 			boxes.removeIf(b -> b.matches(currentView, currentType));
 			updateOverall();
 			logsContainer.removeAll();
@@ -377,22 +378,46 @@ class LootTrackerPanel extends PluginPanel
 		}
 		else
 		{
-			subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
+			subTitle = actorLevel > 0 ? "(lvl-" + actorLevel + ")" : "";
 		}
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, kills);
-		sessionRecords.add(record);
+
+		LootTrackerRecord sessRecord = new LootTrackerRecord(eventName, subTitle, type, items, kills);
+		sessionRecords.add(sessRecord);
+		if (sessionRecords.size() > MAX_SESSION_RECORDS)
+		{
+			sessionRecords.removeFirst();
+		}
+
+		LootTrackerRecord aggRecord = aggregateRecords.get(sessRecord);
+		if (aggRecord != null)
+		{
+			aggRecord.merge(sessRecord);
+		}
+		else
+		{
+			// allocate a separate LootTrackerRecord for aggregate records to avoid later merge() calls
+			// mutating the session record
+			aggRecord = new LootTrackerRecord(eventName, subTitle, type, items, kills);
+			aggregateRecords.put(aggRecord, aggRecord);
+		}
 
 		if (hideIgnoredItems && plugin.isEventIgnored(eventName))
 		{
 			return;
 		}
 
-		LootTrackerBox box = buildBox(record);
+		LootTrackerBox box = buildBox(groupLoot ? aggRecord : sessRecord);
 		if (box != null)
 		{
 			box.rebuild();
 			updateOverall();
 		}
+	}
+
+	boolean hasRecord(LootRecordType type, String name)
+	{
+		LootTrackerRecord r = new LootTrackerRecord(name, null, type, null, 0);
+		return aggregateRecords.containsKey(r);
 	}
 
 	/**
@@ -409,7 +434,7 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	void addRecords(Collection<LootTrackerRecord> recs)
 	{
-		aggregateRecords.addAll(recs);
+		recs.forEach(r -> aggregateRecords.put(r, r));
 		rebuild();
 	}
 
@@ -465,7 +490,7 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	void updateIgnoredRecords()
 	{
-		for (LootTrackerRecord record : concat(aggregateRecords, sessionRecords))
+		for (LootTrackerRecord record : concat(aggregateRecords.values(), sessionRecords))
 		{
 			for (LootTrackerItem item : record.getItems())
 			{
@@ -477,38 +502,26 @@ class LootTrackerPanel extends PluginPanel
 	}
 
 	/**
-	 * Rebuilds loot entries when one of the price type config options is changed
-	 */
-	void updatePriceTypeDisplay()
-	{
-		rebuild();
-	}
-
-	/**
 	 * Rebuilds all the boxes from scratch using existing listed records, depending on the grouping mode.
 	 */
-	private void rebuild()
+	void rebuild()
 	{
 		SwingUtil.fastRemoveAll(logsContainer);
 		boxes.clear();
 
 		if (groupLoot)
 		{
-			aggregateRecords.forEach(this::buildBox);
-			sessionRecords.forEach(this::buildBox);
+			aggregateRecords.values().forEach(this::buildBox);
 		}
 		else
 		{
-			// Loop in reverse insertion order so limiting includes most recent data
-			Lists.reverse(sessionRecords).stream()
-				// filter records prior to limiting so that it is limited to the correct amount
-				.filter(r -> !hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
-				.limit(MAX_LOOT_BOXES)
-				// The box that is built last is first inside the UI.
-				// since we are looping in reverse order we need to use a data type that support reverse iterating
-				.collect(Collectors.toCollection(ArrayDeque::new))
-				.descendingIterator()
-				.forEachRemaining(this::buildBox);
+			for (LootTrackerRecord r : sessionRecords)
+			{
+				if (!hideIgnoredItems || !plugin.isEventIgnored(r.getTitle()))
+				{
+					buildBox(r);
+				}
+			}
 		}
 
 		boxes.forEach(LootTrackerBox::rebuild);
@@ -544,7 +557,6 @@ class LootTrackerPanel extends PluginPanel
 				{
 					// float the matched box to the top of the UI list if it's not already first
 					logsContainer.setComponentZOrder(box, 0);
-					box.addKill(record);
 					return box;
 				}
 			}
@@ -556,9 +568,8 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record,
 			hideIgnoredItems, config.priceType(), config.showPriceType(), plugin::toggleItem, plugin::toggleEvent, isIgnored);
-		box.addKill(record);
 
 		// Use the existing popup menu or create a new one
 		JPopupMenu popupMenu = box.getComponentPopupMenu();
@@ -595,7 +606,7 @@ class LootTrackerPanel extends PluginPanel
 		reset.addActionListener(e ->
 		{
 			final int result = JOptionPane.showOptionDialog(box,
-				groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
+				groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, record.getTitle()) : RESET_ONE_WARNING_TEXT,
 				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 				null, new String[]{"Yes", "No"}, "No");
 
@@ -610,7 +621,7 @@ class LootTrackerPanel extends PluginPanel
 				// Otherwise remove specifically this entry
 				: r -> r.equals(record);
 			sessionRecords.removeIf(match);
-			aggregateRecords.removeIf(match);
+			aggregateRecords.values().removeIf(match);
 			boxes.remove(box);
 			updateOverall();
 			logsContainer.remove(box);
@@ -619,7 +630,7 @@ class LootTrackerPanel extends PluginPanel
 			// Without loot being grouped we have no way to identify single kills to be deleted
 			if (groupLoot)
 			{
-				plugin.removeLootConfig(box.getLootRecordType(), box.getId());
+				plugin.removeLootConfig(record.getType(), record.getTitle());
 			}
 		});
 
@@ -656,11 +667,7 @@ class LootTrackerPanel extends PluginPanel
 		long overallGe = 0;
 		long overallHa = 0;
 
-		Iterable<LootTrackerRecord> records = sessionRecords;
-		if (groupLoot)
-		{
-			records = concat(aggregateRecords, sessionRecords);
-		}
+		Iterable<LootTrackerRecord> records = groupLoot ? aggregateRecords.values() : sessionRecords;
 
 		for (LootTrackerRecord record : records)
 		{

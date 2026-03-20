@@ -238,12 +238,11 @@ public final class VarPlayer
 
 	/**
 	 * Currently assigned slayer task if SLAYER_TASK_SIZE is greater than 0.
-	 * Mapping of value to name can be found in {@link EnumID#SLAYER_TASK_CREATURE}.
 	 */
 	public static final int SLAYER_TASK_CREATURE = 395;
 
 	/**
-	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
+	 * Assigned slayer task location.
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
 

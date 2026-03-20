@@ -35,6 +35,6 @@ public class FairyRingTest
 	@Test
 	public void testFairyRingsAlphabetized()
 	{
-		assertTrue(isSorted(Stream.of(FairyRings.values()).map(FairyRings::name).toArray(String[]::new)));
+		assertTrue(isSorted(Stream.of(FairyRing.values()).map(FairyRing::name).toArray(String[]::new)));
 	}
 }

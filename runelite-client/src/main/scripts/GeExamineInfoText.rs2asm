@@ -4,13 +4,11 @@
 ; component1 = parent of the info icon
 ; string0 = item examine
 ; string1 = Convenience fee text
-.id                 5730
-.int_stack_count    2
-.string_stack_count 2
-.int_var_count      6
-.string_var_count   3
+.id                       5730
+.int_arg_count            2
+.obj_arg_count            2
    sconst                 ""
-   sstore                 2
+   ostore                 2
    iconst                 0
    istore                 2
    iconst                 0
@@ -19,7 +17,7 @@
    istore                 4
    iconst                 5
    istore                 5
-   sload                  1
+   oload                  1
    string_length         
    iconst                 0
    if_icmpgt              LABEL15
@@ -33,11 +31,11 @@ LABEL15:
    if_icmpeq              LABEL22
    jump                   LABEL25
 LABEL22:
-   sload                  0
-   sstore                 2
+   oload                  0
+   ostore                 2
    jump                   LABEL44
 LABEL25:
-   sload                  0
+   oload                  0
    iload                  2
    iconst                 494
    paraheight            
@@ -45,33 +43,33 @@ LABEL25:
    if_icmple              LABEL32
    jump                   LABEL39
 LABEL32:
-   sload                  0
+   oload                  0
    sconst                 "<br>"
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            4
-   sstore                 2
+   ostore                 2
    jump                   LABEL44
 LABEL39:
-   sload                  0
+   oload                  0
    sconst                 "<br>"
-   sload                  1
+   oload                  1
    join_string            3
-   sstore                 2
+   ostore                 2
 LABEL44:
 
-   sload                  0 ; examine
-   sload                  1 ; Convenience fee
-   sload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
+   oload                  0 ; examine
+   oload                  1 ; Convenience fee
+   oload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
    sconst                 "geSellExamineText"
    runelite_callback     
-   sstore                 2 ; final text
-   pop_string               ; Convenience fee
-   pop_string               ; examine
+   ostore                 2 ; final text
+   pop_object               ; Convenience fee
+   pop_object               ; examine
 
    iload                  0
    if_getx               
-   sload                  1
+   oload                  1
    iload                  2
    iconst                 494
    parawidth             
@@ -80,7 +78,7 @@ LABEL44:
    add                   
    iload                  0
    if_gety               
-   sload                  2
+   oload                  2
    iload                  2
    iconst                 494
    paraheight            
@@ -154,7 +152,7 @@ LABEL98:
    cc_getid              
    iconst                 0
    iconst                 -1
-   sconst                 "IiiI"
+   sconst                 "iiii"
    iload                  1
    if_setonmouserepeat   
    iconst                 244
@@ -162,7 +160,7 @@ LABEL98:
    cc_getid              
    iconst                 50
    iconst                 -1
-   sconst                 "IiiI"
+   sconst                 "iiii"
    iload                  1
    if_setonmouseleave    
    iconst                 489
@@ -178,17 +176,17 @@ LABEL98:
 LABEL148:
    jump                   LABEL170
 LABEL149:
-   sload                  0
-   sstore                 2
+   oload                  0
+   ostore                 2
 
-   sload                  0 ; examine
-   sload                  1 ; ""
-   sload                  2 ; examine
+   oload                  0 ; examine
+   oload                  1 ; ""
+   oload                  2 ; examine
    sconst                 "geBuyExamineText"
    runelite_callback     
-   sstore                 2 ; final text
-   pop_string               ; ""
-   pop_string               ; examine
+   ostore                 2 ; final text
+   pop_object               ; ""
+   pop_object               ; examine
 
    iconst                 1
    iload                  1
@@ -210,7 +208,7 @@ LABEL149:
    iload                  1
    if_clearops           
 LABEL170:
-   sload                  2
+   oload                  2
    iload                  0
    if_settext            
    return                

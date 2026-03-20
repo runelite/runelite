@@ -31,7 +31,8 @@ import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL43C;
+import static org.lwjgl.opengl.GL33C.*;
+import static org.lwjgl.opengl.GL42C.glTexStorage3D;
 
 @Singleton
 @Slf4j
@@ -49,26 +50,26 @@ class TextureManager
 
 		Texture[] textures = textureProvider.getTextures();
 
-		int textureArrayId = GL43C.glGenTextures();
-		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D_ARRAY, textureArrayId);
+		int textureArrayId = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D_ARRAY, textureArrayId);
 		if (GL.getCapabilities().glTexStorage3D != 0)
 		{
-			GL43C.glTexStorage3D(GL43C.GL_TEXTURE_2D_ARRAY, 8, GL43C.GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
+			glTexStorage3D(GL_TEXTURE_2D_ARRAY, 8, GL_RGBA8, TEXTURE_SIZE, TEXTURE_SIZE, textures.length);
 		}
 		else
 		{
 			int size = TEXTURE_SIZE;
 			for (int i = 0; i < 8; i++)
 			{
-				GL43C.glTexImage3D(GL43C.GL_TEXTURE_2D_ARRAY, i, GL43C.GL_RGBA8, size, size, textures.length, 0, GL43C.GL_RGBA, GL43C.GL_UNSIGNED_BYTE, 0);
+				glTexImage3D(GL_TEXTURE_2D_ARRAY, i, GL_RGBA8, size, size, textures.length, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 				size /= 2;
 			}
 		}
 
-		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_MIN_FILTER, GL43C.GL_NEAREST);
-		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_MAG_FILTER, GL43C.GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_WRAP_S, GL43C.GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
 		// Set brightness to 1.0d to upload unmodified textures to GPU
 		double save = textureProvider.getBrightness();
@@ -78,22 +79,22 @@ class TextureManager
 
 		textureProvider.setBrightness(save);
 
-		GL43C.glActiveTexture(GL43C.GL_TEXTURE1);
-		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D_ARRAY, textureArrayId);
-		GL43C.glGenerateMipmap(GL43C.GL_TEXTURE_2D_ARRAY);
-		GL43C.glActiveTexture(GL43C.GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, textureArrayId);
+		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		glActiveTexture(GL_TEXTURE0);
 
 		return textureArrayId;
 	}
 
 	void setAnisotropicFilteringLevel(int textureArrayId, int level)
 	{
-		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D_ARRAY, textureArrayId);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, textureArrayId);
 
 		//level = 0 means no mipmaps and no anisotropic filtering
 		if (level == 0)
 		{
-			GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_MIN_FILTER, GL43C.GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		}
 		//level = 1 means with mipmaps but without anisotropic filtering GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT defaults to 1.0 which is off
 		//level > 1 enables anisotropic filtering. It's up to the vendor what the values mean
@@ -102,21 +103,21 @@ class TextureManager
 		{
 			// Set on GL_NEAREST_MIPMAP_LINEAR (bilinear filtering with mipmaps) since the pixel nature of the game means that nearest filtering
 			// looks best for objects up close but allows linear filtering to resolve possible aliasing and noise with mipmaps from far away objects.
-			GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D_ARRAY, GL43C.GL_TEXTURE_MIN_FILTER, GL43C.GL_NEAREST_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 		}
 
 		if (GL.getCapabilities().GL_EXT_texture_filter_anisotropic)
 		{
-			final float maxSamples = GL43C.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+			final float maxSamples = glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
 			//Clamp from 1 to max GL says it supports.
 			final float anisoLevel = Math.max(1, Math.min(maxSamples, level));
-			GL43C.glTexParameterf(GL43C.GL_TEXTURE_2D_ARRAY, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoLevel);
+			glTexParameterf(GL_TEXTURE_2D_ARRAY, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, anisoLevel);
 		}
 	}
 
 	void freeTextureArray(int textureArrayId)
 	{
-		GL43C.glDeleteTextures(textureArrayId);
+		glDeleteTextures(textureArrayId);
 	}
 
 	/**
@@ -153,7 +154,7 @@ class TextureManager
 	{
 		Texture[] textures = textureProvider.getTextures();
 
-		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D_ARRAY, textureArrayId);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, textureArrayId);
 
 		int cnt = 0;
 		for (int textureId = 0; textureId < textures.length; textureId++)
@@ -182,8 +183,8 @@ class TextureManager
 				ByteBuffer pixelBuffer = ByteBuffer.allocateDirect(pixels.length);
 				pixelBuffer.put(pixels);
 				pixelBuffer.flip();
-				GL43C.glTexSubImage3D(GL43C.GL_TEXTURE_2D_ARRAY, 0, 0, 0, textureId, TEXTURE_SIZE, TEXTURE_SIZE,
-					1, GL43C.GL_RGBA, GL43C.GL_UNSIGNED_BYTE, pixelBuffer);
+				glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, textureId, TEXTURE_SIZE, TEXTURE_SIZE,
+					1, GL_RGBA, GL_UNSIGNED_BYTE, pixelBuffer);
 			}
 		}
 

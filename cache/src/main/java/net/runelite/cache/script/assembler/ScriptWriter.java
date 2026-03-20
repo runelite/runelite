@@ -48,10 +48,10 @@ class ScriptWriter extends rs2asmBaseListener
 
 	private int id;
 	private int pos;
-	private int intStackCount;
-	private int stringStackCount;
+	private int intArgCount;
+	private int objArgCount;
 	private int localIntCount;
-	private int localStringCount;
+	private int localObjCount;
 	private List<Integer> opcodes = new ArrayList<>();
 	private List<Integer> iops = new ArrayList<>();
 	private List<String> sops = new ArrayList<>();
@@ -65,31 +65,17 @@ class ScriptWriter extends rs2asmBaseListener
 	}
 
 	@Override
-	public void enterInt_stack_value(rs2asmParser.Int_stack_valueContext ctx)
+	public void enterInt_arg_value(rs2asmParser.Int_arg_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
-		intStackCount = value;
+		intArgCount = value;
 	}
 
 	@Override
-	public void enterString_stack_value(rs2asmParser.String_stack_valueContext ctx)
+	public void enterObj_arg_value(rs2asmParser.Obj_arg_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
-		stringStackCount = value;
-	}
-
-	@Override
-	public void enterInt_var_value(rs2asmParser.Int_var_valueContext ctx)
-	{
-		int value = Integer.parseInt(ctx.getText());
-		localIntCount = value;
-	}
-
-	@Override
-	public void enterString_var_value(rs2asmParser.String_var_valueContext ctx)
-	{
-		int value = Integer.parseInt(ctx.getText());
-		localStringCount = value;
+		objArgCount = value;
 	}
 
 	@Override
@@ -131,7 +117,15 @@ class ScriptWriter extends rs2asmBaseListener
 		opcodes.add(opcode);
 		iops.add(null);
 		sops.add(null);
-		switches.add(null);
+
+		if (opcode == Opcodes.SWITCH)
+		{
+			switches.add(new LookupSwitch());
+		}
+		else
+		{
+			switches.add(null);
+		}
 	}
 
 	@Override
@@ -146,7 +140,9 @@ class ScriptWriter extends rs2asmBaseListener
 	public void enterOperand_qstring(rs2asmParser.Operand_qstringContext ctx)
 	{
 		String text = ctx.getText();
-		text = text.substring(1, text.length() - 1);
+		text = text.substring(1, text.length() - 1)
+			.replace("\\\\", "\\")
+			.replace("\\\"", "\"");
 		sops.set(pos, text);
 	}
 
@@ -180,18 +176,6 @@ class ScriptWriter extends rs2asmBaseListener
 		}
 
 		iops.set(pos, (int) symbol);
-	}
-
-	@Override
-	public void enterSwitch_lookup(rs2asmParser.Switch_lookupContext ctx)
-	{
-		if (switches.get(pos - 1) != null)
-		{
-			return;
-		}
-
-		LookupSwitch ls = new LookupSwitch();
-		switches.set(pos - 1, ls);
 	}
 
 	@Override
@@ -233,13 +217,14 @@ class ScriptWriter extends rs2asmBaseListener
 	public ScriptDefinition buildScript()
 	{
 		setSwitchOperands();
+		computeLocalSizes();
 
 		ScriptDefinition script = new ScriptDefinition();
 		script.setId(id);
-		script.setIntStackCount(intStackCount);
-		script.setStringStackCount(stringStackCount);
+		script.setIntArgCount(intArgCount);
+		script.setObjArgCount(objArgCount);
 		script.setLocalIntCount(localIntCount);
-		script.setLocalStringCount(localStringCount);
+		script.setLocalObjCount(localObjCount);
 		script.setInstructions(opcodes.stream().mapToInt(Integer::valueOf).toArray());
 		script.setIntOperands(iops.stream()
 			.map(i -> i == null ? 0 : i)
@@ -248,6 +233,29 @@ class ScriptWriter extends rs2asmBaseListener
 		script.setStringOperands(sops.toArray(new String[0]));
 		script.setSwitches(buildSwitches());
 		return script;
+	}
+
+	private void computeLocalSizes()
+	{
+		int maxIntVars = intArgCount;
+		int maxObjVars = objArgCount;
+		for (int i = 0; i < opcodes.size(); ++i)
+		{
+			int opcode = opcodes.get(i);
+			if (opcode == Opcodes.ILOAD || opcode == Opcodes.ISTORE)
+			{
+				int op = iops.get(i);
+				maxIntVars = Math.max(maxIntVars, op + 1);
+			}
+			else if (opcode == Opcodes.OLOAD || opcode == Opcodes.OSTORE)
+			{
+				int op = iops.get(i);
+				maxObjVars = Math.max(maxObjVars, op + 1);
+			}
+		}
+
+		localIntCount = maxIntVars;
+		localObjCount = maxObjVars;
 	}
 
 	private void setSwitchOperands()

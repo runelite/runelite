@@ -32,6 +32,7 @@ import net.runelite.api.gameval.ItemID;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.BLESSED_SUNFIRE_WINE;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.DEMONIC_OFFERING;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.MORYTANIA_DIARY_3_SHADES;
+import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.SACRED_BONE_BURNER;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.ZEALOT_ROBES;
 
 @AllArgsConstructor
@@ -59,6 +60,7 @@ public enum PrayerAction implements ItemSkillAction
 	PHRIN_REMAINS(ItemID.SHADE_BONES2, 1, 46.5f, PrayerMethod.SHADE_REMAINS),
 	WYRM_BONES(ItemID.WYRM_BONES, 1, 50, PrayerMethod.BONES),
 	RIYL_REMAINS(ItemID.SHADE_BONES3, 1, 59.5f, PrayerMethod.SHADE_REMAINS),
+	STRYKEWYRM_BONES(ItemID.STRYKEWYRM_BONES, 1, 60, PrayerMethod.BONES),
 	MALICIOUS_ASHES(ItemID.MALICIOUS_ASHES, 1, 65, PrayerMethod.DEMONIC_ASHES),
 	DRAGON_BONES(ItemID.DRAGON_BONES, 1, 72, PrayerMethod.BONES),
 	WYVERN_BONES(ItemID.WYVERN_BONES, 1, 72, PrayerMethod.BONES),
@@ -69,6 +71,7 @@ public enum PrayerAction implements ItemSkillAction
 	ABYSSAL_ASHES(ItemID.ABYSSAL_ASHES, 1, 85, PrayerMethod.DEMONIC_ASHES),
 	LAVA_DRAGON_BONES(ItemID.LAVA_DRAGON_BONES, 1, 85, PrayerMethod.BONES),
 	RAURG_BONES(ItemID.ZOGRE_ANCESTRAL_BONES_RAURG, 1, 96, PrayerMethod.BONES),
+	FROST_DRAGON_BONES(ItemID.FROST_DRAGON_BONES, 1, 100, PrayerMethod.BONES),
 	HYDRA_BONES(ItemID.HYDRA_BONES, 1, 110, PrayerMethod.BONES),
 	INFERNAL_ASHES(ItemID.INFERNAL_ASHES, 1, 110, PrayerMethod.DEMONIC_ASHES),
 	URIUM_REMAINS(ItemID.SHADE_BONES6, 1, 120.5f, PrayerMethod.SHADE_REMAINS),
@@ -116,7 +119,7 @@ public enum PrayerAction implements ItemSkillAction
 		DEMONIC_OFFERING,
 		BLESSED_SUNFIRE_WINE
 	);
-	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
+	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING, SACRED_BONE_BURNER));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_REMAINS = EnumSet.complementOf(EnumSet.of(MORYTANIA_DIARY_3_SHADES));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_BLESSED_SUNFIRE_WINE = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES, BLESSED_SUNFIRE_WINE));
 	private static final Set<PrayerBonus> EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES));

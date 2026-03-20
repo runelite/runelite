@@ -34,9 +34,9 @@ public class ScriptDefinition
 	private int[] instructions;
 	private int[] intOperands;
 	private String[] stringOperands;
-	private int intStackCount;
-	private int stringStackCount;
+	private int intArgCount;
+	private int objArgCount;
 	private int localIntCount;
-	private int localStringCount;
+	private int localObjCount;
 	private Map<Integer, Integer>[] switches;
 }

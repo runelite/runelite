@@ -221,7 +221,7 @@ public class SessionManager
 		server = HttpServer.create(new InetSocketAddress("localhost", 0), 1);
 		server.createContext("/oauth", req ->
 		{
-			try
+			try // NOPMD: UseTryWithResources: false positive
 			{
 				final HttpUrl url = HttpUrl.get("http://localhost" + req.getRequestURI());
 				final String username = url.queryParameter("username");

@@ -36,15 +36,85 @@ public interface SceneTilePaint
 	 */
 	int getRBG();
 
+	/**
+	 * Gets the color of the south-west corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @return the south-west corner of the tile
+	 */
 	int getSwColor();
 
+	/**
+	 * Sets the color of the south-west corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @param color the new color for the south-west corner of the tile
+	 */
+	void setSwColor(int color);
+
+	/**
+	 * Gets the color of the south-east corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @return the south-east corner of the tile
+	 */
 	int getSeColor();
 
+	/**
+	 * Sets the color of the south-east corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @param color the new color for the south-east corner of the tile
+	 */
+	void setSeColor(int color);
+
+	/**
+	 * Gets the color of the north-west corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @return the north-west corner of the tile
+	 */
 	int getNwColor();
 
+	/**
+	 * Sets the color of the north-west corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @param color the new color for the north-west corner of the tile
+	 */
+	void setNwColor(int color);
+
+	/**
+	 * Gets the color of the north-east corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @return the north-east corner of the tile
+	 */
 	int getNeColor();
 
+	/**
+	 * Sets the color of the north-east corner of the tile.
+	 * Used to render a Gouraud-shaded gradient along the tile plane in the scene.
+	 *
+	 * @param color the new color for the north-east corner of the tile
+	 */
+	void setNeColor(int color);
+
+	/**
+	 * Gets the texture to be rendered for the tile.
+	 * When set, the texture will be drawn instead of a 4-point color gradient.
+	 *
+	 * @return the texture id to draw on the tile
+	 */
 	int getTexture();
+
+	/**
+	 * Sets the texture to be rendered for the tile.
+	 * When set, the texture will be drawn instead of a 4-point color gradient.
+	 *
+	 * @param texture the texture id to be drawn on the tile
+	 */
+	void setTexture(int texture);
 
 	boolean isFlat();
 

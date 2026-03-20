@@ -4568,7 +4568,7 @@ public final class ObjectID extends ObjectID1
 	public static final int BODY_ROOT2 = 1389;
 
 	/**
-	 * Jungle plant
+	 * Plant
 	 */
 	public static final int JUNGLE2 = 1390;
 
@@ -6443,6 +6443,11 @@ public final class ObjectID extends ObjectID1
 	public static final int WIZARDS_TOWER_LADDER = 2148;
 
 	/**
+	 * Trellis
+	 */
+	public static final int GARDEN_TRELLIS_CONCAVE_SHORTCUT = 2149;
+
+	/**
 	 * Obelisk of Earth
 	 */
 	public static final int OBELISK_EARTH = 2150;
@@ -8164,9 +8169,9 @@ public final class ObjectID extends ObjectID1
 	public static final int DRAGONSHIPLADDERTOP = 2590;
 
 	/**
-	 * Ladder
+	 * Bunk bed
 	 */
-	public static final int DRAGONSHIPLADDERTOP2 = 2591;
+	public static final int AKD_SHAYZIEN_BUNKBED_SMALL = 2591;
 
 	/**
 	 * Ladder
@@ -9903,17 +9908,17 @@ public final class ObjectID extends ObjectID1
 	public static final int FAI_VARROCK_SACK_PILE = 3025;
 
 	/**
-	 * Shelf
+	 * Shelves
 	 */
 	public static final int FAI_VARROCK_SHELVES1 = 3026;
 
 	/**
-	 * Shelf
+	 * Shelves
 	 */
 	public static final int FAI_VARROCK_SHELVES2 = 3027;
 
 	/**
-	 * Shelf
+	 * Shelves
 	 */
 	public static final int FAI_VARROCK_SHELVES3 = 3028;
 
@@ -30356,7 +30361,7 @@ public final class ObjectID extends ObjectID1
 	public static final int FEUD_CLOTHESEQUIP_TABLE = 9082;
 
 	/**
-	 * Dye Pots
+	 * Dye pots
 	 */
 	public static final int DYE_POTS = 9083;
 
@@ -33871,7 +33876,7 @@ public final class ObjectID extends ObjectID1
 	public static final int AGRITH_WIZARD_RUBBLE = 10249;
 
 	/**
-	 * Eric
+	 * &#60;col=ffff00&#62;Eric&#60;/col&#62;
 	 */
 	public static final int SEZ_AGRITH_RUBBLE_WIZ = 10250;
 
@@ -44652,32 +44657,32 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_LEVER_OAK_4 = 13674;
 
 	/**
-	 * Trapdoor
+	 * Oak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_OAK_7 = 13675;
 
 	/**
-	 * Trapdoor
+	 * Teak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_TEAK_7 = 13676;
 
 	/**
-	 * Trapdoor
+	 * Mahogany trapdoor
 	 */
 	public static final int POH_TRAPDOOR_MAG_7 = 13677;
 
 	/**
-	 * Trapdoor
+	 * Oak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_OAK_OPEN_7 = 13678;
 
 	/**
-	 * Trapdoor
+	 * Teak trapdoor
 	 */
 	public static final int POH_TRAPDOOR_TEAK_OPEN_7 = 13679;
 
 	/**
-	 * Trapdoor
+	 * Mahogany trapdoor
 	 */
 	public static final int POH_TRAPDOOR_MAG_OPEN_7 = 13680;
 
@@ -49435,7 +49440,7 @@ public final class ObjectID extends ObjectID1
 	public static final int ROYAL_CLOTHESEQUIP_TABLE = 15137;
 
 	/**
-	 * Dye Pots
+	 * Dye pots
 	 */
 	public static final int ROYAL_DYE_POTS = 15138;
 
@@ -59440,7 +59445,7 @@ public final class ObjectID extends ObjectID1
 	public static final int SEASLUG_WOODEN_ROOF_WINDOW_TWO = 18398;
 
 	/**
-	 * Bone barrel
+	 * Barrel
 	 */
 	public static final int SEASLUG_BARREL_FISHBONES = 18399;
 
@@ -63767,25 +63772,9 @@ public final class ObjectID extends ObjectID1
 	public static final int TRAIL_PURPLE_FIRE = 20001;
 	public static final int RIMMINGTON_WOOD_WALLS_WINDOW_SINGLE01 = 20002;
 	public static final int RIMMINGTON_WOOD_WALLS_WINDOW_DOUBLE01 = 20003;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_MIDDLE = 20004;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_MIDDLE_MIRROR = 20005;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_END = 20006;
-
-	/**
-	 * Rope bridge support
-	 */
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_END_MIRROR = 20007;
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_ROPE_END = 20008;
 	public static final int QIP_WATCHTOWER_ROPE_BRIDGE_ROPE_END_MIRROR = 20009;
@@ -64470,7 +64459,7 @@ public final class ObjectID extends ObjectID1
 	public static final int BARBASSAULT_CRATE_STACKED = 20216;
 
 	/**
-	 * Barrel
+	 * Barrels
 	 */
 	public static final int BARBASSAULT_BARREL_STACKED = 20217;
 	public static final int BARBASSAULT_RECRUITMENT_DOOR_TOP = 20218;
@@ -78380,7 +78369,7 @@ public final class ObjectID extends ObjectID1
 	public static final int DRAGON_SLAYER_QIP_ROCKCOLUMN3 = 25082;
 
 	/**
-	 * Stalagmite
+	 * Stalactite
 	 */
 	public static final int DRAGON_SLAYER_QIP_STAGAMITE = 25083;
 
@@ -81330,9 +81319,9 @@ public final class ObjectID extends ObjectID1
 	 * Lever
 	 */
 	public static final int FAI_FALADOR_PARTY_ROOM_LEVER = 26194;
-	public static final int BIRTHDAYBANNERL = 26195;
-	public static final int BIRTHDAYBANNERR = 26196;
-	public static final int BIRTHDAYBANNERM = 26197;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_WOOD = 26195;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_WOOD = 26196;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_WOOD = 26197;
 
 	/**
 	 * Birthday cake
@@ -85400,7 +85389,7 @@ public final class ObjectID extends ObjectID1
 	public static final int PISCARILIUS_DRAWERS_LARGE = 27674;
 
 	/**
-	 * Drawers
+	 * Wardrobe
 	 */
 	public static final int PISCARILIUS_WARDROBE_01 = 27675;
 
@@ -95957,7 +95946,7 @@ public final class ObjectID extends ObjectID1
 	public static final int FOSSIL_U_ROCKS_FLOOR_SOFT_09 = 30795;
 
 	/**
-	 * Bank Chest-wreck
+	 * Bank Chest
 	 */
 	public static final int FOSSIL_WASHED_UP_CHEST = 30796;
 

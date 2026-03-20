@@ -65,6 +65,10 @@ class PrayerFlickOverlay extends Overlay
 		Widget xpOrb = client.getWidget(InterfaceID.Orbs.PRAYERBUTTON);
 		if (xpOrb == null || xpOrb.isHidden())
 		{
+			xpOrb = client.getWidget(InterfaceID.OrbsNomap.PRAYERBUTTON);
+		}
+		if (xpOrb == null || xpOrb.isHidden())
+		{
 			return null;
 		}
 

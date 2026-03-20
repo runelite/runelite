@@ -37,7 +37,7 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.SpriteID;
+import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -173,7 +173,7 @@ public class PoisonPlugin extends Plugin
 
 				if (damage > 0)
 				{
-					final BufferedImage image = getSplat(envenomed ? SpriteID.HITSPLAT_DARK_GREEN_VENOM : SpriteID.HITSPLAT_GREEN_POISON, damage);
+					final BufferedImage image = getSplat(envenomed ? SpriteID.Hitmark.HITSPLAT_DARK_GREEN_VENOM : SpriteID.Hitmark.HITSPLAT_GREEN_POISON, damage);
 
 					if (image != null)
 					{
@@ -322,7 +322,7 @@ public class PoisonPlugin extends Plugin
 		{
 			heart = newHeart;
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
+			client.getSpriteOverrides().put(SpriteID.OrbIcon.HITPOINTS, ImageUtil.getImageSpritePixels(heart, client));
 		}
 	}
 
@@ -334,7 +334,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		client.getWidgetSpriteCache().reset();
-		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
+		client.getSpriteOverrides().remove(SpriteID.OrbIcon.HITPOINTS);
 		heart = null;
 	}
 }

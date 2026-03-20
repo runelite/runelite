@@ -34,7 +34,6 @@ import lombok.Getter;
 public enum FiremakingBonus implements SkillBonus
 {
 	PYROMANCER_OUTFIT("Pyromancer Outfit", 1.025f),
-	FORESTERS_CAMPFIRE("Forester's Campfire", 0.33333333f),
 	MORYTANIA_ELITE_DIARY("Morytania Elite Diary", 1.5f)
 	;
 

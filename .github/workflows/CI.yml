@@ -9,21 +9,21 @@ jobs:
     permissions:
       contents: read
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
+    env:
+      GRADLE_OPTS: "-Dfile:encoding=UTF-8"
 
-      - name: Cache
-        uses: actions/cache@v4
+    steps:
+      - name: Cache glslang
+        uses: actions/cache@v5
         with:
           path: |
-            ~/.m2/repository
             ~/.cache/runelite
-          key: ${{ runner.os }}-cache-${{ hashFiles('**/pom.xml', '**/build.sh', '**/pmd-ruleset.xml') }}
+          key: ${{ runner.os }}-cache-${{ hashFiles('ci/build.sh') }}
           restore-keys: |
             ${{ runner.os }}-cache-
+
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up JDK 11
         uses: actions/setup-java@v4
@@ -31,5 +31,10 @@ jobs:
           distribution: temurin
           java-version: 11
 
-      - name: Build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: wrapper
+
+      - name: Build and Test
         run: ./ci/build.sh

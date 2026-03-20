@@ -69,6 +69,7 @@ public class ClueScrollOverlay extends OverlayPanel
 		item(ItemID.SEERS_HEADBAND_HARD),
 		item(ItemID.SEERS_HEADBAND_ELITE),
 		item(ItemID.WINT_TORCH),
+		item(ItemID.WINT_TORCH_OFFHAND),
 		item(ItemID.SKILLCAPE_MAX),
 		item(ItemID.SKILLCAPE_MAX_WORN),
 		item(ItemID.ABYSSAL_LANTERN_NORMAL),

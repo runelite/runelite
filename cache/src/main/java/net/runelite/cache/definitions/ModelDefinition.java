@@ -35,6 +35,7 @@ public class ModelDefinition
 	public transient float[][] faceTextureVCoordinates;
 	public short[] texturePrimaryColors;
 	public short[] faceTextures;
+	public byte[] faceZOffsets;
 	public byte[] textureCoords;
 	public byte[] textureRenderTypes;
 

@@ -1,8 +1,6 @@
-.id                 6004
-.int_stack_count    7
-.string_stack_count 1
-.int_var_count      7
-.string_var_count   1
+.id                       6004
+.int_arg_count            7
+.obj_arg_count            1
    iload                  1
    iconst                 100000
    if_icmpge              LABEL4
@@ -31,7 +29,7 @@ LABEL4:
    ;invoke                 6005
    jump                   LABEL34
 LABEL23:
-   sload                  0
+   oload                  0
    iconst                 27 ; ITEM_EXAMINE
    sconst                 "mes"
    runelite_callback
