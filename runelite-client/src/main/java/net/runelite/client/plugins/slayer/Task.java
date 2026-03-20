@@ -28,8 +28,10 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import net.runelite.api.NPC;
 import net.runelite.api.gameval.ItemID;
 
 @Getter
@@ -192,9 +194,9 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
-	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
+	private final Predicate<NPC> npcPredicate;
 
 	static
 	{
@@ -208,24 +210,31 @@ enum Task
 		tasks = builder.build();
 	}
 
-	Task(String name, int itemSpriteId, String... targetNames)
-	{
-		Preconditions.checkArgument(itemSpriteId >= 0);
-		this.name = name;
-		this.itemSpriteId = itemSpriteId;
-		this.weaknessThreshold = -1;
-		this.weaknessItem = -1;
-		this.targetNames = targetNames;
-	}
-
-	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, Predicate<NPC> npcPredicate)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
-		this.targetNames = targetNames;
+		this.npcPredicate = npcPredicate;
+	}
+
+	Task(String name, int itemSpriteId, Predicate<NPC> npcPredicate)
+	{
+		this(name, itemSpriteId, -1, -1, npcPredicate);
+	}
+
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	{
+		this(name, itemSpriteId, weaknessThreshold, weaknessItem,
+			NpcPredicate.nameContains(name.replaceAll("s$", ""))
+				.or(NpcPredicate.nameContains(targetNames)));
+	}
+
+	Task(String name, int itemSpriteId, String... targetNames)
+	{
+		this(name, itemSpriteId, -1, -1, targetNames);
 	}
 
 	@Nullable
