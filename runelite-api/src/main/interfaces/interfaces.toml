@@ -176,16 +176,16 @@ tab_clan=23
 tab_trade=27
 report_text=33
 frame=34
-transparent_background=36
-container=38
-title=42
-full_input=43
-ge_search_results=51
-messages=54
-transparent_background_lines=55
-input=56
-message_lines=57
-first_message=58
+transparent_background=37
+container=39
+title=43
+full_input=44
+ge_search_results=52
+messages=55
+transparent_background_lines=56
+input=57
+message_lines=58
+first_message=59
 
 [clan]
 id=701
@@ -259,7 +259,7 @@ id=13
 
 [deposit_box]
 id=192
-inventory_item_container=23
+inventory_item_container=24
 
 [destroy_item]
 id=584
@@ -824,10 +824,10 @@ parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
 lumbridge_home_teleport=7
-edgeville_home_teleport=105
-lunar_home_teleport=106
-arceuus_home_teleport=150
-fertile_soil=131
+edgeville_home_teleport=106
+lunar_home_teleport=107
+arceuus_home_teleport=151
+fertile_soil=132
 
 [tempoross]
 id=437

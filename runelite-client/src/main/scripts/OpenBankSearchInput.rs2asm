@@ -13,7 +13,7 @@ LABEL5:
    sconst                 "Show items whose names contain the following text:"
    sconst                 "setSearchBankInputText"  ; load event name
    runelite_callback     ; invoke callback
-   iconst                 10616874
+   iconst                 10616875
    if_settext            
    sconst                 ""
    invoke                 222
@@ -24,11 +24,11 @@ LABEL5:
    iconst                 -2147483639
    oload                  0
    sconst                 "iis"
-   iconst                 10616875
+   iconst                 10616876
    if_setonkey           
    iconst                 138
    sconst                 ""
-   iconst                 10616875
+   iconst                 10616876
    if_setondialogabort   
    invoke                 1972
    iconst                 1

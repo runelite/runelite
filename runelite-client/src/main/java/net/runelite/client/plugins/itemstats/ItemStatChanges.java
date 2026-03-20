@@ -47,6 +47,8 @@ import net.runelite.client.plugins.itemstats.potions.StaminaPotion;
 import net.runelite.client.plugins.itemstats.potions.SuperRestore;
 import net.runelite.client.plugins.itemstats.special.CastleWarsBandage;
 import net.runelite.client.plugins.itemstats.special.CaveNightshade;
+import net.runelite.client.plugins.itemstats.special.DwarvenRockCake;
+import net.runelite.client.plugins.itemstats.special.LocatorOrb;
 import net.runelite.client.plugins.itemstats.special.NettleTeaRunEnergy;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
@@ -393,6 +395,8 @@ public class ItemStatChanges
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(PRAYER, 1), heal(DEFENCE, -1)), ItemID.JANGERBERRIES);
 		add(new CaveNightshade(), ItemID.NIGHTSHADE);
 		add(combo(food(15), heal(PRAYER, perc(.25, 0)), staminaPot), ItemID.DT2_SCAR_MAZE_STAMINA);
+		add(new DwarvenRockCake(), ItemID.HUNDRED_DWARF_COOL_ROCKCAKE);
+		add(new LocatorOrb(), ItemID.DS2_ORB);
 
 		// Gauntlet
 		add(combo(heal(PRAYER, perc(.25, 7)), heal(RUN_ENERGY, 40)), ItemID.GAUNTLET_POTION_1, ItemID.GAUNTLET_POTION_2, ItemID.GAUNTLET_POTION_3, ItemID.GAUNTLET_POTION_4);

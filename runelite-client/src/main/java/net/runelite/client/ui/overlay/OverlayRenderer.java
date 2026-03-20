@@ -292,9 +292,9 @@ public class OverlayRenderer extends MouseAdapter
 		final Color background = graphics.getBackground();
 
 		// Cache overlay fonts
-		this.font = runeLiteConfig.fontType().getFont();
-		this.tooltipFont = runeLiteConfig.tooltipFontType().getFont();
-		this.interfaceFont = runeLiteConfig.interfaceFontType().getFont();
+		this.font = runeLiteConfig.dynamicOverlayFont().getFont();
+		this.tooltipFont = runeLiteConfig.tooltipFont().getFont();
+		this.interfaceFont = runeLiteConfig.interfaceFont().getFont();
 
 		final Rectangle clip = clipBounds(layer);
 		graphics.setClip(clip);

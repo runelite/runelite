@@ -16,7 +16,7 @@
       1130: LABEL103
       1129: LABEL141
       1745: LABEL161
-   jump                   LABEL170
+   jump                   LABEL174
 LABEL9:
    iconst                 10747998
    if_getwidth           
@@ -124,7 +124,7 @@ LABEL96:
    invoke                 633
    iconst                 10747926
    if_sethide            
-   jump                   LABEL170
+   jump                   LABEL174
 LABEL103:
    get_varbit             4084
    iconst                 1
@@ -168,7 +168,7 @@ LABEL134:
    invoke                 633
    iconst                 10551318
    if_sethide            
-   jump                   LABEL170
+   jump                   LABEL174
 LABEL141:
    invoke                 3297
    iconst                 1
@@ -192,16 +192,20 @@ LABEL153:
    enum                  
    2122                  
 LABEL160:
-   jump                   LABEL170
+   jump                   LABEL174
 LABEL161:
    invoke                 2581
    get_varbit             6254
    invoke                 633
+   iconst                 73
+   iconst                 73
+   iload                  1
    iconst                 39387167
+   enum                  
    if_sethide            
    invoke                 2526
    pop_int               
    clientclock           
    set_varc_int           384
-LABEL170:
+LABEL174:
    return                

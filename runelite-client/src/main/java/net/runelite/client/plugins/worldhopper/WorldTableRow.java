@@ -55,6 +55,7 @@ class WorldTableRow extends JPanel
 	private static final ImageIcon FLAG_US_EAST;
 	private static final ImageIcon FLAG_US_WEST;
 	private static final ImageIcon FLAG_GER;
+	private static final ImageIcon FLAG_BR;
 
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
@@ -78,6 +79,7 @@ class WorldTableRow extends JPanel
 		FLAG_US_EAST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_east.png"));
 		FLAG_US_WEST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_west.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
+		FLAG_BR = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_br.png"));
 	}
 
 	private static final int LOCATION_US_WEST = -73;
@@ -428,6 +430,8 @@ class WorldTableRow extends JPanel
 				return FLAG_AUS;
 			case GERMANY:
 				return FLAG_GER;
+			case BRAZIL:
+				return FLAG_BR;
 			default:
 				return null;
 		}

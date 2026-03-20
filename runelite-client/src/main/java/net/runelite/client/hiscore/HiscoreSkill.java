@@ -82,6 +82,7 @@ public enum HiscoreSkill
 	ARAXXOR("Araxxor", BOSS, SpriteID.IconBoss25x25.ARAXXOR),
 	ARTIO("Artio", BOSS, SpriteID.IconBoss25x25.ARTIO_CALLISTO),
 	BARROWS_CHESTS("Barrows Chests", BOSS, SpriteID.IconBoss25x25.BARROWS_CHESTS),
+	BRUTUS("Brutus", BOSS, SpriteID.IconBoss25x25.BRUTUS),
 	BRYOPHYTA("Bryophyta", BOSS, SpriteID.IconBoss25x25.BRYOPHYTA),
 	CALLISTO("Callisto", BOSS, SpriteID.IconBoss25x25.ARTIO_CALLISTO),
 	CALVARION("Calvar'ion", BOSS, SpriteID.IconBoss25x25.CALVARION_VETION),

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, dekvall <https://github.com/dekvall>
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,18 +24,51 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.Value;
+import net.runelite.client.util.WildcardMatcher;
 
 @Value
-@RequiredArgsConstructor
-class NamedQuantity
+class ItemList
 {
-	private final String name;
-	private final int quantity;
+	static final int NONE = 0;
+	static final int WILDCARD = 1;
+	static final int EXACT = 2;
 
-	NamedQuantity(GroundItem groundItem)
+	List<ItemThreshold> items;
+
+	ItemList(List<String> items)
 	{
-		this(groundItem.getName(), groundItem.getQuantity());
+		this.items = items.stream()
+			.map(ItemThreshold::fromName)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toList());
+	}
+
+	int matches(GroundItem item)
+	{
+		for (ItemThreshold it : items)
+		{
+			if (!it.isWildcard()
+				&& it.getName().equalsIgnoreCase(item.getName())
+				&& it.quantityHolds(item.getQuantity()))
+			{
+				return EXACT;
+			}
+		}
+
+		for (ItemThreshold it : items)
+		{
+			if (it.isWildcard()
+				&& WildcardMatcher.matches(it.getName(), item.getName())
+				&& it.quantityHolds(item.getQuantity()))
+			{
+				return WILDCARD;
+			}
+		}
+
+		return NONE;
 	}
 }

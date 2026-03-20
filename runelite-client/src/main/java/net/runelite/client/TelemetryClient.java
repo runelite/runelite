@@ -178,6 +178,7 @@ public class TelemetryClient
 			telemetry.setTotalMemory(totalPhysicalMemorySize);
 		}
 		telemetry.setCpuName(cpuName());
+		telemetry.setJxAccount(System.getenv("JX_SESSION_ID") != null && System.getenv("JX_CHARACTER_ID") != null);
 		return telemetry;
 	}
 

@@ -32,11 +32,12 @@ import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
-import net.runelite.api.ScriptID;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.gameval.AnimationID;
@@ -150,6 +151,17 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getKillCountNumber());
+	}
+
+	@Test
+	public void testDelveLootClaimed()
+	{
+		when(screenshotConfig.screenshotRewards()).thenReturn(true);
+
+		ScriptPostFired scriptPostFiredEvent = new ScriptPostFired(ScriptID.DOM_LOOT_CLAIM);
+		screenshotPlugin.onScriptPostFired(scriptPostFiredEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Doom of Mokhaiotl", "Chest Loot");
 	}
 
 	@Test
@@ -327,7 +339,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testCraftingLevel96NoInterface()
 	{
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CRAFTING_LEVEL_96_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -335,7 +347,7 @@ public class ScreenshotPluginTest
 		verify(screenshotPlugin).takeScreenshot("Crafting(96)", "Levels");
 		reset(screenshotPlugin);
 
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(0);
 
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
@@ -344,7 +356,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testStrengthLevel99NoInterface()
 	{
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(1);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", STRENGTH_LEVEL_99_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
@@ -352,7 +364,7 @@ public class ScreenshotPluginTest
 		verify(screenshotPlugin).takeScreenshot("Strength(99)", "Levels");
 		reset(screenshotPlugin);
 
-		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE)).thenReturn(0);
+		when(client.getVarbitValue(VarbitID.OPTION_LEVEL_UP_MESSAGE_DISABLED)).thenReturn(0);
 
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());

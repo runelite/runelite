@@ -41,8 +41,8 @@ rs-cache = { module = "net.runelite.rs:cache", version.ref = "cache" }
 
 flatlaf-core = { module = "net.runelite:flatlaf", version.ref = "flatlaf" }
 flatlaf-extras = { module = "net.runelite:flatlaf-extras", version.ref = "flatlaf" }
-rl-http-api = "net.runelite.arn:http-api:1.2.21"
-rl-awt = "net.runelite:rlawt:1.7"
+rl-http-api = "net.runelite.arn:http-api:1.2.22"
+rl-awt = "net.runelite:rlawt:1.8"
 rl-discord = "net.runelite:discord:1.4"
 rl-orange = "net.runelite:orange-extensions:1.1"
 
