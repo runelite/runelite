@@ -210,13 +210,14 @@ public class MiningPlugin extends Plugin
 	 */
 	private void clearExpiredRespawns()
 	{
-		if(config.showMiningRocksOverlay())
+		if (config.showMiningRocksOverlay())
 		{
 			respawns.removeIf(rockRespawn ->
 			{
 				final boolean expired = rockRespawn.isExpired();
 
-				if (expired && rockRespawn.getRock() == Rock.DAEYALT_ESSENCE) {
+				if (expired && rockRespawn.getRock() == Rock.DAEYALT_ESSENCE)
+				{
 					clearHintArrowAt(rockRespawn.getWorldPoint());
 				}
 

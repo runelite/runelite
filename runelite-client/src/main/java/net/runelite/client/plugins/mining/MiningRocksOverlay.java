@@ -123,7 +123,7 @@ class MiningRocksOverlay extends Overlay
 					break;
 			}
 
-			if(0.0 > startAngle)
+			if (0.0 > startAngle)
 			{
 				startAngle += 360.0;
 			}
