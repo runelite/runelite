@@ -28,6 +28,8 @@ package net.runelite.client.plugins.mining;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("mining")
@@ -52,5 +54,58 @@ public interface MiningConfig extends Config
 	default boolean showMiningStats()
 	{
 		return true;
+	}
+
+	@ConfigSection(
+			name = "Mining rocks overlays",
+			description = "The pie timer overlays for depleted rocks.",
+			position = 0
+	)
+	String miningRocksOverlay = "miningRocksOverlay";
+
+	@ConfigItem(
+		keyName = "showMiningRocksOverlay",
+		name = "Show mining rocks overlays",
+		description = "Configures whether to display mining rocks overlays.",
+		position = 0,
+		section = miningRocksOverlay
+	)
+	default boolean showMiningRocksOverlay()
+	{
+		return true;
+	}
+
+	enum RocksOverlayDirection
+	{
+		CLOCKWISE,
+		COUNTERCLOCKWISE,
+		BOTH
+	}
+
+	@ConfigItem(
+		keyName = "rocksOverlayDirection",
+		name = "Direction",
+		description = "Configures the direction that the rocks overlays fill.",
+		position = 1,
+		section = miningRocksOverlay
+	)
+	default RocksOverlayDirection rocksOverlayDirection()
+	{
+		return RocksOverlayDirection.COUNTERCLOCKWISE;
+	}
+
+	@Range(
+			max = 360
+	)
+	@ConfigItem(
+		keyName = "rocksOverlayStartAngle",
+		name = "Starting angle",
+		description = "Configures the starting angle of the rocks overlays.",
+		position = 2,
+		section = miningRocksOverlay
+	)
+	default int rocksOverlayStartAngle()
+	{
+		return 90;
 	}
 }

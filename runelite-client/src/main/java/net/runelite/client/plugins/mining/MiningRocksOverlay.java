@@ -69,6 +69,8 @@ class MiningRocksOverlay extends Overlay
 			return null;
 		}
 
+		MiningConfig config = plugin.getConfig();
+
 		Instant now = Instant.now();
 		for (RockRespawn rockRespawn : respawns)
 		{
@@ -104,11 +106,34 @@ class MiningRocksOverlay extends Overlay
 				pieBorderColor = DARK_GREEN;
 			}
 
+			double startAngle;
+			switch (config.rocksOverlayDirection())
+			{
+				case CLOCKWISE:
+					startAngle = config.rocksOverlayStartAngle() - (percent * 360.0);
+					break;
+				case COUNTERCLOCKWISE:
+					startAngle = config.rocksOverlayStartAngle();
+					break;
+				case BOTH:
+					startAngle = config.rocksOverlayStartAngle() - (percent * 180.0);
+					break;
+				default:
+					startAngle = 0.0;
+					break;
+			}
+
+			if (0.0 > startAngle)
+			{
+				startAngle += 360.0;
+			}
+
 			ProgressPieComponent ppc = new ProgressPieComponent();
 			ppc.setBorderColor(pieBorderColor);
 			ppc.setFill(pieFillColor);
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
+			ppc.setAngleStart(startAngle);
 			ppc.render(graphics);
 		}
 		return null;
