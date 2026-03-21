@@ -92,6 +92,7 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningRocksOverlay rocksOverlay;
 
+	@Getter(AccessLevel.PACKAGE)
 	@Inject
 	private MiningConfig config;
 
@@ -209,17 +210,23 @@ public class MiningPlugin extends Plugin
 	 */
 	private void clearExpiredRespawns()
 	{
-		respawns.removeIf(rockRespawn ->
+		if(config.showMiningRocksOverlay())
 		{
-			final boolean expired = rockRespawn.isExpired();
-
-			if (expired && rockRespawn.getRock() == Rock.DAEYALT_ESSENCE)
+			respawns.removeIf(rockRespawn ->
 			{
-				clearHintArrowAt(rockRespawn.getWorldPoint());
-			}
+				final boolean expired = rockRespawn.isExpired();
 
-			return expired;
-		});
+				if (expired && rockRespawn.getRock() == Rock.DAEYALT_ESSENCE) {
+					clearHintArrowAt(rockRespawn.getWorldPoint());
+				}
+
+				return expired;
+			});
+		}
+		else
+		{
+			respawns.clear();
+		}
 	}
 
 	public void resetSession()
@@ -284,7 +291,8 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
-		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC)
+		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC
+				&& config.showMiningRocksOverlay())
 		{
 			var args = scriptPreFired.getScriptEvent().getArguments();
 			int locCoord = (int) args[1];
