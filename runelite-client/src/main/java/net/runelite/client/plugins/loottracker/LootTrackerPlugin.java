@@ -132,6 +132,10 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class LootTrackerPlugin extends Plugin
 {
+	private long invCbSeq = 0;
+	private String invCbArmedBy = null;
+	private int invCbArmedTick = -1;
+	private int invCbArmedTs = -1;
 	private static final int MAX_DROPS = 1024;
 	private static final Duration MAX_AGE = Duration.ofDays(365L);
 	private static final int INVCHANGE_TIMEOUT = 10; // server ticks
@@ -1135,6 +1139,10 @@ public class LootTrackerPlugin extends Plugin
 
 		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
 		{
+			log.error("Tempoross Loot Fired, Message ={}", message);
+			invCbArmedBy = "TEMPOROSS";
+			invCbArmedTick = client.getTickCount();
+			invCbArmedTs = event.getTimestamp();
 			onInvChange(collectInvItems(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING)));
 			return;
 		}
@@ -1223,6 +1231,11 @@ public class LootTrackerPlugin extends Plugin
 
 		if (inventorySnapshotCb != null)
 		{
+			log.debug("FIRE invCb id={} currentTick={} diffItems={}",
+					System.identityHashCode(inventorySnapshotCb),
+					client.getTickCount(),
+					items
+			);
 			inventorySnapshotCb.accept(items, groundItems, diffr);
 		}
 
@@ -1478,6 +1491,15 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = HashMultiset.create();
 		inventorySnapshotCb = cb;
 		inventoryTimeout = timeout * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
+
+		long seq = ++invCbSeq;
+		log.debug("ARM invCb seq={} id={} tick={} ts={} by={}",
+				seq,
+				System.identityHashCode(inventorySnapshotCb),
+				invCbArmedTick,
+				invCbArmedTs,
+				invCbArmedBy
+		);
 
 		final ItemContainer itemContainer = client.getItemContainer(inv);
 		if (itemContainer != null)
