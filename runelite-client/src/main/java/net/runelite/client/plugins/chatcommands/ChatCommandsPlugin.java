@@ -2779,6 +2779,10 @@ public class ChatCommandsPlugin extends Plugin
 			case "brimstone chest":
 				return "Brimstone chest";
 
+			case "royal titans":
+			case "titans":
+				return "The Royal Titans";
+
 			case "dom":
 			case "doom":
 				return "Doom of Mokhaiotl";
