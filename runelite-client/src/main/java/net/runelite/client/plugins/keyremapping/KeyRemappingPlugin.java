@@ -167,6 +167,13 @@ public class KeyRemappingPlugin extends Plugin
 		return client.getWidget(InterfaceID.Chatmenu.OPTIONS) != null;
 	}
 
+	boolean isInputExpected()
+	{
+		return  isOptionsDialogOpen() ||
+				client.getWidget(ComponentID.DIALOG_MAKE_X_OPTIONS) != null ||
+				client.getWidget(ComponentID.DIALOG_DECANT_NAME) != null;
+	}
+
 	private boolean isHidden(int component)
 	{
 		Widget w = client.getWidget(component);

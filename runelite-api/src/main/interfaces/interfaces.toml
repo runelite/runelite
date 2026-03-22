@@ -292,6 +292,14 @@ id=193
 sprite=1
 text=2
 
+[dialog_make_x]
+id=270
+options=13
+
+[dialog_decant]
+id=582
+name=2
+
 [diary]
 id=119
 title=5
