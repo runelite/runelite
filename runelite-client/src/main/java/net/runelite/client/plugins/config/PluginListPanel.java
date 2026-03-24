@@ -275,6 +275,13 @@ class PluginListPanel extends PluginPanel
 		}
 	}
 
+	void openConfigurationPanelWithMuxer(PluginConfigurationDescriptor plugin, MultiplexingPluginPanel targetMuxer)
+	{
+		ConfigPanel panel = configPanelProvider.get();
+		panel.init(plugin);
+		targetMuxer.pushState(panel);
+	}
+
 	void openConfigurationPanel(Plugin plugin)
 	{
 		for (PluginListItem pluginListItem : pluginList)
