@@ -180,7 +180,6 @@ public enum ConstructionAction implements NamedSkillAction
 	POSH_BELL_PULL("Posh Bell-Pull", 60, 420, ItemID.POH_BELLPULL_3),
 	GILDED_FOUR_POSTER_BED("Gilded 4-Poster Bed", 60, 1330, ItemID.POH_BED_7),
 	GILDED_BENCH("Gilded Bench", 61, 1760, ItemID.POH_DINING_CHAIRS_7),
-	CAMPHOR_CRATE("Camphor Crate", 62, 50, ItemID.CAMPHOR_CRATE),
 	ASTRONOMICAL_CHART("Astronomical Chart", 63, 45, ItemID.POH_WALLCHART_2),
 	TEAK_WARDROBE("Teak Wardrobe", 63, 270, ItemID.POH_WARDROBE_5),
 	MARBLE_FIREPLACE("Marble Fireplace", 63, 500, ItemID.POH_FIREPLACE_3),
