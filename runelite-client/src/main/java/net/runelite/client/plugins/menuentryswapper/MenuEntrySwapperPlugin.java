@@ -561,7 +561,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				Menu subLeft = swapLeftClick.createSubMenu();
 				Menu subShift = swapShiftClick.createSubMenu();
 
-				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
+				for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
 				{
 					if (Strings.isNullOrEmpty(actions[actionIdx]))
 					{
@@ -1912,7 +1912,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		String[] actions = objectComposition.getActions();
 		// GAME_OBJECT_FIFTH_OPTION is never the default, even if it is the only option, because it
 		// gets depriotizied below Walk here
-		for (int i = 0; i < OBJECT_MENU_TYPES.size() - 1; ++i)
+		for (int i = 0; i < actions.length && i < OBJECT_MENU_TYPES.size() - 1; ++i)
 		{
 			if (!Strings.isNullOrEmpty(actions[i]))
 			{
