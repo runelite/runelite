@@ -1,5 +1,6 @@
 .id                       6004
 .int_arg_count            7
+.long_arg_count           0
 .obj_arg_count            1
    iload                  1
    iconst                 100000

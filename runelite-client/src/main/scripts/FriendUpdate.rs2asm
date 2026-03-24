@@ -1,5 +1,6 @@
 .id                       125
 .int_arg_count            9
+.long_arg_count           0
 .obj_arg_count            0
 ; callback "friendsChatSetText"
 ;   Fired just before the client pops the name off the stack

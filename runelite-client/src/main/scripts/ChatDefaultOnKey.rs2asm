@@ -1,5 +1,6 @@
 .id                       73
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            0
    iconst                 10616887
    if_gethide            

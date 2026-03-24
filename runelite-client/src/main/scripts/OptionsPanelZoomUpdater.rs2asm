@@ -1,5 +1,6 @@
 .id                       1049
 .int_arg_count            0
+.long_arg_count           0
 .obj_arg_count            0
 ; locals
 ; 0 resizableZoomRange
