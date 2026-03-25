@@ -83,7 +83,7 @@ public class ClientLoader implements Supplier<Client>
 	{
 		try
 		{
-			SplashScreen.stage(0, null, "Fetching applet viewer config");
+			SplashScreen.stage(0, null, "Fetching client config");
 			RSConfig config = downloadConfig();
 
 			SplashScreen.stage(.3, "Starting", "Starting Old School RuneScape");
