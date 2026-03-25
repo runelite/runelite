@@ -78,14 +78,13 @@ class CompactBoostsOverlay extends Overlay
 			return null;
 		}
 
-		curY = maxX = maxIconWidth = 0;
+		curY = maxX = 0;
+		maxIconWidth = Math.max(BUFFED.getWidth(), DEBUFFED.getWidth());
 
 		for (Skill skill : boostedSkills) {
 			BufferedImage img = skillIconManager.getSkillImage(skill, true);
 			maxIconWidth = Math.max(maxIconWidth, img.getWidth());
 		}
-		maxIconWidth = Math.max(maxIconWidth, BUFFED.getWidth());
-		maxIconWidth = Math.max(maxIconWidth, DEBUFFED.getWidth());
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 		final int fontHeight = fontMetrics.getHeight();
