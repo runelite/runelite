@@ -81,7 +81,8 @@ class CompactBoostsOverlay extends Overlay
 		curY = maxX = 0;
 		maxIconWidth = Math.max(BUFFED.getWidth(), DEBUFFED.getWidth());
 
-		for (Skill skill : boostedSkills) {
+		for (Skill skill : boostedSkills)
+		{
 			BufferedImage img = skillIconManager.getSkillImage(skill, true);
 			maxIconWidth = Math.max(maxIconWidth, img.getWidth());
 		}
