@@ -31,6 +31,7 @@ import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
@@ -92,6 +93,7 @@ public class OverlayRenderer extends MouseAdapter
 
 	private final Client client;
 	private final OverlayManager overlayManager;
+	private final OverlayAnchorManager overlayAnchorManager;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ClientUI clientUI;
 	private final EventBus eventBus;
@@ -124,6 +126,7 @@ public class OverlayRenderer extends MouseAdapter
 	private OverlayRenderer(
 		final Client client,
 		final OverlayManager overlayManager,
+		final OverlayAnchorManager overlayAnchorManager,
 		final RuneLiteConfig runeLiteConfig,
 		final MouseManager mouseManager,
 		final KeyManager keyManager,
@@ -134,6 +137,7 @@ public class OverlayRenderer extends MouseAdapter
 	{
 		this.client = client;
 		this.overlayManager = overlayManager;
+		this.overlayAnchorManager = overlayAnchorManager;
 		this.runeLiteConfig = runeLiteConfig;
 		this.clientUI = clientUI;
 		this.eventBus = eventBus;
@@ -283,6 +287,12 @@ public class OverlayRenderer extends MouseAdapter
 			graphics.setColor(previous);
 		}
 
+		// Draw anchors when in overlay managing mode OR when anchor management panel is open
+		if ((inOverlayManagingMode || overlayAnchorManager.isManagementModeActive()) && layer == OverlayLayer.UNDER_WIDGETS)
+		{
+			renderAnchors(graphics);
+		}
+
 		// Save graphics2d properties so we can restore them later
 		final AffineTransform transform = graphics.getTransform();
 		final Stroke stroke = graphics.getStroke();
@@ -308,8 +318,14 @@ public class OverlayRenderer extends MouseAdapter
 			Point location;
 			Rectangle snapCorner = null;
 
+			// Check if overlay is assigned to an anchor - anchor positioning takes priority
+			Point anchorPosition = overlayAnchorManager.calculateOverlayPosition(overlay);
+			if (anchorPosition != null)
+			{
+				location = anchorPosition;
+			}
 			// If the final position is not modified, layout it
-			if (overlayPosition != OverlayPosition.DYNAMIC && overlayPosition != OverlayPosition.TOOLTIP
+			else if (overlayPosition != OverlayPosition.DYNAMIC && overlayPosition != OverlayPosition.TOOLTIP
 				&& overlayPosition != OverlayPosition.DETACHED && preferredLocation == null)
 			{
 				snapCorner = snapCorners.forPosition(overlayPosition);
@@ -389,6 +405,7 @@ public class OverlayRenderer extends MouseAdapter
 					overlay.onMouseOver();
 				}
 			}
+
 		}
 	}
 
@@ -398,13 +415,52 @@ public class OverlayRenderer extends MouseAdapter
 		final Point mousePoint = mouseEvent.getPoint();
 		mousePosition.setLocation(mousePoint);
 
+		if (!inOverlayManagingMode && !overlayAnchorManager.isManagementModeActive())
+		{
+			return mouseEvent;
+		}
+
+		// PRIORITY: Overlays take priority over anchors for mouse interaction
+		// This allows users to drag overlays out of anchors
+		// Use real-time bounds check to find overlay at click point - this is independent of render cycle
+		// Fall back to curHoveredOverlay/lastHoveredOverlay if real-time check fails
+		Overlay overlayAtPoint = findOverlayAt(mousePoint);
+		if (overlayAtPoint != null)
+		{
+			currentManagedOverlay = overlayAtPoint;
+		}
+		else
+		{
+			currentManagedOverlay = curHoveredOverlay != null ? curHoveredOverlay : lastHoveredOverlay;
+		}
+
+		// If there's NO overlay under the mouse, check for anchor interaction
+		// Note: We check for overlay presence regardless of whether Alt is held or panel is open
+		boolean hasOverlayUnderMouse = currentManagedOverlay != null && currentManagedOverlay.isMovable();
+
+		if (!hasOverlayUnderMouse && SwingUtilities.isLeftMouseButton(mouseEvent))
+		{
+			// No overlay under mouse - check if we've clicked on an anchor
+			for (OverlayAnchor anchor : overlayAnchorManager.getAnchors())
+			{
+				Rectangle bounds = anchor.getBounds();
+				if (bounds.contains(mousePoint) || overlayAnchorManager.isNearResizeHandle(bounds, mousePoint))
+				{
+					int direction = overlayAnchorManager.getResizeDirectionAt(bounds, mousePoint);
+					overlayAnchorManager.startAnchorDrag(anchor, mousePoint, direction);
+					mouseEvent.consume();
+					return mouseEvent;
+				}
+			}
+		}
+
+		// Handle overlay interaction - requires Alt to be held (inOverlayManagingMode)
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
 
 		// See if we've clicked on an overlay
-		currentManagedOverlay = lastHoveredOverlay;
 		if (currentManagedOverlay == null || !currentManagedOverlay.isMovable())
 		{
 			return mouseEvent;
@@ -419,14 +475,48 @@ public class OverlayRenderer extends MouseAdapter
 		}
 		else if (SwingUtilities.isLeftMouseButton(mouseEvent))
 		{
+			// Use preferredLocation if available (more accurate for anchored overlays)
+			// Fall back to bounds if preferredLocation is not set
+			Rectangle overlayBounds = currentManagedOverlay.getBounds();
+			Point overlayPos = currentManagedOverlay.getPreferredLocation();
+			if (overlayPos == null && overlayBounds != null)
+			{
+				overlayPos = overlayBounds.getLocation();
+			}
+			if (overlayPos == null)
+			{
+				overlayPos = new Point(0, 0);
+			}
+
 			final Point offset = new Point(mousePoint.x, mousePoint.y);
-			offset.translate(-currentManagedOverlay.getBounds().x, -currentManagedOverlay.getBounds().y);
+			offset.translate(-overlayPos.x, -overlayPos.y);
 			overlayOffset.setLocation(offset);
 
-			inOverlayResizingMode = currentManagedOverlay != null && currentManagedOverlay.isResizable() && clientUI.getCurrentCursor() != clientUI.getDefaultCursor();
+			// Only enter resize mode if the cursor is actually a resize cursor (not just non-default)
+			// This fixes the bug where hovering over an anchor sets MOVE_CURSOR, which was incorrectly
+			// triggering resize mode when clicking on an overlay
+			Cursor currentCursor = clientUI.getCurrentCursor();
+			boolean isResizeCursor = currentCursor != null && currentCursor.getType() >= Cursor.N_RESIZE_CURSOR
+				&& currentCursor.getType() <= Cursor.NE_RESIZE_CURSOR;
+			inOverlayResizingMode = currentManagedOverlay != null && currentManagedOverlay.isResizable() && isResizeCursor;
 			inOverlayDraggingMode = !inOverlayResizingMode;
 			startedMovingOverlay = true;
-			currentManagedBounds = new Rectangle(currentManagedOverlay.getBounds());
+
+			// Use preferredLocation for bounds if available
+			if (currentManagedOverlay.getPreferredLocation() != null && overlayBounds != null)
+			{
+				currentManagedBounds = new Rectangle(overlayPos.x, overlayPos.y, overlayBounds.width, overlayBounds.height);
+			}
+			else
+			{
+				currentManagedBounds = new Rectangle(overlayBounds);
+			}
+
+			// Tell anchor manager which overlay is being dragged so it won't reposition it
+			if (inOverlayDraggingMode)
+			{
+				overlayAnchorManager.setCurrentlyDraggedOverlay(currentManagedOverlay);
+			}
 		}
 		else
 		{
@@ -443,57 +533,91 @@ public class OverlayRenderer extends MouseAdapter
 		final Point mousePoint = mouseEvent.getPoint();
 		mousePosition.setLocation(mousePoint);
 
-		if (!inOverlayManagingMode)
+		if (!inOverlayManagingMode && !overlayAnchorManager.isManagementModeActive())
 		{
 			return mouseEvent;
 		}
 
+		// PRIORITY: Check for overlay under mouse FIRST (overlays take priority over anchors)
+		// Use curHoveredOverlay if available (most current), fall back to lastHoveredOverlay
+		// This prevents state corruption when mouse moves from anchor to overlay
 		if (!inOverlayResizingMode && !inOverlayDraggingMode)
 		{
-			currentManagedOverlay = lastHoveredOverlay;
+			currentManagedOverlay = curHoveredOverlay != null ? curHoveredOverlay : lastHoveredOverlay;
 		}
 
-		if (currentManagedOverlay == null || !currentManagedOverlay.isResizable())
+		// If there's an overlay under the mouse, handle overlay cursor
+		if (currentManagedOverlay != null && currentManagedOverlay.isMovable() && inOverlayManagingMode)
 		{
-			clientUI.setCursor(clientUI.getDefaultCursor());
+			if (currentManagedOverlay.isResizable())
+			{
+				final Rectangle toleranceRect = new Rectangle(currentManagedOverlay.getBounds());
+				toleranceRect.grow(-OVERLAY_RESIZE_TOLERANCE, -OVERLAY_RESIZE_TOLERANCE);
+				final int outcode = toleranceRect.outcode(mousePoint);
+
+				Cursor cursor = null;
+				switch (outcode)
+				{
+					case Rectangle.OUT_TOP:
+						cursor = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_TOP | Rectangle.OUT_LEFT:
+						cursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_LEFT:
+						cursor = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_LEFT | Rectangle.OUT_BOTTOM:
+						cursor = Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_BOTTOM:
+						cursor = Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_BOTTOM | Rectangle.OUT_RIGHT:
+						cursor = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_RIGHT:
+						cursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+						break;
+					case Rectangle.OUT_RIGHT | Rectangle.OUT_TOP:
+						cursor = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
+						break;
+				}
+
+				if (cursor != null)
+				{
+					clientUI.setCursor(cursor);
+					return mouseEvent;
+				}
+			}
+
+			// Overlay is movable but not resizable, or not near edge - show move cursor
+			clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			return mouseEvent;
 		}
 
-		final Rectangle toleranceRect = new Rectangle(currentManagedOverlay.getBounds());
-		toleranceRect.grow(-OVERLAY_RESIZE_TOLERANCE, -OVERLAY_RESIZE_TOLERANCE);
-		final int outcode = toleranceRect.outcode(mouseEvent.getPoint());
-
-		switch (outcode)
+		// No overlay under mouse - check for anchor resize cursor
+		if (inOverlayManagingMode || overlayAnchorManager.isManagementModeActive())
 		{
-			case Rectangle.OUT_TOP:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_TOP | Rectangle.OUT_LEFT:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_LEFT:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_LEFT | Rectangle.OUT_BOTTOM:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_BOTTOM:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_BOTTOM | Rectangle.OUT_RIGHT:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_RIGHT:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-				break;
-			case Rectangle.OUT_RIGHT | Rectangle.OUT_TOP:
-				clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR));
-				break;
-			default:
-				// center
-				clientUI.setCursor(clientUI.getDefaultCursor());
+			for (OverlayAnchor anchor : overlayAnchorManager.getAnchors())
+			{
+				Rectangle bounds = anchor.getBounds();
+				if (overlayAnchorManager.isNearResizeHandle(bounds, mousePoint))
+				{
+					int dir = overlayAnchorManager.getResizeDirectionAt(bounds, mousePoint);
+					clientUI.setCursor(getCursorForAnchorDirection(dir));
+					return mouseEvent;
+				}
+				else if (bounds.contains(mousePoint))
+				{
+					// Inside anchor but not near resize handle - show move cursor for anchor
+					clientUI.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+					return mouseEvent;
+				}
+			}
 		}
 
+		clientUI.setCursor(clientUI.getDefaultCursor());
 		return mouseEvent;
 	}
 
@@ -503,8 +627,24 @@ public class OverlayRenderer extends MouseAdapter
 		final Point p = mouseEvent.getPoint();
 		mousePosition.setLocation(p);
 
+		// Handle anchor dragging (works when panel is open OR Alt is held)
+		if (overlayAnchorManager.isAnchorDragging())
+		{
+			overlayAnchorManager.updateAnchorDrag(p);
+			mouseEvent.consume();
+			return mouseEvent;
+		}
+
 		if (!inOverlayManagingMode)
 		{
+			return mouseEvent;
+		}
+
+		// Handle anchor dragging (legacy check)
+		if (overlayAnchorManager.isAnchorDragging())
+		{
+			overlayAnchorManager.updateAnchorDrag(p);
+			mouseEvent.consume();
 			return mouseEvent;
 		}
 
@@ -622,6 +762,9 @@ public class OverlayRenderer extends MouseAdapter
 			overlayPosition = clampOverlayLocation(overlayPosition.x, overlayPosition.y, overlayBounds.width, overlayBounds.height, currentManagedOverlay);
 			currentManagedOverlay.setPreferredPosition(null);
 			currentManagedOverlay.setPreferredLocation(overlayPosition);
+
+			// Check if overlay should be captured by or released from an anchor
+			overlayAnchorManager.onOverlayDragged(currentManagedOverlay, p);
 		}
 		else
 		{
@@ -643,6 +786,15 @@ public class OverlayRenderer extends MouseAdapter
 	{
 		final Point mousePoint = mouseEvent.getPoint();
 		mousePosition.setLocation(mousePoint);
+
+		// Handle anchor drag release
+		if (overlayAnchorManager.isAnchorDragging())
+		{
+			overlayAnchorManager.endAnchorDrag();
+			clientUI.setCursor(clientUI.getDefaultCursor());
+			mouseEvent.consume();
+			return mouseEvent;
+		}
 
 		if (!inOverlayManagingMode || currentManagedOverlay == null || (!inOverlayDraggingMode && !inOverlayResizingMode))
 		{
@@ -692,6 +844,15 @@ public class OverlayRenderer extends MouseAdapter
 				.runeLiteFormattedMessage("You've repositioned one of the in-game interfaces. Hold " + runeLiteConfig.dragHotkey() +
 					" and drag to reposition the interface again, or " + runeLiteConfig.dragHotkey() + " and right-click to reset.")
 				.build());
+		}
+
+		// Check if overlay was dropped into an anchor and snap to alignment
+		if (inOverlayDraggingMode)
+		{
+			// Clear the dragged overlay reference BEFORE snapping so layoutOverlaysInAnchor doesn't skip it
+			overlayAnchorManager.setCurrentlyDraggedOverlay(null);
+			// This will snap the overlay to the anchor's alignment if it's inside one
+			overlayAnchorManager.onOverlayDragEnd(currentManagedOverlay, mousePoint);
 		}
 
 		overlayManager.saveOverlay(currentManagedOverlay);
@@ -794,6 +955,31 @@ public class OverlayRenderer extends MouseAdapter
 		dragTargetOverlay = null;
 		currentManagedBounds = null;
 		clientUI.setCursor(clientUI.getDefaultCursor());
+
+		// Clear the dragged overlay reference so anchor manager can reposition it again
+		overlayAnchorManager.setCurrentlyDraggedOverlay(null);
+	}
+
+	/**
+	 * Find an overlay at the given point by checking bounds directly.
+	 * This is used for real-time detection during mouse events, independent of render cycle.
+	 */
+	private Overlay findOverlayAt(Point point)
+	{
+		// Check overlays in reverse order (top-most first, matching render order)
+		for (int i = overlayManager.getOverlays().size() - 1; i >= 0; i--)
+		{
+			Overlay overlay = overlayManager.getOverlays().get(i);
+			if (overlay.isMovable())
+			{
+				Rectangle bounds = overlay.getBounds();
+				if (bounds != null && bounds.width > 0 && bounds.height > 0 && bounds.contains(point))
+				{
+					return overlay;
+				}
+			}
+		}
+		return null;
 	}
 
 	private boolean shouldInvalidateBounds()
@@ -937,5 +1123,93 @@ public class OverlayRenderer extends MouseAdapter
 			Ints.constrainToRange(overlayY, py,
 				Math.max(py, py + ph - overlayHeight))
 		);
+	}
+
+	private void renderAnchors(Graphics2D graphics)
+	{
+		final Color ANCHOR_FILL_COLOR = new Color(0, 255, 255, 30);
+		final Color ANCHOR_BORDER_COLOR = new Color(0, 255, 255, 150);
+		final Color ANCHOR_ACTIVE_COLOR = new Color(0, 255, 0, 100);
+		final Color ANCHOR_DRAGGING_COLOR = new Color(255, 255, 0, 100);
+
+		// Get canvas bounds to clip anchors
+		final Rectangle canvasBounds = new Rectangle(client.getRealDimensions());
+
+		for (OverlayAnchor anchor : overlayAnchorManager.getAnchors())
+		{
+			Rectangle bounds = anchor.getBounds();
+
+			// Skip anchors that are completely outside the canvas
+			if (!bounds.intersects(canvasBounds))
+			{
+				continue;
+			}
+
+			// Check if this anchor is being dragged or hovered
+			boolean isDragging = overlayAnchorManager.getDraggedAnchor() == anchor;
+			boolean isHovered = bounds.contains(mousePosition) || overlayAnchorManager.isNearResizeHandle(bounds, mousePosition);
+
+			// Fill
+			if (isDragging)
+			{
+				graphics.setColor(ANCHOR_DRAGGING_COLOR);
+			}
+			else if (isHovered)
+			{
+				graphics.setColor(ANCHOR_ACTIVE_COLOR);
+			}
+			else
+			{
+				graphics.setColor(ANCHOR_FILL_COLOR);
+			}
+			graphics.fill(bounds);
+
+			// Border
+			graphics.setColor(ANCHOR_BORDER_COLOR);
+			graphics.draw(bounds);
+
+			// Draw anchor name
+			graphics.setColor(Color.WHITE);
+			FontMetrics fm = graphics.getFontMetrics();
+			String name = anchor.getName();
+			int textX = bounds.x + (bounds.width - fm.stringWidth(name)) / 2;
+			int textY = bounds.y + fm.getAscent() + 2;
+			graphics.drawString(name, textX, textY);
+
+			// Draw overlay count
+			int overlayCount = overlayAnchorManager.getOverlaysForAnchor(anchor).size();
+			if (overlayCount > 0)
+			{
+				String countText = overlayCount + " overlay" + (overlayCount > 1 ? "s" : "");
+				int countX = bounds.x + (bounds.width - fm.stringWidth(countText)) / 2;
+				int countY = bounds.y + bounds.height - 5;
+				graphics.drawString(countText, countX, countY);
+			}
+		}
+	}
+
+	private Cursor getCursorForAnchorDirection(int dir)
+	{
+		switch (dir)
+		{
+			case OverlayAnchorManager.NORTH:
+				return Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+			case OverlayAnchorManager.SOUTH:
+				return Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
+			case OverlayAnchorManager.EAST:
+				return Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+			case OverlayAnchorManager.WEST:
+				return Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
+			case OverlayAnchorManager.NORTH | OverlayAnchorManager.WEST:
+				return Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
+			case OverlayAnchorManager.NORTH | OverlayAnchorManager.EAST:
+				return Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
+			case OverlayAnchorManager.SOUTH | OverlayAnchorManager.WEST:
+				return Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
+			case OverlayAnchorManager.SOUTH | OverlayAnchorManager.EAST:
+				return Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+			default:
+				return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+		}
 	}
 }
