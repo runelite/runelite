@@ -43,14 +43,15 @@ public class ProgressPieComponent implements RenderableEntity
 	private Stroke stroke = new BasicStroke(1);
 	private double progress;
 	private Point position;
+	private double angleStart = 90.0;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		//Construct the arc
 		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
-		arc.setAngleExtent(progress * 360);
+		arc.setAngleStart(angleStart);
+		arc.setAngleExtent(progress * 360.0);
 		arc.setFrame(position.getX() - diameter / 2, position.getY() - diameter / 2, diameter, diameter);
 
 		//Draw the inside of the arc
