@@ -232,7 +232,8 @@ public class PartyPlugin extends Plugin
 		chatCommandManager.registerCommand(INVITE_COMMAND_SHORT_STRING, this::partyInviteCommand);
 	}
 
-	void partyInviteCommand(ChatMessage chatMessage, String message) {
+	void partyInviteCommand(ChatMessage chatMessage, String message)
+	{
 		var isShorthand = !message.toLowerCase().startsWith(INVITE_COMMAND_STRING);
 		var commandLength = (isShorthand ? INVITE_COMMAND_SHORT_STRING : INVITE_COMMAND_STRING).length();
 		if (message.length() <= commandLength)
@@ -285,7 +286,8 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded) {
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
 		int groupId = WidgetUtil.componentToInterface(menuEntryAdded.getActionParam1());
 		var option = menuEntryAdded.getOption();
 		if (!INVITE_AFTER_OPTIONS.contains(option))
