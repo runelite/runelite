@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.party;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -47,20 +48,28 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
+import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
@@ -102,6 +111,16 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class PartyPlugin extends Plugin
 {
+	private static final String INVITE_COMMAND_STRING = "!invite";
+	private static final String INVITE_COMMAND_SHORT_STRING = "!inv";
+	private static final ImmutableList<String> INVITE_AFTER_OPTIONS =
+		ImmutableList.of(
+			"Message",
+			"Add ignore",
+			"Remove friend",
+			"Delete"
+		);
+
 	@Inject
 	private Client client;
 
@@ -125,6 +144,9 @@ public class PartyPlugin extends Plugin
 
 	@Inject
 	private PartyConfig config;
+
+	@Inject
+	private ChatCommandManager chatCommandManager;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -155,6 +177,7 @@ public class PartyPlugin extends Plugin
 
 	private WorldPoint lastLocation;
 	private StatusUpdate lastStatus;
+	private final Map<String, String> latestInviteByPlayer = new HashMap<>();
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
 	{
@@ -204,6 +227,99 @@ public class PartyPlugin extends Plugin
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
 		SwingUtilities.invokeLater(this::requestSync);
+
+		chatCommandManager.registerCommand(INVITE_COMMAND_STRING, this::partyInviteCommand);
+		chatCommandManager.registerCommand(INVITE_COMMAND_SHORT_STRING, this::partyInviteCommand);
+	}
+
+	void partyInviteCommand(ChatMessage chatMessage, String message) {
+		var isShorthand = !message.toLowerCase().startsWith(INVITE_COMMAND_STRING);
+		var commandLength = (isShorthand ? INVITE_COMMAND_SHORT_STRING : INVITE_COMMAND_STRING).length();
+		if (message.length() <= commandLength)
+		{
+			return;
+		}
+
+		var type = chatMessage.getType();
+		var sender = Text.toJagexName(Text.removeTags(chatMessage.getName()));
+		var ownName = client.getLocalPlayer().getName();
+		if (type == ChatMessageType.PRIVATECHATOUT)
+		{
+			sender = ownName;
+		}
+		var passphrase = message.substring(commandLength + 1);
+
+		if (Objects.equals(sender, ownName))
+		{
+			if (!Objects.equals(party.getPartyPassphrase(), passphrase))
+			{
+				party.changeParty(passphrase);
+			}
+
+			String response = new ChatMessageBuilder()
+					.append("Invited people to join: ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(passphrase)
+					.append(ChatColorType.NORMAL)
+					.append("...")
+					.build();
+
+			chatMessage.getMessageNode().setRuneLiteFormatMessage(response);
+			client.refreshChat();
+
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+				.append("Party invite: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(passphrase)
+				.append(ChatColorType.NORMAL)
+				.append(" (right-click to join)")
+				.build();
+
+		chatMessage.getMessageNode().setRuneLiteFormatMessage(response);
+		client.refreshChat();
+
+		latestInviteByPlayer.put(sender, passphrase);
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded) {
+		int groupId = WidgetUtil.componentToInterface(menuEntryAdded.getActionParam1());
+		var option = menuEntryAdded.getOption();
+		if (!INVITE_AFTER_OPTIONS.contains(option))
+		{
+			return;
+		}
+
+		boolean addJoinParty =
+			groupId == InterfaceID.FRIENDS
+					|| groupId == InterfaceID.CHATCHANNEL_CURRENT
+					|| groupId == InterfaceID.CLANS_SIDEPANEL
+					|| groupId == InterfaceID.CLANS_GUEST_SIDEPANEL
+					|| groupId == InterfaceID.CHATBOX
+					|| groupId == InterfaceID.RAIDS_SIDEPANEL
+					|| groupId == InterfaceID.PM_CHAT
+					|| groupId == InterfaceID.IGNORE;
+		if (!addJoinParty)
+		{
+			return;
+		}
+
+		var name = Text.toJagexName(Text.removeTags(menuEntryAdded.getTarget()));
+		var passphrase = latestInviteByPlayer.get(name);
+		if (passphrase == null || passphrase.isEmpty())
+		{
+			return;
+		}
+
+		client.getMenu().createMenuEntry(1)
+				.setTarget(menuEntryAdded.getTarget())
+				.setOption("Join party")
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(menuEntryAdded.getIdentifier())
+				.onClick(e -> party.changeParty(passphrase));
 	}
 
 	@Override
@@ -225,6 +341,10 @@ public class PartyPlugin extends Plugin
 		wsClient.unregisterMessage(StatusUpdate.class);
 		lastLocation = null;
 		lastStatus = null;
+
+		chatCommandManager.unregisterCommand(INVITE_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(INVITE_COMMAND_SHORT_STRING);
+		latestInviteByPlayer.clear();
 	}
 
 	@Provides
