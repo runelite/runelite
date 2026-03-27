@@ -357,6 +357,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("pick", "pick-lots", config::swapPick);
 
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
+		swap("view offer", "modify offer", config::swapGEModify);
 
 		swap("value", "buy 1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
 		swap("value", "buy 5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
