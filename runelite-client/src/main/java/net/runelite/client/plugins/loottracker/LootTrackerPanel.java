@@ -95,6 +95,9 @@ class LootTrackerPanel extends PluginPanel
 	private static final String RESET_ONE_WARNING_TEXT =
 		"This will delete one kill.";
 
+	private static final String RESET_OTHERS_WARNING_TEXT =
+			"This will permanently delete all loot except \"%s\".";
+
 	// When there is no loot, display this
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
@@ -635,6 +638,48 @@ class LootTrackerPanel extends PluginPanel
 		});
 
 		popupMenu.add(reset);
+
+		// Create reset others menu (grouped loot only)
+		final JMenuItem resetOthers = new JMenuItem("Reset others");
+		resetOthers.addActionListener(e ->
+		{
+			final int result = JOptionPane.showOptionDialog(box, String.format(RESET_OTHERS_WARNING_TEXT, box.getId()),
+					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, new String[]{"Yes", "No"}, "No");
+
+			if (result != JOptionPane.YES_OPTION)
+			{
+				return;
+			}
+
+			Predicate<LootTrackerRecord> match = r -> !r.matches(record.getTitle(), record.getType());
+
+			sessionRecords.removeIf(match);
+			aggregateRecords.removeIf(match);
+
+			List<LootTrackerBox> removedBoxes = boxes
+					.stream()
+					.filter((b) -> !b.getLootRecordType().equals(box.getLootRecordType()) && !b.getId().equals(box.getId()))
+					.collect(Collectors.toList());
+
+			boxes.clear();
+			boxes.add(box);
+			updateOverall();
+			logsContainer.removeAll();
+			logsContainer.add(box);
+			logsContainer.revalidate();
+
+			// Without loot being grouped we have no way to identify single kills to be deleted
+			if (groupLoot)
+			{
+				removedBoxes.forEach((b) -> plugin.removeLootConfig(b.getLootRecordType(), b.getId()));
+			}
+		});
+
+		if (groupLoot)
+		{
+			popupMenu.add(resetOthers);
+		}
 
 		// Create details menu
 		final JMenuItem details = new JMenuItem("View details");
