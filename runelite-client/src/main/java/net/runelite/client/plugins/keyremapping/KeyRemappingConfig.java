@@ -31,6 +31,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("keyremapping")
 public interface KeyRemappingConfig extends Config
@@ -297,5 +298,16 @@ public interface KeyRemappingConfig extends Config
 	default ModifierlessKeybind control()
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "ctrlM",
+		name = "World map",
+		description = "The key which will replace Ctrl+M."
+	)
+	default Keybind ctrlM()
+	{
+		return new Keybind(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
 	}
 }
