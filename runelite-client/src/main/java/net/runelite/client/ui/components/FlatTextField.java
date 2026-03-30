@@ -102,11 +102,9 @@ public class FlatTextField extends JPanel
 	}
 
 	/**
-     * Adds platform-native text editing shortcuts so RuneLite fields behave like
-     * standard desktop text inputs.
-     * Note: if <a href="https://github.com/JFormDesigner/FlatLaf/issues/1095">FlatLaf Issue 1095</a> merges
-	 * we could remove this code and bump the FlatLaf version.
-     */
+	 * Adds platform-native text editing shortcuts so RuneLite fields behave like
+	 * standard desktop text inputs.
+	 */
 	private void setupNativeKeybindings()
 	{
 		if (OSType.getOSType() != OSType.MacOS)
