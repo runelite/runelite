@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import static net.runelite.api.HitsplatID.DAMAGE_ME;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -260,16 +261,20 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				Hitsplat secondHit = hitsplats.get(hitsplats.size() - 1);
 				Hitsplat firstHit = hitsplats.get(hitsplats.size() - 2);
-				boolean bothHitsNonZero = firstHit.getHitsplatType() == DAMAGE_ME  && secondHit.getHitsplatType() == DAMAGE_ME;
-				Hitsplat hit;
+				boolean firstIsDmg = firstHit.getHitsplatType() == HitsplatID.DAMAGE_ME;
+				boolean secondIsDmg = secondHit.getHitsplatType() == HitsplatID.DAMAGE_ME;
 
-				if (!bothHitsNonZero)
+				if (!firstIsDmg && !secondIsDmg)
 				{
 					return;
 				}
-				else
+
+				Hitsplat hit = secondHit.getAmount() >= firstHit.getAmount() ? secondHit : firstHit;
+
+				// ignore hits in thrall range when only one hitsplat is damage
+				if (!(firstIsDmg && secondIsDmg) && hit.getAmount() <= 3)
 				{
-					hit = secondHit.getAmount() >= firstHit.getAmount() ? secondHit : firstHit;
+					return;
 				}
 
 				specialAttackHit(specialWeapon, hit.getAmount(), lastSpecTarget);
