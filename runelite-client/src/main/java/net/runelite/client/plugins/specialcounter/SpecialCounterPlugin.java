@@ -77,6 +77,7 @@ import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.EYE_OF_AYAK;
 import static net.runelite.client.plugins.specialcounter.SpecialWeapon.TONALZTICS_OF_RALOS;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -252,6 +253,35 @@ public class SpecialCounterPlugin extends Plugin
 				int hit = Math.min(last.getAmount(), 1) + Math.min(secondToLast.getAmount(), 1);
 
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
+			}
+			else if (specialWeapon == EYE_OF_AYAK && hitsplats.size() > 1)
+			{
+				Hitsplat secondHit = hitsplats.get(hitsplats.size() - 1);
+				Hitsplat firstHit = hitsplats.get(hitsplats.size() - 2);
+				int secondHitAmount = secondHit.getAmount();
+				int firstHitAmount = firstHit.getAmount();
+
+				if (firstHitAmount == 0 && secondHitAmount == 0)
+				{
+					return;
+				}
+
+				Hitsplat hit;
+				if (firstHitAmount > 0 && secondHitAmount > 0)
+				{
+					hit = secondHit.getAmount() >= firstHit.getAmount() ? secondHit : firstHit;
+				}
+				else
+				{
+					hit = secondHitAmount > 0 ? secondHit : firstHit;
+					// 3 is the  thrall max hit
+					if (hit.getAmount() <= 3)
+					{
+						return;
+					}
+				}
+
+				specialAttackHit(specialWeapon, hit.getAmount(), lastSpecTarget);
 			}
 			else
 			{
