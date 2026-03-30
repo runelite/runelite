@@ -44,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import static net.runelite.api.HitsplatID.DAMAGE_ME;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
@@ -51,6 +52,7 @@ import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldView;
+import net.runelite.api.annotations.HitsplatType;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -258,27 +260,16 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				Hitsplat secondHit = hitsplats.get(hitsplats.size() - 1);
 				Hitsplat firstHit = hitsplats.get(hitsplats.size() - 2);
-				int secondHitAmount = secondHit.getAmount();
-				int firstHitAmount = firstHit.getAmount();
+				boolean bothHitsNonZero = firstHit.getHitsplatType() == DAMAGE_ME  && secondHit.getHitsplatType() == DAMAGE_ME;
+				Hitsplat hit;
 
-				if (firstHitAmount == 0 && secondHitAmount == 0)
+				if (!bothHitsNonZero)
 				{
 					return;
 				}
-
-				Hitsplat hit;
-				if (firstHitAmount > 0 && secondHitAmount > 0)
-				{
-					hit = secondHit.getAmount() >= firstHit.getAmount() ? secondHit : firstHit;
-				}
 				else
 				{
-					hit = secondHitAmount > 0 ? secondHit : firstHit;
-					// 3 is the  thrall max hit
-					if (hit.getAmount() <= 3)
-					{
-						return;
-					}
+					hit = secondHit.getAmount() >= firstHit.getAmount() ? secondHit : firstHit;
 				}
 
 				specialAttackHit(specialWeapon, hit.getAmount(), lastSpecTarget);
