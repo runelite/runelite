@@ -1138,9 +1138,8 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
+		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING) && chatType == ChatMessageType.SPAM)
 		{
-			log.error("Tempoross Loot Fired, Message ={}", message);
 			invCbArmedBy = "TEMPOROSS";
 			invCbArmedTick = client.getTickCount();
 			invCbArmedTs = event.getTimestamp();
@@ -1442,6 +1441,7 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = null;
 		inventorySnapshotCb = null;
 		inventoryTimeout = 0;
+		lootRollCount = 0;
 	}
 
 	@FunctionalInterface
@@ -1464,7 +1464,7 @@ public class LootTrackerPlugin extends Plugin
 	private InvChangeCallback collectInvItems(LootRecordType type, String event, Object metadata, int amount)
 	{
 		return (invItems, groundItems, removedItems) ->
-				addLoot(event, -1, type, metadata, invItems, amount);
+			addLoot(event, -1, type, metadata, invItems, amount);
 	}
 
 	private InvChangeCallback collectInvAndGroundItems(LootRecordType type, String event)
@@ -1499,14 +1499,14 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = HashMultiset.create();
 		inventorySnapshotCb = cb;
 		inventoryTimeout = timeout * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
-		lootRollCount = 0;
 		long seq = ++invCbSeq;
-		log.debug("ARM invCb seq={} id={} tick={} ts={} by={}",
+		log.debug("ARM invCb seq={} id={} tick={} ts={} by={} lootRollCount={}",
 				seq,
 				System.identityHashCode(inventorySnapshotCb),
 				invCbArmedTick,
 				invCbArmedTs,
-				invCbArmedBy
+				invCbArmedBy,
+				lootRollCount
 		);
 
 		final ItemContainer itemContainer = client.getItemContainer(inv);
