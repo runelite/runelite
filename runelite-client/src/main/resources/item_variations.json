@@ -13119,6 +13119,34 @@
     32197,
     32198
   ],
+  "bronze cannon": [
+    32199,
+    33204
+  ],
+  "iron cannon": [
+    32200,
+    33205
+  ],
+  "steel cannon": [
+    32201,
+    33206
+  ],
+  "mithril cannon": [
+    32202,
+    33207
+  ],
+  "adamant cannon": [
+    32203,
+    33208
+  ],
+  "rune cannon": [
+    32204,
+    33209
+  ],
+  "dragon cannon": [
+    32205,
+    33210
+  ],
   "hull wood": [
     32239,
     32240,
