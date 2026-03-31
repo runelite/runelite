@@ -309,6 +309,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String TEMPOROSS_CASKET_EVENT = "Casket (Tempoross)";
 	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
 	private static final int TEMPOROSS_REGION = 12588;
+	private int lootRollCount = 0;
 
 	// Guardians of the Rift
 	private static final String GUARDIANS_OF_THE_RIFT_EVENT = "Guardians of the Rift";
@@ -1143,7 +1144,8 @@ public class LootTrackerPlugin extends Plugin
 			invCbArmedBy = "TEMPOROSS";
 			invCbArmedTick = client.getTickCount();
 			invCbArmedTs = event.getTimestamp();
-			onInvChange(collectInvItems(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING)));
+			lootRollCount += 1;
+			onInvChange(collectInvItems(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING), lootRollCount));
 			return;
 		}
 
@@ -1459,6 +1461,12 @@ public class LootTrackerPlugin extends Plugin
 			addLoot(event, -1, type, metadata, invItems);
 	}
 
+	private InvChangeCallback collectInvItems(LootRecordType type, String event, Object metadata, int amount)
+	{
+		return (invItems, groundItems, removedItems) ->
+				addLoot(event, -1, type, metadata, invItems, amount);
+	}
+
 	private InvChangeCallback collectInvAndGroundItems(LootRecordType type, String event)
 	{
 		return collectInvAndGroundItems(type, event, null);
@@ -1491,7 +1499,7 @@ public class LootTrackerPlugin extends Plugin
 		inventorySnapshot = HashMultiset.create();
 		inventorySnapshotCb = cb;
 		inventoryTimeout = timeout * Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH;
-
+		lootRollCount = 0;
 		long seq = ++invCbSeq;
 		log.debug("ARM invCb seq={} id={} tick={} ts={} by={}",
 				seq,
