@@ -3579,6 +3579,7 @@ public final class SpotanimID
 	public static final int DEADMAN_2026_SOTD_SPECIAL_START = 3572;
 	public static final int DEADMAN_2026_SOTD_SPECIAL_EXTRA = 3573;
 	public static final int SARADOMIN_LIGHTNING_DEADMAN = 3574;
+	public static final int XBOWS_FIRE_AND_CLIMBED_GRAPPLE_SPOT_ANIM_FAST = 3575;
 	public static final int VFX_WHITE_PARTICLES = 3585;
 	public static final int VFX_WHITE_PARTICLES_REVERSE = 3586;
 	public static final int VFX_BEEF_TORNADO = 3587;

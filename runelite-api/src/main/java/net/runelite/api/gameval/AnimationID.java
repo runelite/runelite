@@ -1782,6 +1782,9 @@ public final class AnimationID
 	public static final int HUMAN_EGG_ROLL_FAST = 1775;
 	public static final int ARCHIBALD_EGG_FALL01 = 1776;
 	public static final int ARCHIBALD_EGG_IDLE01 = 1777;
+	public static final int XBOWS_FIRE_AND_CLIMBED_GRAPPLE_FAST = 1778;
+	public static final int XBOWS_HUMAN_FIRE_AND_CLIMB_GRAPPLE_FAST = 1779;
+	public static final int XBOWS_HUMAN_SHOOT_GRAPPLE_UP_CLIFF_FAST = 1780;
 	public static final int CAVE_LITTLEBUG_WALK = 1781;
 	public static final int CAVE_LITTLEBUG_READY = 1782;
 	public static final int CAVE_GOBLIN_READY = 1783;

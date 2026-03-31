@@ -6764,6 +6764,7 @@ public final class DBTableID
 			public static final int COMBAT_INTERFACE_PARTISAN = 3968;
 			public static final int COMBAT_INTERFACE_TRIBRID = 4091;
 			public static final int COMBAT_INTERFACE_EGG = 5376;
+			public static final int COMBAT_INTERFACE_SAILING_CANNON = 13321;
 		}
 	}
 
@@ -12909,34 +12910,39 @@ public final class DBTableID
 		public static final int ID = 162;
 
 		/**
-		 * integer
+		 * obj
 		 */
-		public static final int COL_RANGED_LEVEL_REQUIRED = 3;
+		public static final int COL_DUMMY_OBJ = 2;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_ACCURACY = 4;
+		public static final int COL_RANGED_LEVEL_REQUIRED = 4;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_DAMAGE = 5;
+		public static final int COL_ACCURACY = 5;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_AMMUNITION_MAX_TIER = 6;
+		public static final int COL_DAMAGE = 6;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_ATTACK_RATE = 7;
+		public static final int COL_AMMUNITION_MAX_TIER = 9;
 
 		/**
 		 * integer
 		 */
-		public static final int COL_ATTACK_RANGE = 9;
+		public static final int COL_ATTACK_RATE = 10;
+
+		/**
+		 * integer
+		 */
+		public static final int COL_ATTACK_RANGE = 12;
 
 		public static final class Row
 		{

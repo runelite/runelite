@@ -86969,6 +86969,41 @@ public final class ItemID
 	 */
 	public static final int BR_ARANEA_BOOTS = 33202;
 
+	/**
+	 * Bronze cannon
+	 */
+	public static final int SAILING_COMBAT_BRONZE_CANNON_DUMMY = 33204;
+
+	/**
+	 * Iron cannon
+	 */
+	public static final int SAILING_COMBAT_IRON_CANNON_DUMMY = 33205;
+
+	/**
+	 * Steel cannon
+	 */
+	public static final int SAILING_COMBAT_STEEL_CANNON_DUMMY = 33206;
+
+	/**
+	 * Mithril cannon
+	 */
+	public static final int SAILING_COMBAT_MITHRIL_CANNON_DUMMY = 33207;
+
+	/**
+	 * Adamant cannon
+	 */
+	public static final int SAILING_COMBAT_ADAMANT_CANNON_DUMMY = 33208;
+
+	/**
+	 * Rune cannon
+	 */
+	public static final int SAILING_COMBAT_RUNE_CANNON_DUMMY = 33209;
+
+	/**
+	 * Dragon cannon
+	 */
+	public static final int SAILING_COMBAT_DRAGON_CANNON_DUMMY = 33210;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;

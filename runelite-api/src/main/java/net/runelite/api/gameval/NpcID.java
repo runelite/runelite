@@ -67837,6 +67837,31 @@ public final class NpcID
 	 * Archibald
 	 */
 	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_07 = 15600;
+
+	/**
+	 * Kaiquir
+	 */
+	public static final int CANOEING_KAIQUIR = 15601;
+
+	/**
+	 * Amergin
+	 */
+	public static final int CANOEING_AMERGIN = 15602;
+
+	/**
+	 * Pete
+	 */
+	public static final int CANOEING_PETE = 15603;
+
+	/**
+	 * Porkai
+	 */
+	public static final int CANOEING_PORKAI = 15604;
+
+	/**
+	 * Lara
+	 */
+	public static final int CANOEING_LARA = 15605;
 	public static final int COWBOSS_MAPPED = 15624;
 
 	/**
