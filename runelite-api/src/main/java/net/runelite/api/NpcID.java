@@ -13040,6 +13040,11 @@ public final class NpcID
 	public static final int ARCHIBALD_15598 = 15598;
 	public static final int ARCHIBALD_15599 = 15599;
 	public static final int ARCHIBALD_15600 = 15600;
+	public static final int KAIQUIR = 15601;
+	public static final int AMERGIN = 15602;
+	public static final int PETE = 15603;
+	public static final int PORKAI = 15604;
+	public static final int LARA = 15605;
 	public static final int BULL = 15625;
 	public static final int BRUTUS = 15626;
 	public static final int BRUTUS_15627 = 15627;
