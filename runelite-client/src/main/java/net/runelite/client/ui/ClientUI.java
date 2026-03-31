@@ -1354,11 +1354,13 @@ public class ClientUI
 		// This is based on the workaround in https://github.com/JFormDesigner/FlatLaf/issues/1095
 		KeyboardFocusManager
 				.getCurrentKeyboardFocusManager()
-				.addPropertyChangeListener("focusOwner", event -> {
+				.addPropertyChangeListener("focusOwner", event ->
+				{
 					Optional.ofNullable(event.getNewValue())
 							.filter(JTextComponent.class::isInstance)
 							.map(JTextComponent.class::cast)
-							.ifPresent(textComponent -> {
+							.ifPresent(textComponent ->
+							{
 								final String clearLineAction = "clear line text macOS";
 
 								if (textComponent.getClientProperty(clearLineAction) != null)
@@ -1369,9 +1371,11 @@ public class ClientUI
 								KeyStroke metaBackspace = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_DOWN_MASK);
 								textComponent.getInputMap().put(metaBackspace, clearLineAction);
 
-								textComponent.getActionMap().put(clearLineAction, new AbstractAction() {
+								textComponent.getActionMap().put(clearLineAction, new AbstractAction()
+								{
 									@Override
-									public void actionPerformed(ActionEvent event) {
+									public void actionPerformed(ActionEvent event)
+									{
 										JTextComponent component = (JTextComponent)event.getSource();
 
 										if (!component.isEditable())
@@ -1379,15 +1383,19 @@ public class ClientUI
 											return;
 										}
 
-										try {
+										try
+										{
 											// In multiline text fields (i.e. notes) we want to only remove to the start of the line
 											int position = component.getCaretPosition();
 											int lineStart = Utilities.getRowStart(component, position);
 
-											if (lineStart < position) {
+											if (lineStart < position)
+											{
 												component.getDocument().remove(lineStart, position - lineStart);
 											}
-										} catch (BadLocationException ex) {
+										}
+										catch (BadLocationException ex)
+										{
 											// shouldn't be thrown, but if so do nothing
 										}
 									}
