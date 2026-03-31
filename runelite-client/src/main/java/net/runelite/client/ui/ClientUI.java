@@ -54,46 +54,25 @@ import java.awt.Taskbar;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.desktop.QuitStrategy;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import javax.swing.Box;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JRootPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.ToolTipManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Utilities;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -1361,6 +1340,63 @@ public class ClientUI
 		// Do not fill in background on repaint. Reduces flickering when
 		// the applet is resized.
 		System.setProperty("sun.awt.noerasebackground", "true");
+
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			setupMacOSDefaults();
+		}
+	}
+
+
+	private static void setupMacOSDefaults()
+	{
+		// Insert action to support macOS's 'Cmd+Backspace' native keymapping
+		// This is based on the workaround in https://github.com/JFormDesigner/FlatLaf/issues/1095
+		KeyboardFocusManager
+				.getCurrentKeyboardFocusManager()
+				.addPropertyChangeListener("focusOwner", event -> {
+					Optional.ofNullable(event.getNewValue())
+							.filter(JTextComponent.class::isInstance)
+							.map(JTextComponent.class::cast)
+							.ifPresent(textComponent -> {
+								final String clearLineAction = "clear line text macOS";
+
+								if (textComponent.getClientProperty(clearLineAction) != null)
+								{
+									return;
+								}
+
+								KeyStroke metaBackspace = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_DOWN_MASK);
+								textComponent.getInputMap().put(metaBackspace, clearLineAction);
+
+								textComponent.getActionMap().put(clearLineAction, new AbstractAction() {
+									@Override
+									public void actionPerformed(ActionEvent event) {
+										JTextComponent component = (JTextComponent)event.getSource();
+
+										if (!component.isEditable())
+										{
+											return;
+										}
+
+										try {
+											// In multiline text fields (i.e. notes) we want to only remove to the start of the line
+											int position = component.getCaretPosition();
+											int lineStart = Utilities.getRowStart(component, position);
+
+											if (lineStart < position) {
+												component.getDocument().remove(lineStart, position - lineStart);
+											}
+										} catch (BadLocationException ex) {
+											// shouldn't be thrown, but if so do nothing
+										}
+									}
+								});
+
+								// Set the property to avoid re-setting it next time this component is focused
+								textComponent.putClientProperty(clearLineAction, Boolean.TRUE);
+							});
+				});
 	}
 
 	@Nullable
