@@ -1,5 +1,6 @@
 .id                       276
 .int_arg_count            20
+.long_arg_count           0
 .obj_arg_count            0
 
 ; Check if we should allow server to relayout bank

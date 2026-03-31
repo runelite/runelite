@@ -24,7 +24,6 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import java.util.HashMap;
 import net.runelite.cache.definitions.StructDefinition;
 import net.runelite.cache.io.InputStream;
 
@@ -53,27 +52,7 @@ public class StructLoader
 	{
 		if (opcode == 249)
 		{
-			int length = stream.readUnsignedByte();
-
-			def.params = new HashMap<>(length);
-
-			for (int i = 0; i < length; i++)
-			{
-				boolean isString = stream.readUnsignedByte() == 1;
-				int key = stream.read24BitInt();
-				Object value;
-
-				if (isString)
-				{
-					value = stream.readString();
-				}
-				else
-				{
-					value = stream.readInt();
-				}
-
-				def.params.put(key, value);
-			}
+			def.params = stream.readParams();
 		}
 	}
 

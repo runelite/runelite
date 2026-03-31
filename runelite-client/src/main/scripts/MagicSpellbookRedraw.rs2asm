@@ -1,5 +1,6 @@
 .id                       2611
 .int_arg_count            11
+.long_arg_count           0
 .obj_arg_count            2
    iconst                 190
    istore                 11

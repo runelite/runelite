@@ -83,7 +83,6 @@ tasks.processTestResources {
 }
 
 tasks.test {
-    enabled = false
     jvmArgs("-Xmx2048m")
 }
 

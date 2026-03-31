@@ -42,6 +42,7 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
+import net.runelite.api.WorldView;
 import net.runelite.client.callback.RenderCallbackManager;
 
 @Slf4j
@@ -177,7 +178,7 @@ class SceneUploader
 		int[][][] roofs = scene.getRoofs();
 		Tile[][][] tiles = scene.getExtendedTiles();
 
-		int offset = scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET >> 3 : 0;
+		int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET >> 3 : 0;
 		this.basex = (mzx - offset) << 10;
 		this.basez = (mzz - offset) << 10;
 
@@ -449,8 +450,8 @@ class SceneUploader
 
 	private int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, int lx, int lz)
 	{
-		tileX += scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET : 0;
-		tileY += scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET : 0;
+		tileX += scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET : 0;
+		tileY += scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET : 0;
 
 		final int[][][] tileHeights = scene.getTileHeights();
 		final int swHeight = tileHeights[tileZ][tileX][tileY];

@@ -131,6 +131,10 @@ public class XteaPlugin extends Plugin
 		int revision = client.getRevision();
 		int[] regions = wv.getMapRegions();
 		int[][] xteaKeys = wv.getXteaKeys();
+		if (xteaKeys == null)
+		{
+			return;
+		}
 
 		XteaRequest xteaRequest = new XteaRequest();
 		xteaRequest.setRevision(revision);

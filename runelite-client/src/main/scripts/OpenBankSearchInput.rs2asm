@@ -1,5 +1,6 @@
 .id                       300
 .int_arg_count            0
+.long_arg_count           0
 .obj_arg_count            0
    get_varc_int           11
    iconst                 1

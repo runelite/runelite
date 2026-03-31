@@ -1,5 +1,6 @@
 .id                       1001
 .int_arg_count            0
+.long_arg_count           0
 .obj_arg_count            0
    sconst                 ": "
    return                

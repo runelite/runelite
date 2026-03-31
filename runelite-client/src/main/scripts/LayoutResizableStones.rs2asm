@@ -1,5 +1,6 @@
 .id                       920
 .int_arg_count            2
+.long_arg_count           0
 .obj_arg_count            0
 ; callback "forceStackStones"
 ;   Used by the InterfaceStylesPlugin to enable it's Always stack bottom bar option

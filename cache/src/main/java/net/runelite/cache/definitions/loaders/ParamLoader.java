@@ -58,6 +58,12 @@ public class ParamLoader
 				case 5:
 					def.setDefaultString(b.readString());
 					break;
+				case 7:
+					def.setDefaultLong(b.readLong());
+					break;
+				case 8:
+					def.setType(ScriptVarType.forId(b.readUnsignedByte()));
+					break;
 			}
 		}
 	}

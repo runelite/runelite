@@ -38,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Scene;
+import net.runelite.api.WorldView;
 import static net.runelite.client.plugins.gpu.FacePrioritySorter.MAX_DIAMETER;
 import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortHead;
 import static net.runelite.client.plugins.gpu.FacePrioritySorter.zsortNext;
@@ -700,7 +701,7 @@ class Zone
 
 	void multizoneLocs(Scene scene, int zx, int zz, int cx, int cz, Zone[][] zones)
 	{
-		int offset = scene.getWorldViewId() == -1 ? GpuPlugin.SCENE_OFFSET >> 3 : 0;
+		int offset = scene.getWorldViewId() == WorldView.TOPLEVEL ? GpuPlugin.SCENE_OFFSET >> 3 : 0;
 		for (int i = 0; i < alphaModels.size(); ++i) // NOPMD: ForLoopCanBeForeach
 		{
 			AlphaModel m = alphaModels.get(i);

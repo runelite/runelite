@@ -448,6 +448,7 @@ public final class DBTableID
 			public static final int EASTER_2025 = 5107;
 			public static final int HALLOWEEN_2025 = 6989;
 			public static final int BIRTHDAY_2026 = 7033;
+			public static final int EASTER_2026 = 13319;
 		}
 	}
 
@@ -4110,6 +4111,13 @@ public final class DBTableID
 			public static final int GREENMAN_MASK_MAPLE_TRANSMOG = 5394;
 			public static final int GREENMAN_MASK_YEW_TRANSMOG = 5395;
 			public static final int GREENMAN_MASK_MAGIC_TRANSMOG = 5396;
+			public static final int EASTER26_EGG_COMPANION_ARCHIBALD = 13312;
+			public static final int EASTER26_EGG_COMPANION_GRID = 13313;
+			public static final int EASTER26_EGG_COMPANION_BUNNY = 13314;
+			public static final int EASTER26_EGG_COMPANION_DIAMONDS = 13315;
+			public static final int EASTER26_EGG_COMPANION_CHICK = 13316;
+			public static final int EASTER26_EGG_COMPANION_MELTED = 13317;
+			public static final int EASTER26_EGG_COMPANION_DRAGON = 13318;
 		}
 	}
 
@@ -4151,6 +4159,7 @@ public final class DBTableID
 			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_REVERSED = 3511;
 			public static final int VMQ3_TOWER_LOCK_DATASET_ALPHABETIC = 3783;
 			public static final int COMBINATION_LOCK_DATASET_VMQ4_JANUS_LOCK = 5195;
+			public static final int COMBINATION_LOCK_DATASET_ALPHABETIC_EASTER26 = 13320;
 		}
 	}
 

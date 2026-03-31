@@ -1,5 +1,6 @@
 .id                       84
 .int_arg_count            1
+.long_arg_count           0
 .obj_arg_count            0
    get_varc_int           1112
    clientclock           
