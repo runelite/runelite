@@ -490,6 +490,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					loggingIn = false;
 					clientThread.invokeLater(() ->
 					{
+						//avoid infinite loop in the event of unexpected gamestate change before client.getLocalPlayer() is non-null
 						if (event.getGameState() != GameState.LOGGED_IN)
 						{
 							return true;
