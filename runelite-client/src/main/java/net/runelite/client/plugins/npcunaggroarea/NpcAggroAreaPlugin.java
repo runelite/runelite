@@ -494,7 +494,7 @@ public class NpcAggroAreaPlugin extends Plugin
 						{
 							return true;
 						}
-						final var localPlayer = client.getLocalPlayer();
+						final Player localPlayer = client.getLocalPlayer();
 						if (localPlayer == null)
 						{
 							return false;
