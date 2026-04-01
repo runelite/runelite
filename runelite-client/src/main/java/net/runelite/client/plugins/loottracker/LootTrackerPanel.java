@@ -39,6 +39,7 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -53,12 +54,15 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -106,6 +110,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
+	private final IconTextField searchBar = new IconTextField();
 
 	// Details and navigation
 	private final JPanel actionsPanel;
@@ -128,6 +133,7 @@ class LootTrackerPanel extends PluginPanel
 
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
+	private String searchFilter = "";
 	private String currentView;
 	private LootRecordType currentType;
 
@@ -178,11 +184,13 @@ class LootTrackerPanel extends PluginPanel
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
+		configureSearchBar();
 		actionsPanel = buildActionsPanel();
 		overallPanel = buildOverallPanel();
 
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
+		layoutPanel.add(searchBar);
 		layoutPanel.add(actionsPanel);
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
@@ -190,6 +198,48 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
 		add(errorPanel);
+	}
+
+	private void configureSearchBar()
+	{
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setToolTipText("Search loot sources");
+		searchBar.getDocument().addDocumentListener(new DocumentListener()
+		{
+			@Override
+			public void insertUpdate(DocumentEvent e)
+			{
+				onSearchChanged();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e)
+			{
+				onSearchChanged();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e)
+			{
+				onSearchChanged();
+			}
+		});
+	}
+
+	private void onSearchChanged()
+	{
+		final String text = searchBar.getText();
+		searchFilter = text == null ? "" : text.trim().toLowerCase(Locale.ENGLISH);
+
+		if (!searchFilter.isEmpty())
+		{
+			plugin.loadMatchingRecords(searchFilter);
+		}
+
+		rebuild();
 	}
 
 	/**
@@ -542,6 +592,12 @@ class LootTrackerPanel extends PluginPanel
 			return null;
 		}
 
+		if (!searchFilter.isEmpty()
+			&& !record.getTitle().toLowerCase(Locale.ENGLISH).contains(searchFilter))
+		{
+			return null;
+		}
+
 		final boolean isIgnored = plugin.isEventIgnored(record.getTitle());
 		if (hideIgnoredItems && isIgnored)
 		{
@@ -672,6 +728,12 @@ class LootTrackerPanel extends PluginPanel
 		for (LootTrackerRecord record : records)
 		{
 			if (!record.matches(currentView, currentType))
+			{
+				continue;
+			}
+
+			if (!searchFilter.isEmpty()
+				&& !record.getTitle().toLowerCase(Locale.ENGLISH).contains(searchFilter))
 			{
 				continue;
 			}

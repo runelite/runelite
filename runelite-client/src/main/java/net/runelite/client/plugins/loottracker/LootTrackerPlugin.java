@@ -48,6 +48,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -551,6 +552,85 @@ public class LootTrackerPlugin extends Plugin
 					panel.addRecords(records);
 				});
 
+				return true;
+			});
+		});
+	}
+
+	void loadMatchingRecords(String searchTerm)
+	{
+		final String profile = profileKey;
+		if (!config.rememberLoot() || Strings.isNullOrEmpty(profile))
+		{
+			return;
+		}
+
+		final String trimmedSearch = searchTerm == null ? "" : searchTerm.trim();
+		if (trimmedSearch.isEmpty())
+		{
+			return;
+		}
+
+		final String normalizedSearch = trimmedSearch.toLowerCase(Locale.ENGLISH);
+
+		executor.execute(() ->
+		{
+			if (!profile.equals(profileKey))
+			{
+				return;
+			}
+
+			final List<ConfigLoot> loots = new ArrayList<>();
+			for (String key : configManager.getRSProfileConfigurationKeys(LootTrackerConfig.GROUP, profile, "drops_"))
+			{
+				final Map.Entry<LootRecordType, String> parsedKey = parseLootConfigKey(key);
+				if (parsedKey == null)
+				{
+					continue;
+				}
+
+				final String name = parsedKey.getValue();
+				if (!name.toLowerCase(Locale.ENGLISH).contains(normalizedSearch))
+				{
+					continue;
+				}
+
+				final String json = configManager.getConfiguration(LootTrackerConfig.GROUP, profile, key);
+				if (json == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					final ConfigLoot configLoot = gson.fromJson(json, ConfigLoot.class);
+					if (configLoot != null)
+					{
+						loots.add(configLoot);
+					}
+				}
+				catch (JsonSyntaxException ex)
+				{
+					log.debug("Unable to parse loot key {} while searching", key, ex);
+				}
+			}
+
+			if (loots.isEmpty())
+			{
+				return;
+			}
+
+			clientThread.invokeLater(() ->
+			{
+				if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+				{
+					return false;
+				}
+
+				List<LootTrackerRecord> records = loots.stream()
+					.map(this::convertToLootTrackerRecord)
+					.collect(Collectors.toList());
+				SwingUtilities.invokeLater(() -> panel.addRecords(records));
 				return true;
 			});
 		});
@@ -1675,6 +1755,21 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return gson.fromJson(json, ConfigLoot.class);
+	}
+
+	@VisibleForTesting
+	static Map.Entry<LootRecordType, String> parseLootConfigKey(String key)
+	{
+		for (LootRecordType type : LootRecordType.values())
+		{
+			final String prefix = "drops_" + type + "_";
+			if (key.startsWith(prefix) && key.length() > prefix.length())
+			{
+				return Map.entry(type, key.substring(prefix.length()));
+			}
+		}
+
+		return null;
 	}
 
 	void setLootConfig(LootRecordType type, String name, ConfigLoot loot)
