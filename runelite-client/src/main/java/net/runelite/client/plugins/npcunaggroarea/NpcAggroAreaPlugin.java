@@ -40,9 +40,11 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
@@ -459,12 +461,12 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 	}
 
-	private void onLogin()
+	private void onLogin(Player localPlayer)
 	{
 		loadConfig();
 		resetConfig();
 
-		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
+		WorldPoint newLocation = localPlayer.getWorldLocation();
 		assert newLocation != null;
 
 		// If the player isn't at the location he/she logged out at,
@@ -486,7 +488,22 @@ public class NpcAggroAreaPlugin extends Plugin
 				if (loggingIn)
 				{
 					loggingIn = false;
-					onLogin();
+					clientThread.invokeLater(() ->
+					{
+						if (event.getGameState() != GameState.LOGGED_IN)
+						{
+							return true;
+						}
+						final var localPlayer = client.getLocalPlayer();
+						if (localPlayer == null)
+						{
+							return false;
+						}
+						onLogin(localPlayer);
+						scanNpcs();
+						return true;
+					});
+					break;
 				}
 
 				scanNpcs();
