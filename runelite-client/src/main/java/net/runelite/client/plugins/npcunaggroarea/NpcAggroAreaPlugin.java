@@ -461,12 +461,12 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 	}
 
-	private void onLogin(Player localPlayer)
+	private void onLogin()
 	{
 		loadConfig();
 		resetConfig();
 
-		WorldPoint newLocation = localPlayer.getWorldLocation();
+		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
 		assert newLocation != null;
 
 		// If the player isn't at the location he/she logged out at,
@@ -499,7 +499,7 @@ public class NpcAggroAreaPlugin extends Plugin
 						{
 							return false;
 						}
-						onLogin(localPlayer);
+						onLogin();
 						scanNpcs();
 						return true;
 					});
