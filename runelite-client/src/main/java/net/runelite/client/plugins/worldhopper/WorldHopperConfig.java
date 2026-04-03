@@ -66,7 +66,7 @@ public interface WorldHopperConfig extends Config
 		name = "Quick-hop home world",
 		description = "When you press this key you'll hop to your set home world.",
 		position = 2
-	)	
+	)
 	default Keybind homeWorldKey()
 	{
 		return new Keybind(KeyEvent.VK_HOME, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
