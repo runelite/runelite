@@ -62,10 +62,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "homeWorldKey",
+		name = "Quick-hop home world",
+		description = "When you press this key you'll hop to your set home world.",
+		position = 2
+	)	
+	default Keybind homeWorldKey()
+	{
+		return new Keybind(KeyEvent.VK_HOME, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
+	}
+
+	@ConfigItem(
 		keyName = "quickhopOutOfDanger",
 		name = "Quick-hop out of dangerous worlds",
 		description = "Don't hop to a PvP/high risk world when quick-hopping.",
-		position = 2
+		position = 3
 	)
 	default boolean quickhopOutOfDanger()
 	{
@@ -158,5 +169,16 @@ public interface WorldHopperConfig extends Config
 	default boolean displayPing()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "setHomeWorld",
+		name = "Home world",
+		description = "Sets a home world to teleport to after world hopping.",
+		position = 12
+	)
+	default int setHomeWorld()
+	{
+		return 0;
 	}
 }
