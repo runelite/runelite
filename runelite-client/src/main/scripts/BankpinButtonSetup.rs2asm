@@ -1,5 +1,6 @@
 .id                       679
 .int_arg_count            21
+.long_arg_count           0
 .obj_arg_count            0
    iload                  0
    cc_deleteall          

@@ -785,6 +785,8 @@ public final class SpriteID
 	public static final int MINIMAP_BOAT_COLOSSAL = 7291;
 	public static final int MINIMAP_BOAT_CLASSIC_LARGE = 7292;
 	public static final int STOP_OUTLINED = 7426;
+	public static final int TITLEBUTTON_ARROWS_47X41 = 7529;
+	public static final int TITLE_ICON_STAR_12X12 = 7530;
 
 	public static final class _2XStandardSpellsOn
 	{

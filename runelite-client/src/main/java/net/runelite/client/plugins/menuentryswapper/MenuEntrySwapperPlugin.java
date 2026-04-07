@@ -48,6 +48,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EntityOps;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyCode;
 import net.runelite.api.Menu;
@@ -526,6 +527,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configureUiSwap(event);
 	}
 
+	private int packSubID(int opIdx, int subID)
+	{
+		return (subID + 1) << 8 | opIdx;
+	}
+
 	private void configureObjectClick(MenuOpened event)
 	{
 		if (!shiftModifier() || !config.objectCustomization())
@@ -540,15 +546,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (entry.getType() == MenuAction.EXAMINE_OBJECT)
 			{
 				final ObjectComposition composition = client.getObjectDefinition(entry.getIdentifier());
-				final String[] actions = composition.getActions();
+				final var ops = composition.getOps();
 
 				final Integer swapConfig = getObjectSwapConfig(false, composition.getId());
-				final MenuAction currentAction = swapConfig == null ? defaultAction(composition) :
-					(swapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(swapConfig));
-
 				final Integer shiftSwapConfig = getObjectSwapConfig(true, composition.getId());
-				final MenuAction currentShiftAction = shiftSwapConfig == null ? defaultAction(composition) :
-					(shiftSwapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(shiftSwapConfig));
 
 				MenuEntry swapLeftClick = client.createMenuEntry(idx)
 					.setOption("Swap left-click")
@@ -561,47 +562,52 @@ public class MenuEntrySwapperPlugin extends Plugin
 				Menu subLeft = swapLeftClick.createSubMenu();
 				Menu subShift = swapShiftClick.createSubMenu();
 
-				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
+				for (int opIdx = 0; opIdx < EntityOps.MAX_OPS; ++opIdx)
 				{
-					if (Strings.isNullOrEmpty(actions[actionIdx]))
+					String op = ops.getOp(opIdx);
+					if (Strings.isNullOrEmpty(op))
 					{
 						continue;
 					}
 
-					final MenuAction menuAction = OBJECT_MENU_TYPES.get(actionIdx);
-					if (menuAction != currentAction)
-					{
-						subLeft.createMenuEntry(0)
-							.setOption(actions[actionIdx])
-							.setType(MenuAction.RUNELITE)
-							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, false));
-					}
+					subLeft.createMenuEntry(0)
+						.setOption(op)
+						.setType(MenuAction.RUNELITE)
+						.onClick(objectConsumer(composition, op, opIdx, false));
+					subShift.createMenuEntry(0)
+						.setOption(op)
+						.setType(MenuAction.RUNELITE)
+						.onClick(objectConsumer(composition, op, opIdx, true));
 
-					if (menuAction != currentShiftAction && menuAction != currentAction)
+					int numSubOps = ops.getNumSubOps(opIdx);
+					for (int subIdx = 0; subIdx < numSubOps; subIdx++)
 					{
-						subShift.createMenuEntry(0)
-							.setOption(actions[actionIdx])
-							.setType(MenuAction.RUNELITE)
-							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, true));
+						String subOp = ops.getSubOp(opIdx, subIdx);
+
+						if (subOp != null)
+						{
+							int subID = ops.getSubID(opIdx, subIdx);
+							subLeft.createMenuEntry(0)
+								.setOption(subOp)
+								.setType(MenuAction.RUNELITE)
+								.onClick(objectConsumer(composition, subOp, packSubID(opIdx, subID), false));
+							subShift.createMenuEntry(0)
+								.setOption(subOp)
+								.setType(MenuAction.RUNELITE)
+								.onClick(objectConsumer(composition, subOp, packSubID(opIdx, subID), true));
+						}
 					}
 				}
 
 				// Walk here
-				if (currentAction != MenuAction.WALK)
-				{
-					subLeft.createMenuEntry(0)
-						.setOption("Walk here")
-						.setType(MenuAction.RUNELITE)
-						.onClick(walkHereConsumer(false, composition));
-				}
-
-				if (currentShiftAction != MenuAction.WALK)
-				{
-					subShift.createMenuEntry(0)
-						.setOption("Walk here")
-						.setType(MenuAction.RUNELITE)
-						.onClick(walkHereConsumer(true, composition));
-				}
+				subLeft.createMenuEntry(0)
+					.setOption("Walk here")
+					.setType(MenuAction.RUNELITE)
+					.onClick(walkHereConsumer(false, composition));
+				subShift.createMenuEntry(0)
+					.setOption("Walk here")
+					.setType(MenuAction.RUNELITE)
+					.onClick(walkHereConsumer(true, composition));
 
 				// Reset
 				if (swapConfig != null)
@@ -623,14 +629,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private Consumer<MenuEntry> objectConsumer(ObjectComposition composition, String[] actions, int menuIdx,
-		MenuAction menuAction, boolean shift)
+	private Consumer<MenuEntry> objectConsumer(ObjectComposition composition, String text, int menuIdx, boolean shift)
 	{
 		return e ->
 		{
 			final String message = new ChatMessageBuilder()
 				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(composition.getName())).append("' ")
-				.append("has been set to '").append(actions[menuIdx]).append("'.")
+				.append("has been set to '").append(text).append("'.")
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
@@ -638,7 +643,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				.runeLiteFormattedMessage(message)
 				.build());
 
-			log.debug("Set object swap for {} to {}", composition.getId(), menuAction);
+			log.debug("Set object swap for {} to {}", composition.getId(), menuIdx);
 
 			setObjectSwapConfig(shift, composition.getId(), menuIdx);
 		};
@@ -750,7 +755,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				Menu subLeft = swapLeftClick.createSubMenu();
 				Menu subShift = swapShiftClick.createSubMenu();
 
-				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
+				for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
 				{
 					// Attack can be swapped with the in-game settings, and this becomes very confusing if we try
 					// to swap Attack and the game also tries to swap it (by deprioritizing), so just use the in-game
@@ -1493,16 +1498,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				// Submenu swap. The swapIndex is actually the option hashCode.
 				else if (parent != null && menuEntry.getOption().hashCode() == swapIndex)
 				{
-					// Since it isn't possible to reparent the menu to the top level, just copy it
-					client.createMenuEntry(-1)
-						.setOption(menuEntry.getOption())
-						.setTarget(menuEntry.getTarget())
-						.setIdentifier(menuEntry.getIdentifier())
-						.setType(menuEntry.getType() == MenuAction.CC_OP_LOW_PRIORITY ? MenuAction.CC_OP : menuEntry.getType())
-						.setItemId(menuEntry.getItemId())
-						.setParam0(menuEntry.getParam0())
-						.setParam1(menuEntry.getParam1())
-						.onClick(menuEntry.onClick());
+					clone(menuEntry);
 				}
 				return;
 			}
@@ -1524,26 +1520,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 					// Submenu swap.
 					else if (parent != null && menuEntry.getOption().hashCode() == wornItemSwapConfig)
 					{
-						// Since it isn't possible to reparent the menu to the top level, just copy it
-						client.createMenuEntry(-1)
-							.setOption(menuEntry.getOption())
-							.setTarget(menuEntry.getTarget())
-							.setIdentifier(menuEntry.getIdentifier())
-							.setType(menuEntry.getType() == MenuAction.CC_OP_LOW_PRIORITY ? MenuAction.CC_OP : menuEntry.getType())
-							.setItemId(menuEntry.getItemId())
-							.setParam0(menuEntry.getParam0())
-							.setParam1(menuEntry.getParam1())
-							.onClick(menuEntry.onClick());
+						clone(menuEntry);
 					}
 					return;
 				}
 			}
 		}
 
-		if (OBJECT_MENU_TYPES.contains(menuAction))
+		int objMenuIdx = OBJECT_MENU_TYPES.indexOf(menuAction);
+		if (objMenuIdx != -1)
 		{
 			// Get multiloc id
-			int objectId = eventId;
+			int objectId = eventId & 0xFFFF;
 			ObjectComposition objectComposition = client.getObjectDefinition(objectId);
 			if (objectComposition.getImpostorIds() != null)
 			{
@@ -1554,12 +1542,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			Integer customOption = getObjectSwapConfig(shiftModifier(), objectId);
 			if (customOption != null && customOption >= 0)
 			{
-				MenuAction swapAction = OBJECT_MENU_TYPES.get(customOption);
-				if (swapAction == menuAction)
+				if (customOption == objMenuIdx)
 				{
 					swap(menu, menuEntries, index, menuEntries.length - 1);
-					return;
 				}
+				else if (parent != null && customOption == packSubID(objMenuIdx, menuEntry.getIdentifier() >> 16))
+				{
+					clone(menuEntry);
+				}
+				return;
 			}
 		}
 
@@ -1875,6 +1866,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	private MenuEntry clone(MenuEntry menuEntry)
+	{
+		// Since it isn't possible to reparent the menu to the top level, just copy it
+		return client.createMenuEntry(-1)
+			.setOption(menuEntry.getOption())
+			.setTarget(menuEntry.getTarget())
+			.setIdentifier(menuEntry.getIdentifier())
+			.setType(menuEntry.getType() == MenuAction.CC_OP_LOW_PRIORITY ? MenuAction.CC_OP : menuEntry.getType())
+			.setItemId(menuEntry.getItemId())
+			.setParam0(menuEntry.getParam0())
+			.setParam1(menuEntry.getParam1())
+			.onClick(menuEntry.onClick());
+	}
+
 	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value)
 	{
 		int idx = Collections.binarySearch(list, value);
@@ -1907,21 +1912,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, (shift ? OBJECT_SHIFT_KEY_PREFIX : OBJECT_KEY_PREFIX) + objectId);
 	}
 
-	private static MenuAction defaultAction(ObjectComposition objectComposition)
-	{
-		String[] actions = objectComposition.getActions();
-		// GAME_OBJECT_FIFTH_OPTION is never the default, even if it is the only option, because it
-		// gets depriotizied below Walk here
-		for (int i = 0; i < OBJECT_MENU_TYPES.size() - 1; ++i)
-		{
-			if (!Strings.isNullOrEmpty(actions[i]))
-			{
-				return OBJECT_MENU_TYPES.get(i);
-			}
-		}
-		return null;
-	}
-
 	private Integer getNpcSwapConfig(boolean shift, int npcId)
 	{
 		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP,
@@ -1947,7 +1937,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static MenuAction defaultAction(NPCComposition composition)
 	{
 		String[] actions = composition.getActions();
-		for (int i = 0; i < NPC_MENU_TYPES.size(); ++i)
+		for (int i = 0; i < actions.length && i < NPC_MENU_TYPES.size(); ++i)
 		{
 			if (!Strings.isNullOrEmpty(actions[i]) && !actions[i].equalsIgnoreCase("Attack"))
 			{

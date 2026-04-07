@@ -1,5 +1,6 @@
 .id                       327
 .int_arg_count            1
+.long_arg_count           0
 .obj_arg_count            0
    ; Attach specbar redraw listeners to the weapon name text instead of to
    ; auto retaliate text (which is var0). Test by enabling "Hide auto retaliate"

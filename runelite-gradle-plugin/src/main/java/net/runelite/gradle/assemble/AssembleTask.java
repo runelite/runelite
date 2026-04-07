@@ -90,6 +90,8 @@ public abstract class AssembleTask extends DefaultTask
 
 		int count = 0;
 		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
+
+		getProject().delete(scriptOut);
 		scriptOut.mkdirs();
 
 		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))

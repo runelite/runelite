@@ -67728,9 +67728,140 @@ public final class NpcID
 	public static final int SAILING_VEILED_KRAKEN_DEAD = 15577;
 
 	/**
+	 * Easter Bunny
+	 */
+	public static final int EASTER26_EASTER_BUNNY = 15578;
+	public static final int EASTER26_EGG_LAST_SPOT = 15579;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_LAST_SPOT_FOUND = 15580;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_CHURCH_CUTSCENE = 15581;
+
+	/**
+	 * Barricade
+	 */
+	public static final int CASTLEWARS_BARRICADE_SARADOMIN_RENDER_UNDER = 15582;
+
+	/**
+	 * Barricade
+	 */
+	public static final int CASTLEWARS_BARRICADE_BURNING_SARADOMIN_RENDER_UNDER = 15583;
+
+	/**
+	 * Barricade
+	 */
+	public static final int CASTLEWARS_BARRICADE_ZAMORAK_RENDER_UNDER = 15584;
+
+	/**
+	 * Barricade
+	 */
+	public static final int CASTLEWARS_BARRICADE_BURNING_ZAMORAK_RENDER_UNDER = 15585;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG = 15586;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG = 15587;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG_02 = 15588;
+
+	/**
 	 * Sookie
 	 */
 	public static final int _25TH_CAT = 15589;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_02 = 15590;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG_03 = 15591;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_03 = 15592;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG_04 = 15593;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_04 = 15594;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG_05 = 15595;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_05 = 15596;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG_06 = 15597;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_06 = 15598;
+
+	/**
+	 * Archibald
+	 */
+	public static final int POH_EASTER26_EGG_07 = 15599;
+
+	/**
+	 * Archibald
+	 */
+	public static final int DAGANNOTH_DUNGEON_PRESSURE_PET_EASTER26_EGG_07 = 15600;
+
+	/**
+	 * Kaiquir
+	 */
+	public static final int CANOEING_KAIQUIR = 15601;
+
+	/**
+	 * Amergin
+	 */
+	public static final int CANOEING_AMERGIN = 15602;
+
+	/**
+	 * Pete
+	 */
+	public static final int CANOEING_PETE = 15603;
+
+	/**
+	 * Porkai
+	 */
+	public static final int CANOEING_PORKAI = 15604;
+
+	/**
+	 * Lara
+	 */
+	public static final int CANOEING_LARA = 15605;
 	public static final int COWBOSS_MAPPED = 15624;
 
 	/**

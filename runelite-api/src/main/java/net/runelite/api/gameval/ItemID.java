@@ -68891,7 +68891,7 @@ public final class ItemID
 	public static final int BR_ZARYTE_XBOW = 27186;
 
 	/**
-	 * Bow of faerdhinen
+	 * Bow of faerdhinen (c)
 	 */
 	public static final int BR_BOW_OF_FAERDHINEN = 27187;
 
@@ -86819,6 +86819,191 @@ public final class ItemID
 	 */
 	public static final int SAILING_VEILED_KRAKEN_INK_SAC = 33145;
 
+	/**
+	 * Scribbled notes
+	 */
+	public static final int EASTER26_CLUE_STACK = 33146;
+
+	/**
+	 * Egg box
+	 */
+	public static final int EASTER26_SECOND_LOCATION_EGG_BOX = 33147;
+
+	/**
+	 * Egg box
+	 */
+	public static final int EASTER26_SIXTH_LOCATION_EGG_BOX = 33148;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_RUNAWAY_EGG = 33149;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION = 33151;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION02 = 33153;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION03 = 33155;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION04 = 33157;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION05 = 33159;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION06 = 33161;
+
+	/**
+	 * Archibald
+	 */
+	public static final int EASTER26_EGG_COMPANION07 = 33163;
+
+	/**
+	 * Crystal body
+	 */
+	public static final int BR_CRYSTAL_CHESTPLATE = 33166;
+
+	/**
+	 * Crystal legs
+	 */
+	public static final int BR_CRYSTAL_PLATELEGS = 33168;
+
+	/**
+	 * Crystal helm
+	 */
+	public static final int BR_CRYSTAL_HELMET = 33170;
+
+	/**
+	 * Avernic treads (max)
+	 */
+	public static final int BR_AVERNIC_TREADS = 33172;
+
+	/**
+	 * Osmumten's fang
+	 */
+	public static final int BR_OSMUMTENS_FANG = 33174;
+
+	/**
+	 * Elidinis' ward (f)
+	 */
+	public static final int BR_ELIDINIS_WARD_FORTIFIED = 33176;
+
+	/**
+	 * Noxious halberd
+	 */
+	public static final int BR_NOXIOUS_HALBERD = 33178;
+
+	/**
+	 * Magus ring
+	 */
+	public static final int BR_MAGUS_RING = 33180;
+
+	/**
+	 * Ultor ring
+	 */
+	public static final int BR_ULTOR_RING = 33182;
+
+	/**
+	 * Purging staff
+	 */
+	public static final int BR_PURGING_STAFF = 33184;
+
+	/**
+	 * Dragonfire shield
+	 */
+	public static final int BR_DRAGONFIRE_SHIELD = 33186;
+
+	/**
+	 * Twisted buckler
+	 */
+	public static final int BR_TWISTED_BUCKLER = 33188;
+
+	/**
+	 * Masori body (f)
+	 */
+	public static final int BR_MASORI_BODY_FORTIFIED = 33190;
+
+	/**
+	 * Masori chaps (f)
+	 */
+	public static final int BR_MASORI_CHAPS_FORTIFIED = 33192;
+
+	/**
+	 * Torva platelegs
+	 */
+	public static final int BR_TORVA_LEGS = 33194;
+
+	/**
+	 * Virtus robe top
+	 */
+	public static final int BR_VIRTUS_TOP = 33196;
+
+	/**
+	 * Virtus robe bottom
+	 */
+	public static final int BR_VIRTUS_LEGS = 33198;
+
+	/**
+	 * Burning claws
+	 */
+	public static final int BR_BONE_CLAWS = 33200;
+
+	/**
+	 * Aranea boots
+	 */
+	public static final int BR_ARANEA_BOOTS = 33202;
+
+	/**
+	 * Bronze cannon
+	 */
+	public static final int SAILING_COMBAT_BRONZE_CANNON_DUMMY = 33204;
+
+	/**
+	 * Iron cannon
+	 */
+	public static final int SAILING_COMBAT_IRON_CANNON_DUMMY = 33205;
+
+	/**
+	 * Steel cannon
+	 */
+	public static final int SAILING_COMBAT_STEEL_CANNON_DUMMY = 33206;
+
+	/**
+	 * Mithril cannon
+	 */
+	public static final int SAILING_COMBAT_MITHRIL_CANNON_DUMMY = 33207;
+
+	/**
+	 * Adamant cannon
+	 */
+	public static final int SAILING_COMBAT_ADAMANT_CANNON_DUMMY = 33208;
+
+	/**
+	 * Rune cannon
+	 */
+	public static final int SAILING_COMBAT_RUNE_CANNON_DUMMY = 33209;
+
+	/**
+	 * Dragon cannon
+	 */
+	public static final int SAILING_COMBAT_DRAGON_CANNON_DUMMY = 33210;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -91406,6 +91591,26 @@ public final class ItemID
 		public static final int RAW_TBONE_STEAK = 33107;
 		public static final int TBONE_STEAK = 33110;
 		public static final int TBONE_STEAK_BURNED = 33113;
+		public static final int BR_BOW_OF_FAERDHINEN = 33165;
+		public static final int BR_CRYSTAL_CHESTPLATE = 33167;
+		public static final int BR_CRYSTAL_PLATELEGS = 33169;
+		public static final int BR_CRYSTAL_HELMET = 33171;
+		public static final int BR_AVERNIC_TREADS = 33173;
+		public static final int BR_OSMUMTENS_FANG = 33175;
+		public static final int BR_ELIDINIS_WARD_FORTIFIED = 33177;
+		public static final int BR_NOXIOUS_HALBERD = 33179;
+		public static final int BR_MAGUS_RING = 33181;
+		public static final int BR_ULTOR_RING = 33183;
+		public static final int BR_PURGING_STAFF = 33185;
+		public static final int BR_DRAGONFIRE_SHIELD = 33187;
+		public static final int BR_TWISTED_BUCKLER = 33189;
+		public static final int BR_MASORI_BODY_FORTIFIED = 33191;
+		public static final int BR_MASORI_CHAPS_FORTIFIED = 33193;
+		public static final int BR_TORVA_LEGS = 33195;
+		public static final int BR_VIRTUS_TOP = 33197;
+		public static final int BR_VIRTUS_LEGS = 33199;
+		public static final int BR_BONE_CLAWS = 33201;
+		public static final int BR_ARANEA_BOOTS = 33203;
 	}
 
 	public static final class Placeholder
@@ -100882,6 +101087,14 @@ public final class ItemID
 		public static final int COWQUEST_MILK_SAMPLE_2 = 33131;
 		public static final int SLAYER_SPIDER_SILK = 33134;
 		public static final int SLAYER_HERB_SACK_SILK = 33136;
+		public static final int EASTER26_RUNAWAY_EGG = 33150;
+		public static final int EASTER26_EGG_COMPANION = 33152;
+		public static final int EASTER26_EGG_COMPANION02 = 33154;
+		public static final int EASTER26_EGG_COMPANION03 = 33156;
+		public static final int EASTER26_EGG_COMPANION04 = 33158;
+		public static final int EASTER26_EGG_COMPANION05 = 33160;
+		public static final int EASTER26_EGG_COMPANION06 = 33162;
+		public static final int EASTER26_EGG_COMPANION07 = 33164;
 	}
 /* This file is automatically generated. Do not edit. */
 }

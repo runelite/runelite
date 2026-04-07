@@ -1186,10 +1186,12 @@ public final class AnimationID
 	public static final int SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_1X3_DROP01_CREW = 1179;
 	public static final int SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_2X5_DROP01_CREW = 1180;
 	public static final int SAILING_HUMAN_SALVAGE_HOOK_KANDARIN_3X8_DROP01_CREW = 1181;
+	public static final int CHAT_BAFFLED = 1182;
 	public static final int KALPHITE_READY = 1183;
 	public static final int KALPHITE_ATTACK_MANDIBLES = 1184;
 	public static final int KALPHITE_ATTACK_CLAWS = 1185;
 	public static final int KALPHITE_BLOCK = 1186;
+	public static final int CHAT_BAFFLED_IDLE = 1187;
 	public static final int KALPHITE_HATCHING = 1188;
 	public static final int KALPHITE_WALK = 1189;
 	public static final int KALPHITE_DEATH = 1190;
@@ -1776,6 +1778,13 @@ public final class AnimationID
 	public static final int MDAUGHTER_ABSAIL_COMBI_OLD = 1771;
 	public static final int MDAUGHTER_ABSAIL_COMBI = 1772;
 	public static final int GIANT_EAGLE_FLY = 1773;
+	public static final int HUMAN_EGG_ROLL = 1774;
+	public static final int HUMAN_EGG_ROLL_FAST = 1775;
+	public static final int ARCHIBALD_EGG_FALL01 = 1776;
+	public static final int ARCHIBALD_EGG_IDLE01 = 1777;
+	public static final int XBOWS_FIRE_AND_CLIMBED_GRAPPLE_FAST = 1778;
+	public static final int XBOWS_HUMAN_FIRE_AND_CLIMB_GRAPPLE_FAST = 1779;
+	public static final int XBOWS_HUMAN_SHOOT_GRAPPLE_UP_CLIFF_FAST = 1780;
 	public static final int CAVE_LITTLEBUG_WALK = 1781;
 	public static final int CAVE_LITTLEBUG_READY = 1782;
 	public static final int CAVE_GOBLIN_READY = 1783;
